@@ -35,7 +35,7 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     CapturedParameter() { none() }
   }
 
-  private class TExpr = TCallableNode or TLocalVariableRefNode;
+  private class TExpr = TCallableNode or TLocalVariableRefNode or TImplicitArgumentNode;
 
   private predicate isTopLevelCallable(BuilderNode callable) {
     callable.isCallable(any(TopLevel t))
@@ -54,6 +54,14 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
       exists(DataFlowCallable callable |
         this = TCallableNode(callable) and
         bb.getNode(i).injects(callable.asSourceCallable())
+      )
+      or
+      // We need to associate a CFG node with the callee argument passed to a capturing getter/setter,
+      // so it can carry captured data in and out the getter/setter.
+      exists(DataFlowCall call | this = TImplicitArgumentNode(call, _, false) |
+        performsVariableAccess(call.asGetterCall(), _, TRead(), bb.getNode(i))
+        or
+        performsVariableAccess(call.asSetterCall(), _, TWrite(), bb.getNode(i))
       )
     }
   }
@@ -114,6 +122,19 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     predicate hasAliasedAccess(Expr f) {
       // TODO: Restrict to places where the function is called or escapes into a call where it might get called.
       callableHasLocalAlias(callable, f) and not f.(LocalVariableRefNode).getRefKind().isWrite()
+      or
+      // Record the callee argument passed into a local capturing getter/setter as an alias for that getter/setter
+      // so it can carry capture data in and out of the getter/setter call.
+      exists(ComputedLocalVariable local, DataFlowCall call |
+        callable = local.getAnAccessor() and
+        f = TImplicitArgumentNode(call, any(ArgumentPosition p | p.isCallee()), false)
+      |
+        callable instanceof GetterDeclaration and
+        call.asGetterCall() = local.getAnAccess()
+        or
+        callable instanceof SetterDeclaration and
+        call.asSetterCall() = local.getAnAccess()
+      )
     }
   }
 }

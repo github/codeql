@@ -44,7 +44,7 @@ func t5() {
 func t6() {
     var y: String = source("t6.1")
     var x: String { y }
-    sink(x)  // $ MISSING: hasValueFlow=t6.1
+    sink(x)  // $ hasValueFlow=t6.1
 }
 
 func t7() {
@@ -52,5 +52,5 @@ func t7() {
     var x: String { y }
     sink(x)  // no flow
     y = source("t7.1")
-    sink(x)  // $ MISSING: hasValueFlow=t7.1
+    sink(x)  // $ hasValueFlow=t7.1
 }
