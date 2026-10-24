@@ -272,6 +272,8 @@ module DataFlowInput implements InputSig<Location> {
   predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() } // TODO
 
   predicate allowParameterReturnInSelf(ParameterNode p) {
+    p.isReceiverParameter(_)
+    or
     captureSsaAllowParameterReturnInSelf(p)
     or
     exists(DataFlowCallable c, ParameterPosition pos |

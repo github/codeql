@@ -86,5 +86,5 @@ func t8() {
     var c = C()
     c.field = source("t8.1")
     c.x = "safe"  // trigger the setter
-    sink(c.otherField)  // $ MISSING: hasTaintFlow=t8.1
+    sink(c.otherField)  // $ hasTaintFlow=t8.1
 }
