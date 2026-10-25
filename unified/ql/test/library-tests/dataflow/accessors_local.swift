@@ -72,3 +72,15 @@ func t9() {
     y = source("t9.1")
     closure()
 }
+
+func t10() {
+    var y: String = "safe"
+    var x1: String { y }
+    var x2: String { x1 }
+    var x3: String { x2 }
+    let closure = {
+        sink(x3)  // $ hasValueFlow=t9.1
+    }
+    y = source("t9.1")
+    closure()
+}
