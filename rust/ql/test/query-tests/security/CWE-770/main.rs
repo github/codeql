@@ -351,3 +351,23 @@ fn main() {
 
     println!("--- end ---");
 }
+
+mod actix_tests {
+    use actix_web::dev::{ConnectionInfo, Payload};
+    use actix_web::{web, App, FromRequest, HttpRequest};
+
+    async fn connection_info_handler(req: HttpRequest) -> &'static str {
+        // reading the connection info does not allocate an uncontrolled amount of memory
+        let _ = req.connection_info(); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=actix
+        let _ = req.full_url(); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=actix
+        let _ = req.url_for("index", ["a"]); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=actix
+        let _ = req.url_for_static("index"); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=actix
+        let _ = req.resource_map().url_for(&req, "index", ["a"]); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=actix
+        let _ = ConnectionInfo::from_request(&req, &mut Payload::None); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=actix
+        ""
+    }
+
+    fn test_actix() {
+        let _ = App::new().route("/", web::get().to(connection_info_handler)); // $ Source=actix
+    }
+}
