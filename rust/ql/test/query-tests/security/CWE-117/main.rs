@@ -157,16 +157,16 @@ mod actix_tests {
 
     async fn connection_info_handler(req: HttpRequest) -> &'static str {
         // reading the connection info does not log anything
-        let _ = req.connection_info(); // $ SPURIOUS: Alert[rust/log-injection]=actix
-        let _ = req.full_url(); // $ SPURIOUS: Alert[rust/log-injection]=actix
-        let _ = req.url_for("index", ["a"]); // $ SPURIOUS: Alert[rust/log-injection]=actix
-        let _ = req.url_for_static("index"); // $ SPURIOUS: Alert[rust/log-injection]=actix
-        let _ = req.resource_map().url_for(&req, "index", ["a"]); // $ SPURIOUS: Alert[rust/log-injection]=actix
-        let _ = ConnectionInfo::from_request(&req, &mut Payload::None); // $ SPURIOUS: Alert[rust/log-injection]=actix
+        let _ = req.connection_info();
+        let _ = req.full_url();
+        let _ = req.url_for("index", ["a"]);
+        let _ = req.url_for_static("index");
+        let _ = req.resource_map().url_for(&req, "index", ["a"]);
+        let _ = ConnectionInfo::from_request(&req, &mut Payload::None);
         ""
     }
 
     fn test_actix() {
-        let _ = App::new().route("/", web::get().to(connection_info_handler)); // $ Source=actix
+        let _ = App::new().route("/", web::get().to(connection_info_handler));
     }
 }

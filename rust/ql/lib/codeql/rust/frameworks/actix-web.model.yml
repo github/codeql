@@ -16,3 +16,14 @@ extensions:
       extensible: summaryModel
     data:
         - ["<actix_web::types::path::Path>::into_inner", "Argument[self]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: neutralModel
+    data:
+      - ["<actix_web::info::ConnectionInfo as actix_web::extract::FromRequest>::from_request", "sink", "manual"]
+      - ["<actix_web::request::HttpRequest>::connection_info", "sink", "manual"]
+      - ["<actix_web::request::HttpRequest>::full_url", "sink", "manual"]
+      - ["<actix_web::request::HttpRequest>::url_for", "sink", "manual"]
+      - ["<actix_web::request::HttpRequest>::url_for_static", "sink", "manual"]
+      - ["<actix_web::rmap::ResourceMap>::url_for", "sink", "manual"]
+      - ["<actix_web::service::ServiceRequest>::connection_info", "sink", "manual"]
