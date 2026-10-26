@@ -161,6 +161,20 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node2.isIncomingValue(arg.getValue())
   )
   or
+  // For local getters/setters, pass the callable into the callee argument.
+  // Capture SSA depends on this.
+  exists(ComputedLocalVariable local, AccessorDeclaration accessor, DataFlowCall call |
+    accessor = local.getAnAccessor() and
+    node1.isCallable(accessor) and
+    step.callGraph() and
+    (
+      call.asGetterCall() = local.getAnAccess() and accessor instanceof GetterDeclaration
+      or
+      call.asSetterCall() = local.getAnAccess() and accessor instanceof SetterDeclaration
+    ) and
+    node2.isImplicitArgument(call, any(ArgumentPosition pos | pos.isCallee()), false)
+  )
+  or
   exists(SwitchExpr expr |
     node1.isResultValue(expr.getValue()) and
     step.value() and

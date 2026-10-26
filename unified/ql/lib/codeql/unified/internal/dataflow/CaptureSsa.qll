@@ -71,7 +71,7 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     node.(BuilderNode).isCallable(callable)
     or
     exists(Stage2Node prev | callableHasLocalAlias(callable, prev) |
-      step(prev, any(Step s | s.value()), node)
+      step(prev, any(Step s | s.value() or s.callGraph()), node)
       or
       localSsaStep(prev, node, _)
     )
@@ -101,19 +101,6 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     predicate hasAliasedAccess(Expr f) {
       // TODO: Restrict to places where the function is called or escapes into a call where it might get called.
       callableHasLocalAlias(callable, f) and not f.(LocalVariableRefNode).getRefKind().isWrite()
-      or
-      // Record the callee argument passed into a local capturing getter/setter as an alias for that getter/setter
-      // so it can carry capture data in and out of the getter/setter call.
-      exists(ComputedLocalVariable local, DataFlowCall call |
-        callable = local.getAnAccessor() and
-        f = TImplicitArgumentNode(call, any(ArgumentPosition p | p.isCallee()), false)
-      |
-        callable instanceof GetterDeclaration and
-        call.asGetterCall() = local.getAnAccess()
-        or
-        callable instanceof SetterDeclaration and
-        call.asSetterCall() = local.getAnAccess()
-      )
     }
   }
 }
