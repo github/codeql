@@ -320,6 +320,50 @@ class BuilderNode extends TDataFlowNodeStage1 {
       result = call.getLocation()
     )
   }
+
+  /**
+   * Holds if this data flow node is associated with the `i`'th index in the given basic block.
+   *
+   * Note that some data flow nodes may have an index appearing before the first or after the
+   * last `ControlFlowNode` node in the basic block. Multiple data flow nodes may share the same control flow position.
+   *
+   * Also note that some data flow nodes have no associated control flow position, either because they are
+   * in unreachable code, or belong to a synthesized callable that has no control flow graph.
+   */
+  predicate hasControlFlowPosition(BasicBlock bb, int i) {
+    exists(ControlFlowNode cfgNode | cfgNode = bb.getNode(i) |
+      exists(Expr expr |
+        this.isResultValue(expr) and cfgNode.asExpr() = expr
+        or
+        this.isIncomingValue(expr) and hasIncomingValueAtCfgNode(expr, cfgNode)
+        or
+        this.isPostUpdate(expr) and hasPostUpdate(expr, cfgNode)
+      )
+      or
+      exists(AstNode repr, LocalVariable var, VariableRefKind kind |
+        this.isLocalVariableRef(repr, var, kind) and
+        performsVariableAccess(repr, var, kind, cfgNode)
+      )
+      or
+      exists(DataFlowCallable callable |
+        this.isImplicitParameter(callable, _) and
+        cfgNode.(ControlFlow::EntryNode).getEnclosingCallable() = callable.asSourceCallable()
+        or
+        this.isCallableEx(callable) and
+        cfgNode.injects(callable.asSourceCallable())
+      )
+      or
+      exists(DataFlowCall call, CallExpr sourceCall, boolean isPost |
+        call.asExplicitCall() = sourceCall and
+        this.isImplicitArgument(call, _, isPost) and
+        (
+          isPost = false and cfgNode.injects(sourceCall)
+          or
+          isPost = true and cfgNode.isAfter(sourceCall)
+        )
+      )
+    )
+  }
 }
 
 /** A node in stage 2, which includes stage 1 and local SSA nodes. */
@@ -341,6 +385,16 @@ class Stage2Node extends TDataFlowNodeStage2 {
     exists(LocalSsaDataFlowOutput::SsaNode node |
       this = TLocalSsaNode(node) and
       result = node.getLocation()
+    )
+  }
+
+  predicate hasControlFlowPosition(BasicBlock bb, int i) {
+    this.(BuilderNode).hasControlFlowPosition(bb, i)
+    or
+    exists(LocalSsaDataFlowOutput::SsaNode node |
+      this = TLocalSsaNode(node) and
+      bb = node.getBasicBlock() and
+      i = node.getIndex() // TODO: why is this marked as internal in the SSA library?
     )
   }
 }
@@ -491,44 +545,7 @@ class Node extends TDataFlowNode {
    * in unreachable code, or belong to a synthesized callable that has no control flow graph.
    */
   predicate hasControlFlowPosition(BasicBlock bb, int i) {
-    exists(ControlFlowNode cfgNode | cfgNode = bb.getNode(i) |
-      exists(Expr expr |
-        this.isResultValue(expr) and cfgNode.asExpr() = expr
-        or
-        this.isIncomingValue(expr) and hasIncomingValueAtCfgNode(expr, cfgNode)
-        or
-        this.isPostUpdate(expr) and hasPostUpdate(expr, cfgNode)
-      )
-      or
-      exists(AstNode repr, LocalVariable var, VariableRefKind kind |
-        this.isLocalVariableRef(repr, var, kind) and
-        performsVariableAccess(repr, var, kind, cfgNode)
-      )
-      or
-      exists(DataFlowCallable callable |
-        this.(BuilderNode).isImplicitParameter(callable, _) and
-        cfgNode.(ControlFlow::EntryNode).getEnclosingCallable() = callable.asSourceCallable()
-        or
-        this.isCallableEx(callable) and
-        cfgNode.injects(callable.asSourceCallable())
-      )
-      or
-      exists(DataFlowCall call, CallExpr sourceCall, boolean isPost |
-        call.asExplicitCall() = sourceCall and
-        this.(BuilderNode).isImplicitArgument(call, _, isPost) and
-        (
-          isPost = false and cfgNode.injects(sourceCall)
-          or
-          isPost = true and cfgNode.isAfter(sourceCall)
-        )
-      )
-    )
-    or
-    exists(LocalSsaDataFlowOutput::SsaNode node |
-      this = TLocalSsaNode(node) and
-      bb = node.getBasicBlock() and
-      i = node.getIndex() // TODO: why is this marked as internal in the SSA library?
-    )
+    this.(Stage2Node).hasControlFlowPosition(bb, i)
     or
     exists(CaptureSsaOutput::SynthesizedCaptureNode node |
       this = TCaptureSsaNode(node) and
