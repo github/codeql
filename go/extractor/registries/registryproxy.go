@@ -104,8 +104,7 @@ func getEnvVars() []string {
 		} else {
 			proxy_cert_file = f.Name()
 			// `SSL_CERT_FILE` is used by Go itself; `GIT_SSL_CAINFO` is used by the `git`
-			// processes that `go` spawns to fetch `git_source` modules. Setting it here scopes
-			// the certificate to our subprocesses instead of modifying the global git configuration.
+			// processes that `go` spawns to fetch `git_source` modules.
 			result = append(
 				result,
 				fmt.Sprintf("SSL_CERT_FILE=%s", proxy_cert_file),
