@@ -10,6 +10,7 @@ extensions:
       - ["strings", "", False, "CutSuffix", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["strings", "", False, "Fields", "", "", "Argument[0]", "ReturnValue.ArrayElement", "taint", "manual"]
       - ["strings", "", False, "FieldsFunc", "", "", "Argument[0]", "ReturnValue.ArrayElement", "taint", "manual"]
+      - ["strings", "", False, "Join", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["strings", "", False, "Join", "", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
       - ["strings", "", False, "Join", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
       - ["strings", "", False, "Map", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
