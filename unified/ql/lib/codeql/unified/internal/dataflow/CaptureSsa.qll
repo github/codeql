@@ -35,35 +35,14 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     CapturedParameter() { none() }
   }
 
-  private class TExpr = TCallableNode or TLocalVariableRefNode or TImplicitArgumentNode;
-
   private predicate isTopLevelCallable(BuilderNode callable) {
     callable.isCallable(any(TopLevel t))
   }
 
-  class Expr extends TExpr {
+  class Expr extends Stage2Node {
     Expr() { not isTopLevelCallable(this) }
 
-    string toString() { result = this.(BuilderNode).toString() }
-
-    Location getLocation() { result = this.(BuilderNode).getLocation() }
-
-    predicate hasCfgNode(BasicBlock bb, int i) {
-      this.(LocalVariableRefNode).hasCfgNode(bb, i)
-      or
-      exists(DataFlowCallable callable |
-        this = TCallableNode(callable) and
-        bb.getNode(i).injects(callable.asSourceCallable())
-      )
-      or
-      // We need to associate a CFG node with the callee argument passed to a capturing getter/setter,
-      // so it can carry captured data in and out the getter/setter.
-      exists(DataFlowCall call | this = TImplicitArgumentNode(call, _, false) |
-        performsVariableAccess(call.asGetterCall(), _, TRead(), bb.getNode(i))
-        or
-        performsVariableAccess(call.asSetterCall(), _, TWrite(), bb.getNode(i))
-      )
-    }
+    predicate hasCfgNode(BasicBlock bb, int i) { this.hasControlFlowPosition(bb, i) }
   }
 
   final private class FinalLocalVariableRefNode = LocalVariableRefNode;
