@@ -38,8 +38,28 @@ signature module InputSig<LocationSig Location, TypSig BasicBlock> {
    * Examples of uncertain reads are pseudo-reads inserted at the end of a C# method
    * with a `ref` or `out` parameter, where it is the caller that may or may not read
    * the argument.
+   *
+   * Uncertain reads are skipped in the use-use relations and in the data flow
+   * integration.
    */
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain);
+
+  /**
+   * Holds if the `i1`th node of basic block `bb1` reads source variable `v`
+   * and this read has an associated post-update that occurs at the `i2`th node
+   * of basic block `bb2`.
+   *
+   * If left empty, post-updates are considered to occur at the same control
+   * flow node as the read.
+   *
+   * If specified for only some reads, the remaining reads are assumed to not
+   * have post-updates.
+   */
+  default predicate variableReadWithPostUpdate(
+    BasicBlock bb1, int i1, SourceVariable v, BasicBlock bb2, int i2
+  ) {
+    none()
+  }
 }
 
 /**
@@ -1325,6 +1345,15 @@ module Make<
     }
 
     /**
+     * Holds if the supposed read at `bb` and `i` has a post-update, but no
+     * actual certain read.
+     */
+    query predicate postUpdateWithoutRead(SourceVariable v, BasicBlock bb, int i) {
+      variableReadWithPostUpdate(bb, i, v, _, _) and
+      not variableRead(bb, i, v, true)
+    }
+
+    /**
      * Gets counts of inconsistencies of each type.
      */
     int getInconsistencyCounts(string type) {
@@ -1374,6 +1403,9 @@ module Make<
         count(BasicBlock bbPhi, SourceVariable v, int inputRefs |
           phiReadWithoutTwoPriorRefs(bbPhi, v, inputRefs)
         )
+      or
+      type = "Post-update without read" and
+      result = count(SourceVariable v, BasicBlock bb, int i | postUpdateWithoutRead(v, bb, i))
     }
   }
 
