@@ -148,10 +148,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     .Where(path => IsPathInSubfolder(path, legacyPackageDirectory.DirInfo.FullName, "tools"))
                     .ToList();
 
-                if (nugetPackageDllPaths.Count > 0)
-                {
-                    logger.LogInfo($"Restored {nugetPackageDllPaths.Count} NuGet DLLs.");
-                }
+
+                logger.LogInfo($"Restored {nugetPackageDllPaths.Count} NuGet DLLs.");
+
                 if (excludedPaths.Count > 0)
                 {
                     logger.LogInfo($"Excluding {excludedPaths.Count} NuGet DLLs.");
@@ -163,6 +162,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
 
                 nugetPackageDllPaths.ExceptWith(excludedPaths);
+
+                logger.LogInfo($"Using {nugetPackageDllPaths.Count} NuGet DLLs as dependency candidates.");
+                foreach (var path in nugetPackageDllPaths)
+                {
+                    logger.LogDebug($"Using NuGet DLL as dependency candidate: {path}");
+                }
+
                 assemblyLookupLocations.UnionWith(nugetPackageDllPaths.Select(p => new AssemblyLookupLocation(p)));
             }
             catch (Exception exc)
