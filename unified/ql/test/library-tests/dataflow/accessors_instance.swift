@@ -41,6 +41,16 @@ func t4() {
     C().x = source("t4.1")
 }
 
+func t4a() {
+    class C {
+        var x: String {
+            get {}
+            set(v) { sink(v) }  // $ hasValueFlow=t4a.1
+        }
+    }
+    C().x = source("t4a.1")
+}
+
 func t5() {
     class C {
         var x: String {
