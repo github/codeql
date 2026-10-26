@@ -1067,6 +1067,7 @@ private float getTruncatedUpperBounds(Expr expr) {
 }
 
 /** Only to be called by `getTruncatedLowerBounds`. */
+pragma[no_dynamic_join_order]
 private float getLowerBoundsImpl(Expr expr) {
   (
     exists(Expr operand, float operandLow, float positive |
@@ -1277,6 +1278,7 @@ private float getLowerBoundsImpl(Expr expr) {
 }
 
 /** Only to be called by `getTruncatedUpperBounds`. */
+pragma[no_dynamic_join_order]
 private float getUpperBoundsImpl(Expr expr) {
   (
     exists(Expr operand, float operandHigh, float positive |
