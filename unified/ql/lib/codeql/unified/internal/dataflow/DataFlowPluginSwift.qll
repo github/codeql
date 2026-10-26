@@ -76,5 +76,13 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       step.taint() and
       node2.isResultValue(call)
     )
+    or
+    // Singleton blocks propagate their value upwards, e.g. in `if expr { expr } else { expr }`
+    exists(Block block |
+      not exists(block.getStmt(1)) and
+      node1.isResultValue(block.getStmt(0)) and
+      step.value() and
+      node2.isResultValue(block)
+    )
   }
 }

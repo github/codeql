@@ -23,8 +23,7 @@ module DataFlowInput implements InputSig<Location> {
   // Parameter, argument, return, and out nodes and their positions/kinds
   //
   private predicate isReturnNode(Node n, ReturnKind kind) {
-    // TODO: Handle short-hand returns such as `func foo() -> Int { 5 }`
-    n.asExpr() = any(ReturnExpr r).getValue() and kind.isStandardReturnValue()
+    n.isReturnNode(_) and kind.isStandardReturnValue()
     or
     FlowSummaryOutput::summaryReturnNode(getSummaryNode(n), kind)
   }
@@ -240,7 +239,8 @@ module DataFlowInput implements InputSig<Location> {
 
   predicate neverSkipInPathGraph(Node n) {
     n.isIncomingValue(_) or // Never skip assignment target
-    n.asExpr() instanceof LocalVariableAccess // Never skip a variable reference
+    n.asExpr() instanceof LocalVariableAccess or // Never skip a variable reference
+    n.asExpr() = any(ReturnExpr e).getValue()
   }
 
   class DataFlowExpr = Expr;

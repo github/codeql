@@ -79,3 +79,13 @@ predicate hasResultValue(Expr e) {
   not isInAssignmentContext(e, any(AssignExpr n)) and // non-compound assignment target
   not e instanceof IdentifierLabel
 }
+
+/** Holds if `e` is returned from `callable` either because it is an operand of `return` or is implicitly returned due to language-specific semantics. */
+predicate isReturnedExpr(Callable callable, Expr e) {
+  exists(ReturnExpr ret |
+    callable = ret.getEnclosingCallable() and
+    e = ret.getValue()
+  )
+  or
+  any(ExprPositionsPlugin p).isReturnedExpr(callable, e)
+}
