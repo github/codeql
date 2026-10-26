@@ -5,6 +5,10 @@ private import codeql.dataflow.internal.DataFlowImplConsistency
 module ConsistencyInput implements InputSig<Location, DataFlowInput> {
   predicate argHasPostUpdateExclude(DataFlowInput::ArgumentNode n) {
     not exists(n.getBasicBlock()) // ignore unreachable data flow nodes
+    or
+    // The RHS value passed into a setter call technically needs a post-update node
+    // because it's an argument to a call, but this rarely matters in practice.
+    n.isIncomingValue(any(DataFlowCall c).asSetterCall())
   }
 
   predicate reverseReadExclude(DataFlow::Node n) {
