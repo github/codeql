@@ -6,7 +6,8 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/implicit-bitfield-downcast
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       types
  */

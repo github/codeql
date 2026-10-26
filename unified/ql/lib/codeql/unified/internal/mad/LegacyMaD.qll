@@ -118,7 +118,7 @@ private predicate callableSelector(
   name = callable.getName() and
   argLabels = getArgLabelsFromCallable(callable) and
   exists(ClassLikeDeclaration cls |
-    callable = cls.getAMember() and
+    callable = cls.getAMemberIncludingExtensions() and
     isSubclassOfType(cls, type)
   )
 }
@@ -245,7 +245,7 @@ private DataFlow::Node getSourceFromCall(CallExpr call, AccessPathToken token) {
 bindingset[callable, token]
 private DataFlow::Node getSinkFromCallable(Callable callable, AccessPathToken token) {
   token = "ReturnValue" and
-  result.asExpr() = any(ReturnExpr r | r.getEnclosingCallable() = callable).getValue() // TODO: expose canonical return node in data flow
+  result.isReturnNode(callable)
 }
 
 /**

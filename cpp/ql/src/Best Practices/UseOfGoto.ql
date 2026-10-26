@@ -6,8 +6,10 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/use-of-goto
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
+ *       complexity
  *       language-features
  */
 

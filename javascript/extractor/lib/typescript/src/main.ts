@@ -33,7 +33,7 @@
 
 import * as pathlib from "path";
 import * as readline from "readline";
-import * as ts from "./typescript";
+import * as ts from "typescript";
 import * as ast_extractor from "./ast_extractor";
 
 // Remove limit on stack trace depth.

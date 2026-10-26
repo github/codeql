@@ -1,4 +1,4 @@
-import * as ts from "./typescript";
+import * as ts from "typescript";
 
 /**
  * Interface that exposes some internal properties we rely on, as well as

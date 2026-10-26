@@ -1,6 +1,8 @@
 /**
  * Provides Swift-specific name binding rules.
  */
+overlay[local?]
+module;
 
 private import unified
 private import codeql.unified.internal.StaticNameBinding
