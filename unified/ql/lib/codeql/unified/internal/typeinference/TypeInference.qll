@@ -388,6 +388,8 @@ module Input3 implements InputSig3 {
 
     ParameterEx getParameterEx() { result = p }
 
+    string getExternalName() { result = p.getExternalName() }
+
     override AstNode getPattern() { result = p.asParameter().getPattern() }
 
     override AstNode getInitializer() { none() }
@@ -497,12 +499,47 @@ module Input3 implements InputSig3 {
     result = ce.getCallee().(MemberAccessExpr).getBase()
   }
 
+  abstract class Argument extends AstNode {
+    abstract Expr getValue();
+
+    abstract string getName();
+  }
+
+  private class SyntacticArgument extends Argument instanceof Unified::Argument {
+    override Expr getValue() { result = Unified::Argument.super.getValue() }
+
+    override string getName() { result = Unified::Argument.super.getName() }
+  }
+
+  private class ReceiverArgument extends Argument {
+    ReceiverArgument() {
+      // may include nodes that are not actually receivers, but that's ok for type inference
+      exists(CallExpr ce |
+        this = ce.getCallee()
+        or
+        this = ce.getCallee().(MemberAccessExpr).getBase()
+      )
+    }
+
+    override Expr getValue() { result = this }
+
+    override string getName() { none() }
+  }
+
+  private class SyntheticConstructorArgument extends Argument {
+    SyntheticConstructorArgument() { this = Construction::getSyntheticConstructionReceiver(_) }
+
+    override Expr getValue() { result = this }
+
+    override string getName() { none() }
+  }
+
   class Invocation extends Expr, CallExpr {
     Type getTypeQualifier(TypePath path) { result = getQualifierTypeMention(this).getTypeAt(path) }
 
     Type getTypeArgument(int i, TypePath path) { none() }
 
-    Expr getArgument(int i) {
+    Argument getArgument(int i) {
       i = 0 and
       (
         result = Construction::getSyntheticConstructionReceiver(this)
@@ -515,7 +552,12 @@ module Input3 implements InputSig3 {
         )
       )
       or
-      result = CallExpr.super.getArgument(i - 1).getValue()
+      result = CallExpr.super.getArgument(i - 1)
+    }
+
+    predicate hasImplicitArgument(int i) {
+      this.getCallee() instanceof UnqualifiedMemberAccess and
+      i = 0
     }
 
     /** Gets the special `invoke` target when the callee evaluates to a function expression. */
@@ -599,7 +641,7 @@ module Input3 implements InputSig3 {
     )
   }
 
-  Type inferInvocationArgumentTypeContextual(Expr arg, TypePath path) {
+  Type inferInvocationArgumentTypeContextual(Argument arg, TypePath path) {
     result = M3::inferInvocationArgumentTypeContextualDefault(_, _, _, arg, path)
   }
 
@@ -650,7 +692,7 @@ module Input3 implements InputSig3 {
     n2 =
       any(TupleExpr te |
         exists(int i, int arity, TupleType tt |
-          n1 = te.getElement(i).getValue() and
+          n1 = te.getElement(i) and
           arity = te.getNumberOfElements() and
           tt.getArity() = arity and
           prefix1.isEmpty() and
@@ -704,7 +746,7 @@ module Input3 implements InputSig3 {
     }
 
     private predicate constructionReceiver(
-      Invocation i, Callable constructor, Expr receiver, TypePath enumPrefixPath
+      Invocation i, Callable constructor, Argument receiver, TypePath enumPrefixPath
     ) {
       exists(ConstructorDeclaration cd |
         constructor = i.getTargetImpl(_) and
@@ -751,7 +793,7 @@ module Input3 implements InputSig3 {
 
     private predicate needsContextualTyping(Invocation i, TypePath path) {
       exists(
-        Callable constructor, Expr receiver, TypePath enumPrefixPath,
+        Callable constructor, Argument receiver, TypePath enumPrefixPath,
         ClassLikeDeclarationType receiverType, TypePath path0
       |
         constructionReceiver(i, constructor, receiver, enumPrefixPath) and
