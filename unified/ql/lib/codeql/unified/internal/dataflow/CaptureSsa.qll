@@ -90,6 +90,19 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     )
   }
 
+  private predicate isEscape(BuilderNode node) {
+    node.isResultValue(any(Argument arg).getValue())
+    or
+    node.isImplicitArgument(_, _, _)
+    or
+    exists(U::Expr e |
+      isReturnedExpr(_, e) and
+      node.isResultValue(e)
+    )
+    or
+    step(node, any(Step s | s.store(_)), _)
+  }
+
   class ClosureExpr extends Expr instanceof TCallableNode {
     // TODO: In order to support classes with captures, this needs to cover constructor calls to such classes as well.
     private Callable callable;
@@ -99,8 +112,8 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     predicate hasBody(Callable body) { callable = body }
 
     predicate hasAliasedAccess(Expr f) {
-      // TODO: Restrict to places where the function is called or escapes into a call where it might get called.
-      callableHasLocalAlias(callable, f) and not f.(LocalVariableRefNode).getRefKind().isWrite()
+      callableHasLocalAlias(callable, f) and
+      isEscape(f)
     }
   }
 }
