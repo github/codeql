@@ -149,7 +149,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     .ToList();
 
 
-                logger.LogInfo($"Restored {nugetPackageDllPaths.Count} NuGet DLLs.");
+                logger.LogInfo($"Restored {nugetPackageDllPaths.Count} NuGet DLLs from packages.config files using the NuGet CLI.");
 
                 if (excludedPaths.Count > 0)
                 {
@@ -163,7 +163,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 nugetPackageDllPaths.ExceptWith(excludedPaths);
 
-                logger.LogInfo($"Using {nugetPackageDllPaths.Count} NuGet DLLs as dependency candidates.");
+                logger.LogInfo($"Using {nugetPackageDllPaths.Count} DLLs as dependency candidates from NuGet packages restored via the NuGet CLI based on packages.config files.");
                 foreach (var path in nugetPackageDllPaths)
                 {
                     logger.LogDebug($"Using NuGet DLL as dependency candidate: {path}");

@@ -240,6 +240,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     logger.LogDebug($"Failed to read file {file}, exception: {ex}");
                 }
             }
+
+            logger.LogInfo("Finished reading project files.");
+            logger.LogInfo($"Legacy project structure usage detected: {isLegacyProjectStructureUsed}");
+            logger.LogInfo($"New project structure usage detected: {isNewProjectStructureUsed}");
+            logger.LogInfo($"ASP.NET usage detected: {useAspNetCoreDlls}");
+            logger.LogInfo($"Windows Forms usage detected: {useWindowsForms}");
+            logger.LogInfo($"WPF usage detected: {useWpf}");
+            logger.LogInfo($"Implicit usings enabled: {useImplicitUsings}");
         }
 
         [GeneratedRegex("(?<!<!--.*)<PackageReference.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
