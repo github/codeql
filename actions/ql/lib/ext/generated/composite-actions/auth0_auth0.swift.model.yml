@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["auth0/auth0.swift", "*", "input.platform", "code-injection", "generated"]

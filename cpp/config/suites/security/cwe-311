@@ -1,0 +1,9 @@
+# CWE-311 Missing Encryption of Sensitive Data
++ semmlecode-cpp-queries/Security/CWE/CWE-311/CleartextBufferWrite.ql: /CWE/CWE-311
+    @name Cleartext storage of sensitive information in buffer (CWE-311)
+    
++ semmlecode-cpp-queries/Security/CWE/CWE-311/CleartextFileWrite.ql: /CWE/CWE-311
+    @name Cleartext storage of sensitive information in file (CWE-311)
+
++ semmlecode-cpp-queries/Security/CWE/CWE-313/CleartextSqliteDatabase.ql: /CWE/CWE-311
+    @name Cleartext storage of sensitive information in an SQLite database (CWE-311)

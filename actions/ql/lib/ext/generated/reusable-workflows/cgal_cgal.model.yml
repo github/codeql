@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["cgal/cgal/.github/workflows/send_email.yml", "*", "input.message", "code-injection", "generated"]

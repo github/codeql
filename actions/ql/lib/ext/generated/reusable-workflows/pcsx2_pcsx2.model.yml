@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "input.configuration", "code-injection", "generated"]
+     - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "input.platform", "code-injection", "generated"]
+     - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "input.cmakeFlags", "code-injection", "generated"]
+     - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "input.patchesUrl", "code-injection", "generated"]
+     - ["pcsx2/pcsx2/.github/workflows/macos_build.yml", "*", "input.patchesUrl", "code-injection", "generated"]
+     - ["pcsx2/pcsx2/.github/workflows/linux_build_qt.yml", "*", "input.patchesUrl", "code-injection", "generated"]
+     - ["pcsx2/pcsx2/.github/workflows/linux_build_flatpak.yml", "*", "input.patchesUrl", "code-injection", "generated"]

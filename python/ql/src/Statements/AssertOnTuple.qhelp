@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>When you define an <code>assert</code> statement to test a tuple the test 
+will either always succeed (if the tuple is non-empty) or always 
+fail (if the tuple is empty).</p>
+
+<p>This error usually occurs when the programmer writes <code>
+assert (condition, message)
+</code>
+instead of the correct form<code>
+assert condition, message
+</code>
+</p>
+
+</overview>
+<recommendation>
+
+<p>Review the code and determine the purpose of the <code>assert</code> statement:</p>
+<ul>
+<li>
+If the "tuple" has been created in error, then remove the parentheses and correct the statement</li>
+<li>If validation of a tuple is intended, then you should define an <code>assert</code> statement 
+for each element of the tuple.</li>
+</ul>
+
+</recommendation>
+<example>
+<p>The statement <code>assert (xxx, yyy)</code> attempts to test a "tuple" <code>(xxx, yyy)</code>. 
+The original intention may be any of the alternatives listed below:</p>
+<sample src="AssertOnTuple.py" />
+
+<p>If you want to define a validity check on the values of a tuple then these must be tested 
+individually.</p>
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2.7/reference/simple_stmts.html#the-assert-statement">The assert statement</a>.</li>
+<li>Tutorials Point: <a href="http://www.tutorialspoint.com/python/assertions_in_python.htm">Assertions in Python</a>.</li>
+
+
+</references>
+</qhelp>

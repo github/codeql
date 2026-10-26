@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.poi.sl.usermodel", "SlideShow", True, "addPicture", "(File,PictureData$PictureType)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.poi.sl.usermodel", "SlideShowFactory", True, "create", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.poi.sl.usermodel", "SlideShowFactory", True, "create", "(File,String)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.poi.sl.usermodel", "SlideShowFactory", True, "create", "(File,String,boolean)", "", "Argument[0]", "path-injection", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.poi.sl.usermodel", "SlideShowFactory", True, "create", "(File)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.poi.sl.usermodel", "SlideShowFactory", True, "create", "(File,String)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.poi.sl.usermodel", "SlideShowFactory", True, "create", "(File,String,boolean)", "", "ReturnValue", "file", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.sl.usermodel", "PaintStyle$SolidPaint", True, "getSolidColor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

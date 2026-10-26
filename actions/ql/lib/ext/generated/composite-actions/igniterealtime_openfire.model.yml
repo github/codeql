@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["igniterealtime/openfire", "*", "input.domain", "code-injection", "generated"]
+     - ["igniterealtime/openfire", "*", "input.ip", "code-injection", "generated"]
+     - ["igniterealtime/openfire", "*", "input.distBaseDir", "code-injection", "generated"]

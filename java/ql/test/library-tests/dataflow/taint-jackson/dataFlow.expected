@@ -1,0 +1,110 @@
+models
+| 1 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; convertValue; ; ; Argument[0]; ReturnValue; taint; manual |
+| 2 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0].MapValue.Element; ReturnValue; taint; manual |
+| 3 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0].MapValue; ReturnValue; taint; manual |
+| 4 | Summary: java.io; FileOutputStream; true; FileOutputStream; (File); ; Argument[0]; Argument[this]; taint; df-generated |
+| 5 | Summary: java.lang; String; false; String; ; ; Argument[0]; Argument[this]; taint; manual |
+| 6 | Summary: java.util; Iterator; true; next; ; ; Argument[this].Element; ReturnValue; value; manual |
+| 7 | Summary: java.util; Map; true; put; (Object,Object); ; Argument[1]; Argument[this].MapValue; value; manual |
+edges
+| Test.java:21:18:21:24 | parameter this : Potato | Test.java:22:11:22:14 | name : String | provenance | AdditionalTaintStep |
+| Test.java:33:14:33:20 | taint(...) : String | Test.java:37:8:37:11 | file | provenance | TaintPreservingCallable |
+| Test.java:33:14:33:20 | taint(...) : String | Test.java:40:8:40:11 | file | provenance | TaintPreservingCallable |
+| Test.java:33:14:33:20 | taint(...) : String | Test.java:43:8:43:13 | writer | provenance | TaintPreservingCallable |
+| Test.java:33:14:33:20 | taint(...) : String | Test.java:46:8:46:16 | generator | provenance | TaintPreservingCallable |
+| Test.java:33:14:33:20 | taint(...) : String | Test.java:48:8:48:8 | t | provenance | TaintPreservingCallable |
+| Test.java:33:14:33:20 | taint(...) : String | Test.java:50:37:50:38 | bs : byte[] | provenance | TaintPreservingCallable |
+| Test.java:33:14:33:20 | taint(...) : String | Test.java:51:8:51:9 | bs | provenance | TaintPreservingCallable |
+| Test.java:50:26:50:48 | new String(...) : String | Test.java:52:8:52:20 | reconstructed | provenance |  |
+| Test.java:50:37:50:38 | bs : byte[] | Test.java:50:26:50:48 | new String(...) : String | provenance | MaD:5 |
+| Test.java:56:14:56:20 | taint(...) : String | Test.java:60:8:60:11 | file | provenance | TaintPreservingCallable |
+| Test.java:56:14:56:20 | taint(...) : String | Test.java:61:43:61:46 | file : File | provenance | TaintPreservingCallable |
+| Test.java:56:14:56:20 | taint(...) : String | Test.java:63:8:63:10 | out | provenance | TaintPreservingCallable |
+| Test.java:56:14:56:20 | taint(...) : String | Test.java:66:8:66:13 | writer | provenance | TaintPreservingCallable |
+| Test.java:56:14:56:20 | taint(...) : String | Test.java:69:8:69:16 | generator | provenance | TaintPreservingCallable |
+| Test.java:56:14:56:20 | taint(...) : String | Test.java:71:8:71:8 | t | provenance | TaintPreservingCallable |
+| Test.java:56:14:56:20 | taint(...) : String | Test.java:73:37:73:38 | bs : byte[] | provenance | TaintPreservingCallable |
+| Test.java:56:14:56:20 | taint(...) : String | Test.java:74:8:74:9 | bs | provenance | TaintPreservingCallable |
+| Test.java:61:22:61:47 | new FileOutputStream(...) : FileOutputStream | Test.java:63:8:63:10 | out | provenance |  |
+| Test.java:61:43:61:46 | file : File | Test.java:61:22:61:47 | new FileOutputStream(...) : FileOutputStream | provenance | MaD:4 |
+| Test.java:73:26:73:48 | new String(...) : String | Test.java:75:8:75:20 | reconstructed | provenance |  |
+| Test.java:73:37:73:38 | bs : byte[] | Test.java:73:26:73:48 | new String(...) : String | provenance | MaD:5 |
+| Test.java:79:14:79:20 | taint(...) : String | Test.java:82:8:82:26 | readValue(...) | provenance | TaintPreservingCallable |
+| Test.java:79:14:79:20 | taint(...) : String | Test.java:83:8:83:45 | readValue(...).name | provenance | TaintPreservingCallable |
+| Test.java:79:14:79:20 | taint(...) : String | Test.java:84:8:84:40 | readValue(...) : Potato | provenance | TaintPreservingCallable |
+| Test.java:84:8:84:40 | readValue(...) : Potato | Test.java:21:18:21:24 | parameter this : Potato | provenance |  |
+| Test.java:84:8:84:40 | readValue(...) : Potato | Test.java:84:8:84:50 | getName(...) | provenance | AdditionalTaintStep |
+| Test.java:88:14:88:20 | taint(...) : String | Test.java:91:8:91:27 | readValues(...) | provenance | TaintPreservingCallable |
+| Test.java:88:14:88:20 | taint(...) : String | Test.java:94:15:94:23 | pIterator : MappingIterator | provenance | TaintPreservingCallable |
+| Test.java:94:15:94:23 | pIterator : MappingIterator | Test.java:94:15:94:30 | next(...) : Potato | provenance | MaD:6 |
+| Test.java:94:15:94:30 | next(...) : Potato | Test.java:95:9:95:9 | p | provenance |  |
+| Test.java:94:15:94:30 | next(...) : Potato | Test.java:96:9:96:14 | p.name | provenance | AdditionalTaintStep |
+| Test.java:94:15:94:30 | next(...) : Potato | Test.java:97:9:97:9 | p : Potato | provenance |  |
+| Test.java:97:9:97:9 | p : Potato | Test.java:21:18:21:24 | parameter this : Potato | provenance |  |
+| Test.java:97:9:97:9 | p : Potato | Test.java:97:9:97:19 | getName(...) | provenance | AdditionalTaintStep |
+| Test.java:102:14:102:20 | taint(...) : String | Test.java:104:29:104:29 | s : String | provenance |  |
+| Test.java:104:3:104:15 | taintedParams [post update] : HashMap [<map.value>] : String | Test.java:106:32:106:44 | taintedParams : HashMap [<map.value>] : String | provenance |  |
+| Test.java:104:29:104:29 | s : String | Test.java:104:3:104:15 | taintedParams [post update] : HashMap [<map.value>] : String | provenance | MaD:7 |
+| Test.java:106:17:106:45 | valueToTree(...) : JsonNode | Test.java:107:8:107:9 | jn | provenance |  |
+| Test.java:106:17:106:45 | valueToTree(...) : JsonNode | Test.java:108:30:108:31 | jn : JsonNode | provenance |  |
+| Test.java:106:32:106:44 | taintedParams : HashMap [<map.value>] : String | Test.java:106:17:106:45 | valueToTree(...) : JsonNode | provenance | MaD:2 |
+| Test.java:106:32:106:44 | taintedParams : HashMap [<map.value>] : String | Test.java:106:17:106:45 | valueToTree(...) : JsonNode | provenance | MaD:3 |
+| Test.java:108:14:108:46 | convertValue(...) : Potato | Test.java:109:8:109:8 | p | provenance |  |
+| Test.java:108:14:108:46 | convertValue(...) : Potato | Test.java:110:8:110:8 | p : Potato | provenance |  |
+| Test.java:108:30:108:31 | jn : JsonNode | Test.java:108:14:108:46 | convertValue(...) : Potato | provenance | MaD:1 |
+| Test.java:110:8:110:8 | p : Potato | Test.java:21:18:21:24 | parameter this : Potato | provenance |  |
+| Test.java:110:8:110:8 | p : Potato | Test.java:110:8:110:18 | getName(...) | provenance | AdditionalTaintStep |
+nodes
+| Test.java:21:18:21:24 | parameter this : Potato | semmle.label | parameter this : Potato |
+| Test.java:22:11:22:14 | name : String | semmle.label | name : String |
+| Test.java:33:14:33:20 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:37:8:37:11 | file | semmle.label | file |
+| Test.java:40:8:40:11 | file | semmle.label | file |
+| Test.java:43:8:43:13 | writer | semmle.label | writer |
+| Test.java:46:8:46:16 | generator | semmle.label | generator |
+| Test.java:48:8:48:8 | t | semmle.label | t |
+| Test.java:50:26:50:48 | new String(...) : String | semmle.label | new String(...) : String |
+| Test.java:50:37:50:38 | bs : byte[] | semmle.label | bs : byte[] |
+| Test.java:51:8:51:9 | bs | semmle.label | bs |
+| Test.java:52:8:52:20 | reconstructed | semmle.label | reconstructed |
+| Test.java:56:14:56:20 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:60:8:60:11 | file | semmle.label | file |
+| Test.java:61:22:61:47 | new FileOutputStream(...) : FileOutputStream | semmle.label | new FileOutputStream(...) : FileOutputStream |
+| Test.java:61:43:61:46 | file : File | semmle.label | file : File |
+| Test.java:63:8:63:10 | out | semmle.label | out |
+| Test.java:66:8:66:13 | writer | semmle.label | writer |
+| Test.java:69:8:69:16 | generator | semmle.label | generator |
+| Test.java:71:8:71:8 | t | semmle.label | t |
+| Test.java:73:26:73:48 | new String(...) : String | semmle.label | new String(...) : String |
+| Test.java:73:37:73:38 | bs : byte[] | semmle.label | bs : byte[] |
+| Test.java:74:8:74:9 | bs | semmle.label | bs |
+| Test.java:75:8:75:20 | reconstructed | semmle.label | reconstructed |
+| Test.java:79:14:79:20 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:82:8:82:26 | readValue(...) | semmle.label | readValue(...) |
+| Test.java:83:8:83:45 | readValue(...).name | semmle.label | readValue(...).name |
+| Test.java:84:8:84:40 | readValue(...) : Potato | semmle.label | readValue(...) : Potato |
+| Test.java:84:8:84:50 | getName(...) | semmle.label | getName(...) |
+| Test.java:88:14:88:20 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:91:8:91:27 | readValues(...) | semmle.label | readValues(...) |
+| Test.java:94:15:94:23 | pIterator : MappingIterator | semmle.label | pIterator : MappingIterator |
+| Test.java:94:15:94:30 | next(...) : Potato | semmle.label | next(...) : Potato |
+| Test.java:95:9:95:9 | p | semmle.label | p |
+| Test.java:96:9:96:14 | p.name | semmle.label | p.name |
+| Test.java:97:9:97:9 | p : Potato | semmle.label | p : Potato |
+| Test.java:97:9:97:19 | getName(...) | semmle.label | getName(...) |
+| Test.java:102:14:102:20 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:104:3:104:15 | taintedParams [post update] : HashMap [<map.value>] : String | semmle.label | taintedParams [post update] : HashMap [<map.value>] : String |
+| Test.java:104:29:104:29 | s : String | semmle.label | s : String |
+| Test.java:106:17:106:45 | valueToTree(...) : JsonNode | semmle.label | valueToTree(...) : JsonNode |
+| Test.java:106:32:106:44 | taintedParams : HashMap [<map.value>] : String | semmle.label | taintedParams : HashMap [<map.value>] : String |
+| Test.java:107:8:107:9 | jn | semmle.label | jn |
+| Test.java:108:14:108:46 | convertValue(...) : Potato | semmle.label | convertValue(...) : Potato |
+| Test.java:108:30:108:31 | jn : JsonNode | semmle.label | jn : JsonNode |
+| Test.java:109:8:109:8 | p | semmle.label | p |
+| Test.java:110:8:110:8 | p : Potato | semmle.label | p : Potato |
+| Test.java:110:8:110:18 | getName(...) | semmle.label | getName(...) |
+subpaths
+| Test.java:84:8:84:40 | readValue(...) : Potato | Test.java:21:18:21:24 | parameter this : Potato | Test.java:22:11:22:14 | name : String | Test.java:84:8:84:50 | getName(...) |
+| Test.java:97:9:97:9 | p : Potato | Test.java:21:18:21:24 | parameter this : Potato | Test.java:22:11:22:14 | name : String | Test.java:97:9:97:19 | getName(...) |
+| Test.java:110:8:110:8 | p : Potato | Test.java:21:18:21:24 | parameter this : Potato | Test.java:22:11:22:14 | name : String | Test.java:110:8:110:18 | getName(...) |
+testFailures

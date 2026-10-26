@@ -1,0 +1,17 @@
++ odasa-cpp-metrics/Files/NumberOfPublicGlobals.ql: /Maintainability/Coupling 
+   @warning-from 11
++ odasa-cpp-metrics/Files/FEfferentCoupling.ql: /Maintainability/Coupling
+   @warning-from 120
++ odasa-cpp-metrics/Functions/FunNumberOfParameters.ql: /Maintainability/Size
+   @warning-from 9
++ odasa-cpp-metrics/Functions/FunLinesOfCode.ql: /Maintainability/Size
+   @warning-from 250
++ odasa-cpp-metrics/Files/FLinesOfCode.ql: /Maintainability/Size
+   @warning-from 1500
+  # Complexity
++ odasa-cpp-metrics/Functions/FunNumberOfCalls.ql: /Maintainability/Complexity
+  @warning-from 100
++ odasa-cpp-metrics/Functions/StatementNestingDepth.ql: /Maintainability/Complexity
+   @recommendation-from 7
++ odasa-cpp-metrics/Functions/FunCyclomaticComplexity.ql: /Maintainability/Complexity
+   @recommendation-from 100

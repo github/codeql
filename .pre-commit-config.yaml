@@ -1,0 +1,87 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+default_language_version:
+  python: python3.12
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: /test([^/]*)/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
+      - id: end-of-file-fixer
+        exclude: Cargo.lock$|/test([^/]*)/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
+
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v20.1.8
+    hooks:
+      - id: clang-format
+
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+        files: ^(misc/codegen/.*|misc/scripts/models-as-data/.*)\.py$
+
+  - repo: local
+    hooks:
+      - id: buildifier
+        name: Format bazel files
+        files: \.(bazel|bzl)
+        language: system
+        entry: bazel run //misc/bazel/buildifier
+        pass_filenames: false
+
+#      DISABLED: can be enabled by copying this config and installing `pre-commit` with `--config` on the copy
+#      - id: go-gen
+#        name: Check checked in generated files in go
+#        files: ^go/.*
+#        language: system
+#        entry: bazel run //go:gen
+#        pass_filenames: false
+
+      - id: codeql-format
+        name: Fix QL file formatting
+        files: \.qll?$
+        language: system
+        entry: codeql query format --in-place
+
+      - id: sync-files
+        name: Fix files required to be identical
+        files: \.(qll?|qhelp|swift|toml)$|^config/identical-files\.json$
+        language: system
+        entry: python3 config/sync-files.py --latest
+        pass_filenames: false
+
+      - id: qhelp
+        name: Check query help generation
+        files: \.qhelp$
+        language: system
+        entry: python3 misc/scripts/check-qhelp.py
+
+      - id: swift-codegen
+        name: Run Swift checked in code generation
+        files: ^misc/codegen/|^swift/(schema.py$|codegen/|.*/generated/|ql/lib/(swift\.dbscheme$|codeql/swift/elements)|ql/\.generated.list)
+        language: system
+        entry: bazel run //swift/codegen -- --quiet
+        pass_filenames: false
+
+      - id: swift-codegen-unit-tests
+        name: Run Swift code generation unit tests
+        files: ^swift/codegen/.*\.py$
+        language: system
+        entry: bazel test //misc/codegen/test
+        pass_filenames: false
+
+      - id: rust-codegen
+        name: Run Rust checked in code generation
+        files: ^misc/codegen/|^rust/(prefix\.dbscheme|schema/|codegen/|.*/generated/|ql/lib/(rust\.dbscheme$|codeql/rust/elements)|\.generated.list|ast-generator/)
+        language: system
+        entry: bazel run //rust/codegen -- --quiet
+        pass_filenames: false
+
+      - id: rust-lint
+        name: Run fmt and clippy on Rust code
+        files: ^rust/extractor/(.*rs|Cargo.toml)$
+        language: system
+        entry: python3 rust/lint.py
+        pass_filenames: false

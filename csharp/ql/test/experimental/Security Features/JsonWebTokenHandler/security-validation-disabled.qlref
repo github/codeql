@@ -1,0 +1,2 @@
+query: experimental/Security Features/JsonWebTokenHandler/security-validation-disabled.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

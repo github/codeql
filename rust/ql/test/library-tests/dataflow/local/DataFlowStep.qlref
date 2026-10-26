@@ -1,0 +1,2 @@
+query: DataFlowStep.ql
+postprocess: utils/test/ExternalLocationPostProcessing.ql

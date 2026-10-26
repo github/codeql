@@ -1,0 +1,1 @@
+| Foo.qll:2:76:2:79 | String | Ordering $@ by a constant. | Foo.qll:2:12:2:80 | FullAggregate[concat] | concat aggregate |

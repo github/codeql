@@ -1,0 +1,22 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup")
+
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "dbscheme",
+    actual = "//cpp/ql/lib:dbscheme",
+)
+
+alias(
+    name = "dbscheme-stats",
+    actual = "//cpp/ql/lib:dbscheme-stats",
+)
+
+pkg_filegroup(
+    name = "db-files",
+    srcs = [
+        ":dbscheme",
+        "//cpp/downgrades",
+        "//cpp/ql/lib:dbscheme-stats",
+    ],
+)

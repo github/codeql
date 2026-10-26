@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Type shadowing occurs if two types have the same name but one is defined within
+the scope of the other. This can arise if you introduce a type variable
+with the same name as an imported class.</p>
+
+<p>Type shadowing may cause the two types to be confused, which can lead to various problems.</p>
+
+</overview>
+<recommendation>
+
+<p>Name the type variable so that its name does not clash with the
+imported class.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the type <code>java.util.Map.Entry</code> is imported at the top of the 
+file, but the class <code>Mapping</code> is defined with two type variables,
+<code>Key</code> and <code>Entry</code>. Uses of <code>Entry</code> within the
+<code>Mapping</code> class refer to the type variable, and not the imported
+interface. The type variable therefore shadows <code>Map.Entry</code>.</p>
+
+<sample src="TypeVariableHidesType.java" />
+
+<p>To fix the code, the type variable <code>Entry</code> on line 4 should be renamed.</p>
+
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-6.html#jls-6.4">6.4 Shadowing and Obscuring</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>It is good practice (and often essential for correctness) to dispose of resources (for example 
+file handles, graphics handles or database connections) when a program no longer needs them. For 
+resources that are used only within a single method, a common idiom is to enclose the code that uses 
+the resource in a <code>try</code> block and dispose of the resource in the <code>try</code>'s <code>
+finally </code> block. This idiom is in fact so common that C# provides a shorter, tidier syntax for 
+it in the form of the <code>using</code> statement.</p> 
+
+</overview>
+<recommendation>
+<p>Given the explicit language support provided in this case, it is more idiomatic to use the <code>
+using</code> statement in preference to the <code>try</code>-<code>finally</code> technique; it also 
+helps to clearly communicate the intent of your code to other programmers.</p>
+
+</recommendation>
+<example>
+<p>In this example a <code>try</code> block is used to ensure resources are disposed of even if the 
+program throws an exception.</p>
+<sample src="MissedUsingOpportunity.cs" />
+
+<p>The example can be significantly simplified by making use of the <code>using</code> block 
+instead.</p>
+<sample src="MissedUsingOpportunityFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/yh598w02(v=vs.80).aspx">using Statement</a>.</li>
+  <li>J. Albahari and B. Albahari, <em>C# 4.0 in a Nutshell - The Definitive Reference</em>, p. 138.</li>
+
+
+</references>
+</qhelp>

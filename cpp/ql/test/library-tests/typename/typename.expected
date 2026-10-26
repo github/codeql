@@ -1,0 +1,4 @@
+| typename.cpp:11:9:11:19 | T |
+| typename.cpp:11:9:11:19 | short |
+| typename.cpp:16:9:16:21 | int |
+| typename.cpp:16:25:16:57 | myClass |

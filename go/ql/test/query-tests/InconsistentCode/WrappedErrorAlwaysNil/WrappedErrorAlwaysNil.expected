@@ -1,0 +1,4 @@
+| WrappedErrorAlwaysNil.go:31:22:31:24 | err | The first argument to 'errors.Wrap' is always nil. |
+| WrappedErrorAlwaysNil.go:41:14:41:16 | nil | The first argument to 'errors.Wrap' is always nil. |
+| WrappedErrorAlwaysNil.go:45:14:45:16 | err | The first argument to 'errors.Wrap' is always nil. |
+| WrappedErrorAlwaysNil.go:49:14:49:21 | localErr | The first argument to 'errors.Wrap' is always nil. |

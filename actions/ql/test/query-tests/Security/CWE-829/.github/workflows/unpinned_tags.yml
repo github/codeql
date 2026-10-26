@@ -1,0 +1,19 @@
+on:
+  pull_request
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: foo/bar
+    - uses: foo/bar@v1
+    - uses: foo/bar@25b062c917b0c75f8b47d8469aff6c94ffd89abb
+    - uses: docker://foo/bar@latest
+    - uses: docker://foo/bar@sha256:887a259a5a534f3c4f36cb02dca341673c6089431057242cdc931e9f133147e9
+    # SHA-256 pinned (64 hex chars) - should NOT be flagged
+    - uses: foo/bar@25b062c917b0c75f8b47d8469aff6c94ffd89abb25b062c917b0c75f8b47d84d
+    # SHA-1 pinned (40 hex chars) regression - should NOT be flagged
+    - uses: foo/bar@a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2
+    # Invalid 50-char hex string - should be flagged
+    - uses: foo/bar@a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2a1b2c3d4e5

@@ -1,0 +1,13 @@
+| UnsafeCertTrustTest.java:24:3:24:11 | sslEngine | Unsafe configuration of trusted certificates. |
+| UnsafeCertTrustTest.java:25:3:25:11 | sslEngine | Unsafe configuration of trusted certificates. |
+| UnsafeCertTrustTest.java:26:3:26:11 | sslEngine | Unsafe configuration of trusted certificates. |
+| UnsafeCertTrustTest.java:35:3:35:11 | sslEngine | Unsafe configuration of trusted certificates. |
+| UnsafeCertTrustTest.java:36:3:36:11 | sslEngine | Unsafe configuration of trusted certificates. |
+| UnsafeCertTrustTest.java:37:3:37:11 | sslEngine | Unsafe configuration of trusted certificates. |
+| UnsafeCertTrustTest.java:64:3:64:8 | socket | Unsafe configuration of trusted certificates. |
+| UnsafeCertTrustTest.java:74:3:74:8 | socket | Unsafe configuration of trusted certificates. |
+| UnsafeCertTrustTest.java:84:3:84:8 | socket | Unsafe configuration of trusted certificates. |
+| UnsafeCertTrustTest.java:91:3:91:8 | socket | Unsafe configuration of trusted certificates. |
+| UnsafeCertTrustTest.java:141:3:141:8 | socket | Unsafe configuration of trusted certificates. |
+| UnsafeCertTrustTest.java:153:4:153:60 | useSslProtocol(...) | Unsafe configuration of trusted certificates. |
+| UnsafeCertTrustTest.java:157:4:157:70 | setSslContextFactory(...) | Unsafe configuration of trusted certificates. |

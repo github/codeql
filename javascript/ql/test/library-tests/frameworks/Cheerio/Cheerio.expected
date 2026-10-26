@@ -1,0 +1,19 @@
+test_CheerioRef
+| tst.js:1:1:1:30 | import  ... eerio"; |
+| tst.js:1:8:1:14 | cheerio |
+| tst.js:4:11:4:23 | getTemplate() |
+| tst.js:8:1:10:1 | return of function getTemplate |
+| tst.js:9:10:9:36 | cheerio ... t</b>') |
+test_CheerioObjectCreation
+| tst.js:5:3:5:18 | $.attr('foo', 5) |
+| tst.js:9:10:9:36 | cheerio ... t</b>') |
+test_AttributeDefinition
+| tst.js:5:3:5:18 | $.attr('foo', 5) |
+test_CheerioObjectRef
+| tst.js:4:11:4:23 | getTemplate() |
+| tst.js:5:3:5:18 | $.attr('foo', 5) |
+| tst.js:5:3:5:33 | $.attr( ... ar', 6) |
+| tst.js:5:3:5:41 | $.attr( ... html(x) |
+| tst.js:9:10:9:36 | cheerio ... t</b>') |
+test_XssSink
+| tst.js:5:40:5:40 | x |

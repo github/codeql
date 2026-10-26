@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["chia-network/actions/.github/workflows/docker-build.yaml", "*", "input.docker-context", "code-injection", "generated"]
+     - ["chia-network/actions/.github/workflows/docker-build.yaml", "*", "input.image_subpath", "code-injection", "generated"]

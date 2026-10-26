@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.google.common.cache", "Cache", True, "asMap", "()", "", "Argument[this].MapKey", "ReturnValue.MapKey", "value", "manual"]
+      - ["com.google.common.cache", "Cache", True, "asMap", "()", "", "Argument[this].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      # Lambda flow from Argument[1] not implemented
+      - ["com.google.common.cache", "Cache", True, "get", "(Object,Callable)", "", "Argument[this].MapValue", "ReturnValue", "value", "manual"]
+      # The true flow to MapKey of ReturnValue for getAllPresent is the intersection of the these inputs, but intersections cannot be modeled fully accurately.
+      - ["com.google.common.cache", "Cache", True, "getAllPresent", "(Iterable)", "", "Argument[this].MapKey", "ReturnValue.MapKey", "value", "manual"]
+      - ["com.google.common.cache", "Cache", True, "getAllPresent", "(Iterable)", "", "Argument[this].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      - ["com.google.common.cache", "Cache", True, "getAllPresent", "(Iterable)", "", "Argument[0].Element", "ReturnValue.MapKey", "value", "manual"]
+      - ["com.google.common.cache", "Cache", True, "getIfPresent", "(Object)", "", "Argument[this].MapValue", "ReturnValue", "value", "manual"]
+      - ["com.google.common.cache", "Cache", True, "put", "(Object,Object)", "", "Argument[0]", "Argument[this].MapKey", "value", "manual"]
+      - ["com.google.common.cache", "Cache", True, "put", "(Object,Object)", "", "Argument[1]", "Argument[this].MapValue", "value", "manual"]
+      - ["com.google.common.cache", "Cache", True, "putAll", "(Map)", "", "Argument[0].MapKey", "Argument[this].MapKey", "value", "manual"]
+      - ["com.google.common.cache", "Cache", True, "putAll", "(Map)", "", "Argument[0].MapValue", "Argument[this].MapValue", "value", "manual"]
+      - ["com.google.common.cache", "LoadingCache", True, "apply", "(Object)", "", "Argument[this].MapValue", "ReturnValue", "value", "manual"]
+      - ["com.google.common.cache", "LoadingCache", True, "get", "(Object)", "", "Argument[this].MapValue", "ReturnValue", "value", "manual"]
+      - ["com.google.common.cache", "LoadingCache", True, "getAll", "(Iterable)", "", "Argument[this].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      - ["com.google.common.cache", "LoadingCache", True, "getAll", "(Iterable)", "", "Argument[0].Element", "Argument[this].MapKey", "value", "manual"]
+      - ["com.google.common.cache", "LoadingCache", True, "getAll", "(Iterable)", "", "Argument[0].Element", "ReturnValue.MapKey", "value", "manual"]
+      - ["com.google.common.cache", "LoadingCache", True, "getUnchecked", "(Object)", "", "Argument[this].MapValue", "ReturnValue", "value", "manual"]

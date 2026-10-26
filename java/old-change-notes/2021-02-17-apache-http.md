@@ -1,0 +1,2 @@
+lgtm,codescanning
+* Added support for the Apache Http components core library (`org.apache.http.*` and `org.apache.hc.core5.*`); adding additional remote flow sources, sinks for the XSS and Open Redirect queries, and additional taint steps. 

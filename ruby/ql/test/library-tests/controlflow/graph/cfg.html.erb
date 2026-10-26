@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= @title %></title>
+    <%= stylesheet_link_tag "application", :media => "all" %>
+  </head>
+
+  <body>
+  <header>
+    <div class="c">
+      <%= link_to "A", a, id: "a" %>
+      <nav>
+        <ul>
+          <li><%= link_to "B", a %></li>
+          <li><%= link_to "C", b %></li>
+          
+          <% if admin? %>
+          <li><%= link_to "D", d %></li>
+          <% else %>
+          <li><%= link_to "E", e %></li>
+          <% end %>     
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div>
+    <% collection.each do |key, value| %>
+      <div class="<%= key %>"><%= value %> </div>
+    <% end %>
+  </div>
+  </body>
+</html>

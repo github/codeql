@@ -1,0 +1,42 @@
+{
+  "markdownMessage": "A compilation error was observed while autobuilding your code. Check that your Code Scanning workflow installs the needed compiler version and dependencies.\n\nRelevant output line: `[ERROR] COMPILATION ERROR : `",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/compilation-error",
+    "name": "Some of your code may have failed to compile"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "A compilation error was observed while autobuilding your code. Check that your Code Scanning workflow installs the needed compiler version and dependencies.\n\nRelevant output line: `[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.0:compile (default-compile) on project maven-sample: Compilation failure`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/compilation-error",
+    "name": "Some of your code may have failed to compile"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "A compilation error was observed while autobuilding your code. Check that your Code Scanning workflow installs the needed compiler version and dependencies.\n\nRelevant output line: `org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.0:compile (default-compile) on project maven-sample: Compilation failure`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/compilation-error",
+    "name": "Some of your code may have failed to compile"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

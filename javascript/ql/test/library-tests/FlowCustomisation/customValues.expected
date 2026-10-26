@@ -1,0 +1,7 @@
+| tst.js:2:7:2:7 | o | tst.js:2:11:4:3 | {\\n    x: 42\\n  } | tst.js:2:11:4:3 | object literal |
+| tst.js:5:7:5:7 | x | tst.js:5:11:5:13 | o.x | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:5:7:5:7 | x | tst.js:5:11:5:13 | o.x | file://:0:0:0:0 | non-zero value |
+| tst.js:6:7:6:7 | y | tst.js:6:11:6:13 | o.y | file://:0:0:0:0 | indefinite value (heap) |
+| tst.js:9:5:9:5 | z | tst.js:9:9:9:20 | document.all | file://:0:0:0:0 | document.all |
+| tst.js:9:5:9:5 | z | tst.js:9:9:9:20 | document.all | file://:0:0:0:0 | indefinite value (global) |
+| tst.js:9:5:9:5 | z | tst.js:9:9:9:20 | document.all | file://:0:0:0:0 | indefinite value (heap) |

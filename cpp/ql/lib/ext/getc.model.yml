@@ -1,0 +1,19 @@
+# Models for getc and similar character-reading functions
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sourceModel
+    data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
+      - ["", "", False, "getc", "", "", "ReturnValue", "remote", "manual"]
+      - ["", "", False, "getwc", "", "", "ReturnValue", "remote", "manual"]
+      - ["", "", False, "_getc_nolock", "", "", "ReturnValue", "remote", "manual"]
+      - ["", "", False, "_getwc_nolock", "", "", "ReturnValue", "remote", "manual"]
+      - ["", "", False, "getch", "", "", "ReturnValue", "local", "manual"]
+      - ["", "", False, "_getch", "", "", "ReturnValue", "local", "manual"]
+      - ["", "", False, "_getwch", "", "", "ReturnValue", "local", "manual"]
+      - ["", "", False, "_getch_nolock", "", "", "ReturnValue", "local", "manual"]
+      - ["", "", False, "_getwch_nolock", "", "", "ReturnValue", "local", "manual"]
+      - ["", "", False, "getchar", "", "", "ReturnValue", "local", "manual"]
+      - ["", "", False, "getwchar", "", "", "ReturnValue", "local", "manual"]
+      - ["", "", False, "_getchar_nolock", "", "", "ReturnValue", "local", "manual"]
+      - ["", "", False, "_getwchar_nolock", "", "", "ReturnValue", "local", "manual"]

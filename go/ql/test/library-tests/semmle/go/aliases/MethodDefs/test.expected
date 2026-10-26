@@ -1,0 +1,20 @@
+distinctDefinedFs
+| 2 |
+declaredEntities
+| methods.go:5:6:5:13 | IntAlias (1 declaration sites) |
+| methods.go:7:6:7:7 | S1 (1 declaration sites) |
+| methods.go:7:19:7:19 | x (2 declaration sites) |
+| methods.go:8:6:8:7 | S2 (1 declaration sites) |
+| methods.go:8:19:8:19 | x (2 declaration sites) |
+| methods.go:10:6:10:7 | I1 (1 declaration sites) |
+| methods.go:10:22:10:22 | F (2 declaration sites) |
+| methods.go:11:6:11:7 | I2 (1 declaration sites) |
+| methods.go:11:22:11:22 | F (2 declaration sites) |
+| methods.go:12:6:12:7 | I3 (1 declaration sites) |
+| methods.go:12:22:12:22 | F (2 declaration sites) |
+| methods.go:13:6:13:7 | I4 (1 declaration sites) |
+| methods.go:13:22:13:22 | F (2 declaration sites) |
+| methods.go:15:6:15:10 | Test1 (1 declaration sites) |
+| methods.go:15:12:15:17 | param1 (1 declaration sites) |
+| methods.go:15:23:15:28 | param2 (1 declaration sites) |
+| methods.go:15:34:15:36 | arg (1 declaration sites) |

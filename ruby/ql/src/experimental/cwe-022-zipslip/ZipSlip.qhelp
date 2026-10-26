@@ -1,0 +1,78 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Extracting files from a malicious zip file, or similar type of archive,
+is at risk of directory traversal attacks if filenames from the archive are
+not properly validated.</p>
+
+<p>Tar archives contain archive entries representing each file in the archive. These entries
+include a file path for the entry, but these file paths are not restricted and may contain
+unexpected special elements such as the directory traversal element (<code>..</code>). If these
+file paths are used to create a filesystem path, then a file operation may happen in an 
+unexpected location. This can result in sensitive information being
+revealed or deleted, or an attacker being able to influence behavior by modifying unexpected
+files.</p>
+
+<p>For example, if a tar archive contains a file entry <code>..\sneaky-file</code>, and the tar archive
+is extracted to the directory <code>c:\output</code>, then naively combining the paths would result
+in an output file path of <code>c:\output\..\sneaky-file</code>, which would cause the file to be
+written to <code>c:\sneaky-file</code>.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that output paths constructed from tar archive entries are validated
+to prevent writing files to unexpected locations.</p>
+
+<p>The recommended way of writing an output file from a tar archive entry is to check that
+<code>".."</code> does not occur in the path.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In this example an archive is extracted without validating file paths.
+If <code>archive.tar</code> contained relative paths (for
+instance, if it were created by something like <code>tar -cf archive.tar
+../file.txt</code>) then executing this code could write to locations
+outside the destination directory.
+</p>
+
+<sample src="examples/zip_slip_bad.rb" />
+
+<p>To fix this vulnerability, we need to check that the path does not
+contain any <code>".."</code> elements in it.
+</p>
+
+<sample src="examples/zip_slip_good.rb" />
+
+</example>
+<references>
+
+<li>
+Snyk:
+<a href="https://snyk.io/research/zip-slip-vulnerability">Zip Slip Vulnerability</a>.
+</li>
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.
+</li>
+<li>
+class
+<a href="https://docs.ruby-lang.org/en/2.4.0/Gem/Package/TarReader.html">Gem::Package::TarReader</a>.
+</li>
+<li>
+class
+<a href="https://ruby-doc.org/stdlib-2.4.0/libdoc/zlib/rdoc/Zlib/GzipReader.html">Zlib::GzipReader</a>.
+</li>
+<li>
+class
+<a href="https://www.rubydoc.info/github/rubyzip/rubyzip/Zip/File">Zip::File</a>.
+</li>
+
+</references>
+</qhelp>

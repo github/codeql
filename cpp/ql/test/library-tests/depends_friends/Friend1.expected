@@ -1,0 +1,5 @@
+| file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | __va_list_tag |
+| friends.cpp:1:7:1:13 | Friend1 | friends.cpp:1:7:1:13 | Friend1 |
+| friends.cpp:10:7:10:13 | Friend2 | friends.cpp:10:7:10:13 | Friend2 |
+| friends.cpp:24:7:24:7 | C | friends.cpp:1:7:1:13 | Friend1 |
+| friends.cpp:24:7:24:7 | C | friends.cpp:24:7:24:7 | C |

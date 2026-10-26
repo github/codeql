@@ -1,0 +1,12 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<fragment>
+<warning>
+This check is an approximation, so some results may not be actual defects in the program. 
+It is not possible in general to compute which function is actually called in a virtual call,
+or a call through a pointer, without running the program with all possible input data.
+</warning>
+</fragment>
+</qhelp>

@@ -1,0 +1,18 @@
+Transform: 'Aliyun::Serverless-2018-04-03'
+Resources:
+  fc-mongo:
+    Type: 'Aliyun::Serverless::Service'
+    Properties:
+      Description: MyServiceThing
+    nodejs:
+      Type: 'Aliyun::Serverless::Function'
+      Properties:
+        Handler: index.handler
+        Runtime: nodejs10
+        CodeUri: nodejs/
+    python:
+      Type: 'Aliyun::Serverless::Function'
+      Properties:
+        Handler: 'index.handler'
+        Runtime: python3
+        CodeUri: python/

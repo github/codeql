@@ -1,0 +1,7 @@
+@import "../../suites/cpp/correctness"
+@import "../../suites/cpp/maintainability"
+@import "../../suites/cpp/readability"
+@import "../../suites/cpp/useless-code"
+
+@import "../../suites/cpp/metrics"
+@import "../../suites/cpp/metric-defects"

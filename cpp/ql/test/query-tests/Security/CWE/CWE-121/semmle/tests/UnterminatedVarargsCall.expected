@@ -1,0 +1,9 @@
+| more_tests.cpp:25:2:25:12 | call to myFunction2 | Calls to $@ should use the value -1 as a terminator (5 of 6 calls do). | more_tests.cpp:5:6:5:16 | myFunction2 | myFunction2 |
+| more_tests.cpp:39:2:39:12 | call to myFunction4 | Calls to $@ should use the value 0 as a terminator (5 of 6 calls do). | more_tests.cpp:7:6:7:16 | myFunction4 | myFunction4 |
+| more_tests.cpp:49:2:49:12 | call to myFunction6 | Calls to $@ should use the value 0 as a terminator (5 of 6 calls do). | more_tests.cpp:9:6:9:16 | myFunction6 | myFunction6 |
+| more_tests.cpp:64:2:64:12 | call to myFunction7 | Calls to $@ should use the value 0 as a terminator (9 of 11 calls do). | more_tests.cpp:10:6:10:16 | myFunction7 | myFunction7 |
+| more_tests.cpp:65:2:65:12 | call to myFunction7 | Calls to $@ should use the value 0 as a terminator (9 of 11 calls do). | more_tests.cpp:10:6:10:16 | myFunction7 | myFunction7 |
+| tests.c:34:2:34:3 | call to f1 | Calls to $@ should use the value 0 as a terminator (4 of 5 calls do). | tests.c:4:6:4:7 | f1 | f1 |
+| tests.c:78:2:78:3 | call to f6 | Calls to $@ should use the value -1 as a terminator (10 of 12 calls do). | tests.c:24:6:24:7 | f6 | f6 |
+| tests.c:79:2:79:3 | call to f6 | Calls to $@ should use the value -1 as a terminator (10 of 12 calls do). | tests.c:24:6:24:7 | f6 | f6 |
+| tests.c:84:2:84:3 | call to f7 | Calls to $@ should use the value 0 as a terminator (12 of 13 calls do). | tests.c:28:6:28:7 | f7 | f7 |

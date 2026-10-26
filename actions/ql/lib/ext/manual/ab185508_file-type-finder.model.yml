@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      # https://github.com/ab185508/file-type-finder
+      - ["ab185508/file-type-finder", "*", "output.paths", "filename", "manual"]
+      - ["ab185508/file-type-finder", "*", "output.names", "filename", "manual"]
+      - ["ab185508/file-type-finder", "*", "output.extaddpaths", "filename", "manual"]
+

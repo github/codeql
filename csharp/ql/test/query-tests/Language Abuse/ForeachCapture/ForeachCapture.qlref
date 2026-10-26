@@ -1,0 +1,2 @@
+query: Language Abuse/ForeachCapture.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,2 @@
+query: Classes/PropertyInOldStyleClass.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

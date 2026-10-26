@@ -1,0 +1,2 @@
+query: queries/style/MissingQualityMetadata.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

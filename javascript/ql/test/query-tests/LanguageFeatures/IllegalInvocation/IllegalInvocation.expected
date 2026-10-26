@@ -1,0 +1,6 @@
+| tst.js:12:1:12:3 | C() | Illegal invocation of $@ as a function. | tst.js:1:9:1:8 | () {} | a constructor |
+| tst.js:13:1:13:10 | new (x=>x) | Illegal invocation of $@ using 'new'. | tst.js:13:6:13:9 | x=>x | an arrow function |
+| tst.js:42:1:42:7 | new g() | Illegal invocation of $@ using 'new'. | tst.js:39:1:39:16 | function* g() {} | a generator function |
+| tst.js:43:1:43:7 | new h() | Illegal invocation of $@ using 'new'. | tst.js:40:1:40:21 | async f ...  h() {} | an async function |
+| tst.js:45:1:45:8 | reflective call | Illegal invocation of $@ as a function. | tst.js:1:9:1:8 | () {} | a constructor |
+| tst.js:46:1:46:9 | reflective call | Illegal invocation of $@ as a function. | tst.js:1:9:1:8 | () {} | a constructor |

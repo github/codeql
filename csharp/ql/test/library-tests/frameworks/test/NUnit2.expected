@@ -1,0 +1,3 @@
+| nunit.cs:95:21:95:25 | Test3 | nunit.cs:82:18:82:26 | TestCases |
+| nunit.cs:100:21:100:25 | Test4 | nunit.cs:71:18:71:26 | TestCases |
+| nunit.cs:105:21:105:25 | Test5 | nunit.cs:109:18:109:34 | PropertyTestCases |

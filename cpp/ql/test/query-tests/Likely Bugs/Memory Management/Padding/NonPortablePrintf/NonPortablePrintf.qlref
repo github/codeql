@@ -1,0 +1,2 @@
+query: Likely Bugs/Memory Management/Padding/NonPortablePrintf.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+When an object has an attribute that shares its name with a method on the object's class (or another class attribute), the instance attribute is 
+prioritized during attribute lookup, shadowing the method.  
+
+If a method on a subclass is shadowed by an attribute on a superclass in this way, this may lead to unexpected results or errors, as this
+shadowing behavior is nonlocal and may be unintended.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Ensure method names on subclasses don't conflict with attribute names on superclasses, and rename one.  
+If the shadowing behavior is intended, ensure this is explicit in the superclass.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the <code>_foo</code> attribute of class <code>A</code> shadows the method <code>_foo</code> of class <code>B</code>. 
+Calls to <code>B()._foo()</code> will result in a <code>TypeError</code>, as <code>3</code> will be called instead. 
+</p>
+
+<sample src="examples/SubclassShadowingBad.py" />
+
+<p>
+In the following example, the behavior of the <code>default</code> attribute being shadowed to allow for customization during initialization is
+intended in within the superclass <code>A</code>. Overriding <code>default</code> in the subclass <code>B</code> is then OK.
+</p>
+
+<sample src="examples/SubclassShadowingGood.py" />
+
+</example>
+</qhelp>

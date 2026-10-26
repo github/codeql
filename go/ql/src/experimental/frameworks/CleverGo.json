@@ -1,0 +1,900 @@
+{
+   "Name": "CleverGo",
+   "Models": [
+      {
+         "Name": "RemoteSources",
+         "Kind": "RemoteFlowSource",
+         "Methods": [
+            {
+               "Name": "{source:[](Param|Result|Fields|Type)} \u003c- $source",
+               "Selectors": [
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-BasicAuth",
+                        "Pos": [
+                           false,
+                           true,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "BasicAuth"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-Decode",
+                        "Pos": [
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "Decode"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-DefaultQuery",
+                        "Pos": [
+                           false,
+                           false,
+                           false,
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "DefaultQuery"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-FormValue",
+                        "Pos": [
+                           false,
+                           false,
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "FormValue"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-GetHeader",
+                        "Pos": [
+                           false,
+                           false,
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "GetHeader"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-PostFormValue",
+                        "Pos": [
+                           false,
+                           false,
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "PostFormValue"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-QueryParam",
+                        "Pos": [
+                           false,
+                           false,
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "QueryParam"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-QueryString",
+                        "Pos": [
+                           false,
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "QueryString"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Params-String",
+                        "Pos": [
+                           false,
+                           false,
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "String"
+                     }
+                  },
+                  {
+                     "Kind": "Struct",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "Struct-Context",
+                        "TypeName": "Context",
+                        "Fields": {
+                           "Params": null
+                        }
+                     }
+                  },
+                  {
+                     "Kind": "Struct",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "Struct-Param",
+                        "TypeName": "Param",
+                        "Fields": {
+                           "Key": null,
+                           "Value": null
+                        }
+                     }
+                  },
+                  {
+                     "Kind": "Type",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "Type-Params",
+                        "TypeName": "Params",
+                        "Value": true
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "InterfaceMethod-Decoder-Decode",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "Decode"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-QueryParams",
+                        "Pos": [
+                           false,
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "QueryParams"
+                     }
+                  }
+               ]
+            }
+         ]
+      },
+      {
+         "Name": "TaintTracking",
+         "Kind": "TaintTracking",
+         "Methods": [
+            {
+               "Name": "Self",
+               "Selectors": [
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "Function-CleanPath",
+                        "Pos": null,
+                        "Flows": {
+                           "Blocks": [
+                              {
+                                 "Inp": [
+                                    true,
+                                    false
+                                 ],
+                                 "Out": [
+                                    false,
+                                    true
+                                 ]
+                              }
+                           ],
+                           "Enabled": true
+                        },
+                        "Name": "CleanPath"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "InterfaceMethod-Decoder-Decode",
+                        "Pos": null,
+                        "Flows": {
+                           "Blocks": [
+                              {
+                                 "Inp": [
+                                    false,
+                                    true,
+                                    false,
+                                    false
+                                 ],
+                                 "Out": [
+                                    false,
+                                    false,
+                                    true,
+                                    false
+                                 ]
+                              }
+                           ],
+                           "Enabled": true
+                        },
+                        "Name": "Decode"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "InterfaceMethod-Renderer-Render",
+                        "Pos": null,
+                        "Flows": {
+                           "Blocks": [
+                              {
+                                 "Inp": [
+                                    false,
+                                    false,
+                                    false,
+                                    true,
+                                    false,
+                                    false
+                                 ],
+                                 "Out": [
+                                    false,
+                                    true,
+                                    false,
+                                    false,
+                                    false,
+                                    false
+                                 ]
+                              }
+                           ],
+                           "Enabled": true
+                        },
+                        "Name": "Render"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Application-RouteURL",
+                        "Pos": null,
+                        "Flows": {
+                           "Blocks": [
+                              {
+                                 "Inp": [
+                                    false,
+                                    true,
+                                    true,
+                                    false,
+                                    false
+                                 ],
+                                 "Out": [
+                                    false,
+                                    false,
+                                    false,
+                                    true,
+                                    false
+                                 ]
+                              }
+                           ],
+                           "Enabled": true
+                        },
+                        "Name": "RouteURL"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-Context",
+                        "Pos": null,
+                        "Flows": {
+                           "Blocks": [
+                              {
+                                 "Inp": [
+                                    true,
+                                    false
+                                 ],
+                                 "Out": [
+                                    false,
+                                    true
+                                 ]
+                              }
+                           ],
+                           "Enabled": true
+                        },
+                        "Name": "Context"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Params-String",
+                        "Pos": null,
+                        "Flows": {
+                           "Blocks": [
+                              {
+                                 "Inp": [
+                                    true,
+                                    false,
+                                    false
+                                 ],
+                                 "Out": [
+                                    false,
+                                    false,
+                                    true
+                                 ]
+                              }
+                           ],
+                           "Enabled": true
+                        },
+                        "Name": "String"
+                     }
+                  }
+               ]
+            }
+         ]
+      },
+      {
+         "Name": "HttpRedirect",
+         "Kind": "HTTP::Redirect",
+         "Methods": [
+            {
+               "Name": "{url:Param} \u003c- $url",
+               "Selectors": [
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-Redirect",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "Redirect"
+                     }
+                  }
+               ]
+            }
+         ]
+      },
+      {
+         "Name": "HttpResponseBody",
+         "Kind": "HTTP::ResponseBody",
+         "Methods": [
+            {
+               "Name": "{ct:Inferred, body:Param} \u003c- $body",
+               "Selectors": [
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-Error",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "Error"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-HTML",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "HTML"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-HTMLBlob",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "HTMLBlob"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-JSON",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "JSON"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-JSONBlob",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "JSONBlob"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-JSONP",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "JSONP"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-JSONPBlob",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "JSONPBlob"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-JSONPCallback",
+                        "Pos": [
+                           false,
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "JSONPCallback"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-JSONPCallbackBlob",
+                        "Pos": [
+                           false,
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "JSONPCallbackBlob"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-String",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "String"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-StringBlob",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "StringBlob"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-Stringf",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "Stringf"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-XML",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "XML"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-XMLBlob",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "XMLBlob"
+                     }
+                  }
+               ]
+            },
+            {
+               "Name": "{ct:Param, body:Param} \u003c- $body",
+               "Selectors": [
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-Blob",
+                        "Pos": [
+                           false,
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "Blob"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-Emit",
+                        "Pos": [
+                           false,
+                           false,
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "Emit"
+                     }
+                  }
+               ]
+            },
+            {
+               "Name": "{ct:Param, body:Param} \u003c- $ct",
+               "Selectors": [
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-Blob",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "Blob"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-Emit",
+                        "Pos": [
+                           false,
+                           false,
+                           true,
+                           false,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "Emit"
+                     }
+                  }
+               ]
+            },
+            {
+               "Name": "{body:Param} \u003c- $body",
+               "Selectors": [
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-Write",
+                        "Pos": [
+                           false,
+                           true,
+                           false,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "Write"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-WriteString",
+                        "Pos": [
+                           false,
+                           true,
+                           false,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "WriteString"
+                     }
+                  }
+               ]
+            }
+         ]
+      },
+      {
+         "Name": "HeaderWrite",
+         "Kind": "HTTP::HeaderWrite",
+         "Methods": [
+            {
+               "Name": "{key:Param, val:Param} \u003c- $key",
+               "Selectors": [
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-SetHeader",
+                        "Pos": [
+                           false,
+                           true,
+                           false
+                        ],
+                        "Flows": null,
+                        "Name": "SetHeader"
+                     }
+                  }
+               ]
+            },
+            {
+               "Name": "{key:Param, val:Param} \u003c- $val",
+               "Selectors": [
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-SetHeader",
+                        "Pos": [
+                           false,
+                           false,
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "SetHeader"
+                     }
+                  }
+               ]
+            },
+            {
+               "Name": "{ct:Param} \u003c- $ct",
+               "Selectors": [
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-SetContentType",
+                        "Pos": [
+                           false,
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "SetContentType"
+                     }
+                  }
+               ]
+            },
+            {
+               "Name": "{ct:Inferred} \u003c- *",
+               "Selectors": [
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-SetContentTypeHTML",
+                        "Pos": [
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "SetContentTypeHTML"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-SetContentTypeJSON",
+                        "Pos": [
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "SetContentTypeJSON"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-SetContentTypeText",
+                        "Pos": [
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "SetContentTypeText"
+                     }
+                  },
+                  {
+                     "Kind": "Func",
+                     "Qualifier": {
+                        "Path": "clevergo.tech/clevergo",
+                        "Version": "v0.5.2",
+                        "ID": "TypeMethod-Context-SetContentTypeXML",
+                        "Pos": [
+                           true
+                        ],
+                        "Flows": null,
+                        "Name": "SetContentTypeXML"
+                     }
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+}

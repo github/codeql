@@ -1,0 +1,6 @@
+| nhibernate.cs:46:18:46:21 | access to property Id |
+| nhibernate.cs:47:18:47:23 | access to property Name |
+| nhibernate.cs:48:18:48:26 | access to property Address |
+| nhibernate.cs:50:18:50:22 | access to property Id |
+| nhibernate.cs:51:18:51:23 | access to property Age |
+| nhibernate.cs:52:18:52:27 | access to property Address |

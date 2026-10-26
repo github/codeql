@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>TLS v1.0 and v1.1 versions are known to be vulnerable.</p>
+</overview>
+<recommendation>
+
+<p>Use <code>tls_protocol_version_t.TLSv12</code> or <code>tls_protocol_version_t.TLSv13</code> when configuring <code>URLSession</code>.</p>
+
+</recommendation>
+<example>
+
+<p>Specify a newer <code>tls_protocol_version_t</code> explicitly, or omit it completely as the OS will use secure defaults.</p>
+
+<sample src="SecureTLS.swift" />
+
+</example>
+<references>
+
+<li>
+  <a href="https://support.apple.com/en-gb/guide/security/sec100a75d12/web">Apple Platform Security - TLS security</a>
+  <a href="https://developer.apple.com/documentation/security/preventing_insecure_network_connections">Preventing Insecure Network Connections</a>
+</li>
+
+</references>
+</qhelp>

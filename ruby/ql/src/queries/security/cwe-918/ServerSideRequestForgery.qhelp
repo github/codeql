@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Directly incorporating user input into an HTTP request without validating the input
+can facilitate server-side request forgery (SSRF) attacks. In these attacks, the
+request may be changed, directed at a different server, or via a different
+protocol. This can allow the attacker to obtain sensitive information or perform
+actions with escalated privilege.
+</p>
+
+</overview>
+<recommendation>
+
+<p>To guard against SSRF attacks you should avoid putting user-provided input
+directly into a request URL. Instead, maintain a list of authorized
+URLs on the server; then choose from that list based on the input provided.
+Alternatively, ensure requests constructed from user input are limited to
+a particular host or more restrictive URL prefix.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows an HTTP request parameter being used directly to form a
+new request without validating the input, which facilitates SSRF attacks.
+It also shows how to remedy the problem by validating the user input against a known fixed string.
+</p>
+
+<sample src="ServerSideRequestForgery.rb" />
+
+</example>
+<references>
+  <li>
+    <a href="https://owasp.org/www-community/attacks/Server_Side_Request_Forgery">OWASP SSRF</a>
+  </li>
+
+</references>
+</qhelp>

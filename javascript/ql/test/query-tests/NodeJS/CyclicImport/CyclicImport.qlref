@@ -1,0 +1,2 @@
+query: NodeJS/CyclicImport.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

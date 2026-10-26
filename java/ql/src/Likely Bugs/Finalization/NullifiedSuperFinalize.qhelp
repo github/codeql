@@ -1,0 +1,58 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A <code>finalize</code> method that overrides the finalizer of a superclass but does not call 
+<code>super.finalize</code> may leave system resources undisposed of or cause other cleanup actions 
+to be left undone.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Make sure that all <code>finalize</code> methods call <code>super.finalize</code> to ensure that the 
+finalizer of its superclass is executed. Finalizer chaining is not automatic in Java.
+</p>
+
+<p>
+It is also possible to defend against subclasses that do not call <code>super.finalize</code> by putting the cleanup code into a 
+<em>finalizer guardian</em> instead of the <code>finalize</code> method. A finalizer guardian is an anonymous object instance 
+that contains the cleanup code for the enclosing object in its <code>finalize</code> method.
+The only reference to the finalizer guardian is stored in a private field of the enclosing instance,
+which means that both the guardian and the enclosing instance can be finalized at the same time.
+This way, a subclass cannot block the execution of the cleanup code by not calling <code>super.finalize</code>.  
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>WrongCache.finalize</code> does not call <code>super.finalize</code>,
+which means that native resources are not disposed of. However, <code>RightCache.finalize</code> 
+<i>does</i> call <code>super.finalize</code>, which means that native resources <i>are</i> disposed of.</p>
+
+<sample src="NullifiedSuperFinalize.java" />
+
+<p>The following example shows a finalizer guardian.</p>
+
+<sample src="NullifiedSuperFinalizeGuarded.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#finalize()">Object.finalize()</a>.
+</li>
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 7. Addison-Wesley, 2008.
+</li>
+
+
+</references>
+</qhelp>

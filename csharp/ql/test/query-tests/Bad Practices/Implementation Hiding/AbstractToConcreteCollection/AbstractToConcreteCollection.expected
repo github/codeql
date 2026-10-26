@@ -1,0 +1,2 @@
+| AbstractToConcreteCollection.cs:7:20:7:41 | (...) ... | Questionable cast from abstract 'IEnumerable<String>' to concrete implementation 'List<String>'. |
+| AbstractToConcreteCollectionBad.cs:8:20:8:39 | (...) ... | Questionable cast from abstract 'IEnumerable<String>' to concrete implementation 'List<String>'. |

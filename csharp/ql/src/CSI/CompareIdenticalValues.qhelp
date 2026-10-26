@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If two identical expressions are compared (that is, checked for equality or
+inequality), this is typically an
+indication of a mistake, because the Boolean value of the comparison
+is always the same. Often, it indicates that the wrong qualifier has been
+used on a field access.</p>
+
+<p>An exception applies to inequality (<code>!=</code>) and equality (<code>==</code>) tests
+of a floating point variable with itself: the special floating point value <code>NaN</code> ("not-a-number")
+is the only value that is not considered to be equal to itself. Thus, the test <code>x != x</code> where
+<code>x</code> is a <code>float</code> or <code>double</code> variable is equivalent to checking whether
+<code>x</code> is <code>NaN</code>, and similarly for <code>x == x</code>.</p>
+
+</overview>
+<recommendation>
+
+<p>It is never good practice to compare a value with itself. If you require constant
+behavior, use the Boolean literals <code>true</code> and
+<code>false</code>, rather than encoding them obscurely as <code>1 == 1</code>
+or similar.</p>
+
+<p>If an inequality test (using <code>!=</code>) of a floating point variable with itself is intentional, it
+should be replaced by <code>double.IsNaN(...)</code> or <code>float.IsNaN(...)</code> for readability.
+Similarly, if an equality test (using <code>==</code>) of a floating point variable with itself is intentional, it
+should be replaced by <code>!double.IsNaN(...)</code> or <code>!float.IsNaN(...)</code>.</p>
+
+</recommendation>
+<example>
+<p>In this example the developer clearly meant to compare age with <code>personObj.age</code> but instead compared age with itself.</p>
+<sample src="CompareIdenticalValues.cs" />
+
+</example>
+<references>
+
+  <li>MSDN, C# Reference, <a href="http://msdn.microsoft.com/en-GB/library/78kc05h3(v=vs.90).aspx">Compiler Warning (level 3) CS1718</a>.</li>
+  <li>MSDN, C# Reference, <a href="https://msdn.microsoft.com/en-us/library/system.single.nan(v=vs.110).aspx">Single.NaN Field</a>.</li>
+  <li>MSDN, C# Reference, <a href="https://msdn.microsoft.com/en-us/library/system.double.nan(v=vs.110).aspx">Double.NaN Field</a>.</li>
+
+</references>
+</qhelp>

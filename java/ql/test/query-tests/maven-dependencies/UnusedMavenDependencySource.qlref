@@ -1,0 +1,2 @@
+query: Architecture/Dependencies/UnusedMavenDependencySource.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

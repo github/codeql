@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["hashicorp/terraform", "*", "input.target-terraform-branch", "code-injection", "generated"]
+     - ["hashicorp/terraform", "*", "input.target-terraform-version", "code-injection", "generated"]
+     - ["hashicorp/terraform", "*", "input.target-arch", "code-injection", "generated"]
+     - ["hashicorp/terraform", "*", "input.target-os", "code-injection", "generated"]
+     - ["hashicorp/terraform", "*", "input.target-equivalence-test-version", "code-injection", "generated"]

@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["mattermost/mattermost/.github/workflows/server-test-template.yml", "*", "input.name", "code-injection", "generated"]
+     - ["mattermost/mattermost/.github/workflows/server-test-template.yml", "*", "input.drivername", "code-injection", "generated"]
+     - ["mattermost/mattermost/.github/workflows/server-test-template.yml", "*", "input.datasource", "code-injection", "generated"]
+     - ["mattermost/mattermost/.github/workflows/mmctl-test-template.yml", "*", "input.datasource", "code-injection", "generated"]
+     - ["mattermost/mattermost/.github/workflows/esrupgrade-common.yml", "*", "input.db-dump-url", "code-injection", "generated"]

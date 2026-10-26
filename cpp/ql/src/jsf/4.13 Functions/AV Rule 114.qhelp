@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds non-void functions with an execution path that does not return through an explicit
+return statement. The return value in such a case is undefined. For example, in the <code>cdecl</code> 
+calling convention for x86, it would be whatever value was in the AX/EAX register when the function returned, 
+assuming the function had a non-float return type that can fit in a machine word.
+</p>
+
+<include src="../../Critical/dataFlowWarning.inc.qhelp" />
+
+<!--/*FALSEPOSITIVE_WARNING*/-->
+
+</overview>
+<recommendation>
+<p>Make sure that all execution paths in the function exit through an explicit return statement.</p>
+
+
+</recommendation>
+<example><sample src="AV Rule 114.cpp" />
+
+
+
+</example>
+<references>
+
+
+<li>
+  AV Rule 114, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  MISRA C++ Rule 8-4-3, <em>Guidelines for the use of the C++ language in critical systems</em>. The Motor Industry Software Reliability Associate, 2008.
+</li>
+<li>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/return-statement-cpp">return Statement (C++)</a>.
+</li>
+
+
+</references>
+</qhelp>

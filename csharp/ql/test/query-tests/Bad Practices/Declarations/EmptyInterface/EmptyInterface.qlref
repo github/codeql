@@ -1,0 +1,2 @@
+query: Bad Practices/Declarations/EmptyInterface.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

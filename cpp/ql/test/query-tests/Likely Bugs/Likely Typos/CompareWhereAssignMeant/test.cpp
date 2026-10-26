@@ -1,0 +1,74 @@
+class IntHolder {
+private:
+  int x;
+public:
+  IntHolder(int x_) {
+    x = x_;
+  }
+
+  operator bool() {
+    return x;
+  }
+
+  inline bool operator==(const IntHolder& other) {
+    return x == other.x;
+  }
+
+  IntHolder& operator=(const IntHolder& other) {
+    x = other.x;
+    return *this;
+  }
+};
+
+void f(void) {
+    int i;
+
+    i = 1;
+
+    i == 1; // $ Alert[cpp/compare-where-assign-meant]
+
+    i == 1, i == 2; // $ Alert[cpp/compare-where-assign-meant] Alert[cpp/useless-expression]
+
+    i = i == 1, i == 2; // $ Alert[cpp/compare-where-assign-meant]
+
+    i = (i == 1, i == 2); // $ Alert[cpp/compare-where-assign-meant]
+
+    if (({ int x = 3; x == 3; })) {
+        return;
+    }
+    if (({ int x = 3; x == 3; x; })) { // $ Alert[cpp/compare-where-assign-meant]
+        return;
+    }
+    if (({ int x = 3; x == 3; x = 4; })) { // $ Alert[cpp/compare-where-assign-meant]
+        return;
+    }
+
+    i != 1; // $ Alert[cpp/useless-expression]
+
+    IntHolder holder1(i);
+    IntHolder holder2(i);
+    holder1 = holder2;
+    holder1 == holder2; // $ Alert[cpp/compare-where-assign-meant]
+    if(holder1 = holder2) {
+    }
+    if(holder1 == holder1) {
+    }
+}
+
+// This pattern is used to emulate C++20 concepts in a way that's very light on
+// template syntax.
+template<typename T1, typename T2>
+auto sfinaeTrick(T1 x1, T2 x2) -> decltype(x1 == x2, bool()) { // GOOD
+  return x1 == x2;
+}
+
+void report_error(const char*);
+
+#define DOES_NOT_THROW(E) do { try { E; } catch (...) { report_error(""); } } while(0)
+#define ID(X) (X)
+
+void test_inside_macro_expansion(int x, int y) {
+  DOES_NOT_THROW(x == y); // GOOD
+  x == y; // $ Alert[cpp/compare-where-assign-meant] // BAD
+  x == ID(y); // $ Alert[cpp/compare-where-assign-meant] // BAD
+}

@@ -1,0 +1,6 @@
+<!--AVOID: Using constructor args for optional parameters requires one constructor per combination
+of properties. This leads to a large number of constructors in the bean class.-->
+<bean id="chart1" class="documentation.examples.spring.WrongChartMaker">
+	<constructor-arg ref="customTrend"/>
+	<constructor-arg ref="customAxis"/>
+</bean>

@@ -1,0 +1,11 @@
+digraph
+{
+	start -> iEven;
+	start -> iOdd;
+	iEven -> end;
+	iOdd -> jEven;
+	iOdd -> jOdd;
+	jEven -> end;
+	jOdd -> end;
+}
+

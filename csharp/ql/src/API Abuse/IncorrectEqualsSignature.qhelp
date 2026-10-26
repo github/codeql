@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The intent of defining an <code>Equals(object)</code> method on a class is generally to ensure
+that instances of that class are compared using it, both in client code and in library code. The 
+standard <code>Equals(object)</code> method has an <code>object</code> parameter, so
+<code>Equals(T)</code> methods where <code>T</code> is not <code>object</code>, will often not be
+used in favor of <code>Equals(object)</code>.</p>
+
+</overview>
+<recommendation>
+<p>Define an <code>Equals(object)</code> method that returns false if the object parameter is not of 
+the type containing the method.</p>
+
+</recommendation>
+<example>
+<p>In this example, the <code>Equals</code> method only takes an instance of <code>Bad</code> as a 
+parameter.</p>
+<sample src="IncorrectEqualsSignatureBad.cs" />
+
+<p>In the revised example, <code>Equals(object)</code> is overridden and defined in terms of the
+<code>Equals(Good)</code> method.
+</p>
+<sample src="IncorrectEqualsSignatureGood.cs" />
+</example>
+<references>
+
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/bsc2ak47.aspx">Object.Equals Method (Object)</a>.</li>
+
+</references>
+</qhelp>

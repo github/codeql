@@ -1,0 +1,263 @@
+| addressOf.cpp:14:28:14:29 | d_ | non-const address |
+| addressOf.cpp:24:32:24:32 | i | non-const address |
+| addressOf.cpp:25:26:25:26 | i | non-const address |
+| addressOf.cpp:26:32:26:32 | i | non-const address |
+| addressOf.cpp:32:19:32:19 | i | non-const address |
+| addressOf.cpp:34:18:34:18 | i |  |
+| addressOf.cpp:34:23:34:23 | i | non-const address |
+| addressOf.cpp:35:23:35:23 | i | non-const address |
+| addressOf.cpp:36:22:36:22 | i | non-const address |
+| addressOf.cpp:37:20:37:20 | i | non-const address |
+| addressOf.cpp:38:20:38:20 | i | non-const address |
+| addressOf.cpp:40:15:40:15 | i | non-const address |
+| addressOf.cpp:42:19:42:22 | iref | non-const address |
+| addressOf.cpp:47:12:47:31 | captured | non-const address |
+| addressOf.cpp:47:13:47:13 | (unnamed parameter 0) |  |
+| addressOf.cpp:47:13:47:13 | captured |  |
+| addressOf.cpp:47:19:47:28 | captured |  |
+| addressOf.cpp:48:3:48:4 | f1 | const address |
+| addressOf.cpp:49:13:49:13 | (unnamed parameter 0) |  |
+| addressOf.cpp:49:13:49:13 | captured |  |
+| addressOf.cpp:49:15:49:22 | captured | non-const address |
+| addressOf.cpp:49:27:49:36 | captured |  |
+| addressOf.cpp:50:3:50:4 | f2 | const address |
+| addressOf.cpp:51:10:51:17 | captured |  |
+| addressOf.cpp:56:16:56:16 | i |  |
+| addressOf.cpp:56:19:56:19 | i |  |
+| addressOf.cpp:56:24:56:24 | i |  |
+| addressOf.cpp:57:19:57:19 | a | non-const address |
+| addressOf.cpp:57:33:57:33 | a |  |
+| addressOf.cpp:57:44:57:44 | a |  |
+| addressOf.cpp:58:18:58:18 | a | non-const address |
+| addressOf.cpp:62:11:62:13 | ptr |  |
+| addressOf.cpp:63:19:63:21 | ptr |  |
+| addressOf.cpp:63:24:63:26 | ref | non-const address |
+| addressOf.cpp:71:32:71:34 | obj |  |
+| addressOf.cpp:71:32:71:34 | obj |  |
+| addressOf.cpp:77:27:77:27 | x | non-const address |
+| addressOf.cpp:77:48:77:48 | x |  |
+| indirect_use.cpp:17:32:17:43 | globalIntPtr | non-const address |
+| indirect_use.cpp:20:14:20:15 | ip |  |
+| indirect_use.cpp:21:17:21:17 | p |  |
+| indirect_use.cpp:25:14:25:15 | ip |  |
+| indirect_use.cpp:26:5:26:5 | p |  |
+| indirect_use.cpp:27:17:27:17 | p |  |
+| indirect_use.cpp:31:19:31:21 | ppp |  |
+| indirect_use.cpp:35:14:35:15 | ip |  |
+| indirect_use.cpp:36:17:36:17 | p | non-const address |
+| indirect_use.cpp:37:14:37:15 | pp | non-const address |
+| indirect_use.cpp:41:18:41:19 | ip |  |
+| indirect_use.cpp:45:16:45:17 | ip |  |
+| indirect_use.cpp:51:24:51:25 | ap |  |
+| indirect_use.cpp:51:28:51:35 | argCount |  |
+| indirect_use.cpp:52:21:52:21 | i |  |
+| indirect_use.cpp:52:25:52:32 | argCount |  |
+| indirect_use.cpp:52:35:52:35 | i |  |
+| indirect_use.cpp:53:35:53:36 | ap |  |
+| indirect_use.cpp:54:23:54:23 | p |  |
+| indirect_use.cpp:56:22:56:23 | ap |  |
+| indirect_use.cpp:60:15:60:15 | i | non-const address |
+| indirect_use.cpp:61:5:61:5 | p |  |
+| indirect_use.cpp:62:17:62:17 | p |  |
+| indirect_use.cpp:66:9:66:17 | externInt |  |
+| indirect_use.cpp:67:9:67:9 | i |  |
+| indirect_use.cpp:69:16:69:16 | i |  |
+| indirect_use.cpp:73:14:73:14 | i | non-const address |
+| indirect_use.cpp:77:5:77:19 | globalIntPtrPtr |  |
+| indirect_use.cpp:77:22:77:22 | p |  |
+| indirect_use.cpp:77:26:77:27 | ip |  |
+| indirect_use.cpp:81:9:81:17 | externInt |  |
+| indirect_use.cpp:82:21:82:22 | ip |  |
+| indirect_use.cpp:91:9:91:17 | externInt |  |
+| indirect_use.cpp:92:9:92:17 | externInt |  |
+| indirect_use.cpp:93:24:93:25 | ip |  |
+| indirect_use.cpp:94:24:94:25 | ip |  |
+| indirect_use.cpp:99:6:99:7 | ip |  |
+| indirect_use.cpp:103:5:103:6 | ip |  |
+| indirect_use.cpp:107:6:107:7 | ip |  |
+| indirect_use.cpp:108:17:108:18 | ip |  |
+| indirect_use.cpp:112:5:112:5 | i |  |
+| indirect_use.cpp:113:16:113:16 | i |  |
+| indirect_use.cpp:117:5:117:6 | ip |  |
+| indirect_use.cpp:118:5:118:6 | ip |  |
+| indirect_use.cpp:119:5:119:6 | ip |  |
+| indirect_use.cpp:120:17:120:18 | ip |  |
+| indirect_use.cpp:139:19:139:20 | ns |  |
+| indirect_use.cpp:139:23:139:28 | level1 | non-const address |
+| indirect_use.cpp:139:30:139:35 | level2 | non-const address |
+| indirect_use.cpp:139:37:139:37 | i | non-const address |
+| indirect_use.cpp:143:16:143:17 | ns |  |
+| indirect_use.cpp:143:20:143:25 | level1 |  |
+| indirect_use.cpp:143:27:143:32 | level2 |  |
+| indirect_use.cpp:143:34:143:34 | i |  |
+| indirect_use.cpp:147:5:147:6 | ns |  |
+| indirect_use.cpp:147:9:147:14 | level1 |  |
+| indirect_use.cpp:147:16:147:21 | level2 |  |
+| indirect_use.cpp:147:23:147:23 | i |  |
+| indirect_use.cpp:151:5:151:6 | ns |  |
+| indirect_use.cpp:151:8:151:13 | level1 |  |
+| indirect_use.cpp:151:15:151:20 | level2 |  |
+| indirect_use.cpp:151:22:151:22 | i |  |
+| indirect_use.cpp:156:19:156:19 | i | non-const address |
+| indirect_use.cpp:157:19:157:19 | i | non-const address |
+| indirect_use.cpp:158:19:158:19 | i | non-const address |
+| indirect_use.cpp:159:19:159:19 | i | non-const address |
+| indirect_use.cpp:160:19:160:19 | i | non-const address |
+| indirect_use.cpp:161:28:161:28 | i | non-const address |
+| indirect_use.cpp:162:28:162:28 | i | non-const address |
+| indirect_use.cpp:163:14:163:14 | i | non-const address |
+| indirect_use.cpp:164:14:164:14 | i | non-const address |
+| indirect_use.cpp:165:14:165:14 | i | non-const address |
+| indirect_use.cpp:166:19:166:19 | i | non-const address |
+| indirect_use.cpp:167:29:167:29 | i | non-const address |
+| indirect_use.cpp:168:21:168:21 | i | non-const address |
+| indirect_use.cpp:169:21:169:21 | i | non-const address |
+| indirect_use.cpp:170:20:170:20 | i | non-const address |
+| indirect_use.cpp:171:20:171:20 | i | non-const address |
+| indirect_use.cpp:172:20:172:20 | i | non-const address |
+| indirect_use.cpp:173:20:173:20 | i | non-const address |
+| indirect_use.cpp:174:15:174:15 | i | non-const address |
+| indirect_use.cpp:175:5:175:10 | object |  |
+| indirect_use.cpp:175:15:175:15 | i | non-const address |
+| indirect_use.cpp:176:5:176:19 | functionPointer |  |
+| indirect_use.cpp:176:22:176:22 | i | non-const address |
+| indirect_use.cpp:177:5:177:21 | functionReference |  |
+| indirect_use.cpp:177:24:177:24 | i | non-const address |
+| indirect_use.cpp:178:5:178:28 | referenceToreceiveIntPtr |  |
+| indirect_use.cpp:178:31:178:31 | i | non-const address |
+| indirect_use.cpp:181:14:181:15 | ns | non-const address |
+| indirect_use.cpp:182:14:182:15 | ns | non-const address |
+| indirect_use.cpp:183:15:183:16 | ns | non-const address |
+| indirect_use.cpp:184:14:184:15 | ns | non-const address |
+| indirect_use.cpp:186:17:186:31 | globalIntPtrPtr |  |
+| indirect_use.cpp:186:34:186:34 | p |  |
+| indirect_use.cpp:187:5:187:19 | functionPointer |  |
+| pass_by_ref.cpp:12:18:12:35 | uninitializedArray | non-const address |
+| pass_by_ref.cpp:13:20:13:37 | uninitializedArray | non-const address |
+| pass_by_ref.cpp:15:23:15:40 | uninitializedArray | const address |
+| pass_by_ref.cpp:16:25:16:42 | uninitializedArray | const address |
+| pass_by_ref.cpp:18:12:18:12 | n |  |
+| pass_by_ref.cpp:19:22:19:23 | i1 | non-const address |
+| pass_by_ref.cpp:21:12:21:12 | n |  |
+| pass_by_ref.cpp:22:21:22:22 | i2 | non-const address |
+| pass_by_ref.cpp:24:26:24:27 | i2 | const address |
+| pass_by_ref.cpp:25:27:25:28 | i2 | const address |
+| pass_by_ref.cpp:27:10:27:27 | uninitializedArray |  |
+| pass_by_ref.cpp:27:34:27:35 | i1 |  |
+| pass_by_ref.cpp:27:39:27:40 | i2 |  |
+| pass_by_ref.cpp:32:12:32:12 | n |  |
+| pass_by_ref.cpp:33:20:33:22 | arr | non-const address |
+| pass_by_ref.cpp:39:12:39:12 | n |  |
+| pass_by_ref.cpp:40:22:40:24 | arr | non-const address |
+| pass_by_ref.cpp:41:20:41:22 | arr | non-const address |
+| pass_by_ref.cpp:46:11:46:11 | n |  |
+| pass_by_ref.cpp:48:7:48:7 | n |  |
+| pass_by_ref.cpp:49:5:49:5 | i |  |
+| pass_by_ref.cpp:53:22:53:22 | i | non-const address |
+| pass_by_ref.cpp:54:10:54:10 | i |  |
+| pass_by_ref.cpp:61:35:61:35 | x | non-const address |
+| pass_by_ref.cpp:62:10:62:10 | x |  |
+| pass_by_ref.cpp:67:34:67:34 | p | const address |
+| pass_by_ref.cpp:68:10:68:10 | p |  |
+| pass_by_ref.cpp:75:36:75:36 | x | non-const address |
+| pass_by_ref.cpp:76:10:76:10 | x |  |
+| test.cpp:5:3:5:3 | a |  |
+| test.cpp:5:7:5:8 | a0 |  |
+| test.cpp:6:3:6:3 | b |  |
+| test.cpp:6:7:6:8 | b0 |  |
+| test.cpp:7:3:7:3 | c |  |
+| test.cpp:7:7:7:8 | c0 |  |
+| test.cpp:9:7:9:7 | a |  |
+| test.cpp:10:7:10:7 | b |  |
+| test.cpp:11:7:11:7 | c |  |
+| test.cpp:13:3:13:3 | a |  |
+| test.cpp:13:7:13:7 | b |  |
+| test.cpp:14:7:14:7 | a |  |
+| test.cpp:15:7:15:7 | b |  |
+| test.cpp:16:7:16:7 | c |  |
+| test.cpp:18:7:18:7 | a |  |
+| test.cpp:19:5:19:5 | a |  |
+| test.cpp:21:5:21:5 | b |  |
+| test.cpp:24:7:24:7 | a |  |
+| test.cpp:25:7:25:7 | b |  |
+| test.cpp:26:7:26:7 | c |  |
+| test.cpp:28:11:28:11 | a |  |
+| test.cpp:29:7:29:7 | d |  |
+| test.cpp:31:11:31:11 | d |  |
+| test.cpp:32:3:32:3 | e |  |
+| test.cpp:32:7:32:7 | d |  |
+| test.cpp:33:7:33:7 | d |  |
+| test.cpp:34:7:34:7 | e |  |
+| test.cpp:40:3:40:3 | x |  |
+| test.cpp:44:12:44:12 | x |  |
+| test.cpp:44:16:44:16 | y |  |
+| test.cpp:48:13:48:13 | x |  |
+| test.cpp:53:12:53:12 | x | non-const address |
+| test.cpp:54:7:54:7 | x |  |
+| test.cpp:59:12:59:12 | x | non-const address |
+| test.cpp:60:7:60:7 | x |  |
+| test.cpp:65:13:65:13 | x | non-const address |
+| test.cpp:66:7:66:7 | x |  |
+| test.cpp:71:13:71:13 | x | non-const address |
+| test.cpp:72:7:72:7 | x |  |
+| test.cpp:81:15:81:15 | x | non-const address |
+| test.cpp:82:7:82:7 | x |  |
+| test.cpp:87:16:87:16 | x | non-const address |
+| test.cpp:88:7:88:7 | x |  |
+| test.cpp:93:19:93:19 | i |  |
+| test.cpp:93:26:93:26 | i |  |
+| test.cpp:94:9:94:9 | x |  |
+| test.cpp:95:5:95:5 | x |  |
+| test.cpp:97:7:97:7 | x |  |
+| test.cpp:103:11:103:14 | done |  |
+| test.cpp:104:9:104:9 | x |  |
+| test.cpp:105:5:105:5 | x |  |
+| test.cpp:106:5:106:8 | done |  |
+| test.cpp:108:7:108:7 | x |  |
+| test.cpp:113:19:113:19 | i |  |
+| test.cpp:113:26:113:26 | i |  |
+| test.cpp:114:9:114:9 | x |  |
+| test.cpp:115:5:115:5 | x |  |
+| test.cpp:117:7:117:7 | x |  |
+| test.cpp:119:11:119:14 | done |  |
+| test.cpp:120:9:120:9 | x |  |
+| test.cpp:121:5:121:5 | x |  |
+| test.cpp:122:5:122:8 | done |  |
+| test.cpp:124:7:124:7 | x |  |
+| test.cpp:129:19:129:19 | i |  |
+| test.cpp:129:26:129:26 | i |  |
+| test.cpp:130:9:130:9 | x |  |
+| test.cpp:131:5:131:5 | x |  |
+| test.cpp:133:13:133:16 | done |  |
+| test.cpp:134:11:134:11 | x |  |
+| test.cpp:135:7:135:7 | x |  |
+| test.cpp:136:7:136:10 | done |  |
+| test.cpp:138:9:138:9 | x |  |
+| test.cpp:140:7:140:7 | x |  |
+| test.cpp:145:13:145:13 | x | non-const address |
+| test.cpp:146:4:146:4 | y |  |
+| test.cpp:147:7:147:7 | x |  |
+| test.cpp:152:12:152:12 | x | non-const address |
+| test.cpp:153:7:153:7 | x |  |
+| test.cpp:154:3:154:3 | y |  |
+| test.cpp:155:7:155:7 | x |  |
+| test.cpp:159:7:159:7 | x |  |
+| test.cpp:160:3:160:3 | x |  |
+| test.cpp:161:7:161:7 | x |  |
+| test.cpp:165:7:165:7 | x |  |
+| test.cpp:169:8:169:8 | x |  |
+| test.cpp:173:19:173:19 | x | const address |
+| test.cpp:174:20:174:20 | x | const address |
+| test.cpp:175:7:175:7 | x |  |
+| test.cpp:178:8:178:8 | (unnamed parameter 0) |  |
+| test.cpp:178:8:178:8 | (unnamed parameter 0) |  |
+| test.cpp:178:8:178:8 | nested |  |
+| test.cpp:178:8:178:8 | x_ |  |
+| test.cpp:183:38:183:41 | yptr |  |
+| test.cpp:183:48:183:48 | z |  |
+| test.cpp:184:28:184:35 | static_y | non-const address |
+| test.cpp:184:42:184:42 | z |  |
+| test.cpp:190:11:190:11 | x |  |
+| test.cpp:190:17:190:17 | y | non-const address |
+| test.cpp:190:20:190:20 | z |  |
+| test.cpp:191:10:191:10 | s |  |

@@ -1,0 +1,182 @@
+fn source(i: i64) -> i64 {
+    1000 + i
+}
+
+fn sink(s: i64) {
+    println!("{}", s);
+}
+
+fn closure_flow_out() {
+    let f = |cond| if cond { source(92) } else { 0 };
+    sink(f(true)); // $ hasValueFlow=92
+}
+
+fn closure_flow_in() {
+    let f = |cond, data| {
+        if cond {
+            sink(data); // $ hasValueFlow=87
+        } else {
+            sink(0)
+        }
+    };
+    let a = source(87);
+    f(true, a);
+}
+
+fn closure_flow_through() {
+    let f = |cond, data| if cond { data } else { 0 };
+    let a = source(43);
+    let b = f(true, a);
+    sink(b); // $ hasValueFlow=43
+}
+
+fn closure_captured_variable() {
+    let mut capt = 1;
+    sink(capt);
+    let mut f = || {
+        capt = source(73);
+    };
+    f();
+    sink(capt); // $ hasValueFlow=73
+    let g = || {
+        sink(capt); // $ hasValueFlow=73
+    };
+    g();
+}
+
+fn get_from_source() -> i64 {
+    source(93)
+}
+
+fn pass_to_sink(data: i64) {
+    sink(data); // $ hasValueFlow=34
+}
+
+fn function_flow_out() {
+    let f = get_from_source;
+    sink(f()); // $ hasValueFlow=93
+}
+
+fn function_flow_in() {
+    let f = pass_to_sink;
+    let a = source(34);
+    f(a);
+}
+
+fn get_arg(cond: bool, data: i64) -> i64 {
+    if cond {
+        data
+    } else {
+        0
+    }
+}
+
+fn function_flows_through() {
+    let f = get_arg;
+    let a = source(56);
+    let b = f(true, a);
+    sink(b); // $ hasValueFlow=56
+}
+
+fn apply<F: Fn(i64)>(f: F, x: i64) {
+    f(x);
+}
+
+fn test_apply() {
+    let a = source(77);
+    apply(|x| sink(x), a); // $ hasValueFlow=77
+    let b = source(78);
+    apply(|x| sink(x), b); // $ hasValueFlow=78
+    apply(|x| sink(x), 0);
+}
+
+fn apply_wrap<F: Fn(i64)>(f: F, x: i64) {
+    apply(f, x);
+}
+
+fn test_apply_wrap() {
+    let a = source(79);
+    apply_wrap(|x| sink(x), a); // $ hasValueFlow=79 $ SPURIOUS: hasValueFlow=80
+    let b = source(80);
+    apply_wrap(|x| sink(x), b); // $ hasValueFlow=80 $ SPURIOUS: hasValueFlow=79
+    apply_wrap(|x| sink(x), 0);
+}
+
+mod external_file;
+use external_file::*;
+
+fn test_external_call() {
+    let a = source(81);
+    may_invoke_callback1(|x| sink(a)); // $ hasValueFlow=81
+    may_invoke_callback2(|x| sink(a)); // $ hasValueFlow=81
+    may_invoke_callback3(|x| sink(a)); // $ hasValueFlow=81
+    may_invoke_callback4(|x| sink(a)); // $ hasValueFlow=81
+}
+
+mod async_blocks {
+    use super::{sink, source};
+
+    async fn async_block_flow_out() {
+        let future = async { source(206) };
+        sink(future.await); // $ hasValueFlow=206
+    }
+
+    async fn async_block_flow_in() {
+        let data = source(207);
+        async {
+            sink(data); // $ hasValueFlow=207
+        }
+        .await;
+    }
+
+    async fn async_block_flow_through() {
+        let data = source(208);
+        let future = async { data };
+        sink(future.await); // $ hasValueFlow=208
+    }
+
+    async fn async_block_captured_variable() {
+        let mut captured = 1;
+        sink(captured);
+        async {
+            captured = source(209);
+        }
+        .await;
+        sink(captured); // $ hasValueFlow=209
+    }
+
+    async fn boxed_async_block_captured_variable() {
+        let mut captured = 1;
+        sink(captured);
+        Box::pin(async {
+            captured = source(210);
+        })
+        .await;
+        sink(captured); // $ MISSING: hasValueFlow=210
+    }
+
+    async fn test_async_blocks() {
+        async_block_flow_out().await;
+        async_block_flow_in().await;
+        async_block_flow_through().await;
+        async_block_captured_variable().await;
+        boxed_async_block_captured_variable().await;
+    }
+
+    pub fn main() {
+        futures::executor::block_on(test_async_blocks());
+    }
+}
+
+fn main() {
+    closure_flow_out();
+    closure_flow_in();
+    closure_flow_through();
+    closure_captured_variable();
+    function_flow_in();
+    function_flow_out();
+    function_flows_through();
+    test_apply();
+    test_apply_wrap();
+    async_blocks::main();
+}

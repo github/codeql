@@ -1,0 +1,10 @@
+| 0 | generics/A$B.class:0:0:0:0 | B<> | 7 | generics/A.java:7:8:7:8 | B |
+| 0 | generics/A.class:0:0:0:0 | A<String> | 6 | generics/A.java:6:14:6:14 | A |
+| 0 | generics/D.class:0:0:0:0 | D<? extends Float> | 16 | generics/A.java:16:7:16:7 | D |
+| 0 | generics/D.class:0:0:0:0 | D<? extends Object> | 16 | generics/A.java:16:7:16:7 | D |
+| 0 | generics/D.class:0:0:0:0 | D<? super Double> | 16 | generics/A.java:16:7:16:7 | D |
+| 0 | generics/D.class:0:0:0:0 | D<?> | 16 | generics/A.java:16:7:16:7 | D |
+| 6 | generics/A.java:6:14:6:14 | A | 6 | generics/A.java:6:14:6:14 | A |
+| 7 | generics/A.java:7:8:7:8 | B | 7 | generics/A.java:7:8:7:8 | B |
+| 10 | generics/A.java:10:7:10:7 | C | 10 | generics/A.java:10:7:10:7 | C |
+| 16 | generics/A.java:16:7:16:7 | D | 16 | generics/A.java:16:7:16:7 | D |

@@ -1,0 +1,88 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+
+			Sanitizing untrusted URLs is an important technique for
+			preventing attacks such as request forgeries and malicious
+			redirections. Usually, this is done by checking that the host of a URL
+			is in a set of allowed hosts.
+
+		</p>
+
+		<p>
+
+			However, treating the URL as a string and checking if one of the
+			allowed hosts is a substring of the URL is very prone to errors.
+			Malicious URLs can bypass such security checks by embedding one
+			of the allowed hosts in an unexpected location.
+
+		</p>
+
+		<p>
+
+			Even if the substring check is not used in a
+			security-critical context, the incomplete check may still cause
+			undesirable behaviors when the check succeeds accidentally.
+
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+
+			Parse a URL before performing a check on its host value,
+			and ensure that the check handles arbitrary subdomain sequences
+			correctly.
+
+		</p>
+	</recommendation>
+
+	<example>
+
+		<p>
+
+			The following example code checks that a URL redirection
+			will reach the <code>example.com</code> domain, or one of its
+			subdomains, and not some malicious site.
+
+		</p>
+
+		<sample src="examples/IncompleteUrlSubstringSanitization_BAD1.rb"/>
+
+		<p>
+
+			The substring check is, however, easy to bypass. For example
+			by embedding <code>example.com</code> in the path component:
+			<code>http://evil-example.net/example.com</code>, or in the query
+			string component: <code>http://evil-example.net/?x=example.com</code>.
+
+			Address these shortcomings by checking the host of the parsed URL instead:
+
+		</p>
+
+		<sample src="examples/IncompleteUrlSubstringSanitization_BAD2.rb"/>
+
+		<p>
+
+			This is still not a sufficient check as the
+			following URLs bypass it: <code>http://evil-example.com</code>
+			<code>http://example.com.evil-example.net</code>.
+
+			Instead, use an explicit whitelist of allowed hosts to
+			make the redirect secure:
+
+		</p>
+
+		<sample src="examples/IncompleteUrlSubstringSanitization_GOOD.rb"/>
+
+	</example>
+
+	<references>
+		<li>OWASP: <a href="https://www.owasp.org/index.php/Server_Side_Request_Forgery">SSRF</a></li>
+		<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
+	</references>
+</qhelp>

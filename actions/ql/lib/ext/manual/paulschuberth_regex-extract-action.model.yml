@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["paulschuberth/regex-extract-action", "*", "input.haystack", "output.matches", "taint", "manual"]
+

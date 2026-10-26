@@ -1,0 +1,13 @@
+| a.c:4:5:4:6 | is | array of {int} | 1 |
+| c.c:2:5:2:6 | js | array of {int} | 1 |
+| c.c:4:5:4:6 | ks | array of 4 {int} | 1 |
+| c.c:6:5:6:6 | ls | array of 4 {int} | 1 |
+| c.c:8:5:8:7 | iss | array of 4 {array of 2 {int}} | 1 |
+| c.c:12:11:12:11 | i | typedef {int} as "int_alias" | 1 |
+| d.cpp:3:7:3:8 | xs | array of {int} | 1 |
+| file://:0:0:0:0 | (unnamed parameter 0) | reference to {const {struct __va_list_tag}} | 1 |
+| file://:0:0:0:0 | (unnamed parameter 0) | rvalue reference to {struct __va_list_tag} | 1 |
+| file://:0:0:0:0 | fp_offset | unsigned int | 1 |
+| file://:0:0:0:0 | gp_offset | unsigned int | 1 |
+| file://:0:0:0:0 | overflow_arg_area | pointer to {void} | 1 |
+| file://:0:0:0:0 | reg_save_area | pointer to {void} | 1 |

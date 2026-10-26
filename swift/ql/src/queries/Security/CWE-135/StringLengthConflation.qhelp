@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Using a length value from an <code>NSString</code> in a <code>String</code>, or a count from a <code>String</code> in an <code>NSString</code>, may cause unexpected behavior including (in some cases) buffer overwrites. This is because certain unicode sequences are represented as one character in a <code>String</code> but as a sequence of multiple characters in an <code>NSString</code>. For example, a 'thumbs up' emoji with a skin tone modifier (&#x1F44D;&#x1F3FF;) is represented as U+1F44D (&#x1F44D;) then the modifier U+1F3FF.</p>
+
+<p>This issue can also arise from using the values of <code>String.utf8.count</code>, <code>String.utf16.count</code> or <code>String.unicodeScalars.count</code> in an unsuitable place.</p>
+
+</overview>
+<recommendation>
+
+<p>Use <code>String.count</code> when working with a <code>String</code>. Use <code>NSString.length</code> when working with an <code>NSString</code>. Do not mix values for lengths and offsets between the two types as they are not compatible measures.</p>
+
+<p>If you need to convert between <code>Range</code> and <code>NSRange</code>, do so directly using the appropriate initializer. Do not attempt to use incompatible length and offset values to accomplish conversion.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, a <code>String</code> is converted to <code>NSString</code>, but a range is created from the <code>String</code> to do some processing on it.</p>
+
+<sample src="StringLengthConflationBad.swift" />
+
+<p>This is dangerous because, if the input contains certain characters, the range computed on the <code>String</code> will be wrong for the <code>NSString</code>.  This will lead to incorrect behaviour in the string processing that follows. To fix the problem, we can use <code>NSString.length</code> to create the <code>NSRange</code> instead, as follows:</p>
+
+<sample src="StringLengthConflationGood.swift" />
+
+</example>
+<references>
+
+<li>
+  <a href="https://talk.objc.io/episodes/S01E80-swift-string-vs-nsstring">Swift String vs. NSString</a>
+</li>
+
+</references>
+</qhelp>

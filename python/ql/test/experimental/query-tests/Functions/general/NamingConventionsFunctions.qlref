@@ -1,0 +1,2 @@
+query: experimental/Functions/NamingConventionsFunctions.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

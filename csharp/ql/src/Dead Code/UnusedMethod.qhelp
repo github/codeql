@@ -1,0 +1,21 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Dead methods are often deprecated pieces of code, and should be removed as they may increase 
+object code size, decrease code maintainability, and create the possibility of misuse. A method is 
+considered dead if it is private and not directly called, or accessed, or only ever called from 
+other dead methods.</p>
+
+</overview>
+<recommendation>
+<p>Consider removing the method or cluster of methods.</p>
+
+</recommendation>
+<example>
+<p>Both private methods in this example are dead. <code>A</code> is dead because it is never called 
+and <code>B</code> is dead because it is only called from the dead method <code>A</code>.</p>
+<sample src="UnusedMethod.cs" />
+</example>
+</qhelp>

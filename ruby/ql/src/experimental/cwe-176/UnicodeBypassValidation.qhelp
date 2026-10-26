@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>Security checks bypass due to a Unicode transformation</p>
+        <p>
+            If ever a unicode tranformation is performed after some security checks or logical
+            validation, the
+            latter could be bypassed due to a potential Unicode characters collision.
+            The validation of concern are any character escaping, any regex validation or any string
+            verification.
+        </p>
+    </overview>
+    <recommendation>
+        <p> Perform a Unicode normalization before the logical validation. </p>
+    </recommendation>
+    <example>
+
+        <p> The following example showcases the bypass of all checks performed by <code>
+            html_escape()</code> due to a post-unicode normalization.</p>
+        <p>For instance: the character U+FE64 (<code>﹤</code>) is not filtered-out by the
+            html_escape() function. But due to the Unicode normalization, the character is
+            transformed and would become U+003C (<code> &lt; </code> ).</p>
+
+        <sample src="./examples/unicode_normalization.rb" />
+
+    </example>
+    <example>
+
+        <p> The next example shows how an early deletion of a character may be bypassed due to a
+            potential Unicode character collision.</p>
+        <p>The character <code>&lt;</code> was expected to be omitted from the string <code>s</code>.
+            However, a malicious user may consider using its colliding Unicode character U+FE64 <code>
+            ﹤</code> as an alternative. Due to the Late-Unicode normalization with the form NFKC,
+            the resulting string would contain the unintended character <code>&lt;</code> . </p>
+
+        <sample src="./examples/unicode_normalization2.rb" />
+
+    </example>
+    <references>
+        <li> Research study: <a
+                href="https://gosecure.github.io/presentations/2021-02-unicode-owasp-toronto/philippe_arteau_owasp_unicode_v4.pdf">
+            Unicode vulnerabilities that could bYte you
+            </a>
+        </li>
+        <li>
+            <a
+                href="https://gosecure.github.io/unicode-pentester-cheatsheet/">Unicode pentest
+            cheatsheet</a>. </li>
+    </references>
+</qhelp>

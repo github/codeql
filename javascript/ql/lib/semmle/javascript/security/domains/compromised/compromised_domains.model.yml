@@ -1,0 +1,6 @@
+extensions:
+  - addsTo: 
+      pack: codeql/javascript-all
+      extensible: isUntrustedDomain
+    data:
+      - ["polyfill.io"]

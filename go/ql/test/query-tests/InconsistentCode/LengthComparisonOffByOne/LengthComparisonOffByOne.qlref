@@ -1,0 +1,2 @@
+query: InconsistentCode/LengthComparisonOffByOne.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

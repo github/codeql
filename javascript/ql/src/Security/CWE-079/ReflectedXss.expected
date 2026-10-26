@@ -1,0 +1,8 @@
+edges
+| examples/ReflectedXss.js:6:33:6:45 | req.params.id | examples/ReflectedXss.js:6:14:6:45 | "Unknow ... rams.id | provenance |  |
+nodes
+| examples/ReflectedXss.js:6:14:6:45 | "Unknow ... rams.id | semmle.label | "Unknow ... rams.id |
+| examples/ReflectedXss.js:6:33:6:45 | req.params.id | semmle.label | req.params.id |
+subpaths
+#select
+| examples/ReflectedXss.js:6:14:6:45 | "Unknow ... rams.id | examples/ReflectedXss.js:6:33:6:45 | req.params.id | examples/ReflectedXss.js:6:14:6:45 | "Unknow ... rams.id | Cross-site scripting vulnerability due to a $@. | examples/ReflectedXss.js:6:33:6:45 | req.params.id | user-provided value |

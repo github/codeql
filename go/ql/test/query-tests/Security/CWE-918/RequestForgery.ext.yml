@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["main", "", False, "intSource", "", "", "ReturnValue", "remote", "manual"]

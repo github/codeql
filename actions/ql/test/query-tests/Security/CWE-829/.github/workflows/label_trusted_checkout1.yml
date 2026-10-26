@@ -1,0 +1,27 @@
+on:
+  pull_request_target:
+    types: [labeled]
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'safe to test')
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    - uses: actions/setup-node@v1
+    - run: |
+        npm install
+        npm build
+
+    - uses: completely/fakeaction@v2
+      with:
+        arg1: ${{ secrets.supersecret }}
+
+    - uses: fakerepo/comment-on-pr@v1
+      with:
+        message: |
+          Thank you!

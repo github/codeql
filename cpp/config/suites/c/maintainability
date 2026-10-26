@@ -1,0 +1,22 @@
+# MAINTAINABILITY
+  # Coupling
++ semmlecode-cpp-queries/jsf/4.06 Pre-Processing Directives/AV Rule 32.ql: /Maintainability/Coupling # Include header files only
++ semmlecode-cpp-queries/jsf/4.07 Header Files/AV Rule 35.ql: /Maintainability/Coupling # Missing header guard
++ semmlecode-cpp-queries/Header Cleanup/Cleanup-DuplicateIncludeGuard.ql: /Maintainability/Coupling # Duplicate header guards
++ semmlecode-cpp-queries/Architecture/FeatureEnvy.ql: /Maintainability/Coupling
++ semmlecode-cpp-queries/Architecture/InappropriateIntimacy.ql: /Maintainability/Coupling
+  # Size
++ semmlecode-cpp-queries/Architecture/Refactoring Opportunities/ClassesWithManyFields.ql: /Maintainability/Size
+   @name Structs with too many members
+  # Documentation
++ semmlecode-cpp-queries/Documentation/CommentedOutCode.ql: /Maintainability/Documentation
++ semmlecode-cpp-queries/Documentation/TodoComments.ql: /Maintainability/Documentation
++ semmlecode-cpp-queries/Documentation/FixmeComments.ql: /Maintainability/Documentation
++ semmlecode-cpp-queries/Documentation/UncommentedFunction.ql: /Maintainability/Documentation
++ semmlecode-cpp-queries/Documentation/DocumentApi.ql: /Maintainability/Documentation
+  # Declarations
++ semmlecode-cpp-queries/Best Practices/Magic Constants/MagicConstantsString.ql: /Maintainability/Declarations
++ semmlecode-cpp-queries/Best Practices/Magic Constants/MagicConstantsNumbers.ql: /Maintainability/Declarations
++ semmlecode-cpp-queries/Best Practices/SloppyGlobal.ql: /Maintainability/Declarations
+  # Memory management
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/StackAddressEscapes.ql: /Maintainability/Memory Management

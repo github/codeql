@@ -1,0 +1,84 @@
+let f = { [weak self] in self?.doThing() }
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    closureExpr
+                      leftBrace: {
+                      rightBrace: }
+                      signature:
+                        closureSignature
+                          attributes:
+                          capture:
+                            closureCaptureClause
+                              leftSquare: [
+                              rightSquare: ]
+                              items:
+                                closureCapture
+                                  name: self
+                                  specifier:
+                                    closureCaptureSpecifier
+                                      specifier: weak
+                          inKeyword: in
+                      statements:
+                        codeBlockItem
+                          item:
+                            functionCallExpr
+                              leftParen: (
+                              rightParen: )
+                              arguments:
+                              additionalTrailingClosures:
+                              calledExpression:
+                                memberAccessExpr
+                                  period: .
+                                  declName:
+                                    declReferenceExpr
+                                      baseName: identifier "doThing"
+                                  base:
+                                    optionalChainingExpr
+                                      expression:
+                                        declReferenceExpr
+                                          baseName: self
+                                      questionMark: ?
+              pattern:
+                identifierPattern
+                  identifier: identifier "f"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "f" source="f"
+          value:
+            function_expr source="{ [⟨capture_declaration⟩] in ⟨body⟩ }"
+              capture_declaration:
+                variable_declaration source="⟨modifier⟩ ⟨pattern⟩⟨value⟩"
+                  modifier: modifier "weak" source="weak"
+                  pattern: identifier "self" source="self"
+                  value: identifier "self" source="self"
+              body:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩()"
+                      callee:
+                        member_access_expr source="⟨base⟩?.⟨member_name_node⟩"
+                          base: identifier "self" source="self"
+                          member_name_node: identifier "doThing" source="doThing"

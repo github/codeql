@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In certain contexts, such as when concatenating a string and an object, calling
+<code>ToString</code> explicitly can be omitted.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Remove the redundant call to <code>ToString</code>.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, <code>ToString</code> is called explicitly on <code>o</code>,
+before being passed to <code>string.Format</code>.
+</p>
+<sample src="RedundantToStringCallBad.cs" />
+
+<p>
+In the revised example, the call to <code>ToString</code> is omitted, as
+<code>string.Format</code> will invoke <code>ToString</code> implicitly.
+</p>
+<sample src="RedundantToStringCallGood.cs" />
+
+</example>
+<references>
+
+<li>MSDN: <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/addition-operator">+ Operator</a>, <a href="https://msdn.microsoft.com/en-us/library/system.string.format(v=vs.110).aspx">String.Format method</a>.</li>
+
+</references>
+</qhelp>

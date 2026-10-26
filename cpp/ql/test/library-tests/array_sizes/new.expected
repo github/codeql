@@ -1,0 +1,6 @@
+| implicit_sizes.cpp:3:14:3:32 | new[] | 3 |
+| implicit_sizes.cpp:4:14:4:28 | new[] | 0 |
+| implicit_sizes.cpp:5:14:5:27 | new[] | 0 |
+| implicit_sizes.cpp:7:11:7:29 | new[] | 6 |
+| implicit_sizes.cpp:9:14:9:32 | new[] | 3 |
+| implicit_sizes.cpp:10:14:10:31 | new[] | 4 |

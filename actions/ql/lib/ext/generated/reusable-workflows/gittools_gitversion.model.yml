@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["gittools/gitversion/.github/workflows/_artifacts_linux.yml", "*", "input.arch", "code-injection", "generated"]

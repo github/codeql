@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      # https://github.com/w3f/action-find-old-files
+      - ["w3f/action-find-old-files", "*", "output.files", "filename", "manual"]
+

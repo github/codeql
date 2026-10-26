@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["aws/amazon-vpc-cni-k8s", "*", "input.go-package", "code-injection", "generated"]
+     - ["aws/amazon-vpc-cni-k8s", "*", "input.work-dir", "code-injection", "generated"]

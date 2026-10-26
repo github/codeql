@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Casting an expression to the type that it already has serves no purpose and clutters the code. It indicates confusion about the 
+type of the expression, or that the code has been partially refactored. 
+</p>
+
+<p>
+This query applies to both the <code>()</code> operator and the <code>as</code> operator.
+</p>
+</overview>
+
+<recommendation>
+<p>In all cases, the redundant cast should simply be removed.</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a getter where the return value is explicitly cast to an <code>int</code>.
+However this is unnecessary because the type of the expression <code>properties["Size"]</code> is already
+<code>int</code>.
+</p>
+
+<sample src="UselessCastToSelf.cs" />
+
+<p>
+The problem is resolved by deleting the useless <code>(int)</code>.
+</p>
+
+<sample src="UselessCastToSelfFix.cs" />
+</example>
+
+<references>
+
+  <li>MSDN, C# Programming Guide: <a href="https://msdn.microsoft.com/en-us/library/ms173105.aspx">Casting and Type Conversions</a>.</li>
+
+</references>
+</qhelp>

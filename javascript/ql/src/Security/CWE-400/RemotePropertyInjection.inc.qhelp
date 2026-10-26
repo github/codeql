@@ -1,0 +1,87 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+	<p>
+		Dynamically computing object property names from untrusted input
+		may have multiple undesired consequences. For example,
+		if the property access is used as part of a write, an
+		attacker may overwrite vital properties of objects, such as
+		<code>__proto__</code>. This attack is known as <i>prototype
+		pollution attack</i> and may serve as a vehicle for denial-of-service
+		attacks. A similar attack vector, is to replace the
+		<code>toString</code> property of an object with a primitive.
+		Whenever <code>toString</code> is then called on that object, either
+		explicitly or implicitly as part of a type coercion, an exception
+		will be raised.
+	</p>
+
+	<p>
+		Moreover, if the name of an HTTP header is user-controlled,
+		an attacker may exploit this to overwrite security-critical headers
+		such as <code>Access-Control-Allow-Origin</code> or
+		<code>Content-Security-Policy</code>.
+	</p>
+</overview>
+
+<recommendation>
+	<p>
+		The most common case in which prototype pollution vulnerabilities arise
+		is when JavaScript objects are used for implementing map data
+		structures. This case should be avoided whenever possible by using the
+		ECMAScript 2015 <code>Map</code> instead. When this is not possible, an
+		alternative fix is to prepend untrusted input with a marker character
+		such as <code>$</code>, before using it in properties accesses. In this way,
+		the attacker does not	have access to built-in properties which do not
+		start with the chosen character.
+	</p>
+	<p>
+		When using user input as part of a header name, a sanitization
+		step should be performed on the input to ensure that the name does not
+		clash with existing header names such as
+		<code>Content-Security-Policy</code>.
+	</p>
+</recommendation>
+
+<example>
+	<p>
+		In the example below, the dynamically computed property
+		<code>prop</code> is accessed on <code>myObj</code> using a
+		user-controlled value.
+	</p>
+
+	<sample src="examples/RemotePropertyInjection.js"/>
+
+	<p>
+		This is not secure since an attacker may exploit this code to
+		overwrite the property <code>__proto__</code> with an empty function.
+		If this happens, the concatenation in the <code>console.log</code>
+		argument will fail with a confusing message such as
+		"Function.prototype.toString is not	generic". If the application does
+		not properly handle this error, this scenario may result in a serious
+		denial-of-service attack. The fix is to prepend the user-controlled
+		string with a marker character such as <code>$</code> which will
+		prevent arbitrary property names from being overwritten.
+	</p>
+
+	<sample src="examples/RemotePropertyInjection_fixed.js"/>
+</example>
+
+<references>
+	<li>Prototype pollution attacks:
+		<a href="https://github.com/electron/electron/pull/9287">electron</a>,
+		<a href="https://hackerone.com/reports/310443">lodash</a>,
+		<a href="https://npmjs.com/advisories/566">hoek</a>.
+	</li>
+	<li> Penetration testing report:
+		<a href="http://seclists.org/pen-test/2009/Mar/67">
+			header name injection attack</a>
+	</li>
+	<li> npm blog post:
+		<a href="https://github.com/nodesecurity/eslint-plugin-security/blob/3c7522ca1be800353513282867a1034c795d9eb4/docs/the-dangers-of-square-bracket-notation.md">
+			dangers of square bracket notation</a>
+	</li>
+</references>
+</qhelp>

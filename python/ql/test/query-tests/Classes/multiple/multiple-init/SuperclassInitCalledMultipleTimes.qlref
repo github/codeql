@@ -1,0 +1,2 @@
+query: Classes/CallsToInitDel/SuperclassInitCalledMultipleTimes.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

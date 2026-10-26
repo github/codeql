@@ -1,0 +1,5 @@
+| Invalid argument '0-1' in token 'Argument[0-1]' in access path: Method[foo].Argument[0-1] |
+| Invalid argument '*' in token 'Argument[*]' in access path: Method[foo].Argument[*] |
+| Invalid token 'Argument' is missing its arguments, in access path: Method[foo].Argument |
+| Invalid token 'Member' is missing its arguments, in access path: Method[foo].Member |
+| Invalid token name 'Arg' in access path: Method[foo].Arg[0] |

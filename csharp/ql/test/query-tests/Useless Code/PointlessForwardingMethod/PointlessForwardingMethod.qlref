@@ -1,0 +1,2 @@
+query: Useless code/PointlessForwardingMethod.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

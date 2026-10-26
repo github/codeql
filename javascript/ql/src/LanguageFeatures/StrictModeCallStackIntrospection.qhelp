@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The properties <code>callee</code> and <code>caller</code> of arguments objects as well
+as the properties <code>caller</code> and <code>arguments</code> of function objects are
+not available in strict-mode code, and any attempt to access them will result in a runtime
+error.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Instead of using <code>arguments.callee</code>, you can refer to the enclosing function by
+its name (possibly giving it a name first if it is an anonymous function expression).
+Uses of the other properties can often be eliminated by refactoring the program.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, <code>arguments.callee</code> is used to recursively invoke the
+enclosing function, which is anonymous.
+</p>
+
+<sample language="javascript">
+var o = {
+  A: function(x) {
+       'use strict';
+       if (!(this instanceof arguments.callee))
+         return new arguments.callee(x);
+       this.x = x;
+     }
+};
+</sample>
+
+<p>
+To avoid this use, the function can be given a name and referred to using that name:
+</p>
+
+<sample language="javascript">
+var o = {
+  A: function A(x) {
+       'use strict';
+       if (!(this instanceof A))
+         return new A(x);
+       this.x = x;
+     }
+};
+</sample>
+</example>
+
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/arguments">arguments</a>.</li>
+</references>
+</qhelp>

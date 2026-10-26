@@ -1,0 +1,23 @@
+| CPP-205.cpp:2:5:2:5 | definition of fn | function declaration entry for int fn<int>(int), isFromTemplateInstantiation(fn) |
+| CPP-205.cpp:2:5:2:5 | fn | function int fn<int>(int), isFromTemplateInstantiation(fn) |
+| CPP-205.cpp:2:5:2:6 | definition of fn | function declaration entry for int fn<T>(T), isFromUninstantiatedTemplate(fn) |
+| CPP-205.cpp:2:5:2:6 | fn | function int fn<T>(T), isFromUninstantiatedTemplate(fn) |
+| CPP-205.cpp:2:10:2:12 | definition of out | isFromTemplateInstantiation(fn), parameter declaration entry for int fn<int>(int) |
+| CPP-205.cpp:2:10:2:12 | definition of out | isFromUninstantiatedTemplate(fn), parameter declaration entry for int fn<T>(T) |
+| CPP-205.cpp:2:10:2:12 | out | isFromTemplateInstantiation(fn), parameter for int fn<int>(int) |
+| CPP-205.cpp:2:10:2:12 | out | isFromUninstantiatedTemplate(fn), parameter for int fn<T>(T) |
+| CPP-205.cpp:2:15:5:1 | { ... } | isFromTemplateInstantiation(fn) |
+| CPP-205.cpp:2:15:5:1 | { ... } | isFromUninstantiatedTemplate(fn) |
+| CPP-205.cpp:3:3:3:33 | declaration | isFromTemplateInstantiation(fn) |
+| CPP-205.cpp:3:3:3:33 | declaration | isFromUninstantiatedTemplate(fn) |
+| CPP-205.cpp:3:15:3:15 | declaration of y | isFromTemplateInstantiation(fn) |
+| CPP-205.cpp:3:15:3:15 | declaration of y | isFromUninstantiatedTemplate(fn) |
+| CPP-205.cpp:3:15:3:15 | y | isFromTemplateInstantiation(fn) |
+| CPP-205.cpp:3:15:3:15 | y | isFromUninstantiatedTemplate(fn) |
+| CPP-205.cpp:3:17:3:31 | 5 | isFromTemplateInstantiation(fn) |
+| CPP-205.cpp:4:3:4:11 | return ... | isFromTemplateInstantiation(fn) |
+| CPP-205.cpp:4:3:4:11 | return ... | isFromUninstantiatedTemplate(fn) |
+| CPP-205.cpp:4:10:4:10 | 0 | isFromTemplateInstantiation(fn) |
+| CPP-205.cpp:4:10:4:10 | 0 | isFromUninstantiatedTemplate(fn) |
+| CPP-205.cpp:7:5:7:8 | definition of main | function declaration entry for int main() |
+| CPP-205.cpp:7:5:7:8 | main | function int main() |

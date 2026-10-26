@@ -1,0 +1,84 @@
+| Assertions.cs:7:44:7:59 | call to method IsTrue | Assertions.cs:7:58:7:58 | access to parameter b | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:7:44:7:59 | call to method IsTrue | Assertions.cs:7:58:7:58 | access to parameter b | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:7:44:7:59 | call to method IsTrue | Assertions.cs:7:58:7:58 | access to parameter b | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:7:44:7:59 | call to method IsTrue | Assertions.cs:7:58:7:58 | access to parameter b | VSTestAssertTrueMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:8:45:8:55 | call to method MyAssert | Assertions.cs:8:54:8:54 | access to parameter b | ForwarderAssertTrueMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:8:45:8:55 | call to method MyAssert | Assertions.cs:8:54:8:54 | access to parameter b | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:8:45:8:55 | call to method MyAssert | Assertions.cs:8:54:8:54 | access to parameter b | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:8:45:8:55 | call to method MyAssert | Assertions.cs:8:54:8:54 | access to parameter b | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:16:9:16:31 | call to method Assert | Assertions.cs:16:22:16:30 | ... != ... | NonConstructedMethod | <none> |
+| Assertions.cs:16:9:16:31 | call to method Assert | Assertions.cs:16:22:16:30 | ... != ... | RuntimeMethod | <none> |
+| Assertions.cs:16:9:16:31 | call to method Assert | Assertions.cs:16:22:16:30 | ... != ... | SourceDeclarationMethod | <none> |
+| Assertions.cs:16:9:16:31 | call to method Assert | Assertions.cs:16:22:16:30 | ... != ... | SystemDiagnosticsDebugAssertTrueMethod | <none> |
+| Assertions.cs:17:9:17:24 | call to method IsNull | Assertions.cs:17:23:17:23 | access to local variable s | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:17:9:17:24 | call to method IsNull | Assertions.cs:17:23:17:23 | access to local variable s | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:17:9:17:24 | call to method IsNull | Assertions.cs:17:23:17:23 | access to local variable s | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:17:9:17:24 | call to method IsNull | Assertions.cs:17:23:17:23 | access to local variable s | VSTestAssertNullMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:18:9:18:27 | call to method IsNotNull | Assertions.cs:18:26:18:26 | access to local variable s | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:18:9:18:27 | call to method IsNotNull | Assertions.cs:18:26:18:26 | access to local variable s | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:18:9:18:27 | call to method IsNotNull | Assertions.cs:18:26:18:26 | access to local variable s | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:18:9:18:27 | call to method IsNotNull | Assertions.cs:18:26:18:26 | access to local variable s | VSTestAssertNonNullMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:19:9:19:32 | call to method IsTrue | Assertions.cs:19:23:19:31 | ... == ... | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:19:9:19:32 | call to method IsTrue | Assertions.cs:19:23:19:31 | ... == ... | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:19:9:19:32 | call to method IsTrue | Assertions.cs:19:23:19:31 | ... == ... | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:19:9:19:32 | call to method IsTrue | Assertions.cs:19:23:19:31 | ... == ... | VSTestAssertTrueMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:20:9:20:32 | call to method IsTrue | Assertions.cs:20:23:20:31 | ... != ... | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:20:9:20:32 | call to method IsTrue | Assertions.cs:20:23:20:31 | ... != ... | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:20:9:20:32 | call to method IsTrue | Assertions.cs:20:23:20:31 | ... != ... | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:20:9:20:32 | call to method IsTrue | Assertions.cs:20:23:20:31 | ... != ... | VSTestAssertTrueMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:21:9:21:33 | call to method IsFalse | Assertions.cs:21:24:21:32 | ... != ... | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:21:9:21:33 | call to method IsFalse | Assertions.cs:21:24:21:32 | ... != ... | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:21:9:21:33 | call to method IsFalse | Assertions.cs:21:24:21:32 | ... != ... | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:21:9:21:33 | call to method IsFalse | Assertions.cs:21:24:21:32 | ... != ... | VSTestAssertFalseMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:22:9:22:33 | call to method IsFalse | Assertions.cs:22:24:22:32 | ... == ... | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:22:9:22:33 | call to method IsFalse | Assertions.cs:22:24:22:32 | ... == ... | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:22:9:22:33 | call to method IsFalse | Assertions.cs:22:24:22:32 | ... == ... | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:22:9:22:33 | call to method IsFalse | Assertions.cs:22:24:22:32 | ... == ... | VSTestAssertFalseMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:23:9:23:38 | call to method MyAssert | Assertions.cs:23:29:23:37 | ... == ... | ForwarderAssertTrueMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:23:9:23:38 | call to method MyAssert | Assertions.cs:23:29:23:37 | ... == ... | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:23:9:23:38 | call to method MyAssert | Assertions.cs:23:29:23:37 | ... == ... | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:23:9:23:38 | call to method MyAssert | Assertions.cs:23:29:23:37 | ... == ... | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:24:9:24:39 | call to method MyAssert2 | Assertions.cs:24:30:24:38 | ... == ... | ForwarderAssertTrueMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:24:9:24:39 | call to method MyAssert2 | Assertions.cs:24:30:24:38 | ... == ... | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:24:9:24:39 | call to method MyAssert2 | Assertions.cs:24:30:24:38 | ... == ... | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:24:9:24:39 | call to method MyAssert2 | Assertions.cs:24:30:24:38 | ... == ... | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:29:9:29:27 | call to method Assert | Assertions.cs:29:22:29:26 | false | NonConstructedMethod | <none> |
+| Assertions.cs:29:9:29:27 | call to method Assert | Assertions.cs:29:22:29:26 | false | RuntimeMethod | <none> |
+| Assertions.cs:29:9:29:27 | call to method Assert | Assertions.cs:29:22:29:26 | false | SourceDeclarationMethod | <none> |
+| Assertions.cs:29:9:29:27 | call to method Assert | Assertions.cs:29:22:29:26 | false | SystemDiagnosticsDebugAssertTrueMethod | <none> |
+| Assertions.cs:30:9:30:26 | call to method Assert | Assertions.cs:30:22:30:25 | true | NonConstructedMethod | <none> |
+| Assertions.cs:30:9:30:26 | call to method Assert | Assertions.cs:30:22:30:25 | true | RuntimeMethod | <none> |
+| Assertions.cs:30:9:30:26 | call to method Assert | Assertions.cs:30:22:30:25 | true | SourceDeclarationMethod | <none> |
+| Assertions.cs:30:9:30:26 | call to method Assert | Assertions.cs:30:22:30:25 | true | SystemDiagnosticsDebugAssertTrueMethod | <none> |
+| Assertions.cs:31:9:31:28 | call to method IsTrue | Assertions.cs:31:23:31:27 | false | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:31:9:31:28 | call to method IsTrue | Assertions.cs:31:23:31:27 | false | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:31:9:31:28 | call to method IsTrue | Assertions.cs:31:23:31:27 | false | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:31:9:31:28 | call to method IsTrue | Assertions.cs:31:23:31:27 | false | VSTestAssertTrueMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:32:9:32:27 | call to method IsTrue | Assertions.cs:32:23:32:26 | true | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:32:9:32:27 | call to method IsTrue | Assertions.cs:32:23:32:26 | true | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:32:9:32:27 | call to method IsTrue | Assertions.cs:32:23:32:26 | true | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:32:9:32:27 | call to method IsTrue | Assertions.cs:32:23:32:26 | true | VSTestAssertTrueMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:33:9:33:28 | call to method IsFalse | Assertions.cs:33:24:33:27 | true | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:33:9:33:28 | call to method IsFalse | Assertions.cs:33:24:33:27 | true | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:33:9:33:28 | call to method IsFalse | Assertions.cs:33:24:33:27 | true | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:33:9:33:28 | call to method IsFalse | Assertions.cs:33:24:33:27 | true | VSTestAssertFalseMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:34:9:34:29 | call to method IsFalse | Assertions.cs:34:24:34:28 | false | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:34:9:34:29 | call to method IsFalse | Assertions.cs:34:24:34:28 | false | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:34:9:34:29 | call to method IsFalse | Assertions.cs:34:24:34:28 | false | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:34:9:34:29 | call to method IsFalse | Assertions.cs:34:24:34:28 | false | VSTestAssertFalseMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:35:9:35:34 | call to method MyAssert | Assertions.cs:35:29:35:33 | false | ForwarderAssertTrueMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:35:9:35:34 | call to method MyAssert | Assertions.cs:35:29:35:33 | false | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:35:9:35:34 | call to method MyAssert | Assertions.cs:35:29:35:33 | false | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:35:9:35:34 | call to method MyAssert | Assertions.cs:35:29:35:33 | false | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:36:9:36:33 | call to method MyAssert | Assertions.cs:36:29:36:32 | true | ForwarderAssertTrueMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:36:9:36:33 | call to method MyAssert | Assertions.cs:36:29:36:32 | true | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:36:9:36:33 | call to method MyAssert | Assertions.cs:36:29:36:32 | true | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:36:9:36:33 | call to method MyAssert | Assertions.cs:36:29:36:32 | true | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:37:9:37:35 | call to method MyAssert2 | Assertions.cs:37:30:37:34 | false | ForwarderAssertTrueMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:37:9:37:35 | call to method MyAssert2 | Assertions.cs:37:30:37:34 | false | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:37:9:37:35 | call to method MyAssert2 | Assertions.cs:37:30:37:34 | false | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:37:9:37:35 | call to method MyAssert2 | Assertions.cs:37:30:37:34 | false | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:38:9:38:34 | call to method MyAssert2 | Assertions.cs:38:30:38:33 | true | ForwarderAssertTrueMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:38:9:38:34 | call to method MyAssert2 | Assertions.cs:38:30:38:33 | true | NonConstructedMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:38:9:38:34 | call to method MyAssert2 | Assertions.cs:38:30:38:33 | true | RuntimeMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |
+| Assertions.cs:38:9:38:34 | call to method MyAssert2 | Assertions.cs:38:30:38:33 | true | SourceDeclarationMethod | Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException |

@@ -1,0 +1,4 @@
+| test.py:3:1:3:33 | test.py:3 | u' | [\ufffd-\ufffd][\ufffd-\ufffd] |
+| test.py:5:1:5:26 | test.py:5 | u' | [\ufffd-\ufffd] |
+| test.py:8:1:8:20 | test.py:8 | u' | {}\r{}{:<{width}} |
+| test.py:9:1:9:15 | test.py:9 | u' | {}\r{}{:<{}} |

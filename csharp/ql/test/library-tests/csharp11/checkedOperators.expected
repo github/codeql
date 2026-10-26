@@ -1,0 +1,16 @@
+| CheckedOperators.cs:9:43:9:43 | checked + | op_CheckedAddition | CheckedAddOperator |
+| CheckedOperators.cs:12:35:12:35 | + | op_Addition | AddOperator |
+| CheckedOperators.cs:15:43:15:43 | checked - | op_CheckedSubtraction | CheckedSubOperator |
+| CheckedOperators.cs:18:35:18:35 | - | op_Subtraction | SubOperator |
+| CheckedOperators.cs:21:43:21:43 | checked * | op_CheckedMultiply | CheckedMulOperator |
+| CheckedOperators.cs:24:35:24:35 | * | op_Multiply | MulOperator |
+| CheckedOperators.cs:27:43:27:43 | checked / | op_CheckedDivision | CheckedDivOperator |
+| CheckedOperators.cs:30:35:30:35 | / | op_Division | DivOperator |
+| CheckedOperators.cs:33:43:33:43 | checked - | op_CheckedUnaryNegation | CheckedMinusOperator |
+| CheckedOperators.cs:36:35:36:35 | - | op_UnaryNegation | MinusOperator |
+| CheckedOperators.cs:39:43:39:44 | checked ++ | op_CheckedIncrement | CheckedIncrementOperator |
+| CheckedOperators.cs:42:35:42:36 | ++ | op_Increment | IncrementOperator |
+| CheckedOperators.cs:45:43:45:44 | checked -- | op_CheckedDecrement | CheckedDecrementOperator |
+| CheckedOperators.cs:48:35:48:36 | -- | op_Decrement | DecrementOperator |
+| CheckedOperators.cs:51:28:51:35 | explicit conversion | op_Explicit | ExplicitConversionOperator |
+| CheckedOperators.cs:54:28:54:35 | checked explicit conversion | op_CheckedExplicit | CheckedExplicitConversionOperator |

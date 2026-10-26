@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["lf-edge/eve", "*", "input.command", "code-injection", "generated"]
+     - ["lf-edge/eve", "*", "input.dockerhub-account", "code-injection", "generated"]
+     - ["lf-edge/eve", "*", "input.dockerhub-token", "code-injection", "generated"]

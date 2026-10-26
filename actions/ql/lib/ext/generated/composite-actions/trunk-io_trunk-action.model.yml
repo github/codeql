@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["trunk-io/trunk-action", "*", "input.tools", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "input.post-init", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "input.setup-deps", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "input.label", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "input.debug", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "input.check-run-id", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "input.check-all-mode", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "input.cache-key", "code-injection", "generated"]

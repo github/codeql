@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["gittools/gitversion", "*", "input.distro", "code-injection", "generated"]
+     - ["gittools/gitversion", "*", "input.targetFramework", "code-injection", "generated"]
+     - ["gittools/gitversion", "*", "input.arch", "code-injection", "generated"]

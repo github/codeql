@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: allocationFunctionModel
+    data:
+      - ["", "", False, "kmem_alloc", "0", "", "", True]
+      - ["", "", False, "kmem_zalloc", "0", "", "", True]

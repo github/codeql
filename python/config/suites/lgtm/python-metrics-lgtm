@@ -1,0 +1,17 @@
++ semmlecode-python-queries/Lexical/FCommentedOutCode.ql: /Metrics/Files
+    @_namespace com.lgtm/python-queries
++ semmlecode-python-queries/Metrics/FLinesOfCode.ql: /Metrics/Files
+    @_namespace com.lgtm/python-queries
++ semmlecode-python-queries/Metrics/FLinesOfComments.ql: /Metrics/Files
+    @_namespace com.lgtm/python-queries
++ semmlecode-python-queries/Metrics/FLinesOfDuplicatedCode.ql: /Metrics/Duplication
+    @_namespace com.lgtm/python-queries
++ semmlecode-python-queries/Metrics/FLinesOfSimilarCode.ql: /Metrics/Duplication
+    @_namespace com.lgtm/python-queries
++ semmlecode-python-queries/Metrics/FNumberOfTests.ql: /Metrics/Functions
+    @_namespace com.lgtm/python-queries
+
++ semmlecode-python-queries/Metrics/Dependencies/ExternalDependencies.ql
+    @_namespace com.lgtm/python-queries
++ semmlecode-python-queries/Metrics/Dependencies/ExternalDependenciesSourceLinks.ql
+    @_namespace com.lgtm/python-queries

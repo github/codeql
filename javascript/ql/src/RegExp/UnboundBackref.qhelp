@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+In regular expressions, back references can be used to refer back to the result of a previously
+matched capture group. The ECMAScript standard forbids back references of the form '\n', where
+'n' is a positive number greater than the number of capture groups in the regular expression.
+</p>
+
+<p>
+While many browsers allow such references and interpret them as normal character escapes instead,
+this behavior is non-standard and should not be relied on. It can also be a source of bugs if
+the regular expression is changed later on, since the character escape may then start matching
+newly introduced capture groups.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+If the back reference is meant to refer to a capture group, ensure that there is a capture group
+with the right number. If it is meant to be an escape sequence, convert it to a hexadecimal
+character escape, which is ECMAScript-compliant.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the back reference <code>\1</code> presumably is meant to refer to
+the string matched by the group <code>(?:\s+)</code>. However, that group is non-capturing.
+</p>
+
+<sample src="examples/UnboundBackref.js" />
+
+<p>
+To fix this, convert the group into a capturing group <code>(\s+)</code>.
+</p>
+
+<p>
+If <code>\1</code> is actually meant to match the character with character code 1, it should
+be rewritten into the hexadecimal character escape <code>\x01</code>.
+</p>
+
+</example>
+<references>
+
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Section 15. ECMA, 2011.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">JavaScript Regular Expressions</a>.</li>
+
+</references>
+</qhelp>

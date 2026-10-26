@@ -1,0 +1,18 @@
+#!/bin/bash
+
+exec 1>&2
+exitVal=0
+while read -r f
+do
+  filename="${f##*/}"
+  extension="${filename##*.}"
+  p="$PWD/$f";
+  if [[ -f "$p" ]] && { [ "$extension" == "ql" ] || [ "$extension" == "qll" ]; }
+  then
+    if ! codeql query format --check-only "$p"
+    then
+      exitVal=1
+    fi
+  fi
+done <<<"$(git diff --cached --relative --name-only)"
+exit $exitVal

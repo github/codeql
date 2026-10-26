@@ -1,0 +1,7 @@
+implicitlyTypedObjectCreation
+| AnonymousObjectCreation.cs:7:31:7:35 | object creation of type List<AnonObj> |
+| AnonymousObjectCreation.cs:13:17:13:35 | object creation of type AnonObj |
+| AnonymousObjectCreation.cs:14:16:14:20 | object creation of type AnonObj |
+| AnonymousObjectCreation.cs:25:26:25:30 | object creation of type List<Int32> |
+implicitlyTypedDelegateCreation
+| AnonymousObjectCreation.cs:21:23:21:29 | delegate creation of type D |

@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule finds calls to functions that are dangerous to
+use. Currently, it checks for calls
+to <code>gmtime</code>, <code>localtime</code>,
+<code>ctime</code> and <code>asctime</code>.</p>
+
+<p>The time related functions such as <code>gmtime</code>
+fill data into a <code>tm</code> struct or <code>char</code> array in
+shared memory and then returns a pointer to that memory. If
+the function is called from multiple places in the same program, and
+especially if it is called from multiple threads in the same program,
+then the calls will overwrite each other's data.</p>
+
+</overview>
+<recommendation>
+
+<p>Replace calls to <code>gmtime</code> with <code>gmtime_r</code>.
+With <code>gmtime_r</code>, the application code manages allocation of
+the <code>tm</code> struct. That way, separate calls to the function
+can use their own storage.</p>
+
+<p>Similarly replace calls to <code>localtime</code> with
+<code>localtime_r</code>, calls to <code>ctime</code> with
+<code>ctime_r</code> and calls to <code>asctime</code> with
+<code>asctime_r</code> (if those functions exist on your platform).</p>
+
+</recommendation>
+<example>
+<p>The following example checks the local time in two ways:</p>
+<sample src="PotentiallyDangerousFunction.c" />
+
+<p>The first version uses <code>gmtime</code>, so it is vulnerable to
+its data being overwritten by another thread. Even if this code is not
+used in a multi-threaded context right now, future changes may
+make the program multi-threaded. The second version of the code
+uses <code>gmtime_r</code>. Since it allocates a new <code>tm</code>
+struct on every call, it is immune to other calls to <code>gmtime</code>
+or <code>gmtime_r</code>.</p>
+
+</example>
+<references>
+<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/CON33-C.+Avoid+race+conditions+when+using+library+functions">CON33-C. Avoid race conditions when using library functions</a>.</li>
+</references>
+</qhelp>

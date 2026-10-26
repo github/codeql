@@ -1,0 +1,7 @@
+| code/h_classes.py:3:1:3:16 | ControlFlowNode for ClassExpr | code/h_classes.py:10:1:10:9 | ControlFlowNode for type() |
+| code/h_classes.py:3:1:3:16 | ControlFlowNode for ClassExpr | code/h_classes.py:15:5:15:13 | ControlFlowNode for type() |
+| code/l_calls.py:12:1:12:20 | ControlFlowNode for ClassExpr | code/l_calls.py:16:16:16:18 | ControlFlowNode for cls |
+| code/l_calls.py:12:1:12:20 | ControlFlowNode for ClassExpr | code/l_calls.py:24:13:24:22 | ControlFlowNode for Attribute() |
+| code/l_calls.py:12:1:12:20 | ControlFlowNode for ClassExpr | code/l_calls.py:25:16:25:16 | ControlFlowNode for a |
+| code/t_type.py:3:1:3:16 | ControlFlowNode for ClassExpr | code/t_type.py:6:1:6:9 | ControlFlowNode for type() |
+| code/t_type.py:3:1:3:16 | ControlFlowNode for ClassExpr | code/t_type.py:13:5:13:13 | ControlFlowNode for type() |

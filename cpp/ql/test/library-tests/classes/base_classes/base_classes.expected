@@ -1,0 +1,6 @@
+| base_classes.cpp:1:8:1:12 | empty | <none> |
+| base_classes.cpp:4:8:4:15 | indirect<T> | <none> |
+| base_classes.cpp:4:8:4:15 | indirect<int> | <none> |
+| base_classes.cpp:9:8:9:8 | S<i> | empty |
+| base_classes.cpp:9:8:9:8 | S<int> | empty |
+| file://:0:0:0:0 | __va_list_tag | <none> |

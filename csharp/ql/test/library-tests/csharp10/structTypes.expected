@@ -1,0 +1,5 @@
+structAllDefaultConstructors
+| StructTypes.cs:4:15:4:46 | MyStructParameterlessConstructor | StructTypes.cs:10:12:10:43 | MyStructParameterlessConstructor |
+| StructTypes.cs:19:15:19:29 | MyDefaultStruct | StructTypes.cs:19:15:19:29 | MyDefaultStruct |
+structFromSourceDefaultConstructors
+| StructTypes.cs:4:15:4:46 | MyStructParameterlessConstructor | StructTypes.cs:10:12:10:43 | MyStructParameterlessConstructor |

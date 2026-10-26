@@ -1,0 +1,2 @@
+query: API Abuse/FormatInvalid.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

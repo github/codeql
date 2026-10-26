@@ -1,0 +1,10 @@
+| builtinliteralexpr.swift:4:6:4:6 | 1 | 1 |
+| builtinliteralexpr.swift:5:6:5:6 | 0xFF | 0xFF |
+| builtinliteralexpr.swift:6:6:6:6 | 2.34 | 2.34 |
+| builtinliteralexpr.swift:7:6:7:6 | true | true |
+| builtinliteralexpr.swift:8:6:8:6 | abc | abc |
+| builtinliteralexpr.swift:9:6:9:6 | \u2872 | \u2872 |
+| builtinliteralexpr.swift:11:7:11:7 | 5 | 5 |
+| builtinliteralexpr.swift:12:7:12:7 | 6 | 6 |
+| builtinliteralexpr.swift:12:10:12:10 | 7 | 7 |
+| builtinliteralexpr.swift:13:6:13:6 | #... |  |

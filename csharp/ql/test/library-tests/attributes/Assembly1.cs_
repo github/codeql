@@ -1,0 +1,27 @@
+using System;
+
+[assembly: Assembly1.CustomAttribute(1, new object[] { 1, 2, null }, typeof(Assembly1.CustomAttribute), (Assembly1.Enum1)12, null, Prop2 = new object[] { 1, typeof(int) })]
+[module: Assembly1.CustomAttribute(2, new object[] { 1, 2, null }, typeof(Assembly1.CustomAttribute), (Assembly1.Enum1)12, null, Prop2 = new object[] { 1, typeof(int) })]
+
+namespace Assembly1
+{
+    public enum Enum1 { A = 42, B, C }
+
+    public class CustomAttribute : Attribute
+    {
+        public object[] Prop1 { get; set; }
+        public object[] Prop2 { get; set; }
+        public CustomAttribute(int i, object o, Type t, Enum1 e, int[] arr) { }
+    }
+
+    [Custom(3, new int[] { 1, 2, 3 }, null, (Enum1)12, null, Prop2 = new object[] { 1, typeof(int) })]
+    public class Class1
+    {
+        [CustomAttribute(42 + 0, new int[] { 1, 2, 3 }, typeof(Class1), Enum1.B, new int[] { 1, 2, 3 }, Prop2 = new object[] { 1, typeof(int) })]
+        [return: Custom(42 + 0, new int[] { 1, 2, 3 }, null, Enum1.A, new int[] { 1, 2, 3 }, Prop2 = new object[] { 1, typeof(int) })]
+        public int Method1()
+        {
+            return 1;
+        }
+    }
+}

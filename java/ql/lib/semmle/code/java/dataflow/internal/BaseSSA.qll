@@ -1,0 +1,410 @@
+/**
+ * Provides classes and predicates for SSA representation (Static Single Assignment form)
+ * restricted to local variables.
+ *
+ * An SSA variable consists of the pair of a `BaseSsaSourceVariable` and a
+ * `ControlFlowNode` at which it is defined. Each SSA variable is defined
+ * either by a phi node, an implicit initial value (for parameters),
+ * or an explicit update.
+ *
+ * This is a restricted version of SSA.qll that only handles `LocalScopeVariable`s
+ * in order to not depend on virtual dispatch.
+ */
+overlay[local?]
+module;
+
+import java
+private import codeql.ssa.Ssa as SsaImplCommon
+
+cached
+private module BaseSsaStage {
+  cached
+  predicate ref() { any() }
+
+  cached
+  predicate backref() {
+    (exists(TLocalVar(_, _)) implies any()) and
+    (exists(any(BaseSsaSourceVariable v).getAnAccess()) implies any()) and
+    (exists(any(SsaDefinition def).getARead()) implies any()) and
+    (captures(_, _) implies any())
+  }
+}
+
+cached
+private newtype TBaseSsaSourceVariable =
+  TLocalVar(Callable c, LocalScopeVariable v) {
+    BaseSsaStage::ref() and
+    c = v.getCallable()
+    or
+    c = v.getAnAccess().getEnclosingCallable()
+  }
+
+/**
+ * A local variable in the context of a `Callable` in which it is accessed.
+ */
+class BaseSsaSourceVariable extends TBaseSsaSourceVariable {
+  /** Gets the variable corresponding to this `BaseSsaSourceVariable`. */
+  LocalScopeVariable getVariable() { this = TLocalVar(_, result) }
+
+  /**
+   * Gets an access of this `BaseSsaSourceVariable`. This access is within `this.getEnclosingCallable()`.
+   */
+  cached
+  VarAccess getAnAccess() {
+    BaseSsaStage::ref() and
+    exists(LocalScopeVariable v, Callable c |
+      this = TLocalVar(c, v) and result = v.getAnAccess() and result.getEnclosingCallable() = c
+    )
+  }
+
+  /** Gets the `Callable` in which this `BaseSsaSourceVariable` is defined. */
+  Callable getEnclosingCallable() { this = TLocalVar(result, _) }
+
+  /** Gets a textual representation of this element. */
+  string toString() {
+    exists(LocalScopeVariable v, Callable c | this = TLocalVar(c, v) |
+      if c = v.getCallable()
+      then result = v.getName()
+      else result = c.getName() + "(..)." + v.getName()
+    )
+  }
+
+  /** Gets the source location for this element. */
+  Location getLocation() {
+    exists(LocalScopeVariable v | this = TLocalVar(_, v) and result = v.getLocation())
+  }
+
+  /** Gets the type of this variable. */
+  Type getType() { result = this.getVariable().getType() }
+}
+
+private module BaseSsaImpl {
+  /** Gets the destination variable of an update of a tracked variable. */
+  BaseSsaSourceVariable getDestVar(VariableUpdate upd) {
+    result.getAnAccess() = upd.(Assignment).getDest()
+    or
+    exists(LocalVariableDecl v | v = upd.(LocalVariableDeclExpr).getVariable() |
+      result = TLocalVar(v.getCallable(), v)
+    )
+    or
+    result.getAnAccess() = upd.(UnaryAssignExpr).getOperand()
+  }
+
+  /** Holds if `n` updates the local variable `v`. */
+  predicate variableUpdate(BaseSsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
+    exists(VariableUpdate a | a.getControlFlowNode() = n | getDestVar(a) = v) and
+    b.getNode(i) = n
+  }
+
+  /** Gets the definition point of a nested class in the parent scope. */
+  private ControlFlowNode parentDef(NestedClass nc) {
+    nc.(AnonymousClass).getClassInstanceExpr().getControlFlowNode() = result or
+    nc.(LocalClass).getLocalTypeDeclStmt().getControlFlowNode() = result
+  }
+
+  /**
+   * Gets the enclosing type of a nested class.
+   *
+   * Differs from `RefType.getEnclosingType()` by including anonymous classes defined by lambdas.
+   */
+  private RefType desugaredGetEnclosingType(NestedClass inner) {
+    exists(ControlFlowNode node |
+      node = parentDef(inner) and
+      node.getEnclosingCallable().getDeclaringType() = result
+    )
+  }
+
+  /**
+   * Gets the control flow node at which the variable is read to get the value for
+   * a `VarAccess` inside a closure. `capturedvar` is the variable in its defining
+   * scope, and `closurevar` is the variable in the closure.
+   */
+  private ControlFlowNode captureNode(
+    BaseSsaSourceVariable capturedvar, BaseSsaSourceVariable closurevar
+  ) {
+    exists(
+      LocalScopeVariable v, Callable inner, Callable outer, NestedClass innerclass, VarAccess va
+    |
+      va.getVariable() = v and
+      inner = va.getEnclosingCallable() and
+      outer = v.getCallable() and
+      inner != outer and
+      inner.getDeclaringType() = innerclass and
+      result = parentDef(desugaredGetEnclosingType*(innerclass)) and
+      result.getEnclosingCallable() = outer and
+      capturedvar = TLocalVar(outer, v) and
+      closurevar = TLocalVar(inner, v)
+    )
+  }
+
+  /** Holds if the value of `v` is captured in `b` at index `i`. */
+  predicate variableCapture(
+    BaseSsaSourceVariable capturedvar, BaseSsaSourceVariable closurevar, BasicBlock b, int i
+  ) {
+    b.getNode(i) = captureNode(capturedvar, closurevar)
+  }
+
+  /** Holds if `v` has an implicit definition at the entry, `b`, of the callable. */
+  predicate hasEntryDef(BaseSsaSourceVariable v, BasicBlock b) {
+    exists(LocalScopeVariable l, Callable c |
+      v = TLocalVar(c, l) and c.getBody().getBasicBlock() = b
+    |
+      l instanceof Parameter or
+      l.getCallable() != c
+    )
+  }
+}
+
+private import BaseSsaImpl
+
+private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
+  class SourceVariable = BaseSsaSourceVariable;
+
+  /**
+   * Holds if the `i`th node of basic block `bb` is a write to source variable
+   * `v`.
+   */
+  predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    variableUpdate(v, _, bb, i) and
+    certain = true
+    or
+    hasEntryDef(v, bb) and
+    i = -1 and
+    certain = true
+  }
+
+  /**
+   * Holds if the `i`th of basic block `bb` reads source variable `v`.
+   */
+  predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    exists(VarRead use |
+      v.getAnAccess() = use and bb.getNode(i) = use.getControlFlowNode() and certain = true
+    )
+    or
+    variableCapture(v, _, bb, i) and
+    certain = false
+  }
+}
+
+private module Impl = SsaImplCommon::Make<Location, Cfg, SsaImplInput>;
+
+private module SsaInput implements Impl::SsaInputSig {
+  private import java as J
+
+  class Expr = J::Expr;
+
+  class Parameter = J::Parameter;
+
+  class VariableWrite = J::VariableWrite;
+
+  predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, BaseSsaSourceVariable v) {
+    variableUpdate(v, w.asExpr().getControlFlowNode(), bb, i)
+    or
+    exists(Parameter p, Callable c |
+      c = p.getCallable() and
+      v = TLocalVar(c, p) and
+      w.isParameterInit(p) and
+      c.getBody().getBasicBlock() = bb and
+      i = -1
+    )
+  }
+}
+
+module Ssa = Impl::MakeSsa<SsaInput>;
+
+import Ssa
+private import Cached
+
+cached
+private module Cached {
+  /** Holds if `init` is a closure variable that captures the value of `capturedvar`. */
+  cached
+  predicate captures(SsaImplicitEntryDefinition init, SsaDefinition capturedvar) {
+    exists(BasicBlock bb, int i |
+      Ssa::ssaDefReachesUncertainRead(_, capturedvar, bb, i) and
+      variableCapture(capturedvar.getSourceVariable(), init.getSourceVariable(), bb, i)
+    )
+  }
+
+  cached
+  module SsaPublic {
+    /**
+     * Holds if `use1` and `use2` form an adjacent use-use-pair of the same SSA
+     * variable, that is, the value read in `use1` can reach `use2` without passing
+     * through any other use or any SSA definition of the variable.
+     */
+    cached
+    predicate baseSsaAdjacentUseUseSameVar(VarRead use1, VarRead use2) {
+      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+        use1.getControlFlowNode() = bb1.getNode(i1) and
+        use2.getControlFlowNode() = bb2.getNode(i2) and
+        Impl::adjacentUseUse(bb1, i1, bb2, i2, _, true)
+      )
+    }
+
+    /**
+     * Holds if `use1` and `use2` form an adjacent use-use-pair of the same
+     * `SsaSourceVariable`, that is, the value read in `use1` can reach `use2`
+     * without passing through any other use or any SSA definition of the variable
+     * except for phi nodes.
+     */
+    cached
+    predicate baseSsaAdjacentUseUse(VarRead use1, VarRead use2) {
+      exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+        use1.getControlFlowNode() = bb1.getNode(i1) and
+        use2.getControlFlowNode() = bb2.getNode(i2) and
+        Impl::adjacentUseUse(bb1, i1, bb2, i2, _, _)
+      )
+    }
+  }
+}
+
+import SsaPublic
+
+/** An SSA definition in a closure that captures a variable. */
+class SsaCapturedDefinition extends SsaImplicitEntryDefinition {
+  SsaCapturedDefinition() { captures(this, _) }
+
+  override string toString() { result = "SSA capture def(" + this.getSourceVariable() + ")" }
+
+  /** Holds if this definition captures the value of `capturedvar`. */
+  predicate captures(SsaDefinition capturedvar) { captures(this, capturedvar) }
+
+  /**
+   * Gets a definition that ultimately defines the captured variable and is not itself a phi node.
+   */
+  SsaDefinition getAnUltimateCapturedDefinition() {
+    exists(SsaDefinition capturedvar |
+      captures(this, capturedvar) and result = capturedvar.getAnUltimateDefinition()
+    )
+  }
+}
+
+deprecated private predicate ssaUpdate(Impl::Definition def, VariableUpdate upd) {
+  exists(BaseSsaSourceVariable v, BasicBlock bb, int i |
+    def.definesAt(v, bb, i) and
+    variableUpdate(v, upd.getControlFlowNode(), bb, i) and
+    getDestVar(upd) = v
+  )
+}
+
+deprecated private predicate ssaImplicitInit(Impl::WriteDefinition def) {
+  exists(BaseSsaSourceVariable v, BasicBlock bb, int i |
+    def.definesAt(v, bb, i) and
+    hasEntryDef(v, bb) and
+    i = -1
+  )
+}
+
+/**
+ * DEPRECATED: Use `SsaDefinition` instead.
+ *
+ * An SSA variable.
+ */
+deprecated class BaseSsaVariable extends Impl::Definition {
+  /**
+   * DEPRECATED: Use `getControlFlowNode()` instead.
+   *
+   * Gets the `ControlFlowNode` at which this SSA variable is defined.
+   */
+  deprecated ControlFlowNode getCfgNode() { result = this.(SsaDefinition).getControlFlowNode() }
+
+  /**
+   * DEPRECATED: Use `getARead()` instead.
+   *
+   * Gets an access of this SSA variable.
+   */
+  deprecated VarRead getAUse() { result = this.(SsaDefinition).getARead() }
+
+  /** Holds if this SSA variable is live at the end of `b`. */
+  predicate isLiveAtEndOfBlock(BasicBlock b) { this.(SsaDefinition).isLiveAtEndOfBlock(b) }
+
+  /** Gets an input to the phi node defining the SSA variable. */
+  private BaseSsaVariable getAPhiInput() { result = this.(BaseSsaPhiNode).getAnInput() }
+
+  /**
+   * DEPRECATED: Use `SsaDefinition::getAnUltimateDefinition()` instead.
+   *
+   * Gets a definition in the same callable that ultimately defines this variable and is not itself a phi node.
+   */
+  deprecated BaseSsaVariable getAnUltimateLocalDefinition() {
+    result = this.getAPhiInput*() and not result instanceof BaseSsaPhiNode
+  }
+
+  /**
+   * Gets an SSA variable whose value can flow to this one in one step. This
+   * includes inputs to phi nodes and the captured ssa variable for a closure
+   * variable.
+   */
+  private BaseSsaVariable getAPhiInputOrCapturedVar() {
+    result = this.(BaseSsaPhiNode).getAnInput() or
+    this.(BaseSsaImplicitInit).captures(result)
+  }
+
+  /**
+   * DEPRECATED: Use `SsaCapturedDefinition::getAnUltimateCapturedDefinition()`
+   * and/or `SsaDefinition::getAnUltimateDefinition()` instead.
+   *
+   * Gets a definition that ultimately defines this variable and is not itself a phi node.
+   */
+  deprecated BaseSsaVariable getAnUltimateDefinition() {
+    result = this.getAPhiInputOrCapturedVar*() and not result instanceof BaseSsaPhiNode
+  }
+}
+
+/**
+ * DEPRECATED: Use `SsaExplicitWrite` instead.
+ *
+ * An SSA variable that is defined by a `VariableUpdate`.
+ */
+deprecated class BaseSsaUpdate extends BaseSsaVariable instanceof Impl::WriteDefinition {
+  BaseSsaUpdate() { ssaUpdate(this, _) }
+
+  /** Gets the `VariableUpdate` defining the SSA variable. */
+  VariableUpdate getDefiningExpr() { ssaUpdate(this, result) }
+}
+
+/**
+ * DEPRECATED: Use `SsaParameterInit` or `SsaCapturedDefinition` instead.
+ *
+ * An SSA variable that is defined by its initial value in the callable. This
+ * includes initial values of parameters, fields, and closure variables.
+ */
+deprecated class BaseSsaImplicitInit extends BaseSsaVariable instanceof Impl::WriteDefinition {
+  BaseSsaImplicitInit() { ssaImplicitInit(this) }
+
+  /** Holds if this is a closure variable that captures the value of `capturedvar`. */
+  predicate captures(BaseSsaVariable capturedvar) { captures(this, capturedvar) }
+
+  /**
+   * DEPRECATED: Use `SsaParameterInit::getParameter()` instead.
+   *
+   * Holds if the SSA variable is a parameter defined by its initial value in the callable.
+   */
+  deprecated predicate isParameterDefinition(Parameter p) {
+    this.getSourceVariable() = TLocalVar(p.getCallable(), p) and
+    p.getCallable().getBody().getControlFlowNode() = this.getCfgNode()
+  }
+}
+
+/**
+ * DEPRECATED: Use `SsaPhiDefinition` instead.
+ *
+ * An SSA phi node.
+ */
+deprecated class BaseSsaPhiNode extends BaseSsaVariable instanceof Impl::PhiNode {
+  /**
+   * DEPRECATED: Use `getAnInput()` instead.
+   *
+   * Gets an input to the phi node defining the SSA variable.
+   */
+  deprecated BaseSsaVariable getAPhiInput() { this.hasInputFromBlock(result, _) }
+
+  /** Gets an input to the phi node defining the SSA variable. */
+  BaseSsaVariable getAnInput() { this.hasInputFromBlock(result, _) }
+
+  /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
+  predicate hasInputFromBlock(BaseSsaVariable inp, BasicBlock bb) {
+    this.(SsaPhiDefinition).hasInputFromBlock(inp, bb)
+  }
+}

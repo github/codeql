@@ -1,0 +1,13 @@
+storeStepIsLocal
+| SqlExecution.py:16:1:16:25 | [orm-model] Class User | SqlExecution.py:21:5:21:32 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| SqlExecution.py:16:1:16:25 | [orm-model] Class User | SqlExecution.py:23:5:23:45 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| SqlExecution.py:16:1:16:25 | [orm-model] Class User | SqlExecution.py:24:5:24:55 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| SqlExecution.py:16:1:16:25 | [orm-model] Class User | SqlExecution.py:25:5:25:49 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| SqlExecution.py:16:1:16:25 | [orm-model] Class User | SqlExecution.py:27:5:27:52 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| SqlExecution.py:16:1:16:25 | [orm-model] Class User | SqlExecution.py:28:5:28:46 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| SqlExecution.py:16:1:16:25 | [orm-model] Class User | SqlExecution.py:30:5:30:34 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| SqlExecution.py:16:1:16:25 | [orm-model] Class User | SqlExecution.py:31:5:31:92 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| SqlExecution.py:16:1:16:25 | [orm-model] Class User | SqlExecution.py:34:5:34:34 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| SqlExecution.py:16:1:16:25 | [orm-model] Class User | SqlExecution.py:37:5:37:33 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| SqlExecution.py:16:1:16:25 | [orm-model] Class User | SqlExecution.py:37:5:37:59 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| SqlExecution.py:16:1:16:25 | [orm-model] Class User | SqlExecution.py:37:5:37:77 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |

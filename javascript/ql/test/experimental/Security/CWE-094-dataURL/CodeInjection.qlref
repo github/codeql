@@ -1,0 +1,2 @@
+query: experimental/Security/CWE-094-dataURL/CodeInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

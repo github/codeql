@@ -1,0 +1,27 @@
+| 0 | ifstmt.c:27:27:32:1 | { ... } | 1 | ifstmt.c:28:3:30:3 | if (...) ...  |
+| 0 | ifstmt.cpp:1:27:6:1 | { ... } | 1 | ifstmt.cpp:2:3:4:3 | if (...) ...  |
+| 1 | ifstmt.c:28:3:30:3 | if (...) ...  | 1 | ifstmt.c:28:6:28:6 | x |
+| 1 | ifstmt.c:28:6:28:6 | x | 1 | ifstmt.c:28:11:28:11 | y |
+| 1 | ifstmt.c:28:6:28:11 | ... == ... | 1 | ifstmt.c:28:14:30:3 | { ... } |
+| 1 | ifstmt.c:28:6:28:11 | ... == ... | 4 | ifstmt.c:31:3:31:5 | label ...: |
+| 1 | ifstmt.c:28:11:28:11 | y | 1 | ifstmt.c:28:6:28:11 | ... == ... |
+| 1 | ifstmt.c:28:14:30:3 | { ... } | 2 | ifstmt.c:29:5:29:7 | label ...: |
+| 1 | ifstmt.cpp:2:3:4:3 | if (...) ...  | 1 | ifstmt.cpp:2:6:2:6 | declaration |
+| 1 | ifstmt.cpp:2:6:2:6 | declaration | 1 | ifstmt.cpp:2:13:2:14 | initializer for z |
+| 1 | ifstmt.cpp:2:13:2:14 | initializer for z | 1 | ifstmt.cpp:2:14:2:14 | y |
+| 1 | ifstmt.cpp:2:14:2:14 | y | 1 | ifstmt.cpp:2:17:2:17 | x |
+| 1 | ifstmt.cpp:2:17:2:17 | x | 1 | ifstmt.cpp:2:22:2:22 | z |
+| 1 | ifstmt.cpp:2:17:2:22 | ... == ... | 1 | ifstmt.cpp:2:25:4:3 | { ... } |
+| 1 | ifstmt.cpp:2:17:2:22 | ... == ... | 4 | ifstmt.cpp:5:3:5:5 | label ...: |
+| 1 | ifstmt.cpp:2:22:2:22 | z | 1 | ifstmt.cpp:2:17:2:22 | ... == ... |
+| 1 | ifstmt.cpp:2:25:4:3 | { ... } | 2 | ifstmt.cpp:3:5:3:7 | label ...: |
+| 2 | ifstmt.c:29:5:29:7 | label ...: | 2 | ifstmt.c:29:8:29:8 | ; |
+| 2 | ifstmt.c:29:8:29:8 | ; | 4 | ifstmt.c:31:3:31:5 | label ...: |
+| 2 | ifstmt.cpp:3:5:3:7 | label ...: | 2 | ifstmt.cpp:3:8:3:8 | ; |
+| 2 | ifstmt.cpp:3:8:3:8 | ; | 4 | ifstmt.cpp:5:3:5:5 | label ...: |
+| 4 | ifstmt.c:31:3:31:5 | label ...: | 4 | ifstmt.c:31:6:31:6 | ; |
+| 4 | ifstmt.c:31:6:31:6 | ; | 5 | ifstmt.c:32:1:32:1 | return ... |
+| 4 | ifstmt.cpp:5:3:5:5 | label ...: | 4 | ifstmt.cpp:5:6:5:6 | ; |
+| 4 | ifstmt.cpp:5:6:5:6 | ; | 5 | ifstmt.cpp:6:1:6:1 | return ... |
+| 5 | ifstmt.c:32:1:32:1 | return ... | 0 | ifstmt.c:27:6:27:11 | normal |
+| 5 | ifstmt.cpp:6:1:6:1 | return ... | 0 | ifstmt.cpp:1:6:1:11 | normal |

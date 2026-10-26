@@ -1,0 +1,12 @@
+exprs
+| TestSwitchExpr.java:9:13:9:41 | case ... | TestSwitchExpr.java:9:43:9:46 | null |
+| TestSwitchExpr.java:10:13:10:22 | default | TestSwitchExpr.java:10:24:10:25 | x1 |
+| TestSwitchExprStmtConsistency.java:10:7:10:15 | case ... | TestSwitchExprStmtConsistency.java:10:17:10:19 | f(...) |
+| TestSwitchExprStmtConsistency.java:11:7:11:15 | case ... | TestSwitchExprStmtConsistency.java:11:17:11:19 | f(...) |
+| TestSwitchExprStmtConsistency.java:12:7:12:16 | default | TestSwitchExprStmtConsistency.java:12:18:12:20 | f(...) |
+| TestSwitchExprStmtConsistency.java:16:7:16:15 | case ... | TestSwitchExprStmtConsistency.java:16:17:16:19 | f(...) |
+| TestSwitchExprStmtConsistency.java:17:7:17:15 | case ... | TestSwitchExprStmtConsistency.java:17:17:17:19 | f(...) |
+| TestSwitchExprStmtConsistency.java:18:7:18:16 | default | TestSwitchExprStmtConsistency.java:18:18:18:20 | f(...) |
+stmts
+| TestSwitchExpr.java:13:13:13:28 | case ... | TestSwitchExpr.java:13:30:13:42 | { ... } |
+| TestSwitchExpr.java:14:13:14:22 | default | TestSwitchExpr.java:14:24:14:52 | throw ... |

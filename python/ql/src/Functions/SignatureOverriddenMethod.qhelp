@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> When the signature of a method of a base class and a method of a subclass that overrides it don't match, a call to the base class method 
+may not be a valid call to the subclass method, and thus raise an exception if an instance of the subclass is passed instead. 
+If following the Liskov Substitution Principle, in which an instance of a subclass should be usable in every context as though it were an 
+instance of the base class, this behavior breaks the principle.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that the overriding method in the subclass accepts the same parameters as the base method. </p>
+
+</recommendation>
+<example>
+<p>In the following example, <code>Base.runsource</code> takes an optional <code>filename</code> argument. However, the overriding method 
+<code>Sub.runsource</code> does not. This means the <code>run</code> function will fail if passed an instance of <code>Sub</code>.
+</p>
+
+<sample src="SignatureOverriddenMethod.py" />
+
+</example>
+<references>
+
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Liskov_substitution_principle">Liskov Substitution Principle</a>, <a href="http://en.wikipedia.org/wiki/Method_overriding#Python">Method overriding</a>.</li>
+
+
+</references>
+</qhelp>

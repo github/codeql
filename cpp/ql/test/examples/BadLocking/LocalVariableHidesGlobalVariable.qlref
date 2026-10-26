@@ -1,0 +1,2 @@
+query: Best Practices/Hiding/LocalVariableHidesGlobalVariable.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

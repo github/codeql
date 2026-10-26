@@ -1,0 +1,17 @@
+| java.io.File#File(String) | 2 |
+| java.net.URL#URL(String) | 2 |
+| java.io.File#compareTo(File) | 1 |
+| java.io.FileWriter#FileWriter(File) | 1 |
+| java.lang.StringBuilder#append(String) | 1 |
+| java.lang.StringBuilder#toString() | 1 |
+| java.net.URL#openConnection() | 1 |
+| java.net.URL#openStream() | 1 |
+| java.net.URLConnection#getInputStream() | 1 |
+| java.time.Duration#ofMillis(long) | 1 |
+| java.util.Iterator#next() | 1 |
+| java.util.Map#entrySet() | 1 |
+| java.util.Map#put(Object,Object) | 1 |
+| java.util.Map$Entry#getKey() | 1 |
+| java.util.Set#iterator() | 1 |
+| javax.servlet.http.HttpServletResponse#sendRedirect(String) | 1 |
+| org.apache.commons.io.FileUtils#deleteDirectory(File) | 1 |

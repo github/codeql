@@ -1,0 +1,15 @@
+| test.js:3:9:3:20 | $scope.call1 |
+| test.js:4:9:4:20 | $scope.read1 |
+| test.js:5:9:5:21 | $scope.write1 |
+| test.js:8:13:8:24 | $scope.call2 |
+| test.js:9:13:9:24 | $scope.read2 |
+| test.js:10:13:10:25 | $scope.write2 |
+| test.js:20:9:20:19 | scope.call4 |
+| test.js:21:9:21:21 | $scope.read14 |
+| test.js:22:9:22:21 | $scope.write4 |
+| test.js:24:13:24:23 | scope.call5 |
+| test.js:25:13:25:23 | scope.read5 |
+| test.js:26:13:26:24 | scope.write5 |
+| test.js:34:17:34:27 | scope.call6 |
+| test.js:35:17:35:27 | scope.read6 |
+| test.js:36:17:36:28 | scope.write6 |

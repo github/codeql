@@ -1,0 +1,2 @@
+| exceptions_test.py:196:11:196:24 | NotImplemented | NotImplemented is not an Exception. Did you mean NotImplementedError? |
+| exceptions_test.py:199:11:199:26 | NotImplemented() | NotImplemented is not an Exception. Did you mean NotImplementedError? |

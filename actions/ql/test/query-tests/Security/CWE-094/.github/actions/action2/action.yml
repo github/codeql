@@ -1,0 +1,17 @@
+name: 'Hello World'
+description: 'Greet someone and record the time'
+inputs:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'docker'
+  steps: # this is actually invalid, used to test we correctly identify composite actions
+    - run: echo '${{ github.event.comment.body }}'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.who-to-greet }}

@@ -1,0 +1,2 @@
+query: AngularJS/RepeatedInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,1 @@
+| .github/workflows/defaultable_workflow.yml:44:9:55:6 | Uses Step | CodeQL Action could use default setup instead of advanced configuration. |

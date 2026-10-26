@@ -1,0 +1,2 @@
+query: external/SimilarToplevel.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

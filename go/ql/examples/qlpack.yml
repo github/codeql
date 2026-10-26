@@ -1,0 +1,7 @@
+name: codeql/go-examples
+groups: 
+  - go
+  - examples
+dependencies:
+  codeql/go-all: ${workspace}
+warnOnImplicitThis: true

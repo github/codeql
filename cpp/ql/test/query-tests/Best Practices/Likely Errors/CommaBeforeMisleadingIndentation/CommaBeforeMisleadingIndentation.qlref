@@ -1,0 +1,2 @@
+query: Best Practices/Likely Errors/CommaBeforeMisleadingIndentation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

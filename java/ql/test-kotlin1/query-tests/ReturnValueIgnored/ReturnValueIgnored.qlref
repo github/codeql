@@ -1,0 +1,2 @@
+query: Likely Bugs/Statements/ReturnValueIgnored.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

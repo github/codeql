@@ -1,0 +1,21 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A local variable that is not accessed or initialized
+is typically a sign of incomplete or pending code changes.</p>
+
+</overview>
+<recommendation>
+
+<p>If an unused variable is no longer needed following refactoring, you should just remove it. If there are
+incomplete or pending code changes, finish making the changes, and then remove the variable if it is no longer
+needed.</p>
+
+</recommendation>
+
+<include src="../../DeadCode/DeadCodeReferences.inc.qhelp" />
+</qhelp>

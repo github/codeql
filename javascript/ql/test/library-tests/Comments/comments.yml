@@ -1,0 +1,26 @@
+# leading file comment
+--- # document marker comment
+root: #comment after root key
+  # indented comment before first property
+  name: "odd" # comment after quoted scalar
+  empty: #comment after an explicit null value
+  list: # comment after list key
+    # comment before sequence item
+    - id: 1 #comment after inline sequence mapping
+      label: plain # comment after plain scalar
+    - # comment after bare dash
+      id: 2 # comment after mapping key in sequence
+      enabled: true #comment after boolean
+      tags: [alpha, beta] # comment after flow sequence
+  flow_map: {left: 1, right: 2} # comment after flow mapping
+  flow_list: [first, second, "third # not a comment"] # comment after flow list
+  block: | #comment after literal scalar header
+    this line belongs to the scalar
+    # this hash is text, not a YAML comment
+  folded: > #comment after folded scalar header
+    folded text with # also just text
+    and another scalar line
+  trailing_hash: "there is # no comment # in here" # comment after hash-looking value
+# comment between body and document end
+... # document end comment
+# final comment after document end

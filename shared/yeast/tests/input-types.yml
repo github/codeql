@@ -1,0 +1,40 @@
+# Test input schema for yeast rules! macro tests. Covers a small subset of
+# tree-sitter-ruby kinds used by the test rules. Kept deliberately small so
+# the macro's compile-time loader can be exercised over a known surface.
+
+named:
+  program:
+    $children*: [assignment, call, identifier, for]
+
+  assignment:
+    left: [identifier, left_assignment_list]
+    right: [identifier, integer, call]
+
+  left_assignment_list:
+    $children*: identifier
+
+  for:
+    pattern: [identifier, left_assignment_list]
+    value: in
+    body: do
+
+  in:
+    $children: [identifier, call]
+
+  do:
+    $children*: [identifier, assignment, call]
+
+  call:
+    receiver: [identifier, call]
+    method: identifier
+
+  identifier:
+  integer:
+
+unnamed:
+  - "="
+  - ","
+  - "for"
+  - "in"
+  - "do"
+  - "end"

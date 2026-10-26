@@ -1,0 +1,8 @@
+| authlib.py:11:1:11:39 | ControlFlowNode for Attribute() | This JWT encoding has an empty key. |
+| authlib.py:12:1:12:50 | ControlFlowNode for Attribute() | This JWT encoding has an empty key. |
+| pyjwt.py:10:1:10:29 | ControlFlowNode for Attribute() | This JWT encoding has an empty algorithm. |
+| pyjwt.py:10:1:10:29 | ControlFlowNode for Attribute() | This JWT encoding has an empty key. |
+| pyjwt.py:13:1:13:40 | ControlFlowNode for Attribute() | This JWT encoding has an empty key. |
+| pyjwt.py:14:1:14:44 | ControlFlowNode for Attribute() | This JWT encoding has an empty key. |
+| python_jose.py:10:1:10:40 | ControlFlowNode for Attribute() | This JWT encoding has an empty key. |
+| python_jose.py:11:1:11:44 | ControlFlowNode for Attribute() | This JWT encoding has an empty key. |

@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-120/MemoryUnsafeFunctionScan.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

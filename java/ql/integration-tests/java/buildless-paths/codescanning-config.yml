@@ -1,0 +1,4 @@
+paths:
+  - include
+paths-ignore:
+  - include/exclude

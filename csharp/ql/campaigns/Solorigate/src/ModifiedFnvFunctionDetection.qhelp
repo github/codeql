@@ -1,0 +1,12 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>In Solorigate, the malicious code tried to evade various security detection software by comparing hashes of the process names against an embedded list of values. The malicious code used in the SolarWinds attack included hash values calculated using a standard FNV-1A 64-bit hash with an additional XOR by a literal after computing the FNV-1A.</p>
+    <p>This query detects FNV-like hash calculations where there is an additional XOR (with any static value) after the hash calculation loop.</p>
+  </overview>
+
+  <include src="Solorigate.inc.qhelp" />
+
+</qhelp>

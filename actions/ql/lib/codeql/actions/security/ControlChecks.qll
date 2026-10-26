@@ -1,0 +1,516 @@
+import actions
+
+string any_category() {
+  result =
+    [
+      "untrusted-checkout", "output-clobbering", "envpath-injection", "envvar-injection",
+      "command-injection", "argument-injection", "code-injection", "cache-poisoning",
+      "untrusted-checkout-toctou", "artifact-poisoning", "artifact-poisoning-toctou"
+    ]
+}
+
+string non_toctou_category() {
+  result = any_category() and not result = "untrusted-checkout-toctou"
+}
+
+string toctou_category() { result = ["untrusted-checkout-toctou", "artifact-poisoning-toctou"] }
+
+string any_event() { result = actor_not_attacker_event() or result = actor_is_attacker_event() }
+
+string actor_is_attacker_event() {
+  result =
+    [
+      // actor and attacker have to be the same
+      "pull_request_target",
+      "workflow_run",
+      "discussion_comment",
+      "discussion",
+      "issues",
+      "fork",
+      "watch"
+    ]
+}
+
+string actor_not_attacker_event() {
+  result =
+    [
+      // actor and attacker can be different
+      // actor may be a collaborator, but the attacker is may be the author of the PR that gets commented
+      // therefore it may be vulnerable to TOCTOU races where the actor reviews one thing and the attacker changes it
+      "issue_comment",
+      "pull_request_comment",
+    ]
+}
+
+/**
+ * Gets the outer caller of `ej`, i.e. the `ExternalJob` that calls the
+ * reusable workflow containing `ej`. Used with transitive closure to
+ * walk up nested reusable workflow chains.
+ */
+private ExternalJob getAnOuterCaller(ExternalJob ej) {
+  result = ej.getEnclosingWorkflow().(ReusableWorkflow).getACaller()
+}
+
+/** An If node that contains an actor, user or label check */
+abstract class ControlCheck extends AstNode {
+  ControlCheck() {
+    this instanceof If or
+    this instanceof Environment or
+    this instanceof UsesStep or
+    this instanceof Run
+  }
+
+  predicate protects(AstNode node, Event event, string category) {
+    // The check dominates the step it should protect
+    this.dominates(node, event) and
+    // The check is effective against the event and category
+    this.protectsCategoryAndEvent(category, event.getName()) and
+    // The check can be triggered by the event
+    this.getATriggerEvent() = event and
+    // For reusable workflows, there must be no unprotected caller chain for this event.
+    (
+      not node.getEnclosingWorkflow() instanceof ReusableWorkflow
+      or
+      this.dominatesSameWorkflow(node, event)
+      or
+      not exists(ExternalJob directCaller |
+        directCaller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
+        unprotectedCallerChain(directCaller, event, category)
+      )
+    )
+  }
+
+  /**
+   * Holds if this control check must execute and pass before `node` can run.
+   */
+  predicate dominates(AstNode node, Event event) {
+    this.dominatesSameWorkflow(node, event)
+    or
+    // When the node is inside a reusable workflow,
+    // this check dominates via at least one caller chain.
+    this.dominatesViaCaller(node, event, _)
+  }
+
+  /**
+   * Holds if this control check dominates `node` within the same workflow.
+   */
+  predicate dominatesSameWorkflow(AstNode node, Event event) {
+    this.getATriggerEvent() = event and
+    (
+      // Step-level: the check is an `if:` on the step containing `node`,
+      // or on the enclosing job, or on a needed job/step.
+      this instanceof If and
+      (
+        node.getEnclosingStep().getIf() = this or
+        node.getEnclosingJob().getIf() = this or
+        node.getEnclosingJob().getANeededJob().(LocalJob).getAStep().getIf() = this or
+        node.getEnclosingJob().getANeededJob().(LocalJob).getIf() = this
+      )
+      or
+      // Job-level: the check is an environment on the enclosing job or a needed job.
+      this instanceof Environment and
+      (
+        node.getEnclosingJob().getEnvironment() = this
+        or
+        node.getEnclosingJob().getANeededJob().getEnvironment() = this
+      )
+      or
+      // Step-level: the check is a Run/UsesStep that precedes `node`'s step
+      // in the same job, or is a step in a needed job.
+      (
+        this instanceof Run or
+        this instanceof UsesStep
+      ) and
+      (
+        this.(Step).getAFollowingStep() = node.getEnclosingStep()
+        or
+        node.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this
+      )
+    )
+  }
+
+  /**
+   * Holds if this control check dominates `node` in a reusable workflow
+   * via the caller chain starting at `directCaller`.
+   */
+  predicate dominatesViaCaller(AstNode node, Event event, ExternalJob directCaller) {
+    directCaller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
+    directCaller.getATriggerEvent() = event and
+    exists(ExternalJob caller |
+      caller = getAnOuterCaller*(directCaller) and
+      this.dominatesCaller(caller)
+    )
+  }
+
+  /**
+   * Holds if this control check directly dominates `caller`.
+   */
+  predicate dominatesCaller(ExternalJob caller) {
+    this instanceof If and
+    (
+      caller.getIf() = this or
+      caller.getANeededJob().(LocalJob).getIf() = this or
+      caller.getANeededJob().(LocalJob).getAStep().getIf() = this
+    )
+    or
+    this instanceof Environment and
+    (
+      caller.getEnvironment() = this or
+      caller.getANeededJob().getEnvironment() = this
+    )
+    or
+    (this instanceof Run or this instanceof UsesStep) and
+    caller.getANeededJob().(LocalJob).getAStep() = this
+  }
+
+  abstract predicate protectsCategoryAndEvent(string category, string event);
+}
+
+/**
+ * Holds if this control check directly protects `caller`.
+ */
+bindingset[caller, event, category]
+private predicate protectedCaller(ExternalJob caller, Event event, string category) {
+  exists(ControlCheck check |
+    check.protectsCategoryAndEvent(category, event.getName()) and
+    check.getATriggerEvent() = event and
+    check.dominatesCaller(caller)
+  )
+}
+
+cached
+private newtype TCallerState =
+  MkCallerState(ExternalJob caller, Event event, string category) {
+    caller.getATriggerEvent() = event and
+    category = any_category()
+  }
+
+private class CallerState extends TCallerState, MkCallerState {
+  ExternalJob caller;
+  Event event;
+  string category;
+
+  CallerState() { this = MkCallerState(caller, event, category) }
+
+  ExternalJob getCaller() { result = caller }
+
+  Event getEvent() { result = event }
+
+  string getCategory() { result = category }
+
+  /**
+   * Gets an outer caller state if this caller is not protected.
+   */
+  CallerState getUnprotectedOuterState() {
+    not protectedCaller(this.getCaller(), this.getEvent(), this.getCategory()) and
+    result = MkCallerState(getAnOuterCaller(this.getCaller()), this.getEvent(), this.getCategory())
+  }
+
+  predicate isUnprotectedOutermost() {
+    not protectedCaller(this.getCaller(), this.getEvent(), this.getCategory()) and
+    not exists(getAnOuterCaller(this.getCaller()))
+  }
+
+  string toString() { result = caller + " / " + event + " / " + category }
+}
+
+/**
+ * Holds if there is a caller path from `caller` to an outer workflow that has no protection.
+ */
+bindingset[caller, event, category]
+private predicate unprotectedCallerChain(ExternalJob caller, Event event, string category) {
+  exists(CallerState start, CallerState outermost |
+    start = MkCallerState(caller, event, category) and
+    outermost = start.getUnprotectedOuterState*() and
+    outermost.isUnprotectedOutermost()
+  )
+}
+
+abstract class AssociationCheck extends ControlCheck {
+  // Checks if the actor is a MEMBER/OWNER the repo
+  // - they are effective against pull requests and workflow_run (since these are triggered by pull_requests) since they can control who is making the PR
+  // - they are not effective against issue_comment since the author of the comment may not be the same as the author of the PR
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = actor_is_attacker_event() and category = any_category()
+    or
+    event = actor_not_attacker_event() and category = non_toctou_category()
+  }
+}
+
+abstract class ActorCheck extends ControlCheck {
+  // checks for a specific actor
+  // - they are effective against pull requests and workflow_run (since these are triggered by pull_requests) since they can control who is making the PR
+  // - they are not effective against issue_comment since the author of the comment may not be the same as the author of the PR
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = actor_is_attacker_event() and category = any_category()
+    or
+    event = actor_not_attacker_event() and category = non_toctou_category()
+  }
+}
+
+abstract class RepositoryCheck extends ControlCheck {
+  // checks that the origin of the code is the same as the repository.
+  // for pull_requests, that means that it triggers only on local branches or repos from the same org
+  // - they are effective against pull requests/workflow_run since they can control where the code is coming from
+  // - they are not effective against issue_comment since the repository will always be the same
+}
+
+abstract class PermissionCheck extends ControlCheck {
+  // checks that the actor has a specific permission level
+  // - they are effective against pull requests/workflow_run since they can control who can make changes
+  // - they are not effective against issue_comment since the author of the comment may not be the same as the author of the PR
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = actor_is_attacker_event() and category = any_category()
+    or
+    event = actor_not_attacker_event() and category = non_toctou_category()
+  }
+}
+
+abstract class LabelCheck extends ControlCheck {
+  // checks if the issue/pull_request is labeled, which implies that it could have been approved
+  // - they dont protect against mutation attacks
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = actor_is_attacker_event() and category = any_category()
+    or
+    event = actor_not_attacker_event() and category = non_toctou_category()
+  }
+}
+
+/**
+ * A deployment environment that may serve as a sanitizer for
+ * various vulnerabilities.
+ *
+ * It is possible to customize which deployment environments apply. The default behavior
+ * of this model is for any environment to be considered a sanitizer.
+ * If values are provided then those names
+ * will be used to define the valid sanitizer set.
+ * To describe the situation where there is no acceptable sanitizer environment
+ * populate the predicate `enabledDeploymentEnvironmentDataModel` to contain a single empty string.
+ */
+class EnvironmentCheck extends ControlCheck instanceof Environment {
+  EnvironmentCheck() {
+    if enabledDeploymentEnvironmentDataModel(_)
+    then enabledDeploymentEnvironmentDataModel(this.(Environment).getName())
+    else this instanceof Environment
+  }
+
+  // Environment checks are not effective against any mutable attacks
+  // they do actually protect against untrusted code execution (sha)
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = [actor_is_attacker_event(), actor_not_attacker_event()] and
+    category = non_toctou_category()
+  }
+}
+
+abstract class CommentVsHeadDateCheck extends ControlCheck {
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    // by itself, this check is not effective against any attacks
+    event = actor_not_attacker_event() and category = toctou_category()
+  }
+}
+
+/* Specific implementations of control checks */
+class LabelIfCheck extends LabelCheck instanceof If {
+  LabelIfCheck() {
+    exists(string condition | condition = normalizeExpr(this.getCondition()) |
+      // eg: contains(github.event.pull_request.labels.*.name, 'safe to test')
+      condition.regexpMatch(".*(^|[^!])contains\\(\\s*github\\.event\\.pull_request\\.labels\\b.*")
+      or
+      // eg: github.event.label.name == 'safe to test'
+      condition.regexpMatch(".*\\bgithub\\.event\\.label\\.name\\s*==.*")
+    )
+  }
+}
+
+class ActorIfCheck extends ActorCheck instanceof If {
+  ActorIfCheck() {
+    // eg: github.actor == 'admin'
+    // eg: github.triggering_actor == 'admin'
+    exists(
+      normalizeExpr(this.getCondition())
+          .regexpFind(["\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",], _, _)
+    ) and
+    not normalizeExpr(this.getCondition()).matches("%[bot]%")
+  }
+}
+
+/**
+ * Gets a regular expression matching a condition on an actor field that is
+ * only populated for events whose payload contains the `context_prefix` context.
+ */
+private string eventPayloadActorFieldRegex(string context_prefix) {
+  context_prefix = "github.event.pull_request" and
+  result = "\\bgithub\\.event\\.pull_request\\.user\\.login\\b"
+  or
+  context_prefix = "github.event.head_commit" and
+  result = "\\bgithub\\.event\\.head_commit\\.author\\.name\\b"
+  or
+  context_prefix = "github.event.commits" and
+  result = "\\bgithub\\.event\\.commits.*\\.author\\.name\\b"
+  or
+  context_prefix = "github.event.sender" and
+  result = "\\bgithub\\.event\\.sender\\.login\\b"
+}
+
+/** An If node that checks an actor field from the event payload */
+class EventActorIfCheck extends ActorCheck instanceof If {
+  string context_prefix;
+
+  EventActorIfCheck() {
+    // eg: github.event.pull_request.user.login == 'admin'
+    exists(
+      normalizeExpr(this.getCondition())
+          .regexpFind(eventPayloadActorFieldRegex(context_prefix), _, _)
+    )
+  }
+
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    ActorCheck.super.protectsCategoryAndEvent(category, event) and
+    (
+      // the `sender` object is part of every webhook event payload
+      context_prefix = "github.event.sender"
+      or
+      // other actor fields only restrict events whose payload populates them.
+      // eg: `github.event.pull_request.user.login` cannot restrict the actor
+      // of an `issues` event since `github.event.pull_request` is not
+      // populated there, which makes the condition vacuous
+      contextTriggerDataModel(event, context_prefix)
+    )
+  }
+}
+
+class PullRequestTargetRepositoryIfCheck extends RepositoryCheck instanceof If {
+  PullRequestTargetRepositoryIfCheck() {
+    // eg: github.event.pull_request.head.repo.full_name == github.repository
+    exists(
+      normalizeExpr(this.getCondition())
+          // github.repository in a workflow_run event triggered by a pull request is the base repository
+          .regexpFind([
+              "\\bgithub\\.repository\\b", "\\bgithub\\.repository_owner\\b",
+              "\\bgithub\\.event\\.pull_request\\.head\\.repo\\.full_name\\b",
+              "\\bgithub\\.event\\.pull_request\\.head\\.repo\\.owner\\.name\\b",
+              "\\bgithub\\.event\\.workflow_run\\.head_repository\\.full_name\\b",
+              "\\bgithub\\.event\\.workflow_run\\.head_repository\\.owner\\.name\\b"
+            ], _, _)
+    )
+  }
+
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = "pull_request_target" and category = any_category()
+  }
+}
+
+class WorkflowRunRepositoryIfCheck extends RepositoryCheck instanceof If {
+  WorkflowRunRepositoryIfCheck() {
+    // eg: github.event.workflow_run.head_repository.full_name == github.repository
+    exists(
+      normalizeExpr(this.getCondition())
+          // github.repository in a workflow_run event triggered by a pull request is the base repository
+          .regexpFind([
+              "\\bgithub\\.event\\.workflow_run\\.head_repository\\.full_name\\b",
+              "\\bgithub\\.event\\.workflow_run\\.head_repository\\.owner\\.name\\b"
+            ], _, _)
+    )
+  }
+
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    event = "workflow_run" and category = any_category()
+  }
+}
+
+/**
+ * Gets a regular expression matching a condition on an author association field
+ * that is only populated for events whose payload contains the `context_prefix`
+ * context.
+ */
+private string eventPayloadAssociationFieldRegex(string context_prefix) {
+  context_prefix = "github.event.comment" and
+  result = "\\bgithub\\.event\\.comment\\.author_association\\b"
+  or
+  context_prefix = "github.event.issue" and
+  result = "\\bgithub\\.event\\.issue\\.author_association\\b"
+  or
+  context_prefix = "github.event.pull_request" and
+  result = "\\bgithub\\.event\\.pull_request\\.author_association\\b"
+}
+
+class AssociationIfCheck extends AssociationCheck instanceof If {
+  string context_prefix;
+
+  AssociationIfCheck() {
+    // eg: contains(fromJson('["MEMBER", "OWNER"]'), github.event.comment.author_association)
+    exists(
+      normalizeExpr(this.getCondition())
+          .regexpFind(eventPayloadAssociationFieldRegex(context_prefix), _, _)
+    )
+  }
+
+  override predicate protectsCategoryAndEvent(string category, string event) {
+    AssociationCheck.super.protectsCategoryAndEvent(category, event) and
+    // association fields only restrict events whose payload populates them
+    contextTriggerDataModel(event, context_prefix)
+  }
+}
+
+class AssociationActionCheck extends AssociationCheck instanceof UsesStep {
+  AssociationActionCheck() {
+    this.getCallee() = "TheModdingInquisition/actions-team-membership" and
+    (
+      not exists(this.getArgument("exit"))
+      or
+      this.getArgument("exit") = "true"
+    )
+    or
+    this.getCallee() = "actions/github-script" and
+    this.getArgument("script").splitAt("\n").matches("%getMembershipForUserInOrg%")
+    or
+    this.getCallee() = "octokit/request-action" and
+    this.getArgument("route").regexpMatch("GET.*(memberships).*")
+  }
+}
+
+class PermissionActionCheck extends PermissionCheck instanceof UsesStep {
+  PermissionActionCheck() {
+    this.getCallee() = "actions-cool/check-user-permission" and
+    (
+      // default permission level is write
+      not exists(this.getArgument("permission-level")) or
+      this.getArgument("require") = ["write", "admin"]
+    )
+    or
+    this.getCallee() = "sushichop/action-repository-permission" and
+    this.getArgument("required-permission") = ["write", "admin"]
+    or
+    this.getCallee() = "prince-chrismc/check-actor-permissions-action" and
+    this.getArgument("permission") = ["write", "admin"]
+    or
+    this.getCallee() = "lannonbr/repo-permission-check-action" and
+    this.getArgument("permission") = ["write", "admin"]
+    or
+    this.getCallee() = "xt0rted/slash-command-action" and
+    (
+      // default permission level is write
+      not exists(this.getArgument("permission-level")) or
+      this.getArgument("permission-level") = ["write", "admin"]
+    )
+    or
+    this.getCallee() = "actions/github-script" and
+    this.getArgument("script").splitAt("\n").matches("%getCollaboratorPermissionLevel%")
+    or
+    this.getCallee() = "octokit/request-action" and
+    this.getArgument("route").regexpMatch("GET.*(collaborators|permission).*")
+  }
+}
+
+class BashCommentVsHeadDateCheck extends CommentVsHeadDateCheck, Run {
+  BashCommentVsHeadDateCheck() {
+    // eg: if [[ $(date -d "$pushed_at" +%s) -gt $(date -d "$COMMENT_AT" +%s) ]]; then
+    exists(string cmd1, string cmd2 |
+      cmd1 = this.getScript().getACommand() and
+      cmd2 = this.getScript().getACommand() and
+      not cmd1 = cmd2 and
+      cmd1.toLowerCase().regexpMatch("date\\s+-d.*(commit|pushed|comment|commented)_at.*") and
+      cmd2.toLowerCase().regexpMatch("date\\s+-d.*(commit|pushed|comment|commented)_at.*")
+    )
+  }
+}

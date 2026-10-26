@@ -1,0 +1,2 @@
+query: Expressions/ExprHasNoEffect.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,2 @@
+| Foo.qll:1:1:3:3 | BlockComment | Block comment could be QLDoc for $@. | Foo.qll:1:1:22:2 | TopLevel | the file |
+| Foo.qll:10:1:10:24 | BlockComment | Block comment could be QLDoc for $@. | Foo.qll:11:7:11:9 | Class Foo | the below code |

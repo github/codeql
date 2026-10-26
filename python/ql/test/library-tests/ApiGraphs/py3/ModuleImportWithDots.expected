@@ -1,0 +1,5 @@
+moduleImportWithDots
+doesntFullyWork
+works
+| test.py:25:6:25:18 | ControlFlowNode for Attribute() |
+| test.py:28:10:28:17 | ControlFlowNode for method() |

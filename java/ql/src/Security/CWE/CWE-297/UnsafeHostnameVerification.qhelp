@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If a <code>HostnameVerifier</code> always returns <code>true</code> it will not verify the hostname at all.
+This stops Transport Layer Security (TLS) providing any security and allows an attacker to perform a man-in-the-middle attack against the application.
+</p>
+
+<p>
+An attack might look like this:
+</p>
+
+<ol>
+  <li>The program connects to <code>https://example.com</code>.</li>
+  <li>The attacker intercepts this connection and presents an apparently-valid certificate of their choosing.</li>
+  <li>The <code>TrustManager</code> of the program verifies that the certificate has been issued by a trusted certificate authority.</li>
+  <li>The Java HTTPS library checks whether the certificate has been issued for the host <code>example.com</code>. This check fails because the certificate has been issued for a domain controlled by the attacker, for example: <code>malicious.domain</code>.</li>
+  <li>The HTTPS library wants to reject the certificate because the hostname does not match. Before doing this it checks whether a <code>HostnameVerifier</code> exists.</li>
+  <li>Your <code>HostnameVerifier</code> is called which returns <code>true</code> for any certificate so also for this one.</li>
+  <li>The program proceeds with the connection since your <code>HostnameVerifier</code> accepted it.</li>
+  <li>The attacker can now read the data your program sends to <code>https://example.com</code> 
+and/or alter its replies while the program thinks the connection is secure.</li>
+</ol>
+
+</overview>
+
+<recommendation>
+<p>
+Do not use an open <code>HostnameVerifier</code>.
+If you have a configuration problem with TLS/HTTPS, you should always solve the configuration problem instead of using an open verifier.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In the first (bad) example, the <code>HostnameVerifier</code> always returns <code>true</code>.
+This allows an attacker to perform a man-in-the-middle attack, because any certificate is accepted despite an incorrect hostname.
+In the second (good) example, the <code>HostnameVerifier</code> only returns <code>true</code> when the certificate has been correctly checked.
+</p>
+<sample src="UnsafeHostnameVerification.java" />
+</example>
+
+<references>
+<li>Android developers: <a href="https://developer.android.com/training/articles/security-ssl">Security with HTTPS and SSL</a>.</li>
+<li>Terse systems blog: <a href="https://tersesystems.com/blog/2014/03/23/fixing-hostname-verification/">Fixing Hostname Verification</a>.</li>
+</references>
+</qhelp>

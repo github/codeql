@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "Internal error: com.semmle.util.exception.CatastrophicError: The TypeScript parser wrapper crashed with exit code 1",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "javascript",
+    "id": "js/internal-error",
+    "name": "Internal error"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

@@ -1,0 +1,2 @@
+| inout Int | getName: | inout Int | getCanonicalType: | inout Int | getObjectType: | Int |
+| inout S | getName: | inout S | getCanonicalType: | inout S | getObjectType: | S |

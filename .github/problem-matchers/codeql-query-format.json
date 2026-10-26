@@ -1,0 +1,14 @@
+{
+    "problemMatcher": [
+        {
+            "owner": "codeql-query-format",
+            "pattern": [
+                {
+                    "regexp": "^((.*) would change by autoformatting\\.)$",
+                    "file": 2,
+                    "message": 1
+                }
+            ]
+        }
+    ]
+}

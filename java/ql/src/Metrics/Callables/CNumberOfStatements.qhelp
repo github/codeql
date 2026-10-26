@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+This metric measures the number of statements for each method.
+</p>
+
+<p>
+Methods that consist of too many statements are hard to understand,
+difficult to check and a common source of bugs (particularly towards
+the end of the method, since few people ever read that far). They often
+lack cohesion because they are trying to do too many things at once, and
+should be refactored into multiple, smaller methods. As a rough guide,
+methods should be able to fit on a single screen or side of A4. Anything
+longer than that increases the risk of introducing new defects during routine code changes.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Over-long methods should be broken up into smaller ones by extracting
+parts of their functionality out into auxiliary methods, using the
+technique that Martin Fowler's <em>Refactoring</em> book calls 'Extract
+Method' (see References).
+</p>
+
+
+
+</recommendation>
+<references>
+
+
+<li>
+M. Fowler. <em>Refactoring</em> pp. 89-95. Addison-Wesley, 1999.
+</li>
+
+
+</references>
+</qhelp>

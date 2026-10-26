@@ -1,0 +1,5 @@
+reverseRead
+| pkg1/tst.go:43:6:43:6 | t | Origin of readStep is missing a PostUpdateNode. |
+| pkg1/tst.go:46:6:46:6 | t | Origin of readStep is missing a PostUpdateNode. |
+| pkg1/tst.go:53:6:53:7 | t2 | Origin of readStep is missing a PostUpdateNode. |
+| pkg1/tst.go:55:6:55:7 | t2 | Origin of readStep is missing a PostUpdateNode. |

@@ -1,0 +1,4 @@
+query: Security/CWE/CWE-094/GroovyInjection.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql

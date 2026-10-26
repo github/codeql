@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", False, "GetResult", "(System.Int16)", "", "Argument[this].SyntheticField[System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1._result]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", False, "SetException", "(System.Exception)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", False, "SetResult", "(TResult)", "", "Argument[0]", "Argument[this].SyntheticField[System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1._result]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Threading.Tasks.Sources", "IValueTaskSource", "GetResult", "(System.Int16)", "summary", "df-generated"]
+      - ["System.Threading.Tasks.Sources", "IValueTaskSource", "GetStatus", "(System.Int16)", "summary", "df-generated"]
+      - ["System.Threading.Tasks.Sources", "IValueTaskSource", "OnCompleted", "(System.Action<System.Object>,System.Object,System.Int16,System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags)", "summary", "df-generated"]
+      - ["System.Threading.Tasks.Sources", "IValueTaskSource<TResult>", "GetResult", "(System.Int16)", "summary", "df-generated"]
+      - ["System.Threading.Tasks.Sources", "IValueTaskSource<TResult>", "GetStatus", "(System.Int16)", "summary", "df-generated"]
+      - ["System.Threading.Tasks.Sources", "IValueTaskSource<TResult>", "OnCompleted", "(System.Action<System.Object>,System.Object,System.Int16,System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags)", "summary", "df-generated"]
+      - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", "GetStatus", "(System.Int16)", "summary", "df-generated"]
+      - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", "OnCompleted", "(System.Action<System.Object>,System.Object,System.Int16,System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags)", "summary", "df-generated"]
+      - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", "Reset", "()", "summary", "df-generated"]
+      - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", "get_Version", "()", "summary", "df-generated"]

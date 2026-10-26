@@ -1,0 +1,2 @@
+query: DeadCode/UselessParameter.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

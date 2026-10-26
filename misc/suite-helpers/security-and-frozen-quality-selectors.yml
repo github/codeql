@@ -1,0 +1,5 @@
+- description: Selectors for selecting the non-quality queries for the security-and-quality queries for a language
+- apply: security-extended-selectors.yml
+- exclude:
+    tags contain:
+      - 'model-generator'

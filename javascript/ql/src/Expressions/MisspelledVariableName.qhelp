@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If a reference to a local variable is accidentally misspelled, it will be interpreted
+as a reference to an implicitly declared global variable, which may indicate a bug.
+Even if this is intentional, it should be avoided as it makes the code hard to read.
+</p>
+</overview>
+<recommendation>
+
+<p>
+Correct the misspelling.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following code snippet attempts to loop over an array <code>ids</code> in order
+to update DOM nodes referenced by the elements of the array. Note, however, that the
+upper bound of the loop is specified as <code>lenght</code>, a typo for the local
+variable <code>length</code>. At runtime, <code>lenght</code> will evaluate to
+<code>undefined</code>, so the check <code>i &lt; lenght</code> will always fail,
+and the loop body is never executed.
+</p>
+
+<sample src="examples/MisspelledVariableName.js" />
+
+<p>
+The misspelling should be corrected by replacing <code>lenght</code> with
+<code>length</code>.
+</p>
+</example>
+
+<references>
+<li>D. Crockford: <i>JavaScript: The Good Parts</i>, Appendix A: Awful Parts, Global Variables. O'Reilly, 2008.</li>
+</references>
+</qhelp>

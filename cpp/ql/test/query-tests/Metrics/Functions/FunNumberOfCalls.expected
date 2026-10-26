@@ -1,0 +1,8 @@
+| functions.cpp:4:5:4:6 | g1 | 0 |
+| functions.cpp:9:5:9:6 | g2 | 2 |
+| functions.cpp:13:5:13:5 | h | 0 |
+| functions.cpp:24:6:24:31 | uncalled_with_default_args | 2 |
+| functions.cpp:26:6:26:40 | called_with_default_args_defaulting | 2 |
+| functions.cpp:27:6:27:38 | call_with_default_args_defaulting | 1 |
+| functions.cpp:31:6:31:39 | called_with_default_args_specified | 2 |
+| functions.cpp:32:6:32:37 | call_with_default_args_specified | 1 |

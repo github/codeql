@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: immutableActionsDataModel
+    # Since the Immutable Actions feature is not yet available to customers, we won't alert about
+    # any unversioned immutable action references for now. Within GitHub, we'll include the
+    # `codeql/immutable-actions-list` model pack, which will provide the necessary list of actions
+    # for internal use. Once the feature is available to customers, we'll move that list back into
+    # this file.
+    data: []

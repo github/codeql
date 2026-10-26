@@ -1,0 +1,3 @@
+| tst.js:5:2:5:5 | else | This else branch belongs to $@, but its indentation suggests it belongs to $@. | tst.js:3:3:3:4 | if | this if statement | tst.js:2:2:2:3 | if | this other if statement |
+| tst.js:21:4:21:7 | else | This else branch belongs to $@, but its indentation suggests it belongs to $@. | tst.js:19:3:19:4 | if | this if statement | tst.js:18:2:18:3 | if | this other if statement |
+| tst.js:40:2:40:5 | else | This else branch belongs to $@, but its indentation suggests it belongs to $@. | tst.js:38:3:38:4 | if | this if statement | tst.js:37:7:37:8 | if | this other if statement |

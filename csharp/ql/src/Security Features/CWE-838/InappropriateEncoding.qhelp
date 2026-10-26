@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Using an inappropriate encoding may yield unintended results. For example, using URL encoding
+for HTML content may result in an incorrectly rendered web page. Using an inappropriate encoding may
+further pose a security risk when a remote user can control the value being encoded. For example,
+redirecting to an HTML encoded URL provided by a remote user can facilitate phishing attacks.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Use the appropriate encoding. For example, use HTML encoding for HTML entities, URL encoding for
+URLs, etc. If possible, avoid writing custom encoding/escaping functionality, and use predefined
+functionality such as <code>HttpUtility.HtmlEncode()</code> or <code>SqlParameter</code>s instead.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows two methods where a value is encoded before being written to an
+HTML page. In the <code>Bad</code> method, URL encoding is incorrectly used. In the
+<code>Good</code> method, HTML encoding is correctly used.
+</p>
+
+<sample src="HtmlEncode.cs" />
+
+<p>
+The following example shows two methods where a value is encoded before being used in a
+URL redirect. In the <code>Bad</code> method, HTML encoding is incorrectly used. In the
+<code>Good</code> method, URL encoding is correctly used.
+</p>
+
+<sample src="UrlEncode.cs" />
+
+<p>
+The following example shows two methods where a value is used in a SQL query. In the
+<code>Bad</code> method, the value is insufficiently encoded by only escaping double
+quotes. In the <code>Good</code> method, encoding is handled by using a SQL parameter.
+</p>
+
+<sample src="SqlEncode.cs" />
+
+</example>
+<references>
+
+<li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/system.web.httputility(v=vs.110).aspx">HttpUtility Class</a>, <a href="https://msdn.microsoft.com/en-us/library/system.web.httpserverutility(v=vs.110).aspx">HttpServerUtility Class</a>, <a href="https://msdn.microsoft.com/en-us/library/system.net.webutility(v=vs.110).aspx">WebUtility Class</a>, <a href="https://msdn.microsoft.com/en-us/library/ff648339.aspx">How To: Protect From SQL Injection in ASP.NET</a>.</li>
+
+</references>
+</qhelp>

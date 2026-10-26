@@ -1,0 +1,8 @@
+| 1 | AnnAssign | x | int | IntegerLiteral |
+| 2 | AnnAssign | y | Thing | something() |
+| 3 | AnnAssign | z | Any | ---- |
+| 4 | AnnAssign | Attribute | complex | ---- |
+| 5 | AnnAssign | Attribute | not_simple | None |
+| 8 | AnnAssign | a | int | IntegerLiteral |
+| 9 | AnnAssign | b | Thing | something() |
+| 10 | AnnAssign | c | Any | ---- |

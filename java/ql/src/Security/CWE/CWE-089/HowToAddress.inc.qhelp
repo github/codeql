@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<fragment>
+<p>Usually, it is better to use a SQL prepared statement than to build a
+complete SQL query with string concatenation. A prepared statement can
+include a wildcard, written as a question mark (?), for each part of
+the SQL query that is expected to be filled in by a different value
+each time it is run. When the query is later executed, a value must be
+supplied for each wildcard in the query.</p>
+
+<p>In the Java Persistence Query Language, it is better to use
+queries with parameters than to build a complete query with string concatenation.
+A Java Persistence query can include a parameter placeholder for each part of the query
+that is expected to be filled in by a different value when run.
+A parameter placeholder may be indicated by a colon (:) followed by a parameter name,
+or by a question mark (?) followed by an integer position.
+When the query is later executed, a value must be supplied for each parameter in the query,
+using the <code>setParameter</code> method.
+Specifying the query using the <code>@NamedQuery</code> annotation introduces an additional
+level of safety: the query must be a constant string literal, preventing construction
+by string concatenation, and the only way to fill in
+values for parts of the query is by setting positional parameters.</p>
+
+<p>It is good practice to use prepared statements (in SQL) or query parameters
+(in the Java Persistence Query Language) for supplying parameter values to a query,
+whether or not any of the parameters are directly traceable to user input.
+Doing so avoids any need to worry about quoting and escaping.</p>
+
+</fragment>
+</qhelp>

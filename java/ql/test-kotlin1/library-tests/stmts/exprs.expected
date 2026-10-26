@@ -1,0 +1,108 @@
+| stmts.kt:0:0:0:0 | component1(...) | MethodCall |
+| stmts.kt:0:0:0:0 | component2(...) | MethodCall |
+| stmts.kt:0:0:0:0 | tmp3_loop_parameter | VarAccess |
+| stmts.kt:2:1:20:1 | int | TypeAccess |
+| stmts.kt:2:20:2:25 | int | TypeAccess |
+| stmts.kt:2:28:2:33 | int | TypeAccess |
+| stmts.kt:3:5:6:5 | when ... | WhenExpr |
+| stmts.kt:3:8:3:8 | x | VarAccess |
+| stmts.kt:3:8:3:12 | ... > ... | GTExpr |
+| stmts.kt:3:12:3:12 | y | VarAccess |
+| stmts.kt:4:15:4:15 | x | VarAccess |
+| stmts.kt:4:15:4:19 | ... < ... | LTExpr |
+| stmts.kt:4:19:4:19 | y | VarAccess |
+| stmts.kt:5:12:6:5 | true | BooleanLiteral |
+| stmts.kt:7:11:7:11 | x | VarAccess |
+| stmts.kt:7:11:7:15 | ... > ... | GTExpr |
+| stmts.kt:7:15:7:15 | y | VarAccess |
+| stmts.kt:8:16:8:16 | x | VarAccess |
+| stmts.kt:9:11:9:11 | x | VarAccess |
+| stmts.kt:9:11:9:15 | ... < ... | LTExpr |
+| stmts.kt:9:15:9:15 | y | VarAccess |
+| stmts.kt:10:16:10:16 | y | VarAccess |
+| stmts.kt:13:16:13:16 | y | VarAccess |
+| stmts.kt:14:13:14:13 | x | VarAccess |
+| stmts.kt:14:13:14:17 | ... < ... | LTExpr |
+| stmts.kt:14:17:14:17 | y | VarAccess |
+| stmts.kt:15:9:15:9 | z | LocalVariableDeclExpr |
+| stmts.kt:15:13:15:13 | 3 | IntegerLiteral |
+| stmts.kt:17:9:17:10 | q2 | LocalVariableDeclExpr |
+| stmts.kt:17:26:17:58 | true | BooleanLiteral |
+| stmts.kt:17:26:17:58 | when ... | WhenExpr |
+| stmts.kt:17:29:17:32 | true | BooleanLiteral |
+| stmts.kt:17:37:17:37 | z | VarAccess |
+| stmts.kt:17:37:17:41 | ...=... | AssignExpr |
+| stmts.kt:17:41:17:41 | 4 | IntegerLiteral |
+| stmts.kt:17:52:17:52 | z | VarAccess |
+| stmts.kt:17:52:17:56 | ...=... | AssignExpr |
+| stmts.kt:17:56:17:56 | 5 | IntegerLiteral |
+| stmts.kt:18:9:18:10 | q3 | LocalVariableDeclExpr |
+| stmts.kt:18:26:18:56 | true | BooleanLiteral |
+| stmts.kt:18:26:18:56 | when ... | WhenExpr |
+| stmts.kt:18:29:18:32 | true | BooleanLiteral |
+| stmts.kt:18:37:18:37 | z | VarAccess |
+| stmts.kt:18:37:18:41 | ...=... | AssignExpr |
+| stmts.kt:18:41:18:41 | 4 | IntegerLiteral |
+| stmts.kt:18:52:18:52 | z | VarAccess |
+| stmts.kt:18:52:18:56 | ...=... | AssignExpr |
+| stmts.kt:18:56:18:56 | 5 | IntegerLiteral |
+| stmts.kt:19:12:19:12 | x | VarAccess |
+| stmts.kt:19:12:19:16 | ... + ... | AddExpr |
+| stmts.kt:19:16:19:16 | y | VarAccess |
+| stmts.kt:22:1:44:1 | Unit | TypeAccess |
+| stmts.kt:22:11:22:16 | int | TypeAccess |
+| stmts.kt:22:19:22:24 | int | TypeAccess |
+| stmts.kt:23:18:23:18 | x | VarAccess |
+| stmts.kt:23:18:23:24 | ... < ... | LTExpr |
+| stmts.kt:23:22:23:24 | 100 | IntegerLiteral |
+| stmts.kt:25:13:25:33 | when ... | WhenExpr |
+| stmts.kt:25:17:25:17 | x | VarAccess |
+| stmts.kt:25:17:25:21 | ... > ... | GTExpr |
+| stmts.kt:25:21:25:21 | y | VarAccess |
+| stmts.kt:26:18:26:18 | y | VarAccess |
+| stmts.kt:26:18:26:24 | ... > ... | GTExpr |
+| stmts.kt:26:22:26:24 | 100 | IntegerLiteral |
+| stmts.kt:28:11:28:11 | x | VarAccess |
+| stmts.kt:28:11:28:15 | ... > ... | GTExpr |
+| stmts.kt:28:15:28:15 | y | VarAccess |
+| stmts.kt:31:10:31:10 | i | LocalVariableDeclExpr |
+| stmts.kt:31:15:31:15 | x | VarAccess |
+| stmts.kt:31:15:31:18 | rangeTo(...) | MethodCall |
+| stmts.kt:31:18:31:18 | y | VarAccess |
+| stmts.kt:32:9:32:24 | when ... | WhenExpr |
+| stmts.kt:32:13:32:13 | x | VarAccess |
+| stmts.kt:32:13:32:17 | ... > ... | GTExpr |
+| stmts.kt:32:17:32:17 | y | VarAccess |
+| stmts.kt:35:18:35:18 | i | LocalVariableDeclExpr |
+| stmts.kt:35:23:35:23 | x | VarAccess |
+| stmts.kt:35:23:35:26 | rangeTo(...) | MethodCall |
+| stmts.kt:35:26:35:26 | y | VarAccess |
+| stmts.kt:37:13:37:36 | when ... | WhenExpr |
+| stmts.kt:37:17:37:17 | x | VarAccess |
+| stmts.kt:37:17:37:21 | ... > ... | GTExpr |
+| stmts.kt:37:21:37:21 | y | VarAccess |
+| stmts.kt:38:18:38:18 | y | VarAccess |
+| stmts.kt:38:18:38:24 | ... > ... | GTExpr |
+| stmts.kt:38:22:38:24 | 100 | IntegerLiteral |
+| stmts.kt:41:11:41:11 | v | LocalVariableDeclExpr |
+| stmts.kt:41:13:41:13 | i | LocalVariableDeclExpr |
+| stmts.kt:41:19:41:36 | tmp3_loop_parameter | LocalVariableDeclExpr |
+| stmts.kt:41:19:41:36 | tmp3_loop_parameter | VarAccess |
+| stmts.kt:41:20:41:20 | x | VarAccess |
+| stmts.kt:41:20:41:23 | rangeTo(...) | MethodCall |
+| stmts.kt:41:20:41:36 | CollectionsKt | TypeAccess |
+| stmts.kt:41:20:41:36 | Integer | TypeAccess |
+| stmts.kt:41:20:41:36 | withIndex(...) | MethodCall |
+| stmts.kt:41:23:41:23 | y | VarAccess |
+| stmts.kt:42:9:42:24 | when ... | WhenExpr |
+| stmts.kt:42:13:42:13 | x | VarAccess |
+| stmts.kt:42:13:42:17 | ... > ... | GTExpr |
+| stmts.kt:42:17:42:17 | y | VarAccess |
+| stmts.kt:46:1:56:1 | int | TypeAccess |
+| stmts.kt:48:15:48:30 | Exception | TypeAccess |
+| stmts.kt:48:15:48:30 | new Exception(...) | ClassInstanceExpr |
+| stmts.kt:48:25:48:29 | "Foo" | StringLiteral |
+| stmts.kt:50:12:50:23 | Exception | TypeAccess |
+| stmts.kt:50:12:50:23 | e | LocalVariableDeclExpr |
+| stmts.kt:51:16:51:16 | 1 | IntegerLiteral |
+| stmts.kt:54:16:54:16 | 2 | IntegerLiteral |

@@ -1,0 +1,73 @@
+diff --git a/xtask/src/codegen/grammar.rs b/xtask/src/codegen/grammar.rs
+index 0aad1e2..68f679f 100644
+--- a/xtask/src/codegen/grammar.rs
++++ b/xtask/src/codegen/grammar.rs
+@@ -3,6 +3,10 @@
+ //! Specifically, it generates the `SyntaxKind` enum and a number of newtype
+ //! wrappers around `SyntaxNode` which implement `syntax::AstNode`.
+ 
++#![allow(warnings)]
++#![allow(clippy)]
++#![cfg_attr(any(), rustfmt::skip)]
++
+ use std::{
+     collections::{BTreeSet, HashSet},
+     fmt::Write,
+@@ -21,7 +25,7 @@ use crate::{
+     project_root,
+ };
+ 
+-mod ast_src;
++pub mod ast_src;
+ use self::ast_src::{AstEnumSrc, AstNodeSrc, AstSrc, Cardinality, Field, KindsSrc};
+ 
+ pub(crate) fn generate(check: bool) {
+@@ -775,7 +779,7 @@ fn pluralize(s: &str) -> String {
+ }
+ 
+ impl Field {
+-    fn is_many(&self) -> bool {
++    pub fn is_many(&self) -> bool {
+         matches!(self, Field::Node { cardinality: Cardinality::Many, .. })
+     }
+     fn token_kind(&self) -> Option<proc_macro2::TokenStream> {
+@@ -787,7 +791,7 @@ impl Field {
+             _ => None,
+         }
+     }
+-    fn method_name(&self) -> String {
++    pub fn method_name(&self) -> String {
+         match self {
+             Field::Token { name, token, .. } => {
+                 if let Some(name) = name {
+@@ -836,7 +840,7 @@ impl Field {
+             }
+         }
+     }
+-    fn ty(&self) -> proc_macro2::Ident {
++    pub fn ty(&self) -> proc_macro2::Ident {
+         match self {
+             Field::Token { .. } => format_ident!("SyntaxToken"),
+             Field::Node { ty, .. } => format_ident!("{}", ty),
+@@ -849,7 +853,7 @@ fn clean_token_name(name: &str) -> String {
+     if cleaned.is_empty() { name.to_owned() } else { cleaned.to_owned() }
+ }
+ 
+-fn lower(grammar: &Grammar) -> AstSrc {
++pub fn lower(grammar: &Grammar) -> AstSrc {
+     let mut res = AstSrc {
+         tokens:
+             "Whitespace Comment String ByteString CString IntNumber FloatNumber Char Byte Ident"
+diff --git a/xtask/src/codegen/grammar/ast_src.rs b/xtask/src/codegen/grammar/ast_src.rs
+index 1ae139f..d4d791e 100644
+--- a/xtask/src/codegen/grammar/ast_src.rs
++++ b/xtask/src/codegen/grammar/ast_src.rs
+@@ -1,5 +1,8 @@
+ //! Defines input for code generation process.
+ 
++#![allow(clippy)]
++#![cfg_attr(any(), rustfmt::skip)]
++
+ use quote::ToTokens;
+ 
+ use crate::codegen::grammar::to_upper_snake_case;

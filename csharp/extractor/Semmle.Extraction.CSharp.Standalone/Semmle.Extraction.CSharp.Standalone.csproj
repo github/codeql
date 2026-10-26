@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+		<WarningsAsErrors />
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj" />
+		<ProjectReference Include="..\Semmle.Extraction.CSharp.DependencyFetching\Semmle.Extraction.CSharp.DependencyFetching.csproj" />
+		<ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
+	</ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>

@@ -1,0 +1,4 @@
+| file://:0:0:0:0 | __va_list_tag | 1 distinct class(es) called __va_list_tag |
+| main2.cpp:7:7:7:7 | C | 2 distinct class(es) called C |
+| main2.cpp:7:7:7:7 | C | 2 distinct class(es) called C |
+| main2.cpp:15:7:15:7 | D | 1 distinct class(es) called D |

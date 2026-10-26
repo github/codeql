@@ -1,0 +1,1 @@
+| imports_test.py:22:1:22:32 | from module_without_all import * | Import pollutes the enclosing namespace, as the imported module $@ does not define '__all__'. | module_without_all.py:0:0:0:0 | Module module_without_all | module_without_all |

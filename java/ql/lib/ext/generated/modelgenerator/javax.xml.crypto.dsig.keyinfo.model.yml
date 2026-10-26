@@ -1,0 +1,49 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfo", True, "getContent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfo", True, "getId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "getInstance", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.mechanismType]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "getInstance", "(String,Provider)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.mechanismType]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "getInstance", "(String,Provider)", "", "Argument[1]", "ReturnValue.SyntheticField[javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.provider]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "getInstance", "(String,String)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.mechanismType]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "getMechanismType", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.mechanismType]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "getProvider", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.provider]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newKeyInfo", "(List)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newKeyInfo", "(List,String)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newKeyInfo", "(List,String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newKeyName", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newKeyValue", "(PublicKey)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newPGPData", "(byte[])", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newPGPData", "(byte[],List)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newPGPData", "(byte[],List)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newPGPData", "(byte[],byte[],List)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newPGPData", "(byte[],byte[],List)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newPGPData", "(byte[],byte[],List)", "", "Argument[2].Element", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newRetrievalMethod", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newRetrievalMethod", "(String,String,List)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newRetrievalMethod", "(String,String,List)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newRetrievalMethod", "(String,String,List)", "", "Argument[2].Element", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newX509Data", "(List)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", True, "newX509IssuerSerial", "(String,BigInteger)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyName", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyValue", True, "getPublicKey", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "PGPData", True, "getExternalElements", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "PGPData", True, "getKeyId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "PGPData", True, "getKeyPacket", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "RetrievalMethod", True, "dereference", "(XMLCryptoContext)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "RetrievalMethod", True, "dereference", "(XMLCryptoContext)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "RetrievalMethod", True, "getTransforms", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "X509Data", True, "getContent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "X509IssuerSerial", True, "getIssuerName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", "getInstance", "()", "summary", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", "getURIDereferencer", "()", "summary", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", "isFeatureSupported", "(String)", "summary", "df-generated"]
+      - ["javax.xml.crypto.dsig.keyinfo", "KeyInfoFactory", "unmarshalKeyInfo", "(XMLStructure)", "summary", "df-generated"]

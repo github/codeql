@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["gr2m/create-or-update-pull-request-action", "*", "input.branch", "command-injection", "manual"]
+      - ["gr2m/create-or-update-pull-request-action", "*", "input.path", "command-injection", "manual"]
+      - ["gr2m/create-or-update-pull-request-action", "*", "input.commit-message", "command-injection", "manual"]
+      - ["gr2m/create-or-update-pull-request-action", "*", "input.author", "command-injection", "manual"]

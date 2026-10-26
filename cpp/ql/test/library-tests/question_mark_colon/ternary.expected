@@ -1,0 +1,2 @@
+| question_mark_colon.c:6:9:6:21 | ... ? ... : ... | question_mark_colon.c:6:9:6:9 | call to f | question_mark_colon.c:6:9:6:9 | call to f | question_mark_colon.c:6:17:6:21 | str |
+| question_mark_colon.c:7:9:7:23 | ... ? ... : ... | question_mark_colon.c:7:9:7:9 | call to f | question_mark_colon.c:7:15:7:17 | a | question_mark_colon.c:7:21:7:23 | b |

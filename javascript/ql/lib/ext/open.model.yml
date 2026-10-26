@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["open", "Argument[0]", "path-injection"]
+      - ["open", "Member[openApp].Argument[0]", "path-injection"]

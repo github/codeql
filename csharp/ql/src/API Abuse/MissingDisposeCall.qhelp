@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Classes that implement <code>IDisposable</code> and have members of <code>IDisposable</code> type should
+dispose those members in their <code>Dispose()</code> method.</p>
+
+</overview>
+<recommendation>
+<p>Add a call to <code>m.Dispose()</code> in your <code>Dispose</code> method for each member <code>m</code> that implements <code>IDisposable</code>.</p>
+
+</recommendation>
+<example>
+<p>In this example, the class <code>Bad</code> contains two disposable fields <code>stream1</code> and
+<code>stream2</code>, but only <code>stream1</code> is disposed in <code>Bad</code>'s <code>Dispose()</code>
+method.
+</p>
+<sample src="MissingDisposeCallBad.cs" />
+
+<p>
+In the revised example, both <code>stream1</code> and <code>stream2</code> are disposed.
+</p>
+<sample src="MissingDisposeCallGood.cs" />
+</example>
+<references>
+
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/system.idisposable.aspx">IDisposable Interface</a>.</li>
+
+</references>
+</qhelp>

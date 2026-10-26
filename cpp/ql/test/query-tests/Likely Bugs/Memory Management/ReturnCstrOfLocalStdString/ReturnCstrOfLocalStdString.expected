@@ -1,0 +1,3 @@
+| test.cpp:24:3:24:26 | return ... | Return value may contain a dangling pointer to $@. | test.cpp:23:24:23:37 | call to basic_string | this local std::string |
+| test.cpp:32:3:32:44 | return ... | Return value may contain a dangling pointer to $@. | test.cpp:32:10:32:35 | call to basic_string | this local std::string |
+| test.cpp:45:3:45:42 | return ... | Return value may contain a dangling pointer to $@. | test.cpp:44:22:44:35 | call to basic_string | this local std::string |

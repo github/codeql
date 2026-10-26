@@ -1,0 +1,2 @@
+query: Dead Code/NonAssignedFields.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

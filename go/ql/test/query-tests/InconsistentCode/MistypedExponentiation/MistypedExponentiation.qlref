@@ -1,0 +1,2 @@
+query: InconsistentCode/MistypedExponentiation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

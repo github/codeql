@@ -1,0 +1,2 @@
+query: ASP/NonInternationalizedText.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

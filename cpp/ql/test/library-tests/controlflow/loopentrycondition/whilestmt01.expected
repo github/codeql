@@ -1,0 +1,3 @@
+| whilestmt.cpp:6:5:8:5 | while (...) ... |
+| whilestmt.cpp:31:9:33:9 | while (...) ... |
+| whilestmt.cpp:52:5:54:5 | while (...) ... |

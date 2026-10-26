@@ -1,0 +1,2 @@
+query: Declarations/DeclBeforeUse.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

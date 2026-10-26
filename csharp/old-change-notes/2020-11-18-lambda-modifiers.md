@@ -1,0 +1,2 @@
+lgtm,codescanning
+* The `AnonymousFunctionExpr` class now extends `Modifiable`. This change allows storing the `async` modifier for lambdas, which was missing before, and the `static` modifier, which was added in C# 9.

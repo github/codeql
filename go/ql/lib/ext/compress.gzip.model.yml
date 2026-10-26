@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["compress/gzip", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["compress/gzip", "Reader", True, "Reset", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["compress/gzip", "Writer", True, "Reset", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]

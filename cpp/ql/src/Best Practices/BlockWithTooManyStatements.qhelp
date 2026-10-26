@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds blocks of code that have too many complex statements, 
+such as branching statements (<code>if</code>, <code>switch</code>), and loops (<code>for</code>, <code>while</code>).
+</p>
+
+<p>
+Blocks with too many consecutive statements are candidates for refactoring. 
+Only complex statements are counted here (eg. for, while, switch ...).
+The top-level logic will be clearer if each complex statement is extracted to a function.
+</p>
+
+</overview>
+<recommendation>
+<p>It is often the case that each consecutive complex statement performs a dedicated separate task. It is a very common case that each complex statement is actually commented with a description of the task. Extract each such task into its own function for improved readability and to promote reuse.</p>
+
+</recommendation>
+<references>
+
+<li>
+  M. Fowler. <em>Refactoring</em> Addison-Wesley, 1999.
+</li>
+<li>
+  <a href="https://en.wikipedia.org/wiki/Code_refactoring">Wikipedia: Code refactoring</a>
+</li>
+<li>
+  Microsoft Patterns &amp; Practices Team. <a href="http://msdn.microsoft.com/en-us/library/ee658117.aspx">Architectural Patterns and Styles</a> <em>Microsoft Application Architecture Guide, 2nd Edition.</em> Microsoft Press, 2009.
+</li>
+
+
+
+
+
+
+</references>
+</qhelp>

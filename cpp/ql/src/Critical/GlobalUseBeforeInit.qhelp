@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds calls to functions that use a global variable before the variable has been initialized. 
+Not all compilers generate code that zero-out memory, especially when optimizations are enabled or the compiler 
+is not compliant with the latest language standards. Accessing uninitialized memory will lead to undefined results.
+</p>
+
+<include src="dataFlowWarning.inc.qhelp" />
+</overview>
+
+<recommendation>
+<p>
+Initialize the global variable. If no constant can be used for initialization, ensure that all accesses to the variable occur after
+the initialization code is executed.
+</p>
+</recommendation>
+<example>
+<p>
+In the example below, <code>callCtr</code> is wrongly used before it has been initialized.
+</p>
+<sample src="GlobalUseBeforeInit.cpp" />
+</example>
+
+<references>
+<li>SEI CERT C++ Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/EXP53-CPP.+Do+not+read+uninitialized+memory">EXP53-CPP. Do not read uninitialized memory</a>.</li>
+</references>
+</qhelp>

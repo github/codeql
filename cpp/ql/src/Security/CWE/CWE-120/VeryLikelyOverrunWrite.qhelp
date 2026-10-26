@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The program performs a buffer copy or write operation with no upper limit on the size of the copy. By analyzing the bounds of the expressions involved, it appears that certain inputs will cause a buffer overflow to occur in this case.  In addition to causing program instability, techniques exist which may allow an attacker to use this vulnerability to execute arbitrary code.</p>
+
+</overview>
+<include src="OverrunWriteRecommendation.inc.qhelp" />
+<example>
+<sample src="VeryLikelyOverrunWrite.c" />
+
+<p>In this example, the call to <code>sprintf</code> writes a message of 14 characters (including the terminating null) plus the length of the string conversion of `userId` into a buffer with space for just 17 characters. While `userId` is checked to occupy no more than 4 characters when converted, there is no space in the buffer for the terminating null character if `userId >= 1000`. In this case, the null character overflows the buffer resulting in undefined behavior.</p>
+
+<p>To fix this issue these changes should be made:</p>
+<ul>
+  <li>Control the size of the buffer by declaring it with a compile time constant.</li>
+  <li>Preferably, replace the call to <code>sprintf</code> with <code>snprintf</code>, using the defined constant size of the buffer or `sizeof(buffer)` as maximum length to write. This will prevent the buffer overflow.</li>
+  <li>Increasing the buffer size to account for the full range of `userId` and the terminating null character.</li>
+</ul>
+
+</example>
+<include src="OverrunWriteReferences.inc.qhelp" />
+</qhelp>

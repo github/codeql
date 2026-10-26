@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> An expression statement without side effects is just clutter. It confuses the reader and may have a slight impact on performance.
+</p>
+
+</overview>
+<recommendation>
+<p> First determine what the intention of the code was, if there is no intention of a side effect, then just delete the statement.
+However, it is probable that there is a mistake in the code and some effect was intended.
+</p>
+<p>
+This query will not flag a statement consisting solely of a string as having no side effect, as these are often used as comments.
+If you want to use strings as comments, the most common convention is to use triple quoted strings rather than single quoted ones.
+Although consistency is more important than conforming to any particular style.
+</p>
+
+</recommendation>
+<example>
+
+<p>In this example neither line of the <code>increment_and_show()</code> function has any effect.
+</p><p>
+The first line, <code>++x</code>, has no effect as it applies the unary plus operator twice. Probably the programmer intended <code>x += 1</code>
+</p>
+<p>
+The second line, <code>x.show</code>, has no observable effect, but it is likely that <code>x.show()</code> was intended.
+</p>
+
+<sample src="StatementNoEffect.py" />
+</example>
+</qhelp>

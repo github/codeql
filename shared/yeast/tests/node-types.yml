@@ -1,0 +1,73 @@
+# Output node types for yeast test rules.
+# Inspired by tree-sitter-ruby, but with all children in named fields
+# (no unnamed children). This represents the desugared output schema.
+
+named:
+  program:
+    stmt*: [assignment, call, identifier, for, first_node, second_node]
+
+  assignment:
+    left: [identifier, left_assignment_list]
+    right: [identifier, integer, call, element_reference]
+
+  left_assignment_list:
+    item*: identifier
+
+  element_reference:
+    object: identifier
+    index: [integer, identifier]
+
+  for:
+    pattern: [identifier, left_assignment_list]
+    value: in
+    body: do
+
+  in:
+    value: [identifier, call]
+
+  do:
+    stmt*: [assignment, identifier, call]
+
+  call:
+    receiver: [identifier, call]
+    method: identifier
+    arguments?: argument_list
+    block?: block
+
+  argument_list:
+    argument*: [identifier, integer, call]
+
+  block:
+    parameters: block_parameters
+    body: block_body
+
+  block_parameters:
+    parameter*: identifier
+
+  block_body:
+    stmt*: [assignment, identifier, call]
+
+  identifier:
+  integer:
+
+  # Output-only kinds, used by tests of chained desugaring rules.
+  # Neither exists in the input tree-sitter-ruby grammar.
+  first_node:
+    left: [identifier, integer]
+    right: [identifier, integer]
+
+  second_node:
+    left: [identifier, integer]
+    right: [identifier, integer]
+
+unnamed:
+  - "="
+  - ","
+  - "("
+  - ")"
+  - "for"
+  - "in"
+  - "do"
+  - "end"
+  - "|"
+  - "."

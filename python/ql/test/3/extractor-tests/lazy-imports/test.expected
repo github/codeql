@@ -1,0 +1,9 @@
+| 2 | Import | lazy |
+| 3 | Import | lazy |
+| 4 | Import | lazy |
+| 5 | Import | lazy |
+| 6 | Import | lazy |
+| 7 | from l import * | lazy |
+| 10 | Import | normal |
+| 11 | Import | normal |
+| 12 | from w import * | normal |

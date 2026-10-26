@@ -1,0 +1,3 @@
+| SinksXss.cs:13:20:13:29 | "<script>" | SinksXss.cs:13:20:13:29 | "<script>" |
+| SinksXss.cs:16:49:16:58 | "<script>" | SinksXss.cs:16:49:16:58 | "<script>" |
+| SinksXss.cs:25:44:25:65 | object creation of type HttpResult | SinksXss.cs:25:44:25:65 | object creation of type HttpResult |

@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of methods per class. If a class has a large number of methods 
+it is possible the class may have too many responsibilities which makes it more difficult to 
+understand.</p>
+
+</overview>
+<recommendation>
+<p>If the class has too many responsibilities then some of them should be extracted into their own 
+classes. If the class contains a lot of utility methods then consider moving them to another class 
+too.</p>
+
+<p>If the class is part of an inheritance hierarchy then consider whether the methods are in the 
+right place. If the methods are present in multiple sibling classes or if the methods are only used 
+in a small number of subclasses of the class in question then the hierarchy may need to be 
+redesigned.</p>
+
+</recommendation>
+<references>
+
+  <li>Martin Fowler. <em>Refactoring</em>. Addison-Wesley. 1999.</li>
+  <li>MSDN. Microsoft Application Architecture Guide 2nd Edition. <a href="http://msdn.microsoft.com/en-us/library/ee658117.aspx">Chapter 3: Architectural Patterns and Styles</a>. Microsoft. 2009.</li>
+
+</references>
+</qhelp>

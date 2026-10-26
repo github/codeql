@@ -1,0 +1,8 @@
+| java.lang.Object#toString() | no manual model |
+| java.lang.Runnable#run() | no manual model |
+| java.util.Comparator#comparing(Function) | no manual model |
+| java.util.function.BiConsumer#accept(Object,Object) | no manual model |
+| java.util.function.BiFunction#apply(Object,Object) | no manual model |
+| java.util.function.Consumer#accept(Object) | no manual model |
+| java.util.function.Function#apply(Object) | no manual model |
+| java.util.function.Supplier#get() | no manual model |

@@ -1,0 +1,89 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Comparing two identical expressions typically indicates a mistake such as a missing
+<code>this</code> qualifier or a misspelled variable name. The only case where such
+a comparison makes semantic sense is when determining whether a value is
+<code>NaN</code>, since <code>NaN</code> does not compare as equal to itself. But
+even in this case clearer alternatives are available.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Carefully inspect the comparison to determine whether it is a symptom of a bug.
+If the comparison is used to check for <code>NaN</code>, consider using the
+<code>isNaN</code> function from the standard library instead.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the example below, the method <code>Rectangle.prototype.contains</code> is intended
+to check whether a point <code>(x, y)</code> lies inside a rectangle given by its
+origin <code>(this.x, this.y)</code>, its width <code>this.width</code>, and its
+height <code>this.height</code>.
+</p>
+
+<sample src="examples/CompareIdenticalValues.js" />
+
+<p>
+Note, however, that on line 11 the programmer forgot to qualify <code>this.y</code>,
+thus ending up comparing the argument <code>y</code> against itself. The comparison
+should be fixed accordingly:
+</p>
+
+<sample src="examples/CompareIdenticalValuesGood.js" />
+
+<p>
+A common use of self-comparison is to detect <code>NaN</code> values, which are the only
+kind of values that are not considered equal to themselves:
+</p>
+
+<sample language="javascript">
+function eq(x, y) {
+  // check if x is NaN
+  if (x !== x) {
+    // consider NaN to be equal to itself
+    return y !== y;
+  }
+  return x === y;
+}
+</sample>
+
+<p>
+In cases like this one, it is clearer to use the <code>isNaN</code> function from
+the standard library:
+</p>
+
+<sample language="javascript">
+function eq(x, y) {
+  // check if x is NaN
+  if (isNaN(x)) {
+    // consider NaN to be equal to itself
+    return isNaN(y);
+  }
+  return x === y;
+}
+</sample>
+
+<p>
+If you do not want to rely on <code>isNaN</code> being defined, you can provide your
+own implementation: self-comparisons in functions named <code>isNaN</code>
+(regardless of capitalization) are treated specially and will not be flagged.
+</p>
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN">NaN</a>.</li>
+
+
+</references>
+</qhelp>

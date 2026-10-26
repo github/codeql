@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Pointer arithmetic in C and C++ is automatically scaled according
+to the size of the data type. For example, if the type of <tt>p</tt>
+is <tt>T*</tt> and <tt>sizeof(T) == 4</tt> then the
+expression <tt>p+1</tt> adds 4 bytes to <tt>p</tt>. This can cause a
+buffer overflow condition if the programmer forgets that they are
+adding a multiple of <tt>sizeof(T)</tt>, rather than a number of
+bytes.
+</p>
+
+<p>
+This query finds pointer arithmetic expressions where it appears
+likely that the programmer has forgotten that the offset is
+automatically scaled.
+</p>
+
+</overview>
+<recommendation>
+
+<ol>
+<li>Whenever possible, use the array subscript operator rather than
+pointer arithmetic. For example, replace <tt>*(p+k)</tt>
+with <tt>p[k]</tt>.</li>
+<li>Cast to the correct type before using pointer arithmetic. For
+example, if the type of <tt>p</tt> is <tt>int*</tt> but it really
+points to an array of type <tt>double[]</tt> then use the syntax
+<tt>(double*)p + k</tt> to get a pointer to the <tt>k</tt>'th element
+of the array.</li>
+</ol>
+
+</recommendation>
+<example>
+
+<sample src="IncorrectPointerScaling.cpp" />
+
+</example>
+<references>
+
+</references>
+</qhelp>

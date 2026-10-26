@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["dragonflydb/dragonfly", "*", "input.gspace-secret", "code-injection", "generated"]
+     - ["dragonflydb/dragonfly", "*", "input.filter", "code-injection", "generated"]
+     - ["dragonflydb/dragonfly", "*", "input.dfly-executable", "code-injection", "generated"]
+     - ["dragonflydb/dragonfly", "*", "input.build-folder-name", "code-injection", "generated"]

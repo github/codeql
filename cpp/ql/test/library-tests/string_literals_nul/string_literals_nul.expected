@@ -1,0 +1,2 @@
+| 4 | string_literals_nul.c:4:12:4:31 | literal \u0000 with NUL | "literal \u0000 with NUL" |
+| 5 | string_literals_nul.c:5:12:5:51 | literal \u0000 with NUL " and double quote | "literal \u0000 with NUL \\" and double quote" |

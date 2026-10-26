@@ -1,0 +1,571 @@
+| extended.thrift:3:8:3:11 | definition | 0 | extended.thrift:3:8:3:11 | struct User |
+| extended.thrift:3:8:3:11 | name | 0 | extended.thrift:3:8:3:11 | IDENTIFIER User |
+| extended.thrift:3:8:3:11 | struct User | 0 | extended.thrift:3:8:3:11 | name |
+| extended.thrift:3:8:3:11 | struct User | 1 | extended.thrift:4:3:4:16 | field name |
+| extended.thrift:3:8:3:11 | struct User | 2 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:3:8:48:15 | document | 0 | extended.thrift:3:8:3:11 | definition |
+| extended.thrift:3:8:48:15 | document | 1 | extended.thrift:7:11:7:15 | definition |
+| extended.thrift:3:8:48:15 | document | 2 | extended.thrift:12:9:12:16 | definition |
+| extended.thrift:3:8:48:15 | document | 3 | extended.thrift:19:9:19:15 | definition |
+| extended.thrift:3:8:48:15 | document | 4 | extended.thrift:21:9:21:40 | definition |
+| extended.thrift:3:8:48:15 | document | 5 | extended.thrift:23:8:23:23 | definition |
+| extended.thrift:3:8:48:15 | document | 6 | extended.thrift:31:6:31:12 | definition |
+| extended.thrift:3:8:48:15 | document | 7 | extended.thrift:37:9:37:19 | definition |
+| extended.thrift:3:8:48:15 | document | 8 | extended.thrift:46:14:46:30 | definition |
+| extended.thrift:3:8:48:15 | document | 9 | extended.thrift:48:9:48:15 | definition |
+| extended.thrift:3:8:48:15 | start | 0 | extended.thrift:3:8:48:15 | document |
+| extended.thrift:4:3:4:3 | fieldid | 0 | extended.thrift:4:3:4:3 | INTCONSTANT 1 |
+| extended.thrift:4:3:4:16 | field name | 0 | extended.thrift:4:3:4:3 | fieldid |
+| extended.thrift:4:3:4:16 | field name | 2 | extended.thrift:4:6:4:11 | type string |
+| extended.thrift:4:3:4:16 | field name | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:4:3:4:16 | field name | 4 | extended.thrift:4:13:4:16 | IDENTIFIER name |
+| extended.thrift:4:3:4:16 | field name | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:4:3:4:16 | field name | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:4:3:4:16 | field name | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:4:6:4:11 | type string | 0 | extended.thrift:4:6:4:11 | STRING string |
+| extended.thrift:4:6:4:11 | type string | 0 | extended.thrift:4:6:4:11 | type string |
+| extended.thrift:7:11:7:15 | definition | 0 | extended.thrift:7:11:7:15 | exception Error |
+| extended.thrift:7:11:7:15 | exception Error | 0 | extended.thrift:7:11:7:15 | name |
+| extended.thrift:7:11:7:15 | exception Error | 1 | extended.thrift:8:3:8:13 | field what |
+| extended.thrift:7:11:7:15 | exception Error | 2 | extended.thrift:9:3:9:15 | field why |
+| extended.thrift:7:11:7:15 | name | 0 | extended.thrift:7:11:7:15 | IDENTIFIER Error |
+| extended.thrift:8:3:8:3 | fieldid | 0 | extended.thrift:8:3:8:3 | INTCONSTANT 1 |
+| extended.thrift:8:3:8:13 | field what | 0 | extended.thrift:8:3:8:3 | fieldid |
+| extended.thrift:8:3:8:13 | field what | 2 | extended.thrift:8:6:8:8 | type i32 |
+| extended.thrift:8:3:8:13 | field what | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:8:3:8:13 | field what | 4 | extended.thrift:8:10:8:13 | IDENTIFIER what |
+| extended.thrift:8:3:8:13 | field what | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:8:3:8:13 | field what | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:8:3:8:13 | field what | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:8:6:8:8 | type i32 | 0 | extended.thrift:8:6:8:8 | I32 i32 |
+| extended.thrift:8:6:8:8 | type i32 | 0 | extended.thrift:8:6:8:8 | type i32 |
+| extended.thrift:9:3:9:3 | fieldid | 0 | extended.thrift:9:3:9:3 | INTCONSTANT 2 |
+| extended.thrift:9:3:9:15 | field why | 0 | extended.thrift:9:3:9:3 | fieldid |
+| extended.thrift:9:3:9:15 | field why | 2 | extended.thrift:9:6:9:11 | type string |
+| extended.thrift:9:3:9:15 | field why | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:9:3:9:15 | field why | 4 | extended.thrift:9:13:9:15 | IDENTIFIER why |
+| extended.thrift:9:3:9:15 | field why | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:9:3:9:15 | field why | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:9:3:9:15 | field why | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:9:6:9:11 | type string | 0 | extended.thrift:9:6:9:11 | STRING string |
+| extended.thrift:9:6:9:11 | type string | 0 | extended.thrift:9:6:9:11 | type string |
+| extended.thrift:12:9:12:16 | definition | 0 | extended.thrift:12:9:12:16 | service Extended |
+| extended.thrift:12:9:12:16 | name | 0 | extended.thrift:12:9:12:16 | IDENTIFIER Extended |
+| extended.thrift:12:9:12:16 | service Extended | 0 | extended.thrift:12:9:12:16 | name |
+| extended.thrift:12:9:12:16 | service Extended | 1 | extended.thrift:14:4:14:15 | function getUser |
+| extended.thrift:12:9:12:16 | service Extended | 2 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:14:4:14:7 | type User | 0 | extended.thrift:14:4:14:7 | IDENTIFIER User |
+| extended.thrift:14:4:14:7 | type User | 0 | extended.thrift:14:4:14:7 | type User |
+| extended.thrift:14:4:14:15 | function getUser | 0 | file://:0:0:0:0 | oneway |
+| extended.thrift:14:4:14:15 | function getUser | 1 | extended.thrift:14:4:14:7 | type User |
+| extended.thrift:14:4:14:15 | function getUser | 2 | extended.thrift:14:9:14:15 | name |
+| extended.thrift:14:4:14:15 | function getUser | 3 | extended.thrift:14:17:14:24 | field id |
+| extended.thrift:14:4:14:15 | function getUser | 4 | extended.thrift:14:35:14:47 | throws |
+| extended.thrift:14:4:14:15 | function getUser | 5 | extended.thrift:15:5:15:47 | type_annotations |
+| extended.thrift:14:9:14:15 | name | 0 | extended.thrift:14:9:14:15 | IDENTIFIER getUser |
+| extended.thrift:14:17:14:17 | fieldid | 0 | extended.thrift:14:17:14:17 | INTCONSTANT 1 |
+| extended.thrift:14:17:14:24 | field id | 0 | extended.thrift:14:17:14:17 | fieldid |
+| extended.thrift:14:17:14:24 | field id | 2 | extended.thrift:14:19:14:21 | type i32 |
+| extended.thrift:14:17:14:24 | field id | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:14:17:14:24 | field id | 4 | extended.thrift:14:23:14:24 | IDENTIFIER id |
+| extended.thrift:14:17:14:24 | field id | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:14:17:14:24 | field id | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:14:17:14:24 | field id | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:14:19:14:21 | type i32 | 0 | extended.thrift:14:19:14:21 | I32 i32 |
+| extended.thrift:14:19:14:21 | type i32 | 0 | extended.thrift:14:19:14:21 | type i32 |
+| extended.thrift:14:35:14:35 | fieldid | 0 | extended.thrift:14:35:14:35 | INTCONSTANT 1 |
+| extended.thrift:14:35:14:47 | field error | 0 | extended.thrift:14:35:14:35 | fieldid |
+| extended.thrift:14:35:14:47 | field error | 2 | extended.thrift:14:37:14:41 | type Error |
+| extended.thrift:14:35:14:47 | field error | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:14:35:14:47 | field error | 4 | extended.thrift:14:43:14:47 | IDENTIFIER error |
+| extended.thrift:14:35:14:47 | field error | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:14:35:14:47 | field error | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:14:35:14:47 | field error | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:14:35:14:47 | throws | 0 | extended.thrift:14:35:14:47 | field error |
+| extended.thrift:14:37:14:41 | type Error | 0 | extended.thrift:14:37:14:41 | IDENTIFIER Error |
+| extended.thrift:15:5:15:16 | name | 0 | extended.thrift:15:5:15:16 | IDENTIFIER doggy.window |
+| extended.thrift:15:5:15:25 | type_annotation | 0 | extended.thrift:15:5:15:16 | name |
+| extended.thrift:15:5:15:25 | type_annotation | 1 | extended.thrift:15:20:15:25 | constvalue |
+| extended.thrift:15:5:15:47 | type_annotations | 0 | extended.thrift:15:5:15:25 | type_annotation |
+| extended.thrift:15:5:15:47 | type_annotations | 1 | extended.thrift:15:28:15:47 | type_annotation |
+| extended.thrift:15:20:15:25 | constvalue | 0 | extended.thrift:15:20:15:25 | LITERAL "true" |
+| extended.thrift:15:28:15:40 | name | 0 | extended.thrift:15:28:15:40 | IDENTIFIER doggy.howmuch |
+| extended.thrift:15:28:15:47 | type_annotation | 0 | extended.thrift:15:28:15:40 | name |
+| extended.thrift:15:28:15:47 | type_annotation | 1 | extended.thrift:15:44:15:47 | constvalue |
+| extended.thrift:15:44:15:47 | constvalue | 0 | extended.thrift:15:44:15:47 | INTCONSTANT 1000 |
+| extended.thrift:19:9:19:11 | type i32 | 0 | extended.thrift:19:9:19:11 | I32 i32 |
+| extended.thrift:19:9:19:11 | type i32 | 0 | extended.thrift:19:9:19:11 | type i32 |
+| extended.thrift:19:9:19:15 | definition | 0 | extended.thrift:19:9:19:15 | typedef int |
+| extended.thrift:19:9:19:15 | typedef int | 0 | extended.thrift:19:9:19:11 | type i32 |
+| extended.thrift:19:9:19:15 | typedef int | 1 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:19:9:19:15 | typedef int | 2 | extended.thrift:19:13:19:15 | name |
+| extended.thrift:19:9:19:15 | typedef int | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:19:13:19:15 | name | 0 | extended.thrift:19:13:19:15 | IDENTIFIER int |
+| extended.thrift:21:9:21:11 | type i64 | 0 | extended.thrift:21:9:21:11 | I64 i64 |
+| extended.thrift:21:9:21:11 | type i64 | 0 | extended.thrift:21:9:21:11 | type i64 |
+| extended.thrift:21:9:21:40 | definition | 0 | extended.thrift:21:9:21:40 | typedef shrubbery |
+| extended.thrift:21:9:21:40 | typedef shrubbery | 0 | extended.thrift:21:9:21:11 | type i64 |
+| extended.thrift:21:9:21:40 | typedef shrubbery | 1 | extended.thrift:21:13:21:29 | type_annotations |
+| extended.thrift:21:9:21:40 | typedef shrubbery | 2 | extended.thrift:21:32:21:40 | name |
+| extended.thrift:21:9:21:40 | typedef shrubbery | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:21:13:21:19 | name | 0 | extended.thrift:21:13:21:19 | IDENTIFIER foo.bar |
+| extended.thrift:21:13:21:29 | type_annotation | 0 | extended.thrift:21:13:21:19 | name |
+| extended.thrift:21:13:21:29 | type_annotation | 1 | extended.thrift:21:23:21:29 | constvalue |
+| extended.thrift:21:13:21:29 | type_annotations | 0 | extended.thrift:21:13:21:29 | type_annotation |
+| extended.thrift:21:23:21:29 | constvalue | 0 | extended.thrift:21:23:21:29 | LITERAL "hello" |
+| extended.thrift:21:32:21:40 | name | 0 | extended.thrift:21:32:21:40 | IDENTIFIER shrubbery |
+| extended.thrift:23:8:23:23 | definition | 0 | extended.thrift:23:8:23:23 | struct with_annotations |
+| extended.thrift:23:8:23:23 | name | 0 | extended.thrift:23:8:23:23 | IDENTIFIER with_annotations |
+| extended.thrift:23:8:23:23 | struct with_annotations | 0 | extended.thrift:23:8:23:23 | name |
+| extended.thrift:23:8:23:23 | struct with_annotations | 1 | extended.thrift:25:5:25:22 | field i1 |
+| extended.thrift:23:8:23:23 | struct with_annotations | 2 | extended.thrift:26:5:26:37 | field i2 |
+| extended.thrift:23:8:23:23 | struct with_annotations | 3 | extended.thrift:27:5:27:20 | field nice |
+| extended.thrift:23:8:23:23 | struct with_annotations | 4 | extended.thrift:29:5:29:21 | type_annotations |
+| extended.thrift:25:5:25:5 | fieldid | 0 | extended.thrift:25:5:25:5 | INTCONSTANT 1 |
+| extended.thrift:25:5:25:22 | field i1 | 0 | extended.thrift:25:5:25:5 | fieldid |
+| extended.thrift:25:5:25:22 | field i1 | 2 | extended.thrift:25:17:25:19 | type int |
+| extended.thrift:25:5:25:22 | field i1 | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:25:5:25:22 | field i1 | 4 | extended.thrift:25:21:25:22 | IDENTIFIER i1 |
+| extended.thrift:25:5:25:22 | field i1 | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:25:5:25:22 | field i1 | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:25:5:25:22 | field i1 | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:25:17:25:19 | type int | 0 | extended.thrift:25:17:25:19 | IDENTIFIER int |
+| extended.thrift:26:5:26:5 | fieldid | 0 | extended.thrift:26:5:26:5 | INTCONSTANT 2 |
+| extended.thrift:26:5:26:37 | field i2 | 0 | extended.thrift:26:5:26:5 | fieldid |
+| extended.thrift:26:5:26:37 | field i2 | 2 | extended.thrift:26:8:26:10 | type int |
+| extended.thrift:26:5:26:37 | field i2 | 3 | extended.thrift:26:13:26:33 | type_annotations |
+| extended.thrift:26:5:26:37 | field i2 | 4 | extended.thrift:26:36:26:37 | IDENTIFIER i2 |
+| extended.thrift:26:5:26:37 | field i2 | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:26:5:26:37 | field i2 | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:26:5:26:37 | field i2 | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:26:8:26:10 | type int | 0 | extended.thrift:26:8:26:10 | IDENTIFIER int |
+| extended.thrift:26:13:26:25 | name | 0 | extended.thrift:26:13:26:25 | IDENTIFIER type.annotate |
+| extended.thrift:26:13:26:33 | type_annotation | 0 | extended.thrift:26:13:26:25 | name |
+| extended.thrift:26:13:26:33 | type_annotation | 1 | extended.thrift:26:29:26:33 | constvalue |
+| extended.thrift:26:13:26:33 | type_annotations | 0 | extended.thrift:26:13:26:33 | type_annotation |
+| extended.thrift:26:29:26:33 | constvalue | 0 | extended.thrift:26:29:26:33 | LITERAL "foo" |
+| extended.thrift:27:5:27:5 | fieldid | 0 | extended.thrift:27:5:27:5 | INTCONSTANT 3 |
+| extended.thrift:27:5:27:20 | field nice | 0 | extended.thrift:27:5:27:5 | fieldid |
+| extended.thrift:27:5:27:20 | field nice | 2 | extended.thrift:27:8:27:15 | type shubbery |
+| extended.thrift:27:5:27:20 | field nice | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:27:5:27:20 | field nice | 4 | extended.thrift:27:17:27:20 | IDENTIFIER nice |
+| extended.thrift:27:5:27:20 | field nice | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:27:5:27:20 | field nice | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:27:5:27:20 | field nice | 7 | extended.thrift:27:23:27:44 | type_annotations |
+| extended.thrift:27:8:27:15 | type shubbery | 0 | extended.thrift:27:8:27:15 | IDENTIFIER shubbery |
+| extended.thrift:27:23:27:37 | name | 0 | extended.thrift:27:23:27:37 | IDENTIFIER knights.who.say |
+| extended.thrift:27:23:27:44 | type_annotation | 0 | extended.thrift:27:23:27:37 | name |
+| extended.thrift:27:23:27:44 | type_annotation | 1 | extended.thrift:27:41:27:44 | constvalue |
+| extended.thrift:27:23:27:44 | type_annotations | 0 | extended.thrift:27:23:27:44 | type_annotation |
+| extended.thrift:27:41:27:44 | constvalue | 0 | extended.thrift:27:41:27:44 | LITERAL "ni" |
+| extended.thrift:29:5:29:15 | name | 0 | extended.thrift:29:5:29:15 | IDENTIFIER struct.anno |
+| extended.thrift:29:5:29:21 | type_annotation | 0 | extended.thrift:29:5:29:15 | name |
+| extended.thrift:29:5:29:21 | type_annotation | 1 | extended.thrift:29:19:29:21 | constvalue |
+| extended.thrift:29:5:29:21 | type_annotations | 0 | extended.thrift:29:5:29:21 | type_annotation |
+| extended.thrift:29:19:29:21 | constvalue | 0 | extended.thrift:29:19:29:21 | LITERAL "y" |
+| extended.thrift:31:6:31:12 | definition | 0 | extended.thrift:31:6:31:12 | enum Animals |
+| extended.thrift:31:6:31:12 | enum Animals | 0 | extended.thrift:31:6:31:12 | name |
+| extended.thrift:31:6:31:12 | enum Animals | 1 | extended.thrift:32:5:32:7 | enumfield cat |
+| extended.thrift:31:6:31:12 | enum Animals | 2 | extended.thrift:33:5:33:9 | enumfield mouse |
+| extended.thrift:31:6:31:12 | enum Animals | 3 | extended.thrift:34:5:34:7 | enumfield dog |
+| extended.thrift:31:6:31:12 | enum Animals | 4 | extended.thrift:35:5:35:19 | type_annotations |
+| extended.thrift:31:6:31:12 | name | 0 | extended.thrift:31:6:31:12 | IDENTIFIER Animals |
+| extended.thrift:32:5:32:7 | enumfield cat | 0 | extended.thrift:32:5:32:7 | name |
+| extended.thrift:32:5:32:7 | enumfield cat | 1 | extended.thrift:32:11:32:11 | enumvalue |
+| extended.thrift:32:5:32:7 | enumfield cat | 2 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:32:5:32:7 | name | 0 | extended.thrift:32:5:32:7 | IDENTIFIER cat |
+| extended.thrift:32:11:32:11 | enumvalue | 0 | extended.thrift:32:11:32:11 | INTCONSTANT 1 |
+| extended.thrift:33:5:33:9 | enumfield mouse | 0 | extended.thrift:33:5:33:9 | name |
+| extended.thrift:33:5:33:9 | enumfield mouse | 1 | extended.thrift:33:13:33:13 | enumvalue |
+| extended.thrift:33:5:33:9 | enumfield mouse | 2 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:33:5:33:9 | name | 0 | extended.thrift:33:5:33:9 | IDENTIFIER mouse |
+| extended.thrift:33:13:33:13 | enumvalue | 0 | extended.thrift:33:13:33:13 | INTCONSTANT 2 |
+| extended.thrift:34:5:34:7 | enumfield dog | 0 | extended.thrift:34:5:34:7 | name |
+| extended.thrift:34:5:34:7 | enumfield dog | 1 | file://:0:0:0:0 | enumvalue |
+| extended.thrift:34:5:34:7 | enumfield dog | 2 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:34:5:34:7 | name | 0 | extended.thrift:34:5:34:7 | IDENTIFIER dog |
+| extended.thrift:35:5:35:13 | name | 0 | extended.thrift:35:5:35:13 | IDENTIFIER enum.anno |
+| extended.thrift:35:5:35:19 | type_annotation | 0 | extended.thrift:35:5:35:13 | name |
+| extended.thrift:35:5:35:19 | type_annotation | 1 | extended.thrift:35:17:35:19 | constvalue |
+| extended.thrift:35:5:35:19 | type_annotations | 0 | extended.thrift:35:5:35:19 | type_annotation |
+| extended.thrift:35:17:35:19 | constvalue | 0 | extended.thrift:35:17:35:19 | LITERAL "x" |
+| extended.thrift:37:9:37:19 | definition | 0 | extended.thrift:37:9:37:19 | service with_throws |
+| extended.thrift:37:9:37:19 | name | 0 | extended.thrift:37:9:37:19 | IDENTIFIER with_throws |
+| extended.thrift:37:9:37:19 | service with_throws | 0 | extended.thrift:37:9:37:19 | name |
+| extended.thrift:37:9:37:19 | service with_throws | 1 | extended.thrift:39:4:39:12 | function foo |
+| extended.thrift:37:9:37:19 | service with_throws | 2 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:39:4:39:8 | type int32 | 0 | extended.thrift:39:4:39:8 | IDENTIFIER int32 |
+| extended.thrift:39:4:39:8 | type int32 | 0 | extended.thrift:39:4:39:8 | type int32 |
+| extended.thrift:39:4:39:12 | function foo | 0 | file://:0:0:0:0 | oneway |
+| extended.thrift:39:4:39:12 | function foo | 1 | extended.thrift:39:4:39:8 | type int32 |
+| extended.thrift:39:4:39:12 | function foo | 2 | extended.thrift:39:10:39:12 | name |
+| extended.thrift:39:4:39:12 | function foo | 3 | extended.thrift:39:14:39:21 | field id |
+| extended.thrift:39:4:39:12 | function foo | 4 | extended.thrift:40:9:41:22 | throws |
+| extended.thrift:39:4:39:12 | function foo | 5 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:39:10:39:12 | name | 0 | extended.thrift:39:10:39:12 | IDENTIFIER foo |
+| extended.thrift:39:14:39:14 | fieldid | 0 | extended.thrift:39:14:39:14 | INTCONSTANT 1 |
+| extended.thrift:39:14:39:21 | field id | 0 | extended.thrift:39:14:39:14 | fieldid |
+| extended.thrift:39:14:39:21 | field id | 2 | extended.thrift:39:16:39:18 | type i32 |
+| extended.thrift:39:14:39:21 | field id | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:39:14:39:21 | field id | 4 | extended.thrift:39:20:39:21 | IDENTIFIER id |
+| extended.thrift:39:14:39:21 | field id | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:39:14:39:21 | field id | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:39:14:39:21 | field id | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:39:16:39:18 | type i32 | 0 | extended.thrift:39:16:39:18 | I32 i32 |
+| extended.thrift:39:16:39:18 | type i32 | 0 | extended.thrift:39:16:39:18 | type i32 |
+| extended.thrift:40:9:40:9 | fieldid | 0 | extended.thrift:40:9:40:9 | INTCONSTANT 1 |
+| extended.thrift:40:9:40:21 | field error | 0 | extended.thrift:40:9:40:9 | fieldid |
+| extended.thrift:40:9:40:21 | field error | 2 | extended.thrift:40:11:40:15 | type Error |
+| extended.thrift:40:9:40:21 | field error | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:40:9:40:21 | field error | 4 | extended.thrift:40:17:40:21 | IDENTIFIER error |
+| extended.thrift:40:9:40:21 | field error | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:40:9:40:21 | field error | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:40:9:40:21 | field error | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:40:9:41:22 | throws | 0 | extended.thrift:40:9:40:21 | field error |
+| extended.thrift:40:9:41:22 | throws | 1 | extended.thrift:41:9:41:22 | field cause |
+| extended.thrift:40:11:40:15 | type Error | 0 | extended.thrift:40:11:40:15 | IDENTIFIER Error |
+| extended.thrift:41:9:41:9 | fieldid | 0 | extended.thrift:41:9:41:9 | INTCONSTANT 3 |
+| extended.thrift:41:9:41:22 | field cause | 0 | extended.thrift:41:9:41:9 | fieldid |
+| extended.thrift:41:9:41:22 | field cause | 2 | extended.thrift:41:11:41:16 | type string |
+| extended.thrift:41:9:41:22 | field cause | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:41:9:41:22 | field cause | 4 | extended.thrift:41:18:41:22 | IDENTIFIER cause |
+| extended.thrift:41:9:41:22 | field cause | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:41:9:41:22 | field cause | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:41:9:41:22 | field cause | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:41:11:41:16 | type string | 0 | extended.thrift:41:11:41:16 | STRING string |
+| extended.thrift:41:11:41:16 | type string | 0 | extended.thrift:41:11:41:16 | type string |
+| extended.thrift:46:14:46:22 | type shrubbery | 0 | extended.thrift:46:14:46:22 | IDENTIFIER shrubbery |
+| extended.thrift:46:14:46:22 | type shrubbery | 0 | extended.thrift:46:14:46:22 | type shrubbery |
+| extended.thrift:46:14:46:22 | type shrubbery | 0 | extended.thrift:46:14:46:22 | type shrubbery |
+| extended.thrift:46:14:46:22 | type shrubbery | 0 | extended.thrift:46:14:46:22 | type shrubbery |
+| extended.thrift:46:14:46:30 | definition | 0 | extended.thrift:46:14:46:30 | typedef border |
+| extended.thrift:46:14:46:30 | typedef border | 0 | extended.thrift:46:14:46:22 | type shrubbery |
+| extended.thrift:46:14:46:30 | typedef border | 1 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:46:14:46:30 | typedef border | 2 | extended.thrift:46:25:46:30 | name |
+| extended.thrift:46:14:46:30 | typedef border | 3 | extended.thrift:46:34:46:45 | type_annotations |
+| extended.thrift:46:25:46:30 | name | 0 | extended.thrift:46:25:46:30 | IDENTIFIER border |
+| extended.thrift:46:34:46:35 | name | 0 | extended.thrift:46:34:46:35 | IDENTIFIER ni |
+| extended.thrift:46:34:46:45 | type_annotation | 0 | extended.thrift:46:34:46:35 | name |
+| extended.thrift:46:34:46:45 | type_annotation | 1 | extended.thrift:46:39:46:45 | constvalue |
+| extended.thrift:46:34:46:45 | type_annotations | 0 | extended.thrift:46:34:46:45 | type_annotation |
+| extended.thrift:46:39:46:45 | constvalue | 0 | extended.thrift:46:39:46:45 | LITERAL "false" |
+| extended.thrift:48:9:48:15 | definition | 0 | extended.thrift:48:9:48:15 | service TheShop |
+| extended.thrift:48:9:48:15 | name | 0 | extended.thrift:48:9:48:15 | IDENTIFIER TheShop |
+| extended.thrift:48:9:48:15 | service TheShop | 0 | extended.thrift:48:9:48:15 | name |
+| extended.thrift:48:9:48:15 | service TheShop | 1 | extended.thrift:50:5:50:18 | function getPet |
+| extended.thrift:48:9:48:15 | service TheShop | 2 | extended.thrift:59:5:59:32 | type_annotations |
+| extended.thrift:50:5:50:11 | type Animals | 0 | extended.thrift:50:5:50:11 | IDENTIFIER Animals |
+| extended.thrift:50:5:50:11 | type Animals | 0 | extended.thrift:50:5:50:11 | type Animals |
+| extended.thrift:50:5:50:18 | function getPet | 0 | file://:0:0:0:0 | oneway |
+| extended.thrift:50:5:50:18 | function getPet | 1 | extended.thrift:50:5:50:11 | type Animals |
+| extended.thrift:50:5:50:18 | function getPet | 2 | extended.thrift:50:13:50:18 | name |
+| extended.thrift:50:5:50:18 | function getPet | 3 | extended.thrift:51:9:51:30 | field owner |
+| extended.thrift:50:5:50:18 | function getPet | 4 | extended.thrift:53:9:56:21 | throws |
+| extended.thrift:50:5:50:18 | function getPet | 5 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:50:13:50:18 | name | 0 | extended.thrift:50:13:50:18 | IDENTIFIER getPet |
+| extended.thrift:51:9:51:9 | fieldid | 0 | extended.thrift:51:9:51:9 | INTCONSTANT 1 |
+| extended.thrift:51:9:51:30 | field owner | 0 | extended.thrift:51:9:51:9 | fieldid |
+| extended.thrift:51:9:51:30 | field owner | 2 | extended.thrift:51:21:51:24 | type User |
+| extended.thrift:51:9:51:30 | field owner | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:51:9:51:30 | field owner | 4 | extended.thrift:51:26:51:30 | IDENTIFIER owner |
+| extended.thrift:51:9:51:30 | field owner | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:51:9:51:30 | field owner | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:51:9:51:30 | field owner | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:51:21:51:24 | type User | 0 | extended.thrift:51:21:51:24 | IDENTIFIER User |
+| extended.thrift:53:9:53:9 | fieldid | 0 | extended.thrift:53:9:53:9 | INTCONSTANT 1 |
+| extended.thrift:53:9:53:24 | field napping | 0 | extended.thrift:53:9:53:9 | fieldid |
+| extended.thrift:53:9:53:24 | field napping | 2 | extended.thrift:53:12:53:16 | type Error |
+| extended.thrift:53:9:53:24 | field napping | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:53:9:53:24 | field napping | 4 | extended.thrift:53:18:53:24 | IDENTIFIER napping |
+| extended.thrift:53:9:53:24 | field napping | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:53:9:53:24 | field napping | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:53:9:53:24 | field napping | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:53:9:56:21 | throws | 0 | extended.thrift:53:9:53:24 | field napping |
+| extended.thrift:53:9:56:21 | throws | 1 | extended.thrift:54:9:54:30 | field pining |
+| extended.thrift:53:9:56:21 | throws | 2 | extended.thrift:55:9:55:35 | field resting |
+| extended.thrift:53:9:56:21 | throws | 3 | extended.thrift:56:9:56:21 | field deaf |
+| extended.thrift:53:12:53:16 | type Error | 0 | extended.thrift:53:12:53:16 | IDENTIFIER Error |
+| extended.thrift:54:9:54:9 | fieldid | 0 | extended.thrift:54:9:54:9 | INTCONSTANT 2 |
+| extended.thrift:54:9:54:30 | field pining | 0 | extended.thrift:54:9:54:9 | fieldid |
+| extended.thrift:54:9:54:30 | field pining | 2 | extended.thrift:54:12:54:23 | type AnotherError |
+| extended.thrift:54:9:54:30 | field pining | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:54:9:54:30 | field pining | 4 | extended.thrift:54:25:54:30 | IDENTIFIER pining |
+| extended.thrift:54:9:54:30 | field pining | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:54:9:54:30 | field pining | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:54:9:54:30 | field pining | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:54:12:54:23 | type AnotherError | 0 | extended.thrift:54:12:54:23 | IDENTIFIER AnotherError |
+| extended.thrift:55:9:55:9 | fieldid | 0 | extended.thrift:55:9:55:9 | INTCONSTANT 3 |
+| extended.thrift:55:9:55:35 | field resting | 0 | extended.thrift:55:9:55:9 | fieldid |
+| extended.thrift:55:9:55:35 | field resting | 2 | extended.thrift:55:12:55:27 | type ThirdKindOfError |
+| extended.thrift:55:9:55:35 | field resting | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:55:9:55:35 | field resting | 4 | extended.thrift:55:29:55:35 | IDENTIFIER resting |
+| extended.thrift:55:9:55:35 | field resting | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:55:9:55:35 | field resting | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:55:9:55:35 | field resting | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:55:12:55:27 | type ThirdKindOfError | 0 | extended.thrift:55:12:55:27 | IDENTIFIER ThirdKindOfError |
+| extended.thrift:56:9:56:9 | fieldid | 0 | extended.thrift:56:9:56:9 | INTCONSTANT 4 |
+| extended.thrift:56:9:56:21 | field deaf | 0 | extended.thrift:56:9:56:9 | fieldid |
+| extended.thrift:56:9:56:21 | field deaf | 2 | extended.thrift:56:12:56:16 | type Error |
+| extended.thrift:56:9:56:21 | field deaf | 3 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:56:9:56:21 | field deaf | 4 | extended.thrift:56:18:56:21 | IDENTIFIER deaf |
+| extended.thrift:56:9:56:21 | field deaf | 5 | file://:0:0:0:0 | fieldvalue |
+| extended.thrift:56:9:56:21 | field deaf | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| extended.thrift:56:9:56:21 | field deaf | 7 | file://:0:0:0:0 | type_annotations |
+| extended.thrift:56:12:56:16 | type Error | 0 | extended.thrift:56:12:56:16 | IDENTIFIER Error |
+| extended.thrift:59:5:59:22 | name | 0 | extended.thrift:59:5:59:22 | IDENTIFIER service.annotation |
+| extended.thrift:59:5:59:32 | type_annotation | 0 | extended.thrift:59:5:59:22 | name |
+| extended.thrift:59:5:59:32 | type_annotation | 1 | extended.thrift:59:26:59:32 | constvalue |
+| extended.thrift:59:5:59:32 | type_annotations | 0 | extended.thrift:59:5:59:32 | type_annotation |
+| extended.thrift:59:26:59:32 | constvalue | 0 | extended.thrift:59:26:59:32 | LITERAL "thing" |
+| test.thrift:3:9:3:23 | header | 0 | test.thrift:3:9:3:23 | include |
+| test.thrift:3:9:3:23 | include | 0 | test.thrift:3:9:3:23 | LITERAL "shared.thrift" |
+| test.thrift:3:9:83:17 | document | 0 | test.thrift:3:9:3:23 | header |
+| test.thrift:3:9:83:17 | document | 1 | file://:0:0:0:0 | header |
+| test.thrift:3:9:83:17 | document | 2 | file://:0:0:0:0 | header |
+| test.thrift:3:9:83:17 | document | 3 | file://:0:0:0:0 | header |
+| test.thrift:3:9:83:17 | document | 4 | file://:0:0:0:0 | header |
+| test.thrift:3:9:83:17 | document | 5 | file://:0:0:0:0 | header |
+| test.thrift:3:9:83:17 | document | 6 | test.thrift:15:7:15:30 | definition |
+| test.thrift:3:9:83:17 | document | 7 | test.thrift:16:11:16:75 | definition |
+| test.thrift:3:9:83:17 | document | 8 | test.thrift:22:6:22:14 | definition |
+| test.thrift:3:9:83:17 | document | 9 | test.thrift:38:8:38:11 | definition |
+| test.thrift:3:9:83:17 | document | 10 | test.thrift:48:11:48:26 | definition |
+| test.thrift:3:9:83:17 | document | 11 | test.thrift:57:9:57:18 | definition |
+| test.thrift:3:9:83:17 | document | 12 | test.thrift:83:9:83:17 | definition |
+| test.thrift:3:9:83:17 | start | 0 | test.thrift:3:9:83:17 | document |
+| test.thrift:15:7:15:9 | type i32 | 0 | test.thrift:15:7:15:9 | I32 i32 |
+| test.thrift:15:7:15:9 | type i32 | 0 | test.thrift:15:7:15:9 | type i32 |
+| test.thrift:15:7:15:30 | const | 0 | test.thrift:15:7:15:9 | type i32 |
+| test.thrift:15:7:15:30 | const | 1 | test.thrift:15:11:15:23 | name |
+| test.thrift:15:7:15:30 | const | 2 | test.thrift:15:27:15:30 | constvalue |
+| test.thrift:15:7:15:30 | definition | 0 | test.thrift:15:7:15:30 | const |
+| test.thrift:15:11:15:23 | name | 0 | test.thrift:15:11:15:23 | IDENTIFIER INT32CONSTANT |
+| test.thrift:15:27:15:30 | constvalue | 0 | test.thrift:15:27:15:30 | INTCONSTANT 9853 |
+| test.thrift:16:11:16:16 | type string | 0 | test.thrift:16:11:16:16 | STRING string |
+| test.thrift:16:11:16:16 | type string | 0 | test.thrift:16:11:16:16 | type string |
+| test.thrift:16:11:16:16 | type string | 0 | test.thrift:16:11:16:16 | type string |
+| test.thrift:16:11:16:16 | type string | 0 | test.thrift:16:11:16:16 | type string |
+| test.thrift:16:11:16:16 | type string | 0 | test.thrift:16:11:16:16 | type string |
+| test.thrift:16:11:16:16 | type string | 1 | test.thrift:16:18:16:23 | type string |
+| test.thrift:16:11:16:75 | const | 0 | test.thrift:16:11:16:16 | type string |
+| test.thrift:16:11:16:75 | const | 1 | test.thrift:16:26:16:36 | name |
+| test.thrift:16:11:16:75 | const | 2 | test.thrift:16:41:16:75 | constvalue |
+| test.thrift:16:11:16:75 | definition | 0 | test.thrift:16:11:16:75 | const |
+| test.thrift:16:18:16:23 | type string | 0 | test.thrift:16:18:16:23 | STRING string |
+| test.thrift:16:18:16:23 | type string | 0 | test.thrift:16:18:16:23 | type string |
+| test.thrift:16:26:16:36 | name | 0 | test.thrift:16:26:16:36 | IDENTIFIER MAPCONSTANT |
+| test.thrift:16:41:16:47 | constvalue | 0 | test.thrift:16:41:16:47 | LITERAL 'hello' |
+| test.thrift:16:41:16:55 | constmapelt | 0 | test.thrift:16:41:16:47 | constvalue |
+| test.thrift:16:41:16:55 | constmapelt | 1 | test.thrift:16:49:16:55 | constvalue |
+| test.thrift:16:41:16:75 | constmap | 0 | test.thrift:16:41:16:55 | constmapelt |
+| test.thrift:16:41:16:75 | constmap | 1 | test.thrift:16:58:16:75 | constmapelt |
+| test.thrift:16:41:16:75 | constvalue | 0 | test.thrift:16:41:16:75 | constmap |
+| test.thrift:16:49:16:55 | constvalue | 0 | test.thrift:16:49:16:55 | LITERAL 'world' |
+| test.thrift:16:58:16:68 | constvalue | 0 | test.thrift:16:58:16:68 | LITERAL 'goodnight' |
+| test.thrift:16:58:16:75 | constmapelt | 0 | test.thrift:16:58:16:68 | constvalue |
+| test.thrift:16:58:16:75 | constmapelt | 1 | test.thrift:16:70:16:75 | constvalue |
+| test.thrift:16:70:16:75 | constvalue | 0 | test.thrift:16:70:16:75 | LITERAL 'moon' |
+| test.thrift:22:6:22:14 | definition | 0 | test.thrift:22:6:22:14 | enum Operation |
+| test.thrift:22:6:22:14 | enum Operation | 0 | test.thrift:22:6:22:14 | name |
+| test.thrift:22:6:22:14 | enum Operation | 1 | test.thrift:23:3:23:5 | enumfield ADD |
+| test.thrift:22:6:22:14 | enum Operation | 2 | test.thrift:24:3:24:10 | enumfield SUBTRACT |
+| test.thrift:22:6:22:14 | enum Operation | 3 | test.thrift:25:3:25:10 | enumfield MULTIPLY |
+| test.thrift:22:6:22:14 | enum Operation | 4 | test.thrift:26:3:26:8 | enumfield DIVIDE |
+| test.thrift:22:6:22:14 | enum Operation | 5 | file://:0:0:0:0 | type_annotations |
+| test.thrift:22:6:22:14 | name | 0 | test.thrift:22:6:22:14 | IDENTIFIER Operation |
+| test.thrift:23:3:23:5 | enumfield ADD | 0 | test.thrift:23:3:23:5 | name |
+| test.thrift:23:3:23:5 | enumfield ADD | 1 | test.thrift:23:9:23:9 | enumvalue |
+| test.thrift:23:3:23:5 | enumfield ADD | 2 | file://:0:0:0:0 | type_annotations |
+| test.thrift:23:3:23:5 | name | 0 | test.thrift:23:3:23:5 | IDENTIFIER ADD |
+| test.thrift:23:9:23:9 | enumvalue | 0 | test.thrift:23:9:23:9 | INTCONSTANT 1 |
+| test.thrift:24:3:24:10 | enumfield SUBTRACT | 0 | test.thrift:24:3:24:10 | name |
+| test.thrift:24:3:24:10 | enumfield SUBTRACT | 1 | test.thrift:24:14:24:14 | enumvalue |
+| test.thrift:24:3:24:10 | enumfield SUBTRACT | 2 | file://:0:0:0:0 | type_annotations |
+| test.thrift:24:3:24:10 | name | 0 | test.thrift:24:3:24:10 | IDENTIFIER SUBTRACT |
+| test.thrift:24:14:24:14 | enumvalue | 0 | test.thrift:24:14:24:14 | INTCONSTANT 2 |
+| test.thrift:25:3:25:10 | enumfield MULTIPLY | 0 | test.thrift:25:3:25:10 | name |
+| test.thrift:25:3:25:10 | enumfield MULTIPLY | 1 | test.thrift:25:14:25:14 | enumvalue |
+| test.thrift:25:3:25:10 | enumfield MULTIPLY | 2 | file://:0:0:0:0 | type_annotations |
+| test.thrift:25:3:25:10 | name | 0 | test.thrift:25:3:25:10 | IDENTIFIER MULTIPLY |
+| test.thrift:25:14:25:14 | enumvalue | 0 | test.thrift:25:14:25:14 | INTCONSTANT 3 |
+| test.thrift:26:3:26:8 | enumfield DIVIDE | 0 | test.thrift:26:3:26:8 | name |
+| test.thrift:26:3:26:8 | enumfield DIVIDE | 1 | test.thrift:26:12:26:12 | enumvalue |
+| test.thrift:26:3:26:8 | enumfield DIVIDE | 2 | file://:0:0:0:0 | type_annotations |
+| test.thrift:26:3:26:8 | name | 0 | test.thrift:26:3:26:8 | IDENTIFIER DIVIDE |
+| test.thrift:26:12:26:12 | enumvalue | 0 | test.thrift:26:12:26:12 | INTCONSTANT 4 |
+| test.thrift:38:8:38:11 | definition | 0 | test.thrift:38:8:38:11 | struct Work |
+| test.thrift:38:8:38:11 | name | 0 | test.thrift:38:8:38:11 | IDENTIFIER Work |
+| test.thrift:38:8:38:11 | struct Work | 0 | test.thrift:38:8:38:11 | name |
+| test.thrift:38:8:38:11 | struct Work | 1 | test.thrift:39:3:39:13 | field num1 |
+| test.thrift:38:8:38:11 | struct Work | 2 | test.thrift:40:3:40:13 | field num2 |
+| test.thrift:38:8:38:11 | struct Work | 3 | test.thrift:41:3:41:17 | field op |
+| test.thrift:38:8:38:11 | struct Work | 4 | test.thrift:42:3:42:28 | field comment |
+| test.thrift:38:8:38:11 | struct Work | 5 | file://:0:0:0:0 | type_annotations |
+| test.thrift:39:3:39:3 | fieldid | 0 | test.thrift:39:3:39:3 | INTCONSTANT 1 |
+| test.thrift:39:3:39:13 | field num1 | 0 | test.thrift:39:3:39:3 | fieldid |
+| test.thrift:39:3:39:13 | field num1 | 2 | test.thrift:39:6:39:8 | type i32 |
+| test.thrift:39:3:39:13 | field num1 | 3 | file://:0:0:0:0 | type_annotations |
+| test.thrift:39:3:39:13 | field num1 | 4 | test.thrift:39:10:39:13 | IDENTIFIER num1 |
+| test.thrift:39:3:39:13 | field num1 | 5 | test.thrift:39:17:39:17 | fieldvalue |
+| test.thrift:39:3:39:13 | field num1 | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| test.thrift:39:3:39:13 | field num1 | 7 | file://:0:0:0:0 | type_annotations |
+| test.thrift:39:6:39:8 | type i32 | 0 | test.thrift:39:6:39:8 | I32 i32 |
+| test.thrift:39:6:39:8 | type i32 | 0 | test.thrift:39:6:39:8 | type i32 |
+| test.thrift:39:17:39:17 | constvalue | 0 | test.thrift:39:17:39:17 | INTCONSTANT 0 |
+| test.thrift:39:17:39:17 | fieldvalue | 0 | test.thrift:39:17:39:17 | constvalue |
+| test.thrift:40:3:40:3 | fieldid | 0 | test.thrift:40:3:40:3 | INTCONSTANT 2 |
+| test.thrift:40:3:40:13 | field num2 | 0 | test.thrift:40:3:40:3 | fieldid |
+| test.thrift:40:3:40:13 | field num2 | 2 | test.thrift:40:6:40:8 | type i32 |
+| test.thrift:40:3:40:13 | field num2 | 3 | file://:0:0:0:0 | type_annotations |
+| test.thrift:40:3:40:13 | field num2 | 4 | test.thrift:40:10:40:13 | IDENTIFIER num2 |
+| test.thrift:40:3:40:13 | field num2 | 5 | file://:0:0:0:0 | fieldvalue |
+| test.thrift:40:3:40:13 | field num2 | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| test.thrift:40:3:40:13 | field num2 | 7 | file://:0:0:0:0 | type_annotations |
+| test.thrift:40:6:40:8 | type i32 | 0 | test.thrift:40:6:40:8 | I32 i32 |
+| test.thrift:40:6:40:8 | type i32 | 0 | test.thrift:40:6:40:8 | type i32 |
+| test.thrift:41:3:41:3 | fieldid | 0 | test.thrift:41:3:41:3 | INTCONSTANT 3 |
+| test.thrift:41:3:41:17 | field op | 0 | test.thrift:41:3:41:3 | fieldid |
+| test.thrift:41:3:41:17 | field op | 2 | test.thrift:41:6:41:14 | type Operation |
+| test.thrift:41:3:41:17 | field op | 3 | file://:0:0:0:0 | type_annotations |
+| test.thrift:41:3:41:17 | field op | 4 | test.thrift:41:16:41:17 | IDENTIFIER op |
+| test.thrift:41:3:41:17 | field op | 5 | file://:0:0:0:0 | fieldvalue |
+| test.thrift:41:3:41:17 | field op | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| test.thrift:41:3:41:17 | field op | 7 | file://:0:0:0:0 | type_annotations |
+| test.thrift:41:6:41:14 | type Operation | 0 | test.thrift:41:6:41:14 | IDENTIFIER Operation |
+| test.thrift:42:3:42:3 | fieldid | 0 | test.thrift:42:3:42:3 | INTCONSTANT 4 |
+| test.thrift:42:3:42:28 | field comment | 0 | test.thrift:42:3:42:3 | fieldid |
+| test.thrift:42:3:42:28 | field comment | 2 | test.thrift:42:15:42:20 | type string |
+| test.thrift:42:3:42:28 | field comment | 3 | file://:0:0:0:0 | type_annotations |
+| test.thrift:42:3:42:28 | field comment | 4 | test.thrift:42:22:42:28 | IDENTIFIER comment |
+| test.thrift:42:3:42:28 | field comment | 5 | file://:0:0:0:0 | fieldvalue |
+| test.thrift:42:3:42:28 | field comment | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| test.thrift:42:3:42:28 | field comment | 7 | file://:0:0:0:0 | type_annotations |
+| test.thrift:42:15:42:20 | type string | 0 | test.thrift:42:15:42:20 | STRING string |
+| test.thrift:42:15:42:20 | type string | 0 | test.thrift:42:15:42:20 | type string |
+| test.thrift:48:11:48:26 | definition | 0 | test.thrift:48:11:48:26 | exception InvalidOperation |
+| test.thrift:48:11:48:26 | exception InvalidOperation | 0 | test.thrift:48:11:48:26 | name |
+| test.thrift:48:11:48:26 | exception InvalidOperation | 1 | test.thrift:49:3:49:13 | field what |
+| test.thrift:48:11:48:26 | exception InvalidOperation | 2 | test.thrift:50:3:50:15 | field why |
+| test.thrift:48:11:48:26 | name | 0 | test.thrift:48:11:48:26 | IDENTIFIER InvalidOperation |
+| test.thrift:49:3:49:3 | fieldid | 0 | test.thrift:49:3:49:3 | INTCONSTANT 1 |
+| test.thrift:49:3:49:13 | field what | 0 | test.thrift:49:3:49:3 | fieldid |
+| test.thrift:49:3:49:13 | field what | 2 | test.thrift:49:6:49:8 | type i32 |
+| test.thrift:49:3:49:13 | field what | 3 | file://:0:0:0:0 | type_annotations |
+| test.thrift:49:3:49:13 | field what | 4 | test.thrift:49:10:49:13 | IDENTIFIER what |
+| test.thrift:49:3:49:13 | field what | 5 | file://:0:0:0:0 | fieldvalue |
+| test.thrift:49:3:49:13 | field what | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| test.thrift:49:3:49:13 | field what | 7 | file://:0:0:0:0 | type_annotations |
+| test.thrift:49:6:49:8 | type i32 | 0 | test.thrift:49:6:49:8 | I32 i32 |
+| test.thrift:49:6:49:8 | type i32 | 0 | test.thrift:49:6:49:8 | type i32 |
+| test.thrift:50:3:50:3 | fieldid | 0 | test.thrift:50:3:50:3 | INTCONSTANT 2 |
+| test.thrift:50:3:50:15 | field why | 0 | test.thrift:50:3:50:3 | fieldid |
+| test.thrift:50:3:50:15 | field why | 2 | test.thrift:50:6:50:11 | type string |
+| test.thrift:50:3:50:15 | field why | 3 | file://:0:0:0:0 | type_annotations |
+| test.thrift:50:3:50:15 | field why | 4 | test.thrift:50:13:50:15 | IDENTIFIER why |
+| test.thrift:50:3:50:15 | field why | 5 | file://:0:0:0:0 | fieldvalue |
+| test.thrift:50:3:50:15 | field why | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| test.thrift:50:3:50:15 | field why | 7 | file://:0:0:0:0 | type_annotations |
+| test.thrift:50:6:50:11 | type string | 0 | test.thrift:50:6:50:11 | STRING string |
+| test.thrift:50:6:50:11 | type string | 0 | test.thrift:50:6:50:11 | type string |
+| test.thrift:57:9:57:18 | definition | 0 | test.thrift:57:9:57:18 | service Calculator |
+| test.thrift:57:9:57:18 | name | 0 | test.thrift:57:9:57:18 | IDENTIFIER Calculator |
+| test.thrift:57:9:57:18 | service Calculator | 0 | test.thrift:57:9:57:18 | name |
+| test.thrift:57:9:57:18 | service Calculator | 1 | test.thrift:57:28:57:47 | extends |
+| test.thrift:57:9:57:18 | service Calculator | 2 | test.thrift:66:4:66:12 | function ping |
+| test.thrift:57:9:57:18 | service Calculator | 3 | test.thrift:68:4:68:10 | function add |
+| test.thrift:57:9:57:18 | service Calculator | 4 | test.thrift:70:4:70:16 | function calculate |
+| test.thrift:57:9:57:18 | service Calculator | 5 | test.thrift:77:11:77:18 | function zip |
+| test.thrift:57:9:57:18 | service Calculator | 6 | file://:0:0:0:0 | type_annotations |
+| test.thrift:57:28:57:47 | extends | 0 | test.thrift:57:28:57:47 | IDENTIFIER shared.SharedService |
+| test.thrift:66:4:66:7 | type void | 0 | test.thrift:66:4:66:7 | VOID void |
+| test.thrift:66:4:66:12 | function ping | 0 | file://:0:0:0:0 | oneway |
+| test.thrift:66:4:66:12 | function ping | 1 | test.thrift:66:4:66:7 | type void |
+| test.thrift:66:4:66:12 | function ping | 2 | test.thrift:66:9:66:12 | name |
+| test.thrift:66:4:66:12 | function ping | 3 | file://:0:0:0:0 | throws |
+| test.thrift:66:4:66:12 | function ping | 4 | file://:0:0:0:0 | type_annotations |
+| test.thrift:66:9:66:12 | name | 0 | test.thrift:66:9:66:12 | IDENTIFIER ping |
+| test.thrift:68:4:68:6 | type i32 | 0 | test.thrift:68:4:68:6 | I32 i32 |
+| test.thrift:68:4:68:6 | type i32 | 0 | test.thrift:68:4:68:6 | type i32 |
+| test.thrift:68:4:68:6 | type i32 | 0 | test.thrift:68:4:68:6 | type i32 |
+| test.thrift:68:4:68:10 | function add | 0 | file://:0:0:0:0 | oneway |
+| test.thrift:68:4:68:10 | function add | 1 | test.thrift:68:4:68:6 | type i32 |
+| test.thrift:68:4:68:10 | function add | 2 | test.thrift:68:8:68:10 | name |
+| test.thrift:68:4:68:10 | function add | 3 | test.thrift:68:12:68:21 | field num1 |
+| test.thrift:68:4:68:10 | function add | 4 | test.thrift:68:24:68:33 | field num2 |
+| test.thrift:68:4:68:10 | function add | 5 | file://:0:0:0:0 | throws |
+| test.thrift:68:4:68:10 | function add | 6 | file://:0:0:0:0 | type_annotations |
+| test.thrift:68:8:68:10 | name | 0 | test.thrift:68:8:68:10 | IDENTIFIER add |
+| test.thrift:68:12:68:12 | fieldid | 0 | test.thrift:68:12:68:12 | INTCONSTANT 1 |
+| test.thrift:68:12:68:21 | field num1 | 0 | test.thrift:68:12:68:12 | fieldid |
+| test.thrift:68:12:68:21 | field num1 | 2 | test.thrift:68:14:68:16 | type i32 |
+| test.thrift:68:12:68:21 | field num1 | 3 | file://:0:0:0:0 | type_annotations |
+| test.thrift:68:12:68:21 | field num1 | 4 | test.thrift:68:18:68:21 | IDENTIFIER num1 |
+| test.thrift:68:12:68:21 | field num1 | 5 | file://:0:0:0:0 | fieldvalue |
+| test.thrift:68:12:68:21 | field num1 | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| test.thrift:68:12:68:21 | field num1 | 7 | file://:0:0:0:0 | type_annotations |
+| test.thrift:68:14:68:16 | type i32 | 0 | test.thrift:68:14:68:16 | I32 i32 |
+| test.thrift:68:14:68:16 | type i32 | 0 | test.thrift:68:14:68:16 | type i32 |
+| test.thrift:68:24:68:24 | fieldid | 0 | test.thrift:68:24:68:24 | INTCONSTANT 2 |
+| test.thrift:68:24:68:33 | field num2 | 0 | test.thrift:68:24:68:24 | fieldid |
+| test.thrift:68:24:68:33 | field num2 | 2 | test.thrift:68:26:68:28 | type i32 |
+| test.thrift:68:24:68:33 | field num2 | 3 | file://:0:0:0:0 | type_annotations |
+| test.thrift:68:24:68:33 | field num2 | 4 | test.thrift:68:30:68:33 | IDENTIFIER num2 |
+| test.thrift:68:24:68:33 | field num2 | 5 | file://:0:0:0:0 | fieldvalue |
+| test.thrift:68:24:68:33 | field num2 | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| test.thrift:68:24:68:33 | field num2 | 7 | file://:0:0:0:0 | type_annotations |
+| test.thrift:68:26:68:28 | type i32 | 0 | test.thrift:68:26:68:28 | I32 i32 |
+| test.thrift:68:26:68:28 | type i32 | 0 | test.thrift:68:26:68:28 | type i32 |
+| test.thrift:70:4:70:6 | type i32 | 0 | test.thrift:70:4:70:6 | I32 i32 |
+| test.thrift:70:4:70:6 | type i32 | 0 | test.thrift:70:4:70:6 | type i32 |
+| test.thrift:70:4:70:6 | type i32 | 0 | test.thrift:70:4:70:6 | type i32 |
+| test.thrift:70:4:70:16 | function calculate | 0 | file://:0:0:0:0 | oneway |
+| test.thrift:70:4:70:16 | function calculate | 1 | test.thrift:70:4:70:6 | type i32 |
+| test.thrift:70:4:70:16 | function calculate | 2 | test.thrift:70:8:70:16 | name |
+| test.thrift:70:4:70:16 | function calculate | 3 | test.thrift:70:18:70:28 | field logid |
+| test.thrift:70:4:70:16 | function calculate | 4 | test.thrift:70:31:70:38 | field w |
+| test.thrift:70:4:70:16 | function calculate | 5 | test.thrift:70:49:70:71 | throws |
+| test.thrift:70:4:70:16 | function calculate | 6 | file://:0:0:0:0 | type_annotations |
+| test.thrift:70:8:70:16 | name | 0 | test.thrift:70:8:70:16 | IDENTIFIER calculate |
+| test.thrift:70:18:70:18 | fieldid | 0 | test.thrift:70:18:70:18 | INTCONSTANT 1 |
+| test.thrift:70:18:70:28 | field logid | 0 | test.thrift:70:18:70:18 | fieldid |
+| test.thrift:70:18:70:28 | field logid | 2 | test.thrift:70:20:70:22 | type i32 |
+| test.thrift:70:18:70:28 | field logid | 3 | file://:0:0:0:0 | type_annotations |
+| test.thrift:70:18:70:28 | field logid | 4 | test.thrift:70:24:70:28 | IDENTIFIER logid |
+| test.thrift:70:18:70:28 | field logid | 5 | file://:0:0:0:0 | fieldvalue |
+| test.thrift:70:18:70:28 | field logid | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| test.thrift:70:18:70:28 | field logid | 7 | file://:0:0:0:0 | type_annotations |
+| test.thrift:70:20:70:22 | type i32 | 0 | test.thrift:70:20:70:22 | I32 i32 |
+| test.thrift:70:20:70:22 | type i32 | 0 | test.thrift:70:20:70:22 | type i32 |
+| test.thrift:70:31:70:31 | fieldid | 0 | test.thrift:70:31:70:31 | INTCONSTANT 2 |
+| test.thrift:70:31:70:38 | field w | 0 | test.thrift:70:31:70:31 | fieldid |
+| test.thrift:70:31:70:38 | field w | 2 | test.thrift:70:33:70:36 | type Work |
+| test.thrift:70:31:70:38 | field w | 3 | file://:0:0:0:0 | type_annotations |
+| test.thrift:70:31:70:38 | field w | 4 | test.thrift:70:38:70:38 | IDENTIFIER w |
+| test.thrift:70:31:70:38 | field w | 5 | file://:0:0:0:0 | fieldvalue |
+| test.thrift:70:31:70:38 | field w | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| test.thrift:70:31:70:38 | field w | 7 | file://:0:0:0:0 | type_annotations |
+| test.thrift:70:33:70:36 | type Work | 0 | test.thrift:70:33:70:36 | IDENTIFIER Work |
+| test.thrift:70:49:70:49 | fieldid | 0 | test.thrift:70:49:70:49 | INTCONSTANT 1 |
+| test.thrift:70:49:70:71 | field ouch | 0 | test.thrift:70:49:70:49 | fieldid |
+| test.thrift:70:49:70:71 | field ouch | 2 | test.thrift:70:51:70:66 | type InvalidOperation |
+| test.thrift:70:49:70:71 | field ouch | 3 | file://:0:0:0:0 | type_annotations |
+| test.thrift:70:49:70:71 | field ouch | 4 | test.thrift:70:68:70:71 | IDENTIFIER ouch |
+| test.thrift:70:49:70:71 | field ouch | 5 | file://:0:0:0:0 | fieldvalue |
+| test.thrift:70:49:70:71 | field ouch | 6 | file://:0:0:0:0 | xsdfieldoptions |
+| test.thrift:70:49:70:71 | field ouch | 7 | file://:0:0:0:0 | type_annotations |
+| test.thrift:70:49:70:71 | throws | 0 | test.thrift:70:49:70:71 | field ouch |
+| test.thrift:70:51:70:66 | type InvalidOperation | 0 | test.thrift:70:51:70:66 | IDENTIFIER InvalidOperation |
+| test.thrift:77:11:77:14 | type void | 0 | test.thrift:77:11:77:14 | VOID void |
+| test.thrift:77:11:77:18 | function zip | 0 | file://:0:0:0:0 | oneway |
+| test.thrift:77:11:77:18 | function zip | 1 | test.thrift:77:11:77:14 | type void |
+| test.thrift:77:11:77:18 | function zip | 2 | test.thrift:77:16:77:18 | name |
+| test.thrift:77:11:77:18 | function zip | 3 | file://:0:0:0:0 | throws |
+| test.thrift:77:11:77:18 | function zip | 4 | file://:0:0:0:0 | type_annotations |
+| test.thrift:77:16:77:18 | name | 0 | test.thrift:77:16:77:18 | IDENTIFIER zip |
+| test.thrift:83:9:83:12 | type wood | 0 | test.thrift:83:9:83:12 | IDENTIFIER wood |
+| test.thrift:83:9:83:17 | definition | 0 | test.thrift:83:9:83:17 | typedef duck |
+| test.thrift:83:9:83:17 | typedef duck | 0 | test.thrift:83:9:83:12 | type wood |
+| test.thrift:83:9:83:17 | typedef duck | 1 | file://:0:0:0:0 | type_annotations |
+| test.thrift:83:9:83:17 | typedef duck | 2 | test.thrift:83:14:83:17 | name |
+| test.thrift:83:9:83:17 | typedef duck | 3 | file://:0:0:0:0 | type_annotations |
+| test.thrift:83:14:83:17 | name | 0 | test.thrift:83:14:83:17 | IDENTIFIER duck |

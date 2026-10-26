@@ -1,0 +1,41 @@
+let x = .foo
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    memberAccessExpr
+                      period: .
+                      declName:
+                        declReferenceExpr
+                          baseName: identifier "foo"
+              pattern:
+                identifierPattern
+                  identifier: identifier "x"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "x" source="x"
+          value:
+            member_access_expr source="⟨base⟩⟨member_name_node⟩"
+              base: inferred_type_expr "." source="."
+              member_name_node: identifier "foo" source="foo"

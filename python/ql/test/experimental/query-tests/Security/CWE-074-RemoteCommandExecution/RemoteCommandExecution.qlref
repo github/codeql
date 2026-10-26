@@ -1,0 +1,2 @@
+query: experimental/Security/CWE-074/remoteCommandExecution/RemoteCommandExecution.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

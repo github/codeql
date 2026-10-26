@@ -1,0 +1,4 @@
+| tests.cpp:350:13:350:19 | call to strncat | This 'call to strncat' operation is limited to 100 bytes but the destination is only 50 bytes. |
+| tests.cpp:452:9:452:15 | call to wcsncpy | This 'call to wcsncpy' operation is limited to 396 bytes but the destination is only 200 bytes. |
+| tests.cpp:481:9:481:16 | call to swprintf | This 'call to swprintf' operation is limited to 400 bytes but the destination is only 200 bytes. |
+| tests.cpp:630:13:630:20 | call to swprintf | This 'call to swprintf' operation is limited to 400 bytes but the destination is only 200 bytes. |

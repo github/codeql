@@ -1,0 +1,2 @@
+| wrong_arguments.py:12:1:12:24 | f() | Keyword argument 'kw3' is not a supported parameter name of $@. | wrong_arguments.py:4:1:4:43 | Function f | function f |
+| wrong_arguments.py:13:1:13:17 | f() | Keyword argument 'kw3' is not a supported parameter name of $@. | wrong_arguments.py:4:1:4:43 | Function f | function f |

@@ -1,0 +1,117 @@
+routes
+| app.rb:1:1:114:3 | MyApp | app.rb:2:3:4:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:6:3:8:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:10:3:13:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:15:3:18:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:20:3:22:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:24:3:26:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:28:3:31:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:33:3:35:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:37:3:42:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:44:3:46:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:48:3:50:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:52:3:54:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:56:3:58:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:60:3:62:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:66:3:68:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:70:3:72:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:74:3:77:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:79:3:82:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:89:3:92:5 | call to get |
+| app.rb:1:1:114:3 | MyApp | app.rb:94:3:96:5 | call to get |
+params
+| app.rb:3:14:3:19 | call to params |
+| app.rb:12:5:12:10 | call to params |
+| app.rb:17:5:17:10 | call to params |
+| app.rb:25:15:25:20 | call to params |
+| app.rb:39:13:39:18 | call to params |
+| app.rb:40:14:40:19 | call to params |
+| app.rb:45:38:45:43 | call to params |
+| app.rb:75:12:75:17 | call to params |
+| app.rb:91:5:91:10 | call to params |
+erbCalls
+| app.rb:76:5:76:36 | call to erb | views/index.erb:0:0:0:0 | views/index.erb |
+erbSyntheticGlobals
+| SinatraErbLocalsHash(views/index.erb,app.rb@76:5:76:36) | views/index.erb:0:0:0:0 | views/index.erb |
+filters
+| app.rb:84:3:87:5 | call to before | before |
+| app.rb:98:3:100:5 | call to after | after |
+| app.rb:102:3:104:5 | call to before | before |
+| app.rb:106:3:108:5 | call to before | before |
+| app.rb:111:3:113:5 | call to after | after |
+filterPatterns
+| app.rb:106:3:108:5 | call to before | app.rb:106:10:106:23 | "/protected/*" |
+| app.rb:111:3:113:5 | call to after | app.rb:111:9:111:23 | "/create/:slug" |
+additionalFlowSteps
+| app.rb:85:5:85:9 | [post] self | app.rb:3:14:3:19 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:12:5:12:10 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:17:5:17:10 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:25:15:25:20 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:39:13:39:18 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:40:14:40:19 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:45:38:45:43 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:57:5:57:15 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:61:5:61:17 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:75:5:75:8 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:75:12:75:17 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:76:5:76:36 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:76:32:76:35 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:81:5:81:12 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:90:5:90:9 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:91:5:91:10 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:95:5:95:14 | self |
+| app.rb:85:5:85:9 | [post] self | app.rb:95:10:95:14 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:3:14:3:19 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:12:5:12:10 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:17:5:17:10 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:25:15:25:20 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:39:13:39:18 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:40:14:40:19 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:45:38:45:43 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:57:5:57:15 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:61:5:61:17 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:75:5:75:8 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:75:12:75:17 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:76:5:76:36 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:76:32:76:35 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:81:5:81:12 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:90:5:90:9 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:91:5:91:10 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:95:5:95:14 | self |
+| app.rb:86:5:86:11 | [post] self | app.rb:95:10:95:14 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:3:14:3:19 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:12:5:12:10 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:17:5:17:10 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:25:15:25:20 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:39:13:39:18 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:40:14:40:19 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:45:38:45:43 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:57:5:57:15 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:61:5:61:17 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:75:5:75:8 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:75:12:75:17 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:76:5:76:36 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:76:32:76:35 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:81:5:81:12 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:90:5:90:9 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:91:5:91:10 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:95:5:95:14 | self |
+| app.rb:103:5:103:9 | [post] self | app.rb:95:10:95:14 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:3:14:3:19 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:12:5:12:10 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:17:5:17:10 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:25:15:25:20 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:39:13:39:18 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:40:14:40:19 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:45:38:45:43 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:57:5:57:15 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:61:5:61:17 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:75:5:75:8 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:75:12:75:17 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:76:5:76:36 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:76:32:76:35 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:81:5:81:12 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:90:5:90:9 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:91:5:91:10 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:95:5:95:14 | self |
+| app.rb:103:13:103:22 | [post] self | app.rb:95:10:95:14 | self |

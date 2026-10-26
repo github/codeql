@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Constructing a regular expression with unsanitized user input is dangerous,
+since a malicious user may be able to modify the meaning of the expression. They
+may be able to cause unexpected program behaviour, or perform a denial-of-service
+attack. For example, they may provide a regular expression fragment that takes
+exponential time to evaluate in the worst case.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Before embedding user input into a regular expression, use a sanitization
+function such as <code>NSRegularExpression::escapedPattern(for:)</code> to escape
+meta-characters that have special meaning.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following examples construct regular expressions from user input without
+sanitizing it first:
+</p>
+<sample src="RegexInjectionBad.swift" />
+<p>
+If user input is used to construct a regular expression it should be sanitized
+first. This ensures that the user cannot insert characters that have special
+meanings in regular expressions.
+</p>
+<sample src="RegexInjectionGood.swift" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS">Regular expression Denial of Service - ReDoS</a>.
+</li>
+<li>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/ReDoS">ReDoS</a>.
+</li>
+<li>
+Swift: <a href="https://developer.apple.com/documentation/foundation/nsregularexpression/1408386-escapedpattern">NSRegularExpression.escapedPattern(for:)</a>.
+</li>
+</references>
+</qhelp>

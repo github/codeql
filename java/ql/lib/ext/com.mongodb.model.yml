@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.mongodb", "MongoCredential", False, "createCredential", "(String,String,char[])", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createCredential", "(String,String,char[])", "", "Argument[2]", "credentials-password", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createGSSAPICredential", "(String)", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createMongoCRCredential", "(String,String,char[])", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createMongoCRCredential", "(String,String,char[])", "", "Argument[2]", "credentials-password", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createMongoX509Credential", "(String)", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createPlainCredential", "(String,String,char[])", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createPlainCredential", "(String,String,char[])", "", "Argument[2]", "credentials-password", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createScramSha1Credential", "(String,String,char[])", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.mongodb", "MongoCredential", False, "createScramSha1Credential", "(String,String,char[])", "", "Argument[2]", "credentials-password", "manual"]

@@ -1,0 +1,21 @@
+nullables
+| trivia.cs:49:1:49:82 | #nullable ... | 0 | 0 |
+| trivia.cs:50:1:50:80 | #nullable ... | 1 | 0 |
+| trivia.cs:51:1:51:94 | #nullable ... | 2 | 0 |
+| trivia.cs:52:1:52:81 | #nullable ... | 0 | 1 |
+| trivia.cs:53:1:53:79 | #nullable ... | 1 | 1 |
+| trivia.cs:54:1:54:93 | #nullable ... | 2 | 1 |
+| trivia.cs:55:1:55:75 | #nullable ... | 0 | 2 |
+| trivia.cs:56:1:56:73 | #nullable ... | 1 | 2 |
+| trivia.cs:57:1:57:87 | #nullable ... | 2 | 2 |
+succ
+| trivia.cs:49:1:49:82 | #nullable ... | trivia.cs:50:1:50:80 | #nullable ... |
+| trivia.cs:50:1:50:80 | #nullable ... | trivia.cs:51:1:51:94 | #nullable ... |
+| trivia.cs:51:1:51:94 | #nullable ... | trivia.cs:52:1:52:81 | #nullable ... |
+| trivia.cs:52:1:52:81 | #nullable ... | trivia.cs:53:1:53:79 | #nullable ... |
+| trivia.cs:53:1:53:79 | #nullable ... | trivia.cs:54:1:54:93 | #nullable ... |
+| trivia.cs:54:1:54:93 | #nullable ... | trivia.cs:55:1:55:75 | #nullable ... |
+| trivia.cs:55:1:55:75 | #nullable ... | trivia.cs:56:1:56:73 | #nullable ... |
+| trivia.cs:56:1:56:73 | #nullable ... | trivia.cs:57:1:57:87 | #nullable ... |
+last
+| trivia.cs:57:1:57:87 | #nullable ... |

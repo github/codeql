@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-297/InsecureLdapEndpoint.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

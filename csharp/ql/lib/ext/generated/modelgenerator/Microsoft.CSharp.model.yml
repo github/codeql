@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.CSharp", "CSharpCodeProvider", False, "CSharpCodeProvider", "(System.Collections.Generic.IDictionary<System.String,System.String>)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.CSharp", "CSharpCodeProvider", "GetConverter", "(System.Type)", "summary", "df-generated"]
+      - ["Microsoft.CSharp", "CSharpCodeProvider", "get_FileExtension", "()", "summary", "df-generated"]

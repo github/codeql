@@ -1,0 +1,1106 @@
+/**
+ * Provides classes for working with static single assignment (SSA) form.
+ */
+
+import csharp
+private import codeql.ssa.Ssa as SsaImplCommon
+private import AssignableDefinitions
+private import semmle.code.csharp.controlflow.Guards as Guards
+private import semmle.code.csharp.dataflow.internal.BaseSSA
+private import semmle.code.csharp.internal.Location
+
+private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
+  class SourceVariable = Ssa::SourceVariable;
+
+  /**
+   * Holds if the `i`th node of basic block `bb` is a (potential) write to source
+   * variable `v`. The Boolean `certain` indicates whether the write is certain.
+   *
+   * This includes implicit writes via calls.
+   */
+  predicate variableWrite(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+    variableWriteDirect(bb, i, v, certain)
+    or
+    variableWriteQualifier(bb, i, v, certain)
+    or
+    updatesNamedFieldOrProp(bb, i, _, v, _) and
+    certain = false
+  }
+
+  /**
+   * Holds if the `i`th of basic block `bb` reads source variable `v`.
+   *
+   * This includes implicit reads via calls.
+   */
+  predicate variableRead(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+    variableReadActual(bb, i, v) and
+    certain = true
+    or
+    variableReadPseudo(bb, i, v) and
+    certain = false
+  }
+}
+
+import SsaImplCommon::Make<Location, Cfg, SsaImplInput> as Impl
+
+private module SsaInput implements Impl::SsaInputSig {
+  private import csharp as CS
+
+  class Expr = CS::Expr;
+
+  class Parameter = CS::Parameter;
+
+  class VariableWrite extends AssignableDefinition {
+    Expr asExpr() { result = this.getExpr() }
+
+    Expr getValue() { result = this.getSource() }
+
+    predicate isParameterInit(Parameter p) { this.(ImplicitParameterDefinition).getParameter() = p }
+  }
+
+  predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, SsaImplInput::SourceVariable v) {
+    exists(AssignableDefinition ad | variableDefinition(bb, i, v, ad) |
+      w = ad or
+      w = getASameOutRefDefAfter(v, ad)
+    )
+    or
+    exists(Parameter p |
+      implicitEntryDefinition(bb, v) and
+      i = -1 and
+      p = v.getAssignable() and
+      pragma[only_bind_out](p.getCallable()) = pragma[only_bind_out](v.getEnclosingCallable()) and
+      w.isParameterInit(p)
+    )
+  }
+}
+
+module Ssa_ = Impl::MakeSsa<SsaInput>;
+
+class Definition = Impl::Definition;
+
+private class SsaDefinitionToStringProxy extends Definition {
+  override string toString() { result = this.(SsaDefinition).toString() }
+}
+
+deprecated class WriteDefinition = Impl::WriteDefinition;
+
+deprecated class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
+
+deprecated class PhiNode = Impl::PhiNode;
+
+module Consistency = Impl::Consistency;
+
+/**
+ * Holds if the `i`th node of basic block `bb` reads source variable `v`.
+ */
+private predicate variableReadActual(BasicBlock bb, int i, Ssa::SourceVariable v) {
+  v.getAnAccess().(AssignableRead) = bb.getNode(i).asExpr()
+}
+
+private module SourceVariableImpl {
+  private import AssignableDefinitions
+
+  /** A field or a property. */
+  class FieldOrProp extends Assignable, Modifiable {
+    FieldOrProp() {
+      this instanceof Field
+      or
+      this instanceof Property
+    }
+
+    /** Holds if this is a volatile field. */
+    predicate isVolatile() { this.(Field).isVolatile() }
+  }
+
+  /** An instance field or property. */
+  class InstanceFieldOrProp extends FieldOrProp {
+    InstanceFieldOrProp() { not this.isStatic() }
+  }
+
+  /** An access to a field or a property. */
+  class FieldOrPropAccess extends AssignableAccess, QualifiableExpr {
+    FieldOrPropAccess() { this.getTarget() instanceof FieldOrProp }
+  }
+
+  /** An access to a field or a property that reads the underlying value. */
+  class FieldOrPropRead extends FieldOrPropAccess, AssignableRead { }
+
+  /**
+   * Holds if `fpa` is an access inside callable `c` of `this`-qualified or
+   * static field or property `fp`.
+   */
+  predicate isPlainFieldOrPropAccess(FieldOrPropAccess fpa, FieldOrProp fp, Callable c) {
+    fieldOrPropAccessInCallable(fpa, fp, c) and
+    (
+      ownFieldOrPropAccess(fpa)
+      or
+      fp.isStatic() and not fp instanceof EnumConstant
+    )
+  }
+
+  /**
+   * Holds if `fpa` is an access inside callable `c` of instance field or property
+   * `fp` with qualifier `q`.
+   */
+  predicate isQualifiedFieldOrPropAccess(
+    FieldOrPropAccess fpa, InstanceFieldOrProp fp, Callable c, Ssa::SourceVariable q
+  ) {
+    fieldOrPropAccessInCallable(fpa, fp, c) and
+    fpa.getQualifier() = q.getAnAccess()
+  }
+
+  /** Holds if `fpa` is an access inside callable `c` of field or property `fp`. */
+  private predicate fieldOrPropAccessInCallable(FieldOrPropAccess fpa, FieldOrProp fp, Callable c) {
+    fp = fpa.getTarget() and
+    c = fpa.getEnclosingCallable()
+  }
+
+  /** Holds if `fpa` is an access to an instance field or property of `this`. */
+  predicate ownFieldOrPropAccess(FieldOrPropAccess fpa) { fpa.getQualifier() instanceof ThisAccess }
+
+  /**
+   * Holds if the `i`th node of basic block `bb` is assignable definition `ad`
+   * targeting source variable `v`.
+   */
+  predicate variableDefinition(BasicBlock bb, int i, Ssa::SourceVariable v, AssignableDefinition ad) {
+    ad = v.getADefinition() and
+    // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
+    not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second | first = ad |
+      second.getAssignment() = first.getAssignment() and
+      second.getEvaluationOrder() > first.getEvaluationOrder() and
+      second = v.getADefinition()
+    ) and
+    // In cases like `M(out x, out x)`, there is no inherent evaluation order, so we
+    // collapse the two definitions of `x`, using the first access as the representative,
+    // and expose both definitions in `ExplicitDefinition.getADefinition()`
+    not ad = getASameOutRefDefAfter(v, _) and
+    (
+      ad.getExpr().getControlFlowNode() = bb.getNode(i)
+      or
+      ad.(AssignableDefinitions::ImplicitParameterDefinition).getParameter().getControlFlowNode() =
+        bb.getNode(i)
+    )
+  }
+
+  /**
+   * Gets an `out`/`ref` definition of the same source variable `v` as the `out`/`ref`
+   * definition `def`, belonging to the same call, at a position after `def`.
+   */
+  OutRefDefinition getASameOutRefDefAfter(Ssa::SourceVariable v, OutRefDefinition def) {
+    def = v.getADefinition() and
+    result.getCall() = def.getCall() and
+    result.getIndex() > def.getIndex() and
+    result = v.getADefinition()
+  }
+
+  /**
+   * Holds if the `i`th node of basic block `bb` is a (potential) write to source
+   * variable `v`. The Boolean `certain` indicates whether the write is certain.
+   *
+   * This excludes implicit writes via calls.
+   */
+  predicate variableWriteDirect(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+    exists(AssignableDefinition ad | variableDefinition(bb, i, v, ad) |
+      if any(AssignableDefinition ad0 | ad0 = ad or ad0 = getASameOutRefDefAfter(v, ad)).isCertain()
+      then certain = true
+      else certain = false
+    )
+    or
+    variableWriteDirect(bb, i, v.(QualifiedFieldOrPropSourceVariable).getQualifier(), certain)
+    or
+    implicitEntryDefinition(bb, v) and
+    i = -1 and
+    certain = true
+  }
+
+  /**
+   * Holds if a pseudo read for `ref` or `out` variable `v` happens at index `i`
+   * in basic block `bb`. A pseudo read is inserted to make assignments to
+   * `out`/`ref` variables live, for example line 1 in
+   *
+   * ```csharp
+   * void M(out int i) {
+   *   i = 0;
+   * }
+   * ```
+   */
+  predicate outRefExitRead(BasicBlock bb, int i, LocalScopeSourceVariable v) {
+    exists(ControlFlow::NormalExitNode exit |
+      exists(LocalScopeVariable lsv |
+        lsv = v.getAssignable() and
+        bb.getNode(i) = exit and
+        exit.getEnclosingCallable() = lsv.getCallable()
+      |
+        lsv.(Parameter).isOutOrRef()
+        or
+        lsv.isRef() and
+        strictcount(v.getAnAccess()) > 1
+      )
+    )
+  }
+
+  /**
+   * Holds if a pseudo read for `ref` variable `v` happens at index `i` in basic
+   * block `bb`, just prior to an update of the referenced value. A pseudo read
+   * is inserted to make assignments to the `ref` variable live, for example
+   * line 2 in
+   *
+   * ```csharp
+   * void M() {
+   *   ref int i = ref GetRef();
+   *   i = 0;
+   * }
+   * ```
+   *
+   * The pseudo read is inserted at the CFG node `i` on the left-hand side of the
+   * assignment on line 3.
+   */
+  predicate refReadBeforeWrite(BasicBlock bb, int i, LocalScopeSourceVariable v) {
+    exists(AssignableDefinitions::AssignmentDefinition def, LocalVariable lv |
+      def.getTarget() = lv and
+      lv.isRef() and
+      lv = v.getAssignable() and
+      bb.getNode(i) = def.getExpr().getControlFlowNode() and
+      not def.getAssignment() instanceof LocalVariableDeclAndInitExpr
+    )
+  }
+
+  /**
+   * Holds if `fp` is a field or a property that is interesting as a basis for SSA.
+   *
+   * - A volatile field is never interesting, since all reads must reread from
+   *   memory and we are forced to assume that the value can change at any point.
+   * - A property is only interesting if it is "field-like", that is, it is a
+   *   non-overridable trivial property.
+   */
+  predicate trackFieldOrProp(FieldOrProp fp) {
+    not fp.isVolatile() and
+    (
+      fp instanceof Field
+      or
+      fp = any(TrivialProperty p | not p.isOverridableOrImplementable())
+    )
+  }
+}
+
+private import SourceVariableImpl
+private import Ssa::SourceVariables
+
+pragma[nomagic]
+predicate localScopeSourceVariable(
+  Ssa::SourceVariables::LocalScopeSourceVariable sv, LocalScopeVariable v, Callable c1, Callable c2
+) {
+  sv.getAssignable() = v and
+  sv.getEnclosingCallable() = c1 and
+  v.getCallable() = c2
+}
+
+private module CallGraph {
+  private import semmle.code.csharp.dispatch.Dispatch
+
+  /**
+   * Gets a potential run-time target for the call `c`.
+   *
+   * This predicate differs from `Call.getARuntimeTarget()` in three ways:
+   *
+   * (1) The returned callable is always a source declaration,
+   *
+   * (2) a simpler analysis is applied for delegate calls (needed to avoid making
+   *     the SSA library and `Call.getARuntimeTarget()` mutually recursive), and
+   *
+   * (3) indirect calls to delegates via calls to library callables are included.
+   *
+   * The Boolean `libraryDelegateCall` indicates whether `c` is a call to a library
+   * method and the result is a delegate passed to `c`. For example, in
+   *
+   * ```csharp
+   * Lazy<int> M1()
+   * {
+   *     return new Lazy<int>(M2);
+   * }
+   * ```
+   *
+   * the constructor call `new Lazy<int>(M2)` includes `M2` as a target.
+   */
+  Callable getARuntimeTarget(Call c, ControlFlowNode n, boolean libraryDelegateCall) {
+    // Non-delegate call: use dispatch library
+    exists(DispatchCall dc | dc.getCall() = c |
+      n = dc.getControlFlowNode() and
+      result = dc.getADynamicTarget().getUnboundDeclaration() and
+      libraryDelegateCall = false
+    )
+    or
+    // Delegate call: use simple analysis
+    result = SimpleDelegateAnalysis::getARuntimeDelegateTarget(c, libraryDelegateCall) and
+    n = c.getControlFlowNode()
+  }
+
+  private module SimpleDelegateAnalysis {
+    private import semmle.code.csharp.dataflow.internal.Steps
+    private import semmle.code.csharp.frameworks.system.linq.Expressions
+
+    /**
+     * Holds if `c` is a call that (potentially) calls the delegate expression `e`.
+     * Either `c` is a delegate call and `e` is the qualifier, or `c` is a call to
+     * a library callable and `e` is a delegate argument.
+     */
+    private predicate delegateCall(Call c, Expr e, boolean libraryDelegateCall) {
+      c = any(DelegateCall dc | e = dc.getExpr()) and
+      libraryDelegateCall = false
+      or
+      exists(Callable target |
+        target = c.getTarget() and
+        not target.hasBody()
+      |
+        if target instanceof Accessor then not target.fromSource() else any()
+      ) and
+      e = c.getAnArgument() and
+      e.getType() instanceof SystemLinqExpressions::DelegateExtType and
+      libraryDelegateCall = true
+    }
+
+    /** Holds if expression `e` is a delegate creation for callable `c` of type `t`. */
+    private predicate delegateCreation(Expr e, Callable c, SystemLinqExpressions::DelegateExtType dt) {
+      e =
+        any(AnonymousFunctionExpr afe |
+          dt = afe.getType() and
+          c = afe
+        )
+      or
+      e =
+        any(CallableAccess ca |
+          c = ca.getTarget().getUnboundDeclaration() and
+          dt = ca.getType()
+        )
+    }
+
+    /**
+     * A simple flow step that does not take flow through fields or flow out
+     * of callables into account.
+     */
+    pragma[nomagic]
+    private predicate delegateFlowStep(Expr pred, Expr succ) {
+      Steps::stepClosed(pred, succ)
+      or
+      pred = succ.(DelegateCreation).getArgument()
+      or
+      exists(AddEventExpr ae | succ.(EventAccess).getTarget() = ae.getTarget() |
+        pred = ae.getRightOperand()
+      )
+    }
+
+    private predicate delegateCreationReaches(Callable c, Expr e) {
+      delegateCreation(e, c, _)
+      or
+      exists(Expr mid |
+        delegateCreationReaches(c, mid) and
+        delegateFlowStep(mid, e)
+      )
+    }
+
+    private predicate reachesDelegateCall(Expr e, Call c, boolean libraryDelegateCall) {
+      delegateCall(c, e, libraryDelegateCall)
+      or
+      exists(Expr mid |
+        reachesDelegateCall(mid, c, libraryDelegateCall) and
+        delegateFlowStep(e, mid)
+      )
+    }
+
+    /**
+     * A "busy" flow element, that is, a node in the data-flow graph that typically
+     * has a large fan-in or a large fan-out (or both).
+     *
+     * For such busy elements, we do not track flow directly from all delegate
+     * creations, but instead we first perform a flow analysis between busy elements,
+     * and then only in the end join up with delegate creations and delegate calls.
+     */
+    abstract private class BusyFlowElement extends Element {
+      pragma[nomagic]
+      abstract Expr getAnInput();
+
+      pragma[nomagic]
+      abstract Expr getAnOutput();
+
+      /** Holds if this element can be reached from expression `e`. */
+      pragma[nomagic]
+      private predicate exprReaches(Expr e) {
+        this.reachesCall(_) and
+        e = this.getAnInput()
+        or
+        exists(Expr mid |
+          this.exprReaches(mid) and
+          delegateFlowStep(e, mid)
+        )
+      }
+
+      /**
+       * Holds if this element can reach a delegate call `c` directly without
+       * passing through another busy element.
+       */
+      pragma[nomagic]
+      predicate delegateCall(Call c, boolean libraryDelegateCall) {
+        reachesDelegateCall(this.getAnOutput(), c, libraryDelegateCall)
+      }
+
+      pragma[nomagic]
+      private BusyFlowElement getASuccessor() { result.exprReaches(this.getAnOutput()) }
+
+      /**
+       * Holds if this element reaches another busy element `other`,
+       * which can reach a delegate call directly without passing
+       * through another busy element.
+       */
+      pragma[nomagic]
+      private predicate reachesCall(BusyFlowElement other) {
+        this = other and
+        other.delegateCall(_, _)
+        or
+        this.getASuccessor().reachesCall(other)
+      }
+
+      /** Holds if this element is reached by a delegate creation for `c`. */
+      pragma[nomagic]
+      predicate isReachedBy(Callable c) {
+        exists(BusyFlowElement pred |
+          pred.reachesCall(this) and
+          delegateCreationReaches(c, pred.getAnInput())
+        )
+      }
+    }
+
+    private class TFieldOrProperty = @field or @property;
+
+    private class FieldOrPropertyFlow extends BusyFlowElement, Assignable, TFieldOrProperty {
+      final override Expr getAnInput() {
+        exists(Assignable target |
+          target = this.getUnboundDeclaration() and
+          result = target.getAnAssignedValue()
+        )
+      }
+
+      final override AssignableRead getAnOutput() {
+        exists(Assignable target |
+          target = this.getUnboundDeclaration() and
+          result = target.getAnAccess()
+        )
+      }
+    }
+
+    private class CallOutputFlow extends BusyFlowElement, Callable {
+      final override Expr getAnInput() { this.canReturn(result) }
+
+      final override Call getAnOutput() {
+        exists(Callable target | this = target.getUnboundDeclaration() |
+          target = result.getTarget() or
+          target = result.getTarget().(Method).getAnOverrider+() or
+          target = result.getTarget().(Method).getAnUltimateImplementor() or
+          target = getARuntimeDelegateTarget(result, false)
+        )
+      }
+    }
+
+    /** Gets a run-time target for the delegate call `c`. */
+    pragma[nomagic]
+    Callable getARuntimeDelegateTarget(Call c, boolean libraryDelegateCall) {
+      // directly resolvable without going through a "busy" element
+      exists(Expr e |
+        delegateCreationReaches(result, e) and
+        delegateCall(c, e, libraryDelegateCall)
+      )
+      or
+      // resolvable by going through one or more "busy" elements
+      exists(BusyFlowElement busy |
+        busy.isReachedBy(result) and
+        busy.delegateCall(c, libraryDelegateCall)
+      )
+    }
+  }
+
+  /** Holds if `(c1,c2)` is an edge in the call graph. */
+  predicate callEdge(Callable c1, Callable c2) {
+    exists(Call c | c.getEnclosingCallable() = c1 and c2 = getARuntimeTarget(c, _, _))
+  }
+}
+
+private import CallGraph
+
+/**
+ * The SSA construction for a field or a property `fp` relies on implicit
+ * update nodes at every call site that conceivably could reach an update
+ * of the field or property. For example, there is an implicit update of
+ * `this.Field` on line 7 in
+ *
+ * ```csharp
+ * int Field;
+ *
+ * void SetField(int i) { Field = i; }
+ *
+ * int M() {
+ *   Field = 0;
+ *   SetField(1); // implicit update of `this.Field`
+ *   return Field;
+ * }
+ * ```
+ *
+ * At a first approximation, we need to find update paths of the form:
+ *
+ * ```
+ *   Call --(callEdge)-->* Callable(setter of fp)
+ * ```
+ *
+ * This can be improved by excluding paths ending in:
+ *
+ * ```
+ *   Constructor --(intraInstanceCallEdge)-->+ Callable(setter of this.fp)
+ * ```
+ *
+ * as these updates are guaranteed not to alias with the `fp` under
+ * consideration.
+ *
+ * This set of paths can be expressed positively by noting that those
+ * that set `this.fp`, end in zero or more `intraInstanceCallEdge`s between
+ * callables, and before those is either the originating `Call`:
+ *
+ * ```
+ *   Call --(intraInstanceCallEdge)-->* Callable(setter of this.fp)
+ * ```
+ *
+ * or a `crossInstanceCallEdge`:
+ *
+ * ```
+ *   Call --crossInstanceCallEdge--> Callable
+ *        --(intraInstanceCallEdge)-->* Callable(setter of this.fp)
+ * ```
+ */
+private module FieldOrPropsImpl {
+  /**
+   * A callable that is neither static nor a constructor.
+   */
+  private class InstanceCallable extends Callable {
+    InstanceCallable() {
+      not this.(Modifiable).isStatic() and
+      not this instanceof Constructor
+    }
+  }
+
+  private class FieldOrPropDefinition extends AssignableDefinition {
+    FieldOrPropDefinition() { this.getTarget() instanceof FieldOrProp }
+  }
+
+  /**
+   * Holds if `fpdef` is a definition that is not relevant as an implicit
+   * SSA update, since it is an initialization and therefore cannot alias.
+   */
+  private predicate init(FieldOrPropDefinition fpdef) {
+    exists(FieldOrPropAccess access | access = fpdef.getTargetAccess() |
+      fpdef.getEnclosingCallable() instanceof Constructor and
+      ownFieldOrPropAccess(access)
+      or
+      exists(LocalVariable v |
+        v.getAnAccess() = access.getQualifier() and
+        not v.isCaptured() and
+        forex(AssignableDefinition def | def.getTarget() = v and exists(def.getSource()) |
+          def.getSource() instanceof ObjectCreation
+        )
+      )
+    )
+    or
+    fpdef.(AssignableDefinitions::AssignmentDefinition).getAssignment() instanceof MemberInitializer
+  }
+
+  /**
+   * Holds if `fpdef` is an update of `fp` in `c` that is relevant for SSA construction.
+   */
+  private predicate relevantDefinition(Callable c, FieldOrProp fp, FieldOrPropDefinition fpdef) {
+    fpdef.getTarget() = fp and
+    not init(fpdef) and
+    fpdef.getEnclosingCallable() = c and
+    exists(FieldOrPropSourceVariable tf | tf.getAssignable() = fp)
+  }
+
+  /**
+   * Holds if callable `c` can change the value of `this.fp` and is relevant
+   * for SSA construction.
+   */
+  private predicate setsOwnFieldOrProp(InstanceCallable c, FieldOrProp fp) {
+    exists(FieldOrPropDefinition fpdef | relevantDefinition(c, fp, fpdef) |
+      ownFieldOrPropAccess(fpdef.getTargetAccess())
+    )
+  }
+
+  /**
+   * Holds if callable `c` can change the value of `fp` and is relevant for SSA
+   * construction excluding those cases covered by `setsOwnFieldOrProp`.
+   */
+  private predicate setsOtherFieldOrProp(Callable c, FieldOrProp fp) {
+    exists(FieldOrPropDefinition fpdef | relevantDefinition(c, fp, fpdef) |
+      not ownFieldOrPropAccess(fpdef.getTargetAccess())
+    )
+  }
+
+  /**
+   * Holds if `(c1,c2)` is a call edge to a callable that does not change the
+   * value of `this`.
+   *
+   * Constructor-to-constructor calls can also be intra-instance, but are not
+   * included, as this does not affect whether a call chain ends in
+   *
+   * ```
+   *   Constructor --(intraInstanceCallEdge)-->+ Callable(setter of this.f)
+   * ```
+   */
+  private predicate intraInstanceCallEdge(Callable c1, InstanceCallable c2) {
+    exists(Call c |
+      c.getEnclosingCallable() = c1 and
+      c2 = getARuntimeTarget(c, _, _) and
+      c.(QualifiableExpr).targetIsLocalInstance()
+    )
+  }
+
+  /**
+   * Holds if `(c1,c2)` is an edge in the call graph excluding
+   * `intraInstanceCallEdge`.
+   */
+  private predicate crossInstanceCallEdge(Callable c1, Callable c2) {
+    callEdge(c1, c2) and
+    not intraInstanceCallEdge(c1, c2)
+  }
+
+  pragma[noinline]
+  predicate callAt(BasicBlock bb, int i, Call call) {
+    getARuntimeTarget(call, bb.getNode(i), _).hasBody()
+  }
+
+  /**
+   * Holds if `call` occurs in basic block `bb` at index `i`, `fp` has
+   * an update somewhere, and `fp` is likely to be live in `bb` at index
+   * `i`.
+   */
+  predicate updateCandidate(BasicBlock bb, int i, FieldOrPropSourceVariable fp, Call call) {
+    callAt(bb, i, call) and
+    call.getEnclosingCallable() = fp.getEnclosingCallable() and
+    relevantDefinition(_, fp.getAssignable(), _) and
+    not variableWriteDirect(bb, i, fp, _)
+  }
+
+  private predicate source(
+    Call call, FieldOrPropSourceVariable fps, FieldOrProp fp, Callable c, boolean fresh
+  ) {
+    updateCandidate(_, _, fps, call) and
+    c = getARuntimeTarget(call, _, _) and
+    fp = fps.getAssignable() and
+    if c instanceof Constructor then fresh = true else fresh = false
+  }
+
+  /**
+   * A callable in a potential call-chain between a source that cares about the
+   * value of some field `f` and a sink that may overwrite `f`. The Boolean
+   * `fresh` indicates whether the instance `this` in `c` has been freshly
+   * allocated along the call-chain.
+   */
+  private newtype TCallableNode =
+    MkCallableNode(Callable c, boolean fresh) { source(_, _, _, c, fresh) or edge(_, c, fresh) }
+
+  private predicate edge(TCallableNode n, Callable c2, boolean f2) {
+    exists(Callable c1, boolean f1 | n = MkCallableNode(c1, f1) |
+      intraInstanceCallEdge(c1, c2) and f2 = f1
+      or
+      crossInstanceCallEdge(c1, c2) and
+      if c2 instanceof Constructor then f2 = true else f2 = false
+    )
+  }
+
+  private predicate edge(TCallableNode n1, TCallableNode n2) {
+    exists(Callable c2, boolean f2 |
+      edge(n1, c2, f2) and
+      n2 = MkCallableNode(c2, f2)
+    )
+  }
+
+  pragma[noinline]
+  private predicate source(Call call, FieldOrPropSourceVariable fps, FieldOrProp fp, TCallableNode n) {
+    exists(Callable c, boolean fresh |
+      source(call, fps, fp, c, fresh) and
+      n = MkCallableNode(c, fresh)
+    )
+  }
+
+  private predicate sink(Callable c, FieldOrProp fp, TCallableNode n) {
+    relevantDefinition(c, fp, _) and
+    (
+      setsOwnFieldOrProp(c, fp) and n = MkCallableNode(c, false)
+      or
+      setsOtherFieldOrProp(c, fp) and n = MkCallableNode(c, _)
+    )
+  }
+
+  private predicate prunedNode(TCallableNode n) {
+    sink(_, _, n)
+    or
+    exists(TCallableNode mid | edge(n, mid) and prunedNode(mid))
+  }
+
+  private predicate prunedEdge(TCallableNode n1, TCallableNode n2) {
+    prunedNode(n1) and
+    prunedNode(n2) and
+    edge(n1, n2)
+  }
+
+  private predicate edgePlus(TCallableNode c1, TCallableNode c2) = fastTC(prunedEdge/2)(c1, c2)
+
+  pragma[noopt]
+  predicate updatesNamedFieldOrProp(FieldOrPropSourceVariable fps, Call call, Callable setter) {
+    exists(TCallableNode src, TCallableNode sink, FieldOrProp fp |
+      source(call, fps, fp, src) and
+      sink(setter, fp, sink) and
+      (src = sink or edgePlus(src, sink))
+    )
+  }
+}
+
+private predicate variableReadPseudo(BasicBlock bb, int i, Ssa::SourceVariable v) {
+  outRefExitRead(bb, i, v)
+  or
+  refReadBeforeWrite(bb, i, v)
+}
+
+cached
+private module Cached {
+  cached
+  newtype TSourceVariable =
+    TLocalVar(Callable c, BaseSsa::SimpleLocalScopeVariable v) {
+      c = v.getCallable()
+      or
+      // Local scope variables can be captured
+      c = v.getAnAccess().getEnclosingCallable()
+    } or
+    TPlainFieldOrProp(Callable c, FieldOrProp f) {
+      exists(FieldOrPropRead fr | isPlainFieldOrPropAccess(fr, f, c)) and
+      trackFieldOrProp(f)
+    } or
+    TQualifiedFieldOrProp(Callable c, Ssa::SourceVariable q, InstanceFieldOrProp f) {
+      exists(FieldOrPropRead fr | isQualifiedFieldOrPropAccess(fr, f, c, q)) and
+      trackFieldOrProp(f)
+    }
+
+  /** Gets an access to source variable `v`. */
+  cached
+  AssignableAccess getAnAccess(Ssa::SourceVariable v) {
+    exists(Callable c |
+      exists(LocalScopeVariable lsv | v = TLocalVar(c, lsv) |
+        result = lsv.getAnAccess() and
+        result.getEnclosingCallable() = c
+      )
+      or
+      exists(FieldOrProp fp | v = TPlainFieldOrProp(c, fp) |
+        isPlainFieldOrPropAccess(result, fp, c)
+      )
+      or
+      exists(FieldOrProp fp, Ssa::SourceVariable q | v = TQualifiedFieldOrProp(c, q, fp) |
+        isQualifiedFieldOrPropAccess(result, fp, c, q)
+      )
+    )
+  }
+
+  cached
+  predicate implicitEntryDefinition(BasicBlock bb, Ssa::SourceVariable v) {
+    exists(Callable c | c = v.getEnclosingCallable() |
+      c = bb.(EntryBasicBlock).getEnclosingCallable() and
+      (
+        // Captured variable
+        exists(LocalScopeVariable lsv |
+          v = any(LocalScopeSourceVariable lv | lsv = lv.getAssignable())
+        |
+          lsv.getCallable() != c
+        )
+        or
+        // Each tracked field and property has an implicit entry definition
+        v instanceof PlainFieldOrPropSourceVariable
+      )
+      or
+      // In case `c` has multiple bodies, we want each body to get its own set of
+      // parameter definitions, so we add special writes to the start of the basic
+      // blocks containing the bodies
+      strictcount(c.getBody()) > 1 and
+      v.getAssignable() instanceof Parameter and
+      bb.getANode().isBefore(c.getBody())
+    )
+  }
+
+  /**
+   * Holds if `call` may change the value of field or property `fp`. The actual
+   * update occurs in `setter`.
+   */
+  cached
+  predicate updatesNamedFieldOrProp(
+    BasicBlock bb, int i, Call c, FieldOrPropSourceVariable fp, Callable setter
+  ) {
+    FieldOrPropsImpl::updateCandidate(bb, i, fp, c) and
+    FieldOrPropsImpl::updatesNamedFieldOrProp(fp, c, setter)
+  }
+
+  cached
+  predicate variableWriteQualifier(
+    BasicBlock bb, int i, QualifiedFieldOrPropSourceVariable v, boolean certain
+  ) {
+    SsaImplInput::variableWrite(bb, i, v.getQualifier(), certain) and
+    // Eliminate corner case where a call definition can overlap with a
+    // qualifier definition: if method `M` updates field `F`, then a call
+    // to `M` is both an update of `x.M` and `x.M.M`, so the former call
+    // definition should not give rise to an implicit qualifier definition
+    // for `x.M.M`.
+    not updatesNamedFieldOrProp(bb, i, _, v, _)
+  }
+
+  /**
+   * Holds if the value defined at SSA definition `def` can reach a read `read`,
+   * without passing through any other read.
+   */
+  cached
+  predicate firstReadSameVar(Definition def, AssignableRead read) {
+    exists(BasicBlock bb, int i |
+      Impl::firstUse(def, bb, i, true) and read.getControlFlowNode() = bb.getNode(i)
+    )
+  }
+
+  /**
+   * Holds if the read at `cfn2` is a read of the same SSA definition `def`
+   * as the read at `cfn1`, and `cfn2` can be reached from `cfn1` without
+   * passing through another read.
+   */
+  cached
+  predicate adjacentReadPairSameVar(Definition def, ControlFlowNode cfn1, ControlFlowNode cfn2) {
+    exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2, Ssa::SourceVariable v |
+      Impl::ssaDefReachesRead(v, def, bb1, i1) and
+      Impl::adjacentUseUse(bb1, i1, bb2, i2, v, true) and
+      cfn1 = bb1.getNode(i1) and
+      cfn2 = bb2.getNode(i2)
+    )
+  }
+
+  /**
+   * Holds if the SSA definition `def` assigns to `out`/`ref` parameter `p`, and the
+   * parameter may remain unchanged throughout the rest of the enclosing callable.
+   */
+  cached
+  predicate isLiveOutRefParameterDefinition(SsaDefinition def, Parameter p) {
+    p.isOutOrRef() and
+    exists(Ssa::SourceVariable v, SsaDefinition def0, BasicBlock bb, int i |
+      v = def.getSourceVariable() and
+      p = v.getAssignable() and
+      def = def0.getAnUltimateDefinition() and
+      Impl::ssaDefReachesRead(_, def0, bb, i) and
+      outRefExitRead(bb, i, v)
+    )
+  }
+
+  cached
+  module DataFlowIntegration {
+    import DataFlowIntegrationImpl
+
+    cached
+    predicate localFlowStep(Ssa::SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+      DataFlowIntegrationImpl::localFlowStep(v, nodeFrom, nodeTo, isUseStep)
+    }
+
+    cached
+    predicate localMustFlowStep(Ssa::SourceVariable v, Node nodeFrom, Node nodeTo) {
+      DataFlowIntegrationImpl::localMustFlowStep(v, nodeFrom, nodeTo)
+    }
+
+    signature predicate guardChecksSig(Guards::Guard g, Expr e, Guards::GuardValue v);
+
+    cached // nothing is actually cached
+    module BarrierGuard<guardChecksSig/3 guardChecks> {
+      private import codeql.util.Unit
+
+      private predicate guardChecksAdjTypes(Guards::Guards::Guard g, Expr e, Guards::GuardValue v) {
+        guardChecks(g, e, v)
+      }
+
+      private predicate guardChecksWithWrappers(
+        Guards::Guard g, Definition def, Guards::GuardValue val, Unit state
+      ) {
+        Guards::Guards::ValidationWrapper<guardChecksAdjTypes/3>::guardChecksDef(g, def, val) and
+        exists(state)
+      }
+
+      private Node getABarrierNodeImpl() {
+        result =
+          DataFlowIntegrationImpl::BarrierGuardDefWithState<Unit, guardChecksWithWrappers/4>::getABarrierNode(_)
+      }
+
+      predicate getABarrierNode = getABarrierNodeImpl/0;
+    }
+
+    bindingset[this]
+    private signature class ParamSig;
+
+    private module WithParam<ParamSig P> {
+      signature predicate guardChecksSig(Guards::Guard g, Expr e, Guards::GuardValue gv, P param);
+    }
+
+    cached // nothing is actually cached
+    module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+      private predicate guardChecksAdjTypes(
+        Guards::Guards::Guard g, Expr e, Guards::GuardValue gv, P param
+      ) {
+        guardChecks(g, e, gv, param)
+      }
+
+      private predicate guardChecksWithWrappers(
+        DataFlowIntegrationInput::Guard g, Definition def, Guards::GuardValue val, P param
+      ) {
+        Guards::Guards::ParameterizedValidationWrapper<P, guardChecksAdjTypes/4>::guardChecksDef(g,
+          def, val, param)
+      }
+
+      private Node getABarrierNodeImpl(P param) {
+        result =
+          DataFlowIntegrationImpl::BarrierGuardDefWithState<P, guardChecksWithWrappers/4>::getABarrierNode(param)
+      }
+
+      predicate getABarrierNode = getABarrierNodeImpl/1;
+    }
+  }
+}
+
+import Cached
+
+deprecated AssignableDefinition getADefinition(Ssa::ExplicitDefinition def) {
+  exists(Ssa::SourceVariable v, AssignableDefinition ad | explicitDefinition(def, v, ad) |
+    result = ad or
+    result = getASameOutRefDefAfter(v, ad)
+  )
+}
+
+deprecated predicate explicitDefinition(
+  WriteDefinition def, Ssa::SourceVariable v, AssignableDefinition ad
+) {
+  exists(BasicBlock bb, int i |
+    def.definesAt(v, bb, i) and
+    variableDefinition(bb, i, v, ad)
+  )
+}
+
+deprecated predicate isLiveAtEndOfBlock(Definition def, BasicBlock bb) {
+  Impl::ssaDefReachesEndOfBlock(bb, def, _)
+}
+
+deprecated Definition phiHasInputFromBlock(Ssa::PhiNode phi, BasicBlock bb) {
+  Impl::phiHasInputFromBlock(phi, result, bb)
+}
+
+deprecated AssignableRead getAReadAtNode(Definition def, ControlFlowNode cfn) {
+  exists(Ssa::SourceVariable v, BasicBlock bb, int i |
+    Impl::ssaDefReachesRead(v, def, bb, i) and
+    variableReadActual(bb, i, v) and
+    cfn = bb.getNode(i) and
+    result.getControlFlowNode() = cfn
+  )
+}
+
+deprecated Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
+  Impl::uncertainWriteDefinitionInput(def, result)
+}
+
+private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
+  private import codeql.util.Boolean
+
+  class Expr extends ControlFlowNode {
+    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
+  }
+
+  Expr getARead(Definition def) { def.(SsaDefinition).getARead().getControlFlowNode() = result }
+
+  predicate ssaDefHasSource(Impl::WriteDefinition def) {
+    // exclude flow directly from RHS to SSA definition, as we instead want to
+    // go from RHS to matching assignable definition, and from there to SSA definition
+    def instanceof SsaParameterInit
+  }
+
+  /**
+   * Allows for flow into uncertain definitions that are not call definitions,
+   * as we, conservatively, consider such definitions to be certain.
+   */
+  predicate allowFlowIntoUncertainDef(Impl::UncertainWriteDefinition def) {
+    def instanceof SsaExplicitWrite
+    or
+    def =
+      any(Ssa::ImplicitQualifierDefinition qdef |
+        allowFlowIntoUncertainDef(qdef.getQualifierDefinition())
+      )
+  }
+
+  class GuardValue = Guards::GuardValue;
+
+  class Guard = Guards::Guard;
+
+  /** Holds if the guard `guard` directly controls block `bb` upon evaluating to `val`. */
+  predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue val) {
+    guard.directlyValueControls(bb, val)
+  }
+
+  /** Holds if the guard `guard` controls block `bb` upon evaluating to `val`. */
+  predicate guardControlsBlock(Guard guard, BasicBlock bb, GuardValue val) {
+    guard.valueControls(bb, val)
+  }
+}
+
+private module DataFlowIntegrationImpl = Impl::DataFlowIntegration<DataFlowIntegrationInput>;
+
+deprecated private module MultiBodyNearestLocationInput implements NearestLocationInputSig {
+  class C = MultiBodyParameterDefinition;
+
+  predicate relevantLocations(MultiBodyParameterDefinition def, Location l1, Location l2) {
+    exists(Callable c, ControlFlowNode n |
+      l1 = def.getParameter().getALocation() and
+      n = def.getBasicBlock().getANode() and
+      n.isBefore(c.getBody()) and
+      l2 = n.getLocation()
+    )
+  }
+}
+
+pragma[nomagic]
+deprecated private predicate implicitEntryDef(
+  Ssa::ImplicitEntryDefinition def, Ssa::SourceVariable v, Callable c
+) {
+  v = def.getSourceVariable() and
+  c = def.getCallable()
+}
+
+/**
+ * An SSA definition representing the implicit initialization of a parameter
+ * at the beginning of a callable.
+ */
+abstract deprecated class ParameterDefinitionImpl extends Ssa::Definition {
+  /** Gets the parameter that this definition represents. */
+  abstract Parameter getParameter();
+
+  override string toString() {
+    result = "SSA param(" + pragma[only_bind_out](this.getParameter()) + ")"
+  }
+}
+
+deprecated class MultiBodyParameterDefinition extends ParameterDefinitionImpl,
+  Ssa::ImplicitEntryDefinition
+{
+  private Parameter p;
+
+  MultiBodyParameterDefinition() {
+    exists(Ssa::SourceVariable sv, Callable c |
+      implicitEntryDef(this, sv, c) and
+      localScopeSourceVariable(sv, p, _, c)
+    )
+  }
+
+  override Parameter getParameter() { result = p }
+
+  override string toString() { result = ParameterDefinitionImpl.super.toString() }
+
+  override Location getLocation() {
+    NearestLocation<MultiBodyNearestLocationInput>::nearestLocation(this, result, _)
+  }
+}

@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["sync/atomic", "", False, "AddUintptr", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["sync/atomic", "", False, "AddUintptr", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["sync/atomic", "", False, "CompareAndSwapPointer", "", "", "Argument[2]", "Argument[0]", "taint", "manual"]
+      - ["sync/atomic", "", False, "CompareAndSwapUintptr", "", "", "Argument[2]", "Argument[0]", "taint", "manual"]
+      - ["sync/atomic", "", False, "LoadPointer", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["sync/atomic", "", False, "LoadUintptr", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["sync/atomic", "", False, "StorePointer", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["sync/atomic", "", False, "StoreUintptr", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["sync/atomic", "", False, "SwapPointer", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["sync/atomic", "", False, "SwapPointer", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["sync/atomic", "", False, "SwapUintptr", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["sync/atomic", "", False, "SwapUintptr", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["sync/atomic", "Pointer", True, "Load", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["sync/atomic", "Pointer", True, "Store", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["sync/atomic", "Pointer", True, "Swap", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["sync/atomic", "Pointer", True, "Swap", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["sync/atomic", "Uintptr", True, "Load", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["sync/atomic", "Uintptr", True, "Store", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["sync/atomic", "Uintptr", True, "Swap", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["sync/atomic", "Uintptr", True, "Swap", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["sync/atomic", "Value", True, "Load", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["sync/atomic", "Value", True, "Store", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["sync/atomic", "Value", True, "Swap", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["sync/atomic", "Value", True, "Swap", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]

@@ -1,0 +1,119 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+
+		<p>
+
+			Forwarding command-line arguments to
+			<code>child_process.exec</code> or some other library routine that
+			executes a system command within a shell can change the meaning of the
+			command unexpectedly due to unescaped special characters.
+
+		</p>
+
+		<p>
+
+			When the forwarded command-line arguments come from a parent
+			process that has not escaped the special characters in the arguments,
+			then the parent process may indirectly be vulnerable to command-line
+			injection since the special characters are evaluated unexpectedly.
+
+		</p>
+
+	</overview>
+	<recommendation>
+
+		<p>
+
+			If possible, use APIs that don't run shell commands and accept
+			command arguments as an array of strings rather than a single
+			concatenated string. This is both safer and more portable.
+
+		</p>
+
+		<p>
+
+If given arguments as a single string, avoid simply splitting the string on 
+whitespace. Arguments may contain quoted whitespace, causing them to split into 
+multiple arguments. Use a library like <code>shell-quote</code> to parse the string 
+into an array of arguments instead.
+
+		</p>
+
+		<p>
+
+			If this approach is not viable, then add code to verify that each
+			forwarded command-line argument is properly escaped before using it.
+
+		</p>
+
+	</recommendation>
+	<example>
+
+		<p>
+
+			The following wrapper script example executes another
+			JavaScript file in a child process and forwards some command-line
+			arguments. This is problematic because the special characters in the
+			command-line arguments may change the meaning of the child process invocation
+			unexpectedly. For instance, if one of the command-line arguments is
+			<code>"dollar$separated$name"</code>, then the child process will
+			substitute the two environment variables <code>$separated</code> and
+			<code>$name</code> before invoking <code>node</code>.
+
+		</p>
+
+		<sample src="examples/indirect-command-injection.js" />
+
+		<p>
+
+			If another program uses <code>child_process.execFile</code> to
+			invoke the above wrapper script with input from a remote user, then
+			there may be a command-line injection vulnerability.
+
+			This may be surprising, since a command-line invocation with
+			<code>child_process.execFile</code> is generally considered safe.  But
+			in this case, the remote user input is simply forwarded to the
+			problematic <code>process.exec</code> call in the wrapper script.
+
+		</p>
+
+		<p>
+
+			To guard against this, use an API that does not perform environment
+			variable substitution, such as <code>child_process.execFile</code>:
+
+		</p>
+
+		<sample src="examples/indirect-command-injection_fixed.js" />
+
+		<p>
+
+			If you want to allow the user to specify other options to
+			<code>node</code>, you can use a library like
+			<code>shell-quote</code> to parse the user input into an array of
+			arguments without risking command injection:
+
+		</p>
+
+		<sample src="examples/indirect-command-injection_shellquote.js" />
+
+	</example>
+
+	<references>
+
+		<li>
+			OWASP:
+			<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+		</li>
+
+		<li>
+			npm:
+			<a href="https://www.npmjs.com/package/shell-quote">shell-quote</a>.
+		</li>
+
+	</references>
+
+</qhelp>

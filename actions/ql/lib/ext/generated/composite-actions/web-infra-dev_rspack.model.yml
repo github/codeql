@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["web-infra-dev/rspack", "*", "input.post", "code-injection", "generated"]
+     - ["web-infra-dev/rspack", "*", "input.profile", "code-injection", "generated"]
+     - ["web-infra-dev/rspack", "*", "input.target", "code-injection", "generated"]

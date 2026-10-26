@@ -1,0 +1,21 @@
+| test.cpp:6:8:6:8 | c | struct C | struct C |
+| test.cpp:6:8:6:8 | call to ~C | void | void |
+| test.cpp:6:8:6:8 | destructor field destruction of c | struct C | struct C |
+| test.cpp:8:11:8:13 | 0 | struct C | struct C |
+| test.cpp:8:11:8:13 | constructor init of field c | struct C | struct C |
+| test.cpp:11:8:11:8 | call to ~D | void | void |
+| test.cpp:11:8:11:8 | d | struct D | struct D |
+| test.cpp:11:8:11:8 | destructor field destruction of d | struct D | struct D |
+| test.cpp:13:15:13:15 | call to D | void | void |
+| test.cpp:13:15:13:15 | constructor init of field d | struct D | struct D |
+| test.cpp:19:30:19:30 | (reference to) | reference to {const {struct E}} | reference to {struct E} |
+| test.cpp:19:30:19:30 | call to E | void | void |
+| test.cpp:19:30:19:30 | temporary object | const {struct E} | struct E |
+| test.cpp:19:30:19:30 | w | pointer to {int} | pointer to {int} |
+| test.cpp:23:12:23:12 | (const F *)... | pointer to {const {struct F}} | pointer to {struct F} |
+| test.cpp:23:12:23:12 | f | pointer to {struct F} | pointer to {struct F} |
+| test.cpp:23:15:23:17 | call to fun | pointer to {struct E} | pointer to {struct E} |
+| test.cpp:23:19:23:24 | (const E)... | const {struct E} | struct E |
+| test.cpp:23:19:23:24 | (reference dereference) | struct E | struct E |
+| test.cpp:23:19:23:24 | (reference to) | reference to {const {struct E}} | reference to {struct E} |
+| test.cpp:23:19:23:24 | domain | reference to {struct E} | reference to {struct E} |

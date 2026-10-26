@@ -1,0 +1,2 @@
+query: LanguageFeatures/SpuriousArguments.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

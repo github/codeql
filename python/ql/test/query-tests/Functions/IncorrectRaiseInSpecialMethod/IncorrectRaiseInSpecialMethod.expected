@@ -1,0 +1,6 @@
+| test.py:6:5:6:33 | Function __getitem__ | This method always raises $@ - should raise a LookupError (KeyError or IndexError) instead. | test.py:7:15:7:33 | ZeroDivisionError() | ZeroDivisionError |
+| test.py:9:5:9:32 | Function __getattr__ | This method always raises $@ - should raise an AttributeError instead. | test.py:10:15:10:33 | ZeroDivisionError() | ZeroDivisionError |
+| test.py:12:5:12:23 | Function __bool__ | This method always raises $@ - should raise a TypeError instead. | test.py:13:15:13:26 | ValueError() | ValueError |
+| test.py:15:5:15:22 | Function __int__ | This method always raises $@ - this method does not need to be implemented. | test.py:16:15:16:26 | ValueError() | ValueError |
+| test.py:24:5:24:23 | Function __hash__ | This method always raises $@ - use __hash__ = None instead. | test.py:25:15:25:35 | NotImplementedError() | NotImplementedError |
+| test.py:28:5:28:29 | Function __sub__ | This method raises $@ - should raise an ArithmeticError or return NotImplemented instead. | test.py:30:19:30:29 | TypeError() | TypeError |

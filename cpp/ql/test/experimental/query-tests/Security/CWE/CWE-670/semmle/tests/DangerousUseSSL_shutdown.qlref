@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-670/DangerousUseSSL_shutdown.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

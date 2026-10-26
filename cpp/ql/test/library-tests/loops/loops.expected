@@ -1,0 +1,35 @@
+| loops.cpp:11:2:11:21 | while (...) ... | getCondition() | loops.cpp:11:9:11:9 | b |
+| loops.cpp:11:2:11:21 | while (...) ... | getStmt() | loops.cpp:11:12:11:21 | ExprStmt: call to update |
+| loops.cpp:13:2:16:13 | do (...) ... | getCondition() | loops.cpp:16:11:16:11 | b |
+| loops.cpp:13:2:16:13 | do (...) ... | getStmt() | loops.cpp:14:2:16:2 | { ... } |
+| loops.cpp:23:2:24:2 | for(...;...;...) ... | (ForStmt).getAnIterationVariable() | loops.cpp:21:6:21:6 | i |
+| loops.cpp:23:2:24:2 | for(...;...;...) ... | (ForStmt).getInitialization() | loops.cpp:23:7:23:12 | ExprStmt: ... = ... |
+| loops.cpp:23:2:24:2 | for(...;...;...) ... | (ForStmt).getUpdate() | loops.cpp:23:22:23:24 | ... ++ |
+| loops.cpp:23:2:24:2 | for(...;...;...) ... | getCondition() | loops.cpp:23:14:23:19 | ... < ... |
+| loops.cpp:23:2:24:2 | for(...;...;...) ... | getStmt() | loops.cpp:23:27:24:2 | { ... } |
+| loops.cpp:26:2:26:28 | for(...;...;...) ... | (ForStmt).getInitialization() | loops.cpp:26:7:26:13 | ExprStmt: ... = ... |
+| loops.cpp:26:2:26:28 | for(...;...;...) ... | getCondition() | loops.cpp:26:15:26:20 | ... >= ... |
+| loops.cpp:26:2:26:28 | for(...;...;...) ... | getStmt() | loops.cpp:26:25:26:28 | ExprStmt: ... -- |
+| loops.cpp:28:2:29:2 | for(...;...;...) ... | (ForStmt).getAnIterationVariable() | loops.cpp:21:6:21:6 | i |
+| loops.cpp:28:2:29:2 | for(...;...;...) ... | (ForStmt).getInitialization() | loops.cpp:28:7:28:19 | ExprStmt: ... , ... |
+| loops.cpp:28:2:29:2 | for(...;...;...) ... | (ForStmt).getUpdate() | loops.cpp:28:29:28:36 | ... , ... |
+| loops.cpp:28:2:29:2 | for(...;...;...) ... | getCondition() | loops.cpp:28:21:28:26 | ... < ... |
+| loops.cpp:28:2:29:2 | for(...;...;...) ... | getStmt() | loops.cpp:28:39:29:2 | { ... } |
+| loops.cpp:31:2:32:2 | for(...;...;...) ... | (ForStmt).getInitialization() | loops.cpp:31:7:31:14 | ExprStmt: call to init |
+| loops.cpp:31:2:32:2 | for(...;...;...) ... | (ForStmt).getUpdate() | loops.cpp:31:25:31:30 | call to update |
+| loops.cpp:31:2:32:2 | for(...;...;...) ... | getCondition() | loops.cpp:31:16:31:19 | call to cond |
+| loops.cpp:31:2:32:2 | for(...;...;...) ... | getStmt() | loops.cpp:31:36:32:2 | { ... } |
+| loops.cpp:34:2:35:2 | for(...;...;...) ... | (ForStmt).getAnIterationVariable() | loops.cpp:21:6:21:6 | i |
+| loops.cpp:34:2:35:2 | for(...;...;...) ... | (ForStmt).getInitialization() | loops.cpp:34:7:34:16 | ExprStmt: ... = ... |
+| loops.cpp:34:2:35:2 | for(...;...;...) ... | (ForStmt).getUpdate() | loops.cpp:34:29:34:31 | ... -- |
+| loops.cpp:34:2:35:2 | for(...;...;...) ... | getCondition() | loops.cpp:34:19:34:24 | ... >= ... |
+| loops.cpp:34:2:35:2 | for(...;...;...) ... | getStmt() | loops.cpp:34:35:35:2 | { ... } |
+| rbfl.cpp:11:3:13:3 | for(...:...) ... | (RangeBasedForStmt).getEnclosingFunction().getATemplateArgument() | file://:0:0:0:0 | int |
+| rbfl.cpp:11:3:13:3 | for(...:...) ... | (RangeBasedForStmt).getEnclosingFunction().getATemplateArgument() | rbfl.cpp:8:20:8:20 | T |
+| rbfl.cpp:11:3:13:3 | for(...:...) ... | (RangeBasedForStmt).getUpdate() | file://:0:0:0:0 | ++ ... |
+| rbfl.cpp:11:3:13:3 | for(...:...) ... | (RangeBasedForStmt).getVariable() | rbfl.cpp:11:10:11:12 | itr |
+| rbfl.cpp:11:3:13:3 | for(...:...) ... | (RangeBasedForStmt).getVariable() | rbfl.cpp:11:10:11:12 | itr |
+| rbfl.cpp:11:3:13:3 | for(...:...) ... | getCondition() | file://:0:0:0:0 | ... != ... |
+| rbfl.cpp:11:3:13:3 | for(...:...) ... | getCondition() | file://:0:0:0:0 | <error expr> |
+| rbfl.cpp:11:3:13:3 | for(...:...) ... | getStmt() | rbfl.cpp:12:3:13:3 | { ... } |
+| rbfl.cpp:11:3:13:3 | for(...:...) ... | getStmt() | rbfl.cpp:12:3:13:3 | { ... } |

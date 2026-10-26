@@ -1,0 +1,20 @@
+| qualifiedNames.cpp:3:25:3:27 | (unnamed parameter 0) |
+| qualifiedNames.cpp:4:25:4:28 | (unnamed parameter 0) |
+| qualifiedNames.cpp:18:18:18:31 | Nested's friend |
+| qualifiedNames.cpp:26:9:26:9 | LocalClass |
+| qualifiedNames.cpp:26:9:26:9 | operator= |
+| qualifiedNames.cpp:26:9:26:9 | operator= |
+| qualifiedNames.cpp:26:9:26:18 | LocalClass |
+| qualifiedNames.cpp:27:9:27:23 | localClassField |
+| qualifiedNames.cpp:44:21:44:21 | T |
+| qualifiedNames.cpp:48:23:48:29 | Ignored |
+| qualifiedNames.cpp:49:32:49:38 | ignored |
+| qualifiedNames.cpp:49:32:49:38 | ignored |
+| qualifiedNames.cpp:49:32:49:38 | ignored |
+| qualifiedNames.cpp:52:21:52:21 | T |
+| qualifiedNames.cpp:52:33:52:39 | Ignored |
+| qualifiedNames.cpp:53:40:53:41 | tc |
+| qualifiedNames.cpp:53:40:53:41 | tc |
+| qualifiedNames.cpp:53:52:53:58 | ignored |
+| qualifiedNames.cpp:53:52:53:58 | ignored |
+| qualifiedNames.cpp:58:34:58:35 | tc |

@@ -1,0 +1,129 @@
+protocol P {
+  var foo: Int { get }
+  var bar: String { get set }
+  var count: Int { get }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        protocolDecl
+          attributes:
+          name: identifier "P"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "foo"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                accessorDecl
+                                  accessorSpecifier: get
+                                  attributes:
+                              leftBrace: {
+                              rightBrace: }
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "bar"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "String"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                accessorDecl
+                                  accessorSpecifier: get
+                                  attributes:
+                                accessorDecl
+                                  accessorSpecifier: set
+                                  attributes:
+                              leftBrace: {
+                              rightBrace: }
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "count"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                accessorDecl
+                                  accessorSpecifier: get
+                                  attributes:
+                              leftBrace: {
+                              rightBrace: }
+          modifiers:
+          protocolKeyword: protocol
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  var foo: Int { ⟨member⟩ }\n  var bar: String { ⟨member⟩ ⟨member⟩ }\n  var count: Int { ⟨member⟩ }\n}"
+          modifier: modifier "protocol" source="protocol"
+          name_node: identifier "P" source="P"
+          member:
+            accessor_declaration source="⟨accessor_kind⟩"
+              name_node: identifier "foo" source="foo" (external)
+              accessor_kind: accessor_kind "get" source="get"
+              type: identifier "Int" source="Int" (external)
+            accessor_declaration source="⟨accessor_kind⟩"
+              name_node: identifier "bar" source="bar" (external)
+              accessor_kind: accessor_kind "get" source="get"
+              type: identifier "String" source="String" (external)
+            accessor_declaration source="⟨accessor_kind⟩"
+              modifier: modifier "chained_declaration" source=""
+              name_node: identifier "bar" source="bar" (external)
+              accessor_kind: accessor_kind "set" source="set"
+              type: identifier "String" source="String" (external)
+            accessor_declaration source="⟨accessor_kind⟩"
+              name_node: identifier "count" source="count" (external)
+              accessor_kind: accessor_kind "get" source="get"
+              type: identifier "Int" source="Int" (external)

@@ -1,0 +1,14 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<references>
+
+<li>CERT C Coding Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/STR31-C.+Guarantee+that+storage+for+strings+has+sufficient+space+for+character+data+and+the+null+terminator">STR31-C. Guarantee that storage for strings has sufficient space for character data and the null terminator</a>.</li>
+<li>CERT C++ Coding Standard: <a href="https://www.securecoding.cert.org/confluence/display/cplusplus/STR50-CPP.+Guarantee+that+storage+for+strings+has+sufficient+space+for+character+data+and+the+null+terminator">STR50-CPP. Guarantee that storage for strings has sufficient space for character data and the null terminator</a>.</li>
+
+<!--  LocalWords:  preprocessor CWE STR
+ -->
+
+</references>
+</qhelp>

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["reflex-dev/reflex", "*", "input.create-venv-at-path", "code-injection", "generated"]

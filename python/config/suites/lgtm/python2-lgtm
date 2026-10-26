@@ -1,0 +1,4 @@
+# This file (and the other python2- files in this directory) is present for
+# backwards compatibility, and can be removed once we reach version 1.23.
+
+@import "python-lgtm"

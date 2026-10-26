@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["shimataro/ssh-key-action/.github/workflows/reusable-verify.yml", "*", "input.package_installation_command", "code-injection", "generated"]

@@ -1,0 +1,8 @@
+extractedFiles
+| src/module/go.mod:0:0:0:0 | src/module/go.mod |
+| src/module/test.go:0:0:0:0 | src/module/test.go |
+| src/stray-files/go.mod:0:0:0:0 | src/stray-files/go.mod |
+| src/stray-files/test.go:0:0:0:0 | src/stray-files/test.go |
+| src/workspace/subdir/go.mod:0:0:0:0 | src/workspace/subdir/go.mod |
+| src/workspace/subdir/test.go:0:0:0:0 | src/workspace/subdir/test.go |
+#select

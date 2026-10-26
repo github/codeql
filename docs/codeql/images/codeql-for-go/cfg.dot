@@ -1,0 +1,8 @@
+digraph cfg {
+    graph [dpi=300];
+    rankdir=LR;
+    "x := 0" -> "p != nil";
+    "p != nil" -> "x = p.f";
+    "p != nil" -> "return x";
+    "x = p.f" -> "return x";
+}

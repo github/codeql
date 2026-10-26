@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["determinatesystems/magic-nix-cache-action", "*", "input.source-url", "command-injection", "manual"]
+      - ["determinatesystems/magic-nix-cache-action", "*", "input.source-tag", "command-injection", "manual"]
+      - ["determinatesystems/magic-nix-cache-action", "*", "input.source-pr", "command-injection", "manual"]
+      - ["determinatesystems/magic-nix-cache-action", "*", "input.source-branch", "command-injection", "manual"]
+      - ["determinatesystems/magic-nix-cache-action", "*", "input.source-revision", "command-injection", "manual"]
+      - ["determinatesystems/magic-nix-cache-action", "*", "input.source-binary", "command-injection", "manual"]

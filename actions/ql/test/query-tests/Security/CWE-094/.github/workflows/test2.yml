@@ -1,0 +1,64 @@
+name: List files
+
+on:
+  pull_request_target:
+    types: [ opened, synchronize, workflow_dispatch]
+
+permissions: {}
+jobs:
+  test:
+    permissions:
+      contents: write 
+      pull-requests: write 
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+    steps:
+      - name: Check for relevant changes
+        uses: dorny/paths-filter@v3
+        id: changed
+        with:
+          list-files: json
+          filters: |
+            locale:
+              - '*.xml'
+      - name: Changed files 1
+        run: |
+          echo changed: ${{ steps.changed.outputs.locale_files }}
+          echo changed: ${{ steps.changed.outputs.changes }}
+      - name: Check for relevant changes
+        uses: dorny/paths-filter@v3
+        id: changed2
+        with:
+          list-files: csv
+          filters: |
+            locale:
+              - '*.xml'
+      - name: Changed files 2
+        run: |
+          echo changed:${{ steps.changed2.outputs.locale_files }}
+          echo changed: ${{ steps.changed2.outputs.changes }}
+      - name: Check for relevant changes
+        uses: dorny/paths-filter@v3
+        id: changed3
+        with:
+          list-files: shell
+          filters: |
+            locale:
+              - '*.xml'
+      - name: Changed files 3
+        run: |
+          echo changed:${{ steps.changed3.outputs.locale_files }}
+          echo changed: ${{ steps.changed3.outputs.changes }}
+      - name: Check for relevant changes
+        uses: dorny/paths-filter@v3
+        id: changed4
+        with:
+          list-files: escape
+          filters: |
+            locale:
+              - '*.xml'
+      - name: Changed files 4
+        run: |
+          echo changed:${{ steps.changed4.outputs.locale_files }}
+          echo changed: ${{ steps.changed4.outputs.changes }}

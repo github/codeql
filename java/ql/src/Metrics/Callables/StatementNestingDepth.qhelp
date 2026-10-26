@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A method that contains a high level of nesting can be very difficult to understand. As noted in 
+[McConnell], the human brain cannot easily handle more than three levels of nested <code>if</code>
+statements.</p>
+
+</overview>
+<recommendation>
+
+<p>
+Extract nested statements into new methods, for example by using the 'Extract Method' refactoring
+from [Fowler].</p>
+
+<p>
+For more ways to reduce the level of nesting in a method, see [McConnell].
+</p>
+
+<p>
+Furthermore, a method that has a high level of nesting often indicates that its design can be 
+improved in other ways, as well as dealing with the nesting problem itself.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the code has four levels of nesting and is unnecessarily difficult to read.
+</p>
+
+<sample src="StatementNestingDepth.java" />
+
+<p>
+In the following modified example, some of the nested statements have been extracted into a new method
+<code>PrintAllCharInts</code>.
+</p>
+
+<sample src="StatementNestingDepthGood.java" />
+
+</example>
+<references>
+
+
+<li>
+M. Fowler, <em>Refactoring</em>, pp. 89-95. Addison-Wesley, 1999.
+</li>
+<li>
+S. McConnell, <em>Code Complete</em>, 2nd Edition, &sect;19.4. Microsoft Press, 2004.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["cycjimmy/semantic-release-action", "*", "input.semantic_version", "command-injection", "manual"]
+      - ["cycjimmy/semantic-release-action", "*", "input.extra_plugins", "command-injection", "manual"]
+      - ["cycjimmy/semantic-release-action", "*", "input.extends", "command-injection", "manual"]

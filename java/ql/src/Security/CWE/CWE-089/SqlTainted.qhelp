@@ -1,0 +1,84 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If a database query is built using string concatenation, and the
+components of the concatenation include user input, a user 
+is likely to be able to run malicious database queries.
+This applies to various database query languages, including
+SQL and the Java Persistence Query Language.</p>
+</overview>
+<recommendation>
+
+<include src="HowToAddress.inc.qhelp" />
+
+</recommendation>
+<example>
+<p>In the following example, the code runs a simple SQL query in two different ways.</p>
+
+<p>The first way involves building a query, <code>query1</code>, by concatenating an
+environment variable with some string literals. The environment
+variable can include special characters, so this code allows
+for SQL injection attacks.</p>
+
+<p>The second way, which shows good practice, involves building a query, <code>query2</code>, with a
+single string literal that includes a wildcard (<code>?</code>). The wildcard
+is then given a value by calling <code>setString</code>. This
+version is immune to injection attacks, because any special characters
+in the environment variable are not given any special
+treatment.</p>
+
+<sample src="SqlTainted.java" />
+</example>
+
+<example>
+<p>The following code shows several different ways to run a Java Persistence query.</p>
+
+<p>The first example involves building a query, <code>query1</code>, by concatenating an
+environment variable with some string literals. Just like the SQL example, the environment
+variable can include special characters, so this code allows
+for Java Persistence query injection attacks.</p>
+
+<p>The remaining examples demonstrate different methods for safely building a Java Persistence query with user-supplied values:</p>
+<ol>
+<li><code>query2</code> uses a single string literal that includes a placeholder for a parameter, indicated by a colon (<code>:</code>) and parameter name (<code>category</code>).
+</li>
+<li><code>query3</code> uses a single string literal that includes a placeholder for a parameter, indicated by a question mark (<code>?</code>) and position number (<code>1</code>).
+</li>
+<li><code>namedQuery1</code> is defined using the <code>@NamedQuery</code> annotation,
+whose <code>query</code> attribute is a string literal that includes a placeholder for a parameter,
+indicated by a colon (<code>:</code>) and parameter name (<code>category</code>).
+</li>
+<li><code>namedQuery2</code> is defined using the <code>@NamedQuery</code> annotation,
+whose <code>query</code> attribute includes a placeholder for a parameter,
+indicated by a question mark (<code>?</code>) and position number (<code>1</code>).
+</li>
+</ol>
+<p>The parameter is then given a value by calling <code>setParameter</code>. These
+versions are immune to injection attacks, because any special characters
+in the environment variable or user-supplied value are not given any special treatment.</p>
+
+<sample src="SqlTaintedPersistence.java" />
+
+</example>
+
+<references>
+
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">SQL
+Injection Prevention Cheat Sheet</a>.
+</li>
+<li>SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/IDS00-J.+Prevent+SQL+injection">IDS00-J. Prevent SQL injection</a>.</li>
+<li>The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html">Using Prepared Statements</a>.</li>
+<li>The Java EE Tutorial: <a href="https://docs.oracle.com/javaee/7/tutorial/persistence-querylanguage.htm">The Java Persistence Query Language</a>.</li>
+
+
+
+<!--  LocalWords:  CWE SQL wildcard untrusted
+ -->
+
+</references>
+</qhelp>

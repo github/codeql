@@ -1,0 +1,2 @@
+lgtm,codescanning
+* Added support for API graphs. Data-flow nodes referring to an external API component such as `flask.views.View` can now be found using `API::moduleImport("flask").getMember("views").getMember("View").getAUse()` when the `semmle.python.ApiGraphs` module has been imported.

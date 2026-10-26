@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - [
+          "@example/mysql.Connection",
+          "Member[query].Argument[0]",
+          "sql-injection",
+        ]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - [
+          "@example/mysql.Connection",
+          "@example/db",
+          "Member[getConnection].ReturnValue",
+        ]

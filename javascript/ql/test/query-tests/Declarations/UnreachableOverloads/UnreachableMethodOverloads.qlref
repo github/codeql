@@ -1,0 +1,2 @@
+query: Declarations/UnreachableMethodOverloads.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

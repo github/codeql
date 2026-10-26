@@ -1,0 +1,2 @@
+query: InconsistentCode/WhitespaceContradictsPrecedence.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

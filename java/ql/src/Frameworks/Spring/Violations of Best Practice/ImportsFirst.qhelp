@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Putting <code>import</code> statements at the top of Spring XML bean definition files is good practice because they give a quick summary of the 
+file's dependencies, and can even be used to document the general architecture of a system.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Make sure that all <code>import</code> statements are at the top of the <code>&lt;beans&gt;</code> section of a Spring XML bean definition file.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a <code>&lt;beans&gt;</code> section of a Spring XML bean definition file in
+which an <code>import</code> statement is in the middle, and a <code>&lt;beans&gt;</code> section in 
+which all the <code>import</code> statements are at the top.</p>
+
+<sample src="ImportsFirst.xml" />
+
+</example>
+<references>
+
+
+<li>
+Spring Framework Reference Documentation 3.0:
+<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-factory-xml-import">3.2.2.1 Composing XML-based configuration metadata</a>.
+</li>
+
+
+</references>
+</qhelp>

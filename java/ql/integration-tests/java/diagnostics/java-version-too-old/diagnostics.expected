@@ -1,0 +1,28 @@
+{
+  "markdownMessage": "Your project may need a different JDK version. Ensure your Code Scanning workflow file has [an appropriate `setup-java` step](https://github.com/actions/setup-java#eclipse-temurin).\n\nRelevant output line: `> Could not target platform: 'Java SE 11' using tool chain: 'JDK 8 (1.8)'.`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/wrong-jdk-version",
+    "name": "Your project may need a different JDK version"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Your project may need a different JDK version. Ensure your Code Scanning workflow file has [an appropriate `setup-java` step](https://github.com/actions/setup-java#eclipse-temurin).\n\nRelevant output line: `Caused by: java.lang.IllegalArgumentException: Could not target platform: 'Java SE 11' using tool chain: 'JDK 8 (1.8)'.`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/wrong-jdk-version",
+    "name": "Your project may need a different JDK version"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

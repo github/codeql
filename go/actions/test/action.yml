@@ -1,0 +1,48 @@
+name: Test Go extractor
+description: Run build, QL tests, and optionally qhelp generation for the Go extractor
+inputs:
+  go-test-version:
+    description: Which Go version to use for running the tests
+    required: false
+    default: "~1.27.2"
+  run-code-checks:
+    description: Whether to run qhelp generation checks
+    required: false
+    default: false
+runs:
+  using: composite
+  steps:
+    - name: Set up Go ${{ inputs.go-test-version }}
+      uses: actions/setup-go@v5
+      with:
+        go-version: ${{ inputs.go-test-version }}
+        cache: false
+      id: go
+
+    - name: Set up CodeQL CLI
+      uses: ./.github/actions/fetch-codeql
+
+    - name: Enable problem matchers in repository
+      shell: bash
+      run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
+
+    - name: Build
+      shell: bash
+      run: |
+        cd go/extractor
+        go build ./...
+
+    - name: Compile qhelp files to markdown
+      if: inputs.run-code-checks == 'true' && !cancelled()
+      id: markdown
+      shell: bash
+      run: |
+        cd go
+        env QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
+
+    - name: Upload qhelp markdown
+      if: inputs.run-code-checks == 'true' && !cancelled()
+      uses: actions/upload-artifact@v4
+      with:
+        name: qhelp-markdown
+        path: go/qhelp-out/**/*.md

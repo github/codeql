@@ -1,0 +1,28 @@
+#select
+| test.go:173:20:173:24 | param | test.go:172:11:172:32 | call to Param | test.go:173:20:173:24 | param | This path to an untrusted URL redirection depends on a $@. | test.go:172:11:172:32 | call to Param | user-provided value |
+| test.go:185:20:185:29 | ...+... | test.go:178:11:178:32 | call to Param | test.go:185:20:185:29 | ...+... | This path to an untrusted URL redirection depends on a $@. | test.go:178:11:178:32 | call to Param | user-provided value |
+edges
+| test.go:172:11:172:32 | call to Param | test.go:173:20:173:24 | param | provenance | Src:MaD:2 Sink:MaD:1 |
+| test.go:178:11:178:32 | call to Param | test.go:185:24:185:29 | param2 | provenance | Src:MaD:2  |
+| test.go:185:24:185:29 | param2 | test.go:185:20:185:29 | ...+... | provenance | Config Sink:MaD:1 |
+| test.go:193:9:193:26 | star expression | test.go:193:10:193:26 | selection of URL [postupdate] | provenance | Config |
+| test.go:193:9:193:26 | star expression | test.go:196:21:196:23 | url | provenance |  |
+| test.go:193:10:193:26 | selection of URL | test.go:193:9:193:26 | star expression | provenance | Src:MaD:3 Config |
+| test.go:193:10:193:26 | selection of URL [postupdate] | test.go:193:9:193:26 | star expression | provenance | Config |
+| test.go:196:21:196:23 | url | test.go:196:21:196:32 | call to String | provenance | Config Sink:MaD:1 |
+models
+| 1 | Sink: github.com/labstack/echo; Context; true; Redirect; ; ; Argument[1]; url-redirection; manual |
+| 2 | Source: github.com/labstack/echo; Context; true; Param; ; ; ReturnValue[0]; remote; manual |
+| 3 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
+nodes
+| test.go:172:11:172:32 | call to Param | semmle.label | call to Param |
+| test.go:173:20:173:24 | param | semmle.label | param |
+| test.go:178:11:178:32 | call to Param | semmle.label | call to Param |
+| test.go:185:20:185:29 | ...+... | semmle.label | ...+... |
+| test.go:185:24:185:29 | param2 | semmle.label | param2 |
+| test.go:193:9:193:26 | star expression | semmle.label | star expression |
+| test.go:193:10:193:26 | selection of URL | semmle.label | selection of URL |
+| test.go:193:10:193:26 | selection of URL [postupdate] | semmle.label | selection of URL [postupdate] |
+| test.go:196:21:196:23 | url | semmle.label | url |
+| test.go:196:21:196:32 | call to String | semmle.label | call to String |
+subpaths

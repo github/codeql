@@ -1,0 +1,37 @@
+missingOperand
+| misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | void misc3() | void misc3() |
+unexpectedOperand
+duplicateOperand
+missingPhiOperand
+missingOperandType
+duplicateChiOperand
+sideEffectWithoutPrimary
+instructionWithoutSuccessor
+| stmt_expr.cpp:27:5:27:15 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | stmt_expr.cpp:21:13:21:13 | void stmtexpr::g(int) | void stmtexpr::g(int) |
+ambiguousSuccessors
+unexplainedLoop
+unnecessaryPhiInstruction
+memoryOperandDefinitionIsUnmodeled
+operandAcrossFunctions
+instructionWithoutUniqueBlock
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
+containsLoopOfForwardEdges
+missingIRType
+multipleIRTypes
+lostReachability
+backEdgeCountMismatch
+useNotDominatedByDefinition
+switchInstructionWithoutDefaultEdge
+notMarkedAsConflated
+wronglyMarkedAsConflated
+invalidOverlap
+nonUniqueEnclosingIRFunction
+fieldAddressOnNonPointer
+thisArgumentIsNonPointer
+| pmcallexpr.cpp:10:2:10:15 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pmcallexpr.cpp:8:13:8:13 | void f() | void f() |
+| pointer_to_member.cpp:23:5:23:54 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
+| pointer_to_member.cpp:24:5:24:49 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
+nonUniqueIRVariable
+nonBooleanOperand
+missingCppType

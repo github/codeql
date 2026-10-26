@@ -1,0 +1,76 @@
+for x in xs where x > 0 {
+  print(x)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        forStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "x"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          pattern:
+            identifierPattern
+              identifier: identifier "x"
+          whereClause:
+            whereClause
+              condition:
+                infixOperatorExpr
+                  operator:
+                    binaryOperatorExpr
+                      operator: binaryOperator ">"
+                  leftOperand:
+                    declReferenceExpr
+                      baseName: identifier "x"
+                  rightOperand:
+                    integerLiteralExpr
+                      literal: integerLiteral "0"
+              whereKeyword: where
+          inKeyword: in
+          forKeyword: for
+          sequence:
+            declReferenceExpr
+              baseName: identifier "xs"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        for_each_stmt source="for ⟨pattern⟩ in ⟨iterable⟩ where ⟨guard⟩ ⟨body⟩"
+          pattern: identifier "x" source="x"
+          iterable: identifier "xs" source="xs"
+          guard:
+            binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+              left: identifier "x" source="x"
+              operator: infix_operator ">" source=">"
+              right: int_literal "0" source="0"
+          body:
+            block source="{\n  ⟨stmt⟩\n}"
+              stmt:
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
+                  argument:
+                    argument source="⟨value⟩"
+                      value: identifier "x" source="x"

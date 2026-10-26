@@ -1,0 +1,25 @@
+provide:
+  - "*/ql/src/qlpack.yml"
+  - "*/ql/lib/qlpack.yml"
+  - "*/ql/test*/qlpack.yml"
+  - "*/ql/examples/qlpack.yml"
+  - "*/ql/consistency-queries/qlpack.yml"
+  - "*/ql/automodel/src/qlpack.yml"
+  - "*/ql/automodel/test/qlpack.yml"
+  - "*/extractor-pack/codeql-extractor.yml"
+  - "python/extractor/qlpack.yml"
+  - "shared/**/qlpack.yml"
+  - "cpp/ql/test/query-tests/Security/CWE/CWE-190/semmle/tainted/qlpack.yml"
+  - "go/ql/config/legacy-support/qlpack.yml"
+  - "csharp/ql/campaigns/Solorigate/lib/qlpack.yml"
+  - "csharp/ql/campaigns/Solorigate/src/qlpack.yml"
+  - "csharp/ql/campaigns/Solorigate/test/qlpack.yml"
+  - "misc/legacy-support/*/qlpack.yml"
+  - "misc/suite-helpers/qlpack.yml"
+  - ".github/codeql/extensions/**/codeql-pack.yml"
+  - "actions/ql/extensions/**/qlpack.yml"
+versionPolicies:
+  default:
+    requireChangeNotes: true
+    committedPrereleaseSuffix: dev
+    committedVersion: nextPatchRelease

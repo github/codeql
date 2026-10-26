@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A module is deprecated when it cannot or will not be maintained indefinitely in the standard library.
+Deprecated modules may not receive security fixes or other important updates.
+See PEP 4 for a list of all deprecated modules.
+</p>
+</overview>
+<recommendation>
+
+<p>Do not import the deprecated module. Replace uses of it with uses of a better maintained module.
+</p>
+
+</recommendation>
+<references>
+
+<li>Python PEPs: <a href="http://www.python.org/dev/peps/pep-0004/">PEP 4 -- Deprecation of Standard Modules </a>.</li>
+
+
+</references>
+</qhelp>

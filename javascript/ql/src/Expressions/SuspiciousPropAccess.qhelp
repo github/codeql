@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Attempting to read or write a property of <code>null</code> or <code>undefined</code>
+will cause an exception at runtime.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Carefully inspect the property access in question. If the problem was not detected during testing,
+this could either be because it is in dead code, or because it is not covered by
+a test. In the former case, delete the dead code in question. In the latter case, consider
+adding a new test.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, function <code>f</code> declares a variable <code>result</code>, then
+invokes another function <code>computeInterestingResult</code> (not shown) and stores the result
+in <code>res</code>, and finally returns <code>result.value</code>. Since <code>result</code>
+has not been initialized, it will still have its default value <code>undefined</code>, causing
+a runtime exception.</p>
+
+<sample src="examples/SuspiciousPropAccess.js" />
+
+<p>
+The assignment to <code>res</code> is presumably a typo; instead, it should be assigned to
+<code>result</code>:
+</p>
+
+<sample src="examples/SuspiciousPropAccessGood.js" />
+
+</example>
+<references>
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Objects_and_properties">Objects and properties</a>.</li>
+
+</references>
+</qhelp>

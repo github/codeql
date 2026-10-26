@@ -1,0 +1,6 @@
+| a.c:2:1:2:9 | #define A |
+| a.c:3:1:3:14 | #include "h.h" |
+| b.c:2:1:2:9 | #define B |
+| b.c:3:1:3:14 | #include "h.h" |
+| h.h:2:1:2:8 | #undef A |
+| h.h:3:1:3:8 | #undef B |

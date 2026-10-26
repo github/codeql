@@ -1,0 +1,11 @@
+| DontModify.cs:0:0:0:0 | DontModify.cs | generated |
+| File.autogen.cs:0:0:0:0 | File.autogen.cs | generated |
+| File.designer.cs:0:0:0:0 | File.designer.cs | generated |
+| File.feature.cs:0:0:0:0 | File.feature.cs | generated |
+| File.g.cs:0:0:0:0 | File.g.cs | generated |
+| GeneratedAssembly.cs:0:0:0:0 | GeneratedAssembly.cs | generated |
+| GeneratedAttribute.cs:0:0:0:0 | GeneratedAttribute.cs | generated |
+| GeneratedBy.cs:0:0:0:0 | GeneratedBy.cs | generated |
+| NUnitTest.cs:0:0:0:0 | NUnitTest.cs | test |
+| VisualStudioTest.cs:0:0:0:0 | VisualStudioTest.cs | test |
+| XUnitTest.cs:0:0:0:0 | XUnitTest.cs | test |

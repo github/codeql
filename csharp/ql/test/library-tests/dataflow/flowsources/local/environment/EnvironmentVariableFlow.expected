@@ -1,0 +1,2 @@
+| EnvironmentVariables.cs:34:18:34:21 | access to local variable path | EnvironmentVariables.cs:30:26:31:42 | call to method AddEnvironmentVariables |
+| EnvironmentVariables.cs:44:18:44:21 | access to local variable path | EnvironmentVariables.cs:41:13:41:19 | [post] access to local variable builder |

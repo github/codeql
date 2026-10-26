@@ -1,0 +1,8 @@
+| six | Package six |
+| six.moves | Package six.moves |
+| six.moves.http_client | Missing module http.client |
+| six.moves.http_client.HTTPConnection | Missing module attribute http.client.HTTPConnection |
+| six.moves.range | builtin-class range |
+| six.moves.urllib | Package six.moves.urllib |
+| six.moves.urllib.parse | Module six.moves.urllib_parse |
+| six.moves.zip | builtin-class zip |

@@ -1,0 +1,1 @@
+semmle-extractor-options: -R . -p non-such --filter exclude:**/*.testproj/**

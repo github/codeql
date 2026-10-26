@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.crypto.dsig.dom", "DOMSignContext", True, "DOMSignContext", "(Key,Node)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMSignContext.parent]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.dom", "DOMSignContext", True, "DOMSignContext", "(Key,Node,Node)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMSignContext.parent]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.dom", "DOMSignContext", True, "DOMSignContext", "(Key,Node,Node)", "", "Argument[2]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMSignContext.nextSibling]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.dom", "DOMSignContext", True, "DOMSignContext", "(KeySelector,Node)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMSignContext.parent]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.dom", "DOMSignContext", True, "DOMSignContext", "(KeySelector,Node,Node)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMSignContext.parent]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.dom", "DOMSignContext", True, "DOMSignContext", "(KeySelector,Node,Node)", "", "Argument[2]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMSignContext.nextSibling]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.dom", "DOMSignContext", True, "getNextSibling", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMSignContext.nextSibling]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.dom", "DOMSignContext", True, "getParent", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMSignContext.parent]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.dom", "DOMSignContext", True, "setNextSibling", "(Node)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMSignContext.nextSibling]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.dom", "DOMSignContext", True, "setParent", "(Node)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMSignContext.parent]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.dom", "DOMValidateContext", True, "DOMValidateContext", "(Key,Node)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMValidateContext.node]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.dom", "DOMValidateContext", True, "DOMValidateContext", "(KeySelector,Node)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMValidateContext.node]", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.dom", "DOMValidateContext", True, "getNode", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMValidateContext.node]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto.dsig.dom", "DOMValidateContext", True, "setNode", "(Node)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.dsig.dom.DOMValidateContext.node]", "value", "dfc-generated"]

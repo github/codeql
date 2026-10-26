@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Windows.Input", "ICommand", "CanExecute", "(System.Object)", "summary", "df-generated"]
+      - ["System.Windows.Input", "ICommand", "Execute", "(System.Object)", "summary", "df-generated"]
+      - ["System.Windows.Input", "ICommand", "add_CanExecuteChanged", "(System.EventHandler)", "summary", "df-generated"]
+      - ["System.Windows.Input", "ICommand", "remove_CanExecuteChanged", "(System.EventHandler)", "summary", "df-generated"]

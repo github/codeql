@@ -1,0 +1,14 @@
+systemCommandExecutions
+| Railties.rb:5:5:5:34 | call to execute_command |
+| Railties.rb:6:5:6:37 | call to execute_command |
+| Railties.rb:8:5:8:16 | call to rake |
+| Railties.rb:10:5:10:27 | call to rails_command |
+| Railties.rb:12:5:12:17 | call to git |
+shellInterpretedArguments
+| Railties.rb:5:5:5:34 | call to execute_command | Railties.rb:5:21:5:25 | :rake |
+| Railties.rb:5:5:5:34 | call to execute_command | Railties.rb:5:28:5:33 | "test" |
+| Railties.rb:6:5:6:37 | call to execute_command | Railties.rb:6:21:6:26 | :rails |
+| Railties.rb:6:5:6:37 | call to execute_command | Railties.rb:6:29:6:36 | "server" |
+| Railties.rb:8:5:8:16 | call to rake | Railties.rb:8:10:8:15 | "test" |
+| Railties.rb:10:5:10:27 | call to rails_command | Railties.rb:10:19:10:26 | "server" |
+| Railties.rb:12:5:12:17 | call to git | Railties.rb:12:9:12:16 | "status" |

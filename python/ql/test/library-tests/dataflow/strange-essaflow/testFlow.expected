@@ -1,0 +1,6 @@
+os_import
+| test.py:2:8:2:9 | ControlFlowNode for os |
+flowstep
+jumpStep
+| test.py:2:8:2:9 | ControlFlowNode for os | test.py:0:0:0:0 | ModuleVariableNode in Module test for os |
+essaFlowStep

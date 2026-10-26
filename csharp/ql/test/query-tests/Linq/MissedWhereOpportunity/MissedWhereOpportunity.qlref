@@ -1,0 +1,2 @@
+query: Linq/MissedWhereOpportunity.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

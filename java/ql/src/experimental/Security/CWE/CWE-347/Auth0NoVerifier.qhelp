@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+     <overview>
+          <p>
+               A JSON Web Token (JWT) is used for authenticating and managing users in an application. It must be verified in order to ensure the JWT is genuine.
+          </p>
+
+     </overview>
+     <recommendation>
+
+          <p>
+               Don't use information from a JWT without verifying that JWT.
+          </p>
+
+     </recommendation>
+     <example>
+
+          <p>
+               The following example illustrates secure and insecure use of the Auth0 `java-jwt` library.
+          </p>
+
+          <sample src="Example.java" />
+
+     </example>
+     <references>
+          <li>
+               <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-37580">The incorrect use of JWT in ShenyuAdminBootstrap allows an attacker to bypass authentication.</a>
+          </li>
+     </references>
+
+</qhelp>

@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-200/ExposureSensitiveInformationUnauthorizedActor.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

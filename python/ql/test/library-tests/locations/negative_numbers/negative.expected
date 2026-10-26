@@ -1,0 +1,26 @@
+| FloatLiteral | 6 | 2 | 6 | 4 |  |
+| FloatLiteral | 7 | 2 | 7 | 7 |  |
+| FloatLiteral | 11 | 3 | 11 | 5 | () |
+| FloatLiteral | 12 | 3 | 12 | 8 | () |
+| FloatLiteral | 16 | 3 | 16 | 5 |  |
+| FloatLiteral | 17 | 3 | 17 | 8 |  |
+| ImaginaryLiteral | 19 | 2 | 19 | 3 |  |
+| IntegerLiteral | 4 | 2 | 4 | 2 |  |
+| IntegerLiteral | 5 | 2 | 5 | 18 |  |
+| IntegerLiteral | 9 | 3 | 9 | 3 | () |
+| IntegerLiteral | 10 | 3 | 10 | 19 | () |
+| IntegerLiteral | 14 | 3 | 14 | 3 |  |
+| IntegerLiteral | 15 | 3 | 15 | 19 |  |
+| UnaryExpr | 4 | 1 | 4 | 2 |  |
+| UnaryExpr | 5 | 1 | 5 | 18 |  |
+| UnaryExpr | 6 | 1 | 6 | 4 |  |
+| UnaryExpr | 7 | 1 | 7 | 7 |  |
+| UnaryExpr | 9 | 1 | 9 | 4 |  |
+| UnaryExpr | 10 | 1 | 10 | 20 |  |
+| UnaryExpr | 11 | 1 | 11 | 6 |  |
+| UnaryExpr | 12 | 1 | 12 | 9 |  |
+| UnaryExpr | 14 | 2 | 14 | 3 | () |
+| UnaryExpr | 15 | 2 | 15 | 19 | () |
+| UnaryExpr | 16 | 2 | 16 | 5 | () |
+| UnaryExpr | 17 | 2 | 17 | 8 | () |
+| UnaryExpr | 19 | 1 | 19 | 3 |  |

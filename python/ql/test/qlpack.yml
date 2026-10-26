@@ -1,0 +1,8 @@
+name: codeql/python-tests
+groups: [python, test]
+dependencies:
+    codeql/python-all: ${workspace}
+    codeql/python-queries: ${workspace}
+extractor: python
+tests: .
+warnOnImplicitThis: true

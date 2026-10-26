@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Sensitive information included in a build artifact can allow an attacker to access
+      the sensitive information if the artifact is published.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      Only store information that is meant to be publicly available in a build artifact.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      The following example creates a <code>webpack</code> configuration that inserts all environment
+      variables from the host into the build artifact:
+    </p>
+    <sample src="examples/build-leak.js"/>
+    <p>
+      The environment variables might include API keys or other sensitive information, and the build-system
+      should instead insert only the environment variables that are supposed to be public. 
+    </p>
+    <p>
+      The issue has been fixed below, where only the <code>DEBUG</code> environment variable is inserted into the artifact.
+    </p>
+    <sample src="examples/build-leak-fixed.js"/>
+  </example>
+  <references>
+    <li>webpack: <a href="https://webpack.js.org/plugins/define-plugin/">DefinePlugin API</a>.</li>
+  </references>
+</qhelp>

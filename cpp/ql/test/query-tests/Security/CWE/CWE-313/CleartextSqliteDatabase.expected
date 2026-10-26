@@ -1,0 +1,16 @@
+#select
+| CleartextSqliteDatabase.cpp:31:5:31:16 | call to sqlite3_exec | CleartextSqliteDatabase.cpp:29:77:29:84 | password | CleartextSqliteDatabase.cpp:31:22:31:24 | *sql | This SQLite call may store $@ in a non-encrypted SQLite database. | CleartextSqliteDatabase.cpp:29:77:29:84 | password | sensitive information |
+| CleartextSqliteDatabase.cpp:39:5:39:22 | call to sqlite3_prepare_v2 | CleartextSqliteDatabase.cpp:37:77:37:84 | password | CleartextSqliteDatabase.cpp:39:28:39:30 | *sql | This SQLite call may store $@ in a non-encrypted SQLite database. | CleartextSqliteDatabase.cpp:37:77:37:84 | password | sensitive information |
+| CleartextSqliteDatabase.cpp:49:5:49:21 | call to sqlite3_bind_text | CleartextSqliteDatabase.cpp:49:32:49:39 | password | CleartextSqliteDatabase.cpp:49:32:49:39 | password | This SQLite call may store $@ in a non-encrypted SQLite database. | CleartextSqliteDatabase.cpp:49:32:49:39 | password | sensitive information |
+| CleartextSqliteDatabase.cpp:56:5:56:23 | call to sqlite3_str_appendf | CleartextSqliteDatabase.cpp:56:76:56:83 | password | CleartextSqliteDatabase.cpp:56:76:56:83 | password | This SQLite call may store $@ in a non-encrypted SQLite database. | CleartextSqliteDatabase.cpp:56:76:56:83 | password | sensitive information |
+edges
+| CleartextSqliteDatabase.cpp:29:77:29:84 | password | CleartextSqliteDatabase.cpp:31:22:31:24 | *sql | provenance | TaintFunction |
+| CleartextSqliteDatabase.cpp:37:77:37:84 | password | CleartextSqliteDatabase.cpp:39:28:39:30 | *sql | provenance | TaintFunction |
+nodes
+| CleartextSqliteDatabase.cpp:29:77:29:84 | password | semmle.label | password |
+| CleartextSqliteDatabase.cpp:31:22:31:24 | *sql | semmle.label | *sql |
+| CleartextSqliteDatabase.cpp:37:77:37:84 | password | semmle.label | password |
+| CleartextSqliteDatabase.cpp:39:28:39:30 | *sql | semmle.label | *sql |
+| CleartextSqliteDatabase.cpp:49:32:49:39 | password | semmle.label | password |
+| CleartextSqliteDatabase.cpp:56:76:56:83 | password | semmle.label | password |
+subpaths

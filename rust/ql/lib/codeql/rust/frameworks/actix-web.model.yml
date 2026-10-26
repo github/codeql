@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["<actix_web::route::Route>::to", "Argument[0].Parameter[0..7]", "remote", "manual"]
+      # Actix attributes such as `get` expand to this `to` call on the handler.
+      - ["<actix_web::resource::Resource>::to", "Argument[0].Parameter[0..7]", "remote", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+        - ["<actix_web::types::html::Html>::new", "Argument[0]", "html-injection", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+        - ["<actix_web::types::path::Path>::into_inner", "Argument[self]", "ReturnValue", "taint", "manual"]

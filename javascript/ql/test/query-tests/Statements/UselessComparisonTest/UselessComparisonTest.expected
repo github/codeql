@@ -1,0 +1,5 @@
+| constant.js:2:7:2:11 | 1 > 2 | The condition '1 > 2' is always false. |
+| constant.js:3:7:3:11 | 1 > 0 | The condition '1 > 0' is always true. |
+| example.js:8:7:8:13 | i < end | The condition 'i < end' is always false. |
+| tst.js:8:22:8:32 | i == 100000 | The condition 'i == 100000' is always false. |
+| tst.js:9:23:9:33 | i == 100000 | The condition 'i == 100000' is always false. |

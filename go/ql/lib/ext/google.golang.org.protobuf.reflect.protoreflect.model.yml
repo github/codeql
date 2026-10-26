@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["google.golang.org/protobuf/reflect/protoreflect", "ProtoMessage", True, "ProtoReflect", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

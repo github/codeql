@@ -1,0 +1,38 @@
+/**
+ * @name Constant length comparison
+ * @description Comparing the length of an array to a constant before indexing it using a
+ *              loop variable may indicate a logic error.
+ * @kind problem
+ * @problem.severity warning
+ * @id go/constant-length-comparison
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       external/cwe/cwe-129
+ * @precision high
+ */
+
+import go
+private import semmle.go.controlflow.Guards
+
+from
+  ForStmt fs, Variable i, DataFlow::ElementReadNode idx, GVN a, Guard cond, boolean branch,
+  DataFlow::CallNode lenA
+where
+  // `i` is incremented in `fs`
+  fs.getPost().(IncStmt).getOperand() = i.getAReference() and
+  // `idx` reads `a[i]`
+  idx.reads(a.getANode(), i.getARead()) and
+  // `lenA` is `len(a)`
+  lenA = Builtin::len().getACall() and
+  lenA.getArgument(0) = a.getANode() and
+  // and is checked against a constant
+  exists(DataFlow::Node const | exists(const.getIntValue()) |
+    guardEnsuresNeq(cond, branch, lenA, const) or
+    guardEnsuresLeq(cond, branch, const, lenA, _)
+  ) and
+  cond.controls(idx.getBasicBlock(), branch) and
+  // and that check happens inside the loop body
+  cond.(Expr).getParent+() = fs
+select cond, "This checks the length against a constant, but it $@.", idx,
+  "is indexed using a variable"

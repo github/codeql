@@ -1,0 +1,4 @@
+test
+| file:///modules/java.base/java/util/List.class:0:0:0:0 | iterator | file:///modules/java.base/java/util/Collection.class:0:0:0:0 | iterator |
+test1
+| file:///modules/java.base/java/util/List.class:0:0:0:0 | iterator |

@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+JavaScript allows to freely mix <code>case</code> labels and ordinary statement labels in the body of
+a <code>switch</code> statement. However, this is confusing to read (especially if both kinds of
+labels have the same amount of indentation), and indeed most likely the result of a typo.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the statement labels to see whether they were meant to be case labels. If not, consider
+wrapping them into a statement block and indent them to set them apart visually from the case
+labels.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In this example, the label <code>case3</code> is most likely a typo for <code>case 3</code> and
+should be fixed.
+</p>
+
+<sample src="examples/LabelInCase.js" />
+
+</example>
+<references>
+
+
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Section 12.11. ECMA, 2011.</li>
+
+
+</references>
+</qhelp>

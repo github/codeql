@@ -1,0 +1,2 @@
+query: Declarations/TemporalDeadZone.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

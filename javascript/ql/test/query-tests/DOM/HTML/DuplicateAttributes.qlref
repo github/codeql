@@ -1,0 +1,2 @@
+query: DOM/DuplicateAttributes.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

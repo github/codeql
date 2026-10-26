@@ -1,0 +1,41 @@
+Diamond.java:
+#    0| [CompilationUnit] Diamond
+#-----|   -1: (Imports)
+#    3|     1: [ImportType] import ArrayList
+#    4|     2: [ImportType] import HashMap
+#    5|     3: [ImportType] import List
+#    6|     4: [ImportType] import Map
+#    8|   1: [Class] Diamond
+#   10|     3: [FieldDeclaration] List<Integer> list;
+#   10|       -1: [TypeAccess] List<Integer>
+#   10|         0: [TypeAccess] Integer
+#   10|       0: [ClassInstanceExpr] new ArrayList<Integer>(...)
+#   10|         -3: [TypeAccess] ArrayList<Integer>
+#   10|           0: [TypeAccess] Integer
+#   11|     4: [FieldDeclaration] Map<String,Object> map;
+#   11|       -1: [TypeAccess] Map<String,Object>
+#   11|         0: [TypeAccess] String
+#   11|         1: [TypeAccess] Object
+#   11|       0: [ClassInstanceExpr] new HashMap<String,Object>(...)
+#   11|         -3: [TypeAccess] HashMap<String,Object>
+#   11|           0: [TypeAccess] String
+#   11|           1: [TypeAccess] Object
+#   14|     5: [FieldDeclaration] List<Integer> diamond_list;
+#   14|       -1: [TypeAccess] List<Integer>
+#   14|         0: [TypeAccess] Integer
+#   14|       0: [ClassInstanceExpr] new ArrayList<Integer>(...)
+#   14|         -3: [TypeAccess] ArrayList<Integer>
+#   15|     6: [FieldDeclaration] Map<String,Object> diamond_map;
+#   15|       -1: [TypeAccess] Map<String,Object>
+#   15|         0: [TypeAccess] String
+#   15|         1: [TypeAccess] Object
+#   15|       0: [ClassInstanceExpr] new HashMap<String,Object>(...)
+#   15|         -3: [TypeAccess] HashMap<String,Object>
+#   18|     7: [FieldDeclaration] List<> l;
+#   18|       -1: [TypeAccess] List<>
+#   18|       0: [ClassInstanceExpr] new ArrayList<>(...)
+#   18|         -3: [TypeAccess] ArrayList<>
+#   19|     8: [FieldDeclaration] Error e;
+#   19|       -1: [TypeAccess] Error
+#   19|       0: [ClassInstanceExpr] new Error(...)
+#   19|         -3: [TypeAccess] Error

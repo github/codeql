@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A possibly non-existent attribute of <code>self</code> is accessed in a method.
+The attribute is set in another method of the class, but may be uninitialized if the
+method that uses the attribute is called before the one that sets it.
+This may result in an <code>AttributeError</code> at run time.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that all attributes are initialized in the <code>__init__</code> method.</p>
+
+
+</recommendation>
+<example>
+<sample src="MaybeUndefinedClassAttribute.py" />
+
+
+</example>
+<references>
+
+<li>Python Standard Library: <a href="http://docs.python.org/library/exceptions.html#exceptions.AttributeError">exception AttributeError</a>.
+</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,5 @@
+| exceptions_test.py:7:5:7:11 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |
+| exceptions_test.py:13:5:13:21 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |
+| exceptions_test.py:72:1:72:18 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |
+| exceptions_test.py:85:1:85:17 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |
+| exceptions_test.py:89:1:89:17 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |

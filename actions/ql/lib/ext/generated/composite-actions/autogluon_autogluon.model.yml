@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["autogluon/autogluon", "*", "input.submodule-to-test", "code-injection", "generated"]
+     - ["autogluon/autogluon", "*", "input.command", "code-injection", "generated"]
+     - ["autogluon/autogluon", "*", "input.work-dir", "code-injection", "generated"]
+     - ["autogluon/autogluon", "*", "input.job-name", "code-injection", "generated"]
+     - ["autogluon/autogluon", "*", "input.job-type", "code-injection", "generated"]

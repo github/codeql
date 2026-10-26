@@ -1,0 +1,2 @@
+| Test.java:5:3:5:43 | Set<Object> seen | The contents of this container are never initialized. |
+| Test.java:68:3:68:46 | List<Boolean> bl | The contents of this container are never initialized. |

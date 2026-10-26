@@ -1,0 +1,50 @@
+# Builds a zip file of the compiled typscript-parser-wrapper and its dependencies.
+genrule(
+    name = "typescript",
+    srcs = [
+        "tsconfig.json",
+        "package.json",
+        "package-lock.json",
+    ] + glob(["src/**"]),
+    outs = ["javascript.zip"],
+    cmd = "\n".join([
+        # the original working directory is not preserved anywhere, but needs to be accessible, as
+        # all paths are relative to this
+        # unfortunately, we need to change the working directory to run npm.
+        "export BAZEL_ROOT=$$(pwd)",
+        # we need a temp dir, and unfortunately, $TMPDIR is not set on Windows
+        "export TEMP=$$(mktemp -d)",
+        # Add node to the path so that npm run can find it - it's calling env node
+        "export PATH=$$BAZEL_ROOT/$$(dirname $(execpath @nodejs//:node_bin)):$$PATH",
+        "export NPM=$$BAZEL_ROOT/$(execpath @nodejs//:npm_bin)",
+        # npm has a global cache which doesn't work on macos, where absolute paths aren't filtered out by the sandbox.
+        # Therefore, set a temporary cache directory.
+        "export NPM_CONFIG_USERCONFIG=$$TEMP/npmrc",
+        "$$NPM config set cache $$TEMP/npm",
+        "$$NPM config set update-notifier false",
+        "rm -rf $(RULEDIR)/inputs",
+        "cp -L -R $$(dirname $(execpath package.json)) $(RULEDIR)/inputs",
+        "cd $(RULEDIR)/inputs",
+        "$$NPM install",
+        "$$NPM run build",
+        "rm -rf node_modules",
+        # Install again with only runtime deps
+        "$$NPM install --prod",
+        "mv node_modules build/",
+        "mkdir -p typescript-parser-wrapper",
+        "mv build/* typescript-parser-wrapper",
+        "OUT=$$BAZEL_ROOT/$@",
+        "case $$OSTYPE in",
+        "  cygwin|msys|win32) OUT=$$(cygpath -w $$OUT);;",
+        "esac",
+        "",
+        "$$BAZEL_ROOT/$(execpath @bazel_tools//tools/zip:zipper) cC $$OUT $$(find typescript-parser-wrapper -name '*' -print)",
+        "rm -rf $$TEMP",
+    ]),
+    tools = [
+        "@bazel_tools//tools/zip:zipper",
+        "@nodejs//:node_bin",
+        "@nodejs//:npm_bin",
+    ],
+    visibility = ["//visibility:public"],
+)

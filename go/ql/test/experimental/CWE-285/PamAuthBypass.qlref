@@ -1,0 +1,2 @@
+query: experimental/CWE-285/PamAuthBypass.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

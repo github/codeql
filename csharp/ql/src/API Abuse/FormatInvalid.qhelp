@@ -1,0 +1,98 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+When using string formatting methods (such as <code>string.Format()</code>), the following
+should be taken into account:
+</p>
+<ol>
+  <li>
+    The formatting string must be formatted correctly, otherwise the exception
+    <code>System.FormatException</code> will be thrown.
+  </li>
+  <li>
+    All passed arguments should be used by the formatting string, otherwise such
+    arguments will be ignored.
+  </li>
+  <li>
+    Missing arguments will result in a <code>System.FormatException</code> exception
+    being thrown.
+  </li>
+</ol>
+
+</overview>
+
+<recommendation>
+
+<ol>
+  <li>
+    Change the format string so that it is correctly formatted. Ensure that each
+    format item adheres to the syntax:
+    <blockquote>
+      <p><b>{</b><i>index</i>[<b>,</b><i>alignment</i>][<b>:</b><i>formatString</i>]<b>}</b></p>
+    </blockquote>
+    When literals <code>{</code> or <code>}</code> are required, replace them with <code>{{</code> and
+    <code>}}</code>, respectively, or supply them as arguments.
+  </li>
+  <li>
+    Change the format string to use the highlighted argument, or remove the unnecessary argument.
+  </li>
+  <li>
+    Supply the correct number of arguments to the format method, or change the format string 
+    to use the correct arguments.
+  </li>
+</ol>
+
+</recommendation>
+
+<example>
+<p>
+In this example, a format string uses both literals <code>{</code> and <code>}</code>, but the
+literals are not properly escaped.
+</p>
+<sample src="FormatInvalidBad.cs" />
+
+<p>
+In the revised example, the literals are properly escaped.
+</p>
+<sample src="FormatInvalidGood.cs" />
+</example>
+
+<example>
+<p>
+Here are three examples where the format string does not use all the arguments.
+</p>
+<sample src="FormatUnusedArgumentBad.cs"/>
+<ul>
+  <li>On line 7, the second argument (<code>ex.HResult</code>) is not logged.</li>
+  <li>On line 8, the first argument (<code>ex</code>) is not logged but the second 
+    argument (<code>ex.HResult</code>) is logged twice.</li>
+  <li>On line 9, a C-style format string is used, which is incorrect, and neither 
+    argument will be logged.</li>
+</ul>  
+</example>
+
+<example>
+<p>
+Here are two examples where the call to <code>String.Format()</code> is missing arguments.
+</p>
+<sample src="FormatMissingArgumentBad.cs"/>
+<ul>
+  <li>On line 7, the second argument (<code>last</code>) is not supplied.</li>
+  <li>On line 8, the format items are numbered <code>{1}</code> and <code>{2}</code>,
+    instead of <code>{0}</code> and <code>{1}</code> as they should be.</li>
+</ul>
+
+<p>
+In the revised example, both arguments are supplied.
+</p>
+<sample src="FormatMissingArgumentGood.cs"/>
+</example>
+
+<references>
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/system.string.format.aspx">String.Format Method</a>.</li>
+  <li>Microsoft: <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting">Composite Formatting</a>.</li>
+</references>
+</qhelp>

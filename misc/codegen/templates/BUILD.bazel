@@ -1,0 +1,26 @@
+package(default_visibility = ["//misc/codegen:__subpackages__"])
+
+filegroup(
+    name = "dbscheme",
+    srcs = ["dbscheme.mustache"],
+)
+
+filegroup(
+    name = "trap",
+    srcs = glob(["trap_*.mustache"]),
+)
+
+filegroup(
+    name = "cpp",
+    srcs = glob(["cpp_*.mustache"]),
+)
+
+filegroup(
+    name = "ql",
+    srcs = glob(["ql_*.mustache"]),
+)
+
+filegroup(
+    name = "rust",
+    srcs = glob(["rust_*.mustache"]),
+)

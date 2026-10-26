@@ -1,0 +1,16 @@
+on:
+  pull_request_target:
+    types: [Created]
+jobs:
+  test1:
+    environment: EnvironmentInRepo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test 1
+        run: echo "test1"
+  test2:
+    environment: EnvironmentNotInRepo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test 2
+        run: echo "test2"

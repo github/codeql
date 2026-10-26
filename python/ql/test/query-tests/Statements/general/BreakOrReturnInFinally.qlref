@@ -1,0 +1,2 @@
+query: Statements/BreakOrReturnInFinally.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

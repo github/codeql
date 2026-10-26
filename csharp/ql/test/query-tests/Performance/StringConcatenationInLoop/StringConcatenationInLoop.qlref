@@ -1,0 +1,2 @@
+query: Performance/StringConcatenationInLoop.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

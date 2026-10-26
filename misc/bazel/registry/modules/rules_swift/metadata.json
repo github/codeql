@@ -1,0 +1,11 @@
+{
+    "homepage": "https://github.com/bazelbuild/rules_swift",
+    "maintainers": [],
+    "repository": [
+        "github:bazelbuild/rules_swift"
+    ],
+    "versions": [
+        "4.0.0-rc5-codeql.2"
+    ],
+    "yanked_versions": {}
+}

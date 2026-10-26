@@ -1,0 +1,2 @@
+query: Security/CWE-807/DifferentKindsComparisonBypass.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

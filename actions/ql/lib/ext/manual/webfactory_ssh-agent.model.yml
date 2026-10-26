@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["webfactory/ssh-agent", "*", "input.ssh-agent-cmd", "command-injection", "manual"]
+      - ["webfactory/ssh-agent", "*", "input.ssh-add-cmd", "command-injection", "manual"]
+      - ["webfactory/ssh-agent", "*", "input.git-cmd", "command-injection", "manual"]

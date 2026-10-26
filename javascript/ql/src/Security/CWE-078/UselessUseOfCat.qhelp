@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+<overview>
+<p>Using the unix command <code>cat</code> only to read a file is an 
+unnecessarily complex way to achieve something that can be done in a simpler 
+and safer manner using the Node.js <code>fs.readFile</code> API.
+</p>
+<p>
+The use of <code>cat</code> for simple file reads leads to code that is 
+unportable, inefficient, complex, and can lead to subtle bugs or even 
+security vulnerabilities. 
+</p>
+</overview>
+<recommendation>
+<p>
+Use <code>fs.readFile</code> or <code>fs.readFileSync</code> to read files 
+from the file system. 
+</p>
+</recommendation>
+<example>
+
+<p>The following example shows code that reads a file using <code>cat</code>:</p>
+
+<sample src="examples/useless-cat.js"/>
+
+<p>The code in the example will break if the input <code>name</code> contains 
+special characters (including space). Additionally, it does not work on Windows 
+and if the input is user-controlled, a command injection attack can happen.</p>
+
+<p>The <code>fs.readFile</code> API should be used to avoid these potential issues: </p>
+
+<sample src="examples/useless-cat-fixed.js"/>
+
+</example>
+<references>
+
+<li>OWASP: <a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.</li>
+<li>Node.js: <a href="https://nodejs.org/api/fs.html">File System API</a>.</li>
+<li><a href="http://porkmail.org/era/unix/award.html#cat">The Useless Use of Cat Award</a>.</li>
+
+
+</references>
+</qhelp>

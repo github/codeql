@@ -1,0 +1,25 @@
+<Solution>
+  <Project Path="autobuilder/Semmle.Autobuild.Cpp.Tests/Semmle.Autobuild.Cpp.Tests.csproj">
+    <Build Solution="Release|*" Project="false" />
+  </Project>
+  <Project Path="autobuilder/Semmle.Autobuild.Cpp/Semmle.Autobuild.Cpp.csproj" />
+  <Project Path="autobuilder/Semmle.Autobuild.CSharp.Tests/Semmle.Autobuild.CSharp.Tests.csproj">
+    <Build Solution="Release|*" Project="false" />
+  </Project>
+  <Project Path="autobuilder/Semmle.Autobuild.CSharp/Semmle.Autobuild.CSharp.csproj" />
+  <Project Path="autobuilder/Semmle.Autobuild.Shared/Semmle.Autobuild.Shared.csproj" />
+  <Project Path="extractor/Semmle.Extraction.CSharp.DependencyFetching/Semmle.Extraction.CSharp.DependencyFetching.csproj" />
+  <Project Path="extractor/Semmle.Extraction.CSharp.DependencyStubGenerator/Semmle.Extraction.CSharp.DependencyStubGenerator.csproj" />
+  <Project Path="extractor/Semmle.Extraction.CSharp.Driver/Semmle.Extraction.CSharp.Driver.csproj" />
+  <Project Path="extractor/Semmle.Extraction.CSharp.Standalone/Semmle.Extraction.CSharp.Standalone.csproj" />
+  <Project Path="extractor/Semmle.Extraction.CSharp.StubGenerator/Semmle.Extraction.CSharp.StubGenerator.csproj" />
+  <Project Path="extractor/Semmle.Extraction.CSharp.Util/Semmle.Extraction.CSharp.Util.csproj" />
+  <Project Path="extractor/Semmle.Extraction.CSharp/Semmle.Extraction.CSharp.csproj" />
+  <Project Path="extractor/Semmle.Extraction.Tests/Semmle.Extraction.Tests.csproj">
+    <Build Solution="Release|*" Project="false" />
+  </Project>
+  <Project Path="extractor/Semmle.Util.Tests/Semmle.Util.Tests.csproj">
+    <Build Solution="Release|*" Project="false" />
+  </Project>
+  <Project Path="extractor/Semmle.Util/Semmle.Util.csproj" />
+</Solution>

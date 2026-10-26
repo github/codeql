@@ -1,0 +1,44 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.crypto", "AlgorithmMethod", True, "getAlgorithm", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto", "AlgorithmMethod", True, "getParameterSpec", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto", "KeySelector", True, "singletonKeySelector", "(Key)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto", "KeySelectorException", True, "KeySelectorException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "KeySelectorException", True, "KeySelectorException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "KeySelectorException", True, "KeySelectorException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "KeySelectorException", True, "KeySelectorException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "MarshalException", True, "MarshalException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "MarshalException", True, "MarshalException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "MarshalException", True, "MarshalException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "MarshalException", True, "MarshalException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "NoSuchMechanismException", True, "NoSuchMechanismException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "NoSuchMechanismException", True, "NoSuchMechanismException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "NoSuchMechanismException", True, "NoSuchMechanismException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "NoSuchMechanismException", True, "NoSuchMechanismException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "OctetStreamData", True, "OctetStreamData", "(InputStream)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.OctetStreamData.octetStream]", "value", "dfc-generated"]
+      - ["javax.xml.crypto", "OctetStreamData", True, "OctetStreamData", "(InputStream,String,String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.crypto.OctetStreamData.octetStream]", "value", "dfc-generated"]
+      - ["javax.xml.crypto", "OctetStreamData", True, "OctetStreamData", "(InputStream,String,String)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.crypto.OctetStreamData.uri]", "value", "dfc-generated"]
+      - ["javax.xml.crypto", "OctetStreamData", True, "OctetStreamData", "(InputStream,String,String)", "", "Argument[2]", "Argument[this].SyntheticField[javax.xml.crypto.OctetStreamData.mimeType]", "value", "dfc-generated"]
+      - ["javax.xml.crypto", "OctetStreamData", True, "getMimeType", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.OctetStreamData.mimeType]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto", "OctetStreamData", True, "getOctetStream", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.OctetStreamData.octetStream]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto", "OctetStreamData", True, "getURI", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.OctetStreamData.uri]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto", "URIDereferencer", True, "dereference", "(URIReference,XMLCryptoContext)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto", "URIDereferencer", True, "dereference", "(URIReference,XMLCryptoContext)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto", "URIReference", True, "getType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto", "URIReference", True, "getURI", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.crypto", "URIReferenceException", True, "URIReferenceException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "URIReferenceException", True, "URIReferenceException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "URIReferenceException", True, "URIReferenceException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "URIReferenceException", True, "URIReferenceException", "(String,Throwable,URIReference)", "", "Argument[2]", "Argument[this].SyntheticField[javax.xml.crypto.URIReferenceException.uriReference]", "value", "dfc-generated"]
+      - ["javax.xml.crypto", "URIReferenceException", True, "URIReferenceException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.crypto", "URIReferenceException", True, "getURIReference", "()", "", "Argument[this].SyntheticField[javax.xml.crypto.URIReferenceException.uriReference]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.crypto", "XMLCryptoContext", True, "getNamespacePrefix", "(String,String)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.xml.crypto", "KeySelector", "select", "(KeyInfo,KeySelector$Purpose,AlgorithmMethod,XMLCryptoContext)", "summary", "df-generated"]

@@ -1,0 +1,8 @@
+| (Int32,(String,Int32)) | (int, (string, int)) | ValueTuple<int, (string, int)> | 2 | 0 | Item1 |
+| (Int32,(String,Int32)) | (int, (string, int)) | ValueTuple<int, (string, int)> | 2 | 1 | Item2 |
+| (Int32,Double) | (int, double) | ValueTuple<int, double> | 2 | 0 | Item1 |
+| (Int32,Double) | (int, double) | ValueTuple<int, double> | 2 | 1 | Item2 |
+| (Int32,String) | (int, string) | ValueTuple<int, string> | 2 | 0 | Item1 |
+| (Int32,String) | (int, string) | ValueTuple<int, string> | 2 | 1 | Item2 |
+| (String,String) | (string, string) | ValueTuple<string, string> | 2 | 0 | Item1 |
+| (String,String) | (string, string) | ValueTuple<string, string> | 2 | 1 | Item2 |

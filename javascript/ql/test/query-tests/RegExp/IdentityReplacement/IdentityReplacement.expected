@@ -1,0 +1,13 @@
+| IdentityReplacement.js:1:27:1:30 | /"/g | This replaces '"' with itself. |
+| IdentityReplacement.js:4:14:4:21 | indirect | This replaces '"' with itself. |
+| tst.js:1:13:1:16 | "\\\\" | This replaces '\\' with itself. |
+| tst.js:2:13:2:18 | /(\\\\)/ | This replaces '\\' with itself. |
+| tst.js:3:13:3:17 | /["]/ | This replaces '"' with itself. |
+| tst.js:6:13:6:18 | /foo/g | This replaces 'foo' with itself. |
+| tst.js:9:13:9:17 | /^\\\\/ | This replaces '\\' with itself. |
+| tst.js:10:13:10:17 | /\\\\$/ | This replaces '\\' with itself. |
+| tst.js:11:13:11:18 | /\\b\\\\/ | This replaces '\\' with itself. |
+| tst.js:12:13:12:18 | /\\B\\\\/ | This replaces '\\' with itself. |
+| tst.js:13:13:13:22 | /\\\\(?!\\\\)/ | This replaces '\\' with itself. |
+| tst.js:14:13:14:23 | /(?<!\\\\)\\\\/ | This replaces '\\' with itself. |
+| tst.js:16:13:16:15 | /^/ | This replaces the empty string with itself. |

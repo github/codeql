@@ -1,0 +1,29 @@
+name: Test
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        type: string
+        default: "**"
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    name: Checkout
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ inputs.branch }}
+      - run: |
+          npm install
+          npm run lint
+      

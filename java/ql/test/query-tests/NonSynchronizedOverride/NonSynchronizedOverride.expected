@@ -1,0 +1,4 @@
+| Test.java:16:7:16:11 | quack | Method 'quack' overrides a synchronized method in $@ but is not synchronized. | Test.java:1:7:1:11 | Super | Super |
+| Test.java:27:7:27:9 | foo | Method 'foo' overrides a synchronized method in $@ but is not synchronized. | Test.java:1:7:1:11 | Super | Super |
+| Test.java:38:7:38:9 | foo | Method 'foo' overrides a synchronized method in $@ but is not synchronized. | Test.java:32:7:32:7 | A | A |
+| Test.java:43:7:43:9 | foo | Method 'foo' overrides a synchronized method in $@ but is not synchronized. | Test.java:32:7:32:7 | A | A |

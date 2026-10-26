@@ -1,0 +1,4 @@
+| EqualsArray.cs:11:16:11:43 | call to method Equals | Using Equals(object) on a collection only checks reference equality. |
+| EqualsArray.cs:23:16:23:32 | call to method Equals | Using Equals(object) on a collection only checks reference equality. |
+| EqualsArray.cs:29:16:29:28 | call to method Equals | Using Equals(object) on a collection only checks reference equality. |
+| EqualsArray.cs:87:16:87:26 | call to method Equals | Using Equals(object) on a collection only checks reference equality. |

@@ -1,0 +1,115 @@
+| switch_block | false | 131 | 131 | switch_block |
+| switch_block | false | 139 | 139 | i |
+| switch_block | false | 143 | 143 | 0 |
+| switch_block | false | 144 | 144 | ... < ... |
+| switch_block | false | 146 | 146 | i |
+| switch_block | false | 148 | 148 | - ... |
+| switch_block | false | 150 | 150 | i |
+| switch_block | false | 152 | 152 | ... ? ... : ... |
+| switch_block | false | 156 | 156 | 0 |
+| switch_block | false | 157 | 157 | case ...: |
+| switch_block | false | 161 | 161 | 1 |
+| switch_block | false | 162 | 162 | return ... |
+| switch_block | false | 164 | 164 | default:  |
+| switch_block | false | 166 | 166 | i |
+| switch_block | false | 168 | 168 | return ... |
+| switch_block | false | 170 | 170 | { ... } |
+| switch_block | false | 172 | 172 | switch (...) ...  |
+| switch_block | false | 174 | 174 | { ... } |
+| switch_block | true | 139 | 143 |  |
+| switch_block | true | 143 | 144 |  |
+| switch_block | true | 144 | 146 | T |
+| switch_block | true | 144 | 150 | F |
+| switch_block | true | 146 | 148 |  |
+| switch_block | true | 148 | 170 |  |
+| switch_block | true | 150 | 170 |  |
+| switch_block | true | 152 | 139 |  |
+| switch_block | true | 157 | 162 |  |
+| switch_block | true | 161 | 131 |  |
+| switch_block | true | 162 | 161 |  |
+| switch_block | true | 164 | 168 |  |
+| switch_block | true | 166 | 131 |  |
+| switch_block | true | 168 | 166 |  |
+| switch_block | true | 170 | 157 |  |
+| switch_block | true | 170 | 164 |  |
+| switch_block | true | 172 | 152 |  |
+| switch_block | true | 174 | 172 |  |
+| switch_notblock | false | 227 | 227 | switch_notblock |
+| switch_notblock | false | 235 | 235 | i |
+| switch_notblock | false | 239 | 239 | 0 |
+| switch_notblock | false | 240 | 240 | ... < ... |
+| switch_notblock | false | 242 | 242 | i |
+| switch_notblock | false | 244 | 244 | - ... |
+| switch_notblock | false | 246 | 246 | i |
+| switch_notblock | false | 248 | 248 | ... ? ... : ... |
+| switch_notblock | false | 252 | 252 | 1 |
+| switch_notblock | false | 255 | 255 | 0 |
+| switch_notblock | false | 256 | 256 | case ...: |
+| switch_notblock | false | 260 | 260 | 1 |
+| switch_notblock | false | 261 | 261 | return ... |
+| switch_notblock | false | 263 | 263 | default:  |
+| switch_notblock | false | 265 | 265 | i |
+| switch_notblock | false | 267 | 267 | return ... |
+| switch_notblock | false | 269 | 269 | { ... } |
+| switch_notblock | false | 271 | 271 | if (...) ...  |
+| switch_notblock | false | 273 | 273 | switch (...) ...  |
+| switch_notblock | false | 275 | 275 | { ... } |
+| switch_notblock | true | 235 | 239 |  |
+| switch_notblock | true | 239 | 240 |  |
+| switch_notblock | true | 240 | 242 | T |
+| switch_notblock | true | 240 | 246 | F |
+| switch_notblock | true | 242 | 244 |  |
+| switch_notblock | true | 244 | 256 |  |
+| switch_notblock | true | 244 | 263 |  |
+| switch_notblock | true | 246 | 256 |  |
+| switch_notblock | true | 246 | 263 |  |
+| switch_notblock | true | 248 | 235 |  |
+| switch_notblock | true | 252 | 269 | T |
+| switch_notblock | true | 256 | 261 |  |
+| switch_notblock | true | 260 | 227 |  |
+| switch_notblock | true | 261 | 260 |  |
+| switch_notblock | true | 263 | 267 |  |
+| switch_notblock | true | 265 | 227 |  |
+| switch_notblock | true | 267 | 265 |  |
+| switch_notblock | true | 269 | 256 |  |
+| switch_notblock | true | 271 | 252 |  |
+| switch_notblock | true | 273 | 248 |  |
+| switch_notblock | true | 275 | 273 |  |
+| switch_single | false | 178 | 178 | switch_single |
+| switch_single | false | 186 | 186 | i |
+| switch_single | false | 190 | 190 | 0 |
+| switch_single | false | 191 | 191 | ... < ... |
+| switch_single | false | 193 | 193 | i |
+| switch_single | false | 195 | 195 | - ... |
+| switch_single | false | 197 | 197 | i |
+| switch_single | false | 199 | 199 | ... ? ... : ... |
+| switch_single | false | 203 | 203 | 0 |
+| switch_single | false | 204 | 204 | case ...: |
+| switch_single | false | 208 | 208 | 1 |
+| switch_single | false | 209 | 209 | case ...: |
+| switch_single | false | 211 | 211 | i |
+| switch_single | false | 213 | 213 | return ... |
+| switch_single | false | 215 | 215 | { ... } |
+| switch_single | false | 216 | 216 | switch (...) ...  |
+| switch_single | false | 220 | 220 | 2 |
+| switch_single | false | 221 | 221 | return ... |
+| switch_single | false | 223 | 223 | { ... } |
+| switch_single | true | 186 | 190 |  |
+| switch_single | true | 190 | 191 |  |
+| switch_single | true | 191 | 193 | T |
+| switch_single | true | 191 | 197 | F |
+| switch_single | true | 193 | 195 |  |
+| switch_single | true | 195 | 215 |  |
+| switch_single | true | 197 | 215 |  |
+| switch_single | true | 199 | 186 |  |
+| switch_single | true | 204 | 209 |  |
+| switch_single | true | 209 | 213 |  |
+| switch_single | true | 211 | 178 |  |
+| switch_single | true | 213 | 211 |  |
+| switch_single | true | 215 | 204 |  |
+| switch_single | true | 215 | 209 |  |
+| switch_single | true | 215 | 221 |  |
+| switch_single | true | 216 | 199 |  |
+| switch_single | true | 220 | 178 |  |
+| switch_single | true | 221 | 220 |  |
+| switch_single | true | 223 | 216 |  |

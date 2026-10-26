@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Loops can contain multiple exit conditions, either directly in the loop
+condition or as guards around <code>break</code> or <code>return</code>
+statements.  If none of the exit conditions can ever be satisfied, then
+the loop will never terminate.
+</p>
+</overview>
+
+<recommendation>
+<p>
+When writing a loop that is intended to terminate, make sure that all the
+necessary exit conditions can be satisfied and that loop termination is clear.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+The following example searches for a field of a given name, and intends to
+throw an exception if the field cannot be found.  However, if the field cannot
+be found, the double loop structure means that the exit conditions will never
+be met, resulting in an infinite loop.
+</p>
+<sample src="ConstantLoopConditionBad.java" />
+
+<p>
+The solution is to rewrite the code as follows using an <code>if</code>-statement.
+</p>
+<sample src="ConstantLoopConditionGood.java" />
+
+</example>
+
+<references>
+
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html">Blocks and Statements</a>.
+</li>
+
+</references>
+
+</qhelp>

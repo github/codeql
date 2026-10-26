@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Text.RegularExpressions.Generator", "RegexGenerator", "Initialize", "(Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext)", "summary", "df-generated"]
+      - ["System.Text.RegularExpressions.Generator", "UpgradeToGeneratedRegexAnalyzer", "Initialize", "(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext)", "summary", "df-generated"]
+      - ["System.Text.RegularExpressions.Generator", "UpgradeToGeneratedRegexAnalyzer", "get_SupportedDiagnostics", "()", "summary", "df-generated"]
+      - ["System.Text.RegularExpressions.Generator", "UpgradeToGeneratedRegexCodeFixer", "GetFixAllProvider", "()", "summary", "df-generated"]
+      - ["System.Text.RegularExpressions.Generator", "UpgradeToGeneratedRegexCodeFixer", "RegisterCodeFixesAsync", "(Microsoft.CodeAnalysis.CodeFixes.CodeFixContext)", "summary", "df-generated"]
+      - ["System.Text.RegularExpressions.Generator", "UpgradeToGeneratedRegexCodeFixer", "get_FixableDiagnosticIds", "()", "summary", "df-generated"]

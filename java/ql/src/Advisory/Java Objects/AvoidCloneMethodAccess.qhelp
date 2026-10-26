@@ -1,0 +1,7 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<include src="AvoidCloneableInterface.qhelp" /></qhelp>

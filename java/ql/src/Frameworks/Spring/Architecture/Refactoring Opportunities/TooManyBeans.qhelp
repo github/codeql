@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Too many bean definitions in a single file can make the file difficult to understand and maintain. It is also
+an indication that the architecture of the system is too tightly coupled and can be refactored.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Refactor related bean definitions into separate files, and compose them using the <code>&lt;import/&gt;</code> element.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a configuration file that imports two other configuration files. These
+two files were created by refactoring a file that contained too many bean definitions.</p>
+
+<sample src="TooManyBeans.xml" />
+
+</example>
+<references>
+
+
+<li>
+Spring Framework Reference Documentation 3.0:
+<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-factory-xml-import">3.2.2.1 Composing XML-based configuration metadata</a>.
+</li>
+
+
+</references>
+</qhelp>

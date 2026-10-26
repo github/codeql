@@ -1,0 +1,17 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<fragment>
+<p>
+Redundant, or "dead", code imposes a burden on those reading or maintaining the software project.
+It can make it harder to understand the structure of the code, as well as increasing the complexity
+of adding new features or fixing bugs. It can also affect compilation and build times for the
+project, as dead code will still be compiled and built even if it is never used. In some cases it
+may also affect runtime performance - for example, fields that are written to but never read from,
+where the value written to the field is expensive to compute. Removing dead code should not
+change the meaning of the program.
+</p>
+</fragment>
+</qhelp>

@@ -1,0 +1,6 @@
+{
+    "name": "foo",
+    "dependencies": {
+        "async": "3.2.0"
+    }
+}

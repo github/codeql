@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["mumble-voip/mumble", "*", "input.arch", "code-injection", "generated"]
+     - ["mumble-voip/mumble", "*", "input.type", "code-injection", "generated"]
+     - ["mumble-voip/mumble", "*", "input.os", "code-injection", "generated"]

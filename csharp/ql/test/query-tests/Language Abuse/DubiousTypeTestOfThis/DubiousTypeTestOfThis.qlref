@@ -1,0 +1,2 @@
+query: Language Abuse/DubiousTypeTestOfThis.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

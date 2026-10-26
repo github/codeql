@@ -1,0 +1,2 @@
+query: Violations of Best Practice/Dead Code/UnreadLocal.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

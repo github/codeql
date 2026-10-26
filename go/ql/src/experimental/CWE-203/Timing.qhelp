@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Using a non-constant time comparision to compare sensitive information can lead to auth
+      vulnerabilities.
+</p>
+  </overview>
+
+  <recommendation>
+    <p>Use of a constant time comparision function such as <code>crypto/subtle</code> package's <code>
+      ConstantTimeCompare</code> function can prevent this vulnerability. </p>
+  </recommendation>
+
+  <example>
+    <p>In the following examples, the code accepts a secret via a HTTP header in variable <code>
+      secretHeader</code> and a secret from the user in the <code>headerSecret</code> variable, which
+      are then compared with a system stored secret to perform authentication.</p>
+
+
+    <sample src="timingBad.go" />
+
+    <p>In the following example, the input provided by the user is compared using the <code>
+      ConstantTimeComapre</code> function. This ensures that timing attacks are not possible in this
+      case.</p>
+
+    <sample src="timingGood.go" />
+  </example>
+
+  <references>
+    <li>National Vulnerability Database: <a href="https://nvd.nist.gov/vuln/detail/CVE-2022-24912">
+      CVE-2022-24912</a>.</li>
+    <li>Verbose Logging:<a href="https://verboselogging.com/2012/08/20/a-timing-attack-in-action"> A
+      timing attack in action </a></li>
+  </references>
+</qhelp>

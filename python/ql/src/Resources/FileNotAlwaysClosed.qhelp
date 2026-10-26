@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>When a file is opened, it should always be closed. 
+</p>
+<p>A file opened for writing that is not closed when the application exits may result in data loss, where not all of the data written may be saved to the file.
+A file opened for reading or writing that is not closed may also use up file descriptors, which is a resource leak that in long running applications could lead to a failure to open additional files. 
+</p>
+</overview>
+<recommendation>
+
+<p>Ensure that opened files are always closed, including when an exception could be raised.
+The best practice is often to use a <code>with</code> statement to automatically clean up resources.
+Otherwise, ensure that <code>.close()</code> is called in a <code>try...except</code> or <code>try...finally</code> 
+block to handle any possible exceptions.
+</p>
+
+</recommendation>
+<example>
+<p>In the following examples, in the case marked BAD, the file may not be closed if an exception is raised. In the cases marked GOOD, the file is always closed.</p>
+
+<sample src="examples/FileNotAlwaysClosed.py" />
+
+</example>
+<references>
+
+<li>Python Documentation: <a href="https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files">Reading and writing files</a>.</li>
+<li>Python Language Reference: <a href="http://docs.python.org/reference/compound_stmts.html#the-with-statement">The with statement</a>,
+ <a href="http://docs.python.org/reference/compound_stmts.html#the-try-statement">The try statement</a>.</li>
+<li>Python PEP 343: <a href="http://www.python.org/dev/peps/pep-0343">The "with" Statement</a>.</li>
+
+
+
+</references>
+</qhelp>

@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-754/ImproperCheckReturnValueScanf.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

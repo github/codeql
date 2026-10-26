@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds calls to virtual methods from within constructors and destructors. If the constructor of a derived class calls the constructor of its base type, the dynamic type of the object is the base type for the duration of the constructor call, so virtual method dispatch may yield unexpected results. The same holds for destructors.</p>
+
+</overview>
+<recommendation>
+<p>Carefully check the flagged calls to make sure they will behave as expected.</p>
+
+</recommendation>
+<example><sample src="VirtualCallInStructor.cpp" />
+
+
+
+</example>
+<references>
+<li>S. Meyer. <em>Effective C++ 3d ed.</em> pp 48-52. Addison Wesley. 2005. Excerpt available <a href="http://www.artima.com/cppsource/nevercall.html">here</a>.
+
+</li></references></qhelp>

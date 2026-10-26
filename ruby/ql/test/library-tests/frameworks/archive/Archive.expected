@@ -1,0 +1,4 @@
+rubyZipFileOpens
+| Archive.rb:2:12:2:35 | call to open |
+rubyZipFileNew
+| Archive.rb:5:12:5:34 | call to new |

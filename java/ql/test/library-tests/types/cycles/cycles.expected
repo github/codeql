@@ -1,0 +1,6 @@
+| BiFunction<? super Object,? super Object,? extends Object> |
+| BiFunction<? super Object,? super Object,?> |
+| Function<? super Object,? extends Object> |
+| Function<? super Object,?> |
+| Map<? extends Object,? extends Object> |
+| Map<?,?> |

@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["apache/opendal", "*", "input.feature", "code-injection", "generated"]
+     - ["apache/opendal", "*", "input.setup", "code-injection", "generated"]
+     - ["apache/opendal", "*", "input.service", "code-injection", "generated"]
+     - ["apache/opendal", "*", "input.target", "code-injection", "generated"]

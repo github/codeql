@@ -1,0 +1,2 @@
+query: Violations of Best Practice/Implementation Hiding/VisibleForTestingAbuse.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

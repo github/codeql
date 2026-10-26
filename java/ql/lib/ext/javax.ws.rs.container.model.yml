@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["javax.ws.rs.container", "ContainerRequestContext", True, "getAcceptableLanguages", "", "", "ReturnValue", "remote", "manual"]
+      - ["javax.ws.rs.container", "ContainerRequestContext", True, "getAcceptableMediaTypes", "", "", "ReturnValue", "remote", "manual"]
+      - ["javax.ws.rs.container", "ContainerRequestContext", True, "getCookies", "", "", "ReturnValue", "remote", "manual"]
+      - ["javax.ws.rs.container", "ContainerRequestContext", True, "getEntityStream", "", "", "ReturnValue", "remote", "manual"]
+      - ["javax.ws.rs.container", "ContainerRequestContext", True, "getHeaderString", "", "", "ReturnValue", "remote", "manual"]
+      - ["javax.ws.rs.container", "ContainerRequestContext", True, "getHeaders", "", "", "ReturnValue", "remote", "manual"]
+      - ["javax.ws.rs.container", "ContainerRequestContext", True, "getLanguage", "", "", "ReturnValue", "remote", "manual"]
+      - ["javax.ws.rs.container", "ContainerRequestContext", True, "getMediaType", "", "", "ReturnValue", "remote", "manual"]
+      - ["javax.ws.rs.container", "ContainerRequestContext", True, "getUriInfo", "", "", "ReturnValue", "remote", "manual"]

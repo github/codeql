@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.hadoop.hive.metastore", "ObjectStore", True, "updatePartitionColumnStatistics", "(ColumnStatistics,List,String,long)", "", "Argument[0]", "sql-injection", "ai-manual"]
+      - ["org.apache.hadoop.hive.metastore", "ObjectStore", True, "updatePartitionColumnStatistics", "(ColumnStatistics,List)", "", "Argument[0]", "sql-injection", "ai-manual"]

@@ -1,0 +1,22 @@
+| numeric.swift:5:6:5:6 | f1 | Float | FloatingPointType, NumericType |
+| numeric.swift:6:6:6:6 | f2 | Double | FloatingPointType, NumericType |
+| numeric.swift:7:6:7:6 | f3 | Double | FloatingPointType, NumericType |
+| numeric.swift:8:6:8:6 | f4 | Float? |  |
+| numeric.swift:9:6:9:6 | f5 | MyFloat |  |
+| numeric.swift:10:6:10:6 | f6 | MyFloat? |  |
+| numeric.swift:12:6:12:6 | d | Double | FloatingPointType, NumericType |
+| numeric.swift:14:6:14:6 | c | Character | CharacterType |
+| numeric.swift:16:6:16:6 | i1 | Int | IntegralType, NumericType |
+| numeric.swift:17:6:17:6 | i2 | Int | IntegralType, NumericType |
+| numeric.swift:18:6:18:6 | i3 | Int | IntegralType, NumericType |
+| numeric.swift:19:6:19:6 | i4 | Int8 | IntegralType, NumericType |
+| numeric.swift:20:6:20:6 | i5 | Int16 | IntegralType, NumericType |
+| numeric.swift:21:6:21:6 | i6 | Int32 | IntegralType, NumericType |
+| numeric.swift:22:6:22:6 | i7 | Int64 | IntegralType, NumericType |
+| numeric.swift:24:6:24:6 | u1 | UInt | IntegralType, NumericType |
+| numeric.swift:25:6:25:6 | u2 | UInt8 | IntegralType, NumericType |
+| numeric.swift:26:6:26:6 | u3 | UInt16 | IntegralType, NumericType |
+| numeric.swift:27:6:27:6 | u4 | UInt32 | IntegralType, NumericType |
+| numeric.swift:28:6:28:6 | u5 | UInt64 | IntegralType, NumericType |
+| numeric.swift:30:6:30:6 | b1 | Bool | BoolType |
+| numeric.swift:31:6:31:6 | b2 | Bool | BoolType |

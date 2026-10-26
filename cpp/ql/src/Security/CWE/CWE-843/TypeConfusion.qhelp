@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Certain casts in C and C++ place no restrictions on the target type. For
+example, C style casts such as <code>(MyClass*)p</code> allows the programmer
+to cast any pointer <code>p</code> to an expression of type <code>MyClass*</code>.
+If the runtime type of <code>p</code> turns out to be a type that's incompatible
+with <code>MyClass</code>, this results in undefined behavior.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If possible, use <code>dynamic_cast</code> to safely cast between polymorphic types.
+If <code>dynamic_cast</code> is not an option, use <code>static_cast</code> to restrict
+the kinds of conversions that the compiler is allowed to perform. If C++ style casts is
+not an option, carefully check that all casts are safe.
+</p>
+</recommendation>
+
+<example>
+<p>
+Consider the following class hierachy where we define a base class <code>Shape</code> and two
+derived classes <code>Circle</code> and <code>Square</code> that are mutually incompatible:
+</p>
+<sample src="TypeConfusionCommon.cpp"/>
+
+<p>
+The following code demonstrates a type confusion vulnerability where the programmer
+assumes that the runtime type of <code>p</code> is always a <code>Square</code>.
+However, if <code>p</code> is a <code>Circle</code>, the cast will result in undefined behavior.
+</p>
+<sample src="TypeConfusionBad.cpp"/>
+
+<p>
+The following code fixes the vulnerability by using <code>dynamic_cast</code> to
+safely cast between polymorphic types. If the cast fails, <code>dynamic_cast</code>
+returns a null pointer, which can be checked for and handled appropriately.
+</p>
+<sample src="TypeConfusionGood.cpp"/>
+</example>
+
+<references>
+<li>
+Microsoft Learn: <a href="https://learn.microsoft.com/en-us/cpp/cpp/type-conversions-and-type-safety-modern-cpp">Type conversions and type safety</a>.
+</li>
+</references>
+</qhelp>

@@ -1,0 +1,544 @@
+/**
+ * Provides Go-specific definitions for use in the data flow library.
+ */
+overlay[local?]
+module;
+
+private import go
+private import semmle.go.controlflow.Guards
+private import semmle.go.dataflow.FunctionInputsAndOutputs
+private import semmle.go.dataflow.ExternalFlow
+private import DataFlowPrivate
+private import FlowSummaryImpl as FlowSummaryImpl
+private import codeql.util.Unit
+import DataFlowNodes::Public
+
+/**
+ * Holds if `node` reads an element from `base`, either via an element-read (`base[y]`) expression
+ * or via a range statement `_, node := range base`.
+ */
+predicate readsAnElement(DataFlow::Node node, DataFlow::Node base) {
+  node.(ElementReadNode).readsElement(base, _) or
+  node.(RangeElementNode).getBase() = base
+}
+
+/**
+ * A model of a function specifying that the function copies input values from
+ * a parameter or qualifier to a result.
+ *
+ * Note that this only models verbatim copying. Flow that does not preserve exact
+ * values should be modeled by `TaintTracking::FunctionModel` instead.
+ */
+abstract class FunctionModel extends Function {
+  /** Holds if data flows through this function from `input` to `output`. */
+  abstract predicate hasDataFlow(FunctionInput input, FunctionOutput output);
+
+  /** Gets an input node for this model for the call `c`. */
+  DataFlow::Node getAnInputNode(DataFlow::CallNode c) { this.flowStepForCall(result, _, c) }
+
+  /** Gets an output node for this model for the call `c`. */
+  DataFlow::Node getAnOutputNode(DataFlow::CallNode c) { this.flowStepForCall(_, result, c) }
+
+  /** Holds if this function model causes data to flow from `pred` to `succ` for the call `c`. */
+  predicate flowStepForCall(DataFlow::Node pred, DataFlow::Node succ, DataFlow::CallNode c) {
+    c = this.getACall() and
+    exists(FunctionInput inp, FunctionOutput outp | this.hasDataFlow(inp, outp) |
+      pred = inp.getNode(c) and
+      succ = outp.getNode(c)
+    )
+  }
+
+  /** Holds if this function model causes data to flow from `pred` to `succ`. */
+  predicate flowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    this.flowStepForCall(pred, succ, _)
+  }
+}
+
+/**
+ * A unit class for adding nodes that should implicitly read from all nested content.
+ *
+ * For example, this might be appropriate for the argument to a method that serializes a struct.
+ */
+class ImplicitFieldReadNode extends Unit {
+  /**
+   * Holds if the node `n` should implicitly read from all nested content in a taint-tracking context.
+   */
+  abstract predicate shouldImplicitlyReadAllFields(DataFlow::Node n);
+}
+
+/**
+ * Gets the `Node` corresponding to `insn`.
+ */
+InstructionNode instructionNode(IR::Instruction insn) { result.asInstruction() = insn }
+
+/**
+ * Gets the `Node` corresponding to `e`.
+ */
+ExprNode exprNode(Expr e) { result.asExpr() = e.stripParens() }
+
+/**
+ * Gets the `Node` corresponding to the value of `p` at function entry.
+ */
+ParameterNode parameterNode(Parameter p) { result.asParameter() = p }
+
+/**
+ * Gets the `Node` corresponding to the value of `r` at function entry.
+ */
+ReceiverNode receiverNode(ReceiverVariable r) { result.asReceiverVariable() = r }
+
+/**
+ * Gets the data-flow node corresponding to SSA variable `v`.
+ */
+SsaNode ssaNode(SsaVariable v) { result.getDefinition() = v.getDefinition() }
+
+/**
+ * Gets the data-flow node corresponding to the `i`th element of tuple `t` (which is either a call
+ * with multiple results, an iterator in a range loop, or the result of a type assertion).
+ */
+Node extractTupleElement(Node t, int i) {
+  exists(IR::Instruction insn | t = instructionNode(insn) |
+    result = instructionNode(IR::extractTupleElement(insn, i))
+  )
+}
+
+/**
+ * Holds if `node` refers to a value returned alongside a non-nil error value.
+ *
+ * For example, `0` in `func tryGetInt() (int, error) { return 0, errors.New("no good") }`
+ */
+predicate isReturnedWithError(Node node) {
+  exists(ReturnStmt ret, int nodeArg, int errorArg |
+    ret.getExpr(nodeArg) = node.asExpr() and
+    nodeArg != errorArg and
+    ret.getExpr(errorArg).getType() instanceof ErrorType
+    // That last condition implies ret.getExpr(errorArg) is non-nil, since nil doesn't implement `error`
+  )
+}
+
+/**
+ * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
+ * (intra-procedural) step.
+ */
+predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+  simpleLocalFlowStep(nodeFrom, nodeTo, _)
+  or
+  // Simple flow through library code is included in the exposed local
+  // step relation, even though flow is technically inter-procedural
+  FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * This is the local flow predicate that's used as a building block in global
+ * data flow. It may have less flow than the `localFlowStep` predicate.
+ */
+cached
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+  basicLocalFlowStep(nodeFrom, nodeTo) and
+  model = ""
+  or
+  // step through function model
+  any(FunctionModel m).flowStep(nodeFrom, nodeTo) and
+  model = "FunctionModel"
+  or
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true, model)
+}
+
+/**
+ * Holds if data flows from `source` to `sink` in zero or more local
+ * (intra-procedural) steps.
+ */
+overlay[caller?]
+pragma[inline]
+predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
+
+private newtype TContent =
+  TFieldContent(Field f) or
+  TCollectionContent() or
+  TArrayContent() or
+  TPointerContent(PointerType p) or
+  TMapKeyContent() or
+  TMapValueContent() or
+  TSyntheticFieldContent(SyntheticField s)
+
+/**
+ * A reference contained in an object. Examples include instance fields, the
+ * contents of a collection object, the contents of an array or pointer.
+ */
+class Content extends TContent {
+  /** Gets the type of the contained data for the purpose of type pruning. */
+  DataFlowType getType() { any() }
+
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  /** Gets the location of this element. */
+  Location getLocation() { none() }
+
+  /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  deprecated predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    not exists(this.getLocation()) and
+    filepath = "" and
+    startline = 0 and
+    startcolumn = 0 and
+    endline = 0 and
+    endcolumn = 0
+  }
+
+  /**
+   * Gets the `ContentSet` contaning only this content.
+   */
+  ContentSet asContentSet() { result.asOneContent() = this }
+}
+
+/** A reference through a field. */
+class FieldContent extends Content, TFieldContent {
+  Field f;
+
+  FieldContent() { this = TFieldContent(f) }
+
+  /** Gets the field associated with this `FieldContent`. */
+  Field getField() { result = f }
+
+  override DataFlowType getType() { any() }
+
+  override string toString() { result = f.toString() }
+
+  override Location getLocation() { result = f.getDeclaration().getLocation() }
+}
+
+/** A reference through the contents of some collection-like container. */
+class CollectionContent extends Content, TCollectionContent {
+  override string toString() { result = "collection" }
+}
+
+/** A reference through an array. */
+class ArrayContent extends Content, TArrayContent {
+  override string toString() { result = "array" }
+}
+
+/** A reference through a pointer. */
+class PointerContent extends Content, TPointerContent {
+  PointerType t;
+
+  PointerContent() { this = TPointerContent(t) }
+
+  /** Gets the pointer type that containers with this content must have. */
+  PointerType getPointerType() { result = t }
+
+  override DataFlowType getType() { any() }
+
+  override string toString() { result = "pointer" }
+}
+
+/** A reference through a map key. */
+class MapKeyContent extends Content, TMapKeyContent {
+  override string toString() { result = "map.key" }
+}
+
+/** A reference through a map value. */
+class MapValueContent extends Content, TMapValueContent {
+  override string toString() { result = "map.value" }
+}
+
+class SyntheticFieldContent extends Content, TSyntheticFieldContent {
+  SyntheticField s;
+
+  SyntheticFieldContent() { this = TSyntheticFieldContent(s) }
+
+  /** Gets the field associated with this `SyntheticFieldContent`. */
+  SyntheticField getField() { result = s }
+
+  override DataFlowType getType() { any() }
+
+  override string toString() { result = s.toString() }
+}
+
+private newtype TContentSet =
+  TOneContent(Content c) or
+  TAllContent()
+
+/**
+ * An entity that represents a set of `Content`s.
+ *
+ * The set may be interpreted differently depending on whether it is
+ * stored into (`getAStoreContent`) or read from (`getAReadContent`).
+ */
+class ContentSet instanceof TContentSet {
+  /** Gets a content that may be stored into when storing into this set. */
+  Content getAStoreContent() { this = TOneContent(result) }
+
+  /** Gets a content that may be read from when reading from this set. */
+  Content getAReadContent() {
+    this = TOneContent(result)
+    or
+    this = TAllContent() and exists(result)
+  }
+
+  /** Gets a textual representation of this content set. */
+  string toString() {
+    result = this.asOneContent().toString()
+    or
+    this = TAllContent() and result = "all content"
+  }
+
+  /**
+   * Gets the location of this content set, if it contains only one `Content`.
+   */
+  Location getLocation() { result = this.asOneContent().getLocation() }
+
+  /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  deprecated predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    not exists(this.getLocation()) and
+    filepath = "" and
+    startline = 0 and
+    startcolumn = 0 and
+    endline = 0 and
+    endcolumn = 0
+  }
+
+  /**
+   * If this is a singleton content set, returns the content.
+   */
+  Content asOneContent() { this = TOneContent(result) }
+
+  /**
+   * Holds if this is a universal content set.
+   */
+  predicate isUniversalContent() { this = TAllContent() }
+}
+
+/**
+ * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+ * the argument `x`.
+ */
+signature predicate guardChecksSig(Node g, Expr e, boolean branch);
+
+bindingset[this]
+private signature class ParamSig;
+
+private module WithParam<ParamSig P> {
+  /**
+   * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+   *
+   * The expression `e` is expected to be a syntactic part of the guard `g`.
+   * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+   * the argument `x`.
+   */
+  signature predicate guardChecksSig(Node g, Expr e, boolean branch, P param);
+}
+
+/**
+ * Holds if the guard `g` validates the expression `e` upon evaluating to `value`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ */
+signature predicate valueGuardChecksSig(Guard g, Expr e, GuardValue value);
+
+bindingset[this]
+private signature class ValueParamSig;
+
+private module WithValueParam<ValueParamSig P> {
+  /**
+   * Holds if the guard `g` validates the expression `e` upon evaluating to `value`.
+   *
+   * The expression `e` is expected to be a syntactic part of the guard `g`.
+   */
+  signature predicate guardChecksSig(Guard g, Expr e, GuardValue value, P param);
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ */
+module BarrierGuardValue<valueGuardChecksSig/3 guardChecks> {
+  private predicate guardChecksWithParam(Guard g, Expr e, GuardValue value, Unit param) {
+    guardChecks(g, e, value) and exists(param)
+  }
+
+  private module B = ParameterizedBarrierGuardValue<Unit, guardChecksWithParam/4>;
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode() { result = B::getABarrierNode(_) }
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuard<guardChecksSig/3 guardChecks> {
+  private predicate guardChecksValue(Guard g, Expr e, GuardValue value) {
+    guardChecks(DataFlow::exprNode(g), e, value.asBooleanValue())
+  }
+
+  private module B = BarrierGuardValue<guardChecksValue/3>;
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode() { result = B::getABarrierNode() }
+
+  /**
+   * Gets a node that is safely guarded by the given guard check.
+   */
+  Node getABarrierNodeForGuard(Node guardCheck) {
+    result =
+      ParameterizedBarrierGuard<Unit, guardChecksWithParam/4>::getABarrierNodeForGuard(guardCheck, _)
+  }
+
+  private predicate guardChecksWithParam(Node g, Expr e, boolean branch, Unit param) {
+    guardChecks(g, e, branch) and exists(param)
+  }
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module ParameterizedBarrierGuardValue<
+  ValueParamSig P, WithValueParam<P>::guardChecksSig/4 guardChecks>
+{
+  private module WrappedGuardChecks = ParameterizedValidationWrapper<P, guardChecks/4>;
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode(P param) {
+    exists(Guard guard, GuardValue value, SsaWithFields var |
+      result = pragma[only_bind_out](var).getAUse()
+    |
+      guards(_, guard, value, _, var, param) and
+      pragma[only_bind_out](guard).valueControls(result.getBasicBlock(), value)
+    )
+  }
+
+  /**
+   * Gets a node that is safely guarded by the given guard check.
+   */
+  Node getABarrierNodeForGuard(Node guardCheck, P param) {
+    exists(Guard guard, GuardValue value, SsaWithFields var | result = var.getAUse() |
+      guards(guardCheck, guard, value, _, var, param) and
+      guard.valueControls(result.getBasicBlock(), value)
+    )
+  }
+
+  /**
+   * Holds if `guard` evaluating to `value` marks a point in the control-flow
+   * graph where `g` is known to validate `nd`, which is represented by `ap`.
+   * `param` is the caller-supplied parameter associated with that validation.
+   *
+   * This predicate exists to enforce a good join order in `getAGuardedNode`.
+   */
+  pragma[noinline]
+  private predicate guards(Node g, Guard guard, GuardValue value, Node nd, SsaWithFields ap, P param) {
+    guards(g, guard, value, nd, param) and nd = ap.getAUse()
+  }
+
+  /**
+   * Holds if `guard` evaluating to `value` marks a point in the control-flow
+   * graph where `g` is known to validate `nd`. `param` is the caller-supplied
+   * parameter associated with that validation.
+   */
+  private predicate guards(Node g, Guard guard, GuardValue value, Node nd, P param) {
+    WrappedGuardChecks::guardChecks(guard, nd.asExpr(), value, param) and
+    g = DataFlow::exprNode(guard)
+  }
+}
+
+/**
+ * Provides a set of barrier nodes for a Boolean guard that validates an expression.
+ */
+module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+  private predicate guardChecksValue(Guard g, Expr e, GuardValue value, P param) {
+    guardChecks(DataFlow::exprNode(g), e, value.asBooleanValue(), param)
+  }
+
+  private module B = ParameterizedBarrierGuardValue<P, guardChecksValue/4>;
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode(P param) { result = B::getABarrierNode(param) }
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNodeForGuard(Node guardCheck, P param) {
+    result = B::getABarrierNodeForGuard(guardCheck, param)
+  }
+}
+
+DataFlow::Node getUniqueOutputNode(FuncDecl fd, FunctionOutput outp) {
+  result = unique(DataFlow::Node n | n = outp.getEntryNode(fd) | n)
+}
+
+/**
+ * Holds if `ret` is a data-flow node whose value contributes to the output `res` of `fd`,
+ * and that node may have Boolean value `b`.
+ */
+predicate possiblyReturnsBool(FuncDecl fd, FunctionOutput res, Node ret, Boolean b) {
+  ret = res.getEntryNode(fd) and
+  ret.getType().getUnderlyingType() instanceof BoolType and
+  not ret.getBoolValue() != b
+}
+
+/**
+ * Holds if `ret` is a data-flow node whose value contributes to the output `res` of `fd`,
+ * and that node may evaluate to a value other than `nil`.
+ */
+predicate possiblyReturnsNonNil(FuncDecl fd, FunctionOutput res, Node ret) {
+  ret = res.getEntryNode(fd) and
+  not exprRefersToNil(ret.asExpr())
+}
+
+/**
+ * Holds if function `f`'s result `output`, which must be a return value, cannot be nil.
+ */
+predicate certainlyReturnsNonNil(Function f, FunctionOutput output) {
+  output.isResult(_) and
+  (
+    f.hasQualifiedName("errors", "New")
+    or
+    f.hasQualifiedName("fmt", "Errorf")
+    or
+    f in [Builtin::new(), Builtin::make()]
+    or
+    exists(FuncDecl fd | fd = f.getFuncDecl() |
+      forex(DataFlow::Node ret | ret = output.getEntryNode(fd) | isCertainlyNotNil(ret))
+    )
+  )
+}
+
+/**
+ * Holds if `node` cannot be `nil`.
+ */
+predicate isCertainlyNotNil(DataFlow::Node node) {
+  node instanceof DataFlow::AddressOperationNode
+  or
+  exists(DataFlow::CallNode c, FunctionOutput output | output.getExitNode(c) = node |
+    certainlyReturnsNonNil(c.getTarget(), output)
+  )
+}

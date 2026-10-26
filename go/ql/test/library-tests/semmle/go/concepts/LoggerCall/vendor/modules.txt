@@ -1,0 +1,9 @@
+# github.com/golang/glog v1.2.5
+## explicit
+github.com/golang/glog
+# github.com/sirupsen/logrus v1.7.0
+## explicit
+github.com/sirupsen/logrus
+# k8s.io/klog v1.0.0
+## explicit
+k8s.io/klog

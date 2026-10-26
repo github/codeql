@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["risc0/risc0", "*", "input.key", "code-injection", "generated"]
+     - ["risc0/risc0", "*", "input.components", "code-injection", "generated"]
+     - ["risc0/risc0", "*", "input.targets", "code-injection", "generated"]
+     - ["risc0/risc0", "*", "input.toolchain", "code-injection", "generated"]

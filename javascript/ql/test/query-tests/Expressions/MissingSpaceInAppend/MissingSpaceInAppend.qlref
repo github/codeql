@@ -1,0 +1,2 @@
+query: Expressions/MissingSpaceInAppend.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,68 @@
+enum Suit {
+  case clubs, diamonds, hearts, spades
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        enumDecl
+          attributes:
+          name: identifier "Suit"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "clubs"
+                          trailingComma: ,
+                        enumCaseElement
+                          name: identifier "diamonds"
+                          trailingComma: ,
+                        enumCaseElement
+                          name: identifier "hearts"
+                          trailingComma: ,
+                        enumCaseElement
+                          name: identifier "spades"
+                      caseKeyword: case
+          modifiers:
+          enumKeyword: enum
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  case ⟨member⟩, ⟨member⟩, ⟨member⟩, ⟨member⟩\n}"
+          modifier: modifier "enum" source="enum"
+          name_node: identifier "Suit" source="Suit"
+          member:
+            variable_declaration source="⟨pattern⟩"
+              modifier: modifier "enum_case" source=""
+              pattern: identifier "clubs" source="clubs"
+            variable_declaration source="⟨pattern⟩"
+              modifier:
+                modifier "chained_declaration" source=""
+                modifier "enum_case" source=""
+              pattern: identifier "diamonds" source="diamonds"
+            variable_declaration source="⟨pattern⟩"
+              modifier:
+                modifier "chained_declaration" source=""
+                modifier "enum_case" source=""
+              pattern: identifier "hearts" source="hearts"
+            variable_declaration source="⟨pattern⟩"
+              modifier:
+                modifier "chained_declaration" source=""
+                modifier "enum_case" source=""
+              pattern: identifier "spades" source="spades"

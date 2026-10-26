@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>Constructing URLs with the HTTP protocol can lead to unsecured connections.</p>
+
+</overview>
+<recommendation>
+
+<p>When you construct a URL, ensure that you use an HTTPS URL rather than an HTTP URL. Then, any connections that are made using that URL are secure SSL connections.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows two ways of opening a connection using a URL. When the connection is 
+opened using an HTTP URL rather than an HTTPS URL, the connection is unsecured. When the connection is opened using an HTTPS URL, the connection is a secure SSL connection.</p>
+
+<sample src="UseOfHttp.cpp" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html">Transport Layer Protection Cheat Sheet</a>.
+</li>
+<li>
+OWASP Top 10:
+<a href="https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/">A08:2021 - Software and Data Integrity Failures</a>.
+</li>
+
+</references>
+</qhelp>

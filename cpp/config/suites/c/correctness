@@ -1,0 +1,46 @@
+# CORRECTNESS
+  # Dangerous Conversions
++ semmlecode-cpp-queries/Likely Bugs/Conversion/LossyPointerCast.ql: /Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Best Practices/Likely Errors/Slicing.ql: /Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/BadCheckOdd.ql: /Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/IntMultToLong.ql: /Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Likely Bugs/Conversion/NonzeroValueCastToPointer.ql: /Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Likely Bugs/Conversion/ImplicitDowncastFromBitfield.ql: /Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Likely Bugs/Underspecified Functions/MistypedFunctionArguments.ql: /Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Security/CWE/CWE-253/HResultBooleanConversion.ql: /Correctness/Dangerous Conversions
+  # Consistent Use
++ semmlecode-cpp-queries/Critical/ReturnValueIgnored.ql: /Correctness/Consistent Use
++ semmlecode-cpp-queries/Likely Bugs/InconsistentCheckReturnNull.ql: /Correctness/Consistent Use
++ semmlecode-cpp-queries/Likely Bugs/InconsistentCallOnResult.ql: /Correctness/Consistent Use
+  # Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/AssignWhereCompareMeant.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/CompareWhereAssignMeant.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/ExprHasNoEffect.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Underspecified Functions/TooFewArguments.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Underspecified Functions/TooManyArguments.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Underspecified Functions/ImplicitFunctionDeclaration.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/ShortCircuitBitMask.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/MissingEnumCaseInSwitch.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/FloatComparison.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/BitwiseSignCheck.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/BadAdditionOverflowCheck.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/SignedOverflowCheck.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/PointerOverflow.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/NestedLoopSameVar.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/UseInOwnInitializer.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Critical/NewArrayDeleteMismatch.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Critical/NewDeleteArrayMismatch.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Critical/NewFreeMismatch.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/UsingExpiredStackAddress.ql: /Correctness/Common Errors
+  # Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/SuspiciousCallToMemset.ql: /Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/SuspiciousSizeof.ql: /Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/UnsafeUseOfStrcat.ql: /Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/SuspiciousCallToStrncat.ql: /Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/StrncpyFlippedArgs.ql: /Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Format/WrongNumberOfFormatArguments.ql: /Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Format/TooManyFormatArguments.ql: /Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Format/WrongTypeFormatArguments.ql: /Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Format/NonConstantFormat.ql: /Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Format/SnprintfOverflow.ql: /Correctness/Use of Libraries
++ semmlecode-cpp-queries/jsf/4.21 Operators/AV Rule 166.ql: /Correctness/Use of Libraries # Sizeof with side effects

@@ -1,0 +1,67 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+In Java all of the primitive types have boxed counterparts.  The boxed types
+are objects and can therefore be <code>null</code>, whereas the primitive types
+can never be <code>null</code>.  The names of the primitive and boxed types are
+similar except that primitive types start with a lower-case letter and boxed
+types start with an upper-case letter (also, for <code>char</code> and
+<code>int</code> the names of the boxed types are slightly longer, namely
+<code>Character</code> and <code>Integer</code>).
+</p>
+<p>
+Because the names are so similar and because Java performs automatic
+boxing and unboxing conversions, they can easily be confused.  Furthermore, using
+a boxed type where a primitive type was intended leads to both
+readability issues and potentially superfluous allocation of objects.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If a variable is never assigned <code>null</code> it should use the primitive
+type, as this both directly shows the impossibility of <code>null</code> and
+also avoids unnecessary boxing and unboxing conversions.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In the example below the variable <code>done</code> controls the loop exit.  It
+is only set to <code>false</code> before the loop entry and set to
+<code>true</code> at some point during the loop iteration.
+</p>
+
+<sample src="BoxedVariableBad.java" />
+
+<p>
+Each of the assignments to <code>done</code> involves a boxing conversion and
+the check involves an unboxing conversion. Since <code>done</code> is never
+<code>null</code>, these conversions can be completely avoided, and the code
+made clearer, by using the primitive type instead.  Therefore the code should
+be rewritten in the following way:
+</p>
+
+<sample src="BoxedVariableGood.java" />
+</example>
+
+<references>
+
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-5.html#jls-5.1.7">Boxing Conversion</a>,
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-5.html#jls-5.1.8">Unboxing Conversion</a>.
+</li>
+<li>
+The Java Tutorials:
+<a href="https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html">Autoboxing and Unboxing</a>.
+</li>
+
+</references>
+
+</qhelp>

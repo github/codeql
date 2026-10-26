@@ -1,0 +1,1 @@
+// semmle-extractor-options: --javac-args -cp ${testdir}/../../../../../stubs/google-android-9.0.0:${testdir}/../../../../../stubs/okhttp-4.9.3

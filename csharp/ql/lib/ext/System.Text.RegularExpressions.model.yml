@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Text.RegularExpressions", "CaptureCollection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.Text.RegularExpressions", "GroupCollection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.Text.RegularExpressions", "GroupCollection", False, "get_Item", "(System.String)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.Text.RegularExpressions", "MatchCollection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]

@@ -1,0 +1,68 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Accessing files using paths constructed from user-controlled data can allow an attacker to access
+unexpected resources. This can result in sensitive information being revealed or deleted, or an
+attacker being able to influence behavior by modifying unexpected files.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Validate paths constructed from untrusted user input before using them to access files.
+</p>
+
+<p>
+The choice of validation depends on the use case.
+</p>
+
+<p>
+If you want to allow paths spanning multiple folders, a common strategy is to make sure that the constructed
+file path is contained within a safe root folder. First, normalize the path using <code>os.path.normpath</code> or
+<code>os.path.realpath</code> (make sure to use the latter if symlinks are a consideration)
+to remove any internal ".." segments and/or follow links. Then check that the normalized path starts with the
+root folder. Note that the normalization step is important, since otherwise even a path that starts with the root
+folder could be used to access files outside the root folder.
+</p>
+
+<p>
+More restrictive options include using a library function like <code>werkzeug.utils.secure_filename</code> to eliminate
+any special characters from the file path, or restricting the path to a known list of safe paths. These options are
+safe, but can only be used in particular circumstances.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the first example, a file name is read from an HTTP request and then used to access a file.
+However, a malicious user could enter a file name that is an absolute path, such as
+<code>"/etc/passwd"</code>.
+</p>
+
+<p>
+In the second example, it appears that the user is restricted to opening a file within the
+<code>"user"</code> home directory. However, a malicious user could enter a file name containing
+special characters. For example, the string <code>"../../../etc/passwd"</code> will result in the code
+reading the file located at <code>"/server/static/images/../../../etc/passwd"</code>, which is the system's
+password file. This file would then be sent back to the user, giving them access to all the
+system's passwords. Note that a user could also use an absolute path here, since the result of
+<code>os.path.join("/server/static/images/", "/etc/passwd")</code> is <code>"/etc/passwd"</code>.
+</p>
+
+<p>
+In the third example, the path used to access the file system is normalized <em>before</em> being checked against a
+known prefix. This ensures that regardless of the user input, the resulting path is safe.
+</p>
+
+<sample src="examples/tainted_path.py" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.</li>
+<li>npm: <a href="http://werkzeug.pocoo.org/docs/utils/#werkzeug.utils.secure_filename">werkzeug.utils.secure_filename</a>.</li>
+</references>
+</qhelp>

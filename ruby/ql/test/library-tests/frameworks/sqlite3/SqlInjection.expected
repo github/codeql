@@ -1,0 +1,12 @@
+#select
+| sqlite3.rb:29:16:29:67 | "select * from table where cat..." | sqlite3.rb:25:16:25:21 | call to params | sqlite3.rb:29:16:29:67 | "select * from table where cat..." | This SQL query depends on a $@. | sqlite3.rb:25:16:25:21 | call to params | user-provided value |
+edges
+| sqlite3.rb:25:5:25:12 | category | sqlite3.rb:29:16:29:67 | "select * from table where cat..." | provenance | AdditionalTaintStep |
+| sqlite3.rb:25:16:25:21 | call to params | sqlite3.rb:25:16:25:32 | ...[...] | provenance |  |
+| sqlite3.rb:25:16:25:32 | ...[...] | sqlite3.rb:25:5:25:12 | category | provenance |  |
+nodes
+| sqlite3.rb:25:5:25:12 | category | semmle.label | category |
+| sqlite3.rb:25:16:25:21 | call to params | semmle.label | call to params |
+| sqlite3.rb:25:16:25:32 | ...[...] | semmle.label | ...[...] |
+| sqlite3.rb:29:16:29:67 | "select * from table where cat..." | semmle.label | "select * from table where cat..." |
+subpaths

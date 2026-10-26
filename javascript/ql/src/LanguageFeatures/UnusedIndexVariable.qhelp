@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If the loop variable of a <code>for</code> loop ranges over the indices of an array, that variable
+would normally be used as an array index in the body of the loop. If, instead, the loop body only
+refers to array elements at constant indices, this may indicate a logic error or leftover testing
+code.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Examine the loop carefully to ensure it is behaving as expected. You may want to consider using
+a <code>for</code>-<code>of</code> loop to iterate over all elements of an array without the need
+for error-prone index manipulations.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a function that is intended to sum up the elements of an array
+<code>xs</code>. The loop variable <code>i</code> is counted up from zero to
+<code>xs.length-1</code>, but instead of adding <code>xs[i]</code> to the running sum
+<code>res</code>, the code adds <code>xs[0]</code>, the first element of <code>xs</code>,
+to it, which is likely a mistake:
+</p>
+<sample src="examples/UnusedIndexVariable.js"/>
+<p>
+The problem can be fixed by adding <code>xs[i]</code> instead:
+</p>
+<sample src="examples/UnusedIndexVariableGood.js"/>
+<p>
+Alternatively, the function can be written more succinctly using a <code>for</code>-<code>of</code>
+loop:
+</p>
+<sample src="examples/UnusedIndexVariableGood2.js"/>
+</example>
+
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for">for</a></li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of">for...of</a></li>
+</references>
+</qhelp>

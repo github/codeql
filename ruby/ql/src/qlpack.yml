@@ -1,0 +1,12 @@
+name: codeql/ruby-queries
+version: 1.6.14-dev
+groups:
+  - ruby
+  - queries
+suites: codeql-suites
+defaultSuiteFile: codeql-suites/ruby-code-scanning.qls
+dependencies:
+  codeql/ruby-all: ${workspace}
+  codeql/suite-helpers: ${workspace}
+  codeql/util: ${workspace}
+warnOnImplicitThis: true

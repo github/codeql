@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["solidusio/solidus", "*", "input.last_minor", "code-injection", "generated"]
+     - ["solidusio/solidus", "*", "input.labels", "code-injection", "generated"]
+     - ["solidusio/solidus", "*", "input.base", "code-injection", "generated"]
+     - ["solidusio/solidus", "*", "input.message", "code-injection", "generated"]

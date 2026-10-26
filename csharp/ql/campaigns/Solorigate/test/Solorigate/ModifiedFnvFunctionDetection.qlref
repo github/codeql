@@ -1,0 +1,2 @@
+query: ModifiedFnvFunctionDetection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

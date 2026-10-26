@@ -1,0 +1,102 @@
+
+// --- tests ---
+
+fn encrypt_with(plaintext: &str, key: &[u8;16], iv: &[u8;16]) {
+    // ...
+}
+
+fn encrypt2(plaintext: &str, crypto_key: &[u8;16], iv_bytes: &[u8;16]) {
+    // ...
+}
+
+fn database_op(text: &str, primary_key: &str, pivot: &str) {
+    // note: this one has nothing to do with encryption, but has
+    // `key` and `iv` contained within the parameter names.
+}
+
+struct MyCryptor {
+}
+
+impl MyCryptor {
+    fn new(password: &str) -> MyCryptor {
+        MyCryptor { }
+    }
+
+    fn set_nonce(&self, nonce: &[u8;16]) {
+        // ...
+    }
+
+    fn encrypt(&self, plaintext: &str, salt: &[u8;16]) {
+        // ...
+    }
+
+    fn set_salt_u64(&self, salt: u64) {
+        // ...
+    }
+}
+
+const MY_CONST_1: u64 = 0xFFFF; // $ Alert[rust/hard-coded-cryptographic-value]
+const MY_CONST_2: u64 = std::env::consts::ARCH.len() as u64; // $ Alert[rust/hard-coded-cryptographic-value]
+static MY_STATIC_3: u64 = 0xFFFF; // $ Alert[rust/hard-coded-cryptographic-value]
+static MY_STATIC_4: u64 = std::env::consts::ARCH.len() as u64;
+
+fn test(var_string: &str, var_data: &[u8;16], var_u64: u64) {
+    encrypt_with("plaintext", var_data, var_data);
+
+    let const_key: &[u8;16] = &[0u8;16]; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    encrypt_with("plaintext", const_key, var_data); // $ MISSING: Sink
+
+    let const_iv: &[u8;16] = &[0u8;16]; // $ Alert[rust/hard-coded-cryptographic-value]
+    encrypt_with("plaintext", var_data, const_iv); // $ Sink
+
+    encrypt2("plaintext", var_data, var_data);
+
+    let const_key2: &[u8;16] = &[1u8;16]; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    encrypt2("plaintext", const_key2, var_data); // $ MISSING: Sink
+
+    let const_iv: &[u8;16] = &[1u8;16]; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    encrypt2("plaintext", var_data, const_iv); // $ MISSING: Sink
+
+    let const_key_str = "primary_key";
+    let const_pivot_str = "pivot";
+    database_op("text", const_key_str, const_pivot_str);
+
+    let mc1 = MyCryptor::new(var_string);
+    mc1.set_nonce(var_data);
+    mc1.encrypt("plaintext", var_data);
+
+    let mc2 = MyCryptor::new("secret"); // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_nonce(&[0u8;16]); // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.encrypt("plaintext", &[0u8;16]); // $ Alert[rust/hard-coded-cryptographic-value]
+
+    mc2.set_salt_u64(0); // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(var_u64);
+    mc2.set_salt_u64(var_u64 + 1);
+    mc2.set_salt_u64((var_u64 << 32) ^ (var_u64  & 0xFFFFFFFF));
+    mc2.set_salt_u64(1 << 4); // $ Alert[rust/hard-coded-cryptographic-value]
+
+    mc2.set_salt_u64(u64::MAX); // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(u64::MAX / 4); // $ Alert[rust/hard-coded-cryptographic-value]
+
+    mc2.set_salt_u64(MY_CONST_1); // $ Sink[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_CONST_2); // $ Sink[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_STATIC_3); // $ Sink[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_STATIC_4);
+
+    const MY_CONST_5: u64 = 1u64; // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_CONST_5); // $ Sink[rust/hard-coded-cryptographic-value]
+    const MY_CONST_6: u64 = 2 + 3; // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_CONST_6); // $ Sink[rust/hard-coded-cryptographic-value]
+
+    let mut key1 = "foo".to_string(); // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    key1 += "bar"; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    let _ = MyCryptor::new(&key1);
+
+    let mut key2 = "foo".to_string();
+    key2 += var_string;
+    let _ = MyCryptor::new(&key2);
+
+    let mut key3 = var_string.to_string();
+    key3 += "bar";
+    let _ = MyCryptor::new(&key3);
+}

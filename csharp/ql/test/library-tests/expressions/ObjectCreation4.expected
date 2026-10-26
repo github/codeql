@@ -1,0 +1,2 @@
+| expressions.cs:388:23:388:48 | object creation of type Point | expressions.cs:388:33:388:48 | { ..., ... } | expressions.cs:388:35:388:39 | ... = ... | expressions.cs:388:42:388:46 | ... = ... |
+| expressions.cs:391:22:391:49 | object creation of type Point | expressions.cs:391:34:391:49 | { ..., ... } | expressions.cs:391:36:391:40 | ... = ... | expressions.cs:391:43:391:47 | ... = ... |

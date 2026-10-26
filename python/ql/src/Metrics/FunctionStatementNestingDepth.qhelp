@@ -1,0 +1,78 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A method that contains a high level of nesting can be very difficult to understand. As noted in 
+[McConnell], the human brain cannot easily handle more than three levels of nested <code>if</code>
+statements.</p>
+
+</overview>
+<recommendation>
+
+<p>
+Extract the control flow into a separate generator and use that to control iteration.</p>
+
+<p>
+Use early exits to move nested statements out of conditions. For example:
+<code>
+def func(x):
+    if x:
+        long_complex_block()
+</code>
+can be replaced by
+<code>
+def func(x):
+    if x:
+        return    
+    long_complex_block()
+</code>
+</p>
+
+<p>
+Extract nested statements into new functions, for example by using the 'Extract Method' refactoring
+from [Fowler].</p>
+
+<p>
+For more ways to reduce the level of nesting in a method, see [McConnell].
+</p>
+
+<p>
+Furthermore, a method that has a high level of nesting often indicates that its design can be 
+improved in other ways, as well as dealing with the nesting problem itself.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the code has four levels of nesting and is unnecessarily difficult to read.
+</p>
+
+<sample src="FunctionStatementNestingDepth.py" />
+
+<p>
+In the following modified example, three different approaches to reducing the nesting depth are shown.
+The first, <code>print_character_codes_early_exit</code>, uses early exits, either <code>return</code>
+or <code>continue</code>.
+The second, <code>print_character_codes_use_gen</code>, extracts the control flow into a generator.
+The third, <code>print_character_codes_extracted</code>, uses a separate function for the inner loop.
+</p>
+
+<sample src="FunctionStatementNestingDepthGood.py" />
+
+</example>
+<references>
+
+
+<li>
+M. Fowler, <em>Refactoring</em>, pp. 89-95. Addison-Wesley, 1999.
+</li>
+<li>
+S. McConnell, <em>Code Complete</em>, 2nd Edition, &sect;19.4. Microsoft Press, 2004.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,73 @@
+edges
+| tests.py:1:35:1:41 | ControlFlowNode for ImportMember | tests.py:1:35:1:41 | ControlFlowNode for request | provenance |  |
+| tests.py:1:35:1:41 | ControlFlowNode for request | tests.py:12:17:12:23 | ControlFlowNode for request | provenance |  |
+| tests.py:1:35:1:41 | ControlFlowNode for request | tests.py:24:9:24:15 | ControlFlowNode for request | provenance |  |
+| tests.py:1:35:1:41 | ControlFlowNode for request | tests.py:36:9:36:15 | ControlFlowNode for request | provenance |  |
+| tests.py:1:35:1:41 | ControlFlowNode for request | tests.py:48:9:48:15 | ControlFlowNode for request | provenance |  |
+| tests.py:1:35:1:41 | ControlFlowNode for request | tests.py:60:9:60:15 | ControlFlowNode for request | provenance |  |
+| tests.py:1:35:1:41 | ControlFlowNode for request | tests.py:72:9:72:15 | ControlFlowNode for request | provenance |  |
+| tests.py:12:5:12:13 | ControlFlowNode for file_path | tests.py:16:39:16:47 | ControlFlowNode for file_path | provenance |  |
+| tests.py:12:17:12:23 | ControlFlowNode for request | tests.py:12:17:12:28 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| tests.py:12:17:12:28 | ControlFlowNode for Attribute | tests.py:12:17:12:49 | ControlFlowNode for Attribute() | provenance | dict.get |
+| tests.py:12:17:12:49 | ControlFlowNode for Attribute() | tests.py:12:5:12:13 | ControlFlowNode for file_path | provenance |  |
+| tests.py:24:5:24:5 | ControlFlowNode for r | tests.py:28:43:28:43 | ControlFlowNode for r | provenance |  |
+| tests.py:24:9:24:15 | ControlFlowNode for request | tests.py:24:9:24:20 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| tests.py:24:9:24:20 | ControlFlowNode for Attribute | tests.py:24:9:24:33 | ControlFlowNode for Attribute() | provenance | dict.get |
+| tests.py:24:9:24:33 | ControlFlowNode for Attribute() | tests.py:24:5:24:5 | ControlFlowNode for r | provenance |  |
+| tests.py:36:5:36:5 | ControlFlowNode for r | tests.py:40:43:40:43 | ControlFlowNode for r | provenance |  |
+| tests.py:36:9:36:15 | ControlFlowNode for request | tests.py:36:9:36:20 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| tests.py:36:9:36:20 | ControlFlowNode for Attribute | tests.py:36:9:36:33 | ControlFlowNode for Attribute() | provenance | dict.get |
+| tests.py:36:9:36:33 | ControlFlowNode for Attribute() | tests.py:36:5:36:5 | ControlFlowNode for r | provenance |  |
+| tests.py:48:5:48:5 | ControlFlowNode for r | tests.py:52:43:52:43 | ControlFlowNode for r | provenance |  |
+| tests.py:48:9:48:15 | ControlFlowNode for request | tests.py:48:9:48:20 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| tests.py:48:9:48:20 | ControlFlowNode for Attribute | tests.py:48:9:48:33 | ControlFlowNode for Attribute() | provenance | dict.get |
+| tests.py:48:9:48:33 | ControlFlowNode for Attribute() | tests.py:48:5:48:5 | ControlFlowNode for r | provenance |  |
+| tests.py:60:5:60:5 | ControlFlowNode for r | tests.py:64:43:64:43 | ControlFlowNode for r | provenance |  |
+| tests.py:60:9:60:15 | ControlFlowNode for request | tests.py:60:9:60:20 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| tests.py:60:9:60:20 | ControlFlowNode for Attribute | tests.py:60:9:60:33 | ControlFlowNode for Attribute() | provenance | dict.get |
+| tests.py:60:9:60:33 | ControlFlowNode for Attribute() | tests.py:60:5:60:5 | ControlFlowNode for r | provenance |  |
+| tests.py:72:5:72:5 | ControlFlowNode for r | tests.py:76:43:76:43 | ControlFlowNode for r | provenance |  |
+| tests.py:72:9:72:15 | ControlFlowNode for request | tests.py:72:9:72:20 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| tests.py:72:9:72:20 | ControlFlowNode for Attribute | tests.py:72:9:72:33 | ControlFlowNode for Attribute() | provenance | dict.get |
+| tests.py:72:9:72:33 | ControlFlowNode for Attribute() | tests.py:72:5:72:5 | ControlFlowNode for r | provenance |  |
+nodes
+| tests.py:1:35:1:41 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| tests.py:1:35:1:41 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| tests.py:12:5:12:13 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| tests.py:12:17:12:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| tests.py:12:17:12:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| tests.py:12:17:12:49 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| tests.py:16:39:16:47 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| tests.py:24:5:24:5 | ControlFlowNode for r | semmle.label | ControlFlowNode for r |
+| tests.py:24:9:24:15 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| tests.py:24:9:24:20 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| tests.py:24:9:24:33 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| tests.py:28:43:28:43 | ControlFlowNode for r | semmle.label | ControlFlowNode for r |
+| tests.py:36:5:36:5 | ControlFlowNode for r | semmle.label | ControlFlowNode for r |
+| tests.py:36:9:36:15 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| tests.py:36:9:36:20 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| tests.py:36:9:36:33 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| tests.py:40:43:40:43 | ControlFlowNode for r | semmle.label | ControlFlowNode for r |
+| tests.py:48:5:48:5 | ControlFlowNode for r | semmle.label | ControlFlowNode for r |
+| tests.py:48:9:48:15 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| tests.py:48:9:48:20 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| tests.py:48:9:48:33 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| tests.py:52:43:52:43 | ControlFlowNode for r | semmle.label | ControlFlowNode for r |
+| tests.py:60:5:60:5 | ControlFlowNode for r | semmle.label | ControlFlowNode for r |
+| tests.py:60:9:60:15 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| tests.py:60:9:60:20 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| tests.py:60:9:60:33 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| tests.py:64:43:64:43 | ControlFlowNode for r | semmle.label | ControlFlowNode for r |
+| tests.py:72:5:72:5 | ControlFlowNode for r | semmle.label | ControlFlowNode for r |
+| tests.py:72:9:72:15 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| tests.py:72:9:72:20 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| tests.py:72:9:72:33 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| tests.py:76:43:76:43 | ControlFlowNode for r | semmle.label | ControlFlowNode for r |
+subpaths
+#select
+| tests.py:16:39:16:47 | ControlFlowNode for file_path | tests.py:1:35:1:41 | ControlFlowNode for ImportMember | tests.py:16:39:16:47 | ControlFlowNode for file_path | This $@ can reach a $@. | tests.py:1:35:1:41 | ControlFlowNode for ImportMember | user-provided value | tests.py:16:39:16:47 | ControlFlowNode for file_path | costly Unicode normalization operation |
+| tests.py:28:43:28:43 | ControlFlowNode for r | tests.py:1:35:1:41 | ControlFlowNode for ImportMember | tests.py:28:43:28:43 | ControlFlowNode for r | This $@ can reach a $@. | tests.py:1:35:1:41 | ControlFlowNode for ImportMember | user-provided value | tests.py:28:43:28:43 | ControlFlowNode for r | costly Unicode normalization operation |
+| tests.py:40:43:40:43 | ControlFlowNode for r | tests.py:1:35:1:41 | ControlFlowNode for ImportMember | tests.py:40:43:40:43 | ControlFlowNode for r | This $@ can reach a $@. | tests.py:1:35:1:41 | ControlFlowNode for ImportMember | user-provided value | tests.py:40:43:40:43 | ControlFlowNode for r | costly Unicode normalization operation |
+| tests.py:52:43:52:43 | ControlFlowNode for r | tests.py:1:35:1:41 | ControlFlowNode for ImportMember | tests.py:52:43:52:43 | ControlFlowNode for r | This $@ can reach a $@. | tests.py:1:35:1:41 | ControlFlowNode for ImportMember | user-provided value | tests.py:52:43:52:43 | ControlFlowNode for r | costly Unicode normalization operation |
+| tests.py:64:43:64:43 | ControlFlowNode for r | tests.py:1:35:1:41 | ControlFlowNode for ImportMember | tests.py:64:43:64:43 | ControlFlowNode for r | This $@ can reach a $@. | tests.py:1:35:1:41 | ControlFlowNode for ImportMember | user-provided value | tests.py:64:43:64:43 | ControlFlowNode for r | costly Unicode normalization operation |
+| tests.py:76:43:76:43 | ControlFlowNode for r | tests.py:1:35:1:41 | ControlFlowNode for ImportMember | tests.py:76:43:76:43 | ControlFlowNode for r | This $@ can reach a $@. | tests.py:1:35:1:41 | ControlFlowNode for ImportMember | user-provided value | tests.py:76:43:76:43 | ControlFlowNode for r | costly Unicode normalization operation |

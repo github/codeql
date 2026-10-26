@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A non-existent attribute of <code>self</code> is accessed in a method.
+An attribute is treated as non-existent if it is not a class attribute
+and it is not set in any method of the class.
+This may result in an <code>AttributeError</code> at run time.
+
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that all attributes are initialized in the <code>__init__</code> method.</p>
+
+
+</recommendation>
+<example>
+<sample src="UndefinedClassAttribute.py" />
+
+
+</example>
+<references>
+
+<li>Python Standard Library: <a href="http://docs.python.org/library/exceptions.html#exceptions.AttributeError">exception AttributeError</a>.</li>
+
+
+</references>
+</qhelp>

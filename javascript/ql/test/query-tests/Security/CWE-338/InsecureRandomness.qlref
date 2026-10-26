@@ -1,0 +1,2 @@
+query: Security/CWE-338/InsecureRandomness.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

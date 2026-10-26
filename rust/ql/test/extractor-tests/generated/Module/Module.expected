@@ -1,0 +1,14 @@
+instances
+| gen_module.rs:3:1:4:8 | mod foo |
+| gen_module.rs:5:1:7:1 | mod bar |
+| lib.rs:1:1:1:19 | mod gen_module |
+getAttributeMacroExpansion
+getAttr
+getItemList
+| gen_module.rs:5:1:7:1 | mod bar | gen_module.rs:5:9:7:1 | ItemList |
+getName
+| gen_module.rs:3:1:4:8 | mod foo | gen_module.rs:4:5:4:7 | foo |
+| gen_module.rs:5:1:7:1 | mod bar | gen_module.rs:5:5:5:7 | bar |
+| lib.rs:1:1:1:19 | mod gen_module | lib.rs:1:9:1:18 | gen_module |
+getVisibility
+| lib.rs:1:1:1:19 | mod gen_module | lib.rs:1:1:1:3 | pub |

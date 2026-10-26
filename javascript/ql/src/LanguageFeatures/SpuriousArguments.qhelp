@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Function calls in JavaScript may pass an arbitrary number of arguments to the invoked function.
+If the invoked function declares fewer parameters than arguments were passed, the remaining arguments
+can only be accessed through the <code>arguments</code> object. Hence, if a function is passed too
+many arguments but does <i>not</i> use the <code>arguments</code> object, the remaining arguments are
+useless. Such calls often indicate incomplete refactorings, or may point to a misunderstanding of
+the functionality of the invoked function.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Remove the extra parameters if they are unnecessary. Otherwise, further investigation may be
+necessary to determine how to update the function call.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following code snippet defines a function <code>f</code> that does not declare any parameters and
+does not use the <code>arguments</code> object. The only call to <code>f</code> passes it a single
+argument <code>42</code>, which is not used by <code>f</code> in any way and thus can be removed.
+</p>
+
+<sample src="examples/SpuriousArguments.js" />
+
+</example>
+<references>
+
+
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Section 10. ECMA, 2011.</li>
+
+
+</references>
+</qhelp>

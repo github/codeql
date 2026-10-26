@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>Constructing URLs with the HTTP protocol can lead to insecure connections.</p>
+
+<p>Furthermore, constructing URLs with the HTTP protocol can create problems if other parts of the
+code expect HTTPS URLs. A typical pattern is to use libraries that expect secure connections,
+which may fail or fall back to insecure behavior when provided with HTTP URLs instead of HTTPS URLs.</p>
+
+</overview>
+<recommendation>
+
+<p>When you construct a URL for network requests, ensure that you use an HTTPS URL rather than an HTTP URL.
+Then, any connections that are made using that URL are secure TLS connections.</p>
+
+</recommendation>
+<example>
+
+<p>The following examples show two ways of making a network request using a URL. When the request is
+made using an HTTP URL rather than an HTTPS URL, the connection is unsecured and can be intercepted
+by attackers:</p>
+
+<sample src="UseOfHttpBad.rs" />
+
+<p>A better approach is to use HTTPS. When the request is made using an HTTPS URL, the connection
+is a secure TLS connection:</p>
+
+<sample src="UseOfHttpGood.rs" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html">Transport Layer Security Cheat Sheet</a>.
+</li>
+<li>
+OWASP Top 10:
+<a href="https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/">A08:2021 - Software and Data Integrity Failures</a>.
+</li>
+<li>Rust reqwest documentation:
+<a href="https://docs.rs/reqwest/">reqwest crate</a>.
+</li>
+
+</references>
+</qhelp>

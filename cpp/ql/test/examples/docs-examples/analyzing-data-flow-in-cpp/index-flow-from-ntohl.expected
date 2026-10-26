@@ -1,0 +1,2 @@
+| ntohl.cpp:10:20:10:28 | hostlong0 | This array offset may be influenced by $@. | ntohl.cpp:6:30:6:34 | call to ntohl | converted data from the network |
+| ntohl.cpp:17:24:17:24 | i | This array offset may be influenced by $@. | ntohl.cpp:8:30:8:34 | call to ntohl | converted data from the network |

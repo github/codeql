@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/go-chi/jwtauth", "", False, "New", "", "", "Argument[1]", "credentials-key", "manual"]

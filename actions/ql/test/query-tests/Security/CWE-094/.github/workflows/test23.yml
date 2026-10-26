@@ -1,0 +1,64 @@
+on:
+  workflow_run:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    if: >
+      (github.event.workflow_run.event == 'pull_request' ||
+      github.event.workflow_run.event == 'pull_request_target') &&
+      github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: 'Download artifact'
+        uses: actions/github-script@v3.1.0
+        with:
+          script: |
+            var artifacts = await github.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: ${{github.event.workflow_run.id }},
+            });
+            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "doc-build-artifact"
+            })[0];
+            var download = await github.actions.downloadArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: matchArtifact.id,
+              archive_format: 'zip',
+            });
+            var fs = require('fs');
+            fs.writeFileSync('${{steps.setup-env.outputs.current_work_dir}}/doc-build-artifact.zip', Buffer.from(download.data));
+
+      - run: |
+          mkdir build_dir
+          unzip doc-build-artifact.zip -d build_dir
+
+      - name: Get commit_sha & pr_number
+        id: github-context
+        run: |
+          content_commit_sha=$(cat ./build_dir/commit_sha)
+          if [[ $content_commit_sha =~ ^[0-9a-zA-Z]{40}$ ]]; then
+            echo "commit_sha=$content_commit_sha" >> $GITHUB_OUTPUT
+            rm -rf ./build_dir/commit_sha
+          else
+            echo "Encountered an invalid commit_sha"
+            exit 1
+          fi
+
+          content_pr_number=$(cat ./build_dir/pr_number)
+          if [[ $content_pr_number =~ ^[0-9]+$ ]]; then
+            echo "pr_number=$content_pr_number" >> $GITHUB_OUTPUT
+            rm -rf ./build_dir/pr_number
+          else
+            echo "Encountered an invalid pr_number"
+            exit 1
+          fi
+
+      - run: |
+          echo "hub_docs_url=pr_${{ steps.github-context.outputs.pr_number }}" >> $GITHUB_OUTPUT
+
+      - run: |
+          cd build_dir
+          doc-builder push --commit_msg "Updated with commit ${{ steps.github-context.outputs.commit_sha }} 

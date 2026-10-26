@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["elastic/apm-agent-java", "*", "input.tag", "code-injection", "generated"]
+     - ["elastic/apm-agent-java", "*", "input.path", "code-injection", "generated"]
+     - ["elastic/apm-agent-java", "*", "input.name", "code-injection", "generated"]
+     - ["elastic/apm-agent-java", "*", "input.test-java-version", "code-injection", "generated"]
+     - ["elastic/apm-agent-java", "*", "input.command", "code-injection", "generated"]

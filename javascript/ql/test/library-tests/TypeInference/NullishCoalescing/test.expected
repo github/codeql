@@ -1,0 +1,19 @@
+| v1 | file://:0:0:0:0 | true |
+| v2 | file://:0:0:0:0 | false |
+| v2 | file://:0:0:0:0 | undefined |
+| v4 | file://:0:0:0:0 | false |
+| v4 | file://:0:0:0:0 | true |
+| v4 | file://:0:0:0:0 | undefined |
+| v5 | file://:0:0:0:0 | false |
+| v5 | file://:0:0:0:0 | true |
+| v5 | file://:0:0:0:0 | undefined |
+| v6 | file://:0:0:0:0 | false |
+| v6 | file://:0:0:0:0 | true |
+| v6 | file://:0:0:0:0 | undefined |
+| v7 | file://:0:0:0:0 | false |
+| v7 | file://:0:0:0:0 | true |
+| v7 | file://:0:0:0:0 | undefined |
+| v7 | tst.js:22:15:22:16 | object literal |
+| x | file://:0:0:0:0 | false |
+| x | file://:0:0:0:0 | true |
+| x | file://:0:0:0:0 | undefined |

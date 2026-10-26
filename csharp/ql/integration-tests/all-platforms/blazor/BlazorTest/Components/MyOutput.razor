@@ -1,0 +1,11 @@
+﻿@rendermode InteractiveServer
+
+<div>
+    <p>Value from InputText: @Value</p>
+    <p>Raw value from InputText: @(new MarkupString(Value))</p> @* $ Alert[cs/web/xss]=r1 *@
+</div>
+
+@code {
+    [Parameter]
+    public string Value { get; set; } = "";
+}

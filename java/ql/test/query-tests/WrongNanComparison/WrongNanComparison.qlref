@@ -1,0 +1,2 @@
+query: Likely Bugs/Comparison/WrongNanComparison.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

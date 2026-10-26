@@ -1,0 +1,1666 @@
+/**
+ * INTERNAL use only. This is an experimental API subject to change without notice.
+ *
+ * Provides classes and predicates for dealing with flow models specified
+ * in data extension files.
+ *
+ * The extensible relations have the following columns:
+ * - Sources:
+ *   `namespace; type; subtypes; name; signature; ext; output; kind; provenance`
+ * - Sinks:
+ *   `namespace; type; subtypes; name; signature; ext; input; kind; provenance`
+ * - Summaries:
+ *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
+ * - Barriers:
+ *   `namespace; type; subtypes; name; signature; ext; output; kind; provenance`
+ * - BarrierGuards:
+ *   `namespace; type; subtypes; name; signature; ext; input; acceptingValue; kind; provenance`
+ * - Forwards:
+ *   `namespace; type; subtypes; name; signature; ext; start; constructor; output; provenance`
+ *
+ * The interpretation of a row is similar to API-graphs with a left-to-right
+ * reading.
+ * 1. The `namespace` column selects a namespace.
+ * 2. The `type` column selects a type within that namespace. This column can
+ *    introduce template type names that can be mentioned in the `signature` column.
+ *    For example, `vector<T,Allocator>` introduces the template names `T` and
+ *    `Allocator`. Non-type template parameters cannot be specified.
+ * 3. The `subtypes` is a boolean that indicates whether to jump to an
+ *    arbitrary subtype of that type. Set this to `false` if leaving the `type`
+ *    blank (for example, a free function).
+ * 4. The `name` column optionally selects a specific named member of the type.
+ *    Like the `type` column, this column can introduce template type names
+ *    that can be mentioned in the `signature` column. For example,
+ *    `insert<InputIt>` introduces the template name `InputIt`. Non-type
+ *    template parameters cannot be specified.
+ * 5. The `signature` column optionally restricts the named member. If
+ *    `signature` is blank then no such filtering is done. The format of the
+ *    signature is a comma-separated list of types enclosed in parentheses. The
+ *    types must be stripped of template names. That is, write `const vector &`
+ *    instead of `const vector<T> &`.
+ * 6. The `ext` column specifies additional API-graph-like edges. Currently
+ *    there is only one valid value: "".
+ * 7. The `input` column specifies how data enters the element selected by the
+ *    first 6 columns, and the `output` column specifies how data leaves the
+ *    element selected by the first 6 columns. An `input` can be either:
+ *    - "": Selects a write to the selected element in case this is a field.
+ *    - "Argument[n]": Selects an argument in a call to the selected element.
+ *      The arguments are zero-indexed, and `-1` specifies the qualifier object,
+ *      that is, `*this`.
+ *      - one or more "*" can be added in front of the argument index to indicate
+ *        indirection, for example, `Argument[*0]` indicates the first indirection
+ *        of the 0th argument.
+ *      - `n1..n2` syntax can be used to indicate a range of arguments, inclusive
+ *        at both ends. One or more "*"s can be added in front of the whole range
+ *        to indicate that every argument in the range is indirect, for example
+ *        `*0..1` is the first indirection of both arguments 0 and 1.
+ *    - "ReturnValue": Selects a value being returned by the selected element.
+ *      One or more "*" can be added as an argument to indicate indirection, for
+ *      example, "ReturnValue[*]" indicates the first indirection of the return
+ *      value.
+ *    The special symbol `@` can be used to specify an arbitrary (but fixed)
+ *    number of indirections. For example, the `input` column `Argument[*@0]`
+ *    indicates one or more indirections of the 0th argument.
+ *
+ *    An `output` can be either:
+ *    - "": Selects a read of a selected field.
+ *    - "Argument[n]": Selects the post-update value of an argument in a call to
+ *      the selected element. That is, the value of the argument after the call
+ *      returns. The arguments are zero-indexed, and `-1` specifies the qualifier
+ *      object, that is, `*this`.
+ *      - one or more "*" can be added in front of the argument index to indicate
+ *        indirection, for example, `Argument[*0]` indicates the first indirection
+ *        of the 0th argument.
+ *      - `n1..n2` syntax can be used to indicate a range of arguments, inclusive
+ *        at both ends. One or more "*"s can be added in front of the whole range
+ *        to indicate that every argument in the range is indirect, for example
+ *        `*0..1` is the first indirection of both arguments 0 and 1.
+ *    - "Parameter[n]": Selects the value of a parameter of the selected element.
+ *      The syntax is the same as for "Argument", for example "Parameter[0]",
+ *      "Parameter[*0]", "Parameter[0..2]" etc.
+ *    - "ReturnValue": Selects a value being returned by the selected element.
+ *      One or more "*" can be added as an argument to indicate indirection, for
+ *      example, "ReturnValue[*]" indicates the first indirection of the return
+ *      value.
+ *    The special symbol `@` can be used to specify an arbitrary (but fixed)
+ *    number of indirections. For example, the `output` column
+ *    `ReturnValue[*@0]` indicates one or more indirections of the return
+ *    value.
+ *    Note: The symbol `@` only ever takes a single value across a row. Thus,
+ *    the (`input`, `output`) pair `("Argument[*@0]", "ReturnValue[@]")`
+ *    represents:
+ *    - flow from the _first_ indirection of the 0th argument to the return
+ *    value, and
+ *    - flow from the _second_ indirection of the 0th argument to the first
+ *    indirection of the return value, etc.
+ * 8. The `acceptingValue` column of barrier guard models specifies the condition
+ *    under which the guard blocks flow. It can be one of "true" or "false". In
+ *    the future "no-exception", "not-zero", "null", "not-null" may be supported.
+ * 9. The `kind` column is a tag that can be referenced from QL to determine to
+ *    which classes the interpreted elements should be added. For example, for
+ *    sources "remote" indicates a default remote flow source, and for summaries
+ *    "taint" indicates a default additional taint step and "value" indicates a
+ *    globally applicable value-preserving step.
+ * 10. The `provenance` column is a tag to indicate the origin and verification of a model.
+ *    The format is {origin}-{verification} or just "manual" where the origin describes
+ *    the origin of the model and verification describes how the model has been verified.
+ *    Some examples are:
+ *    - "df-generated": The model has been generated by the model generator tool.
+ *    - "df-manual": The model has been generated by the model generator and verified by a human.
+ *    - "manual": The model has been written by hand.
+ *    This information is used in a heuristic for dataflow analysis to determine, if a
+ *    model or source code should be used for determining flow.
+ *
+ * The "Forwards" relation allows modeling of function that perform C++11-style "perfect
+ * forwarding" where a function receives a number of arguments and forwards those arguments
+ * to a constructor of another type. For example, the row:
+ * `"std"; "vector<T>"; "True"; "emplace"; ""; ""; "1"; T; Argument[-1].Element; manual`
+ * says that `std::vector<T>::emplace(arg0, arg1, ..., argn)` forwards arguments
+ * `arg1, ..., argn` to a constructor for `T`, and the result of `T(arg1, ..., argn)`
+ * flows to `Argument[-1].Element` (see information about the semantics of the `output`
+ * column further above).
+ */
+
+import cpp
+private import new.DataFlow
+private import semmle.code.cpp.controlflow.IRGuards
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowNodes as Nodes
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as Private
+private import semmle.code.cpp.ir.dataflow.internal.SsaImpl as SsaImpl
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
+private import internal.FlowSummaryImpl
+private import internal.FlowSummaryImpl::Public
+private import internal.FlowSummaryImpl::Private
+private import internal.FlowSummaryImpl::Private::External
+private import internal.ExternalFlowExtensions::Extensions as Extensions
+private import codeql.mad.ModelValidation as SharedModelVal
+private import codeql.mad.static.ModelsAsData as SharedMaD
+
+private module MadInput implements SharedMaD::InputSig {
+  string namespaceSegmentSeparator() { result = "::" }
+}
+
+private module MaD = SharedMaD::ModelsAsData<Extensions, MadInput>;
+
+import MaD
+
+/**
+ * Holds if `input` is `input0`, but with all occurrences of `@` replaced
+ * by `n` repetitions of `*` (and similarly for `output` and `output0`).
+ */
+bindingset[input0, output0, n]
+pragma[inline_late]
+private predicate expandInputAndOutput(
+  string input0, string input, string output0, string output, int n
+) {
+  input = input0.replaceAll("@", repeatStars(n)) and
+  output = output0.replaceAll("@", repeatStars(n))
+}
+
+/**
+ * Holds if a summary model exists for the given parameters.
+ */
+predicate summaryModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance, string model
+) {
+  exists(string input0, string output0 |
+    MaD::summaryModel(namespace, type, subtypes, name, signature, ext, input0, output0, kind,
+      provenance, model) and
+    expandInputAndOutput(input0, input, output0, output,
+      [0 .. Private::getMaxElementContentIndirectionIndex() - 1])
+  )
+}
+
+/**
+ * Holds if a forward model exists for the given parameters.
+ */
+predicate forwardsModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string start, string constructor, string output, string provenance, string model
+) {
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::forwardsModel(namespace, type, subtypes, name, signature, ext, start, constructor,
+      output, provenance, madId) and
+    model = "MaD:" + madId.toString()
+  )
+}
+
+/** Provides a query predicate to check the data for validation errors. */
+module ModelValidation {
+  private string getInvalidModelInput() {
+    exists(string pred, AccessPath input, string part |
+      sinkModel(_, _, _, _, _, _, input, _, _, _) and pred = "sink"
+      or
+      summaryModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "summary"
+    |
+      (
+        invalidSpecComponent(input, part) and
+        not part = "" and
+        not (part = "Argument" and pred = "sink") and
+        not parseArg(part, _)
+        or
+        part = input.getToken(_) and
+        parseParam(part, _)
+      ) and
+      result = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
+    )
+  }
+
+  private string getInvalidModelOutput() {
+    exists(string pred, string output, string part |
+      sourceModel(_, _, _, _, _, _, output, _, _, _) and pred = "source"
+      or
+      summaryModel(_, _, _, _, _, _, _, output, _, _, _) and pred = "summary"
+      or
+      forwardsModel(_, _, _, _, _, _, _, _, output, _, _) and pred = "forwards"
+    |
+      invalidSpecComponent(output, part) and
+      not part = "" and
+      not (part = ["Argument", "Parameter"] and pred = "source") and
+      result = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
+    )
+  }
+
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _, _) }
+
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _, _) }
+
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _, _) }
+  }
+
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
+
+  private string getInvalidModelSignature() {
+    exists(string pred, string namespace, string type, string name, string signature, string ext |
+      sourceModel(namespace, type, _, name, signature, ext, _, _, _, _) and pred = "source"
+      or
+      sinkModel(namespace, type, _, name, signature, ext, _, _, _, _) and pred = "sink"
+      or
+      summaryModel(namespace, type, _, name, signature, ext, _, _, _, _, _) and pred = "summary"
+    |
+      not namespace.regexpMatch("[a-zA-Z0-9_\\.:]*") and
+      result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
+      or
+      not type.regexpMatch("[a-zA-Z0-9_<>,\\+]*") and
+      result = "Dubious type \"" + type + "\" in " + pred + " model."
+      or
+      not name.regexpMatch("[a-zA-Z0-9_<>,]*") and
+      result = "Dubious member name \"" + name + "\" in " + pred + " model."
+      or
+      not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+\\*,\\[\\]]*\\)") and
+      result = "Dubious signature \"" + signature + "\" in " + pred + " model."
+      or
+      not ext.regexpMatch("|Attribute") and
+      result = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
+    )
+  }
+
+  private string getIncorrectConstructorSummaryOutput() {
+    exists(string namespace, string type, string name, string output |
+      type = name or
+      type = name + "<" + any(string s)
+    |
+      summaryModel(namespace, type, _, name, _, _, _, output, _, _, _) and
+      output.matches("ReturnValue%") and
+      result =
+        "Constructor model for " + namespace + "." + type +
+          " should use `Argument[this]` in the output, not `ReturnValue`."
+    )
+  }
+
+  /** Holds if some row in a MaD flow model appears to contain typos. */
+  query predicate invalidModelRow(string msg) {
+    msg =
+      [
+        getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
+        KindVal::getInvalidModelKind(), getIncorrectConstructorSummaryOutput()
+      ]
+  }
+}
+
+private predicate elementSpec(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext
+) {
+  sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
+  sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
+  barrierModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
+  barrierGuardModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _) or
+  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _) or
+  forwardsModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
+}
+
+/**
+ * Holds if `c` is an instantiation of a class template `templateClass`, or
+ * holds with `c = templateClass` if `c` is not an instantiation of any class
+ * template.
+ *
+ * This predicate is used instead of `Class.isConstructedFrom` (which only
+ * holds for template instantiations) in this file to allow for uniform
+ * treatment of non-templated classes and class template instantiations.
+ */
+private predicate isClassConstructedFrom(Class c, Class templateClass) {
+  c.isConstructedFrom(templateClass)
+  or
+  not c.isConstructedFrom(_) and c = templateClass
+}
+
+/** Gets the fully templated version of `c`. */
+private Class getFullyTemplatedClassOld(Class c) {
+  not c.isFromUninstantiatedTemplate(_) and
+  isClassConstructedFrom(c, result)
+}
+
+private TemplateClass getOriginalClassTemplate(TemplateClass tc) {
+  result = tc.getOriginalTemplate()
+  or
+  not exists(tc.getOriginalTemplate()) and
+  result = tc
+}
+
+/** Gets the fully templated version of `c`. */
+private Class getFullyTemplatedClassNew(Class c) {
+  not c.isFromUninstantiatedTemplate(_) and
+  exists(Class mid |
+    c.isConstructedFrom(mid)
+    or
+    not c.isConstructedFrom(_) and c = mid
+  |
+    result = getOriginalClassTemplate(mid)
+    or
+    not mid instanceof TemplateClass and mid = result
+  )
+}
+
+/** Gets the fully templated version of `c`. */
+private Class getFullyTemplatedClass(Class c) {
+  // The `Class::getOriginalTemplate` predicate was introduced in CodeQL
+  // version 2.25.6 and the upgrade script leaves the
+  // `class_template_generated_from` extensionals empty if the database
+  // was generated with an older extractor. So we use the old implementation
+  // if the `class_template_generated_from` extensional is empty.
+  if class_template_generated_from(_, _)
+  then result = getFullyTemplatedClassNew(c)
+  else result = getFullyTemplatedClassOld(c)
+}
+
+/**
+ * Holds if `f` is an instantiation of a function template `templateFunc`, or
+ * holds with `f = templateFunc` if `f` is not an instantiation of any function
+ * template.
+ *
+ * This predicate is used instead of `Function.isConstructedFrom` (which only
+ * holds for template instantiations) in this file to allow for uniform
+ * treatment of non-templated classes and class template instantiations.
+ */
+private predicate isFunctionConstructedFrom(Function f, Function templateFunc) {
+  f.isConstructedFrom(templateFunc)
+  or
+  not f.isConstructedFrom(_) and f = templateFunc
+}
+
+/** Gets the fully templated version of `f`. */
+private Function getFullyTemplatedFunctionOld(Function f) {
+  not f.isFromUninstantiatedTemplate(_) and
+  (
+    exists(Class c, Class templateClass, int i |
+      isClassConstructedFrom(c, templateClass) and
+      f = c.getAMember(i) and
+      result = templateClass.getCanonicalMember(i)
+    )
+    or
+    not exists(f.getDeclaringType()) and
+    isFunctionConstructedFrom(f, result)
+  )
+}
+
+private TemplateFunction getOriginalFunctionTemplate(TemplateFunction tf) {
+  result = tf.getOriginalTemplate()
+  or
+  not exists(tf.getOriginalTemplate()) and
+  result = tf
+}
+
+/** Gets the fully templated version of `f`. */
+private Function getFullyTemplatedFunctionNew(Function f) {
+  not f.isFromUninstantiatedTemplate(_) and
+  exists(Function mid |
+    f.isConstructedFrom(mid)
+    or
+    not f.isConstructedFrom(_) and f = mid
+  |
+    result = getOriginalFunctionTemplate(mid)
+    or
+    not mid instanceof TemplateFunction and mid = result
+  )
+}
+
+/** Gets the fully templated version of `f`. */
+Function getFullyTemplatedFunction(Function f) {
+  // The `Function::getOriginalTemplate` predicate was introduced in CodeQL
+  // version 2.25.6 and the upgrade script leaves the
+  // `function_template_generated_from` extensionals empty if the database
+  // was generated with an older extractor. So we use the old implementation
+  // if the `function_template_generated_from` extensional is empty.
+  if function_template_generated_from(_, _)
+  then result = getFullyTemplatedFunctionNew(f)
+  else result = getFullyTemplatedFunctionOld(f)
+}
+
+/** Prefixes `const` to `s` if `t` is const, or returns `s` otherwise. */
+bindingset[s, t]
+private string withConst(string s, Type t) {
+  if t.isConst() then result = "const " + s else result = s
+}
+
+/** Prefixes `volatile` to `s` if `t` is volatile, or returns `s` otherwise. */
+bindingset[s, t]
+private string withVolatile(string s, Type t) {
+  if t.isVolatile() then result = "volatile " + s else result = s
+}
+
+/**
+ * Returns `s` prefixed with appropriate specifiers from `t`, or `s` if `t` has
+ * no relevant specifiers.
+ */
+bindingset[s, t]
+private string withSpecifiers(string s, Type t) {
+  // An `int` that is both const and volatile will be printed as
+  // `const volatile int` to match the behavior of `Type.getName` which
+  // is generated by the extractor.
+  result = withConst(withVolatile(s, t), t)
+}
+
+/**
+ * Gets the string version of `t`, after resolving typedefs. The boolean `needsSpace` is `true`
+ * if a space should be appended before concatenating any additional symbols
+ * (such as `*` or `&`) when recursively constructing the type name.
+ */
+private string getTypeName(Type t, boolean needsSpace) {
+  // We don't care about template instantiations since we always base models
+  // on the uninstantiated templates
+  not t.isFromTemplateInstantiation(_) and
+  (
+    exists(DerivedType dt, string s, boolean needsSpace0 |
+      dt = t and s = withSpecifiers(getTypeName(dt.getBaseType(), needsSpace0), dt)
+    |
+      dt instanceof ReferenceType and
+      not dt instanceof RValueReferenceType and
+      needsSpace = false and
+      (if needsSpace0 = true then result = s + " &" else result = s + "&")
+      or
+      dt instanceof RValueReferenceType and
+      needsSpace = false and
+      (if needsSpace0 = true then result = s + " &&" else result = s + "&&")
+      or
+      dt instanceof PointerType and
+      needsSpace = false and
+      (if needsSpace0 = true then result = s + " *" else result = s + "*")
+      or
+      // We don't need to check for `needsSpace0` here because the type of
+      // `x` in `int x[1024]` is formatted without a space between the bracket
+      // and the `int` by `Type.getName`. That is, calling `Type.getName` on
+      // the type of `x` gives `int[1024]` and not `int [1024]`.
+      needsSpace = false and
+      exists(ArrayType array | array = dt |
+        result = s + "[" + array.getArraySize() + "]"
+        or
+        not array.hasArraySize() and
+        result = s + "[]"
+      )
+      or
+      not dt instanceof ReferenceType and
+      not dt instanceof PointerType and
+      not dt instanceof ArrayType and
+      result = s and
+      needsSpace = needsSpace0
+    )
+    or
+    not t instanceof DerivedType and
+    not t instanceof TypedefType and
+    result = t.getName() and
+    (if result.matches(["%*", "%&", "%]"]) then needsSpace = false else needsSpace = true)
+  )
+  or
+  result = getTypeName(t.(TypedefType).getBaseType(), needsSpace)
+}
+
+/**
+ * Gets a type name for the `n`'th parameter of `f` without any template
+ * arguments.
+ *
+ * If `canonical = false` then the result may be a string representing a type
+ * for which the typedefs have been resolved. If `canonical = true` then the
+ * result will be a string representing a type without resolving `typedefs`.
+ */
+bindingset[f]
+pragma[inline_late]
+string getParameterTypeWithoutTemplateArguments(Function f, int n, boolean canonical) {
+  exists(string s, string base, string specifiers, Type t |
+    t = f.getParameter(n).getType() and
+    // The name of the string can either be the possibly typedefed name
+    // or an alternative name where typedefs has been resolved.
+    // `getTypeName(t, _)` is almost equal to `t.resolveTypedefs().getName()`,
+    // except that `t.resolveTypedefs()` doesn't have a result when the
+    // resulting type doesn't appear in the database.
+    (
+      s = t.getName() and canonical = true
+      or
+      s = getTypeName(t, _) and canonical = false
+    ) and
+    parseAngles(s, base, _, specifiers) and
+    result = base + specifiers
+  )
+  or
+  f.isVarargs() and
+  n = f.getNumberOfParameters() and
+  result = "..." and
+  canonical = true
+}
+
+/**
+ * Gets the largest index of a template parameter of `templateFunction` that
+ * is a type template parameter.
+ */
+private int getLastTypeTemplateFunctionParameterIndex(Function templateFunction) {
+  result =
+    max(int index | templateFunction.getTemplateArgument(index) instanceof TypeTemplateParameter)
+}
+
+/** Gets the number of supported template parameters for `templateFunction`. */
+private int getNumberOfSupportedFunctionTemplateArguments(Function templateFunction) {
+  result = count(int i | exists(getSupportedFunctionTemplateArgument(templateFunction, i)) | i)
+}
+
+/** Gets the `i`'th supported template parameter for `templateFunction`. */
+private Locatable getSupportedFunctionTemplateArgument(Function templateFunction, int i) {
+  result = templateFunction.getTemplateArgument(i) and
+  // We don't yet support non-type template parameters in the middle of a
+  // template parameter list
+  i <= getLastTypeTemplateFunctionParameterIndex(templateFunction)
+}
+
+/**
+ * Normalize the `n`'th parameter of `f` by replacing template names
+ * with `func:N` (where `N` is the index of the template).
+ */
+pragma[nomagic]
+private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remaining) {
+  exists(Function templateFunction |
+    templateFunction = getFullyTemplatedFunction(f) and
+    remaining = getNumberOfSupportedFunctionTemplateArguments(templateFunction) and
+    result = getParameterTypeWithoutTemplateArguments(templateFunction, n, _)
+  )
+  or
+  exists(string mid, TypeTemplateParameter tp, Function templateFunction |
+    mid = getTypeNameWithoutFunctionTemplates(f, n, remaining + 1) and
+    templateFunction = getFullyTemplatedFunction(f) and
+    tp = getSupportedFunctionTemplateArgument(templateFunction, remaining)
+  |
+    result = mid.replaceAll(tp.getName(), "func:" + remaining.toString())
+  )
+}
+
+/**
+ * Gets the largest index of a template parameter of `templateClass` that
+ * is a type template parameter.
+ */
+private int getLastTypeTemplateClassParameterIndex(Class templateClass) {
+  result =
+    max(int index | templateClass.getTemplateArgument(index) instanceof TypeTemplateParameter)
+}
+
+/** Gets the `i`'th supported template parameter for `templateClass`. */
+private Locatable getSupportedClassTemplateArgument(Class templateClass, int i) {
+  result = templateClass.getTemplateArgument(i) and
+  // We don't yet support non-type template parameters in the middle of a
+  // template parameter list
+  i <= getLastTypeTemplateClassParameterIndex(templateClass)
+}
+
+/** Gets the number of supported template parameters for `templateClass`. */
+private int getNumberOfSupportedClassTemplateArguments(Class templateClass) {
+  result = count(int i | exists(getSupportedClassTemplateArgument(templateClass, i)) | i)
+}
+
+/**
+ * Normalize the `n`'th parameter of `f` by replacing template names
+ * with `class:N` (where `N` is the index of the template).
+ */
+pragma[nomagic]
+private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining) {
+  // If there is a declaring type then we start by expanding the function templates
+  exists(Class template |
+    template = getFullyTemplatedClass(f.getDeclaringType()) and
+    remaining = getNumberOfSupportedClassTemplateArguments(template) and
+    result = getTypeNameWithoutFunctionTemplates(f, n, 0)
+  )
+  or
+  // If there is no declaring type we're done after expanding the function templates
+  not exists(f.getDeclaringType()) and
+  remaining = 0 and
+  result = getTypeNameWithoutFunctionTemplates(f, n, 0)
+  or
+  exists(string mid, TypeTemplateParameter tp, Class template |
+    mid = getTypeNameWithoutClassTemplates(f, n, remaining + 1) and
+    template = getFullyTemplatedClass(f.getDeclaringType()) and
+    tp = getSupportedClassTemplateArgument(template, remaining)
+  |
+    result = mid.replaceAll(tp.getName(), "class:" + remaining.toString())
+  )
+}
+
+/** Gets the string representation of the `i`'th parameter of `c`. */
+string getParameterTypeName(Function c, int i) {
+  result = getTypeNameWithoutClassTemplates(c, i, 0)
+}
+
+/** Splits `s` by `,` and gets the `i`'th element. */
+bindingset[s]
+pragma[inline_late]
+private string getAtIndex(string s, int i) {
+  result = s.splitAt(",", i) and
+  // when `s` is `""` and `i` is `0` we get `result = ""` which we don't want.
+  not (s = "" and i = 0)
+}
+
+/** Gets the number of comma-separated arguments in `s`. */
+bindingset[s]
+private int getNumberOfArguments(string s) {
+  s = "" and result = 0
+  or
+  s != "" and result = count(s.indexOf(",")) + 1
+}
+
+/**
+ * Normalizes `partiallyNormalizedSignature` by replacing the `remaining`
+ * number of template arguments in `partiallyNormalizedSignature` with their
+ * index in `typeArgs`.
+ */
+private string getSignatureWithoutClassTemplateNames(
+  string partiallyNormalizedSignature, string typeArgs, string nameArgs, int remaining
+) {
+  elementSpecWithArguments0(_, _, _, partiallyNormalizedSignature, typeArgs, nameArgs) and
+  remaining = getNumberOfArguments(typeArgs) and
+  result = partiallyNormalizedSignature
+  or
+  exists(string mid |
+    mid =
+      getSignatureWithoutClassTemplateNames(partiallyNormalizedSignature, typeArgs, nameArgs,
+        remaining + 1)
+  |
+    exists(string typeArg |
+      typeArg = getAtIndex(typeArgs, remaining) and
+      result = mid.replaceAll(typeArg, "class:" + remaining.toString())
+    )
+    or
+    // Make sure `remaining` is properly bound
+    remaining = [0 .. getNumberOfArguments(typeArgs)] and
+    not exists(getAtIndex(typeArgs, remaining)) and
+    result = mid
+  )
+}
+
+/**
+ * Normalizes `partiallyNormalizedSignature` by replacing:
+ * - _All_ the template arguments in `partiallyNormalizedSignature` that refer to
+ * template parameters in `typeArgs` with their index in `typeArgs`, and
+ * - The `remaining` number of template arguments in `partiallyNormalizedSignature`
+ * with their index in `nameArgs`.
+ */
+pragma[nomagic]
+private string getSignatureWithoutFunctionTemplateNames(
+  string partiallyNormalizedSignature, string typeArgs, string nameArgs, int remaining
+) {
+  remaining = getNumberOfArguments(nameArgs) and
+  result =
+    getSignatureWithoutClassTemplateNames(partiallyNormalizedSignature, typeArgs, nameArgs, 0)
+  or
+  exists(string mid |
+    mid =
+      getSignatureWithoutFunctionTemplateNames(partiallyNormalizedSignature, typeArgs, nameArgs,
+        remaining + 1)
+  |
+    exists(string nameArg |
+      nameArg = getAtIndex(nameArgs, remaining) and
+      result = mid.replaceAll(nameArg, "func:" + remaining.toString())
+    )
+    or
+    // Make sure `remaining` is properly bound
+    remaining = [0 .. getNumberOfArguments(nameArgs)] and
+    not exists(getAtIndex(nameArgs, remaining)) and
+    result = mid
+  )
+}
+
+/**
+ * Holds if `elementSpec(_, type, _, name, signature, _)` holds and
+ * - `typeArgs` represents the named template parameters supplied to `type`, and
+ * - `nameArgs` represents the named template parameters supplied to `name`, and
+ * - `normalizedSignature` is `signature`, except with
+ *    - template parameter names replaced by `func:i` if the template name is
+ *      the `i`'th entry in `nameArgs`, and
+ *    - template parameter names replaced by `class:i` if the template name is
+ *      the `i`'th entry in `typeArgs`.
+ *
+ * In other words, the string `normalizedSignature` represents a "normalized"
+ * signature with no mention of any free template parameters.
+ *
+ * For example, consider a summary row such as:
+ * ```
+ * elementSpec(_, "MyClass<B, C>", _, myFunc<A>, "(const A &,int,C,B *)", _)
+ * ```
+ * In this case, `normalizedSignature` will be `"(const func:0 &,int,class:1,class:0 *)"`.
+ */
+pragma[nomagic]
+private predicate elementSpecWithArguments(
+  string signature, string type, string name, string normalizedSignature, string typeArgs,
+  string nameArgs
+) {
+  exists(string signatureWithoutParens |
+    elementSpecWithArguments0(signature, type, name, signatureWithoutParens, typeArgs, nameArgs) and
+    normalizedSignature =
+      getSignatureWithoutFunctionTemplateNames(signatureWithoutParens, typeArgs, nameArgs, 0)
+  )
+}
+
+/** Gets the `n`'th normalized signature parameter for the function `name` in class `type`. */
+private string getSignatureParameterName(string signature, string type, string name, int n) {
+  exists(string normalizedSignature |
+    elementSpecWithArguments(signature, type, name, normalizedSignature, _, _) and
+    result = getAtIndex(normalizedSignature, n)
+  )
+}
+
+/**
+ * Gets a `Function` identified by the `(namespace, type, name)` components.
+ *
+ * If `subtypes` is `true` then the result may be an override of the function
+ * identified by the components.
+ */
+pragma[nomagic]
+private Function getFunction(string namespace, string type, boolean subtypes, string name) {
+  elementSpec(namespace, type, subtypes, name, _, _) and
+  (
+    funcHasQualifiedName(result, namespace, name) and
+    subtypes = false and
+    type = ""
+    or
+    exists(Class namedClass, Class classWithMethod |
+      hasClassAndName(classWithMethod, result, name) and
+      classHasQualifiedName(namedClass, namespace, type)
+    |
+      // member declared in the named type or a subtype of it
+      subtypes = true and
+      classWithMethod = namedClass.getADerivedClass*()
+      or
+      // member declared directly in the named type
+      subtypes = false and
+      classWithMethod = namedClass
+    )
+  )
+}
+
+/**
+ * Holds if the suffix containing the entries in `signature` starting at entry
+ * `i` matches the suffix containing the parameters of `func` starting at entry `i`.
+ *
+ * For example, consider the signature `(int,bool,char)` and a function:
+ * ```
+ * void f(int a, bool b, char c);
+ * ```
+ * 1. The predicate holds for `i = 2` because the suffix containing all the entries
+ * in `signature` starting at `2` is `char`, and suffix containing all the parameters
+ * of `func` starting at `2` is `char`.
+ * 2. The predicate holds for `i = 1` because the suffix containing all the entries
+ * in `signature` starting at `1` is `bool,char`, and the suffix containing all the
+ * parameters of `func` starting at `1` is `bool, char`.
+ * 3. The predicate holds for `i = 0` because the suffix containing all the entries
+ * in `signature` starting at `0` is `int,bool,char` and the suffix containing all
+ * the parameters of `func` starting at `0` is `int, bool, char`.
+ *
+ * When `paramsString(func)[i]` is `class:n` then the signature name is
+ * compared with the `n`'th name in `type`, and when `paramsString(func)[i]`
+ * is `func:n` then the signature name is compared with the `n`'th name
+ * in `name`.
+ */
+pragma[nomagic]
+private predicate signatureMatches(
+  Function func, string namespace, string signature, string type, string name, int i
+) {
+  func = getFunction(namespace, type, _, name) and
+  exists(string s |
+    s = getSignatureParameterName(signature, type, name, i) and
+    s = getParameterTypeName(func, i)
+  ) and
+  if exists(getParameterTypeName(func, i + 1))
+  then signatureMatches(func, namespace, signature, type, name, i + 1)
+  else i = count(signature.indexOf(","))
+}
+
+/**
+ * Internal: Do not use.
+ *
+ * This module only exists to expose internal predicates for testing purposes.
+ */
+module ExternalFlowDebug {
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Exposed for testing purposes.
+   */
+  predicate signatureMatches_debug = signatureMatches/6;
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Exposed for testing purposes.
+   */
+  predicate getSignatureParameterName_debug = getSignatureParameterName/4;
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Exposed for testing purposes.
+   */
+  predicate getParameterTypeName_debug = getParameterTypeName/2;
+}
+
+/**
+ * Holds if `s` can be broken into a string of the form
+ * `beforeAngles<betweenAngles>`,
+ * or `s = beforeAngles` where `beforeAngles` does not have any brackets.
+ */
+bindingset[s]
+pragma[inline_late]
+private predicate parseAngles(
+  string s, string beforeAngles, string betweenAngles, string afterAngles
+) {
+  beforeAngles = s.regexpCapture("([^<]+)(?:<([^>]+)>(.*))?", 1) and
+  (
+    betweenAngles = s.regexpCapture("([^<]+)(?:<([^>]+)>(.*))?", 2) and
+    afterAngles = s.regexpCapture("([^<]+)(?:<([^>]+)>(.*))?", 3)
+    or
+    not exists(s.regexpCapture("([^<]+)(?:<([^>]+)>(.*))?", 2)) and
+    betweenAngles = "" and
+    afterAngles = ""
+  )
+}
+
+/** Holds if `s` can be broken into a string of the form `(betweenParens)`. */
+bindingset[s]
+pragma[inline_late]
+private predicate parseParens(string s, string betweenParens) { s = "(" + betweenParens + ")" }
+
+/**
+ * Holds if `elementSpec(_, type, _, name, signature, _)` and:
+ * - `type` introduces template parameters `typeArgs`, and
+ * - `name` introduces template parameters `nameArgs`, and
+ * - `signatureWithoutParens` equals `signature`, but with the surrounding
+ *    parentheses removed.
+ */
+pragma[nomagic]
+private predicate elementSpecWithArguments0(
+  string signature, string type, string name, string signatureWithoutParens, string typeArgs,
+  string nameArgs
+) {
+  elementSpec(_, type, _, name, signature, _) and
+  parseAngles(name, _, nameArgs, "") and
+  (
+    type = "" and typeArgs = ""
+    or
+    parseAngles(type, _, typeArgs, "")
+  ) and
+  parseParens(signature, signatureWithoutParens)
+}
+
+/**
+ * Holds if `elementSpec(namespace, type, subtypes, name, signature, _)` and
+ * `func`'s signature matches `signature`.
+ *
+ * `signature` may contain template parameter names that are bound by `type` and `name`.
+ */
+pragma[nomagic]
+private predicate elementSpecMatchesSignature(
+  Function func, string namespace, string type, boolean subtypes, string name, string signature
+) {
+  elementSpec(namespace, pragma[only_bind_into](type), subtypes, pragma[only_bind_into](name),
+    pragma[only_bind_into](signature), _) and
+  signatureMatches(func, namespace, signature, type, name, 0)
+}
+
+/**
+ * Holds when `method` has name `nameWithoutArgs`, and gets the enclosing
+ * class of `method`. Unlike `method.getClassAndName` this predicate does
+ * not strip typedefs from the name when `method` is an `ConversionOperator`.
+ */
+bindingset[nameWithoutArgs]
+pragma[inline_late]
+private Class getClassAndNameImpl(Function method, string nameWithoutArgs) {
+  result = method.getDeclaringType() and
+  nameWithoutArgs = "operator " + method.(ConversionOperator).getDestType()
+  or
+  result = method.getClassAndName(nameWithoutArgs) and
+  not method instanceof ConversionOperator
+}
+
+/**
+ * Holds if `classWithMethod` has `method` named `name` (excluding any
+ * template parameters).
+ */
+bindingset[name]
+pragma[inline_late]
+private predicate hasClassAndName(Class classWithMethod, Function method, string name) {
+  exists(string nameWithoutArgs |
+    parseAngles(name, nameWithoutArgs, _, "") and
+    classWithMethod = getClassAndNameImpl(method, nameWithoutArgs)
+  )
+}
+
+bindingset[name]
+pragma[inline_late]
+private predicate funcHasQualifiedName(Function func, string namespace, string name) {
+  exists(string nameWithoutArgs |
+    parseAngles(name, nameWithoutArgs, _, "") and
+    func.hasQualifiedName(namespace, nameWithoutArgs)
+  )
+}
+
+/**
+ * Holds if `namedClass` is in namespace `namespace` and has
+ * name `type` (excluding any template parameters).
+ */
+bindingset[type]
+pragma[inline_late]
+private predicate classHasQualifiedName(Class namedClass, string namespace, string type) {
+  exists(string typeWithoutArgs |
+    parseAngles(type, typeWithoutArgs, _, "") and
+    namedClass.hasQualifiedName(namespace, typeWithoutArgs)
+  )
+}
+
+/**
+ * Gets the element in module `namespace` that satisfies the following properties:
+ * 1. If the element is a member of a class-like type, then the class-like type has name `type`
+ * 2. If `subtypes = true` and the element is a member of a class-like type, then overrides of the element
+ *    are also returned.
+ * 3. The element has name `name`
+ * 4. If `signature` is non-empty, then the element has a list of parameter types described by `signature`.
+ */
+pragma[nomagic]
+private Element interpretElement0(
+  string namespace, string type, boolean subtypes, string name, string signature
+) {
+  result = getFunction(namespace, type, subtypes, name) and
+  (
+    // Non-member functions
+    type = "" and
+    (
+      elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
+      or
+      signature = "" and
+      elementSpec(namespace, type, subtypes, name, signature, _)
+    )
+    or
+    // Member functions
+    elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
+    or
+    signature = "" and
+    elementSpec(namespace, type, subtypes, name, signature, _)
+  )
+}
+
+cached
+private module Cached {
+  /** Gets the source/sink/summary element corresponding to the supplied parameters. */
+  cached
+  Element interpretElement(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  ) {
+    elementSpec(namespace, type, subtypes, name, signature, ext) and
+    exists(Element e | e = interpretElement0(namespace, type, subtypes, name, signature) |
+      ext = "" and result = e
+    )
+  }
+
+  /**
+   * Holds if `node` is specified as a source with the given kind in a MaD flow
+   * model.
+   */
+  cached
+  predicate sourceNode(DataFlow::Node node, string kind, string model) {
+    node.(Nodes::FlowSummaryNode).isSource(kind, model)
+  }
+
+  /**
+   * Holds if `node` is specified as a sink with the given kind in a MaD flow
+   * model.
+   */
+  cached
+  predicate sinkNode(DataFlow::Node node, string kind, string model) {
+    node.(Nodes::FlowSummaryNode).isSink(kind, model)
+  }
+
+  private newtype TKindModelPair =
+    TMkPair(string kind, string model) { isBarrierGuardNode(_, _, kind, model) }
+
+  private GuardValue convertAcceptingValue(Public::AcceptingValue av) {
+    av.isTrue() and result.asBooleanValue() = true
+    or
+    av.isFalse() and result.asBooleanValue() = false
+    or
+    // NOTE: The below cases don't contribute anything currently since the
+    // callers immediately use `.asBooleanValue()` to convert the `GuardValue`
+    // to a boolean. Once we're willing to accept the breaking change of
+    // converting the barrier guard API to use `GuardValue`s instead `Boolean`s
+    // we can remove this restriction.
+    av.isNoException() and result.getDualValue().isThrowsException()
+    or
+    av.isZero() and result.asIntValue() = 0
+    or
+    av.isNotZero() and result.getDualValue().asIntValue() = 0
+    or
+    av.isNull() and result.isNullValue()
+    or
+    av.isNotNull() and result.isNonNullValue()
+  }
+
+  private predicate barrierGuardChecks(IRGuardCondition g, Expr e, boolean gv, TKindModelPair kmp) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode n, Public::AcceptingValue acceptingValue,
+      string kind, string model
+    |
+      isBarrierGuardNode(n, acceptingValue, kind, model) and
+      n.asNode().asExpr() = e and
+      kmp = TMkPair(kind, model) and
+      gv = convertAcceptingValue(acceptingValue).asBooleanValue() and
+      n.asNode().(Private::ArgumentNode).getCall().asCallInstruction() = g
+    )
+  }
+
+  private newtype TKindModelPairIntPair =
+    MkKindModelPairIntPair(TKindModelPair pair, int indirectionIndex) {
+      indirectionIndex > 0 and
+      Private::nodeHasInstruction(_, _, indirectionIndex) and
+      exists(pair)
+    }
+
+  private predicate indirectBarrierGuardChecks(
+    IRGuardCondition g, Expr e, boolean gv, TKindModelPairIntPair kmp
+  ) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode interpretNode,
+      Public::AcceptingValue acceptingValue, string kind, string model, int indirectionIndex,
+      Private::ArgumentNode arg
+    |
+      isBarrierGuardNode(interpretNode, acceptingValue, kind, model) and
+      arg = interpretNode.asNode() and
+      arg.asIndirectExpr(indirectionIndex) = e and
+      kmp = MkKindModelPairIntPair(TMkPair(kind, model), indirectionIndex) and
+      gv = convertAcceptingValue(acceptingValue).asBooleanValue() and
+      arg.getCall().asCallInstruction() = g
+    )
+  }
+
+  /**
+   * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+   * model.
+   */
+  cached
+  predicate barrierNode(DataFlow::Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isBarrierNode(n, kind, model) and n.asNode() = node
+    )
+    or
+    DataFlow::ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
+        model)) = node
+    or
+    DataFlow::ParameterizedBarrierGuard<TKindModelPairIntPair, indirectBarrierGuardChecks/4>::getAnIndirectBarrierNode(MkKindModelPairIntPair(TMkPair(kind,
+          model), _)) = node
+  }
+}
+
+import Cached
+
+/** Gets the constructor type selected by `constructorType` in a forwarding model. */
+private Type getForwardedConstructorType(
+  Function forwarder, string namespace, string type, boolean subtypes, string name,
+  string signature, string ext, string constructorType
+) {
+  exists(int index |
+    forwardsModel(namespace, type, subtypes, name, signature, ext, _, constructorType, _, _, _) and
+    forwarder = interpretElement(namespace, type, subtypes, name, signature, ext)
+  |
+    exists(string typeArguments |
+      parseAngles(type, _, typeArguments, "") and
+      constructorType = getAtIndex(typeArguments, index) and
+      result = forwarder.getDeclaringType().getTemplateArgument(index)
+    )
+    or
+    exists(string nameArguments |
+      parseAngles(name, _, nameArguments, "") and
+      constructorType = getAtIndex(nameArguments, index) and
+      result = forwarder.getTemplateArgument(index)
+    )
+  )
+}
+
+/** Interprets a forwarding model, retaining its constructed type, output, and provenance. */
+private predicate interpretForwardsModelType(
+  Function forwarder, Type constructedType, int start, string output, string provenance,
+  string model
+) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string startString, string constructorType
+  |
+    forwardsModel(namespace, type, subtypes, name, signature, ext, startString, constructorType,
+      output, provenance, model) and
+    forwarder = interpretElement(namespace, type, subtypes, name, signature, ext) and
+    start = startString.toInt()
+  |
+    // Either the row specifies forwarding to a type given by the type or
+    // function template, in which case we need to resolve that from the type
+    // or function name.
+    constructedType =
+      getForwardedConstructorType(forwarder, namespace, type, subtypes, name, signature, ext,
+        constructorType).getUnspecifiedType()
+    or
+    // Or the row specifies forwarding to a specific type.
+    not exists(
+      getForwardedConstructorType(forwarder, namespace, type, subtypes, name, signature, ext,
+        constructorType)
+    ) and
+    classHasQualifiedName(constructedType, namespace, constructorType)
+  )
+}
+
+/**
+ * Holds if `forwarder` may forward its arguments starting at `start` to a
+ * constructor of `c`. The actual constructor being forwarded to depends on the
+ * types of arguments from `start` at calls to `forwarder`.
+ */
+private predicate interpretForwardsModel(
+  Function forwarder, Class c, int start, string output, string provenance, string model
+) {
+  interpretForwardsModelType(forwarder, c, start, output, provenance, model)
+}
+
+/**
+ * Holds if `forwarder` forwards its arguments starting at `start` to a
+ * constructor of `c`.
+ */
+predicate forwards(Function forwarder, Class c, int start) {
+  interpretForwardsModel(forwarder, c, start, _, _, _)
+}
+
+private int referenceIndirection(Type unspecified) {
+  if unspecified instanceof ReferenceType then result = 1 else result = 0
+}
+
+/** Gets `unspecified`, but with its outermost reference removed, if any. */
+private Type stripReference(Type unspecified) {
+  result = unspecified.(ReferenceType).getBaseType().getUnspecifiedType()
+  or
+  not unspecified instanceof ReferenceType and
+  result = unspecified
+}
+
+/**
+ * Encapsulates predicates used to compute which constructor a perfect
+ * forwarding function targets.
+ */
+module ConstructorForwarding {
+  private import codeql.util.Boolean
+
+  private class ConvertingConstructor extends Constructor {
+    Type fromType;
+
+    ConvertingConstructor() {
+      not this.isFromUninstantiatedTemplate(_) and
+      not this.isExplicit() and
+      not this.isDeleted() and
+      not this instanceof CopyConstructor and
+      not this instanceof MoveConstructor and
+      fromType = this.getParameter(0).getUnderlyingType() and
+      forall(int index | index > 0 and exists(this.getParameter(index)) |
+        this.getParameter(index).hasInitializer()
+      )
+    }
+
+    Type getUnderlyingFromType() { result = fromType }
+  }
+
+  private Type getForwardedArgumentType(Function forwarder, int start, int i) {
+    forwards(forwarder, _, start) and
+    i = [0 .. forwarder.getNumberOfParameters() - start - 1] and
+    result = forwarder.getParameter(start + i).getUnderlyingType()
+  }
+
+  private Type getConstructorParameterType(Cpp::Constructor constructor, int i) {
+    forwards(_, constructor.getDeclaringType(), _) and
+    result = constructor.getParameter(i).getUnderlyingType()
+  }
+
+  private newtype ValueCategory =
+    LValue() or
+    XValue() or
+    PRValue()
+
+  bindingset[t1, t2]
+  pragma[inline_late]
+  private predicate preservesQualifiers(Type t1, Type t2) {
+    (t1.isConst() implies t2.isConst()) and
+    (t1.isVolatile() implies t2.isVolatile())
+  }
+
+  private predicate baseTypeCompatible(Type arg, Type param) {
+    param.stripTopLevelSpecifiers() = arg.stripTopLevelSpecifiers().(Class).getABaseClass+() and
+    preservesQualifiers(arg, param)
+  }
+
+  private predicate voidType(Type t) { t.stripTopLevelSpecifiers() instanceof VoidType }
+
+  private predicate routineType(Type t) { t.stripTopLevelSpecifiers() instanceof RoutineType }
+
+  private predicate pointerConversion(Cpp::PointerType arg, Cpp::PointerType param) {
+    exists(Type argBase, Type paramBase |
+      argBase = arg.getBaseType() and
+      paramBase = param.getBaseType()
+    |
+      baseTypeCompatible(argBase, paramBase)
+      or
+      voidType(paramBase) and
+      not routineType(argBase) and
+      preservesQualifiers(argBase, paramBase)
+    )
+  }
+
+  private predicate nullPointerConversion(Type t) {
+    t instanceof Cpp::PointerType or t instanceof FunctionPointerType
+  }
+
+  private predicate booleanConversion(Type t) {
+    t instanceof Cpp::PointerType
+    or
+    t instanceof FunctionPointerType
+    or
+    t instanceof Cpp::ArrayType
+    or
+    t instanceof RoutineType
+  }
+
+  private predicate referenceAcceptsCategory(Cpp::ReferenceType t, ValueCategory category) {
+    if t instanceof Cpp::LValueReferenceType
+    then
+      category = LValue()
+      or
+      exists(Type base |
+        base = t.getBaseType() and
+        base.isConst() and
+        not base.isVolatile()
+      )
+    else category != LValue()
+  }
+
+  /**
+   * Tracks the ordering of standard conversions. All phases allow parameter matching
+   * and, if none has been used, a user-defined conversion that resets to `Initial()`.
+   */
+  private newtype Phase =
+    // Allows array/function decay, a value or base-class conversion, or pointer qualification.
+    Initial() or
+    // Allows a value or base-class conversion or pointer qualification, but no further decay.
+    AfterTransformation() or
+    // Allows only pointer qualification among the remaining conversion steps.
+    AfterValueConversion() or
+    // Allows no further conversion steps.
+    AfterQualification()
+
+  private predicate isUnderlyingType(Type type) { type = type.getUnderlyingType() }
+
+  private newtype TTypeState =
+    MkTypeState(Type type, ValueCategory category, Boolean conversionUsed, Phase phase) {
+      not type instanceof Cpp::ReferenceType and
+      not type instanceof FunctionReferenceType and
+      isUnderlyingType(type)
+    }
+
+  private ValueCategory getCategoryForRef(Cpp::ReferenceType reference) {
+    reference instanceof Cpp::LValueReferenceType and result = LValue()
+    or
+    reference instanceof Cpp::RValueReferenceType and result = XValue()
+  }
+
+  private Type getValueType(Type t, ValueCategory category) {
+    result = t.(FunctionReferenceType).getBaseType().getUnderlyingType() and
+    category = LValue()
+    or
+    result = t.(Cpp::ReferenceType).getBaseType().getUnderlyingType() and
+    category = getCategoryForRef(t)
+    or
+    not t instanceof FunctionReferenceType and
+    not t instanceof Cpp::ReferenceType and
+    result = t and
+    category = PRValue()
+  }
+
+  bindingset[arg, param]
+  pragma[inline_late]
+  private predicate qualificationCompatible(Type arg, Type param) {
+    arg.stripTopLevelSpecifiers() = param.stripTopLevelSpecifiers() and
+    preservesQualifiers(arg, param)
+  }
+
+  private class TypeState extends TTypeState {
+    Type getType() { this = MkTypeState(result, _, _, _) }
+
+    ValueCategory getCategory() { this = MkTypeState(_, result, _, _) }
+
+    Phase getPhase() { this = MkTypeState(_, _, _, result) }
+
+    /** Holds if this state's phase permits a value or base-class conversion. */
+    predicate canConvertValue() {
+      this.getPhase() = Initial() or this.getPhase() = AfterTransformation()
+    }
+
+    predicate hasNotUsedConversion() { this = MkTypeState(_, _, false, _) }
+
+    string toString() { result = this.getType().toString() }
+
+    predicate isSource(Type argType) {
+      argType = getForwardedArgumentType(_, _, _) and
+      exists(ValueCategory category |
+        this = MkTypeState(getValueType(argType, category), category, false, Initial())
+      )
+    }
+
+    predicate matchesParameter(Type paramType) {
+      exists(Type base | base = paramType.(Cpp::ReferenceType).getBaseType() |
+        qualificationCompatible(this.getType(), base) and
+        referenceAcceptsCategory(paramType, this.getCategory())
+      )
+      or
+      not paramType instanceof Cpp::ReferenceType and
+      this.getType().stripTopLevelSpecifiers() = paramType.stripTopLevelSpecifiers()
+    }
+
+    predicate isSink(Type paramType, Cpp::Constructor constructor) {
+      paramType = getConstructorParameterType(constructor, _) and
+      this.matchesParameter(paramType)
+    }
+  }
+
+  private Cpp::PointerType pointerType(Type base) {
+    result.getBaseType() = base.getUnderlyingType()
+  }
+
+  private predicate arrayToPointerStep(TypeState argState, TypeState paramState) {
+    exists(Cpp::ArrayType array, boolean conversionUsed |
+      argState = MkTypeState(array, _, conversionUsed, Initial()) and
+      paramState =
+        MkTypeState(pointerType(array.getBaseType()), PRValue(), conversionUsed,
+          AfterTransformation())
+    )
+  }
+
+  private predicate functionToPointerStep(TypeState argState, TypeState paramState) {
+    exists(RoutineType routine, FunctionPointerType pointer, boolean conversionUsed |
+      argState = MkTypeState(routine, _, conversionUsed, Initial()) and
+      routine = pointer.getBaseType().getUnderlyingType() and
+      paramState = MkTypeState(pointer, PRValue(), conversionUsed, AfterTransformation())
+    )
+  }
+
+  private predicate arithmeticConversion(Type t) {
+    t instanceof ArithmeticType
+    or
+    t instanceof Enum and not t instanceof ScopedEnum
+  }
+
+  private predicate hasNoTopLevelSpecifiers(Type type) { type = type.stripTopLevelSpecifiers() }
+
+  private predicate valueConversionStep(TypeState argState, TypeState paramState) {
+    exists(Type argType, Type paramType, boolean conversionUsed |
+      argState = MkTypeState(_, _, conversionUsed, _) and
+      argState.canConvertValue() and
+      argType = argState.getType().stripTopLevelSpecifiers() and
+      hasNoTopLevelSpecifiers(paramType) and
+      argType != paramType and
+      paramState = MkTypeState(paramType, PRValue(), conversionUsed, AfterValueConversion())
+    |
+      paramType instanceof ArithmeticType and
+      arithmeticConversion(argType)
+      or
+      pointerConversion(argType, paramType)
+      or
+      argType instanceof NullPointerType and
+      nullPointerConversion(paramType)
+      or
+      booleanConversion(argType) and
+      paramType instanceof BoolType
+    )
+  }
+
+  private newtype PtrKind =
+    NormalPtrKind() or
+    FunPtrKind()
+
+  private Type pointerBase(Type pointer, PtrKind k) {
+    result = pointer.(Cpp::PointerType).getBaseType() and
+    k = NormalPtrKind()
+    or
+    result = pointer.(FunctionPointerType).getBaseType() and
+    k = FunPtrKind()
+  }
+
+  private predicate pointerQualificationStep(TypeState argState, TypeState paramState) {
+    exists(Type argType, Type paramType, boolean conversionUsed, PtrKind k |
+      argState = MkTypeState(_, _, conversionUsed, _) and
+      argState.getPhase() != AfterQualification() and
+      argType = argState.getType().stripTopLevelSpecifiers() and
+      hasNoTopLevelSpecifiers(paramType) and
+      argType != paramType and
+      qualificationCompatible(pointerBase(argType, k), pointerBase(paramType, k)) and
+      paramState = MkTypeState(paramType, PRValue(), conversionUsed, AfterQualification())
+    )
+  }
+
+  private predicate baseClassStep(TypeState argState, TypeState paramState) {
+    exists(Type arg, Type param, ValueCategory category, boolean conversionUsed |
+      argState = MkTypeState(arg, category, conversionUsed, _) and
+      argState.canConvertValue() and
+      baseTypeCompatible(arg, param) and
+      paramState = MkTypeState(param, category, conversionUsed, AfterValueConversion())
+    )
+  }
+
+  private predicate convertingConstructorStep(TypeState argState, TypeState paramState) {
+    exists(ConvertingConstructor constructor |
+      argState.hasNotUsedConversion() and
+      argState.matchesParameter(constructor.getUnderlyingFromType()) and
+      paramState = MkTypeState(constructor.getDeclaringType(), PRValue(), true, Initial())
+    )
+  }
+
+  private predicate conversionOperatorStep(TypeState argState, TypeState paramState) {
+    exists(ConversionOperator conversion, ValueCategory category |
+      not conversion.isFromUninstantiatedTemplate(_) and
+      not conversion.isExplicit() and
+      not conversion.isDeleted() and
+      argState.hasNotUsedConversion() and
+      conversion.getSourceType() =
+        argState.getType().stripTopLevelSpecifiers().(Class).getABaseClass*() and
+      paramState =
+        MkTypeState(getValueType(conversion.getDestType().getUnderlyingType(), category), category,
+          true, Initial())
+    )
+  }
+
+  private predicate step(TypeState argState, TypeState paramState) {
+    arrayToPointerStep(argState, paramState)
+    or
+    functionToPointerStep(argState, paramState)
+    or
+    valueConversionStep(argState, paramState)
+    or
+    pointerQualificationStep(argState, paramState)
+    or
+    baseClassStep(argState, paramState)
+    or
+    convertingConstructorStep(argState, paramState)
+    or
+    conversionOperatorStep(argState, paramState)
+  }
+
+  private predicate typeFwd(TypeState state) {
+    state.isSource(_)
+    or
+    exists(TypeState previous |
+      typeFwd(previous) and
+      step(previous, state)
+    )
+  }
+
+  private predicate typeRev(TypeState state, Cpp::Constructor constructor) {
+    typeFwd(state) and
+    (
+      state.isSink(_, constructor)
+      or
+      exists(TypeState next |
+        typeRev(next, constructor) and
+        step(state, next)
+      )
+    )
+  }
+
+  private predicate prunedStep(TypeState argState, TypeState paramState) {
+    exists(Cpp::Constructor constructor |
+      typeRev(argState, constructor) and
+      typeRev(paramState, constructor) and
+      step(argState, paramState)
+    )
+  }
+
+  private predicate compatible(Function forwarder, int start, int i, Cpp::Constructor constructor) {
+    exists(TypeState argState, TypeState paramState |
+      argState.isSource(getForwardedArgumentType(forwarder, start, i)) and
+      paramState.isSink(getConstructorParameterType(constructor, i), constructor) and
+      prunedStep*(argState, paramState)
+    )
+  }
+
+  /**
+   * Gets the `Constructor` that should be invoked with arguments `0 .. n`
+   * when `forwarder` is called with arguments `start + 0 .. start + n`.
+   */
+  Cpp::Constructor getForwardingConstructor(Function forwarder, int start) {
+    exists(int numberOfForwardedArguments |
+      numberOfForwardedArguments <= result.getNumberOfParameters()
+      or
+      result.isVarargs()
+    |
+      forwards(forwarder, result.getDeclaringType(), start) and
+      forwarder.getNumberOfParameters() = start + numberOfForwardedArguments and
+      forex(int i | i = [0 .. result.getNumberOfParameters() - 1] |
+        // If we are still processing the forwarded arguments then we need to
+        // check that the argument types match the parameter types.
+        // Functions that perform perfect forwarding are always written as:
+        // ```
+        // template<typename... Args> void emplace(Args&&... args) { ... }
+        // ```
+        // and so all the arguments will be reference typed (lvalue or rvalued).
+        // However, the constructor may not specify all the arguments by
+        // reference.
+        i < numberOfForwardedArguments and
+        compatible(forwarder, start, i, result)
+        or
+        // If the constructor has a default argument and we have processed all
+        // the forwarded arguments then we don't need to check the types.
+        i >= numberOfForwardedArguments and result.getParameter(i).hasInitializer()
+      )
+    )
+  }
+
+  /** Holds if `call` is a call that forwards arguments to a constructor call. */
+  predicate isForwarderConstructorArgumentNodeImpl(CallInstruction call) {
+    exists(getForwardingConstructor(call.getStaticCallTarget(), _))
+  }
+}
+
+/**
+ * In order to support flow summaries for functions that perform "perfect
+ * forwarding" we interpret a call such as:
+ * ```cpp
+ * struct Foo { Foo(int) };
+ * std::vector<Foo> v;
+ * v.emplace_back(42);
+ * ```
+ * as:
+ * ```cpp
+ * v.emplace_back(42, &Foo);
+ * ```
+ * and add two summaries:
+ * (1) One flow from `42` to the first argument of a call to `Foo`
+ * (2) One flow from the return value of `Foo` to the `this` argument of the call
+ * to `emplace_back` (with a sequence of output `Content`s).
+ *
+ * These two summaries are automatically generated when a forwarding model
+ * for `emplace_back` exists.
+ */
+private predicate interpretForwardingSummary(
+  Function forwarder, string input, string output, string provenance, string model
+) {
+  exists(Class c, int start, string constructorOutput |
+    interpretForwardsModel(forwarder, c, start, constructorOutput, provenance, model)
+  |
+    // Generate the (1) summary
+    exists(int index, Parameter arg, Parameter p, int indirection, Cpp::Constructor constructor |
+      arg = forwarder.getParameter(start + index) and
+      constructor = ConstructorForwarding::getForwardingConstructor(forwarder, start) and
+      constructor.getDeclaringType() = c and
+      p = constructor.getParameter(index) and
+      indirection = [0 .. SsaImpl::getMaxIndirectionsForPRType(p.getUnspecifiedType())] and
+      input =
+        "Argument[" + repeatStars(indirection + referenceIndirection(arg.getUnspecifiedType())) +
+          (start + index) + "]" and
+      output =
+        "Argument[forward].Parameter[" +
+          repeatStars(indirection + referenceIndirection(p.getUnspecifiedType())) + index + "]"
+    )
+    or
+    // Generate the (2) summary
+    input = "Argument[forward].Parameter[-1]" and
+    output = constructorOutput
+  )
+  or
+  // Scalar types have no constructor to synthesize. In this case, directly
+  // preserve the value of the single forwarded argument at the modeled output.
+  exists(Type constructedType, int start, Parameter p, int indirection |
+    interpretForwardsModelType(forwarder, constructedType, start, output, provenance, model) and
+    not constructedType instanceof Class and
+    forwarder.getNumberOfParameters() = start + 1 and
+    p = forwarder.getParameter(start) and
+    stripReference(p.getUnspecifiedType()) = constructedType and
+    indirection = [0 .. SsaImpl::getMaxIndirectionsForPRType(constructedType)] and
+    input =
+      "Argument[" + repeatStars(indirection + referenceIndirection(p.getUnspecifiedType())) + start +
+        "]"
+  )
+}
+
+/**
+ * Holds if `node` is specified as a source with the given kind in a MaD flow
+ * model.
+ */
+predicate sourceNode(DataFlow::Node node, string kind) { sourceNode(node, kind, _) }
+
+/**
+ * Holds if `node` is specified as a sink with the given kind in a MaD flow
+ * model.
+ */
+predicate sinkNode(DataFlow::Node node, string kind) { sinkNode(node, kind, _) }
+
+/**
+ * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+ * model.
+ */
+predicate barrierNode(DataFlow::Node node, string kind) { barrierNode(node, kind, _) }
+
+private predicate interpretSummary(
+  Function f, string input, string output, string kind, string provenance, string model
+) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  |
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance,
+      model) and
+    f = interpretElement(namespace, type, subtypes, name, signature, ext)
+  )
+  or
+  interpretForwardingSummary(f, input, output, provenance, model) and
+  kind = "value"
+}
+
+// adapter class for converting Mad summaries to `SummarizedCallable`s
+private class SummarizedCallableAdapter extends SummarizedCallable {
+  string input_;
+  string output_;
+  string kind;
+  Provenance p_;
+  string model_;
+
+  SummarizedCallableAdapter() { interpretSummary(this, input_, output_, kind, p_, model_) }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
+  ) {
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = p_ and
+    isExact = true and
+    model = model_
+  }
+}

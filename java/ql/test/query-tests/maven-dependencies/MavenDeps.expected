@@ -1,0 +1,1 @@
+| my-project/pom.xml:17:5:21:18 | dependency | my-project/pom.xml:1:1:33:11 | project | another-project/pom.xml:1:1:16:11 | project |

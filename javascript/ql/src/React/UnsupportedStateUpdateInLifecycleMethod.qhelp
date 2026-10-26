@@ -1,0 +1,71 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+	<p>
+
+		The three builtin React component methods
+		<code>setState</code>, <code>replaceState</code>, and
+		<code>forceUpdate</code> can update the state of a component
+		asynchronously. It is, however, not recommended to invoke these methods
+		at certain points in the lifecycle of the component.
+
+	</p>
+
+	<p>
+
+		For instance, invoking one of the state update methods during
+		a call to <code>render</code> will cause React to throw an exception
+		because the <code>render</code> method must be pure.
+
+		Invoking one of the state update methods from the
+		constructor of a component is also forbidden because the component
+		is not mounted at that point in time.
+
+		The three component methods <code>componentDidUpdate</code>,
+		<code>componentWillUpdate</code>, and
+		<code>shouldComponentUpdate</code> do allow calls to the state update
+		methods, but only if the calls are conditional.
+
+	</p>
+
+</overview>
+
+<recommendation>
+	<p>
+
+		Only invoke a state update method on a React component when its
+		lifecycle allows it.
+
+	</p>
+
+</recommendation>
+
+<example>
+	<p>
+
+		The following example uses <code>setState</code> to update the
+		<code>counter</code> property of <code>this.state</code>, from the
+		constructor of a React component:
+
+	</p>
+
+	<sample src="examples/unsupported-state-update-in-lifecycle-method.js"/>
+
+	<p>
+
+		Instead, replace the call to <code>setState</code> with an
+		assignment:
+
+	</p>
+
+	<sample src="examples/unsupported-state-update-in-lifecycle-method_fixed.js"/>
+</example>
+
+<references>
+	<li>React reference: <a href="https://reactjs.org/docs/react-component.html">React.Component</a>.</li>
+	<li>React Quick Start: <a href="https://reactjs.org/docs/state-and-lifecycle.html">State and Lifecycle</a>.</li>
+</references>
+</qhelp>

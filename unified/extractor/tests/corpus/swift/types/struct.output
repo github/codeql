@@ -1,0 +1,79 @@
+struct Point {
+  let x: Int
+  let y: Int
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        structDecl
+          attributes:
+          name: identifier "Point"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "y"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+          modifiers:
+          structKeyword: struct
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  ⟨member⟩\n}"
+          modifier: modifier "struct" source="struct"
+          name_node: identifier "Point" source="Point"
+          member:
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩"
+              modifier: modifier "let" source="let"
+              pattern: identifier "x" source="x"
+              type: identifier "Int" source="Int"
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩"
+              modifier: modifier "let" source="let"
+              pattern: identifier "y" source="y"
+              type: identifier "Int" source="Int"
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""

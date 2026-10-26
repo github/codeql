@@ -1,0 +1,5 @@
+name: codeql/rust-downgrades
+groups: rust
+downgrades: .
+library: true
+warnOnImplicitThis: true

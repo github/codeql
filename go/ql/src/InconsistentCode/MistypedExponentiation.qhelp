@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+  The caret symbol (<code>^</code>) is sometimes used to represent
+  exponentiation but in Go, as in many C-like languages, it represents the
+  bitwise exclusive-or operation. The expression as <code>2^32</code> thus
+  evaluates the number 34, not 2<sup>32</sup>, and it is likely that patterns
+  such as this are mistakes.
+</p>
+</overview>
+
+<recommendation>
+<p>
+  To compute 2<sup><code>EXP</code></sup>, <code>1 &lt;&lt; EXP</code> can be
+  used. For constant exponents, <code>1eEXP</code> can be used to find
+  10<sup><code>EXP</code></sup>. In other cases, there is <code>math.Pow</code>
+  in the Go standard library which provides this functionality.
+</p>
+</recommendation>
+
+<example>
+<p>
+  The example below prints 34 and not 2<sup>32</sup> (4294967296).
+</p>
+
+<sample src="MistypedExponentiation.go" />
+</example>
+
+<references>
+<li>GCC Bugzilla: <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90885">GCC should warn about 2^16 and 2^32 and 2^64</a></li>
+</references>
+</qhelp>

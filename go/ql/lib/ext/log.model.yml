@@ -1,0 +1,32 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["log", "", False, "Fatal", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["log", "", False, "Fatalf", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["log", "", False, "Fatalln", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["log", "", False, "Output", "", "", "Argument[1]", "log-injection", "manual"]
+      - ["log", "", False, "Panic", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["log", "", False, "Panicf", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["log", "", False, "Panicln", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["log", "", False, "Print", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["log", "", False, "Printf", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["log", "", False, "Println", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["log", "Logger", True, "Fatal", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["log", "Logger", True, "Fatalf", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["log", "Logger", True, "Fatalln", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["log", "Logger", True, "Output", "", "", "Argument[1]", "log-injection", "manual"]
+      - ["log", "Logger", True, "Panic", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["log", "Logger", True, "Panicf", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["log", "Logger", True, "Panicln", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["log", "Logger", True, "Print", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["log", "Logger", True, "Printf", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["log", "Logger", True, "Println", "", "", "Argument[0]", "log-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["log", "Logger", True, "SetOutput", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["log", "Logger", True, "SetPrefix", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["log", "Logger", True, "Writer", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

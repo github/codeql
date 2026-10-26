@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.hc.client5.http.utils", "URIUtils", True, "extractHost", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.hc.client5.http.utils", "URIUtils", True, "resolve", "(URI,HttpHost,List)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.hc.client5.http.utils", "URIUtils", True, "resolve", "(URI,String)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.hc.client5.http.utils", "URIUtils", True, "resolve", "(URI,URI)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.hc.client5.http.utils", "URIUtils", True, "rewriteURI", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.hc.client5.http.utils", "URIUtils", True, "rewriteURI", "(URI,HttpHost)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.hc.client5.http.utils", "URIUtils", True, "rewriteURI", "(URI,HttpHost,boolean)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]

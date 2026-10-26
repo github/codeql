@@ -1,0 +1,26 @@
+| test.cpp:35:2:37:2 | for(...;...;...) ... | test.cpp:35:18:35:23 | ... < ... | 1 | i | { ... } | i | ExprStmt |
+| test.cpp:43:2:45:2 | for(...;...;...) ... | test.cpp:43:18:43:26 | ... < ... |  | i | { ... } | i | ExprStmt |
+| test.cpp:74:2:77:2 | while (...) ... | test.cpp:74:9:74:17 | ... > ... | 1 | count | { ... } | count | ExprStmt |
+| test.cpp:84:2:88:2 | while (...) ... | test.cpp:84:9:84:17 | ... > ... |  | count | { ... } | count | if (...) ...  |
+| test.cpp:172:3:174:3 | while (...) ... | test.cpp:172:10:172:43 | ... != ... |  | args | { ... } | args | return ... |
+| test.cpp:259:2:263:2 | while (...) ... | test.cpp:259:9:259:12 | loop | 1 | loop | { ... } | loop | return ... |
+| test.cpp:271:2:275:2 | while (...) ... | test.cpp:271:9:271:20 | ... && ... | 1 | 1 | { ... } | ... && ... | return ... |
+| test.cpp:283:2:287:2 | while (...) ... | test.cpp:283:9:283:13 | ! ... | 1 | stop | { ... } | stop | return ... |
+| test.cpp:295:2:299:2 | while (...) ... | test.cpp:295:9:295:20 | ... && ... | 1 | loop | { ... } | loop | return ... |
+| test.cpp:307:2:311:2 | while (...) ... | test.cpp:307:9:307:20 | ... && ... | 1 | loop | { ... } | ... && ..., loop | return ... |
+| test.cpp:319:2:323:2 | while (...) ... | test.cpp:319:9:319:21 | ... \|\| ... | 1 | ... \|\| ... | { ... } | 0 | return ... |
+| test.cpp:331:2:336:2 | while (...) ... | test.cpp:331:9:331:17 | ... ? ... : ... |  | b, c | { ... } | c | return ... |
+| test.cpp:344:2:349:2 | while (...) ... | test.cpp:344:9:344:21 | ... \|\| ... | 1 | b, c | { ... } | c | return ... |
+| test.cpp:356:2:359:17 | do (...) ... | test.cpp:359:11:359:15 | 0 |  | { ... } | { ... } | { ... } | return ... |
+| test.cpp:369:2:372:2 | while (...) ... | test.cpp:369:9:369:21 | ... \|\| ... | 1 | ... \|\| ... | { ... } | 0 | while (...) ... |
+| test.cpp:373:2:376:2 | while (...) ... | test.cpp:373:9:373:13 | ! ... | 1 | stop | { ... } | stop | while (...) ... |
+| test.cpp:377:2:381:2 | while (...) ... | test.cpp:377:9:377:21 | ... \|\| ... | 1 | b, c | { ... } | c | do (...) ... |
+| test.cpp:382:2:384:17 | do (...) ... | test.cpp:384:11:384:15 | 0 |  | do (...) ... | { ... } | { ... } | return ... |
+| test.cpp:392:2:394:2 | while (...) ... | test.cpp:392:9:392:12 | 1 | 1 | 1 | { ... } |  | return ... |
+| test.cpp:402:2:404:2 | while (...) ... | test.cpp:402:9:402:21 | ... , ... |  | { ... } | { ... } |  |  |
+| test.cpp:412:3:416:3 | while (...) ... | test.cpp:412:10:412:13 | loop | 1 | loop | { ... } |  |  |
+| test.cpp:424:2:426:2 | for(...;...;...) ... | test.cpp:424:18:424:23 | ... < ... | 1 | i | { ... } | i | return ... |
+| test.cpp:432:2:433:2 | for(...;...;...) ... | test.cpp:432:18:432:23 | ... < ... | 1 | i | { ... } | i | return ... |
+| test.cpp:441:2:442:2 | for(...;...;...) ... | test.cpp:441:18:441:22 | 0 | 0 |  | { ... } | 0 | return ... |
+| test.cpp:567:3:572:3 | while (...) ... | test.cpp:567:9:567:15 | call to getBool |  | call to getBool | { ... } | call to getBool | ExprStmt |
+| test.cpp:582:3:587:3 | while (...) ... | test.cpp:582:10:582:16 | call to getBool |  | call to getBool | { ... } | call to getBool | ExprStmt |

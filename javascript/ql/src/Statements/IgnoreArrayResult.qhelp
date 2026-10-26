@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The <code>concat</code>, <code>join</code> and <code>slice</code> methods are
+pure and do not modify any of the inputs or the array the method is called 
+on. It is therefore generally an error to ignore the return value from a call
+to one of these methods. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Use the returned value from the calls to <code>concat</code>, <code>join</code> 
+or <code>slice</code>. 
+</p>
+
+</recommendation>
+<example>
+
+<p>
+A function <code>extend</code> is defined in the following example. The 
+function uses the <code>concat</code> method to add elements to the 
+<code>arr</code> array. However, the <code>extend</code> function has no 
+effect as the return value from <code>concat</code> is ignored:
+</p>
+
+<sample src="examples/IgnoreArrayResult.js" />
+
+<p>
+Assigning the returned value from the call to <code>concat</code> to the 
+<code>arr</code> variable fixes the error:
+</p>
+
+<sample src="examples/IgnoreArrayResultFixed.js" />
+
+</example>
+<references>
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat">Array concat</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice">Array slice</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join">Array join</a>.</li>
+
+</references>
+</qhelp>

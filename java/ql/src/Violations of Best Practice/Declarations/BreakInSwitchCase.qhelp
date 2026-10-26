@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>In a <code>switch</code> statement, execution 'falls through' from one <code>case</code> to
+the next, unless the <code>case</code> ends with a <code>break</code> statement. A
+common programming error is to forget to insert a <code>break</code> at the end
+of a <code>case</code>.</p>
+
+</overview>
+<recommendation>
+
+<p>End each <code>case</code> with a <code>break</code> statement or, if execution is 
+supposed to fall through to the next <code>case</code>, comment the last line of the
+<code>case</code> with the following comment: <code>/* falls through */</code></p>
+
+<p>Such comments are not required for a completely empty <code>case</code> that is
+supposed to share the same implementation with the subsequent <code>case</code>.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the <code>PING</code> case is missing a
+<code>break</code> statement. As a result, after <code>reply</code> is assigned the value of 
+<code>Message.PONG</code>, execution falls through to the <code>TIMEOUT</code> case. Then the value 
+of <code>reply</code> is erroneously assigned the value of <code>Message.PING</code>. To fix this,
+insert <code>break;</code> at the end of the <code>PING</code> case.</p>
+
+<sample src="BreakInSwitchCase.java" />
+
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, Puzzle 23.
+  Addison-Wesley, 2005.
+</li>
+<li>
+Code Conventions for the Java Programming Language:
+<a href="https://www.oracle.com/java/technologies/javase/codeconventions-statements.html#468">7.8 switch Statements</a>.
+</li>
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+
+
+</references>
+</qhelp>

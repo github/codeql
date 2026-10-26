@@ -1,0 +1,18 @@
+42
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        integerLiteralExpr
+          literal: integerLiteral "42"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt: int_literal "42" source="42"

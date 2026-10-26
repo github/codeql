@@ -1,0 +1,2 @@
+| RethrowException.cs:12:13:12:20 | throw ...; | Rethrowing exception variable. |
+| RethrowException.cs:21:17:21:24 | throw ...; | Rethrowing exception variable. |

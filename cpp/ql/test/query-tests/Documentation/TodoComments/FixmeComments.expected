@@ -1,0 +1,3 @@
+| todo_fixme.cpp:8:1:8:16 | // FIXME: Bug 1. | FIXME comment: Bug 1. |
+| todo_fixme.cpp:9:1:9:19 | /* FIXME: Bug 2. */ | FIXME comment: Bug 2. |
+| todo_fixme.cpp:10:1:12:3 | /**\n * FIXME: Bug 3.\n */ | FIXME comment: Bug 3. |

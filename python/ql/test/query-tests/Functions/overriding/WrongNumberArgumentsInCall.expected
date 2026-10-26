@@ -1,0 +1,2 @@
+| test.py:16:9:16:21 | Attribute() | Call to $@ with too many arguments; should be no more than 0. | test.py:5:5:5:20 | Function Base.meth1 | method Base.meth1 |
+| test.py:17:9:17:20 | Attribute() | Call to $@ with too few arguments; should be no fewer than 1. | test.py:8:5:8:26 | Function Base.meth2 | method Base.meth2 |

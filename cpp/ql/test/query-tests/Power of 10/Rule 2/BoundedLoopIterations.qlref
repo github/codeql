@@ -1,0 +1,2 @@
+query: Power of 10/Rule 2/BoundedLoopIterations.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

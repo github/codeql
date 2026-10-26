@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Locks held concurrently should be locked in a consistent sequence, otherwise the program can deadlock.
+This rule detects nested <code>lock</code> statements that lock variables in a different sequence in 
+different parts of the program.</p>
+</overview>
+
+<recommendation>
+<p>This problem can be avoided by ensuring that nested <code>lock</code> statements always lock 
+variables in the same sequence.</p>
+</recommendation>
+
+<example>
+<p>The following example shows a program running two threads, which deadlocks because <code>thread1</code> holds <code>lock1</code> and
+is waiting to acquire <code>lock2</code>, whilst <code>thread2</code> holds <code>lock2</code> and is waiting to acquire <code>lock1</code>.</p>
+
+<sample src="LockOrderBad.cs" />
+
+<p>This problem is resolved by reordering the <code>lock</code> variables as shown below.</p>
+<sample src="LockOrderGood.cs" />
+</example>
+
+<references>
+  <li>
+    MSDN, C# Reference: 
+    <a href="http://msdn.microsoft.com/en-us/library/c5kehkcz%28v=vs.110%29.aspx">lock Statement</a>.
+  </li>
+  <li>
+    The CERT Oracle Coding Standard for Java: 
+    <a href="https://www.securecoding.cert.org/confluence/display/java/LCK07-J.+Avoid+deadlock+by+requesting+and+releasing+locks+in+the+same+order">
+    LCK07-J. Avoid deadlock by requesting and releasing locks in the same order</a>.
+  </li>
+</references>
+</qhelp>

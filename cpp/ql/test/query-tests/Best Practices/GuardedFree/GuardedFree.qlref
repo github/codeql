@@ -1,0 +1,2 @@
+query: Best Practices/GuardedFree.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

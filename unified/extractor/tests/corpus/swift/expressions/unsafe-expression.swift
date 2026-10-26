@@ -1,0 +1,2 @@
+func doWork() {}
+unsafe doWork()

@@ -1,0 +1,72 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Code that constructs a quoted string literal containing user-provided data needs to ensure that
+this data does not itself contain a quote. Otherwise the embedded data could (accidentally or
+intentionally) terminate the string literal early and thereby change the structure of the overall
+string, with potentially severe consequences. If, for example, the string is later used as
+part of an operating-system command or database query, an attacker may be able to craft input data
+that injects a malicious command.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Sanitize the embedded data appropriately to ensure quotes are escaped, or use an API that does
+not rely on manually constructing quoted substrings. Make sure to use the appropriate escaping
+mechanism, for example, double quoting for SQL strings or backslash escaping for shell commands.
+When using backslash escaping, the backslash character itself must also be escaped.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, assume that <code>version</code> is an object from an untrusted source.
+The code snippet first uses <code>json.Marshal</code> to serialize this object into a string, and
+then embeds it into a SQL query built using the Squirrel library.
+</p>
+<sample src="StringBreak.go"/>
+<p>
+Note that JSON encoding does not escape single quotes in any way, so this code is vulnerable: any
+single-quote character in <code>version</code> will prematurely close the surrounding string literal,
+changing the structure of the SQL expression being constructed. This could be exploited to mount
+a SQL injection attack.
+</p>
+<p>
+To fix this vulnerability, use the placeholder syntax from Squirrel's structured API for building
+queries, which avoids the need to explicitly construct a quoted string.
+</p>
+<sample src="StringBreakGood.go"/>
+<p>
+In situations where a structured API is not available, make sure that you escape quotes before embedding
+user-provided data into a quoted string. For example, this is how you can backslash-escape single
+quotes using <code>strings.ReplaceAll</code>:
+</p>
+<sample language="go">
+  quoted := strings.ReplaceAll(raw, `\`, `\\`)
+  quoted = strings.ReplaceAll(quoted, "'", "\\'")
+</sample>
+<p>
+Note that any existing backslash characters in the string must be escaped first, so that they do
+not interfere with the escaping of single quotes.
+</p>
+<p>
+In some cases, <code>strconv.Quote</code> is a convenient option for backslash escaping, but note
+that it has two limitations:
+</p>
+<ol>
+  <li>It only supports double quotes, not single quotes (as in the example).</li>
+  <li>It puts quotes around the entire string, so it can only be used to construct complete string
+      literals, not parts of larger string literals.</li>
+</ol>
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection</a>.</li>
+<li>OWASP: <a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.</li>
+</references>
+</qhelp>

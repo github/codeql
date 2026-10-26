@@ -1,0 +1,25 @@
+| test.cpp:6:10:6:10 | a | test.cpp:27:6:27:6 | a |
+| test.cpp:6:13:6:13 | b | test.cpp:27:9:27:9 | b |
+| test.cpp:6:16:6:16 | c | test.cpp:27:12:27:12 | c |
+| test.cpp:6:19:6:19 | d | test.cpp:27:15:27:15 | d |
+| test.cpp:7:11:7:12 | p1 | test.cpp:20:7:20:8 | p1 |
+| test.cpp:7:11:7:12 | p1 | test.cpp:27:18:27:19 | p1 |
+| test.cpp:7:16:7:17 | p2 | test.cpp:27:22:27:23 | p2 |
+| test.cpp:7:21:7:22 | p3 | test.cpp:27:26:27:27 | p3 |
+| test.cpp:8:12:8:14 | pp1 | test.cpp:27:30:27:32 | pp1 |
+| test.cpp:8:19:8:21 | pp2 | test.cpp:27:35:27:37 | pp2 |
+| test.cpp:12:15:12:18 | cond | test.cpp:14:6:14:9 | cond |
+| test.cpp:16:3:16:4 | p1 | test.cpp:16:3:16:9 | ... = ... |
+| test.cpp:16:3:16:4 | p1 | test.cpp:16:8:16:9 | & ... |
+| test.cpp:18:3:18:4 | p1 | test.cpp:18:3:18:9 | ... = ... |
+| test.cpp:18:3:18:4 | p1 | test.cpp:18:8:18:9 | & ... |
+| test.cpp:20:2:20:3 | p2 | test.cpp:20:2:20:8 | ... = ... |
+| test.cpp:20:2:20:3 | p2 | test.cpp:20:7:20:8 | p1 |
+| test.cpp:22:2:22:3 | p3 | test.cpp:22:2:22:8 | ... = ... |
+| test.cpp:22:2:22:3 | p3 | test.cpp:22:7:22:8 | & ... |
+| test.cpp:23:2:23:4 | pp1 | test.cpp:23:2:23:10 | ... = ... |
+| test.cpp:23:2:23:4 | pp1 | test.cpp:23:8:23:10 | & ... |
+| test.cpp:24:2:24:3 | p3 | test.cpp:24:2:24:8 | ... = ... |
+| test.cpp:24:2:24:3 | p3 | test.cpp:24:7:24:8 | & ... |
+| test.cpp:25:2:25:4 | pp2 | test.cpp:25:2:25:10 | ... = ... |
+| test.cpp:25:2:25:4 | pp2 | test.cpp:25:8:25:10 | & ... |

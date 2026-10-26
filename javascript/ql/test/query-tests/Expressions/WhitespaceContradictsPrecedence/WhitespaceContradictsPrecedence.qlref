@@ -1,0 +1,2 @@
+query: Expressions/WhitespaceContradictsPrecedence.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

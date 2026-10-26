@@ -1,0 +1,4 @@
+name: integrationtest-custom-plugin
+dependencies:
+  codeql/java-all: '*'
+warnOnImplicitThis: true

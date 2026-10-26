@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["encoding/gob", "", False, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["encoding/gob", "Decoder", True, "Decode", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["encoding/gob", "Decoder", True, "DecodeValue", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["encoding/gob", "Encoder", True, "Encode", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["encoding/gob", "Encoder", True, "EncodeValue", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["encoding/gob", "GobDecoder", True, "GobDecode", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["encoding/gob", "GobEncoder", True, "GobEncode", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]

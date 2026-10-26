@@ -1,0 +1,13 @@
+| file://:0:0:0:0 | builtin-class dict | file://:0:0:0:0 | builtin-class dict |
+| file://:0:0:0:0 | builtin-class dict | file://:0:0:0:0 | builtin-class list |
+| file://:0:0:0:0 | builtin-class int | file://:0:0:0:0 | builtin-class dict |
+| file://:0:0:0:0 | builtin-class int | file://:0:0:0:0 | builtin-class float |
+| file://:0:0:0:0 | builtin-class int | file://:0:0:0:0 | builtin-class int |
+| file://:0:0:0:0 | builtin-class int | file://:0:0:0:0 | builtin-class list |
+| file://:0:0:0:0 | builtin-class int | file://:0:0:0:0 | builtin-class object |
+| file://:0:0:0:0 | builtin-class int | file://:0:0:0:0 | builtin-class tuple |
+| file://:0:0:0:0 | builtin-class int | test.py:14:23:14:31 | (builtin-class list, builtin-class int, ) |
+| file://:0:0:0:0 | builtin-class int | test.py:15:29:15:37 | (builtin-class list, builtin-class int, ) |
+| file://:0:0:0:0 | builtin-class int | test.py:16:25:16:35 | (builtin-class float, builtin-class dict, ) |
+| file://:0:0:0:0 | builtin-class tuple | file://:0:0:0:0 | builtin-class int |
+| file://:0:0:0:0 | builtin-class tuple | file://:0:0:0:0 | builtin-class tuple |

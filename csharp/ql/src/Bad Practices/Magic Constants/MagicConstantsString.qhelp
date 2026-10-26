@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule finds strings that are used multiple times that should possibly be constants instead. 
+Named constants make it easier to determine the purpose of the string and make the string easy to
+change if it is used more than once.</p>
+
+</overview>
+<recommendation>
+<p>Consider replacing the string with a named constant.</p>
+
+</recommendation>
+<example>
+<p>In the example shown it would be better if the string "127.0.0.1" was made into a named constant.</p>
+<sample src="MagicConstantsString.cs" />
+
+</example>
+<references>
+
+  <li>Robert C. Martin, <em>Clean Code - A handbook of agile software craftsmanship</em>, p. 295. Prentice Hall, 2008.</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,15 @@
+#select
+| Mysql2.rb:13:27:13:72 | "SELECT * FROM users WHERE use..." | Mysql2.rb:3:12:3:17 | call to params | Mysql2.rb:13:27:13:72 | "SELECT * FROM users WHERE use..." | This SQL query depends on a $@. | Mysql2.rb:3:12:3:17 | call to params | user-provided value |
+| Mysql2.rb:24:31:24:93 | "SELECT * FROM users WHERE use..." | Mysql2.rb:3:12:3:17 | call to params | Mysql2.rb:24:31:24:93 | "SELECT * FROM users WHERE use..." | This SQL query depends on a $@. | Mysql2.rb:3:12:3:17 | call to params | user-provided value |
+edges
+| Mysql2.rb:3:5:3:8 | name | Mysql2.rb:13:27:13:72 | "SELECT * FROM users WHERE use..." | provenance | AdditionalTaintStep |
+| Mysql2.rb:3:5:3:8 | name | Mysql2.rb:24:31:24:93 | "SELECT * FROM users WHERE use..." | provenance | AdditionalTaintStep |
+| Mysql2.rb:3:12:3:17 | call to params | Mysql2.rb:3:12:3:29 | ...[...] | provenance |  |
+| Mysql2.rb:3:12:3:29 | ...[...] | Mysql2.rb:3:5:3:8 | name | provenance |  |
+nodes
+| Mysql2.rb:3:5:3:8 | name | semmle.label | name |
+| Mysql2.rb:3:12:3:17 | call to params | semmle.label | call to params |
+| Mysql2.rb:3:12:3:29 | ...[...] | semmle.label | ...[...] |
+| Mysql2.rb:13:27:13:72 | "SELECT * FROM users WHERE use..." | semmle.label | "SELECT * FROM users WHERE use..." |
+| Mysql2.rb:24:31:24:93 | "SELECT * FROM users WHERE use..." | semmle.label | "SELECT * FROM users WHERE use..." |
+subpaths

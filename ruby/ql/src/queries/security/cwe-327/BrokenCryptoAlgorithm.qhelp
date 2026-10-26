@@ -1,0 +1,60 @@
+<!DOCTYPE qhelp PUBLIC
+ "-//Semmle//qhelp//EN"
+ "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Using broken or weak cryptographic algorithms may compromise
+      security guarantees such as confidentiality, integrity, and
+      authenticity.
+    </p>
+
+    <p>
+      Many cryptographic algorithms are known to be weak or flawed. The
+      security guarantees of a system often rely on the underlying
+      cryptography, so using a weak algorithm can have severe consequences.
+      For example:
+    </p>
+
+    <ul>
+      <li>
+      If a weak encryption algorithm is used, an attacker may be able to
+      decrypt sensitive data.
+      </li>
+      <li>
+      If a weak algorithm is used for digital signatures, an attacker may
+      be able to forge signatures and impersonate legitimate users.
+      </li>
+    </ul>
+    <p>
+      This query alerts on any use of a weak cryptographic algorithm that is
+      not a hashing algorithm. Use of broken or weak cryptographic hash
+      functions are handled by the
+      <code>rb/weak-sensitive-data-hashing</code> query.
+    </p>
+  </overview>
+  <recommendation>
+    <p>
+      Ensure that you use a strong, modern cryptographic
+      algorithm, such as AES-128 or RSA-2048.
+    </p>
+  </recommendation>
+  <example>
+
+    <p>
+      The following code uses the <code>OpenSSL</code> library to encrypt some
+      secret data. When you create a cipher using <code>OpenSSL</code> you must
+      specify the encryption algorithm to use. The first example uses DES, which
+      is an older algorithm that is now considered weak. The second example uses
+      AES, which is a stronger modern algorithm.
+    </p>
+
+    <sample src="examples/broken_crypto.rb" />
+  </example>
+  <references>
+    <li>NIST, FIPS 140 Annex a: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf"> Approved Security Functions</a>.</li>
+    <li>NIST, SP 800-131A: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf"> Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
+    <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#rule---use-strong-approved-authenticated-encryption">Rule - Use strong approved cryptographic algorithms</a>.
+    </li>
+  </references>
+</qhelp>

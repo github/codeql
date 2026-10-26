@@ -1,0 +1,7 @@
+missingCallee
+spuriousCallee
+| main.go:44:3:44:7 | call to m | main.go:17:1:17:17 | function declaration |
+| main.go:44:3:44:7 | call to m | main.go:21:1:21:20 | function declaration |
+| main.go:56:2:56:6 | call to m | main.go:21:1:21:20 | function declaration |
+| test.go:42:2:42:13 | call to Write | test.go:36:1:39:1 | function declaration |
+| test.go:44:2:44:8 | call to f1 | test.go:36:1:39:1 | function declaration |

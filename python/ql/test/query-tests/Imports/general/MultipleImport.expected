@@ -1,0 +1,2 @@
+| imports_test.py:33:1:33:14 | Import | This import of module module1 is redundant, as it was previously imported $@. | imports_test.py:2:1:2:23 | Import | on line 2 |
+| imports_test.py:34:1:34:14 | Import | This import of module module2 is redundant, as it was previously imported $@. | imports_test.py:2:1:2:23 | Import | on line 2 |

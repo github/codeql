@@ -1,0 +1,30 @@
+#select
+| closure.js:3:24:3:26 | src | closure.js:2:13:2:36 | documen ... .search | closure.js:3:24:3:26 | src | XML parsing depends on a $@ without guarding against uncontrolled entity expansion. | closure.js:2:13:2:36 | documen ... .search | user-provided value |
+| domparser.js:5:37:5:39 | src | domparser.js:2:13:2:36 | documen ... .search | domparser.js:5:37:5:39 | src | XML parsing depends on a $@ without guarding against uncontrolled entity expansion. | domparser.js:2:13:2:36 | documen ... .search | user-provided value |
+| domparser.js:9:55:9:57 | src | domparser.js:2:13:2:36 | documen ... .search | domparser.js:9:55:9:57 | src | XML parsing depends on a $@ without guarding against uncontrolled entity expansion. | domparser.js:2:13:2:36 | documen ... .search | user-provided value |
+| domparser.js:11:57:11:59 | src | domparser.js:2:13:2:36 | documen ... .search | domparser.js:11:57:11:59 | src | XML parsing depends on a $@ without guarding against uncontrolled entity expansion. | domparser.js:2:13:2:36 | documen ... .search | user-provided value |
+| expat.js:6:16:6:36 | req.par ... e-xml") | expat.js:6:16:6:36 | req.par ... e-xml") | expat.js:6:16:6:36 | req.par ... e-xml") | XML parsing depends on a $@ without guarding against uncontrolled entity expansion. | expat.js:6:16:6:36 | req.par ... e-xml") | user-provided value |
+| jquery.js:4:14:4:16 | src | jquery.js:2:13:2:36 | documen ... .search | jquery.js:4:14:4:16 | src | XML parsing depends on a $@ without guarding against uncontrolled entity expansion. | jquery.js:2:13:2:36 | documen ... .search | user-provided value |
+edges
+| closure.js:2:7:2:9 | src | closure.js:3:24:3:26 | src | provenance |  |
+| closure.js:2:13:2:36 | documen ... .search | closure.js:2:7:2:9 | src | provenance |  |
+| domparser.js:2:7:2:9 | src | domparser.js:5:37:5:39 | src | provenance |  |
+| domparser.js:2:7:2:9 | src | domparser.js:9:55:9:57 | src | provenance |  |
+| domparser.js:2:7:2:9 | src | domparser.js:11:57:11:59 | src | provenance |  |
+| domparser.js:2:13:2:36 | documen ... .search | domparser.js:2:7:2:9 | src | provenance |  |
+| jquery.js:2:7:2:9 | src | jquery.js:4:14:4:16 | src | provenance |  |
+| jquery.js:2:13:2:36 | documen ... .search | jquery.js:2:7:2:9 | src | provenance |  |
+nodes
+| closure.js:2:7:2:9 | src | semmle.label | src |
+| closure.js:2:13:2:36 | documen ... .search | semmle.label | documen ... .search |
+| closure.js:3:24:3:26 | src | semmle.label | src |
+| domparser.js:2:7:2:9 | src | semmle.label | src |
+| domparser.js:2:13:2:36 | documen ... .search | semmle.label | documen ... .search |
+| domparser.js:5:37:5:39 | src | semmle.label | src |
+| domparser.js:9:55:9:57 | src | semmle.label | src |
+| domparser.js:11:57:11:59 | src | semmle.label | src |
+| expat.js:6:16:6:36 | req.par ... e-xml") | semmle.label | req.par ... e-xml") |
+| jquery.js:2:7:2:9 | src | semmle.label | src |
+| jquery.js:2:13:2:36 | documen ... .search | semmle.label | documen ... .search |
+| jquery.js:4:14:4:16 | src | semmle.label | src |
+subpaths

@@ -1,0 +1,2 @@
+query: Declarations/UnusedProperty.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,3 @@
+| tests.cpp:290:13:290:19 | call to wcsncpy | Potentially unsafe call to wcsncpy; third argument should be size of destination. |
+| tests.cpp:306:4:306:10 | call to wcsncpy | Potentially unsafe call to wcsncpy; third argument should be size of destination. |
+| tests.cpp:452:9:452:15 | call to wcsncpy | Potentially unsafe call to wcsncpy; third argument should be size of destination. |

@@ -1,0 +1,6 @@
+| DeferInLoop.go:8:3:8:20 | defer statement | This defer statement is in a $@. | DeferInLoop.go:6:2:13:2 | range statement | loop |
+| test.go:6:3:6:14 | defer statement | This defer statement is in a $@. | test.go:5:2:7:2 | range statement | loop |
+| test.go:11:4:11:15 | defer statement | This defer statement is in a $@. | test.go:9:2:13:2 | range statement | loop |
+| test.go:16:3:16:14 | defer statement | This defer statement is in a $@. | test.go:15:2:17:2 | for statement | loop |
+| test.go:20:3:20:14 | defer statement | This defer statement is in a $@. | test.go:19:2:21:2 | for statement | loop |
+| test.go:24:3:24:14 | defer statement | This defer statement is in a $@. | test.go:23:2:25:2 | for statement | loop |

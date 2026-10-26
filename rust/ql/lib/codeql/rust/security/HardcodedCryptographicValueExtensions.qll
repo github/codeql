@@ -1,0 +1,199 @@
+/**
+ * Provides classes and predicates for reasoning about hard-coded cryptographic value
+ * vulnerabilities.
+ */
+
+import rust
+private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
+private import codeql.rust.dataflow.FlowSource
+private import codeql.rust.dataflow.FlowSink
+private import codeql.rust.Concepts
+private import codeql.rust.security.SensitiveData
+private import codeql.rust.dataflow.internal.Node as Node
+
+/**
+ * A kind of cryptographic value.
+ */
+class CryptographicValueKind extends string {
+  CryptographicValueKind() { this = ["password", "key", "iv", "nonce", "salt"] }
+
+  /**
+   * Gets a description of this value kind for user-facing messages.
+   */
+  string getDescription() {
+    this = "password" and result = "a password"
+    or
+    this = "key" and result = "a key"
+    or
+    this = "iv" and result = "an initialization vector"
+    or
+    this = "nonce" and result = "a nonce"
+    or
+    this = "salt" and result = "a salt"
+  }
+}
+
+/**
+ * Provides default sources, sinks and barriers for detecting hard-coded cryptographic
+ * value vulnerabilities, as well as extension points for adding your own.
+ */
+module HardcodedCryptographicValue {
+  /**
+   * A data flow source for hard-coded cryptographic value vulnerabilities.
+   */
+  abstract class Source extends DataFlow::Node { }
+
+  /**
+   * A data flow sink for hard-coded cryptographic value vulnerabilities.
+   */
+  abstract class Sink extends QuerySink::Range {
+    override string getSinkType() { result = "HardcodedCryptographicValue" }
+
+    /**
+     * Gets the kind of credential this sink is interpreted as.
+     */
+    abstract CryptographicValueKind getKind();
+  }
+
+  /**
+   * A barrier for hard-coded cryptographic value vulnerabilities.
+   */
+  abstract class Barrier extends DataFlow::Node { }
+
+  /**
+   * Holds if `e` is a literal or an expression that contains a constant. For example:
+   * ```
+   * ["hello", "world", s]
+   * ```
+   */
+  private predicate hasConstant(Expr e) {
+    e instanceof LiteralExpr // e.g. `0`
+    or
+    exists(Expr elem | elem = e.(ArrayListExpr).getExpr(_) | hasConstant(elem)) // e.g. `[0, 0, 0, 0]`
+    or
+    hasConstant(e.(ArrayRepeatExpr).getRepeatOperand()) // e.g. `[0; 10]`
+    or
+    // a match expression with one or more constant arms; taint would reach here
+    // anyway, but we make it a source to avoid reporting many similar results
+    // on each match arm.
+    hasConstant(e.(MatchExpr).getMatchArmList().getAnArm().getExpr())
+    or
+    // e.g. `const MY_CONST: u64 = ...`
+    // the constant initializer / body is the preferred source location for flow paths, when available.
+    e = any(Const c).getBody()
+    or
+    // e.g. `u64::MAX`
+    // when the constant initializer is not available as a source location (case above), use the access instead.
+    e instanceof ConstAccess and
+    not exists(e.(ConstAccess).getConst().getBody())
+    or
+    // e.g. `1 << 4`
+    hasConstant(e.(BinaryExpr).getLhs()) and
+    hasConstant(e.(BinaryExpr).getRhs())
+  }
+
+  /**
+   * A constant, considered as a flow source.
+   */
+  private class ConstantSource extends Source {
+    ConstantSource() { hasConstant(this.asExpr()) }
+  }
+
+  /**
+   * An externally modeled source for constant values.
+   */
+  private class ModeledSource extends Source {
+    ModeledSource() { sourceNode(this, "constant-source") }
+  }
+
+  /**
+   * An externally modeled sink for hard-coded cryptographic value vulnerabilities.
+   */
+  private class ModelsAsDataSinks extends Sink {
+    CryptographicValueKind kind;
+
+    ModelsAsDataSinks() { sinkNode(this, "credentials-" + kind) }
+
+    override CryptographicValueKind getKind() { result = kind }
+  }
+
+  /**
+   * A heuristic sink for hard-coded cryptographic value vulnerabilities.
+   */
+  private class HeuristicSinks extends Sink {
+    CryptographicValueKind kind;
+
+    HeuristicSinks() {
+      // any argument going to a parameter whose name matches a credential name
+      exists(Call c, Function f, Expr arg, int argIndex, string argName |
+        arg = this.asExpr() and
+        c.getPositionalArgument(argIndex) = arg and
+        c.getStaticTarget() = f and
+        f.getParam(argIndex).getPat().(IdentPat).getName().getText() = argName and
+        (
+          argName = "password" and kind = "password"
+          or
+          argName = "iv" and kind = "iv"
+          or
+          argName = "nonce" and kind = "nonce"
+          or
+          argName = "salt" and kind = "salt"
+          //
+          // note: matching "key" results in too many false positives
+        ) and
+        // don't duplicate modeled sinks
+        not exists(ModelsAsDataSinks s |
+          s.(Node::FlowSummaryNode).getSummaryNode().getSourceSinkReportingElement() = arg
+        )
+      )
+    }
+
+    override CryptographicValueKind getKind() { result = kind }
+  }
+
+  /**
+   * An externally modeled barrier for hard-coded cryptographic value vulnerabilities.
+   *
+   * Note that a barrier will block flow to all hard-coded cryptographic value
+   * sinks, regardless of the `kind` that is specified. For example a barrier of
+   * kind `credentials-key` will block flow to a sink of kind `credentials-iv`.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() {
+      exists(CryptographicValueKind kind | barrierNode(this, "credentials-" + kind))
+    }
+  }
+
+  /**
+   * A call to `getrandom` that is a barrier.
+   */
+  private class GetRandomBarrier extends Barrier {
+    GetRandomBarrier() {
+      exists(Call call |
+        call.getStaticTarget().getCanonicalPath() = ["getrandom::fill", "getrandom::getrandom"] and
+        this.asExpr().getParentNode*() = call.getPositionalArgument(0)
+      )
+    }
+  }
+
+  /**
+   * An arithmetic or bitwise operation that acts as a barrier.
+   *
+   * This prevents false positives where a hard-coded value is combined with
+   * non-constant data through operations like `+`, `^`, or `+=` (including string concatenation).
+   */
+  private class ArithmeticOperationBarrier extends Barrier {
+    ArithmeticOperationBarrier() {
+      // binary operations (e.g. `a + b`, `a ^ b`)
+      this.asExpr() = any(BinaryArithmeticOperation a).getAnOperand()
+      or
+      this.asExpr() = any(BinaryBitwiseOperation a).getAnOperand()
+      or
+      // compound assignments (e.g. `a += b`, `a ^= b`)
+      this.asExpr() = any(AssignArithmeticOperation a).getAnOperand()
+      or
+      this.asExpr() = any(AssignBitwiseOperation a).getAnOperand()
+    }
+  }
+}

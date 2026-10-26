@@ -1,0 +1,25 @@
+#select
+| timing.go:17:31:17:42 | headerSecret | timing.go:15:18:15:27 | selection of Header | timing.go:17:31:17:42 | headerSecret | $@ may be vulnerable to timing attacks. | timing.go:15:18:15:27 | selection of Header | Hardcoded String |
+| timing.go:30:47:30:58 | headerSecret | timing.go:28:18:28:27 | selection of Header | timing.go:30:47:30:58 | headerSecret | $@ may be vulnerable to timing attacks. | timing.go:28:18:28:27 | selection of Header | Hardcoded String |
+| timing.go:42:25:42:36 | headerSecret | timing.go:41:18:41:27 | selection of Header | timing.go:42:25:42:36 | headerSecret | $@ may be vulnerable to timing attacks. | timing.go:41:18:41:27 | selection of Header | Hardcoded String |
+edges
+| timing.go:15:18:15:27 | selection of Header | timing.go:15:18:15:45 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| timing.go:15:18:15:45 | call to Get | timing.go:17:31:17:42 | headerSecret | provenance |  |
+| timing.go:28:18:28:27 | selection of Header | timing.go:28:18:28:45 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| timing.go:28:18:28:45 | call to Get | timing.go:30:47:30:58 | headerSecret | provenance |  |
+| timing.go:41:18:41:27 | selection of Header | timing.go:41:18:41:45 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| timing.go:41:18:41:45 | call to Get | timing.go:42:25:42:36 | headerSecret | provenance |  |
+models
+| 1 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
+| 2 | Summary: net/http; Header; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
+nodes
+| timing.go:15:18:15:27 | selection of Header | semmle.label | selection of Header |
+| timing.go:15:18:15:45 | call to Get | semmle.label | call to Get |
+| timing.go:17:31:17:42 | headerSecret | semmle.label | headerSecret |
+| timing.go:28:18:28:27 | selection of Header | semmle.label | selection of Header |
+| timing.go:28:18:28:45 | call to Get | semmle.label | call to Get |
+| timing.go:30:47:30:58 | headerSecret | semmle.label | headerSecret |
+| timing.go:41:18:41:27 | selection of Header | semmle.label | selection of Header |
+| timing.go:41:18:41:45 | call to Get | semmle.label | call to Get |
+| timing.go:42:25:42:36 | headerSecret | semmle.label | headerSecret |
+subpaths

@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["elementor/elementor", "*", "input.README_TXT_PATH", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.CHANNEL", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.PACKAGE_VERSION", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.MESSAGE", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.SLACK_TOKEN", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.SLACK_CHANNELS", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.PRERELEASE", "code-injection", "generated"]
+     - ["elementor/elementor", "*", "input.TAG_NAME", "code-injection", "generated"]

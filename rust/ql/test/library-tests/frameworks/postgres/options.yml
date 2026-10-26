@@ -1,0 +1,3 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - postgres = { version = "0.19" }

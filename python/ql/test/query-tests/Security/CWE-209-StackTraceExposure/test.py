@@ -1,0 +1,70 @@
+from flask import Flask, request, make_response, jsonify
+app = Flask(__name__)
+
+
+import traceback
+
+def do_computation():
+    raise Exception("Secret info")
+
+# BAD
+@app.route('/bad')
+def server_bad():
+    try:
+        do_computation()
+    except Exception:
+        return traceback.format_exc()  # $ Alert exceptionInfo
+
+# BAD
+@app.route('/bad/direct')
+def server_bad_direct():
+    try:
+        do_computation()
+    except Exception as e:  # $ Source exceptionInfo
+        return e # $ Alert
+
+# BAD
+@app.route('/bad/traceback')
+def server_bad_traceback():
+    try:
+        do_computation()
+    except Exception as e:  # $ Source exceptionInfo
+        return e.__traceback__ # $ Alert
+
+# GOOD
+@app.route('/good')
+def server_good():
+    try:
+        do_computation()
+    except Exception:
+        log(traceback.format_exc())  # $ exceptionInfo
+        return "An internal error has occurred!"
+
+#BAD
+@app.route('/bad/with-flow')
+def server_bad_flow():
+    try:
+        do_computation()
+    except Exception:
+        err = traceback.format_exc()  # $ Source exceptionInfo
+        return format_error(err) # $ Alert
+
+def format_error(msg):
+    return "[ERROR] " + msg
+
+#Unrelated error
+@app.route('/maybe_xss')
+def maybe_xss():
+    return make_response(request.args.get('name', ''))
+
+# BAD
+@app.route('/bad/jsonify')
+def bad_jsonify():
+    try:
+        do_computation()
+    except Exception as e: # $ Source exceptionInfo
+        return jsonify({"error": str(e)}) # $ Alert
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

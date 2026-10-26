@@ -1,0 +1,68 @@
+# Catch-all for anything which isn't matched by a line lower down
+* @github/code-scanning-alert-coverage
+
+# CodeQL language libraries
+/actions/ @github/code-scanning-alert-coverage
+/cpp/ @github/codeql-c-analysis
+/csharp/ @github/codeql-csharp
+/csharp/autobuilder/Semmle.Autobuild.Cpp @github/codeql-c-extractor @github/code-scanning-language-coverage
+/csharp/autobuilder/Semmle.Autobuild.Cpp.Tests @github/codeql-c-extractor @github/code-scanning-language-coverage
+/go/ @github/codeql-go
+/go/codeql-tools/ @github/codeql-go @github/code-scanning-language-coverage
+/go/downgrades/ @github/codeql-go @github/code-scanning-language-coverage
+/go/extractor/ @github/codeql-go @github/code-scanning-language-coverage
+/go/ql/test/extractor-tests/ @github/codeql-go @github/code-scanning-language-coverage
+/java/ @github/codeql-java
+/javascript/ @github/codeql-javascript
+/javascript/extractor/ @github/codeql-javascript @github/code-scanning-language-coverage
+/python/ @github/codeql-python
+/python/extractor/ @github/codeql-python @github/code-scanning-language-coverage
+/ql/ @github/codeql-ql-for-ql-reviewers
+/ruby/ @github/codeql-ruby
+/ruby/extractor/ @github/codeql-ruby @github/code-scanning-language-coverage
+/rust/ @github/codeql-rust
+/rust/extractor/ @github/codeql-rust @github/code-scanning-language-coverage
+/shared/ @github/codeql-shared-libraries-reviewers
+/shared/cpp/ @github/code-scanning-language-coverage
+/shared/yeast/ @github/code-scanning-language-coverage
+/shared/yeast-macros/ @github/code-scanning-language-coverage
+/shared/yeast-schema/ @github/code-scanning-language-coverage
+/swift/ @github/codeql-swift
+/swift/extractor/ @github/codeql-swift @github/code-scanning-language-coverage
+/unified/extractor/ @github/code-scanning-language-coverage
+/unified/swift-syntax-rs/ @github/code-scanning-language-coverage
+/misc/codegen/ @github/codeql-swift
+/java/kotlin-extractor/ @github/codeql-kotlin @github/code-scanning-language-coverage
+/java/ql/test-kotlin1/ @github/codeql-kotlin
+/java/ql/test-kotlin2/ @github/codeql-kotlin
+
+# Experimental CodeQL cryptography
+**/experimental/**/quantum/ @github/ps-codeql
+/shared/quantum/ @github/ps-codeql
+
+# CodeQL tools and associated docs
+/docs/codeql/codeql-cli/ @github/codeql-cli-reviewers
+/docs/codeql/codeql-for-visual-studio-code/ @github/codeql-vscode-reviewers
+/docs/codeql/ql-language-reference/ @github/codeql-frontend-reviewers
+/docs/query-*-style-guide.md @github/codeql-analysis-reviewers
+
+# Bazel (excluding BUILD.bazel files)
+MODULE.bazel @github/codeql-ci-reviewers
+.bazelversion @github/codeql-ci-reviewers
+.bazelrc @github/codeql-ci-reviewers
+**/*.bzl @github/codeql-ci-reviewers
+
+# Documentation etc
+/*.md @github/code-scanning-product
+/LICENSE @github/code-scanning-product
+
+# Workflows
+/.github/workflows/ @github/codeql-ci-reviewers
+/.github/workflows/go-* @github/codeql-go
+/.github/workflows/ql-for-ql-* @github/codeql-ql-for-ql-reviewers
+/.github/workflows/ruby-* @github/codeql-ruby
+/.github/workflows/rust.yml @github/codeql-rust
+/.github/workflows/swift.yml @github/codeql-swift
+
+# .devcontainer
+/.devcontainer/ @github/codeql-ci-reviewers

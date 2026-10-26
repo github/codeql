@@ -1,0 +1,6 @@
+#!/bin/bash -p
+
+case $1 in
+    python2)   exit 1;;
+    *)         command /usr/bin/which -- "$1";;
+esac

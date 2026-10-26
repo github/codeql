@@ -1,0 +1,2 @@
+query: Security/CWE/CWE-129/ImproperArrayIndexValidation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

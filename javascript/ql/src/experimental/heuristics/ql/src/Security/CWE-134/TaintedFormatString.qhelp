@@ -1,0 +1,6 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+<include src="../../../../../../Security/CWE-134/TaintedFormatString.inc.qhelp" />
+</qhelp>

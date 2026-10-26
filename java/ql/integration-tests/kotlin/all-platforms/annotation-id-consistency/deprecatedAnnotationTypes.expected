@@ -1,0 +1,5 @@
+| HasJavaDeprecatedAnnotationUsedByJava | java.lang.Deprecated |
+| HasJavaDeprecatedAnnotationUsedByKotlin | java.lang.Deprecated |
+| HasKotlinDeprecatedAnnotationUsedByJava | kotlin.Deprecated |
+| HasKotlinDeprecatedAnnotationUsedByKotlin | kotlin.Deprecated |
+| isJavaLetter | java.lang.Deprecated |

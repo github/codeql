@@ -1,0 +1,7 @@
+name: codeql/javascript-examples
+groups: 
+  - javascript
+  - examples
+dependencies:
+  codeql/javascript-all: ${workspace}
+warnOnImplicitThis: true

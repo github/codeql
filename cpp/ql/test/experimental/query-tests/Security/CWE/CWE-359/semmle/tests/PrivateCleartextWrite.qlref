@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-359/PrivateCleartextWrite.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

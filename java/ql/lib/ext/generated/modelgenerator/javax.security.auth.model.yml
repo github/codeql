@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.security.auth", "AuthPermission", False, "AuthPermission", "(String)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["javax.security.auth", "AuthPermission", False, "AuthPermission", "(String,String)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["javax.security.auth", "DestroyFailedException", True, "DestroyFailedException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth", "PrivateCredentialPermission", False, "PrivateCredentialPermission", "(String,String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.security.auth.PrivateCredentialPermission.credentialClass]", "taint", "dfc-generated"]
+      - ["javax.security.auth", "PrivateCredentialPermission", False, "PrivateCredentialPermission", "(String,String)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["javax.security.auth", "PrivateCredentialPermission", False, "getCredentialClass", "()", "", "Argument[this].SyntheticField[javax.security.auth.PrivateCredentialPermission.credentialClass]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.security.auth", "PrivateCredentialPermission", False, "getPrincipals", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth", "RefreshFailedException", True, "RefreshFailedException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth", "Subject", False, "doAs", "(Subject,PrivilegedAction)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth", "Subject", False, "doAs", "(Subject,PrivilegedExceptionAction)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth", "Subject", False, "doAsPrivileged", "(Subject,PrivilegedAction,AccessControlContext)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth", "Subject", False, "doAsPrivileged", "(Subject,PrivilegedExceptionAction,AccessControlContext)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth", "Subject", False, "getPrincipals", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth", "Subject", False, "getPrivateCredentials", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth", "Subject", False, "getPublicCredentials", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth", "SubjectDomainCombiner", True, "SubjectDomainCombiner", "(Subject)", "", "Argument[0]", "Argument[this].SyntheticField[javax.security.auth.SubjectDomainCombiner.subject]", "value", "dfc-generated"]
+      - ["javax.security.auth", "SubjectDomainCombiner", True, "getSubject", "()", "", "Argument[this].SyntheticField[javax.security.auth.SubjectDomainCombiner.subject]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.security.auth", "Destroyable", "destroy", "()", "summary", "df-generated"]
+      - ["javax.security.auth", "Destroyable", "isDestroyed", "()", "summary", "df-generated"]
+      - ["javax.security.auth", "PrivateCredentialPermission", "implies", "(Permission)", "summary", "df-generated"]
+      - ["javax.security.auth", "PrivateCredentialPermission", "newPermissionCollection", "()", "summary", "df-generated"]
+      - ["javax.security.auth", "Subject", "Subject", "(boolean,Set,Set,Set)", "summary", "df-generated"]
+      - ["javax.security.auth", "Subject", "getPrincipals", "(Class)", "summary", "df-generated"]
+      - ["javax.security.auth", "Subject", "getPrivateCredentials", "(Class)", "summary", "df-generated"]
+      - ["javax.security.auth", "Subject", "getPublicCredentials", "(Class)", "summary", "df-generated"]
+      - ["javax.security.auth", "Subject", "getSubject", "(AccessControlContext)", "summary", "df-generated"]
+      - ["javax.security.auth", "Subject", "isReadOnly", "()", "summary", "df-generated"]
+      - ["javax.security.auth", "Subject", "setReadOnly", "()", "summary", "df-generated"]

@@ -1,0 +1,26 @@
+| SinksExternal.cs:24:24:24:36 | object creation of type ReqDto1 | SinksExternal.cs:24:24:24:36 | object creation of type ReqDto1 |
+| SinksExternal.cs:25:24:25:36 | object creation of type ReqDto2 | SinksExternal.cs:25:24:25:36 | object creation of type ReqDto2 |
+| SinksExternal.cs:27:37:27:48 | object creation of type Object | SinksExternal.cs:27:37:27:48 | object creation of type Object |
+| SinksExternal.cs:29:24:29:35 | object creation of type Object | SinksExternal.cs:29:24:29:35 | object creation of type Object |
+| SinksExternal.cs:32:48:32:59 | object creation of type Object | SinksExternal.cs:32:48:32:59 | object creation of type Object |
+| SinksExternal.cs:33:35:33:47 | object creation of type ReqDto1 | SinksExternal.cs:33:35:33:47 | object creation of type ReqDto1 |
+| SinksExternal.cs:34:35:34:47 | object creation of type ReqDto2 | SinksExternal.cs:34:35:34:47 | object creation of type ReqDto2 |
+| SinksExternal.cs:37:40:37:52 | object creation of type ReqDto2 | SinksExternal.cs:37:40:37:52 | object creation of type ReqDto2 |
+| SinksExternal.cs:38:78:38:90 | object creation of type ReqDto1 | SinksExternal.cs:38:78:38:90 | object creation of type ReqDto1 |
+| SinksExternal.cs:39:53:39:65 | object creation of type ReqDto1 | SinksExternal.cs:39:53:39:65 | object creation of type ReqDto1 |
+| SinksExternal.cs:40:53:40:64 | object creation of type Object | SinksExternal.cs:40:53:40:64 | object creation of type Object |
+| SinksExternal.cs:41:65:41:76 | object creation of type Object | SinksExternal.cs:41:65:41:76 | object creation of type Object |
+| SinksExternal.cs:42:40:42:56 | (...) ... | SinksExternal.cs:42:40:42:56 | (...) ... |
+| SinksExternal.cs:43:51:43:63 | object creation of type ReqDto2 | SinksExternal.cs:43:51:43:63 | object creation of type ReqDto2 |
+| SinksExternal.cs:44:89:44:101 | object creation of type ReqDto1 | SinksExternal.cs:44:89:44:101 | object creation of type ReqDto1 |
+| SinksExternal.cs:45:64:45:76 | object creation of type ReqDto1 | SinksExternal.cs:45:64:45:76 | object creation of type ReqDto1 |
+| SinksExternal.cs:46:64:46:75 | object creation of type Object | SinksExternal.cs:46:64:46:75 | object creation of type Object |
+| SinksExternal.cs:48:55:48:66 | object creation of type Object | SinksExternal.cs:48:55:48:66 | object creation of type Object |
+| SinksExternal.cs:49:77:49:88 | object creation of type Object | SinksExternal.cs:49:77:49:88 | object creation of type Object |
+| SinksExternal.cs:51:25:51:36 | object creation of type Object | SinksExternal.cs:51:25:51:36 | object creation of type Object |
+| SinksExternal.cs:52:26:52:37 | object creation of type Object | SinksExternal.cs:52:26:52:37 | object creation of type Object |
+| SinksExternal.cs:53:25:53:36 | object creation of type Object | SinksExternal.cs:53:25:53:36 | object creation of type Object |
+| SinksExternal.cs:54:24:54:35 | object creation of type Object | SinksExternal.cs:54:24:54:35 | object creation of type Object |
+| SinksExternal.cs:56:38:56:49 | object creation of type Object | SinksExternal.cs:56:38:56:49 | object creation of type Object |
+| SinksExternal.cs:57:28:57:40 | object creation of type ReqDto1 | SinksExternal.cs:57:28:57:40 | object creation of type ReqDto1 |
+| SinksExternal.cs:58:31:58:42 | object creation of type Object | SinksExternal.cs:58:31:58:42 | object creation of type Object |

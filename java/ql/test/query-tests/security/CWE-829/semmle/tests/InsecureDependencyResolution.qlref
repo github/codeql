@@ -1,0 +1,2 @@
+query: Security/CWE/CWE-829/InsecureDependencyResolution.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

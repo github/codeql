@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-783/OperatorPrecedenceLogicErrorWhenUseBitwiseOrLogicalOperations.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

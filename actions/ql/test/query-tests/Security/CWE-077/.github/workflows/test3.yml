@@ -1,0 +1,23 @@
+name: Test
+on:
+  workflow_run:
+    workflows: ['checks']
+    types:
+      - completed
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download PR metadata
+      uses: dawidd6/action-download-artifact@e6e25ac3a2b93187502a8be1ef9e9603afc34925 # v2.24.2
+      with:
+        workflow: ${{ github.event.workflow_run.workflow_id }}
+        workflow_conclusion: ''
+        name: pr_metadata
+        if_no_artifact_found: 'ignore'
+    - run: |
+         echo "PR_NUMBER=$(cat pr_number.txt | jq -r .)" >> $GITHUB_ENV
+         echo "PR_HEAD_REPO=$(cat pr_head_repo.txt | jq -Rr .)" >> $GITHUB_ENV
+         echo "PR_HEAD_REF=$(cat pr_head_ref.txt | jq -Rr .)" >> $GITHUB_ENV

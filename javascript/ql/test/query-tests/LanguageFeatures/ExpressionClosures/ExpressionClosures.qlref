@@ -1,0 +1,2 @@
+query: LanguageFeatures/ExpressionClosures.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

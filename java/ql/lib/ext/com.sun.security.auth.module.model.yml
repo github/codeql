@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.sun.security.auth.module", "JndiLoginModule", False, "verifyPassword", "(String,String)", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["com.sun.security.auth.module", "JndiLoginModule", False, "verifyPassword", "(String,String)", "", "Argument[1]", "credentials-password", "hq-generated"]

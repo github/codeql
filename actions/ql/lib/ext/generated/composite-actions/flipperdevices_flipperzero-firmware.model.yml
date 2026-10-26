@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["flipperdevices/flipperzero-firmware", "*", "input.firmware-version", "code-injection", "generated"]
+     - ["flipperdevices/flipperzero-firmware", "*", "input.firmware-target", "code-injection", "generated"]
+     - ["flipperdevices/flipperzero-firmware", "*", "input.firmware-api", "code-injection", "generated"]
+     - ["flipperdevices/flipperzero-firmware", "*", "input.catalog-api-token", "code-injection", "generated"]
+     - ["flipperdevices/flipperzero-firmware", "*", "input.catalog-url", "code-injection", "generated"]

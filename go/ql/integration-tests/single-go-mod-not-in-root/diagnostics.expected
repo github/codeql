@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "A single, non-root `go.mod` file was found.\n\n`subdir/go.mod`",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/single-non-root-go-mod-found",
+    "name": "A single, non-root `go.mod` file was found"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

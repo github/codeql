@@ -1,0 +1,2 @@
+query: NodeJS/UnresolvableImport.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

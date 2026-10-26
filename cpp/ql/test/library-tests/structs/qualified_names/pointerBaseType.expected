@@ -1,0 +1,4 @@
+| decls.cpp:4:6:4:6 | x | defs.cpp:2:9:2:9 | C |
+| defs.cpp:18:21:18:38 | definedAndDeclared | defs.cpp:11:7:11:24 | DefinedAndDeclared |
+| defs.cpp:25:28:25:32 | mdbsh | header.h:1:8:1:32 | MultipleDefsButSameHeader |
+| defs.cpp:29:24:29:28 | odidf | c1.cpp:7:8:7:28 | OneDefInDifferentFile |

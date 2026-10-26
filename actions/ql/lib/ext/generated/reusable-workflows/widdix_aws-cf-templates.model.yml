@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["widdix/aws-cf-templates/.github/workflows/acceptance-test-run.yml", "*", "input.tests", "code-injection", "generated"]

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["larsoner/circleci-artifacts-redirector-action", "*", "input.artifact-path", "output.url", "taint", "manual"]

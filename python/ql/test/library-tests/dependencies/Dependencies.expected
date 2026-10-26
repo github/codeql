@@ -1,0 +1,16 @@
+| attribute | a.py | 3 | Attribute | class B |
+| attribute | b.py | 3 | Attribute | class C |
+| import | a.py | 1 | Import | Module b |
+| import | b.py | 1 | Import | Module c |
+| import | c.py | 1 | Import | Module b |
+| inheritance | a.py | 3 | ClassExpr | builtin-class object |
+| inheritance | a.py | 3 | ClassExpr | builtin-class type |
+| inheritance | a.py | 3 | ClassExpr | class B |
+| inheritance | a.py | 3 | ClassExpr | class C |
+| inheritance | b.py | 3 | ClassExpr | builtin-class object |
+| inheritance | b.py | 3 | ClassExpr | builtin-class type |
+| inheritance | b.py | 3 | ClassExpr | class C |
+| inheritance | c.py | 3 | ClassExpr | builtin-class object |
+| inheritance | c.py | 3 | ClassExpr | builtin-class type |
+| use | a.py | 3 | Attribute | class B |
+| use | b.py | 3 | Attribute | class C |

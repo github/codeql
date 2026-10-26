@@ -1,0 +1,4 @@
+| c.c | c.c | CFile, GuardConditionImpl, MetricFile | C |  |  |
+| files1.cpp | files1.cpp | CppFile, GuardConditionImpl, MetricFile | C++ | swap | t |
+| files1.h | files1.h | GuardConditionImpl, HeaderFile, MetricFile |  | swap |  |
+| files2.cpp | files2.cpp | CppFile, GuardConditionImpl, MetricFile | C++ | g | x, y |

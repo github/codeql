@@ -1,0 +1,2 @@
+query: Functions/ModificationOfParameterWithDefault.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

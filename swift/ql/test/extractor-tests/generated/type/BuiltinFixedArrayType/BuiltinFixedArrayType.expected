@@ -1,0 +1,3 @@
+| Builtin.FixedArray<4, Int> | getName: | FixedArray<4, Int> | getCanonicalType: | Builtin.FixedArray<4, Int> | getSize: | 4 | getElementType: | Int |
+| Builtin.FixedArray<N, T> | getName: | FixedArray<N, T> | getCanonicalType: | Builtin.FixedArray<N, T> | getSize: | N | getElementType: | T |
+| Builtin.FixedArray<\u03c4_0_0, \u03c4_0_1> | getName: | FixedArray<\u03c4_0_0, \u03c4_0_1> | getCanonicalType: | Builtin.FixedArray<\u03c4_0_0, \u03c4_0_1> | getSize: | \u03c4_0_0 | getElementType: | \u03c4_0_1 |

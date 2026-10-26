@@ -1,0 +1,30 @@
+| tst.ts:3:3:3:45 | abstrac ... number; | class AbstractClass.abstractMethod: Signature |
+| tst.ts:5:3:5:55 | abstrac ... string; | class AbstractClass.overloadedAbstractMethod: Signature |
+| tst.ts:6:3:6:55 | abstrac ... number; | class AbstractClass.overloadedAbstractMethod: Signature |
+| tst.ts:8:3:8:38 | overloa ... string; | class AbstractClass.overloadedMethod: Signature |
+| tst.ts:9:3:9:38 | overloa ... number; | class AbstractClass.overloadedMethod: Signature |
+| tst.ts:10:3:10:49 | overloa ...  + x; } | class AbstractClass.overloadedMethod: Definition |
+| tst.ts:12:3:12:42 | abstrac ... number; | class AbstractClass.abstractAccessor: Signature |
+| tst.ts:13:3:13:47 | abstrac ... umber); | class AbstractClass.abstractAccessor: Signature |
+| tst.ts:15:3:15:33 | abstrac ... number; | class AbstractClass.abstractField: Signature |
+| tst.ts:16:3:16:24 | concret ... number; | class AbstractClass.concreteField: Definition |
+| tst.ts:18:3:18:25 | constru ... tring); | class AbstractClass.constructor: Signature |
+| tst.ts:19:3:19:25 | constru ... umber); | class AbstractClass.constructor: Signature |
+| tst.ts:20:3:20:24 | constru ... any) {} | class AbstractClass.constructor: Definition |
+| tst.ts:24:3:24:38 | overloa ... string; | class ConcreteClass.overloadedMethod: Signature |
+| tst.ts:25:3:25:38 | overloa ... number; | class ConcreteClass.overloadedMethod: Signature |
+| tst.ts:26:3:26:49 | overloa ...  + x; } | class ConcreteClass.overloadedMethod: Definition |
+| tst.ts:28:3:28:48 | notOver ... rn x; } | class ConcreteClass.notOverloaded: Definition |
+| tst.ts:30:3:30:25 | constru ... tring); | class ConcreteClass.constructor: Signature |
+| tst.ts:31:3:31:25 | constru ... umber); | class ConcreteClass.constructor: Signature |
+| tst.ts:32:3:32:24 | constru ... any) {} | class ConcreteClass.constructor: Definition |
+| tst.ts:35:27:35:26 | constructor() {} | class ImplicitConstructor.constructor: Definition |
+| tst.ts:38:3:38:47 | overloa ... string; | interface Interface.overloadedInterfaceMethod: Signature |
+| tst.ts:39:3:39:47 | overloa ... number; | interface Interface.overloadedInterfaceMethod: Signature |
+| tst.ts:41:3:41:39 | interfa ... oolean; | interface Interface.interfaceMethod: Signature |
+| tst.ts:45:3:45:25 | constru ... umber); | class AmbientClass.constructor: Signature |
+| tst.ts:46:3:46:25 | constru ... tring); | class AmbientClass.constructor: Signature |
+| tst.ts:48:3:48:45 | overloa ... number; | class AmbientClass.overloadedAmbientMethod: Signature |
+| tst.ts:49:3:49:45 | overloa ... string; | class AmbientClass.overloadedAmbientMethod: Signature |
+| tst.ts:51:3:51:23 | ambient ... number; | class AmbientClass.ambientField: Signature |
+| tst.ts:52:3:52:40 | abstrac ... number; | class AmbientClass.abstractAmbientField: Signature |

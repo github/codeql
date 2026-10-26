@@ -1,0 +1,2 @@
+query: Critical/DeadCodeFunction.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

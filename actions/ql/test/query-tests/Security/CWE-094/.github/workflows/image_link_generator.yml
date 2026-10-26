@@ -1,0 +1,37 @@
+name: Image URL Processing
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  process-image-url:
+    runs-on: ubuntu-latest
+    if: contains(github.event.comment.body, 'https://github.com/github/release-assets/assets/')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Extract and Clean Initial URL
+        id: extract-url
+        env:
+          BODY: ${{ github.event.comment.body }}
+        run: |
+          echo "::set-output name=initial_url::$BODY"
+
+      - name: Get Redirected URL with Debugging
+        id: curl
+        env:
+          INITIAL_URL: ${{ steps.extract-url.outputs.initial_url }}
+        run: |
+          echo "redirected_url=$(echo $INITIAL_URL)" >> $GITHUB_OUTPUT
+      - name: Trim URL after PNG
+        id: trim-url
+        env:
+          REDIRECTED_URL: ${{ steps.curl.outputs.redirected_url }}
+        run: |
+          echo "trimmed_url=$(echo $REDIRECTED_URL)" >> "$GITHUB_OUTPUT"
+
+      - name: Update Comment with New URL
+        run: |
+          NEW_COMMENT_BODY="Use this link to include this asset in your changelog: ${{ steps.trim-url.outputs.trimmed_url }}"

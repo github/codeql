@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Search for places where the result of the multiplication is subjected to explicit conversion, not the arguments. Therefore, during the multiplication period, you can lose meaningful data.</p>
+
+
+</overview>
+
+<example>
+<p>The following example demonstrates erroneous and fixed methods for working with type conversion.</p>
+<sample src="DangerousUseOfTransformationAfterOperation.cpp" />
+
+</example>
+<references>
+
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/INT30-C.+Ensure+that+unsigned+integer+operations+do+not+wrap">INT30-C. Ensure that unsigned integer operations do not wrap</a>.
+</li>
+
+</references>
+</qhelp>

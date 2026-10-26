@@ -1,0 +1,2 @@
+semmle-extractor-options: /out:Locations.dll
+semmle-extractor-options: /r:System.Runtime.Extensions.dll

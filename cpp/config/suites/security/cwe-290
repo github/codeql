@@ -1,0 +1,3 @@
+# CWE-290: Authentication Bypass by Spoofing
++ semmlecode-cpp-queries/Security/CWE/CWE-290/AuthenticationBypass.ql: /CWE/CWE-290
+    @name Authentication bypass by spoofing (CWE-290)

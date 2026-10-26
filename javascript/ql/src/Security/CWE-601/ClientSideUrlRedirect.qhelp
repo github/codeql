@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Redirecting to a URL that is constructed from parts of the DOM that may be controlled by an
+attacker can facilitate phishing attacks. In these attacks, unsuspecting users can be redirected
+to a malicious site that looks very similar to the real site they intend to visit, but which is
+controlled by the attacker.
+</p>
+</overview>
+
+<recommendation>
+<p>
+To guard against untrusted URL redirection, it is advisable to avoid putting user input
+directly into a redirect URL. Instead, maintain a list of authorized
+redirects on the server; then choose from that list based on the user input provided.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses a regular expression to extract a query parameter from the document
+URL, and then uses it to construct a new URL to redirect to without any further validation. This
+may allow an attacker to craft a link that redirects from a trusted website to some arbitrary
+website of their choosing, which facilitates phishing attacks:
+</p>
+
+<sample src="examples/ClientSideUrlRedirect.js"/>
+
+</example>
+
+<references>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">
+  XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
+</references>
+
+</qhelp>

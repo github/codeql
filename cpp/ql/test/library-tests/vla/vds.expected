@@ -1,0 +1,7 @@
+| vla.c:5:15:5:15 | VLA dimension size | vla.c:5:16:5:19 | argc |
+| vla.c:5:21:5:21 | VLA dimension size | vla.c:5:22:5:25 | call to atoi |
+| vla.c:12:32:12:32 | VLA dimension size | vla.c:12:33:12:44 | ... + ... |
+| vla.c:12:49:12:49 | VLA dimension size | vla.c:12:50:12:62 | ... * ... |
+| vla.c:14:35:14:35 | VLA dimension size | vla.c:14:36:14:47 | ... + ... |
+| vla.c:14:52:14:52 | VLA dimension size | vla.c:14:53:14:65 | ... * ... |
+| vla.c:14:73:14:73 | VLA dimension size | vla.c:14:74:14:79 | call to getInt |

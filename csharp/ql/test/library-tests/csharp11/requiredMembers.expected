@@ -1,0 +1,5 @@
+| RequiredMembers.cs:6:29:6:41 | RequiredField | ClassRequiredMembers | Field |
+| RequiredMembers.cs:7:29:7:44 | RequiredProperty | ClassRequiredMembers | Property |
+| RequiredMembers.cs:22:38:22:52 | VirtualProperty | ClassRequiredMembersSub | Property |
+| RequiredMembers.cs:35:29:35:29 | X | RecordRequiredMembers | Property |
+| RequiredMembers.cs:40:29:40:29 | Y | StructRequiredMembers | Property |

@@ -1,0 +1,2 @@
+query: Exceptions/CatchingBaseException.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,31 @@
+test_RouteHandler
+| src/now.ts:5:16:7:1 | functio ... ame);\\n} |
+| src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+test_RequestSource
+| src/now.ts:5:33:5:35 | req | src/now.ts:5:16:7:1 | functio ... ame);\\n} |
+| src/vercel.ts:9:33:9:35 | req | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+test_ResponseSource
+| src/now.ts:5:50:5:52 | res | src/now.ts:5:16:7:1 | functio ... ame);\\n} |
+| src/vercel.ts:9:53:9:55 | res | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+| src/vercel.ts:23:3:23:17 | res.status(200) | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+| src/vercel.ts:27:3:27:17 | res.status(200) | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+test_HeaderDefinition
+| src/vercel.ts:19:3:19:44 | res.set ... /html") | content-type | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+test_RedirectInvocation
+| src/vercel.ts:31:3:31:39 | res.red ... string) | src/vercel.ts:31:16:31:38 | req.que ...  string | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+test_RequestInputAccess
+| src/now.ts:6:12:6:20 | req.query | parameter | src/now.ts:5:16:7:1 | functio ... ame);\\n} |
+| src/vercel.ts:11:13:11:21 | req.query | parameter | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+| src/vercel.ts:12:13:12:20 | req.body | body | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+| src/vercel.ts:13:13:13:23 | req.cookies | cookie | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+| src/vercel.ts:14:13:14:19 | req.url | url | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+| src/vercel.ts:15:16:15:31 | req.headers.host | header | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+| src/vercel.ts:16:15:16:33 | req.headers.referer | header | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+| src/vercel.ts:31:16:31:24 | req.query | parameter | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+test_ResponseSendArgument
+| src/now.ts:6:12:6:25 | req.query.name | src/now.ts:5:16:7:1 | functio ... ame);\\n} |
+| src/vercel.ts:22:12:22:12 | q | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+| src/vercel.ts:23:24:23:24 | b | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+| src/vercel.ts:26:12:26:12 | c | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+| src/vercel.ts:27:24:27:24 | u | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |
+| src/vercel.ts:28:13:28:16 | host | src/vercel.ts:9:16:32:1 | functio ... ing);\\n} |

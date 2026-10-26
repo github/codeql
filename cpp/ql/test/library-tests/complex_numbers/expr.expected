@@ -1,0 +1,35 @@
+| conjugation.c:3:5:3:5 | x | VariableAccess |
+| conjugation.c:3:5:3:10 | ... = ... | AssignExpr |
+| conjugation.c:3:9:3:10 | ~ ... | ConjugationExpr |
+| conjugation.c:3:10:3:10 | x | VariableAccess |
+| test.c:5:5:5:5 | z | VariableAccess |
+| test.c:5:5:5:13 | ... = ... | AssignExpr |
+| test.c:5:9:5:9 | x | VariableAccess |
+| test.c:5:9:5:13 | ... * ... | ImaginaryMulExpr |
+| test.c:5:13:5:13 | y | VariableAccess |
+| test.c:6:5:6:5 | z | VariableAccess |
+| test.c:6:5:6:13 | ... = ... | AssignExpr |
+| test.c:6:9:6:9 | z | VariableAccess |
+| test.c:6:9:6:13 | (double)... | CStyleCast |
+| test.c:6:9:6:13 | ... / ... | ImaginaryDivExpr |
+| test.c:6:13:6:13 | y | VariableAccess |
+| test.c:7:5:7:5 | w | VariableAccess |
+| test.c:7:5:7:13 | ... = ... | AssignExpr |
+| test.c:7:9:7:9 | z | VariableAccess |
+| test.c:7:9:7:13 | ... + ... | RealImaginaryAddExpr |
+| test.c:7:13:7:13 | x | VariableAccess |
+| test.c:8:5:8:5 | w | VariableAccess |
+| test.c:8:5:8:13 | ... = ... | AssignExpr |
+| test.c:8:9:8:9 | x | VariableAccess |
+| test.c:8:9:8:13 | ... + ... | ImaginaryRealAddExpr |
+| test.c:8:13:8:13 | z | VariableAccess |
+| test.c:9:5:9:5 | w | VariableAccess |
+| test.c:9:5:9:13 | ... = ... | AssignExpr |
+| test.c:9:9:9:9 | z | VariableAccess |
+| test.c:9:9:9:13 | ... - ... | RealImaginarySubExpr |
+| test.c:9:13:9:13 | x | VariableAccess |
+| test.c:10:5:10:5 | w | VariableAccess |
+| test.c:10:5:10:13 | ... = ... | AssignExpr |
+| test.c:10:9:10:9 | x | VariableAccess |
+| test.c:10:9:10:13 | ... - ... | ImaginaryRealSubExpr |
+| test.c:10:13:10:13 | z | VariableAccess |

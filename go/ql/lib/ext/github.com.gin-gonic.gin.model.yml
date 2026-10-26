@@ -1,0 +1,64 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/gin-gonic/gin", "Context", True, "File", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "FileAttachment", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "SaveUploadedFile", "", "", "Argument[1]", "path-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["github.com/gin-gonic/gin", "Params", True, "ByName", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["github.com/gin-gonic/gin", "Params", True, "Get", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/gin-gonic/gin", "Context", True, "Accepted", "", "", "", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "Bind", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "BindHeader", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "BindJSON", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "BindQuery", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "BindXML", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "BindYAML", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "BindUri", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "BindWith", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "ClientIP", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "ContentType", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "DefaultPostForm", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "DefaultQuery", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "FullPath", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "GetHeader", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "GetPostForm", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "GetPostFormArray", "", "", "ReturnValue[0]", "remote", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["github.com/gin-gonic/gin", "Context", True, "GetPostFormMap", "", "", "ReturnValue[0]", "remote", "manual"] # TODO: when sources can have access paths, use .MapValue (and .MapKey?)
+      - ["github.com/gin-gonic/gin", "Context", True, "GetQuery", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "GetQueryArray", "", "", "ReturnValue[0]", "remote", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["github.com/gin-gonic/gin", "Context", True, "GetQueryMap", "", "", "ReturnValue[0]", "remote", "manual"] # TODO: when sources can have access paths, use .MapValue (and .MapKey?)
+      - ["github.com/gin-gonic/gin", "Context", True, "GetRawData", "", "", "ReturnValue[0]", "remote", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["github.com/gin-gonic/gin", "Context", True, "GetString", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "GetStringMap", "", "", "ReturnValue", "remote", "manual"] # TODO: when sources can have access paths, use .MapValue (and .MapKey?)
+      - ["github.com/gin-gonic/gin", "Context", True, "GetStringMapString", "", "", "ReturnValue", "remote", "manual"] # TODO: when sources can have access paths, use .MapValue (and .MapKey?)
+      - ["github.com/gin-gonic/gin", "Context", True, "GetStringMapStringSlice", "", "", "ReturnValue", "remote", "manual"] # TODO: when sources can have access paths, use .MapValue.ArrayElement (and .MapKey?)
+      - ["github.com/gin-gonic/gin", "Context", True, "GetStringSlice", "", "", "ReturnValue", "remote", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["github.com/gin-gonic/gin", "Context", True, "MustBindWith", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "Param", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "Params", "", "", "", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "PostForm", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "PostFormArray", "", "", "ReturnValue", "remote", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["github.com/gin-gonic/gin", "Context", True, "PostFormMap", "", "", "ReturnValue", "remote", "manual"] # TODO: when sources can have access paths, use .MapValue (and .MapKey?)
+      - ["github.com/gin-gonic/gin", "Context", True, "Query", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "QueryArray", "", "", "ReturnValue", "remote", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["github.com/gin-gonic/gin", "Context", True, "QueryMap", "", "", "ReturnValue", "remote", "manual"] # TODO: when sources can have access paths, use .MapValue (and .MapKey?)
+      - ["github.com/gin-gonic/gin", "Context", True, "ShouldBind", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "ShouldBindBodyWith", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "ShouldBindHeader", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "ShouldBindJSON", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "ShouldBindQuery", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "ShouldBindUri", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "ShouldBindWith", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "ShouldBindXML", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "ShouldBindYAML", "", "", "Argument[0]", "remote", "manual"]

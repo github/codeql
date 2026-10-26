@@ -1,0 +1,64 @@
+| addressOf.cpp:47:8:47:9 | f1 | addressOf.cpp:47:12:47:31 | [...](...){...} | addressOf.cpp:47:12:47:31 | [...](...){...} |
+| addressOf.cpp:49:8:49:9 | f2 | addressOf.cpp:49:12:49:39 | [...](...){...} | addressOf.cpp:49:12:49:39 | [...](...){...} |
+| addressOf.cpp:56:7:56:7 | a | addressOf.cpp:56:13:56:28 | {...} | addressOf.cpp:56:13:56:28 | {...} |
+| addressOf.cpp:76:7:76:7 | x | addressOf.cpp:76:10:76:11 | 0 | addressOf.cpp:76:10:76:11 | 0 |
+| addressOf.cpp:77:8:77:8 | y | addressOf.cpp:77:12:77:49 | ... + ... | addressOf.cpp:77:12:77:49 | ... + ... |
+| indirect_use.cpp:20:10:20:10 | p | indirect_use.cpp:20:14:20:15 | ip | indirect_use.cpp:20:14:20:15 | ip |
+| indirect_use.cpp:25:10:25:10 | p | indirect_use.cpp:25:14:25:19 | ... + ... | indirect_use.cpp:25:14:25:19 | ... + ... |
+| indirect_use.cpp:35:10:35:10 | p | indirect_use.cpp:35:14:35:15 | ip | indirect_use.cpp:35:14:35:15 | ip |
+| indirect_use.cpp:36:11:36:12 | pp | indirect_use.cpp:36:16:36:17 | & ... | indirect_use.cpp:36:16:36:17 | & ... |
+| indirect_use.cpp:52:14:52:14 | i | indirect_use.cpp:52:17:52:18 | 0 | indirect_use.cpp:52:17:52:18 | 0 |
+| indirect_use.cpp:53:14:53:14 | p | indirect_use.cpp:53:18:53:43 | __builtin_va_arg | indirect_use.cpp:53:18:53:43 | __builtin_va_arg |
+| indirect_use.cpp:60:10:60:10 | p | indirect_use.cpp:60:14:60:19 | ... + ... | indirect_use.cpp:60:14:60:19 | ... + ... |
+| indirect_use.cpp:65:27:65:27 | i | indirect_use.cpp:67:9:67:13 | ... = ... | indirect_use.cpp:67:13:67:13 | 0 |
+| indirect_use.cpp:111:28:111:28 | i | indirect_use.cpp:112:5:112:9 | ... = ... | indirect_use.cpp:112:9:112:9 | 1 |
+| pass_by_ref.cpp:18:7:18:8 | i1 | pass_by_ref.cpp:18:12:18:12 | n | pass_by_ref.cpp:18:12:18:12 | n |
+| pass_by_ref.cpp:21:7:21:8 | i2 | pass_by_ref.cpp:21:12:21:12 | n | pass_by_ref.cpp:21:12:21:12 | n |
+| pass_by_ref.cpp:31:7:31:9 | arr | pass_by_ref.cpp:31:15:31:18 | {...} | pass_by_ref.cpp:31:15:31:18 | {...} |
+| pass_by_ref.cpp:37:7:37:9 | arr | pass_by_ref.cpp:37:15:37:18 | {...} | pass_by_ref.cpp:37:15:37:18 | {...} |
+| pass_by_ref.cpp:46:7:46:7 | i | pass_by_ref.cpp:46:11:46:11 | n | pass_by_ref.cpp:46:11:46:11 | n |
+| pass_by_ref.cpp:60:7:60:7 | x | pass_by_ref.cpp:60:10:60:11 | 2 | pass_by_ref.cpp:60:10:60:11 | 2 |
+| pass_by_ref.cpp:66:8:66:8 | p | pass_by_ref.cpp:66:12:66:18 | 0 | pass_by_ref.cpp:66:12:66:18 | 0 |
+| pass_by_ref.cpp:74:7:74:7 | x | pass_by_ref.cpp:74:10:74:11 | 2 | pass_by_ref.cpp:74:10:74:11 | 2 |
+| test.cpp:4:7:4:7 | a | test.cpp:5:3:5:8 | ... = ... | test.cpp:5:7:5:8 | a0 |
+| test.cpp:4:7:4:7 | a | test.cpp:13:3:13:7 | ... = ... | test.cpp:13:7:13:7 | b |
+| test.cpp:4:7:4:7 | a | test.cpp:19:5:19:9 | ... = ... | test.cpp:19:9:19:9 | 1 |
+| test.cpp:4:10:4:10 | b | test.cpp:6:3:6:8 | ... = ... | test.cpp:6:7:6:8 | b0 |
+| test.cpp:4:10:4:10 | b | test.cpp:21:5:21:9 | ... = ... | test.cpp:21:9:21:9 | 1 |
+| test.cpp:4:13:4:13 | c | test.cpp:7:3:7:8 | ... = ... | test.cpp:7:7:7:8 | c0 |
+| test.cpp:28:7:28:7 | d | test.cpp:28:11:28:11 | a | test.cpp:28:11:28:11 | a |
+| test.cpp:31:7:31:7 | e | test.cpp:31:11:31:13 | ... ++ | test.cpp:31:11:31:13 | ... ++ |
+| test.cpp:31:7:31:7 | e | test.cpp:32:3:32:9 | ... = ... | test.cpp:32:7:32:9 | ... ++ |
+| test.cpp:39:20:39:20 | x | test.cpp:40:3:40:8 | ... = ... | test.cpp:40:7:40:8 | 42 |
+| test.cpp:44:8:44:8 | y | test.cpp:44:12:44:12 | x | test.cpp:44:12:44:12 | x |
+| test.cpp:52:7:52:7 | x | test.cpp:52:10:52:11 | 0 | test.cpp:52:10:52:11 | 0 |
+| test.cpp:58:7:58:7 | x | test.cpp:58:10:58:11 | 0 | test.cpp:58:10:58:11 | 0 |
+| test.cpp:64:7:64:7 | x | test.cpp:64:10:64:11 | 0 | test.cpp:64:10:64:11 | 0 |
+| test.cpp:70:7:70:7 | x | test.cpp:70:10:70:11 | 0 | test.cpp:70:10:70:11 | 0 |
+| test.cpp:80:7:80:7 | x | test.cpp:80:10:80:11 | 0 | test.cpp:80:10:80:11 | 0 |
+| test.cpp:86:7:86:7 | x | test.cpp:86:10:86:11 | 0 | test.cpp:86:10:86:11 | 0 |
+| test.cpp:92:7:92:7 | x | test.cpp:92:10:92:11 | 0 | test.cpp:92:10:92:11 | 0 |
+| test.cpp:92:7:92:7 | x | test.cpp:95:5:95:9 | ... = ... | test.cpp:95:9:95:9 | 3 |
+| test.cpp:93:12:93:12 | i | test.cpp:93:15:93:16 | 0 | test.cpp:93:15:93:16 | 0 |
+| test.cpp:101:7:101:7 | x | test.cpp:101:10:101:11 | 0 | test.cpp:101:10:101:11 | 0 |
+| test.cpp:101:7:101:7 | x | test.cpp:105:5:105:9 | ... = ... | test.cpp:105:9:105:9 | 3 |
+| test.cpp:102:8:102:11 | done | test.cpp:102:14:102:19 | 0 | test.cpp:102:14:102:19 | 0 |
+| test.cpp:102:8:102:11 | done | test.cpp:106:5:106:15 | ... = ... | test.cpp:106:12:106:15 | 1 |
+| test.cpp:112:7:112:7 | x | test.cpp:112:10:112:11 | 0 | test.cpp:112:10:112:11 | 0 |
+| test.cpp:112:7:112:7 | x | test.cpp:115:5:115:9 | ... = ... | test.cpp:115:9:115:9 | 3 |
+| test.cpp:112:7:112:7 | x | test.cpp:121:5:121:9 | ... = ... | test.cpp:121:9:121:9 | 3 |
+| test.cpp:113:12:113:12 | i | test.cpp:113:15:113:16 | 0 | test.cpp:113:15:113:16 | 0 |
+| test.cpp:118:8:118:11 | done | test.cpp:118:14:118:19 | 0 | test.cpp:118:14:118:19 | 0 |
+| test.cpp:118:8:118:11 | done | test.cpp:122:5:122:15 | ... = ... | test.cpp:122:12:122:15 | 1 |
+| test.cpp:128:7:128:7 | x | test.cpp:128:10:128:11 | 0 | test.cpp:128:10:128:11 | 0 |
+| test.cpp:128:7:128:7 | x | test.cpp:131:5:131:9 | ... = ... | test.cpp:131:9:131:9 | 3 |
+| test.cpp:128:7:128:7 | x | test.cpp:135:7:135:11 | ... = ... | test.cpp:135:11:135:11 | 3 |
+| test.cpp:129:12:129:12 | i | test.cpp:129:15:129:16 | 0 | test.cpp:129:15:129:16 | 0 |
+| test.cpp:132:10:132:13 | done | test.cpp:132:16:132:21 | 0 | test.cpp:132:16:132:21 | 0 |
+| test.cpp:132:10:132:13 | done | test.cpp:136:7:136:17 | ... = ... | test.cpp:136:14:136:17 | 1 |
+| test.cpp:144:7:144:7 | x | test.cpp:144:10:144:11 | 0 | test.cpp:144:10:144:11 | 0 |
+| test.cpp:145:8:145:8 | y | test.cpp:145:12:145:13 | & ... | test.cpp:145:12:145:13 | & ... |
+| test.cpp:151:7:151:7 | x | test.cpp:151:10:151:11 | 0 | test.cpp:151:10:151:11 | 0 |
+| test.cpp:152:8:152:8 | y | test.cpp:154:3:154:7 | ... = ... | test.cpp:154:7:154:7 | 1 |
+| test.cpp:158:17:158:17 | x | test.cpp:160:3:160:8 | ... = ... | test.cpp:160:7:160:8 | 42 |
+| test.cpp:190:5:190:5 | s | test.cpp:190:8:190:24 | {...} | test.cpp:190:8:190:24 | {...} |

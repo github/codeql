@@ -1,0 +1,2 @@
+query: Security/CWE/CWE-335/PredictableSeed.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

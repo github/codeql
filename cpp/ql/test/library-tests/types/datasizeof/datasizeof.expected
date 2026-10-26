@@ -1,0 +1,10 @@
+| datasizeof.cpp:20:15:20:31 | __datasizeof(int) | 4 | DatasizeofTypeOperator.getTypeOperand() | file://:0:0:0:0 | int |
+| datasizeof.cpp:21:15:21:32 | __datasizeof(char) | 1 | DatasizeofTypeOperator.getTypeOperand() | file://:0:0:0:0 | char |
+| datasizeof.cpp:22:15:22:33 | __datasizeof(int *) | 8 | DatasizeofTypeOperator.getTypeOperand() | file://:0:0:0:0 | int * |
+| datasizeof.cpp:23:15:23:35 | __datasizeof(MyClass) | 24 | DatasizeofTypeOperator.getTypeOperand() | datasizeof.cpp:5:7:5:13 | MyClass |
+| datasizeof.cpp:24:15:24:29 | __datasizeof(<expr>) | 4 | DatasizeofExprOperator.getExprOperand() | datasizeof.cpp:24:28:24:28 | i |
+| datasizeof.cpp:25:15:25:29 | __datasizeof(<expr>) | 1 | DatasizeofExprOperator.getExprOperand() | datasizeof.cpp:25:28:25:28 | c |
+| datasizeof.cpp:26:15:26:31 | __datasizeof(<expr>) | 8 | DatasizeofExprOperator.getExprOperand() | datasizeof.cpp:26:28:26:30 | ptr |
+| datasizeof.cpp:27:15:27:30 | __datasizeof(<expr>) | 24 | DatasizeofExprOperator.getExprOperand() | datasizeof.cpp:27:28:27:29 | mc |
+| datasizeof.cpp:28:15:28:31 | __datasizeof(<expr>) | 40 | DatasizeofExprOperator.getExprOperand() | datasizeof.cpp:28:28:28:30 | arr |
+| datasizeof.cpp:29:16:29:35 | __datasizeof(<expr>) | 4 | DatasizeofExprOperator.getExprOperand() | datasizeof.cpp:29:29:29:34 | access to array |

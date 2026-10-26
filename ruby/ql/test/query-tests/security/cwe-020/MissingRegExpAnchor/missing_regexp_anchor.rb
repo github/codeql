@@ -1,0 +1,61 @@
+/www\.example\.com/ # $ Alert // BAD
+/^www\.example\.com$/ # BAD: uses end-of-line anchors rather than end-of-string anchors
+/\Awww\.example\.com\z/ # GOOD
+
+/foo\.bar/ # GOOD
+
+/https?:\/\/good\.com/ # $ Alert // BAD
+/^https?:\/\/good\.com/ # $ Alert // BAD: missing end-of-string anchor
+/(^https?:\/\/good1\.com)|(^https?:#good2\.com)/ # BAD: missing end-of-string anchor
+
+/bar/ # GOOD
+
+foo.gsub(/www\.example\.com/, "bar") # GOOD
+foo.sub(/www\.example.com/, "bar") # GOOD
+foo.gsub!(/www\.example\.com/, "bar") # GOOD
+foo.sub!(/www\.example\.com/, "bar") # GOOD
+
+/^a|/
+/^a|b/ # $ Alert // BAD
+/a|^b/
+/^a|^b/
+/^a|b|c/ # $ Alert // BAD
+/a|^b|c/
+/a|b|^c/
+/^a|^b|c/
+
+/(^a)|b/
+/^a|(b)/ # $ Alert // BAD
+/^a|(^b)/
+/^(a)|(b)/ # $ Alert // BAD
+
+
+/a|b$/ # $ Alert // BAD
+/a$|b/
+/a$|b$/
+/a|b|c$/ # $ Alert // BAD
+/a|b$|c/
+/a$|b|c/
+/a|b$|c$/
+
+/a|(b$)/
+/(a)|b$/ # $ Alert // BAD
+/(a$)|b$/
+/(a)|(b)$/ # $ Alert // BAD
+
+/^good.com|better.com/ # $ Alert // BAD
+/^good\.com|better\.com/ # $ Alert // BAD
+/^good\\.com|better\\.com/ # $ Alert // BAD
+/^good\\\.com|better\\\.com/ # $ Alert // BAD
+/^good\\\\.com|better\\\\.com/ # $ Alert // BAD
+
+/^foo|bar|baz$/ # $ Alert // BAD
+/^foo|%/ # OK
+
+REGEXP = /foo/
+REGEXP.match? "http://example.com" # GOOD: the url is the text not the regexp
+REGEXP.match "http://example.com" # GOOD: the url is the text not the regexp
+"http://example.com".match? REGEXP  # GOOD: the url is the text not the regexp
+"http://example.com".match REGEXP  # GOOD: the url is the text not the regexp
+"some text".match? "http://example.com" # $ Alert // BAD
+"some text".match "http://example.com" # $ Alert // BAD

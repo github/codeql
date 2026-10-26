@@ -1,0 +1,36 @@
+name: Build framework coverage timeseries reports
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone self (github/codeql)
+        uses: actions/checkout@v5
+        with:
+          path: script
+      - name: Clone self (github/codeql) for analysis
+        uses: actions/checkout@v5
+        with:
+          path: codeqlModels
+          fetch-depth: 0
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - name: Download CodeQL CLI
+        uses: ./script/.github/actions/fetch-codeql
+      - name: Build modeled package list
+        run: |
+          python script/misc/scripts/library-coverage/generate-timeseries.py codeqlModels
+      - name: Upload timeseries CSV
+        uses: actions/upload-artifact@v4
+        with:
+          name: framework-coverage-timeseries
+          path: framework-coverage-timeseries-*.csv

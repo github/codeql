@@ -1,0 +1,8 @@
+| test.cpp:63:3:71:3 | { ... } | If the allocation in the try block fails, then an unallocated pointer bufMyData will be freed in the catch block. |
+| test.cpp:63:3:71:3 | { ... } | If the allocation in the try block fails, then an unallocated pointer buffer will be freed in the catch block. |
+| test.cpp:63:3:71:3 | { ... } | it is possible to dereference a pointer when accessing a buffer, since it is possible to throw an exception before the memory for the bufMyData is allocated |
+| test.cpp:91:3:100:3 | { ... } | If the allocation in the try block fails, then an unallocated pointer buffer will be freed in the catch block. |
+| test.cpp:120:3:128:3 | { ... } | If the allocation in the try block fails, then an unallocated pointer buffer will be freed in the catch block. |
+| test.cpp:143:3:151:3 | { ... } | If the allocation in the try block fails, then an unallocated pointer buffer will be freed in the catch block. |
+| test.cpp:181:3:183:3 | { ... } | This allocation may have been released in the try block or a previous catch block.valData |
+| test.cpp:219:3:221:3 | { ... } | This allocation may have been released in the try block or a previous catch block.valData |

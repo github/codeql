@@ -1,0 +1,42 @@
+{
+  "markdownMessage": "CodeQL was unable to build the following projects using .NET Core:\n\n- `test.csproj`\n\nSet up a [manual build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/dotnet-build-failure",
+    "name": "Some projects or solutions failed to build using .NET Core"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "CodeQL was unable to build the following projects using MSBuild:\n\n- `test.csproj`\n\nSet up a [manual build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/msbuild-build-failure",
+    "name": "Some projects or solutions failed to build using MSBuild"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "[Configure your workflow](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-xamarin-applications) for this SDK before running CodeQL.",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/missing-xamarin-ios-sdk",
+    "name": "Missing Xamarin SDK for iOS"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

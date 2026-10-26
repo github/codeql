@@ -1,0 +1,2 @@
+| test.c:14:6:14:15 | not_called | AV Rule 186: There shall be no unreachable code. |
+| test.c:32:3:32:6 | ExprStmt | AV Rule 186: There shall be no unreachable code. |

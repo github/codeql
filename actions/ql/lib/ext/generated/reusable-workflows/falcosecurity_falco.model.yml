@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["falcosecurity/falco/.github/workflows/reusable_build_packages.yaml", "*", "input.build_type", "code-injection", "generated"]
+     - ["falcosecurity/falco/.github/workflows/reusable_build_packages.yaml", "*", "input.version", "code-injection", "generated"]
+     - ["falcosecurity/falco/.github/workflows/reusable_test_packages.yaml", "*", "input.version", "code-injection", "generated"]
+     - ["falcosecurity/falco/.github/workflows/reusable_test_packages.yaml", "*", "input.arch", "code-injection", "generated"]
+     - ["falcosecurity/falco/.github/workflows/reusable_publish_packages.yaml", "*", "input.version", "code-injection", "generated"]
+     - ["falcosecurity/falco/.github/workflows/reusable_publish_packages.yaml", "*", "input.bucket_suffix", "code-injection", "generated"]

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Azure.Core/1.47.1/Azure.Core.csproj" />
+    <ProjectReference Include="../../Microsoft.Identity.Client/4.73.1/Microsoft.Identity.Client.csproj" />
+    <ProjectReference Include="../../Microsoft.Identity.Client.Extensions.Msal/4.73.1/Microsoft.Identity.Client.Extensions.Msal.csproj" />
+    <ProjectReference Include="../../System.Memory/4.5.5/System.Memory.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

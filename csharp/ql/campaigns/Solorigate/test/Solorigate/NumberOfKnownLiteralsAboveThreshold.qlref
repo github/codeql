@@ -1,0 +1,2 @@
+query: NumberOfKnownLiteralsAboveThreshold.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

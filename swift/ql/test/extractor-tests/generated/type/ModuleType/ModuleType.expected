@@ -1,0 +1,3 @@
+| module<Foo> | getName: | module<Foo> | getCanonicalType: | module<Foo> | getModule: | file://:0:0:0:0 | Foo |
+| module<__ObjC> | getName: | module<__ObjC> | getCanonicalType: | module<__ObjC> | getModule: | file://:0:0:0:0 | __ObjC |
+| module<default_module_name> | getName: | module<default_module_name> | getCanonicalType: | module<default_module_name> | getModule: | file://:0:0:0:0 | default_module_name |

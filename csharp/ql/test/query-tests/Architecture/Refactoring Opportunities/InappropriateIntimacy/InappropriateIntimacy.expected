@@ -1,0 +1,2 @@
+| InappropriateIntimacy.cs:5:11:5:11 | A | Type A is too closely tied to $@ (16 dependencies one way and 16 the other). | InappropriateIntimacy.cs:28:11:28:11 | B | B |
+| InappropriateIntimacy.cs:28:11:28:11 | B | Type B is too closely tied to $@ (16 dependencies one way and 16 the other). | InappropriateIntimacy.cs:5:11:5:11 | A | A |

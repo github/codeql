@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["ashley-taylor/read-json-property-action", "*", "input.json", "output.value", "taint", "manual"]

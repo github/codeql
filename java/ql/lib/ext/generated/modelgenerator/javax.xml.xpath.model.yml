@@ -1,0 +1,48 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.xpath", "XPath", True, "compile", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPath", True, "compile", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPath", True, "getNamespaceContext", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPath", True, "getXPathFunctionResolver", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPath", True, "getXPathVariableResolver", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPath", True, "setNamespaceContext", "(NamespaceContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPath", True, "setXPathFunctionResolver", "(XPathFunctionResolver)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPath", True, "setXPathVariableResolver", "(XPathVariableResolver)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathException", True, "XPathException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathException", True, "XPathException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathExpression", True, "evaluate", "(InputSource,QName)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathExpression", True, "evaluate", "(Object,QName)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathExpression", True, "evaluateExpression", "(InputSource)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathExpression", True, "evaluateExpression", "(InputSource,Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathExpression", True, "evaluateExpression", "(Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathExpression", True, "evaluateExpression", "(Object,Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathExpressionException", True, "XPathExpressionException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathExpressionException", True, "XPathExpressionException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathFactory", True, "newXPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathFactory", True, "setXPathFunctionResolver", "(XPathFunctionResolver)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathFactory", True, "setXPathVariableResolver", "(XPathVariableResolver)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathFactoryConfigurationException", True, "XPathFactoryConfigurationException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathFactoryConfigurationException", True, "XPathFactoryConfigurationException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathFunctionException", True, "XPathFunctionException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathFunctionException", True, "XPathFunctionException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.xpath", "XPathNodes", True, "get", "(int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.xml.xpath", "XPath", "evaluateExpression", "(String,InputSource)", "summary", "df-generated"]
+      - ["javax.xml.xpath", "XPath", "evaluateExpression", "(String,InputSource,Class)", "summary", "df-generated"]
+      - ["javax.xml.xpath", "XPath", "evaluateExpression", "(String,Object)", "summary", "df-generated"]
+      - ["javax.xml.xpath", "XPath", "evaluateExpression", "(String,Object,Class)", "summary", "df-generated"]
+      - ["javax.xml.xpath", "XPathEvaluationResult$XPathResultType", "getQNameType", "(Class)", "summary", "df-generated"]
+      - ["javax.xml.xpath", "XPathFactory", "getFeature", "(String)", "summary", "df-generated"]
+      - ["javax.xml.xpath", "XPathFactory", "isObjectModelSupported", "(String)", "summary", "df-generated"]
+      - ["javax.xml.xpath", "XPathFactory", "newDefaultInstance", "()", "summary", "df-generated"]
+      - ["javax.xml.xpath", "XPathFactory", "newInstance", "()", "summary", "df-generated"]
+      - ["javax.xml.xpath", "XPathFactory", "newInstance", "(String)", "summary", "df-generated"]
+      - ["javax.xml.xpath", "XPathFactory", "newInstance", "(String,String,ClassLoader)", "summary", "df-generated"]
+      - ["javax.xml.xpath", "XPathFactory", "setFeature", "(String,boolean)", "summary", "df-generated"]

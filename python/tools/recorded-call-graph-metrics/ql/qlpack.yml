@@ -1,0 +1,6 @@
+name: codeql-python-recorded-call-graph-metrics
+version: 0.0.1
+extractor: python
+dependencies:
+  codeql/python-all: '*'
+warnOnImplicitThis: true

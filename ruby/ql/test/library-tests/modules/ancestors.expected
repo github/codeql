@@ -1,0 +1,293 @@
+#-----| BasicObject
+
+#-----| Class
+#-----| super -> Module
+
+#-----| Complex
+#-----| super -> Numeric
+
+#-----| EsotericInstanceMethods
+
+#-----| FalseClass
+#-----| super -> Object
+
+#-----| Float
+#-----| super -> Numeric
+
+#-----| MyStruct
+
+#-----| NilClass
+#-----| super -> Object
+
+#-----| Numeric
+#-----| super -> Object
+
+#-----| Proc
+
+#-----| Rational
+#-----| super -> Numeric
+
+#-----| Struct
+
+#-----| Symbol
+
+#-----| TrueClass
+#-----| super -> Object
+
+#-----| UnresolvedNamespace
+
+#-----| UnresolvedNamespace::X1
+
+#-----| UnresolvedNamespace::X1::X2
+
+#-----| UnresolvedNamespace::X1::X2::X3
+
+calls.rb:
+#   21| M
+
+#   43| C
+#-----| include -> M
+#-----| super -> Object
+
+#   65| D
+#-----| super -> C
+
+#   91| Integer
+#-----| super -> Numeric
+
+#   96| String
+#-----| super -> Object
+
+#  100| Kernel
+
+#  105| Module
+#-----| super -> Object
+
+#  115| Object
+#-----| super -> BasicObject
+#-----| include -> Kernel
+#-----| prepend -> A
+
+#  120| Hash
+#-----| super -> Object
+
+#  125| Array
+#-----| super -> Object
+
+#  165| S
+#-----| super -> Object
+
+#  171| A
+#-----| super -> S
+#-----| super -> B
+#-----| prepend -> A::B
+
+#  176| B
+#-----| super -> S
+
+#  190| Singletons
+#-----| super -> Object
+
+#  310| SelfNew
+#-----| super -> Object
+
+#  325| C1
+#-----| super -> Object
+
+#  335| C2
+#-----| super -> C1
+
+#  341| C3
+#-----| super -> C2
+
+#  385| SingletonOverride1
+#-----| super -> Object
+
+#  420| SingletonOverride2
+#-----| super -> SingletonOverride1
+
+#  441| ConditionalInstanceMethods
+#-----| super -> Object
+
+#  504| ExtendSingletonMethod
+
+#  514| ExtendSingletonMethod2
+
+#  520| ExtendSingletonMethod3
+
+#  533| ProtectedMethodInModule
+
+#  539| ProtectedMethods
+#-----| super -> Object
+#-----| include -> ProtectedMethodInModule
+
+#  558| ProtectedMethodsSub
+#-----| super -> ProtectedMethods
+
+#  572| SingletonUpCall_Base
+#-----| super -> Object
+
+#  576| SingletonUpCall_Sub
+#-----| super -> SingletonUpCall_Base
+
+#  584| SingletonUpCall_SubSub
+#-----| super -> SingletonUpCall_Sub
+
+#  591| SingletonA
+#-----| super -> Object
+
+#  604| SingletonB
+#-----| super -> SingletonA
+
+#  613| SingletonC
+#-----| super -> SingletonA
+
+#  626| Included
+
+#  634| IncludesIncluded
+#-----| super -> Object
+#-----| include -> Included
+
+#  641| CustomNew1
+#-----| super -> Object
+
+#  649| CustomNew2
+#-----| super -> Object
+
+element_reference.rb:
+#    1| ClassWithElementRef
+#-----| super -> Object
+
+hello.rb:
+#    1| EnglishWords
+
+#   11| Greeting
+#-----| super -> Object
+#-----| include -> EnglishWords
+
+#   18| HelloWorld
+#-----| super -> Greeting
+
+instance_fields.rb:
+#   11| A_target
+#-----| super -> Object
+
+#   26| B_target
+#-----| super -> Object
+
+modules.rb:
+#    1| Empty
+
+#    4| Foo
+
+#    5| Foo::Bar
+
+#    6| Foo::Bar::ClassInFooBar
+#-----| super -> Object
+
+#   19| Foo::ClassInFoo
+#-----| super -> Object
+
+#   30| Foo::ClassInAnotherDefinitionOfFoo
+#-----| super -> Object
+
+#   37| Bar
+#-----| super -> Object
+
+#   49| Foo::Bar::ClassInAnotherDefinitionOfFooBar
+#-----| super -> Object
+
+#   60| MyModuleInGlobalScope
+
+#   63| Test
+
+#   65| Test::Foo1
+
+#   66| Test::Foo1::Bar
+#-----| super -> Object
+
+#   70| Test::Foo2
+
+#   71| Test::Foo2::Foo2
+
+#   72| Test::Foo2::Foo2::Bar
+#-----| super -> Object
+
+#   76| Test::Foo3
+
+#   83| Other
+
+#   84| Other::Foo1
+
+#   88| IncludeTest
+#-----| include -> Test
+
+#   91| Test::Foo1::Y
+
+#   95| IncludeTest2
+#-----| include -> Test
+
+#   97| Test::Foo1::Z
+
+#  101| PrependTest
+#-----| prepend -> Test
+
+#  103| Test::Foo2::Y
+
+#  107| MM
+
+#  108| MM::MM
+
+#  112| YY
+#-----| super -> Object
+
+#  115| XX
+
+#  116| XX::YY
+#-----| super -> YY
+
+#  123| Test::Foo1::Bar::Baz
+
+modules_rec.rb:
+#    1| B::A
+#-----| super -> Object
+
+private.rb:
+#    1| E
+#-----| super -> Object
+
+#   62| F
+
+#   82| PrivateOverride1
+#-----| super -> Object
+
+#   96| PrivateOverride2
+#-----| super -> PrivateOverride1
+
+toplevel_self_singleton.rb:
+#    2| A::B
+#-----| super -> Object
+
+#   24| Good
+
+unresolved_subclass.rb:
+#    1| ResolvableBaseClass
+#-----| super -> Object
+
+#    4| UnresolvedNamespace::Subclass1
+#-----| super -> ResolvableBaseClass
+
+#    7| UnresolvedNamespace::Subclass2
+#-----| super -> UnresolvedNamespace::Subclass1
+
+#   11| UnresolvedNamespace::A
+#-----| super -> Object
+
+#   14| UnresolvedNamespace::X1::X2::X3::Subclass1
+#-----| super -> ResolvableBaseClass
+
+#   17| UnresolvedNamespace::X1::X2::X3::Subclass2
+#-----| super -> UnresolvedNamespace::X1::X2::X3::Subclass1
+
+#   21| UnresolvedNamespace::X1::X2::X3::A
+#-----| super -> Object

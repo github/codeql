@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["sun.net.ftp", "FtpClient", True, "login", "(String,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["sun.net.ftp", "FtpClient", True, "login", "(String,char[],String)", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["sun.net.ftp", "FtpClient", True, "login", "(String,char[])", "", "Argument[0]", "credentials-username", "hq-generated"]
+      - ["sun.net.ftp", "FtpClient", True, "login", "(String,char[],String)", "", "Argument[0]", "credentials-username", "hq-generated"]
+      - ["sun.net.ftp", "FtpDirEntry", True, "setUser", "(String)", "", "Argument[0]", "credentials-username", "hq-generated"]

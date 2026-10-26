@@ -1,0 +1,244 @@
+## 0.7.0
+
+### Breaking Changes
+
+* The GitHub Actions control flow graph (CFG) now uses the shared CFG library. The CFG includes explicit before and after nodes and uses the shared entry and exit node representations. Existing code that relies on specific CFG nodes, edges, textual representations, or basic block boundaries may need to be updated. The legacy `Completion`, `NormalCompletion`, `SimpleCompletion`, `BooleanCompletion`, and `ReturnCompletion` classes have been removed because completions are no longer part of the Actions CFG API. Code that inspected completions should inspect CFG edge labels such as `DirectSuccessor`, `BooleanSuccessor`, and `ReturnSuccessor` instead.
+
+## 0.6.3
+
+### Minor Analysis Improvements
+
+* The `trustedActionsOwnerDataModel` extensible predicate, used by the `actions/unpinned-tag` query, now supports removing an owner from the trusted set by adding an entry prefixed with `!` (for example, `!github`). This makes it possible to distrust first-party owners (`actions`, `github`, `advanced-security`) so that unpinned tags for their Actions are reported.
+
+## 0.6.2
+
+No user-facing changes.
+
+## 0.6.1
+
+### New Features
+
+* GitHub Actions databases now extract `actions.lock` files. The new `ActionsLock` class
+  provides access to their YAML abstract syntax trees.
+
+### Minor Analysis Improvements
+
+* Checks on author association fields read from the event payload (e.g. `github.event.pull_request.author_association`) now only count as protection for events whose payload actually populates that field. Previously, a condition such as `github.event.pull_request.author_association != 'NONE'` on a workflow triggered by `issues` events was treated as a protective check even though `github.event.pull_request` is not populated for `issues` events, which makes the condition vacuous. This change may result in more alerts for queries using the `ControlCheck` class.
+
+## 0.6.0
+
+### Breaking Changes
+
+* Checks on actor fields read from the event payload (e.g. `github.event.pull_request.user.login`) were split out of `ActorIfCheck` into a new class `EventActorIfCheck`. The `ActorIfCheck` class now only covers `github.actor` and `github.triggering_actor`.
+
+### Minor Analysis Improvements
+
+* Checks on actor fields read from the event payload (e.g. `github.event.pull_request.user.login`) now only count as protection for events whose payload actually populates that field. Previously, a condition such as `github.event.pull_request.user.login != 'name'` on a workflow triggered by `issues` events was treated as a protective check even though `github.event.pull_request` is not populated for `issues` events, which makes the condition vacuous. This change may result in more alerts for queries using the `ControlCheck` class.
+* Added an option to `EnvironmentCheck` to become specified by a MaD model, otherwise it will continue as the default it previously was. Without adding models to `actions/ql/lib/ext/config/deployment_environment.yml` the behavior of every query will be unchanged. When models are added queries using `ControlCheck` may find more results in cases where an environment is no longer a sufficient sanitizer.
+
+## 0.5.0
+
+### Breaking Changes
+
+* The `codeql.actions.security.SelfHostedQuery` module has been removed because runner labels do not reliably distinguish self-hosted runners from managed runners.
+
+### Minor Analysis Improvements
+
+* GitHub Actions analysis now recognizes untrusted data in `github.event.merge_group` for workflows triggered by the `merge_group` event.
+
+## 0.4.40
+
+### Minor Analysis Improvements
+
+* Altered the logic of `EnvironmentCheck` to make sure it is a check that protects only for non-toctou. This change will result in more results being found by the queries: `actions/untrusted-checkout-toctou/high` and `actions/untrusted-checkout-toctou/critical`.
+
+## 0.4.39
+
+No user-facing changes.
+
+## 0.4.38
+
+### Bug Fixes
+
+* GitHub Actions queries now better account for permission checks on jobs that call reusable workflows.
+* The query `actions/pr-on-self-hosted-runner` was updated to the latest standard runner labels reducing false positive results.
+
+## 0.4.37
+
+### Minor Analysis Improvements
+
+* The GitHub Actions analysis now recognizes more Bash regex checks that restrict a value to alphanumeric characters, including regexes like `^[0-9a-zA-Z]{40}([0-9a-zA-Z]{24})?$` which check for a SHA-1 or SHA-256 hash. This may reduce false positive results where command output is validated with grouped or optional alphanumeric patterns before being used.
+
+## 0.4.36
+
+### Minor Analysis Improvements
+
+* Altered 2 patterns in the `poisonable_steps` modelling. Extra sinks are detected in the following cases: scripts executed via python modules and `go run` in directories are detected as potential mechanisms of injection. For the go execution pattern, the pattern is updated to now ignore flags that occur between go and the specific command. This change may lead to more results being detected by the following queries: `actions/untrusted-checkout/high`, `actions/untrusted-checkout/critical`, `actions/untrusted-checkout-toctou/high`, `actions/untrusted-checkout-toctou/critical`, `actions/cache-poisoning/poisonable-step`, `actions/cache-poisoning/direct-cache` and `actions/artifact-poisoning/path-traversal`.
+
+## 0.4.35
+
+No user-facing changes.
+
+## 0.4.34
+
+### Minor Analysis Improvements
+
+* Removed false positive injection sink models for the `context` input of `docker/build-push-action` and the `allowed-endpoints` input of `step-security/harden-runner`.
+
+## 0.4.33
+
+No user-facing changes.
+
+## 0.4.32
+
+No user-facing changes.
+
+## 0.4.31
+
+No user-facing changes.
+
+## 0.4.30
+
+No user-facing changes.
+
+## 0.4.29
+
+No user-facing changes.
+
+## 0.4.28
+
+No user-facing changes.
+
+## 0.4.27
+
+### Bug Fixes
+
+* Fixed a crash when analysing a `${{ ... }}` expression over around 300 characters in length.
+
+## 0.4.26
+
+### Major Analysis Improvements
+
+* The query `actions/code-injection/medium` has been updated to include results which were incorrectly excluded while filtering out results that are reported by `actions/code-injection/critical`.
+
+## 0.4.25
+
+No user-facing changes.
+
+## 0.4.24
+
+No user-facing changes.
+
+## 0.4.23
+
+No user-facing changes.
+
+## 0.4.22
+
+No user-facing changes.
+
+## 0.4.21
+
+No user-facing changes.
+
+## 0.4.20
+
+No user-facing changes.
+
+## 0.4.19
+
+No user-facing changes.
+
+## 0.4.18
+
+No user-facing changes.
+
+## 0.4.17
+
+No user-facing changes.
+
+## 0.4.16
+
+No user-facing changes.
+
+## 0.4.15
+
+No user-facing changes.
+
+## 0.4.14
+
+No user-facing changes.
+
+## 0.4.13
+
+### Bug Fixes
+
+* The `actions/artifact-poisoning/critical` and `actions/artifact-poisoning/medium` queries now exclude artifacts downloaded to `$[{ runner.temp }}` in addition to `/tmp`.
+
+## 0.4.12
+
+### Minor Analysis Improvements
+
+* Fixed performance issues in the parsing of Bash scripts in workflow files,
+  which led to out-of-disk errors when analysing certain workflow files with
+  complex interpolations of shell commands or quoted strings.
+
+## 0.4.11
+
+No user-facing changes.
+
+## 0.4.10
+
+No user-facing changes.
+
+## 0.4.9
+
+No user-facing changes.
+
+## 0.4.8
+
+No user-facing changes.
+
+## 0.4.7
+
+### New Features
+
+* CodeQL and Copilot Autofix support for GitHub Actions is now Generally Available.
+
+## 0.4.6
+
+### Bug Fixes
+
+* The query `actions/code-injection/medium` now produces alerts for injection
+  vulnerabilities on `pull_request` events.
+
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+No user-facing changes.
+
+## 0.4.3
+
+### New Features
+
+* The "Unpinned tag for a non-immutable Action in workflow" query (`actions/unpinned-tag`) now supports expanding the trusted action owner list using data extensions (`extensible: trustedActionsOwnerDataModel`). If you trust an Action publisher, you can include the owner name/organization in a model pack to add it to the allow list for this query. This addition will prevent security alerts when using unpinned tags for Actions published by that owner. For more information on creating a model pack, see [Creating a CodeQL Model Pack](https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack).
+
+## 0.4.2
+
+### Bug Fixes
+
+* Fixed data for vulnerable versions of `actions/download-artifact` and `rlespinasse/github-slug-action` (following GHSA-cxww-7g56-2vh6 and GHSA-6q4m-7476-932w).
+* Improved `untrustedGhCommandDataModel` regex for `gh pr view` and Bash taint analysis in GitHub Actions.
+
+## 0.4.1
+
+No user-facing changes.
+
+## 0.4.0
+
+### New Features
+
+* Initial public preview release

@@ -1,0 +1,6 @@
+| file://:0:0:0:0 | operator= | 1 |
+| file://:0:0:0:0 | operator= | 1 |
+| parameters.cpp:3:5:3:14 | Callback_1 | 2 |
+| parameters.cpp:8:5:8:14 | Callback_2 | 2 |
+| parameters.cpp:13:5:13:14 | Callback_3 | 2 |
+| parameters.cpp:18:6:18:13 | Dispatch | 5 |

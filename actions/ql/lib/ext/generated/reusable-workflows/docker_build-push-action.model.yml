@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["docker/build-push-action/.github/workflows/.e2e-run.yml", "*", "input.id", "code-injection", "generated"]
+     - ["docker/build-push-action/.github/workflows/.e2e-run.yml", "*", "input.type", "code-injection", "generated"]

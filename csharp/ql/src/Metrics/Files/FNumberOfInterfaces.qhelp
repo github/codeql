@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of interfaces in each file. Interfaces are public facing by 
+design and as such any changes to them will have a large impact. This impact can be reduced by 
+compartmentalizing each interface into its own source file.</p>
+
+</overview>
+<recommendation>
+<p>Give all interfaces their own dedicated file.</p>
+
+</recommendation>
+<references>
+
+  <li>MSDN. C# Programming Guide. <a href="http://msdn.microsoft.com/en-us/library/vstudio/ms173156.aspx">Interfaces</a>.</li>
+
+</references>
+</qhelp>

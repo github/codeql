@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["open-telemetry/opentelemetry-java-instrumentation/.github/workflows/reusable-workflow-notification.yml", "*", "input.success", "code-injection", "generated"]
+     - ["open-telemetry/opentelemetry-java-instrumentation/.github/workflows/reusable-smoke-test-images.yml", "*", "input.project", "code-injection", "generated"]

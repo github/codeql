@@ -1,0 +1,4 @@
+- description: Standard LGTM queries for Java
+- apply: codeql-suites/java-lgtm-full.qls
+- apply: lgtm-displayed-only.yml
+  from: codeql/suite-helpers

@@ -1,0 +1,2 @@
+| test.py:28:1:28:23 | Class Useless1 | Class Useless1 defines only one public method, which should be replaced by a function. |
+| test.py:37:1:37:23 | Class Useless2 | Class Useless2 defines only one public method, which should be replaced by a function. |

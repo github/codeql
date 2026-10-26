@@ -1,0 +1,2 @@
+query: Variables/GlobalAtModuleLevel.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

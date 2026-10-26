@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The use of the <code>global</code> keyword enables functions to modify variables outside of their scope.
+These functions may then include side effects that may not be apparent to users
+of that function, making the code harder to understand.</p>
+</overview>
+
+<recommendation>
+<p>Remove the <code>global</code> statement, if possible.</p>
+</recommendation>
+
+<references>
+
+  <li>Python Language Reference: <a href="http://docs.python.org/reference/simple_stmts.html#the-global-statement">The global statement</a>.</li>
+
+</references>
+</qhelp>

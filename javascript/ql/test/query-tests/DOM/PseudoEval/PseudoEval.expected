@@ -1,0 +1,5 @@
+| tst.js:1:1:1:22 | window. ... ut(";") | Avoid using functions that evaluate strings as code. |
+| tst.js:2:1:2:24 | setInte ... te();") | Avoid using functions that evaluate strings as code. |
+| tst.js:4:1:4:31 | documen ... i!');") | Avoid using functions that evaluate strings as code. |
+| tst.js:5:1:5:30 | window. ... gger;") | Avoid using functions that evaluate strings as code. |
+| tst.js:9:3:9:33 | documen ... d = 2") | Avoid using functions that evaluate strings as code. |

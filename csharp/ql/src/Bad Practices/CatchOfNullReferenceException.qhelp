@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Catching <code>NullReferenceException</code> should not be used as an alternative to checks and 
+assertions for preventing dereferencing a null pointer.</p>
+
+</overview>
+<recommendation>
+<p>Check if the variable is null before dereferencing it.</p>
+
+</recommendation>
+<example>
+<p>The following example class, <code>findPerson</code> returns null if the person is not found.</p>
+<sample src="CatchOfNullReferenceException.cs" />
+
+<p>The following example has been updated to ensure that any null return values are handled 
+correctly.</p>
+<sample src="CatchOfNullReferenceExceptionFix.cs" />
+
+</example>
+<references>
+
+
+</references>
+</qhelp>

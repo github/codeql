@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["braintree/braintree/android", "*", "input.version", "code-injection", "generated"]
+     - ["braintree/braintree/android", "*", "input.module", "code-injection", "generated"]
+     - ["braintree/braintree/android", "*", "input.signing_file_path", "code-injection", "generated"]
+     - ["braintree/braintree/android", "*", "input.signing_key_file", "code-injection", "generated"]

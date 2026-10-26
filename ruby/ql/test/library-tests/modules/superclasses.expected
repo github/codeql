@@ -1,0 +1,283 @@
+#-----| BasicObject
+
+#-----| Class
+#-----|  -> Module
+
+#-----| Complex
+#-----|  -> Numeric
+
+#-----| EsotericInstanceMethods
+
+#-----| FalseClass
+#-----|  -> Object
+
+#-----| Float
+#-----|  -> Numeric
+
+#-----| MyStruct
+
+#-----| NilClass
+#-----|  -> Object
+
+#-----| Numeric
+#-----|  -> Object
+
+#-----| Proc
+
+#-----| Rational
+#-----|  -> Numeric
+
+#-----| Struct
+
+#-----| Symbol
+
+#-----| TrueClass
+#-----|  -> Object
+
+#-----| UnresolvedNamespace
+
+#-----| UnresolvedNamespace::X1
+
+#-----| UnresolvedNamespace::X1::X2
+
+#-----| UnresolvedNamespace::X1::X2::X3
+
+calls.rb:
+#   21| M
+
+#   43| C
+#-----|  -> Object
+
+#   65| D
+#-----|  -> C
+
+#   91| Integer
+#-----|  -> Numeric
+
+#   96| String
+#-----|  -> Object
+
+#  100| Kernel
+
+#  105| Module
+#-----|  -> Object
+
+#  115| Object
+#-----|  -> BasicObject
+
+#  120| Hash
+#-----|  -> Object
+
+#  125| Array
+#-----|  -> Object
+
+#  165| S
+#-----|  -> Object
+
+#  171| A
+#-----|  -> B
+#-----|  -> S
+
+#  176| B
+#-----|  -> S
+
+#  190| Singletons
+#-----|  -> Object
+
+#  310| SelfNew
+#-----|  -> Object
+
+#  325| C1
+#-----|  -> Object
+
+#  335| C2
+#-----|  -> C1
+
+#  341| C3
+#-----|  -> C2
+
+#  385| SingletonOverride1
+#-----|  -> Object
+
+#  420| SingletonOverride2
+#-----|  -> SingletonOverride1
+
+#  441| ConditionalInstanceMethods
+#-----|  -> Object
+
+#  504| ExtendSingletonMethod
+
+#  514| ExtendSingletonMethod2
+
+#  520| ExtendSingletonMethod3
+
+#  533| ProtectedMethodInModule
+
+#  539| ProtectedMethods
+#-----|  -> Object
+
+#  558| ProtectedMethodsSub
+#-----|  -> ProtectedMethods
+
+#  572| SingletonUpCall_Base
+#-----|  -> Object
+
+#  576| SingletonUpCall_Sub
+#-----|  -> SingletonUpCall_Base
+
+#  584| SingletonUpCall_SubSub
+#-----|  -> SingletonUpCall_Sub
+
+#  591| SingletonA
+#-----|  -> Object
+
+#  604| SingletonB
+#-----|  -> SingletonA
+
+#  613| SingletonC
+#-----|  -> SingletonA
+
+#  626| Included
+
+#  634| IncludesIncluded
+#-----|  -> Object
+
+#  641| CustomNew1
+#-----|  -> Object
+
+#  649| CustomNew2
+#-----|  -> Object
+
+element_reference.rb:
+#    1| ClassWithElementRef
+#-----|  -> Object
+
+hello.rb:
+#    1| EnglishWords
+
+#   11| Greeting
+#-----|  -> Object
+
+#   18| HelloWorld
+#-----|  -> Greeting
+
+instance_fields.rb:
+#   11| A_target
+#-----|  -> Object
+
+#   26| B_target
+#-----|  -> Object
+
+modules.rb:
+#    1| Empty
+
+#    4| Foo
+
+#    5| Foo::Bar
+
+#    6| Foo::Bar::ClassInFooBar
+#-----|  -> Object
+
+#   19| Foo::ClassInFoo
+#-----|  -> Object
+
+#   30| Foo::ClassInAnotherDefinitionOfFoo
+#-----|  -> Object
+
+#   37| Bar
+#-----|  -> Object
+
+#   49| Foo::Bar::ClassInAnotherDefinitionOfFooBar
+#-----|  -> Object
+
+#   60| MyModuleInGlobalScope
+
+#   63| Test
+
+#   65| Test::Foo1
+
+#   66| Test::Foo1::Bar
+#-----|  -> Object
+
+#   70| Test::Foo2
+
+#   71| Test::Foo2::Foo2
+
+#   72| Test::Foo2::Foo2::Bar
+#-----|  -> Object
+
+#   76| Test::Foo3
+
+#   83| Other
+
+#   84| Other::Foo1
+
+#   88| IncludeTest
+
+#   91| Test::Foo1::Y
+
+#   95| IncludeTest2
+
+#   97| Test::Foo1::Z
+
+#  101| PrependTest
+
+#  103| Test::Foo2::Y
+
+#  107| MM
+
+#  108| MM::MM
+
+#  112| YY
+#-----|  -> Object
+
+#  115| XX
+
+#  116| XX::YY
+#-----|  -> YY
+
+#  123| Test::Foo1::Bar::Baz
+
+modules_rec.rb:
+#    1| B::A
+#-----|  -> Object
+
+private.rb:
+#    1| E
+#-----|  -> Object
+
+#   62| F
+
+#   82| PrivateOverride1
+#-----|  -> Object
+
+#   96| PrivateOverride2
+#-----|  -> PrivateOverride1
+
+toplevel_self_singleton.rb:
+#    2| A::B
+#-----|  -> Object
+
+#   24| Good
+
+unresolved_subclass.rb:
+#    1| ResolvableBaseClass
+#-----|  -> Object
+
+#    4| UnresolvedNamespace::Subclass1
+#-----|  -> ResolvableBaseClass
+
+#    7| UnresolvedNamespace::Subclass2
+#-----|  -> UnresolvedNamespace::Subclass1
+
+#   11| UnresolvedNamespace::A
+#-----|  -> Object
+
+#   14| UnresolvedNamespace::X1::X2::X3::Subclass1
+#-----|  -> ResolvableBaseClass
+
+#   17| UnresolvedNamespace::X1::X2::X3::Subclass2
+#-----|  -> UnresolvedNamespace::X1::X2::X3::Subclass1
+
+#   21| UnresolvedNamespace::X1::X2::X3::A
+#-----|  -> Object

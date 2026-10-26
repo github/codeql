@@ -1,0 +1,1 @@
+| ConstantLengthComparison.go:5:6:5:17 | ...==... | This checks the length against a constant, but it $@. | ConstantLengthComparison.go:5:31:5:35 | index expression | is indexed using a variable |

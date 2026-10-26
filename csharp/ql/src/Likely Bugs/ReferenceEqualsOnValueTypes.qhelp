@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>Object.ReferenceEquals(...)</code> method is used to determine if two objects are the 
+same instance. Since the method takes two objects as parameters, value types will automatically be 
+boxed in different objects when calling the method. Hence, the method <code>ReferenceEquals(..)
+</code> will always return <code>false</code> when comparing value type expressions, including 
+struct values. As such, this kind of check is at best useless and at worst erroneous.</p>
+
+</overview>
+<recommendation>
+<p>Consider whether the equality test is needed. If it is not then remove it, otherwise replace it 
+with a more appropriate equality check such as <code>==</code>.</p>
+
+</recommendation>
+<example>
+<p>In this example, the programmer is attempting to compare two <code>int</code>s but since they 
+are value types the <code>ReferenceEquals</code> method will always return false. They should 
+really be compared using <code>i == j</code>.</p>
+<sample src="ReferenceEqualsOnValueTypes.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.object.referenceequals.aspx">Object.ReferenceEquals Method</a>.</li>
+  <li>The Way I See It: <a href="https://docs.microsoft.com/en-us/archive/blogs/vijaysk/object-referenceequalsvaluevar-valuevar-will-always-return-false">Object.ReferenceEquals(ValueVar, ValueVar) will always return false.</a></li>
+
+
+</references>
+</qhelp>

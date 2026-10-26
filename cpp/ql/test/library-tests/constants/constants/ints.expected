@@ -1,0 +1,6 @@
+| constants.cpp:38:7:38:10 | zero | 0 |  0 | Literal |
+| constants.cpp:38:7:38:10 | zero | 0 |  0 | Zero |
+| constants.cpp:40:7:40:9 | dec | 100 |  100 | Literal |
+| constants.cpp:41:7:41:9 | hex | 100 |  0x64 | HexLiteral |
+| constants.cpp:42:7:42:9 | oct | 100 |  0144 | OctalLiteral |
+| constants.cpp:46:7:46:16 | full_macro | 100 |  ONE_HUNDRED | Literal |

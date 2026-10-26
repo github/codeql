@@ -1,0 +1,3 @@
+| any ExplicitExistential | getName: | any ExplicitExistential | getCanonicalType: | any ExplicitExistential | getConstraint: | ExplicitExistential |
+| any ImplicitExistential | getName: | any ImplicitExistential | getCanonicalType: | any ImplicitExistential | getConstraint: | ImplicitExistential |
+| any P1 & P2 | getName: | any P1 & P2 | getCanonicalType: | any P1 & P2 | getConstraint: | P1 & P2 |

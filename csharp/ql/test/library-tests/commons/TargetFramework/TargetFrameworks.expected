@@ -1,0 +1,4 @@
+| NetCore2.0.cs:5:12:5:26 | [assembly: TargetFramework(...)] | .NETCoreApp | 2.0 |
+| NetFramework4.6.1.cs:5:12:5:69 | [assembly: TargetFramework(...)] | .NETFramework | 4.6.1 |
+| NetFramework4.6.cs:5:12:5:35 | [assembly: TargetFramework(...)] | .NETFramework | 4.6 |
+| NetStandard1.3.cs:5:12:5:26 | [assembly: TargetFramework(...)] | .NETStandard | 1.3 |

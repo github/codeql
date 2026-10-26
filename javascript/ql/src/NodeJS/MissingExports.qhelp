@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Referencing an otherwise undeclared global variable in a module that exports
+a definition of the same name is confusing and may indicate a bug.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If the global variable reference is intentional, consider adding a JSLint
+<code>/*global ...*/</code> directive or an externs declaration to declare the variable.
+</p>
+<p>
+If the global variable reference is unintentional, qualifying the reference
+with <code>exports</code> will make it refer to the exported definition instead.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, the module exports two functions <code>checkOne</code>
+and <code>checkList</code>. The latter is also stored in a variable of the same name
+that is local to the module, but the former is not. Hence the call <code>checkOne(xs[i])</code>
+on line 7 does not refer to the function defined on line 1, but to an otherwise undeclared
+global variable also called <code>checkOne</code>.
+</p>
+
+<sample src="examples/MissingExports.js" />
+
+<p>
+Assuming that the intention is to call the <code>checkOne</code> function defined on line 1,
+the call should be qualified with <code>exports</code> like this:
+</p>
+
+<sample src="examples/MissingExportsGood.js" />
+</example>
+
+<references>
+<li>Node.js: <a href="https://nodejs.org/api/modules.html">Modules</a>.</li>
+<li>JSLint Help: <a href="http://www.jslint.com/help.html">JSLint Directives</a>.</li>
+<li>Closure Compiler: <a href="https://developers.google.com/closure/compiler/docs/api-tutorial3">Advanced Compilation and Externs</a>.</li>
+</references>
+</qhelp>

@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+A constant-time algorithm should be used for checking a MAC or a digital signature.
+In other words, the comparison time should not depend on the content of the input. 
+Otherwise, an attacker may be able to forge a valid signature for an arbitrary message
+by running a timing attack if they can send to the validation procedure
+both the message and the signature. A successful attack can result in authentication bypass.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use <code>MessageDigest.isEqual()</code> method to check MACs and signatures.
+If this method is used, then the calculation time depends only on the length of input byte arrays,
+and does not depend on the contents of the arrays.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses <code>Arrays.equals()</code> method for validating a MAC over a message.
+This method implements a non-constant-time algorithm.
+Both the message and the signature come from an untrusted HTTP request:
+</p>
+<sample src="UnsafeMacComparison.java" />
+
+<p>
+The next example uses a safe constant-time algorithm for validating a MAC:
+</p>
+<sample src="SafeMacComparison.java" />
+</example>
+
+<references>
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/Timing_attack">Timing attack</a>.
+</li>
+<li>
+  Coursera:
+  <a href="https://www.coursera.org/lecture/crypto/timing-attacks-on-mac-verification-FHGW1">Timing attacks on MAC verification</a>
+</li>
+<li>
+  NCC Group:
+  <a href="https://www.nccgroup.trust/globalassets/our-research/us/whitepapers/TimeTrial.pdf">Time Trial: Racing Towards Practical Remote Timing Attacks</a>
+</li>
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/MessageDigest.html#isEqual(byte[],byte[])">MessageDigest.isEqual() method</a>
+</li>
+</references>
+
+</qhelp>

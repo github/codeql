@@ -1,0 +1,1977 @@
+/**
+ * Provides a hierarchy of classes for modeling C/C++ types.
+ */
+
+import semmle.code.cpp.Element
+import semmle.code.cpp.Function
+import semmle.code.cpp.TemplateParameter
+private import semmle.code.cpp.internal.ResolveClass
+
+/**
+ * A C/C++ type.
+ *
+ * This QL class represents the root of the C/C++ type hierarchy.
+ */
+class Type extends Locatable, @type {
+  Type() { isType(underlyingElement(this)) }
+
+  /**
+   * Gets the name of this type.
+   */
+  string getName() { none() }
+
+  /**
+   * Holds if this type is called `name`.
+   */
+  predicate hasName(string name) { name = this.getName() }
+
+  /**
+   * Holds if this declaration has a specifier called `name`, recursively looking
+   * through `typedef` and `decltype`. For example, in the context of
+   * `typedef const int *restrict t`, the type `volatile t` has specifiers
+   * `volatile` and `restrict` but not `const` since the `const` is attached to
+   * the type being pointed to rather than the pointer itself.
+   */
+  // This predicate should not be overridden, but it cannot be declared `final`
+  // because there is a similarly-named predicate in Declaration, and UserType
+  // inherits from both Type and Declaration and must override it to resolve
+  // the ambiguity.
+  predicate hasSpecifier(string name) { this.getASpecifier().hasName(name) }
+
+  /**
+   * Gets a specifier of this type, recursively looking through `typedef` and
+   * `decltype`. For example, in the context of `typedef const int *restrict t`,
+   * the type `volatile t` has specifiers `volatile` and `restrict` but not
+   * `const` since the `const` is attached to the type being pointed to rather
+   * than the pointer itself.
+   */
+  // This predicate should not be overridden, but it cannot be declared `final`
+  // because there is a similarly-named predicate in Declaration, and UserType
+  // inherits from both Type and Declaration and must override it to resolve
+  // the ambiguity.
+  Specifier getASpecifier() {
+    typespecifiers(underlyingElement(this), unresolveElement(result))
+    or
+    result = this.internal_getAnAdditionalSpecifier()
+  }
+
+  /**
+   * Gets an attribute of this type.
+   */
+  Attribute getAnAttribute() { typeattributes(underlyingElement(this), unresolveElement(result)) }
+
+  /**
+   * Internal -- should be `protected` when QL supports such a flag. Subtypes
+   * override this to recursively get specifiers that are not attached directly
+   * to this `@type` in the database but arise through type aliases such as
+   * `typedef` and `decltype`.
+   */
+  Specifier internal_getAnAdditionalSpecifier() { none() }
+
+  /**
+   * Holds if this type is const.
+   */
+  predicate isConst() { this.hasSpecifier("const") }
+
+  /**
+   * Holds if this type is volatile.
+   */
+  predicate isVolatile() { this.hasSpecifier("volatile") }
+
+  /**
+   * Holds if this type refers to type `t` (by default,
+   * a type always refers to itself).
+   */
+  predicate refersTo(Type t) { this.refersToDirectly*(t) }
+
+  /**
+   * Holds if this type refers to type `t` directly.
+   */
+  predicate refersToDirectly(Type t) { none() }
+
+  /**
+   * Gets this type after typedefs have been resolved.
+   *
+   * The result of this predicate will be the type itself, except in the case of a TypedefType, a Decltype,
+   * or a TypeofType, in which case the result will be type which results from (possibly recursively)
+   * resolving typedefs.
+   */
+  pragma[nomagic]
+  Type getUnderlyingType() { result = this }
+
+  /**
+   * Gets this type after specifiers have been deeply stripped and typedefs have been resolved.
+   *
+   * For example, starting with `const i64* const` in the context of `typedef long long i64;`, this predicate will return `long long*`.
+   */
+  pragma[nomagic]
+  Type getUnspecifiedType() { unspecifiedtype(underlyingElement(this), unresolveElement(result)) }
+
+  /**
+   * Gets this type after any top-level specifiers and typedefs have been stripped.
+   *
+   * For example, starting with `const i64* const`, this predicate will return `const i64*`.
+   */
+  Type stripTopLevelSpecifiers() { result = this }
+
+  /**
+   * Gets the size of this type in bytes.
+   */
+  int getSize() {
+    builtintypes(underlyingElement(this), _, _, result, _, _) or
+    pointerishsize(underlyingElement(this), result, _) or
+    usertypesize(underlyingElement(this), result, _)
+  }
+
+  /**
+   * Gets the bit width of this type.
+   */
+  int getBitWidth() {
+    not bit_precise_int_types(underlyingElement(this), _) and
+    result = this.getSize() * 8
+    or
+    bit_precise_int_types(underlyingElement(this), result)
+  }
+
+  /**
+   * Gets the alignment of this type in bytes.
+   */
+  int getAlignment() {
+    builtintypes(underlyingElement(this), _, _, _, _, result) or
+    pointerishsize(underlyingElement(this), _, result) or
+    usertypesize(underlyingElement(this), _, result)
+  }
+
+  /**
+   * Gets the pointer indirection level of this type.
+   */
+  int getPointerIndirectionLevel() { result = 0 }
+
+  /**
+   * Gets a detailed string representation explaining the AST of this type
+   * (with all specifiers and nested constructs such as pointers). This is
+   * intended to help debug queries and is a very expensive operation; not
+   * to be used in production queries.
+   *
+   * An example output is "const {pointer to {const {char}}}".
+   */
+  string explain() { result = "type" } // Concrete base impl to allow filters on Type
+
+  /**
+   * Holds if this type is constant and only contains constant types.
+   * For instance, a `char *const` is a constant type, but not deeply constant,
+   * because while the pointer can't be modified the character can. The type
+   * `const char *const*` is a deeply constant type though - both the pointer
+   * and what it points to are immutable.
+   */
+  predicate isDeeplyConst() { this.isConst() and this.isDeeplyConstBelow() }
+
+  /**
+   * Holds if this type is constant and only contains constant types, excluding
+   * the type itself. It is implied by Type.isDeeplyConst() and is just used to
+   * implement that predicate.
+   * For example, `const char *const` is deeply constant and deeply constant below,
+   * but `const char *` is only deeply constant below (the pointer can be changed,
+   * but not the underlying char). `char *const` is neither (it is just `const`).
+   */
+  predicate isDeeplyConstBelow() { none() } // Concrete base impl to allow filters on Type
+
+  /**
+   * Gets as many places as possible where this type is used by name in the source after macros have been replaced
+   * (in particular, therefore, this will find type name uses caused by macros). Note that all type name uses within
+   * instantiations are currently excluded - this is too draconian in the absence of indexing prototype instantiations
+   * of functions, and is likely to improve in the future. At present, the method takes the conservative approach of
+   * giving valid type name uses, but not necessarily *all* type name uses.
+   */
+  Element getATypeNameUse() {
+    // An explicit cast to a type referring to T uses T. We exclude casts within instantiations,
+    // since they do not appear directly in the source.
+    exists(Cast c |
+      not c.isImplicit() and
+      c.getType().refersTo(this) and
+      result = c and
+      not c.getEnclosingFunction().isConstructedFrom(_)
+    )
+    or
+    // A class derivation from a type referring to T uses T. We exclude class derivations within
+    // instantiations, since they do not appear directly in the source.
+    exists(ClassDerivation cd |
+      cd.getBaseType().refersTo(this) and
+      result = cd and
+      not cd.getDerivedClass() instanceof ClassTemplateInstantiation
+    )
+    or
+    // A new, new array, or placement new expression with a type that refers to T uses T.
+    // We exclude news within instantiations, since they do not appear directly in the source.
+    exists(Expr e |
+      (
+        e instanceof NewArrayExpr or
+        e instanceof NewExpr
+      ) and
+      e.getType().refersTo(this) and
+      result = e and
+      not e.getEnclosingFunction().isConstructedFrom(_)
+    )
+    or
+    // The declaration of a function that returns a type referring to T uses T. We exclude
+    // declarations of function template instantiations, since their return types do not
+    // appear directly in the source. We also exclude constructors and destructors, since
+    // they are indexed with a dummy return type of void that does not appear in the source.
+    exists(FunctionDeclarationEntry fde, Type t |
+      (if exists(fde.getTypedefType()) then t = fde.getTypedefType() else t = fde.getType()) and
+      t.refersTo(this) and
+      result = fde and
+      not fde.getDeclaration().isConstructedFrom(_) and
+      not fde.getDeclaration() instanceof Constructor and
+      not fde.getDeclaration() instanceof Destructor
+    )
+    or
+    // A function call that provides an explicit template argument that refers to T uses T.
+    // We exclude calls within instantiations, since they do not appear directly in the source.
+    exists(FunctionCall c |
+      c.getAnExplicitTemplateArgument().(Type).refersTo(this) and
+      result = c and
+      not c.getEnclosingFunction().isConstructedFrom(_)
+    )
+    or
+    // Qualifying an expression with a type that refers to T uses T. We exclude qualifiers
+    // within instantiations, since they do not appear directly in the source.
+    exists(NameQualifier nq |
+      nq.getQualifyingElement().(Type).refersTo(this) and
+      result = nq and
+      not nq.getExpr().getEnclosingFunction().isConstructedFrom(_)
+    )
+    or
+    // Calculating the size of a type that refers to T uses T. We exclude sizeofs within
+    // instantiations, since they do not appear directly in the source.
+    exists(SizeofTypeOperator soto |
+      soto.getTypeOperand().refersTo(this) and
+      result = soto and
+      not soto.getEnclosingFunction().isConstructedFrom(_)
+    )
+    or
+    // A typedef of a type that refers to T uses T.
+    exists(TypeDeclarationEntry tde |
+      tde.getDeclaration().(TypedefType).getBaseType().refersTo(this) and
+      result = tde
+    )
+    or
+    // Using something declared within a type that refers to T uses T.
+    exists(UsingDeclarationEntry ude |
+      ude.getDeclaration().getDeclaringType().refersTo(this) and
+      result = ude
+    )
+    or
+    // The declaration of a variable with a type that refers to T uses T. We exclude declarations within
+    // instantiations, since those do not appear directly in the source.
+    exists(VariableDeclarationEntry vde |
+      vde.getType().refersTo(this) and
+      result = vde and
+      not exists(LocalScopeVariable sv |
+        sv = vde.getDeclaration() and sv.getFunction().isConstructedFrom(_)
+      ) and
+      not exists(MemberVariable mv |
+        mv = vde.getDeclaration() and mv.getDeclaringType() instanceof ClassTemplateInstantiation
+      )
+    )
+  }
+
+  /**
+   * Holds if this type involves a reference.
+   */
+  predicate involvesReference() { none() }
+
+  /**
+   * Holds if this type involves a template parameter.
+   */
+  predicate involvesTemplateParameter() { none() }
+
+  /**
+   * Gets this type with any typedefs resolved. For example, given
+   * `typedef C T`, this would resolve `const T&` to `const C&`.
+   * Note that this will only work if the resolved type actually appears
+   * on its own elsewhere in the program.
+   */
+  Type resolveTypedefs() { result = this }
+
+  /**
+   * Gets the type stripped of pointers, references and cv-qualifiers, and resolving typedefs.
+   * For example, given `typedef const C&amp; T`, `stripType` returns `C`.
+   */
+  Type stripType() { result = this }
+
+  override Location getLocation() { result instanceof UnknownLocation }
+}
+
+/**
+ * A C/C++ built-in primitive type (int, float, void, and so on). See 4.1.1.
+ * In the following example, `unsigned int` and `double` denote primitive
+ * built-in types:
+ * ```
+ * double a;
+ * unsigned int ua[40];
+ * typedef double LargeFloat;
+ * ```
+ */
+class BuiltInType extends Type, @builtintype {
+  override string toString() { result = this.getName() }
+
+  override string getName() { builtintypes(underlyingElement(this), result, _, _, _, _) }
+
+  override string explain() { result = this.getName() }
+
+  override predicate isDeeplyConstBelow() { any() } // No subparts
+}
+
+/**
+ * An erroneous type.  This type has no corresponding C/C++ syntax.
+ *
+ * `ErroneousType` is the type of `ErrorExpr`, which in turn refers to an illegal
+ * language construct.  In the example below, a temporary (`0`) cannot be bound
+ * to an lvalue reference (`int &`):
+ * ```
+ * int &intref = 0;
+ * ```
+ */
+class ErroneousType extends BuiltInType {
+  ErroneousType() { builtintypes(underlyingElement(this), _, 1, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "ErroneousType" }
+}
+
+/**
+ * The unknown type.  This type has no corresponding C/C++ syntax.
+ *
+ * Unknown types usually occur inside _uninstantiated_ template functions.
+ * In the example below, the expressions `x.a` and `x.b` have unknown type
+ * in the _uninstantiated_ template.
+ * ```
+ * template<typename T>
+ * bool check(T x) {
+ *   if (x.a == x.b)
+ *     abort();
+ * }
+ * ```
+ */
+class UnknownType extends BuiltInType {
+  UnknownType() { builtintypes(underlyingElement(this), _, 2, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "UnknownType" }
+}
+
+private predicate isArithmeticType(@builtintype type, int kind) {
+  builtintypes(type, _, kind, _, _, _) and
+  kind >= 4 and
+  kind != 34 and // Exclude decltype(nullptr)
+  kind != 63 // Exclude __SVCount_t
+}
+
+/**
+ * The Arm scalable vector count type.
+ *
+ * In the following example, `a` is declared using the scalable vector
+ * count type:
+ * ```
+ * svcount_t a;
+ * ```
+ */
+class ScalableVectorCount extends BuiltInType {
+  ScalableVectorCount() { builtintypes(underlyingElement(this), _, 63, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "ScalableVectorCount" }
+}
+
+/**
+ * The C/C++ arithmetic types. See 4.1.1.
+ *
+ * This includes primitive types on which arithmetic, bitwise or logical
+ * operations may be performed.  Examples of arithmetic types include
+ * `char`, `int`, `float`, and `bool`.
+ */
+class ArithmeticType extends BuiltInType {
+  ArithmeticType() { isArithmeticType(underlyingElement(this), _) }
+
+  override string getAPrimaryQlClass() { result = "ArithmeticType" }
+}
+
+private predicate isIntegralType(@builtintype type, int kind) {
+  isArithmeticType(type, kind) and
+  (
+    kind < 24
+    or
+    kind = 33
+    or
+    35 <= kind and kind <= 37
+    or
+    kind = 43
+    or
+    kind = 44
+    or
+    kind = 51
+    or
+    67 <= kind and kind <= 69
+  )
+}
+
+/**
+ * A C/C++ integral or `enum` type.
+ *
+ * The definition of "integral type" in the C++ standard excludes `enum` types,
+ * but because an `enum` type holds a value of its underlying integral type,
+ * it is often useful to have a common category that includes both integral
+ * and `enum` types.
+ *
+ * In the following example, `a`, `b` and `c` are all declared with an
+ * integral or `enum` type:
+ * ```
+ * unsigned long a;
+ * enum e1 { val1, val2 } b;
+ * enum class e2: short { val3, val4 } c;
+ * ```
+ */
+class IntegralOrEnumType extends Type {
+  IntegralOrEnumType() {
+    // Integral type
+    isIntegralType(underlyingElement(this), _)
+    or
+    // Enum type
+    usertypes(underlyingElement(this), _, [4, 13])
+  }
+}
+
+/**
+ * Maps between different integral types of the same size.
+ *
+ * original: The original type. Can be any integral type kind.
+ * canonical: The canonical form of the type
+ *   - plain T -> T
+ *   - signed T -> T (except signed char -> signed char)
+ *   - unsigned T -> unsigned T
+ * unsigned: The explicitly unsigned form of the type.
+ * signed: The explicitly signed form of the type.
+ */
+private predicate integralTypeMapping(int original, int canonical, int unsigned, int signed) {
+  original = 4 and canonical = 4 and unsigned = -1 and signed = -1 // bool
+  or
+  original = 5 and canonical = 5 and unsigned = 6 and signed = 7 // char
+  or
+  original = 6 and canonical = 6 and unsigned = 6 and signed = 7 // unsigned char
+  or
+  original = 7 and canonical = 7 and unsigned = 6 and signed = 7 // signed char
+  or
+  original = 8 and canonical = 8 and unsigned = 9 and signed = 10 // short
+  or
+  original = 9 and canonical = 9 and unsigned = 9 and signed = 10 // unsigned short
+  or
+  original = 10 and canonical = 8 and unsigned = 9 and signed = 10 // signed short
+  or
+  original = 11 and canonical = 11 and unsigned = 12 and signed = 13 // int
+  or
+  original = 12 and canonical = 12 and unsigned = 12 and signed = 13 // unsigned int
+  or
+  original = 13 and canonical = 11 and unsigned = 12 and signed = 13 // signed int
+  or
+  original = 14 and canonical = 14 and unsigned = 15 and signed = 16 // long
+  or
+  original = 15 and canonical = 15 and unsigned = 15 and signed = 16 // unsigned long
+  or
+  original = 16 and canonical = 14 and unsigned = 15 and signed = 16 // signed long
+  or
+  original = 17 and canonical = 17 and unsigned = 18 and signed = 19 // long long
+  or
+  original = 18 and canonical = 18 and unsigned = 18 and signed = 19 // unsigned long long
+  or
+  original = 19 and canonical = 17 and unsigned = 18 and signed = 19 // signed long long
+  or
+  original = 33 and canonical = 33 and unsigned = -1 and signed = -1 // wchar_t
+  or
+  original = 35 and canonical = 35 and unsigned = 36 and signed = 37 // __int128
+  or
+  original = 36 and canonical = 36 and unsigned = 36 and signed = 37 // unsigned __int128
+  or
+  original = 37 and canonical = 35 and unsigned = 36 and signed = 37 // signed __int128
+  or
+  original = 43 and canonical = 43 and unsigned = -1 and signed = -1 // char16_t
+  or
+  original = 44 and canonical = 44 and unsigned = -1 and signed = -1 // char32_t
+  or
+  original = 51 and canonical = 51 and unsigned = -1 and signed = -1 // char8_t
+  or
+  original = 67 and canonical = 67 and unsigned = 68 and signed = 69 // _BitInt(N)
+  or
+  original = 68 and canonical = 68 and unsigned = 68 and signed = 69 // unsigned _BitInt(N)
+  or
+  original = 69 and canonical = 67 and unsigned = 68 and signed = 69 // signed _BitInt(N)
+}
+
+/**
+ * The C/C++ integral types. See 4.1.1.  These are types that are represented
+ * as integers of varying sizes.  Both `enum` types and floating-point types
+ * are excluded.
+ *
+ * In the following examples, `a`, `b` and `c` are declared using integral
+ * types:
+ * ```
+ * unsigned int a;
+ * long long b;
+ * char c;
+ * ```
+ */
+class IntegralType extends ArithmeticType, IntegralOrEnumType {
+  int kind;
+
+  IntegralType() { isIntegralType(underlyingElement(this), kind) }
+
+  /** Holds if this integral type is signed. */
+  predicate isSigned() { builtintypes(underlyingElement(this), _, _, _, -1, _) }
+
+  /** Holds if this integral type is unsigned. */
+  predicate isUnsigned() { builtintypes(underlyingElement(this), _, _, _, 1, _) }
+
+  /** Holds if this integral type is explicitly signed. */
+  predicate isExplicitlySigned() {
+    builtintypes(underlyingElement(this), _, 7, _, _, _) or
+    builtintypes(underlyingElement(this), _, 10, _, _, _) or
+    builtintypes(underlyingElement(this), _, 13, _, _, _) or
+    builtintypes(underlyingElement(this), _, 16, _, _, _) or
+    builtintypes(underlyingElement(this), _, 19, _, _, _) or
+    builtintypes(underlyingElement(this), _, 37, _, _, _) or
+    builtintypes(underlyingElement(this), _, 69, _, _, _)
+  }
+
+  /** Holds if this integral type is explicitly unsigned. */
+  predicate isExplicitlyUnsigned() {
+    builtintypes(underlyingElement(this), _, 6, _, _, _) or
+    builtintypes(underlyingElement(this), _, 9, _, _, _) or
+    builtintypes(underlyingElement(this), _, 12, _, _, _) or
+    builtintypes(underlyingElement(this), _, 15, _, _, _) or
+    builtintypes(underlyingElement(this), _, 18, _, _, _) or
+    builtintypes(underlyingElement(this), _, 36, _, _, _) or
+    builtintypes(underlyingElement(this), _, 68, _, _, _)
+  }
+
+  /** Holds if this integral type is implicitly signed. */
+  predicate isImplicitlySigned() {
+    builtintypes(underlyingElement(this), _, 5, _, -1, _) or
+    builtintypes(underlyingElement(this), _, 8, _, -1, _) or
+    builtintypes(underlyingElement(this), _, 11, _, -1, _) or
+    builtintypes(underlyingElement(this), _, 14, _, -1, _) or
+    builtintypes(underlyingElement(this), _, 17, _, -1, _) or
+    builtintypes(underlyingElement(this), _, 35, _, -1, _) or
+    builtintypes(underlyingElement(this), _, 67, _, -1, _)
+  }
+
+  /**
+   * Gets the unsigned type corresponding to this integral type.  For
+   * example on a `short`, this would give the type `unsigned short`.
+   */
+  IntegralType getUnsigned() {
+    exists(int unsignedKind |
+      integralTypeMapping(kind, _, unsignedKind, _) and
+      builtintypes(unresolveElement(result), _, unsignedKind, _, _, _) and
+      (
+        not kind in [67, 68, 69]
+        or
+        exists(int bitWidth | bit_precise_int_types(underlyingElement(this), bitWidth) |
+          bit_precise_int_types(unresolveElement(result), bitWidth)
+        )
+      )
+    )
+  }
+
+  /**
+   * Gets the canonical type corresponding to this integral type.
+   *
+   * For a plain type, this gives the same type (e.g. `short` -> `short`).
+   * For an explicitly unsigned type, this gives the same type (e.g. `unsigned short` -> `unsigned short`).
+   * For an explicitly signed type, this gives the plain version of that type (e.g. `signed short` -> `short`), except
+   * that `signed char` -> `signed char`.
+   */
+  IntegralType getCanonicalArithmeticType() {
+    exists(int canonicalKind |
+      integralTypeMapping(kind, canonicalKind, _, _) and
+      builtintypes(unresolveElement(result), _, canonicalKind, _, _, _) and
+      (
+        not kind in [67, 68, 69]
+        or
+        exists(int bitWidth | bit_precise_int_types(underlyingElement(this), bitWidth) |
+          bit_precise_int_types(unresolveElement(result), bitWidth)
+        )
+      )
+    )
+  }
+}
+
+/**
+ * The C/C++ boolean type. See 4.2.  This is the C `_Bool` type
+ * or the C++ `bool` type.  For example:
+ * ```
+ * extern bool a, b;   // C++
+ * _Bool c, d;         // C
+ * ```
+ */
+class BoolType extends IntegralType {
+  BoolType() { builtintypes(underlyingElement(this), _, 4, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "BoolType" }
+}
+
+/**
+ * The C/C++ character types. See 4.3.  This includes the `char`,
+ * `signed char` and `unsigned char` types, all of which are
+ * distinct from one another.  For example:
+ * ```
+ * char a, b;
+ * signed char c, d;
+ * unsigned char e, f;
+ * ```
+ */
+class CharType extends IntegralType {
+  CharType() { builtintypes(underlyingElement(this), _, [5, 6, 7], _, _, _) }
+}
+
+/**
+ * The C/C++ `char` type (which is distinct from `signed char` and
+ * `unsigned char`).  For example:
+ * ```
+ * char a, b;
+ * ```
+ */
+class PlainCharType extends CharType {
+  PlainCharType() { builtintypes(underlyingElement(this), _, 5, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "PlainCharType" }
+}
+
+/**
+ * The C/C++ `unsigned char` type (which is distinct from plain `char`
+ * even when `char` is `unsigned` by default).
+ * ```
+ * unsigned char e, f;
+ * ```
+ */
+class UnsignedCharType extends CharType {
+  UnsignedCharType() { builtintypes(underlyingElement(this), _, 6, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "UnsignedCharType" }
+}
+
+/**
+ * The C/C++ `signed char` type (which is distinct from plain `char`
+ * even when `char` is `signed` by default).
+ * ```
+ * signed char c, d;
+ * ```
+ */
+class SignedCharType extends CharType {
+  SignedCharType() { builtintypes(underlyingElement(this), _, 7, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "SignedCharType" }
+}
+
+/**
+ * The C/C++ short types. See 4.3.  This includes `short`, `signed short`
+ * and `unsigned short`.
+ * ```
+ * signed short ss;
+ * ```
+ */
+class ShortType extends IntegralType {
+  ShortType() {
+    builtintypes(underlyingElement(this), _, 8, _, _, _) or
+    builtintypes(underlyingElement(this), _, 9, _, _, _) or
+    builtintypes(underlyingElement(this), _, 10, _, _, _)
+  }
+
+  override string getAPrimaryQlClass() { result = "ShortType" }
+}
+
+/**
+ * The C/C++ integer types. See 4.4.  This includes `int`, `signed int`
+ * and `unsigned int`.
+ * ```
+ * unsigned int ui;
+ * ```
+ */
+class IntType extends IntegralType {
+  IntType() {
+    builtintypes(underlyingElement(this), _, 11, _, _, _) or
+    builtintypes(underlyingElement(this), _, 12, _, _, _) or
+    builtintypes(underlyingElement(this), _, 13, _, _, _)
+  }
+
+  override string getAPrimaryQlClass() { result = "IntType" }
+}
+
+/**
+ * The C/C++ long types. See 4.4.  This includes `long`, `signed long`
+ * and `unsigned long`.
+ * ```
+ * long l;
+ * ```
+ */
+class LongType extends IntegralType {
+  LongType() {
+    builtintypes(underlyingElement(this), _, 14, _, _, _) or
+    builtintypes(underlyingElement(this), _, 15, _, _, _) or
+    builtintypes(underlyingElement(this), _, 16, _, _, _)
+  }
+
+  override string getAPrimaryQlClass() { result = "LongType" }
+}
+
+/**
+ * The C/C++ long long types. See 4.4.  This includes `long long`, `signed long long`
+ * and `unsigned long long`.
+ * ```
+ * signed long long sll;
+ * ```
+ */
+class LongLongType extends IntegralType {
+  LongLongType() {
+    builtintypes(underlyingElement(this), _, 17, _, _, _) or
+    builtintypes(underlyingElement(this), _, 18, _, _, _) or
+    builtintypes(underlyingElement(this), _, 19, _, _, _)
+  }
+
+  override string getAPrimaryQlClass() { result = "LongLongType" }
+}
+
+/**
+ * The GNU C __int128 primitive types.  They are not part of standard C/C++.
+ *
+ * This includes `__int128`, `signed __int128` and `unsigned __int128`.
+ * ```
+ * unsigned __int128 ui128;
+ * ```
+ */
+class Int128Type extends IntegralType {
+  Int128Type() {
+    builtintypes(underlyingElement(this), _, 35, _, _, _) or
+    builtintypes(underlyingElement(this), _, 36, _, _, _) or
+    builtintypes(underlyingElement(this), _, 37, _, _, _)
+  }
+
+  override string getAPrimaryQlClass() { result = "Int128Type" }
+}
+
+private newtype TTypeDomain =
+  TRealDomain() or
+  TComplexDomain() or
+  TImaginaryDomain()
+
+/**
+ * The type domain of a floating-point type. One of `RealDomain`, `ComplexDomain`, or
+ * `ImaginaryDomain`.
+ */
+class TypeDomain extends TTypeDomain {
+  /** Gets a textual representation of this type domain. */
+  string toString() { none() }
+}
+
+/**
+ * The type domain of a floating-point type that represents a real number.
+ */
+class RealDomain extends TypeDomain, TRealDomain {
+  final override string toString() { result = "real" }
+}
+
+/**
+ * The type domain of a floating-point type that represents a complex number.
+ */
+class ComplexDomain extends TypeDomain, TComplexDomain {
+  final override string toString() { result = "complex" }
+}
+
+/**
+ * The type domain of a floating-point type that represents an imaginary number.
+ */
+class ImaginaryDomain extends TypeDomain, TImaginaryDomain {
+  final override string toString() { result = "imaginary" }
+}
+
+/**
+ * Data for floating-point types.
+ *
+ * kind: The original type kind. Can be any floating-point type kind.
+ * base: The numeric base of the number's representation. Can be 2 (binary) or 10 (decimal).
+ * domain: The type domain of the type. Can be `RealDomain`, `ComplexDomain`, or `ImaginaryDomain`.
+ * realKind: The type kind of the corresponding real type. For example, the corresponding real type
+ *   of `_Complex double` is `double`.
+ * extended: `true` if the number is an extended-precision floating-point number, such as
+ *   `_Float32x`.
+ */
+private predicate floatingPointTypeMapping(
+  int kind, int base, TTypeDomain domain, int realKind, boolean extended
+) {
+  // float
+  kind = 24 and base = 2 and domain = TRealDomain() and realKind = 24 and extended = false
+  or
+  // double
+  kind = 25 and base = 2 and domain = TRealDomain() and realKind = 25 and extended = false
+  or
+  // long double
+  kind = 26 and base = 2 and domain = TRealDomain() and realKind = 26 and extended = false
+  or
+  // _Complex float
+  kind = 27 and base = 2 and domain = TComplexDomain() and realKind = 24 and extended = false
+  or
+  // _Complex double
+  kind = 28 and base = 2 and domain = TComplexDomain() and realKind = 25 and extended = false
+  or
+  // _Complex long double
+  kind = 29 and base = 2 and domain = TComplexDomain() and realKind = 26 and extended = false
+  or
+  // _Imaginary float
+  kind = 30 and base = 2 and domain = TImaginaryDomain() and realKind = 24 and extended = false
+  or
+  // _Imaginary double
+  kind = 31 and base = 2 and domain = TImaginaryDomain() and realKind = 25 and extended = false
+  or
+  // _Imaginary long double
+  kind = 32 and base = 2 and domain = TImaginaryDomain() and realKind = 26 and extended = false
+  or
+  // __float128
+  kind = 38 and base = 2 and domain = TRealDomain() and realKind = 38 and extended = false
+  or
+  // _Complex __float128
+  kind = 39 and base = 2 and domain = TComplexDomain() and realKind = 38 and extended = false
+  or
+  // _Float32
+  kind = 45 and base = 2 and domain = TRealDomain() and realKind = 45 and extended = false
+  or
+  // _Float32x
+  kind = 46 and base = 2 and domain = TRealDomain() and realKind = 46 and extended = true
+  or
+  // _Float64
+  kind = 47 and base = 2 and domain = TRealDomain() and realKind = 47 and extended = false
+  or
+  // _Float64x
+  kind = 48 and base = 2 and domain = TRealDomain() and realKind = 48 and extended = true
+  or
+  // _Float128
+  kind = 49 and base = 2 and domain = TRealDomain() and realKind = 49 and extended = false
+  or
+  // _Float16
+  kind = 52 and base = 2 and domain = TRealDomain() and realKind = 52 and extended = false
+  or
+  // _Complex _Float16
+  kind = 53 and base = 2 and domain = TComplexDomain() and realKind = 52 and extended = false
+  or
+  // __fp16
+  kind = 54 and base = 2 and domain = TRealDomain() and realKind = 54 and extended = false
+  or
+  // __bf16
+  kind = 55 and base = 2 and domain = TRealDomain() and realKind = 55 and extended = false
+  or
+  // std::float16_t
+  kind = 56 and base = 2 and domain = TRealDomain() and realKind = 56 and extended = false
+  or
+  // _Complex _Float32
+  kind = 57 and base = 2 and domain = TComplexDomain() and realKind = 45 and extended = false
+  or
+  // _Complex _Float32x
+  kind = 58 and base = 2 and domain = TComplexDomain() and realKind = 46 and extended = true
+  or
+  // _Complex _Float64
+  kind = 59 and base = 2 and domain = TComplexDomain() and realKind = 47 and extended = false
+  or
+  // _Complex _Float64x
+  kind = 60 and base = 2 and domain = TComplexDomain() and realKind = 48 and extended = true
+  or
+  // _Complex _Float128
+  kind = 61 and base = 2 and domain = TComplexDomain() and realKind = 49 and extended = false
+  or
+  // __mfp8
+  kind = 62 and base = 2 and domain = TRealDomain() and realKind = 62 and extended = false
+  or
+  // _Complex __fp16
+  kind = 64 and base = 2 and domain = TComplexDomain() and realKind = 54 and extended = false
+  or
+  // _Complex __bf16
+  kind = 65 and base = 2 and domain = TComplexDomain() and realKind = 55 and extended = false
+  or
+  // _Complex std::float16_t
+  kind = 66 and base = 2 and domain = TComplexDomain() and realKind = 56 and extended = false
+}
+
+/**
+ * The C/C++ floating point types. See 4.5.  This includes `float`, `double` and `long double`, the
+ * fixed-size floating-point types like `_Float32`, and the extended-precision floating-point types
+ * like `_Float64x`. It also includes the complex and imaginary versions of all of these types.
+ */
+class FloatingPointType extends ArithmeticType {
+  final int base;
+  final TypeDomain domain;
+  final int realKind;
+  final boolean extended;
+
+  FloatingPointType() {
+    exists(int kind |
+      builtintypes(underlyingElement(this), _, kind, _, _, _) and
+      floatingPointTypeMapping(kind, base, domain, realKind, extended)
+    )
+  }
+
+  /** Gets the numeric base of this type's representation: 2 (binary) or 10 (decimal). */
+  final int getBase() { result = base }
+
+  /**
+   * Gets the type domain of this type. Can be `RealDomain`, `ComplexDomain`, or `ImaginaryDomain`.
+   */
+  final TypeDomain getDomain() { result = domain }
+
+  /**
+   * Gets the corresponding real type of this type. For example, the corresponding real type of
+   * `_Complex double` is `double`.
+   */
+  final RealNumberType getRealType() {
+    builtintypes(unresolveElement(result), _, realKind, _, _, _)
+  }
+
+  /** Holds if this type is an extended precision floating-point type, such as `_Float32x`. */
+  final predicate isExtendedPrecision() { extended = true }
+}
+
+/**
+ * A floating-point type representing a real number.
+ */
+class RealNumberType extends FloatingPointType {
+  RealNumberType() { domain instanceof RealDomain }
+}
+
+/**
+ * A floating-point type representing a complex number.
+ */
+class ComplexNumberType extends FloatingPointType {
+  ComplexNumberType() { domain instanceof ComplexDomain }
+}
+
+/**
+ * A floating-point type representing an imaginary number.
+ */
+class ImaginaryNumberType extends FloatingPointType {
+  ImaginaryNumberType() { domain instanceof ImaginaryDomain }
+}
+
+/**
+ * A floating-point type whose representation is base 2.
+ */
+class BinaryFloatingPointType extends FloatingPointType {
+  BinaryFloatingPointType() { base = 2 }
+}
+
+/**
+ * A floating-point type whose representation is base 10.
+ */
+class DecimalFloatingPointType extends FloatingPointType {
+  DecimalFloatingPointType() { base = 10 }
+}
+
+/**
+ * The C/C++ `float` type.
+ * ```
+ * float f;
+ * ```
+ */
+class FloatType extends RealNumberType, BinaryFloatingPointType {
+  FloatType() { builtintypes(underlyingElement(this), _, 24, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "FloatType" }
+}
+
+/**
+ * The C/C++ `double` type.
+ * ```
+ * double d;
+ * ```
+ */
+class DoubleType extends RealNumberType, BinaryFloatingPointType {
+  DoubleType() { builtintypes(underlyingElement(this), _, 25, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "DoubleType" }
+}
+
+/**
+ * The C/C++ `long double` type.
+ * ```
+ * long double ld;
+ * ```
+ */
+class LongDoubleType extends RealNumberType, BinaryFloatingPointType {
+  LongDoubleType() { builtintypes(underlyingElement(this), _, 26, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "LongDoubleType" }
+}
+
+/**
+ * The GNU C `__float128` primitive type.  This is not standard C/C++.
+ * ```
+ * __float128 f128;
+ * ```
+ */
+class Float128Type extends RealNumberType, BinaryFloatingPointType {
+  Float128Type() { builtintypes(underlyingElement(this), _, 38, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "Float128Type" }
+}
+
+/**
+ * The C/C++ `void` type. See 4.7.
+ * ```
+ * void foo();
+ * ```
+ */
+class VoidType extends BuiltInType {
+  VoidType() { builtintypes(underlyingElement(this), _, 3, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "VoidType" }
+}
+
+/**
+ * The C/C++ wide character type.
+ *
+ * Note that on some platforms `wchar_t` doesn't exist as a built-in
+ * type but a typedef is provided.  Consider using the `Wchar_t` QL
+ * class to include these types.
+ * ```
+ * wchar_t wc;
+ * ```
+ */
+class WideCharType extends IntegralType {
+  WideCharType() { builtintypes(underlyingElement(this), _, 33, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "WideCharType" }
+}
+
+/**
+ * The C/C++ `char8_t` type.  This is available starting with C++20.
+ * ```
+ * char8_t c8;
+ * ```
+ */
+class Char8Type extends IntegralType {
+  Char8Type() { builtintypes(underlyingElement(this), _, 51, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "Char8Type" }
+}
+
+/**
+ * The C/C++ `char16_t` type.  This is available starting with C11 and C++11.
+ * ```
+ * char16_t c16;
+ * ```
+ */
+class Char16Type extends IntegralType {
+  Char16Type() { builtintypes(underlyingElement(this), _, 43, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "Char16Type" }
+}
+
+/**
+ * The C/C++ `char32_t` type.  This is available starting with C11 and C++11.
+ * ```
+ * char32_t c32;
+ * ```
+ */
+class Char32Type extends IntegralType {
+  Char32Type() { builtintypes(underlyingElement(this), _, 44, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "Char32Type" }
+}
+
+/**
+ * A C23 bit-precise integer type `_BitInt(N)`.
+ */
+class BitPreciseIntType extends IntegralType {
+  BitPreciseIntType() { builtintypes(underlyingElement(this), _, [67, 68, 69], _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "BitPreciseIntType" }
+}
+
+/**
+ * The (primitive) type of the C++11 `nullptr` constant.  It is a
+ * distinct type, denoted by `decltype(nullptr)`, that is not itself a pointer
+ * type or a pointer to member type.  The `<cstddef>` header usually defines
+ * the `std::nullptr_t` type as follows:
+ * ```
+ * typedef decltype(nullptr) nullptr_t;
+ * ```
+ */
+class NullPointerType extends BuiltInType {
+  NullPointerType() { builtintypes(underlyingElement(this), _, 34, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "NullPointerType" }
+}
+
+/**
+ * A C/C++ derived type.
+ *
+ * These are pointer and reference types, array and vector types, and `const` and `volatile` types.
+ * In all cases, the type is formed from a single base type.  For example:
+ * ```
+ * int *pi;
+ * int &ri = *pi;
+ * const float fa[40];
+ * ```
+ */
+class DerivedType extends Type, NameQualifyingElement, @derivedtype {
+  override string toString() { result = this.getName() }
+
+  override string getName() { derivedtypes(underlyingElement(this), result, _, _) }
+
+  /**
+   * Gets the base type of this derived type.
+   *
+   * This predicate strips off one level of decoration from a type. For example, it returns `char*` for the PointerType `char**`,
+   * `const int` for the ReferenceType `const int&amp;`, and `long` for the SpecifiedType `volatile long`.
+   */
+  Type getBaseType() { derivedtypes(underlyingElement(this), _, _, unresolveElement(result)) }
+
+  override predicate refersToDirectly(Type t) { t = this.getBaseType() }
+
+  override predicate involvesReference() { this.getBaseType().involvesReference() }
+
+  override predicate involvesTemplateParameter() { this.getBaseType().involvesTemplateParameter() }
+
+  override Type stripType() { result = this.getBaseType().stripType() }
+}
+
+/**
+ * An instance of the C++11 `decltype` operator.  For example:
+ * ```
+ * int a;
+ * decltype(a) b;
+ * ```
+ */
+class Decltype extends Type, NameQualifyingElement {
+  Decltype() { decltypes(underlyingElement(this), _, 0, _, _) }
+
+  override string getAPrimaryQlClass() { result = "Decltype" }
+
+  /**
+   * Gets the expression whose type is being obtained by this decltype.
+   */
+  Expr getExpr() { decltypes(underlyingElement(this), unresolveElement(result), _, _, _) }
+
+  /**
+   * Gets the type immediately yielded by this decltype.
+   */
+  Type getBaseType() { decltypes(underlyingElement(this), _, _, unresolveElement(result), _) }
+
+  /**
+   * Whether an extra pair of parentheses around the expression would change the semantics of this decltype.
+   *
+   * The following example shows the effect of an extra pair of parentheses:
+   * ```
+   * struct A { double x; };
+   * const A* a = new A();
+   * decltype( a->x ); // type is double
+   * decltype((a->x)); // type is const double&
+   * ```
+   * Please consult the C++11 standard for more details.
+   */
+  predicate parenthesesWouldChangeMeaning() { decltypes(underlyingElement(this), _, _, _, true) }
+
+  override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
+
+  override Type stripTopLevelSpecifiers() { result = this.getBaseType().stripTopLevelSpecifiers() }
+
+  override Type stripType() { result = this.getBaseType().stripType() }
+
+  override Type resolveTypedefs() { result = this.getBaseType().resolveTypedefs() }
+
+  override Location getLocation() { result = this.getExpr().getLocation() }
+
+  override string toString() { result = "decltype(...)" }
+
+  override string getName() { result = "decltype(...)" }
+
+  override int getSize() { result = this.getBaseType().getSize() }
+
+  override int getBitWidth() { result = this.getBaseType().getBitWidth() }
+
+  override int getAlignment() { result = this.getBaseType().getAlignment() }
+
+  override int getPointerIndirectionLevel() {
+    result = this.getBaseType().getPointerIndirectionLevel()
+  }
+
+  override string explain() {
+    result = "decltype resulting in {" + this.getBaseType().explain() + "}"
+  }
+
+  override predicate involvesReference() { this.getBaseType().involvesReference() }
+
+  override predicate involvesTemplateParameter() { this.getBaseType().involvesTemplateParameter() }
+
+  override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConstBelow() }
+
+  override Specifier internal_getAnAdditionalSpecifier() {
+    result = this.getBaseType().getASpecifier()
+  }
+}
+
+/**
+ * An instance of the C23 `typeof` or `typeof_unqual` operator. For example:
+ * ```
+ * int a;
+ * typeof(a) b;
+ * typeof_unqual(const int) b;
+ * ```
+ */
+class TypeofType extends Type {
+  TypeofType() {
+    decltypes(underlyingElement(this), _, 1, _, _) or
+    type_operators(underlyingElement(this), _, 0, _)
+  }
+
+  /**
+   * Gets the type immediately yielded by this typeof.
+   */
+  Type getBaseType() {
+    decltypes(underlyingElement(this), _, _, unresolveElement(result), _)
+    or
+    type_operators(underlyingElement(this), _, _, unresolveElement(result))
+  }
+
+  override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
+
+  override Type stripTopLevelSpecifiers() { result = this.getBaseType().stripTopLevelSpecifiers() }
+
+  override Type stripType() { result = this.getBaseType().stripType() }
+
+  override Type resolveTypedefs() { result = this.getBaseType().resolveTypedefs() }
+
+  override string toString() { result = "typeof(...)" }
+
+  override string getName() { result = "typeof(...)" }
+
+  override int getSize() { result = this.getBaseType().getSize() }
+
+  override int getBitWidth() { result = this.getBaseType().getBitWidth() }
+
+  override int getAlignment() { result = this.getBaseType().getAlignment() }
+
+  override int getPointerIndirectionLevel() {
+    result = this.getBaseType().getPointerIndirectionLevel()
+  }
+
+  override string explain() {
+    result = "typeof resulting in {" + this.getBaseType().explain() + "}"
+  }
+
+  override predicate involvesReference() { this.getBaseType().involvesReference() }
+
+  override predicate involvesTemplateParameter() { this.getBaseType().involvesTemplateParameter() }
+
+  override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConstBelow() }
+
+  override Specifier internal_getAnAdditionalSpecifier() {
+    result = this.getBaseType().getASpecifier()
+  }
+}
+
+/**
+ * An instance of the C23 `typeof` or `typeof_unqual` operator taking an expression
+ * as its argument. For example:
+ * ```
+ * int a;
+ * typeof(a) b;
+ * ```
+ */
+class TypeofExprType extends TypeofType {
+  TypeofExprType() { decltypes(underlyingElement(this), _, 1, _, _) }
+
+  override string getAPrimaryQlClass() { result = "TypeofExprType" }
+
+  /**
+   * Gets the expression whose type is being obtained by this typeof.
+   */
+  Expr getExpr() { decltypes(underlyingElement(this), unresolveElement(result), _, _, _) }
+
+  override Location getLocation() { result = this.getExpr().getLocation() }
+}
+
+/**
+ * A type obtained by C23 `typeof` or `typeof_unqual` operator taking a type as its
+ * argument. For example:
+ * ```
+ * typeof_unqual(const int) b;
+ * ```
+ */
+class TypeofTypeType extends TypeofType {
+  TypeofTypeType() { type_operators(underlyingElement(this), _, 0, _) }
+
+  /**
+   * Gets the expression whose type is being obtained by this typeof.
+   */
+  Type getType() { type_operators(underlyingElement(this), unresolveElement(result), _, _) }
+
+  override string getAPrimaryQlClass() { result = "TypeofTypeType" }
+}
+
+/**
+ * A type obtained by applying a type transforming intrinsic. For example:
+ * ```
+ * __make_unsigned(int) x;
+ * ```
+ */
+class IntrinsicTransformedType extends Type {
+  int intrinsic;
+
+  IntrinsicTransformedType() {
+    type_operators(underlyingElement(this), _, intrinsic, _) and
+    intrinsic in [1 .. 19]
+  }
+
+  override string getAPrimaryQlClass() { result = "IntrinsicTransformedType" }
+
+  override string toString() { result = this.getIntrinsicName() + "(...)" }
+
+  /**
+   * Gets the type immediately yielded by this transformation.
+   */
+  Type getBaseType() { type_operators(underlyingElement(this), _, _, unresolveElement(result)) }
+
+  /**
+   * Gets the type that is transformed.
+   */
+  Type getType() { type_operators(underlyingElement(this), unresolveElement(result), _, _) }
+
+  /**
+   * Gets the name of the intrinsic used to transform the type.
+   */
+  string getIntrinsicName() {
+    intrinsic = 1 and result = "__underlying_type"
+    or
+    intrinsic = 2 and result = "__bases"
+    or
+    intrinsic = 3 and result = "__direct_bases"
+    or
+    intrinsic = 4 and result = "__add_lvalue_reference"
+    or
+    intrinsic = 5 and result = "__add_pointer"
+    or
+    intrinsic = 6 and result = "__add_rvalue_reference"
+    or
+    intrinsic = 7 and result = "__decay"
+    or
+    intrinsic = 8 and result = "__make_signed"
+    or
+    intrinsic = 9 and result = "__make_unsigned"
+    or
+    intrinsic = 10 and result = "__remove_all_extents"
+    or
+    intrinsic = 11 and result = "__remove_const"
+    or
+    intrinsic = 12 and result = "__remove_cv"
+    or
+    intrinsic = 13 and result = "__remove_cvref"
+    or
+    intrinsic = 14 and result = "__remove_extent"
+    or
+    intrinsic = 15 and result = "__remove_pointer"
+    or
+    intrinsic = 16 and result = "__remove_reference_t"
+    or
+    intrinsic = 17 and result = "__remove_restrict"
+    or
+    intrinsic = 18 and result = "__remove_volatile"
+    or
+    intrinsic = 19 and result = "__remove_reference"
+  }
+
+  override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
+
+  override Type stripTopLevelSpecifiers() { result = this.getBaseType().stripTopLevelSpecifiers() }
+
+  override Type stripType() { result = this.getBaseType().stripType() }
+
+  override Type resolveTypedefs() { result = this.getBaseType().resolveTypedefs() }
+
+  override string getName() { result = this.getIntrinsicName() + "(...)" }
+
+  override int getSize() { result = this.getBaseType().getSize() }
+
+  override int getBitWidth() { result = this.getBaseType().getBitWidth() }
+
+  override int getAlignment() { result = this.getBaseType().getAlignment() }
+
+  override int getPointerIndirectionLevel() {
+    result = this.getBaseType().getPointerIndirectionLevel()
+  }
+
+  override string explain() {
+    result =
+      "application of " + this.getIntrinsicName() + " resulting in {" + this.getBaseType().explain()
+        + "}"
+  }
+
+  override predicate involvesReference() { this.getBaseType().involvesReference() }
+
+  override predicate involvesTemplateParameter() { this.getBaseType().involvesTemplateParameter() }
+
+  override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConstBelow() }
+
+  override Specifier internal_getAnAdditionalSpecifier() {
+    result = this.getBaseType().getASpecifier()
+  }
+}
+
+/**
+ * A C/C++ pointer type. See 4.9.1.
+ * ```
+ * void *ptr;
+ * void **ptr2 = &ptr;
+ * ```
+ */
+class PointerType extends DerivedType {
+  PointerType() { derivedtypes(underlyingElement(this), _, 1, _) }
+
+  override string getAPrimaryQlClass() { result = "PointerType" }
+
+  override int getPointerIndirectionLevel() {
+    result = 1 + this.getBaseType().getPointerIndirectionLevel()
+  }
+
+  override string explain() { result = "pointer to {" + this.getBaseType().explain() + "}" }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
+
+  override Type resolveTypedefs() {
+    result.(PointerType).getBaseType() = this.getBaseType().resolveTypedefs()
+  }
+}
+
+/**
+ * A C++ reference type. See 4.9.1.
+ *
+ * For C++11 code bases, this includes both _lvalue_ references (`&`) and _rvalue_ references (`&&`).
+ * To distinguish between them, use the LValueReferenceType and RValueReferenceType QL classes.
+ */
+class ReferenceType extends DerivedType {
+  ReferenceType() {
+    derivedtypes(underlyingElement(this), _, 2, _) or derivedtypes(underlyingElement(this), _, 8, _)
+  }
+
+  override string getAPrimaryQlClass() { result = "ReferenceType" }
+
+  override int getPointerIndirectionLevel() {
+    result = this.getBaseType().getPointerIndirectionLevel()
+  }
+
+  override string explain() { result = "reference to {" + this.getBaseType().explain() + "}" }
+
+  override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() } // No such thing as a const reference type
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
+
+  override predicate involvesReference() { any() }
+
+  override Type resolveTypedefs() {
+    result.(ReferenceType).getBaseType() = this.getBaseType().resolveTypedefs()
+  }
+}
+
+/**
+ * A C++11 lvalue reference type (e.g. `int &`).
+ * ```
+ * int a;
+ * int& b = a;
+ * ```
+ */
+class LValueReferenceType extends ReferenceType {
+  LValueReferenceType() { derivedtypes(underlyingElement(this), _, 2, _) }
+
+  override string getAPrimaryQlClass() { result = "LValueReferenceType" }
+}
+
+/**
+ * A C++11 rvalue reference type (e.g., `int &&`).  It is used to
+ * implement "move" semantics for object construction and assignment.
+ * ```
+ * class C {
+ *   E e;
+ *   C(C&& from): e(std::move(from.e)) { }
+ * };
+ * ```
+ */
+class RValueReferenceType extends ReferenceType {
+  RValueReferenceType() { derivedtypes(underlyingElement(this), _, 8, _) }
+
+  override string getAPrimaryQlClass() { result = "RValueReferenceType" }
+
+  override string explain() { result = "rvalue " + super.explain() }
+}
+
+/**
+ * A type with specifiers.
+ * ```
+ * const int a;
+ * volatile char v;
+ * ```
+ */
+class SpecifiedType extends DerivedType {
+  SpecifiedType() { derivedtypes(underlyingElement(this), _, 3, _) }
+
+  override string getAPrimaryQlClass() { result = "SpecifiedType" }
+
+  override int getSize() { result = this.getBaseType().getSize() }
+
+  override int getBitWidth() { result = this.getBaseType().getBitWidth() }
+
+  override int getAlignment() { result = this.getBaseType().getAlignment() }
+
+  override int getPointerIndirectionLevel() {
+    result = this.getBaseType().getPointerIndirectionLevel()
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Gets all the specifiers of this type as a string in a fixed order (the order
+   * only depends on the specifiers, not on the source program). This is intended
+   * for debugging queries only and is an expensive operation.
+   */
+  string getSpecifierString() { result = concat(this.getASpecifier().getName(), " ") }
+
+  override string explain() {
+    result = this.getSpecifierString() + " {" + this.getBaseType().explain() + "}"
+  }
+
+  override predicate isDeeplyConst() {
+    this.getASpecifier().getName() = "const" and this.getBaseType().isDeeplyConstBelow()
+  }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConstBelow() }
+
+  override Specifier internal_getAnAdditionalSpecifier() {
+    result = this.getBaseType().getASpecifier()
+  }
+
+  override Type resolveTypedefs() {
+    result.(SpecifiedType).getBaseType() = this.getBaseType().resolveTypedefs() and
+    result.getASpecifier() = this.getASpecifier()
+  }
+
+  override Type stripTopLevelSpecifiers() { result = this.getBaseType().stripTopLevelSpecifiers() }
+}
+
+/**
+ * A C/C++ array type. See 4.9.1.
+ * ```
+ * char table[32];
+ * ```
+ */
+class ArrayType extends DerivedType {
+  ArrayType() { derivedtypes(underlyingElement(this), _, 4, _) }
+
+  override string getAPrimaryQlClass() { result = "ArrayType" }
+
+  /**
+   * Holds if this array is declared to be of a constant size. See
+   * `getArraySize` and `getByteSize` to get the size of the array.
+   */
+  predicate hasArraySize() { arraysizes(underlyingElement(this), _, _, _) }
+
+  /**
+   * Gets the number of elements in this array. Only has a result for arrays declared to be of a
+   * constant size. See `getByteSize` for getting the number of bytes.
+   */
+  int getArraySize() { arraysizes(underlyingElement(this), result, _, _) }
+
+  /**
+   * Gets the byte size of this array. Only has a result for arrays declared to be of a constant
+   * size. See `getArraySize` for getting the number of elements.
+   */
+  int getByteSize() { arraysizes(underlyingElement(this), _, result, _) }
+
+  override int getAlignment() { arraysizes(underlyingElement(this), _, _, result) }
+
+  /**
+   * Gets the byte size of this array. Only has a result for arrays declared to be of a constant
+   * size. This predicate is a synonym for `getByteSize`. See `getArraySize` for getting the number
+   * of elements.
+   */
+  override int getSize() { result = this.getByteSize() }
+
+  override int getBitWidth() { result = this.getByteSize() * 8 }
+
+  override string explain() {
+    if exists(this.getArraySize())
+    then
+      result =
+        "array of " + this.getArraySize().toString() + " {" + this.getBaseType().explain() + "}"
+    else result = "array of {" + this.getBaseType().explain() + "}"
+  }
+
+  override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() } // No such thing as a const array type
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
+
+  /**
+   * Holds if this array is a variable-length array (VLA).
+   */
+  predicate isVla() { type_is_vla(underlyingElement(this)) }
+
+  override Type resolveTypedefs() {
+    result.(ArrayType).getBaseType() = this.getBaseType().resolveTypedefs() and
+    result.(ArrayType).getArraySize() = this.getArraySize()
+  }
+}
+
+/**
+ * A GNU/Clang vector type.
+ *
+ * In both Clang and GNU compilers, vector types can be introduced using the
+ * `__attribute__((vector_size(byte_size)))` syntax. The Clang compiler also
+ * allows vector types to be introduced using the `ext_vector_type`,
+ * `neon_vector_type`, and `neon_polyvector_type` attributes (all of which take
+ * an element count rather than a byte size).
+ *
+ * In the example below, both `v4si` and `float4` are GNU vector types:
+ * ```
+ * typedef int v4si __attribute__ (( vector_size(4*sizeof(int)) ));
+ * typedef float float4 __attribute__((ext_vector_type(4)));
+ * ```
+ */
+class GNUVectorType extends DerivedType {
+  GNUVectorType() { derivedtypes(underlyingElement(this), _, 5, _) }
+
+  /**
+   * Get the number of elements in this vector type.
+   *
+   * For vector types declared using Clang's ext_vector_type, neon_vector_type,
+   * or neon_polyvector_type attribute, this is the value which appears within
+   * the attribute. For vector types declared using the vector_size attribute,
+   * the number of elements is the value in the attribute divided by the size
+   * of a single element.
+   */
+  int getNumElements() { arraysizes(underlyingElement(this), result, _, _) }
+
+  override string getAPrimaryQlClass() { result = "GNUVectorType" }
+
+  /**
+   * Gets the size, in bytes, of this vector type.
+   *
+   * For vector types declared using the vector_size attribute, this is the
+   * value which appears within the attribute. For vector types declared using
+   * Clang's ext_vector_type, neon_vector_type, or neon_polyvector_type
+   * attribute, the byte size is the value in the attribute multiplied by the
+   * byte size of a single element.
+   */
+  override int getSize() { arraysizes(underlyingElement(this), _, result, _) }
+
+  override int getAlignment() { arraysizes(underlyingElement(this), _, _, result) }
+
+  override string explain() {
+    result =
+      "GNU " + this.getNumElements() + " element vector of {" + this.getBaseType().explain() + "}"
+  }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
+}
+
+/**
+ * An Arm Scalable vector type.
+ *
+ * In the following example, `a` has a scalable vector type consisting
+ * of 8-bit signed integer elements:
+ * ```
+ * svint8_t a;
+ * ```
+ */
+class ScalableVectorType extends DerivedType {
+  ScalableVectorType() { derivedtypes(underlyingElement(this), _, 11, _) }
+
+  /**
+   * Get the number of tuple elements of this scalable vector type.
+   */
+  int getNumTupleElements() { tupleelements(underlyingElement(this), result) }
+
+  override string getAPrimaryQlClass() { result = "ScalableVectorType" }
+
+  override string explain() { result = "scalable vector of {" + this.getBaseType().explain() + "}" }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
+}
+
+/**
+ * A C/C++ pointer to a function. See 7.7.
+ * ```
+ * int(* pointer)(const void *element1, const void *element2);
+ * ```
+ */
+class FunctionPointerType extends FunctionPointerIshType {
+  FunctionPointerType() { derivedtypes(underlyingElement(this), _, 6, _) }
+
+  override string getAPrimaryQlClass() { result = "FunctionPointerType" }
+
+  override int getPointerIndirectionLevel() { result = 1 }
+
+  override string explain() {
+    result = "pointer to {" + this.getBaseType().(RoutineType).explain() + "}"
+  }
+}
+
+/**
+ * A C++ reference to a function.
+ * ```
+ * int(& reference)(const void *element1, const void *element2);
+ * ```
+ */
+class FunctionReferenceType extends FunctionPointerIshType {
+  FunctionReferenceType() { derivedtypes(underlyingElement(this), _, 7, _) }
+
+  override string getAPrimaryQlClass() { result = "FunctionReferenceType" }
+
+  override int getPointerIndirectionLevel() {
+    result = this.getBaseType().getPointerIndirectionLevel()
+  }
+
+  override string explain() {
+    result = "reference to {" + this.getBaseType().(RoutineType).explain() + "}"
+  }
+}
+
+/**
+ * A block type, for example, `int(^)(char, float)`.
+ *
+ * Block types (along with blocks themselves) are a language extension
+ * supported by Clang, and by Apple's branch of GCC.
+ * ```
+ * int(^ block)(const char *element1, const char *element2)
+ *   = ^int (const char *element1, const char *element2) { return element1 - element 2; }
+ * ```
+ */
+class BlockType extends FunctionPointerIshType {
+  BlockType() { derivedtypes(underlyingElement(this), _, 10, _) }
+
+  override int getPointerIndirectionLevel() { result = 0 }
+
+  override string explain() {
+    result = "block of {" + this.getBaseType().(RoutineType).explain() + "}"
+  }
+}
+
+/**
+ * A C/C++ pointer to a function, a C++ function reference, or a clang/Apple block.
+ *
+ * See `FunctionPointerType`, `FunctionReferenceType` and `BlockType` for more information.
+ */
+class FunctionPointerIshType extends DerivedType {
+  FunctionPointerIshType() {
+    derivedtypes(underlyingElement(this), _, 6, _) or
+    derivedtypes(underlyingElement(this), _, 7, _) or
+    derivedtypes(underlyingElement(this), _, 10, _)
+  }
+
+  /** the return type of this function pointer type */
+  Type getReturnType() {
+    exists(RoutineType t |
+      derivedtypes(underlyingElement(this), _, _, unresolveElement(t)) and
+      result = t.getReturnType()
+    )
+  }
+
+  /** the type of the ith argument of this function pointer type */
+  Type getParameterType(int i) {
+    exists(RoutineType t |
+      derivedtypes(underlyingElement(this), _, _, unresolveElement(t)) and
+      result = t.getParameterType(i)
+    )
+  }
+
+  /** the type of an argument of this function pointer type */
+  Type getAParameterType() {
+    exists(RoutineType t |
+      derivedtypes(underlyingElement(this), _, _, unresolveElement(t)) and
+      result = t.getAParameterType()
+    )
+  }
+
+  /** the number of arguments of this function pointer type */
+  int getNumberOfParameters() { result = count(int i | exists(this.getParameterType(i))) }
+
+  override predicate involvesTemplateParameter() {
+    this.getReturnType().involvesTemplateParameter() or
+    this.getAParameterType().involvesTemplateParameter()
+  }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
+}
+
+/**
+ * A C++ pointer to data member. See 15.5.
+ * ```
+ * class C { public: int m; };
+ * int C::* p = &C::m;          // pointer to data member m of class C
+ * class C c;
+ * int val = c.*p;              // access data member
+ * ```
+ */
+class PointerToMemberType extends Type, @ptrtomember {
+  /** a printable representation of this named element */
+  override string toString() { result = this.getName() }
+
+  override string getAPrimaryQlClass() { result = "PointerToMemberType" }
+
+  /** the name of this type */
+  override string getName() { result = "..:: *" }
+
+  /** the base type of this pointer to member type */
+  Type getBaseType() { ptrtomembers(underlyingElement(this), unresolveElement(result), _) }
+
+  /** the class referred by this pointer to member type */
+  Type getClass() { ptrtomembers(underlyingElement(this), _, unresolveElement(result)) }
+
+  override predicate refersToDirectly(Type t) {
+    t = this.getBaseType() or
+    t = this.getClass()
+  }
+
+  override int getPointerIndirectionLevel() {
+    result = 1 + this.getBaseType().getPointerIndirectionLevel()
+  }
+
+  override string explain() {
+    result =
+      "pointer to member of " + this.getClass().toString() + " with type {" +
+        this.getBaseType().explain() + "}"
+  }
+
+  override predicate involvesTemplateParameter() { this.getBaseType().involvesTemplateParameter() }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
+}
+
+/**
+ * A C/C++ routine type. Conceptually, this is what results from stripping
+ * away the pointer from a function pointer type.  It can also occur in C++
+ * code, for example the base type of `myRoutineType` in the following code:
+ * ```
+ * using myRoutineType = int(int);
+ *
+ * myRoutineType *fp = 0;
+ * ```
+ */
+class RoutineType extends Type, @routinetype {
+  /** a printable representation of this named element */
+  override string toString() { result = this.getName() }
+
+  override string getAPrimaryQlClass() { result = "RoutineType" }
+
+  override string getName() { result = "..()(..)" }
+
+  /**
+   * Gets the type of the `n`th parameter to this routine.
+   */
+  Type getParameterType(int n) {
+    routinetypeargs(underlyingElement(this), n, unresolveElement(result))
+  }
+
+  /**
+   * Gets the type of a parameter to this routine.
+   */
+  Type getAParameterType() { routinetypeargs(underlyingElement(this), _, unresolveElement(result)) }
+
+  /**
+   * Gets the return type of this routine.
+   */
+  Type getReturnType() { routinetypes(underlyingElement(this), unresolveElement(result)) }
+
+  /**
+   * Holds if this function type has "C" language linkage.
+   *
+   * This includes any function declared in a C source file, or explicitly marked as having "C" linkage:
+   * ```
+   * extern "C" void f();
+   * extern "C" {
+   * void g();
+   * }
+   * ```
+   */
+  predicate hasCLinkage() { this.hasSpecifier("c_linkage") }
+
+  override string explain() {
+    result =
+      "function returning {" + this.getReturnType().explain() + "} with arguments (" +
+        this.explainParameters(0) + ")"
+  }
+
+  /**
+   * Gets a string with the `explain()` values for the parameters of
+   * this function, for instance "int,int".
+   *
+   * The integer argument is the index of the first parameter to explain.
+   */
+  private string explainParameters(int i) {
+    i = 0 and result = "" and not exists(this.getAParameterType())
+    or
+    (
+      if i < max(int j | exists(this.getParameterType(j)))
+      then
+        // Not the last one
+        result = this.getParameterType(i).explain() + "," + this.explainParameters(i + 1)
+      else
+        // Last parameter
+        result = this.getParameterType(i).explain()
+    )
+  }
+
+  override predicate refersToDirectly(Type t) {
+    t = this.getReturnType() or
+    t = this.getAParameterType()
+  }
+
+  override predicate isDeeplyConst() { none() } // Current limitation: no such thing as a const routine type
+
+  override predicate isDeeplyConstBelow() { none() } // Current limitation: no such thing as a const routine type
+
+  override predicate involvesTemplateParameter() {
+    this.getReturnType().involvesTemplateParameter() or
+    this.getAParameterType().involvesTemplateParameter()
+  }
+}
+
+/**
+ * A source code location referring to a user-defined type.
+ *
+ * Note that only _user-defined_ types have `TypeMention`s. In particular,
+ * built-in types, and derived types with built-in types as their base don't
+ * have any `TypeMention`s. For example, given
+ * ```cpp
+ * struct S { ... };
+ * void f(S s1, int i1) {
+ *   S s2;
+ *   S* s3;
+ *   S& s4 = s2;
+ *   decltype(s2) s5;
+ *
+ *   int i2;
+ *   int* i3;
+ *   int i4[10];
+ * }
+ * ```
+ * there will be a `TypeMention` for the mention of `S` at `S s1`, `S s2`, and `S& s4 = s2`,
+ * but not at `decltype(s2) s5`. Additionally, there will be no `TypeMention`s for `int`.
+ */
+class TypeMention extends Locatable, @type_mention {
+  override string toString() { result = "type mention" }
+
+  override string getAPrimaryQlClass() { result = "TypeMention" }
+
+  /**
+   * Gets the type being referenced by this type mention.
+   */
+  Type getMentionedType() { type_mentions(underlyingElement(this), unresolveElement(result), _, _) }
+
+  override Location getLocation() { type_mentions(underlyingElement(this), _, result, _) }
+}

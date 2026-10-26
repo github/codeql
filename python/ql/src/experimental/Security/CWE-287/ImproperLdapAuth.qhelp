@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If an LDAP query doesn't carry any kind of authentication, anonymous binds causes an empty or None-set password 
+to result in a successful authentication.</p>
+</overview>
+
+<recommendation>
+<p>Use a non-empty password while establishing an LDAP connection.</p>
+</recommendation>
+
+<example>
+<p>In the following examples, the code builds a LDAP query whose execution carries no authentication or binds anonymously.</p>
+
+<sample src="examples/auth_bad_2.py" />
+<sample src="examples/auth_bad_3.py" />
+
+<p>In the third and fourth examples, the authentication is established using a password.</p>
+
+<sample src="examples/auth_good_2.py" />
+<sample src="examples/auth_good_3.py" />
+</example>
+
+<references>
+<li>SonarSource: <a href="https://rules.sonarsource.com/python/type/Vulnerability/RSPEC-4433">RSPEC-4433</a>.</li>
+<li>Python2: <a href="https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html">LDAP Documentation</a>.</li>
+<li>Python3: <a href="https://ldap3.readthedocs.io/en/latest/">LDAP Documentation</a>.</li>
+</references>
+</qhelp>

@@ -1,0 +1,96 @@
+func add(_ a: Int, _ b: Int) -> Int {
+  return a + b
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      expression:
+                        infixOperatorExpr
+                          operator:
+                            binaryOperatorExpr
+                              operator: binaryOperator "+"
+                          leftOperand:
+                            declReferenceExpr
+                              baseName: identifier "a"
+                          rightOperand:
+                            declReferenceExpr
+                              baseName: identifier "b"
+                      returnKeyword: return
+          name: identifier "add"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: _
+                      secondName: identifier "a"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: _
+                      secondName: identifier "b"
+              returnClause:
+                returnClause
+                  arrow: ->
+                  type:
+                    identifierType
+                      name: identifier "Int"
+          funcKeyword: func
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) -> ⟨return_type⟩ ⟨body⟩"
+          name_node: identifier "add" source="add"
+          parameter:
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "a" source="a"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "b" source="b"
+          return_type: identifier "Int" source="Int"
+          body:
+            block source="{\n  ⟨stmt⟩\n}"
+              stmt:
+                return_expr source="return ⟨value⟩"
+                  value:
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "a" source="a"
+                      operator: infix_operator "+" source="+"
+                      right: identifier "b" source="b"

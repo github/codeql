@@ -1,0 +1,3 @@
+| AV Rule 78.cpp:56:8:56:34 | Base_Virtual_NonVirtualDtor | Base classes with a virtual function must define a virtual destructor. |
+| AV Rule 78.cpp:68:8:68:48 | Base_Virtual_NonVirtualDtorWithDefinition | Base classes with a virtual function must define a virtual destructor. |
+| AV Rule 78.cpp:78:8:78:54 | Base_Virtual_NonVirtualDtorWithInlineDefinition | Base classes with a virtual function must define a virtual destructor. |

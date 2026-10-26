@@ -1,0 +1,2 @@
+query: Language Abuse/NestedIf.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

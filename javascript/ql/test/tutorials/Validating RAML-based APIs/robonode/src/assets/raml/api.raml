@@ -1,0 +1,72 @@
+#%RAML 0.8
+title: RESTful API for Robotis Darwin Mini
+version: v1
+mediaType: application/json
+baseUri: http://localhost:3000/api # optionally, change to http://<subdomain>.ngrok.com/api
+
+/robots:
+  get:
+    description: |
+      Retrieve information about any robots paired with your computer.
+      Useful to see what's your robotId.
+    responses:
+      200:
+  /{robotId}:
+    uriParameters:
+      robotId:
+        description: |
+          The last 4 characters of the bluetooth address of your Robotis device.
+          Use `GET /robots` to see all paired robots so you know the valid options
+          for `robotId`. Or, you can see its address on a Mac if you hold down 'option' 
+          while viewing the menu bar's bluetooth dropdown.
+          e.g. if the address is 'b8-63-bc-00-12-16' your robotId is 1216
+    /commands:
+      get:
+        description: |
+          Returns information about the commands in the motion file currently loaded into the robot.
+        responses:
+          200:
+      post:
+        description: |
+          Execute a command, and return when the robot has finished.
+          You can submit either the number of the command or its name,
+          based on the motion file currently loaded into the robot.
+          If you submit both, only the number is used.
+          By default, the API call returns only after the robot 
+          (is supposed to have) finished executing the command. 
+          If you specify `async` of `true`, the API call returns immediately,
+          responding with the number of ms you should wait for the robot to finish.
+        body:
+          example: |
+            { "number": 3, "name": "Sit", "async": false }
+        responses:
+          202:
+            description: |
+              The command is now executing, and should finish within the number of ms
+              returned in the response. This is the response when `async` was true.
+            body:
+              example: |
+                { "executionTimeInMs": 800 }
+          204:
+            description: |
+              The command finished executing. This is the default behavior, when `async` 
+              was not specified or was `false`.
+    /state:
+      get:
+        description: |
+          DOES NOT WORK PROPERLY YET.
+          It only logs the data it sees to the console.
+          See http://support.robotis.com/en/product/dynamixel_pro/dynamixelpro/control_table.htm
+        queryParameters:
+          address:
+            description: The address in the control table.
+            type: number
+            required: true
+            example: 610
+          bytesToRead:
+            description: How many bytes to read starting from that address.
+            type: number
+            required: true
+            example: 1
+        responses:
+          200:

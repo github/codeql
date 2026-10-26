@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/avro.git#68da8fb99da5c482f17853e01e79f714e3717b42 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.avro.file", "DataFileReader", True, "openReader", "(File,DatumReader)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileWriter", True, "appendTo", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileWriter", True, "create", "(Schema,File)", "", "Argument[1]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "SeekableFileInput", True, "SeekableFileInput", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "SyncableFileOutputStream", True, "SyncableFileOutputStream", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "SyncableFileOutputStream", True, "SyncableFileOutputStream", "(File,boolean)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "SyncableFileOutputStream", True, "SyncableFileOutputStream", "(String)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "SyncableFileOutputStream", True, "SyncableFileOutputStream", "(String,boolean)", "", "Argument[0]", "path-injection", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.avro.file", "DataFileReader12", True, "getMeta", "(String)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileReader12", True, "getMetaString", "(String)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileReader12", True, "next", "()", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileReader12", True, "next", "(Object)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileStream", True, "getMeta", "(String)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileStream", True, "getMetaString", "(String)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileStream", True, "next", "()", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileStream", True, "next", "(Object)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileStream", True, "nextBlock", "()", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro.file", "FileReader", True, "next", "(Object)", "", "ReturnValue", "file", "ai-generated"]

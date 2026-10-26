@@ -1,0 +1,12 @@
+| class Exception1 | yes |
+| class Exception2 | yes |
+| class Exception3 | yes |
+| class InnerException1 | yes |
+| class InnerException2 | yes |
+| class InnerException3 | yes |
+| class InnerException4 | yes |
+| class InnerException5 | yes |
+| class InnerNotException1 | no |
+| class InnerNotException2 | no |
+| class NotException1 | no |
+| class NotException2 | no |

@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The meaning of the <code>\b</code> escape sequence inside a regular expression depends on its
+syntactic context: inside a character class, it matches the backspace character; outside of a
+character class, it matches a word boundary. This context dependency makes regular expressions
+hard to read, so the <code>\b</code> escape sequence should not be used inside character classes.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Replace <code>\b</code> in character classes with the semantically identical escape sequence
+<code>\x08</code>.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the regular expression contains two uses of <code>\b</code>: in the
+first case, it matches a word boundary, in the second case it matches a backspace character.
+</p>
+
+<sample src="examples/BackspaceEscape.js" />
+
+<p>
+To avoid mistaking the backspace character for the word boundary metacharacter, rewrite the
+regular expression as <code>/\b[\t\x08]/</code>.
+</p>
+
+</example>
+<references>
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">JavaScript Regular Expressions</a>.</li>
+
+</references>
+</qhelp>

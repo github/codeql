@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Node.js modules can be imported either directly by specifying a file or folder, or indirectly
+by specifying a module name, which will be looked up in a <code>node_modules</code> folder.
+In the latter case, care should be taken that the imported module is either bundled with
+the code that uses it, or declared as a dependency in the <code>package.json</code> file
+to ensure that the import does not fail at runtime.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Declare the dependency in the <code>package.json</code> file or include an externs file
+for it during extraction.
+</p>
+
+<p>
+Externs files for all the core packages of Node.js are available in the
+<code>tool/data/externs/nodejs</code> directory of the distribution, and are included
+by default for projects created using bootstrap.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the <code>package.json</code> file specifies no dependencies,
+but <code>index.js</code> imports <code>acorn</code>. This import will fail unless a copy
+of <code>acorn</code> happens to be installed (for instance in the user's <code>node_modules</code>
+folder). On the other hand, the import of <code>fs</code> is unproblematic, since
+<code>fs</code> is a standard module that is included with every Node.js installation.
+</p>
+
+<sample src="examples/UnresolvableImport.js" />
+
+<p>
+The dependency on <code>acorn</code> should be declared in the <code>package.json</code> file:
+</p>
+
+<sample src="examples/UnresolvableImportGood.js" />
+
+</example>
+<references>
+
+
+<li>Node.js Manual: <a href="https://nodejs.org/api/modules.html#modules_all_together">Module resolution algorithm</a>.</li>
+
+
+</references>
+</qhelp>

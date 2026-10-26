@@ -1,0 +1,17 @@
+{
+    "problemMatcher": [
+        {
+            "owner": "codeql-syntax-check",
+            "pattern": [
+                {
+                    "regexp": "^((ERROR|WARNING): .* \\((.*):(\\d+),(\\d+)-\\d+\\))$",
+                    "message": 1,
+                    "file": 3,
+                    "line": 4,
+                    "col": 5,
+                    "severity": 2
+                }
+            ]
+        }
+    ]
+}

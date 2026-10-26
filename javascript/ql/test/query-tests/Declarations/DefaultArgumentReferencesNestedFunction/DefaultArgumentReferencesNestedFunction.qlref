@@ -1,0 +1,2 @@
+query: Declarations/DefaultArgumentReferencesNestedFunction.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,83 @@
+func greet(name: String = "world") {
+  print(name)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "name"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          name: identifier "greet"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "String"
+                      firstName: identifier "name"
+                      defaultValue:
+                        initializerClause
+                          equal: =
+                          value:
+                            stringLiteralExpr
+                              closingQuote: "
+                              openingQuote: "
+                              segments:
+                                stringSegment
+                                  content: stringSegment "world"
+          funcKeyword: func
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩) ⟨body⟩"
+          name_node: identifier "greet" source="greet"
+          parameter:
+            parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩ = ⟨default⟩"
+              external_name_node: identifier "name" source="name"
+              type: identifier "String" source="String"
+              pattern: identifier "name" source="name"
+              default: string_literal "\"world\"" source="\"world\""
+          body:
+            block source="{\n  ⟨stmt⟩\n}"
+              stmt:
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
+                  argument:
+                    argument source="⟨value⟩"
+                      value: identifier "name" source="name"

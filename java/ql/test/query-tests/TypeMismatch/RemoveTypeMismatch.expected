@@ -1,0 +1,5 @@
+| remove_type_mismatch/A.java:7:12:7:12 | s | Actual argument type 'String' is incompatible with expected argument type 'StringBuffer'. |
+| remove_type_mismatch/A.java:12:12:12:12 | a | Actual argument type 'A' is incompatible with expected argument type '? extends CharSequence'. |
+| remove_type_mismatch/A.java:23:16:23:17 | "" | Actual argument type 'String' is incompatible with expected argument type 'RunnableList'. |
+| remove_type_mismatch/A.java:33:14:33:15 | "" | Actual argument type 'String' is incompatible with expected argument type 'Integer'. |
+| remove_type_mismatch/A.java:43:15:43:16 | "" | Actual argument type 'String' is incompatible with expected argument type 'Integer'. |

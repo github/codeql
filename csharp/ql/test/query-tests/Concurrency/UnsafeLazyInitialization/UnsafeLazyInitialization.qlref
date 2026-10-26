@@ -1,0 +1,2 @@
+query: Concurrency/UnsafeLazyInitialization.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,7 @@
+| HtmlText.html:3:9:5:2 | \n  (1) as child #0\n   | HtmlText.html:3:3:17:9 | <body>...</> | 0 |  |
+| HtmlText.html:5:8:7:2 | \n    (2) as child #0\n   | HtmlText.html:5:3:7:8 | <div>...</> | 0 |  |
+| HtmlText.html:7:9:9:2 | \n  (3) as child #2\n   | HtmlText.html:3:3:17:9 | <body>...</> | 2 |  |
+| HtmlText.html:9:8:11:2 | \n    (4) entity ampersand: &\n   | HtmlText.html:9:3:11:8 | <div>...</> | 0 |  |
+| HtmlText.html:12:8:14:2 | \n    (5) numeric entity ampersand: &\n   | HtmlText.html:12:3:14:8 | <div>...</> | 0 |  |
+| HtmlText.html:15:12:15:25 | (6) cdata text | HtmlText.html:3:3:17:9 | <body>...</> | 7 | (cdata) |
+| HtmlText.html:16:12:16:33 | (7) cdata ampersand: & | HtmlText.html:3:3:17:9 | <body>...</> | 9 | (cdata) |

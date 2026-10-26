@@ -1,0 +1,6 @@
+test_ConstKeyword
+| tst.ts:1:19:1:23 | const |
+| tst.ts:2:10:2:14 | const |
+test_ConstTypeAssertion
+| tst.ts:1:9:1:23 | [1, 2] as const |
+| tst.ts:2:9:2:21 | <const>[1, 2] |

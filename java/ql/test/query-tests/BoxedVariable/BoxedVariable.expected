@@ -1,0 +1,5 @@
+| BoxedVariable.java:5:5:5:25 | Boolean done | The variable 'done' is only assigned values of primitive type and is never 'null', but it is declared with the boxed type 'Boolean'. |
+| BoxedVariable.java:10:5:10:20 | Integer sum | The variable 'sum' is only assigned values of primitive type and is never 'null', but it is declared with the boxed type 'Integer'. |
+| BoxedVariable.java:18:5:18:24 | Integer badbox | The variable 'badbox' is only assigned values of primitive type and is never 'null', but it is declared with the boxed type 'Integer'. |
+| BoxedVariable.java:26:5:26:23 | Long y | The variable 'y' is only assigned values of primitive type and is never 'null', but it is declared with the boxed type 'Long'. |
+| BoxedVariable.java:42:10:42:22 | Integer badix | The variable 'badix' is only assigned values of primitive type and is never 'null', but it is declared with the boxed type 'Integer'. |

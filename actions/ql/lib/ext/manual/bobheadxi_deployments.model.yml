@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["bobheadxi/deployments", "*", "input.env", "output.env", "taint", "manual"]

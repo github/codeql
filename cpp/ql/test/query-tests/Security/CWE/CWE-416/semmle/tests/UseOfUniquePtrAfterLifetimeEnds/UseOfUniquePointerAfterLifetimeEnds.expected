@@ -1,0 +1,11 @@
+| test.cpp:156:15:156:15 | call to operator* | The underlying unique pointer object is destroyed after the call to 'operator*' returns. |
+| test.cpp:157:31:157:33 | call to get | The underlying unique pointer object is destroyed after the call to 'get' returns. |
+| test.cpp:159:32:159:32 | call to operator-> | The underlying unique pointer object is destroyed after the call to 'operator->' returns. |
+| test.cpp:160:35:160:37 | call to get | The underlying unique pointer object is destroyed after the call to 'get' returns. |
+| test.cpp:161:44:161:46 | call to get | The underlying unique pointer object is destroyed after the call to 'get' returns. |
+| test.cpp:163:25:163:27 | call to get | The underlying unique pointer object is destroyed after the call to 'get' returns. |
+| test.cpp:172:33:172:35 | call to get | The underlying unique pointer object is destroyed after the call to 'get' returns. |
+| test.cpp:174:32:174:34 | call to get | The underlying unique pointer object is destroyed after the call to 'get' returns. |
+| test.cpp:177:16:177:16 | call to operator* | The underlying unique pointer object is destroyed after the call to 'operator*' returns. |
+| test.cpp:177:36:177:36 | call to operator* | The underlying unique pointer object is destroyed after the call to 'operator*' returns. |
+| test.cpp:179:11:179:11 | call to operator* | The underlying unique pointer object is destroyed after the call to 'operator*' returns. |

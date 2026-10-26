@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.awt", "Container", True, "add", "(Component)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["java.awt", "Container", True, "add", "(Component)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["java.awt", "Container", True, "add", "(Component,Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.awt", "Insets", "Insets", "(int,int,int,int)", "summary", "manual"] # value-numeric
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.awt", "Desktop", True, "browse", "(URI)", "", "Argument[0]", "url-redirection", "ai-manual"]

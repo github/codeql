@@ -1,0 +1,14 @@
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
+
+codeql_pkg_files(
+    name = "tools",
+    exes = glob(
+        ["**/*"],
+        exclude = [
+            "BUILD.bazel",
+            "recorded-call-graph-metrics/**",
+        ],
+    ),
+    prefix = "tools",
+    visibility = ["//python:__pkg__"],
+)

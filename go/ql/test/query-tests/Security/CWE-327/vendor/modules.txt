@@ -1,0 +1,4 @@
+# golang.org/x/crypto v0.43.0
+## explicit
+golang.org/x/crypto/md4
+golang.org/x/crypto/ripemd160

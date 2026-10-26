@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["<std::ffi::os_str::OsStr>::to_str", "Argument[self].Reference.Field[std::ffi::os_str::OsStr::inner]", "ReturnValue.Field[core::option::Option::Some(0)].Reference", "taint", "manual"]
+      - ["<std::ffi::os_str::OsStr>::to_string_lossy", "Argument[self].Reference.Field[std::ffi::os_str::OsStr::inner]", "ReturnValue.Field[alloc::borrow::Cow::Owned(0)]", "taint", "manual"]
+      - ["<std::ffi::os_str::OsStr>::as_encoded_bytes", "Argument[self].Reference.Field[std::ffi::os_str::OsStr::inner]", "ReturnValue.Reference", "taint", "manual"]
+      # Overwrite generated model
+      - ["<std::ffi::os_str::OsString as core::ops::deref::Deref>::deref", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]

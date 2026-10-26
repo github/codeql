@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.yaml.snakeyaml", "Yaml", True, "load", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]

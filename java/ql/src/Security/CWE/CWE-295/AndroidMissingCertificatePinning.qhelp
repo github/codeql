@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Certificate pinning is the practice of only trusting a specific set of SSL certificates, rather than those that the device trusts by default.
+In Android applications, it is reccomended to use certificate pinning when communicating over the network, 
+in order to minimize the risk of machine-in-the-middle attacks from a compromised CA.
+</p>
+</overview>
+
+<recommendation>
+<p>
+The easiest way to implement certificate pinning is to declare your pins in a <code>network-security-config</code> XML file. 
+This will automatically provide certificate pinning for any network connection made by the app.
+</p>
+<p>
+Another way to implement certificate pinning is to use the `CertificatePinner` class from the `okhttp` library. 
+</p>
+<p>
+A final way to implement certificate pinning is to use a <code>TrustManager</code>, initialized from a <code>KeyStore</code> loaded with only the necessary certificates.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In the first (bad) case below, a network call is performed with no certificate pinning implemented. 
+The other (good) cases demonstrate the different ways to implement certificate pinning. 
+</p>
+<sample src="AndroidMissingCertificatePinning1.java" />
+<sample src="AndroidMissingCertificatePinning2.xml" />
+<sample src="AndroidMissingCertificatePinning3.java" />
+</example>
+
+<references>
+  <li>
+    OWASP Mobile Security: <a href="https://mobile-security.gitbook.io/mobile-security-testing-guide/android-testing-guide/0x05g-testing-network-communication#testing-custom-certificate-stores-and-certificate-pinning-mstg-network-4">Testing Custom Certificate Stores and Certificate Pinning (MSTG-NETWORK-4)</a>.
+  </li>
+  <li>
+    Android Developers: <a href="https://developer.android.com/training/articles/security-config">Network security configuration</a>.
+  </li>
+  <li>
+    OkHttp: <a href="https://square.github.io/okhttp/4.x/okhttp/okhttp3/-certificate-pinner/">CertificatePinner</a>.
+  </li>
+</references>
+</qhelp>

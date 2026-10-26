@@ -1,0 +1,2 @@
+query: DOM/MalformedIdAttribute.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

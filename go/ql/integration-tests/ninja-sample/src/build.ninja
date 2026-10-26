@@ -1,0 +1,5 @@
+rule get
+  command = rm todel.go && go get
+# If the build.ninja file isn't used, then todel.go will be seen and fail the build.
+
+build all: get test.go

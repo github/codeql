@@ -1,0 +1,2 @@
+query: Declarations/ArgumentsRedefined.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,2 @@
+query: Concurrency/LockOrder.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

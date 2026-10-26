@@ -1,0 +1,2 @@
+query: Critical/FileMayNotBeClosed.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

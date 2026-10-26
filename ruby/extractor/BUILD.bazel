@@ -1,0 +1,19 @@
+load("//misc/bazel:rust.bzl", "codeql_rust_binary")
+load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "all_crate_deps")
+
+exports_files(["Cargo.toml"])
+
+codeql_rust_binary(
+    name = "extractor",
+    srcs = glob(["src/*.rs"]),
+    aliases = aliases(),
+    proc_macro_deps = all_crate_deps(
+        proc_macro = True,
+    ),
+    visibility = ["//visibility:public"],
+    deps = all_crate_deps(
+        normal = True,
+    ) + [
+        "//shared/tree-sitter-extractor",
+    ],
+)

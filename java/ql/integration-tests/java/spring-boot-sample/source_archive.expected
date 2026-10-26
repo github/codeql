@@ -1,0 +1,9 @@
+.gradle/8.7/dependencies-accessors/gc.properties
+.gradle/8.7/gc.properties
+.gradle/buildOutputCleanup/cache.properties
+.gradle/vcs-1/gc.properties
+build/resources/main/application.properties
+gradle/wrapper/gradle-wrapper.properties
+src/main/java/com/github/springbootsample/SpringBootSampleApplication.java
+src/main/resources/application.properties
+src/test/java/com/github/springbootsample/SpringBootSampleApplicationTests.java

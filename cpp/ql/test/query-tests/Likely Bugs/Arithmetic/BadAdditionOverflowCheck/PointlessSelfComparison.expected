@@ -1,0 +1,7 @@
+| templates.cpp:17:5:17:25 | ... < ... | This expression compares an $@ to itself. | templates.cpp:17:5:17:13 | value | expression |
+| test.cpp:13:11:13:21 | ... == ... | This expression compares an $@ to itself. | test.cpp:13:11:13:11 | x | expression |
+| test.cpp:79:11:79:32 | ... == ... | This expression compares an $@ to itself. | test.cpp:79:11:79:11 | x | expression |
+| test.cpp:83:10:83:15 | ... == ... | This expression compares an $@ to itself. | test.cpp:83:10:83:10 | x | expression |
+| test.cpp:90:10:90:15 | ... == ... | This expression compares an $@ to itself. | test.cpp:90:10:90:10 | x | expression |
+| test.cpp:118:7:118:32 | ... != ... | This expression compares an $@ to itself. | test.cpp:118:27:118:27 | x | expression |
+| test.cpp:151:11:151:16 | ... == ... | This expression compares an $@ to itself. | test.cpp:151:11:151:11 | x | expression |

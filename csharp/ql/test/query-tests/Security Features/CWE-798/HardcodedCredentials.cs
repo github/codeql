@@ -1,0 +1,122 @@
+using System;
+using System.Data.SqlClient;
+using System.Web;
+using System.Web.Security;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Identity;
+
+public class HardcodedHandler : IHttpHandler
+{
+
+    public void ProcessRequest(HttpContext ctx)
+    {
+        string password = ctx.Request.QueryString["password"];
+
+        // BAD: Inbound authentication made by comparison to string literal
+        if (password == "myPa55word") // $ Alert[cs/hardcoded-credentials]
+        {
+            ctx.Response.Redirect("login");
+        }
+
+        string hashedPassword = LoadPasswordFromSecretConfig();
+
+        // GOOD: the password is checked
+        if (VerifyHashedPassword(hashedPassword, password))
+        {
+            ctx.Response.Redirect("login");
+        }
+
+        // BAD: Create a membership user with hardcoded username
+        MembershipUser user = new MembershipUser(
+            providerName: "provider",
+            name: "username", // $ Alert[cs/hardcoded-credentials]
+            providerUserKey: "username",
+            email: "foo@bar.com",
+            passwordQuestion: "Hardcoded question.",
+            comment: "",
+            isApproved: true,
+            isLockedOut: false,
+            creationDate: DateTime.Now,
+            lastLoginDate: DateTime.Now,
+            lastActivityDate: DateTime.Now,
+            lastPasswordChangedDate: DateTime.Now,
+            lastLockoutDate: DateTime.Now
+            );
+        // BAD: Set the password to a hardcoded string literal
+        user.ChangePassword(password, "myNewPa55word"); // $ Alert[cs/hardcoded-credentials]
+
+        byte[] rawCertData = new byte[] { 0x20, 0x20, 0x20 }; // $ Alert[cs/hardcoded-credentials]
+        // BAD: Passing a literal certificate and password to an X509 certificate constructor
+        X509Certificate2 cert = new X509Certificate2(
+            rawCertData, // $ Sink[cs/hardcoded-credentials]
+            "myPa55word"); // $ Alert[cs/hardcoded-credentials]
+
+        // BAD: Passing literal Password to connection string
+        SqlConnection conn = new SqlConnection("Password=12345"); // $ Alert[cs/hardcoded-connection-string-credentials]
+        // BAD: Passing literal User Id to connection string
+        SqlConnection conn2 = new SqlConnection("User Id=12345"); // $ Alert[cs/hardcoded-connection-string-credentials]
+        // GOOD: Password is not specified literally
+        SqlConnection conn3 = new SqlConnection("Password=" + LoadPasswordFromSecretConfig() + ";");
+
+        // SANITIZERS:
+        // GOOD: Password is not set literally, and the replace characters should not be considered as sources
+        X509Certificate2 cert2 = new X509Certificate2(
+            "cert.cert",
+            LoadPasswordFromSecretConfig().Replace("=", "\\="));
+        // GOOD: Password is not set literally, and ToString
+        X509Certificate2 cert3 = new X509Certificate2(
+            "cert.cert",
+            new Foo().ToString());
+        // GOOD: Password is not set literally
+        conn = new SqlConnection(string.Format("Password={0}", LoadPasswordFromSecretConfig()));
+        conn = new SqlConnection($"Password={LoadPasswordFromSecretConfig()}");
+
+        // BAD: Hard-coded user
+        Membership.CreateUser("myusername", "mypassword"); // $ Alert[cs/hardcoded-credentials]
+
+        var identityOptions = new IdentityOptions
+        {
+            User = new UserOptions
+            {
+                // GOOD: This is not a credential so hardcoding a string assignment is fine     
+                AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+"
+            }
+        };
+
+        var claimsIdentityOptions = new ClaimsIdentityOptions
+        {
+            // GOOD: This is not a credential so hardcoding a string assignment is fine
+            UserNameClaimType = "username"
+        };
+    }
+
+    class Foo
+    {
+        string ToString()
+        {
+            // We don't consider this hard-coded data - too many ToString implementations include
+            // string literal construction
+            return "Foo";
+        }
+    }
+
+    public string LoadPasswordFromSecretConfig()
+    {
+        return null;
+    }
+
+    public static bool VerifyHashedPassword(string hashedPassword, string password)
+    {
+        // API provided by System.Web.Helpers.Crypto.VerifyHashedPassword
+        // but that assembly not available on Mono.
+        return true;
+    }
+
+    public bool IsReusable
+    {
+        get
+        {
+            return true;
+        }
+    }
+}

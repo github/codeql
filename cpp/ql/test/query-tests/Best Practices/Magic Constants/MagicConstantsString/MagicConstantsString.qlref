@@ -1,0 +1,2 @@
+query: Best Practices/Magic Constants/MagicConstantsString.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

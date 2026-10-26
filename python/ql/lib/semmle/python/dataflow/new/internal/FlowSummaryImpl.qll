@@ -1,0 +1,261 @@
+/**
+ * Provides classes and predicates for defining flow summaries.
+ */
+overlay[local]
+module;
+
+private import python
+private import codeql.dataflow.internal.FlowSummaryImpl
+private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
+private import DataFlowImplSpecific as DataFlowImplSpecific
+private import DataFlowImplSpecific::Private
+private import DataFlowImplSpecific::Public
+
+module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow> {
+  private import codeql.util.Void
+
+  class SummarizedCallableBase extends string {
+    bindingset[this]
+    SummarizedCallableBase() { exists(this) }
+
+    Location getLocation() { none() }
+  }
+
+  class FlowSummaryCallBase extends Void {
+    Location getLocation() { none() }
+  }
+
+  predicate callableFromSource(SummarizedCallableBase c) { none() }
+
+  DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c) {
+    result.asLibraryCallable() = c
+  }
+
+  ArgumentPosition callbackSelfParameterPosition() { result.isLambdaSelf() }
+
+  ReturnKind getStandardReturnValueKind() { any() }
+
+  string encodeParameterPosition(ParameterPosition pos) {
+    pos.isSelf() and result = "self"
+    or
+    pos.isLambdaSelf() and
+    result = "lambda-self"
+    or
+    exists(int i |
+      pos.isPositional(i) and
+      result = i.toString()
+    )
+    or
+    exists(int i |
+      pos.isPositionalLowerBound(i) and
+      result = i + ".."
+    )
+    or
+    exists(string name |
+      pos.isKeyword(name) and
+      result = name + ":"
+    )
+  }
+
+  string encodeArgumentPosition(ArgumentPosition pos) {
+    pos.isSelf() and result = "self"
+    or
+    pos.isLambdaSelf() and
+    result = "lambda-self"
+    or
+    exists(int i |
+      pos.isPositional(i) and
+      result = i.toString()
+    )
+    or
+    exists(string name |
+      pos.isKeyword(name) and
+      result = name + ":"
+    )
+  }
+
+  string encodeContent(ContentSet cs, string arg) {
+    exists(Content c | cs.isSingleton(c) |
+      c = TListElementContent() and result = "ListElement" and arg = ""
+      or
+      c = TSetElementContent() and result = "SetElement" and arg = ""
+      or
+      exists(int index |
+        c = TTupleElementContent(index) and result = "TupleElement" and arg = index.toString()
+      )
+      or
+      exists(string key |
+        c = TDictionaryElementContent(key) and result = "DictionaryElement" and arg = key
+      )
+      or
+      c = TDictionaryElementAnyContent() and result = "DictionaryElementAny" and arg = ""
+      or
+      exists(string attr | c = TAttributeContent(attr) and result = "Attribute" and arg = attr)
+    )
+    or
+    cs.isAnyTupleElement() and result = "AnyTupleElement" and arg = ""
+    or
+    cs.isAnyDictionaryElement() and result = "AnyDictionaryElement" and arg = ""
+    or
+    cs.isAnyTupleOrDictionaryElement() and result = "AnyTupleOrDictionaryElement" and arg = ""
+  }
+
+  string encodeWithContent(ContentSet c, string arg) { result = "With" + encodeContent(c, arg) }
+
+  bindingset[token]
+  ParameterPosition decodeUnknownParameterPosition(AccessPath::AccessPathTokenBase token) {
+    // needed to support `Argument[x..y]` ranges
+    token.getName() = "Argument" and
+    result.isPositional(AccessPath::parseInt(token.getAnArgument()))
+  }
+
+  bindingset[token]
+  ArgumentPosition decodeUnknownArgumentPosition(AccessPath::AccessPathTokenBase token) {
+    // needed to support `Parameter[x..y]` ranges
+    token.getName() = "Parameter" and
+    result.isPositional(AccessPath::parseInt(token.getAnArgument()))
+  }
+}
+
+private import Make<Location, DataFlowImplSpecific::PythonDataFlow, Input> as Impl
+
+private module Input2 implements Impl::Private::InputSig2 {
+  private import codeql.util.Void
+
+  class SourceSinkReportingElement extends Void {
+    Location getLocation() { none() }
+
+    DataFlowCallable getEnclosingCallable() { none() }
+
+    SourceSinkReportingElement getASuccessor(Impl::Private::SummaryComponent sc) { none() }
+  }
+}
+
+private import Impl::Private::Make2<Input2> as Impl2
+
+private module StepsInput implements Impl2::StepsInputSig {
+  Impl2::SummaryNode getSummaryNode(Node n) { result = n.(FlowSummaryNode).getSummaryNode() }
+
+  overlay[global]
+  DataFlowCall getACall(Public::SummarizedCallable sc) {
+    result =
+      TPotentialLibraryCall([
+          sc.(LibraryCallable).getACall().asCfgNode(),
+          sc.(LibraryCallable).getACallSimple().asCfgNode()
+        ])
+  }
+}
+
+module Private {
+  import Impl::Private
+  import Impl2
+
+  module Steps = Impl2::Steps<StepsInput>;
+
+  /**
+   * Provides predicates for constructing summary components.
+   */
+  module SummaryComponent {
+    private import Impl::Private::SummaryComponent as SC
+
+    predicate parameter = SC::parameter/1;
+
+    predicate argument = SC::argument/1;
+
+    predicate content = SC::content/1;
+
+    predicate withoutContent = SC::withoutContent/1;
+
+    predicate withContent = SC::withContent/1;
+
+    /** Gets a summary component that represents a list element. */
+    SummaryComponent listElement() { result = content(singleton(any(ListElementContent c))) }
+
+    /** Gets a summary component that represents a set element. */
+    SummaryComponent setElement() { result = content(singleton(any(SetElementContent c))) }
+
+    /** Gets a summary component that represents a tuple element. */
+    SummaryComponent tupleElement(int index) {
+      exists(TupleElementContent c | c.getIndex() = index and result = content(singleton(c)))
+    }
+
+    /** Gets a summary component that represents a dictionary element. */
+    SummaryComponent dictionaryElement(string key) {
+      exists(DictionaryElementContent c | c.getKey() = key and result = content(singleton(c)))
+    }
+
+    /** Gets a summary component that represents a dictionary element at any key. */
+    SummaryComponent dictionaryElementAny() {
+      result = content(singleton(any(DictionaryElementAnyContent c)))
+    }
+
+    /** Gets a summary component that represents an attribute element. */
+    SummaryComponent attribute(string attr) {
+      exists(AttributeContent c | c.getAttribute() = attr and result = content(singleton(c)))
+    }
+
+    /** Gets a summary component that represents the return value of a call. */
+    SummaryComponent return() { result = SC::return(any(ReturnKind rk)) }
+  }
+
+  /**
+   * Provides predicates for constructing stacks of summary components.
+   */
+  module SummaryComponentStack {
+    private import Impl::Private::SummaryComponentStack as SCS
+
+    predicate singleton = SCS::singleton/1;
+
+    predicate push = SCS::push/2;
+
+    predicate argument = SCS::argument/1;
+
+    /** Gets a singleton stack representing the return value of a call. */
+    SummaryComponentStack return() { result = singleton(SummaryComponent::return()) }
+  }
+}
+
+module Public = Impl::Public;
+
+module ParsePositions {
+  private import Private
+
+  private predicate isParamBody(string body) {
+    exists(AccessPathToken tok |
+      tok.getName() = "Parameter" and
+      body = tok.getAnArgument()
+    )
+  }
+
+  private predicate isArgBody(string body) {
+    exists(AccessPathToken tok |
+      tok.getName() = "Argument" and
+      body = tok.getAnArgument()
+    )
+  }
+
+  predicate isParsedPositionalParameterPosition(string c, int i) {
+    isParamBody(c) and
+    i = AccessPath::parseInt(c)
+  }
+
+  predicate isParsedKeywordParameterPosition(string c, string paramName) {
+    isParamBody(c) and
+    c = paramName + ":"
+  }
+
+  predicate isParsedPositionalArgumentPosition(string c, int i) {
+    isArgBody(c) and
+    i = AccessPath::parseInt(c)
+  }
+
+  predicate isParsedArgumentLowerBoundPosition(string c, int i) {
+    isArgBody(c) and
+    i = AccessPath::parseLowerBound(c)
+  }
+
+  predicate isParsedKeywordArgumentPosition(string c, string argName) {
+    isArgBody(c) and
+    c = argName + ":"
+  }
+}

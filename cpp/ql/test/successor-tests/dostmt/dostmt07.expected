@@ -1,0 +1,12 @@
+| 0 | dostmt.c:8:22:14:1 | { ... } | 1 | dostmt.c:9:3:9:3 | { ... } |
+| 1 | dostmt.c:9:3:9:3 | { ... } | 1 | dostmt.c:9:3:12:13 | do (...) ... |
+| 1 | dostmt.c:9:3:12:13 | do (...) ... | 1 | dostmt.c:9:6:12:3 | { ... } |
+| 1 | dostmt.c:9:6:12:3 | { ... } | 2 | dostmt.c:10:5:10:7 | label ...: |
+| 2 | dostmt.c:10:5:10:7 | label ...: | 2 | dostmt.c:10:8:10:8 | ; |
+| 2 | dostmt.c:10:8:10:8 | ; | 3 | dostmt.c:11:5:11:10 | break; |
+| 3 | dostmt.c:11:5:11:10 | break; | 4 | dostmt.c:12:13:12:13 | label ...: |
+| 4 | dostmt.c:12:11:12:11 | 1 | 1 | dostmt.c:9:6:12:3 | { ... } |
+| 4 | dostmt.c:12:13:12:13 | label ...: | 5 | dostmt.c:13:3:13:5 | label ...: |
+| 5 | dostmt.c:13:3:13:5 | label ...: | 5 | dostmt.c:13:6:13:6 | ; |
+| 5 | dostmt.c:13:6:13:6 | ; | 6 | dostmt.c:14:1:14:1 | return ... |
+| 6 | dostmt.c:14:1:14:1 | return ... | 0 | dostmt.c:8:6:8:18 | always_true_1 |

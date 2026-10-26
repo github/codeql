@@ -1,0 +1,222 @@
+private import csharp
+private import TaintTrackingPublic
+private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.csharp.Caching
+private import semmle.code.csharp.dataflow.FlowSteps
+private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
+private import semmle.code.csharp.dispatch.Dispatch
+private import semmle.code.csharp.commons.ComparisonTest
+// import `TaintedMember` definitions from other files to avoid potential reevaluation
+private import semmle.code.csharp.frameworks.JsonNET
+private import semmle.code.csharp.frameworks.OData
+private import semmle.code.csharp.frameworks.WCF
+private import semmle.code.csharp.security.dataflow.flowsources.Remote
+
+/**
+ * Holds if `node` should be a sanitizer in all global taint flow configurations
+ * but not in local taint.
+ */
+predicate defaultTaintSanitizer(DataFlow::Node node) {
+  exists(MethodCall mc |
+    mc.getTarget().hasFullyQualifiedName("System.Text.StringBuilder", "Clear")
+  |
+    node.asExpr() = mc.getQualifier()
+  )
+}
+
+/**
+ * Gets the (unbound) property `System.Collections.Generic.KeyValuePair.Value`.
+ */
+private Property keyValuePairValue() {
+  result.hasFullyQualifiedName("System.Collections.Generic", "KeyValuePair`2", "Value")
+}
+
+/**
+ * Holds if default `TaintTracking::Configuration`s should allow implicit reads
+ * of `c` at sinks and inputs to additional taint steps.
+ */
+bindingset[node]
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
+  exists(node) and
+  (
+    c.isElement()
+    or
+    c.isProperty(keyValuePairValue())
+  )
+}
+
+private predicate localTaintExprStep(Expr e1, Expr e2) {
+  e1 = e2.(ElementAccess).getQualifier()
+  or
+  e1 = e2.(AddOperation).getAnOperand()
+  or
+  // A comparison expression where taint can flow from one of the
+  // operands if the other operand is a constant value.
+  exists(ComparisonTest ct, Expr other |
+    ct.getExpr() = e2 and
+    e1 = ct.getAnArgument() and
+    other = ct.getAnArgument() and
+    other.stripCasts().hasValue() and
+    e1 != other
+  )
+  or
+  e1 = e2.(UnaryLogicalOperation).getAnOperand()
+  or
+  e1 = e2.(BinaryLogicalOperation).getAnOperand()
+  or
+  e1 = e2.(InterpolatedStringExpr).getAChild()
+  or
+  e1 = e2.(InterpolatedStringInsertExpr).getInsert()
+  or
+  e2 =
+    any(OperatorCall oc |
+      oc.getTarget().(ConversionOperator).fromLibrary() and
+      e1 = oc.getAnArgument()
+    )
+  or
+  e1 = e2.(AwaitExpr).getExpr()
+  or
+  // Taint flows from the operand of a cast to the cast expression if the cast is to an interpolated string handler.
+  e2 =
+    any(CastExpr ce |
+      e1 = ce.getExpr() and
+      ce.getTargetType()
+          .(Attributable)
+          .getAnAttribute()
+          .getType()
+          .hasFullyQualifiedName("System.Runtime.CompilerServices",
+            "InterpolatedStringHandlerAttribute")
+    )
+}
+
+private Expr getALastEvalNode(OperatorCall oc) {
+  localTaintExprStep(result, oc) and oc.getTarget() instanceof ImplicitConversionOperator
+}
+
+private Expr getPostUpdateReverseStep(Expr e) { result = getALastEvalNode(e) }
+
+private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  localTaintExprStep(nodeFrom.asExpr(), nodeTo.asExpr())
+}
+
+cached
+private module Cached {
+  private import DataFlowImplCommon as DataFlowImplCommon
+
+  cached
+  predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
+
+  /**
+   * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
+   * (intra-procedural) step.
+   */
+  cached
+  predicate localTaintStepImpl(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // Ordinary data flow
+    DataFlow::localFlowStep(nodeFrom, nodeTo)
+    or
+    localTaintStepCommon(nodeFrom, nodeTo)
+    or
+    not LocalFlow::excludeFromExposedRelations(nodeFrom) and
+    not LocalFlow::excludeFromExposedRelations(nodeTo) and
+    (
+      // Simple flow through library code is included in the exposed local
+      // step relation, even though flow is technically inter-procedural
+      FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
+      or
+      // Taint collection by adding a tainted element
+      exists(DataFlow::ContentSet c | c.isElement() |
+        storeStep(nodeFrom, c, nodeTo)
+        or
+        FlowSummaryImpl::Private::Steps::summarySetterStep(nodeFrom, c, nodeTo, _)
+      )
+      or
+      exists(DataFlow::ContentSet c |
+        readStep(nodeFrom, c, nodeTo)
+        or
+        FlowSummaryImpl::Private::Steps::summaryGetterStep(nodeFrom, c, nodeTo, _)
+      |
+        // Taint members
+        c = any(TaintedMember m).(FieldOrProperty).getContentSet()
+        or
+        // Read from a tainted collection
+        c.isElement()
+      )
+    )
+  }
+
+  /**
+   * Holds if the additional step from `nodeFrom` to `nodeTo` should be included
+   * in all global taint flow configurations.
+   */
+  cached
+  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
+    (
+      localTaintStepCommon(nodeFrom, nodeTo)
+      or
+      // Taint members
+      readStep(nodeFrom, any(TaintedMember m).(FieldOrProperty).getContentSet(), nodeTo)
+      or
+      // Although flow through collections is modeled precisely using stores/reads, we still
+      // allow flow out of a _tainted_ collection. This is needed in order to support taint-
+      // tracking configurations where the source is a collection
+      readStep(nodeFrom, any(DataFlow::ContentSet c | c.isElement()), nodeTo)
+      or
+      nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
+      or
+      // Allow reverse update flow for implicit conversion operator calls.
+      // This is needed to support flow out of method call arguments, where an implicit conversion is applied
+      // to a call argument.
+      nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() =
+        getPostUpdateReverseStep(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr())
+    ) and
+    model = ""
+    or
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false, model)
+    or
+    any(AdditionalTaintStep a).step(nodeFrom, nodeTo) and model = "AdditionalTaintStep"
+  }
+}
+
+import Cached
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
+  private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as Impl
+
+  private predicate hasTarget(Call call) {
+    exists(Impl::Public::SummarizedCallable sc | sc.getACall() = call)
+    or
+    exists(Impl::Public::NeutralSummaryCallable nc | nc.getACall() = call)
+    or
+    call.getTarget().getUnboundDeclaration() instanceof ExternalFlow::SinkCallable
+    or
+    exists(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.getACall() = call)
+  }
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowCall call, Call srcCall, ArgumentPosition argpos |
+      not exists(viableCallable(call)) and
+      not hasTarget(srcCall) and
+      call.(NonDelegateDataFlowCall).getDispatchCall().getCall() = srcCall and
+      (srcCall instanceof ConstructorInitializer or srcCall instanceof MethodCall) and
+      src.(ArgumentNode).argumentOf(call, argpos) and
+      not src instanceof PostUpdateNodes::ObjectInitializerNode and
+      not src instanceof MallocNode
+    |
+      not argpos.isQualifier() and
+      sink.(PostUpdateNode)
+          .getPreUpdateNode()
+          .(ArgumentNode)
+          .argumentOf(call, any(ArgumentPosition qualpos | qualpos.isQualifier()))
+      or
+      sink.(OutNode).getCall(_) = call
+    )
+  }
+}

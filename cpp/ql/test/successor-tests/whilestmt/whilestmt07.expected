@@ -1,0 +1,12 @@
+| 0 | whilestmt.c:15:22:21:1 | { ... } | 1 | whilestmt.c:16:3:16:3 | { ... } |
+| 1 | whilestmt.c:16:3:16:3 | { ... } | 1 | whilestmt.c:16:3:19:3 | while (...) ... |
+| 1 | whilestmt.c:16:3:19:3 | while (...) ... | 1 | whilestmt.c:16:9:16:9 | 1 |
+| 1 | whilestmt.c:16:9:16:9 | 1 | 1 | whilestmt.c:16:12:19:3 | { ... } |
+| 1 | whilestmt.c:16:12:19:3 | { ... } | 2 | whilestmt.c:17:5:17:7 | label ...: |
+| 2 | whilestmt.c:17:5:17:7 | label ...: | 2 | whilestmt.c:17:8:17:8 | ; |
+| 2 | whilestmt.c:17:8:17:8 | ; | 3 | whilestmt.c:18:5:18:10 | break; |
+| 3 | whilestmt.c:18:5:18:10 | break; | 4 | whilestmt.c:19:3:19:3 | label ...: |
+| 4 | whilestmt.c:19:3:19:3 | label ...: | 5 | whilestmt.c:20:3:20:5 | label ...: |
+| 5 | whilestmt.c:20:3:20:5 | label ...: | 5 | whilestmt.c:20:6:20:6 | ; |
+| 5 | whilestmt.c:20:6:20:6 | ; | 6 | whilestmt.c:21:1:21:1 | return ... |
+| 6 | whilestmt.c:21:1:21:1 | return ... | 0 | whilestmt.c:15:6:15:18 | always_true_1 |

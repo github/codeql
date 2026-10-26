@@ -1,0 +1,6 @@
+extractor/target
+.vscode/launch.json
+.cache
+ql/test/**/*.testproj
+ql/test/**/*.actual
+.codeql

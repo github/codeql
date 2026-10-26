@@ -1,0 +1,11 @@
+| fields/FieldTest.java:4:15:4:16 | ff | 4 | 15 | 4 | 16 |
+| fields/FieldTest.java:4:19:4:19 | g | 4 | 19 | 4 | 19 |
+| fields/FieldTest.java:4:29:4:31 | hhh | 4 | 29 | 4 | 31 |
+| fields/FieldTest.java:5:23:5:25 | obj | 5 | 23 | 5 | 25 |
+| fields/FieldTest.java:5:35:5:38 | obj2 | 5 | 35 | 5 | 38 |
+| fields/FieldTest.java:6:54:6:54 | l | 6 | 54 | 6 | 54 |
+| fields/FieldTest.java:6:57:6:57 | m | 6 | 57 | 6 | 57 |
+| fields/FieldTest.java:7:13:7:13 | x | 7 | 13 | 7 | 13 |
+| fields/FieldTest.java:8:13:8:13 | y | 8 | 13 | 8 | 13 |
+| fields/FieldTest.java:12:20:12:20 | z | 12 | 20 | 12 | 20 |
+| fields/FieldTest.java:13:20:13:20 | w | 13 | 20 | 13 | 20 |

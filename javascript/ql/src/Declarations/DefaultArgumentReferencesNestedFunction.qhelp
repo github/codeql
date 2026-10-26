@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Default parameter values can only refer to variables and functions that are defined before the
+parameter. In particular, they cannot refer to nested functions defined inside the function
+body, since their definition is not evaluated until after default parameter values have been
+computed.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Move the function into the enclosing scope so that it becomes available to the default parameter.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the default parameter value for the parameter <code>y</code> of the function
+<code>f</code> is computed from the value of the parameter <code>x</code> using the function
+<code>defaultVal</code>. However, since <code>defaultVal</code> is defined inside <code>f</code>
+itself, it is not yet defined at the point where the default value of <code>y</code> is evaluated,
+which will lead to a runtime error.
+</p>
+
+<sample src="examples/DefaultArgumentReferencesNestedFunction.js" />
+
+<p>
+To fix this problem, <code>defaultVal</code> should be moved into the outer scope so that it
+becomes available to <code>y</code>:
+</p>
+
+<sample src="examples/DefaultArgumentReferencesNestedFunctionGood.js" />
+
+</example>
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters">Default parameters</a>.</li>
+</references>
+</qhelp>

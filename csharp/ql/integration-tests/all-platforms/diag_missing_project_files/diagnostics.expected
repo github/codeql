@@ -1,0 +1,28 @@
+{
+  "markdownMessage": "CodeQL was unable to build the following projects using MSBuild:\n\n- `test.sln`\n\nSet up a [manual build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/msbuild-build-failure",
+    "name": "Some projects or solutions failed to build using MSBuild"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Some project files were not found when CodeQL built your project:\n\n- `Example.csproj`\n- `Example.Test.csproj`\n\nThis may lead to subsequent failures. You can check for common causes for missing project files:\n\n- Ensure that the project is built using the [intended operating system](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idruns-on) and that filenames on case-sensitive platforms are correctly specified.\n- If your repository uses Git submodules, ensure that those are [checked out](https://github.com/actions/checkout#usage) before the CodeQL Action is run.\n- If you auto-generate some project files as part of your build process, ensure that these are generated before the CodeQL Action is run.",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/missing-project-files",
+    "name": "Missing project files"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

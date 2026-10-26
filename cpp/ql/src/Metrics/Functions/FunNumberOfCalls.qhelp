@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of function calls in each function. Only explicit calls are included, i.e., calls in macro expansions and compiler generated calls are not counted.
+
+</p>
+<p>Functions with many calls are hard to understand and maintain. It is usually a sign of a function with too many responsibilities.</p>
+
+</overview>
+<recommendation>
+<p>The primary way to reduce the complexity is to extract sub-functionality into separate functions. If the function naturally breaks up into a sequence of operations it is preferable to extract each operation as a separate function. This is most likely the case for large functions with low cyclomatic complexity. Even if the code is straight forward it is better to extract functionality for readability purposes. Moreover, it may enable reuse of the extracted subfunctionality.</p>
+
+</recommendation>
+<references>
+
+<li>
+  <a href="http://www.cplusplus.com/doc/tutorial/functions/">Functions</a>
+</li>
+<li>
+  M. Fowler. <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+<li>
+  <a href="https://en.wikipedia.org/wiki/Code_refactoring">Wikipedia: Code refactoring</a>
+</li>
+<li>
+  <a href="http://www.jot.fm/issues/issue_2005_01/column1/">Refactoring as Meta Programming?</a>
+</li>
+
+</references>
+</qhelp>

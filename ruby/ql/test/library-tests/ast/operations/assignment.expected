@@ -1,0 +1,120 @@
+assignments
+| operations.rb:3:1:3:5 | ... = ... | = | operations.rb:3:1:3:1 | a | operations.rb:3:5:3:5 | 0 | AssignExpr |
+| operations.rb:4:1:4:5 | ... = ... | = | operations.rb:4:1:4:1 | b | operations.rb:4:5:4:5 | 0 | AssignExpr |
+| operations.rb:5:1:5:7 | ... = ... | = | operations.rb:5:1:5:3 | bar | operations.rb:5:7:5:7 | 0 | AssignExpr |
+| operations.rb:6:1:6:8 | ... = ... | = | operations.rb:6:1:6:4 | base | operations.rb:6:8:6:8 | 0 | AssignExpr |
+| operations.rb:7:1:7:7 | ... = ... | = | operations.rb:7:1:7:3 | baz | operations.rb:7:7:7:7 | 0 | AssignExpr |
+| operations.rb:8:1:8:7 | ... = ... | = | operations.rb:8:1:8:3 | foo | operations.rb:8:7:8:7 | 0 | AssignExpr |
+| operations.rb:9:1:9:10 | ... = ... | = | operations.rb:9:1:9:6 | handle | operations.rb:9:10:9:10 | 0 | AssignExpr |
+| operations.rb:10:1:10:5 | ... = ... | = | operations.rb:10:1:10:1 | m | operations.rb:10:5:10:5 | 0 | AssignExpr |
+| operations.rb:11:1:11:8 | ... = ... | = | operations.rb:11:1:11:4 | mask | operations.rb:11:8:11:8 | 0 | AssignExpr |
+| operations.rb:12:1:12:5 | ... = ... | = | operations.rb:12:1:12:1 | n | operations.rb:12:5:12:5 | 0 | AssignExpr |
+| operations.rb:13:1:13:8 | ... = ... | = | operations.rb:13:1:13:4 | name | operations.rb:13:8:13:8 | 0 | AssignExpr |
+| operations.rb:14:1:14:7 | ... = ... | = | operations.rb:14:1:14:3 | num | operations.rb:14:7:14:7 | 0 | AssignExpr |
+| operations.rb:15:1:15:9 | ... = ... | = | operations.rb:15:1:15:5 | power | operations.rb:15:9:15:9 | 0 | AssignExpr |
+| operations.rb:16:1:16:7 | ... = ... | = | operations.rb:16:1:16:3 | qux | operations.rb:16:7:16:7 | 0 | AssignExpr |
+| operations.rb:17:1:17:5 | ... = ... | = | operations.rb:17:1:17:1 | w | operations.rb:17:5:17:5 | 0 | AssignExpr |
+| operations.rb:18:1:18:5 | ... = ... | = | operations.rb:18:1:18:1 | x | operations.rb:18:5:18:5 | 0 | AssignExpr |
+| operations.rb:19:1:19:5 | ... = ... | = | operations.rb:19:1:19:1 | y | operations.rb:19:5:19:5 | 0 | AssignExpr |
+| operations.rb:20:1:20:5 | ... = ... | = | operations.rb:20:1:20:1 | z | operations.rb:20:5:20:5 | 0 | AssignExpr |
+| operations.rb:69:1:69:8 | ... += ... | += | operations.rb:69:1:69:1 | x | operations.rb:69:6:69:8 | 128 | AssignAddExpr |
+| operations.rb:69:1:69:8 | ... = ... | = | operations.rb:69:1:69:1 | x | operations.rb:69:3:69:4 | ... + ... | AssignExpr |
+| operations.rb:70:1:70:7 | ... -= ... | -= | operations.rb:70:1:70:1 | y | operations.rb:70:6:70:7 | 32 | AssignSubExpr |
+| operations.rb:70:1:70:7 | ... = ... | = | operations.rb:70:1:70:1 | y | operations.rb:70:3:70:4 | ... - ... | AssignExpr |
+| operations.rb:71:1:71:7 | ... *= ... | *= | operations.rb:71:1:71:1 | a | operations.rb:71:6:71:7 | 12 | AssignMulExpr |
+| operations.rb:71:1:71:7 | ... = ... | = | operations.rb:71:1:71:1 | a | operations.rb:71:3:71:4 | ... * ... | AssignExpr |
+| operations.rb:72:1:72:6 | ... /= ... | /= | operations.rb:72:1:72:1 | b | operations.rb:72:6:72:6 | 4 | AssignDivExpr |
+| operations.rb:72:1:72:6 | ... = ... | = | operations.rb:72:1:72:1 | b | operations.rb:72:3:72:4 | ... / ... | AssignExpr |
+| operations.rb:73:1:73:6 | ... %= ... | %= | operations.rb:73:1:73:1 | z | operations.rb:73:6:73:6 | 2 | AssignModuloExpr |
+| operations.rb:73:1:73:6 | ... = ... | = | operations.rb:73:1:73:1 | z | operations.rb:73:3:73:4 | ... % ... | AssignExpr |
+| operations.rb:74:1:74:11 | ... **= ... | **= | operations.rb:74:1:74:3 | foo | operations.rb:74:9:74:11 | bar | AssignExponentExpr |
+| operations.rb:74:1:74:11 | ... = ... | = | operations.rb:74:1:74:3 | foo | operations.rb:74:5:74:7 | ... ** ... | AssignExpr |
+| operations.rb:77:2:77:8 | ... &&= ... | &&= | operations.rb:77:2:77:2 | x | operations.rb:77:8:77:8 | y | AssignLogicalAndExpr |
+| operations.rb:77:2:77:8 | ... = ... | = | operations.rb:77:2:77:2 | x | operations.rb:77:4:77:6 | ... && ... | AssignExpr |
+| operations.rb:78:2:78:8 | ... = ... | = | operations.rb:78:2:78:2 | a | operations.rb:78:4:78:6 | ... \|\| ... | AssignExpr |
+| operations.rb:78:2:78:8 | ... \|\|= ... | \|\|= | operations.rb:78:2:78:2 | a | operations.rb:78:8:78:8 | b | AssignLogicalOrExpr |
+| operations.rb:81:2:81:8 | ... <<= ... | <<= | operations.rb:81:2:81:2 | x | operations.rb:81:8:81:8 | 2 | AssignLShiftExpr |
+| operations.rb:81:2:81:8 | ... = ... | = | operations.rb:81:2:81:2 | x | operations.rb:81:4:81:6 | ... << ... | AssignExpr |
+| operations.rb:82:2:82:8 | ... = ... | = | operations.rb:82:2:82:2 | y | operations.rb:82:4:82:6 | ... >> ... | AssignExpr |
+| operations.rb:82:2:82:8 | ... >>= ... | >>= | operations.rb:82:2:82:2 | y | operations.rb:82:8:82:8 | 3 | AssignRShiftExpr |
+| operations.rb:83:2:83:12 | ... &= ... | &= | operations.rb:83:2:83:4 | foo | operations.rb:83:9:83:12 | mask | AssignBitwiseAndExpr |
+| operations.rb:83:2:83:12 | ... = ... | = | operations.rb:83:2:83:4 | foo | operations.rb:83:6:83:7 | ... & ... | AssignExpr |
+| operations.rb:84:2:84:12 | ... = ... | = | operations.rb:84:2:84:4 | bar | operations.rb:84:6:84:7 | ... \| ... | AssignExpr |
+| operations.rb:84:2:84:12 | ... \|= ... | \|= | operations.rb:84:2:84:4 | bar | operations.rb:84:9:84:12 | 0x01 | AssignBitwiseOrExpr |
+| operations.rb:85:2:85:11 | ... = ... | = | operations.rb:85:2:85:4 | baz | operations.rb:85:6:85:7 | ... ^ ... | AssignExpr |
+| operations.rb:85:2:85:11 | ... ^= ... | ^= | operations.rb:85:2:85:4 | baz | operations.rb:85:9:85:11 | qux | AssignBitwiseXorExpr |
+| operations.rb:88:1:89:6 | ... = ... | = | operations.rb:88:1:88:3 | foo | operations.rb:88:7:89:6 | ... && ... | AssignExpr |
+| operations.rb:108:3:108:8 | ... = ... | = | operations.rb:108:3:108:4 | @x | operations.rb:108:8:108:8 | 1 | AssignExpr |
+| operations.rb:109:3:109:9 | ... += ... | += | operations.rb:109:3:109:4 | @x | operations.rb:109:9:109:9 | 2 | AssignAddExpr |
+| operations.rb:109:3:109:9 | ... = ... | = | operations.rb:109:3:109:4 | @x | operations.rb:109:6:109:7 | ... + ... | AssignExpr |
+| operations.rb:111:3:111:9 | ... = ... | = | operations.rb:111:3:111:5 | @@y | operations.rb:111:9:111:9 | 3 | AssignExpr |
+| operations.rb:112:3:112:10 | ... /= ... | /= | operations.rb:112:3:112:5 | @@y | operations.rb:112:10:112:10 | 4 | AssignDivExpr |
+| operations.rb:112:3:112:10 | ... = ... | = | operations.rb:112:3:112:5 | @@y | operations.rb:112:7:112:8 | ... / ... | AssignExpr |
+| operations.rb:115:1:115:15 | ... = ... | = | operations.rb:115:1:115:11 | $global_var | operations.rb:115:15:115:15 | 5 | AssignExpr |
+| operations.rb:116:1:116:16 | ... *= ... | *= | operations.rb:116:1:116:11 | $global_var | operations.rb:116:16:116:16 | 6 | AssignMulExpr |
+| operations.rb:116:1:116:16 | ... = ... | = | operations.rb:116:1:116:11 | $global_var | operations.rb:116:13:116:14 | ... * ... | AssignExpr |
+| operations.rb:118:1:118:13 | ... = ... | = | operations.rb:118:1:118:9 | CONSTANT1 | operations.rb:118:13:118:13 | 5 | AssignExpr |
+| operations.rb:119:1:119:14 | ... += ... | += | operations.rb:119:1:119:9 | CONSTANT2 | operations.rb:119:14:119:14 | 6 | AssignAddExpr |
+| operations.rb:119:1:119:14 | ... = ... | = | operations.rb:119:1:119:9 | CONSTANT2 | operations.rb:119:11:119:12 | ... + ... | AssignExpr |
+| operations.rb:120:1:120:15 | ... = ... | = | operations.rb:120:1:120:9 | CONSTANT3 | operations.rb:120:11:120:13 | ... \|\| ... | AssignExpr |
+| operations.rb:120:1:120:15 | ... \|\|= ... | \|\|= | operations.rb:120:1:120:9 | CONSTANT3 | operations.rb:120:15:120:15 | 7 | AssignLogicalOrExpr |
+| operations.rb:121:1:121:3 | ... = ... | = | operations.rb:121:1:121:3 | __synth__0 | operations.rb:121:1:121:3 | Foo | AssignExpr |
+| operations.rb:121:1:121:25 | ... = ... | = | operations.rb:121:1:121:19 | MemberConstant | operations.rb:121:21:121:23 | ... \|\| ... | AssignExpr |
+| operations.rb:121:1:121:25 | ... \|\|= ... | \|\|= | operations.rb:121:1:121:19 | MemberConstant | operations.rb:121:25:121:25 | 8 | AssignLogicalOrExpr |
+| operations.rb:122:1:122:10 | ... = ... | = | operations.rb:122:1:122:10 | __synth__0 | operations.rb:122:1:122:10 | call to bar | AssignExpr |
+| operations.rb:122:1:122:31 | ... = ... | = | operations.rb:122:1:122:25 | OtherConstant | operations.rb:122:27:122:29 | ... \|\| ... | AssignExpr |
+| operations.rb:122:1:122:31 | ... \|\|= ... | \|\|= | operations.rb:122:1:122:25 | OtherConstant | operations.rb:122:31:122:31 | 7 | AssignLogicalOrExpr |
+| operations.rb:123:1:123:17 | ... = ... | = | operations.rb:123:1:123:11 | CONSTANT4 | operations.rb:123:13:123:15 | ... \|\| ... | AssignExpr |
+| operations.rb:123:1:123:17 | ... \|\|= ... | \|\|= | operations.rb:123:1:123:11 | CONSTANT4 | operations.rb:123:17:123:17 | 7 | AssignLogicalOrExpr |
+| operations.rb:124:1:124:3 | ... = ... | = | operations.rb:124:1:124:3 | FOO | operations.rb:124:1:124:3 | call to [] | AssignExpr |
+| operations.rb:124:1:124:32 | ... = ... | = | operations.rb:124:1:124:20 | (..., ...) | operations.rb:124:24:124:32 | [...] | AssignExpr |
+| operations.rb:124:6:124:10 | ... = ... | = | operations.rb:124:6:124:10 | BAR | operations.rb:124:6:124:10 | call to [] | AssignExpr |
+| operations.rb:124:13:124:15 | ... = ... | = | operations.rb:124:13:124:15 | __synth__2 | operations.rb:124:13:124:15 | foo | AssignExpr |
+| operations.rb:124:13:124:20 | ... = ... | = | operations.rb:124:13:124:20 | FOO | operations.rb:124:13:124:20 | call to [] | AssignExpr |
+| operations.rb:124:24:124:32 | ... = ... | = | operations.rb:124:24:124:32 | __synth__3 | operations.rb:124:24:124:32 | * ... | AssignExpr |
+assignOperations
+| operations.rb:69:1:69:8 | ... += ... | += | operations.rb:69:1:69:1 | x | operations.rb:69:6:69:8 | 128 | AssignAddExpr |
+| operations.rb:70:1:70:7 | ... -= ... | -= | operations.rb:70:1:70:1 | y | operations.rb:70:6:70:7 | 32 | AssignSubExpr |
+| operations.rb:71:1:71:7 | ... *= ... | *= | operations.rb:71:1:71:1 | a | operations.rb:71:6:71:7 | 12 | AssignMulExpr |
+| operations.rb:72:1:72:6 | ... /= ... | /= | operations.rb:72:1:72:1 | b | operations.rb:72:6:72:6 | 4 | AssignDivExpr |
+| operations.rb:73:1:73:6 | ... %= ... | %= | operations.rb:73:1:73:1 | z | operations.rb:73:6:73:6 | 2 | AssignModuloExpr |
+| operations.rb:74:1:74:11 | ... **= ... | **= | operations.rb:74:1:74:3 | foo | operations.rb:74:9:74:11 | bar | AssignExponentExpr |
+| operations.rb:77:2:77:8 | ... &&= ... | &&= | operations.rb:77:2:77:2 | x | operations.rb:77:8:77:8 | y | AssignLogicalAndExpr |
+| operations.rb:78:2:78:8 | ... \|\|= ... | \|\|= | operations.rb:78:2:78:2 | a | operations.rb:78:8:78:8 | b | AssignLogicalOrExpr |
+| operations.rb:81:2:81:8 | ... <<= ... | <<= | operations.rb:81:2:81:2 | x | operations.rb:81:8:81:8 | 2 | AssignLShiftExpr |
+| operations.rb:82:2:82:8 | ... >>= ... | >>= | operations.rb:82:2:82:2 | y | operations.rb:82:8:82:8 | 3 | AssignRShiftExpr |
+| operations.rb:83:2:83:12 | ... &= ... | &= | operations.rb:83:2:83:4 | foo | operations.rb:83:9:83:12 | mask | AssignBitwiseAndExpr |
+| operations.rb:84:2:84:12 | ... \|= ... | \|= | operations.rb:84:2:84:4 | bar | operations.rb:84:9:84:12 | 0x01 | AssignBitwiseOrExpr |
+| operations.rb:85:2:85:11 | ... ^= ... | ^= | operations.rb:85:2:85:4 | baz | operations.rb:85:9:85:11 | qux | AssignBitwiseXorExpr |
+| operations.rb:109:3:109:9 | ... += ... | += | operations.rb:109:3:109:4 | @x | operations.rb:109:9:109:9 | 2 | AssignAddExpr |
+| operations.rb:112:3:112:10 | ... /= ... | /= | operations.rb:112:3:112:5 | @@y | operations.rb:112:10:112:10 | 4 | AssignDivExpr |
+| operations.rb:116:1:116:16 | ... *= ... | *= | operations.rb:116:1:116:11 | $global_var | operations.rb:116:16:116:16 | 6 | AssignMulExpr |
+| operations.rb:119:1:119:14 | ... += ... | += | operations.rb:119:1:119:9 | CONSTANT2 | operations.rb:119:14:119:14 | 6 | AssignAddExpr |
+| operations.rb:120:1:120:15 | ... \|\|= ... | \|\|= | operations.rb:120:1:120:9 | CONSTANT3 | operations.rb:120:15:120:15 | 7 | AssignLogicalOrExpr |
+| operations.rb:121:1:121:25 | ... \|\|= ... | \|\|= | operations.rb:121:1:121:19 | MemberConstant | operations.rb:121:25:121:25 | 8 | AssignLogicalOrExpr |
+| operations.rb:122:1:122:31 | ... \|\|= ... | \|\|= | operations.rb:122:1:122:25 | OtherConstant | operations.rb:122:31:122:31 | 7 | AssignLogicalOrExpr |
+| operations.rb:123:1:123:17 | ... \|\|= ... | \|\|= | operations.rb:123:1:123:11 | CONSTANT4 | operations.rb:123:17:123:17 | 7 | AssignLogicalOrExpr |
+assignArithmeticOperations
+| operations.rb:69:1:69:8 | ... += ... | += | operations.rb:69:1:69:1 | x | operations.rb:69:6:69:8 | 128 | AssignAddExpr |
+| operations.rb:70:1:70:7 | ... -= ... | -= | operations.rb:70:1:70:1 | y | operations.rb:70:6:70:7 | 32 | AssignSubExpr |
+| operations.rb:71:1:71:7 | ... *= ... | *= | operations.rb:71:1:71:1 | a | operations.rb:71:6:71:7 | 12 | AssignMulExpr |
+| operations.rb:72:1:72:6 | ... /= ... | /= | operations.rb:72:1:72:1 | b | operations.rb:72:6:72:6 | 4 | AssignDivExpr |
+| operations.rb:73:1:73:6 | ... %= ... | %= | operations.rb:73:1:73:1 | z | operations.rb:73:6:73:6 | 2 | AssignModuloExpr |
+| operations.rb:74:1:74:11 | ... **= ... | **= | operations.rb:74:1:74:3 | foo | operations.rb:74:9:74:11 | bar | AssignExponentExpr |
+| operations.rb:109:3:109:9 | ... += ... | += | operations.rb:109:3:109:4 | @x | operations.rb:109:9:109:9 | 2 | AssignAddExpr |
+| operations.rb:112:3:112:10 | ... /= ... | /= | operations.rb:112:3:112:5 | @@y | operations.rb:112:10:112:10 | 4 | AssignDivExpr |
+| operations.rb:116:1:116:16 | ... *= ... | *= | operations.rb:116:1:116:11 | $global_var | operations.rb:116:16:116:16 | 6 | AssignMulExpr |
+| operations.rb:119:1:119:14 | ... += ... | += | operations.rb:119:1:119:9 | CONSTANT2 | operations.rb:119:14:119:14 | 6 | AssignAddExpr |
+assignLogicalOperations
+| operations.rb:77:2:77:8 | ... &&= ... | &&= | operations.rb:77:2:77:2 | x | operations.rb:77:8:77:8 | y | AssignLogicalAndExpr |
+| operations.rb:78:2:78:8 | ... \|\|= ... | \|\|= | operations.rb:78:2:78:2 | a | operations.rb:78:8:78:8 | b | AssignLogicalOrExpr |
+| operations.rb:120:1:120:15 | ... \|\|= ... | \|\|= | operations.rb:120:1:120:9 | CONSTANT3 | operations.rb:120:15:120:15 | 7 | AssignLogicalOrExpr |
+| operations.rb:121:1:121:25 | ... \|\|= ... | \|\|= | operations.rb:121:1:121:19 | MemberConstant | operations.rb:121:25:121:25 | 8 | AssignLogicalOrExpr |
+| operations.rb:122:1:122:31 | ... \|\|= ... | \|\|= | operations.rb:122:1:122:25 | OtherConstant | operations.rb:122:31:122:31 | 7 | AssignLogicalOrExpr |
+| operations.rb:123:1:123:17 | ... \|\|= ... | \|\|= | operations.rb:123:1:123:11 | CONSTANT4 | operations.rb:123:17:123:17 | 7 | AssignLogicalOrExpr |
+assignBitwiseOperations
+| operations.rb:81:2:81:8 | ... <<= ... | <<= | operations.rb:81:2:81:2 | x | operations.rb:81:8:81:8 | 2 | AssignLShiftExpr |
+| operations.rb:82:2:82:8 | ... >>= ... | >>= | operations.rb:82:2:82:2 | y | operations.rb:82:8:82:8 | 3 | AssignRShiftExpr |
+| operations.rb:83:2:83:12 | ... &= ... | &= | operations.rb:83:2:83:4 | foo | operations.rb:83:9:83:12 | mask | AssignBitwiseAndExpr |
+| operations.rb:84:2:84:12 | ... \|= ... | \|= | operations.rb:84:2:84:4 | bar | operations.rb:84:9:84:12 | 0x01 | AssignBitwiseOrExpr |
+| operations.rb:85:2:85:11 | ... ^= ... | ^= | operations.rb:85:2:85:4 | baz | operations.rb:85:9:85:11 | qux | AssignBitwiseXorExpr |

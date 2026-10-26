@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["phalcon/cphalcon", "*", "input.target-name", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "input.ext-path", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "input.pecl", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "input.arch", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "input.msvc", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "input.ts", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "input.php_version", "code-injection", "generated"]
+     - ["phalcon/cphalcon", "*", "input.php-version", "code-injection", "generated"]

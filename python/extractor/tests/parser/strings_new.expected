@@ -1,0 +1,265 @@
+Module: [1, 0] - [31, 0]
+  body: [
+    If: [1, 0] - [1, 5]
+      test:
+        Num: [1, 3] - [1, 4]
+          n: 1
+          text: '1'
+      body: [
+        Expr: [2, 4] - [2, 72]
+          value:
+            JoinedStr: [2, 4] - [2, 72]
+              values: [
+                Str: [2, 4] - [2, 61]
+                  s: 'this is not a unicode escape but an interpolation: \\N'
+                  prefix: 'fr"'
+                  implicitly_concatenated_parts: None
+                Name: [2, 61] - [2, 70]
+                  variable: Variable('AMPERSAND', None)
+                  ctx: Load
+                Str: [2, 70] - [2, 72]
+                  s: ''
+                  prefix: 'fr"'
+                  implicitly_concatenated_parts: None
+              ]
+      ]
+      orelse: None
+    If: [3, 0] - [3, 5]
+      test:
+        Num: [3, 3] - [3, 4]
+          n: 2
+          text: '2'
+      body: [
+        Expr: [4, 4] - [4, 44]
+          value:
+            JoinedStr: [4, 4] - [4, 44]
+              values: [
+                Str: [4, 4] - [4, 33]
+                  s: 'also an interpolation: \\N'
+                  prefix: "f'"
+                  implicitly_concatenated_parts: None
+                Name: [4, 33] - [4, 42]
+                  variable: Variable('AMPERSAND', None)
+                  ctx: Load
+                Str: [4, 42] - [4, 44]
+                  s: ''
+                  prefix: "f'"
+                  implicitly_concatenated_parts: None
+              ]
+      ]
+      orelse: None
+    If: [5, 0] - [5, 5]
+      test:
+        Num: [5, 3] - [5, 4]
+          n: 3
+          text: '3'
+      body: [
+        Expr: [6, 4] - [6, 14]
+          value:
+            Str: [6, 4] - [6, 14]
+              s: '\\Nspam'
+              prefix: "f'"
+              implicitly_concatenated_parts: None
+      ]
+      orelse: None
+    If: [7, 0] - [7, 5]
+      test:
+        Num: [7, 3] - [7, 4]
+          n: 4
+          text: '4'
+      body: [
+        Expr: [8, 4] - [8, 46]
+          value:
+            Str: [8, 4] - [8, 46]
+              s: 'this is a unicode escape: &'
+              prefix: 'f"'
+              implicitly_concatenated_parts: None
+      ]
+      orelse: None
+    If: [9, 0] - [9, 5]
+      test:
+        Num: [9, 3] - [9, 4]
+          n: 5
+          text: '5'
+      body: [
+        Expr: [10, 4] - [10, 55]
+          value:
+            Str: [10, 4] - [10, 55]
+              s: 'this is also not a unicode escape: \\N{AMPERSAND}'
+              prefix: 'r"'
+              implicitly_concatenated_parts: None
+      ]
+      orelse: None
+    If: [11, 0] - [11, 5]
+      test:
+        Num: [11, 3] - [11, 4]
+          n: 6
+          text: '6'
+      body: [
+        Expr: [12, 4] - [12, 20]
+          value:
+            Str: [12, 4] - [12, 20]
+              s: '\\N{AMPERSAND}'
+              prefix: "'"
+              implicitly_concatenated_parts: None
+      ]
+      orelse: None
+    If: [13, 0] - [13, 5]
+      test:
+        Num: [13, 3] - [13, 4]
+          n: 7
+          text: '7'
+      body: [
+        Expr: [14, 4] - [14, 13]
+          value:
+            Str: [14, 4] - [14, 13]
+              s: '\\Nspam'
+              prefix: "'"
+              implicitly_concatenated_parts: None
+      ]
+      orelse: None
+    If: [15, 0] - [15, 5]
+      test:
+        Num: [15, 3] - [15, 4]
+          n: 8
+          text: '8'
+      body: [
+        Expr: [16, 4] - [16, 55]
+          value:
+            Str: [16, 4] - [16, 55]
+              s: 'this is also also a unicode escape: &'
+              prefix: '"'
+              implicitly_concatenated_parts: None
+      ]
+      orelse: None
+    If: [17, 0] - [17, 5]
+      test:
+        Num: [17, 3] - [17, 4]
+          n: 9
+          text: '9'
+      body: [
+        Expr: [18, 4] - [18, 56]
+          value:
+            Str: [18, 4] - [18, 56]
+              s: 'this is also not a unicode escape: \\N{AMPERSAND}'
+              prefix: 'rb"'
+              implicitly_concatenated_parts: None
+      ]
+      orelse: None
+    If: [19, 0] - [19, 6]
+      test:
+        Num: [19, 3] - [19, 5]
+          n: 10
+          text: '10'
+      body: [
+        Expr: [20, 4] - [20, 21]
+          value:
+            Str: [20, 4] - [20, 21]
+              s: '\\N{AMPERSAND}'
+              prefix: "b'"
+              implicitly_concatenated_parts: None
+      ]
+      orelse: None
+    If: [21, 0] - [21, 6]
+      test:
+        Num: [21, 3] - [21, 5]
+          n: 11
+          text: '11'
+      body: [
+        Expr: [22, 4] - [22, 14]
+          value:
+            Str: [22, 4] - [22, 14]
+              s: '\\Nspam'
+              prefix: "b'"
+              implicitly_concatenated_parts: None
+      ]
+      orelse: None
+    If: [23, 0] - [23, 6]
+      test:
+        Num: [23, 3] - [23, 5]
+          n: 12
+          text: '12'
+      body: [
+        Expr: [24, 4] - [24, 81]
+          value:
+            Str: [24, 4] - [24, 81]
+              s: 'this is not a unicode escape because we are in a bytestring: \\N{AMPERSAND}'
+              prefix: 'b"'
+              implicitly_concatenated_parts: None
+      ]
+      orelse: None
+    If: [25, 0] - [25, 6]
+      test:
+        Num: [25, 3] - [25, 5]
+          n: 13
+          text: '13'
+      body: [
+        Expr: [26, 4] - [26, 55]
+          value:
+            JoinedStr: [26, 4] - [26, 55]
+              values: [
+                Str: [26, 4] - [26, 39]
+                  s: 'quotes before interpolation "'
+                  prefix: 'fr"""'
+                  implicitly_concatenated_parts: None
+                Num: [26, 39] - [26, 40]
+                  n: 0
+                  text: '0'
+                Str: [26, 40] - [26, 55]
+                  s: '" are okay.'
+                  prefix: 'fr"""'
+                  implicitly_concatenated_parts: None
+              ]
+      ]
+      orelse: None
+    If: [27, 0] - [27, 6]
+      test:
+        Num: [27, 3] - [27, 5]
+          n: 14
+          text: '14'
+      body: [
+        Expr: [28, 4] - [28, 61]
+          value:
+            JoinedStr: [28, 4] - [28, 61]
+              values: [
+                Str: [28, 4] - [28, 45]
+                  s: 'backslash before an interpolation \\'
+                  prefix: 'fr"""'
+                  implicitly_concatenated_parts: None
+                Num: [28, 45] - [28, 46]
+                  n: 1
+                  text: '1'
+                Str: [28, 46] - [28, 61]
+                  s: '\\ are okay.'
+                  prefix: 'fr"""'
+                  implicitly_concatenated_parts: None
+              ]
+      ]
+      orelse: None
+    If: [29, 0] - [29, 6]
+      test:
+        Num: [29, 3] - [29, 5]
+          n: 15
+          text: '15'
+      body: [
+        Expr: [30, 4] - [30, 54]
+          value:
+            JoinedStr: [30, 4] - [30, 54]
+              values: [
+                Str: [30, 4] - [30, 33]
+                  s: 'Yield inside an f-string: '
+                  prefix: 'f"'
+                  implicitly_concatenated_parts: None
+                Yield: [30, 33] - [30, 40]
+                  value:
+                    Num: [30, 39] - [30, 40]
+                      n: 5
+                      text: '5'
+                Str: [30, 40] - [30, 54]
+                  s: ' is allowed.'
+                  prefix: 'f"'
+                  implicitly_concatenated_parts: None
+              ]
+      ]
+      orelse: None
+  ]

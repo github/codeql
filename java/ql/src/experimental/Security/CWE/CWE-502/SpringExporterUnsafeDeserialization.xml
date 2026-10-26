@@ -1,0 +1,4 @@
+<bean name="/account" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+    <property name="service" ref="accountService"/>
+    <property name="serviceInterface" value="AccountService"/>
+</bean>

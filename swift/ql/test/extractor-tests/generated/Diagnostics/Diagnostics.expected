@@ -1,0 +1,3 @@
+| diags.swift:1:10:1:10 | warning: Hello, warning | getText: | Hello, warning | getKind: | 2 |
+| error.swift:2:14:2:14 | error: cannot convert value of type 'String' to specified type 'Int' | getText: | cannot convert value of type 'String' to specified type 'Int' | getKind: | 1 |
+| import-error.swift:2:8:2:8 | error: no such module 'FooBar' | getText: | no such module 'FooBar' | getKind: | 1 |

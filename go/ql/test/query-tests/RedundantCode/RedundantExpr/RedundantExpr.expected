@@ -1,0 +1,4 @@
+| RedundantExpr.go:4:10:4:14 | ...+... | The $@ and $@ operand of this operation are identical. | RedundantExpr.go:4:10:4:10 | x | left | RedundantExpr.go:4:14:4:14 | x | right |
+| tst.go:4:9:4:13 | ...-... | The $@ and $@ operand of this operation are identical. | tst.go:4:9:4:9 | x | left | tst.go:4:13:4:13 | x | right |
+| tst.go:4:31:4:35 | ...&... | The $@ and $@ operand of this operation are identical. | tst.go:4:31:4:31 | x | left | tst.go:4:35:4:35 | x | right |
+| tst.go:9:11:9:15 | ...+... | The $@ and $@ operand of this operation are identical. | tst.go:9:11:9:11 | x | left | tst.go:9:15:9:15 | x | right |

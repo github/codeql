@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["neondatabase/neon", "*", "input.save_perf_report", "code-injection", "generated"]
+     - ["neondatabase/neon", "*", "input.real_s3_region", "code-injection", "generated"]
+     - ["neondatabase/neon", "*", "input.real_s3_bucket", "code-injection", "generated"]
+     - ["neondatabase/neon", "*", "input.run_with_real_s3", "code-injection", "generated"]
+     - ["neondatabase/neon", "*", "input.run_in_parallel", "code-injection", "generated"]
+     - ["neondatabase/neon", "*", "input.extra_params", "code-injection", "generated"]
+     - ["neondatabase/neon", "*", "input.test_selection", "code-injection", "generated"]
+     - ["neondatabase/neon", "*", "input.build_type", "code-injection", "generated"]

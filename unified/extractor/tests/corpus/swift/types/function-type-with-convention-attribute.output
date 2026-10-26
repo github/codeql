@@ -1,0 +1,76 @@
+let callback: @convention(c) () -> Void = {}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    closureExpr
+                      leftBrace: {
+                      rightBrace: }
+                      statements:
+              pattern:
+                identifierPattern
+                  identifier: identifier "callback"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    attributedType
+                      attributes:
+                        attribute
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "c"
+                          atSign: @
+                          attributeName:
+                            identifierType
+                              name: identifier "convention"
+                      baseType:
+                        functionType
+                          leftParen: (
+                          rightParen: )
+                          parameters:
+                          returnClause:
+                            returnClause
+                              arrow: ->
+                              type:
+                                identifierType
+                                  name: identifier "Void"
+                      lateSpecifiers:
+                      specifiers:
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "callback" source="callback"
+          type:
+            modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+              modifier: modifier "@convention(c)" source="@convention(c)"
+              type:
+                function_expr source="() -> ⟨return_type⟩"
+                  return_type: identifier "Void" source="Void"
+          value:
+            function_expr source="{}"
+              body: block source=""

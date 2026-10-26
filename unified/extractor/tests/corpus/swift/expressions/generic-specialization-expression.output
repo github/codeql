@@ -1,0 +1,57 @@
+let numbers = Array<Int>()
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                      additionalTrailingClosures:
+                      calledExpression:
+                        genericSpecializationExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "Array"
+                          genericArgumentClause:
+                            genericArgumentClause
+                              arguments:
+                                genericArgument
+                                  argument:
+                                    identifierType
+                                      name: identifier "Int"
+                              leftAngle: <
+                              rightAngle: >
+              pattern:
+                identifierPattern
+                  identifier: identifier "numbers"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "numbers" source="numbers"
+          value:
+            call_expr source="⟨callee⟩()"
+              callee:
+                generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                  base: identifier "Array" source="Array"
+                  type_argument: identifier "Int" source="Int"

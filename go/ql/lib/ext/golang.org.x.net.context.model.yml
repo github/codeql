@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["golang.org/x/net/context", "", False, "WithCancel", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/context", "", False, "WithDeadline", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/context", "", False, "WithTimeout", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/context", "", False, "WithValue", "", "", "Argument[0..2]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/context", "Context", True, "Value", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

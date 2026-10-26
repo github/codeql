@@ -1,0 +1,1 @@
+The source file now exists in the public, open-source `docs <https://github.com/github/docs/tree/main/content/code-security/codeql-cli>`__ repository. If you would like to contribute, you can consult the `GitHub docs contributing guide <https://github.com/github/docs/blob/main/CONTRIBUTING.md>`__. 

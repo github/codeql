@@ -1,0 +1,12 @@
+edges
+| BadClassLoader.java:15:42:16:75 | createPackageContext(...) : Context | BadClassLoader.java:17:47:17:56 | appContext : Context | provenance |  |
+| BadClassLoader.java:17:47:17:56 | appContext : Context | BadClassLoader.java:17:47:17:73 | getClassLoader(...) : ClassLoader | provenance | Config |
+| BadClassLoader.java:17:47:17:73 | getClassLoader(...) : ClassLoader | BadClassLoader.java:18:37:18:47 | classLoader | provenance |  |
+nodes
+| BadClassLoader.java:15:42:16:75 | createPackageContext(...) : Context | semmle.label | createPackageContext(...) : Context |
+| BadClassLoader.java:17:47:17:56 | appContext : Context | semmle.label | appContext : Context |
+| BadClassLoader.java:17:47:17:73 | getClassLoader(...) : ClassLoader | semmle.label | getClassLoader(...) : ClassLoader |
+| BadClassLoader.java:18:37:18:47 | classLoader | semmle.label | classLoader |
+problems
+| BadClassLoader.java:18:37:18:47 | classLoader | BadClassLoader.java:15:42:16:75 | createPackageContext(...) : Context | BadClassLoader.java:18:37:18:47 | classLoader | Class loaded from a $@ without signature check | BadClassLoader.java:15:42:16:75 | createPackageContext(...) | third party library |
+subpaths

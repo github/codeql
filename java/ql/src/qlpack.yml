@@ -1,0 +1,15 @@
+name: codeql/java-queries
+version: 1.11.14-dev
+groups:
+  - java
+  - queries
+suites: codeql-suites
+extractor: java
+defaultSuiteFile: codeql-suites/java-code-scanning.qls
+dependencies:
+  codeql/java-all: ${workspace}
+  codeql/suite-helpers: ${workspace}
+  codeql/util: ${workspace}
+dataExtensions:
+  - Telemetry/ExtractorInformation.yml
+warnOnImplicitThis: true

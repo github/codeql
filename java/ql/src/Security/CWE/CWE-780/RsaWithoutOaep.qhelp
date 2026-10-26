@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>Cryptographic algorithms often use padding schemes to make the plaintext less predictable. The OAEP (Optimal Asymmetric Encryption Padding) scheme should be used with RSA encryption.
+    Using an outdated padding scheme such as PKCS1, or no padding at all, can weaken the encryption by making it vulnerable to a padding oracle attack.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>Use the OAEP scheme when using RSA encryption.</p>
+  </recommendation>
+
+  <example>
+    <p>In the following example, the BAD case shows no padding being used, whereas the GOOD case shows an OAEP scheme being used.</p>
+    <sample src="RsaWithoutOaep.java" />
+  </example>
+
+  <references>
+    <li>
+      <a href="https://github.com/MobSF/owasp-mstg/blob/master/Document/0x04g-Testing-Cryptography.md#padding-oracle-attacks-due-to-weaker-padding-or-block-operation-implementations">Mobile Security Testing Guide</a>.
+    </li>
+    <li>
+      <a href="https://robertheaton.com/2013/07/29/padding-oracle-attack/">The Padding Oracle Attack</a>.
+    </li>
+  </references>
+</qhelp>

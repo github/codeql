@@ -1,0 +1,2 @@
+| tst.js:7:3:7:14 | return true; | This statement jumps out of the finally block, potentially hiding an exception. |
+| tst.js:28:4:28:9 | break; | This statement jumps out of the finally block, potentially hiding an exception. |

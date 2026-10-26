@@ -1,0 +1,4 @@
+query: experimental/Security/CWE-1427/PromptInjection.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql

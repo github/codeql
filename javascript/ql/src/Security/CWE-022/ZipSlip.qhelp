@@ -1,0 +1,67 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Extracting files from a malicious zip file, or similar type of archive,
+is at risk of directory traversal attacks if filenames from the archive are
+not properly validated.
+archive paths.</p>
+
+<p>Zip archives contain archive entries representing each file in the archive. These entries
+include a file path for the entry, but these file paths are not restricted and may contain
+unexpected special elements such as the directory traversal element (<code>..</code>). If these
+file paths are used to create a filesystem path, then a file operation may happen in an 
+unexpected location. This can result in sensitive information being
+revealed or deleted, or an attacker being able to influence behavior by modifying unexpected
+files.</p>
+
+<p>For example, if a zip file contains a file entry <code>..\sneaky-file</code>, and the zip file
+is extracted to the directory <code>c:\output</code>, then naively combining the paths would result
+in an output file path of <code>c:\output\..\sneaky-file</code>, which would cause the file to be
+written to <code>c:\sneaky-file</code>.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that output paths constructed from zip archive entries are validated
+to prevent writing files to unexpected locations.</p>
+
+<p>The recommended way of writing an output file from a zip archive entry is to check that
+<code>".."</code> does not occur in the path.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In this example an archive is extracted without validating file paths.
+If <code>archive.zip</code> contained relative paths (for
+instance, if it were created by something like <code>zip archive.zip
+../file.txt</code>) then executing this code could write to locations
+outside the destination directory.
+</p>
+
+<sample src="ZipSlipBad.js" />
+
+<p>To fix this vulnerability, we need to check that the path does not
+contain any <code>".."</code> elements in it.
+</p>
+
+<sample src="ZipSlipGood.js" />
+
+</example>
+<references>
+
+<li>
+Snyk:
+<a href="https://snyk.io/research/zip-slip-vulnerability">Zip Slip Vulnerability</a>.
+</li>
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.
+</li>
+
+</references>
+</qhelp>

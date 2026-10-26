@@ -1,0 +1,2 @@
+query: queries/security/cwe-352/CSRFProtectionNotEnabled.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

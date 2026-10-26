@@ -1,0 +1,114 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+<overview>
+	<p>
+		
+		Dynamically constructing a shell command with inputs from exported 
+		functions may inadvertently change the meaning of the shell command.
+		
+		Clients using the exported function may use inputs containing
+		characters that the shell interprets in a special way, for instance
+		quotes and spaces.
+
+		This can result in the shell command misbehaving, or even
+		allowing a malicious user to execute arbitrary commands on the system.
+	</p>
+
+
+</overview>
+<recommendation>
+
+	<p>
+		If possible, provide the dynamic arguments to the shell as an array 
+		using a safe API such as <code>child_process.execFile</code> to avoid
+		interpretation by the shell.
+	</p>
+
+	<p>
+
+		If given arguments as a single string, avoid simply splitting the string
+		on whitespace. Arguments may contain quoted whitespace, causing them to
+		split into multiple arguments. Use a library like
+		<code>shell-quote</code> to parse the string into an array of arguments
+		instead.
+
+	</p>
+
+	<p>
+
+		Alternatively, if the command must be interpreted by a shell (for
+		example because it includes I/O redirections), you can use
+		<code>shell-quote</code> to escape any special characters in the input
+		before embedding it in the command.
+
+	</p>
+
+</recommendation>
+<example>
+
+	<p>
+		The following example shows a dynamically constructed shell
+		command that downloads a file from a remote URL.
+	</p>
+
+	<sample src="examples/unsafe-shell-command-construction.js" />
+
+	<p>
+		The shell command will, however, fail to work as intended if the
+		input contains spaces or other special characters interpreted in a 
+		special way by the shell. 
+	</p>
+
+	<p>
+		Even worse, a client might pass in user-controlled
+		data, not knowing that the input is interpreted as a shell command. 
+		This could allow a malicious user to provide the input <code>http://example.org; cat /etc/passwd</code>
+		in order to execute the command <code>cat /etc/passwd</code>.
+	</p>
+
+	<p>
+		To avoid such potentially catastrophic behaviors, provide the
+		inputs from exported functions as an argument that does not
+		get interpreted by a shell:
+	</p>
+
+	<sample src="examples/unsafe-shell-command-construction_fixed.js" />
+
+	<p>
+
+		As another example, consider the following code which is similar to the
+		preceding example, but pipes the output of <code>wget</code> into <code>wc -l</code>
+		to count the number of lines in the downloaded file.
+
+	</p>
+
+	<sample src="examples/unsafe-shell-command-construction_pipe.js" />
+
+	<p>
+
+		In this case, using <code>child_process.execFile</code> is not an option
+		because the shell is needed to interpret the pipe operator. Instead, you
+		can use <code>shell-quote</code> to escape the input before embedding it
+		in the command:
+
+	</p>
+
+	<sample src="examples/unsafe-shell-command-construction_pipe_fixed.js" />
+
+</example>
+<references>
+
+	<li>
+		OWASP:
+		<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+	</li>
+
+	<li>
+		npm:
+		<a href="https://www.npmjs.com/package/shell-quote">shell-quote</a>.
+	</li>
+
+</references>
+</qhelp>

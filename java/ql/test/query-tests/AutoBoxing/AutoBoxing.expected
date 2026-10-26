@@ -1,0 +1,10 @@
+| Test.java:4:11:4:11 | i | This expression is implicitly unboxed. |
+| Test.java:8:7:8:7 | i | This expression is implicitly unboxed. |
+| Test.java:10:8:10:8 | i | This expression is implicitly unboxed. |
+| Test.java:12:11:12:11 | i | This expression is implicitly unboxed. |
+| Test.java:14:7:14:7 | b | This expression is implicitly unboxed. |
+| Test.java:16:27:16:27 | i | This expression is implicitly unboxed. |
+| Test.java:24:11:24:11 | i | This expression is implicitly boxed. |
+| Test.java:26:15:26:15 | i | This expression is implicitly boxed. |
+| Test.java:28:27:28:27 | i | This expression is implicitly boxed. |
+| Test.java:33:3:33:9 | ...+=... | This expression implicitly unboxes, updates, and reboxes the value of 'i'. |

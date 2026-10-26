@@ -1,0 +1,2 @@
+query: Expressions/UnboundEventHandlerReceiver.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

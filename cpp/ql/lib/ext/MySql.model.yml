@@ -1,0 +1,14 @@
+# partial model of the MySQL api
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "", False, "mysql_real_escape_string", "", "", "Argument[*2]", "Argument[*1]", "taint", "manual"]
+      - ["", "", False, "mysql_real_escape_string_quote", "", "", "Argument[*2]", "Argument[*1]", "taint", "manual"]
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: barrierModel
+    data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
+      - ["", "", False, "mysql_real_escape_string", "", "", "Argument[*1]", "sql-injection", "manual"]
+      - ["", "", False, "mysql_real_escape_string_quote", "", "", "Argument[*1]", "sql-injection", "manual"]

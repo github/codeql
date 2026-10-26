@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+  Timing Attack is based on the leakage of information by studying how long it takes the system to respond to different inputs. 
+  it can be circumvented by using a constant-time algorithm for checking the value of Hash, 
+more precisely, the comparison time should not depend on the content of the input. Otherwise the attacker gains
+information that is indirectly leaked by the application. This information may then be used for malicious purposes.
+</p>
+</overview>
+
+
+<recommendation>
+<p>
+ Two types of countermeasures can be applied against timing attacks. The first one consists 
+in eliminating timing variations whereas the second renders these variations useless for an attacker.
+The only absolute way to prevent timing attacks is to make the computation strictly constant time,
+independent of the input.
+
+ Use <code>hmac.compare_digest()</code> method to securely check the value of Hash.
+If this method is used, then the calculation time depends only on the length of input byte arrays,
+and does not depend on the contents of the arrays. 
+ Unlike <code>==</code> is a fail fast check, If the first byte is not equal, it will return immediately.
+</p>
+</recommendation>
+<example>
+<p>
+  The following example uses <code>==</code> which is a fail fast check for validating a Hash.
+</p>
+<sample src="UnSafeComparisonOfHash.py" />
+
+<p> 
+  The next example use a safe constant-time algorithm for validating a Hash:
+</p>
+<sample src="SafeComparisonOfHash.py" />
+</example>
+
+<references>
+<li>
+  Wikipedia:
+  <a href="https://en.wikipedia.org/wiki/Timing_attack">Timing attack</a>.
+</li>
+
+<li>
+  <a href="https://docs.python.org/3/library/hmac.html#hmac.compare_digest">hmac.compare_digest() method</a>
+</li>
+
+<li>
+  HMAC:
+  <a href="https://datatracker.ietf.org/doc/html/rfc2104.html">RFC 2104</a>
+</li>
+</references>
+
+</qhelp>

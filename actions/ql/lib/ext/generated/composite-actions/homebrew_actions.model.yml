@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["homebrew/actions", "*", "input.casks", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "input.formulae", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "input.signing_key", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "input.workflow-name", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "input.collapse", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "input.step_name", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "input.result_path", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "input.workdir", "code-injection", "generated"]
+     - ["homebrew/actions", "*", "input.script", "code-injection", "generated"]

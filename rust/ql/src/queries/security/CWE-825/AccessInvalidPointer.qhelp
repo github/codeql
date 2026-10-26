@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>
+Dereferencing an invalid or dangling pointer may cause undefined behavior. Memory may be corrupted
+causing the program to crash or behave incorrectly, in some cases exposing the program to
+potential attacks.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+When dereferencing a pointer in <code>unsafe</code> code, take care that the pointer is valid and
+points to the intended data. Code may need to be rearranged or additional checks added to ensure
+safety in all circumstances. If possible, rewrite the code using safe Rust types to avoid this
+kind of problem altogether.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, <code>std::ptr::drop_in_place</code> is used to execute the destructor
+of an object. However, a pointer to that object is dereferenced later in the program, causing
+undefined behavior:
+</p>
+
+<sample src="AccessInvalidPointerBad.rs" />
+
+<p>
+In this case, undefined behavior can be avoided by rearranging the code so that the dereferencing
+comes before the call to <code>std::ptr::drop_in_place</code>:
+</p>
+
+<sample src="AccessInvalidPointerGood.rs" />
+
+</example>
+<references>
+
+<li>Rust Documentation: <a href="https://doc.rust-lang.org/reference/behavior-considered-undefined.html#dangling-pointers">Behavior considered undefined &gt;&gt; Dangling pointers</a>.</li>
+<li>Rust Documentation: <a href="https://doc.rust-lang.org/std/ptr/index.html#safety">Module ptr - Safety</a>.</li>
+<li>Massachusetts Institute of Technology: <a href="https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/second-edition/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer">Unsafe Rust - Dereferencing a Raw Pointer</a>.</li>
+
+</references>
+</qhelp>

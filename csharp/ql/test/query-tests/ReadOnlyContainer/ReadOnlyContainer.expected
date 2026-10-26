@@ -1,0 +1,12 @@
+| ReadOnlyContainer.cs:9:16:9:17 | v1 | The contents of this container are never initialized. |
+| ReadOnlyContainer.cs:13:13:13:14 | v2 | The contents of this container are never initialized. |
+| ReadOnlyContainer.cs:30:16:30:17 | v3 | The contents of this container are never initialized. |
+| ReadOnlyContainer.cs:55:13:55:14 | v4 | The contents of this container are never initialized. |
+| ReadOnlyContainer.cs:76:13:76:14 | v5 | The contents of this container are never initialized. |
+| ReadOnlyContainer.cs:82:13:82:14 | v6 | The contents of this container are never initialized. |
+| ReadOnlyContainer.cs:88:13:88:14 | v7 | The contents of this container are never initialized. |
+| ReadOnlyContainer.cs:91:13:91:14 | v8 | The contents of this container are never initialized. |
+| ReadOnlyContainer.cs:96:13:96:14 | v9 | The contents of this container are never initialized. |
+| ReadOnlyContainer.cs:99:13:99:15 | v10 | The contents of this container are never initialized. |
+| ReadOnlyContainer.cs:121:13:121:15 | v11 | The contents of this container are never initialized. |
+| ReadOnlyContainer.cs:158:13:158:14 | l1 | The contents of this container are never initialized. |

@@ -1,0 +1,2 @@
+query: Critical/IncorrectCheckScanf.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

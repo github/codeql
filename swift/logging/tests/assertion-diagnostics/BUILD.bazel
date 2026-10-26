@@ -1,0 +1,22 @@
+load("@rules_python//python:defs.bzl", "py_test")
+load("//swift:rules.bzl", "swift_cc_binary")
+
+swift_cc_binary(
+    name = "assert-false",
+    srcs = ["AssertFalse.cpp"],
+    visibility = ["//swift:__pkg__"],
+    deps = [
+        "//swift/logging",
+    ],
+)
+
+py_test(
+    name = "test",
+    size = "small",
+    srcs = ["test.py"],
+    data = [
+        "diagnostics.expected",
+        ":assert-false",
+    ],
+    deps = ["//swift/ql/integration-tests:utils"],
+)

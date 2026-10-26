@@ -1,0 +1,2 @@
+query: queries/style/SwappedParameterNames.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

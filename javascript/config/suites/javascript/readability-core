@@ -1,0 +1,10 @@
++ semmlecode-javascript-queries/Expressions/ImplicitOperandConversion.ql: /Readability/Expressions
++ semmlecode-javascript-queries/Expressions/MissingSpaceInAppend.ql: /Readability/Expressions
++ semmlecode-javascript-queries/Expressions/MisspelledIdentifier.ql: /Readability/Expressions
++ semmlecode-javascript-queries/JSDoc/BadParamTag.ql: /Readability/JSDoc
++ semmlecode-javascript-queries/JSDoc/JSDocForNonExistentParameter.ql: /Readability/JSDoc
++ semmlecode-javascript-queries/JSDoc/UndocumentedParameter.ql: /Readability/JSDoc
++ semmlecode-javascript-queries/Statements/LabelInCase.ql: /Readability/Statements
++ semmlecode-javascript-queries/Statements/DanglingElse.ql: /Readability/Statements
++ semmlecode-javascript-queries/Statements/ReturnAssignsLocal.ql: /Readability/Statements
++ semmlecode-javascript-queries/Statements/EphemeralLoop.ql: /Readability/Statements

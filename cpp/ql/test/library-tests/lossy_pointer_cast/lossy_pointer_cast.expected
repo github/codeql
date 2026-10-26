@@ -1,0 +1,2 @@
+| lossy_pointer_cast.c:9:20:9:21 | p2 | Converted from void * to smaller type short |
+| lossy_pointer_cast.c:13:20:13:29 | (void *)... | Converted from void * to smaller type short |

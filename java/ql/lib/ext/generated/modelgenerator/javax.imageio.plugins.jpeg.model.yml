@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.imageio.plugins.jpeg", "JPEGImageReadParam", True, "getACHuffmanTables", "()", "", "Argument[this].SyntheticField[javax.imageio.plugins.jpeg.JPEGImageReadParam.ACHuffmanTables]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageReadParam", True, "getDCHuffmanTables", "()", "", "Argument[this].SyntheticField[javax.imageio.plugins.jpeg.JPEGImageReadParam.DCHuffmanTables]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageReadParam", True, "getQTables", "()", "", "Argument[this].SyntheticField[javax.imageio.plugins.jpeg.JPEGImageReadParam.qTables]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageReadParam", True, "setDecodeTables", "(JPEGQTable[],JPEGHuffmanTable[],JPEGHuffmanTable[])", "", "Argument[0]", "Argument[this].SyntheticField[javax.imageio.plugins.jpeg.JPEGImageReadParam.qTables]", "value", "dfc-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageReadParam", True, "setDecodeTables", "(JPEGQTable[],JPEGHuffmanTable[],JPEGHuffmanTable[])", "", "Argument[1]", "Argument[this].SyntheticField[javax.imageio.plugins.jpeg.JPEGImageReadParam.DCHuffmanTables]", "value", "dfc-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageReadParam", True, "setDecodeTables", "(JPEGQTable[],JPEGHuffmanTable[],JPEGHuffmanTable[])", "", "Argument[2]", "Argument[this].SyntheticField[javax.imageio.plugins.jpeg.JPEGImageReadParam.ACHuffmanTables]", "value", "dfc-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", True, "JPEGImageWriteParam", "(Locale)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", True, "getACHuffmanTables", "()", "", "Argument[this].SyntheticField[javax.imageio.plugins.jpeg.JPEGImageWriteParam.ACHuffmanTables]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", True, "getDCHuffmanTables", "()", "", "Argument[this].SyntheticField[javax.imageio.plugins.jpeg.JPEGImageWriteParam.DCHuffmanTables]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", True, "getQTables", "()", "", "Argument[this].SyntheticField[javax.imageio.plugins.jpeg.JPEGImageWriteParam.qTables]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", True, "setEncodeTables", "(JPEGQTable[],JPEGHuffmanTable[],JPEGHuffmanTable[])", "", "Argument[0]", "Argument[this].SyntheticField[javax.imageio.plugins.jpeg.JPEGImageWriteParam.qTables]", "value", "dfc-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", True, "setEncodeTables", "(JPEGQTable[],JPEGHuffmanTable[],JPEGHuffmanTable[])", "", "Argument[1]", "Argument[this].SyntheticField[javax.imageio.plugins.jpeg.JPEGImageWriteParam.DCHuffmanTables]", "value", "dfc-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", True, "setEncodeTables", "(JPEGQTable[],JPEGHuffmanTable[],JPEGHuffmanTable[])", "", "Argument[2]", "Argument[this].SyntheticField[javax.imageio.plugins.jpeg.JPEGImageWriteParam.ACHuffmanTables]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.imageio.plugins.jpeg", "JPEGHuffmanTable", "JPEGHuffmanTable", "(short[],short[])", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGHuffmanTable", "getLengths", "()", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGHuffmanTable", "getValues", "()", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageReadParam", "areTablesSet", "()", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageReadParam", "unsetDecodeTables", "()", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", "areTablesSet", "()", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", "getCompressionQualityValues", "()", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", "getOptimizeHuffmanTables", "()", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", "isCompressionLossless", "()", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", "setOptimizeHuffmanTables", "(boolean)", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", "unsetCompression", "()", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGImageWriteParam", "unsetEncodeTables", "()", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGQTable", "JPEGQTable", "(int[])", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGQTable", "getScaledInstance", "(float,boolean)", "summary", "df-generated"]
+      - ["javax.imageio.plugins.jpeg", "JPEGQTable", "getTable", "()", "summary", "df-generated"]

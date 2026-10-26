@@ -1,0 +1,2 @@
+query: Security/CWE-1004/ClientExposedCookie.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,2 @@
+query: jsf/3.02 Code Size and Complexity/AV Rule 1.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

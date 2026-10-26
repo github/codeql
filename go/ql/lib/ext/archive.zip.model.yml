@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["archive/zip", "", False, "FileInfoHeader", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["archive/zip", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["archive/zip", "", False, "OpenReader", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["archive/zip", "File", True, "Open", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["archive/zip", "File", True, "OpenRaw", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["archive/zip", "Writer", True, "Copy", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]

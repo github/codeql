@@ -1,0 +1,7 @@
+| comments.rs:0:0:0:0 | comments.rs | File successfully extracted. |
+| does_not_compile.rs:0:0:0:0 | does_not_compile.rs | File successfully extracted. |
+| error.rs:0:0:0:0 | error.rs | File successfully extracted. |
+| lib.rs:0:0:0:0 | lib.rs | File successfully extracted. |
+| main.rs:0:0:0:0 | main.rs | File successfully extracted. |
+| my_macro.rs:0:0:0:0 | my_macro.rs | File successfully extracted. |
+| my_struct.rs:0:0:0:0 | my_struct.rs | File successfully extracted. |

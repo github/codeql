@@ -1,0 +1,2 @@
+query: Security/CWE/CWE-676/DangerousUseOfCin.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

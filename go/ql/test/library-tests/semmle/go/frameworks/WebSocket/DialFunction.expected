@@ -1,0 +1,13 @@
+| DialFunction.go:21:2:21:43 | call to Dial | DialFunction.go:21:17:21:30 | untrustedInput |
+| DialFunction.go:24:2:24:29 | call to DialConfig | DialFunction.go:23:35:23:48 | untrustedInput |
+| DialFunction.go:26:2:26:49 | call to Dial | DialFunction.go:26:30:26:43 | untrustedInput |
+| DialFunction.go:29:2:29:33 | call to Dial | DialFunction.go:29:14:29:27 | untrustedInput |
+| DialFunction.go:31:2:31:56 | call to DialContext | DialFunction.go:31:37:31:50 | untrustedInput |
+| DialFunction.go:33:2:33:44 | call to Dial | DialFunction.go:33:30:33:43 | untrustedInput |
+| DialFunction.go:36:2:36:45 | call to Dial | DialFunction.go:36:31:36:44 | untrustedInput |
+| DialFunction.go:38:2:38:31 | call to BuildProxy | DialFunction.go:38:17:38:30 | untrustedInput |
+| DialFunction.go:39:2:39:24 | call to New | DialFunction.go:39:10:39:23 | untrustedInput |
+| WebSocketReadWrite.go:30:12:30:42 | call to Dial | WebSocketReadWrite.go:30:27:30:29 | uri |
+| WebSocketReadWrite.go:40:14:40:50 | call to Dial | WebSocketReadWrite.go:40:42:40:44 | uri |
+| WebSocketReadWrite.go:50:17:50:37 | call to Dial | WebSocketReadWrite.go:50:29:50:31 | uri |
+| WebSocketReadWrite.go:66:20:66:51 | call to Dial | WebSocketReadWrite.go:66:48:66:50 | uri |

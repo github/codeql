@@ -1,0 +1,42 @@
+externalDecl_getName
+| Point.js:1:21:1:43 | functio ... , y) {} | Point |
+| Point.js:3:1:3:43 | Point.p ... dy) {}; | move |
+| Point.js:4:1:4:25 | Point.p ... j = {}; | obj |
+| Point.js:5:1:5:23 | Point.p ... secret; | secret |
+| Point.js:7:1:7:13 | Point.ORIGIN; | ORIGIN |
+| Point.js:8:1:8:26 | Point.f ... n() {}; | foo |
+| Point.js:10:5:10:14 | someGlobal | someGlobal |
+| Point.js:13:5:13:12 | MyString | MyString |
+| Point.js:15:1:15:25 | Point.p ... inal']; | final |
+| Point.js:18:5:18:10 | aPoint | aPoint |
+externalDecl_getQualifiedName
+| Point.js:1:21:1:43 | functio ... , y) {} | Point |
+| Point.js:3:1:3:43 | Point.p ... dy) {}; | Point.move |
+| Point.js:4:1:4:25 | Point.p ... j = {}; | Point.obj |
+| Point.js:5:1:5:23 | Point.p ... secret; | Point.secret |
+| Point.js:7:1:7:13 | Point.ORIGIN; | Point.ORIGIN |
+| Point.js:8:1:8:26 | Point.f ... n() {}; | Point.foo |
+| Point.js:10:5:10:14 | someGlobal | someGlobal |
+| Point.js:13:5:13:12 | MyString | MyString |
+| Point.js:15:1:15:25 | Point.p ... inal']; | Point.final |
+| Point.js:18:5:18:10 | aPoint | aPoint |
+externalDecl
+| Point.js:1:21:1:43 | functio ... , y) {} |
+| Point.js:3:1:3:43 | Point.p ... dy) {}; |
+| Point.js:4:1:4:25 | Point.p ... j = {}; |
+| Point.js:5:1:5:23 | Point.p ... secret; |
+| Point.js:7:1:7:13 | Point.ORIGIN; |
+| Point.js:8:1:8:26 | Point.f ... n() {}; |
+| Point.js:10:5:10:14 | someGlobal |
+| Point.js:13:5:13:12 | MyString |
+| Point.js:15:1:15:25 | Point.p ... inal']; |
+| Point.js:18:5:18:10 | aPoint |
+externalTypedef
+| Point.js:13:5:13:12 | MyString |
+externalVarDecl_getInit
+| Point.js:1:21:1:43 | functio ... , y) {} | Point.js:1:21:1:43 | functio ... , y) {} |
+| Point.js:3:1:3:43 | Point.p ... dy) {}; | Point.js:3:24:3:42 | function(dx, dy) {} |
+| Point.js:4:1:4:25 | Point.p ... j = {}; | Point.js:4:23:4:24 | {} |
+| Point.js:8:1:8:26 | Point.f ... n() {}; | Point.js:8:13:8:25 | function() {} |
+sourceDecl
+| Point.js:18:5:18:10 | aPoint | Point.js:1:21:1:43 | functio ... , y) {} | aPoint |

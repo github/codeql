@@ -1,0 +1,9 @@
+| operators.cpp:18:9:18:10 | call to Table |
+| operators.cpp:19:12:19:14 | call to Table |
+| operators.cpp:20:6:20:11 | call to insert |
+| operators.cpp:21:1:21:1 | call to ~Table |
+| operators.cpp:21:1:21:1 | call to ~Table |
+| operators.cpp:24:30:24:30 | call to A |
+| operators.cpp:25:23:25:31 | call to A |
+| operators.cpp:26:15:26:15 | call to operator+ |
+| operators.cpp:26:17:26:17 | call to A |

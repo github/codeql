@@ -1,0 +1,3 @@
+| file://:0:0:0:0 | NewEncoder | tst2.go:10:9:10:26 | call to NewEncoder | tst2.go:10:25:10:25 | w [postupdate] |
+| file://:0:0:0:0 | ReadFrom | tst.go:10:23:10:28 | reader | tst.go:10:2:10:12 | bytesBuffer [postupdate] |
+| file://:0:0:0:0 | Reset | reset.go:12:15:12:20 | source | reset.go:12:2:12:7 | reader [postupdate] |

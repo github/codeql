@@ -1,0 +1,4 @@
+| extensiondecl.swift:11:1:12:1 | extension of MyClass | getExtendedTypeDecl:MyClass |
+| extensiondecl.swift:14:1:15:1 | extension of MyClass | getExtendedTypeDecl:MyClass, getProtocol(0):MyProtocol1, getProtocol(1):MyProtocol2 |
+| extensiondecl.swift:17:1:18:1 | extension of Int | getExtendedTypeDecl:Int |
+| extensiondecl.swift:20:1:21:1 | extension of String | getExtendedTypeDecl:String |

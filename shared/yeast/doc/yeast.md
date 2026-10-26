@@ -1,0 +1,650 @@
+# YEAST — YEAST Elaborates Abstract Syntax Trees
+
+YEAST is a framework for transforming tree-sitter parse trees before they are
+extracted into a CodeQL database. It sits between the tree-sitter parser and
+the TRAP extractor, rewriting parts of the AST according to declarative rules.
+
+## Motivation
+
+Tree-sitter grammars describe the **concrete syntax** of a language — every
+keyword, operator, and punctuation token appears in the parse tree. CodeQL
+analyses often prefer a **simplified abstract syntax** where syntactic sugar
+has been removed. YEAST bridges this gap by desugaring the tree-sitter output
+into a cleaner form before extraction.
+
+For example, Ruby's `for x in list do ... end` is syntactic sugar for
+`list.each { |x| ... }`. A YEAST rule can rewrite the former into the latter
+so that CodeQL queries only need to reason about the `.each` form.
+
+## Architecture
+
+```
+Source code
+    │
+    ▼
+┌──────────────┐
+│  tree-sitter │  Parse source into a concrete syntax tree
+│    parser    │
+└──────┬───────┘
+       │ tree_sitter::Tree
+       ▼
+┌──────────────┐
+│    YEAST     │  Apply desugaring rules, producing a new AST
+│   Runner     │
+└──────┬───────┘
+       │ yeast::Ast
+       ▼
+┌──────────────┐
+│    TRAP      │  Walk the (possibly rewritten) AST and emit TRAP tuples
+│  extractor   │
+└──────────────┘
+```
+
+The entry point is `extract()` in the shared tree-sitter extractor. When
+called with a non-empty `rules` vector, the parsed tree is run through the
+YEAST `Runner` before TRAP extraction; with an empty `rules` vector the
+tree is extracted unchanged.
+
+## How desugaring works
+
+A YEAST `Rule` has two parts:
+
+1. A **query** that matches nodes in the AST using a tree-sitter-inspired
+   pattern language.
+2. A **transform** that produces replacement nodes from the match captures.
+
+The `Runner` translates the root with the first matching rule. Before the
+rule's transform runs, captured input nodes are recursively translated with
+the same rules. Every visited input node must match a rule; a missing match is
+an error.
+
+A rule can replace one node with zero nodes (deletion), one node (rewriting),
+or multiple nodes (expansion).
+
+A rule's output is final for the current phase: it is not matched or traversed
+again. This allows rule queries to describe the input schema while transforms
+build nodes from a different output schema. Use another named phase when the
+output of one exhaustive translation must become the input to another.
+
+## Query language
+
+Queries use a syntax inspired by
+[tree-sitter queries](https://tree-sitter.github.io/tree-sitter/using-parsers/queries/index.html),
+written inside the `yeast::query!()` proc macro.
+
+### Node patterns
+
+```rust
+// Match any named node
+(_)
+
+// Match a node of a specific kind
+(assignment)
+
+// Match an unnamed token by its text
+("end")
+```
+
+### Fields
+
+```rust
+// Match a node with specific fields
+(assignment
+    left: (identifier) @lhs
+    right: (_) @rhs
+)
+```
+
+Fields are matched by name. Unmentioned fields are ignored — the pattern
+`(assignment left: (_) @x)` matches any `assignment` node regardless of
+what's in `right`.
+
+### Captures
+
+Captures bind matched nodes to names for use in the transform. A capture
+`@name` always follows the pattern it captures:
+
+```rust
+(identifier) @name          // capture an identifier node
+(_) @value                  // capture any named node
+(identifier)* @items        // capture each repeated match
+("=") @op                   // capture an unnamed token by its text
+"=" @op                     // shorthand for the line above
+_ @anything                 // capture any node, named or unnamed
+```
+
+### Named vs unnamed children
+
+The two wildcard forms `(_)` and bare `_` differ:
+
+- `(_)` matches only **named** nodes. When used as a positional pattern,
+  unnamed children (keywords, operators, punctuation) are skipped over.
+- Bare `_` matches **any** node, named or unnamed, taking whatever is next
+  in the child list.
+
+Bare child patterns are matched **forward-scan**: each pattern advances
+through the iterator until it finds a child that matches, skipping
+non-matching children along the way. So `(foo ("baz"))` against a `foo`
+whose children are `[bar, baz]` succeeds — the matcher scans past `bar`
+and matches `baz`. The iterator advances as it goes, so subsequent
+patterns can never match children that appear earlier in source order
+than already-matched ones.
+
+For named-only patterns (`(_)`, `(some_kind ...)`), the scan additionally
+skips past unnamed tokens without trying to match them, since they can
+never match anyway.
+
+Anchors (`.`) for forcing immediate adjacency, like in tree-sitter
+queries, are not supported.
+
+```rust
+(for
+    pattern: (_) @pat             // named field, captures any named node
+    value: (in (_) @val)          // "in" wrapper is a named node here
+    body: (do (_)* @body)         // "do" and "end" tokens skipped by (_)
+)
+```
+
+### Repetitions
+
+```rust
+(_)*                   // zero or more
+(_)+                   // one or more
+(_)?                   // zero or one
+(identifier)* @names   // capture each repeated match
+"+"* @operators        // repeat and capture an unnamed token
+```
+
+When a parenthesized query starts with a node-kind identifier, it is always
+parsed as that node pattern, and every remaining token must belong to that
+node's fields or children. Otherwise, two or more sibling patterns form a
+sequence. A sequence may be repeated, but it cannot itself be captured because
+the sequence does not correspond to one AST node:
+
+```rust
+((identifier) @items (integer) @items)*  // explicit flattened captures
+((identifier) (integer))* @items         // error: sequence capture
+```
+
+Literal- and wildcard-led sequences are valid and unambiguous because neither
+can introduce node fields:
+
+```rust
+("+" ",")*  // repeat a two-token sequence
+(_ ",")*    // repeat a wildcard followed by a comma
+```
+
+Single-pattern and empty query groups are rejected as redundant or meaningless.
+This does not affect the empty output template `()`, which intentionally means
+“emit no replacement nodes.”
+
+## Template language
+
+Templates construct new AST nodes using the `tree!` and `trees!` macros.
+All children in a template must be in named fields — output AST nodes are
+always fully fielded.
+
+The macros use a `BuildCtx` binding named `ctx` from the surrounding scope.
+`rule!` provides this binding automatically; standalone uses must create it:
+
+```rust
+// Inside rule! — ctx is provided automatically, captures are Rust variables
+yeast::rule!(
+    (assignment left: (_) @left right: (_) @right)
+    =>
+    (assignment left: {right} right: {left})
+);
+
+// Standalone — create a binding named ctx
+let mut user_ctx = ();
+let mut ctx = BuildCtx::new(ast, &captures, &mut user_ctx);
+let id = yeast::tree!(
+    (assignment
+        left: {ctx.capture("lhs")}
+        right: {ctx.capture("rhs")}
+    )
+);
+```
+
+### `tree!` — build a single node
+
+`tree!(...)` returns a single node `Id`:
+
+```rust
+yeast::tree!(
+    (assignment
+        left: {ctx.capture("lhs")}
+        right: {ctx.capture("rhs")}
+    )
+)
+```
+
+### `trees!` — build multiple nodes
+
+`trees!(...)` returns `Vec<Id>`:
+
+```rust
+yeast::trees!(
+    (assignment left: {tmp} right: {right})
+    {body}
+)
+```
+
+### Literal nodes
+
+`(kind "text")` creates a leaf node with fixed text content:
+
+```rust
+(identifier "each")          // an identifier node whose text is "each"
+```
+
+### Computed literals
+
+`(kind #{expr})` creates a leaf node whose content is `expr.to_string()`:
+
+```rust
+(integer #{i})               // an integer node with the value of i
+(identifier #{name})         // an identifier from a Rust variable
+```
+
+### Source locations
+
+Captured nodes keep the locations assigned by their own translations. New
+nodes in an output template derive their locations from their children. A
+source-less nested node receives an empty location at the start of the matched
+input node. After the transform completes, the full matched range is added only
+to locally-created nodes returned as rule results:
+
+```rust
+rule!(
+    (wrapper child: (_) @child)
+    =>
+    (outer nested: (inner value: {child}))
+)
+```
+
+Here `inner` derives its range from `child`, while the returned `outer` node
+also includes the full `wrapper` range. A nested node with no located children
+would instead receive an empty range at the start of `wrapper`. This lets
+replacement roots include elided keywords or delimiters without assigning the
+same broad range to every synthetic descendant. A transform that simply
+returns a translated capture does not widen that capture to the wrapper's
+range.
+
+The special `location` field overrides the location of the node on which it
+appears. Its value must be a Rust block and uses the same node-splicing rules
+as an ordinary field block, but is metadata and is not added to the output AST:
+
+```rust
+rule!(
+    (wrapper
+        first: (_) @first
+        second: (_) @second
+        child: (_) @child)
+    =>
+    (synthetic_node
+        child: {child}
+        location: {[first, second]})
+)
+```
+
+If a `location` value yields several nodes, their locations are combined into
+the smallest range containing all of them. Multiple `location` fields on the
+same node are combined in the same way. The field can also be used on literal
+leaf nodes:
+
+```rust
+(identifier "synthetic" location: {source_node})
+```
+
+The override applies only to the node carrying the `location` field; nested
+nodes still derive their locations normally.
+
+For input fields whose leading or trailing syntax should never belong to rule
+results, configure them once with
+`DesugaringConfig::with_ignored_location_fields(...)`. For example, ignoring
+`trailingComma` retains the rest of each matched list element without requiring
+every rule to capture or handle the comma.
+
+For literals, `ctx.literal_at_start_of(...)` creates an empty range at another
+node's start.
+
+For reviewing locations, `DumpOptions::show_abridged_source` prints each node's
+source range with every direct child replaced by its field name in Unicode
+angle brackets. This keeps delimiters and other parent-owned syntax visible
+without repeating entire subtrees:
+
+```text
+return_expr source="return ⟨value⟩"
+  value:
+    call_expr source="⟨callee⟩(⟨argument⟩)"
+```
+
+Children outside the node's source range retain their own locations and are
+annotated where they are printed rather than being treated as errors:
+
+```text
+accessor_declaration source="⟨accessor_kind⟩"
+  name_node: identifier "value" source="value" (external)
+```
+
+Node and child ranges are still validated against the source text and UTF-8
+boundaries.
+
+### Optional fields (`?`)
+
+A `?` on a field's value makes that field fallible. If a `#{expr}` anywhere
+beneath it interpolates an absent value — an `Option` that is `None` — the
+subtree is abandoned and the field is left unset:
+
+```rust
+rule!((breakStmt label: _? @@lbl) => (break_expr label: (identifier #{lbl})?))
+```
+
+Here an optional capture is being wrapped in a leaf, which without `?` needs
+an `Option::map` to build the leaf only in the `Some` case:
+
+```rust
+// Equivalent, but the intent is buried in the closure:
+(break_expr label: {lbl.map(|l| tree!((identifier #{l})))})
+```
+
+The marker mirrors the query language, where a quantifier likewise follows the
+value it applies to (`label: _? @@lbl`). Note that the schema puts it on the
+other side of the colon — `external_name?: identifier` — because it is
+*declaring* a field's cardinality rather than supplying a value for it.
+
+Absence propagates outwards through as many levels as necessary, and a nested
+`?` catches first, so an inner absent value need not discard the outer node:
+
+```rust
+// If `name` is absent, `pattern` is left unset — but `type` is still set.
+(parameter pattern: (name_pattern identifier: (identifier #{name}))? type: {ty})
+```
+
+Only `#{expr}` propagates absence, because it supplies a node's *content*: with
+no value there is no leaf to build. A `{expr}` splice supplies *children*, where
+yielding nothing already leaves the field unset (see below), so `?` is rejected
+on one. Repetition has no marker at all, in templates or elsewhere: how many
+children a `{expr}` contributes is a property of the expression rather than of
+the syntax.
+
+Outside a `?`, interpolating an `Option` with `#{expr}` remains a compile error.
+That is deliberate: it keeps the choice between "leave the field unset" and
+"unwrap it" explicit at every interpolation.
+
+### Embedded Rust expressions
+
+`{expr}` embeds a Rust expression whose value is appended to the
+enclosing field (or to the rule body's id list). Dispatch happens via
+the [`IntoFieldIds`] trait, which is implemented for:
+
+- `Id` — pushes the single id.
+- Any `IntoIterator<Item: Into<Id>>` — extends with all yielded ids
+  (covers `Vec<Id>`, `Option<Id>`, iterator chains, etc.).
+
+So the same `{expr}` syntax handles single ids, splices, and zero-or-many
+options uniformly:
+
+```rust
+(assignment
+    left: {some_node_id}       // a single Id
+    right: {rhs}               // a captured value (inside rule!)
+)
+
+yeast::trees!(
+    (assignment left: {tmp} right: {right})
+    {extra_nodes}              // splices a Vec<Id>
+)
+```
+
+Because an `Option<Id>` splices as zero or one id, `field: {opt}` already
+leaves the field unset when `opt` is `None`. Use [`?`](#optional-fields-)
+instead when the optional value has to be *wrapped* in a node first, so that
+there is nothing to wrap when it is absent.
+
+The contents of `{…}` are treated as a Rust block, so multi-statement
+expressions (with `let` bindings) work too:
+
+```rust
+(assignment
+    left: {tmp}
+    right: {
+        let lit = ctx.literal("integer", "0");
+        tree!((binary_expr op: (operator "+") left: {tmp} right: {lit}))
+    })
+```
+
+Inside `rule!`, captures are Rust variables — `{name}` works for
+single, optional, and repeated captures alike:
+
+```rust
+rule!(
+    (assignment left: @lhs right: _* @parts)
+    =>
+    (assignment left: {lhs} right: (block stmt: {parts}))
+)
+```
+
+### Raw captures (`@@name`)
+
+The default `@name` capture marker is *auto-translated*: the macro recursively
+translates the captured node before binding it, so `{name}` in the output
+template splices a node that already conforms to the output schema.
+
+For rules that need the raw (input-schema) capture — typically to read
+its source text or to translate it explicitly with mutable context
+state between calls — use `@@name` instead. The body sees the original
+input-schema `Id`. Because these rules always have a Rust block body,
+they use the annotation form (see [the `rule!` macro
+section](#the-rule-macro) for the full grammar):
+
+```rust
+yeast::rule!(
+    (assignment left: (_) @@raw_lhs right: (_) @rhs)
+    =>
+    call {
+        // raw_lhs is untranslated: read its original source text.
+        let text = ctx.ast.source_text(raw_lhs);
+        // rhs is already translated by the auto-translate prefix.
+        tree!((call
+            method: (identifier #{text.as_str()})
+            receiver: {rhs}))
+    }
+);
+```
+
+Mix `@` and `@@` freely in the same rule.
+
+## The `rule!` macro
+
+`rule!` combines a query and a transform into a single declaration.
+There are two transform forms, each suited to a different level of
+rule complexity:
+
+```rust
+// 1. Template form — a tree literal describing the output.
+yeast::rule!(
+    (query_pattern field: (_) @capture)
+    =>
+    (output_template field: {capture})
+)
+
+// 2. Annotation form — a Rust block body preceded by the output kind.
+yeast::rule!(
+    (query_pattern child: (_)+ @@children)
+    =>
+    output_kind* {
+        // arbitrary Rust; must evaluate to a value compatible with the
+        // declared multiplicity (see below).
+        let mut result = Vec::new();
+        for child in children {
+            result.extend(ctx.translate(child)?);
+        }
+        result
+    }
+)
+```
+
+### Guards
+
+A rule may include a Rust guard between its query and `=>`. The guard runs
+after the query matches but before any captures are translated. If it returns
+`false`, the rule is treated as a non-match and the driver tries the next rule.
+Omitting the guard is equivalent to writing `where true`:
+
+```rust
+rule!(
+    (tupleExpr
+        elements: (labeledExpr
+            label: _? @label
+            expression: @inner)
+        elements: _* @rest)
+    where label.is_none() && rest.is_empty()
+    =>
+    expr { inner }
+)
+```
+
+Every capture is a raw input-schema id in the guard, regardless of whether it
+uses `@` or `@@`, because the guard runs before translation. The marker controls
+the transform binding only: `@inner` is translated after the guard accepts the
+rule, while a capture marked `@@` would remain raw in the transform as well.
+In this example `label` and `rest` are empty whenever the guard succeeds, so
+there is nothing to translate for those captures.
+
+Guards receive the mutable user context as `ctx` and the raw AST as `ast`.
+The framework clones the user context before evaluating each guard. If the
+guard succeeds, its context mutations are visible to the rule transform and
+recursive translation; if it fails, the clone is discarded before the next
+rule is tried:
+
+```rust
+rule!(
+    (tupleExpr elements: _* @elements)
+    where {
+        ctx.in_pattern = true;
+        elements
+            .first()
+            .and_then(|element| ast.get_node(*element))
+            .is_some()
+    }
+    =>
+    (tuple_pattern element: {elements})
+)
+```
+
+### Annotation form
+
+Rules that need imperative logic — mutating [`BuildCtx`] state per
+iteration, computing intermediate values, or looping over captures —
+use the annotation form. It has three shapes distinguished by a suffix
+on the output-kind identifier:
+
+| Syntax              | Body must evaluate to               | Meaning                        |
+|---------------------|-------------------------------------|--------------------------------|
+| `=> kind { ... }`   | a single node id of `kind`          | Emit exactly one node.         |
+| `=> kind? { ... }`  | an `Option` of a node id of `kind`  | Emit 0 or 1 nodes (`None`/`Some`). |
+| `=> kind* { ... }`  | an iterable of node ids of `kind`   | Emit 0+ nodes; flattens into the enclosing splice slot. |
+
+The suffix mirrors the `?` / `*` markers used elsewhere in the schema
+DSL (see [`ast_types.yml`](../../../unified/extractor/ast_types.yml)):
+bare identifier = required single, `?` = optional single, `*` =
+repeated.
+
+The annotation names the schema kind of the output, giving the macro
+enough information for future static analysis (e.g. computing the
+static output type of translated captures at their consumer sites).
+
+**Bare `=> { ... }` block bodies are rejected** — every Rust-block body
+must carry an annotation, so the output kind is always visible without
+having to inspect the block's expression.
+
+### Choosing between the forms
+
+Prefer the simplest form that fits:
+
+- If the whole transform is a tree literal, use the **template form**.
+- If the transform needs Rust logic (loops, `let` bindings, calls to
+  `ctx.translate`, etc.), use the **annotation form**.
+
+## Integration with the extractor
+
+A YEAST translation pass is configured with a [`DesugaringConfig`], which
+carries one or more named [`Phase`]s of exhaustive rules and an optional
+output node-types schema (in YAML format). Each phase translates the previous
+phase's root before the next phase starts; only the current phase's rules are
+considered during that translation. Attach the config to a language spec to
+enable rewriting:
+
+```rust
+let desugar = yeast::DesugaringConfig::new()
+    .add_phase("normalize", normalization_rules())
+    .add_phase("translate", translation_rules())
+    .with_output_node_types_yaml(include_str!("output-node-types.yml"));
+
+let lang = simple::LanguageSpec {
+    prefix: "ruby",
+    ts_language: tree_sitter_ruby::LANGUAGE.into(),
+    node_types: tree_sitter_ruby::NODE_TYPES,
+    desugar: Some(desugar),
+    file_globs: vec!["*.rb".into()],
+};
+```
+
+A single-phase config is just `.add_phase(...)` called once. Phase names
+appear in error messages so you can tell which phase failed.
+
+Every phase uses one-shot translation: each visited input node is processed by
+the first matching rule, captured nodes are recursively translated, and the
+phase errors if no rule matches. Output nodes are not reprocessed in the same
+phase.
+
+The same YAML node-types is used for both the runtime yeast `Schema` (so
+rules can refer to output-only kinds and fields) and TRAP validation (it
+is converted to JSON internally).
+
+For the dbscheme/QL code generator, set `Language::desugar` to a
+`DesugaringConfig` carrying the same YAML; the generator converts it to
+JSON for downstream code generation. The `phases` field of the config is
+unused at code-generation time.
+
+## The `rules!` macro
+
+The [`rules!`] macro bundles a list of rewrite rules with the input and
+output node-types schema paths. It's a drop-in replacement for the
+hand-written `vec![rule!(...), rule!(...), ...]` form and accepts a
+slightly looser syntax: bare rule bodies don't need an explicit
+`rule!(...)` wrapper.
+
+```rust
+let translation_rules: Vec<yeast::Rule> = yeast::rules! {
+    input: "tree-sitter-swift/node-types.yml",
+    output: "ast_types.yml",
+    [
+        (simple_identifier) @name
+        =>
+        (name_expr identifier: (identifier #{name})),
+
+        (integer_literal) @lit
+        =>
+        (int_literal #{lit}),
+    ]
+};
+```
+
+Each comma-separated item in the bracketed list may be:
+
+- A **bare rule body** `(query) => (template)` — no `rule!(...)` wrapper.
+- An explicit `rule!(...)` invocation.
+- Any other expression returning a `Rule` (helper functions, etc.).
+
+Schema paths are resolved relative to the consuming crate's
+`CARGO_MANIFEST_DIR` (the same convention `include_str!` uses for
+relative paths). The resolved paths are emitted as `include_str!`
+references in the expansion so the consuming crate's incremental cache
+invalidates when a schema YAML changes — laying the groundwork for
+schema-aware compile-time checks on the rule bodies.
+
+The `Vec<Rule>` produced by `rules!` flows into `add_phase` exactly as
+before.

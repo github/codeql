@@ -1,0 +1,9 @@
+<html ng-app="app">
+  <!-- Adapted from https://github.com/hakanson/ng-owasp -->
+  <body>
+    <div ng-controller="InterpolateController as vm">
+      <div ng-bind-html="vm.renderedUntrusted"></div> <!-- OK -->
+      <div ng-bind-html="vm.renderedTrusted"></div> <!-- not OK -->
+    </div>
+  </body>
+</html>

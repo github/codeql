@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Using the <code>alert</code> function to show a message to the user is disruptive, since an alert
+dialog prevents the user from accessing the rest of the program's interface until the dialog is
+closed. Also, alert dialogs are displayed by the browser and hence cannot be styled to fit with
+the rest of the web application, which negatively affects user experience.
+</p>
+
+<p>
+Some developers use <code>alert</code> during debugging, so left over calls to <code>alert</code>
+may also indicate unfinished code.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Use one of the HTML-based dialog box widgets offered by frameworks such as
+<a href="http://jqueryui.com">jQuery UI</a>, and consider using a non-modal dialog box where possible.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following code snippet uses <code>alert</code> to print a warning message if an element of a form is not
+correctly filled in. A preferable option would be to visually highlight the corresponding field to provide
+more context for the warning.
+</p>
+
+<sample src="examples/Alert.js" />
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window.alert">Window.alert</a>.</li>
+
+
+</references>
+</qhelp>

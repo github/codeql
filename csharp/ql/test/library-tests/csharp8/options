@@ -1,0 +1,2 @@
+semmle-extractor-options: /langversion:8.0
+semmle-extractor-options: /r:System.Threading.Tasks.dll /r:System.Threading.Tasks.Extensions.dll /r:netstandard.dll /langversion:preview

@@ -1,0 +1,6 @@
+name: Composite unpinned tag test
+runs:
+  using: "composite"
+  steps:
+    - uses: foo/bar@v2
+    - uses: foo/bar@25b062c917b0c75f8b47d8469aff6c94ffd89abb

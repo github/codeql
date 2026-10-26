@@ -1,0 +1,2 @@
+query: Exceptions/IncorrectExceptOrder.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

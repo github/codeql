@@ -1,0 +1,62 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Some expressions always evaluate to the same result, no matter what their subexpressions are:
+</p>
+
+<ul>
+<li><code>x * 0</code> always evaluates to <code>0</code>.
+</li>
+<li><code>x % 1</code> always evaluates to <code>0</code>.
+</li>
+<li><code>x &amp; 0</code> always evaluates to <code>0</code>.
+</li>
+<li><code>x || true</code> always evaluates to <code>true</code>.
+</li>
+<li><code>x &amp;&amp; false</code> always evaluates to <code>false</code>.
+</li>
+</ul>
+
+<p>
+Whenever <code>x</code> is not constant, such an expression is often a mistake.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+If the expression is supposed to evaluate to the same result every time it is executed, consider replacing the entire expression with its result.
+</p>
+
+</recommendation>
+<example>
+<p>
+The following method tries to determine whether <code>x</code> is even by checking whether <code>x % 1 == 0</code>.
+</p>
+
+<sample src="ConstantExpAppearsNonConstant.java" />
+
+<p>
+However, <code>x % 1 == 0</code> is always true when <code>x</code> is
+an integer. The correct check is <code>x % 2 == 0</code>.
+</p>
+
+<sample src="ConstantExpAppearsNonConstantGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.17.1">Multiplication Operator *</a>, <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.17.3">Remainder Operator %</a>, <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.22.1">Integer Bitwise Operators &amp;, ^, and |</a>, <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.23">Conditional-And Operator &amp;&amp;</a> and <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.24">Conditional-Or Operator ||</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,63 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Accessing files using paths constructed from user-controlled data can allow an attacker to access
+unexpected resources. This can result in sensitive information being revealed or deleted, or an
+attacker being able to influence behavior by modifying unexpected files.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Validate user input before using it to construct a file path.
+</p>
+
+<p>
+The validation method you should use depends on whether you want to allow the user to specify complex paths with multiple components that may span multiple folders, or only simple filenames without a path component.
+</p>
+
+<p>
+In the former case, a common strategy is to make sure that the constructed file path is contained within a safe root folder.
+First, normalize the path using <code>path.resolve</code> or <code>fs.realpathSync</code> to remove any ".." segments.
+You should always normalize the file path since an unnormalized path that starts with the root folder can still be used to access files outside the root folder.
+Then, after you have normalized the path, check that the path starts with the root folder.
+</p>
+
+<p>
+In the latter case, you can use a library like the <code>sanitize-filename</code> npm package to eliminate any special characters from the file path.
+Note that it is <i>not</i> sufficient to only remove "../" sequences: for example, applying this filter to ".../...//" would still result in the string "../".
+</p>
+
+<p>
+Finally, the simplest (but most restrictive) option is to use an allow list of safe patterns and make sure that the user input matches one of these patterns.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the first (bad) example, the code reads the file name from an HTTP request, then accesses that file within a root folder.
+A malicious user could enter a file name containing "../" segments to navigate outside the root folder and access sensitive files.
+</p>
+
+<sample src="examples/TaintedPath.js" />
+
+<p>
+The second (good) example shows how to avoid access to sensitive files by sanitizing the file path.
+First, the code resolves the file name relative to a root folder, normalizing the path and removing any "../" segments in the process.
+Then, the code calls <code>fs.realpathSync</code> to resolve any symbolic links in the path.
+Finally, the code checks that the normalized path starts with the path of the root folder, ensuring the file is contained within the root folder.
+</p>
+
+<sample src="examples/TaintedPathGood.js" />
+
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.</li>
+<li>npm: <a href="https://www.npmjs.com/package/sanitize-filename">sanitize-filename</a> package.</li>
+</references>
+</qhelp>

@@ -1,0 +1,67 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A subtle type of defect is caused when an object accidentally exposes its internal
+representation to the code outside the object, and the internal representation is then (deliberately or accidentally)
+modified in ways that the object is not prepared to handle. Most commonly, this happens
+when a getter returns a direct reference to a mutable field within the object, or a setter just assigns
+a mutable argument to its field.</p>
+
+</overview>
+<recommendation>
+<p>There are three ways of addressing this problem:</p>
+
+<ul>
+<li><strong>Using immutable objects</strong> : The fields store objects that are <em>immutable</em>, 
+which means that once constructed their value can never be changed. Examples from the
+standard library are <code>String</code>, <code>Integer</code> or
+<code>Float</code>. Although such an object may be aliased, or shared between several contexts, 
+there can be no unexpected changes to the internal state of the object because it cannot be modified.</li>
+
+<li><strong>Creating a read-only view</strong> : The <code>java.util.Collections.unmodifiable*</code> 
+methods can be used to create a read-only view of a collection without copying it. 
+This tends to give better performance than creating copies of objects. Note that this 
+technique is not suitable for every situation, because any changes to the underlying 
+collection will spread to affect the view. This can lead to unexpected 
+results, and is a particular danger when writing multi-threaded code.</li>
+
+<li><strong>Making defensive copies</strong> : Each setter (or constructor) makes a copy or clone of the
+incoming parameter. In this way, it constructs an instance known only internally,
+and no matter what happens with the object that was passed in, the state stays
+consistent. Conversely, each getter for a field must also construct a copy of the
+field's value to return.</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>In the following example, the private field <code>items</code> is returned
+directly by the getter <code>getItems</code>. Thus, a caller obtains a reference to internal object state
+and can manipulate the collection of items in the cart. In the example, each of the
+carts is emptied when <code>countItems</code> is called.</p>
+
+<sample src="ExposeRepresentation.java" />
+
+<p>The solution is for <code>getItems</code> to return a <i>copy</i> of the
+actual field, for example <code>return new HashSet&lt;Item&gt;(items);</code>.</p>
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>,
+  Items 15 and 39.
+  Addison-Wesley, 2008.
+</li>
+<li>
+  Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Collections.html">Collections</a>.
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "A single `go.mod` file was found.\n\n`go.mod`",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/single-root-go-mod-found",
+    "name": "A single `go.mod` file was found in the root"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

@@ -1,0 +1,2 @@
+query: queries/Security/CWE-730/RegexInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

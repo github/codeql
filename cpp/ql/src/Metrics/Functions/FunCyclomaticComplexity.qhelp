@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the cyclomatic complexity of each function in the project.</p>
+
+<p>The cyclomatic complexity of a function is an indication of the number of paths that can be taken during the execution of a function.
+Straight-line code has zero cyclomatic complexity, while branches and loops increase cyclomatic complexity. A cyclomatic complexity above 50 should be considered bad practice and above 75 should definitely be addressed.</p>
+
+<p>Functions with high cyclomatic complexity suffer from the following problems:</p>
+<ul>
+<li>Difficult to test since tests should be provided for each possible execution</li>
+<li>Difficult to understand since a developer needs to understand how all conditions interact</li>
+<li>Difficult to maintain since many execution paths is an indication of functions that perform too many tasks</li>
+</ul>
+
+</overview>
+<recommendation>
+<p>The primary way to reduce the complexity is to extract sub-functionality into separate functions. This improves on all problems described above. If the function naturally breaks up into a sequence of operations it is preferable to extract each operation as a separate function. Even if that's not the case it is often possible to extract the body of an iteration into a separate function to reduce complexity. If the complexity can't be reduced significantly make sure that the function is properly documented and carefully tested.</p>
+
+</recommendation>
+<references>
+
+<li>
+  <a href="http://www.cplusplus.com/doc/tutorial/functions/">Functions</a>
+</li>
+<li>
+  M. Fowler. <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+<li>
+  <a href="https://en.wikipedia.org/wiki/Code_refactoring">Wikipedia: Code refactoring</a>
+</li>
+<li>
+  <a href="http://www.jot.fm/issues/issue_2005_01/column1/">Refactoring as Meta Programming?</a>
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,2 @@
+query: Variables/SuspiciousUnusedLoopIterationVariable.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

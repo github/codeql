@@ -1,0 +1,10 @@
+| enums.cpp:3:6:3:8 | Day |  |
+| enums.cpp:4:6:4:9 | Day2 |  |
+| enums.cpp:5:6:5:9 | Flag |  |
+| enums.cpp:19:7:19:17 | myLocalEnum | LocalEnum |
+| enums.cpp:27:8:27:19 | MyNestedEnum | NestedEnum |
+| enums.ms.c:1:6:1:12 | numbers |  |
+| scoped.cpp:2:12:2:13 | E1 | ScopedEnum |
+| scoped.cpp:6:12:6:13 | E2 | ScopedEnum |
+| scoped.cpp:10:13:10:14 | E3 | ScopedEnum |
+| scoped.cpp:16:14:16:18 | State | NestedEnum, ScopedEnum |

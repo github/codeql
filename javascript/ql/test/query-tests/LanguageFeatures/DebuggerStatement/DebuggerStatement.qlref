@@ -1,0 +1,2 @@
+query: LanguageFeatures/DebuggerStatement.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

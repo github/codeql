@@ -1,0 +1,29 @@
+| container::Copyable | can | does | have implicit copy constructor |
+| container::CopyableComposition | can | does | have implicit copy constructor |
+| container::CopyableInheritance | can | does | have implicit copy constructor |
+| container::NotCopyable | can NOT | does NOT | have implicit copy constructor |
+| container::NotCopyableComposition | can NOT | does NOT | have implicit copy constructor |
+| container::NotCopyableInheritance | can NOT | does NOT | have implicit copy constructor |
+| container::Wrapper<Copyable> | can | does | have implicit copy constructor |
+| container::Wrapper<NotCopyable> | can NOT | does NOT | have implicit copy constructor |
+| deleted_cc::C | can | does NOT | have implicit copy constructor |
+| deleted_cc::Sub | can NOT | does NOT | have implicit copy constructor |
+| difference::Base | can | does NOT | have implicit copy constructor |
+| difference::OnlyAssign | can NOT | does NOT | have implicit copy constructor |
+| difference::OnlyCtor | can | does | have implicit copy constructor |
+| instantiated_explicit_ctor::Wrapper<int> | can | does NOT | have implicit copy constructor |
+| moves::MoveAssign | can NOT | does NOT | have implicit copy constructor |
+| moves::MoveCtor | can NOT | does NOT | have implicit copy constructor |
+| private_cc::C | can | does NOT | have implicit copy constructor |
+| private_cc::HasArray | can NOT | does NOT | have implicit copy constructor |
+| private_cc::HasArray2D | can NOT | does NOT | have implicit copy constructor |
+| private_cc::HasPointer | can | does | have implicit copy constructor |
+| private_cc::Sub | can NOT | does NOT | have implicit copy constructor |
+| protected_cc::C | can | does NOT | have implicit copy constructor |
+| protected_cc::HasMember | can NOT | does NOT | have implicit copy constructor |
+| protected_cc::Sub1 | can | does | have implicit copy constructor |
+| protected_cc::Sub2 | can | does | have implicit copy constructor |
+| typedefs::A | can | does | have implicit copy constructor |
+| typedefs::A::B | can | does | have implicit copy constructor |
+| typedefs::C | can | does | have implicit copy constructor |
+| typedefs::Derived | can | does | have implicit copy constructor |

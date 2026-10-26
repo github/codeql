@@ -1,0 +1,11 @@
+| fields/FieldTest.java:4:9:4:32 | float ff, ...; | 0/3 | fields/FieldTest.java:4:15:4:16 | ff |
+| fields/FieldTest.java:4:9:4:32 | float ff, ...; | 1/3 | fields/FieldTest.java:4:19:4:19 | g |
+| fields/FieldTest.java:4:9:4:32 | float ff, ...; | 2/3 | fields/FieldTest.java:4:29:4:31 | hhh |
+| fields/FieldTest.java:5:9:5:39 | Object obj, ...; | 0/2 | fields/FieldTest.java:5:23:5:25 | obj |
+| fields/FieldTest.java:5:9:5:39 | Object obj, ...; | 1/2 | fields/FieldTest.java:5:35:5:38 | obj2 |
+| fields/FieldTest.java:6:9:6:58 | List<> l, ...; | 0/2 | fields/FieldTest.java:6:54:6:54 | l |
+| fields/FieldTest.java:6:9:6:58 | List<> l, ...; | 1/2 | fields/FieldTest.java:6:57:6:57 | m |
+| fields/FieldTest.java:7:9:7:18 | int x; | 0/1 | fields/FieldTest.java:7:13:7:13 | x |
+| fields/FieldTest.java:8:9:8:22 | int y; | 0/1 | fields/FieldTest.java:8:13:8:13 | y |
+| fields/FieldTest.java:12:9:12:25 | int z; | 0/1 | fields/FieldTest.java:12:20:12:20 | z |
+| fields/FieldTest.java:13:9:13:29 | int w; | 0/1 | fields/FieldTest.java:13:20:13:20 | w |

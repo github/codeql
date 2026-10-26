@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The special floating-point number <code>NaN</code> is defined to be different from all other
+floating-point numbers, including itself, when compared using the equality operators,
+<code>==</code> and <code>!=</code>.
+</p>
+
+</overview>
+<recommendation>
+<p>To check whether a variable <code>x</code> is <code>NaN</code> use the method <code>isNaN</code>
+that is defined on both <code>java.lang.Float</code> and <code>java.lang.Double</code>.
+</p>
+
+</recommendation>
+<example>
+<p>The expression <code>x == Double.NaN</code> is always false.  This expression should be replaced
+by <code>Double.isNaN(x)</code>, which accurately identifies whether <code>x</code> is equal to <code>Double.NaN</code>.
+</p>
+</example>
+<references>
+
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.21.1">Numerical Equality Operators == and !=</a>.
+</li>
+
+</references>
+</qhelp>

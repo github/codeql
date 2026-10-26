@@ -1,0 +1,2 @@
+query: Likely Bugs/Resource Leaks/CloseReader.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,34 @@
+import codeql.ruby.DataFlow::DataFlow as DataFlow
+private import codeql.ruby.AST
+private import codeql.ruby.CFG
+private import codeql.ruby.dataflow.internal.DataFlowImplSpecific
+private import codeql.ruby.dataflow.internal.TaintTrackingImplSpecific
+private import codeql.dataflow.internal.DataFlowImplConsistency
+
+private module Input implements InputSig<Location, RubyDataFlow> {
+  private import RubyDataFlow
+
+  predicate postWithInFlowExclude(Node n) {
+    n instanceof FlowSummaryNode
+    or
+    n.(PostUpdateNode).getPreUpdateNode().asExpr() = getPostUpdateReverseStep(_)
+  }
+
+  predicate argHasPostUpdateExclude(ArgumentNode n) {
+    n instanceof FlowSummaryNode
+    or
+    n instanceof SynthHashSplatArgumentNode
+    or
+    not isNonConstantExpr(n.asExpr())
+  }
+
+  predicate uniqueTypeExclude(Node n) {
+    n =
+      any(DataFlow::CallNode call |
+        Private::isStandardNewCall(call.getExprNode(), _, _) and
+        not call.getReceiver().asExpr().getExpr() instanceof ConstantReadAccess
+      )
+  }
+}
+
+import MakeConsistency<Location, RubyDataFlow, RubyTaintTracking, Input>

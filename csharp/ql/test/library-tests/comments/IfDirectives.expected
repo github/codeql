@@ -1,0 +1,28 @@
+ifDirectives
+| trivia.cs:65:1:65:9 | #if ... | trivia.cs:76:1:76:6 | #endif | not taken | false | trivia.cs:65:5:65:9 | DEBUG |
+| trivia.cs:68:1:68:10 | #if ... | trivia.cs:70:1:70:6 | #endif | not taken | false | trivia.cs:68:5:68:10 | NESTED |
+| trivia.cs:82:1:82:10 | #if ... | trivia.cs:86:1:86:6 | #endif | taken | true | trivia.cs:82:5:82:10 | DEBUG2 |
+| trivia.cs:93:1:93:10 | #if ... | trivia.cs:95:1:95:6 | #endif | taken | true | trivia.cs:93:5:93:10 | DEBUG2 |
+| trivia.cs:103:1:103:10 | #if ... | trivia.cs:105:1:105:6 | #endif | taken | true | trivia.cs:103:5:103:10 | DEBUG2 |
+siblings
+| trivia.cs:65:1:65:9 | #if ... | trivia.cs:71:1:71:35 | #elif ... | 0 | taken |
+| trivia.cs:65:1:65:9 | #if ... | trivia.cs:74:1:74:5 | #else | 1 | not taken |
+conditionalDirectives
+| trivia.cs:65:1:65:9 | #if ... | not taken | false | trivia.cs:65:5:65:9 | DEBUG |
+| trivia.cs:68:1:68:10 | #if ... | not taken | false | trivia.cs:68:5:68:10 | NESTED |
+| trivia.cs:71:1:71:35 | #elif ... | taken | true | trivia.cs:71:7:71:35 | ... \|\| ... |
+| trivia.cs:82:1:82:10 | #if ... | taken | true | trivia.cs:82:5:82:10 | DEBUG2 |
+| trivia.cs:93:1:93:10 | #if ... | taken | true | trivia.cs:93:5:93:10 | DEBUG2 |
+| trivia.cs:103:1:103:10 | #if ... | taken | true | trivia.cs:103:5:103:10 | DEBUG2 |
+expressions
+| trivia.cs:65:5:65:9 | DEBUG |
+| trivia.cs:68:5:68:10 | NESTED |
+| trivia.cs:71:7:71:35 | ... \|\| ... |
+| trivia.cs:71:8:71:15 | NOTDEBUG |
+| trivia.cs:71:8:71:23 | ... == ... |
+| trivia.cs:71:20:71:23 | true |
+| trivia.cs:71:29:71:35 | !... |
+| trivia.cs:71:31:71:34 | TEST |
+| trivia.cs:82:5:82:10 | DEBUG2 |
+| trivia.cs:93:5:93:10 | DEBUG2 |
+| trivia.cs:103:5:103:10 | DEBUG2 |

@@ -1,0 +1,2 @@
+query: Expressions/EqualsNone.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      - ["lots0logs/gh-action-get-changed-files", "*", "output.all", "PR changed files", "manual"]
+      - ["lots0logs/gh-action-get-changed-files", "*", "output.added", "PR changed files", "manual"]
+      - ["lots0logs/gh-action-get-changed-files", "*", "output.modified", "PR changed files", "manual"]
+      - ["lots0logs/gh-action-get-changed-files", "*", "output.renamed", "PR changed files", "manual"]
+

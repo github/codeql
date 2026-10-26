@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The descriptor protocol allows user programmable attribute access.
+The descriptor protocol is what enables class methods, static methods, properties and <code>super()</code>.
+</p>
+
+<p>
+Descriptor objects are class attributes which control the behavior of instance attributes. Consequently, a single descriptor
+is common to all instances of a class and should not be mutated when instance attributes are accessed.
+</p>
+
+
+</overview>
+<recommendation>
+
+<p>Do not mutate the descriptor object, rather create a new object that contains the necessary state.</p>
+
+
+</recommendation>
+<example>
+<p>In this example the descriptor class <code>MutatingDescriptor</code> stores a reference to <code>obj</code> in an attribute.
+</p><sample src="MutatingDescriptor.py" />
+
+<p>In the following example, the descriptor class <code>NonMutatingDescriptor</code> returns a new object every time <code>__get__</code>
+is called.
+
+</p><sample src="MutatingDescriptorFixed.py" />
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="https://docs.python.org/reference/datamodel.html#descriptors">Implementing Descriptors.</a></li>
+<li>Mark Lutz. <em>Learning Python</em>, Section 30.6: Methods Are Objects: Bound or Unbound. O'Reilly 2013.</li>
+<li>A real world example: <a href="https://github.com/numpy/numpy/issues/5247">NumPy Issue 5247.</a></li>
+
+
+</references>
+</qhelp>

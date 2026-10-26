@@ -1,0 +1,52 @@
+arrays/A.java:
+#    0| [CompilationUnit] A
+#    3|   1: [Class] A
+#    4|     2: [FieldDeclaration] ...[] a;
+#    4|       -1: [ArrayTypeAccess] ...[]
+#    4|         0: [TypeAccess] String
+#    5|     3: [FieldDeclaration] ...[] b;
+#    5|       -1: [ArrayTypeAccess] ...[]
+#    5|         0: [ArrayTypeAccess] ...[]
+#    5|           0: [TypeAccess] String
+arrays/B.java:
+#    0| [CompilationUnit] B
+#    3|   1: [Class] B
+#    4|     2: [Method] m
+#    4|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    4|         0: [Parameter] a
+#    4|           0: [TypeAccess] A
+#    4|       5: [BlockStmt] { ... }
+#    5|         0: [LocalVariableDeclStmt] var ...;
+#    5|           0: [ArrayTypeAccess] ...[]
+#    5|             0: [TypeAccess] A
+#    5|           1: [LocalVariableDeclExpr] aa
+#    5|             0: [ArrayCreationExpr] new A[]
+#    5|               -2: [ArrayInit] {...}
+#    5|                 0: [VarAccess] a
+#    5|               -1: [TypeAccess] A
+#    6|         1: [LocalVariableDeclStmt] var ...;
+#    6|           0: [ArrayTypeAccess] ...[]
+#    6|             0: [ArrayTypeAccess] ...[]
+#    6|               0: [TypeAccess] A
+#    6|           1: [LocalVariableDeclExpr] aaa
+#    6|             0: [ArrayCreationExpr] new A[][]
+#    6|               -2: [ArrayInit] {...}
+#    6|                 0: [ArrayInit] {...}
+#    6|                   0: [VarAccess] a
+#    6|               -1: [ArrayTypeAccess] ...[]
+#    6|                 0: [TypeAccess] A
+#    7|         2: [LocalVariableDeclStmt] var ...;
+#    7|           0: [ArrayTypeAccess] ...[]
+#    7|             0: [ArrayTypeAccess] ...[]
+#    7|               0: [ArrayTypeAccess] ...[]
+#    7|                 0: [TypeAccess] A
+#    7|           1: [LocalVariableDeclExpr] aaaa
+#    7|             0: [ArrayCreationExpr] new A[][][]
+#    7|               -2: [ArrayInit] {...}
+#    7|                 0: [ArrayInit] {...}
+#    7|                   0: [ArrayInit] {...}
+#    7|                     0: [VarAccess] a
+#    7|               -1: [ArrayTypeAccess] ...[]
+#    7|                 0: [ArrayTypeAccess] ...[]
+#    7|                   0: [TypeAccess] A

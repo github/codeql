@@ -1,0 +1,2 @@
+lgtm,codescanning
+* Updated the query that detects insecure SSL/TLS protocol creation from default values (`py/insecure-default-protocol`) to use the new API graphs. The query also no longer reports use of the default value for constructing `ssl.SSLContext`, since that _can_ still be secure, either through manipulation of the `options` field or the `minimum_version` field. If the usage is not secure, this should be reported by the `py/insecure-protocol` query.

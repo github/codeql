@@ -1,0 +1,124 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace Semmle.Extraction.CSharp.Entities
+{
+    internal abstract class CachedSymbol<T> : CachedEntity<T> where T : class, ISymbol
+    {
+        private readonly Lazy<BlockSyntax?> blockLazy;
+        private readonly Lazy<ExpressionSyntax?> expressionBodyLazy;
+
+        protected CachedSymbol(Context cx, T init)
+            : base(cx, init)
+        {
+            blockLazy = new Lazy<BlockSyntax?>(() => GetBlock(Symbol));
+            expressionBodyLazy = new Lazy<ExpressionSyntax?>(() => GetExpressionBody(Symbol));
+        }
+
+        public virtual Type? ContainingType => Symbol.ContainingType is not null
+            ? Symbol.ContainingType.IsTupleType
+                ? NamedType.CreateNamedTypeFromTupleType(Context, Symbol.ContainingType)
+                : Type.Create(Context, Symbol.ContainingType)
+            : null;
+
+        public void PopulateModifiers(TextWriter trapFile)
+        {
+            Modifier.ExtractModifiers(Context, trapFile, this, Symbol);
+        }
+
+        protected void PopulateAttributes()
+        {
+            // Only extract attributes for source declarations
+            if (ReferenceEquals(Symbol, Symbol.OriginalDefinition))
+                Attribute.ExtractAttributes(Context, Symbol, this);
+        }
+
+        protected void PopulateScopedKind(TextWriter trapFile, ScopedKind kind)
+        {
+            switch (kind)
+            {
+                case ScopedKind.ScopedRef:
+                    trapFile.scoped_annotation(this, Kinds.ScopedAnnotation.ScopedRef);
+                    break;
+                case ScopedKind.ScopedValue:
+                    trapFile.scoped_annotation(this, Kinds.ScopedAnnotation.ScopedValue);
+                    break;
+            }
+        }
+
+        protected void ExtractCompilerGenerated(TextWriter trapFile)
+        {
+            if (Symbol.IsImplicitlyDeclared)
+                trapFile.compiler_generated(this);
+        }
+
+        /// <summary>
+        /// The location which is stored in the database and is used when highlighting source code.
+        /// It's generally short, e.g. a method name.
+        /// </summary>
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Symbol.Locations.BestOrDefault();
+
+        /// <summary>
+        /// The full text span of the entity, e.g. for binding comments.
+        /// </summary>
+        public virtual Microsoft.CodeAnalysis.Location? FullLocation => Symbol.Locations.BestOrDefault();
+
+        public virtual IEnumerable<Location> Locations
+        {
+            get
+            {
+                var loc = ReportingLocation;
+                if (loc is not null)
+                {
+                    // Some built in operators lack locations, so loc is null.
+                    yield return Context.CreateLocation(ReportingLocation);
+                    if (loc.Kind == LocationKind.SourceFile)
+                        yield return Assembly.CreateOutputAssembly(Context);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Bind comments to this symbol.
+        /// Comments are only bound to source declarations.
+        /// </summary>
+        protected void BindComments()
+        {
+            if (!Symbol.IsImplicitlyDeclared && IsSourceDeclaration && Symbol.FromSource())
+                Context.BindComments(this, FullLocation);
+        }
+
+        private static BlockSyntax? GetBlock(T symbol)
+        {
+            return symbol.DeclaringSyntaxReferences
+                    .SelectMany(r => r.GetSyntax().ChildNodes())
+                    .OfType<BlockSyntax>()
+                    .FirstOrDefault();
+        }
+
+        private static ExpressionSyntax? GetExpressionBody(T symbol)
+        {
+            return symbol.DeclaringSyntaxReferences
+                    .SelectMany(r => r.GetSyntax().ChildNodes())
+                    .OfType<ArrowExpressionClauseSyntax>()
+                    .Select(arrow => arrow.Expression)
+                    .FirstOrDefault();
+        }
+
+        public BlockSyntax? Block => blockLazy.Value;
+
+        public ExpressionSyntax? ExpressionBody => expressionBodyLazy.Value;
+
+        public bool HasBody => Block is not null || ExpressionBody is not null;
+
+        public virtual bool IsSourceDeclaration => Symbol.IsSourceDeclaration();
+
+        public override bool NeedsPopulation => Context.Defines(Symbol);
+
+        public Location Location => Context.CreateLocation(ReportingLocation);
+    }
+}

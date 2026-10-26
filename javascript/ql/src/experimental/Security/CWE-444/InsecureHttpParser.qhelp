@@ -1,0 +1,63 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+	<overview>
+
+		<p>
+
+			Strict HTTP parsing may cause problems with interoperability with some 
+			non-conformant HTTP implementations. But disabling it is strongly discouraged,
+			as it opens the door to several threats including HTTP Request Smuggling.
+
+		</p>
+
+	</overview>
+
+	<recommendation>
+
+		<p>
+
+			Do not enable insecure http parser.
+
+		</p>
+
+	</recommendation>
+
+	<example>
+
+		<p>
+
+			The following example shows the instantiation of an http server. This 
+			server is vulnerable to HTTP Request Smuggling because the
+			<code>insecureHTTPParser</code> option of the server instantiation is 
+			set to <code>true</code>. As a consequence, malformed packets may attempt
+			to exploit any number of weaknesses including ranging from Web Cache Poisoning
+			Attacks to bypassing firewall protection mecahanisms.
+
+		</p>
+
+		<sample src="examples/InsecureHttpParser.js"/>
+
+		<p>
+
+			To make sure that packets are parsed correctly, the
+			<code>invalidHTTPParser</code> option should have its default value,
+			or be explicitly set to <code>false</code>.
+
+		</p>
+
+	</example>
+
+	<references>
+
+		<li>NodeJS: <a href="https://nodejs.org/en/blog/vulnerability/february-2020-security-releases">February 20 Security Release</a></li>
+
+		<li>Snyk: <a href="https://snyk.io/blog/node-js-release-fixes-a-critical-http-security-vulnerability/">NodeJS Critical HTTP Vulnerability</a></li>
+
+		<li>CWE-444: <a href="https://cwe.mitre.org/data/definitions/444.html">HTTP Request/Response Smuggling</a></li>
+
+	</references>
+
+</qhelp>

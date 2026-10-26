@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      - ["tim-actions/get-pr-commits", "*", "output.commits", "text", "manual"]
+

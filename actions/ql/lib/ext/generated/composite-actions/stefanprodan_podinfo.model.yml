@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["stefanprodan/podinfo", "*", "input.version", "code-injection", "generated"]
+     - ["stefanprodan/podinfo", "*", "input.arch", "code-injection", "generated"]

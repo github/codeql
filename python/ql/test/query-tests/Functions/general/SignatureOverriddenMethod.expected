@@ -1,0 +1,2 @@
+| om_test.py:32:5:32:35 | Function grossly_wrong1 | This method requires 2 positional arguments, whereas overridden $@ requires 3. | om_test.py:12:5:12:41 | Function grossly_wrong1 | Base.grossly_wrong1 | file://:0:0:0:0 | (none) | This call |
+| om_test.py:35:5:35:47 | Function grossly_wrong2 | This method requires 4 positional arguments, whereas overridden $@ requires 3. | om_test.py:15:5:15:41 | Function grossly_wrong2 | Base.grossly_wrong2 | file://:0:0:0:0 | (none) | This call |

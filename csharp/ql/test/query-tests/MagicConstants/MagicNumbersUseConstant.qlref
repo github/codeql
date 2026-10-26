@@ -1,0 +1,2 @@
+query: Bad Practices/Magic Constants/MagicNumbersUseConstant.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

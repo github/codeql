@@ -1,0 +1,13 @@
+| EntityFrameworkCore.cs:62:13:62:46 | call to method ExecuteSqlCommand |
+| EntityFrameworkCore.cs:63:19:63:57 | call to method ExecuteSqlCommandAsync |
+| EntityFrameworkCore.cs:66:13:66:29 | call to method Build |
+| EntityFrameworkCore.cs:69:13:69:32 | object creation of type RawSqlString |
+| EntityFrameworkCore.cs:70:32:70:33 | call to operator implicit conversion |
+| EntityFrameworkCore.cs:72:13:72:41 | call to method FromSqlRaw<Person> |
+| EntityFrameworkCore.cs:73:13:73:72 | call to method ExecuteSqlRaw |
+| EntityFrameworkCore.cs:74:13:74:45 | call to method ExecuteSqlRaw |
+| EntityFrameworkCore.cs:75:19:75:63 | call to method ExecuteSqlRawAsync |
+| EntityFrameworkCore.cs:76:19:76:56 | call to method ExecuteSqlRawAsync |
+| EntityFrameworkCore.cs:77:19:77:90 | call to method ExecuteSqlRawAsync |
+| EntityFrameworkCore.cs:84:18:84:46 | object creation of type RawSqlString |
+| EntityFrameworkCore.cs:85:18:85:42 | call to operator implicit conversion |

@@ -1,0 +1,6 @@
+| tst.js:1:1:1:0 | entry node of <toplevel> |
+| tst.js:1:1:1:0 | entry node of functio ... n 23;\\n} |
+| tst.js:2:3:2:13 | x = x \|\| 42 |
+| tst.js:2:7:2:7 | guard: x is false |
+| tst.js:2:7:2:7 | guard: x is true |
+| tst.js:8:1:8:0 | entry node of function g() {} |

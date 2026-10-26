@@ -1,0 +1,4 @@
+| b.cpp:5:5:5:7 | call to bar | a.cpp:4:6:4:13 | bar |
+| b.cpp:6:3:6:5 | call to baz | a.cpp:6:6:6:8 | baz |
+| c.cpp:6:5:6:7 | call to bar | a.cpp:4:6:4:13 | bar |
+| c.cpp:7:3:7:5 | call to baz | a.cpp:6:6:6:8 | baz |

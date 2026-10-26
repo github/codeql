@@ -1,0 +1,4 @@
+| tst.js:1:10:1:10 | $ | This assertion can never match. |
+| tst.js:9:3:9:3 | $ | This assertion can never match. |
+| tst.js:16:3:16:3 | $ | This assertion can never match. |
+| tst.js:33:6:33:6 | $ | This assertion can never match. |

@@ -1,0 +1,3 @@
+| conditionalComment.js:1:1:5:5 | /*@cc_o ... d\\n  @*/ | Do not use conditional comments. |
+| conditionalComment.js:7:1:7:8 | //@cc_on | Do not use conditional comments. |
+| conditionalComment.js:9:1:9:9 | // @cc_on | Do not use conditional comments. |

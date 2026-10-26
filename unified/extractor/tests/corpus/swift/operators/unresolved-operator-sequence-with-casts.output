@@ -1,0 +1,127 @@
+func casts(_ a: Any, _ b: Int) {
+  _ = a as Int .& b
+  _ = a is Int .& b
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    sequenceExpr
+                      elements:
+                        discardAssignmentExpr
+                          wildcard: _
+                        assignmentExpr
+                          equal: =
+                        declReferenceExpr
+                          baseName: identifier "a"
+                        unresolvedAsExpr
+                          asKeyword: as
+                        typeExpr
+                          type:
+                            identifierType
+                              name: identifier "Int"
+                        binaryOperatorExpr
+                          operator: binaryOperator ".&"
+                        declReferenceExpr
+                          baseName: identifier "b"
+                codeBlockItem
+                  item:
+                    sequenceExpr
+                      elements:
+                        discardAssignmentExpr
+                          wildcard: _
+                        assignmentExpr
+                          equal: =
+                        declReferenceExpr
+                          baseName: identifier "a"
+                        unresolvedIsExpr
+                          isKeyword: is
+                        typeExpr
+                          type:
+                            identifierType
+                              name: identifier "Int"
+                        binaryOperatorExpr
+                          operator: binaryOperator ".&"
+                        declReferenceExpr
+                          baseName: identifier "b"
+          name: identifier "casts"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        identifierType
+                          name: Any
+                      firstName: _
+                      secondName: identifier "a"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: _
+                      secondName: identifier "b"
+          funcKeyword: func
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) ⟨body⟩"
+          name_node: identifier "casts" source="casts"
+          parameter:
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Any" source="Any"
+              pattern: identifier "a" source="a"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "b" source="b"
+          body:
+            block source="{\n  ⟨stmt⟩\n  ⟨stmt⟩\n}"
+              stmt:
+                unresolved_operator_sequence source="⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩"
+                  element:
+                    ignore_pattern "_" source="_"
+                    infix_operator "=" source="="
+                    identifier "a" source="a"
+                    infix_operator "as" source="as"
+                    unsupported_node "Int" source="Int"
+                    infix_operator ".&" source=".&"
+                    identifier "b" source="b"
+                unresolved_operator_sequence source="⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩ ⟨element⟩"
+                  element:
+                    ignore_pattern "_" source="_"
+                    infix_operator "=" source="="
+                    identifier "a" source="a"
+                    infix_operator "is" source="is"
+                    unsupported_node "Int" source="Int"
+                    infix_operator ".&" source=".&"
+                    identifier "b" source="b"

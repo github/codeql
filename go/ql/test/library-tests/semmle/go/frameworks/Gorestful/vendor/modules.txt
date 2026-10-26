@@ -1,0 +1,6 @@
+# github.com/emicklei/go-restful/v3 v3.2.0
+## explicit
+github.com/emicklei/go-restful/v3
+# github.com/json-iterator/go v1.1.10
+## explicit
+github.com/json-iterator/go

@@ -1,0 +1,3 @@
+| DisablingSce.js:3:9:3:35 | $scePro ... (false) | Disabling SCE is strongly discouraged. |
+| DisablingSce.js:9:9:9:24 | x.enabled(false) | Disabling SCE is strongly discouraged. |
+| DisablingSce.js:16:9:16:31 | $scePro ... bled(x) | Disabling SCE is strongly discouraged. |

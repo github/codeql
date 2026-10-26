@@ -1,0 +1,37 @@
+typeMentions
+| NullableDisabled.cs:6:24:6:27 | Base |
+| NullableDisabled.cs:8:23:8:24 | I0 |
+| NullableDisabled.cs:9:21:9:22 | I1 |
+| NullableDisabled.cs:13:12:13:15 | Void |
+| NullableDisabled.cs:15:9:15:15 | Derived |
+| NullableDisabled.cs:15:27:15:33 | Derived |
+| NullableDisabled.cs:16:9:16:15 | Derived |
+| NullableDisabled.cs:16:26:16:32 | Derived |
+| NullableDisabled.cs:17:9:17:11 | Str |
+| NullableDisabled.cs:17:9:17:12 | Nullable<Str> |
+| NullableDisabled.cs:17:23:17:25 | Str |
+| NullableDisabled.cs:18:9:18:11 | Str |
+| NullableDisabled.cs:18:22:18:24 | Str |
+| NullableDisabled.cs:19:9:19:10 | I1 |
+| NullableDisabled.cs:19:22:19:24 | Str |
+| NullableDisabled.cs:20:9:20:10 | I1 |
+| NullableDisabled.cs:20:21:20:23 | Str |
+| NullableEnabled.cs:6:24:6:27 | Base |
+| NullableEnabled.cs:8:23:8:24 | I0 |
+| NullableEnabled.cs:9:21:9:22 | I1 |
+| NullableEnabled.cs:13:12:13:15 | Void |
+| NullableEnabled.cs:15:9:15:15 | Derived |
+| NullableEnabled.cs:15:27:15:33 | Derived |
+| NullableEnabled.cs:16:9:16:15 | Derived |
+| NullableEnabled.cs:16:26:16:32 | Derived |
+| NullableEnabled.cs:17:9:17:11 | Str |
+| NullableEnabled.cs:17:9:17:12 | Nullable<Str> |
+| NullableEnabled.cs:17:23:17:25 | Str |
+| NullableEnabled.cs:18:9:18:11 | Str |
+| NullableEnabled.cs:18:22:18:24 | Str |
+| NullableEnabled.cs:19:9:19:10 | I1 |
+| NullableEnabled.cs:19:22:19:24 | Str |
+| NullableEnabled.cs:20:9:20:10 | I1 |
+| NullableEnabled.cs:20:21:20:23 | Str |
+duplicates
+diff

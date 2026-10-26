@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.hadoop.hive.metastore.api", "DefaultConstraintsRequest", True, "DefaultConstraintsRequest", "(String,String,String)", "", "Argument[1]", "sql-injection", "ai-manual"]

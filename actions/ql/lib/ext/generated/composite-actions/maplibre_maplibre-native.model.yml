@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["maplibre/maplibre-native", "*", "input.artifact-name", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "input.externalData", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "input.testSpecArn", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "input.testFilter", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "input.testType", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "input.AWS_DEVICE_FARM_DEVICE_POOL_ARN", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "input.AWS_DEVICE_FARM_PROJECT_ARN", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "input.testFile", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "input.appFile", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "input.testPackageType", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "input.appType", "code-injection", "generated"]

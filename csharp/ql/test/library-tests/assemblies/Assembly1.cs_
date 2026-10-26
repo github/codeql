@@ -1,0 +1,20 @@
+using System;
+
+namespace Assembly2
+{
+	public delegate int del2(int x);
+
+	public class Class2 : Attribute
+	{
+	}
+
+	public class Class3 : Attribute
+	{
+		public class Class4
+		{
+		}
+		public class Class5<T>
+		{
+		}
+	}
+}

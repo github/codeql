@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["napari/napari/.github/workflows/reusable_run_tox_test.yml", "*", "input.qt_backend", "code-injection", "generated"]

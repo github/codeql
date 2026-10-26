@@ -1,0 +1,2 @@
+query: LanguageFeatures/LengthComparisonOffByOne.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

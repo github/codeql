@@ -1,0 +1,17 @@
+| Annotation processors enabled: true | 1 |
+| Number of calls with call target | 1 |
+| Number of calls with missing call target | 0 |
+| Number of expressions with known type | 1 |
+| Number of expressions with unknown type | 0 |
+| Number of files | 542 |
+| Number of files with extension class | 538 |
+| Number of files with extension jar | 1 |
+| Number of files with extension java | 2 |
+| Number of lines of code | 7 |
+| Number of lines of code with extension java | 7 |
+| Percentage of calls with call target | 100 |
+| Percentage of expressions with known type | 100 |
+| Total number of lines | 12 |
+| Total number of lines with extension java | 12 |
+| Used annotation processor: lombok.launch.AnnotationProcessorHider$AnnotationProcessor | 1 |
+| Used annotation processor: lombok.launch.AnnotationProcessorHider$ClaimingProcessor | 1 |

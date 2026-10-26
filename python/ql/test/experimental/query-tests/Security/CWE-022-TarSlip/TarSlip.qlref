@@ -1,0 +1,2 @@
+query: experimental/Security/CWE-022bis/TarSlipImprov.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

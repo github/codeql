@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>When two identical expressions are compared it is typically an
+indication of a mistake, since the Boolean value of the comparison
+will always be the same. Often, it can indicate that <code>self</code> has
+been omitted.</p>
+
+</overview>
+<recommendation>
+
+<p>It is never good practice to compare a value with itself.
+If <code>self</code> has been omitted, then insert it. If the constant
+behavior is indeed required, use the Boolean literals <code>True</code> or
+<code>False</code>, rather than encoding them obscurely as <code>x == x</code>
+or similar.</p>
+
+</recommendation>
+<example>
+<sample src="CompareIdenticalValuesMissingSelf.py" />
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/expressions.html#not-in">Comparisons</a>.</li>
+
+</references>
+</qhelp>

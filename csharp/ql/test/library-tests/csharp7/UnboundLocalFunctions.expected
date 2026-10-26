@@ -1,0 +1,7 @@
+| CSharp7.cs:131:9:131:42 | f2 | 0 | CSharp7.cs:131:14:131:14 | T |
+| CSharp7.cs:131:9:131:42 | f2 | 1 | CSharp7.cs:131:17:131:17 | U |
+| CSharp7.cs:159:9:159:24 | f | 0 | CSharp7.cs:159:15:159:15 | T |
+| CSharp7.cs:160:9:160:25 | g | 0 | CSharp7.cs:160:13:160:13 | T |
+| CSharp7.cs:162:9:167:9 | h | 0 | CSharp7.cs:162:13:162:13 | T |
+| CSharp7.cs:162:9:167:9 | h | 1 | CSharp7.cs:162:16:162:16 | U |
+| CSharp7.cs:164:13:164:43 | f2 | 0 | CSharp7.cs:164:20:164:20 | S |

@@ -1,0 +1,2 @@
+| ReadOnlySpan<Char> | PatternMatchSpan.cs:8:19:8:23 | "ABC" | String |
+| Span<Char> | PatternMatchSpan.cs:15:18:15:22 | "DEF" | String |

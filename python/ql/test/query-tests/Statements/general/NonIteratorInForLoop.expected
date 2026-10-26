@@ -1,0 +1,1 @@
+| test.py:50:1:50:23 | For | This for-loop may attempt to iterate over a $@ of class $@. | test.py:50:10:50:22 | ControlFlowNode for NonIterator() | non-iterable instance | test.py:45:1:45:26 | class NonIterator | NonIterator |

@@ -1,0 +1,2 @@
+query: Variables/UnusedLocalVariable.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

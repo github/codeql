@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>In some situations, the code constructs used may be executed in the wrong order in which the developer designed them. For example, if you call multiple functions as part of a single expression, and the functions have the ability to modify a shared resource, then the sequence in which the resource is changed can be unpredictable. These code snippets look suspicious and require the developer's attention.</p>
+
+
+</overview>
+<recommendation>
+
+<p>We recommend that you use more guaranteed, in terms of sequence of execution, coding techniques.</p>
+
+</recommendation>
+<example>
+<p>The following example demonstrates sections of code with insufficient execution sequence definition.</p>
+<sample src="UndefinedOrImplementationDefinedBehavior.c" />
+
+</example>
+<references>
+
+<li>
+  CWE Common Weakness Enumeration:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/EXP10-C.+Do+not+depend+on+the+order+of+evaluation+of+subexpressions+or+the+order+in+which+side+effects+take+place"> EXP10-C. Do not depend on the order of evaluation of subexpressions or the order in which side effects take place</a>.
+</li>
+
+</references>
+</qhelp>

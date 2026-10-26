@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.trilead.ssh2", "Connection", False, "authenticateWithDSA", "(String,String,String)", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.trilead.ssh2", "Connection", False, "authenticateWithDSA", "(String,String,String)", "", "Argument[1]", "credentials-key", "manual"]
+      - ["com.trilead.ssh2", "Connection", False, "authenticateWithDSA", "(String,String,String)", "", "Argument[2]", "credentials-password", "manual"]
+      - ["com.trilead.ssh2", "Connection", False, "authenticateWithNone", "(String)", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.trilead.ssh2", "Connection", False, "authenticateWithPassword", "(String,String)", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.trilead.ssh2", "Connection", False, "authenticateWithPassword", "(String,String)", "", "Argument[1]", "credentials-password", "manual"]
+      - ["com.trilead.ssh2", "Connection", False, "authenticateWithPublicKey", "(String,char[],String)", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.trilead.ssh2", "Connection", False, "authenticateWithPublicKey", "(String,File,String)", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.trilead.ssh2", "Connection", False, "authenticateWithPublicKey", "(String,char[],String)", "", "Argument[1]", "credentials-key", "manual"]
+      - ["com.trilead.ssh2", "Connection", False, "authenticateWithPublicKey", "(String,char[],String)", "", "Argument[2]", "credentials-password", "manual"]
+      - ["com.trilead.ssh2", "Connection", False, "authenticateWithPublicKey", "(String,File,String)", "", "Argument[2]", "credentials-password", "manual"]
+      - ["com.trilead.ssh2", "Connection", False, "getRemainingAuthMethods", "(String)", "", "Argument[0]", "credentials-username", "manual"]
+      - ["com.trilead.ssh2", "Connection", False, "isAuthMethodAvailable", "(String,String)", "", "Argument[0]", "credentials-username", "manual"]

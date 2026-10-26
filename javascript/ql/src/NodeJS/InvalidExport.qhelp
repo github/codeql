@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Node.js modules that only export a single value commonly do so by assigning it directly to the
+<code>module.exports</code> property. A common mistake is to assign it to the <code>exports</code>
+variable instead, but this simply overwrites the value of <code>exports</code> without affecting
+the value of <code>module.exports</code>, and does not lead to anything being exported.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Rewrite the assignment to assign to <code>module.exports</code> instead.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, module <code>point.js</code> attempts to export the function <code>Point</code>
+by assigning it to <code>exports</code>. As explained above, this does not work as expected: after
+the assignment, the <code>exports</code> <i>variable</i> will contain a reference to <code>Point</code>, but
+the <code>module.exports</code> <i>property</i> still contains a reference to an empty object.
+Consequently, the client code in <code>client.js</code> will fail, since it attempts to call an object as
+a constructor.
+</p>
+
+<sample src="examples/InvalidExport.js" />
+
+<p>
+Instead of assigning to <code>exports</code>, <code>point.js</code> should assign to <code>module.exports</code>:
+</p>
+
+<sample src="examples/InvalidExportGood.js" />
+
+</example>
+<references>
+
+
+<li>Node.js Manual: <a href="http://nodejs.org/api/modules.html#modules_exports_alias">exports alias</a>.</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,35 @@
+name: Pull Request Open
+
+on:
+  workflow_run:
+
+jobs:
+  test1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download PR metadata
+        uses: dawidd6/action-download-artifact@e6e25ac3a2b93187502a8be1ef9e9603afc34925 # v2.24.2
+        with:
+          workflow: ${{ github.event.workflow_run.workflow_id }}
+          name: pr_metadata
+      - run: |
+          # VULNERABLE
+          echo "PR_NUMBER=$(cat pr_number.txt)" >> $GITHUB_ENV
+      - run: |
+          # VULNERABLE
+          echo "PR_NUMBER=$(cat pr_number.txt | tr ',' '\n')" >> $GITHUB_ENV
+      - run: |
+          # NOT VULNERABLE
+          echo "PR_NUMBER=$(cat pr_number.txt | tr '\n' ' ')" >> $GITHUB_ENV
+      - run: |
+          # NOT VULNERABLE
+          echo "PR_NUMBER=$(cat pr_number.txt | tr -d '\n')" >> $GITHUB_ENV
+      - run: |
+          # NOT VULNERABLE
+          echo "PR_NUMBER=$(cat pr_number.txt | tr -cd '[:alpha:]_')" >> $GITHUB_ENV
+      - run: |
+          # NOT VULNERABLE
+          echo "PR_NUMBER=$(cat pr_number.txt | tail -n 1)" >> $GITHUB_ENV
+      - run: |
+          # NOT VULNERABLE
+          echo "PR_NUMBER=$(cat pr_number.txt | head -n 1)" >> $GITHUB_ENV

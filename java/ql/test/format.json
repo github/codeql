@@ -1,0 +1,6 @@
+[
+  {
+    "pattern": "**/*.java",
+    "allowMixedTabsAndSpaces": true
+  }
+]

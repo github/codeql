@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

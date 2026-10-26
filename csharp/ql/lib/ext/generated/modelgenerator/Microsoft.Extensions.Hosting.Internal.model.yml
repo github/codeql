@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Hosting.Internal", "ApplicationLifetime", False, "ApplicationLifetime", "(Microsoft.Extensions.Logging.ILogger<Microsoft.Extensions.Hosting.Internal.ApplicationLifetime>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ConsoleLifetime", False, "ConsoleLifetime", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.ConsoleLifetimeOptions>,Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions>,Microsoft.Extensions.Logging.ILoggerFactory)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ConsoleLifetime", False, "ConsoleLifetime", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.ConsoleLifetimeOptions>,Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions>,Microsoft.Extensions.Logging.ILoggerFactory)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ConsoleLifetime", False, "ConsoleLifetime", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.ConsoleLifetimeOptions>,Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions>,Microsoft.Extensions.Logging.ILoggerFactory)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ConsoleLifetime", False, "ConsoleLifetime", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.ConsoleLifetimeOptions>,Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions>,Microsoft.Extensions.Logging.ILoggerFactory)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Hosting.Internal", "ApplicationLifetime", "NotifyStarted", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ApplicationLifetime", "NotifyStopped", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ApplicationLifetime", "StopApplication", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ConsoleLifetime", "ConsoleLifetime", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.ConsoleLifetimeOptions>,Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions>)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ConsoleLifetime", "Dispose", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ConsoleLifetime", "StopAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]

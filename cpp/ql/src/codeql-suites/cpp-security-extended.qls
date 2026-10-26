@@ -1,0 +1,5 @@
+- description: Security-extended queries for C and C++
+- queries: .
+- apply: security-extended-selectors.yml
+  from: codeql/suite-helpers
+- apply: codeql-suites/exclude-slow-queries.yml

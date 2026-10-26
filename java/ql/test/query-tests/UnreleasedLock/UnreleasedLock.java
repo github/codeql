@@ -1,0 +1,135 @@
+class Test {
+	static class MyLock {
+		void lock() throws RuntimeException { }
+		boolean tryLock() { return true; }
+		void unlock() { }
+		boolean isHeldByCurrentThread() { return true; }
+	}
+
+	void f() throws RuntimeException { }
+	void g() throws RuntimeException { }
+
+	MyLock mylock = new MyLock();
+
+	void bad1() {
+		mylock.lock(); // $ Alert
+		f();
+		mylock.unlock();
+	}
+
+	void good2() {
+		mylock.lock();
+		try {
+			f();
+		} finally {
+			mylock.unlock();
+		}
+	}
+
+	void bad3() {
+		mylock.lock(); // $ Alert
+		f();
+		try {
+			g();
+		} finally {
+			mylock.unlock();
+		}
+	}
+
+	void bad4() {
+		mylock.lock(); // $ Alert
+		try {
+			f();
+		} finally {
+			g();
+			mylock.unlock();
+		}
+	}
+
+	void bad5(boolean lockmore) {
+		mylock.lock(); // $ Alert
+		try {
+			f();
+			if (lockmore) {
+				mylock.lock();
+			}
+			g();
+		} finally {
+			mylock.unlock();
+		}
+	}
+
+	void good6() {
+		if (!mylock.tryLock()) { return; }
+		try {
+			f();
+		} finally {
+			mylock.unlock();
+		}
+	}
+
+	void bad7() {
+		if (!mylock.tryLock()) { return; } // $ Alert
+		f();
+		mylock.unlock();
+	}
+
+	void good7() {
+		try {
+			if (mylock.tryLock()) {
+				return;
+			}
+		} finally {
+			if (mylock.isHeldByCurrentThread()) {
+				mylock.unlock();
+			}
+		}
+	}
+
+	void good8() {
+		boolean locked = mylock.tryLock();
+		if (!locked) { return; }
+		try {
+			f();
+		} finally {
+			mylock.unlock();
+		}
+	}
+
+	void good9() {
+		boolean locked = false;
+		try {
+			locked = mylock.tryLock();
+			if (!locked) { return; }
+		} finally {
+			if (locked) {
+				mylock.unlock();
+			}
+		}
+	}
+
+	void bad10() {
+		boolean locked = false;
+		try {
+			locked = mylock.tryLock(); // $ Alert
+			if (!locked) { return; }
+		} finally {
+			if (locked) {
+				g();
+				mylock.unlock();
+			}
+		}
+	}
+
+	static class TestPool {
+		void lock() {}
+		void unlock() {}
+	}
+
+	void good11() {
+		TestPool pool = new TestPool();
+		pool.lock(); // Should be excluded because of "Pool" suffix
+		f();
+		pool.unlock();
+	}
+}

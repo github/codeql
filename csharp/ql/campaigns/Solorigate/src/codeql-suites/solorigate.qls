@@ -1,0 +1,4 @@
+- description: Queries related to Solorigate
+- queries: .
+- include:
+    tags contain: solorigate

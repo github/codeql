@@ -1,0 +1,19 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This query finds classes that belong to no namespace.</p>
+</overview>
+
+<recommendation>
+<p>If there are many classes that belong to no namespace, consider defining namespaces to create a better project structure.</p>
+</recommendation>
+
+<references>
+<li>C++ reference: <a href="https://en.cppreference.com/w/cpp/language/namespace">Namespaces</a>
+ </li>
+</references>
+</qhelp>

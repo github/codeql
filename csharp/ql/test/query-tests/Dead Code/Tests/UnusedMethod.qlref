@@ -1,0 +1,2 @@
+query: Dead Code/UnusedMethod.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

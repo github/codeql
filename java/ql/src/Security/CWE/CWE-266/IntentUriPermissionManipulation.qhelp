@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>When an Android component expects a result from an Activity, <code>startActivityForResult</code> can be used.
+The started Activity can then use <code>setResult</code> to return the appropriate data to the calling component.</p>
+<p>If an Activity obtains the incoming, user-provided Intent and directly returns it via <code>setResult</code>
+without any checks, the application may be unintentionally giving arbitrary access to its content providers, even
+if they are not exported, as long as they are configured with the attribute <code>android:grantUriPermissions="true"</code>. 
+This happens because the attacker adds the appropriate URI permission flags to the provided Intent, which take effect
+once the Intent is reflected back.</p>
+</overview>
+
+<recommendation>
+<p>Avoid returning user-provided or untrusted Intents via <code>setResult</code>. Use a new Intent instead.</p>
+<p>If it is required to use the received Intent, make sure that it does not contain URI permission flags, either
+by checking them with <code>Intent.getFlags</code> or removing them with <code>Intent.removeFlags</code>.</p>
+</recommendation>
+
+<example>
+<p>The following sample contains three examples. In the first example, a user-provided Intent is obtained and 
+  directly returned back with <code>setResult</code>, which is dangerous. In the second example, a new Intent
+  is created to safely return the desired data. The third example shows how the obtained Intent can be sanitized
+  by removing dangerous flags before using it to return data to the calling component.
+</p>
+
+<sample src="IntentUriPermissionManipulation.java" />
+</example>
+
+<references>
+<li>Google Help: <a href="https://support.google.com/faqs/answer/9267555?hl=en">Remediation for Intent Redirection Vulnerability</a>.</li>
+</references>
+</qhelp>

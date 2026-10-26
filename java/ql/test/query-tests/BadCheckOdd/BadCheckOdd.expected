@@ -1,0 +1,9 @@
+| BadCheckOdd.java:10:10:10:20 | ... > ... | Possibly invalid test for oddness. This will fail for negative numbers. |
+| BadCheckOdd.java:14:10:14:22 | ... > ... | Possibly invalid test for oddness. This will fail for negative numbers. |
+| BadCheckOdd.java:18:10:18:22 | ... > ... | Possibly invalid test for oddness. This will fail for negative numbers. |
+| BadCheckOdd.java:22:10:22:22 | ... > ... | Possibly invalid test for oddness. This will fail for negative numbers. |
+| BadCheckOdd.java:26:10:26:22 | ... > ... | Possibly invalid test for oddness. This will fail for negative numbers. |
+| BadCheckOdd.java:50:10:50:18 | ... > ... | Possibly invalid test for oddness. This will fail for negative numbers. |
+| BadCheckOdd.java:54:10:54:18 | ... > ... | Possibly invalid test for oddness. This will fail for negative numbers. |
+| BadCheckOdd.java:63:10:63:18 | ... > ... | Possibly invalid test for oddness. This will fail for negative numbers. |
+| BadCheckOdd.java:68:10:68:17 | ... > ... | Possibly invalid test for oddness. This will fail for negative numbers. |

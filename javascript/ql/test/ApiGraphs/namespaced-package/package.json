@@ -1,0 +1,6 @@
+{
+    "name": "@myorg/mypkg",
+    "dependencies": {
+        "@myorg/myotherpkg": "*"
+    }
+}
