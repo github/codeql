@@ -131,11 +131,10 @@ private class SwiftTypeInferencePlugin extends Plugin::TypeInferencePlugin {
     result.getName() = "callAsFunction"
   }
 
-  bindingset[t, arity, i]
-  override predicate functionInvokeSignature(Type t, int arity, int i, int j, TypePath path) {
-    j = 1 and
-    path = TypePath::singleton(getTupleTypeParameter(arity, i)) and
-    exists(t)
+  bindingset[arity, i]
+  override predicate functionInvokeSignature(int arity, int i, int j, TypePath path) {
+    j = 0 and
+    path = TypePath::singleton(getTupleTypeParameter(arity, i))
   }
 
   override Type getTupleType(int arity) { result.(TupleType).getArity() = arity }

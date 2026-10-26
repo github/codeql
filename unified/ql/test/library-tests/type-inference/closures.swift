@@ -74,4 +74,4 @@ class Box<T> {}
 let f: (Box<Int>) -> Void = { box in
 }
 
-f(Box())  // $ target=Function.callAsFunction target=Box.init $ MISSING: type=Box(...)@Box<T>:Int
+f(Box())  // $ target=Function.callAsFunction target=Box.init type=Box(...)@Box<T>:Int

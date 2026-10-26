@@ -73,5 +73,5 @@ let pair = swap(a: 1, a: true)  // $ target=swap type=pair@Tuple2<T0>:Bool type=
 func f(a first: (Int) -> Void, a second: (String) -> Void) {}
 
 f { x in  // $ type=x:Int
-} a: { y in  // $ type=y:String
+} a: { y in  // $ MISSING: type=y:String (second closure is incorrectly matched against the first `a` parameter)
 }  // $  target=f

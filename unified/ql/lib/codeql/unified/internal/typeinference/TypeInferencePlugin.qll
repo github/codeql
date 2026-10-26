@@ -65,15 +65,15 @@ class TypeInferencePlugin extends Unit {
 
   /**
    * Holds if the `i`th syntactic argument in a call to the `invoke` function
-   * belonging to `t` should map to position `j` and type path `path`.
+   * should map to position `j` and type path `path`.
    *
    * For example, in Rust, in a call `closure(arg0, arg1)` the first argument
    * maps to `(1, "T0")` and the second argument maps to `(1, "T1")`, where `T0`
    * is the first type parameter of the 2-tuple type and `T1` is the second type
    * parameter.
    */
-  bindingset[t, arity, i]
-  abstract predicate functionInvokeSignature(Type t, int arity, int i, int j, TypePath path);
+  bindingset[arity, i]
+  abstract predicate functionInvokeSignature(int arity, int i, int j, TypePath path);
 
   /** Gets the tuple type with the given arity. */
   abstract Type getTupleType(int arity);
@@ -135,7 +135,7 @@ Type inferType(AstNode n, TypePath path) { result = any(TypeInferencePlugin p).i
 
 Callable getFunctionInvoke(Type t) { result = any(TypeInferencePlugin p).getFunctionInvoke(t) }
 
-bindingset[t, arity, i]
-predicate functionInvokeSignature(Type t, int arity, int i, int j, TypePath path) {
-  any(TypeInferencePlugin p).functionInvokeSignature(t, arity, i, j, path)
+bindingset[arity, i]
+predicate functionInvokeSignature(int arity, int i, int j, TypePath path) {
+  any(TypeInferencePlugin p).functionInvokeSignature(arity, i, j, path)
 }
