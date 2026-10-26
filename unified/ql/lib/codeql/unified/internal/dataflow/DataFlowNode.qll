@@ -353,13 +353,20 @@ class BuilderNode extends TDataFlowNodeStage1 {
         cfgNode.injects(callable.asSourceCallable())
       )
       or
-      exists(DataFlowCall call, CallExpr sourceCall, boolean isPost |
-        call.asExplicitCall() = sourceCall and
-        this.isImplicitArgument(call, _, isPost) and
+      exists(DataFlowCall call, Expr access, boolean isPost |
+        this.isImplicitArgument(call, _, isPost)
+      |
         (
-          isPost = false and cfgNode.injects(sourceCall)
+          access = call.asExplicitCall()
           or
-          isPost = true and cfgNode.isAfter(sourceCall)
+          access = call.asGetterCall()
+          or
+          access = call.asSetterCall()
+        ) and
+        (
+          isPost = false and cfgNode.injects(access)
+          or
+          isPost = true and cfgNode.isAfter(access)
         )
       )
     )
