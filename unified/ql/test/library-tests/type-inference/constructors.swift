@@ -74,7 +74,7 @@ struct S1<T> {  // implicit `init(f1: T, f2: String = "default", f3: (T) -> T = 
 var s11 = S1(f1: 0)  // $ target=S1.init type=s11@S1<T>:Int
 var s12 = S1(f1: true, f2: "")  // $ target=S1.init type=s12@S1<T>:Bool
 S1(f1: 0, f2: "", f3: { x in x })  // $ target=S1.init type=x:Int
-S1(f1: 0, f3: { x in x })  // $ target=S1.init $ MISSING: type=x:Int (optional parameters are not handled)
+S1(f1: 0, f3: { x in x })  // $ target=S1.init type=x:Int
 
 enum E1 {
     case a(Int)
