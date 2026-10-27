@@ -473,7 +473,13 @@ abstract class ReturnNode extends Node {
 }
 
 final class ExprReturnNode extends ExprNode, ReturnNode {
-  ExprReturnNode() { n.getACfgNode().getASuccessor() instanceof AnnotatedExitCfgNode }
+  ExprReturnNode() {
+    exists(SuccessorType t | n.getACfgNode().getASuccessor(t) instanceof AnnotatedExitCfgNode |
+      // The early return of `x?` returns the `Err` or `None` held by `x`, which is
+      // a different value from the one `x?` evaluates to
+      not (n instanceof TryExpr and t instanceof ReturnSuccessor)
+    )
+  }
 
   override ReturnKind getKind() { result = TNormalReturnKind() }
 }
