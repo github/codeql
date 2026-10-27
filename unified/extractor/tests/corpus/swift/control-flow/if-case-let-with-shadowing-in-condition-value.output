@@ -112,46 +112,46 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩\n\n⟨stmt⟩"
       stmt:
-        if_expr
+        if_expr source="if ⟨condition⟩ ⟨then⟩"
           condition:
-            pattern_guard_expr
+            pattern_guard_expr source="case ⟨pattern⟩ = ⟨value⟩"
               pattern:
-                expr_pattern
-                  modifier: modifier "let"
-                  expr: identifier "x"
+                expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                  modifier: modifier "let" source="let"
+                  expr: identifier "x" source="x"
               value:
-                binary_expr
-                  left: identifier "x"
-                  operator: infix_operator "+"
-                  right: int_literal "10"
+                binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                  left: identifier "x" source="x"
+                  operator: infix_operator "+" source="+"
+                  right: int_literal "10" source="10"
           then:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                call_expr
-                  callee: identifier "print"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
                   argument:
-                    argument
-                      value: identifier "x"
-        if_expr
+                    argument source="⟨value⟩"
+                      value: identifier "x" source="x"
+        if_expr source="if ⟨condition⟩ ⟨then⟩"
           condition:
-            pattern_guard_expr
+            pattern_guard_expr source="case ⟨pattern⟩ = ⟨value⟩"
               pattern:
-                expr_pattern
-                  modifier: modifier "var"
-                  expr: identifier "y"
+                expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                  modifier: modifier "var" source="var"
+                  expr: identifier "y" source="y"
               value:
-                binary_expr
-                  left: identifier "y"
-                  operator: infix_operator "+"
-                  right: int_literal "10"
+                binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                  left: identifier "y" source="y"
+                  operator: infix_operator "+" source="+"
+                  right: int_literal "10" source="10"
           then:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                compound_assign_expr
-                  target: identifier "y"
-                  operator: infix_operator "+="
-                  value: int_literal "1"
+                binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                  left: identifier "y" source="y"
+                  operator: infix_operator "+=" source="+="
+                  right: int_literal "1" source="1"

@@ -5,9 +5,10 @@
 
 <overview>
 <p>
-Web sites that do not specify the <code>X-Frame-Options</code> HTTP header may be vulnerable to UI
-redress attacks ("clickjacking"). In these attacks, the vulnerable site is loaded in a frame on
-an attacker-controlled site which uses opaque or transparent layers to trick the user into
+Web sites that do not restrict framing using the <code>X-Frame-Options</code> HTTP header or the
+<code>frame-ancestors</code> Content Security Policy directive may be vulnerable to UI redress
+attacks ("clickjacking"). In these attacks, the vulnerable site is loaded in a frame on an
+attacker-controlled site which uses opaque or transparent layers to trick the user into
 unintentionally clicking a button or link on the vulnerable site.
 </p>
 
@@ -17,16 +18,24 @@ unintentionally clicking a button or link on the vulnerable site.
 <p>
 Set the <code>X-Frame-Options</code> HTTP header to <code>DENY</code>, to instruct web browsers to
 block attempts to load the site in a frame. Alternatively, if framing is needed in certain
-circumstances, specify <code>SAMEORIGIN</code> or <code>ALLOW FROM: ...</code> to limit the ability
-to frame the site to pages from the same origin, or from an allowed whitelist of trusted domains.
+circumstances, specify <code>SAMEORIGIN</code> to permit framing by the same origin. The
+<code>frame-ancestors</code> directive in an enforced <code>Content-Security-Policy</code> header
+provides a more flexible alternative. For example, use <code>frame-ancestors 'none'</code> to
+prevent all framing, or use its source list to specify which origins may embed the application.
 </p>
 <p>
-For ASP.NET web applications, the header may be specified either in the <code>Web.config</code>
-file, using the <code>&lt;customHeaders&gt;</code> tag, or within the source code of the
-application using the <code>HttpResponse.AddHeader</code> method. In general, prefer specifying the
-header in the <code>Web.config</code> file to ensure it is added to all requests. If adding it
-to the source code, ensure that it is added unconditionally to all requests. For example, add the
-header in the <code>Application_BeginRequest</code> method in the <code>global.asax</code> file.
+For ASP.NET Framework applications, the header may be specified either in the
+<code>Web.config</code> file, using the <code>&lt;customHeaders&gt;</code> tag, or within the source
+code of the application using the <code>HttpResponse.AddHeader</code> method. In general, prefer
+specifying the header in the <code>Web.config</code> file to ensure it is added to all requests. If
+adding it to the source code, ensure that it is added unconditionally to all requests. For example,
+add the header in the <code>Application_BeginRequest</code> method in the
+<code>global.asax</code> file.
+</p>
+<p>
+For ASP.NET Core applications, set the header on <code>HttpResponse.Headers</code>. This can be
+done using the header dictionary's indexer or its <code>Append</code>, <code>Add</code>, or
+<code>TryAdd</code> methods.
 </p>
 
 </recommendation>
@@ -41,10 +50,16 @@ The following example shows how to specify the <code>X-Frame-Options</code> head
 
 <p>
 This next example shows how to specify the <code>X-Frame-Options</code> header within the
-<code>global.asax</code> file for ASP.NET application:
+<code>global.asax</code> file for an ASP.NET application:
 </p>
 
 <sample src="MissingXFrameOptions.cs" />
+
+<p>
+The following ASP.NET Core example uses an enforced Content Security Policy to disallow framing:
+</p>
+
+<sample src="MissingXFrameOptionsAspNetCore.cs" />
 
 </example>
 <references>
@@ -56,6 +71,10 @@ OWASP:
 <li>
 Mozilla:
 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options">X-Frame-Options</a>
+</li>
+<li>
+Mozilla:
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors">Content-Security-Policy: frame-ancestors</a>
 </li>
 
 </references>

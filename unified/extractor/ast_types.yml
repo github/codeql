@@ -13,6 +13,7 @@ supertypes:
     - binary_expr
     - unary_expr
     - call_expr
+    - macro_call_expr
     - member_access_expr
     - super_expr
     - function_expr
@@ -23,8 +24,6 @@ supertypes:
     - type_cast_expr
     - type_test_expr
     - if_expr
-    - assign_expr
-    - compound_assign_expr
     - pattern_guard_expr
     - empty_expr
     - block
@@ -36,10 +35,13 @@ supertypes:
     - switch_expr
     - unresolved_operator_sequence
     - unsupported_node
+    - unhandled_node
     - or_pattern
     - conditional_pattern
     - bulk_importing_pattern
+    - ignore_pattern
     - generic_type_expr
+    - modified_type_expr
     - inferred_type_expr
   # An element of an `unresolved_operator_sequence`: either an operand (`expr`)
   # or one of the infix operators separating the operands.
@@ -64,27 +66,37 @@ supertypes:
     - for_each_stmt
     - while_stmt
     - do_while_stmt
+    - defer_stmt
     - labeled_stmt
   callable:
-    - top_level
-    - function_expr
-    - function_declaration
-    - constructor_declaration
-    - destructor_declaration
-    - accessor_declaration
-    - initializer_declaration
+    subtypes:
+      - top_level
+      - function_expr
+      - function_declaration
+      - constructor_declaration
+      - destructor_declaration
+      - accessor_declaration
+      - initializer_declaration
+    fields:
+      parameter*: parameter
+      body?: block
+      return_type?: expr
   # A member is anything that can appear in the body of a class-like declaration
   member:
-    - constructor_declaration
-    - destructor_declaration
-    - function_declaration
-    - variable_declaration
-    - accessor_declaration
-    - initializer_declaration
-    - class_like_declaration
-    - type_alias_declaration
-    - associated_type_declaration
-    - unsupported_node
+    subtypes:
+      - constructor_declaration
+      - destructor_declaration
+      - function_declaration
+      - variable_declaration
+      - accessor_declaration
+      - initializer_declaration
+      - class_like_declaration
+      - type_alias_declaration
+      - associated_type_declaration
+      - unsupported_node
+      - unhandled_node
+    fields:
+      name_node: identifier
   type_constraint:
     - equality_type_constraint
     - bound_type_constraint
@@ -159,17 +171,6 @@ named:
   unresolved_operator_sequence:
     element*: expr_or_operator
 
-  # Plain assignment
-  assign_expr:
-    target: expr
-    value: expr
-
-  # Compound assignment
-  compound_assign_expr:
-    target: expr
-    operator: infix_operator
-    value: expr
-
   # A function or method call, such as `f(x)` or `obj.m(x)`.
   #
   # Method calls are represented as a call whose `function` is a `member_access_expr`.
@@ -178,6 +179,13 @@ named:
   call_expr:
     modifier*: modifier
     callee: expr
+    argument*: argument
+
+  # A macro call expression, such as `#expect(x == y)` in Swift or
+  # `assert!(x == y)` in Rust.
+  macro_call_expr:
+    macro_name_node: identifier
+    type_argument*: expr
     argument*: argument
 
   argument:
@@ -356,6 +364,9 @@ named:
     body?: block
     condition: expr
 
+  defer_stmt:
+    body: expr
+
   # `do { body } catch pattern { ... } catch ...`. Swift uses `do`/`catch`
   # for error handling; for languages with `try`/`catch`, this is the same shape.
   try_expr:
@@ -424,11 +435,17 @@ named:
   bulk_importing_pattern:
     modifier*: modifier
 
+  # A pattern that accepts any incoming value, usually written as an `_`.
+  ignore_pattern:
+
   # A simple unqualified name token
   identifier:
 
   # A node that we don't yet translate
   unsupported_node:
+
+  # A node kind that has no explicit translation or unsupported classification
+  unhandled_node:
 
   infix_operator:
 
@@ -536,6 +553,12 @@ named:
   generic_type_expr:
     base: expr
     type_argument*: expr
+
+  # A type with a modifier. In Swift this can be specifiers or attributes, such
+  # as `inout T`, `sending T` or `@escaping () -> Void`.
+  modified_type_expr:
+    modifier*: modifier
+    type: expr
 
   # A modifier such as 'static', 'public', or 'async'. For now this is just a leaf node with a string value.
   modifier:

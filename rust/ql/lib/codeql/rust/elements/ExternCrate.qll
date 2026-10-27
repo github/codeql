@@ -4,7 +4,7 @@
  */
 
 private import internal.ExternCrateImpl
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.Item
 import codeql.rust.elements.NameRef
 import codeql.rust.elements.Rename

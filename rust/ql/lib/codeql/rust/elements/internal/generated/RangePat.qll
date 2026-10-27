@@ -29,6 +29,8 @@ module Generated {
   class RangePat extends Synth::TRangePat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "RangePat" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the end of this range pattern, if it exists.
      */

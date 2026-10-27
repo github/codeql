@@ -1,8 +1,13 @@
+#select
+| test.go:18:10:18:12 | buf | test.go:15:28:15:30 | buf [postupdate] | test.go:18:10:18:12 | buf | HTTP response depends on $@ and may be exposed to an external user. | test.go:15:28:15:30 | buf [postupdate] | stack trace information |
+| test.go:46:11:46:13 | buf | test.go:15:28:15:30 | buf [postupdate] | test.go:46:11:46:13 | buf | HTTP response depends on $@ and may be exposed to an external user. | test.go:15:28:15:30 | buf [postupdate] | stack trace information |
 edges
 | test.go:15:28:15:30 | buf [postupdate] | test.go:18:10:18:12 | buf | provenance |  |
+| test.go:15:28:15:30 | buf [postupdate] | test.go:21:29:21:31 | buf | provenance |  |
+| test.go:21:29:21:31 | buf | test.go:46:11:46:13 | buf | provenance |  |
 nodes
 | test.go:15:28:15:30 | buf [postupdate] | semmle.label | buf [postupdate] |
 | test.go:18:10:18:12 | buf | semmle.label | buf |
+| test.go:21:29:21:31 | buf | semmle.label | buf |
+| test.go:46:11:46:13 | buf | semmle.label | buf |
 subpaths
-#select
-| test.go:18:10:18:12 | buf | test.go:15:28:15:30 | buf [postupdate] | test.go:18:10:18:12 | buf | HTTP response depends on $@ and may be exposed to an external user. | test.go:15:28:15:30 | buf [postupdate] | stack trace information |

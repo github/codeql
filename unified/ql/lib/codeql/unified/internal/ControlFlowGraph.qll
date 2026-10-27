@@ -7,6 +7,7 @@ module;
 private import unified
 private import codeql.controlflow.ControlFlowGraph
 private import codeql.controlflow.SuccessorType
+private import ControlFlowGraphPlugin
 
 private module Cfg0 = Make0<Location, Ast>;
 
@@ -16,11 +17,10 @@ private module Cfg2 = Make2<Input>;
 
 private import Cfg0
 private import Cfg1
-private import Cfg2
-import Public
+import Cfg2
 
 /** Provides an implementation of the AST signature for Unified. */
-private module Ast implements AstSig<Location> {
+module Ast implements AstSig<Location> {
   private import unified as U
 
   class AstNode = U::AstNode;
@@ -29,26 +29,45 @@ private module Ast implements AstSig<Location> {
     e instanceof Modifier
     or
     e instanceof Identifier and not e instanceof IdentifierExpr
+    or
+    e instanceof Operator
+    or
+    not e.fromSource()
   }
+
+  private AstNode adjustedGetChild(AstNode n, int index) { deferScope(n, index, result) }
 
   AstNode getChild(AstNode n, int index) {
     result.getParent() = n and
     result.getParentIndex() = index and
     not n instanceof Callable and
     not skipControlFlow(n) and
-    not skipControlFlow(result)
+    not skipControlFlow(result) and
+    not adjustedGetChild(_, _) = result
+    or
+    adjustedGetChild(n, index) = result
+    or
+    n.(FunctionExpr).getCaptureDeclaration(index) = result
+    or
+    n.(FunctionDeclaration).getNameNode() = result and index = 0
   }
 
   Callable getEnclosingCallable(AstNode node) { result = node.getEnclosingCallable() }
 
-  class Callable = U::Callable;
+  class Callable extends U::Callable {
+    Callable() { this.fromSource() }
+  }
 
   AstNode callableGetBody(Callable c) { result = c.getBody() }
 
   class Parameter extends U::Parameter {
     Expr getDefaultValue() { result = super.getDefault() }
 
-    AstNode getPattern() { result = super.getPattern() }
+    AstNode getPattern() {
+      result = super.getPattern()
+      or
+      not exists(super.getPattern()) and result = this
+    }
   }
 
   Parameter callableGetParameter(Callable c, int index) {
@@ -62,7 +81,56 @@ private module Ast implements AstSig<Location> {
 
   class Expr = U::Expr;
 
-  class BlockStmt = U::Block;
+  /**
+   * Holds if `s` is the `n`th statement in the constructed `try` block of
+   * `defer`.
+   *
+   * For example, the following `defer` statements
+   * ```
+   * {
+   *   s1
+   *   defer { s5 }
+   *   s2
+   *   defer { s4 }
+   *   s3
+   * }
+   * ```
+   * are transformed into these `try`-`finally` blocks:
+   * ```
+   * {
+   *   s1
+   *   try {
+   *     s2
+   *     try {
+   *       s3
+   *     } finally {
+   *       s4
+   *     }
+   *   } finally {
+   *     s5
+   *   }
+   * }
+   * ```
+   */
+  private predicate deferScope(U::DeferStmt defer, int n, Stmt s) {
+    exists(U::Block block, int deferIdx | block.getStmt(deferIdx) = defer |
+      block.getStmt(deferIdx + 1) = s and n = 0
+      or
+      exists(Stmt mid |
+        deferScope(defer, n - 1, mid) and
+        not mid instanceof U::DeferStmt and
+        block.getStmt(deferIdx + 1 + n) = s
+      )
+    )
+  }
+
+  class BlockStmt extends Stmt instanceof U::Block {
+    Stmt getStmt(int n) { result = super.getStmt(n) and not deferScope(_, _, result) }
+
+    Stmt getLastStmt() {
+      exists(int i | result = this.getStmt(i) and not exists(this.getStmt(i + 1)))
+    }
+  }
 
   class ExprStmt extends Stmt {
     ExprStmt() { none() }
@@ -70,14 +138,12 @@ private module Ast implements AstSig<Location> {
     Expr getExpr() { none() }
   }
 
-  class IfStmt extends Stmt {
-    IfStmt() { none() }
-
-    Expr getCondition() { none() }
+  class IfStmt extends Stmt instanceof U::GuardIfStmt {
+    Expr getCondition() { result = super.getCondition() }
 
     Stmt getThen() { none() }
 
-    Stmt getElse() { none() }
+    Stmt getElse() { result = super.getElse() }
   }
 
   abstract class LoopStmt extends Stmt {
@@ -115,16 +181,18 @@ private module Ast implements AstSig<Location> {
   class ForEachStmt extends LoopStmt instanceof U::ForEachStmt {
     override Stmt getBody() { result = U::ForEachStmt.super.getBody() }
 
-    // TODO support foreach guard
-    //
     Expr getVariable() { result = super.getPattern() }
 
     Expr getCollection() { result = super.getIterable() }
   }
 
+  AstNode getLoopGuard(ForEachStmt foreachstmt) { result = foreachstmt.(U::ForEachStmt).getGuard() }
+
   class BreakStmt = U::BreakExpr;
 
   class ContinueStmt = U::ContinueExpr;
+
+  class LabeledStmt = U::LabeledStmt;
 
   class GotoStmt extends Stmt {
     GotoStmt() { none() }
@@ -138,12 +206,18 @@ private module Ast implements AstSig<Location> {
     Expr getExpr() { result = super.getValue() }
   }
 
-  class TryStmt extends U::TryExpr {
-    AstNode getBody(int index) { index = 0 and result = super.getBody() }
+  class TryStmt extends Stmt {
+    TryStmt() { this instanceof U::TryExpr or this instanceof U::DeferStmt }
 
-    CatchClause getCatch(int index) { result = super.getCatchClause(index) }
+    AstNode getBody(int index) {
+      index = 0 and result = this.(U::TryExpr).getBody()
+      or
+      deferScope(this, index, result)
+    }
 
-    Stmt getFinally() { none() }
+    CatchClause getCatch(int index) { result = this.(U::TryExpr).getCatchClause(index) }
+
+    Stmt getFinally() { result = this.(U::DeferStmt).getBody() }
   }
 
   class CatchClause extends U::CatchClause {
@@ -195,20 +269,23 @@ private module Ast implements AstSig<Location> {
 
   class LogicalNotExpr = U::LogicalNotExpr;
 
-  // TODO
-  class Assignment extends BinaryExpr {
-    Assignment() { none() }
+  class Assignment extends BinaryExpr, U::Assignment { }
+
+  class AssignExpr extends Assignment, U::AssignExpr { }
+
+  class CompoundAssignment extends Assignment, U::CompoundAssignExpr { }
+
+  class AssignLogicalAndExpr extends CompoundAssignment {
+    AssignLogicalAndExpr() { this.getOperator().getValue() = "&&=" }
   }
 
-  class AssignExpr extends Assignment { }
+  class AssignLogicalOrExpr extends CompoundAssignment {
+    AssignLogicalOrExpr() { this.getOperator().getValue() = "||=" }
+  }
 
-  class CompoundAssignment extends Assignment { }
-
-  class AssignLogicalAndExpr extends CompoundAssignment { }
-
-  class AssignLogicalOrExpr extends CompoundAssignment { }
-
-  class AssignNullCoalescingExpr extends CompoundAssignment { }
+  class AssignNullCoalescingExpr extends CompoundAssignment {
+    AssignNullCoalescingExpr() { this.getOperator().getValue() = "??=" }
+  }
 
   class BooleanLiteral extends U::BooleanLiteral {
     boolean getValue() { result.toString() = super.getValue() }
@@ -220,6 +297,8 @@ private module Ast implements AstSig<Location> {
     AstNode getPattern() { result = super.getPattern() }
   }
 }
+
+private predicate mayThrow(AstNode ast) { any(ControlFlowGraphPlugin p).mayThrow(ast) }
 
 private module Input implements InputSig1, InputSig2 {
   private import codeql.util.Void
@@ -236,15 +315,8 @@ private module Input implements InputSig1, InputSig2 {
     string toString() { result = this }
   }
 
-  private Label getLabelOfStmt(Stmt s) {
-    exists(LabeledStmt l | s = l.getStmt() |
-      result = l.getLabelName() or
-      result = getLabelOfStmt(l)
-    )
-  }
-
   predicate hasLabel(Ast::AstNode n, Label l) {
-    l = getLabelOfStmt(n)
+    l = n.(LabeledStmt).getLabelName()
     or
     l = n.(BreakExpr).getLabelName()
     or
@@ -256,7 +328,10 @@ private module Input implements InputSig1, InputSig2 {
   predicate beginAbruptCompletion(
     AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
   ) {
-    none()
+    mayThrow(ast) and
+    n.isIn(ast) and
+    c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+    always = false
   }
 
   predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c) { none() }

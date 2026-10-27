@@ -23,4 +23,4 @@ where
   thenBranch = is.getThen() and
   elseBranch = is.getElse() and
   thenBranch.hash() = elseBranch.hash()
-select is.getCond(), "The 'then' and 'else' branches of this if statement are identical."
+select is.getCondition(), "The 'then' and 'else' branches of this if statement are identical."

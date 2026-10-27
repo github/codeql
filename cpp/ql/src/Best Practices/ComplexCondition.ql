@@ -5,9 +5,11 @@
  * @problem.severity recommendation
  * @precision high
  * @id cpp/complex-condition
- * @tags testability
+ * @tags quality
+ *       testability
  *       readability
  *       maintainability
+ *       complexity
  *       statistical
  *       non-attributable
  */

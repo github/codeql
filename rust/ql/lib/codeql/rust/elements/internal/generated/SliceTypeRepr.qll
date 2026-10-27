@@ -28,6 +28,8 @@ module Generated {
   class SliceTypeRepr extends Synth::TSliceTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "SliceTypeRepr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the type representation of this slice type representation, if it exists.
      */

@@ -254,6 +254,7 @@ module Make<LocationSig Location, CfgSig<Location> Cfg, InputSig<Cfg::AstNode, C
     )
   }
 
+  /** Provides a query for dumping every line-based slice of a basic block. */
   module BlockSlices {
     /**
      * Holds if `blockSlice` is a string representation of a `line` slice of a
@@ -283,6 +284,13 @@ module Make<LocationSig Location, CfgSig<Location> Cfg, InputSig<Cfg::AstNode, C
 
   /** A `ControlFlowNode` with its location trimmed to a single line. */
   class ControlFlowNode1line extends FinalControlFlowNode {
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `sc` of line `sl` to
+     * column `ec` of line `el` in file `file`.
+     * For more information, see
+     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+     */
     predicate hasLocationInfo(string file, int sl, int sc, int el, int ec) {
       exists(int el0, int ec0 |
         super.getLocation().hasLocationInfo(file, sl, sc, el0, ec0) and

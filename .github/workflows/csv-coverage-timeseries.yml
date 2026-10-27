@@ -20,10 +20,10 @@ jobs:
         with:
           path: codeqlModels
           fetch-depth: 0
-      - name: Set up Python 3.8
+      - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: "3.12"
       - name: Download CodeQL CLI
         uses: ./script/.github/actions/fetch-codeql
       - name: Build modeled package list

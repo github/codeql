@@ -26,5 +26,7 @@ module Generated {
    */
   class NotNull extends Synth::TNotNull, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "NotNull" }
+
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }

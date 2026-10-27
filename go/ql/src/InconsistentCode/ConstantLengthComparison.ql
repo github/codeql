@@ -13,10 +13,11 @@
  */
 
 import go
+private import semmle.go.controlflow.Guards
 
 from
-  ForStmt fs, Variable i, DataFlow::ElementReadNode idx, GVN a,
-  ControlFlow::ConditionGuardNode cond, DataFlow::CallNode lenA
+  ForStmt fs, Variable i, DataFlow::ElementReadNode idx, GVN a, Guard cond, boolean branch,
+  DataFlow::CallNode lenA
 where
   // `i` is incremented in `fs`
   fs.getPost().(IncStmt).getOperand() = i.getAReference() and
@@ -27,11 +28,11 @@ where
   lenA.getArgument(0) = a.getANode() and
   // and is checked against a constant
   exists(DataFlow::Node const | exists(const.getIntValue()) |
-    cond.ensuresNeq(lenA, const) or
-    cond.ensuresLeq(const, lenA, _)
+    guardEnsuresNeq(cond, branch, lenA, const) or
+    guardEnsuresLeq(cond, branch, const, lenA, _)
   ) and
-  cond.dominates(idx.getBasicBlock()) and
+  cond.controls(idx.getBasicBlock(), branch) and
   // and that check happens inside the loop body
-  cond.getCondition().getParent+() = fs
-select cond.getCondition(), "This checks the length against a constant, but it $@.", idx,
+  cond.(Expr).getParent+() = fs
+select cond, "This checks the length against a constant, but it $@.", idx,
   "is indexed using a variable"

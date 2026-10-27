@@ -79,7 +79,14 @@ signature module InputSig1<LocationSig Location> {
    * For example `int` or ``IEnumerable`1``.
    */
   class Type {
-    /** Gets a type parameter of this type, if any. */
+    /** Gets the `i`th positional type parameter of this type, if any. */
+    TypeParameter getPositionalTypeParameter(int i);
+
+    /**
+     * Gets a type parameter of this type, if any.
+     *
+     * This may include non-positional type parameters as well.
+     */
     TypeParameter getATypeParameter();
 
     /** Gets a textual representation of this type. */
@@ -358,10 +365,27 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
   module Make2<HasTypeTreeSig TypeMention, InputSig2<TypeMention> Input2> {
     private import Input2
 
-    /** Gets the type at the empty path of `tm`. */
+    /**
+     * Gets the non-pseudo root type mentioned at `tm`.
+     *
+     * Type mentions are allowed to resolve to `UnknownType` (which this predicate
+     * will filter away), for example in
+     *
+     * ```rust
+     * let x: Vec<Unresolved> = Vec::new();
+     * x.push(foo());
+     * ```
+     *
+     * by resolving `Unresolved` to `UnknownType` (that is, treating it as if it was
+     * `_`), we allow for the element type to be inferred from the return type of
+     * `foo`.
+     */
     bindingset[tm]
     pragma[inline_late]
-    private Type getTypeMentionRoot(TypeMention tm) { result = tm.getTypeAt(TypePath::nil()) }
+    private Type getTypeMentionNonPseudoRoot(TypeMention tm) {
+      result = tm.getTypeAt(TypePath::nil()) and
+      not result instanceof PseudoType
+    }
 
     /** Provides the input to `IsInstantiationOf`. */
     signature module IsInstantiationOfInputSig<HasTypeTreeSig App, HasTypeTreeSig Constraint> {
@@ -637,13 +661,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         pragma[nomagic]
         private predicate typeCondition(Type type, TypeAbstraction abs, TypeMention condition) {
           conditionSatisfiesConstraint(abs, condition, _, _) and
-          type = getTypeMentionRoot(condition)
+          type = getTypeMentionNonPseudoRoot(condition)
         }
 
         pragma[nomagic]
         private predicate typeConstraint(Type type, TypeMention constraint) {
           conditionSatisfiesConstraint(_, _, constraint, _) and
-          type = getTypeMentionRoot(constraint)
+          type = getTypeMentionNonPseudoRoot(constraint)
         }
 
         predicate potentialInstantiationOf(
@@ -651,7 +675,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         ) {
           exists(Type type |
             typeConstraint(type, constraint) and typeCondition(type, abs, condition)
-          )
+          ) and
+          conditionSatisfiesConstraint(_, _, constraint, true)
         }
       }
 
@@ -697,8 +722,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         TypeMention constraint
       ) {
         conditionSatisfiesConstraintTypeAt(abs, condition, constraint, _, _) and
-        conditionRoot = getTypeMentionRoot(condition) and
-        constraintRoot = getTypeMentionRoot(constraint)
+        conditionRoot = getTypeMentionNonPseudoRoot(condition) and
+        constraintRoot = getTypeMentionNonPseudoRoot(constraint)
       }
 
       /**
@@ -803,8 +828,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           //
           // not exists(countConstraintImplementations(type, constraint)) and
           // conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
-          // getTypeMentionRoot(condition) = abs.getATypeParameter() and
-          // constraint = getTypeMentionRoot(constraintMention)
+          // getTypeMentionNonPseudoRoot(condition) = abs.getATypeParameter() and
+          // constraint = getTypeMentionNonPseudoRoot(constraintMention)
           // or
           countConstraintImplementations(type, constraintRoot) > 0 and
           rootTypesSatisfaction(type, constraintRoot, abs, condition, constraintMention) and
@@ -843,9 +868,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           //   or
           //   forall(TypeAbstraction abs, TypeMention condition, TypeMention constraintMention |
           //     conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
-          //     getTypeMentionRoot(condition) = abs.getATypeParameter()
+          //     getTypeMentionNonPseudoRoot(condition) = abs.getATypeParameter()
           //   |
-          //     not constraint = getTypeMentionRoot(constraintMention)
+          //     not constraint = getTypeMentionNonPseudoRoot(constraintMention)
           //   )
           // ) and
           (
@@ -1261,22 +1286,50 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     module MatchingWithEnvironment<MatchingWithEnvironmentInputSig Input> {
       private import Input
 
+      private Type getTypeArgumentNonPseudo(Access a, int pos, TypePath path) {
+        result = a.getTypeArgument(pos, path) and
+        not result instanceof PseudoType
+      }
+
       /**
        * Gets the type of the type argument at `path` in `a` that corresponds to
        * the type parameter `tp` in `target`, if any.
        *
        * Note that this predicate crucially does not depend on type inference,
-       * and hence can appear in negated position, e.g., as in
-       * `directTypeMatch`.
+       * and hence can appear in negated position, e.g., as in `directTypeMatch`.
        */
       bindingset[a, target]
       pragma[inline_late]
       Type getTypeArgument(Access a, Declaration target, TypeParameter tp, TypePath path) {
         exists(int pos |
-          result = a.getTypeArgument(pos, path) and
-          tp = target.getTypeParameter(pos) and
-          not result instanceof PseudoType
+          result = getTypeArgumentNonPseudo(a, pos, path) and
+          tp = target.getTypeParameter(pos)
         )
+      }
+
+      bindingset[a, target]
+      pragma[inline_late]
+      private predicate hasNotTypeArgument0(Access a, Declaration target, TypeParameter tp) {
+        exists(int pos |
+          tp = target.getTypeParameter(pragma[only_bind_into](pos)) and
+          not exists(getTypeArgumentNonPseudo(a, pos, _))
+        )
+      }
+
+      bindingset[target, tp]
+      pragma[inline_late]
+      private predicate hasNotTypeArgument1(Declaration target, TypeParameter tp) {
+        not tp = target.getTypeParameter(_)
+      }
+
+      /**
+       * A join-order optimized version of `not exists(getTypeArgument(a, target, tp, _)`.
+       */
+      pragma[inline]
+      private predicate hasNotTypeArgument(Access a, Declaration target, TypeParameter tp) {
+        hasNotTypeArgument0(a, target, tp)
+        or
+        hasNotTypeArgument1(target, tp)
       }
 
       pragma[nomagic]
@@ -1284,7 +1337,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Access a, DeclarationPosition dpos, AccessEnvironment e, Declaration target,
         TypePath pathToTypeParam, TypeParameter tp
       ) {
-        not exists(getTypeArgument(a, target, tp, _)) and
+        hasNotTypeArgument(a, target, tp) and
         tp = target.getDeclaredType(dpos, pathToTypeParam) and
         target = a.getTarget(e)
       }
@@ -1359,12 +1412,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           t = a.getInferredType(e, apos, TypePath::nil())
         }
 
+        private predicate relevantAccessTarget(
+          Access a, AccessPosition apos, AccessEnvironment e, Declaration target
+        ) {
+          exists(Type t |
+            accessTargetsWithArgRootType(a, e, target, apos, t) and
+            argRootTypeSatisfiesTargetTypeCand(t, target, apos, _, _)
+          )
+        }
+
         private newtype TRelevantAccess =
           MkRelevantAccess(Access a, AccessPosition apos, AccessEnvironment e) {
-            exists(Declaration target, Type t |
-              accessTargetsWithArgRootType(a, e, target, apos, t) and
-              argRootTypeSatisfiesTargetTypeCand(t, target, apos, _, _)
-            )
+            relevantAccessTarget(a, apos, e, _)
           }
 
         private class RelevantAccess extends MkRelevantAccess {
@@ -1374,7 +1433,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
           RelevantAccess() { this = MkRelevantAccess(a, apos, e) }
 
-          RelevantTarget getTarget() { result = MkRelevantTarget(a.getTarget(e), apos) }
+          RelevantTarget getTarget() {
+            exists(Declaration target |
+              relevantAccessTarget(a, apos, e, target) and
+              result = MkRelevantTarget(target, apos)
+            )
+          }
 
           pragma[nomagic]
           Type getTypeAt(TypePath path) { result = a.getInferredType(e, apos, path) }
@@ -1437,7 +1501,81 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
                 pragma[only_bind_into](apos), e),
               MkRelevantTarget(target, pragma[only_bind_into](apos)), pathToTp.appendInverse(path),
               t) and
-            not exists(getTypeArgument(a, target, tp, _))
+            hasNotTypeArgument(a, target, tp)
+          )
+        }
+
+        predicate baseTypeMatchAtTypeParameter(
+          Access a, AccessEnvironment e, AccessPosition apos, Declaration target, TypeParameter tp,
+          TypePath prefix, TypePath requiredPrefix
+        ) {
+          exists(
+            TypePath pathToTypeParamInConstraint, TypePath pathToTp, TypePath pathToTypeParamInSub
+          |
+            argRootTypeSatisfiesTargetTypeCand(_, target, pragma[only_bind_into](apos), tp, pathToTp) and
+            SatisfiesParameterConstraint::satisfiesConstraintAtTypeParameter(MkRelevantAccess(a,
+                pragma[only_bind_into](apos), e),
+              MkRelevantTarget(target, pragma[only_bind_into](apos)), pathToTypeParamInConstraint,
+              pathToTypeParamInSub) and
+            hasNotTypeArgument(a, target, tp)
+          |
+            /*
+             * Example:
+             *
+             * ```swift
+             * class Base<B> {
+             *   init(_ value: B) {}
+             * }
+             *
+             * class Derived<D>: Base<[D]> {
+             *   init(_ value: D) { super.init([value]) }
+             * }
+             *
+             * func foo<T>(_ value: T, _ base: Base<T>) { }
+             *
+             * foo([2], Derived(<unknown>))
+             * ```
+             *
+             * - tp = T (bound by `foo`)
+             * - prefix = pathToTypeParamInSub = "D"
+             * - requiredPrefix = "Element"
+             * - pathToTypeParamInConstraint = "B.Element"
+             * - pathToTp = "B"
+             */
+
+            pathToTypeParamInConstraint = pathToTp.appendInverse(requiredPrefix) and
+            prefix = pathToTypeParamInSub
+            or
+            /*
+             * Example:
+             *
+             * ```swift
+             * class Base<B> {
+             *   init(_ value: B) {}
+             * }
+             *
+             * class Derived<D>: Base<D> {
+             *   override init(_ value: D) { super.init(value) }
+             * }
+             *
+             * func foo<T>(_ value: T, _ base: Base<T?>) {}
+             *
+             * foo(2, Derived(Optional.none))
+             * ```
+             *
+             * - tp = T (bound by `foo`)
+             * - prefix = "D.Wrapped"
+             * - pathToTypeParamInSub = "D"
+             * - requiredPrefix = ""
+             * - pathToTypeParamInConstraint = "B"
+             * - pathToTp = "B.Wrapped"
+             */
+
+            exists(TypePath path0 |
+              pathToTp = pathToTypeParamInConstraint.appendInverse(path0) and
+              prefix = pathToTypeParamInSub.append(path0) and
+              requiredPrefix = TypePath::nil()
+            )
           )
         }
       }
@@ -1595,7 +1733,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate typeConstraintBaseTypeMatch(
         Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
-        not exists(getTypeArgument(a, target, tp, _)) and
+        hasNotTypeArgument(a, target, tp) and
         exists(TypeMention constraint, TypeParameter constrainedTp, TypePath pathToTp |
           typeParameterConstraintHasTypeParameter(target, constrainedTp, constraint, pathToTp, tp) and
           AccessConstraint::satisfiesConstraint(a, e, target, constrainedTp, constraint,
@@ -1682,6 +1820,16 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
         or
         exists(
+          Declaration target, TypePath prefix, TypePath requiredPrefix, TypePath suffix,
+          TypeParameter tp
+        |
+          AccessBaseType::baseTypeMatchAtTypeParameter(a, e, apos, target, tp, prefix,
+            requiredPrefix) and
+          typeMatch(a, e, target, requiredPrefix.appendInverse(suffix), result, tp) and
+          path = prefix.append(suffix)
+        )
+        or
+        exists(
           Declaration target, TypePath prefix, TypeMention constraint,
           TypePath pathToTypeParamInConstraint, TypePath pathToTypeParamInSub
         |
@@ -1721,44 +1869,86 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           )
           or
           exists(TypeParameter tp, TypePath suffix, TypePath mid, TypePath pathToTp |
+            exists(TypeParameter constrainedTp, DeclarationPosition dpos |
+              typeParameterConstraintHasTypeParameter(target, constrainedTp, constraint, pathToTp,
+                tp) and
+              accessDeclarationPositionMatch(apos, dpos) and
+              constrainedTp = target.getDeclaredType(dpos, _)
+            )
+          |
             /*
              * Example:
              *
              * ```rust
+             * struct S<T> { ... }
+             *
              * struct MyThing<A> { ... }
              *
              * trait MyTrait<B> { ... }
              *
              * impl<T> MyTrait<T> for MyThing<T> { ... }
              *
-             * fn bar<T1, T2: MyTrait<T1>>(x: T1, y: T2) {}
+             * fn bar<T1, T2: MyTrait<T1>>(x: T1, y: Option<T2>) {}
              *
-             * let x: i32 = ...;
+             * let x: S<i32> = ...;
              * let y = MyThing(Default::default());
-             * bar(x, y);
+             * bar(x, Some(y));
              * ```
              *
-             * At `term` = `bar(x, y)`, we have
+             * At `term` = `bar(x, Some(y))`, we have
              * - `constraint = MyTrait<T1>`,
-             * - `pathToTypeParamInConstraint` = `"B"`,
-             * - `pathToTypeParamInSub` = `"A"`,
-             * - `prefix` = `suffix` = `mid` = `""`,
+             * - `pathToTypeParamInConstraint` = `"MyTrait<B>"`,
+             * - `pathToTypeParamInSub` = `"MyThing<A>"`,
+             * - `prefix` = `"Option<T>"`
+             * - `mid` = `""`,
              * - `tp = T1`,
-             * - `pathToTp` = `"B"`, and
-             * - `result` = `i32`.
+             * - `pathToTp` = `"MyTrait<B>"`, and
+             *   - `suffix` = `""` and `result` = `S`, or
+             *   - `suffix` = `"S<T>"` and `result` = `i32`.
              *
-             * That is, it allows us to infer that the type of `y` is `MyThing<i32>`.
+             * That is, it allows us to infer that the type of `y` is `MyThing<S<i32>>`.
              */
 
             typeMatch(a, e, target, suffix, result, tp) and
-            exists(TypeParameter constrainedTp, DeclarationPosition dpos |
-              typeParameterConstraintHasTypeParameter(target, constrainedTp, constraint, pathToTp,
-                tp) and
-              accessDeclarationPositionMatch(apos, dpos) and
-              constrainedTp = target.getDeclaredType(dpos, _)
-            ) and
             pathToTp = pathToTypeParamInConstraint.appendInverse(mid) and
             path = prefix.append(pathToTypeParamInSub.append(mid).append(suffix))
+            or
+            /*
+             * Example:
+             *
+             * ```rust
+             * struct S<T> { ... }
+             *
+             * struct MyThing<A> { ... }
+             *
+             * trait MyTrait<B> { ... }
+             *
+             * impl<T> MyTrait<[T;1]> for MyThing<T> { ... }
+             *
+             * fn bar<T1, T2: MyTrait<T1>>(x: T1, y: Option<T2>) {}
+             *
+             * let x: S<i32> = ...;
+             * let y = MyThing(Default::default());
+             * bar([x], Some(y));
+             * ```
+             *
+             * At `term` = `bar([x], Some(y))`, we have
+             * - `constraint = MyTrait<T1>`,
+             * - `pathToTypeParamInConstraint` = `"MyTrait<B>.[;]<TArray>"`,
+             * - `pathToTypeParamInSub` = `"MyThing<A>"`,
+             * - `prefix` = `"Option<T>"`
+             * - `mid` = `"[;]<TArray>"`,
+             * - `tp = T1`,
+             * - `pathToTp` = `"MyTrait<B>"`, and
+             *   - `suffix` = `""` and `result` = `S`, or
+             *   - `suffix` = `"S<T>"` and `result` = `i32`.
+             *
+             * That is, it allows us to infer that the type of `y` is `MyThing<S<i32>>`.
+             */
+
+            pathToTypeParamInConstraint = pathToTp.appendInverse(mid) and
+            typeMatch(a, e, target, mid.appendInverse(suffix), result, tp) and
+            path = prefix.append(pathToTypeParamInSub.append(suffix))
           )
         )
       }
@@ -2041,7 +2231,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * item in Rust.
        */
       class Variable {
-        /** Gets the AST node that defines this variable. */
+        /** Gets the AST node that defines this variable, if any. */
         AstNode getDefiningNode();
 
         /** Gets an access to this variable. */
@@ -2055,7 +2245,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /** A declaration. */
-      class Declaration extends AstNode {
+      class Declaration {
         /**
          * Gets the type mention of the entity that contains this declaration, if any.
          *
@@ -2088,6 +2278,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * a function.
          */
         TypeMention getType();
+
+        /** Gets a textual representation of this declaration. */
+        string toString();
+
+        /** Gets the location of this declaration. */
+        Location getLocation();
       }
 
       /**
@@ -2166,6 +2362,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /** A parameter. */
       class Parameter extends VariableDeclaration;
+
+      /**
+       * Holds if `p` is an implicit parameter declaration corresponding
+       * to variable `v`.
+       */
+      default predicate implicitParameterDecl(Parameter p, Variable v) { none() }
 
       /** A callable. This may include for example variant constructors. */
       class Callable extends Declaration {
@@ -2368,7 +2570,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /** A closure/lambda expression. */
-      class Closure extends Callable, Expr;
+      class Closure extends Callable {
+        /** Gets the expression that defines this closure (typically the entity itself). */
+        Expr getDefiningExpr();
+      }
 
       /**
        * A special pseudo type representing a particular closure parameter without
@@ -2463,6 +2668,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       predicate stepLanguageSpecific(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2);
 
       /**
+       * Like `stepLanguageSpecific`, but allows for recursion through type inference, which
+       * has the consequence that it cannot be used in the logic for inferring certain type
+       * information.
+       *
+       * Only use this predicate when using `stepLanguageSpecific` results in non-monotonicity.
+       */
+      default predicate stepLanguageSpecificExtra(
+        AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2
+      ) {
+        none()
+      }
+
+      /**
        * Gets the inferred type of `n` at `path`.
        *
        * Use this predicate to implement any language-specific inference logic, but only for
@@ -2479,17 +2697,26 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * in `inferTypeLanguageSpecific`; if in doubt, use `inferTypeLanguageSpecific` instead.
        */
       default Type inferTypeCertainLanguageSpecific(AstNode n, TypePath path) { none() }
+
+      /**
+       * Holds if contextual inference is allowed for the node `n` at the type path
+       * `path`. This has the same effect as assigning `UnknownType` to `n` at `path`,
+       * but prevents propagation of `UnknownType` from `n` to other nodes.
+       */
+      default predicate allowContextualInference(AstNode n, TypePath path) { none() }
     }
 
     module Make3<InputSig3 Input3> {
       private import Input3
 
-      private predicate closureStep(AstNode pattern, TypePath prefix1, Closure c, TypePath prefix2) {
-        exists(Parameter p |
+      pragma[nomagic]
+      private predicate closureStep(AstNode pattern, TypePath prefix1, Expr c, TypePath prefix2) {
+        exists(Closure c0, Parameter p |
           pattern = p.getPattern() and
-          p = c.getParameter(_) and
+          p = c0.getParameter(_) and
           prefix1.isEmpty() and
-          prefix2 = getClosureParameterTypePath(p)
+          prefix2 = getClosureParameterTypePath(p) and
+          c = c0.getDefiningExpr()
         )
       }
 
@@ -2513,10 +2740,16 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
               tm = decl.getType() and
               n = decl.getPattern()
             )
+            or
+            exists(Parameter p, Variable v |
+              implicitParameterDecl(p, v) and
+              tm = p.getType() and
+              n = v.getAnAccess()
+            )
           )
           or
           exists(Closure c, TypePath suffix |
-            n = c and
+            n = c.getDefiningExpr() and
             result = getCallableReturnType(c, suffix) and
             path = getClosureReturnTypePath(c).append(suffix)
           )
@@ -2537,6 +2770,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             or
             exists(VariableDeclaration decl |
               decl.preservesInitializerType() and
+              not exists(decl.getType()) and
               n1 = decl.getInitializer() and
               n2 = decl.getPattern()
             )
@@ -2615,8 +2849,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             or
             result = inferLogicalOperationType(n, path)
             or
-            result = getClosureType(n) and
-            path.isEmpty()
+            exists(Closure c |
+              n = c.getDefiningExpr() and
+              result = getClosureType(c) and
+              path.isEmpty()
+            )
             or
             infersCertainTypeAt(n, path, result.getATypeParameter())
           ) and
@@ -2676,6 +2913,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate step(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
         stepLanguageSpecific(n1, prefix1, n2, prefix2)
         or
+        stepLanguageSpecificExtra(n1, prefix1, n2, prefix2)
+        or
         Certain::stepCertain(n1, prefix1, n2, prefix2)
         or
         prefix1.isEmpty() and
@@ -2709,9 +2948,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         or
         exists(Closure c |
           n1 = c.getBody() and
-          n2 = c and
+          n2 = c.getDefiningExpr() and
           prefix1.isEmpty() and
-          prefix2 = getClosureReturnTypePath(n2)
+          prefix2 = getClosureReturnTypePath(c)
         )
       }
 
@@ -2725,7 +2964,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           or
           closureStep(n2, prefix2, n, prefix1) and
           // prevent closure parameter pseudo types from escaping the closure
-          not result.(ClosureParameterPseudoType).getParameter() = n.(Closure).getParameter(_)
+          not exists(Closure c |
+            n = c.getDefiningExpr() and
+            result.(ClosureParameterPseudoType).getParameter() = c.getParameter(_)
+          )
         )
       }
 
@@ -3014,70 +3256,97 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * This module identifies calls where the return type may need to be inferred from the
        * context, and also implements logic for performing contextual inference.
        */
-      private module ContextualTyping {
-        pragma[nomagic]
-        private TypeParameter getAConstrained(TypeParameter tp) {
-          result = getATypeParameterConstraint(tp).getTypeAt(_)
+      module ContextualTyping {
+        /**
+         * Provides the input to `ContextualReturnType`.
+         */
+        signature module ContextualReturnTypeInputSig {
+          /** Holds if `c` has the type parameter `tp` at its return type at `path`. */
+          default predicate callableHasTypeParameterAtReturnType(
+            Callable c, TypePath path, TypeParameter tp
+          ) {
+            tp = getCallableReturnType(c, path)
+          }
+
+          /** Gets a parameter of `c`. */
+          default Parameter getACallableParameter(Callable c) { result = c.getParameter(_) }
         }
 
         /**
-         * Holds if callable `c` mentions type parameter `tp` at some parameter,
-         * possibly via a constraint on another mentioned type parameter.
+         * Provide logic for identifying calls where the return type may need to be inferred from the context.
          */
-        pragma[nomagic]
-        private predicate mentionsTypeParameterAtParameter(Callable c, TypeParameter tp) {
-          tp = getAConstrained*(c.getParameter(_).getType().getTypeAt(_))
-        }
+        module ContextualReturnType<ContextualReturnTypeInputSig Input> {
+          pragma[nomagic]
+          private TypeParameter getAConstrained(TypeParameter tp) {
+            result = getATypeParameterConstraint(tp).getTypeAt(_)
+          }
 
-        /**
-         * Holds if the return type of the callable `c` at `path` is type parameter
-         * `tp`, and `tp` does not appear in the type of any parameter of `c`.
-         *
-         * In this case, the context in which `p` is called may be needed to infer
-         * the instantiation of `tp`.
-         *
-         * This covers functions like `Default::default` and `Vec::new` in Rust.
-         */
-        pragma[nomagic]
-        private predicate callableReturnContextTypedAt(Callable c, TypePath path, TypeParameter tp) {
-          tp = getCallableReturnType(c, path) and
-          not mentionsTypeParameterAtParameter(c, tp)
-        }
+          /**
+           * Holds if callable `c` mentions type parameter `tp` at some parameter,
+           * possibly via a constraint on another mentioned type parameter.
+           */
+          pragma[nomagic]
+          private predicate mentionsTypeParameterAtParameter(Callable c, TypeParameter tp) {
+            tp = getAConstrained*(Input::getACallableParameter(c).getType().getTypeAt(_))
+          }
 
-        bindingset[invocation, target]
-        pragma[inline_late]
-        private predicate hasTypeArgument(Invocation invocation, Callable target, TypeParameter tp) {
-          exists(Type t |
-            InvocationTypeQualifierMatching::typeMatch(invocation, _, _, _, t, tp) and
-            not t instanceof PseudoType
-          )
-          or
-          exists(InvocationMatching::getTypeArgument(invocation, target, tp, _))
-        }
+          /**
+           * Holds if the return type of the callable `c` at `path` is type parameter
+           * `tp`, and `tp` does not appear in the type of any parameter of `c`.
+           *
+           * In this case, the context in which `p` is called may be needed to infer
+           * the instantiation of `tp`.
+           *
+           * This covers functions like `Default::default` and `Vec::new` in Rust.
+           */
+          pragma[nomagic]
+          private predicate callableReturnContextTypedAt(Callable c, TypePath path, TypeParameter tp) {
+            Input::callableHasTypeParameterAtReturnType(c, path, tp) and
+            not mentionsTypeParameterAtParameter(c, tp)
+          }
 
-        /**
-         * Holds if `invocation` resolves to some target where the return type at `path`
-         * may have to be inferred from the context.
-         */
-        pragma[nomagic]
-        predicate needsContextualTyping(Invocation invocation, TypePath path) {
-          exists(Callable target, TypeParameter tp |
-            target = invocation.getATargetForTypeQualifierMatching()
-            or
-            target = invocation.getTarget(_)
-          |
-            callableReturnContextTypedAt(target, path, tp) and
-            // check that no explicit type arguments have been supplied that bind `tp`
-            not exists(TypeParameter supplied |
-              tp = getAConstrained*(supplied) and
-              hasTypeArgument(invocation, target, supplied)
+          bindingset[invocation, target]
+          pragma[inline_late]
+          private predicate hasTypeArgument(Invocation invocation, Callable target, TypeParameter tp) {
+            exists(Type t |
+              InvocationTypeQualifierMatching::typeMatch(invocation, _, _, _, t, tp) and
+              not t instanceof PseudoType
             )
-          )
+            or
+            exists(InvocationMatching::getTypeArgument(invocation, target, tp, _))
+          }
+
+          /**
+           * Holds if `invocation` resolves to some target where the return type at `path`
+           * may have to be inferred from the context.
+           */
+          pragma[nomagic]
+          predicate needsContextualTyping(Invocation invocation, TypePath path) {
+            exists(Callable target, TypeParameter tp |
+              target = invocation.getATargetForTypeQualifierMatching()
+              or
+              target = invocation.getTarget(_)
+            |
+              callableReturnContextTypedAt(target, path, tp) and
+              // check that no explicit type arguments have been supplied that bind `tp`
+              not exists(TypeParameter supplied |
+                tp = getAConstrained*(supplied) and
+                hasTypeArgument(invocation, target, supplied)
+              )
+            )
+          }
         }
 
+        private module DefaultContextualReturnTypeInput implements ContextualReturnTypeInputSig { }
+
+        predicate needsContextualTyping =
+          ContextualReturnType<DefaultContextualReturnTypeInput>::needsContextualTyping/2;
+
         pragma[nomagic]
-        private predicate hasUnknownTypeAt(AstNode n, TypePath path) {
+        predicate hasUnknownTypeAt(AstNode n, TypePath path) {
           inferType(n, path) instanceof UnknownType
+          or
+          allowContextualInference(n, path)
         }
 
         pragma[nomagic]
@@ -3106,10 +3375,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         private Type inferTypeContextualCand1(AstNode n, TypePath prefix, TypePath path) {
           result = inferTypeContextualCand0(n, path) and
           hasUnknownType(n) and
-          prefix = path.getAPrefix() and
-          // no need to propagate `UnknownType`s contextually; `n` must already have an
-          // `UnknownType` at some prefix of `path`
-          not result instanceof UnknownType
+          prefix = path.getAPrefix()
         }
 
         pragma[nomagic]
@@ -3209,8 +3475,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             result.(ClosureParameterPseudoType).getParameter() = p
             or
             // step 3
-            hasClosureParameterPseudoType(c, path, p) and
-            n = c and
+            hasClosureParameterPseudoType(n, path, p) and
+            n = c.getDefiningExpr() and
             result instanceof UnknownType
           )
           or
@@ -3227,21 +3493,89 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           or
           // The `step X` comments below refer to the steps for 'Case A' in the
           // QL doc for `ClosureParameterPseudoType`.
-          exists(Closure c, Parameter p |
+          exists(Closure c, Parameter p, Expr def |
             p = c.getParameter(_) and
-            not exists(p.getType())
+            not exists(p.getType()) and
+            def = c.getDefiningExpr()
           |
             // step 1
-            n = c and
+            n = def and
             path = getClosureParameterTypePath(p) and
             result instanceof UnknownType
             or
             // step 3
             n = p.getPattern() and
-            result = inferType(c, getClosureParameterTypePath(p).appendInverse(path)) and
+            result = inferType(def, getClosureParameterTypePath(p).appendInverse(path)) and
             not (path.isEmpty() and result instanceof UnknownType)
           )
         }
+      }
+
+      /**
+       * Holds if the type of `n` at `path` is `t` and the `j`th element of `path`
+       * corresponds to the `i`th type parameter of the unknown type.
+       */
+      pragma[nomagic]
+      private predicate infersUnknownTypeArg0(AstNode n, int i, int j, TypePath path, Type t) {
+        exists(TypeParameter tp |
+          ContextualTyping::hasUnknownType(n) and
+          tp = any(UnknownType ut).getPositionalTypeParameter(i) and
+          t = inferType(n, path) and
+          not t instanceof UnknownType and
+          tp = path.getElement(j)
+        )
+      }
+
+      /**
+       * Holds if the type of `n` at `path` is `t`, where
+       * `path = prefix ++ tp_i ++ suffix` and `tp_i` is the `i`th type parameter
+       * of the unknown type.
+       */
+      pragma[nomagic]
+      private predicate infersUnknownTypeArg1(
+        AstNode n, TypePath prefix, int i, TypePath suffix, Type t
+      ) {
+        exists(TypePath path, int j, TypePath suffix0 |
+          infersUnknownTypeArg0(n, i, j, path, t) and
+          prefix = path.getProperPrefix(j) and
+          path = prefix.appendInverse(suffix0) and
+          suffix0.isCons(_, suffix)
+        )
+      }
+
+      /**
+       * Holds if `n` has unknown type at `prefix`, but is still able to
+       * infer a known type at `suffix` for the `i`th type parameter of whatever
+       * the unknown type is.
+       *
+       * For example, in
+       *
+       * ```rust
+       * let mut x: Unresolvable<i32> = ...;
+       *
+       * x = resolvable(...);
+       * ```
+       *
+       * even though the root type is unresolvable at the declaration, we are still
+       * able to infer that the first type argument is `i32`. We can then combine this
+       * information with later inferred type information.
+       */
+      pragma[nomagic]
+      private predicate infersUnknownTypeArg(
+        AstNode n, TypePath prefix, int i, TypePath suffix, Type t
+      ) {
+        ContextualTyping::hasUnknownTypeAt(n, prefix) and
+        infersUnknownTypeArg1(n, prefix, i, suffix, t)
+      }
+
+      pragma[nomagic]
+      private predicate infersKnownAndUnknownType(AstNode n, TypePath path, int i, TypeParameter tp) {
+        ContextualTyping::hasUnknownTypeAt(n, path) and
+        exists(Type t |
+          t = inferType(n, path) and
+          not t instanceof UnknownType and
+          tp = t.getPositionalTypeParameter(i)
+        )
       }
 
       /**
@@ -3275,6 +3609,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         result instanceof UnknownType
         or
         result = ContextualTyping::inferTypeContextual(n, path)
+        or
+        exists(TypePath prefix, int i, TypePath suffix, TypeParameter tp |
+          infersUnknownTypeArg(n, prefix, i, suffix, result) and
+          infersKnownAndUnknownType(n, prefix, i, tp) and
+          path = prefix.append(TypePath::cons(tp, suffix))
+        )
       }
 
       /**
@@ -3298,7 +3638,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           result instanceof ClosureParameterPseudoType
         ) and
         // prevent closure parameter pseudo types from escaping from the closure
-        not result.(ClosureParameterPseudoType).getParameter() = n.(Closure).getParameter(_)
+        not exists(Closure c |
+          n = c.getDefiningExpr() and
+          result.(ClosureParameterPseudoType).getParameter() = c.getParameter(_)
+        )
         or
         // If `n` has an explicitly unknown type at `prefix` and at the same time a certain
         // type at `prefix.suffix`, then extend the unknown type information to any path

@@ -364,7 +364,7 @@ void forward_test() {
 
     ConstructableFromInt c = f.get();
     ymlSink(c.s); // $ ir
-    ymlSink(c.ul); // clean
+    ymlSink(c.ul); // $ SPURIOUS: ir
   }
   {
     Forwarder<ConstructableFromInt> f;
@@ -372,7 +372,7 @@ void forward_test() {
     f.forward(ul);
 
     ConstructableFromInt c = f.get();
-    ymlSink(c.s); // clean
+    ymlSink(c.s); // $ SPURIOUS: ir
     ymlSink(c.ul); // $ ir
   }
 }

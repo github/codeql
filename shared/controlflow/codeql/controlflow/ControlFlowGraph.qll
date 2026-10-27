@@ -71,6 +71,12 @@ signature module AstSig<LocationSig Location> {
   /** A statement. */
   class Stmt extends AstNode;
 
+  /** A labeled statement. */
+  class LabeledStmt extends Stmt {
+    /** Gets the statement carrying the label. */
+    Stmt getStmt();
+  }
+
   /** An expression. */
   class Expr extends AstNode;
 
@@ -154,6 +160,9 @@ signature module AstSig<LocationSig Location> {
     /** Gets the collection expression of this `foreach` loop. */
     Expr getCollection();
   }
+
+  /** Gets the loop guard of the given `loop`, if any. */
+  default AstNode getLoopGuard(ForEachStmt loop) { none() }
 
   /**
    * A `break` statement.
@@ -283,6 +292,14 @@ signature module AstSig<LocationSig Location> {
      */
     Stmt getStmt(int index);
   }
+
+  /**
+   * Gets the initializer of `switch` statement `switch`, if any.
+   *
+   * Only some languages (e.g. Go) support an initializer that is evaluated
+   * before the switch expression.
+   */
+  default AstNode getSwitchInit(Switch switch) { none() }
 
   /** A case in a switch. */
   class Case extends AstNode {
@@ -431,10 +448,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       string toString();
     }
 
-    /**
-     * Holds if the node `n` has the label `l`. For example, a label in a goto
-     * statement or a goto target.
-     */
+    /** Holds if the node `n` directly has the label `l`. */
     default predicate hasLabel(AstNode n, Label l) { none() }
 
     /**
@@ -645,6 +659,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         any(DoStmt dostmt).getCondition() = n or
         any(UntilStmt untilstmt).getCondition() = n or
         any(ForStmt forstmt).getCondition() = n or
+        getLoopGuard(_) = n or
         any(ConditionalExpr condexpr).getCondition() = n or
         any(CatchClause catch).getCondition() = n or
         any(Case case).getGuard() = n
@@ -1088,7 +1103,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     /** The `PreControlFlowNode` at the entry point of a callable. */
-    final private class EntryNodeImpl extends NodeImpl, TEntryNode {
+    final class EntryNodeImpl extends NodeImpl, TEntryNode {
       private Callable c;
 
       EntryNodeImpl() { this = TEntryNode(c) }
@@ -1132,7 +1147,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     /** A control flow node indicating exceptional termination of a callable. */
-    final private class ExceptionalExitNodeImpl extends AnnotatedExitNodeImpl {
+    final class ExceptionalExitNodeImpl extends AnnotatedExitNodeImpl {
       ExceptionalExitNodeImpl() { this = TAnnotatedExitNode(_, false) }
     }
 
@@ -1188,8 +1203,16 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
     signature module InputSig2 {
       /**
+       * Holds if control flow is constructed and reachability starts at the
+       * entry of `callable` in this stage.
+       * By default, all callable entries are included. Restricting this is useful
+       * for auxiliary CFG stages that are only needed for selected callables.
+       */
+      default predicate includeCallableEntry(Callable callable) { any() }
+
+      /**
        * Holds if `ast` may result in an abrupt completion `c` originating at
-       * `n`. The boolean `always`  indicates whether the abrupt completion
+       * `n`. The boolean `always` indicates whether the abrupt completion
        * always occurs or whether `n` may also terminate normally.
        *
        * This predicate is only relevant for AST constructs that are not already
@@ -1266,9 +1289,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         )
       }
 
-      private Stmt getAStmtInBlock(AstNode block) {
-        result = block.(BlockStmt).getStmt(_) or
-        result = block.(Switch).getStmt(_)
+      /** Holds if `n` is marked with a `LabeledStmt` with label `l`. */
+      private predicate hasEnclosingLabel(AstNode n, Input1::Label l) {
+        exists(LabeledStmt labeled | labeled.getStmt+() = n and Input1::hasLabel(labeled, l))
       }
 
       private predicate callableHasParamDefault(Callable c, Expr defaultValue) {
@@ -1283,7 +1306,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         Input2::endAbruptCompletion(ast, n, c)
         or
         exists(Callable callable |
-          callableHasBodyPart(callable, ast) or callableHasParamDefault(callable, ast)
+          not Input2::endAbruptCompletion(ast, _, c) and
+          (callableHasBodyPart(callable, ast) or callableHasParamDefault(callable, ast))
         |
           c.getSuccessorType() instanceof ReturnSuccessor and
           n.(NormalExitNodeImpl).getEnclosingCallable() = callable
@@ -1308,7 +1332,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             exists(Input1::Label l |
               c.hasLabel(l) and
-              Input1::hasLabel(loop, l)
+              (Input1::hasLabel(loop, l) or hasEnclosingLabel(loop, l))
             )
           )
         )
@@ -1348,16 +1372,24 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           or
           exists(Input1::Label l |
             c.hasLabel(l) and
-            Input1::hasLabel(switch, l)
+            (Input1::hasLabel(switch, l) or hasEnclosingLabel(switch, l))
           )
         )
         or
-        exists(AstNode block, Input1::Label l, Stmt lblstmt |
-          ast = getAStmtInBlock(block) and
-          lblstmt = getAStmtInBlock(block) and
-          not lblstmt instanceof GotoStmt and
-          Input1::hasLabel(pragma[only_bind_into](lblstmt), l) and
-          n.isBefore(lblstmt) and
+        exists(LabeledStmt target, Input1::Label l |
+          ast = target.getStmt() and
+          Input1::hasLabel(target, l) and
+          n.isAfter(target) and
+          c.getSuccessorType() instanceof BreakSuccessor and
+          c.hasLabel(l)
+        )
+        or
+        exists(AstNode parent, LabeledStmt root, LabeledStmt target, Input1::Label l |
+          ast = getChild(parent, _) and
+          root = getChild(parent, _) and
+          root.getStmt*() = target and
+          Input1::hasLabel(pragma[only_bind_into](target), l) and
+          n.isBefore(target) and
           c.getSuccessorType() instanceof GotoSuccessor and
           c.hasLabel(l)
         )
@@ -1673,7 +1705,18 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isBefore(foreachstmt.getVariable())
           or
           n1.isAfter(foreachstmt.getVariable()) and
+          (
+            n2.isBefore(getLoopGuard(foreachstmt))
+            or
+            not exists(getLoopGuard(foreachstmt)) and
+            n2.isBefore(foreachstmt.getBody())
+          )
+          or
+          n1.isAfterTrue(getLoopGuard(foreachstmt)) and
           n2.isBefore(foreachstmt.getBody())
+          or
+          n1.isAfterFalse(getLoopGuard(foreachstmt)) and
+          n2.isAdditional(foreachstmt, loopHeaderTag())
           or
           n1.isAfter(foreachstmt.getBody()) and
           n2.isAdditional(foreachstmt, loopHeaderTag())
@@ -1826,14 +1869,30 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         exists(Switch switch, PreControlFlowNode firstCase |
           firstCase.isBefore(getRankedCaseCfgOrder(switch, 1))
           or
-          not exists(getRankedCaseCfgOrder(switch, _)) and firstCase.isAfter(switch)
+          not exists(getRankedCaseCfgOrder(switch, _)) and
+          not simpleLeafNode(switch) and
+          firstCase.isAfter(switch)
         |
           n1.isBefore(switch) and
-          n2.isBefore(switch.getExpr())
+          (
+            n2.isBefore(getSwitchInit(switch))
+            or
+            not exists(getSwitchInit(switch)) and
+            (
+              n2.isBefore(switch.getExpr())
+              or
+              not exists(switch.getExpr()) and
+              n2 = firstCase
+            )
+          )
           or
-          n1.isBefore(switch) and
-          not exists(switch.getExpr()) and
-          n2 = firstCase
+          n1.isAfter(getSwitchInit(switch)) and
+          (
+            n2.isBefore(switch.getExpr())
+            or
+            not exists(switch.getExpr()) and
+            n2 = firstCase
+          )
           or
           n1.isAfter(switch.getExpr()) and
           n2 = firstCase
@@ -1904,6 +1963,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
        */
       private predicate defaultCfg(AstNode ast) {
         hasCfg(ast) and
+        Input2::includeCallableEntry(getEnclosingCallable(ast)) and
         not explicitStep(any(PreControlFlowNode n | n.isBefore(ast)), _)
       }
 
@@ -1955,7 +2015,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
       private predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
-        explicitStep(n1, n2) or defaultStep(n1, n2)
+        Input2::includeCallableEntry(n1.getEnclosingCallable()) and
+        (explicitStep(n1, n2) or defaultStep(n1, n2))
       }
 
       /**
@@ -1966,8 +2027,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         // Require a predecessor as a coarse approximation of reachability.
         // In particular, this prevents a catch-all catch clause preceding a
         // finally block from adding exception edges out of the finally.
-        step(_, last) and
-        beginAbruptCompletion(ast, last, c, _)
+        step(_, last) and beginAbruptCompletion(ast, last, c, _)
         or
         exists(AstNode child |
           getChild(ast, _) = child and
@@ -1990,17 +2050,20 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       }
 
       private predicate preSucc(PreControlFlowNode n1, PreControlFlowNode n2, SuccessorType t) {
-        step(n1, n2) and n2 = TAfterValueNode(_, t)
-        or
-        step(n1, n2) and n2.(AdditionalNode).getSuccessorType() = t
-        or
-        step(n1, n2) and
-        not n2 instanceof AfterValueNode and
-        not n2 instanceof AdditionalNode and
-        t instanceof DirectSuccessor
-        or
-        exists(AstNode ast, AbruptCompletion c |
-          last(ast, n1, c) and endAbruptCompletion(ast, n2, c) and t = c.getSuccessorType()
+        Input2::includeCallableEntry(n1.getEnclosingCallable()) and
+        (
+          step(n1, n2) and n2 = TAfterValueNode(_, t)
+          or
+          step(n1, n2) and n2.(AdditionalNode).getSuccessorType() = t
+          or
+          step(n1, n2) and
+          not n2 instanceof AfterValueNode and
+          not n2 instanceof AdditionalNode and
+          t instanceof DirectSuccessor
+          or
+          exists(AstNode ast, AbruptCompletion c |
+            last(ast, n1, c) and endAbruptCompletion(ast, n2, c) and t = c.getSuccessorType()
+          )
         )
       }
 
@@ -2008,7 +2071,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       cached
       private predicate reachable(PreControlFlowNode n) {
         Input1::cfgCachedStageRef() and
-        n instanceof EntryNodeImpl
+        Input2::includeCallableEntry(n.(EntryNodeImpl).getEnclosingCallable())
         or
         exists(PreControlFlowNode mid | reachable(mid) and preSucc(mid, n, _))
       }
@@ -2210,6 +2273,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
         private module Cfg_ = BB::Make<Location, BbInput>;
 
+        /** Provides the control flow graph interfaces used by basic-block and inline CFG tests. */
         module Cfg implements BB::CfgSig<Location>, TestCfg::CfgSig<Location> {
           import Cfg_
 

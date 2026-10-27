@@ -2,6 +2,9 @@ from misc.codegen.lib.schemadefs import *
 from .ast import *
 
 
+@ql.to_string_impl_from_primary_class(
+    False
+)  # Disable since we have a final manual `toStringImpl` for this class
 class LabelableExpr(Expr):
     """
     The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).
@@ -25,7 +28,7 @@ class _:
     """
 
     derive_macro_expansions: list[MacroItems] | child | rust.detach
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
     visibility: optional["Visibility"] | child
@@ -549,6 +552,41 @@ class _:
     """
 
 
+@annotate(CfgPredExpr, cfg=True)
+class _:
+    """
+    A configuration predicate expression resulting from expansion of a `cfg!` macro call.
+    It has type `bool` and evaluates to whether the configuration predicate holds.
+
+    Rust-analyzer expands `cfg!(...)` in expression position to its internal `builtin#cfg(...)`
+    syntax, as illustrated below:
+    ```rust
+    builtin#cfg(unix);
+    builtin#cfg(target_os = "windows");
+    builtin#cfg(any(unix, target_os = "windows"));
+    ```
+    """
+
+
+@annotate(CfgPredPat, cfg=True)
+class _:
+    """
+    A configuration predicate pattern resulting from expansion of a `cfg!` macro call.
+    It matches `true` when the configuration predicate holds and `false` otherwise.
+
+    Rust-analyzer expands `cfg!(...)` in pattern position to its internal `builtin#cfg(...)`
+    syntax, as illustrated below:
+    ```rust
+    match true {
+        builtin#cfg(unix) => (),
+        builtin#cfg(target_os = "windows") => (),
+        builtin#cfg(any(unix, target_os = "windows")) => (),
+        _ => (),
+    };
+    ```
+    """
+
+
 @annotate(ClosureExpr)
 class _:
     """
@@ -597,7 +635,7 @@ class ArrayExpr(Expr):
     """
 
     exprs: list[Expr] | child
-    attrs: list[Attr] | child
+    attrs: list[AnyAttr] | child
 
 
 @synth.from_class(ArrayExprInternal)
@@ -1585,12 +1623,25 @@ class _:
     """
 
 
+@annotate(DocComment)
+class _:
+    """
+    A documentation comment.
+
+    For example:
+    ```rust
+    /// Documents `documented`.
+    fn documented() {}
+    ```
+    """
+
+
 class ParamBase(AstNode):
     """
     A normal parameter, `Param`, or a self parameter `SelfParam`.
     """
 
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     type_repr: optional["TypeRepr"] | child
 
 

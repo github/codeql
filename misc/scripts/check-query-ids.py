@@ -20,7 +20,8 @@ def main():
     query_ids: Dict[str, List[str]] = {}
 
     # Just check src folders for now to avoid churn
-    for query_path in Path().glob("**/src/**/*.ql"):
+    # The glob can yield the same file more than once when its path contains several `src` folders.
+    for query_path in sorted(set(Path().glob("**/src/**/*.ql"))):
         # Skip compiled query packs
         if any(p == ".codeql" for p in query_path.parts):
             continue

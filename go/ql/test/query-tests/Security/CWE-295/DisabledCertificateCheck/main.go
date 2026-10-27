@@ -83,3 +83,16 @@ func good3(i int) *http.Transport {
 	}
 	return nil
 }
+
+func reusedFeatureFlag(cfg *tls.Config, enableSecurity bool) {
+	switch true {
+	case enableSecurity:
+		_ = enableSecurity
+	}
+
+	if enableSecurity {
+		_ = cfg
+	} else {
+		cfg.InsecureSkipVerify = true // OK
+	}
+}

@@ -7,9 +7,38 @@ private import AllDataFlow
 
 private class SwiftDataFlowPlugin extends DataFlowPlugin {
   // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
-  override predicate step(Node node1, Step step, Node node2) {
+  override predicate bypassContentSet(ContentSet contents) {
+    contents.asSingleton().asNamedMember() = "some.0"
+  }
+
+  override predicate exprStep(Expr expr1, Expr expr2, boolean mustFlow) {
+    mustFlow = true and
+    exists(UnaryExpr expr |
+      expr.getOperator().(PrefixOperator).getValue() = "&"
+      or
+      expr.getOperator().(PostfixOperator).getValue() = "!"
+    |
+      expr1 = expr.getOperand() and
+      expr2 = expr
+    )
+    or
+    mustFlow = true and
+    exists(TypeCastExpr expr |
+      // Type-cast operators:
+      // - "as": Safe upcast conversion
+      // - "as?": Wrap in Optional<T> if cast succeeds
+      // - "as!": Throw if cast fails
+      //
+      // Since we bypass Optional<T> content, we model all of these as must-flow steps.
+      expr.getOperator().getValue() = ["as", "as?", "as!"] and
+      expr1 = expr.getExpr() and
+      expr2 = expr
+    )
+  }
+
+  override predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     exists(BinaryExpr expr |
-      expr.getOperator().getValue() = "+" and
+      expr.getOperator().getValue() = ["+", "+="] and
       node1.isResultValue([expr.getLeft(), expr.getRight()]) and
       step.taint() and
       node2.isResultValue(expr)
@@ -24,6 +53,36 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       node1.isResultValue(call.getArgument(0).getValue()) and
       step.value() and
       node2.isResultValue(call)
+    )
+    or
+    exists(UnaryExpr expr |
+      expr.getOperator().(PrefixOperator).getValue() = ["try", "try!", "try?", "await"] and
+      node1.isResultValue(expr.getOperand()) and
+      step.value() and
+      node2.isResultValue(expr)
+    )
+    or
+    exists(NullCoalescingExpr expr |
+      // We bypass Optional<T> content so we add value-flow out of both operands of "??"
+      node1.isResultValue(expr.getAnOperand()) and
+      step.value() and
+      node2.isResultValue(expr)
+    )
+    or
+    // Taint flow through URL(string: x). TODO: Model with MaD and flow summaries
+    exists(CallExpr call |
+      call.getCallee().(Identifier).getValue() = ["URL", "NSURL"] and
+      node1.isResultValue(call.getNamedArgument("string")) and
+      step.taint() and
+      node2.isResultValue(call)
+    )
+    or
+    // Singleton blocks propagate their value upwards, e.g. in `if expr { expr } else { expr }`
+    exists(Block block |
+      not exists(block.getStmt(1)) and
+      node1.isResultValue(block.getStmt(0)) and
+      step.value() and
+      node2.isResultValue(block)
     )
   }
 }

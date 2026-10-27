@@ -2,7 +2,8 @@ use std::fs;
 use std::path::Path;
 
 use codeql_extractor::extractor::desugaring;
-use yeast::{dump::dump_ast, dump::dump_ast_with_type_errors};
+use yeast::OutputAst as Ast;
+use yeast::dump::{DumpOptions, dump_ast, dump_ast_with_type_errors_and_options};
 
 #[path = "../src/languages/mod.rs"]
 mod languages;
@@ -61,7 +62,7 @@ fn render_corpus(case: &CorpusCase) -> String {
 
 /// Parse `input` through the language's parser and desugar it, returning the
 /// mapped AST.
-fn run_desugaring(lang: &desugaring::LanguageSpec, input: &str) -> Result<yeast::Ast, String> {
+fn run_desugaring(lang: &desugaring::LanguageSpec, input: &str) -> Result<Ast, String> {
     let parsed = (lang.parser)(input.as_bytes())?;
     lang.desugarer
         .run_from_ast(parsed.ast)
@@ -123,7 +124,7 @@ fn test_corpus() {
         let output_schema = yeast::node_types_yaml::schema_from_yaml(languages::OUTPUT_AST_SCHEMA)
             .expect("Failed to parse OUTPUT_AST_SCHEMA YAML");
 
-        let lang_corpus_dir = corpus_dir.join(&lang.prefix);
+        let lang_corpus_dir = corpus_dir.join(lang.prefix);
         if !lang_corpus_dir.exists() {
             continue;
         }
@@ -223,11 +224,15 @@ fn test_corpus() {
                         ));
                     }
                     Ok(actual) => {
-                        let actual_dump = dump_ast_with_type_errors(
+                        let actual_dump = dump_ast_with_type_errors_and_options(
                             &actual,
                             actual.get_root(),
                             &case_input,
                             &output_schema,
+                            &DumpOptions {
+                                show_abridged_source: true,
+                                ..DumpOptions::default()
+                            },
                         );
                         if update_mode {
                             case.expected = actual_dump.trim().to_string();

@@ -114,9 +114,8 @@ pub fn run(options: Options) -> std::io::Result<()> {
             let src_archive_file = file_paths::path_for(&src_archive_dir, &path, "", path_transformer.as_ref());
             let mut source = std::fs::read(&path)?;
             let mut needs_conversion = false;
-            let code_ranges;
             let mut trap_writer = trap::Writer::new();
-            if path.extension().is_some_and(|x| x == "erb") {
+            let code_ranges = if path.extension().is_some_and(|x| x == "erb") {
                 tracing::info!("scanning: {}", path.display());
                 extractor::extract(
                     &erb,
@@ -142,7 +141,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                         source[i] = b'\n';
                     }
                 }
-                code_ranges = ranges;
+                ranges
             } else {
                 if let Some(encoding_name) = scan_coding_comment(&source) {
                     // If the input is already UTF-8 then there is no need to recode the source
@@ -204,8 +203,8 @@ pub fn run(options: Options) -> std::io::Result<()> {
                         }
                     }
                 }
-                code_ranges = vec![];
-            }
+                vec![]
+            };
             extractor::extract(
                 &language,
                 "ruby",
@@ -372,7 +371,7 @@ fn get_overlay_changed_files() -> Option<HashSet<PathBuf>> {
     )
 }
 
-fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<str>> {
+fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<'_, str>> {
     let mut index = 0;
     // skip UTF-8 BOM marker if there is one
     if content.len() >= 3 && content[0] == 0xef && content[1] == 0xbb && content[2] == 0xbf {

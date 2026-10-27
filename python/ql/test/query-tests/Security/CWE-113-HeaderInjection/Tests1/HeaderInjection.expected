@@ -1,4 +1,7 @@
 #select
+| extra_response_headers.py:9:52:9:56 | ControlFlowNode for value | extra_response_headers.py:5:16:5:19 | ControlFlowNode for self | extra_response_headers.py:9:52:9:56 | ControlFlowNode for value | This HTTP header is constructed from a $@. | extra_response_headers.py:5:16:5:19 | ControlFlowNode for self | user-provided value |
+| extra_response_headers.py:11:42:11:45 | ControlFlowNode for name | extra_response_headers.py:5:16:5:19 | ControlFlowNode for self | extra_response_headers.py:11:42:11:45 | ControlFlowNode for name | This HTTP header is constructed from a $@. | extra_response_headers.py:5:16:5:19 | ControlFlowNode for self | user-provided value |
+| extra_response_headers.py:27:49:27:53 | ControlFlowNode for value | extra_response_headers.py:21:16:21:19 | ControlFlowNode for self | extra_response_headers.py:27:49:27:53 | ControlFlowNode for value | This HTTP header is constructed from a $@. | extra_response_headers.py:21:16:21:19 | ControlFlowNode for self | user-provided value |
 | flask_tests.py:13:17:13:26 | ControlFlowNode for rfs_header | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:13:17:13:26 | ControlFlowNode for rfs_header | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
 | flask_tests.py:20:36:20:61 | ControlFlowNode for Subscript | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:20:36:20:61 | ControlFlowNode for Subscript | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
 | flask_tests.py:33:11:33:20 | ControlFlowNode for rfs_header | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:33:11:33:20 | ControlFlowNode for rfs_header | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
@@ -7,6 +10,12 @@
 | wsgiref_tests.py:8:17:8:22 | ControlFlowNode for h_name | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | wsgiref_tests.py:8:17:8:22 | ControlFlowNode for h_name | This HTTP header is constructed from a $@. | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | user-provided value |
 | wsgiref_tests.py:8:42:8:46 | ControlFlowNode for h_val | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | wsgiref_tests.py:8:42:8:46 | ControlFlowNode for h_val | This HTTP header is constructed from a $@. | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | user-provided value |
 edges
+| extra_response_headers.py:5:16:5:19 | ControlFlowNode for self | extra_response_headers.py:6:9:6:12 | ControlFlowNode for name | provenance | AdditionalTaintStep |
+| extra_response_headers.py:5:16:5:19 | ControlFlowNode for self | extra_response_headers.py:7:9:7:13 | ControlFlowNode for value | provenance | AdditionalTaintStep |
+| extra_response_headers.py:6:9:6:12 | ControlFlowNode for name | extra_response_headers.py:11:42:11:45 | ControlFlowNode for name | provenance |  |
+| extra_response_headers.py:7:9:7:13 | ControlFlowNode for value | extra_response_headers.py:9:52:9:56 | ControlFlowNode for value | provenance |  |
+| extra_response_headers.py:21:16:21:19 | ControlFlowNode for self | extra_response_headers.py:23:9:23:13 | ControlFlowNode for value | provenance | AdditionalTaintStep |
+| extra_response_headers.py:23:9:23:13 | ControlFlowNode for value | extra_response_headers.py:27:49:27:53 | ControlFlowNode for value | provenance |  |
 | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:1:29:1:35 | ControlFlowNode for request | provenance |  |
 | flask_tests.py:1:29:1:35 | ControlFlowNode for request | flask_tests.py:9:18:9:24 | ControlFlowNode for request | provenance |  |
 | flask_tests.py:1:29:1:35 | ControlFlowNode for request | flask_tests.py:19:18:19:24 | ControlFlowNode for request | provenance |  |
@@ -37,6 +46,14 @@ models
 | 1 | Summary: urllib; Member[parse].Member[parse_qs]; Argument[0,qs:]; ReturnValue; taint |
 | 2 | Summary: urllib; Member[parse].Member[urlparse]; Argument[0,urlstring:]; ReturnValue; taint |
 nodes
+| extra_response_headers.py:5:16:5:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| extra_response_headers.py:6:9:6:12 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| extra_response_headers.py:7:9:7:13 | ControlFlowNode for value | semmle.label | ControlFlowNode for value |
+| extra_response_headers.py:9:52:9:56 | ControlFlowNode for value | semmle.label | ControlFlowNode for value |
+| extra_response_headers.py:11:42:11:45 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| extra_response_headers.py:21:16:21:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| extra_response_headers.py:23:9:23:13 | ControlFlowNode for value | semmle.label | ControlFlowNode for value |
+| extra_response_headers.py:27:49:27:53 | ControlFlowNode for value | semmle.label | ControlFlowNode for value |
 | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | flask_tests.py:1:29:1:35 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | flask_tests.py:9:5:9:14 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |

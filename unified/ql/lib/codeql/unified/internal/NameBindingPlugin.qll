@@ -1,5 +1,10 @@
+overlay[local?]
+module;
+
 private import unified
 private import codeql.util.Unit
+private import codeql.util.Option
+private import StaticNameBinding
 
 private module Plugins {
   private import codeql.unified.internal.NameBindingPluginSwift
@@ -43,6 +48,23 @@ class NameBindingPlugin extends Unit {
   bindingset[cls, member]
   predicate isInheritableMember(ClassLikeDeclaration cls, Member member) { none() }
 
+  /**
+   * Holds if `member` is considered invalid within the namespace `n`.
+   */
+  bindingset[n, member]
+  predicate isInvalidMember(NamespaceNode n, Member member) { none() }
+
+  /**
+   * Gets the key used to determine if `m` is shadowed by another declaration
+   * with the same name and key.
+   *
+   * Nodes without shadowing keys will not shadow inherited declarations.
+   *
+   * This means that shadowing can be completely disabled by not implementing this
+   * predicate, and completely enabled by assigning the same key to all members.
+   */
+  string getShadowingKey(Member m) { none() }
+
   /** Gets the name of the implicit receiver parameter in `callable`, if it has one. */
   string getImplicitReceiverParameterName(Callable callable) { none() }
 
@@ -56,7 +78,11 @@ class NameBindingPlugin extends Unit {
 
 /** Holds if `member` is an instance member. */
 predicate isInstanceMember(Member member) {
-  (member instanceof VariableDeclaration or member instanceof FunctionDeclaration) and
+  (
+    member instanceof VariableDeclaration or
+    member instanceof FunctionDeclaration or
+    member instanceof ConstructorDeclaration
+  ) and
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |
     any(NameBindingPlugin p).isInstanceMember(cls, member)
   )
@@ -64,10 +90,15 @@ predicate isInstanceMember(Member member) {
 
 /**
  * Holds if `member` is a non-instance member declared in the context of a class or top-level.
+ *
+ * Instance constructors are also considered static members, in order to be able to look them
+ * up as both instance members (`self.init()`) and static members (`C1.init()`).
  */
 predicate isStaticMember(Member member) {
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |
-    not any(NameBindingPlugin p).isInstanceMember(cls, member)
+    not any(NameBindingPlugin p).isInstanceMember(cls, member) or
+    member instanceof ConstructorDeclaration or
+    member instanceof TypeAliasDeclaration
   )
   or
   member = any(TopLevel t).getBody().getAStmt()
@@ -78,6 +109,28 @@ predicate isInheritableMember(Member member) {
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |
     any(NameBindingPlugin p).isInheritableMember(cls, member)
   )
+}
+
+bindingset[n, member]
+predicate isInvalidMember(NamespaceNode n, Member member) {
+  any(NameBindingPlugin p).isInvalidMember(n, member)
+}
+
+private string getShadowingKey0(NameBindingNode n) {
+  result = any(NameBindingPlugin p).getShadowingKey(any(Member m | n.isMember(m)))
+}
+
+private class ShadowingKey extends string {
+  ShadowingKey() { this = getShadowingKey0(_) }
+}
+
+class ShadowingKeyOpt = Option<ShadowingKey>::Option;
+
+ShadowingKeyOpt getShadowingKey(NameBindingNode n) {
+  result.asSome() = getShadowingKey0(n)
+  or
+  not exists(getShadowingKey0(n)) and
+  result.isNone()
 }
 
 /**

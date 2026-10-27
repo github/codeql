@@ -1,8 +1,9 @@
 private import unified
 private import NameBinding as NameBinding
+private import ExprPositionsPlugin
 
 /**
- * Holds if `expr` appears in the context of a type annotation.
+ * Holds if `expr` appears in a context where it must refer to a type.
  */
 predicate isInTypeContext(Expr expr) {
   expr = any(TypeCastExpr n).getType()
@@ -27,7 +28,17 @@ predicate isInTypeContext(Expr expr) {
   or
   expr = any(AssociatedTypeDeclaration n).getBound()
   or
+  expr = any(ClassLikeDeclaration c).getExtensionTarget()
+  or
+  expr = any(GenericTypeExpr gte).getATypeArgument()
+  or
+  expr = any(ModifiedTypeExpr m).getType()
+  or
   expr.getParent() instanceof TypeConstraint
+  or
+  exists(NameBinding::getTypeFromRef(expr))
+  or
+  any(ExprPositionsPlugin p).isInTypeContext(expr)
   or
   isInTypeContext(expr.getEnclosingExpr())
 }
@@ -67,4 +78,14 @@ predicate hasResultValue(Expr e) {
   not isInBindingContext(e, _) and
   not isInAssignmentContext(e, any(AssignExpr n)) and // non-compound assignment target
   not e instanceof IdentifierLabel
+}
+
+/** Holds if `e` is returned from `callable` either because it is an operand of `return` or is implicitly returned due to language-specific semantics. */
+predicate isReturnedExpr(Callable callable, Expr e) {
+  exists(ReturnExpr ret |
+    callable = ret.getEnclosingCallable() and
+    e = ret.getValue()
+  )
+  or
+  any(ExprPositionsPlugin p).isReturnedExpr(callable, e)
 }

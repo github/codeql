@@ -44,14 +44,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             // Configure the proxy settings, if applicable.
-            if (this.proxy != null)
-            {
-                logger.LogDebug($"Configuring environment variables for the registry proxy at {this.proxy.Address}");
-
-                startInfo.EnvironmentVariables["HTTP_PROXY"] = this.proxy.Address;
-                startInfo.EnvironmentVariables["HTTPS_PROXY"] = this.proxy.Address;
-                startInfo.EnvironmentVariables["SSL_CERT_FILE"] = this.proxy.CertificatePath;
-            }
+            proxy?.SetProcessEnvironment(startInfo);
 
             return startInfo;
         }

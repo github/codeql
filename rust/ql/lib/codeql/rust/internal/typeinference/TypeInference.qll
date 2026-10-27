@@ -36,6 +36,7 @@ private module Input1 implements InputSig1<Location> {
   class TypeAbstraction = TA::TypeAbstraction;
 
   int getTypeParameterId(TypeParameter tp) {
+    CachedStage::ref() and
     tp =
       rank[result](TypeParameter tp0, int kind, int id1, int id2 |
         kind = 1 and
@@ -2917,7 +2918,9 @@ private module Input3 implements InputSig3 {
     )
   }
 
-  class Closure extends Expr, Callable instanceof Rust::ClosureExpr { }
+  class Closure extends Expr, Callable instanceof Rust::ClosureExpr {
+    Expr getDefiningExpr() { result = this }
+  }
 
   class ClosureParameterPseudoType extends T::ClosureParameterPseudoType {
     Parameter getParameter() { result = this.getParam() }
@@ -3115,6 +3118,10 @@ private module Input3 implements InputSig3 {
   pragma[nomagic]
   Type inferTypeCertainLanguageSpecific(AstNode n, TypePath path) {
     result = inferLiteralType(n, path, true)
+    or
+    (n instanceof CfgPredExpr or n instanceof CfgPredPat) and
+    path.isEmpty() and
+    result instanceof BoolType
     or
     result = inferRefPatType(n) and
     path.isEmpty()

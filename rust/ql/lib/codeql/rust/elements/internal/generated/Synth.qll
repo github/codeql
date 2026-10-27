@@ -149,6 +149,14 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TCfgPredExpr(Raw::CfgPredExpr id) { constructCfgPredExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TCfgPredPat(Raw::CfgPredPat id) { constructCfgPredPat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TClosureExpr(Raw::ClosureExpr id) { constructClosureExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -182,6 +190,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TDerefPat(Raw::DerefPat id) { constructDerefPat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TDocComment(Raw::DocComment id) { constructDocComment(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -743,6 +755,11 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TAnyAttr = TAttr or TDocComment;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TArrayExpr = TArrayListExpr or TArrayRepeatExpr;
 
   /**
@@ -764,19 +781,18 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TAstNode =
-    TAbi or TAddressable or TArgList or TAsmDirSpec or TAsmOperand or TAsmOperandExpr or
-        TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItemList or TAttr or TCallable or
-        TCfgPredicate or TExpr or TExternItemList or TFieldList or TForBinder or TFormatArgsArg or
-        TGenericArg or TGenericArgList or TGenericParam or TGenericParamList or TImplRestriction or
-        TItemList or TLabel or TLetElse or TMacroItems or TMatchArm or TMatchArmList or
-        TMatchGuard or TMeta or TMutRestriction or TName or TParamBase or TParamList or
-        TParenthesizedArgList or TPat or TPath or TPathAstNode or TPathSegment or TRename or
-        TRetTypeRepr or TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or
-        TStructExprField or TStructExprFieldList or TStructField or TStructPatField or
-        TStructPatFieldList or TToken or TTokenTree or TTryBlockModifier or TTupleField or
-        TTypeBound or TTypeBoundList or TTypeRepr or TUseBoundGenericArg or TUseBoundGenericArgs or
-        TUseTree or TUseTreeList or TVariantList or TVisibility or TVisibilityInner or
-        TWhereClause or TWherePred;
+    TAbi or TAddressable or TAnyAttr or TArgList or TAsmDirSpec or TAsmOperand or TAsmOperandExpr or
+        TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItemList or TCallable or TCfgPredicate or
+        TExpr or TExternItemList or TFieldList or TForBinder or TFormatArgsArg or TGenericArg or
+        TGenericArgList or TGenericParam or TGenericParamList or TImplRestriction or TItemList or
+        TLabel or TLetElse or TMacroItems or TMatchArm or TMatchArmList or TMatchGuard or TMeta or
+        TMutRestriction or TName or TParamBase or TParamList or TParenthesizedArgList or TPat or
+        TPath or TPathAstNode or TPathSegment or TRename or TRetTypeRepr or TReturnTypeSyntax or
+        TSourceFile or TStmt or TStmtList or TStructExprField or TStructExprFieldList or
+        TStructField or TStructPatField or TStructPatFieldList or TToken or TTokenTree or
+        TTryBlockModifier or TTupleField or TTypeBound or TTypeBoundList or TTypeRepr or
+        TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or TUseTreeList or TVariantList or
+        TVisibility or TVisibilityInner or TWhereClause or TWherePred;
 
   /**
    * INTERNAL: Do not use.
@@ -793,11 +809,12 @@ module Synth {
    */
   class TExpr =
     TArrayExpr or TArrayExprInternal or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or
-        TBreakExpr or TCallExpr or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
-        TFormatArgsExpr or TIfExpr or TIncludeBytesExpr or TIndexExpr or TLabelableExpr or
-        TLetExpr or TLiteralExpr or TMacroExpr or TMatchExpr or TMethodCallExpr or TOffsetOfExpr or
-        TParenExpr or TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or TReturnExpr or
-        TStructExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or TYieldExpr;
+        TBreakExpr or TCallExpr or TCastExpr or TCfgPredExpr or TClosureExpr or TContinueExpr or
+        TFieldExpr or TFormatArgsExpr or TIfExpr or TIncludeBytesExpr or TIndexExpr or
+        TLabelableExpr or TLetExpr or TLiteralExpr or TMacroExpr or TMatchExpr or TMethodCallExpr or
+        TOffsetOfExpr or TParenExpr or TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or
+        TReturnExpr or TStructExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or
+        TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -856,9 +873,9 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TPat =
-    TBoxPat or TConstBlockPat or TDerefPat or TIdentPat or TLiteralPat or TMacroPat or TNotNull or
-        TOrPat or TParenPat or TPathPat or TRangePat or TRefPat or TRestPat or TSlicePat or
-        TStructPat or TTuplePat or TTupleStructPat or TWildcardPat;
+    TBoxPat or TCfgPredPat or TConstBlockPat or TDerefPat or TIdentPat or TLiteralPat or
+        TMacroPat or TNotNull or TOrPat or TParenPat or TPathPat or TRangePat or TRefPat or
+        TRestPat or TSlicePat or TStructPat or TTuplePat or TTupleStructPat or TWildcardPat;
 
   /**
    * INTERNAL: Do not use.
@@ -1154,6 +1171,20 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    *
+   * Converts a raw element to a synthesized `TCfgPredExpr`, if possible.
+   */
+  TCfgPredExpr convertCfgPredExprFromRaw(Raw::Element e) { result = TCfgPredExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TCfgPredPat`, if possible.
+   */
+  TCfgPredPat convertCfgPredPatFromRaw(Raw::Element e) { result = TCfgPredPat(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
    * Converts a raw element to a synthesized `TClosureExpr`, if possible.
    */
   TClosureExpr convertClosureExprFromRaw(Raw::Element e) { result = TClosureExpr(e) }
@@ -1213,6 +1244,13 @@ module Synth {
    * Converts a raw element to a synthesized `TDerefPat`, if possible.
    */
   TDerefPat convertDerefPatFromRaw(Raw::Element e) { result = TDerefPat(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TDocComment`, if possible.
+   */
+  TDocComment convertDocCommentFromRaw(Raw::Element e) { result = TDocComment(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2190,6 +2228,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TAnyAttr`, if possible.
+   */
+  TAnyAttr convertAnyAttrFromRaw(Raw::Element e) {
+    result = convertAttrFromRaw(e)
+    or
+    result = convertDocCommentFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TArrayExpr`, if possible.
    */
   TArrayExpr convertArrayExprFromRaw(Raw::Element e) {
@@ -2247,6 +2295,8 @@ module Synth {
     or
     result = convertAddressableFromRaw(e)
     or
+    result = convertAnyAttrFromRaw(e)
+    or
     result = convertArgListFromRaw(e)
     or
     result = convertAsmDirSpecFromRaw(e)
@@ -2262,8 +2312,6 @@ module Synth {
     result = convertAsmRegSpecFromRaw(e)
     or
     result = convertAssocItemListFromRaw(e)
-    or
-    result = convertAttrFromRaw(e)
     or
     result = convertCallableFromRaw(e)
     or
@@ -2434,6 +2482,8 @@ module Synth {
     result = convertCallExprFromRaw(e)
     or
     result = convertCastExprFromRaw(e)
+    or
+    result = convertCfgPredExprFromRaw(e)
     or
     result = convertClosureExprFromRaw(e)
     or
@@ -2638,6 +2688,8 @@ module Synth {
    */
   TPat convertPatFromRaw(Raw::Element e) {
     result = convertBoxPatFromRaw(e)
+    or
+    result = convertCfgPredPatFromRaw(e)
     or
     result = convertConstBlockPatFromRaw(e)
     or
@@ -2988,6 +3040,18 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TCfgPredExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertCfgPredExprToRaw(TCfgPredExpr e) { e = TCfgPredExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCfgPredPat` to a raw DB element, if possible.
+   */
+  Raw::Element convertCfgPredPatToRaw(TCfgPredPat e) { e = TCfgPredPat(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TClosureExpr` to a raw DB element, if possible.
    */
   Raw::Element convertClosureExprToRaw(TClosureExpr e) { e = TClosureExpr(result) }
@@ -3039,6 +3103,12 @@ module Synth {
    * Converts a synthesized `TDerefPat` to a raw DB element, if possible.
    */
   Raw::Element convertDerefPatToRaw(TDerefPat e) { e = TDerefPat(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TDocComment` to a raw DB element, if possible.
+   */
+  Raw::Element convertDocCommentToRaw(TDocComment e) { e = TDocComment(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3878,6 +3948,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TAnyAttr` to a raw DB element, if possible.
+   */
+  Raw::Element convertAnyAttrToRaw(TAnyAttr e) {
+    result = convertAttrToRaw(e)
+    or
+    result = convertDocCommentToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TArrayExpr` to a raw DB element, if possible.
    */
   Raw::Element convertArrayExprToRaw(TArrayExpr e) {
@@ -3935,6 +4015,8 @@ module Synth {
     or
     result = convertAddressableToRaw(e)
     or
+    result = convertAnyAttrToRaw(e)
+    or
     result = convertArgListToRaw(e)
     or
     result = convertAsmDirSpecToRaw(e)
@@ -3950,8 +4032,6 @@ module Synth {
     result = convertAsmRegSpecToRaw(e)
     or
     result = convertAssocItemListToRaw(e)
-    or
-    result = convertAttrToRaw(e)
     or
     result = convertCallableToRaw(e)
     or
@@ -4122,6 +4202,8 @@ module Synth {
     result = convertCallExprToRaw(e)
     or
     result = convertCastExprToRaw(e)
+    or
+    result = convertCfgPredExprToRaw(e)
     or
     result = convertClosureExprToRaw(e)
     or
@@ -4326,6 +4408,8 @@ module Synth {
    */
   Raw::Element convertPatToRaw(TPat e) {
     result = convertBoxPatToRaw(e)
+    or
+    result = convertCfgPredPatToRaw(e)
     or
     result = convertConstBlockPatToRaw(e)
     or

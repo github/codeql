@@ -108,7 +108,6 @@
 | Tuples.cs:59:17:59:32 | (..., ...) | Tuples.cs:59:13:59:13 | access to local variable x |
 | Tuples.cs:60:17:60:17 | access to local variable x | Tuples.cs:62:18:62:57 | (String,(Int32,String),Int32) t |
 | Tuples.cs:60:17:60:17 | access to local variable x | Tuples.cs:67:18:67:35 | (..., ...) |
-| Tuples.cs:60:17:60:17 | access to local variable x | Tuples.cs:67:18:67:35 | (..., ...) |
 | Tuples.cs:60:17:60:17 | access to local variable x | Tuples.cs:87:13:87:13 | access to local variable x |
 | Tuples.cs:62:18:62:57 | (String,(Int32,String),Int32) t | Tuples.cs:62:18:62:57 | SSA def(t) |
 | Tuples.cs:62:18:62:57 | SSA def(t) | Tuples.cs:62:64:62:64 | access to local variable t |
@@ -144,7 +143,7 @@
 | Tuples.cs:75:13:75:30 | SSA qualifier def(y.Item2.Item2) | Tuples.cs:80:22:80:34 | access to field Item2 |
 | Tuples.cs:75:17:75:30 | (..., ...) | Tuples.cs:75:13:75:13 | access to local variable y |
 | Tuples.cs:75:18:75:18 | access to parameter s | Tuples.cs:75:25:75:25 | access to parameter s |
-| Tuples.cs:76:17:76:17 | access to local variable y | Tuples.cs:78:26:78:35 | (..., ...) |
+| Tuples.cs:76:17:76:17 | access to local variable y | Tuples.cs:78:18:78:39 | { ... } |
 | Tuples.cs:76:17:76:17 | access to local variable y | Tuples.cs:79:22:79:22 | access to local variable y |
 | Tuples.cs:78:19:78:23 | SSA def(a) | Tuples.cs:78:46:78:46 | access to local variable a |
 | Tuples.cs:78:19:78:23 | String a | Tuples.cs:78:19:78:23 | SSA def(a) |
@@ -160,7 +159,6 @@
 | Tuples.cs:80:22:80:28 | access to field Item2 | Tuples.cs:82:22:82:28 | access to field Item2 |
 | Tuples.cs:82:22:82:34 | access to field Item1 | Tuples.cs:82:22:82:34 | (...) ... |
 | Tuples.cs:83:22:83:22 | access to local variable b | Tuples.cs:83:22:83:22 | (...) ... |
-| Tuples.cs:87:13:87:13 | access to local variable x | Tuples.cs:87:18:87:35 | (..., ...) |
 | Tuples.cs:87:13:87:13 | access to local variable x | Tuples.cs:87:18:87:35 | (..., ...) |
 | Tuples.cs:87:23:87:23 | SSA def(p) | Tuples.cs:89:18:89:18 | access to local variable p |
 | Tuples.cs:87:23:87:23 | String p | Tuples.cs:87:23:87:23 | SSA def(p) |
@@ -229,4 +227,62 @@
 | Tuples.cs:133:24:133:29 | (..., ...) | Tuples.cs:133:9:133:20 | (..., ...) |
 | Tuples.cs:133:25:133:25 | 1 | Tuples.cs:133:9:133:29 | ... = ... |
 | Tuples.cs:133:28:133:28 | access to local variable o | Tuples.cs:133:18:133:19 | access to local variable y4 |
-| Tuples.cs:144:18:144:31 | this | Tuples.cs:144:18:144:31 | this access |
+| Tuples.cs:139:13:139:14 | access to local variable o1 | Tuples.cs:139:13:139:35 | SSA def(o1) |
+| Tuples.cs:139:13:139:35 | SSA def(o1) | Tuples.cs:141:18:141:19 | access to local variable o1 |
+| Tuples.cs:139:18:139:35 | call to method Source<String> | Tuples.cs:139:13:139:14 | access to local variable o1 |
+| Tuples.cs:139:33:139:34 | 10 | Tuples.cs:139:33:139:34 | (...) ... |
+| Tuples.cs:140:13:140:14 | access to local variable o2 | Tuples.cs:140:13:140:35 | SSA def(o2) |
+| Tuples.cs:140:13:140:35 | SSA def(o2) | Tuples.cs:141:26:141:27 | access to local variable o2 |
+| Tuples.cs:140:18:140:35 | call to method Source<String> | Tuples.cs:140:13:140:14 | access to local variable o2 |
+| Tuples.cs:140:33:140:34 | 11 | Tuples.cs:140:33:140:34 | (...) ... |
+| Tuples.cs:141:13:141:13 | access to local variable x | Tuples.cs:141:13:141:32 | SSA def(x) |
+| Tuples.cs:141:13:141:32 | SSA def(x) | Tuples.cs:142:17:142:17 | access to local variable x |
+| Tuples.cs:141:17:141:32 | (..., ...) | Tuples.cs:141:13:141:13 | access to local variable x |
+| Tuples.cs:142:17:142:17 | access to local variable x | Tuples.cs:144:18:144:46 | { ... } |
+| Tuples.cs:144:19:144:24 | SSA def(a1) | Tuples.cs:145:22:145:23 | access to local variable a1 |
+| Tuples.cs:144:19:144:24 | String a1 | Tuples.cs:144:19:144:24 | SSA def(a1) |
+| Tuples.cs:144:28:144:33 | Int32 b1 | Tuples.cs:144:28:144:33 | SSA def(b1) |
+| Tuples.cs:144:28:144:33 | SSA def(b1) | Tuples.cs:147:22:147:23 | access to local variable b1 |
+| Tuples.cs:144:36:144:41 | SSA def(c1) | Tuples.cs:146:22:146:23 | access to local variable c1 |
+| Tuples.cs:144:36:144:41 | String c1 | Tuples.cs:144:36:144:41 | SSA def(c1) |
+| Tuples.cs:147:22:147:23 | access to local variable b1 | Tuples.cs:147:22:147:23 | (...) ... |
+| Tuples.cs:151:13:151:14 | access to local variable o3 | Tuples.cs:151:13:151:35 | SSA def(o3) |
+| Tuples.cs:151:13:151:35 | SSA def(o3) | Tuples.cs:153:18:153:19 | access to local variable o3 |
+| Tuples.cs:151:18:151:35 | call to method Source<String> | Tuples.cs:151:13:151:14 | access to local variable o3 |
+| Tuples.cs:151:33:151:34 | 12 | Tuples.cs:151:33:151:34 | (...) ... |
+| Tuples.cs:152:13:152:14 | access to local variable o4 | Tuples.cs:152:13:152:35 | SSA def(o4) |
+| Tuples.cs:152:13:152:35 | SSA def(o4) | Tuples.cs:153:26:153:27 | access to local variable o4 |
+| Tuples.cs:152:18:152:35 | call to method Source<String> | Tuples.cs:152:13:152:14 | access to local variable o4 |
+| Tuples.cs:152:33:152:34 | 13 | Tuples.cs:152:33:152:34 | (...) ... |
+| Tuples.cs:153:13:153:13 | access to local variable y | Tuples.cs:153:13:153:32 | SSA def(y) |
+| Tuples.cs:153:13:153:32 | SSA def(y) | Tuples.cs:154:13:154:13 | access to local variable y |
+| Tuples.cs:153:17:153:32 | (..., ...) | Tuples.cs:153:13:153:13 | access to local variable y |
+| Tuples.cs:154:13:154:13 | access to local variable y | Tuples.cs:154:18:154:42 | { ... } |
+| Tuples.cs:154:19:154:24 | SSA def(a2) | Tuples.cs:156:18:156:19 | access to local variable a2 |
+| Tuples.cs:154:19:154:24 | String a2 | Tuples.cs:154:19:154:24 | SSA def(a2) |
+| Tuples.cs:154:32:154:33 | Int32 b2 | Tuples.cs:154:32:154:33 | SSA def(b2) |
+| Tuples.cs:154:32:154:33 | SSA def(b2) | Tuples.cs:158:18:158:19 | access to local variable b2 |
+| Tuples.cs:154:36:154:37 | SSA def(c2) | Tuples.cs:157:18:157:19 | access to local variable c2 |
+| Tuples.cs:154:36:154:37 | String c2 | Tuples.cs:154:36:154:37 | SSA def(c2) |
+| Tuples.cs:158:18:158:19 | access to local variable b2 | Tuples.cs:158:18:158:19 | (...) ... |
+| Tuples.cs:161:13:161:14 | access to local variable o5 | Tuples.cs:161:13:161:35 | SSA def(o5) |
+| Tuples.cs:161:13:161:35 | SSA def(o5) | Tuples.cs:163:18:163:19 | access to local variable o5 |
+| Tuples.cs:161:18:161:35 | call to method Source<String> | Tuples.cs:161:13:161:14 | access to local variable o5 |
+| Tuples.cs:161:33:161:34 | 14 | Tuples.cs:161:33:161:34 | (...) ... |
+| Tuples.cs:162:13:162:14 | access to local variable o6 | Tuples.cs:162:13:162:35 | SSA def(o6) |
+| Tuples.cs:162:13:162:35 | SSA def(o6) | Tuples.cs:163:26:163:27 | access to local variable o6 |
+| Tuples.cs:162:18:162:35 | call to method Source<String> | Tuples.cs:162:13:162:14 | access to local variable o6 |
+| Tuples.cs:162:33:162:34 | 15 | Tuples.cs:162:33:162:34 | (...) ... |
+| Tuples.cs:163:13:163:13 | access to local variable z | Tuples.cs:163:13:163:32 | SSA def(z) |
+| Tuples.cs:163:13:163:32 | SSA def(z) | Tuples.cs:164:13:164:13 | access to local variable z |
+| Tuples.cs:163:17:163:32 | (..., ...) | Tuples.cs:163:13:163:13 | access to local variable z |
+| Tuples.cs:164:13:164:13 | access to local variable z | Tuples.cs:164:18:164:47 | { ... } |
+| Tuples.cs:164:19:164:24 | SSA def(a3) | Tuples.cs:166:18:166:19 | access to local variable a3 |
+| Tuples.cs:164:19:164:24 | String a3 | Tuples.cs:164:19:164:24 | SSA def(a3) |
+| Tuples.cs:164:27:164:43 | (Int32,String) t | Tuples.cs:164:27:164:43 | SSA def(t) |
+| Tuples.cs:164:27:164:43 | SSA def(t) | Tuples.cs:167:18:167:18 | access to local variable t |
+| Tuples.cs:164:27:164:43 | SSA qualifier def(t.Item2) | Tuples.cs:167:18:167:24 | access to field Item2 |
+| Tuples.cs:164:28:164:33 | Int32 b3 | Tuples.cs:164:28:164:33 | SSA def(b3) |
+| Tuples.cs:164:28:164:33 | SSA def(b3) | Tuples.cs:168:18:168:19 | access to local variable b3 |
+| Tuples.cs:168:18:168:19 | access to local variable b3 | Tuples.cs:168:18:168:19 | (...) ... |
+| Tuples.cs:179:18:179:31 | this | Tuples.cs:179:18:179:31 | this access |

@@ -7,9 +7,9 @@ func returnZero() -> Int { return 0 }
 returnZero()
 Double(topLevelDecl)
 
-enum MyError: Error { // $ nonSimple='ClassLikeDeclaration -V MyError -^ BaseType -V Error'
+enum MyError: Error {
     case error1, error2
-    case error3(withParam: Int)
+    case error3(withParam: Int) // $ nonSimple='withParam -? Block'
 }
 
 func isZero(x : Int) -> Bool {
@@ -17,29 +17,29 @@ func isZero(x : Int) -> Bool {
 }
 
 func mightThrow(x : Int) throws -> Void {
-  guard x >= 0 else {
+  guard x >= 0 else { // $ bbStep='... >= ... : false -> Block(+0)' bbStep='... >= ... : true -> GuardIfStmt(+3)'
     throw MyError.error1
   }
-  guard x <= 0 else { // $ noCfg
-    throw MyError.error3(withParam: x + 1) // $ noCfg
+  guard x <= 0 else { // $ bbStep='... <= ... : false -> Block(+0)'
+    throw MyError.error3(withParam: x + 1)
   }
 }
 
 func tryCatch(x : Int) -> Int {
   do {
-    try mightThrow(x: 0)
+    try mightThrow(x: 0) // $ bbStep='mightThrow(...) : exception -> CatchClause(+5)' bbStep='mightThrow(...) : successor -> try ...(+0)'
     print("Did not throw.")
     try! mightThrow(x: 0)
-    print("Still did not throw.")
+    print("Still did not throw.") // $ bbStep='print(...) : successor -> 0(+11)'
 
-  } catch MyError.error1 , MyError.error2 where isZero(x: x) { // $ noCfg
-    return 0 // $ noCfg
-  } catch MyError.error3(let withParam) { // $ noCfg
-    return withParam // $ noCfg
-  } catch is MyError { // $ noCfg
-    print("MyError") // $ noCfg
+  } catch MyError.error1 , MyError.error2 where isZero(x: x) { // $ bbStep='OrPattern : match -> Block(+0)' bbStep='OrPattern : no-match -> CatchClause(+2)' nonSimple='CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern'
+    return 0
+  } catch MyError.error3(let withParam) { // $ bbStep='... .error3(...) : match -> Block(+0)' bbStep='... .error3(...) : no-match -> CatchClause(+2)'
+    return withParam
+  } catch is MyError { // $ bbStep=' : match -> Block(+0)' bbStep=' : no-match -> CatchClause(+2)'
+    print("MyError") // $ bbStep='print(...) : successor -> 0(+4)'
   } catch {
-    print("Unknown error \(error)") // $ noCfg
+    print("Unknown error \(error)") // $ bbStep='print(...) : successor -> 0(+2)'
   }
   return 0
 }
@@ -59,11 +59,11 @@ func createClosure2(x : Int) -> (_ : Int) -> Int { // $ noCfg
 
 func createClosure3(x : Int) -> (_ : Int) -> Int { // $ noCfg
   return {
-    (y) -> Int in x + y // $ bbContinues='y goto Block(-1)'
+    (y) -> Int in x + y
   }
 }
 
-func callClosures() { // $ noCfg
+func callClosures() {
   var x1 = createClosure1(s: "")()
   var x2 = createClosure2(x: 0)(10)
   var x3 = createClosure3(x: 0)(10)
@@ -137,59 +137,68 @@ func testMemberRef(param : C, inoutParam : inout C, opt : C?) {
 }
 
 func patterns(x : Int) -> Bool {
-  for _ in 0...10 // $ bbStep='BinaryExpr : empty -> SwitchExpr(+3)' bbStep='BinaryExpr : non-empty -> _(+0)'
-        {  } // $ bbStep='Block : successor -> _(-1)' bbStep='Block : successor -> SwitchExpr(+2)'
+  for _ in 0...10 // $ bbStep='... ... ... : empty -> ForEachStmt(+3)' bbStep='... ... ... : non-empty -> _(+0)'
+        {  } // $ bbStep='Block : successor -> _(-1)' bbStep='Block : successor -> ForEachStmt(+2)'
+
+  for y in 0...10 where y != 5 { // $ bbStep='... ... ... : empty -> SwitchExpr(+4)' bbStep='... ... ... : non-empty -> y(+0)' bbStep='... != ... : false -> SwitchExpr(+4)' bbStep='... != ... : false -> y(+0)' bbStep='... != ... : true -> Block(+0)'
+    print(y) // $ bbStep='print(...) : successor -> SwitchExpr(+3)' bbStep='print(...) : successor -> y(-1)'
+  }
 
   switch x {
-    case 0, 1: // $ bbStep='OrPattern : match -> Block(+0)' bbStep='OrPattern : no-match -> SwitchCase(+3)'
+    case 0, 1: // $ bbStep='OrPattern : match -> Block(+1)' bbStep='OrPattern : no-match -> SwitchCase(+3)'
       return true
       return true // $ noCfg
-    case x where // $ bbContinues='Block goto true(+3)' bbStep='ConditionalPattern : match -> Block(+0)' bbStep='ConditionalPattern : no-match -> SwitchCase(+4)'
-        (x >= 2) && // $ bbStep='BinaryExpr : false -> x(-1)' bbStep='BinaryExpr : true -> x(+1)'
-            x < 5: // $ bbStep='BinaryExpr : successor -> x(-2)'
+    case x where // $ bbStep='ConditionalPattern : match -> Block(+3)' bbStep='ConditionalPattern : no-match -> SwitchCase(+4)'
+        (x >= 2) && // $ bbStep='... >= ... : false -> x(-1)' bbStep='... >= ... : true -> x(+1)'
+            x < 5: // $ bbStep='... < ... : successor -> x(-2)'
       return true
+    case 42: // $ bbStep='42 : match -> Block(+1)' bbStep='42 : no-match -> SwitchCase(+3)'
+      print("42!")
+      fallthrough // $ bbStep=' : successor -> var obj(+5)'
     default:
-      return false
+      if (x > 10) { return false } // $ bbStep='... > ... : false -> var obj(+3)' bbStep='... > ... : true -> Block(+0)'
   }
 
-  var obj : AnyObject = C(n: x) // $ noCfg
-  if obj is C { // $ noCfg
-    return true // $ noCfg
+  var obj : AnyObject = C(n: x)
+  if obj is C { // $ bbStep='TypeTestExpr : false -> let xOptional(+4)' bbStep='TypeTestExpr : true -> Block(+0)'
+    return true
   }
 
-  let xOptional: Int? = x // $ noCfg
-  if case .some(let x) = xOptional { // $ noCfg
-    return x == 0 // $ noCfg
+  let xOptional: Int? = x
+  if case .some(let x) = xOptional { // $ bbStep='PatternGuardExpr : false -> Block(+2)' bbStep='PatternGuardExpr : true -> .(+0)'
+    return x == 0
   } else {
-    return false // $ noCfg
+    return false
   }
 }
 
 func testDefer(x : inout Int) {
-  // Will print 1, 2, 3, 4
-  defer {
-    print("4")
+  // Will print 1, 2, 3, 4, 5, 6
+  defer { // $ bbContinues='DeferStmt goto print(+3)'
+    print("6")
+  }
+  print("1")
+  print("2")
+
+  defer { // $ bbContinues='DeferStmt goto DeferStmt(+4)'
+    print("5") // $ bbContinues='print(...) goto Block(-7)'
   }
 
   defer {
     print("3")
-  }
-
-  defer {
-    print("1")
-     defer {
-      print("2")
+    defer {
+      print("4") // $ bbContinues='print(...) goto Block(-7)'
     }
   }
 }
 
 func m1(x : Int) {
-  if x > 2 { // $ bbStep='BinaryExpr : false -> IfExpr(+3)' bbStep='BinaryExpr : true -> Block(+0)'
+  if x > 2 { // $ bbStep='... > ... : false -> IfExpr(+3)' bbStep='... > ... : true -> Block(+0)'
     print("x is greater than 2")
   }
-  else if x <= 2 && // $ bbStep='BinaryExpr : true -> x(+1)' bbStep='BinaryExpr : false,false,false -> Block(+5)'
-            x > 0 && // $ bbStep='BinaryExpr : true -> UnaryExpr(+1)' bbStep='BinaryExpr : false,false,false -> Block(+4)'
-            !(x == 5) { // $ bbStep='BinaryExpr : false -> Block(+0)' bbStep='BinaryExpr : true,false -> Block(+3)'
+  else if x <= 2 && // $ bbStep='... <= ... : false,false,false -> Block(+5)' bbStep='... <= ... : true -> x(+1)'
+            x > 0 && // $ bbStep='... > ... : false,false,false -> Block(+4)' bbStep='... > ... : true -> ! ...(+1)'
+            !(x == 5) { // $ bbStep='... == ... : false -> Block(+0)' bbStep='... == ... : true,false -> Block(+3)'
     print("x is 1")
   }
   else {
@@ -197,7 +206,7 @@ func m1(x : Int) {
   }
 }
 
-func m2(b : Bool) -> Int {
+func m2(b : Bool = false) -> Int { // $ bbStep='b : match -> Block(+0)' bbStep='b : no-match -> false(+0)' bbStep='false : successor -> Block(+0)'
   if b { // $ bbStep='b : false -> 1(+3)' bbStep='b : true -> Block(+0)'
     return 0
   }
@@ -205,10 +214,10 @@ func m2(b : Bool) -> Int {
 }
 
 func m3(x : inout Int) -> Int {
-  if x < 0 { // $ bbStep='BinaryExpr : true -> Block(+0)' bbStep='BinaryExpr : false -> x(+6)'
-    x = -x // $ nonSimple='x -> x -? - -^ UnaryExpr -^ AssignExpr'
-    if x > 10 { // $ bbStep='BinaryExpr : true -> Block(+0)' bbStep='BinaryExpr : false -> x(+4)'
-      x = x - 1 // $ bbStep='AssignExpr : successor -> x(+3)'
+  if x < 0 { // $ bbStep='... < ... : false -> x(+6)' bbStep='... < ... : true -> Block(+0)'
+    x = -x
+    if x > 10 { // $ bbStep='... > ... : false -> x(+4)' bbStep='... > ... : true -> Block(+0)'
+      x = x - 1 // $ bbStep='... = ... : successor -> x(+3)'
     }
   }
   return x
@@ -225,7 +234,7 @@ func m4 (b1 : Bool, b2 : Bool, b3 : Bool) -> String {
 func conversionsInSplitEntry (b : Bool) -> String {
   if b ? // $ bbStep='b : false -> Bool(+2)' bbStep='b : true -> true(+1)'
       (true) : // $ bbStep='true : true -> Block(+1)'
-      Bool(false) { // $ bbStep='CallExpr : true,true -> Block(+0)' bbStep='CallExpr : false -> Block(+3)'
+      Bool(false) { // $ bbStep='Bool(...) : false -> Block(+3)' bbStep='Bool(...) : true,true -> Block(+0)'
     return "b"
   }
   else {
@@ -233,7 +242,7 @@ func conversionsInSplitEntry (b : Bool) -> String {
   }
 }
 
-func constant_condition() { // $ noCfg
+func constant_condition() {
   if !true {
     print("Impossible") // $ noCfg
   }
@@ -241,7 +250,7 @@ func constant_condition() { // $ noCfg
 
 func empty_else(b : Bool) {
   if b { // $ bbStep='b : false -> Block(+3)' bbStep='b : true -> Block(+0)'
-    print("true") // $ bbStep='CallExpr : successor -> print(+3)'
+    print("true") // $ bbStep='print(...) : successor -> print(+3)'
   }
   else {} // $ bbStep='Block : successor -> print(+1)'
   print("done")
@@ -310,41 +319,41 @@ func testSubscriptExpr() -> (Int, Int, Int, Int, Int) { // $ noCfg
 }
 
 func loop1(x : inout Int) {
-  while x >= 0 { // $ bbStep='WhileStmt : successor -> x(+0)' bbStep='BinaryExpr : true -> Block(+0)'
+  while x >= 0 { // $ bbStep='WhileStmt : successor -> x(+0)' bbStep='... >= ... : true -> Block(+0)'
     print(x)
-    x -= 1 // $ bbStep='CompoundAssignExpr : successor -> x(-2)'
+    x -= 1 // $ bbStep='... -= ... : successor -> x(-2)'
   }
 }
 
 func loop2(x : inout Int) {
-  while x >= 0 { // $ bbStep='WhileStmt : successor -> x(+0)' bbStep='BinaryExpr : false -> print(+11)' bbStep='BinaryExpr : true -> Block(+0)'
+  while x >= 0 { // $ bbStep='WhileStmt : successor -> x(+0)' bbStep='... >= ... : false -> print(+11)' bbStep='... >= ... : true -> Block(+0)'
     print(x)
     x -= 1
-    if x > 100 { // $ bbStep='BinaryExpr : false -> IfExpr(+3)' bbStep='BinaryExpr : true -> Block(+0)'
+    if x > 100 { // $ bbStep='... > ... : false -> IfExpr(+3)' bbStep='... > ... : true -> Block(+0)'
       break // $ bbStep='BreakExpr : break -> print(+7)'
     }
-    else if x > 50 { // $ bbStep='BinaryExpr : false -> print(+3)' bbStep='BinaryExpr : true -> Block(+0)'
+    else if x > 50 { // $ bbStep='... > ... : false -> print(+3)' bbStep='... > ... : true -> Block(+0)'
       continue // $ bbStep='ContinueExpr : continue -> x(-7)'
     }
-    print("Iter") // $ bbStep='CallExpr : successor -> x(-9)'
+    print("Iter") // $ bbStep='print(...) : successor -> x(-9)'
   }
   print("Done")
 }
 
 func labeledLoop(x : inout Int) {
-  outer: while x >= 0 { // $ bbStep='WhileStmt : successor -> x(+0)' bbStep='BinaryExpr : true -> Block(+0)'
-    inner: while x >= 0 { // $ bbStep='BinaryExpr : false -> print(+11)' bbStep='WhileStmt : successor -> x(+0)' bbStep='BinaryExpr : true -> Block(+0)'
+  outer: while x >= 0 { // $ bbStep='WhileStmt : successor -> x(+0)' bbStep='... >= ... : true -> Block(+0)'
+    inner: while x >= 0 { // $ bbStep='WhileStmt : successor -> x(+0)' bbStep='... >= ... : false -> print(+11)' bbStep='... >= ... : true -> Block(+0)'
       print(x)
       x -= 1
-      if x > 100 { // $ bbStep='BinaryExpr : false -> IfExpr(+3)' bbStep='BinaryExpr : true -> Block(+0)'
+      if x > 100 { // $ bbStep='... > ... : false -> IfExpr(+3)' bbStep='... > ... : true -> Block(+0)'
         break outer
       }
-      else if x > 50 { // $ bbStep='BinaryExpr : false -> print(+3)' bbStep='BinaryExpr : true -> Block(+0)'
+      else if x > 50 { // $ bbStep='... > ... : false -> print(+3)' bbStep='... > ... : true -> Block(+0)'
         continue inner // $ bbStep='ContinueExpr : continue -> x(-7)'
       }
-      print("Iter") // $ bbStep='CallExpr : successor -> x(-9)'
+      print("Iter") // $ bbStep='print(...) : successor -> x(-9)'
     }
-    print("Done") // $ bbStep='CallExpr : successor -> x(-12)'
+    print("Done") // $ bbStep='print(...) : successor -> x(-12)'
   }
 }
 
@@ -352,13 +361,13 @@ func testRepeat(x : inout Int) {
   repeat { // $ bbStep='DoWhileStmt : successor -> Block(+0)'
     print(x)
     x -= 1
-  } while x >= 0 // $ bbStep='BinaryExpr : true -> Block(-3)'
+  } while x >= 0 // $ bbStep='... >= ... : true -> Block(-3)'
 }
 
-func loop_with_identity_expr() { // $ noCfg
+func loop_with_identity_expr() {
   var x = 0
-  while(x < 10) { // $ bbStep='WhileStmt : successor -> x(+0)' bbStep='BinaryExpr : true -> Block(+0)'
-    x += 1 // $ bbStep='CompoundAssignExpr : successor -> x(-1)'
+  while(x < 10) { // $ bbStep='WhileStmt : successor -> x(+0)' bbStep='... < ... : true -> Block(+0)'
+    x += 1 // $ bbStep='... += ... : successor -> x(-1)'
   }
 }
 
@@ -378,7 +387,7 @@ func testOptional(c : OptionalC?) -> Int? {
 }
 
 func testCapture(x : Int, y : Int) -> () -> Int { // $ noCfg
-  return { [z = x + y, t = "literal"] in // $ noCfg
+  return { [z = x + y, t = "literal"] in
     return z
   }
 }
@@ -387,15 +396,15 @@ func testTupleElement(t : (a: Int, Int, c: Int)) -> Int {
   return t.a + t.1 + t.c + (1, 2, 3).0
 }
 
-class Derived : C { // $ nonSimple='ClassLikeDeclaration -V Derived -^ BaseType -V C'
-  init() {
+class Derived : C {
+  init() { // $ noCfg
     super.init(n: 0)
   }
 }
 
 func doWithoutCatch(x : Int) throws -> Int {
   do {
-    try mightThrow(x: 0)
+    try mightThrow(x: 0) // $ bbStep='mightThrow(...) : successor -> try ...(+0)'
     print("Did not throw.")
     try! mightThrow(x: 0)
     print("Still did not throw.")
@@ -405,7 +414,7 @@ func doWithoutCatch(x : Int) throws -> Int {
 
 class Structors {
   var field: Int
-  init() {
+  init() { // $ noCfg
     field = 10
   }
 
@@ -421,14 +430,14 @@ func dictionaryLiteral(x: Int, y: Int) -> [String: Int] {
 func localDeclarations() -> Int { // $ noCfg
   class MyLocalClass {
     var x: Int
-    init() {
+    init() { // $ noCfg
       x = 10
     }
   }
 
   struct MyLocalStruct {
     var x: Int
-    init() {
+    init() { // $ noCfg
       x = 10
     }
   }
@@ -465,7 +474,7 @@ func test(a : A) {
   var apply_kpGet_mayB_x = a[keyPath: kpGet_mayB_x]
 }
 
-func testIfConfig() { // $ noCfg
+func testIfConfig() {
 #if FOO
   1
   2
@@ -498,42 +507,42 @@ func testAvailable() -> Int { // $ noCfg
   var x = 0;
 
   if #available(macOS 10, *) { // $ bbStep=' : false -> IfExpr(+4)' bbStep=' : true -> Block(+0)'
-    x += 1 // $ bbStep='CompoundAssignExpr : successor -> IfExpr(+3)'
+    x += 1 // $ bbStep='... += ... : successor -> IfExpr(+3)'
   }
 
   if #available(macOS 10.13, *) { // $ bbStep=' : false -> IfExpr(+4)' bbStep=' : true -> Block(+0)'
-    x += 1 // $ bbStep='CompoundAssignExpr : successor -> IfExpr(+3)'
+    x += 1 // $ bbStep='... += ... : successor -> IfExpr(+3)'
   }
 
   if #unavailable(iOS 10, watchOS 10, macOS 10) { // $ bbStep=' : false -> GuardIfStmt(+4)' bbStep=' : true -> Block(+0)'
-    x += 1 // $ bbStep='CompoundAssignExpr : successor -> GuardIfStmt(+3)'
+    x += 1 // $ bbStep='... += ... : successor -> GuardIfStmt(+3)'
   }
 
-  guard #available(macOS 12, *) else {
-    x += 1
+  guard #available(macOS 12, *) else { // $ bbStep=' : false -> Block(+0)' bbStep=' : true -> IfExpr(+4)'
+    x += 1 // $ bbStep='... += ... : successor -> IfExpr(+3)'
   }
 
   if #available(macOS 12, *), // $ bbStep=' : true -> (+1)' bbStep=' : false,false -> x(+5)'
       #available(iOS 12, *) { // $ bbStep=' : false,false -> x(+4)' bbStep=' : true -> Block(+0)'
-    x += 1 // $ bbStep='CompoundAssignExpr : successor -> x(+3)'
+    x += 1 // $ bbStep='... += ... : successor -> x(+3)'
   }
 
   return x
 }
 
-func testAsyncFor () async { // $ noCfg
-    var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), { // $ bbContinues='Block goto Task(+2)'
-        continuation in // $ bbContinues='continuation goto Block(-1)'
-            Task.detached { // $ nonSimple='Task -^ MemberAccessExpr -^ Argument -V FunctionExpr -^ CallExpr'
-                for i in 1...100 { // $ bbStep='BinaryExpr : empty -> continuation(+3)' bbStep='BinaryExpr : non-empty -> i(+0)'
-                    continuation.yield(i) // $ bbStep='CallExpr : successor -> continuation(+2)' bbStep='CallExpr : successor -> i(-1)'
+func testAsyncFor () async {
+    var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), {
+        continuation in
+            Task.detached {
+                for i in 1...100 { // $ bbStep='... ... ... : empty -> continuation(+3)' bbStep='... ... ... : non-empty -> i(+0)'
+                    continuation.yield(i) // $ bbStep='... .yield(...) : successor -> continuation(+2)' bbStep='... .yield(...) : successor -> i(-1)'
                 }
                 continuation.finish()
             }
     })
 
     for try await i in stream { // $ bbStep='stream : non-empty -> i(+0)'
-        print(i) // $ bbStep='CallExpr : successor -> i(-1)'
+        print(i) // $ bbStep='print(...) : successor -> i(-1)'
     }
 }
 
@@ -552,11 +561,11 @@ func testNilCoalescing2(x: Bool?) -> Int {
   }
 }
 
-func usesAutoclosure(_ expr: @autoclosure () -> Int) -> Int {
+func usesAutoclosure(_ expr: @autoclosure () -> Int) -> Int { // $ noCfg
   return expr()
 }
 
-func autoclosureTest() { // $ noCfg
+func autoclosureTest() {
   usesAutoclosure(1)
 }
 
@@ -566,7 +575,7 @@ protocol MyProtocol {
 	func source() -> Int
 }
 
-class MyProcotolImpl : MyProtocol { // $ nonSimple='ClassLikeDeclaration -V MyProcotolImpl -^ BaseType -V MyProtocol'
+class MyProcotolImpl : MyProtocol {
 	func source() -> Int { return 0 }
 }
 
@@ -584,11 +593,11 @@ func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
 
 func singleStmtExpr(_ x: Int) {
   let a = switch x {
-    case 0..<5: 1 // $ bbStep='BinaryExpr : match -> Block(+0)' bbStep='BinaryExpr : no-match -> SwitchCase(+1)' bbStep='1 : successor -> VariableDeclaration(+3)'
-    default: 2 // $ bbStep='2 : successor -> VariableDeclaration(+2)'
+    case 0..<5: 1 // $ bbStep='1 : successor -> let b(+3)' bbStep='... ..< ... : match -> Block(+0)' bbStep='... ..< ... : no-match -> SwitchCase(+1)'
+    default: 2 // $ bbStep='2 : successor -> let b(+2)'
   }
   let b =
-        if (x < 42) { 1 } // $ bbStep='BinaryExpr : false -> Block(+1)' bbStep='BinaryExpr : true -> Block(+0)'
+        if (x < 42) { 1 } // $ bbStep='... < ... : false -> Block(+1)' bbStep='... < ... : true -> Block(+0)'
         else { 2 }
 }
 // ---

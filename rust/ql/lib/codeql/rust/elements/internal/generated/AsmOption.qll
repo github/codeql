@@ -28,6 +28,8 @@ module Generated {
   class AsmOption extends Synth::TAsmOption, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "AsmOption" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Holds if this asm option is raw.
      */

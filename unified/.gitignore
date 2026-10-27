@@ -1,4 +1,5 @@
 target
+/.build
 .vscode/launch.json
 .cache
 ql/test/**/*.testproj

@@ -1,9 +1,13 @@
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 
+mod ast;
+mod lower;
 mod parse;
+mod rule_parse;
+mod template_parse;
 
-/// Proc macro for constructing a `QueryNode` from a tree-sitter-inspired pattern.
+/// Proc macro for constructing a tree-sitter-inspired `yeast::query::QueryNode`.
 ///
 /// # Syntax
 ///
@@ -19,11 +23,24 @@ mod parse;
 /// (pattern) @capture           - capture the matched node
 /// "literal" @capture           - capture an unnamed token
 /// _ @capture                   - capture any node
-/// (pattern)* @capture          - capture each repeated match
-/// (pattern)?                   - zero or one
+/// (kind)* @capture             - capture each repeated named-node match
+/// "literal"* @capture          - capture each repeated unnamed-token match
+/// (kind)?                      - zero or one named node
 /// ```
 ///
 /// Named fields and bare child patterns may be intermixed in any order.
+///
+/// A parenthesized query whose first element is a node kind is always parsed as
+/// that node pattern. Otherwise, two or more sibling patterns form a sequence.
+/// A sequence may be repeated, but cannot itself be captured because it does
+/// not represent one node:
+///
+/// ```text
+/// ((identifier) @items (integer) @items)*  // valid: explicit node captures
+/// ((identifier) (integer))* @items         // invalid: sequence capture
+/// ("+" ",")*                               // valid: repeated token sequence
+/// (_ ",")*                                 // valid: repeated wildcard/token sequence
+/// ```
 #[proc_macro]
 pub fn query(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
@@ -33,22 +50,23 @@ pub fn query(input: TokenStream) -> TokenStream {
     }
 }
 
-/// Build a single AST node from a template, returning its `Id`.
+/// Build a single AST node from a template, returning its `OutputId`.
 ///
 /// # Template syntax
 ///
 /// ```text
 /// (kind "literal")             - leaf with static content
 /// (kind #{expr})               - leaf with computed content (expr.to_string())
-/// (kind $fresh)                - leaf with auto-generated unique name
 /// {expr}                       - embed a Rust expression, dispatched via
-///                                the `IntoFieldIds` trait: `Id` pushes a
-///                                single id; iterables (`Vec<Id>`,
-///                                `Option<Id>`, iterator chains) splice
+///                                the `IntoFieldIds` trait: `OutputId` pushes a
+///                                single id; iterables (`Vec<OutputId>`,
+///                                `Option<OutputId>`, iterator chains) splice
 ///                                their elements
 /// field: {expr}                - extend a named field with `{expr}`'s ids
 /// field: (kind ...)?           - set the field only if every `#{expr}`
 ///                                beneath it has a value (see below)
+/// location: {expr}             - override this node's source range with the
+///                                span of one or more nodes; may be repeated
 /// ```
 ///
 /// # Optional fields
@@ -76,12 +94,10 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// error, so the choice between "unset the field" and "unwrap it" stays
 /// explicit.
 ///
-/// Can be called with an explicit context or using the implicit context
-/// from an enclosing `rule!`:
+/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
 ///
 /// ```text
-/// tree!(ctx, (kind ...))     // explicit BuildCtx
-/// tree!((kind ...))          // implicit context from rule!
+/// tree!((kind ...))
 /// ```
 #[proc_macro]
 pub fn tree(input: TokenStream) -> TokenStream {
@@ -92,17 +108,15 @@ pub fn tree(input: TokenStream) -> TokenStream {
     }
 }
 
-/// Build a list of AST nodes from a template, returning `Vec<Id>`.
+/// Build a list of AST nodes from a template, returning `Vec<OutputId>`.
 ///
-/// Like `tree!` but returns `Vec<Id>` and supports multiple top-level
+/// Like `tree!` but returns `Vec<OutputId>` and supports multiple top-level
 /// elements. All syntax from `tree!` is available.
 ///
-/// Can be called with an explicit context or using the implicit context
-/// from an enclosing `rule!`:
+/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
 ///
 /// ```text
-/// trees!(ctx, (node1 ...) (node2 ...))   // explicit BuildCtx
-/// trees!((node1 ...) (node2 ...))        // implicit context from rule!
+/// trees!((node1 ...) (node2 ...))
 /// ```
 #[proc_macro]
 pub fn trees(input: TokenStream) -> TokenStream {
@@ -131,14 +145,14 @@ pub fn trees(input: TokenStream) -> TokenStream {
 ///     (output_template)
 /// )
 ///
-/// // Shorthand: captures become fields on the output node
-/// rule!((query ...) => output_kind)
 /// ```
 ///
 /// Captures become Rust variables automatically:
-/// - `@name` (no quantifier) → `name: Id`
-/// - `@name` (after `*`/`+`) → `name: Vec<Id>`
-/// - `@name` (after `?`) → `name: Option<Id>`
+/// - `@name` (no quantifier) → `name: OutputId`
+/// - `@name` (after `*`/`+`) → `name: Vec<OutputId>`
+/// - `@name` (after `?`) → `name: Option<OutputId>`
+///
+/// Raw `@@name` captures use the corresponding input `Id` types instead.
 ///
 /// A guard is an optional Rust condition between the query and `=>`. It is
 /// evaluated after the query matches and before any `@` captures are
@@ -149,7 +163,7 @@ pub fn trees(input: TokenStream) -> TokenStream {
 /// Mutations to `ctx` are visible to the transform when the guard succeeds.
 /// Omitting the guard is equivalent to writing `where true`.
 ///
-/// `tree!` and `trees!` can be used without explicit context inside `{...}`.
+/// `tree!` and `trees!` use the rule transform's `ctx` binding inside `{...}`.
 #[proc_macro]
 pub fn rule(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
@@ -167,8 +181,8 @@ pub fn rule(input: TokenStream) -> TokenStream {
 ///
 /// 1. A **bare rule body** `(query) => (template)` — the `rule!(...)`
 ///    wrapper is implicit.
-/// 2. An explicit `rule!(...)` invocation, possibly chained as
-///    `rule!(...).repeated()` or path-prefixed as `yeast::rule!(...)`.
+/// 2. An explicit `rule!(...)` invocation, possibly path-prefixed as
+///    `yeast::rule!(...)`.
 /// 3. Any other expression returning a `Rule` (helper-function calls,
 ///    conditionals).
 ///
@@ -178,8 +192,8 @@ pub fn rule(input: TokenStream) -> TokenStream {
 ///     output: "ast_types.yml",
 ///     [
 ///         (source_file (_)* @cs) => (top_level body: {..cs}),
-///         (simple_identifier) @id => (name_expr identifier: (identifier #{id})),
-///         rule!((integer_literal) @lit => (int_literal #{lit})).repeated(),
+///         (simple_identifier) @@id => (name_expr identifier: (identifier #{id})),
+///         rule!((integer_literal) @@lit => (int_literal #{lit})),
 ///         helper_fn(),
 ///     ]
 /// };

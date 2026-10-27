@@ -8,6 +8,6 @@ query predicate getAssocItem(AssocItemList x, int index, AssocItem getAssocItem)
   toBeTested(x) and not x.isUnknown() and getAssocItem = x.getAssocItem(index)
 }
 
-query predicate getAttr(AssocItemList x, int index, Attr getAttr) {
+query predicate getAttr(AssocItemList x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }

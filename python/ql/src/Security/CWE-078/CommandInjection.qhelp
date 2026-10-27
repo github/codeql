@@ -34,7 +34,7 @@ The second is safe as it selects the command from a predefined allowlist.</p>
 
 <li>
 OWASP:
-<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+<a href="https://community.owasp.org/attacks/Command_Injection">Command Injection</a>.
 </li>
 
 </references>

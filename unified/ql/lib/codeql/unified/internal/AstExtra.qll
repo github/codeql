@@ -1,11 +1,48 @@
 /**
  * Provides additional AST-like classes outside the generated tree-sitter classes.
  */
+overlay[local?]
+module;
 
 private import unified
 private import codeql.unified.internal.NameBindingPlugin
 
 module Public {
+  /** An assignment, possibly a compound assignment. */
+  abstract private class AssignmentImpl extends BinaryExpr {
+    /** Gets the target of this assignment. */
+    abstract Expr getTarget();
+
+    /** Gets the value assigned by this assignment. */
+    abstract Expr getValue();
+  }
+
+  final class Assignment = AssignmentImpl;
+
+  /** A plain assignment expression. */
+  final class AssignExpr extends BinaryExpr, AssignmentImpl {
+    AssignExpr() { this.getOperator().getValue() = "=" }
+
+    override Expr getTarget() { result = this.getLeft() }
+
+    override Expr getValue() { result = this.getRight() }
+  }
+
+  /** A compound assignment expression. */
+  final class CompoundAssignExpr extends BinaryExpr, AssignmentImpl {
+    CompoundAssignExpr() {
+      this.getOperator().getValue() =
+        [
+          "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "|=", "^=", "&+=", "&-=", "&*=", "&&=",
+          "||=", "??="
+        ]
+    }
+
+    override Expr getTarget() { result = this.getLeft() }
+
+    override Expr getValue() { result = this.getRight() }
+  }
+
   /** A short-circuiting logical AND expression. */
   class LogicalAndExpr extends BinaryExpr {
     LogicalAndExpr() { this.getOperator().getValue() = "&&" }
@@ -75,5 +112,61 @@ module Public {
   /** An identifier appearing in the context of an expression, pattern, or type annotation. */
   final class IdentifierExpr extends Identifier {
     IdentifierExpr() { not this instanceof IdentifierLabel }
+  }
+
+  /**
+   * A class representing one of the branches of an algebraic data type.
+   *
+   * In Swift, a class with a single constructor is generated for each `case` with data parameters in an `enum` declaration. Example:
+   *
+   * ```swift
+   * enum E {
+   *   case foo(Int)
+   * }
+   * ```
+   *
+   * is modeled as
+   *
+   * ```swift
+   * class E {
+   *   class foo {
+   *     init(_ x : Int)
+   *   }
+   * }
+   * ```
+   */
+  final class EnumCaseClass extends ClassLikeDeclaration {
+    EnumCaseClass() { this.hasModifier("enum_case") }
+
+    /** Gets the constructor of this algebraic data type. */
+    EnumCaseConstructor getConstructor() { result = this.getAMember() }
+  }
+
+  /**
+   * The constructor of a class representing one of the branches of an algebraic data type.
+   *
+   * In Swift, a class with a single constructor is generated for each `case` with data parameters in an `enum` declaration. Example:
+   *
+   * ```swift
+   * enum E {
+   *   case foo(Int)
+   * }
+   * ```
+   *
+   * is modeled as
+   *
+   * ```swift
+   * class E {
+   *   class foo {
+   *     init(_ x : Int)
+   *   }
+   * }
+   * ```
+   */
+  final class EnumCaseConstructor extends ConstructorDeclaration {
+    EnumCaseConstructor() { this = any(EnumCaseClass cls).getAMember() }
+
+    /** Gets the class containing this constructor. */
+    EnumCaseClass getEnumCaseClass() { result.getAMember() = this }
   }
 }

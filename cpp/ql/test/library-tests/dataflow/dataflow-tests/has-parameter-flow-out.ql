@@ -27,7 +27,7 @@ module IRTest {
 
   private string stars(int k) {
     k = [0 .. max(DataFlow::Node n, int i | n.isFinalValueOfParameter(_, i) | i)] and
-    (if k = 0 then result = "" else result = "*" + stars(k - 1))
+    result = concat(int i | i in [1 .. k] | "*")
   }
 
   module IRParameterDefTest implements TestSig {

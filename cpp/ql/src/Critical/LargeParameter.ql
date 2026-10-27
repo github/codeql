@@ -5,7 +5,10 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id cpp/large-parameter
- * @tags efficiency
+ * @tags quality
+ *       reliability
+ *       performance
+ *       efficiency
  *       readability
  *       statistical
  *       non-attributable

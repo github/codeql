@@ -37,7 +37,7 @@ module Folder = Impl::Folder;
 /** A file. */
 class File extends Container, Impl::File {
   /** Holds if this file was extracted from ordinary source code. */
-  predicate fromSource() { any() }
+  predicate fromSource() { exists(this.getRelativePath()) }
 
   /**
    * Gets the number of lines containing code in this file. This value

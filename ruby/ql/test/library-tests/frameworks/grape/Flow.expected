@@ -33,6 +33,8 @@ edges
 | app.rb:169:9:169:15 | session | app.rb:176:14:176:20 | session | provenance |  |
 | app.rb:169:19:169:25 | call to cookies | app.rb:169:19:169:38 | ...[...] | provenance |  |
 | app.rb:169:19:169:38 | ...[...] | app.rb:169:9:169:15 | session | provenance |  |
+| app.rb:170:9:170:17 | body_data | app.rb:177:14:177:22 | body_data | provenance |  |
+| app.rb:170:21:170:37 | call to read | app.rb:170:9:170:17 | body_data | provenance |  |
 | app.rb:183:9:183:14 | result | app.rb:184:14:184:19 | result | provenance |  |
 | app.rb:183:9:183:14 | result | app.rb:184:14:184:19 | result | provenance |  |
 | app.rb:183:18:183:43 | call to vulnerable_helper | app.rb:183:9:183:14 | result | provenance |  |
@@ -76,6 +78,24 @@ edges
 | app.rb:235:13:235:23 | case_result | app.rb:236:18:236:28 | case_result | provenance |  |
 | app.rb:235:27:235:37 | call to test_helper | app.rb:235:13:235:23 | case_result | provenance |  |
 | app.rb:235:27:235:37 | call to test_helper | app.rb:235:13:235:23 | case_result | provenance |  |
+| app.rb:247:5:247:13 | body_data | app.rb:248:10:248:18 | body_data | provenance |  |
+| app.rb:247:17:247:33 | call to read | app.rb:247:5:247:13 | body_data | provenance |  |
+| app.rb:252:5:252:13 | body_data | app.rb:253:10:253:18 | body_data | provenance |  |
+| app.rb:252:17:252:35 | call to string | app.rb:252:5:252:13 | body_data | provenance |  |
+| app.rb:257:5:257:15 | params_hash | app.rb:258:10:258:20 | params_hash | provenance |  |
+| app.rb:257:19:257:32 | call to params | app.rb:257:5:257:15 | params_hash | provenance |  |
+| app.rb:262:5:262:14 | get_params | app.rb:263:10:263:19 | get_params | provenance |  |
+| app.rb:262:18:262:28 | call to GET | app.rb:262:5:262:14 | get_params | provenance |  |
+| app.rb:267:5:267:15 | post_params | app.rb:268:10:268:20 | post_params | provenance |  |
+| app.rb:267:19:267:30 | call to POST | app.rb:267:5:267:15 | post_params | provenance |  |
+| app.rb:272:5:272:15 | cookie_data | app.rb:273:10:273:20 | cookie_data | provenance |  |
+| app.rb:272:19:272:33 | call to cookies | app.rb:272:5:272:15 | cookie_data | provenance |  |
+| app.rb:277:5:277:12 | env_data | app.rb:278:10:278:17 | env_data | provenance |  |
+| app.rb:277:16:277:26 | call to env | app.rb:277:5:277:12 | env_data | provenance |  |
+| app.rb:282:5:282:6 | qs | app.rb:283:10:283:11 | qs | provenance |  |
+| app.rb:282:10:282:29 | call to query_string | app.rb:282:5:282:6 | qs | provenance |  |
+| app.rb:287:5:287:8 | path | app.rb:288:10:288:13 | path | provenance |  |
+| app.rb:287:12:287:28 | call to path_info | app.rb:287:5:287:8 | path | provenance |  |
 nodes
 | app.rb:103:13:103:18 | call to params | semmle.label | call to params |
 | app.rb:103:13:103:70 | call to select | semmle.label | call to select |
@@ -107,10 +127,13 @@ nodes
 | app.rb:169:9:169:15 | session | semmle.label | session |
 | app.rb:169:19:169:25 | call to cookies | semmle.label | call to cookies |
 | app.rb:169:19:169:38 | ...[...] | semmle.label | ...[...] |
+| app.rb:170:9:170:17 | body_data | semmle.label | body_data |
+| app.rb:170:21:170:37 | call to read | semmle.label | call to read |
 | app.rb:173:14:173:20 | user_id | semmle.label | user_id |
 | app.rb:174:14:174:21 | route_id | semmle.label | route_id |
 | app.rb:175:14:175:17 | auth | semmle.label | auth |
 | app.rb:176:14:176:20 | session | semmle.label | session |
+| app.rb:177:14:177:22 | body_data | semmle.label | body_data |
 | app.rb:183:9:183:14 | result | semmle.label | result |
 | app.rb:183:9:183:14 | result | semmle.label | result |
 | app.rb:183:18:183:43 | call to vulnerable_helper | semmle.label | call to vulnerable_helper |
@@ -173,6 +196,33 @@ nodes
 | app.rb:235:27:235:37 | call to test_helper | semmle.label | call to test_helper |
 | app.rb:236:18:236:28 | case_result | semmle.label | case_result |
 | app.rb:236:18:236:28 | case_result | semmle.label | case_result |
+| app.rb:247:5:247:13 | body_data | semmle.label | body_data |
+| app.rb:247:17:247:33 | call to read | semmle.label | call to read |
+| app.rb:248:10:248:18 | body_data | semmle.label | body_data |
+| app.rb:252:5:252:13 | body_data | semmle.label | body_data |
+| app.rb:252:17:252:35 | call to string | semmle.label | call to string |
+| app.rb:253:10:253:18 | body_data | semmle.label | body_data |
+| app.rb:257:5:257:15 | params_hash | semmle.label | params_hash |
+| app.rb:257:19:257:32 | call to params | semmle.label | call to params |
+| app.rb:258:10:258:20 | params_hash | semmle.label | params_hash |
+| app.rb:262:5:262:14 | get_params | semmle.label | get_params |
+| app.rb:262:18:262:28 | call to GET | semmle.label | call to GET |
+| app.rb:263:10:263:19 | get_params | semmle.label | get_params |
+| app.rb:267:5:267:15 | post_params | semmle.label | post_params |
+| app.rb:267:19:267:30 | call to POST | semmle.label | call to POST |
+| app.rb:268:10:268:20 | post_params | semmle.label | post_params |
+| app.rb:272:5:272:15 | cookie_data | semmle.label | cookie_data |
+| app.rb:272:19:272:33 | call to cookies | semmle.label | call to cookies |
+| app.rb:273:10:273:20 | cookie_data | semmle.label | cookie_data |
+| app.rb:277:5:277:12 | env_data | semmle.label | env_data |
+| app.rb:277:16:277:26 | call to env | semmle.label | call to env |
+| app.rb:278:10:278:17 | env_data | semmle.label | env_data |
+| app.rb:282:5:282:6 | qs | semmle.label | qs |
+| app.rb:282:10:282:29 | call to query_string | semmle.label | call to query_string |
+| app.rb:283:10:283:11 | qs | semmle.label | qs |
+| app.rb:287:5:287:8 | path | semmle.label | path |
+| app.rb:287:12:287:28 | call to path_info | semmle.label | call to path_info |
+| app.rb:288:10:288:13 | path | semmle.label | path |
 subpaths
 testFailures
 #select
@@ -180,6 +230,7 @@ testFailures
 | app.rb:174:14:174:21 | route_id | app.rb:167:20:167:40 | call to route_param | app.rb:174:14:174:21 | route_id | $@ | app.rb:167:20:167:40 | call to route_param | call to route_param |
 | app.rb:175:14:175:17 | auth | app.rb:168:16:168:22 | call to headers | app.rb:175:14:175:17 | auth | $@ | app.rb:168:16:168:22 | call to headers | call to headers |
 | app.rb:176:14:176:20 | session | app.rb:169:19:169:25 | call to cookies | app.rb:176:14:176:20 | session | $@ | app.rb:169:19:169:25 | call to cookies | call to cookies |
+| app.rb:177:14:177:22 | body_data | app.rb:170:21:170:37 | call to read | app.rb:177:14:177:22 | body_data | $@ | app.rb:170:21:170:37 | call to read | call to read |
 | app.rb:184:14:184:19 | result | app.rb:107:13:107:32 | call to source | app.rb:184:14:184:19 | result | $@ | app.rb:107:13:107:32 | call to source | call to source |
 | app.rb:184:14:184:19 | result | app.rb:107:13:107:32 | call to source | app.rb:184:14:184:19 | result | $@ | app.rb:107:13:107:32 | call to source | call to source |
 | app.rb:191:14:191:22 | user_data | app.rb:103:13:103:18 | call to params | app.rb:191:14:191:22 | user_data | $@ | app.rb:103:13:103:18 | call to params | call to params |
@@ -199,3 +250,12 @@ testFailures
 | app.rb:231:14:231:26 | rescue_result | app.rb:140:17:140:37 | call to source | app.rb:231:14:231:26 | rescue_result | $@ | app.rb:140:17:140:37 | call to source | call to source |
 | app.rb:236:18:236:28 | case_result | app.rb:150:17:150:35 | call to source | app.rb:236:18:236:28 | case_result | $@ | app.rb:150:17:150:35 | call to source | call to source |
 | app.rb:236:18:236:28 | case_result | app.rb:150:17:150:35 | call to source | app.rb:236:18:236:28 | case_result | $@ | app.rb:150:17:150:35 | call to source | call to source |
+| app.rb:248:10:248:18 | body_data | app.rb:247:17:247:33 | call to read | app.rb:248:10:248:18 | body_data | $@ | app.rb:247:17:247:33 | call to read | call to read |
+| app.rb:253:10:253:18 | body_data | app.rb:252:17:252:35 | call to string | app.rb:253:10:253:18 | body_data | $@ | app.rb:252:17:252:35 | call to string | call to string |
+| app.rb:258:10:258:20 | params_hash | app.rb:257:19:257:32 | call to params | app.rb:258:10:258:20 | params_hash | $@ | app.rb:257:19:257:32 | call to params | call to params |
+| app.rb:263:10:263:19 | get_params | app.rb:262:18:262:28 | call to GET | app.rb:263:10:263:19 | get_params | $@ | app.rb:262:18:262:28 | call to GET | call to GET |
+| app.rb:268:10:268:20 | post_params | app.rb:267:19:267:30 | call to POST | app.rb:268:10:268:20 | post_params | $@ | app.rb:267:19:267:30 | call to POST | call to POST |
+| app.rb:273:10:273:20 | cookie_data | app.rb:272:19:272:33 | call to cookies | app.rb:273:10:273:20 | cookie_data | $@ | app.rb:272:19:272:33 | call to cookies | call to cookies |
+| app.rb:278:10:278:17 | env_data | app.rb:277:16:277:26 | call to env | app.rb:278:10:278:17 | env_data | $@ | app.rb:277:16:277:26 | call to env | call to env |
+| app.rb:283:10:283:11 | qs | app.rb:282:10:282:29 | call to query_string | app.rb:283:10:283:11 | qs | $@ | app.rb:282:10:282:29 | call to query_string | call to query_string |
+| app.rb:288:10:288:13 | path | app.rb:287:12:287:28 | call to path_info | app.rb:288:10:288:13 | path | $@ | app.rb:287:12:287:28 | call to path_info | call to path_info |
