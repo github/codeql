@@ -66,7 +66,7 @@ impl<'a> AstNode for Node<'a> {
     }
 }
 
-impl AstNode for yeast::Node {
+impl<I: yeast::TreeId> AstNode for yeast::Node<I> {
     fn kind(&self) -> &str {
         yeast::Node::kind_name(self)
     }
@@ -1043,7 +1043,7 @@ fn traverse(tree: &Tree, visitor: &mut Visitor) {
     }
 }
 
-fn traverse_yeast(tree: &yeast::Ast, visitor: &mut Visitor) {
+fn traverse_yeast(tree: &yeast::OutputAst, visitor: &mut Visitor) {
     let mut cursor = tree.walk();
     visitor.enter_node(cursor.node());
     let mut recurse = true;

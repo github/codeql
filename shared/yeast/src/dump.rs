@@ -1,6 +1,6 @@
 use std::fmt::Write;
 
-use crate::{schema::Schema, Ast, Id, Node, NodeContent, CHILD_FIELD};
+use crate::{schema::Schema, Ast, Node, NodeContent, TreeId, CHILD_FIELD};
 
 #[derive(Clone, Copy)]
 struct TypeCheckContext<'a> {
@@ -45,11 +45,16 @@ impl Default for DumpOptions {
 ///         method:
 ///           identifier "foo"
 /// ```
-pub fn dump_ast(ast: &Ast, root: Id, source: &str) -> String {
+pub fn dump_ast<Id: TreeId>(ast: &Ast<Id>, root: Id, source: &str) -> String {
     dump_ast_with_options(ast, root, source, &DumpOptions::default())
 }
 
-pub fn dump_ast_with_options(ast: &Ast, root: Id, source: &str, options: &DumpOptions) -> String {
+pub fn dump_ast_with_options<Id: TreeId>(
+    ast: &Ast<Id>,
+    root: Id,
+    source: &str,
+    options: &DumpOptions,
+) -> String {
     let mut out = String::new();
     dump_node(ast, root, source, options, 0, None, false, &mut out);
     out
@@ -59,7 +64,12 @@ pub fn dump_ast_with_options(ast: &Ast, root: Id, source: &str, options: &DumpOp
 ///
 /// Any node that does not match the expected type set for its parent field is
 /// rendered with a trailing `" <-- ERROR: ..."` annotation on the same line.
-pub fn dump_ast_with_type_errors(ast: &Ast, root: Id, source: &str, schema: &Schema) -> String {
+pub fn dump_ast_with_type_errors<Id: TreeId>(
+    ast: &Ast<Id>,
+    root: Id,
+    source: &str,
+    schema: &Schema,
+) -> String {
     dump_ast_with_type_errors_and_options(ast, root, source, schema, &DumpOptions::default())
 }
 
@@ -67,8 +77,8 @@ pub fn dump_ast_with_type_errors(ast: &Ast, root: Id, source: &str, schema: &Sch
 ///
 /// Any node that does not match the expected type set for its parent field is
 /// rendered with a trailing `" <-- ERROR: ..."` annotation on the same line.
-pub fn dump_ast_with_type_errors_and_options(
-    ast: &Ast,
+pub fn dump_ast_with_type_errors_and_options<Id: TreeId>(
+    ast: &Ast<Id>,
     root: Id,
     source: &str,
     schema: &Schema,
@@ -119,9 +129,9 @@ const EMPTY_NODE_TYPES: &[crate::schema::NodeType] = &[];
 /// # Returns
 /// `Some(error_message)` if the node violates the schema (e.g., wrong kind, missing field declaration).
 /// `None` if the node matches the expected types or if type-checking is disabled.
-fn type_error_for_node(
+fn type_error_for_node<Id: TreeId>(
     schema: &Schema,
-    node: &Node,
+    node: &Node<Id>,
     expected: Option<&[crate::schema::NodeType]>,
     parent_field: Option<(&str, &str)>,
 ) -> Option<String> {
@@ -189,8 +199,8 @@ fn expected_for_field<'a>(
         .map(|v| v.as_slice())
 }
 
-fn dump_node(
-    ast: &Ast,
+fn dump_node<Id: TreeId>(
+    ast: &Ast<Id>,
     id: Id,
     source: &str,
     options: &DumpOptions,
@@ -402,8 +412,8 @@ fn dump_node(
 }
 
 /// Dump a leaf node inline (no newline prefix, caller provides context).
-fn dump_node_inline(
-    ast: &Ast,
+fn dump_node_inline<Id: TreeId>(
+    ast: &Ast<Id>,
     id: Id,
     source: &str,
     options: &DumpOptions,
@@ -457,7 +467,7 @@ fn dump_node_inline(
     writeln!(out).unwrap();
 }
 
-fn is_leaf(node: &Node) -> bool {
+fn is_leaf<Id: TreeId>(node: &Node<Id>) -> bool {
     node.fields.is_empty()
 }
 
@@ -467,7 +477,12 @@ enum SourceSkeleton {
     Invalid(String),
 }
 
-fn write_source_skeleton(ast: &Ast, node: &Node, source: &str, out: &mut String) {
+fn write_source_skeleton<Id: TreeId>(
+    ast: &Ast<Id>,
+    node: &Node<Id>,
+    source: &str,
+    out: &mut String,
+) {
     match source_skeleton(ast, node, source) {
         SourceSkeleton::Missing => write!(out, " source=<no location>").unwrap(),
         SourceSkeleton::Text(text) => write!(out, " source={text:?}").unwrap(),
@@ -475,21 +490,21 @@ fn write_source_skeleton(ast: &Ast, node: &Node, source: &str, out: &mut String)
     }
 }
 
-fn node_source_range(node: &Node) -> Option<crate::Range> {
+fn node_source_range<Id: TreeId>(node: &Node<Id>) -> Option<crate::Range> {
     match node.content {
         NodeContent::Range(range) => Some(range),
         _ => node.source_range,
     }
 }
 
-fn is_external_child(parent: &Node, child: &Node) -> bool {
+fn is_external_child<Id: TreeId>(parent: &Node<Id>, child: &Node<Id>) -> bool {
     let (Some(parent), Some(child)) = (node_source_range(parent), node_source_range(child)) else {
         return false;
     };
     child.start_byte < parent.start_byte || child.end_byte > parent.end_byte
 }
 
-fn source_skeleton(ast: &Ast, node: &Node, source: &str) -> SourceSkeleton {
+fn source_skeleton<Id: TreeId>(ast: &Ast<Id>, node: &Node<Id>, source: &str) -> SourceSkeleton {
     let Some(parent) = node_source_range(node) else {
         return SourceSkeleton::Missing;
     };
@@ -551,7 +566,7 @@ fn source_skeleton(ast: &Ast, node: &Node, source: &str) -> SourceSkeleton {
     SourceSkeleton::Text(result)
 }
 
-fn node_content(node: &Node, source: &str) -> String {
+fn node_content<Id: TreeId>(node: &Node<Id>, source: &str) -> String {
     match &node.content {
         NodeContent::DynamicString(s) if !s.is_empty() => s.clone(),
         _ => {
@@ -568,7 +583,7 @@ fn node_content(node: &Node, source: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{NodeContent, Point, Range};
+    use crate::{NodeContent, OutputAst, Point, Range};
     use std::collections::BTreeMap;
 
     fn range(start: usize, end: usize) -> Range {
@@ -581,7 +596,7 @@ mod tests {
     }
 
     fn dump_with_children(source: &str, parent_range: Range, children: &[(&str, Range)]) -> String {
-        let mut ast = Ast::with_schema(crate::schema::Schema::new());
+        let mut ast = OutputAst::with_schema(crate::schema::Schema::new());
         let parent_kind = ast.register_kind("parent");
         let child_kind = ast.register_kind("child");
         let mut fields = BTreeMap::new();
@@ -637,8 +652,16 @@ mod tests {
     #[test]
     fn source_skeleton_preserves_unnamed_tokens() {
         let source = "x = 1";
-        let runner: crate::Runner = crate::Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-        let ast = runner.run(source).unwrap();
+        let language: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+        let mut parser = tree_sitter::Parser::new();
+        parser.set_language(&language).unwrap();
+        let tree = parser.parse(source, None).unwrap();
+        let ast = Ast::from_tree_with_schema_and_source(
+            crate::schema::from_language(&language),
+            &tree,
+            &language,
+            source.as_bytes().to_vec(),
+        );
         let dump = dump_ast_with_options(
             &ast,
             ast.get_root(),

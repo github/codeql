@@ -1,6 +1,6 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use crate::Id;
+use crate::{Id, OutputId};
 
 #[derive(Debug, Clone)]
 pub struct Captures {
@@ -54,31 +54,23 @@ impl Captures {
         self.captures.entry(key).or_default().push(id);
     }
 
-    /// Apply a fallible function to every captured id, replacing each id
-    /// with the results. A function returning an empty vector removes
-    /// the capture; returning multiple ids splices them into the
-    /// capture's value list (suitable for `*`/`+` captures). Captures
-    /// whose name appears in `skip` are left untouched. Stops and
-    /// returns the error on the first failure.
-    ///
-    /// Used by the `rule!` macro's auto-translate prefix to translate
-    /// every capture except those marked `@@name` (raw).
-    pub fn try_map_captures_except<E>(
-        &mut self,
+    pub(crate) fn try_translate_except<E>(
+        &self,
         skip: &[&str],
-        mut f: impl FnMut(Id) -> Result<Vec<Id>, E>,
-    ) -> Result<(), E> {
-        for (name, ids) in self.captures.iter_mut() {
+        mut f: impl FnMut(Id) -> Result<Vec<OutputId>, E>,
+    ) -> Result<TranslatedCaptures, E> {
+        let mut translated = TranslatedCaptures::new();
+        for (name, ids) in &self.captures {
             if skip.contains(name) {
                 continue;
             }
-            let mut new_ids = Vec::with_capacity(ids.len());
-            for &id in ids.iter() {
-                new_ids.extend(f(id)?);
+            for &id in ids {
+                for translated_id in f(id)? {
+                    translated.insert(name, translated_id);
+                }
             }
-            *ids = new_ids;
         }
-        Ok(())
+        Ok(translated)
     }
 
     pub fn merge(&mut self, other: &Captures) {
@@ -114,5 +106,48 @@ impl Captures {
         } else {
             Err("Repeated captures must have at least one capture".to_string())
         }
+    }
+}
+
+/// Output ids produced by eagerly translating non-raw query captures.
+#[derive(Debug, Clone, Default)]
+pub struct TranslatedCaptures {
+    captures: BTreeMap<&'static str, Vec<OutputId>>,
+}
+
+impl TranslatedCaptures {
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    pub fn get_var(&self, key: &str) -> Result<OutputId, String> {
+        let ids = self.captures.get(key);
+        if let Some(ids) = ids {
+            if ids.len() == 1 {
+                Ok(ids[0])
+            } else {
+                Err(format!(
+                    "Variable {} has {} matches, use * to allow repetition",
+                    key,
+                    ids.len()
+                ))
+            }
+        } else {
+            Err(format!("No variable named {key}"))
+        }
+    }
+
+    pub fn get_all(&self, key: &str) -> Vec<OutputId> {
+        self.captures.get(key).cloned().unwrap_or_default()
+    }
+
+    pub fn get_opt(&self, key: &str) -> Option<OutputId> {
+        self.captures
+            .get(key)
+            .and_then(|ids| if ids.len() == 1 { Some(ids[0]) } else { None })
+    }
+
+    fn insert(&mut self, key: &'static str, id: OutputId) {
+        self.captures.entry(key).or_default().push(id);
     }
 }
