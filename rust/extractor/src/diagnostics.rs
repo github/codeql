@@ -87,6 +87,7 @@ pub enum ExtractionStepKind {
     ParseLibrary,
     ExtractLibrary,
     CrateGraph,
+    SelectDependencies,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -140,6 +141,10 @@ impl ExtractionStep {
 
     pub fn crate_graph(start: Instant) -> Self {
         Self::new(start, ExtractionStepKind::CrateGraph, None)
+    }
+
+    pub fn select_dependencies(start: Instant) -> Self {
+        Self::new(start, ExtractionStepKind::SelectDependencies, None)
     }
 
     pub fn load_source(start: Instant, target: &Path) -> Self {

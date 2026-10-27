@@ -5,7 +5,7 @@ use crate::translate::SourceKind;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
-use configuration::{DependencyFiles, manifest_parent};
+use configuration::{DependencyFiles, dependency_files, manifest_parent};
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
@@ -311,18 +311,16 @@ fn main() -> anyhow::Result<()> {
                     Err(e) => extractor.extract_without_semantics(file, source_mode, e),
                 };
             }
-            // The same dependency path may appear in multiple workspaces' VFSs.
-            // We record it by updating its preferred context, but defer
-            // extraction until all workspaces have contributed their priority.
-            for (file_id, file) in vfs.iter() {
-                dependencies.add_file(manifest, file_id, file, &semantics, &source_files);
-            }
-            // A single workspace has no competing configurations, so reuse its loaded database.
             if workspaces.len() == 1 {
-                let selected = std::mem::take(&mut dependencies).by_manifests();
-                for file in selected.into_values().flatten() {
-                    extractor.extract_with_semantics(&file, &semantics, &vfs, library_mode);
+                for (_, file) in dependency_files(&db, &vfs, &source_files) {
+                    extractor.extract_with_semantics(file, &semantics, &vfs, library_mode);
                 }
+            } else {
+                let before_select = Instant::now();
+                dependencies.add_workspace(manifest, &semantics, &vfs, &source_files);
+                extractor
+                    .steps
+                    .push(ExtractionStep::select_dependencies(before_select));
             }
         } else {
             for file in files {
@@ -337,21 +335,38 @@ fn main() -> anyhow::Result<()> {
 
     // For each workspace extract the dependency files for which that workspace
     // is the preferred one.
-    for (manifest, files) in dependencies.by_manifests() {
-        if let Some((db, vfs)) =
-            extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
-        {
-            let semantics = Semantics::new(&db);
-            for file in files {
-                extractor.extract_with_semantics(&file, &semantics, &vfs, library_mode);
-            }
-        } else {
-            for file in files {
-                extractor.extract_without_semantics(
-                    &file,
-                    library_mode,
-                    RustAnalyzerNoSemantics::warning("unable to reload manifest"),
-                );
+    loop {
+        let selected = dependencies.by_manifests();
+        if selected.is_empty() {
+            break;
+        }
+        for (manifest, files) in selected {
+            if let Some((db, vfs)) =
+                extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
+            {
+                let semantics = Semantics::new(&db);
+                for file in files {
+                    // A richer configuration can disable a module. Try another
+                    // configuration before extracting that file without semantics.
+                    if dependencies.has_alternative(&file)
+                        && path_to_file_id(&file, &vfs)
+                            .and_then(|id| semantics.file_to_module_def(id))
+                            .is_none()
+                    {
+                        continue;
+                    }
+                    extractor.extract_with_semantics(&file, &semantics, &vfs, library_mode);
+                    dependencies.extracted(&file);
+                }
+            } else {
+                for file in files {
+                    extractor.extract_without_semantics(
+                        &file,
+                        library_mode,
+                        RustAnalyzerNoSemantics::warning("unable to reload manifest"),
+                    );
+                    dependencies.extracted(&file);
+                }
             }
         }
     }

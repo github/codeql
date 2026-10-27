@@ -3,6 +3,7 @@
 | exe/src/main.rs:0:0:0:0 | Parse(exe/src/main.rs) |
 | file://:0:0:0:0 | CrateGraph |
 | file://:0:0:0:0 | FindManifests |
+| file://:0:0:0:0 | SelectDependencies |
 | lib/src/lib.rs:0:0:0:0 | Extract(lib/src/lib.rs) |
 | lib/src/lib.rs:0:0:0:0 | Parse(lib/src/lib.rs) |
 | other/Cargo.toml:0:0:0:0 | LoadManifest(other/Cargo.toml) |

@@ -52,6 +52,10 @@ def test_dependency_features(codeql, rust, cwd, configurations, reverse):
     to different calls depending on the enabled features. The `functions.ql`
     query checks which calls and targets are extracted for the `src/lib.rs`
     files.
+
+    Alpha's `only_a` module is disabled by feature `b`. Its item macro must still
+    be expanded using a configuration in which the module is enabled, even when
+    a richer configuration wins for alpha's other files.
     """
     if reverse:
         configurations = configurations[::-1]
