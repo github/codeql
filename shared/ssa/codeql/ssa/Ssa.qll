@@ -504,7 +504,7 @@ module Make<
      * associated with uncertain writes.
      */
     pragma[nomagic]
-    predicate ssaRef(BasicBlock bb, int i, SourceVariable v, RefKind k) {
+    private predicate ssaRef(BasicBlock bb, int i, SourceVariable v, RefKind k) {
       variableRead(bb, i, v, _) and
       k = Read()
       or
@@ -521,7 +521,7 @@ module Make<
      * Holds if the SSA definition `def` reaches rank index `rnk` in its own
      * basic block `bb`.
      */
-    predicate ssaDefReachesRank(BasicBlock bb, Definition def, int rnk, SourceVariable v) {
+    private predicate ssaDefReachesRank(BasicBlock bb, Definition def, int rnk, SourceVariable v) {
       exists(int i |
         rnk = refRank(bb, i, v, Def()) and
         def.definesAt(v, bb, i)
@@ -610,7 +610,7 @@ module Make<
      * reads.
      */
     pragma[nomagic]
-    predicate ssaRef(BasicBlock bb, int i, SourceVariable v, RefKind k) {
+    private predicate ssaRef(BasicBlock bb, int i, SourceVariable v, RefKind k) {
       variableRead(bb, i, v, true) and
       k = Read()
       or
