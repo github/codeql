@@ -456,7 +456,6 @@ module Make<
   pragma[nomagic]
   private predicate inReadDominanceFrontier(BasicBlock bb, SourceVariable v) {
     exists(BasicBlock readbb | readbb.inDominanceFrontier(bb) |
-      ssaDefReachesRead(v, _, readbb, _) and
       variableRead(readbb, _, v, true) and
       not variableWrite(readbb, _, v, _)
       or
