@@ -21,29 +21,29 @@ index b77f636..1255ba7 100644
      "swift_version_file": attr.label(doc = "A label to the .swift_version file to use. Cannot be used concurrently with `swift_version`"),
  })
 diff --git a/swift/internal/extensions/standalone_toolchain.bzl b/swift/internal/extensions/standalone_toolchain.bzl
-index a1e09ea..1fcf56d 100644
+index 801aad7..119ded9 100644
 --- a/swift/internal/extensions/standalone_toolchain.bzl
 +++ b/swift/internal/extensions/standalone_toolchain.bzl
-@@ -105,6 +105,9 @@ def _standalone_toolchain_impl(repository_ctx):
+@@ -100,6 +100,9 @@ def _standalone_toolchain_impl(repository_ctx):
          "BUILD.bazel",
          repository_ctx.attr._build_template,
          substitutions = {
 +            "{external_static_runtime}": (
 +                '    external_static_runtime = "{}",'.format(repository_ctx.attr.static_runtime) if repository_ctx.attr.static_runtime else ""
 +            ),
-             "{macos_sdkroot}": macos_sdkroot,
              "{swift_version}": repository_ctx.attr.swift_version,
          },
-@@ -121,6 +124,9 @@ _STANDALONE_TOOLCHAIN_ATTRS = {
-     "sha256": attr.string(
-         doc = "The expected SHA-256 of the file downloaded. This must match the SHA-256 of the file downloaded.",
-     ),
-+    "static_runtime": attr.label(
-+        doc = "External static runtime package used by this execution toolchain.",
-+    ),
-     "swift_version": attr.string(
-         doc = "Version of the swift toolchain to be installed.",
-         mandatory = True,
+     )
+@@ -117,6 +120,9 @@ standalone_toolchain = repository_rule(
+         "sha256": attr.string(
+             doc = "The expected SHA-256 of the file downloaded. This must match the SHA-256 of the file downloaded.",
+         ),
++        "static_runtime": attr.label(
++            doc = "External static runtime package used by this execution toolchain.",
++        ),
+         "swift_version": attr.string(
+             doc = "Version of the swift toolchain to be installed.",
+             mandatory = True,
 diff --git a/swift/internal/extensions/toolchain.BUILD b/swift/internal/extensions/toolchain.BUILD
 index 1304dc2..ee77866 100644
 --- a/swift/internal/extensions/toolchain.BUILD
