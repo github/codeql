@@ -1,4 +1,59 @@
 inferCertainType
+| accessors.swift:4:7:4:12 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:7:12:7:17 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:17:14:17:19 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:20:7:20:12 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:20:16:20:23 | newValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:26:14:26:19 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:28:9:28:13 | value |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:29:7:29:12 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:29:16:29:20 | value |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:48:7:48:14 | observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:50:11:50:17 | current |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:50:21:50:28 | observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:51:11:51:18 | incoming |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:51:22:51:29 | newValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:54:11:54:17 | current |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:54:21:54:28 | observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:55:11:55:18 | previous |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:55:22:55:29 | oldValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:59:7:59:20 | namedObservers |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:60:13:60:20 | incoming |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:61:11:61:15 | value |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:61:19:61:26 | incoming |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:63:12:63:19 | previous |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:64:11:64:15 | value |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:64:19:64:26 | previous |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:80:7:80:12 | stored |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:82:8:82:12 | value |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:83:5:83:10 | stored |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:83:14:83:18 | value |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:88:14:88:19 | stored |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:91:7:91:12 | stored |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:91:16:91:23 | newValue |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:95:7:95:14 | observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:97:11:97:17 | current |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:97:21:97:28 | observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:98:11:98:18 | previous |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:98:22:98:29 | oldValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:107:22:107:25 | self |  | accessors.swift:103:1:111:1 | InheritedAccessors |
+| accessors.swift:108:11:108:18 | previous |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:108:22:108:29 | oldValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:135:33:135:37 | value |  | accessors.swift:130:1:133:1 | AccessorRequirements |
+| accessors.swift:136:18:136:22 | value |  | accessors.swift:130:1:133:1 | AccessorRequirements |
+| accessors.swift:137:19:137:23 | value |  | accessors.swift:130:1:133:1 | AccessorRequirements |
+| accessors.swift:138:3:138:7 | value |  | accessors.swift:130:1:133:1 | AccessorRequirements |
+| accessors.swift:143:30:143:40 | Block |  | {EXTERNAL LOCATION} | Function |
+| accessors.swift:143:32:143:38 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| accessors.swift:147:19:147:22 | self |  | accessors.swift:142:1:149:1 | C |
+| accessors.swift:154:14:154:19 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:158:14:158:19 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:161:7:161:12 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:161:16:161:23 | newValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:172:14:172:19 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:176:14:176:19 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:179:7:179:12 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:179:16:179:23 | newValue |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:1:5:1:16 | topLevelDecl |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:3:1:3:12 | topLevelDecl |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:6:7:6:11 | myInt |  | {EXTERNAL LOCATION} | Int |
@@ -103,8 +158,20 @@ inferCertainType
 | closures.swift:38:9:38:10 | f2 | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:38:9:38:10 | f2 | Args.T0 | {EXTERNAL LOCATION} | Int |
 | closures.swift:38:9:38:10 | f2 | Return | {EXTERNAL LOCATION} | Int |
+| closures.swift:40:10:40:10 | f |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:40:10:40:10 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:40:10:40:10 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:40:10:40:10 | f | Return | {EXTERNAL LOCATION} | Int |
 | closures.swift:41:9:41:12 | self |  | closures.swift:31:1:50:1 | ClosureField |
+| closures.swift:41:18:41:18 | f |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:41:18:41:18 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:41:18:41:18 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:41:18:41:18 | f | Return | {EXTERNAL LOCATION} | Int |
 | closures.swift:42:9:42:12 | self |  | closures.swift:31:1:50:1 | ClosureField |
+| closures.swift:42:19:42:19 | f |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:42:19:42:19 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:42:19:42:19 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:42:19:42:19 | f | Return | {EXTERNAL LOCATION} | Int |
 | closures.swift:45:24:45:28 | value |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:47:9:47:12 | self |  | closures.swift:31:1:50:1 | ClosureField |
 | closures.swift:47:16:47:20 | value |  | {EXTERNAL LOCATION} | Int |
@@ -686,6 +753,196 @@ inferCertainType
 | type_constraints.swift:256:29:256:33 | upper |  | type_constraints.swift:254:12:254:24 | T |
 | type_constraints.swift:257:10:257:14 | value |  | type_constraints.swift:254:12:254:24 | T |
 inferType
+| accessors.swift:4:7:4:12 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:4:21:4:21 | 0 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:6:27:8:3 | Block |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:7:12:7:17 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:10:30:13:3 | Block |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:11:9:11:13 | value |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:11:17:11:26 | "accessor" |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:12:12:12:16 | value |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:16:9:18:5 | Block |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:17:14:17:19 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:19:9:21:5 | Block |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:20:7:20:12 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:20:7:20:23 | ... = ... |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:20:16:20:23 | newValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:25:9:27:5 | Block |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:26:14:26:19 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:28:9:28:13 | value |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:28:16:30:5 | Block |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:29:7:29:12 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:29:7:29:20 | ... = ... |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:29:16:29:20 | value |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:34:31:43:1 | Block |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:35:7:35:15 | container |  | accessors.swift:3:1:32:1 | AccessorContainer |
+| accessors.swift:35:19:35:35 | AccessorContainer |  | accessors.swift:3:1:32:1 | AccessorContainer |
+| accessors.swift:35:19:35:37 | AccessorContainer(...) |  | accessors.swift:3:1:32:1 | AccessorContainer |
+| accessors.swift:36:7:36:19 | implicitValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:36:23:36:31 | container |  | accessors.swift:3:1:32:1 | AccessorContainer |
+| accessors.swift:36:23:36:46 | ... .implicitGetter |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:37:7:37:19 | explicitValue |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:37:23:37:31 | container |  | accessors.swift:3:1:32:1 | AccessorContainer |
+| accessors.swift:37:23:37:46 | ... .explicitGetter |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:38:7:38:19 | writableValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:38:23:38:31 | container |  | accessors.swift:3:1:32:1 | AccessorContainer |
+| accessors.swift:38:23:38:40 | ... .writable |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:39:3:39:11 | container |  | accessors.swift:3:1:32:1 | AccessorContainer |
+| accessors.swift:39:3:39:20 | ... .writable |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:39:3:39:25 | ... = ... |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:39:24:39:25 | 42 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:40:3:40:11 | container |  | accessors.swift:3:1:32:1 | AccessorContainer |
+| accessors.swift:40:3:40:20 | ... .writable |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:40:3:40:25 | ... += ... |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:40:25:40:25 | 0 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:41:7:41:16 | namedValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:41:20:41:28 | container |  | accessors.swift:3:1:32:1 | AccessorContainer |
+| accessors.swift:41:20:41:40 | ... .namedSetter |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:42:3:42:11 | container |  | accessors.swift:3:1:32:1 | AccessorContainer |
+| accessors.swift:42:3:42:23 | ... .namedSetter |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:42:3:42:28 | ... = ... |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:42:27:42:28 | 43 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:48:7:48:14 | observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:48:23:48:23 | 0 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:50:11:50:17 | current |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:50:21:50:28 | observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:51:11:51:18 | incoming |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:51:22:51:29 | newValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:54:11:54:17 | current |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:54:21:54:28 | observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:55:11:55:18 | previous |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:55:22:55:29 | oldValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:59:7:59:20 | namedObservers |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:59:32:59:33 | "" |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:60:13:60:20 | incoming |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:61:11:61:15 | value |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:61:19:61:26 | incoming |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:63:12:63:19 | previous |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:64:11:64:15 | value |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:64:19:64:26 | previous |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:69:31:75:1 | Block |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:70:7:70:15 | container |  | accessors.swift:47:1:67:1 | ObservedProperties |
+| accessors.swift:70:19:70:36 | ObservedProperties |  | accessors.swift:47:1:67:1 | ObservedProperties |
+| accessors.swift:70:19:70:38 | ObservedProperties(...) |  | accessors.swift:47:1:67:1 | ObservedProperties |
+| accessors.swift:71:7:71:14 | observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:71:18:71:26 | container |  | accessors.swift:47:1:67:1 | ObservedProperties |
+| accessors.swift:71:18:71:35 | ... .observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:72:3:72:11 | container |  | accessors.swift:47:1:67:1 | ObservedProperties |
+| accessors.swift:72:3:72:20 | ... .observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:72:3:72:25 | ... = ... |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:72:24:72:25 | 42 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:73:7:73:11 | named |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:73:15:73:23 | container |  | accessors.swift:47:1:67:1 | ObservedProperties |
+| accessors.swift:73:15:73:38 | ... .namedObservers |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:74:3:74:11 | container |  | accessors.swift:47:1:67:1 | ObservedProperties |
+| accessors.swift:74:3:74:26 | ... .namedObservers |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:74:3:74:38 | ... = ... |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:74:30:74:38 | "updated" |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:80:7:80:12 | stored |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:82:8:82:12 | value |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:82:18:84:3 | Block |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:83:5:83:10 | stored |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:83:5:83:18 | ... = ... |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:83:14:83:18 | value |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:87:9:89:5 | Block |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:88:14:88:19 | stored |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:90:9:92:5 | Block |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:91:7:91:12 | stored |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:91:7:91:23 | ... = ... |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:91:16:91:23 | newValue |  | accessors.swift:79:24:79:24 | T |
+| accessors.swift:95:7:95:14 | observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:95:23:95:23 | 0 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:97:11:97:17 | current |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:97:21:97:28 | observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:98:11:98:18 | previous |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:98:22:98:29 | oldValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:107:11:107:18 | current2 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:107:22:107:25 | self |  | accessors.swift:103:1:111:1 | InheritedAccessors |
+| accessors.swift:107:22:107:34 | ... .observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:108:11:108:18 | previous |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:108:22:108:29 | oldValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:120:7:120:15 | container |  | accessors.swift:79:1:101:1 | GenericAccessors |
+| accessors.swift:120:7:120:15 | container | T | {EXTERNAL LOCATION} | String |
+| accessors.swift:120:19:120:34 | GenericAccessors |  | accessors.swift:79:1:101:1 | GenericAccessors |
+| accessors.swift:120:19:120:34 | GenericAccessors | T | {EXTERNAL LOCATION} | String |
+| accessors.swift:120:19:120:50 | GenericAccessors(...) |  | accessors.swift:79:1:101:1 | GenericAccessors |
+| accessors.swift:120:19:120:50 | GenericAccessors(...) | T | {EXTERNAL LOCATION} | String |
+| accessors.swift:120:43:120:49 | "value" |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:121:7:121:11 | value |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:121:15:121:23 | container |  | accessors.swift:79:1:101:1 | GenericAccessors |
+| accessors.swift:121:15:121:23 | container | T | {EXTERNAL LOCATION} | String |
+| accessors.swift:121:15:121:29 | ... .value |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:122:24:122:32 | container |  | accessors.swift:79:1:101:1 | GenericAccessors |
+| accessors.swift:122:24:122:32 | container | T | {EXTERNAL LOCATION} | String |
+| accessors.swift:123:7:123:15 | inherited |  | accessors.swift:103:1:111:1 | InheritedAccessors |
+| accessors.swift:123:19:123:36 | InheritedAccessors |  | accessors.swift:103:1:111:1 | InheritedAccessors |
+| accessors.swift:123:19:123:47 | InheritedAccessors(...) |  | accessors.swift:103:1:111:1 | InheritedAccessors |
+| accessors.swift:123:45:123:46 | 42 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:124:7:124:20 | inheritedValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:124:24:124:32 | inherited |  | accessors.swift:103:1:111:1 | InheritedAccessors |
+| accessors.swift:124:24:124:38 | ... .value |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:125:7:125:23 | inheritedObserver |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:125:27:125:35 | inherited |  | accessors.swift:103:1:111:1 | InheritedAccessors |
+| accessors.swift:125:27:125:44 | ... .observed |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:135:33:135:37 | value |  | accessors.swift:130:1:133:1 | AccessorRequirements |
+| accessors.swift:135:68:139:1 | Block |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:136:7:136:14 | readOnly |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:136:18:136:22 | value |  | accessors.swift:130:1:133:1 | AccessorRequirements |
+| accessors.swift:136:18:136:31 | ... .readOnly |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:137:7:137:15 | readWrite |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:137:19:137:23 | value |  | accessors.swift:130:1:133:1 | AccessorRequirements |
+| accessors.swift:137:19:137:33 | ... .readWrite |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:138:3:138:7 | value |  | accessors.swift:130:1:133:1 | AccessorRequirements |
+| accessors.swift:138:3:138:17 | ... .readWrite |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:138:3:138:29 | ... = ... |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:138:21:138:29 | "updated" |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:143:30:143:40 | Block |  | {EXTERNAL LOCATION} | Function |
+| accessors.swift:143:30:143:40 | Block | Return | {EXTERNAL LOCATION} | String |
+| accessors.swift:143:32:143:38 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| accessors.swift:143:32:143:38 | FunctionExpr | Return | {EXTERNAL LOCATION} | String |
+| accessors.swift:143:34:143:36 | "x" |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:143:34:143:36 | Block |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:146:9:146:14 | result |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:146:18:146:25 | callback |  | {EXTERNAL LOCATION} | Function |
+| accessors.swift:146:18:146:25 | callback | Return | {EXTERNAL LOCATION} | String |
+| accessors.swift:146:18:146:27 | callback(...) |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:147:9:147:15 | result2 |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:147:19:147:22 | self |  | accessors.swift:142:1:149:1 | C |
+| accessors.swift:147:19:147:31 | ... .callback |  | {EXTERNAL LOCATION} | Function |
+| accessors.swift:147:19:147:31 | ... .callback | Return | {EXTERNAL LOCATION} | String |
+| accessors.swift:147:19:147:33 | ... .callback(...) |  | {EXTERNAL LOCATION} | String |
+| accessors.swift:154:14:154:19 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:154:28:154:28 | 0 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:157:9:159:5 | Block |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:158:14:158:19 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:160:9:162:5 | Block |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:161:7:161:12 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:161:7:161:23 | ... = ... |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:161:16:161:23 | newValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:166:28:169:1 | Block |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:167:7:167:11 | value |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:167:15:167:35 | ... .value |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:168:3:168:23 | ... .value |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:168:3:168:28 | ... = ... |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:168:27:168:28 | 42 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:172:14:172:19 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:172:28:172:28 | 0 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:175:9:177:5 | Block |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:176:14:176:19 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:178:9:180:5 | Block |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:179:7:179:12 | stored |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:179:7:179:23 | ... = ... |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:179:16:179:23 | newValue |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:184:27:187:1 | Block |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:185:7:185:11 | value |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:185:15:185:34 | ... .value |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:186:3:186:22 | ... .value |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:186:3:186:27 | ... = ... |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:186:26:186:27 | 42 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:191:17:191:22 | Block |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:191:19:191:20 | 42 |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:192:5:192:5 | x |  | {EXTERNAL LOCATION} | Int |
+| accessors.swift:192:9:192:14 | answer |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:1:5:1:16 | topLevelDecl |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:1:25:1:25 | 0 |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:2:1:2:1 | 0 |  | {EXTERNAL LOCATION} | Int |
@@ -1050,16 +1307,40 @@ inferType
 | closures.swift:38:9:38:10 | f2 | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:38:9:38:10 | f2 | Args.T0 | {EXTERNAL LOCATION} | Int |
 | closures.swift:38:9:38:10 | f2 | Return | {EXTERNAL LOCATION} | Int |
+| closures.swift:40:10:40:10 | f |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:40:10:40:10 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:40:10:40:10 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:40:10:40:10 | f | Return | {EXTERNAL LOCATION} | Int |
+| closures.swift:40:37:43:5 | Block |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:40:37:43:5 | Block | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:40:37:43:5 | Block | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:40:37:43:5 | Block | Return | {EXTERNAL LOCATION} | Int |
 | closures.swift:41:9:41:12 | self |  | closures.swift:31:1:50:1 | ClosureField |
 | closures.swift:41:9:41:14 | ... .f |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:41:9:41:14 | ... .f | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:41:9:41:14 | ... .f | Args.T0 | {EXTERNAL LOCATION} | Int |
 | closures.swift:41:9:41:14 | ... .f | Return | {EXTERNAL LOCATION} | Int |
+| closures.swift:41:9:41:18 | ... = ... |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:41:9:41:18 | ... = ... | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:41:9:41:18 | ... = ... | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:41:9:41:18 | ... = ... | Return | {EXTERNAL LOCATION} | Int |
+| closures.swift:41:18:41:18 | f |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:41:18:41:18 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:41:18:41:18 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:41:18:41:18 | f | Return | {EXTERNAL LOCATION} | Int |
 | closures.swift:42:9:42:12 | self |  | closures.swift:31:1:50:1 | ClosureField |
 | closures.swift:42:9:42:15 | ... .f2 |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:42:9:42:15 | ... .f2 | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:42:9:42:15 | ... .f2 | Args.T0 | {EXTERNAL LOCATION} | Int |
 | closures.swift:42:9:42:15 | ... .f2 | Return | {EXTERNAL LOCATION} | Int |
+| closures.swift:42:9:42:19 | ... = ... |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:42:9:42:19 | ... = ... | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:42:9:42:19 | ... = ... | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:42:9:42:19 | ... = ... | Return | {EXTERNAL LOCATION} | Int |
+| closures.swift:42:19:42:19 | f |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:42:19:42:19 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:42:19:42:19 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:42:19:42:19 | f | Return | {EXTERNAL LOCATION} | Int |
 | closures.swift:45:24:45:28 | value |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:45:43:49:5 | Block |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:47:9:47:12 | self |  | closures.swift:31:1:50:1 | ClosureField |

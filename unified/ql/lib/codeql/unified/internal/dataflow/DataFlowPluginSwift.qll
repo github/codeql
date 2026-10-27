@@ -13,11 +13,12 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
     contents.asSingleton().asNamedMember() = "some.0"
   }
 
-  // Swift writes back mutated values of computed properties via their setter
+  // Swift writes back mutated values of computed value-type properties via their setter
   bindingset[expr]
   override predicate mayWriteBackViaSetterCall(Expr expr) {
-    isInWriteBackPosition(expr)
-    // TODO: Check that 'expr' has a value type. Reference types don't cause writebacks.
+    isInWriteBackPosition(expr) and
+    // conservative value-type check
+    not forex(T::Type t | t = T::inferType(expr) | t.asClass().hasModifier("class"))
   }
 
   override predicate exprStep(Expr expr1, Expr expr2, boolean mustFlow) {

@@ -100,9 +100,7 @@ func t12() {
     }
     var p: S {
         get { S() }
-        set { sink(newValue.field) }  // $ MISSING: hasValueFlow=t12.1
+        set { sink(newValue.field) }  // $ hasValueFlow=t12.1
     }
-    // TODO: test fails because the call to 'mutate' is not yet resolved
-    // At the time of writing, the test passes if the call graph is manually patched
     p.mutate()
 }

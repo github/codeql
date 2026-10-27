@@ -123,6 +123,8 @@ module Input3 implements InputSig3 {
   predicate cacheRevRef() {
     (exists(resolveFieldAccess(_)) implies any())
     or
+    (exists(resolveAccessorAccess(_)) implies any())
+    or
     (exists(resolveCallTarget(_)) implies any())
   }
 
@@ -252,18 +254,36 @@ module Input3 implements InputSig3 {
     override Location getLocation() { result = decl.getLocation() }
   }
 
-  class Field extends AstVariableDeclaration {
+  final class Field = FieldImpl;
+
+  abstract private class FieldImpl extends DeclarationImpl {
+    abstract AstNode getAstNode();
+  }
+
+  private class VariableDeclarationField extends FieldImpl, AstVariableDeclaration {
     ClassLikeDeclaration cls;
 
-    Field() { decl = cls.getAMember() }
+    VariableDeclarationField() { decl = cls.getAMember() }
+
+    override AstNode getAstNode() { result = this.getDecl() }
 
     override TypeMention getDeclaringType() { result = getClassLikeDeclarationTypeMention(cls) }
   }
 
-  private class EnumField_ extends Field {
+  private class EnumField_ extends VariableDeclarationField {
     override EnumField decl;
 
     override TypeMention getType() { result = decl.getEnum().getNameNode() }
+  }
+
+  private class AccessorField extends FieldImpl, Callable {
+    private AccessorDeclaration accessor;
+
+    AccessorField() { accessor = this.getCallable() }
+
+    override TypeMention getType() { result = accessor.getReturnType() }
+
+    override AstNode getAstNode() { result = accessor }
   }
 
   abstract class FieldAccess extends Expr {
@@ -275,7 +295,7 @@ module Input3 implements InputSig3 {
   pragma[nomagic]
   private predicate lookupMember0(MemberAccessExpr mae, ClassLikeDeclaration cls, string name) {
     not exists(getStaticBindingTargetFromRef(mae)) and // if a static member can be resolved, use it
-    cls = inferType(mae.getBase()).(ClassLikeDeclarationType).getClassLikeDeclaration() and
+    cls = inferType(mae.getBase()).asClass() and
     name = mae.getMemberName()
   }
 
@@ -303,7 +323,7 @@ module Input3 implements InputSig3 {
       // also mutual recursion
       exists(TupleType tuple, string name |
         this.isTupleProjection(tuple, name) and
-        result.getDecl() = tuple.getField(name)
+        result.getAstNode() = tuple.getField(name)
       )
       or
       // no mutual recursion; can be resolved directly with static name binding
@@ -323,6 +343,18 @@ module Input3 implements InputSig3 {
     override Expr getReceiver() { none() }
 
     override Field getField() { result.getNameNode() = this.getTarget() }
+  }
+
+  private class LocalAccessorFieldAccess extends FieldAccess, LocalNameAccess {
+    AccessorDeclaration target;
+
+    LocalAccessorFieldAccess() {
+      target = getStaticBindingTargetFromIdentifier(this).getDeclaration()
+    }
+
+    override Expr getReceiver() { none() }
+
+    override Field getField() { result.getAstNode() = target }
   }
 
   Type inferFieldAccessReceiverType(FieldAccess fa, TypePath path) {
@@ -506,17 +538,21 @@ module Input3 implements InputSig3 {
     }
 
     Callable getTargetImpl(boolean isFunctionExprInvoke) {
-      // mutual recursion; call with explicit receiver: `obj.foo(42)`
-      result = lookupInstanceMember(this.getCallee()) and
-      isFunctionExprInvoke = false
-      or
-      // mutual recursion; call to a function expression: `callback(42)`
-      result.asCallable() = this.getInvokeTarget(_) and
-      isFunctionExprInvoke = true
-      or
-      // no mutual recursion; can be resolved directly with static name binding
-      result = this.getTargetViaStaticNameBinding() and
-      isFunctionExprInvoke = false
+      (
+        // mutual recursion; call with explicit receiver: `obj.foo(42)`
+        result = lookupInstanceMember(this.getCallee()) and
+        isFunctionExprInvoke = false
+        or
+        // mutual recursion; call to a function expression: `callback(42)`
+        result.asCallable() = this.getInvokeTarget(_) and
+        isFunctionExprInvoke = true
+        or
+        // no mutual recursion; can be resolved directly with static name binding
+        result = this.getTargetViaStaticNameBinding() and
+        isFunctionExprInvoke = false
+      ) and
+      // handled as a field access
+      not result.asCallable() instanceof AccessorDeclaration
     }
 
     Callable getTarget(InvocationResolutionContext c) {
@@ -835,7 +871,23 @@ module CachedStage = M3::CachedStage;
 cached
 VariableDeclaration resolveFieldAccess(Expr access) {
   CachedStage::ref() and
-  result = access.(Input3::FieldAccess).getField().getDecl()
+  result = access.(Input3::FieldAccess).getField().getAstNode()
+}
+
+/**
+ * Gets the accessor that is accessed by the given expression.
+ *
+ * Note that we do not attempt to distinguish between different kinds of
+ * accessors; all accessors belonging to the same declaration will be
+ * returned (for example both the getter and setter of a property).
+ *
+ * `access` is either a `MemberAccessExpr` or an `Identifier` (when
+ * the field is accessed with an implicit receiver).
+ */
+cached
+AccessorDeclaration resolveAccessorAccess(Expr access) {
+  CachedStage::ref() and
+  result = access.(Input3::FieldAccess).getField().getAstNode()
 }
 
 /**
