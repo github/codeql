@@ -98,3 +98,31 @@ func t8() {
     c.x = "safe"  // trigger the setter
     sink(c.otherField)  // $ hasTaintFlow=t8.1
 }
+
+func t9() {
+    class C {
+        var field: String = "safe"
+        var x: String {
+            field = source("t9.1")
+            return ""
+        }
+    }
+    let c = C()
+    let ignored = c.x
+    sink(c.field)  // $ MISSING: hasValueFlow=t9.1
+}
+
+func t10() {
+    class C {
+        var field: String = "safe"
+        var x: String {
+            field = source("t10.1")
+            return ""
+        }
+
+        func method() {
+            let ignored = x
+            sink(field)  // $ MISSING: hasValueFlow=t10.1
+        }
+    }
+}
