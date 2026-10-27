@@ -11,6 +11,10 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
     contents.asSingleton().asNamedMember() = "some.0"
   }
 
+  // Swift writes back mutated values of computed properties via their setter
+  bindingset[expr]
+  override predicate mayWriteBackViaSetterCall(Expr expr) { any() }
+
   override predicate exprStep(Expr expr1, Expr expr2, boolean mustFlow) {
     mustFlow = true and
     exists(UnaryExpr expr |
