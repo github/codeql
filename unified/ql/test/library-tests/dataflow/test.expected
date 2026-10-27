@@ -28,6 +28,11 @@ edges
 | accessors_instance.swift:98:5:98:5 | c [field] | accessors_instance.swift:93:32:93:36 | field | provenance |  |
 | accessors_instance.swift:98:5:98:5 | c [field] | accessors_instance.swift:99:10:99:10 | c [otherField] | provenance |  |
 | accessors_instance.swift:99:10:99:10 | c [otherField] | accessors_instance.swift:99:10:99:21 | ... .otherField | provenance |  |
+| accessors_instance.swift:106:13:106:17 | field | accessors_instance.swift:112:10:112:10 | c [field] | provenance |  |
+| accessors_instance.swift:106:21:106:34 | source(...) | accessors_instance.swift:106:13:106:17 | field | provenance |  |
+| accessors_instance.swift:112:10:112:10 | c [field] | accessors_instance.swift:112:10:112:16 | ... .field | provenance |  |
+| accessors_instance.swift:119:13:119:17 | field | accessors_instance.swift:125:18:125:22 | field | provenance |  |
+| accessors_instance.swift:119:21:119:35 | source(...) | accessors_instance.swift:119:13:119:17 | field | provenance |  |
 | accessors_local.swift:7:21:7:34 | source(...) | accessors_local.swift:8:10:8:10 | x | provenance |  |
 | accessors_local.swift:15:15:15:28 | source(...) | accessors_local.swift:17:10:17:10 | x | provenance |  |
 | accessors_local.swift:22:15:22:28 | source(...) | accessors_local.swift:25:10:25:10 | x | provenance |  |
@@ -544,6 +549,13 @@ nodes
 | accessors_instance.swift:98:5:98:5 | c [field] | semmle.label | c [field] |
 | accessors_instance.swift:99:10:99:10 | c [otherField] | semmle.label | c [otherField] |
 | accessors_instance.swift:99:10:99:21 | ... .otherField | semmle.label | ... .otherField |
+| accessors_instance.swift:106:13:106:17 | field | semmle.label | field |
+| accessors_instance.swift:106:21:106:34 | source(...) | semmle.label | source(...) |
+| accessors_instance.swift:112:10:112:10 | c [field] | semmle.label | c [field] |
+| accessors_instance.swift:112:10:112:16 | ... .field | semmle.label | ... .field |
+| accessors_instance.swift:119:13:119:17 | field | semmle.label | field |
+| accessors_instance.swift:119:21:119:35 | source(...) | semmle.label | source(...) |
+| accessors_instance.swift:125:18:125:22 | field | semmle.label | field |
 | accessors_local.swift:7:21:7:34 | source(...) | semmle.label | source(...) |
 | accessors_local.swift:8:10:8:10 | x | semmle.label | x |
 | accessors_local.swift:15:15:15:28 | source(...) | semmle.label | source(...) |
@@ -1171,6 +1183,8 @@ testFailures
 | accessors_instance.swift:71:18:71:18 | x | accessors_instance.swift:67:25:67:38 | source(...) | accessors_instance.swift:71:18:71:18 | x | $@ | accessors_instance.swift:67:25:67:38 | source(...) | source(...) |
 | accessors_instance.swift:84:10:84:12 | ... .x | accessors_instance.swift:83:15:83:28 | source(...) | accessors_instance.swift:84:10:84:12 | ... .x | $@ | accessors_instance.swift:83:15:83:28 | source(...) | source(...) |
 | accessors_instance.swift:99:10:99:21 | ... .otherField | accessors_instance.swift:97:15:97:28 | source(...) | accessors_instance.swift:99:10:99:21 | ... .otherField | $@ | accessors_instance.swift:97:15:97:28 | source(...) | source(...) |
+| accessors_instance.swift:112:10:112:16 | ... .field | accessors_instance.swift:106:21:106:34 | source(...) | accessors_instance.swift:112:10:112:16 | ... .field | $@ | accessors_instance.swift:106:21:106:34 | source(...) | source(...) |
+| accessors_instance.swift:125:18:125:22 | field | accessors_instance.swift:119:21:119:35 | source(...) | accessors_instance.swift:125:18:125:22 | field | $@ | accessors_instance.swift:119:21:119:35 | source(...) | source(...) |
 | accessors_local.swift:8:10:8:10 | x | accessors_local.swift:7:21:7:34 | source(...) | accessors_local.swift:8:10:8:10 | x | $@ | accessors_local.swift:7:21:7:34 | source(...) | source(...) |
 | accessors_local.swift:17:10:17:10 | x | accessors_local.swift:15:15:15:28 | source(...) | accessors_local.swift:17:10:17:10 | x | $@ | accessors_local.swift:15:15:15:28 | source(...) | source(...) |
 | accessors_local.swift:25:10:25:10 | x | accessors_local.swift:22:15:22:28 | source(...) | accessors_local.swift:25:10:25:10 | x | $@ | accessors_local.swift:22:15:22:28 | source(...) | source(...) |

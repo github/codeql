@@ -109,7 +109,7 @@ func t9() {
     }
     let c = C()
     let ignored = c.x
-    sink(c.field)  // $ MISSING: hasValueFlow=t9.1
+    sink(c.field)  // $ hasValueFlow=t9.1
 }
 
 func t10() {
@@ -122,7 +122,7 @@ func t10() {
 
         func method() {
             let ignored = x
-            sink(field)  // $ MISSING: hasValueFlow=t10.1
+            sink(field)  // $ hasValueFlow=t10.1
         }
     }
 }

@@ -27,9 +27,10 @@ private predicate hasIncomingValueAtCfgNode(Expr expr, ControlFlowNode cfgNode) 
   )
 }
 
-private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
+/** Holds if `expr` has a post-update at `cfgNode` resulting from a surrounding call or assignment. */
+private predicate hasPostUpdateAfterCallOrAssign(Expr expr, ControlFlowNode cfgNode) {
   exists(MemberAccessExpr member |
-    (hasIncomingValueAtCfgNode(member, cfgNode) or hasPostUpdate(member, cfgNode)) and
+    (hasIncomingValueAtCfgNode(member, cfgNode) or hasPostUpdateAfterCallOrAssign(member, cfgNode)) and
     expr = member.getBase()
   )
   or
@@ -40,8 +41,25 @@ private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
   )
   or
   exists(Expr target |
-    hasPostUpdate(target, cfgNode) and
+    hasPostUpdateAfterCallOrAssign(target, cfgNode) and
     exprStep(expr, target, _)
+  )
+}
+
+/**
+ * Holds if `expr` has a post-update at `cfgNode`.
+ */
+private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
+  hasPostUpdateAfterCallOrAssign(expr, cfgNode)
+  or
+  not hasPostUpdateAfterCallOrAssign(expr, _) and
+  exists(MemberAccessExpr member |
+    // If the member access is not updated by call or assignment, it might still be a call to a getter,
+    // and thus needs a post-update. Generate a post-update for this case.
+    // In case it's a call to a getter, while also being post-updated from a call or assignment, we accept
+    // the imprecision and use the post-update position from the call or assignment.
+    expr = member.getBase() and
+    cfgNode.isAfter(member)
   )
 }
 
@@ -67,6 +85,11 @@ predicate performsVariableAccess(
     kind.isRead() and cfgNode.isBefore(access)
     or
     (hasIncomingValueAtCfgNode(access, cfgNode) or hasPostUpdate(access, cfgNode)) and
+    kind.isPostUpdate()
+    or
+    // Generate a post-update for the receiver in case this is a call to a getter that mutates 'self'.
+    not (hasIncomingValueAtCfgNode(access, _) or hasPostUpdate(access, _)) and
+    cfgNode.isAfter(access) and
     kind.isPostUpdate()
     or
     exists(CallExpr call |
