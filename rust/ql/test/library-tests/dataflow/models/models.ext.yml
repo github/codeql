@@ -26,6 +26,7 @@ extensions:
       - ["<main::MyFieldEnum>::sink", "Argument[self].Field[main::MyFieldEnum::D::field_d]", "test-sink", "manual"]
       - ["main::sink_out_of_function::pass_sink", "Argument[0].ReturnValue", "test-sink", "manual"]
       - ["main::sink_out_of_function::pass_sink_nested", "Argument[0].ReturnValue.Field[main::MyFieldEnum::E::field_e].Field[core::option::Option::Some(0)]", "test-sink", "manual"]
+      - ["main::try_in_sink_callback::pass_sink_option", "Argument[0].ReturnValue", "test-sink", "manual"]
       - ["main::external_file::generated_sink", "Argument[0]", "test-sink", "dfc-generated"]
       - ["main::external_file::neutral_generated_sink", "Argument[0]", "test-sink", "dfc-generated"]
       - ["main::external_file::neutral_manual_sink", "Argument[0]", "test-sink", "manual"]
