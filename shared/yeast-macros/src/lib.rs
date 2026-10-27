@@ -50,7 +50,7 @@ pub fn query(input: TokenStream) -> TokenStream {
     }
 }
 
-/// Build a single AST node from a template, returning its `Id`.
+/// Build a single AST node from a template, returning its `OutputId`.
 ///
 /// # Template syntax
 ///
@@ -58,9 +58,9 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// (kind "literal")             - leaf with static content
 /// (kind #{expr})               - leaf with computed content (expr.to_string())
 /// {expr}                       - embed a Rust expression, dispatched via
-///                                the `IntoFieldIds` trait: `Id` pushes a
-///                                single id; iterables (`Vec<Id>`,
-///                                `Option<Id>`, iterator chains) splice
+///                                the `IntoFieldIds` trait: `OutputId` pushes a
+///                                single id; iterables (`Vec<OutputId>`,
+///                                `Option<OutputId>`, iterator chains) splice
 ///                                their elements
 /// field: {expr}                - extend a named field with `{expr}`'s ids
 /// field: (kind ...)?           - set the field only if every `#{expr}`
@@ -108,9 +108,9 @@ pub fn tree(input: TokenStream) -> TokenStream {
     }
 }
 
-/// Build a list of AST nodes from a template, returning `Vec<Id>`.
+/// Build a list of AST nodes from a template, returning `Vec<OutputId>`.
 ///
-/// Like `tree!` but returns `Vec<Id>` and supports multiple top-level
+/// Like `tree!` but returns `Vec<OutputId>` and supports multiple top-level
 /// elements. All syntax from `tree!` is available.
 ///
 /// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
@@ -148,9 +148,11 @@ pub fn trees(input: TokenStream) -> TokenStream {
 /// ```
 ///
 /// Captures become Rust variables automatically:
-/// - `@name` (no quantifier) → `name: Id`
-/// - `@name` (after `*`/`+`) → `name: Vec<Id>`
-/// - `@name` (after `?`) → `name: Option<Id>`
+/// - `@name` (no quantifier) → `name: OutputId`
+/// - `@name` (after `*`/`+`) → `name: Vec<OutputId>`
+/// - `@name` (after `?`) → `name: Option<OutputId>`
+///
+/// Raw `@@name` captures use the corresponding input `Id` types instead.
 ///
 /// A guard is an optional Rust condition between the query and `=>`. It is
 /// evaluated after the query matches and before any `@` captures are
@@ -190,8 +192,8 @@ pub fn rule(input: TokenStream) -> TokenStream {
 ///     output: "ast_types.yml",
 ///     [
 ///         (source_file (_)* @cs) => (top_level body: {..cs}),
-///         (simple_identifier) @id => (name_expr identifier: (identifier #{id})),
-///         rule!((integer_literal) @lit => (int_literal #{lit})),
+///         (simple_identifier) @@id => (name_expr identifier: (identifier #{id})),
+///         rule!((integer_literal) @@lit => (int_literal #{lit})),
 ///         helper_fn(),
 ///     ]
 /// };

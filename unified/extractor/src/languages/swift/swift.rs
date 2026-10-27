@@ -11,17 +11,17 @@ struct SwiftContext {
     /// Name node for the property name. Set by the accessor-bearing
     /// `variableDecl` rule before translating the accessor block; read by the
     /// inner `accessorDecl` rules to name each `accessor_declaration`.
-    property_name_node: Option<yeast::Id>,
+    property_name_node: Option<yeast::OutputId>,
     /// Translated type node for the property type. Set (for computed
     /// properties) by the accessor-bearing `variableDecl` rule; read by the
     /// inner `accessorDecl` rules. Left `None` for stored properties with
     /// observers, so their `willSet`/`didSet` accessors carry no type.
-    property_type: Option<yeast::Id>,
+    property_type: Option<yeast::OutputId>,
     /// Translated outer modifiers to attach to each child of a flattening
     /// outer rule — e.g. the `let`/`var` binding modifier on each
     /// `patternBinding` of a `variableDecl`, or the binding modifier on each
     /// accessor of a property.
-    outer_modifiers: Vec<yeast::Id>,
+    outer_modifiers: Vec<yeast::OutputId>,
     /// True when the current child of a flattening outer rule is not
     /// the first one — its inner rule should emit a
     /// `chained_declaration` modifier so the original grouping can be
@@ -63,8 +63,8 @@ impl SwiftContext {
 /// Build a freshly-created `chained_declaration` modifier node if
 /// `ctx.is_chained`, else `None`. Used by inner declaration rules to
 /// emit the chained tag for non-first children of a flattening outer
-/// rule. Returns `Option<Id>` so it splices via `{…}` to 0 or 1 ids.
-fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Option<yeast::Id> {
+/// rule. Returns `Option<OutputId>` so it splices via `{…}` to 0 or 1 ids.
+fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Option<yeast::OutputId> {
     if ctx.is_chained {
         Some(tree!((modifier "chained_declaration")))
     } else {
@@ -74,10 +74,10 @@ fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Optio
 
 fn implicit_parameterless_initializer(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
-    members: &[yeast::Id],
-) -> Option<yeast::Id> {
+    members: &[yeast::OutputId],
+) -> Option<yeast::OutputId> {
     let has_explicit_initializer = members.iter().any(|member| {
-        ctx.ast
+        ctx.output
             .get_node(*member)
             .is_some_and(|node| node.kind_name() == "constructor_declaration")
     });
@@ -98,8 +98,8 @@ fn implicit_parameterless_initializer(
 /// condition.
 fn and_chain(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
-    conds: Vec<yeast::Id>,
-) -> yeast::Id {
+    conds: Vec<yeast::OutputId>,
+) -> yeast::OutputId {
     conds
         .into_iter()
         .reduce(|acc, elem| {
@@ -114,8 +114,8 @@ fn and_chain(
 /// wrap the list in an `or_pattern`.
 fn make_or_pattern(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
-    items: Vec<yeast::Id>,
-) -> yeast::Id {
+    items: Vec<yeast::OutputId>,
+) -> yeast::OutputId {
     if items.len() == 1 {
         items[0]
     } else {
@@ -130,7 +130,7 @@ fn make_or_pattern(
 fn member_chain(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
     parts: Vec<yeast::Id>,
-) -> yeast::Id {
+) -> yeast::OutputId {
     let mut iter = parts.into_iter();
     let first = iter
         .next()
@@ -272,9 +272,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // to an opaque `unsupported_node`. These bare nodes only occur inside an
         // unresolved sequence — folded forms are handled by the dedicated rules
         // above (assignment) and below (`ternaryExpr`).
-        rule!((assignmentExpr) @op => (infix_operator #{op})),
-        rule!((unresolvedAsExpr) @op => (infix_operator #{op})),
-        rule!((unresolvedIsExpr) @op => (infix_operator #{op})),
+        rule!((assignmentExpr) @@op => (infix_operator #{op})),
+        rule!((unresolvedAsExpr) @@op => (infix_operator #{op})),
+        rule!((unresolvedIsExpr) @@op => (infix_operator #{op})),
         // The ternary is a three-part operator (`? thenExpr :`) that *wraps* a
         // nested expression. Splice it into `?`, the then-expression, `:` so the
         // then-expression survives as a real (traversable) operand rather than
@@ -403,34 +403,24 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (accessorDecl accessorSpecifier: @@spec body: _? @@body)
             =>
-            accessor_declaration {
-                let binding = if body.is_some() {
-                    ctx.outer_modifiers.clone()
-                } else {
-                    Vec::new()
-                };
-                let chained = chained_modifier(&mut ctx);
-                let name = ctx
-                    .property_name_node
-                    .ok_or("accessor outside property context")?;
-                let ty = ctx.property_type;
-                let body = match body {
-                    Some(block) => {
-                        ctx.reset();
-                        ctx.translate(block)?.into_iter().next()
+            (accessor_declaration
+                modifier: {
+                    if body.is_some() {
+                        ctx.outer_modifiers.clone()
+                    } else {
+                        Vec::new()
                     }
-                    None => None,
-                };
-                tree!((accessor_declaration
-                    modifier: {binding}
-                    modifier: {chained}
-                    name_node: {name}
-                    type: {ty}
-                    accessor_kind: (accessor_kind #{spec})
-                    body: {body}
-                    location: {spec}
-                    location: {body}))
-            }
+                }
+                modifier: {chained_modifier(&mut ctx)}
+                name_node: {
+                    ctx.property_name_node
+                        .ok_or("accessor outside property context")?
+                }
+                type: {ctx.property_type}
+                accessor_kind: (accessor_kind #{spec})
+                body: {ctx.reset(); body}
+                location: {spec}
+                location: {body})
         ),
         // ---- Variables ----
         // The individual bindings of a `variableDecl`. The binding modifier and
@@ -450,7 +440,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 modifier: {chained_modifier(&mut ctx)}
                 pattern: {pattern}
                 type: {ty}
-                value: {ctx.reset(); ctx.translate(val)?})
+                value: {ctx.reset(); val})
         ),
         // A `let`/`var` declaration binds one or more comma-separated patterns
         // (`let x = 1, y = 2`). The `bindingSpecifier` (`let`/`var`) is published
@@ -591,7 +581,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // determines the concrete pattern shape.
         rule!((expressionPattern expression: @@e) => expr {
             ctx.in_pattern = true;
-            ctx.translate(e)?.into_iter().next().ok_or("expression pattern has no child")?
+            e
         }),
         // ---- Functions ----
         // A function declaration (parameters/return type/body optional). The
@@ -1158,12 +1148,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A leading attribute (`@objc`) or access/function/member/mutation/
         // ownership modifier (swift-syntax models each as a single `declModifier`)
         // becomes a `modifier`; its source text is the modifier spelling.
-        rule!((attribute) @m => (modifier #{m})),
-        rule!((declModifier) @m => (modifier #{m})),
+        rule!((attribute) @@m => (modifier #{m})),
+        rule!((declModifier) @@m => (modifier #{m})),
         // Type specifiers (`inout`, `sending`, ...) are mapped to modifiers.
-        rule!((simpleTypeSpecifier) @m => (modifier #{m})),
-        rule!((lifetimeTypeSpecifier) @m => (modifier #{m})),
-        rule!((nonisolatedTypeSpecifier) @m => (modifier #{m})),
+        rule!((simpleTypeSpecifier) @@m => (modifier #{m})),
+        rule!((lifetimeTypeSpecifier) @@m => (modifier #{m})),
+        rule!((nonisolatedTypeSpecifier) @@m => (modifier #{m})),
         // An attributed type is mapped to a modified type of its base type.
         rule!(
             (attributedType
@@ -1236,33 +1226,21 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A tuple type (`(Int, String)`) or function type (`(Int) -> Bool`).
         // Both hold their contents as `tupleTypeElement`s, but a tuple element
         // maps to `argument` while a function parameter maps to `parameter`.
-        // Each container sets `ctx.in_function_type` for its direct
-        // children (and translates them explicitly, so a nested type is
-        // translated in the right context) and the shared `tupleTypeElement`
-        // rule below reads it. An element's label (`firstName`) is optional.
+        // Each container sets `ctx.in_function_type` before returning its raw
+        // children, so structural interpolation translates them in the right
+        // context. The shared `tupleTypeElement` rule below reads it. An
+        // element's label (`firstName`) is optional.
         rule!(
             (tupleType elements: _* @@elems)
             =>
-            tuple_expr {
-                ctx.in_function_type = false;
-                let mut out = Vec::new();
-                for e in elems {
-                    out.extend(ctx.translate(e)?);
-                }
-                tree!((tuple_expr element: {out}))
-            }
+            (tuple_expr element: {ctx.in_function_type = false; elems})
         ),
         rule!(
             (functionType parameters: _* @@params returnClause: (returnClause type: @ret))
             =>
-            function_expr {
-                ctx.in_function_type = true;
-                let mut out = Vec::new();
-                for p in params {
-                    out.extend(ctx.translate(p)?);
-                }
-                tree!((function_expr parameter: {out} return_type: {ret}))
-            }
+            (function_expr
+                parameter: {ctx.in_function_type = true; params}
+                return_type: {ret})
         ),
         rule!(
             (tupleTypeElement
@@ -1529,7 +1507,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             _ @@node
             =>
             unhandled_node {
-                let input = ctx.ast.get_node(node).expect("matched node must exist");
+                let input = ctx
+                    .ast()
+                    .get_node(node)
+                    .expect("matched node must exist");
                 tracing::error!(
                     target: "unified_extractor",
                     node_kind = input.kind_name(),
