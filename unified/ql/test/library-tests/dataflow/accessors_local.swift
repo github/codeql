@@ -84,3 +84,11 @@ func t10() {
     y = source("t9.1")
     closure()
 }
+
+func t11() {
+    var p: (String, String) {
+        get { ("safe", "safe") }
+        set { sink(newValue.0) }  // $ hasValueFlow=t11.1
+    }
+    p.0 = source("t11.1")
+}

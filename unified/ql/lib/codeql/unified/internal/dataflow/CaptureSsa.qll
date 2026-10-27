@@ -93,7 +93,7 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
   private predicate isEscape(BuilderNode node) {
     node.isResultValue(any(Argument arg).getValue())
     or
-    node.isIncomingValue(any(DataFlowCall call).asSetterCall())
+    node.isSetterValueArgument(_)
     or
     node.isImplicitArgument(_, _, _)
     or

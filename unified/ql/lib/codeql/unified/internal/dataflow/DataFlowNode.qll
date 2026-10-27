@@ -47,6 +47,14 @@ private predicate hasPostUpdateAfterCallOrAssign(Expr expr, ControlFlowNode cfgN
 }
 
 /**
+ * Holds if the value of `expr` is mutated at `cfgNode` by a surrounding call or assignment,
+ * and thus needs to be written back if `expr` refers to a computed value.
+ */
+predicate isMutatedByCallOrAssign(Expr expr, ControlFlowNode cfgNode) {
+  hasPostUpdateAfterCallOrAssign(expr, cfgNode)
+}
+
+/**
  * Holds if `expr` has a post-update at `cfgNode`.
  */
 private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
@@ -177,6 +185,22 @@ class BuilderNode extends TDataFlowNodeStage1 {
 
   /** Holds if this represents the updated state of the value returned by `expr` after it has been mutated by the surrounding assignment or call. */
   predicate isPostUpdate(Expr expr) { this = TExprPostUpdateNode(expr) }
+
+  /**
+   * Holds if this node represents the new value passed to the setter invoked by `call`.
+   *
+   * For a direct assignment, such as `x.p = y`, this is the incoming value of `x.p`.
+   * When the value of a computed property is mutated in place, such as `x.p.f = y`,
+   * this is the post-update node of `x.p`, as the mutated value is written back via the setter.
+   */
+  predicate isSetterValueArgument(DataFlowCall call) {
+    exists(Expr access | access = call.asSetterCall() |
+      this.isIncomingValue(access)
+      or
+      not isInAssignmentContext(access, _) and
+      this.isPostUpdate(access)
+    )
+  }
 
   /** Holds if this node is the canonical representative for the return value of `callable`. */
   predicate isReturnNode(Callable callable) { this.isReturnNodeEx(toDataFlowCallable(callable)) }
@@ -387,10 +411,16 @@ class BuilderNode extends TDataFlowNodeStage1 {
         )
         or
         access = call.asSetterCall() and
-        exists(Assignment assignment | isInAssignmentContext(access, assignment) |
-          isPost = false and cfgNode.injects(assignment)
+        (
+          exists(Assignment assignment | isInAssignmentContext(access, assignment) |
+            isPost = false and cfgNode.injects(assignment)
+            or
+            isPost = true and cfgNode.isAfter(assignment)
+          )
           or
-          isPost = true and cfgNode.isAfter(assignment)
+          // Setter invoked to write back a mutated value
+          not isInAssignmentContext(access, _) and
+          isMutatedByCallOrAssign(access, cfgNode)
         )
       )
     )

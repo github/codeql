@@ -16,7 +16,12 @@ private newtype TDataFlowCall =
     )
   } or
   TSetterCall(Expr expr) {
-    isInAssignmentContext(expr, _) and
+    (
+      isInAssignmentContext(expr, _)
+      or
+      // Write back a value that was mutated in-place, such as `x.p` in `x.p.f = y`
+      isMutatedByCallOrAssign(expr, _)
+    ) and
     (
       N::getStaticBindingTargetFromRef(expr) = any(SetterDeclaration g).getNameNode()
       or

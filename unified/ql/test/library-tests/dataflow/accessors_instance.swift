@@ -126,3 +126,29 @@ func t10() {
         }
     }
 }
+
+func t11() {
+    class C {
+        var p: (String, String) {
+            get { ("safe", "safe") }
+            set { sink(newValue.0) }  // $ hasValueFlow=t11.1
+        }
+    }
+    let c = C()
+    c.p.0 = source("t11.1")
+}
+
+func t12() {
+    struct S {
+        var field: String = "safe"
+        mutating func update() { field = source("t12.1") }
+    }
+    class C {
+        var s: S {
+            get { S() }
+            set { sink(newValue.field) }  // $ MISSING: hasValueFlow=t12.1
+        }
+    }
+    let c = C()
+    c.s.update() // MISSING: the call to 'update' is not resolved
+}

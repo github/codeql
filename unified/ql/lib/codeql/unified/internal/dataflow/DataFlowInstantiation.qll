@@ -107,11 +107,8 @@ module DataFlowInput implements InputSig<Location> {
     or
     n.(BuilderNode).isImplicitArgument(call, pos, false)
     or
-    exists(Expr access |
-      call.asSetterCall() = access and
-      n.isIncomingValue(access) and
-      pos.asPositional() = 0
-    )
+    n.(BuilderNode).isSetterValueArgument(call) and
+    pos.asPositional() = 0
     or
     exists(FlowSummaryOutput::SummaryNode callee |
       FlowSummaryOutput::summaryArgumentNode(callee, getSummaryNode(n), pos) and
