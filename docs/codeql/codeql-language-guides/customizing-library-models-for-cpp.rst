@@ -25,7 +25,29 @@ Syntax used to define an element in an extension file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Each model of an element is defined using a data extension where each tuple constitutes a model.
-A data extension file to extend the standard CPP queries included with CodeQL is a YAML file with the form:
+A data extension file to extend the standard CPP queries included with CodeQL can be written using either JSON or YAML. JSON is the preferred format, for performance reasons, and takes the following form:
+
+.. code-block:: json
+
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/cpp-all",
+           "extensible": "<name of extensible predicate>"
+         },
+         "data": [
+           ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."],
+           ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
+           // ...
+         ]
+       }
+     ]
+   }
+
+Files in the JSON format must use the ``.json`` file extension. Single-line (``//``) and multi-line (``/* ... */``) comments are supported as a non-standard JSON extension.
+
+A YAML file has the following form:
 
 .. code-block:: yaml
 
@@ -34,11 +56,11 @@ A data extension file to extend the standard CPP queries included with CodeQL is
          pack: codeql/cpp-all
          extensible: <name of extensible predicate>
        data:
-         - <tuple1>
-         - <tuple2>
+         - ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."]
+         - ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
          - ...
 
-Each YAML file may contain one or more top-level extensions.
+Each data extension file may contain one or more top-level extensions.
 
 - ``addsTo`` defines the CodeQL pack name and extensible predicate that the extension is injected into.
 - ``data`` defines one or more rows of tuples that are injected as values into the extensible predicate. The number of columns and their types must match the definition of the extensible predicate.
@@ -79,20 +101,27 @@ This example shows how the CPP query pack models the return value from the ``rea
 
 We need to add a tuple to the ``sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/cpp-all
-         extensible: sourceModel
-       data:
-         - ["boost::asio", "", False, "read_until", "", "", "Argument[*1]", "remote", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/cpp-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["boost::asio", "", false, "read_until", "", "", "Argument[*1]", "remote", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the callable (in this case a free function) to be modeled as a source.
 
 - The first value ``"boost::asio"`` is the namespace name.
 - The second value ``""`` is the name of the type (class) that contains the method. Because we're modeling a free function, the type is left blank.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method. For a free function, this should be ``False``.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to all overrides of the method. For a free function, this should be ``false``.
 - The fourth value ``"read_until"`` is the function name.
 - The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name. In this case, we want the model to include all functions in ``boost::asio`` called ``read_until``.
 
@@ -114,20 +143,27 @@ This example shows how the CPP query pack models the second argument of the ``bo
 
 We need to add a tuple to the ``sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/cpp-all
-         extensible: sinkModel
-       data:
-         - ["boost::asio", "", False, "write", "", "", "Argument[*1]", "remote-sink", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/cpp-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["boost::asio", "", false, "write", "", "", "Argument[*1]", "remote-sink", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the callable (in this case a free function) to be modeled as a sink.
 
 - The first value ``"boost::asio"`` is the namespace name.
 - The second value ``""`` is the name of the type (class) that contains the method. Because we're modeling a free function, the type is left blank.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method. For a free function, this should be ``False``.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to all overrides of the method. For a free function, this should be ``false``.
 - The fourth value ``"write"`` is the function name.
 - The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name. In this case, we want the model to include all functions in ``boost::asio`` called ``write``.
 
@@ -149,20 +185,27 @@ This example shows how the CPP query pack models flow through a function for a s
 
 We need to add tuples to the ``summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/cpp-all
-         extensible: summaryModel
-       data:
-         - ["boost::asio", "", False, "buffer", "", "", "Argument[*0]", "ReturnValue", "taint", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/cpp-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["boost::asio", "", false, "buffer", "", "", "Argument[*0]", "ReturnValue", "taint", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the callable (in this case free function) to be modeled as a summary.
 
 - The first value ``"boost::asio"`` is the namespace name.
 - The second value ``""`` is the name of the type (class) that contains the method. Because we're modeling a free function, the type is left blank.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method. For a free function, this should be ``False``.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to all overrides of the method. For a free function, this should be ``false``.
 - The fourth value ``"buffer"`` is the function name.
 - The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name. In this case, we want the model to include all functions in ``boost::asio`` called ``buffer``.
 
@@ -190,20 +233,27 @@ This function escapes special characters in a string for use in an SQL statement
 
 We need to add a tuple to the ``barrierModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/cpp-all
-         extensible: barrierModel
-       data:
-         - ["", "", False, "mysql_real_escape_string", "", "", "Argument[*1]", "sql-injection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/cpp-all",
+           "extensible": "barrierModel"
+         },
+         "data": [
+           ["", "", false, "mysql_real_escape_string", "", "", "Argument[*1]", "sql-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the callable (in this case a free function) to be modeled as a barrier.
 
 - The first value ``""`` is the namespace name.
 - The second value ``""`` is the name of the type (class) that contains the method. Because we're modeling a free function, the type is left blank.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method. For a free function, this should be ``False``.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to all overrides of the method. For a free function, this should be ``false``.
 - The fourth value ``"mysql_real_escape_string"`` is the function name.
 - The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name.
 
@@ -229,20 +279,27 @@ Consider a function called ``is_safe`` which returns ``true`` when the data is c
 
 We need to add a tuple to the ``barrierGuardModel(namespace, type, subtypes, name, signature, ext, input, acceptingValue, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/cpp-all
-         extensible: barrierGuardModel
-       data:
-         - ["", "", False, "is_safe", "", "", "Argument[*0]", "true", "sql-injection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/cpp-all",
+           "extensible": "barrierGuardModel"
+         },
+         "data": [
+           ["", "", false, "is_safe", "", "", "Argument[*0]", "true", "sql-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the callable (in this case a free function) to be modeled as a barrier guard.
 
 - The first value ``""`` is the namespace name.
 - The second value ``""`` is the name of the type (class) that contains the method. Because we're modeling a free function, the type is left blank.
-- The third value ``False`` is a flag that indicates whether or not the model guard also applies to all overrides of the method. For a free function, this should be ``False``.
+- The third value ``false`` is a flag that indicates whether or not the model guard also applies to all overrides of the method. For a free function, this should be ``false``.
 - The fourth value ``"is_safe"`` is the function name.
 - The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name.
 

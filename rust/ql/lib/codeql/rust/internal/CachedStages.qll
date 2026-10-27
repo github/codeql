@@ -30,6 +30,8 @@ import rust
  * The `backref` predicate starts with `1 = 1 or` to ensure that the predicate will be optimized down to a constant by the optimizer.
  */
 module Stages {
+  private import codeql.rust.internal.typeinference.TypeInference as TypeInference
+
   /**
    * The abstract syntex tree (AST) stage.
    */
@@ -126,35 +128,7 @@ module Stages {
   /**
    * The type inference stage.
    */
-  cached
-  module TypeInferenceStage {
-    private import codeql.rust.internal.typeinference.Type
-    private import codeql.rust.internal.typeinference.TypeInference
-    private import codeql.rust.dataflow.internal.ModelsAsData
-
-    /**
-     * Always holds.
-     * Ensures that a predicate is evaluated as part of the type inference stage.
-     */
-    cached
-    predicate ref() { 1 = 1 }
-
-    /**
-     * DO NOT USE!
-     *
-     * Contains references to each predicate that use the above `ref` predicate.
-     */
-    cached
-    predicate backref() {
-      1 = 1
-      or
-      exists(Type t)
-      or
-      exists(inferType(_))
-      or
-      mayInvokeCallback(_, _)
-    }
-  }
+  module TypeInferenceStage = TypeInference::CachedStage;
 
   /**
    * The data flow stage.

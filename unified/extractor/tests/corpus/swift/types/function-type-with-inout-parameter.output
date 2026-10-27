@@ -1,0 +1,83 @@
+let f: (inout Int) -> Void = { _ in }
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    closureExpr
+                      leftBrace: {
+                      rightBrace: }
+                      signature:
+                        closureSignature
+                          attributes:
+                          inKeyword: in
+                          parameterClause:
+                            closureShorthandParameter
+                              name: _
+                      statements:
+              pattern:
+                identifierPattern
+                  identifier: identifier "f"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    functionType
+                      leftParen: (
+                      rightParen: )
+                      parameters:
+                        tupleTypeElement
+                          type:
+                            attributedType
+                              attributes:
+                              baseType:
+                                identifierType
+                                  name: identifier "Int"
+                              lateSpecifiers:
+                              specifiers:
+                                simpleTypeSpecifier
+                                  specifier: inout
+                      returnClause:
+                        returnClause
+                          arrow: ->
+                          type:
+                            identifierType
+                              name: identifier "Void"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "f" source="f"
+          type:
+            function_expr source="(⟨parameter⟩) -> ⟨return_type⟩"
+              parameter:
+                parameter source="⟨type⟩"
+                  type:
+                    modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+                      modifier: modifier "inout" source="inout"
+                      type: identifier "Int" source="Int"
+              return_type: identifier "Void" source="Void"
+          value:
+            function_expr source="{ ⟨parameter⟩ in }"
+              parameter:
+                parameter source="⟨pattern⟩"
+                  pattern: identifier "_" source="_"
+              body: block source=""

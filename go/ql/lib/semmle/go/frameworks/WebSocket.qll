@@ -102,10 +102,10 @@ module WebSocketRequestCall {
   /**
    * A call to the `Dial` function of the `nhooyr.io/websocket` package.
    */
-  private class NhooyrWebSocketDialFunc extends Range {
-    NhooyrWebSocketDialFunc() {
+  private class CoderWebSocketDialFunc extends Range {
+    CoderWebSocketDialFunc() {
       // func Dial(ctx context.Context, u string, opts *DialOptions) (*Conn, *http.Response, error)
-      this.getTarget().hasQualifiedName(NhooyrWebSocket::packagePath(), "Dial")
+      this.getTarget().hasQualifiedName(CoderWebSocket::packagePath(), "Dial")
     }
 
     override DataFlow::Node getRequestUrl() { result = this.getArgument(1) }
@@ -188,10 +188,10 @@ module WebSocketReader {
   /**
    * The `Conn.Read` method of the `nhooyr.io/websocket` package.
    */
-  private class NhooyrWebSocketRead extends Range, Method {
-    NhooyrWebSocketRead() {
+  private class CoderWebSocketRead extends Range, Method {
+    CoderWebSocketRead() {
       // func (c *Conn) Read(ctx context.Context) (MessageType, []byte, error)
-      this.hasQualifiedName(NhooyrWebSocket::packagePath(), "Conn", "Read")
+      this.hasQualifiedName(CoderWebSocket::packagePath(), "Conn", "Read")
     }
 
     override FunctionOutput getAnOutput() { result.isResult(1) }
@@ -200,10 +200,10 @@ module WebSocketReader {
   /**
    * The `Conn.Reader` method of the `nhooyr.io/websocket` package.
    */
-  private class NhooyrWebSocketReader extends Range, Method {
-    NhooyrWebSocketReader() {
+  private class CoderWebSocketReader extends Range, Method {
+    CoderWebSocketReader() {
       // func (c *Conn) Reader(ctx context.Context) (MessageType, io.Reader, error)
-      this.hasQualifiedName(NhooyrWebSocket::packagePath(), "Conn", "Reader")
+      this.hasQualifiedName(CoderWebSocket::packagePath(), "Conn", "Reader")
     }
 
     override FunctionOutput getAnOutput() { result.isResult(1) }
@@ -313,12 +313,14 @@ module GolangOrgXNetWebsocket {
 }
 
 /**
- * Provides classes for working with the [nhooyr.io/websocket](http://nhooyr.io/websocket)
+ * Provides classes for working with the [coder/websocket](http://github.com/coder/websocket)
  * package.
  */
-module NhooyrWebSocket {
-  /** Gets the package name `nhooyr.io/websocket/`. */
-  string packagePath() { result = package("nhooyr.io/websocket", "") }
+module CoderWebSocket {
+  /** Gets the package name `github.com/coder/websocket` or `nhooyr.io/websocket`. */
+  string packagePath() {
+    result = package(["github.com/coder/websocket", "nhooyr.io/websocket"], "")
+  }
 }
 
 /**

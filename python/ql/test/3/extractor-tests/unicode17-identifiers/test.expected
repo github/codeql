@@ -1,0 +1,13 @@
+| test.py:2:1:2:3 | \u088f | \u088f |
+| test.py:3:1:3:4 | \ufffd | \ufffd |
+| test.py:4:1:4:4 | \ufffd | \ufffd |
+| test.py:5:1:5:4 | \ufffd | \ufffd |
+| test.py:8:1:8:4 | a\u1acf | a\u1acf |
+| test.py:9:1:9:5 | a\ufffd | a\ufffd |
+| test.py:11:1:11:6 | result | result |
+| test.py:11:10:11:12 | \u088f | \u088f |
+| test.py:11:16:11:19 | \ufffd | \ufffd |
+| test.py:11:23:11:26 | \ufffd | \ufffd |
+| test.py:11:30:11:33 | \ufffd | \ufffd |
+| test.py:11:37:11:40 | a\u1acf | a\u1acf |
+| test.py:11:44:11:48 | a\ufffd | a\ufffd |

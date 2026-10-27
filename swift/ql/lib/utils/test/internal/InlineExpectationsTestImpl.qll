@@ -25,4 +25,14 @@ module Impl implements InlineExpectationsTestSig {
   }
 
   class Location = S::Location;
+
+  string getRelativeUrl(Location location) {
+    exists(S::File f, int startline, int startcolumn, int endline, int endcolumn |
+      location.hasLocationInfo(_, startline, startcolumn, endline, endcolumn) and
+      f = location.getFile()
+    |
+      result =
+        f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
+    )
+  }
 }

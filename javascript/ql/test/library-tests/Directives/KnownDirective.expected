@@ -19,4 +19,6 @@
 | tst.js:27:3:27:14 | 'use cache'; | use cache |
 | tst.js:28:3:28:22 | 'use cache: remote'; | use cache: remote |
 | tst.js:29:3:29:23 | 'use ca ... ivate'; | use cache: private |
-| tst.js:36:5:36:17 | 'use strict'; | use strict |
+| tst.js:30:3:30:17 | 'use workflow'; | use workflow |
+| tst.js:31:3:31:13 | 'use step'; | use step |
+| tst.js:38:5:38:17 | 'use strict'; | use strict |

@@ -6,6 +6,8 @@
 | test.c:106:24:106:29 | query1 | test.c:101:8:101:16 | gets output argument | test.c:106:24:106:29 | query1 | This argument to a SQL query function is derived from $@. | test.c:101:8:101:16 | gets output argument | user input (string read by gets) |
 | test.c:107:28:107:33 | query1 | test.c:101:8:101:16 | gets output argument | test.c:107:28:107:33 | query1 | This argument to a SQL query function is derived from $@. | test.c:101:8:101:16 | gets output argument | user input (string read by gets) |
 | test.cpp:43:27:43:33 | *access to array | test.cpp:39:27:39:30 | **argv | test.cpp:43:27:43:33 | *access to array | This argument to a SQL query function is derived from $@ and then passed to pqxx::work::exec1((unnamed parameter 0)). | test.cpp:39:27:39:30 | **argv | user input (a command-line argument) |
+| test_comdb2.c:22:28:22:36 | userInput | test_comdb2.c:18:8:18:16 | gets output argument | test_comdb2.c:22:28:22:36 | userInput | This argument to a SQL query function is derived from $@. | test_comdb2.c:18:8:18:16 | gets output argument | user input (string read by gets) |
+| test_comdb2.c:23:34:23:42 | userInput | test_comdb2.c:18:8:18:16 | gets output argument | test_comdb2.c:23:34:23:42 | userInput | This argument to a SQL query function is derived from $@. | test_comdb2.c:18:8:18:16 | gets output argument | user input (string read by gets) |
 | test_libpq.c:26:16:26:24 | userInput | test_libpq.c:23:8:23:16 | gets output argument | test_libpq.c:26:16:26:24 | userInput | This argument to a SQL query function is derived from $@. | test_libpq.c:23:8:23:16 | gets output argument | user input (string read by gets) |
 | test_libpq.c:27:22:27:30 | userInput | test_libpq.c:23:8:23:16 | gets output argument | test_libpq.c:27:22:27:30 | userInput | This argument to a SQL query function is derived from $@. | test_libpq.c:23:8:23:16 | gets output argument | user input (string read by gets) |
 | test_libpq.c:28:27:28:35 | userInput | test_libpq.c:23:8:23:16 | gets output argument | test_libpq.c:28:27:28:35 | userInput | This argument to a SQL query function is derived from $@. | test_libpq.c:23:8:23:16 | gets output argument | user input (string read by gets) |
@@ -26,6 +28,8 @@ edges
 | test.c:101:8:101:16 | gets output argument | test.c:106:24:106:29 | query1 | provenance | TaintFunction Sink:MaD:2 |
 | test.c:101:8:101:16 | gets output argument | test.c:107:28:107:33 | query1 | provenance | TaintFunction Sink:MaD:1 |
 | test.cpp:39:27:39:30 | **argv | test.cpp:43:27:43:33 | *access to array | provenance |  |
+| test_comdb2.c:18:8:18:16 | gets output argument | test_comdb2.c:22:28:22:36 | userInput | provenance | Sink:MaD:9 |
+| test_comdb2.c:18:8:18:16 | gets output argument | test_comdb2.c:23:34:23:42 | userInput | provenance | Sink:MaD:10 |
 | test_libpq.c:23:8:23:16 | gets output argument | test_libpq.c:26:16:26:24 | userInput | provenance | Sink:MaD:3 |
 | test_libpq.c:23:8:23:16 | gets output argument | test_libpq.c:27:22:27:30 | userInput | provenance | Sink:MaD:4 |
 | test_libpq.c:23:8:23:16 | gets output argument | test_libpq.c:28:27:28:35 | userInput | provenance | Sink:MaD:5 |
@@ -41,6 +45,8 @@ models
 | 6 | Sink: ; ; false; PQsendPrepare; ; ; Argument[*2]; sql-injection; manual |
 | 7 | Sink: ; ; false; PQsendQuery; ; ; Argument[*1]; sql-injection; manual |
 | 8 | Sink: ; ; false; PQsendQueryParams; ; ; Argument[*1]; sql-injection; manual |
+| 9 | Sink: ; ; false; cdb2_run_statement; ; ; Argument[*1]; sql-injection; manual |
+| 10 | Sink: ; ; false; cdb2_run_statement_typed; ; ; Argument[*1]; sql-injection; manual |
 nodes
 | test.c:14:27:14:30 | **argv | semmle.label | **argv |
 | test.c:15:20:15:26 | *access to array | semmle.label | *access to array |
@@ -59,6 +65,9 @@ nodes
 | test.c:107:28:107:33 | query1 | semmle.label | query1 |
 | test.cpp:39:27:39:30 | **argv | semmle.label | **argv |
 | test.cpp:43:27:43:33 | *access to array | semmle.label | *access to array |
+| test_comdb2.c:18:8:18:16 | gets output argument | semmle.label | gets output argument |
+| test_comdb2.c:22:28:22:36 | userInput | semmle.label | userInput |
+| test_comdb2.c:23:34:23:42 | userInput | semmle.label | userInput |
 | test_libpq.c:23:8:23:16 | gets output argument | semmle.label | gets output argument |
 | test_libpq.c:26:16:26:24 | userInput | semmle.label | userInput |
 | test_libpq.c:27:22:27:30 | userInput | semmle.label | userInput |

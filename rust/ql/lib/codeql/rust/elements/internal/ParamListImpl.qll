@@ -22,8 +22,6 @@ module Impl {
    * ```
    */
   class ParamList extends Generated::ParamList {
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
-
     /**
      * Gets any of the parameters of this parameter list.
      */

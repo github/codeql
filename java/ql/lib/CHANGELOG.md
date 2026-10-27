@@ -1,3 +1,20 @@
+## 9.3.3
+
+### Minor Analysis Improvements
+
+* The queries `java/ssrf` and `java/unvalidated-url-redirection` recognize case-insensitive comparisons of `URI.getHost()` with fixed string allowlist entries, as well as equality and case-insensitive comparisons when the host is stored in a local variable.
+
+## 9.3.2
+
+No user-facing changes.
+
+## 9.3.1
+
+### Minor Analysis Improvements
+
+* Support for Kotlin 2.4.20 has been added.
+* Fixed an issue where `Foo::class.java` arguments were dropped during extraction under the Kotlin K2 compiler, which could cause false positives in queries such as `java/android/implicit-pendingintents`.
+
 ## 9.3.0
 
 ### New Features

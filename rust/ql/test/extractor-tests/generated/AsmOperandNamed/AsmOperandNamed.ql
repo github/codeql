@@ -8,7 +8,7 @@ query predicate getAsmOperand(AsmOperandNamed x, AsmOperand getAsmOperand) {
   toBeTested(x) and not x.isUnknown() and getAsmOperand = x.getAsmOperand()
 }
 
-query predicate getAttr(AsmOperandNamed x, int index, Attr getAttr) {
+query predicate getAttr(AsmOperandNamed x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

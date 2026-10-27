@@ -101,19 +101,16 @@ public class TypeScriptParser {
    * set to indicate the maximum heap space usable by the Node.js process, in addition to its
    * "reserve memory".
    *
-   * <p>Defaults to 1.0 GB (for a total heap space of 1.4 GB by default).
+   * <p>Defaults to 2000 MB (for a total heap space of 2400 MB by default).
    */
   public static final String TYPESCRIPT_RAM_SUFFIX = "TYPESCRIPT_RAM";
 
   /**
    * An environment variable (without the <code>SEMMLE_</code> or <code>LGTM_</code> prefix), that can be
-   * set to indicate the amount of heap space the Node.js process should reserve for extracting
-   * individual files.
+   * set to indicate the additional heap space added to <code>TYPESCRIPT_RAM</code> when setting the
+   * Node.js heap limit.
    *
-   * <p>When less than this amount of memory is available, the TypeScript compiler instance is
-   * restarted to free space.
-   *
-   * <p>Defaults to 400 MB (for a total heap space of 1.4 GB by default).
+   * <p>Defaults to 400 MB (for a total heap space of 2400 MB by default).
    */
   public static final String TYPESCRIPT_RAM_RESERVE_SUFFIX = "TYPESCRIPT_RAM_RESERVE";
 
@@ -306,7 +303,6 @@ public class TypeScriptParser {
 
     ProcessBuilder pb = new ProcessBuilder(cmd);
     parserWrapperCommand = StringUtil.glue(" ", cmd);
-    pb.environment().put("SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD", "" + mainMemoryMb);
 
     try {
       pb.redirectError(Redirect.INHERIT); // Forward stderr to our own stderr.

@@ -594,6 +594,62 @@ private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode
 }
 
 /**
+ * In order to implement a MaD summary for a flow such as:
+ * ```
+ * struct Foo {
+ *   int x;
+ *   Foo(int x) { // (2)
+ *     this->x = x;
+ *   }
+ * }
+ *
+ * std::vector<Foo> v;
+ * int x = source();
+ * v.emplace_back(x); // (1)
+ * sink(v.back());
+ * ```
+ * we model it as if the code was:
+ * ```
+ * v.__emplace_back(x, &Foo)
+ * ```
+ * (never mind that this is not real C++ since you cannot take the address of a
+ * constructor.)
+ * where `__emplace_back` invokes `Foo` with the `x` argument and returns the
+ * result.
+ *
+ * This class serves as the argument node for `&Foo`.
+ */
+private class ForwarderConstructorArgumentNode extends ArgumentNode,
+  TForwarderConstructorArgumentNode
+{
+  private CallInstruction call;
+
+  ForwarderConstructorArgumentNode() { this = TForwarderConstructorArgumentNode(call) }
+
+  override predicate sourceArgumentOf(CallInstruction c, ArgumentPosition pos) {
+    c = call and pos = TForwardPosition()
+  }
+
+  /**
+   * Gets a constructor which may be targeted by this forwarding call.
+   */
+  Cpp::Constructor getAConstructor() {
+    result =
+      External::ConstructorForwarding::getForwardingConstructor(call.getStaticCallTarget(), _)
+  }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getFunction()
+  }
+
+  override Declaration getFunction() { result = call.getEnclosingFunction() }
+
+  override Location getLocationImpl() { result = call.getLocation() }
+
+  override string toStringImpl() { result = "forwarder for " + call.toString() }
+}
+
+/**
  * An argument node that is part of a summary. These only occur when the
  * summary contains a synthesized call.
  */
@@ -672,6 +728,12 @@ abstract class Position extends TPosition {
     this.getArgumentIndex() = -1 and
     result = call.getQualifier()
   }
+
+  /**
+   * Holds if this position is the synthetic argument for an address of a
+   * constructor used for functions which perform "perfect forwarding".
+   */
+  predicate isForward() { none() }
 }
 
 class DirectPosition extends Position, TDirectPosition {
@@ -721,6 +783,16 @@ class FlowSummaryPosition extends Position, TFlowSummaryPosition {
   final override int getIndirectionIndex() { result = rk.getIndirectionIndex() }
 }
 
+class ForwardPosition extends Position, TForwardPosition {
+  final override predicate isForward() { any() }
+
+  override int getArgumentIndex() { none() }
+
+  final override int getIndirectionIndex() { result = 0 }
+
+  override string toString() { result = "forward" }
+}
+
 newtype TPosition =
   TDirectPosition(int argumentIndex) {
     exists(any(CallInstruction c).getArgument(argumentIndex))
@@ -737,9 +809,10 @@ newtype TPosition =
     // the function.
     exists(Cpp::Function f, Cpp::Parameter p |
       p = f.getParameter(argumentIndex) and
-      indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1]
+      indirectionIndex = [1 .. Ssa::getMaxIndirectionsForPRType(p.getUnspecifiedType())]
     )
   } or
+  TForwardPosition() or
   TFlowSummaryPosition(ReturnKind rk) { FlowSummaryImpl::Private::relevantFlowSummaryPosition(rk) }
 
 private newtype TReturnKind =
@@ -755,7 +828,7 @@ private newtype TReturnKind =
       [0 .. max(Cpp::Function f |
           not exists(f.getBlock())
         |
-          Ssa::getMaxIndirectionsForType(f.getUnspecifiedType()) - 1 // -1 because a returned value is a prvalue not a glvalue
+          Ssa::getMaxIndirectionsForPRType(f.getUnspecifiedType())
         )]
   } or
   TIndirectReturnKind(int argumentIndex, int indirectionIndex) {
@@ -770,7 +843,7 @@ private newtype TReturnKind =
       [0 .. max(Cpp::Function f |
           not exists(f.getBlock())
         |
-          Ssa::getMaxIndirectionsForType(f.getParameter(argumentIndex).getUnspecifiedType()) - 1 // -1 because an argument is a prvalue not a glvalue
+          Ssa::getMaxIndirectionsForPRType(f.getParameter(argumentIndex).getUnspecifiedType())
         )]
   }
 
@@ -1258,6 +1331,19 @@ private predicate summarizedCallableIsManual(SummarizedCallable sc) {
   sc.asSummarizedCallable().hasManualModel()
 }
 
+private DataFlowCallable getTarget(Declaration target) {
+  // Don't use the source callable if there is a manual model for the target.
+  not exists(SummarizedCallable sc |
+    sc.asSummarizedCallable() = target and
+    summarizedCallableIsManual(sc)
+  ) and
+  result.asSourceCallable() = target
+  or
+  // When there is no function body, or when we have a manual model, dispatch to the summary.
+  (not target.hasDefinition() or summarizedCallableIsManual(result)) and
+  result.asSummarizedCallable() = target
+}
+
 /**
  * A function call relevant for data flow. This includes calls from source
  * code and calls inside library callables with a flow summary.
@@ -1293,20 +1379,7 @@ class DataFlowCall extends TDataFlowCall {
    * whether is it manual or generated.
    */
   final DataFlowCallable getStaticCallTarget() {
-    exists(Declaration target | target = this.getStaticCallSourceTarget() |
-      // Don't use the source callable if there is a manual model for the
-      // target
-      not exists(SummarizedCallable sc |
-        sc.asSummarizedCallable() = target and
-        summarizedCallableIsManual(sc)
-      ) and
-      result.asSourceCallable() = target
-      or
-      // When there is no function body, or when we have a manual model then
-      // we dispatch to the summary.
-      (not target.hasDefinition() or summarizedCallableIsManual(result)) and
-      result.asSummarizedCallable() = target
-    )
+    result = getTarget(this.getStaticCallSourceTarget())
   }
 
   /**
@@ -1493,6 +1566,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof SsaSynthNode
   or
   n.(FlowSummaryNode).getSummaryNode().isHidden()
+  or
+  n instanceof ForwarderConstructorArgumentNode
 }
 
 predicate neverSkipInPathGraph(Node n) {
@@ -1573,6 +1648,9 @@ private predicate isFunctorCreationWithConstructor(Node creation, OperatorCall o
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
   kind.isFunctionPointer() and
   creation.asInstruction().(FunctionAddressInstruction).getFunctionSymbol() = c.asSourceCallable()
+  or
+  kind.isFunctionPointer() and
+  c = getTarget(creation.(ForwarderConstructorArgumentNode).getAConstructor())
   or
   kind.isFunctor() and
   exists(OperatorCall operator | operator = c.asSourceCallable() |

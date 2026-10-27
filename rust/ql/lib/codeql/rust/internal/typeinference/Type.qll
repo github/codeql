@@ -36,8 +36,13 @@ newtype TType =
   TTrait(Trait t) or
   TImplTraitType(ImplTraitTypeRepr impl) or
   TDynTraitType(Trait t) { t = any(DynTraitTypeRepr dt).getTrait() } or
-  TNeverType() or
   TUnknownType() or
+  TClosureParameterPseudoType(Param p) {
+    exists(ClosureExpr ce |
+      p = ce.getParam(_) and
+      not p.hasTypeRepr()
+    )
+  } or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(Trait trait, AssocType typeAlias) {
     getTraitAssocType(trait) = typeAlias
@@ -326,14 +331,6 @@ TypeParamTypeParameter getSliceTypeParameter() {
   result = any(SliceType t).getPositionalTypeParameter(0)
 }
 
-class NeverType extends Type, TNeverType {
-  override TypeParameter getPositionalTypeParameter(int i) { none() }
-
-  override string toString() { result = "!" }
-
-  override Location getLocation() { result instanceof EmptyLocation }
-}
-
 abstract class PtrType extends StructType { }
 
 pragma[nomagic]
@@ -353,6 +350,10 @@ class PtrConstType extends PtrType {
   PtrConstType() { this.getTypeItem() instanceof Builtins::PtrConstType }
 
   override string toString() { result = "*const" }
+}
+
+abstract class PseudoType extends Type {
+  override TypeParameter getPositionalTypeParameter(int i) { none() }
 }
 
 /**
@@ -377,12 +378,22 @@ class PtrConstType extends PtrType {
  * into call arguments (including method call receivers), in order to avoid
  * combinatorial explosions.
  */
-class UnknownType extends Type, TUnknownType {
-  override TypeParameter getPositionalTypeParameter(int i) { none() }
-
-  override string toString() { result = "(context typed)" }
+class UnknownType extends PseudoType, TUnknownType {
+  override string toString() { result = "(unknown type)" }
 
   override Location getLocation() { result instanceof EmptyLocation }
+}
+
+class ClosureParameterPseudoType extends PseudoType, TClosureParameterPseudoType {
+  private Param param;
+
+  ClosureParameterPseudoType() { this = TClosureParameterPseudoType(param) }
+
+  Param getParam() { result = param }
+
+  override string toString() { result = "(closure parameter " + param + ")" }
+
+  override Location getLocation() { result = param.getLocation() }
 }
 
 /** A type parameter. */

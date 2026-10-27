@@ -1,3 +1,17 @@
+## 7.1.0
+
+### New Features
+
+* Added modeling for `Grape::API`'s `request` sub-accessors (`body.read`, `body.string`, `params`, `GET`, `POST`, `cookies`, `env`, `query_string`, and `path_info`) as remote flow sources.
+
+## 7.0.2
+
+No user-facing changes.
+
+## 7.0.1
+
+No user-facing changes.
+
 ## 7.0.0
 
 ### Breaking Changes

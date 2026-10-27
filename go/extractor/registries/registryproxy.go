@@ -103,7 +103,13 @@ func getEnvVars() []string {
 			slog.Error("Failed to close the temporary certificate file", slog.String("error", err.Error()))
 		} else {
 			proxy_cert_file = f.Name()
-			result = append(result, fmt.Sprintf("SSL_CERT_FILE=%s", proxy_cert_file))
+			// `SSL_CERT_FILE` is used by Go itself; `GIT_SSL_CAINFO` is used by the `git`
+			// processes that `go` spawns to fetch `git_source` modules.
+			result = append(
+				result,
+				fmt.Sprintf("SSL_CERT_FILE=%s", proxy_cert_file),
+				fmt.Sprintf("GIT_SSL_CAINFO=%s", proxy_cert_file),
+			)
 		}
 	}
 
@@ -160,18 +166,6 @@ func getEnvVars() []string {
 
 			if len(git_sources) > 0 {
 				goprivate = append(goprivate, git_sources...)
-
-				if proxy_cert_file != "" {
-					slog.Info("Configuring `git` to use proxy certificate", slog.String("path", proxy_cert_file))
-					cmd := exec.Command("git", "config", "--global", "http.sslCAInfo", proxy_cert_file)
-
-					out, cmdErr := cmd.CombinedOutput()
-					slog.Info(string(out))
-
-					if cmdErr != nil {
-						slog.Error("Failed to configure `git` to accept the certificate file", slog.String("error", cmdErr.Error()))
-					}
-				}
 			}
 
 			result = append(result, fmt.Sprintf("GOPRIVATE=%s", strings.Join(goprivate, ",")))

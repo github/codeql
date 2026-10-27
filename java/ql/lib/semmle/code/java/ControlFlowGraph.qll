@@ -70,6 +70,8 @@ private module Ast implements AstSig<Location> {
 
   class Stmt = J::Stmt;
 
+  class LabeledStmt = J::LabeledStmt;
+
   class Expr = J::Expr;
 
   class BlockStmt = J::BlockStmt;
@@ -543,15 +545,8 @@ private module Input implements InputSig1, InputSig2 {
     }
   }
 
-  private Label getLabelOfLoop(Stmt s) {
-    exists(LabeledStmt l | s = l.getStmt() |
-      result = TJavaLabel(l.getLabel()) or
-      result = getLabelOfLoop(l)
-    )
-  }
-
   predicate hasLabel(Ast::AstNode n, Label l) {
-    l = getLabelOfLoop(n)
+    l = TJavaLabel(n.(LabeledStmt).getLabel())
     or
     l = TJavaLabel(n.(BreakStmt).getLabel())
     or
@@ -616,12 +611,7 @@ private module Input implements InputSig1, InputSig2 {
    * flow continuing at `n`.
    */
   predicate endAbruptCompletion(Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
-    exists(LabeledStmt lbl |
-      ast = lbl.getStmt() and
-      n.isAfter(lbl) and
-      c.getSuccessorType() instanceof BreakSuccessor and
-      c.hasLabel(TJavaLabel(lbl.getLabel()))
-    )
+    none()
   }
 
   /** Holds if there is a local non-abrupt step from `n1` to `n2`. */

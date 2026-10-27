@@ -5,8 +5,11 @@
  * @problem.severity warning
  * @precision very-high
  * @id cpp/catch-by-value
- * @tags efficiency
+ * @tags quality
+ *       reliability
+ *       efficiency
  *       correctness
+ *       error-handling
  *       exceptions
  */
 

@@ -36,5 +36,7 @@ module Generated {
    */
   class ReturnTypeSyntax extends Synth::TReturnTypeSyntax, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "ReturnTypeSyntax" }
+
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }

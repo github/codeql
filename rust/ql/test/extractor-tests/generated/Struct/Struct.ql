@@ -14,7 +14,7 @@ query predicate getDeriveMacroExpansion(Struct x, int index, MacroItems getDeriv
   toBeTested(x) and not x.isUnknown() and getDeriveMacroExpansion = x.getDeriveMacroExpansion(index)
 }
 
-query predicate getAttr(Struct x, int index, Attr getAttr) {
+query predicate getAttr(Struct x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

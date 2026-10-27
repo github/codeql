@@ -35,10 +35,9 @@ module CookieInjection {
    */
   deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
 
-  /**
-   * An active threat-model source, considered as a flow source.
-   */
-  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
+  /** An active threat-model source, considered as a flow source. */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+  }
 
   /**
    * A write to a cookie, considered as a sink.

@@ -1239,32 +1239,6 @@ public class Parser {
     unexpected((Integer) null);
   }
 
-  public static class DestructuringErrors {
-    private int shorthandAssign, trailingComma;
-
-    public void reset() {
-      this.shorthandAssign = 0;
-      this.trailingComma = 0;
-    }
-  }
-
-  protected boolean checkPatternErrors(
-      DestructuringErrors refDestructuringErrors, boolean andThrow) {
-    int trailing = refDestructuringErrors != null ? refDestructuringErrors.trailingComma : 0;
-    if (!andThrow) return trailing != 0;
-    if (trailing != 0) this.raise(trailing, "Comma is not permitted after the rest element");
-    return false;
-  }
-
-  protected boolean checkExpressionErrors(
-      DestructuringErrors refDestructuringErrors, boolean andThrow) {
-    int pos = refDestructuringErrors != null ? refDestructuringErrors.shorthandAssign : 0;
-    if (!andThrow) return pos != 0;
-    if (pos != 0)
-      this.raise(pos, "Shorthand property assignments are valid only in destructuring patterns");
-    return false;
-  }
-
   private void checkYieldAwaitInDefaultParams() {
     if (this.yieldPos > 0 && (this.awaitPos == 0 || this.yieldPos < this.awaitPos))
       this.raise(this.yieldPos, "Yield expression cannot be a default value");
@@ -1367,20 +1341,16 @@ public class Parser {
   // and, *if* the syntactic construct they handle is present, wrap
   // the AST node that the inner parser gave them in another node.
 
-  // Parse a full expression. The optional arguments are used to
-  // forbid the `in` operator (in for loops initalization expressions)
-  // and provide reference for storing '=' operator inside shorthand
-  // property assignment in contexts where both object expression
-  // and object pattern might appear (so it's possible to raise
-  // delayed syntax error at correct position).
-  protected Expression parseExpression(boolean noIn, DestructuringErrors refDestructuringErrors) {
+  // Parse a full expression. The argument is used to forbid the `in` operator
+  // (in for loops initialization expressions).
+  protected Expression parseExpression(boolean noIn) {
     Position startLoc = this.startLoc;
-    Expression expr = this.parseMaybeAssign(noIn, refDestructuringErrors, null);
+    Expression expr = this.parseMaybeAssign(noIn, null);
     if (this.type == TokenType.comma) {
       List<Expression> expressions = CollectionUtil.makeList(expr);
       SequenceExpression node = new SequenceExpression(new SourceLocation(startLoc), expressions);
       while (this.eat(TokenType.comma))
-        expressions.add(this.parseMaybeAssign(noIn, refDestructuringErrors, null));
+        expressions.add(this.parseMaybeAssign(noIn, null));
       return this.finishNode(node);
     }
     return expr;
@@ -1392,46 +1362,32 @@ public class Parser {
 
   // Parse an assignment expression. This includes applications of
   // operators like `+=`.
-  protected Expression parseMaybeAssign(
-      boolean noIn, DestructuringErrors refDestructuringErrors, AfterLeftParse afterLeftParse) {
+  protected Expression parseMaybeAssign(boolean noIn, AfterLeftParse afterLeftParse) {
     if (this.inGenerator && this.isContextual("yield")) return this.parseYield();
 
-    boolean ownDestructuringErrors = false;
-    if (refDestructuringErrors == null) {
-      refDestructuringErrors = new DestructuringErrors();
-      ownDestructuringErrors = true;
-    }
     int startPos = this.start;
     Position startLoc = this.startLoc;
     if (this.type == TokenType.parenL || this.type == TokenType.name)
       this.potentialArrowAt = this.start;
-    Expression left = this.parseMaybeConditional(noIn, refDestructuringErrors);
+    Expression left = this.parseMaybeConditional(noIn);
     if (afterLeftParse != null) left = afterLeftParse.call(left, startPos, startLoc);
     if (this.type.isAssign) {
-      this.checkPatternErrors(refDestructuringErrors, true);
-      if (!ownDestructuringErrors) refDestructuringErrors.reset();
       Expression l = this.type == TokenType.eq ? (Expression) this.toAssignable(left, false) : left;
-      refDestructuringErrors.shorthandAssign =
-          0; // reset because shorthand default was used correctly
       String operator = String.valueOf(this.value);
       this.checkLVal(l, false, null);
       this.next();
-      Expression r = this.parseMaybeAssign(noIn, null, null);
+      Expression r = this.parseMaybeAssign(noIn, null);
       AssignmentExpression node =
           new AssignmentExpression(new SourceLocation(startLoc), operator, l, r);
       return this.finishNode(node);
-    } else {
-      if (ownDestructuringErrors) this.checkExpressionErrors(refDestructuringErrors, true);
     }
     return left;
   }
 
   // Parse a ternary conditional (`?:`) operator.
-  protected Expression parseMaybeConditional(
-      boolean noIn, DestructuringErrors refDestructuringErrors) {
+  protected Expression parseMaybeConditional(boolean noIn) {
     Position startLoc = this.startLoc;
-    Expression expr = this.parseExprOps(noIn, refDestructuringErrors);
-    if (this.checkExpressionErrors(refDestructuringErrors, false)) return expr;
+    Expression expr = this.parseExprOps(noIn);
     if (this.eat(TokenType.question)) {
       return parseConditionalRest(noIn, startLoc, expr);
     }
@@ -1439,20 +1395,19 @@ public class Parser {
   }
 
   protected Expression parseConditionalRest(boolean noIn, Position start, Expression test) {
-    Expression consequent = this.parseMaybeAssign(false, null, null);
+    Expression consequent = this.parseMaybeAssign(false, null);
     this.expect(TokenType.colon);
-    Expression alternate = this.parseMaybeAssign(noIn, null, null);
+    Expression alternate = this.parseMaybeAssign(noIn, null);
     ConditionalExpression node =
         new ConditionalExpression(new SourceLocation(start), test, consequent, alternate);
     return this.finishNode(node);
   }
 
   // Start the precedence parser.
-  protected Expression parseExprOps(boolean noIn, DestructuringErrors refDestructuringErrors) {
+  protected Expression parseExprOps(boolean noIn) {
     int startPos = this.start;
     Position startLoc = this.startLoc;
-    Expression expr = this.parseMaybeUnary(refDestructuringErrors, false);
-    if (this.checkExpressionErrors(refDestructuringErrors, false)) return expr;
+    Expression expr = this.parseMaybeUnary(false);
     return this.parseExprOp(expr, startPos, startLoc, -1, noIn);
   }
 
@@ -1472,7 +1427,7 @@ public class Parser {
         int startPos = this.start;
         Position startLoc = this.startLoc;
         Expression right =
-            this.parseExprOp(this.parseMaybeUnary(null, false), startPos, startLoc, prec, noIn);
+            this.parseExprOp(this.parseMaybeUnary(false), startPos, startLoc, prec, noIn);
         Expression node = this.buildBinary(leftStartPos, leftStartLoc, left, right, op, logical);
         return this.parseExprOp(node, leftStartPos, leftStartLoc, minPrec, noIn);
       }
@@ -1496,8 +1451,7 @@ public class Parser {
   }
 
   // Parse unary operators, both prefix and postfix.
-  protected Expression parseMaybeUnary(
-      DestructuringErrors refDestructuringErrors, boolean sawUnary) {
+  protected Expression parseMaybeUnary(boolean sawUnary) {
     int startPos = this.start;
     Position startLoc = this.startLoc;
     Expression expr;
@@ -1508,21 +1462,19 @@ public class Parser {
       String operator = String.valueOf(this.value);
       boolean update = this.type == TokenType.incDec;
       this.next();
-      Expression argument = this.parseMaybeUnary(null, true);
+      Expression argument = this.parseMaybeUnary(true);
       SourceLocation loc = new SourceLocation(startLoc);
       Expression node =
           update
               ? new UpdateExpression(loc, operator, argument, true)
               : new UnaryExpression(loc, operator, argument, true);
-      this.checkExpressionErrors(refDestructuringErrors, true);
       if (update) this.checkLVal(argument, false, null);
       else if (this.strict && operator.equals("delete") && argument instanceof Identifier)
         this.raiseRecoverable(node, "Deleting local variable in strict mode");
       else sawUnary = true;
       expr = this.finishNode(node);
     } else {
-      expr = this.parseExprSubscripts(refDestructuringErrors);
-      if (this.checkExpressionErrors(refDestructuringErrors, false)) return expr;
+      expr = this.parseExprSubscripts();
       while (this.type.isPostfix && !this.canInsertSemicolon()) {
         UpdateExpression node =
             new UpdateExpression(
@@ -1535,20 +1487,19 @@ public class Parser {
 
     if (!sawUnary && this.eat(TokenType.starstar))
       return this.buildBinary(
-          startPos, startLoc, expr, this.parseMaybeUnary(null, false), "**", false);
+          startPos, startLoc, expr, this.parseMaybeUnary(false), "**", false);
     else return expr;
   }
 
   // Parse call, dot, and `[]`-subscript expressions.
-  protected Expression parseExprSubscripts(DestructuringErrors refDestructuringErrors) {
+  protected Expression parseExprSubscripts() {
     int startPos = this.start;
     Position startLoc = this.startLoc;
-    Expression expr = this.parseExprAtom(refDestructuringErrors);
+    Expression expr = this.parseExprAtom();
     boolean skipArrowSubscripts =
         expr instanceof ArrowFunctionExpression
             && !inputSubstring(this.lastTokStart, this.lastTokEnd).equals(")");
-    if (this.checkExpressionErrors(refDestructuringErrors, false) || skipArrowSubscripts)
-      return expr;
+    if (skipArrowSubscripts) return expr;
     return this.parseSubscripts(expr, startPos, startLoc, false);
   }
 
@@ -1578,28 +1529,24 @@ public class Parser {
           new MemberExpression(
               new SourceLocation(startLoc),
               base,
-              this.parseExpression(false, null),
+              this.parseExpression(false),
               true,
               optional,
               Chainable.isOnOptionalChain(optional, base));
       this.expect(TokenType.bracketR);
       return Pair.make(this.finishNode(node), true);
     } else if (!noCalls && this.eat(TokenType.parenL)) {
-      DestructuringErrors refDestructuringErrors = new DestructuringErrors();
       int oldYieldPos = this.yieldPos, oldAwaitPos = this.awaitPos;
       this.yieldPos = 0;
       this.awaitPos = 0;
       List<Expression> exprList =
-          this.parseExprList(
-              TokenType.parenR, this.options.ecmaVersion() >= 8, false, refDestructuringErrors);
+          this.parseExprList(TokenType.parenR, this.options.ecmaVersion() >= 8, false);
       if (maybeAsyncArrow && shouldParseAsyncArrow()) {
-        this.checkPatternErrors(refDestructuringErrors, true);
         this.checkYieldAwaitInDefaultParams();
         this.yieldPos = oldYieldPos;
         this.awaitPos = oldAwaitPos;
         return Pair.make(this.parseArrowExpression(startLoc, exprList, true), false);
       }
-      this.checkExpressionErrors(refDestructuringErrors, true);
       if (oldYieldPos > 0) this.yieldPos = oldYieldPos;
       if (oldAwaitPos > 0) this.awaitPos = oldAwaitPos;
       CallExpression node =
@@ -1642,7 +1589,7 @@ public class Parser {
   // expression, an expression started by a keyword like `function` or
   // `new`, or an expression wrapped in punctuation like `()`, `[]`,
   // or `{}`.
-  protected Expression parseExprAtom(DestructuringErrors refDestructuringErrors) {
+  protected Expression parseExprAtom() {
     Expression node;
     boolean canBeArrow = this.potentialArrowAt == this.start;
     if (this.type == TokenType._super) {
@@ -1700,12 +1647,11 @@ public class Parser {
     } else if (this.type == TokenType.bracketL) {
       Position startLoc = this.startLoc;
       this.next();
-      List<Expression> elements =
-          this.parseExprList(TokenType.bracketR, true, true, refDestructuringErrors);
+      List<Expression> elements = this.parseExprList(TokenType.bracketR, true, true);
       node = new ArrayExpression(new SourceLocation(startLoc), elements);
       return this.finishNode(node);
     } else if (this.type == TokenType.braceL) {
-      return this.parseObj(false, refDestructuringErrors);
+      return this.parseObj(false);
     } else if (this.type == TokenType._function) {
       Position startLoc = this.startLoc;
       this.next();
@@ -1734,7 +1680,7 @@ public class Parser {
 
   protected Expression parseParenExpression() {
     this.expect(TokenType.parenL);
-    Expression val = this.parseExpression(false, null);
+    Expression val = this.parseExpression(false);
     this.expect(TokenType.parenR);
     return val;
   }
@@ -1745,12 +1691,10 @@ public class Parser {
     if (this.options.ecmaVersion() >= 6) {
       this.next();
 
-      DestructuringErrors refDestructuringErrors = new DestructuringErrors();
       int oldYieldPos = this.yieldPos, oldAwaitPos = this.awaitPos;
-      ParenthesisedExpressions parenExprs = parseParenthesisedExpressions(refDestructuringErrors);
+      ParenthesisedExpressions parenExprs = parseParenthesisedExpressions();
 
       if (canBeArrow && !this.canInsertSemicolon() && this.eat(TokenType.arrow)) {
-        this.checkPatternErrors(refDestructuringErrors, true);
         this.checkYieldAwaitInDefaultParams();
         if (parenExprs.innerParenStart != 0) this.unexpected(parenExprs.innerParenStart);
         this.yieldPos = oldYieldPos;
@@ -1761,7 +1705,6 @@ public class Parser {
       if (parenExprs.exprList.isEmpty() || parenExprs.lastIsComma)
         this.unexpected(this.lastTokStart);
       if (parenExprs.spreadStart != 0) this.unexpected(parenExprs.spreadStart);
-      this.checkExpressionErrors(refDestructuringErrors, true);
       if (oldYieldPos > 0) this.yieldPos = oldYieldPos;
       if (oldAwaitPos > 0) this.awaitPos = oldAwaitPos;
 
@@ -1803,8 +1746,7 @@ public class Parser {
     boolean lastIsComma;
   }
 
-  protected ParenthesisedExpressions parseParenthesisedExpressions(
-      DestructuringErrors refDestructuringErrors) {
+  protected ParenthesisedExpressions parseParenthesisedExpressions() {
     boolean allowTrailingComma = this.options.ecmaVersion() >= 8;
     ParenthesisedExpressions parenExprs = new ParenthesisedExpressions();
     parenExprs.startLoc = this.startLoc;
@@ -1814,8 +1756,7 @@ public class Parser {
     while (this.type != TokenType.parenR) {
       if (first) first = false;
       else this.expect(TokenType.comma);
-      if (!parseParenthesisedExpression(
-          refDestructuringErrors, allowTrailingComma, parenExprs, first)) break;
+      if (!parseParenthesisedExpression(allowTrailingComma, parenExprs, first)) break;
     }
     parenExprs.endLoc = this.startLoc;
     this.expect(TokenType.parenR);
@@ -1829,7 +1770,6 @@ public class Parser {
    * @return true if more expressions may follow this one, false if it must be the last one
    */
   protected boolean parseParenthesisedExpression(
-      DestructuringErrors refDestructuringErrors,
       boolean allowTrailingComma,
       ParenthesisedExpressions parenExprs,
       boolean first) {
@@ -1838,16 +1778,15 @@ public class Parser {
       return false;
     } else if (this.type == TokenType.ellipsis) {
       parenExprs.spreadStart = this.start;
-      parenExprs.exprList.add(this.parseParenItem(this.parseRest(false), -1, null));
-      if (this.type == TokenType.comma)
-        this.raise(this.startLoc, "Comma is not permitted after the rest element");
+      parenExprs.exprList.add(this.parseParenItem(this.parseRest(), -1, null));
+      this.eat(TokenType.comma);
       return false;
     } else {
       if (this.type == TokenType.parenL && parenExprs.innerParenStart == 0) {
         parenExprs.innerParenStart = this.start;
       }
       parenExprs.exprList.add(
-          this.parseMaybeAssign(false, refDestructuringErrors, this::parseParenItem));
+          this.parseMaybeAssign(false, this::parseParenItem));
     }
     return true;
   }
@@ -1879,7 +1818,7 @@ public class Parser {
     int innerStartPos = this.start;
     Position innerStartLoc = this.startLoc;
     Expression callee =
-        this.parseSubscripts(this.parseExprAtom(null), innerStartPos, innerStartLoc, true);
+        this.parseSubscripts(this.parseExprAtom(), innerStartPos, innerStartLoc, true);
 
     if (Chainable.isOnOptionalChain(false, callee))
       this.raise(callee, "An optional chain may not be used in a `new` expression.");
@@ -1891,7 +1830,7 @@ public class Parser {
     List<Expression> arguments;
     if (this.eat(TokenType.parenL))
       arguments =
-          this.parseExprList(TokenType.parenR, this.options.ecmaVersion() >= 8, false, null);
+          this.parseExprList(TokenType.parenR, this.options.ecmaVersion() >= 8, false);
     else arguments = new ArrayList<Expression>();
     NewExpression node =
         new NewExpression(new SourceLocation(startLoc), callee, new ArrayList<>(), arguments);
@@ -1926,7 +1865,7 @@ public class Parser {
     List<TemplateElement> quasis = CollectionUtil.makeList(curElt);
     while (!curElt.isTail()) {
       this.expect(TokenType.dollarBraceL);
-      expressions.add(this.parseExpression(false, null));
+      expressions.add(this.parseExpression(false));
       this.expect(TokenType.braceR);
       quasis.add(curElt = this.parseTemplateElement(isTagged));
     }
@@ -1958,7 +1897,7 @@ public class Parser {
   }
 
   // Parse an object literal or binding pattern.
-  protected Expression parseObj(boolean isPattern, DestructuringErrors refDestructuringErrors) {
+  protected Expression parseObj(boolean isPattern) {
     Position startLoc = this.startLoc;
     if (!isPattern && options.allowGeneratedCodeExprs() && charAt(pos) == '{') {
       // Parse mustache-style placeholder expression: {{ ... }} or {{{ ... }}}
@@ -1978,7 +1917,7 @@ public class Parser {
         first = false;
       }
 
-      properties.add(this.finishNode(parseProperty(isPattern, refDestructuringErrors, propHash)));
+      properties.add(this.finishNode(parseProperty(isPattern, propHash)));
     }
     SourceLocation loc = new SourceLocation(startLoc);
     Expression node =
@@ -2022,10 +1961,7 @@ public class Parser {
         bodyToken.getValue()));
   }
 
-  protected Property parseProperty(
-      boolean isPattern,
-      DestructuringErrors refDestructuringErrors,
-      Map<String, PropInfo> propHash) {
+  protected Property parseProperty(boolean isPattern, Map<String, PropInfo> propHash) {
     Position propStartLoc = this.startLoc;
     boolean isGenerator = false;
     if (this.options.ecmaVersion() >= 6) {
@@ -2040,7 +1976,7 @@ public class Parser {
     } else {
       pi.isAsync = false;
     }
-    this.parsePropertyValue(pi, refDestructuringErrors);
+    this.parsePropertyValue(pi);
     Property prop =
         new Property(
             new SourceLocation(pi.startLoc), pi.key, pi.value, pi.kind, pi.computed, pi.method);
@@ -2061,14 +1997,14 @@ public class Parser {
         && !this.canInsertSemicolon();
   }
 
-  protected void parsePropertyValue(PropertyInfo pi, DestructuringErrors refDestructuringErrors) {
+  protected void parsePropertyValue(PropertyInfo pi) {
     if ((pi.isGenerator || pi.isAsync) && this.type == TokenType.colon) this.unexpected();
 
     if (this.eat(TokenType.colon)) {
       pi.value =
           pi.isPattern
               ? this.parseMaybeDefault(this.startLoc, null)
-              : this.parseMaybeAssign(false, refDestructuringErrors, null);
+              : this.parseMaybeAssign(false, null);
       pi.kind = "init";
     } else if (this.options.ecmaVersion() >= 6 && this.type == TokenType.parenL) {
       if (pi.isPattern) this.unexpected();
@@ -2108,9 +2044,7 @@ public class Parser {
       pi.kind = "init";
       if (pi.isPattern) {
         pi.value = this.parseMaybeDefault(pi.startLoc, pi.key);
-      } else if (this.type == TokenType.eq && refDestructuringErrors != null) {
-        if (refDestructuringErrors.shorthandAssign == 0)
-          refDestructuringErrors.shorthandAssign = this.start;
+      } else if (this.type == TokenType.eq) {
         pi.value = this.parseMaybeDefault(pi.startLoc, pi.key);
       } else {
         pi.value = pi.key;
@@ -2123,14 +2057,14 @@ public class Parser {
   protected void parsePropertyName(PropertyInfo result) {
     if (this.options.ecmaVersion() >= 6) {
       if (this.eat(TokenType.bracketL)) {
-        result.key = this.parseMaybeAssign(false, null, null);
+        result.key = this.parseMaybeAssign(false, null);
         result.computed = true;
         this.expect(TokenType.bracketR);
         return;
       }
     }
     if (this.type == TokenType.num || this.type == TokenType.string)
-      result.key = this.parseExprAtom(null);
+      result.key = this.parseExprAtom();
     else result.key = this.parseIdent(true);
   }
 
@@ -2147,7 +2081,7 @@ public class Parser {
 
     this.expect(TokenType.parenL);
     List<Expression> params =
-        this.parseBindingList(TokenType.parenR, false, this.options.ecmaVersion() >= 8, false);
+        this.parseBindingList(TokenType.parenR, false, this.options.ecmaVersion() >= 8);
     this.checkYieldAwaitInDefaultParams();
     boolean generator = this.options.ecmaVersion() >= 6 && isGenerator;
     Node body = this.parseFunctionBody(null, params, false);
@@ -2191,7 +2125,7 @@ public class Parser {
     boolean isExpression = isArrowFunction && this.type != TokenType.braceL;
     Node body;
     if (isExpression) {
-      body = this.parseMaybeAssign(false, null, null);
+      body = this.parseMaybeAssign(false, null);
     } else {
       // Start a new scope with regard to labels and the `inFunction`
       // flag (restore them to their old value afterwards).
@@ -2247,10 +2181,7 @@ public class Parser {
   // nothing in between them to be parsed as `null` (which is needed
   // for array literals).
   protected List<Expression> parseExprList(
-      TokenType close,
-      boolean allowTrailingComma,
-      boolean allowEmpty,
-      DestructuringErrors refDestructuringErrors) {
+      TokenType close, boolean allowTrailingComma, boolean allowEmpty) {
     List<Expression> elts = new ArrayList<Expression>();
     boolean first = true;
     while (!this.eat(close)) {
@@ -2265,14 +2196,9 @@ public class Parser {
       if (allowEmpty && this.type == TokenType.comma) {
         elt = null;
       } else if (this.type == TokenType.ellipsis) {
-        elt = this.processExprListItem(this.parseSpread(refDestructuringErrors));
-        if (this.type == TokenType.comma
-            && refDestructuringErrors != null
-            && refDestructuringErrors.trailingComma == 0) {
-          refDestructuringErrors.trailingComma = this.start;
-        }
+        elt = this.processExprListItem(this.parseSpread());
       } else
-        elt = this.processExprListItem(this.parseMaybeAssign(false, refDestructuringErrors, null));
+        elt = this.processExprListItem(this.parseMaybeAssign(false, null));
       elts.add(elt);
     }
     return elts;
@@ -2335,7 +2261,7 @@ public class Parser {
       argument = null;
     } else {
       delegate = this.eat(TokenType.star);
-      argument = this.parseMaybeAssign(false, null, null);
+      argument = this.parseMaybeAssign(false, null);
     }
     YieldExpression node = new YieldExpression(new SourceLocation(startLoc), argument, delegate);
     return this.finishNode(node);
@@ -2344,7 +2270,7 @@ public class Parser {
   protected AwaitExpression parseAwait() {
     Position startLoc = this.startLoc;
     this.next();
-    Expression argument = this.parseMaybeUnary(null, true);
+    Expression argument = this.parseMaybeUnary(true);
     AwaitExpression node = new AwaitExpression(new SourceLocation(startLoc), argument);
     return this.finishNode(node);
   }
@@ -2433,17 +2359,11 @@ public class Parser {
       } else if (last != null && last instanceof SpreadElement) {
         Expression arg = ((SpreadElement) last).getArgument();
         arg = (Expression) this.toAssignable(arg, isBinding);
-        if (!(arg instanceof Identifier
-            || arg instanceof MemberExpression
-            || arg instanceof ArrayPattern)) this.unexpected(arg.getLoc().getStart());
+        if (!(arg instanceof IPattern || arg instanceof MemberExpression))
+          this.unexpected(arg.getLoc().getStart());
         exprList.set(end - 1, last = new RestElement(last.getLoc(), arg));
         --end;
       }
-
-      if (isBinding
-          && last instanceof RestElement
-          && !(((RestElement) last).getArgument() instanceof Identifier))
-        this.unexpected(((RestElement) last).getArgument().getLoc().getStart());
     }
     for (int i = 0; i < end; ++i)
       exprList.set(i, (Expression) this.toAssignable(exprList.get(i), isBinding));
@@ -2451,27 +2371,18 @@ public class Parser {
   }
 
   // Parses spread element.
-  protected SpreadElement parseSpread(DestructuringErrors refDestructuringErrors) {
+  protected SpreadElement parseSpread() {
     Position start = this.startLoc;
     this.next();
     SpreadElement node =
-        new SpreadElement(
-            new SourceLocation(start), this.parseMaybeAssign(false, refDestructuringErrors, null));
+        new SpreadElement(new SourceLocation(start), this.parseMaybeAssign(false, null));
     return this.finishNode(node);
   }
 
-  protected RestElement parseRest(boolean allowNonIdent) {
+  protected RestElement parseRest() {
     Position start = this.startLoc;
     this.next();
-
-    // RestElement inside of a function parameter must be an identifier
-    Expression argument = null;
-    if (allowNonIdent)
-      if (this.type == TokenType.name) argument = this.parseIdent(false);
-      else this.unexpected();
-    else if (this.type == TokenType.name || this.type == TokenType.bracketL)
-      argument = this.parseBindingAtom();
-    else this.unexpected();
+    Expression argument = this.parseBindingAtom();
     RestElement node = new RestElement(new SourceLocation(start), argument);
     return this.finishNode(node);
   }
@@ -2483,18 +2394,18 @@ public class Parser {
     if (this.type == TokenType.bracketL) {
       Position start = this.startLoc;
       this.next();
-      List<Expression> elements = this.parseBindingList(TokenType.bracketR, true, true, false);
+      List<Expression> elements = this.parseBindingList(TokenType.bracketR, true, true);
       ArrayPattern node = new ArrayPattern(new SourceLocation(start), elements);
       return this.finishNode(node);
     }
 
-    if (this.type == TokenType.braceL) return this.parseObj(true, null);
+    if (this.type == TokenType.braceL) return this.parseObj(true);
 
     return this.parseIdent(false);
   }
 
   protected List<Expression> parseBindingList(
-      TokenType close, boolean allowEmpty, boolean allowTrailingComma, boolean allowNonIdent) {
+      TokenType close, boolean allowEmpty, boolean allowTrailingComma) {
     List<Expression> result = new ArrayList<Expression>();
     boolean first = true;
     while (!this.eat(close)) {
@@ -2505,9 +2416,8 @@ public class Parser {
       } else if (allowTrailingComma && this.afterTrailingComma(close, false)) {
         break;
       } else if (this.type == TokenType.ellipsis) {
-        result.add(this.processBindingListItem(this.parseRest(allowNonIdent)));
-        if (this.type == TokenType.comma)
-          this.raise(this.start, "Comma is not permitted after the rest element");
+        result.add(this.processBindingListItem(this.parseRest()));
+        this.eat(TokenType.comma);
         this.expect(close);
         break;
       } else {
@@ -2527,7 +2437,7 @@ public class Parser {
     if (this.options.ecmaVersion() < 6 || !this.eat(TokenType.eq)) return left;
     AssignmentPattern node =
         new AssignmentPattern(
-            new SourceLocation(startLoc), "=", left, this.parseMaybeAssign(false, null, null));
+            new SourceLocation(startLoc), "=", left, this.parseMaybeAssign(false, null));
     return this.finishNode(node);
   }
 
@@ -2826,7 +2736,7 @@ public class Parser {
       // next token is a colon and the expression was a simple
       // Identifier node, we switch to interpreting it as a label.
       String maybeName = String.valueOf(this.value);
-      Expression expr = this.parseExpression(false, null);
+      Expression expr = this.parseExpression(false);
       if (starttype == TokenType.name && expr instanceof Identifier && this.eat(TokenType.colon))
         return this.parseLabeledStatement(startLoc, maybeName, (Identifier) expr);
       else return this.parseExpressionStatement(declaration, startLoc, expr);
@@ -2909,16 +2819,12 @@ public class Parser {
         return this.parseForIn(startLoc, init);
       return this.parseFor(startLoc, init);
     }
-    DestructuringErrors refDestructuringErrors = new DestructuringErrors();
-    Expression init = this.parseExpression(true, refDestructuringErrors);
+    Expression init = this.parseExpression(true);
     if (this.type == TokenType._in
         || (this.options.ecmaVersion() >= 6 && this.isContextual("of"))) {
-      this.checkPatternErrors(refDestructuringErrors, true);
       init = (Expression) this.toAssignable(init, false);
       this.checkLVal(init, false, null);
       return this.parseForIn(startLoc, init);
-    } else {
-      this.checkExpressionErrors(refDestructuringErrors, true);
     }
     return this.parseFor(startLoc, init);
   }
@@ -2972,7 +2878,7 @@ public class Parser {
     if (this.eagerlyTrySemicolon()) {
       argument = null;
     } else {
-      argument = this.parseExpression(false, null);
+      argument = this.parseExpression(false);
       this.semicolon();
     }
     return this.finishNode(new ReturnStatement(new SourceLocation(startLoc), argument));
@@ -3005,7 +2911,7 @@ public class Parser {
         curConsequent = new ArrayList<Statement>();
         this.next();
         if (isCase) {
-          curTest = this.parseExpression(false, null);
+          curTest = this.parseExpression(false);
         } else {
           if (sawDefault) this.raiseRecoverable(this.lastTokStart, "Multiple default clauses");
           sawDefault = true;
@@ -3031,7 +2937,7 @@ public class Parser {
     this.next();
     if (inputSubstring(this.lastTokEnd, this.start).matches("(?s).*(?:" + lineBreak + ").*"))
       this.raise(this.lastTokEnd, "Illegal newline after throw");
-    Expression argument = this.parseExpression(false, null);
+    Expression argument = this.parseExpression(false);
     this.semicolon();
     return this.finishNode(new ThrowStatement(new SourceLocation(startLoc), argument));
   }
@@ -3144,9 +3050,9 @@ public class Parser {
   // expression.
   protected ForStatement parseFor(Position startLoc, Node init) {
     this.expect(TokenType.semi);
-    Expression test = this.type == TokenType.semi ? null : this.parseExpression(false, null);
+    Expression test = this.type == TokenType.semi ? null : this.parseExpression(false);
     this.expect(TokenType.semi);
-    Expression update = this.type == TokenType.parenR ? null : this.parseExpression(false, null);
+    Expression update = this.type == TokenType.parenR ? null : this.parseExpression(false);
     this.expect(TokenType.parenR);
     Statement body = this.parseStatement(false, false);
     this.labels.pop();
@@ -3160,7 +3066,7 @@ public class Parser {
     SourceLocation loc = new SourceLocation(startLoc);
     boolean isForIn = this.type == TokenType._in;
     this.next();
-    Expression right = this.parseExpression(false, null);
+    Expression right = this.parseExpression(false);
     this.expect(TokenType.parenR);
     Statement body = this.parseStatement(false, false);
     this.labels.pop();
@@ -3178,7 +3084,7 @@ public class Parser {
       Expression id = this.parseVarId();
       Expression init = null;
       if (this.eat(TokenType.eq)) {
-        init = this.parseMaybeAssign(isFor, null, null);
+        init = this.parseMaybeAssign(isFor, null);
       } else if ((kind.equals("const") || kind.equals("using"))
           && !(this.type == TokenType._in
               || (this.options.ecmaVersion() >= 6 && this.isContextual("of")))) {
@@ -3280,7 +3186,7 @@ public class Parser {
   protected List<Expression> parseFunctionParams() {
     this.expect(TokenType.parenL);
     List<Expression> params =
-        this.parseBindingList(TokenType.parenR, false, this.options.ecmaVersion() >= 8, true);
+        this.parseBindingList(TokenType.parenR, false, this.options.ecmaVersion() >= 8);
     this.checkYieldAwaitInDefaultParams();
     return params;
   }
@@ -3415,7 +3321,7 @@ public class Parser {
   }
 
   protected Expression parseClassSuper() {
-    return this.eat(TokenType._extends) ? this.parseExprSubscripts(null) : null;
+    return this.eat(TokenType._extends) ? this.parseExprSubscripts() : null;
   }
 
   // Parses module export declaration.
@@ -3462,7 +3368,7 @@ public class Parser {
               new ClassDeclaration(ce.getLoc(), ce.getClassDef(), noDeclareKeyword, notAbstract);
         else declaration = ce;
       } else {
-        declaration = this.parseMaybeAssign(false, null, null);
+        declaration = this.parseMaybeAssign(false, null);
         this.semicolon();
       }
       return this.finishNode(new ExportDefaultDeclaration(loc, declaration));
@@ -3497,7 +3403,7 @@ public class Parser {
   protected Expression parseExportFrom(
       List<ExportSpecifier> specifiers, Expression source, boolean expectFrom) {
     if (this.eatContextual("from")) {
-      if (this.type == TokenType.string) source = this.parseExprAtom(null);
+      if (this.type == TokenType.string) source = this.parseExprAtom();
       else this.unexpected();
     } else {
       if (expectFrom) this.unexpected();
@@ -3576,7 +3482,7 @@ public class Parser {
       } else {
         if (this.type == TokenType.string) {
           // e.g. `export { Foo_new as "Foo::new" }`
-          Expression string = this.parseExprAtom(null);
+          Expression string = this.parseExprAtom();
           String str = ((Literal)string).getStringValue();
           exported = this.finishNode(new Identifier(loc, str));
         } else {
@@ -3609,7 +3515,7 @@ public class Parser {
     this.checkLVal(local, true, null);
     this.expectContextual("from");
     if (this.type != TokenType.string) this.unexpected();
-    Literal source = (Literal) this.parseExprAtom(null);
+    Literal source = (Literal) this.parseExprAtom();
     this.semicolon();
 
     List<ImportSpecifier> specifiers = new ArrayList<ImportSpecifier>();
@@ -3625,7 +3531,7 @@ public class Parser {
       if (!this.eatContextual("assert")) {
         this.expect(TokenType._with);
       }
-      result = this.parseObj(false, null);
+      result = this.parseObj(false);
       this.semicolon();
     }
     return result;
@@ -3638,12 +3544,12 @@ public class Parser {
     // import '...'
     if (this.type == TokenType.string) {
       specifiers = new ArrayList<ImportSpecifier>();
-      source = (Literal) this.parseExprAtom(null);
+      source = (Literal) this.parseExprAtom();
     } else {
       specifiers = this.parseImportSpecifiers(phaseModifier);
       this.expectContextual("from");
       if (this.type != TokenType.string) this.unexpected();
-      source = (Literal) this.parseExprAtom(null);
+      source = (Literal) this.parseExprAtom();
     }
     Expression attributes = this.parseImportOrExportAttributesAndSemicolon();
     if (specifiers == null) return null;
@@ -3698,7 +3604,7 @@ public class Parser {
     if (this.type == TokenType.string) {
       // Arbitrary Module Namespace Identifiers
       // e.g. `import { "Foo::new" as Foo_new } from "./foo.wasm"`
-      Expression string = this.parseExprAtom(null);
+      Expression string = this.parseExprAtom();
       String str = ((Literal)string).getStringValue();
       imported = this.finishNode(new Identifier(loc, str));
       // only makes sense if there is a local identifier

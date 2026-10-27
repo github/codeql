@@ -31,6 +31,8 @@ module Generated {
   class AsmRegOperand extends Synth::TAsmRegOperand, AsmOperandImpl::AsmOperand {
     override string getAPrimaryQlClass() { result = "AsmRegOperand" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the asm dir spec of this asm reg operand, if it exists.
      */

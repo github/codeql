@@ -29,6 +29,8 @@ module Generated {
   class AsmSym extends Synth::TAsmSym, AsmOperandImpl::AsmOperand {
     override string getAPrimaryQlClass() { result = "AsmSym" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the path of this asm sym, if it exists.
      */

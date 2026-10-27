@@ -51,6 +51,14 @@ extensible predicate neutralModel(
   string namespace, string type, string name, string signature, string kind, string provenance
 );
 
+/**
+ * Holds if a constructor forwarding model exists for the given parameters.
+ */
+extensible predicate forwardsModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string start, string constructor, string output, string provenance, QlBuiltins::ExtensionId madId
+);
+
 module Extensions implements SharedMaD::ExtensionsSig {
   import ExternalFlowExtensions
 

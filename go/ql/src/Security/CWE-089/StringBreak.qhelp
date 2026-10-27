@@ -67,6 +67,6 @@ that it has two limitations:
 
 <references>
 <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection</a>.</li>
-<li>OWASP: <a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.</li>
+<li>OWASP: <a href="https://community.owasp.org/attacks/Command_Injection">Command Injection</a>.</li>
 </references>
 </qhelp>

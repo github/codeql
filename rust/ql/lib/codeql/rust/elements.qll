@@ -6,6 +6,7 @@
 import codeql.files.FileSystem
 import codeql.rust.elements.Abi
 import codeql.rust.elements.Addressable
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.ArgList
 import codeql.rust.elements.ArrayExpr
 import codeql.rust.elements.ArrayListExpr
@@ -43,6 +44,8 @@ import codeql.rust.elements.CfgAtom
 import codeql.rust.elements.CfgAttrMeta
 import codeql.rust.elements.CfgComposite
 import codeql.rust.elements.CfgMeta
+import codeql.rust.elements.CfgPredExpr
+import codeql.rust.elements.CfgPredPat
 import codeql.rust.elements.CfgPredicate
 import codeql.rust.elements.ClosureExpr
 import codeql.rust.elements.Comment
@@ -53,6 +56,7 @@ import codeql.rust.elements.ConstParam
 import codeql.rust.elements.ContinueExpr
 import codeql.rust.elements.Crate
 import codeql.rust.elements.DerefPat
+import codeql.rust.elements.DocComment
 import codeql.rust.elements.DynTraitTypeRepr
 import codeql.rust.elements.Element
 import codeql.rust.elements.Enum

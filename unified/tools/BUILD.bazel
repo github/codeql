@@ -6,6 +6,5 @@ codeql_pkg_files(
         "BUILD.bazel",
     ],
     exes = glob(["**/*"]),
-    prefix = "tools",
     visibility = ["//unified:__pkg__"],
 )
