@@ -71,7 +71,7 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     node.(BuilderNode).isCallable(callable)
     or
     exists(Stage2Node prev | callableHasLocalAlias(callable, prev) |
-      step(prev, any(Step s | s.value() or s.callGraph()), node)
+      step(prev, any(Step s | s.value() or s.valueMustFlow() or s.callGraph()), node)
       or
       localSsaStep(prev, node, _)
     )
