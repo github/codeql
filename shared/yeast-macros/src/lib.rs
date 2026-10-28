@@ -158,10 +158,9 @@ pub fn trees(input: TokenStream) -> TokenStream {
 /// evaluated after the query matches and before any `@` captures are
 /// translated. Returning false makes the driver try the next rule. All
 /// captures are therefore raw in the guard; `@` versus `@@` controls only
-/// whether the capture is translated for the transform. `ctx` provides
-/// mutable user-context access, and `ast` provides read-only AST access.
-/// Mutations to `ctx` are visible to the transform when the guard succeeds.
-/// Omitting the guard is equivalent to writing `where true`.
+/// whether the capture is translated for the transform. Both `ctx` and `ast`
+/// provide read-only access. Omitting the guard is equivalent to writing
+/// `where true`.
 ///
 /// `tree!` and `trees!` use the rule transform's `ctx` binding inside `{...}`.
 #[proc_macro]
