@@ -179,7 +179,7 @@ namespace Semmle.Extraction.Tests
 
             // Execute
             var isLegacy = fileContent.IsLegacyProjectStructureUsed;
-            var isNew = fileContent.IsNewProjectStructureUsed;
+            var isNew = fileContent.IsSdkProjectStructureUsed;
 
             // Verify
             Assert.True(isLegacy);
@@ -204,7 +204,7 @@ namespace Semmle.Extraction.Tests
 
             // Execute
             var isLegacy = fileContent.IsLegacyProjectStructureUsed;
-            var isNew = fileContent.IsNewProjectStructureUsed;
+            var isNew = fileContent.IsSdkProjectStructureUsed;
 
             // Verify
             Assert.True(isNew);
