@@ -16,18 +16,22 @@ edges
 | test.cpp:92:9:92:16 | fread output argument | test.cpp:94:17:94:24 | *filename | provenance |  |
 | test.cpp:94:11:94:14 | strncat output argument | test.cpp:95:45:95:48 | *path | provenance |  |
 | test.cpp:94:17:94:24 | *filename | test.cpp:94:11:94:14 | strncat output argument | provenance | Config |
+| test.cpp:107:15:107:18 | call to basic_string | test.cpp:108:33:108:36 | *path | provenance |  |
+| test.cpp:107:20:107:38 | *call to getenv | test.cpp:107:15:107:18 | call to basic_string | provenance | MaD:33404 |
 | test.cpp:107:20:107:38 | *call to getenv | test.cpp:108:33:108:36 | *path | provenance | TaintFunction |
 | test.cpp:108:31:108:31 | call to operator+ | test.cpp:108:31:108:31 | call to operator+ | provenance |  |
-| test.cpp:108:31:108:31 | call to operator+ | test.cpp:109:18:109:22 | *call to c_str | provenance | TaintFunction |
+| test.cpp:108:31:108:31 | call to operator+ | test.cpp:109:10:109:16 | command | provenance |  |
 | test.cpp:108:33:108:36 | *path | test.cpp:108:31:108:31 | call to operator+ | provenance | Config |
+| test.cpp:109:10:109:16 | command | test.cpp:109:18:109:22 | *call to c_str | provenance | MaD:33449 |
+| test.cpp:114:15:114:18 | call to basic_string | test.cpp:115:19:115:22 | *path | provenance |  |
+| test.cpp:114:20:114:38 | *call to getenv | test.cpp:114:15:114:18 | call to basic_string | provenance | MaD:33404 |
 | test.cpp:114:20:114:38 | *call to getenv | test.cpp:115:19:115:22 | *path | provenance | TaintFunction |
-| test.cpp:115:10:115:23 | call to operator+ | test.cpp:115:25:115:29 | *call to c_str | provenance | TaintFunction |
-| test.cpp:115:10:115:23 | call to operator+ | test.cpp:115:25:115:29 | *call to c_str | provenance | TaintFunction |
-| test.cpp:115:17:115:17 | call to operator+ | test.cpp:115:10:115:23 | call to operator+ | provenance |  |
+| test.cpp:115:10:115:23 | call to operator+ | test.cpp:115:25:115:29 | *call to c_str | provenance | MaD:33449 |
 | test.cpp:115:19:115:22 | *path | test.cpp:115:10:115:23 | call to operator+ | provenance | Config |
-| test.cpp:115:19:115:22 | *path | test.cpp:115:17:115:17 | call to operator+ | provenance | Config |
+| test.cpp:120:15:120:18 | call to basic_string | test.cpp:121:19:121:22 | *path | provenance |  |
+| test.cpp:120:20:120:38 | *call to getenv | test.cpp:120:15:120:18 | call to basic_string | provenance | MaD:33404 |
 | test.cpp:120:20:120:38 | *call to getenv | test.cpp:121:19:121:22 | *path | provenance | TaintFunction |
-| test.cpp:121:17:121:17 | call to operator+ | test.cpp:121:10:121:30 | *call to data | provenance | TaintFunction |
+| test.cpp:121:17:121:17 | call to operator+ | test.cpp:121:10:121:30 | *call to data | provenance | MaD:33447 |
 | test.cpp:121:19:121:22 | *path | test.cpp:121:17:121:17 | call to operator+ | provenance | Config |
 | test.cpp:141:9:141:11 | fread output argument | test.cpp:143:31:143:33 | *str | provenance |  |
 | test.cpp:143:11:143:17 | sprintf output argument | test.cpp:144:10:144:16 | *command | provenance |  |
@@ -112,18 +116,19 @@ nodes
 | test.cpp:94:11:94:14 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:94:17:94:24 | *filename | semmle.label | *filename |
 | test.cpp:95:45:95:48 | *path | semmle.label | *path |
+| test.cpp:107:15:107:18 | call to basic_string | semmle.label | call to basic_string |
 | test.cpp:107:20:107:38 | *call to getenv | semmle.label | *call to getenv |
 | test.cpp:108:31:108:31 | call to operator+ | semmle.label | call to operator+ |
 | test.cpp:108:31:108:31 | call to operator+ | semmle.label | call to operator+ |
 | test.cpp:108:33:108:36 | *path | semmle.label | *path |
+| test.cpp:109:10:109:16 | command | semmle.label | command |
 | test.cpp:109:18:109:22 | *call to c_str | semmle.label | *call to c_str |
+| test.cpp:114:15:114:18 | call to basic_string | semmle.label | call to basic_string |
 | test.cpp:114:20:114:38 | *call to getenv | semmle.label | *call to getenv |
 | test.cpp:115:10:115:23 | call to operator+ | semmle.label | call to operator+ |
-| test.cpp:115:10:115:23 | call to operator+ | semmle.label | call to operator+ |
-| test.cpp:115:17:115:17 | call to operator+ | semmle.label | call to operator+ |
 | test.cpp:115:19:115:22 | *path | semmle.label | *path |
 | test.cpp:115:25:115:29 | *call to c_str | semmle.label | *call to c_str |
-| test.cpp:115:25:115:29 | *call to c_str | semmle.label | *call to c_str |
+| test.cpp:120:15:120:18 | call to basic_string | semmle.label | call to basic_string |
 | test.cpp:120:20:120:38 | *call to getenv | semmle.label | *call to getenv |
 | test.cpp:121:10:121:30 | *call to data | semmle.label | *call to data |
 | test.cpp:121:17:121:17 | call to operator+ | semmle.label | call to operator+ |
@@ -210,7 +215,6 @@ subpaths
 | test.cpp:95:45:95:48 | path | test.cpp:92:9:92:16 | fread output argument | test.cpp:95:45:95:48 | *path | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl. | test.cpp:92:9:92:16 | fread output argument | user input (string read by fread) | test.cpp:94:11:94:14 | strncat output argument | strncat output argument |
 | test.cpp:109:18:109:22 | call to c_str | test.cpp:107:20:107:38 | *call to getenv | test.cpp:109:18:109:22 | *call to c_str | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string). | test.cpp:107:20:107:38 | *call to getenv | user input (an environment variable) | test.cpp:108:31:108:31 | call to operator+ | call to operator+ |
 | test.cpp:115:25:115:29 | call to c_str | test.cpp:114:20:114:38 | *call to getenv | test.cpp:115:25:115:29 | *call to c_str | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string). | test.cpp:114:20:114:38 | *call to getenv | user input (an environment variable) | test.cpp:115:10:115:23 | call to operator+ | call to operator+ |
-| test.cpp:115:25:115:29 | call to c_str | test.cpp:114:20:114:38 | *call to getenv | test.cpp:115:25:115:29 | *call to c_str | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string). | test.cpp:114:20:114:38 | *call to getenv | user input (an environment variable) | test.cpp:115:17:115:17 | call to operator+ | call to operator+ |
 | test.cpp:121:25:121:28 | call to data | test.cpp:120:20:120:38 | *call to getenv | test.cpp:121:10:121:30 | *call to data | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string). | test.cpp:120:20:120:38 | *call to getenv | user input (an environment variable) | test.cpp:121:17:121:17 | call to operator+ | call to operator+ |
 | test.cpp:144:10:144:16 | command | test.cpp:141:9:141:11 | fread output argument | test.cpp:144:10:144:16 | *command | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string). | test.cpp:141:9:141:11 | fread output argument | user input (string read by fread) | test.cpp:143:11:143:17 | sprintf output argument | sprintf output argument |
 | test.cpp:184:32:184:38 | command | test.cpp:175:9:175:16 | fread output argument | test.cpp:184:32:184:38 | *command | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl. | test.cpp:175:9:175:16 | fread output argument | user input (string read by fread) | test.cpp:178:13:178:17 | strncat output argument | strncat output argument |
