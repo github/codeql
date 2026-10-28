@@ -23,12 +23,19 @@ private predicate sqliteSwiftSink(DataFlow::Node node) {
   )
 }
 
+/**
+ * An SQL injection sink that is determined by imprecise methods.
+ */
 private predicate heuristicSink(DataFlow::Node node) {
   exists(Argument arg |
     node.asExpr() = arg.getValue() and
     (
+      // by argument name
       arg.getName() = "sql"
       or
+      // by parameter name
+      // TODO: can we simplify this whole case since we have `getExternalName`?
+      // TODO: make a helper predicate `Argument.getParameter` for this?
       exists(CallExpr call, Parameter param |
         arg = call.getAnArgument() and
         param = TypeInference::resolveCallTarget(call).getAParameter() and

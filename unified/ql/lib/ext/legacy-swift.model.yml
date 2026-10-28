@@ -247,7 +247,6 @@ extensions:
       - ["", "Connection", true, "execute(_:)", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["", "Connection", true, "prepare(_:)", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["", "Connection", true, "prepare(_:_:)", "", "", "Argument[0]", "sql-injection", "manual"]
-      # Connection.run/scalar need receiver checks; see SqlInjection.ql until legacy selectors support them.
       - ["", "Statement", true, "init(_:_:)", "", "", "Argument[1]", "sql-injection", "manual"]
       - ["", "SQLRequest", true, "init(stringLiteral:)", "", "", "Argument[stringLiteral:]", "sql-injection", "manual"]
       - ["", "SQLRequest", true, "init(unicodeScalarLiteral:)", "", "", "Argument[unicodeScalarLiteral:]", "sql-injection", "manual"]
