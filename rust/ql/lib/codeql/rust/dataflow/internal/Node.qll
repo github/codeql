@@ -472,8 +472,17 @@ abstract class ReturnNode extends Node {
   abstract ReturnKind getKind();
 }
 
+/** Holds if the value of `n` is returned from its enclosing callable. */
+predicate isReturnedValue(AstNode n) {
+  exists(SuccessorType t | n.getACfgNode().getASuccessor(t) instanceof AnnotatedExitCfgNode |
+    // The early return of `x?` returns the `Err` or `None` held by `x`, which is
+    // a different value from the one `x?` evaluates to
+    not (n instanceof TryExpr and t instanceof ReturnSuccessor)
+  )
+}
+
 final class ExprReturnNode extends ExprNode, ReturnNode {
-  ExprReturnNode() { n.getACfgNode().getASuccessor() instanceof AnnotatedExitCfgNode }
+  ExprReturnNode() { isReturnedValue(n) }
 
   override ReturnKind getKind() { result = TNormalReturnKind() }
 }
