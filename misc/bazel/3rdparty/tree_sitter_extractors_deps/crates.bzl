@@ -360,7 +360,6 @@ _NORMAL_DEPENDENCIES = {
     "rust/extractor": {
         _COMMON_CONDITION: {
             "anyhow": Label("@vendor_ts//anyhow-1.0.104"),
-            "argfile": Label("@vendor_ts//argfile-1.0.0"),
             "chalk-ir": Label("@vendor_ts//chalk-ir-0.104.0"),
             "chrono": Label("@vendor_ts//chrono-0.4.45"),
             "clap": Label("@vendor_ts//clap-4.6.7"),
@@ -981,16 +980,6 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/anyhow/1.0.104/download"],
         strip_prefix = "anyhow-1.0.104",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.anyhow-1.0.104.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__argfile-1.0.0",
-        sha256 = "99489a733dea0d2930bfa59c243146a8513ce7b0991b9d006647687cc61f53e7",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/argfile/1.0.0/download"],
-        strip_prefix = "argfile-1.0.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.argfile-1.0.0.bazel"),
     )
 
     maybe(
@@ -1695,16 +1684,6 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__fs-err-3.3.0",
-        sha256 = "73fde052dbfc920003cfd2c8e2c6e6d4cc7c1091538c3a24226cec0665ab08c0",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/fs-err/3.3.0/download"],
-        strip_prefix = "fs-err-3.3.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.fs-err-3.3.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
         name = "vendor_ts__fsevent-sys-4.1.0",
         sha256 = "76ee7a02da4d231650c7cea31349b889be2f45ddb3ef3032d2ec8185f6313fd2",
         type = "tar.gz",
@@ -2341,16 +2320,6 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/oorandom/11.1.5/download"],
         strip_prefix = "oorandom-11.1.5",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.oorandom-11.1.5.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_ts__os_str_bytes-7.2.0",
-        sha256 = "89284d0c2af7b0eb5e814798aa07265413c8fd72009f7fc82ea25a81fb287ce9",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/os_str_bytes/7.2.0/download"],
-        strip_prefix = "os_str_bytes-7.2.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.os_str_bytes-7.2.0.bazel"),
     )
 
     maybe(
@@ -4056,7 +4025,6 @@ def crate_repositories():
     return [
         struct(repo = "vendor_ts", is_dev_dep = False),
         struct(repo = "vendor_ts__anyhow-1.0.104", is_dev_dep = False),
-        struct(repo = "vendor_ts__argfile-1.0.0", is_dev_dep = False),
         struct(repo = "vendor_ts__chalk-ir-0.104.0", is_dev_dep = False),
         struct(repo = "vendor_ts__chrono-0.4.45", is_dev_dep = False),
         struct(repo = "vendor_ts__clap-4.6.7", is_dev_dep = False),
