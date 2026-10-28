@@ -125,21 +125,20 @@ func test_sqlite_swift_api(db: Connection) throws {
 	try stmt9.run(remoteString) // GOOD
 	try stmt9.run([remoteString]) // GOOD
 	try stmt9.run(["username": remoteString]) // GOOD
+	try stmt9.run(localString, remoteString) // GOOD
 	try stmt9.scalar(remoteString) // GOOD
 	try stmt9.scalar([remoteString]) // GOOD
 	try stmt9.scalar(["username": remoteString]) // GOOD
+	try stmt9.scalar(localString, remoteString) // GOOD
 
 	try Statement(db, remoteString).run() // $ Alert
 
 	try db.run(unsafeQuery1) // $ Alert
 	try db.run(safeQuery1) // GOOD
-	try db.scalar(unsafeQuery1) // $ Alert
-	try db.scalar(safeQuery1) // GOOD
-
 	try db.run(unsafeQuery1, localString, remoteString) // $ Alert
 	try db.run(varQuery, localString, remoteString) // GOOD
+	try db.scalar(unsafeQuery1) // $ Alert
+	try db.scalar(safeQuery1) // GOOD
 	try db.scalar(unsafeQuery1, localString, remoteString) // $ Alert
 	try db.scalar(varQuery, localString, remoteString) // GOOD
-	try stmt9.run(localString, remoteString) // GOOD
-	try stmt9.scalar(localString, remoteString) // GOOD
 }

@@ -96,11 +96,11 @@
 | SQLite.swift:115:16:115:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:115:16:115:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | SQLite.swift:117:16:117:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:117:16:117:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | SQLite.swift:119:16:119:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:119:16:119:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
-| SQLite.swift:132:20:132:31 | remoteString | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:132:20:132:31 | remoteString | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
-| SQLite.swift:134:13:134:24 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:134:13:134:24 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
-| SQLite.swift:136:16:136:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:136:16:136:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
-| SQLite.swift:139:13:139:24 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:139:13:139:24 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
-| SQLite.swift:141:16:141:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:141:16:141:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:134:20:134:31 | remoteString | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:134:20:134:31 | remoteString | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:136:13:136:24 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:136:13:136:24 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:138:13:138:24 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:138:13:138:24 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:140:16:140:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:140:16:140:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:142:16:142:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:142:16:142:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | other.swift:53:22:53:33 | remoteString | other.swift:49:25:49:79 | String(...) | other.swift:53:22:53:33 | remoteString | This query depends on a $@. | other.swift:49:25:49:79 | String(...) | user-provided value |
 | other.swift:55:14:55:25 | remoteString | other.swift:49:25:49:79 | String(...) | other.swift:55:14:55:25 | remoteString | This query depends on a $@. | other.swift:49:25:49:79 | String(...) | user-provided value |
 | other.swift:56:14:56:25 | remoteString | other.swift:49:25:49:79 | String(...) | other.swift:56:14:56:25 | remoteString | This query depends on a $@. | other.swift:49:25:49:79 | String(...) | user-provided value |
@@ -219,7 +219,7 @@ edges
 | SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:66:62:66:73 | remoteString | provenance |  |
 | SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:67:60:67:71 | remoteString | provenance |  |
 | SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:95:32:95:43 | remoteString | provenance |  |
-| SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:132:20:132:31 | remoteString | provenance |  |
+| SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:134:20:134:31 | remoteString | provenance |  |
 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:62:6:62:17 | remoteString | provenance |  |
 | SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:73:17:73:28 | unsafeQuery1 | provenance |  |
 | SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:100:29:100:40 | unsafeQuery1 | provenance |  |
@@ -231,10 +231,10 @@ edges
 | SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:115:16:115:27 | unsafeQuery1 | provenance |  |
 | SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:117:16:117:27 | unsafeQuery1 | provenance |  |
 | SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:119:16:119:27 | unsafeQuery1 | provenance |  |
-| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:134:13:134:24 | unsafeQuery1 | provenance |  |
-| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:136:16:136:27 | unsafeQuery1 | provenance |  |
-| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:139:13:139:24 | unsafeQuery1 | provenance |  |
-| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:141:16:141:27 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:136:13:136:24 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:138:13:138:24 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:140:16:140:27 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:142:16:142:27 | unsafeQuery1 | provenance |  |
 | SQLite.swift:65:21:65:32 | remoteString | SQLite.swift:65:6:65:17 | unsafeQuery1 | provenance |  |
 | SQLite.swift:66:6:66:17 | unsafeQuery2 | SQLite.swift:74:17:74:28 | unsafeQuery2 | provenance |  |
 | SQLite.swift:66:62:66:73 | remoteString | SQLite.swift:66:6:66:17 | unsafeQuery2 | provenance |  |
@@ -404,11 +404,11 @@ nodes
 | SQLite.swift:115:16:115:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:117:16:117:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:119:16:119:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
-| SQLite.swift:132:20:132:31 | remoteString | semmle.label | remoteString |
-| SQLite.swift:134:13:134:24 | unsafeQuery1 | semmle.label | unsafeQuery1 |
-| SQLite.swift:136:16:136:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
-| SQLite.swift:139:13:139:24 | unsafeQuery1 | semmle.label | unsafeQuery1 |
-| SQLite.swift:141:16:141:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:134:20:134:31 | remoteString | semmle.label | remoteString |
+| SQLite.swift:136:13:136:24 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:138:13:138:24 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:140:16:140:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:142:16:142:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | other.swift:49:6:49:17 | remoteString | semmle.label | remoteString |
 | other.swift:49:25:49:79 | String(...) | semmle.label | String(...) |
 | other.swift:53:22:53:33 | remoteString | semmle.label | remoteString |
