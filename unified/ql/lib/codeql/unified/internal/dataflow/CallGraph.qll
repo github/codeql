@@ -14,14 +14,19 @@ DataFlowCallable viableCallable(DataFlowCall c) {
   result.asSummarizedCallable().matchesCall(c.asExplicitCall())
 }
 
+bindingset[access]
+pragma[inline_late]
+private N::NamespaceNode resolveBase(MemberAccessExpr access) {
+  result.isInstanceMemberNamespace(T::inferType(access.getBase()).asClass())
+}
+
 private AccessorDeclaration resolveAccessor(Expr access) {
   result.getNameNode() = N::getStaticBindingTargetFromRef(access)
   or
   not exists(N::getStaticBindingTargetFromRef(access)) and
-  exists(MemberAccessExpr m, N::NamespaceNode namespace |
+  exists(MemberAccessExpr m |
     access = m and
     // TODO: Make type inference own accessor-resolution. It also needs it internally.
-    namespace.isInstanceMemberNamespace(T::inferType(m.getBase()).asClass()) and
-    namespace.getMember(m.getMemberName()).isMember(result)
+    resolveBase(m).getMember(m.getMemberName()).isMember(result)
   )
 }
