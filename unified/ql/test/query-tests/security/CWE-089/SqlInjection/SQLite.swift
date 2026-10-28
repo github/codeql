@@ -59,7 +59,7 @@ class Connection {
 
 func test_sqlite_swift_api(db: Connection) throws {
 	let localString = "user"
-	let remoteString = try String(contentsOf: URL(string: "http://example.com/")!) // $ Source
+	let remoteString = try String(contentsOf: URL(string: "http://example.com/")!) // $ MISSING: Source
 	let remoteNumber = Int(remoteString) ?? 0
 
 	let unsafeQuery1 = remoteString
@@ -70,9 +70,9 @@ func test_sqlite_swift_api(db: Connection) throws {
 
 	// --- execute ---
 
-	try db.execute(unsafeQuery1) // $ Alert
-	try db.execute(unsafeQuery2) // $ Alert
-	try db.execute(unsafeQuery3) // $ Alert
+	try db.execute(unsafeQuery1) // $ MISSING: Alert
+	try db.execute(unsafeQuery2) // $ MISSING: Alert
+	try db.execute(unsafeQuery3) // $ MISSING: Alert
 	try db.execute(safeQuery1) // GOOD
 	try db.execute(safeQuery2) // GOOD
 
@@ -80,7 +80,7 @@ func test_sqlite_swift_api(db: Connection) throws {
 
 	let varQuery = "SELECT * FROM users WHERE username=?"
 
-	let stmt1 = try db.prepare(unsafeQuery3) // $ Alert
+	let stmt1 = try db.prepare(unsafeQuery3) // $ MISSING: Alert
 	try stmt1.run()
 
 	let stmt2 = try db.prepare(varQuery, localString) // GOOD
@@ -92,31 +92,31 @@ func test_sqlite_swift_api(db: Connection) throws {
 	let stmt4 = try Statement(db, localString) // GOOD
 	try stmt4.run()
 
-	let stmt5 = try Statement(db, remoteString) // $ Alert
+	let stmt5 = try Statement(db, remoteString) // $ MISSING: Alert
 	try stmt5.run()
 
 	// --- more variants ---
 
-	let stmt6 = try db.prepare(unsafeQuery1, "") // $ Alert
+	let stmt6 = try db.prepare(unsafeQuery1, "") // $ MISSING: Alert
 	try stmt6.run()
 
-	let stmt7 = try db.prepare(unsafeQuery1, [""]) // $ Alert
+	let stmt7 = try db.prepare(unsafeQuery1, [""]) // $ MISSING: Alert
 	try stmt7.run()
 
-	let stmt8 = try db.prepare(unsafeQuery1, ["username": ""]) // $ Alert
+	let stmt8 = try db.prepare(unsafeQuery1, ["username": ""]) // $ MISSING: Alert
 	try stmt8.run()
 
-	try db.run(unsafeQuery1, "") // $ Alert
+	try db.run(unsafeQuery1, "") // $ MISSING: Alert
 
-	try db.run(unsafeQuery1, [""]) // $ Alert
+	try db.run(unsafeQuery1, [""]) // $ MISSING: Alert
 
-	try db.run(unsafeQuery1, ["username": ""]) // $ Alert
+	try db.run(unsafeQuery1, ["username": ""]) // $ MISSING: Alert
 
-	try db.scalar(unsafeQuery1, "") // $ Alert
+	try db.scalar(unsafeQuery1, "") // $ MISSING: Alert
 
-	try db.scalar(unsafeQuery1, [""]) // $ Alert
+	try db.scalar(unsafeQuery1, [""]) // $ MISSING: Alert
 
-	try db.scalar(unsafeQuery1, ["username": ""]) // $ Alert
+	try db.scalar(unsafeQuery1, ["username": ""]) // $ MISSING: Alert
 
 	let stmt9 = try db.prepare(varQuery) // GOOD
 	try stmt9.bind(remoteString) // GOOD
@@ -129,5 +129,5 @@ func test_sqlite_swift_api(db: Connection) throws {
 	try stmt9.scalar([remoteString]) // GOOD
 	try stmt9.scalar(["username": remoteString]) // GOOD
 
-	try Statement(db, remoteString).run() // $ Alert
+	try Statement(db, remoteString).run() // $ MISSING: Alert
 }

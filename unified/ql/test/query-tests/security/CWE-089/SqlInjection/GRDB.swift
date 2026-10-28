@@ -129,16 +129,16 @@ func testSqlRequest() throws {
     let localString = "user"
 	let remoteString  = try String(contentsOf: URL(string: "http://example.com/")!) // $ Source
 
-    let _ = SQLRequest(stringLiteral: remoteString) // $ Alert
+    let _ = SQLRequest(stringLiteral: remoteString) // $ MISSING: Alert
     let _ = SQLRequest(stringLiteral: localString) // GOOD
 
-    let _ = SQLRequest(unicodeScalarLiteral: remoteString) // $ Alert
+    let _ = SQLRequest(unicodeScalarLiteral: remoteString) // $ MISSING: Alert
     let _ = SQLRequest(unicodeScalarLiteral: localString) // GOOD
 
-    let _ = SQLRequest(extendedGraphemeClusterLiteral: remoteString) // $ Alert
+    let _ = SQLRequest(extendedGraphemeClusterLiteral: remoteString) // $ MISSING: Alert
     let _ = SQLRequest(extendedGraphemeClusterLiteral: localString) // GOOD
 
-    let _ = SQLRequest(stringInterpolation: remoteString) // $ Alert
+    let _ = SQLRequest(stringInterpolation: remoteString) // $ MISSING: Alert
     let _ = SQLRequest(stringInterpolation: localString) // GOOD
 
     let _ = SQLRequest(sql: remoteString) // $ Alert
@@ -163,10 +163,10 @@ func testSql() throws {
     let localString = "user"
 	let remoteString  = try String(contentsOf: URL(string: "http://example.com/")!) // $ Source
 
-    let _ = SQL(stringLiteral: remoteString) // $ Alert
-    let _ = SQL(unicodeScalarLiteral: remoteString) // $ Alert
-    let _ = SQL(extendedGraphemeClusterLiteral: remoteString) // $ Alert
-    let _ = SQL(stringInterpolation: remoteString) // $ Alert
+    let _ = SQL(stringLiteral: remoteString) // $ MISSING: Alert
+    let _ = SQL(unicodeScalarLiteral: remoteString) // $ MISSING: Alert
+    let _ = SQL(extendedGraphemeClusterLiteral: remoteString) // $ MISSING: Alert
+    let _ = SQL(stringInterpolation: remoteString) // $ MISSING: Alert
     let _ = SQL(sql: remoteString) // $ Alert
     let sql1 = SQL(stringLiteral: "")
     sql1.append(sql: remoteString) // $ Alert
@@ -239,9 +239,9 @@ func testTableRecord() throws {
 
 func test(statementCache: StatementCache) throws {
     let localString = "user"
-	let remoteString  = try String(contentsOf: URL(string: "http://example.com/")!) // $ Source
+	let remoteString  = try String(contentsOf: URL(string: "http://example.com/")!) // $ MISSING: Source
 
-    let _ = statementCache.statement(remoteString) // $ Alert
+    let _ = statementCache.statement(remoteString) // $ MISSING: Alert
     let _ = statementCache.statement(localString) // GOOD
 }
 

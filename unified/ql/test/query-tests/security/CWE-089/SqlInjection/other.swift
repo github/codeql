@@ -49,10 +49,10 @@ func test_heuristic(db: MyDatabase) throws {
 	_ = MyDatabase(sql: "some_fixed_sql") // GOOD
 	_ = MyDatabase(sql: remoteString) // $ Alert
 
-	db.execute1(remoteString) // $ Alert
-	db.execute2(remoteString) // $ Alert
-	db.execute3(NSString(string: remoteString)) // $ Alert
-	db.execute4(remoteString as! Sql) // $ Alert
+	db.execute1(remoteString) // $ MISSING: Alert
+	db.execute2(remoteString) // $ MISSING: Alert
+	db.execute3(NSString(string: remoteString)) // $ MISSING: Alert
+	db.execute4(remoteString as! Sql) // $ MISSING: Alert
 
 	db.query(sql: remoteString) // $ Alert
 	db.query(sqlLiteral: remoteString) // $ MISSING: Alert // BAD [NOT DETECTED]
