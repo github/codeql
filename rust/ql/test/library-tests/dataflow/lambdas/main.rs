@@ -179,6 +179,11 @@ mod async_blocks {
     }
 }
 
+fn closure_flow_out_try() {
+    let f = || (Some(Some(source(93))))?;
+    sink(f().unwrap()); // $ hasValueFlow=93
+}
+
 fn main() {
     closure_flow_out();
     closure_flow_in();
