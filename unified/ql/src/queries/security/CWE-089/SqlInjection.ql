@@ -13,6 +13,16 @@
 import unified
 private import codeql.unified.internal.typeinference.TypeInference as TypeInference
 
+private predicate sqliteSwiftSink(DataFlow::Node node) {
+  // TODO: Use MaD once legacy selectors distinguish Connection methods from Statement bindings.
+  exists(CallExpr call, FunctionDeclaration target |
+    target = TypeInference::resolveCallTarget(call) and
+    target.getEnclosingClass().getName() = "Connection" and
+    target.getName() = ["run", "scalar"] and
+    node.asExpr() = call.getArgument(0).getValue()
+  )
+}
+
 private predicate heuristicSink(DataFlow::Node node) {
   exists(Argument arg |
     node.asExpr() = arg.getValue() and
@@ -41,6 +51,8 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     Models::isSink(node, "sql-injection")
+    or
+    sqliteSwiftSink(node)
     or
     heuristicSink(node)
   }
