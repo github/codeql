@@ -91,8 +91,15 @@
 | SQLite.swift:103:29:103:40 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:103:29:103:40 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | SQLite.swift:106:29:106:40 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:106:29:106:40 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | SQLite.swift:132:20:132:31 | remoteString | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:132:20:132:31 | remoteString | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
-| other.swift:50:22:50:33 | remoteString | other.swift:46:25:46:79 | String(...) | other.swift:50:22:50:33 | remoteString | This query depends on a $@. | other.swift:46:25:46:79 | String(...) | user-provided value |
-| other.swift:57:16:57:27 | remoteString | other.swift:46:25:46:79 | String(...) | other.swift:57:16:57:27 | remoteString | This query depends on a $@. | other.swift:46:25:46:79 | String(...) | user-provided value |
+| other.swift:53:22:53:33 | remoteString | other.swift:49:25:49:79 | String(...) | other.swift:53:22:53:33 | remoteString | This query depends on a $@. | other.swift:49:25:49:79 | String(...) | user-provided value |
+| other.swift:55:14:55:25 | remoteString | other.swift:49:25:49:79 | String(...) | other.swift:55:14:55:25 | remoteString | This query depends on a $@. | other.swift:49:25:49:79 | String(...) | user-provided value |
+| other.swift:56:14:56:25 | remoteString | other.swift:49:25:49:79 | String(...) | other.swift:56:14:56:25 | remoteString | This query depends on a $@. | other.swift:49:25:49:79 | String(...) | user-provided value |
+| other.swift:57:14:57:43 | NSString(...) | other.swift:49:25:49:79 | String(...) | other.swift:57:14:57:43 | NSString(...) | This query depends on a $@. | other.swift:49:25:49:79 | String(...) | user-provided value |
+| other.swift:58:14:58:33 | TypeCastExpr | other.swift:49:25:49:79 | String(...) | other.swift:58:14:58:33 | TypeCastExpr | This query depends on a $@. | other.swift:49:25:49:79 | String(...) | user-provided value |
+| other.swift:60:25:60:36 | remoteString | other.swift:49:25:49:79 | String(...) | other.swift:60:25:60:36 | remoteString | This query depends on a $@. | other.swift:49:25:49:79 | String(...) | user-provided value |
+| other.swift:62:34:62:45 | remoteString | other.swift:49:25:49:79 | String(...) | other.swift:62:34:62:45 | remoteString | This query depends on a $@. | other.swift:49:25:49:79 | String(...) | user-provided value |
+| other.swift:64:21:64:32 | remoteString | other.swift:49:25:49:79 | String(...) | other.swift:64:21:64:32 | remoteString | This query depends on a $@. | other.swift:49:25:49:79 | String(...) | user-provided value |
+| other.swift:67:16:67:27 | remoteString | other.swift:49:25:49:79 | String(...) | other.swift:67:16:67:27 | remoteString | This query depends on a $@. | other.swift:49:25:49:79 | String(...) | user-provided value |
 | sqlite3_c_api.swift:133:33:133:44 | unsafeQuery1 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:133:33:133:44 | unsafeQuery1 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
 | sqlite3_c_api.swift:134:33:134:44 | unsafeQuery2 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:134:33:134:44 | unsafeQuery2 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
 | sqlite3_c_api.swift:135:33:135:44 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:135:33:135:44 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
@@ -214,9 +221,18 @@ edges
 | SQLite.swift:67:6:67:17 | unsafeQuery3 | SQLite.swift:75:17:75:28 | unsafeQuery3 | provenance |  |
 | SQLite.swift:67:6:67:17 | unsafeQuery3 | SQLite.swift:83:29:83:40 | unsafeQuery3 | provenance |  |
 | SQLite.swift:67:60:67:71 | remoteString | SQLite.swift:67:6:67:17 | unsafeQuery3 | provenance |  |
-| other.swift:46:6:46:17 | remoteString | other.swift:50:22:50:33 | remoteString | provenance |  |
-| other.swift:46:6:46:17 | remoteString | other.swift:57:16:57:27 | remoteString | provenance |  |
-| other.swift:46:25:46:79 | String(...) | other.swift:46:6:46:17 | remoteString | provenance |  |
+| other.swift:49:6:49:17 | remoteString | other.swift:53:22:53:33 | remoteString | provenance |  |
+| other.swift:49:6:49:17 | remoteString | other.swift:55:14:55:25 | remoteString | provenance |  |
+| other.swift:49:6:49:17 | remoteString | other.swift:56:14:56:25 | remoteString | provenance |  |
+| other.swift:49:6:49:17 | remoteString | other.swift:57:31:57:42 | remoteString | provenance |  |
+| other.swift:49:6:49:17 | remoteString | other.swift:58:14:58:25 | remoteString | provenance |  |
+| other.swift:49:6:49:17 | remoteString | other.swift:60:25:60:36 | remoteString | provenance |  |
+| other.swift:49:6:49:17 | remoteString | other.swift:62:34:62:45 | remoteString | provenance |  |
+| other.swift:49:6:49:17 | remoteString | other.swift:64:21:64:32 | remoteString | provenance |  |
+| other.swift:49:6:49:17 | remoteString | other.swift:67:16:67:27 | remoteString | provenance |  |
+| other.swift:49:25:49:79 | String(...) | other.swift:49:6:49:17 | remoteString | provenance |  |
+| other.swift:57:31:57:42 | remoteString | other.swift:57:14:57:43 | NSString(...) | provenance |  |
+| other.swift:58:14:58:25 | remoteString | other.swift:58:14:58:33 | TypeCastExpr | provenance |  |
 | sqlite3_c_api.swift:122:6:122:17 | remoteString | sqlite3_c_api.swift:125:21:125:32 | remoteString | provenance |  |
 | sqlite3_c_api.swift:122:6:122:17 | remoteString | sqlite3_c_api.swift:126:62:126:73 | remoteString | provenance |  |
 | sqlite3_c_api.swift:122:6:122:17 | remoteString | sqlite3_c_api.swift:127:60:127:71 | remoteString | provenance |  |
@@ -363,10 +379,19 @@ nodes
 | SQLite.swift:103:29:103:40 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:106:29:106:40 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:132:20:132:31 | remoteString | semmle.label | remoteString |
-| other.swift:46:6:46:17 | remoteString | semmle.label | remoteString |
-| other.swift:46:25:46:79 | String(...) | semmle.label | String(...) |
-| other.swift:50:22:50:33 | remoteString | semmle.label | remoteString |
-| other.swift:57:16:57:27 | remoteString | semmle.label | remoteString |
+| other.swift:49:6:49:17 | remoteString | semmle.label | remoteString |
+| other.swift:49:25:49:79 | String(...) | semmle.label | String(...) |
+| other.swift:53:22:53:33 | remoteString | semmle.label | remoteString |
+| other.swift:55:14:55:25 | remoteString | semmle.label | remoteString |
+| other.swift:56:14:56:25 | remoteString | semmle.label | remoteString |
+| other.swift:57:14:57:43 | NSString(...) | semmle.label | NSString(...) |
+| other.swift:57:31:57:42 | remoteString | semmle.label | remoteString |
+| other.swift:58:14:58:25 | remoteString | semmle.label | remoteString |
+| other.swift:58:14:58:33 | TypeCastExpr | semmle.label | TypeCastExpr |
+| other.swift:60:25:60:36 | remoteString | semmle.label | remoteString |
+| other.swift:62:34:62:45 | remoteString | semmle.label | remoteString |
+| other.swift:64:21:64:32 | remoteString | semmle.label | remoteString |
+| other.swift:67:16:67:27 | remoteString | semmle.label | remoteString |
 | sqlite3_c_api.swift:122:6:122:17 | remoteString | semmle.label | remoteString |
 | sqlite3_c_api.swift:122:26:122:80 | String(...) | semmle.label | String(...) |
 | sqlite3_c_api.swift:125:6:125:17 | unsafeQuery1 | semmle.label | unsafeQuery1 |

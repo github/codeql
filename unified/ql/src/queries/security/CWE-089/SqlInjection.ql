@@ -11,6 +11,27 @@
  */
 
 import unified
+private import codeql.unified.internal.typeinference.TypeInference as TypeInference
+
+private predicate heuristicSink(DataFlow::Node node) {
+  exists(Argument arg |
+    node.asExpr() = arg.getValue() and
+    (
+      arg.getName() = "sql"
+      or
+      exists(CallExpr call, Parameter param |
+        arg = call.getAnArgument() and
+        param = TypeInference::resolveCallTarget(call).getAParameter() and
+        param.getPattern().(Identifier).getValue() = "sql" and
+        (
+          arg.getPositionalIndex() = param.getPositionalIndex()
+          or
+          arg.getName() = param.getExternalName()
+        )
+      )
+    )
+  )
+}
 
 /**
  * A taint configuration for tainted data that reaches a SQL sink.
@@ -21,11 +42,7 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) {
     Models::isSink(node, "sql-injection")
     or
-    exists(Argument arg |
-      arg.getName() = "sql" and
-      node.asExpr() = arg.getValue()
-    )
-    // TODO: Port the parameter-name heuristic from original Swift's SqlInjectionExtensions.qll.
+    heuristicSink(node)
   }
 
   predicate isBarrier(DataFlow::Node node) {
