@@ -2668,6 +2668,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       predicate stepLanguageSpecific(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2);
 
       /**
+       * Like `stepLanguageSpecific`, but allows for recursion through type inference, which
+       * has the consequence that it cannot be used in the logic for inferring certain type
+       * information.
+       *
+       * Only use this predicate when using `stepLanguageSpecific` results in non-monotonicity.
+       */
+      default predicate stepLanguageSpecificExtra(
+        AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2
+      ) {
+        none()
+      }
+
+      /**
        * Gets the inferred type of `n` at `path`.
        *
        * Use this predicate to implement any language-specific inference logic, but only for
@@ -2684,6 +2697,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * in `inferTypeLanguageSpecific`; if in doubt, use `inferTypeLanguageSpecific` instead.
        */
       default Type inferTypeCertainLanguageSpecific(AstNode n, TypePath path) { none() }
+
+      /**
+       * Holds if contextual inference is allowed for the node `n` at the type path
+       * `path`. This has the same effect as assigning `UnknownType` to `n` at `path`,
+       * but prevents propagation of `UnknownType` from `n` to other nodes.
+       */
+      default predicate allowContextualInference(AstNode n, TypePath path) { none() }
     }
 
     module Make3<InputSig3 Input3> {
@@ -2892,6 +2912,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       private predicate step(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
         stepLanguageSpecific(n1, prefix1, n2, prefix2)
+        or
+        stepLanguageSpecificExtra(n1, prefix1, n2, prefix2)
         or
         Certain::stepCertain(n1, prefix1, n2, prefix2)
         or
@@ -3234,70 +3256,97 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * This module identifies calls where the return type may need to be inferred from the
        * context, and also implements logic for performing contextual inference.
        */
-      private module ContextualTyping {
-        pragma[nomagic]
-        private TypeParameter getAConstrained(TypeParameter tp) {
-          result = getATypeParameterConstraint(tp).getTypeAt(_)
+      module ContextualTyping {
+        /**
+         * Provides the input to `ContextualReturnType`.
+         */
+        signature module ContextualReturnTypeInputSig {
+          /** Holds if `c` has the type parameter `tp` at its return type at `path`. */
+          default predicate callableHasTypeParameterAtReturnType(
+            Callable c, TypePath path, TypeParameter tp
+          ) {
+            tp = getCallableReturnType(c, path)
+          }
+
+          /** Gets a parameter of `c`. */
+          default Parameter getACallableParameter(Callable c) { result = c.getParameter(_) }
         }
 
         /**
-         * Holds if callable `c` mentions type parameter `tp` at some parameter,
-         * possibly via a constraint on another mentioned type parameter.
+         * Provide logic for identifying calls where the return type may need to be inferred from the context.
          */
-        pragma[nomagic]
-        private predicate mentionsTypeParameterAtParameter(Callable c, TypeParameter tp) {
-          tp = getAConstrained*(c.getParameter(_).getType().getTypeAt(_))
-        }
+        module ContextualReturnType<ContextualReturnTypeInputSig Input> {
+          pragma[nomagic]
+          private TypeParameter getAConstrained(TypeParameter tp) {
+            result = getATypeParameterConstraint(tp).getTypeAt(_)
+          }
 
-        /**
-         * Holds if the return type of the callable `c` at `path` is type parameter
-         * `tp`, and `tp` does not appear in the type of any parameter of `c`.
-         *
-         * In this case, the context in which `p` is called may be needed to infer
-         * the instantiation of `tp`.
-         *
-         * This covers functions like `Default::default` and `Vec::new` in Rust.
-         */
-        pragma[nomagic]
-        private predicate callableReturnContextTypedAt(Callable c, TypePath path, TypeParameter tp) {
-          tp = getCallableReturnType(c, path) and
-          not mentionsTypeParameterAtParameter(c, tp)
-        }
+          /**
+           * Holds if callable `c` mentions type parameter `tp` at some parameter,
+           * possibly via a constraint on another mentioned type parameter.
+           */
+          pragma[nomagic]
+          private predicate mentionsTypeParameterAtParameter(Callable c, TypeParameter tp) {
+            tp = getAConstrained*(Input::getACallableParameter(c).getType().getTypeAt(_))
+          }
 
-        bindingset[invocation, target]
-        pragma[inline_late]
-        private predicate hasTypeArgument(Invocation invocation, Callable target, TypeParameter tp) {
-          exists(Type t |
-            InvocationTypeQualifierMatching::typeMatch(invocation, _, _, _, t, tp) and
-            not t instanceof PseudoType
-          )
-          or
-          exists(InvocationMatching::getTypeArgument(invocation, target, tp, _))
-        }
+          /**
+           * Holds if the return type of the callable `c` at `path` is type parameter
+           * `tp`, and `tp` does not appear in the type of any parameter of `c`.
+           *
+           * In this case, the context in which `p` is called may be needed to infer
+           * the instantiation of `tp`.
+           *
+           * This covers functions like `Default::default` and `Vec::new` in Rust.
+           */
+          pragma[nomagic]
+          private predicate callableReturnContextTypedAt(Callable c, TypePath path, TypeParameter tp) {
+            Input::callableHasTypeParameterAtReturnType(c, path, tp) and
+            not mentionsTypeParameterAtParameter(c, tp)
+          }
 
-        /**
-         * Holds if `invocation` resolves to some target where the return type at `path`
-         * may have to be inferred from the context.
-         */
-        pragma[nomagic]
-        predicate needsContextualTyping(Invocation invocation, TypePath path) {
-          exists(Callable target, TypeParameter tp |
-            target = invocation.getATargetForTypeQualifierMatching()
-            or
-            target = invocation.getTarget(_)
-          |
-            callableReturnContextTypedAt(target, path, tp) and
-            // check that no explicit type arguments have been supplied that bind `tp`
-            not exists(TypeParameter supplied |
-              tp = getAConstrained*(supplied) and
-              hasTypeArgument(invocation, target, supplied)
+          bindingset[invocation, target]
+          pragma[inline_late]
+          private predicate hasTypeArgument(Invocation invocation, Callable target, TypeParameter tp) {
+            exists(Type t |
+              InvocationTypeQualifierMatching::typeMatch(invocation, _, _, _, t, tp) and
+              not t instanceof PseudoType
             )
-          )
+            or
+            exists(InvocationMatching::getTypeArgument(invocation, target, tp, _))
+          }
+
+          /**
+           * Holds if `invocation` resolves to some target where the return type at `path`
+           * may have to be inferred from the context.
+           */
+          pragma[nomagic]
+          predicate needsContextualTyping(Invocation invocation, TypePath path) {
+            exists(Callable target, TypeParameter tp |
+              target = invocation.getATargetForTypeQualifierMatching()
+              or
+              target = invocation.getTarget(_)
+            |
+              callableReturnContextTypedAt(target, path, tp) and
+              // check that no explicit type arguments have been supplied that bind `tp`
+              not exists(TypeParameter supplied |
+                tp = getAConstrained*(supplied) and
+                hasTypeArgument(invocation, target, supplied)
+              )
+            )
+          }
         }
+
+        private module DefaultContextualReturnTypeInput implements ContextualReturnTypeInputSig { }
+
+        predicate needsContextualTyping =
+          ContextualReturnType<DefaultContextualReturnTypeInput>::needsContextualTyping/2;
 
         pragma[nomagic]
         predicate hasUnknownTypeAt(AstNode n, TypePath path) {
           inferType(n, path) instanceof UnknownType
+          or
+          allowContextualInference(n, path)
         }
 
         pragma[nomagic]
@@ -3326,10 +3375,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         private Type inferTypeContextualCand1(AstNode n, TypePath prefix, TypePath path) {
           result = inferTypeContextualCand0(n, path) and
           hasUnknownType(n) and
-          prefix = path.getAPrefix() and
-          // no need to propagate `UnknownType`s contextually; `n` must already have an
-          // `UnknownType` at some prefix of `path`
-          not result instanceof UnknownType
+          prefix = path.getAPrefix()
         }
 
         pragma[nomagic]
@@ -3466,6 +3512,38 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
+       * Holds if the type of `n` at `path` is `t` and the `j`th element of `path`
+       * corresponds to the `i`th type parameter of the unknown type.
+       */
+      pragma[nomagic]
+      private predicate infersUnknownTypeArg0(AstNode n, int i, int j, TypePath path, Type t) {
+        exists(TypeParameter tp |
+          ContextualTyping::hasUnknownType(n) and
+          tp = any(UnknownType ut).getPositionalTypeParameter(i) and
+          t = inferType(n, path) and
+          not t instanceof UnknownType and
+          tp = path.getElement(j)
+        )
+      }
+
+      /**
+       * Holds if the type of `n` at `path` is `t`, where
+       * `path = prefix ++ tp_i ++ suffix` and `tp_i` is the `i`th type parameter
+       * of the unknown type.
+       */
+      pragma[nomagic]
+      private predicate infersUnknownTypeArg1(
+        AstNode n, TypePath prefix, int i, TypePath suffix, Type t
+      ) {
+        exists(TypePath path, int j, TypePath suffix0 |
+          infersUnknownTypeArg0(n, i, j, path, t) and
+          prefix = path.getProperPrefix(j) and
+          path = prefix.appendInverse(suffix0) and
+          suffix0.isCons(_, suffix)
+        )
+      }
+
+      /**
        * Holds if `n` has unknown type at `prefix`, but is still able to
        * infer a known type at `suffix` for the `i`th type parameter of whatever
        * the unknown type is.
@@ -3486,13 +3564,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate infersUnknownTypeArg(
         AstNode n, TypePath prefix, int i, TypePath suffix, Type t
       ) {
-        exists(TypeParameter tp, TypePath suffix0 |
-          ContextualTyping::hasUnknownTypeAt(n, prefix) and
-          suffix0.isCons(tp, suffix) and
-          tp = any(UnknownType ut).getPositionalTypeParameter(i) and
-          t = inferType(n, prefix.appendInverse(suffix0)) and
-          not t instanceof UnknownType
-        )
+        ContextualTyping::hasUnknownTypeAt(n, prefix) and
+        infersUnknownTypeArg1(n, prefix, i, suffix, t)
       }
 
       pragma[nomagic]

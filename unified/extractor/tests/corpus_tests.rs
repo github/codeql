@@ -2,6 +2,7 @@ use std::fs;
 use std::path::Path;
 
 use codeql_extractor::extractor::desugaring;
+use yeast::OutputAst as Ast;
 use yeast::dump::{DumpOptions, dump_ast, dump_ast_with_type_errors_and_options};
 
 #[path = "../src/languages/mod.rs"]
@@ -61,7 +62,7 @@ fn render_corpus(case: &CorpusCase) -> String {
 
 /// Parse `input` through the language's parser and desugar it, returning the
 /// mapped AST.
-fn run_desugaring(lang: &desugaring::LanguageSpec, input: &str) -> Result<yeast::Ast, String> {
+fn run_desugaring(lang: &desugaring::LanguageSpec, input: &str) -> Result<Ast, String> {
     let parsed = (lang.parser)(input.as_bytes())?;
     lang.desugarer
         .run_from_ast(parsed.ast)

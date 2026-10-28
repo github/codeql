@@ -1,7 +1,8 @@
 models
 | 1 | Summary: <& as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue; value |
 | 2 | Summary: <core::ops::arith::Mul>::mul; Argument[self,0]; ReturnValue; taint |
-| 3 | Summary: futures_executor::local_pool::block_on; Argument[0]; ReturnValue; value |
+| 3 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 4 | Summary: futures_executor::local_pool::block_on; Argument[0]; ReturnValue; value |
 edges
 | main.rs:12:28:14:1 | { ... } | main.rs:17:13:17:23 | get_data(...) | provenance |  |
 | main.rs:13:5:13:13 | source(...) | main.rs:12:28:14:1 | { ... } | provenance |  |
@@ -201,7 +202,7 @@ edges
 | main.rs:348:9:348:9 | c | main.rs:350:10:350:16 | await b | provenance |  |
 | main.rs:354:9:354:9 | a | main.rs:355:10:355:10 | a | provenance |  |
 | main.rs:354:13:354:55 | ...::block_on(...) | main.rs:354:9:354:9 | a | provenance |  |
-| main.rs:354:41:354:54 | async_source(...) | main.rs:354:13:354:55 | ...::block_on(...) | provenance | MaD:3 |
+| main.rs:354:41:354:54 | async_source(...) | main.rs:354:13:354:55 | ...::block_on(...) | provenance | MaD:4 |
 | main.rs:366:44:368:9 | { ... } | main.rs:403:18:403:38 | t.get_double_number() | provenance |  |
 | main.rs:366:44:368:9 | { ... } | main.rs:407:18:407:50 | ...::get_double_number(...) | provenance |  |
 | main.rs:367:13:367:29 | self.get_number() | main.rs:367:13:367:33 | ... * ... | provenance | MaD:2 |
@@ -233,6 +234,14 @@ edges
 | main.rs:433:32:433:43 | STATIC_VALUE | main.rs:433:17:433:28 | static_value | provenance |  |
 | main.rs:436:13:436:24 | STATIC_VALUE | main.rs:427:5:427:46 | static STATIC_VALUE | provenance |  |
 | main.rs:436:28:436:37 | source(...) | main.rs:436:13:436:24 | STATIC_VALUE | provenance |  |
+| main.rs:466:55:469:5 | { ... } [Ok] | main.rs:473:14:473:39 | unwrapped_value_returned(...) [Ok] | provenance |  |
+| main.rs:467:13:467:13 | a [Ok, Ok] | main.rs:468:9:468:9 | a [Ok, Ok] | provenance |  |
+| main.rs:467:48:467:65 | Ok(...) [Ok, Ok] | main.rs:467:13:467:13 | a [Ok, Ok] | provenance |  |
+| main.rs:467:51:467:64 | Ok(...) [Ok] | main.rs:467:48:467:65 | Ok(...) [Ok, Ok] | provenance |  |
+| main.rs:467:54:467:63 | source(...) | main.rs:467:51:467:64 | Ok(...) [Ok] | provenance |  |
+| main.rs:468:9:468:9 | a [Ok, Ok] | main.rs:468:9:468:10 | TryExpr [Ok] | provenance |  |
+| main.rs:468:9:468:10 | TryExpr [Ok] | main.rs:466:55:469:5 | { ... } [Ok] | provenance |  |
+| main.rs:473:14:473:39 | unwrapped_value_returned(...) [Ok] | main.rs:473:14:473:48 | ... .unwrap() | provenance | MaD:3 |
 nodes
 | main.rs:12:28:14:1 | { ... } | semmle.label | { ... } |
 | main.rs:13:5:13:13 | source(...) | semmle.label | source(...) |
@@ -488,6 +497,15 @@ nodes
 | main.rs:436:13:436:24 | STATIC_VALUE | semmle.label | STATIC_VALUE |
 | main.rs:436:28:436:37 | source(...) | semmle.label | source(...) |
 | main.rs:437:18:437:29 | STATIC_VALUE | semmle.label | STATIC_VALUE |
+| main.rs:466:55:469:5 | { ... } [Ok] | semmle.label | { ... } [Ok] |
+| main.rs:467:13:467:13 | a [Ok, Ok] | semmle.label | a [Ok, Ok] |
+| main.rs:467:48:467:65 | Ok(...) [Ok, Ok] | semmle.label | Ok(...) [Ok, Ok] |
+| main.rs:467:51:467:64 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
+| main.rs:467:54:467:63 | source(...) | semmle.label | source(...) |
+| main.rs:468:9:468:9 | a [Ok, Ok] | semmle.label | a [Ok, Ok] |
+| main.rs:468:9:468:10 | TryExpr [Ok] | semmle.label | TryExpr [Ok] |
+| main.rs:473:14:473:39 | unwrapped_value_returned(...) [Ok] | semmle.label | unwrapped_value_returned(...) [Ok] |
+| main.rs:473:14:473:48 | ... .unwrap() | semmle.label | ... .unwrap() |
 subpaths
 | main.rs:38:16:38:24 | source(...) | main.rs:26:28:26:33 | ...: i64 | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | main.rs:38:5:38:5 | [post] a [MyStruct] |
 | main.rs:39:10:39:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:30:31:32:5 | { ... } | main.rs:39:10:39:21 | a.get_data() |
@@ -555,3 +573,4 @@ testFailures
 | main.rs:434:18:434:29 | static_value | main.rs:436:28:436:37 | source(...) | main.rs:434:18:434:29 | static_value | $@ | main.rs:436:28:436:37 | source(...) | source(...) |
 | main.rs:437:18:437:29 | STATIC_VALUE | main.rs:427:36:427:45 | source(...) | main.rs:437:18:437:29 | STATIC_VALUE | $@ | main.rs:427:36:427:45 | source(...) | source(...) |
 | main.rs:437:18:437:29 | STATIC_VALUE | main.rs:436:28:436:37 | source(...) | main.rs:437:18:437:29 | STATIC_VALUE | $@ | main.rs:436:28:436:37 | source(...) | source(...) |
+| main.rs:473:14:473:48 | ... .unwrap() | main.rs:467:54:467:63 | source(...) | main.rs:473:14:473:48 | ... .unwrap() | $@ | main.rs:467:54:467:63 | source(...) | source(...) |

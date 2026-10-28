@@ -38,6 +38,11 @@ private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
     or
     expr = call.getCallee()
   )
+  or
+  exists(Expr target |
+    hasPostUpdate(target, cfgNode) and
+    exprStep(expr, target, _)
+  )
 }
 
 /**
@@ -86,15 +91,23 @@ newtype TDataFlowNode =
   TLocalVariableRefNode(AstNode repr, LocalVariable var, VariableRefKind kind) {
     performsVariableAccess(repr, var, kind, _)
   } or
+  TReturnNode(DataFlowCallable callable) {
+    not exists(callable.asSummarizedCallable()) // represented by TSummaryNode
+  } or
   TCallableNode(DataFlowCallable callable) or
-  TImplicitParameterNode(DataFlowCallable callable, ImplicitParameterPosition pos) or
-  TImplicitArgumentNode(DataFlowCall call, ImplicitArgumentPosition pos, Boolean isPost) or
+  TImplicitParameterNode(DataFlowCallable callable, ImplicitParameterPosition pos) {
+    not exists(callable.asSummarizedCallable()) // represented by TSummaryNode
+  } or
+  TImplicitArgumentNode(DataFlowCall call, ImplicitArgumentPosition pos, Boolean isPost) {
+    not call.isSummaryCall(_, _) // represented by TSummaryNode
+  } or
   TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node) or
-  TCaptureSsaNode(CaptureSsaOutput::SynthesizedCaptureNode node)
+  TCaptureSsaNode(CaptureSsaOutput::SynthesizedCaptureNode node) or
+  TSummaryNode(FlowSummaryOutput::SummaryNode node)
 
 class TDataFlowNodeStage1 =
   TValueNode or TStrictlyIncomingValue or TExprPostUpdateNode or TLocalVariableRefNode or
-      TCallableNode or TImplicitParameterNode or TImplicitArgumentNode;
+      TReturnNode or TCallableNode or TImplicitParameterNode or TImplicitArgumentNode;
 
 class TDataFlowNodeStage2 = TDataFlowNodeStage1 or TLocalSsaNode;
 
@@ -141,6 +154,16 @@ class BuilderNode extends TDataFlowNodeStage1 {
 
   /** Holds if this represents the updated state of the value returned by `expr` after it has been mutated by the surrounding assignment or call. */
   predicate isPostUpdate(Expr expr) { this = TExprPostUpdateNode(expr) }
+
+  /** Holds if this node is the canonical representative for the return value of `callable`. */
+  predicate isReturnNode(Callable callable) { this.isReturnNodeEx(toDataFlowCallable(callable)) }
+
+  /**
+   * Holds if this node is the canonical representative for the return value of `callable`.
+   *
+   * Note that this does not hold for the return node in a summarized callable.
+   */
+  predicate isReturnNodeEx(DataFlowCallable callable) { this = TReturnNode(callable) }
 
   /** Holds if this node represents an implicit parameter of `callable`. */
   predicate isImplicitParameter(DataFlowCallable callable, ImplicitParameterPosition pos) {
@@ -248,6 +271,11 @@ class BuilderNode extends TDataFlowNodeStage1 {
       result = "[callable] " + callable.toString()
     )
     or
+    exists(DataFlowCallable callable |
+      this.isReturnNodeEx(callable) and
+      result = "[return] " + callable.toString()
+    )
+    or
     exists(DataFlowCall call, ArgumentPosition pos |
       this.isImplicitArgument(call, pos, false) and
       result = "[" + pos + " arg] " + call.toString()
@@ -271,6 +299,11 @@ class BuilderNode extends TDataFlowNodeStage1 {
       or
       this.isCallableEx(callable)
     |
+      result = callable.getLocation()
+    )
+    or
+    exists(DataFlowCallable callable |
+      this.isReturnNodeEx(callable) and
       result = callable.getLocation()
     )
     or
@@ -361,6 +394,9 @@ class Node extends TDataFlowNode {
   /** Holds if this is the canonical representative for the given `callable`. */
   predicate isCallable(Callable callable) { this.(BuilderNode).isCallable(callable) }
 
+  /** Holds if this node is the canonical representative for the return value of `callable`. */
+  predicate isReturnNode(Callable callable) { this.(BuilderNode).isReturnNode(callable) }
+
   /**
    * Gets the AST node wrapped by this data flow, if any.
    */
@@ -374,6 +410,11 @@ class Node extends TDataFlowNode {
       this = TCaptureSsaNode(node) and
       result = "[capture] " + node.toString()
     )
+    or
+    exists(FlowSummaryOutput::SummaryNode node |
+      this = TSummaryNode(node) and
+      result = node.toString()
+    )
   }
 
   /** Gets the location of this data flow node. */
@@ -384,6 +425,9 @@ class Node extends TDataFlowNode {
       this = TCaptureSsaNode(node) and
       result = node.getLocation()
     )
+    or
+    this instanceof TSummaryNode and
+    result instanceof EmptyLocation
   }
 
   /** Gets the data-flow callable containing this data flow node. */
@@ -401,8 +445,6 @@ class Node extends TDataFlowNode {
       result.asSourceCallable() = node.getSourceVariable().getDeclaringCallable()
     )
     or
-    this.(BuilderNode).isImplicitParameter(result, _)
-    or
     exists(CaptureSsaOutput::SynthesizedCaptureNode node |
       this = TCaptureSsaNode(node) and
       result.asSourceCallable() = node.getEnclosingCallable()
@@ -415,9 +457,16 @@ class Node extends TDataFlowNode {
       result = call.getEnclosingCallable()
     )
     or
+    this.(BuilderNode).isReturnNodeEx(result)
+    or
     exists(DataFlowCallable callable |
       this.isCallableEx(callable) and
       result.asSourceCallable() = callable.asSourceCallable().getEnclosingCallable()
+    )
+    or
+    exists(FlowSummaryOutput::SummaryNode sn |
+      this = TSummaryNode(sn) and
+      result = sn.getEnclosingCallable()
     )
   }
 
@@ -491,5 +540,7 @@ class Node extends TDataFlowNode {
     result = this.(BuilderNode).getPostUpdateNode()
     or
     result = getCaptureSsaPostUpdate(this)
+    or
+    FlowSummaryOutput::summaryPostUpdateNode(getSummaryNode(result), getSummaryNode(this))
   }
 }

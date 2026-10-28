@@ -21,18 +21,10 @@ abstract private class TypeMentionImpl extends AstNode {
   final Type getType() { result = this.getTypeAt(TypePath::nil()) }
 }
 
-private Type resolveType(Identifier access) {
-  exists(NameBinding b | b = getStaticBindingTargetFromIdentifier(access) |
-    b = result.(ClassLikeDeclarationType).getClassLikeDeclaration().getNameNode()
-    or
-    b = result.(TypeParameterType).getTypeParameter().getNameNode()
-  )
-}
-
 final class ExprTypeMention = ExprTypeMentionImpl;
 
 abstract private class ExprTypeMentionImpl extends TypeMentionImpl, Expr {
-  ExprTypeMentionImpl() { isInTypeContext(this) }
+  ExprTypeMentionImpl() { isInTypeContext(this) and not this instanceof GenericTypeExpr }
 
   pragma[nomagic]
   abstract TypePath getTypeArgumentPath(int i);
@@ -44,7 +36,7 @@ abstract private class ExprTypeMentionImpl extends TypeMentionImpl, Expr {
 private class AliasExprTypeMention extends ExprTypeMentionImpl {
   private TypeAliasDeclaration alias;
 
-  AliasExprTypeMention() { alias.getNameNode() = getStaticBindingTargetFromRef(this) }
+  AliasExprTypeMention() { alias.getNameNode() = getTypeFromRef(this) }
 
   private TypeParameterType getAliasTypeParameter(int i) {
     result.getTypeParameter() = alias.getTypeParameter(i)
@@ -70,7 +62,21 @@ private class NonAliasExprTypeMention extends ExprTypeMentionImpl {
   NonAliasExprTypeMention() { not this instanceof AliasExprTypeMention }
 
   private Type getRootType0() {
-    result = resolveType(this)
+    exists(Identifier i | i = getTypeFromRef(this) |
+      // for now, we resolve enum cases to their enclosing class
+      exists(EnumCaseClass c |
+        i = c.getNameNode() and
+        result.getNameNode() = c.getEnclosingClass().getNameNode()
+      )
+      or
+      not i = any(EnumCaseClass c).getNameNode() and
+      result.getNameNode() = i and
+      (
+        not result instanceof AssociatedTypeParameterType
+        or
+        result = TAssociatedTypeParameterType(this.getEnclosingClass(), _, _)
+      )
+    )
     or
     result = Plugin::getFunctionExprType(this)
     or

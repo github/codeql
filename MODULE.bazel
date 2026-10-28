@@ -21,7 +21,7 @@ bazel_dep(name = "rules_java", version = "9.6.1")
 bazel_dep(name = "rules_pkg", version = "1.2.0")
 bazel_dep(name = "rules_nodejs", version = "6.7.5")
 bazel_dep(name = "rules_python", version = "1.9.0")
-bazel_dep(name = "rules_shell", version = "0.7.1")
+bazel_dep(name = "rules_shell", version = "0.8.0")
 bazel_dep(name = "bazel_skylib", version = "1.9.0")
 bazel_dep(name = "abseil-cpp", version = "20260107.1", repo_name = "absl")
 bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.1", repo_name = "json")
@@ -315,7 +315,7 @@ use_repo(
 )
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.27.2")
+go_sdk.download(version = "1.27.3")
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 go_deps.from_file(go_mod = "//go/extractor:go.mod")

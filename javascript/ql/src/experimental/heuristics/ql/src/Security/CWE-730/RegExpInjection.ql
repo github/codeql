@@ -10,7 +10,6 @@
  * @id js/regex-injection-more-sources
  * @tags experimental
  *       security
- *       external/cwe/cwe-730
  *       external/cwe/cwe-400
  */
 
