@@ -1500,22 +1500,6 @@ module Make<
      */
     default predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) { none() }
 
-    /**
-     * Holds if the post-update node corresponding to the given `read` occurs at `bb,i`, meaning
-     * it will propagate to the next use (strictly) after that point in the CFG.
-     *
-     * The default is to use the CFG node associated with the read itself, meaning the post-update
-     * always flows to the next use. The default can however lead to spurious flow in cases like:
-     * ```
-     * x.f = foo(x)
-     * ```
-     * where the post-update node for `x` on the left-hand side flows into the `x` on the right-hand side.
-     *
-     * NOTE: When implementing this predicate, you must ensure that `variableRead` is defined to contain
-     * a synthetic read of this variable at `bb,i`.
-     */
-    default predicate postUpdateCfgNode(Expr read, BasicBlock bb, int i) { read.hasCfgNode(bb, i) }
-
     /** An abstract value that a `Guard` may evaluate to. */
     class GuardValue {
       /** Gets a textual representation of this value. */
@@ -1651,7 +1635,8 @@ module Make<
     private predicate phiInputIsGuardEquivalentWithPreviousRef(SsaPhiExt phi, BasicBlock input) {
       exists(BasicBlock prev |
         phiInputHasRead(phi, input) and
-        AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(), phi.getSourceVariable()) and
+        AdjacentSsaRefs::adjacentRefPhiSkipPostUpd(prev, _, input, phi.getBasicBlock(),
+          phi.getSourceVariable()) and
         prev = getGuardEquivalentImmediateDominator*(input)
       )
     }
@@ -1693,7 +1678,7 @@ module Make<
         // An equivalent, but less performant, way to express this is as follows:
         // ```
         // exists(BasicBlock prev |
-        //   AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(),
+        //   AdjacentSsaRefs::adjacentRefPhiSkipPostUpd(prev, _, input, phi.getBasicBlock(),
         //     phi.getSourceVariable()) and
         //   prev != input and
         //   exists(DfInput::Guard g, DfInput::GuardValue val |
@@ -1715,7 +1700,7 @@ module Make<
     ) {
       exists(BasicBlock bb1, int i, SourceVariable v, BasicBlock bb2 |
         phi.definesAt(pragma[only_bind_into](v), bb1, i) and
-        AdjacentSsaRefs::adjacentRefPhi(bb1, i, input, bb2, v) and
+        AdjacentSsaRefs::adjacentRefPhiSkipPostUpd(bb1, i, input, bb2, v) and
         phi2.definesAt(pragma[only_bind_into](v), bb2, _) and
         if relevantPhiInputNode(phi2, input) then relevant = true else relevant = false
       )
@@ -1729,7 +1714,7 @@ module Make<
     private predicate phiStepsToRef(SsaPhiExt phi, BasicBlock bb, int i, boolean isUse) {
       exists(SourceVariable v, BasicBlock bb1, int i1 |
         phi.definesAt(v, bb1, i1) and
-        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb, i, v)
+        AdjacentSsaRefs::adjacentRefReadSkipPostUpd(bb1, i1, bb, i, v)
       |
         isUse = true and
         variableRead(bb, i, v, true)
@@ -1761,14 +1746,22 @@ module Make<
     cached
     private newtype TNode =
       TWriteDefSource(WriteDefinition def) { DfInput::ssaDefHasSource(def) } or
-      TExprNode(DfInput::Expr e, SourceVariable v, Boolean isPost) {
-        exists(BasicBlock bb, int i |
-          e.hasCfgNode(bb, i) and
+      TExprNode(DfInput::Expr e, SourceVariable v, boolean isPost) {
+        exists(BasicBlock bb, int i | e.hasCfgNode(bb, i) |
           variableRead(bb, i, v, true) and
+          isPost = false and
           // Only materialise if 'expr' has a reaching definition.
           // Note that the read may correspond to a different variable than 'v', but the C++
           // instantiation currently expects this particular behaviour.
           DfInput::getARead(_) = e
+          or
+          not postUpdate(_, _, _) and
+          variableRead(bb, i, v, true) and
+          isPost = true and
+          DfInput::getARead(_) = e
+          or
+          postUpdate(bb, i, v) and
+          isPost = true
         )
       } or
       TSsaDefinitionNode(DefinitionExt def) {
@@ -1857,7 +1850,17 @@ module Make<
       ExprPostUpdateNodeImpl() { isPost = true }
 
       /** Gets the pre-update expression node. */
-      ExprNode getPreUpdateNode() { result = TExprNode(e, v_, false) }
+      ExprNode getPreUpdateNode() {
+        not postUpdate(_, _, _) and
+        result = TExprNode(e, v_, false)
+        or
+        exists(DfInput::Expr e1, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+          result = TExprNode(e1, v_, false) and
+          e1.hasCfgNode(bb1, i1) and
+          variableReadWithPostUpdate(bb1, i1, v_, bb2, i2) and
+          e.hasCfgNode(bb2, i2)
+        )
+      }
 
       override string toString() { result = e.toString() + " [postupdate]" }
     }
@@ -1868,7 +1871,6 @@ module Make<
     private predicate exprReadAt(
       DfInput::Expr e, BasicBlock bb, int i, SourceVariable v, boolean isPost, TExprNode node
     ) {
-      variableRead(bb, i, v, true) and
       e.hasCfgNode(bb, i) and
       node = TExprNode(e, v, isPost)
     }
@@ -2007,13 +2009,6 @@ module Make<
       override string toString() { result = "[input] " + def_.toString() }
     }
 
-    private predicate postUpdateNodeAt(
-      ExprPostUpdateNode node, BasicBlock bb, int i, SourceVariable v
-    ) {
-      node.getPreUpdateNode().(ReadNode).readsAt(_, _, v) and
-      DfInput::postUpdateCfgNode(node.getExpr(), bb, i)
-    }
-
     /**
      * Holds if `nodeFrom` corresponds to the reference to `v` at index `i` in
      * `bb`. The boolean `isUseStep` indicates whether `nodeFrom` is an actual
@@ -2029,10 +2024,8 @@ module Make<
         isUseStep = false
       )
       or
-      nodeFrom.(ReadNode).readsAt(bb, i, v) and
-      isUseStep = true
-      or
-      postUpdateNodeAt(nodeFrom, bb, i, v) and
+      exprReadAt(_, bb, i, v, _, nodeFrom) and
+      not variableWrite(bb, i, v, true) and
       isUseStep = true
     }
 
@@ -2051,6 +2044,15 @@ module Make<
           nodeTo.(SsaDefinitionNode).getDefinition() = def2 and
           def2.definesAt(v, bb2, i2)
         )
+      )
+      or
+      // Flow from definition/read via post-update node
+      exists(BasicBlock bb2, int i2 |
+        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
+        postUpdate(bb2, i2, v) and
+        not any(ReadNode r).readsAt(bb2, i2, v) and
+        not any(UncertainWriteDefinition def2).definesAt(v, bb2, i2) and
+        flowFromRefToNode(v, bb2, i2, nodeTo)
       )
       or
       // Flow from definition/read to phi input
