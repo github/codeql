@@ -352,6 +352,10 @@ module Make<
     }
   }
 
+  private predicate postUpdate(BasicBlock bb, int i, SourceVariable v) {
+    variableReadWithPostUpdate(_, _, v, bb, i)
+  }
+
   /**
    * Liveness analysis (based on source variables) to restrict the size of the
    * SSA representation.
@@ -456,7 +460,7 @@ module Make<
   pragma[nomagic]
   private predicate inReadDominanceFrontier(BasicBlock bb, SourceVariable v) {
     exists(BasicBlock readbb | readbb.inDominanceFrontier(bb) |
-      variableRead(readbb, _, v, true) and
+      (variableRead(readbb, _, v, true) or postUpdate(readbb, _, v)) and
       not variableWrite(readbb, _, v, _)
       or
       synthPhiRead(readbb, v) and
@@ -613,6 +617,9 @@ module Make<
       variableRead(bb, i, v, true) and
       k = Read()
       or
+      postUpdate(bb, i, v) and
+      k = Read()
+      or
       variableWrite(bb, i, v, false) and
       k = Read()
       or
@@ -647,6 +654,12 @@ module Make<
       )
     }
 
+    private predicate justPostUpdate(BasicBlock bb, int i, SourceVariable v) {
+      postUpdate(bb, i, v) and
+      not variableRead(bb, i, v, true) and
+      not variableWrite(bb, i, v, _)
+    }
+
     /**
      * Holds if `v` has adjacent references at index `i1` in basic block `bb1`
      * and index `i2` in basic block `bb2`, that is, there is a path between
@@ -668,6 +681,33 @@ module Make<
       1 = refRank(bb2, i2, v, Read())
     }
 
+    private predicate closestPriorNonPostUpdateRef(
+      BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v
+    ) {
+      exists(RefKind k |
+        ssaRef(bb1, i1, v, k) and
+        bb1 = bb2 and
+        i1 = i2
+      |
+        k = Def() or not justPostUpdate(bb1, i1, v)
+      )
+      or
+      exists(BasicBlock bb0, int i0 |
+        closestPriorNonPostUpdateRef(bb1, i1, bb0, i0, v) and
+        justPostUpdate(bb2, i2, v) and
+        adjacentRefRead(bb0, i0, bb2, i2, v)
+      )
+    }
+
+    predicate adjacentRefReadSkipPostUpd(
+      BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v
+    ) {
+      exists(BasicBlock bb0, int i0 |
+        adjacentRefRead(bb0, i0, bb2, i2, v) and
+        closestPriorNonPostUpdateRef(bb1, i1, bb0, i0, v)
+      )
+    }
+
     /**
      * Holds if the phi node or phi-read for `v` in basic block `bbPhi` takes
      * input from basic block `input`, and that the reference to `v` at index
@@ -682,10 +722,19 @@ module Make<
       1 = refRank(bbPhi, -1, v, _)
     }
 
+    predicate adjacentRefPhiSkipPostUpd(
+      BasicBlock bb, int i, BasicBlock input, BasicBlock bbPhi, SourceVariable v
+    ) {
+      exists(BasicBlock bb0, int i0 |
+        adjacentRefPhi(bb0, i0, input, bbPhi, v) and
+        closestPriorNonPostUpdateRef(bb, i, bb0, i0, v)
+      )
+    }
+
     private predicate adjacentRefs(BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v) {
-      adjacentRefRead(bb1, i1, bb2, i2, v)
+      adjacentRefReadSkipPostUpd(bb1, i1, bb2, i2, v)
       or
-      adjacentRefPhi(bb1, i1, _, bb2, v) and i2 = -1
+      adjacentRefPhiSkipPostUpd(bb1, i1, _, bb2, v) and i2 = -1
     }
 
     /**
@@ -1309,7 +1358,7 @@ module Make<
     /** Holds if a certain read does not have a prior reference. */
     query predicate readWithoutPriorRef(SourceVariable v, BasicBlock bb, int i) {
       variableRead(bb, i, v, true) and
-      not AdjacentSsaRefs::adjacentRefRead(_, _, bb, i, v)
+      not AdjacentSsaRefs::adjacentRefReadSkipPostUpd(_, _, bb, i, v)
     }
 
     /**
@@ -1329,7 +1378,8 @@ module Make<
       PhiNode phi, BasicBlock bbPhi, SourceVariable v, int inputRefs
     ) {
       phi.definesAt(v, bbPhi, _) and
-      inputRefs = count(BasicBlock bb, int i | AdjacentSsaRefs::adjacentRefPhi(bb, i, _, bbPhi, v)) and
+      inputRefs =
+        count(BasicBlock bb, int i | AdjacentSsaRefs::adjacentRefPhiSkipPostUpd(bb, i, _, bbPhi, v)) and
       inputRefs < 2
     }
 
@@ -2213,6 +2263,7 @@ module Make<
   module TestAdjacentRefs {
     private newtype TRef =
       TRefRead(BasicBlock bb, int i, SourceVariable v) { variableRead(bb, i, v, true) } or
+      TRefPostUpdate(BasicBlock bb, int i, SourceVariable v) { postUpdate(bb, i, v) } or
       TRefDef(Definition def) or
       TRefPhiRead(BasicBlock bb, SourceVariable v) { synthPhiRead(bb, v) }
 
@@ -2224,6 +2275,8 @@ module Make<
       /** Gets the source variable referenced by this reference. */
       SourceVariable getSourceVariable() {
         this = TRefRead(_, _, result)
+        or
+        this = TRefPostUpdate(_, _, result)
         or
         exists(Definition def | this = TRefDef(def) and def.getSourceVariable() = result)
         or
@@ -2237,6 +2290,9 @@ module Make<
       string toString() {
         this = TRefRead(_, _, _) and result = "SSA read(" + this.getSourceVariable() + ")"
         or
+        this = TRefPostUpdate(_, _, _) and
+        result = "SSA post update(" + this.getSourceVariable() + ")"
+        or
         exists(Definition def | this = TRefDef(def) and result = def.toString())
         or
         this = TRefPhiRead(_, _) and result = "SSA phi read(" + this.getSourceVariable() + ")"
@@ -2244,8 +2300,8 @@ module Make<
 
       /** Gets the location of this SSA reference. */
       Location getLocation() {
-        exists(BasicBlock bb, int i |
-          this = TRefRead(bb, i, _) and bb.getNode(i).getLocation() = result
+        exists(BasicBlock bb, int i | this = TRefRead(bb, i, _) or this = TRefPostUpdate(bb, i, _) |
+          bb.getNode(i).getLocation() = result
         )
         or
         exists(Definition def | this = TRefDef(def) and def.getLocation() = result)
@@ -2256,6 +2312,8 @@ module Make<
       /** Holds if this reference of `v` occurs in `bb` at index `i`. */
       predicate accessAt(BasicBlock bb, int i, SourceVariable v) {
         this = TRefRead(bb, i, v)
+        or
+        this = TRefPostUpdate(bb, i, v)
         or
         exists(Definition def | this = TRefDef(def) and def.definesAt(v, bb, i))
         or
