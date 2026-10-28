@@ -388,6 +388,10 @@ impl Node {
 
         let mut stmts = Vec::new();
         let mut field_args = Vec::new();
+        let location_none = self
+            .fields
+            .iter()
+            .any(|field| matches!(field, Field::LocationNone));
 
         for (field_counter, field) in self.fields.iter().enumerate() {
             match field {
@@ -399,6 +403,7 @@ impl Node {
                         #ctx.extend_location_ranges(__value, &mut __location_ranges);
                     });
                 }
+                Field::LocationNone => {}
                 Field::Named {
                     name,
                     value,
@@ -475,8 +480,13 @@ impl Node {
                 #node_init
                 #(#stmts)*
                 #build_node
-                let __source_range = __location_ranges.into_iter().reduce(yeast::Range::union);
-                #ctx.set_node_source_range(__node, __source_range)
+                if #location_none {
+                    #ctx.set_node_locationless(__node)
+                } else {
+                    let __source_range =
+                        __location_ranges.into_iter().reduce(yeast::Range::union);
+                    #ctx.set_node_source_range(__node, __source_range)
+                }
             }
         }
     }

@@ -300,6 +300,14 @@ leaf nodes:
 The override applies only to the node carrying the `location` field; nested
 nodes still derive their locations normally.
 
+Use `location: none` for a synthetic node that intentionally has no source
+location. This also prevents a returned rule result from inheriting the matched
+input range:
+
+```rust
+(metadata_node location: none)
+```
+
 For input fields whose leading or trailing syntax should never belong to rule
 results, configure them once with
 `DesugaringConfig::with_ignored_location_fields(...)`. For example, ignoring

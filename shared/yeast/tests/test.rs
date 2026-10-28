@@ -1706,6 +1706,24 @@ fn test_location_field_overrides_derived_location() {
 }
 
 #[test]
+fn test_location_none_makes_result_root_locationless() {
+    let rule: Rule = rule!(
+        (call method: (identifier) @method)
+        =>
+        (call method: {method} location: none)
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let call = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "call")
+        .expect("call exists");
+    assert_eq!(call.source_range(), None);
+}
+
+#[test]
 fn test_multiple_location_fields_combine_iterable_locations() {
     let rule: Rule = rule!(
         (assignment
