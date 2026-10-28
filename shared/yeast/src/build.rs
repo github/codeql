@@ -187,6 +187,14 @@ impl<'a, C> BuildCtx<'a, C> {
         node
     }
 
+    /// Explicitly make a newly-built node locationless.
+    #[doc(hidden)]
+    pub fn set_node_locationless(&mut self, node: OutputId) -> OutputId {
+        self.output.clear_source_range(node);
+        self.created_nodes_without_source_range.remove(&node);
+        node
+    }
+
     /// Return the immutable input AST. Available inside rule transforms.
     pub fn ast(&self) -> &Ast {
         self.ast

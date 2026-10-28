@@ -367,9 +367,7 @@ impl Template {
     fn lower_choice(alternatives: &[Alternative]) -> TokenStream {
         let pick = alternatives.iter().rev().fold(
             quote! { ::std::option::Option::None },
-            |fallback, alternative| {
-                alternative.lower_candidate(fallback)
-            },
+            |fallback, alternative| alternative.lower_candidate(fallback),
         );
         quote! {{ #pick }}
     }
@@ -402,25 +400,26 @@ impl Alternative {
         // evaluated in source order. Construction happens only after the
         // resulting option has been matched, keeping it in a separate branch
         // from the fallback.
-        let prepared = interpolations.into_iter().rev().fold(
-            prepared,
-            |candidate, interpolation| {
-                let GuardingInterpolation {
-                    value,
-                    source_range,
-                    expression,
-                } = interpolation;
-                // Do not use `map`/`and_then` here: `candidate` may contain
-                // embedded user Rust, and putting it in a closure would change
-                // the target of `return` and the result type seen by `?`.
-                quote! {
-                    match #expression {
-                        ::std::option::Option::Some((#value, #source_range)) => #candidate,
-                        ::std::option::Option::None => ::std::option::Option::None,
+        let prepared =
+            interpolations
+                .into_iter()
+                .rev()
+                .fold(prepared, |candidate, interpolation| {
+                    let GuardingInterpolation {
+                        value,
+                        source_range,
+                        expression,
+                    } = interpolation;
+                    // Do not use `map`/`and_then` here: `candidate` may contain
+                    // embedded user Rust, and putting it in a closure would change
+                    // the target of `return` and the result type seen by `?`.
+                    quote! {
+                        match #expression {
+                            ::std::option::Option::Some((#value, #source_range)) => #candidate,
+                            ::std::option::Option::None => ::std::option::Option::None,
+                        }
                     }
-                }
-            },
-        );
+                });
         let prepared = if let Some(guard) = &self.guard {
             let guard = rust_block(guard);
             quote! {
@@ -462,27 +461,27 @@ impl Node {
                             .interpolations
                             .borrow_mut()
                             .push(GuardingInterpolation {
-                            value: value.clone(),
-                            source_range: source_range.clone(),
-                            expression: quote! {
-                                {
-                                    let __expr = #block;
-                                    yeast::MaybeYeastValue::maybe_yeast_value(&__expr).map(
-                                        |__value_ref| {
-                                            (
-                                                yeast::YeastDisplay::yeast_to_string(
-                                                    __value_ref,
-                                                    &#ctx,
-                                                ),
-                                                yeast::YeastSourceRange::yeast_source_range(
-                                                    __value_ref,
-                                                    &#ctx,
-                                                ),
-                                            )
-                                        },
-                                    )
-                                }
-                            },
+                                value: value.clone(),
+                                source_range: source_range.clone(),
+                                expression: quote! {
+                                    {
+                                        let __expr = #block;
+                                        yeast::MaybeYeastValue::maybe_yeast_value(&__expr).map(
+                                            |__value_ref| {
+                                                (
+                                                    yeast::YeastDisplay::yeast_to_string(
+                                                        __value_ref,
+                                                        &#ctx,
+                                                    ),
+                                                    yeast::YeastSourceRange::yeast_source_range(
+                                                        __value_ref,
+                                                        &#ctx,
+                                                    ),
+                                                )
+                                            },
+                                        )
+                                    }
+                                },
                             });
                         quote! {
                             #ctx.literal_with_source_range(
@@ -516,6 +515,10 @@ impl Node {
 
         let mut stmts = Vec::new();
         let mut field_args = Vec::new();
+        let location_none = self
+            .fields
+            .iter()
+            .any(|field| matches!(field, Field::LocationNone));
 
         for (field_counter, field) in self.fields.iter().enumerate() {
             match field {
@@ -527,6 +530,7 @@ impl Node {
                         #ctx.extend_location_ranges(__value, &mut __location_ranges);
                     });
                 }
+                Field::LocationNone => {}
                 Field::Named { name, value } => {
                     let field_name = name.to_string();
                     let field_str = field_name
@@ -591,8 +595,13 @@ impl Node {
                 #node_init
                 #(#stmts)*
                 #build_node
-                let __source_range = __location_ranges.into_iter().reduce(yeast::Range::union);
-                #ctx.set_node_source_range(__node, __source_range)
+                if #location_none {
+                    #ctx.set_node_locationless(__node)
+                } else {
+                    let __source_range =
+                        __location_ranges.into_iter().reduce(yeast::Range::union);
+                    #ctx.set_node_source_range(__node, __source_range)
+                }
             }
         }
     }
