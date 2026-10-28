@@ -32,11 +32,13 @@ class MyDatabase {
 	func execute5(_ context: String, _ sql: String) { }
 	func execute6(context: String, _ sql: String) { }
 	func queryCode(code sql: String) { }
+	func queryCode2(sql code: String) { }
 
 	func query(sql: String) { }
 	func query(sqlLiteral: String) { }
 	func query(sqlStatement: String) { }
 	func query(sqliteStatement: String) { }
+	func query(config: String, sql: String) { }
 
 	// non-examples
 	func doSomething(sqlIndex: Int) { }
@@ -61,13 +63,18 @@ func test_heuristic(db: MyDatabase) throws {
 	db.execute5(remoteString, "SELECT 1") // GOOD
 	db.execute6(context: "context", remoteString) // $ Alert
 	db.execute6(context: remoteString, "SELECT 1") // GOOD
+
 	db.queryCode(code: remoteString) // $ Alert
 	db.queryCode(code: "SELECT 1") // GOOD
+	db.queryCode2(sql: remoteString) // $ Alert
+	db.queryCode2(sql: "SELECT 1") // GOOD
 
 	db.query(sql: remoteString) // $ Alert
-	db.query(sqlLiteral: remoteString) // $ MISSING: Alert // BAD [NOT DETECTED]
-	db.query(sqlStatement: remoteString) // $ MISSING: Alert // BAD [NOT DETECTED]
-	db.query(sqliteStatement: remoteString) // $ MISSING: Alert // BAD [NOT DETECTED]
+	db.query(sqlLiteral: remoteString) // $ MISSING: Alert
+	db.query(sqlStatement: remoteString) // $ MISSING: Alert
+	db.query(sqliteStatement: remoteString) // $ MISSING: Alert
+	db.query(config: "config", sql: remoteString) // $ Alert
+	db.query(config: remoteString, sql: "SELECT 1") // GOOD
 
 	db.doSomething(sqlIndex: Int(remoteString) ?? 0) // GOOD
 	db.doSomething(sqliteContext: remoteString as! Sql) // GOOD
