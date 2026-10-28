@@ -12,7 +12,8 @@ private newtype TDataFlowCall =
     (
       N::getStaticBindingTargetFromRef(expr) = any(GetterDeclaration g).getNameNode()
       or
-      expr instanceof MemberAccess
+      // Assume a qualified member accesses might resolve to a getter.
+      expr instanceof MemberAccessExpr
     )
   } or
   TSetterCall(Expr expr) {
@@ -26,7 +27,8 @@ private newtype TDataFlowCall =
     (
       N::getStaticBindingTargetFromRef(expr) = any(SetterDeclaration g).getNameNode()
       or
-      expr instanceof MemberAccess
+      // Assume a qualified member accesses might resolve to a setter.
+      expr instanceof MemberAccessExpr
     )
   } or
   TSummaryCall(SummarizedCallable callable, SummaryNode callee) {
