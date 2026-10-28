@@ -26,19 +26,19 @@ fn closure_flow_in() {
 fn closure_flow_in2() {
     let (mut x, y) = (source(1), 0);
     (x) = x;
-    (|| sink(x))(); // $ MISSING: hasValueFlow=1
+    (|| sink(x))(); // $ hasValueFlow=1
 }
 
 fn closure_flow_in3() {
     let (ref x,) = (source(1),);
-    (|| sink(*x))(); // $ MISSING: hasValueFlow=1
+    (|| sink(*x))(); // $ hasValueFlow=1
 }
 
 fn closure_flow_through() {
     let f = |cond, ((data))| if cond { data } else { 0 };
     let a = source(43);
     let b = f(true, a);
-    sink(b); // $ MISSING: hasValueFlow=43
+    sink(b); // $ hasValueFlow=43
 }
 
 fn closure_captured_variable() {

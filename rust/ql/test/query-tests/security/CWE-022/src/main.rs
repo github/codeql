@@ -189,7 +189,7 @@ struct Config {
 }
 
 async fn destructured(State(config): State<Arc<Config>>) {
-    let _ = tokio::task::spawn_blocking(move || std::fs::read_to_string(&config.path)).await; // $ path-injection-sink $ SPURIOUS: Alert[rust/path-injection]=s1
+    let _ = tokio::task::spawn_blocking(move || std::fs::read_to_string(&config.path)).await; // $ path-injection-sink
 }
 
 async fn local_clone(state: State<Arc<Config>>) {
@@ -203,7 +203,7 @@ async fn request(Json(path): Json<String>) {
 
 fn main() {
     let _: Router = Router::new()
-        .route("/destructured", get(destructured)) // $ SPURIOUS: Source=s1
+        .route("/destructured", get(destructured))
         .route("/local-clone", get(local_clone))
         .route("/request", post(request)) // $ Source=s3
         .with_state(Arc::new(Config { path: String::from("configured-file") }));

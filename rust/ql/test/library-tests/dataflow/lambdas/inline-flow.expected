@@ -1,4 +1,5 @@
 models
+| 1 | Summary: <& as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue; value |
 edges
 | main.rs:10:20:10:52 | if cond {...} else {...} | main.rs:11:10:11:16 | f(...) | provenance |  |
 | main.rs:10:30:10:39 | source(...) | main.rs:10:20:10:52 | if cond {...} else {...} | provenance |  |
@@ -6,7 +7,26 @@ edges
 | main.rs:22:9:22:9 | a | main.rs:23:13:23:13 | a | provenance |  |
 | main.rs:22:13:22:22 | source(...) | main.rs:22:9:22:9 | a | provenance |  |
 | main.rs:23:13:23:13 | a | main.rs:15:20:15:23 | ... | provenance |  |
-| main.rs:48:16:48:25 | source(...) | main.rs:50:5:50:5 | [post] f : ... => .. [captured capt] | provenance |  |
+| main.rs:27:9:27:18 | TuplePat [tuple.0] | main.rs:27:10:27:14 | mut x | provenance |  |
+| main.rs:27:10:27:14 | mut x | main.rs:28:6:28:6 | x | provenance |  |
+| main.rs:27:22:27:35 | TupleExpr [tuple.0] | main.rs:27:9:27:18 | TuplePat [tuple.0] | provenance |  |
+| main.rs:27:23:27:31 | source(...) | main.rs:27:22:27:35 | TupleExpr [tuple.0] | provenance |  |
+| main.rs:28:6:28:6 | x | main.rs:29:14:29:14 | x | provenance |  |
+| main.rs:33:9:33:16 | TuplePat [tuple.0] | main.rs:33:10:33:14 | ref x | provenance |  |
+| main.rs:33:10:33:14 | ref x | main.rs:33:14:33:14 | x [&ref] | provenance |  |
+| main.rs:33:14:33:14 | x [&ref] | main.rs:34:15:34:15 | x [&ref] | provenance |  |
+| main.rs:33:20:33:31 | TupleExpr [tuple.0] | main.rs:33:9:33:16 | TuplePat [tuple.0] | provenance |  |
+| main.rs:33:21:33:29 | source(...) | main.rs:33:20:33:31 | TupleExpr [tuple.0] | provenance |  |
+| main.rs:34:15:34:15 | x [&ref] | main.rs:34:14:34:15 | * ... | provenance | MaD:1 |
+| main.rs:38:20:38:27 | ... | main.rs:38:30:38:56 | if cond {...} else {...} | provenance |  |
+| main.rs:39:9:39:9 | a | main.rs:40:21:40:21 | a | provenance |  |
+| main.rs:39:13:39:22 | source(...) | main.rs:39:9:39:9 | a | provenance |  |
+| main.rs:40:9:40:9 | b | main.rs:41:10:41:10 | b | provenance |  |
+| main.rs:40:13:40:22 | f(...) | main.rs:40:9:40:9 | b | provenance |  |
+| main.rs:40:21:40:21 | a | main.rs:38:20:38:27 | ... | provenance |  |
+| main.rs:40:21:40:21 | a | main.rs:40:13:40:22 | f(...) | provenance |  |
+| main.rs:48:9:48:12 | capt | main.rs:50:5:50:5 | [post] f : ... => .. [captured capt] | provenance |  |
+| main.rs:48:16:48:25 | source(...) | main.rs:48:9:48:12 | capt | provenance |  |
 | main.rs:50:5:50:5 | [post] f : ... => .. [captured capt] | main.rs:51:10:51:13 | capt | provenance |  |
 | main.rs:50:5:50:5 | [post] f : ... => .. [captured capt] | main.rs:55:5:55:5 | g [captured capt] | provenance |  |
 | main.rs:55:5:55:5 | g [captured capt] | main.rs:53:14:53:17 | capt | provenance |  |
@@ -48,22 +68,26 @@ edges
 | main.rs:111:13:111:22 | source(...) | main.rs:111:9:111:9 | b | provenance |  |
 | main.rs:112:17:112:17 | ... | main.rs:112:25:112:25 | x | provenance |  |
 | main.rs:112:29:112:29 | b | main.rs:104:33:104:38 | ...: i64 | provenance |  |
-| main.rs:120:13:120:22 | source(...) | main.rs:121:26:121:36 | \|...\| ... : ... => .. [captured a] | provenance |  |
-| main.rs:120:13:120:22 | source(...) | main.rs:122:26:122:36 | \|...\| ... : ... => .. [captured a] | provenance |  |
-| main.rs:120:13:120:22 | source(...) | main.rs:123:26:123:36 | \|...\| ... : ... => .. [captured a] | provenance |  |
-| main.rs:120:13:120:22 | source(...) | main.rs:124:26:124:36 | \|...\| ... : ... => .. [captured a] | provenance |  |
+| main.rs:120:9:120:9 | a | main.rs:121:26:121:36 | \|...\| ... : ... => .. [captured a] | provenance |  |
+| main.rs:120:9:120:9 | a | main.rs:122:26:122:36 | \|...\| ... : ... => .. [captured a] | provenance |  |
+| main.rs:120:9:120:9 | a | main.rs:123:26:123:36 | \|...\| ... : ... => .. [captured a] | provenance |  |
+| main.rs:120:9:120:9 | a | main.rs:124:26:124:36 | \|...\| ... : ... => .. [captured a] | provenance |  |
+| main.rs:120:13:120:22 | source(...) | main.rs:120:9:120:9 | a | provenance |  |
 | main.rs:121:26:121:36 | \|...\| ... : ... => .. [captured a] | main.rs:121:35:121:35 | a | provenance | heuristic-callback |
 | main.rs:122:26:122:36 | \|...\| ... : ... => .. [captured a] | main.rs:122:35:122:35 | a | provenance | heuristic-callback |
 | main.rs:123:26:123:36 | \|...\| ... : ... => .. [captured a] | main.rs:123:35:123:35 | a | provenance | heuristic-callback |
 | main.rs:124:26:124:36 | \|...\| ... : ... => .. [captured a] | main.rs:124:35:124:35 | a | provenance | heuristic-callback |
 | main.rs:131:30:131:40 | source(...) | main.rs:132:14:132:25 | await future | provenance |  |
-| main.rs:136:20:136:30 | source(...) | main.rs:137:9:139:9 | { ... } : ... => .. [captured data] | provenance |  |
+| main.rs:136:13:136:16 | data | main.rs:137:9:139:9 | { ... } : ... => .. [captured data] | provenance |  |
+| main.rs:136:20:136:30 | source(...) | main.rs:136:13:136:16 | data | provenance |  |
 | main.rs:137:9:139:9 | { ... } : ... => .. [captured data] | main.rs:138:18:138:21 | data | provenance |  |
-| main.rs:144:20:144:30 | source(...) | main.rs:146:14:146:19 | future [captured data] | provenance |  |
+| main.rs:144:13:144:16 | data | main.rs:146:14:146:19 | future [captured data] | provenance |  |
+| main.rs:144:20:144:30 | source(...) | main.rs:144:13:144:16 | data | provenance |  |
 | main.rs:146:14:146:19 | future [captured data] | main.rs:145:30:145:33 | data | provenance |  |
 | main.rs:146:14:146:19 | future [captured data] | main.rs:146:14:146:25 | await future | provenance |  |
 | main.rs:152:9:154:9 | [post] { ... } : ... => .. [captured captured] | main.rs:156:14:156:21 | captured | provenance |  |
-| main.rs:153:24:153:34 | source(...) | main.rs:152:9:154:9 | [post] { ... } : ... => .. [captured captured] | provenance |  |
+| main.rs:153:13:153:20 | captured | main.rs:152:9:154:9 | [post] { ... } : ... => .. [captured captured] | provenance |  |
+| main.rs:153:24:153:34 | source(...) | main.rs:153:13:153:20 | captured | provenance |  |
 nodes
 | main.rs:10:20:10:52 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
 | main.rs:10:30:10:39 | source(...) | semmle.label | source(...) |
@@ -73,6 +97,28 @@ nodes
 | main.rs:22:9:22:9 | a | semmle.label | a |
 | main.rs:22:13:22:22 | source(...) | semmle.label | source(...) |
 | main.rs:23:13:23:13 | a | semmle.label | a |
+| main.rs:27:9:27:18 | TuplePat [tuple.0] | semmle.label | TuplePat [tuple.0] |
+| main.rs:27:10:27:14 | mut x | semmle.label | mut x |
+| main.rs:27:22:27:35 | TupleExpr [tuple.0] | semmle.label | TupleExpr [tuple.0] |
+| main.rs:27:23:27:31 | source(...) | semmle.label | source(...) |
+| main.rs:28:6:28:6 | x | semmle.label | x |
+| main.rs:29:14:29:14 | x | semmle.label | x |
+| main.rs:33:9:33:16 | TuplePat [tuple.0] | semmle.label | TuplePat [tuple.0] |
+| main.rs:33:10:33:14 | ref x | semmle.label | ref x |
+| main.rs:33:14:33:14 | x [&ref] | semmle.label | x [&ref] |
+| main.rs:33:20:33:31 | TupleExpr [tuple.0] | semmle.label | TupleExpr [tuple.0] |
+| main.rs:33:21:33:29 | source(...) | semmle.label | source(...) |
+| main.rs:34:14:34:15 | * ... | semmle.label | * ... |
+| main.rs:34:15:34:15 | x [&ref] | semmle.label | x [&ref] |
+| main.rs:38:20:38:27 | ... | semmle.label | ... |
+| main.rs:38:30:38:56 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
+| main.rs:39:9:39:9 | a | semmle.label | a |
+| main.rs:39:13:39:22 | source(...) | semmle.label | source(...) |
+| main.rs:40:9:40:9 | b | semmle.label | b |
+| main.rs:40:13:40:22 | f(...) | semmle.label | f(...) |
+| main.rs:40:21:40:21 | a | semmle.label | a |
+| main.rs:41:10:41:10 | b | semmle.label | b |
+| main.rs:48:9:48:12 | capt | semmle.label | capt |
 | main.rs:48:16:48:25 | source(...) | semmle.label | source(...) |
 | main.rs:50:5:50:5 | [post] f : ... => .. [captured capt] | semmle.label | [post] f : ... => .. [captured capt] |
 | main.rs:51:10:51:13 | capt | semmle.label | capt |
@@ -122,6 +168,7 @@ nodes
 | main.rs:112:17:112:17 | ... | semmle.label | ... |
 | main.rs:112:25:112:25 | x | semmle.label | x |
 | main.rs:112:29:112:29 | b | semmle.label | b |
+| main.rs:120:9:120:9 | a | semmle.label | a |
 | main.rs:120:13:120:22 | source(...) | semmle.label | source(...) |
 | main.rs:121:26:121:36 | \|...\| ... : ... => .. [captured a] | semmle.label | \|...\| ... : ... => .. [captured a] |
 | main.rs:121:35:121:35 | a | semmle.label | a |
@@ -133,23 +180,30 @@ nodes
 | main.rs:124:35:124:35 | a | semmle.label | a |
 | main.rs:131:30:131:40 | source(...) | semmle.label | source(...) |
 | main.rs:132:14:132:25 | await future | semmle.label | await future |
+| main.rs:136:13:136:16 | data | semmle.label | data |
 | main.rs:136:20:136:30 | source(...) | semmle.label | source(...) |
 | main.rs:137:9:139:9 | { ... } : ... => .. [captured data] | semmle.label | { ... } : ... => .. [captured data] |
 | main.rs:138:18:138:21 | data | semmle.label | data |
+| main.rs:144:13:144:16 | data | semmle.label | data |
 | main.rs:144:20:144:30 | source(...) | semmle.label | source(...) |
 | main.rs:145:30:145:33 | data | semmle.label | data |
 | main.rs:146:14:146:19 | future [captured data] | semmle.label | future [captured data] |
 | main.rs:146:14:146:25 | await future | semmle.label | await future |
 | main.rs:152:9:154:9 | [post] { ... } : ... => .. [captured captured] | semmle.label | [post] { ... } : ... => .. [captured captured] |
+| main.rs:153:13:153:20 | captured | semmle.label | captured |
 | main.rs:153:24:153:34 | source(...) | semmle.label | source(...) |
 | main.rs:156:14:156:21 | captured | semmle.label | captured |
 subpaths
+| main.rs:40:21:40:21 | a | main.rs:38:20:38:27 | ... | main.rs:38:30:38:56 | if cond {...} else {...} | main.rs:40:13:40:22 | f(...) |
 | main.rs:88:21:88:21 | a | main.rs:77:24:77:32 | ...: i64 | main.rs:77:42:83:1 | { ... } | main.rs:88:13:88:22 | f(...) |
 | main.rs:146:14:146:19 | future [captured data] | main.rs:145:30:145:33 | data | main.rs:145:30:145:33 | data | main.rs:146:14:146:25 | await future |
 testFailures
 #select
 | main.rs:11:10:11:16 | f(...) | main.rs:10:30:10:39 | source(...) | main.rs:11:10:11:16 | f(...) | $@ | main.rs:10:30:10:39 | source(...) | source(...) |
 | main.rs:17:18:17:21 | data | main.rs:22:13:22:22 | source(...) | main.rs:17:18:17:21 | data | $@ | main.rs:22:13:22:22 | source(...) | source(...) |
+| main.rs:29:14:29:14 | x | main.rs:27:23:27:31 | source(...) | main.rs:29:14:29:14 | x | $@ | main.rs:27:23:27:31 | source(...) | source(...) |
+| main.rs:34:14:34:15 | * ... | main.rs:33:21:33:29 | source(...) | main.rs:34:14:34:15 | * ... | $@ | main.rs:33:21:33:29 | source(...) | source(...) |
+| main.rs:41:10:41:10 | b | main.rs:39:13:39:22 | source(...) | main.rs:41:10:41:10 | b | $@ | main.rs:39:13:39:22 | source(...) | source(...) |
 | main.rs:51:10:51:13 | capt | main.rs:48:16:48:25 | source(...) | main.rs:51:10:51:13 | capt | $@ | main.rs:48:16:48:25 | source(...) | source(...) |
 | main.rs:53:14:53:17 | capt | main.rs:48:16:48:25 | source(...) | main.rs:53:14:53:17 | capt | $@ | main.rs:48:16:48:25 | source(...) | source(...) |
 | main.rs:63:10:63:13 | data | main.rs:73:13:73:22 | source(...) | main.rs:63:10:63:13 | data | $@ | main.rs:73:13:73:22 | source(...) | source(...) |
