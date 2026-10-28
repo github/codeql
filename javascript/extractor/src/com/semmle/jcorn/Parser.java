@@ -2017,7 +2017,9 @@ public class Parser {
         && pi.key instanceof Identifier
         && (((Identifier) pi.key).getName().equals("get")
             || ((Identifier) pi.key).getName().equals("set"))
-        && (this.type != TokenType.comma && this.type != TokenType.braceR)) {
+        && (this.type != TokenType.comma
+            && this.type != TokenType.braceR
+            && this.type != TokenType.eq)) {
       if (pi.isGenerator || pi.isAsync || pi.isPattern) this.unexpected();
       pi.kind = ((Identifier) pi.key).getName();
       PropertyInfo pi2 = new PropertyInfo(false, false, this.startLoc);
