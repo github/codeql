@@ -181,7 +181,33 @@ fn my_function(path_str: &str) -> Result<(), std::io::Error> {
     Ok(())
 }
 
+use axum::{extract::State, routing::{get, post}, Json, Router};
+use std::sync::Arc;
+
+struct Config {
+    path: String,
+}
+
+async fn destructured(State(config): State<Arc<Config>>) {
+    let _ = tokio::task::spawn_blocking(move || std::fs::read_to_string(&config.path)).await; // $ path-injection-sink $ SPURIOUS: Alert[rust/path-injection]=s1
+}
+
+async fn local_clone(state: State<Arc<Config>>) {
+    let config = Arc::clone(&state.0);
+    let _ = tokio::task::spawn_blocking(move || std::fs::read_to_string(&config.path)).await; // $ path-injection-sink
+}
+
+async fn request(Json(path): Json<String>) {
+    let _ = tokio::task::spawn_blocking(move || std::fs::read_to_string(path)).await; // $ Alert[rust/path-injection]=s3 path-injection-sink
+}
+
 fn main() {
+    let _: Router = Router::new()
+        .route("/destructured", get(destructured)) // $ SPURIOUS: Source=s1
+        .route("/local-clone", get(local_clone))
+        .route("/request", post(request)) // $ Source=s3
+        .with_state(Arc::new(Config { path: String::from("configured-file") }));
+
     let path1 = std::env::args().nth(1).unwrap(); // $ Source=arg2
     my_function(&path1);
 }
