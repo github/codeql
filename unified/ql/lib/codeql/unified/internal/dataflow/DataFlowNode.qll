@@ -28,7 +28,7 @@ private predicate hasIncomingValueAtCfgNode(Expr expr, ControlFlowNode cfgNode) 
 }
 
 /** Holds if `expr` has a post-update at `cfgNode` resulting from a surrounding call or assignment. */
-private predicate hasPostUpdateAfterCallOrAssign(Expr expr, ControlFlowNode cfgNode) {
+predicate hasPostUpdateAfterCallOrAssign(Expr expr, ControlFlowNode cfgNode) {
   exists(MemberAccessExpr member |
     (hasIncomingValueAtCfgNode(member, cfgNode) or hasPostUpdateAfterCallOrAssign(member, cfgNode)) and
     expr = member.getBase()
@@ -44,14 +44,6 @@ private predicate hasPostUpdateAfterCallOrAssign(Expr expr, ControlFlowNode cfgN
     hasPostUpdateAfterCallOrAssign(target, cfgNode) and
     exprStep(expr, target, _)
   )
-}
-
-/**
- * Holds if the value of `expr` is mutated at `cfgNode` by a surrounding call or assignment,
- * and thus needs to be written back if `expr` refers to a computed value.
- */
-predicate isMutatedByCallOrAssign(Expr expr, ControlFlowNode cfgNode) {
-  hasPostUpdateAfterCallOrAssign(expr, cfgNode)
 }
 
 /**
@@ -420,7 +412,7 @@ class BuilderNode extends TDataFlowNodeStage1 {
           or
           // Setter invoked to write back a mutated value
           not isInAssignmentContext(access, _) and
-          isMutatedByCallOrAssign(access, cfgNode)
+          hasPostUpdate(access, cfgNode)
         )
       )
     )

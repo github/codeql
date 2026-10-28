@@ -20,7 +20,7 @@ private newtype TDataFlowCall =
       isInAssignmentContext(expr, _)
       or
       // Write back a value that was mutated in-place, such as `x.p` in `x.p.f = y`
-      isMutatedByCallOrAssign(expr, _) and
+      hasPostUpdateAfterCallOrAssign(expr, _) and
       mayWriteBackViaSetterCall(expr)
     ) and
     (
