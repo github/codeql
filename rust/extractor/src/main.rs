@@ -15,7 +15,9 @@ use ra_ap_project_model::{CargoConfig, ProjectManifest};
 use ra_ap_vfs::Vfs;
 use rust_analyzer::{ParseResult, RustAnalyzer};
 use std::collections::HashSet;
+use std::fs::File;
 use std::hash::RandomState;
+use std::io::{self, BufRead, BufReader};
 use std::time::Instant;
 use std::{
     collections::HashMap,
@@ -212,10 +214,20 @@ fn cwd() -> anyhow::Result<AbsPathBuf> {
 }
 
 fn main() -> anyhow::Result<()> {
-    let mut cfg = config::Config::extract().context("failed to load configuration")?;
-    if cfg.qltest {
-        qltest::prepare(&mut cfg)?;
-    }
+    let cfg = config::Config::extract().context("failed to load configuration")?;
+    let inputs = if cfg.qltest {
+        qltest::prepare(&cfg)?
+    } else if let Some(path) = &cfg.file_list {
+        let file =
+            File::open(path).with_context(|| format!("opening file list {}", path.display()))?;
+        BufReader::new(file)
+            .lines()
+            .map(|line| line.map(PathBuf::from))
+            .collect::<io::Result<Vec<_>>>()
+            .with_context(|| format!("reading file list {}", path.display()))?
+    } else {
+        Vec::new()
+    };
     let start = Instant::now();
     let (flame_layer, _flush_guard) = if let Some(path) = &cfg.logging_flamegraph {
         tracing_flame::FlameLayer::with_file(path)
@@ -234,14 +246,14 @@ fn main() -> anyhow::Result<()> {
         .with(flame_layer)
         .init();
     info!("{cfg:#?}\n");
+    info!("number of inputs: {}", inputs.len());
 
     let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
     let archiver = archive::Archiver {
         root: cfg.source_archive_dir.clone(),
     };
     let mut extractor = Extractor::new(&archiver, &traps);
-    let files: Vec<PathBuf> = cfg
-        .inputs
+    let files: Vec<PathBuf> = inputs
         .iter()
         .map(|file| {
             let file = std::path::absolute(file).unwrap_or(file.to_path_buf());
