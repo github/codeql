@@ -34,17 +34,11 @@ private predicate heuristicSink(DataFlow::Node node) {
       arg.getName() = "sql"
       or
       // by parameter name
-      // TODO: can we simplify this whole case since we have `getExternalName`?
       // TODO: make a helper predicate `Argument.getParameter` for this?
-      exists(CallExpr call, Parameter param |
-        arg = call.getAnArgument() and
-        param = TypeInference::resolveCallTarget(call).getAParameter() and
-        param.getPattern().(Identifier).getValue() = "sql" and
-        (
-          arg.getPositionalIndex() = param.getPositionalIndex()
-          or
-          arg.getName() = param.getExternalName()
-        )
+      exists(CallExpr call, int index, Parameter param |
+        arg = call.getArgument(index) and
+        param = TypeInference::resolveCallTarget(call).getParameter(index) and
+        param.getPattern().(Identifier).getValue() = "sql"
       )
     )
   )

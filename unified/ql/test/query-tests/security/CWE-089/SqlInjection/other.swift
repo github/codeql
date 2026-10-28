@@ -70,11 +70,11 @@ func test_heuristic(db: MyDatabase) throws {
 	db.queryCode2(sql: "SELECT 1") // GOOD
 
 	db.query(sql: remoteString) // $ Alert
-	db.query(sqlLiteral: remoteString) // $ MISSING: Alert
-	db.query(sqlStatement: remoteString) // $ MISSING: Alert
-	db.query(sqliteStatement: remoteString) // $ MISSING: Alert
+	db.query(sqlLiteral: remoteString) // $ Alert
+	db.query(sqlStatement: remoteString) // $ Alert
+	db.query(sqliteStatement: remoteString) // $ Alert
 	db.query(config: "config", sql: remoteString) // $ Alert
-	db.query(config: remoteString, sql: "SELECT 1") // GOOD
+	db.query(config: remoteString, sql: "SELECT 1") // $ SPURIOUS: Alert
 
 	db.doSomething(sqlIndex: Int(remoteString) ?? 0) // GOOD
 	db.doSomething(sqliteContext: remoteString as! Sql) // GOOD
