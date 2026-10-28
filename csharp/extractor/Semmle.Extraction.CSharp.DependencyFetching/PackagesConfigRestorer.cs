@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     {
         public static IPackagesConfigRestore Create(IFileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
         {
-            if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMonoInstalled())
+            if ((SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMonoInstalled()) && !feedManager.HasPrivateRegistryFeeds)
             {
                 return new NugetExeWrapper(fileProvider, packageDirectory, logger, feedManager);
             }
@@ -252,7 +252,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 if (PackageCount > 0)
                 {
-                    logger.LogInfo("Found packages.config files, but nuget.exe cannot be used to restore packages on this platform. Skipping restore of packages.config files.");
+                    logger.LogInfo("Found packages.config files, but nuget.exe cannot be used to restore packages on this platform or if private registry feeds are configured. Skipping restore of packages.config files.");
                 }
                 return 0;
             }
