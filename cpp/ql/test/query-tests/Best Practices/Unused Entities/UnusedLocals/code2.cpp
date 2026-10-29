@@ -176,3 +176,8 @@ void test_switch_initializer()
 		// ...
 	}
 }
+
+void test_maybe_unused()
+{
+	[[maybe_unused]] int unused; // $ SPURIOUS: Alert // GOOD: false positive for maybe_unused
+}
