@@ -304,7 +304,7 @@ void test_BodyStream() {
 void test_RawResponse(Azure::Core::Http::RawResponse& resp) {
   {
     std::map<std::string, std::string> body = resp.GetHeaders();
-    sink(body["Content-Type"]); // $ MISSING: ir
+    sink(body["Content-Type"]); // $ ir
   }
   {
     std::vector<uint8_t> body = resp.GetBody();
@@ -325,7 +325,7 @@ void test_GetHeader() {
   {
     std::map<std::string, std::string> headers = request.GetHeaders();
     std::string contentType = headers["Content-Type"];
-    sink(contentType); // $ MISSING: ir
+    sink(contentType); // $ ir
   }
 }
 
@@ -333,5 +333,5 @@ void test_QueryParameters() {
   Azure::Core::Http::Request request(Azure::Core::Http::Get, Azure::Core::Url("http://example.com"));
   Azure::Core::Url url;
   url.SetQueryParameters(request.GetHeaders());
-  sink(url.GetQueryParameters()["query"]); // $ MISSING: ir
+  sink(url.GetQueryParameters()["query"]); // $ ir
 }
