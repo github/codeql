@@ -1827,59 +1827,66 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:23:2:23:16 | ... = ... | map.cpp:23:4:23:8 | first [post update] |  |
 | map.cpp:23:2:23:16 | ... = ... | map.cpp:24:9:24:13 | first |  |
 | map.cpp:23:12:23:16 | 123 | map.cpp:23:2:23:16 | ... = ... |  |
+| map.cpp:26:7:26:7 | a | map.cpp:26:7:26:7 | call to pair |  |
 | map.cpp:28:2:28:2 | b [post update] | map.cpp:29:7:29:7 | b |  |
 | map.cpp:28:2:28:2 | b [post update] | map.cpp:30:7:30:7 | b |  |
 | map.cpp:28:2:28:2 | b [post update] | map.cpp:31:7:31:7 | b |  |
 | map.cpp:28:2:28:19 | ... = ... | map.cpp:28:4:28:8 | first [post update] |  |
 | map.cpp:28:2:28:19 | ... = ... | map.cpp:29:9:29:13 | first |  |
 | map.cpp:28:12:28:17 | call to source | map.cpp:28:2:28:19 | ... = ... |  |
+| map.cpp:31:7:31:7 | b | map.cpp:31:7:31:7 | call to pair |  |
 | map.cpp:33:2:33:2 | c [post update] | map.cpp:34:7:34:7 | c |  |
 | map.cpp:33:2:33:2 | c [post update] | map.cpp:35:7:35:7 | c |  |
 | map.cpp:33:2:33:2 | c [post update] | map.cpp:36:7:36:7 | c |  |
 | map.cpp:33:2:33:20 | ... = ... | map.cpp:33:4:33:9 | second [post update] |  |
 | map.cpp:33:2:33:20 | ... = ... | map.cpp:35:9:35:14 | second |  |
 | map.cpp:33:13:33:18 | call to source | map.cpp:33:2:33:20 | ... = ... |  |
+| map.cpp:36:7:36:7 | c | map.cpp:36:7:36:7 | call to pair |  |
 | map.cpp:38:42:38:54 | call to pair | map.cpp:39:7:39:7 | d |  |
 | map.cpp:38:42:38:54 | call to pair | map.cpp:40:7:40:7 | d |  |
 | map.cpp:38:42:38:54 | call to pair | map.cpp:41:7:41:7 | d |  |
-| map.cpp:38:49:38:53 | 456 | map.cpp:38:42:38:54 | call to pair | TAINT |
+| map.cpp:41:7:41:7 | d | map.cpp:41:7:41:7 | call to pair |  |
 | map.cpp:43:42:43:57 | call to pair | map.cpp:44:7:44:7 | e |  |
 | map.cpp:43:42:43:57 | call to pair | map.cpp:45:7:45:7 | e |  |
 | map.cpp:43:42:43:57 | call to pair | map.cpp:46:7:46:7 | e |  |
-| map.cpp:43:52:43:56 | 456 | map.cpp:43:42:43:57 | call to pair | TAINT |
+| map.cpp:46:7:46:7 | e | map.cpp:46:7:46:7 | call to pair |  |
 | map.cpp:48:42:48:57 | call to pair | map.cpp:49:7:49:7 | f |  |
 | map.cpp:48:42:48:57 | call to pair | map.cpp:50:7:50:7 | f |  |
 | map.cpp:48:42:48:57 | call to pair | map.cpp:51:7:51:7 | f |  |
 | map.cpp:48:42:48:57 | call to pair | map.cpp:53:42:53:42 | f |  |
 | map.cpp:48:42:48:57 | call to pair | map.cpp:59:6:59:6 | f |  |
-| map.cpp:48:49:48:54 | call to source | map.cpp:48:42:48:57 | call to pair | TAINT |
-| map.cpp:53:42:53:42 | f | map.cpp:54:7:54:7 | g |  |
-| map.cpp:53:42:53:42 | f | map.cpp:55:7:55:7 | g |  |
-| map.cpp:53:42:53:42 | f | map.cpp:56:7:56:7 | g |  |
-| map.cpp:59:6:59:6 | f | map.cpp:59:2:59:6 | ... = ... |  |
-| map.cpp:59:6:59:6 | f | map.cpp:60:7:60:7 | h |  |
-| map.cpp:59:6:59:6 | f | map.cpp:61:7:61:7 | h |  |
-| map.cpp:59:6:59:6 | f | map.cpp:62:7:62:7 | h |  |
+| map.cpp:51:7:51:7 | f | map.cpp:51:7:51:7 | call to pair |  |
+| map.cpp:53:42:53:42 | f | map.cpp:53:42:53:43 | call to pair |  |
+| map.cpp:53:42:53:43 | call to pair | map.cpp:54:7:54:7 | g |  |
+| map.cpp:53:42:53:43 | call to pair | map.cpp:55:7:55:7 | g |  |
+| map.cpp:53:42:53:43 | call to pair | map.cpp:56:7:56:7 | g |  |
+| map.cpp:56:7:56:7 | g | map.cpp:56:7:56:7 | call to pair |  |
+| map.cpp:58:40:58:40 | call to pair | map.cpp:59:2:59:2 | h |  |
+| map.cpp:58:40:58:40 | call to pair | map.cpp:60:7:60:7 | h |  |
+| map.cpp:58:40:58:40 | call to pair | map.cpp:61:7:61:7 | h |  |
+| map.cpp:58:40:58:40 | call to pair | map.cpp:62:7:62:7 | h |  |
+| map.cpp:59:2:59:2 | ref arg h | map.cpp:60:7:60:7 | h |  |
+| map.cpp:59:2:59:2 | ref arg h | map.cpp:61:7:61:7 | h |  |
+| map.cpp:59:2:59:2 | ref arg h | map.cpp:62:7:62:7 | h |  |
+| map.cpp:59:6:59:6 | f | map.cpp:59:2:59:2 | ref arg h | TAINT |
+| map.cpp:59:6:59:6 | f | map.cpp:59:4:59:4 | call to operator= | TAINT |
+| map.cpp:62:7:62:7 | h | map.cpp:62:7:62:7 | call to pair |  |
 | map.cpp:64:42:64:54 | call to pair | map.cpp:68:3:68:3 | i |  |
 | map.cpp:64:42:64:54 | call to pair | map.cpp:70:7:70:7 | i |  |
 | map.cpp:64:42:64:54 | call to pair | map.cpp:71:7:71:7 | i |  |
 | map.cpp:64:42:64:54 | call to pair | map.cpp:72:7:72:7 | i |  |
-| map.cpp:64:49:64:53 | 456 | map.cpp:64:42:64:54 | call to pair | TAINT |
 | map.cpp:65:42:65:57 | call to pair | map.cpp:68:10:68:10 | j |  |
 | map.cpp:65:42:65:57 | call to pair | map.cpp:73:7:73:7 | j |  |
 | map.cpp:65:42:65:57 | call to pair | map.cpp:74:7:74:7 | j |  |
 | map.cpp:65:42:65:57 | call to pair | map.cpp:75:7:75:7 | j |  |
-| map.cpp:65:49:65:54 | call to source | map.cpp:65:42:65:57 | call to pair | TAINT |
 | map.cpp:66:42:66:57 | call to pair | map.cpp:69:2:69:2 | k |  |
 | map.cpp:66:42:66:57 | call to pair | map.cpp:76:7:76:7 | k |  |
 | map.cpp:66:42:66:57 | call to pair | map.cpp:77:7:77:7 | k |  |
 | map.cpp:66:42:66:57 | call to pair | map.cpp:78:7:78:7 | k |  |
-| map.cpp:66:49:66:54 | call to source | map.cpp:66:42:66:57 | call to pair | TAINT |
 | map.cpp:67:42:67:54 | call to pair | map.cpp:69:9:69:9 | l |  |
 | map.cpp:67:42:67:54 | call to pair | map.cpp:79:7:79:7 | l |  |
 | map.cpp:67:42:67:54 | call to pair | map.cpp:80:7:80:7 | l |  |
 | map.cpp:67:42:67:54 | call to pair | map.cpp:81:7:81:7 | l |  |
-| map.cpp:67:49:67:53 | 456 | map.cpp:67:42:67:54 | call to pair | TAINT |
 | map.cpp:68:3:68:3 | ref arg i | map.cpp:70:7:70:7 | i |  |
 | map.cpp:68:3:68:3 | ref arg i | map.cpp:71:7:71:7 | i |  |
 | map.cpp:68:3:68:3 | ref arg i | map.cpp:72:7:72:7 | i |  |
@@ -1892,13 +1899,27 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:69:9:69:9 | ref arg l | map.cpp:79:7:79:7 | l |  |
 | map.cpp:69:9:69:9 | ref arg l | map.cpp:80:7:80:7 | l |  |
 | map.cpp:69:9:69:9 | ref arg l | map.cpp:81:7:81:7 | l |  |
+| map.cpp:72:7:72:7 | i | map.cpp:72:7:72:7 | call to pair |  |
+| map.cpp:75:7:75:7 | j | map.cpp:75:7:75:7 | call to pair |  |
+| map.cpp:78:7:78:7 | k | map.cpp:78:7:78:7 | call to pair |  |
+| map.cpp:81:7:81:7 | l | map.cpp:81:7:81:7 | call to pair |  |
+| map.cpp:93:65:93:65 | call to pair | map.cpp:94:2:94:2 | m |  |
+| map.cpp:93:65:93:65 | call to pair | map.cpp:95:7:95:7 | m |  |
+| map.cpp:93:65:93:65 | call to pair | map.cpp:96:7:96:7 | m |  |
+| map.cpp:93:65:93:65 | call to pair | map.cpp:97:7:97:7 | m |  |
+| map.cpp:93:65:93:65 | call to pair | map.cpp:98:7:98:7 | m |  |
+| map.cpp:93:65:93:65 | call to pair | map.cpp:99:7:99:7 | m |  |
+| map.cpp:94:2:94:2 | ref arg m | map.cpp:95:7:95:7 | m |  |
+| map.cpp:94:2:94:2 | ref arg m | map.cpp:96:7:96:7 | m |  |
+| map.cpp:94:2:94:2 | ref arg m | map.cpp:97:7:97:7 | m |  |
+| map.cpp:94:2:94:2 | ref arg m | map.cpp:98:7:98:7 | m |  |
+| map.cpp:94:2:94:2 | ref arg m | map.cpp:99:7:99:7 | m |  |
 | map.cpp:94:6:94:14 | call to make_pair | map.cpp:94:6:94:49 | call to pair | TAINT |
-| map.cpp:94:6:94:49 | call to pair | map.cpp:94:2:94:49 | ... = ... |  |
-| map.cpp:94:6:94:49 | call to pair | map.cpp:95:7:95:7 | m |  |
-| map.cpp:94:6:94:49 | call to pair | map.cpp:96:7:96:7 | m |  |
-| map.cpp:94:6:94:49 | call to pair | map.cpp:97:7:97:7 | m |  |
-| map.cpp:94:6:94:49 | call to pair | map.cpp:98:7:98:7 | m |  |
-| map.cpp:94:6:94:49 | call to pair | map.cpp:99:7:99:7 | m |  |
+| map.cpp:94:6:94:49 | call to pair | map.cpp:94:2:94:2 | ref arg m | TAINT |
+| map.cpp:94:6:94:49 | call to pair | map.cpp:94:4:94:4 | call to operator= | TAINT |
+| map.cpp:95:7:95:7 | m | map.cpp:95:7:95:7 | call to pair |  |
+| map.cpp:96:7:96:7 | m | map.cpp:96:7:96:13 | call to pair |  |
+| map.cpp:96:9:96:13 | first | map.cpp:96:7:96:13 | call to pair |  |
 | map.cpp:105:39:105:40 | call to map | map.cpp:107:7:107:8 | m1 |  |
 | map.cpp:105:39:105:40 | call to map | map.cpp:113:7:113:8 | m1 |  |
 | map.cpp:105:39:105:40 | call to map | map.cpp:119:7:119:8 | m1 |  |
@@ -1946,8 +1967,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:107:7:107:8 | ref arg m1 | map.cpp:146:12:146:13 | m1 |  |
 | map.cpp:107:7:107:8 | ref arg m1 | map.cpp:146:30:146:31 | m1 |  |
 | map.cpp:107:7:107:8 | ref arg m1 | map.cpp:252:1:252:1 | m1 |  |
-| map.cpp:107:17:107:30 | call to make_pair | map.cpp:107:7:107:8 | ref arg m1 | TAINT |
-| map.cpp:107:17:107:30 | call to make_pair | map.cpp:107:10:107:15 | call to insert | TAINT |
 | map.cpp:107:47:107:51 | first | map.cpp:107:7:107:51 | call to iterator |  |
 | map.cpp:108:7:108:8 | ref arg m2 | map.cpp:114:7:114:8 | m2 |  |
 | map.cpp:108:7:108:8 | ref arg m2 | map.cpp:120:7:120:8 | m2 |  |
@@ -1958,8 +1977,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:108:7:108:8 | ref arg m2 | map.cpp:152:12:152:13 | m2 |  |
 | map.cpp:108:7:108:8 | ref arg m2 | map.cpp:152:30:152:31 | m2 |  |
 | map.cpp:108:7:108:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
-| map.cpp:108:17:108:30 | call to make_pair | map.cpp:108:7:108:8 | ref arg m2 | TAINT |
-| map.cpp:108:17:108:30 | call to make_pair | map.cpp:108:10:108:15 | call to insert | TAINT |
 | map.cpp:108:50:108:54 | first | map.cpp:108:7:108:54 | call to iterator |  |
 | map.cpp:109:7:109:8 | ref arg m3 | map.cpp:115:7:115:8 | m3 |  |
 | map.cpp:109:7:109:8 | ref arg m3 | map.cpp:121:7:121:8 | m3 |  |
@@ -1967,8 +1984,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:109:7:109:8 | ref arg m3 | map.cpp:158:12:158:13 | m3 |  |
 | map.cpp:109:7:109:8 | ref arg m3 | map.cpp:158:30:158:31 | m3 |  |
 | map.cpp:109:7:109:8 | ref arg m3 | map.cpp:252:1:252:1 | m3 |  |
-| map.cpp:109:17:109:30 | call to make_pair | map.cpp:109:7:109:8 | ref arg m3 | TAINT |
-| map.cpp:109:17:109:30 | call to make_pair | map.cpp:109:10:109:15 | call to insert | TAINT |
 | map.cpp:109:50:109:54 | first | map.cpp:109:7:109:54 | call to iterator |  |
 | map.cpp:110:7:110:8 | ref arg m4 | map.cpp:116:7:116:8 | m4 |  |
 | map.cpp:110:7:110:8 | ref arg m4 | map.cpp:122:7:122:8 | m4 |  |
@@ -1981,15 +1996,10 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:110:17:110:18 | ref arg m4 | map.cpp:128:7:128:8 | m4 |  |
 | map.cpp:110:17:110:18 | ref arg m4 | map.cpp:252:1:252:1 | m4 |  |
 | map.cpp:110:20:110:24 | call to begin | map.cpp:110:17:110:26 | call to iterator | TAINT |
-| map.cpp:110:29:110:82 | call to pair | map.cpp:110:7:110:8 | ref arg m4 | TAINT |
-| map.cpp:110:29:110:82 | call to pair | map.cpp:110:10:110:15 | call to insert | TAINT |
-| map.cpp:110:74:110:79 | call to source | map.cpp:110:29:110:82 | call to pair | TAINT |
 | map.cpp:111:7:111:8 | ref arg m5 | map.cpp:117:7:117:8 | m5 |  |
 | map.cpp:111:7:111:8 | ref arg m5 | map.cpp:123:7:123:8 | m5 |  |
 | map.cpp:111:7:111:8 | ref arg m5 | map.cpp:129:7:129:8 | m5 |  |
 | map.cpp:111:7:111:8 | ref arg m5 | map.cpp:252:1:252:1 | m5 |  |
-| map.cpp:111:34:111:39 | call to source | map.cpp:111:7:111:8 | ref arg m5 | TAINT |
-| map.cpp:111:34:111:39 | call to source | map.cpp:111:10:111:25 | call to insert_or_assign | TAINT |
 | map.cpp:111:44:111:48 | first | map.cpp:111:7:111:48 | call to iterator |  |
 | map.cpp:112:7:112:8 | ref arg m6 | map.cpp:118:7:118:8 | m6 |  |
 | map.cpp:112:7:112:8 | ref arg m6 | map.cpp:124:7:124:8 | m6 |  |
@@ -2002,20 +2012,16 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:112:27:112:28 | ref arg m6 | map.cpp:130:7:130:8 | m6 |  |
 | map.cpp:112:27:112:28 | ref arg m6 | map.cpp:252:1:252:1 | m6 |  |
 | map.cpp:112:30:112:34 | call to begin | map.cpp:112:27:112:36 | call to iterator | TAINT |
-| map.cpp:112:46:112:51 | call to source | map.cpp:112:7:112:8 | ref arg m6 | TAINT |
-| map.cpp:112:46:112:51 | call to source | map.cpp:112:10:112:25 | call to insert_or_assign | TAINT |
 | map.cpp:113:7:113:8 | m1 | map.cpp:113:7:113:8 | call to map |  |
 | map.cpp:114:7:114:8 | m2 | map.cpp:114:7:114:8 | call to map |  |
 | map.cpp:115:7:115:8 | m3 | map.cpp:115:7:115:8 | call to map |  |
 | map.cpp:116:7:116:8 | m4 | map.cpp:116:7:116:8 | call to map |  |
 | map.cpp:117:7:117:8 | m5 | map.cpp:117:7:117:8 | call to map |  |
 | map.cpp:118:7:118:8 | m6 | map.cpp:118:7:118:8 | call to map |  |
-| map.cpp:119:7:119:8 | m1 | map.cpp:119:10:119:13 | call to find | TAINT |
 | map.cpp:119:7:119:8 | ref arg m1 | map.cpp:125:7:125:8 | m1 |  |
 | map.cpp:119:7:119:8 | ref arg m1 | map.cpp:146:12:146:13 | m1 |  |
 | map.cpp:119:7:119:8 | ref arg m1 | map.cpp:146:30:146:31 | m1 |  |
 | map.cpp:119:7:119:8 | ref arg m1 | map.cpp:252:1:252:1 | m1 |  |
-| map.cpp:120:7:120:8 | m2 | map.cpp:120:10:120:13 | call to find | TAINT |
 | map.cpp:120:7:120:8 | ref arg m2 | map.cpp:126:7:126:8 | m2 |  |
 | map.cpp:120:7:120:8 | ref arg m2 | map.cpp:133:42:133:43 | m2 |  |
 | map.cpp:120:7:120:8 | ref arg m2 | map.cpp:134:44:134:45 | m2 |  |
@@ -2023,40 +2029,30 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:120:7:120:8 | ref arg m2 | map.cpp:152:12:152:13 | m2 |  |
 | map.cpp:120:7:120:8 | ref arg m2 | map.cpp:152:30:152:31 | m2 |  |
 | map.cpp:120:7:120:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
-| map.cpp:121:7:121:8 | m3 | map.cpp:121:10:121:13 | call to find | TAINT |
 | map.cpp:121:7:121:8 | ref arg m3 | map.cpp:127:7:127:8 | m3 |  |
 | map.cpp:121:7:121:8 | ref arg m3 | map.cpp:158:12:158:13 | m3 |  |
 | map.cpp:121:7:121:8 | ref arg m3 | map.cpp:158:30:158:31 | m3 |  |
 | map.cpp:121:7:121:8 | ref arg m3 | map.cpp:252:1:252:1 | m3 |  |
-| map.cpp:122:7:122:8 | m4 | map.cpp:122:10:122:13 | call to find | TAINT |
 | map.cpp:122:7:122:8 | ref arg m4 | map.cpp:128:7:128:8 | m4 |  |
 | map.cpp:122:7:122:8 | ref arg m4 | map.cpp:252:1:252:1 | m4 |  |
-| map.cpp:123:7:123:8 | m5 | map.cpp:123:10:123:13 | call to find | TAINT |
 | map.cpp:123:7:123:8 | ref arg m5 | map.cpp:129:7:129:8 | m5 |  |
 | map.cpp:123:7:123:8 | ref arg m5 | map.cpp:252:1:252:1 | m5 |  |
-| map.cpp:124:7:124:8 | m6 | map.cpp:124:10:124:13 | call to find | TAINT |
 | map.cpp:124:7:124:8 | ref arg m6 | map.cpp:130:7:130:8 | m6 |  |
 | map.cpp:124:7:124:8 | ref arg m6 | map.cpp:252:1:252:1 | m6 |  |
-| map.cpp:125:7:125:8 | m1 | map.cpp:125:10:125:13 | call to find | TAINT |
 | map.cpp:125:7:125:8 | ref arg m1 | map.cpp:146:12:146:13 | m1 |  |
 | map.cpp:125:7:125:8 | ref arg m1 | map.cpp:146:30:146:31 | m1 |  |
 | map.cpp:125:7:125:8 | ref arg m1 | map.cpp:252:1:252:1 | m1 |  |
-| map.cpp:126:7:126:8 | m2 | map.cpp:126:10:126:13 | call to find | TAINT |
 | map.cpp:126:7:126:8 | ref arg m2 | map.cpp:133:42:133:43 | m2 |  |
 | map.cpp:126:7:126:8 | ref arg m2 | map.cpp:134:44:134:45 | m2 |  |
 | map.cpp:126:7:126:8 | ref arg m2 | map.cpp:136:7:136:8 | m2 |  |
 | map.cpp:126:7:126:8 | ref arg m2 | map.cpp:152:12:152:13 | m2 |  |
 | map.cpp:126:7:126:8 | ref arg m2 | map.cpp:152:30:152:31 | m2 |  |
 | map.cpp:126:7:126:8 | ref arg m2 | map.cpp:252:1:252:1 | m2 |  |
-| map.cpp:127:7:127:8 | m3 | map.cpp:127:10:127:13 | call to find | TAINT |
 | map.cpp:127:7:127:8 | ref arg m3 | map.cpp:158:12:158:13 | m3 |  |
 | map.cpp:127:7:127:8 | ref arg m3 | map.cpp:158:30:158:31 | m3 |  |
 | map.cpp:127:7:127:8 | ref arg m3 | map.cpp:252:1:252:1 | m3 |  |
-| map.cpp:128:7:128:8 | m4 | map.cpp:128:10:128:13 | call to find | TAINT |
 | map.cpp:128:7:128:8 | ref arg m4 | map.cpp:252:1:252:1 | m4 |  |
-| map.cpp:129:7:129:8 | m5 | map.cpp:129:10:129:13 | call to find | TAINT |
 | map.cpp:129:7:129:8 | ref arg m5 | map.cpp:252:1:252:1 | m5 |  |
-| map.cpp:130:7:130:8 | m6 | map.cpp:130:10:130:13 | call to find | TAINT |
 | map.cpp:130:7:130:8 | ref arg m6 | map.cpp:252:1:252:1 | m6 |  |
 | map.cpp:133:42:133:43 | m2 | map.cpp:133:42:133:44 | call to map |  |
 | map.cpp:133:42:133:44 | call to map | map.cpp:137:7:137:8 | m7 |  |
@@ -2078,11 +2074,8 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:137:7:137:8 | m7 | map.cpp:137:7:137:8 | call to map |  |
 | map.cpp:138:7:138:8 | m8 | map.cpp:138:7:138:8 | call to map |  |
 | map.cpp:139:7:139:8 | m9 | map.cpp:139:7:139:8 | call to map |  |
-| map.cpp:140:7:140:8 | m7 | map.cpp:140:10:140:13 | call to find | TAINT |
 | map.cpp:140:7:140:8 | ref arg m7 | map.cpp:252:1:252:1 | m7 |  |
-| map.cpp:141:7:141:8 | m8 | map.cpp:141:10:141:13 | call to find | TAINT |
 | map.cpp:141:7:141:8 | ref arg m8 | map.cpp:252:1:252:1 | m8 |  |
-| map.cpp:142:7:142:8 | m9 | map.cpp:142:10:142:13 | call to find | TAINT |
 | map.cpp:142:7:142:8 | ref arg m9 | map.cpp:252:1:252:1 | m9 |  |
 | map.cpp:146:12:146:13 | m1 | map.cpp:146:15:146:19 | call to begin | TAINT |
 | map.cpp:146:12:146:13 | ref arg m1 | map.cpp:146:30:146:31 | m1 |  |
@@ -2102,6 +2095,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:146:40:146:41 | ref arg i1 | map.cpp:148:9:148:10 | i1 |  |
 | map.cpp:146:40:146:41 | ref arg i1 | map.cpp:149:8:149:9 | i1 |  |
 | map.cpp:146:40:146:41 | ref arg i1 | map.cpp:150:8:150:9 | i1 |  |
+| map.cpp:148:8:148:8 | call to operator* | map.cpp:148:8:148:10 | call to pair | TAINT |
 | map.cpp:148:9:148:10 | i1 | map.cpp:148:8:148:8 | call to operator* | TAINT |
 | map.cpp:148:9:148:10 | ref arg i1 | map.cpp:146:24:146:25 | i1 |  |
 | map.cpp:148:9:148:10 | ref arg i1 | map.cpp:146:40:146:41 | i1 |  |
@@ -2138,6 +2132,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:152:40:152:41 | ref arg i2 | map.cpp:154:9:154:10 | i2 |  |
 | map.cpp:152:40:152:41 | ref arg i2 | map.cpp:155:8:155:9 | i2 |  |
 | map.cpp:152:40:152:41 | ref arg i2 | map.cpp:156:8:156:9 | i2 |  |
+| map.cpp:154:8:154:8 | call to operator* | map.cpp:154:8:154:10 | call to pair | TAINT |
 | map.cpp:154:9:154:10 | i2 | map.cpp:154:8:154:8 | call to operator* | TAINT |
 | map.cpp:154:9:154:10 | ref arg i2 | map.cpp:152:24:152:25 | i2 |  |
 | map.cpp:154:9:154:10 | ref arg i2 | map.cpp:152:40:152:41 | i2 |  |
@@ -2174,6 +2169,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:158:40:158:41 | ref arg i3 | map.cpp:160:9:160:10 | i3 |  |
 | map.cpp:158:40:158:41 | ref arg i3 | map.cpp:161:8:161:9 | i3 |  |
 | map.cpp:158:40:158:41 | ref arg i3 | map.cpp:162:8:162:9 | i3 |  |
+| map.cpp:160:8:160:8 | call to operator* | map.cpp:160:8:160:10 | call to pair | TAINT |
 | map.cpp:160:9:160:10 | i3 | map.cpp:160:8:160:8 | call to operator* | TAINT |
 | map.cpp:160:9:160:10 | ref arg i3 | map.cpp:158:24:158:25 | i3 |  |
 | map.cpp:160:9:160:10 | ref arg i3 | map.cpp:158:40:158:41 | i3 |  |
@@ -2204,37 +2200,25 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:166:54:166:56 | call to map | map.cpp:170:7:170:9 | m13 |  |
 | map.cpp:166:54:166:56 | call to map | map.cpp:174:7:174:9 | m13 |  |
 | map.cpp:166:54:166:56 | call to map | map.cpp:252:1:252:1 | m13 |  |
-| map.cpp:167:7:167:9 | m10 | map.cpp:167:10:167:10 | call to operator[] | TAINT |
 | map.cpp:167:7:167:9 | ref arg m10 | map.cpp:171:7:171:9 | m10 |  |
 | map.cpp:167:7:167:9 | ref arg m10 | map.cpp:252:1:252:1 | m10 |  |
 | map.cpp:167:7:167:24 | ... = ... | map.cpp:167:10:167:10 | call to operator[] [post update] |  |
-| map.cpp:167:10:167:10 | call to operator[] [post update] | map.cpp:167:7:167:9 | ref arg m10 | TAINT |
 | map.cpp:167:20:167:24 | def | map.cpp:167:7:167:24 | ... = ... |  |
-| map.cpp:168:7:168:9 | m11 | map.cpp:168:10:168:10 | call to operator[] | TAINT |
 | map.cpp:168:7:168:9 | ref arg m11 | map.cpp:172:7:172:9 | m11 |  |
 | map.cpp:168:7:168:9 | ref arg m11 | map.cpp:252:1:252:1 | m11 |  |
 | map.cpp:168:7:168:27 | ... = ... | map.cpp:168:10:168:10 | call to operator[] [post update] |  |
-| map.cpp:168:10:168:10 | call to operator[] [post update] | map.cpp:168:7:168:9 | ref arg m11 | TAINT |
 | map.cpp:168:20:168:25 | call to source | map.cpp:168:7:168:27 | ... = ... |  |
-| map.cpp:169:7:169:9 | m12 | map.cpp:169:11:169:12 | call to at | TAINT |
 | map.cpp:169:7:169:9 | ref arg m12 | map.cpp:173:7:173:9 | m12 |  |
 | map.cpp:169:7:169:9 | ref arg m12 | map.cpp:252:1:252:1 | m12 |  |
 | map.cpp:169:7:169:27 | ... = ... | map.cpp:169:11:169:12 | call to at [post update] |  |
-| map.cpp:169:11:169:12 | call to at [post update] | map.cpp:169:7:169:9 | ref arg m12 | TAINT |
 | map.cpp:169:23:169:27 | def | map.cpp:169:7:169:27 | ... = ... |  |
-| map.cpp:170:7:170:9 | m13 | map.cpp:170:11:170:12 | call to at | TAINT |
 | map.cpp:170:7:170:9 | ref arg m13 | map.cpp:174:7:174:9 | m13 |  |
 | map.cpp:170:7:170:9 | ref arg m13 | map.cpp:252:1:252:1 | m13 |  |
 | map.cpp:170:7:170:30 | ... = ... | map.cpp:170:11:170:12 | call to at [post update] |  |
-| map.cpp:170:11:170:12 | call to at [post update] | map.cpp:170:7:170:9 | ref arg m13 | TAINT |
 | map.cpp:170:23:170:28 | call to source | map.cpp:170:7:170:30 | ... = ... |  |
-| map.cpp:171:7:171:9 | m10 | map.cpp:171:10:171:10 | call to operator[] | TAINT |
 | map.cpp:171:7:171:9 | ref arg m10 | map.cpp:252:1:252:1 | m10 |  |
-| map.cpp:172:7:172:9 | m11 | map.cpp:172:10:172:10 | call to operator[] | TAINT |
 | map.cpp:172:7:172:9 | ref arg m11 | map.cpp:252:1:252:1 | m11 |  |
-| map.cpp:173:7:173:9 | m12 | map.cpp:173:10:173:10 | call to operator[] | TAINT |
 | map.cpp:173:7:173:9 | ref arg m12 | map.cpp:252:1:252:1 | m12 |  |
-| map.cpp:174:7:174:9 | m13 | map.cpp:174:10:174:10 | call to operator[] | TAINT |
 | map.cpp:174:7:174:9 | ref arg m13 | map.cpp:252:1:252:1 | m13 |  |
 | map.cpp:177:39:177:41 | call to map | map.cpp:178:2:178:4 | m14 |  |
 | map.cpp:177:39:177:41 | call to map | map.cpp:179:2:179:4 | m14 |  |
@@ -2257,8 +2241,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:178:2:178:4 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
 | map.cpp:178:2:178:4 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:178:2:178:4 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
-| map.cpp:178:13:178:26 | call to make_pair | map.cpp:178:2:178:4 | ref arg m14 | TAINT |
-| map.cpp:178:13:178:26 | call to make_pair | map.cpp:178:6:178:11 | call to insert | TAINT |
 | map.cpp:179:2:179:4 | ref arg m14 | map.cpp:180:2:180:4 | m14 |  |
 | map.cpp:179:2:179:4 | ref arg m14 | map.cpp:181:2:181:4 | m14 |  |
 | map.cpp:179:2:179:4 | ref arg m14 | map.cpp:182:7:182:9 | m14 |  |
@@ -2268,8 +2250,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:179:2:179:4 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
 | map.cpp:179:2:179:4 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:179:2:179:4 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
-| map.cpp:179:13:179:26 | call to make_pair | map.cpp:179:2:179:4 | ref arg m14 | TAINT |
-| map.cpp:179:13:179:26 | call to make_pair | map.cpp:179:6:179:11 | call to insert | TAINT |
 | map.cpp:180:2:180:4 | ref arg m14 | map.cpp:181:2:181:4 | m14 |  |
 | map.cpp:180:2:180:4 | ref arg m14 | map.cpp:182:7:182:9 | m14 |  |
 | map.cpp:180:2:180:4 | ref arg m14 | map.cpp:183:7:183:9 | m14 |  |
@@ -2278,8 +2258,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:180:2:180:4 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
 | map.cpp:180:2:180:4 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:180:2:180:4 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
-| map.cpp:180:13:180:26 | call to make_pair | map.cpp:180:2:180:4 | ref arg m14 | TAINT |
-| map.cpp:180:13:180:26 | call to make_pair | map.cpp:180:6:180:11 | call to insert | TAINT |
 | map.cpp:181:2:181:4 | ref arg m14 | map.cpp:182:7:182:9 | m14 |  |
 | map.cpp:181:2:181:4 | ref arg m14 | map.cpp:183:7:183:9 | m14 |  |
 | map.cpp:181:2:181:4 | ref arg m14 | map.cpp:184:7:184:9 | m14 |  |
@@ -2287,36 +2265,28 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:181:2:181:4 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
 | map.cpp:181:2:181:4 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:181:2:181:4 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
-| map.cpp:181:13:181:26 | call to make_pair | map.cpp:181:2:181:4 | ref arg m14 | TAINT |
-| map.cpp:181:13:181:26 | call to make_pair | map.cpp:181:6:181:11 | call to insert | TAINT |
-| map.cpp:182:7:182:9 | m14 | map.cpp:182:11:182:21 | call to lower_bound | TAINT |
 | map.cpp:182:7:182:9 | ref arg m14 | map.cpp:183:7:183:9 | m14 |  |
 | map.cpp:182:7:182:9 | ref arg m14 | map.cpp:184:7:184:9 | m14 |  |
 | map.cpp:182:7:182:9 | ref arg m14 | map.cpp:185:7:185:9 | m14 |  |
 | map.cpp:182:7:182:9 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
 | map.cpp:182:7:182:9 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:182:7:182:9 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
-| map.cpp:183:7:183:9 | m14 | map.cpp:183:11:183:21 | call to upper_bound | TAINT |
 | map.cpp:183:7:183:9 | ref arg m14 | map.cpp:184:7:184:9 | m14 |  |
 | map.cpp:183:7:183:9 | ref arg m14 | map.cpp:185:7:185:9 | m14 |  |
 | map.cpp:183:7:183:9 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
 | map.cpp:183:7:183:9 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:183:7:183:9 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
-| map.cpp:184:7:184:9 | m14 | map.cpp:184:11:184:21 | call to equal_range | TAINT |
 | map.cpp:184:7:184:9 | ref arg m14 | map.cpp:185:7:185:9 | m14 |  |
 | map.cpp:184:7:184:9 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
 | map.cpp:184:7:184:9 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:184:7:184:9 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
 | map.cpp:184:28:184:32 | first | map.cpp:184:7:184:32 | call to iterator |  |
-| map.cpp:185:7:185:9 | m14 | map.cpp:185:11:185:21 | call to equal_range | TAINT |
 | map.cpp:185:7:185:9 | ref arg m14 | map.cpp:186:7:186:9 | m14 |  |
 | map.cpp:185:7:185:9 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:185:7:185:9 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
 | map.cpp:185:28:185:33 | second | map.cpp:185:7:185:33 | call to iterator |  |
-| map.cpp:186:7:186:9 | m14 | map.cpp:186:11:186:21 | call to upper_bound | TAINT |
 | map.cpp:186:7:186:9 | ref arg m14 | map.cpp:187:7:187:9 | m14 |  |
 | map.cpp:186:7:186:9 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
-| map.cpp:187:7:187:9 | m14 | map.cpp:187:11:187:21 | call to equal_range | TAINT |
 | map.cpp:187:7:187:9 | ref arg m14 | map.cpp:252:1:252:1 | m14 |  |
 | map.cpp:187:28:187:33 | second | map.cpp:187:7:187:33 | call to iterator |  |
 | map.cpp:190:39:190:41 | call to map | map.cpp:191:2:191:4 | m15 |  |
@@ -2341,16 +2311,10 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:191:2:191:4 | ref arg m15 | map.cpp:197:2:197:4 | m15 |  |
 | map.cpp:191:2:191:4 | ref arg m15 | map.cpp:199:7:199:9 | m15 |  |
 | map.cpp:191:2:191:4 | ref arg m15 | map.cpp:252:1:252:1 | m15 |  |
-| map.cpp:191:13:191:69 | call to pair | map.cpp:191:2:191:4 | ref arg m15 | TAINT |
-| map.cpp:191:13:191:69 | call to pair | map.cpp:191:6:191:11 | call to insert | TAINT |
-| map.cpp:191:61:191:66 | call to source | map.cpp:191:13:191:69 | call to pair | TAINT |
 | map.cpp:192:2:192:4 | ref arg m18 | map.cpp:196:7:196:9 | m18 |  |
 | map.cpp:192:2:192:4 | ref arg m18 | map.cpp:198:11:198:13 | m18 |  |
 | map.cpp:192:2:192:4 | ref arg m18 | map.cpp:202:7:202:9 | m18 |  |
 | map.cpp:192:2:192:4 | ref arg m18 | map.cpp:252:1:252:1 | m18 |  |
-| map.cpp:192:13:192:69 | call to pair | map.cpp:192:2:192:4 | ref arg m18 | TAINT |
-| map.cpp:192:13:192:69 | call to pair | map.cpp:192:6:192:11 | call to insert | TAINT |
-| map.cpp:192:61:192:66 | call to source | map.cpp:192:13:192:69 | call to pair | TAINT |
 | map.cpp:193:7:193:9 | m15 | map.cpp:193:7:193:9 | call to map |  |
 | map.cpp:194:7:194:9 | m16 | map.cpp:194:7:194:9 | call to map |  |
 | map.cpp:195:7:195:9 | m17 | map.cpp:195:7:195:9 | call to map |  |
@@ -2391,42 +2355,28 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:206:2:206:4 | ref arg m19 | map.cpp:214:2:214:4 | m19 |  |
 | map.cpp:206:2:206:4 | ref arg m19 | map.cpp:216:7:216:9 | m19 |  |
 | map.cpp:206:2:206:4 | ref arg m19 | map.cpp:252:1:252:1 | m19 |  |
-| map.cpp:206:13:206:69 | call to pair | map.cpp:206:2:206:4 | ref arg m19 | TAINT |
-| map.cpp:206:13:206:69 | call to pair | map.cpp:206:6:206:11 | call to insert | TAINT |
-| map.cpp:206:61:206:66 | call to source | map.cpp:206:13:206:69 | call to pair | TAINT |
 | map.cpp:207:2:207:4 | ref arg m20 | map.cpp:211:7:211:9 | m20 |  |
 | map.cpp:207:2:207:4 | ref arg m20 | map.cpp:214:12:214:14 | m20 |  |
 | map.cpp:207:2:207:4 | ref arg m20 | map.cpp:217:7:217:9 | m20 |  |
 | map.cpp:207:2:207:4 | ref arg m20 | map.cpp:252:1:252:1 | m20 |  |
-| map.cpp:207:13:207:63 | call to pair | map.cpp:207:2:207:4 | ref arg m20 | TAINT |
-| map.cpp:207:13:207:63 | call to pair | map.cpp:207:6:207:11 | call to insert | TAINT |
-| map.cpp:207:58:207:62 | def | map.cpp:207:13:207:63 | call to pair | TAINT |
 | map.cpp:208:2:208:4 | ref arg m21 | map.cpp:212:7:212:9 | m21 |  |
 | map.cpp:208:2:208:4 | ref arg m21 | map.cpp:215:2:215:4 | m21 |  |
 | map.cpp:208:2:208:4 | ref arg m21 | map.cpp:218:7:218:9 | m21 |  |
 | map.cpp:208:2:208:4 | ref arg m21 | map.cpp:252:1:252:1 | m21 |  |
-| map.cpp:208:13:208:63 | call to pair | map.cpp:208:2:208:4 | ref arg m21 | TAINT |
-| map.cpp:208:13:208:63 | call to pair | map.cpp:208:6:208:11 | call to insert | TAINT |
-| map.cpp:208:58:208:62 | def | map.cpp:208:13:208:63 | call to pair | TAINT |
 | map.cpp:209:2:209:4 | ref arg m22 | map.cpp:213:7:213:9 | m22 |  |
 | map.cpp:209:2:209:4 | ref arg m22 | map.cpp:215:12:215:14 | m22 |  |
 | map.cpp:209:2:209:4 | ref arg m22 | map.cpp:219:7:219:9 | m22 |  |
 | map.cpp:209:2:209:4 | ref arg m22 | map.cpp:252:1:252:1 | m22 |  |
-| map.cpp:209:13:209:69 | call to pair | map.cpp:209:2:209:4 | ref arg m22 | TAINT |
-| map.cpp:209:13:209:69 | call to pair | map.cpp:209:6:209:11 | call to insert | TAINT |
-| map.cpp:209:61:209:66 | call to source | map.cpp:209:13:209:69 | call to pair | TAINT |
 | map.cpp:210:7:210:9 | m19 | map.cpp:210:7:210:9 | call to map |  |
 | map.cpp:211:7:211:9 | m20 | map.cpp:211:7:211:9 | call to map |  |
 | map.cpp:212:7:212:9 | m21 | map.cpp:212:7:212:9 | call to map |  |
 | map.cpp:213:7:213:9 | m22 | map.cpp:213:7:213:9 | call to map |  |
 | map.cpp:214:2:214:4 | ref arg m19 | map.cpp:216:7:216:9 | m19 |  |
 | map.cpp:214:2:214:4 | ref arg m19 | map.cpp:252:1:252:1 | m19 |  |
-| map.cpp:214:12:214:14 | m20 | map.cpp:214:2:214:4 | ref arg m19 | TAINT |
 | map.cpp:214:12:214:14 | ref arg m20 | map.cpp:217:7:217:9 | m20 |  |
 | map.cpp:214:12:214:14 | ref arg m20 | map.cpp:252:1:252:1 | m20 |  |
 | map.cpp:215:2:215:4 | ref arg m21 | map.cpp:218:7:218:9 | m21 |  |
 | map.cpp:215:2:215:4 | ref arg m21 | map.cpp:252:1:252:1 | m21 |  |
-| map.cpp:215:12:215:14 | m22 | map.cpp:215:2:215:4 | ref arg m21 | TAINT |
 | map.cpp:215:12:215:14 | ref arg m22 | map.cpp:219:7:219:9 | m22 |  |
 | map.cpp:215:12:215:14 | ref arg m22 | map.cpp:252:1:252:1 | m22 |  |
 | map.cpp:216:7:216:9 | m19 | map.cpp:216:7:216:9 | call to map |  |
@@ -2442,7 +2392,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:222:39:222:41 | call to map | map.cpp:228:2:228:4 | m23 |  |
 | map.cpp:222:39:222:41 | call to map | map.cpp:229:7:229:9 | m23 |  |
 | map.cpp:222:39:222:41 | call to map | map.cpp:252:1:252:1 | m23 |  |
-| map.cpp:222:103:222:108 | call to source | map.cpp:222:44:222:111 | call to pair | TAINT |
 | map.cpp:223:2:223:4 | ref arg m23 | map.cpp:224:2:224:4 | m23 |  |
 | map.cpp:223:2:223:4 | ref arg m23 | map.cpp:225:7:225:9 | m23 |  |
 | map.cpp:223:2:223:4 | ref arg m23 | map.cpp:226:7:226:9 | m23 |  |
@@ -2451,9 +2400,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:223:2:223:4 | ref arg m23 | map.cpp:228:2:228:4 | m23 |  |
 | map.cpp:223:2:223:4 | ref arg m23 | map.cpp:229:7:229:9 | m23 |  |
 | map.cpp:223:2:223:4 | ref arg m23 | map.cpp:252:1:252:1 | m23 |  |
-| map.cpp:223:13:223:69 | call to pair | map.cpp:223:2:223:4 | ref arg m23 | TAINT |
-| map.cpp:223:13:223:69 | call to pair | map.cpp:223:6:223:11 | call to insert | TAINT |
-| map.cpp:223:61:223:66 | call to source | map.cpp:223:13:223:69 | call to pair | TAINT |
 | map.cpp:224:2:224:4 | ref arg m23 | map.cpp:225:7:225:9 | m23 |  |
 | map.cpp:224:2:224:4 | ref arg m23 | map.cpp:226:7:226:9 | m23 |  |
 | map.cpp:224:2:224:4 | ref arg m23 | map.cpp:226:17:226:19 | m23 |  |
@@ -2461,11 +2407,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:224:2:224:4 | ref arg m23 | map.cpp:228:2:228:4 | m23 |  |
 | map.cpp:224:2:224:4 | ref arg m23 | map.cpp:229:7:229:9 | m23 |  |
 | map.cpp:224:2:224:4 | ref arg m23 | map.cpp:252:1:252:1 | m23 |  |
-| map.cpp:224:13:224:69 | call to pair | map.cpp:224:2:224:4 | ref arg m23 | TAINT |
-| map.cpp:224:13:224:69 | call to pair | map.cpp:224:6:224:11 | call to insert | TAINT |
-| map.cpp:224:61:224:66 | call to source | map.cpp:224:13:224:69 | call to pair | TAINT |
 | map.cpp:225:7:225:9 | m23 | map.cpp:225:7:225:9 | call to map |  |
-| map.cpp:226:7:226:9 | m23 | map.cpp:226:11:226:15 | call to erase | TAINT |
 | map.cpp:226:7:226:9 | ref arg m23 | map.cpp:227:7:227:9 | m23 |  |
 | map.cpp:226:7:226:9 | ref arg m23 | map.cpp:228:2:228:4 | m23 |  |
 | map.cpp:226:7:226:9 | ref arg m23 | map.cpp:229:7:229:9 | m23 |  |
@@ -2492,24 +2434,16 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:232:44:232:46 | call to map | map.cpp:239:24:239:26 | m25 |  |
 | map.cpp:232:44:232:46 | call to map | map.cpp:240:7:240:9 | m25 |  |
 | map.cpp:232:44:232:46 | call to map | map.cpp:252:1:252:1 | m25 |  |
-| map.cpp:232:105:232:110 | call to source | map.cpp:232:49:232:113 | call to pair | TAINT |
-| map.cpp:233:7:233:9 | m24 | map.cpp:233:11:233:17 | call to emplace | TAINT |
 | map.cpp:233:7:233:9 | ref arg m24 | map.cpp:234:7:234:9 | m24 |  |
 | map.cpp:233:7:233:9 | ref arg m24 | map.cpp:235:7:235:9 | m24 |  |
 | map.cpp:233:7:233:9 | ref arg m24 | map.cpp:236:7:236:9 | m24 |  |
 | map.cpp:233:7:233:9 | ref arg m24 | map.cpp:252:1:252:1 | m24 |  |
-| map.cpp:233:26:233:30 | def | map.cpp:233:7:233:9 | ref arg m24 | TAINT |
-| map.cpp:233:26:233:30 | def | map.cpp:233:11:233:17 | call to emplace | TAINT |
 | map.cpp:233:33:233:37 | first | map.cpp:233:7:233:37 | call to iterator |  |
 | map.cpp:234:7:234:9 | m24 | map.cpp:234:7:234:9 | call to map |  |
-| map.cpp:235:7:235:9 | m24 | map.cpp:235:11:235:17 | call to emplace | TAINT |
 | map.cpp:235:7:235:9 | ref arg m24 | map.cpp:236:7:236:9 | m24 |  |
 | map.cpp:235:7:235:9 | ref arg m24 | map.cpp:252:1:252:1 | m24 |  |
-| map.cpp:235:26:235:31 | call to source | map.cpp:235:7:235:9 | ref arg m24 | TAINT |
-| map.cpp:235:26:235:31 | call to source | map.cpp:235:11:235:17 | call to emplace | TAINT |
 | map.cpp:235:36:235:40 | first | map.cpp:235:7:235:40 | call to iterator |  |
 | map.cpp:236:7:236:9 | m24 | map.cpp:236:7:236:9 | call to map |  |
-| map.cpp:237:7:237:9 | m25 | map.cpp:237:11:237:22 | call to emplace_hint | TAINT |
 | map.cpp:237:7:237:9 | ref arg m25 | map.cpp:238:7:238:9 | m25 |  |
 | map.cpp:237:7:237:9 | ref arg m25 | map.cpp:239:7:239:9 | m25 |  |
 | map.cpp:237:7:237:9 | ref arg m25 | map.cpp:239:24:239:26 | m25 |  |
@@ -2523,10 +2457,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:237:24:237:26 | ref arg m25 | map.cpp:240:7:240:9 | m25 |  |
 | map.cpp:237:24:237:26 | ref arg m25 | map.cpp:252:1:252:1 | m25 |  |
 | map.cpp:237:28:237:32 | call to begin | map.cpp:237:24:237:34 | call to iterator | TAINT |
-| map.cpp:237:44:237:48 | def | map.cpp:237:7:237:9 | ref arg m25 | TAINT |
-| map.cpp:237:44:237:48 | def | map.cpp:237:11:237:22 | call to emplace_hint | TAINT |
 | map.cpp:238:7:238:9 | m25 | map.cpp:238:7:238:9 | call to map |  |
-| map.cpp:239:7:239:9 | m25 | map.cpp:239:11:239:22 | call to emplace_hint | TAINT |
 | map.cpp:239:7:239:9 | ref arg m25 | map.cpp:240:7:240:9 | m25 |  |
 | map.cpp:239:7:239:9 | ref arg m25 | map.cpp:252:1:252:1 | m25 |  |
 | map.cpp:239:24:239:26 | m25 | map.cpp:239:28:239:32 | call to begin | TAINT |
@@ -2534,8 +2465,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:239:24:239:26 | ref arg m25 | map.cpp:240:7:240:9 | m25 |  |
 | map.cpp:239:24:239:26 | ref arg m25 | map.cpp:252:1:252:1 | m25 |  |
 | map.cpp:239:28:239:32 | call to begin | map.cpp:239:24:239:34 | call to iterator | TAINT |
-| map.cpp:239:44:239:49 | call to source | map.cpp:239:7:239:9 | ref arg m25 | TAINT |
-| map.cpp:239:44:239:49 | call to source | map.cpp:239:11:239:22 | call to emplace_hint | TAINT |
 | map.cpp:240:7:240:9 | m25 | map.cpp:240:7:240:9 | call to map |  |
 | map.cpp:243:39:243:41 | call to map | map.cpp:244:7:244:9 | m26 |  |
 | map.cpp:243:39:243:41 | call to map | map.cpp:245:7:245:9 | m26 |  |
@@ -2549,23 +2478,16 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:243:44:243:46 | call to map | map.cpp:250:23:250:25 | m27 |  |
 | map.cpp:243:44:243:46 | call to map | map.cpp:251:7:251:9 | m27 |  |
 | map.cpp:243:44:243:46 | call to map | map.cpp:252:1:252:1 | m27 |  |
-| map.cpp:244:7:244:9 | m26 | map.cpp:244:11:244:21 | call to try_emplace | TAINT |
 | map.cpp:244:7:244:9 | ref arg m26 | map.cpp:245:7:245:9 | m26 |  |
 | map.cpp:244:7:244:9 | ref arg m26 | map.cpp:246:7:246:9 | m26 |  |
 | map.cpp:244:7:244:9 | ref arg m26 | map.cpp:247:7:247:9 | m26 |  |
 | map.cpp:244:7:244:9 | ref arg m26 | map.cpp:252:1:252:1 | m26 |  |
-| map.cpp:244:30:244:34 | def | map.cpp:244:7:244:9 | ref arg m26 | TAINT |
-| map.cpp:244:30:244:34 | def | map.cpp:244:11:244:21 | call to try_emplace | TAINT |
 | map.cpp:244:37:244:41 | first | map.cpp:244:7:244:41 | call to iterator |  |
 | map.cpp:245:7:245:9 | m26 | map.cpp:245:7:245:9 | call to map |  |
-| map.cpp:246:7:246:9 | m26 | map.cpp:246:11:246:21 | call to try_emplace | TAINT |
 | map.cpp:246:7:246:9 | ref arg m26 | map.cpp:247:7:247:9 | m26 |  |
 | map.cpp:246:7:246:9 | ref arg m26 | map.cpp:252:1:252:1 | m26 |  |
-| map.cpp:246:30:246:35 | call to source | map.cpp:246:7:246:9 | ref arg m26 | TAINT |
-| map.cpp:246:30:246:35 | call to source | map.cpp:246:11:246:21 | call to try_emplace | TAINT |
 | map.cpp:246:40:246:44 | first | map.cpp:246:7:246:44 | call to iterator |  |
 | map.cpp:247:7:247:9 | m26 | map.cpp:247:7:247:9 | call to map |  |
-| map.cpp:248:7:248:9 | m27 | map.cpp:248:11:248:21 | call to try_emplace | TAINT |
 | map.cpp:248:7:248:9 | ref arg m27 | map.cpp:249:7:249:9 | m27 |  |
 | map.cpp:248:7:248:9 | ref arg m27 | map.cpp:250:7:250:9 | m27 |  |
 | map.cpp:248:7:248:9 | ref arg m27 | map.cpp:250:23:250:25 | m27 |  |
@@ -2579,10 +2501,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:248:23:248:25 | ref arg m27 | map.cpp:251:7:251:9 | m27 |  |
 | map.cpp:248:23:248:25 | ref arg m27 | map.cpp:252:1:252:1 | m27 |  |
 | map.cpp:248:27:248:31 | call to begin | map.cpp:248:23:248:33 | call to iterator | TAINT |
-| map.cpp:248:43:248:47 | def | map.cpp:248:7:248:9 | ref arg m27 | TAINT |
-| map.cpp:248:43:248:47 | def | map.cpp:248:11:248:21 | call to try_emplace | TAINT |
 | map.cpp:249:7:249:9 | m27 | map.cpp:249:7:249:9 | call to map |  |
-| map.cpp:250:7:250:9 | m27 | map.cpp:250:11:250:21 | call to try_emplace | TAINT |
 | map.cpp:250:7:250:9 | ref arg m27 | map.cpp:251:7:251:9 | m27 |  |
 | map.cpp:250:7:250:9 | ref arg m27 | map.cpp:252:1:252:1 | m27 |  |
 | map.cpp:250:23:250:25 | m27 | map.cpp:250:27:250:31 | call to begin | TAINT |
@@ -2590,8 +2509,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:250:23:250:25 | ref arg m27 | map.cpp:251:7:251:9 | m27 |  |
 | map.cpp:250:23:250:25 | ref arg m27 | map.cpp:252:1:252:1 | m27 |  |
 | map.cpp:250:27:250:31 | call to begin | map.cpp:250:23:250:33 | call to iterator | TAINT |
-| map.cpp:250:43:250:48 | call to source | map.cpp:250:7:250:9 | ref arg m27 | TAINT |
-| map.cpp:250:43:250:48 | call to source | map.cpp:250:11:250:21 | call to try_emplace | TAINT |
 | map.cpp:251:7:251:9 | m27 | map.cpp:251:7:251:9 | call to map |  |
 | map.cpp:257:49:257:50 | call to unordered_map | map.cpp:259:7:259:8 | m1 |  |
 | map.cpp:257:49:257:50 | call to unordered_map | map.cpp:265:7:265:8 | m1 |  |
@@ -2641,8 +2558,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:259:7:259:8 | ref arg m1 | map.cpp:298:30:298:31 | m1 |  |
 | map.cpp:259:7:259:8 | ref arg m1 | map.cpp:438:1:438:1 | m1 |  |
 | map.cpp:259:17:259:30 | call to make_pair | map.cpp:259:17:259:44 | call to pair | TAINT |
-| map.cpp:259:17:259:44 | call to pair | map.cpp:259:7:259:8 | ref arg m1 | TAINT |
-| map.cpp:259:17:259:44 | call to pair | map.cpp:259:10:259:15 | call to insert | TAINT |
 | map.cpp:259:47:259:51 | first | map.cpp:259:7:259:51 | call to iterator |  |
 | map.cpp:260:7:260:8 | ref arg m2 | map.cpp:266:7:266:8 | m2 |  |
 | map.cpp:260:7:260:8 | ref arg m2 | map.cpp:272:7:272:8 | m2 |  |
@@ -2654,8 +2569,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:260:7:260:8 | ref arg m2 | map.cpp:304:30:304:31 | m2 |  |
 | map.cpp:260:7:260:8 | ref arg m2 | map.cpp:438:1:438:1 | m2 |  |
 | map.cpp:260:17:260:30 | call to make_pair | map.cpp:260:17:260:47 | call to pair | TAINT |
-| map.cpp:260:17:260:47 | call to pair | map.cpp:260:7:260:8 | ref arg m2 | TAINT |
-| map.cpp:260:17:260:47 | call to pair | map.cpp:260:10:260:15 | call to insert | TAINT |
 | map.cpp:260:50:260:54 | first | map.cpp:260:7:260:54 | call to iterator |  |
 | map.cpp:261:7:261:8 | ref arg m3 | map.cpp:267:7:267:8 | m3 |  |
 | map.cpp:261:7:261:8 | ref arg m3 | map.cpp:273:7:273:8 | m3 |  |
@@ -2664,8 +2577,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:261:7:261:8 | ref arg m3 | map.cpp:310:30:310:31 | m3 |  |
 | map.cpp:261:7:261:8 | ref arg m3 | map.cpp:438:1:438:1 | m3 |  |
 | map.cpp:261:17:261:30 | call to make_pair | map.cpp:261:17:261:47 | call to pair | TAINT |
-| map.cpp:261:17:261:47 | call to pair | map.cpp:261:7:261:8 | ref arg m3 | TAINT |
-| map.cpp:261:17:261:47 | call to pair | map.cpp:261:10:261:15 | call to insert | TAINT |
 | map.cpp:261:50:261:54 | first | map.cpp:261:7:261:54 | call to iterator |  |
 | map.cpp:262:7:262:8 | ref arg m4 | map.cpp:268:7:268:8 | m4 |  |
 | map.cpp:262:7:262:8 | ref arg m4 | map.cpp:274:7:274:8 | m4 |  |
@@ -2678,16 +2589,11 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:262:17:262:18 | ref arg m4 | map.cpp:280:7:280:8 | m4 |  |
 | map.cpp:262:17:262:18 | ref arg m4 | map.cpp:438:1:438:1 | m4 |  |
 | map.cpp:262:20:262:24 | call to begin | map.cpp:262:17:262:26 | call to iterator | TAINT |
-| map.cpp:262:29:262:82 | call to pair | map.cpp:262:7:262:8 | ref arg m4 | TAINT |
-| map.cpp:262:29:262:82 | call to pair | map.cpp:262:10:262:15 | call to insert | TAINT |
 | map.cpp:262:29:262:82 | call to pair | map.cpp:262:29:262:82 | call to pair | TAINT |
-| map.cpp:262:74:262:79 | call to source | map.cpp:262:29:262:82 | call to pair | TAINT |
 | map.cpp:263:7:263:8 | ref arg m5 | map.cpp:269:7:269:8 | m5 |  |
 | map.cpp:263:7:263:8 | ref arg m5 | map.cpp:275:7:275:8 | m5 |  |
 | map.cpp:263:7:263:8 | ref arg m5 | map.cpp:281:7:281:8 | m5 |  |
 | map.cpp:263:7:263:8 | ref arg m5 | map.cpp:438:1:438:1 | m5 |  |
-| map.cpp:263:34:263:39 | call to source | map.cpp:263:7:263:8 | ref arg m5 | TAINT |
-| map.cpp:263:34:263:39 | call to source | map.cpp:263:10:263:25 | call to insert_or_assign | TAINT |
 | map.cpp:263:44:263:48 | first | map.cpp:263:7:263:48 | call to iterator |  |
 | map.cpp:264:7:264:8 | ref arg m6 | map.cpp:270:7:270:8 | m6 |  |
 | map.cpp:264:7:264:8 | ref arg m6 | map.cpp:276:7:276:8 | m6 |  |
@@ -2700,20 +2606,16 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:264:27:264:28 | ref arg m6 | map.cpp:282:7:282:8 | m6 |  |
 | map.cpp:264:27:264:28 | ref arg m6 | map.cpp:438:1:438:1 | m6 |  |
 | map.cpp:264:30:264:34 | call to begin | map.cpp:264:27:264:36 | call to iterator | TAINT |
-| map.cpp:264:46:264:51 | call to source | map.cpp:264:7:264:8 | ref arg m6 | TAINT |
-| map.cpp:264:46:264:51 | call to source | map.cpp:264:10:264:25 | call to insert_or_assign | TAINT |
 | map.cpp:265:7:265:8 | m1 | map.cpp:265:7:265:8 | call to unordered_map |  |
 | map.cpp:266:7:266:8 | m2 | map.cpp:266:7:266:8 | call to unordered_map |  |
 | map.cpp:267:7:267:8 | m3 | map.cpp:267:7:267:8 | call to unordered_map |  |
 | map.cpp:268:7:268:8 | m4 | map.cpp:268:7:268:8 | call to unordered_map |  |
 | map.cpp:269:7:269:8 | m5 | map.cpp:269:7:269:8 | call to unordered_map |  |
 | map.cpp:270:7:270:8 | m6 | map.cpp:270:7:270:8 | call to unordered_map |  |
-| map.cpp:271:7:271:8 | m1 | map.cpp:271:10:271:13 | call to find | TAINT |
 | map.cpp:271:7:271:8 | ref arg m1 | map.cpp:277:7:277:8 | m1 |  |
 | map.cpp:271:7:271:8 | ref arg m1 | map.cpp:298:12:298:13 | m1 |  |
 | map.cpp:271:7:271:8 | ref arg m1 | map.cpp:298:30:298:31 | m1 |  |
 | map.cpp:271:7:271:8 | ref arg m1 | map.cpp:438:1:438:1 | m1 |  |
-| map.cpp:272:7:272:8 | m2 | map.cpp:272:10:272:13 | call to find | TAINT |
 | map.cpp:272:7:272:8 | ref arg m2 | map.cpp:278:7:278:8 | m2 |  |
 | map.cpp:272:7:272:8 | ref arg m2 | map.cpp:285:52:285:53 | m2 |  |
 | map.cpp:272:7:272:8 | ref arg m2 | map.cpp:286:54:286:55 | m2 |  |
@@ -2721,40 +2623,30 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:272:7:272:8 | ref arg m2 | map.cpp:304:12:304:13 | m2 |  |
 | map.cpp:272:7:272:8 | ref arg m2 | map.cpp:304:30:304:31 | m2 |  |
 | map.cpp:272:7:272:8 | ref arg m2 | map.cpp:438:1:438:1 | m2 |  |
-| map.cpp:273:7:273:8 | m3 | map.cpp:273:10:273:13 | call to find | TAINT |
 | map.cpp:273:7:273:8 | ref arg m3 | map.cpp:279:7:279:8 | m3 |  |
 | map.cpp:273:7:273:8 | ref arg m3 | map.cpp:310:12:310:13 | m3 |  |
 | map.cpp:273:7:273:8 | ref arg m3 | map.cpp:310:30:310:31 | m3 |  |
 | map.cpp:273:7:273:8 | ref arg m3 | map.cpp:438:1:438:1 | m3 |  |
-| map.cpp:274:7:274:8 | m4 | map.cpp:274:10:274:13 | call to find | TAINT |
 | map.cpp:274:7:274:8 | ref arg m4 | map.cpp:280:7:280:8 | m4 |  |
 | map.cpp:274:7:274:8 | ref arg m4 | map.cpp:438:1:438:1 | m4 |  |
-| map.cpp:275:7:275:8 | m5 | map.cpp:275:10:275:13 | call to find | TAINT |
 | map.cpp:275:7:275:8 | ref arg m5 | map.cpp:281:7:281:8 | m5 |  |
 | map.cpp:275:7:275:8 | ref arg m5 | map.cpp:438:1:438:1 | m5 |  |
-| map.cpp:276:7:276:8 | m6 | map.cpp:276:10:276:13 | call to find | TAINT |
 | map.cpp:276:7:276:8 | ref arg m6 | map.cpp:282:7:282:8 | m6 |  |
 | map.cpp:276:7:276:8 | ref arg m6 | map.cpp:438:1:438:1 | m6 |  |
-| map.cpp:277:7:277:8 | m1 | map.cpp:277:10:277:13 | call to find | TAINT |
 | map.cpp:277:7:277:8 | ref arg m1 | map.cpp:298:12:298:13 | m1 |  |
 | map.cpp:277:7:277:8 | ref arg m1 | map.cpp:298:30:298:31 | m1 |  |
 | map.cpp:277:7:277:8 | ref arg m1 | map.cpp:438:1:438:1 | m1 |  |
-| map.cpp:278:7:278:8 | m2 | map.cpp:278:10:278:13 | call to find | TAINT |
 | map.cpp:278:7:278:8 | ref arg m2 | map.cpp:285:52:285:53 | m2 |  |
 | map.cpp:278:7:278:8 | ref arg m2 | map.cpp:286:54:286:55 | m2 |  |
 | map.cpp:278:7:278:8 | ref arg m2 | map.cpp:288:7:288:8 | m2 |  |
 | map.cpp:278:7:278:8 | ref arg m2 | map.cpp:304:12:304:13 | m2 |  |
 | map.cpp:278:7:278:8 | ref arg m2 | map.cpp:304:30:304:31 | m2 |  |
 | map.cpp:278:7:278:8 | ref arg m2 | map.cpp:438:1:438:1 | m2 |  |
-| map.cpp:279:7:279:8 | m3 | map.cpp:279:10:279:13 | call to find | TAINT |
 | map.cpp:279:7:279:8 | ref arg m3 | map.cpp:310:12:310:13 | m3 |  |
 | map.cpp:279:7:279:8 | ref arg m3 | map.cpp:310:30:310:31 | m3 |  |
 | map.cpp:279:7:279:8 | ref arg m3 | map.cpp:438:1:438:1 | m3 |  |
-| map.cpp:280:7:280:8 | m4 | map.cpp:280:10:280:13 | call to find | TAINT |
 | map.cpp:280:7:280:8 | ref arg m4 | map.cpp:438:1:438:1 | m4 |  |
-| map.cpp:281:7:281:8 | m5 | map.cpp:281:10:281:13 | call to find | TAINT |
 | map.cpp:281:7:281:8 | ref arg m5 | map.cpp:438:1:438:1 | m5 |  |
-| map.cpp:282:7:282:8 | m6 | map.cpp:282:10:282:13 | call to find | TAINT |
 | map.cpp:282:7:282:8 | ref arg m6 | map.cpp:438:1:438:1 | m6 |  |
 | map.cpp:285:52:285:53 | m2 | map.cpp:285:52:285:54 | call to unordered_map |  |
 | map.cpp:285:52:285:54 | call to unordered_map | map.cpp:289:7:289:8 | m7 |  |
@@ -2776,11 +2668,8 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:289:7:289:8 | m7 | map.cpp:289:7:289:8 | call to unordered_map |  |
 | map.cpp:290:7:290:8 | m8 | map.cpp:290:7:290:8 | call to unordered_map |  |
 | map.cpp:291:7:291:8 | m9 | map.cpp:291:7:291:8 | call to unordered_map |  |
-| map.cpp:292:7:292:8 | m7 | map.cpp:292:10:292:13 | call to find | TAINT |
 | map.cpp:292:7:292:8 | ref arg m7 | map.cpp:438:1:438:1 | m7 |  |
-| map.cpp:293:7:293:8 | m8 | map.cpp:293:10:293:13 | call to find | TAINT |
 | map.cpp:293:7:293:8 | ref arg m8 | map.cpp:438:1:438:1 | m8 |  |
-| map.cpp:294:7:294:8 | m9 | map.cpp:294:10:294:13 | call to find | TAINT |
 | map.cpp:294:7:294:8 | ref arg m9 | map.cpp:438:1:438:1 | m9 |  |
 | map.cpp:298:12:298:13 | m1 | map.cpp:298:15:298:19 | call to begin | TAINT |
 | map.cpp:298:12:298:13 | ref arg m1 | map.cpp:298:30:298:31 | m1 |  |
@@ -2800,6 +2689,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:298:40:298:41 | ref arg i1 | map.cpp:300:9:300:10 | i1 |  |
 | map.cpp:298:40:298:41 | ref arg i1 | map.cpp:301:8:301:9 | i1 |  |
 | map.cpp:298:40:298:41 | ref arg i1 | map.cpp:302:8:302:9 | i1 |  |
+| map.cpp:300:8:300:8 | call to operator* | map.cpp:300:8:300:10 | call to pair | TAINT |
 | map.cpp:300:9:300:10 | i1 | map.cpp:300:8:300:8 | call to operator* | TAINT |
 | map.cpp:300:9:300:10 | ref arg i1 | map.cpp:298:24:298:25 | i1 |  |
 | map.cpp:300:9:300:10 | ref arg i1 | map.cpp:298:40:298:41 | i1 |  |
@@ -2836,6 +2726,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:304:40:304:41 | ref arg i2 | map.cpp:306:9:306:10 | i2 |  |
 | map.cpp:304:40:304:41 | ref arg i2 | map.cpp:307:8:307:9 | i2 |  |
 | map.cpp:304:40:304:41 | ref arg i2 | map.cpp:308:8:308:9 | i2 |  |
+| map.cpp:306:8:306:8 | call to operator* | map.cpp:306:8:306:10 | call to pair | TAINT |
 | map.cpp:306:9:306:10 | i2 | map.cpp:306:8:306:8 | call to operator* | TAINT |
 | map.cpp:306:9:306:10 | ref arg i2 | map.cpp:304:24:304:25 | i2 |  |
 | map.cpp:306:9:306:10 | ref arg i2 | map.cpp:304:40:304:41 | i2 |  |
@@ -2872,6 +2763,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:310:40:310:41 | ref arg i3 | map.cpp:312:9:312:10 | i3 |  |
 | map.cpp:310:40:310:41 | ref arg i3 | map.cpp:313:8:313:9 | i3 |  |
 | map.cpp:310:40:310:41 | ref arg i3 | map.cpp:314:8:314:9 | i3 |  |
+| map.cpp:312:8:312:8 | call to operator* | map.cpp:312:8:312:10 | call to pair | TAINT |
 | map.cpp:312:9:312:10 | i3 | map.cpp:312:8:312:8 | call to operator* | TAINT |
 | map.cpp:312:9:312:10 | ref arg i3 | map.cpp:310:24:310:25 | i3 |  |
 | map.cpp:312:9:312:10 | ref arg i3 | map.cpp:310:40:310:41 | i3 |  |
@@ -2902,37 +2794,25 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:318:64:318:66 | call to unordered_map | map.cpp:322:7:322:9 | m13 |  |
 | map.cpp:318:64:318:66 | call to unordered_map | map.cpp:326:7:326:9 | m13 |  |
 | map.cpp:318:64:318:66 | call to unordered_map | map.cpp:438:1:438:1 | m13 |  |
-| map.cpp:319:7:319:9 | m10 | map.cpp:319:10:319:10 | call to operator[] | TAINT |
 | map.cpp:319:7:319:9 | ref arg m10 | map.cpp:323:7:323:9 | m10 |  |
 | map.cpp:319:7:319:9 | ref arg m10 | map.cpp:438:1:438:1 | m10 |  |
 | map.cpp:319:7:319:24 | ... = ... | map.cpp:319:10:319:10 | call to operator[] [post update] |  |
-| map.cpp:319:10:319:10 | call to operator[] [post update] | map.cpp:319:7:319:9 | ref arg m10 | TAINT |
 | map.cpp:319:20:319:24 | def | map.cpp:319:7:319:24 | ... = ... |  |
-| map.cpp:320:7:320:9 | m11 | map.cpp:320:10:320:10 | call to operator[] | TAINT |
 | map.cpp:320:7:320:9 | ref arg m11 | map.cpp:324:7:324:9 | m11 |  |
 | map.cpp:320:7:320:9 | ref arg m11 | map.cpp:438:1:438:1 | m11 |  |
 | map.cpp:320:7:320:27 | ... = ... | map.cpp:320:10:320:10 | call to operator[] [post update] |  |
-| map.cpp:320:10:320:10 | call to operator[] [post update] | map.cpp:320:7:320:9 | ref arg m11 | TAINT |
 | map.cpp:320:20:320:25 | call to source | map.cpp:320:7:320:27 | ... = ... |  |
-| map.cpp:321:7:321:9 | m12 | map.cpp:321:11:321:12 | call to at | TAINT |
 | map.cpp:321:7:321:9 | ref arg m12 | map.cpp:325:7:325:9 | m12 |  |
 | map.cpp:321:7:321:9 | ref arg m12 | map.cpp:438:1:438:1 | m12 |  |
 | map.cpp:321:7:321:27 | ... = ... | map.cpp:321:11:321:12 | call to at [post update] |  |
-| map.cpp:321:11:321:12 | call to at [post update] | map.cpp:321:7:321:9 | ref arg m12 | TAINT |
 | map.cpp:321:23:321:27 | def | map.cpp:321:7:321:27 | ... = ... |  |
-| map.cpp:322:7:322:9 | m13 | map.cpp:322:11:322:12 | call to at | TAINT |
 | map.cpp:322:7:322:9 | ref arg m13 | map.cpp:326:7:326:9 | m13 |  |
 | map.cpp:322:7:322:9 | ref arg m13 | map.cpp:438:1:438:1 | m13 |  |
 | map.cpp:322:7:322:30 | ... = ... | map.cpp:322:11:322:12 | call to at [post update] |  |
-| map.cpp:322:11:322:12 | call to at [post update] | map.cpp:322:7:322:9 | ref arg m13 | TAINT |
 | map.cpp:322:23:322:28 | call to source | map.cpp:322:7:322:30 | ... = ... |  |
-| map.cpp:323:7:323:9 | m10 | map.cpp:323:10:323:10 | call to operator[] | TAINT |
 | map.cpp:323:7:323:9 | ref arg m10 | map.cpp:438:1:438:1 | m10 |  |
-| map.cpp:324:7:324:9 | m11 | map.cpp:324:10:324:10 | call to operator[] | TAINT |
 | map.cpp:324:7:324:9 | ref arg m11 | map.cpp:438:1:438:1 | m11 |  |
-| map.cpp:325:7:325:9 | m12 | map.cpp:325:10:325:10 | call to operator[] | TAINT |
 | map.cpp:325:7:325:9 | ref arg m12 | map.cpp:438:1:438:1 | m12 |  |
-| map.cpp:326:7:326:9 | m13 | map.cpp:326:10:326:10 | call to operator[] | TAINT |
 | map.cpp:326:7:326:9 | ref arg m13 | map.cpp:438:1:438:1 | m13 |  |
 | map.cpp:329:49:329:51 | call to unordered_map | map.cpp:330:2:330:4 | m14 |  |
 | map.cpp:329:49:329:51 | call to unordered_map | map.cpp:331:2:331:4 | m14 |  |
@@ -2950,8 +2830,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:330:2:330:4 | ref arg m14 | map.cpp:336:7:336:9 | m14 |  |
 | map.cpp:330:2:330:4 | ref arg m14 | map.cpp:438:1:438:1 | m14 |  |
 | map.cpp:330:13:330:26 | call to make_pair | map.cpp:330:13:330:36 | call to pair | TAINT |
-| map.cpp:330:13:330:36 | call to pair | map.cpp:330:2:330:4 | ref arg m14 | TAINT |
-| map.cpp:330:13:330:36 | call to pair | map.cpp:330:6:330:11 | call to insert | TAINT |
 | map.cpp:331:2:331:4 | ref arg m14 | map.cpp:332:2:332:4 | m14 |  |
 | map.cpp:331:2:331:4 | ref arg m14 | map.cpp:333:2:333:4 | m14 |  |
 | map.cpp:331:2:331:4 | ref arg m14 | map.cpp:334:7:334:9 | m14 |  |
@@ -2959,33 +2837,24 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:331:2:331:4 | ref arg m14 | map.cpp:336:7:336:9 | m14 |  |
 | map.cpp:331:2:331:4 | ref arg m14 | map.cpp:438:1:438:1 | m14 |  |
 | map.cpp:331:13:331:26 | call to make_pair | map.cpp:331:13:331:41 | call to pair | TAINT |
-| map.cpp:331:13:331:41 | call to pair | map.cpp:331:2:331:4 | ref arg m14 | TAINT |
-| map.cpp:331:13:331:41 | call to pair | map.cpp:331:6:331:11 | call to insert | TAINT |
 | map.cpp:332:2:332:4 | ref arg m14 | map.cpp:333:2:333:4 | m14 |  |
 | map.cpp:332:2:332:4 | ref arg m14 | map.cpp:334:7:334:9 | m14 |  |
 | map.cpp:332:2:332:4 | ref arg m14 | map.cpp:335:7:335:9 | m14 |  |
 | map.cpp:332:2:332:4 | ref arg m14 | map.cpp:336:7:336:9 | m14 |  |
 | map.cpp:332:2:332:4 | ref arg m14 | map.cpp:438:1:438:1 | m14 |  |
 | map.cpp:332:13:332:26 | call to make_pair | map.cpp:332:13:332:41 | call to pair | TAINT |
-| map.cpp:332:13:332:41 | call to pair | map.cpp:332:2:332:4 | ref arg m14 | TAINT |
-| map.cpp:332:13:332:41 | call to pair | map.cpp:332:6:332:11 | call to insert | TAINT |
 | map.cpp:333:2:333:4 | ref arg m14 | map.cpp:334:7:334:9 | m14 |  |
 | map.cpp:333:2:333:4 | ref arg m14 | map.cpp:335:7:335:9 | m14 |  |
 | map.cpp:333:2:333:4 | ref arg m14 | map.cpp:336:7:336:9 | m14 |  |
 | map.cpp:333:2:333:4 | ref arg m14 | map.cpp:438:1:438:1 | m14 |  |
 | map.cpp:333:13:333:26 | call to make_pair | map.cpp:333:13:333:36 | call to pair | TAINT |
-| map.cpp:333:13:333:36 | call to pair | map.cpp:333:2:333:4 | ref arg m14 | TAINT |
-| map.cpp:333:13:333:36 | call to pair | map.cpp:333:6:333:11 | call to insert | TAINT |
-| map.cpp:334:7:334:9 | m14 | map.cpp:334:11:334:21 | call to equal_range | TAINT |
 | map.cpp:334:7:334:9 | ref arg m14 | map.cpp:335:7:335:9 | m14 |  |
 | map.cpp:334:7:334:9 | ref arg m14 | map.cpp:336:7:336:9 | m14 |  |
 | map.cpp:334:7:334:9 | ref arg m14 | map.cpp:438:1:438:1 | m14 |  |
 | map.cpp:334:28:334:32 | first | map.cpp:334:7:334:32 | call to iterator |  |
-| map.cpp:335:7:335:9 | m14 | map.cpp:335:11:335:21 | call to equal_range | TAINT |
 | map.cpp:335:7:335:9 | ref arg m14 | map.cpp:336:7:336:9 | m14 |  |
 | map.cpp:335:7:335:9 | ref arg m14 | map.cpp:438:1:438:1 | m14 |  |
 | map.cpp:335:28:335:33 | second | map.cpp:335:7:335:33 | call to iterator |  |
-| map.cpp:336:7:336:9 | m14 | map.cpp:336:11:336:21 | call to equal_range | TAINT |
 | map.cpp:336:7:336:9 | ref arg m14 | map.cpp:438:1:438:1 | m14 |  |
 | map.cpp:336:28:336:33 | second | map.cpp:336:7:336:33 | call to iterator |  |
 | map.cpp:339:49:339:51 | call to unordered_map | map.cpp:340:2:340:4 | m15 |  |
@@ -3010,18 +2879,12 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:340:2:340:4 | ref arg m15 | map.cpp:346:2:346:4 | m15 |  |
 | map.cpp:340:2:340:4 | ref arg m15 | map.cpp:348:7:348:9 | m15 |  |
 | map.cpp:340:2:340:4 | ref arg m15 | map.cpp:438:1:438:1 | m15 |  |
-| map.cpp:340:13:340:69 | call to pair | map.cpp:340:2:340:4 | ref arg m15 | TAINT |
-| map.cpp:340:13:340:69 | call to pair | map.cpp:340:6:340:11 | call to insert | TAINT |
 | map.cpp:340:13:340:69 | call to pair | map.cpp:340:13:340:69 | call to pair | TAINT |
-| map.cpp:340:61:340:66 | call to source | map.cpp:340:13:340:69 | call to pair | TAINT |
 | map.cpp:341:2:341:4 | ref arg m18 | map.cpp:345:7:345:9 | m18 |  |
 | map.cpp:341:2:341:4 | ref arg m18 | map.cpp:347:11:347:13 | m18 |  |
 | map.cpp:341:2:341:4 | ref arg m18 | map.cpp:351:7:351:9 | m18 |  |
 | map.cpp:341:2:341:4 | ref arg m18 | map.cpp:438:1:438:1 | m18 |  |
-| map.cpp:341:13:341:69 | call to pair | map.cpp:341:2:341:4 | ref arg m18 | TAINT |
-| map.cpp:341:13:341:69 | call to pair | map.cpp:341:6:341:11 | call to insert | TAINT |
 | map.cpp:341:13:341:69 | call to pair | map.cpp:341:13:341:69 | call to pair | TAINT |
-| map.cpp:341:61:341:66 | call to source | map.cpp:341:13:341:69 | call to pair | TAINT |
 | map.cpp:342:7:342:9 | m15 | map.cpp:342:7:342:9 | call to unordered_map |  |
 | map.cpp:343:7:343:9 | m16 | map.cpp:343:7:343:9 | call to unordered_map |  |
 | map.cpp:344:7:344:9 | m17 | map.cpp:344:7:344:9 | call to unordered_map |  |
@@ -3062,46 +2925,32 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:355:2:355:4 | ref arg m19 | map.cpp:363:2:363:4 | m19 |  |
 | map.cpp:355:2:355:4 | ref arg m19 | map.cpp:365:7:365:9 | m19 |  |
 | map.cpp:355:2:355:4 | ref arg m19 | map.cpp:438:1:438:1 | m19 |  |
-| map.cpp:355:13:355:69 | call to pair | map.cpp:355:2:355:4 | ref arg m19 | TAINT |
-| map.cpp:355:13:355:69 | call to pair | map.cpp:355:6:355:11 | call to insert | TAINT |
 | map.cpp:355:13:355:69 | call to pair | map.cpp:355:13:355:69 | call to pair | TAINT |
-| map.cpp:355:61:355:66 | call to source | map.cpp:355:13:355:69 | call to pair | TAINT |
 | map.cpp:356:2:356:4 | ref arg m20 | map.cpp:360:7:360:9 | m20 |  |
 | map.cpp:356:2:356:4 | ref arg m20 | map.cpp:363:12:363:14 | m20 |  |
 | map.cpp:356:2:356:4 | ref arg m20 | map.cpp:366:7:366:9 | m20 |  |
 | map.cpp:356:2:356:4 | ref arg m20 | map.cpp:438:1:438:1 | m20 |  |
-| map.cpp:356:13:356:63 | call to pair | map.cpp:356:2:356:4 | ref arg m20 | TAINT |
-| map.cpp:356:13:356:63 | call to pair | map.cpp:356:6:356:11 | call to insert | TAINT |
 | map.cpp:356:13:356:63 | call to pair | map.cpp:356:13:356:63 | call to pair | TAINT |
-| map.cpp:356:58:356:62 | def | map.cpp:356:13:356:63 | call to pair | TAINT |
 | map.cpp:357:2:357:4 | ref arg m21 | map.cpp:361:7:361:9 | m21 |  |
 | map.cpp:357:2:357:4 | ref arg m21 | map.cpp:364:2:364:4 | m21 |  |
 | map.cpp:357:2:357:4 | ref arg m21 | map.cpp:367:7:367:9 | m21 |  |
 | map.cpp:357:2:357:4 | ref arg m21 | map.cpp:438:1:438:1 | m21 |  |
-| map.cpp:357:13:357:63 | call to pair | map.cpp:357:2:357:4 | ref arg m21 | TAINT |
-| map.cpp:357:13:357:63 | call to pair | map.cpp:357:6:357:11 | call to insert | TAINT |
 | map.cpp:357:13:357:63 | call to pair | map.cpp:357:13:357:63 | call to pair | TAINT |
-| map.cpp:357:58:357:62 | def | map.cpp:357:13:357:63 | call to pair | TAINT |
 | map.cpp:358:2:358:4 | ref arg m22 | map.cpp:362:7:362:9 | m22 |  |
 | map.cpp:358:2:358:4 | ref arg m22 | map.cpp:364:12:364:14 | m22 |  |
 | map.cpp:358:2:358:4 | ref arg m22 | map.cpp:368:7:368:9 | m22 |  |
 | map.cpp:358:2:358:4 | ref arg m22 | map.cpp:438:1:438:1 | m22 |  |
-| map.cpp:358:13:358:69 | call to pair | map.cpp:358:2:358:4 | ref arg m22 | TAINT |
-| map.cpp:358:13:358:69 | call to pair | map.cpp:358:6:358:11 | call to insert | TAINT |
 | map.cpp:358:13:358:69 | call to pair | map.cpp:358:13:358:69 | call to pair | TAINT |
-| map.cpp:358:61:358:66 | call to source | map.cpp:358:13:358:69 | call to pair | TAINT |
 | map.cpp:359:7:359:9 | m19 | map.cpp:359:7:359:9 | call to unordered_map |  |
 | map.cpp:360:7:360:9 | m20 | map.cpp:360:7:360:9 | call to unordered_map |  |
 | map.cpp:361:7:361:9 | m21 | map.cpp:361:7:361:9 | call to unordered_map |  |
 | map.cpp:362:7:362:9 | m22 | map.cpp:362:7:362:9 | call to unordered_map |  |
 | map.cpp:363:2:363:4 | ref arg m19 | map.cpp:365:7:365:9 | m19 |  |
 | map.cpp:363:2:363:4 | ref arg m19 | map.cpp:438:1:438:1 | m19 |  |
-| map.cpp:363:12:363:14 | m20 | map.cpp:363:2:363:4 | ref arg m19 | TAINT |
 | map.cpp:363:12:363:14 | ref arg m20 | map.cpp:366:7:366:9 | m20 |  |
 | map.cpp:363:12:363:14 | ref arg m20 | map.cpp:438:1:438:1 | m20 |  |
 | map.cpp:364:2:364:4 | ref arg m21 | map.cpp:367:7:367:9 | m21 |  |
 | map.cpp:364:2:364:4 | ref arg m21 | map.cpp:438:1:438:1 | m21 |  |
-| map.cpp:364:12:364:14 | m22 | map.cpp:364:2:364:4 | ref arg m21 | TAINT |
 | map.cpp:364:12:364:14 | ref arg m22 | map.cpp:368:7:368:9 | m22 |  |
 | map.cpp:364:12:364:14 | ref arg m22 | map.cpp:438:1:438:1 | m22 |  |
 | map.cpp:365:7:365:9 | m19 | map.cpp:365:7:365:9 | call to unordered_map |  |
@@ -3125,10 +2974,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:372:2:372:4 | ref arg m23 | map.cpp:377:2:377:4 | m23 |  |
 | map.cpp:372:2:372:4 | ref arg m23 | map.cpp:378:7:378:9 | m23 |  |
 | map.cpp:372:2:372:4 | ref arg m23 | map.cpp:438:1:438:1 | m23 |  |
-| map.cpp:372:13:372:69 | call to pair | map.cpp:372:2:372:4 | ref arg m23 | TAINT |
-| map.cpp:372:13:372:69 | call to pair | map.cpp:372:6:372:11 | call to insert | TAINT |
 | map.cpp:372:13:372:69 | call to pair | map.cpp:372:13:372:69 | call to pair | TAINT |
-| map.cpp:372:61:372:66 | call to source | map.cpp:372:13:372:69 | call to pair | TAINT |
 | map.cpp:373:2:373:4 | ref arg m23 | map.cpp:374:7:374:9 | m23 |  |
 | map.cpp:373:2:373:4 | ref arg m23 | map.cpp:375:7:375:9 | m23 |  |
 | map.cpp:373:2:373:4 | ref arg m23 | map.cpp:375:17:375:19 | m23 |  |
@@ -3136,12 +2982,8 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:373:2:373:4 | ref arg m23 | map.cpp:377:2:377:4 | m23 |  |
 | map.cpp:373:2:373:4 | ref arg m23 | map.cpp:378:7:378:9 | m23 |  |
 | map.cpp:373:2:373:4 | ref arg m23 | map.cpp:438:1:438:1 | m23 |  |
-| map.cpp:373:13:373:69 | call to pair | map.cpp:373:2:373:4 | ref arg m23 | TAINT |
-| map.cpp:373:13:373:69 | call to pair | map.cpp:373:6:373:11 | call to insert | TAINT |
 | map.cpp:373:13:373:69 | call to pair | map.cpp:373:13:373:69 | call to pair | TAINT |
-| map.cpp:373:61:373:66 | call to source | map.cpp:373:13:373:69 | call to pair | TAINT |
 | map.cpp:374:7:374:9 | m23 | map.cpp:374:7:374:9 | call to unordered_map |  |
-| map.cpp:375:7:375:9 | m23 | map.cpp:375:11:375:15 | call to erase | TAINT |
 | map.cpp:375:7:375:9 | ref arg m23 | map.cpp:376:7:376:9 | m23 |  |
 | map.cpp:375:7:375:9 | ref arg m23 | map.cpp:377:2:377:4 | m23 |  |
 | map.cpp:375:7:375:9 | ref arg m23 | map.cpp:378:7:378:9 | m23 |  |
@@ -3168,23 +3010,16 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:381:54:381:56 | call to unordered_map | map.cpp:388:24:388:26 | m25 |  |
 | map.cpp:381:54:381:56 | call to unordered_map | map.cpp:389:7:389:9 | m25 |  |
 | map.cpp:381:54:381:56 | call to unordered_map | map.cpp:438:1:438:1 | m25 |  |
-| map.cpp:382:7:382:9 | m24 | map.cpp:382:11:382:17 | call to emplace | TAINT |
 | map.cpp:382:7:382:9 | ref arg m24 | map.cpp:383:7:383:9 | m24 |  |
 | map.cpp:382:7:382:9 | ref arg m24 | map.cpp:384:7:384:9 | m24 |  |
 | map.cpp:382:7:382:9 | ref arg m24 | map.cpp:385:7:385:9 | m24 |  |
 | map.cpp:382:7:382:9 | ref arg m24 | map.cpp:438:1:438:1 | m24 |  |
-| map.cpp:382:26:382:30 | def | map.cpp:382:7:382:9 | ref arg m24 | TAINT |
-| map.cpp:382:26:382:30 | def | map.cpp:382:11:382:17 | call to emplace | TAINT |
 | map.cpp:382:33:382:37 | first | map.cpp:382:7:382:37 | call to iterator |  |
 | map.cpp:383:7:383:9 | m24 | map.cpp:383:7:383:9 | call to unordered_map |  |
-| map.cpp:384:7:384:9 | m24 | map.cpp:384:11:384:17 | call to emplace | TAINT |
 | map.cpp:384:7:384:9 | ref arg m24 | map.cpp:385:7:385:9 | m24 |  |
 | map.cpp:384:7:384:9 | ref arg m24 | map.cpp:438:1:438:1 | m24 |  |
-| map.cpp:384:26:384:31 | call to source | map.cpp:384:7:384:9 | ref arg m24 | TAINT |
-| map.cpp:384:26:384:31 | call to source | map.cpp:384:11:384:17 | call to emplace | TAINT |
 | map.cpp:384:36:384:40 | first | map.cpp:384:7:384:40 | call to iterator |  |
 | map.cpp:385:7:385:9 | m24 | map.cpp:385:7:385:9 | call to unordered_map |  |
-| map.cpp:386:7:386:9 | m25 | map.cpp:386:11:386:22 | call to emplace_hint | TAINT |
 | map.cpp:386:7:386:9 | ref arg m25 | map.cpp:387:7:387:9 | m25 |  |
 | map.cpp:386:7:386:9 | ref arg m25 | map.cpp:388:7:388:9 | m25 |  |
 | map.cpp:386:7:386:9 | ref arg m25 | map.cpp:388:24:388:26 | m25 |  |
@@ -3198,10 +3033,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:386:24:386:26 | ref arg m25 | map.cpp:389:7:389:9 | m25 |  |
 | map.cpp:386:24:386:26 | ref arg m25 | map.cpp:438:1:438:1 | m25 |  |
 | map.cpp:386:28:386:32 | call to begin | map.cpp:386:24:386:34 | call to iterator | TAINT |
-| map.cpp:386:44:386:48 | def | map.cpp:386:7:386:9 | ref arg m25 | TAINT |
-| map.cpp:386:44:386:48 | def | map.cpp:386:11:386:22 | call to emplace_hint | TAINT |
 | map.cpp:387:7:387:9 | m25 | map.cpp:387:7:387:9 | call to unordered_map |  |
-| map.cpp:388:7:388:9 | m25 | map.cpp:388:11:388:22 | call to emplace_hint | TAINT |
 | map.cpp:388:7:388:9 | ref arg m25 | map.cpp:389:7:389:9 | m25 |  |
 | map.cpp:388:7:388:9 | ref arg m25 | map.cpp:438:1:438:1 | m25 |  |
 | map.cpp:388:24:388:26 | m25 | map.cpp:388:28:388:32 | call to begin | TAINT |
@@ -3209,8 +3041,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:388:24:388:26 | ref arg m25 | map.cpp:389:7:389:9 | m25 |  |
 | map.cpp:388:24:388:26 | ref arg m25 | map.cpp:438:1:438:1 | m25 |  |
 | map.cpp:388:28:388:32 | call to begin | map.cpp:388:24:388:34 | call to iterator | TAINT |
-| map.cpp:388:44:388:49 | call to source | map.cpp:388:7:388:9 | ref arg m25 | TAINT |
-| map.cpp:388:44:388:49 | call to source | map.cpp:388:11:388:22 | call to emplace_hint | TAINT |
 | map.cpp:389:7:389:9 | m25 | map.cpp:389:7:389:9 | call to unordered_map |  |
 | map.cpp:392:49:392:51 | call to unordered_map | map.cpp:393:7:393:9 | m26 |  |
 | map.cpp:392:49:392:51 | call to unordered_map | map.cpp:394:7:394:9 | m26 |  |
@@ -3233,39 +3063,26 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:392:59:392:61 | call to unordered_map | map.cpp:405:23:405:25 | m28 |  |
 | map.cpp:392:59:392:61 | call to unordered_map | map.cpp:406:7:406:9 | m28 |  |
 | map.cpp:392:59:392:61 | call to unordered_map | map.cpp:438:1:438:1 | m28 |  |
-| map.cpp:393:7:393:9 | m26 | map.cpp:393:11:393:21 | call to try_emplace | TAINT |
 | map.cpp:393:7:393:9 | ref arg m26 | map.cpp:394:7:394:9 | m26 |  |
 | map.cpp:393:7:393:9 | ref arg m26 | map.cpp:395:7:395:9 | m26 |  |
 | map.cpp:393:7:393:9 | ref arg m26 | map.cpp:396:7:396:9 | m26 |  |
 | map.cpp:393:7:393:9 | ref arg m26 | map.cpp:397:7:397:9 | m26 |  |
 | map.cpp:393:7:393:9 | ref arg m26 | map.cpp:398:7:398:9 | m26 |  |
 | map.cpp:393:7:393:9 | ref arg m26 | map.cpp:438:1:438:1 | m26 |  |
-| map.cpp:393:30:393:34 | def | map.cpp:393:7:393:9 | ref arg m26 | TAINT |
-| map.cpp:393:30:393:34 | def | map.cpp:393:11:393:21 | call to try_emplace | TAINT |
 | map.cpp:393:37:393:41 | first | map.cpp:393:7:393:41 | call to iterator |  |
-| map.cpp:394:7:394:9 | m26 | map.cpp:394:11:394:21 | call to try_emplace | TAINT |
 | map.cpp:394:7:394:9 | ref arg m26 | map.cpp:395:7:395:9 | m26 |  |
 | map.cpp:394:7:394:9 | ref arg m26 | map.cpp:396:7:396:9 | m26 |  |
 | map.cpp:394:7:394:9 | ref arg m26 | map.cpp:397:7:397:9 | m26 |  |
 | map.cpp:394:7:394:9 | ref arg m26 | map.cpp:398:7:398:9 | m26 |  |
 | map.cpp:394:7:394:9 | ref arg m26 | map.cpp:438:1:438:1 | m26 |  |
-| map.cpp:394:30:394:34 | def | map.cpp:394:7:394:9 | ref arg m26 | TAINT |
-| map.cpp:394:30:394:34 | def | map.cpp:394:11:394:21 | call to try_emplace | TAINT |
 | map.cpp:395:7:395:9 | m26 | map.cpp:395:7:395:9 | call to unordered_map |  |
-| map.cpp:396:7:396:9 | m26 | map.cpp:396:11:396:21 | call to try_emplace | TAINT |
 | map.cpp:396:7:396:9 | ref arg m26 | map.cpp:397:7:397:9 | m26 |  |
 | map.cpp:396:7:396:9 | ref arg m26 | map.cpp:398:7:398:9 | m26 |  |
 | map.cpp:396:7:396:9 | ref arg m26 | map.cpp:438:1:438:1 | m26 |  |
-| map.cpp:396:30:396:35 | call to source | map.cpp:396:7:396:9 | ref arg m26 | TAINT |
-| map.cpp:396:30:396:35 | call to source | map.cpp:396:11:396:21 | call to try_emplace | TAINT |
 | map.cpp:396:40:396:44 | first | map.cpp:396:7:396:44 | call to iterator |  |
-| map.cpp:397:7:397:9 | m26 | map.cpp:397:11:397:21 | call to try_emplace | TAINT |
 | map.cpp:397:7:397:9 | ref arg m26 | map.cpp:398:7:398:9 | m26 |  |
 | map.cpp:397:7:397:9 | ref arg m26 | map.cpp:438:1:438:1 | m26 |  |
-| map.cpp:397:30:397:35 | call to source | map.cpp:397:7:397:9 | ref arg m26 | TAINT |
-| map.cpp:397:30:397:35 | call to source | map.cpp:397:11:397:21 | call to try_emplace | TAINT |
 | map.cpp:398:7:398:9 | m26 | map.cpp:398:7:398:9 | call to unordered_map |  |
-| map.cpp:399:7:399:9 | m27 | map.cpp:399:11:399:21 | call to try_emplace | TAINT |
 | map.cpp:399:7:399:9 | ref arg m27 | map.cpp:400:7:400:9 | m27 |  |
 | map.cpp:399:7:399:9 | ref arg m27 | map.cpp:401:7:401:9 | m27 |  |
 | map.cpp:399:7:399:9 | ref arg m27 | map.cpp:401:23:401:25 | m27 |  |
@@ -3279,10 +3096,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:399:23:399:25 | ref arg m27 | map.cpp:402:7:402:9 | m27 |  |
 | map.cpp:399:23:399:25 | ref arg m27 | map.cpp:438:1:438:1 | m27 |  |
 | map.cpp:399:27:399:31 | call to begin | map.cpp:399:23:399:33 | call to iterator | TAINT |
-| map.cpp:399:43:399:47 | def | map.cpp:399:7:399:9 | ref arg m27 | TAINT |
-| map.cpp:399:43:399:47 | def | map.cpp:399:11:399:21 | call to try_emplace | TAINT |
 | map.cpp:400:7:400:9 | m27 | map.cpp:400:7:400:9 | call to unordered_map |  |
-| map.cpp:401:7:401:9 | m27 | map.cpp:401:11:401:21 | call to try_emplace | TAINT |
 | map.cpp:401:7:401:9 | ref arg m27 | map.cpp:402:7:402:9 | m27 |  |
 | map.cpp:401:7:401:9 | ref arg m27 | map.cpp:438:1:438:1 | m27 |  |
 | map.cpp:401:23:401:25 | m27 | map.cpp:401:27:401:31 | call to begin | TAINT |
@@ -3290,10 +3104,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:401:23:401:25 | ref arg m27 | map.cpp:402:7:402:9 | m27 |  |
 | map.cpp:401:23:401:25 | ref arg m27 | map.cpp:438:1:438:1 | m27 |  |
 | map.cpp:401:27:401:31 | call to begin | map.cpp:401:23:401:33 | call to iterator | TAINT |
-| map.cpp:401:43:401:48 | call to source | map.cpp:401:7:401:9 | ref arg m27 | TAINT |
-| map.cpp:401:43:401:48 | call to source | map.cpp:401:11:401:21 | call to try_emplace | TAINT |
 | map.cpp:402:7:402:9 | m27 | map.cpp:402:7:402:9 | call to unordered_map |  |
-| map.cpp:403:7:403:9 | m28 | map.cpp:403:11:403:21 | call to try_emplace | TAINT |
 | map.cpp:403:7:403:9 | ref arg m28 | map.cpp:404:7:404:9 | m28 |  |
 | map.cpp:403:7:403:9 | ref arg m28 | map.cpp:405:7:405:9 | m28 |  |
 | map.cpp:403:7:403:9 | ref arg m28 | map.cpp:405:23:405:25 | m28 |  |
@@ -3307,10 +3118,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:403:23:403:25 | ref arg m28 | map.cpp:406:7:406:9 | m28 |  |
 | map.cpp:403:23:403:25 | ref arg m28 | map.cpp:438:1:438:1 | m28 |  |
 | map.cpp:403:27:403:31 | call to begin | map.cpp:403:23:403:33 | call to iterator | TAINT |
-| map.cpp:403:43:403:47 | def | map.cpp:403:7:403:9 | ref arg m28 | TAINT |
-| map.cpp:403:43:403:47 | def | map.cpp:403:11:403:21 | call to try_emplace | TAINT |
 | map.cpp:404:7:404:9 | m28 | map.cpp:404:7:404:9 | call to unordered_map |  |
-| map.cpp:405:7:405:9 | m28 | map.cpp:405:11:405:21 | call to try_emplace | TAINT |
 | map.cpp:405:7:405:9 | ref arg m28 | map.cpp:406:7:406:9 | m28 |  |
 | map.cpp:405:7:405:9 | ref arg m28 | map.cpp:438:1:438:1 | m28 |  |
 | map.cpp:405:23:405:25 | m28 | map.cpp:405:27:405:31 | call to begin | TAINT |
@@ -3318,8 +3126,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:405:23:405:25 | ref arg m28 | map.cpp:406:7:406:9 | m28 |  |
 | map.cpp:405:23:405:25 | ref arg m28 | map.cpp:438:1:438:1 | m28 |  |
 | map.cpp:405:27:405:31 | call to begin | map.cpp:405:23:405:33 | call to iterator | TAINT |
-| map.cpp:405:46:405:50 | def | map.cpp:405:7:405:9 | ref arg m28 | TAINT |
-| map.cpp:405:46:405:50 | def | map.cpp:405:11:405:21 | call to try_emplace | TAINT |
 | map.cpp:406:7:406:9 | m28 | map.cpp:406:7:406:9 | call to unordered_map |  |
 | map.cpp:409:56:409:58 | call to unordered_map | map.cpp:410:7:410:9 | m29 |  |
 | map.cpp:409:56:409:58 | call to unordered_map | map.cpp:411:7:411:9 | m29 |  |
@@ -3337,62 +3143,37 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:409:71:409:73 | call to unordered_map | map.cpp:420:7:420:9 | m32 |  |
 | map.cpp:409:71:409:73 | call to unordered_map | map.cpp:421:7:421:9 | m32 |  |
 | map.cpp:409:71:409:73 | call to unordered_map | map.cpp:438:1:438:1 | m32 |  |
-| map.cpp:409:105:409:105 | 0 | map.cpp:409:102:409:106 | call to pair | TAINT |
 | map.cpp:409:113:409:113 | x | map.cpp:409:142:409:142 | x |  |
 | map.cpp:409:113:409:113 | x | map.cpp:409:145:409:145 | x |  |
-| map.cpp:409:145:409:145 | x | map.cpp:409:142:409:146 | call to pair | TAINT |
-| map.cpp:410:7:410:9 | m29 | map.cpp:410:11:410:21 | call to try_emplace | TAINT |
 | map.cpp:410:7:410:9 | ref arg m29 | map.cpp:411:7:411:9 | m29 |  |
 | map.cpp:410:7:410:9 | ref arg m29 | map.cpp:412:7:412:9 | m29 |  |
 | map.cpp:410:7:410:9 | ref arg m29 | map.cpp:438:1:438:1 | m29 |  |
-| map.cpp:410:30:410:30 | 1 | map.cpp:410:7:410:9 | ref arg m29 | TAINT |
-| map.cpp:410:30:410:30 | 1 | map.cpp:410:11:410:21 | call to try_emplace | TAINT |
-| map.cpp:410:33:410:33 | 2 | map.cpp:410:7:410:9 | ref arg m29 | TAINT |
-| map.cpp:410:33:410:33 | 2 | map.cpp:410:11:410:21 | call to try_emplace | TAINT |
 | map.cpp:411:7:411:9 | m29 | map.cpp:411:7:411:9 | call to unordered_map |  |
-| map.cpp:412:7:412:9 | m29 | map.cpp:412:10:412:10 | call to operator[] | TAINT |
 | map.cpp:412:7:412:9 | ref arg m29 | map.cpp:438:1:438:1 | m29 |  |
-| map.cpp:413:7:413:9 | m30 | map.cpp:413:11:413:21 | call to try_emplace | TAINT |
+| map.cpp:412:10:412:10 | call to operator[] | map.cpp:412:7:412:16 | call to pair | TAINT |
 | map.cpp:413:7:413:9 | ref arg m30 | map.cpp:414:7:414:9 | m30 |  |
 | map.cpp:413:7:413:9 | ref arg m30 | map.cpp:415:7:415:9 | m30 |  |
 | map.cpp:413:7:413:9 | ref arg m30 | map.cpp:438:1:438:1 | m30 |  |
-| map.cpp:413:33:413:33 | 1 | map.cpp:413:7:413:9 | ref arg m30 | TAINT |
-| map.cpp:413:33:413:33 | 1 | map.cpp:413:11:413:21 | call to try_emplace | TAINT |
-| map.cpp:413:36:413:36 | 2 | map.cpp:413:7:413:9 | ref arg m30 | TAINT |
-| map.cpp:413:36:413:36 | 2 | map.cpp:413:11:413:21 | call to try_emplace | TAINT |
 | map.cpp:414:7:414:9 | m30 | map.cpp:414:7:414:9 | call to unordered_map |  |
-| map.cpp:415:7:415:9 | m30 | map.cpp:415:10:415:10 | call to operator[] | TAINT |
 | map.cpp:415:7:415:9 | ref arg m30 | map.cpp:438:1:438:1 | m30 |  |
-| map.cpp:416:7:416:9 | m31 | map.cpp:416:11:416:21 | call to try_emplace | TAINT |
+| map.cpp:415:10:415:10 | call to operator[] | map.cpp:415:7:415:16 | call to pair | TAINT |
 | map.cpp:416:7:416:9 | ref arg m31 | map.cpp:417:7:417:9 | m31 |  |
 | map.cpp:416:7:416:9 | ref arg m31 | map.cpp:418:7:418:9 | m31 |  |
 | map.cpp:416:7:416:9 | ref arg m31 | map.cpp:438:1:438:1 | m31 |  |
-| map.cpp:416:30:416:35 | call to source | map.cpp:416:7:416:9 | ref arg m31 | TAINT |
-| map.cpp:416:30:416:35 | call to source | map.cpp:416:11:416:21 | call to try_emplace | TAINT |
-| map.cpp:416:41:416:41 | 2 | map.cpp:416:7:416:9 | ref arg m31 | TAINT |
-| map.cpp:416:41:416:41 | 2 | map.cpp:416:11:416:21 | call to try_emplace | TAINT |
 | map.cpp:417:7:417:9 | m31 | map.cpp:417:7:417:9 | call to unordered_map |  |
-| map.cpp:418:7:418:9 | m31 | map.cpp:418:10:418:10 | call to operator[] | TAINT |
 | map.cpp:418:7:418:9 | ref arg m31 | map.cpp:438:1:438:1 | m31 |  |
-| map.cpp:419:7:419:9 | m32 | map.cpp:419:11:419:21 | call to try_emplace | TAINT |
+| map.cpp:418:10:418:10 | call to operator[] | map.cpp:418:7:418:16 | call to pair | TAINT |
 | map.cpp:419:7:419:9 | ref arg m32 | map.cpp:420:7:420:9 | m32 |  |
 | map.cpp:419:7:419:9 | ref arg m32 | map.cpp:421:7:421:9 | m32 |  |
 | map.cpp:419:7:419:9 | ref arg m32 | map.cpp:438:1:438:1 | m32 |  |
-| map.cpp:419:30:419:30 | 1 | map.cpp:419:7:419:9 | ref arg m32 | TAINT |
-| map.cpp:419:30:419:30 | 1 | map.cpp:419:11:419:21 | call to try_emplace | TAINT |
-| map.cpp:419:33:419:38 | call to source | map.cpp:419:7:419:9 | ref arg m32 | TAINT |
-| map.cpp:419:33:419:38 | call to source | map.cpp:419:11:419:21 | call to try_emplace | TAINT |
 | map.cpp:420:7:420:9 | m32 | map.cpp:420:7:420:9 | call to unordered_map |  |
-| map.cpp:421:7:421:9 | m32 | map.cpp:421:10:421:10 | call to operator[] | TAINT |
 | map.cpp:421:7:421:9 | ref arg m32 | map.cpp:438:1:438:1 | m32 |  |
+| map.cpp:421:10:421:10 | call to operator[] | map.cpp:421:7:421:16 | call to pair | TAINT |
 | map.cpp:424:49:424:51 | call to unordered_map | map.cpp:425:7:425:9 | m33 |  |
 | map.cpp:424:49:424:51 | call to unordered_map | map.cpp:426:7:426:9 | m33 |  |
 | map.cpp:424:49:424:51 | call to unordered_map | map.cpp:438:1:438:1 | m33 |  |
-| map.cpp:425:7:425:9 | m33 | map.cpp:425:11:425:17 | call to emplace | TAINT |
 | map.cpp:425:7:425:9 | ref arg m33 | map.cpp:426:7:426:9 | m33 |  |
 | map.cpp:425:7:425:9 | ref arg m33 | map.cpp:438:1:438:1 | m33 |  |
-| map.cpp:425:29:425:33 | def | map.cpp:425:7:425:9 | ref arg m33 | TAINT |
-| map.cpp:425:29:425:33 | def | map.cpp:425:11:425:17 | call to emplace | TAINT |
 | map.cpp:425:36:425:40 | first | map.cpp:425:7:425:40 | call to iterator |  |
 | map.cpp:426:7:426:9 | m33 | map.cpp:426:7:426:9 | call to unordered_map |  |
 | map.cpp:428:49:428:51 | call to unordered_map | map.cpp:429:7:429:9 | m34 |  |
@@ -3407,63 +3188,43 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:428:54:428:56 | call to unordered_map | map.cpp:436:7:436:9 | m35 |  |
 | map.cpp:428:54:428:56 | call to unordered_map | map.cpp:437:7:437:9 | m35 |  |
 | map.cpp:428:54:428:56 | call to unordered_map | map.cpp:438:1:438:1 | m35 |  |
-| map.cpp:429:7:429:9 | m34 | map.cpp:429:11:429:17 | call to emplace | TAINT |
 | map.cpp:429:7:429:9 | ref arg m34 | map.cpp:430:7:430:9 | m34 |  |
 | map.cpp:429:7:429:9 | ref arg m34 | map.cpp:431:7:431:9 | m34 |  |
 | map.cpp:429:7:429:9 | ref arg m34 | map.cpp:432:7:432:9 | m34 |  |
 | map.cpp:429:7:429:9 | ref arg m34 | map.cpp:433:7:433:9 | m34 |  |
 | map.cpp:429:7:429:9 | ref arg m34 | map.cpp:433:24:433:26 | m34 |  |
 | map.cpp:429:7:429:9 | ref arg m34 | map.cpp:438:1:438:1 | m34 |  |
-| map.cpp:429:19:429:69 | call to pair | map.cpp:429:7:429:9 | ref arg m34 | TAINT |
-| map.cpp:429:19:429:69 | call to pair | map.cpp:429:11:429:17 | call to emplace | TAINT |
-| map.cpp:429:64:429:68 | def | map.cpp:429:19:429:69 | call to pair | TAINT |
 | map.cpp:429:72:429:76 | first | map.cpp:429:7:429:76 | call to iterator |  |
 | map.cpp:430:7:430:9 | m34 | map.cpp:430:7:430:9 | call to unordered_map |  |
-| map.cpp:431:7:431:9 | m34 | map.cpp:431:11:431:17 | call to emplace | TAINT |
 | map.cpp:431:7:431:9 | ref arg m34 | map.cpp:432:7:432:9 | m34 |  |
 | map.cpp:431:7:431:9 | ref arg m34 | map.cpp:433:7:433:9 | m34 |  |
 | map.cpp:431:7:431:9 | ref arg m34 | map.cpp:433:24:433:26 | m34 |  |
 | map.cpp:431:7:431:9 | ref arg m34 | map.cpp:438:1:438:1 | m34 |  |
-| map.cpp:431:19:431:72 | call to pair | map.cpp:431:7:431:9 | ref arg m34 | TAINT |
-| map.cpp:431:19:431:72 | call to pair | map.cpp:431:11:431:17 | call to emplace | TAINT |
-| map.cpp:431:64:431:69 | call to source | map.cpp:431:19:431:72 | call to pair | TAINT |
 | map.cpp:431:75:431:79 | first | map.cpp:431:7:431:79 | call to iterator |  |
 | map.cpp:432:7:432:9 | m34 | map.cpp:432:7:432:9 | call to unordered_map |  |
-| map.cpp:433:7:433:9 | m34 | map.cpp:433:11:433:22 | call to emplace_hint | TAINT |
 | map.cpp:433:7:433:9 | ref arg m34 | map.cpp:438:1:438:1 | m34 |  |
 | map.cpp:433:24:433:26 | m34 | map.cpp:433:28:433:32 | call to begin | TAINT |
 | map.cpp:433:24:433:26 | ref arg m34 | map.cpp:433:7:433:9 | m34 |  |
 | map.cpp:433:24:433:26 | ref arg m34 | map.cpp:438:1:438:1 | m34 |  |
 | map.cpp:433:28:433:32 | call to begin | map.cpp:433:24:433:34 | call to iterator | TAINT |
-| map.cpp:433:44:433:48 | def | map.cpp:433:7:433:9 | ref arg m34 | TAINT |
-| map.cpp:433:44:433:48 | def | map.cpp:433:11:433:22 | call to emplace_hint | TAINT |
-| map.cpp:434:7:434:9 | m35 | map.cpp:434:7:434:9 | ref arg m35 | TAINT |
-| map.cpp:434:7:434:9 | m35 | map.cpp:434:11:434:17 | call to emplace | TAINT |
 | map.cpp:434:7:434:9 | ref arg m35 | map.cpp:435:7:435:9 | m35 |  |
 | map.cpp:434:7:434:9 | ref arg m35 | map.cpp:436:7:436:9 | m35 |  |
 | map.cpp:434:7:434:9 | ref arg m35 | map.cpp:437:7:437:9 | m35 |  |
 | map.cpp:434:7:434:9 | ref arg m35 | map.cpp:438:1:438:1 | m35 |  |
 | map.cpp:434:21:434:25 | first | map.cpp:434:7:434:25 | call to iterator |  |
 | map.cpp:435:7:435:9 | m35 | map.cpp:435:7:435:9 | call to unordered_map |  |
-| map.cpp:436:7:436:9 | m35 | map.cpp:436:11:436:17 | call to emplace | TAINT |
 | map.cpp:436:7:436:9 | ref arg m35 | map.cpp:437:7:437:9 | m35 |  |
 | map.cpp:436:7:436:9 | ref arg m35 | map.cpp:438:1:438:1 | m35 |  |
-| map.cpp:436:19:436:72 | call to pair | map.cpp:436:7:436:9 | ref arg m35 | TAINT |
-| map.cpp:436:19:436:72 | call to pair | map.cpp:436:11:436:17 | call to emplace | TAINT |
-| map.cpp:436:67:436:71 | def | map.cpp:436:19:436:72 | call to pair | TAINT |
 | map.cpp:436:75:436:79 | first | map.cpp:436:7:436:79 | call to iterator |  |
 | map.cpp:437:7:437:9 | m35 | map.cpp:437:7:437:9 | call to unordered_map |  |
 | map.cpp:446:23:446:23 | call to map | map.cpp:448:3:448:3 | m |  |
 | map.cpp:446:23:446:23 | call to map | map.cpp:449:12:449:12 | m |  |
 | map.cpp:446:23:446:23 | call to map | map.cpp:451:1:451:1 | m |  |
 | map.cpp:447:12:447:26 | call to indirect_source | map.cpp:448:10:448:10 | p |  |
-| map.cpp:448:3:448:3 | m | map.cpp:448:4:448:4 | call to operator[] | TAINT |
 | map.cpp:448:3:448:3 | ref arg m | map.cpp:449:12:449:12 | m |  |
 | map.cpp:448:3:448:3 | ref arg m | map.cpp:451:1:451:1 | m |  |
 | map.cpp:448:3:448:10 | ... = ... | map.cpp:448:4:448:4 | call to operator[] [post update] |  |
-| map.cpp:448:4:448:4 | call to operator[] [post update] | map.cpp:448:3:448:3 | ref arg m | TAINT |
 | map.cpp:448:10:448:10 | p | map.cpp:448:3:448:10 | ... = ... |  |
-| map.cpp:449:12:449:12 | m | map.cpp:449:13:449:13 | call to operator[] | TAINT |
 | map.cpp:449:12:449:12 | ref arg m | map.cpp:451:1:451:1 | m |  |
 | map.cpp:449:13:449:13 | call to operator[] | map.cpp:450:8:450:8 | q |  |
 | movableclass.cpp:8:2:8:15 | this | movableclass.cpp:8:27:8:31 | constructor init of field v [pre-this] |  |
@@ -4854,107 +4615,62 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | stl.h:72:42:72:42 | ref arg x | stl.h:71:69:71:69 | x |  |
 | stl.h:72:42:72:42 | ref arg x | stl.h:71:69:71:69 | x |  |
 | stl.h:323:30:323:40 | 0 | file://:0:0:0:0 | noexcept(...) | TAINT |
-| stl.h:429:3:429:3 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
-| stl.h:429:3:429:3 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
-| stl.h:429:3:429:3 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
-| stl.h:429:3:429:3 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
-| stl.h:429:3:429:3 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
-| stl.h:429:3:429:3 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
-| stl.h:429:3:429:6 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
-| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
-| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
-| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
-| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
-| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
-| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
-| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
-| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
-| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
-| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
-| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
-| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
-| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
-| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
-| stl.h:429:36:429:43 | call to unknown function | stl.h:429:36:429:43 | constructor init of field first | TAINT |
-| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
-| stl.h:429:42:429:42 | x | stl.h:429:36:429:43 | constructor init of field first | TAINT |
-| stl.h:429:42:429:42 | x | stl.h:429:36:429:43 | constructor init of field first | TAINT |
-| stl.h:429:42:429:42 | x | stl.h:429:36:429:43 | constructor init of field first | TAINT |
-| stl.h:429:42:429:42 | x | stl.h:429:36:429:43 | constructor init of field first | TAINT |
-| stl.h:429:42:429:42 | x | stl.h:429:36:429:43 | constructor init of field first | TAINT |
-| stl.h:429:42:429:42 | x | stl.h:429:36:429:43 | constructor init of field first | TAINT |
-| stl.h:429:46:429:54 | call to unknown function | stl.h:429:46:429:54 | constructor init of field second | TAINT |
-| stl.h:429:53:429:53 | y | stl.h:429:46:429:54 | constructor init of field second | TAINT |
-| stl.h:429:53:429:53 | y | stl.h:429:46:429:54 | constructor init of field second | TAINT |
-| stl.h:429:53:429:53 | y | stl.h:429:46:429:54 | constructor init of field second | TAINT |
-| stl.h:429:53:429:53 | y | stl.h:429:46:429:54 | constructor init of field second | TAINT |
-| stl.h:429:53:429:53 | y | stl.h:429:46:429:54 | constructor init of field second | TAINT |
-| stl.h:429:53:429:53 | y | stl.h:429:46:429:54 | constructor init of field second | TAINT |
-| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
-| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
-| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
-| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
-| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
-| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
-| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
-| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
-| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
-| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
-| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
-| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
-| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
-| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
-| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
-| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
-| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
-| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
-| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
-| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
-| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
-| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
-| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
-| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
-| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
-| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
-| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
-| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
-| stl.h:436:58:436:58 | x | stl.h:436:41:436:56 | call to forward | TAINT |
-| stl.h:436:58:436:58 | x | stl.h:436:41:436:56 | call to forward | TAINT |
-| stl.h:436:58:436:58 | x | stl.h:436:41:436:56 | call to forward | TAINT |
-| stl.h:436:58:436:58 | x | stl.h:436:41:436:56 | call to forward | TAINT |
-| stl.h:436:58:436:58 | x | stl.h:436:41:436:56 | call to forward | TAINT |
-| stl.h:436:58:436:58 | x | stl.h:436:41:436:56 | call to forward | TAINT |
-| stl.h:436:62:436:77 | call to forward | stl.h:436:3:436:82 | call to pair | TAINT |
-| stl.h:436:62:436:77 | call to forward | stl.h:436:3:436:82 | call to pair | TAINT |
-| stl.h:436:62:436:77 | call to forward | stl.h:436:3:436:82 | call to pair | TAINT |
-| stl.h:436:62:436:77 | call to forward | stl.h:436:3:436:82 | call to pair | TAINT |
-| stl.h:436:62:436:77 | call to forward | stl.h:436:3:436:82 | call to pair | TAINT |
-| stl.h:436:62:436:77 | call to forward | stl.h:436:3:436:82 | call to pair | TAINT |
-| stl.h:436:79:436:79 | y | stl.h:436:3:436:82 | call to pair | TAINT |
-| stl.h:436:79:436:79 | y | stl.h:436:3:436:82 | call to pair | TAINT |
-| stl.h:436:79:436:79 | y | stl.h:436:3:436:82 | call to pair | TAINT |
-| stl.h:436:79:436:79 | y | stl.h:436:3:436:82 | call to pair | TAINT |
-| stl.h:436:79:436:79 | y | stl.h:436:3:436:82 | call to pair | TAINT |
-| stl.h:436:79:436:79 | y | stl.h:436:3:436:82 | call to pair | TAINT |
-| stl.h:436:79:436:79 | y | stl.h:436:62:436:77 | call to forward | TAINT |
-| stl.h:436:79:436:79 | y | stl.h:436:62:436:77 | call to forward | TAINT |
-| stl.h:436:79:436:79 | y | stl.h:436:62:436:77 | call to forward | TAINT |
-| stl.h:436:79:436:79 | y | stl.h:436:62:436:77 | call to forward | TAINT |
-| stl.h:436:79:436:79 | y | stl.h:436:62:436:77 | call to forward | TAINT |
-| stl.h:436:79:436:79 | y | stl.h:436:62:436:77 | call to forward | TAINT |
+| stl.h:436:87:436:87 | x | stl.h:436:87:436:87 | x |  |
+| stl.h:436:87:436:87 | x | stl.h:436:87:436:87 | x |  |
+| stl.h:436:87:436:87 | x | stl.h:436:87:436:87 | x |  |
+| stl.h:436:87:436:87 | x | stl.h:436:87:436:87 | x |  |
+| stl.h:436:87:436:87 | x | stl.h:436:87:436:87 | x |  |
+| stl.h:436:87:436:87 | x | stl.h:436:87:436:87 | x |  |
+| stl.h:436:87:436:87 | x | stl.h:436:87:436:87 | x |  |
+| stl.h:436:87:436:87 | x | stl.h:437:58:437:58 | x |  |
+| stl.h:436:87:436:87 | x | stl.h:437:58:437:58 | x |  |
+| stl.h:436:87:436:87 | x | stl.h:437:58:437:58 | x |  |
+| stl.h:436:87:436:87 | x | stl.h:437:58:437:58 | x |  |
+| stl.h:436:87:436:87 | x | stl.h:437:58:437:58 | x |  |
+| stl.h:436:87:436:87 | x | stl.h:437:58:437:58 | x |  |
+| stl.h:436:87:436:87 | x | stl.h:437:58:437:58 | x |  |
+| stl.h:436:95:436:95 | y | stl.h:436:95:436:95 | y |  |
+| stl.h:436:95:436:95 | y | stl.h:436:95:436:95 | y |  |
+| stl.h:436:95:436:95 | y | stl.h:436:95:436:95 | y |  |
+| stl.h:436:95:436:95 | y | stl.h:436:95:436:95 | y |  |
+| stl.h:436:95:436:95 | y | stl.h:436:95:436:95 | y |  |
+| stl.h:436:95:436:95 | y | stl.h:436:95:436:95 | y |  |
+| stl.h:436:95:436:95 | y | stl.h:436:95:436:95 | y |  |
+| stl.h:436:95:436:95 | y | stl.h:437:79:437:79 | y |  |
+| stl.h:436:95:436:95 | y | stl.h:437:79:437:79 | y |  |
+| stl.h:436:95:436:95 | y | stl.h:437:79:437:79 | y |  |
+| stl.h:436:95:436:95 | y | stl.h:437:79:437:79 | y |  |
+| stl.h:436:95:436:95 | y | stl.h:437:79:437:79 | y |  |
+| stl.h:436:95:436:95 | y | stl.h:437:79:437:79 | y |  |
+| stl.h:436:95:436:95 | y | stl.h:437:79:437:79 | y |  |
+| stl.h:437:41:437:56 | ref arg call to forward | stl.h:436:87:436:87 | x |  |
+| stl.h:437:41:437:56 | ref arg call to forward | stl.h:436:87:436:87 | x |  |
+| stl.h:437:41:437:56 | ref arg call to forward | stl.h:436:87:436:87 | x |  |
+| stl.h:437:41:437:56 | ref arg call to forward | stl.h:436:87:436:87 | x |  |
+| stl.h:437:41:437:56 | ref arg call to forward | stl.h:437:58:437:58 | x [inner post update] |  |
+| stl.h:437:41:437:56 | ref arg call to forward | stl.h:437:58:437:58 | x [inner post update] |  |
+| stl.h:437:41:437:56 | ref arg call to forward | stl.h:437:58:437:58 | x [inner post update] |  |
+| stl.h:437:41:437:56 | ref arg call to forward | stl.h:437:58:437:58 | x [inner post update] |  |
+| stl.h:437:58:437:58 | x | stl.h:437:41:437:56 | call to forward | TAINT |
+| stl.h:437:58:437:58 | x | stl.h:437:41:437:56 | call to forward | TAINT |
+| stl.h:437:58:437:58 | x | stl.h:437:41:437:56 | call to forward | TAINT |
+| stl.h:437:58:437:58 | x | stl.h:437:41:437:56 | call to forward | TAINT |
+| stl.h:437:58:437:58 | x | stl.h:437:41:437:56 | call to forward | TAINT |
+| stl.h:437:58:437:58 | x | stl.h:437:41:437:56 | call to forward | TAINT |
+| stl.h:437:62:437:77 | ref arg call to forward | stl.h:436:95:436:95 | y |  |
+| stl.h:437:62:437:77 | ref arg call to forward | stl.h:436:95:436:95 | y |  |
+| stl.h:437:62:437:77 | ref arg call to forward | stl.h:436:95:436:95 | y |  |
+| stl.h:437:62:437:77 | ref arg call to forward | stl.h:436:95:436:95 | y |  |
+| stl.h:437:62:437:77 | ref arg call to forward | stl.h:437:79:437:79 | y [inner post update] |  |
+| stl.h:437:62:437:77 | ref arg call to forward | stl.h:437:79:437:79 | y [inner post update] |  |
+| stl.h:437:62:437:77 | ref arg call to forward | stl.h:437:79:437:79 | y [inner post update] |  |
+| stl.h:437:62:437:77 | ref arg call to forward | stl.h:437:79:437:79 | y [inner post update] |  |
+| stl.h:437:79:437:79 | y | stl.h:437:62:437:77 | call to forward | TAINT |
+| stl.h:437:79:437:79 | y | stl.h:437:62:437:77 | call to forward | TAINT |
+| stl.h:437:79:437:79 | y | stl.h:437:62:437:77 | call to forward | TAINT |
+| stl.h:437:79:437:79 | y | stl.h:437:62:437:77 | call to forward | TAINT |
+| stl.h:437:79:437:79 | y | stl.h:437:62:437:77 | call to forward | TAINT |
+| stl.h:437:79:437:79 | y | stl.h:437:62:437:77 | call to forward | TAINT |
 | string.cpp:26:12:26:17 | call to source | string.cpp:30:7:30:7 | a |  |
 | string.cpp:27:16:27:20 | 123 | string.cpp:27:16:27:21 | call to basic_string | TAINT |
 | string.cpp:27:16:27:21 | call to basic_string | string.cpp:31:7:31:7 | b |  |
@@ -4962,18 +4678,13 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:28:16:28:21 | call to source | string.cpp:28:16:28:24 | call to basic_string | TAINT |
 | string.cpp:28:16:28:24 | call to basic_string | string.cpp:32:7:32:7 | c |  |
 | string.cpp:28:16:28:24 | call to basic_string | string.cpp:34:7:34:7 | c |  |
-| string.cpp:33:7:33:7 | b | string.cpp:33:9:33:13 | call to c_str | TAINT |
-| string.cpp:34:7:34:7 | c | string.cpp:34:9:34:13 | call to c_str | TAINT |
 | string.cpp:39:16:39:28 | call to basic_string | string.cpp:40:7:40:11 | path1 |  |
 | string.cpp:39:17:39:26 | call to user_input | string.cpp:39:16:39:28 | call to basic_string | TAINT |
-| string.cpp:40:7:40:11 | path1 | string.cpp:40:13:40:17 | call to c_str | TAINT |
 | string.cpp:43:10:43:19 | call to user_input | string.cpp:43:10:43:21 | call to basic_string | TAINT |
 | string.cpp:43:10:43:21 | call to basic_string | string.cpp:43:2:43:21 | ... = ... |  |
 | string.cpp:43:10:43:21 | call to basic_string | string.cpp:44:7:44:11 | path2 |  |
-| string.cpp:44:7:44:11 | path2 | string.cpp:44:13:44:17 | call to c_str | TAINT |
 | string.cpp:46:15:46:24 | call to user_input | string.cpp:46:15:46:27 | call to basic_string | TAINT |
 | string.cpp:46:15:46:27 | call to basic_string | string.cpp:47:7:47:11 | path3 |  |
-| string.cpp:47:7:47:11 | path3 | string.cpp:47:13:47:17 | call to c_str | TAINT |
 | string.cpp:52:19:52:24 | call to source | string.cpp:55:17:55:18 | cs |  |
 | string.cpp:52:19:52:24 | call to source | string.cpp:57:7:57:8 | cs |  |
 | string.cpp:55:17:55:18 | cs | string.cpp:55:17:55:19 | call to basic_string | TAINT |
@@ -4982,7 +4693,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:66:17:66:18 | cs | string.cpp:66:17:66:19 | call to basic_string | TAINT |
 | string.cpp:66:17:66:19 | call to basic_string | string.cpp:69:7:69:8 | ss |  |
 | string.cpp:66:17:66:19 | call to basic_string | string.cpp:72:7:72:8 | ss |  |
-| string.cpp:69:7:69:8 | ss | string.cpp:69:10:69:14 | call to c_str | TAINT |
 | string.cpp:69:10:69:14 | call to c_str | string.cpp:69:2:69:16 | ... = ... |  |
 | string.cpp:69:10:69:14 | call to c_str | string.cpp:71:7:71:8 | cs |  |
 | string.cpp:78:18:78:24 | hello | string.cpp:78:18:78:25 | call to basic_string | TAINT |
@@ -5101,17 +4811,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:143:18:143:26 | call to basic_string | string.cpp:147:8:147:9 | s2 |  |
 | string.cpp:143:18:143:26 | call to basic_string | string.cpp:148:8:148:9 | s2 |  |
 | string.cpp:143:18:143:26 | call to basic_string | string.cpp:148:13:148:14 | s2 |  |
-| string.cpp:145:8:145:9 | s1 | string.cpp:145:11:145:11 | call to operator+ | TAINT |
-| string.cpp:145:13:145:14 | s1 | string.cpp:145:11:145:11 | call to operator+ | TAINT |
-| string.cpp:146:8:146:9 | s1 | string.cpp:146:11:146:11 | call to operator+ | TAINT |
-| string.cpp:146:13:146:14 | s2 | string.cpp:146:11:146:11 | call to operator+ | TAINT |
-| string.cpp:147:8:147:9 | s2 | string.cpp:147:11:147:11 | call to operator+ | TAINT |
-| string.cpp:147:13:147:14 | s1 | string.cpp:147:11:147:11 | call to operator+ | TAINT |
-| string.cpp:148:8:148:9 | s2 | string.cpp:148:11:148:11 | call to operator+ | TAINT |
-| string.cpp:148:13:148:14 | s2 | string.cpp:148:11:148:11 | call to operator+ | TAINT |
-| string.cpp:150:8:150:9 | s1 | string.cpp:150:11:150:11 | call to operator+ | TAINT |
 | string.cpp:150:13:150:20 |  world | string.cpp:150:11:150:11 | call to operator+ | TAINT |
-| string.cpp:151:8:151:9 | s1 | string.cpp:151:11:151:11 | call to operator+ | TAINT |
 | string.cpp:151:13:151:18 | call to source | string.cpp:151:11:151:11 | call to operator+ | TAINT |
 | string.cpp:155:18:155:22 | abc | string.cpp:155:18:155:23 | call to basic_string | TAINT |
 | string.cpp:155:18:155:23 | call to basic_string | string.cpp:159:8:159:9 | s3 |  |
@@ -5123,58 +4823,36 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:156:18:156:26 | call to basic_string | string.cpp:159:13:159:14 | s4 |  |
 | string.cpp:156:18:156:26 | call to basic_string | string.cpp:163:14:163:15 | s4 |  |
 | string.cpp:156:18:156:26 | call to basic_string | string.cpp:172:13:172:14 | s4 |  |
-| string.cpp:159:8:159:9 | s3 | string.cpp:159:11:159:11 | call to operator+ | TAINT |
 | string.cpp:159:11:159:11 | call to operator+ | string.cpp:159:3:159:14 | ... = ... |  |
 | string.cpp:159:11:159:11 | call to operator+ | string.cpp:160:8:160:9 | s5 |  |
-| string.cpp:159:13:159:14 | s4 | string.cpp:159:11:159:11 | call to operator+ | TAINT |
 | string.cpp:162:8:162:9 | s3 | string.cpp:162:3:162:9 | ... = ... |  |
 | string.cpp:162:8:162:9 | s3 | string.cpp:163:8:163:9 | s6 |  |
 | string.cpp:162:8:162:9 | s3 | string.cpp:164:8:164:9 | s6 |  |
 | string.cpp:163:8:163:9 | ref arg s6 | string.cpp:164:8:164:9 | s6 |  |
-| string.cpp:163:8:163:9 | s6 | string.cpp:163:11:163:11 | call to operator+= | TAINT |
-| string.cpp:163:14:163:15 | s4 | string.cpp:163:8:163:9 | ref arg s6 | TAINT |
-| string.cpp:163:14:163:15 | s4 | string.cpp:163:11:163:11 | call to operator+= | TAINT |
 | string.cpp:166:8:166:9 | s3 | string.cpp:166:3:166:9 | ... = ... |  |
 | string.cpp:166:8:166:9 | s3 | string.cpp:167:8:167:9 | s7 |  |
 | string.cpp:166:8:166:9 | s3 | string.cpp:168:8:168:9 | s7 |  |
 | string.cpp:166:8:166:9 | s3 | string.cpp:169:8:169:9 | s7 |  |
 | string.cpp:167:8:167:9 | ref arg s7 | string.cpp:168:8:168:9 | s7 |  |
 | string.cpp:167:8:167:9 | ref arg s7 | string.cpp:169:8:169:9 | s7 |  |
-| string.cpp:167:8:167:9 | s7 | string.cpp:167:11:167:11 | call to operator+= | TAINT |
-| string.cpp:167:14:167:19 | call to source | string.cpp:167:8:167:9 | ref arg s7 | TAINT |
 | string.cpp:167:14:167:19 | call to source | string.cpp:167:11:167:11 | call to operator+= | TAINT |
 | string.cpp:168:8:168:9 | ref arg s7 | string.cpp:169:8:169:9 | s7 |  |
-| string.cpp:168:8:168:9 | s7 | string.cpp:168:11:168:11 | call to operator+= | TAINT |
-| string.cpp:168:14:168:16 |   | string.cpp:168:8:168:9 | ref arg s7 | TAINT |
-| string.cpp:168:14:168:16 |   | string.cpp:168:11:168:11 | call to operator+= | TAINT |
 | string.cpp:171:8:171:9 | s3 | string.cpp:171:3:171:9 | ... = ... |  |
 | string.cpp:171:8:171:9 | s3 | string.cpp:172:3:172:4 | s8 |  |
 | string.cpp:171:8:171:9 | s3 | string.cpp:173:8:173:9 | s8 |  |
 | string.cpp:172:3:172:4 | ref arg s8 | string.cpp:173:8:173:9 | s8 |  |
-| string.cpp:172:3:172:4 | s8 | string.cpp:172:6:172:11 | call to append | TAINT |
-| string.cpp:172:13:172:14 | s4 | string.cpp:172:3:172:4 | ref arg s8 | TAINT |
-| string.cpp:172:13:172:14 | s4 | string.cpp:172:6:172:11 | call to append | TAINT |
 | string.cpp:175:8:175:9 | s3 | string.cpp:175:3:175:9 | ... = ... |  |
 | string.cpp:175:8:175:9 | s3 | string.cpp:176:3:176:4 | s9 |  |
 | string.cpp:175:8:175:9 | s3 | string.cpp:177:3:177:4 | s9 |  |
 | string.cpp:175:8:175:9 | s3 | string.cpp:178:8:178:9 | s9 |  |
 | string.cpp:176:3:176:4 | ref arg s9 | string.cpp:177:3:177:4 | s9 |  |
 | string.cpp:176:3:176:4 | ref arg s9 | string.cpp:178:8:178:9 | s9 |  |
-| string.cpp:176:3:176:4 | s9 | string.cpp:176:6:176:11 | call to append | TAINT |
-| string.cpp:176:13:176:18 | call to source | string.cpp:176:3:176:4 | ref arg s9 | TAINT |
-| string.cpp:176:13:176:18 | call to source | string.cpp:176:6:176:11 | call to append | TAINT |
 | string.cpp:177:3:177:4 | ref arg s9 | string.cpp:178:8:178:9 | s9 |  |
-| string.cpp:177:3:177:4 | s9 | string.cpp:177:6:177:11 | call to append | TAINT |
-| string.cpp:177:13:177:15 |   | string.cpp:177:3:177:4 | ref arg s9 | TAINT |
-| string.cpp:177:13:177:15 |   | string.cpp:177:6:177:11 | call to append | TAINT |
 | string.cpp:182:19:182:23 | abc | string.cpp:182:19:182:24 | call to basic_string | TAINT |
 | string.cpp:182:19:182:24 | call to basic_string | string.cpp:185:3:185:5 | s10 |  |
 | string.cpp:182:19:182:24 | call to basic_string | string.cpp:186:8:186:10 | s10 |  |
 | string.cpp:183:12:183:26 | call to source | string.cpp:185:17:185:17 | c |  |
 | string.cpp:185:3:185:5 | ref arg s10 | string.cpp:186:8:186:10 | s10 |  |
-| string.cpp:185:3:185:5 | s10 | string.cpp:185:7:185:12 | call to append | TAINT |
-| string.cpp:185:17:185:17 | c | string.cpp:185:3:185:5 | ref arg s10 | TAINT |
-| string.cpp:185:17:185:17 | c | string.cpp:185:7:185:12 | call to append | TAINT |
 | string.cpp:191:17:191:23 | hello | string.cpp:191:17:191:24 | call to basic_string | TAINT |
 | string.cpp:191:17:191:24 | call to basic_string | string.cpp:197:17:197:18 | s1 |  |
 | string.cpp:191:17:191:24 | call to basic_string | string.cpp:206:17:206:18 | s1 |  |
@@ -5191,17 +4869,9 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:195:17:195:25 | call to basic_string | string.cpp:206:7:206:8 | s6 |  |
 | string.cpp:195:17:195:25 | call to basic_string | string.cpp:207:7:207:8 | s6 |  |
 | string.cpp:197:7:197:8 | ref arg s3 | string.cpp:198:7:198:8 | s3 |  |
-| string.cpp:197:17:197:18 | s1 | string.cpp:197:7:197:8 | ref arg s3 | TAINT |
-| string.cpp:197:17:197:18 | s1 | string.cpp:197:10:197:15 | call to assign | TAINT |
 | string.cpp:200:7:200:8 | ref arg s4 | string.cpp:201:7:201:8 | s4 |  |
-| string.cpp:200:17:200:18 | s2 | string.cpp:200:7:200:8 | ref arg s4 | TAINT |
-| string.cpp:200:17:200:18 | s2 | string.cpp:200:10:200:15 | call to assign | TAINT |
 | string.cpp:203:7:203:8 | ref arg s5 | string.cpp:204:7:204:8 | s5 |  |
-| string.cpp:203:21:203:21 | c | string.cpp:203:7:203:8 | ref arg s5 | TAINT |
-| string.cpp:203:21:203:21 | c | string.cpp:203:10:203:15 | call to assign | TAINT |
 | string.cpp:206:7:206:8 | ref arg s6 | string.cpp:207:7:207:8 | s6 |  |
-| string.cpp:206:17:206:18 | s1 | string.cpp:206:7:206:8 | ref arg s6 | TAINT |
-| string.cpp:206:17:206:18 | s1 | string.cpp:206:10:206:15 | call to assign | TAINT |
 | string.cpp:211:17:211:23 | hello | string.cpp:211:17:211:24 | call to basic_string | TAINT |
 | string.cpp:211:17:211:24 | call to basic_string | string.cpp:216:7:216:8 | s1 |  |
 | string.cpp:211:17:211:24 | call to basic_string | string.cpp:217:20:217:21 | s1 |  |
@@ -5216,30 +4886,18 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:216:7:216:8 | s1 | string.cpp:217:7:217:8 | s3 |  |
 | string.cpp:216:7:216:8 | s1 | string.cpp:218:7:218:8 | s3 |  |
 | string.cpp:217:7:217:8 | ref arg s3 | string.cpp:218:7:218:8 | s3 |  |
-| string.cpp:217:7:217:8 | s3 | string.cpp:217:10:217:15 | call to insert | TAINT |
-| string.cpp:217:20:217:21 | s1 | string.cpp:217:7:217:8 | ref arg s3 | TAINT |
-| string.cpp:217:20:217:21 | s1 | string.cpp:217:10:217:15 | call to insert | TAINT |
 | string.cpp:220:7:220:8 | s2 | string.cpp:220:2:220:8 | ... = ... |  |
 | string.cpp:220:7:220:8 | s2 | string.cpp:221:7:221:8 | s4 |  |
 | string.cpp:220:7:220:8 | s2 | string.cpp:222:7:222:8 | s4 |  |
 | string.cpp:221:7:221:8 | ref arg s4 | string.cpp:222:7:222:8 | s4 |  |
-| string.cpp:221:7:221:8 | s4 | string.cpp:221:10:221:15 | call to insert | TAINT |
-| string.cpp:221:20:221:21 | s1 | string.cpp:221:7:221:8 | ref arg s4 | TAINT |
-| string.cpp:221:20:221:21 | s1 | string.cpp:221:10:221:15 | call to insert | TAINT |
 | string.cpp:224:7:224:8 | s1 | string.cpp:224:2:224:8 | ... = ... |  |
 | string.cpp:224:7:224:8 | s1 | string.cpp:225:7:225:8 | s5 |  |
 | string.cpp:224:7:224:8 | s1 | string.cpp:226:7:226:8 | s5 |  |
 | string.cpp:225:7:225:8 | ref arg s5 | string.cpp:226:7:226:8 | s5 |  |
-| string.cpp:225:7:225:8 | s5 | string.cpp:225:10:225:15 | call to insert | TAINT |
-| string.cpp:225:20:225:21 | s2 | string.cpp:225:7:225:8 | ref arg s5 | TAINT |
-| string.cpp:225:20:225:21 | s2 | string.cpp:225:10:225:15 | call to insert | TAINT |
 | string.cpp:228:7:228:8 | s1 | string.cpp:228:2:228:8 | ... = ... |  |
 | string.cpp:228:7:228:8 | s1 | string.cpp:229:7:229:8 | s6 |  |
 | string.cpp:228:7:228:8 | s1 | string.cpp:230:7:230:8 | s6 |  |
 | string.cpp:229:7:229:8 | ref arg s6 | string.cpp:230:7:230:8 | s6 |  |
-| string.cpp:229:7:229:8 | s6 | string.cpp:229:10:229:15 | call to insert | TAINT |
-| string.cpp:229:24:229:24 | c | string.cpp:229:7:229:8 | ref arg s6 | TAINT |
-| string.cpp:229:24:229:24 | c | string.cpp:229:10:229:15 | call to insert | TAINT |
 | string.cpp:234:17:234:23 | hello | string.cpp:234:17:234:24 | call to basic_string | TAINT |
 | string.cpp:234:17:234:24 | call to basic_string | string.cpp:239:7:239:8 | s1 |  |
 | string.cpp:234:17:234:24 | call to basic_string | string.cpp:240:24:240:25 | s1 |  |
@@ -5254,30 +4912,18 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:239:7:239:8 | s1 | string.cpp:240:7:240:8 | s3 |  |
 | string.cpp:239:7:239:8 | s1 | string.cpp:241:7:241:8 | s3 |  |
 | string.cpp:240:7:240:8 | ref arg s3 | string.cpp:241:7:241:8 | s3 |  |
-| string.cpp:240:7:240:8 | s3 | string.cpp:240:10:240:16 | call to replace | TAINT |
-| string.cpp:240:24:240:25 | s1 | string.cpp:240:7:240:8 | ref arg s3 | TAINT |
-| string.cpp:240:24:240:25 | s1 | string.cpp:240:10:240:16 | call to replace | TAINT |
 | string.cpp:243:7:243:8 | s2 | string.cpp:243:2:243:8 | ... = ... |  |
 | string.cpp:243:7:243:8 | s2 | string.cpp:244:7:244:8 | s4 |  |
 | string.cpp:243:7:243:8 | s2 | string.cpp:245:7:245:8 | s4 |  |
 | string.cpp:244:7:244:8 | ref arg s4 | string.cpp:245:7:245:8 | s4 |  |
-| string.cpp:244:7:244:8 | s4 | string.cpp:244:10:244:16 | call to replace | TAINT |
-| string.cpp:244:24:244:25 | s1 | string.cpp:244:7:244:8 | ref arg s4 | TAINT |
-| string.cpp:244:24:244:25 | s1 | string.cpp:244:10:244:16 | call to replace | TAINT |
 | string.cpp:247:7:247:8 | s1 | string.cpp:247:2:247:8 | ... = ... |  |
 | string.cpp:247:7:247:8 | s1 | string.cpp:248:7:248:8 | s5 |  |
 | string.cpp:247:7:247:8 | s1 | string.cpp:249:7:249:8 | s5 |  |
 | string.cpp:248:7:248:8 | ref arg s5 | string.cpp:249:7:249:8 | s5 |  |
-| string.cpp:248:7:248:8 | s5 | string.cpp:248:10:248:16 | call to replace | TAINT |
-| string.cpp:248:24:248:25 | s2 | string.cpp:248:7:248:8 | ref arg s5 | TAINT |
-| string.cpp:248:24:248:25 | s2 | string.cpp:248:10:248:16 | call to replace | TAINT |
 | string.cpp:251:7:251:8 | s1 | string.cpp:251:2:251:8 | ... = ... |  |
 | string.cpp:251:7:251:8 | s1 | string.cpp:252:7:252:8 | s6 |  |
 | string.cpp:251:7:251:8 | s1 | string.cpp:253:7:253:8 | s6 |  |
 | string.cpp:252:7:252:8 | ref arg s6 | string.cpp:253:7:253:8 | s6 |  |
-| string.cpp:252:7:252:8 | s6 | string.cpp:252:10:252:16 | call to replace | TAINT |
-| string.cpp:252:28:252:28 | c | string.cpp:252:7:252:8 | ref arg s6 | TAINT |
-| string.cpp:252:28:252:28 | c | string.cpp:252:10:252:16 | call to replace | TAINT |
 | string.cpp:257:17:257:20 | {...} | string.cpp:262:10:262:11 | b1 |  |
 | string.cpp:257:17:257:20 | {...} | string.cpp:263:7:263:8 | b1 |  |
 | string.cpp:257:19:257:19 | 0 | string.cpp:257:17:257:20 | {...} | TAINT |
@@ -5290,9 +4936,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:259:17:259:24 | call to basic_string | string.cpp:265:14:265:15 | s1 |  |
 | string.cpp:260:17:260:22 | call to source | string.cpp:260:17:260:25 | call to basic_string | TAINT |
 | string.cpp:260:17:260:25 | call to basic_string | string.cpp:265:2:265:3 | s2 |  |
-| string.cpp:262:2:262:3 | s1 | string.cpp:262:10:262:11 | ref arg b1 | TAINT |
 | string.cpp:262:10:262:11 | ref arg b1 | string.cpp:263:7:263:8 | b1 |  |
-| string.cpp:265:2:265:3 | s2 | string.cpp:265:10:265:11 | ref arg b2 | TAINT |
 | string.cpp:265:10:265:11 | ref arg b2 | string.cpp:266:7:266:8 | b2 |  |
 | string.cpp:270:17:270:23 | hello | string.cpp:270:17:270:24 | call to basic_string | TAINT |
 | string.cpp:270:17:270:24 | call to basic_string | string.cpp:275:7:275:8 | s1 |  |
@@ -5335,9 +4979,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:310:16:310:21 | call to source | string.cpp:310:16:310:24 | call to basic_string | TAINT |
 | string.cpp:310:16:310:24 | call to basic_string | string.cpp:313:7:313:7 | b |  |
 | string.cpp:310:16:310:24 | call to basic_string | string.cpp:315:7:315:7 | b |  |
-| string.cpp:312:7:312:7 | a | string.cpp:312:9:312:12 | call to data | TAINT |
 | string.cpp:312:7:312:7 | ref arg a | string.cpp:314:7:314:7 | a |  |
-| string.cpp:313:7:313:7 | b | string.cpp:313:9:313:12 | call to data | TAINT |
 | string.cpp:313:7:313:7 | ref arg b | string.cpp:315:7:315:7 | b |  |
 | string.cpp:320:16:320:20 | 123 | string.cpp:320:16:320:21 | call to basic_string | TAINT |
 | string.cpp:320:16:320:21 | call to basic_string | string.cpp:323:7:323:7 | a |  |
@@ -5345,8 +4987,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:321:16:321:21 | call to source | string.cpp:321:16:321:24 | call to basic_string | TAINT |
 | string.cpp:321:16:321:24 | call to basic_string | string.cpp:324:7:324:7 | b |  |
 | string.cpp:321:16:321:24 | call to basic_string | string.cpp:324:19:324:19 | b |  |
-| string.cpp:323:7:323:7 | a | string.cpp:323:9:323:14 | call to substr | TAINT |
-| string.cpp:324:7:324:7 | b | string.cpp:324:9:324:14 | call to substr | TAINT |
 | string.cpp:329:16:329:20 | 123 | string.cpp:329:16:329:21 | call to basic_string | TAINT |
 | string.cpp:329:16:329:21 | call to basic_string | string.cpp:333:7:333:7 | a |  |
 | string.cpp:329:16:329:21 | call to basic_string | string.cpp:337:2:337:2 | a |  |
@@ -5360,22 +5000,15 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:331:16:331:21 | call to basic_string | string.cpp:335:7:335:7 | c |  |
 | string.cpp:331:16:331:21 | call to basic_string | string.cpp:339:2:339:2 | c |  |
 | string.cpp:331:16:331:21 | call to basic_string | string.cpp:343:7:343:7 | c |  |
-| string.cpp:337:2:337:2 | a | string.cpp:337:3:337:3 | call to operator[] | TAINT |
 | string.cpp:337:2:337:2 | ref arg a | string.cpp:339:9:339:9 | a |  |
 | string.cpp:337:2:337:2 | ref arg a | string.cpp:341:7:341:7 | a |  |
 | string.cpp:337:2:337:25 | ... = ... | string.cpp:337:3:337:3 | call to operator[] [post update] |  |
-| string.cpp:337:3:337:3 | call to operator[] [post update] | string.cpp:337:2:337:2 | ref arg a | TAINT |
 | string.cpp:337:9:337:23 | call to source | string.cpp:337:2:337:25 | ... = ... |  |
-| string.cpp:338:2:338:2 | b | string.cpp:338:4:338:5 | call to at | TAINT |
 | string.cpp:338:2:338:2 | ref arg b | string.cpp:342:7:342:7 | b |  |
 | string.cpp:338:2:338:28 | ... = ... | string.cpp:338:4:338:5 | call to at [post update] |  |
-| string.cpp:338:4:338:5 | call to at [post update] | string.cpp:338:2:338:2 | ref arg b | TAINT |
 | string.cpp:338:12:338:26 | call to source | string.cpp:338:2:338:28 | ... = ... |  |
-| string.cpp:339:2:339:2 | c | string.cpp:339:3:339:3 | call to operator[] | TAINT |
 | string.cpp:339:2:339:2 | ref arg c | string.cpp:343:7:343:7 | c |  |
 | string.cpp:339:2:339:12 | ... = ... | string.cpp:339:3:339:3 | call to operator[] [post update] |  |
-| string.cpp:339:3:339:3 | call to operator[] [post update] | string.cpp:339:2:339:2 | ref arg c | TAINT |
-| string.cpp:339:9:339:9 | a | string.cpp:339:10:339:10 | call to operator[] | TAINT |
 | string.cpp:339:9:339:9 | ref arg a | string.cpp:341:7:341:7 | a |  |
 | string.cpp:339:10:339:10 | call to operator[] | string.cpp:339:2:339:12 | ... = ... |  |
 | string.cpp:348:18:348:22 | 123 | string.cpp:348:18:348:23 | call to basic_string | TAINT |
@@ -5384,14 +5017,11 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:348:18:348:23 | call to basic_string | string.cpp:352:7:352:9 | str |  |
 | string.cpp:350:2:350:4 | ref arg str | string.cpp:351:7:351:9 | str |  |
 | string.cpp:350:2:350:4 | ref arg str | string.cpp:352:7:352:9 | str |  |
-| string.cpp:350:2:350:4 | str | string.cpp:350:6:350:9 | call to data | TAINT |
 | string.cpp:350:2:350:14 | access to array [post update] | string.cpp:350:6:350:9 | call to data [inner post update] |  |
 | string.cpp:350:2:350:34 | ... = ... | string.cpp:350:2:350:14 | access to array [post update] |  |
 | string.cpp:350:6:350:9 | call to data | string.cpp:350:2:350:14 | access to array | TAINT |
-| string.cpp:350:6:350:9 | call to data [inner post update] | string.cpp:350:2:350:4 | ref arg str | TAINT |
 | string.cpp:350:13:350:13 | 1 | string.cpp:350:2:350:14 | access to array | TAINT |
 | string.cpp:350:18:350:32 | call to source | string.cpp:350:2:350:34 | ... = ... |  |
-| string.cpp:352:7:352:9 | str | string.cpp:352:11:352:14 | call to data | TAINT |
 | string.cpp:358:18:358:24 | hello | string.cpp:358:18:358:25 | call to basic_string | TAINT |
 | string.cpp:358:18:358:25 | call to basic_string | string.cpp:363:8:363:9 | s1 |  |
 | string.cpp:358:18:358:25 | call to basic_string | string.cpp:364:8:364:9 | s1 |  |
@@ -5407,23 +5037,13 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:361:18:361:25 | call to basic_string | string.cpp:368:18:368:19 | s4 |  |
 | string.cpp:361:18:361:25 | call to basic_string | string.cpp:368:30:368:31 | s4 |  |
 | string.cpp:364:8:364:9 | ref arg s1 | string.cpp:365:8:365:9 | s1 |  |
-| string.cpp:364:8:364:9 | s1 | string.cpp:364:11:364:16 | call to append | TAINT |
 | string.cpp:364:18:364:19 | ref arg s2 | string.cpp:364:30:364:31 | s2 |  |
 | string.cpp:364:18:364:19 | s2 | string.cpp:364:21:364:25 | call to begin | TAINT |
-| string.cpp:364:21:364:25 | call to begin | string.cpp:364:8:364:9 | ref arg s1 | TAINT |
-| string.cpp:364:21:364:25 | call to begin | string.cpp:364:11:364:16 | call to append | TAINT |
 | string.cpp:364:30:364:31 | s2 | string.cpp:364:33:364:35 | call to end | TAINT |
-| string.cpp:364:33:364:35 | call to end | string.cpp:364:8:364:9 | ref arg s1 | TAINT |
-| string.cpp:364:33:364:35 | call to end | string.cpp:364:11:364:16 | call to append | TAINT |
 | string.cpp:368:8:368:9 | ref arg s3 | string.cpp:369:8:369:9 | s3 |  |
-| string.cpp:368:8:368:9 | s3 | string.cpp:368:11:368:16 | call to append | TAINT |
 | string.cpp:368:18:368:19 | ref arg s4 | string.cpp:368:30:368:31 | s4 |  |
 | string.cpp:368:18:368:19 | s4 | string.cpp:368:21:368:25 | call to begin | TAINT |
-| string.cpp:368:21:368:25 | call to begin | string.cpp:368:8:368:9 | ref arg s3 | TAINT |
-| string.cpp:368:21:368:25 | call to begin | string.cpp:368:11:368:16 | call to append | TAINT |
 | string.cpp:368:30:368:31 | s4 | string.cpp:368:33:368:35 | call to end | TAINT |
-| string.cpp:368:33:368:35 | call to end | string.cpp:368:8:368:9 | ref arg s3 | TAINT |
-| string.cpp:368:33:368:35 | call to end | string.cpp:368:11:368:16 | call to append | TAINT |
 | string.cpp:374:18:374:24 | hello | string.cpp:374:18:374:25 | call to basic_string | TAINT |
 | string.cpp:374:18:374:25 | call to basic_string | string.cpp:377:28:377:29 | s1 |  |
 | string.cpp:375:18:375:23 | call to source | string.cpp:375:18:375:26 | call to basic_string | TAINT |
@@ -5543,13 +5163,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:431:14:431:17 | cc | string.cpp:434:20:434:22 | cs1 |  |
 | string.cpp:432:14:432:19 | call to source | string.cpp:437:20:437:22 | cs2 |  |
 | string.cpp:434:7:434:8 | ref arg s1 | string.cpp:435:7:435:8 | s1 |  |
-| string.cpp:434:7:434:8 | s1 | string.cpp:434:10:434:15 | call to insert | TAINT |
-| string.cpp:434:20:434:22 | cs1 | string.cpp:434:7:434:8 | ref arg s1 | TAINT |
-| string.cpp:434:20:434:22 | cs1 | string.cpp:434:10:434:15 | call to insert | TAINT |
 | string.cpp:437:7:437:8 | ref arg s2 | string.cpp:438:7:438:8 | s2 |  |
-| string.cpp:437:7:437:8 | s2 | string.cpp:437:10:437:15 | call to insert | TAINT |
-| string.cpp:437:20:437:22 | cs2 | string.cpp:437:7:437:8 | ref arg s2 | TAINT |
-| string.cpp:437:20:437:22 | cs2 | string.cpp:437:10:437:15 | call to insert | TAINT |
 | string.cpp:444:17:444:20 | aa | string.cpp:444:17:444:21 | call to basic_string | TAINT |
 | string.cpp:444:17:444:21 | call to basic_string | string.cpp:447:8:447:8 | a |  |
 | string.cpp:444:17:444:21 | call to basic_string | string.cpp:447:17:447:17 | a |  |
@@ -5558,26 +5172,16 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:445:17:445:21 | call to basic_string | string.cpp:450:8:450:8 | b |  |
 | string.cpp:445:17:445:21 | call to basic_string | string.cpp:450:17:450:17 | b |  |
 | string.cpp:445:17:445:21 | call to basic_string | string.cpp:451:8:451:8 | b |  |
-| string.cpp:447:8:447:8 | a | string.cpp:447:10:447:15 | call to insert | TAINT |
 | string.cpp:447:8:447:8 | ref arg a | string.cpp:448:8:448:8 | a |  |
 | string.cpp:447:17:447:17 | a | string.cpp:447:19:447:23 | call to begin | TAINT |
 | string.cpp:447:17:447:17 | ref arg a | string.cpp:447:8:447:8 | a |  |
 | string.cpp:447:17:447:17 | ref arg a | string.cpp:448:8:448:8 | a |  |
-| string.cpp:447:17:447:25 | call to iterator | string.cpp:447:8:447:8 | ref arg a | TAINT |
-| string.cpp:447:17:447:25 | call to iterator | string.cpp:447:10:447:15 | call to insert | TAINT |
 | string.cpp:447:19:447:23 | call to begin | string.cpp:447:17:447:25 | call to iterator | TAINT |
-| string.cpp:447:32:447:34 | 120 | string.cpp:447:8:447:8 | ref arg a | TAINT |
-| string.cpp:447:32:447:34 | 120 | string.cpp:447:10:447:15 | call to insert | TAINT |
-| string.cpp:450:8:450:8 | b | string.cpp:450:10:450:15 | call to insert | TAINT |
 | string.cpp:450:8:450:8 | ref arg b | string.cpp:451:8:451:8 | b |  |
 | string.cpp:450:17:450:17 | b | string.cpp:450:19:450:23 | call to begin | TAINT |
 | string.cpp:450:17:450:17 | ref arg b | string.cpp:450:8:450:8 | b |  |
 | string.cpp:450:17:450:17 | ref arg b | string.cpp:451:8:451:8 | b |  |
-| string.cpp:450:17:450:25 | call to iterator | string.cpp:450:8:450:8 | ref arg b | TAINT |
-| string.cpp:450:17:450:25 | call to iterator | string.cpp:450:10:450:15 | call to insert | TAINT |
 | string.cpp:450:19:450:23 | call to begin | string.cpp:450:17:450:25 | call to iterator | TAINT |
-| string.cpp:450:32:450:46 | call to source | string.cpp:450:8:450:8 | ref arg b | TAINT |
-| string.cpp:450:32:450:46 | call to source | string.cpp:450:10:450:15 | call to insert | TAINT |
 | string.cpp:455:17:455:20 | cc | string.cpp:455:17:455:21 | call to basic_string | TAINT |
 | string.cpp:455:17:455:21 | call to basic_string | string.cpp:460:8:460:8 | c |  |
 | string.cpp:455:17:455:21 | call to basic_string | string.cpp:460:17:460:17 | c |  |
@@ -5597,61 +5201,40 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:458:18:458:26 | call to basic_string | string.cpp:466:8:466:9 | s2 |  |
 | string.cpp:458:18:458:26 | call to basic_string | string.cpp:466:18:466:19 | s2 |  |
 | string.cpp:458:18:458:26 | call to basic_string | string.cpp:467:8:467:9 | s2 |  |
-| string.cpp:460:8:460:8 | c | string.cpp:460:10:460:15 | call to insert | TAINT |
 | string.cpp:460:8:460:8 | ref arg c | string.cpp:461:8:461:8 | c |  |
 | string.cpp:460:17:460:17 | c | string.cpp:460:19:460:21 | call to end | TAINT |
 | string.cpp:460:17:460:17 | ref arg c | string.cpp:460:8:460:8 | c |  |
 | string.cpp:460:17:460:17 | ref arg c | string.cpp:461:8:461:8 | c |  |
-| string.cpp:460:17:460:23 | call to iterator | string.cpp:460:8:460:8 | ref arg c | TAINT |
-| string.cpp:460:17:460:23 | call to iterator | string.cpp:460:10:460:15 | call to insert | TAINT |
 | string.cpp:460:19:460:21 | call to end | string.cpp:460:17:460:23 | call to iterator | TAINT |
 | string.cpp:460:26:460:27 | ref arg s1 | string.cpp:460:38:460:39 | s1 |  |
 | string.cpp:460:26:460:27 | ref arg s1 | string.cpp:466:28:466:29 | s1 |  |
 | string.cpp:460:26:460:27 | ref arg s1 | string.cpp:466:40:466:41 | s1 |  |
 | string.cpp:460:26:460:27 | s1 | string.cpp:460:29:460:33 | call to begin | TAINT |
-| string.cpp:460:29:460:33 | call to begin | string.cpp:460:8:460:8 | ref arg c | TAINT |
-| string.cpp:460:29:460:33 | call to begin | string.cpp:460:10:460:15 | call to insert | TAINT |
 | string.cpp:460:38:460:39 | ref arg s1 | string.cpp:466:28:466:29 | s1 |  |
 | string.cpp:460:38:460:39 | ref arg s1 | string.cpp:466:40:466:41 | s1 |  |
 | string.cpp:460:38:460:39 | s1 | string.cpp:460:41:460:43 | call to end | TAINT |
-| string.cpp:460:41:460:43 | call to end | string.cpp:460:8:460:8 | ref arg c | TAINT |
-| string.cpp:460:41:460:43 | call to end | string.cpp:460:10:460:15 | call to insert | TAINT |
-| string.cpp:463:8:463:8 | d | string.cpp:463:10:463:15 | call to insert | TAINT |
 | string.cpp:463:8:463:8 | ref arg d | string.cpp:464:8:464:8 | d |  |
 | string.cpp:463:17:463:17 | d | string.cpp:463:19:463:21 | call to end | TAINT |
 | string.cpp:463:17:463:17 | ref arg d | string.cpp:463:8:463:8 | d |  |
 | string.cpp:463:17:463:17 | ref arg d | string.cpp:464:8:464:8 | d |  |
-| string.cpp:463:17:463:23 | call to iterator | string.cpp:463:8:463:8 | ref arg d | TAINT |
-| string.cpp:463:17:463:23 | call to iterator | string.cpp:463:10:463:15 | call to insert | TAINT |
 | string.cpp:463:19:463:21 | call to end | string.cpp:463:17:463:23 | call to iterator | TAINT |
 | string.cpp:463:26:463:27 | ref arg s2 | string.cpp:463:38:463:39 | s2 |  |
 | string.cpp:463:26:463:27 | ref arg s2 | string.cpp:466:8:466:9 | s2 |  |
 | string.cpp:463:26:463:27 | ref arg s2 | string.cpp:466:18:466:19 | s2 |  |
 | string.cpp:463:26:463:27 | ref arg s2 | string.cpp:467:8:467:9 | s2 |  |
 | string.cpp:463:26:463:27 | s2 | string.cpp:463:29:463:33 | call to begin | TAINT |
-| string.cpp:463:29:463:33 | call to begin | string.cpp:463:8:463:8 | ref arg d | TAINT |
-| string.cpp:463:29:463:33 | call to begin | string.cpp:463:10:463:15 | call to insert | TAINT |
 | string.cpp:463:38:463:39 | ref arg s2 | string.cpp:466:8:466:9 | s2 |  |
 | string.cpp:463:38:463:39 | ref arg s2 | string.cpp:466:18:466:19 | s2 |  |
 | string.cpp:463:38:463:39 | ref arg s2 | string.cpp:467:8:467:9 | s2 |  |
 | string.cpp:463:38:463:39 | s2 | string.cpp:463:41:463:43 | call to end | TAINT |
-| string.cpp:463:41:463:43 | call to end | string.cpp:463:8:463:8 | ref arg d | TAINT |
-| string.cpp:463:41:463:43 | call to end | string.cpp:463:10:463:15 | call to insert | TAINT |
 | string.cpp:466:8:466:9 | ref arg s2 | string.cpp:467:8:467:9 | s2 |  |
-| string.cpp:466:8:466:9 | s2 | string.cpp:466:11:466:16 | call to insert | TAINT |
 | string.cpp:466:18:466:19 | ref arg s2 | string.cpp:466:8:466:9 | s2 |  |
 | string.cpp:466:18:466:19 | ref arg s2 | string.cpp:467:8:467:9 | s2 |  |
 | string.cpp:466:18:466:19 | s2 | string.cpp:466:21:466:23 | call to end | TAINT |
-| string.cpp:466:18:466:25 | call to iterator | string.cpp:466:8:466:9 | ref arg s2 | TAINT |
-| string.cpp:466:18:466:25 | call to iterator | string.cpp:466:11:466:16 | call to insert | TAINT |
 | string.cpp:466:21:466:23 | call to end | string.cpp:466:18:466:25 | call to iterator | TAINT |
 | string.cpp:466:28:466:29 | ref arg s1 | string.cpp:466:40:466:41 | s1 |  |
 | string.cpp:466:28:466:29 | s1 | string.cpp:466:31:466:35 | call to begin | TAINT |
-| string.cpp:466:31:466:35 | call to begin | string.cpp:466:8:466:9 | ref arg s2 | TAINT |
-| string.cpp:466:31:466:35 | call to begin | string.cpp:466:11:466:16 | call to insert | TAINT |
 | string.cpp:466:40:466:41 | s1 | string.cpp:466:43:466:45 | call to end | TAINT |
-| string.cpp:466:43:466:45 | call to end | string.cpp:466:8:466:9 | ref arg s2 | TAINT |
-| string.cpp:466:43:466:45 | call to end | string.cpp:466:11:466:16 | call to insert | TAINT |
 | string.cpp:471:17:471:20 | ee | string.cpp:471:17:471:21 | call to basic_string | TAINT |
 | string.cpp:471:17:471:21 | call to basic_string | string.cpp:476:8:476:8 | e |  |
 | string.cpp:471:17:471:21 | call to basic_string | string.cpp:477:8:477:8 | e |  |
@@ -5668,41 +5251,26 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:474:18:474:26 | call to basic_string | string.cpp:479:29:479:30 | s4 |  |
 | string.cpp:474:18:474:26 | call to basic_string | string.cpp:482:8:482:9 | s4 |  |
 | string.cpp:474:18:474:26 | call to basic_string | string.cpp:483:8:483:9 | s4 |  |
-| string.cpp:476:8:476:8 | e | string.cpp:476:10:476:15 | call to append | TAINT |
 | string.cpp:476:8:476:8 | ref arg e | string.cpp:477:8:477:8 | e |  |
 | string.cpp:476:17:476:18 | ref arg s3 | string.cpp:476:29:476:30 | s3 |  |
 | string.cpp:476:17:476:18 | ref arg s3 | string.cpp:482:18:482:19 | s3 |  |
 | string.cpp:476:17:476:18 | ref arg s3 | string.cpp:482:30:482:31 | s3 |  |
 | string.cpp:476:17:476:18 | s3 | string.cpp:476:20:476:24 | call to begin | TAINT |
-| string.cpp:476:20:476:24 | call to begin | string.cpp:476:8:476:8 | ref arg e | TAINT |
-| string.cpp:476:20:476:24 | call to begin | string.cpp:476:10:476:15 | call to append | TAINT |
 | string.cpp:476:29:476:30 | ref arg s3 | string.cpp:482:18:482:19 | s3 |  |
 | string.cpp:476:29:476:30 | ref arg s3 | string.cpp:482:30:482:31 | s3 |  |
 | string.cpp:476:29:476:30 | s3 | string.cpp:476:32:476:34 | call to end | TAINT |
-| string.cpp:476:32:476:34 | call to end | string.cpp:476:8:476:8 | ref arg e | TAINT |
-| string.cpp:476:32:476:34 | call to end | string.cpp:476:10:476:15 | call to append | TAINT |
-| string.cpp:479:8:479:8 | f | string.cpp:479:10:479:15 | call to append | TAINT |
 | string.cpp:479:8:479:8 | ref arg f | string.cpp:480:8:480:8 | f |  |
 | string.cpp:479:17:479:18 | ref arg s4 | string.cpp:479:29:479:30 | s4 |  |
 | string.cpp:479:17:479:18 | ref arg s4 | string.cpp:482:8:482:9 | s4 |  |
 | string.cpp:479:17:479:18 | ref arg s4 | string.cpp:483:8:483:9 | s4 |  |
 | string.cpp:479:17:479:18 | s4 | string.cpp:479:20:479:24 | call to begin | TAINT |
-| string.cpp:479:20:479:24 | call to begin | string.cpp:479:8:479:8 | ref arg f | TAINT |
-| string.cpp:479:20:479:24 | call to begin | string.cpp:479:10:479:15 | call to append | TAINT |
 | string.cpp:479:29:479:30 | ref arg s4 | string.cpp:482:8:482:9 | s4 |  |
 | string.cpp:479:29:479:30 | ref arg s4 | string.cpp:483:8:483:9 | s4 |  |
 | string.cpp:479:29:479:30 | s4 | string.cpp:479:32:479:34 | call to end | TAINT |
-| string.cpp:479:32:479:34 | call to end | string.cpp:479:8:479:8 | ref arg f | TAINT |
-| string.cpp:479:32:479:34 | call to end | string.cpp:479:10:479:15 | call to append | TAINT |
 | string.cpp:482:8:482:9 | ref arg s4 | string.cpp:483:8:483:9 | s4 |  |
-| string.cpp:482:8:482:9 | s4 | string.cpp:482:11:482:16 | call to append | TAINT |
 | string.cpp:482:18:482:19 | ref arg s3 | string.cpp:482:30:482:31 | s3 |  |
 | string.cpp:482:18:482:19 | s3 | string.cpp:482:21:482:25 | call to begin | TAINT |
-| string.cpp:482:21:482:25 | call to begin | string.cpp:482:8:482:9 | ref arg s4 | TAINT |
-| string.cpp:482:21:482:25 | call to begin | string.cpp:482:11:482:16 | call to append | TAINT |
 | string.cpp:482:30:482:31 | s3 | string.cpp:482:33:482:35 | call to end | TAINT |
-| string.cpp:482:33:482:35 | call to end | string.cpp:482:8:482:9 | ref arg s4 | TAINT |
-| string.cpp:482:33:482:35 | call to end | string.cpp:482:11:482:16 | call to append | TAINT |
 | string.cpp:487:17:487:20 | gg | string.cpp:487:17:487:21 | call to basic_string | TAINT |
 | string.cpp:487:17:487:21 | call to basic_string | string.cpp:492:8:492:8 | g |  |
 | string.cpp:487:17:487:21 | call to basic_string | string.cpp:493:8:493:8 | g |  |
@@ -5721,25 +5289,13 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:490:18:490:26 | call to basic_string | string.cpp:499:8:499:9 | s6 |  |
 | string.cpp:492:8:492:8 | ref arg g | string.cpp:493:8:493:8 | g |  |
 | string.cpp:492:17:492:18 | s5 | string.cpp:492:20:492:25 | call to cbegin | TAINT |
-| string.cpp:492:20:492:25 | call to cbegin | string.cpp:492:8:492:8 | ref arg g | TAINT |
-| string.cpp:492:20:492:25 | call to cbegin | string.cpp:492:10:492:15 | call to assign | TAINT |
 | string.cpp:492:30:492:31 | s5 | string.cpp:492:33:492:36 | call to cend | TAINT |
-| string.cpp:492:33:492:36 | call to cend | string.cpp:492:8:492:8 | ref arg g | TAINT |
-| string.cpp:492:33:492:36 | call to cend | string.cpp:492:10:492:15 | call to assign | TAINT |
 | string.cpp:495:8:495:8 | ref arg h | string.cpp:496:8:496:8 | h |  |
 | string.cpp:495:17:495:18 | s6 | string.cpp:495:20:495:25 | call to cbegin | TAINT |
-| string.cpp:495:20:495:25 | call to cbegin | string.cpp:495:8:495:8 | ref arg h | TAINT |
-| string.cpp:495:20:495:25 | call to cbegin | string.cpp:495:10:495:15 | call to assign | TAINT |
 | string.cpp:495:30:495:31 | s6 | string.cpp:495:33:495:36 | call to cend | TAINT |
-| string.cpp:495:33:495:36 | call to cend | string.cpp:495:8:495:8 | ref arg h | TAINT |
-| string.cpp:495:33:495:36 | call to cend | string.cpp:495:10:495:15 | call to assign | TAINT |
 | string.cpp:498:8:498:9 | ref arg s6 | string.cpp:499:8:499:9 | s6 |  |
 | string.cpp:498:18:498:19 | s5 | string.cpp:498:21:498:26 | call to cbegin | TAINT |
-| string.cpp:498:21:498:26 | call to cbegin | string.cpp:498:8:498:9 | ref arg s6 | TAINT |
-| string.cpp:498:21:498:26 | call to cbegin | string.cpp:498:11:498:16 | call to assign | TAINT |
 | string.cpp:498:31:498:32 | s5 | string.cpp:498:34:498:37 | call to cend | TAINT |
-| string.cpp:498:34:498:37 | call to cend | string.cpp:498:8:498:9 | ref arg s6 | TAINT |
-| string.cpp:498:34:498:37 | call to cend | string.cpp:498:11:498:16 | call to assign | TAINT |
 | string.cpp:504:14:504:18 | abc | string.cpp:506:17:506:19 | cs1 |  |
 | string.cpp:505:14:505:19 | call to source | string.cpp:507:17:507:19 | cs2 |  |
 | string.cpp:506:17:506:19 | cs1 | string.cpp:506:17:506:20 | call to basic_string | TAINT |
@@ -5754,39 +5310,30 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:508:17:508:18 | ref arg s1 | string.cpp:511:7:511:8 | s1 |  |
 | string.cpp:508:17:508:18 | s1 | string.cpp:508:20:508:24 | call to begin | TAINT |
 | string.cpp:508:17:508:37 | call to basic_string | string.cpp:513:7:513:8 | s3 |  |
-| string.cpp:508:20:508:24 | call to begin | string.cpp:508:17:508:37 | call to basic_string | TAINT |
 | string.cpp:508:29:508:30 | ref arg s1 | string.cpp:511:7:511:8 | s1 |  |
 | string.cpp:508:29:508:30 | s1 | string.cpp:508:32:508:34 | call to end | TAINT |
-| string.cpp:508:32:508:34 | call to end | string.cpp:508:17:508:37 | call to basic_string | TAINT |
 | string.cpp:509:17:509:18 | ref arg s2 | string.cpp:509:29:509:30 | s2 |  |
 | string.cpp:509:17:509:18 | ref arg s2 | string.cpp:512:7:512:8 | s2 |  |
 | string.cpp:509:17:509:18 | s2 | string.cpp:509:20:509:24 | call to begin | TAINT |
 | string.cpp:509:17:509:37 | call to basic_string | string.cpp:514:7:514:8 | s4 |  |
-| string.cpp:509:20:509:24 | call to begin | string.cpp:509:17:509:37 | call to basic_string | TAINT |
 | string.cpp:509:29:509:30 | ref arg s2 | string.cpp:512:7:512:8 | s2 |  |
 | string.cpp:509:29:509:30 | s2 | string.cpp:509:32:509:34 | call to end | TAINT |
-| string.cpp:509:32:509:34 | call to end | string.cpp:509:17:509:37 | call to basic_string | TAINT |
 | string.cpp:518:16:518:19 | aa | string.cpp:518:16:518:20 | call to basic_string | TAINT |
 | string.cpp:518:16:518:20 | call to basic_string | string.cpp:520:7:520:7 | a |  |
 | string.cpp:518:16:518:20 | call to basic_string | string.cpp:521:7:521:7 | a |  |
 | string.cpp:518:16:518:20 | call to basic_string | string.cpp:522:2:522:2 | a |  |
 | string.cpp:518:16:518:20 | call to basic_string | string.cpp:523:7:523:7 | a |  |
 | string.cpp:518:16:518:20 | call to basic_string | string.cpp:524:7:524:7 | a |  |
-| string.cpp:520:7:520:7 | a | string.cpp:520:9:520:13 | call to front | TAINT |
 | string.cpp:520:7:520:7 | ref arg a | string.cpp:521:7:521:7 | a |  |
 | string.cpp:520:7:520:7 | ref arg a | string.cpp:522:2:522:2 | a |  |
 | string.cpp:520:7:520:7 | ref arg a | string.cpp:523:7:523:7 | a |  |
 | string.cpp:520:7:520:7 | ref arg a | string.cpp:524:7:524:7 | a |  |
-| string.cpp:521:7:521:7 | a | string.cpp:521:9:521:12 | call to back | TAINT |
 | string.cpp:521:7:521:7 | ref arg a | string.cpp:522:2:522:2 | a |  |
 | string.cpp:521:7:521:7 | ref arg a | string.cpp:523:7:523:7 | a |  |
 | string.cpp:521:7:521:7 | ref arg a | string.cpp:524:7:524:7 | a |  |
 | string.cpp:522:2:522:2 | ref arg a | string.cpp:523:7:523:7 | a |  |
 | string.cpp:522:2:522:2 | ref arg a | string.cpp:524:7:524:7 | a |  |
-| string.cpp:522:14:522:28 | call to source | string.cpp:522:2:522:2 | ref arg a | TAINT |
-| string.cpp:523:7:523:7 | a | string.cpp:523:9:523:13 | call to front | TAINT |
 | string.cpp:523:7:523:7 | ref arg a | string.cpp:524:7:524:7 | a |  |
-| string.cpp:524:7:524:7 | a | string.cpp:524:9:524:12 | call to back | TAINT |
 | string.cpp:529:17:529:20 | aa | string.cpp:529:17:529:21 | call to basic_string | TAINT |
 | string.cpp:529:17:529:21 | call to basic_string | string.cpp:536:9:536:9 | a |  |
 | string.cpp:529:17:529:21 | call to basic_string | string.cpp:540:8:540:8 | a |  |
@@ -5805,38 +5352,15 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:534:17:534:20 | ff | string.cpp:534:17:534:21 | call to basic_string | TAINT |
 | string.cpp:534:17:534:21 | call to basic_string | string.cpp:539:10:539:10 | f |  |
 | string.cpp:534:17:534:21 | call to basic_string | string.cpp:545:8:545:8 | f |  |
-| string.cpp:536:9:536:9 | a | string.cpp:536:11:536:11 | call to operator+= | TAINT |
 | string.cpp:536:9:536:9 | ref arg a | string.cpp:540:8:540:8 | a |  |
-| string.cpp:536:15:536:15 | b | string.cpp:536:17:536:17 | call to operator+= | TAINT |
 | string.cpp:536:15:536:15 | ref arg b | string.cpp:541:8:541:8 | b |  |
-| string.cpp:536:17:536:17 | call to operator+= | string.cpp:536:9:536:9 | ref arg a | TAINT |
-| string.cpp:536:17:536:17 | call to operator+= | string.cpp:536:11:536:11 | call to operator+= | TAINT |
-| string.cpp:536:20:536:23 | bb | string.cpp:536:15:536:15 | ref arg b | TAINT |
-| string.cpp:536:20:536:23 | bb | string.cpp:536:17:536:17 | call to operator+= | TAINT |
-| string.cpp:537:9:537:9 | c | string.cpp:537:11:537:11 | call to operator+= | TAINT |
 | string.cpp:537:9:537:9 | ref arg c | string.cpp:542:8:542:8 | c |  |
-| string.cpp:537:15:537:15 | d | string.cpp:537:17:537:17 | call to operator+= | TAINT |
 | string.cpp:537:15:537:15 | ref arg d | string.cpp:543:8:543:8 | d |  |
-| string.cpp:537:17:537:17 | call to operator+= | string.cpp:537:9:537:9 | ref arg c | TAINT |
-| string.cpp:537:17:537:17 | call to operator+= | string.cpp:537:11:537:11 | call to operator+= | TAINT |
-| string.cpp:537:20:537:25 | call to source | string.cpp:537:15:537:15 | ref arg d | TAINT |
 | string.cpp:537:20:537:25 | call to source | string.cpp:537:17:537:17 | call to operator+= | TAINT |
-| string.cpp:538:10:538:10 | e | string.cpp:538:12:538:12 | call to operator+= | TAINT |
 | string.cpp:538:10:538:10 | ref arg e | string.cpp:544:8:544:8 | e |  |
-| string.cpp:538:12:538:12 | call to operator+= | string.cpp:538:21:538:21 | call to operator+= | TAINT |
-| string.cpp:538:12:538:12 | ref arg call to operator+= | string.cpp:538:10:538:10 | ref arg e | TAINT |
-| string.cpp:538:15:538:18 | ee | string.cpp:538:10:538:10 | ref arg e | TAINT |
-| string.cpp:538:15:538:18 | ee | string.cpp:538:12:538:12 | call to operator+= | TAINT |
-| string.cpp:538:24:538:29 | call to source | string.cpp:538:12:538:12 | ref arg call to operator+= | TAINT |
 | string.cpp:538:24:538:29 | call to source | string.cpp:538:21:538:21 | call to operator+= | TAINT |
-| string.cpp:539:10:539:10 | f | string.cpp:539:12:539:12 | call to operator+= | TAINT |
 | string.cpp:539:10:539:10 | ref arg f | string.cpp:545:8:545:8 | f |  |
-| string.cpp:539:12:539:12 | call to operator+= | string.cpp:539:25:539:25 | call to operator+= | TAINT |
-| string.cpp:539:12:539:12 | ref arg call to operator+= | string.cpp:539:10:539:10 | ref arg f | TAINT |
-| string.cpp:539:15:539:20 | call to source | string.cpp:539:10:539:10 | ref arg f | TAINT |
 | string.cpp:539:15:539:20 | call to source | string.cpp:539:12:539:12 | call to operator+= | TAINT |
-| string.cpp:539:28:539:31 | ff | string.cpp:539:12:539:12 | ref arg call to operator+= | TAINT |
-| string.cpp:539:28:539:31 | ff | string.cpp:539:25:539:25 | call to operator+= | TAINT |
 | string.cpp:549:17:549:20 | aa | string.cpp:549:17:549:21 | call to basic_string | TAINT |
 | string.cpp:549:17:549:21 | call to basic_string | string.cpp:556:9:556:9 | a |  |
 | string.cpp:549:17:549:21 | call to basic_string | string.cpp:560:8:560:8 | a |  |
@@ -5857,33 +5381,15 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:554:17:554:21 | call to basic_string | string.cpp:565:8:565:8 | f |  |
 | string.cpp:556:9:556:9 | ref arg a | string.cpp:560:8:560:8 | a |  |
 | string.cpp:556:18:556:18 | ref arg b | string.cpp:561:8:561:8 | b |  |
-| string.cpp:556:20:556:25 | call to assign | string.cpp:556:9:556:9 | ref arg a | TAINT |
-| string.cpp:556:20:556:25 | call to assign | string.cpp:556:11:556:16 | call to assign | TAINT |
 | string.cpp:556:27:556:30 | bb | string.cpp:556:27:556:30 | call to basic_string | TAINT |
-| string.cpp:556:27:556:30 | call to basic_string | string.cpp:556:18:556:18 | ref arg b | TAINT |
-| string.cpp:556:27:556:30 | call to basic_string | string.cpp:556:20:556:25 | call to assign | TAINT |
 | string.cpp:557:9:557:9 | ref arg c | string.cpp:562:8:562:8 | c |  |
 | string.cpp:557:18:557:18 | ref arg d | string.cpp:563:8:563:8 | d |  |
-| string.cpp:557:20:557:25 | call to assign | string.cpp:557:9:557:9 | ref arg c | TAINT |
-| string.cpp:557:20:557:25 | call to assign | string.cpp:557:11:557:16 | call to assign | TAINT |
 | string.cpp:557:27:557:32 | call to source | string.cpp:557:27:557:34 | call to basic_string | TAINT |
-| string.cpp:557:27:557:34 | call to basic_string | string.cpp:557:18:557:18 | ref arg d | TAINT |
-| string.cpp:557:27:557:34 | call to basic_string | string.cpp:557:20:557:25 | call to assign | TAINT |
 | string.cpp:558:9:558:9 | ref arg e | string.cpp:564:8:564:8 | e |  |
-| string.cpp:558:11:558:16 | ref arg call to assign | string.cpp:558:9:558:9 | ref arg e | TAINT |
-| string.cpp:558:18:558:21 | call to basic_string | string.cpp:558:9:558:9 | ref arg e | TAINT |
-| string.cpp:558:18:558:21 | call to basic_string | string.cpp:558:11:558:16 | call to assign | TAINT |
 | string.cpp:558:18:558:21 | ee | string.cpp:558:18:558:21 | call to basic_string | TAINT |
 | string.cpp:558:31:558:36 | call to source | string.cpp:558:31:558:38 | call to basic_string | TAINT |
-| string.cpp:558:31:558:38 | call to basic_string | string.cpp:558:11:558:16 | ref arg call to assign | TAINT |
-| string.cpp:558:31:558:38 | call to basic_string | string.cpp:558:24:558:29 | call to assign | TAINT |
 | string.cpp:559:9:559:9 | ref arg f | string.cpp:565:8:565:8 | f |  |
-| string.cpp:559:11:559:16 | ref arg call to assign | string.cpp:559:9:559:9 | ref arg f | TAINT |
 | string.cpp:559:18:559:23 | call to source | string.cpp:559:18:559:25 | call to basic_string | TAINT |
-| string.cpp:559:18:559:25 | call to basic_string | string.cpp:559:9:559:9 | ref arg f | TAINT |
-| string.cpp:559:18:559:25 | call to basic_string | string.cpp:559:11:559:16 | call to assign | TAINT |
-| string.cpp:559:35:559:38 | call to basic_string | string.cpp:559:11:559:16 | ref arg call to assign | TAINT |
-| string.cpp:559:35:559:38 | call to basic_string | string.cpp:559:28:559:33 | call to assign | TAINT |
 | string.cpp:559:35:559:38 | ff | string.cpp:559:35:559:38 | call to basic_string | TAINT |
 | string.cpp:574:26:574:47 | call to source | string.cpp:575:26:575:29 | view |  |
 | string.cpp:574:26:574:47 | call to source | string.cpp:575:40:575:43 | view |  |
@@ -5891,28 +5397,13 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:574:26:574:47 | call to source | string.cpp:581:23:581:26 | view |  |
 | string.cpp:574:26:574:47 | call to source | string.cpp:582:26:582:29 | view |  |
 | string.cpp:574:26:574:47 | call to source | string.cpp:583:30:583:33 | view |  |
-| string.cpp:575:26:575:29 | view | string.cpp:575:26:575:30 | call to basic_string | TAINT |
 | string.cpp:575:26:575:30 | call to basic_string | string.cpp:576:7:576:17 | constructed |  |
-| string.cpp:575:40:575:43 | view | string.cpp:575:40:575:50 | call to basic_string | TAINT |
 | string.cpp:575:40:575:50 | call to basic_string | string.cpp:577:7:577:12 | sliced |  |
 | string.cpp:579:14:579:21 | call to basic_string | string.cpp:580:7:580:14 | assigned |  |
 | string.cpp:579:24:579:31 | call to basic_string | string.cpp:581:7:581:14 | appended |  |
 | string.cpp:579:34:579:41 | call to basic_string | string.cpp:582:7:582:14 | inserted |  |
 | string.cpp:579:44:579:51 | call to basic_string | string.cpp:583:7:583:14 | replaced |  |
-| string.cpp:580:23:580:26 | view | string.cpp:580:7:580:14 | ref arg assigned | TAINT |
-| string.cpp:580:23:580:26 | view | string.cpp:580:16:580:21 | call to assign | TAINT |
-| string.cpp:581:7:581:14 | appended | string.cpp:581:16:581:21 | call to append | TAINT |
-| string.cpp:581:23:581:26 | view | string.cpp:581:7:581:14 | ref arg appended | TAINT |
-| string.cpp:581:23:581:26 | view | string.cpp:581:16:581:21 | call to append | TAINT |
-| string.cpp:582:7:582:14 | inserted | string.cpp:582:16:582:21 | call to insert | TAINT |
-| string.cpp:582:26:582:29 | view | string.cpp:582:7:582:14 | ref arg inserted | TAINT |
-| string.cpp:582:26:582:29 | view | string.cpp:582:16:582:21 | call to insert | TAINT |
-| string.cpp:583:7:583:14 | replaced | string.cpp:583:16:583:22 | call to replace | TAINT |
-| string.cpp:583:30:583:33 | view | string.cpp:583:7:583:14 | ref arg replaced | TAINT |
-| string.cpp:583:30:583:33 | view | string.cpp:583:16:583:22 | call to replace | TAINT |
 | string.cpp:585:17:585:31 | call to source | string.cpp:586:7:586:13 | tainted |  |
-| string.cpp:586:7:586:13 | tainted | string.cpp:586:15:586:15 | call to operator+ | TAINT |
-| string.cpp:586:17:586:36 | call to basic_string | string.cpp:586:15:586:15 | call to operator+ | TAINT |
 | string.cpp:586:29:586:35 | clean | string.cpp:586:17:586:36 | call to basic_string | TAINT |
 | string.cpp:602:21:602:26 | call to source | string.cpp:603:30:603:33 | data |  |
 | string.cpp:602:21:602:26 | call to source | string.cpp:607:27:607:30 | data |  |
@@ -6031,59 +5522,45 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:694:17:694:20 | aa | string.cpp:694:17:694:21 | call to basic_string | TAINT |
 | string.cpp:695:4:695:4 | s | string.cpp:695:4:695:11 | ... = ... |  |
 | string.cpp:695:4:695:11 | ... = ... | string.cpp:695:4:695:4 | s [inner post update] |  |
-| string.cpp:695:4:695:11 | ... = ... | string.cpp:695:14:695:14 | call to operator+= | TAINT |
 | string.cpp:695:4:695:11 | ref arg ... = ... | string.cpp:695:4:695:4 | s [inner post update] |  |
 | string.cpp:695:4:695:11 | ref arg ... = ... | string.cpp:696:8:696:8 | s |  |
 | string.cpp:695:8:695:11 | bb | string.cpp:695:8:695:11 | call to basic_string | TAINT |
 | string.cpp:695:8:695:11 | call to basic_string | string.cpp:695:4:695:11 | ... = ... |  |
 | string.cpp:695:8:695:11 | call to basic_string | string.cpp:696:8:696:8 | s |  |
-| string.cpp:695:17:695:22 | call to source | string.cpp:695:4:695:11 | ref arg ... = ... | TAINT |
 | string.cpp:695:17:695:22 | call to source | string.cpp:695:14:695:14 | call to operator+= | TAINT |
 | string.cpp:700:17:700:20 | aa | string.cpp:700:17:700:21 | call to basic_string | TAINT |
 | string.cpp:700:17:700:21 | call to basic_string | string.cpp:701:3:701:3 | s |  |
 | string.cpp:700:17:700:21 | call to basic_string | string.cpp:702:8:702:8 | s |  |
 | string.cpp:701:3:701:3 | ref arg s | string.cpp:702:8:702:8 | s |  |
-| string.cpp:701:3:701:3 | s | string.cpp:701:5:701:9 | call to front | TAINT |
 | string.cpp:701:3:701:31 | ... = ... | string.cpp:701:5:701:9 | call to front [post update] |  |
 | string.cpp:701:15:701:29 | call to source | string.cpp:701:3:701:31 | ... = ... |  |
 | string.cpp:706:17:706:20 | aa | string.cpp:706:17:706:21 | call to basic_string | TAINT |
 | string.cpp:706:17:706:21 | call to basic_string | string.cpp:707:3:707:3 | s |  |
 | string.cpp:706:17:706:21 | call to basic_string | string.cpp:708:8:708:8 | s |  |
 | string.cpp:707:3:707:3 | ref arg s | string.cpp:708:8:708:8 | s |  |
-| string.cpp:707:3:707:3 | s | string.cpp:707:5:707:8 | call to back | TAINT |
 | string.cpp:707:3:707:30 | ... = ... | string.cpp:707:5:707:8 | call to back [post update] |  |
 | string.cpp:707:14:707:28 | call to source | string.cpp:707:3:707:30 | ... = ... |  |
 | string.cpp:712:17:712:20 | aa | string.cpp:712:17:712:21 | call to basic_string | TAINT |
 | string.cpp:712:17:712:21 | call to basic_string | string.cpp:713:3:713:3 | s |  |
 | string.cpp:712:17:712:21 | call to basic_string | string.cpp:714:8:714:8 | s |  |
 | string.cpp:713:3:713:3 | ref arg s | string.cpp:714:8:714:8 | s |  |
-| string.cpp:713:3:713:3 | s | string.cpp:713:5:713:8 | call to data | TAINT |
 | string.cpp:713:3:713:13 | access to array [post update] | string.cpp:713:5:713:8 | call to data [inner post update] |  |
 | string.cpp:713:3:713:33 | ... = ... | string.cpp:713:3:713:13 | access to array [post update] |  |
 | string.cpp:713:5:713:8 | call to data | string.cpp:713:3:713:13 | access to array | TAINT |
-| string.cpp:713:5:713:8 | call to data [inner post update] | string.cpp:713:3:713:3 | ref arg s | TAINT |
 | string.cpp:713:12:713:12 | 0 | string.cpp:713:3:713:13 | access to array | TAINT |
 | string.cpp:713:17:713:31 | call to source | string.cpp:713:3:713:33 | ... = ... |  |
 | string.cpp:718:17:718:20 | aa | string.cpp:718:17:718:21 | call to basic_string | TAINT |
 | string.cpp:718:17:718:21 | call to basic_string | string.cpp:719:3:719:3 | s |  |
 | string.cpp:718:17:718:21 | call to basic_string | string.cpp:720:8:720:8 | s |  |
 | string.cpp:719:3:719:3 | ref arg s | string.cpp:720:8:720:8 | s |  |
-| string.cpp:719:3:719:3 | s | string.cpp:719:5:719:10 | call to insert | TAINT |
 | string.cpp:719:3:719:30 | ... = ... | string.cpp:719:5:719:10 | call to insert [post update] |  |
-| string.cpp:719:5:719:10 | call to insert [post update] | string.cpp:719:3:719:3 | ref arg s | TAINT |
-| string.cpp:719:15:719:18 | bb | string.cpp:719:3:719:3 | ref arg s | TAINT |
-| string.cpp:719:15:719:18 | bb | string.cpp:719:5:719:10 | call to insert | TAINT |
 | string.cpp:719:23:719:28 | call to source | string.cpp:719:23:719:30 | call to basic_string | TAINT |
 | string.cpp:719:23:719:30 | call to basic_string | string.cpp:719:3:719:30 | ... = ... |  |
 | string.cpp:724:17:724:20 | aa | string.cpp:724:17:724:21 | call to basic_string | TAINT |
 | string.cpp:724:17:724:21 | call to basic_string | string.cpp:725:3:725:3 | s |  |
 | string.cpp:724:17:724:21 | call to basic_string | string.cpp:726:8:726:8 | s |  |
 | string.cpp:725:3:725:3 | ref arg s | string.cpp:726:8:726:8 | s |  |
-| string.cpp:725:3:725:3 | s | string.cpp:725:5:725:10 | call to append | TAINT |
 | string.cpp:725:3:725:27 | ... = ... | string.cpp:725:5:725:10 | call to append [post update] |  |
-| string.cpp:725:5:725:10 | call to append [post update] | string.cpp:725:3:725:3 | ref arg s | TAINT |
-| string.cpp:725:12:725:15 | bb | string.cpp:725:3:725:3 | ref arg s | TAINT |
-| string.cpp:725:12:725:15 | bb | string.cpp:725:5:725:10 | call to append | TAINT |
 | string.cpp:725:20:725:25 | call to source | string.cpp:725:20:725:27 | call to basic_string | TAINT |
 | string.cpp:725:20:725:27 | call to basic_string | string.cpp:725:3:725:27 | ... = ... |  |
 | string.cpp:730:17:730:20 | aa | string.cpp:730:17:730:21 | call to basic_string | TAINT |
@@ -6091,22 +5568,14 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:730:17:730:21 | call to basic_string | string.cpp:732:8:732:8 | s |  |
 | string.cpp:731:3:731:24 | ... = ... | string.cpp:731:6:731:6 | call to operator+= [post update] |  |
 | string.cpp:731:4:731:4 | ref arg s | string.cpp:732:8:732:8 | s |  |
-| string.cpp:731:4:731:4 | s | string.cpp:731:6:731:6 | call to operator+= | TAINT |
-| string.cpp:731:6:731:6 | call to operator+= [post update] | string.cpp:731:4:731:4 | ref arg s | TAINT |
-| string.cpp:731:9:731:12 | bb | string.cpp:731:4:731:4 | ref arg s | TAINT |
-| string.cpp:731:9:731:12 | bb | string.cpp:731:6:731:6 | call to operator+= | TAINT |
 | string.cpp:731:17:731:22 | call to source | string.cpp:731:17:731:24 | call to basic_string | TAINT |
 | string.cpp:731:17:731:24 | call to basic_string | string.cpp:731:3:731:24 | ... = ... |  |
 | string.cpp:736:17:736:20 | aa | string.cpp:736:17:736:21 | call to basic_string | TAINT |
 | string.cpp:736:17:736:21 | call to basic_string | string.cpp:737:3:737:3 | s |  |
 | string.cpp:736:17:736:21 | call to basic_string | string.cpp:738:8:738:8 | s |  |
 | string.cpp:737:3:737:3 | ref arg s | string.cpp:738:8:738:8 | s |  |
-| string.cpp:737:3:737:3 | s | string.cpp:737:5:737:11 | call to replace | TAINT |
 | string.cpp:737:3:737:34 | ... = ... | string.cpp:737:5:737:11 | call to replace [post update] |  |
-| string.cpp:737:5:737:11 | call to replace [post update] | string.cpp:737:3:737:3 | ref arg s | TAINT |
 | string.cpp:737:19:737:22 | bb | string.cpp:737:19:737:22 | call to basic_string | TAINT |
-| string.cpp:737:19:737:22 | call to basic_string | string.cpp:737:3:737:3 | ref arg s | TAINT |
-| string.cpp:737:19:737:22 | call to basic_string | string.cpp:737:5:737:11 | call to replace | TAINT |
 | string.cpp:737:27:737:32 | call to source | string.cpp:737:27:737:34 | call to basic_string | TAINT |
 | string.cpp:737:27:737:34 | call to basic_string | string.cpp:737:3:737:34 | ... = ... |  |
 | stringstream.cpp:26:35:26:40 | amount | stringstream.cpp:64:46:64:51 | amount |  |
@@ -9665,7 +9134,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | vector.cpp:484:13:484:13 | call to operator[] | vector.cpp:484:10:484:22 | & ... |  |
 | vector.cpp:484:14:484:17 | offs | vector.cpp:484:14:484:21 | ... + ... | TAINT |
 | vector.cpp:484:21:484:21 | 1 | vector.cpp:484:14:484:21 | ... + ... | TAINT |
-| vector.cpp:484:25:484:27 | src | vector.cpp:484:29:484:33 | call to c_str | TAINT |
 | vector.cpp:484:29:484:33 | call to c_str | vector.cpp:484:3:484:8 | call to memcpy | TAINT |
 | vector.cpp:484:29:484:33 | call to c_str | vector.cpp:484:10:484:22 | ref arg & ... | TAINT |
 | vector.cpp:486:8:486:9 | ref arg cs | vector.cpp:487:2:487:2 | cs |  |

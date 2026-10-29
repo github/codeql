@@ -1,4 +1,5 @@
 | asio_streams.cpp:122:64:122:71 | *send_str | asio_streams.cpp:122:44:122:62 | call to buffer |
+| asio_streams.cpp:138:29:138:36 | call to source | asio_streams.cpp:138:19:138:27 | call to basic_string_view |
 | asio_streams.cpp:141:24:141:27 | *host | asio_streams.cpp:141:16:141:22 | call to resolve |
 | asio_streams.cpp:141:30:141:36 | *service | asio_streams.cpp:141:16:141:22 | call to resolve |
 | asio_streams.cpp:142:24:142:27 | *host | asio_streams.cpp:142:16:142:22 | call to resolve |
@@ -31,6 +32,7 @@
 | asio_streams.cpp:158:45:158:56 | call to basic_string_view | asio_streams.cpp:158:16:158:22 | call to resolve |
 | asio_streams.cpp:159:34:159:42 | call to basic_string_view | asio_streams.cpp:159:16:159:22 | call to resolve |
 | asio_streams.cpp:159:45:159:56 | call to basic_string_view | asio_streams.cpp:159:16:159:22 | call to resolve |
+| asio_streams.cpp:170:32:170:39 | call to source | asio_streams.cpp:170:19:170:30 | call to basic_string_view |
 | asio_streams.cpp:172:24:172:27 | *host | asio_streams.cpp:172:16:172:22 | call to resolve |
 | asio_streams.cpp:172:30:172:36 | *service | asio_streams.cpp:172:16:172:22 | call to resolve |
 | asio_streams.cpp:173:24:173:27 | *host | asio_streams.cpp:173:16:173:22 | call to resolve |
@@ -67,10 +69,7 @@
 | azure.cpp:220:5:220:8 | *resp | azure.cpp:220:16:220:21 | Read output argument |
 | azure.cpp:225:5:225:8 | *resp | azure.cpp:225:23:225:28 | ReadToCount output argument |
 | azure.cpp:253:79:253:98 | call to basic_string | azure.cpp:253:62:253:99 | call to Url |
-| azure.cpp:255:24:255:56 | call to GetHeader | azure.cpp:255:63:255:65 | call to Value |
 | azure.cpp:266:79:266:98 | call to basic_string | azure.cpp:266:62:266:99 | call to Url |
-| azure.cpp:268:26:268:45 | call to GetHeaders | azure.cpp:268:3:268:5 | SetQueryParameters output argument |
-| azure.cpp:269:8:269:10 | *url | azure.cpp:269:12:269:29 | call to GetQueryParameters |
 | bal.cpp:132:17:132:18 | *sb | bal.cpp:132:21:132:24 | decode output argument |
 | bal.cpp:141:17:141:19 | ** ... | bal.cpp:141:22:141:25 | decode output argument |
 | bal.cpp:150:20:150:21 | *sb | bal.cpp:150:24:150:27 | decodeAny output argument |
