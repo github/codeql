@@ -1,5 +1,6 @@
 typeModel
 | GenBase | GenLib |  |
+| GenBase.BaseReader | GenLib.Qualified | Member[base] |
 | GenBase.BaseReader | GenLib.Reader |  |
 | GenLib.ExternalThing | GenLib.ExternalThing.Type | Member[make].ReturnValue |
 | GenLib.Manager | GenLib.Manager.Type | Member[default] |
@@ -12,6 +13,7 @@ typeModel
 | GenLib.Reader | GenLib.Manager | Member[makeReader].WithNamedArgument[options].ReturnValue |
 | GenLib.Reader | GenLib.Manager | Member[makeReader].WithNamedArgument[path].ReturnValue |
 | GenLib.Reader | GenLib.Manager | Member[makeReader].WithNamedArgument[url].WithoutNamedArgument[options].ReturnValue |
+| GenLib.Reader | GenLib.Qualified | Member[reader] |
 | GenLib.Reader.Options | GenLib.Reader.Options.Type | Member[fast] |
 | GenLib.ReadingProtocol | GenLib.Deep |  |
 | GenLib.ReadingProtocol | GenLib.ExternalThing |  |

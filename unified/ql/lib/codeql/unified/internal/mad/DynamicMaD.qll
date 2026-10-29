@@ -627,11 +627,15 @@ private ApiNode getAnAnnotatedInstance(string type) {
     )
     or
     // Instantiation of a user-defined subclass
-    exists(CallExpr call, Expr callee |
+    exists(CallExpr call, Expr callee, Expr classRef |
       callee = call.getCallee() and
-      isUserTypeForType(StaticNameBinding::getStaticBindingTargetFromRef([
-            callee, callee.(MemberAccessExpr).getBase()
-          ]), type) and
+      (
+        classRef = callee
+        or
+        classRef = callee.(MemberAccessExpr).getBase() and
+        callee.(MemberAccessExpr).getMemberName() = "init"
+      ) and
+      isUserTypeForType(StaticNameBinding::getStaticBindingTargetFromRef(classRef), type) and
       result = useOfExpr(call)
     )
     or
@@ -677,6 +681,9 @@ ApiNode getATypeNode(string type) {
   result = getATypeNodeRaw(type)
   or
   localValueStepPlus(getATypeNodeRaw(type).asUse(), result.asUse())
+  or
+  // Apply type summaries
+  typeStep(getATypeNode(type), result)
 }
 
 /** Holds if `node` is the use of a value appearing in the evaluation of an access path. */
@@ -700,6 +707,21 @@ private predicate localValueStepPlus(DataFlow::Node node1, DataFlow::Node node2)
 }
 
 /**
+ * Gets the node reached by applying the first token of `path` to an instance of `type`.
+ *
+ * This is computed per `(type, token)` pair rather than per row, as many rows typically share
+ * the same type and first token, and the set of instances of a type can be large.
+ */
+pragma[nomagic]
+private ApiNode getNodeFromFirstToken(string type, AccessPathToken token) {
+  exists(AccessPath path |
+    isRelevantRow(type, path) and
+    token = path.getToken(0)
+  ) and
+  result = getSuccessorFromToken(getATypeNode(type), token)
+}
+
+/**
  * Gets the node reached by evaluating the first `n` tokens of `(type, path)`, but without following
  * local flow after the last token.
  */
@@ -707,8 +729,13 @@ private ApiNode getNodeFromPathRaw(string type, AccessPath path, int n) {
   isRelevantRow(type, path) and
   (
     n = 0 and
+    path.getNumToken() = 0 and
     result = getATypeNode(type)
     or
+    n = 1 and
+    result = getNodeFromFirstToken(type, path.getToken(0))
+    or
+    n > 1 and
     result = getSuccessorFromToken(getNodeFromPath(type, path, n - 1), path.getToken(n - 1))
   )
 }
@@ -717,9 +744,11 @@ private ApiNode getNodeFromPathRaw(string type, AccessPath path, int n) {
 private ApiNode getNodeFromPath(string type, AccessPath path, int n) {
   result = getNodeFromPathRaw(type, path, n)
   or
+  n > 0 and
   localValueStepPlus(getNodeFromPathRaw(type, path, n).asUse(), result.asUse())
   or
   // Apply type summaries
+  n > 0 and
   typeStep(getNodeFromPath(type, path, n), result)
 }
 

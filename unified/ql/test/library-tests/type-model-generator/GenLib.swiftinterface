@@ -49,3 +49,8 @@ public class Unrelated {
 public protocol MidProtocol : GenLib::ReadingProtocol {}
 
 public class Deep : GenLib::MidProtocol {}
+
+public class Qualified {
+  public var reader: GenLib.Reader { get }
+  public var base: GenBase.BaseReader { get }
+}

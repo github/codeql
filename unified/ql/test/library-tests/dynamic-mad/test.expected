@@ -15,6 +15,7 @@ isSink
 | test.swift:96:36:96:38 | "x" | builder |
 | test.swift:97:16:97:18 | "y" | builder |
 | test.swift:102:11:102:13 | "x" | log-injection |
+| test.swift:116:5:116:31 | ... .arguments | command-injection |
 isSource
 | test.swift:5:9:5:31 | String(...) | remote |
 | test.swift:6:9:6:36 | ... .init(...) | remote |

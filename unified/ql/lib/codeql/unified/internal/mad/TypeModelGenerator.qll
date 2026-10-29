@@ -107,11 +107,36 @@ string getTypeStringFromTypeExpr(Expr te) {
       )
       or
       exists(MemberAccessExpr access | access = te |
+        // Module-qualified reference, `M.T`
+        exists(string moduleName |
+          isModuleRefInInterface(access.getBase(), moduleName) and
+          result = moduleName + "." + access.getMemberName()
+        )
+        or
+        not isModuleRefInInterface(access.getBase(), _) and
         result = getTypeStringFromTypeExpr(access.getBase()) + "." + access.getMemberName()
       )
     )
     or
     result = getTypeStringFromTypeExpr(getUnwrappedTypeExpr(te))
+  )
+}
+
+/**
+ * Holds if `e` is a reference to the module `moduleName` from an interface file, such as `Foundation`
+ * in `Foundation.URL`.
+ */
+private predicate isModuleRefInInterface(Identifier e, string moduleName) {
+  isInInterface(e) and
+  e.getValue() = moduleName and
+  not exists(getReferencedClass(e)) and
+  (
+    moduleName = any(NameBindingPluginSwift::SwiftInterfaceModule m).getModuleName()
+    or
+    exists(ImportDeclaration imprt |
+      imprt.getFile() = e.getFile() and
+      moduleName = imprt.getImportedExpr().(Identifier).getValue()
+    )
   )
 }
 

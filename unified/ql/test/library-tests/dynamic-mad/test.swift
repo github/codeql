@@ -106,3 +106,12 @@ func testShadowing() {
     func NSLog(_ s: String) {}
     NSLog("x")  // not a sink (local function)
 }
+
+class MyProcess3: Process {
+    static func helper() -> MyHelper { return MyHelper() }
+}
+
+func testStaticCallOnSubclass() {
+    MyProcess3.helper().arguments = ["a"]  // not a sink
+    MyProcess3.init().arguments = ["a"]  // $ isSink=command-injection
+}
