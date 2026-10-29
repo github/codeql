@@ -105,7 +105,7 @@ void test_range_based_for()
 		output(v1);
 	}
 
-	for (int v2 : myContainer) // $ MISSING: Alert // BAD: v2 is not used (iterator dereference may have side effects)
+	for (int v2 : myContainer) // GOOD: iterator dereference may have side effects
 	{
 	}
 }
