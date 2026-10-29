@@ -7,17 +7,23 @@ private import AllDataFlow
 private import codeql.unified.internal.ExprPositions
 private import codeql.unified.internal.typeinference.TypeInference as T
 
+private predicate isReferenceType(T::Type t) {
+  // todo: type parameters with type constraints
+  t.asClass().hasModifier(["actor", "class"])
+}
+
 private class SwiftDataFlowPlugin extends DataFlowPlugin {
   // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
   override predicate bypassContentSet(ContentSet contents) {
     contents.asSingleton().asNamedMember() = "some.0"
   }
 
-  // Swift writes back mutated values of computed properties via their setter
+  // Swift writes back mutated values of computed value-type properties via their setter
   bindingset[expr]
   override predicate mayWriteBackViaSetterCall(Expr expr) {
-    isInWriteBackPosition(expr)
-    // TODO: Check that 'expr' has a value type. Reference types don't cause writebacks.
+    exists(boolean direct | isInWriteBackPosition(expr, direct) |
+      if direct = false then not isReferenceType(T::inferTypeUnique(expr)) else any()
+    )
   }
 
   override predicate exprStep(Expr expr1, Expr expr2, boolean mustFlow) {
@@ -100,25 +106,29 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
  * Holds if `expr` is target of an assignment or 'inout' argument,
  * or the base of such an expression, e.g. `x` in `x.f1.f2 = foo()`
  */
-private predicate isInWriteBackPosition(Expr expr) {
-  isInAssignmentContext(expr, _)
+private predicate isInWriteBackPosition(Expr expr, boolean direct) {
+  isInAssignmentContext(expr, _) and
+  direct = false
   or
   // Arguments to an 'inout' parameter must be prefixed with '&'
   exists(UnaryExpr unary |
     unary.getOperator().(PrefixOperator).getValue() = "&" and
     unary.getOperand() = expr
     // TODO: support custom operators with an 'inout' parameter, which lack the '&' indicator
-  )
+  ) and
+  direct = true
   or
   // The receiver of a call to a 'mutating' function counts as an 'inout' argument
   exists(CallExpr call, Callable target |
     target = T::resolveCallTarget(call) and
     target.hasModifier("mutating") and
     expr = call.getCallee().(MemberAccessExpr).getBase()
-  )
+  ) and
+  direct = true
   or
   exists(MemberAccessExpr member |
-    isInWriteBackPosition(member) and
-    expr = member.getBase()
+    isInWriteBackPosition(member, _) and
+    expr = member.getBase() and
+    direct = false
   )
 }

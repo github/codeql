@@ -2,6 +2,7 @@ private import unified
 private import AllDataFlow
 private import codeql.unified.internal.ExprPositions
 private import codeql.unified.internal.NameBinding as N
+private import codeql.unified.internal.typeinference.TypeInference as T
 
 private newtype TDataFlowCall =
   TExplicitCall(CallExpr call) {
@@ -9,12 +10,7 @@ private newtype TDataFlowCall =
   } or
   TGetterCall(Expr expr) {
     hasResultValue(expr) and
-    (
-      N::getStaticBindingTargetFromRef(expr) = any(GetterDeclaration g).getNameNode()
-      or
-      // Assume a qualified member accesses might resolve to a getter.
-      expr instanceof MemberAccessExpr
-    )
+    T::resolveAccessorAccess(expr) instanceof GetterDeclaration
   } or
   TSetterCall(Expr expr) {
     (
@@ -24,12 +20,7 @@ private newtype TDataFlowCall =
       hasPostUpdateAfterCallOrAssign(expr, _) and
       mayWriteBackViaSetterCall(expr)
     ) and
-    (
-      N::getStaticBindingTargetFromRef(expr) = any(SetterDeclaration g).getNameNode()
-      or
-      // Assume a qualified member accesses might resolve to a setter.
-      expr instanceof MemberAccessExpr
-    )
+    T::resolveAccessorAccess(expr) instanceof SetterDeclaration
   } or
   TSummaryCall(SummarizedCallable callable, SummaryNode callee) {
     FlowSummaryOutput::summaryCallbackRange(callable, callee)
