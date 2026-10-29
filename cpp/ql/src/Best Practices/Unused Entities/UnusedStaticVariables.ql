@@ -26,5 +26,6 @@ where
   not v instanceof MemberVariable and
   not declarationHasSideEffects(v) and
   not v.getAnAttribute().hasName("used") and
-  not v.getAnAttribute().hasName("unused")
+  not v.getAnAttribute().hasName("unused") and
+  not v.getAnAttribute().hasName("maybe_unused")
 select v, "Static variable " + v.getName() + " is never read."
