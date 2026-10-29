@@ -1,5 +1,5 @@
 use codeql_extractor::extractor::desugaring;
-use yeast::{ConcreteDesugarer, DesugaringConfig, Rule, rule, tree};
+use yeast::{ConcreteDesugarer, DesugaringConfig, Rule, tree};
 
 /// User context propagated from outer rules down to the inner rules that
 /// emit the corresponding output declarations, so that each emitted node
@@ -1221,7 +1221,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // Preserve the `super` keyword as a dedicated expression, normally used
         // as the base of a member access (`super.foo`).
-        rule!((superExpr superKeyword: @@keyword) => (super_expr #{keyword})),
+        rule!((superExpr) => (super_expr)),
         // Type expressions. A generic type applied with explicit arguments
         // (`Set<Int>`) becomes a `generic_type_expr` whose `base` is the type
         // name and whose `type_argument`s are the (structured) arguments — the
