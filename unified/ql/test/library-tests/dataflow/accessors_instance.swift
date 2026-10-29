@@ -131,11 +131,16 @@ func t11() {
     class C {
         var p: (String, String) {
             get { ("safe", "safe") }
-            set { sink(newValue.0) }  // $ hasValueFlow=t11.1
+            set { sink(newValue.0) }  // $ hasValueFlow=t11.1 $ MISSING: hasValueFlow=t11.2
+        }
+        var q: C {
+            get { C() }
+            set { sink(newValue.p.0) }  // $ SPURIOUS: hasValueFlow=t11.2
         }
     }
     let c = C()
     c.p.0 = source("t11.1")
+    c.q.p = (source("t11.2"), source("t11.3"))
 }
 
 func t12() {
@@ -150,5 +155,5 @@ func t12() {
         }
     }
     let c = C()
-    c.s.update() // MISSING: the call to 'update' is not resolved
+    c.s.update()  // MISSING: the call to 'update' is not resolved
 }
