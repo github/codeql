@@ -10,11 +10,14 @@
 | Dubious member name "operator&" in summary model. |
 | Dubious member name "operator*" in summary model. |
 | Dubious member name "operator+" in summary model. |
+| Dubious member name "operator+<CharT,Traits,Alloc>" in summary model. |
 | Dubious member name "operator+=" in summary model. |
+| Dubious member name "operator+=<StringViewLike>" in summary model. |
 | Dubious member name "operator->" in summary model. |
 | Dubious member name "operator=" in summary model. |
 | Dubious member name "operator=<U>" in summary model. |
 | Dubious member name "operator[]" in summary model. |
+| Dubious member name "operator[]<K>" in summary model. |
 | Dubious signature "(..(*)(..))" in summary model. |
 | Dubious signature "(..(*)(..),..(*)(..),..(*)(..),..(*)(..))" in summary model. |
 | Dubious signature "(..(*)(..),..(*)(..),..(*)(..),void *)" in summary model. |
@@ -507,6 +510,8 @@
 | Dubious signature "(CURLU *,CURLUPart,const char *,unsigned int)" in summary model. |
 | Dubious signature "(CURLU *,const char *)" in summary model. |
 | Dubious signature "(CURLU *,const char *,char **,OperationConfig *)" in summary model. |
+| Dubious signature "(CharT,basic_string &&)" in summary model. |
+| Dubious signature "(CharT,const basic_string &)" in summary model. |
 | Dubious signature "(ComPtr &&)" in summary model. |
 | Dubious signature "(CompoundDictionary *,const PreparedDictionary *)" in summary model. |
 | Dubious signature "(Curl_cfilter *)" in summary model. |
@@ -1110,6 +1115,14 @@
 | Dubious signature "(ISSUER_SIGN_TOOL **,const unsigned char **,long)" in summary model. |
 | Dubious signature "(ISSUING_DIST_POINT *)" in summary model. |
 | Dubious signature "(ISSUING_DIST_POINT **,const unsigned char **,long)" in summary model. |
+| Dubious signature "(InputIt,InputIt,const Allocator &)" in summary model. |
+| Dubious signature "(InputIt,InputIt,const Compare &)" in summary model. |
+| Dubious signature "(InputIt,InputIt,const Compare &,const Allocator &)" in summary model. |
+| Dubious signature "(InputIt,InputIt,size_type,const Allocator &)" in summary model. |
+| Dubious signature "(InputIt,InputIt,size_type,const Hash &)" in summary model. |
+| Dubious signature "(InputIt,InputIt,size_type,const Hash &,const Allocator &)" in summary model. |
+| Dubious signature "(InputIt,InputIt,size_type,const Hash &,const Pred &)" in summary model. |
+| Dubious signature "(InputIt,InputIt,size_type,const Hash &,const Pred &,const Allocator &)" in summary model. |
 | Dubious signature "(InputIterator,InputIterator,const Allocator &)" in summary model. |
 | Dubious signature "(Jim_HashTable *)" in summary model. |
 | Dubious signature "(Jim_HashTable *,const Jim_HashTableType *,void *)" in summary model. |
@@ -1161,6 +1174,7 @@
 | Dubious signature "(Jim_Obj *,int *)" in summary model. |
 | Dubious signature "(Jim_Stack *)" in summary model. |
 | Dubious signature "(Jim_Stack *,void *)" in summary model. |
+| Dubious signature "(K &&)" in summary model. |
 | Dubious signature "(KECCAK1600_CTX *,const void *,size_t)" in summary model. |
 | Dubious signature "(KECCAK1600_CTX *,unsigned char *,size_t)" in summary model. |
 | Dubious signature "(KECCAK1600_CTX *,unsigned char,size_t)" in summary model. |
@@ -1877,6 +1891,7 @@
 | Dubious signature "(OperationConfig *,HttpReq,HttpReq *)" in summary model. |
 | Dubious signature "(OperationConfig *,const char *,tool_mime **,tool_mime **,bool)" in summary model. |
 | Dubious signature "(OperationConfig *,const char *const *,char **,const char *)" in summary model. |
+| Dubious signature "(P &&)" in summary model. |
 | Dubious signature "(PACKET *)" in summary model. |
 | Dubious signature "(PACKET *,BIGNUM *)" in summary model. |
 | Dubious signature "(PACKET *,OSSL_QUIC_FRAME_CONN_CLOSE *)" in summary model. |
@@ -2127,6 +2142,7 @@
 | Dubious signature "(QUIC_TXPIM *,QUIC_TXPIM_PKT *)" in summary model. |
 | Dubious signature "(QUIC_TXPIM_PKT *,QUIC_CFQ_ITEM *)" in summary model. |
 | Dubious signature "(QUIC_TXPIM_PKT *,const QUIC_TXPIM_CHUNK *)" in summary model. |
+| Dubious signature "(R &&)" in summary model. |
 | Dubious signature "(RAND_POOL *)" in summary model. |
 | Dubious signature "(RAND_POOL *,const unsigned char *,size_t)" in summary model. |
 | Dubious signature "(RAND_POOL *,const unsigned char *,size_t,size_t)" in summary model. |
@@ -2437,6 +2453,7 @@
 | Dubious signature "(Strent *)" in summary model. |
 | Dubious signature "(Strtab *,const char *,size_t)" in summary model. |
 | Dubious signature "(Strtab *,size_t *)" in summary model. |
+| Dubious signature "(T1 &&,T2 &&)" in summary model. |
 | Dubious signature "(T *)" in summary model. |
 | Dubious signature "(T **)" in summary model. |
 | Dubious signature "(TLS_FEATURE *)" in summary model. |
@@ -2501,6 +2518,7 @@
 | Dubious signature "(TS_VERIFY_CTX *,unsigned char *,long)" in summary model. |
 | Dubious signature "(TXT_DB *,OPENSSL_STRING *)" in summary model. |
 | Dubious signature "(TXT_DB *,int,..(*)(..),OPENSSL_LH_HASHFUNC,OPENSSL_LH_COMPFUNC)" in summary model. |
+| Dubious signature "(U1 &&,U2 &&)" in summary model. |
 | Dubious signature "(U *)" in summary model. |
 | Dubious signature "(UI *)" in summary model. |
 | Dubious signature "(UI *,UI_STRING *,const char *)" in summary model. |
@@ -2870,6 +2888,14 @@
 | Dubious signature "(argp_fmtstream *,argp_fmtstream_t,size_t)" in summary model. |
 | Dubious signature "(argp_fmtstream_t,const char *)" in summary model. |
 | Dubious signature "(argp_fmtstream_t,const char *,size_t)" in summary model. |
+| Dubious signature "(basic_string &&)" in summary model. |
+| Dubious signature "(basic_string &&,CharT)" in summary model. |
+| Dubious signature "(basic_string &&,basic_string &&)" in summary model. |
+| Dubious signature "(basic_string &&,const Allocator &)" in summary model. |
+| Dubious signature "(basic_string &&,const CharT *)" in summary model. |
+| Dubious signature "(basic_string &&,const basic_string &)" in summary model. |
+| Dubious signature "(basic_string &&,size_type,const Allocator &)" in summary model. |
+| Dubious signature "(basic_string &&,size_type,size_type,const Allocator &)" in summary model. |
 | Dubious signature "(brotli_alloc_func,brotli_free_func,void *)" in summary model. |
 | Dubious signature "(bufc_pool *,size_t,size_t)" in summary model. |
 | Dubious signature "(bufq *,Curl_bufq_reader *,void *,CURLcode *)" in summary model. |
@@ -3165,6 +3191,12 @@
 | Dubious signature "(const CT_POLICY_EVAL_CTX *)" in summary model. |
 | Dubious signature "(const CURLU *)" in summary model. |
 | Dubious signature "(const CURLU *,CURLUPart,char **,unsigned int)" in summary model. |
+| Dubious signature "(const CharT *)" in summary model. |
+| Dubious signature "(const CharT *,basic_string &&)" in summary model. |
+| Dubious signature "(const CharT *,const Allocator &)" in summary model. |
+| Dubious signature "(const CharT *,const basic_string &)" in summary model. |
+| Dubious signature "(const CharT *,size_type)" in summary model. |
+| Dubious signature "(const CharT *,size_type,const Allocator &)" in summary model. |
 | Dubious signature "(const ComPtr &)" in summary model. |
 | Dubious signature "(const Command *,const size_t,const BlockSplit *,const BlockSplit *,const BlockSplit *,const uint8_t *,size_t,size_t,uint8_t,uint8_t,const ContextType *,HistogramLiteral *,HistogramCommand *,HistogramDistance *)" in summary model. |
 | Dubious signature "(const Cord &)" in summary model. |
@@ -3693,6 +3725,11 @@
 | Dubious signature "(const SXNET *,unsigned char **)" in summary model. |
 | Dubious signature "(const SXNETID *,unsigned char **)" in summary model. |
 | Dubious signature "(const StringRef &)" in summary model. |
+| Dubious signature "(const StringViewLike &)" in summary model. |
+| Dubious signature "(const StringViewLike &,const Allocator &)" in summary model. |
+| Dubious signature "(const StringViewLike &,size_type,size_type)" in summary model. |
+| Dubious signature "(const StringViewLike &,size_type,size_type,const Allocator &)" in summary model. |
+| Dubious signature "(const T1 &,const T2 &)" in summary model. |
 | Dubious signature "(const T &,BOOL)" in summary model. |
 | Dubious signature "(const TS_ACCURACY *)" in summary model. |
 | Dubious signature "(const TS_ACCURACY *,unsigned char **)" in summary model. |
@@ -3828,6 +3865,16 @@
 | Dubious signature "(const aiocb *const[],int,const timespec *)" in summary model. |
 | Dubious signature "(const argp_state *,const char *,va_list,unsigned int)" in summary model. |
 | Dubious signature "(const argp_state *,int,int,const char *,va_list,unsigned int)" in summary model. |
+| Dubious signature "(const basic_string &)" in summary model. |
+| Dubious signature "(const basic_string &,CharT)" in summary model. |
+| Dubious signature "(const basic_string &,basic_string &&)" in summary model. |
+| Dubious signature "(const basic_string &,const Allocator &)" in summary model. |
+| Dubious signature "(const basic_string &,const CharT *)" in summary model. |
+| Dubious signature "(const basic_string &,const basic_string &)" in summary model. |
+| Dubious signature "(const basic_string &,size_type,const Allocator &)" in summary model. |
+| Dubious signature "(const basic_string &,size_type,size_type)" in summary model. |
+| Dubious signature "(const basic_string &,size_type,size_type,const Allocator &)" in summary model. |
+| Dubious signature "(const basic_string_view &)" in summary model. |
 | Dubious signature "(const bufq *)" in summary model. |
 | Dubious signature "(const bufref *)" in summary model. |
 | Dubious signature "(const char *)" in summary model. |
@@ -4095,9 +4142,14 @@
 | Dubious signature "(const int,int,protoent *,char *,size_t,int *)" in summary model. |
 | Dubious signature "(const int[],BIGNUM *)" in summary model. |
 | Dubious signature "(const int_dhx942_dh *,unsigned char **)" in summary model. |
+| Dubious signature "(const key_type &)" in summary model. |
+| Dubious signature "(const key_type &,Args &&)" in summary model. |
+| Dubious signature "(const key_type &,M &&)" in summary model. |
 | Dubious signature "(const list &)" in summary model. |
 | Dubious signature "(const list &,const Allocator &)" in summary model. |
 | Dubious signature "(const long double *)" in summary model. |
+| Dubious signature "(const map &)" in summary model. |
+| Dubious signature "(const map &,const Allocator &)" in summary model. |
 | Dubious signature "(const md5_ctx *,void *)" in summary model. |
 | Dubious signature "(const mntent *,const char *)" in summary model. |
 | Dubious signature "(const nghttp2_extpri *)" in summary model. |
@@ -4114,6 +4166,7 @@
 | Dubious signature "(const nis_result *,nis_result *)" in summary model. |
 | Dubious signature "(const ns_msg *,const ns_rr *,const char *,const char *,char *,size_t)" in summary model. |
 | Dubious signature "(const old_termios_t *)" in summary model. |
+| Dubious signature "(const pair &)" in summary model. |
 | Dubious signature "(const passwd *,const passwd *__restrict__,FILE *,FILE *__restrict__)" in summary model. |
 | Dubious signature "(const posix_spawnattr_t *,const posix_spawnattr_t *__restrict__,int *,int *__restrict__)" in summary model. |
 | Dubious signature "(const posix_spawnattr_t *,const posix_spawnattr_t *__restrict__,pid_t *,pid_t *__restrict__)" in summary model. |
@@ -4214,6 +4267,8 @@
 | Dubious signature "(const uint32_t *,const size_t,const int,HuffmanTree *,uint8_t *)" in summary model. |
 | Dubious signature "(const uint32_t *,size_t,char *,size_t *)" in summary model. |
 | Dubious signature "(const uint32_t *,size_t,uint32_t *,size_t *,int)" in summary model. |
+| Dubious signature "(const unordered_map &)" in summary model. |
+| Dubious signature "(const unordered_map &,const Allocator &)" in summary model. |
 | Dubious signature "(const unsigned char *)" in summary model. |
 | Dubious signature "(const unsigned char **,const unsigned char *)" in summary model. |
 | Dubious signature "(const unsigned char **,long *,int *,int *,long)" in summary model. |
@@ -4326,6 +4381,7 @@
 | Dubious signature "(const uv_timer_t *)" in summary model. |
 | Dubious signature "(const uv_udp_t *)" in summary model. |
 | Dubious signature "(const uv_udp_t *,sockaddr *,int *)" in summary model. |
+| Dubious signature "(const value_type &)" in summary model. |
 | Dubious signature "(const vector &)" in summary model. |
 | Dubious signature "(const vector &,const Allocator &)" in summary model. |
 | Dubious signature "(const void *)" in summary model. |
@@ -4383,9 +4439,20 @@
 | Dubious signature "(const wchar_t *,wchar_t **,int,locale_t)" in summary model. |
 | Dubious signature "(const wchar_t *,wchar_t **,wchar_t)" in summary model. |
 | Dubious signature "(const_DES_cblock *)" in summary model. |
+| Dubious signature "(const_iterator,P &&)" in summary model. |
 | Dubious signature "(const_iterator,T &&)" in summary model. |
 | Dubious signature "(const_iterator,const T &)" in summary model. |
+| Dubious signature "(const_iterator,const key_type &,Args &&)" in summary model. |
+| Dubious signature "(const_iterator,const key_type &,M &&)" in summary model. |
+| Dubious signature "(const_iterator,const value_type &)" in summary model. |
+| Dubious signature "(const_iterator,const_iterator,const CharT *)" in summary model. |
+| Dubious signature "(const_iterator,const_iterator,const CharT *,size_type)" in summary model. |
+| Dubious signature "(const_iterator,const_iterator,const StringViewLike &)" in summary model. |
+| Dubious signature "(const_iterator,const_iterator,const basic_string &)" in summary model. |
+| Dubious signature "(const_iterator,key_type &&,Args &&)" in summary model. |
+| Dubious signature "(const_iterator,key_type &&,M &&)" in summary model. |
 | Dubious signature "(const_iterator,size_type,const T &)" in summary model. |
+| Dubious signature "(const_iterator,value_type &&)" in summary model. |
 | Dubious signature "(const_nis_name,char *,size_t)" in summary model. |
 | Dubious signature "(const_nis_name,const unsigned int,unsigned int)" in summary model. |
 | Dubious signature "(const_nis_name,directory_obj **,dir_binding *,unsigned int)" in summary model. |
@@ -4493,6 +4560,11 @@
 | Dubious signature "(format_string,Args &&)" in summary model. |
 | Dubious signature "(forward_list &&)" in summary model. |
 | Dubious signature "(forward_list &&,const Allocator &)" in summary model. |
+| Dubious signature "(from_range_t,R &&)" in summary model. |
+| Dubious signature "(from_range_t,R &&,size_type)" in summary model. |
+| Dubious signature "(from_range_t,R &&,size_type,const Hash &)" in summary model. |
+| Dubious signature "(from_range_t,R &&,size_type,const Hash &,const Pred &)" in summary model. |
+| Dubious signature "(from_range_t,R &&,size_type,const Hash &,const Pred &,const Allocator &)" in summary model. |
 | Dubious signature "(ftp_parselist_data *)" in summary model. |
 | Dubious signature "(ftp_parselist_data **)" in summary model. |
 | Dubious signature "(fuse_in_header *,uint32_t)" in summary model. |
@@ -4536,6 +4608,14 @@
 | Dubious signature "(i2d_of_void *,d2i_of_void *,const void *)" in summary model. |
 | Dubious signature "(iconv_t,char **,char **__restrict__,size_t *,size_t *__restrict__,char **,char **__restrict__,size_t *,size_t *__restrict__)" in summary model. |
 | Dubious signature "(in_addr_t,uint32_t,char *,size_t)" in summary model. |
+| Dubious signature "(initializer_list,const Allocator &)" in summary model. |
+| Dubious signature "(initializer_list,const Compare &)" in summary model. |
+| Dubious signature "(initializer_list,const Compare &,const Allocator &)" in summary model. |
+| Dubious signature "(initializer_list,size_type,const Allocator &)" in summary model. |
+| Dubious signature "(initializer_list,size_type,const Hash &)" in summary model. |
+| Dubious signature "(initializer_list,size_type,const Hash &,const Allocator &)" in summary model. |
+| Dubious signature "(initializer_list,size_type,const Hash &,const Pred &)" in summary model. |
+| Dubious signature "(initializer_list,size_type,const Hash &,const Pred &,const Allocator &)" in summary model. |
 | Dubious signature "(int32_t *,int32_t *,int32_t *,int32_t *)" in summary model. |
 | Dubious signature "(int64_t *,const ASN1_ENUMERATED *)" in summary model. |
 | Dubious signature "(int64_t *,const ASN1_INTEGER *)" in summary model. |
@@ -4683,6 +4763,9 @@
 | Dubious signature "(int_dhx942_dh **,const unsigned char **,long)" in summary model. |
 | Dubious signature "(istream &,AnyRef *,const char *)" in summary model. |
 | Dubious signature "(istream &,TYPE *,const char *)" in summary model. |
+| Dubious signature "(key_type &&)" in summary model. |
+| Dubious signature "(key_type &&,Args &&)" in summary model. |
+| Dubious signature "(key_type &&,M &&)" in summary model. |
 | Dubious signature "(lemon *)" in summary model. |
 | Dubious signature "(lemon *,action *)" in summary model. |
 | Dubious signature "(lemon *,const char *)" in summary model. |
@@ -4751,11 +4834,16 @@
 | Dubious signature "(long long)" in summary model. |
 | Dubious signature "(long long,long long)" in summary model. |
 | Dubious signature "(long,drand48_data *)" in summary model. |
+| Dubious signature "(map &&)" in summary model. |
+| Dubious signature "(map &&,const Allocator &)" in summary model. |
+| Dubious signature "(map &)" in summary model. |
 | Dubious signature "(md5_ctx *,void *)" in summary model. |
 | Dubious signature "(mp_ptr,mp_size_t,int *,int *,_Float128)" in summary model. |
 | Dubious signature "(mp_ptr,mp_size_t,int *,int *,double)" in summary model. |
 | Dubious signature "(mp_ptr,mp_size_t,int *,int *,long double)" in summary model. |
 | Dubious signature "(msghdr *,cmsghdr *)" in summary model. |
+| Dubious signature "(multimap &&)" in summary model. |
+| Dubious signature "(multimap &)" in summary model. |
 | Dubious signature "(netent *,char *,size_t,int *,int *)" in summary model. |
 | Dubious signature "(netent *,netent *__restrict__,char *,char *__restrict__,size_t,netent **,netent **__restrict__,int *,int *__restrict__)" in summary model. |
 | Dubious signature "(netlink_handle *,int)" in summary model. |
@@ -4933,6 +5021,7 @@
 | Dubious signature "(old_termios_t *,speed_t)" in summary model. |
 | Dubious signature "(ostream &,const AnyConstRef &)" in summary model. |
 | Dubious signature "(ostream &,const TYPE &)" in summary model. |
+| Dubious signature "(pair &&)" in summary model. |
 | Dubious signature "(passwd *,char *,size_t,int *)" in summary model. |
 | Dubious signature "(passwd *,char *,size_t,passwd **)" in summary model. |
 | Dubious signature "(pgrs_dir *,curl_off_t,curltime)" in summary model. |
@@ -5039,8 +5128,21 @@
 | Dubious signature "(size_t,traced_file *)" in summary model. |
 | Dubious signature "(size_t,uint32_t *,uint8_t *)" in summary model. |
 | Dubious signature "(size_t,void **)" in summary model. |
+| Dubious signature "(size_type,CharT,const Allocator &)" in summary model. |
+| Dubious signature "(size_type,const CharT *)" in summary model. |
+| Dubious signature "(size_type,const CharT *,size_type)" in summary model. |
+| Dubious signature "(size_type,const StringViewLike &)" in summary model. |
+| Dubious signature "(size_type,const StringViewLike &,size_type,size_type)" in summary model. |
 | Dubious signature "(size_type,const T &)" in summary model. |
 | Dubious signature "(size_type,const T &,const Allocator &)" in summary model. |
+| Dubious signature "(size_type,const basic_string &)" in summary model. |
+| Dubious signature "(size_type,const basic_string &,size_type,size_type)" in summary model. |
+| Dubious signature "(size_type,size_type,const CharT *)" in summary model. |
+| Dubious signature "(size_type,size_type,const CharT *,size_type)" in summary model. |
+| Dubious signature "(size_type,size_type,const StringViewLike &)" in summary model. |
+| Dubious signature "(size_type,size_type,const StringViewLike &,size_type,size_type)" in summary model. |
+| Dubious signature "(size_type,size_type,const basic_string &)" in summary model. |
+| Dubious signature "(size_type,size_type,const basic_string &,size_type,size_type)" in summary model. |
 | Dubious signature "(slist_wc **,const char *)" in summary model. |
 | Dubious signature "(slist_wc *,const char *)" in summary model. |
 | Dubious signature "(sockaddr_in *)" in summary model. |
@@ -5292,6 +5394,11 @@
 | Dubious signature "(uint64_t *,uint64_t,uint64_t *,CRYPTO_RWLOCK *)" in summary model. |
 | Dubious signature "(uint64_t,uint64_t *)" in summary model. |
 | Dubious signature "(uninorm_t,const uint32_t *,size_t,uint32_t *,uint32_t *__restrict__,size_t *)" in summary model. |
+| Dubious signature "(unordered_map &&)" in summary model. |
+| Dubious signature "(unordered_map &&,const Allocator &)" in summary model. |
+| Dubious signature "(unordered_map &)" in summary model. |
+| Dubious signature "(unordered_multimap &&)" in summary model. |
+| Dubious signature "(unordered_multimap &)" in summary model. |
 | Dubious signature "(unsigned char *)" in summary model. |
 | Dubious signature "(unsigned char **)" in summary model. |
 | Dubious signature "(unsigned char **,X509_ALGOR *,ASN1_OCTET_STRING *,int)" in summary model. |
@@ -5505,6 +5612,7 @@
 | Dubious signature "(uv_udp_t *,uv_os_sock_t)" in summary model. |
 | Dubious signature "(uv_write_t *,uv_stream_t *,const uv_buf_t[],unsigned int,uv_stream_t *,uv_write_cb)" in summary model. |
 | Dubious signature "(uv_write_t *,uv_stream_t *,const uv_buf_t[],unsigned int,uv_write_cb)" in summary model. |
+| Dubious signature "(value_type &&)" in summary model. |
 | Dubious signature "(vector &&)" in summary model. |
 | Dubious signature "(vector &&,const Allocator &)" in summary model. |
 | Dubious signature "(void *)" in summary model. |
@@ -5603,16 +5711,43 @@
 | Unrecognized input specification "Argument[****4]" in summary model. |
 | Unrecognized input specification "Argument[*****0]" in summary model. |
 | Unrecognized input specification "Argument[*****1]" in summary model. |
+| Unrecognized input specification "Field[****Azure::Nullable::m_value]" in summary model. |
 | Unrecognized input specification "Field[****hEvent]" in summary model. |
+| Unrecognized input specification "Field[****std::pair::first]" in summary model. |
+| Unrecognized input specification "Field[****std::pair::second]" in summary model. |
+| Unrecognized input specification "Field[***Azure::Nullable::m_value]" in summary model. |
 | Unrecognized input specification "Field[***hEvent]" in summary model. |
+| Unrecognized input specification "Field[***std::pair::first]" in summary model. |
+| Unrecognized input specification "Field[***std::pair::second]" in summary model. |
+| Unrecognized input specification "Field[**Azure::Nullable::m_value]" in summary model. |
+| Unrecognized input specification "Field[**std::pair::first]" in summary model. |
+| Unrecognized input specification "Field[**std::pair::second]" in summary model. |
+| Unrecognized input specification "Field[*Azure::Nullable::m_value]" in summary model. |
+| Unrecognized input specification "Field[*std::pair::first]" in summary model. |
+| Unrecognized input specification "Field[*std::pair::second]" in summary model. |
+| Unrecognized input specification "ReturnValue[*****]" in summary model. |
+| Unrecognized input specification "ReturnValue[****]" in summary model. |
+| Unrecognized input specification "ReturnValue[***]" in summary model. |
 | Unrecognized output specification "Argument[***0]" in summary model. |
 | Unrecognized output specification "Argument[***1]" in summary model. |
 | Unrecognized output specification "Argument[****0]" in summary model. |
 | Unrecognized output specification "Argument[****1]" in summary model. |
 | Unrecognized output specification "Argument[*****0]" in summary model. |
 | Unrecognized output specification "Argument[*****1]" in summary model. |
+| Unrecognized output specification "Field[****Azure::Nullable::m_value]" in summary model. |
 | Unrecognized output specification "Field[****hEvent]" in summary model. |
+| Unrecognized output specification "Field[****std::pair::first]" in summary model. |
+| Unrecognized output specification "Field[****std::pair::second]" in summary model. |
+| Unrecognized output specification "Field[***Azure::Nullable::m_value]" in summary model. |
 | Unrecognized output specification "Field[***hEvent]" in summary model. |
+| Unrecognized output specification "Field[***std::pair::first]" in summary model. |
+| Unrecognized output specification "Field[***std::pair::second]" in summary model. |
+| Unrecognized output specification "Field[**Azure::Nullable::m_value]" in summary model. |
+| Unrecognized output specification "Field[**std::pair::first]" in summary model. |
+| Unrecognized output specification "Field[**std::pair::second]" in summary model. |
+| Unrecognized output specification "Field[*Azure::Nullable::m_value]" in summary model. |
+| Unrecognized output specification "Field[*std::pair::first]" in summary model. |
+| Unrecognized output specification "Field[*std::pair::second]" in summary model. |
 | Unrecognized output specification "Parameter[***0]" in summary model. |
 | Unrecognized output specification "Parameter[****0]" in summary model. |
 | Unrecognized output specification "ReturnValue[*****]" in summary model. |

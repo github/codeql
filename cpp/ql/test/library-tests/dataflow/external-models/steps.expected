@@ -63,11 +63,11 @@
 | asio_streams.cpp:196:45:196:56 | service_view | asio_streams.cpp:196:16:196:22 | call to resolve |
 | asio_streams.cpp:197:34:197:42 | host_view | asio_streams.cpp:197:16:197:22 | call to resolve |
 | asio_streams.cpp:197:45:197:56 | service_view | asio_streams.cpp:197:16:197:22 | call to resolve |
-| azure.cpp:252:79:252:98 | call to string | azure.cpp:252:62:252:99 | call to Url |
-| azure.cpp:257:5:257:8 | *resp | azure.cpp:257:16:257:21 | Read output argument |
-| azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument |
-| azure.cpp:287:79:287:98 | call to string | azure.cpp:287:62:287:99 | call to Url |
-| azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value |
+| azure.cpp:285:79:285:98 | call to basic_string | azure.cpp:285:62:285:99 | call to Url |
+| azure.cpp:290:5:290:8 | *resp | azure.cpp:290:16:290:21 | Read output argument |
+| azure.cpp:295:5:295:8 | *resp | azure.cpp:295:23:295:28 | ReadToCount output argument |
+| azure.cpp:321:79:321:98 | call to basic_string | azure.cpp:321:62:321:99 | call to Url |
+| azure.cpp:334:79:334:98 | call to basic_string | azure.cpp:334:62:334:99 | call to Url |
 | bal.cpp:132:17:132:18 | *sb | bal.cpp:132:21:132:24 | decode output argument |
 | bal.cpp:141:17:141:19 | ** ... | bal.cpp:141:22:141:25 | decode output argument |
 | bal.cpp:150:20:150:21 | *sb | bal.cpp:150:24:150:27 | decodeAny output argument |
