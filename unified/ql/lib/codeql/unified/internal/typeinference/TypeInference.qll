@@ -856,6 +856,10 @@ predicate inferType = M3::inferType/1;
 
 predicate inferType = M3::inferType/2;
 
+predicate inferTypeUnique = M3::inferTypeUnique/1;
+
+predicate inferTypeUnique = M3::inferTypeUnique/2;
+
 predicate inferTypeCertain = M3::inferTypeCertain/2;
 
 module Consistency = M3::Consistency;

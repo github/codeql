@@ -3683,6 +3683,16 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       pragma[nomagic]
       Type inferType(AstNode n) { result = inferType(n, TypePath::nil()) }
 
+      /** Gets the unique non-pseudo type inferred at `path` for `n`, if any. */
+      Type inferTypeUnique(AstNode n, TypePath path) {
+        result = unique(Type t | t = inferType(n, path) and not t instanceof PseudoType | t)
+      }
+
+      /**
+       * Gets the unique non-pseudo type inferred at the root for `n`, if any.
+       */
+      Type inferTypeUnique(AstNode n) { result = inferTypeUnique(n, TypePath::nil()) }
+
       /**
        * The cached stage of this module.
        *

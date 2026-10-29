@@ -139,7 +139,9 @@ func t11() {
         }
     }
     let c = C()
+    // `p` has value type, so this calls `p`'s setter
     c.p.0 = source("t11.1")
+    // `q` has reference type, so this calls `q`'s getter followed by `p`'s setter
     c.q.p = (source("t11.2"), source("t11.3"))
 }
 
