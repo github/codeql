@@ -1,0 +1,135 @@
+class C {
+    @discardableResult public func f() -> Int { return 0 }
+    @available(*, unavailable) public init(x: Int) {}
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "C"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    functionDecl
+                      attributes:
+                        attribute
+                          atSign: @
+                          attributeName:
+                            identifierType
+                              name: identifier "discardableResult"
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
+                            codeBlockItem
+                              item:
+                                returnStmt
+                                  expression:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "0"
+                                  returnKeyword: return
+                      name: identifier "f"
+                      modifiers:
+                        declModifier
+                          name: public
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                          returnClause:
+                            returnClause
+                              arrow: ->
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                      funcKeyword: func
+                memberBlockItem
+                  decl:
+                    initializerDecl
+                      attributes:
+                        attribute
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            availabilityArgument
+                              trailingComma: ,
+                              argument: binaryOperator "*"
+                            availabilityArgument
+                              argument: unavailable
+                          atSign: @
+                          attributeName:
+                            identifierType
+                              name: identifier "available"
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
+                      modifiers:
+                        declModifier
+                          name: public
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                                functionParameter
+                                  colon: :
+                                  attributes:
+                                  modifiers:
+                                  type:
+                                    identifierType
+                                      name: identifier "Int"
+                                  firstName: identifier "x"
+                      initKeyword: init
+          modifiers:
+          classKeyword: class
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    ⟨member⟩\n    ⟨member⟩\n}"
+          modifier: modifier "class" source="class"
+          name_node: identifier "C" source="C"
+          member:
+            function_declaration source="⟨modifier⟩ ⟨modifier⟩ func ⟨name_node⟩() -> ⟨return_type⟩ ⟨body⟩"
+              modifier:
+                modifier "@discardableResult" source="@discardableResult"
+                modifier "public" source="public"
+              name_node: identifier "f" source="f"
+              return_type: identifier "Int" source="Int"
+              body:
+                block source="{ ⟨stmt⟩ }"
+                  stmt:
+                    return_expr source="return ⟨value⟩"
+                      value: int_literal "0" source="0"
+            constructor_declaration source="⟨modifier⟩ ⟨modifier⟩ ⟨name_node⟩(⟨parameter⟩) ⟨body⟩"
+              modifier:
+                modifier "@available(*, unavailable)" source="@available(*, unavailable)"
+                modifier "public" source="public"
+              name_node: identifier "init" source="init"
+              parameter:
+                parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+                  external_name_node: identifier "x" source="x"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "x" source="x"
+              body: block "{}" source="{}"

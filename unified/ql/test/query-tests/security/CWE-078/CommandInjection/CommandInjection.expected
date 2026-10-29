@@ -1,36 +1,81 @@
 #select
-| CommandInjection.swift:150:42:150:61 | userControlledString | CommandInjection.swift:105:40:105:94 | String(...) | CommandInjection.swift:150:42:150:61 | userControlledString | This command depends on a $@. | CommandInjection.swift:105:40:105:94 | String(...) | user-provided value |
-| CommandInjection.swift:154:23:154:56 | ... ! | CommandInjection.swift:105:40:105:94 | String(...) | CommandInjection.swift:154:23:154:56 | ... ! | This command depends on a $@. | CommandInjection.swift:105:40:105:94 | String(...) | user-provided value |
-| CommandInjection.swift:158:23:158:56 | ... ! | CommandInjection.swift:105:40:105:94 | String(...) | CommandInjection.swift:158:23:158:56 | ... ! | This command depends on a $@. | CommandInjection.swift:105:40:105:94 | String(...) | user-provided value |
-| CommandInjection.swift:163:41:163:74 | ... ! | CommandInjection.swift:105:40:105:94 | String(...) | CommandInjection.swift:163:41:163:74 | ... ! | This command depends on a $@. | CommandInjection.swift:105:40:105:94 | String(...) | user-provided value |
+| CommandInjection.swift:61:2:61:20 | ... .executableURL | CommandInjection.swift:46:40:46:94 | String(...) | CommandInjection.swift:61:2:61:20 | ... .executableURL | This command depends on a $@. | CommandInjection.swift:46:40:46:94 | String(...) | user-provided value |
+| CommandInjection.swift:66:2:66:20 | ... .executableURL | CommandInjection.swift:46:40:46:94 | String(...) | CommandInjection.swift:66:2:66:20 | ... .executableURL | This command depends on a $@. | CommandInjection.swift:46:40:46:94 | String(...) | user-provided value |
+| CommandInjection.swift:67:2:67:20 | ... .executableURL | CommandInjection.swift:46:40:46:94 | String(...) | CommandInjection.swift:67:2:67:20 | ... .executableURL | This command depends on a $@. | CommandInjection.swift:46:40:46:94 | String(...) | user-provided value |
+| CommandInjection.swift:72:2:72:21 | ... .executableURL | CommandInjection.swift:46:40:46:94 | String(...) | CommandInjection.swift:72:2:72:21 | ... .executableURL | This command depends on a $@. | CommandInjection.swift:46:40:46:94 | String(...) | user-provided value |
+| CommandInjection.swift:77:2:77:20 | ... .executableURL | CommandInjection.swift:46:40:46:94 | String(...) | CommandInjection.swift:77:2:77:20 | ... .executableURL | This command depends on a $@. | CommandInjection.swift:46:40:46:94 | String(...) | user-provided value |
+| CommandInjection.swift:78:2:78:20 | ... .executableURL | CommandInjection.swift:46:40:46:94 | String(...) | CommandInjection.swift:78:2:78:20 | ... .executableURL | This command depends on a $@. | CommandInjection.swift:46:40:46:94 | String(...) | user-provided value |
+| CommandInjection.swift:91:42:91:61 | userControlledString | CommandInjection.swift:46:40:46:94 | String(...) | CommandInjection.swift:91:42:91:61 | userControlledString | This command depends on a $@. | CommandInjection.swift:46:40:46:94 | String(...) | user-provided value |
+| CommandInjection.swift:95:23:95:56 | ... ! | CommandInjection.swift:46:40:46:94 | String(...) | CommandInjection.swift:95:23:95:56 | ... ! | This command depends on a $@. | CommandInjection.swift:46:40:46:94 | String(...) | user-provided value |
+| CommandInjection.swift:99:23:99:56 | ... ! | CommandInjection.swift:46:40:46:94 | String(...) | CommandInjection.swift:99:23:99:56 | ... ! | This command depends on a $@. | CommandInjection.swift:46:40:46:94 | String(...) | user-provided value |
+| CommandInjection.swift:104:41:104:74 | ... ! | CommandInjection.swift:46:40:46:94 | String(...) | CommandInjection.swift:104:41:104:74 | ... ! | This command depends on a $@. | CommandInjection.swift:46:40:46:94 | String(...) | user-provided value |
 edges
-| CommandInjection.swift:105:8:105:31 | ... .some(...) | CommandInjection.swift:105:12:105:31 | userControlledString | provenance |  |
-| CommandInjection.swift:105:12:105:31 | userControlledString | CommandInjection.swift:150:42:150:61 | userControlledString | provenance |  |
-| CommandInjection.swift:105:12:105:31 | userControlledString | CommandInjection.swift:154:35:154:54 | userControlledString | provenance |  |
-| CommandInjection.swift:105:12:105:31 | userControlledString | CommandInjection.swift:158:35:158:54 | userControlledString | provenance |  |
-| CommandInjection.swift:105:12:105:31 | userControlledString | CommandInjection.swift:163:53:163:72 | userControlledString | provenance |  |
-| CommandInjection.swift:105:40:105:94 | String(...) | CommandInjection.swift:105:8:105:31 | ... .some(...) | provenance |  |
-| CommandInjection.swift:154:23:154:55 | URL(...) | CommandInjection.swift:154:23:154:56 | ... ! | provenance |  |
-| CommandInjection.swift:154:35:154:54 | userControlledString | CommandInjection.swift:154:23:154:55 | URL(...) | provenance |  |
-| CommandInjection.swift:154:35:154:54 | userControlledString | CommandInjection.swift:154:23:154:56 | ... ! | provenance |  |
-| CommandInjection.swift:158:23:158:55 | URL(...) | CommandInjection.swift:158:23:158:56 | ... ! | provenance |  |
-| CommandInjection.swift:158:35:158:54 | userControlledString | CommandInjection.swift:158:23:158:55 | URL(...) | provenance |  |
-| CommandInjection.swift:158:35:158:54 | userControlledString | CommandInjection.swift:158:23:158:56 | ... ! | provenance |  |
-| CommandInjection.swift:163:41:163:73 | URL(...) | CommandInjection.swift:163:41:163:74 | ... ! | provenance |  |
-| CommandInjection.swift:163:53:163:72 | userControlledString | CommandInjection.swift:163:41:163:73 | URL(...) | provenance |  |
-| CommandInjection.swift:163:53:163:72 | userControlledString | CommandInjection.swift:163:41:163:74 | ... ! | provenance |  |
+| CommandInjection.swift:46:8:46:31 | ... .some(...) | CommandInjection.swift:46:12:46:31 | userControlledString | provenance |  |
+| CommandInjection.swift:46:12:46:31 | userControlledString | CommandInjection.swift:61:36:61:55 | userControlledString | provenance |  |
+| CommandInjection.swift:46:12:46:31 | userControlledString | CommandInjection.swift:66:45:66:64 | userControlledString | provenance |  |
+| CommandInjection.swift:46:12:46:31 | userControlledString | CommandInjection.swift:67:36:67:55 | userControlledString | provenance |  |
+| CommandInjection.swift:46:12:46:31 | userControlledString | CommandInjection.swift:72:46:72:65 | userControlledString | provenance |  |
+| CommandInjection.swift:46:12:46:31 | userControlledString | CommandInjection.swift:77:45:77:64 | userControlledString | provenance |  |
+| CommandInjection.swift:46:12:46:31 | userControlledString | CommandInjection.swift:78:36:78:55 | userControlledString | provenance |  |
+| CommandInjection.swift:46:12:46:31 | userControlledString | CommandInjection.swift:91:42:91:61 | userControlledString | provenance |  |
+| CommandInjection.swift:46:12:46:31 | userControlledString | CommandInjection.swift:95:35:95:54 | userControlledString | provenance |  |
+| CommandInjection.swift:46:12:46:31 | userControlledString | CommandInjection.swift:99:35:99:54 | userControlledString | provenance |  |
+| CommandInjection.swift:46:12:46:31 | userControlledString | CommandInjection.swift:104:53:104:72 | userControlledString | provenance |  |
+| CommandInjection.swift:46:40:46:94 | String(...) | CommandInjection.swift:46:8:46:31 | ... .some(...) | provenance |  |
+| CommandInjection.swift:61:24:61:56 | URL(...) | CommandInjection.swift:61:2:61:20 | ... .executableURL | provenance |  |
+| CommandInjection.swift:61:36:61:55 | userControlledString | CommandInjection.swift:61:2:61:20 | ... .executableURL | provenance |  |
+| CommandInjection.swift:61:36:61:55 | userControlledString | CommandInjection.swift:61:24:61:56 | URL(...) | provenance |  |
+| CommandInjection.swift:66:24:66:65 | URL(...) | CommandInjection.swift:66:2:66:20 | ... .executableURL | provenance |  |
+| CommandInjection.swift:66:45:66:64 | userControlledString | CommandInjection.swift:66:24:66:65 | URL(...) | provenance |  |
+| CommandInjection.swift:67:24:67:56 | URL(...) | CommandInjection.swift:67:2:67:20 | ... .executableURL | provenance |  |
+| CommandInjection.swift:67:36:67:55 | userControlledString | CommandInjection.swift:67:2:67:20 | ... .executableURL | provenance |  |
+| CommandInjection.swift:67:36:67:55 | userControlledString | CommandInjection.swift:67:24:67:56 | URL(...) | provenance |  |
+| CommandInjection.swift:72:25:72:66 | URL(...) | CommandInjection.swift:72:2:72:21 | ... .executableURL | provenance |  |
+| CommandInjection.swift:72:46:72:65 | userControlledString | CommandInjection.swift:72:25:72:66 | URL(...) | provenance |  |
+| CommandInjection.swift:77:24:77:65 | URL(...) | CommandInjection.swift:77:2:77:20 | ... .executableURL | provenance |  |
+| CommandInjection.swift:77:45:77:64 | userControlledString | CommandInjection.swift:77:24:77:65 | URL(...) | provenance |  |
+| CommandInjection.swift:78:24:78:56 | URL(...) | CommandInjection.swift:78:2:78:20 | ... .executableURL | provenance |  |
+| CommandInjection.swift:78:36:78:55 | userControlledString | CommandInjection.swift:78:2:78:20 | ... .executableURL | provenance |  |
+| CommandInjection.swift:78:36:78:55 | userControlledString | CommandInjection.swift:78:24:78:56 | URL(...) | provenance |  |
+| CommandInjection.swift:95:23:95:55 | URL(...) | CommandInjection.swift:95:23:95:56 | ... ! | provenance |  |
+| CommandInjection.swift:95:35:95:54 | userControlledString | CommandInjection.swift:95:23:95:55 | URL(...) | provenance |  |
+| CommandInjection.swift:95:35:95:54 | userControlledString | CommandInjection.swift:95:23:95:56 | ... ! | provenance |  |
+| CommandInjection.swift:99:23:99:55 | URL(...) | CommandInjection.swift:99:23:99:56 | ... ! | provenance |  |
+| CommandInjection.swift:99:35:99:54 | userControlledString | CommandInjection.swift:99:23:99:55 | URL(...) | provenance |  |
+| CommandInjection.swift:99:35:99:54 | userControlledString | CommandInjection.swift:99:23:99:56 | ... ! | provenance |  |
+| CommandInjection.swift:104:41:104:73 | URL(...) | CommandInjection.swift:104:41:104:74 | ... ! | provenance |  |
+| CommandInjection.swift:104:53:104:72 | userControlledString | CommandInjection.swift:104:41:104:73 | URL(...) | provenance |  |
+| CommandInjection.swift:104:53:104:72 | userControlledString | CommandInjection.swift:104:41:104:74 | ... ! | provenance |  |
 nodes
-| CommandInjection.swift:105:8:105:31 | ... .some(...) | semmle.label | ... .some(...) |
-| CommandInjection.swift:105:12:105:31 | userControlledString | semmle.label | userControlledString |
-| CommandInjection.swift:105:40:105:94 | String(...) | semmle.label | String(...) |
-| CommandInjection.swift:150:42:150:61 | userControlledString | semmle.label | userControlledString |
-| CommandInjection.swift:154:23:154:55 | URL(...) | semmle.label | URL(...) |
-| CommandInjection.swift:154:23:154:56 | ... ! | semmle.label | ... ! |
-| CommandInjection.swift:154:35:154:54 | userControlledString | semmle.label | userControlledString |
-| CommandInjection.swift:158:23:158:55 | URL(...) | semmle.label | URL(...) |
-| CommandInjection.swift:158:23:158:56 | ... ! | semmle.label | ... ! |
-| CommandInjection.swift:158:35:158:54 | userControlledString | semmle.label | userControlledString |
-| CommandInjection.swift:163:41:163:73 | URL(...) | semmle.label | URL(...) |
-| CommandInjection.swift:163:41:163:74 | ... ! | semmle.label | ... ! |
-| CommandInjection.swift:163:53:163:72 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:46:8:46:31 | ... .some(...) | semmle.label | ... .some(...) |
+| CommandInjection.swift:46:12:46:31 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:46:40:46:94 | String(...) | semmle.label | String(...) |
+| CommandInjection.swift:61:2:61:20 | ... .executableURL | semmle.label | ... .executableURL |
+| CommandInjection.swift:61:24:61:56 | URL(...) | semmle.label | URL(...) |
+| CommandInjection.swift:61:36:61:55 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:66:2:66:20 | ... .executableURL | semmle.label | ... .executableURL |
+| CommandInjection.swift:66:24:66:65 | URL(...) | semmle.label | URL(...) |
+| CommandInjection.swift:66:45:66:64 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:67:2:67:20 | ... .executableURL | semmle.label | ... .executableURL |
+| CommandInjection.swift:67:24:67:56 | URL(...) | semmle.label | URL(...) |
+| CommandInjection.swift:67:36:67:55 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:72:2:72:21 | ... .executableURL | semmle.label | ... .executableURL |
+| CommandInjection.swift:72:25:72:66 | URL(...) | semmle.label | URL(...) |
+| CommandInjection.swift:72:46:72:65 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:77:2:77:20 | ... .executableURL | semmle.label | ... .executableURL |
+| CommandInjection.swift:77:24:77:65 | URL(...) | semmle.label | URL(...) |
+| CommandInjection.swift:77:45:77:64 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:78:2:78:20 | ... .executableURL | semmle.label | ... .executableURL |
+| CommandInjection.swift:78:24:78:56 | URL(...) | semmle.label | URL(...) |
+| CommandInjection.swift:78:36:78:55 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:91:42:91:61 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:95:23:95:55 | URL(...) | semmle.label | URL(...) |
+| CommandInjection.swift:95:23:95:56 | ... ! | semmle.label | ... ! |
+| CommandInjection.swift:95:35:95:54 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:99:23:99:55 | URL(...) | semmle.label | URL(...) |
+| CommandInjection.swift:99:23:99:56 | ... ! | semmle.label | ... ! |
+| CommandInjection.swift:99:35:99:54 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:104:41:104:73 | URL(...) | semmle.label | URL(...) |
+| CommandInjection.swift:104:41:104:74 | ... ! | semmle.label | ... ! |
+| CommandInjection.swift:104:53:104:72 | userControlledString | semmle.label | userControlledString |
 subpaths

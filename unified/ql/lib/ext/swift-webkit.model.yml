@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: sourceModel
+    data:
+      - ["WebKit.WKScriptMessageHandler", "Member[userContentController].Parameter[didReceive:]", "remote"]
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: summaryModel
+    data:
+      - ["WebKit.WKUserScript.Type", "Member[init].WithoutNamedArgument[in]", "Argument[source:]", "ReturnValue", "taint"]
+      - ["WebKit.WKUserScript.Type", "Member[init].WithNamedArgument[in]", "Argument[source:]", "ReturnValue", "taint"]

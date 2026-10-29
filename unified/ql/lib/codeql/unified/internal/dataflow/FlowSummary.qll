@@ -2,13 +2,33 @@ private import unified
 private import AllDataFlow
 private import codeql.dataflow.internal.FlowSummaryImpl
 private import codeql.util.Void
-private import codeql.unified.internal.mad.LegacyMaD as LegacyMaD
+private import codeql.unified.internal.mad.DynamicMaD as DynamicMaD
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 
-module FlowSummaryInput implements InputSig<Location, DataFlowInput> {
-  class SummarizedCallableBase extends LegacyMaD::Selector {
-    SummarizedCallableBase() { LegacyMaD::normalizedSummaryModel(this, _, _, _, _) }
+private newtype TSummaryKey =
+  MkSummaryKey(string type, string path) { DynamicMaD::flowSummaryModel(type, path, _, _, _, _) }
 
+/**
+ * A `(type, path)` pair identifying a library function that has a flow summary.
+ */
+class SummaryKey extends TSummaryKey {
+  /** Gets the type from which the access path of this summary starts. */
+  string getType() { this = MkSummaryKey(result, _) }
+
+  /** Gets the access path leading to the summarized function. */
+  string getPath() { this = MkSummaryKey(_, result) }
+
+  /** Holds if `call` is a call to the function identified by this summary key. */
+  predicate matchesCall(CallExpr call) {
+    DynamicMaD::isCallToPath(this.getType(), this.getPath(), call)
+  }
+
+  /** Gets a string representation of this summary key. */
+  string toString() { result = this.getType() + ";" + this.getPath() }
+}
+
+module FlowSummaryInput implements InputSig<Location, DataFlowInput> {
+  class SummarizedCallableBase extends SummaryKey {
     Location getLocation() { none() }
   }
 
@@ -133,15 +153,16 @@ class SummaryNode = FlowSummaryOutput::SummaryNode;
 class SummarizedCallable = FlowSummaryOutput::SummarizedCallable;
 
 private class SummarizedCallableFromModel extends SummarizedCallable {
-  SummarizedCallableFromModel() { LegacyMaD::normalizedSummaryModel(this, _, _, _, _) }
+  SummarizedCallableFromModel() { exists(this.getType()) }
 
   override predicate propagatesFlow(
     string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
     isExact = true and
+    p = "manual" and
     model = "" and // TODO
     exists(string kind |
-      LegacyMaD::normalizedSummaryModel(this, input, output, kind, p) and
+      DynamicMaD::flowSummaryModel(this.getType(), this.getPath(), input, output, kind, _) and
       (
         kind = "value" and
         preservesValue = true

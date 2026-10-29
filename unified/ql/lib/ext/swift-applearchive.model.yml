@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: sinkModel
+    data:
+      - ["AppleArchive.ArchiveByteStream.Type", "Member[fileStream].WithNamedArgument[automaticClose].Argument[fd:]", "path-injection"]
+      - ["AppleArchive.ArchiveByteStream.Type", "Member[fileStream].WithNamedArgument[mode].Argument[path:]", "path-injection"]
+      - ["AppleArchive.ArchiveByteStream.Type", "Member[withFileStream].WithNamedArgument[automaticClose].Argument[fd:]", "path-injection"]
+      - ["AppleArchive.ArchiveByteStream.Type", "Member[withFileStream].WithNamedArgument[mode].Argument[path:]", "path-injection"]

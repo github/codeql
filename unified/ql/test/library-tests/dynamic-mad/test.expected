@@ -1,0 +1,35 @@
+isSink
+| test.swift:10:26:10:29 | path | path-injection |
+| test.swift:11:34:11:34 | 0 | string-length |
+| test.swift:34:5:34:36 | ... .tlsMinimumSupportedProtocol | tls |
+| test.swift:54:9:54:17 | arguments | command-injection |
+| test.swift:55:9:55:22 | ... .arguments | command-injection |
+| test.swift:72:5:72:15 | ... .arguments | command-injection |
+| test.swift:73:5:73:26 | ... .arguments | command-injection |
+| test.swift:74:5:74:28 | ... .arguments | command-injection |
+| test.swift:77:5:77:16 | ... .arguments | command-injection |
+| test.swift:78:10:78:17 | [self arg] ... .run(...) | receiver |
+| test.swift:93:19:93:21 | "x" | stub |
+| test.swift:94:32:94:34 | "y" | stub |
+| test.swift:95:33:95:35 | "z" | stub |
+| test.swift:96:36:96:38 | "x" | builder |
+| test.swift:97:16:97:18 | "y" | builder |
+| test.swift:102:11:102:13 | "x" | log-injection |
+isSource
+| test.swift:5:9:5:31 | String(...) | remote |
+| test.swift:6:9:6:36 | ... .init(...) | remote |
+| test.swift:7:9:7:37 | ... .String(...) | remote |
+| test.swift:8:9:8:52 | String(...) | remote-encoding |
+| test.swift:16:9:16:32 | ... .contents(...) | local |
+| test.swift:17:9:17:49 | ... .contents(...) | local |
+| test.swift:18:9:18:64 | ... .contents(...) | local |
+| test.swift:23:9:23:32 | ... .contents(...) | local |
+| test.swift:24:9:24:34 | ... .contents(...) | local |
+| test.swift:25:9:25:34 | ... .contents(...) | local |
+| test.swift:27:9:27:34 | ... .contents(...) | local |
+| test.swift:28:9:28:50 | ... .contents(...) | local |
+| test.swift:32:9:32:15 | ... .text | local |
+| test.swift:42:27:42:32 | string | local |
+| test.swift:82:54:82:57 | data | remote |
+| test.swift:84:22:84:25 | data | remote |
+| test.swift:101:9:101:23 | getRemoteData(...) | remote |

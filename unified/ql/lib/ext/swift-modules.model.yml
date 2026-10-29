@@ -1,0 +1,26 @@
+# Hand-written type models describing module re-exports, and types that are imported from
+# Objective-C headers and are therefore not covered by type models generated from `.swiftinterface` files.
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: typeModel
+    data:
+      # Module re-exports: `(M1, M2, "")` means importing M2 makes the members of M1 available.
+      - ["_StringProcessing", "Swift", ""]
+      - ["_Concurrency", "Swift", ""]
+      - ["ObjectiveC", "Foundation", ""]
+      - ["Darwin", "Foundation", ""]
+      - ["Foundation", "UIKit", ""]
+      - ["Foundation", "AppKit", ""]
+      - ["Foundation", "Cocoa", ""]
+      - ["AppKit", "Cocoa", ""]
+      - ["System", "SystemPackage", ""]
+      - ["NIOCore", "NIO", ""]
+      - ["NIOCore", "NIOPosix", ""]
+      # swift-crypto's `Crypto` module provides the same API as `CryptoKit`
+      - ["CryptoKit", "Crypto", ""]
+      # Types imported from Objective-C
+      - ["Foundation.FileManager", "Foundation.FileManager.Type", "Member[default]"]
+      - ["Foundation.URLSession", "Foundation.URLSession.Type", "Member[shared]"]
+      - ["Foundation.Process", "Foundation.Process.Type", "Member[launchedProcess].ReturnValue"]
+      - ["Foundation.Process", "Foundation.Process.Type", "Member[run].ReturnValue"]

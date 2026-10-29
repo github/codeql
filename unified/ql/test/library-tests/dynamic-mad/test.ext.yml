@@ -1,0 +1,37 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: sourceModel
+    data:
+      - ["Swift.String.Type", "Member[init].WithNamedArgument[testSource].WithoutNamedArgument[testEncoding].ReturnValue", "remote"]
+      - ["Swift.String.Type", "Member[init].WithNamedArgument[testSource].WithNamedArgument[testEncoding].ReturnValue", "remote-encoding"]
+      - ["TestFoundation.FileManager", "Member[contents].ReturnValue", "local"]
+      - ["TestUIKit.UITextField", "Member[text]", "local"]
+      - ["TestUIKit.UITextFieldDelegate", "Member[textField].WithNamedArgument[shouldChangeCharactersIn].Parameter[replacementString:]", "local"]
+      - ["TestFoundation.URLSession", "Member[dataTask].Argument[completionHandler:].Parameter[0]", "remote"]
+      - ["TestFoundation", "Member[getRemoteData].ReturnValue", "remote"]
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: sinkModel
+    data:
+      - ["Swift.String.Type", "Member[init].Argument[testSink:]", "path-injection"]
+      - ["TestFoundation.URLSessionConfiguration", "Member[tlsMinimumSupportedProtocol]", "tls"]
+      - ["TestFoundation.Process", "Member[arguments]", "command-injection"]
+      - ["TestFoundation.Process", "Member[run].Argument[self]", "receiver"]
+      - ["MyLib.StubClass", "Member[sink].Argument[arg:]", "stub"]
+      - ["MyLib.Builder", "Member[run].Argument[cmd:]", "builder"]
+      - ["Swift.String.Index.Type", "Member[init].Argument[testOffset:]", "string-length"]
+      - ["TestFoundation", "Member[NSLog].Argument[0]", "log-injection"]
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: summaryModel
+    data:
+      - ["MyLib.Builder", "", "", "Member[withFoo].ReturnValue", "type"]
+      - ["MyLib.Builder", "", "", "Member[withBar].ReturnValue", "type"]
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: typeModel
+    data:
+      - ["TestFoundation.FileManager", "TestFoundation.FileManager.Type", "Member[default]"]
+      - ["MyLib.StubClass", "MyLib.StubClass.Type", "Member[make].ReturnValue"]
+      - ["TestFoundation", "TestUIKit", ""]

@@ -1,0 +1,24 @@
+typeModel
+| GenBase | GenLib |  |
+| GenBase.BaseReader | GenLib.Reader |  |
+| GenLib.ExternalThing | GenLib.ExternalThing.Type | Member[make].ReturnValue |
+| GenLib.Manager | GenLib.Manager.Type | Member[default] |
+| GenLib.Manager | GenLib.Manager.Type | Member[shared] |
+| GenLib.Reader | GenLib | Member[globalReader].ReturnValue |
+| GenLib.Reader | GenLib.ExternalThing | Member[reader] |
+| GenLib.Reader | GenLib.Manager | Member[currentReader] |
+| GenLib.Reader | GenLib.Manager | Member[fetch].Argument[completionHandler:].Parameter[0] |
+| GenLib.Reader | GenLib.Manager | Member[makeReader].ReturnValue |
+| GenLib.Reader | GenLib.Manager | Member[makeReader].WithNamedArgument[options].ReturnValue |
+| GenLib.Reader | GenLib.Manager | Member[makeReader].WithNamedArgument[path].ReturnValue |
+| GenLib.Reader | GenLib.Manager | Member[makeReader].WithNamedArgument[url].WithoutNamedArgument[options].ReturnValue |
+| GenLib.Reader.Options | GenLib.Reader.Options.Type | Member[fast] |
+| GenLib.ReadingProtocol | GenLib.Deep |  |
+| GenLib.ReadingProtocol | GenLib.ExternalThing |  |
+| GenLib.ReadingProtocol | GenLib.MidProtocol |  |
+| GenLib.ReadingProtocol | GenLib.Reader |  |
+| Swift.String | GenBase.BaseReader | Member[read].ReturnValue |
+| Swift.String | GenLib.Reader | Member[text] |
+| Swift.String | GenLib.ReadingProtocol | Member[readAll].ReturnValue |
+summaryModel
+| GenLib.Manager |  |  | Member[configured].ReturnValue | type |

@@ -1,338 +1,10 @@
-// --- stubs ---
-
-struct URL {
-    enum DirectoryHint {
-        case inferFromPath
-    }
-
-    init?(string: String) {}
-    init(fileURLWithPath path: String, isDirectory: Bool) {}
-    init(
-        filePath path: String, directoryHint: URL.DirectoryHint = .inferFromPath,
-        relativeTo base: URL? = nil
-    ) {}
-
-    mutating func appendPathComponent(_ pathComponent: String) {}
-    func appendingPathComponent(_ pathComponent: String) -> URL { return self }
-}
-
-class NSURL {
-    init?(string: String) {}
-
-    func appendingPathComponent(_ pathComponent: String) -> URL? { return nil }
-
-    var filePathURL: URL? { URL(string: "") }
-}
-
-extension StringProtocol {
-    func completePath(
-        into outputName: UnsafeMutablePointer<String>? = nil,
-        caseSensitive: Bool,
-        matchesInto outputArray: UnsafeMutablePointer<[String]>? = nil,
-        filterTypes: [String]? = nil
-    ) -> Int { 0 }
-}
-
-extension String {
-    struct Encoding {
-        static let utf8 = Encoding()
-    }
-
-    init(contentsOf: URL) {
-        let data = ""
-        self.init(data)
-    }
-
-    init(contentsOfFile path: String) throws {
-        self.init("")
-    }
-
-    init(contentsOfFile path: String, encoding enc: String.Encoding) throws {
-        self.init("")
-    }
-
-    init(contentsOfFile path: String, usedEncoding: inout String.Encoding) throws {
-        self.init("")
-    }
-}
-
-class NSString {
-    init() {}
-    init(string aString: String) {}
-    convenience init(contentsOfFile path: String, encoding enc: UInt) throws { self.init() }
-    convenience init(contentsOfFile path: String, usedEncoding enc: UnsafeMutablePointer<UInt>?)
-        throws
-    { self.init() }
-
-    func write(toFile: String, atomically: Bool, encoding: UInt) {}
-    func write(to: URL, atomically: Bool, encoding: UInt) {}
-
-    var utf8String: UnsafePointer<CChar>? { return nil }
-}
-protocol DataProtocol {}
-class Data: DataProtocol {
-    struct ReadingOptions: OptionSet { let rawValue: Int }
-    struct WritingOptions: OptionSet { let rawValue: Int }
-
-    init<S>(_ elements: S) { count = 0 }
-    init(contentsOf: URL, options: ReadingOptions) { count = 0 }
-
-    func copyBytes(to: UnsafeMutablePointer<UInt8>, count: Int) {}
-
-    func write(to: URL, options: Data.WritingOptions = []) {}
-
-    var count: Int
-}
-
-class NSData {
-    init() {}
-    init?(contentsOfFile path: String) {}
-    init?(contentsOfMappedFile path: String) {}
-    init?(contentsOf url: URL) {}
-    class func dataWithContentsOfMappedFile(_ path: String) -> Any? { return nil }
-
-    struct WritingOptions: OptionSet { let rawValue: Int }
-    func write(to: URL, atomically: Bool) -> Bool { return false }
-    func write(to: URL, options: NSData.WritingOptions) {}
-    func write(toFile: String, atomically: Bool) -> Bool { return false }
-    func write(toFile: String, options: NSData.WritingOptions) {}
-}
-
-class NSKeyedUnarchiver {
-    func unarchiveObject(withFile: String) -> Any? { return nil }
-}
-
-struct URLResourceKey {}
-
-struct FileAttributeKey: Hashable {}
-
-struct ObjCBool {}
-
-struct AutoreleasingUnsafeMutablePointer<Pointee> {}
-
-struct FilePath: ExpressibleByStringLiteral {
-    typealias StringLiteralType = String
-    init(stringLiteral: String) {}
-    func lexicallyNormalized() -> FilePath { return "" }
-    func starts(with: FilePath) -> Bool { return false }
-}
-
-class FileManager {
-    class DirectoryEnumerator {}
-    struct DirectoryEnumerationOptions: OptionSet { let rawValue: Int }
-    struct ItemReplacementOptions: OptionSet { let rawValue: Int }
-    struct UnmountOptions: OptionSet { let rawValue: Int }
-    struct SearchPathDomainMask {}
-    enum SearchPathDirectory: UInt { case none }
-    enum URLRelationship: Int { case none }
-
-    func contentsOfDirectory(
-        at: URL, includingPropertiesForKeys: [URLResourceKey]?,
-        options: FileManager.DirectoryEnumerationOptions
-    ) -> [URL] { return [] }
-    func contentsOfDirectory(atPath: String) -> [String] { return [] }
-    func enumerator(
-        at: URL, includingPropertiesForKeys: [URLResourceKey]?,
-        options: FileManager.DirectoryEnumerationOptions, errorHandler: ((URL, Error) -> Bool)?
-    ) -> FileManager.DirectoryEnumerator? { return nil }
-    func enumerator(atPath: String) -> FileManager.DirectoryEnumerator? { return nil }
-    func subpathsOfDirectory(atPath: String) -> [String] { return [] }
-    func subpaths(atPath: String) -> [String]? { return nil }
-    func createDirectory(
-        at: URL, withIntermediateDirectories: Bool, attributes: [FileAttributeKey: Any]?
-    ) {}
-    func createDirectory(
-        atPath: String, withIntermediateDirectories: Bool, attributes: [FileAttributeKey: Any]?
-    ) {}
-    func createFile(atPath: String, contents: Data?, attributes: [FileAttributeKey: Any]?) -> Bool {
-        return false
-    }
-    func removeItem(at: URL) {}
-    func removeItem(atPath: String) {}
-    func trashItem(at: URL, resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>?) {}
-    func replaceItemAt(
-        _: URL, withItemAt: URL, backupItemName: String?,
-        options: FileManager.ItemReplacementOptions
-    ) -> URL? { return nil }
-    func replaceItem(
-        at: URL, withItemAt: URL, backupItemName: String?,
-        options: FileManager.ItemReplacementOptions,
-        resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>?
-    ) {}
-    func copyItem(at: URL, to: URL) {}
-    func copyItem(atPath: String, toPath: String) {}
-    func moveItem(at: URL, to: URL) {}
-    func moveItem(atPath: String, toPath: String) {}
-    func createSymbolicLink(at: URL, withDestinationURL: URL) {}
-    func createSymbolicLink(atPath: String, withDestinationPath: String) {}
-    func linkItem(at: URL, to: URL) {}
-    func linkItem(atPath: String, toPath: String) {}
-    func destinationOfSymbolicLink(atPath: String) -> String { return "" }
-    func fileExists(atPath: String) -> Bool { return false }
-    func fileExists(atPath: String, isDirectory: UnsafeMutablePointer<ObjCBool>?) -> Bool {
-        return false
-    }
-    func setAttributes(_: [FileAttributeKey: Any], ofItemAtPath: String) {}
-    func contents(atPath: String) -> Data? { return nil }
-    func contentsEqual(atPath: String, andPath: String) -> Bool { return false }
-    func changeCurrentDirectoryPath(_: String) -> Bool { return false }
-    func unmountVolume(
-        at: URL, options: FileManager.UnmountOptions, completionHandler: (Error?) -> Void
-    ) {}
-    // Deprecated methods
-    func fileAttributes(atPath path: String, traverseLink yorn: Bool) -> [AnyHashable: Any]? { nil }
-    func changeFileAttributes(_: [AnyHashable: Any], atPath: String) -> Bool { return false }
-    func attributesOfItem(atPath path: String) throws -> [FileAttributeKey: Any] { return [:] }
-    func directoryContents(atPath: String) -> [Any]? { return nil }
-    func createDirectory(atPath: String, attributes: [AnyHashable: Any]) -> Bool { return false }
-    func createSymbolicLink(atPath: String, pathContent: String) -> Bool { return false }
-    func pathContentOfSymbolicLink(atPath: String) -> String? { return nil }
-    func replaceItemAtURL(
-        originalItemURL: NSURL, withItemAtURL: NSURL, backupItemName: String?,
-        options: FileManager.ItemReplacementOptions
-    ) -> NSURL? { return nil }
-}
-
-struct FileDescriptor {
-    struct AccessMode: RawRepresentable {
-        static let readOnly = AccessMode(rawValue: 0)
-        let rawValue: UInt8
-        init(rawValue: UInt8) { self.rawValue = rawValue }
-    }
-
-    struct OpenOptions: RawRepresentable {
-        static let append = OpenOptions(rawValue: 0)
-        let rawValue: UInt8
-        init(rawValue: UInt8) { self.rawValue = rawValue }
-    }
-}
-
-struct FilePermissions: RawRepresentable {
-    static let ownerRead = FilePermissions(rawValue: 0)
-    let rawValue: UInt8
-    init(rawValue: UInt8) { self.rawValue = rawValue }
-}
-
-class ArchiveByteStream {
-    static func fileStream(fd: FileDescriptor, automaticClose: Bool = true) -> ArchiveByteStream? {
-        return nil
-    }
-    static func withFileStream<E>(
-        fd: FileDescriptor, automaticClose: Bool = true, _ body: (ArchiveByteStream) -> E
-    ) -> E { return body(ArchiveByteStream()) }
-    static func fileStream(
-        path: FilePath, mode: FileDescriptor.AccessMode, options: FileDescriptor.OpenOptions,
-        permissions: FilePermissions
-    ) -> ArchiveByteStream? { return nil }
-    static func withFileStream<E>(
-        path: FilePath, mode: FileDescriptor.AccessMode, options: FileDescriptor.OpenOptions,
-        permissions: FilePermissions, _ body: (ArchiveByteStream) -> E
-    ) -> E { return body(ArchiveByteStream()) }
-}
-
-class Bundle {
-    init?(url: URL) {}
-    init?(path: String) {}
-}
-
-class KeyPath<Root, Value> {
-}
-
-class NSSortDescriptor {
-    init(key: String?, ascending: Bool) {}
-    convenience init<Root, Value>(keyPath: KeyPath<Root, Value>, ascending: Bool) {
-        self.init(key: nil, ascending: ascending)
-    }
-}
-
-// GRDB
-
-struct Configuration {}
-
-class Database {
-    init(path: String, description: String, configuration: Configuration) {}
-}
-
-class DatabasePool {
-    init(path: String, configuration: Configuration) {}
-}
-
-class DatabaseQueue {
-    init(path: String, configuration: Configuration) {}
-}
-
-class DatabaseSnapshotPool {
-    init(path: String, configuration: Configuration) {}
-}
-
-class SerializedDatabase {
-    init(
-        path: String, configuration: Configuration = Configuration(), defaultLabel: String,
-        purpose: String? = nil
-    ) {}
-}
-
-// Realm
-
-class Realm {
-}
-
-extension Realm {
-    struct Configuration {
-        init(
-            fileURL: URL? = URL(fileURLWithPath: "defaultFile", isDirectory: false),
-            inMemoryIdentifier: String? = nil,
-            syncConfiguration: Int = 0,
-            encryptionKey: Data? = nil,
-            readOnly: Bool = false,
-            schemaVersion: UInt64 = 0,
-            migrationBlock: Int = 0,
-            deleteRealmIfMigrationNeeded: Bool = false,
-            shouldCompactOnLaunch: Bool = false,
-            objectTypes: Int = 0,
-            seedFilePath: URL? = nil
-        ) {}
-
-        var fileURL: URL?
-        var seedFilePath: URL?
-    }
-}
-
-// sqlite3
-
-func sqlite3_open(
-    _ filename: UnsafePointer<CChar>?,
-    _ ppDb: UnsafeMutablePointer<OpaquePointer?>?
-) -> Int32 { return 0 }
-
-func sqlite3_open16(
-    _ filename: UnsafeRawPointer?,
-    _ ppDb: UnsafeMutablePointer<OpaquePointer?>?
-) -> Int32 { return 0 }
-
-func sqlite3_open_v2(
-    _ filename: UnsafePointer<CChar>?,
-    _ ppDb: UnsafeMutablePointer<OpaquePointer?>?,
-    _ flags: Int32,
-    _ zVfs: UnsafePointer<CChar>?
-) -> Int32 { return 0 }
-
-var sqlite3_temp_directory: UnsafeMutablePointer<CChar>?
-
-// SQLite.swift
-
-enum URIQueryParameter {
-}
-
-class Connection {
-    enum Location {
-        case inMemory
-        case uri(String, parameters: [URIQueryParameter] = [])
-    }
-
-    init(_ location: Location = .inMemory, readonly: Bool = false) throws {}
-    convenience init(_ filename: String, readonly: Bool = false) throws { try self.init() }
-}
+import AppleArchive
+import Foundation
+import GRDB
+import RealmSwift
+import SQLite
+import SQLite3
+import System
 
 // --- tests ---
 
@@ -446,11 +118,11 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     let _ = DatabaseQueue(path: "", configuration: Configuration())  // Safe
     let _ = DatabaseSnapshotPool(path: remoteString, configuration: Configuration())  // $ Alert
     let _ = DatabaseSnapshotPool(path: "", configuration: Configuration())  // Safe
-    let _ = SerializedDatabase(path: remoteString, defaultLabel: "")  // $ MISSING: Alert
+    let _ = SerializedDatabase(path: remoteString, defaultLabel: "")  // $ Alert
     let _ = SerializedDatabase(path: "", defaultLabel: "")  // Safe
-    let _ = SerializedDatabase(path: remoteString, defaultLabel: "", purpose: nil)  // $ MISSING: Alert
+    let _ = SerializedDatabase(path: remoteString, defaultLabel: "", purpose: nil)  // $ Alert
     let _ = SerializedDatabase(path: "", defaultLabel: "", purpose: nil)  // Safe
-    let _ = SerializedDatabase(path: remoteString, configuration: Configuration(), defaultLabel: "")  // $ MISSING: Alert
+    let _ = SerializedDatabase(path: remoteString, configuration: Configuration(), defaultLabel: "")  // $ Alert
     let _ = SerializedDatabase(path: "", configuration: Configuration(), defaultLabel: "")  // Safe
     let _ = SerializedDatabase(
         path: remoteString, configuration: Configuration(), defaultLabel: "", purpose: nil)  // $ Alert
@@ -460,15 +132,15 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     // Realm
 
     _ = Realm.Configuration(fileURL: safeUrl)  // GOOD
-    _ = Realm.Configuration(fileURL: remoteUrl)  // $ MISSING: Alert
+    _ = Realm.Configuration(fileURL: remoteUrl)  // $ Alert
     _ = Realm.Configuration(seedFilePath: safeUrl)  // GOOD
-    _ = Realm.Configuration(seedFilePath: remoteUrl)  // $ MISSING: Alert
+    _ = Realm.Configuration(seedFilePath: remoteUrl)  // $ Alert
 
     var config = Realm.Configuration()  // GOOD
     config.fileURL = safeUrl  // GOOD
-    config.fileURL = remoteUrl  // $ MISSING: Alert
+    config.fileURL = remoteUrl  // $ Alert
     config.seedFilePath = safeUrl  // GOOD
-    config.seedFilePath = remoteUrl  // $ MISSING: Alert
+    config.seedFilePath = remoteUrl  // $ Alert
 
     // sqlite3
 
@@ -494,10 +166,10 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
 
     try! _ = Connection()
     try! _ = Connection(Connection.Location.uri("myFile.sqlite3"))  // GOOD
-    try! _ = Connection(Connection.Location.uri(remoteString))  // $ MISSING: Alert
+    try! _ = Connection(Connection.Location.uri(remoteString))  // $ Alert
     try! _ = Connection(Connection.Location.uri(remoteString, parameters: []))  // $ Alert
     try! _ = Connection("myFile.sqlite3")  // GOOD
-    try! _ = Connection(remoteString)  // $ MISSING: Alert
+    try! _ = Connection(remoteString)  // $ Alert
     let remoteData2 = Data(contentsOf: URL(string: "http://example.com/")!)  // $ Source
     nsData.write(toFile: remoteData2, options: [])  // $ Alert
 }

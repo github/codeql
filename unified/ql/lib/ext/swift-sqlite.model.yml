@@ -1,0 +1,44 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: sinkModel
+    data:
+      - ["SQLite.Connection", "Member[key].Argument[0]", "encryption-key"]
+      - ["SQLite.Connection", "Member[keyAndMigrate].Argument[0]", "encryption-key"]
+      - ["SQLite.Connection", "Member[rekey].Argument[0]", "encryption-key"]
+      - ["SQLite.Connection", "Member[sqlcipher_export].Argument[key:]", "encryption-key"]
+      - ["SQLite.Connection", "Member[execute].Argument[0]", "database-store"]
+      - ["SQLite.Connection", "Member[prepare].Argument[0]", "database-store"]
+      - ["SQLite.Connection", "Member[prepare].Argument[1]", "database-store"]
+      - ["SQLite.Connection", "Member[run].Argument[0]", "database-store"]
+      - ["SQLite.Connection", "Member[run].Argument[1]", "database-store"]
+      - ["SQLite.Connection", "Member[scalar].Argument[0]", "database-store"]
+      - ["SQLite.Connection", "Member[scalar].Argument[1]", "database-store"]
+      - ["SQLite.Connection.Type", "Member[init].Argument[0]", "path-injection"]
+      - ["SQLite.Connection.Location.Type", "Member[uri].Argument[0]", "path-injection"]
+      - ["SQLite.QueryType", "Member[insert].Argument[0]", "database-store"]
+      - ["SQLite.QueryType", "Member[update].Argument[0]", "database-store"]
+      - ["SQLite.QueryType", "Member[insert].Argument[0,1]", "database-store"]
+      - ["SQLite.QueryType", "Member[insert].WithNamedArgument[or].Argument[0]", "database-store"]
+      - ["SQLite.QueryType", "Member[insertMany].Argument[0]", "database-store"]
+      - ["SQLite.QueryType", "Member[insertMany].WithNamedArgument[or].Argument[0]", "database-store"]
+      - ["SQLite.QueryType", "Member[update].Argument[0,1]", "database-store"]
+      - ["SQLite.QueryType", "Member[update].WithNamedArgument[or].Argument[0]", "database-store"]
+      - ["SQLite.QueryType", "Member[upsert].WithoutNamedArgument[setValues].Argument[0]", "database-store"]
+      - ["SQLite.QueryType", "Member[upsert].WithNamedArgument[setValues].Argument[0]", "database-store"]
+      - ["SQLite.QueryType", "Member[upsert].WithNamedArgument[setValues].Argument[setValues:]", "database-store"]
+      - ["SQLite.Statement.Type", "Member[init].Argument[1]", "database-store"]
+      - ["SQLite.Statement", "Member[scalar].Argument[0]", "database-store"]
+      - ["SQLite.Statement", "Member[bind].Argument[0]", "database-store"]
+      - ["SQLite.Statement", "Member[run].Argument[0]", "database-store"]
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: summaryModel
+    data:
+      - ["SQLite", "Member[<-]", "Argument[0,1]", "ReturnValue", "taint"]
+      - ["SQLite.Blob.Type", "Member[init].WithoutNamedArgument[length]", "Argument[bytes:]", "ReturnValue", "taint"]
+      - ["SQLite.Blob.Type", "Member[init].WithNamedArgument[length]", "Argument[bytes:]", "ReturnValue", "taint"]
+      - ["SQLite.Expression.Type", "Member[init]", "Argument[0]", "ReturnValue", "taint"]
+      - ["SQLite.Expression.Type", "Member[init]", "Argument[1].CollectionElement", "ReturnValue", "taint"]
+      - ["SQLite.ExpressionType.Type", "Member[init]", "Argument[0]", "ReturnValue", "taint"]
+      - ["SQLite.ExpressionType", "Member[replace]", "Argument[with:]", "ReturnValue", "taint"]

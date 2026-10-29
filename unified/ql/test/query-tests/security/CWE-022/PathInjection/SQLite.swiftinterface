@@ -1,0 +1,16 @@
+// swift-interface-format-version: 1.0
+// swift-module-flags: -module-name SQLite
+// Stubs for testing.
+
+enum URIQueryParameter {
+}
+
+class Connection {
+    enum Location {
+        case inMemory
+        case uri(String, parameters: [URIQueryParameter] = [])
+    }
+
+    init(_ location: Location = .inMemory, readonly: Bool = false) throws {}
+    convenience init(_ filename: String, readonly: Bool = false) throws { try self.init() }
+}

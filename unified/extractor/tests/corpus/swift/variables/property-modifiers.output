@@ -1,0 +1,174 @@
+class C {
+    public static var shared: C { get }
+    @objc public var name: String { get set }
+    private var count: Int { return 0 }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "C"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                        declModifier
+                          name: public
+                        declModifier
+                          name: static
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "shared"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "C"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                accessorDecl
+                                  accessorSpecifier: get
+                                  attributes:
+                              leftBrace: {
+                              rightBrace: }
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                        attribute
+                          atSign: @
+                          attributeName:
+                            identifierType
+                              name: identifier "objc"
+                      modifiers:
+                        declModifier
+                          name: public
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "name"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "String"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                accessorDecl
+                                  accessorSpecifier: get
+                                  attributes:
+                                accessorDecl
+                                  accessorSpecifier: set
+                                  attributes:
+                              leftBrace: {
+                              rightBrace: }
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                        declModifier
+                          name: private
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "count"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                codeBlockItem
+                                  item:
+                                    returnStmt
+                                      expression:
+                                        integerLiteralExpr
+                                          literal: integerLiteral "0"
+                                      returnKeyword: return
+                              leftBrace: {
+                              rightBrace: }
+          modifiers:
+          classKeyword: class
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    public static var shared: C { ⟨member⟩ }\n    @objc public var name: String { ⟨member⟩ ⟨member⟩ }\n    ⟨member⟩\n}"
+          modifier: modifier "class" source="class"
+          name_node: identifier "C" source="C"
+          member:
+            accessor_declaration source="⟨accessor_kind⟩"
+              modifier:
+                modifier "var" source="var" (external)
+                modifier "public" source="public" (external)
+                modifier "static" source="static" (external)
+              name_node: identifier "shared" source="shared" (external)
+              accessor_kind: accessor_kind "get" source="get"
+              return_type: identifier "C" source="C" (external)
+            accessor_declaration source="⟨accessor_kind⟩"
+              modifier:
+                modifier "var" source="var" (external)
+                modifier "@objc" source="@objc" (external)
+                modifier "public" source="public" (external)
+              name_node: identifier "name" source="name" (external)
+              accessor_kind: accessor_kind "get" source="get"
+              return_type: identifier "String" source="String" (external)
+            accessor_declaration source="⟨accessor_kind⟩⟨parameter⟩"
+              modifier:
+                modifier "var" source="var" (external)
+                modifier "@objc" source="@objc" (external)
+                modifier "public" source="public" (external)
+                modifier "chained_declaration" source=""
+              name_node: identifier "name" source="name" (external)
+              accessor_kind: accessor_kind "set" source="set"
+              parameter:
+                parameter source="⟨pattern⟩"
+                  modifier: modifier "generated" source=""
+                  type: identifier "String" source="String" (external)
+                  pattern: identifier "newValue" source="set"
+            accessor_declaration source="⟨modifier⟩ ⟨modifier⟩ ⟨name_node⟩: ⟨return_type⟩ ⟨body⟩"
+              modifier:
+                modifier "var" source="var"
+                modifier "private" source="private"
+              name_node: identifier "count" source="count"
+              accessor_kind: accessor_kind "get" source=""
+              return_type: identifier "Int" source="Int"
+              body:
+                block source="{ ⟨stmt⟩ }"
+                  stmt:
+                    return_expr source="return ⟨value⟩"
+                      value: int_literal "0" source="0"
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""

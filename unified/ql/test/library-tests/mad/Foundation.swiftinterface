@@ -1,0 +1,10 @@
+// swift-interface-format-version: 1.0
+// swift-module-flags: -module-name Foundation
+// Stubs for testing.
+
+class URLSessionConfiguration {
+    var tlsMaximumSupportedProtocol: Int = 0
+    var tlsMinimumSupportedProtocol: Int = 0
+    var tlsMaximumSupportedProtocolVersion: Int = 0
+    var tlsMinimumSupportedProtocolVersion: Int = 0
+}

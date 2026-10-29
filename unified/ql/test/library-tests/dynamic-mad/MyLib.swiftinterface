@@ -1,0 +1,15 @@
+// swift-interface-format-version: 1.0
+// swift-module-flags: -module-name MyLib
+import Swift
+
+public class StubClass {
+  public init()
+  public static func make() -> StubClass
+  public func sink(arg: Swift::String)
+}
+
+public class Builder {
+  public func withFoo() -> Self
+  public func withBar() -> Self
+  public func run(cmd: Swift::String)
+}

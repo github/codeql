@@ -1,0 +1,51 @@
+// swift-interface-format-version: 1.0
+// swift-module-flags: -module-name GenLib
+import Swift
+@_exported import GenBase
+
+public class Manager {
+  public static var shared: GenLib::Manager { get }
+  public class var `default`: GenLib::Manager { get }
+  public init()
+  public init(configuration: Swift::Int)
+  public func makeReader(path: Swift::String) -> GenLib::Reader
+  public func makeReader(url: Swift::String) -> GenLib::Reader
+  public func makeReader(url: Swift::String, options: GenLib::Reader.Options) -> GenLib::Reader?
+  public func makeReader(_ name: Swift::String) -> GenLib::Reader
+  public func fetch(completionHandler: @escaping (GenLib::Reader?, Swift::Int) -> Swift::Void)
+  public func configured() -> Self
+  internal func hidden() -> GenLib::Reader
+  public func _private() -> GenLib::Reader
+  @_spi(Testing) public func spi() -> GenLib::Reader
+  @available(*, unavailable, message: "gone")
+  public func unavailable() -> GenLib::Reader
+  public var currentReader: GenLib::Reader? { get set }
+}
+
+public class Reader : GenBase::BaseReader, GenLib::ReadingProtocol {
+  public var text: Swift::String { get }
+  public struct Options {
+    public static var fast: GenLib::Reader.Options { get }
+  }
+}
+
+public protocol ReadingProtocol {
+  func readAll() -> Swift::String
+}
+
+public func globalReader() -> GenLib::Reader
+
+extension GenLib::ExternalThing {
+  public var reader: GenLib::Reader { get }
+  public static func make() -> GenLib::ExternalThing
+}
+
+extension GenLib::ExternalThing : GenLib::ReadingProtocol {}
+
+public class Unrelated {
+  public var reader: Swift::Int { get }
+}
+
+public protocol MidProtocol : GenLib::ReadingProtocol {}
+
+public class Deep : GenLib::MidProtocol {}

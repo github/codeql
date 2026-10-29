@@ -1,0 +1,44 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: sourceModel
+    data:
+      - ["JavaScriptCore.JSContext", "Member[globalObject]", "remote"]
+      - ["JavaScriptCore.JSContext", "Member[objectForKeyedSubscript].ReturnValue", "remote"]
+      - ["JavaScriptCore.JSContext", "Member[objectAtIndexedSubscript].ReturnValue", "remote"]
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: summaryModel
+    data:
+      - ["JavaScriptCore", "Member[JSStringRetain]", "Argument[0]", "ReturnValue", "taint"]
+      - ["JavaScriptCore", "Member[JSStringCreateWithUTF8CString]", "Argument[0]", "ReturnValue", "taint"]
+      - ["JavaScriptCore", "Member[JSStringCreateWithCharacters]", "Argument[0]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[atIndex]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[defineProperty]", "Argument[descriptor:]", "Argument[self]", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[forProperty]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue.Type", "Member[init].WithNamedArgument[bool]", "Argument[bool:]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue.Type", "Member[init].WithNamedArgument[double]", "Argument[double:]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue.Type", "Member[init].WithNamedArgument[int32]", "Argument[int32:]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue.Type", "Member[init].WithNamedArgument[object]", "Argument[object:]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue.Type", "Member[init].WithNamedArgument[point]", "Argument[point:]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue.Type", "Member[init].WithNamedArgument[range]", "Argument[range:]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue.Type", "Member[init].WithNamedArgument[rect]", "Argument[rect:]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue.Type", "Member[init].WithNamedArgument[size]", "Argument[size:]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue.Type", "Member[init].WithNamedArgument[uInt32]", "Argument[uInt32:]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[setValue].WithNamedArgument[at]", "Argument[0]", "Argument[self]", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[setValue].WithNamedArgument[forProperty]", "Argument[0]", "Argument[self]", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toArray]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toBool]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toDate]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toDictionary]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toDouble]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toInt32]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toNumber]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toObject]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toObjectOf]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toPoint]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toRange]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toRect]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toSize]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toString]", "Argument[self]", "ReturnValue", "taint"]
+      - ["JavaScriptCore.JSValue", "Member[toUInt32]", "Argument[self]", "ReturnValue", "taint"]

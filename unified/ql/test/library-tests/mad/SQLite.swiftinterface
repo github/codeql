@@ -1,0 +1,9 @@
+// swift-interface-format-version: 1.0
+// swift-module-flags: -module-name SQLite
+// Stubs for testing.
+
+class Connection {
+    enum Location {
+        static func uri(_ path: String, parameters: String) {}
+    }
+}

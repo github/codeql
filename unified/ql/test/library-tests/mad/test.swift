@@ -1,3 +1,8 @@
+import Foundation
+import RealmSwift
+import SQLite
+import UIKit
+
 func test(url: URL, string: String) {
     String(url)  // not a source
 
@@ -26,22 +31,11 @@ func test(url: URL, string: String) {
     class TestTextInput: UITextInput {
         func shouldChangeText(
             in range: UITextRange,
-            replacementText text: String  // $ isSource=local // parameters not detected yet
+            replacementText text: String  // $ isSource=local
         ) -> Bool {
             return true
         }
     }
-}
-
-class UITextField {
-    var text: String = ""
-}
-
-class URLSessionConfiguration {
-    var tlsMaximumSupportedProtocol: Int = 0
-    var tlsMinimumSupportedProtocol: Int = 0
-    var tlsMaximumSupportedProtocolVersion: Int = 0
-    var tlsMinimumSupportedProtocolVersion: Int = 0
 }
 
 func testProperties(
@@ -49,17 +43,13 @@ func testProperties(
     textField: UITextField,
     configuration: URLSessionConfiguration
 ) {
-    _ = string.count  // $ MISSING: isSource=string-length
-    _ = textField.text  // $ MISSING: isSource=local
+    _ = string.count  // $ isSource=string-length
+    _ = textField.text  // $ isSource=local
 
-    configuration.tlsMaximumSupportedProtocol = 0  // $ MISSING: isSink=tls-protocol-version
-    configuration.tlsMinimumSupportedProtocol = 0  // $ MISSING: isSink=tls-protocol-version
-    configuration.tlsMaximumSupportedProtocolVersion = 0  // $ MISSING: isSink=tls-protocol-version
-    configuration.tlsMinimumSupportedProtocolVersion = 0  // $ MISSING: isSink=tls-protocol-version
-}
-
-class Realm {
-    struct Configuration {}
+    configuration.tlsMaximumSupportedProtocol = 0  // $ isSink=tls-protocol-version
+    configuration.tlsMinimumSupportedProtocol = 0  // $ isSink=tls-protocol-version
+    configuration.tlsMaximumSupportedProtocolVersion = 0  // $ isSink=tls-protocol-version
+    configuration.tlsMinimumSupportedProtocolVersion = 0  // $ isSink=tls-protocol-version
 }
 
 func testQualifiedConstructors(
@@ -107,12 +97,6 @@ func testQualifiedConstructors(
         seedFilePath: seedFilePath,  // $ isSink=path-injection
         shouldCompactOnLaunch: nil,
         syncConfiguration: nil)
-}
-
-class Connection {
-    enum Location {
-        static func uri(_ path: String, parameters: String) {}
-    }
 }
 
 func testConnectionLocation(string: String) {

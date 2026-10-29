@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: sinkModel
+    data:
+      - ["Zip.Zip.Type", "Member[unzipFile].Argument[0]", "unsafe-unpack"]

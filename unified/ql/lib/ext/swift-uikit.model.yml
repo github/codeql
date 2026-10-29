@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: sourceModel
+    data:
+      - ["UIKit.UITextField", "Member[text]", "local"]
+      - ["UIKit.UITextField", "Member[attributedText]", "local"]
+      - ["UIKit.UITextInput", "Member[text].ReturnValue", "local"]
+      - ["UIKit.UITextInput", "Member[shouldChangeText].Parameter[replacementText:]", "local"]
+      - ["UIKit.UISceneDelegate", "Member[scene].WithNamedArgument[continue].Parameter[continue:]", "remote"]
+      - ["UIKit.UISceneDelegate", "Member[scene].WithNamedArgument[didUpdate].Parameter[didUpdate:]", "remote"]
+      - ["UIKit.UISceneDelegate", "Member[scene].WithNamedArgument[openURLContexts].Parameter[openURLContexts:]", "remote"]
+      - ["UIKit.UISceneDelegate", "Member[scene].WithNamedArgument[options].Parameter[options:]", "remote"]
+      - ["UIKit.UIApplicationDelegate", "Member[application].WithNamedArgument[handleOpen].Parameter[handleOpen:]", "remote"]
+      - ["UIKit.UIApplicationDelegate", "Member[application].WithNamedArgument[options].Parameter[open:]", "remote"]
+      - ["UIKit.UIApplicationDelegate", "Member[application].WithNamedArgument[annotation].Parameter[open:]", "remote"]
+      - ["UIKit.UITextViewDelegate", "Member[textView].Parameter[replacementText:]", "local"]
+      - ["UIKit.UITextFieldDelegate", "Member[textField].Parameter[replacementString:]", "local"]

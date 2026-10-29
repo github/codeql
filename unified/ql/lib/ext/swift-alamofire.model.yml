@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: sourceModel
+    data:
+      - ["Alamofire.DataResponse", "Member[value]", "remote"]
+      - ["Alamofire.DataResponse", "Member[result]", "remote"]
+      - ["Alamofire.DataResponse", "Member[data]", "remote"]
+      - ["Alamofire.DownloadResponse", "Member[value]", "remote"]
+      - ["Alamofire.DownloadResponse", "Member[result]", "remote"]
+      - ["Alamofire.DownloadResponse", "Member[data]", "remote"]

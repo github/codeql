@@ -1,0 +1,27 @@
+// swift-interface-format-version: 1.0
+// swift-module-flags: -module-name RealmSwift
+// Stubs for testing.
+
+class Realm {
+}
+
+extension Realm {
+    struct Configuration {
+        init(
+            fileURL: URL? = URL(fileURLWithPath: "defaultFile", isDirectory: false),
+            inMemoryIdentifier: String? = nil,
+            syncConfiguration: Int = 0,
+            encryptionKey: Data? = nil,
+            readOnly: Bool = false,
+            schemaVersion: UInt64 = 0,
+            migrationBlock: Int = 0,
+            deleteRealmIfMigrationNeeded: Bool = false,
+            shouldCompactOnLaunch: Bool = false,
+            objectTypes: Int = 0,
+            seedFilePath: URL? = nil
+        ) {}
+
+        var fileURL: URL?
+        var seedFilePath: URL?
+    }
+}

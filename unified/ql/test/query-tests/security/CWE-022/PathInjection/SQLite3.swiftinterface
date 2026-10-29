@@ -1,0 +1,22 @@
+// swift-interface-format-version: 1.0
+// swift-module-flags: -module-name SQLite3
+// Stubs for testing.
+
+func sqlite3_open(
+    _ filename: UnsafePointer<CChar>?,
+    _ ppDb: UnsafeMutablePointer<OpaquePointer?>?
+) -> Int32 { return 0 }
+
+func sqlite3_open16(
+    _ filename: UnsafeRawPointer?,
+    _ ppDb: UnsafeMutablePointer<OpaquePointer?>?
+) -> Int32 { return 0 }
+
+func sqlite3_open_v2(
+    _ filename: UnsafePointer<CChar>?,
+    _ ppDb: UnsafeMutablePointer<OpaquePointer?>?,
+    _ flags: Int32,
+    _ zVfs: UnsafePointer<CChar>?
+) -> Int32 { return 0 }
+
+var sqlite3_temp_directory: UnsafeMutablePointer<CChar>?

@@ -1,0 +1,30 @@
+// swift-interface-format-version: 1.0
+// swift-module-flags: -module-name System
+// Stubs for testing.
+
+struct FilePath: ExpressibleByStringLiteral {
+    typealias StringLiteralType = String
+    init(stringLiteral: String) {}
+    func lexicallyNormalized() -> FilePath { return "" }
+    func starts(with: FilePath) -> Bool { return false }
+}
+
+struct FileDescriptor {
+    struct AccessMode: RawRepresentable {
+        static let readOnly = AccessMode(rawValue: 0)
+        let rawValue: UInt8
+        init(rawValue: UInt8) { self.rawValue = rawValue }
+    }
+
+    struct OpenOptions: RawRepresentable {
+        static let append = OpenOptions(rawValue: 0)
+        let rawValue: UInt8
+        init(rawValue: UInt8) { self.rawValue = rawValue }
+    }
+}
+
+struct FilePermissions: RawRepresentable {
+    static let ownerRead = FilePermissions(rawValue: 0)
+    let rawValue: UInt8
+    init(rawValue: UInt8) { self.rawValue = rawValue }
+}

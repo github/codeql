@@ -1,0 +1,33 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: sinkModel
+    data:
+      - ["CryptoSwift.AES.Type", "Member[init].WithoutNamedArgument[padding].Argument[blockMode:]", "encryption-block-mode"]
+      - ["CryptoSwift.AES.Type", "Member[init].WithNamedArgument[padding].Argument[blockMode:]", "encryption-block-mode"]
+      - ["CryptoSwift.Blowfish.Type", "Member[init].Argument[blockMode:]", "encryption-block-mode"]
+      - ["CryptoSwift.Digest.Type", "Member[md5].Argument[0]", "weak-hash-input-MD5"]
+      - ["CryptoSwift.Digest.Type", "Member[sha1].Argument[0]", "weak-hash-input-SHA1"]
+      - ["CryptoSwift.Digest.Type", "Member[sha2].Argument[0]", "weak-password-hash-input-SHA2"]
+      - ["CryptoSwift.Digest", "Member[sha224].Argument[0]", "weak-password-hash-input-SHA224"]
+      - ["CryptoSwift.Digest", "Member[sha256].Argument[0]", "weak-password-hash-input-SHA256"]
+      - ["CryptoSwift.Digest.Type", "Member[sha3].Argument[0]", "weak-password-hash-input-SHA3"]
+      - ["CryptoSwift.Digest", "Member[sha384].Argument[0]", "weak-password-hash-input-SHA384"]
+      - ["CryptoSwift.Digest.Type", "Member[sha512].Argument[0]", "weak-password-hash-input-SHA512"]
+      - ["CryptoSwift.MD5", "Member[callAsFunction].Argument[0]", "weak-hash-input-MD5"]
+      - ["CryptoSwift.MD5", "Member[calculate].Argument[for:]", "weak-hash-input-MD5"]
+      - ["CryptoSwift.MD5", "Member[process].Argument[block:]", "weak-hash-input-MD5"]
+      - ["CryptoSwift.MD5", "Member[update].Argument[withBytes:]", "weak-hash-input-MD5"]
+      - ["CryptoSwift.SHA1", "Member[callAsFunction].Argument[0]", "weak-hash-input-SHA1"]
+      - ["CryptoSwift.SHA1", "Member[calculate].Argument[for:]", "weak-hash-input-SHA1"]
+      - ["CryptoSwift.SHA1", "Member[process].Argument[block:]", "weak-hash-input-SHA1"]
+      - ["CryptoSwift.SHA1", "Member[update].Argument[withBytes:]", "weak-hash-input-SHA1"]
+      - ["CryptoSwift.SHA2", "Member[callAsFunction].Argument[0]", "weak-password-hash-input-SHA2"]
+      - ["CryptoSwift.SHA2", "Member[calculate].Argument[for:]", "weak-password-hash-input-SHA2"]
+      - ["CryptoSwift.SHA2", "Member[update].Argument[withBytes:]", "weak-password-hash-input-SHA2"]
+      - ["CryptoSwift.SHA2", "Member[process32].Argument[block:]", "weak-password-hash-input-SHA2"]
+      - ["CryptoSwift.SHA2", "Member[process64].Argument[block:]", "weak-password-hash-input-SHA2"]
+      - ["CryptoSwift.SHA3", "Member[callAsFunction].Argument[0]", "weak-password-hash-input-SHA2"]
+      - ["CryptoSwift.SHA3", "Member[calculate].Argument[for:]", "weak-password-hash-input-SHA2"]
+      - ["CryptoSwift.SHA3", "Member[process].Argument[block:]", "weak-password-hash-input-SHA2"]
+      - ["CryptoSwift.SHA3", "Member[update].Argument[withBytes:]", "weak-password-hash-input-SHA2"]

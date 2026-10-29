@@ -1,0 +1,28 @@
+// swift-interface-format-version: 1.0
+// swift-module-flags: -module-name GRDB
+// Stubs for testing.
+
+struct Configuration {}
+
+class Database {
+    init(path: String, description: String, configuration: Configuration) {}
+}
+
+class DatabasePool {
+    init(path: String, configuration: Configuration) {}
+}
+
+class DatabaseQueue {
+    init(path: String, configuration: Configuration) {}
+}
+
+class DatabaseSnapshotPool {
+    init(path: String, configuration: Configuration) {}
+}
+
+class SerializedDatabase {
+    init(
+        path: String, configuration: Configuration = Configuration(), defaultLabel: String,
+        purpose: String? = nil
+    ) {}
+}

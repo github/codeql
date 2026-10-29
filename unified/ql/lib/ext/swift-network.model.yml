@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: sinkModel
+    data:
+      - ["Network.NWConnection", "Member[send].Argument[content:]", "transmission"]

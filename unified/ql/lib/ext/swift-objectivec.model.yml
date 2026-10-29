@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: summaryModel
+    data:
+      - ["ObjectiveC.NSObject", "Member[copy]", "Argument[self]", "ReturnValue", "taint"]
+      - ["ObjectiveC.NSObject", "Member[mutableCopy]", "Argument[self]", "ReturnValue", "taint"]

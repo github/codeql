@@ -195,3 +195,39 @@ class SwiftPackageTarget extends ModuleScopeRepr, CallExpr {
     name = this.getName()
   }
 }
+
+/**
+ * Gets the name of the module described by the given `.swiftinterface` file.
+ *
+ * The module name is taken from the enclosing `<Module>.swiftmodule` folder if there is one,
+ * and otherwise from the file name itself, e.g. `Foundation.swiftinterface`.
+ */
+private string getSwiftInterfaceModuleName(File file) {
+  file.getExtension() = "swiftinterface" and
+  (
+    result = file.getParentContainer().getBaseName().regexpCapture("(.*)\\.swiftmodule", 1)
+    or
+    not file.getParentContainer().getBaseName().matches("%.swiftmodule") and
+    result = file.getStem()
+  )
+}
+
+/**
+ * The top-level of a `.swiftinterface` file, seen as the representative of the module
+ * whose public interface it describes.
+ */
+class SwiftInterfaceModule extends ModuleScopeRepr, TopLevel {
+  private string name;
+
+  SwiftInterfaceModule() { name = getSwiftInterfaceModuleName(this.getFile()) }
+
+  /** Gets the name of this module. */
+  string getModuleName() { result = name }
+
+  override predicate shouldInclude(Container c, string path) {
+    c = this.getFile().getParentContainer() and
+    path = this.getFile().getBaseName()
+  }
+
+  override predicate hasImportableName(string n) { n = name }
+}

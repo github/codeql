@@ -1,0 +1,33 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: summaryModel
+    data:
+      - ["System.FilePath.Component.Type", "Member[init]", "Argument[0]", "ReturnValue", "taint"]
+      - ["System.FilePath.Component.Type", "Member[init].WithNamedArgument[platformString]", "Argument[platformString:]", "ReturnValue", "taint"]
+      - ["System.FilePath.Component", "Member[withPlatformString]", "Argument[self]", "Argument[0].Parameter[0]", "taint"]
+      - ["System.FilePath.Root.Type", "Member[init]", "Argument[0]", "ReturnValue", "taint"]
+      - ["System.FilePath.Root.Type", "Member[init].WithNamedArgument[platformString]", "Argument[platformString:]", "ReturnValue", "taint"]
+      - ["System.FilePath.Root", "Member[withPlatformString]", "Argument[self]", "Argument[0].Parameter[0]", "taint"]
+      - ["System.FilePath.Type", "Member[init]", "Argument[0]", "ReturnValue", "taint"]
+      - ["System.FilePath", "Member[append]", "Argument[0]", "Argument[self]", "taint"]
+      - ["System.FilePath.Type", "Member[init].WithNamedArgument[extendedGraphemeClusterLiteral]", "Argument[extendedGraphemeClusterLiteral:]", "ReturnValue", "taint"]
+      - ["System.FilePath.Type", "Member[init].WithNamedArgument[unicodeScalarLiteral]", "Argument[unicodeScalarLiteral:]", "ReturnValue", "taint"]
+      - ["System.FilePath", "Member[encode]", "Argument[self]", "Argument[to:]", "taint"]
+      - ["System.FilePath.Type", "Member[init].WithNamedArgument[from]", "Argument[from:]", "ReturnValue", "taint"]
+      - ["System.FilePath.Type", "Member[init].WithNamedArgument[stringLiteral]", "Argument[stringLiteral:]", "ReturnValue", "taint"]
+      - ["System.FilePath", "Member[withCString]", "Argument[self]", "Argument[0].Parameter[0].CollectionElement", "taint"]
+      - ["System.FilePath", "Member[withCString]", "Argument[0].ReturnValue", "ReturnValue", "taint"]
+      - ["System.FilePath.Type", "Member[init].WithNamedArgument[cString]", "Argument[cString:]", "ReturnValue", "taint"]
+      - ["System.FilePath", "Member[push]", "Argument[0]", "Argument[self]", "taint"]
+      - ["System.FilePath", "Member[appending]", "Argument[self,0]", "ReturnValue", "taint"]
+      - ["System.FilePath.Type", "Member[init].WithNamedArgument[platformString]", "Argument[platformString:]", "ReturnValue", "taint"]
+      - ["System.FilePath", "Member[withPlatformString]", "Argument[self]", "Argument[0].Parameter[0].CollectionElement", "taint"]
+      - ["System.FilePath", "Member[withPlatformString]", "Argument[0].ReturnValue", "ReturnValue", "taint"]
+      - ["System.FilePath.Type", "Member[init].WithNamedArgument[root].WithoutNamedArgument[components]", "Argument[root:,0]", "ReturnValue", "taint"]
+      - ["System.FilePath.Type", "Member[init].WithNamedArgument[components]", "Argument[root:,components:]", "ReturnValue", "taint"]
+      - ["System.FilePath", "Member[lexicallyNormalized]", "Argument[self]", "ReturnValue", "taint"]
+      - ["System.FilePath", "Member[lexicallyResolving]", "Argument[self,0]", "ReturnValue", "taint"]
+      - ["System.FilePath", "Member[pushing]", "Argument[self,0]", "ReturnValue", "taint"]
+      - ["System.FilePath", "Member[removingLastComponent]", "Argument[self]", "ReturnValue", "taint"]
+      - ["System.FilePath", "Member[removingRoot]", "Argument[self]", "ReturnValue", "taint"]

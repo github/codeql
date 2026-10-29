@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: sinkModel
+    data:
+      - ["Logging.Logger", "Member[warning].Argument[0]", "log-injection"]
+      - ["Logging.Logger", "Member[error].Argument[0]", "log-injection"]
+      - ["Logging.Logger", "Member[critical].Argument[0]", "log-injection"]
+      - ["Logging.Logger", "Member[debug].Argument[0]", "log-injection"]
+      - ["Logging.Logger", "Member[fault].Argument[0]", "log-injection"]
+      - ["Logging.Logger", "Member[info].Argument[0]", "log-injection"]
+      - ["Logging.Logger", "Member[log].Argument[0]", "log-injection"]
+      - ["Logging.Logger", "Member[log].WithNamedArgument[level].Argument[0]", "log-injection"]
+      - ["Logging.Logger", "Member[notice].Argument[0]", "log-injection"]
+      - ["Logging.Logger", "Member[trace].Argument[0]", "log-injection"]

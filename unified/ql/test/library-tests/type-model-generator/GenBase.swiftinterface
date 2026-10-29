@@ -1,0 +1,7 @@
+// swift-interface-format-version: 1.0
+// swift-module-flags: -module-name GenBase
+import Swift
+
+public class BaseReader {
+  public func read() -> Swift::String
+}

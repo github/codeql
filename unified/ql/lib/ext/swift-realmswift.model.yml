@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: sinkModel
+    data:
+      - ["RealmSwift.Realm.Configuration", "Member[encryptionKey]", "encryption-key"]
+      - ["RealmSwift.Realm.Configuration.Type", "Member[init].WithoutNamedArgument[seedFilePath].Argument[fileURL:]", "path-injection"]
+      - ["RealmSwift.Realm.Configuration.Type", "Member[init].WithoutNamedArgument[seedFilePath].Argument[encryptionKey:]", "encryption-key"]
+      - ["RealmSwift.Realm.Configuration.Type", "Member[init].WithNamedArgument[seedFilePath].Argument[fileURL:]", "path-injection"]
+      - ["RealmSwift.Realm.Configuration.Type", "Member[init].WithNamedArgument[seedFilePath].Argument[encryptionKey:]", "encryption-key"]
+      - ["RealmSwift.Realm.Configuration.Type", "Member[init].WithNamedArgument[seedFilePath].Argument[seedFilePath:]", "path-injection"]
+      - ["RealmSwift.Realm.Configuration", "Member[fileURL]", "path-injection"]
+      - ["RealmSwift.Realm.Configuration", "Member[seedFilePath]", "path-injection"]

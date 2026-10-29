@@ -1,0 +1,20 @@
+// swift-interface-format-version: 1.0
+// swift-module-flags: -module-name AppleArchive
+// Stubs for testing.
+
+class ArchiveByteStream {
+    static func fileStream(fd: FileDescriptor, automaticClose: Bool = true) -> ArchiveByteStream? {
+        return nil
+    }
+    static func withFileStream<E>(
+        fd: FileDescriptor, automaticClose: Bool = true, _ body: (ArchiveByteStream) -> E
+    ) -> E { return body(ArchiveByteStream()) }
+    static func fileStream(
+        path: FilePath, mode: FileDescriptor.AccessMode, options: FileDescriptor.OpenOptions,
+        permissions: FilePermissions
+    ) -> ArchiveByteStream? { return nil }
+    static func withFileStream<E>(
+        path: FilePath, mode: FileDescriptor.AccessMode, options: FileDescriptor.OpenOptions,
+        permissions: FilePermissions, _ body: (ArchiveByteStream) -> E
+    ) -> E { return body(ArchiveByteStream()) }
+}

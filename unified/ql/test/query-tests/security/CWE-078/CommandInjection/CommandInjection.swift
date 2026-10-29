@@ -1,63 +1,4 @@
-
-// --- stubs ---
-
-struct URL
-{
-	init?(string: String) {}
-	init(fileURLWithPath: String) {}
-}
-
-class NSObject {
-}
-
-class Process : NSObject {
-	var launchPath: String? { get { nil } set {} }
-	var arguments: [String]? { get { nil } set {} }
-	func launch() {}
-
-	var executableURL: URL? { get { nil } set {} }
-	func run() throws {}
-
-	class func launchedProcess(launchPath path: String, arguments: [String]) -> Process {
-		return Process()
-	}
-
-	class func run(_ url: URL, arguments: [String], terminationHandler: (@Sendable (Process) -> Void)? = nil) throws -> Process {
-		return Process()
-	}
-}
-
-extension String {
-    init(contentsOf url: URL) throws {
-        self.init("")
-    }
-}
-
-class NSUserScriptTask : NSObject {
-	typealias CompletionHandler = @Sendable (Error?) -> Void
-
-	init(url: URL) throws {}
-	func execute(completionHandler handler: NSUserScriptTask.CompletionHandler? = nil) { }
-}
-
-class NSUserUnixTask : NSUserScriptTask {
-	func execute(withArguments arguments: [String]?, completionHandler handler: NSUserScriptTask.CompletionHandler? = nil) { }
-}
-
-protocol NSSecureCoding {
-}
-
-class NSUserAutomatorTask : NSUserScriptTask {
-	func execute(withInput input: NSSecureCoding?, completionHandler handler: NSUserScriptTask.CompletionHandler? = nil) { }
-
-	var variables: [String: Any]? { get { return nil } set { } }
-}
-
-class FileManager : NSObject {
-	class var `default`: FileManager { get { return 0 as! FileManager } }
-
-	func contentsOfDirectory(atPath path: String) throws -> [String] { [] }
-}
+import Foundation
 
 // --- tests ---
 
@@ -117,24 +58,24 @@ func testCommandInjectionMore(mySafeString: String) {
 	try! task2.run()
 
 	let task3 = Process()
-	task3.executableURL = URL(string: userControlledString)! // $ MISSING: Alert
+	task3.executableURL = URL(string: userControlledString)! // $ Alert
 	task3.arguments = ["abc", userControlledString] // $ MISSING: Alert
 	try! task3.run()
 
 	let task4 = Process()
-	task4.executableURL = URL(fileURLWithPath: userControlledString) // $ MISSING: Alert
-	task4.executableURL = URL(string: userControlledString)! // $ MISSING: Alert
+	task4.executableURL = URL(fileURLWithPath: userControlledString) // $ Alert
+	task4.executableURL = URL(string: userControlledString)! // $ Alert
 	task4.arguments = ["abc", "def" + userControlledString] // $ MISSING: Alert
 	try! task4.run()
 
 	let task5 = mkProcess()
-	task5?.executableURL = URL(fileURLWithPath: userControlledString) // $ MISSING: Alert
+	task5?.executableURL = URL(fileURLWithPath: userControlledString) // $ Alert
 	task5?.arguments = [userControlledString] // $ MISSING: Alert
 	try! task5?.run()
 
 	let task6 = MyProcess()
-	task6.executableURL = URL(fileURLWithPath: userControlledString) // $ MISSING: Alert
-	task6.executableURL = URL(string: userControlledString)! // $ MISSING: Alert
+	task6.executableURL = URL(fileURLWithPath: userControlledString) // $ Alert
+	task6.executableURL = URL(string: userControlledString)! // $ Alert
 	task6.arguments = [userControlledString] // $ MISSING: Alert
 	task6.setArguments([userControlledString]) // BAD (expected inside setArguments; currently missing)
 	task6.harmlessField = userControlledString // GOOD

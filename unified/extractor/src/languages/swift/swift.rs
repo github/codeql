@@ -638,6 +638,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // an empty `block`.
         rule!(
             (functionDecl
+                attributes: _* @attrs
                 modifiers: _* @mods
                 name: @@name
                 genericParameterClause: (genericParameterClause parameters: _* @type_params)?
@@ -647,6 +648,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 body: (codeBlock) @body)
             =>
             (function_declaration
+                modifier: {attrs}
                 modifier: {mods}
                 name_node: (identifier #{name})
                 type_parameter: {type_params}
@@ -656,6 +658,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         rule!(
             (functionDecl
+                attributes: _* @attrs
                 modifiers: _* @mods
                 name: @@name
                 genericParameterClause: (genericParameterClause parameters: _* @type_params)?
@@ -664,6 +667,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     returnClause: (returnClause type: @ret)?))
             =>
             (function_declaration
+                modifier: {attrs}
                 modifier: {mods}
                 name_node: (identifier #{name})
                 type_parameter: {type_params}
@@ -1456,12 +1460,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (initializerDecl
                 initKeyword: @@initK
+                attributes: _* @attrs
                 modifiers: _* @mods
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params))
                 body: (codeBlock) @body)
             =>
             (constructor_declaration
+                modifier: {attrs}
                 modifier: {mods}
                 name_node: (identifier #{initK})
                 parameter: {params}
@@ -1470,11 +1476,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (initializerDecl
                 initKeyword: @@initK
+                attributes: _* @attrs
                 modifiers: _* @mods
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params)))
             =>
             (constructor_declaration
+                modifier: {attrs}
                 modifier: {mods}
                 name_node: (identifier #{initK})
                 parameter: {params}
