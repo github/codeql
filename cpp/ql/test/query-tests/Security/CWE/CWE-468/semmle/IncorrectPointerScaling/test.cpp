@@ -155,16 +155,16 @@ std::byte* test19(
   std::byte *x
 ) {
   int *p = (int*)x;
-  // GOOD [FALSE POSITIVE cpp/suspicious-pointer-scaling]: like char*, std::byte*
-  // is a generic pointer type, so assume that it is really an int*.
-  return (std::byte *)(p + 1); // $ Alert[cpp/suspicious-pointer-scaling]
+  // GOOD: like char*, std::byte* is a generic pointer type,
+  // so assume that it is really an int*.
+  return (std::byte *)(p + 1);
 }
 
 std::byte* test20(
   std::byte *x
 ) {
   int *p = reinterpret_cast<int*>(x);
-  // GOOD [FALSE POSITIVE cpp/suspicious-pointer-scaling]: like char*, std::byte*
-  // is a generic pointer type, so assume that it is really an int*.
-  return reinterpret_cast<std::byte*>(p + 1); // $ Alert[cpp/suspicious-pointer-scaling]
+  // GOOD: like char*, std::byte* is a generic pointer type,
+  // so assume that it is really an int*.
+  return reinterpret_cast<std::byte*>(p + 1);
 }
