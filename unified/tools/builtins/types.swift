@@ -8,6 +8,8 @@ struct String {
     public init<T>(_ value: T) where T: LosslessStringConvertible {
         fatalError("Dummy implementation.")
     }
+
+    struct Index {}
 }
 
 struct Character {}
@@ -218,3 +220,242 @@ struct Tuple12<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> {
     var _10: T10
     var _11: T11
 }
+
+// The types below are referenced by models in `ql/lib/ext/legacy-swift.model.yml`.
+// They are included so that type inference can resolve these types (and hence match
+// models against property accesses) even though declarations from dependencies are not
+// extracted. Only the type hierarchy is represented here, not the members.
+
+// Swift standard library
+
+protocol Sequence {}
+
+protocol IteratorProtocol {}
+
+protocol Collection: Sequence {}
+
+protocol BidirectionalCollection: Collection {}
+
+protocol MutableCollection: Collection {}
+
+protocol RangeReplaceableCollection: Collection {}
+
+protocol StringProtocol: BidirectionalCollection {}
+
+protocol LosslessStringConvertible {}
+
+protocol TextOutputStream {}
+
+protocol TextOutputStreamable {}
+
+protocol RawRepresentable {}
+
+protocol OptionSet: RawRepresentable {}
+
+protocol Strideable {}
+
+protocol Numeric {}
+
+protocol BinaryInteger: Numeric {}
+
+protocol SignedInteger: BinaryInteger {}
+
+protocol UnsignedInteger: BinaryInteger {}
+
+protocol FixedWidthInteger: BinaryInteger {}
+
+protocol FloatingPoint: Numeric {}
+
+protocol BinaryFloatingPoint: FloatingPoint {}
+
+struct ContiguousArray<Element> {}
+
+struct Slice<Base> {}
+
+struct Regex<Output> {}
+
+// Foundation
+
+class NSObject {}
+
+protocol NSCopying {}
+
+protocol NSMutableCopying {}
+
+protocol ContiguousBytes {}
+
+protocol DataProtocol {}
+
+struct Data: DataProtocol, ContiguousBytes {}
+
+class NSData: NSObject {}
+
+class NSMutableData: NSData {}
+
+class NSString: NSObject {}
+
+class NSMutableString: NSString {}
+
+struct NSRange {}
+
+struct URL {
+    struct AsyncBytes {}
+}
+
+struct URLResource {}
+
+class NSURL: NSObject {}
+
+class NSException: NSObject {}
+
+class NSKeyedUnarchiver: NSObject {}
+
+class NSPredicate: NSObject {}
+
+class NSRegularExpression: NSObject {}
+
+class NSUserScriptTask: NSObject {}
+
+class NSUserUnixTask: NSUserScriptTask {}
+
+class Process: NSObject {}
+
+class FileManager: NSObject {}
+
+class Bundle: NSObject {}
+
+class InputStream: NSObject {}
+
+class URLSession: NSObject {}
+
+class URLSessionConfiguration: NSObject {}
+
+// System, os, Network, AppleArchive
+
+struct FilePath {
+    struct Component {}
+
+    struct Root {}
+}
+
+struct Logger {}
+
+class NWConnection {}
+
+class ArchiveByteStream {}
+
+// UIKit, WebKit, JavaScriptCore
+
+protocol UITextInput {}
+
+protocol UITextFieldDelegate {}
+
+protocol UITextViewDelegate {}
+
+protocol UIApplicationDelegate {}
+
+protocol UISceneDelegate {}
+
+class UITextField: NSObject, UITextInput {}
+
+protocol WKScriptMessageHandler {}
+
+class WKUserScript: NSObject {}
+
+class JSContext: NSObject {}
+
+class JSValue: NSObject {}
+
+// CryptoKit
+
+protocol Digest {}
+
+enum Insecure {
+    struct MD5 {}
+
+    struct SHA1 {}
+}
+
+struct SHA256 {}
+
+struct SHA384 {}
+
+struct SHA512 {}
+
+// CryptoSwift
+
+class AES {}
+
+class Blowfish {}
+
+class MD5 {}
+
+class SHA1 {}
+
+class SHA2 {}
+
+class SHA3 {}
+
+// Alamofire
+
+struct DataResponse<Success, Failure> {}
+
+struct DownloadResponse<Success, Failure> {}
+
+// GRDB
+
+protocol DatabaseValueConvertible {}
+
+protocol FetchableRecord {}
+
+protocol TableRecord {}
+
+class Database {}
+
+class DatabasePool {}
+
+class DatabaseQueue {}
+
+class DatabaseSnapshotPool {}
+
+class SerializedDatabase {}
+
+class Row {}
+
+class Statement {}
+
+class SQLStatementCursor {}
+
+struct SQL {}
+
+struct SQLRequest<RowDecoder> {}
+
+struct CommonTableExpression<RowDecoder> {}
+
+// SQLite.swift
+
+class Connection {
+    enum Location {}
+}
+
+struct Blob {}
+
+struct Expression<Datatype> {}
+
+protocol ExpressionType {}
+
+protocol QueryType {}
+
+// RealmSwift
+
+struct Realm {
+    struct Configuration {}
+}
+
+// NIO
+
+class NIOFileHandle {}
+
+// Zip
+
+class Zip {}

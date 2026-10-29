@@ -1,0 +1,9 @@
+isSink
+| test.swift:15:5:15:52 | ... .tlsMinimumSupportedProtocolVersion | tls-protocol-version |
+| test.swift:17:5:17:22 | ... .launchPath | command-injection |
+| test.swift:18:5:18:21 | ... .arguments | command-injection |
+| test.swift:19:5:19:23 | ... .arguments | command-injection |
+| test.swift:22:5:22:26 | ... .arguments | command-injection |
+isSource
+| test.swift:13:9:13:22 | ... .text | local |
+missingBuiltinType
