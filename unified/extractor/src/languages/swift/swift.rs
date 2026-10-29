@@ -622,8 +622,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A type-casting pattern (`case is T`). Not yet supported, so it is
         // mapped to `unsupported_node` — an explicit reminder that this needs
         // handling in the future. (Redundant with the catch-all fallback, but
-        // kept as a signpost.)
-        rule!((isTypePattern) => (unsupported_node)),
+        // kept as a signpost.) Its explicit empty content preserves the
+        // existing representation instead of inheriting the matched source.
+        rule!((isTypePattern) => (unsupported_node "")),
         // A wildcard *binding* pattern (`let _ = x`, `for _ in xs`). swift-syntax
         // models this as a `wildcardPattern`, distinct from the `_` match form
         // handled by the context-aware `discardAssignmentExpr` rule.
@@ -1523,35 +1524,37 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // These kinds can reach translation independently, but we do not
         // currently map them to the unified AST. Syntax nested inside one of
         // these roots is discarded with its parent and needs no separate rule.
-        rule!((actorDecl) => (unsupported_node)),
-        rule!((borrowExpr) => (unsupported_node)),
-        rule!((classRestrictionType) => (unsupported_node)),
-        rule!((compositionType) => (unsupported_node)),
-        rule!((consumeExpr) => (unsupported_node)),
-        rule!((copyExpr) => (unsupported_node)),
-        rule!((discardStmt) => (unsupported_node)),
-        rule!((fallThroughStmt) => (unsupported_node)),
-        rule!((ifConfigDecl) => (unsupported_node)),
-        rule!((implicitlyUnwrappedOptionalType) => (unsupported_node)),
-        rule!((inlineArrayType) => (unsupported_node)),
-        rule!((keyPathExpr) => (unsupported_node)),
-        rule!((macroDecl) => (unsupported_node)),
-        rule!((metatypeType) => (unsupported_node)),
-        rule!((namedOpaqueReturnType) => (unsupported_node)),
-        rule!((operatorDecl) => (unsupported_node)),
-        rule!((packElementExpr) => (unsupported_node)),
-        rule!((packElementType) => (unsupported_node)),
-        rule!((packExpansionExpr) => (unsupported_node)),
-        rule!((packExpansionType) => (unsupported_node)),
-        rule!((postfixIfConfigExpr) => (unsupported_node)),
-        rule!((poundSourceLocation) => (unsupported_node)),
-        rule!((precedenceGroupDecl) => (unsupported_node)),
-        rule!((someOrAnyType) => (unsupported_node)),
-        rule!((subscriptDecl) => (unsupported_node)),
-        rule!((suppressedType) => (unsupported_node)),
-        rule!((typeExpr) => (unsupported_node)),
-        rule!((unsafeExpr) => (unsupported_node)),
-        rule!((yieldStmt) => (unsupported_node)),
+        // Explicit empty content preserves their existing representation
+        // instead of inheriting the matched source text.
+        rule!((actorDecl) => (unsupported_node "")),
+        rule!((borrowExpr) => (unsupported_node "")),
+        rule!((classRestrictionType) => (unsupported_node "")),
+        rule!((compositionType) => (unsupported_node "")),
+        rule!((consumeExpr) => (unsupported_node "")),
+        rule!((copyExpr) => (unsupported_node "")),
+        rule!((discardStmt) => (unsupported_node "")),
+        rule!((fallThroughStmt) => (unsupported_node "")),
+        rule!((ifConfigDecl) => (unsupported_node "")),
+        rule!((implicitlyUnwrappedOptionalType) => (unsupported_node "")),
+        rule!((inlineArrayType) => (unsupported_node "")),
+        rule!((keyPathExpr) => (unsupported_node "")),
+        rule!((macroDecl) => (unsupported_node "")),
+        rule!((metatypeType) => (unsupported_node "")),
+        rule!((namedOpaqueReturnType) => (unsupported_node "")),
+        rule!((operatorDecl) => (unsupported_node "")),
+        rule!((packElementExpr) => (unsupported_node "")),
+        rule!((packElementType) => (unsupported_node "")),
+        rule!((packExpansionExpr) => (unsupported_node "")),
+        rule!((packExpansionType) => (unsupported_node "")),
+        rule!((postfixIfConfigExpr) => (unsupported_node "")),
+        rule!((poundSourceLocation) => (unsupported_node "")),
+        rule!((precedenceGroupDecl) => (unsupported_node "")),
+        rule!((someOrAnyType) => (unsupported_node "")),
+        rule!((subscriptDecl) => (unsupported_node "")),
+        rule!((suppressedType) => (unsupported_node "")),
+        rule!((typeExpr) => (unsupported_node "")),
+        rule!((unsafeExpr) => (unsupported_node "")),
+        rule!((yieldStmt) => (unsupported_node "")),
         // Anything reaching this final generic handler has neither a
         // dedicated rule nor an explicit unsupported entry.
         rule!(
