@@ -1,0 +1,2 @@
+query: library-tests/mad/test.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
