@@ -419,6 +419,11 @@ namespace std {
 		using const_iterator = std::iterator<random_access_iterator_tag, const value_type >;
 
 		map() /*: map(Compare()) { }*/;
+		template<class InputIt> map(InputIt, InputIt);
+		
+		template<class InputIt> map(InputIt, InputIt, const Compare&);
+		
+		template<class InputIt> map(InputIt, InputIt, const Compare&, const Allocator&);
 		map(const map& x);
 		map(map&& x);
 		~map();
@@ -433,6 +438,7 @@ namespace std {
 
 		T& operator[](const key_type& x);
 		T& operator[](key_type&& x);
+		template<class K> T& operator[](K&& x);
 		T& at(const key_type& x);
 		const T& at(const key_type& x) const;
 
@@ -441,9 +447,10 @@ namespace std {
 
 		pair<iterator, bool> insert(const value_type& x);
 		pair<iterator, bool> insert(value_type&& x);
+		template<class P> pair<iterator, bool> insert(P&& x);
 		iterator insert(const_iterator position, const value_type& x);
 		iterator insert(const_iterator position, value_type&& x);
-
+		template<class P> iterator insert(const_iterator position, P&& x);
 		template<class... Args> pair<iterator, bool> try_emplace(const key_type& k, Args&&... args);
 		template<class... Args> pair<iterator, bool> try_emplace(key_type&& k, Args&&... args);
 		template<class... Args> iterator try_emplace(const_iterator hint, const key_type& k, Args&&... args);
