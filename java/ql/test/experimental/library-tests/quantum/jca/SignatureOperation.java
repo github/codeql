@@ -3,6 +3,8 @@ package com.example.crypto.algorithms;
 // import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
+import java.security.spec.MGF1ParameterSpec;
+import java.security.spec.PSSParameterSpec;
 import java.util.Base64;
 import java.util.Properties;
 
@@ -204,6 +206,118 @@ public class SignatureOperation {
     ///////////////////////////////////////
     // Nuanced Edge-Case Examples
     ///////////////////////////////////////
+
+    ///////////////////////////////////////
+    // 5. SHA{n}withRSA (RS256, RS384, RS512 equivalents)
+    ///////////////////////////////////////
+
+    /**
+     * Sign using SHA256withRSA (RS256 equivalent).
+     */
+    public byte[] signSHA256withRSA(PrivateKey privateKey, byte[] data) throws Exception {
+        Signature signature = Signature.getInstance("SHA256withRSA");
+        signature.initSign(privateKey);
+        signature.update(data);
+        return signature.sign();
+    }
+
+    /**
+     * Sign using SHA384withRSA (RS384 equivalent).
+     */
+    public byte[] signSHA384withRSA(PrivateKey privateKey, byte[] data) throws Exception {
+        Signature signature = Signature.getInstance("SHA384withRSA");
+        signature.initSign(privateKey);
+        signature.update(data);
+        return signature.sign();
+    }
+
+    /**
+     * Sign using SHA512withRSA (RS512 equivalent).
+     */
+    public byte[] signSHA512withRSA(PrivateKey privateKey, byte[] data) throws Exception {
+        Signature signature = Signature.getInstance("SHA512withRSA");
+        signature.initSign(privateKey);
+        signature.update(data);
+        return signature.sign();
+    }
+
+    ///////////////////////////////////////
+    // 6. RSASSA-PSS with PSSParameterSpec (PS256, PS384, PS512 equivalents)
+    ///////////////////////////////////////
+
+    /**
+     * Sign using RSASSA-PSS with SHA-256 (PS256 equivalent).
+     */
+    public byte[] signRSASSA_PSS_SHA256(PrivateKey privateKey, byte[] data) throws Exception {
+        Signature signature = Signature.getInstance("RSASSA-PSS");
+        signature.setParameter(
+            new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1));
+        signature.initSign(privateKey);
+        signature.update(data);
+        return signature.sign();
+    }
+
+    /**
+     * Sign using RSASSA-PSS with SHA-384 (PS384 equivalent).
+     */
+    public byte[] signRSASSA_PSS_SHA384(PrivateKey privateKey, byte[] data) throws Exception {
+        Signature signature = Signature.getInstance("RSASSA-PSS");
+        signature.setParameter(
+            new PSSParameterSpec("SHA-384", "MGF1", MGF1ParameterSpec.SHA384, 48, 1));
+        signature.initSign(privateKey);
+        signature.update(data);
+        return signature.sign();
+    }
+
+    /**
+     * Sign using RSASSA-PSS with SHA-512 (PS512 equivalent).
+     */
+    public byte[] signRSASSA_PSS_SHA512(PrivateKey privateKey, byte[] data) throws Exception {
+        Signature signature = Signature.getInstance("RSASSA-PSS");
+        signature.setParameter(
+            new PSSParameterSpec("SHA-512", "MGF1", MGF1ParameterSpec.SHA512, 64, 1));
+        signature.initSign(privateKey);
+        signature.update(data);
+        return signature.sign();
+    }
+
+    /**
+     * Verify using RSASSA-PSS with SHA-256.
+     */
+    public boolean verifyRSASSA_PSS_SHA256(PublicKey publicKey, byte[] data, byte[] sigBytes)
+            throws Exception {
+        Signature signature = Signature.getInstance("RSASSA-PSS");
+        signature.setParameter(
+            new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1));
+        signature.initVerify(publicKey);
+        signature.update(data);
+        return signature.verify(sigBytes);
+    }
+
+    ///////////////////////////////////////
+    // 7. SHA256withRSAandMGF1 (PSS implied by name)
+    ///////////////////////////////////////
+
+    /**
+     * Sign using SHA256withRSAandMGF1.
+     */
+    public byte[] signSHA256withRSAandMGF1(PrivateKey privateKey, byte[] data) throws Exception {
+        Signature signature = Signature.getInstance("SHA256withRSAandMGF1");
+        signature.initSign(privateKey);
+        signature.update(data);
+        return signature.sign();
+    }
+
+    /**
+     * Verify using SHA256withRSAandMGF1.
+     */
+    public boolean verifySHA256withRSAandMGF1(PublicKey publicKey, byte[] data, byte[] sigBytes)
+            throws Exception {
+        Signature signature = Signature.getInstance("SHA256withRSAandMGF1");
+        signature.initVerify(publicKey);
+        signature.update(data);
+        return signature.verify(sigBytes);
+    }
 
     /**
      * Demonstrates signing and verifying an empty message.

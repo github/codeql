@@ -1,0 +1,10 @@
+| CryptoClassificationTest.java:219:47:219:51 | KeyOperationAlgorithm | Insecure symmetric cipher: DES. |
+| CryptoClassificationTest.java:220:55:220:59 | KeyOperationAlgorithm | Insecure symmetric cipher: DES. |
+| CryptoClassificationTest.java:226:50:226:57 | KeyOperationAlgorithm | Insecure symmetric cipher: TripleDES. |
+| CryptoClassificationTest.java:227:58:227:65 | KeyOperationAlgorithm | Insecure symmetric cipher: TripleDES. |
+| CryptoClassificationTest.java:233:52:233:61 | KeyOperationAlgorithm | Insecure symmetric cipher: Blowfish. |
+| CryptoClassificationTest.java:234:60:234:69 | KeyOperationAlgorithm | Insecure symmetric cipher: Blowfish. |
+| CryptoClassificationTest.java:240:48:240:53 | KeyOperationAlgorithm | Insecure symmetric cipher: IDEA. |
+| CryptoClassificationTest.java:241:56:241:61 | KeyOperationAlgorithm | Insecure symmetric cipher: IDEA. |
+| CryptoClassificationTest.java:247:48:247:53 | KeyOperationAlgorithm | Insecure symmetric cipher: SEED. |
+| CryptoClassificationTest.java:248:56:248:61 | KeyOperationAlgorithm | Insecure symmetric cipher: SEED. |
