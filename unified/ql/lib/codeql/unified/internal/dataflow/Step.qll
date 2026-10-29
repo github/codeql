@@ -3,10 +3,12 @@ private import AllDataFlow
 
 private newtype TStep =
   TValueStep() or
+  TValueMustFlowStep() or
   TJumpStep() or
   TTaintStep() or
   TReadStep(ContentSet contents) or
-  TStoreStep(ContentSet contents)
+  TStoreStep(ContentSet contents) or
+  TCallGraphStep()
 
 /**
  * A type of data flow step, used during construction of the data flow graph.
@@ -14,6 +16,9 @@ private newtype TStep =
 class Step extends TStep {
   /** Holds if this represents a value-preserving step. */
   predicate value() { this = TValueStep() }
+
+  /** Holds if this represents a value-preserving step with must-flow, meaning this step is the only way a value can reach the target node. */
+  predicate valueMustFlow() { this = TValueMustFlowStep() }
 
   /** Holds if this represents a value-preserving jump step (propagating across unrelated call stacks). */
   predicate jump() { this = TJumpStep() }
@@ -43,8 +48,13 @@ class Step extends TStep {
   pragma[nomagic]
   predicate storeArrayElement() { this.store(ContentSet::arrayElement()) }
 
+  /** Holds if this step can only be used for call graph construction. */
+  predicate callGraph() { this = TCallGraphStep() }
+
   string toString() {
     this.value() and result = "value"
+    or
+    this.valueMustFlow() and result = "value-must"
     or
     this.jump() and result = "jump"
     or
@@ -55,5 +65,7 @@ class Step extends TStep {
       or
       this.store(contents) and result = "store[" + contents + "]"
     )
+    or
+    this.callGraph() and result = "call-graph"
   }
 }

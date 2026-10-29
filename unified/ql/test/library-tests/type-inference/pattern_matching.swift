@@ -31,3 +31,7 @@ func createValue() -> PatternMatch<Bool> {
   var y = PatternMatch<String>.novalue  // $ type=y@PatternMatch<T>:String field=PatternMatch.novalue
   return PatternMatch.novalue  // $ type=.novalue@PatternMatch<T>:Bool field=PatternMatch.novalue
 }
+
+func createValueShorthand() -> PatternMatch<Bool> {
+  PatternMatch.novalue  // $ type=.novalue@PatternMatch<T>:Bool field=PatternMatch.novalue
+}

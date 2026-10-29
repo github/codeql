@@ -123,6 +123,8 @@ module Input3 implements InputSig3 {
   predicate cacheRevRef() {
     (exists(resolveFieldAccess(_)) implies any())
     or
+    (exists(resolveAccessorAccess(_)) implies any())
+    or
     (exists(resolveCallTarget(_)) implies any())
   }
 
@@ -135,7 +137,11 @@ module Input3 implements InputSig3 {
   class AstNode = Unified::AstNode;
 
   class Expr extends Unified::Expr {
-    Expr() { isInAssignmentContext(this, _) or hasResultValue(this) }
+    Expr() {
+      isInAssignmentContext(this, _) or
+      hasResultValue(this) or
+      this = Construction::getSyntheticConstructionReceiver(_)
+    }
   }
 
   class Cast extends Expr, TypeCastExpr {
@@ -248,18 +254,36 @@ module Input3 implements InputSig3 {
     override Location getLocation() { result = decl.getLocation() }
   }
 
-  class Field extends AstVariableDeclaration {
+  final class Field = FieldImpl;
+
+  abstract private class FieldImpl extends DeclarationImpl {
+    abstract AstNode getAstNode();
+  }
+
+  private class VariableDeclarationField extends FieldImpl, AstVariableDeclaration {
     ClassLikeDeclaration cls;
 
-    Field() { decl = cls.getAMember() }
+    VariableDeclarationField() { decl = cls.getAMember() }
+
+    override AstNode getAstNode() { result = this.getDecl() }
 
     override TypeMention getDeclaringType() { result = getClassLikeDeclarationTypeMention(cls) }
   }
 
-  private class EnumField_ extends Field {
+  private class EnumField_ extends VariableDeclarationField {
     override EnumField decl;
 
     override TypeMention getType() { result = decl.getEnum().getNameNode() }
+  }
+
+  private class AccessorField extends FieldImpl, Callable {
+    private AccessorDeclaration accessor;
+
+    AccessorField() { accessor = this.getCallable() }
+
+    override TypeMention getType() { result = accessor.getReturnType() }
+
+    override AstNode getAstNode() { result = accessor }
   }
 
   abstract class FieldAccess extends Expr {
@@ -270,7 +294,8 @@ module Input3 implements InputSig3 {
 
   pragma[nomagic]
   private predicate lookupMember0(MemberAccessExpr mae, ClassLikeDeclaration cls, string name) {
-    cls = inferType(mae.getBase()).(ClassLikeDeclarationType).getClassLikeDeclaration() and
+    not exists(getStaticBindingTargetFromRef(mae)) and // if a static member can be resolved, use it
+    cls = inferType(mae.getBase()).asClass() and
     name = mae.getMemberName()
   }
 
@@ -298,7 +323,7 @@ module Input3 implements InputSig3 {
       // also mutual recursion
       exists(TupleType tuple, string name |
         this.isTupleProjection(tuple, name) and
-        result.getDecl() = tuple.getField(name)
+        result.getAstNode() = tuple.getField(name)
       )
       or
       // no mutual recursion; can be resolved directly with static name binding
@@ -318,6 +343,18 @@ module Input3 implements InputSig3 {
     override Expr getReceiver() { none() }
 
     override Field getField() { result.getNameNode() = this.getTarget() }
+  }
+
+  private class LocalAccessorFieldAccess extends FieldAccess, LocalNameAccess {
+    AccessorDeclaration target;
+
+    LocalAccessorFieldAccess() {
+      target = getStaticBindingTargetFromIdentifier(this).getDeclaration()
+    }
+
+    override Expr getReceiver() { none() }
+
+    override Field getField() { result.getAstNode() = target }
   }
 
   Type inferFieldAccessReceiverType(FieldAccess fa, TypePath path) {
@@ -393,12 +430,7 @@ module Input3 implements InputSig3 {
       )
     }
 
-    override TypeMention getType() {
-      result = c.getReturnType()
-      or
-      c instanceof ConstructorDeclaration and
-      result = this.getDeclaringType()
-    }
+    override TypeMention getType() { result = c.getReturnType() }
 
     override Identifier getNameNode() {
       result = c.(AccessorDeclaration).getNameNode()
@@ -456,26 +488,29 @@ module Input3 implements InputSig3 {
 
   class InvocationResolutionContext = Unit;
 
+  private TypeMention getQualifierTypeMention(CallExpr ce) {
+    result = ce.getCallee()
+    or
+    not ce.getCallee() instanceof TypeMention and
+    result = ce.getCallee().(MemberAccessExpr).getBase()
+  }
+
   class Invocation extends Expr, CallExpr {
-    Type getTypeQualifier(TypePath path) {
-      exists(TypeMention tm | result = tm.getTypeAt(path) |
-        tm = super.getCallee()
-        or
-        not super.getCallee() instanceof TypeMention and
-        tm = super.getCallee().(MemberAccessExpr).getBase()
-      )
-    }
+    Type getTypeQualifier(TypePath path) { result = getQualifierTypeMention(this).getTypeAt(path) }
 
     Type getTypeArgument(int i, TypePath path) { none() }
 
-    int getNumberOfArguments() { result = CallExpr.super.getNumberOfArguments() + 1 }
-
     Expr getArgument(int i) {
       i = 0 and
-      exists(boolean isFunctionExprInvoke | exists(this.getTargetImpl(isFunctionExprInvoke)) |
-        if isFunctionExprInvoke = true
-        then result = CallExpr.super.getCallee()
-        else result = CallExpr.super.getCallee().(MemberAccessExpr).getBase()
+      (
+        result = Construction::getSyntheticConstructionReceiver(this)
+        or
+        not exists(Construction::getSyntheticConstructionReceiver(this)) and
+        exists(boolean isFunctionExprInvoke | exists(this.getTargetImpl(isFunctionExprInvoke)) |
+          if isFunctionExprInvoke = true
+          then result = CallExpr.super.getCallee()
+          else result = CallExpr.super.getCallee().(MemberAccessExpr).getBase()
+        )
       )
       or
       result = CallExpr.super.getArgument(i - 1).getValue()
@@ -488,13 +523,13 @@ module Input3 implements InputSig3 {
       result = getFunctionInvoke(t)
     }
 
-    private Callable getTargetViaStaticNameBinding() {
+    Callable getTargetViaStaticNameBinding() {
       exists(NameBinding b | b = getStaticBindingTargetFromRef(this.getCallee()) |
         // object creation (including enum constructors): `String(42)`, `Optional.Some(42)`
-        exists(ClassLikeDeclaration cls, ConstructorDeclaration init |
+        exists(ClassLikeDeclaration cls |
           cls.getNameNode() = b and
-          init = cls.getAMember() and
-          result.asCallable() = init
+          result.isInstanceMemberOf(cls, _) and
+          result.asCallable() instanceof ConstructorDeclaration
         )
         or
         // call without explicit receiver: `foo(42)`
@@ -503,17 +538,21 @@ module Input3 implements InputSig3 {
     }
 
     Callable getTargetImpl(boolean isFunctionExprInvoke) {
-      // mutual recursion; call with explicit receiver: `obj.foo(42)`
-      result = lookupInstanceMember(this.getCallee()) and
-      isFunctionExprInvoke = false
-      or
-      // mutual recursion; call to a function expression: `callback(42)`
-      result.asCallable() = this.getInvokeTarget(_) and
-      isFunctionExprInvoke = true
-      or
-      // no mutual recursion; can be resolved directly with static name binding
-      result = this.getTargetViaStaticNameBinding() and
-      isFunctionExprInvoke = false
+      (
+        // mutual recursion; call with explicit receiver: `obj.foo(42)`
+        result = lookupInstanceMember(this.getCallee()) and
+        isFunctionExprInvoke = false
+        or
+        // mutual recursion; call to a function expression: `callback(42)`
+        result.asCallable() = this.getInvokeTarget(_) and
+        isFunctionExprInvoke = true
+        or
+        // no mutual recursion; can be resolved directly with static name binding
+        result = this.getTargetViaStaticNameBinding() and
+        isFunctionExprInvoke = false
+      ) and
+      // handled as a field access
+      not result.asCallable() instanceof AccessorDeclaration
     }
 
     Callable getTarget(InvocationResolutionContext c) {
@@ -535,13 +574,13 @@ module Input3 implements InputSig3 {
         result = inferType(invocation.(CallExpr).getCallee(), path)
         or
         exists(TypePath prefix, TypePath suffix, int j |
-          functionInvokeSignature(t, invocation.getNumberOfArguments() - 1, j, i, prefix) and
+          functionInvokeSignature(t, invocation.getNumberOfArguments(), j, i, prefix) and
           result = inferType(invocation.getArgument(j + 1), suffix) and
           path = prefix.append(suffix)
         )
       )
       or
-      // A call to a regular function or method
+      // A non-function-expression call
       exists(invocation.getTargetImpl(false)) and
       (
         result = inferType(invocation.getArgument(i), path)
@@ -612,6 +651,155 @@ module Input3 implements InputSig3 {
       )
   }
 
+  predicate stepLanguageSpecificExtra(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+    Construction::step(n1, prefix1, n2, prefix2)
+  }
+
+  /**
+   * Provides logic for resolving types of constructor invocations.
+   *
+   * Constructors are treated as instance methods without return types, in order
+   * to be able to handle inherited constructors similar to ordinary instance
+   * methods:
+   *
+   * ```swift
+   * class A<Ta> {
+   *   init(x : Ta) { ... }
+   * }
+   *
+   * class B<Tb> : A<Tb?> { }
+   *
+   * A.init(0);        // (1) has type `A<Int>`
+   * B.init(.some(0)); // (2) has type `B<Int>`
+   * B<Int>(.none);    // (3) has type `B<Int>`
+   * ```
+   *
+   * Because the constructor calls are treated as normal instance method calls,
+   * we use the type qualifier to represent the receiver, and then allow for
+   * contextual type information to flow into the receiver:
+   *
+   * (1) The receiver has type `A`, `Ta` is inferred to be instantiated to `Int`,
+   *     which is propagated directly back into the receiver.
+   * (2) The receiver has type `B`, `Ta` is inferred to be instantiated to `Int?`
+   *     which in turn means `Tb` is inferred to be instantiated to `Int`, which
+   *     is then propagated back into the receiver.
+   * (3) The receiver has type `B<Int>`, and no further type inference is needed.
+   */
+  private module Construction {
+    /**
+     * Gets the AST node that is used to represent the receiver in a constructor
+     * invocation without an actual receiver.
+     */
+    TypeMention getSyntheticConstructionReceiver(Invocation invocation) {
+      invocation.getTargetViaStaticNameBinding().asCallable() instanceof ConstructorDeclaration and
+      result = getQualifierTypeMention(invocation)
+    }
+
+    private predicate constructionReceiver(Invocation i, Callable constructor, Expr receiver) {
+      constructor = i.getTargetImpl(_) and
+      constructor.asCallable() instanceof ConstructorDeclaration and
+      receiver = i.getArgument(0)
+    }
+
+    /**
+     * Since we handle constructors as instance methods without return types,
+     * we need to explicitly handle constructors where (parts of) the type of
+     * the constructed object must be inferred from the context.
+     *
+     * Example:
+     *
+     * ```swift
+     * class C<T1, T2> {
+     *   init(x : T1) { ... } // `T2` must be inferred from the context
+     * }
+     * ```
+     */
+    private module ContextualConstructorReturnTypeInput implements
+      M3::ContextualTyping::ContextualReturnTypeInputSig
+    {
+      predicate callableHasTypeParameterAtReturnType(Callable c, TypePath path, TypeParameter tp) {
+        c.asCallable() instanceof ConstructorDeclaration and
+        tp = c.getDeclaringType().getTypeAt(path)
+      }
+
+      Parameter getACallableParameter(Callable c) {
+        result = c.getParameter(_) and
+        not result.getParameterEx().isImplicitReceiverParameter(_)
+      }
+    }
+
+    private module ContextualConstructorReturnType =
+      M3::ContextualTyping::ContextualReturnType<ContextualConstructorReturnTypeInput>;
+
+    private predicate needsContextualTyping(Invocation i, TypePath path) {
+      exists(Callable constructor, Expr receiver, ClassLikeDeclarationType receiverType |
+        constructionReceiver(i, constructor, receiver) and
+        receiverType = inferType(receiver)
+      |
+        ContextualConstructorReturnType::needsContextualTyping(i, path) and
+        receiverType = constructor.getDeclaringType().getType()
+        or
+        // inherited constructor
+        exists(
+          ClassLikeDeclarationType declType, TypeAbstraction abs, TypeMention constraint,
+          TypeParameter tp
+        |
+          declType = constructor.getDeclaringType().getType() and
+          BaseTypes::rootTypesSatisfaction(receiverType, declType, abs, _, constraint) and
+          path = TypePath::singleton(tp)
+        |
+          // `A<T> : B<T>`
+          exists(TypePath path0 |
+            BaseTypes::conditionSatisfiesConstraintTypeAt(abs, _, constraint, path0, tp) and
+            ContextualConstructorReturnType::needsContextualTyping(i, path0)
+          )
+          or
+          // `A<T> : B`
+          tp = receiverType.getATypeParameter() and
+          not BaseTypes::conditionSatisfiesConstraintTypeAt(abs, _, constraint, _, tp) and
+          not exists(Type t | t = i.getTypeQualifier(path) and not t instanceof PseudoType)
+        )
+      )
+    }
+
+    /**
+     * Propagate type information from the receiver of a construction to the construction
+     * itself.
+     *
+     * Note that this works both for calls with synthetic receivers, `A.init(0)` or `A(0)`,
+     * as well as calls receivers, `self.init(0)` or `super.init(0)`.
+     */
+    predicate step(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+      constructionReceiver(n2, _, n1) and
+      prefix1.isEmpty() and
+      prefix2.isEmpty()
+    }
+
+    Type inferType(AstNode n, TypePath path) {
+      n =
+        any(TypeMention tm |
+          tm = getSyntheticConstructionReceiver(_) and
+          result = tm.getTypeAt(path)
+        )
+      or
+      needsContextualTyping(n, path) and
+      result instanceof UnknownType
+    }
+
+    predicate allowContextualInference(TypeMention tm, TypePath path) {
+      // For a construction such as `Optional.some(0)`, we need contextual inference
+      // to infer the type of the wrapped object
+      tm = getSyntheticConstructionReceiver(_) and
+      exists(TypePath prefix, Type t, TypeParameter tp |
+        t = tm.getTypeAt(prefix) and
+        not t instanceof UnknownType and
+        tp = t.getATypeParameter() and
+        path = TypePath::snoc(prefix, tp) and
+        not exists(tm.getTypeAt(path))
+      )
+    }
+  }
+
   Type inferTypeLanguageSpecific(AstNode n, TypePath path) {
     result = Plugin::inferType(n, path)
     or
@@ -632,7 +820,7 @@ module Input3 implements InputSig3 {
     path.isEmpty()
     or
     exists(ClassLikeDeclaration c |
-      c = n.(SuperExpr).getEnclosingClass() and
+      c = n.(SuperExpr).getEnclosingClass().resolve() and
       result = c.getBaseType(0).getType().(TypeMention).getTypeAt(path)
     )
     or
@@ -650,10 +838,16 @@ module Input3 implements InputSig3 {
     n.(ArrayLiteral).getNumberOfElements() = 0 and
     path = TypePath::singleton(getArrayElementTypeParameter()) and
     result instanceof UnknownType
+    or
+    result = Construction::inferType(n, path)
   }
 
   pragma[nomagic]
   Type inferTypeCertainLanguageSpecific(AstNode n, TypePath path) { none() }
+
+  predicate allowContextualInference(AstNode n, TypePath path) {
+    Construction::allowContextualInference(n, path)
+  }
 }
 
 private module M3 = Make3<Input3>;
@@ -661,6 +855,10 @@ private module M3 = Make3<Input3>;
 predicate inferType = M3::inferType/1;
 
 predicate inferType = M3::inferType/2;
+
+predicate inferTypeUnique = M3::inferTypeUnique/1;
+
+predicate inferTypeUnique = M3::inferTypeUnique/2;
 
 predicate inferTypeCertain = M3::inferTypeCertain/2;
 
@@ -677,7 +875,23 @@ module CachedStage = M3::CachedStage;
 cached
 VariableDeclaration resolveFieldAccess(Expr access) {
   CachedStage::ref() and
-  result = access.(Input3::FieldAccess).getField().getDecl()
+  result = access.(Input3::FieldAccess).getField().getAstNode()
+}
+
+/**
+ * Gets the accessor that is accessed by the given expression.
+ *
+ * Note that we do not attempt to distinguish between different kinds of
+ * accessors; all accessors belonging to the same declaration will be
+ * returned (for example both the getter and setter of a property).
+ *
+ * `access` is either a `MemberAccessExpr` or an `Identifier` (when
+ * the field is accessed with an implicit receiver).
+ */
+cached
+AccessorDeclaration resolveAccessorAccess(Expr access) {
+  CachedStage::ref() and
+  result = access.(Input3::FieldAccess).getField().getAstNode()
 }
 
 /**
@@ -693,6 +907,14 @@ Callable resolveCallTarget(CallExpr ce) {
 
 private predicate typeTestAstNodeRepr(AstNode n, string repr) {
   repr = [n.toString(), n.(Identifier).getValue(), "." + n.(MemberAccessExpr).getMemberName()]
+  or
+  exists(string s |
+    typeTestAstNodeRepr(n.(CallExpr).getCallee(), s) and
+    repr = s + "(...)"
+    or
+    typeTestAstNodeRepr(n.(GenericTypeExpr).getBase(), s) and
+    repr = s + "<...>"
+  )
 }
 
 module TypeTest implements TestSig {

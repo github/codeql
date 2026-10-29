@@ -1,0 +1,36 @@
+#select
+| CommandInjection.swift:150:42:150:61 | userControlledString | CommandInjection.swift:105:40:105:94 | String(...) | CommandInjection.swift:150:42:150:61 | userControlledString | This command depends on a $@. | CommandInjection.swift:105:40:105:94 | String(...) | user-provided value |
+| CommandInjection.swift:154:23:154:56 | ... ! | CommandInjection.swift:105:40:105:94 | String(...) | CommandInjection.swift:154:23:154:56 | ... ! | This command depends on a $@. | CommandInjection.swift:105:40:105:94 | String(...) | user-provided value |
+| CommandInjection.swift:158:23:158:56 | ... ! | CommandInjection.swift:105:40:105:94 | String(...) | CommandInjection.swift:158:23:158:56 | ... ! | This command depends on a $@. | CommandInjection.swift:105:40:105:94 | String(...) | user-provided value |
+| CommandInjection.swift:163:41:163:74 | ... ! | CommandInjection.swift:105:40:105:94 | String(...) | CommandInjection.swift:163:41:163:74 | ... ! | This command depends on a $@. | CommandInjection.swift:105:40:105:94 | String(...) | user-provided value |
+edges
+| CommandInjection.swift:105:8:105:31 | ... .some(...) | CommandInjection.swift:105:12:105:31 | userControlledString | provenance |  |
+| CommandInjection.swift:105:12:105:31 | userControlledString | CommandInjection.swift:150:42:150:61 | userControlledString | provenance |  |
+| CommandInjection.swift:105:12:105:31 | userControlledString | CommandInjection.swift:154:35:154:54 | userControlledString | provenance |  |
+| CommandInjection.swift:105:12:105:31 | userControlledString | CommandInjection.swift:158:35:158:54 | userControlledString | provenance |  |
+| CommandInjection.swift:105:12:105:31 | userControlledString | CommandInjection.swift:163:53:163:72 | userControlledString | provenance |  |
+| CommandInjection.swift:105:40:105:94 | String(...) | CommandInjection.swift:105:8:105:31 | ... .some(...) | provenance |  |
+| CommandInjection.swift:154:23:154:55 | URL(...) | CommandInjection.swift:154:23:154:56 | ... ! | provenance |  |
+| CommandInjection.swift:154:35:154:54 | userControlledString | CommandInjection.swift:154:23:154:55 | URL(...) | provenance |  |
+| CommandInjection.swift:154:35:154:54 | userControlledString | CommandInjection.swift:154:23:154:56 | ... ! | provenance |  |
+| CommandInjection.swift:158:23:158:55 | URL(...) | CommandInjection.swift:158:23:158:56 | ... ! | provenance |  |
+| CommandInjection.swift:158:35:158:54 | userControlledString | CommandInjection.swift:158:23:158:55 | URL(...) | provenance |  |
+| CommandInjection.swift:158:35:158:54 | userControlledString | CommandInjection.swift:158:23:158:56 | ... ! | provenance |  |
+| CommandInjection.swift:163:41:163:73 | URL(...) | CommandInjection.swift:163:41:163:74 | ... ! | provenance |  |
+| CommandInjection.swift:163:53:163:72 | userControlledString | CommandInjection.swift:163:41:163:73 | URL(...) | provenance |  |
+| CommandInjection.swift:163:53:163:72 | userControlledString | CommandInjection.swift:163:41:163:74 | ... ! | provenance |  |
+nodes
+| CommandInjection.swift:105:8:105:31 | ... .some(...) | semmle.label | ... .some(...) |
+| CommandInjection.swift:105:12:105:31 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:105:40:105:94 | String(...) | semmle.label | String(...) |
+| CommandInjection.swift:150:42:150:61 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:154:23:154:55 | URL(...) | semmle.label | URL(...) |
+| CommandInjection.swift:154:23:154:56 | ... ! | semmle.label | ... ! |
+| CommandInjection.swift:154:35:154:54 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:158:23:158:55 | URL(...) | semmle.label | URL(...) |
+| CommandInjection.swift:158:23:158:56 | ... ! | semmle.label | ... ! |
+| CommandInjection.swift:158:35:158:54 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:163:41:163:73 | URL(...) | semmle.label | URL(...) |
+| CommandInjection.swift:163:41:163:74 | ... ! | semmle.label | ... ! |
+| CommandInjection.swift:163:53:163:72 | userControlledString | semmle.label | userControlledString |
+subpaths

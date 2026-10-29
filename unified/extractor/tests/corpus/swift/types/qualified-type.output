@@ -2,10 +2,21 @@ struct Outer {
   struct Inner {
     struct Deep {}
   }
+
+  struct Generic<T> {
+    struct Deep<U, V> {}
+    struct Plain {}
+  }
 }
 
 let value: Outer.Inner
 let nested: Outer.Inner.Deep
+
+func qualifiedTypes<Metadata, ErrorComponentType>(
+  _ value: Outer.Generic<Metadata>,
+  _ nested: Outer.Generic<Metadata>.Deep<ErrorComponentType, [Metadata]>,
+  _ plain: Outer.Generic<Metadata>.Plain
+) {}
 
 ---
 
@@ -37,6 +48,62 @@ sourceFile
                                 structDecl
                                   attributes:
                                   name: identifier "Deep"
+                                  memberBlock:
+                                    memberBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      members:
+                                  modifiers:
+                                  structKeyword: struct
+                      modifiers:
+                      structKeyword: struct
+                memberBlockItem
+                  decl:
+                    structDecl
+                      attributes:
+                      name: identifier "Generic"
+                      genericParameterClause:
+                        genericParameterClause
+                          parameters:
+                            genericParameter
+                              attributes:
+                              name: identifier "T"
+                          leftAngle: <
+                          rightAngle: >
+                      memberBlock:
+                        memberBlock
+                          leftBrace: {
+                          rightBrace: }
+                          members:
+                            memberBlockItem
+                              decl:
+                                structDecl
+                                  attributes:
+                                  name: identifier "Deep"
+                                  genericParameterClause:
+                                    genericParameterClause
+                                      parameters:
+                                        genericParameter
+                                          attributes:
+                                          name: identifier "U"
+                                          trailingComma: ,
+                                        genericParameter
+                                          attributes:
+                                          name: identifier "V"
+                                      leftAngle: <
+                                      rightAngle: >
+                                  memberBlock:
+                                    memberBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      members:
+                                  modifiers:
+                                  structKeyword: struct
+                            memberBlockItem
+                              decl:
+                                structDecl
+                                  attributes:
+                                  name: identifier "Plain"
                                   memberBlock:
                                     memberBlock
                                       leftBrace: {
@@ -94,14 +161,139 @@ sourceFile
                               name: identifier "Outer"
                           period: .
                       period: .
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+          name: identifier "qualifiedTypes"
+          genericParameterClause:
+            genericParameterClause
+              parameters:
+                genericParameter
+                  attributes:
+                  name: identifier "Metadata"
+                  trailingComma: ,
+                genericParameter
+                  attributes:
+                  name: identifier "ErrorComponentType"
+              leftAngle: <
+              rightAngle: >
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        memberType
+                          name: identifier "Generic"
+                          baseType:
+                            identifierType
+                              name: identifier "Outer"
+                          period: .
+                          genericArgumentClause:
+                            genericArgumentClause
+                              arguments:
+                                genericArgument
+                                  argument:
+                                    identifierType
+                                      name: identifier "Metadata"
+                              leftAngle: <
+                              rightAngle: >
+                      firstName: _
+                      secondName: identifier "value"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        memberType
+                          name: identifier "Deep"
+                          baseType:
+                            memberType
+                              name: identifier "Generic"
+                              baseType:
+                                identifierType
+                                  name: identifier "Outer"
+                              period: .
+                              genericArgumentClause:
+                                genericArgumentClause
+                                  arguments:
+                                    genericArgument
+                                      argument:
+                                        identifierType
+                                          name: identifier "Metadata"
+                                  leftAngle: <
+                                  rightAngle: >
+                          period: .
+                          genericArgumentClause:
+                            genericArgumentClause
+                              arguments:
+                                genericArgument
+                                  trailingComma: ,
+                                  argument:
+                                    identifierType
+                                      name: identifier "ErrorComponentType"
+                                genericArgument
+                                  argument:
+                                    arrayType
+                                      leftSquare: [
+                                      rightSquare: ]
+                                      element:
+                                        identifierType
+                                          name: identifier "Metadata"
+                              leftAngle: <
+                              rightAngle: >
+                      firstName: _
+                      secondName: identifier "nested"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        memberType
+                          name: identifier "Plain"
+                          baseType:
+                            memberType
+                              name: identifier "Generic"
+                              baseType:
+                                identifierType
+                                  name: identifier "Outer"
+                              period: .
+                              genericArgumentClause:
+                                genericArgumentClause
+                                  arguments:
+                                    genericArgument
+                                      argument:
+                                        identifierType
+                                          name: identifier "Metadata"
+                                  leftAngle: <
+                                  rightAngle: >
+                          period: .
+                      firstName: _
+                      secondName: identifier "plain"
+          funcKeyword: func
 
 ---
 
 top_level source="⟨body⟩"
   body:
-    block source="⟨stmt⟩\n\n⟨stmt⟩\n⟨stmt⟩"
+    block source="⟨stmt⟩\n\n⟨stmt⟩\n⟨stmt⟩\n\n⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n\n  ⟨member⟩\n}"
           modifier: modifier "struct" source="struct"
           name_node: identifier "Outer" source="Outer"
           member:
@@ -112,6 +304,38 @@ top_level source="⟨body⟩"
                 class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {}"
                   modifier: modifier "struct" source="struct"
                   name_node: identifier "Deep" source="Deep"
+                  member:
+                    constructor_declaration source=""
+                      modifier: modifier "generated" source=""
+                      name_node: identifier "init" source=""
+                      body: block source=""
+                constructor_declaration source=""
+                  modifier: modifier "generated" source=""
+                  name_node: identifier "init" source=""
+                  body: block source=""
+            class_like_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩> {\n    ⟨member⟩\n    ⟨member⟩\n  }"
+              modifier: modifier "struct" source="struct"
+              name_node: identifier "Generic" source="Generic"
+              type_parameter:
+                type_parameter source="⟨name_node⟩"
+                  name_node: identifier "T" source="T"
+              member:
+                class_like_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩, ⟨type_parameter⟩> {}"
+                  modifier: modifier "struct" source="struct"
+                  name_node: identifier "Deep" source="Deep"
+                  type_parameter:
+                    type_parameter source="⟨name_node⟩"
+                      name_node: identifier "U" source="U"
+                    type_parameter source="⟨name_node⟩"
+                      name_node: identifier "V" source="V"
+                  member:
+                    constructor_declaration source=""
+                      modifier: modifier "generated" source=""
+                      name_node: identifier "init" source=""
+                      body: block source=""
+                class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {}"
+                  modifier: modifier "struct" source="struct"
+                  name_node: identifier "Plain" source="Plain"
                   member:
                     constructor_declaration source=""
                       modifier: modifier "generated" source=""
@@ -142,3 +366,55 @@ top_level source="⟨body⟩"
                   base: identifier "Outer" source="Outer"
                   member_name_node: identifier "Inner" source="Inner"
               member_name_node: identifier "Deep" source="Deep"
+        function_declaration source="func ⟨name_node⟩<⟨type_parameter⟩, ⟨type_parameter⟩>(\n  ⟨parameter⟩,\n  ⟨parameter⟩,\n  ⟨parameter⟩\n) ⟨body⟩"
+          name_node: identifier "qualifiedTypes" source="qualifiedTypes"
+          type_parameter:
+            type_parameter source="⟨name_node⟩"
+              name_node: identifier "Metadata" source="Metadata"
+            type_parameter source="⟨name_node⟩"
+              name_node: identifier "ErrorComponentType" source="ErrorComponentType"
+          parameter:
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type:
+                generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                  base:
+                    member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                      base: identifier "Outer" source="Outer"
+                      member_name_node: identifier "Generic" source="Generic"
+                  type_argument: identifier "Metadata" source="Metadata"
+              pattern: identifier "value" source="value"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type:
+                generic_type_expr source="⟨base⟩<⟨type_argument⟩, ⟨type_argument⟩>"
+                  base:
+                    member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                      base:
+                        generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                          base:
+                            member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                              base: identifier "Outer" source="Outer"
+                              member_name_node: identifier "Generic" source="Generic"
+                          type_argument: identifier "Metadata" source="Metadata"
+                      member_name_node: identifier "Deep" source="Deep"
+                  type_argument:
+                    identifier "ErrorComponentType" source="ErrorComponentType"
+                    generic_type_expr source="[⟨type_argument⟩]"
+                      base: identifier "Array" source=""
+                      type_argument: identifier "Metadata" source="Metadata"
+              pattern: identifier "nested" source="nested"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type:
+                member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                  base:
+                    generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                      base:
+                        member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                          base: identifier "Outer" source="Outer"
+                          member_name_node: identifier "Generic" source="Generic"
+                      type_argument: identifier "Metadata" source="Metadata"
+                  member_name_node: identifier "Plain" source="Plain"
+              pattern: identifier "plain" source="plain"
+          body: block "{}" source="{}"

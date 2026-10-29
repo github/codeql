@@ -111,19 +111,28 @@ top_level source="⟨body⟩"
           name_node: identifier "P" source="P"
           member:
             accessor_declaration source="⟨accessor_kind⟩"
+              modifier: modifier "var" source="var" (external)
               name_node: identifier "foo" source="foo" (external)
               accessor_kind: accessor_kind "get" source="get"
-              type: identifier "Int" source="Int" (external)
+              return_type: identifier "Int" source="Int" (external)
             accessor_declaration source="⟨accessor_kind⟩"
+              modifier: modifier "var" source="var" (external)
               name_node: identifier "bar" source="bar" (external)
               accessor_kind: accessor_kind "get" source="get"
-              type: identifier "String" source="String" (external)
-            accessor_declaration source="⟨accessor_kind⟩"
-              modifier: modifier "chained_declaration" source=""
+              return_type: identifier "String" source="String" (external)
+            accessor_declaration source="⟨accessor_kind⟩⟨parameter⟩"
+              modifier:
+                modifier "var" source="var" (external)
+                modifier "chained_declaration" source=""
               name_node: identifier "bar" source="bar" (external)
               accessor_kind: accessor_kind "set" source="set"
-              type: identifier "String" source="String" (external)
+              parameter:
+                parameter source="⟨pattern⟩"
+                  modifier: modifier "generated" source=""
+                  type: identifier "String" source="String" (external)
+                  pattern: identifier "newValue" source="set"
             accessor_declaration source="⟨accessor_kind⟩"
+              modifier: modifier "var" source="var" (external)
               name_node: identifier "count" source="count" (external)
               accessor_kind: accessor_kind "get" source="get"
-              type: identifier "Int" source="Int" (external)
+              return_type: identifier "Int" source="Int" (external)

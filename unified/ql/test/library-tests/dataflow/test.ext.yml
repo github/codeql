@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: legacySummaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "TestType", true, "identityFlow(_:)", "", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["", "TestType", true, "storeArray(_:)", "", "", "Argument[0]", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["", "TestType", true, "readArray(_:)", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"]
+      - ["", "TestType", true, "postUpdateArg(_:output:)", "", "", "Argument[0]", "Argument[output:].Member[outputField]", "value", "manual"]
+      - ["", "TestType", true, "storeUnusualName(_:)", "", "", "Argument[0]", "ReturnValue.Member[unusualNameNotAppearingInSourceCode]", "value", "manual"]
+      - ["", "TestType", true, "readUnusualName(_:)", "", "", "Argument[0].Member[unusualNameNotAppearingInSourceCode]", "ReturnValue", "value", "manual"]
+      - ["", "TestType", true, "intoCallback(_:_:)", "", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["", "TestType", true, "outOfCallback(_:)", "", "", "Argument[0].ReturnValue", "ReturnValue", "value", "manual"]
+      - ["", "TestType", true, "throughCallback(_:_:)", "", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["", "TestType", true, "throughCallback(_:_:)", "", "", "Argument[1].ReturnValue", "ReturnValue", "value", "manual"]
+      - ["", "TestType", true, "taintFlow(_:)", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["", "TestType", true, "swap(_:_:)", "", "", "Argument[0]", "Argument[1]", "value", "manual"]
+      - ["", "TestType", true, "swap(_:_:)", "", "", "Argument[1]", "Argument[0]", "value", "manual"]
+      - ["", "TestType", true, "getField()", "", "", "Argument[self].Member[field]", "ReturnValue", "value", "manual"]
+      - ["", "TestType", true, "setField(_:)", "", "", "Argument[0]", "Argument[self].Member[field]", "value", "manual"]

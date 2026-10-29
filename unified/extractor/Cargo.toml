@@ -15,7 +15,7 @@ regex = "1.13.1"
 encoding = "0.2"
 lazy_static = "1.5.1"
 serde = "1.0.229"
-serde_json = { version = "1.0.151", features = ["unbounded_depth"] }
+serde_json = { version = "1.0.154", features = ["unbounded_depth"] }
 
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
 yeast = { path = "../../shared/yeast" }

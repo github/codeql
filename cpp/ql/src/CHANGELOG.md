@@ -1,3 +1,9 @@
+## 1.9.2
+
+### Minor Analysis Improvements
+
+* The `cpp/resource-not-released-in-destructor` query now recognizes resources released through local aliases, reducing false-positive results.
+
 ## 1.9.1
 
 No user-facing changes.

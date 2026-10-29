@@ -1,4 +1,12 @@
 dominates
+| cfg.rs:1:1:3:1 | enter fn cfg_expr | cfg.rs:1:1:3:1 | enter fn cfg_expr |
+| cfg.rs:5:1:10:1 | enter fn cfg_pat | cfg.rs:5:1:10:1 | enter fn cfg_pat |
+| cfg.rs:5:1:10:1 | enter fn cfg_pat | cfg.rs:6:5:9:5 | match value { ... } |
+| cfg.rs:5:1:10:1 | enter fn cfg_pat | cfg.rs:7:23:7:26 | true |
+| cfg.rs:5:1:10:1 | enter fn cfg_pat | cfg.rs:8:9:8:9 | _ |
+| cfg.rs:6:5:9:5 | match value { ... } | cfg.rs:6:5:9:5 | match value { ... } |
+| cfg.rs:7:23:7:26 | true | cfg.rs:7:23:7:26 | true |
+| cfg.rs:8:9:8:9 | _ | cfg.rs:8:9:8:9 | _ |
 | test.rs:5:5:8:5 | enter fn function_call | test.rs:5:5:8:5 | enter fn function_call |
 | test.rs:10:5:13:5 | enter fn method_call | test.rs:10:5:13:5 | enter fn method_call |
 | test.rs:18:5:24:5 | enter fn next | test.rs:18:5:24:5 | enter fn next |
@@ -783,6 +791,14 @@ dominates
 | test.rs:615:5:617:5 | enter fn negated | test.rs:615:5:617:5 | enter fn negated |
 | test.rs:619:5:621:5 | enter fn multifly_add | test.rs:619:5:621:5 | enter fn multifly_add |
 postDominance
+| cfg.rs:1:1:3:1 | enter fn cfg_expr | cfg.rs:1:1:3:1 | enter fn cfg_expr |
+| cfg.rs:5:1:10:1 | enter fn cfg_pat | cfg.rs:5:1:10:1 | enter fn cfg_pat |
+| cfg.rs:6:5:9:5 | match value { ... } | cfg.rs:5:1:10:1 | enter fn cfg_pat |
+| cfg.rs:6:5:9:5 | match value { ... } | cfg.rs:6:5:9:5 | match value { ... } |
+| cfg.rs:6:5:9:5 | match value { ... } | cfg.rs:7:23:7:26 | true |
+| cfg.rs:6:5:9:5 | match value { ... } | cfg.rs:8:9:8:9 | _ |
+| cfg.rs:7:23:7:26 | true | cfg.rs:7:23:7:26 | true |
+| cfg.rs:8:9:8:9 | _ | cfg.rs:8:9:8:9 | _ |
 | test.rs:5:5:8:5 | enter fn function_call | test.rs:5:5:8:5 | enter fn function_call |
 | test.rs:10:5:13:5 | enter fn method_call | test.rs:10:5:13:5 | enter fn method_call |
 | test.rs:18:5:24:5 | enter fn next | test.rs:18:5:24:5 | enter fn next |
@@ -1463,6 +1479,9 @@ postDominance
 | test.rs:615:5:617:5 | enter fn negated | test.rs:615:5:617:5 | enter fn negated |
 | test.rs:619:5:621:5 | enter fn multifly_add | test.rs:619:5:621:5 | enter fn multifly_add |
 immediateDominator
+| cfg.rs:6:5:9:5 | match value { ... } | cfg.rs:5:1:10:1 | enter fn cfg_pat |
+| cfg.rs:7:23:7:26 | true | cfg.rs:5:1:10:1 | enter fn cfg_pat |
+| cfg.rs:8:9:8:9 | _ | cfg.rs:5:1:10:1 | enter fn cfg_pat |
 | test.rs:19:9:23:9 | if ... {...} else {...} | test.rs:18:5:24:5 | enter fn next |
 | test.rs:20:13:20:13 | n | test.rs:18:5:24:5 | enter fn next |
 | test.rs:22:13:22:13 | 3 | test.rs:18:5:24:5 | enter fn next |
@@ -2087,6 +2106,8 @@ successor
 | test.rs:571:9:573:9 | if ... {...} | test.rs:575:9:577:9 | if ... {...} | false |
 | test.rs:571:9:573:9 | if ... {...} | test.rs:576:13:576:27 | ExprStmt | true |
 joinBlockPredecessor
+| cfg.rs:6:5:9:5 | match value { ... } | cfg.rs:7:23:7:26 | true | 0 |
+| cfg.rs:6:5:9:5 | match value { ... } | cfg.rs:8:9:8:9 | _ | 1 |
 | test.rs:19:9:23:9 | if ... {...} else {...} | test.rs:20:13:20:13 | n | 1 |
 | test.rs:19:9:23:9 | if ... {...} else {...} | test.rs:22:13:22:13 | 3 | 0 |
 | test.rs:26:5:42:5 | exit fn test_break_and_continue (normal) | test.rs:31:17:31:29 | ExprStmt | 0 |

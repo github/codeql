@@ -15,6 +15,16 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  */
 module Generated {
   /**
+   * A configuration predicate expression resulting from expansion of a `cfg!` macro call.
+   * It has type `bool` and evaluates to whether the configuration predicate holds.
+   *
+   * Rust-analyzer expands `cfg!(...)` in expression position to its internal `builtin#cfg(...)`
+   * syntax, as illustrated below:
+   * ```rust
+   * builtin#cfg(unix);
+   * builtin#cfg(target_os = "windows");
+   * builtin#cfg(any(unix, target_os = "windows"));
+   * ```
    * INTERNAL: Do not reference the `Generated::CfgPredExpr` class directly.
    * Use the subclass `CfgPredExpr`, where the following predicates are available.
    */

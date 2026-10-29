@@ -1,9 +1,13 @@
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 
+mod ast;
+mod lower;
 mod parse;
+mod rule_parse;
+mod template_parse;
 
-/// Proc macro for constructing a `QueryNode` from a tree-sitter-inspired pattern.
+/// Proc macro for constructing a tree-sitter-inspired `yeast::query::QueryNode`.
 ///
 /// # Syntax
 ///
@@ -19,11 +23,24 @@ mod parse;
 /// (pattern) @capture           - capture the matched node
 /// "literal" @capture           - capture an unnamed token
 /// _ @capture                   - capture any node
-/// (pattern)* @capture          - capture each repeated match
-/// (pattern)?                   - zero or one
+/// (kind)* @capture             - capture each repeated named-node match
+/// "literal"* @capture          - capture each repeated unnamed-token match
+/// (kind)?                      - zero or one named node
 /// ```
 ///
 /// Named fields and bare child patterns may be intermixed in any order.
+///
+/// A parenthesized query whose first element is a node kind is always parsed as
+/// that node pattern. Otherwise, two or more sibling patterns form a sequence.
+/// A sequence may be repeated, but cannot itself be captured because it does
+/// not represent one node:
+///
+/// ```text
+/// ((identifier) @items (integer) @items)*  // valid: explicit node captures
+/// ((identifier) (integer))* @items         // invalid: sequence capture
+/// ("+" ",")*                               // valid: repeated token sequence
+/// (_ ",")*                                 // valid: repeated wildcard/token sequence
+/// ```
 #[proc_macro]
 pub fn query(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
@@ -33,7 +50,7 @@ pub fn query(input: TokenStream) -> TokenStream {
     }
 }
 
-/// Build a single AST node from a template, returning its `Id`.
+/// Build a single AST node from a template, returning its `OutputId`.
 ///
 /// # Template syntax
 ///
@@ -41,13 +58,15 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// (kind "literal")             - leaf with static content
 /// (kind #{expr})               - leaf with computed content (expr.to_string())
 /// {expr}                       - embed a Rust expression, dispatched via
-///                                the `IntoFieldIds` trait: `Id` pushes a
-///                                single id; iterables (`Vec<Id>`,
-///                                `Option<Id>`, iterator chains) splice
+///                                the `IntoFieldIds` trait: `OutputId` pushes a
+///                                single id; iterables (`Vec<OutputId>`,
+///                                `Option<OutputId>`, iterator chains) splice
 ///                                their elements
 /// field: {expr}                - extend a named field with `{expr}`'s ids
 /// field: (kind ...)?           - set the field only if every `#{expr}`
 ///                                beneath it has a value (see below)
+/// location: {expr}             - override this node's source range with the
+///                                span of one or more nodes; may be repeated
 /// ```
 ///
 /// # Optional fields
@@ -89,9 +108,9 @@ pub fn tree(input: TokenStream) -> TokenStream {
     }
 }
 
-/// Build a list of AST nodes from a template, returning `Vec<Id>`.
+/// Build a list of AST nodes from a template, returning `Vec<OutputId>`.
 ///
-/// Like `tree!` but returns `Vec<Id>` and supports multiple top-level
+/// Like `tree!` but returns `Vec<OutputId>` and supports multiple top-level
 /// elements. All syntax from `tree!` is available.
 ///
 /// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
@@ -103,38 +122,6 @@ pub fn tree(input: TokenStream) -> TokenStream {
 pub fn trees(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
     match parse::parse_trees_top(input2) {
-        Ok(output) => output.into(),
-        Err(err) => err.to_compile_error().into(),
-    }
-}
-
-/// Build one AST node whose root uses another node's source range.
-///
-/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
-///
-/// ```text
-/// tree_at!(source, (kind ...))
-/// ```
-#[proc_macro]
-pub fn tree_at(input: TokenStream) -> TokenStream {
-    let input2: TokenStream2 = input.into();
-    match parse::parse_tree_at_top(input2) {
-        Ok(output) => output.into(),
-        Err(err) => err.to_compile_error().into(),
-    }
-}
-
-/// Build one AST node whose root spans a collection of nodes.
-///
-/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
-///
-/// ```text
-/// tree_spanning!(sources, (kind ...))
-/// ```
-#[proc_macro]
-pub fn tree_spanning(input: TokenStream) -> TokenStream {
-    let input2: TokenStream2 = input.into();
-    match parse::parse_tree_spanning_top(input2) {
         Ok(output) => output.into(),
         Err(err) => err.to_compile_error().into(),
     }
@@ -161,18 +148,19 @@ pub fn tree_spanning(input: TokenStream) -> TokenStream {
 /// ```
 ///
 /// Captures become Rust variables automatically:
-/// - `@name` (no quantifier) → `name: Id`
-/// - `@name` (after `*`/`+`) → `name: Vec<Id>`
-/// - `@name` (after `?`) → `name: Option<Id>`
+/// - `@name` (no quantifier) → `name: OutputId`
+/// - `@name` (after `*`/`+`) → `name: Vec<OutputId>`
+/// - `@name` (after `?`) → `name: Option<OutputId>`
+///
+/// Raw `@@name` captures use the corresponding input `Id` types instead.
 ///
 /// A guard is an optional Rust condition between the query and `=>`. It is
 /// evaluated after the query matches and before any `@` captures are
 /// translated. Returning false makes the driver try the next rule. All
 /// captures are therefore raw in the guard; `@` versus `@@` controls only
-/// whether the capture is translated for the transform. `ctx` provides
-/// mutable user-context access, and `ast` provides read-only AST access.
-/// Mutations to `ctx` are visible to the transform when the guard succeeds.
-/// Omitting the guard is equivalent to writing `where true`.
+/// whether the capture is translated for the transform. Both `ctx` and `ast`
+/// provide read-only access. Omitting the guard is equivalent to writing
+/// `where true`.
 ///
 /// `tree!` and `trees!` use the rule transform's `ctx` binding inside `{...}`.
 #[proc_macro]
@@ -203,8 +191,8 @@ pub fn rule(input: TokenStream) -> TokenStream {
 ///     output: "ast_types.yml",
 ///     [
 ///         (source_file (_)* @cs) => (top_level body: {..cs}),
-///         (simple_identifier) @id => (name_expr identifier: (identifier #{id})),
-///         rule!((integer_literal) @lit => (int_literal #{lit})),
+///         (simple_identifier) @@id => (name_expr identifier: (identifier #{id})),
+///         rule!((integer_literal) @@lit => (int_literal #{lit})),
 ///         helper_fn(),
 ///     ]
 /// };

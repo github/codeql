@@ -12,5 +12,17 @@ private import codeql.rust.elements.internal.generated.CfgPredExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A configuration predicate expression resulting from expansion of a `cfg!` macro call.
+   * It has type `bool` and evaluates to whether the configuration predicate holds.
+   *
+   * Rust-analyzer expands `cfg!(...)` in expression position to its internal `builtin#cfg(...)`
+   * syntax, as illustrated below:
+   * ```rust
+   * builtin#cfg(unix);
+   * builtin#cfg(target_os = "windows");
+   * builtin#cfg(any(unix, target_os = "windows"));
+   * ```
+   */
   class CfgPredExpr extends Generated::CfgPredExpr { }
 }

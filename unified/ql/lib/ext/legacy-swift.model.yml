@@ -220,6 +220,8 @@ extensions:
       - ["", "Process", true, "executableURL", "", "", "PostUpdate", "command-injection", "manual"]
       - ["", "Process", true, "launchPath", "", "", "PostUpdate", "command-injection", "manual"]
       - ["", "Process", true, "launchedProcess(arguments:launchPath:)", "", "", "Argument[launchPath:,arguments:]", "command-injection", "manual"]
+      # Calls may omit the defaulted terminationHandler argument.
+      - ["", "Process", true, "run(_:arguments:)", "", "", "Argument[0,arguments:]", "command-injection", "manual"]
       - ["", "Process", true, "run(_:arguments:terminationHandler:)", "", "", "Argument[0,arguments:]", "command-injection", "manual"]
       - ["", "Process", true, "standardError", "", "", "PostUpdate", "command-injection", "manual"]
       - ["", "Process", true, "standardInput", "", "", "PostUpdate", "command-injection", "manual"]
@@ -1164,7 +1166,7 @@ extensions:
       - ["", "FilePath", true, "init(platformString:)", "", "", "Argument[platformString:]", "ReturnValue", "taint", "manual"]
       - ["", "FilePath", true, "withPlatformString(_:)", "", "", "Argument[self]", "Argument[0].Parameter[0].CollectionElement", "taint", "manual"]
       - ["", "FilePath", true, "withPlatformString(_:)", "", "", "Argument[0].ReturnValue", "ReturnValue", "taint", "manual"]
-      - ["", "FilePath", true, "init(_:root:)", "", "", "Argument[root:,1]", "ReturnValue", "taint", "manual"]
+      - ["", "FilePath", true, "init(_:root:)", "", "", "Argument[root:,0]", "ReturnValue", "taint", "manual"]
       - ["", "FilePath", true, "init(components:root:)", "", "", "Argument[root:,components:]", "ReturnValue", "taint", "manual"]
       - ["", "FilePath", true, "lexicallyNormalized()", "", "", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["", "FilePath", true, "lexicallyResolving(_:)", "", "", "Argument[self,0]", "ReturnValue", "taint", "manual"]

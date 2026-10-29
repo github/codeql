@@ -14,24 +14,52 @@ private predicate hasIncomingValueAtCfgNode(Expr expr, ControlFlowNode cfgNode) 
     // Use the after node.
     cfgNode.isAfter(declOrAssignment.(VariableDeclaration))
     or
+    // Hoist local functions to the top of their block
+    declOrAssignment instanceof LocalFunctionDeclaration and
+    cfgNode.isBefore(declOrAssignment.getParent())
+    or
     // In other cases, it's a binding pattern whose CFG node can be used
     // as its assignment time
     not declOrAssignment instanceof Assignment and
     not declOrAssignment instanceof VariableDeclaration and
+    not declOrAssignment instanceof LocalFunctionDeclaration and
     cfgNode.injects(expr)
   )
 }
 
-private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
+/** Holds if `expr` has a post-update at `cfgNode` resulting from a surrounding call or assignment. */
+predicate hasPostUpdateAfterCallOrAssign(Expr expr, ControlFlowNode cfgNode) {
   exists(MemberAccessExpr member |
-    (hasIncomingValueAtCfgNode(member, cfgNode) or hasPostUpdate(member, cfgNode)) and
+    (hasIncomingValueAtCfgNode(member, cfgNode) or hasPostUpdateAfterCallOrAssign(member, cfgNode)) and
     expr = member.getBase()
   )
   or
   exists(CallExpr call | cfgNode.isAfter(call) |
     expr = call.getAnArgument().getValue()
     or
-    expr = call.getCallee().(MemberAccessExpr).getBase()
+    expr = call.getCallee()
+  )
+  or
+  exists(Expr target |
+    hasPostUpdateAfterCallOrAssign(target, cfgNode) and
+    exprStep(expr, target, _)
+  )
+}
+
+/**
+ * Holds if `expr` has a post-update at `cfgNode`.
+ */
+private predicate hasPostUpdate(Expr expr, ControlFlowNode cfgNode) {
+  hasPostUpdateAfterCallOrAssign(expr, cfgNode)
+  or
+  not hasPostUpdateAfterCallOrAssign(expr, _) and
+  exists(MemberAccessExpr member |
+    // If the member access is not updated by call or assignment, it might still be a call to a getter,
+    // and thus needs a post-update. Generate a post-update for this case.
+    // In case it's a call to a getter, while also being post-updated from a call or assignment, we accept
+    // the imprecision and use the post-update position from the call or assignment.
+    expr = member.getBase() and
+    cfgNode.isAfter(member)
   )
 }
 
@@ -59,6 +87,11 @@ predicate performsVariableAccess(
     (hasIncomingValueAtCfgNode(access, cfgNode) or hasPostUpdate(access, cfgNode)) and
     kind.isPostUpdate()
     or
+    // Generate a post-update for the receiver in case this is a call to a getter that mutates 'self'.
+    not (hasIncomingValueAtCfgNode(access, _) or hasPostUpdate(access, _)) and
+    cfgNode.isAfter(access) and
+    kind.isPostUpdate()
+    or
     exists(CallExpr call |
       access = call.getCallee() and
       cfgNode.isAfter(call) and
@@ -81,14 +114,32 @@ newtype TDataFlowNode =
   TLocalVariableRefNode(AstNode repr, LocalVariable var, VariableRefKind kind) {
     performsVariableAccess(repr, var, kind, _)
   } or
+  TReturnNode(DataFlowCallable callable) {
+    not exists(callable.asSummarizedCallable()) // represented by TSummaryNode
+  } or
+  TCallableNode(DataFlowCallable callable) or
+  TImplicitParameterNode(DataFlowCallable callable, ImplicitParameterPosition pos) {
+    not exists(callable.asSummarizedCallable()) // represented by TSummaryNode
+  } or
+  TImplicitArgumentNode(DataFlowCall call, ImplicitArgumentPosition pos, Boolean isPost) {
+    not call.isSummaryCall(_, _) // represented by TSummaryNode
+  } or
   TLocalSsaNode(LocalSsaDataFlowOutput::SsaNode node) or
-  TReceiverParameterNode(DataFlowCallable callable) or
-  TReceiverArgumentNode(DataFlowCall call, Boolean isPost)
+  TCaptureSsaNode(CaptureSsaOutput::SynthesizedCaptureNode node) or
+  TSummaryNode(FlowSummaryOutput::SummaryNode node)
+
+class TDataFlowNodeStage1 =
+  TValueNode or TStrictlyIncomingValue or TExprPostUpdateNode or TLocalVariableRefNode or
+      TReturnNode or TCallableNode or TImplicitParameterNode or TImplicitArgumentNode;
+
+class TDataFlowNodeStage2 = TDataFlowNodeStage1 or TLocalSsaNode;
 
 /**
- * A node representing something that can have a value.
+ * A data-flow node used during construction of the local data flow graph.
+ *
+ * This only contains nodes that are materialised in "stage 1".
  */
-class Node extends TDataFlowNode {
+class BuilderNode extends TDataFlowNodeStage1 {
   /** Holds if this is the result of evaluating `expr`. */
   pragma[nomagic]
   predicate isResultValue(Expr expr) { hasResultValue(expr) and this = TValueNode(expr) }
@@ -128,63 +179,123 @@ class Node extends TDataFlowNode {
   predicate isPostUpdate(Expr expr) { this = TExprPostUpdateNode(expr) }
 
   /**
+   * Holds if this node represents the new value passed to the setter invoked by `call`.
+   *
+   * For a direct assignment, such as `x.p = y`, this is the incoming value of `x.p`.
+   * When the value of a computed property is mutated in place, such as `x.p.f = y`,
+   * this is the post-update node of `x.p`, as the mutated value is written back via the setter.
+   */
+  predicate isSetterValueArgument(DataFlowCall call) {
+    exists(Expr access | access = call.asSetterCall() |
+      this.isIncomingValue(access)
+      or
+      not isInAssignmentContext(access, _) and
+      this.isPostUpdate(access)
+    )
+  }
+
+  /** Holds if this node is the canonical representative for the return value of `callable`. */
+  predicate isReturnNode(Callable callable) { this.isReturnNodeEx(toDataFlowCallable(callable)) }
+
+  /**
+   * Holds if this node is the canonical representative for the return value of `callable`.
+   *
+   * Note that this does not hold for the return node in a summarized callable.
+   */
+  predicate isReturnNodeEx(DataFlowCallable callable) { this = TReturnNode(callable) }
+
+  /** Holds if this node represents an implicit parameter of `callable`. */
+  predicate isImplicitParameter(DataFlowCallable callable, ImplicitParameterPosition pos) {
+    this = TImplicitParameterNode(callable, pos)
+  }
+
+  /** Holds if this node represents an implicit argument to `call` (or its post-update). */
+  predicate isImplicitArgument(DataFlowCall call, ImplicitArgumentPosition pos, boolean isPost) {
+    this = TImplicitArgumentNode(call, pos, isPost)
+  }
+
+  /**
    * Holds if this represents the receiver passed to the given callable.
    *
    * Note that for non-methods and closures that capture the receiver from the enclosing method,
    * this node still exists but will typically not flow anywhere.
    */
   predicate isReceiverParameter(Callable callable) {
-    this.isReceiverParameterEx(any(DataFlowCallable c | c.asSourceCallable() = callable))
-  }
-
-  /**
-   * Holds if this represents the receiver passed to the given callable.
-   *
-   * Note that for non-methods and closures that capture the receiver from the enclosing method,
-   * this node still exists but will typically not flow anywhere.
-   */
-  predicate isReceiverParameterEx(DataFlowCallable callable) {
-    this = TReceiverParameterNode(callable)
+    this.isImplicitParameter(toDataFlowCallable(callable), any(ParameterPosition p | p.isReceiver()))
   }
 
   /** Holds if this node represents the receiver argument passed to `call`. */
-  predicate isReceiverArgument(CallExpr call) {
-    this.isReceiverArgumentEx(any(DataFlowCall c | c.asExplicitCall() = call))
+  predicate isReceiverArgumentEx(DataFlowCall call) {
+    this.isImplicitArgument(call, any(ArgumentPosition p | p.isReceiver()), false)
   }
+
+  /** Holds if this node represents the receiver argument passed to `call`. */
+  predicate isReceiverArgument(CallExpr call) { this.isReceiverArgumentEx(toDataFlowCall(call)) }
 
   /** Holds if this node represents the updated state of the receiver of `call` after the call returns. */
   predicate isReceiverPostUpdate(CallExpr call) {
-    this.isReceiverPostUpdateEx(any(DataFlowCall c | c.asExplicitCall() = call))
+    this.isReceiverPostUpdateEx(toDataFlowCall(call))
   }
-
-  /** Holds if this node represents the receiver argument passed to `call`. */
-  predicate isReceiverArgumentEx(DataFlowCall call) { this.isReceiverArgumentEx(call, false) }
 
   /** Holds if this node represents the updated state of the receiver of `call` after the call returns. */
-  predicate isReceiverPostUpdateEx(DataFlowCall call) { this.isReceiverArgumentEx(call, true) }
-
-  /** Holds if this node represents the receiver argument passed to `call`. */
-  predicate isReceiverArgumentEx(DataFlowCall call, boolean isPost) {
-    this = TReceiverArgumentNode(call, isPost)
+  predicate isReceiverPostUpdateEx(DataFlowCall call) {
+    this.isImplicitArgument(call, any(ArgumentPosition p | p.isReceiver()), true)
   }
 
-  /** Gets the expression represented by this node. */
-  Expr asExpr() { this = TValueNode(result) }
+  /** Holds if this is the canonical representative for the given `callable`. */
+  predicate isCallableEx(DataFlowCallable callable) { this = TCallableNode(callable) }
+
+  /** Holds if this is the canonical representative for the given `callable`. */
+  predicate isCallable(Callable callable) { this = TCallableNode(toDataFlowCallable(callable)) }
+
+  /** Holds if this node represents the function being invoked at `call`. */
+  predicate isCalleeArgument(CallExpr call) {
+    this.isImplicitArgument(toDataFlowCall(call), any(ArgumentPosition p | p.isCallee()), false)
+  }
+
+  /** Holds if this node represents the updated state of the function being invoked at `call`, after the call returns. */
+  predicate isCalleePostUpdate(CallExpr call) {
+    this.isImplicitArgument(toDataFlowCall(call), any(ArgumentPosition p | p.isCallee()), true)
+  }
+
+  /**
+   * Gets the post-update node for this node, if any.
+   *
+   * The post-update node represents the updated state of the value held in this node, after it has been mutated by the surrounding assignment or call.
+   */
+  pragma[nomagic]
+  BuilderNode getPostUpdateNode() {
+    exists(Expr expr |
+      this.isResultValue(expr) and
+      result.isPostUpdate(expr)
+    )
+    or
+    exists(Expr expr, LocalVariable var |
+      this.isLocalVariableRead(expr, var) and
+      result.isLocalVariablePostUpdate(expr, var)
+    )
+    or
+    exists(DataFlowCall call, ArgumentPosition pos |
+      this.isImplicitArgument(call, pos, false) and
+      result.isImplicitArgument(call, pos, true)
+    )
+  }
 
   /**
    * Gets the AST node wrapped by this data flow, if any.
    */
   AstNode getWrappedAstNode() {
-    result = this.asExpr() or
+    this = TValueNode(result) or
     this = TStrictlyIncomingValue(result) or
     this = TExprPostUpdateNode(result)
   }
 
   /** Get a string representation of this element. */
   string toString() {
-    result = this.asExpr().toString()
-    or
     exists(Expr expr |
+      this = TValueNode(expr) and
+      result = expr.toString()
+      or
       this = TStrictlyIncomingValue(expr) and
       result = "[incoming] " + expr.toString()
       or
@@ -197,22 +308,27 @@ class Node extends TDataFlowNode {
       result = "[variable " + kind + "] " + v.toString()
     )
     or
-    exists(LocalSsaDataFlowOutput::SsaNode node |
-      this = TLocalSsaNode(node) and
-      result = node.toString()
+    exists(DataFlowCallable callable |
+      exists(ParameterPosition pos |
+        this.isImplicitParameter(callable, pos) and
+        result = "[" + pos + " param] " + callable.toString()
+      )
+      or
+      this.isCallableEx(callable) and
+      result = "[callable] " + callable.toString()
     )
     or
     exists(DataFlowCallable callable |
-      this.isReceiverParameterEx(callable) and
-      result = "[receiver] " + callable.toString()
+      this.isReturnNodeEx(callable) and
+      result = "[return] " + callable.toString()
     )
     or
-    exists(DataFlowCall call |
-      this.isReceiverArgumentEx(call) and
-      result = "[receiver arg] " + call.toString()
+    exists(DataFlowCall call, ArgumentPosition pos |
+      this.isImplicitArgument(call, pos, false) and
+      result = "[" + pos + " arg] " + call.toString()
       or
-      this.isReceiverPostUpdateEx(call) and
-      result = "[receiver post] " + call.toString()
+      this.isImplicitArgument(call, pos, true) and
+      result = "[" + pos + " post] " + call.toString()
     )
   }
 
@@ -225,47 +341,24 @@ class Node extends TDataFlowNode {
       result = repr.getLocation()
     )
     or
-    exists(LocalSsaDataFlowOutput::SsaNode node |
-      this = TLocalSsaNode(node) and
-      result = node.getLocation()
+    exists(DataFlowCallable callable |
+      this.isImplicitParameter(callable, _)
+      or
+      this.isCallableEx(callable)
+    |
+      result = callable.getLocation()
     )
     or
     exists(DataFlowCallable callable |
-      this.isReceiverParameterEx(callable) and
+      this.isReturnNodeEx(callable) and
       result = callable.getLocation()
     )
     or
     exists(DataFlowCall call |
-      this.isReceiverArgumentEx(call, _) and
+      this.isImplicitArgument(call, _, _) and
       result = call.getLocation()
     )
   }
-
-  /** Gets the data-flow callable containing this data flow node. */
-  DataFlowCallable getEnclosingCallableEx() {
-    result.asSourceCallable() = this.getWrappedAstNode().getEnclosingCallable()
-    or
-    exists(AstNode repr, LocalVariable var, VariableRefKind kind, ControlFlowNode cfgNode |
-      this.isLocalVariableRef(repr, var, kind) and
-      performsVariableAccess(repr, var, kind, cfgNode) and
-      result.asSourceCallable() = cfgNode.getEnclosingCallable()
-    )
-    or
-    exists(LocalSsaDataFlowOutput::SsaNode node |
-      this = TLocalSsaNode(node) and
-      result.asSourceCallable() = node.getSourceVariable().getDeclaringCallable()
-    )
-    or
-    this.isReceiverParameterEx(result)
-    or
-    exists(DataFlowCall call |
-      this.isReceiverArgumentEx(call, _) and
-      result = call.getEnclosingCallable()
-    )
-  }
-
-  /** Gets the callable containing this data flow node. */
-  Callable getEnclosingCallable() { result = this.getEnclosingCallableEx().asSourceCallable() }
 
   /**
    * Holds if this data flow node is associated with the `i`'th index in the given basic block.
@@ -292,24 +385,224 @@ class Node extends TDataFlowNode {
       )
       or
       exists(DataFlowCallable callable |
-        this.isReceiverParameterEx(callable) and
+        this.isImplicitParameter(callable, _) and
         cfgNode.(ControlFlow::EntryNode).getEnclosingCallable() = callable.asSourceCallable()
+        or
+        this.isCallableEx(callable) and
+        cfgNode.injects(callable.asSourceCallable())
       )
       or
-      exists(DataFlowCall call, CallExpr sourceCall |
-        call.asExplicitCall() = sourceCall and
+      exists(DataFlowCall call, Expr access, boolean isPost |
+        this.isImplicitArgument(call, _, isPost)
+      |
+        (access = call.asExplicitCall() or access = call.asGetterCall()) and
         (
-          this.isReceiverArgumentEx(call) and cfgNode.injects(sourceCall)
+          isPost = false and cfgNode.injects(access)
           or
-          this.isReceiverPostUpdateEx(call) and cfgNode.isAfter(sourceCall)
+          isPost = true and cfgNode.isAfter(access)
+        )
+        or
+        access = call.asSetterCall() and
+        (
+          exists(Assignment assignment | isInAssignmentContext(access, assignment) |
+            isPost = false and cfgNode.injects(assignment)
+            or
+            isPost = true and cfgNode.isAfter(assignment)
+          )
+          or
+          // Setter invoked to write back a mutated value
+          not isInAssignmentContext(access, _) and
+          hasPostUpdate(access, cfgNode)
         )
       )
     )
+  }
+}
+
+/** A node in stage 2, which includes stage 1 and local SSA nodes. */
+class Stage2Node extends TDataFlowNodeStage2 {
+  /** Get a string representation of this element. */
+  string toString() {
+    result = this.(BuilderNode).toString()
+    or
+    exists(LocalSsaDataFlowOutput::SsaNode node |
+      this = TLocalSsaNode(node) and
+      result = node.toString()
+    )
+  }
+
+  /** Gets the location of this data flow node. */
+  Location getLocation() {
+    result = this.(BuilderNode).getLocation()
+    or
+    exists(LocalSsaDataFlowOutput::SsaNode node |
+      this = TLocalSsaNode(node) and
+      result = node.getLocation()
+    )
+  }
+
+  predicate hasControlFlowPosition(BasicBlock bb, int i) {
+    this.(BuilderNode).hasControlFlowPosition(bb, i)
     or
     exists(LocalSsaDataFlowOutput::SsaNode node |
       this = TLocalSsaNode(node) and
       bb = node.getBasicBlock() and
       i = node.getIndex() // TODO: why is this marked as internal in the SSA library?
+    )
+  }
+}
+
+class Node extends TDataFlowNode {
+  /** Gets the expression represented by this node. */
+  Expr asExpr() { this = TValueNode(result) }
+
+  /** Holds if this is the result of evaluating `expr`. */
+  pragma[nomagic]
+  predicate isResultValue(Expr expr) { this.(BuilderNode).isResultValue(expr) }
+
+  /** Holds if this represents the value about to be assigned to `expr` or pattern-matched against `expr`. */
+  pragma[nomagic]
+  predicate isIncomingValue(Expr expr) { this.(BuilderNode).isIncomingValue(expr) }
+
+  /** Holds if this represents the reference to `v` at `repr`. */
+  predicate isLocalVariableRef(AstNode repr, LocalVariable v, VariableRefKind kind) {
+    this.(BuilderNode).isLocalVariableRef(repr, v, kind)
+  }
+
+  /** Holds if this represents the value read from `v` at `repr`. */
+  predicate isLocalVariableRead(AstNode repr, LocalVariable v) {
+    this.(BuilderNode).isLocalVariableRead(repr, v)
+  }
+
+  /** Holds if this represents the value written to `v` at `repr`. */
+  predicate isLocalVariableWrite(AstNode repr, LocalVariable v) {
+    this.(BuilderNode).isLocalVariableWrite(repr, v)
+  }
+
+  /** Holds if this represents the updated state of the value held in `v` after it has been mutated by the surrounding assignment or call. */
+  predicate isLocalVariablePostUpdate(AstNode repr, LocalVariable v) {
+    this.(BuilderNode).isLocalVariablePostUpdate(repr, v)
+  }
+
+  /** Holds if this represents the updated state of the value returned by `expr` after it has been mutated by the surrounding assignment or call. */
+  predicate isPostUpdate(Expr expr) { this.(BuilderNode).isPostUpdate(expr) }
+
+  /**
+   * Holds if this represents the receiver passed to the given callable.
+   *
+   * Note that for non-methods and closures that capture the receiver from the enclosing method,
+   * this node still exists but will typically not flow anywhere.
+   */
+  predicate isReceiverParameter(Callable callable) {
+    this.(BuilderNode).isReceiverParameter(callable)
+  }
+
+  /** Holds if this node represents the receiver argument passed to `call`. */
+  predicate isReceiverArgument(CallExpr call) { this.(BuilderNode).isReceiverArgument(call) }
+
+  /** Holds if this node represents the updated state of the receiver of `call` after the call returns. */
+  predicate isReceiverPostUpdate(CallExpr call) { this.(BuilderNode).isReceiverPostUpdate(call) }
+
+  /** Holds if this is the canonical representative for the given `callable`. */
+  predicate isCallableEx(DataFlowCallable callable) { this.(BuilderNode).isCallableEx(callable) }
+
+  /** Holds if this is the canonical representative for the given `callable`. */
+  predicate isCallable(Callable callable) { this.(BuilderNode).isCallable(callable) }
+
+  /** Holds if this node is the canonical representative for the return value of `callable`. */
+  predicate isReturnNode(Callable callable) { this.(BuilderNode).isReturnNode(callable) }
+
+  /**
+   * Gets the AST node wrapped by this data flow, if any.
+   */
+  AstNode getWrappedAstNode() { result = this.(BuilderNode).getWrappedAstNode() }
+
+  /** Get a string representation of this element. */
+  string toString() {
+    result = this.(Stage2Node).toString()
+    or
+    exists(CaptureSsaOutput::SynthesizedCaptureNode node |
+      this = TCaptureSsaNode(node) and
+      result = "[capture] " + node.toString()
+    )
+    or
+    exists(FlowSummaryOutput::SummaryNode node |
+      this = TSummaryNode(node) and
+      result = node.toString()
+    )
+  }
+
+  /** Gets the location of this data flow node. */
+  Location getLocation() {
+    result = this.(Stage2Node).getLocation()
+    or
+    exists(CaptureSsaOutput::SynthesizedCaptureNode node |
+      this = TCaptureSsaNode(node) and
+      result = node.getLocation()
+    )
+    or
+    this instanceof TSummaryNode and
+    result instanceof EmptyLocation
+  }
+
+  /** Gets the data-flow callable containing this data flow node. */
+  DataFlowCallable getEnclosingCallableEx() {
+    result.asSourceCallable() = this.getWrappedAstNode().getEnclosingCallable()
+    or
+    exists(AstNode repr, LocalVariable var, VariableRefKind kind, ControlFlowNode cfgNode |
+      this.isLocalVariableRef(repr, var, kind) and
+      performsVariableAccess(repr, var, kind, cfgNode) and
+      result.asSourceCallable() = cfgNode.getEnclosingCallable()
+    )
+    or
+    exists(LocalSsaDataFlowOutput::SsaNode node |
+      this = TLocalSsaNode(node) and
+      result.asSourceCallable() = node.getSourceVariable().getDeclaringCallable()
+    )
+    or
+    exists(CaptureSsaOutput::SynthesizedCaptureNode node |
+      this = TCaptureSsaNode(node) and
+      result.asSourceCallable() = node.getEnclosingCallable()
+    )
+    or
+    this.(BuilderNode).isImplicitParameter(result, _)
+    or
+    exists(DataFlowCall call |
+      this.(BuilderNode).isImplicitArgument(call, _, _) and
+      result = call.getEnclosingCallable()
+    )
+    or
+    this.(BuilderNode).isReturnNodeEx(result)
+    or
+    exists(DataFlowCallable callable |
+      this.isCallableEx(callable) and
+      result.asSourceCallable() = callable.asSourceCallable().getEnclosingCallable()
+    )
+    or
+    exists(FlowSummaryOutput::SummaryNode sn |
+      this = TSummaryNode(sn) and
+      result = sn.getEnclosingCallable()
+    )
+  }
+
+  /** Gets the callable containing this data flow node. */
+  Callable getEnclosingCallable() { result = this.getEnclosingCallableEx().asSourceCallable() }
+
+  /**
+   * Holds if this data flow node is associated with the `i`'th index in the given basic block.
+   *
+   * Note that some data flow nodes may have an index appearing before the first or after the
+   * last `ControlFlowNode` node in the basic block. Multiple data flow nodes may share the same control flow position.
+   *
+   * Also note that some data flow nodes have no associated control flow position, either because they are
+   * in unreachable code, or belong to a synthesized callable that has no control flow graph.
+   */
+  predicate hasControlFlowPosition(BasicBlock bb, int i) {
+    this.(Stage2Node).hasControlFlowPosition(bb, i)
+    or
+    exists(CaptureSsaOutput::SynthesizedCaptureNode node |
+      this = TCaptureSsaNode(node) and
+      node.hasCfgNode(bb, i)
     )
   }
 
@@ -321,21 +614,11 @@ class Node extends TDataFlowNode {
    *
    * The post-update node represents the updated state of the value held in this node, after it has been mutated by the surrounding assignment or call.
    */
-  pragma[nomagic]
   Node getPostUpdateNode() {
-    exists(Expr expr |
-      this.isResultValue(expr) and
-      result.isPostUpdate(expr)
-    )
+    result = this.(BuilderNode).getPostUpdateNode()
     or
-    exists(Expr expr, LocalVariable var |
-      this.isLocalVariableRead(expr, var) and
-      result.isLocalVariablePostUpdate(expr, var)
-    )
+    result = getCaptureSsaPostUpdate(this)
     or
-    exists(DataFlowCall call |
-      this.isReceiverArgumentEx(call) and
-      result.isReceiverPostUpdateEx(call)
-    )
+    FlowSummaryOutput::summaryPostUpdateNode(getSummaryNode(result), getSummaryNode(this))
   }
 }

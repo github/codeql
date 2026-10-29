@@ -756,9 +756,24 @@ predicate unqualifiedMemberAccess(
 
 module Public {
   /**
+   * An expression that accesses a named member, either with an explicit base (`MemberAccessExpr`)
+   * or with an implicit base (`UnqualifiedMemberAccess`).
+   */
+  abstract private class MemberAccessImpl extends Expr {
+    /** Gets the name of the member being accessed. */
+    abstract string getMemberName();
+  }
+
+  final class MemberAccess = MemberAccessImpl;
+
+  private class MemberAccessExprImpl extends MemberAccessImpl instanceof MemberAccessExpr {
+    override string getMemberName() { result = MemberAccessExpr.super.getMemberName() }
+  }
+
+  /**
    * A name node appearing in an unqualified position, referring to a member of an enclosing class.
    */
-  class UnqualifiedMemberAccess extends Identifier {
+  class UnqualifiedMemberAccess extends Identifier, MemberAccessImpl {
     private boolean instanceAccess;
     private NameBinding target;
     private ClassLikeDeclaration accessingClass;
@@ -783,7 +798,7 @@ module Public {
     }
 
     /** Gets the simple name of this identifier, that is, the name of the member being accessed. */
-    string getName() { result = this.getValue() }
+    override string getMemberName() { result = this.getValue() }
   }
 }
 
@@ -808,6 +823,22 @@ NameBinding getStaticBindingTargetFromIdentifier(Identifier i) {
  */
 NameBinding getStaticBindingTargetFromRef(AstNode access) {
   result = getStaticBindingTargetFromIdentifier(getIdentifierFromRef(access))
+}
+
+/**
+ * Gets the type being accessed by `access`, if any.
+ */
+Identifier getTypeFromRef(AstNode access) {
+  result = getStaticBindingTargetFromRef(access) and
+  (
+    result = any(ClassLikeDeclaration c).getNameNode()
+    or
+    result = any(TypeAliasDeclaration t).getNameNode()
+    or
+    result = any(TypeParameter t).getNameNode()
+    or
+    result = any(AssociatedTypeDeclaration t).getNameNode()
+  )
 }
 
 /**

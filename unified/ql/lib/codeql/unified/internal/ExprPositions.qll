@@ -16,7 +16,7 @@ predicate isInTypeContext(Expr expr) {
   or
   expr = any(FunctionExpr n).getReturnType()
   or
-  expr = any(AccessorDeclaration n).getType()
+  expr = any(AccessorDeclaration n).getReturnType()
   or
   expr = any(Parameter n).getType()
   or
@@ -32,15 +32,11 @@ predicate isInTypeContext(Expr expr) {
   or
   expr = any(GenericTypeExpr gte).getATypeArgument()
   or
+  expr = any(ModifiedTypeExpr m).getType()
+  or
   expr.getParent() instanceof TypeConstraint
   or
-  exists(Identifier id | id = NameBinding::getStaticBindingTargetFromRef(expr) |
-    id = any(ClassLikeDeclaration c).getNameNode()
-    or
-    id = any(TypeAliasDeclaration t).getNameNode()
-    or
-    id = any(TypeParameter t).getNameNode()
-  )
+  exists(NameBinding::getTypeFromRef(expr))
   or
   any(ExprPositionsPlugin p).isInTypeContext(expr)
   or
@@ -82,4 +78,14 @@ predicate hasResultValue(Expr e) {
   not isInBindingContext(e, _) and
   not isInAssignmentContext(e, any(AssignExpr n)) and // non-compound assignment target
   not e instanceof IdentifierLabel
+}
+
+/** Holds if `e` is returned from `callable` either because it is an operand of `return` or is implicitly returned due to language-specific semantics. */
+predicate isReturnedExpr(Callable callable, Expr e) {
+  exists(ReturnExpr ret |
+    callable = ret.getEnclosingCallable() and
+    e = ret.getValue()
+  )
+  or
+  any(ExprPositionsPlugin p).isReturnedExpr(callable, e)
 }

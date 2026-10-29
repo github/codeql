@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import unified
 private import codeql.util.Unit
 private import codeql.util.Option
@@ -78,6 +81,7 @@ predicate isInstanceMember(Member member) {
   (
     member instanceof VariableDeclaration or
     member instanceof FunctionDeclaration or
+    member instanceof AccessorDeclaration or
     member instanceof ConstructorDeclaration
   ) and
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |
@@ -93,9 +97,9 @@ predicate isInstanceMember(Member member) {
  */
 predicate isStaticMember(Member member) {
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |
-    not any(NameBindingPlugin p).isInstanceMember(cls, member)
-    or
-    member instanceof ConstructorDeclaration
+    not any(NameBindingPlugin p).isInstanceMember(cls, member) or
+    member instanceof ConstructorDeclaration or
+    member instanceof TypeAliasDeclaration
   )
   or
   member = any(TopLevel t).getBody().getAStmt()
