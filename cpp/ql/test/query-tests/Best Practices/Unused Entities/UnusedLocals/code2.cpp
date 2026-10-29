@@ -105,7 +105,7 @@ void test_range_based_for()
 		output(v1);
 	}
 
-	for (int v2 : myContainer) // $ Alert // BAD: v2 is not used
+	for (int v2 : myContainer) // $ MISSING: Alert // BAD: v2 is not used (iterator dereference may have side effects)
 	{
 	}
 }
@@ -191,5 +191,5 @@ int initialize()
 
 void test_initializer_side_effect()
 {
-	int initialized = initialize(); // $ SPURIOUS: Alert // GOOD (initializer has a side effect)
+	int initialized = initialize(); // GOOD (initializer has a side effect)
 }

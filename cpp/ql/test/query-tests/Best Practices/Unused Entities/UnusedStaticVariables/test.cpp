@@ -35,7 +35,7 @@ int initialize()
 	return ++globalVar;
 }
 
-static int initialized = initialize(); // $ SPURIOUS: Alert // GOOD (initializer has a side effect)
+static int initialized = initialize(); // GOOD (initializer has a side effect)
 
 struct WithConstructor
 {
