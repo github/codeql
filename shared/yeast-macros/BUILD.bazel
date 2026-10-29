@@ -8,5 +8,7 @@ rust_proc_macro(
     srcs = glob(["src/**/*.rs"]),
     aliases = aliases(),
     visibility = ["//visibility:public"],
-    deps = all_crate_deps(),
+    deps = all_crate_deps() + [
+        "//shared/yeast-schema",
+    ],
 )
