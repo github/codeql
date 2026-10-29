@@ -1,0 +1,9 @@
+| tst.ts:3:41:3:41 | T | The parameter 'T' has type 'any', but its name coincides with the $@. | tst.ts:3:15:3:15 | T | type parameter T |
+| tst.ts:7:15:7:15 | T | The parameter 'T' has type 'any', but its name coincides with the $@. | tst.ts:7:12:7:12 | T | type parameter T |
+| tst.ts:10:26:10:26 | T | The parameter 'T' has type 'any', but its name coincides with the $@. | tst.ts:9:24:9:24 | T | type parameter T |
+| tst.ts:11:54:11:54 | S | The parameter 'S' has type 'any', but its name coincides with the $@. | tst.ts:11:15:11:15 | S | type parameter S |
+| tst.ts:15:10:15:15 | number | The parameter 'number' has type 'any', but its name coincides with the $@. | tst.ts:15:10:15:15 | number | predefined type 'number' |
+| tst.ts:16:4:16:9 | number | The parameter 'number' has type 'any', but its name coincides with the $@. | tst.ts:16:4:16:9 | number | predefined type 'number' |
+| tst.ts:19:23:19:37 | NumberFormatter | The parameter 'NumberFormatter' has type 'any', but its name coincides with the $@. | tst.ts:14:11:14:25 | NumberFormatter | interface NumberFormatter |
+| tst.ts:22:18:22:23 | MyType | The parameter 'MyType' has type 'any', but its name coincides with the $@. | tst.ts:1:10:1:15 | MyType | imported type MyType |
+| tst.ts:30:18:30:25 | Repeated | The parameter 'Repeated' has type 'any', but its name coincides with the $@. | tst.ts:26:11:26:18 | Repeated | interface Repeated |

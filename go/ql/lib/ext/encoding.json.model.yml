@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["encoding/json", "", False, "Compact", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["encoding/json", "", False, "HTMLEscape", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["encoding/json", "", False, "Indent", "", "", "Argument[1..3]", "Argument[0]", "taint", "manual"]
+      - ["encoding/json", "", False, "Marshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/json", "", False, "MarshalIndent", "", "", "Argument[0..2]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/json", "", False, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["encoding/json", "", False, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["encoding/json", "Decoder", True, "Buffered", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["encoding/json", "Decoder", True, "Decode", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["encoding/json", "Decoder", True, "Token", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/json", "Encoder", True, "Encode", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["encoding/json", "Encoder", True, "SetIndent", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
+      - ["encoding/json", "Marshaler", True, "MarshalJSON", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/json", "Unmarshaler", True, "UnmarshalJSON", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]

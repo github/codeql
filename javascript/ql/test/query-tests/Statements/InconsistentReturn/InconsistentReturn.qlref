@@ -1,0 +1,2 @@
+query: Statements/InconsistentReturn.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

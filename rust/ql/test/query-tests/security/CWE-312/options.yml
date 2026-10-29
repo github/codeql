@@ -1,0 +1,11 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - log = { version = "0.4.25", features = ["kv"] }
+    - simple_logger = { version = "5.0.0" }
+    - log_err = { version = "1.1.1" }
+    - sqlx = { version = "0.8.6", features = ["mysql", "sqlite", "postgres", "runtime-async-std", "tls-native-tls"] }
+    - futures = { version = "0.3" }
+    - aes = { version = "0.8.4" }
+    - aes-gcm = { version = "0.10.3" }
+    - base64 = { version = "0.22.1" }
+    - rusqlite = { version = "0.32" }

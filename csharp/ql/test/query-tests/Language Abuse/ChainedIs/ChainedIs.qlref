@@ -1,0 +1,2 @@
+query: Language Abuse/ChainedIs.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

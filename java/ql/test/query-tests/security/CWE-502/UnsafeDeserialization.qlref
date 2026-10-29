@@ -1,0 +1,4 @@
+query: Security/CWE/CWE-502/UnsafeDeserialization.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql

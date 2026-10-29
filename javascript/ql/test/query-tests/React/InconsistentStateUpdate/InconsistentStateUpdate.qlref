@@ -1,0 +1,2 @@
+query: React/InconsistentStateUpdate.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-691/InsufficientControlFlowManagementWhenUsingBitOperations.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

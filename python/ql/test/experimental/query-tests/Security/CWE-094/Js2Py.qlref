@@ -1,0 +1,2 @@
+query: experimental/Security/CWE-094/Js2Py.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

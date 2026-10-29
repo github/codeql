@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The <code>window.postMessage</code> method allows different windows or iframes
+to communicate directly, even if they were loaded from different origins, circumventing
+the usual same-origin policy.
+</p>
+<p>
+The sender of the message can restrict the origin of the receiver by specifying
+a target origin. If the receiver window does not come from this origin, the
+message is not sent.
+</p>
+<p>
+Alternatively, the sender can specify a target origin of <code>'*'</code>, which means
+that any origin is acceptable and the message is always sent.
+</p>
+<p>
+This feature should not be used if the message being sent contains sensitive data such
+as user credentials: the target window may have been loaded from a malicious site,
+to which the data would then become available.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If possible, specify a target origin when using <code>window.postMessage</code>.
+Alternatively, encrypt the sensitive data before sending it to prevent an unauthorized
+receiver from accessing it.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example code sends user credentials (in this case, their user
+name) to <code>window.parent</code> without checking its origin. If a malicious site
+loads the page containing this code into an iframe it would be able to gain access
+to the user name.
+</p>
+<sample src="examples/PostMessageStar.js"/>
+<p>
+To prevent this from happening, the origin of the target window should be restricted,
+as in this example:
+</p>
+<sample src="examples/PostMessageStarGood.js"/>
+</example>
+
+
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">Window.postMessage</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy">Same-origin policy</a>.</li>
+</references>
+</qhelp>

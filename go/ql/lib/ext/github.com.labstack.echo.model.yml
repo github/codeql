@@ -1,0 +1,33 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      # path-injection
+      - ["github.com/labstack/echo", "Context", True, "Attachment", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "File", "", "", "Argument[0]", "path-injection", "manual"]
+      # url-redirection
+      - ["github.com/labstack/echo", "Context", True, "Redirect", "", "", "Argument[1]", "url-redirection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["github.com/labstack/echo", "Context", True, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "Set", "", "", "Argument[1]", "Argument[receiver]", "taint", "manual"]
+
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/labstack/echo", "Context", True, "Bind", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "Param", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "ParamValues", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "QueryParam", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "QueryParams", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "QueryString", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "FormValue", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "FormParams", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "FormFile", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "MultipartForm", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "Cookies", "", "", "ReturnValue[0]", "remote", "manual"]

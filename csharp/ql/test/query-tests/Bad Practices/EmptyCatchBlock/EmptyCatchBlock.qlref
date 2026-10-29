@@ -1,0 +1,2 @@
+query: Bad Practices/EmptyCatchBlock.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,2 @@
+query: Linq/MissedCastOpportunity.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

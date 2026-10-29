@@ -1,0 +1,3 @@
+| Test.java:21:23:21:48 | ... * ... | Potential overflow in $@ before it is converted to long by use in an assignment context. | Test.java:21:23:21:48 | ... * ... | int multiplication |
+| Test.java:28:23:28:52 | ... + ... | Potential overflow in $@ before it is converted to long by use in an assignment context. | Test.java:28:23:28:48 | ... * ... | int multiplication |
+| Test.java:35:23:35:63 | ...?...:... | Potential overflow in $@ before it is converted to long by use in an assignment context. | Test.java:35:30:35:55 | ... * ... | int multiplication |

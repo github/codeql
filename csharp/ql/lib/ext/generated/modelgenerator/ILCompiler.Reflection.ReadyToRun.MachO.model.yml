@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ILCompiler.Reflection.ReadyToRun.MachO", "MachOImageReader", False, "GetManifestAssemblyMetadata", "(System.Reflection.Metadata.MetadataReader)", "", "Argument[0]", "ReturnValue.SyntheticField[ILCompiler.Reflection.ReadyToRun.ManifestAssemblyMetadata._metadataReader]", "value", "dfc-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.MachO", "MachOImageReader", False, "MachOImageReader", "(System.Byte[])", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["ILCompiler.Reflection.ReadyToRun.MachO", "MachOImageReader", "DumpImageInformation", "(System.IO.TextWriter)", "summary", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.MachO", "MachOImageReader", "GetEntireImage", "()", "summary", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.MachO", "MachOImageReader", "GetOffset", "(System.Int32)", "summary", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.MachO", "MachOImageReader", "GetSections", "()", "summary", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.MachO", "MachOImageReader", "GetStandaloneAssemblyMetadata", "()", "summary", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.MachO", "MachOImageReader", "Read<T>", "(System.Int64,T)", "summary", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.MachO", "MachOImageReader", "TryGetReadyToRunHeader", "(System.Int32,System.Boolean)", "summary", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.MachO", "MachOImageReader", "get_ImageBase", "()", "summary", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.MachO", "MachOImageReader", "get_Machine", "()", "summary", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.MachO", "MachOImageReader", "get_OperatingSystem", "()", "summary", "df-generated"]

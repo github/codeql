@@ -1,0 +1,2 @@
+query: queries/security/cwe-601/UrlRedirect.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

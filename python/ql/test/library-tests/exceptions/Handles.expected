@@ -1,0 +1,10 @@
+| 37 | ControlFlowNode for ExceptStmt | class Exception3 |
+| 39 | ControlFlowNode for ExceptStmt | class Exception2 |
+| 41 | ControlFlowNode for ExceptStmt | class Exception1 |
+| 43 | ControlFlowNode for ExceptStmt | class NotException2 |
+| 47 | ControlFlowNode for ExceptStmt | builtin-class BaseException |
+| 58 | ControlFlowNode for ExceptStmt | class Exception3 |
+| 60 | ControlFlowNode for ExceptStmt | class NotException2 |
+| 62 | ControlFlowNode for ExceptStmt | class InnerException5 |
+| 68 | ControlFlowNode for ExceptStmt | builtin-class IndexError |
+| 70 | ControlFlowNode for ExceptStmt | class Exception1 |

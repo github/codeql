@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - ["System.Net.Sockets", "TcpClient", False, "GetStream", "", "", "ReturnValue", "remote", "manual"]
+      - ["System.Net.Sockets", "UpdClient", False, "EndReceive", "", "", "ReturnValue", "remote", "manual"]
+      - ["System.Net.Sockets", "UpdClient", False, "Receive", "", "", "ReturnValue", "remote", "manual"]
+      - ["System.Net.Sockets", "UpdClient", False, "ReceiveAsync", "", "", "ReturnValue", "remote", "manual"]

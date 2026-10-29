@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["pixijs/pixijs", "*", "input.npm-version", "code-injection", "generated"]

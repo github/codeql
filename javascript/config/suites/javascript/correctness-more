@@ -1,0 +1,19 @@
++ semmlecode-javascript-queries/Expressions/BitwiseSignCheck.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/ExprHasNoEffect.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/SelfAssignment.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/StringInsteadOfRegex.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/SuspiciousInvocation.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/SuspiciousPropAccess.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/UnboundEventHandlerReceiver.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/UnclearOperatorPrecedence.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/UnknownDirective.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/WhitespaceContradictsPrecedence.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/LanguageFeatures/IllegalInvocation.ql: /Correctness/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/InconsistentNew.ql: /Correctness/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/SpuriousArguments.ql: /Correctness/Language Features
++ semmlecode-javascript-queries/Statements/LoopIterationSkippedDueToShifting.ql: /Correctness/Statements
++ semmlecode-javascript-queries/Statements/MisleadingIndentationAfterControlStmt.ql: /Correctness/Statements
++ semmlecode-javascript-queries/Statements/ReturnOutsideFunction.ql: /Correctness/Statements
++ semmlecode-javascript-queries/Statements/SuspiciousUnusedLoopIterationVariable.ql: /Correctness/Statements
++ semmlecode-javascript-queries/Statements/UselessConditional.ql: /Correctness/Statements
++ semmlecode-javascript-queries/Statements/UselessComparisonTest.ql: /Correctness/Statements

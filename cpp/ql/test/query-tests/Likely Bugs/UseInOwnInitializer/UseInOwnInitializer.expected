@@ -1,0 +1,4 @@
+| test.cpp:4:10:4:10 | x | x is used in its own initializer. |
+| test.cpp:8:10:8:10 | x | x is used in its own initializer. |
+| test.cpp:57:10:57:10 | x | x is used in its own initializer. |
+| test.cpp:61:24:61:24 | x | x is used in its own initializer. |

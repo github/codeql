@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.sun.security.ntlm", "Client", False, "Client", "(String,String,String,String,char[])", "", "Argument[4]", "credentials-password", "hq-generated"]
+      - ["com.sun.security.ntlm", "NTLM", False, "getP1", "(char[])", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["com.sun.security.ntlm", "NTLM", False, "getP2", "(char[])", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["com.sun.security.ntlm", "Client", False, "Client", "(String,String,String,String,char[])", "", "Argument[2]", "credentials-username", "hq-generated"]
+      - ["com.sun.security.ntlm", "Server", False, "getPassword", "(String,String)", "", "Argument[1]", "credentials-username", "hq-generated"]

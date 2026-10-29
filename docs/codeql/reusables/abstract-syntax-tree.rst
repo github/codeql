@@ -1,0 +1,1 @@
+The `abstract syntax tree (AST) <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`__ represents the syntactic structure of a program. Nodes on the AST represent elements such as statements and expressions.

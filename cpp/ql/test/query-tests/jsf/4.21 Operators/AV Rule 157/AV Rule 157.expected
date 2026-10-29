@@ -1,0 +1,3 @@
+| test.c:20:9:20:16 | ... && ... | AV Rule 157: The right hand operand of a && or \|\| operator shall not contain side effects. |
+| test.c:26:9:26:24 | ... && ... | AV Rule 157: The right hand operand of a && or \|\| operator shall not contain side effects. |
+| test.c:32:9:32:37 | ... && ... | AV Rule 157: The right hand operand of a && or \|\| operator shall not contain side effects. |

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: summaryModel
+    data:
+      - ["call-me-maybe", "", "Argument[1]", "ReturnValue", "value"]

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  <!-- Adapted from https://github.com/hakanson/ng-owasp -->
+  <body>
+    <div ng-controller="TranslateController as vm">
+      <div ng-bind-html="'GREETING' | translate:vm.parameters | trust"></div> <!-- not OK -->
+      <hr>
+      <div ng-bind-html="'GREETING' | translate:vm.parameters"></div> <!-- OK -->
+      <hr>
+      <div ng-bind="'GREETING' | translate:vm.parameters"></div> <!-- OK -->
+      <hr>
+      <div ng-bind-html="'GREETINGX' | translate:{name:'Kevin'}"></div> <!-- OK -->
+    </div>
+  </body>
+</html>

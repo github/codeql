@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/santhosh-tekuri/xpathparser", "", False, "Parse", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["github.com/santhosh-tekuri/xpathparser", "", False, "MustParse", "", "", "Argument[0]", "xpath-injection", "manual"]

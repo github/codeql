@@ -1,0 +1,47 @@
+| ContravariantInterface<Base>[] | ReadOnlySpan<ContravariantInterface<Base>> |
+| ContravariantInterface<Base>[] | ReadOnlySpan<ContravariantInterface<Derived>> |
+| ContravariantInterface<Base>[] | ReadOnlySpan<object> |
+| ContravariantInterface<Base>[] | Span<ContravariantInterface<Base>> |
+| CovariantInterface<Derived>[] | ReadOnlySpan<CovariantInterface<Base>> |
+| CovariantInterface<Derived>[] | ReadOnlySpan<CovariantInterface<Derived>> |
+| CovariantInterface<Derived>[] | ReadOnlySpan<object> |
+| CovariantInterface<Derived>[] | Span<CovariantInterface<Derived>> |
+| Derived[] | ReadOnlySpan<Base> |
+| Derived[] | ReadOnlySpan<object> |
+| InvariantInterface<Derived>[] | ReadOnlySpan<InvariantInterface<Derived>> |
+| InvariantInterface<Derived>[] | ReadOnlySpan<object> |
+| InvariantInterface<Derived>[] | Span<InvariantInterface<Derived>> |
+| MixedInterface<Derived,Base>[] | ReadOnlySpan<MixedInterface<Base, Derived>> |
+| MixedInterface<Derived,Base>[] | ReadOnlySpan<MixedInterface<Derived, Base>> |
+| MixedInterface<Derived,Base>[] | ReadOnlySpan<object> |
+| MixedInterface<Derived,Base>[] | Span<MixedInterface<Derived, Base>> |
+| ReadOnlySpan<Base> | ReadOnlySpan<object> |
+| ReadOnlySpan<ContravariantInterface<Base>> | ReadOnlySpan<ContravariantInterface<Derived>> |
+| ReadOnlySpan<ContravariantInterface<Base>> | ReadOnlySpan<object> |
+| ReadOnlySpan<ContravariantInterface<Derived>> | ReadOnlySpan<object> |
+| ReadOnlySpan<CovariantInterface<Base>> | ReadOnlySpan<object> |
+| ReadOnlySpan<CovariantInterface<Derived>> | ReadOnlySpan<CovariantInterface<Base>> |
+| ReadOnlySpan<CovariantInterface<Derived>> | ReadOnlySpan<object> |
+| ReadOnlySpan<InvariantInterface<Base>> | ReadOnlySpan<object> |
+| ReadOnlySpan<InvariantInterface<Derived>> | ReadOnlySpan<object> |
+| ReadOnlySpan<MixedInterface<Base, Derived>> | ReadOnlySpan<object> |
+| ReadOnlySpan<MixedInterface<Derived, Base>> | ReadOnlySpan<MixedInterface<Base, Derived>> |
+| ReadOnlySpan<MixedInterface<Derived, Base>> | ReadOnlySpan<object> |
+| ReadOnlySpan<string> | ReadOnlySpan<object> |
+| Span<ContravariantInterface<Base>> | ReadOnlySpan<ContravariantInterface<Base>> |
+| Span<ContravariantInterface<Base>> | ReadOnlySpan<ContravariantInterface<Derived>> |
+| Span<ContravariantInterface<Base>> | ReadOnlySpan<object> |
+| Span<CovariantInterface<Derived>> | ReadOnlySpan<CovariantInterface<Base>> |
+| Span<CovariantInterface<Derived>> | ReadOnlySpan<CovariantInterface<Derived>> |
+| Span<CovariantInterface<Derived>> | ReadOnlySpan<object> |
+| Span<InvariantInterface<Derived>> | ReadOnlySpan<InvariantInterface<Derived>> |
+| Span<InvariantInterface<Derived>> | ReadOnlySpan<object> |
+| Span<MixedInterface<Derived, Base>> | ReadOnlySpan<MixedInterface<Base, Derived>> |
+| Span<MixedInterface<Derived, Base>> | ReadOnlySpan<MixedInterface<Derived, Base>> |
+| Span<MixedInterface<Derived, Base>> | ReadOnlySpan<object> |
+| Span<string> | ReadOnlySpan<object> |
+| Span<string> | ReadOnlySpan<string> |
+| String[] | ReadOnlySpan<object> |
+| String[] | ReadOnlySpan<string> |
+| String[] | Span<string> |
+| string | ReadOnlySpan<char> |

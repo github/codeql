@@ -1,0 +1,17 @@
+<beans>
+	<bean id="shippingService" class="documentation.examples.spring.ShippingService">
+		<!--AVOID: This form of reference cannot be checked by the XML parser-->
+		<property name="dao">
+			<ref bean="dao"/>
+		</property>
+	</bean>
+	
+	<bean id="orderService" class="documentation.examples.spring.OrderService">
+		<!--GOOD: This form of reference allows the XML parser to find any errors at parse time-->
+		<property name="dao">
+			<idref local="dao"/>
+		</property>
+	</bean>
+	
+	<bean id="dao" class="documentation.examples.spring.DAO"/>
+</beans>

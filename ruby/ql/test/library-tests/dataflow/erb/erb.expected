@@ -1,0 +1,111 @@
+models
+edges
+| main.rb:3:9:3:9 | x | main.rb:4:26:4:26 | x | provenance |  |
+| main.rb:3:13:3:21 | call to source | main.rb:3:9:3:9 | x | provenance |  |
+| main.rb:4:9:4:12 | view : View1 [@x] | main.rb:5:16:5:19 | view : View1 [@x] | provenance |  |
+| main.rb:4:16:4:27 | call to new : View1 [@x] | main.rb:4:9:4:12 | view : View1 [@x] | provenance |  |
+| main.rb:4:26:4:26 | x | main.rb:4:16:4:27 | call to new : View1 [@x] | provenance |  |
+| main.rb:4:26:4:26 | x | view1.rb:2:20:2:20 | x | provenance |  |
+| main.rb:5:16:5:19 | view : View1 [@x] | view1.html.erb:2:5:8:1 | self in view1.html.erb : View1 [@x] | provenance |  |
+| main.rb:10:16:10:19 | [post] view : View2 [@x] | main.rb:11:9:11:12 | view : View2 [@x] | provenance |  |
+| main.rb:11:9:11:12 | view : View2 [@x] | view2.rb:2:5:4:7 | self in foo : View2 [@x] | provenance |  |
+| main.rb:15:9:15:9 | x | main.rb:16:26:16:26 | x | provenance |  |
+| main.rb:15:13:15:21 | call to source | main.rb:15:9:15:9 | x | provenance |  |
+| main.rb:16:9:16:12 | view : View3 [@x] | main.rb:17:16:17:19 | view : View3 [@x] | provenance |  |
+| main.rb:16:16:16:27 | call to new : View3 [@x] | main.rb:16:9:16:12 | view : View3 [@x] | provenance |  |
+| main.rb:16:26:16:26 | x | main.rb:16:16:16:27 | call to new : View3 [@x] | provenance |  |
+| main.rb:16:26:16:26 | x | view3.rb:2:20:2:20 | x | provenance |  |
+| main.rb:17:16:17:19 | view : View3 [@x] | view3.html.erb:3:1:4:1 | self in view3.html.erb : View3 [@x] | provenance |  |
+| view1.html.erb:2:5:2:9 | self : View1 [@x] | view1.rb:6:5:8:7 | self in foo : View1 [@x] | provenance |  |
+| view1.html.erb:2:5:8:1 | self in view1.html.erb : View1 [@x] | view1.html.erb:2:5:2:9 | self : View1 [@x] | provenance |  |
+| view1.html.erb:2:5:8:1 | self in view1.html.erb : View1 [@x] | view1.html.erb:7:1:7:5 | self : View1 [@x] | provenance |  |
+| view1.html.erb:6:1:6:14 | [post] self : View1 [@x] | view1.html.erb:7:1:7:5 | self : View1 [@x] | provenance |  |
+| view1.html.erb:6:5:6:13 | call to source | view1.html.erb:6:1:6:14 | [post] self : View1 [@x] | provenance |  |
+| view1.html.erb:6:5:6:13 | call to source | view1.rb:10:13:10:13 | x | provenance |  |
+| view1.html.erb:7:1:7:5 | self : View1 [@x] | view1.rb:6:5:8:7 | self in foo : View1 [@x] | provenance |  |
+| view1.html.erb:7:1:7:5 | self : View1 [@x] | view1.rb:6:5:8:7 | self in foo : View1 [@x] | provenance |  |
+| view1.rb:2:20:2:20 | x | view1.rb:3:14:3:14 | x | provenance |  |
+| view1.rb:3:14:3:14 | x | view1.rb:3:9:3:10 | [post] self [@x] | provenance |  |
+| view1.rb:6:5:8:7 | self in foo : View1 [@x] | view1.rb:7:14:7:15 | self : View1 [@x] | provenance |  |
+| view1.rb:7:14:7:15 | self : View1 [@x] | view1.rb:7:14:7:15 | @x | provenance |  |
+| view1.rb:10:13:10:13 | x | view1.rb:11:14:11:14 | x | provenance |  |
+| view1.rb:11:9:11:10 | [post] self [@x] | view1.rb:10:5:12:7 | self in set [Return] : View1 [@x] | provenance |  |
+| view1.rb:11:14:11:14 | x | view1.rb:11:9:11:10 | [post] self [@x] | provenance |  |
+| view2.html.erb:3:1:3:14 | [post] self : View2 [@x] | view2.html.erb:3:1:4:1 | self in view2.html.erb [Return] : View2 [@x] | provenance |  |
+| view2.html.erb:3:1:4:1 | self in view2.html.erb [Return] : View2 [@x] | main.rb:10:16:10:19 | [post] view : View2 [@x] | provenance |  |
+| view2.html.erb:3:5:3:13 | call to source | view2.html.erb:3:1:3:14 | [post] self : View2 [@x] | provenance |  |
+| view2.html.erb:3:5:3:13 | call to source | view2.rb:6:13:6:13 | x | provenance |  |
+| view2.rb:2:5:4:7 | self in foo : View2 [@x] | view2.rb:3:14:3:15 | self : View2 [@x] | provenance |  |
+| view2.rb:3:14:3:15 | self : View2 [@x] | view2.rb:3:14:3:15 | @x | provenance |  |
+| view2.rb:6:13:6:13 | x | view2.rb:7:14:7:14 | x | provenance |  |
+| view2.rb:7:9:7:10 | [post] self [@x] | view2.rb:6:5:8:7 | self in set [Return] : View2 [@x] | provenance |  |
+| view2.rb:7:14:7:14 | x | view2.rb:7:9:7:10 | [post] self [@x] | provenance |  |
+| view3.html.erb:3:1:4:1 | self in view3.html.erb : View3 [@x] | view3.html.erb:3:6:3:8 | self : View3 [@x] | provenance |  |
+| view3.html.erb:3:6:3:8 | self : View3 [@x] | view3.html.erb:3:6:3:8 | call to get | provenance |  |
+| view3.html.erb:3:6:3:8 | self : View3 [@x] | view3.rb:6:5:8:7 | self in get : View3 [@x] | provenance |  |
+| view3.rb:2:20:2:20 | x | view3.rb:3:14:3:14 | x | provenance |  |
+| view3.rb:3:14:3:14 | x | view3.rb:3:9:3:10 | [post] self [@x] | provenance |  |
+| view3.rb:6:5:8:7 | self in get : View3 [@x] | view3.rb:7:9:7:10 | self : View3 [@x] | provenance |  |
+| view3.rb:7:9:7:10 | self : View3 [@x] | view3.rb:7:9:7:10 | @x | provenance |  |
+nodes
+| main.rb:3:9:3:9 | x | semmle.label | x |
+| main.rb:3:13:3:21 | call to source | semmle.label | call to source |
+| main.rb:4:9:4:12 | view : View1 [@x] | semmle.label | view : View1 [@x] |
+| main.rb:4:16:4:27 | call to new : View1 [@x] | semmle.label | call to new : View1 [@x] |
+| main.rb:4:26:4:26 | x | semmle.label | x |
+| main.rb:5:16:5:19 | view : View1 [@x] | semmle.label | view : View1 [@x] |
+| main.rb:10:16:10:19 | [post] view : View2 [@x] | semmle.label | [post] view : View2 [@x] |
+| main.rb:11:9:11:12 | view : View2 [@x] | semmle.label | view : View2 [@x] |
+| main.rb:15:9:15:9 | x | semmle.label | x |
+| main.rb:15:13:15:21 | call to source | semmle.label | call to source |
+| main.rb:16:9:16:12 | view : View3 [@x] | semmle.label | view : View3 [@x] |
+| main.rb:16:16:16:27 | call to new : View3 [@x] | semmle.label | call to new : View3 [@x] |
+| main.rb:16:26:16:26 | x | semmle.label | x |
+| main.rb:17:16:17:19 | view : View3 [@x] | semmle.label | view : View3 [@x] |
+| view1.html.erb:2:5:2:9 | self : View1 [@x] | semmle.label | self : View1 [@x] |
+| view1.html.erb:2:5:8:1 | self in view1.html.erb : View1 [@x] | semmle.label | self in view1.html.erb : View1 [@x] |
+| view1.html.erb:6:1:6:14 | [post] self : View1 [@x] | semmle.label | [post] self : View1 [@x] |
+| view1.html.erb:6:5:6:13 | call to source | semmle.label | call to source |
+| view1.html.erb:7:1:7:5 | self : View1 [@x] | semmle.label | self : View1 [@x] |
+| view1.html.erb:7:1:7:5 | self : View1 [@x] | semmle.label | self : View1 [@x] |
+| view1.rb:2:20:2:20 | x | semmle.label | x |
+| view1.rb:3:9:3:10 | [post] self [@x] | semmle.label | [post] self [@x] |
+| view1.rb:3:14:3:14 | x | semmle.label | x |
+| view1.rb:6:5:8:7 | self in foo : View1 [@x] | semmle.label | self in foo : View1 [@x] |
+| view1.rb:7:14:7:15 | @x | semmle.label | @x |
+| view1.rb:7:14:7:15 | self : View1 [@x] | semmle.label | self : View1 [@x] |
+| view1.rb:10:5:12:7 | self in set [Return] : View1 [@x] | semmle.label | self in set [Return] : View1 [@x] |
+| view1.rb:10:13:10:13 | x | semmle.label | x |
+| view1.rb:11:9:11:10 | [post] self [@x] | semmle.label | [post] self [@x] |
+| view1.rb:11:14:11:14 | x | semmle.label | x |
+| view2.html.erb:3:1:3:14 | [post] self : View2 [@x] | semmle.label | [post] self : View2 [@x] |
+| view2.html.erb:3:1:4:1 | self in view2.html.erb [Return] : View2 [@x] | semmle.label | self in view2.html.erb [Return] : View2 [@x] |
+| view2.html.erb:3:5:3:13 | call to source | semmle.label | call to source |
+| view2.rb:2:5:4:7 | self in foo : View2 [@x] | semmle.label | self in foo : View2 [@x] |
+| view2.rb:3:14:3:15 | @x | semmle.label | @x |
+| view2.rb:3:14:3:15 | self : View2 [@x] | semmle.label | self : View2 [@x] |
+| view2.rb:6:5:8:7 | self in set [Return] : View2 [@x] | semmle.label | self in set [Return] : View2 [@x] |
+| view2.rb:6:13:6:13 | x | semmle.label | x |
+| view2.rb:7:9:7:10 | [post] self [@x] | semmle.label | [post] self [@x] |
+| view2.rb:7:14:7:14 | x | semmle.label | x |
+| view3.html.erb:3:1:4:1 | self in view3.html.erb : View3 [@x] | semmle.label | self in view3.html.erb : View3 [@x] |
+| view3.html.erb:3:6:3:8 | call to get | semmle.label | call to get |
+| view3.html.erb:3:6:3:8 | self : View3 [@x] | semmle.label | self : View3 [@x] |
+| view3.rb:2:20:2:20 | x | semmle.label | x |
+| view3.rb:3:9:3:10 | [post] self [@x] | semmle.label | [post] self [@x] |
+| view3.rb:3:14:3:14 | x | semmle.label | x |
+| view3.rb:6:5:8:7 | self in get : View3 [@x] | semmle.label | self in get : View3 [@x] |
+| view3.rb:7:9:7:10 | @x | semmle.label | @x |
+| view3.rb:7:9:7:10 | self : View3 [@x] | semmle.label | self : View3 [@x] |
+subpaths
+| main.rb:4:26:4:26 | x | view1.rb:2:20:2:20 | x | view1.rb:3:9:3:10 | [post] self [@x] | main.rb:4:16:4:27 | call to new : View1 [@x] |
+| main.rb:16:26:16:26 | x | view3.rb:2:20:2:20 | x | view3.rb:3:9:3:10 | [post] self [@x] | main.rb:16:16:16:27 | call to new : View3 [@x] |
+| view1.html.erb:6:5:6:13 | call to source | view1.rb:10:13:10:13 | x | view1.rb:10:5:12:7 | self in set [Return] : View1 [@x] | view1.html.erb:6:1:6:14 | [post] self : View1 [@x] |
+| view2.html.erb:3:5:3:13 | call to source | view2.rb:6:13:6:13 | x | view2.rb:6:5:8:7 | self in set [Return] : View2 [@x] | view2.html.erb:3:1:3:14 | [post] self : View2 [@x] |
+| view3.html.erb:3:6:3:8 | self : View3 [@x] | view3.rb:6:5:8:7 | self in get : View3 [@x] | view3.rb:7:9:7:10 | @x | view3.html.erb:3:6:3:8 | call to get |
+testFailures
+#select
+| view1.rb:7:14:7:15 | @x | main.rb:3:13:3:21 | call to source | view1.rb:7:14:7:15 | @x | $@ | main.rb:3:13:3:21 | call to source | call to source |
+| view1.rb:7:14:7:15 | @x | view1.html.erb:6:5:6:13 | call to source | view1.rb:7:14:7:15 | @x | $@ | view1.html.erb:6:5:6:13 | call to source | call to source |
+| view2.rb:3:14:3:15 | @x | view2.html.erb:3:5:3:13 | call to source | view2.rb:3:14:3:15 | @x | $@ | view2.html.erb:3:5:3:13 | call to source | call to source |
+| view3.html.erb:3:6:3:8 | call to get | main.rb:15:13:15:21 | call to source | view3.html.erb:3:6:3:8 | call to get | $@ | main.rb:15:13:15:21 | call to source | call to source |

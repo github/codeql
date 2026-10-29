@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.ibatis.mapping", "BoundSql", True, "getSql", "()", "", "Argument[this]", "ReturnValue", "taint", "ai-manual"]

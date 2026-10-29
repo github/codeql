@@ -1,0 +1,32 @@
+# Models for the `biscotti` crate.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["<biscotti::response_cookie::ResponseCookie>::new", "ReturnValue", "cookie-create", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie as core::convert::From>::from", "ReturnValue", "cookie-create", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["<biscotti::response_cookies::ResponseCookies>::insert", "Argument[0]", "cookie-use", "manual"]
+      - ["<biscotti::crypto::master::Key>::from", "Argument[0]", "credentials-key", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["<biscotti::response_cookie::ResponseCookie>::set_secure", "Argument[self].OptionalBarrier[cookie-secure-arg0]", "ReturnValue", "taint", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie>::set_partitioned", "Argument[self].OptionalBarrier[cookie-partitioned-arg0]", "ReturnValue", "taint", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie>::set_name", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie>::set_value", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie>::set_http_only", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie>::set_same_site", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie>::set_max_age", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie>::set_path", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie>::unset_path", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie>::set_domain", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie>::unset_domain", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie>::set_expires", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie>::unset_expires", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<biscotti::response_cookie::ResponseCookie>::make_permanent", "Argument[self]", "ReturnValue", "taint", "manual"]

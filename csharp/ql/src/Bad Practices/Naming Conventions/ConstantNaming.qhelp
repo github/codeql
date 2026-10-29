@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Constants not named with PascalCase can be confusing to other developers.</p>
+
+</overview>
+<recommendation>
+<p>As per Microsoft's suggested naming conventions, all constant fields should be named using 
+PascalCase.</p>
+
+</recommendation>
+<example>
+<p>This example demonstrates several different capitalizations that trigger alerts for this 
+rule. Another developer working on the program might not realize they refer to constants. The <code>
+PascalCase</code> constant is the only one named correctly.</p>
+<sample src="ConstantNaming.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-gb/library/vstudio/ms229043%28v=vs.100%29.aspx">Capitalization Conventions</a>.</li>
+
+</references>
+</qhelp>

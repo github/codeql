@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Speech.AudioFormat", "SpeechAudioFormatInfo", "Equals", "(System.Object)", "summary", "df-generated"]
+      - ["System.Speech.AudioFormat", "SpeechAudioFormatInfo", "FormatSpecificData", "()", "summary", "df-generated"]
+      - ["System.Speech.AudioFormat", "SpeechAudioFormatInfo", "GetHashCode", "()", "summary", "df-generated"]
+      - ["System.Speech.AudioFormat", "SpeechAudioFormatInfo", "SpeechAudioFormatInfo", "(System.Int32,System.Speech.AudioFormat.AudioBitsPerSample,System.Speech.AudioFormat.AudioChannel)", "summary", "df-generated"]
+      - ["System.Speech.AudioFormat", "SpeechAudioFormatInfo", "SpeechAudioFormatInfo", "(System.Speech.AudioFormat.EncodingFormat,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Byte[])", "summary", "df-generated"]
+      - ["System.Speech.AudioFormat", "SpeechAudioFormatInfo", "get_AverageBytesPerSecond", "()", "summary", "df-generated"]
+      - ["System.Speech.AudioFormat", "SpeechAudioFormatInfo", "get_BitsPerSample", "()", "summary", "df-generated"]
+      - ["System.Speech.AudioFormat", "SpeechAudioFormatInfo", "get_BlockAlign", "()", "summary", "df-generated"]
+      - ["System.Speech.AudioFormat", "SpeechAudioFormatInfo", "get_ChannelCount", "()", "summary", "df-generated"]
+      - ["System.Speech.AudioFormat", "SpeechAudioFormatInfo", "get_EncodingFormat", "()", "summary", "df-generated"]
+      - ["System.Speech.AudioFormat", "SpeechAudioFormatInfo", "get_SamplesPerSecond", "()", "summary", "df-generated"]

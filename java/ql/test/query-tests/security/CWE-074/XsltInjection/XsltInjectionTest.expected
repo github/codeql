@@ -1,0 +1,245 @@
+#select
+| XsltInjectionTest.java:31:5:31:59 | newTransformer(...) | XsltInjectionTest.java:30:44:30:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:31:5:31:59 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:30:44:30:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:36:5:36:74 | newTransformer(...) | XsltInjectionTest.java:35:66:35:88 | getInputStream(...) : InputStream | XsltInjectionTest.java:36:5:36:74 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:35:66:35:88 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:43:5:43:59 | newTransformer(...) | XsltInjectionTest.java:40:45:40:70 | param : String | XsltInjectionTest.java:43:5:43:59 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:40:45:40:70 | param | this user input |
+| XsltInjectionTest.java:48:5:48:74 | newTransformer(...) | XsltInjectionTest.java:47:54:47:76 | getInputStream(...) : InputStream | XsltInjectionTest.java:48:5:48:74 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:47:54:47:76 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:54:5:54:59 | newTransformer(...) | XsltInjectionTest.java:53:67:53:89 | getInputStream(...) : InputStream | XsltInjectionTest.java:54:5:54:59 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:53:67:53:89 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:60:5:60:59 | newTransformer(...) | XsltInjectionTest.java:59:75:59:97 | getInputStream(...) : InputStream | XsltInjectionTest.java:60:5:60:59 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:59:75:59:97 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:66:5:66:74 | newTransformer(...) | XsltInjectionTest.java:65:31:65:53 | getInputStream(...) : InputStream | XsltInjectionTest.java:66:5:66:74 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:65:31:65:53 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:72:5:72:59 | newTransformer(...) | XsltInjectionTest.java:71:73:71:95 | getInputStream(...) : InputStream | XsltInjectionTest.java:72:5:72:59 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:71:73:71:95 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:80:5:80:34 | newTransformer(...) | XsltInjectionTest.java:76:44:76:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:80:5:80:34 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:76:44:76:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:87:5:87:34 | newTransformer(...) | XsltInjectionTest.java:84:44:84:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:87:5:87:34 | newTransformer(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:84:44:84:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:94:5:94:35 | load(...) | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:94:5:94:35 | load(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:95:5:95:37 | load30(...) | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:95:5:95:37 | load30(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:96:5:96:37 | load30(...) | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:96:5:96:37 | load30(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:97:5:97:37 | load30(...) | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:97:5:97:37 | load30(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:98:5:98:37 | load30(...) | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:98:5:98:37 | load30(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:99:5:99:37 | load30(...) | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:99:5:99:37 | load30(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:100:5:100:37 | load30(...) | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:100:5:100:37 | load30(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:101:5:101:37 | load30(...) | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:101:5:101:37 | load30(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:102:5:102:37 | load30(...) | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:102:5:102:37 | load30(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:103:5:103:37 | load30(...) | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:103:5:103:37 | load30(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:91:44:91:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:112:5:112:46 | load(...) | XsltInjectionTest.java:107:36:107:61 | param : String | XsltInjectionTest.java:112:5:112:46 | load(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:107:36:107:61 | param | this user input |
+| XsltInjectionTest.java:113:5:113:49 | load(...) | XsltInjectionTest.java:107:64:107:76 | socket : Socket | XsltInjectionTest.java:113:5:113:49 | load(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:107:64:107:76 | socket | this user input |
+| XsltInjectionTest.java:113:5:113:49 | load(...) | XsltInjectionTest.java:109:44:109:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:113:5:113:49 | load(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:109:44:109:66 | getInputStream(...) | this user input |
+| XsltInjectionTest.java:114:5:114:50 | load(...) | XsltInjectionTest.java:107:36:107:61 | param : String | XsltInjectionTest.java:114:5:114:50 | load(...) | XSLT transformation might include stylesheet from $@. | XsltInjectionTest.java:107:36:107:61 | param | this user input |
+edges
+| XsltInjectionTest.java:30:27:30:67 | new StreamSource(...) : StreamSource | XsltInjectionTest.java:31:53:31:58 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:30:44:30:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:30:27:30:67 | new StreamSource(...) : StreamSource | provenance | Src:MaD:7 MaD:14 |
+| XsltInjectionTest.java:31:53:31:58 | source : StreamSource | XsltInjectionTest.java:31:5:31:59 | newTransformer(...) | provenance | Config Sink:MaD:1 |
+| XsltInjectionTest.java:35:27:35:90 | new StreamSource(...) : StreamSource | XsltInjectionTest.java:36:51:36:56 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:35:44:35:89 | new InputStreamReader(...) : InputStreamReader | XsltInjectionTest.java:35:27:35:90 | new StreamSource(...) : StreamSource | provenance | MaD:14 |
+| XsltInjectionTest.java:35:66:35:88 | getInputStream(...) : InputStream | XsltInjectionTest.java:35:44:35:89 | new InputStreamReader(...) : InputStreamReader | provenance | Src:MaD:7 MaD:8 |
+| XsltInjectionTest.java:36:5:36:57 | newTemplates(...) : Templates | XsltInjectionTest.java:36:5:36:74 | newTransformer(...) | provenance | Config Sink:MaD:1 |
+| XsltInjectionTest.java:36:5:36:57 | newTemplates(...) : Templates | XsltInjectionTest.java:36:5:36:74 | newTransformer(...) | provenance | MaD:15 Sink:MaD:1 |
+| XsltInjectionTest.java:36:51:36:56 | source : StreamSource | XsltInjectionTest.java:36:5:36:57 | newTemplates(...) : Templates | provenance | Config |
+| XsltInjectionTest.java:36:51:36:56 | source : StreamSource | XsltInjectionTest.java:36:5:36:57 | newTemplates(...) : Templates | provenance | MaD:16 |
+| XsltInjectionTest.java:40:45:40:70 | param : String | XsltInjectionTest.java:42:61:42:64 | xslt : String | provenance |  |
+| XsltInjectionTest.java:42:27:42:66 | new StreamSource(...) : StreamSource | XsltInjectionTest.java:43:53:43:58 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:42:44:42:65 | new StringReader(...) : StringReader | XsltInjectionTest.java:42:27:42:66 | new StreamSource(...) : StreamSource | provenance | MaD:14 |
+| XsltInjectionTest.java:42:61:42:64 | xslt : String | XsltInjectionTest.java:42:44:42:65 | new StringReader(...) : StringReader | provenance | MaD:9 |
+| XsltInjectionTest.java:43:53:43:58 | source : StreamSource | XsltInjectionTest.java:43:5:43:59 | newTransformer(...) | provenance | Config Sink:MaD:1 |
+| XsltInjectionTest.java:47:24:47:78 | new SAXSource(...) : SAXSource | XsltInjectionTest.java:48:51:48:56 | source : SAXSource | provenance |  |
+| XsltInjectionTest.java:47:38:47:77 | new InputSource(...) : InputSource | XsltInjectionTest.java:47:24:47:78 | new SAXSource(...) : SAXSource | provenance | MaD:12 |
+| XsltInjectionTest.java:47:54:47:76 | getInputStream(...) : InputStream | XsltInjectionTest.java:47:38:47:77 | new InputSource(...) : InputSource | provenance | Src:MaD:7 MaD:17 |
+| XsltInjectionTest.java:48:5:48:57 | newTemplates(...) : Templates | XsltInjectionTest.java:48:5:48:74 | newTransformer(...) | provenance | Config Sink:MaD:1 |
+| XsltInjectionTest.java:48:5:48:57 | newTemplates(...) : Templates | XsltInjectionTest.java:48:5:48:74 | newTransformer(...) | provenance | MaD:15 Sink:MaD:1 |
+| XsltInjectionTest.java:48:51:48:56 | source : SAXSource | XsltInjectionTest.java:48:5:48:57 | newTemplates(...) : Templates | provenance | Config |
+| XsltInjectionTest.java:48:51:48:56 | source : SAXSource | XsltInjectionTest.java:48:5:48:57 | newTemplates(...) : Templates | provenance | MaD:16 |
+| XsltInjectionTest.java:53:9:53:92 | new SAXSource(...) : SAXSource | XsltInjectionTest.java:54:53:54:58 | source : SAXSource | provenance |  |
+| XsltInjectionTest.java:53:29:53:91 | new InputSource(...) : InputSource | XsltInjectionTest.java:53:9:53:92 | new SAXSource(...) : SAXSource | provenance | MaD:13 |
+| XsltInjectionTest.java:53:45:53:90 | new InputStreamReader(...) : InputStreamReader | XsltInjectionTest.java:53:29:53:91 | new InputSource(...) : InputSource | provenance | MaD:17 |
+| XsltInjectionTest.java:53:67:53:89 | getInputStream(...) : InputStream | XsltInjectionTest.java:53:45:53:90 | new InputStreamReader(...) : InputStreamReader | provenance | Src:MaD:7 MaD:8 |
+| XsltInjectionTest.java:54:53:54:58 | source : SAXSource | XsltInjectionTest.java:54:5:54:59 | newTransformer(...) | provenance | Config Sink:MaD:1 |
+| XsltInjectionTest.java:59:9:59:99 | new StAXSource(...) : StAXSource | XsltInjectionTest.java:60:53:60:58 | source : StAXSource | provenance |  |
+| XsltInjectionTest.java:59:24:59:98 | createXMLEventReader(...) : XMLEventReader | XsltInjectionTest.java:59:9:59:99 | new StAXSource(...) : StAXSource | provenance | Config |
+| XsltInjectionTest.java:59:75:59:97 | getInputStream(...) : InputStream | XsltInjectionTest.java:59:24:59:98 | createXMLEventReader(...) : XMLEventReader | provenance | Src:MaD:7 Config |
+| XsltInjectionTest.java:60:53:60:58 | source : StAXSource | XsltInjectionTest.java:60:5:60:59 | newTransformer(...) | provenance | Config Sink:MaD:1 |
+| XsltInjectionTest.java:64:25:65:56 | new StAXSource(...) : StAXSource | XsltInjectionTest.java:66:51:66:56 | source : StAXSource | provenance |  |
+| XsltInjectionTest.java:64:40:65:55 | createXMLStreamReader(...) : XMLStreamReader | XsltInjectionTest.java:64:25:65:56 | new StAXSource(...) : StAXSource | provenance | Config |
+| XsltInjectionTest.java:65:9:65:54 | new InputStreamReader(...) : InputStreamReader | XsltInjectionTest.java:64:40:65:55 | createXMLStreamReader(...) : XMLStreamReader | provenance | Config |
+| XsltInjectionTest.java:65:31:65:53 | getInputStream(...) : InputStream | XsltInjectionTest.java:65:9:65:54 | new InputStreamReader(...) : InputStreamReader | provenance | Src:MaD:7 MaD:8 |
+| XsltInjectionTest.java:66:5:66:57 | newTemplates(...) : Templates | XsltInjectionTest.java:66:5:66:74 | newTransformer(...) | provenance | Config Sink:MaD:1 |
+| XsltInjectionTest.java:66:5:66:57 | newTemplates(...) : Templates | XsltInjectionTest.java:66:5:66:74 | newTransformer(...) | provenance | MaD:15 Sink:MaD:1 |
+| XsltInjectionTest.java:66:51:66:56 | source : StAXSource | XsltInjectionTest.java:66:5:66:57 | newTemplates(...) : Templates | provenance | Config |
+| XsltInjectionTest.java:66:51:66:56 | source : StAXSource | XsltInjectionTest.java:66:5:66:57 | newTemplates(...) : Templates | provenance | MaD:16 |
+| XsltInjectionTest.java:70:24:71:97 | new DOMSource(...) : DOMSource | XsltInjectionTest.java:72:53:72:58 | source : DOMSource | provenance |  |
+| XsltInjectionTest.java:71:9:71:96 | parse(...) : Document | XsltInjectionTest.java:70:24:71:97 | new DOMSource(...) : DOMSource | provenance | Config |
+| XsltInjectionTest.java:71:73:71:95 | getInputStream(...) : InputStream | XsltInjectionTest.java:71:9:71:96 | parse(...) : Document | provenance | Src:MaD:7 Config |
+| XsltInjectionTest.java:72:53:72:58 | source : DOMSource | XsltInjectionTest.java:72:5:72:59 | newTransformer(...) | provenance | Config Sink:MaD:1 |
+| XsltInjectionTest.java:76:27:76:67 | new StreamSource(...) : StreamSource | XsltInjectionTest.java:80:28:80:33 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:76:44:76:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:76:27:76:67 | new StreamSource(...) : StreamSource | provenance | Src:MaD:7 MaD:14 |
+| XsltInjectionTest.java:80:28:80:33 | source : StreamSource | XsltInjectionTest.java:80:5:80:34 | newTransformer(...) | provenance | Config Sink:MaD:1 |
+| XsltInjectionTest.java:84:27:84:67 | new StreamSource(...) : StreamSource | XsltInjectionTest.java:87:28:87:33 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:84:44:84:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:84:27:84:67 | new StreamSource(...) : StreamSource | provenance | Src:MaD:7 MaD:14 |
+| XsltInjectionTest.java:87:28:87:33 | source : StreamSource | XsltInjectionTest.java:87:5:87:34 | newTransformer(...) | provenance | Config Sink:MaD:1 |
+| XsltInjectionTest.java:91:27:91:67 | new StreamSource(...) : StreamSource | XsltInjectionTest.java:94:22:94:27 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:91:44:91:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:91:27:91:67 | new StreamSource(...) : StreamSource | provenance | Src:MaD:7 MaD:14 |
+| XsltInjectionTest.java:94:5:94:28 | compile(...) : XsltExecutable | XsltInjectionTest.java:94:5:94:35 | load(...) | provenance | Config Sink:MaD:6 |
+| XsltInjectionTest.java:94:22:94:27 | source : StreamSource | XsltInjectionTest.java:94:5:94:28 | compile(...) : XsltExecutable | provenance | Config |
+| XsltInjectionTest.java:94:22:94:27 | source : StreamSource | XsltInjectionTest.java:95:22:95:27 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:95:5:95:28 | compile(...) : XsltExecutable | XsltInjectionTest.java:95:5:95:37 | load30(...) | provenance | Config Sink:MaD:5 |
+| XsltInjectionTest.java:95:22:95:27 | source : StreamSource | XsltInjectionTest.java:95:5:95:28 | compile(...) : XsltExecutable | provenance | Config |
+| XsltInjectionTest.java:95:22:95:27 | source : StreamSource | XsltInjectionTest.java:96:22:96:27 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:96:5:96:28 | compile(...) : XsltExecutable | XsltInjectionTest.java:96:5:96:37 | load30(...) | provenance | Config Sink:MaD:2 |
+| XsltInjectionTest.java:96:22:96:27 | source : StreamSource | XsltInjectionTest.java:96:5:96:28 | compile(...) : XsltExecutable | provenance | Config |
+| XsltInjectionTest.java:96:22:96:27 | source : StreamSource | XsltInjectionTest.java:97:22:97:27 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:97:5:97:28 | compile(...) : XsltExecutable | XsltInjectionTest.java:97:5:97:37 | load30(...) | provenance | Config Sink:MaD:2 |
+| XsltInjectionTest.java:97:22:97:27 | source : StreamSource | XsltInjectionTest.java:97:5:97:28 | compile(...) : XsltExecutable | provenance | Config |
+| XsltInjectionTest.java:97:22:97:27 | source : StreamSource | XsltInjectionTest.java:98:22:98:27 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:98:5:98:28 | compile(...) : XsltExecutable | XsltInjectionTest.java:98:5:98:37 | load30(...) | provenance | Config Sink:MaD:2 |
+| XsltInjectionTest.java:98:22:98:27 | source : StreamSource | XsltInjectionTest.java:98:5:98:28 | compile(...) : XsltExecutable | provenance | Config |
+| XsltInjectionTest.java:98:22:98:27 | source : StreamSource | XsltInjectionTest.java:99:22:99:27 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:99:5:99:28 | compile(...) : XsltExecutable | XsltInjectionTest.java:99:5:99:37 | load30(...) | provenance | Config Sink:MaD:2 |
+| XsltInjectionTest.java:99:22:99:27 | source : StreamSource | XsltInjectionTest.java:99:5:99:28 | compile(...) : XsltExecutable | provenance | Config |
+| XsltInjectionTest.java:99:22:99:27 | source : StreamSource | XsltInjectionTest.java:100:22:100:27 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:100:5:100:28 | compile(...) : XsltExecutable | XsltInjectionTest.java:100:5:100:37 | load30(...) | provenance | Config Sink:MaD:3 |
+| XsltInjectionTest.java:100:22:100:27 | source : StreamSource | XsltInjectionTest.java:100:5:100:28 | compile(...) : XsltExecutable | provenance | Config |
+| XsltInjectionTest.java:100:22:100:27 | source : StreamSource | XsltInjectionTest.java:101:22:101:27 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:101:5:101:28 | compile(...) : XsltExecutable | XsltInjectionTest.java:101:5:101:37 | load30(...) | provenance | Config Sink:MaD:3 |
+| XsltInjectionTest.java:101:22:101:27 | source : StreamSource | XsltInjectionTest.java:101:5:101:28 | compile(...) : XsltExecutable | provenance | Config |
+| XsltInjectionTest.java:101:22:101:27 | source : StreamSource | XsltInjectionTest.java:102:22:102:27 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:102:5:102:28 | compile(...) : XsltExecutable | XsltInjectionTest.java:102:5:102:37 | load30(...) | provenance | Config Sink:MaD:4 |
+| XsltInjectionTest.java:102:22:102:27 | source : StreamSource | XsltInjectionTest.java:102:5:102:28 | compile(...) : XsltExecutable | provenance | Config |
+| XsltInjectionTest.java:102:22:102:27 | source : StreamSource | XsltInjectionTest.java:103:22:103:27 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:103:5:103:28 | compile(...) : XsltExecutable | XsltInjectionTest.java:103:5:103:37 | load30(...) | provenance | Config Sink:MaD:4 |
+| XsltInjectionTest.java:103:22:103:27 | source : StreamSource | XsltInjectionTest.java:103:5:103:28 | compile(...) : XsltExecutable | provenance | Config |
+| XsltInjectionTest.java:107:36:107:61 | param : String | XsltInjectionTest.java:108:23:108:27 | param : String | provenance |  |
+| XsltInjectionTest.java:107:64:107:76 | socket : Socket | XsltInjectionTest.java:109:44:109:49 | socket : Socket | provenance |  |
+| XsltInjectionTest.java:108:15:108:28 | new URI(...) : URI | XsltInjectionTest.java:112:36:112:38 | uri : URI | provenance |  |
+| XsltInjectionTest.java:108:23:108:27 | param : String | XsltInjectionTest.java:108:15:108:28 | new URI(...) : URI | provenance | MaD:11 |
+| XsltInjectionTest.java:109:27:109:67 | new StreamSource(...) : StreamSource | XsltInjectionTest.java:113:29:113:34 | source : StreamSource | provenance |  |
+| XsltInjectionTest.java:109:44:109:49 | socket : Socket | XsltInjectionTest.java:109:44:109:66 | getInputStream(...) : InputStream | provenance | MaD:10 |
+| XsltInjectionTest.java:109:44:109:66 | getInputStream(...) : InputStream | XsltInjectionTest.java:109:27:109:67 | new StreamSource(...) : StreamSource | provenance | Src:MaD:7 MaD:14 |
+| XsltInjectionTest.java:112:5:112:39 | loadExecutablePackage(...) : XsltExecutable | XsltInjectionTest.java:112:5:112:46 | load(...) | provenance | Config Sink:MaD:6 |
+| XsltInjectionTest.java:112:36:112:38 | uri : URI | XsltInjectionTest.java:112:5:112:39 | loadExecutablePackage(...) : XsltExecutable | provenance | Config |
+| XsltInjectionTest.java:112:36:112:38 | uri : URI | XsltInjectionTest.java:114:33:114:35 | uri : URI | provenance |  |
+| XsltInjectionTest.java:113:5:113:35 | compilePackage(...) : XsltPackage | XsltInjectionTest.java:113:5:113:42 | link(...) : XsltExecutable | provenance | Config |
+| XsltInjectionTest.java:113:5:113:42 | link(...) : XsltExecutable | XsltInjectionTest.java:113:5:113:49 | load(...) | provenance | Config Sink:MaD:6 |
+| XsltInjectionTest.java:113:29:113:34 | source : StreamSource | XsltInjectionTest.java:113:5:113:35 | compilePackage(...) : XsltPackage | provenance | Config |
+| XsltInjectionTest.java:114:5:114:36 | loadLibraryPackage(...) : XsltPackage | XsltInjectionTest.java:114:5:114:43 | link(...) : XsltExecutable | provenance | Config |
+| XsltInjectionTest.java:114:5:114:43 | link(...) : XsltExecutable | XsltInjectionTest.java:114:5:114:50 | load(...) | provenance | Config Sink:MaD:6 |
+| XsltInjectionTest.java:114:33:114:35 | uri : URI | XsltInjectionTest.java:114:5:114:36 | loadLibraryPackage(...) : XsltPackage | provenance | Config |
+models
+| 1 | Sink: javax.xml.transform; Transformer; false; transform; ; ; Argument[this]; xslt-injection; manual |
+| 2 | Sink: net.sf.saxon.s9api; Xslt30Transformer; false; applyTemplates; ; ; Argument[this]; xslt-injection; manual |
+| 3 | Sink: net.sf.saxon.s9api; Xslt30Transformer; false; callFunction; ; ; Argument[this]; xslt-injection; manual |
+| 4 | Sink: net.sf.saxon.s9api; Xslt30Transformer; false; callTemplate; ; ; Argument[this]; xslt-injection; manual |
+| 5 | Sink: net.sf.saxon.s9api; Xslt30Transformer; false; transform; ; ; Argument[this]; xslt-injection; manual |
+| 6 | Sink: net.sf.saxon.s9api; XsltTransformer; false; transform; ; ; Argument[this]; xslt-injection; manual |
+| 7 | Source: java.net; Socket; false; getInputStream; (); ; ReturnValue; remote; manual |
+| 8 | Summary: java.io; InputStreamReader; false; InputStreamReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 9 | Summary: java.io; StringReader; false; StringReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 10 | Summary: java.net; Socket; true; getInputStream; (); ; Argument[this]; ReturnValue; taint; df-generated |
+| 11 | Summary: java.net; URI; false; URI; (String); ; Argument[0]; Argument[this]; taint; manual |
+| 12 | Summary: javax.xml.transform.sax; SAXSource; false; SAXSource; (InputSource); ; Argument[0]; Argument[this]; taint; manual |
+| 13 | Summary: javax.xml.transform.sax; SAXSource; false; SAXSource; (XMLReader,InputSource); ; Argument[1]; Argument[this]; taint; manual |
+| 14 | Summary: javax.xml.transform.stream; StreamSource; false; StreamSource; ; ; Argument[0]; Argument[this]; taint; manual |
+| 15 | Summary: javax.xml.transform; Templates; true; newTransformer; (); ; Argument[this]; ReturnValue; taint; df-generated |
+| 16 | Summary: javax.xml.transform; TransformerFactory; true; newTemplates; (Source); ; Argument[0]; ReturnValue; taint; df-generated |
+| 17 | Summary: org.xml.sax; InputSource; false; InputSource; ; ; Argument[0]; Argument[this]; taint; manual |
+nodes
+| XsltInjectionTest.java:30:27:30:67 | new StreamSource(...) : StreamSource | semmle.label | new StreamSource(...) : StreamSource |
+| XsltInjectionTest.java:30:44:30:66 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjectionTest.java:31:5:31:59 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjectionTest.java:31:53:31:58 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:35:27:35:90 | new StreamSource(...) : StreamSource | semmle.label | new StreamSource(...) : StreamSource |
+| XsltInjectionTest.java:35:44:35:89 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| XsltInjectionTest.java:35:66:35:88 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjectionTest.java:36:5:36:57 | newTemplates(...) : Templates | semmle.label | newTemplates(...) : Templates |
+| XsltInjectionTest.java:36:5:36:74 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjectionTest.java:36:51:36:56 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:40:45:40:70 | param : String | semmle.label | param : String |
+| XsltInjectionTest.java:42:27:42:66 | new StreamSource(...) : StreamSource | semmle.label | new StreamSource(...) : StreamSource |
+| XsltInjectionTest.java:42:44:42:65 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| XsltInjectionTest.java:42:61:42:64 | xslt : String | semmle.label | xslt : String |
+| XsltInjectionTest.java:43:5:43:59 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjectionTest.java:43:53:43:58 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:47:24:47:78 | new SAXSource(...) : SAXSource | semmle.label | new SAXSource(...) : SAXSource |
+| XsltInjectionTest.java:47:38:47:77 | new InputSource(...) : InputSource | semmle.label | new InputSource(...) : InputSource |
+| XsltInjectionTest.java:47:54:47:76 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjectionTest.java:48:5:48:57 | newTemplates(...) : Templates | semmle.label | newTemplates(...) : Templates |
+| XsltInjectionTest.java:48:5:48:74 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjectionTest.java:48:51:48:56 | source : SAXSource | semmle.label | source : SAXSource |
+| XsltInjectionTest.java:53:9:53:92 | new SAXSource(...) : SAXSource | semmle.label | new SAXSource(...) : SAXSource |
+| XsltInjectionTest.java:53:29:53:91 | new InputSource(...) : InputSource | semmle.label | new InputSource(...) : InputSource |
+| XsltInjectionTest.java:53:45:53:90 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| XsltInjectionTest.java:53:67:53:89 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjectionTest.java:54:5:54:59 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjectionTest.java:54:53:54:58 | source : SAXSource | semmle.label | source : SAXSource |
+| XsltInjectionTest.java:59:9:59:99 | new StAXSource(...) : StAXSource | semmle.label | new StAXSource(...) : StAXSource |
+| XsltInjectionTest.java:59:24:59:98 | createXMLEventReader(...) : XMLEventReader | semmle.label | createXMLEventReader(...) : XMLEventReader |
+| XsltInjectionTest.java:59:75:59:97 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjectionTest.java:60:5:60:59 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjectionTest.java:60:53:60:58 | source : StAXSource | semmle.label | source : StAXSource |
+| XsltInjectionTest.java:64:25:65:56 | new StAXSource(...) : StAXSource | semmle.label | new StAXSource(...) : StAXSource |
+| XsltInjectionTest.java:64:40:65:55 | createXMLStreamReader(...) : XMLStreamReader | semmle.label | createXMLStreamReader(...) : XMLStreamReader |
+| XsltInjectionTest.java:65:9:65:54 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| XsltInjectionTest.java:65:31:65:53 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjectionTest.java:66:5:66:57 | newTemplates(...) : Templates | semmle.label | newTemplates(...) : Templates |
+| XsltInjectionTest.java:66:5:66:74 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjectionTest.java:66:51:66:56 | source : StAXSource | semmle.label | source : StAXSource |
+| XsltInjectionTest.java:70:24:71:97 | new DOMSource(...) : DOMSource | semmle.label | new DOMSource(...) : DOMSource |
+| XsltInjectionTest.java:71:9:71:96 | parse(...) : Document | semmle.label | parse(...) : Document |
+| XsltInjectionTest.java:71:73:71:95 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjectionTest.java:72:5:72:59 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjectionTest.java:72:53:72:58 | source : DOMSource | semmle.label | source : DOMSource |
+| XsltInjectionTest.java:76:27:76:67 | new StreamSource(...) : StreamSource | semmle.label | new StreamSource(...) : StreamSource |
+| XsltInjectionTest.java:76:44:76:66 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjectionTest.java:80:5:80:34 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjectionTest.java:80:28:80:33 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:84:27:84:67 | new StreamSource(...) : StreamSource | semmle.label | new StreamSource(...) : StreamSource |
+| XsltInjectionTest.java:84:44:84:66 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjectionTest.java:87:5:87:34 | newTransformer(...) | semmle.label | newTransformer(...) |
+| XsltInjectionTest.java:87:28:87:33 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:91:27:91:67 | new StreamSource(...) : StreamSource | semmle.label | new StreamSource(...) : StreamSource |
+| XsltInjectionTest.java:91:44:91:66 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjectionTest.java:94:5:94:28 | compile(...) : XsltExecutable | semmle.label | compile(...) : XsltExecutable |
+| XsltInjectionTest.java:94:5:94:35 | load(...) | semmle.label | load(...) |
+| XsltInjectionTest.java:94:22:94:27 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:95:5:95:28 | compile(...) : XsltExecutable | semmle.label | compile(...) : XsltExecutable |
+| XsltInjectionTest.java:95:5:95:37 | load30(...) | semmle.label | load30(...) |
+| XsltInjectionTest.java:95:22:95:27 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:96:5:96:28 | compile(...) : XsltExecutable | semmle.label | compile(...) : XsltExecutable |
+| XsltInjectionTest.java:96:5:96:37 | load30(...) | semmle.label | load30(...) |
+| XsltInjectionTest.java:96:22:96:27 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:97:5:97:28 | compile(...) : XsltExecutable | semmle.label | compile(...) : XsltExecutable |
+| XsltInjectionTest.java:97:5:97:37 | load30(...) | semmle.label | load30(...) |
+| XsltInjectionTest.java:97:22:97:27 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:98:5:98:28 | compile(...) : XsltExecutable | semmle.label | compile(...) : XsltExecutable |
+| XsltInjectionTest.java:98:5:98:37 | load30(...) | semmle.label | load30(...) |
+| XsltInjectionTest.java:98:22:98:27 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:99:5:99:28 | compile(...) : XsltExecutable | semmle.label | compile(...) : XsltExecutable |
+| XsltInjectionTest.java:99:5:99:37 | load30(...) | semmle.label | load30(...) |
+| XsltInjectionTest.java:99:22:99:27 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:100:5:100:28 | compile(...) : XsltExecutable | semmle.label | compile(...) : XsltExecutable |
+| XsltInjectionTest.java:100:5:100:37 | load30(...) | semmle.label | load30(...) |
+| XsltInjectionTest.java:100:22:100:27 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:101:5:101:28 | compile(...) : XsltExecutable | semmle.label | compile(...) : XsltExecutable |
+| XsltInjectionTest.java:101:5:101:37 | load30(...) | semmle.label | load30(...) |
+| XsltInjectionTest.java:101:22:101:27 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:102:5:102:28 | compile(...) : XsltExecutable | semmle.label | compile(...) : XsltExecutable |
+| XsltInjectionTest.java:102:5:102:37 | load30(...) | semmle.label | load30(...) |
+| XsltInjectionTest.java:102:22:102:27 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:103:5:103:28 | compile(...) : XsltExecutable | semmle.label | compile(...) : XsltExecutable |
+| XsltInjectionTest.java:103:5:103:37 | load30(...) | semmle.label | load30(...) |
+| XsltInjectionTest.java:103:22:103:27 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:107:36:107:61 | param : String | semmle.label | param : String |
+| XsltInjectionTest.java:107:64:107:76 | socket : Socket | semmle.label | socket : Socket |
+| XsltInjectionTest.java:108:15:108:28 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| XsltInjectionTest.java:108:23:108:27 | param : String | semmle.label | param : String |
+| XsltInjectionTest.java:109:27:109:67 | new StreamSource(...) : StreamSource | semmle.label | new StreamSource(...) : StreamSource |
+| XsltInjectionTest.java:109:44:109:49 | socket : Socket | semmle.label | socket : Socket |
+| XsltInjectionTest.java:109:44:109:66 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XsltInjectionTest.java:112:5:112:39 | loadExecutablePackage(...) : XsltExecutable | semmle.label | loadExecutablePackage(...) : XsltExecutable |
+| XsltInjectionTest.java:112:5:112:46 | load(...) | semmle.label | load(...) |
+| XsltInjectionTest.java:112:36:112:38 | uri : URI | semmle.label | uri : URI |
+| XsltInjectionTest.java:113:5:113:35 | compilePackage(...) : XsltPackage | semmle.label | compilePackage(...) : XsltPackage |
+| XsltInjectionTest.java:113:5:113:42 | link(...) : XsltExecutable | semmle.label | link(...) : XsltExecutable |
+| XsltInjectionTest.java:113:5:113:49 | load(...) | semmle.label | load(...) |
+| XsltInjectionTest.java:113:29:113:34 | source : StreamSource | semmle.label | source : StreamSource |
+| XsltInjectionTest.java:114:5:114:36 | loadLibraryPackage(...) : XsltPackage | semmle.label | loadLibraryPackage(...) : XsltPackage |
+| XsltInjectionTest.java:114:5:114:43 | link(...) : XsltExecutable | semmle.label | link(...) : XsltExecutable |
+| XsltInjectionTest.java:114:5:114:50 | load(...) | semmle.label | load(...) |
+| XsltInjectionTest.java:114:33:114:35 | uri : URI | semmle.label | uri : URI |
+subpaths

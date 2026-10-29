@@ -1,0 +1,25 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "trap",
+    srcs = [
+        "labels.go",
+        "trapwriter.go",
+        "util.go",
+    ],
+    importpath = "github.com/github/codeql-go/extractor/trap",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//go/extractor/srcarchive",
+        "//go/extractor/util",
+        "@org_golang_x_tools//go/packages",
+    ],
+)
+
+go_test(
+    name = "trap_test",
+    srcs = ["trapwriter_test.go"],
+    embed = [":trap"],
+)

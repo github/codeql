@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If the object raised is not a legal Exception class or an instance of one, then
+a <code>TypeError</code> will be raised instead.</p>
+
+<p>Legal exception classes are:</p>
+<ul>
+<li>Any old-style classes (Python 2 only)</li>
+<li>Any subclass of the builtin class <code>BaseException</code></li>
+</ul>
+<p>
+However, it recommended that you only use subclasses of the builtin class
+<code>Exception</code> (which is itself a subclass of <code>BaseException</code>).
+</p>
+
+</overview>
+<recommendation>
+<p>Change the expression in the <code>raise</code> statement to be a legal exception.</p>
+
+
+</recommendation>
+<example>
+
+<sample src="IllegalRaise.py" />
+
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="https://docs.python.org/reference/executionmodel.html#exceptions">Exceptions</a>.</li>
+<li>Python Tutorial: <a href="https://docs.python.org/tutorial/errors.html#handling-exceptions">Handling Exceptions</a>.</li>
+
+
+</references>
+</qhelp>

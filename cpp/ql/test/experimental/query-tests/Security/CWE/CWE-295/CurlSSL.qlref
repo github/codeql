@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-295/CurlSSL.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

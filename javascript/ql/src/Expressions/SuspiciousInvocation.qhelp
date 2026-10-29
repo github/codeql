@@ -1,0 +1,62 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Attempting to invoke a non-function (that is, a primitive value or an object) will cause an
+exception at runtime. This applies both to calls using <code>new</code> and normal calls.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Carefully inspect the invocation in question. If the problem was not detected during testing,
+this could either be because the invocation is in dead code, or because it is not covered by
+a test. In the former case, delete the dead code in question. In the latter case, consider
+adding a new test.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, function <code>processResponse</code> accepts an argument
+<code>response</code>, and, depending on the value of property <code>response.status</code>,
+does one of two things: if <code>response.status</code> is 200, it invokes a function
+<code>processResponseText</code> (not shown), and if that function returns an
+<code>error</code> value, it throws that value as an exception; otherwise, it invokes
+<code>error</code> to log the value of <code>response.status</code>.
+</p>
+
+<sample src="examples/SuspiciousInvocation.js" />
+
+<p>
+Note that due to JavaScript's scoping rules, <code>error</code> in the "else"
+branch actually refers to the <code>error</code> variable declared in the "then" branch (and
+not the global function of the same name). Since that variable is always <code>undefined</code>
+in the "else" branch, attempting to invoke it will result in an exception at runtime.
+</p>
+
+<p>
+To fix this problem, <code>error</code> could be turned into a <code>let</code>-bound variable
+to avoid the accidental name capture:
+</p>
+
+<sample src="examples/SuspiciousInvocationGood.js" />
+
+<p>
+Alternatively, if ECMAScript 5 compatibility is desired, the <code>error</code> variable could
+be renamed instead, as in this example:
+</p>
+
+<sample src="examples/SuspiciousInvocationGood2.js"/>
+
+</example>
+<references>
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions#Calling_functions">Calling functions</a>.</li>
+
+</references>
+</qhelp>

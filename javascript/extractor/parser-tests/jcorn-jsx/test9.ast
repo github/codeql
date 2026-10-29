@@ -1,0 +1,210 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "JSXElement",
+        "openingElement": {
+          "type": "JSXOpeningElement",
+          "name": {
+            "type": "JSXIdentifier",
+            "name": "a",
+            "loc": {
+              "start": {
+                "offset": 1
+              },
+              "end": {
+                "offset": 2
+              }
+            }
+          },
+          "selfClosing": true,
+          "attributes": [
+            {
+              "type": "JSXAttribute",
+              "name": {
+                "type": "JSXIdentifier",
+                "name": "b",
+                "loc": {
+                  "start": {
+                    "offset": 3
+                  },
+                  "end": {
+                    "offset": 4
+                  }
+                }
+              },
+              "value": {
+                "type": "JSXExpressionContainer",
+                "expression": {
+                  "type": "Literal",
+                  "value": " ",
+                  "raw": "\" \"",
+                  "loc": {
+                    "start": {
+                      "offset": 6
+                    },
+                    "end": {
+                      "offset": 9
+                    }
+                  }
+                },
+                "loc": {
+                  "start": {
+                    "offset": 5
+                  },
+                  "end": {
+                    "offset": 10
+                  }
+                }
+              },
+              "loc": {
+                "start": {
+                  "offset": 3
+                },
+                "end": {
+                  "offset": 10
+                }
+              }
+            },
+            {
+              "type": "JSXAttribute",
+              "name": {
+                "type": "JSXIdentifier",
+                "name": "c",
+                "loc": {
+                  "start": {
+                    "offset": 11
+                  },
+                  "end": {
+                    "offset": 12
+                  }
+                }
+              },
+              "value": {
+                "type": "Literal",
+                "value": " ",
+                "raw": "\" \"",
+                "loc": {
+                  "start": {
+                    "offset": 13
+                  },
+                  "end": {
+                    "offset": 16
+                  }
+                }
+              },
+              "loc": {
+                "start": {
+                  "offset": 11
+                },
+                "end": {
+                  "offset": 16
+                }
+              }
+            },
+            {
+              "type": "JSXAttribute",
+              "name": {
+                "type": "JSXIdentifier",
+                "name": "d",
+                "loc": {
+                  "start": {
+                    "offset": 17
+                  },
+                  "end": {
+                    "offset": 18
+                  }
+                }
+              },
+              "value": {
+                "type": "Literal",
+                "value": "&",
+                "raw": "\"&amp;\"",
+                "loc": {
+                  "start": {
+                    "offset": 19
+                  },
+                  "end": {
+                    "offset": 26
+                  }
+                }
+              },
+              "loc": {
+                "start": {
+                  "offset": 17
+                },
+                "end": {
+                  "offset": 26
+                }
+              }
+            },
+            {
+              "type": "JSXAttribute",
+              "name": {
+                "type": "JSXIdentifier",
+                "name": "e",
+                "loc": {
+                  "start": {
+                    "offset": 27
+                  },
+                  "end": {
+                    "offset": 28
+                  }
+                }
+              },
+              "value": {
+                "type": "Literal",
+                "value": "&ampr;",
+                "raw": "\"&ampr;\"",
+                "loc": {
+                  "start": {
+                    "offset": 29
+                  },
+                  "end": {
+                    "offset": 37
+                  }
+                }
+              },
+              "loc": {
+                "start": {
+                  "offset": 27
+                },
+                "end": {
+                  "offset": 37
+                }
+              }
+            }
+          ],
+          "loc": {
+            "start": {
+              "offset": 0
+            },
+            "end": {
+              "offset": 40
+            }
+          }
+        },
+        "closingElement": null,
+        "children": [],
+        "loc": {
+          "start": {
+            "offset": 0
+          },
+          "end": {
+            "offset": 40
+          }
+        }
+      },
+      "loc": {
+        "start": {
+          "offset": 0
+        },
+        "end": {
+          "offset": 40
+        }
+      }
+    }
+  ]
+}

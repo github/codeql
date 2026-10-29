@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In ECMAScript 2015 and above, as well as ECMAScript 5 non-strict mode, an object literal may define the
+same property multiple times, with later definitions overwriting earlier ones. In particular,
+if the last definition assigns a different value from earlier definitions, the earlier
+value is lost, which is most likely unintentional and should be avoided.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Rename the properties to have different names.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the object literal assigned to <code>point</code> has two definitions
+of property <code>x</code>. The object's use in function <code>dist</code> suggests that the
+second definition should define a property <code>y</code> instead, and should be renamed.
+</p>
+
+<sample src="examples/UniquePropertyNames.js" />
+
+</example>
+<references>
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 5.1 Edition, Annex C. ECMA, 2011.</li>
+<li>Ecma International, <i>ECMAScript Language Definition</i>, 6th Edition, Annex E. ECMA, 2015.</li>
+</references>
+</qhelp>

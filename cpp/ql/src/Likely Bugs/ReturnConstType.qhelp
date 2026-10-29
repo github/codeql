@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds non-member functions with a superfluous <code>const</code> qualifier
+on their return type.</p>
+
+</overview>
+<recommendation>
+<p>The superfluous <code>const</code> qualifier should be removed, as it serves no purpose.
+If the return type contains embedded qualifiers, then care should be taken to remove only
+the superfluous one.</p>
+
+</recommendation>
+<example><sample src="ReturnConstType.cpp" />
+
+</example>
+<references>
+
+
+<li>
+  <a href="http://c-faq.com/aryptr/aryptrequiv.html">comp.lang.c FAQ list · Question 6.3 </a>
+</li>
+
+
+
+</references>
+</qhelp>

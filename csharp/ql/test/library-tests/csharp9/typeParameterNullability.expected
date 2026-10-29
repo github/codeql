@@ -1,0 +1,15 @@
+refType
+| TypeParameterNullability.cs:7:28:7:28 | T |
+| TypeParameterNullability.cs:8:28:8:28 | T |
+| TypeParameterNullability.cs:17:29:17:29 | T |
+| TypeParameterNullability.cs:18:29:18:29 | T |
+valueType
+| TypeParameterNullability.cs:6:28:6:28 | T |
+| TypeParameterNullability.cs:10:28:10:28 | T |
+| TypeParameterNullability.cs:16:29:16:29 | T |
+| TypeParameterNullability.cs:19:29:19:29 | T |
+| TypeParameterNullability.cs:24:29:24:29 | T |
+valueOrRefType
+| TypeParameterNullability.cs:5:28:5:28 | T |
+| TypeParameterNullability.cs:9:28:9:28 | T |
+| TypeParameterNullability.cs:15:29:15:29 | T |

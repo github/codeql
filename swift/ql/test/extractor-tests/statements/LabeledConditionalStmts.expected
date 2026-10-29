@@ -1,0 +1,7 @@
+| GuardStmt | statements.swift:39:9:39:14 | StmtCondition |
+| IfStmt | statements.swift:3:8:3:13 | StmtCondition |
+| IfStmt | statements.swift:65:4:65:19 | StmtCondition |
+| IfStmt | statements.swift:67:4:67:20 | StmtCondition |
+| IfStmt | statements.swift:87:4:87:27 | StmtCondition |
+| IfStmt | statements.swift:91:4:91:25 | StmtCondition |
+| WhileStmt | statements.swift:10:17:10:24 | StmtCondition |

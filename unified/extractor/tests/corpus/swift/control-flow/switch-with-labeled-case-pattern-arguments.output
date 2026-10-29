@@ -1,0 +1,175 @@
+switch x {
+case .implicit(isAcknowledged: false):
+  print("yes")
+case .thread(threadRowId: _, let rowId):
+  print(rowId)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            switchExpr
+              leftBrace: {
+              rightBrace: }
+              cases:
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                    labeledExpr
+                                      colon: :
+                                      label: identifier "isAcknowledged"
+                                      expression:
+                                        booleanLiteralExpr
+                                          literal: false
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "implicit"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "yes"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                    labeledExpr
+                                      colon: :
+                                      label: identifier "threadRowId"
+                                      expression:
+                                        discardAssignmentExpr
+                                          wildcard: _
+                                      trailingComma: ,
+                                    labeledExpr
+                                      expression:
+                                        patternExpr
+                                          pattern:
+                                            valueBindingPattern
+                                              pattern:
+                                                identifierPattern
+                                                  identifier: identifier "rowId"
+                                              bindingSpecifier: let
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "thread"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "rowId"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              subject:
+                declReferenceExpr
+                  baseName: identifier "x"
+              switchKeyword: switch
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n}"
+          value: identifier "x" source="x"
+          case:
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
+              pattern:
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee:
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: inferred_type_expr "." source="."
+                      member_name_node: identifier "implicit" source="implicit"
+                  argument:
+                    argument source="⟨name_node⟩: ⟨value⟩"
+                      name_node: identifier "isAcknowledged" source="isAcknowledged"
+                      value: boolean_literal "false" source="false"
+              body:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: string_literal "\"yes\"" source="\"yes\""
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
+              pattern:
+                call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"
+                  callee:
+                    member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                      base: inferred_type_expr "." source="."
+                      member_name_node: identifier "thread" source="thread"
+                  argument:
+                    argument source="⟨name_node⟩: ⟨value⟩"
+                      name_node: identifier "threadRowId" source="threadRowId"
+                      value: ignore_pattern "_" source="_"
+                    argument source="⟨value⟩"
+                      value:
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "rowId" source="rowId"
+              body:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: identifier "rowId" source="rowId"

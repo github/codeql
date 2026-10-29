@@ -1,0 +1,17 @@
+graph
+{
+	node [shape=rectangle, fontsize=8];
+
+	Root [label="", shape=none];
+	Root -- Type [color=white];
+	Root -- Fuel [color=white];
+	Root -- Style [color=white];
+	Type -- Car;
+	Type -- Van;
+	Type -- Truck;
+	Fuel -- Gas;
+	Fuel -- Diesel;
+	Style -- Colored;
+	Style -- Stripey;
+}
+

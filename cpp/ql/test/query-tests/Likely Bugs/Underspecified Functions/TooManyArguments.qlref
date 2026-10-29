@@ -1,0 +1,2 @@
+query: Likely Bugs/Underspecified Functions/TooManyArguments.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

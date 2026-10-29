@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["AsasInnab/regex-action", "*", "input.search_string", "output.first_match", "taint", "manual"]

@@ -1,0 +1,2 @@
+query: experimental/performance/UseDetect.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

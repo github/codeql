@@ -1,0 +1,2 @@
+query: experimental/Security/CWE-176/UnicodeBypassValidation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

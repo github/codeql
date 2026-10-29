@@ -1,0 +1,19 @@
+load(
+    "//misc/bazel:csharp.bzl",
+    "codeql_csharp_library",
+)
+
+codeql_csharp_library(
+    name = "Semmle.Extraction.CSharp.StubGenerator",
+    srcs = glob([
+        "*.cs",
+    ]),
+    internals_visible_to = ["et"],
+    visibility = ["//csharp:__subpackages__"],
+    deps = [
+        "//csharp/extractor/Semmle.Extraction.CSharp.DependencyFetching",
+        "//csharp/extractor/Semmle.Extraction.CSharp.Util",
+        "//csharp/extractor/Semmle.Util",
+        "@paket.main//microsoft.codeanalysis.csharp",
+    ],
+)

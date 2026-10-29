@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>When writing an <code>operator==</code>, it is common to want to check whether or not an operand 
+is null or check if both operands refer to the same object. Attempting to do this using <code>==
+</code> will not work as it will simply call the overridden <code>operator==</code> that is being 
+defined.</p>
+
+</overview>
+<recommendation>
+<p>There are two suggested ways to fix the problem. The tidiest approach is to simply replace the 
+call to <code>operator==</code> with a call to <code>ReferenceEquals</code> (see code below). As a 
+less preferable alternative, it is also possible to simply cast the parameters to <code>object
+</code>.</p>
+
+</recommendation>
+<example>
+<p>In this example the <code>==</code> overload will constantly call itself to compare the initial 
+arguments passed to it with null.</p>
+<sample src="RecursiveOperatorEquals.cs" />
+
+<p>The best fix is to use the <code>ReferenceEquals</code> method instead.</p>
+<sample src="RecursiveOperatorEqualsFix.cs" />
+
+</example>
+<references>
+
+  <li><a href="http://msdn.microsoft.com/en-us/library/ms173147%28VS.80%29.aspx">Guidelines for Overloading Equals() and Operator== (C#)</a></li>
+
+
+</references>
+</qhelp>

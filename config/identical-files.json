@@ -1,0 +1,280 @@
+{
+  "SsaReadPosition Java/C#": [
+    "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll",
+    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll"
+  ],
+  "Sign Java/C#": [
+    "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/Sign.qll",
+    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/Sign.qll"
+  ],
+  "SignAnalysis Java/C#": [
+    "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/SignAnalysisCommon.qll",
+    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SignAnalysisCommon.qll"
+  ],
+  "ModulusAnalysis Java/C#": [
+    "java/ql/lib/semmle/code/java/dataflow/ModulusAnalysis.qll",
+    "csharp/ql/lib/semmle/code/csharp/dataflow/ModulusAnalysis.qll"
+  ],
+  "C++ SubBasicBlocks": [
+    "cpp/ql/lib/semmle/code/cpp/controlflow/SubBasicBlocks.qll",
+    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/SubBasicBlocks.qll"
+  ],
+  "IR Instruction": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/Instruction.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/Instruction.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/Instruction.qll"
+  ],
+  "IR IRBlock": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/IRBlock.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IRBlock.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/IRBlock.qll"
+  ],
+  "IR IRVariable": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/IRVariable.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IRVariable.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/IRVariable.qll"
+  ],
+  "IR IRFunction": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/IRFunction.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IRFunction.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/IRFunction.qll"
+  ],
+  "IR Operand": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/Operand.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/Operand.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/Operand.qll"
+  ],
+  "IR IR": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/IR.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IR.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/IR.qll"
+  ],
+  "IR IRConsistency": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/IRConsistency.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IRConsistency.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/IRConsistency.qll"
+  ],
+  "IR PrintIR": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/PrintIR.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/PrintIR.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/PrintIR.qll"
+  ],
+  "IR SSAConsistency": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConsistency.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConsistency.qll"
+  ],
+  "C++ IR InstructionImports": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/InstructionImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/InstructionImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/InstructionImports.qll"
+  ],
+  "C++ IR IRImports": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRImports.qll"
+  ],
+  "C++ IR IRBlockImports": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRBlockImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRBlockImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRBlockImports.qll"
+  ],
+  "C++ IR IRConsistencyImports": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRConsistencyImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRConsistencyImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRConsistencyImports.qll"
+  ],
+  "C++ IR IRFunctionImports": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRFunctionImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRFunctionImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRFunctionImports.qll"
+  ],
+  "C++ IR IRVariableImports": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRVariableImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRVariableImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRVariableImports.qll"
+  ],
+  "C++ IR OperandImports": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/OperandImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/OperandImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/OperandImports.qll"
+  ],
+  "C++ IR PrintIRImports": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/PrintIRImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintIRImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintIRImports.qll"
+  ],
+  "C++ SSA SSAConstructionImports": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConstructionImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConstructionImports.qll"
+  ],
+  "SSA AliasAnalysis": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll"
+  ],
+  "SSA PrintAliasAnalysis": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintAliasAnalysis.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintAliasAnalysis.qll"
+  ],
+  "C++ SSA AliasAnalysisImports": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysisImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysisImports.qll"
+  ],
+  "IR SSA SSAConstruction": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConstruction.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConstruction.qll"
+  ],
+  "IR SSA PrintSSA": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintSSA.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintSSA.qll"
+  ],
+  "IR ValueNumberInternal": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/gvn/internal/ValueNumberingInternal.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingInternal.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/internal/ValueNumberingInternal.qll"
+  ],
+  "C++ IR ValueNumber": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/gvn/ValueNumbering.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/ValueNumbering.qll"
+  ],
+  "C++ IR PrintValueNumbering": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/gvn/PrintValueNumbering.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/PrintValueNumbering.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/PrintValueNumbering.qll"
+  ],
+  "C++ IR ConstantAnalysis": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/constant/ConstantAnalysis.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/constant/ConstantAnalysis.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/constant/ConstantAnalysis.qll"
+  ],
+  "C++ IR PrintConstantAnalysis": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/constant/PrintConstantAnalysis.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/constant/PrintConstantAnalysis.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/constant/PrintConstantAnalysis.qll"
+  ],
+  "C++ IR ReachableBlock": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/reachability/ReachableBlock.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/reachability/ReachableBlock.qll"
+  ],
+  "C++ IR PrintReachableBlock": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/reachability/PrintReachableBlock.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/reachability/PrintReachableBlock.qll"
+  ],
+  "C++ IR Dominance": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/reachability/Dominance.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/reachability/Dominance.qll"
+  ],
+  "C++ IR PrintDominance": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/reachability/PrintDominance.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/reachability/PrintDominance.qll"
+  ],
+  "C++ ExternalAPIs": [
+    "cpp/ql/src/Security/CWE/CWE-020/ExternalAPIs.qll",
+    "cpp/ql/src/Security/CWE/CWE-020/ir/ExternalAPIs.qll"
+  ],
+  "C++ SafeExternalAPIFunction": [
+    "cpp/ql/src/Security/CWE/CWE-020/SafeExternalAPIFunction.qll",
+    "cpp/ql/src/Security/CWE/CWE-020/ir/SafeExternalAPIFunction.qll"
+  ],
+  "DuplicationProblems.inc.qhelp": [
+    "cpp/ql/src/Metrics/Files/DuplicationProblems.inc.qhelp",
+    "javascript/ql/src/Metrics/DuplicationProblems.inc.qhelp",
+    "python/ql/src/Metrics/DuplicationProblems.inc.qhelp"
+  ],
+  "CommentedOutCodeQuery.inc.qhelp": [
+    "cpp/ql/src/Documentation/CommentedOutCodeQuery.inc.qhelp",
+    "python/ql/src/Lexical/CommentedOutCodeQuery.inc.qhelp",
+    "csharp/ql/src/Bad Practices/Comments/CommentedOutCodeQuery.inc.qhelp",
+    "java/ql/src/Violations of Best Practice/Comments/CommentedOutCodeQuery.inc.qhelp",
+    "javascript/ql/src/Comments/CommentedOutCodeQuery.inc.qhelp"
+  ],
+  "FLinesOfCodeReferences.inc.qhelp": [
+    "java/ql/src/Metrics/Files/FLinesOfCodeReferences.inc.qhelp",
+    "javascript/ql/src/Metrics/FLinesOfCodeReferences.inc.qhelp"
+  ],
+  "FCommentRatioCommon.inc.qhelp": [
+    "java/ql/src/Metrics/Files/FCommentRatioCommon.inc.qhelp",
+    "javascript/ql/src/Metrics/FCommentRatioCommon.inc.qhelp"
+  ],
+  "FLinesOfCodeOverview.inc.qhelp": [
+    "java/ql/src/Metrics/Files/FLinesOfCodeOverview.inc.qhelp",
+    "javascript/ql/src/Metrics/FLinesOfCodeOverview.inc.qhelp"
+  ],
+  "CommentedOutCodeMetricOverview.inc.qhelp": [
+    "cpp/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.inc.qhelp",
+    "csharp/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.inc.qhelp",
+    "java/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.inc.qhelp",
+    "javascript/ql/src/Comments/CommentedOutCodeMetricOverview.inc.qhelp",
+    "python/ql/src/Lexical/CommentedOutCodeMetricOverview.inc.qhelp"
+  ],
+  "FLinesOfDuplicatedCodeCommon.inc.qhelp": [
+    "java/ql/src/Metrics/Files/FLinesOfDuplicatedCodeCommon.inc.qhelp",
+    "javascript/ql/src/Metrics/FLinesOfDuplicatedCodeCommon.inc.qhelp",
+    "python/ql/src/Metrics/FLinesOfDuplicatedCodeCommon.inc.qhelp"
+  ],
+  "CommentedOutCodeReferences.inc.qhelp": [
+    "cpp/ql/src/Metrics/Files/CommentedOutCodeReferences.inc.qhelp",
+    "csharp/ql/src/Metrics/Files/CommentedOutCodeReferences.inc.qhelp",
+    "java/ql/src/Metrics/Files/CommentedOutCodeReferences.inc.qhelp",
+    "javascript/ql/src/Comments/CommentedOutCodeReferences.inc.qhelp",
+    "python/ql/src/Lexical/CommentedOutCodeReferences.inc.qhelp"
+  ],
+  "ThreadResourceAbuse qhelp": [
+    "java/ql/src/experimental/Security/CWE/CWE-400/LocalThreadResourceAbuse.qhelp",
+    "java/ql/src/experimental/Security/CWE/CWE-400/ThreadResourceAbuse.qhelp"
+  ],
+  "IncompleteUrlSubstringSanitization": [
+    "javascript/ql/src/Security/CWE-020/IncompleteUrlSubstringSanitization.qll",
+    "ruby/ql/src/queries/security/cwe-020/IncompleteUrlSubstringSanitization.qll"
+  ],
+  "ApiGraphModels": [
+    "javascript/ql/lib/semmle/javascript/frameworks/data/internal/ApiGraphModels.qll",
+    "ruby/ql/lib/codeql/ruby/frameworks/data/internal/ApiGraphModels.qll",
+    "python/ql/lib/semmle/python/frameworks/data/internal/ApiGraphModels.qll"
+  ],
+  "ApiGraphModelsExtensions": [
+    "javascript/ql/lib/semmle/javascript/frameworks/data/internal/ApiGraphModelsExtensions.qll",
+    "ruby/ql/lib/codeql/ruby/frameworks/data/internal/ApiGraphModelsExtensions.qll",
+    "python/ql/lib/semmle/python/frameworks/data/internal/ApiGraphModelsExtensions.qll"
+  ],
+  "Swift declarations test file": [
+    "swift/ql/test/extractor-tests/declarations/declarations.swift",
+    "swift/ql/test/library-tests/ast/declarations.swift"
+  ],
+  "Swift statements test file": [
+    "swift/ql/test/extractor-tests/statements/statements.swift",
+    "swift/ql/test/library-tests/ast/statements.swift"
+  ],
+  "Swift expressions test file": [
+    "swift/ql/test/extractor-tests/expressions/expressions.swift",
+    "swift/ql/test/library-tests/ast/expressions.swift"
+  ],
+  "Swift patterns test file": [
+    "swift/ql/test/extractor-tests/patterns/patterns.swift",
+    "swift/ql/test/library-tests/ast/patterns.swift"
+  ],
+  "Swift control flow test file": [
+    "swift/ql/test/library-tests/controlflow/graph/cfg.swift",
+    "swift/ql/test/library-tests/ast/cfg.swift"
+  ],
+  "IncompleteMultiCharacterSanitization JS/Ruby": [
+    "javascript/ql/lib/semmle/javascript/security/IncompleteMultiCharacterSanitizationQuery.qll",
+    "ruby/ql/lib/codeql/ruby/security/IncompleteMultiCharacterSanitizationQuery.qll"
+  ],
+  "EncryptionKeySizes Python/Java": [
+    "python/ql/lib/semmle/python/security/internal/EncryptionKeySizes.qll",
+    "java/ql/lib/semmle/code/java/security/internal/EncryptionKeySizes.qll"
+  ],
+  "Python model summaries test extension": [
+    "python/ql/test/library-tests/dataflow/model-summaries/InlineTaintTest.ext.yml",
+    "python/ql/test/library-tests/dataflow/model-summaries/NormalDataflowTest.ext.yml"
+  ],
+  "XML discard predicates": [
+    "javascript/ql/lib/semmle/javascript/internal/OverlayXml.qll",
+    "java/ql/lib/semmle/code/java/internal/OverlayXml.qll",
+    "go/ql/lib/semmle/go/internal/OverlayXml.qll",
+    "python/ql/lib/semmle/python/internal/OverlayXml.qll",
+    "csharp/ql/lib/semmle/code/csharp/internal/OverlayXml.qll",
+    "cpp/ql/lib/semmle/code/cpp/internal/OverlayXml.qll"
+  ]
+}

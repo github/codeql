@@ -1,0 +1,47 @@
+charLiteral
+| literal.rs:2:5:2:7 | 'a' |
+| literal.rs:3:5:3:7 | 'b' |
+| literal.rs:4:5:4:8 | '\\'' |
+| literal.rs:5:5:5:8 | '\\n' |
+| literal.rs:6:5:6:15 | '\\u{1F600}' |
+stringLiteral
+| literal.rs:11:5:11:9 | "foo" |
+| literal.rs:12:5:12:10 | r"foo" |
+| literal.rs:13:5:13:13 | "\\"foo\\"" |
+| literal.rs:14:5:14:14 | r#""foo""# |
+| literal.rs:16:5:16:18 | "foo #\\"# bar" |
+| literal.rs:17:5:17:22 | r##"foo #"# bar"## |
+| literal.rs:19:5:19:10 | "\\x52" |
+| literal.rs:20:5:20:7 | "R" |
+| literal.rs:21:5:21:8 | r"R" |
+| literal.rs:22:5:22:11 | "\\\\x52" |
+| literal.rs:23:5:23:11 | r"\\x52" |
+| literal.rs:25:5:29:5 | "\n    A normal string literal\n... |
+| literal.rs:31:5:34:6 | r#"\n    A raw string literal\n ... |
+integerLiteral
+| literal.rs:39:5:39:7 | 123 |  |
+| literal.rs:40:5:40:10 | 123i32 | i32 |
+| literal.rs:41:5:41:10 | 123u32 | u32 |
+| literal.rs:42:5:42:11 | 123_u32 | u32 |
+| literal.rs:44:5:44:8 | 0xff |  |
+| literal.rs:45:5:45:11 | 0xff_u8 | u8 |
+| literal.rs:46:5:46:12 | 0x01_f32 |  |
+| literal.rs:47:5:47:11 | 0x01_e3 |  |
+| literal.rs:49:5:49:8 | 0o70 |  |
+| literal.rs:50:5:50:12 | 0o70_i16 | i16 |
+| literal.rs:52:5:52:25 | 0b1111_1111_1001_0000 |  |
+| literal.rs:53:5:53:28 | 0b1111_1111_1001_0000i64 | i64 |
+| literal.rs:54:5:54:15 | 0b________1 |  |
+| literal.rs:56:5:56:10 | 0usize | usize |
+| literal.rs:59:5:60:10 | 128_i8 | i8 |
+| literal.rs:61:5:62:10 | 256_u8 | u8 |
+floatLiteral
+| literal.rs:67:5:67:8 | 5f32 | f32 |
+| literal.rs:69:5:69:12 | 123.0f64 | f64 |
+| literal.rs:70:5:70:10 | 0.1f64 | f64 |
+| literal.rs:71:5:71:10 | 0.1f32 | f32 |
+| literal.rs:72:5:72:14 | 12E+99_f64 | f64 |
+| literal.rs:73:18:73:19 | 2. |  |
+booleanLiteral
+| literal.rs:77:5:77:8 | true |
+| literal.rs:78:5:78:9 | false |

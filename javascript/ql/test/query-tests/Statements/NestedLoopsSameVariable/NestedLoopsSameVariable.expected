@@ -1,0 +1,1 @@
+| tst.js:2:16:2:18 | i>5 | Nested for statement uses loop variable $@ of enclosing $@. | tst.js:2:23:2:23 | i | i | tst.js:1:1:8:1 | for (va ... , k);\\n} | for statement |

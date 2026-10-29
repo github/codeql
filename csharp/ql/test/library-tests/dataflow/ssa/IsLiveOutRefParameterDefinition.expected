@@ -1,0 +1,15 @@
+| Capture.cs:81:28:81:28 | i | Capture.cs:81:34:81:36 | SSA def(i) |
+| Capture.cs:248:36:248:36 | j | Capture.cs:251:13:251:17 | SSA def(j) |
+| Consistency.cs:30:30:30:30 | c | Consistency.cs:32:9:32:29 | SSA def(c) |
+| DefUse.cs:114:42:114:42 | i | DefUse.cs:114:47:114:52 | SSA def(i) |
+| DefUse.cs:116:42:116:42 | i | DefUse.cs:116:47:116:51 | SSA def(i) |
+| DefUse.cs:118:45:118:45 | i | DefUse.cs:118:68:118:72 | SSA def(i) |
+| DefUse.cs:118:56:118:56 | j | DefUse.cs:118:61:118:65 | SSA def(j) |
+| OutRef.cs:28:26:28:26 | i | OutRef.cs:30:9:30:13 | SSA def(i) |
+| OutRef.cs:28:37:28:37 | j | OutRef.cs:31:9:31:13 | SSA def(j) |
+| OutRef.cs:34:27:34:27 | i | OutRef.cs:36:9:36:13 | SSA def(i) |
+| OutRef.cs:34:38:34:38 | j | OutRef.cs:34:38:34:38 | SSA param(j) |
+| OutRef.cs:39:35:39:35 | j | OutRef.cs:39:35:39:35 | SSA param(j) |
+| OutRef.cs:39:35:39:35 | j | OutRef.cs:42:13:42:17 | SSA def(j) |
+| Test.cs:46:29:46:32 | out | Test.cs:50:13:50:20 | SSA def(out) |
+| Test.cs:46:29:46:32 | out | Test.cs:54:13:54:20 | SSA def(out) |

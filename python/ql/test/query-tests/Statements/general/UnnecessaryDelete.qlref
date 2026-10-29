@@ -1,0 +1,2 @@
+query: Statements/UnnecessaryDelete.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

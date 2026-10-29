@@ -1,0 +1,15 @@
+invalidModelRow
+edges
+| test.go:9:9:9:11 | selection of c [collection] | test.go:9:7:9:11 | <-... | provenance |  |
+| test.go:15:10:15:17 | call to source | test.go:16:9:16:12 | data | provenance |  |
+| test.go:16:2:16:4 | selection of c [postupdate] [collection] | test.go:9:9:9:11 | selection of c [collection] | provenance |  |
+| test.go:16:9:16:12 | data | test.go:16:2:16:4 | selection of c [postupdate] [collection] | provenance |  |
+nodes
+| test.go:9:7:9:11 | <-... | semmle.label | <-... |
+| test.go:9:9:9:11 | selection of c [collection] | semmle.label | selection of c [collection] |
+| test.go:15:10:15:17 | call to source | semmle.label | call to source |
+| test.go:16:2:16:4 | selection of c [postupdate] [collection] | semmle.label | selection of c [postupdate] [collection] |
+| test.go:16:9:16:12 | data | semmle.label | data |
+subpaths
+#select
+| test.go:15:10:15:17 | call to source | test.go:15:10:15:17 | call to source | test.go:9:7:9:11 | <-... | path |

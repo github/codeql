@@ -1,0 +1,8 @@
+| tst.ts:10:1:10:49 | class S ... ts A {} | class SubClass1 | tst.ts:10:25:10:33 | BaseClass |
+| tst.ts:11:1:11:52 | class S ... A, B {} | class SubClass2 | tst.ts:11:25:11:33 | BaseClass |
+| tst.ts:12:17:12:55 | class e ... ts A {} | class SubClass3 | tst.ts:12:31:12:39 | BaseClass |
+| tst.ts:13:17:13:58 | class e ... A, B {} | class SubClass4 | tst.ts:13:31:13:39 | BaseClass |
+| tst.ts:24:1:24:55 | class E ... ing> {} | class ExtendGenericBase1 | tst.ts:24:34:24:52 | GenericBase<string> |
+| tst.ts:25:26:25:61 | class e ... ing> {} | class ExtendGenericBase2 | tst.ts:25:40:25:58 | GenericBase<string> |
+| tst.ts:28:1:28:52 | class C ... ber> {} | class ComplexBase1 | tst.ts:28:28:28:49 | f("reac ... number> |
+| tst.ts:29:20:29:58 | class e ... ber> {} | class ComplexBase2 | tst.ts:29:34:29:55 | f("reac ... number> |

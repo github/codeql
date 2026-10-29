@@ -1,0 +1,24 @@
+/**
+ * @name Storage of sensitive information in build artifact
+ * @description Including sensitive information in a build artifact can
+ *              expose it to an attacker.
+ * @kind path-problem
+ * @problem.severity error
+ * @security-severity 7.5
+ * @precision high
+ * @id js/build-artifact-leak
+ * @tags security
+ *       external/cwe/cwe-312
+ *       external/cwe/cwe-315
+ *       external/cwe/cwe-359
+ */
+
+import javascript
+import semmle.javascript.security.dataflow.BuildArtifactLeakQuery
+import BuildArtifactLeakFlow::PathGraph
+
+from BuildArtifactLeakFlow::PathNode source, BuildArtifactLeakFlow::PathNode sink
+where BuildArtifactLeakFlow::flowPath(source, sink)
+select sink.getNode(), source, sink, "This creates a build artifact that depends on $@.",
+  source.getNode(),
+  "sensitive data returned by" + source.getNode().(CleartextLogging::Source).describe()

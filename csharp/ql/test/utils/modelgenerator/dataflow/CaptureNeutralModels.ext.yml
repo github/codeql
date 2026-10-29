@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - [ "Models", "ManuallyModelled", "HasNeutralSummaryNoFlow", "(System.Object)", "summary", "manual"]
+      - [ "Sinks", "NewSinks", "NoSink", "(System.Object)", "summary", "df-generated"]
+      - [ "Sinks", "NewSinks", "NoSink", "(System.Object)", "sink", "manual"]

@@ -1,0 +1,155 @@
+package registries
+
+import (
+	"os"
+	"slices"
+	"testing"
+)
+
+func parseRegistryConfigsFail(t *testing.T, str string) {
+	_, err := parseRegistryConfigs(str)
+
+	if err == nil {
+		t.Fatal("Expected `parseRegistryConfigs` to fail, but it succeeded.")
+	}
+}
+
+func parseRegistryConfigsSuccess(t *testing.T, str string) []RegistryConfig {
+	val, err := parseRegistryConfigs(str)
+
+	if err != nil {
+		t.Fatalf("Expected `parseRegistryConfigs` to succeed, but it failed: %s", err.Error())
+	}
+
+	return val
+}
+
+func TestParseRegistryConfigs(t *testing.T) {
+	parseRegistryConfigsFail(t, "")
+
+	empty := parseRegistryConfigsSuccess(t, "[]")
+
+	if len(empty) != 0 {
+		t.Fatal("Expected `parseRegistryConfigs(\"[]\")` to return no configurations, but got some.")
+	}
+
+	single := parseRegistryConfigsSuccess(t, "[{ \"type\": \"goproxy_server\", \"url\": \"https://proxy.example.com/mod\" }]")
+
+	if len(single) != 1 {
+		t.Fatalf("Expected `parseRegistryConfigs` to return one configuration, but got %d.", len(single))
+	}
+
+	first := single[0]
+
+	if first.Type != "goproxy_server" {
+		t.Fatalf("Expected `Type` to be `goproxy_server`, but got `%s`", first.Type)
+	}
+
+	if first.URL != "https://proxy.example.com/mod" {
+		t.Fatalf("Expected `URL` to be `https://proxy.example.com/mod`, but got `%s`", first.URL)
+	}
+}
+
+func TestParseRegistryConfigsMultiple(t *testing.T) {
+	multiple := parseRegistryConfigsSuccess(t, "[{ \"type\": \"git_source\", \"url\": \"https://github.com/github\" }, { \"type\": \"goproxy_server\", \"url\": \"https://proxy.example.com/mod\" }]")
+
+	if len(multiple) != 2 {
+		t.Fatalf("Expected `parseRegistryConfigs` to return two configurations, but got %d.", len(multiple))
+	}
+
+	first := multiple[0]
+
+	if first.Type != "git_source" {
+		t.Fatalf("Expected `Type` to be `git_source`, but got `%s`", first.Type)
+	}
+
+	if first.URL != "https://github.com/github" {
+		t.Fatalf("Expected `URL` to be `https://github.com/github`, but got `%s`", first.URL)
+	}
+
+	second := multiple[1]
+
+	if second.Type != "goproxy_server" {
+		t.Fatalf("Expected `Type` to be `goproxy_server`, but got `%s`", second.Type)
+	}
+
+	if second.URL != "https://proxy.example.com/mod" {
+		t.Fatalf("Expected `URL` to be `https://proxy.example.com/mod`, but got `%s`", second.URL)
+	}
+}
+
+func TestParseRegistryConfigsMultipleGitSources(t *testing.T) {
+	multiple := parseRegistryConfigsSuccess(t, "[{ \"type\": \"git_source\", \"url\": \"https://github.com/github\" }, { \"type\": \"git_source\", \"url\": \"https://go.googlesource.com/go\" }]")
+
+	if len(multiple) != 2 {
+		t.Fatalf("Expected `parseRegistryConfigs` to return two configurations, but got %d.", len(multiple))
+	}
+
+	first := multiple[0]
+
+	if first.Type != "git_source" {
+		t.Fatalf("Expected `Type` to be `git_source`, but got `%s`", first.Type)
+	}
+
+	if first.URL != "https://github.com/github" {
+		t.Fatalf("Expected `URL` to be `https://github.com/github`, but got `%s`", first.URL)
+	}
+
+	second := multiple[1]
+
+	if second.Type != "git_source" {
+		t.Fatalf("Expected `Type` to be `git_source`, but got `%s`", second.Type)
+	}
+
+	if second.URL != "https://go.googlesource.com/go" {
+		t.Fatalf("Expected `URL` to be `https://go.googlesource.com/go`, but got `%s`", second.URL)
+	}
+}
+
+func TestParseRegistryConfigsMultipleGoProxyServers(t *testing.T) {
+	multiple := parseRegistryConfigsSuccess(t, "[{ \"type\": \"goproxy_server\", \"url\": \"https://proxy.example.com/mod\" }, { \"type\": \"goproxy_server\", \"url\": \"https://goproxy.io\" }]")
+
+	if len(multiple) != 2 {
+		t.Fatalf("Expected `parseRegistryConfigs` to return two configurations, but got %d.", len(multiple))
+	}
+
+	first := multiple[0]
+
+	if first.Type != "goproxy_server" {
+		t.Fatalf("Expected `Type` to be `goproxy_server`, but got `%s`", first.Type)
+	}
+
+	if first.URL != "https://proxy.example.com/mod" {
+		t.Fatalf("Expected `URL` to be `https://proxy.example.com/mod`, but got `%s`", first.URL)
+	}
+
+	second := multiple[1]
+
+	if second.Type != "goproxy_server" {
+		t.Fatalf("Expected `Type` to be `goproxy_server`, but got `%s`", second.Type)
+	}
+
+	if second.URL != "https://goproxy.io" {
+		t.Fatalf("Expected `URL` to be `https://goproxy.io`, but got `%s`", second.URL)
+	}
+}
+
+func TestGetEnvVarsScopesCertificateToSubprocesses(t *testing.T) {
+	t.Setenv(PROXY_HOST, "")
+	t.Setenv(PROXY_PORT, "")
+	t.Setenv(PROXY_URLS, "")
+	t.Setenv(PROXY_CA_CERTIFICATE, "dummy certificate")
+
+	vars := getEnvVars()
+	defer os.Remove(proxy_cert_file)
+
+	if proxy_cert_file == "" {
+		t.Fatal("Expected a temporary certificate file to be created.")
+	}
+
+	for _, expected := range []string{"SSL_CERT_FILE=" + proxy_cert_file, "GIT_SSL_CAINFO=" + proxy_cert_file} {
+		if !slices.Contains(vars, expected) {
+			t.Errorf("Expected `getEnvVars` to return %q, but got %v.", expected, vars)
+		}
+	}
+}

@@ -1,0 +1,5 @@
+| structure/A.java:3:11:3:11 | I | file://:0:0:0:0 | structure |
+| structure/A.java:5:14:5:14 | A | file://:0:0:0:0 | structure |
+| structure/A.java:15:7:15:7 | B | file://:0:0:0:0 | structure |
+| structure/A.java:20:7:20:7 | C | file://:0:0:0:0 | structure |
+| structure/A.java:24:7:24:7 | D | file://:0:0:0:0 | structure |

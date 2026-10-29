@@ -1,0 +1,59 @@
+/**
+ * Provides utility predicates to extend the core SSA functionality.
+ */
+
+private import csharp
+private import Ssa
+private import RangeUtils
+private import ConstantUtils
+
+private class ExprNode = ControlFlowNodes::ExprNode;
+
+/** An SSA variable. */
+class SsaVariable extends SsaDefinition {
+  /** Gets a read of this SSA variable. */
+  ExprNode getAUse() { this.getARead().getControlFlowNode() = result }
+}
+
+/** Gets a node that reads `src` via an SSA explicit definition. */
+ExprNode getAnExplicitDefinitionRead(ExprNode src) {
+  exists(SsaExplicitWrite def |
+    def.getARead().getControlFlowNode() = result and
+    hasChild(def.getDefiningExpr(), def.getValue(), def.getControlFlowNode(), src)
+  )
+}
+
+/**
+ * Gets an expression that equals `v - delta`.
+ */
+ExprNode ssaRead(SsaDefinition v, int delta) {
+  v.getARead().getControlFlowNode() = result and delta = 0
+  or
+  exists(ExprNode::AddOperation add, int d1, ConstantIntegerExpr c |
+    result = add and
+    delta = d1 - c.getIntValue()
+  |
+    add.getLeftOperand() = ssaRead(v, d1) and add.getRightOperand() = c
+    or
+    add.getRightOperand() = ssaRead(v, d1) and add.getLeftOperand() = c
+  )
+  or
+  exists(ExprNode::SubOperation sub, int d1, ConstantIntegerExpr c |
+    result = sub and
+    sub.getLeftOperand() = ssaRead(v, d1) and
+    sub.getRightOperand() = c and
+    delta = d1 + c.getIntValue()
+  )
+  or
+  v.(SsaExplicitWrite).getControlFlowNode().(ExprNode::PreIncrExpr) = result and delta = 0
+  or
+  v.(SsaExplicitWrite).getControlFlowNode().(ExprNode::PreDecrExpr) = result and delta = 0
+  or
+  v.(SsaExplicitWrite).getControlFlowNode().(ExprNode::PostIncrExpr) = result and delta = 1 // x++ === ++x - 1
+  or
+  v.(SsaExplicitWrite).getControlFlowNode().(ExprNode::PostDecrExpr) = result and delta = -1 // x-- === --x + 1
+  or
+  v.(SsaExplicitWrite).getControlFlowNode().(ExprNode::Assignment) = result and delta = 0
+  or
+  result.(ExprNode::AssignExpr).getRightOperand() = ssaRead(v, delta)
+}

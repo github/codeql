@@ -1,0 +1,19 @@
+<div>
+  <div ng-controller="MyScopeController">
+    <input ng-model="n1">
+    <button ng-click="n2">greet</button>
+    <div x="{{n3}}"/>
+    {{n4}}
+  </div>
+  <div ng-controller="MyNamedScopeController2 as mnsc">
+    <div x="{{mnsc}}"/>
+  </div>
+  <my-directive
+    x="{{directiveScopeProp}}"
+    />
+  <my-directive-1
+    x="{{directiveDuplicateScopePropAccess}}"
+    />
+  <my-template-directive />
+
+</div>

@@ -1,0 +1,28 @@
+{
+  "markdownMessage": "CodeQL could not find any project or solution files in your repository.\n\nSet up a [manual build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/no-projects-or-solutions",
+    "name": "No project or solutions files found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "CodeQL found multiple potential build scripts for your project and attempted to run `build.bat`, which failed. This may not be the right build script for your project.\n\nSet up a [manual build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/multiple-build-scripts",
+    "name": "There are multiple potential build scripts"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

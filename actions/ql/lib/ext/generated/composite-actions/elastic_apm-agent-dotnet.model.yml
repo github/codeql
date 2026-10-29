@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["elastic/apm-agent-dotnet", "*", "input.project", "code-injection", "generated"]
+     - ["elastic/apm-agent-dotnet", "*", "input.name", "code-injection", "generated"]

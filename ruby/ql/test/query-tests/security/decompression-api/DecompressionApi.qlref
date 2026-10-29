@@ -1,0 +1,2 @@
+query: experimental/decompression-api/DecompressionApi.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

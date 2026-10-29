@@ -1,0 +1,80 @@
+| carrier.py:18 | Simple config | Attribute | simple.test |
+| carrier.py:18 | Taint carrier config | Attribute | simple.test |
+| carrier.py:22 | Simple config | Attribute() | simple.test |
+| carrier.py:22 | Taint carrier config | Attribute() | simple.test |
+| carrier.py:26 | Simple config | Attribute() | simple.test |
+| carrier.py:26 | Taint carrier config | Attribute() | simple.test |
+| carrier.py:30 | Simple config | Attribute() | simple.test |
+| carrier.py:30 | Taint carrier config | Attribute() | simple.test |
+| carrier.py:35 | Simple config | Attribute() | simple.test |
+| carrier.py:35 | Taint carrier config | Attribute() | simple.test |
+| deep.py:22 | Simple config | x | simple.test |
+| deep.py:22 | Taint carrier config | x | simple.test |
+| rockpaperscissors.py:13 | Rock-paper-scissors config | SCISSORS | scissors |
+| rockpaperscissors.py:16 | Rock-paper-scissors config | ROCK | rock |
+| rockpaperscissors.py:21 | Rock-paper-scissors config | y | paper |
+| rockpaperscissors.py:26 | Rock-paper-scissors config | y | paper |
+| rockpaperscissors.py:31 | Rock-paper-scissors config | x | rock |
+| rockpaperscissors.py:32 | Rock-paper-scissors config | y | rock |
+| test.py:3 | Simple config | SOURCE | simple.test |
+| test.py:3 | Taint carrier config | SOURCE | simple.test |
+| test.py:7 | Simple config | s | simple.test |
+| test.py:7 | Taint carrier config | s | simple.test |
+| test.py:13 | Simple config | arg | simple.test |
+| test.py:13 | Taint carrier config | arg | simple.test |
+| test.py:17 | Simple config | t | simple.test |
+| test.py:17 | Taint carrier config | t | simple.test |
+| test.py:33 | Simple config | t | simple.test |
+| test.py:33 | Taint carrier config | t | simple.test |
+| test.py:41 | Simple config | t | simple.test |
+| test.py:41 | Taint carrier config | t | simple.test |
+| test.py:78 | Simple config | t | simple.test |
+| test.py:78 | Taint carrier config | t | simple.test |
+| test.py:83 | Simple config | t | simple.test |
+| test.py:83 | Taint carrier config | t | simple.test |
+| test.py:89 | Simple config | t | simple.test |
+| test.py:89 | Taint carrier config | t | simple.test |
+| test.py:93 | Simple config | t | simple.test |
+| test.py:93 | Taint carrier config | t | simple.test |
+| test.py:97 | Simple config | t | simple.test |
+| test.py:97 | Taint carrier config | t | simple.test |
+| test.py:101 | Simple config | t | simple.test |
+| test.py:101 | Taint carrier config | t | simple.test |
+| test.py:106 | Simple config | Attribute | simple.test |
+| test.py:106 | Taint carrier config | Attribute | simple.test |
+| test.py:111 | Simple config | Attribute | simple.test |
+| test.py:111 | Taint carrier config | Attribute | simple.test |
+| test.py:122 | Basic custom config | t | simple.test |
+| test.py:130 | Basic custom config | t | simple.test |
+| test.py:132 | Simple config | t | simple.test |
+| test.py:132 | Taint carrier config | t | simple.test |
+| test.py:140 | Basic custom config | t | simple.test |
+| test.py:142 | Simple config | t | simple.test |
+| test.py:142 | Taint carrier config | t | simple.test |
+| test.py:151 | Basic custom config | t | simple.test |
+| test.py:153 | Simple config | t | simple.test |
+| test.py:153 | Taint carrier config | t | simple.test |
+| test.py:156 | Simple config | unsafe | simple.test |
+| test.py:156 | Taint carrier config | unsafe | simple.test |
+| test.py:160 | Simple config | t | simple.test |
+| test.py:160 | Taint carrier config | t | simple.test |
+| test.py:165 | Simple config | s | simple.test |
+| test.py:165 | Taint carrier config | s | simple.test |
+| test.py:172 | Simple config | Subscript | simple.test |
+| test.py:172 | Taint carrier config | Subscript | simple.test |
+| test.py:173 | Simple config | Subscript | simple.test |
+| test.py:173 | Taint carrier config | Subscript | simple.test |
+| test.py:180 | Simple config | t | simple.test |
+| test.py:180 | Taint carrier config | t | simple.test |
+| test.py:182 | Simple config | t | simple.test |
+| test.py:182 | Taint carrier config | t | simple.test |
+| test.py:184 | Simple config | t | simple.test |
+| test.py:184 | Taint carrier config | t | simple.test |
+| test.py:186 | Simple config | t | simple.test |
+| test.py:186 | Taint carrier config | t | simple.test |
+| test.py:197 | Simple config | t | simple.test |
+| test.py:197 | Taint carrier config | t | simple.test |
+| test.py:199 | Simple config | t | simple.test |
+| test.py:199 | Taint carrier config | t | simple.test |
+| test.py:214 | Simple config | x | simple.test |
+| test.py:214 | Taint carrier config | x | simple.test |

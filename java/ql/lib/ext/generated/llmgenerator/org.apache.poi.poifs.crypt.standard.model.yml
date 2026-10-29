@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.poifs.crypt.standard", "EncryptionRecord", True, "write", "(LittleEndianByteArrayOutputStream)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["org.apache.poi.poifs.crypt.standard", "StandardEncryptionVerifier", True, "setEncryptedVerifier", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.EncryptionVerifier.encryptedVerifier]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.standard", "StandardEncryptionVerifier", True, "setEncryptedVerifierHash", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.EncryptionVerifier.encryptedVerifierHash]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.standard", "StandardEncryptionVerifier", True, "setSalt", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.EncryptionVerifier.salt]", "value", "dfc-generated"]

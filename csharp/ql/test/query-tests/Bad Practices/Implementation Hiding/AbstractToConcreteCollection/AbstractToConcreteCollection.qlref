@@ -1,0 +1,2 @@
+query: Bad Practices/Implementation Hiding/AbstractToConcreteCollection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

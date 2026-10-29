@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "batchUpdate", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "execute", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "query", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "queryForList", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "queryForMap", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "queryForObject", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "queryForRowSet", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "queryForStream", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "update", "", "", "Argument[0]", "sql-injection", "manual"]

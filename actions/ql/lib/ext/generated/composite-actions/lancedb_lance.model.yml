@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["lancedb/lance", "*", "input.repo", "code-injection", "generated"]
+     - ["lancedb/lance", "*", "input.vcpkg_token", "code-injection", "generated"]
+     - ["lancedb/lance", "*", "input.part", "code-injection", "generated"]
+     - ["lancedb/lance", "*", "input.arm-build", "code-injection", "generated"]

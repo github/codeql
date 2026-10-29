@@ -1,0 +1,50 @@
+| file://:0:0:0:0 | (unnamed parameter 0) | Parameter | file://:0:0:0:0 | __va_list_tag && | ReferenceType, base: __va_list_tag |
+| file://:0:0:0:0 | (unnamed parameter 0) | Parameter | file://:0:0:0:0 | const __va_list_tag & | ReferenceType, base: const __va_list_tag |
+| file://:0:0:0:0 | fp_offset |  | file://:0:0:0:0 | unsigned int | IntType |
+| file://:0:0:0:0 | gp_offset |  | file://:0:0:0:0 | unsigned int | IntType |
+| file://:0:0:0:0 | overflow_arg_area |  | file://:0:0:0:0 | void * | PointerType, VoidPointerType, base: void |
+| file://:0:0:0:0 | reg_save_area |  | file://:0:0:0:0 | void * | PointerType, VoidPointerType, base: void |
+| types.cpp:1:12:1:12 | i |  | file://:0:0:0:0 | int | IntType |
+| types.cpp:3:11:3:11 | c | isConst | file://:0:0:0:0 | const int | base: int, isConst |
+| types.cpp:4:14:4:15 | pi | isConst | file://:0:0:0:0 | const double | base: double, isConst |
+| types.cpp:6:10:6:10 | a |  | file://:0:0:0:0 | unsigned int | IntType |
+| types.cpp:8:14:8:14 | b |  | file://:0:0:0:0 | unsigned int | IntType |
+| types.cpp:12:13:12:17 | kings |  | file://:0:0:0:0 | const char *[] | base: const char * |
+| types.cpp:14:6:14:6 | p |  | file://:0:0:0:0 | int * | PointerType, base: int |
+| types.cpp:14:9:14:9 | q |  | file://:0:0:0:0 | int | IntType |
+| types.cpp:15:5:15:6 | v1 |  | file://:0:0:0:0 | int[10] | base: int |
+| types.cpp:15:14:15:15 | pv |  | file://:0:0:0:0 | int * | PointerType, base: int |
+| types.cpp:17:7:17:8 | fp |  | file://:0:0:0:0 | ..(*)(..) | base: ..()(..) |
+| types.cpp:19:7:19:8 | v2 |  | file://:0:0:0:0 | float[3] | base: float |
+| types.cpp:20:7:20:8 | v3 |  | file://:0:0:0:0 | char *[32] | base: char * |
+| types.cpp:22:5:22:6 | d2 |  | file://:0:0:0:0 | int[10][20] | base: int[20] |
+| types.cpp:24:6:24:7 | v4 |  | file://:0:0:0:0 | char[3] | base: char |
+| types.cpp:26:5:26:6 | v5 |  | file://:0:0:0:0 | int[8] | base: int |
+| types.cpp:28:7:28:8 | p2 |  | file://:0:0:0:0 | char * | PointerType, base: char |
+| types.cpp:29:6:29:7 | p3 |  | file://:0:0:0:0 | char[] | base: char |
+| types.cpp:31:6:31:10 | alpha |  | file://:0:0:0:0 | char[] | base: char |
+| types.cpp:34:5:34:6 | av |  | file://:0:0:0:0 | int[] | base: int |
+| types.cpp:35:6:35:8 | ap1 |  | file://:0:0:0:0 | int * | PointerType, base: int |
+| types.cpp:36:6:36:8 | ap2 |  | file://:0:0:0:0 | int * | PointerType, base: int |
+| types.cpp:37:6:37:8 | ap3 |  | file://:0:0:0:0 | int * | PointerType, base: int |
+| types.cpp:39:12:39:13 | pi | Parameter | file://:0:0:0:0 | int * | PointerType, base: int |
+| types.cpp:41:8:41:9 | pv | LocalVariable | file://:0:0:0:0 | void * | PointerType, VoidPointerType, base: void |
+| types.cpp:45:15:45:15 | p | Parameter | file://:0:0:0:0 | char * | PointerType, base: char |
+| types.cpp:47:8:47:8 | s | LocalVariable | file://:0:0:0:0 | char[] | base: char |
+| types.cpp:48:15:48:16 | pc | LocalVariable | file://:0:0:0:0 | const char * | PointerType, base: const char |
+| types.cpp:51:15:51:16 | cp | LocalVariable, isConst | file://:0:0:0:0 | char *const | base: char *, isConst |
+| types.cpp:54:21:54:23 | cpc | LocalVariable, isConst | file://:0:0:0:0 | const char *const | base: const char *, isConst |
+| types.cpp:55:15:55:17 | pc2 | LocalVariable | file://:0:0:0:0 | const char * | PointerType, base: const char |
+| types.cpp:60:7:60:7 | i | LocalVariable | file://:0:0:0:0 | int | IntType |
+| types.cpp:61:8:61:8 | r | LocalVariable | file://:0:0:0:0 | int & | ReferenceType, base: int |
+| types.cpp:62:7:62:7 | x | LocalVariable | file://:0:0:0:0 | int | IntType |
+| types.cpp:64:17:64:19 | cdr | LocalVariable | file://:0:0:0:0 | const double & | ReferenceType, base: const double |
+| types.cpp:67:21:67:22 | aa | Parameter | file://:0:0:0:0 | int & | ReferenceType, base: int |
+| types.cpp:69:10:69:13 | i128 |  | file://:0:0:0:0 | __int128 |  |
+| types.cpp:70:17:70:21 | i128s |  | file://:0:0:0:0 | signed __int128 |  |
+| types.cpp:71:19:71:23 | i128u |  | file://:0:0:0:0 | unsigned __int128 |  |
+| types.cpp:73:7:73:11 | pchar |  | types.cpp:10:15:10:19 | Pchar | TypedefType |
+| types.cpp:79:8:79:9 | st |  | types.cpp:75:23:75:28 | size_t | Size_t, TypedefType |
+| types.cpp:80:9:80:11 | sst |  | types.cpp:76:14:76:20 | ssize_t | Ssize_t, TypedefType |
+| types.cpp:81:11:81:13 | pdt |  | types.cpp:77:14:77:22 | ptrdiff_t | Ptrdiff_t, TypedefType |
+| types.cpp:82:9:82:11 | wct |  | file://:0:0:0:0 | wchar_t | Wchar_t |

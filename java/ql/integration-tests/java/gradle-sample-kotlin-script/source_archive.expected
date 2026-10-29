@@ -1,0 +1,7 @@
+.gradle/7.5.1/dependencies-accessors/gc.properties
+.gradle/7.5.1/gc.properties
+.gradle/buildOutputCleanup/cache.properties
+.gradle/vcs-1/gc.properties
+app/src/main/java/test/App.java
+app/src/test/java/test/AppTest.java
+gradle/wrapper/gradle-wrapper.properties

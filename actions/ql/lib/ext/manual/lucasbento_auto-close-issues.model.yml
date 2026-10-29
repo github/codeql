@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["lucasbento/auto-close-issues", "*", "input.issue-close-message", "code-injection", "manual"]

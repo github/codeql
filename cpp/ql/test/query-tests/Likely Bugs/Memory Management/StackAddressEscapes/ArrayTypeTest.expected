@@ -1,0 +1,148 @@
+| ArrayTypeTest.cpp:11:5:11:8 | access to array | int[3][4][5], int(*)[4][5], int[4][5] |
+| ArrayTypeTest.cpp:11:5:11:11 | access to array | int[4][5], int(*)[5], int[5] |
+| ArrayTypeTest.cpp:11:5:11:14 | access to array | int[5], int *, int |
+| ArrayTypeTest.cpp:12:5:12:8 | access to array | int(*)[7][8], int(*)[7][8], int[7][8] |
+| ArrayTypeTest.cpp:12:5:12:11 | access to array | int[7][8], int(*)[8], int[8] |
+| ArrayTypeTest.cpp:12:5:12:14 | access to array | int[8], int *, int |
+| ArrayTypeTest.cpp:23:11:23:14 | access to array | int[10][11][12], int(*)[11][12], int[11][12] |
+| ArrayTypeTest.cpp:23:11:23:17 | access to array | int[11][12], int(*)[12], int[12] |
+| ArrayTypeTest.cpp:23:11:23:20 | access to array | int[12], int *, int |
+| ArrayTypeTest.cpp:33:5:33:10 | access to array | int[10][11][12], int(*)[11][12], int[11][12] |
+| ArrayTypeTest.cpp:33:5:33:13 | access to array | int[11][12], int(*)[12], int[12] |
+| ArrayTypeTest.cpp:33:5:33:16 | access to array | int[12], int *, int |
+| ArrayTypeTest.cpp:34:5:34:11 | access to array | int[10][11][12], int(*)[11][12], int[11][12] |
+| ArrayTypeTest.cpp:34:5:34:14 | access to array | int[11][12], int(*)[12], int[12] |
+| ArrayTypeTest.cpp:34:5:34:17 | access to array | int[12], int *, int |
+| test.cpp:170:11:170:15 | access to array | int[15], int *, int |
+| test.cpp:173:11:173:15 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:174:10:174:14 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:175:11:175:15 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:175:11:175:18 | access to array | int[15], int *, int |
+| test.cpp:178:11:178:15 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:179:10:179:14 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:180:11:180:15 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:180:11:180:18 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:181:10:181:14 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:181:10:181:17 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:182:11:182:15 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:182:11:182:18 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:182:11:182:21 | access to array | int[15], int *, int |
+| test.cpp:184:3:184:9 | access to array | int **, int **, int * |
+| test.cpp:185:3:185:9 | access to array | int **, int **, int * |
+| test.cpp:185:14:185:18 | access to array | int[15], int *, int |
+| test.cpp:186:3:186:9 | access to array | int **, int **, int * |
+| test.cpp:186:13:186:17 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:187:3:187:9 | access to array | int **, int **, int * |
+| test.cpp:187:14:187:18 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:187:14:187:21 | access to array | int[15], int *, int |
+| test.cpp:188:3:188:9 | access to array | int **, int **, int * |
+| test.cpp:188:13:188:17 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:188:13:188:20 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:189:3:189:9 | access to array | int **, int **, int * |
+| test.cpp:189:14:189:18 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:189:14:189:21 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:189:14:189:24 | access to array | int[15], int *, int |
+| test.cpp:199:11:199:15 | access to array | int[15], int *, int |
+| test.cpp:202:11:202:15 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:203:10:203:14 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:204:11:204:15 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:204:11:204:18 | access to array | int[15], int *, int |
+| test.cpp:207:11:207:15 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:208:10:208:14 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:209:11:209:15 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:209:11:209:18 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:210:10:210:14 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:210:10:210:17 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:211:11:211:15 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:211:11:211:18 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:211:11:211:21 | access to array | int[15], int *, int |
+| test.cpp:215:3:215:9 | access to array | int **, int **, int * |
+| test.cpp:216:3:216:9 | access to array | int **, int **, int * |
+| test.cpp:216:14:216:18 | access to array | int[15], int *, int |
+| test.cpp:217:3:217:9 | access to array | int **, int **, int * |
+| test.cpp:217:13:217:17 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:218:3:218:9 | access to array | int **, int **, int * |
+| test.cpp:218:14:218:18 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:218:14:218:21 | access to array | int[15], int *, int |
+| test.cpp:219:3:219:9 | access to array | int **, int **, int * |
+| test.cpp:219:13:219:17 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:219:13:219:20 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:220:3:220:9 | access to array | int **, int **, int * |
+| test.cpp:220:14:220:18 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:220:14:220:21 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:220:14:220:24 | access to array | int[15], int *, int |
+| test.cpp:228:11:228:17 | access to array | int[15], int *, int |
+| test.cpp:231:11:231:17 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:232:10:232:16 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:233:11:233:17 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:233:11:233:20 | access to array | int[15], int *, int |
+| test.cpp:236:11:236:17 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:237:10:237:16 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:238:11:238:17 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:238:11:238:20 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:239:10:239:16 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:239:10:239:19 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:240:11:240:17 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:240:11:240:20 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:240:11:240:23 | access to array | int[15], int *, int |
+| test.cpp:244:3:244:9 | access to array | int **, int **, int * |
+| test.cpp:245:3:245:9 | access to array | int **, int **, int * |
+| test.cpp:245:14:245:20 | access to array | int[15], int *, int |
+| test.cpp:246:3:246:9 | access to array | int **, int **, int * |
+| test.cpp:246:13:246:19 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:247:3:247:9 | access to array | int **, int **, int * |
+| test.cpp:247:14:247:20 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:247:14:247:23 | access to array | int[15], int *, int |
+| test.cpp:248:3:248:9 | access to array | int **, int **, int * |
+| test.cpp:248:13:248:19 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:248:13:248:22 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:249:3:249:9 | access to array | int **, int **, int * |
+| test.cpp:249:14:249:20 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:249:14:249:23 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:249:14:249:26 | access to array | int[15], int *, int |
+| test.cpp:257:11:257:17 | access to array | int[15], int *, int |
+| test.cpp:260:11:260:17 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:261:10:261:16 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:262:11:262:17 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:262:11:262:20 | access to array | int[15], int *, int |
+| test.cpp:265:11:265:17 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:266:10:266:16 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:267:11:267:17 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:267:11:267:20 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:268:10:268:16 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:268:10:268:19 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:269:11:269:17 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:269:11:269:20 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:269:11:269:23 | access to array | int[15], int *, int |
+| test.cpp:273:3:273:9 | access to array | int **, int **, int * |
+| test.cpp:274:3:274:9 | access to array | int **, int **, int * |
+| test.cpp:274:14:274:20 | access to array | int[15], int *, int |
+| test.cpp:275:3:275:9 | access to array | int **, int **, int * |
+| test.cpp:275:13:275:19 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:276:3:276:9 | access to array | int **, int **, int * |
+| test.cpp:276:14:276:20 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:276:14:276:23 | access to array | int[15], int *, int |
+| test.cpp:277:3:277:9 | access to array | int **, int **, int * |
+| test.cpp:277:13:277:19 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:277:13:277:22 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:278:3:278:9 | access to array | int **, int **, int * |
+| test.cpp:278:14:278:20 | access to array | int[13][14][15], int(*)[14][15], int[14][15] |
+| test.cpp:278:14:278:23 | access to array | int[14][15], int(*)[15], int[15] |
+| test.cpp:278:14:278:26 | access to array | int[15], int *, int |
+| test.cpp:294:7:294:11 | access to array | int **[10], int ***, int ** |
+| test.cpp:298:9:298:13 | access to array | int **[10][11], int **(*)[11], int **[11] |
+| test.cpp:298:9:298:16 | access to array | int **[11], int ***, int ** |
+| test.cpp:310:3:310:9 | access to array | int *[10], int **, int * |
+| test.cpp:311:3:311:9 | access to array | int *[10][11], int *(*)[11], int *[11] |
+| test.cpp:311:3:311:12 | access to array | int *[11], int **, int * |
+| test.cpp:312:3:312:9 | access to array | int **, int **, int * |
+| test.cpp:313:3:313:9 | access to array | int **[10], int ***, int ** |
+| test.cpp:313:3:313:12 | access to array | int **, int **, int * |
+| test.cpp:314:3:314:9 | access to array | int **[10][11], int **(*)[11], int **[11] |
+| test.cpp:314:3:314:12 | access to array | int **[11], int ***, int ** |
+| test.cpp:314:3:314:15 | access to array | int **, int **, int * |
+| test.cpp:315:3:315:9 | access to array | int *(*)[11], int *(*)[11], int *[11] |
+| test.cpp:315:3:315:12 | access to array | int *[11], int **, int * |
+| test.cpp:316:3:316:9 | access to array | int *(*)[11][12], int *(*)[11][12], int *[11][12] |
+| test.cpp:316:3:316:12 | access to array | int *[11][12], int *(*)[12], int *[12] |
+| test.cpp:316:3:316:15 | access to array | int *[12], int **, int * |

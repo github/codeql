@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds comparisons using the equals (<code>==</code>) operator on floating point values. 
+Such comparisons can yield unexpected results due to conversion or rounding errors.
+Pay particular attention if you are dealing with very large or very small floating point values 
+as rounding errors will be more prominent when using such values.
+</p> 
+
+</overview>
+<recommendation>
+<p>Floating point numbers should be considered equal if their difference is within an appropriate margin of error.</p>
+
+</recommendation>
+<example><sample src="FloatComparison.cpp" />
+
+</example>
+<references>
+
+<li>
+  D. Goldberg, <em>What Every Computer Scientist Should Know About Floating-Point Arithmetic</em>,
+ACM Computing Surveys, Volume 23, Issue 1, March 1991 (<a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">available online</a>).
+</li>
+
+
+</references>
+</qhelp>

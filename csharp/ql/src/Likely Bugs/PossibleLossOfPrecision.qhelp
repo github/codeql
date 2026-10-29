@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Converting the result of dividing, or multiplying, two integral expressions to a floating-point
+value may result in a loss of precision. For integral division, any fractional component of the
+result will be lost. For integral multiplication, the result may be outside the integral range
+and overflow.
+</p>
+
+</overview>
+<recommendation>
+<p>
+For division, unless the intent is to round the result down to a whole number, you should
+cast one of the operands to a floating-point type before performing the division.
+
+For multiplication, unless the intent is to overflow, you should cast one of the
+operands to a floating-point type before performing the multiplication.
+</p>
+
+</recommendation>
+<example>
+<p>
+In this example <code>c</code> is equal to 5 because integer division is performed.
+</p>
+<sample src="PossibleLossOfPrecision.cs" />
+
+<p>
+Casting one of the integers to a float ensures that float division is used and
+the remainder will be maintained, giving <code>c</code> the value of 5.25.
+</p>
+<sample src="PossibleLossOfPrecisionFix.cs" />
+
+<p>
+In this example, if <code>a</code> is greater than 536,870,911 the result will overflow.
+</p>
+<sample src="PossibleLossOfPrecision2.cs" />
+
+<p>
+Casting one of the integers to a float ensures that float multiplication is used and
+overflow is avoided.
+</p>
+<sample src="PossibleLossOfPrecisionFix2.cs" />
+
+</example>
+<references>
+
+  <li>J. Albahari and B. Albahari, <em>C# 4.0 in a Nutshell - The Definitive Reference</em>, p.24.</li>
+  <li>MSDN, C# Reference <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/division-operator">/ operator</a>, <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/multiplication-operator">* operator</a>.</li>
+
+</references>
+</qhelp>

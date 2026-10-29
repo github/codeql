@@ -1,0 +1,43 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.crypto", "Cipher", True, "init", "(int,Key,AlgorithmParameterSpec)", "", "Argument[2]", "encryption-iv", "manual"]
+      - ["javax.crypto", "Cipher", True, "init", "(int,Key,AlgorithmParameterSpec,SecureRandom)", "", "Argument[2]", "encryption-iv", "manual"]
+      - ["javax.crypto", "Cipher", False, "unwrap", "(byte[],String,int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["javax.crypto", "CipherSpi", True, "engineUnwrap", "(byte[],String,int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.crypto", "KDF", False, "getInstance", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.crypto.KDF.algorithm]", "value", "manual"]
+      - ["javax.crypto", "KDF", False, "getInstance", "(String,Provider)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.crypto.KDF.algorithm]", "value", "manual"]
+      - ["javax.crypto", "KDF", False, "getInstance", "(String,String)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.crypto.KDF.algorithm]", "value", "manual"]
+      - ["javax.crypto", "KDF", False, "getInstance", "(String,KDFParameters)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.crypto.KDF.algorithm]", "value", "manual"]
+      - ["javax.crypto", "KDF", False, "getInstance", "(String,KDFParameters,Provider)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.crypto.KDF.algorithm]", "value", "manual"]
+      - ["javax.crypto", "KDF", False, "getInstance", "(String,KDFParameters,String)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.crypto.KDF.algorithm]", "value", "manual"]
+      - ["javax.crypto", "KDF", True, "getAlgorithm", "()", "", "Argument[this].SyntheticField[javax.crypto.KDF.algorithm]", "ReturnValue", "value", "manual"]
+      - ["javax.crypto", "KDF", True, "getProvider", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["javax.crypto", "KDF", True, "deriveKey", "(String,AlgorithmParameterSpec)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["javax.crypto", "KDF", True, "deriveData", "(AlgorithmParameterSpec)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["javax.crypto", "SecretKey", True, "getEncoded", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.crypto", "Cipher", "doFinal", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "getAlgorithm", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "getExemptionMechanism", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "getInstance", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "getIV", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "getParameters", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "getProvider", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "init", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "toString", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "unwrap", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "update", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "updateAAD", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "wrap", "", "summary", "df-manual"]
+      - ["javax.crypto", "Mac", "init", "(Key)", "summary", "df-manual"]
+      - ["javax.crypto", "Mac", "doFinal", "()", "summary", "df-manual"]

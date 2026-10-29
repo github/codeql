@@ -1,0 +1,6 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+<include src="SqlInjection.inc.qhelp" />
+</qhelp>

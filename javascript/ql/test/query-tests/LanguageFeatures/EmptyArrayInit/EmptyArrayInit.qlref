@@ -1,0 +1,2 @@
+query: LanguageFeatures/EmptyArrayInit.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

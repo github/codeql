@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Often a programmer wants to check that all the elements of a given sequence satisfy some 
+predicate. A common pattern for this is to create a flag and then iterate over the sequence, 
+changing the flag and breaking out of the loop if the element being examined does not satisfy the 
+predicate.</p>
+
+</overview>
+<recommendation>
+<p>This pattern works well and is also available as the <code>All</code> method in LINQ. It is 
+better to use a library method in preference to writing your own pattern unless you have a specific 
+need for a custom version. In particular, this makes the code easier to read (the intent is more 
+clearly expressed), shorter, less error-prone and more maintainable.</p>
+
+</recommendation>
+<example>
+<p>In this example the list is iterated in order to check if every element is even.</p>
+<sample src="MissedAllOpportunity.cs" />
+
+<p>The LINQ <code>All</code> method can be used to accomplish this in a much simpler fashion.</p>
+<sample src="MissedAllOpportunityFix.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/bb548541.aspx">Enumerable.All&lt;TSource&gt; Method</a>.</li>
+
+
+</references>
+</qhelp>

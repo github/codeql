@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.sl.image", "ImageHeaderBitmap", True, "getSize", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.sl.image", "ImageHeaderEMF", True, "getBounds", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.sl.image", "ImageHeaderPICT", True, "getBounds", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.sl.image", "ImageHeaderPNG", False, "ImageHeaderPNG", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.sl.image.ImageHeaderPNG.data]", "value", "dfc-generated"]
+      - ["org.apache.poi.sl.image", "ImageHeaderPNG", False, "extractPNG", "()", "", "Argument[this].SyntheticField[org.apache.poi.sl.image.ImageHeaderPNG.data].ArrayElement", "ReturnValue.ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.poi.sl.image", "ImageHeaderPNG", False, "extractPNG", "()", "", "Argument[this].SyntheticField[org.apache.poi.sl.image.ImageHeaderPNG.data]", "ReturnValue", "value", "dfc-generated"]

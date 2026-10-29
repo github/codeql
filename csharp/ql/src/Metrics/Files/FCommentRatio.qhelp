@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the percentage of lines in files that are comments. A low number of 
+comments may indicate files that are difficult to understand due to poor documentation.</p>
+
+</overview>
+<recommendation>
+<p>Consider if the file needs more documentation.</p>
+
+</recommendation>
+<references>
+
+  <li>Jeff Atwood. <a href="http://www.codinghorror.com/blog/2005/11/avoiding-undocumentation.html">Avoiding Undocumentation</a>. 2005.</li>
+  <li>Steve McConnell. <em>Code Complete</em>. 2nd Edition. Microsoft Press. 2004.</li>
+
+</references>
+</qhelp>

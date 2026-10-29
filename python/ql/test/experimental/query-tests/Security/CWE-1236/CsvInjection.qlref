@@ -1,0 +1,2 @@
+query: experimental/Security/CWE-1236/CsvInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

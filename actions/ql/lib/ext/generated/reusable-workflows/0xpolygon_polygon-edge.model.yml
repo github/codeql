@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["0xpolygon/polygon-edge/.github/workflows/loadtest.yml", "*", "input.scenario", "code-injection", "generated"]

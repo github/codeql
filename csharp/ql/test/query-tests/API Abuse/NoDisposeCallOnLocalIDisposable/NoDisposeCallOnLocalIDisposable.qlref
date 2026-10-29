@@ -1,0 +1,2 @@
+query: API Abuse/NoDisposeCallOnLocalIDisposable.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

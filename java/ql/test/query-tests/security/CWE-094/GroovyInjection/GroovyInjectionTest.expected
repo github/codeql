@@ -1,0 +1,327 @@
+#select
+| GroovyClassLoaderTest.java:20:36:20:38 | gcs | GroovyClassLoaderTest.java:17:29:17:58 | getParameter(...) : String | GroovyClassLoaderTest.java:20:36:20:38 | gcs | Groovy script depends on a $@. | GroovyClassLoaderTest.java:17:29:17:58 | getParameter(...) | user-provided value |
+| GroovyClassLoaderTest.java:27:36:27:38 | gcs | GroovyClassLoaderTest.java:24:29:24:58 | getParameter(...) : String | GroovyClassLoaderTest.java:27:36:27:38 | gcs | Groovy script depends on a $@. | GroovyClassLoaderTest.java:24:29:24:58 | getParameter(...) | user-provided value |
+| GroovyClassLoaderTest.java:33:36:33:78 | new ByteArrayInputStream(...) | GroovyClassLoaderTest.java:31:29:31:58 | getParameter(...) : String | GroovyClassLoaderTest.java:33:36:33:78 | new ByteArrayInputStream(...) | Groovy script depends on a $@. | GroovyClassLoaderTest.java:31:29:31:58 | getParameter(...) | user-provided value |
+| GroovyClassLoaderTest.java:39:36:39:59 | new StringReader(...) | GroovyClassLoaderTest.java:37:29:37:58 | getParameter(...) : String | GroovyClassLoaderTest.java:39:36:39:59 | new StringReader(...) | Groovy script depends on a $@. | GroovyClassLoaderTest.java:37:29:37:58 | getParameter(...) | user-provided value |
+| GroovyClassLoaderTest.java:45:36:45:41 | script | GroovyClassLoaderTest.java:43:29:43:58 | getParameter(...) : String | GroovyClassLoaderTest.java:45:36:45:41 | script | Groovy script depends on a $@. | GroovyClassLoaderTest.java:43:29:43:58 | getParameter(...) | user-provided value |
+| GroovyClassLoaderTest.java:51:36:51:41 | script | GroovyClassLoaderTest.java:49:29:49:58 | getParameter(...) : String | GroovyClassLoaderTest.java:51:36:51:41 | script | Groovy script depends on a $@. | GroovyClassLoaderTest.java:49:29:49:58 | getParameter(...) | user-provided value |
+| GroovyCompilationUnitTest.java:22:13:22:14 | cu | GroovyCompilationUnitTest.java:21:34:21:63 | getParameter(...) : String | GroovyCompilationUnitTest.java:22:13:22:14 | cu | Groovy script depends on a $@. | GroovyCompilationUnitTest.java:21:34:21:63 | getParameter(...) | user-provided value |
+| GroovyCompilationUnitTest.java:33:13:33:14 | cu | GroovyCompilationUnitTest.java:32:46:32:75 | getParameter(...) : String | GroovyCompilationUnitTest.java:33:13:33:14 | cu | Groovy script depends on a $@. | GroovyCompilationUnitTest.java:32:46:32:75 | getParameter(...) | user-provided value |
+| GroovyCompilationUnitTest.java:38:13:38:14 | cu | GroovyCompilationUnitTest.java:37:34:37:63 | getParameter(...) : String | GroovyCompilationUnitTest.java:38:13:38:14 | cu | Groovy script depends on a $@. | GroovyCompilationUnitTest.java:37:34:37:63 | getParameter(...) | user-provided value |
+| GroovyCompilationUnitTest.java:45:13:45:14 | cu | GroovyCompilationUnitTest.java:43:44:43:73 | getParameter(...) : String | GroovyCompilationUnitTest.java:45:13:45:14 | cu | Groovy script depends on a $@. | GroovyCompilationUnitTest.java:43:44:43:73 | getParameter(...) | user-provided value |
+| GroovyCompilationUnitTest.java:59:13:59:14 | cu | GroovyCompilationUnitTest.java:56:60:56:89 | getParameter(...) : String | GroovyCompilationUnitTest.java:59:13:59:14 | cu | Groovy script depends on a $@. | GroovyCompilationUnitTest.java:56:60:56:89 | getParameter(...) | user-provided value |
+| GroovyCompilationUnitTest.java:66:13:66:14 | cu | GroovyCompilationUnitTest.java:64:44:64:73 | getParameter(...) : String | GroovyCompilationUnitTest.java:66:13:66:14 | cu | Groovy script depends on a $@. | GroovyCompilationUnitTest.java:64:44:64:73 | getParameter(...) | user-provided value |
+| GroovyCompilationUnitTest.java:72:13:72:14 | cu | GroovyCompilationUnitTest.java:70:55:70:84 | getParameter(...) : String | GroovyCompilationUnitTest.java:72:13:72:14 | cu | Groovy script depends on a $@. | GroovyCompilationUnitTest.java:70:55:70:84 | getParameter(...) | user-provided value |
+| GroovyCompilationUnitTest.java:78:13:78:14 | cu | GroovyCompilationUnitTest.java:76:55:76:84 | getParameter(...) : String | GroovyCompilationUnitTest.java:78:13:78:14 | cu | Groovy script depends on a $@. | GroovyCompilationUnitTest.java:76:55:76:84 | getParameter(...) | user-provided value |
+| GroovyCompilationUnitTest.java:89:13:89:14 | cu | GroovyCompilationUnitTest.java:88:34:88:63 | getParameter(...) : String | GroovyCompilationUnitTest.java:89:13:89:14 | cu | Groovy script depends on a $@. | GroovyCompilationUnitTest.java:88:34:88:63 | getParameter(...) | user-provided value |
+| GroovyEvalTest.java:15:21:15:26 | script | GroovyEvalTest.java:14:29:14:58 | getParameter(...) : String | GroovyEvalTest.java:15:21:15:26 | script | Groovy script depends on a $@. | GroovyEvalTest.java:14:29:14:58 | getParameter(...) | user-provided value |
+| GroovyEvalTest.java:20:39:20:44 | script | GroovyEvalTest.java:19:29:19:58 | getParameter(...) : String | GroovyEvalTest.java:20:39:20:44 | script | Groovy script depends on a $@. | GroovyEvalTest.java:19:29:19:58 | getParameter(...) | user-provided value |
+| GroovyEvalTest.java:25:31:25:36 | script | GroovyEvalTest.java:24:29:24:58 | getParameter(...) : String | GroovyEvalTest.java:25:31:25:36 | script | Groovy script depends on a $@. | GroovyEvalTest.java:24:29:24:58 | getParameter(...) | user-provided value |
+| GroovyEvalTest.java:31:43:31:48 | script | GroovyEvalTest.java:30:29:30:58 | getParameter(...) : String | GroovyEvalTest.java:31:43:31:48 | script | Groovy script depends on a $@. | GroovyEvalTest.java:30:29:30:58 | getParameter(...) | user-provided value |
+| GroovyEvalTest.java:36:51:36:56 | script | GroovyEvalTest.java:35:29:35:58 | getParameter(...) : String | GroovyEvalTest.java:36:51:36:56 | script | Groovy script depends on a $@. | GroovyEvalTest.java:35:29:35:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:24:28:24:30 | gcs | GroovyShellTest.java:22:29:22:58 | getParameter(...) : String | GroovyShellTest.java:24:28:24:30 | gcs | Groovy script depends on a $@. | GroovyShellTest.java:22:29:22:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:31:28:31:33 | reader | GroovyShellTest.java:29:29:29:58 | getParameter(...) : String | GroovyShellTest.java:31:28:31:33 | reader | Groovy script depends on a $@. | GroovyShellTest.java:29:29:29:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:38:28:38:33 | reader | GroovyShellTest.java:36:29:36:58 | getParameter(...) : String | GroovyShellTest.java:38:28:38:33 | reader | Groovy script depends on a $@. | GroovyShellTest.java:36:29:36:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:44:28:44:33 | script | GroovyShellTest.java:43:29:43:58 | getParameter(...) : String | GroovyShellTest.java:44:28:44:33 | script | Groovy script depends on a $@. | GroovyShellTest.java:43:29:43:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:50:28:50:33 | script | GroovyShellTest.java:49:29:49:58 | getParameter(...) : String | GroovyShellTest.java:50:28:50:33 | script | Groovy script depends on a $@. | GroovyShellTest.java:49:29:49:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:56:28:56:33 | script | GroovyShellTest.java:55:29:55:58 | getParameter(...) : String | GroovyShellTest.java:56:28:56:33 | script | Groovy script depends on a $@. | GroovyShellTest.java:55:29:55:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:62:25:62:39 | new URI(...) | GroovyShellTest.java:61:29:61:58 | getParameter(...) : String | GroovyShellTest.java:62:25:62:39 | new URI(...) | Groovy script depends on a $@. | GroovyShellTest.java:61:29:61:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:70:25:70:30 | reader | GroovyShellTest.java:68:29:68:58 | getParameter(...) : String | GroovyShellTest.java:70:25:70:30 | reader | Groovy script depends on a $@. | GroovyShellTest.java:68:29:68:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:77:25:77:30 | reader | GroovyShellTest.java:75:29:75:58 | getParameter(...) : String | GroovyShellTest.java:77:25:77:30 | reader | Groovy script depends on a $@. | GroovyShellTest.java:75:29:75:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:83:25:83:30 | script | GroovyShellTest.java:82:29:82:58 | getParameter(...) : String | GroovyShellTest.java:83:25:83:30 | script | Groovy script depends on a $@. | GroovyShellTest.java:82:29:82:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:89:25:89:30 | script | GroovyShellTest.java:88:29:88:58 | getParameter(...) : String | GroovyShellTest.java:89:25:89:30 | script | Groovy script depends on a $@. | GroovyShellTest.java:88:29:88:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:95:25:95:39 | new URI(...) | GroovyShellTest.java:94:29:94:58 | getParameter(...) : String | GroovyShellTest.java:95:25:95:39 | new URI(...) | Groovy script depends on a $@. | GroovyShellTest.java:94:29:94:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:103:23:103:25 | gcs | GroovyShellTest.java:101:29:101:58 | getParameter(...) : String | GroovyShellTest.java:103:23:103:25 | gcs | Groovy script depends on a $@. | GroovyShellTest.java:101:29:101:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:110:23:110:25 | gcs | GroovyShellTest.java:108:29:108:58 | getParameter(...) : String | GroovyShellTest.java:110:23:110:25 | gcs | Groovy script depends on a $@. | GroovyShellTest.java:108:29:108:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:117:23:117:28 | reader | GroovyShellTest.java:115:29:115:58 | getParameter(...) : String | GroovyShellTest.java:117:23:117:28 | reader | Groovy script depends on a $@. | GroovyShellTest.java:115:29:115:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:124:23:124:28 | reader | GroovyShellTest.java:122:29:122:58 | getParameter(...) : String | GroovyShellTest.java:124:23:124:28 | reader | Groovy script depends on a $@. | GroovyShellTest.java:122:29:122:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:130:23:130:28 | script | GroovyShellTest.java:129:29:129:58 | getParameter(...) : String | GroovyShellTest.java:130:23:130:28 | script | Groovy script depends on a $@. | GroovyShellTest.java:129:29:129:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:136:23:136:28 | script | GroovyShellTest.java:135:29:135:58 | getParameter(...) : String | GroovyShellTest.java:136:23:136:28 | script | Groovy script depends on a $@. | GroovyShellTest.java:135:29:135:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:142:23:142:37 | new URI(...) | GroovyShellTest.java:141:29:141:58 | getParameter(...) : String | GroovyShellTest.java:142:23:142:37 | new URI(...) | Groovy script depends on a $@. | GroovyShellTest.java:141:29:141:58 | getParameter(...) | user-provided value |
+| GroovyShellTest.java:149:23:149:37 | new URI(...) | GroovyShellTest.java:148:29:148:58 | getParameter(...) : String | GroovyShellTest.java:149:23:149:37 | new URI(...) | Groovy script depends on a $@. | GroovyShellTest.java:148:29:148:58 | getParameter(...) | user-provided value |
+| TemplateEngineTest.java:22:35:22:64 | getParameter(...) | TemplateEngineTest.java:22:35:22:64 | getParameter(...) | TemplateEngineTest.java:22:35:22:64 | getParameter(...) | Groovy script depends on a $@. | TemplateEngineTest.java:22:35:22:64 | getParameter(...) | user-provided value |
+| TemplateEngineTest.java:23:35:23:47 | (...)... | TemplateEngineTest.java:14:16:14:45 | getParameter(...) : String | TemplateEngineTest.java:23:35:23:47 | (...)... | Groovy script depends on a $@. | TemplateEngineTest.java:14:16:14:45 | getParameter(...) | user-provided value |
+| TemplateEngineTest.java:24:35:24:49 | (...)... | TemplateEngineTest.java:14:16:14:45 | getParameter(...) : String | TemplateEngineTest.java:24:35:24:49 | (...)... | Groovy script depends on a $@. | TemplateEngineTest.java:14:16:14:45 | getParameter(...) | user-provided value |
+| TemplateEngineTest.java:25:35:25:46 | (...)... | TemplateEngineTest.java:14:16:14:45 | getParameter(...) : String | TemplateEngineTest.java:25:35:25:46 | (...)... | Groovy script depends on a $@. | TemplateEngineTest.java:14:16:14:45 | getParameter(...) | user-provided value |
+edges
+| GroovyClassLoaderTest.java:17:29:17:58 | getParameter(...) : String | GroovyClassLoaderTest.java:19:57:19:62 | script : String | provenance | Src:MaD:33  |
+| GroovyClassLoaderTest.java:19:36:19:79 | new GroovyCodeSource(...) : GroovyCodeSource | GroovyClassLoaderTest.java:20:36:20:38 | gcs | provenance | Sink:MaD:1 |
+| GroovyClassLoaderTest.java:19:57:19:62 | script : String | GroovyClassLoaderTest.java:19:36:19:79 | new GroovyCodeSource(...) : GroovyCodeSource | provenance | Config |
+| GroovyClassLoaderTest.java:24:29:24:58 | getParameter(...) : String | GroovyClassLoaderTest.java:26:57:26:62 | script : String | provenance | Src:MaD:33  |
+| GroovyClassLoaderTest.java:26:36:26:79 | new GroovyCodeSource(...) : GroovyCodeSource | GroovyClassLoaderTest.java:27:36:27:38 | gcs | provenance | Sink:MaD:2 |
+| GroovyClassLoaderTest.java:26:57:26:62 | script : String | GroovyClassLoaderTest.java:26:36:26:79 | new GroovyCodeSource(...) : GroovyCodeSource | provenance | Config |
+| GroovyClassLoaderTest.java:31:29:31:58 | getParameter(...) : String | GroovyClassLoaderTest.java:33:61:33:66 | script : String | provenance | Src:MaD:33  |
+| GroovyClassLoaderTest.java:33:61:33:66 | script : String | GroovyClassLoaderTest.java:33:61:33:77 | getBytes(...) : byte[] | provenance | MaD:36 |
+| GroovyClassLoaderTest.java:33:61:33:77 | getBytes(...) : byte[] | GroovyClassLoaderTest.java:33:36:33:78 | new ByteArrayInputStream(...) | provenance | MaD:34 Sink:MaD:3 |
+| GroovyClassLoaderTest.java:33:61:33:77 | getBytes(...) : byte[] | GroovyClassLoaderTest.java:33:36:33:78 | new ByteArrayInputStream(...) | provenance | inputStreamWrapper Sink:MaD:3 |
+| GroovyClassLoaderTest.java:37:29:37:58 | getParameter(...) : String | GroovyClassLoaderTest.java:39:53:39:58 | script : String | provenance | Src:MaD:33  |
+| GroovyClassLoaderTest.java:39:53:39:58 | script : String | GroovyClassLoaderTest.java:39:36:39:59 | new StringReader(...) | provenance | MaD:35 Sink:MaD:4 |
+| GroovyClassLoaderTest.java:43:29:43:58 | getParameter(...) : String | GroovyClassLoaderTest.java:45:36:45:41 | script | provenance | Src:MaD:33 Sink:MaD:5 |
+| GroovyClassLoaderTest.java:49:29:49:58 | getParameter(...) : String | GroovyClassLoaderTest.java:51:36:51:41 | script | provenance | Src:MaD:33 Sink:MaD:6 |
+| GroovyCompilationUnitTest.java:21:13:21:14 | cu [post update] : CompilationUnit | GroovyCompilationUnitTest.java:22:13:22:14 | cu | provenance | Sink:MaD:32 |
+| GroovyCompilationUnitTest.java:21:34:21:63 | getParameter(...) : String | GroovyCompilationUnitTest.java:21:13:21:14 | cu [post update] : CompilationUnit | provenance | Src:MaD:33 Config |
+| GroovyCompilationUnitTest.java:31:13:31:14 | cu [post update] : CompilationUnit | GroovyCompilationUnitTest.java:33:13:33:14 | cu | provenance | Sink:MaD:32 |
+| GroovyCompilationUnitTest.java:32:21:32:87 | new ByteArrayInputStream(...) : ByteArrayInputStream | GroovyCompilationUnitTest.java:31:13:31:14 | cu [post update] : CompilationUnit | provenance | Config |
+| GroovyCompilationUnitTest.java:32:46:32:75 | getParameter(...) : String | GroovyCompilationUnitTest.java:32:46:32:86 | getBytes(...) : byte[] | provenance | Src:MaD:33 MaD:36 |
+| GroovyCompilationUnitTest.java:32:46:32:86 | getBytes(...) : byte[] | GroovyCompilationUnitTest.java:32:21:32:87 | new ByteArrayInputStream(...) : ByteArrayInputStream | provenance | MaD:34 |
+| GroovyCompilationUnitTest.java:32:46:32:86 | getBytes(...) : byte[] | GroovyCompilationUnitTest.java:32:21:32:87 | new ByteArrayInputStream(...) : ByteArrayInputStream | provenance | inputStreamWrapper |
+| GroovyCompilationUnitTest.java:37:13:37:14 | cu [post update] : CompilationUnit | GroovyCompilationUnitTest.java:38:13:38:14 | cu | provenance | Sink:MaD:32 |
+| GroovyCompilationUnitTest.java:37:26:37:64 | new URL(...) : URL | GroovyCompilationUnitTest.java:37:13:37:14 | cu [post update] : CompilationUnit | provenance | Config |
+| GroovyCompilationUnitTest.java:37:34:37:63 | getParameter(...) : String | GroovyCompilationUnitTest.java:37:26:37:64 | new URL(...) : URL | provenance | Src:MaD:33 MaD:38 |
+| GroovyCompilationUnitTest.java:43:21:43:92 | new SourceUnit(...) : SourceUnit | GroovyCompilationUnitTest.java:44:26:44:27 | su : SourceUnit | provenance |  |
+| GroovyCompilationUnitTest.java:43:44:43:73 | getParameter(...) : String | GroovyCompilationUnitTest.java:43:21:43:92 | new SourceUnit(...) : SourceUnit | provenance | Src:MaD:33 Config |
+| GroovyCompilationUnitTest.java:44:13:44:14 | cu [post update] : CompilationUnit | GroovyCompilationUnitTest.java:45:13:45:14 | cu | provenance | Sink:MaD:32 |
+| GroovyCompilationUnitTest.java:44:26:44:27 | su : SourceUnit | GroovyCompilationUnitTest.java:44:13:44:14 | cu [post update] : CompilationUnit | provenance | Config |
+| GroovyCompilationUnitTest.java:56:37:56:96 | new StringReaderSource(...) : StringReaderSource | GroovyCompilationUnitTest.java:57:52:57:53 | rs : StringReaderSource | provenance |  |
+| GroovyCompilationUnitTest.java:56:60:56:89 | getParameter(...) : String | GroovyCompilationUnitTest.java:56:37:56:96 | new StringReaderSource(...) : StringReaderSource | provenance | Src:MaD:33 Config |
+| GroovyCompilationUnitTest.java:57:29:57:72 | new SourceUnit(...) : SourceUnit | GroovyCompilationUnitTest.java:58:26:58:27 | su : SourceUnit | provenance |  |
+| GroovyCompilationUnitTest.java:57:52:57:53 | rs : StringReaderSource | GroovyCompilationUnitTest.java:57:29:57:72 | new SourceUnit(...) : SourceUnit | provenance | Config |
+| GroovyCompilationUnitTest.java:58:13:58:14 | cu [post update] : CompilationUnit | GroovyCompilationUnitTest.java:59:13:59:14 | cu | provenance | Sink:MaD:32 |
+| GroovyCompilationUnitTest.java:58:26:58:27 | su : SourceUnit | GroovyCompilationUnitTest.java:58:13:58:14 | cu [post update] : CompilationUnit | provenance | Config |
+| GroovyCompilationUnitTest.java:64:21:64:93 | new SourceUnit(...) : SourceUnit | GroovyCompilationUnitTest.java:65:26:65:27 | su : SourceUnit | provenance |  |
+| GroovyCompilationUnitTest.java:64:36:64:74 | new URL(...) : URL | GroovyCompilationUnitTest.java:64:21:64:93 | new SourceUnit(...) : SourceUnit | provenance | Config |
+| GroovyCompilationUnitTest.java:64:44:64:73 | getParameter(...) : String | GroovyCompilationUnitTest.java:64:36:64:74 | new URL(...) : URL | provenance | Src:MaD:33 MaD:38 |
+| GroovyCompilationUnitTest.java:65:13:65:14 | cu [post update] : CompilationUnit | GroovyCompilationUnitTest.java:66:13:66:14 | cu | provenance | Sink:MaD:32 |
+| GroovyCompilationUnitTest.java:65:26:65:27 | su : SourceUnit | GroovyCompilationUnitTest.java:65:13:65:14 | cu [post update] : CompilationUnit | provenance | Config |
+| GroovyCompilationUnitTest.java:70:29:70:85 | create(...) : SourceUnit | GroovyCompilationUnitTest.java:71:26:71:27 | su : SourceUnit | provenance |  |
+| GroovyCompilationUnitTest.java:70:55:70:84 | getParameter(...) : String | GroovyCompilationUnitTest.java:70:29:70:85 | create(...) : SourceUnit | provenance | Src:MaD:33 Config |
+| GroovyCompilationUnitTest.java:71:13:71:14 | cu [post update] : CompilationUnit | GroovyCompilationUnitTest.java:72:13:72:14 | cu | provenance | Sink:MaD:32 |
+| GroovyCompilationUnitTest.java:71:26:71:27 | su : SourceUnit | GroovyCompilationUnitTest.java:71:13:71:14 | cu [post update] : CompilationUnit | provenance | Config |
+| GroovyCompilationUnitTest.java:76:29:76:88 | create(...) : SourceUnit | GroovyCompilationUnitTest.java:77:26:77:27 | su : SourceUnit | provenance |  |
+| GroovyCompilationUnitTest.java:76:55:76:84 | getParameter(...) : String | GroovyCompilationUnitTest.java:76:29:76:88 | create(...) : SourceUnit | provenance | Src:MaD:33 Config |
+| GroovyCompilationUnitTest.java:77:13:77:14 | cu [post update] : CompilationUnit | GroovyCompilationUnitTest.java:78:13:78:14 | cu | provenance | Sink:MaD:32 |
+| GroovyCompilationUnitTest.java:77:26:77:27 | su : SourceUnit | GroovyCompilationUnitTest.java:77:13:77:14 | cu [post update] : CompilationUnit | provenance | Config |
+| GroovyCompilationUnitTest.java:88:13:88:14 | cu [post update] : JavaAwareCompilationUnit | GroovyCompilationUnitTest.java:89:13:89:14 | cu | provenance | Sink:MaD:32 |
+| GroovyCompilationUnitTest.java:88:34:88:63 | getParameter(...) : String | GroovyCompilationUnitTest.java:88:13:88:14 | cu [post update] : JavaAwareCompilationUnit | provenance | Src:MaD:33 Config |
+| GroovyEvalTest.java:14:29:14:58 | getParameter(...) : String | GroovyEvalTest.java:15:21:15:26 | script | provenance | Src:MaD:33 Sink:MaD:27 |
+| GroovyEvalTest.java:19:29:19:58 | getParameter(...) : String | GroovyEvalTest.java:20:39:20:44 | script | provenance | Src:MaD:33 Sink:MaD:28 |
+| GroovyEvalTest.java:24:29:24:58 | getParameter(...) : String | GroovyEvalTest.java:25:31:25:36 | script | provenance | Src:MaD:33 Sink:MaD:29 |
+| GroovyEvalTest.java:30:29:30:58 | getParameter(...) : String | GroovyEvalTest.java:31:43:31:48 | script | provenance | Src:MaD:33 Sink:MaD:30 |
+| GroovyEvalTest.java:35:29:35:58 | getParameter(...) : String | GroovyEvalTest.java:36:51:36:56 | script | provenance | Src:MaD:33 Sink:MaD:31 |
+| GroovyShellTest.java:22:29:22:58 | getParameter(...) : String | GroovyShellTest.java:23:57:23:62 | script : String | provenance | Src:MaD:33  |
+| GroovyShellTest.java:23:36:23:79 | new GroovyCodeSource(...) : GroovyCodeSource | GroovyShellTest.java:24:28:24:30 | gcs | provenance | Sink:MaD:7 |
+| GroovyShellTest.java:23:57:23:62 | script : String | GroovyShellTest.java:23:36:23:79 | new GroovyCodeSource(...) : GroovyCodeSource | provenance | Config |
+| GroovyShellTest.java:29:29:29:58 | getParameter(...) : String | GroovyShellTest.java:30:46:30:51 | script : String | provenance | Src:MaD:33  |
+| GroovyShellTest.java:30:29:30:52 | new StringReader(...) : StringReader | GroovyShellTest.java:31:28:31:33 | reader | provenance | Sink:MaD:8 |
+| GroovyShellTest.java:30:46:30:51 | script : String | GroovyShellTest.java:30:29:30:52 | new StringReader(...) : StringReader | provenance | MaD:35 |
+| GroovyShellTest.java:36:29:36:58 | getParameter(...) : String | GroovyShellTest.java:37:46:37:51 | script : String | provenance | Src:MaD:33  |
+| GroovyShellTest.java:37:29:37:52 | new StringReader(...) : StringReader | GroovyShellTest.java:38:28:38:33 | reader | provenance | Sink:MaD:9 |
+| GroovyShellTest.java:37:46:37:51 | script : String | GroovyShellTest.java:37:29:37:52 | new StringReader(...) : StringReader | provenance | MaD:35 |
+| GroovyShellTest.java:43:29:43:58 | getParameter(...) : String | GroovyShellTest.java:44:28:44:33 | script | provenance | Src:MaD:33 Sink:MaD:10 |
+| GroovyShellTest.java:49:29:49:58 | getParameter(...) : String | GroovyShellTest.java:50:28:50:33 | script | provenance | Src:MaD:33 Sink:MaD:11 |
+| GroovyShellTest.java:55:29:55:58 | getParameter(...) : String | GroovyShellTest.java:56:28:56:33 | script | provenance | Src:MaD:33 Sink:MaD:12 |
+| GroovyShellTest.java:61:29:61:58 | getParameter(...) : String | GroovyShellTest.java:62:33:62:38 | script : String | provenance | Src:MaD:33  |
+| GroovyShellTest.java:62:33:62:38 | script : String | GroovyShellTest.java:62:25:62:39 | new URI(...) | provenance | MaD:37 Sink:MaD:17 |
+| GroovyShellTest.java:68:29:68:58 | getParameter(...) : String | GroovyShellTest.java:69:46:69:51 | script : String | provenance | Src:MaD:33  |
+| GroovyShellTest.java:69:29:69:52 | new StringReader(...) : StringReader | GroovyShellTest.java:70:25:70:30 | reader | provenance | Sink:MaD:13 |
+| GroovyShellTest.java:69:46:69:51 | script : String | GroovyShellTest.java:69:29:69:52 | new StringReader(...) : StringReader | provenance | MaD:35 |
+| GroovyShellTest.java:75:29:75:58 | getParameter(...) : String | GroovyShellTest.java:76:46:76:51 | script : String | provenance | Src:MaD:33  |
+| GroovyShellTest.java:76:29:76:52 | new StringReader(...) : StringReader | GroovyShellTest.java:77:25:77:30 | reader | provenance | Sink:MaD:14 |
+| GroovyShellTest.java:76:46:76:51 | script : String | GroovyShellTest.java:76:29:76:52 | new StringReader(...) : StringReader | provenance | MaD:35 |
+| GroovyShellTest.java:82:29:82:58 | getParameter(...) : String | GroovyShellTest.java:83:25:83:30 | script | provenance | Src:MaD:33 Sink:MaD:15 |
+| GroovyShellTest.java:88:29:88:58 | getParameter(...) : String | GroovyShellTest.java:89:25:89:30 | script | provenance | Src:MaD:33 Sink:MaD:16 |
+| GroovyShellTest.java:94:29:94:58 | getParameter(...) : String | GroovyShellTest.java:95:33:95:38 | script : String | provenance | Src:MaD:33  |
+| GroovyShellTest.java:95:33:95:38 | script : String | GroovyShellTest.java:95:25:95:39 | new URI(...) | provenance | MaD:37 Sink:MaD:17 |
+| GroovyShellTest.java:101:29:101:58 | getParameter(...) : String | GroovyShellTest.java:102:57:102:62 | script : String | provenance | Src:MaD:33  |
+| GroovyShellTest.java:102:36:102:79 | new GroovyCodeSource(...) : GroovyCodeSource | GroovyShellTest.java:103:23:103:25 | gcs | provenance | Sink:MaD:19 |
+| GroovyShellTest.java:102:57:102:62 | script : String | GroovyShellTest.java:102:36:102:79 | new GroovyCodeSource(...) : GroovyCodeSource | provenance | Config |
+| GroovyShellTest.java:108:29:108:58 | getParameter(...) : String | GroovyShellTest.java:109:57:109:62 | script : String | provenance | Src:MaD:33  |
+| GroovyShellTest.java:109:36:109:79 | new GroovyCodeSource(...) : GroovyCodeSource | GroovyShellTest.java:110:23:110:25 | gcs | provenance | Sink:MaD:18 |
+| GroovyShellTest.java:109:57:109:62 | script : String | GroovyShellTest.java:109:36:109:79 | new GroovyCodeSource(...) : GroovyCodeSource | provenance | Config |
+| GroovyShellTest.java:115:29:115:58 | getParameter(...) : String | GroovyShellTest.java:116:46:116:51 | script : String | provenance | Src:MaD:33  |
+| GroovyShellTest.java:116:29:116:52 | new StringReader(...) : StringReader | GroovyShellTest.java:117:23:117:28 | reader | provenance | Sink:MaD:21 |
+| GroovyShellTest.java:116:46:116:51 | script : String | GroovyShellTest.java:116:29:116:52 | new StringReader(...) : StringReader | provenance | MaD:35 |
+| GroovyShellTest.java:122:29:122:58 | getParameter(...) : String | GroovyShellTest.java:123:46:123:51 | script : String | provenance | Src:MaD:33  |
+| GroovyShellTest.java:123:29:123:52 | new StringReader(...) : StringReader | GroovyShellTest.java:124:23:124:28 | reader | provenance | Sink:MaD:20 |
+| GroovyShellTest.java:123:46:123:51 | script : String | GroovyShellTest.java:123:29:123:52 | new StringReader(...) : StringReader | provenance | MaD:35 |
+| GroovyShellTest.java:129:29:129:58 | getParameter(...) : String | GroovyShellTest.java:130:23:130:28 | script | provenance | Src:MaD:33 Sink:MaD:23 |
+| GroovyShellTest.java:135:29:135:58 | getParameter(...) : String | GroovyShellTest.java:136:23:136:28 | script | provenance | Src:MaD:33 Sink:MaD:22 |
+| GroovyShellTest.java:141:29:141:58 | getParameter(...) : String | GroovyShellTest.java:142:31:142:36 | script : String | provenance | Src:MaD:33  |
+| GroovyShellTest.java:142:31:142:36 | script : String | GroovyShellTest.java:142:23:142:37 | new URI(...) | provenance | MaD:37 Sink:MaD:25 |
+| GroovyShellTest.java:148:29:148:58 | getParameter(...) : String | GroovyShellTest.java:149:31:149:36 | script : String | provenance | Src:MaD:33  |
+| GroovyShellTest.java:149:31:149:36 | script : String | GroovyShellTest.java:149:23:149:37 | new URI(...) | provenance | MaD:37 Sink:MaD:24 |
+| TemplateEngineTest.java:14:16:14:45 | getParameter(...) : String | TemplateEngineTest.java:20:29:20:43 | source(...) : String | provenance | Src:MaD:33  |
+| TemplateEngineTest.java:20:29:20:43 | source(...) : String | TemplateEngineTest.java:23:35:23:47 | (...)... | provenance | Sink:MaD:26 |
+| TemplateEngineTest.java:20:29:20:43 | source(...) : String | TemplateEngineTest.java:24:35:24:49 | (...)... | provenance | Sink:MaD:26 |
+| TemplateEngineTest.java:20:29:20:43 | source(...) : String | TemplateEngineTest.java:25:35:25:46 | (...)... | provenance | Sink:MaD:26 |
+models
+| 1 | Sink: groovy.lang; GroovyClassLoader; false; parseClass; (GroovyCodeSource); ; Argument[0]; groovy-injection; manual |
+| 2 | Sink: groovy.lang; GroovyClassLoader; false; parseClass; (GroovyCodeSource,boolean); ; Argument[0]; groovy-injection; manual |
+| 3 | Sink: groovy.lang; GroovyClassLoader; false; parseClass; (InputStream,String); ; Argument[0]; groovy-injection; manual |
+| 4 | Sink: groovy.lang; GroovyClassLoader; false; parseClass; (Reader,String); ; Argument[0]; groovy-injection; manual |
+| 5 | Sink: groovy.lang; GroovyClassLoader; false; parseClass; (String); ; Argument[0]; groovy-injection; manual |
+| 6 | Sink: groovy.lang; GroovyClassLoader; false; parseClass; (String,String); ; Argument[0]; groovy-injection; manual |
+| 7 | Sink: groovy.lang; GroovyShell; false; evaluate; (GroovyCodeSource); ; Argument[0]; groovy-injection; manual |
+| 8 | Sink: groovy.lang; GroovyShell; false; evaluate; (Reader); ; Argument[0]; groovy-injection; manual |
+| 9 | Sink: groovy.lang; GroovyShell; false; evaluate; (Reader,String); ; Argument[0]; groovy-injection; manual |
+| 10 | Sink: groovy.lang; GroovyShell; false; evaluate; (String); ; Argument[0]; groovy-injection; manual |
+| 11 | Sink: groovy.lang; GroovyShell; false; evaluate; (String,String); ; Argument[0]; groovy-injection; manual |
+| 12 | Sink: groovy.lang; GroovyShell; false; evaluate; (String,String,String); ; Argument[0]; groovy-injection; manual |
+| 13 | Sink: groovy.lang; GroovyShell; false; parse; (Reader); ; Argument[0]; groovy-injection; manual |
+| 14 | Sink: groovy.lang; GroovyShell; false; parse; (Reader,String); ; Argument[0]; groovy-injection; manual |
+| 15 | Sink: groovy.lang; GroovyShell; false; parse; (String); ; Argument[0]; groovy-injection; manual |
+| 16 | Sink: groovy.lang; GroovyShell; false; parse; (String,String); ; Argument[0]; groovy-injection; manual |
+| 17 | Sink: groovy.lang; GroovyShell; false; parse; (URI); ; Argument[0]; groovy-injection; manual |
+| 18 | Sink: groovy.lang; GroovyShell; false; run; (GroovyCodeSource,List); ; Argument[0]; groovy-injection; manual |
+| 19 | Sink: groovy.lang; GroovyShell; false; run; (GroovyCodeSource,String[]); ; Argument[0]; groovy-injection; manual |
+| 20 | Sink: groovy.lang; GroovyShell; false; run; (Reader,String,List); ; Argument[0]; groovy-injection; manual |
+| 21 | Sink: groovy.lang; GroovyShell; false; run; (Reader,String,String[]); ; Argument[0]; groovy-injection; manual |
+| 22 | Sink: groovy.lang; GroovyShell; false; run; (String,String,List); ; Argument[0]; groovy-injection; manual |
+| 23 | Sink: groovy.lang; GroovyShell; false; run; (String,String,String[]); ; Argument[0]; groovy-injection; manual |
+| 24 | Sink: groovy.lang; GroovyShell; false; run; (URI,List); ; Argument[0]; groovy-injection; manual |
+| 25 | Sink: groovy.lang; GroovyShell; false; run; (URI,String[]); ; Argument[0]; groovy-injection; manual |
+| 26 | Sink: groovy.text; TemplateEngine; true; createTemplate; ; ; Argument[0]; groovy-injection; manual |
+| 27 | Sink: groovy.util; Eval; false; me; (String); ; Argument[0]; groovy-injection; manual |
+| 28 | Sink: groovy.util; Eval; false; me; (String,Object,String); ; Argument[2]; groovy-injection; manual |
+| 29 | Sink: groovy.util; Eval; false; x; (Object,String); ; Argument[1]; groovy-injection; manual |
+| 30 | Sink: groovy.util; Eval; false; xy; (Object,Object,String); ; Argument[2]; groovy-injection; manual |
+| 31 | Sink: groovy.util; Eval; false; xyz; (Object,Object,Object,String); ; Argument[3]; groovy-injection; manual |
+| 32 | Sink: org.codehaus.groovy.control; CompilationUnit; false; compile; ; ; Argument[this]; groovy-injection; manual |
+| 33 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 34 | Summary: java.io; ByteArrayInputStream; false; ByteArrayInputStream; ; ; Argument[0]; Argument[this]; taint; manual |
+| 35 | Summary: java.io; StringReader; false; StringReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 36 | Summary: java.lang; String; false; getBytes; ; ; Argument[this]; ReturnValue; taint; manual |
+| 37 | Summary: java.net; URI; false; URI; (String); ; Argument[0]; Argument[this]; taint; manual |
+| 38 | Summary: java.net; URL; false; URL; (String); ; Argument[0]; Argument[this]; taint; manual |
+nodes
+| GroovyClassLoaderTest.java:17:29:17:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyClassLoaderTest.java:19:36:19:79 | new GroovyCodeSource(...) : GroovyCodeSource | semmle.label | new GroovyCodeSource(...) : GroovyCodeSource |
+| GroovyClassLoaderTest.java:19:57:19:62 | script : String | semmle.label | script : String |
+| GroovyClassLoaderTest.java:20:36:20:38 | gcs | semmle.label | gcs |
+| GroovyClassLoaderTest.java:24:29:24:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyClassLoaderTest.java:26:36:26:79 | new GroovyCodeSource(...) : GroovyCodeSource | semmle.label | new GroovyCodeSource(...) : GroovyCodeSource |
+| GroovyClassLoaderTest.java:26:57:26:62 | script : String | semmle.label | script : String |
+| GroovyClassLoaderTest.java:27:36:27:38 | gcs | semmle.label | gcs |
+| GroovyClassLoaderTest.java:31:29:31:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyClassLoaderTest.java:33:36:33:78 | new ByteArrayInputStream(...) | semmle.label | new ByteArrayInputStream(...) |
+| GroovyClassLoaderTest.java:33:61:33:66 | script : String | semmle.label | script : String |
+| GroovyClassLoaderTest.java:33:61:33:77 | getBytes(...) : byte[] | semmle.label | getBytes(...) : byte[] |
+| GroovyClassLoaderTest.java:37:29:37:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyClassLoaderTest.java:39:36:39:59 | new StringReader(...) | semmle.label | new StringReader(...) |
+| GroovyClassLoaderTest.java:39:53:39:58 | script : String | semmle.label | script : String |
+| GroovyClassLoaderTest.java:43:29:43:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyClassLoaderTest.java:45:36:45:41 | script | semmle.label | script |
+| GroovyClassLoaderTest.java:49:29:49:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyClassLoaderTest.java:51:36:51:41 | script | semmle.label | script |
+| GroovyCompilationUnitTest.java:21:13:21:14 | cu [post update] : CompilationUnit | semmle.label | cu [post update] : CompilationUnit |
+| GroovyCompilationUnitTest.java:21:34:21:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyCompilationUnitTest.java:22:13:22:14 | cu | semmle.label | cu |
+| GroovyCompilationUnitTest.java:31:13:31:14 | cu [post update] : CompilationUnit | semmle.label | cu [post update] : CompilationUnit |
+| GroovyCompilationUnitTest.java:32:21:32:87 | new ByteArrayInputStream(...) : ByteArrayInputStream | semmle.label | new ByteArrayInputStream(...) : ByteArrayInputStream |
+| GroovyCompilationUnitTest.java:32:46:32:75 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyCompilationUnitTest.java:32:46:32:86 | getBytes(...) : byte[] | semmle.label | getBytes(...) : byte[] |
+| GroovyCompilationUnitTest.java:33:13:33:14 | cu | semmle.label | cu |
+| GroovyCompilationUnitTest.java:37:13:37:14 | cu [post update] : CompilationUnit | semmle.label | cu [post update] : CompilationUnit |
+| GroovyCompilationUnitTest.java:37:26:37:64 | new URL(...) : URL | semmle.label | new URL(...) : URL |
+| GroovyCompilationUnitTest.java:37:34:37:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyCompilationUnitTest.java:38:13:38:14 | cu | semmle.label | cu |
+| GroovyCompilationUnitTest.java:43:21:43:92 | new SourceUnit(...) : SourceUnit | semmle.label | new SourceUnit(...) : SourceUnit |
+| GroovyCompilationUnitTest.java:43:44:43:73 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyCompilationUnitTest.java:44:13:44:14 | cu [post update] : CompilationUnit | semmle.label | cu [post update] : CompilationUnit |
+| GroovyCompilationUnitTest.java:44:26:44:27 | su : SourceUnit | semmle.label | su : SourceUnit |
+| GroovyCompilationUnitTest.java:45:13:45:14 | cu | semmle.label | cu |
+| GroovyCompilationUnitTest.java:56:37:56:96 | new StringReaderSource(...) : StringReaderSource | semmle.label | new StringReaderSource(...) : StringReaderSource |
+| GroovyCompilationUnitTest.java:56:60:56:89 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyCompilationUnitTest.java:57:29:57:72 | new SourceUnit(...) : SourceUnit | semmle.label | new SourceUnit(...) : SourceUnit |
+| GroovyCompilationUnitTest.java:57:52:57:53 | rs : StringReaderSource | semmle.label | rs : StringReaderSource |
+| GroovyCompilationUnitTest.java:58:13:58:14 | cu [post update] : CompilationUnit | semmle.label | cu [post update] : CompilationUnit |
+| GroovyCompilationUnitTest.java:58:26:58:27 | su : SourceUnit | semmle.label | su : SourceUnit |
+| GroovyCompilationUnitTest.java:59:13:59:14 | cu | semmle.label | cu |
+| GroovyCompilationUnitTest.java:64:21:64:93 | new SourceUnit(...) : SourceUnit | semmle.label | new SourceUnit(...) : SourceUnit |
+| GroovyCompilationUnitTest.java:64:36:64:74 | new URL(...) : URL | semmle.label | new URL(...) : URL |
+| GroovyCompilationUnitTest.java:64:44:64:73 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyCompilationUnitTest.java:65:13:65:14 | cu [post update] : CompilationUnit | semmle.label | cu [post update] : CompilationUnit |
+| GroovyCompilationUnitTest.java:65:26:65:27 | su : SourceUnit | semmle.label | su : SourceUnit |
+| GroovyCompilationUnitTest.java:66:13:66:14 | cu | semmle.label | cu |
+| GroovyCompilationUnitTest.java:70:29:70:85 | create(...) : SourceUnit | semmle.label | create(...) : SourceUnit |
+| GroovyCompilationUnitTest.java:70:55:70:84 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyCompilationUnitTest.java:71:13:71:14 | cu [post update] : CompilationUnit | semmle.label | cu [post update] : CompilationUnit |
+| GroovyCompilationUnitTest.java:71:26:71:27 | su : SourceUnit | semmle.label | su : SourceUnit |
+| GroovyCompilationUnitTest.java:72:13:72:14 | cu | semmle.label | cu |
+| GroovyCompilationUnitTest.java:76:29:76:88 | create(...) : SourceUnit | semmle.label | create(...) : SourceUnit |
+| GroovyCompilationUnitTest.java:76:55:76:84 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyCompilationUnitTest.java:77:13:77:14 | cu [post update] : CompilationUnit | semmle.label | cu [post update] : CompilationUnit |
+| GroovyCompilationUnitTest.java:77:26:77:27 | su : SourceUnit | semmle.label | su : SourceUnit |
+| GroovyCompilationUnitTest.java:78:13:78:14 | cu | semmle.label | cu |
+| GroovyCompilationUnitTest.java:88:13:88:14 | cu [post update] : JavaAwareCompilationUnit | semmle.label | cu [post update] : JavaAwareCompilationUnit |
+| GroovyCompilationUnitTest.java:88:34:88:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyCompilationUnitTest.java:89:13:89:14 | cu | semmle.label | cu |
+| GroovyEvalTest.java:14:29:14:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyEvalTest.java:15:21:15:26 | script | semmle.label | script |
+| GroovyEvalTest.java:19:29:19:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyEvalTest.java:20:39:20:44 | script | semmle.label | script |
+| GroovyEvalTest.java:24:29:24:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyEvalTest.java:25:31:25:36 | script | semmle.label | script |
+| GroovyEvalTest.java:30:29:30:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyEvalTest.java:31:43:31:48 | script | semmle.label | script |
+| GroovyEvalTest.java:35:29:35:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyEvalTest.java:36:51:36:56 | script | semmle.label | script |
+| GroovyShellTest.java:22:29:22:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:23:36:23:79 | new GroovyCodeSource(...) : GroovyCodeSource | semmle.label | new GroovyCodeSource(...) : GroovyCodeSource |
+| GroovyShellTest.java:23:57:23:62 | script : String | semmle.label | script : String |
+| GroovyShellTest.java:24:28:24:30 | gcs | semmle.label | gcs |
+| GroovyShellTest.java:29:29:29:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:30:29:30:52 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| GroovyShellTest.java:30:46:30:51 | script : String | semmle.label | script : String |
+| GroovyShellTest.java:31:28:31:33 | reader | semmle.label | reader |
+| GroovyShellTest.java:36:29:36:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:37:29:37:52 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| GroovyShellTest.java:37:46:37:51 | script : String | semmle.label | script : String |
+| GroovyShellTest.java:38:28:38:33 | reader | semmle.label | reader |
+| GroovyShellTest.java:43:29:43:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:44:28:44:33 | script | semmle.label | script |
+| GroovyShellTest.java:49:29:49:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:50:28:50:33 | script | semmle.label | script |
+| GroovyShellTest.java:55:29:55:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:56:28:56:33 | script | semmle.label | script |
+| GroovyShellTest.java:61:29:61:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:62:25:62:39 | new URI(...) | semmle.label | new URI(...) |
+| GroovyShellTest.java:62:33:62:38 | script : String | semmle.label | script : String |
+| GroovyShellTest.java:68:29:68:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:69:29:69:52 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| GroovyShellTest.java:69:46:69:51 | script : String | semmle.label | script : String |
+| GroovyShellTest.java:70:25:70:30 | reader | semmle.label | reader |
+| GroovyShellTest.java:75:29:75:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:76:29:76:52 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| GroovyShellTest.java:76:46:76:51 | script : String | semmle.label | script : String |
+| GroovyShellTest.java:77:25:77:30 | reader | semmle.label | reader |
+| GroovyShellTest.java:82:29:82:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:83:25:83:30 | script | semmle.label | script |
+| GroovyShellTest.java:88:29:88:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:89:25:89:30 | script | semmle.label | script |
+| GroovyShellTest.java:94:29:94:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:95:25:95:39 | new URI(...) | semmle.label | new URI(...) |
+| GroovyShellTest.java:95:33:95:38 | script : String | semmle.label | script : String |
+| GroovyShellTest.java:101:29:101:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:102:36:102:79 | new GroovyCodeSource(...) : GroovyCodeSource | semmle.label | new GroovyCodeSource(...) : GroovyCodeSource |
+| GroovyShellTest.java:102:57:102:62 | script : String | semmle.label | script : String |
+| GroovyShellTest.java:103:23:103:25 | gcs | semmle.label | gcs |
+| GroovyShellTest.java:108:29:108:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:109:36:109:79 | new GroovyCodeSource(...) : GroovyCodeSource | semmle.label | new GroovyCodeSource(...) : GroovyCodeSource |
+| GroovyShellTest.java:109:57:109:62 | script : String | semmle.label | script : String |
+| GroovyShellTest.java:110:23:110:25 | gcs | semmle.label | gcs |
+| GroovyShellTest.java:115:29:115:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:116:29:116:52 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| GroovyShellTest.java:116:46:116:51 | script : String | semmle.label | script : String |
+| GroovyShellTest.java:117:23:117:28 | reader | semmle.label | reader |
+| GroovyShellTest.java:122:29:122:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:123:29:123:52 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| GroovyShellTest.java:123:46:123:51 | script : String | semmle.label | script : String |
+| GroovyShellTest.java:124:23:124:28 | reader | semmle.label | reader |
+| GroovyShellTest.java:129:29:129:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:130:23:130:28 | script | semmle.label | script |
+| GroovyShellTest.java:135:29:135:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:136:23:136:28 | script | semmle.label | script |
+| GroovyShellTest.java:141:29:141:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:142:23:142:37 | new URI(...) | semmle.label | new URI(...) |
+| GroovyShellTest.java:142:31:142:36 | script : String | semmle.label | script : String |
+| GroovyShellTest.java:148:29:148:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyShellTest.java:149:23:149:37 | new URI(...) | semmle.label | new URI(...) |
+| GroovyShellTest.java:149:31:149:36 | script : String | semmle.label | script : String |
+| TemplateEngineTest.java:14:16:14:45 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| TemplateEngineTest.java:20:29:20:43 | source(...) : String | semmle.label | source(...) : String |
+| TemplateEngineTest.java:22:35:22:64 | getParameter(...) | semmle.label | getParameter(...) |
+| TemplateEngineTest.java:23:35:23:47 | (...)... | semmle.label | (...)... |
+| TemplateEngineTest.java:24:35:24:49 | (...)... | semmle.label | (...)... |
+| TemplateEngineTest.java:25:35:25:46 | (...)... | semmle.label | (...)... |
+subpaths

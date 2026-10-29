@@ -1,0 +1,3 @@
+
+func test(x: Int) {
+}

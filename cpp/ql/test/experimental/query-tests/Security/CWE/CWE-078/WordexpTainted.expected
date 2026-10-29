@@ -1,0 +1,10 @@
+edges
+| test.cpp:22:27:22:30 | **argv | test.cpp:23:20:23:26 | *access to array | provenance |  |
+| test.cpp:23:20:23:26 | *access to array | test.cpp:29:13:29:20 | *filePath | provenance |  |
+nodes
+| test.cpp:22:27:22:30 | **argv | semmle.label | **argv |
+| test.cpp:23:20:23:26 | *access to array | semmle.label | *access to array |
+| test.cpp:29:13:29:20 | *filePath | semmle.label | *filePath |
+subpaths
+#select
+| test.cpp:29:13:29:20 | *filePath | test.cpp:22:27:22:30 | **argv | test.cpp:29:13:29:20 | *filePath | Using user-supplied data in a `wordexp` command, without disabling command substitution, can make code vulnerable to command injection. |

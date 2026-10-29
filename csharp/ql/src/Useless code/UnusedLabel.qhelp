@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>An unused label serves no purpose and clutters the source code. It could be an
+indication that the code is incomplete, or that the code contains a bug where a
+<code>goto</code> statement uses the wrong label.</p>
+
+</overview>
+<recommendation>
+<p>Ensure that all <code>goto</code> statements use the correct label, and remove the 
+label if it is no longer needed.</p>
+
+<p>Another solution is to rewrite the code without <code>goto</code> statements, which can
+often be much clearer.</p>
+
+</recommendation>
+
+<example>
+
+<p>The following example has an unused label <code>Error</code>, which means that the error message
+is never displayed. The code can be fixed by either jumping to the correct label, or by rewriting
+the code without <code>goto</code> statements.</p>
+
+<sample src="UnusedLabel.cs"/>
+
+</example>
+
+<references>
+  <li>MSDN, C# Reference: <a href="https://msdn.microsoft.com/en-us/library/13940fs2.aspx">goto</a>.</li>
+</references>
+</qhelp>

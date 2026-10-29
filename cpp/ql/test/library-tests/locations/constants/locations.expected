@@ -1,0 +1,13 @@
+| c.c:3:12:3:12 | 5 | 5 | 5 |
+| c.c:4:15:4:15 | 6 | 6 | 6 |
+| c.c:8:10:8:10 | 2 | 2 | 2 |
+| c.c:11:38:11:43 | Conversion of MyCVal | 5 | MyCVal |
+| c.c:11:38:11:43 | MyCVal | 5 | MyCVal |
+| c.c:11:46:11:54 | Conversion of MyNextVal | 6 | MyNextVal |
+| c.c:11:46:11:54 | MyNextVal | 6 | MyNextVal |
+| cpp.cpp:3:11:3:11 | 5 | 5 | 5 |
+| cpp.cpp:4:15:4:15 | 6 | 6 | 6 |
+| cpp.cpp:8:13:8:13 | 2 | 2 | 2 |
+| cpp.cpp:8:13:8:13 | Conversion of 2 | 2 | 2 |
+| cpp.cpp:11:30:11:34 | MyVal | 5 | MyVal |
+| cpp.cpp:11:37:11:45 | MyNextVal | 6 | MyNextVal |

@@ -1,0 +1,23 @@
+interpolatedstrings
+| Strings.cs:8:16:12:12 | $"..." | Strings.cs:8:18:8:32 | "This is my int " |
+| Strings.cs:8:16:12:12 | $"..." | Strings.cs:8:34:12:9 | ... switch { ... } |
+| Strings.cs:8:16:12:12 | $"..." | Strings.cs:12:11:12:11 | "." |
+| Strings.cs:26:24:30:11 | $"..." | Strings.cs:27:1:28:14 | "The nested message\n  is \\"" |
+| Strings.cs:26:24:30:11 | $"..." | Strings.cs:28:16:28:23 | access to local variable message1 |
+| Strings.cs:26:24:30:11 | $"..." | Strings.cs:28:25:29:29 | "\\" and everything\nspans multiple lines." |
+| Strings.cs:33:24:36:11 | $"..." | Strings.cs:34:1:34:30 | "Show no curly braces: " |
+| Strings.cs:33:24:36:11 | $"..." | Strings.cs:34:33:34:40 | access to local variable message1 |
+| Strings.cs:33:24:36:11 | $"..." | Strings.cs:34:43:35:44 | "\nShow matching set of curly braces: {" |
+| Strings.cs:33:24:36:11 | $"..." | Strings.cs:35:47:35:54 | access to local variable message2 |
+| Strings.cs:33:24:36:11 | $"..." | Strings.cs:35:57:35:57 | "}" |
+stringliterals
+| Strings.cs:18:24:23:11 | "This is my very long\n    text message that spans\n  accross multiple lines\nand is very useful." | StringLiteralUtf16 | String |
+| Strings.cs:27:1:28:14 | "The nested message\n  is \\"" | StringLiteralUtf16 | String |
+| Strings.cs:28:25:29:29 | "\\" and everything\nspans multiple lines." | StringLiteralUtf16 | String |
+| Strings.cs:34:1:34:30 | "Show no curly braces: " | StringLiteralUtf16 | String |
+| Strings.cs:34:43:35:44 | "\nShow matching set of curly braces: {" | StringLiteralUtf16 | String |
+| Strings.cs:35:57:35:57 | "}" | StringLiteralUtf16 | String |
+| Strings.cs:43:17:43:27 | "AUTH8: " | StringLiteralUtf8 | ReadOnlySpan<Byte> |
+| Strings.cs:46:17:46:26 | "AUTH16: " | StringLiteralUtf16 | String |
+| Strings.cs:49:17:50:22 | "AUTH8: \n        <username> " | StringLiteralUtf8 | ReadOnlySpan<Byte> |
+| Strings.cs:53:17:57:13 | "The nested message\n  is UTF-8 encoded and\nspans multiple lines." | StringLiteralUtf8 | ReadOnlySpan<Byte> |

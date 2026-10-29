@@ -1,0 +1,5 @@
+<Solution>
+  <!-- proj2/proj2.csproj is deliberately excluded from this solution
+       to test that only proj1 is built from the .slnx file. -->
+  <Project Path="proj1/proj1.csproj" />
+</Solution>

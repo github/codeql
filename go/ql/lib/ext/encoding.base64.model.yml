@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["encoding/base64", "", False, "NewDecoder", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["encoding/base64", "Encoding", True, "Decode", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["encoding/base64", "Encoding", True, "DecodeString", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]

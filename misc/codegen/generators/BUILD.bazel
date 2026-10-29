@@ -1,0 +1,11 @@
+load("@rules_python//python:defs.bzl", "py_library")
+
+py_library(
+    name = "generators",
+    srcs = glob(["*.py"]),
+    visibility = ["//misc/codegen:__subpackages__"],
+    deps = [
+        "//misc/codegen/lib",
+        "//misc/codegen/loaders",
+    ],
+)

@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      # https://github.com/jsmith/changes-since-last-tag
+      - ["jsmith/changes-since-last-tag", "*", "output.files", "filename", "manual"]
+      - ["jsmith/changes-since-last-tag", "*", "output.added", "filename", "manual"]
+      - ["jsmith/changes-since-last-tag", "*", "output.modified", "filename", "manual"]
+      - ["jsmith/changes-since-last-tag", "*", "output.removed", "filename", "manual"]
+      - ["jsmith/changes-since-last-tag", "*", "output.renamed", "filename", "manual"]
+

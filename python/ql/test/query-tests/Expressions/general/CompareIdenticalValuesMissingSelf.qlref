@@ -1,0 +1,2 @@
+query: Expressions/CompareIdenticalValuesMissingSelf.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

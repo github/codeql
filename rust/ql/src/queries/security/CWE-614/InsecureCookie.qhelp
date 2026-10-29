@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>Failing to set the 'Secure' attribute on a cookie allows it to be transmitted over an unencrypted (HTTP) connection. If an attacker can observe a user's network traffic, they can access sensitive information in the cookie and potentially use it to impersonate the user.</p>
+
+</overview>
+<recommendation>
+
+<p>Always set the cookie 'Secure' attribute so that the browser only sends the cookie over HTTPS.</p>
+
+</recommendation>
+<example>
+
+<p>The following example creates a cookie using the <a href="https://crates.io/crates/cookie">cookie</a> crate without the 'Secure' attribute:</p>
+
+<sample src="InsecureCookieBad.rs" />
+
+<p>In the fixed example, we either call <code>secure(true)</code> on the <code>CookieBuilder</code> or <code>set_secure(true)</code> on the <code>Cookie</code> itself:</p>
+
+<sample src="InsecureCookieGood.rs" />
+
+</example>
+<references>
+
+<li>MDN Web Docs: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies">Using HTTP cookies</a>.</li>
+<li>OWASP Cheat Sheet Series: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#transport-layer-security">Session Management Cheat Sheet - Transport Layer Security</a>.</li>
+<li>MDN Web Docs: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie#secure">Set-Cookie header - Secure</a>.</li>
+
+</references>
+</qhelp>

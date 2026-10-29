@@ -1,0 +1,80 @@
+| patterns.swift:2:9:2:9 | an_int | patterns.swift:2:18:2:18 | 42 |
+| patterns.swift:3:9:3:9 | a_string | patterns.swift:3:28:3:28 | here |
+| patterns.swift:3:9:3:19 | ... as ... | patterns.swift:3:28:3:28 | here |
+| patterns.swift:4:9:4:17 | (...) | patterns.swift:4:21:4:29 | (...) |
+| patterns.swift:4:10:4:10 | x | patterns.swift:4:22:4:22 | 1 |
+| patterns.swift:4:13:4:13 | y | patterns.swift:4:25:4:25 | 2 |
+| patterns.swift:4:16:4:16 | z | patterns.swift:4:28:4:28 | 3 |
+| patterns.swift:5:9:5:9 | _ | patterns.swift:5:13:5:13 | any |
+| patterns.swift:6:10:6:10 | _ | patterns.swift:6:15:6:15 | paren |
+| patterns.swift:10:9:10:9 | point | patterns.swift:10:17:10:22 | (...) |
+| patterns.swift:12:14:12:21 | (...) | patterns.swift:11:12:11:12 | point |
+| patterns.swift:16:10:16:14 | =~ ... | patterns.swift:15:12:15:12 | 3 |
+| patterns.swift:17:10:17:10 | _ | patterns.swift:15:12:15:12 | 3 |
+| patterns.swift:24:9:24:9 | v | patterns.swift:24:18:24:19 | .bar |
+| patterns.swift:24:9:24:12 | ... as ... | patterns.swift:24:18:24:19 | .bar |
+| patterns.swift:27:10:27:11 | .bar | patterns.swift:26:12:26:12 | v |
+| patterns.swift:28:14:28:23 | .baz(...) | patterns.swift:26:12:26:12 | v |
+| patterns.swift:31:9:31:9 | w | patterns.swift:31:19:31:19 | nil |
+| patterns.swift:31:9:31:15 | ... as ... | patterns.swift:31:19:31:19 | nil |
+| patterns.swift:34:14:34:14 | n | patterns.swift:33:12:33:12 | w |
+| patterns.swift:34:14:34:15 | let ...? | patterns.swift:33:12:33:12 | w |
+| patterns.swift:35:10:35:10 | _ | patterns.swift:33:12:33:12 | w |
+| patterns.swift:38:9:38:9 | a | patterns.swift:38:18:38:18 | any |
+| patterns.swift:38:9:38:12 | ... as ... | patterns.swift:38:18:38:18 | any |
+| patterns.swift:41:10:41:13 | ... is ... | patterns.swift:40:12:40:12 | a |
+| patterns.swift:42:14:42:14 | x | patterns.swift:40:12:40:12 | a |
+| patterns.swift:42:14:42:19 | ... is ... | patterns.swift:40:12:40:12 | a |
+| patterns.swift:43:10:43:10 | _ | patterns.swift:40:12:40:12 | a |
+| patterns.swift:46:9:46:9 | b | patterns.swift:46:13:46:13 | true |
+| patterns.swift:49:10:49:10 | true | patterns.swift:48:12:48:12 | b |
+| patterns.swift:50:10:50:10 | false | patterns.swift:48:12:48:12 | b |
+| patterns.swift:55:9:55:9 | a | patterns.swift:55:13:55:13 | 1 |
+| patterns.swift:55:16:55:16 | b | patterns.swift:55:20:55:20 | 2 |
+| patterns.swift:55:23:55:23 | c | patterns.swift:55:32:55:32 | 3 |
+| patterns.swift:55:23:55:26 | ... as ... | patterns.swift:55:32:55:32 | 3 |
+| patterns.swift:57:8:57:20 | let ...? | patterns.swift:57:24:57:47 | call to ... |
+| patterns.swift:57:12:57:20 | (...) | patterns.swift:57:24:57:47 | call to ... |
+| patterns.swift:58:13:58:29 | (...) | patterns.swift:58:33:58:41 | (...) |
+| patterns.swift:58:14:58:14 | =~ ... | patterns.swift:58:34:58:34 | a |
+| patterns.swift:58:21:58:21 | b | patterns.swift:58:37:58:37 | b |
+| patterns.swift:58:28:58:28 | c | patterns.swift:58:40:58:40 | c |
+| patterns.swift:61:14:61:14 | =~ ... | patterns.swift:60:12:60:12 | a |
+| patterns.swift:62:18:62:18 | c | patterns.swift:60:12:60:12 | a |
+| patterns.swift:63:9:63:9 | _ | patterns.swift:60:12:60:12 | a |
+| patterns.swift:78:9:78:9 | a | patterns.swift:78:22:78:23 | .myNone |
+| patterns.swift:78:9:78:13 | ... as ... | patterns.swift:78:22:78:23 | .myNone |
+| patterns.swift:81:10:81:11 | .myNone | patterns.swift:80:12:80:12 | a |
+| patterns.swift:83:10:83:25 | .mySingle(...) | patterns.swift:80:12:80:12 | a |
+| patterns.swift:85:10:85:30 | .myPair(...) | patterns.swift:80:12:80:12 | a |
+| patterns.swift:88:14:88:26 | .myCons(...) | patterns.swift:80:12:80:12 | a |
+| patterns.swift:92:13:92:28 | .mySingle(...) | patterns.swift:92:32:92:32 | a |
+| patterns.swift:95:13:95:33 | .myPair(...) | patterns.swift:95:37:95:37 | a |
+| patterns.swift:103:10:103:11 | .myNone | patterns.swift:102:12:102:12 | a |
+| patterns.swift:105:10:105:25 | .mySingle(...) | patterns.swift:102:12:102:12 | a |
+| patterns.swift:107:10:107:30 | .myPair(...) | patterns.swift:102:12:102:12 | a |
+| patterns.swift:110:14:110:26 | .myCons(...) | patterns.swift:102:12:102:12 | a |
+| patterns.swift:114:13:114:28 | .mySingle(...) | patterns.swift:114:32:114:32 | a |
+| patterns.swift:117:13:117:33 | .myPair(...) | patterns.swift:117:37:117:37 | a |
+| patterns.swift:125:10:125:11 | .myNone | patterns.swift:124:12:124:12 | a |
+| patterns.swift:127:10:127:25 | .mySingle(...) | patterns.swift:124:12:124:12 | a |
+| patterns.swift:129:10:129:30 | .myPair(...) | patterns.swift:124:12:124:12 | a |
+| patterns.swift:132:14:132:26 | .myCons(...) | patterns.swift:124:12:124:12 | a |
+| patterns.swift:136:13:136:28 | .mySingle(...) | patterns.swift:136:32:136:32 | a |
+| patterns.swift:139:13:139:33 | .myPair(...) | patterns.swift:139:37:139:37 | a |
+| patterns.swift:144:9:144:9 | b | patterns.swift:144:21:144:34 | call to ... |
+| patterns.swift:144:9:144:12 | ... as ... | patterns.swift:144:21:144:34 | call to ... |
+| patterns.swift:147:10:147:11 | .myNone | patterns.swift:146:12:146:12 | b |
+| patterns.swift:149:10:149:25 | .mySingle(...) | patterns.swift:146:12:146:12 | b |
+| patterns.swift:151:10:151:30 | .myPair(...) | patterns.swift:146:12:146:12 | b |
+| patterns.swift:154:14:154:38 | .myCons(...) | patterns.swift:146:12:146:12 | b |
+| patterns.swift:158:14:158:26 | .myCons(...) | patterns.swift:146:12:146:12 | b |
+| patterns.swift:162:13:162:28 | .mySingle(...) | patterns.swift:162:32:162:57 | call to ... |
+| patterns.swift:165:13:165:39 | .myPair(...) | patterns.swift:165:43:165:62 | call to ... |
+| patterns.swift:165:31:165:31 | x | patterns.swift:165:51:165:58 | call to source() |
+| patterns.swift:165:38:165:38 | y | patterns.swift:165:61:165:61 | 0 |
+| patterns.swift:169:17:169:41 | .myCons(...) | patterns.swift:169:45:169:45 | b |
+| patterns.swift:174:14:174:55 | (...) | patterns.swift:173:12:173:17 | (...) |
+| patterns.swift:174:15:174:27 | .myPair(...) | patterns.swift:173:13:173:13 | a |
+| patterns.swift:174:30:174:54 | .myCons(...) | patterns.swift:173:16:173:16 | b |
+| patterns.swift:180:5:180:5 | _ | patterns.swift:173:12:173:17 | (...) |

@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+    <p>
+        Directly incorporating user input into an HTTP request without validating the input can facilitate
+        server side request forgery attacks, where the attacker essentially controls the request.
+    </p>
+</overview>
+
+<recommendation>
+    <p>
+        To guard against server side request forgery, it is advisable to avoid putting user input directly into a
+        network request. If using user input is necessary, then is mandatory to validate them. Only allow numeric and alphanumeric values.
+        URL encoding is not a solution in certain scenarios, such as, an architecture build over NGINX proxies.
+    </p>
+</recommendation>
+
+<example>
+    <p>
+        The following example shows an HTTP request parameter being used directly in a URL request without
+        validating the input, which facilitates an SSRF attack. The request <code>axios.get("https://example.com/current_api/"+target)</code> is
+        vulnerable since attackers can choose the value of <code>target</code> to be anything they want. For
+        instance, the attacker can choose <code>"../super_secret_api"</code> as the target, causing the
+        URL to become <code>"https://example.com/super_secret_api"</code>.
+    </p>
+
+    <p>
+        A request to <code>https://example.com/super_secret_api</code> may be problematic if that api is not
+        meant to be directly accessible from the attacker's machine.
+    </p>
+
+    <sample src="SSRF.js"/>
+
+    <p>
+        One way to remedy the problem is to validate the user input to only allow alphanumeric values:
+    </p>
+
+    <sample src="SSRFGood.js"/>
+</example>
+
+<references>
+
+<li>OWASP: <a href="https://www.owasp.org/www-community/attacks/Server_Side_Request_Forgery">SSRF</a></li>
+
+</references>
+</qhelp>

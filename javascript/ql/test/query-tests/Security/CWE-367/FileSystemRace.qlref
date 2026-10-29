@@ -1,0 +1,2 @@
+query: Security/CWE-367/FileSystemRace.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

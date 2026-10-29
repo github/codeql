@@ -1,0 +1,2 @@
+query: queries/Security/CWE-094/UnsafeJsEval.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

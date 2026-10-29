@@ -1,0 +1,90 @@
+# Text files will be normalized to LF line endings in the Git database, and will keep those LF line
+# endings in the working tree even on Windows. If you make changes below, you should renormalize the
+# affected files by running the following from the root of this repo (requires Git 2.16 or greater):
+#
+# git add --renormalize .
+# git status  [just to show what files were renormalized]
+# git commit -m "Normalize line endings"
+
+# Anything Git auto-detects as text gets normalized and checked out as LF
+* text=auto eol=lf
+
+# Explicitly set a bunch of known extensions to text, in case auto detection gets confused.
+*.ql text
+*.qll text
+*.qlref text
+*.dbscheme text
+*.qhelp text
+*.html text
+*.htm text
+*.xhtml text
+*.xhtm text
+*.js text
+*.mjs text
+*.ts text
+*.json text
+*.yml text
+*.yaml text
+*.c text
+*.cpp text
+*.h text
+*.hpp text
+*.md text
+*.stats text
+*.xml text
+*.sh text
+*.pl text
+*.java text
+*.cs text
+*.py text
+*.lua text
+*.expected text
+*.go text
+
+# Explicitly set a bunch of known extensions to binary, because Git < 2.10 will treat
+# `* text=auto eol=lf` as `* text eol=lf`
+*.png -text
+*.jpg -text
+*.jpeg -text
+*.gif -text
+*.dll -text
+*.pdb -text
+
+/java/ql/test/stubs/**/*.java linguist-generated=true
+/java/ql/test/experimental/stubs/**/*.java linguist-generated=true
+/java/kotlin-extractor/deps/*.jar filter=lfs diff=lfs merge=lfs -text
+
+# Force git not to modify line endings for go or html files under the go/ql directory
+/go/ql/**/*.go -text
+/go/ql/**/*.html -text
+# Force git not to modify line endings for go dbschemes
+/go/*.dbscheme -text
+# Preserve unusual line ending from codeql-go merge
+/go/extractor/opencsv/CSVReader.java -text
+
+# For some languages, upgrade script testing references really old dbscheme
+# files from legacy upgrades that have CRLF line endings. Since upgrade
+# resolution relies on object hashes, we must suppress line ending conversion
+# for those testing dbscheme files.
+/*/ql/lib/upgrades/initial/*.dbscheme -text
+
+# Auto-generated modeling for Python
+/python/ql/lib/semmle/python/frameworks/data/internal/subclass-capture/*.yml linguist-generated=true
+
+# auto-generated bazel lock file
+/ruby/extractor/cargo-bazel-lock.json linguist-generated=true
+/ruby/extractor/cargo-bazel-lock.json -merge
+
+# GitHub Agentic Workflows compiled output
+.github/workflows/*.lock.yml linguist-generated=true
+
+# auto-generated files for the C# build
+/csharp/paket.lock linguist-generated=true
+# needs eol=crlf, as `paket` touches this file and saves it as crlf
+/csharp/.paket/Paket.Restore.targets linguist-generated=true eol=crlf
+/csharp/paket.main.bzl linguist-generated=true
+/csharp/paket.main_extension.bzl linguist-generated=true
+
+# swift prebuilt resources
+/swift/third_party/resources/*.zip filter=lfs diff=lfs merge=lfs -text
+/swift/third_party/resources/*.tar.zst filter=lfs diff=lfs merge=lfs -text

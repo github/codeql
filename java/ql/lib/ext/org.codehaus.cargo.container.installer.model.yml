@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.codehaus.cargo.container.installer", "ZipURLInstaller", True, "ZipURLInstaller", "(URL,String,String)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["org.codehaus.cargo.container.installer", "ZipURLInstaller", True, "ZipURLInstaller", "(URL,String,String)", "", "Argument[1]", "path-injection", "ai-manual"]
+      - ["org.codehaus.cargo.container.installer", "ZipURLInstaller", True, "ZipURLInstaller", "(URL,String,String)", "", "Argument[2]", "path-injection", "ai-manual"]

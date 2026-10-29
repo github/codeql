@@ -1,0 +1,6 @@
+{
+    "name": "nonlocal",
+    "dependencies": {
+        "express": "*"
+    }
+}

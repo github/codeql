@@ -1,0 +1,2 @@
+query: RedundantCode/ExprHasNoEffect.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

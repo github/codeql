@@ -1,0 +1,2 @@
+query: Bad Practices/Declarations/LocalScopeVariableShadowsMember.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,2 @@
+query: Language Abuse/LabelInSwitch.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

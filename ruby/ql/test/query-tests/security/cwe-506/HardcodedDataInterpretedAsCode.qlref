@@ -1,0 +1,2 @@
+query: queries/security/cwe-506/HardcodedDataInterpretedAsCode.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

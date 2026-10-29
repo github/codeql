@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["firebase/firebase-ios-sdk", "*", "input.min-ios-version", "code-injection", "generated"]
+     - ["firebase/firebase-ios-sdk", "*", "input.sources", "code-injection", "generated"]
+     - ["firebase/firebase-ios-sdk", "*", "input.pods", "code-injection", "generated"]
+     - ["firebase/firebase-ios-sdk", "*", "input.notices-path", "code-injection", "generated"]

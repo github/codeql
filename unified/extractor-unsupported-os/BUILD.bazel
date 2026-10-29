@@ -1,0 +1,8 @@
+load("//misc/bazel:rust.bzl", "codeql_rust_binary")
+
+codeql_rust_binary(
+    name = "extractor",
+    srcs = ["src/main.rs"],
+    crate_root = "src/main.rs",
+    visibility = ["//visibility:public"],
+)

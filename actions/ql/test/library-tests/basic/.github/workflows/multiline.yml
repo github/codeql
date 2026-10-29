@@ -1,0 +1,89 @@
+on: 
+  workflow_run:
+    workflows: ["Prev"]
+    types:
+      - completed
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "changelog<<CHANGELOGEOF" >> $GITHUB_OUTPUT
+          echo -e "$FILTERED_CHANGELOG" >> $GITHUB_OUTPUT
+          echo "CHANGELOGEOF" >> $GITHUB_OUTPUT
+      - run: |
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "status<<$EOF" >> $GITHUB_OUTPUT
+          echo "$(cat status.output.json)" >> $GITHUB_OUTPUT
+          echo "$EOF" >> $GITHUB_OUTPUT
+      - run: |
+          echo "response<<$EOF" >> $GITHUB_OUTPUT
+          echo $output >> $GITHUB_OUTPUT
+          echo "$EOF" >> $GITHUB_OUTPUT
+      - run: |
+          {
+            echo 'JSON_RESPONSE<<EOF'
+            ls | grep -E "*.(tar.gz|zip)$"
+            echo EOF
+          } >> "$GITHUB_ENV"
+      - run: |
+          cat <<-"EOF" > event.json
+            ${{ toJson(github.event) }}
+          EOF
+      - name: heredoc11
+        run: |
+          cat >> $GITHUB_ENV << EOL
+          ${ISSUE_BODY}
+          FOO
+          EOL
+      - name: heredoc12
+        run: |
+          cat > issue.txt << EOL
+          ${ISSUE_BODY}
+          FOO
+          EOL
+      - name: heredoc21
+        run: |
+          cat << EOL >> $GITHUB_ENV
+          ${ISSUE_BODY}
+          FOO
+          EOL
+      - name: heredoc22
+        run: |
+          cat <<EOF |  sed 's/l/e/g' > file.txt
+          Hello
+          World
+          EOF
+      - name: heredoc23
+        run: |
+          cat <<-EOF >> "$GITHUB_ENV"
+          echo "FOO=$TITLE"
+          EOF
+      - name: line1
+        run: |
+          echo REPO_NAME=$(cat issue.txt | sed 's/\\r/\\n/g' | grep -ioE '\\s*[a-z0-9_-]+/[a-z0-9_-]+\\s*$' | tr -d ' ') >> $GITHUB_ENV
+      - name: multiline1
+        run: |
+          echo "PR_TITLE<<EOF" >> $GITHUB_ENV
+          echo "$TITLE" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+      - name: block11
+        run: |
+          {
+            echo 'JSON_RESPONSE<<EOF'
+            echo "$TITLE"
+            echo EOF
+          } >> "$GITHUB_ENV"
+      - name: block12
+        run: |
+          {
+            echo 'JSON_RESPONSE<<EOF'
+            echo '$ISSUE'
+            echo 'EOF'
+          } >> "$GITHUB_ENV"
+      - name: block13
+        run: |
+          {
+            echo 'JSON_RESPONSE<<EOF'
+          } >> "$GITHUB_ENV"

@@ -1,0 +1,45 @@
+models
+| 1 | Summary: org.apache.commons.compress.archivers.tar; TarArchiveEntry; true; TarArchiveEntry; (String); ; Argument[0]; Argument[this]; taint; ai-manual |
+| 2 | Summary: org.apache.commons.compress.archivers.tar; TarArchiveEntry; true; TarArchiveEntry; (String,boolean); ; Argument[0]; Argument[this]; taint; ai-manual |
+| 3 | Summary: org.apache.commons.compress.archivers.tar; TarArchiveEntry; true; TarArchiveEntry; (String,byte); ; Argument[0]; Argument[this]; taint; ai-manual |
+| 4 | Summary: org.apache.commons.compress.archivers.tar; TarArchiveEntry; true; setLinkName; (String); ; Argument[0]; Argument[this]; taint; ai-manual |
+edges
+| Test.java:18:16:18:32 | (...)... : String | Test.java:19:30:19:31 | in : String | provenance |  |
+| Test.java:18:25:18:32 | source(...) : Object | Test.java:18:16:18:32 | (...)... : String | provenance |  |
+| Test.java:19:10:19:32 | new TarArchiveEntry(...) : TarArchiveEntry | Test.java:20:9:20:11 | out | provenance |  |
+| Test.java:19:30:19:31 | in : String | Test.java:19:10:19:32 | new TarArchiveEntry(...) : TarArchiveEntry | provenance | MaD:1 |
+| Test.java:25:16:25:32 | (...)... : String | Test.java:26:30:26:31 | in : String | provenance |  |
+| Test.java:25:25:25:32 | source(...) : Object | Test.java:25:16:25:32 | (...)... : String | provenance |  |
+| Test.java:26:10:26:39 | new TarArchiveEntry(...) : TarArchiveEntry | Test.java:27:9:27:11 | out | provenance |  |
+| Test.java:26:30:26:31 | in : String | Test.java:26:10:26:39 | new TarArchiveEntry(...) : TarArchiveEntry | provenance | MaD:2 |
+| Test.java:32:16:32:32 | (...)... : String | Test.java:33:30:33:31 | in : String | provenance |  |
+| Test.java:32:25:32:32 | source(...) : Object | Test.java:32:16:32:32 | (...)... : String | provenance |  |
+| Test.java:33:10:33:42 | new TarArchiveEntry(...) : TarArchiveEntry | Test.java:34:9:34:11 | out | provenance |  |
+| Test.java:33:30:33:31 | in : String | Test.java:33:10:33:42 | new TarArchiveEntry(...) : TarArchiveEntry | provenance | MaD:3 |
+| Test.java:39:16:39:32 | (...)... : String | Test.java:40:20:40:21 | in : String | provenance |  |
+| Test.java:39:25:39:32 | source(...) : Object | Test.java:39:16:39:32 | (...)... : String | provenance |  |
+| Test.java:40:4:40:6 | out [post update] : TarArchiveEntry | Test.java:41:9:41:11 | out | provenance |  |
+| Test.java:40:20:40:21 | in : String | Test.java:40:4:40:6 | out [post update] : TarArchiveEntry | provenance | MaD:4 |
+nodes
+| Test.java:18:16:18:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:18:25:18:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:19:10:19:32 | new TarArchiveEntry(...) : TarArchiveEntry | semmle.label | new TarArchiveEntry(...) : TarArchiveEntry |
+| Test.java:19:30:19:31 | in : String | semmle.label | in : String |
+| Test.java:20:9:20:11 | out | semmle.label | out |
+| Test.java:25:16:25:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:25:25:25:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:26:10:26:39 | new TarArchiveEntry(...) : TarArchiveEntry | semmle.label | new TarArchiveEntry(...) : TarArchiveEntry |
+| Test.java:26:30:26:31 | in : String | semmle.label | in : String |
+| Test.java:27:9:27:11 | out | semmle.label | out |
+| Test.java:32:16:32:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:32:25:32:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:33:10:33:42 | new TarArchiveEntry(...) : TarArchiveEntry | semmle.label | new TarArchiveEntry(...) : TarArchiveEntry |
+| Test.java:33:30:33:31 | in : String | semmle.label | in : String |
+| Test.java:34:9:34:11 | out | semmle.label | out |
+| Test.java:39:16:39:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:39:25:39:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:40:4:40:6 | out [post update] : TarArchiveEntry | semmle.label | out [post update] : TarArchiveEntry |
+| Test.java:40:20:40:21 | in : String | semmle.label | in : String |
+| Test.java:41:9:41:11 | out | semmle.label | out |
+subpaths
+testFailures

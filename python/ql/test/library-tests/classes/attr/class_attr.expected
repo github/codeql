@@ -1,0 +1,32 @@
+| 5 | class OldStyle | a1 | int 1 |
+| 5 | class OldStyle | a2 | List |
+| 5 | class OldStyle | l | List |
+| 5 | class OldStyle | meth1 | Function meth1 |
+| 15 | class OldStyleDerived | a1 | int 1 |
+| 15 | class OldStyleDerived | a2 | List |
+| 15 | class OldStyleDerived | l | List |
+| 15 | class OldStyleDerived | meth1 | Function meth1 |
+| 15 | class OldStyleDerived | meth2 | Function meth2 |
+| 21 | class NewStyle | a1 | int 1 |
+| 21 | class NewStyle | a2 | List |
+| 21 | class NewStyle | l | List |
+| 21 | class NewStyle | meth3 | Function meth3 |
+| 31 | class NewStyleDerived | a1 | int 1 |
+| 31 | class NewStyleDerived | a2 | List |
+| 31 | class NewStyleDerived | l | List |
+| 31 | class NewStyleDerived | meth3 | Function meth3 |
+| 31 | class NewStyleDerived | meth4 | Function meth4 |
+| 41 | class Meta | meth5 | Function meth5 |
+| 41 | class Meta | mro | Builtin-method mro |
+| 50 | class WithMeta | a1 | int 1 |
+| 50 | class WithMeta | a2 | List |
+| 50 | class WithMeta | l | List |
+| 50 | class WithMeta | meth6 | Function meth6 |
+| 96 | class Oddities | float | builtin-class float |
+| 96 | class Oddities | h | Builtin-function hash |
+| 96 | class Oddities | int | builtin-class int |
+| 96 | class Oddities | l | Builtin-function len |
+| 103 | class Sub | float | builtin-class float |
+| 103 | class Sub | h | Builtin-function hash |
+| 103 | class Sub | int | builtin-class int |
+| 103 | class Sub | l | Builtin-function len |

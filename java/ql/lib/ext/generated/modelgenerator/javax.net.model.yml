@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.net", "ServerSocketFactory", True, "createServerSocket", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "ServerSocketFactory", True, "createServerSocket", "(int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "ServerSocketFactory", True, "createServerSocket", "(int,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "ServerSocketFactory", True, "createServerSocket", "(int,int,InetAddress)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "ServerSocketFactory", True, "createServerSocket", "(int,int,InetAddress)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "SocketFactory", True, "createSocket", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "SocketFactory", True, "createSocket", "(InetAddress,int)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "SocketFactory", True, "createSocket", "(InetAddress,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "SocketFactory", True, "createSocket", "(InetAddress,int,InetAddress,int)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "SocketFactory", True, "createSocket", "(InetAddress,int,InetAddress,int)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "SocketFactory", True, "createSocket", "(InetAddress,int,InetAddress,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "SocketFactory", True, "createSocket", "(String,int)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "SocketFactory", True, "createSocket", "(String,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "SocketFactory", True, "createSocket", "(String,int,InetAddress,int)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "SocketFactory", True, "createSocket", "(String,int,InetAddress,int)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.net", "SocketFactory", True, "createSocket", "(String,int,InetAddress,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.net", "ServerSocketFactory", "getDefault", "()", "summary", "df-generated"]
+      - ["javax.net", "SocketFactory", "getDefault", "()", "summary", "df-generated"]

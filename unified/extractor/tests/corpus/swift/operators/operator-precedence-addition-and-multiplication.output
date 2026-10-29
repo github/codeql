@@ -1,0 +1,42 @@
+a + b * c
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "+"
+          leftOperand:
+            declReferenceExpr
+              baseName: identifier "a"
+          rightOperand:
+            infixOperatorExpr
+              operator:
+                binaryOperatorExpr
+                  operator: binaryOperator "*"
+              leftOperand:
+                declReferenceExpr
+                  baseName: identifier "b"
+              rightOperand:
+                declReferenceExpr
+                  baseName: identifier "c"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+          left: identifier "a" source="a"
+          operator: infix_operator "+" source="+"
+          right:
+            binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+              left: identifier "b" source="b"
+              operator: infix_operator "*" source="*"
+              right: identifier "c" source="c"

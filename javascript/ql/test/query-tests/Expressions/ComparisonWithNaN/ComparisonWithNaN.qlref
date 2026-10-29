@@ -1,0 +1,2 @@
+query: Expressions/ComparisonWithNaN.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

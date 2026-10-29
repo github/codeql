@@ -1,0 +1,14 @@
+| tst.ts:17:3:17:24 | declare ... string; |
+| tst.ts:18:3:18:20 | declare class y {} |
+| tst.ts:19:3:19:49 | declare ... iate; } |
+| tst.ts:20:3:20:23 | declare ... on w(); |
+| tst.ts:33:3:33:31 | export  ... number; |
+| tst.ts:33:10:33:31 | declare ... number; |
+| tst.ts:34:3:34:27 | export  ... ss y {} |
+| tst.ts:34:10:34:27 | declare class y {} |
+| tst.ts:35:3:35:56 | export  ... iate; } |
+| tst.ts:35:10:35:56 | declare ... iate; } |
+| tst.ts:36:3:36:30 | export  ... on w(); |
+| tst.ts:36:10:36:30 | declare ... on w(); |
+| tst.ts:47:3:47:31 | export  ... ce x {} |
+| tst.ts:47:10:47:31 | declare ... ce x {} |

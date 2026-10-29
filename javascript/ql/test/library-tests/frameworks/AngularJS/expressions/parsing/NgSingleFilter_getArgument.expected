@@ -1,0 +1,8 @@
+| (NgSingleFilter: FILTER10 (NgFilterArgument: (NgVarExpr: FILTER_ARG10))) | 0 | (NgVarExpr: FILTER_ARG10) |
+| (NgSingleFilter: FILTER11 (NgFilterArgument: (NgVarExpr: FILTER_ARG11a) (NgFilterArgument: (NgVarExpr: FILTER_ARG11b)))) | 0 | (NgVarExpr: FILTER_ARG11a) |
+| (NgSingleFilter: FILTER11 (NgFilterArgument: (NgVarExpr: FILTER_ARG11a) (NgFilterArgument: (NgVarExpr: FILTER_ARG11b)))) | 1 | (NgVarExpr: FILTER_ARG11b) |
+| (NgSingleFilter: FILTER14a (NgFilterArgument: (NgVarExpr: FILTER_ARG14a))) | 0 | (NgVarExpr: FILTER_ARG14a) |
+| (NgSingleFilter: FILTER15 (NgFilterArgument: (NgDotExpr: (NgVarExpr: VAR15).FIELD15))) | 0 | (NgDotExpr: (NgVarExpr: VAR15).FIELD15) |
+| (NgSingleFilter: FILTER15 (NgFilterArgument: (NgVarExpr: VAR15))) | 0 | (NgVarExpr: VAR15) |
+| (NgSingleFilter: FILTER16 (NgFilterArgument: 16)) | 0 | 16 |
+| (NgSingleFilter: FILTER_ARG11a (NgFilterArgument: (NgVarExpr: FILTER_ARG11b))) | 0 | (NgVarExpr: FILTER_ARG11b) |

@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Internal", "ISystemClock", "get_UtcNow", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Internal", "SystemClock", "get_UtcNow", "()", "summary", "df-generated"]

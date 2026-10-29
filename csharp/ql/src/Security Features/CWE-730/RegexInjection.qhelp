@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Constructing a regular expression with unsanitized user input is dangerous as a malicious user may
+be able to modify the meaning of the expression. In particular, such a user may be able to provide
+a regular expression fragment that takes exponential time in the worst case, and use that to
+perform a Denial of Service attack.
+</p>
+</overview>
+<recommendation>
+
+<p>
+For user input that is intended to be referenced as a string literal in a regular expression, use
+the <code>Regex.Escape</code> method to escape any special characters. If the regular expression is
+intended to be configurable by the user, then a timeout should be used to avoid Denial of Service
+attacks. For C# applications, a timeout can be provided to the <code>Regex</code> constructor.
+Alternatively, apply a global timeout by setting the <code>REGEX_DEFAULT_MATCH_TIMEOUT</code>
+application domain property, using the <code>AppDomain.SetData</code> method.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows a HTTP request parameter that is used as a regular expression, and
+matched against another request parameter.
+</p>
+<p>
+In the first case, the regular expression is used without a timeout, and the user-provided regex
+is not escaped. If a malicious user provides a regex that has exponential worst case performance,
+then this could lead to a Denial of Service.
+</p>
+<p>
+In the second case, the user input is escaped using <code>Regex.Escape</code> before being included
+in the regular expression. This ensures that the user cannot insert characters which have a special
+meaning in regular expressions.
+</p>
+<sample src="RegexInjection.cs" />
+
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS">Regular expression Denial of Service - ReDoS</a>.
+</li>
+<li>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/ReDoS">ReDoS</a>.
+</li>
+
+</references>
+</qhelp>

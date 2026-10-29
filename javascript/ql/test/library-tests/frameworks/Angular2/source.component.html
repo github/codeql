@@ -1,0 +1,19 @@
+<sink-component
+    [sink1]="taint"
+    [sink2]="taint | unknownPipe"
+    [sink3]="taint | unknownPipe:'safe'"
+    [sink4]="taint | testPipe:'safe'"
+    [sink5]="42 | testPipe:taint"
+    (someEvent)="methodOnComponent(taint)"
+    [sink8]="$any(taint)"
+></sink-component>
+
+<div *ngFor="let element of taintedArray">
+    <sink-component [sink1]="element"></sink-component>
+</div>
+
+<div *ngFor="let element of safeArray">
+    <sink-component [sink2]="element"></sink-component>
+</div>
+
+<mid-component [field]="taint"></mid-component>

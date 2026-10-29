@@ -1,0 +1,2 @@
+query: Security/CWE/CWE-843/TypeConfusion.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

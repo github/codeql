@@ -1,0 +1,2 @@
+query: jsf/4.24 Control Flow Structures/AV Rule 186.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

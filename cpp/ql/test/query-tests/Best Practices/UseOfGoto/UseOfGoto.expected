@@ -1,0 +1,1 @@
+| UseOfGoto.cpp:3:6:3:39 | definition of multiple_forward_and_backward_goto | Multiple forward and backward goto statements may make function multiple_forward_and_backward_goto hard to understand. |

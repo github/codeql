@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p> If a class has only one public method (other than its <code>__init__</code>)
+it should be replaced with a function.
+</p>
+
+</overview>
+<recommendation>
+
+<p> Convert the single public method into a function.
+If there is an <code>__init__</code> and it sets attributes on the <code>self</code>
+then rename the <code>__init__</code> method and remove the <code>self</code> parameter
+Make the public method an inner function and return that.</p>
+
+<p>Delete the class.</p>
+
+</recommendation>
+<example>
+<p>In this example the class only has a single method. This method does not need to be in its own 
+class. It should be a method on its own that takes <code>a</code> and <code>b</code> as parameters.
+</p>
+<sample src="UselessClass.py" />
+
+</example>
+<references>
+
+  <li>Python: <a href="http://docs.python.org/tutorial/classes.html">Classes</a>.</li>
+
+</references>
+</qhelp>

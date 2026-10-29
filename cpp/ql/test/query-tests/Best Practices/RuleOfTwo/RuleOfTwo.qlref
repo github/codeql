@@ -1,0 +1,2 @@
+query: Best Practices/RuleOfTwo.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

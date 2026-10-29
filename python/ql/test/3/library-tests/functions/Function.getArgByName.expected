@@ -1,0 +1,9 @@
+| test.py:4:1:11:2 | Function func | keyword_only | test.py:9:5:9:16 | Parameter |
+| test.py:4:1:11:2 | Function func | normal | test.py:7:5:7:10 | Parameter |
+| test.py:4:1:11:2 | Function func | pos_only | test.py:5:5:5:12 | Parameter |
+| test.py:23:1:31:2 | Function func2 | keyword_also_req | test.py:30:5:30:20 | Parameter |
+| test.py:23:1:31:2 | Function func2 | keyword_req | test.py:28:5:28:15 | Parameter |
+| test.py:23:1:31:2 | Function func2 | keyword_w_default | test.py:29:5:29:21 | Parameter |
+| test.py:23:1:31:2 | Function func2 | pos_req | test.py:24:5:24:11 | Parameter |
+| test.py:23:1:31:2 | Function func2 | pos_w_default | test.py:25:5:25:17 | Parameter |
+| test.py:23:1:31:2 | Function func2 | pos_w_default2 | test.py:26:5:26:18 | Parameter |

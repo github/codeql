@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>
+The constant <code>NotImplemented</code> is not an <code>Exception</code>, but is often confused for <code>NotImplementedError</code>.
+If it is used as an exception, such as in <code>raise NotImplemented</code> or <code>raise NotImplemented("message")</code>,
+a <code>TypeError</code> will be raised rather than the expected <code>NotImplemented</code>. This may make debugging more difficult.
+</p>
+
+<p><code>NotImplemented</code> should only be used as a special return value for implementing special methods such as <code>__lt__</code>.
+Code that is not intended to be called should raise <code>NotImplementedError</code>.</p>
+
+</overview>
+<recommendation>
+<p>If a <code>NotImplementedError</code> is intended to be raised, replace the use of <code>NotImplemented</code>
+with that. If <code>NotImplemented</code> is intended to be returned rather than raised, replace the <code>raise</code> with <code>return NotImplemented</code>.
+</p>
+</recommendation>
+<example>
+
+<p>
+In the following example, the method <code>wrong</code> will incorrectly raise a <code>TypeError</code> when called.
+The method <code>right</code> will raise a <code>NotImplementedError</code>.
+</p>
+
+<sample src="NotImplemented.py" />
+
+
+</example>
+
+<references>
+
+    <li>Python Language Reference: <a href="https://docs.python.org/library/exceptions.html#NotImplementedError">The NotImplementedError exception</a>.</li>
+    <li>Python Language Reference: <a href="https://docs.python.org/3/library/constants.html#NotImplemented">The NotImplemented constant</a>.</li>
+    <li>Python Language Reference: <a href="https://docs.python.org/3/reference/datamodel.html#emulating-numeric-types">Emulating numeric types</a>.</li>
+
+</references>
+
+</qhelp>

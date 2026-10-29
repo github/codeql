@@ -1,0 +1,7 @@
+{
+    "include": ["my-root","my-tests"],
+    "compilerOptions": {
+        "rootDir": "./my-root",
+        "outDir": "./my-out",
+    }
+}

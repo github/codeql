@@ -1,0 +1,6 @@
+name: codeql/python-consistency-queries
+groups: [python, test, consistency-queries]
+dependencies:
+    codeql/python-all: ${workspace}
+extractor: python
+warnOnImplicitThis: true

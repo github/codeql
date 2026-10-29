@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["datadog/dd-trace-go/.github/workflows/smoke-tests.yml", "*", "input.go-libddwaf-ref", "code-injection", "generated"]

@@ -1,0 +1,2 @@
+query: Likely Bugs/Protocols/UseOfDeprecatedHardcodedProtocol.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

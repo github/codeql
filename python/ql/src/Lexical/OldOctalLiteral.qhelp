@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Octal literals starting with 0 are easily misread as a decimal,
+particularly by those programmers who do not have a C or Java background.
+</p>
+
+<p>
+The new literal syntax for non-decimal numbers is more distinct and is thus less likely to be misunderstood.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Use the 0oXXX form instead of the 0XXX form. Alternatively use binary or hexadecimal format if that would be clearer.
+</p>
+
+</recommendation>
+<example>
+<sample src="OldOctalLiteral.py" />
+
+</example>
+<references>
+
+
+<li>Python Language Reference: <a href="http://docs.python.org/2/reference/lexical_analysis.html#integer-and-long-integer-literals">Integer Literals</a>.</li>
+<li>Python PEP 3127: <a href="http://www.python.org/dev/peps/pep-3127/">Integer Literal Support and Syntax</a>.</li>
+
+
+</references>
+</qhelp>

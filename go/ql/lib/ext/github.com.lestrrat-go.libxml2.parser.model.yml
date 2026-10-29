@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/lestrrat-go/libxml2/parser", "Parser", True, "Parse", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["github.com/lestrrat-go/libxml2/parser", "Parser", True, "ParseReader", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["github.com/lestrrat-go/libxml2/parser", "Parser", True, "ParseString", "", "", "Argument[0]", "xpath-injection", "manual"]

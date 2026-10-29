@@ -1,0 +1,1 @@
+| test.cs:42:7:42:15 | JobEngine | The enum $@ may be related to Solorigate. It matches 19 of the values used for commands in the enum. | test.cs:42:7:42:15 | JobEngine | JobEngine |

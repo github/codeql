@@ -1,0 +1,1 @@
+| Test.java:6:22:6:32 | new byte[] | Implicit conversion from Array to String. |

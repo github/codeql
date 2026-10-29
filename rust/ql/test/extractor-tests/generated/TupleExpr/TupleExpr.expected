@@ -1,0 +1,9 @@
+instances
+| gen_tuple_expr.rs:5:17:5:26 | TupleExpr |
+| gen_tuple_expr.rs:6:13:6:22 | TupleExpr |
+getAttr
+getField
+| gen_tuple_expr.rs:5:17:5:26 | TupleExpr | 0 | gen_tuple_expr.rs:5:18:5:18 | 1 |
+| gen_tuple_expr.rs:5:17:5:26 | TupleExpr | 1 | gen_tuple_expr.rs:5:21:5:25 | "one" |
+| gen_tuple_expr.rs:6:13:6:22 | TupleExpr | 0 | gen_tuple_expr.rs:6:14:6:14 | 2 |
+| gen_tuple_expr.rs:6:13:6:22 | TupleExpr | 1 | gen_tuple_expr.rs:6:17:6:21 | "two" |

@@ -1,0 +1,15 @@
+on:
+  pull_request_target
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - id: artifact
+        run: |
+          echo "::set-output name=pr_number::$(<artifact.txt)"
+      - name: Use artifact
+        run: echo ${{ steps.artifact.outputs.pr_number }} 

@@ -1,0 +1,425 @@
+/**
+ * Provides the public API for working with Go's control-flow graph.
+ */
+overlay[local]
+module;
+
+import go
+private import ControlFlowGraphImpl
+private import codeql.controlflow.SuccessorType
+
+/** Provides helper predicates for mapping between CFG nodes and the AST. */
+module ControlFlow {
+  /** A file or function with which a CFG is associated. */
+  class Root extends AstNode {
+    Root() {
+      exists(this.(FuncDef).getBody())
+      or
+      exists(this.(File).getADecl())
+    }
+
+    /** Holds if `nd` belongs to this file or function. */
+    predicate isRootOf(AstNode nd) {
+      this = nd.getEnclosingFunction()
+      or
+      not exists(nd.getEnclosingFunction()) and
+      this = nd.getFile()
+    }
+
+    /** Gets the synthetic entry node of the CFG for this file or function. */
+    EntryNode getEntryNode() { result = ControlFlow::entryNode(this) }
+
+    /** Gets the synthetic exit node of the CFG for this file or function. */
+    ExitNode getExitNode() { result = ControlFlow::exitNode(this) }
+  }
+
+  /**
+   * A node in the control-flow graph of a Go file or function.
+   *
+   * Nodes correspond to expressions and statements that compute a value or perform
+   * an operation (as opposed to providing syntactic structure or type information).
+   *
+   * There are also synthetic entry and exit nodes for each Go file or function
+   * that mark the beginning and the end, respectively, of its execution.
+   */
+  class Node extends CfgImpl::ControlFlowNode {
+    /** Holds if this is a node with more than one successor. */
+    predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
+
+    /** Holds if this is a node with more than one predecessor. */
+    predicate isJoin() { strictcount(this.getAPredecessor()) > 1 }
+
+    /** Holds if this is the first control-flow node in `subtree`. */
+    predicate isFirstNodeOf(AstNode subtree) { this.isBefore(subtree) }
+
+    /** Holds if this node is the unique entry node of a file or function. */
+    predicate isEntryNode() { this instanceof CfgImpl::ControlFlow::EntryNode }
+
+    /** Holds if this node is the unique exit node of a file or function. */
+    predicate isExitNode() { this instanceof CfgImpl::ControlFlow::ExitNode }
+
+    /** Holds if this node dominates `dominee` in the control-flow graph. */
+    overlay[caller?]
+    pragma[inline]
+    predicate dominatesNode(ControlFlow::Node dominee) {
+      exists(CfgImpl::Cfg::BasicBlock thisbb, CfgImpl::Cfg::BasicBlock dbb, int i, int j |
+        this = thisbb.getNode(i) and dominee = dbb.getNode(j)
+      |
+        thisbb.strictlyDominates(dbb)
+        or
+        thisbb = dbb and i <= j
+      )
+    }
+
+    /**
+     * Gets the innermost function to which this node belongs, or the file if
+     * it is not inside a function.
+     */
+    cached
+    Root getRoot() { result = this.getEnclosingCallable() }
+
+    /** Gets the file to which this node belongs. */
+    File getFile() { result = this.getLocation().getFile() }
+
+    /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+     */
+    deprecated predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      or
+      not exists(this.getLocation()) and
+      filepath = "" and
+      startline = 0 and
+      startcolumn = 0 and
+      endline = 0 and
+      endcolumn = 0
+    }
+  }
+
+  /** A synthetic entry node for a function or a file. */
+  class EntryNode extends Node instanceof CfgImpl::ControlFlow::EntryNode { }
+
+  /** A synthetic exit node for a function or a file. */
+  class ExitNode extends Node instanceof CfgImpl::ControlFlow::ExitNode { }
+
+  private predicate isConditionGuardRoot(Expr expr) {
+    expr = any(LogicalBinaryExpr lbe).getLeftOperand()
+    or
+    expr = any(ForStmt fs).getCond()
+    or
+    expr = any(IfStmt is).getCondition()
+    or
+    isExpressionlessSwitchCaseCondition(expr)
+  }
+
+  private predicate isExpressionlessSwitchCaseCondition(Expr expr) {
+    expr = any(ExpressionSwitchStmt ess | not exists(ess.getExpr())).getACase().getAnExpr()
+  }
+
+  /**
+   * A control-flow node that initializes or updates the value of a constant, a variable,
+   * a field, or an (array, slice, or map) element.
+   */
+  class WriteNode extends Node instanceof IR::WriteInstruction {
+    /** Gets the left-hand side of this write. */
+    IR::WriteTarget getLhs() { result = super.getLhs() }
+
+    private predicate isInitialization() { super.isInitialization() }
+
+    /** Gets the right-hand side of this write. */
+    DataFlow::Node getRhs() { super.getRhs() = result.asInstruction() }
+
+    /** Holds if this node sets variable or constant `v` to `rhs`. */
+    predicate writes(ValueEntity v, DataFlow::Node rhs) { super.writes(v, rhs.asInstruction()) }
+
+    /** Holds if this node defines SSA variable `v` to be `rhs`. */
+    predicate definesSsaVariable(SsaVariable v, DataFlow::Node rhs) {
+      super.getLhs().asSsaVariable() = v and
+      super.getRhs() = rhs.asInstruction()
+    }
+
+    /**
+     * Holds if this node sets the value of field `f` on `base` (or its implicit dereference) to
+     * `rhs`, where `base` represents the post-update value.
+     *
+     * For example, for the assignment `x.width = newWidth`, `base` is the post-update node of
+     * either the data-flow node corresponding to `x` or (if `x` is a pointer) the data-flow node
+     * corresponding to the implicit dereference `*x`, `f` is the field referenced by `width`, and
+     * `rhs` is the data-flow node corresponding to `newWidth`. If this `WriteNode` is a struct
+     * initialization then there is no post-update node and `base` is the struct literal being
+     * initialized.
+     */
+    predicate writesField(DataFlow::Node base, Field f, DataFlow::Node rhs) {
+      exists(DataFlow::Node b | this.writesFieldPreUpdate(b, f, rhs) |
+        this.isInitialization() and base = b
+        or
+        not this.isInitialization() and
+        b = base.(DataFlow::PostUpdateNode).getPreUpdateNode()
+      )
+    }
+
+    /**
+     * Holds if this node sets the value of field `f` on `base` (or its implicit dereference) to
+     * `rhs`, where `base` represents the pre-update value.
+     *
+     * For example, for the assignment `x.width = newWidth`, `base` is either the data-flow node
+     * corresponding to `x` or (if `x` is a pointer) the data-flow node corresponding to the
+     * implicit dereference `*x`, `f` is the field referenced by `width`, and `rhs` is the
+     * data-flow node corresponding to `newWidth`.
+     */
+    predicate writesFieldPreUpdate(DataFlow::Node base, Field f, DataFlow::Node rhs) {
+      this.writesFieldInsn(base.asInstruction(), f, rhs.asInstruction())
+    }
+
+    private predicate writesFieldInsn(IR::Instruction base, Field f, IR::Instruction rhs) {
+      exists(IR::FieldTarget trg | trg = super.getLhs() |
+        (
+          trg.getBase() = base or
+          trg.getBase() = IR::implicitDerefInstruction(base.(IR::EvalInstruction).getExpr())
+        ) and
+        trg.getField() = f and
+        super.getRhs() = rhs
+      )
+    }
+
+    /**
+     * Holds if this node sets the value of element `index` on `base` (or its implicit dereference)
+     * to `rhs`.
+     *
+     * For example, for the assignment `xs[i] = v`, `base` is the post-update node of the data-flow
+     * node corresponding to `xs` or (if `xs` is a pointer) the implicit dereference `*xs`, `index`
+     * is the data-flow node corresponding to `i`, and `rhs` is the data-flow node corresponding to
+     * `base`. If this `WriteNode` corresponds to the initialization of an array/slice/map then
+     * there is no need for a post-update node and `base` is the array/slice/map literal being
+     * initialized.
+     */
+    predicate writesElement(DataFlow::Node base, DataFlow::Node index, DataFlow::Node rhs) {
+      exists(DataFlow::Node b | this.writesElementPreUpdate(b, index, rhs) |
+        this.isInitialization() and base = b
+        or
+        not this.isInitialization() and
+        b = base.(DataFlow::PostUpdateNode).getPreUpdateNode()
+      )
+    }
+
+    /**
+     * Holds if this node sets the value of element `index` on `base` (or its implicit dereference)
+     * to `rhs`.
+     *
+     * For example, for the assignment `xs[i] = v`, `base` is the post-update node of the data-flow
+     * node corresponding to `xs` or (if `xs` is a pointer) the implicit dereference `*xs`, `index`
+     * is the data-flow node corresponding to `i`, and `rhs` is the data-flow node corresponding to
+     * `base`. If this `WriteNode` corresponds to the initialization of an array/slice/map then
+     * there is no need for a post-update node and `base` is the array/slice/map literal being
+     * initialized.
+     */
+    predicate writesElementPreUpdate(DataFlow::Node base, DataFlow::Node index, DataFlow::Node rhs) {
+      this.writesElementInsn(base.asInstruction(), index.asInstruction(), rhs.asInstruction())
+    }
+
+    private predicate writesElementInsn(
+      IR::Instruction base, IR::Instruction index, IR::Instruction rhs
+    ) {
+      exists(IR::ElementTarget trg | trg = super.getLhs() |
+        (
+          trg.getBase() = base or
+          trg.getBase() = IR::implicitDerefInstruction(base.(IR::EvalInstruction).getExpr())
+        ) and
+        trg.getIndex() = index and
+        super.getRhs() = rhs
+      )
+    }
+
+    /**
+     * DEPRECATED: Use the disjunct of `writesElement` and `writesField`, or `writesFieldPreUpdate`
+     * and `writesElementPreUpdate`, instead.
+     *
+     * Holds if this node sets any field or element of `base` (or its implicit dereference) to
+     * `rhs`, where `base` represents the pre-update value.
+     */
+    deprecated predicate writesComponent(DataFlow::Node base, DataFlow::Node rhs) {
+      this.writesElementPreUpdate(base, _, rhs) or this.writesFieldPreUpdate(base, _, rhs)
+    }
+
+    /**
+     * Holds if this node sets any field or element of `base` to `rhs`.
+     */
+    predicate writesComponentInstruction(IR::Instruction base, IR::Instruction rhs) {
+      this.writesElementInsn(base, _, rhs) or this.writesFieldInsn(base, _, rhs)
+    }
+  }
+
+  /**
+   * DEPRECATED: Use `Guard` from `semmle.go.controlflow.Guards` instead.
+   *
+   * A control-flow node recording the fact that a certain expression has a known
+   * Boolean value at this point in the program.
+   */
+  deprecated class ConditionGuardNode extends IR::Instruction {
+    Expr cond;
+    boolean outcome;
+
+    ConditionGuardNode() {
+      isConditionGuardRoot(cond) and
+      this.isAfterTrue(cond) and
+      outcome = true
+      or
+      isConditionGuardRoot(cond) and
+      this.isAfterFalse(cond) and
+      outcome = false
+      or
+      isExpressionlessSwitchCaseCondition(cond) and
+      exists(MatchingSuccessor successor |
+        this.isAfterValue(cond, successor) and outcome = successor.getValue()
+      )
+    }
+
+    private predicate ensuresAux(Expr expr, boolean b) {
+      expr = cond and b = outcome
+      or
+      expr = any(NotExpr ne | this.ensuresAux(ne, b.booleanNot())).getOperand()
+      or
+      expr = any(LandExpr land | this.ensuresAux(land, true)).getAnOperand() and
+      b = true
+      or
+      expr = any(LorExpr lor | this.ensuresAux(lor, false)).getAnOperand() and
+      b = false
+    }
+
+    /**
+     * DEPRECATED: Use `Guard.controls` from `semmle.go.controlflow.Guards`
+     * instead.
+     *
+     * Holds if this guard ensures that the result of `nd` is `b`.
+     */
+    deprecated predicate ensures(DataFlow::Node nd, boolean b) {
+      this.ensuresAux(any(Expr e | nd = DataFlow::exprNode(e)), b)
+    }
+
+    /**
+     * DEPRECATED: Use `guardEnsuresLeq` from `semmle.go.controlflow.Guards`
+     * instead.
+     *
+     * Holds if this guard ensures that `lesser <= greater + bias` holds.
+     */
+    deprecated predicate ensuresLeq(DataFlow::Node lesser, DataFlow::Node greater, int bias) {
+      exists(DataFlow::RelationalComparisonNode rel, boolean b |
+        this.ensuresAux(rel.asExpr(), b) and
+        rel.leq(b, lesser, greater, bias)
+      )
+      or
+      exists(DataFlow::EqualityTestNode eq, boolean b |
+        this.ensuresAux(eq.asExpr(), b) and
+        eq.eq(b, lesser, greater)
+      ) and
+      bias = 0
+    }
+
+    /**
+     * DEPRECATED: Use `guardEnsuresEq` from `semmle.go.controlflow.Guards`
+     * instead.
+     *
+     * Holds if this guard ensures that `i = j` holds.
+     */
+    deprecated predicate ensuresEq(DataFlow::Node i, DataFlow::Node j) {
+      exists(DataFlow::EqualityTestNode eq, boolean b |
+        this.ensuresAux(eq.asExpr(), b) and
+        eq.eq(b, i, j)
+      )
+    }
+
+    /**
+     * DEPRECATED: Use `guardEnsuresNeq` from `semmle.go.controlflow.Guards`
+     * instead.
+     *
+     * Holds if this guard ensures that `i != j` holds.
+     */
+    deprecated predicate ensuresNeq(DataFlow::Node i, DataFlow::Node j) {
+      exists(DataFlow::EqualityTestNode eq, boolean b |
+        this.ensuresAux(eq.asExpr(), b.booleanNot()) and
+        eq.eq(b, i, j)
+      )
+    }
+
+    /**
+     * DEPRECATED: Use `Guard.controls` from `semmle.go.controlflow.Guards`
+     * instead.
+     *
+     * Holds if this guard dominates basic block `bb`, that is, the guard
+     * is known to hold at `bb`.
+     */
+    deprecated predicate dominates(ReachableBasicBlock bb) {
+      this = bb.getANode() or
+      this.dominates(bb.getImmediateDominator())
+    }
+
+    /**
+     * Gets the condition whose outcome the guard concerns.
+     */
+    Expr getCondition() { result = cond }
+
+    /** Gets the value of the condition that this node corresponds to. */
+    boolean getOutcome() { result = outcome }
+  }
+
+  /**
+   * Gets the entry node of file or function `root`.
+   */
+  EntryNode entryNode(Root root) { result.getEnclosingCallable() = root }
+
+  /**
+   * Gets the exit node of file or function `root`.
+   */
+  ExitNode exitNode(Root root) { result.getEnclosingCallable() = root }
+
+  /**
+   * Holds if the function `f` may return without panicking, exiting the process, or looping forever.
+   *
+   * This is defined conservatively, and so may also hold of a function that in fact
+   * cannot return normally, but never fails to hold of a function that can return normally.
+   */
+  predicate mayReturnNormally(FuncDecl f) {
+    exists(CfgImpl::ControlFlow::NormalExitNode exit |
+      exit.getEnclosingCallable() = f and
+      exists(exit.getAPredecessor())
+    )
+  }
+
+  /**
+   * Holds if `pred` is the node reached when a case of the expression switch
+   * statement switching on `switchExpr` matches, `testExpr` is one of that
+   * case's test expressions, and `succ` is the node to be executed next when
+   * the case matches.
+   *
+   * In the control-flow graph the individual case test expressions of a case
+   * clause all funnel into a single "matched" node for the clause, from which
+   * control transfers to the case body. Hence `pred` is that shared matched
+   * node, and the same `(pred, succ)` pair is reported once per test
+   * expression `testExpr` of the clause.
+   */
+  predicate isSwitchCaseTestPassingEdge(
+    ControlFlow::Node pred, ControlFlow::Node succ, Expr switchExpr, Expr testExpr
+  ) {
+    exists(ExpressionSwitchStmt ess, CaseClause cc, int i |
+      ess.getExpr() = switchExpr and
+      cc = ess.getACase() and
+      testExpr = cc.getExpr(i) and
+      pred.isAfter(cc) and
+      succ.isFirstNodeOf(cc.getStmt(0))
+    )
+  }
+}
+
+class ControlFlowNode = ControlFlow::Node;
+
+class CfgScope = CfgImpl::CfgScope;
+
+class Write = ControlFlow::WriteNode;

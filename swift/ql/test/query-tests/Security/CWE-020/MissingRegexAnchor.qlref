@@ -1,0 +1,2 @@
+query: queries/Security/CWE-020/MissingRegexAnchor.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

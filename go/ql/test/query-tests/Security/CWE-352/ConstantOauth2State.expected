@@ -1,0 +1,37 @@
+edges
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:50:26:50:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:147:26:147:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:169:26:169:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:191:26:191:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:210:26:210:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:232:26:232:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:249:26:249:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:266:26:266:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:282:26:282:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:22:22:22:28 | "state" | ConstantOauth2State.go:65:26:65:39 | stateStringVar | provenance |  |
+| ConstantOauth2State.go:80:11:80:25 | call to newFixedState | ConstantOauth2State.go:81:26:81:30 | state | provenance |  |
+| ConstantOauth2State.go:86:9:86:15 | "state" | ConstantOauth2State.go:80:11:80:25 | call to newFixedState | provenance |  |
+nodes
+| ConstantOauth2State.go:20:26:20:32 | "state" | semmle.label | "state" |
+| ConstantOauth2State.go:22:22:22:28 | "state" | semmle.label | "state" |
+| ConstantOauth2State.go:35:26:35:32 | "state" | semmle.label | "state" |
+| ConstantOauth2State.go:50:26:50:41 | stateStringConst | semmle.label | stateStringConst |
+| ConstantOauth2State.go:65:26:65:39 | stateStringVar | semmle.label | stateStringVar |
+| ConstantOauth2State.go:80:11:80:25 | call to newFixedState | semmle.label | call to newFixedState |
+| ConstantOauth2State.go:81:26:81:30 | state | semmle.label | state |
+| ConstantOauth2State.go:86:9:86:15 | "state" | semmle.label | "state" |
+| ConstantOauth2State.go:147:26:147:41 | stateStringConst | semmle.label | stateStringConst |
+| ConstantOauth2State.go:169:26:169:41 | stateStringConst | semmle.label | stateStringConst |
+| ConstantOauth2State.go:191:26:191:41 | stateStringConst | semmle.label | stateStringConst |
+| ConstantOauth2State.go:210:26:210:41 | stateStringConst | semmle.label | stateStringConst |
+| ConstantOauth2State.go:232:26:232:41 | stateStringConst | semmle.label | stateStringConst |
+| ConstantOauth2State.go:249:26:249:41 | stateStringConst | semmle.label | stateStringConst |
+| ConstantOauth2State.go:266:26:266:41 | stateStringConst | semmle.label | stateStringConst |
+| ConstantOauth2State.go:282:26:282:41 | stateStringConst | semmle.label | stateStringConst |
+subpaths
+#select
+| ConstantOauth2State.go:35:26:35:32 | "state" | ConstantOauth2State.go:35:26:35:32 | "state" | ConstantOauth2State.go:35:26:35:32 | "state" | Using a constant $@ to create oauth2 URLs. | ConstantOauth2State.go:35:26:35:32 | "state" | state string |
+| ConstantOauth2State.go:50:26:50:41 | stateStringConst | ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:50:26:50:41 | stateStringConst | Using a constant $@ to create oauth2 URLs. | ConstantOauth2State.go:20:26:20:32 | "state" | state string |
+| ConstantOauth2State.go:65:26:65:39 | stateStringVar | ConstantOauth2State.go:22:22:22:28 | "state" | ConstantOauth2State.go:65:26:65:39 | stateStringVar | Using a constant $@ to create oauth2 URLs. | ConstantOauth2State.go:22:22:22:28 | "state" | state string |
+| ConstantOauth2State.go:81:26:81:30 | state | ConstantOauth2State.go:86:9:86:15 | "state" | ConstantOauth2State.go:81:26:81:30 | state | Using a constant $@ to create oauth2 URLs. | ConstantOauth2State.go:86:9:86:15 | "state" | state string |
+| ConstantOauth2State.go:232:26:232:41 | stateStringConst | ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:232:26:232:41 | stateStringConst | Using a constant $@ to create oauth2 URLs. | ConstantOauth2State.go:20:26:20:32 | "state" | state string |

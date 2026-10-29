@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+There is no need to call <code>toString</code> on a <code>String</code> because it just returns the object itself. From the Java API
+Specification entry for <code>String.toString()</code>:
+</p>
+<blockquote><p>
+<code>public String toString()</code> </p><p>
+This object (which is already a string!) is itself returned.
+</p>
+</blockquote>
+
+</overview>
+<recommendation>
+<p>
+Do not call <code>toString</code> on a <code>String</code> object.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows an unnecessary call to <code>toString</code> on the string <code>name</code>.</p>
+
+<sample src="CallsToStringToString.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#toString()">String.toString()</a>.
+</li>
+
+
+</references>
+</qhelp>

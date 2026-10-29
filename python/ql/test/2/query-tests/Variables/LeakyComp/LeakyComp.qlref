@@ -1,0 +1,2 @@
+query: Variables/LeakingListComprehension.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

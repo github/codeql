@@ -1,0 +1,1 @@
+| types.c:11:16:11:16 | a | a could be optimized to save 64/80 bits of padding (or 25% of its size). |

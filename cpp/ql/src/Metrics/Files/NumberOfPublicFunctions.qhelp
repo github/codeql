@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of public functions in a file.</p>
+
+<p>Public functions are the API between a component and other parts of a program. As such,
+it makes sense to monitor the number of public functions and consider the following
+questions:</p>
+
+<ul>
+<li>Is the API too large and unwieldy?</li>
+<li>When adding new functions, what effect will the new additions have on the cost of
+    maintaining the additions (given that other components may come to rely on them)?</li>
+<li>Do any public functions inadvertently expose implementation details of a component?</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>Adjust the API of a component in consideration of the above questions.</p>
+
+</recommendation>
+<references>
+
+<li>
+  <a href="http://www.cplusplus.com/doc/tutorial/functions/">Functions</a>
+</li>
+<li>
+  M. Fowler. <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+<li>
+  <a href="https://en.wikipedia.org/wiki/Code_refactoring">Wikipedia: Code refactoring</a>
+</li>
+<li>
+  <a href="http://www.jot.fm/issues/issue_2005_01/column1/">Refactoring as Meta Programming?</a>
+</li>
+
+
+</references>
+</qhelp>

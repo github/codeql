@@ -1,0 +1,2 @@
+query: Security/CWE-730/ServerCrash.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

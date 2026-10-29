@@ -1,0 +1,2 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../stubs/google-android-9.0.0:${testdir}/../../stubs/apache-commons-lang3-3.7:${testdir}/../../stubs/guava-30.0
+//codeql-extractor-kotlin-options: ${testdir}/../../stubs/google-android-9.0.0

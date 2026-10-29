@@ -1,0 +1,35 @@
+| SimplifyBoolExpr.cs:9:13:9:21 | ... == ... | The expression 'A == true' can be simplified to 'A'. |
+| SimplifyBoolExpr.cs:10:13:10:22 | ... == ... | The expression 'A == false' can be simplified to '!A'. |
+| SimplifyBoolExpr.cs:11:13:11:21 | ... == ... | The expression 'true == A' can be simplified to 'A'. |
+| SimplifyBoolExpr.cs:12:13:12:22 | ... == ... | The expression 'false == A' can be simplified to '!A'. |
+| SimplifyBoolExpr.cs:13:13:13:21 | ... != ... | The expression 'A != true' can be simplified to '!A'. |
+| SimplifyBoolExpr.cs:14:13:14:22 | ... != ... | The expression 'A != false' can be simplified to 'A'. |
+| SimplifyBoolExpr.cs:15:13:15:21 | ... != ... | The expression 'true != A' can be simplified to '!A'. |
+| SimplifyBoolExpr.cs:16:13:16:22 | ... != ... | The expression 'false != A' can be simplified to 'A'. |
+| SimplifyBoolExpr.cs:17:13:17:21 | ... && ... | The expression 'A && true' can be simplified to 'A'. |
+| SimplifyBoolExpr.cs:18:13:18:22 | ... && ... | The expression 'A && false' is always 'false'. |
+| SimplifyBoolExpr.cs:19:13:19:21 | ... && ... | The expression 'true && A' can be simplified to 'A'. |
+| SimplifyBoolExpr.cs:20:13:20:22 | ... && ... | The expression 'false && A' is always 'false'. |
+| SimplifyBoolExpr.cs:21:13:21:21 | ... \|\| ... | The expression 'A \|\| true' is always 'true'. |
+| SimplifyBoolExpr.cs:22:13:22:22 | ... \|\| ... | The expression 'A \|\| false' can be simplified to 'A'. |
+| SimplifyBoolExpr.cs:23:13:23:21 | ... \|\| ... | The expression 'true \|\| A' is always 'true'. |
+| SimplifyBoolExpr.cs:24:13:24:22 | ... \|\| ... | The expression 'false \|\| A' can be simplified to 'A'. |
+| SimplifyBoolExpr.cs:25:13:25:21 | !... | The expression '!(A == B)' can be simplified to 'A != B'. |
+| SimplifyBoolExpr.cs:26:13:26:21 | !... | The expression '!(A != B)' can be simplified to 'A == B'. |
+| SimplifyBoolExpr.cs:27:13:27:20 | !... | The expression '!(A < B)' can be simplified to 'A >= B'. |
+| SimplifyBoolExpr.cs:28:13:28:21 | !... | The expression '!(A <= B)' can be simplified to 'A > B'. |
+| SimplifyBoolExpr.cs:29:13:29:21 | !... | The expression '!(A >= B)' can be simplified to 'A < B'. |
+| SimplifyBoolExpr.cs:30:13:30:20 | !... | The expression '!(A > B)' can be simplified to 'A <= B'. |
+| SimplifyBoolExpr.cs:31:13:31:28 | ... ? ... : ... | The expression 'A ? true : false' can be simplified to 'A'. |
+| SimplifyBoolExpr.cs:32:13:32:27 | ... ? ... : ... | The expression 'A ? true : true' is always 'true'. |
+| SimplifyBoolExpr.cs:33:13:33:28 | ... ? ... : ... | The expression 'A ? false : true' can be simplified to '!A'. |
+| SimplifyBoolExpr.cs:34:13:34:27 | ... ? ... : ... | The expression 'A ? true : true' is always 'true'. |
+| SimplifyBoolExpr.cs:35:13:35:25 | ... ? ... : ... | The expression 'A ? B : false' can be simplified to 'A && B'. |
+| SimplifyBoolExpr.cs:36:13:36:24 | ... ? ... : ... | The expression 'A ? B : true' can be simplified to '!A \|\| B'. |
+| SimplifyBoolExpr.cs:37:13:37:25 | ... ? ... : ... | The expression 'A ? false : B' can be simplified to '!A && B'. |
+| SimplifyBoolExpr.cs:38:13:38:24 | ... ? ... : ... | The expression 'A ? true : B' can be simplified to 'A \|\| B'. |
+| SimplifyBoolExprBad.cs:5:22:5:32 | !... | The expression '!(A > B)' can be simplified to 'A <= B'. |
+| SimplifyBoolExprBad.cs:6:19:6:35 | ... == ... | The expression 'A == false' can be simplified to '!A'. |
+| SimplifyBoolExprBad.cs:7:20:7:36 | ... == ... | The expression 'A == false' can be simplified to '!A'. |
+| SimplifyBoolExprBad.cs:7:20:7:60 | ... ? ... : ... | The expression 'A ? B : false' can be simplified to 'A && B'. |
+| SimplifyBoolExprBad.cs:7:40:7:52 | ... != ... | The expression 'A != true' can be simplified to '!A'. |

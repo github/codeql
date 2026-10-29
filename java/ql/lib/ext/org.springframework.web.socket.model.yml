@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+     - ["org.springframework.web.socket", "WebSocketHandler", True, "afterConnectionClosed", "", "", "Parameter[0]", "remote", "manual"]
+     - ["org.springframework.web.socket", "WebSocketHandler", True, "afterConnectionEstablished", "", "", "Parameter[0]", "remote", "manual"]
+     - ["org.springframework.web.socket", "WebSocketHandler", True, "handleMessage", "", "", "Parameter[0]", "remote", "manual"]
+     - ["org.springframework.web.socket", "WebSocketHandler", True, "handleMessage", "", "", "Parameter[1]", "remote", "manual"]
+     - ["org.springframework.web.socket", "WebSocketHandler", True, "handleTransportError", "", "", "Parameter[0]", "remote", "manual"]
+     - ["org.springframework.web.socket.handler", "AbstractWebSocketHandler", True, "handleBinaryMessage", "", "", "Parameter[0..1]", "remote", "manual"]
+     - ["org.springframework.web.socket.handler", "AbstractWebSocketHandler", True, "handlePongMessage", "", "", "Parameter[0..1]", "remote", "manual"]
+     - ["org.springframework.web.socket.handler", "AbstractWebSocketHandler", True, "handleTextMessage", "", "", "Parameter[0..1]", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.springframework.web.socket", "TextMessage", True, "asBytes", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.socket", "WebSocketMessage", True, "getPayload", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.socket", "WebSocketSession", True, "getAcceptedProtocol", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.socket", "WebSocketSession", True, "getHandshakeHeaders", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.socket", "WebSocketSession", True, "getPrincipal", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.web.socket", "WebSocketSession", True, "getUri", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]

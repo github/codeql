@@ -1,0 +1,2 @@
+query: Architecture/Refactoring Opportunities/FeatureEnvy.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

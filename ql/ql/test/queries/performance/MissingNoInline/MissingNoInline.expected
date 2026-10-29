@@ -1,0 +1,1 @@
+| Test.qll:8:11:8:25 | ClasslessPredicate missingNoInline | This predicate should probably be marked pragma[noinline] to prevent inlining. |

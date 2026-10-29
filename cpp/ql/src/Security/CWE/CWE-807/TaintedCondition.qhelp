@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule finds code where untrusted inputs are used in
+an <code>if</code> statement, and the body of that statement makes a
+security decision. This is an example of CWE-807 and makes the program 
+vulnerable to attack. An attacker might be able to gain unauthorized 
+access to the system by manipulating external inputs to the system.</p>
+
+</overview>
+<recommendation>
+<p>In most cases, you need to add or strengthen the checks made on the 
+user-supplied data to ensure its integrity. The user-supplied data can 
+then be used as a trusted input to the security decision. For example, 
+instead of checking an HTTP cookie against a predictable fixed string, 
+check a cookie against a randomly generated session key.</p>
+
+<p>This rule may highlight a few conditions where user-supplied  
+data has been checked and can be trusted. It is not always possible 
+to determine if the checks applied to data are enough to ensure security.</p>
+
+</recommendation>
+<example>
+<p>The following example is included in CWE 807.</p>
+<sample src="TaintedCondition.c" />
+
+<p>In this example, the result of a reverse DNS query is compared
+against a fixed string. An attacker can return an incorrect reverse
+DNS entry for the requesting IP and thus gain the same access as a
+legitimate user from <code>trustme.example.com</code>.</p>
+
+<p>To fix the problem in this example, you need to add an additional 
+mechanism to test the user-supplied data. For example,
+numeric IP addresses could be used.</p>
+
+
+</example>
+<references>
+
+
+<!--  LocalWords:  CWE untrusted Semmle untaint DNS IP lookup
+ -->
+
+</references>
+</qhelp>

@@ -1,0 +1,2 @@
+query: Concurrency/SynchSetUnsynchGet.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,2 @@
+query: Likely Bugs/Format/WrongNumberOfFormatArguments.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

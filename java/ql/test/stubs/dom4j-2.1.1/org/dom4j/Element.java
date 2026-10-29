@@ -1,0 +1,88 @@
+// Generated automatically from org.dom4j.Element for testing purposes
+
+package org.dom4j;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import org.dom4j.Attribute;
+import org.dom4j.Branch;
+import org.dom4j.CDATA;
+import org.dom4j.Entity;
+import org.dom4j.Namespace;
+import org.dom4j.Node;
+import org.dom4j.QName;
+import org.dom4j.Text;
+
+public interface Element extends Branch
+{
+    Attribute attribute(QName p0);
+    Attribute attribute(String p0);
+    Attribute attribute(int p0);
+    Element addAttribute(QName p0, String p1);
+    Element addAttribute(String p0, String p1);
+    Element addCDATA(String p0);
+    Element addComment(String p0);
+    Element addEntity(String p0, String p1);
+    Element addNamespace(String p0, String p1);
+    Element addProcessingInstruction(String p0, Map p1);
+    Element addProcessingInstruction(String p0, String p1);
+    Element addText(String p0);
+    Element createCopy();
+    Element createCopy(QName p0);
+    Element createCopy(String p0);
+    Element element(QName p0);
+    Element element(String p0);
+    Iterator attributeIterator();
+    Iterator elementIterator();
+    Iterator elementIterator(QName p0);
+    Iterator elementIterator(String p0);
+    List additionalNamespaces();
+    List attributes();
+    List declaredNamespaces();
+    List elements();
+    List elements(QName p0);
+    List elements(String p0);
+    List getNamespacesForURI(String p0);
+    Namespace getNamespace();
+    Namespace getNamespaceForPrefix(String p0);
+    Namespace getNamespaceForURI(String p0);
+    Node getXPathResult(int p0);
+    Object getData();
+    QName getQName();
+    QName getQName(String p0);
+    String attributeValue(QName p0);
+    String attributeValue(QName p0, String p1);
+    String attributeValue(String p0);
+    String attributeValue(String p0, String p1);
+    String elementText(QName p0);
+    String elementText(String p0);
+    String elementTextTrim(QName p0);
+    String elementTextTrim(String p0);
+    String getNamespacePrefix();
+    String getNamespaceURI();
+    String getQualifiedName();
+    String getStringValue();
+    String getText();
+    String getTextTrim();
+    boolean hasMixedContent();
+    boolean isRootElement();
+    boolean isTextOnly();
+    boolean remove(Attribute p0);
+    boolean remove(CDATA p0);
+    boolean remove(Entity p0);
+    boolean remove(Namespace p0);
+    boolean remove(Text p0);
+    int attributeCount();
+    void add(Attribute p0);
+    void add(CDATA p0);
+    void add(Entity p0);
+    void add(Namespace p0);
+    void add(Text p0);
+    void appendAttributes(Element p0);
+    void setAttributeValue(QName p0, String p1);
+    void setAttributeValue(String p0, String p1);
+    void setAttributes(List p0);
+    void setData(Object p0);
+    void setQName(QName p0);
+}

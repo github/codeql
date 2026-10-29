@@ -1,0 +1,2 @@
+query: Expressions/UnneededDefensiveProgramming.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

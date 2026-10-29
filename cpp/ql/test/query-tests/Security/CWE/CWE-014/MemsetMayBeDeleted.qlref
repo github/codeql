@@ -1,0 +1,2 @@
+query: Security/CWE/CWE-014/MemsetMayBeDeleted.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

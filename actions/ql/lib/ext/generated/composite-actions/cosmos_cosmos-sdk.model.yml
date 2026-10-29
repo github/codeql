@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["cosmos/cosmos-sdk", "*", "input.github_token", "code-injection", "generated"]

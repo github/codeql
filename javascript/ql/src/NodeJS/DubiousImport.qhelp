@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Since JavaScript is a dynamically typed language, module imports in node.js are not statically checked
+for correctness: calls to <code>require</code> simply return an object containing all the exports of
+the imported module, and accessing a member that was not, in fact, exported, yields
+<code>undefined</code>. This is most likely unintentional and usually indicates a bug.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the import in question and determine the correct name of the symbol to import.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, module <code>point.js</code> exports the function <code>Point</code> by
+assigning it to <code>module.exports</code>. The client module <code>client.js</code> tries to
+import it by reading from the <code>Point</code> property, but since this property does not exist
+the result will be <code>undefined</code>, and the <code>new</code> invocation will fail.
+</p>
+
+<sample src="examples/DubiousImport.js" />
+
+<p>
+Instead of reading the <code>Point</code> property, <code>client.js</code> should directly use
+the result of the <code>require</code> call:
+</p>
+
+<sample src="examples/DubiousImportGood.js" />
+
+</example>
+<references>
+
+
+<li>Node.js Manual: <a href="http://nodejs.org/api/modules.html">Modules</a>.</li>
+
+
+</references>
+</qhelp>

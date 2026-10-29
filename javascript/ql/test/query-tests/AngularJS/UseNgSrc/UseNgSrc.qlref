@@ -1,0 +1,2 @@
+query: AngularJS/UseNgSrc.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,7 @@
+| Bottom | Base | 40 |
+| EffectivelyVirtual | SingleInheritance | 40 |
+| Left | Base | 16 |
+| Right | Base | 16 |
+| VirtualInheritance1 | Base | 16 |
+| VirtualInheritance2 | Base | 24 |
+| VirtualInheritance2 | Base2 | 32 |

@@ -1,0 +1,11 @@
+#select
+| Test.java:24:88:24:94 | keySize | Test.java:23:23:23:24 | 64 : Number | Test.java:24:88:24:94 | keySize | Key derivation operation configures output key length below 256: $@ | Test.java:23:23:23:24 | 64 | 64 |
+edges
+| Test.java:23:23:23:24 | 64 : Number | Test.java:24:88:24:94 | keySize | provenance |  |
+| Test.java:37:23:37:25 | 256 : Number | Test.java:38:88:38:94 | keySize | provenance |  |
+nodes
+| Test.java:23:23:23:24 | 64 : Number | semmle.label | 64 : Number |
+| Test.java:24:88:24:94 | keySize | semmle.label | keySize |
+| Test.java:37:23:37:25 | 256 : Number | semmle.label | 256 : Number |
+| Test.java:38:88:38:94 | keySize | semmle.label | keySize |
+subpaths

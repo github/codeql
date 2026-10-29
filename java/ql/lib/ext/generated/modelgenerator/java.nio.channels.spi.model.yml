@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.nio.channels.spi", "AsynchronousChannelProvider", True, "openAsynchronousChannelGroup", "(ExecutorService,int)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "AsynchronousChannelProvider", True, "openAsynchronousChannelGroup", "(ExecutorService,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "AsynchronousChannelProvider", True, "openAsynchronousChannelGroup", "(int,ThreadFactory)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "AsynchronousChannelProvider", True, "openAsynchronousServerSocketChannel", "(AsynchronousChannelGroup)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "AsynchronousChannelProvider", True, "openAsynchronousSocketChannel", "(AsynchronousChannelGroup)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", True, "openDatagramChannel", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", True, "openDatagramChannel", "(ProtocolFamily)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", True, "openDatagramChannel", "(ProtocolFamily)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", True, "openPipe", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", True, "openSelector", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", True, "openServerSocketChannel", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", True, "openServerSocketChannel", "(ProtocolFamily)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", True, "openServerSocketChannel", "(ProtocolFamily)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", True, "openSocketChannel", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", True, "openSocketChannel", "(ProtocolFamily)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", True, "openSocketChannel", "(ProtocolFamily)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.nio.channels.spi", "AbstractInterruptibleChannel", "isOpen", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "AbstractSelectableChannel", "isBlocking", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "AbstractSelectableChannel", "isRegistered", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "AbstractSelectionKey", "cancel", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "AbstractSelectionKey", "isValid", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "AbstractSelector", "isOpen", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "AsynchronousChannelProvider", "provider", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", "inheritedChannel", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", "provider", "()", "summary", "df-generated"]

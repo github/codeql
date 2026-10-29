@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["renovatebot/github-action", "*", "input.renovate-image", "command-injection", "manual"]
+      - ["renovatebot/github-action", "*", "input.renovate-version", "command-injection", "manual"]
+      - ["renovatebot/github-action", "*", "input.docker-cmd-file", "command-injection", "manual"]
+      - ["renovatebot/github-action", "*", "input.docker-user", "command-injection", "manual"]
+      - ["renovatebot/github-action", "*", "input.docker-volumes", "command-injection", "manual"]

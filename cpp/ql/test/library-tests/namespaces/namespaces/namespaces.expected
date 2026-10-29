@@ -1,0 +1,6 @@
+| file://:0:0:0:0 | (global namespace) |  |  | Yes | <none> |
+| file://:0:0:0:0 | B | B | B | Yes | (global namespace) |
+| namespaces.cpp:1:11:1:11 | A | A | A | Yes | (global namespace) |
+| namespaces.cpp:9:11:9:11 | C | C | C | Yes | (global namespace) |
+| namespaces.cpp:11:13:11:13 | C::D | D | C::D | Yes | C |
+| namespaces.cpp:36:11:36:13 | std | std | std | Yes | (global namespace) |

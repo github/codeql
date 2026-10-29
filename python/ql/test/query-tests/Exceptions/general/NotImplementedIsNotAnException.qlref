@@ -1,0 +1,2 @@
+query: Exceptions/NotImplementedIsNotAnException.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

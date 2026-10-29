@@ -1,0 +1,2 @@
+query: queries/style/RedundantOverride.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

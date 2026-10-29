@@ -1,0 +1,4 @@
+gradle/verification-metadata.xml
+gradle/wrapper/gradle-wrapper.properties
+src/main/java/com/example/App.java
+src/test/java/com/example/AppTest.java

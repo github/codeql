@@ -1,0 +1,1 @@
+semmle-extractor-options: --experimental --extract-program-text

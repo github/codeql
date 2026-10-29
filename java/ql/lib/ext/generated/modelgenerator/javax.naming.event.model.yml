@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.naming.event", "NamingEvent", True, "NamingEvent", "(EventContext,int,Binding,Binding,Object)", "", "Argument[0]", "Argument[this].SyntheticField[java.util.EventObject.source]", "value", "dfc-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "NamingEvent", "(EventContext,int,Binding,Binding,Object)", "", "Argument[2]", "Argument[this].SyntheticField[javax.naming.event.NamingEvent.newBinding]", "value", "dfc-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "NamingEvent", "(EventContext,int,Binding,Binding,Object)", "", "Argument[3]", "Argument[this].SyntheticField[javax.naming.event.NamingEvent.oldBinding]", "value", "dfc-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "NamingEvent", "(EventContext,int,Binding,Binding,Object)", "", "Argument[4]", "Argument[this].SyntheticField[javax.naming.event.NamingEvent.changeInfo]", "value", "dfc-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "getChangeInfo", "()", "", "Argument[this].SyntheticField[javax.naming.event.NamingEvent.changeInfo]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "getEventContext", "()", "", "Argument[this].SyntheticField[java.util.EventObject.source]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "getNewBinding", "()", "", "Argument[this].SyntheticField[javax.naming.event.NamingEvent.newBinding]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "getOldBinding", "()", "", "Argument[this].SyntheticField[javax.naming.event.NamingEvent.oldBinding]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.naming.event", "NamingExceptionEvent", True, "NamingExceptionEvent", "(EventContext,NamingException)", "", "Argument[0]", "Argument[this].SyntheticField[java.util.EventObject.source]", "value", "dfc-generated"]
+      - ["javax.naming.event", "NamingExceptionEvent", True, "NamingExceptionEvent", "(EventContext,NamingException)", "", "Argument[1]", "Argument[this].SyntheticField[javax.naming.event.NamingExceptionEvent.exception]", "value", "dfc-generated"]
+      - ["javax.naming.event", "NamingExceptionEvent", True, "getEventContext", "()", "", "Argument[this].SyntheticField[java.util.EventObject.source]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.naming.event", "NamingExceptionEvent", True, "getException", "()", "", "Argument[this].SyntheticField[javax.naming.event.NamingExceptionEvent.exception]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.naming.event", "NamingEvent", "dispatch", "(NamingListener)", "summary", "df-generated"]
+      - ["javax.naming.event", "NamingEvent", "getType", "()", "summary", "df-generated"]
+      - ["javax.naming.event", "NamingExceptionEvent", "dispatch", "(NamingListener)", "summary", "df-generated"]

@@ -1,0 +1,2 @@
+query: queries/security/cwe-295/RequestWithoutValidation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

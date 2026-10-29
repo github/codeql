@@ -1,0 +1,3 @@
+| comments.swift:1:1:1:22 | // Hello this is swift |  Hello this is swift |
+| comments.swift:3:1:6:3 | /*\n * This is a multi-line comment\n * It should be ignored by the parser\n */ | \n * This is a multi-line comment\n * It should be ignored by the parser\n  |
+| comments.swift:9:5:9:36 | // This is a single-line comment |  This is a single-line comment |

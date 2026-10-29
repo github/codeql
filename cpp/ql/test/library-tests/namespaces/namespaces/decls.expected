@@ -1,0 +1,23 @@
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | (unnamed parameter 0) | <none> | false |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | (unnamed parameter 0) | <none> | false |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | __va_list_tag | __va_list_tag | true |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | fp_offset | __va_list_tag::fp_offset | false |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | gp_offset | __va_list_tag::gp_offset | false |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | operator= | __va_list_tag::operator= | false |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | operator= | __va_list_tag::operator= | false |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | overflow_arg_area | __va_list_tag::overflow_arg_area | false |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | reg_save_area | __va_list_tag::reg_save_area | false |
+| file://:0:0:0:0 | (global namespace) | namespaces.cpp:40:5:40:13 | globalInt | globalInt | true |
+| file://:0:0:0:0 | (global namespace) | namespaces.cpp:42:6:42:18 | globalIntUser | globalIntUser | true |
+| file://:0:0:0:0 | <none> | file://:0:0:0:0 | auto | <none> | false |
+| file://:0:0:0:0 | B | namespaces.cpp:32:7:32:7 | x | B::x | true |
+| namespaces.cpp:11:13:11:13 | C::D | file://:0:0:0:0 | (unnamed parameter 0) | <none> | false |
+| namespaces.cpp:11:13:11:13 | C::D | file://:0:0:0:0 | (unnamed parameter 0) | <none> | false |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:13:17:13:17 | f | C::D::f | true |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:15:12:15:12 | E | C::D::E | true |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:15:12:15:12 | operator= | C::D::E::operator= | false |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:15:12:15:12 | operator= | C::D::E::operator= | false |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:17:12:17:12 | g | C::D::E::g | false |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:17:18:17:18 | p | <none> | false |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:18:12:18:12 | a | <none> | false |
+| namespaces.cpp:11:13:11:13 | C::D | namespaces.cpp:20:13:20:13 | b | <none> | false |

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - ["Microsoft.JSInterop", "JSRuntimeExtensions", True, "InvokeAsync<TValue>", "", "", "Argument[1]", "js-injection", "manual"]
+      - ["Microsoft.JSInterop", "JSRuntimeExtensions", True, "InvokeVoidAsync", "", "", "Argument[1]", "js-injection", "manual"]

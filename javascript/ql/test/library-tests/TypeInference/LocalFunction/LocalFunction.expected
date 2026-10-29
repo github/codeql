@@ -1,0 +1,10 @@
+| LocalFunction.js:4:5:4:19 | function f1(){} | LocalFunction.js:5:5:5:8 | f1() |
+| LocalFunction.js:11:5:11:19 | function f3(){} | LocalFunction.js:13:5:13:8 | f3() |
+| LocalFunction.js:12:5:12:19 | function f3(){} | LocalFunction.js:13:5:13:8 | f3() |
+| LocalFunction.js:15:14:15:25 | function(){} | LocalFunction.js:16:5:16:8 | f4() |
+| LocalFunction.js:31:5:33:5 | functio ... ;\\n    } | LocalFunction.js:37:17:37:24 | f_zero() |
+| LocalFunction.js:34:5:36:5 | functio ... ;\\n    } | LocalFunction.js:37:5:37:12 | f_null() |
+| LocalFunction.js:39:5:41:5 | functio ... ;\\n    } | LocalFunction.js:45:5:45:12 | f_id1(0) |
+| LocalFunction.js:42:5:44:5 | functio ... ;\\n    } | LocalFunction.js:45:17:45:27 | f_id2(null) |
+| LocalFunction_arguments.js:17:5:20:5 | functio ... e\\n    } | LocalFunction_arguments.js:21:5:21:7 | i() |
+| LocalFunction_arguments.js:40:14:43:5 | functio ... e\\n    } | LocalFunction_arguments.js:44:5:44:8 | i1() |

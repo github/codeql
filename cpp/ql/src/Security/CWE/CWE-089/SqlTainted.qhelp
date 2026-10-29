@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The code passes user input as part of a SQL query without escaping special elements. 
+It generates a SQL query using <code>sprintf</code>,
+with the user-supplied data directly passed as an argument
+to <code>sprintf</code>. This leaves the code vulnerable to attack by SQL Injection.</p>
+
+</overview>
+<recommendation>
+
+<p>Use a library routine to escape characters in the user-supplied
+string before converting it to SQL.</p>
+
+</recommendation>
+<example>
+<sample src="SqlTainted.c" />
+
+</example>
+<references>
+
+<li>MSDN Library: <a href="https://docs.microsoft.com/en-us/sql/relational-databases/security/sql-injection">SQL Injection</a>.</li>
+
+
+<!--  LocalWords:  SQL CWE
+ -->
+
+</references>
+</qhelp>

@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-401/MemoryLeakOnFailedCallToRealloc.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

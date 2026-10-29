@@ -1,0 +1,23 @@
+#select
+| Gin.go:25:10:25:17 | filepath | Gin.go:24:15:24:33 | call to Query | Gin.go:25:10:25:17 | filepath | This path depends on a $@. | Gin.go:24:15:24:33 | call to Query | user-provided value |
+| Gin.go:26:39:26:46 | filepath | Gin.go:24:15:24:33 | call to Query | Gin.go:26:39:26:46 | filepath | This path depends on a $@. | Gin.go:24:15:24:33 | call to Query | user-provided value |
+| Gin.go:27:20:27:27 | filepath | Gin.go:24:15:24:33 | call to Query | Gin.go:27:20:27:27 | filepath | This path depends on a $@. | Gin.go:24:15:24:33 | call to Query | user-provided value |
+| Gin.go:29:32:29:39 | filepath | Gin.go:24:15:24:33 | call to Query | Gin.go:29:32:29:39 | filepath | This path depends on a $@. | Gin.go:24:15:24:33 | call to Query | user-provided value |
+edges
+| Gin.go:24:15:24:33 | call to Query | Gin.go:25:10:25:17 | filepath | provenance | Src:MaD:5 Sink:MaD:1 |
+| Gin.go:24:15:24:33 | call to Query | Gin.go:26:39:26:46 | filepath | provenance | Src:MaD:5 Sink:MaD:4 |
+| Gin.go:24:15:24:33 | call to Query | Gin.go:27:20:27:27 | filepath | provenance | Src:MaD:5 Sink:MaD:2 |
+| Gin.go:24:15:24:33 | call to Query | Gin.go:29:32:29:39 | filepath | provenance | Src:MaD:5 Sink:MaD:3 |
+models
+| 1 | Sink: github.com/gin-gonic/gin; Context; true; File; ; ; Argument[0]; path-injection; manual |
+| 2 | Sink: github.com/gin-gonic/gin; Context; true; FileAttachment; ; ; Argument[0]; path-injection; manual |
+| 3 | Sink: github.com/gin-gonic/gin; Context; true; SaveUploadedFile; ; ; Argument[1]; path-injection; manual |
+| 4 | Sink: net/http; ; false; ServeFile; ; ; Argument[2]; path-injection; manual |
+| 5 | Source: github.com/gin-gonic/gin; Context; true; Query; ; ; ReturnValue; remote; manual |
+nodes
+| Gin.go:24:15:24:33 | call to Query | semmle.label | call to Query |
+| Gin.go:25:10:25:17 | filepath | semmle.label | filepath |
+| Gin.go:26:39:26:46 | filepath | semmle.label | filepath |
+| Gin.go:27:20:27:27 | filepath | semmle.label | filepath |
+| Gin.go:29:32:29:39 | filepath | semmle.label | filepath |
+subpaths

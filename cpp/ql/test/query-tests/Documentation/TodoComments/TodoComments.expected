@@ -1,0 +1,11 @@
+| todo.c:2:1:2:41 | /* TODO This is a simple to do comment */ | TODO comment: This is a simple to do comment |
+| todo.c:4:1:4:10 | /* TODO */ | TODO comment |
+| todo.c:6:1:7:24 | /* TODO This is a\n * multi-line comment */ | TODO comment: This is a [...] |
+| todo.c:9:1:11:24 | /* Some comment\n * TODO This is a mid-comment\n * multi-line comment */ | TODO comment: This is a mid-comment [...] |
+| todo.c:17:1:21:15 | /* Some comment\n * TODO This is a mid-comment\n * multi-line comment with two\n * TODO comments\n * inside it */ | TODO comment: This is a mid-comment [...] |
+| todo.c:17:1:21:15 | /* Some comment\n * TODO This is a mid-comment\n * multi-line comment with two\n * TODO comments\n * inside it */ | TODO comment: comments [...] |
+| todo.c:23:1:23:53 | /* TODO This comment mentions TODO in its body too */ | TODO comment: This comment mentions TODO in its body too |
+| todo.c:25:1:25:40 | // TODO: Can have C++-style comments too | TODO comment: Can have C++-style comments too |
+| todo_fixme.cpp:1:1:1:17 | // TODO: Thing 1. | TODO comment: Thing 1. |
+| todo_fixme.cpp:2:1:2:20 | /* TODO: Thing 2. */ | TODO comment: Thing 2. |
+| todo_fixme.cpp:3:1:5:3 | /**\n * TODO: Thing 3.\n */ | TODO comment: Thing 3. |

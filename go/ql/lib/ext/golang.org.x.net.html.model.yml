@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["golang.org/x/net/html", "", False, "EscapeString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "NewTokenizer", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "NewTokenizerFragment", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "ParseFragment", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "ParseFragmentWithOptions", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "ParseWithOptions", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "Render", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "UnescapeString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "Node", True, "AppendChild", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["golang.org/x/net/html", "Node", True, "InsertBefore", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "Buffered", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "Raw", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "TagAttr", "", "", "Argument[receiver]", "ReturnValue[1]", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "Text", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "Token", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

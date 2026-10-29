@@ -1,0 +1,3 @@
+| WithExpression.cs:16:18:16:34 | ... with { ... } | MyStruct | WithExpression.cs:16:18:16:19 | access to local variable s1 | WithExpression.cs:16:26:16:34 | { ..., ... } |
+| WithExpression.cs:22:18:22:34 | ... with { ... } | MyRecordStruct2 | WithExpression.cs:22:18:22:19 | access to local variable r1 | WithExpression.cs:22:26:22:34 | { ..., ... } |
+| WithExpression.cs:28:21:28:40 | ... with { ... } | <>__AnonType0<Int32,Int32> | WithExpression.cs:28:21:28:25 | access to local variable anon1 | WithExpression.cs:28:32:28:40 | { ..., ... } |

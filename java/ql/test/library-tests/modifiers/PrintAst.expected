@@ -1,0 +1,37 @@
+Test.java:
+#    0| [CompilationUnit] Test
+#    1|   1: [Class] Test
+#    2|     2: [Class] FinalEnum
+#    2|       3: [FieldDeclaration] FinalEnum RED;
+#    2|         -1: [TypeAccess] FinalEnum
+#    2|         0: [ClassInstanceExpr] new FinalEnum(...)
+#    2|           -3: [TypeAccess] FinalEnum
+#    2|       4: [FieldDeclaration] FinalEnum GREEN;
+#    2|         -1: [TypeAccess] FinalEnum
+#    2|         0: [ClassInstanceExpr] new FinalEnum(...)
+#    2|           -3: [TypeAccess] FinalEnum
+#    2|       5: [FieldDeclaration] FinalEnum BLUE;
+#    2|         -1: [TypeAccess] FinalEnum
+#    2|         0: [ClassInstanceExpr] new FinalEnum(...)
+#    2|           -3: [TypeAccess] FinalEnum
+#    3|     3: [Class] NonFinalEnum
+#    4|       3: [FieldDeclaration] NonFinalEnum RED;
+#    4|         -1: [TypeAccess] NonFinalEnum
+#    4|         0: [ClassInstanceExpr] new (...)
+#    4|           -4: [AnonymousClass] new NonFinalEnum(...) { ... }
+#    4|             2: [Method] toString
+#-----|               1: (Annotations)
+#    4|                 1: [Annotation] Override
+#    4|               3: [TypeAccess] String
+#    4|               5: [BlockStmt] { ... }
+#    4|                 0: [ReturnStmt] return ...
+#    4|                   0: [StringLiteral] "red"
+#    4|           -3: [TypeAccess] NonFinalEnum
+#    5|       4: [FieldDeclaration] NonFinalEnum GREEN;
+#    5|         -1: [TypeAccess] NonFinalEnum
+#    5|         0: [ClassInstanceExpr] new NonFinalEnum(...)
+#    5|           -3: [TypeAccess] NonFinalEnum
+#    6|       5: [FieldDeclaration] NonFinalEnum BLUE;
+#    6|         -1: [TypeAccess] NonFinalEnum
+#    6|         0: [ClassInstanceExpr] new NonFinalEnum(...)
+#    6|           -3: [TypeAccess] NonFinalEnum

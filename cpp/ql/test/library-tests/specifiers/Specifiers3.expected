@@ -1,0 +1,4 @@
+| 5 | specifiers.cpp:5:11:5:11 | c |
+| 6 | specifiers.cpp:6:14:6:15 | pi |
+| 13 | specifiers.cpp:13:19:13:30 | int_pointer1 |
+| 15 | specifiers.cpp:15:19:15:30 | int_pointer3 |

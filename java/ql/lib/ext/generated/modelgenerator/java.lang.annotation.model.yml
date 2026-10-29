@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.lang.annotation", "AnnotationFormatError", True, "AnnotationFormatError", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.lang.annotation", "AnnotationFormatError", True, "AnnotationFormatError", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.lang.annotation", "AnnotationFormatError", True, "AnnotationFormatError", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["java.lang.annotation", "AnnotationFormatError", True, "AnnotationFormatError", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.lang.annotation", "AnnotationTypeMismatchException", True, "AnnotationTypeMismatchException", "(Method,String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.annotation.AnnotationTypeMismatchException.element]", "value", "dfc-generated"]
+      - ["java.lang.annotation", "AnnotationTypeMismatchException", True, "AnnotationTypeMismatchException", "(Method,String)", "", "Argument[1]", "Argument[this].SyntheticField[java.lang.annotation.AnnotationTypeMismatchException.foundType]", "value", "dfc-generated"]
+      - ["java.lang.annotation", "AnnotationTypeMismatchException", True, "element", "()", "", "Argument[this].SyntheticField[java.lang.annotation.AnnotationTypeMismatchException.element]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.lang.annotation", "AnnotationTypeMismatchException", True, "foundType", "()", "", "Argument[this].SyntheticField[java.lang.annotation.AnnotationTypeMismatchException.foundType]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.lang.annotation", "IncompleteAnnotationException", True, "IncompleteAnnotationException", "(Class,String)", "", "Argument[1]", "Argument[this].SyntheticField[java.lang.annotation.IncompleteAnnotationException.elementName]", "value", "dfc-generated"]
+      - ["java.lang.annotation", "IncompleteAnnotationException", True, "elementName", "()", "", "Argument[this].SyntheticField[java.lang.annotation.IncompleteAnnotationException.elementName]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.lang.annotation", "IncompleteAnnotationException", "annotationType", "()", "summary", "df-generated"]

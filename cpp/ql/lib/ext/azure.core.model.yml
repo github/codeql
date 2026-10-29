@@ -1,0 +1,41 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sourceModel
+    data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
+      - ["Azure::Core::Http", "RawResponse", True, "GetHeaders", "", "", "ReturnValue[*]", "remote", "manual"]
+      - ["Azure::Core::Http", "RawResponse", True, "GetBody", "", "", "ReturnValue[*]", "remote", "manual"]
+      - ["Azure::Core::Http", "RawResponse", True, "ExtractBodyStream", "", "", "ReturnValue[*]", "remote", "manual"]
+      - ["Azure::Core::Http", "Request", True, "GetHeaders", "", "", "ReturnValue", "remote", "manual"]
+      - ["Azure::Core::Http", "Request", True, "GetHeader", "", "", "ReturnValue", "remote", "manual"]
+      - ["Azure::Core::Http", "Request", True, "GetBodyStream", "", "", "ReturnValue[*]", "remote", "manual"]
+
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["Azure::Core", "Url", True, "Url", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "SetScheme", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "SetHost", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "SetPort", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "SetPath", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "SetQueryParameters", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "AppendPath", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "AppendQueryParameter", "", "", "Argument[*1]", "Argument[-1]", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "GetHost", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "GetPath", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "GetPort", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "GetQueryParameters", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "GetScheme", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "GetRelativeUrl", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "GetAbsoluteUrl", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "Decode", "", "", "Argument[*0]", "ReturnValue", "taint", "manual"]
+      - ["Azure::Core", "Url", True, "Encode", "", "", "Argument[*0]", "ReturnValue", "taint", "manual"]
+      - ["Azure::Core::IO", "BodyStream", True, "Read", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["Azure::Core::IO", "BodyStream", True, "ReadToCount", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["Azure::Core::IO", "BodyStream", True, "ReadToEnd", "", "", "Argument[-1]", "ReturnValue.Element", "taint", "manual"]
+      - ["Azure", "Nullable", True, "Nullable", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["Azure", "Nullable", True, "operator=", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["Azure", "Nullable", True, "Value", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["Azure", "Nullable", True, "operator->", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["Azure", "Nullable", True, "operator*", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]

@@ -1,0 +1,91 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/uptrace/bun", "DB", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "DB", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+      - ["github.com/uptrace/bun", "IDB", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "IDB", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+      # - ["github.com/uptrace/bun", "RawQuery", True, "Exec", "", "", "Argument[0]", "database", "manual"] # Implemented in QL because variadic arguments as sources aren't supported in this format yet
+      # - ["github.com/uptrace/bun", "RawQuery", True, "Scan", "", "", "Argument[0]", "database", "manual"] # Implemented in QL because variadic arguments as sources aren't supported in this format yet
+      # - ["github.com/uptrace/bun", "SelectQuery", True, "Exec", "", "", "Argument[0]", "database", "manual"] # Implemented in QL because variadic arguments as sources aren't supported in this format yet
+      - ["github.com/uptrace/bun", "SelectQuery", True, "Model", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "Rows", "", "", "ReturnValue[0]", "database", "manual"]
+      # - ["github.com/uptrace/bun", "SelectQuery", True, "Scan", "", "", "Argument[1]", "database", "manual"] # Implemented in QL because variadic arguments as sources aren't supported in this format yet
+      # - ["github.com/uptrace/bun", "SelectQuery", True, "ScanAndCount", "", "", "Argument[1]", "database", "manual"] # Implemented in QL because variadic arguments as sources aren't supported in this format yet
+      - ["github.com/uptrace/bun", "Tx", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "Tx", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/uptrace/bun", "", False, "NewRawQuery", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "AddColumnQuery", True, "ColumnExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "AddColumnQuery", True, "ModelTableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "AddColumnQuery", True, "TableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "Conn", True, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "Conn", True, "ExecContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "Conn", True, "NewRaw", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "Conn", True, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "Conn", True, "Query", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "Conn", True, "QueryRow", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "Conn", True, "PrepareContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "Conn", True, "QueryContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "Conn", True, "QueryRowContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "Conn", True, "Raw", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "CreateIndexQuery", True, "ColumnExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "CreateIndexQuery", True, "ModelTableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "CreateIndexQuery", True, "TableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "CreateIndexQuery", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "CreateIndexQuery", True, "WhereOr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "CreateTableQuery", True, "ColumnExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "CreateTableQuery", True, "ModelTableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "CreateTableQuery", True, "TableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DB", True, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DB", True, "ExecContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DB", True, "NewRaw", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DB", True, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DB", True, "Query", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DB", True, "QueryRow", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DB", True, "PrepareContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DB", True, "QueryContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DB", True, "QueryRowContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DB", True, "Raw", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DeleteQuery", True, "TableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DeleteQuery", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DeleteQuery", True, "WhereOr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DropColumnQuery", True, "ColumnExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DropColumnQuery", True, "ModelTableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DropColumnQuery", True, "TableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DropTableQuery", True, "ModelTableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "DropTableQuery", True, "TableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "InsertQuery", True, "ColumnExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "InsertQuery", True, "ModelTableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "InsertQuery", True, "TableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "InsertQuery", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "InsertQuery", True, "WhereOr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "MergeQuery", True, "ModelTableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "MergeQuery", True, "TableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "RawQuery", True, "NewRaw", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "ColumnExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "DistinctOn", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "For", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "GroupExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "Having", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "ModelTableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "OrderExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "TableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "WhereOr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "TruncateTableQuery", True, "TableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "UpdateQuery", True, "ModelTableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "UpdateQuery", True, "TableExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "UpdateQuery", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["github.com/uptrace/bun", "UpdateQuery", True, "WhereOr", "", "", "Argument[0]", "sql-injection", "manual"]
+  # - addsTo:
+  #     pack: codeql/go-all
+  #     extensible: summaryModel
+  #   data:
+      # - ["github.com/uptrace/bun", "DB", True, "ScanRow", "", "", "Argument[1]", "Argument[2].ArrayElement", "taint", "manual"] # Implemented in QL because variadic arguments as outputs aren't supported in this format yet
+      # - ["github.com/uptrace/bun", "DB", True, "ScanRows", "", "", "Argument[1]", "Argument[2].ArrayElement", "taint", "manual"] # Implemented in QL because variadic arguments as outputs aren't supported in this format yet

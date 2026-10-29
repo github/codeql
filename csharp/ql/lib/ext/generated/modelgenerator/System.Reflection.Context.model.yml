@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Reflection.Context", "CustomReflectionContext", False, "CustomReflectionContext", "(System.Reflection.ReflectionContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Reflection.Context", "CustomReflectionContext", True, "GetCustomAttributes", "(System.Reflection.MemberInfo,System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Reflection.Context", "CustomReflectionContext", True, "GetCustomAttributes", "(System.Reflection.ParameterInfo,System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Reflection.Context", "CustomReflectionContext", "AddProperties", "(System.Type)", "summary", "df-generated"]
+      - ["System.Reflection.Context", "CustomReflectionContext", "CreateProperty", "(System.Type,System.String,System.Func<System.Object,System.Object>,System.Action<System.Object,System.Object>)", "summary", "df-generated"]
+      - ["System.Reflection.Context", "CustomReflectionContext", "CreateProperty", "(System.Type,System.String,System.Func<System.Object,System.Object>,System.Action<System.Object,System.Object>,System.Collections.Generic.IEnumerable<System.Attribute>,System.Collections.Generic.IEnumerable<System.Attribute>,System.Collections.Generic.IEnumerable<System.Attribute>)", "summary", "df-generated"]

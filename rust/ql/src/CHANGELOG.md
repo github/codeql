@@ -1,0 +1,252 @@
+## 0.1.45
+
+No user-facing changes.
+
+## 0.1.44
+
+No user-facing changes.
+
+## 0.1.43
+
+No user-facing changes.
+
+## 0.1.42
+
+### New Queries
+
+* Added a new query, `rust/command-line-injection`, to detect uncontrolled command lines.
+
+### Minor Analysis Improvements
+
+* The `rust/hard-coded-cryptographic-value` query has been adjusted to produce
+fewer results in certain situations where many results were being produced with very similar source locations.
+* The `rust/unused-variable` query no longer reports variables in functions containing the standard `todo!()` or `unimplemented!()` macros.
+
+## 0.1.41
+
+No user-facing changes.
+
+## 0.1.40
+
+No user-facing changes.
+
+## 0.1.39
+
+No user-facing changes.
+
+## 0.1.38
+
+### Minor Analysis Improvements
+
+* The `rust/hard-coded-cryptographic-value` query now treats arithmetic and bitwise operations, including string append operations, as barriers. This addresses false positive results where hard-coded constants are combined with non-constant data, such as incrementing a nonce or appending variable data to a constant prefix.
+
+## 0.1.37
+
+No user-facing changes.
+
+## 0.1.36
+
+No user-facing changes.
+
+## 0.1.35
+
+No user-facing changes.
+
+## 0.1.34
+
+No user-facing changes.
+
+## 0.1.33
+
+No user-facing changes.
+
+## 0.1.32
+
+### Query Metadata Changes
+
+* The `@security-severity` metadata of `rust/log-injection` has been increased from 2.6 (low) to 6.1 (medium).
+* The `@security-severity` metadata of `rust/xss` has been increased from 6.1 (medium) to 7.8 (high).
+
+## 0.1.31
+
+No user-facing changes.
+
+## 0.1.30
+
+No user-facing changes.
+
+## 0.1.29
+
+No user-facing changes.
+
+## 0.1.28
+
+### Minor Analysis Improvements
+
+* The macro resolution metric has been removed from `rust/diagnostic/database-quality`. This metric was found to be an unreliable indicator of database quality in many cases, leading to false alarms on the tool status page.
+
+## 0.1.27
+
+No user-facing changes.
+
+## 0.1.26
+
+No user-facing changes.
+
+## 0.1.25
+
+### Minor Analysis Improvements
+
+* Fixed common false positives for the `rust/unused-variable` and `rust/unused-value` queries.
+* Fixed false positives from the `rust/access-invalid-pointer` query, by only considering dereferences of raw pointers as sinks.
+* Fixed false positives from the `rust/access-after-lifetime-ended` query, involving calls to trait methods.
+* The `rust/hard-coded-cryptographic-value` query has been extended with new heuristic sinks identifying passwords, initialization vectors, nonces and salts.
+
+## 0.1.24
+
+No user-facing changes.
+
+## 0.1.23
+
+No user-facing changes.
+
+## 0.1.22
+
+No user-facing changes.
+
+## 0.1.21
+
+### New Queries
+
+* Added a new query `rust/xss`, to detect cross-site scripting security vulnerabilities.
+* Added a new query `rust/disabled-certificate-check`, to detect disabled TLS certificate checks.
+* Added three example queries (`rust/examples/empty-if`, `rust/examples/simple-sql-injection` and `rust/examples/simple-constant-password`) to help developers learn to write CodeQL queries for Rust.
+
+### Minor Analysis Improvements
+
+* The `rust/access-invalid-pointer` query has been improved with new flow sources and barriers.
+
+## 0.1.20
+
+### Minor Analysis Improvements
+
+* Taint flow barriers have been added to the `rust/regex-injection`, `rust/sql-injection` and `rust/log-injection`, reducing the frequency of false positive results for these queries.
+
+## 0.1.19
+
+### Minor Analysis Improvements
+
+* The "Low Rust analysis quality" query (`rust/diagnostic/database-quality`), used by the tool status page, has been extended with a measure of successful type inference.
+
+## 0.1.18
+
+### New Queries
+
+* Added a new query, `rust/insecure-cookie`, to detect cookies created without the 'Secure' attribute.
+
+## 0.1.17
+
+### New Queries
+
+* Added a new query, `rust/non-https-url`, for detecting the use of non-HTTPS URLs that can be intercepted by third parties.
+
+## 0.1.16
+
+### New Queries
+
+* Added a new query, `rust/request-forgery`, for detecting server-side request forgery vulnerabilities.
+
+### Bug Fixes
+
+* The message for `rust/diagnostic/database-quality` has been updated to include detailed database health metrics. These changes are visible on the tool status page.
+
+## 0.1.15
+
+### New Queries
+
+* Added a new query, `rust/log-injection`, for detecting cases where log entries could be forged by a malicious user.
+
+### Bug Fixes
+
+* The "Low Rust analysis quality" query (`rust/diagnostic/database-quality`) has been tuned so that it won't trigger on databases that have extracted normally. This will remove spurious messages of "Low Rust analysis quality" on the CodeQL status page.
+* Fixed an inconsistency across languages where most have a `Customizations.qll` file for adding customizations, but not all did.
+
+## 0.1.14
+
+### New Queries
+
+* Added a new query, `rust/cleartext-storage-database`, for detecting cases where sensitive information is stored non-encrypted in a database.
+
+## 0.1.13
+
+### New Queries
+
+* Added a new query, `rust/hard-coded-cryptographic-value`, for detecting use of hardcoded keys, passwords, salts and initialization vectors.
+
+### Minor Analysis Improvements
+
+* Type inference now supports closures, calls to closures, and trait bounds
+  using the `FnOnce` trait.
+* Type inference now supports trait objects, i.e., `dyn Trait` types.
+* Type inference now supports tuple types.
+
+## 0.1.12
+
+### New Queries
+
+* Added a new query, `rust/access-after-lifetime-ended`, for detecting pointer dereferences after the lifetime of the pointed-to object has ended.
+
+## 0.1.11
+
+### New Queries
+
+* Initial public preview release.
+
+## 0.1.10
+
+No user-facing changes.
+
+## 0.1.9
+
+No user-facing changes.
+
+## 0.1.8
+
+No user-facing changes.
+
+## 0.1.7
+
+### Minor Analysis Improvements
+
+* Changes to the MaD model generation infrastructure:
+  * Changed the query `rust/utils/modelgenerator/summary-models` to use the implementation from `rust/utils/modelgenerator/mixed-summary-models`.
+  * Removed the now-redundant `rust/utils/modelgenerator/mixed-summary-models` query.
+  * A similar replacement was made for `rust/utils/modelgenerator/neutral-models`. That is, if `GenerateFlowModel.py` is provided with `--with-summaries`, combined/mixed models are now generated instead of heuristic models (and similar for `--with-neutrals`).
+
+## 0.1.6
+
+No user-facing changes.
+
+## 0.1.5
+
+No user-facing changes.
+
+## 0.1.4
+
+No user-facing changes.
+
+## 0.1.3
+
+No user-facing changes.
+
+## 0.1.2
+
+No user-facing changes.
+
+## 0.1.1
+
+No user-facing changes.
+
+## 0.1.0
+
+No user-facing changes.

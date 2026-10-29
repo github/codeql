@@ -1,0 +1,68 @@
+name: Compile dependabot updates
+
+on:
+  pull_request:
+
+permissions:
+  pull-requests: write
+  contents: write
+jobs:
+  fetch-dependabot-metadata:
+    runs-on: ubuntu-latest
+    # We only want to check the metadata on pull_request events from Dependabot itself,
+    # any subsequent pushes to the PR should just skip this step so we don't go into
+    # a loop on commits created by the `build-dependabot-changes` job
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    # Map the step output to a job output for subsequent jobs
+    outputs:
+      dependency-type: ${{ steps.dependabot-metadata.outputs.dependency-type }}
+      package-ecosystem: ${{ steps.dependabot-metadata.outputs.package-ecosystem }}
+    steps:
+      - name: Fetch dependabot metadata
+        id: dependabot-metadata
+        uses: dependabot/fetch-metadata@c9c4182bf1b97f5224aee3906fd373f6b61b4526 # v1.6.0
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+  build-dependabot-changes:
+    runs-on: ubuntu-latest
+    needs: [fetch-dependabot-metadata]
+    # We only need to build the dist/ folder if the PR relates to Docker or an npm dependency
+    if: needs.fetch-dependabot-metadata.outputs.package-ecosystem == 'docker' || needs.fetch-dependabot-metadata.outputs.package-ecosystem == 'npm_and_yarn'
+    steps:
+      # Check out using a PAT so any pushed changes will trigger checkruns
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.DEPENDABOT_AUTOBUILD }}
+
+      - name: Read .nvmrc
+        id: nvm
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.nvm.outputs.NVMRC }}
+
+      - name: Install npm dependencies
+        run: npm clean-install
+
+      # If we're reacting to a Docker PR, we have on extra step to refresh and check in the container manifest,
+      # this **must** happen before rebuilding dist/ so it uses the new version of the manifest
+      - name: Rebuild docker/containers.json
+        if: needs.fetch-dependabot-metadata.outputs.package-ecosystem == 'docker'
+        run: |
+          npm run update-container-manifest
+          git add docker/containers.json
+
+      - name: Rebuild the dist/ directory
+        run: npm run package
+
+      - name: Check in any change to dist/
+        run: |
+          git add dist/
+          # Specifying the full email allows the avatar to show up: https://github.com/orgs/community/discussions/26560
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "[dependabot skip] Update dist/ with build changes" || exit 0
+          git push

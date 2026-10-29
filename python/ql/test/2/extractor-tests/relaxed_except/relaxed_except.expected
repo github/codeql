@@ -1,0 +1,3 @@
+| 6 | ValueError | err (definition) |
+| 12 | ValueError | other (definition) |
+| 18 | ValueError, TypeError | none |

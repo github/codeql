@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["andresz1/size-limit-action", "*", "input.package_manager", "command-injection", "manual"]
+      - ["andresz1/size-limit-action", "*", "input.build_script", "command-injection", "manual"]
+      - ["andresz1/size-limit-action", "*", "input.script", "command-injection", "manual"]
+      - ["andresz1/size-limit-action", "*", "input.clean_script", "command-injection", "manual"]

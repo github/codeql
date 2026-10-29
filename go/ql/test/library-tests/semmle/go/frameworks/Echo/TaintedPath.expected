@@ -1,0 +1,16 @@
+#select
+| test.go:225:17:225:24 | filepath | test.go:224:15:224:38 | call to QueryParam | test.go:225:17:225:24 | filepath | This path depends on a $@. | test.go:224:15:224:38 | call to QueryParam | user-provided value |
+| test.go:229:23:229:30 | filepath | test.go:228:15:228:38 | call to QueryParam | test.go:229:23:229:30 | filepath | This path depends on a $@. | test.go:228:15:228:38 | call to QueryParam | user-provided value |
+edges
+| test.go:224:15:224:38 | call to QueryParam | test.go:225:17:225:24 | filepath | provenance | Src:MaD:3 Sink:MaD:2 |
+| test.go:228:15:228:38 | call to QueryParam | test.go:229:23:229:30 | filepath | provenance | Src:MaD:3 Sink:MaD:1 |
+models
+| 1 | Sink: github.com/labstack/echo; Context; true; Attachment; ; ; Argument[0]; path-injection; manual |
+| 2 | Sink: github.com/labstack/echo; Context; true; File; ; ; Argument[0]; path-injection; manual |
+| 3 | Source: github.com/labstack/echo; Context; true; QueryParam; ; ; ReturnValue[0]; remote; manual |
+nodes
+| test.go:224:15:224:38 | call to QueryParam | semmle.label | call to QueryParam |
+| test.go:225:17:225:24 | filepath | semmle.label | filepath |
+| test.go:228:15:228:38 | call to QueryParam | semmle.label | call to QueryParam |
+| test.go:229:23:229:30 | filepath | semmle.label | filepath |
+subpaths

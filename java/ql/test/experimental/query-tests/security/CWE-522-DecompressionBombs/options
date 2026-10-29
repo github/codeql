@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/apache-commons-compress-1.23.0:${testdir}/../../../stubs/lingala-zip4j-2.11.5:${testdir}/../../../stubs/zstd-jni-1.5.5

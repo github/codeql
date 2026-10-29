@@ -1,0 +1,104 @@
+if x > 0 {
+  print(x)
+} else {
+  print(-x)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            ifExpr
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "x"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              conditions:
+                conditionElement
+                  condition:
+                    infixOperatorExpr
+                      operator:
+                        binaryOperatorExpr
+                          operator: binaryOperator ">"
+                      leftOperand:
+                        declReferenceExpr
+                          baseName: identifier "x"
+                      rightOperand:
+                        integerLiteralExpr
+                          literal: integerLiteral "0"
+              elseKeyword: else
+              elseBody:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                prefixOperatorExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "x"
+                                  operator: prefixOperator "-"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              ifKeyword: if
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        if_expr source="if ⟨condition⟩ ⟨then⟩ else ⟨else⟩"
+          condition:
+            binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+              left: identifier "x" source="x"
+              operator: infix_operator ">" source=">"
+              right: int_literal "0" source="0"
+          then:
+            block source="{\n  ⟨stmt⟩\n}"
+              stmt:
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
+                  argument:
+                    argument source="⟨value⟩"
+                      value: identifier "x" source="x"
+          else:
+            block source="{\n  ⟨stmt⟩\n}"
+              stmt:
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
+                  argument:
+                    argument source="⟨value⟩"
+                      value:
+                        unary_expr source="⟨operator⟩⟨operand⟩"
+                          operand: identifier "x" source="x"
+                          operator: prefix_operator "-" source="-"

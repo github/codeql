@@ -1,0 +1,41 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.ss.formula.eval", "AreaEval", True, "getAbsoluteValue", "(int,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.ss.formula.eval", "AreaEval", True, "offset", "(int,int,int,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.ss.formula.eval", "EvaluationException", False, "EvaluationException", "(ErrorEval)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.EvaluationException._errorEval]", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "EvaluationException", False, "getErrorEval", "()", "", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.EvaluationException._errorEval]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "ExternalNameEval", False, "ExternalNameEval", "(EvaluationName)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.ExternalNameEval._name]", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "ExternalNameEval", False, "getName", "()", "", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.ExternalNameEval._name]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "FunctionNameEval", False, "FunctionNameEval", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.FunctionNameEval._functionName]", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "FunctionNameEval", False, "getFunctionName", "()", "", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.FunctionNameEval._functionName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "IntersectionEval", False, "evaluate", "(int,int,ValueEval,ValueEval)", "", "Argument[2].SyntheticField[org.apache.poi.ss.formula.CacheAreaEval._values].ArrayElement", "ReturnValue.SyntheticField[org.apache.poi.ss.formula.CacheAreaEval._values].ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "NotImplementedException", True, "NotImplementedException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.ss.formula.eval", "NotImplementedException", True, "NotImplementedException", "(String,NotImplementedException)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.ss.formula.eval", "NotImplementedException", True, "NotImplementedException", "(String,NotImplementedException)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.ss.formula.eval", "NotImplementedFunctionException", False, "NotImplementedFunctionException", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.NotImplementedFunctionException.functionName]", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "NotImplementedFunctionException", False, "NotImplementedFunctionException", "(String,NotImplementedException)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.NotImplementedFunctionException.functionName]", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "NotImplementedFunctionException", False, "getFunctionName", "()", "", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.NotImplementedFunctionException.functionName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "OperandResolver", False, "chooseSingleElementFromArea", "(AreaEval,int,int)", "", "Argument[0].SyntheticField[org.apache.poi.ss.formula.CacheAreaEval._values].ArrayElement", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "OperandResolver", False, "coerceValueToString", "(ValueEval)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.ss.formula.eval", "OperandResolver", False, "getElementFromArray", "(AreaEval,EvaluationCell)", "", "Argument[0].SyntheticField[org.apache.poi.ss.formula.CacheAreaEval._values].ArrayElement", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "OperandResolver", False, "getSingleValue", "(ValueEval,int,int)", "", "Argument[0].SyntheticField[org.apache.poi.ss.formula.CacheAreaEval._values].ArrayElement", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "OperandResolver", False, "getSingleValue", "(ValueEval,int,int)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "RangeEval", False, "evaluate", "(int,int,ValueEval,ValueEval)", "", "Argument[2].SyntheticField[org.apache.poi.ss.formula.CacheAreaEval._values].ArrayElement", "ReturnValue.SyntheticField[org.apache.poi.ss.formula.CacheAreaEval._values].ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "RefEval", True, "offset", "(int,int,int,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.ss.formula.eval", "RefListEval", True, "RefListEval", "(ValueEval,ValueEval)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.RefListEval.list].Element", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "RefListEval", True, "RefListEval", "(ValueEval,ValueEval)", "", "Argument[1]", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.RefListEval.list].Element", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "RefListEval", True, "getList", "()", "", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.RefListEval.list]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "RelationalOperationEval", True, "evaluateArray", "(ValueEval[],int,int)", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[org.apache.poi.ss.formula.CacheAreaEval._values].ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "StringEval", False, "StringEval", "(Ptg)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.ss.formula.eval", "StringEval", False, "StringEval", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.StringEval._value]", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "StringEval", False, "getStringValue", "()", "", "Argument[this].SyntheticField[org.apache.poi.ss.formula.eval.StringEval._value]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "StringValueEval", True, "getStringValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.ss.formula.eval", "TwoOperandNumericOperation", True, "evaluateArray", "(ValueEval[],int,int)", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[org.apache.poi.ss.formula.CacheAreaEval._values].ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "UnaryMinusEval", False, "evaluateArray", "(ValueEval[],int,int)", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[org.apache.poi.ss.formula.CacheAreaEval._values].ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "UnaryPlusEval", False, "evaluate", "(int,int,ValueEval)", "", "Argument[2].SyntheticField[org.apache.poi.ss.formula.CacheAreaEval._values].ArrayElement", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.eval", "UnaryPlusEval", False, "evaluateArray", "(ValueEval[],int,int)", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[org.apache.poi.ss.formula.CacheAreaEval._values].ArrayElement", "value", "dfc-generated"]

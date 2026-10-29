@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.VisualBasic", "Collection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["Microsoft.VisualBasic", "Collection", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Collections.IEnumerator.Current]", "value", "manual"]
+      - ["Microsoft.VisualBasic", "Collection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["Microsoft.VisualBasic", "Collection", False, "get_Item", "(System.Object)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["Microsoft.VisualBasic", "Collection", False, "get_Item", "(System.String)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]

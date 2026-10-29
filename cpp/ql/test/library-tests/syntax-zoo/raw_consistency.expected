@@ -1,0 +1,46 @@
+missingOperand
+| misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | void misc3() | void misc3() |
+| try_catch.cpp:23:5:23:18 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | try_catch.cpp:19:6:19:23 | void throw_from_nonstmt(int) | void throw_from_nonstmt(int) |
+unexpectedOperand
+duplicateOperand
+missingPhiOperand
+missingOperandType
+duplicateChiOperand
+sideEffectWithoutPrimary
+instructionWithoutSuccessor
+| stmt_expr.cpp:27:5:27:15 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | stmt_expr.cpp:21:13:21:13 | void stmtexpr::g(int) | void stmtexpr::g(int) |
+| stmt_expr.cpp:29:11:32:11 | CopyValue: (statement expression) | Instruction 'CopyValue: (statement expression)' has no successors in function '$@'. | stmt_expr.cpp:21:13:21:13 | void stmtexpr::g(int) | void stmtexpr::g(int) |
+| stmt_in_type.cpp:5:53:5:53 | Constant: 1 | Instruction 'Constant: 1' has no successors in function '$@'. | stmt_in_type.cpp:2:6:2:12 | void cpp_fun() | void cpp_fun() |
+ambiguousSuccessors
+unexplainedLoop
+unnecessaryPhiInstruction
+memoryOperandDefinitionIsUnmodeled
+operandAcrossFunctions
+instructionWithoutUniqueBlock
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
+containsLoopOfForwardEdges
+missingIRType
+multipleIRTypes
+lostReachability
+backEdgeCountMismatch
+useNotDominatedByDefinition
+| ms_try_except.cpp:9:19:9:19 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
+| ms_try_except.cpp:9:19:9:19 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
+| ms_try_except.cpp:19:17:19:21 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
+| ms_try_except.cpp:19:17:19:21 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
+| static_init_templates.cpp:15:1:15:18 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | static_init_templates.cpp:15:1:15:18 | void MyClass::MyClass() | void MyClass::MyClass() |
+| try_catch.cpp:21:9:21:9 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | try_catch.cpp:19:6:19:23 | void throw_from_nonstmt(int) | void throw_from_nonstmt(int) |
+switchInstructionWithoutDefaultEdge
+notMarkedAsConflated
+wronglyMarkedAsConflated
+invalidOverlap
+nonUniqueEnclosingIRFunction
+fieldAddressOnNonPointer
+thisArgumentIsNonPointer
+| pmcallexpr.cpp:10:2:10:15 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pmcallexpr.cpp:8:13:8:13 | void f() | void f() |
+| pointer_to_member.cpp:23:5:23:54 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
+| pointer_to_member.cpp:24:5:24:49 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
+nonUniqueIRVariable
+nonBooleanOperand
+missingCppType

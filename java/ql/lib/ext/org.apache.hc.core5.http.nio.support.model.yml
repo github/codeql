@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "delete", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "delete", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "get", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "get", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "head", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "head", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "options", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "options", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "patch", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "patch", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "post", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "post", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "put", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "put", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "trace", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "AsyncRequestBuilder", True, "trace", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "BasicRequestProducer", True, "BasicRequestProducer", "(Method,HttpHost,String)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "BasicRequestProducer", True, "BasicRequestProducer", "(Method,HttpHost,String,AsyncEntityProducer)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "BasicRequestProducer", True, "BasicRequestProducer", "(Method,URI)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "BasicRequestProducer", True, "BasicRequestProducer", "(Method,URI,AsyncEntityProducer)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "BasicRequestProducer", True, "BasicRequestProducer", "(String,HttpHost,String)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "BasicRequestProducer", True, "BasicRequestProducer", "(String,HttpHost,String,AsyncEntityProducer)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "BasicRequestProducer", True, "BasicRequestProducer", "(String,URI)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.nio.support", "BasicRequestProducer", True, "BasicRequestProducer", "(String,URI,AsyncEntityProducer)", "", "Argument[1]", "request-forgery", "hq-manual"]

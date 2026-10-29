@@ -1,0 +1,2 @@
+query: Likely Bugs/Likely Typos/SuspiciousDateFormat.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

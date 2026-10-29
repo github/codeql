@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A method named <code>equal</code> may be a typographical error.
+<code>equals</code> may have been intended instead.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that any such method is intended to have this name. Even if it is, it may be better to 
+rename it to avoid confusion with the inherited method <code>Object.equals</code>.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a method named <code>equal</code>. It may be better to rename it.</p>
+
+<sample src="EqualsTypo.java" />
+
+</example>
+<references>
+
+
+<li>
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)">
+equals</a>.
+</li>
+
+
+</references>
+</qhelp>

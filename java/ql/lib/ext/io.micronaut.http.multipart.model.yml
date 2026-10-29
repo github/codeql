@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.micronaut.http.multipart", "CompletedFileUpload", True, "getBytes", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http.multipart", "CompletedFileUpload", True, "getInputStream", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http.multipart", "CompletedFileUpload", True, "getFilename", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http.multipart", "CompletedFileUpload", True, "getContentType", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http.multipart", "CompletedFileUpload", True, "getSize", "", "", "ReturnValue", "remote", "manual"]

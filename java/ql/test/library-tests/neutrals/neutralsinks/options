@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -source 11 -target 11 -cp ${testdir}/../../../stubs/apache-http-5

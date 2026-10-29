@@ -1,0 +1,7 @@
+| calls2.cpp:6:2:6:5 | call to swap | 2 | file://:0:0:0:0 | void |
+| calls2.cpp:13:2:13:5 | call to expression | 1 | file://:0:0:0:0 | unknown |
+| calls2.cpp:13:2:13:5 | call to expression | 1 | file://:0:0:0:0 | void |
+| calls2.cpp:18:2:18:8 | call to compute | 2 | file://:0:0:0:0 | void |
+| calls3.cpp:10:9:10:9 | call to f | 0 | file://:0:0:0:0 | void |
+| calls3.cpp:11:13:11:13 | call to g | 2 | file://:0:0:0:0 | int |
+| calls4.cpp:8:9:8:23 | call to expression | 0 | file://:0:0:0:0 | bool |

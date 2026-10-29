@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["std", "array", True, "at", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "array", True, "begin", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
+      - ["std", "array", True, "cbegin", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
+      - ["std", "array", True, "data", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "array", True, "operator[]", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "array", True, "rbegin", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
+      - ["std", "array", True, "rcbegin", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
+      - ["std", "array", True, "front", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "array", True, "back", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]

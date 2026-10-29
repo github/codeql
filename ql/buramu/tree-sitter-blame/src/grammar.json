@@ -1,0 +1,125 @@
+{
+  "name": "blame",
+  "rules": {
+    "blame_info": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_today"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "FIELD",
+            "name": "file_entry",
+            "content": {
+              "type": "SYMBOL",
+              "name": "file_entry"
+            }
+          }
+        }
+      ]
+    },
+    "_today": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "today:"
+        },
+        {
+          "type": "FIELD",
+          "name": "today",
+          "content": {
+            "type": "SYMBOL",
+            "name": "date"
+          }
+        }
+      ]
+    },
+    "file_entry": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "file: "
+        },
+        {
+          "type": "FIELD",
+          "name": "file_name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "filename"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "FIELD",
+            "name": "blame_entry",
+            "content": {
+              "type": "SYMBOL",
+              "name": "blame_entry"
+            }
+          }
+        }
+      ]
+    },
+    "blame_entry": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "last_modified:"
+        },
+        {
+          "type": "FIELD",
+          "name": "date",
+          "content": {
+            "type": "SYMBOL",
+            "name": "date"
+          }
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "FIELD",
+            "name": "line",
+            "content": {
+              "type": "SYMBOL",
+              "name": "number"
+            }
+          }
+        }
+      ]
+    },
+    "date": {
+      "type": "PATTERN",
+      "value": "\\d{4}-\\d{2}-\\d{2}"
+    },
+    "filename": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z0-9_\\-\\.\\/ ]+"
+    },
+    "number": {
+      "type": "PATTERN",
+      "value": "\\d+"
+    }
+  },
+  "extras": [
+    {
+      "type": "PATTERN",
+      "value": "\\s"
+    }
+  ],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [],
+  "inline": [],
+  "supertypes": []
+}

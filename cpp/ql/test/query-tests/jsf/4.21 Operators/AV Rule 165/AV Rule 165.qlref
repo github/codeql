@@ -1,0 +1,2 @@
+query: jsf/4.21 Operators/AV Rule 165.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

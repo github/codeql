@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-190/AllocMultiplicationOverflow.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

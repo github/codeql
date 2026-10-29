@@ -1,0 +1,68 @@
+# https://github.com/AdnaneKhan/ActionsTOCTOU/blob/main/.github/workflows/comment_victim.yml
+name: Comment Triggered Test
+on:
+  issue_comment:
+    types: [created]
+permissions: 'write-all'
+jobs:
+  test1:
+    if: ${{ github.event.issue.pull_request && contains(fromJson('["MEMBER", "OWNER"]'), github.event.comment.author_association) && startsWith(github.event.comment.body, '/run-tests ') }}
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/github-script@v6
+        name: Get PR branch
+        id: issue
+        with:
+          script: |
+            const pr = context.payload.issue.number
+            const data = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr
+            })
+            return {
+              ref: data.data.head.ref,
+              sha: data.data.head.sha,
+            }
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          ref: ${{ fromJson(steps.issue.outputs.result).sha }}
+      - run: bash comment_example/tests.sh
+
+  test2:
+    if: ${{ github.event.issue.pull_request && contains(fromJson('["MEMBER", "OWNER"]'), github.event.comment.author_association) && startsWith(github.event.comment.body, '/run-tests ') }}
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/github-script@v6
+        name: Get PR branch
+        id: issue
+        with:
+          script: |
+            const pr = context.payload.issue.number
+            const data = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr
+            })
+            return {
+              ref: data.data.head.ref,
+              sha: data.data.head.sha,
+            }
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          ref: ${{ fromJson(steps.issue.outputs.result).ref }}
+      - run: bash comment_example/tests.sh
+
+  test3:
+    if: ${{ github.event.issue.pull_request && contains(fromJson('["MEMBER", "OWNER"]'), github.event.comment.author_association) && startsWith(github.event.comment.body, '/run-tests ') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          ref: "refs/pull/${{ github.event.number }}/merge"
+      - run: bash comment_example/tests.sh

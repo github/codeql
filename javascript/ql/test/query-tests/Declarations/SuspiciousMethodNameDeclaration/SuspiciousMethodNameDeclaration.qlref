@@ -1,0 +1,2 @@
+query: Declarations/SuspiciousMethodNameDeclaration.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,109 @@
+#select
+| OgnlInjection.java:18:19:18:22 | tree | OgnlInjection.java:16:39:16:63 | expr : String | OgnlInjection.java:18:19:18:22 | tree | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:16:39:16:63 | expr | user-provided value |
+| OgnlInjection.java:19:19:19:22 | tree | OgnlInjection.java:16:39:16:63 | expr : String | OgnlInjection.java:19:19:19:22 | tree | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:16:39:16:63 | expr | user-provided value |
+| OgnlInjection.java:22:5:22:8 | node | OgnlInjection.java:16:39:16:63 | expr : String | OgnlInjection.java:22:5:22:8 | node | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:16:39:16:63 | expr | user-provided value |
+| OgnlInjection.java:23:5:23:8 | node | OgnlInjection.java:16:39:16:63 | expr : String | OgnlInjection.java:23:5:23:8 | node | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:16:39:16:63 | expr | user-provided value |
+| OgnlInjection.java:29:19:29:22 | tree | OgnlInjection.java:27:41:27:65 | expr : String | OgnlInjection.java:29:19:29:22 | tree | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:27:41:27:65 | expr | user-provided value |
+| OgnlInjection.java:30:19:30:22 | tree | OgnlInjection.java:27:41:27:65 | expr : String | OgnlInjection.java:30:19:30:22 | tree | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:27:41:27:65 | expr | user-provided value |
+| OgnlInjection.java:32:5:32:8 | tree | OgnlInjection.java:27:41:27:65 | expr : String | OgnlInjection.java:32:5:32:8 | tree | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:27:41:27:65 | expr | user-provided value |
+| OgnlInjection.java:33:5:33:8 | tree | OgnlInjection.java:27:41:27:65 | expr : String | OgnlInjection.java:33:5:33:8 | tree | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:27:41:27:65 | expr | user-provided value |
+| OgnlInjection.java:38:19:38:22 | expr | OgnlInjection.java:37:40:37:64 | expr : String | OgnlInjection.java:38:19:38:22 | expr | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:37:40:37:64 | expr | user-provided value |
+| OgnlInjection.java:39:19:39:22 | expr | OgnlInjection.java:37:40:37:64 | expr : String | OgnlInjection.java:39:19:39:22 | expr | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:37:40:37:64 | expr | user-provided value |
+| OgnlInjection.java:45:19:45:22 | expr | OgnlInjection.java:43:26:43:50 | expr : String | OgnlInjection.java:45:19:45:22 | expr | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:43:26:43:50 | expr | user-provided value |
+| OgnlInjection.java:46:19:46:22 | expr | OgnlInjection.java:43:26:43:50 | expr : String | OgnlInjection.java:46:19:46:22 | expr | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:43:26:43:50 | expr | user-provided value |
+| OgnlInjection.java:47:31:47:34 | expr | OgnlInjection.java:43:26:43:50 | expr : String | OgnlInjection.java:47:31:47:34 | expr | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:43:26:43:50 | expr | user-provided value |
+| OgnlInjection.java:54:5:54:12 | accessor | OgnlInjection.java:51:38:51:62 | expr : String | OgnlInjection.java:54:5:54:12 | accessor | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:51:38:51:62 | expr | user-provided value |
+| OgnlInjection.java:55:5:55:12 | accessor | OgnlInjection.java:51:38:51:62 | expr : String | OgnlInjection.java:55:5:55:12 | accessor | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:51:38:51:62 | expr | user-provided value |
+| OgnlInjection.java:57:19:57:26 | accessor | OgnlInjection.java:51:38:51:62 | expr : String | OgnlInjection.java:57:19:57:26 | accessor | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:51:38:51:62 | expr | user-provided value |
+| OgnlInjection.java:58:19:58:26 | accessor | OgnlInjection.java:51:38:51:62 | expr : String | OgnlInjection.java:58:19:58:26 | accessor | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:51:38:51:62 | expr | user-provided value |
+| OgnlInjection.java:67:5:67:12 | accessor | OgnlInjection.java:62:51:62:75 | expr : String | OgnlInjection.java:67:5:67:12 | accessor | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:62:51:62:75 | expr | user-provided value |
+| OgnlInjection.java:68:5:68:12 | accessor | OgnlInjection.java:62:51:62:75 | expr : String | OgnlInjection.java:68:5:68:12 | accessor | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:62:51:62:75 | expr | user-provided value |
+| OgnlInjection.java:70:19:70:26 | accessor | OgnlInjection.java:62:51:62:75 | expr : String | OgnlInjection.java:70:19:70:26 | accessor | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:62:51:62:75 | expr | user-provided value |
+| OgnlInjection.java:71:19:71:26 | accessor | OgnlInjection.java:62:51:62:75 | expr : String | OgnlInjection.java:71:19:71:26 | accessor | OGNL Expression Language statement depends on a $@. | OgnlInjection.java:62:51:62:75 | expr | user-provided value |
+edges
+| OgnlInjection.java:16:39:16:63 | expr : String | OgnlInjection.java:17:40:17:43 | expr : String | provenance |  |
+| OgnlInjection.java:17:19:17:44 | parseExpression(...) : Object | OgnlInjection.java:18:19:18:22 | tree | provenance | Sink:MaD:8 |
+| OgnlInjection.java:17:19:17:44 | parseExpression(...) : Object | OgnlInjection.java:19:19:19:22 | tree | provenance | Sink:MaD:9 |
+| OgnlInjection.java:17:19:17:44 | parseExpression(...) : Object | OgnlInjection.java:21:17:21:27 | (...)... : Object | provenance |  |
+| OgnlInjection.java:17:40:17:43 | expr : String | OgnlInjection.java:17:19:17:44 | parseExpression(...) : Object | provenance | Config |
+| OgnlInjection.java:21:17:21:27 | (...)... : Object | OgnlInjection.java:22:5:22:8 | node | provenance | Sink:MaD:6 |
+| OgnlInjection.java:21:17:21:27 | (...)... : Object | OgnlInjection.java:23:5:23:8 | node | provenance | Sink:MaD:7 |
+| OgnlInjection.java:27:41:27:65 | expr : String | OgnlInjection.java:28:60:28:63 | expr : String | provenance |  |
+| OgnlInjection.java:28:17:28:64 | compileExpression(...) : Node | OgnlInjection.java:29:19:29:22 | tree | provenance | Sink:MaD:8 |
+| OgnlInjection.java:28:17:28:64 | compileExpression(...) : Node | OgnlInjection.java:30:19:30:22 | tree | provenance | Sink:MaD:9 |
+| OgnlInjection.java:28:17:28:64 | compileExpression(...) : Node | OgnlInjection.java:32:5:32:8 | tree | provenance | Sink:MaD:6 |
+| OgnlInjection.java:28:17:28:64 | compileExpression(...) : Node | OgnlInjection.java:33:5:33:8 | tree | provenance | Sink:MaD:7 |
+| OgnlInjection.java:28:60:28:63 | expr : String | OgnlInjection.java:28:17:28:64 | compileExpression(...) : Node | provenance | Config |
+| OgnlInjection.java:37:40:37:64 | expr : String | OgnlInjection.java:38:19:38:22 | expr | provenance | Sink:MaD:8 |
+| OgnlInjection.java:37:40:37:64 | expr : String | OgnlInjection.java:39:19:39:22 | expr | provenance | Sink:MaD:9 |
+| OgnlInjection.java:43:26:43:50 | expr : String | OgnlInjection.java:45:19:45:22 | expr | provenance | Sink:MaD:2 |
+| OgnlInjection.java:43:26:43:50 | expr : String | OgnlInjection.java:46:19:46:22 | expr | provenance | Sink:MaD:3 |
+| OgnlInjection.java:43:26:43:50 | expr : String | OgnlInjection.java:47:31:47:34 | expr | provenance | Sink:MaD:1 |
+| OgnlInjection.java:51:38:51:62 | expr : String | OgnlInjection.java:52:60:52:63 | expr : String | provenance |  |
+| OgnlInjection.java:52:17:52:64 | compileExpression(...) : Node | OgnlInjection.java:53:35:53:38 | tree : Node | provenance |  |
+| OgnlInjection.java:52:60:52:63 | expr : String | OgnlInjection.java:52:17:52:64 | compileExpression(...) : Node | provenance | Config |
+| OgnlInjection.java:53:35:53:38 | tree : Node | OgnlInjection.java:53:35:53:52 | getAccessor(...) : ExpressionAccessor | provenance | Config |
+| OgnlInjection.java:53:35:53:52 | getAccessor(...) : ExpressionAccessor | OgnlInjection.java:54:5:54:12 | accessor | provenance | Sink:MaD:4 |
+| OgnlInjection.java:53:35:53:52 | getAccessor(...) : ExpressionAccessor | OgnlInjection.java:55:5:55:12 | accessor | provenance | Sink:MaD:5 |
+| OgnlInjection.java:53:35:53:52 | getAccessor(...) : ExpressionAccessor | OgnlInjection.java:57:19:57:26 | accessor | provenance | Sink:MaD:8 |
+| OgnlInjection.java:53:35:53:52 | getAccessor(...) : ExpressionAccessor | OgnlInjection.java:58:19:58:26 | accessor | provenance | Sink:MaD:9 |
+| OgnlInjection.java:62:51:62:75 | expr : String | OgnlInjection.java:65:67:65:70 | expr : String | provenance |  |
+| OgnlInjection.java:65:24:65:71 | compileExpression(...) : Node | OgnlInjection.java:66:28:66:38 | taintedTree : Node | provenance |  |
+| OgnlInjection.java:65:67:65:70 | expr : String | OgnlInjection.java:65:24:65:71 | compileExpression(...) : Node | provenance | Config |
+| OgnlInjection.java:66:5:66:12 | accessor [post update] : ExpressionAccessor | OgnlInjection.java:67:5:67:12 | accessor | provenance | Sink:MaD:4 |
+| OgnlInjection.java:66:5:66:12 | accessor [post update] : ExpressionAccessor | OgnlInjection.java:68:5:68:12 | accessor | provenance | Sink:MaD:5 |
+| OgnlInjection.java:66:5:66:12 | accessor [post update] : ExpressionAccessor | OgnlInjection.java:70:19:70:26 | accessor | provenance | Sink:MaD:8 |
+| OgnlInjection.java:66:5:66:12 | accessor [post update] : ExpressionAccessor | OgnlInjection.java:71:19:71:26 | accessor | provenance | Sink:MaD:9 |
+| OgnlInjection.java:66:28:66:38 | taintedTree : Node | OgnlInjection.java:66:5:66:12 | accessor [post update] : ExpressionAccessor | provenance | Config |
+models
+| 1 | Sink: com.opensymphony.xwork2.ognl; OgnlUtil; false; callMethod; ; ; Argument[0]; ognl-injection; manual |
+| 2 | Sink: com.opensymphony.xwork2.ognl; OgnlUtil; false; getValue; ; ; Argument[0]; ognl-injection; manual |
+| 3 | Sink: com.opensymphony.xwork2.ognl; OgnlUtil; false; setValue; ; ; Argument[0]; ognl-injection; manual |
+| 4 | Sink: ognl.enhance; ExpressionAccessor; true; get; ; ; Argument[this]; ognl-injection; manual |
+| 5 | Sink: ognl.enhance; ExpressionAccessor; true; set; ; ; Argument[this]; ognl-injection; manual |
+| 6 | Sink: ognl; Node; false; getValue; ; ; Argument[this]; ognl-injection; manual |
+| 7 | Sink: ognl; Node; false; setValue; ; ; Argument[this]; ognl-injection; manual |
+| 8 | Sink: ognl; Ognl; false; getValue; ; ; Argument[0]; ognl-injection; manual |
+| 9 | Sink: ognl; Ognl; false; setValue; ; ; Argument[0]; ognl-injection; manual |
+nodes
+| OgnlInjection.java:16:39:16:63 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:17:19:17:44 | parseExpression(...) : Object | semmle.label | parseExpression(...) : Object |
+| OgnlInjection.java:17:40:17:43 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:18:19:18:22 | tree | semmle.label | tree |
+| OgnlInjection.java:19:19:19:22 | tree | semmle.label | tree |
+| OgnlInjection.java:21:17:21:27 | (...)... : Object | semmle.label | (...)... : Object |
+| OgnlInjection.java:22:5:22:8 | node | semmle.label | node |
+| OgnlInjection.java:23:5:23:8 | node | semmle.label | node |
+| OgnlInjection.java:27:41:27:65 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:28:17:28:64 | compileExpression(...) : Node | semmle.label | compileExpression(...) : Node |
+| OgnlInjection.java:28:60:28:63 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:29:19:29:22 | tree | semmle.label | tree |
+| OgnlInjection.java:30:19:30:22 | tree | semmle.label | tree |
+| OgnlInjection.java:32:5:32:8 | tree | semmle.label | tree |
+| OgnlInjection.java:33:5:33:8 | tree | semmle.label | tree |
+| OgnlInjection.java:37:40:37:64 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:38:19:38:22 | expr | semmle.label | expr |
+| OgnlInjection.java:39:19:39:22 | expr | semmle.label | expr |
+| OgnlInjection.java:43:26:43:50 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:45:19:45:22 | expr | semmle.label | expr |
+| OgnlInjection.java:46:19:46:22 | expr | semmle.label | expr |
+| OgnlInjection.java:47:31:47:34 | expr | semmle.label | expr |
+| OgnlInjection.java:51:38:51:62 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:52:17:52:64 | compileExpression(...) : Node | semmle.label | compileExpression(...) : Node |
+| OgnlInjection.java:52:60:52:63 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:53:35:53:38 | tree : Node | semmle.label | tree : Node |
+| OgnlInjection.java:53:35:53:52 | getAccessor(...) : ExpressionAccessor | semmle.label | getAccessor(...) : ExpressionAccessor |
+| OgnlInjection.java:54:5:54:12 | accessor | semmle.label | accessor |
+| OgnlInjection.java:55:5:55:12 | accessor | semmle.label | accessor |
+| OgnlInjection.java:57:19:57:26 | accessor | semmle.label | accessor |
+| OgnlInjection.java:58:19:58:26 | accessor | semmle.label | accessor |
+| OgnlInjection.java:62:51:62:75 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:65:24:65:71 | compileExpression(...) : Node | semmle.label | compileExpression(...) : Node |
+| OgnlInjection.java:65:67:65:70 | expr : String | semmle.label | expr : String |
+| OgnlInjection.java:66:5:66:12 | accessor [post update] : ExpressionAccessor | semmle.label | accessor [post update] : ExpressionAccessor |
+| OgnlInjection.java:66:28:66:38 | taintedTree : Node | semmle.label | taintedTree : Node |
+| OgnlInjection.java:67:5:67:12 | accessor | semmle.label | accessor |
+| OgnlInjection.java:68:5:68:12 | accessor | semmle.label | accessor |
+| OgnlInjection.java:70:19:70:26 | accessor | semmle.label | accessor |
+| OgnlInjection.java:71:19:71:26 | accessor | semmle.label | accessor |
+subpaths

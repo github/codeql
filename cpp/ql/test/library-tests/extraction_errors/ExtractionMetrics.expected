@@ -1,0 +1,20 @@
+| #include directives | 2 |
+| calls | 2 |
+| calls with an explicit target | 1 |
+| compilations | 2 |
+| compilations without errors | 1 |
+| compiler errors | 10 |
+| expressions | 10 |
+| expressions with a known type | 3 |
+| functions | 8 |
+| functions without errors | 6 |
+| lines of code | 19 |
+| lines of code without errors | 12 |
+| lines of text | 24 |
+| non-error expressions | 3 |
+| source/header files | 3 |
+| source/header files without errors | 2 |
+| successfully resolved #include directives | 2 |
+| syntax errors | 3 |
+| variables | 10 |
+| variables with a known type | 9 |

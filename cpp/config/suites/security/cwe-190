@@ -1,0 +1,13 @@
+# CWE-190: Integer Overflow or Wraparound
++ semmlecode-cpp-queries/Security/CWE/CWE-190/ArithmeticTainted.ql: /CWE/CWE-190
+    @name User-controlled data in arithmetic expression (CWE-190)
++ semmlecode-cpp-queries/Security/CWE/CWE-190/ArithmeticUncontrolled.ql: /CWE/CWE-190
+    @name Uncontrolled data in arithmetic expression (CWE-190)
++ semmlecode-cpp-queries/Security/CWE/CWE-190/ArithmeticWithExtremeValues.ql: /CWE/CWE-190
+    @name Use of extreme values in arithmetic expression (CWE-190)
++ semmlecode-cpp-queries/Security/CWE/CWE-190/TaintedAllocationSize.ql: /CWE/CWE-190
+    @name Overflow in uncontrolled allocation size (CWE-190)
++ semmlecode-cpp-queries/Security/CWE/CWE-190/IntegerOverflowTainted.ql: /CWE/CWE-190
+    @name Potential integer arithmetic overflow (CWE-190)
++ semmlecode-cpp-queries/Security/CWE/CWE-190/ComparisonWithWiderType.ql: /CWE/CWE-190
+    @name Comparison of wide type with narrow type in loop condition (CWE-190)

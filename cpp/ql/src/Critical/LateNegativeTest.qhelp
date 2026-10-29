@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This query finds integer values that are first used to index an array and
+subsequently tested for being negative. If it is relevant to perform this test
+at all then it should happen <em>before</em> the indexing, not
+after. Otherwise, if the value is negative then the program will have failed
+before performing the test.
+</p>
+
+<include src="dataFlowWarning.inc.qhelp" />
+</overview>
+
+<recommendation>
+<p>
+See if the value needs to be checked before being used as array index. Double-check
+if the value is derived from user input. If the value clearly cannot be
+negative then the negativity test is redundant and can be removed.
+</p>
+</recommendation>
+
+<example>
+<p>The example below includes two functions that use the value <code>recordIdx</code> to 
+index an array and a test to verify that the value is positive. 
+The test is made after <code>records</code> is indexed for <code>printRecord</code> and 
+before <code>records</code> is indexed for <code>processRecord</code>. 
+Unless the value of <code>recordIdx</code> cannot be negative, the test should be 
+updated to run before <em>both</em> times the array is indexed. 
+If the value cannot be negative, the test should be removed.
+</p>
+
+<sample src="LateNegativeTest.cpp" />
+</example>
+
+<references>
+<li>cplusplus.com: <a href="http://www.cplusplus.com/doc/tutorial/pointers/">Pointers</a>.</li>
+<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/ARR30-C.+Do+not+form+or+use+out-of-bounds+pointers+or+array+subscripts">ARR30-C. Do not form or use out-of-bounds pointers or array subscripts</a>.</li>
+</references>
+</qhelp>

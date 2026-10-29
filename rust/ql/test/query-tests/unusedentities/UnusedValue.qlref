@@ -1,0 +1,2 @@
+query: queries/unusedentities/UnusedValue.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

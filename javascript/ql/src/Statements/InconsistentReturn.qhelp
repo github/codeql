@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Since JavaScript programs are not statically type checked, it is acceptable for a function to return
+values of different types under different circumstances. In particular, a function can sometimes return
+the special value <code>undefined</code>, while at other times it returns, say, a number. If this is
+the desired behavior, it should be documented by explicitly returning <code>undefined</code> or
+an expression that evaluates to <code>undefined</code> (such as <code>void 0</code>) rather than
+using a return statement without an explicit return value. 
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Replace implicit return statements with return statements explicitly returning <code>undefined</code>
+or <code>void 0</code> or a similar expression.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the function <code>solve_quad</code> computes one of the roots of a quadratic
+equation given by the coefficients <code>a</code>, <code>b</code> and <code>c</code>. In cases where
+there are no roots, it returns <code>undefined</code> by means of the implicit return statement on
+line 3.
+</p>
+
+<sample src="examples/InconsistentReturn.js" />
+
+<p>
+It would be clearer to make this exceptional return value explicit as follows:
+</p>
+
+<sample src="examples/InconsistentReturnGood.js" />
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/return">Return</a>.</li>
+
+</references>
+</qhelp>

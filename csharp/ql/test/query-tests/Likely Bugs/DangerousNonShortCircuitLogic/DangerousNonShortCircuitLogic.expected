@@ -1,0 +1,4 @@
+| DangerousNonShortCircuitLogic.cs:15:13:15:35 | ... & ... | Potentially dangerous use of non-short circuit logic. |
+| DangerousNonShortCircuitLogic.cs:16:13:16:40 | ... \| ... | Potentially dangerous use of non-short circuit logic. |
+| DangerousNonShortCircuitLogic.cs:17:13:17:28 | ... \| ... | Potentially dangerous use of non-short circuit logic. |
+| DangerousNonShortCircuitLogic.cs:18:13:18:34 | ... \| ... | Potentially dangerous use of non-short circuit logic. |

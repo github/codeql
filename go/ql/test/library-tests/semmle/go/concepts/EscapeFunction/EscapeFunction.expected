@@ -1,0 +1,7 @@
+| file://:0:0:0:0 | HTMLEscape | html |
+| file://:0:0:0:0 | HTMLEscapeString | html |
+| file://:0:0:0:0 | HTMLEscaper | html |
+| file://:0:0:0:0 | JSEscape | js |
+| file://:0:0:0:0 | JSEscapeString | js |
+| file://:0:0:0:0 | JSEscaper | js |
+| file://:0:0:0:0 | URLQueryEscaper | url |

@@ -1,0 +1,2 @@
+query: Security Features/CWE-285/MissingAccessControl.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

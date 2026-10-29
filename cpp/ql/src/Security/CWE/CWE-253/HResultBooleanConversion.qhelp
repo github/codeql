@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>This query indicates that an <code>HRESULT</code> is being cast to a Boolean type or vice versa.</p>
+  <p>The typical success value (<code>S_OK</code>) of an <code>HRESULT</code> equals 0. However, 0 indicates failure for a Boolean type.</p>
+  <p>Casting an <code>HRESULT</code> to a Boolean type and then using it in a test expression will yield an incorrect result.</p>
+</overview>
+
+<recommendation>
+<p>To check if a call that returns an <code>HRESULT</code> succeeded use the <code>FAILED</code> macro.</p>
+</recommendation>
+
+<example>
+<p>In the following example, <code>HRESULT</code> is used in a test expression incorrectly as it may yield an incorrect result.</p>
+<sample src="HResultBooleanConversion.cpp" />
+
+<p>To fix this issue, use the <code>FAILED</code> macro in the test expression.</p>
+</example>
+
+<references>
+</references>
+
+</qhelp>

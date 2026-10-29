@@ -1,0 +1,35 @@
+edges
+| LdapInjection.rb:5:5:5:6 | dc | LdapInjection.rb:25:23:25:49 | "ou=people,dc=#{...},dc=com" | provenance | AdditionalTaintStep |
+| LdapInjection.rb:5:10:5:15 | call to params | LdapInjection.rb:5:10:5:20 | ...[...] | provenance |  |
+| LdapInjection.rb:5:10:5:20 | ...[...] | LdapInjection.rb:5:5:5:6 | dc | provenance |  |
+| LdapInjection.rb:9:5:9:8 | name | LdapInjection.rb:29:62:29:73 | "cn=#{...}" | provenance | AdditionalTaintStep |
+| LdapInjection.rb:9:5:9:8 | name | LdapInjection.rb:33:88:33:91 | name | provenance |  |
+| LdapInjection.rb:9:12:9:17 | call to params | LdapInjection.rb:9:12:9:29 | ...[...] | provenance |  |
+| LdapInjection.rb:9:12:9:29 | ...[...] | LdapInjection.rb:9:5:9:8 | name | provenance |  |
+| LdapInjection.rb:33:88:33:91 | name | LdapInjection.rb:33:87:33:92 | call to [] | provenance |  |
+| LdapInjection.rb:33:88:33:91 | name | LdapInjection.rb:33:87:33:92 | call to [] | provenance | Config |
+| LdapInjection.rb:33:88:33:91 | name | LdapInjection.rb:37:41:37:44 | name | provenance |  |
+| LdapInjection.rb:37:5:37:10 | filter | LdapInjection.rb:38:62:38:67 | filter | provenance |  |
+| LdapInjection.rb:37:14:37:45 | call to eq | LdapInjection.rb:37:5:37:10 | filter | provenance |  |
+| LdapInjection.rb:37:41:37:44 | name | LdapInjection.rb:37:14:37:45 | call to eq | provenance |  |
+nodes
+| LdapInjection.rb:5:5:5:6 | dc | semmle.label | dc |
+| LdapInjection.rb:5:10:5:15 | call to params | semmle.label | call to params |
+| LdapInjection.rb:5:10:5:20 | ...[...] | semmle.label | ...[...] |
+| LdapInjection.rb:9:5:9:8 | name | semmle.label | name |
+| LdapInjection.rb:9:12:9:17 | call to params | semmle.label | call to params |
+| LdapInjection.rb:9:12:9:29 | ...[...] | semmle.label | ...[...] |
+| LdapInjection.rb:25:23:25:49 | "ou=people,dc=#{...},dc=com" | semmle.label | "ou=people,dc=#{...},dc=com" |
+| LdapInjection.rb:29:62:29:73 | "cn=#{...}" | semmle.label | "cn=#{...}" |
+| LdapInjection.rb:33:87:33:92 | call to [] | semmle.label | call to [] |
+| LdapInjection.rb:33:88:33:91 | name | semmle.label | name |
+| LdapInjection.rb:37:5:37:10 | filter | semmle.label | filter |
+| LdapInjection.rb:37:14:37:45 | call to eq | semmle.label | call to eq |
+| LdapInjection.rb:37:41:37:44 | name | semmle.label | name |
+| LdapInjection.rb:38:62:38:67 | filter | semmle.label | filter |
+subpaths
+#select
+| LdapInjection.rb:25:23:25:49 | "ou=people,dc=#{...},dc=com" | LdapInjection.rb:5:10:5:15 | call to params | LdapInjection.rb:25:23:25:49 | "ou=people,dc=#{...},dc=com" | This LDAP query depends on a $@. | LdapInjection.rb:5:10:5:15 | call to params | user-provided value |
+| LdapInjection.rb:29:62:29:73 | "cn=#{...}" | LdapInjection.rb:9:12:9:17 | call to params | LdapInjection.rb:29:62:29:73 | "cn=#{...}" | This LDAP query depends on a $@. | LdapInjection.rb:9:12:9:17 | call to params | user-provided value |
+| LdapInjection.rb:33:87:33:92 | call to [] | LdapInjection.rb:9:12:9:17 | call to params | LdapInjection.rb:33:87:33:92 | call to [] | This LDAP query depends on a $@. | LdapInjection.rb:9:12:9:17 | call to params | user-provided value |
+| LdapInjection.rb:38:62:38:67 | filter | LdapInjection.rb:9:12:9:17 | call to params | LdapInjection.rb:38:62:38:67 | filter | This LDAP query depends on a $@. | LdapInjection.rb:9:12:9:17 | call to params | user-provided value |

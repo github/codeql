@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      - ["jitterbit/get-changed-files", "*", "output.all", "filename", "manual"]
+      - ["jitterbit/get-changed-files", "*", "output.added", "filename", "manual"]
+      - ["jitterbit/get-changed-files", "*", "output.modified", "filename", "manual"]
+      - ["jitterbit/get-changed-files", "*", "output.removed", "filename", "manual"]
+      - ["jitterbit/get-changed-files", "*", "output.renamed", "filename", "manual"]
+      - ["jitterbit/get-changed-files", "*", "output.added_modified", "filename", "manual"]
+      - ["jitterbit/get-changed-files", "*", "output.deleted", "filename", "manual"]

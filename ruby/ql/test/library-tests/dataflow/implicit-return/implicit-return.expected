@@ -1,0 +1,30 @@
+models
+edges
+| implicit_return.rb:12:3:12:11 | call to source | implicit_return.rb:15:6:15:11 | call to m_body | provenance |  |
+| implicit_return.rb:19:3:19:11 | call to source | implicit_return.rb:24:6:24:18 | call to m_body_ensure | provenance |  |
+| implicit_return.rb:30:3:30:11 | call to source | implicit_return.rb:33:6:33:13 | call to m_rescue | provenance |  |
+| implicit_return.rb:39:3:39:11 | call to source | implicit_return.rb:44:6:44:20 | call to m_rescue_ensure | provenance |  |
+| implicit_return.rb:52:3:52:11 | call to source | implicit_return.rb:55:6:55:11 | call to m_else | provenance |  |
+| implicit_return.rb:63:3:63:11 | call to source | implicit_return.rb:68:6:68:18 | call to m_else_ensure | provenance |  |
+nodes
+| implicit_return.rb:12:3:12:11 | call to source | semmle.label | call to source |
+| implicit_return.rb:15:6:15:11 | call to m_body | semmle.label | call to m_body |
+| implicit_return.rb:19:3:19:11 | call to source | semmle.label | call to source |
+| implicit_return.rb:24:6:24:18 | call to m_body_ensure | semmle.label | call to m_body_ensure |
+| implicit_return.rb:30:3:30:11 | call to source | semmle.label | call to source |
+| implicit_return.rb:33:6:33:13 | call to m_rescue | semmle.label | call to m_rescue |
+| implicit_return.rb:39:3:39:11 | call to source | semmle.label | call to source |
+| implicit_return.rb:44:6:44:20 | call to m_rescue_ensure | semmle.label | call to m_rescue_ensure |
+| implicit_return.rb:52:3:52:11 | call to source | semmle.label | call to source |
+| implicit_return.rb:55:6:55:11 | call to m_else | semmle.label | call to m_else |
+| implicit_return.rb:63:3:63:11 | call to source | semmle.label | call to source |
+| implicit_return.rb:68:6:68:18 | call to m_else_ensure | semmle.label | call to m_else_ensure |
+subpaths
+testFailures
+#select
+| implicit_return.rb:15:6:15:11 | call to m_body | implicit_return.rb:12:3:12:11 | call to source | implicit_return.rb:15:6:15:11 | call to m_body | $@ | implicit_return.rb:12:3:12:11 | call to source | call to source |
+| implicit_return.rb:24:6:24:18 | call to m_body_ensure | implicit_return.rb:19:3:19:11 | call to source | implicit_return.rb:24:6:24:18 | call to m_body_ensure | $@ | implicit_return.rb:19:3:19:11 | call to source | call to source |
+| implicit_return.rb:33:6:33:13 | call to m_rescue | implicit_return.rb:30:3:30:11 | call to source | implicit_return.rb:33:6:33:13 | call to m_rescue | $@ | implicit_return.rb:30:3:30:11 | call to source | call to source |
+| implicit_return.rb:44:6:44:20 | call to m_rescue_ensure | implicit_return.rb:39:3:39:11 | call to source | implicit_return.rb:44:6:44:20 | call to m_rescue_ensure | $@ | implicit_return.rb:39:3:39:11 | call to source | call to source |
+| implicit_return.rb:55:6:55:11 | call to m_else | implicit_return.rb:52:3:52:11 | call to source | implicit_return.rb:55:6:55:11 | call to m_else | $@ | implicit_return.rb:52:3:52:11 | call to source | call to source |
+| implicit_return.rb:68:6:68:18 | call to m_else_ensure | implicit_return.rb:63:3:63:11 | call to source | implicit_return.rb:68:6:68:18 | call to m_else_ensure | $@ | implicit_return.rb:63:3:63:11 | call to source | call to source |

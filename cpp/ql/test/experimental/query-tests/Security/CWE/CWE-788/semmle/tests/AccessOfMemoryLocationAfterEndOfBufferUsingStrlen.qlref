@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-788/AccessOfMemoryLocationAfterEndOfBufferUsingStrlen.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

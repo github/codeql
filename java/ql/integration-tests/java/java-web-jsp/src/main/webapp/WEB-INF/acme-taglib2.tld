@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+    <description>Acme JSP2 tags</description>
+    <tlib-version>1.0</tlib-version>
+    <short-name>acme2</short-name>
+    <uri>http://www.acme.com/taglib2</uri>
+    <tag>
+        <description>Simple Date formatting</description>
+        <name>date2</name>
+        <tag-class>com.acme.Date2Tag</tag-class>
+        <body-content>scriptless</body-content>
+        <variable>
+            <description>Day of the Month</description>
+            <name-given>day</name-given>
+        </variable>
+        <variable>
+            <description>Month of the Year</description>
+            <name-given>month</name-given>
+        </variable>
+        <variable>
+            <description>Year</description>
+            <name-given>year</name-given>
+        </variable>
+        <attribute>
+            <name>format</name>
+            <required>true</required>           
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+</taglib>
+

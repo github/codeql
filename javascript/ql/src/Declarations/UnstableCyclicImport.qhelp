@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The ECMAScript module system allows modules to cyclically depend on each other.
+However, modules must still be initialized one at a time.
+Normally, a module is initialized after its imported modules, but in the case of
+cyclic imports, this is not possible.
+This means that some modules in a cycle must be initialized before all of its imported modules
+are ready to be used.
+</p>
+<p>
+When the top-level code of a library depends on a value obtained from a cyclic import,
+its behavior thus depends on the initialization order.
+This order is determined by which module is first imported from the main module.
+Simply adding, removing, or reordering <tt>import</tt> statements can therefore cause
+the cyclic modules to stop working.
+</p>
+<p>
+Note that imports that are only used for type annotations in TypeScript files are removed at compile time.
+Such imports can therefore safely be used in a cycle.
+</p>
+</overview>
+<recommendation>
+<p>Cyclic dependencies can be hard to break. There are several approaches that may help:</p>
+<ul>
+<li>Split up the module so that the shared code is separated from the code that depends on the imported value.</li>
+<li>Avoid using the imported value at the top-level, for example, by lazily initializing the variables that depend on it.</li>
+<li>Ensure there are no other importers of the module whose value is used at the top-level. This ensures that the imported module has been initialized.</li>
+<li>Merge two of the modules into a single module.</li>
+</ul>
+</recommendation>
+<example>
+
+<p>
+In the example below, <tt>services.js</tt> and <tt>audio.js</tt> both depend on each other.
+As long as <tt>services.js</tt> is imported first, the code works as expected, but if <tt>audio.js</tt> is imported
+first, the list of services will contain <tt>undefined</tt> instead of the <tt>AudioService</tt> class.
+</p>
+<sample src="examples/UnstableCyclicImport.js" />
+
+<p>
+One solution is to factor out the <tt>registerService</tt> function into another module which <tt>AudioService</tt> can safely depend on.
+The <tt>services</tt> module can use a re-export to maintain its original interface:
+</p>
+<sample src="examples/UnstableCyclicImportGood.js" />
+
+</example>
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">Import statement</a>.</li>
+</references>
+</qhelp>

@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>An integer literal consisting of a leading <code>0</code> digit
+followed by one or more digits in the range <code>0-7</code> is an
+octal literal. This can lead to two problems:</p>
+
+<ul>
+    <li>An octal literal can be misread by a programmer as a decimal literal.</li>
+    <li>A programmer might accidentally start a decimal literal with a zero, so that the compiler
+    treats the decimal literal as an octal literal. For example, <code>010</code> is equal to 
+    <code>8</code>, not <code>10</code>.</li>
+</ul>
+ 
+</overview>
+<recommendation>
+
+<p>To avoid these problems:</p>
+
+<ul>
+    <li>Avoid using octal literals so that programmers do not confuse them with decimal literals. 
+    However, if you need to use octal literals, you should add a comment to each octal literal 
+    indicating the intention to use octal literals.</li>
+    <li>When typing decimal literals, be careful not to begin them with a zero accidentally.</li>
+</ul>
+
+</recommendation>
+<references>
+
+
+<li>
+  J. Bloch and N. Gafter, <em>Java Puzzlers: Traps, Pitfalls, and Corner Cases</em>, Puzzle 59. Addison-Wesley, 2005.
+</li>
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-3.html#jls-3.10.1">Integer Literals</a>.
+</li>
+
+
+</references>
+</qhelp>

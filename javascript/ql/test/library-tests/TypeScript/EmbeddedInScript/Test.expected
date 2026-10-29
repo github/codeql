@@ -1,0 +1,9 @@
+classDeclaration
+| test.vue:3:18:5:3 | class M ... er;\\n  } |
+| test_tsx.vue:3:18:5:3 | class M ... er;\\n  } |
+importTarget
+| htmlfile.html:4:13:4:42 | import  ... other"; | other.ts:1:1:8:0 | <toplevel> |
+| other.ts:1:1:1:35 | import  ... t.vue"; | test.vue:2:3:6:0 | <toplevel> |
+| other.ts:2:1:2:42 | import  ... x.vue"; | test_tsx.vue:2:3:6:0 | <toplevel> |
+| test.vue:2:3:2:35 | import  ... other"; | other.ts:1:1:8:0 | <toplevel> |
+| test_tsx.vue:2:3:2:35 | import  ... other"; | other.ts:1:1:8:0 | <toplevel> |

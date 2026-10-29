@@ -1,0 +1,20 @@
+{
+  "extensions": [
+    "rust-lang.rust-analyzer",
+    "bungcip.better-toml",
+    "github.vscode-codeql",
+    "hbenl.vscode-test-explorer",
+    "ms-vscode.test-adapter-converter",
+    "slevesque.vscode-zipexplorer"
+  ],
+  "build": {
+    // Path is relative to the devcontainer.json file.
+    "dockerfile": "Dockerfile.codespaces"
+  },
+  "settings": {
+    "files.watcherExclude": {
+      "**/target/**": true
+    },
+    "codeQL.runningQueries.memory": 2048
+  }
+}

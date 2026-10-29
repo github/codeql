@@ -1,0 +1,4 @@
+package subdir
+
+func Test() {
+}

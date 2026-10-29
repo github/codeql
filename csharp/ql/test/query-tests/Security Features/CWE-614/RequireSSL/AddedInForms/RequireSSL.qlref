@@ -1,0 +1,2 @@
+query: Security Features/CWE-614/RequireSSL.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

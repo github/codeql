@@ -1,0 +1,12 @@
+load("@codegen_deps//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_library")
+
+py_library(
+    name = "loaders",
+    srcs = glob(["*.py"]),
+    visibility = ["//misc/codegen:__subpackages__"],
+    deps = [
+        requirement("toposort"),
+        requirement("inflection"),
+    ],
+)

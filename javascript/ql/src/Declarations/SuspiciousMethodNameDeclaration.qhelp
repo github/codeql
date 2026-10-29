@@ -1,0 +1,78 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In TypeScript, certain keywords have special meanings for member declarations, and misusing them can create confusion:
+</p>
+
+<ul>
+<li>In classes, use <code>constructor</code> rather than <code>new</code> to declare constructors. Using <code>new</code> within a class creates a method named "new" and not a constructor signature.</li>
+<li>In interfaces, use <code>new</code> rather than <code>constructor</code> to declare constructor signatures. Using <code>constructor</code> within an interface creates a method named "constructor" and not a constructor signature.</li>
+<li>Similarly, the keyword <code>function</code> is used to declare functions in some contexts. However, using the name <code>function</code> for a class or interface member declaration declares a method named "function".</li>
+</ul>
+
+<p>
+When these keywords are misused, TypeScript will interpret them as regular method names rather than their intended special syntax, leading to code that may not work as expected.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Consider following these guidelines for clearer code:
+</p>
+
+<ul>
+<li>For classes, use <code>constructor</code> to declare constructors.</li>
+<li>For interfaces, use <code>new</code> to declare constructor signatures (call signatures that create new instances).</li>
+<li>Avoid accidentally creating methods named <code>function</code> by misusing the <code>function</code> keyword within class or interface declarations.</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>
+The following examples show common mistakes when using these keywords:
+</p>
+
+<p>
+This interface mistakenly uses <code>constructor</code>, which creates a method named "constructor" instead of a constructor signature:
+</p>
+<sample src="examples/SuspiciousMethodNameDeclaration.ts" />
+
+<p>
+Use <code>new</code> for constructor signatures in interfaces:
+</p>
+<sample src="examples/SuspiciousMethodNameDeclarationFixed.ts" />
+
+<p>
+This class mistakenly uses <code>new</code>, which creates a method named "new" instead of a constructor:
+</p>
+<sample src="examples/SuspiciousMethodNameDeclarationClass.ts" />
+
+<p>
+Use <code>constructor</code> for constructors in classes:
+</p>
+<sample src="examples/SuspiciousMethodNameDeclarationClassFixed.ts" />
+
+<p>
+This interface uses <code>function</code> as a method name, which declares a method named "function" rather than declaring a function:
+</p>
+<sample src="examples/SuspiciousMethodNameDeclarationFunction.ts" />
+
+<p>
+Use a descriptive method name instead:
+</p>
+<sample src="examples/SuspiciousMethodNameDeclarationFunctionFixed.ts" />
+
+</example>
+<references>
+
+<li>TypeScript Handbook: <a href="https://www.typescriptlang.org/docs/handbook/2/classes.html#constructors">Classes - Constructors</a>.</li>
+<li>TypeScript specification: <a href="https://github.com/microsoft/TypeScript/blob/30cb20434a6b117e007a4959b2a7c16489f86069/doc/spec-ARCHIVED.md#3.8.9">Constructor Type Literals</a>.</li>
+<li>TypeScript specification: <a href="https://github.com/microsoft/TypeScript/blob/30cb20434a6b117e007a4959b2a7c16489f86069/doc/spec-ARCHIVED.md#8.3.1">Constructor Parameters</a>.</li>
+
+</references>
+</qhelp>

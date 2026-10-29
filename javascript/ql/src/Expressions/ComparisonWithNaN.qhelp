@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Arithmetic comparisons with the special not-a-number value <code>NaN</code> are useless: nothing is considered
+to be equal to <code>NaN</code>, not even <code>NaN</code> itself, and similarly nothing is considered greater
+or less than <code>NaN</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Use the <code>isNaN</code> function from the standard library to determine whether a given value is <code>NaN</code>.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+Instead of <code>x === NaN</code>, use <code>isNaN(x)</code>.
+</p>
+
+</example>
+<references>
+
+
+<li>Arvind Kumar: <a href="http://www.devarticles.in/javascript/javascript-common-mistake-of-comparing-variable-with-nan-and-not-with-isnan/">Javascript common mistake of comparing with NaN and not with isNaN</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN">NaN</a>.</li>
+
+
+</references>
+</qhelp>

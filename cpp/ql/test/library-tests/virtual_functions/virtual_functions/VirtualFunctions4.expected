@@ -1,0 +1,16 @@
+| virtual_functions.cpp:4:15:4:28 | withunusedpara | virtual_functions.cpp:1:7:1:7 | A | B1, B2 |  | PureVirtualFunction |
+| virtual_functions.cpp:5:15:5:28 | withunusedpara | virtual_functions.cpp:1:7:1:7 | A | B1, B2 |  | PureVirtualFunction |
+| virtual_functions.cpp:11:15:11:28 | withunusedpara | virtual_functions.cpp:8:7:8:8 | B1 |  | A |  |
+| virtual_functions.cpp:15:15:15:28 | withunusedpara | virtual_functions.cpp:8:7:8:8 | B1 |  | A |  |
+| virtual_functions.cpp:24:15:24:28 | withunusedpara | virtual_functions.cpp:21:7:21:8 | B2 |  | A |  |
+| virtual_functions.cpp:28:15:28:28 | withunusedpara | virtual_functions.cpp:21:7:21:8 | B2 |  | A |  |
+| virtual_functions.cpp:34:26:34:26 | f | virtual_functions.cpp:34:8:34:9 | X1 | X3, X4 |  |  |
+| virtual_functions.cpp:36:23:36:23 | f | virtual_functions.cpp:36:8:36:9 | X3 | X5 | X1 |  |
+| virtual_functions.cpp:37:23:37:23 | f | virtual_functions.cpp:37:8:37:9 | X4 | X5 | X1 |  |
+| virtual_functions.cpp:38:27:38:27 | f | virtual_functions.cpp:38:8:38:9 | X5 | X7 | X3, X4 |  |
+| virtual_functions.cpp:40:23:40:23 | f | virtual_functions.cpp:40:8:40:9 | X7 |  | X5 |  |
+| virtual_functions.cpp:42:26:42:26 | f | virtual_functions.cpp:42:8:42:9 | Y1 | Y3, Y4, Y5, Y7 |  |  |
+| virtual_functions.cpp:44:31:44:31 | f | virtual_functions.cpp:44:8:44:9 | Y3 | Y5 | Y1 |  |
+| virtual_functions.cpp:45:31:45:31 | f | virtual_functions.cpp:45:8:45:9 | Y4 | Y5 | Y1 |  |
+| virtual_functions.cpp:46:27:46:27 | f | virtual_functions.cpp:46:8:46:9 | Y5 | Y7 | Y1, Y3, Y4 |  |
+| virtual_functions.cpp:48:23:48:23 | f | virtual_functions.cpp:48:8:48:9 | Y7 |  | Y1, Y5 |  |

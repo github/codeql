@@ -1,0 +1,140 @@
+/*
+ * External artifacts
+ */
+
+externalData(
+  int id : @externalDataElement,
+  string path : string ref,
+  int column: int ref,
+  string value : string ref
+);
+
+snapshotDate(
+  unique date snapshotDate : date ref
+);
+
+sourceLocationPrefix(
+  string prefix : string ref
+);
+
+/*
+ * Locations and files
+ */
+
+@location = @location_default ;
+
+@locatable = @xmllocatable ;
+
+locations_default(
+  unique int id: @location_default,
+  int file: @file ref,
+  int beginLine: int ref,
+  int beginColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref
+);
+
+hasLocation(
+  int locatableid: @locatable ref,
+  int id: @location ref
+);
+
+@sourceline = @locatable ;
+
+#keyset[element_id]
+numlines(
+  int element_id: @sourceline ref,
+  int num_lines: int ref,
+  int num_code: int ref,
+  int num_comment: int ref
+);
+
+files(
+  unique int id: @file,
+  string name: string ref
+);
+
+folders(
+  unique int id: @folder,
+  string name: string ref
+);
+
+@container = @folder | @file
+
+containerparent(
+  int parent: @container ref,
+  unique int child: @container ref
+);
+
+/*
+ * XML Files
+ */
+
+xmlEncoding(
+  unique int id: @file ref,
+  string encoding: string ref
+);
+
+xmlDTDs(
+  unique int id: @xmldtd,
+  string root: string ref,
+  string publicId: string ref,
+  string systemId: string ref,
+  int fileid: @file ref
+);
+
+xmlElements(
+  unique int id: @xmlelement,
+  string name: string ref,
+  int parentid: @xmlparent ref,
+  int idx: int ref,
+  int fileid: @file ref
+);
+
+xmlAttrs(
+  unique int id: @xmlattribute,
+  int elementid: @xmlelement ref,
+  string name: string ref,
+  string value: string ref,
+  int idx: int ref,
+  int fileid: @file ref
+);
+
+xmlNs(
+  int id: @xmlnamespace,
+  string prefixName: string ref,
+  string URI: string ref,
+  int fileid: @file ref
+);
+
+xmlHasNs(
+  int elementId: @xmlnamespaceable ref,
+  int nsId: @xmlnamespace ref,
+  int fileid: @file ref
+);
+
+xmlComments(
+  unique int id: @xmlcomment,
+  string text: string ref,
+  int parentid: @xmlparent ref,
+  int fileid: @file ref
+);
+
+xmlChars(
+  unique int id: @xmlcharacters,
+  string text: string ref,
+  int parentid: @xmlparent ref,
+  int idx: int ref,
+  int isCDATA: int ref,
+  int fileid: @file ref
+);
+
+@xmlparent = @file | @xmlelement;
+@xmlnamespaceable = @xmlelement | @xmlattribute;
+
+xmllocations(
+  int xmlElement: @xmllocatable ref,
+  int location: @location_default ref
+);
+
+@xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;

@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+ "-//Semmle//qhelp//EN"
+ "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Sensitive information such as passwords should not be displayed in UI components unless explicitly required, to mitigate shoulder-surfing attacks.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+    For editable text fields containing sensitive information, the <code>inputType</code> should be set to <code>textPassword</code> or similar to ensure it is properly masked.
+    Otherwise, sensitive data that must be displayed should be hidden by default, and only revealed based on an explicit user action.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+    In the following (bad) case, sensitive information in <code>password</code> is exposed to the <code>TextView</code>.
+    </p>
+
+    <sample src="AndroidSensitiveTextBad.java"/>
+
+    <p>
+    In the following (good) case, the user must press a button to reveal sensitive information.
+    </p>
+
+    <sample src="AndroidSensitiveTextGood.java"/>
+  </example>
+
+  <references>
+    <li>
+      OWASP Mobile Application Security: <a href="https://mas.owasp.org/MASTG/Android/0x05d-Testing-Data-Storage/#ui-components">Android Data Storage - UI Components</a> 
+    </li>
+  </references>
+
+</qhelp>

@@ -1,0 +1,2 @@
+query: Statements/NestedLoopsSameVariable.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

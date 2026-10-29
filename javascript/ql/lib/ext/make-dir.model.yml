@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["make-dir", "Member[makeDirectory,makeDirectorySync].Argument[0]", "path-injection"]

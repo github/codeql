@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["kotest/kotest/.github/workflows/run-gradle.yml", "*", "input.task", "code-injection", "generated"]

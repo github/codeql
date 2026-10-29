@@ -1,0 +1,3 @@
+| tainted | 27 | Test.java:56:4:56:47 | StringBuilder querySb | 29 | Test.java:58:19:58:26 | category |
+| unescaped | 10 | Test.java:102:4:102:47 | StringBuilder querySb | 12 | Test.java:104:19:104:30 | categoryName |
+| unescaped | 20 | Test.java:112:4:112:48 | StringBuilder querySb2 | 22 | Test.java:114:46:114:57 | categoryName |

@@ -1,0 +1,11 @@
+| args | varargs |
+| keyword_also_req | normal |
+| keyword_only | normal |
+| keyword_req | normal |
+| keyword_w_default | normal |
+| kwargs | kwargs |
+| normal | normal |
+| pos_only | normal |
+| pos_req | normal |
+| pos_w_default | normal |
+| pos_w_default2 | normal |

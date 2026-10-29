@@ -1,0 +1,4 @@
+{
+    "name": "otherlib",
+    "main": "dist/otherlibimpl.node.cjs.js"
+}

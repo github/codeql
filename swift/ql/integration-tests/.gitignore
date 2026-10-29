@@ -1,0 +1,10 @@
+.DS_Store
+.build
+build
+Packages
+xcuserdata/
+DerivedData/
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+*.actual
+test-db
+*.swiftmodule

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["prismlauncher/prismlauncher/.github/workflows/build.yml", "*", "input.build_type", "code-injection", "generated"]

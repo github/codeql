@@ -1,0 +1,3 @@
+| tst.js:6:2:6:30 | js_cook ... value') | tst.js:6:23:6:29 | 'value' |
+| tst.js:11:2:11:36 | browser ... value') | tst.js:11:29:11:35 | 'value' |
+| tst.js:17:2:17:33 | cookie. ... value') | tst.js:17:26:17:32 | 'value' |

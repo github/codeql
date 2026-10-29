@@ -1,0 +1,1 @@
+class Point extends (Math.random() ? Object : Array) {}

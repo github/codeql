@@ -1,0 +1,90 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "JSXElement",
+        "openingElement": {
+          "type": "JSXOpeningElement",
+          "attributes": [],
+          "name": {
+            "type": "JSXIdentifier",
+            "name": "div",
+            "loc": {
+              "start": {
+                "offset": 1
+              },
+              "end": {
+                "offset": 4
+              }
+            }
+          },
+          "selfClosing": false,
+          "loc": {
+            "start": {
+              "offset": 0
+            },
+            "end": {
+              "offset": 5
+            }
+          }
+        },
+        "closingElement": {
+          "type": "JSXClosingElement",
+          "name": {
+            "type": "JSXIdentifier",
+            "name": "div",
+            "loc": {
+              "start": {
+                "offset": 12
+              },
+              "end": {
+                "offset": 15
+              }
+            }
+          },
+          "loc": {
+            "start": {
+              "offset": 10
+            },
+            "end": {
+              "offset": 16
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "Literal",
+            "value": "/text",
+            "raw": "/text",
+            "loc": {
+              "start": {
+                "offset": 5
+              },
+              "end": {
+                "offset": 10
+              }
+            }
+          }
+        ],
+        "loc": {
+          "start": {
+            "offset": 0
+          },
+          "end": {
+            "offset": 16
+          }
+        }
+      },
+      "loc": {
+        "start": {
+          "offset": 0
+        },
+        "end": {
+          "offset": 16
+        }
+      }
+    }
+  ]
+}

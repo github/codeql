@@ -1,0 +1,18 @@
+| allocators.cpp:15:1:18:1 | { ... } | allocators.cpp:16:3:16:37 | declaration |
+| allocators.cpp:16:3:16:37 | declaration | allocators.cpp:16:13:16:36 | initializer for foo |
+| allocators.cpp:16:13:16:36 | initializer for foo | allocators.cpp:16:14:16:36 | <error expr> |
+| allocators.cpp:16:14:16:36 | <error expr> | allocators.cpp:16:18:16:19 | 11 |
+| allocators.cpp:16:14:16:36 | call to Foo | allocators.cpp:16:14:16:36 | new |
+| allocators.cpp:16:14:16:36 | call to operator new | allocators.cpp:16:30:16:31 | 33 |
+| allocators.cpp:16:14:16:36 | new | allocators.cpp:17:3:17:13 | ExprStmt |
+| allocators.cpp:16:18:16:19 | 11 | allocators.cpp:16:22:16:23 | 22 |
+| allocators.cpp:16:22:16:23 | 22 | allocators.cpp:16:14:16:36 | call to operator new |
+| allocators.cpp:16:30:16:31 | 33 | allocators.cpp:16:34:16:35 | 44 |
+| allocators.cpp:16:34:16:35 | 44 | allocators.cpp:16:14:16:36 | call to Foo |
+| allocators.cpp:17:3:17:12 | call to operator delete | allocators.cpp:17:3:17:12 | delete |
+| allocators.cpp:17:3:17:12 | call to ~Foo | allocators.cpp:17:3:17:12 | call to operator delete |
+| allocators.cpp:17:3:17:12 | delete | allocators.cpp:18:1:18:1 | return ... |
+| allocators.cpp:17:3:17:13 | ExprStmt | allocators.cpp:17:10:17:12 | foo |
+| allocators.cpp:17:10:17:12 | foo | allocators.cpp:17:3:17:12 | call to ~Foo |
+| allocators.cpp:18:1:18:1 | return ... | file://:0:0:0:0 | 0 |
+| file://:0:0:0:0 | 0 | allocators.cpp:14:5:14:8 | main |

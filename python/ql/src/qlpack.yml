@@ -1,0 +1,12 @@
+name: codeql/python-queries
+version: 1.8.14-dev
+groups:
+  - python
+  - queries
+dependencies:
+  codeql/python-all: ${workspace}
+  codeql/suite-helpers: ${workspace}
+suites: codeql-suites
+extractor: python
+defaultSuiteFile: codeql-suites/python-code-scanning.qls
+warnOnImplicitThis: true

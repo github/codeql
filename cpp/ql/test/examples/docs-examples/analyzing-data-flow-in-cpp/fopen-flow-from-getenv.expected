@@ -1,0 +1,5 @@
+| fopen.cpp:18:18:18:25 | filename | This 'fopen' uses data from $@. | fopen.cpp:25:30:25:35 | call to getenv | call to 'getenv' |
+| fopen.cpp:18:18:18:25 | filename | This 'fopen' uses data from $@. | fopen.cpp:30:29:30:34 | call to getenv | call to 'getenv' |
+| fopen.cpp:27:26:27:31 | call to getenv | This 'fopen' uses data from $@. | fopen.cpp:27:26:27:31 | call to getenv | call to 'getenv' |
+| fopen.cpp:28:26:28:34 | filename1 | This 'fopen' uses data from $@. | fopen.cpp:14:12:14:17 | call to getenv | call to 'getenv' |
+| fopen.cpp:29:26:29:34 | filename2 | This 'fopen' uses data from $@. | fopen.cpp:24:30:24:35 | call to getenv | call to 'getenv' |

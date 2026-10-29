@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Casting a user-controlled numeric value to a narrower type can result in truncated values
+unless the input is validated.</p>
+
+<p>Narrowing conversions may cause potentially unintended results.
+For example, casting the positive integer value <code>128</code> to type <code>byte</code>
+yields the negative value <code>-128</code>.</p>
+
+</overview>
+<recommendation>
+
+<p>Guard against unexpected truncation of user-controlled arithmetic data by doing one of the
+following:</p>
+
+<ul>
+<li>Validate the user input.</li>
+<li>Define a guard on the cast expression, so that the cast is performed only if the
+input is known to be within the range of the resulting type.</li>
+<li>Avoid casting to a narrower type, and instead continue to use a wider type.</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>In this example, a value is read from standard input into a <code>long</code>. Because the value
+is a user-controlled value, it could be extremely large. Casting this value to a narrower type
+could therefore cause unexpected truncation. The <code>scaled2</code> example uses a guard to avoid
+this problem and checks the range of the input before performing the cast. If the value is too large
+to cast to type <code>int</code> it is rejected as invalid.
+</p>
+
+<sample src="NumericCastTainted.java" />
+
+</example>
+<references>
+
+<li>SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/NUM12-J.+Ensure+conversions+of+numeric+types+to+narrower+types+do+not+result+in+lost+or+misinterpreted+data">NUM12-J. Ensure conversions of numeric types to narrower types do not result in lost or misinterpreted data</a>.</li>
+
+
+
+<!--  LocalWords:  CWE
+ -->
+
+</references>
+</qhelp>

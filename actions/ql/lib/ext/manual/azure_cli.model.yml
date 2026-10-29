@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["azure/cli", "*", "input.inlineScript", "code-injection", "manual"]
+      - ["azure/cli", "*", "input.azcliversion", "command-injection", "manual"]

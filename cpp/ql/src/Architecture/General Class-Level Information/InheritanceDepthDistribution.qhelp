@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This query shows the distribution of inheritance depth across all types, that is, classes. Library types are ignored.</p>
+
+<p>The result of this query is a line graph showing, for each number <i>n</i>, how many types have an inheritance depth of <i>n</i>, where
+the inheritance depth of a type is the length of a longest path in the inheritance hierarchy from top class to the type.</p>
+</overview>
+
+<recommendation>
+<p>The depth of a type is an indication of how deeply nested a type is in a given design. 
+Very deep types can be an indication of over-engineering, whereas a system with predominantly shallow types 
+may not be exploiting object-orientation to the full.</p>
+</recommendation>
+
+<references>
+<li>
+Shyam R. Chidamber and Chris F. Kemerer,
+<i><a href="http://www.pitt.edu/~ckemerer/CK%20research%20papers/MetricForOOD_ChidamberKemerer94.pdf">A Metrics Suite for Object Oriented Design
+</a></i>.
+IEEE Transactions on Software Engineering,
+20(6), pages 476-493, June 1994.</li>
+
+<li>
+Lutz Prechelt, Barbara Unger, Michael Philippsen, and Walter Tich, <i><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.159.2229&amp;rep=rep1&amp;type=pdf">A Controlled Experiment on Inheritance Depth as a Cost Factor for Code Maintenance
+</a></i>.
+Journal of Systems and Software, 65 (2):115-126, 2003.
+</li>
+</references>
+</qhelp>

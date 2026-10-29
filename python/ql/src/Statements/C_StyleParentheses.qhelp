@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Python is designed to be more readable, at least for Western readers, than languages in the C family.
+This is achieved, in part, by using English language keywords and more familiar punctuation.
+Top level expressions are thus bracketed by the keyword and either a colon or new line, which can be more
+easily picked put by eye than parentheses.
+</p>
+
+<p>Using superfluous parentheses can impair this readability by making the code harder to scan and parse by eye.
+Parentheses often serve as a visual clue for more complex expressions, and adding them unnecessarily can be distracting.
+</p>
+
+<p>One notable exception to this rule is when an expression has to span multiple lines. In which case, using of parentheses is
+preferred to using a back slash for line continuation.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Remove the unnecessary parentheses.
+</p>
+
+</recommendation>
+<example>
+<p>In the first of the two examples, most of the expressions are wrapped in parentheses.
+This is harder to read than the second example, especially to a programmer more familiar with Python than with C or Java.
+
+</p><sample src="C_StyleParentheses.py" />
+
+</example>
+<references>
+
+<li>Python Language Reference: <a href="https://docs.python.org/2/reference/grammar.html">Full grammar specification</a>.</li>
+<li>Google Python Style Guide: <a href="https://google.github.io/styleguide/pyguide.html#Parentheses">Use parentheses sparingly</a>.</li>
+<li>Python PEP Index: <a href="http://legacy.python.org/dev/peps/pep-0008/">PEP 8</a>.</li>
+
+
+</references>
+</qhelp>

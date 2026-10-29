@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["ben-manes/caffeine", "*", "input.attempt-delay", "code-injection", "generated"]
+     - ["ben-manes/caffeine", "*", "input.attempt-limit", "code-injection", "generated"]
+     - ["ben-manes/caffeine", "*", "input.arguments", "code-injection", "generated"]
+     - ["ben-manes/caffeine", "*", "input.graal", "code-injection", "generated"]
+     - ["ben-manes/caffeine", "*", "input.java", "code-injection", "generated"]

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["crazy-max/ghaction-chocolatey", "*", "input.args", "command-injection", "manual"]

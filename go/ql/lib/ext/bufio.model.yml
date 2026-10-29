@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["bufio", "", False, "NewReadWriter", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["bufio", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["bufio", "", False, "NewReaderSize", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["bufio", "", False, "NewScanner", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["bufio", "", False, "ScanBytes", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
+      - ["bufio", "", False, "ScanLines", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
+      - ["bufio", "", False, "ScanRunes", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
+      - ["bufio", "", False, "ScanWords", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
+      - ["bufio", "Reader", True, "Peek", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["bufio", "Reader", True, "ReadBytes", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["bufio", "Reader", True, "ReadLine", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["bufio", "Reader", True, "ReadSlice", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["bufio", "Reader", True, "ReadString", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["bufio", "Reader", True, "Reset", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["bufio", "Scanner", True, "Bytes", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["bufio", "Scanner", True, "Text", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["bufio", "Writer", True, "Reset", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]

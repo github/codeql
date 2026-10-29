@@ -1,0 +1,2 @@
+query: experimental/Security/CWE-409/DecompressionBombs.ql
+postprocess: utils/test/PrettyPrintModels.ql

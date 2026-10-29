@@ -1,0 +1,12 @@
+| constmemberaccess | constmemberaccess.cpp:1:7:1:7 | operator= | 1 | 1 | constmemberaccess.cpp:1:7:1:7 | constmemberaccess.cpp:1:7:1:7 | constmemberaccess.cpp:1:7:1:7 | operator= | <none> |
+| constmemberaccess | constmemberaccess.cpp:1:7:1:7 | operator= | 1 | 1 | constmemberaccess.cpp:1:7:1:7 | constmemberaccess.cpp:1:7:1:7 | constmemberaccess.cpp:1:7:1:7 | operator= | <none> |
+| constmemberaccess | constmemberaccess.cpp:6:6:6:6 | f | 6 | 1 | constmemberaccess.cpp:6:10:10:1 | constmemberaccess.cpp:6:10:10:1 | constmemberaccess.cpp:6:10:10:1 | { ... } | 7: declaration |
+| constmemberaccess | constmemberaccess.cpp:6:6:6:6 | f | 7 | 2 | constmemberaccess.cpp:7:2:7:6 | constmemberaccess.cpp:7:2:7:6 | constmemberaccess.cpp:7:2:7:6 | declaration | 8: declaration |
+| constmemberaccess | constmemberaccess.cpp:6:6:6:6 | f | 8 | 3 | constmemberaccess.cpp:8:2:8:7 | constmemberaccess.cpp:8:2:8:7 | constmemberaccess.cpp:8:2:8:7 | declaration | 9: ExprStmt |
+| constmemberaccess | constmemberaccess.cpp:6:6:6:6 | f | 9 | 4 | constmemberaccess.cpp:9:2:9:10 | constmemberaccess.cpp:9:2:9:10 | constmemberaccess.cpp:9:2:9:10 | ExprStmt | 9: c |
+| constmemberaccess | constmemberaccess.cpp:6:6:6:6 | f | 9 | 5 | constmemberaccess.cpp:9:6:9:6 | constmemberaccess.cpp:9:6:9:6 | constmemberaccess.cpp:9:6:9:6 | c | 9: x |
+| constmemberaccess | constmemberaccess.cpp:6:6:6:6 | f | 9 | 6 | constmemberaccess.cpp:9:9:9:9 | constmemberaccess.cpp:9:9:9:9 | constmemberaccess.cpp:9:9:9:9 | x | 9: i |
+| constmemberaccess | constmemberaccess.cpp:6:6:6:6 | f | 9 | 7 | constmemberaccess.cpp:9:2:9:2 | constmemberaccess.cpp:9:2:9:2 | constmemberaccess.cpp:9:2:9:2 | i | 9: ... = ... |
+| constmemberaccess | constmemberaccess.cpp:6:6:6:6 | f | 9 | 8 | constmemberaccess.cpp:9:2:9:9 | constmemberaccess.cpp:9:2:9:9 | constmemberaccess.cpp:9:2:9:9 | ... = ... | 10: return ... |
+| constmemberaccess | constmemberaccess.cpp:6:6:6:6 | f | 10 | 9 | constmemberaccess.cpp:10:1:10:1 | constmemberaccess.cpp:10:1:10:1 | constmemberaccess.cpp:10:1:10:1 | return ... | 10: f |
+| constmemberaccess | constmemberaccess.cpp:6:6:6:6 | f | 10 | 10 | constmemberaccess.cpp:6:6:6:6 | constmemberaccess.cpp:6:6:6:6 | constmemberaccess.cpp:6:6:6:6 | f | <none> |

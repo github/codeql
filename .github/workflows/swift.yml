@@ -1,0 +1,89 @@
+name: "Swift"
+
+on:
+  pull_request:
+    paths:
+      - "swift/**"
+      - "misc/bazel/**"
+      - "misc/codegen/**"
+      - "shared/**"
+      - "!shared/tree-sitter-extractor/**"
+      - "!shared/yeast/**"
+      - "!shared/yeast-macros/**"
+      - "!shared/yeast-schema/**"
+      - "*.bazel*"
+      - .github/workflows/swift.yml
+      - .github/actions/**
+      - codeql-workspace.yml
+      - .pre-commit-config.yaml
+      - "!**/*.md"
+      - "!**/*.qhelp"
+    branches:
+      - main
+      - rc/*
+      - codeql-cli-*
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+    working-directory: swift
+
+jobs:
+  build-and-test:
+    if: github.repository_owner == 'github'
+    strategy:
+      matrix:
+        runner: [ubuntu-latest, macos-15-xlarge]
+      fail-fast: false
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y uuid-dev zlib1g-dev
+      - name: Build Swift extractor
+        shell: bash
+        run: |
+          bazel run :install
+      - name: Run Swift tests
+        shell: bash
+        run: |
+          bazel test ... --test_tag_filters=-override --test_output=errors
+  clang-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
+        name: Check that python code is properly formatted
+        with:
+          extra_args: clang-format --all-files
+  codegen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/fetch-codeql
+      - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
+        name: Check that QL generated code was checked in
+        with:
+          extra_args: swift-codegen --all-files
+      - name: Generate C++ files
+        run: |
+          bazel run codegen -- --generate=trap,cpp --cpp-output=$PWD/generated-cpp-files
+      - uses: actions/upload-artifact@v4
+        with:
+          name: swift-generated-cpp-files
+          path: generated-cpp-files/**
+  check-no-override:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check that no override is present in load.bzl
+        run: bazel test ... --test_tag_filters=override --test_output=errors

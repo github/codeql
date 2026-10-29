@@ -1,0 +1,12 @@
+| test2.py | SSA Variable l0 | 10 | test2.py:7:9:7:10 | SSA Variable l0 | 7 |
+| test2.py | SSA Variable l0 | 10 | test2.py:9:9:9:10 | SSA Variable l0 | 9 |
+| test2.py | SSA Variable l1 | 19 | test2.py:14:5:14:6 | SSA Variable l1 | 14 |
+| test2.py | SSA Variable l1 | 19 | test2.py:18:9:18:10 | SSA Variable l1 | 18 |
+| test3.py | SSA Variable l0 | 11 | test3.py:9:13:9:14 | SSA Variable l0 | 9 |
+| test3.py | SSA Variable l0 | 11 | test3.py:9:13:9:14 | SSA Variable l0 | 9 |
+| test3.py | SSA Variable l0 | 13 | test3.py:9:13:9:14 | SSA Variable l0 | 9 |
+| test3.py | SSA Variable l0 | 13 | test3.py:11:5:11:11 | SSA Variable l0 | 11 |
+| test4.py | SSA Variable x | 14 | test4.py:11:13:11:13 | SSA Variable x | 11 |
+| test4.py | SSA Variable x | 14 | test4.py:13:9:13:9 | SSA Variable x | 13 |
+| test5.py | SSA Variable a | 0 | test5.py:4:9:4:9 | SSA Variable a | 4 |
+| test5.py | SSA Variable a | 0 | test5.py:9:9:9:9 | SSA Variable a | 9 |

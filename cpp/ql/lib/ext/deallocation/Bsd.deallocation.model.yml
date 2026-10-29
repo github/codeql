@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: deallocationFunctionModel
+    data:
+      - ["", "", False, "pool_put", "1"]
+      - ["", "", False, "pool_cache_put", "1"]
+      - ["", "", False, "kmem_free", "0"]

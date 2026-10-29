@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<ItemGroup>
+		<ProjectReference Include="..\Semmle.Autobuild.CSharp\Semmle.Autobuild.CSharp.csproj" />
+		<ProjectReference Include="..\Semmle.Autobuild.Shared\Semmle.Autobuild.Shared.csproj" />
+	</ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>

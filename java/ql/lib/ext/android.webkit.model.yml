@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["android.webkit", "WebView", True, "getOriginalUrl", "()", "", "ReturnValue", "remote", "manual"]
+      - ["android.webkit", "WebView", True, "getUrl", "()", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      # Models representing methods susceptible to XSS attacks.
+      - ["android.webkit", "WebView", True, "evaluateJavascript", "", "", "Argument[0]", "js-injection", "manual"]
+      - ["android.webkit", "WebView", True, "loadData", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["android.webkit", "WebView", True, "loadDataWithBaseURL", "", "", "Argument[1]", "html-injection", "manual"]

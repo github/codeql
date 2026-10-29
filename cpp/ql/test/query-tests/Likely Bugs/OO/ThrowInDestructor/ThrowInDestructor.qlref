@@ -1,0 +1,2 @@
+query: Likely Bugs/OO/ThrowInDestructor.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

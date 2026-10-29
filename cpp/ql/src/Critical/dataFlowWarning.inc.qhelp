@@ -1,0 +1,13 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<fragment>
+<warning>
+This check is an approximation, so some results may not be actual defects in the program. 
+It is not possible in general to compute the actual branch taken in conditional statements such
+as "if" without running the program with all possible input data. This means that it is not possible
+to determine if a particular statement is going to be executed.
+</warning>
+</fragment>
+</qhelp>

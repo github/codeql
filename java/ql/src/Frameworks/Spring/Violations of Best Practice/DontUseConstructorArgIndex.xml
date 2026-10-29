@@ -1,0 +1,13 @@
+<!--AVOID: Using explicit constructor indices makes the bean configuration
+           vulnerable to changes to the constructor-->
+<bean id="billingService1" class="documentation.examples.spring.BillingService">
+    <constructor-arg index="0" value="John Doe"/>
+    <constructor-arg index="1" ref="dao"/>
+</bean>
+
+<!--GOOD: Using type matching makes the bean configuration more robust to changes in
+    the constructor-->
+<bean id="billingService2" class="documentation.examples.spring.BillingService">
+    <constructor-arg ref="dao"/>
+    <constructor-arg type="java.lang.String" value="Jane Doe"/>
+</bean>

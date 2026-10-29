@@ -1,0 +1,2 @@
+query: jsf/4.28 Portable Code/AV Rule 210.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

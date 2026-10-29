@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-415/DoubleFree.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

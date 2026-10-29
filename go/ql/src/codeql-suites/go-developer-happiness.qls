@@ -1,0 +1,8 @@
+- description: Experimental queries showing how we use CodeQL internally for developer happiness
+- queries: .
+- include:
+    id: go/examples/database-call-in-loop
+- include:
+    id: go/examples/deferinloop
+- include:
+    id: go/examples/gorm-error-not-checked

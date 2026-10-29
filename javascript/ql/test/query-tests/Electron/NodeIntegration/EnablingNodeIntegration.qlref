@@ -1,0 +1,2 @@
+query: Electron/EnablingNodeIntegration.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

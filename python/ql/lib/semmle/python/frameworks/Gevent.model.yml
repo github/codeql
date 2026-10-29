@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data:
+      # See https://www.gevent.org/api/gevent.socket.html
+      - ['socket.socket', 'gevent', 'Member[socket].Member[socket].ReturnValue']

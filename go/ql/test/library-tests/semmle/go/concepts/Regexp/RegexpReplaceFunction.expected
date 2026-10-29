@@ -1,0 +1,6 @@
+| file://:0:0:0:0 | ReplaceAll | stdlib.go:16:30:16:37 | "posix?" | stdlib.go:21:16:21:29 | type conversion | stdlib.go:21:2:21:46 | call to ReplaceAll |
+| file://:0:0:0:0 | ReplaceAllFunc | stdlib.go:16:30:16:37 | "posix?" | stdlib.go:22:20:22:33 | type conversion | stdlib.go:22:2:22:85 | call to ReplaceAllFunc |
+| file://:0:0:0:0 | ReplaceAllLiteral | stdlib.go:16:30:16:37 | "posix?" | stdlib.go:23:23:23:36 | type conversion | stdlib.go:23:2:23:53 | call to ReplaceAllLiteral |
+| file://:0:0:0:0 | ReplaceAllLiteralString | stdlib.go:16:30:16:37 | "posix?" | stdlib.go:24:29:24:34 | "src3" | stdlib.go:24:2:24:43 | call to ReplaceAllLiteralString |
+| file://:0:0:0:0 | ReplaceAllString | stdlib.go:16:30:16:37 | "posix?" | stdlib.go:25:22:25:27 | "src4" | stdlib.go:25:2:25:36 | call to ReplaceAllString |
+| file://:0:0:0:0 | ReplaceAllStringFunc | stdlib.go:16:30:16:37 | "posix?" | stdlib.go:26:26:26:31 | "src5" | stdlib.go:26:2:26:75 | call to ReplaceAllStringFunc |

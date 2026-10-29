@@ -1,0 +1,4 @@
+| tst.js:3:7:3:11 | let x | For loop variable x is not used in the loop body. |
+| tst.js:136:6:136:23 | const [key, value] | For loop variable value is not used in the loop body. |
+| tst.js:148:6:148:35 | const [ ...  value] | For loop variable value is not used in the loop body. |
+| tst.js:149:6:149:10 | let i | For loop variable i is not used in the loop body. |

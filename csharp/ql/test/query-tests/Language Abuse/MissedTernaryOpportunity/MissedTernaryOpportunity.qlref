@@ -1,0 +1,2 @@
+query: Language Abuse/MissedTernaryOpportunity.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

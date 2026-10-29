@@ -1,0 +1,32 @@
+/**
+ * @name Useless null check
+ * @description Checking whether an expression is null when that expression cannot
+ *              possibly be null is useless.
+ * @kind problem
+ * @problem.severity warning
+ * @precision very-high
+ * @id java/useless-null-check
+ * @tags quality
+ *       maintainability
+ *       useless-code
+ *       external/cwe/cwe-561
+ */
+
+import java
+import semmle.code.java.dataflow.NullGuards
+import semmle.code.java.controlflow.Guards
+
+from Expr guard, Expr e, Expr reason, string msg
+where
+  guardSuggestsExprMaybeNull(guard, e) and
+  e = clearlyNotNullExpr(reason) and
+  (
+    if reason = directNullGuard(_, _, _)
+    then msg = "This check is useless. $@ cannot be null at this check, since it is guarded by $@."
+    else
+      if reason != e
+      then
+        msg = "This check is useless. $@ cannot be null at this check, since $@ always is non-null."
+      else msg = "This check is useless, since $@ always is non-null."
+  )
+select guard, msg, e, e.toString(), reason, reason.toString()

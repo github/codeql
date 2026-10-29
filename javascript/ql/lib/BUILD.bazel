@@ -1,0 +1,15 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+
+package(default_visibility = ["//javascript:__pkg__"])
+
+pkg_files(
+    name = "dbscheme",
+    srcs = ["semmlecode.javascript.dbscheme"],
+    prefix = "javascript",
+)
+
+pkg_files(
+    name = "dbscheme-stats",
+    srcs = ["semmlecode.javascript.dbscheme.stats"],
+    prefix = "javascript",
+)

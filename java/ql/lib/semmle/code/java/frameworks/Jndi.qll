@@ -1,0 +1,73 @@
+/**
+ * Provides classes and predicates for working with the Java JNDI API.
+ */
+overlay[local?]
+module;
+
+import java
+
+/*--- Types ---*/
+/** The interface `javax.naming.Context`. */
+class TypeNamingContext extends Interface {
+  TypeNamingContext() { this.hasQualifiedName(javaxOrJakarta() + ".naming", "Context") }
+}
+
+/** The class `javax.naming.CompositeName`. */
+class TypeCompositeName extends Class {
+  TypeCompositeName() { this.hasQualifiedName(javaxOrJakarta() + ".naming", "CompositeName") }
+}
+
+/** The class `javax.naming.CompoundName`. */
+class TypeCompoundName extends Class {
+  TypeCompoundName() { this.hasQualifiedName(javaxOrJakarta() + ".naming", "CompoundName") }
+}
+
+/** The interface `javax.naming.directory.DirContext`. */
+class TypeDirContext extends Interface {
+  TypeDirContext() { this.hasQualifiedName(javaxOrJakarta() + ".naming.directory", "DirContext") }
+}
+
+/** The class `javax.naming.directory.SearchControls` */
+class TypeSearchControls extends Class {
+  TypeSearchControls() {
+    this.hasQualifiedName(javaxOrJakarta() + ".naming.directory", "SearchControls")
+  }
+}
+
+/** The class `javax.naming.ldap.LdapName`. */
+class TypeLdapName extends Class {
+  TypeLdapName() { this.hasQualifiedName(javaxOrJakarta() + ".naming.ldap", "LdapName") }
+}
+
+/*--- Methods ---*/
+/** A method with the name `addAll` declared in `javax.naming.ldap.LdapName`. */
+class MethodLdapNameAddAll extends Method {
+  MethodLdapNameAddAll() {
+    this.getDeclaringType() instanceof TypeLdapName and
+    this.hasName("addAll")
+  }
+}
+
+/** A method with the name `getAll` declared in `javax.naming.ldap.LdapName`. */
+class MethodLdapNameGetAll extends Method {
+  MethodLdapNameGetAll() {
+    this.getDeclaringType() instanceof TypeLdapName and
+    this.hasName("getAll")
+  }
+}
+
+/** A method with the name `getRdns` declared in `javax.naming.ldap.LdapName`. */
+class MethodLdapNameGetRdns extends Method {
+  MethodLdapNameGetRdns() {
+    this.getDeclaringType() instanceof TypeLdapName and
+    this.hasName("getRdns")
+  }
+}
+
+/** A method with the name `toString` declared in `javax.naming.ldap.LdapName`. */
+class MethodLdapNameToString extends Method {
+  MethodLdapNameToString() {
+    this.getDeclaringType() instanceof TypeLdapName and
+    this.hasName("toString")
+  }
+}

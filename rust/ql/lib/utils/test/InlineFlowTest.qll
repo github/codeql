@@ -1,0 +1,78 @@
+/**
+ * Inline flow tests for Rust.
+ * See `shared/util/codeql/dataflow/test/InlineFlowTest.qll`
+ */
+
+import rust
+private import codeql.dataflow.test.InlineFlowTest
+private import codeql.rust.controlflow.CfgNodes
+private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.internal.DataFlowImpl
+private import codeql.rust.dataflow.internal.Node as Node
+private import codeql.rust.dataflow.internal.TaintTrackingImpl
+private import codeql.rust.dataflow.internal.ModelsAsData as MaD
+private import internal.InlineExpectationsTestImpl as InlineExpectationsTestImpl
+
+/**
+ * Holds if the target expression of `call` is a path and the string
+ * representation of the path has `name` as a prefix.
+ */
+bindingset[name]
+private predicate callTargetName(CallExpr call, string name) {
+  call.getFunction().(PathExpr).getPath().getText().matches(name + "%")
+}
+
+private module FlowTestImpl implements InputSig<Location, RustDataFlow> {
+  predicate defaultSource(DataFlow::Node source) { callTargetName(source.asExpr(), "source") }
+
+  predicate defaultSink(DataFlow::Node sink) {
+    any(CallExpr call | callTargetName(call, "sink")).getASyntacticArgument() = sink.asExpr()
+  }
+
+  private string getSummaryNodeArgString(AstNode n) {
+    exists(Call call |
+      n = call
+      or
+      not n instanceof Call and
+      n = call.getASyntacticArgument() // `n` is a callback
+    |
+      result = call.getPositionalArgument(0).toString()
+    )
+    or
+    result = n.(Call).getPositionalArgument(0).toString()
+    or
+    result = n.(Param).getPat().(IdentPat).getName().getText()
+  }
+
+  private string getSourceArgString(DataFlow::Node src) {
+    defaultSource(src) and
+    exists(Expr arg | arg = src.asExpr().(Call).getPositionalArgument(0) |
+      not arg instanceof ArrayListExpr and
+      result = arg.toString()
+      or
+      result = arg.(ArrayListExpr).getExpr(0).toString()
+    )
+    or
+    exists(AstNode n |
+      sourceNode(src, _) and
+      n = src.(Node::FlowSummaryNode).getSummaryNode().getSourceSinkReportingElement() and
+      result = getSummaryNodeArgString(n)
+    ) and
+    // Don't use the result if it contains spaces
+    not result.matches("% %")
+  }
+
+  bindingset[src, sink]
+  string getArgString(DataFlow::Node src, DataFlow::Node sink) {
+    (
+      result = getSourceArgString(src)
+      or
+      not exists(getSourceArgString(src)) and result = ""
+    ) and
+    exists(sink)
+  }
+
+  predicate interpretModelForTest = MaD::interpretModelForTest/2;
+}
+
+import InlineFlowTestMake<Location, RustDataFlow, RustTaintTracking, InlineExpectationsTestImpl::Impl, FlowTestImpl>

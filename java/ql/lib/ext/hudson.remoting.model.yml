@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["hudson.remoting", "URLDeserializationHelper", True, "wrapIfRequired", "(URL)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]

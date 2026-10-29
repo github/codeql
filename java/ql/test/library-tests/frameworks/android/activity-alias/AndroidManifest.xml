@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.myapplication">
+
+    <application
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+
+        android:theme="@style/Theme.MyApplication"
+        tools:targetApi="31">
+
+      <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".AnotherActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
+        </activity>
+
+
+        <activity-alias
+            android:name=".MainAlias"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity"></activity-alias>
+
+        <activity-alias
+            android:name=".SecondAlias"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity"></activity-alias>
+
+        <activity-alias
+            android:name=".AnotherAlias"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:targetActivity="com.example.myapplication.AnotherActivity"></activity-alias>
+        <activity
+            android:name=".ExampleActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            ></activity>
+
+        <activity-alias
+            android:name=".ExampleAlias"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:targetActivity=".ExampleActivity">
+        </activity-alias>
+
+        <activity
+            android:name=".Example2Activity"
+            android:exported="false"
+            android:label="@string/app_name">
+        </activity>
+
+        <activity-alias
+            android:name=".Example2Alias"
+            android:label="@string/app_name"
+            android:targetActivity=".Example2Activity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"></action>
+                <action android:name="android.intent.category.LAUNCHER"></action>
+            </intent-filter>
+        </activity-alias>
+    </application>
+
+</manifest>

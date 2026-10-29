@@ -1,0 +1,2 @@
+query: experimental/StandardLibrary/MultipleArgumentsToSetConstructor.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

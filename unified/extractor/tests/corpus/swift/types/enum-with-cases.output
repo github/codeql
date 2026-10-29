@@ -1,0 +1,83 @@
+enum Direction {
+  case north
+  case south
+  case east
+  case west
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        enumDecl
+          attributes:
+          name: identifier "Direction"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "north"
+                      caseKeyword: case
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "south"
+                      caseKeyword: case
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "east"
+                      caseKeyword: case
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "west"
+                      caseKeyword: case
+          modifiers:
+          enumKeyword: enum
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  case ⟨member⟩\n  case ⟨member⟩\n  case ⟨member⟩\n  case ⟨member⟩\n}"
+          modifier: modifier "enum" source="enum"
+          name_node: identifier "Direction" source="Direction"
+          member:
+            variable_declaration source="⟨pattern⟩"
+              modifier: modifier "enum_case" source=""
+              pattern: identifier "north" source="north"
+            variable_declaration source="⟨pattern⟩"
+              modifier: modifier "enum_case" source=""
+              pattern: identifier "south" source="south"
+            variable_declaration source="⟨pattern⟩"
+              modifier: modifier "enum_case" source=""
+              pattern: identifier "east" source="east"
+            variable_declaration source="⟨pattern⟩"
+              modifier: modifier "enum_case" source=""
+              pattern: identifier "west" source="west"

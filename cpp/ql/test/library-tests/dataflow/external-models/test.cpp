@@ -1,0 +1,469 @@
+
+int ymlSource(); int* ymlSourcePtr();
+void ymlSink(int value);
+int ymlStepManual(int value);
+int ymlStepGenerated(int value);
+int ymlStepManual_with_body(int value1, int value2) { return value2; }
+int ymlStepGenerated_with_body(int value, int value2) { return value2; }
+
+void test() {
+	int x = ymlSource();
+
+	ymlSink(0);
+
+	ymlSink(x); // $ ir
+
+	// ymlStepManual is manually modeled so we should always use the model
+	int y = ymlStepManual(x);
+	ymlSink(y); // $ ir
+
+	// ymlStepGenerated is modeled by the model generator so we should use the model only if there is no body
+	int z = ymlStepGenerated(x);
+	ymlSink(z); // $ ir
+
+	// ymlStepManual_with_body is manually modeled so we should always use the model
+	int y2 = ymlStepManual_with_body(x, 0);
+	ymlSink(y2); // $ ir
+
+	int y3 = ymlStepManual_with_body(0, x);
+	ymlSink(y3); // clean
+
+	// ymlStepGenerated_with_body is modeled by the model generator so we should use the model only if there is no body
+	int z2 = ymlStepGenerated_with_body(0, x);
+	ymlSink(z2); // $ ir
+
+	int z3 = ymlStepGenerated_with_body(x, 0);
+	ymlSink(z3); // clean
+}
+
+struct S {
+	int x;
+};
+
+using pthread_t = unsigned long;
+using pthread_attr_t = void*;
+
+void *myThreadFunction(void *arg) {
+    S* s = (S *)arg;
+    ymlSink(s->x); // $ ir
+    return nullptr;
+}
+
+int pthread_create(pthread_t *thread, const pthread_attr_t * attr, void *(*start_routine)(void*), void *arg);
+
+int test_pthread_create() {
+	S s;
+	s.x = ymlSource();
+
+	pthread_t threadId;
+	pthread_create(&threadId, nullptr, myThreadFunction, (void *)&s);
+}
+
+template<typename F>
+void callWithArgument(F f, int x);
+
+struct StructWithOperatorCall_has_constructor {
+	StructWithOperatorCall_has_constructor();
+
+	void operator()(int y) {
+		ymlSink(y); // $ ir
+	}
+};
+
+struct StructWithOperatorCall_no_constructor {
+	void operator()(int y) {
+		ymlSink(y); // $ ir
+	}
+};
+
+struct StructWithOperatorCall_has_constructor_2 {
+	StructWithOperatorCall_has_constructor_2();
+
+	void operator()(int y) {
+		ymlSink(y); // $ ir
+	}
+};
+
+struct StructWithOperatorCall_no_constructor_2 {
+	void operator()(int y) {
+		ymlSink(y); // $ ir
+	}
+};
+
+void test_callWithArgument() {
+	int x = ymlSource();
+	{
+		StructWithOperatorCall_has_constructor func;
+		callWithArgument(func, x);
+	}
+	{
+		StructWithOperatorCall_no_constructor func;
+		callWithArgument(func, x);
+	}
+	callWithArgument(StructWithOperatorCall_has_constructor_2(), x);
+	callWithArgument(StructWithOperatorCall_no_constructor_2(), x);
+}
+
+template<int N, typename T>
+T callWithNonTypeTemplate(const T&);
+
+template<typename T, int N>
+T callWithNonTypeTemplate(const T&);
+
+void test_callWithNonTypeTemplate() {
+	int x = ymlSource();
+	int y1 = callWithNonTypeTemplate<10, int>(x);
+	ymlSink(y1); // $ MISSING: ir
+
+	int y2 = callWithNonTypeTemplate<int, 10>(x);
+	ymlSink(y2); // $ ir
+}
+
+template<class T>
+struct TemplateClass1 {
+  template<class U>
+  U templateFunction(T, U);
+
+	template<class U, class V>
+  V templateFunction2(U, V);
+};
+
+void test_template_function_in_template_class() {
+	TemplateClass1<int> b;
+	int x = ymlSource();
+	auto y = b.templateFunction<unsigned long>(x, 0UL);
+	ymlSink(y); // $ ir
+}
+
+template<class S, class T>
+struct TemplateClass2 {
+	T function(T, S);
+};
+
+template<class V> using PartialInstantiationOfTemplateClass2 = TemplateClass2<int, V>;
+
+void test_partial_class_instantiation() {
+	int x = ymlSource();
+	PartialInstantiationOfTemplateClass2<unsigned long> y;
+	int z = y.function(0UL, x);
+	ymlSink(z); // $ ir
+}
+
+template<class V> struct DeriveFromFromPartialTemplateInstantiation : TemplateClass2<int, V> { };
+
+void test_inheritance() {
+	int x = ymlSource();
+	DeriveFromFromPartialTemplateInstantiation<long> y;
+	auto z = y.function(0L, x);
+	ymlSink(z); // $ ir
+}
+
+template<class T>
+struct Class1 : TemplateClass1<T> {
+  template<class U>
+  int templateFunction3(U u, int x) {
+    return TemplateClass1<T>::template templateFunction2<U, int>(u, x);
+  }
+};
+
+void test_class1() {
+	int x = ymlSource();
+	Class1<int> c;
+	auto y = c.templateFunction3<unsigned long>(0UL, x);
+	ymlSink(y); // $ ir
+}
+
+namespace MyNamespace {
+	struct MyStructInNamespace {
+		int myField;
+	};
+}
+
+int read_field_from_struct(MyNamespace::MyStructInNamespace* s);
+
+void test_fully_qualified_field_test() {
+	MyNamespace::MyStructInNamespace s;
+	s.myField = ymlSource();
+	int x = read_field_from_struct(&s);
+	ymlSink(x); // $ ir
+}
+
+struct MyGlobalStruct {
+	int myField;
+};
+
+int read_field_from_struct_2(MyGlobalStruct* s);
+
+void test_fully_qualified_field_test_2() {
+	MyGlobalStruct s;
+	s.myField = ymlSource();
+	int x = read_field_from_struct_2(&s);
+	ymlSink(x); // $ ir
+}
+
+struct ReverseFlow {
+	int value;
+	int& get_ptr();
+};
+
+struct MyString {
+	char& operator[](unsigned);
+};
+
+void test_reverse_flow(unsigned i, unsigned j) {
+	{
+		ReverseFlow rf;
+		rf.get_ptr() = ymlSource();
+		int x = rf.value;
+		ymlSink(x); // $ ir
+	}
+	{
+		MyString s;
+		s[i] = ymlSource();
+		char c = s[j];
+		ymlSink(c); // $ ir
+	}
+}
+
+
+struct SourceWrapper {
+	int value; int* pointer;
+};
+
+SourceWrapper ymlFieldSource();
+
+template<typename F>
+void source_from_callback_template(F);
+
+using Callback = void(*)(const SourceWrapper*);
+
+void source_from_callback_ptr(Callback);
+
+void f(const SourceWrapper* s) {
+	ymlSink(s->value); // $ ir=250:32 ir=251:27 ir=262:27
+}
+
+void test_source_access_path(bool b) {
+	SourceWrapper wrapper = ymlFieldSource();
+	ymlSink(wrapper.value); // $ ir
+
+	source_from_callback_template(f);
+	source_from_callback_ptr(f);
+
+	Callback f_var;
+	if(b) {
+		f_var = f;
+	} else {
+		f_var = [](const SourceWrapper* s) {
+			ymlSink(s->value); // $ ir
+		};
+	}
+
+	source_from_callback_ptr(f_var);
+
+	source_from_callback_template([](const SourceWrapper* s) {
+		ymlSink(s->value); // $ ir
+	});
+
+	source_from_callback_ptr([](const SourceWrapper* s) {
+		ymlSink(s->value); // $ ir
+	});
+
+	struct S {
+		void operator()(const SourceWrapper* s) {
+			ymlSink(s->value); // $ ir
+		}
+	};
+
+	source_from_callback_template(S());
+}
+
+template<typename F> void source_from_callback_return_template(F);
+template<typename F> void sink_from_callback_return_template(F);
+
+using IntCallback = int(*)(void);
+using IntPtrCallback = int*(*)(void);
+
+void source_from_callback_return_ptr(IntCallback);
+void sink_from_callback_return_ptr(IntCallback);
+
+void source_ptr_from_callback_return_ptr(IntPtrCallback);
+void sink_ptr_from_callback_return_ptr(IntPtrCallback);
+
+int callback_returning_int() { return 0; }
+int callback_returning_int_2() { return 0; }
+int* callback_returning_ptr_int() { return nullptr; }
+
+int return_ymlSource() { return ymlSource(); }
+
+int* return_ptr_to_ymlSource() { return ymlSourcePtr(); }
+
+void test_callback_return_access_paths() {
+	
+	ymlSink((int)ymlSourcePtr()); // clean
+	ymlSink(*ymlSourcePtr()); // $ ir
+
+	source_from_callback_return_template(callback_returning_int);
+	ymlSink(callback_returning_int()); // $ ir
+
+	source_from_callback_return_ptr(callback_returning_int_2);
+	ymlSink(callback_returning_int_2()); // $ ir
+
+	source_ptr_from_callback_return_ptr(callback_returning_ptr_int);
+	int *ptr = callback_returning_ptr_int();
+	ymlSink((int)ptr); // clean
+	ymlSink(*ptr); // $ ir
+
+	sink_from_callback_return_template([]() { return ymlSource(); }); // $ ir
+	sink_from_callback_return_template(return_ymlSource); // $ ir
+
+	sink_ptr_from_callback_return_ptr([]() { return ymlSourcePtr(); }); // $ ir
+	sink_ptr_from_callback_return_ptr(return_ptr_to_ymlSource); // $ ir
+}
+
+void test_parameter(SourceWrapper* p, SourceWrapper s, int* source) {
+	ymlSink(p->value); // $ ir
+	ymlSink((int)p->pointer); // clean
+	ymlSink(*p->pointer); // $ ir
+
+	ymlSink(s.value); // $ ir
+	ymlSink((int)s.pointer); // clean
+	ymlSink(*s.pointer); // $ ir
+
+	ymlSink((int)source); // clean
+	ymlSink(*source); // $ ir
+}
+
+
+struct ConstructableFromInt {
+  short s;
+  unsigned long ul;
+  ConstructableFromInt(short arg) {
+    this->s = arg;
+  }
+
+  ConstructableFromInt(unsigned long arg) {
+    this->ul = arg;
+  }
+};
+
+template<typename T>
+struct Forwarder {
+  template<typename... Args>
+  void forward(Args&&... args);
+  void forwardToElement(int arg);
+
+  T get();
+};
+
+void forward_test() {
+  {
+    Forwarder<ConstructableFromInt> f;
+    short x = ymlSource();
+    f.forward(x);
+
+    ConstructableFromInt c = f.get();
+    ymlSink(c.s); // $ ir
+    ymlSink(c.ul); // $ SPURIOUS: ir
+  }
+  {
+    Forwarder<ConstructableFromInt> f;
+    unsigned long ul = ymlSource();
+    f.forward(ul);
+
+    ConstructableFromInt c = f.get();
+    ymlSink(c.s); // $ SPURIOUS: ir
+    ymlSink(c.ul); // $ ir
+  }
+}
+
+template<typename T>
+struct Container {
+  template<typename... Args>
+  void emplace(int pos, Args&&... args);
+
+  T& get();
+};
+
+struct Element {
+  int x;
+  Element(int);
+};
+
+template<typename T>
+T makeForwarded(int arg);
+
+void forward_test_function_template_constructor() {
+  int x = ymlSource();
+  Element e = makeForwarded<Element>(x);
+  ymlSink(e.x); // $ ir
+}
+
+void forward_test_named_constructor() {
+  Forwarder<Element> f;
+  int x = ymlSource();
+  f.forwardToElement(x);
+  Element e = f.get();
+  ymlSink(e.x); // $ ir
+}
+
+void forward_test_model() {
+  Container<Element> c;
+  int x = ymlSource();
+  c.emplace(0, x);
+
+  Element e = c.get();
+  ymlSink(e.x); // $ ir
+}
+
+struct ElementWithDefaultArgument {
+  int x;
+  ElementWithDefaultArgument(int x, int = 0);
+};
+
+void forward_test_model_with_default_argument() {
+  Container<ElementWithDefaultArgument> c;
+  int x = ymlSource();
+  c.emplace(0, x);
+
+  ElementWithDefaultArgument e = c.get();
+  ymlSink(e.x); // $ ir
+}
+
+struct ElementWithOverloadedArity {
+  int x;
+  ElementWithOverloadedArity(int first) : x(first) {}
+  ElementWithOverloadedArity(int, int second) : x(second) {}
+};
+
+void forward_test_constructor_arity() {
+  int x = ymlSource();
+  {
+    Container<ElementWithOverloadedArity> c;
+    c.emplace(0, x);
+    ymlSink(c.get().x); // $ ir
+  }
+  {
+    Container<ElementWithOverloadedArity> c;
+    c.emplace(0, x, 0);
+    ymlSink(c.get().x); // clean
+  }
+  {
+    Container<ElementWithOverloadedArity> c;
+    c.emplace(0, 0, x);
+    ymlSink(c.get().x); // $ ir
+  }
+}
+
+void forward_test_without_constructor() {
+  {
+    Forwarder<int> f;
+    f.forward(ymlSource());
+    ymlSink(f.get()); // $ ir
+  }
+  {
+    Forwarder<int*> f;
+    f.forward(ymlSourcePtr());
+    ymlSink(*f.get()); // $ ir
+  }
+}

@@ -1,0 +1,13 @@
+name: Self-hosted runner (AMD mi250 CI caller)
+
+on:
+  workflow_run:
+    workflows: ["Test"]
+    branches: ["main"]
+    types: [completed]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.event.workflow_run.head_branch }}

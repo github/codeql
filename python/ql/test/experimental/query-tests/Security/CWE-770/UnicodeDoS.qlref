@@ -1,0 +1,2 @@
+query: experimental/Security/CWE-770/UnicodeDoS.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

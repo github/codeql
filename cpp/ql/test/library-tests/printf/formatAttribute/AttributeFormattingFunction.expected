@@ -1,0 +1,2 @@
+| AttributeFormattingFunction.cpp:4:5:4:12 | myPrintf | 0 | char | wchar_t | wchar_t |
+| AttributeFormattingFunction.cpp:5:5:5:13 | mySprintf | 1 | char | wchar_t | wchar_t |

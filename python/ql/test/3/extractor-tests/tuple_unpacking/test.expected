@@ -1,0 +1,5 @@
+| test.py:2:12:2:17 | Tuple |
+| test.py:6:15:6:20 | Tuple |
+| test.py:8:15:8:19 | Tuple |
+| test.py:10:21:10:23 | Tuple |
+| test.py:10:27:10:29 | Tuple |

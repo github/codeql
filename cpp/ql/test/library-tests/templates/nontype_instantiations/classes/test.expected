@@ -1,0 +1,2 @@
+| test.cpp:2:7:2:9 | Int<10> | file://:0:0:0:0 | int | test.cpp:4:5:4:6 | 10 |
+| test.cpp:2:7:2:9 | Int<i> | file://:0:0:0:0 | int | file://:0:0:0:0 | i |

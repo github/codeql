@@ -1,0 +1,43 @@
+name: Test
+
+on:
+  issue_comment:
+
+jobs:
+  parse-issue:
+    runs-on: ubuntu-latest
+    outputs:
+      payload: ${{ steps.issue_body_parser_request.outputs.payload }}
+    steps:
+      - name: Get JSON Data out of Issue Request
+        uses: peter-murray/issue-body-parser-action@v2
+        id: issue_body_parser_request
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          issue_id: ${{ github.event.issue.number }}
+          payload_marker: request
+          fail_on_missing: false
+      - run: echo ${{ steps.issue_body_parser_request.outputs.payload }}
+  approve-or-deny-request:
+    runs-on: ubuntu-latest
+    needs: parse-issue
+    steps:
+    - run: echo ${{ needs.parse-issue.outputs.payload }}
+    - run: echo ${{ fromJson(needs.parse-issue.outputs.payload) }}
+    - run: echo ${{ fromJson(needs.parse-issue.outputs.payload).version }}
+    - uses: actions/github-script@v7
+      with:
+        script: |
+          core.setOutput('issue_title', ${{ fromJson(needs.parse-issue.outputs.payload).version }}.replaceAll(/"/g, '\\"'));
+    - uses: actions/github-script@v7
+      with:
+        script: |
+          core.setOutput('issue_title', ${{ toJson(github.event.issue.title) }}.replaceAll(/"/g, '\\"'));
+    - uses: actions/github-script@v7
+      with:
+        script: |
+          core.setOutput('issue_title', ${{ github.event.issue.title }}.replaceAll(/"/g, '\\"'));
+    - uses: actions/github-script@v7
+      with:
+        script: |
+          core.setOutput('issue_title', ${{ toJson(github.event.issue.title) }}.replaceAll(/"/g, '\\"'));

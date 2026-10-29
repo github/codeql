@@ -1,0 +1,5 @@
+| NestedLoopsSameVariable.cs:9:29:9:33 | ... < ... | Nested for statement uses loop variable i of enclosing for statement (on line 7). |
+| Test.cs:22:20:22:23 | ... > ... | Nested for statement uses loop variable i of enclosing for statement (on line 19). |
+| Test.cs:34:20:34:22 | ... < ... | Nested for statement uses loop variable i of enclosing for statement (on line 31). |
+| Test.cs:46:20:46:24 | ... <= ... | Nested for statement uses loop variable i of enclosing for statement (on line 43). |
+| Test.cs:57:20:57:23 | ... < ... | Nested for statement uses loop variable i of enclosing for statement (on line 55). |

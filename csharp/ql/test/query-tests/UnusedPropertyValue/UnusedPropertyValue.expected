@@ -1,0 +1,3 @@
+| UnusedPropertyValue.cs:9:9:9:11 | set_Prop1 | Value ignored when setting property. |
+| UnusedPropertyValue.cs:14:9:14:11 | set_Prop2 | Value ignored when setting property. |
+| UnusedPropertyValue.cs:58:9:58:11 | set_Prop1 | Value ignored when setting property. |

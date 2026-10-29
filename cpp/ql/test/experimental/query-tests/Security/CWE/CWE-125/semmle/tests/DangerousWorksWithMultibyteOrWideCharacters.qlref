@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-125/DangerousWorksWithMultibyteOrWideCharacters.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,476 @@
+/**
+ * Provides facade AST classes, with additional hand-written members on top of the generated ones.
+ */
+overlay[local?]
+module;
+
+private import unified as U
+private import AstPlugin
+private import codeql.files.FileSystem
+private import codeql.unified.internal.NameBinding as NameBinding
+
+module Unified {
+  private import Ast::Unified as G
+  import G
+
+  /** The base class for all AST nodes. */
+  class AstNode extends G::AstNode {
+    /** Gets the file containing this AST node. */
+    File getFile() { result = this.getLocation().getFile() }
+
+    private predicate isGenerated() {
+      this.hasModifier("generated")
+      or
+      this.getParent().isGenerated()
+    }
+
+    /** Holds if this AST node comes from ordinary source code. */
+    predicate fromSource() {
+      this.getFile().fromSource() and
+      not this.isGenerated()
+    }
+
+    /** Holds if this AST node has a modifier with the given text. */
+    predicate hasModifier(string text) {
+      exists(Modifier mod |
+        mod.getParent() = this and
+        mod.getValue() = text
+      )
+    }
+
+    /**
+     * Gets the nearest syntactically enclosing class declaration, if any.
+     */
+    ClassLikeDeclaration getEnclosingClass() {
+      exists(AstNode parent | parent = this.getParent() |
+        result = parent
+        or
+        not parent instanceof ClassLikeDeclaration and
+        result = parent.getEnclosingClass()
+      )
+    }
+
+    private AstNode overrideEnclosingCallableParent() {
+      exists(FunctionExpr func |
+        // Capture declarations are evaluated as part of the outer context, and
+        // considered to be captured by the function expression.
+        this = func.getACaptureDeclaration() and
+        result = func.getParent()
+      )
+      or
+      exists(FunctionDeclaration func |
+        // The name of a function declaration is a variable belonging to the enclosing callable.
+        this = func.getNameNode() and
+        result = func.getParent()
+      )
+    }
+
+    /**
+     * Gets the nearest callable containing this AST node.
+     *
+     * If this node is itself a callable, this gets the outer callable, not the node itself.
+     *
+     * Note that the `TopLevel` is callable, so all nodes other than the `TopLevel` itself has an enclosing callable.
+     *
+     * In some cases this predicate skips overs the syntactically-enclosing callable in order to get the callable in which
+     * the AST is actually evaluated (such as for capture declarations in a function expression).
+     */
+    Callable getEnclosingCallable() {
+      exists(AstNode parent |
+        parent = this.overrideEnclosingCallableParent()
+        or
+        not exists(this.overrideEnclosingCallableParent()) and
+        parent = this.getParent()
+      |
+        result = parent
+        or
+        not parent instanceof Callable and
+        result = parent.getEnclosingCallable()
+      )
+    }
+
+    /** Gets the depth of this node in the AST. The root node has a depth of 0. */
+    int getDepth() {
+      not exists(this.getParent()) and result = 0
+      or
+      result = this.getParent().getDepth() + 1
+    }
+  }
+
+  /** A block statement. */
+  class Block extends G::Block {
+    /** Gets the last statement in this block. */
+    Stmt getLastStmt() {
+      exists(int i | result = this.getStmt(i) and not exists(this.getStmt(i + 1)))
+    }
+  }
+
+  /** An expression */
+  class Expr extends G::Expr {
+    /** Gets the string value of this expression, if it is a known string constant. */
+    string getStringValue() {
+      // TODO: we'll want to cook the string literals extractor-side, but for now
+      // just strip the quotes here and ignore escape sequences.
+      exists(string text | text = this.(StringLiteral).getValue() |
+        result = text.regexpCapture("\"(.*)\"", 1)
+        or
+        // Constant-segments of string interpolations are represented as string literals, but their raw text does not have quotes
+        not exists(text.regexpCapture("\"(.*)\"", 1)) and
+        result = text
+      )
+    }
+
+    /** Gets the immediately-enclosing expression, skipping over intermediate sub-nodes like `Argument`, and without crossing a function boundary. */
+    Expr getEnclosingExpr() {
+      result = this.getParent() and
+      not result instanceof Callable
+      or
+      result = this.getParent().(Argument).getParent()
+    }
+  }
+
+  class AccessorDeclaration extends G::AccessorDeclaration {
+    /** Gets the name of this accessor. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class Argument extends G::Argument {
+    /** Gets the name of this argument. */
+    string getName() { result = this.getNameNode().getValue() }
+
+    /** Holds if this is a positional argument. */
+    predicate isPositional() { not exists(this.getName()) }
+
+    /** Gets the 0-based index of this argument among the positional arguments in the surrounding call or tuple. */
+    int getPositionalIndex() {
+      this =
+        rank[result + 1](Argument a |
+          a.getParent() = this.getParent() and a.isPositional()
+        |
+          a order by a.getParentIndex()
+        )
+    }
+  }
+
+  class AssociatedTypeDeclaration extends G::AssociatedTypeDeclaration {
+    /** Gets the name of this associated type. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class BreakExpr extends G::BreakExpr {
+    /** Gets the label name targeted by this break. */
+    string getLabelName() { result = this.getLabelNameNode().getValue() }
+  }
+
+  class Member extends G::Member {
+    /** Gets the unqualified name of this member or a fallback name such as `(anonymous function)` if it has no explicit name. */
+    string getNameOrFallback() {
+      result = this.getNameNode().getValue()
+      or
+      not exists(this.getNameNode()) and
+      (
+        this instanceof ConstructorDeclaration and
+        result = "(constructor)"
+        or
+        this instanceof DestructorDeclaration and
+        result = "(destructor)"
+        or
+        this instanceof FunctionDeclaration and
+        result = "(anonymous function)"
+        or
+        this instanceof VariableDeclaration and
+        result = "(pattern assignment)" // this case is only reachable when the target is a destructuring pattern
+        or
+        this instanceof InitializerDeclaration and
+        result = "(initializer block)"
+        or
+        exists(ClassLikeDeclaration cls | this = cls |
+          result = NameBinding::getIdentifierFromRef(cls.getExtensionTarget()).getValue()
+          or
+          not exists(cls.getExtensionTarget()) and
+          result = "(anonymous class)"
+        )
+        or
+        this instanceof TypeAliasDeclaration and
+        result = "(anonymous type alias)"
+        or
+        this instanceof AssociatedTypeDeclaration and
+        result = "(anonymous associated type)"
+        or
+        this instanceof UnsupportedNode and
+        result = "(unsupported node)"
+        or
+        this instanceof UnhandledNode and
+        result = "(unhandled node)"
+      )
+    }
+
+    /**
+     * Gets the name of this member qualified by the short names of each immediately-enclosing class.
+     */
+    string getQualifiedName() { result = QualifiedName<getParentClass/1>::getQualifiedName(this) }
+  }
+
+  private signature ClassLikeDeclaration getDeclaringClassSig(Member m);
+
+  private module QualifiedName<getDeclaringClassSig/1 getDeclaringClass> {
+    string getQualifiedName(Member m) {
+      result = getQualifiedName(getDeclaringClass(m)) + "." + m.getNameOrFallback()
+      or
+      not exists(getDeclaringClass(m)) and
+      result = m.getNameOrFallback()
+    }
+  }
+
+  private ClassLikeDeclaration getParentClass(Member m) {
+    result.getAMemberIncludingExtensions() = m
+  }
+
+  private ClassLikeDeclaration getEnclosingClass(Member m) { result.getAMember() = m }
+
+  /**
+   * Similar to `Member.getQualifiedName`, but avoids a dependency on name binding, making
+   * it suitable for use in `toString` predicates.
+   */
+  private predicate getQualifiedNameForToString =
+    QualifiedName<getEnclosingClass/1>::getQualifiedName/1;
+
+  class ClassLikeDeclaration extends G::ClassLikeDeclaration {
+    /** Gets the name of this declaration. */
+    string getName() { result = this.getNameNode().getValue() }
+
+    /** Gets a direct base class of this class. */
+    ClassLikeDeclaration getABaseClass() {
+      result.getNameNode() =
+        NameBinding::getStaticBindingTargetFromRef(this.getABaseType().getType())
+    }
+
+    /**
+     * Gets the target of this extension class, or this class itself if it is not an extension.
+     */
+    ClassLikeDeclaration resolve() {
+      not exists(this.getExtensionTarget()) and
+      result = this
+      or
+      exists(NameBinding::NamespaceNode ns |
+        ns.isStaticMemberNamespace(result) and
+        ns.getAnExtension().isStaticMemberNamespace(this)
+      )
+    }
+
+    /**
+     * Gets a member of this class, including members from extensions.
+     */
+    Member getAMemberIncludingExtensions() {
+      exists(ClassLikeDeclaration cls |
+        this = cls.resolve() and
+        result = cls.getAMember()
+      )
+    }
+
+    override string toString() {
+      result =
+        concat(getClassLikeDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
+    }
+  }
+
+  class ConstructorDeclaration extends G::ConstructorDeclaration {
+    /** Gets the name of this constructor. */
+    string getName() { result = this.getNameNode().getValue() }
+
+    override string toString() {
+      result =
+        concat(getConstructorDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
+    }
+  }
+
+  class ContinueExpr extends G::ContinueExpr {
+    /** Gets the label name targeted by this continue. */
+    string getLabelName() { result = this.getLabelNameNode().getValue() }
+  }
+
+  class FunctionDeclaration extends G::FunctionDeclaration {
+    /** Gets the name of this function. */
+    string getName() { result = this.getNameNode().getValue() }
+
+    override string toString() {
+      result =
+        concat(getFunctionDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
+    }
+  }
+
+  class VariableDeclaration extends G::VariableDeclaration {
+    /** Gets the name node of this variable declaration, if any. */
+    override Identifier getNameNode() { result = this.getPattern() }
+
+    /** Gets the name of the variable being declared, if any. */
+    string getName() { result = this.getNameNode().getValue() }
+
+    override string toString() {
+      result =
+        concat(getVariableDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
+    }
+  }
+
+  class LabeledStmt extends G::LabeledStmt {
+    /** Gets the label name of this statement. */
+    string getLabelName() { result = this.getLabelNameNode().getValue() }
+  }
+
+  class MemberAccessExpr extends G::MemberAccessExpr {
+    override string toString() { result = "... ." + this.getMemberName() }
+
+    /** Gets the member name of this access. */
+    string getMemberName() { result = this.getMemberNameNode().getValue() }
+  }
+
+  class NamedPattern extends G::NamedPattern {
+    /** Gets the name bound by this pattern. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class OperatorSyntaxDeclaration extends G::OperatorSyntaxDeclaration {
+    /** Gets the name of this operator. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class Parameter extends G::Parameter {
+    /**
+     * Gets the external name of this parameter.
+     *
+     * Has no result for pseudo-names like `_` that indicate that this is actually a positional parameter.
+     */
+    string getExternalName() { result = this.getExternalNameNode().getValue() and not result = "_" }
+
+    /** Gets the callable on which this parameter appears. */
+    Callable getDeclaringCallable() { result = this.getParent() }
+
+    /** Holds if this is a positional parameter. */
+    predicate isPositional() { not exists(this.getExternalName()) }
+
+    /** Gets the 0-based index of this parameter among the positional parameters of the declaring callable. */
+    int getPositionalIndex() {
+      this =
+        rank[result + 1](Parameter p |
+          p.getDeclaringCallable() = this.getDeclaringCallable() and p.isPositional()
+        |
+          p order by p.getParentIndex()
+        )
+    }
+  }
+
+  /** A tuple expression. */
+  class TupleExpr extends G::TupleExpr {
+    /** Gets the number of elements in this tuple expression. */
+    int getNumberOfElements() { result = count(this.getAnElement()) }
+  }
+
+  class TypeAliasDeclaration extends G::TypeAliasDeclaration {
+    /** Gets the name of this type alias. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  class TypeParameter extends G::TypeParameter {
+    /** Gets the name of this type parameter. */
+    string getName() { result = this.getNameNode().getValue() }
+  }
+
+  /** A binary expression. */
+  class BinaryExpr extends G::BinaryExpr {
+    override string toString() { result = "... " + this.getOperator().getValue() + " ..." }
+
+    /** Gets an operand of this binary expression. */
+    Expr getAnOperand() { result = [this.getLeft(), this.getRight()] }
+  }
+
+  /** A unary expression. */
+  class UnaryExpr extends G::UnaryExpr {
+    override string toString() {
+      result = this.getOperator().(PrefixOperator).getValue() + " ..." or
+      result = "... " + this.getOperator().(PostfixOperator).getValue()
+    }
+  }
+
+  /** A function call */
+  class CallExpr extends G::CallExpr {
+    override string toString() {
+      exists(Expr callee | callee = this.getCallee() |
+        result = callee.(Token).getValue() + "(...)"
+        or
+        result = "... ." + callee.(MemberAccessExpr).getMemberName() + "(...)"
+        or
+        not callee instanceof Token and
+        not callee instanceof MemberAccessExpr and
+        result = "...(...)"
+      )
+    }
+
+    /** Gets the named argument with the given `name`. */
+    Expr getNamedArgument(string name) {
+      exists(Argument arg |
+        arg = this.getAnArgument() and
+        arg.getName() = name and
+        result = arg.getValue()
+      )
+    }
+
+    /** Gets the number of arguments passed to this call, not counting implicit arguments like receiver. */
+    int getNumberOfArguments() { result = count(this.getAnArgument()) }
+
+    /** Gets the number of positional arguments passed to this call. */
+    int getNumberOfPositionalArguments() {
+      result = count(Argument arg | arg = this.getAnArgument() and arg.isPositional())
+    }
+  }
+
+  /** A function expression. */
+  class FunctionExpr extends G::FunctionExpr {
+    /** Gets the number of parameters of this function. */
+    int getNumberOfParameters() { result = count(this.getAParameter()) }
+  }
+
+  class ArrayLiteral extends G::ArrayLiteral {
+    /** Gets the number of elements in this array literal. */
+    int getNumberOfElements() { result = count(this.getAnElement()) }
+  }
+
+  /**
+   * A declaration of a getter associated with a variable or field.
+   *
+   * For example, in Swift:
+   * ```swift
+   * var x: String {
+   *   get { "42" } // getter declaration
+   * }
+   * var x: String { "42" } // getter declaration
+   * ```
+   */
+  final class GetterDeclaration extends AccessorDeclaration {
+    GetterDeclaration() { this.getAccessorKind().getValue() = "get" }
+  }
+
+  /**
+   * A declaration of a setter associated with a variable or field.
+   *
+   * For example, in Swift:
+   * ```swift
+   * var x: String {
+   *   get { "42" }
+   *   set { print(newValue) } // setter declaration
+   * }
+   * ```
+   */
+  final class SetterDeclaration extends AccessorDeclaration {
+    SetterDeclaration() { this.getAccessorKind().getValue() = "set" }
+  }
+
+  /** An `if` statement or conditional expression. */
+  class IfExpr extends G::IfExpr {
+    /** Gets then `then` or `else` branch. */
+    Expr getABranch() { result = [this.getThen(), this.getElse()] }
+  }
+}

@@ -1,0 +1,4 @@
+qltest_use_nightly: true
+qltest_dependencies:
+    - libc = { version = "0.2.174" }
+    - actix-web = { version = "4", default-features = false }

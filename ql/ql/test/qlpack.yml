@@ -1,0 +1,8 @@
+name: codeql/ql-tests
+groups: [ql, test]
+dependencies:
+    codeql/ql: ${workspace}
+    codeql/ql-examples: ${workspace}
+extractor: ql
+tests: .
+warnOnImplicitThis: true

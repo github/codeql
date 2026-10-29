@@ -1,0 +1,7 @@
+| outer/inner/imported | imported |
+| outer/inner/imported/__init__.py | imported.__init__ |
+| outer/inner/imported/x.py | imported.x |
+| outer/inner/y.py | y |
+| src/package | package |
+| src/package/__init__.py | package.__init__ |
+| src/package/test.py | package.test |

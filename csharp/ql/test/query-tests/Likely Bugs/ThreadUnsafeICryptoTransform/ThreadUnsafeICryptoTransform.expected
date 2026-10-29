@@ -1,0 +1,5 @@
+| ThreadUnsafeICryptoTransform.cs:40:36:40:37 | _n | Static field '_n' contains a 'System.Security.Cryptography.ICryptoTransform' that could be used in an unsafe way. |
+| ThreadUnsafeICryptoTransform.cs:45:26:45:30 | _list | Static field '_list' contains a 'System.Security.Cryptography.ICryptoTransform' that could be used in an unsafe way. |
+| ThreadUnsafeICryptoTransform.cs:56:73:56:79 | HashMap | Static field 'HashMap' contains a 'System.Security.Cryptography.ICryptoTransform' that could be used in an unsafe way. |
+| ThreadUnsafeICryptoTransform.cs:65:25:65:29 | _sha1 | Static field '_sha1' contains a 'System.Security.Cryptography.ICryptoTransform' that could be used in an unsafe way. |
+| ThreadUnsafeICryptoTransform.cs:70:19:70:20 | _n | Static field '_n' contains a 'System.Security.Cryptography.ICryptoTransform' that could be used in an unsafe way. |

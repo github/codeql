@@ -1,0 +1,23 @@
+inserts
+| StringInterpolation.cs:10:18:10:33 | $"..." | StringInterpolation.cs:10:31:10:31 | access to local variable i |
+| StringInterpolation.cs:11:18:11:36 | $"..." | StringInterpolation.cs:11:31:11:31 | access to local variable i |
+| StringInterpolation.cs:12:18:12:35 | $"..." | StringInterpolation.cs:12:31:12:31 | access to local variable i |
+| StringInterpolation.cs:13:18:13:38 | $"..." | StringInterpolation.cs:13:31:13:31 | access to local variable i |
+| StringInterpolation.cs:14:18:14:39 | $"..." | StringInterpolation.cs:14:31:14:31 | access to local variable i |
+| StringInterpolation.cs:15:18:15:42 | $"..." | StringInterpolation.cs:15:31:15:31 | access to local variable i |
+texts
+| StringInterpolation.cs:10:18:10:33 | $"..." | StringInterpolation.cs:10:20:10:29 | "Hello, Pi " |
+| StringInterpolation.cs:11:18:11:36 | $"..." | StringInterpolation.cs:11:20:11:29 | "Hello, Pi " |
+| StringInterpolation.cs:12:18:12:35 | $"..." | StringInterpolation.cs:12:20:12:29 | "Hello, Pi " |
+| StringInterpolation.cs:13:18:13:38 | $"..." | StringInterpolation.cs:13:20:13:29 | "Hello, Pi " |
+| StringInterpolation.cs:14:18:14:39 | $"..." | StringInterpolation.cs:14:20:14:29 | "Hello, Pi " |
+| StringInterpolation.cs:15:18:15:42 | $"..." | StringInterpolation.cs:15:20:15:29 | "Hello, Pi " |
+interpolationInsertsWithAlign
+| StringInterpolation.cs:12:18:12:35 | $"..." | StringInterpolation.cs:12:31:12:31 | access to local variable i | StringInterpolation.cs:12:33:12:33 | 6 |
+| StringInterpolation.cs:13:18:13:38 | $"..." | StringInterpolation.cs:13:31:13:31 | access to local variable i | StringInterpolation.cs:13:33:13:33 | 6 |
+| StringInterpolation.cs:14:18:14:39 | $"..." | StringInterpolation.cs:14:31:14:31 | access to local variable i | StringInterpolation.cs:14:33:14:37 | access to local variable align |
+| StringInterpolation.cs:15:18:15:42 | $"..." | StringInterpolation.cs:15:31:15:31 | access to local variable i | StringInterpolation.cs:15:33:15:37 | access to local variable align |
+interpolationInsertsWithFormat
+| StringInterpolation.cs:11:18:11:36 | $"..." | StringInterpolation.cs:11:31:11:31 | access to local variable i | StringInterpolation.cs:11:32:11:34 | "F1" |
+| StringInterpolation.cs:13:18:13:38 | $"..." | StringInterpolation.cs:13:31:13:31 | access to local variable i | StringInterpolation.cs:13:34:13:36 | "F3" |
+| StringInterpolation.cs:15:18:15:42 | $"..." | StringInterpolation.cs:15:31:15:31 | access to local variable i | StringInterpolation.cs:15:38:15:40 | "F2" |

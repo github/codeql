@@ -1,0 +1,45 @@
+getName
+| tst.js:1:1:1:15 | function f() {} | f |
+| tst.js:2:2:2:16 | function g() {} | g |
+| tst.js:4:9:4:22 | function () {} | h |
+| tst.js:5:9:5:14 | x => x | k |
+| tst.js:6:9:6:23 | function n() {} | n |
+| tst.js:9:6:9:18 | function() {} | p |
+| tst.js:10:6:10:20 | function f() {} | f |
+| tst.js:11:8:11:12 | () {} | x |
+| tst.js:12:8:12:13 | (v) {} | x |
+| tst.js:13:4:13:8 | () {} | m |
+| tst.js:17:14:17:18 | () {} | constructor |
+| tst.js:18:4:18:8 | () {} | n |
+| tst.js:22:17:22:16 | () {} | constructor |
+| tst.js:22:21:22:20 | (...arg ... rgs); } | constructor |
+| tst.js:25:17:25:16 | () {} | constructor |
+| tst.js:26:19:26:18 | () {} | constructor |
+| tst.js:27:8:27:12 | () {} | y |
+| tst.js:28:8:28:13 | (v) {} | y |
+| tst.js:31:9:31:21 | function() {} | foo |
+| tst.js:32:12:32:24 | function() {} | Hey |
+| tst.js:34:15:34:14 | () {} | constructor |
+#select
+| tst.js:1:1:1:15 | function f() {} | function f |
+| tst.js:2:2:2:16 | function g() {} | function g |
+| tst.js:3:2:3:14 | function() {} | anonymous function |
+| tst.js:4:9:4:22 | function () {} | function h |
+| tst.js:5:9:5:14 | x => x | function k |
+| tst.js:6:9:6:23 | function n() {} | function n |
+| tst.js:9:6:9:18 | function() {} | method p |
+| tst.js:10:6:10:20 | function f() {} | function f |
+| tst.js:11:8:11:12 | () {} | getter for property x |
+| tst.js:12:8:12:13 | (v) {} | setter for property x |
+| tst.js:13:4:13:8 | () {} | method m |
+| tst.js:17:14:17:18 | () {} | constructor of class C |
+| tst.js:18:4:18:8 | () {} | method n of class C |
+| tst.js:22:17:22:16 | () {} | default constructor of anonymous class |
+| tst.js:22:21:22:20 | (...arg ... rgs); } | default constructor of class D |
+| tst.js:25:17:25:16 | () {} | default constructor of class E |
+| tst.js:26:19:26:18 | () {} | default constructor of class G |
+| tst.js:27:8:27:12 | () {} | getter method for property y of class G |
+| tst.js:28:8:28:13 | (v) {} | setter method for property y of class G |
+| tst.js:31:9:31:21 | function() {} | anonymous function |
+| tst.js:32:12:32:24 | function() {} | anonymous function |
+| tst.js:34:15:34:14 | () {} | default constructor of anonymous class |

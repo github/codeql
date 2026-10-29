@@ -1,0 +1,1 @@
+| tst.js:14:3:14:16 | return "nope"; | Useless return statement in setter function. |

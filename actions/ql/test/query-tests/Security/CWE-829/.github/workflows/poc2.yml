@@ -1,0 +1,58 @@
+name: branch-deploy
+
+on:
+  issue_comment:
+    types: [created]
+
+# Permissions needed for reacting and adding comments for IssueOps commands
+permissions:
+  pull-requests: write
+  deployments: write
+  contents: write
+  checks: read
+
+jobs:
+  branch-deploy:
+    name: branch-deploy
+    if: # only run on pull request comments and very specific comment body string as defined in our branch-deploy settings
+      ${{ github.event.issue.pull_request &&
+      (startsWith(github.event.comment.body, '.deploy') ||
+      startsWith(github.event.comment.body, '.noop') ||
+      startsWith(github.event.comment.body, '.lock') ||
+      startsWith(github.event.comment.body, '.help') ||
+      startsWith(github.event.comment.body, '.wcid') ||
+      startsWith(github.event.comment.body, '.unlock')) }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: branch-deploy
+        id: branch-deploy
+        uses: github/branch-deploy@v9
+        with:
+          trigger: ".deploy"
+          environment: "production"
+          sticky_locks: "true" # https://github.com/github/branch-deploy/blob/1f6516ef5092890ce75d9e97ca7cbdb628e38bdd/docs/hubot-style-deployment-locks.md
+        
+      # Check out the ref from the output of the IssueOps command
+      - uses: actions/checkout@v4
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' }}
+        with:
+          ref: ${{ steps.branch-deploy.outputs.ref }}
+
+      - uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677 # pin@v1.172.0
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' }}
+        with:
+          bundler-cache: true
+
+      - name: bootstrap
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' }}
+        run: script/bootstrap
+
+      # Here we run a deploy. It is "gated" by the IssueOps logic and will only run if the outputs from our branch-deploy step indicate that the workflow should continue
+      - name: deploy
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' && steps.branch-deploy.outputs.noop != 'true' }}
+        run: |
+          set -o pipefail
+          script/deploy | tee deploy.out
+          bundle exec ruby script/ci/render_deploy_message.rb
+          rm deploy.out

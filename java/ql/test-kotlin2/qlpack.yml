@@ -1,0 +1,8 @@
+name: codeql/java-kotlin2-tests
+groups: [java, test]
+dependencies:
+    codeql/java-all: ${workspace}
+    codeql/java-queries: ${workspace}
+extractor: java
+tests: .
+warnOnImplicitThis: true

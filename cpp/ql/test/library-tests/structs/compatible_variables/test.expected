@@ -1,0 +1,12 @@
+| a.c:5:7:5:11 | foo_x |
+| a.c:10:7:10:11 | bar_y |
+| a.c:14:19:14:21 | bar |
+| b.c:7:8:7:20 | some_func_ptr |
+| b.c:8:13:8:20 | foo_ptr1 |
+| b.c:9:8:9:15 | foo_ptr2 |
+| b.c:13:17:13:21 | bar_x |
+| b.c:17:19:17:21 | bar |
+| file://:0:0:0:0 | fp_offset |
+| file://:0:0:0:0 | gp_offset |
+| file://:0:0:0:0 | overflow_arg_area |
+| file://:0:0:0:0 | reg_save_area |

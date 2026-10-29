@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["endbug/latest-tag", "*", "input.ref", "command-injection", "manual"]
+      - ["endbug/latest-tag", "*", "input.tag-name", "command-injection", "manual"]
+      - ["endbug/latest-tag", "*", "input.git-directory", "command-injection", "manual"]
+      - ["endbug/latest-tag", "*", "input.description", "command-injection", "manual"]

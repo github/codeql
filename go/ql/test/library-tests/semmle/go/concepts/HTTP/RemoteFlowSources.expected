@@ -1,0 +1,17 @@
+| main.go:17:10:17:15 | selection of Body |
+| main.go:18:10:18:15 | selection of Form |
+| main.go:19:10:19:17 | selection of Header |
+| main.go:20:10:20:14 | selection of URL |
+| main.go:24:10:24:16 | selection of Body |
+| main.go:25:10:25:16 | selection of Form |
+| main.go:26:10:26:18 | selection of Header |
+| main.go:27:10:27:15 | selection of URL |
+| main.go:49:2:49:11 | selection of Header |
+| main.go:50:2:50:11 | selection of Header |
+| main.go:51:2:51:11 | selection of Header |
+| main.go:63:49:63:53 | selection of URL |
+| server.go:8:6:8:13 | selection of Header |
+| server.go:9:6:9:13 | selection of Header |
+| server.go:10:6:10:13 | selection of Header |
+| server.go:13:6:13:11 | selection of Body |
+| server.go:14:15:14:23 | selection of GetBody |

@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+An interface that contains methods whose return types clash with protected
+methods on <code>java.lang.Object</code> can never be implemented, because
+methods cannot be overloaded based simply on their return type.</p>
+
+</overview>
+<recommendation>
+
+<p>
+If the interface is useful, name methods so that they
+do not clash with methods in <code>Object</code>. Otherwise you should delete the interface.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the interface <code>I</code> is useless because the 
+<code>clone</code> method must return type <code>java.lang.Object</code>:</p>
+
+<sample src="InterfaceCannotBeImplemented.java" />
+
+<p>
+Any attempt to implement the interface produces an error:
+</p>
+
+<pre>
+InterfaceCannotBeImplemented.java:6: clone() in C cannot override
+  clone() in java.lang.Object; attempting to use incompatible return
+  type
+found   : int
+required: java.lang.Object
+  public int clone() {
+             ^
+1 error
+</pre>
+
+</example>
+<references>
+
+
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+Java Language Specification:
+<a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-9.html#jls-9.2">9.2 Interface Members</a>.
+</li>
+
+
+</references>
+</qhelp>

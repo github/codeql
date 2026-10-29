@@ -1,0 +1,1 @@
+This is a workaround for a bug in which the extractor can't resolve type javax.management.remote.rmi.RMIConnectorServer even though it has been part of the JDK since Java 5

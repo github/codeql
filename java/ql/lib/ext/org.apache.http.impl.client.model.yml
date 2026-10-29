@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.http.impl.client", "RequestWrapper", True, "setURI", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]

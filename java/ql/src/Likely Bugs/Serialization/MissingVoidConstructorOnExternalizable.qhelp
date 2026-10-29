@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A class that implements <code>java.io.Externalizable</code> must have a public no-argument 
+constructor. The constructor is used by the Java serialization framework when it creates the object 
+during deserialization. If the class does not define such a constructor, the Java 
+serialization framework throws an <code>InvalidClassException</code>.
+</p>
+
+<p>
+The Java Development Kit API documentation for <code>Externalizable</code> states:
+</p>
+
+<blockquote>
+<p>When an <code>Externalizable</code> object is reconstructed, an instance is created using the public no-arg constructor, 
+then the <code>readExternal</code> method called.</p>
+</blockquote>
+
+</overview>
+<recommendation>
+<p>
+Make sure that externalizable classes always have a no-argument constructor. 
+</p>
+
+</recommendation>
+<example>
+<p>In the following example, <code>WrongMemo</code> does not declare a public no-argument constructor. 
+When the Java serialization framework tries to deserialize the object, an <code>InvalidClassException</code>
+is thrown. However, <code>Memo</code> does declare a public no-argument constructor, so that the 
+object is deserialized successfully.</p>
+<sample src="MissingVoidConstructorOnExternalizable.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Externalizable.html">Externalizable</a>.
+</li>
+
+
+</references>
+</qhelp>

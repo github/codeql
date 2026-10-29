@@ -1,0 +1,70 @@
+fieldDeclWithNamedFields
+| aliases.go:6:26:6:35 | field declaration | 0 | aliases.go:6:26:6:26 | x |
+| aliases.go:6:26:6:35 | field declaration | 0 | aliases.go:8:26:8:26 | x |
+| aliases.go:6:26:6:35 | field declaration | 0 | aliases.go:19:17:19:17 | x |
+| aliases.go:8:26:8:35 | field declaration | 0 | aliases.go:6:26:6:26 | x |
+| aliases.go:8:26:8:35 | field declaration | 0 | aliases.go:8:26:8:26 | x |
+| aliases.go:8:26:8:35 | field declaration | 0 | aliases.go:19:17:19:17 | x |
+| aliases.go:19:17:19:21 | field declaration | 0 | aliases.go:6:26:6:26 | x |
+| aliases.go:19:17:19:21 | field declaration | 0 | aliases.go:8:26:8:26 | x |
+| aliases.go:19:17:19:21 | field declaration | 0 | aliases.go:19:17:19:17 | x |
+| aliases.go:29:34:29:42 | field declaration | 0 | aliases.go:29:34:29:34 | x |
+| cyclic.go:9:2:9:6 | field declaration | 0 | cyclic.go:9:2:9:2 | f |
+| depth.go:11:2:11:6 | field declaration | 0 | depth.go:11:2:11:2 | f |
+| depth.go:19:2:19:9 | field declaration | 0 | depth.go:19:2:19:2 | f |
+| embedded.go:4:2:4:9 | field declaration | 0 | embedded.go:4:2:4:2 | A |
+| embedded.go:13:2:13:11 | field declaration | 0 | embedded.go:13:2:13:4 | Baz |
+| generic.go:4:2:4:15 | field declaration | 0 | generic.go:4:2:4:11 | valueField |
+| generic.go:5:2:5:16 | field declaration | 0 | generic.go:5:2:5:13 | pointerField |
+| generic.go:6:2:6:19 | field declaration | 0 | generic.go:6:2:6:11 | arrayField |
+| generic.go:7:2:7:17 | field declaration | 0 | generic.go:7:2:7:11 | sliceField |
+| generic.go:8:2:8:26 | field declaration | 0 | generic.go:8:2:8:9 | mapField |
+| generic.go:12:2:12:40 | field declaration | 0 | generic.go:12:2:12:13 | pointerField |
+| generic.go:16:2:16:31 | field declaration | 0 | generic.go:16:2:16:5 | root |
+| generic.go:20:2:20:30 | field declaration | 0 | generic.go:20:2:20:12 | structField |
+| generic.go:21:2:21:20 | field declaration | 0 | generic.go:21:2:21:9 | mapField |
+| generic.go:25:2:25:33 | field declaration | 0 | generic.go:25:2:25:12 | structField |
+| generic.go:29:2:29:43 | field declaration | 0 | generic.go:29:2:29:13 | pointerField |
+| pkg1/embedding.go:37:2:37:6 | field declaration | 0 | pkg1/embedding.go:37:2:37:2 | f |
+| pkg1/promotedStructs.go:5:2:5:14 | field declaration | 0 | pkg1/promotedStructs.go:5:2:5:7 | SField |
+| pkg1/promotedStructs.go:14:2:14:14 | field declaration | 0 | pkg1/promotedStructs.go:14:2:14:7 | PField |
+| pkg1/tst.go:6:2:6:6 | field declaration | 0 | pkg1/tst.go:6:2:6:2 | f |
+| pkg1/tst.go:12:2:12:8 | field declaration | 0 | pkg1/tst.go:12:2:12:4 | Foo |
+| pkg1/tst.go:23:2:23:8 | field declaration | 0 | pkg1/tst.go:23:2:23:4 | Bar |
+| pkg1/tst.go:27:2:27:9 | field declaration | 0 | pkg1/tst.go:27:2:27:4 | val |
+| pkg1/tst.go:28:2:28:10 | field declaration | 0 | pkg1/tst.go:28:2:28:5 | flag |
+| pkg1/tst.go:32:2:32:10 | field declaration | 0 | pkg1/tst.go:32:2:32:5 | flag |
+| pkg2/tst.go:4:2:4:6 | field declaration | 0 | pkg2/tst.go:4:2:4:2 | g |
+| pkg2/tst.go:4:2:4:6 | field declaration | 0 | pkg2/tst.go:8:2:8:2 | g |
+| pkg2/tst.go:8:2:8:6 | field declaration | 0 | pkg2/tst.go:4:2:4:2 | g |
+| pkg2/tst.go:8:2:8:6 | field declaration | 0 | pkg2/tst.go:8:2:8:2 | g |
+| pkg2/tst.go:17:2:17:15 | field declaration | 0 | pkg2/tst.go:17:2:17:8 | NCField |
+| struct_tags.go:4:2:4:19 | field declaration | 0 | struct_tags.go:4:2:4:7 | field1 |
+| struct_tags.go:5:2:5:19 | field declaration | 0 | struct_tags.go:5:2:5:7 | field2 |
+| struct_tags.go:9:2:9:19 | field declaration | 0 | struct_tags.go:9:2:9:7 | field1 |
+| struct_tags.go:10:2:10:19 | field declaration | 0 | struct_tags.go:10:2:10:7 | field2 |
+fieldDeclWithEmbeddedField
+| cyclic.go:4:2:4:3 | field declaration | * s |
+| cyclic.go:8:2:8:3 | field declaration | * u |
+| cyclic.go:13:2:13:2 | field declaration | t |
+| cyclic.go:17:2:17:2 | field declaration | s |
+| depth.go:6:2:6:2 | field declaration | b |
+| depth.go:7:2:7:2 | field declaration | c |
+| depth.go:15:2:15:2 | field declaration | d |
+| embedded.go:8:2:8:5 | field declaration | * Baz |
+| embedded.go:12:2:12:4 | field declaration | Qux |
+| main.go:18:2:18:15 | field declaration | NameClash |
+| pkg1/embedding.go:19:23:19:26 | field declaration | base |
+| pkg1/embedding.go:22:26:22:30 | field declaration | * base |
+| pkg1/embedding.go:25:24:25:31 | field declaration | embedder |
+| pkg1/embedding.go:28:24:28:31 | field declaration | embedder |
+| pkg1/embedding.go:36:2:36:5 | field declaration | base |
+| pkg1/promotedStructs.go:22:22:22:22 | field declaration | S |
+| pkg1/promotedStructs.go:25:22:25:22 | field declaration | P |
+| pkg1/tst.go:7:2:7:4 | field declaration | Foo |
+| pkg1/tst.go:8:2:8:4 | field declaration | Bar |
+| pkg1/tst.go:13:2:13:4 | field declaration | Bar |
+| pkg1/tst.go:17:2:17:5 | field declaration | * Foo |
+| pkg1/tst.go:18:2:18:5 | field declaration | * Bar |
+| pkg1/tst.go:22:2:22:5 | field declaration | * Foo |
+| pkg1/tst.go:62:2:62:15 | field declaration | NameClash |

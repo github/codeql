@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["<generic_array::GenericArray>::from_slice", "Argument[0].Reference", "ReturnValue.Reference", "value", "manual"]
+      - ["<generic_array::GenericArray>::from_mut_slice", "Argument[0].Reference", "ReturnValue.Reference", "value", "manual"]
+      - ["<generic_array::GenericArray>::try_from_slice", "Argument[0].Reference", "ReturnValue.Field[crate::result::Result::Ok(0)].Reference", "value", "manual"]
+      - ["<generic_array::GenericArray>::try_from_mut_slice", "Argument[0].Reference", "ReturnValue.Field[crate::result::Result::Ok(0)].Reference", "value", "manual"]

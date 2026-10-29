@@ -1,0 +1,17 @@
+| value_categories.cpp:6:9:6:9 | x |
+| value_categories.cpp:9:12:9:12 | y |
+| value_categories.cpp:16:6:16:6 | p |
+| value_categories.cpp:16:10:16:11 | * ... |
+| value_categories.cpp:16:11:16:11 | q |
+| value_categories.cpp:22:12:22:14 | * ... |
+| value_categories.cpp:29:13:29:13 | (reference dereference) |
+| value_categories.cpp:29:13:29:13 | r |
+| value_categories.cpp:33:15:33:15 | r |
+| value_categories.cpp:38:5:38:5 | r |
+| value_categories.cpp:42:12:42:12 | r |
+| value_categories.cpp:57:5:57:6 | rr |
+| value_categories.cpp:62:31:62:32 | rr |
+| value_categories.cpp:74:12:74:12 | s |
+| value_categories.cpp:81:18:81:21 | Func |
+| value_categories.cpp:98:15:98:15 | x |
+| value_categories.cpp:108:14:108:24 | access to array |

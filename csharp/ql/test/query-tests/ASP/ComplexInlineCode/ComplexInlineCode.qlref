@@ -1,0 +1,2 @@
+query: ASP/ComplexInlineCode.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,69 @@
+for i in 0..<10 {
+  print(i)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        forStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "i"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          pattern:
+            identifierPattern
+              identifier: identifier "i"
+          inKeyword: in
+          forKeyword: for
+          sequence:
+            infixOperatorExpr
+              operator:
+                binaryOperatorExpr
+                  operator: binaryOperator "..<"
+              leftOperand:
+                integerLiteralExpr
+                  literal: integerLiteral "0"
+              rightOperand:
+                integerLiteralExpr
+                  literal: integerLiteral "10"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        for_each_stmt source="for ⟨pattern⟩ in ⟨iterable⟩ ⟨body⟩"
+          pattern: identifier "i" source="i"
+          iterable:
+            binary_expr source="⟨left⟩⟨operator⟩⟨right⟩"
+              left: int_literal "0" source="0"
+              operator: infix_operator "..<" source="..<"
+              right: int_literal "10" source="10"
+          body:
+            block source="{\n  ⟨stmt⟩\n}"
+              stmt:
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
+                  argument:
+                    argument source="⟨value⟩"
+                      value: identifier "i" source="i"

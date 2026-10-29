@@ -1,0 +1,396 @@
+C and C++ built-in support
+================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/cpp-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/src>`__)
+and the CodeQL library pack ``codeql/cpp-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+   :align: left
+
+   Name, Category
+   `Berkeley socket API library <https://en.wikipedia.org/wiki/Berkeley_sockets#Socket_API_functions>`__, Network communicator
+   `Bloomberg Standard Library <https://github.com/bloomberg/bde>`__, Utility library
+   string.h, String library
+
+C# built-in support
+================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/csharp-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/src>`__)
+and the CodeQL library pack ``codeql/csharp-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+   :align: left
+
+   Name, Category
+   ASP.NET, Web application framework
+   ASP.NET Core, Web application framework
+   ASP.NET Razor templates, Web application framework
+   Dapper, Database ORM
+   EntityFramework, Database ORM
+   EntityFramework Core, Database ORM
+   Json.NET, Serialization
+   NHibernate, Database ORM
+   WinForms, User interface
+
+GitHub Actions built-in support
+================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/actions-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/actions/ql/src>`__)
+and the CodeQL library pack ``codeql/actions-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/actions/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+   :align: left
+
+   Name, Category
+   `GitHub Actions workflow YAML files <https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions>`__, Workflows
+   `GitHub Actions action metadata YAML files <https://docs.github.com/en/actions/sharing-automations/creating-actions/metadata-syntax-for-github-actions>`__, Actions
+
+Go built-in support
+================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/go-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/src>`__)
+and the CodeQL library pack ``codeql/go-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+   :align: left
+
+   Name, Category
+   `AWS Lambda <https://docs.aws.amazon.com/lambda/latest/dg/lambda-golang.html>`_, Serverless framework
+   `beego <https://beego.me/>`_, Web/logging/database framework
+   `Chi <https://github.com/go-chi/chi>`_, Web framework
+   Couchbase (`gocb <https://github.com/couchbase/gocb>`_ and `go-couchbase <https://www.github.com/couchbase/go-couchbase>`_), Database
+   `Echo <https://echo.labstack.com/>`_, Web framework
+   `Gin <https://github.com/gin-gonic/gin>`_, Web framework
+   `glog <https://github.com/golang/glog>`_, Logging library
+   `go-pg <https://pg.uptrace.dev/>`_, Database
+   `go-restful <https://github.com/emicklei/go-restful>`_, Web application framework
+   `go-sh <https://github.com/codeskyblue/go-sh>`_, Utility library
+   `go-spew <https://github.com/davecgh/go-spew>`_, Logging library
+   `GoKit <https://github.com/go-kit/kit>`_, Microservice toolkit
+   `Gokogiri <https://github.com/jbowtie/gokogiri>`_, XPath library
+   `golang.org/x/crypto/ssh <https://pkg.go.dev/golang.org/x/crypto/ssh>`_, Network communicator
+   `golang.org/x/net/websocket <https://pkg.go.dev/golang.org/x/net/websocket>`_, Network communicator
+   `goproxy <https://github.com/elazarl/goproxy>`_, HTTP proxy library
+   `Gorilla mux <https://github.com/gorilla/mux>`_, HTTP request router and dispatcher
+   `Gorilla websocket <https://github.com/gorilla/websocket>`_, Network communicator
+   `GORM <https://gorm.io/>`_, Database
+   `GoWebsocket <https://github.com/sacOO7/gowebsocket>`_, Network communicator
+   `goxpath <https://github.com/ChrisTrenkamp/goxpath>`_, XPath library
+   `htmlquery <https://github.com/antchfx/htmlquery>`_, XPath library
+   `json-iterator <https://github.com/json-iterator/go>`_, Serialization
+   `jsonpatch <https://github.com/evanphx/json-patch>`_, Serialization
+   `jsonquery <https://github.com/antchfx/jsonquery>`_, XPath library
+   `klog <https://github.com/kubernetes/klog>`_, Logging library
+   `Logrus <https://github.com/sirupsen/logrus>`_, Logging library
+   `Macaron <https://gopkg.in/macaron.v1>`_, Web framework
+   `mongo <https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo>`_, Database
+   `coder/websocket <https://github.com/coder/websocket>`_ (formerly nhooyr.io/websocket), Network communicator
+   `protobuf <https://pkg.go.dev/google.golang.org/protobuf>`_, Serialization
+   `Revel <https://revel.github.io/>`_, Web framework
+   `SendGrid <https://github.com/sendgrid/sendgrid-go>`_, Email library
+   `sqlx <https://jmoiron.github.io/sqlx/>`_, Database
+   `Squirrel <https://github.com/Masterminds/squirrel>`_, Database
+   `ws <https://github.com/gobwas/ws>`_, Network communicator
+   `xmlpath <https://gopkg.in/xmlpath.v2>`_, XPath library
+   `xmlquery <https://github.com/antchfx/xmlquery>`_, XPath library
+   `xpath <https://github.com/antchfx/xpath>`_, XPath library
+   `xpathparser <https://github.com/santhosh-tekuri/xpathparser>`_, XPath library
+   `yaml <https://gopkg.in/yaml.v3>`_, Serialization
+   `zap <https://go.uber.org/zap>`_, Logging library
+
+Java and Kotlin built-in support
+==================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/java-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/src>`__)
+and the CodeQL library pack ``codeql/java-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+   :align: left
+
+   Name, Category
+   Apache Commons Collections, Data structure utility library
+   Apache Commons Lang, Utility library
+   Apache HTTP components, Network communicator
+   Guava, Utility and collections library
+   Hibernate, Database
+   iBatis / MyBatis, Database
+   Jackson, Serialization
+   Java Persistence API (JPA), Database
+   JaxRS, Jakarta EE API specification
+   JDBC, Database
+   JSON-java, Serialization
+   Kryo deserialization, Serialization
+   Project Lombok, Utility library
+   Protobuf, Serialization
+   SnakeYaml, Serialization
+   Spring JDBC, Database
+   Spring MVC, Web application framework
+   Struts, Web application framework
+   Thrift, RPC framework
+   XStream, Serialization
+
+JavaScript and TypeScript built-in support
+=======================================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/javascript-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/src>`__)
+and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+   :align: left
+
+   Name, Category
+   angular (modern version), HTML framework
+   angular.js (legacy version), HTML framework
+   AWS Lambda, Serverless framework
+   axios, Network communicator
+   browser, Runtime environment
+   EJS, templating language
+   electron, Runtime environment
+   express, Server
+   Fastify, Server
+   handlebars, templating language
+   hapi, Server
+   hogan, templating language
+   jquery, Utility library
+   koa, Server
+   lodash, Utility library
+   mongodb, Database
+   mssql, Database
+   mustache, templating language
+   mysql, Database
+   nest.js, Server
+   node, Runtime environment
+   nunjucks, templating language
+   postgres, Database
+   ramda, Utility library
+   react, HTML framework
+   react native, HTML framework
+   request, Network communicator
+   restify, Server
+   Sails.js Action2 controllers, Server
+   sequelize, Database
+   socket.io, Network communicator
+   sqlite3, Database
+   superagent, Network communicator
+   swig, templating language
+   underscore, Utility library
+   Vercel (@vercel/node), Serverless framework
+   vue, HTML framework
+
+
+Python built-in support
+====================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/python-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/src>`__)
+and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+   :align: left
+
+   Name, Category
+   AWS Lambda, Serverless framework
+   aiohttp.web, Web framework
+   Django, Web framework
+   djangorestframework, Web framework
+   FastAPI, Web framework
+   Flask, Web framework
+   Flask-Admin, Web framework
+   Tornado, Web framework
+   Twisted, Web framework
+   Gradio, Web framework
+   starlette, Asynchronous Server Gateway Interface (ASGI)
+   ldap3, Lightweight Directory Access Protocol (LDAP)
+   python-ldap, Lightweight Directory Access Protocol (LDAP)
+   httpx, HTTP client
+   pycurl, HTTP client
+   requests, HTTP client
+   urllib, HTTP client
+   urllib2, HTTP client
+   urllib3, HTTP client
+   dill, Serialization
+   PyYAML, Serialization
+   ruamel.yaml, Serialization
+   simplejson, Serialization
+   toml, Serialization
+   ujson, Serialization
+   fabric, Utility library
+   idna, Utility library
+   invoke, Utility library
+   jmespath, Utility library
+   multidict, Utility library
+   pydantic, Utility library
+   yarl, Utility library
+   aioch, Database
+   aiomysql, Database
+   aiopg, Database
+   aiosqlite, Database
+   asyncpg, Database
+   cassandra-driver, Database
+   clickhouse-driver, Database
+   cx_Oracle, Database
+   hdbcli, Database
+   mysql-connector, Database
+   mysql-connector-python, Database
+   MySQL-python, Database
+   mysqlclient, Database
+   oracledb, Database
+   phoenixdb, Database
+   psycopg, Database
+   psycopg2, Database
+   pymssql, Database
+   PyMySQL, Database
+   pyodbc, Database
+   sqlite3, Database
+   Flask-SQLAlchemy, Database ORM
+   peewee, Database ORM
+   SQLAlchemy, Database ORM
+   cryptography, Cryptography library
+   pycryptodome, Cryptography library
+   pycryptodomex, Cryptography library
+   rsa, Cryptography library
+   MarkupSafe, Escaping Library
+   libtaxii, TAXII utility library
+   libxml2, XML processing library
+   lxml, XML processing library
+   xmltodict, XML processing library
+
+
+Ruby built-in support
+====================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/ruby-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/src>`__)
+and the CodeQL library pack ``codeql/ruby-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+   :align: left
+
+   Name, Category
+   excon, HTTP client
+   faraday, HTTP client
+   http_client, HTTP client
+   httparty, HTTP client
+   libxml-ruby, XML processing library
+   nokogiri, XML processing library
+   open-uri, HTTP client
+   posix-spawn, Utility library
+   rest-client, HTTP client
+   Ruby on Rails, Web framework
+   rubyzip, Compression library
+   typhoeus, HTTP client
+
+Rust built-in support
+====================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/rust-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/src>`__)
+and the CodeQL library pack ``codeql/rust-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+   :align: left
+
+   Name, Category
+   `actix-web <https://crates.io/crates/actix-web>`__, Web framework
+   alloc, Standard library
+   `async-std <https://crates.io/crates/async-std>`__, Asynchronous programming library
+   `axum <https://crates.io/crates/axum>`__, Web framework
+   `biscotti <https://crates.io/crates/biscotti>`__, Cookie management
+   `clap <https://crates.io/crates/clap>`__, Utility library
+   `cookie <https://crates.io/crates/cookie>`__, Cookie management
+   core, Standard library
+   `digest <https://crates.io/crates/digest>`__, Cryptography library
+   `futures <https://crates.io/crates/futures>`__, Asynchronous programming library
+   `futures-rustls <https://crates.io/crates/futures-rustls>`__, Network communicator
+   `hyper <https://crates.io/crates/hyper>`__, HTTP library
+   `libc <https://crates.io/crates/libc>`__, Utility library
+   `log <https://crates.io/crates/log>`__, Logging library
+   `md5 <https://crates.io/crates/md5>`__, Utility library
+   `memchr <https://crates.io/crates/memchr>`__, Utility library
+   `mysql <https://crates.io/crates/mysql>`__, Database
+   `mysql_async <https://crates.io/crates/mysql_async>`__, Database
+   `native-tls <https://crates.io/crates/native-tls>`__, Network communicator
+   `async-native-tls <https://crates.io/crates/async-native-tls>`__, Network communicator
+   `once_cell <https://crates.io/crates/once_cell>`__, Utility library
+   `poem <https://crates.io/crates/poem>`__, Web framework
+   `postgres <https://crates.io/crates/postgres>`__, Database
+   proc_macro, Standard library
+   `rand <https://crates.io/crates/rand>`__, Utility library
+   `regex <https://crates.io/crates/regex>`__, Utility library
+   `reqwest <https://crates.io/crates/reqwest>`__, HTTP client
+   `rocket <https://crates.io/crates/rocket>`__, Web framework
+   `rusqlite <https://crates.io/crates/rusqlite>`__, Database
+   std, Standard library
+   `rust-crypto <https://crates.io/crates/rust-crypto>`__, Cryptography library
+   `rustls <https://crates.io/crates/rustls>`__, Network communicator
+   `serde <https://crates.io/crates/serde>`__, Serialization
+   `smallvec <https://crates.io/crates/smallvec>`__, Utility library
+   `sqlx <https://crates.io/crates/sqlx>`__, Database
+   `tokio <https://crates.io/crates/tokio>`__, Asynchronous IO
+   `tokio-postgres <https://crates.io/crates/tokio-postgres>`__, Database
+   `url <https://crates.io/crates/url>`__, Utility library
+   `warp <https://crates.io/crates/warp>`__, Web framework
+
+Swift built-in support
+================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/swift-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/src>`__)
+and the CodeQL library pack ``codeql/swift-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+   :align: left
+
+   Name, Category
+   `AEXML <https://github.com/tadija/AEXML>`__, XML processing library
+   `Alamofire <https://github.com/Alamofire/Alamofire>`__, Network communicator
+   `Core Data <https://developer.apple.com/documentation/coredata/>`__, Database
+   `CryptoKit <https://developer.apple.com/documentation/cryptokit/>`__, Cryptography library
+   `CryptoSwift <https://github.com/krzyzanowskim/CryptoSwift>`__, Cryptography library
+   `Foundation <https://developer.apple.com/documentation/foundation>`__, Utility library
+   `GRDB <https://github.com/groue/GRDB.swift>`__, Database
+   `JavaScriptCore <https://developer.apple.com/documentation/javascriptcore>`__, Scripting library
+   `Libxml2 <https://gitlab.gnome.org/GNOME/libxml2>`__, XML processing library
+   `Network <https://developer.apple.com/documentation/network>`__, Network communicator
+   `Realm Swift <https://realm.io/realm-swift/>`__, Database
+   `RNCryptor <https://github.com/RNCryptor/RNCryptor>`__, Cryptography library
+   `SQLite3 <https://sqlite.org/index.html>`__, Database
+   `SQLite.swift <https://github.com/stephencelis/SQLite.swift>`__, Database
+   `UIKit <https://developer.apple.com/documentation/uikit>`__, User interface library
+   `WebKit <https://developer.apple.com/documentation/webkit>`__, User interface library

@@ -1,0 +1,2 @@
+query: Quality/UnhandledErrorInStreamPipeline.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

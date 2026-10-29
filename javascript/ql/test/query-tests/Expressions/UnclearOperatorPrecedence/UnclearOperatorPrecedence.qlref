@@ -1,0 +1,2 @@
+query: Expressions/UnclearOperatorPrecedence.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

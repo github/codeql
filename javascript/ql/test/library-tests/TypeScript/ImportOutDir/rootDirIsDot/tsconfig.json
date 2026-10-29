@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "outDir": "lib",
+        "rootDir": "."
+    },
+    "include": [
+        "**/*.ts"
+    ]
+}

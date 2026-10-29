@@ -1,0 +1,32 @@
+bodies
+| test.cpp:8:3:10:3 | for(...:...) ... | test.cpp:8:28:10:3 | { ... } |
+| test.cpp:28:3:30:3 | for(...:...) ... | test.cpp:28:28:30:3 | { ... } |
+| test.cpp:44:3:46:3 | for(...:...) ... | test.cpp:44:27:46:3 | { ... } |
+variables
+| test.cpp:8:3:10:3 | for(...:...) ... | test.cpp:8:13:8:17 | value | file://:0:0:0:0 | short |
+| test.cpp:28:3:30:3 | for(...:...) ... | test.cpp:28:12:28:16 | value | file://:0:0:0:0 | int |
+| test.cpp:44:3:46:3 | for(...:...) ... | test.cpp:44:13:44:17 | value | file://:0:0:0:0 | long |
+ranges
+| test.cpp:8:3:10:3 | for(...:...) ... | test.cpp:8:21:8:25 | array | file://:0:0:0:0 | short[100] |
+| test.cpp:28:3:30:3 | for(...:...) ... | test.cpp:28:20:28:25 | vector | test.cpp:16:8:16:13 | Vector<int> |
+| test.cpp:44:3:46:3 | for(...:...) ... | test.cpp:44:21:44:24 | list | file://:0:0:0:0 | const List<long> & |
+rangeVariables
+| test.cpp:8:3:10:3 | for(...:...) ... | test.cpp:8:3:8:3 | (__range) | file://:0:0:0:0 | short(&)[100] |
+| test.cpp:28:3:30:3 | for(...:...) ... | test.cpp:28:3:28:3 | (__range) | file://:0:0:0:0 | Vector<int> & |
+| test.cpp:44:3:46:3 | for(...:...) ... | test.cpp:44:3:44:3 | (__range) | file://:0:0:0:0 | const List<long> & |
+conditions
+| test.cpp:8:3:10:3 | for(...:...) ... | file://:0:0:0:0 | ... != ... | file://:0:0:0:0 | (__begin) | file://:0:0:0:0 | (__end) |
+| test.cpp:28:3:30:3 | for(...:...) ... | test.cpp:28:20:28:20 | call to operator!= | test.cpp:28:20:28:20 | (__begin) | test.cpp:28:20:28:20 | (__end) |
+| test.cpp:44:3:46:3 | for(...:...) ... | file://:0:0:0:0 | ... != ... | file://:0:0:0:0 | (__begin) | file://:0:0:0:0 | (__end) |
+beginVariables
+| test.cpp:8:3:10:3 | for(...:...) ... | test.cpp:8:3:8:3 | (__begin) | file://:0:0:0:0 | short * |
+| test.cpp:28:3:30:3 | for(...:...) ... | test.cpp:28:3:28:3 | (__begin) | test.cpp:17:10:17:17 | Iterator |
+| test.cpp:44:3:46:3 | for(...:...) ... | test.cpp:44:3:44:3 | (__begin) | file://:0:0:0:0 | long * |
+endVariables
+| test.cpp:8:3:10:3 | for(...:...) ... | test.cpp:8:3:8:3 | (__end) | file://:0:0:0:0 | short * |
+| test.cpp:28:3:30:3 | for(...:...) ... | test.cpp:28:3:28:3 | (__end) | test.cpp:17:10:17:17 | Iterator |
+| test.cpp:44:3:46:3 | for(...:...) ... | test.cpp:44:3:44:3 | (__end) | file://:0:0:0:0 | long * |
+updates
+| test.cpp:8:3:10:3 | for(...:...) ... | file://:0:0:0:0 | ++ ... | file://:0:0:0:0 | (__begin) |
+| test.cpp:28:3:30:3 | for(...:...) ... | test.cpp:28:20:28:20 | call to operator++ | test.cpp:28:20:28:20 | (__begin) |
+| test.cpp:44:3:46:3 | for(...:...) ... | file://:0:0:0:0 | ++ ... | file://:0:0:0:0 | (__begin) |

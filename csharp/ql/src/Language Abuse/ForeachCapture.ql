@@ -1,0 +1,115 @@
+/**
+ * @deprecated This query is no longer relevant as the semantics of capturing a 'foreach' variable
+ *             and using it outside the loop has been stable since C# version 5.
+ * @name Capturing a foreach variable
+ * @description Code that captures a 'foreach' variable and uses it outside the loop behaves differently in C# version 4 and C# version 5
+ * @kind problem
+ * @problem.severity recommendation
+ * @precision medium
+ * @id cs/captured-foreach-variable
+ * @tags reliability
+ *       correctness
+ *       external/cwe/cwe-758
+ */
+
+import csharp
+import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+import semmle.code.csharp.frameworks.system.Collections
+import semmle.code.csharp.frameworks.system.collections.Generic
+
+predicate lambdaCaptures(AnonymousFunctionExpr lambda, Variable v) {
+  exists(VariableAccess va | va.getEnclosingCallable() = lambda | va.getTarget() = v)
+}
+
+predicate lambdaCapturesLoopVariable(AnonymousFunctionExpr lambda, ForEachStmt loop, Variable v) {
+  lambdaCaptures(lambda, v) and
+  inForEachStmtBody(loop, lambda) and
+  loop.getVariable() = v
+}
+
+predicate inForEachStmtBody(ForEachStmt loop, Element e) {
+  e = loop.getBody()
+  or
+  exists(Element mid |
+    inForEachStmtBody(loop, mid) and
+    e = mid.getAChild()
+  )
+}
+
+module LambdaDataFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { lambdaCapturesLoopVariable(source.asExpr(), _, _) }
+
+  predicate isSink(DataFlow::Node sink) { exists(getAssignmentTarget(sink.asExpr())) }
+}
+
+module LambdaDataFlow {
+  private import DataFlow::Global<LambdaDataFlowConfig>
+
+  predicate capturesLoopVarAndIsStoredIn(
+    AnonymousFunctionExpr lambda, Variable loopVar, Element storage
+  ) {
+    exists(DataFlow::Node sink | flow(DataFlow::exprNode(lambda), sink) |
+      storage = getAssignmentTarget(sink.asExpr())
+    ) and
+    exists(ForEachStmt loop | lambdaCapturesLoopVariable(lambda, loop, loopVar) |
+      not declaredInsideLoop(loop, storage)
+    )
+  }
+}
+
+Element getAssignmentTarget(Expr e) {
+  exists(Assignment a | a.getRightOperand() = e |
+    result = a.getLeftOperand().(PropertyAccess).getTarget() or
+    result = a.getLeftOperand().(FieldAccess).getTarget() or
+    result = a.getLeftOperand().(LocalVariableAccess).getTarget() or
+    result = a.getLeftOperand().(EventAccess).getTarget()
+  )
+  or
+  exists(AddEventExpr aee |
+    e = aee.getRightOperand() and
+    result = aee.getLeftOperand().getTarget()
+  )
+  or
+  result = getCollectionAssignmentTarget(e)
+}
+
+Element getCollectionAssignmentTarget(Expr e) {
+  // Store into collection via method
+  exists(DataFlowPrivate::PostUpdateNode postNode |
+    FlowSummaryImpl::Private::Steps::summarySetterStep(DataFlow::exprNode(e), _, postNode, _) and
+    result.(Variable).getAnAccess() = postNode.getPreUpdateNode().asExpr()
+  )
+  or
+  // Array initializer
+  e = result.(ArrayCreation).getInitializer().getAnElement()
+  or
+  // Collection initializer
+  e =
+    result
+        .(ObjectCreation)
+        .getInitializer()
+        .(CollectionInitializer)
+        .getElementInitializer(_)
+        .getAnArgument()
+  or
+  // Store values using indexer
+  exists(IndexerAccess ia, AssignExpr ae |
+    ia.getQualifier() = result.(Variable).getAnAccess() and
+    ia = ae.getLeftOperand() and
+    e = ae.getRightOperand()
+  )
+}
+
+// Variable v is declared inside the loop body
+predicate declaredInsideLoop(ForEachStmt loop, LocalVariable v) {
+  exists(LocalVariableDeclStmt decl | decl.getVariableDeclExpr(_).getVariable() = v |
+    inForEachStmtBody(loop, decl)
+  )
+}
+
+from AnonymousFunctionExpr lambda, Variable loopVar, Element storage
+where LambdaDataFlow::capturesLoopVarAndIsStoredIn(lambda, loopVar, storage)
+select lambda, "Function which may be stored in $@ captures variable $@.", storage,
+  storage.toString(), loopVar, loopVar.getName()

@@ -1,0 +1,2 @@
+query: Advisory/Deprecated Code/AvoidDeprecatedCallableAccess.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

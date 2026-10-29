@@ -1,0 +1,2 @@
+| BlockCodeResponseWriteBad.aspx:5:12:5:36 | <% ... %> | Non-inline code calls 'Response.Write()'. |
+| test.aspx:5:12:5:36 | <% ... %> | Non-inline code calls 'Response.Write()'. |

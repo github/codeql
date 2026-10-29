@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.imageio.stream", "FileCacheImageInputStream", True, "FileCacheImageInputStream", "(InputStream,File)", "", "Argument[0]", "Argument[this].Element", "taint", "ai-manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.imageio.stream", "FileImageOutputStream", True, "FileImageOutputStream", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]

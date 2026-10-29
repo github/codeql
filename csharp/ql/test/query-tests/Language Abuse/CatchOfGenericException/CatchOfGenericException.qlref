@@ -1,0 +1,2 @@
+query: Language Abuse/CatchOfGenericException.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

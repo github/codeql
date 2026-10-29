@@ -1,0 +1,8 @@
+| tst.js:1:1:3:6 | angular ... \\n    }) | tst.html:1:1:1:41 | <div>...</> | tst.js:2:34:3:5 | functio ... {\\n    } | - |
+| tst.js:1:1:3:6 | angular ... \\n    }) | tst.html:4:1:4:48 | <div>...</> | tst.js:2:34:3:5 | functio ... {\\n    } | mc1 |
+| tst.js:1:1:5:6 | angular ... \\n    }) | tst.html:6:1:6:41 | <div>...</> | tst.js:4:34:5:5 | functio ... {\\n    } | - |
+| tst.js:1:1:5:6 | angular ... \\n    }) | tst.html:7:1:7:48 | <div>...</> | tst.js:4:34:5:5 | functio ... {\\n    } | mc2 |
+| tst.js:7:9:12:14 | $routeP ...      }) | template3.html:1:1:1:6 | <div>...</> | tst.js:9:29:10:17 | functio ...       } | - |
+| tst.js:7:9:17:14 | $routeP ...      }) | template4.html:1:1:1:6 | <div>...</> | tst.js:14:29:15:17 | functio ...       } | - |
+| tst.js:7:9:21:14 | $routeP ...      }) | template1.html:1:1:1:6 | <div>...</> | tst.js:2:34:3:5 | functio ... {\\n    } | - |
+| tst.js:7:9:26:14 | $routeP ...      }) | template1.html:1:1:1:6 | <div>...</> | tst.js:2:34:3:5 | functio ... {\\n    } | mc1 |

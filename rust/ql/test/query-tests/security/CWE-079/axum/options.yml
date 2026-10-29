@@ -1,0 +1,5 @@
+qltest_use_nightly: true
+qltest_dependencies:
+    - axum = { version = "0.8.7" }
+    - serde = { version = "1.0.228", features = ["derive"] }
+    - tokio = { version = "1", features = ["full"] }

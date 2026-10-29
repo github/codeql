@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+			Downloading executables or other sensitive files over an unencrypted connection 
+			can leave a server open to man-in-the-middle attacks (MITM). 
+			Such an attack can allow an attacker to insert arbitrary content 
+			into the downloaded file, and in the worst case, allow the attacker to execute 
+			arbitrary code on the vulnerable system.
+		</p>
+	</overview>
+	<recommendation>
+		<p>
+			Use a secure transfer protocol when downloading executables or other sensitive files.
+		</p>
+	</recommendation>
+	<example>
+		<p>
+			In this example, a server downloads a shell script from a remote URL using the <code>node-fetch</code> 
+			library, and then executes this shell script. 
+		</p>
+		<sample src="examples/insecure-download.js" />
+		<p>
+			The HTTP protocol is vulnerable to MITM, and thus an attacker could potentially replace the downloaded
+			shell script with arbitrary code, which gives the attacker complete control over the system.
+		</p>
+		<p>
+			The issue has been fixed in the example below by replacing the HTTP protocol with the HTTPS protocol.
+		</p>
+		<sample src="examples/secure-download.js" />
+	</example>
+
+	<references>
+		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">Man-in-the-middle attack</a></li>
+	</references>
+</qhelp>

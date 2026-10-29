@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A static, final field name that contains lowercase letters does not follow standard
+naming conventions, which decreases code readability. For example, <code>Min_Width</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Use uppercase letters throughout a static, final field name, and use underscores to 
+separate words within the field name. For example, <code>MIN_WIDTH</code>.
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>,
+  Item 56.
+  Addison-Wesley, 2008.
+</li>
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-6.html#jls-6.1">6.1. Declarations</a>.
+</li>
+<li>
+  Java SE Documentation:
+  <a href="https://www.oracle.com/java/technologies/javase/codeconventions-namingconventions.html">9 - Naming Conventions</a>.
+</li>
+
+
+</references>
+</qhelp>

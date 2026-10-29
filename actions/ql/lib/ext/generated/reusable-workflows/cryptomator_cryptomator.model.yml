@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["cryptomator/cryptomator/.github/workflows/get-version.yml", "*", "input.version", "code-injection", "generated"]
+     - ["cryptomator/cryptomator/.github/workflows/av-whitelist.yml", "*", "input.url", "code-injection", "generated"]

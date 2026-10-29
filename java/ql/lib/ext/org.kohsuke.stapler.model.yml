@@ -1,0 +1,49 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.kohsuke.stapler", "HttpResponses", True, "redirectTo", "(String)", "", "Argument[0]", "url-redirection", "ai-manual"]
+      - ["org.kohsuke.stapler", "HttpResponses", True, "redirectTo", "(int,String)", "", "Argument[1]", "url-redirection", "manual"]
+      - ["org.kohsuke.stapler", "HttpResponses", True, "staticResource", "(URL)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["org.kohsuke.stapler", "HttpResponses", True, "staticResource", "(URL,long)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.kohsuke.stapler", "HttpResponses", True, "html", "(String)", "", "Argument[0]", "html-injection", "manual"]
+      - ["org.kohsuke.stapler", "HttpResponses", True, "literalHtml", "(String)", "", "Argument[0]", "html-injection", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "forward", "(Object,String,StaplerRequest)", "", "Argument[1]", "url-forward", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "sendRedirect2", "(String)", "", "Argument[0]", "url-redirection", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "sendRedirect", "(int,String)", "", "Argument[1]", "url-redirection", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "sendRedirect", "(String)", "", "Argument[0]", "url-redirection", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "serveFile", "(StaplerRequest,URL)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "serveFile", "(StaplerRequest,URL,long)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "serveLocalizedFile", "(StaplerRequest,URL)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "serveLocalizedFile", "(StaplerRequest,URL,long)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "serveFile", "(StaplerRequest,InputStream,long,long,long,String)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "serveFile", "(StaplerRequest,InputStream,long,long,int,String)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "serveFile", "(StaplerRequest,InputStream,long,long,String)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "serveFile", "(StaplerRequest,InputStream,long,int,String)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "reverseProxyTo", "(URL,StaplerRequest)", "", "Argument[0]", "request-forgery", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "getRequestURIWithQueryString", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "getRequestURLWithQueryString", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "getReferer", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "getOriginalRequestURI", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "getSubmittedForm", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "getFileItem", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "bindParametersToList", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "bindParameters", "", "", "Argument[0]", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "bindParameters", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "bindJSON", "", "", "Argument[0]", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "bindJSON", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "bindJSONToList", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "getParameter", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "getParameterMap", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "getParameterNames", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "getParameterValues", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "StaplerRequest", True, "getRestOfPath", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.kohsuke.stapler", "QueryParameter", True, "", "", "Annotated", "Parameter", "remote", "manual"]
+      - ["org.kohsuke.stapler", "Header", True, "", "", "Annotated", "Parameter", "remote", "manual"]
+      - ["org.kohsuke.stapler", "DataBoundConstructor", True, "", "", "Annotated", "Parameter", "remote", "manual"]
+      - ["org.kohsuke.stapler", "DataBoundSetter", True, "", "", "Annotated", "Parameter", "remote", "manual"]

@@ -1,0 +1,45 @@
+models
+| 1 | Summary: java.io; InputStream; true; read; (byte[]); ; Argument[this]; Argument[0]; taint; manual |
+edges
+| A.java:31:27:31:34 | source(...) : InputStream | A.java:33:14:33:21 | wrapper1 | provenance | AdditionalTaintStep |
+| A.java:31:27:31:34 | source(...) : InputStream | A.java:35:14:35:21 | wrapper2 | provenance | AdditionalTaintStep |
+| A.java:31:27:31:34 | source(...) : InputStream | A.java:37:14:37:21 | wrapper3 | provenance | AdditionalTaintStep |
+| A.java:31:27:31:34 | source(...) : InputStream | A.java:51:14:51:21 | wrapper4 | provenance | AdditionalTaintStep |
+| A.java:55:31:66:9 | new (...) : new InputStream(...) { ... } | A.java:67:14:67:20 | wrapper | provenance |  |
+| A.java:63:34:63:41 | source(...) : InputStream | A.java:64:24:64:25 | in : InputStream | provenance |  |
+| A.java:64:24:64:25 | in : InputStream | A.java:64:32:64:32 | b [post update] : byte[] | provenance | MaD:1 |
+| A.java:64:32:64:32 | b [post update] : byte[] | A.java:55:31:66:9 | new (...) : new InputStream(...) { ... } | provenance | AdditionalTaintStep |
+| A.java:71:26:71:33 | source(...) : InputStream | A.java:84:14:84:20 | wrapper | provenance | AdditionalTaintStep |
+| A.java:87:42:87:55 | in : InputStream | A.java:88:16:98:9 | new (...) : new InputStream(...) { ... } | provenance | AdditionalTaintStep |
+| A.java:103:25:103:32 | source(...) : InputStream | A.java:87:42:87:55 | in : InputStream | provenance |  |
+| A.java:103:25:103:32 | source(...) : InputStream | A.java:103:14:103:33 | wrapStream(...) | provenance | AdditionalTaintStep |
+| A.java:116:34:116:41 | source(...) : InputStream | A.java:117:24:117:25 | in : InputStream | provenance |  |
+| A.java:117:24:117:25 | in : InputStream | A.java:117:32:117:32 | b [post update] : byte[] | provenance | MaD:1 |
+| A.java:117:32:117:32 | b [post update] : byte[] | A.java:120:14:120:35 | new LocalInputStream(...) | provenance | AdditionalTaintStep |
+| A.java:124:26:124:33 | source(...) : InputStream | A.java:137:14:137:35 | new LocalInputStream(...) | provenance | AdditionalTaintStep |
+nodes
+| A.java:31:27:31:34 | source(...) : InputStream | semmle.label | source(...) : InputStream |
+| A.java:33:14:33:21 | wrapper1 | semmle.label | wrapper1 |
+| A.java:35:14:35:21 | wrapper2 | semmle.label | wrapper2 |
+| A.java:37:14:37:21 | wrapper3 | semmle.label | wrapper3 |
+| A.java:51:14:51:21 | wrapper4 | semmle.label | wrapper4 |
+| A.java:55:31:66:9 | new (...) : new InputStream(...) { ... } | semmle.label | new (...) : new InputStream(...) { ... } |
+| A.java:63:34:63:41 | source(...) : InputStream | semmle.label | source(...) : InputStream |
+| A.java:64:24:64:25 | in : InputStream | semmle.label | in : InputStream |
+| A.java:64:32:64:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| A.java:67:14:67:20 | wrapper | semmle.label | wrapper |
+| A.java:71:26:71:33 | source(...) : InputStream | semmle.label | source(...) : InputStream |
+| A.java:84:14:84:20 | wrapper | semmle.label | wrapper |
+| A.java:87:42:87:55 | in : InputStream | semmle.label | in : InputStream |
+| A.java:88:16:98:9 | new (...) : new InputStream(...) { ... } | semmle.label | new (...) : new InputStream(...) { ... } |
+| A.java:103:14:103:33 | wrapStream(...) | semmle.label | wrapStream(...) |
+| A.java:103:25:103:32 | source(...) : InputStream | semmle.label | source(...) : InputStream |
+| A.java:116:34:116:41 | source(...) : InputStream | semmle.label | source(...) : InputStream |
+| A.java:117:24:117:25 | in : InputStream | semmle.label | in : InputStream |
+| A.java:117:32:117:32 | b [post update] : byte[] | semmle.label | b [post update] : byte[] |
+| A.java:120:14:120:35 | new LocalInputStream(...) | semmle.label | new LocalInputStream(...) |
+| A.java:124:26:124:33 | source(...) : InputStream | semmle.label | source(...) : InputStream |
+| A.java:137:14:137:35 | new LocalInputStream(...) | semmle.label | new LocalInputStream(...) |
+subpaths
+| A.java:103:25:103:32 | source(...) : InputStream | A.java:87:42:87:55 | in : InputStream | A.java:88:16:98:9 | new (...) : new InputStream(...) { ... } | A.java:103:14:103:33 | wrapStream(...) |
+testFailures

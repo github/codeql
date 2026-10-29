@@ -1,0 +1,81 @@
+func identity<T>(_ x: T) -> T {
+  return x
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      expression:
+                        declReferenceExpr
+                          baseName: identifier "x"
+                      returnKeyword: return
+          name: identifier "identity"
+          genericParameterClause:
+            genericParameterClause
+              parameters:
+                genericParameter
+                  attributes:
+                  name: identifier "T"
+              leftAngle: <
+              rightAngle: >
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "T"
+                      firstName: _
+                      secondName: identifier "x"
+              returnClause:
+                returnClause
+                  arrow: ->
+                  type:
+                    identifierType
+                      name: identifier "T"
+          funcKeyword: func
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        function_declaration source="func ⟨name_node⟩<⟨type_parameter⟩>(⟨parameter⟩) -> ⟨return_type⟩ ⟨body⟩"
+          name_node: identifier "identity" source="identity"
+          type_parameter:
+            type_parameter source="⟨name_node⟩"
+              name_node: identifier "T" source="T"
+          parameter:
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "T" source="T"
+              pattern: identifier "x" source="x"
+          return_type: identifier "T" source="T"
+          body:
+            block source="{\n  ⟨stmt⟩\n}"
+              stmt:
+                return_expr source="return ⟨value⟩"
+                  value: identifier "x" source="x"

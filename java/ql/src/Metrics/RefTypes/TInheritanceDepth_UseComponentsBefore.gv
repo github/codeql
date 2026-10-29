@@ -1,0 +1,17 @@
+graph
+{
+	node [shape=rectangle, fontsize=8];
+
+	Vehicle -- GasVehicle;
+	Vehicle -- DieselVehicle;
+	GasVehicle -- ColoredGasVehicle;
+	GasVehicle -- StripeyGasVehicle;
+	DieselVehicle -- ColoredDieselVehicle;
+	ColoredGasVehicle -- ColoredGasCar;
+	ColoredGasVehicle -- ColoredGasVan;
+	StripeyGasVehicle -- StripeyGasCar;
+	StripeyGasVehicle -- StripeyGasVan;
+	ColoredDieselVehicle -- ColoredDieselVan;
+	ColoredDieselVehicle -- ColoredDieselTruck;
+}
+

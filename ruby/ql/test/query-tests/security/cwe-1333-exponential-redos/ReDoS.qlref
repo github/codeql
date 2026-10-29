@@ -1,0 +1,2 @@
+query: queries/security/cwe-1333/ReDoS.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

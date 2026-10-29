@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If a condition always evaluates to true or always evaluates to false, this often indicates
+incomplete code or a latent bug and should be examined carefully.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the surrounding code to determine why the condition is useless. If it is no
+longer needed, remove it.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example constructs an array <code>lines</code>, and then attempts to check whether
+it has any elements by means of an if conditional <code>if (!lines)</code>.
+</p>
+
+<sample src="examples/UselessConditional.js" />
+
+<p>
+Note that in JavaScript (unlike some other languages) arrays and objects are always considered to
+be true when evaluated in a Boolean context. The code should instead check <code>lines.length</code>:
+</p>
+
+<sample src="examples/UselessConditionalGood.js" />
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">Truthy</a>,
+<a href="https://developer.mozilla.org/en-US/docs/Glossary/Falsy">Falsy</a>.</li>
+
+</references>
+</qhelp>

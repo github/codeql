@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Extracting Compressed files with any compression algorithm like gzip can cause to denial of service attacks.</p>
+<p>Attackers can compress a huge file which created by repeated similiar byte and convert it to a small compressed file.</p>
+
+</overview>
+<recommendation>
+
+<p>When you want to decompress a user-provided compressed file you must be careful about the decompression ratio or read these files within a loop byte by byte to be able to manage the decompressed size in each cycle of the loop.</p>
+<p>Please read official RubyZip Documentation <a href="https://github.com/rubyzip/rubyzip/#size-validation">here</a></p>
+</recommendation>
+<example>
+<p>Rubyzip: According to <a href="https://github.com/rubyzip/rubyzip/#reading-a-zip-file">official</a> Documentation</p>
+<sample src="example_good.rb" />
+<sample src="example_bad.rb" />
+</example>
+<references>
+
+<li>
+<a href="https://www.cvedetails.com/cve/CVE-2022-3759/">CVE-2023-22898</a>
+<a href="https://gitlab.com/gitlab-org/gitlab/-/issues/379633">Gitlab issue</a>
+</li>
+<li>
+<a href="https://www.bamsoftware.com/hacks/zipbomb/">A great research to gain more impact by this kind of attack</a>
+</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,4 @@
+| test.py:4:17:4:60 | ControlFlowNode for Attribute() | Unexpected result: unresolved_call=os.path.dirname(..) |
+| test.py:4:33:4:59 | ControlFlowNode for Attribute() | Unexpected result: unresolved_call=os.path.dirname(..) |
+| test_dict.py:4:17:4:60 | ControlFlowNode for Attribute() | Unexpected result: unresolved_call=os.path.dirname(..) |
+| test_dict.py:4:33:4:59 | ControlFlowNode for Attribute() | Unexpected result: unresolved_call=os.path.dirname(..) |

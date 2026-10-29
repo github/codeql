@@ -1,0 +1,2 @@
+| initializers.c:2:9:2:9 | 5 | initializers.c:2:5:2:5 | i |
+| initializers.cpp:3:12:3:12 | 4 | initializers.cpp:3:5:3:8 | cppj |

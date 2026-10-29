@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds calls to <code>socket</code> where there is no corresponding <code>close</code> call in the program analyzed.
+Leaving descriptors open will cause a resource leak that will persist even after the program terminates.
+</p>
+
+<include src="aliasAnalysisWarning.inc.qhelp" />
+</overview>
+
+<recommendation>
+<p>Ensure that all socket descriptors allocated by the program are freed before it terminates.</p>
+</recommendation>
+
+<example>
+<p>In the example below, the <code>sockfd</code> socket remains open when the <code>main</code> program finishes. 
+The code should be updated to ensure that the socket is always closed when the program terminates.
+</p>
+
+<sample src="DescriptorNeverClosed.cpp" />
+</example>
+
+<references>
+<li>SEI CERT C++ Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/ERR57-CPP.+Do+not+leak+resources+when+handling+exceptions">ERR57-CPP. Do not leak resources when handling exceptions</a>.</li>
+</references>
+</qhelp>

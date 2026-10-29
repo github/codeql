@@ -1,0 +1,14 @@
+extensions:
+  - addsTo: 
+      pack: codeql/javascript-all
+      extensible: isUntrustedDomain
+    data:
+      # new location of the polyfill.io CDN, which was used to serve malware. See: https://www.cside.dev/blog/the-polyfill-attack-explained
+      - ["polyfill.com"]
+      - ["polyfillcache.com"]
+
+      # domains operated by the same owner as polyfill.io, which was used to serve malware. See: https://www.cside.dev/blog/the-polyfill-attack-explained
+      - ["bootcdn.net"]
+      - ["bootcss.com"]
+      - ["staticfile.net"]
+      - ["staticfile.org"]

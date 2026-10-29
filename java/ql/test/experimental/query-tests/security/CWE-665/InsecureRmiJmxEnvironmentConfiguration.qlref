@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-665/InsecureRmiJmxEnvironmentConfiguration.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

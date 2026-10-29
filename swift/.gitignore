@@ -1,0 +1,13 @@
+# output files created by running tests
+*.o
+
+# compilation database
+compile_commands.json
+
+# CLion project data and build directories
+/.idea
+/cmake*
+
+# VSCode default build directory and project directory
+/build
+/.vscode

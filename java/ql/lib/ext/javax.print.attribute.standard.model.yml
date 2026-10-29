@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.print.attribute.standard", "JobOriginatingUserName", False, "JobOriginatingUserName", "(String,Locale)", "", "Argument[0]", "credentials-username", "hq-generated"]
+      - ["javax.print.attribute.standard", "RequestingUserName", False, "RequestingUserName", "(String,Locale)", "", "Argument[0]", "credentials-username", "hq-generated"]

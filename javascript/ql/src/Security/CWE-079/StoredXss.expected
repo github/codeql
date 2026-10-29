@@ -1,0 +1,21 @@
+edges
+| examples/StoredXss.js:5:44:5:52 | fileNames | examples/StoredXss.js:7:9:7:17 | fileNames | provenance |  |
+| examples/StoredXss.js:7:9:7:17 | fileNames | examples/StoredXss.js:7:27:7:34 | fileName | provenance |  |
+| examples/StoredXss.js:7:9:7:17 | fileNames | examples/StoredXss.js:11:9:11:12 | list | provenance |  |
+| examples/StoredXss.js:7:27:7:34 | fileName | examples/StoredXss.js:9:30:9:37 | fileName | provenance |  |
+| examples/StoredXss.js:9:30:9:37 | fileName | examples/StoredXss.js:9:13:9:47 | list | provenance |  |
+| examples/StoredXss.js:11:9:11:12 | list | examples/StoredXss.js:11:9:11:23 | list | provenance |  |
+| examples/StoredXss.js:11:9:11:23 | list | examples/StoredXss.js:12:18:12:21 | list | provenance |  |
+nodes
+| examples/StoredXss.js:5:44:5:52 | fileNames | semmle.label | fileNames |
+| examples/StoredXss.js:7:9:7:17 | fileNames | semmle.label | fileNames |
+| examples/StoredXss.js:7:27:7:34 | fileName | semmle.label | fileName |
+| examples/StoredXss.js:9:13:9:47 | list | semmle.label | list |
+| examples/StoredXss.js:9:30:9:37 | fileName | semmle.label | fileName |
+| examples/StoredXss.js:11:9:11:12 | list | semmle.label | list |
+| examples/StoredXss.js:11:9:11:23 | list | semmle.label | list |
+| examples/StoredXss.js:12:18:12:21 | list | semmle.label | list |
+subpaths
+| examples/StoredXss.js:7:9:7:17 | fileNames | examples/StoredXss.js:7:27:7:34 | fileName | examples/StoredXss.js:9:13:9:47 | list | examples/StoredXss.js:11:9:11:12 | list |
+#select
+| examples/StoredXss.js:12:18:12:21 | list | examples/StoredXss.js:5:44:5:52 | fileNames | examples/StoredXss.js:12:18:12:21 | list | Stored cross-site scripting vulnerability due to $@. | examples/StoredXss.js:5:44:5:52 | fileNames | stored value |

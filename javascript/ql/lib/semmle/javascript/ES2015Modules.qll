@@ -1,0 +1,870 @@
+/** Provides classes for working with ECMAScript 2015 modules. */
+overlay[local?]
+module;
+
+import javascript
+private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.internal.paths.PathExprResolver
+
+/**
+ * An ECMAScript 2015 module.
+ *
+ * Example:
+ *
+ * ```
+ * import console from 'console';
+ *
+ * console.log("Hello, world!");
+ * ```
+ */
+class ES2015Module extends Module {
+  ES2015Module() { is_es2015_module(this) }
+
+  override ModuleScope getScope() { result.getScopeElement() = this }
+
+  /** Gets the full path of the file containing this module. */
+  override string getPath() { result = this.getFile().getAbsolutePath() }
+
+  /** Gets the short name of this module without file extension. */
+  override string getName() { result = this.getFile().getStem() }
+
+  /** Gets an export declaration in this module. */
+  pragma[nomagic]
+  ExportDeclaration getAnExport() { result.getTopLevel() = this }
+
+  overlay[global]
+  override DataFlow::Node getAnExportedValue(string name) {
+    exists(ExportDeclaration ed | ed = this.getAnExport() and result = ed.getSourceNode(name))
+  }
+
+  /** Holds if this module exports variable `v` under the name `name`. */
+  overlay[global]
+  pragma[nomagic]
+  predicate exportsAs(LexicalName v, string name) { this.getAnExport().exportsAs(v, name) }
+
+  override predicate isStrict() {
+    // modules are implicitly strict
+    any()
+  }
+
+  /**
+   * Holds if this module contains both named and `default` exports.
+   *
+   * This is used to determine whether a default-import of the module should be reinterpreted
+   * as a namespace-import, to accommodate the non-standard behavior implemented by some compilers.
+   *
+   * When a module has both named and `default` exports, the non-standard interpretation can lead to
+   * ambiguities, so we only allow the standard interpretation in that case.
+   */
+  overlay[global]
+  predicate hasBothNamedAndDefaultExports() {
+    hasNamedExports(this) and
+    hasDefaultExport(this)
+  }
+}
+
+/**
+ * Holds if `mod` contains one or more named export declarations other than `default`.
+ */
+overlay[global]
+private predicate hasNamedExports(ES2015Module mod) {
+  mod.getAnExport().(ExportNamedDeclaration).getASpecifier().getExportedName() != "default"
+  or
+  exists(mod.getAnExport().(ExportNamedDeclaration).getAnExportedDecl())
+  or
+  // Bulk re-exports only export named bindings (not "default")
+  mod.getAnExport() instanceof BulkReExportDeclaration
+}
+
+/**
+ * Holds if this module contains a default export.
+ */
+overlay[global]
+private predicate hasDefaultExport(ES2015Module mod) {
+  // export default foo;
+  mod.getAnExport() instanceof ExportDefaultDeclaration
+  or
+  // export { foo as default };
+  mod.getAnExport().(ExportNamedDeclaration).getASpecifier().getExportedName() = "default"
+}
+
+/**
+ * An import declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * import console, { log, error as fatal } from 'console';
+ * import * as console from 'console';
+ * ```
+ */
+class ImportDeclaration extends Stmt, Import, @import_declaration {
+  override ES2015Module getEnclosingModule() { result = this.getTopLevel() }
+
+  /**
+   * INTERNAL USE ONLY. DO NOT USE.
+   */
+  string getRawImportPath() { result = this.getChildExpr(-1).getStringValue() }
+
+  override Expr getImportedPathExpr() { result = this.getChildExpr(-1) }
+
+  /**
+   * Gets the object literal passed as part of the `with` (or `assert`) clause in this import declaration.
+   *
+   * For example, this gets the `{ type: "json" }` object literal in the following:
+   * ```js
+   * import foo from "foo" with { type: "json" };
+   * import foo from "foo" assert { type: "json" };
+   * ```
+   */
+  ObjectExpr getImportAttributes() { result = this.getChildExpr(-10) }
+
+  /**
+   * DEPRECATED: use `getImportAttributes` instead.
+   * Gets the object literal passed as part of the `with` (or `assert`) clause in this import declaration.
+   *
+   * For example, this gets the `{ type: "json" }` object literal in the following:
+   * ```js
+   * import foo from "foo" with { type: "json" };
+   * import foo from "foo" assert { type: "json" };
+   * ```
+   */
+  deprecated ObjectExpr getImportAssertion() { result = this.getImportAttributes() }
+
+  /** Gets the `i`th import specifier of this import declaration. */
+  ImportSpecifier getSpecifier(int i) { result = this.getChildExpr(i) }
+
+  /** Gets an import specifier of this import declaration. */
+  ImportSpecifier getASpecifier() { result = this.getSpecifier(_) }
+
+  override DataFlow::Node getImportedModuleNode() {
+    // `import * as http from 'http'` or `import http from `http`'
+    exists(ImportSpecifier is |
+      is = this.getASpecifier() and
+      result = DataFlow::valueNode(is)
+    |
+      is instanceof ImportNamespaceSpecifier and
+      count(this.getASpecifier()) = 1
+      or
+      result = this.getAmbiguousDefaultImportNode()
+    )
+    or
+    // `import { createServer } from 'http'`
+    result = DataFlow::destructuredModuleImportNode(this)
+  }
+
+  /**
+   * Gets the data flow node corresponding to the `foo` in `import foo from "somewhere"`.
+   *
+   * This refers to the default import, but some non-standard compilers will treat it as a namespace
+   * import. In order to support both interpretations, it is considered an "ambiguous default import".
+   *
+   * Note that renamed default imports, such as `import { default as foo } from "somewhere"`,
+   * are not considered ambiguous, and will not be reported by this predicate.
+   */
+  DataFlow::Node getAmbiguousDefaultImportNode() {
+    result = DataFlow::valueNode(this.getASpecifier().(ImportDefaultSpecifier))
+  }
+
+  /** Holds if this is declared with the `type` keyword, so it only imports types. */
+  predicate isTypeOnly() { has_type_keyword(this) }
+
+  /**
+   * Holds if this is declared with the `defer` keyword, for example:
+   * ```ts
+   * import defer * as f from "somewhere";
+   * ```
+   */
+  predicate isDeferredImport() { has_defer_keyword(this) }
+
+  override string getAPrimaryQlClass() { result = "ImportDeclaration" }
+}
+
+/** A literal path expression appearing in an `import` declaration. */
+overlay[global]
+deprecated private class LiteralImportPath extends PathExpr, ConstantString {
+  LiteralImportPath() { exists(ImportDeclaration req | this = req.getChildExpr(-1)) }
+
+  override string getValue() { result = this.getStringValue() }
+}
+
+/**
+ * An import specifier in an import declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * import
+ *   console,            // default import specifier
+ *   {
+ *     log,              // named import specifier
+ *     error as fatal    // renaming import specifier
+ *   } from 'console';
+ *
+ * import
+ *   * as console        // namespace import specifier
+ *   from 'console';
+ * ```
+ */
+class ImportSpecifier extends Expr, @import_specifier {
+  /** Gets the import declaration in which this specifier appears. */
+  overlay[global]
+  ImportDeclaration getImportDeclaration() { result.getASpecifier() = this }
+
+  /** Gets the imported symbol; undefined for default and namespace import specifiers. */
+  Identifier getImported() { result = this.getChildExpr(0) }
+
+  /**
+   * Gets the name of the imported symbol.
+   *
+   * For example, consider these four imports:
+   *
+   * ```javascript
+   * import { x } from 'a'
+   * import { y as z } from 'b'
+   * import f from 'c'
+   * import * as g from 'd'
+   * ```
+   *
+   * The names of the imported symbols for the first three of them are, respectively,
+   * `x`, `y` and `default`, while the last one does not import an individual symbol.
+   */
+  string getImportedName() { result = this.getImported().getName() }
+
+  /** Gets the local variable into which this specifier imports. */
+  VarDecl getLocal() { result = this.getChildExpr(1) }
+
+  override string getAPrimaryQlClass() { result = "ImportSpecifier" }
+
+  /** Holds if this is declared with the `type` keyword, so only types are imported. */
+  predicate isTypeOnly() { has_type_keyword(this) }
+}
+
+/**
+ * A named import specifier.
+ *
+ * Examples:
+ *
+ * ```
+ * import
+ *   {
+ *     log,              // named import specifier
+ *     error as fatal    // renaming import specifier
+ *   } from 'console';
+ * ```
+ */
+class NamedImportSpecifier extends ImportSpecifier, @named_import_specifier { }
+
+/**
+ * A default import specifier.
+ *
+ * Example:
+ *
+ * ```
+ * import
+ *   console             // default import specifier
+ *   from 'console';
+ * ```
+ */
+class ImportDefaultSpecifier extends ImportSpecifier, @import_default_specifier {
+  override string getImportedName() { result = "default" }
+}
+
+/**
+ * A namespace import specifier.
+ *
+ * Example:
+ *
+ * ```
+ * import
+ *   * as console        // namespace import specifier
+ *   from 'console';
+ * ```
+ */
+class ImportNamespaceSpecifier extends ImportSpecifier, @import_namespace_specifier { }
+
+/**
+ * A bulk import that imports an entire module as a namespace.
+ *
+ * Example:
+ *
+ * ```
+ * import * as console from 'console';
+ * ```
+ */
+class BulkImportDeclaration extends ImportDeclaration {
+  BulkImportDeclaration() { this.getASpecifier() instanceof ImportNamespaceSpecifier }
+
+  /** Gets the local namespace variable under which the module is imported. */
+  VarDecl getLocal() { result = this.getASpecifier().getLocal() }
+}
+
+/**
+ * A selective import that imports zero or more declarations.
+ *
+ * Example:
+ *
+ * ```
+ * import console, { log } from 'console';
+ * ```
+ */
+overlay[global]
+class SelectiveImportDeclaration extends ImportDeclaration {
+  SelectiveImportDeclaration() { not this instanceof BulkImportDeclaration }
+
+  /** Holds if `local` is the local variable into which `imported` is imported. */
+  predicate importsAs(string imported, LexicalDecl local) {
+    exists(ImportSpecifier spec | spec = this.getASpecifier() |
+      imported = spec.getImported().getName() and
+      local = spec.getLocal()
+    )
+    or
+    imported = "default" and local = this.getASpecifier().(ImportDefaultSpecifier).getLocal()
+  }
+}
+
+/**
+ * An export declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * export * from 'a';               // bulk re-export declaration
+ *
+ * export default function f() {};  // default export declaration
+ * export default 42;               // default export declaration
+ *
+ * export { x, y as z };            // named export declaration
+ * export var x = 42;               // named export declaration
+ * export { x } from 'a';           // named re-export declaration
+ * export x from 'a';               // default re-export declaration
+ * ```
+ */
+abstract class ExportDeclaration extends Stmt, @export_declaration {
+  /** Gets the module to which this export declaration belongs. */
+  overlay[global]
+  ES2015Module getEnclosingModule() { this = result.getAnExport() }
+
+  /** Holds if this export declaration exports variable `v` under the name `name`. */
+  overlay[global]
+  pragma[nomagic]
+  final predicate exportsAs(LexicalName v, string name) {
+    this.exportsDirectlyAs(v, name)
+    or
+    this.(ReExportDeclaration).reExportsAs(v, name)
+  }
+
+  /**
+   * Holds if this export declaration exports variable `v` under the name `name`,
+   * not counting re-exports.
+   */
+  predicate exportsDirectlyAs(LexicalName v, string name) { none() }
+
+  /**
+   * Gets the data flow node corresponding to the value this declaration exports
+   * under the name `name`.
+   *
+   * For example, consider the following exports:
+   *
+   * ```javascript
+   * export var x = 23;
+   * export { y as z };
+   * export default function f() { ... };
+   * export { x } from 'a';
+   * ```
+   *
+   * The first one exports `23` under the name `x`, the second one exports
+   * `y` under the name `z`, while the third one exports `function f() { ... }`
+   * under the name `default`.
+   *
+   * The final export re-exports under the name `x` whatever module `a`
+   * exports under the same name. In particular, its source node belongs
+   * to module `a` or possibly to some other module from which `a` re-exports.
+   */
+  overlay[global]
+  final DataFlow::Node getSourceNode(string name) {
+    result = this.getDirectSourceNode(name)
+    or
+    result = this.(ReExportDeclaration).getReExportedSourceNode(name)
+  }
+
+  /**
+   * Gets the data flow node corresponding to the value this declaration exports
+   * under the name `name`, not including sources that come from a re-export.
+   */
+  DataFlow::Node getDirectSourceNode(string name) { none() }
+
+  /** Holds if is declared with the `type` keyword, so only types are exported. */
+  predicate isTypeOnly() { has_type_keyword(this) }
+
+  override string getAPrimaryQlClass() { result = "ExportDeclaration" }
+
+  /**
+   * Gets the object literal passed as part of the `with` (or `assert`) clause, if this is
+   * a re-export declaration.
+   *
+   * For example, this gets the `{ type: "json" }` expression in each of the following:
+   * ```js
+   * export { x } from 'foo' with { type: "json" };
+   * export * from 'foo' with { type: "json" };
+   * export * as x from 'foo' with { type: "json" };
+   * export * from 'foo' assert { type: "json" };
+   * ```
+   */
+  ObjectExpr getImportAttributes() { result = this.getChildExpr(-10) }
+
+  /**
+   * DEPRECATED: use `getImportAttributes` instead.
+   * Gets the object literal passed as part of the `with` (or `assert`) clause, if this is
+   * a re-export declaration.
+   *
+   * For example, this gets the `{ type: "json" }` expression in each of the following:
+   * ```js
+   * export { x } from 'foo' with { type: "json" };
+   * export * from 'foo' with { type: "json" };
+   * export * as x from 'foo' with { type: "json" };
+   * export * from 'foo' assert { type: "json" };
+   * ```
+   */
+  deprecated ObjectExpr getImportAssertion() { result = this.getImportAttributes() }
+}
+
+/**
+ * A bulk re-export declaration of the form `export * from 'a'`, which re-exports
+ * all exports of another module.
+ *
+ * Examples:
+ *
+ * ```
+ * export * from 'a';          // bulk re-export declaration
+ * ```
+ */
+class BulkReExportDeclaration extends ReExportDeclaration, @export_all_declaration {
+  /** Gets the name of the module from which this declaration re-exports. */
+  override ConstantString getImportedPath() { result = this.getChildExpr(0) }
+
+  overlay[global]
+  override predicate reExportsAs(LexicalName v, string name) {
+    this.getReExportedES2015Module().exportsAs(v, name) and
+    not isShadowedFromBulkExport(this.getEnclosingModule(), name)
+  }
+
+  overlay[global]
+  override DataFlow::Node getReExportedSourceNode(string name) {
+    result = this.getReExportedES2015Module().getAnExport().getSourceNode(name)
+  }
+}
+
+/**
+ * Holds if bulk re-exports in `mod` should not re-export `name` because there is an explicit export
+ * of that name in `mod`.
+ *
+ * At compile time, shadowing works across declaration spaces.
+ * For instance, directly exporting an interface `X` will block a variable `X` from being re-exported:
+ * ```
+ * export interface X {}
+ * export * from 'lib' // will not re-export X
+ * ```
+ * At runtime, the interface `X` will have been removed, so `X` is actually re-exported anyway,
+ * but we ignore this subtlety.
+ */
+overlay[global]
+private predicate isShadowedFromBulkExport(Module mod, string name) {
+  exists(ExportNamedDeclaration other | other.getTopLevel() = mod |
+    other.getAnExportedDecl().getName() = name
+    or
+    other.getASpecifier().getExportedName() = name
+  )
+}
+
+/**
+ * A default export declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * export default function f() {};
+ * export default 42;
+ * ```
+ */
+class ExportDefaultDeclaration extends ExportDeclaration, @export_default_declaration {
+  /** Gets the operand statement or expression that is exported by this declaration. */
+  ExprOrStmt getOperand() { result = this.getChild(0) }
+
+  override predicate exportsDirectlyAs(LexicalName v, string name) {
+    name = "default" and v = this.getADecl().getVariable()
+  }
+
+  /** Gets the declaration, if any, exported by this default export. */
+  VarDecl getADecl() {
+    exists(ExprOrStmt op | op = this.getOperand() |
+      result = op.(FunctionDeclStmt).getIdentifier() or
+      result = op.(ClassDeclStmt).getIdentifier()
+    )
+  }
+
+  override DataFlow::Node getDirectSourceNode(string name) {
+    name = "default" and result = DataFlow::valueNode(this.getOperand())
+  }
+}
+
+/**
+ * A named export declaration.
+ *  *
+ * Examples:
+ *
+ * ```
+ * export { x, y as z };
+ * export var x = 42;
+ * export { x } from 'a';
+ * ```
+ */
+class ExportNamedDeclaration extends ExportDeclaration, @export_named_declaration {
+  /** Gets the operand statement or expression that is exported by this declaration. */
+  ExprOrStmt getOperand() { result = this.getChild(-1) }
+
+  /**
+   * Gets an identifier, if any, exported as part of a declaration by this named export.
+   *
+   * Does not include names of export specifiers.
+   * That is, it includes the `v` in `export var v` but not in `export {v}`.
+   */
+  Identifier getAnExportedDecl() {
+    exists(ExprOrStmt op | op = this.getOperand() |
+      result = op.(DeclStmt).getADecl().getBindingPattern().getABindingVarRef() or
+      result = op.(FunctionDeclStmt).getIdentifier() or
+      result = op.(ClassDeclStmt).getIdentifier() or
+      result = op.(NamespaceDeclaration).getIdentifier() or
+      result = op.(EnumDeclaration).getIdentifier() or
+      result = op.(InterfaceDeclaration).getIdentifier() or
+      result = op.(TypeAliasDeclaration).getIdentifier() or
+      result = op.(ImportEqualsDeclaration).getIdentifier()
+    )
+  }
+
+  /** Gets the variable declaration, if any, exported by this named export. */
+  VarDecl getADecl() { result = this.getAnExportedDecl() }
+
+  override predicate exportsDirectlyAs(LexicalName v, string name) {
+    (
+      exists(LexicalDecl vd | vd = this.getAnExportedDecl() |
+        name = vd.getName() and v = vd.getALexicalName()
+      )
+      or
+      exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
+        v = spec.getLocal().(LexicalAccess).getALexicalName()
+      )
+    ) and
+    not (this.isTypeOnly() and v instanceof Variable)
+  }
+
+  override DataFlow::Node getDirectSourceNode(string name) {
+    exists(VarDef d | d.getTarget() = this.getADecl() |
+      name = d.getTarget().(VarDecl).getName() and
+      result = DataFlow::valueNode(d.getSource())
+    )
+    or
+    exists(ObjectPattern obj | obj = this.getOperand().(DeclStmt).getADecl().getBindingPattern() |
+      exists(DataFlow::PropRead read | read = result |
+        read.getBase() = obj.flow() and
+        name = read.getPropertyName()
+      )
+    )
+    or
+    exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
+      not exists(this.getImportedPath()) and result = DataFlow::valueNode(spec.getLocal())
+      or
+      // For `export * as B from ".."`, we use the ExportNamespaceSpecifier as a representative for the
+      // object that gets exposed as `B`.
+      this instanceof ReExportDeclaration and
+      spec instanceof ExportNamespaceSpecifier and
+      result = DataFlow::valueNode(spec)
+    )
+  }
+
+  /** Gets the module from which the exports are taken if this is a re-export. */
+  ConstantString getImportedPath() { result = this.getChildExpr(-2) }
+
+  /** Gets the `i`th export specifier of this declaration. */
+  ExportSpecifier getSpecifier(int i) { result = this.getChildExpr(i) }
+
+  /** Gets an export specifier of this declaration. */
+  ExportSpecifier getASpecifier() { result = this.getSpecifier(_) }
+}
+
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
+
+overlay[global]
+private class ExportNamespaceStep extends PreCallGraphStep {
+  override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+    exists(ExportNamedDeclaration exprt, ExportNamespaceSpecifier spec |
+      spec = exprt.getASpecifier() and
+      pred =
+        exprt.(ReExportDeclaration).getReExportedES2015Module().getAnExport().getSourceNode(prop) and
+      succ = DataFlow::valueNode(spec)
+    )
+  }
+}
+
+/**
+ * An export specifier in an export declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * export
+ *   *              // namespace export specifier
+ *   from 'a';
+ *
+ * export
+ *   default        // default export specifier
+ *   var x = 42;
+ *
+ * export {
+ *   x,             // named export specifier
+ *   y as z         // named export specifier
+ * };
+ *
+ * export
+ *   x              // default re-export specifier
+ *   from 'a';
+ * ```
+ */
+class ExportSpecifier extends Expr, @exportspecifier {
+  /** Gets the declaration to which this specifier belongs. */
+  ExportDeclaration getExportDeclaration() { result = this.getParent() }
+
+  /** Gets the local symbol that is being exported. */
+  Identifier getLocal() { result = this.getChildExpr(0) }
+
+  /** Gets the name under which the symbol is exported. */
+  Identifier getExported() { result = this.getChildExpr(1) }
+
+  /**
+   * Gets the local name of the exported symbol, that is, the name
+   * of the exported local variable, or the imported name in a
+   * re-export.
+   *
+   * For example, consider these six exports:
+   *
+   * ```javascript
+   * export { x }
+   * export { y as z }
+   * export function f() {}
+   * export default 42
+   * export * from 'd'
+   * export default from 'm'
+   * ```
+   *
+   * The local names for the first three of them are, respectively,
+   * `x`, `y` and `f`; the fourth one exports an un-named value, and
+   * hence has no local name; the fifth one does not export a unique
+   * name, and hence also does not have a local name.
+   *
+   * The sixth one (unlike the fourth one) _does_ have a local name
+   * (that is, `default`), since it is a re-export.
+   */
+  string getLocalName() { result = this.getLocal().getName() }
+
+  /**
+   * Gets the name under which the symbol is exported.
+   *
+   * For example, consider these five exports:
+   *
+   * ```javascript
+   * export { x }
+   * export { y as z }
+   * export function f() {}
+   * export default 42
+   * export * from 'd'
+   * ```
+   *
+   * The exported names for the first four of them are, respectively,
+   * `x`, `z`, `f` and `default`, while the last one does not have
+   * an exported name since it does not export a unique symbol.
+   */
+  string getExportedName() { result = this.getExported().getName() }
+
+  override string getAPrimaryQlClass() { result = "ExportSpecifier" }
+}
+
+/**
+ * A named export specifier.
+ *
+ * Examples:
+ *
+ * ```
+ * export {
+ *   x,       // named export specifier
+ *   y as z   // named export specifier
+ * };
+ * ```
+ */
+class NamedExportSpecifier extends ExportSpecifier, @named_export_specifier { }
+
+/**
+ * A default export specifier.
+ *
+ * Examples:
+ *
+ * ```
+ * export
+ *   default    // default export specifier
+ *   42;
+ * export
+ *   x          // default re-export specifier
+ *   from 'a';
+ * ```
+ */
+class ExportDefaultSpecifier extends ExportSpecifier, @export_default_specifier {
+  override string getExportedName() { result = "default" }
+}
+
+/**
+ * A default export specifier in a re-export declaration.
+ *
+ * Example:
+ *
+ * ```
+ * export
+ *   x          // default re-export specifier
+ *   from 'a';
+ * ```
+ */
+class ReExportDefaultSpecifier extends ExportDefaultSpecifier {
+  ReExportDefaultSpecifier() { this.getExportDeclaration() instanceof ReExportDeclaration }
+
+  override string getLocalName() { result = "default" }
+
+  override string getExportedName() { result = this.getExported().getName() }
+}
+
+/**
+ * A namespace export specifier, that is `*` or `* as x` occurring in an export declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * export
+ *   *          // namespace export specifier
+ *   from 'a';
+ *
+ * export
+ *   * as x     // namespace export specifier
+ *   from 'a';
+ * ```
+ */
+class ExportNamespaceSpecifier extends ExportSpecifier, @export_namespace_specifier { }
+
+/**
+ * An export declaration that re-exports declarations from another module.
+ *
+ * Examples:
+ *
+ * ```
+ * export * from 'a';               // bulk re-export declaration
+ * export * as x from 'a';          // namespace re-export declaration
+ * export { x } from 'a';           // named re-export declaration
+ * export x from 'a';               // default re-export declaration
+ * ```
+ */
+abstract class ReExportDeclaration extends ExportDeclaration {
+  /** Gets the path of the module from which this declaration re-exports. */
+  abstract ConstantString getImportedPath();
+
+  /** Gets the module from which this declaration re-exports, if it is an ES2015 module. */
+  overlay[global]
+  ES2015Module getReExportedES2015Module() { result = this.getReExportedModule() }
+
+  /** Gets the module from which this declaration re-exports. */
+  overlay[global]
+  cached
+  Module getReExportedModule() {
+    Stages::Imports::ref() and
+    result.getFile() = ImportPathResolver::resolveExpr(this.getImportedPath())
+  }
+
+  /**
+   * Holds if this re-export declaration ultimately re-exports `v` (from another module)
+   * under the given `name`.
+   */
+  overlay[global]
+  abstract predicate reExportsAs(LexicalName v, string name);
+
+  /**
+   * Gets the data flow node (from another module) corresponding to the value that is re-exported
+   * under the name `name`.
+   */
+  overlay[global]
+  abstract DataFlow::Node getReExportedSourceNode(string name);
+}
+
+/** A literal path expression appearing in a re-export declaration. */
+overlay[global]
+deprecated private class LiteralReExportPath extends PathExpr, ConstantString {
+  LiteralReExportPath() { exists(ReExportDeclaration bred | this = bred.getImportedPath()) }
+
+  override string getValue() { result = this.getStringValue() }
+}
+
+/**
+ * A named export declaration that re-exports symbols imported from another module.
+ *
+ * Example:
+ *
+ * ```
+ * export { x } from 'a';
+ * ```
+ */
+class SelectiveReExportDeclaration extends ReExportDeclaration, ExportNamedDeclaration {
+  SelectiveReExportDeclaration() { exists(ExportNamedDeclaration.super.getImportedPath()) }
+
+  /** Gets the path of the module from which this declaration re-exports. */
+  override ConstantString getImportedPath() {
+    result = ExportNamedDeclaration.super.getImportedPath()
+  }
+
+  overlay[global]
+  pragma[nomagic]
+  private predicate reExportsFrom(ES2015Module mod, string originalName, string reExportedName) {
+    exists(ExportSpecifier spec |
+      spec = this.getASpecifier() and
+      reExportedName = spec.getExportedName() and
+      originalName = spec.getLocalName() and
+      mod = this.getReExportedES2015Module()
+    )
+  }
+
+  overlay[global]
+  override predicate reExportsAs(LexicalName v, string name) {
+    exists(ES2015Module mod, string originalName |
+      this.reExportsFrom(mod, originalName, name) and
+      mod.exportsAs(v, originalName)
+    ) and
+    not (this.isTypeOnly() and v instanceof Variable)
+  }
+
+  overlay[global]
+  override DataFlow::Node getReExportedSourceNode(string name) {
+    exists(ES2015Module mod, string originalName |
+      this.reExportsFrom(mod, originalName, name) and
+      result = mod.getAnExport().getSourceNode(originalName)
+    )
+  }
+}
+
+/**
+ * An export declaration that exports zero or more declarations from the module it appears in.
+ *
+ * Examples:
+ *
+ * ```
+ * export default function f() {};
+ * export default 42;
+ * export { x, y as z };
+ * export var x = 42;
+ * ```
+ */
+class OriginalExportDeclaration extends ExportDeclaration {
+  OriginalExportDeclaration() { not this instanceof ReExportDeclaration }
+}

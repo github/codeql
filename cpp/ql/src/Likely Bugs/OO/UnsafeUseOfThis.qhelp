@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds calls to pure virtual member functions in constructors and destructors. When executing the body of a constructor of class <code>T</code>, the virtual table of <code>T</code> refers to the virtual table of one of <code>T</code>'s base classes. This can produce unexpected behavior, including program abort that can lead to denial of service attacks. The same problem exists during destruction of an object.</p>
+
+</overview>
+<recommendation>
+<p>Do not rely on virtual dispatch in constructors and destructors. Instead, each class should be responsible for acquiring and releasing its resources. If a base class needs to refer to a derived class during initialization, use the Dynamic Binding During Initialization idiom.</p>
+
+</recommendation>
+<example><sample src="UnsafeUseOfThis.cpp" />
+
+
+
+</example>
+<references>
+
+<li>ISO C++ FAQ: <a href="https://isocpp.org/wiki/faq/strange-inheritance#calling-virtuals-from-ctors">When my base class's constructor calls a virtual function on its this object, why doesn't my derived class's override of that virtual function get invoked?</a>
+</li>
+<li>SEI CERT C++ Coding Standard <a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/OOP50-CPP.+Do+not+invoke+virtual+functions+from+constructors+or+destructors">OOP50-CPP. Do not invoke virtual functions from constructors or destructors</a>
+</li>
+<li>ISO C++ FAQ: <a href="https://isocpp.org/wiki/faq/strange-inheritance#calling-virtuals-from-ctor-idiom">Okay, but is there a way to simulate that behavior as if dynamic binding worked on the this object within my base class's constructor?</a>
+</li>
+
+
+</references></qhelp>

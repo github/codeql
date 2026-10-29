@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p> The 'apply' function is deprecated and makes code harder to read as most Python programmers
+will not be familiar with it (it has been deprecated since 2003).
+</p>
+
+</overview>
+<recommendation>
+
+<p>Replace <code>apply(function, args)</code> with <code>function(*args)</code>.
+</p><p>
+Replace <code>apply(function, args, keywords)</code> with <code>function(*args, **keywords)</code>.
+</p>
+
+
+</recommendation>
+<references>
+
+     <li>Python Standard Library: <a href="http://docs.python.org/2/library/functions.html#apply">apply</a>.</li>
+     <li>Python PEP-290: <a href="http://www.python.org/dev/peps/pep-0290/">Code Migration and Modernization</a>.</li>
+
+
+</references>
+</qhelp>

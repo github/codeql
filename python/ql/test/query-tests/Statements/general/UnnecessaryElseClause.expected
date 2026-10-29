@@ -1,0 +1,2 @@
+| statements_test.py:65:1:65:19 | For | This 'for' statement has a redundant 'else' as no 'break' is present in the body. |
+| statements_test.py:70:1:70:13 | While | This 'while' statement has a redundant 'else' as no 'break' is present in the body. |

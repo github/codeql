@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+React components have a <code>state</code> property. This property contains data associated with the
+component that may change over time. Although properties of the state object can be read freely, they
+should not be updated directly, since such modifications could be overwritten by asynchronous updates
+performed by <code>setState</code>.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Rewrite the code to use <code>setState</code> instead.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example component uses <code>setInterval</code> to register method <code>tick</code>
+as a callback that is invoked every second and updates <code>state.now</code> directly:
+</p>
+
+<sample language="javascript">
+class Clock extends React.Component {
+  componentDidMount() {
+    setInterval(() => this.tick(), 1000);
+  }
+  tick() {
+    this.state.now = Date.now();
+  }
+}
+</sample>
+
+<p>
+Instead, <code>setState</code> should be used:
+</p>
+
+<sample language="javascript">
+class Clock extends React.Component {
+  componentDidMount() {
+    setInterval(() => this.tick(), 1000);
+  }
+  tick() {
+    this.setState({ now: Date.now() });
+  }
+}
+</sample>
+</example>
+
+<references>
+<li>React Quick Start: <a href="https://facebook.github.io/react/docs/state-and-lifecycle.html">State and Lifecycle</a>.</li>
+</references>
+</qhelp>

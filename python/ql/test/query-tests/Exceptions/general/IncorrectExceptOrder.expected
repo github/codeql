@@ -1,0 +1,1 @@
+| exceptions_test.py:64:1:64:22 | ExceptStmt | This except block handling $@ is unreachable; as $@ for the more general $@ always subsumes it. | file://:0:0:0:0 | AttributeError | AttributeError | exceptions_test.py:62:1:62:17 | ExceptStmt | this except block | file://:0:0:0:0 | Exception | Exception |

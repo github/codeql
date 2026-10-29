@@ -1,0 +1,2 @@
+| tst.ts:6:3:6:17 | types1(): any[] | This overload of types1() is unreachable, the $@ overload will always be selected. | tst.ts:5:3:5:18 | types1<T>(): T[] | previous |
+| tst.ts:21:3:21:28 | bar(thi ... number; | This overload of bar() is unreachable, the $@ overload will always be selected. | tst.ts:20:3:20:28 | bar(thi ... string; | previous |

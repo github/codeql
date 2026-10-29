@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["treeverse/lakefs", "*", "input.compose-flags", "code-injection", "generated"]
+     - ["treeverse/lakefs", "*", "input.compose-directory", "code-injection", "generated"]
+     - ["treeverse/lakefs", "*", "input.compose-file", "code-injection", "generated"]

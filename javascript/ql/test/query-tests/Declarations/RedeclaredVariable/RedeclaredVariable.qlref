@@ -1,0 +1,2 @@
+query: Declarations/RedeclaredVariable.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

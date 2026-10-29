@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Using a size argument that is larger than the buffer size will result in an out-of-bounds memory access and possibly overflow. You need to limit the value of the length argument.</p>
+
+</overview>
+
+<example>
+<p>The following example shows the use of a function with and without an error in the size argument.</p>
+<sample src="BufferAccessWithIncorrectLengthValue.cpp" />
+
+</example>
+<references>
+
+<li>
+  CERT Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/ARR38-C.+Guarantee+that+library+functions+do+not+form+invalid+pointers">ARR38-C. Guarantee that library functions do not form invalid pointers - SEI CERT C Coding Standard - Confluence</a>.
+</li>
+
+</references>
+</qhelp>

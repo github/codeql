@@ -1,0 +1,2 @@
+query: Statements/TopLevelPrint.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

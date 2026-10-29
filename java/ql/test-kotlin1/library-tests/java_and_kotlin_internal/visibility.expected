@@ -1,0 +1,16 @@
+#select
+| Kotlin.kt:2:11:3:2 | kotlinFun$main | final |
+| Kotlin.kt:2:11:3:2 | kotlinFun$main | internal |
+| Kotlin.kt:6:10:6:36 | topLevelKotlinFun | final |
+| Kotlin.kt:6:10:6:36 | topLevelKotlinFun | internal |
+| Kotlin.kt:6:10:6:36 | topLevelKotlinFun | static |
+isPublic
+isInternal
+| Kotlin.kt:2:11:3:2 | kotlinFun$main |
+| Kotlin.kt:6:10:6:36 | topLevelKotlinFun |
+modifiers_methods
+| file://:0:0:0:0 | final | Kotlin.kt:2:11:3:2 | kotlinFun$main |
+| file://:0:0:0:0 | final | Kotlin.kt:6:10:6:36 | topLevelKotlinFun |
+| file://:0:0:0:0 | internal | Kotlin.kt:2:11:3:2 | kotlinFun$main |
+| file://:0:0:0:0 | internal | Kotlin.kt:6:10:6:36 | topLevelKotlinFun |
+| file://:0:0:0:0 | static | Kotlin.kt:6:10:6:36 | topLevelKotlinFun |

@@ -1,0 +1,74 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Avoid calling <code>System.runFinalizersOnExit</code> or <code>Runtime.runFinalizersOnExit</code>, 
+which are considered to be dangerous methods. 
+</p>
+
+<p>
+The Java Development Kit documentation for <code>System.runFinalizersOnExit</code> states:
+</p>
+
+<blockquote><p>
+This method is inherently unsafe. It may result in finalizers being called on live objects while other threads are concurrently manipulating those objects, 
+resulting in erratic behavior or deadlock.
+</p>
+</blockquote>
+
+<p>
+Object finalizers are normally only called when the object is about to be collected by the garbage collector. Using <code>runFinalizersOnExit</code> sets a Java Virtual Machine-wide
+flag that executes finalizers <em>on all objects with a <code>finalize</code> method</em> before the runtime exits. This would require all objects with finalizers 
+to defend against the possibility of <code>finalize</code> being called when the object is still in use, which is not practical for most
+applications.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Ensure that the code does not rely on the execution of finalizers. If the code is dependent on the garbage collection behavior of the Java Virtual Machine,
+there is no guarantee that finalizers will be executed in a timely manner, or at all. This may become a problem if finalizers are used to 
+dispose of limited system resources, such as file handles.
+</p>
+<p>
+Instead of finalizers, use explicit <code>dispose</code> methods in <code>finally</code> blocks, to make sure that an object's resources are released.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a program that calls <code>runFinalizersOnExit</code>, which is not
+recommended.</p>
+
+<sample src="CallsToRunFinalizersOnExit.java" />
+
+<p>The following example shows the recommended approach: a program that calls a <code>dispose</code> method in a <code>finally</code> block.</p>
+
+<sample src="CallsToRunFinalizersOnExitGood.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 7. Addison-Wesley, 2008.
+</li>
+
+<!-- Method System.runFinalizersOnExit(boolean) has been removed in Java 11; only use API specification links for Java 10 in the following -->
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/javase/10/docs/api/java/lang/System.html#runFinalizersOnExit-boolean-">System.runFinalizersOnExit()</a>,
+  <a href="https://docs.oracle.com/javase/10/docs/api/java/lang/Object.html#finalize--">Object.finalize()</a>.
+</li>
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/javase/10/docs/api/java/lang/doc-files/threadPrimitiveDeprecation.html">Java Thread Primitive Deprecation</a>.
+</li>
+
+
+</references>
+</qhelp>

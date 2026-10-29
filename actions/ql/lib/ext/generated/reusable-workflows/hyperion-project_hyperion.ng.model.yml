@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["hyperion-project/hyperion.ng/.github/workflows/qt5_6.yml", "*", "input.pull_request_number", "code-injection", "generated"]
+     - ["hyperion-project/hyperion.ng/.github/workflows/qt5_6.yml", "*", "input.qt_version", "code-injection", "generated"]
+     - ["hyperion-project/hyperion.ng/.github/workflows/qt5_6.yml", "*", "input.event_name", "code-injection", "generated"]

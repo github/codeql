@@ -1,0 +1,9 @@
+source "https://rubygems.org"
+
+gem "rails", "7.0.0"
+gem "json", "~> 2.6.0"
+gem "jwt"
+
+gem "loofah", ">= 2"
+
+gem "invalid-version", "abc"

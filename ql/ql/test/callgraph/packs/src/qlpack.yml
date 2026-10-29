@@ -1,0 +1,5 @@
+name: ql-testing-src-pack
+version: 0.1.0
+dependencies: 
+  ql-testing-lib-pack: ${workspace}
+warnOnImplicitThis: true

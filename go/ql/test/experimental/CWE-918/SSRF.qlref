@@ -1,0 +1,4 @@
+query: experimental/CWE-918/SSRF.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql

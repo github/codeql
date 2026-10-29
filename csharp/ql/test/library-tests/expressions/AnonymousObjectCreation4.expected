@@ -1,0 +1,2 @@
+| expressions.cs:418:9:421:9 | object creation of type <>__AnonType0<String,String[]> | expressions.cs:422:9:425:9 | object creation of type <>__AnonType0<String,String[]> |
+| expressions.cs:422:9:425:9 | object creation of type <>__AnonType0<String,String[]> | expressions.cs:418:9:421:9 | object creation of type <>__AnonType0<String,String[]> |

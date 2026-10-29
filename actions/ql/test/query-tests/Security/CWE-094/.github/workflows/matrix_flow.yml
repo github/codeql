@@ -1,0 +1,29 @@
+name: Matrix Flow
+
+on:
+  pull_request_target:
+
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.filelist.outputs.file_names }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get all zip files
+      id: filelist
+      uses: the-coding-turtle/ga-file-list@v0.1
+      with:
+        directory: "."
+        file_extension: "zip"
+
+  multi_tenant:
+    needs: lookup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tenant: ${{fromJson(needs.lookup.outputs.matrix)}}
+    steps:
+    - name: Show all files
+      run: |
+        echo "this is file: ${{ matrix.TENANT }}"

@@ -1,0 +1,17 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+
+py_binary(
+    name = "codegen",
+    srcs = ["codegen.py"],
+    data = [
+        "//misc/codegen/templates:cpp",
+        "//misc/codegen/templates:dbscheme",
+        "//misc/codegen/templates:ql",
+        "//misc/codegen/templates:rust",
+        "//misc/codegen/templates:trap",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//misc/codegen/generators",
+    ],
+)

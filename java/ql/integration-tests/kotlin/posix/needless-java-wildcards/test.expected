@@ -1,0 +1,2 @@
+| Test.java:4:22:4:36 | needlessExtends | file://<external>/Iterable.class:0:0:0:0 | Iterable<? extends String> |
+| Test.java:7:22:7:34 | needlessSuper | build1/KotlinConsumer.class:0:0:0:0 | KotlinConsumer<? super Object> |

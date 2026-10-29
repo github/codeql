@@ -1,0 +1,2 @@
+query: experimental/Likely Bugs/ArrayAccessProductFlow.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

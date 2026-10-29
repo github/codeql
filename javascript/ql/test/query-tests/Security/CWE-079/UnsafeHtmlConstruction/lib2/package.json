@@ -1,0 +1,10 @@
+{
+    "name": "my-unsafe-library",
+    "main": "./index.ts",
+    "exports": {
+        "./MyNode": {
+            "require": "./lib/MyNode.cjs",
+            "import": "./lib/MyNode.mjs"
+        }
+    }
+}

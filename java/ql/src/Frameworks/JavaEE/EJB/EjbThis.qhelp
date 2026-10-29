@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+The Enterprise JavaBeans 3.0 core specification, Section 21.1.2, states:
+</p>
+
+<blockquote>
+<p>
+The enterprise bean must not attempt to pass <code>this</code> as an argument or method result. The
+enterprise bean must pass the result of <code>SessionContext.getBusinessObject</code>, 
+<code>SessionContext.getEJBObject</code>, <code>SessionContext.getEJBLocalObject</code>, 
+<code>EntityContext.getEJBObject</code>, or <code>EntityContext.getEJBLocalObject</code> instead.
+</p>
+</blockquote>
+
+</overview>
+<references>
+
+
+<li>
+  <a href="http://jcp.org/aboutJava/communityprocess/final/jsr220/index.html">
+  JSR-220 Enterprise JavaBeans 3.0 Final Release</a> (ejbcore),
+  Section 21.1.2 Programming Restrictions
+</li>
+
+
+</references>
+</qhelp>

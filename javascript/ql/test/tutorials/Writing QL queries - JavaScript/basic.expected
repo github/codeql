@@ -1,0 +1,2 @@
+| tst.js:3:3:3:14 | "use strict" | This expression has no effect. |
+| tst.js:5:3:5:18 | point.bias == -1 | This expression has no effect. |

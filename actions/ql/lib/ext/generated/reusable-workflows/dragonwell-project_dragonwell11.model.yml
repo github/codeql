@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["dragonwell-project/dragonwell11/.github/workflows/test.yml", "*", "input.platform", "code-injection", "generated"]

@@ -1,0 +1,6 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - async-std = { version = "1.13.1" }
+    - bytes = { version = "1.10.1" }
+    - futures = { version = "0.3" }
+    - tokio = { version = "1.43.0", features = ["full"] }

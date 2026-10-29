@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+	<p>
+		Event handler callbacks are usually invoked as functions, not as methods. This means that the <code>this</code> expressions of such callbacks evaluate to <code>undefined</code> or the global object.
+		Using an ES6 class method as a callback therefore means that the <code>this</code> expressions of the method do not refer to the class instance.
+	</p>
+</overview>
+
+<recommendation>
+	<p>
+		Ensure that the receiver object of event handler methods that use <code>this</code> expressions is not <code>undefined</code>.
+		For instance, you can use <code>bind</code> or explicitly invoke the method as a method call.
+	</p>
+</recommendation>
+
+<example>
+	<p>
+		The following example, for the React framework, registers the <code>handleClick</code> method as an event handler for the <code>click</code> event:
+	</p>
+
+	<sample src="examples/UnboundEventHandlerReceiver.js"/>
+
+	<p>
+
+		This is problematic since this invokes <code>handleClick</code> as a function call instead of a method call, meaning that <code>this</code> is <code>undefined</code> inside <code>handleClick</code>.
+
+	</p>
+
+	<p>
+		Instead, bind the receiver of <code>handleClick</code> in the constructor:
+	</p>
+
+	<sample src="examples/UnboundEventHandlerReceiver_fixed.js"/>
+
+</example>
+
+<references>
+	<li>React Quick Start: <a href="https://reactjs.org/docs/handling-events.html">Handling Events</a>.</li>
+</references>
+</qhelp>

@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>A class that defines attributes that are not present in its superclasses
+may need to override the <code>__eq__()</code> method (<code>__ne__()</code>
+should also be defined).</p>
+
+<p>Adding additional attributes without overriding  <code>__eq__()</code> means
+that the additional attributes will not be accounted for in equality tests.</p>
+
+
+</overview>
+<recommendation>
+
+<p>Override the <code>__eq__</code> method.</p>
+
+
+</recommendation>
+<example>
+<p>In the following example the <code>ColorPoint</code>
+class subclasses the <code>Point</code> class and adds a new attribute,
+but does not override the <code>__eq__</code> method.
+</p>
+
+<sample src="DefineEqualsWhenAddingAttributes.py" />
+
+
+</example>
+<references>
+
+<li>Peter Grogono, Philip Santas: <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.48.5109&amp;rep=rep1&amp;type=pdf">Equality in Object Oriented Languages</a></li>
+
+</references>
+</qhelp>

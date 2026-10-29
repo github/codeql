@@ -1,0 +1,17 @@
+| tst.js:1:1:1:7 | !method | This expression will be implicitly converted from boolean to string. |
+| tst.js:15:6:15:9 | null | This expression will be implicitly converted from null to object. |
+| tst.js:17:6:17:13 | 'string' | This expression will be implicitly converted from string to object. |
+| tst.js:22:13:22:53 | "Settin ... o '%s'" | This expression will be implicitly converted from string to number. |
+| tst.js:24:18:24:26 | !callback | This expression will be implicitly converted from boolean to object. |
+| tst.js:47:5:47:10 | void 0 | This expression will be implicitly converted from undefined to number. |
+| tst.js:54:3:54:3 | x | This expression will be implicitly converted from undefined to number. |
+| tst.js:59:8:59:8 | y | This expression will be implicitly converted from undefined to number. |
+| tst.js:64:5:64:5 | x | This expression will be implicitly converted from undefined to number. |
+| tst.js:69:19:69:22 | name | This expression will be implicitly converted from undefined to string. |
+| tst.js:74:3:74:3 | x | This expression will be implicitly converted from undefined to number. |
+| tst.js:89:5:89:7 | f() | This expression will be implicitly converted from undefined to number. |
+| tst.js:95:5:95:7 | g() | This expression will be implicitly converted from undefined to number. |
+| tst.js:98:13:98:15 | g() | This expression will be implicitly converted from undefined to number. |
+| tst.js:99:13:99:15 | g() | This expression will be implicitly converted from undefined to string. |
+| tst.js:106:8:106:8 | y | This expression will be implicitly converted from string to number. |
+| tst.js:111:10:111:10 | y | This expression will be implicitly converted from string to number. |

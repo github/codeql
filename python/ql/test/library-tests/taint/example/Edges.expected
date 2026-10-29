@@ -1,0 +1,85 @@
+| 5: SSA variable worker = Dilbert (p1 = Dilbert)    | use        | 6: worker = Dilbert (p1 = Dilbert) |
+| 5: SSA variable worker = Wally (p1 = Wally)        | use        | 6: worker = Wally (p1 = Wally) |
+| 5: worker = Dilbert (p1 = Dilbert)                 | [dataflow] | 5: SSA variable worker = Dilbert (p1 = Dilbert) |
+| 5: worker = Wally (p1 = Wally)                     | [dataflow] | 5: SSA variable worker = Wally (p1 = Wally) |
+| 6: worker = Dilbert (p1 = Dilbert)                 | [dataflow] | 6: SSA variable self.worker = Dilbert (p1 = Dilbert) |
+| 6: worker = Wally (p1 = Wally)                     | [dataflow] | 6: SSA variable self.worker = Wally (p1 = Wally) |
+| 8: SSA variable worker = Dilbert (p0 = Dilbert)    | [dataflow] | 10: SSA variable worker = Dilbert (p0 = Dilbert) |
+| 8: SSA variable worker = Dilbert (p0 = Dilbert)    | use        | 10: worker = Dilbert (p0 = Dilbert) |
+| 8: SSA variable worker = Wally (p0 = Wally)        | [dataflow] | 10: SSA variable worker = Wally (p0 = Wally) |
+| 8: SSA variable worker = Wally (p0 = Wally)        | use        | 10: worker = Wally (p0 = Wally) |
+| 8: worker = Dilbert (p0 = Dilbert)                 | [dataflow] | 8: SSA variable worker = Dilbert (p0 = Dilbert) |
+| 8: worker = Wally (p0 = Wally)                     | [dataflow] | 8: SSA variable worker = Wally (p0 = Wally) |
+| 10: worker = Dilbert (p0 = Dilbert)                | parameter  | 5: worker = Dilbert (p1 = Dilbert) |
+| 10: worker = Wally (p0 = Wally)                    | parameter  | 5: worker = Wally (p1 = Wally) |
+| 12: SSA variable worker = Dilbert (p0 = Dilbert)   | use        | 13: worker = Dilbert (p0 = Dilbert) |
+| 12: worker = Dilbert (p0 = Dilbert)                | [dataflow] | 12: SSA variable worker = Dilbert (p0 = Dilbert) |
+| 17: ENGINEER = Dilbert                             | [dataflow] | 17: SSA variable worker = Dilbert |
+| 17: ENGINEER = Wally                               | [dataflow] | 17: SSA variable worker = Wally |
+| 17: SSA variable worker = Dilbert                  | [dataflow] | 18: SSA variable worker = Dilbert |
+| 17: SSA variable worker = Dilbert                  | use        | 18: worker = Dilbert |
+| 17: SSA variable worker = Wally                    | [dataflow] | 18: SSA variable worker = Wally |
+| 17: SSA variable worker = Wally                    | use        | 18: worker = Wally |
+| 22: ENGINEER = Dilbert                             | [dataflow] | 22: SSA variable worker = Dilbert |
+| 22: ENGINEER = Wally                               | [dataflow] | 22: SSA variable worker = Wally |
+| 22: SSA variable worker = Dilbert                  | use        | 23: worker = Dilbert |
+| 23: SSA variable worker = Dilbert                  | [dataflow] | 24: SSA variable worker = Dilbert |
+| 23: SSA variable worker = Dilbert                  | use        | 24: worker = Dilbert |
+| 23: lunch() = Dilbert                              | [dataflow] | 23: SSA variable worker = Dilbert |
+| 23: worker = Dilbert                               | call       | 23: lunch() = Dilbert |
+| 23: worker = Dilbert                               | parameter  | 12: worker = Dilbert (p0 = Dilbert) |
+| 28: ENGINEER = Dilbert                             | [dataflow] | 28: SSA variable worker = Dilbert |
+| 28: ENGINEER = Wally                               | [dataflow] | 28: SSA variable worker = Wally |
+| 28: SSA variable worker = Dilbert                  | [dataflow] | 29: SSA variable worker = Dilbert |
+| 28: SSA variable worker = Dilbert                  | use        | 29: worker = Dilbert |
+| 28: SSA variable worker = Wally                    | [dataflow] | 29: SSA variable worker = Wally |
+| 28: SSA variable worker = Wally                    | use        | 29: worker = Wally |
+| 33: ENGINEER = Dilbert                             | [dataflow] | 33: SSA variable worker = Dilbert |
+| 33: ENGINEER = Wally                               | [dataflow] | 33: SSA variable worker = Wally |
+| 33: SSA variable worker = Dilbert                  | use        | 34: worker = Dilbert |
+| 33: SSA variable worker = Wally                    | use        | 34: worker = Wally |
+| 34: SSA variable task.worker = Dilbert             | use        | 37: task.worker = Dilbert |
+| 34: SSA variable task.worker = Wally               | use        | 37: task.worker = Wally |
+| 34: assign_task().worker = Dilbert                 | [dataflow] | 34: SSA variable task.worker = Dilbert |
+| 34: assign_task().worker = Wally                   | [dataflow] | 34: SSA variable task.worker = Wally |
+| 34: worker = Dilbert                               | call       | 34: assign_task().worker = Dilbert |
+| 34: worker = Dilbert                               | parameter  | 8: worker = Dilbert (p0 = Dilbert) |
+| 34: worker = Wally                                 | call       | 34: assign_task().worker = Wally |
+| 34: worker = Wally                                 | parameter  | 8: worker = Wally (p0 = Wally) |
+| 37: Attribute = Dilbert                            | call       | 37: lunch() = Dilbert |
+| 37: Attribute = Dilbert                            | parameter  | 12: worker = Dilbert (p0 = Dilbert) |
+| 37: SSA variable worker = Dilbert                  | [dataflow] | 39: SSA variable worker = Dilbert |
+| 37: SSA variable worker = Dilbert                  | use        | 39: worker = Dilbert |
+| 37: lunch() = Dilbert                              | [dataflow] | 37: SSA variable worker = Dilbert |
+| 43: ENGINEER = Dilbert                             | [dataflow] | 43: SSA variable worker = Dilbert |
+| 43: ENGINEER = Wally                               | [dataflow] | 43: SSA variable worker = Wally |
+| 48: SSA variable worker = Dilbert (p0 = Dilbert)   | use        | 53: worker = Dilbert (p0 = Dilbert) |
+| 48: SSA variable worker = Wally (p0 = Wally)       | use        | 53: worker = Wally (p0 = Wally) |
+| 48: worker = Dilbert (p0 = Dilbert)                | [dataflow] | 48: SSA variable worker = Dilbert (p0 = Dilbert) |
+| 48: worker = Wally (p0 = Wally)                    | [dataflow] | 48: SSA variable worker = Wally (p0 = Wally) |
+| 57: ENGINEER = Dilbert                             | [dataflow] | 57: SSA variable worker = Dilbert |
+| 57: ENGINEER = Wally                               | [dataflow] | 57: SSA variable worker = Wally |
+| 57: SSA variable worker = Dilbert                  | use        | 58: worker = Dilbert |
+| 57: SSA variable worker = Wally                    | use        | 58: worker = Wally |
+| 58: SSA variable worker = Dilbert                  | [dataflow] | 60: SSA variable worker = Dilbert |
+| 58: SSA variable worker = Dilbert                  | use        | 60: worker = Dilbert |
+| 58: SSA variable worker = Wally                    | [dataflow] | 60: SSA variable worker = Wally |
+| 58: SSA variable worker = Wally                    | use        | 60: worker = Wally |
+| 58: cubical() = Dilbert                            | [dataflow] | 58: SSA variable worker = Dilbert |
+| 58: cubical() = Wally                              | [dataflow] | 58: SSA variable worker = Wally |
+| 58: worker = Dilbert                               | call       | 58: cubical() = Dilbert |
+| 58: worker = Dilbert                               | parameter  | 48: worker = Dilbert (p0 = Dilbert) |
+| 58: worker = Wally                                 | call       | 58: cubical() = Wally |
+| 58: worker = Wally                                 | parameter  | 48: worker = Wally (p0 = Wally) |
+| 64: ENGINEER = Dilbert                             | [dataflow] | 64: SSA variable worker = Dilbert |
+| 64: ENGINEER = Wally                               | [dataflow] | 64: SSA variable worker = Wally |
+| 64: SSA variable worker = Dilbert                  | use        | 65: worker = Dilbert |
+| 65: SSA variable worker = Dilbert                  | use        | 66: worker = Dilbert |
+| 65: lunch() = Dilbert                              | [dataflow] | 65: SSA variable worker = Dilbert |
+| 65: worker = Dilbert                               | call       | 65: lunch() = Dilbert |
+| 65: worker = Dilbert                               | parameter  | 12: worker = Dilbert (p0 = Dilbert) |
+| 66: SSA variable worker = Dilbert                  | [dataflow] | 68: SSA variable worker = Dilbert |
+| 66: SSA variable worker = Dilbert                  | use        | 68: worker = Dilbert |
+| 66: cubical() = Dilbert                            | [dataflow] | 66: SSA variable worker = Dilbert |
+| 66: worker = Dilbert                               | call       | 66: cubical() = Dilbert |
+| 66: worker = Dilbert                               | parameter  | 48: worker = Dilbert (p0 = Dilbert) |

@@ -1,0 +1,8 @@
+| vla.c:5:3:5:36 | declaration | 0 | vla.c:5:9:5:14 | definition of matrix |
+| vla.c:12:5:12:64 | declaration | 0 | vla.c:12:18:12:23 | declaration of myType |
+| vla.c:13:5:13:15 | declaration | 0 | vla.c:13:12:13:14 | definition of var |
+| vla.c:14:5:14:95 | declaration | 0 | vla.c:14:10:14:11 | definition of c1 |
+| vla.c:14:5:14:95 | declaration | 1 | vla.c:14:14:14:15 | definition of c2 |
+| vla.c:14:5:14:95 | declaration | 2 | vla.c:14:24:14:26 | definition of buf |
+| vla.c:14:5:14:95 | declaration | 3 | vla.c:14:69:14:72 | definition of buf2 |
+| vla.c:14:5:14:95 | declaration | 4 | vla.c:14:86:14:88 | definition of ptr |

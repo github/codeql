@@ -1,0 +1,1 @@
+| test.c:6:26:6:26 | x | x uses the basic integral type unsigned char rather than a typedef with size and signedness. |

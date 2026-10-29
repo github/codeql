@@ -1,0 +1,2 @@
+query: LanguageFeatures/ForInComprehensionBlocks.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

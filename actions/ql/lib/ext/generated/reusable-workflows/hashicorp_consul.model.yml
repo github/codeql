@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["hashicorp/consul/.github/workflows/reusable-unit.yml", "*", "input.package-names-command", "code-injection", "generated"]
+     - ["hashicorp/consul/.github/workflows/reusable-unit.yml", "*", "input.go-test-flags", "code-injection", "generated"]

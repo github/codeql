@@ -1,0 +1,32 @@
+| Delegate<String> | Delegate<string> |
+| Delegate`1 | Delegate<T>(int, T) |
+| Item | Item[T, bool] |
+| M | M(IEnumerable<int>) |
+| M | M(Int32[,,,][][,][,,]) |
+| M | M(__arglist) |
+| M | M(bool) |
+| M | M(byte) |
+| M | M(char) |
+| M | M(char?) |
+| M | M(decimal) |
+| M | M(double) |
+| M | M(dynamic, dynamic) |
+| M | M(float) |
+| M | M(int) |
+| M | M(int*) |
+| M | M(long) |
+| M | M(object) |
+| M | M(out T) |
+| M | M(sbyte) |
+| M | M(short) |
+| M | M(string) |
+| M | M(uint) |
+| M | M(ulong) |
+| M | M(ushort) |
+| M<Nullable<Char>> | M<char?>(ref char?) |
+| M`1 | M<S>(params S[]) |
+| M`1 | M<S>(ref S) |
+| ToStringWithTypes`1 | ToStringWithTypes<T> |
+| add_Event | add_Event(Delegate<string>) |
+| get_Item | get_Item(T, bool) |
+| remove_Event | remove_Event(Delegate<string>) |

@@ -1,0 +1,84 @@
+actionDispatchRoutes
+| app/config/routes.rb:2:3:9:5 | call to resources | get | posts | posts | index |
+| app/config/routes.rb:2:3:9:5 | call to resources | get | posts/:id | posts | show |
+| app/config/routes.rb:3:5:6:7 | call to resources | delete | posts/:post_id/comments/:id | comments | destroy |
+| app/config/routes.rb:3:5:6:7 | call to resources | get | posts/:post_id/comments | comments | index |
+| app/config/routes.rb:3:5:6:7 | call to resources | get | posts/:post_id/comments/:id | comments | show |
+| app/config/routes.rb:3:5:6:7 | call to resources | get | posts/:post_id/comments/new | comments | new |
+| app/config/routes.rb:3:5:6:7 | call to resources | get | posts/:post_id/comments:id/edit | comments | edit |
+| app/config/routes.rb:3:5:6:7 | call to resources | patch | posts/:post_id/comments/:id | comments | update |
+| app/config/routes.rb:3:5:6:7 | call to resources | post | posts/:post_id/comments | comments | create |
+| app/config/routes.rb:3:5:6:7 | call to resources | put | posts/:post_id/comments/:id | comments | update |
+| app/config/routes.rb:4:7:4:41 | call to resources | post | posts/:post_id/comments/:comment_id/replies | replies | create |
+| app/config/routes.rb:5:7:5:28 | call to post | post | posts/:post_id/comments/:comment_id/flag | comments | flag |
+| app/config/routes.rb:7:5:7:37 | call to post | post | posts/:post_id/upvote | posts | upvote |
+| app/config/routes.rb:8:5:8:39 | call to post | post | posts/:post_id | posts | downvote |
+| app/config/routes.rb:12:5:12:54 | call to post | post | destroy_all_posts | posts | destroy_alll |
+| app/config/routes.rb:16:5:16:46 | call to get | get | numbers/:number | numbers | show |
+| app/config/routes.rb:20:5:20:44 | call to get | get | admin/jobs | background_jobs | index |
+| app/config/routes.rb:24:5:24:64 | call to get | get | admin/secrets | secrets | view_secrets |
+| app/config/routes.rb:25:5:25:42 | call to delete | delete | admin/:user_id | users | destroy |
+| app/config/routes.rb:28:3:28:48 | call to match | get | photos/:id | photos | show |
+| app/config/routes.rb:29:3:29:50 | call to match | get | photos/:id | photos | show |
+| app/config/routes.rb:30:3:30:69 | call to match | get | photos/:id | photos | show |
+| app/config/routes.rb:31:3:31:50 | call to match | delete | photos/:id | photos | show |
+| app/config/routes.rb:31:3:31:50 | call to match | get | photos/:id | photos | show |
+| app/config/routes.rb:31:3:31:50 | call to match | patch | photos/:id | photos | show |
+| app/config/routes.rb:31:3:31:50 | call to match | post | photos/:id | photos | show |
+| app/config/routes.rb:31:3:31:50 | call to match | put | photos/:id | photos | show |
+| app/config/routes.rb:34:5:34:43 | call to post | post | upgrade | users | start_upgrade |
+| app/config/routes.rb:38:5:38:31 | call to get | get | current_billing_cycle | billing/enterprise | current_billing_cycle |
+| app/config/routes.rb:41:3:41:40 | call to resource | get | global_config | global_config | show |
+| app/config/routes.rb:44:5:46:7 | call to resources | get | foo/bar | foo/bar | index |
+| app/config/routes.rb:44:5:46:7 | call to resources | get | foo/bar/:id | foo/bar | show |
+| app/config/routes.rb:45:7:45:39 | call to get | get | foo/bar/:bar_id/show_debug | foo/bar | show_debug |
+| app/config/routes.rb:50:5:50:95 | call to delete | delete | users/:user/notifications | users/notifications | destroy |
+| app/config/routes.rb:51:5:51:94 | call to post | post | users/:user/notifications/:notification_id/mark_as_read | users/notifications | mark_as_read |
+actionDispatchControllerMethods
+| app/config/routes.rb:2:3:9:5 | call to resources | app/controllers/posts_controller.rb:2:3:3:5 | index |
+| app/config/routes.rb:2:3:9:5 | call to resources | app/controllers/posts_controller.rb:5:3:6:5 | show |
+| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:2:3:39:5 | index |
+| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:41:3:42:5 | show |
+| app/config/routes.rb:7:5:7:37 | call to post | app/controllers/posts_controller.rb:8:3:9:5 | upvote |
+| app/config/routes.rb:8:5:8:39 | call to post | app/controllers/posts_controller.rb:11:3:12:5 | downvote |
+| app/config/routes.rb:28:3:28:48 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
+| app/config/routes.rb:29:3:29:50 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
+| app/config/routes.rb:30:3:30:69 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
+| app/config/routes.rb:31:3:31:50 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
+| app/config/routes.rb:51:5:51:94 | call to post | app/controllers/users/notifications_controller.rb:3:5:4:7 | mark_as_read |
+underscore
+| Foo | foo |
+| Foo::Bar | foo/bar |
+| Foo::Bar::Baz | foo/bar/baz |
+| Foo::Bar::BazQuux | foo/bar/baz_quux |
+| FooBar | foo_bar |
+| FooBar::Baz | foo_bar/baz |
+| HTTPServerRequest | httpserver_request |
+| LotsOfCapitalLetters | lots_of_capital_letters |
+| invalid | invalid |
+mimeTypeInstances
+| mime_type.rb:2:6:2:28 | ForwardNode(call to fetch) |
+| mime_type.rb:3:6:3:32 | ForwardNode(call to new) |
+| mime_type.rb:4:6:4:35 | ForwardNode(call to lookup) |
+| mime_type.rb:5:6:5:43 | ForwardNode(call to lookup_by_extension) |
+| mime_type.rb:6:6:6:47 | ForwardNode(call to register) |
+| mime_type.rb:7:6:7:64 | ForwardNode(call to register_alias) |
+mimeTypeMatchRegExpInterpretations
+| mime_type.rb:11:11:11:19 | "foo/bar" |
+| mime_type.rb:12:7:12:15 | "foo/bar" |
+| mime_type.rb:13:11:13:11 | s |
+| mime_type.rb:14:7:14:7 | s |
+requestInputAccesses
+| app/controllers/comments_controller.rb:3:5:3:18 | call to params |
+| app/controllers/comments_controller.rb:4:5:4:22 | call to parameters |
+| app/controllers/comments_controller.rb:5:5:5:15 | call to GET |
+| app/controllers/comments_controller.rb:6:5:6:16 | call to POST |
+| app/controllers/comments_controller.rb:7:5:7:28 | call to query_parameters |
+| app/controllers/comments_controller.rb:8:5:8:30 | call to request_parameters |
+| app/controllers/comments_controller.rb:9:5:9:31 | call to filtered_parameters |
+| app/controllers/comments_controller.rb:38:5:38:14 | call to params |
+| app/controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies |
+| app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
+| app/controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
+| app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
+| app/controllers/foo/bars_controller.rb:22:10:22:15 | call to params |

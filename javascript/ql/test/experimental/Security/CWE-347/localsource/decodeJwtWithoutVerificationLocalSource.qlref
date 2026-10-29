@@ -1,0 +1,2 @@
+query: experimental/Security/CWE-347/decodeJwtWithoutVerificationLocalSource.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,111 @@
+| Assignables.cs:5:9:5:13 | Field | Assignables.cs:5:9:5:17 | ... = ... | Assignables.cs:5:9:5:13 | access to field Field | Assignables.cs:5:17:5:17 | 0 | certain |
+| Assignables.cs:5:9:5:13 | Field | Assignables.cs:18:9:18:24 | ... = ... | Assignables.cs:18:9:18:13 | access to field Field | Assignables.cs:18:17:18:24 | access to property Property | certain |
+| Assignables.cs:5:9:5:13 | Field | Assignables.cs:19:9:19:15 | ...-- | Assignables.cs:19:9:19:13 | access to field Field | Assignables.cs:19:9:19:15 | <none> | certain |
+| Assignables.cs:5:9:5:13 | Field | Assignables.cs:29:17:29:21 | access to field Field | Assignables.cs:29:17:29:21 | access to field Field | Assignables.cs:29:17:29:21 | <none> | certain |
+| Assignables.cs:5:9:5:13 | Field | Assignables.cs:30:34:30:38 | access to field Field | Assignables.cs:30:34:30:38 | access to field Field | Assignables.cs:30:34:30:38 | <none> | certain |
+| Assignables.cs:5:9:5:13 | Field | Assignables.cs:31:36:31:40 | access to field Field | Assignables.cs:31:36:31:40 | access to field Field | Assignables.cs:31:36:31:40 | <none> | uncertain |
+| Assignables.cs:5:9:5:13 | Field | Assignables.cs:32:37:32:41 | access to field Field | Assignables.cs:32:37:32:41 | access to field Field | Assignables.cs:32:37:32:41 | <none> | uncertain |
+| Assignables.cs:5:9:5:13 | Field | Assignables.cs:34:29:34:33 | access to field Field | Assignables.cs:34:29:34:33 | access to field Field | Assignables.cs:34:29:34:33 | <none> | uncertain |
+| Assignables.cs:5:9:5:13 | Field | Assignables.cs:34:40:34:44 | access to field Field | Assignables.cs:34:40:34:44 | access to field Field | Assignables.cs:34:40:34:44 | <none> | uncertain |
+| Assignables.cs:6:9:6:16 | Property | Assignables.cs:6:32:6:34 | ... = ... | Assignables.cs:6:9:6:16 | access to property Property | Assignables.cs:6:34:6:34 | 1 | certain |
+| Assignables.cs:6:9:6:16 | Property | Assignables.cs:20:9:20:33 | ... = ... | Assignables.cs:20:9:20:16 | access to property Property | Assignables.cs:20:20:20:33 | access to indexer | certain |
+| Assignables.cs:6:9:6:16 | Property | Assignables.cs:21:9:21:18 | ...++ | Assignables.cs:21:9:21:16 | access to property Property | Assignables.cs:21:9:21:18 | <none> | certain |
+| Assignables.cs:6:9:6:16 | Property | Assignables.cs:96:9:96:36 | ... = ... | Assignables.cs:96:10:96:17 | access to property Property | Assignables.cs:96:32:96:32 | 2 | certain |
+| Assignables.cs:8:24:8:28 | Event | Assignables.cs:23:9:23:25 | ... += ... | Assignables.cs:23:9:23:13 | access to event Event | Assignables.cs:23:9:23:25 | <none> | certain |
+| Assignables.cs:8:24:8:28 | Event | Assignables.cs:25:9:25:25 | ... -= ... | Assignables.cs:25:9:25:13 | access to event Event | Assignables.cs:25:9:25:25 | <none> | certain |
+| Assignables.cs:9:9:9:12 | Item | Assignables.cs:26:9:26:33 | ... = ... | Assignables.cs:26:9:26:22 | access to indexer | Assignables.cs:26:26:26:33 | access to local variable variable | certain |
+| Assignables.cs:9:9:9:12 | Item | Assignables.cs:27:9:27:21 | ...++ | Assignables.cs:27:9:27:19 | access to indexer | Assignables.cs:27:9:27:21 | <none> | certain |
+| Assignables.cs:9:9:9:12 | Item | Assignables.cs:96:9:96:36 | ... = ... | Assignables.cs:96:20:96:26 | access to indexer | Assignables.cs:96:35:96:35 | 3 | certain |
+| Assignables.cs:9:18:9:18 | i | Assignables.cs:9:18:9:18 | i | Assignables.cs:9:18:9:18 | <none> | Assignables.cs:9:18:9:18 | <none> | certain |
+| Assignables.cs:9:18:9:18 | i | Assignables.cs:9:18:9:18 | i | Assignables.cs:9:18:9:18 | <none> | Assignables.cs:9:18:9:18 | <none> | certain |
+| Assignables.cs:9:41:9:43 | value | Assignables.cs:9:41:9:43 | value | Assignables.cs:9:41:9:43 | <none> | Assignables.cs:9:41:9:43 | <none> | certain |
+| Assignables.cs:11:16:11:24 | parameter | Assignables.cs:11:16:11:24 | parameter | Assignables.cs:11:16:11:24 | <none> | Assignables.cs:11:16:11:24 | <none> | certain |
+| Assignables.cs:11:16:11:24 | parameter | Assignables.cs:16:9:16:25 | ... = ... | Assignables.cs:16:9:16:17 | access to parameter parameter | Assignables.cs:16:21:16:25 | access to field Field | certain |
+| Assignables.cs:11:16:11:24 | parameter | Assignables.cs:17:9:17:19 | ...++ | Assignables.cs:17:9:17:17 | access to parameter parameter | Assignables.cs:17:9:17:19 | <none> | certain |
+| Assignables.cs:13:13:13:20 | variable | Assignables.cs:13:13:13:24 | Int32 variable = ... | Assignables.cs:13:13:13:20 | access to local variable variable | Assignables.cs:13:24:13:24 | 0 | certain |
+| Assignables.cs:13:13:13:20 | variable | Assignables.cs:14:9:14:28 | ... = ... | Assignables.cs:14:9:14:16 | access to local variable variable | Assignables.cs:14:20:14:28 | access to parameter parameter | certain |
+| Assignables.cs:13:13:13:20 | variable | Assignables.cs:15:9:15:18 | ...-- | Assignables.cs:15:9:15:16 | access to local variable variable | Assignables.cs:15:9:15:18 | <none> | certain |
+| Assignables.cs:13:13:13:20 | variable | Assignables.cs:28:17:28:24 | access to local variable variable | Assignables.cs:28:17:28:24 | access to local variable variable | Assignables.cs:28:17:28:24 | <none> | certain |
+| Assignables.cs:22:22:22:29 | callback | Assignables.cs:22:22:22:50 | EventHandler callback = ... | Assignables.cs:22:22:22:29 | access to local variable callback | Assignables.cs:22:33:22:50 | (...) => ... | certain |
+| Assignables.cs:22:34:22:39 | sender | Assignables.cs:22:34:22:39 | sender | Assignables.cs:22:34:22:39 | <none> | Assignables.cs:22:34:22:39 | <none> | certain |
+| Assignables.cs:22:42:22:42 | e | Assignables.cs:22:42:22:42 | e | Assignables.cs:22:42:22:42 | <none> | Assignables.cs:22:42:22:42 | <none> | certain |
+| Assignables.cs:37:22:37:22 | o | Assignables.cs:37:22:37:22 | o | Assignables.cs:37:22:37:22 | <none> | Assignables.cs:37:22:37:22 | <none> | certain |
+| Assignables.cs:37:22:37:22 | o | Assignables.cs:39:9:39:13 | ... = ... | Assignables.cs:39:9:39:9 | access to parameter o | Assignables.cs:39:13:39:13 | 0 | certain |
+| Assignables.cs:42:26:42:26 | x | Assignables.cs:42:26:42:26 | x | Assignables.cs:42:26:42:26 | <none> | Assignables.cs:42:26:42:26 | <none> | certain |
+| Assignables.cs:42:35:42:35 | y | Assignables.cs:42:35:42:35 | y | Assignables.cs:42:35:42:35 | <none> | Assignables.cs:42:35:42:35 | <none> | certain |
+| Assignables.cs:42:35:42:35 | y | Assignables.cs:45:13:45:17 | ... = ... | Assignables.cs:45:13:45:13 | access to parameter y | Assignables.cs:45:17:45:17 | access to parameter x | certain |
+| Assignables.cs:42:35:42:35 | y | Assignables.cs:47:31:47:31 | access to parameter y | Assignables.cs:47:31:47:31 | access to parameter y | Assignables.cs:47:31:47:31 | <none> | certain |
+| Assignables.cs:42:43:42:43 | b | Assignables.cs:42:43:42:43 | b | Assignables.cs:42:43:42:43 | <none> | Assignables.cs:42:43:42:43 | <none> | certain |
+| Assignables.cs:50:27:50:27 | x | Assignables.cs:50:27:50:27 | x | Assignables.cs:50:27:50:27 | <none> | Assignables.cs:50:27:50:27 | <none> | certain |
+| Assignables.cs:50:38:50:38 | y | Assignables.cs:50:38:50:38 | y | Assignables.cs:50:38:50:38 | <none> | Assignables.cs:50:38:50:38 | <none> | certain |
+| Assignables.cs:50:38:50:38 | y | Assignables.cs:53:13:53:17 | ... = ... | Assignables.cs:53:13:53:13 | access to parameter y | Assignables.cs:53:17:53:17 | access to parameter x | certain |
+| Assignables.cs:56:28:56:28 | x | Assignables.cs:56:28:56:28 | x | Assignables.cs:56:28:56:28 | <none> | Assignables.cs:56:28:56:28 | <none> | certain |
+| Assignables.cs:56:39:56:39 | y | Assignables.cs:56:39:56:39 | y | Assignables.cs:56:39:56:39 | <none> | Assignables.cs:56:39:56:39 | <none> | certain |
+| Assignables.cs:56:39:56:39 | y | Assignables.cs:59:13:59:17 | ... = ... | Assignables.cs:59:13:59:13 | access to parameter y | Assignables.cs:59:17:59:17 | access to parameter x | certain |
+| Assignables.cs:56:39:56:39 | y | Assignables.cs:61:33:61:33 | access to parameter y | Assignables.cs:61:33:61:33 | access to parameter y | Assignables.cs:61:33:61:33 | <none> | uncertain |
+| Assignables.cs:64:34:64:34 | x | Assignables.cs:64:34:64:34 | x | Assignables.cs:64:34:64:34 | <none> | Assignables.cs:64:34:64:34 | <none> | certain |
+| Assignables.cs:64:34:64:34 | x | Assignables.cs:67:13:67:17 | ... = ... | Assignables.cs:67:13:67:13 | access to parameter x | Assignables.cs:67:17:67:17 | 1 | certain |
+| Assignables.cs:64:45:64:45 | y | Assignables.cs:64:45:64:45 | y | Assignables.cs:64:45:64:45 | <none> | Assignables.cs:64:45:64:45 | <none> | certain |
+| Assignables.cs:64:45:64:45 | y | Assignables.cs:69:13:69:17 | ... = ... | Assignables.cs:69:13:69:13 | access to parameter y | Assignables.cs:69:17:69:17 | 1 | certain |
+| Assignables.cs:72:21:72:21 | x | Assignables.cs:72:21:72:21 | x | Assignables.cs:72:21:72:21 | <none> | Assignables.cs:72:21:72:21 | <none> | certain |
+| Assignables.cs:72:32:72:32 | y | Assignables.cs:72:32:72:32 | y | Assignables.cs:72:32:72:32 | <none> | Assignables.cs:72:32:72:32 | <none> | certain |
+| Assignables.cs:76:69:76:70 | ss | Assignables.cs:76:69:76:70 | ss | Assignables.cs:76:69:76:70 | <none> | Assignables.cs:76:69:76:70 | <none> | certain |
+| Assignables.cs:78:22:78:22 | s | Assignables.cs:78:22:78:22 | String s | Assignables.cs:78:22:78:22 | <none> | Assignables.cs:78:22:78:22 | <none> | certain |
+| Assignables.cs:82:21:82:24 | temp | Assignables.cs:82:21:82:33 | String temp = ... | Assignables.cs:82:21:82:24 | access to local variable temp | Assignables.cs:82:28:82:33 | ... + ... | certain |
+| Assignables.cs:84:30:84:30 | e | Assignables.cs:84:30:84:30 | Exception e | Assignables.cs:84:30:84:30 | <none> | Assignables.cs:84:30:84:30 | <none> | certain |
+| Assignables.cs:92:14:92:14 | x | Assignables.cs:92:9:92:54 | ... = ... | Assignables.cs:92:9:92:54 | <none> | Assignables.cs:92:40:92:40 | 0 | certain |
+| Assignables.cs:92:14:92:14 | x | Assignables.cs:93:9:93:38 | ... = ... | Assignables.cs:93:10:93:10 | access to local variable x | Assignables.cs:93:24:93:24 | 1 | certain |
+| Assignables.cs:92:14:92:14 | x | Assignables.cs:94:9:94:32 | ... = ... | Assignables.cs:94:10:94:10 | access to local variable x | Assignables.cs:94:9:94:32 | <none> | certain |
+| Assignables.cs:92:14:92:14 | x | Assignables.cs:97:9:97:37 | ... = ... | Assignables.cs:97:10:97:10 | access to local variable x | Assignables.cs:97:24:97:24 | 4 | certain |
+| Assignables.cs:92:14:92:14 | x | Assignables.cs:97:9:97:37 | ... = ... | Assignables.cs:97:17:97:17 | access to local variable x | Assignables.cs:97:35:97:35 | 5 | certain |
+| Assignables.cs:92:14:92:14 | x | Assignables.cs:98:9:98:36 | ... = ... | Assignables.cs:98:14:98:14 | access to local variable x | Assignables.cs:98:31:98:31 | 6 | certain |
+| Assignables.cs:92:14:92:14 | x | Assignables.cs:98:9:98:36 | ... = ... | Assignables.cs:98:17:98:17 | access to local variable x | Assignables.cs:98:34:98:34 | 7 | certain |
+| Assignables.cs:92:23:92:23 | b | Assignables.cs:92:9:92:54 | ... = ... | Assignables.cs:92:9:92:54 | <none> | Assignables.cs:92:44:92:48 | false | certain |
+| Assignables.cs:92:23:92:23 | b | Assignables.cs:93:9:93:38 | ... = ... | Assignables.cs:93:14:93:14 | access to local variable b | Assignables.cs:93:28:93:31 | true | certain |
+| Assignables.cs:92:23:92:23 | b | Assignables.cs:94:9:94:32 | ... = ... | Assignables.cs:94:14:94:14 | access to local variable b | Assignables.cs:94:9:94:32 | <none> | certain |
+| Assignables.cs:92:23:92:23 | b | Assignables.cs:97:9:97:37 | ... = ... | Assignables.cs:97:14:97:14 | access to local variable b | Assignables.cs:97:28:97:32 | false | certain |
+| Assignables.cs:92:23:92:23 | b | Assignables.cs:98:9:98:36 | ... = ... | Assignables.cs:98:10:98:10 | access to local variable b | Assignables.cs:98:24:98:27 | true | certain |
+| Assignables.cs:92:33:92:33 | s | Assignables.cs:92:9:92:54 | ... = ... | Assignables.cs:92:9:92:54 | <none> | Assignables.cs:92:51:92:52 | "" | certain |
+| Assignables.cs:92:33:92:33 | s | Assignables.cs:93:9:93:38 | ... = ... | Assignables.cs:93:17:93:17 | access to local variable s | Assignables.cs:93:34:93:36 | "a" | certain |
+| Assignables.cs:92:33:92:33 | s | Assignables.cs:94:9:94:32 | ... = ... | Assignables.cs:94:17:94:17 | access to local variable s | Assignables.cs:94:9:94:32 | <none> | certain |
+| Assignables.cs:95:40:95:44 | tuple | Assignables.cs:95:40:95:57 | (Int32,(Boolean,String)) tuple = ... | Assignables.cs:95:40:95:44 | access to local variable tuple | Assignables.cs:95:48:95:57 | call to method GetTuple | certain |
+| Assignables.cs:108:13:108:13 | i | Assignables.cs:108:13:108:17 | Int32 i = ... | Assignables.cs:108:13:108:13 | access to local variable i | Assignables.cs:108:17:108:17 | 0 | certain |
+| Assignables.cs:108:13:108:13 | i | Assignables.cs:109:18:109:19 | &... | Assignables.cs:109:19:109:19 | access to local variable i | Assignables.cs:109:18:109:19 | <none> | certain |
+| Assignables.cs:109:14:109:14 | p | Assignables.cs:109:14:109:19 | Int32* p = ... | Assignables.cs:109:14:109:14 | access to local variable p | Assignables.cs:109:18:109:19 | &... | certain |
+| Assignables.cs:113:25:113:25 | i | Assignables.cs:113:25:113:25 | i | Assignables.cs:113:25:113:25 | <none> | Assignables.cs:113:25:113:25 | <none> | certain |
+| Assignables.cs:113:25:113:25 | i | Assignables.cs:113:44:113:48 | ... = ... | Assignables.cs:113:44:113:44 | access to parameter i | Assignables.cs:113:48:113:48 | 1 | certain |
+| Assignables.cs:113:39:113:39 | s | Assignables.cs:113:39:113:39 | s | Assignables.cs:113:39:113:39 | <none> | Assignables.cs:113:39:113:39 | <none> | certain |
+| Assignables.cs:113:39:113:39 | s | Assignables.cs:113:51:113:56 | ... = ... | Assignables.cs:113:51:113:51 | access to parameter s | Assignables.cs:113:55:113:56 | "" | certain |
+| Assignables.cs:117:13:117:13 | i | Assignables.cs:117:13:117:13 | Int32 i | Assignables.cs:117:13:117:13 | <none> | Assignables.cs:117:13:117:13 | <none> | certain |
+| Assignables.cs:117:13:117:13 | i | Assignables.cs:119:29:119:29 | access to local variable i | Assignables.cs:119:29:119:29 | access to local variable i | Assignables.cs:119:29:119:29 | <none> | certain |
+| Assignables.cs:118:16:118:16 | s | Assignables.cs:118:16:118:21 | String s = ... | Assignables.cs:118:16:118:16 | access to local variable s | Assignables.cs:118:20:118:21 | "" | certain |
+| Assignables.cs:118:16:118:16 | s | Assignables.cs:119:36:119:36 | access to local variable s | Assignables.cs:119:36:119:36 | access to local variable s | Assignables.cs:119:36:119:36 | <none> | certain |
+| Assignables.cs:124:13:124:13 | i | Assignables.cs:124:13:124:13 | Int32 i | Assignables.cs:124:13:124:13 | <none> | Assignables.cs:124:13:124:13 | <none> | certain |
+| Assignables.cs:125:13:125:13 | s | Assignables.cs:125:13:125:25 | String s = ... | Assignables.cs:125:13:125:13 | access to local variable s | Assignables.cs:125:17:125:25 | nameof(...) | certain |
+| Assignables.cs:125:13:125:13 | s | Assignables.cs:126:9:126:30 | ... = ... | Assignables.cs:126:9:126:9 | access to local variable s | Assignables.cs:126:13:126:30 | nameof(...) | certain |
+| Assignables.cs:130:31:130:31 | d | Assignables.cs:130:31:130:31 | d | Assignables.cs:130:31:130:31 | <none> | Assignables.cs:130:31:130:31 | <none> | certain |
+| Assignables.cs:132:13:132:13 | x | Assignables.cs:132:13:132:17 | Int32 x = ... | Assignables.cs:132:13:132:13 | access to local variable x | Assignables.cs:132:17:132:17 | 0 | certain |
+| Assignables.cs:132:13:132:13 | x | Assignables.cs:133:15:133:15 | access to local variable x | Assignables.cs:133:15:133:15 | access to local variable x | Assignables.cs:133:15:133:15 | <none> | certain |
+| Assignables.cs:133:29:133:29 | s | Assignables.cs:133:29:133:29 | String s | Assignables.cs:133:29:133:29 | String s | Assignables.cs:133:29:133:29 | <none> | certain |
+| Assignables.cs:138:19:138:19 | x | Assignables.cs:138:19:138:50 | MemoryStream x = ... | Assignables.cs:138:19:138:19 | access to local variable x | Assignables.cs:138:23:138:50 | object creation of type MemoryStream | certain |
+| Discards.cs:5:30:5:30 | x | Discards.cs:5:30:5:30 | x | Discards.cs:5:30:5:30 | <none> | Discards.cs:5:30:5:30 | <none> | certain |
+| Discards.cs:5:30:5:30 | x | Discards.cs:7:9:7:17 | ... = ... | Discards.cs:7:9:7:9 | access to parameter x | Discards.cs:7:13:7:17 | false | certain |
+| Discards.cs:19:14:19:14 | x | Discards.cs:19:9:19:29 | ... = ... | Discards.cs:19:9:19:29 | <none> | Discards.cs:19:9:19:29 | <none> | certain |
+| Discards.cs:19:14:19:14 | x | Discards.cs:19:14:19:14 | Int32 x | Discards.cs:19:14:19:14 | <none> | Discards.cs:19:14:19:14 | <none> | certain |
+| Discards.cs:20:17:20:17 | y | Discards.cs:20:9:20:33 | ... = ... | Discards.cs:20:9:20:33 | <none> | Discards.cs:20:9:20:33 | <none> | certain |
+| Discards.cs:20:17:20:17 | y | Discards.cs:20:17:20:17 | Double y | Discards.cs:20:17:20:17 | <none> | Discards.cs:20:17:20:17 | <none> | certain |
+| Discards.cs:20:32:20:32 | z | Discards.cs:20:32:20:32 | Boolean z | Discards.cs:20:32:20:32 | Boolean z | Discards.cs:20:32:20:32 | <none> | certain |
+| Discards.cs:23:27:23:30 | args | Discards.cs:23:27:23:30 | args | Discards.cs:23:27:23:30 | <none> | Discards.cs:23:27:23:30 | <none> | certain |
+| Discards.cs:25:22:25:22 | _ | Discards.cs:25:22:25:22 | String _ | Discards.cs:25:22:25:22 | <none> | Discards.cs:25:22:25:22 | <none> | certain |
+| Discards.cs:30:24:30:24 | o | Discards.cs:30:24:30:24 | o | Discards.cs:30:24:30:24 | <none> | Discards.cs:30:24:30:24 | <none> | certain |
+| Finally.cs:5:16:5:16 | b | Finally.cs:5:16:5:16 | b | Finally.cs:5:16:5:16 | <none> | Finally.cs:5:16:5:16 | <none> | certain |
+| Finally.cs:7:13:7:13 | i | Finally.cs:7:13:7:17 | Int32 i = ... | Finally.cs:7:13:7:13 | access to local variable i | Finally.cs:7:17:7:17 | 0 | certain |
+| Finally.cs:7:13:7:13 | i | Finally.cs:15:13:15:17 | ... = ... | Finally.cs:15:13:15:13 | access to local variable i | Finally.cs:15:17:15:17 | 1 | certain |
+| Patterns.cs:7:16:7:16 | o | Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:7:16:7:16 | access to local variable o | Patterns.cs:7:20:7:23 | null | certain |
+| Patterns.cs:8:22:8:23 | i1 | Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:8:18:8:23 | <none> | Patterns.cs:8:13:8:13 | access to local variable o | certain |
+| Patterns.cs:12:30:12:31 | s1 | Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:12:23:12:31 | <none> | Patterns.cs:12:18:12:18 | access to local variable o | certain |
+| Patterns.cs:16:27:16:28 | v1 | Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:16:23:16:28 | <none> | Patterns.cs:16:18:16:18 | access to local variable o | certain |
+| Patterns.cs:24:22:24:23 | i2 | Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | <none> | Patterns.cs:20:17:20:17 | access to local variable o | certain |
+| Patterns.cs:27:22:27:23 | i3 | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | <none> | Patterns.cs:20:17:20:17 | access to local variable o | certain |
+| Patterns.cs:30:25:30:26 | s2 | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | <none> | Patterns.cs:20:17:20:17 | access to local variable o | certain |
+| Patterns.cs:33:22:33:23 | v2 | Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | <none> | Patterns.cs:20:17:20:17 | access to local variable o | certain |

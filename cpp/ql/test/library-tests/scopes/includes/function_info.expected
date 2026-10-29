@@ -1,0 +1,11 @@
+| file://:0:0:0:0 | operator= | file://:0:0:0:0 | (global namespace) | false |
+| file://:0:0:0:0 | operator= | file://:0:0:0:0 | (global namespace) | false |
+| h2.h:2:12:2:15 | h2_1 | file://:0:0:0:0 | (global namespace) | true |
+| h2.h:3:5:3:8 | h2_2 | file://:0:0:0:0 | (global namespace) | false |
+| h2.h:3:5:3:8 | h2_2 | file://:0:0:0:0 | (global namespace) | true |
+| h3.h:2:5:2:8 | h3_1 | file://:0:0:0:0 | (global namespace) | false |
+| h3.h:2:5:2:8 | h3_1 | file://:0:0:0:0 | (global namespace) | true |
+| h3.h:4:5:4:8 | h3_2 | file://:0:0:0:0 | (global namespace) | true |
+| h3.h:6:5:6:8 | h3_3 | file://:0:0:0:0 | (global namespace) | false |
+| h.h:2:14:2:15 | h1 | b.cpp:2:1:2:9 | (unnamed namespace) | false |
+| h.h:2:14:2:15 | h1 | file://:0:0:0:0 | (global namespace) | false |

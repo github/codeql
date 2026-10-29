@@ -1,0 +1,2 @@
+| StringConcatenationInLoop.cs:13:13:13:24 | ... += ... | String concatenation in loop: use 'StringBuilder'. |
+| StringConcatenationInLoop.cs:14:13:14:23 | ... = ... | String concatenation in loop: use 'StringBuilder'. |

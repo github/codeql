@@ -1,0 +1,2 @@
+query: Security/CWE-079/ReflectedXss.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

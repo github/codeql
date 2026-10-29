@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric counts the number of events each reference type has. If a reference type has a large 
+number of events then it is possible the events are too detailed or the class has too many 
+responsibilities.</p>
+
+</overview>
+<recommendation>
+<p>Consider whether the class is responsible for more than one thing. If it is then it may be best 
+to split the class in two. If the class only has one responsibility and it still has too many 
+events then you should also consider whether the detail provided by the different events could 
+instead be provided by the <code>EventArgs</code>.</p>
+
+</recommendation>
+<example>
+<p>In this example the class has a lot of events.</p>
+<sample src="TNumberOfEvents.cs" />
+
+</example>
+<section title="Fix">
+<p>One possible improvement is to provide the detail of the event in a property of the event 
+arguments. If the event arguments are very similar for two different events then this is a key sign 
+that using a single event might be preferable.</p>
+<sample src="TNumberOfEventsFix.cs" />
+
+</section>
+<references>
+
+  <li>MSDN. C# Programmer's Reference. <a href="http://msdn.microsoft.com/en-us/library/aa645739(v=vs.71).aspx">Events Tutorial</a>.</li>
+
+</references>
+</qhelp>

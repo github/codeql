@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Detects <code>if (a+b>c) a=c-b</code>, which incorrectly implements
+<code>a = min(a,c-b)</code> if <code>a+b</code> overflows.
+</p>
+<p>
+Also detects variants such as <code>if (b+a>c) a=c-b</code> (swapped
+terms in addition), <code>if (a+b>c) { a=c-b }</code> (assignment
+inside block), <code>c&lt;a+b</code> (swapped operands), and
+<code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code> instead of 
+<code>&gt;</code> (all operators).
+</p>
+<p>
+This integer overflow is the root cause of the buffer overflow in
+the SHA-3 reference implementation (CVE-2022-37454).
+</p>
+</overview>
+<recommendation>
+<p>
+Replace by <code>if (a>c-b) a=c-b</code>. This avoids the overflow
+and makes it easy to see that <code>a = min(a,c-b)</code>.
+</p>
+</recommendation>
+<references>
+<li>CVE-2022-37454: <a href="https://nvd.nist.gov/vuln/detail/CVE-2022-37454">The Keccak XKCP SHA-3 reference implementation before fdc6fef has an integer overflow and resultant buffer overflow that allows attackers to execute arbitrary code or eliminate expected cryptographic properties. This occurs in the sponge function interface.</a></li>
+<li>GitHub Advisory Database: <a href="https://github.com/advisories/GHSA-6w4m-2xhg-2658">CVE-2022-37454: Buffer overflow in sponge queue functions</a></li>
+</references>
+</qhelp>

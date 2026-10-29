@@ -1,0 +1,2 @@
+query: Likely Bugs/Collections/ContainerSizeCmpZero.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

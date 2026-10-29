@@ -1,0 +1,2 @@
+query: experimental/xpath-injection/XpathInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

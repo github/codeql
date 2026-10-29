@@ -1,0 +1,1 @@
+| Test.java:12:7:12:7 | A | This class is serializable, but its non-serializable super-class $@ does not declare a no-argument constructor. | Test.java:4:7:4:21 | NonSerializable | NonSerializable |

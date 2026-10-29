@@ -1,0 +1,7 @@
+| class C1 | [C1, object] |
+| class C2 | [C2, object] |
+| class C3 | [C3, object] |
+| class C4 | [C4, C2, object] |
+| class Meta1 | [Meta1, type, object] |
+| class Meta2 | [Meta2, type, object] |
+| class NewStyleEvenForPython2 | [NewStyleEvenForPython2, object] |

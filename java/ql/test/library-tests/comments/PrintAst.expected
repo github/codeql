@@ -1,0 +1,44 @@
+Test.java:
+#    0| [CompilationUnit] Test
+#    5|   1: [Class] Test
+#-----|     -4: (Javadoc)
+#    1|       1: [Javadoc] /** A JavaDoc comment ... */
+#    2|         0: [JavadocText] A JavaDoc comment
+#    3|         1: [JavadocText] with multiple lines.
+#    7|     2: [Method] m
+#-----|       0: (Javadoc)
+#    6|         1: [Javadoc] /** A JavaDoc comment with a single line. */
+#    6|           0: [JavadocText] A JavaDoc comment with a single line.
+#    7|       3: [TypeAccess] void
+#    7|       5: [BlockStmt] { ... }
+#   21|     3: [Method] test
+#   21|       3: [TypeAccess] void
+#   21|       5: [BlockStmt] { ... }
+#   23|     4: [Method] method1
+#   23|       3: [TypeAccess] void
+#   23|       5: [BlockStmt] { ... }
+#   24|     5: [Method] method2
+#   24|       3: [TypeAccess] void
+#   24|       5: [BlockStmt] { ... }
+#   28|     6: [Method] method3
+#-----|       0: (Javadoc)
+#   25|         1: [Javadoc] /** JavaDoc for method3 */
+#   26|           0: [JavadocText] JavaDoc for method3
+#   28|       3: [TypeAccess] void
+#   28|       5: [BlockStmt] { ... }
+TestWindows.java:
+#    0| [CompilationUnit] TestWindows
+#    5|   1: [Class] TestWindows
+#-----|     -4: (Javadoc)
+#    1|       1: [Javadoc] /** A JavaDoc comment ... */
+#    2|         0: [JavadocText] A JavaDoc comment
+#    3|         1: [JavadocText] with multiple lines.
+#    7|     2: [Method] m
+#-----|       0: (Javadoc)
+#    6|         1: [Javadoc] /** A JavaDoc comment with a single line. */
+#    6|           0: [JavadocText] A JavaDoc comment with a single line.
+#    7|       3: [TypeAccess] void
+#    7|       5: [BlockStmt] { ... }
+#   21|     3: [Method] test
+#   21|       3: [TypeAccess] void
+#   21|       5: [BlockStmt] { ... }

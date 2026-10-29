@@ -1,0 +1,2 @@
+query: queries/security/cwe-020/IncompleteHostnameRegExp.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

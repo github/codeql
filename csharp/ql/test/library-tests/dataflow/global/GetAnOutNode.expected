@@ -1,0 +1,197 @@
+| Capture.cs:5:7:5:13 | call to constructor Object | normal | Capture.cs:5:7:5:13 | call to constructor Object |
+| Capture.cs:33:9:33:40 | call to method Select<String,String> | normal | Capture.cs:33:9:33:40 | call to method Select<String,String> |
+| Capture.cs:33:9:33:50 | call to method ToArray<String> | normal | Capture.cs:33:9:33:50 | call to method ToArray<String> |
+| Capture.cs:92:9:92:41 | call to method Select<String,String> | normal | Capture.cs:92:9:92:41 | call to method Select<String,String> |
+| Capture.cs:92:9:92:51 | call to method ToArray<String> | normal | Capture.cs:92:9:92:51 | call to method ToArray<String> |
+| Capture.cs:155:9:155:45 | call to method Select<String,String> | normal | Capture.cs:155:9:155:45 | call to method Select<String,String> |
+| Capture.cs:155:9:155:55 | call to method ToArray<String> | normal | Capture.cs:155:9:155:55 | call to method ToArray<String> |
+| Capture.cs:162:22:162:38 | call to local function CaptureThrough4 | normal | Capture.cs:162:22:162:38 | call to local function CaptureThrough4 |
+| Capture.cs:193:20:193:22 | call to local function M | normal | Capture.cs:193:20:193:22 | call to local function M |
+| Capture.cs:196:22:196:32 | call to local function Id | normal | Capture.cs:196:22:196:32 | call to local function Id |
+| Capture.cs:198:20:198:25 | call to local function Id | normal | Capture.cs:198:20:198:25 | call to local function Id |
+| Capture.cs:221:18:221:35 | call to method M3 | normal | Capture.cs:221:18:221:35 | call to method M3 |
+| Capture.cs:223:28:223:45 | call to method M3 | normal | Capture.cs:223:28:223:45 | call to method M3 |
+| Capture.cs:227:24:227:48 | object creation of type List<Int32> | normal | Capture.cs:227:24:227:48 | object creation of type List<Int32> |
+| Capture.cs:241:17:241:29 | object creation of type Capture | normal | Capture.cs:241:17:241:29 | object creation of type Capture |
+| Capture.cs:256:17:256:29 | object creation of type Capture | normal | Capture.cs:256:17:256:29 | object creation of type Capture |
+| GlobalDataFlow.cs:13:14:13:21 | call to constructor Object | normal | GlobalDataFlow.cs:13:14:13:21 | call to constructor Object |
+| GlobalDataFlow.cs:26:9:26:26 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:26:9:26:26 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:30:9:30:29 | access to property NonSinkProperty0 | normal | GlobalDataFlow.cs:30:9:30:29 | access to property NonSinkProperty0 |
+| GlobalDataFlow.cs:31:15:31:35 | access to property NonSinkProperty0 | normal | GlobalDataFlow.cs:31:15:31:35 | access to property NonSinkProperty0 |
+| GlobalDataFlow.cs:32:9:32:29 | access to property NonSinkProperty1 | normal | GlobalDataFlow.cs:32:9:32:29 | access to property NonSinkProperty1 |
+| GlobalDataFlow.cs:33:15:33:35 | access to property NonSinkProperty1 | normal | GlobalDataFlow.cs:33:15:33:35 | access to property NonSinkProperty1 |
+| GlobalDataFlow.cs:36:13:36:30 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:36:13:36:30 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:37:26:37:58 | call to method GetMethod | normal | GlobalDataFlow.cs:37:26:37:58 | call to method GetMethod |
+| GlobalDataFlow.cs:38:35:38:52 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:38:35:38:52 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:39:9:39:37 | call to method Invoke | normal | GlobalDataFlow.cs:39:9:39:37 | call to method Invoke |
+| GlobalDataFlow.cs:46:13:46:30 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:46:13:46:30 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:53:20:53:37 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:53:20:53:37 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:54:28:54:45 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:54:28:54:45 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:55:44:55:61 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:55:44:55:61 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:56:28:56:45 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:56:28:56:45 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:58:35:58:52 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:58:35:58:52 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:65:9:65:18 | access to property InProperty | normal | GlobalDataFlow.cs:65:9:65:18 | access to property InProperty |
+| GlobalDataFlow.cs:65:22:65:39 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:65:22:65:39 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:68:9:68:21 | access to property NonInProperty | normal | GlobalDataFlow.cs:68:9:68:21 | access to property NonInProperty |
+| GlobalDataFlow.cs:71:21:71:46 | call to method Return<String> | normal | GlobalDataFlow.cs:71:21:71:46 | call to method Return<String> |
+| GlobalDataFlow.cs:71:28:71:45 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:71:28:71:45 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:73:29:73:64 | call to method GetMethod | normal | GlobalDataFlow.cs:73:29:73:64 | call to method GetMethod |
+| GlobalDataFlow.cs:73:29:73:101 | call to method Invoke | normal | GlobalDataFlow.cs:73:29:73:101 | call to method Invoke |
+| GlobalDataFlow.cs:76:9:76:46 | call to method ReturnOut<String> | out parameter 1 | GlobalDataFlow.cs:76:30:76:34 | access to local variable sink2 |
+| GlobalDataFlow.cs:76:9:76:46 | call to method ReturnOut<String> | ref parameter 1 | GlobalDataFlow.cs:76:30:76:34 | access to local variable sink2 |
+| GlobalDataFlow.cs:79:9:79:46 | call to method ReturnRef<String> | out parameter 1 | GlobalDataFlow.cs:79:30:79:34 | access to local variable sink3 |
+| GlobalDataFlow.cs:79:9:79:46 | call to method ReturnRef<String> | ref parameter 1 | GlobalDataFlow.cs:79:30:79:34 | access to local variable sink3 |
+| GlobalDataFlow.cs:81:22:81:85 | call to method SelectEven<String,String> | normal | GlobalDataFlow.cs:81:22:81:85 | call to method SelectEven<String,String> |
+| GlobalDataFlow.cs:81:22:81:93 | call to method First<String> | normal | GlobalDataFlow.cs:81:22:81:93 | call to method First<String> |
+| GlobalDataFlow.cs:83:22:83:87 | call to method Select<String,String> | normal | GlobalDataFlow.cs:83:22:83:87 | call to method Select<String,String> |
+| GlobalDataFlow.cs:83:22:83:95 | call to method First<String> | normal | GlobalDataFlow.cs:83:22:83:95 | call to method First<String> |
+| GlobalDataFlow.cs:85:22:85:128 | call to method Zip<String,String,String> | normal | GlobalDataFlow.cs:85:22:85:128 | call to method Zip<String,String,String> |
+| GlobalDataFlow.cs:85:22:85:136 | call to method First<String> | normal | GlobalDataFlow.cs:85:22:85:136 | call to method First<String> |
+| GlobalDataFlow.cs:87:22:87:128 | call to method Zip<String,String,String> | normal | GlobalDataFlow.cs:87:22:87:128 | call to method Zip<String,String,String> |
+| GlobalDataFlow.cs:87:22:87:136 | call to method First<String> | normal | GlobalDataFlow.cs:87:22:87:136 | call to method First<String> |
+| GlobalDataFlow.cs:89:22:89:110 | call to method Aggregate<String,String,String> | normal | GlobalDataFlow.cs:89:22:89:110 | call to method Aggregate<String,String,String> |
+| GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> | normal | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> |
+| GlobalDataFlow.cs:94:9:94:42 | call to method TryParse | normal | GlobalDataFlow.cs:94:9:94:42 | call to method TryParse |
+| GlobalDataFlow.cs:94:9:94:42 | call to method TryParse | out parameter 1 | GlobalDataFlow.cs:94:36:94:41 | access to local variable sink21 |
+| GlobalDataFlow.cs:94:9:94:42 | call to method TryParse | ref parameter 1 | GlobalDataFlow.cs:94:36:94:41 | access to local variable sink21 |
+| GlobalDataFlow.cs:97:9:97:41 | call to method TryParse | normal | GlobalDataFlow.cs:97:9:97:41 | call to method TryParse |
+| GlobalDataFlow.cs:97:9:97:41 | call to method TryParse | out parameter 1 | GlobalDataFlow.cs:97:35:97:40 | access to local variable sink22 |
+| GlobalDataFlow.cs:97:9:97:41 | call to method TryParse | ref parameter 1 | GlobalDataFlow.cs:97:35:97:40 | access to local variable sink22 |
+| GlobalDataFlow.cs:100:9:100:89 | call to method TryParse | normal | GlobalDataFlow.cs:100:9:100:89 | call to method TryParse |
+| GlobalDataFlow.cs:100:9:100:89 | call to method TryParse | out parameter 3 | GlobalDataFlow.cs:100:82:100:88 | access to local variable sink21b |
+| GlobalDataFlow.cs:100:9:100:89 | call to method TryParse | ref parameter 3 | GlobalDataFlow.cs:100:82:100:88 | access to local variable sink21b |
+| GlobalDataFlow.cs:104:24:104:33 | call to method Return<String> | normal | GlobalDataFlow.cs:104:24:104:33 | call to method Return<String> |
+| GlobalDataFlow.cs:106:28:106:63 | call to method GetMethod | normal | GlobalDataFlow.cs:106:28:106:63 | call to method GetMethod |
+| GlobalDataFlow.cs:106:28:106:103 | call to method Invoke | normal | GlobalDataFlow.cs:106:28:106:103 | call to method Invoke |
+| GlobalDataFlow.cs:108:9:108:49 | call to method ReturnOut<String> | out parameter 1 | GlobalDataFlow.cs:108:27:108:34 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:108:9:108:49 | call to method ReturnOut<String> | ref parameter 1 | GlobalDataFlow.cs:108:27:108:34 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:110:9:110:49 | call to method ReturnOut<String> | out parameter 2 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:110:9:110:49 | call to method ReturnOut<String> | ref parameter 2 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:112:9:112:49 | call to method ReturnRef<String> | out parameter 1 | GlobalDataFlow.cs:112:27:112:34 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:112:9:112:49 | call to method ReturnRef<String> | ref parameter 1 | GlobalDataFlow.cs:112:27:112:34 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:114:9:114:49 | call to method ReturnRef<String> | out parameter 1 | GlobalDataFlow.cs:114:30:114:34 | access to local variable sink1 |
+| GlobalDataFlow.cs:114:9:114:49 | call to method ReturnRef<String> | ref parameter 1 | GlobalDataFlow.cs:114:30:114:34 | access to local variable sink1 |
+| GlobalDataFlow.cs:116:20:116:86 | call to method SelectEven<String,String> | normal | GlobalDataFlow.cs:116:20:116:86 | call to method SelectEven<String,String> |
+| GlobalDataFlow.cs:116:20:116:94 | call to method First<String> | normal | GlobalDataFlow.cs:116:20:116:94 | call to method First<String> |
+| GlobalDataFlow.cs:118:20:118:82 | call to method Select<String,String> | normal | GlobalDataFlow.cs:118:20:118:82 | call to method Select<String,String> |
+| GlobalDataFlow.cs:118:20:118:90 | call to method First<String> | normal | GlobalDataFlow.cs:118:20:118:90 | call to method First<String> |
+| GlobalDataFlow.cs:120:20:120:126 | call to method Zip<String,String,String> | normal | GlobalDataFlow.cs:120:20:120:126 | call to method Zip<String,String,String> |
+| GlobalDataFlow.cs:120:20:120:134 | call to method First<String> | normal | GlobalDataFlow.cs:120:20:120:134 | call to method First<String> |
+| GlobalDataFlow.cs:122:20:122:126 | call to method Zip<String,String,String> | normal | GlobalDataFlow.cs:122:20:122:126 | call to method Zip<String,String,String> |
+| GlobalDataFlow.cs:122:20:122:134 | call to method First<String> | normal | GlobalDataFlow.cs:122:20:122:134 | call to method First<String> |
+| GlobalDataFlow.cs:124:20:124:104 | call to method Aggregate<String,String,String> | normal | GlobalDataFlow.cs:124:20:124:104 | call to method Aggregate<String,String,String> |
+| GlobalDataFlow.cs:126:20:126:109 | call to method Aggregate<String,String,String> | normal | GlobalDataFlow.cs:126:20:126:109 | call to method Aggregate<String,String,String> |
+| GlobalDataFlow.cs:128:20:128:107 | call to method Aggregate<String,String,String> | normal | GlobalDataFlow.cs:128:20:128:107 | call to method Aggregate<String,String,String> |
+| GlobalDataFlow.cs:131:9:131:46 | call to method TryParse | normal | GlobalDataFlow.cs:131:9:131:46 | call to method TryParse |
+| GlobalDataFlow.cs:131:9:131:46 | call to method TryParse | out parameter 1 | GlobalDataFlow.cs:131:38:131:45 | access to local variable nonSink2 |
+| GlobalDataFlow.cs:131:9:131:46 | call to method TryParse | ref parameter 1 | GlobalDataFlow.cs:131:38:131:45 | access to local variable nonSink2 |
+| GlobalDataFlow.cs:134:9:134:45 | call to method TryParse | normal | GlobalDataFlow.cs:134:9:134:45 | call to method TryParse |
+| GlobalDataFlow.cs:134:9:134:45 | call to method TryParse | out parameter 1 | GlobalDataFlow.cs:134:37:134:44 | access to local variable nonSink3 |
+| GlobalDataFlow.cs:134:9:134:45 | call to method TryParse | ref parameter 1 | GlobalDataFlow.cs:134:37:134:44 | access to local variable nonSink3 |
+| GlobalDataFlow.cs:138:45:138:64 | call to method ApplyFunc<String,String> | normal | GlobalDataFlow.cs:138:45:138:64 | call to method ApplyFunc<String,String> |
+| GlobalDataFlow.cs:139:21:139:34 | delegate call | normal | GlobalDataFlow.cs:139:21:139:34 | delegate call |
+| GlobalDataFlow.cs:143:20:143:36 | delegate call | normal | GlobalDataFlow.cs:143:20:143:36 | delegate call |
+| GlobalDataFlow.cs:147:21:147:44 | call to method ApplyFunc<String,String> | normal | GlobalDataFlow.cs:147:21:147:44 | call to method ApplyFunc<String,String> |
+| GlobalDataFlow.cs:151:20:151:40 | call to method ApplyFunc<String,String> | normal | GlobalDataFlow.cs:151:20:151:40 | call to method ApplyFunc<String,String> |
+| GlobalDataFlow.cs:153:20:153:44 | call to method ApplyFunc<String,String> | normal | GlobalDataFlow.cs:153:20:153:44 | call to method ApplyFunc<String,String> |
+| GlobalDataFlow.cs:157:21:157:25 | call to method Out | normal | GlobalDataFlow.cs:157:21:157:25 | call to method Out |
+| GlobalDataFlow.cs:160:9:160:25 | call to method OutOut | out parameter 0 | GlobalDataFlow.cs:160:20:160:24 | access to local variable sink7 |
+| GlobalDataFlow.cs:160:9:160:25 | call to method OutOut | ref parameter 0 | GlobalDataFlow.cs:160:20:160:24 | access to local variable sink7 |
+| GlobalDataFlow.cs:163:9:163:25 | call to method OutRef | out parameter 0 | GlobalDataFlow.cs:163:20:163:24 | access to local variable sink8 |
+| GlobalDataFlow.cs:163:9:163:25 | call to method OutRef | ref parameter 0 | GlobalDataFlow.cs:163:20:163:24 | access to local variable sink8 |
+| GlobalDataFlow.cs:165:22:165:31 | call to method OutYield | normal | GlobalDataFlow.cs:165:22:165:31 | call to method OutYield |
+| GlobalDataFlow.cs:165:22:165:39 | call to method First<String> | normal | GlobalDataFlow.cs:165:22:165:39 | call to method First<String> |
+| GlobalDataFlow.cs:167:22:167:43 | call to method TaintedParam | normal | GlobalDataFlow.cs:167:22:167:43 | call to method TaintedParam |
+| GlobalDataFlow.cs:171:20:171:27 | call to method NonOut | normal | GlobalDataFlow.cs:171:20:171:27 | call to method NonOut |
+| GlobalDataFlow.cs:173:9:173:31 | call to method NonOutOut | out parameter 0 | GlobalDataFlow.cs:173:23:173:30 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:173:9:173:31 | call to method NonOutOut | ref parameter 0 | GlobalDataFlow.cs:173:23:173:30 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:175:9:175:31 | call to method NonOutRef | out parameter 0 | GlobalDataFlow.cs:175:23:175:30 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:175:9:175:31 | call to method NonOutRef | ref parameter 0 | GlobalDataFlow.cs:175:23:175:30 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:177:20:177:32 | call to method NonOutYield | normal | GlobalDataFlow.cs:177:20:177:32 | call to method NonOutYield |
+| GlobalDataFlow.cs:177:20:177:40 | call to method First<String> | normal | GlobalDataFlow.cs:177:20:177:40 | call to method First<String> |
+| GlobalDataFlow.cs:179:20:179:44 | call to method NonTaintedParam | normal | GlobalDataFlow.cs:179:20:179:44 | call to method NonTaintedParam |
+| GlobalDataFlow.cs:184:21:184:26 | delegate call | normal | GlobalDataFlow.cs:184:21:184:26 | delegate call |
+| GlobalDataFlow.cs:189:20:189:27 | delegate call | normal | GlobalDataFlow.cs:189:20:189:27 | delegate call |
+| GlobalDataFlow.cs:193:22:193:42 | object creation of type Lazy<String> | normal | GlobalDataFlow.cs:193:22:193:42 | object creation of type Lazy<String> |
+| GlobalDataFlow.cs:193:22:193:48 | access to property Value | normal | GlobalDataFlow.cs:193:22:193:48 | access to property Value |
+| GlobalDataFlow.cs:197:20:197:43 | object creation of type Lazy<String> | normal | GlobalDataFlow.cs:197:20:197:43 | object creation of type Lazy<String> |
+| GlobalDataFlow.cs:197:20:197:49 | access to property Value | normal | GlobalDataFlow.cs:197:20:197:49 | access to property Value |
+| GlobalDataFlow.cs:201:22:201:32 | access to property OutProperty | normal | GlobalDataFlow.cs:201:22:201:32 | access to property OutProperty |
+| GlobalDataFlow.cs:205:20:205:33 | access to property NonOutProperty | normal | GlobalDataFlow.cs:205:20:205:33 | access to property NonOutProperty |
+| GlobalDataFlow.cs:211:38:211:75 | call to method AsQueryable<String> | normal | GlobalDataFlow.cs:211:38:211:75 | call to method AsQueryable<String> |
+| GlobalDataFlow.cs:212:41:212:77 | call to method AsQueryable<String> | normal | GlobalDataFlow.cs:212:41:212:77 | call to method AsQueryable<String> |
+| GlobalDataFlow.cs:215:76:215:90 | call to method ReturnCheck2<String> | normal | GlobalDataFlow.cs:215:76:215:90 | call to method ReturnCheck2<String> |
+| GlobalDataFlow.cs:216:22:216:39 | call to method Select<String,String> | normal | GlobalDataFlow.cs:216:22:216:39 | call to method Select<String,String> |
+| GlobalDataFlow.cs:216:22:216:47 | call to method First<String> | normal | GlobalDataFlow.cs:216:22:216:47 | call to method First<String> |
+| GlobalDataFlow.cs:218:22:218:39 | call to method Select<String,String> | normal | GlobalDataFlow.cs:218:22:218:39 | call to method Select<String,String> |
+| GlobalDataFlow.cs:218:22:218:47 | call to method First<String> | normal | GlobalDataFlow.cs:218:22:218:47 | call to method First<String> |
+| GlobalDataFlow.cs:220:22:220:49 | call to method Select<String,String> | normal | GlobalDataFlow.cs:220:22:220:49 | call to method Select<String,String> |
+| GlobalDataFlow.cs:220:22:220:57 | call to method First<String> | normal | GlobalDataFlow.cs:220:22:220:57 | call to method First<String> |
+| GlobalDataFlow.cs:225:76:225:92 | call to method NonReturnCheck<String> | normal | GlobalDataFlow.cs:225:76:225:92 | call to method NonReturnCheck<String> |
+| GlobalDataFlow.cs:226:23:226:43 | call to method Select<String,String> | normal | GlobalDataFlow.cs:226:23:226:43 | call to method Select<String,String> |
+| GlobalDataFlow.cs:226:23:226:51 | call to method First<String> | normal | GlobalDataFlow.cs:226:23:226:51 | call to method First<String> |
+| GlobalDataFlow.cs:228:19:228:39 | call to method Select<String,String> | normal | GlobalDataFlow.cs:228:19:228:39 | call to method Select<String,String> |
+| GlobalDataFlow.cs:228:19:228:47 | call to method First<String> | normal | GlobalDataFlow.cs:228:19:228:47 | call to method First<String> |
+| GlobalDataFlow.cs:230:19:230:39 | call to method Select<String,String> | normal | GlobalDataFlow.cs:230:19:230:39 | call to method Select<String,String> |
+| GlobalDataFlow.cs:230:19:230:47 | call to method First<String> | normal | GlobalDataFlow.cs:230:19:230:47 | call to method First<String> |
+| GlobalDataFlow.cs:232:19:232:39 | call to method Select<String,String> | normal | GlobalDataFlow.cs:232:19:232:39 | call to method Select<String,String> |
+| GlobalDataFlow.cs:232:19:232:47 | call to method First<String> | normal | GlobalDataFlow.cs:232:19:232:47 | call to method First<String> |
+| GlobalDataFlow.cs:234:19:234:49 | call to method Select<String,String> | normal | GlobalDataFlow.cs:234:19:234:49 | call to method Select<String,String> |
+| GlobalDataFlow.cs:234:19:234:57 | call to method First<String> | normal | GlobalDataFlow.cs:234:19:234:57 | call to method First<String> |
+| GlobalDataFlow.cs:241:20:241:49 | call to method Run<String> | normal | GlobalDataFlow.cs:241:20:241:49 | call to method Run<String> |
+| GlobalDataFlow.cs:242:22:242:32 | access to property Result | normal | GlobalDataFlow.cs:242:22:242:32 | access to property Result |
+| GlobalDataFlow.cs:248:16:248:33 | call to method Run<String> | normal | GlobalDataFlow.cs:248:16:248:33 | call to method Run<String> |
+| GlobalDataFlow.cs:249:24:249:34 | access to property Result | normal | GlobalDataFlow.cs:249:24:249:34 | access to property Result |
+| GlobalDataFlow.cs:300:17:300:38 | call to method ApplyFunc<T,T> | normal | GlobalDataFlow.cs:300:17:300:38 | call to method ApplyFunc<T,T> |
+| GlobalDataFlow.cs:389:16:389:19 | delegate call | normal | GlobalDataFlow.cs:389:16:389:19 | delegate call |
+| GlobalDataFlow.cs:415:11:415:14 | call to constructor Object | normal | GlobalDataFlow.cs:415:11:415:14 | call to constructor Object |
+| GlobalDataFlow.cs:448:22:448:65 | call to method Join | normal | GlobalDataFlow.cs:448:22:448:65 | call to method Join |
+| GlobalDataFlow.cs:451:23:451:65 | call to method Join | normal | GlobalDataFlow.cs:451:23:451:65 | call to method Join |
+| GlobalDataFlow.cs:457:20:457:49 | call to method Run<String> | normal | GlobalDataFlow.cs:457:20:457:49 | call to method Run<String> |
+| GlobalDataFlow.cs:458:25:458:50 | call to method ConfigureAwait | normal | GlobalDataFlow.cs:458:25:458:50 | call to method ConfigureAwait |
+| GlobalDataFlow.cs:459:23:459:44 | call to method GetAwaiter | normal | GlobalDataFlow.cs:459:23:459:44 | call to method GetAwaiter |
+| GlobalDataFlow.cs:460:22:460:40 | call to method GetResult | normal | GlobalDataFlow.cs:460:22:460:40 | call to method GetResult |
+| GlobalDataFlow.cs:476:18:476:28 | call to constructor Object | normal | GlobalDataFlow.cs:476:18:476:28 | call to constructor Object |
+| GlobalDataFlow.cs:488:18:488:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:488:18:488:34 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:489:18:489:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:489:18:489:34 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:494:18:494:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:494:18:494:34 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:495:18:495:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:495:18:495:34 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:496:18:496:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:496:18:496:34 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:503:19:503:32 | call to constructor SimpleClass | normal | GlobalDataFlow.cs:503:19:503:32 | call to constructor SimpleClass |
+| GlobalDataFlow.cs:507:17:507:36 | object creation of type SubSimpleClass | normal | GlobalDataFlow.cs:507:17:507:36 | object creation of type SubSimpleClass |
+| GlobalDataFlow.cs:514:17:514:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:514:17:514:33 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:522:17:522:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:522:17:522:33 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:523:17:523:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:523:17:523:33 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:524:17:524:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:524:17:524:33 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:545:17:545:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:545:17:545:33 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:558:44:558:47 | delegate call | normal | GlobalDataFlow.cs:558:44:558:47 | delegate call |
+| GlobalDataFlowStringBuilder.cs:13:14:13:34 | call to constructor Object | normal | GlobalDataFlowStringBuilder.cs:13:14:13:34 | call to constructor Object |
+| GlobalDataFlowStringBuilder.cs:19:9:19:20 | call to method Append | normal | GlobalDataFlowStringBuilder.cs:19:9:19:20 | call to method Append |
+| GlobalDataFlowStringBuilder.cs:24:9:24:27 | call to method Append | normal | GlobalDataFlowStringBuilder.cs:24:9:24:27 | call to method Append |
+| GlobalDataFlowStringBuilder.cs:29:18:29:36 | object creation of type StringBuilder | normal | GlobalDataFlowStringBuilder.cs:29:18:29:36 | object creation of type StringBuilder |
+| GlobalDataFlowStringBuilder.cs:31:21:31:33 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:31:21:31:33 | call to method ToString |
+| GlobalDataFlowStringBuilder.cs:34:19:34:37 | object creation of type StringBuilder | normal | GlobalDataFlowStringBuilder.cs:34:19:34:37 | object creation of type StringBuilder |
+| GlobalDataFlowStringBuilder.cs:35:9:35:22 | call to method Append | normal | GlobalDataFlowStringBuilder.cs:35:9:35:22 | call to method Append |
+| GlobalDataFlowStringBuilder.cs:36:21:36:34 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:36:21:36:34 | call to method ToString |
+| GlobalDataFlowStringBuilder.cs:39:19:39:37 | object creation of type StringBuilder | normal | GlobalDataFlowStringBuilder.cs:39:19:39:37 | object creation of type StringBuilder |
+| GlobalDataFlowStringBuilder.cs:40:9:40:27 | call to method Append | normal | GlobalDataFlowStringBuilder.cs:40:9:40:27 | call to method Append |
+| GlobalDataFlowStringBuilder.cs:40:23:40:24 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:40:23:40:24 | call to method ToString |
+| GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString |
+| GlobalDataFlowStringBuilder.cs:44:9:44:18 | call to method Clear | normal | GlobalDataFlowStringBuilder.cs:44:9:44:18 | call to method Clear |
+| GlobalDataFlowStringBuilder.cs:45:23:45:35 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:45:23:45:35 | call to method ToString |
+| GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString |
+| MultiImplementationA.cs:3:7:3:15 | call to constructor Object | normal | MultiImplementationA.cs:3:7:3:15 | call to constructor Object |
+| MultiImplementationB.cs:1:7:1:15 | call to constructor Object | normal | MultiImplementationB.cs:1:7:1:15 | call to constructor Object |
+| Splitting.cs:1:7:1:15 | call to constructor Object | normal | Splitting.cs:1:7:1:15 | call to constructor Object |
+| Splitting.cs:8:17:8:31 | call to method Return<String> | normal | Splitting.cs:8:17:8:31 | call to method Return<String> |
+| Splitting.cs:20:22:20:30 | call to method Return<String> | normal | Splitting.cs:20:22:20:30 | call to method Return<String> |
+| Splitting.cs:21:21:21:33 | call to method Return<String> | normal | Splitting.cs:21:21:21:33 | call to method Return<String> |
+| Splitting.cs:30:9:30:13 | dynamic access to element | normal | Splitting.cs:30:9:30:13 | dynamic access to element |
+| Splitting.cs:31:17:31:26 | dynamic access to element | normal | Splitting.cs:31:17:31:26 | dynamic access to element |
+| Splitting.cs:32:9:32:16 | dynamic call to method Check | normal | Splitting.cs:32:9:32:16 | dynamic call to method Check |
+| Splitting.cs:34:13:34:20 | dynamic call to method Check | normal | Splitting.cs:34:13:34:20 | dynamic call to method Check |
+| This.cs:7:5:7:8 | call to constructor Object | normal | This.cs:7:5:7:8 | call to constructor Object |
+| This.cs:17:9:17:18 | object creation of type This | normal | This.cs:17:9:17:18 | object creation of type This |
+| This.cs:22:9:22:11 | call to constructor This | normal | This.cs:22:9:22:11 | call to constructor This |
+| This.cs:28:13:28:21 | object creation of type Sub | normal | This.cs:28:13:28:21 | object creation of type Sub |

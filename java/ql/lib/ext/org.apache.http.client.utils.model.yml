@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.http.client.utils", "URIBuilder", True, "URIBuilder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.http.client.utils", "URIBuilder", True, "URIBuilder", "(URI)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.http.client.utils", "URIBuilder", True, "URIBuilder", "(URI,Charset)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.http.client.utils", "URIBuilder", True, "setHost", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.http.client.utils", "URIBuilder", True, "setHost", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
+      - ["org.apache.http.client.utils", "URIBuilder", True, "setPath", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.http.client.utils.URIBuilder.path]", "taint", "ai-manual"]
+      - ["org.apache.http.client.utils", "URIBuilder", True, "setPathSegments", "(List)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.http.client.utils.URIBuilder.path]", "taint", "ai-manual"]
+      - ["org.apache.http.client.utils", "URIBuilder", True, "setPort", "(int)", "", "Argument[this]", "ReturnValue", "value", "ai-manual"]
+      - ["org.apache.http.client.utils", "URLEncodedUtils", True, "parse", "(URI,String)", "", "Argument[0]", "ReturnValue.Element", "taint", "ai-manual"]
+      - ["org.apache.http.client.utils", "URIUtils", True, "createURI", "(String,String,int,String,String,String)", "", "Argument[1]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.http.client.utils", "URIUtils", True, "extractHost", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.http.client.utils", "URIUtils", True, "resolve", "(URI,HttpHost,List)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.http.client.utils", "URIUtils", True, "resolve", "(URI,String)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.http.client.utils", "URIUtils", True, "resolve", "(URI,URI)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.http.client.utils", "URIUtils", True, "rewriteURI", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.http.client.utils", "URIUtils", True, "rewriteURI", "(URI,HttpHost)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.http.client.utils", "URIUtils", True, "rewriteURI", "(URI,HttpHost,EnumSet)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.http.client.utils", "URIUtils", True, "rewriteURI", "(URI,HttpHost,boolean)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.http.client.utils", "URIUtils", True, "rewriteURIForRoute", "(URI,RouteInfo)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.http.client.utils", "URIUtils", True, "rewriteURIForRoute", "(URI,RouteInfo,boolean)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]

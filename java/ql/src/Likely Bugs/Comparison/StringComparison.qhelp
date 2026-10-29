@@ -1,0 +1,58 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Comparing two <code>String</code> objects using <code>==</code> or
+<code>!=</code> compares object identity, which may not be intended.
+The same sequence of characters can be represented by two distinct 
+<code>String</code> objects.
+</p>
+
+</overview>
+<recommendation>
+
+<p>To see if two <code>String</code> objects represent
+the same sequence of characters, you should usually compare the objects by
+using their <code>equals</code> methods.
+</p>
+
+</recommendation>
+<example>
+
+<p>With the following definition, <code>headerStyle</code> is compared
+to the empty string using <code>==</code>. This comparison can yield
+<code>false</code> even if <code>headerStyle</code> is the empty string, because
+it compares the identity of the two string objects rather than their contents.
+For example, if <code>headerStyle</code> was initialized by an XML parser or a JSON
+parser, then it might have been created with code like
+<code>String.valueOf(buf,start,len)</code>. Such code will produce a new string
+object every time it is called.</p>  
+
+<sample src="StringComparison.java" />
+
+<p>With the following definition, <code>headerStyle</code> is tested using
+the <code>equals</code> method. This version will reliably detect whenever
+<code>headerStyle</code> is the empty string.</p>
+
+<sample src="StringComparisonGood.java" />
+
+</example>
+<references>
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#equals(java.lang.Object)">String.equals()</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#intern()">String.intern()</a>.
+</li>
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.21.3">15.21.3 Reference Equality Operators == and !=</a>,
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-3.html#jls-3.10.5">3.10.5 String Literals </a>,
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-15.html#jls-15.28">15.28 Constant Expressions</a>.
+</li>
+
+
+</references>
+</qhelp>

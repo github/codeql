@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p> 
+In Python, a nested function or lambda expression that captures a variable from its surrounding scope is a <em>late-binding</em> closure, 
+meaning that the value of the variable is determined when the closure is called, not when it is created.
+</p>
+<p>
+Care must be taken when the captured variable is a loop variable. If the closure is called after the loop ends, it will use the value of the variable on the last iteration of the loop, rather than the value at the iteration at which it was created.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Ensure that closures that capture loop variables aren't used outside of a single iteration of the loop. 
+To capture the value of a loop variable at the time the closure is created, use a default parameter, or <code>functools.partial</code>. 
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following (BAD) example, a <code>tasks</code> list is created, but each task captures the loop variable <code>i</code>, and reads the same value when run.
+ </p>
+<sample src="examples/bad.py" />
+<p>
+In the following (GOOD) example, each closure has an <code>i</code> default parameter, shadowing the outer <code>i</code> variable, the default value of which is determined as the value of the loop variable <code>i</code> at the time the closure is created.
+</p>
+<sample src="examples/good.py" />
+<p>
+In the following (GOOD) example, <code>functools.partial</code> is used to partially evaluate the lambda expression with the value of <code>i</code>.
+</p>
+<sample src="examples/good2.py" />
+
+
+
+</example>
+<references>
+<li>The Hitchhiker's Guide to Python: <a href="http://docs.python-guide.org/en/latest/writing/gotchas/#late-binding-closures">Late Binding Closures</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/reference/executionmodel.html#naming-and-binding">Naming and binding</a>.</li>
+<li>Stack Overflow: <a href="https://stackoverflow.com/questions/3431676/creating-functions-or-lambdas-in-a-loop-or-comprehension">Creating functions (or lambdas) in a loop (or comprehension)</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/3/library/functools.html#functools.partial">functools.partial</a>.</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,23 @@
+on:
+  workflow_run:
+    workflows:
+      - 'prev'
+    types:
+      - completed
+
+permissions:
+  actions: read
+  checks: read
+  contents: write
+
+jobs:
+  echo_trigger:
+    name: Report changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo trigger
+        run: |
+          echo "head branch: ${{ github.event.workflow_run.head_branch }}"
+          cat << EOF
+          ${{ toJSON(github.event) }}
+          EOF

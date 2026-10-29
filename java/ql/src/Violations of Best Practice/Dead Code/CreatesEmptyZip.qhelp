@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The <code>ZipOutputStream</code> class is used to write ZIP files to a file
+or other stream. A ZIP file consists of a number of <i>entries</i>. Usually
+each entry corresponds to a file in the directory structure being zipped. There
+is a method on <code>ZipOutputStream</code> that is slightly confusingly named 
+<code>putNextEntry</code>. Despite its name, it does not write a whole entry.
+Instead, it writes the <em>metadata</em> for an entry. The content for that entry
+is then written using the <code>write</code> method. Finally the entry is
+closed using <code>closeEntry</code>.</p>
+
+<p>Therefore, if you call <code>putNextEntry</code> and <code>closeEntry</code> but omit the
+call to <code>write</code>, an empty ZIP file entry is written to the output stream.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that you include a call to <code>ZipOutputStream.write</code>.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the <code>archive</code> method calls <code>putNextEntry</code> and
+<code>closeEntry</code> but the call to <code>write</code> is left out.</p>
+
+<sample src="CreatesEmptyZip.java" />
+
+</example>
+<references>
+
+
+<li>
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/zip/ZipOutputStream.html">
+ZipOutputStream</a>.
+</li>
+
+
+</references>
+</qhelp>

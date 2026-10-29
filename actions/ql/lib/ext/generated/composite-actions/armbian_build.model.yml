@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["armbian/build", "*", "input.armbian_pgp_password", "code-injection", "generated"]
+     - ["armbian/build", "*", "input.armbian_extensions", "code-injection", "generated"]
+     - ["armbian/build", "*", "input.armbian_release", "code-injection", "generated"]
+     - ["armbian/build", "*", "input.armbian_kernel_branch", "code-injection", "generated"]
+     - ["armbian/build", "*", "input.armbian_board", "code-injection", "generated"]
+     - ["armbian/build", "*", "input.armbian_target", "code-injection", "generated"]
+     - ["armbian/build", "*", "input.armbian_branch", "code-injection", "generated"]
+     - ["armbian/build", "*", "input.armbian_ui", "code-injection", "generated"]
+     - ["armbian/build", "*", "input.armbian_version", "code-injection", "generated"]

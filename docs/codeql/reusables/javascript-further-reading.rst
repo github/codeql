@@ -1,0 +1,3 @@
+- `CodeQL queries for JavaScript <https://github.com/github/codeql/tree/main/javascript/ql/src>`__
+- `Example queries for JavaScript <https://github.com/github/codeql/tree/main/javascript/ql/examples>`__
+- `CodeQL library reference for JavaScript <https://codeql.github.com/codeql-standard-libraries/javascript/>`__

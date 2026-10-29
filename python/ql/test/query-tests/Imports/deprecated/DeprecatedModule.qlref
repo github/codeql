@@ -1,0 +1,2 @@
+query: Imports/DeprecatedModule.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

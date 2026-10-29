@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.poifs.crypt.cryptoapi", "CryptoAPIEncryptor", True, "initCipherForBlock", "(Cipher,int)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.cryptoapi", "CryptoAPIEncryptor", True, "setSummaryEntries", "(DirectoryNode,String,POIFSFileSystem)", "", "Argument[1]", "Argument[0].SyntheticField[org.apache.poi.poifs.filesystem.DirectoryNode._byUCName].MapKey", "taint", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.cryptoapi", "CryptoAPIEncryptor", True, "setSummaryEntries", "(DirectoryNode,String,POIFSFileSystem)", "", "Argument[1]", "Argument[0].SyntheticField[org.apache.poi.poifs.filesystem.DirectoryNode._byname].MapKey", "taint", "dfc-generated"]

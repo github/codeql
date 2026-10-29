@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Casting arbitrary pointers into <tt>void*</tt> and then accessing their
+contents should be done with care. The results may not be portable.</p>
+
+<p>
+This query finds pointer arithmetic expressions where a pointer to
+<tt>void</tt> (or similar) is then cast to another type and dereferenced.
+</p>
+
+</overview>
+<recommendation>
+
+<ol>
+<li>Whenever possible, use the array subscript operator rather than
+pointer arithmetic. For example, replace <tt>*(p+k)</tt>
+with <tt>p[k]</tt>.</li>
+<li>Cast to the correct type before using pointer arithmetic. For
+example, if the type of <tt>p</tt> is <tt>void*</tt> but it really
+points to an array of type <tt>double[]</tt> then use the syntax
+<tt>(double*)p + k</tt> to get a pointer to the <tt>k</tt>'th element
+of the array.</li>
+<li>If pointer arithmetic must be done with a single-byte width, prefer
+<code>char *</code> to <code>void *</code>, as pointer arithmetic on
+<code>void *</code> is a nonstandard GNU extension.</li>
+</ol>
+
+</recommendation>
+<example>
+
+<sample src="IncorrectPointerScalingVoid.cpp" />
+
+</example>
+<references>
+
+</references>
+</qhelp>

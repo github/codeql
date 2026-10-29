@@ -1,0 +1,4 @@
+| calls2.cpp:6:2:6:5 | call to swap | swap | calls1.cpp |
+| calls2.cpp:18:2:18:8 | call to compute | compute | calls2.cpp |
+| calls3.cpp:10:9:10:9 | call to f | f | calls3.cpp |
+| calls3.cpp:11:13:11:13 | call to g | g | calls3.cpp |

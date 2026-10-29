@@ -1,0 +1,8 @@
+| NonPrivateFieldTest.java:8:26:8:37 | problematic1 | This non-private field is not accessed outside of its declaring type. |
+| NonPrivateFieldTest.java:9:22:9:33 | problematic2 | This non-private field is not accessed outside of its declaring type. |
+| NonPrivateFieldTest.java:10:22:10:33 | problematic3 | This non-private field is not accessed outside of its declaring type. |
+| NonPrivateFieldTest.java:12:15:12:26 | problematic4 | This non-private field is not accessed outside of its declaring type. |
+| NonPrivateFieldTest.java:13:16:13:27 | problematic5 | This non-private field is not accessed outside of its declaring type. |
+| NonPrivateFieldTest.java:14:16:14:27 | problematic6 | This non-private field is not accessed outside of its declaring type. |
+| NonPrivateFieldTest.java:15:22:15:33 | problematic7 | This non-private field is not accessed outside of its declaring type. |
+| NonPrivateFieldTest.java:16:18:16:29 | problematic8 | This non-private field is not accessed outside of its declaring type. |

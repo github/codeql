@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.transform.stream", "StreamResult", True, "StreamResult", "(File)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamResult.systemId]", "taint", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamResult", True, "StreamResult", "(OutputStream)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamResult.outputStream]", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamResult", True, "StreamResult", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamResult.systemId]", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamResult", True, "StreamResult", "(Writer)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamResult.writer]", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamResult", True, "getOutputStream", "()", "", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamResult.outputStream]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamResult", True, "getSystemId", "()", "", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamResult.systemId]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamResult", True, "getWriter", "()", "", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamResult.writer]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamResult", True, "setOutputStream", "(OutputStream)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamResult.outputStream]", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamResult", True, "setSystemId", "(File)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamResult.systemId]", "taint", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamResult", True, "setSystemId", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamResult.systemId]", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamResult", True, "setWriter", "(Writer)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamResult.writer]", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamSource", True, "getPublicId", "()", "", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamSource.publicId]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamSource", True, "getReader", "()", "", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamSource.reader]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamSource", True, "getSystemId", "()", "", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamSource.systemId]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamSource", True, "setInputStream", "(InputStream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.stream", "StreamSource", True, "setPublicId", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamSource.publicId]", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamSource", True, "setReader", "(Reader)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamSource.reader]", "value", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamSource", True, "setSystemId", "(File)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamSource.systemId]", "taint", "dfc-generated"]
+      - ["javax.xml.transform.stream", "StreamSource", True, "setSystemId", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stream.StreamSource.systemId]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.xml.transform.stream", "StreamSource", "isEmpty", "()", "summary", "df-generated"]

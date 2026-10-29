@@ -1,0 +1,17 @@
+| class A | [A, BaseException, object] |
+| class B | [B, X, object] |
+| class C | [C, BaseException, object] |
+| class D | [D, X, object] |
+| class Meta | [Meta, type, object] |
+| class NewStyle | [NewStyle, object] |
+| class NewStyleDerived | [NewStyleDerived, NewStyle, object] |
+| class O | [O] |
+| class Oddities | [Oddities, object] |
+| class OldStyle | [OldStyle] |
+| class OldStyleDerived | [OldStyleDerived, OldStyle] |
+| class Sub | [Sub, Oddities, Unhashable, object] |
+| class Unhashable | [Unhashable, object] |
+| class W | [W, Y, X, object] |
+| class WithMeta | [WithMeta, object] |
+| class X | [X, object] |
+| class Y | [Y, X, object] |

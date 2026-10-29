@@ -1,0 +1,18 @@
+| f | false | 154 | 154 | call to cut [line 8-9, 4 nodes, pos 2, 1 predecessors, 1 successors] |
+| f | false | 166 | 166 | i [line 5-5, 3 nodes, pos 0 (first in BB), 2 predecessors, 1 successors] |
+| f | false | 170 | 170 | call to cut [line 5-5, 4 nodes, pos 1 (last in BB), 1 predecessors, 2 successors] |
+| f | false | 183 | 183 | call to cut [line 7-8, 5 nodes, pos 1, 1 predecessors, 1 successors] |
+| f | false | 192 | 192 | call to cut [line 9-9, 1 nodes, pos 3 (last in BB), 1 predecessors, 1 successors] |
+| f | false | 198 | 198 | { ... } [line 5-7, 8 nodes, pos 0 (first in BB), 1 predecessors, 1 successors] |
+| f | false | 205 | 205 | call to cut [line 11-3, 3 nodes, pos 1 (last in BB), 1 predecessors, 0 successors] |
+| f | false | 211 | 211 | return ... [line 11-11, 3 nodes, pos 0 (first in BB), 1 predecessors, 1 successors] |
+| f | false | 213 | 213 | { ... } [line 3-10, 5 nodes, pos 0 (first in BB) (last in BB), 0 predecessors, 1 successors] |
+| f | true | 154 | 192 |  |
+| f | true | 166 | 170 |  |
+| f | true | 170 | 198 | T |
+| f | true | 170 | 211 | F |
+| f | true | 183 | 154 |  |
+| f | true | 192 | 166 |  |
+| f | true | 198 | 183 |  |
+| f | true | 211 | 205 |  |
+| f | true | 213 | 166 |  |

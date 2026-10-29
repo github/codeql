@@ -1,0 +1,7 @@
+password: $$SOME_VAR
+config: |
+    [mail]
+    host = smtp.mydomain.com
+    port = 25
+    username = sample_admin@mydomain.com
+    password = abc

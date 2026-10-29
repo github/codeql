@@ -1,0 +1,1 @@
+semmle-extractor-options: --microsoft --edg --no_wchar_t_keyword --edg --target --edg win64

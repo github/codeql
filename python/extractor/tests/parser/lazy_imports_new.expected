@@ -1,0 +1,284 @@
+Module: [2, 0] - [35, 0]
+  body: [
+    Import: [2, 0] - [2, 13]
+      is_lazy: True
+      names: [
+        alias: [2, 12] - [2, 13]
+          value:
+            ImportExpr: [2, 12] - [2, 13]
+              level: 0
+              name: 'a'
+              top: True
+          asname:
+            Name: [2, 12] - [2, 13]
+              variable: Variable('a', None)
+              ctx: Store
+      ]
+    Import: [4, 0] - [4, 18]
+      is_lazy: True
+      names: [
+        alias: [4, 12] - [4, 14]
+          value:
+            ImportExpr: [4, 12] - [4, 14]
+              level: 0
+              name: 'b1'
+              top: True
+          asname:
+            Name: [4, 12] - [4, 14]
+              variable: Variable('b1', None)
+              ctx: Store
+        alias: [4, 16] - [4, 18]
+          value:
+            ImportExpr: [4, 16] - [4, 18]
+              level: 0
+              name: 'b2'
+              top: True
+          asname:
+            Name: [4, 16] - [4, 18]
+              variable: Variable('b2', None)
+              ctx: Store
+      ]
+    Import: [6, 0] - [6, 20]
+      is_lazy: True
+      names: [
+        alias: [6, 12] - [6, 20]
+          value:
+            ImportExpr: [6, 12] - [6, 20]
+              level: 0
+              name: 'c1.c2.c3'
+              top: True
+          asname:
+            Name: [6, 12] - [6, 20]
+              variable: Variable('c1', None)
+              ctx: Store
+      ]
+    Import: [8, 0] - [8, 23]
+      is_lazy: True
+      names: [
+        alias: [8, 12] - [8, 23]
+          value:
+            ImportExpr: [8, 12] - [8, 17]
+              level: 0
+              name: 'd1.d2'
+              top: False
+          asname:
+            Name: [8, 21] - [8, 23]
+              variable: Variable('d3', None)
+              ctx: Store
+      ]
+    Import: [10, 0] - [10, 20]
+      is_lazy: True
+      names: [
+        alias: [10, 19] - [10, 20]
+          value:
+            ImportMember: [10, 19] - [10, 20]
+              module:
+                ImportExpr: [10, 10] - [10, 11]
+                  level: 0
+                  name: 'e'
+                  top: False
+              name: 'f'
+          asname:
+            Name: [10, 19] - [10, 20]
+              variable: Variable('f', None)
+              ctx: Store
+      ]
+    Import: [12, 0] - [12, 29]
+      is_lazy: True
+      names: [
+        alias: [12, 23] - [12, 25]
+          value:
+            ImportMember: [12, 23] - [12, 25]
+              module:
+                ImportExpr: [12, 10] - [12, 15]
+                  level: 0
+                  name: 'g1.g2'
+                  top: False
+              name: 'h1'
+          asname:
+            Name: [12, 23] - [12, 25]
+              variable: Variable('h1', None)
+              ctx: Store
+        alias: [12, 27] - [12, 29]
+          value:
+            ImportMember: [12, 27] - [12, 29]
+              module:
+                ImportExpr: [12, 10] - [12, 15]
+                  level: 0
+                  name: 'g1.g2'
+                  top: False
+              name: 'h2'
+          asname:
+            Name: [12, 27] - [12, 29]
+              variable: Variable('h2', None)
+              ctx: Store
+      ]
+    Import: [14, 0] - [14, 32]
+      is_lazy: True
+      names: [
+        alias: [14, 20] - [14, 28]
+          value:
+            ImportMember: [14, 20] - [14, 28]
+              module:
+                ImportExpr: [14, 10] - [14, 12]
+                  level: 0
+                  name: 'i1'
+                  top: False
+              name: 'j1'
+          asname:
+            Name: [14, 26] - [14, 28]
+              variable: Variable('j2', None)
+              ctx: Store
+        alias: [14, 30] - [14, 32]
+          value:
+            ImportMember: [14, 30] - [14, 32]
+              module:
+                ImportExpr: [14, 10] - [14, 12]
+                  level: 0
+                  name: 'i1'
+                  top: False
+              name: 'j3'
+          asname:
+            Name: [14, 30] - [14, 32]
+              variable: Variable('j3', None)
+              ctx: Store
+      ]
+    Import: [16, 0] - [16, 37]
+      is_lazy: True
+      names: [
+        alias: [16, 25] - [16, 33]
+          value:
+            ImportMember: [16, 25] - [16, 33]
+              module:
+                ImportExpr: [16, 10] - [16, 17]
+                  level: 2
+                  name: 'k1.k2'
+                  top: False
+              name: 'l1'
+          asname:
+            Name: [16, 31] - [16, 33]
+              variable: Variable('l2', None)
+              ctx: Store
+        alias: [16, 35] - [16, 37]
+          value:
+            ImportMember: [16, 35] - [16, 37]
+              module:
+                ImportExpr: [16, 10] - [16, 17]
+                  level: 2
+                  name: 'k1.k2'
+                  top: False
+              name: 'l3'
+          asname:
+            Name: [16, 35] - [16, 37]
+              variable: Variable('l3', None)
+              ctx: Store
+      ]
+    Import: [18, 0] - [18, 20]
+      is_lazy: True
+      names: [
+        alias: [18, 19] - [18, 20]
+          value:
+            ImportMember: [18, 19] - [18, 20]
+              module:
+                ImportExpr: [18, 10] - [18, 11]
+                  level: 1
+                  name: None
+                  top: False
+              name: 'm'
+          asname:
+            Name: [18, 19] - [18, 20]
+              variable: Variable('m', None)
+              ctx: Store
+      ]
+    Import: [20, 0] - [20, 22]
+      is_lazy: True
+      names: [
+        alias: [20, 21] - [20, 22]
+          value:
+            ImportMember: [20, 21] - [20, 22]
+              module:
+                ImportExpr: [20, 10] - [20, 13]
+                  level: 3
+                  name: None
+                  top: False
+              name: 'n'
+          asname:
+            Name: [20, 21] - [20, 22]
+              variable: Variable('n', None)
+              ctx: Store
+      ]
+    ImportFrom: [22, 0] - [22, 20]
+      is_lazy: True
+      module:
+        ImportExpr: [22, 10] - [22, 11]
+          level: 0
+          name: 'o'
+          top: False
+    Assign: [26, 0] - [26, 8]
+      targets: [
+        Name: [26, 0] - [26, 4]
+          variable: Variable('lazy', None)
+          ctx: Store
+      ]
+      value:
+        Num: [26, 7] - [26, 8]
+          n: 1
+          text: '1'
+    Assign: [28, 0] - [28, 11]
+      targets: [
+        Subscript: [28, 0] - [28, 7]
+          value:
+            Name: [28, 0] - [28, 4]
+              variable: Variable('lazy', None)
+              ctx: Load
+          index:
+            Num: [28, 5] - [28, 6]
+              n: 2
+              text: '2'
+          ctx: Store
+      ]
+      value:
+        Num: [28, 10] - [28, 11]
+          n: 3
+          text: '3'
+    Assign: [30, 0] - [30, 12]
+      targets: [
+        Attribute: [30, 0] - [30, 8]
+          value:
+            Name: [30, 0] - [30, 4]
+              variable: Variable('lazy', None)
+              ctx: Load
+          attr: 'foo'
+          ctx: Store
+      ]
+      value:
+        Num: [30, 11] - [30, 12]
+          n: 4
+          text: '4'
+    Expr: [32, 0] - [32, 6]
+      value:
+        Call: [32, 0] - [32, 6]
+          func:
+            Name: [32, 0] - [32, 4]
+              variable: Variable('lazy', None)
+              ctx: Load
+          positional_args: []
+          named_args: []
+    AnnAssign: [34, 0] - [34, 14]
+      value: None
+      annotation:
+        Name: [34, 10] - [34, 14]
+          variable: Variable('case', None)
+          ctx: Load
+      target:
+        Subscript: [34, 0] - [34, 7]
+          value:
+            Name: [34, 0] - [34, 4]
+              variable: Variable('lazy', None)
+              ctx: Load
+          index:
+            Num: [34, 5] - [34, 6]
+              n: 5
+              text: '5'
+          ctx: Store
+  ]

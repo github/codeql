@@ -1,0 +1,10 @@
+multipleSuccessors
+| cfg.swift:33:28:33:28 | ... is ... | no-match | cfg.swift:33:49:33:60 | call to isZero(x:) |
+| cfg.swift:33:28:33:28 | ... is ... | no-match | cfg.swift:35:5:37:3 | case ... |
+| cfg.swift:144:10:144:10 | =~ ... | no-match | cfg.swift:144:18:144:34 | ... .&&(_:_:) ... |
+| cfg.swift:144:10:144:10 | =~ ... | no-match | cfg.swift:146:5:147:14 | case ... |
+| cfg.swift:515:6:515:28 | #available | false | cfg.swift:515:42:515:46 | iOS 12 |
+| cfg.swift:515:6:515:28 | #available | false | cfg.swift:519:10:519:10 | x |
+deadEnd
+| cfg.swift:33:49:33:60 | call to isZero(x:) |
+| cfg.swift:144:18:144:34 | ... .&&(_:_:) ... |

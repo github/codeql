@@ -1,0 +1,4 @@
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (taint.ql:6,48-56)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (taint.ql:7,24-32)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (taint.ql:11,22-30)
+WARNING: module 'TaintTracking' has been deprecated and may be removed in future (taint.ql:19,20-33)

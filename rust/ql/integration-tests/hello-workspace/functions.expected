@@ -1,0 +1,2 @@
+| exe/src/main.rs:7:1:11:1 | fn main |
+| lib/src/a_module/mod.rs:1:1:4:1 | fn hello |

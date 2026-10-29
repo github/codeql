@@ -1,0 +1,3 @@
+| AttributeFormattingFunction.cpp:4:54:4:59 | format | printf | 0 | 1 |
+| AttributeFormattingFunction.cpp:5:69:5:74 | format | __printf__ | 1 | 2 |
+| AttributeFormattingFunction.cpp:6:63:6:68 | format | printf | 0 |  |

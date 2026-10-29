@@ -1,0 +1,2 @@
+query: Security/CWE-078/UnsafeShellCommandConstruction.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

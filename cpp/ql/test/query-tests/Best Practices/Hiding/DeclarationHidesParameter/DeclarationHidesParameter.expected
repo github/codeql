@@ -1,0 +1,7 @@
+| hiding.cpp:4:17:4:18 | ii | Local variable 'ii' hides a $@. | hiding.cpp:2:12:2:13 | definition of ii | parameter of the same name |
+| hiding.cpp:15:15:15:16 | kk | Local variable 'kk' hides a $@. | hiding.cpp:12:25:12:26 | definition of kk | parameter of the same name |
+| hiding.cpp:28:7:28:7 | a | Local variable 'a' hides a $@. | hiding.cpp:26:21:26:21 | definition of a | parameter of the same name |
+| hiding.cpp:45:7:45:7 | a | Local variable 'a' hides a $@. | hiding.cpp:43:41:43:41 | definition of a | parameter of the same name |
+| hiding.cpp:64:11:64:11 | i | Local variable 'i' hides a $@. | hiding.cpp:61:20:61:20 | definition of i | parameter of the same name |
+| hiding.cpp:78:7:78:10 | arg1 | Local variable 'arg1' hides a $@. | hiding.cpp:74:28:74:31 | definition of arg1 | parameter of the same name |
+| hiding.cpp:79:5:79:8 | arg2 | Local variable 'arg2' hides a $@. | hiding.cpp:74:36:74:39 | definition of arg2 | parameter of the same name |

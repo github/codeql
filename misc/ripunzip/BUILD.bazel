@@ -1,0 +1,15 @@
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+
+alias(
+    name = "ripunzip",
+    actual = "@ripunzip",
+    visibility = ["//visibility:public"],
+)
+
+sh_binary(
+    name = "install",
+    srcs = ["install.sh"],
+    args = ["$(rlocationpath :ripunzip)"],
+    data = [":ripunzip"],
+    deps = ["//misc/bazel:sh_runfiles"],
+)

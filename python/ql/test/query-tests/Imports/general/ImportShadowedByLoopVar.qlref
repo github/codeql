@@ -1,0 +1,2 @@
+query: Imports/ImportShadowedByLoopVar.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

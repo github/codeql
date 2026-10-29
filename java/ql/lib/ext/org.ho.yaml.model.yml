@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.ho.yaml", "Yaml", False, "load", "", "", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["org.ho.yaml", "Yaml", False, "loadStream", "", "", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["org.ho.yaml", "Yaml", False, "loadStreamOfType", "", "", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["org.ho.yaml", "Yaml", False, "loadType", "", "", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["org.ho.yaml", "YamlConfig", False, "load", "", "", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["org.ho.yaml", "YamlConfig", False, "loadStream", "", "", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["org.ho.yaml", "YamlConfig", False, "loadStreamOfType", "", "", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["org.ho.yaml", "YamlConfig", False, "loadType", "", "", "Argument[0]", "unsafe-deserialization", "manual"]

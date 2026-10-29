@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["zeroc-ice/ice", "*", "input.flags", "code-injection", "generated"]
+     - ["zeroc-ice/ice", "*", "input.make_flags", "code-injection", "generated"]

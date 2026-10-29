@@ -1,0 +1,2 @@
+query: Likely Bugs/LeapYear/UnsafeYearConstruction.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

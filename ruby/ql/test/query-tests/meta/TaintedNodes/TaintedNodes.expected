@@ -1,0 +1,79 @@
+| tainted_path.rb:4:5:4:24 | ... = ... | Tainted node |
+| tainted_path.rb:4:12:4:17 | call to params | Tainted node |
+| tainted_path.rb:4:12:4:24 | ...[...] | Tainted node |
+| tainted_path.rb:5:26:5:29 | path | Tainted node |
+| tainted_path.rb:10:5:10:43 | ... = ... | Tainted node |
+| tainted_path.rb:10:12:10:43 | call to absolute_path | Tainted node |
+| tainted_path.rb:10:31:10:36 | call to params | Tainted node |
+| tainted_path.rb:10:31:10:43 | ...[...] | Tainted node |
+| tainted_path.rb:11:26:11:29 | path | Tainted node |
+| tainted_path.rb:16:5:16:47 | ... = ... | Tainted node |
+| tainted_path.rb:16:12:16:47 | "#{...}/foo" | Tainted node |
+| tainted_path.rb:16:13:16:42 | #{...} | Tainted node |
+| tainted_path.rb:16:15:16:41 | call to dirname | Tainted node |
+| tainted_path.rb:16:28:16:33 | call to params | Tainted node |
+| tainted_path.rb:16:28:16:40 | ...[...] | Tainted node |
+| tainted_path.rb:17:26:17:29 | path | Tainted node |
+| tainted_path.rb:22:5:22:41 | ... = ... | Tainted node |
+| tainted_path.rb:22:12:22:41 | call to expand_path | Tainted node |
+| tainted_path.rb:22:29:22:34 | call to params | Tainted node |
+| tainted_path.rb:22:29:22:41 | ...[...] | Tainted node |
+| tainted_path.rb:23:26:23:29 | path | Tainted node |
+| tainted_path.rb:28:5:28:34 | ... = ... | Tainted node |
+| tainted_path.rb:28:12:28:34 | call to path | Tainted node |
+| tainted_path.rb:28:22:28:27 | call to params | Tainted node |
+| tainted_path.rb:28:22:28:34 | ...[...] | Tainted node |
+| tainted_path.rb:29:26:29:29 | path | Tainted node |
+| tainted_path.rb:34:5:34:41 | ... = ... | Tainted node |
+| tainted_path.rb:34:12:34:41 | call to realdirpath | Tainted node |
+| tainted_path.rb:34:29:34:34 | call to params | Tainted node |
+| tainted_path.rb:34:29:34:41 | ...[...] | Tainted node |
+| tainted_path.rb:35:26:35:29 | path | Tainted node |
+| tainted_path.rb:40:5:40:38 | ... = ... | Tainted node |
+| tainted_path.rb:40:12:40:38 | call to realpath | Tainted node |
+| tainted_path.rb:40:26:40:31 | call to params | Tainted node |
+| tainted_path.rb:40:26:40:38 | ...[...] | Tainted node |
+| tainted_path.rb:41:26:41:29 | path | Tainted node |
+| tainted_path.rb:47:5:47:63 | ... = ... | Tainted node |
+| tainted_path.rb:47:12:47:63 | call to join | Tainted node |
+| tainted_path.rb:47:43:47:48 | call to params | Tainted node |
+| tainted_path.rb:47:43:47:55 | ...[...] | Tainted node |
+| tainted_path.rb:48:26:48:29 | path | Tainted node |
+| tainted_path.rb:53:26:53:31 | call to params | Tainted node |
+| tainted_path.rb:53:26:53:38 | ...[...] | Tainted node |
+| tainted_path.rb:59:5:59:53 | ... = ... | Tainted node |
+| tainted_path.rb:59:12:59:53 | call to new | Tainted node |
+| tainted_path.rb:59:40:59:45 | call to params | Tainted node |
+| tainted_path.rb:59:40:59:52 | ...[...] | Tainted node |
+| tainted_path.rb:60:26:60:29 | path | Tainted node |
+| tainted_path.rb:65:5:65:63 | ... = ... | Tainted node |
+| tainted_path.rb:65:12:65:53 | call to new | Tainted node |
+| tainted_path.rb:65:12:65:63 | call to sanitized | Tainted node |
+| tainted_path.rb:65:40:65:45 | call to params | Tainted node |
+| tainted_path.rb:65:40:65:52 | ...[...] | Tainted node |
+| tainted_path.rb:66:26:66:29 | path | Tainted node |
+| tainted_path.rb:71:5:71:53 | ... = ... | Tainted node |
+| tainted_path.rb:71:12:71:53 | call to new | Tainted node |
+| tainted_path.rb:71:40:71:45 | call to params | Tainted node |
+| tainted_path.rb:71:40:71:52 | ...[...] | Tainted node |
+| tainted_path.rb:72:15:72:18 | path | Tainted node |
+| tainted_path.rb:77:5:77:53 | ... = ... | Tainted node |
+| tainted_path.rb:77:12:77:53 | call to new | Tainted node |
+| tainted_path.rb:77:40:77:45 | call to params | Tainted node |
+| tainted_path.rb:77:40:77:52 | ...[...] | Tainted node |
+| tainted_path.rb:78:19:78:22 | path | Tainted node |
+| tainted_path.rb:79:14:79:17 | path | Tainted node |
+| tainted_path.rb:84:5:84:53 | ... = ... | Tainted node |
+| tainted_path.rb:84:12:84:53 | call to new | Tainted node |
+| tainted_path.rb:84:40:84:45 | call to params | Tainted node |
+| tainted_path.rb:84:40:84:52 | ...[...] | Tainted node |
+| tainted_path.rb:85:10:85:13 | path | Tainted node |
+| tainted_path.rb:86:25:86:28 | path | Tainted node |
+| tainted_path.rb:90:5:90:53 | ... = ... | Tainted node |
+| tainted_path.rb:90:12:90:53 | call to new | Tainted node |
+| tainted_path.rb:90:40:90:45 | call to params | Tainted node |
+| tainted_path.rb:90:40:90:52 | ...[...] | Tainted node |
+| tainted_path.rb:91:10:91:43 | "Debug: require_relative(#{...})" | Tainted node |
+| tainted_path.rb:91:35:91:41 | #{...} | Tainted node |
+| tainted_path.rb:91:37:91:40 | path | Tainted node |
+| tainted_path.rb:92:11:92:14 | path | Tainted node |

@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>When you add an application to a Tomcat server, it will generate a new <code>JSESSIONID</code> when you call <code>request.getSession()</code>
+or if you invoke a JSP from a servlet. If cookies are generated without the <code>HttpOnly</code> flag,
+an attacker can use a cross-site scripting (XSS) attack to get another user's session ID.
+</p>
+</overview>
+
+<recommendation>
+<p>Tomcat version 7+ automatically sets an <code>HttpOnly</code> flag on all session cookies to
+prevent client side scripts from accessing the session ID. 
+In most situations, you should not override this behavior.</p>
+</recommendation>
+
+<example>
+<p>The following example shows a Tomcat configuration with <code>useHttpOnly</code> disabled. Usually you should not set this.</p>
+
+<sample src="insecure-web.xml" />
+</example>
+
+<references>
+<li>
+CWE:
+<a href="https://cwe.mitre.org/data/definitions/1004.html">Sensitive Cookie Without 'HttpOnly' Flag</a>.
+</li>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/HttpOnly">
+  HttpOnly
+</a>.
+</li>
+</references>
+</qhelp>

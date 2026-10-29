@@ -1,0 +1,9 @@
+| System.cs:7:26:7:31 | Equals | 1 |
+| System.cs:9:16:9:34 | call to method Equals | 2 |
+| System.cs:9:39:9:66 | call to method ReferenceEquals | 3 |
+| System.cs:12:25:12:35 | GetHashCode | 4 |
+| System.cs:17:17:17:22 | Equals | 5 |
+| System.cs:22:16:22:22 | Compare | 6 |
+| System.cs:27:16:27:22 | Compare | 7 |
+| System.cs:32:21:32:29 | CompareTo | 8 |
+| System.cs:37:33:37:41 | CompareTo | 9 |

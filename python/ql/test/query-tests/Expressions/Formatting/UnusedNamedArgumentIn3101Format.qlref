@@ -1,0 +1,2 @@
+query: Expressions/Formatting/UnusedNamedArgumentIn3101Format.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

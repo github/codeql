@@ -1,0 +1,80 @@
+edges
+| zip_slip.rb:8:5:8:11 | tarfile | zip_slip.rb:9:5:9:11 | tarfile | provenance |  |
+| zip_slip.rb:8:15:8:54 | call to new | zip_slip.rb:8:5:8:11 | tarfile | provenance |  |
+| zip_slip.rb:9:5:9:11 | tarfile | zip_slip.rb:9:22:9:26 | entry | provenance |  |
+| zip_slip.rb:9:22:9:26 | entry | zip_slip.rb:10:19:10:23 | entry | provenance |  |
+| zip_slip.rb:10:19:10:23 | entry | zip_slip.rb:10:19:10:33 | call to full_name | provenance | Config |
+| zip_slip.rb:20:50:20:56 | tarfile | zip_slip.rb:21:7:21:13 | tarfile | provenance |  |
+| zip_slip.rb:21:7:21:13 | tarfile | zip_slip.rb:21:30:21:34 | entry | provenance |  |
+| zip_slip.rb:21:30:21:34 | entry | zip_slip.rb:22:21:22:25 | entry | provenance |  |
+| zip_slip.rb:22:21:22:25 | entry | zip_slip.rb:22:21:22:35 | call to full_name | provenance | Config |
+| zip_slip.rb:46:5:46:24 | call to open | zip_slip.rb:46:35:46:39 | entry | provenance |  |
+| zip_slip.rb:46:35:46:39 | entry | zip_slip.rb:47:17:47:21 | entry | provenance |  |
+| zip_slip.rb:47:17:47:21 | entry | zip_slip.rb:47:17:47:26 | call to name | provenance | Config |
+| zip_slip.rb:56:30:56:37 | zip_file | zip_slip.rb:57:7:57:14 | zip_file | provenance |  |
+| zip_slip.rb:57:7:57:14 | zip_file | zip_slip.rb:57:25:57:29 | entry | provenance |  |
+| zip_slip.rb:57:25:57:29 | entry | zip_slip.rb:58:19:58:23 | entry | provenance |  |
+| zip_slip.rb:58:19:58:23 | entry | zip_slip.rb:58:19:58:28 | call to name | provenance | Config |
+| zip_slip.rb:90:5:90:8 | gzip | zip_slip.rb:91:11:91:14 | gzip | provenance |  |
+| zip_slip.rb:90:12:90:54 | call to open | zip_slip.rb:90:5:90:8 | gzip | provenance |  |
+| zip_slip.rb:91:11:91:14 | gzip | zip_slip.rb:97:42:97:56 | compressed_file | provenance |  |
+| zip_slip.rb:97:42:97:56 | compressed_file | zip_slip.rb:98:7:98:21 | compressed_file | provenance |  |
+| zip_slip.rb:98:7:98:21 | compressed_file | zip_slip.rb:98:32:98:36 | entry | provenance |  |
+| zip_slip.rb:98:32:98:36 | entry | zip_slip.rb:99:22:99:26 | entry | provenance |  |
+| zip_slip.rb:99:9:99:18 | entry_path | zip_slip.rb:100:21:100:30 | entry_path | provenance |  |
+| zip_slip.rb:99:22:99:26 | entry | zip_slip.rb:99:22:99:36 | call to full_name | provenance | Config |
+| zip_slip.rb:99:22:99:36 | call to full_name | zip_slip.rb:99:9:99:18 | entry_path | provenance |  |
+| zip_slip.rb:123:7:123:8 | gz | zip_slip.rb:124:7:124:8 | gz | provenance |  |
+| zip_slip.rb:123:12:123:34 | call to new | zip_slip.rb:123:7:123:8 | gz | provenance |  |
+| zip_slip.rb:124:7:124:8 | gz | zip_slip.rb:124:19:124:23 | entry | provenance |  |
+| zip_slip.rb:124:19:124:23 | entry | zip_slip.rb:125:22:125:26 | entry | provenance |  |
+| zip_slip.rb:125:9:125:18 | entry_path | zip_slip.rb:126:21:126:30 | entry_path | provenance |  |
+| zip_slip.rb:125:22:125:26 | entry | zip_slip.rb:125:22:125:36 | call to full_name | provenance | Config |
+| zip_slip.rb:125:22:125:36 | call to full_name | zip_slip.rb:125:9:125:18 | entry_path | provenance |  |
+nodes
+| zip_slip.rb:8:5:8:11 | tarfile | semmle.label | tarfile |
+| zip_slip.rb:8:15:8:54 | call to new | semmle.label | call to new |
+| zip_slip.rb:9:5:9:11 | tarfile | semmle.label | tarfile |
+| zip_slip.rb:9:22:9:26 | entry | semmle.label | entry |
+| zip_slip.rb:10:19:10:23 | entry | semmle.label | entry |
+| zip_slip.rb:10:19:10:33 | call to full_name | semmle.label | call to full_name |
+| zip_slip.rb:20:50:20:56 | tarfile | semmle.label | tarfile |
+| zip_slip.rb:21:7:21:13 | tarfile | semmle.label | tarfile |
+| zip_slip.rb:21:30:21:34 | entry | semmle.label | entry |
+| zip_slip.rb:22:21:22:25 | entry | semmle.label | entry |
+| zip_slip.rb:22:21:22:35 | call to full_name | semmle.label | call to full_name |
+| zip_slip.rb:46:5:46:24 | call to open | semmle.label | call to open |
+| zip_slip.rb:46:35:46:39 | entry | semmle.label | entry |
+| zip_slip.rb:47:17:47:21 | entry | semmle.label | entry |
+| zip_slip.rb:47:17:47:26 | call to name | semmle.label | call to name |
+| zip_slip.rb:56:30:56:37 | zip_file | semmle.label | zip_file |
+| zip_slip.rb:57:7:57:14 | zip_file | semmle.label | zip_file |
+| zip_slip.rb:57:25:57:29 | entry | semmle.label | entry |
+| zip_slip.rb:58:19:58:23 | entry | semmle.label | entry |
+| zip_slip.rb:58:19:58:28 | call to name | semmle.label | call to name |
+| zip_slip.rb:90:5:90:8 | gzip | semmle.label | gzip |
+| zip_slip.rb:90:12:90:54 | call to open | semmle.label | call to open |
+| zip_slip.rb:91:11:91:14 | gzip | semmle.label | gzip |
+| zip_slip.rb:97:42:97:56 | compressed_file | semmle.label | compressed_file |
+| zip_slip.rb:98:7:98:21 | compressed_file | semmle.label | compressed_file |
+| zip_slip.rb:98:32:98:36 | entry | semmle.label | entry |
+| zip_slip.rb:99:9:99:18 | entry_path | semmle.label | entry_path |
+| zip_slip.rb:99:22:99:26 | entry | semmle.label | entry |
+| zip_slip.rb:99:22:99:36 | call to full_name | semmle.label | call to full_name |
+| zip_slip.rb:100:21:100:30 | entry_path | semmle.label | entry_path |
+| zip_slip.rb:123:7:123:8 | gz | semmle.label | gz |
+| zip_slip.rb:123:12:123:34 | call to new | semmle.label | call to new |
+| zip_slip.rb:124:7:124:8 | gz | semmle.label | gz |
+| zip_slip.rb:124:19:124:23 | entry | semmle.label | entry |
+| zip_slip.rb:125:9:125:18 | entry_path | semmle.label | entry_path |
+| zip_slip.rb:125:22:125:26 | entry | semmle.label | entry |
+| zip_slip.rb:125:22:125:36 | call to full_name | semmle.label | call to full_name |
+| zip_slip.rb:126:21:126:30 | entry_path | semmle.label | entry_path |
+subpaths
+#select
+| zip_slip.rb:10:19:10:33 | call to full_name | zip_slip.rb:8:15:8:54 | call to new | zip_slip.rb:10:19:10:33 | call to full_name | This file extraction depends on a $@. | zip_slip.rb:8:15:8:54 | call to new | potentially untrusted source |
+| zip_slip.rb:22:21:22:35 | call to full_name | zip_slip.rb:20:50:20:56 | tarfile | zip_slip.rb:22:21:22:35 | call to full_name | This file extraction depends on a $@. | zip_slip.rb:20:50:20:56 | tarfile | potentially untrusted source |
+| zip_slip.rb:47:17:47:26 | call to name | zip_slip.rb:46:5:46:24 | call to open | zip_slip.rb:47:17:47:26 | call to name | This file extraction depends on a $@. | zip_slip.rb:46:5:46:24 | call to open | potentially untrusted source |
+| zip_slip.rb:58:19:58:28 | call to name | zip_slip.rb:56:30:56:37 | zip_file | zip_slip.rb:58:19:58:28 | call to name | This file extraction depends on a $@. | zip_slip.rb:56:30:56:37 | zip_file | potentially untrusted source |
+| zip_slip.rb:100:21:100:30 | entry_path | zip_slip.rb:90:12:90:54 | call to open | zip_slip.rb:100:21:100:30 | entry_path | This file extraction depends on a $@. | zip_slip.rb:90:12:90:54 | call to open | potentially untrusted source |
+| zip_slip.rb:126:21:126:30 | entry_path | zip_slip.rb:123:12:123:34 | call to new | zip_slip.rb:126:21:126:30 | entry_path | This file extraction depends on a $@. | zip_slip.rb:123:12:123:34 | call to new | potentially untrusted source |

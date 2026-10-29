@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["net", "", False, "FileConn", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["net", "", False, "FilePacketConn", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["net", "", False, "JoinHostPort", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["net", "", False, "SplitHostPort", "", "", "Argument[0]", "ReturnValue[0..1]", "taint", "manual"]
+      - ["net", "IPConn", True, "ReadFromIP", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["net", "IPConn", True, "ReadMsgIP", "", "", "Argument[receiver]", "Argument[0..1]", "taint", "manual"]
+      - ["net", "IPConn", True, "WriteMsgIP", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
+      - ["net", "IPConn", True, "WriteToIP", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["net", "PacketConn", True, "ReadFrom", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["net", "PacketConn", True, "WriteTo", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["net", "TCPListener", True, "File", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["net", "UDPConn", True, "ReadFromUDP", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["net", "UDPConn", True, "ReadMsgUDP", "", "", "Argument[receiver]", "Argument[0..1]", "taint", "manual"]
+      - ["net", "UDPConn", True, "WriteMsgUDP", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
+      - ["net", "UDPConn", True, "WriteToUDP", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["net", "UnixConn", True, "ReadFromUnix", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["net", "UnixConn", True, "ReadMsgUnix", "", "", "Argument[receiver]", "Argument[0..1]", "taint", "manual"]
+      - ["net", "UnixConn", True, "WriteMsgUnix", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
+      - ["net", "UnixConn", True, "WriteToUnix", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["net", "UnixListener", True, "File", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]

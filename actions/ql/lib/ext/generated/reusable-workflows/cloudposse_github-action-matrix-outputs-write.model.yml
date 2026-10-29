@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["cloudposse/github-action-matrix-outputs-write/.github/workflows/setup-test.yml", "*", "input.matrix-key", "output.result", "taint", "manual"]

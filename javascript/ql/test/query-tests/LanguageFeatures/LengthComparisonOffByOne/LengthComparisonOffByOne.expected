@@ -1,0 +1,7 @@
+| tst.js:1:17:1:32 | i <= args.length | Off-by-one index comparison against length may lead to out-of-bounds $@. | tst.js:2:15:2:21 | args[i] | read |
+| tst.js:5:17:5:32 | args.length >= i | Off-by-one index comparison against length may lead to out-of-bounds $@. | tst.js:6:15:6:21 | args[i] | read |
+| tst.js:15:5:15:20 | j <= args.length | Off-by-one index comparison against length may lead to out-of-bounds $@. | tst.js:16:15:16:21 | args[j] | read |
+| tst.js:19:5:19:20 | args.length >= j | Off-by-one index comparison against length may lead to out-of-bounds $@. | tst.js:20:15:20:21 | args[j] | read |
+| tst.js:29:19:29:31 | i <= a.length | Off-by-one index comparison against length may lead to out-of-bounds $@. | tst.js:30:9:30:12 | a[i] | read |
+| tst.js:46:9:46:21 | i <= a.length | Off-by-one index comparison against length may lead to out-of-bounds $@. | tst.js:46:43:46:46 | a[i] | read |
+| tst.js:46:26:46:38 | i <= b.length | Off-by-one index comparison against length may lead to out-of-bounds $@. | tst.js:46:52:46:55 | b[i] | read |

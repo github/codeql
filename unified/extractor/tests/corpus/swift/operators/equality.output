@@ -1,0 +1,30 @@
+a == b
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "=="
+          leftOperand:
+            declReferenceExpr
+              baseName: identifier "a"
+          rightOperand:
+            declReferenceExpr
+              baseName: identifier "b"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+          left: identifier "a" source="a"
+          operator: infix_operator "==" source="=="
+          right: identifier "b" source="b"

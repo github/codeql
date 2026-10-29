@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+According to the HTML5 standard, the value of the <code>id</code> attribute of an element must
+contain at least one character, and must not contain any space characters. ID attributes that
+do not conform to this restriction may be interpreted differently by different browsers, and may indicate
+a misunderstanding on the part of the developer.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Inspect the ID attribute in question. If its value is empty, the attribute is most likely useless
+and can be removed. If it contains a space, perhaps the attribute was meant to be a <code>class</code>
+attribute.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following HTML element has an ID attribute with a space in it:
+</p>
+
+<sample src="examples/MalformedIdAttribute.html"/>
+
+<p>
+Most likely this was meant to be a <code>class</code> attribute, like this:
+</p>
+
+<sample src="examples/MalformedIdAttributeGood.html"/>
+</example>
+
+<references>
+<li>HTML5 Standard: <a href="https://www.w3.org/TR/html5/dom.html#the-id-attribute">3.2.5.1 The id attribute</a>.</li>
+</references>
+
+</qhelp>

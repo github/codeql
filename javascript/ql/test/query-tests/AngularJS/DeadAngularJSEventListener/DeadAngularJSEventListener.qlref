@@ -1,0 +1,2 @@
+query: AngularJS/DeadAngularJSEventListener.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

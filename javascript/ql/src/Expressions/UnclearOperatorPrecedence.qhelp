@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Nested expressions that rely on less well-known operator precedence rules can be
+hard to read and understand. They could even indicate a bug where the author of the
+code misunderstood the precedence rules.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use parentheses or additional whitespace to clarify grouping.
+</p>
+</recommendation>
+
+<example>
+<p>
+Consider the following snippet of code:
+</p>
+
+<sample src="examples/UnclearOperatorPrecedence.js" />
+
+<p>
+It might look like this tests whether <code>x</code> and <code>y</code> have any bits in
+common, but in fact <code>==</code> binds more tightly than <code>&amp;</code>, so the test
+is equivalent to <code>x &amp; (y == 0)</code>.
+</p>
+
+<p>
+If this is the intended interpretation, parentheses should be used to clarify this. You could
+also consider adding extra whitespace around <code>&amp;</code> or removing whitespace
+around <code>==</code> to make it visually apparent that it binds less tightly:
+<code>x &amp; y==0</code>.
+</p>
+<p>
+Probably the best approach in this case, though, would be to use the <code>&amp;&amp;</code>
+operator instead to clarify the intended interpretation: <code>x &amp;&amp; y == 0</code>.
+</p>
+</example>
+
+<references>
+<li>Mozilla Developer Network, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence">Operator precedence</a>.</li>
+</references>
+</qhelp>

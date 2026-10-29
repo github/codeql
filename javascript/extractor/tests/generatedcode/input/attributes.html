@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div foo={{foo}}></div>
+    <div foo={{{foo}}}{{/foo}}/>
+    <div foo={{#foo}}{{/foo}}/>
+    <div foo=bar {{#foo}}{{/foo}}/>
+    <div foo=bar {{#foo}}bar={{baz}}{{/foo}}/>
+  </body>
+</html>

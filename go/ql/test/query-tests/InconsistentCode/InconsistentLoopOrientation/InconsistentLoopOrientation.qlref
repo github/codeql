@@ -1,0 +1,2 @@
+query: InconsistentCode/InconsistentLoopOrientation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,8 @@
+testFailures
+staticAccess
+| main.rs:9:13:9:25 | GLOBAL_STATIC | main.rs:1:1:1:31 | static GLOBAL_STATIC |
+| main.rs:11:13:11:25 | STRING_STATIC | main.rs:2:1:2:37 | static STRING_STATIC |
+| main.rs:13:13:13:36 | ...::MODULE_STATIC | main.rs:5:5:5:40 | static MODULE_STATIC |
+| main.rs:16:16:16:28 | GLOBAL_STATIC | main.rs:1:1:1:31 | static GLOBAL_STATIC |
+| main.rs:22:17:22:29 | STRING_STATIC | main.rs:21:9:21:45 | static STRING_STATIC |
+| main.rs:26:21:26:33 | STRING_STATIC | main.rs:25:13:25:50 | static STRING_STATIC |

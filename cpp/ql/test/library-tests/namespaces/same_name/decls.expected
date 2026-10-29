@@ -1,0 +1,12 @@
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | __va_list_tag |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | fp_offset |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | gp_offset |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | overflow_arg_area |
+| file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | reg_save_area |
+| file://:0:0:0:0 | (global namespace) | same_name.cpp:2:11:2:11 | c |
+| same_name.cpp:4:11:4:21 | namespace_a | same_name.cpp:6:12:6:12 | c |
+| same_name.cpp:9:11:9:21 | namespace_b | same_name.cpp:11:12:11:12 | c |

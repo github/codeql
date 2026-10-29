@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["pardeike/harmony", "*", "input.architecture", "code-injection", "generated"]
+     - ["pardeike/harmony", "*", "input.build_configuration", "code-injection", "generated"]
+     - ["pardeike/harmony", "*", "input.target_framework_array", "code-injection", "generated"]
+     - ["pardeike/harmony", "*", "input.target_framework", "code-injection", "generated"]

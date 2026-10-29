@@ -1,0 +1,61 @@
+# DASHBOARD METRICS
+
+@import metrics-external
+
+  # Build
++ odasa-cpp-metrics/Files/FTimeInFrontend.ql: /Metrics/Build
+
+  # Complexity
++ odasa-cpp-metrics/Classes/CPercentageOfComplexCode.ql: /Metrics/Complexity
++ odasa-cpp-metrics/Classes/CResponse.ql : /Metrics/Complexity
++ odasa-cpp-metrics/Files/FCyclomaticComplexity.ql: /Metrics/Complexity
+   @treemap.warnOn highValues
++ odasa-cpp-metrics/Files/NumberOfParameters.ql: /Metrics/Complexity
+   @treemap.warnOn highValues
++ odasa-cpp-metrics/Functions/StatementNestingDepth.ql: /Metrics/Complexity
+   @treemap.warnOn highValues
+
+  # Coupling
++ odasa-cpp-metrics/Classes/CAfferentCoupling.ql: /Metrics/Coupling
++ odasa-cpp-metrics/Classes/CEfferentCoupling.ql: /Metrics/Coupling
++ odasa-cpp-metrics/Files/FAfferentCoupling.ql: /Metrics/Coupling
++ odasa-cpp-metrics/Files/FEfferentCoupling.ql: /Metrics/Coupling
++ semmlecode-cpp-queries/Metrics/Files/FLinesOfDuplicatedCode.ql: /Metrics/Coupling
+
+  # Documentation
++ odasa-cpp-metrics/Files/FCommentRatio.ql: /Metrics/Documentation
++ odasa-cpp-metrics/Files/FLinesOfComments.ql: /Metrics/Documentation
++ odasa-cpp-metrics/Files/FTodoComments.ql: /Metrics/Documentation
++ odasa-cpp-metrics/Functions/FunLinesOfComments.ql: /Metrics/Documentation
++ odasa-cpp-metrics/Functions/FunPercentageOfComments.ql: /Metrics/Documentation
+   @treemap.warnOn lowValues
++ odasa-cpp-metrics/Files/FLinesOfCommentedOutCode.ql: /Metrics/Documentation
+
+  # Encapsulation
++ odasa-cpp-metrics/Classes/CInheritanceDepth.ql: /Metrics/Encapsulation
++ odasa-cpp-metrics/Classes/CLackOfCohesionCK.ql: /Metrics/Encapsulation
++ odasa-cpp-metrics/Classes/CSizeOfAPI.ql: /Metrics/Encapsulation
++ odasa-cpp-metrics/Classes/CSpecialisation.ql: /Metrics/Encapsulation
+
+  # Globals
++ odasa-cpp-metrics/Files/NumberOfFunctions.ql: /Metrics/Globals
++ odasa-cpp-metrics/Files/NumberOfGlobals.ql: /Metrics/Globals
++ odasa-cpp-metrics/Files/NumberOfPublicFunctions.ql: /Metrics/Globals
++ odasa-cpp-metrics/Files/NumberOfPublicGlobals.ql: /Metrics/Globals
+
+  # Preprocessor
++ odasa-cpp-metrics/Files/FDirectIncludes.ql: /Metrics/Preprocessor
+   @treemap.warnOn highValues
++ odasa-cpp-metrics/Files/FMacroRatio.ql: /Metrics/Preprocessor
++ odasa-cpp-metrics/Files/FTransitiveIncludes.ql: /Metrics/Preprocessor
+   @treemap.warnOn highValues
+
+  # Size
++ odasa-cpp-metrics/Files/FLinesOfCode.ql: /Metrics/Size
++ odasa-cpp-metrics/Files/FNumberOfTests.ql: /Metrics/Size
++ odasa-cpp-metrics/Functions/FunLinesOfCode.ql: /Metrics/Size
++ odasa-cpp-metrics/Functions/FunNumberOfStatements.ql: /Metrics/Size
+   @treemap.warnOn highValues
++ odasa-cpp-metrics/Classes/CLinesOfCode.ql: /Metrics/Size
++ odasa-cpp-metrics/Classes/CNumberOfFields.ql: /Metrics/Size
++ odasa-cpp-metrics/Classes/CNumberOfFunctions.ql: /Metrics/Size

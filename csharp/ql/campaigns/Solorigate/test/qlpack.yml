@@ -1,0 +1,13 @@
+name: csharp-solorigate-tests
+groups:
+    - csharp
+    - solorigate
+    - test
+dependencies:
+  codeql/csharp-all: ${workspace}
+  codeql/csharp-queries: ${workspace}
+  codeql/csharp-solorigate-all: ${workspace}
+  codeql/csharp-solorigate-queries: ${workspace}
+extractor: csharp
+tests: .
+warnOnImplicitThis: true

@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+    In Python variables have function-wide scope which means that if two
+    variables have the same name in the same scope, they are in fact one
+    variable. Consequently, nested loops in which the target variables have the
+    same name in fact share a single variable. Such loops are difficult to
+    understand as the inner loop will modify the target variable of the outer
+    loop. This may lead to unexpected behavior if the loop variable is used
+    after the inner loop has terminated.
+</p>
+
+</overview>
+<recommendation>
+
+  <p>
+    Rename the inner loop variable.
+  </p>
+
+</recommendation>
+<example>
+<p>
+  This example shows a function that processes a sequence of lists of numbers. It
+  prints out the largest element from each of the lists. In the first version, the
+  variable <code>x</code> gets overwritten by the inner loop, resulting in the
+  wrong output. In the second function, the error has been fixed by renaming the
+  inner loop variable to stop it overwriting the outer loop variable.
+</p>
+
+  <sample src="NestedLoopsSameVariableWithReuse.py" />
+
+</example>
+<references>
+
+  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/compound_stmts.html#the-for-statement">The for statement</a>.</li>
+  <li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/controlflow.html#for-statements">for statements</a>.</li>
+
+</references>
+</qhelp>

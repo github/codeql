@@ -1,0 +1,30 @@
+load("@rules_python//python:defs.bzl", "py_test")
+
+[
+    py_test(
+        name = test_dir + "-test",
+        size = "small",
+        srcs = ["autobuild_tester.py"],
+        args = [
+            "$(location //swift/swift-autobuilder)",
+            "$(location %s)" % test_dir,
+        ],
+        data = [
+            "//swift/swift-autobuilder",
+            test_dir,
+        ] + glob([test_dir + "/**/*"]),
+        main = "autobuild_tester.py",
+    )
+    for test_dir in glob(
+        ["*"],
+        exclude = [
+            "*.*",
+            ".*",
+        ],
+        exclude_directories = 0,
+    )
+]
+
+test_suite(
+    name = "tests",
+)

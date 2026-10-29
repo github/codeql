@@ -1,0 +1,2 @@
+| A.java:29:13:29:21 | ...=... | This definition of x is never used. |
+| UnreadLocal/ImplicitReads.java:38:5:38:9 | ...=... | This definition of c is never used. |

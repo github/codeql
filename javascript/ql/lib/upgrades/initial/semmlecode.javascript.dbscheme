@@ -1,0 +1,477 @@
+/*** Standard fragments ***/
+
+/** Files and folders **/
+
+@location = @location_default;
+ 
+locations_default(unique int id: @location_default,
+          int file: @file ref,
+          int beginLine: int ref,
+          int beginColumn: int ref,
+          int endLine: int ref,
+          int endColumn: int ref
+         );
+ 
+@sourceline = @toplevel;
+ 
+numlines(int element_id: @sourceline ref,
+         int num_lines: int ref,
+         int num_code: int ref,
+         int num_comment: int ref
+        );
+ 
+ 
+/*
+  fromSource(0) = unknown,
+  fromSource(1) = from source,
+  fromSource(2) = from library
+*/
+files(unique int id: @file,
+      varchar(900) name: string ref,
+      varchar(900) simple: string ref,
+      varchar(900) ext: string ref,
+      int fromSource: int ref);
+ 
+folders(unique int id: @folder,
+        varchar(900) name: string ref,
+        varchar(900) simple: string ref);
+ 
+ 
+@container = @folder | @file ;
+ 
+ 
+containerparent(int parent: @container ref,
+                unique int child: @container ref);
+                
+/** Duplicate code **/
+
+duplicateCode(
+  unique int id : @duplication,
+  varchar(900) relativePath : string ref,
+  int equivClass : int ref);
+ 
+similarCode(
+  unique int id : @similarity,
+  varchar(900) relativePath : string ref,
+  int equivClass : int ref);
+ 
+@duplication_or_similarity = @duplication | @similarity;
+ 
+tokens(
+  int id : @duplication_or_similarity ref,
+  int offset : int ref,
+  int beginLine : int ref,
+  int beginColumn : int ref,
+  int endLine : int ref,
+  int endColumn : int ref);
+
+/** External data **/
+
+externalDefects(
+  unique int id : @externalDefect,
+  varchar(900) queryPath : string ref,
+  int location : @location ref,
+  varchar(900) message : string ref,
+  float severity : float ref
+);
+ 
+externalMetrics(
+  unique int id : @externalMetric,
+  varchar(900) queryPath : string ref,
+  int location : @location ref,
+  float value : float ref
+);
+ 
+externalData(
+  int id : @externalDataElement,
+  varchar(900) path : string ref,
+  int column: int ref,
+  varchar(900) value : string ref
+);
+ 
+snapshotDate(unique date snapshotDate : date ref);
+ 
+sourceLocationPrefix(varchar(900) prefix : string ref);
+
+/** Version control data **/
+
+svnentries(
+  int id : @svnentry,
+  varchar(500) revision : string ref,
+  varchar(500) author : string ref,
+  date revisionDate : date ref,
+  int changeSize : int ref
+);
+ 
+svnaffectedfiles(
+  int id : @svnentry ref,
+  int file : @file ref,
+  varchar(500) action : string ref
+);
+ 
+svnentrymsg(
+  int id : @svnentry ref,
+  varchar(500) message : string ref
+);
+ 
+svnchurn(
+  int commit : @svnentry ref,
+  int file : @file ref,
+  int churnedLines : int ref
+);
+
+
+/*** JavaScript-specific part ***/
+
+// top-level code fragments
+toplevels (unique int id: @toplevel,
+           int kind: int ref);
+
+case @toplevel.kind of
+   0 = @script
+|  1 = @inline_script
+|  2 = @event_handler
+|  3 = @javascript_url;
+
+// statements
+stmts (unique int id: @stmt, 
+       int kind: int ref,
+       int parent: @stmtparent ref, 
+       int idx: int ref,
+       varchar(900) tostring: string ref);
+
+stmtContainers (int stmt: @stmt ref,
+       int container: @stmt_container ref);
+       
+semicolonInserted (int stmt: @stmt ref);
+
+jumpTargets (int jump: @stmt ref,
+       int target: @stmt ref);
+
+@stmtparent = @stmt | @toplevel | @functionexpr;
+@stmt_container = @toplevel | @functiondecl;
+
+case @stmt.kind of
+   0 = @emptystmt
+|  1 = @blockstmt
+|  2 = @exprstmt
+|  3 = @ifstmt
+|  4 = @labeledstmt
+|  5 = @breakstmt
+|  6 = @continuestmt
+|  7 = @withstmt
+|  8 = @switchstmt
+|  9 = @returnstmt
+| 10 = @throwstmt
+| 11 = @trystmt
+| 12 = @whilestmt
+| 13 = @dowhilestmt
+| 14 = @forstmt
+| 15 = @forinstmt
+| 16 = @debuggerstmt
+| 17 = @functiondeclstmt
+| 18 = @vardeclstmt
+| 19 = @case
+| 20 = @catchclause
+;
+
+// expressions
+exprs (unique int id: @expr,
+       int kind: int ref,
+       int parent: @exprparent ref,
+       int idx: int ref,
+       varchar(900) tostring: string ref);
+
+literals (varchar(900) value: string ref,
+       varchar(900) raw: string ref,
+       unique int expr: @expr ref);
+       
+enclosingStmt (int expr: @expr ref,
+       int stmt: @stmt ref);
+
+arraySize (int ae: @arrayexpr ref,
+       int sz: int ref);
+       
+@exprparent = @expr | @stmt | @property | @vardeclarator;
+
+case @expr.kind of
+   0 = @identifier
+|  1 = @nullliteral
+|  2 = @booleanliteral
+|  3 = @numberliteral
+|  4 = @stringliteral
+|  5 = @regexpliteral
+|  6 = @thisexpr
+|  7 = @arrayexpr
+|  8 = @objexpr
+|  9 = @functionexpr
+| 10 = @seqexpr
+| 11 = @conditionalexpr
+| 12 = @newexpr
+| 13 = @callexpr
+| 14 = @dotexpr
+| 15 = @indexexpr
+| 16 = @negexpr
+| 17 = @plusexpr
+| 18 = @lognotexpr
+| 19 = @bitnotexpr
+| 20 = @typeofexpr
+| 21 = @voidexpr
+| 22 = @deleteexpr
+| 23 = @eqexpr
+| 24 = @neqexpr
+| 25 = @eqqexpr
+| 26 = @neqqexpr
+| 27 = @ltexpr
+| 28 = @leexpr
+| 29 = @gtexpr
+| 30 = @geexpr
+| 31 = @lshiftexpr
+| 32 = @rshiftexpr
+| 33 = @urshiftexpr
+| 34 = @addexpr
+| 35 = @subexpr
+| 36 = @mulexpr
+| 37 = @divexpr
+| 38 = @modexpr
+| 39 = @bitorexpr
+| 40 = @xorexpr
+| 41 = @bitandexpr
+| 42 = @inexpr
+| 43 = @instanceofexpr
+| 44 = @logandexpr
+| 45 = @logorexpr
+| 47 = @assignexpr
+| 48 = @assignaddexpr
+| 49 = @assignsubexpr
+| 50 = @assignmulexpr
+| 51 = @assigndivexpr
+| 52 = @assignmodexpr
+| 53 = @assignlshiftexpr
+| 54 = @assignrshiftexpr
+| 55 = @assignurshiftexpr
+| 56 = @assignorexpr
+| 57 = @assignxorexpr
+| 58 = @assignandexpr
+| 59 = @preincexpr
+| 60 = @postincexpr
+| 61 = @predecexpr
+| 62 = @postdecexpr
+| 63 = @parexpr
+;
+
+@literal = @nullliteral | @booleanliteral | @numberliteral | @stringliteral | @regexpliteral;
+
+@propaccess = @dotexpr | @indexexpr;
+
+@invokeexpr = @newexpr | @callexpr;
+
+@unaryexpr = @negexpr | @plusexpr | @lognotexpr | @bitnotexpr | @typeofexpr | @voidexpr | @deleteexpr;
+
+@equalitytest = @eqexpr | @neqexpr | @eqqexpr | @neqqexpr;
+
+@comparison = @equalitytest | @ltexpr | @leexpr | @gtexpr | @geexpr;
+
+@binaryexpr = @comparison | @lshiftexpr | @rshiftexpr | @urshiftexpr | @addexpr | @subexpr | @mulexpr | @divexpr | @modexpr | @bitorexpr | @xorexpr | @bitandexpr | @inexpr | @instanceofexpr | @logandexpr | @logorexpr;
+
+@assignment = @assignexpr | @assignaddexpr | @assignsubexpr | @assignmulexpr | @assigndivexpr | @assignmodexpr | @assignlshiftexpr | @assignrshiftexpr | @assignurshiftexpr | @assignorexpr | @assignxorexpr | @assignandexpr;
+
+@updateexpr = @preincexpr | @postincexpr | @predecexpr | @postdecexpr;
+
+// scopes
+scopes (unique int id: @scope,
+        int kind: int ref);
+
+case @scope.kind of
+   0 = @globalscope
+|  1 = @functionscope
+|  2 = @catchscope
+|  3 = @modulescope;
+
+@scopenode = @functiondecl | @catchclause | @script;
+
+scopenodes (int node: @scopenode ref,
+            int scope: @scope ref);
+            
+scopenesting (int inner: @scope ref,
+              int outer: @scope ref);
+
+// functions
+@functiondecl = @functiondeclstmt | @functionexpr;
+
+@parameterized = @functiondecl | @catchclause;
+
+params (unique int id: @param,
+        int variable: @variable ref,
+        varchar(900) name: string ref, 
+        int pos: int ref,
+        int parent: @parameterized ref);
+
+// variables
+variables (unique int id: @variable,
+        varchar(900) name: string ref,
+        int scope: @scope ref);
+        
+isArgumentsObject (int id: @variable ref);
+
+vardecls (unique int id: @vardeclarator,
+        int variable: @variable ref,
+        int parent: @stmt ref,
+        int pos: int ref,
+        varchar(900) tostring: string ref);
+
+// function declaration statements and named function expressions implicitly
+// declare variables; this table links the function declaration with its variable
+functionvars (int func: @functiondecl ref,
+        int var: @variable ref);
+        
+bind (int id: @identifier ref,
+      int decl: @variable ref);
+      
+@vardeclaration = @param | @vardeclarator | @functiondecl;
+
+// properties in object literals
+properties (unique int id: @property,
+            int parent: @objexpr ref,
+            int index: int ref,
+            int kind: int ref, // 0 - normal, 1 - getter, 2 - setter
+            varchar(900) tostring: string ref);
+
+// comments
+comments (unique int id: @comment,
+          int kind: int ref,
+          int toplevel: @toplevel ref,
+          varchar(900) text: string ref,
+          varchar(900) tostring: string ref);
+
+case @comment.kind of
+  0 = @slashslashcomment
+| 1 = @slashstarcomment
+| 2 = @doccomment
+| 3 = @htmlcommentstart
+| 4 = @htmlcommentend;
+
+@htmlcomment = @htmlcommentstart | @htmlcommentend;
+@linecomment = @slashslashcomment | @htmlcomment;
+@blockcomment = @slashstarcomment | @doccomment;
+
+// source lines
+lines (unique int id: @line,
+       int toplevel: @toplevel ref,
+       varchar(900) text: string ref,
+       varchar(2) terminator: string ref);
+
+// errors
+errors (unique int id: @error,
+        int kind: int ref,
+        int toplevel: @toplevel ref,
+        varchar(900) message: string ref);
+
+case @error.kind of
+  0 = @parseerror;
+  
+// regular expressions
+regexpterm (unique int id: @regexpterm,
+        int kind: int ref,
+        int parent: @regexpparent ref,
+        int idx: int ref,
+        varchar(900) tostring: string ref);
+        
+@regexpparent = @regexpterm | @regexpliteral;
+
+case @regexpterm.kind of
+   0 = @regexp_alt
+|  1 = @regexp_seq
+|  2 = @regexp_caret
+|  3 = @regexp_dollar
+|  4 = @regexp_wordboundary
+|  5 = @regexp_nonwordboundary
+|  6 = @regexp_positive_lookahead
+|  7 = @regexp_negative_lookahead
+|  8 = @regexp_star
+|  9 = @regexp_plus
+| 10 = @regexp_opt
+| 11 = @regexp_range
+| 12 = @regexp_dot
+| 13 = @regexp_group
+| 14 = @regexp_normal_char
+| 15 = @regexp_hex_escape
+| 16 = @regexp_unicode_escape
+| 17 = @regexp_dec_escape
+| 18 = @regexp_oct_escape
+| 19 = @regexp_ctrl_escape
+| 20 = @regexp_char_class_escape
+| 21 = @regexp_id_escape
+| 22 = @regexp_backref
+| 23 = @regexp_char_class
+| 24 = @regexp_char_range;
+
+regexpParseErrors (unique int id: @regexp_parse_error,
+    int kind: int ref,
+    int regexp: @regexpterm ref);
+
+case @regexp_parse_error.kind of
+   0 = @regexp_parse_error_unexpected_eos
+|  1 = @regexp_parse_error_unexpected_char
+|  2 = @regexp_parse_error_expected_digit
+|  3 = @regexp_parse_error_expected_hex_digit
+|  4 = @regexp_parse_error_expected_control_letter
+|  5 = @regexp_parse_error_expected_closing_paren
+|  6 = @regexp_parse_error_expected_closing_brace
+|  7 = @regexp_parse_error_expected_eos
+|  8 = @regexp_parse_error_octal_escape
+|  9 = @regexp_parse_error_invalid_backref;
+
+@regexp_quantifier = @regexp_star | @regexp_plus | @regexp_opt | @regexp_range;
+@regexp_escape = @regexp_char_escape | @regexp_char_class_escape;
+@regexp_char_escape = @regexp_hex_escape | @regexp_unicode_escape | @regexp_dec_escape | @regexp_oct_escape | @regexp_ctrl_escape | @regexp_id_escape;
+@regexp_constant = @regexp_normal_char | @regexp_char_escape;
+
+isGreedy (int id: @regexp_quantifier ref);
+rangeQuantifierLowerBound (int id: @regexp_range ref, int lo: int ref);
+rangeQuantifierUpperBound (int id: @regexp_range ref, int hi: int ref);
+isCapture (int id: @regexp_group ref, int number: int ref);
+isInverted (int id: @regexp_char_class ref);
+regexpConstValue (int id: @regexp_constant ref, varchar(1) value: string ref);
+charClassEscape (int id: @regexp_char_class_escape ref, varchar(1) value: string ref);
+backref (int id: @regexp_backref ref, int value: int ref);
+
+// tokens
+tokeninfo (unique int id: @token,
+    int kind: int ref,
+    int toplevel: @toplevel ref,
+    int idx: int ref,
+    varchar(900) value: string ref);
+
+case @token.kind of
+  0 = @token_eof
+| 1 = @token_null_literal
+| 2 = @token_boolean_literal
+| 3 = @token_numeric_literal
+| 4 = @token_string_literal
+| 5 = @token_regular_expression
+| 6 = @token_identifier
+| 7 = @token_keyword
+| 8 = @token_punctuator;
+
+// locations
+@locatable = @file 
+    | @toplevel | @stmt | @expr | @property | @vardeclaration
+    | @comment
+    | @line
+    | @error | @regexp_parse_error
+    | @regexpterm
+    | @token;
+
+hasLocation (int locatable: @locatable ref,
+    int location: @location ref);
+
+// Closure externs
+external_global (unique int id: @external_global, varchar(900) name: string ref);
+external_member (unique int id: @external_member, varchar(900) name: string ref, int parent: @external_entity ref);
+
+external_function (unique int id: @external_function, int decl: @external_decl ref);
+external_object (unique int id: @external_object, int decl: @external_decl ref);
+
+@external_decl = @external_global | @external_member;
+@external_entity = @external_function | @external_object;

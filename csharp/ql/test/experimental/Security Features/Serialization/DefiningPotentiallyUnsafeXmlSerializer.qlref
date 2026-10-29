@@ -1,0 +1,2 @@
+query: experimental/Security Features/Serialization/DefiningPotentiallyUnsafeXmlSerializer.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

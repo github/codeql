@@ -1,0 +1,58 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The Android manifest file specifies the content providers for the application
+using <code>provider</code> elements. The <code>provider</code> element
+specifies the explicit permissions an application requires in order to access a
+resource using that provider.
+
+  You specify the permissions using
+  the <code>android:readPermission</code>, <code>android:writePermission</code>,
+  or <code>android:permission</code> attributes. 
+If you do not specify the permission required to perform an operation, the application will implicitly have access to perform that operation.  
+  For example, if you specify only <code>android:readPermission</code>, the application must have explicit permission to read data, but requires no permission to write data.
+</p>
+
+</overview>
+
+<recommendation>
+  <p>To prevent permission bypass, you should create <code>provider</code> elements that either
+  specify both the <code>android:readPermission</code>
+  and <code>android:writePermission</code> attributes, or specify
+  the <code>android:permission</code> attribute.
+  </p>
+</recommendation>
+
+<example>
+
+  <p>In the following two (bad) examples, the provider is configured with only
+  read or write permissions. This allows a malicious application to bypass the permission check by requesting access to the unrestricted operation.</p>
+
+  <sample src="ContentProviderIncompletePermissionsReadOnly.xml"/>
+
+  <sample src="ContentProviderIncompletePermissionsWriteOnly.xml"/>
+
+  <p>In the following (good) examples, the provider is configured with full permissions, protecting it from a permissions bypass.</p>
+
+  <sample src="ContentProviderIncompletePermissionsReadWrite.xml"/>
+
+  <sample src="ContentProviderIncompletePermissionsFull.xml"/>
+</example>
+
+<references>
+<li>
+  Android Documentation:
+  <a href="https://developer.android.com/guide/topics/manifest/provider-element">Provider element</a>
+</li>
+<li>
+  CVE-2021-41166: <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-41166">Insufficient
+  permission control in Nextcloud Android app</a>
+</li>
+<li>
+  GitHub Security Lab Research:
+  <a href="https://securitylab.github.com/advisories/GHSL-2021-1007-Nextcloud_Android_app/#issue-2-permission-bypass-in-disklruimagecachefileprovider-ghsl-2021-1008">Insufficient permission control in Nextcloud Android app</a>
+</li>
+</references>
+</qhelp>

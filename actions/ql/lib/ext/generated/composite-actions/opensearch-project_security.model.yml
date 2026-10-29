@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["opensearch-project/security", "*", "input.plugin-branch", "code-injection", "generated"]

@@ -1,0 +1,62 @@
+| file://:0:0:0:0 |  |
+| file://:0:0:0:0 | 0 |
+| file://:0:0:0:0 | (global namespace) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | B |
+| file://:0:0:0:0 | X |
+| file://:0:0:0:0 | X |
+| file://:0:0:0:0 | X |
+| file://:0:0:0:0 | X |
+| file://:0:0:0:0 | Y |
+| file://:0:0:0:0 | __super |
+| file://:0:0:0:0 | __va_list_tag |
+| file://:0:0:0:0 | __va_list_tag & |
+| file://:0:0:0:0 | __va_list_tag && |
+| file://:0:0:0:0 | auto |
+| file://:0:0:0:0 | const EC |
+| file://:0:0:0:0 | const __va_list_tag |
+| file://:0:0:0:0 | const __va_list_tag & |
+| file://:0:0:0:0 | const bool |
+| file://:0:0:0:0 | definition of fp_offset |
+| file://:0:0:0:0 | definition of gp_offset |
+| file://:0:0:0:0 | definition of overflow_arg_area |
+| file://:0:0:0:0 | definition of reg_save_area |
+| file://:0:0:0:0 | derivation |
+| file://:0:0:0:0 | fp_offset |
+| file://:0:0:0:0 | gp_offset |
+| file://:0:0:0:0 | initializer for V |
+| file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | operator= |
+| file://:0:0:0:0 | overflow_arg_area |
+| file://:0:0:0:0 | reg_save_area |
+| file://:0:0:0:0 | void * |
+| test.cpp:0:0:0:0 | test.cpp |
+| test.cpp:2:12:2:13 | EC |
+| test.cpp:2:12:2:13 | definition of EC |
+| test.cpp:3:5:3:5 | V |
+| test.cpp:6:10:6:11 | type mention |
+| test.cpp:7:8:7:10 | IsX<X> |
+| test.cpp:7:8:7:10 | IsX<X> |
+| test.cpp:7:8:7:10 | definition of IsX<X> |
+| test.cpp:8:23:8:27 | Value |
+| test.cpp:8:23:8:27 | definition of Value |
+| test.cpp:8:31:8:35 | 0 |
+| test.cpp:8:31:8:35 | initializer for Value |
+| test.cpp:11:10:11:11 | type mention |
+| test.cpp:11:25:11:27 | type mention |
+| test.cpp:12:8:12:9 | DX<X, B> |
+| test.cpp:12:8:12:9 | definition of DX<X, B> |
+| test.cpp:13:17:13:20 | Type |
+| test.cpp:13:17:13:20 | declaration of Type |
+| test.cpp:16:10:16:11 | type mention |
+| test.cpp:17:8:17:9 | IX<X> |
+| test.cpp:17:8:17:9 | definition of IX<X> |
+| test.cpp:18:21:18:25 | Value |
+| test.cpp:18:21:18:25 | definition of Value |
+| test.cpp:18:29:18:32 | EC:: |
+| test.cpp:18:29:18:33 | V |
+| test.cpp:18:29:18:33 | initializer for Value |
+| test.cpp:21:10:21:11 | type mention |
+| test.cpp:22:6:22:8 | definition of run |
+| test.cpp:22:6:22:8 | run |

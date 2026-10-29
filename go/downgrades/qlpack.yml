@@ -1,0 +1,5 @@
+name: codeql/go-downgrades
+groups: go
+downgrades: .
+library: true
+warnOnImplicitThis: true

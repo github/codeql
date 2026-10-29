@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: summaryModel
+    data:
+      - ['lxml', 'Member[etree].Member[fromstringlist]', 'Argument[0,strings:].ListElement', 'ReturnValue', 'taint']

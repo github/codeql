@@ -1,0 +1,2 @@
+| test.py:19:9:19:31 | Attribute() | Keyword argument 'spam' is not a supported parameter name of $@. | test.py:5:5:5:20 | Function meth1 | method Base.meth1 |
+| test.py:112:9:112:23 | Attribute() | Keyword argument 'x' is not a supported parameter name of $@. | test.py:86:5:86:20 | Function meth3 | method Base2.meth3 |

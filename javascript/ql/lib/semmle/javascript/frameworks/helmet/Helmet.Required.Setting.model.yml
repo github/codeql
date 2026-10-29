@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: requiredHelmetSecuritySetting
+    data:
+      - ["frameguard"]
+      - ["contentSecurityPolicy"]

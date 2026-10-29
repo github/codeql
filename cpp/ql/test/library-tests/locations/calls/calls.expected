@@ -1,0 +1,6 @@
+| holder.cpp:13:2:13:20 | call to Holder | holder.cpp:5:2:5:2 | Holder |
+| holder.cpp:17:14:17:15 | call to Holder | holder.cpp:5:2:5:2 | Holder |
+| holder.cpp:18:18:18:31 | call to Holder | holder.cpp:5:2:5:2 | Holder |
+| holder.cpp:19:2:19:3 | call to Holder | holder.cpp:6:2:6:2 | Holder |
+| holder.cpp:19:5:19:5 | call to operator+ | holder.cpp:12:11:12:11 | operator+ |
+| holder.cpp:19:7:19:8 | call to Holder | holder.cpp:6:2:6:2 | Holder |

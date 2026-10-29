@@ -1,0 +1,2 @@
+query: Likely Bugs/Memory Management/Padding/Suboptimal64BitType.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

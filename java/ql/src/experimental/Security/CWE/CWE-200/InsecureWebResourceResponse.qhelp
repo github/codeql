@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Android provides a <code>WebResourceResponse</code> class, which allows an Android application to behave
+as a web server by handling requests of popular protocols such as <code>http(s)</code>, <code>file</code>,
+as well as <code>javascript</code> and returning a response (including status code, content type, content
+encoding, headers and the response body). Improper implementation with insufficient input validation can lead
+to leakage of sensitive configuration files or user data because requests could refer to paths intended to be
+application-private.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Unsanitized user-provided URLs must not be used to serve a response directly. When handling a request,
+always validate that the requested file path is not in the receiver's protected directory. Alternatively
+the Android class <code>WebViewAssetLoader</code> can be used, which safely processes data from resources,
+assets or a predefined directory.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following examples show a bad scenario and two good scenarios respectively. In the bad scenario, a
+response is served without path validation. In the good scenario, a response is either served with path
+validation or through the safe <code>WebViewAssetLoader</code> implementation.
+</p>
+<sample src="InsecureWebResourceResponse.java" />
+</example>
+
+<references>
+<li>
+Oversecured:
+<a href="https://blog.oversecured.com/Android-Exploring-vulnerabilities-in-WebResourceResponse/">Android: Exploring vulnerabilities in WebResourceResponse</a>.
+</li>
+<li>
+CVE:
+<a href="https://cordova.apache.org/announcements/2014/08/04/android-351.html">CVE-2014-3502: Cordova apps can potentially leak data to other apps via URL loading</a>.
+</li>
+</references>
+</qhelp>

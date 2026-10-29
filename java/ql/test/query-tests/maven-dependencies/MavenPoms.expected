@@ -1,0 +1,4 @@
+| .m2/repository/semmle-test/semmle-test/1.0/pom.xml:1:1:14:11 | project | com.semmle | test |
+| another-project/pom.xml:1:1:16:11 | project | com.semmle | another-project |
+| my-project/pom.xml:1:1:33:11 | project | com.semmle | my-project |
+| pom.xml:1:1:31:11 | project | com.semmle | parent |

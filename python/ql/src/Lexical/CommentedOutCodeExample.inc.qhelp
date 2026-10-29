@@ -1,0 +1,16 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<example>
+<p>
+In the following example, a <code>print</code> statement, originally used
+for debugging, is left in the code, but commented out. It should be removed altogether.
+</p>
+
+<sample src="CommentedOutCode.py" />
+
+</example>
+
+</qhelp>

@@ -1,0 +1,2 @@
+query: RegExp/UnmatchableCaret.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

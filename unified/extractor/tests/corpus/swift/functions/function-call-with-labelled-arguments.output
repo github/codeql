@@ -1,0 +1,40 @@
+greet(person: "Bob")
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionCallExpr
+          leftParen: (
+          rightParen: )
+          arguments:
+            labeledExpr
+              colon: :
+              label: identifier "person"
+              expression:
+                stringLiteralExpr
+                  closingQuote: "
+                  openingQuote: "
+                  segments:
+                    stringSegment
+                      content: stringSegment "Bob"
+          additionalTrailingClosures:
+          calledExpression:
+            declReferenceExpr
+              baseName: identifier "greet"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        call_expr source="⟨callee⟩(⟨argument⟩)"
+          callee: identifier "greet" source="greet"
+          argument:
+            argument source="⟨name_node⟩: ⟨value⟩"
+              name_node: identifier "person" source="person"
+              value: string_literal "\"Bob\"" source="\"Bob\""

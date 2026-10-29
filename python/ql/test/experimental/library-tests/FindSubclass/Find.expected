@@ -1,0 +1,17 @@
+| Django.Views.View~Subclass | find_subclass_test | Member[clash2] |
+| Django.Views.View~Subclass | find_subclass_test | Member[clash3] |
+| Django.Views.View~Subclass | find_subclass_test | Member[clash] |
+| flask.MethodView~Subclass | find_subclass_test | Member[C] |
+| flask.View~Subclass | find_subclass_test | Member[A] |
+| flask.View~Subclass | find_subclass_test | Member[B] |
+| flask.View~Subclass | find_subclass_test | Member[ViewAliasInExcept] |
+| flask.View~Subclass | find_subclass_test | Member[ViewAliasInTry] |
+| flask.View~Subclass | find_subclass_test | Member[ViewAlias] |
+| flask.View~Subclass | find_subclass_test | Member[ViewAlias_no_use] |
+| flask.View~Subclass | find_subclass_test | Member[View] |
+| flask.View~Subclass | find_subclass_test | Member[clash2] |
+| flask.View~Subclass | find_subclass_test | Member[clash3] |
+| flask.View~Subclass | find_subclass_test | Member[clash] |
+| flask.View~Subclass | find_subclass_test | Member[complete_module_alias] |
+| flask.View~Subclass | find_subclass_test | Member[complete_module_alias_no_use] |
+| rest_framework.response.Response~Subclass | find_subclass_test | Member[MyRestResponse] |

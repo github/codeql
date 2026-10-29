@@ -1,0 +1,2 @@
+query: Declarations/DeadStoreOfLocal.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

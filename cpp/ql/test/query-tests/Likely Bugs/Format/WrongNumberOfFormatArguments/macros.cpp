@@ -1,0 +1,33 @@
+
+extern int printf(const char *fmt, ...);
+
+#define GOODPRINTF(format, ...) \
+	printf(format, __VA_ARGS__)
+
+#define BADPRINTF(format, arg1, arg2, arg3) \
+	printf(format, arg1, arg2, arg3)
+
+void testMacros(int a, int b, int c)
+{
+	GOODPRINTF("%i %i\n", a, b, 0); // $ Alert[cpp/too-many-format-arguments] // BAD: too many format arguments
+	GOODPRINTF("%i %i %i\n", a, b, c); // GOOD
+	GOODPRINTF("%i %i %i %i\n", a, b, c); // $ Alert[cpp/wrong-number-format-arguments] // BAD: too few format arguments
+
+	BADPRINTF("%i %i\n", a, b, 0); // $ Alert[cpp/too-many-format-arguments] // DUBIOUS: too many format arguments
+		// ^ here there are too many format arguments, but the design of the Macro forces the user
+		//   to do this, and the extra argument is harmlessly ignored in practice.  Reporting these
+		//   results can be extremely noisy (e.g. in openldap).
+	BADPRINTF("%i %i %i\n", a, b, c); // GOOD
+	BADPRINTF("%i %i %i %i\n", a, b, c); // $ Alert[cpp/wrong-number-format-arguments] // BAD: too few format arguments
+}
+
+#define DOTHING(x) \
+	printf("doing thing: " #x); x
+
+void testMacros2()
+{
+	int x;
+
+	DOTHING(x++); // GOOD
+	DOTHING(printf("%i", x)); // $ Alert[cpp/wrong-number-format-arguments] // BAD: the printf inside the macro has too few format arguments
+}

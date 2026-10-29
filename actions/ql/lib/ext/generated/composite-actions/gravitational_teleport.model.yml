@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["gravitational/teleport", "*", "input.target", "code-injection", "generated"]
+     - ["gravitational/teleport", "*", "input.attempts", "code-injection", "generated"]
+     - ["gravitational/teleport", "*", "input.flags", "code-injection", "generated"]
+     - ["gravitational/teleport", "*", "input.path", "code-injection", "generated"]
+     - ["gravitational/teleport", "*", "input.bin", "code-injection", "generated"]

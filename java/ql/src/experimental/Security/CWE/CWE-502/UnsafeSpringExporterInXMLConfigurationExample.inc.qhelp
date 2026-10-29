@@ -1,0 +1,13 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<example>
+<p>
+The following examples shows how a vulnerable HTTP endpoint can be defined in a Spring XML config:
+</p>
+<sample src="SpringExporterUnsafeDeserialization.xml" />
+</example>
+
+</qhelp>

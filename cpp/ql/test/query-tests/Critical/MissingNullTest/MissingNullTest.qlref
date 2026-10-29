@@ -1,0 +1,2 @@
+query: Critical/MissingNullTest.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

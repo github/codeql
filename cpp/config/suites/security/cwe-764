@@ -1,0 +1,7 @@
+# CWE-764: Multiple Locks of a CriticalResource
++ semmlecode-cpp-queries/Security/CWE/CWE-764/UnreleasedLock.ql: /CWE/CWE-764
+    @name Lock may not be released (CWE-764)
++ semmlecode-cpp-queries/Security/CWE/CWE-764/TwiceLocked.ql: /CWE/CWE-764
+    @name Mutex locked twice (CWE-764)
++ semmlecode-cpp-queries/Security/CWE/CWE-764/LockOrderCycle.ql: /CWE/CWE-764
+    @name Cyclic lock order dependency (CWE-764)

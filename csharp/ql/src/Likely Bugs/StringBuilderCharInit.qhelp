@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Passing a character to the constructor of <code>StringBuilder</code> is probably intended to insert
+the character into the string. In fact, however, the character value is converted to an integer and 
+interpreted as the internal buffer's initial capacity, so the character value is not inserted into the string.</p>
+</overview>
+
+<example>
+
+<p>The following example shows a <code>ToString()</code> method which formats the contents of an array.
+However, the expression <code>new StringBuilder('(')</code> does not add the character <code>'('</code>
+to the string <code>str</code> but merely initializes the size of the buffer, so the resulting string 
+does not contain the leading <code>'('</code> character.</p>
+
+<sample src="StringBuilderCharInit.cs" />
+
+<p>Note that passing a character to <code>Append()</code>, on the other hand, is unproblematic.</p>
+
+<p>The problem can be fixed by initializing the <code>StringBuilder</code>
+with a string, which <em>does</em> put <code>"("</code> at the start of the string.</p>
+
+<sample src="StringBuilderCharInitFix.cs" />
+
+</example>
+<recommendation>
+
+<p>If the character used to initialize the buffer is a character literal, simply replace it with the
+corresponding string literal. So, in our example, replace <code>new StringBuilder('(')</code> with
+<code>new StringBuilder("(")</code>. If the character is not a literal value, use <code>ToString()</code>
+to convert it to a string, or use an additional call to <code>Append()</code> to insert the value into
+the string.</p>
+
+</recommendation>
+<references>
+
+<li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/system.text.stringbuilder.aspx">StringBuilder Class</a></li>
+
+</references>
+</qhelp>

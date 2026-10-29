@@ -1,0 +1,2 @@
+query: DOM/ConflictingAttributes.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

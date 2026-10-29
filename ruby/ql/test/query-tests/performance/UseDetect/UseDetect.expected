@@ -1,0 +1,7 @@
+| UseDetect.rb:5:9:5:36 | call to first | Replace this call and $@ with 'detect'. | UseDetect.rb:5:9:5:30 | call to select | 'select' call |
+| UseDetect.rb:6:9:6:35 | call to last | Replace this call and $@ with 'reverse_detect'. | UseDetect.rb:6:9:6:30 | call to select | 'select' call |
+| UseDetect.rb:7:9:7:33 | ...[...] | Replace this call and $@ with 'detect'. | UseDetect.rb:7:9:7:30 | call to select | 'select' call |
+| UseDetect.rb:8:9:8:34 | ...[...] | Replace this call and $@ with 'reverse_detect'. | UseDetect.rb:8:9:8:30 | call to select | 'select' call |
+| UseDetect.rb:9:9:9:36 | call to first | Replace this call and $@ with 'detect'. | UseDetect.rb:9:9:9:30 | call to filter | 'select' call |
+| UseDetect.rb:10:9:10:37 | call to last | Replace this call and $@ with 'reverse_detect'. | UseDetect.rb:10:9:10:32 | call to find_all | 'select' call |
+| UseDetect.rb:12:9:12:24 | call to first | Replace this call and $@ with 'detect'. | UseDetect.rb:11:22:11:43 | call to select | 'select' call |

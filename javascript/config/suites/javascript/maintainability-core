@@ -1,0 +1,11 @@
++ semmlecode-javascript-queries/Declarations/ArgumentsRedefined.ql: /Maintainability/Declarations
++ semmlecode-javascript-queries/Declarations/MissingThisQualifier.ql: /Maintainability/Declarations
++ semmlecode-javascript-queries/Declarations/MissingVarDecl.ql: /Maintainability/Declarations
++ semmlecode-javascript-queries/DOM/DuplicateAttributes.ql: /Maintainability/DOM
++ semmlecode-javascript-queries/Expressions/DuplicateProperty.ql: /Maintainability/Expressions
++ semmlecode-javascript-queries/LanguageFeatures/DebuggerStatement.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/DeleteVar.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/ExpressionClosures.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/ForInComprehensionBlocks.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/YieldInNonGenerator.ql: /Maintainability/Language Features
++ semmlecode-javascript-queries/Performance/ReDoS.ql: /Maintainability/Performance

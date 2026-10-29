@@ -1,0 +1,30 @@
+extensions:
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: summaryModel
+    data:
+      # `ActiveSupport::SafeBuffer` wraps a string, providing HTML-safe methods
+      # for concatenation.
+      # It is possible to insert tainted data into `SafeBuffer` that won't get
+      # sanitized, and this taint is then propagated via most of the methods.
+      #
+      # TODO: SafeBuffer also reponds to all String methods.
+      # Can we model this without repeating all the existing summaries we have
+      # for String?
+
+      # SafeBuffer.new(x) does not sanitize x
+      - ['ActionView::SafeBuffer!', 'Method[new]', 'Argument[0]', 'ReturnValue', 'taint']
+      # These methods preserve taint in self
+      - ['ActionView::SafeBuffer', 'Method[concat,insert,prepend,to_s,to_param]', 'Argument[self]', 'ReturnValue', 'taint']
+      # SafeBuffer#safe_concat(x) does not sanitize x
+      - ['ActionView::SafeBuffer', 'Method[safe_concat]', 'Argument[0]', 'Argument[self]', 'taint']
+      - ['ActionView::SafeBuffer', 'Method[safe_concat]', 'Argument[0]', 'ReturnValue', 'taint']
+      - ['ActiveSupport::JSON!', 'Method[decode,load]', 'Argument[0]', 'ReturnValue', 'taint']
+      - ['ActiveSupport::JSON!', 'Method[encode,dump]', 'Argument[0]', 'ReturnValue', 'taint']
+      - ['Pathname', 'Method[existence]', 'Argument[self]', 'ReturnValue', 'taint']
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: typeModel
+    data:
+      - ['Pathname', 'Pathname', 'Method[existence].ReturnValue']

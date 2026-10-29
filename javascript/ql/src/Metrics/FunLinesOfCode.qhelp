@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This metric measures the number of lines of code in a function, excluding comments and blank lines.</p>
+
+<p>Having too many lines of code in a function is an indication that it can be split into several functions of more manageable size.</p>
+
+</overview>
+<recommendation>
+<p>Long functions should be examined to see if they can be split into smaller, more cohesive functions.</p>
+
+</recommendation>
+<references>
+
+<li>
+  M. Fowler. <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+<li>
+  <a href="https://en.wikipedia.org/wiki/Code_refactoring">Wikipedia: Code refactoring</a>
+</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+        PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+        "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.2</jsp-version>
+  <short-name>acme</short-name>
+  <uri>http://www.acme.com/taglib</uri>
+  <description>taglib example</description>
+  <listener>
+    <listener-class>com.acme.TagListener</listener-class>
+  </listener>
+
+  <tag>
+    <name>date</name>
+    <tag-class>com.acme.DateTag</tag-class>
+    <body-content>TAGDEPENDENT</body-content>
+    <description>Display Date</description>
+    <attribute>
+       <name>tz</name>
+       <required>false</required>
+    </attribute>
+  </tag>       
+
+</taglib>

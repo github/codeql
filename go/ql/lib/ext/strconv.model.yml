@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["strconv", "", False, "AppendQuote", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["strconv", "", False, "AppendQuoteToASCII", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["strconv", "", False, "AppendQuoteToGraphic", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["strconv", "", False, "Quote", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["strconv", "", False, "QuoteToASCII", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["strconv", "", False, "QuoteToGraphic", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["strconv", "", False, "QuotedPrefix", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["strconv", "", False, "Unquote", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["strconv", "", False, "UnquoteChar", "", "", "Argument[0]", "ReturnValue[2]", "taint", "manual"]

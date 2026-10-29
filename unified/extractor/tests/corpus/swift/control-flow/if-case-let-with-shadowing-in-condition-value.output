@@ -1,0 +1,157 @@
+if case let x = x + 10 {
+  print(x)
+}
+
+if case var y = y + 10 {
+  y += 1
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            ifExpr
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "x"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              conditions:
+                conditionElement
+                  condition:
+                    matchingPatternCondition
+                      initializer:
+                        initializerClause
+                          equal: =
+                          value:
+                            infixOperatorExpr
+                              operator:
+                                binaryOperatorExpr
+                                  operator: binaryOperator "+"
+                              leftOperand:
+                                declReferenceExpr
+                                  baseName: identifier "x"
+                              rightOperand:
+                                integerLiteralExpr
+                                  literal: integerLiteral "10"
+                      pattern:
+                        valueBindingPattern
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+                          bindingSpecifier: let
+                      caseKeyword: case
+              ifKeyword: if
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            ifExpr
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        infixOperatorExpr
+                          operator:
+                            binaryOperatorExpr
+                              operator: binaryOperator "+="
+                          leftOperand:
+                            declReferenceExpr
+                              baseName: identifier "y"
+                          rightOperand:
+                            integerLiteralExpr
+                              literal: integerLiteral "1"
+              conditions:
+                conditionElement
+                  condition:
+                    matchingPatternCondition
+                      initializer:
+                        initializerClause
+                          equal: =
+                          value:
+                            infixOperatorExpr
+                              operator:
+                                binaryOperatorExpr
+                                  operator: binaryOperator "+"
+                              leftOperand:
+                                declReferenceExpr
+                                  baseName: identifier "y"
+                              rightOperand:
+                                integerLiteralExpr
+                                  literal: integerLiteral "10"
+                      pattern:
+                        valueBindingPattern
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "y"
+                          bindingSpecifier: var
+                      caseKeyword: case
+              ifKeyword: if
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩\n\n⟨stmt⟩"
+      stmt:
+        if_expr source="if ⟨condition⟩ ⟨then⟩"
+          condition:
+            pattern_guard_expr source="case ⟨pattern⟩ = ⟨value⟩"
+              pattern:
+                expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                  modifier: modifier "let" source="let"
+                  expr: identifier "x" source="x"
+              value:
+                binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                  left: identifier "x" source="x"
+                  operator: infix_operator "+" source="+"
+                  right: int_literal "10" source="10"
+          then:
+            block source="{\n  ⟨stmt⟩\n}"
+              stmt:
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
+                  argument:
+                    argument source="⟨value⟩"
+                      value: identifier "x" source="x"
+        if_expr source="if ⟨condition⟩ ⟨then⟩"
+          condition:
+            pattern_guard_expr source="case ⟨pattern⟩ = ⟨value⟩"
+              pattern:
+                expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                  modifier: modifier "var" source="var"
+                  expr: identifier "y" source="y"
+              value:
+                binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                  left: identifier "y" source="y"
+                  operator: infix_operator "+" source="+"
+                  right: int_literal "10" source="10"
+          then:
+            block source="{\n  ⟨stmt⟩\n}"
+              stmt:
+                binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                  left: identifier "y" source="y"
+                  operator: infix_operator "+=" source="+="
+                  right: int_literal "1" source="1"

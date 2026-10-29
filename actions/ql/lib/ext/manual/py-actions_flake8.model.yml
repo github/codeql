@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["py-actions/flake8", "*", "input.flake8-version", "command-injection", "manual"]
+      - ["py-actions/flake8", "*", "input.plugins", "command-injection", "manual"]
+      - ["py-actions/flake8", "*", "input.path", "command-injection", "manual"]
+      - ["py-actions/flake8", "*", "input.ignore", "command-injection", "manual"]
+      - ["py-actions/flake8", "*", "input.exclude", "command-injection", "manual"]
+      - ["py-actions/flake8", "*", "input.max-line-length", "command-injection", "manual"]
+      - ["py-actions/flake8", "*", "input.args", "command-injection", "manual"]

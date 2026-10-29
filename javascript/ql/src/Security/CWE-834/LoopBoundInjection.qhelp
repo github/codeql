@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+	<p>
+		Using the <code>.length</code> property of an untrusted object as a loop bound may
+		cause indefinite looping since a malicious attacker can set the
+		<code>.length</code> property to a very large number. For example, 
+		when a program that expects an array is passed a JSON object such as
+		<code>{length: 1e100}</code>, the loop will be run for 10<sup>100</sup>
+		iterations. This may cause the program to hang or run out of memory, 
+		which can be used to mount a denial-of-service (DoS) attack.
+	</p>
+</overview>
+
+<recommendation>
+	<p>
+		Either check that the object is indeed an array or limit the
+		size of the <code>.length</code> property.
+	</p>
+</recommendation>
+
+<example>
+	<p>
+		In the example below, an HTTP request handler iterates over a 
+		user-controlled object <code>obj</code> using the
+		<code>obj.length</code> property in order to copy the elements from
+		<code>obj</code> to an array.
+	</p>
+
+	<sample src="examples/LoopBoundInjection.js" />
+
+	<p>
+		This is not secure since an attacker can control the value of
+		<code>obj.length</code>, and thereby cause the loop to iterate
+		indefinitely. Here the potential DoS is fixed by enforcing that
+		the user-controlled object is an array.
+	</p>
+
+	<sample src="examples/LoopBoundInjection_fixed.js" />
+</example>
+
+<references></references>
+</qhelp>

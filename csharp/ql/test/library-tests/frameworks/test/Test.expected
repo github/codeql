@@ -1,0 +1,14 @@
+testClass
+| VisualStudio.cs:9:11:9:21 | MyTestSuite |
+| XUnit.cs:22:11:22:21 | MyTestSuite |
+| nunit.cs:75:11:75:21 | MyTestSuite |
+testMethod
+| VisualStudio.cs:12:21:12:25 | Test1 |
+| VisualStudio.cs:17:21:17:25 | Test2 |
+| XUnit.cs:25:21:25:25 | Test1 |
+| XUnit.cs:30:21:30:25 | Test2 |
+| nunit.cs:85:21:85:25 | Test1 |
+| nunit.cs:90:21:90:25 | Test2 |
+| nunit.cs:95:21:95:25 | Test3 |
+| nunit.cs:100:21:100:25 | Test4 |
+| nunit.cs:105:21:105:25 | Test5 |

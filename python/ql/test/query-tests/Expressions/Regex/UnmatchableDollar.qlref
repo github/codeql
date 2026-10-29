@@ -1,0 +1,2 @@
+query: Expressions/Regex/UnmatchableDollar.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

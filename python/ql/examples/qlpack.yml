@@ -1,0 +1,7 @@
+name: codeql/python-examples
+groups: 
+  - python
+  - examples
+dependencies:
+  codeql/python-all: ${workspace}
+warnOnImplicitThis: true

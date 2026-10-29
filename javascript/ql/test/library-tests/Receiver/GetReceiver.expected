@@ -1,0 +1,6 @@
+| tst.js:1:1:13:1 | functio ... \\n  };\\n} | tst.js:1:1:1:0 | this |
+| tst.js:2:3:2:21 | function inner() {} | tst.js:2:3:2:2 | this |
+| tst.js:5:11:5:10 | () {} | tst.js:5:11:5:10 | this |
+| tst.js:6:11:6:15 | () {} | tst.js:6:11:6:10 | this |
+| tst.js:10:15:10:19 | () {} | tst.js:10:15:10:14 | this |
+| tst.js:11:15:11:20 | (x) {} | tst.js:11:15:11:14 | this |

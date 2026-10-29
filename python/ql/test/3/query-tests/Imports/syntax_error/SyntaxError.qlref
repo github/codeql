@@ -1,0 +1,2 @@
+query: Imports/SyntaxError.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

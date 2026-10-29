@@ -1,0 +1,7 @@
+| common.h:2:12:2:12 | derivation | 2 | common.h:2:8:2:8 | B | file://:0:0:0:0 | public | common.h:1:8:1:8 | A |
+| common.h:3:12:3:23 | derivation | 3 | common.h:3:8:3:8 | C | file://:0:0:0:0 | private | common.h:1:8:1:8 | A |
+| common.h:3:12:3:23 | derivation | 3 | common.h:3:8:3:8 | C | file://:0:0:0:0 | public | common.h:1:8:1:8 | A |
+| common.h:4:12:4:15 | derivation | 4 | common.h:4:8:4:8 | D | file://:0:0:0:0 | public | common.h:1:8:1:8 | A |
+| common.h:4:12:4:15 | derivation | 4 | common.h:4:8:4:8 | D | file://:0:0:0:0 | public | common.h:2:8:2:8 | B |
+| common.h:5:18:5:18 | derivation | 5 | common.h:5:8:5:14 | E | file://:0:0:0:0 | public | common.h:1:8:1:8 | A |
+| common.h:5:18:5:18 | derivation | 5 | common.h:5:8:5:14 | F | file://:0:0:0:0 | public | common.h:1:8:1:8 | A |

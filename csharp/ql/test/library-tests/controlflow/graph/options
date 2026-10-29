@@ -1,0 +1,2 @@
+semmle-extractor-options: /r:System.Linq.dll /r:System.Runtime.Extensions.dll
+semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Windows.cs  ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs

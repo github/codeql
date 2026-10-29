@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If a global variable is only ever assigned to but its value is never read,
+this could indicate dead code, a typo or a logic error.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Ensure that the name of the variable has not been misspelled. If the assignment refers
+to an externally defined global variable (such as property of the <code>window</code>
+object), you can provide an externs file or a JSLint-style <code>/*global ...*/</code>
+directive to inform the analysis about this variable.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows a function for counting the number of leaves in a binary
+tree. For an inner node, the function first recursively counts the number of leaves
+in the left and right subtrees, stores them in variables, and then returns their sum.
+The name of the variable holding the number of leaves in the right subtree has been
+misspelled: it is spelled <code>rigtLeaves</code> instead of <code>rightLeaves</code>.
+</p>
+
+<p>
+Since undeclared variables in JavaScript are assumed to be global by default, this
+assignment stores the number of leaves in the right subtree in a global variable
+<code>rigtLeaves</code>, so the algorithm will not work as expected.
+</p>
+
+<sample src="examples/DeadStoreOfGlobal.js" />
+
+<p>
+To fix this, correct the name of the local variable:
+</p>
+
+<sample src="examples/DeadStoreOfGlobalGood.js" />
+
+</example>
+<references>
+
+
+<li>D. Crockford, <i>JavaScript: The Good Parts</i>, Appendix A. O'Reilly, 2008.</li>
+<li>Google Closure Tools: <a href="https://developers.google.com/closure/compiler/docs/api-tutorial3?csw=1#externs">Declaring externs</a>.</li>
+<li>JSLint: <a href="http://www.jslint.com/help.html#global">Global Variables</a>.</li>
+
+
+
+</references>
+</qhelp>

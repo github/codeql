@@ -1,0 +1,27 @@
+extensions:
+  # Make sure that the extensible model predicates have at least one definition
+  # to avoid errors about undefined extensionals.
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data: []
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data: []
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data: []
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: excludeFieldTaintStep
+    data: []
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: neutralModel
+    data: []
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: additionalExternalFile
+    data: []

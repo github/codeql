@@ -1,0 +1,2 @@
+CWE,Sink identifier,Label
+CWE-079,html-injection js-injection,Cross-site scripting

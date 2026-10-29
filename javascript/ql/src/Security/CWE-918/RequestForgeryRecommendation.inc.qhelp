@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+    <recommendation>
+
+        <p>
+            Restrict user inputs in the URL of an outgoing request, in particular:
+        </p>
+        <ul>
+            <li>
+                Avoid user input in the hostname of the URL.
+                Pick the hostname from an allow-list instead of constructing it directly from user input.
+            </li>
+            <li>
+                Take care when user input is part of the pathname of the URL.
+                Restrict the input so that path traversal ("<code>../</code>")
+                cannot be used to redirect the request to an unintended endpoint.
+            </li>
+        </ul>
+
+    </recommendation>
+
+</qhelp>

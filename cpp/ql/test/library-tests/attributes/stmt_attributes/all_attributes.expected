@@ -1,0 +1,6 @@
+| clang_fallthrough.cpp:11:3:11:25 | ; | clang_fallthrough.cpp:11:5:11:22 | fallthrough |
+| clang_fallthrough.cpp:20:3:20:25 | ; | clang_fallthrough.cpp:20:5:20:22 | fallthrough |
+| clang_fallthrough.cpp:22:3:22:25 | ; | clang_fallthrough.cpp:22:5:22:22 | fallthrough |
+| clang_fallthrough.cpp:36:4:36:26 | ; | clang_fallthrough.cpp:36:6:36:23 | fallthrough |
+| clang_fallthrough.cpp:41:5:41:27 | ; | clang_fallthrough.cpp:41:7:41:24 | fallthrough |
+| clang_fallthrough.cpp:43:3:43:25 | ; | clang_fallthrough.cpp:43:5:43:22 | fallthrough |

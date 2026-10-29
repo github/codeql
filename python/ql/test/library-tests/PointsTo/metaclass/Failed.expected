@@ -1,0 +1,2 @@
+| test.py:26:1:26:17 | class C5 | Failed to infer metaclass |
+| test.py:30:1:30:17 | class C6 | Failed to infer metaclass |

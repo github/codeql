@@ -1,0 +1,8 @@
+| src/dir-with-complex-package-json/tst.js:6:7:6:7 | x |
+| src/dir-with-complex-package-json/tst.js:8:10:8:10 | x |
+| src/dir-with-package-json/tst.js:7:7:7:7 | x |
+| src/dir-with-package-json/tst.js:13:10:13:10 | x |
+| src/dir-with-package-lock-json/tst.js:10:7:10:7 | x |
+| src/dir-with-package-lock-json/tst.js:15:7:15:7 | x |
+| src/dir-without-package-json/tst.js:10:7:10:7 | x |
+| src/dir-without-package-json/tst.js:15:7:15:7 | x |

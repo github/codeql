@@ -1,0 +1,2 @@
+query: API Abuse/NonOverridingMethod.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

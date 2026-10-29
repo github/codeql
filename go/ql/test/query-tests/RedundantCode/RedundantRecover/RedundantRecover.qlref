@@ -1,0 +1,2 @@
+query: RedundantCode/RedundantRecover.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

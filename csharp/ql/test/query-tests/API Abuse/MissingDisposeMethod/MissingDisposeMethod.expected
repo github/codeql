@@ -1,0 +1,7 @@
+| MissingDisposeMethod.cs:28:7:28:8 | C2 | This type does not override 'Dispose()' but has disposable field $@. | MissingDisposeMethod.cs:30:8:30:12 | Field | Field |
+| MissingDisposeMethod.cs:44:7:44:13 | WebPage | This type does not override 'Dispose()' but has disposable field $@. | MissingDisposeMethod.cs:46:8:46:13 | Field1 | Field1 |
+| MissingDisposeMethod.cs:50:7:50:16 | WebControl | This type does not override 'Dispose()' but has disposable field $@. | MissingDisposeMethod.cs:52:8:52:13 | Field1 | Field1 |
+| MissingDisposeMethod.cs:76:7:76:8 | C6 | This type does not override 'Dispose()' but has disposable field $@. | MissingDisposeMethod.cs:78:8:78:12 | Field | Field |
+| MissingDisposeMethod.cs:81:7:81:8 | C7 | This type does not override 'Dispose()' but has disposable field $@. | MissingDisposeMethod.cs:83:8:83:12 | Field | Field |
+| MissingDisposeMethod.cs:100:7:100:8 | C9 | This type does not override 'Dispose()' but has disposable field $@. | MissingDisposeMethod.cs:102:8:102:12 | Field | Field |
+| MissingDisposeMethodBad.cs:14:7:14:9 | Bad | This type does not override 'Dispose()' but has disposable field $@. | MissingDisposeMethodBad.cs:16:24:16:30 | stream2 | stream2 |

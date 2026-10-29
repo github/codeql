@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>When creating a file using a library function such as <code>fopen</code>, the access rights for the newly created file are not specified as part of the call. Instead these rights are determined by the system unless the programmer takes specific measures, such as calling the Posix <code>umask</code> function at some point before the call to <code>fopen</code>. For some applications, the default access rights assigned by the system are not sufficient to protect a file against access by an attacker.</p>
+
+
+</overview>
+
+<example>
+<p>The following example demonstrates erroneous and fixed methods for working with files.</p>
+<sample src="ExposureSensitiveInformationUnauthorizedActor.cpp" />
+
+</example>
+<references>
+
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/FIO06-C.+Create+files+with+appropriate+access+permissions">FIO06-C. Create files with appropriate access permissions</a>.
+</li>
+
+</references>
+</qhelp>

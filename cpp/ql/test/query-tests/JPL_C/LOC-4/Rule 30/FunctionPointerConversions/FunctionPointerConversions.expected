@@ -1,0 +1,6 @@
+| test.c:11:16:11:23 | & ... | Function pointer converted to int *, which is not an integral type. |
+| test.c:12:18:12:25 | & ... | Function pointer converted to void *, which is not an integral type. |
+| test.c:17:11:17:17 | funPtr1 | Function pointer converted to int *, which is not an integral type. |
+| test.c:18:12:18:18 | funPtr1 | Function pointer converted to void *, which is not an integral type. |
+| test.c:29:18:29:24 | funPtr1 | Function pointer converted to int *, which is not an integral type. |
+| test.c:30:20:30:26 | funPtr1 | Function pointer converted to void *, which is not an integral type. |

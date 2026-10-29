@@ -1,0 +1,1 @@
+semmle-extractor-options: -v --filter include:**/*.py --filter exclude:**/*test.py -R .  --filter exclude:**/foo/exclude_this.py   --filter include:**/include*.py --filter exclude:**/*.testproj/**

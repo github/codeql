@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+There are several built-in JavaScript functions that search for a regular expression match within a string,
+such as <code>RegExp.prototype.test</code> and <code>String.prototype.search</code>.
+If the regular expression is not anchored, it only needs to match a substring of the input
+and won't necessarily match the whole string.
+</p>
+
+<p>
+If the regular expression being searched for accepts the empty string, this means it can match an empty
+substring anywhere in the input string, and will thus always find a match.
+In this case, testing if a match exists is redundant and indicates dead code.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the regular expression and determine how it was intended to match:
+</p>
+
+<ul>
+<li>To match the whole input string, add anchors at the beginning and end of the regular expression.</li>
+<li>To search for an occurrence within the input string, consider what the shortest meaningful match is and restrict the
+regular expression accordingly, such as by changing a <code>*</code> to a <code>+</code>.</li>
+</ul>
+
+</recommendation>
+<example>
+<p>
+In the following example, a regular expression is used to check the format of a string <code>id</code>.
+However, the check always passes because the regular expression can match the empty substring.
+For example, it will allow the ID string "<code>%%</code>" by matching an empty string at index 0.
+</p>
+
+<sample src="examples/RegExpAlwaysMatches.js" />
+
+<p>
+To ensure the regular expression matches the whole string, add anchors at the beginning and end:
+</p>
+
+<sample src="examples/RegExpAlwaysMatchesGood.js" />
+
+</example>
+<references>
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">JavaScript Regular Expressions</a>.</li>
+
+</references>
+</qhelp>

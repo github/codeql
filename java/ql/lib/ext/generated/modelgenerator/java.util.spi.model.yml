@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.util.spi", "CalendarNameProvider", True, "getDisplayName", "(String,int,int,int,Locale)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.spi", "CalendarNameProvider", True, "getDisplayNames", "(String,int,int,Locale)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.spi", "LocaleNameProvider", True, "getDisplayUnicodeExtensionKey", "(String,Locale)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.spi", "LocaleNameProvider", True, "getDisplayUnicodeExtensionType", "(String,String,Locale)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.spi", "LocaleServiceProvider", True, "getAvailableLocales", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.spi", "TimeZoneNameProvider", True, "getDisplayName", "(String,boolean,int,Locale)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.spi", "TimeZoneNameProvider", True, "getGenericDisplayName", "(String,int,Locale)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.util.spi", "AbstractResourceBundleProvider", "getBundle", "(String,Locale)", "summary", "df-generated"]
+      - ["java.util.spi", "CalendarDataProvider", "getFirstDayOfWeek", "(Locale)", "summary", "df-generated"]
+      - ["java.util.spi", "CalendarDataProvider", "getMinimalDaysInFirstWeek", "(Locale)", "summary", "df-generated"]
+      - ["java.util.spi", "CurrencyNameProvider", "getDisplayName", "(String,Locale)", "summary", "df-generated"]
+      - ["java.util.spi", "CurrencyNameProvider", "getSymbol", "(String,Locale)", "summary", "df-generated"]
+      - ["java.util.spi", "LocaleNameProvider", "getDisplayCountry", "(String,Locale)", "summary", "df-generated"]
+      - ["java.util.spi", "LocaleNameProvider", "getDisplayLanguage", "(String,Locale)", "summary", "df-generated"]
+      - ["java.util.spi", "LocaleNameProvider", "getDisplayScript", "(String,Locale)", "summary", "df-generated"]
+      - ["java.util.spi", "LocaleNameProvider", "getDisplayVariant", "(String,Locale)", "summary", "df-generated"]
+      - ["java.util.spi", "LocaleServiceProvider", "isSupportedLocale", "(Locale)", "summary", "df-generated"]
+      - ["java.util.spi", "ToolProvider", "findFirst", "(String)", "summary", "df-generated"]
+      - ["java.util.spi", "ToolProvider", "run", "(PrintStream,PrintStream,String[])", "summary", "df-generated"]

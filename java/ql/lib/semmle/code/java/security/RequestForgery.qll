@@ -1,0 +1,181 @@
+/** Provides classes to reason about server-side request forgery (SSRF) attacks. */
+overlay[local?]
+module;
+
+import java
+import semmle.code.java.frameworks.Networking
+import semmle.code.java.frameworks.ApacheHttp
+import semmle.code.java.frameworks.spring.Spring
+import semmle.code.java.frameworks.JaxWS
+import semmle.code.java.frameworks.javase.Http
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.frameworks.Properties
+private import semmle.code.java.controlflow.Guards
+private import semmle.code.java.dataflow.StringPrefixes
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.SSA
+private import semmle.code.java.security.Sanitizers
+
+/**
+ * A unit class for adding additional taint steps that are specific to server-side request forgery (SSRF) attacks.
+ *
+ * Extend this class to add additional taint steps to the SSRF query.
+ */
+class RequestForgeryAdditionalTaintStep extends Unit {
+  /**
+   * Holds if the step from `pred` to `succ` should be considered a taint
+   * step for server-side request forgery.
+   */
+  abstract predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ);
+}
+
+private class DefaultRequestForgeryAdditionalTaintStep extends RequestForgeryAdditionalTaintStep {
+  override predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ) {
+    // propagate to a URI when its host is assigned to
+    exists(UriCreation c | c.getHostArg() = pred.asExpr() | succ.asExpr() = c)
+    or
+    // propagate to a URL when its host is assigned to
+    exists(UrlConstructorCall c | c.getHostArg() = pred.asExpr() | succ.asExpr() = c)
+  }
+}
+
+private class TypePropertiesRequestForgeryAdditionalTaintStep extends RequestForgeryAdditionalTaintStep
+{
+  override predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(MethodCall ma |
+      // Properties props = new Properties();
+      // props.setProperty("jdbcUrl", tainted);
+      // Propagate tainted value to the qualifier `props`
+      ma.getMethod() instanceof PropertiesSetPropertyMethod and
+      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "jdbcUrl" and
+      pred.asExpr() = ma.getArgument(1) and
+      succ.asExpr() = ma.getQualifier()
+    )
+  }
+}
+
+/** A data flow sink for server-side request forgery (SSRF) vulnerabilities. */
+abstract class RequestForgerySink extends DataFlow::Node { }
+
+private class DefaultRequestForgerySink extends RequestForgerySink {
+  DefaultRequestForgerySink() { sinkNode(this, "request-forgery") }
+}
+
+/** A sanitizer for request forgery vulnerabilities. */
+abstract class RequestForgerySanitizer extends DataFlow::Node { }
+
+private class PrimitiveSanitizer extends RequestForgerySanitizer instanceof SimpleTypeSanitizer { }
+
+/**
+ * A string constant that contains a prefix which looks like when it is prepended to untrusted
+ * input, it will restrict the host or entity addressed.
+ *
+ * For example, anything containing `?` or `#`, or a slash that doesn't appear to be a protocol
+ * specifier (e.g. `http://` is not sanitizing), or specifically the string "/".
+ */
+class HostnameSanitizingPrefix extends InterestingPrefix {
+  int offset;
+
+  HostnameSanitizingPrefix() {
+    exists(this.getStringValue().regexpFind("([?#]|[^?#:/\\\\][/\\\\])|^/$", 0, offset))
+  }
+
+  override int getOffset() { result = offset }
+}
+
+/**
+ * A value that is the result of prepending a string that prevents any value from controlling the
+ * host of a URL.
+ */
+private class HostnameSanitizer extends RequestForgerySanitizer {
+  HostnameSanitizer() {
+    this.asExpr() = any(HostnameSanitizingPrefix hsp).getAnAppendedExpression()
+  }
+}
+
+/**
+ * An argument to a call to a `.contains()` method that is a sanitizer for URL redirects.
+ *
+ * Matches any method call where the method is named `contains`.
+ */
+private predicate isContainsUrlSanitizer(Guard guard, Expr e, boolean branch) {
+  guard =
+    any(MethodCall method |
+      method.getMethod().getName() = "contains" and
+      e = method.getArgument(0) and
+      branch = true
+    )
+}
+
+/**
+ * An URL argument to a call to `.contains()` that is a sanitizer for URL redirects.
+ *
+ * This `contains` method is usually called on a list, but the sanitizer matches any call to a method
+ * called `contains`, so other methods with the same name will also be considered sanitizers.
+ */
+private class ContainsUrlSanitizer extends RequestForgerySanitizer {
+  ContainsUrlSanitizer() {
+    this = DataFlow::BarrierGuard<isContainsUrlSanitizer/3>::getABarrierNode()
+  }
+}
+
+private class ExternalRequestForgerySanitizer extends RequestForgerySanitizer {
+  ExternalRequestForgerySanitizer() { barrierNode(this, "request-forgery") }
+}
+
+/** Gets a host read, following local assignments with a single explicit SSA definition. */
+private MethodCall getCheckedHost(Expr checked) {
+  result = checked.getUnderlyingExpr() and
+  result.getMethod().hasQualifiedName("java.net", "URI", "getHost")
+  or
+  exists(SsaExplicitWrite def |
+    checked.getUnderlyingExpr().(VarRead).getVariable() instanceof LocalScopeVariable and
+    def.getARead() = checked.getUnderlyingExpr() and
+    result = getCheckedHost(def.getValue())
+  )
+}
+
+/** Holds if a comparison validates the host of a URI. */
+private predicate isHostComparisonSanitizer(Guard guard, Expr e, boolean branch) {
+  // Direct equality checks also accept nonconstant comparison operands.
+  guard =
+    any(MethodCall equalsCall |
+      equalsCall.getMethod().getName() = "equals" and
+      branch = true and
+      exists(MethodCall hostCall |
+        hostCall = [equalsCall.getQualifier(), equalsCall.getArgument(0)] and
+        hostCall.getMethod().hasQualifiedName("java.net", "URI", "getHost") and
+        e = hostCall.getQualifier()
+      )
+    )
+  or
+  exists(MethodCall comparison, Expr checked, Expr allowed |
+    guard = comparison and
+    comparison.getMethod().getDeclaringType() instanceof TypeString and
+    comparison.getMethod().hasName(["equals", "equalsIgnoreCase"]) and
+    branch = true and
+    (
+      checked = comparison.getQualifier() and allowed = comparison.getArgument(0)
+      or
+      checked = comparison.getArgument(0) and allowed = comparison.getQualifier()
+    ) and
+    // New cases require a fixed allowlist entry, not another untrusted value.
+    exists(allowed.(CompileTimeConstantExpr).getStringValue()) and
+    e = getCheckedHost(checked).getQualifier()
+  )
+}
+
+/**
+ * A comparison on the `Host` property of a url, that is a sanitizer for URL redirects.
+ */
+private class HostComparisonSanitizer extends RequestForgerySanitizer {
+  HostComparisonSanitizer() {
+    this = DataFlow::BarrierGuard<isHostComparisonSanitizer/3>::getABarrierNode()
+  }
+}
+
+/**
+ * A comparison with a regular expression that is a sanitizer for URL redirects.
+ */
+private class RegexpCheckRequestForgerySanitizer extends RequestForgerySanitizer instanceof RegexpCheckBarrier
+{ }

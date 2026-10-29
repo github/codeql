@@ -1,0 +1,1 @@
+| Test.kt:15:12:15:21 | ... (value equals) ... | This check is useless. $@ cannot be null at this check, since it is guarded by $@. | Test.kt:15:12:15:21 | tmp0_safe_receiver | tmp0_safe_receiver | Test.kt:14:9:14:17 | ... (value not-equals) ... | ... (value not-equals) ... |

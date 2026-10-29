@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["sonic-pi-net/sonic-pi", "*", "input.command", "code-injection", "generated"]
+     - ["sonic-pi-net/sonic-pi", "*", "input.container-version", "code-injection", "generated"]
+     - ["sonic-pi-net/sonic-pi", "*", "input.container", "code-injection", "generated"]

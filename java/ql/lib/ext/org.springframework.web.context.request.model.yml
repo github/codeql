@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.springframework.web.context.request", "WebRequest", False, "getDescription", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.context.request", "WebRequest", False, "getHeader", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.context.request", "WebRequest", False, "getHeaderNames", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.context.request", "WebRequest", False, "getHeaderValues", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.context.request", "WebRequest", False, "getParameter", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.context.request", "WebRequest", False, "getParameterMap", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.context.request", "WebRequest", False, "getParameterNames", "", "", "ReturnValue", "remote", "manual"]
+      - ["org.springframework.web.context.request", "WebRequest", False, "getParameterValues", "", "", "ReturnValue", "remote", "manual"]

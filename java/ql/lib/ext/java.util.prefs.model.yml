@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      # summary neutrals
+      - ["java.util.prefs", "Preferences", "get", "(String,String)", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.util.prefs", "Preferences", "getBoolean", "(String,boolean)", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.util.prefs", "Preferences", "getByteArray", "(String,byte[])", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.util.prefs", "Preferences", "getDouble", "(String,double)", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.util.prefs", "Preferences", "getFloat", "(String,float)", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.util.prefs", "Preferences", "getInt", "(String,int)", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.util.prefs", "Preferences", "getLong", "(String,int)", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.util.prefs", "Preferences", "put", "(String,String)", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.util.prefs", "Preferences", "putBoolean", "(String,boolean)", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.util.prefs", "Preferences", "putByteArray", "(String,byte[])", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.util.prefs", "Preferences", "putDouble", "(String,double)", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.util.prefs", "Preferences", "putFloat", "(String,float)", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.util.prefs", "Preferences", "putInt", "(String,int)", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.util.prefs", "Preferences", "putLong", "(String,int)", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      # sink neutrals
+      - ["java.util.prefs", "AbstractPreferences", "nodeExists", "", "sink", "hq-manual"]
+      - ["java.util.prefs", "Preferences", "nodeExists", "", "sink", "hq-manual"]

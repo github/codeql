@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-369/DivideByZeroUsingReturnValue.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

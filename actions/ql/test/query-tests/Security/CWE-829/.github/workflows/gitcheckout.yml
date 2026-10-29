@@ -1,0 +1,23 @@
+on:
+  pull_request_target
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+        # 1. Check out the content from an incoming pull request
+        - run: |
+            git fetch origin $HEAD_BRANCH
+            git checkout origin/master
+            git config user.name "release-hash-check"
+            git config user.email "<>"
+            git merge --no-commit --no-edit origin/$HEAD_BRANCH
+          env:
+            HEAD_BRANCH: ${{ github.head_ref }}
+        - uses: actions/setup-node@v1
+        # 2. Potentially untrusted commands are being run during "npm install" or "npm build" as
+        #    the build scripts and referenced packages are controlled by the author of the pull request
+        - run: |
+            npm install
+            npm build

@@ -1,0 +1,49 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["xorm", "xorm.io/xorm"]
+      - ["xorm", "github.com/go-xorm/xorm"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:xorm", "Engine", True, "Alias", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "And", "", "", "Argument[0]", "sql-injection", "manual"]
+      # Engine.Exec has to be modeled in QL to select only the first syntactic argument
+      - ["group:xorm", "Engine", True, "GroupBy", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "Having", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "In", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "Join", "", "", "Argument[0..2]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "NotIn", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "Or", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"]
+      # Engine.Query, Engine.QueryInterface and Engine.QueryString have to be modeled in QL to select only the first syntactic argument
+      - ["group:xorm", "Engine", True, "Select", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "SetExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "SQL", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "Sum", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "Sums", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "SumInt", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "SumsInt", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["group:xorm", "Engine", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "Alias", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "And", "", "", "Argument[0]", "sql-injection", "manual"]
+      # Session.Exec has to be modeled in QL to select only the first syntactic argument
+      - ["group:xorm", "Session", True, "GroupBy", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "Having", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "In", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "Join", "", "", "Argument[0..2]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "NotIn", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "Or", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"]
+      # Session.Query, Session.QueryInterface and Session.QueryString have to be modeled in QL to select only the first syntactic argument
+      - ["group:xorm", "Session", True, "Select", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "SetExpr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "SQL", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "Sum", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "Sums", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "SumInt", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "SumsInt", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["group:xorm", "Session", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]

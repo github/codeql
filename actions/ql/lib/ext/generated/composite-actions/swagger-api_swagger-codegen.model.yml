@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["swagger-api/swagger-codegen", "*", "input.options", "code-injection", "generated"]
+     - ["swagger-api/swagger-codegen", "*", "input.spec-url", "code-injection", "generated"]
+     - ["swagger-api/swagger-codegen", "*", "input.language", "code-injection", "generated"]
+     - ["swagger-api/swagger-codegen", "*", "input.job-name", "code-injection", "generated"]
+     - ["swagger-api/swagger-codegen", "*", "input.build-commands", "code-injection", "generated"]
+     - ["swagger-api/swagger-codegen", "*", "input.path", "code-injection", "generated"]

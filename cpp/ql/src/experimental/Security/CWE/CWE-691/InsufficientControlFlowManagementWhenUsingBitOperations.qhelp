@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Using bitwise operations can be a mistake in some situations. For example, if parameters are evaluated in an expression and the function should be called only upon certain test results. These bitwise operations look suspicious and require developer attention.</p>
+
+
+</overview>
+<recommendation>
+
+<p>We recommend that you evaluate the correctness of using the specified bit operations.</p>
+
+</recommendation>
+<example>
+<p>The following example demonstrates the erroneous and fixed use of bit and logical operations.</p>
+<sample src="InsufficientControlFlowManagementWhenUsingBitOperations.c" />
+
+</example>
+<references>
+
+<li>
+  CWE Common Weakness Enumeration:
+  <a href="https://cwe.mitre.org/data/definitions/691.html"> CWE-691: Insufficient Control Flow Management</a>.
+</li>
+
+</references>
+</qhelp>

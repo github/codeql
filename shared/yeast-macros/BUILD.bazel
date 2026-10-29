@@ -1,0 +1,12 @@
+load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
+load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "all_crate_deps")
+
+exports_files(["Cargo.toml"])
+
+rust_proc_macro(
+    name = "yeast-macros",
+    srcs = glob(["src/**/*.rs"]),
+    aliases = aliases(),
+    visibility = ["//visibility:public"],
+    deps = all_crate_deps(),
+)

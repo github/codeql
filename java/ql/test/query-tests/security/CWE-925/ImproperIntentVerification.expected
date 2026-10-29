@@ -1,0 +1,1 @@
+| BootReceiverXml.java:10:17:10:25 | onReceive | This reciever doesn't verify intents it receives, and $@ to receive $@. | AndroidManifest.xml:3:9:7:20 | receiver | it is registered | AndroidManifest.xml:5:17:5:79 | action | the system action action |

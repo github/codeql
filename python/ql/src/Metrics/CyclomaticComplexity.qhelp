@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This metric measures the total cyclomatic complexity for the functions in a file.
+</p>
+
+<p>
+Cyclomatic complexity approximates the number of paths that can be taken during the execution of a 
+function (and hence, the minimum number of tests cases necessary to test it thoroughly). Straight-line 
+code has zero cyclomatic complexity, while branches and loops increase cyclomatic complexity.</p>
+
+<p>Files that contain too many complex functions can be difficult to test, understand, and maintain.</p>
+
+</overview>
+<recommendation>
+<p>Try to simplify overly-complex code. For example:</p>
+
+<ul><li>Highly nested conditionals can be simplified by rethinking the requirements that the function fulfills.</li>
+<li>Repeated tests can be refactored into helper functions, which also decreases the risk of 
+introducing defects by copying and pasting code.</li>
+<li>Large complex functions can often be split into smaller more focused functions.</li>
+</ul>
+
+
+</recommendation>
+<references>
+
+<li>M. Fowler. <em>Refactoring</em>. Addison-Wesley, 1999.</li>
+<li>T. J. McCabe. <em>A Complexity Measure</em>. IEEE Transactions on Software Engineering, SE-2(4), 
+December 1976.</li>
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity">Cyclomatic complexity</a>.</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,2 @@
+| cfg_macro.rs:15:1:15:15 | fn from_macro_enabled | from_macro_enabled |
+| cfg_macro.rs:21:1:22:26 | fn direct_enabled | direct_enabled |

@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds If-statements with an empty then-branch and no else-branch. These statements are usually unimplemented skeleton code
+that should be implemented, or real unused code that should be removed to avoid confusion and misuse.</p>
+
+</overview>
+<recommendation>
+<p>There might be missing statements in the then-branch or the expression in the condition can be rewritten without using an If-statement.</p>
+
+</recommendation>
+<example><sample src="FutileConditional.cpp" />
+
+
+
+
+</example>
+</qhelp>

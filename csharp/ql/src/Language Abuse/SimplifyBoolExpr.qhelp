@@ -1,0 +1,90 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>There are a number of Boolean expression patterns that can easily be rewritten
+to make them simpler.
+Boolean expressions involving comparisons with Boolean literals,
+ternary conditionals with a Boolean literal as one of the results,
+double negations, or negated comparisons can all be changed to
+equivalent and simpler expressions.</p>
+</overview>
+
+<recommendation>
+<p>If <code>A</code> and <code>B</code> are expressions of Boolean type, you can
+simplify them using the rewrites shown below.</p>
+
+<table><tbody>
+<tr><th>Expression</th><th></th><th>Simplified expression</th></tr>
+<tr><td><code>A == true</code></td><td></td><td><code>A</code></td></tr>
+<tr><td><code>A != false</code></td><td></td><td><code>A</code></td></tr>
+<tr><td><code>A == false</code></td><td></td><td><code>!A</code></td></tr>
+<tr><td><code>A != true</code></td><td></td><td><code>!A</code></td></tr>
+<tr><td><code>A ? true : B</code></td><td></td><td><code>A || B</code></td></tr>
+<tr><td><code>A ? B : false</code></td><td></td><td><code>A &amp;&amp; B</code></td></tr>
+<tr><td><code>A ? B : true</code></td><td></td><td><code>!A || B</code></td></tr>
+<tr><td><code>A ? false : B</code></td><td></td><td><code>!A &amp;&amp; B</code></td></tr>
+<tr><td><code>A ? true : false</code></td><td></td><td><code>A</code></td></tr>
+<tr><td><code>A ? false : true</code></td><td></td><td><code>!A</code></td></tr>
+<tr><td><code>!!A</code></td><td></td><td><code>A</code></td></tr>
+<tr><td><code>A &amp;&amp; true</code></td><td></td><td><code>A</code></td></tr>
+<tr><td><code>A || false</code></td><td></td><td><code>A</code></td></tr>
+</tbody></table>
+
+<p>Some expressions always yield a constant value. If the side-effect in
+<code>A</code> is intended, consider restructuring the code to make this more clear.
+Otherwise, replace the expression with the constant value as shown below.</p>
+
+<table><tbody>
+<tr><th>Expression</th><th></th><th>Value</th></tr>
+<tr><td><code>A &amp;&amp; false</code></td><td></td><td><code>false</code></td></tr>
+<tr><td><code>A || true</code></td><td></td><td><code>true</code></td></tr>
+<tr><td><code>A ? true : true</code></td><td></td><td><code>true</code></td></tr>
+<tr><td><code>A ? false : false</code></td><td></td><td><code>false</code></td></tr>
+</tbody></table>
+
+<p>In addition to the rewrites above, negated comparisons can also be simplified in the following way:</p>
+
+<table><tbody>
+<tr><th>Expression</th><th></th><th>Simplified expression</th></tr>
+<tr><td><code>!(A == B)</code></td><td></td><td><code>A != B</code></td></tr>
+<tr><td><code>!(A != B)</code></td><td></td><td><code>A == B</code></td></tr>
+<tr><td><code>!(A &lt; B)</code></td><td></td><td><code>A >= B</code></td></tr>
+<tr><td><code>!(A > B)</code></td><td></td><td><code>A &lt;= B</code></td></tr>
+<tr><td><code>!(A &lt;= B)</code></td><td></td><td><code>A > B</code></td></tr>
+<tr><td><code>!(A >= B)</code></td><td></td><td><code>A &lt; B</code></td></tr>
+</tbody></table>
+
+</recommendation>
+
+<example>
+<p>
+In the following example, the properties <code>Espresso</code>, <code>Latte</code>, and <code>Grande</code>
+are written in a complex way and can be simplified.
+</p>
+
+<sample src="SimplifyBoolExprBad.cs" />
+
+<p>The code below shows the same logic expressed in a simpler and more readable way.</p>
+
+<sample src="SimplifyBoolExprGood.cs" />
+</example>
+
+<references>
+
+<li>
+Microsoft C# Reference:
+<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/logical-negation-operator">! Operator</a>,
+<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/equality-comparison-operator">== Operator</a>,
+<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/not-equal-operator">!= Operator</a>,
+<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-and-operator">&amp;&amp; Operator</a>,
+<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-or-operator">|| Operator</a>,
+<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator">?: Operator</a>,
+<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/less-than-operator">&lt; Operator</a>.
+</li>
+
+</references>
+
+</qhelp>

@@ -1,0 +1,2 @@
+query: Statements/LabelInCase.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

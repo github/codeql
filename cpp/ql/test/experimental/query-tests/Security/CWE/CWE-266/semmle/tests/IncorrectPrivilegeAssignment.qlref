@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-266/IncorrectPrivilegeAssignment.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>Storing cryptographic hashes of passwords is standard security practice, but it is equally important to select the right hashing scheme. If an attacker obtains the hashed passwords of an application, the password hashing scheme should still prevent the attacker from easily obtaining the original cleartext passwords.</p>
+    <p>A good password hashing scheme requires a computation that cannot be done efficiently. Hashing schemes with low number of iterations are efficiently computable, and are therefore not suitable for password hashing.</p>
+  </overview>
+
+  <recommendation>
+    <p>Use the OWASP recommendation for sufficient number of iterations (currently, that is greater than or equal to 120,000) for password hashing schemes.</p>
+  </recommendation>
+
+  <example>
+    <p>The following example shows a few cases where a password hashing scheme is instantiated. In the 'BAD' cases, the scheme is initialized with insufficient iterations, making it susceptible to password cracking attacks. In the 'GOOD' cases, the scheme is initialized with at least 120,000 iterations, which protects the hashed data against recovery.</p>
+    <sample src="InsufficientHashIterations.swift" />
+  </example>
+
+  <references>
+    <li>Password-Based Cryptography Specification Version 2.0. 2000.<a href="https://www.rfc-editor.org/rfc/rfc2898">RFC2898</a>.</li>
+    <li>OWASP <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">Password Storage Cheat Sheet.</a></li>
+  </references>
+</qhelp>

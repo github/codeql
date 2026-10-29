@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["github.com/sendgrid/sendgrid-go/helpers/mail", "", False, "NewContent", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]

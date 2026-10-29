@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["loginjection", "LogInjectionTest", False, "source", "()", "", "ReturnValue", "remote", "manual"]
+      - ["loginjection", "LogInjectionTest", False, "validatedInput", "()", "", "ReturnValue", "remote", "manual"]
+      - ["loginjection", "LogInjectionTest", False, "validatedInputField", "", "", "", "remote", "manual"]
+      - ["loginjection", "LibrarySanitizers", False, "source", "()", "", "ReturnValue", "remote", "manual"]

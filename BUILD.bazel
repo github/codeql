@@ -1,0 +1,13 @@
+exports_files([
+    "LICENSE",
+    "Cargo.lock",
+    "Cargo.toml",
+])
+
+constraint_setting(name = "swift_runtime_linkage")
+
+constraint_value(
+    name = "static_swift_runtime",
+    constraint_setting = ":swift_runtime_linkage",
+    visibility = ["//visibility:public"],
+)

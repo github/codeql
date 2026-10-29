@@ -1,0 +1,2 @@
+query: Violations of Best Practice/Naming Conventions/AmbiguousOuterSuper.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

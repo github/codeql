@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+      Electron is secure by default through a same-origin policy requiring all
+      JavaScript and CSS code to originate from the machine running the
+      Electron application. Setting the <code>webSecurity</code> property of a
+      <code>webPreferences</code> object to <code>false</code> will disable the
+      same-origin policy.
+    </p>
+    <p>
+      Disabling the same-origin policy is strongly discouraged.
+    </p>
+  </overview>
+  
+  <recommendation>
+    <p>
+      Do not disable <code>webSecurity</code>.
+    </p>
+  </recommendation>
+  
+  <example>
+    <p>
+      The following example shows <code>webSecurity</code> being disabled.
+    </p>
+    <sample src="examples/DisablingWebSecurity.js"/>
+    
+    <p>
+      This is problematic, since it allows the execution of insecure code from
+      other domains.
+    </p>
+    
+  </example>
+  
+  <references>
+    <li>Electron Documentation: <a href="https://electronjs.org/docs/tutorial/security#5-do-not-disable-websecurity">Security, Native Capabilities, and Your Responsibility</a></li>
+  </references>
+</qhelp>

@@ -1,0 +1,4 @@
+| BinaryPattern.cs:8:14:8:23 | ... or ... | BinaryPattern.cs:8:14:8:16 | a | BinaryPattern.cs:8:21:8:23 | b |
+| BinaryPattern.cs:10:14:10:51 | ... and ... | BinaryPattern.cs:10:14:10:21 | Object o | BinaryPattern.cs:10:27:10:51 | { ... } |
+| BinaryPattern.cs:12:14:12:41 | ... and ... | BinaryPattern.cs:12:14:12:21 | Object o | BinaryPattern.cs:12:27:12:41 | BinaryPattern u |
+| BinaryPattern.cs:18:13:18:18 | ... or ... | BinaryPattern.cs:18:13:18:13 | 1 | BinaryPattern.cs:18:18:18:18 | 2 |

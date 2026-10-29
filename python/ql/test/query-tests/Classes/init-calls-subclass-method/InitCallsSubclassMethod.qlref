@@ -1,0 +1,2 @@
+query: Classes/InitCallsSubclass/InitCallsSubclassMethod.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

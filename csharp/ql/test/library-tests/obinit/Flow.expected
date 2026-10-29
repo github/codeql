@@ -1,0 +1,20 @@
+edges
+| obinit.cs:5:23:5:23 | [post] this access : A [field s] : String | obinit.cs:7:16:7:16 | [post] this access : A [field s] : String | provenance |  |
+| obinit.cs:5:27:5:34 | "source" : String | obinit.cs:5:23:5:23 | [post] this access : A [field s] : String | provenance |  |
+| obinit.cs:7:16:7:16 | [post] this access : A [field s] : String | obinit.cs:7:16:7:16 | this [Return] : A [field s] : String | provenance |  |
+| obinit.cs:7:16:7:16 | this [Return] : A [field s] : String | obinit.cs:20:19:20:25 | object creation of type A : A [field s] : String | provenance |  |
+| obinit.cs:20:15:20:15 | access to local variable a : A [field s] : String | obinit.cs:21:18:21:18 | access to local variable a : A [field s] : String | provenance |  |
+| obinit.cs:20:19:20:25 | object creation of type A : A [field s] : String | obinit.cs:20:15:20:15 | access to local variable a : A [field s] : String | provenance |  |
+| obinit.cs:21:18:21:18 | access to local variable a : A [field s] : String | obinit.cs:21:18:21:20 | access to field s | provenance |  |
+flow
+| obinit.cs:21:18:21:20 | access to field s |
+nodes
+| obinit.cs:5:23:5:23 | [post] this access : A [field s] : String | semmle.label | [post] this access : A [field s] : String |
+| obinit.cs:5:27:5:34 | "source" : String | semmle.label | "source" : String |
+| obinit.cs:7:16:7:16 | [post] this access : A [field s] : String | semmle.label | [post] this access : A [field s] : String |
+| obinit.cs:7:16:7:16 | this [Return] : A [field s] : String | semmle.label | this [Return] : A [field s] : String |
+| obinit.cs:20:15:20:15 | access to local variable a : A [field s] : String | semmle.label | access to local variable a : A [field s] : String |
+| obinit.cs:20:19:20:25 | object creation of type A : A [field s] : String | semmle.label | object creation of type A : A [field s] : String |
+| obinit.cs:21:18:21:18 | access to local variable a : A [field s] : String | semmle.label | access to local variable a : A [field s] : String |
+| obinit.cs:21:18:21:20 | access to field s | semmle.label | access to field s |
+subpaths

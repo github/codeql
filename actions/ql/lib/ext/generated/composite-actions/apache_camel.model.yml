@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["apache/camel", "*", "input.end-commit", "code-injection", "generated"]
+     - ["apache/camel", "*", "input.start-commit", "code-injection", "generated"]
+     - ["apache/camel", "*", "input.distribution", "code-injection", "generated"]
+     - ["apache/camel", "*", "input.version", "code-injection", "generated"]
+     - ["apache/camel", "*", "input.pr-id", "code-injection", "generated"]
+     - ["apache/camel", "*", "input.mode", "code-injection", "generated"]

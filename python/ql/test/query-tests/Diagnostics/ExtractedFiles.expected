@@ -1,0 +1,3 @@
+| bad_encoding.py:0:0:0:0 | bad_encoding.py |  |
+| good_file.py:0:0:0:0 | good_file.py |  |
+| syntax_error.py:0:0:0:0 | syntax_error.py |  |

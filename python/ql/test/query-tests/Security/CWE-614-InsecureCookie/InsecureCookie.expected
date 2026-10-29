@@ -1,0 +1,3 @@
+| test.py:8:5:8:40 | ControlFlowNode for Attribute() | Cookie is added to response without the 'secure' flag being set. |
+| test.py:10:5:10:57 | ControlFlowNode for Attribute() | Cookie is added to response without the 'secure' flag being set. |
+| test.py:11:5:11:60 | ControlFlowNode for Attribute() | Cookie is added to response without the 'secure' flag being set. |

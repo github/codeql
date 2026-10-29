@@ -1,0 +1,44 @@
+nodes
+| invalid.json:1:1:1:4 | [JsonString] "hi" | semmle.label | [JsonString] "hi" |
+| invalid.json:1:1:1:4 | [JsonString] "hi" | semmle.order | 1 |
+| tst.json:1:1:15:2 | [JsonArray] [{name: ...}, ...] | semmle.label | [JsonArray] [{name: ...}, ...] |
+| tst.json:1:1:15:2 | [JsonArray] [{name: ...}, ...] | semmle.order | 2 |
+| tst.json:1:2:8:1 | [JsonObject] {name: ...} | semmle.label | [JsonObject] {name: ...} |
+| tst.json:2:11:2:21 | [JsonString] "Jim Knopf" | semmle.label | [JsonString] "Jim Knopf" |
+| tst.json:3:14:7:3 | [JsonObject] {street: ...} | semmle.label | [JsonObject] {street: ...} |
+| tst.json:4:15:4:18 | [JsonNull] null | semmle.label | [JsonNull] null |
+| tst.json:5:15:5:16 | [JsonNumber] -1 | semmle.label | [JsonNumber] -1 |
+| tst.json:6:16:6:27 | [JsonString] "Lummerland" | semmle.label | [JsonString] "Lummerland" |
+| tst.json:8:4:15:1 | [JsonObject] {name: ...} | semmle.label | [JsonObject] {name: ...} |
+| tst.json:9:11:9:25 | [JsonString] "Frau Mahlzahn" | semmle.label | [JsonString] "Frau Mahlzahn" |
+| tst.json:10:14:14:3 | [JsonObject] {street: ...} | semmle.label | [JsonObject] {street: ...} |
+| tst.json:11:15:11:28 | [JsonString] "Alte Strasse" | semmle.label | [JsonString] "Alte Strasse" |
+| tst.json:12:15:12:17 | [JsonNumber] 133 | semmle.label | [JsonNumber] 133 |
+| tst.json:13:16:13:27 | [JsonString] "Kummerland" | semmle.label | [JsonString] "Kummerland" |
+edges
+| tst.json:1:1:15:2 | [JsonArray] [{name: ...}, ...] | tst.json:1:2:8:1 | [JsonObject] {name: ...} | semmle.label | 0 |
+| tst.json:1:1:15:2 | [JsonArray] [{name: ...}, ...] | tst.json:1:2:8:1 | [JsonObject] {name: ...} | semmle.order | 0 |
+| tst.json:1:1:15:2 | [JsonArray] [{name: ...}, ...] | tst.json:8:4:15:1 | [JsonObject] {name: ...} | semmle.label | 1 |
+| tst.json:1:1:15:2 | [JsonArray] [{name: ...}, ...] | tst.json:8:4:15:1 | [JsonObject] {name: ...} | semmle.order | 1 |
+| tst.json:1:2:8:1 | [JsonObject] {name: ...} | tst.json:2:11:2:21 | [JsonString] "Jim Knopf" | semmle.label | 0 |
+| tst.json:1:2:8:1 | [JsonObject] {name: ...} | tst.json:2:11:2:21 | [JsonString] "Jim Knopf" | semmle.order | 0 |
+| tst.json:1:2:8:1 | [JsonObject] {name: ...} | tst.json:3:14:7:3 | [JsonObject] {street: ...} | semmle.label | 1 |
+| tst.json:1:2:8:1 | [JsonObject] {name: ...} | tst.json:3:14:7:3 | [JsonObject] {street: ...} | semmle.order | 1 |
+| tst.json:3:14:7:3 | [JsonObject] {street: ...} | tst.json:4:15:4:18 | [JsonNull] null | semmle.label | 0 |
+| tst.json:3:14:7:3 | [JsonObject] {street: ...} | tst.json:4:15:4:18 | [JsonNull] null | semmle.order | 0 |
+| tst.json:3:14:7:3 | [JsonObject] {street: ...} | tst.json:5:15:5:16 | [JsonNumber] -1 | semmle.label | 1 |
+| tst.json:3:14:7:3 | [JsonObject] {street: ...} | tst.json:5:15:5:16 | [JsonNumber] -1 | semmle.order | 1 |
+| tst.json:3:14:7:3 | [JsonObject] {street: ...} | tst.json:6:16:6:27 | [JsonString] "Lummerland" | semmle.label | 2 |
+| tst.json:3:14:7:3 | [JsonObject] {street: ...} | tst.json:6:16:6:27 | [JsonString] "Lummerland" | semmle.order | 2 |
+| tst.json:8:4:15:1 | [JsonObject] {name: ...} | tst.json:9:11:9:25 | [JsonString] "Frau Mahlzahn" | semmle.label | 0 |
+| tst.json:8:4:15:1 | [JsonObject] {name: ...} | tst.json:9:11:9:25 | [JsonString] "Frau Mahlzahn" | semmle.order | 0 |
+| tst.json:8:4:15:1 | [JsonObject] {name: ...} | tst.json:10:14:14:3 | [JsonObject] {street: ...} | semmle.label | 1 |
+| tst.json:8:4:15:1 | [JsonObject] {name: ...} | tst.json:10:14:14:3 | [JsonObject] {street: ...} | semmle.order | 1 |
+| tst.json:10:14:14:3 | [JsonObject] {street: ...} | tst.json:11:15:11:28 | [JsonString] "Alte Strasse" | semmle.label | 0 |
+| tst.json:10:14:14:3 | [JsonObject] {street: ...} | tst.json:11:15:11:28 | [JsonString] "Alte Strasse" | semmle.order | 0 |
+| tst.json:10:14:14:3 | [JsonObject] {street: ...} | tst.json:12:15:12:17 | [JsonNumber] 133 | semmle.label | 1 |
+| tst.json:10:14:14:3 | [JsonObject] {street: ...} | tst.json:12:15:12:17 | [JsonNumber] 133 | semmle.order | 1 |
+| tst.json:10:14:14:3 | [JsonObject] {street: ...} | tst.json:13:16:13:27 | [JsonString] "Kummerland" | semmle.label | 2 |
+| tst.json:10:14:14:3 | [JsonObject] {street: ...} | tst.json:13:16:13:27 | [JsonString] "Kummerland" | semmle.order | 2 |
+graphProperties
+| semmle.graphKind | tree |

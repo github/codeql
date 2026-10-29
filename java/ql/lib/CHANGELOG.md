@@ -1,0 +1,1539 @@
+## 9.3.3
+
+### Minor Analysis Improvements
+
+* The queries `java/ssrf` and `java/unvalidated-url-redirection` recognize case-insensitive comparisons of `URI.getHost()` with fixed string allowlist entries, as well as equality and case-insensitive comparisons when the host is stored in a local variable.
+
+## 9.3.2
+
+No user-facing changes.
+
+## 9.3.1
+
+### Minor Analysis Improvements
+
+* Support for Kotlin 2.4.20 has been added.
+* Fixed an issue where `Foo::class.java` arguments were dropped during extraction under the Kotlin K2 compiler, which could cause false positives in queries such as `java/android/implicit-pendingintents`.
+
+## 9.3.0
+
+### New Features
+
+* Factories returned by the Apache Commons Secure XML (`org.apache.commons.xml.secure`) hardening library's `SecureDocumentBuilderFactory`, `SecureSAXParserFactory`, `SecureXMLInputFactory`, `SecureTransformerFactory` and `SecureSchemaFactory` classes are now recognized as safely configured by the XXE query.
+* A new extensible class `SafeXmlFactorySource` was added to `semmle.code.java.security.XmlParsers` for modeling sources of pre-hardened JAXP factories.
+
+### Minor Analysis Improvements
+
+* Added modeling for the Micronaut framework, including HTTP controllers, WebSocket endpoints, configuration injection, data access, security annotations, and HTTP client sinks.
+
+## 9.2.4
+
+### Minor Analysis Improvements
+
+* Removed the summary model for `String.valueOf(CharSequence)`, which does not exist. Instead, taint is now propagated through calls to `String.valueOf(Object)` when the argument is a `CharSequence`, for example a `String` or a `StringBuilder`.
+* Added SQL injection sink models for Spring R2DBC `DatabaseClient` and the R2DBC SPI.
+
+## 9.2.3
+
+No user-facing changes.
+
+## 9.2.2
+
+### Minor Analysis Improvements
+
+* Kotlin versions up to 2.4.10 are now supported.
+* `java.io.File.getName()` is no longer treated as a complete sanitizer for `java/path-injection`, since it does not remove a `..` path component (for example `new File("..").getName()` returns `".."`). It is now only recognized as a sanitizer when combined with a subsequent check for `..` components, which may result in new alerts.
+
+## 9.2.1
+
+### Minor Analysis Improvements
+
+* Regular expression checks via annotation with `@javax.validation.constraints.Pattern` are now recognized as sanitizers for `java/path-injection`.
+* Added summary and LLM-generated source and sink models for `org.apache.poi`.
+* The first argument of the `uri` method of `WebClient$UriSpec` in `org.springframework.web.reactive.function.client` is now considered a request forgery sink. Previously only the first arguments of the `WebClient.create` and `WebClient$Builder.baseUrl` methods were considered. This may lead to more alerts for the query `java/ssrf` (Server-side request forgery).
+
+## 9.2.0
+
+### New Features
+
+* Kotlin 2.4.0 can now be analysed.
+
+### Minor Analysis Improvements
+
+* Improved modeling of Apache HttpClient `execute` method sinks for `java/ssrf` and `java/non-https-url`.
+
+## 9.1.2
+
+### Minor Analysis Improvements
+
+* Added LLM-generated source and sink models for `org.apache.avro`.
+
+## 9.1.1
+
+### Minor Analysis Improvements
+
+* Introduced a new sink kind `path-injection[read]` for Models-as-Data rows that only read from a path (such as `ClassLoader.getResource`, `FileInputStream`, `FileReader`, `Files.readAllBytes`, and related APIs). The general `java/path-injection` query continues to consider both `path-injection` and `path-injection[read]` sinks.
+
+## 9.1.0
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for Java and Kotlin](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-java-and-kotlin/).
+
+### Minor Analysis Improvements
+
+* Added `sql-injection` sink models for the Hibernate `org.hibernate.query.QueryProducer` methods `createNativeMutationQuery`, `createMutationQuery`, and `createSelectionQuery`.
+* The `java/partial-path-traversal` and `java/partial-path-traversal-from-remote` queries now correctly recognize file separator appends using `+=`.
+* The `java/path-injection` and `java/zipslip` queries now recognize `Path.toRealPath()` as a path normalization sanitizer, consistent with the existing treatment of `Path.normalize()` and `File.getCanonicalPath()`. This reduces false positives for code that uses the NIO.2 API for path canonicalization.
+* The `java/sensitive-log` query now excludes additional common variable naming patterns that do not hold sensitive data, reducing false positives. This includes pagination/iteration tokens (`nextToken`, `pageToken`, `continuationToken`), token metadata (`tokenType`, `tokenEndpoint`, `tokenCount`), and secret metadata (`secretName`, `secretId`, `secretVersion`).
+* The `java/sensitive-log` query now treats method calls whose names contain "encrypt", "hash", or "digest" as sanitizers, consistent with the existing treatment in `java/cleartext-storage-in-log`. This reduces false positives when sensitive data is hashed or encrypted before logging.
+* The `java/trust-boundary-violation` query now recognizes regular expression checks (including `String.matches()` guards and `@javax.validation.constraints.Pattern` annotations) as sanitizers, consistent with the existing treatment of ESAPI validators. This reduces false positives when input is validated against a pattern before being stored in a session.
+
+## 9.0.4
+
+### Minor Analysis Improvements
+
+* The queries "Resolving XML external entity in user-controlled data" (`java/xxe`) and "Resolving XML external entity in user-controlled data from local source" (`java/xxe-local`) now recognize sinks in the Woodstox StAX library when `com.ctc.wstx.stax.WstxInputFactory` or `org.codehaus.stax2.XMLInputFactory2` are used directly.
+
+## 9.0.3
+
+### Minor Analysis Improvements
+
+* The `java/tainted-arithmetic` query no longer flags arithmetic expressions that are used directly as an operand of a comparison in `if`-condition bounds-checking patterns. For example, `if (off + len > array.length)` is now recognized as a bounds check rather than a potentially vulnerable computation, reducing false positives.
+* The `java/potentially-weak-cryptographic-algorithm` query no longer flags Elliptic Curve algorithms (`EC`, `ECDSA`, `ECDH`, `EdDSA`, `Ed25519`, `Ed448`, `XDH`, `X25519`, `X448`), HMAC-based algorithms (`HMACSHA1`, `HMACSHA256`, `HMACSHA384`, `HMACSHA512`), or PBKDF2 key derivation as potentially insecure. These are modern, secure algorithms recommended by NIST and other standards bodies. This will reduce the number of false positives for this query.
+* The first argument of the method `getInstance` of `java.security.Signature` is now modeled as a sink for `java/potentially-weak-cryptographic-algorithm`, `java/weak-cryptographic-algorithm` and `java/rsa-without-oaep`. This will increase the number of alerts for these queries.
+* Kotlin versions up to 2.3.20 are now supported.
+
+## 9.0.2
+
+No user-facing changes.
+
+## 9.0.1
+
+No user-facing changes.
+
+## 9.0.0
+
+### Breaking Changes
+
+* The Java control flow graph (CFG) implementation has been completely
+  rewritten. The CFG now includes additional nodes to more accurately represent
+  certain constructs. This also means that any existing code that implicitly
+  relies on very specific details about the CFG may need to be updated.
+  The CFG now only includes the nodes that are reachable from the entry point.
+  Additionally, the following breaking changes have been made:
+  - `ControlFlowNode.asCall` has been removed - use `Call.getControlFlowNode` instead.
+  - `ControlFlowNode.getEnclosingStmt` has been removed.
+  - `ControlFlow::ExprNode` has been removed.
+  - `ControlFlow::StmtNode` has been removed.
+  - `ControlFlow::Node` has been removed - this was merely an alias of
+    `ControlFlowNode`, which is still available.
+  - Previously deprecated predicates on `BasicBlock` have been removed.
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+* The class `Assignment` now extends `BinaryExpr`. Uses of `BinaryExpr` may in some cases need slight adjustment.
+
+## 8.1.1
+
+### Minor Analysis Improvements
+
+* Some modelling which previously only worked for Java EE packages beginning with "javax" will now also work for Java EE packages beginning with "jakarta" as well. This may lead to some alert changes.
+
+## 8.1.0
+
+### Deprecated APIs
+
+* The `UnreachableBlocks.qll` library has been deprecated.
+* Renamed the following predicates to increase uniformity across languages. The `getBody` predicate already existed on `LoopStmt`, but is now properly inherited.
+  - `UnaryExpr.getExpr` to `getOperand`.
+  - `ConditionalExpr.getTrueExpr` to `getThen`.
+  - `ConditionalExpr.getFalseExpr` to `getElse`.
+  - `ReturnStmt.getResult` to `getExpr`.
+  - `WhileStmt.getStmt` to `getBody`.
+  - `DoStmt.getStmt` to `getBody`.
+  - `ForStmt.getStmt` to `getBody`.
+  - `EnhancedForStmt.getStmt` to `getBody`.
+
+### Minor Analysis Improvements
+
+* Using a regular expression to check that a string doesn't contain any line breaks is already a sanitizer for `java/log-injection`. Additional ways of doing the regular expression check are now recognised, including annotation with `@javax.validation.constraints.Pattern`.
+* More ways of checking that a string matches a regular expression are now considered as sanitizers for various queries, including `java/ssrf` and `java/path-injection`. In particular, being annotated with `@javax.validation.constraints.Pattern` is now recognised as a sanitizer for those queries.
+* Kotlin versions up to 2.3.10 are now supported.
+
+## 8.0.0
+
+### Breaking Changes
+
+* Support for Kotlin 1.6.x and 1.7.x series has been dropped
+
+### New Features
+
+* Kotlin versions up to 2.3.0 are now supported.
+
+### Minor Analysis Improvements
+
+* Added support for Struts 7.x package names in the Struts framework library. The library now recognizes both the legacy `com.opensymphony.xwork2` package names (Struts 2.x-6.x) and the new `org.apache.struts2` package names (Struts 7.x+), maintaining backward compatibility while enabling analysis of code using the latest Struts versions.
+* The query `java/unreleased-lock` no longer applies to lock types with names ending in "Pool", as these typically manage a collection of resources and the `lock` and `unlock` methods typically only lock one resource at a time. This may lead to a reduction in false positives.
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+* When Maven-compatible private package registries are configured for an organisation for Default Setup, CodeQL will now configure Maven to also use these as plugin repositories. CodeQL previously already configured Maven to use them as regular package repositories. This should now allow Maven plugins to be obtained from private registries.
+
+### Bug Fixes
+
+* Kotlin: The Kotlin extractor now registers as the last IR generation extension, ensuring that code generated by other compiler plugins (such as kotlinx.serialization) is correctly captured.
+
+## 7.8.4
+
+### Minor Analysis Improvements
+
+* When a code-scanning configuration specifies the `paths:` and/or `paths-ignore:` settings, these are now taken into account by the Java extractor's search for XML and properties files.
+* Additional remote flow sources from the `org.springframework.web.socket` package have been modeled. 
+* A sanitizer has been added to `java/ssrf` to remove alerts when a regular expression check is used to verify that the value is safe.
+* URI template variables of all Spring `RestTemplate` methods are now considered as request forgery sinks. Previously only the `getForObject` method was considered. This may lead to more alerts for the query `java/ssrf`.
+* Added more dataflow models of `org.apache.commons.fileupload.FileItem`, `javax/jakarta.servlet.http.Part` and  `org.apache.commons.fileupload.util.Streams`.
+
+## 7.8.3
+
+No user-facing changes.
+
+## 7.8.2
+
+No user-facing changes.
+
+## 7.8.1
+
+No user-facing changes.
+
+## 7.8.0
+
+### Deprecated APIs
+
+* The SSA interface has been updated and all classes and several predicates have been renamed. See the qldoc for more specific migration information.
+
+## 7.7.4
+
+No user-facing changes.
+
+## 7.7.3
+
+No user-facing changes.
+
+## 7.7.2
+
+### Minor Analysis Improvements
+
+* Fields of certain objects are considered tainted if the object is tainted. This holds, for example, for objects that occur directly as sources in the active threat model (for instance, a remote flow source). This has now been amended to also include array types, such that if an array like `MyPojo[]` is a source, then fields of a tainted `MyPojo` are now also considered tainted.
+
+## 7.7.1
+
+No user-facing changes.
+
+## 7.7.0
+
+### New Features
+
+* The Java extractor and QL libraries now support Java 25.
+* Added support for Java 25 compact source files (JEP 512). The new predicate `Class.isImplicit()` identifies classes that are implicitly declared when using compact source files, and the new predicate `CompilationUnit.isCompactSourceFile()` identifies compilation units that contain compact source files.
+* Added support for Java 25 module import declarations.
+* Add `ModuleImportDeclaration` class.
+
+### Minor Analysis Improvements
+
+* Improved support for various assertion libraries, in particular JUnit. This affects the control-flow graph slightly, and in turn affects several queries (mainly quality queries). Most queries should see improved precision (new true positives and fewer false positives), in particular `java/constant-comparison`, `java/index-out-of-bounds`, `java/dereferenced-value-may-be-null`, and `java/useless-null-check`. Some medium precision queries like `java/toctou-race-condition` and `java/unreleased-lock` may see mixed result changes (both slight improvements and slight regressions).
+* Added taint flow model for `java.crypto.KDF`.
+* Added taint flow model for `java.lang.ScopedValue`.
+
+## 7.6.1
+
+No user-facing changes.
+
+## 7.6.0
+
+### Major Analysis Improvements
+
+* Added library models for the relevant method calls under `jakarta.servlet.ServletRequest` and `jakarta.servlet.http.HttpServletRequest` as remote flow sources.
+
+### Minor Analysis Improvements
+
+* Guard implication logic involving wrapper methods has been improved. In particular, this means fewer false positives for `java/dereferenced-value-may-be-null`.
+
+## 7.5.0
+
+### New Features
+
+* Kotlin versions up to 2.2.2*x* are now supported.
+
+## 7.4.0
+
+### Deprecated APIs
+
+* The module `semmle.code.java.frameworks.Castor` has been deprecated and will be removed in a future release.
+* The module `semmle.code.java.frameworks.JYaml` has been deprecated and will be removed in a future release.
+* The classes `UnsafeHessianInputReadObjectMethod` and `BurlapInputReadObjectMethod` in the module `semmle.code.java.frameworks.HessianBurlap` have been deprecated and will be removed in a future release.
+* The class `YamlBeansReaderReadMethod` in the module `semmle.code.java.frameworks.YamlBeans` has been deprecated and will be removed in a future release.
+* The class `MethodApacheSerializationUtilsDeserialize` in the module `semmle.code.java.frameworks.apache.Lang` has been deprecated and will be removed in a future release.
+
+### New Features
+
+* You can now add sinks for the query "Deserialization of user-controlled data" (`java/unsafe-deserialization`) using [data extensions](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-java-and-kotlin/#extensible-predicates-used-to-create-custom-models-in-java-and-kotlin) by extending `sinkModel` and using the kind "unsafe-deserialization". The existing sinks that do not require extra logic to determine if they are unsafe are now defined in this way.
+
+### Minor Analysis Improvements
+
+* The qualifiers of a calls to `readObject` on any classes that implement `java.io.ObjectInput` are now recognised as sinks for `java/unsafe-deserialization`. Previously this was only the case for classes which extend `java.io.ObjectInputStream`.
+
+## 7.3.2
+
+### Minor Analysis Improvements
+
+* Java `assert` statements are now assumed to be executed for the purpose of analysing control flow. This improves precision for a number of queries.
+
+## 7.3.1
+
+No user-facing changes.
+
+## 7.3.0
+
+### Deprecated APIs
+
+* The predicate `getValue()` on `SpringRequestMappingMethod` is now deprecated. Use `getAValue()` instead.
+* Java now uses the shared `BasicBlock` library. This means that the names of several member predicates have been changed to align with the names used in other languages. The old predicates have been deprecated. The `BasicBlock` class itself no longer extends `ControlFlowNode` - the predicate `getFirstNode` can be used to fix any QL code that somehow relied on this.
+
+## 7.2.0
+
+### New Features
+
+* Kotlin versions up to 2.2.0*x* are now supported. Support for the Kotlin 1.5.x series is dropped (so the minimum Kotlin version is now 1.6.0).
+
+## 7.1.4
+
+No user-facing changes.
+
+## 7.1.3
+
+### Minor Analysis Improvements
+
+* Enum-typed values are now assumed to be safe by most queries. This means that queries may return fewer results where an enum value is used in a sensitive context, e.g. pasted into a query string.
+* All existing modelling and support for `javax.persistence` now applies to `jakarta.persistence` as well.
+
+## 7.1.2
+
+### Minor Analysis Improvements
+
+* Java extraction is now able to download Maven 3.9.x if a Maven Enforcer Plugin configuration indicates it is necessary. Maven 3.8.x is still preferred if the enforcer-plugin configuration (if any) permits it.
+* Added a path injection sanitizer for calls to `java.lang.String.matches`, `java.lang.String.replace`, and `java.lang.String.replaceAll` that make sure `/`, `\\`, `..` are not in the path.
+
+### Bug Fixes
+
+* In `build-mode: none` where the project has a Gradle build system, database creation no longer attempts to download some non-existent jar files relating to non-jar Maven artifacts, such as BOMs. This was harmless, but saves some time and reduces spurious warnings.
+* Java extraction no longer freezes for a long time or times out when using libraries that feature expanding cyclic generic types. For example, this was known to occur when using some classes from the Blazebit Persistence library.
+* Java build-mode `none` no longer fails when a required version of Gradle cannot be downloaded using the `gradle wrapper` command, such as due to a firewall. It will now attempt to use the system version of Gradle if present, or otherwise proceed without detailed dependency information.
+* Java build-mode `none` no longer fails when a required version of Maven cannot be downloaded, such as due to a firewall. It will now attempt to use the system version of Maven if present, or otherwise proceed without detailed dependency information.
+* Java build-mode `none` now correctly uses Maven dependency information on Windows platforms.
+
+## 7.1.1
+
+No user-facing changes.
+
+## 7.1.0
+
+### New Features
+
+* The Java extractor and QL libraries now support Java 24.
+
+### Minor Analysis Improvements
+
+* Added a path injection sanitizer for the `child` argument of a `java.io.File` constructor if that argument does not contain path traversal sequences.
+
+## 7.0.1
+
+No user-facing changes.
+
+## 7.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `isLValue` and `isRValue` predicates from the `VarAccess` class, use `isVarWrite` and `isVarRead` respectively instead.
+* Deleted the deprecated `getRhs` predicate from the `VarWrite` class, use `getASource` instead.
+* Deleted the deprecated `LValue` and `RValue` classes, use `VarWrite` and `VarRead` respectively instead.
+* Deleted a lot of deprecated classes ending in `*Access`, use the corresponding `*Call` classes instead.
+* Deleted a lot of deprecated predicates ending in `*Access`, use the corresponding `*Call` predicates instead.
+* Deleted the deprecated `EnvInput` and `DatabaseInput` classes from `FlowSources.qll`, use the threat models feature instead.
+* Deleted some deprecated API predicates from `SensitiveApi.qll`, use the Sink classes from that file instead.
+
+### Minor Analysis Improvements
+
+* We now allow classes which don't have any JAX-RS annotations to inherit JAX-RS annotations from superclasses or interfaces. This is not allowed in the JAX-RS specification, but some implementations, like Apache CXF, allow it. This may lead to more alerts being found.
+
+## 6.1.0
+
+### New Features
+
+* The Java and Kotlin extractors now support `CODEQL_PATH_TRANSFORMER`. `SEMMLE_PATH_TRANSFORMER` is still supported, but deprecated.
+
+### Minor Analysis Improvements
+
+* `JavacTool`-based compiler interception no longer requires an `--add-opens` directive when `FileObject.toUri` is accessible.
+* `JavacTool`-based compiler interception no longer throws an exception visible to the program using `JavacTool` on failure to extract a file path from a passed `JavaFileObject`.
+* `JavacTool`-based compiler interception now supports files that don't simply wrap a `file://` URL, such as a source file inside a JAR, or an in-memory file, but which do implement `getCharContent`.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The class `ControlFlowNode` (and by extension `BasicBlock`) is no longer
+  directly equatable to `Expr` and `Stmt`. Any queries that have been
+  exploiting these equalities, for example by using casts, will need minor
+  updates in order to fix any compilation errors. Conversions can be inserted
+  in either direction depending on what is most convenient. Available
+  conversions include `Expr.getControlFlowNode()`, `Stmt.getControlFlowNode()`,
+  `ControlFlowNode.asExpr()`, `ControlFlowNode.asStmt()`, and
+  `ControlFlowNode.asCall()`. Exit nodes were until now modelled as a
+  `ControlFlowNode` equal to its enclosing `Callable`; these are now instead
+  modelled by the class `ControlFlow::ExitNode`.
+
+### Minor Analysis Improvements
+
+* Added `java.io.File.getName()` as a path injection sanitizer.
+* The data flow library has been updated to track types in a slightly different way: The type of the tainted data (which may be stored into fields, etc.) is tracked more precisely, while the types of intermediate containers for nested contents is tracked less precisely. This may have a slight effect on false positives for complex flow paths.
+* Added a sink for "Server-side request forgery" (`java/ssrf`) for the third parameter to org.springframework.web.client.RestTemplate.getForObject, when we cannot statically determine that it does not affect the host in the URL.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Minor Analysis Improvements
+
+* Calling `coll.contains(x)` is now a taint sanitizer (for any query) for the value `x`, where `coll` is a collection of constants.
+
+## 4.2.1
+
+### Minor Analysis Improvements
+
+* In a switch statement with a constant switch expression, all non-matching cases were being marked as unreachable, including those that can be reached by falling through from the matching case. This has now been fixed.
+
+## 4.2.0
+
+### Major Analysis Improvements
+
+* Java: The generated JDK 17 models have been updated.
+
+### Minor Analysis Improvements
+
+* Java `build-mode=none` extraction now packages the Maven plugin used to examine project dependencies. This means that dependency identification is more likely to succeed, and therefore analysis quality may rise, in scenarios where Maven Central is not reachable.
+
+## 4.1.1
+
+No user-facing changes.
+
+## 4.1.0
+
+### Deprecated APIs
+
+* The `Field.getSourceDeclaration()` predicate has been deprecated. The result was always the original field, so calls to it can simply be removed.
+* The `Field.isSourceDeclaration()` predicate has been deprecated. It always holds.
+* The `RefType.nestedName()` predicate has been deprecated, and `RefType.getNestedName()` added to replace it.
+* The class `ThreatModelFlowSource` has been renamed to `ActiveThreatModelSource` to more clearly reflect it only contains the currently active threat model sources. `ThreatModelFlowSource` has been marked as deprecated.
+
+### New Features
+
+* The Java extractor and QL libraries now support Java 23.
+* Kotlin versions up to 2.1.0*x* are now supported.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `ProcessBuilderConstructor`, `MethodProcessBuilderCommand`, and `MethodRuntimeExec` from `JDK.qll`. 
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted the deprecated `getURI` predicate from `CamelJavaDslToDecl` and `SpringCamelXmlToElement`, use `getUri` instead.
+* Deleted the deprecated `ExecCallable` class from `ExternalProcess.qll`.
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
+* Deleted the deprecated `PathCreation.qll` file.
+* Deleted the deprecated `WebviewDubuggingEnabledQuery.qll` file.
+
+### Major Analysis Improvements
+
+* A generated (Models as Data) summary model is no longer used, if there exists a source code alternative. This primarily affects the analysis, when the analysis includes generated models for the source code being analysed.
+
+## 3.0.2
+
+No user-facing changes.
+
+## 3.0.1
+
+### Minor Analysis Improvements
+
+* Threat-model for `System.in` changed from `commandargs` to newly created `stdin` (both subgroups of `local`).
+
+### Bug Fixes
+
+* Fixed an issue where analysis in `build-mode: none` may very occasionally throw a `CoderMalfunctionError` while resolving dependencies provided by a build system (Maven or Gradle), which could cause some dependency resolution and consequently alerts to vary unpredictably from one run to another.
+* Fixed an issue where Java analysis in `build-mode: none` would fail to resolve dependencies using the `executable-war` Maven artifact type.
+* Fixed an issue where analysis in `build-mode: none` may fail to resolve dependencies of Gradle projects where the dependency uses a non-empty artifact classifier -- for example, `someproject-1.2.3-tests.jar`, which has the classifier `tests`.
+
+## 3.0.0
+
+### Breaking Changes
+
+* The Java and Kotlin extractors no longer support the `SOURCE_ARCHIVE` and `TRAP_FOLDER` legacy environment variable.
+
+### New Features
+
+* Java support for `build-mode: none` is now out of beta, and generally available.
+
+### Major Analysis Improvements
+
+* We previously considered reverse DNS resolutions (IP address -> domain name) as sources of untrusted data, since compromised/malicious DNS servers could potentially return malicious responses to arbitrary requests. We have now removed this source from the default set of untrusted sources and made a new threat model kind for them, called "reverse-dns". You can optionally include other threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see [Analyzing your code with CodeQL queries](https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#including-model-packs-to-add-potential-sources-of-tainted-data>) and [Customizing your advanced setup for code scanning](https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models).
+
+### Minor Analysis Improvements
+
+* Added flow through some methods of the class `java.net.URL` by ensuring that the fields of a URL are tainted.
+* Added path-injection sinks for `org.apache.tools.ant.taskdefs.Property.setFile` and `org.apache.tools.ant.taskdefs.Property.setResource`.
+* Adds models for request handlers using the `org.lastaflute.web` web framework.
+
+## 2.0.0
+
+### Breaking Changes
+
+* The Java extractor no longer supports the `SEMMLE_DIST` legacy environment variable.
+
+### Deprecated APIs
+
+* The predicate `isAndroid` from the module `semmle.code.java.security.AndroidCertificatePinningQuery` has been deprecated. Use `semmle.code.java.frameworks.android.Android::inAndroidApplication(File)` instead.
+
+### New Features
+
+* Kotlin support is now out of beta, and generally available
+* Kotlin versions up to 2.0.2*x* are now supported.
+
+### Minor Analysis Improvements
+
+* Added a path-injection sink for `hudson.FilePath.exists()`.
+* Added summary models for `org.apache.commons.io.IOUtils.toByteArray`.
+* Java build-mode `none` analyses now only report a warning on the CodeQL status page when there are significant analysis problems-- defined as 5% of expressions lacking a type, or 5% of call targets being unknown. Other messages reported on the status page are downgraded from warnings to notes and so are less prominent, but are still available for review.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* Added models for the following packages:
+
+  * io.undertow.server.handlers.resource
+  * jakarta.faces.context
+  * javax.faces.context
+  * javax.servlet
+  * org.jboss.vfs
+  * org.springframework.core.io
+* A bug has been fixed in the heuristic identification of uncertain control
+  flow, which is used to filter data flow in order to improve performance and
+  reduce false positives. This fix means that slightly more code is identified
+  and hence pruned from data flow.
+* Excluded reverse DNS from the loopback address as a source of untrusted data.
+
+### Bug Fixes
+
+* Support for `codeql test run` for Kotlin sources has been fixed.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### Major Analysis Improvements
+
+* The precision of virtual dispatch has been improved. This increases precision in general for all data flow queries. 
+
+### Minor Analysis Improvements
+
+* Support for Eclipse Compiler for Java (ecj) has been fixed to work with (a) runs that don't pass `-noExit` and (b) runs that use post-Java-9 command-line arguments.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Major Analysis Improvements
+
+* Added support for data flow through side-effects on static fields. For example, when a static field containing an array is updated.
+
+### Minor Analysis Improvements
+
+* JDK version detection based on Gradle projects has been improved. Java extraction using build-modes `autobuild` or `none` is more likely to pick an appropriate JDK version, particularly when the Android Gradle Plugin or Spring Boot Plugin are in use.
+
+## 0.11.0
+
+### Breaking Changes
+
+* The Java extractor no longer supports the `ODASA_JAVA_LAYOUT`, `ODASA_TOOLS` and `ODASA_HOME` legacy environment variables.
+* The Java extractor no longer supports the `ODASA_BUILD_ERROR_DIR` legacy environment variable.
+
+## 0.10.0
+
+### Breaking Changes
+
+* Deleted the deprecated `AssignLShiftExpr`, `AssignRShiftExpr`, `AssignURShiftExpr`, `LShiftExpr`, `RShiftExpr`, and `URShiftExpr` aliases.
+
+## 0.9.1
+
+### Minor Analysis Improvements
+
+* About 6,700 summary models and 6,800 neutral summary models for the JDK that were generated using data flow have been added. This may lead to new alerts being reported.
+
+## 0.9.0
+
+### Breaking Changes
+
+* The Java extractor no longer supports the `ODASA_SNAPSHOT` legacy environment variable.
+
+### Minor Analysis Improvements
+
+* Increased the precision of some dataflow models of the class `java.net.URL` by distinguishing the parts of a URL.
+* The Java extractor and QL libraries now support Java 22, including support for anonymous variables, lambda parameters and patterns.
+* Pattern cases with multiple patterns and that fall through to or from other pattern cases are now supported. The `PatternCase` class gains the new `getPatternAtIndex` and `getAPattern` predicates, and deprecates `getPattern`.
+* Added a `path-injection` sink for the `open` methods of the `android.os.ParcelFileDescriptor` class.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+### Minor Analysis Improvements
+
+* Java expressions with erroneous types (e.g. the result of a call whose callee couldn't be resolved during extraction) are now given a CodeQL `ErrorType` more often.
+
+### Bug Fixes
+
+* Fixed the Java autobuilder overriding the version of Maven used by a project when the Maven wrapper `mvnw` is in use and the `maven-wrapper.jar` file is not present in the repository.
+* Some flow steps related to `android.text.Editable.toString` that were accidentally disabled have been re-enabled.
+
+## 0.8.9
+
+### Deprecated APIs
+
+* The `PathCreation` class in `PathCreation.qll` has been deprecated.
+
+### Minor Analysis Improvements
+
+* An extension point for sanitizers of the query `java/unvalidated-url-redirection` has been added.
+* Added models for the following packages:
+
+  * java.io
+  * java.lang
+  * java.net
+  * java.net.http
+  * java.nio.file
+  * java.util.zip
+  * javax.servlet
+  * org.apache.commons.io
+  * org.apache.hadoop.fs
+  * org.apache.hadoop.fs.s3a
+  * org.eclipse.jetty.client
+  * org.gradle.api.file
+
+## 0.8.8
+
+### Minor Analysis Improvements
+
+* Added models for the following packages:
+
+  * com.fasterxml.jackson.databind
+  * javax.servlet
+* Added the `java.util.Date` and `java.util.UUID` classes to the list of types in the `SimpleTypeSanitizer` class in `semmle.code.java.security.Sanitizers`.
+
+## 0.8.7
+
+### New Features
+
+* Added a new library `semmle.code.java.security.Sanitizers` which contains a new sanitizer class `SimpleTypeSanitizer`, which represents nodes which cannot realistically carry taint for most queries (e.g. primitives, their boxed equivalents, and numeric types).
+* Converted definitions of `isBarrier` and sanitizer classes to use `SimpleTypeSanitizer` instead of checking if `node.getType()` is `PrimitiveType` or `BoxedType`.
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `EJB`, `JMX`, `NFE`, `DNS` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `semmle/code/java/security/OverlyLargeRangeQuery.qll`, `semmle/code/java/security/regexp/ExponentialBackTracking.qll`, `semmle/code/java/security/regexp/NfaUtils.qll`, and `semmle/code/java/security/regexp/NfaUtils.qll` files.
+* Improved models for `java.lang.Throwable` and `java.lang.Exception`, and the `valueOf` method of `java.lang.String`.
+* Added taint tracking for the following GSON methods:
+  * `com.google.gson.stream.JsonReader` constructor
+  * `com.google.gson.stream.JsonWriter` constructor
+  * `com.google.gson.JsonObject.getAsJsonArray`
+  * `com.google.gson.JsonObject.getAsJsonObject`
+  * `com.google.gson.JsonObject.getAsJsonPrimitive`
+  * `com.google.gson.JsonParser.parseReader`
+  * `com.google.gson.JsonParser.parseString`
+* Added a dataflow model for `java.awt.Desktop.browse(URI)`.
+
+### Bug Fixes
+
+* Fixed regular expressions containing flags not being parsed correctly in some cases.
+
+## 0.8.6
+
+### Deprecated APIs
+
+* Imports of the old dataflow libraries (e.g. `semmle.code.java.dataflow.DataFlow2`) have been deprecated in the libraries under the `semmle.code.java.security` namespace.
+
+### Minor Analysis Improvements
+
+* Added the `Map#replace` and `Map#replaceAll` methods to the `MapMutator` class in `semmle.code.java.Maps`.
+* Taint tracking now understands Kotlin's `Array.get` and `Array.set` methods.
+* Added a sink model for the `createRelative` method of the `org.springframework.core.io.Resource` interface.
+* Added source models for methods of the `org.springframework.web.util.UrlPathHelper` class and removed their taint flow models.
+* Added models for the following packages:
+
+  * com.google.common.io
+  * hudson
+  * hudson.console
+  * java.lang
+  * java.net
+  * java.util.logging
+  * javax.imageio.stream
+  * org.apache.commons.io
+  * org.apache.hadoop.hive.ql.exec
+  * org.apache.hadoop.hive.ql.metadata
+  * org.apache.tools.ant.taskdefs
+* Added models for the following packages:
+
+  * com.alibaba.druid.sql.repository
+  * jakarta.persistence
+  * jakarta.persistence.criteria
+  * liquibase.database.jvm
+  * liquibase.statement.core
+  * org.apache.ibatis.mapping
+  * org.keycloak.models.map.storage
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* The diagnostic query `java/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Java files, now considers any Java file seen during extraction, even one with some errors, to be extracted / scanned.
+* Switch cases using binding patterns and `case null[, default]` are now supported. Classes `PatternCase` and `NullDefaultCase` are introduced to represent new kinds of case statement.
+* Both switch cases and instanceof expressions using record patterns are now supported. The new class `RecordPatternExpr` is introduced to represent record patterns, and `InstanceOfExpr` gains `getPattern` to replace `getLocalVariableDeclExpr`.
+* The control-flow graph and therefore dominance information regarding switch blocks in statement context but with an expression rule (e.g. `switch(...) { case 1 -> System.out.println("Hello world!") }`) has been fixed. This reduces false positives and negatives from various queries relating to functions featuring such statements.
+
+## 0.8.3
+
+### Deprecated APIs
+
+* In `SensitiveApi.qll`, `javaApiCallablePasswordParam`, `javaApiCallableUsernameParam`, `javaApiCallableCryptoKeyParam`, and `otherApiCallableCredentialParam` predicates have been deprecated. They have been replaced with a new class `CredentialsSinkNode` and its child classes `PasswordSink`, `UsernameSink`, and `CryptoKeySink`. The predicates have been changed to using the new classes, so there may be minor changes in results relying on these predicates.
+
+### Minor Analysis Improvements
+
+* The types `java.util.SequencedCollection`, `SequencedSet` and `SequencedMap`, as well as the related `Collections.unmodifiableSequenced*` methods are now modelled. This means alerts may be raised relating to data flow through these types and methods.
+
+## 0.8.2
+
+### Minor Analysis Improvements
+
+* Java classes `MethodAccess`, `LValue` and `RValue` were renamed to `MethodCall`, `VarWrite` and `VarRead` respectively, along with related predicates and class names. The old names remain usable for the time being but are deprecated and should be replaced.
+* New class `NewClassExpr` was added to represent specifically an explicit `new ClassName(...)` invocation, in contrast to `ClassInstanceExpr` which also includes expressions that implicitly instantiate classes, such as defining a lambda or taking a method reference.
+* Added up to date models related to Spring Framework 6's `org.springframework.http.ResponseEntity`.
+* Added models for the following packages:
+
+  * com.alibaba.fastjson2
+  * javax.management
+  * org.apache.http.client.utils
+
+## 0.8.1
+
+### New Features
+
+* Added predicate `MemberRefExpr::getReceiverExpr`
+
+### Minor Analysis Improvements
+
+* The `isBarrier`, `isBarrierIn`, `isBarrierOut`, and `isAdditionalFlowStep` methods of the taint-tracking configurations for local queries in the `ArithmeticTaintedLocalQuery`, `ExternallyControlledFormatStringLocalQuery`, `ImproperValidationOfArrayIndexQuery`, `NumericCastTaintedQuery`, `ResponseSplittingLocalQuery`, `SqlTaintedLocalQuery`, and `XssLocalQuery` libraries have been changed to match their remote counterpart configurations.
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Deleted the deprecated `getAValue` predicate from the `Annotation` class.
+* Deleted the deprecated alias `FloatingPointLiteral`, use `FloatLiteral` instead.
+* Deleted the deprecated `getASuppressedWarningLiteral` predicate from the `SuppressWarningsAnnotation` class.
+* Deleted the deprecated `getATargetExpression` predicate form the `TargetAnnotation` class.
+* Deleted the deprecated `getRetentionPolicyExpression` predicate from the `RetentionAnnotation` class.
+* Deleted the deprecated `conditionCheck` predicate from `Preconditions.qll`.
+* Deleted the deprecated `semmle.code.java.security.performance` folder, use `semmle.code.java.security.regexp` instead.
+* Deleted the deprecated `ExternalAPI` class from `ExternalApi.qll`, use `ExternalApi` instead.
+* Modified the `EnvInput` class in `semmle.code.java.dataflow.FlowSources` to include `environment` and `file` source nodes.
+  There are no changes to results unless you add source models using the `environment` or `file` source kinds.
+* Added `environment` source models for the following methods:
+  * `java.lang.System#getenv`
+  * `java.lang.System#getProperties`
+  * `java.lang.System#getProperty`
+  * `java.util.Properties#get`
+  * `java.util.Properties#getProperty`
+* Added `file` source models for the following methods:
+  * the `java.io.FileInputStream` constructor
+  * `hudson.FilePath#newInputStreamDenyingSymlinkAsNeeded`
+  * `hudson.FilePath#openInputStream`
+  * `hudson.FilePath#read`
+  * `hudson.FilePath#readFromOffset`
+  * `hudson.FilePath#readToString`
+* Modified the `DatabaseInput` class in `semmle.code.java.dataflow.FlowSources` to include `database` source nodes.
+  There are no changes to results unless you add source models using the `database` source kind.
+* Added `database` source models for the following method:
+  * `java.sql.ResultSet#getString`
+
+## 0.8.0
+
+### New Features
+
+* Kotlin versions up to 1.9.20 are now supported.
+
+### Minor Analysis Improvements
+
+* Fixed a control-flow bug where case rule statements would incorrectly include a fall-through edge.
+* Added support for default cases as proper guards in switch expressions to match switch statements.
+* Improved the class `ArithExpr` of the `Overflow.qll` module to also include compound operators. Because of this, new alerts may be raised in queries related to overflows/underflows.
+* Added new dataflow models for the Apache CXF framework.
+* Regular expressions containing multiple parse mode flags are now interpretted correctly. For example `"(?is)abc.*"` with both the `i` and `s` flags.
+
+### Bug Fixes
+
+* The regular expressions library no longer incorrectly matches mode flag characters against the input.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### New Features
+
+* Kotlin versions up to 1.9.10 are now supported.
+
+### Minor Analysis Improvements
+
+* Fixed the MaD signature specifications to use proper nested type names.
+* Added new sanitizer to Java command injection model
+* Added more dataflow models for JAX-RS.
+* The predicate `JaxWsEndpoint::getARemoteMethod` no longer requires the result to be annotated with `@WebMethod`. Instead, the requirements listed in the JAX-RPC Specification 1.1 for required parameter and return types are used. Applications using JAX-RS may see an increase in results.
+
+## 0.7.3
+
+### Major Analysis Improvements
+
+* Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
+
+### Minor Analysis Improvements
+
+* Modified the `getSecureAlgorithmName` predicate in `Encryption.qll` to also include `SHA-256` and `SHA-512`. Previously only the versions of the names without dashes were considered secure.
+* Add support for `WithElement` and `WithoutElement` for MaD access paths.
+
+## 0.7.2
+
+### New Features
+
+* A `Diagnostic.getCompilationInfo()` predicate has been added.
+
+### Minor Analysis Improvements
+
+* Fixed a typo in the `StdlibRandomSource` class in `RandomDataSource.qll`, which caused the class to improperly model calls to the `nextBytes` method. Queries relying on `StdlibRandomSource` may see an increase in results.
+* Improved the precision of virtual dispatch of `java.io.InputStream` methods. Now, calls to these methods will not dispatch to arbitrary implementations of `InputStream` if there is a high-confidence alternative (like a models-as-data summary).
+* Added more dataflow steps for `java.io.InputStream`s that wrap other `java.io.InputStream`s.
+* Added models for the Struts 2 framework.
+* Improved the modeling of Struts 2 sources of untrusted data by tainting the whole object graph of the objects unmarshaled from an HTTP request.
+
+## 0.7.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+* A `Class.isFileClass()` predicate, to identify Kotlin file classes, has been added.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* Added models for Apache Commons Lang3 `ToStringBuilder.reflectionToString` method.
+* Added support for the Kotlin method `apply`.
+* Added models for the following packages:
+
+  * java.io
+  * java.lang
+  * java.net
+  * java.nio.channels
+  * java.nio.file
+  * java.util.zip
+  * okhttp3
+  * org.gradle.api.file
+  * retrofit2
+
+## 0.7.0
+
+### Deprecated APIs
+
+* The `ExecCallable` class in `ExternalProcess.qll` has been deprecated.
+
+### Major Analysis Improvements
+
+* The data flow library now performs type strengthening. This increases precision for all data flow queries by excluding paths that can be inferred to be impossible due to incompatible types.
+
+### Minor Analysis Improvements
+
+* Added automatically-generated dataflow models for `javax.portlet`.
+* Added a missing summary model for the method `java.net.URL.toString`.
+* Added automatically-generated dataflow models for the following frameworks and libraries:
+  * `hudson`
+  * `jenkins`
+  * `net.sf.json`
+  * `stapler`
+* Added more models for the Hudson framework.
+* Added more models for the Stapler framework.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### New Features
+
+* Kotlin versions up to 1.9.0 are now supported.
+
+### Minor Analysis Improvements
+
+* Added flow through the block arguments of `kotlin.io.use` and `kotlin.with`.
+* Added models for the following packages:
+
+  * com.alibaba.druid.sql
+  * com.fasterxml.jackson.databind
+  * com.jcraft.jsch
+  * io.netty.handler.ssl
+  * okhttp3
+  * org.antlr.runtime
+  * org.fusesource.leveldbjni
+  * org.influxdb
+  * org.springframework.core.io
+  * org.yaml.snakeyaml
+* Deleted the deprecated `getRHS` predicate from the `LValue` class, use `getRhs` instead.
+* Deleted the deprecated `getCFGNode` predicate from the `SsaVariable` class, use `getCfgNode` instead.
+* Deleted many deprecated predicates and classes with uppercase `XML`, `JSON`, `URL`, `API`, etc. in their names. Use the PascalCased versions instead.
+* Added models for the following packages:
+
+  * java.lang
+  * java.nio.file
+* Added dataflow models for the Gson deserialization library.
+* Added models for the following packages:
+
+  * okhttp3
+* Added more dataflow models for the Play Framework.
+* Modified the models related to `java.nio.file.Files.copy` so that generic `[Input|Output]Stream` arguments are not considered file-related sinks.
+* Dataflow analysis has a new flow step through constructors of transitive subtypes of `java.io.InputStream` that wrap an underlying data source. Previously, the step only existed for direct subtypes of `java.io.InputStream`.
+* Path creation sinks modeled in `PathCreation.qll` have been added to the models-as-data sink kind `path-injection`.
+* Updated the regular expression in the `HostnameSanitizer` sanitizer in the `semmle.code.java.security.RequestForgery` library to better detect strings prefixed with a hostname.
+* Changed the `android-widget` Java source kind to `remote`. Any custom data extensions that use the `android-widget` source kind will need to be updated accordingly in order to continue working.
+* Updated the following Java sink kind names. Any custom data extensions will need to be updated accordingly in order to continue working.
+  * `sql` to `sql-injection`
+  * `url-redirect` to `url-redirection`
+  * `xpath` to `xpath-injection`
+  * `ssti` to `template-injection`
+  * `logging` to `log-injection`
+  * `groovy` to `groovy-injection`
+  * `jexl` to `jexl-injection`
+  * `mvel` to `mvel-injection`
+  * `xslt` to `xslt-injection`
+  * `ldap` to `ldap-injection`
+  * `pending-intent-sent` to `pending-intents`
+  * `intent-start` to `intent-redirection`
+  * `set-hostname-verifier` to `hostname-verification`
+  * `header-splitting` to `response-splitting`
+  * `xss` to `html-injection` and `js-injection`
+  * `write-file` to `file-system-store`
+  * `create-file` and `read-file` to `path-injection`
+  * `open-url` and `jdbc-url` to `request-forgery`
+
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* Added SQL injection sinks for Spring JDBC's `NamedParameterJdbcOperations`.
+* Added models for the following packages:
+
+  * org.apache.hadoop.fs
+* Added the `ArithmeticCommon.qll` library to provide predicates for reasoning about arithmetic operations.
+* Added the `ArithmeticTaintedLocalQuery.qll` library to provide the `ArithmeticTaintedLocalOverflowFlow` and `ArithmeticTaintedLocalUnderflowFlow` taint-tracking modules to reason about arithmetic with unvalidated user input.
+* Added the `ArithmeticTaintedQuery.qll` library to provide the `RemoteUserInputOverflow` and `RemoteUserInputUnderflow` taint-tracking modules to reason about arithmetic with unvalidated user input.
+* Added the `ArithmeticUncontrolledQuery.qll` library to provide the `ArithmeticUncontrolledOverflowFlow`  and `ArithmeticUncontrolledUnderflowFlow` taint-tracking modules to reason about arithmetic with uncontrolled user input.
+* Added the `ArithmeticWithExtremeValuesQuery.qll` library to provide the `MaxValueFlow` and `MinValueFlow` dataflow modules to reason about arithmetic with extreme values.
+* Added the `BrokenCryptoAlgorithmQuery.qll` library to provide the `InsecureCryptoFlow` taint-tracking module to reason about broken cryptographic algorithm vulnerabilities.
+* Added the `ExecTaintedLocalQuery.qll` library to provide the `LocalUserInputToArgumentToExecFlow` taint-tracking module to reason about command injection vulnerabilities caused by local data flow.
+* Added the `ExternallyControlledFormatStringLocalQuery.qll` library to provide the `ExternallyControlledFormatStringLocalFlow` taint-tracking module to reason about format string vulnerabilities caused by local data flow.
+* Added the `ImproperValidationOfArrayConstructionCodeSpecifiedQuery.qll` library to provide the `BoundedFlowSourceFlow` dataflow module to reason about improper validation of code-specified sizes used for array construction.
+* Added the `ImproperValidationOfArrayConstructionLocalQuery.qll` library to provide the `ImproperValidationOfArrayConstructionLocalFlow` taint-tracking module to reason about improper validation of local user-provided sizes used for array construction caused by local data flow.
+* Added the `ImproperValidationOfArrayConstructionQuery.qll` library to provide the `ImproperValidationOfArrayConstructionFlow` taint-tracking module to reason about improper validation of user-provided size used for array construction.
+* Added the `ImproperValidationOfArrayIndexCodeSpecifiedQuery.qll` library to provide the `BoundedFlowSourceFlow` data flow module to reason about about improper validation of code-specified array index.
+* Added the `ImproperValidationOfArrayIndexLocalQuery.qll` library to provide the `ImproperValidationOfArrayIndexLocalFlow` taint-tracking module to reason about improper validation of a local user-provided array index.
+* Added the `ImproperValidationOfArrayIndexQuery.qll` library to provide the `ImproperValidationOfArrayIndexFlow` taint-tracking module to reason about improper validation of user-provided array index.
+* Added the `InsecureCookieQuery.qll` library to provide the `SecureCookieFlow` taint-tracking module to reason about insecure cookie vulnerabilities.
+* Added the `MaybeBrokenCryptoAlgorithmQuery.qll` library to provide the `InsecureCryptoFlow` taint-tracking module to reason about broken cryptographic algorithm vulnerabilities.
+* Added the `NumericCastTaintedQuery.qll` library to provide the `NumericCastTaintedFlow` taint-tracking module to reason about numeric cast vulnerabilities.
+* Added the `ResponseSplittingLocalQuery.qll` library to provide the `ResponseSplittingLocalFlow` taint-tracking module to reason about response splitting vulnerabilities caused by local data flow.
+* Added the `SqlConcatenatedQuery.qll` library to provide the `UncontrolledStringBuilderSourceFlow` taint-tracking module to reason about SQL injection vulnerabilities caused by concatenating untrusted strings.
+* Added the `SqlTaintedLocalQuery.qll` library to provide the `LocalUserInputToArgumentToSqlFlow` taint-tracking module to reason about SQL injection vulnerabilities caused by local data flow.
+* Added the `StackTraceExposureQuery.qll` library to provide the `printsStackExternally`, `stringifiedStackFlowsExternally`, and `getMessageFlowsExternally` predicates to reason about stack trace exposure vulnerabilities.
+* Added the `TaintedPermissionQuery.qll` library to provide the `TaintedPermissionFlow` taint-tracking module to reason about tainted permission vulnerabilities.
+* Added the `TempDirLocalInformationDisclosureQuery.qll` library to provide the `TempDirSystemGetPropertyToCreate` taint-tracking module to reason about local information disclosure vulnerabilities caused by local data flow.
+* Added the `UnsafeHostnameVerificationQuery.qll` library to provide the `TrustAllHostnameVerifierFlow` taint-tracking module to reason about insecure hostname verification vulnerabilities.
+* Added the `UrlRedirectLocalQuery.qll` library to provide the `UrlRedirectLocalFlow` taint-tracking module to reason about URL redirection vulnerabilities caused by local data flow.
+* Added the `UrlRedirectQuery.qll` library to provide the `UrlRedirectFlow` taint-tracking module to reason about URL redirection vulnerabilities.
+* Added the `XPathInjectionQuery.qll` library to provide the `XPathInjectionFlow` taint-tracking module to reason about XPath injection vulnerabilities.
+* Added the `XssLocalQuery.qll` library to provide the `XssLocalFlow` taint-tracking module to reason about XSS vulnerabilities caused by local data flow.
+* Moved the `url-open-stream` sink models to experimental and removed `url-open-stream` as a sink option from the [Customizing Library Models for Java](https://github.com/github/codeql/blob/733a00039efdb39c3dd76ddffad5e6d6c85e6774/docs/codeql/codeql-language-guides/customizing-library-models-for-java.rst#customizing-library-models-for-java) documentation.
+* Added models for the Apache Commons Net library.
+* Updated the `neutralModel` extensible predicate to include a `kind` column.
+* Added models for the `io.jsonwebtoken` library.
+
+## 0.6.1
+
+### Deprecated APIs
+
+* The `sensitiveResultReceiver` predicate in `SensitiveResultReceiverQuery.qll` has been deprecated and replaced with `isSensitiveResultReceiver` in order to use the new dataflow API.
+
+### Minor Analysis Improvements
+
+* Changed some models of Spring's `FileCopyUtils.copy` to be path injection sinks instead of summaries.
+* Added models for the following packages:
+  * java.nio.file
+* Added models for [Apache HttpComponents](https://hc.apache.org/) versions 4 and 5.
+* Added sanitizers that recognize line breaks to the query `java/log-injection`.
+* Added new flow steps for `java.util.StringJoiner`.
+
+## 0.6.0
+
+### Deprecated APIs
+
+* The `execTainted` predicate in `CommandLineQuery.qll` has been deprecated and replaced with the predicate `execIsTainted`.
+* The recently introduced new data flow and taint tracking APIs have had a
+  number of module and predicate renamings. The old APIs remain in place for
+  now.
+* The `WebViewDubuggingQuery` library has been renamed to `WebViewDebuggingQuery` to fix the typo in the file name. `WebViewDubuggingQuery` is now deprecated. 
+
+### New Features
+
+* Predicates `Compilation.getExpandedArgument` and `Compilation.getAnExpandedArgument` has been added.
+
+### Minor Analysis Improvements
+
+* Fixed a bug in the regular expression used to identify sensitive information in `SensitiveActions::getCommonSensitiveInfoRegex`. This may affect the results of the queries `java/android/sensitive-communication`, `java/android/sensitive-keyboard-cache`, and `java/sensitive-log`. 
+* Added a summary model for the `java.lang.UnsupportedOperationException(String)` constructor.
+* The filenames embedded in `Compilation.toString()` now use `/` as the path separator on all platforms.
+* Added models for the following packages:
+  * `java.lang`
+  * `java.net`
+  * `java.nio.file`
+  * `java.io`
+  * `java.lang.module`
+  * `org.apache.commons.httpclient.util`
+  * `org.apache.commons.io`
+  * `org.apache.http.client`
+  * `org.eclipse.jetty.client`
+  * `com.google.common.io`
+  * `kotlin.io`
+* Added the `TaintedPathQuery.qll` library to provide the `TaintedPathFlow` and `TaintedPathLocalFlow` taint-tracking modules to reason about tainted path vulnerabilities.
+* Added the `ZipSlipQuery.qll` library to provide the `ZipSlipFlow` taint-tracking module to reason about zip-slip vulnerabilities.
+* Added the `InsecureBeanValidationQuery.qll` library to provide the `BeanValidationFlow` taint-tracking module to reason about bean validation vulnerabilities.
+* Added the `XssQuery.qll` library to provide the `XssFlow` taint-tracking module to reason about cross site scripting vulnerabilities.
+* Added the `LdapInjectionQuery.qll` library to provide the `LdapInjectionFlow` taint-tracking module to reason about LDAP injection vulnerabilities.
+* Added the `ResponseSplittingQuery.qll` library to provide the `ResponseSplittingFlow` taint-tracking module to reason about response splitting vulnerabilities.
+* Added the `ExternallyControlledFormatStringQuery.qll` library to provide the `ExternallyControlledFormatStringFlow` taint-tracking module to reason about externally controlled format string vulnerabilities.
+* Improved the handling of addition in the range analysis. This can cause in minor changes to the results produced by `java/index-out-of-bounds` and `java/constant-comparison`.
+* A new models as data sink kind `command-injection` has been added.
+* The queries `java/command-line-injection` and `java/concatenated-command-line` now can be extended using the `command-injection` models as data sink kind.
+* Added more sink and summary dataflow models for the following packages:
+  * `java.net`
+  * `java.nio.file`
+  * `javax.imageio.stream`
+  * `javax.naming`
+  * `javax.servlet`
+  * `org.geogebra.web.full.main`
+  * `hudson`
+  * `hudson.cli`
+  * `hudson.lifecycle`
+  * `hudson.model`
+  * `hudson.scm`
+  * `hudson.util`
+  * `hudson.util.io`
+* Added the extensible abstract class `JndiInjectionSanitizer`. Now this class can be extended to add more sanitizers to the `java/jndi-injection` query.
+* Added a summary model for the `nativeSQL` method of the `java.sql.Connection` interface.
+* Added sink and summary dataflow models for the Jenkins and Netty frameworks.
+* The Models as Data syntax for selecting the qualifier has been changed from `-1` to `this` (e.g. `Argument[-1]` is now written as `Argument[this]`).
+* Added sources and flow step models for the Netty framework up to version 4.1.
+* Added more dataflow models for frequently-used JDK APIs.
+
+### Bug Fixes
+
+* Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular `DataFlow::hasFlowPath`, `DataFlow::hasFlow`, `DataFlow::hasFlowTo`, and `DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
+
+## 0.5.6
+
+No user-facing changes.
+
+## 0.5.5
+
+### New Features
+
+* Added support for merging two `PathGraph`s via disjoint union to allow results from multiple data flow computations in a single `path-problem` query.
+
+### Major Analysis Improvements
+
+* Removed low-confidence call edges to known neutral call targets from the call graph used in data flow analysis. This includes, for example, custom `List.contains` implementations when the best inferrable type at the call site is simply `List`.
+* Added more sink and summary dataflow models for the following packages:
+  * `java.io`
+  * `java.lang`
+  * `java.sql`
+  * `javafx.scene.web`
+  * `org.apache.commons.compress.archivers.tar`
+  * `org.apache.http.client.utils`
+  * `org.codehaus.cargo.container.installer`
+* The main data flow and taint tracking APIs have been changed. The old APIs
+  remain in place for now and translate to the new through a
+  backwards-compatible wrapper. If multiple configurations are in scope
+  simultaneously, then this may affect results slightly. The new API is quite
+  similar to the old, but makes use of a configuration module instead of a
+  configuration class.
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
+* Deleted the deprecated `getRepresentedString` predicate from the `StringLiteral` class.
+* Deleted the deprecated `ServletWriterSource` class.
+* Deleted the deprecated `getGroupID`, `getArtefactID`, and `artefactMatches` predicates from the `MavenRepoJar` class.
+
+## 0.5.4
+
+### Minor Analysis Improvements
+
+* Added new sinks for `java/hardcoded-credential-api-call` to identify the use of hardcoded secrets in the creation and verification of JWT tokens using `com.auth0.jwt`. These sinks are from [an experimental query submitted by @luchua](https://github.com/github/codeql/pull/9036).
+* The Java extractor now supports builds against JDK 20.
+* The query `java/hardcoded-credential-api-call` now recognizes methods that accept user and password from the SQLServerDataSource class of the Microsoft JDBC Driver for SQL Server.
+
+## 0.5.3
+
+### New Features
+
+* Kotlin versions up to 1.8.20 are now supported.
+
+### Minor Analysis Improvements
+
+* Removed the first argument of `java.nio.file.Files#createTempDirectory(String,FileAttribute[])` as a "create-file" sink.
+* Added the first argument of `java.nio.file.Files#copy` as a "read-file" sink for the `java/path-injection` query.
+* The data flow library now disregards flow through code that is dead based on some basic constant propagation, for example, guards like `if (1+1>3)`.
+
+## 0.5.2
+
+### Minor Analysis Improvements
+
+* Added sink models for the `createQuery`, `createNativeQuery`, and `createSQLQuery` methods of the `org.hibernate.query.QueryProducer` interface.
+
+## 0.5.1
+
+### Minor Analysis Improvements
+
+* Added sink models for the constructors of `org.springframework.jdbc.object.MappingSqlQuery` and `org.springframework.jdbc.object.MappingSqlQueryWithParameters`.
+* Added more dataflow models for frequently-used JDK APIs.
+* Removed summary model for `java.lang.String#endsWith(String)` and added neutral model for this API.
+* Added additional taint step for `java.lang.String#endsWith(String)` to `ConditionalBypassFlowConfig`.
+* Added `AllowContentAccessMethod` to represent the `setAllowContentAccess` method of the `android.webkit.WebSettings` class.
+* Added an external flow source for the parameters of methods annotated with `android.webkit.JavascriptInterface`.
+
+## 0.5.0
+
+### Minor Analysis Improvements
+
+* Added more dataflow models for frequently-used JDK APIs.
+* The extraction of Kotlin extension methods has been improved when default parameter values are present. The dispatch and extension receiver parameters are extracted in the correct order. The `ExtensionMethod::getExtensionReceiverParameterIndex` predicate has been introduced to facilitate getting the correct extension parameter index.
+* The query `java/insecure-cookie` now uses global dataflow to track secure cookies being set to the HTTP response object.
+* The library `PathSanitizer.qll` has been improved to detect more path validation patterns in Kotlin.
+* Models as Data models for Java are defined as data extensions instead of being inlined in the code. New models should be added in the `lib/ext` folder.
+* Added a taint model for the method `java.nio.file.Path.getParent`.
+* Fixed a problem in the taint model for the method `java.nio.file.Paths.get`.
+* Deleted the deprecated `LocalClassDeclStmtNode` and `LocalClassDeclStmt` classes from `PrintAst.qll` and `Statement.qll` respectively.
+* Deleted the deprecated `getLocalClass` predicate from `LocalTypeDeclStmt`, and the deprecated `getLocalClassDeclStmt` predicate from `LocalClassOrInterface`.
+* Added support for Android Manifest `<activity-aliases>` elements in data flow sources. 
+
+### Bug Fixes
+
+* We now correctly handle empty block comments, like `/**/`. Previously these could be mistaken for Javadoc comments and led to attribution of Javadoc tags to the wrong declaration.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+### New Features
+
+* Kotlin support is now in beta. This means that Java analyses will also include Kotlin code by default. Kotlin support can be disabled by setting `CODEQL_EXTRACTOR_JAVA_AGENT_DISABLE_KOTLIN` to `true` in the environment.
+* The new `string Compilation.getInfo(string)` predicate provides access to some information about compilations.
+
+### Minor Analysis Improvements
+
+* The ReDoS libraries in `semmle.code.java.security.regexp` has been moved to a shared pack inside the `shared/` folder, and the previous location has been deprecated.
+* Added data flow summaries for tainted Android intents sent to activities via `Activity.startActivities`.
+
+## 0.4.3
+
+No user-facing changes.
+
+## 0.4.2
+
+### Deprecated APIs
+
+* Deprecated `ContextStartActivityMethod`. Use `StartActivityMethod` instead.
+
+### New Features
+
+* Added a new predicate, `hasIncompletePermissions`, in the `AndroidProviderXmlElement` class. This predicate detects if a provider element does not provide both read and write permissions.
+
+### Minor Analysis Improvements
+
+* Added support for common patterns involving `Stream.collect` and common collectors like `Collectors.toList()`.
+* The class `TypeVariable` now also extends `Modifiable`.
+* Added data flow steps for tainted Android intents that are sent to services and receivers.
+* Improved the data flow step for tainted Android intents that are sent to activities so that more cases are covered.
+
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* Added external flow sources for the intents received in exported Android services.
+
+## 0.4.0
+
+### Breaking Changes
+
+* The `Member.getQualifiedName()` predicate result now includes the qualified name of the declaring type.
+
+### Deprecated APIs
+
+* The predicate `Annotation.getAValue()` has been deprecated because it might lead to obtaining the value of the wrong annotation element by accident. `getValue(string)` (or one of the value type specific predicates) should be used to explicitly specify the name of the annotation element.
+* The predicate `Annotation.getAValue(string)` has been renamed to `getAnArrayValue(string)`.
+* The predicate `SuppressWarningsAnnotation.getASuppressedWarningLiteral()` has been deprecated because it unnecessarily restricts the result type; `getASuppressedWarning()` should be used instead.
+* The predicates `TargetAnnotation.getATargetExpression()` and `RetentionAnnotation.getRetentionPolicyExpression()` have been deprecated because getting the enum constant read expression is rarely useful, instead the corresponding predicates for getting the name of the referenced enum constants should be used.
+
+### New Features
+
+* Added a new predicate, `allowsBackup`, in the `AndroidApplicationXmlElement` class. This predicate detects if the application element does not disable the `android:allowBackup` attribute.
+* The predicates of the CodeQL class `Annotation` have been improved:
+  * Convenience value type specific predicates have been added, such as `getEnumConstantValue(string)` or `getStringValue(string)`.
+  * Convenience predicates for elements with array values have been added, such as `getAnEnumConstantArrayValue(string)`. While the behavior of the existing predicates has not changed, usage of them should be reviewed (or replaced with the newly added predicate) to make sure they work correctly for elements with array values.
+  * Some internal CodeQL usage of the `Annotation` predicates has been adjusted and corrected; this might affect the results of some queries.
+* New predicates have been added to the CodeQL class `Annotatable` to support getting declared and associated annotations. As part of that, `hasAnnotation()` has been changed to also consider inherited annotations, to be consistent with `hasAnnotation(string, string)` and `getAnAnnotation()`. The newly added predicate `hasDeclaredAnnotation()` can be used as replacement for the old functionality.
+* New predicates have been added to the CodeQL class `AnnotationType` to simplify getting information about usage of JDK meta-annotations, such as `@Retention`.
+
+### Major Analysis Improvements
+
+* The virtual dispatch relation used in data flow now favors summary models over source code for dispatch to interface methods from `java.util` unless there is evidence that a specific source implementation is reachable. This should provide increased precision for any projects that include, for example, custom `List` or `Map` implementations.
+
+### Minor Analysis Improvements
+
+* Added new sinks to the query `java/android/implicit-pendingintents` to take into account the classes `androidx.core.app.NotificationManagerCompat` and `androidx.core.app.AlarmManagerCompat`.
+* Added new flow steps for `androidx.core.app.NotificationCompat` and its inner classes.
+* Added flow sinks, sources and summaries for the Kotlin standard library.
+* Added flow summary for `org.springframework.data.repository.CrudRepository.save()`.
+* Added new flow steps for the following Android classes:
+  * `android.content.ContentResolver`
+  * `android.content.ContentProviderClient`
+  * `android.content.ContentProviderOperation`
+  * `android.content.ContentProviderOperation$Builder`
+  * `android.content.ContentProviderResult`
+  * `android.database.Cursor`
+* Added taint flow models for the `java.lang.String.(charAt|getBytes)` methods.
+* Improved taint flow models for the `java.lang.String.(replace|replaceFirst|replaceAll)` methods. Additional results may be found where users do not properly sanitize their inputs.
+
+### Bug Fixes
+
+* Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.
+
+## 0.3.5
+
+## 0.3.4
+
+### Deprecated APIs
+
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+* The utility files previously in the `semmle.code.java.security.performance` package have been moved to the `semmle.code.java.security.regexp` package.  
+  The previous files still exist as deprecated aliases.
+
+### New Features
+
+* Added a new predicate, `requiresPermissions`, in the `AndroidComponentXmlElement` and `AndroidApplicationXmlElement` classes to detect if the element has explicitly set a value for its `android:permission` attribute.
+* Added a new predicate, `hasAnIntentFilterElement`, in the `AndroidComponentXmlElement` class to detect if a component contains an intent filter element.
+* Added a new predicate, `hasExportedAttribute`, in the `AndroidComponentXmlElement` class to detect if a component has an `android:exported` attribute.
+* Added a new class, `AndroidCategoryXmlElement`, to represent a category element in an Android manifest file.
+* Added a new predicate, `getACategoryElement`, in the `AndroidIntentFilterXmlElement` class to get a category element of an intent filter.
+* Added a new predicate, `isInBuildDirectory`, in the `AndroidManifestXmlFile` class. This predicate detects if the manifest file is located in a build directory.
+* Added a new predicate, `isDebuggable`, in the `AndroidApplicationXmlElement` class. This predicate detects if the application element has its `android:debuggable` attribute enabled.
+
+### Minor Analysis Improvements
+
+* Added new flow steps for the classes `java.nio.file.Path` and `java.nio.file.Paths`.
+* The class `AndroidFragment` now also models the Android Jetpack version of the `Fragment` class (`androidx.fragment.app.Fragment`).
+* Java 19 builds can now be extracted. There are no non-preview new language features in this release, so the only user-visible change is that the CodeQL extractor will now correctly trace compilations using the JDK 19 release of `javac`.
+* Classes and methods that are seen with several different paths during the extraction process (for example, packaged into different JAR files) now report an arbitrarily selected location via their `getLocation` and `hasLocationInfo` predicates, rather than reporting all of them. This may lead to reduced alert duplication.
+* The query `java/hardcoded-credential-api-call` now recognises methods that consume usernames, passwords and keys from the JSch, Ganymed, Apache SSHD, sshj, Trilead SSH-2, Apache FTPClient and MongoDB projects. 
+
+## 0.3.3
+
+### Minor Analysis Improvements
+
+* Improved analysis of the Android class `AsyncTask` so that data can properly flow through its methods according to the life-cycle steps described here: https://developer.android.com/reference/android/os/AsyncTask#the-4-steps.
+* Added a data-flow model for the `setProperty` method of `java.util.Properties`. Additional results may be found where relevant data is stored in and then retrieved from a `Properties` instance.
+
+## 0.3.2
+
+### New Features
+
+* The QL predicate `Expr::getUnderlyingExpr` has been added. It can be used to look through casts and not-null expressions and obtain the underlying expression to which they apply.
+
+### Minor Analysis Improvements
+
+* The JUnit5 version of `AssertNotNull` is now recognized, which removes related false positives in the nullness queries.
+* Added data flow models for `java.util.Scanner`.
+
+## 0.3.1
+
+### New Features
+
+* Added an `ErrorType` class. An instance of this class will be used if an extractor is unable to extract a type, or if an up/downgrade script is unable to provide a type.
+
+### Minor Analysis Improvements
+
+* Added data-flow models for `java.util.Properties`. Additional results may be found where relevant data is stored in and then retrieved from a `Properties` instance.
+* Added `Modifier.isInline()`.
+* Removed Kotlin-specific database and QL structures for loops and `break`/`continue` statements. The Kotlin extractor was changed to reuse the Java structures for these constructs.
+* Added additional flow sources for uses of external storage on Android. 
+
+## 0.3.0
+
+### Deprecated APIs
+
+* The `BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new `BarrierGuard` parameterized module.
+
+### Minor Analysis Improvements
+
+Added a flow step for `String.valueOf` calls on tainted `android.text.Editable` objects. 
+
+## 0.2.3
+
+## 0.2.2
+
+### Deprecated APIs
+
+* The QL class `FloatingPointLiteral` has been renamed to `FloatLiteral`.
+
+### Minor Analysis Improvements
+
+* Fixed a sanitizer of the query `java/android/intent-redirection`. Now, for an intent to be considered
+  safe against intent redirection, both its package name and class name must be checked.
+
+## 0.2.1
+
+### New Features
+
+* A number of new classes and methods related to the upcoming Kotlin
+  support have been added. These are not yet stable, as Kotlin support
+  is still under development.
+   * `File::isSourceFile`
+   * `File::isJavaSourceFile`
+   * `File::isKotlinSourceFile`
+   * `Member::getKotlinType`
+   * `Element::isCompilerGenerated`
+   * `Expr::getKotlinType`
+   * `LambdaExpr::isKotlinFunctionN`
+   * `Callable::getReturnKotlinType`
+   * `Callable::getParameterKotlinType`
+   * `Method::isLocal`
+   * `Method::getKotlinName`
+   * `Field::getKotlinType`
+   * `Modifiable::isSealedKotlin`
+   * `Modifiable::isInternal`
+   * `Variable::getKotlinType`
+   * `LocalVariableDecl::getKotlinType`
+   * `Parameter::getKotlinType`
+   * `Parameter::isExtensionParameter`
+   * `Compilation` class
+   * `Diagnostic` class
+   * `KtInitializerAssignExpr` class
+   * `ValueEQExpr` class
+   * `ValueNEExpr` class
+   * `ValueOrReferenceEqualsExpr` class
+   * `ValueOrReferenceNotEqualsExpr` class
+   * `ReferenceEqualityTest` class
+   * `CastingExpr` class
+   * `SafeCastExpr` class
+   * `ImplicitCastExpr` class
+   * `ImplicitNotNullExpr` class
+   * `ImplicitCoercionToUnitExpr` class
+   * `UnsafeCoerceExpr` class
+   * `PropertyRefExpr` class
+   * `NotInstanceOfExpr` class
+   * `ExtensionReceiverAccess` class
+   * `WhenExpr` class
+   * `WhenBranch` class
+   * `ClassExpr` class
+   * `StmtExpr` class
+   * `StringTemplateExpr` class
+   * `NotNullExpr` class
+   * `TypeNullPointerException` class
+   * `KtComment` class
+   * `KtCommentSection` class
+   * `KotlinType` class
+   * `KotlinNullableType` class
+   * `KotlinNotnullType` class
+   * `KotlinTypeAlias` class
+   * `Property` class
+   * `DelegatedProperty` class
+   * `ExtensionMethod` class
+   * `KtInitializerNode` class
+   * `KtLoopStmt` class
+   * `KtBreakContinueStmt` class
+   * `KtBreakStmt` class
+   * `KtContinueStmt` class
+   * `ClassObject` class
+   * `CompanionObject` class
+   * `LiveLiteral` class
+   * `LiveLiteralMethod` class
+   * `CastConversionContext` renamed to `CastingConversionContext`
+* The QL class `ValueDiscardingExpr` has been added, representing expressions for which the value of the expression as a whole is discarded.
+
+### Minor Analysis Improvements
+
+* Added models for the libraries OkHttp and Retrofit.
+* Add taint models for the following `File` methods:
+   * `File::getAbsoluteFile`
+   * `File::getCanonicalFile`
+   * `File::getAbsolutePath`
+   * `File::getCanonicalPath`
+* Added a flow step for `toString` calls on tainted `android.text.Editable` objects. 
+* Added a data flow step for tainted Android intents that are sent to other activities and accessed there via `getIntent()`.
+* Added modeling of MyBatis (`org.apache.ibatis`) Providers, resulting in additional sinks for the queries `java/ognl-injection`, `java/sql-injection`, `java/sql-injection-local` and `java/concatenated-sql-query`.
+
+## 0.2.0
+
+### Breaking Changes
+
+* The signature of `allowImplicitRead` on `DataFlow::Configuration` and `TaintTracking::Configuration` has changed from `allowImplicitRead(DataFlow::Node node, DataFlow::Content c)` to `allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c)`.
+
+### Minor Analysis Improvements
+
+* Improved the data flow support for the Android class `SharedPreferences$Editor`. Specifically, the fluent logic of some of its methods is now taken into account when calculating data flow.
+  * Added flow sources and steps for JMS versions 1 and 2.
+  * Added flow sources and steps for RabbitMQ.
+  * Added flow steps for `java.io.DataInput` and `java.io.ObjectInput` implementations.
+* Added data-flow models for the Spring Framework component `spring-beans`.
+
+### Bug Fixes
+
+* The QL class `JumpStmt` has been made the superclass of `BreakStmt`, `ContinueStmt` and `YieldStmt`. This allows directly using its inherited predicates without having to explicitly cast to `JumpStmt` first.
+
+## 0.1.0
+
+### Breaking Changes
+
+* The recently added flow-state versions of `isBarrierIn`, `isBarrierOut`, `isSanitizerIn`, and `isSanitizerOut` in the data flow and taint tracking libraries have been removed.
+* The `getUrl` predicate of `DeclaredRepository` in `MavenPom.qll` has been renamed to `getRepositoryUrl`. 
+
+### New Features
+
+* There are now QL classes ErrorExpr and ErrorStmt. These may be generated by upgrade or downgrade scripts when databases cannot be fully converted.
+
+### Minor Analysis Improvements
+
+* Added guard precondition support for assertion methods for popular testing libraries (e.g. Junit 4, Junit 5, TestNG).
+
+## 0.0.13
+
+## 0.0.12
+
+### Breaking Changes
+
+* The flow state variants of `isBarrier` and `isAdditionalFlowStep` are no longer exposed in the taint tracking library. The `isSanitizer` and `isAdditionalTaintStep` predicates should be used instead.
+
+### Deprecated APIs
+
+* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+### New Features
+
+* The data flow and taint tracking libraries have been extended with versions of `isBarrierIn`, `isBarrierOut`, and `isBarrierGuard`, respectively `isSanitizerIn`, `isSanitizerOut`, and `isSanitizerGuard`, that support flow states.
+
+### Minor Analysis Improvements
+
+ * Added new guards `IsWindowsGuard`, `IsSpecificWindowsVariant`, `IsUnixGuard`, and `IsSpecificUnixVariant` to detect OS specific guards.
+ * Added a new predicate `getSystemProperty` that gets all expressions that retrieve system properties from a variety of sources (eg. alternative JDK API's, Google Guava, Apache Commons, Apache IO, etc.).
+ * Added support for detection of SSRF via JDBC database URLs, including connections made using the standard library (`java.sql`), Hikari Connection Pool, JDBI and Spring JDBC.
+ * Re-removed support for `CharacterLiteral` from `CompileTimeConstantExpr.getStringValue()` to restore the convention that that predicate only applies to `String`-typed constants.
+* All deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
+
+## 0.0.11
+
+### New Features
+
+* Added `hasDescendant(RefType anc, Type sub)`
+* Added `RefType.getADescendant()`
+* Added `RefType.getAStrictAncestor()`
+
+### Minor Analysis Improvements
+
+ * Add support for `CharacterLiteral` in `CompileTimeConstantExpr.getStringValue()`
+
+## 0.0.10
+
+### New Features
+
+* Added predicates `ClassOrInterface.getAPermittedSubtype` and `isSealed` exposing information about sealed classes.
+
+## 0.0.9
+
+## 0.0.8
+
+### Deprecated APIs
+
+* The `codeql/java-upgrades` CodeQL pack has been removed. All upgrades scripts have been merged into the `codeql/java-all` CodeQL pack.
+
+## 0.0.7
+
+## 0.0.6
+
+### Major Analysis Improvements
+
+* Data flow now propagates taint from remote source `Parameter` types to read steps of their fields (e.g. `tainted.publicField` or `tainted.getField()`). This also applies to their subtypes and the types of their fields, recursively.
+
+## 0.0.5
+
+### Bug Fixes
+
+* `CharacterLiteral`'s `getCodePointValue` predicate now returns the correct value for UTF-16 surrogates.
+* The `RangeAnalysis` module now properly handles comparisons with Unicode surrogate character literals.
+
+## 0.0.4
+
+### Bug Fixes
+
+* `CharacterLiteral`'s `getCodePointValue` predicate now returns the correct value for UTF-16 surrogates.
+* The `RangeAnalysis` module and the `java/constant-comparison` queries no longer raise false alerts regarding comparisons with Unicode surrogate character literals.
+* The predicate `Method.overrides(Method)` was accidentally transitive. This has been fixed. This fix also affects `Method.overridesOrInstantiates(Method)` and `Method.getASourceOverriddenMethod()`.

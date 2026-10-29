@@ -1,0 +1,2 @@
+query: Security/CWE-020/OverlyLargeRange.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

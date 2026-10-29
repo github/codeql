@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Checking for overflow of integer addition needs to be done with
+care, because automatic type promotion can prevent the check
+from working as intended, with the same value (<code>true</code>
+or <code>false</code>) always being returned.
+</p>
+</overview>
+<recommendation>
+<p>
+Use an explicit cast to make sure that the result of the addition is
+not implicitly converted to a larger type.
+</p>
+</recommendation>
+<example>
+<sample src="BadAdditionOverflowCheckExample1.cpp" />
+<p>
+On a typical architecture where <code>short</code> is 16 bits
+and <code>int</code> is 32 bits, the operands of the addition are
+automatically promoted to <code>int</code>, so it cannot overflow
+and the result of the comparison is always false.
+</p>
+<p>
+The code below implements the check correctly, by using an
+explicit cast to make sure that the result of the addition
+is <code>unsigned short</code> (which may overflow, in which case
+the comparison would evaluate to <code>true</code>).
+</p>
+<sample src="BadAdditionOverflowCheckExample2.cpp" />
+</example>
+<references>
+<li><a href="http://c-faq.com/expr/preservingrules.html">Preserving Rules</a></li>
+<li><a href="https://www.securecoding.cert.org/confluence/plugins/servlet/mobile#content/view/20086942">Understand integer conversion rules</a></li>
+</references>
+</qhelp>

@@ -1,0 +1,683 @@
+/**
+ * Provides the module `Ssa` for working with static single assignment (SSA) form.
+ */
+
+import csharp
+private import internal.SsaImpl as SsaImpl
+import SsaImpl::Ssa_
+
+/**
+ * Provides classes for working with static single assignment (SSA) form.
+ */
+module Ssa {
+  import SsaImpl::Ssa_
+
+  pragma[nomagic]
+  private predicate assignableDefinitionLocalScopeVariable(
+    AssignableDefinition ad, LocalScopeVariable v, Callable c
+  ) {
+    ad.getTarget() = v and
+    ad.getEnclosingCallable() = c
+  }
+
+  /**
+   * A variable that can be SSA converted.
+   *
+   * Either a local scope variable (`SourceVariables::LocalScopeSourceVariable`)
+   * or a fully qualified field or property (`SourceVariables::FieldOrPropSourceVariable`),
+   * `q.fp1.fp2....fpn`, where the base qualifier `q` is either `this`, a local
+   * scope variable, or a type in case `fp1` is static.
+   */
+  class SourceVariable extends SsaImpl::TSourceVariable {
+    /**
+     * Gets the assignable corresponding to this source variable. Either
+     * a local scope variable, a field, or a property.
+     */
+    Assignable getAssignable() { none() }
+
+    /** Gets an access to this source variable. */
+    AssignableAccess getAnAccess() { result = SsaImpl::getAnAccess(this) }
+
+    /** Gets a definition of this source variable. */
+    AssignableDefinition getADefinition() {
+      result.getTargetAccess() = this.getAnAccess()
+      or
+      // Local variable declaration without initializer
+      not exists(result.getTargetAccess()) and
+      exists(LocalScopeVariable v, Callable c |
+        assignableDefinitionLocalScopeVariable(result, v, c) and
+        SsaImpl::localScopeSourceVariable(this, v, c, _)
+      )
+    }
+
+    /**
+     * Holds if this variable is captured by a nested callable.
+     */
+    predicate isCaptured() { this.getAssignable().(LocalScopeVariable).isCaptured() }
+
+    /** Gets the callable in which this source variable is defined. */
+    Callable getEnclosingCallable() { none() }
+
+    /** Gets a textual representation of this source variable. */
+    string toString() { none() }
+
+    /** Gets the location of this source variable. */
+    Location getLocation() { none() }
+
+    /** Gets the type of this source variable. */
+    Type getType() { result = this.getAssignable().getType() }
+
+    /** Gets the qualifier of this source variable, if any. */
+    SourceVariable getQualifier() { none() }
+
+    /**
+     * Gets an SSA definition that has this variable as its underlying
+     * source variable.
+     */
+    SsaDefinition getAnSsaDefinition() { result.getSourceVariable() = this }
+  }
+
+  /** Provides different types of `SourceVariable`s. */
+  module SourceVariables {
+    /** A local scope variable. */
+    class LocalScopeSourceVariable extends SourceVariable, SsaImpl::TLocalVar {
+      override LocalScopeVariable getAssignable() { this = SsaImpl::TLocalVar(_, result) }
+
+      override Callable getEnclosingCallable() { this = SsaImpl::TLocalVar(result, _) }
+
+      override string toString() { result = this.getAssignable().getName() }
+
+      override Location getLocation() { result = this.getAssignable().getLocation() }
+    }
+
+    /** A fully qualified field or property. */
+    class FieldOrPropSourceVariable extends SourceVariable {
+      FieldOrPropSourceVariable() {
+        this = SsaImpl::TPlainFieldOrProp(_, _) or
+        this = SsaImpl::TQualifiedFieldOrProp(_, _, _)
+      }
+
+      override Assignable getAssignable() {
+        this = SsaImpl::TPlainFieldOrProp(_, result) or
+        this = SsaImpl::TQualifiedFieldOrProp(_, _, result)
+      }
+
+      /**
+       * Gets the first access to this field or property in terms of source
+       * code location. This is used as the representative location.
+       */
+      private AssignableAccess getFirstAccess() {
+        result =
+          min(this.getAnAccess() as a
+            order by
+              a.getLocation().getStartLine(), a.getLocation().getStartColumn()
+          )
+      }
+
+      override Location getLocation() { result = this.getFirstAccess().getLocation() }
+    }
+
+    /** A plain field or property. */
+    class PlainFieldOrPropSourceVariable extends FieldOrPropSourceVariable,
+      SsaImpl::TPlainFieldOrProp
+    {
+      override Callable getEnclosingCallable() { this = SsaImpl::TPlainFieldOrProp(result, _) }
+
+      override string toString() {
+        exists(Assignable f, string prefix |
+          f = this.getAssignable() and
+          result = prefix + "." + this.getAssignable()
+        |
+          if f.(Modifiable).isStatic()
+          then prefix = f.getDeclaringType().getName()
+          else prefix = "this"
+        )
+      }
+    }
+
+    /** A qualified field or property. */
+    class QualifiedFieldOrPropSourceVariable extends FieldOrPropSourceVariable,
+      SsaImpl::TQualifiedFieldOrProp
+    {
+      override Callable getEnclosingCallable() {
+        this = SsaImpl::TQualifiedFieldOrProp(result, _, _)
+      }
+
+      override SourceVariable getQualifier() { this = SsaImpl::TQualifiedFieldOrProp(_, result, _) }
+
+      override string toString() { result = this.getQualifier() + "." + this.getAssignable() }
+    }
+  }
+
+  /**
+   * Gets a read of the source variable underlying the SSA definition `def`
+   * that can be reached from `def` without passing through any
+   * other SSA definition or read. Example:
+   *
+   * ```csharp
+   * int Field;
+   *
+   * void SetField(int i) {
+   *   this.Field = i;
+   *   Use(this.Field);
+   *   if (i > 0)
+   *     this.Field = i - 1;
+   *   else if (i < 0)
+   *     SetField(1);
+   *   Use(this.Field);
+   *   Use(this.Field);
+   * }
+   * ```
+   *
+   * - The read of `i` on line 4 can be reached from the explicit SSA
+   *   definition (wrapping an implicit entry definition) on line 3.
+   * - The reads of `i` on lines 6 and 7 are not the first reads of any SSA
+   *   definition.
+   * - The read of `this.Field` on line 5 can be reached from the explicit SSA
+   *   definition on line 4.
+   * - The read of `this.Field` on line 10 can be reached from the phi node
+   *   between lines 9 and 10.
+   * - The read of `this.Field` on line 11 is not the first read of any SSA
+   *   definition.
+   *
+   * Subsequent reads can be found by following the steps defined by
+   * `AssignableRead.getANextRead()`.
+   */
+  AssignableRead ssaGetAFirstUse(SsaDefinition def) { SsaImpl::firstReadSameVar(def, result) }
+
+  /**
+   * DEPRECATED: Use `SsaDefinition` instead.
+   *
+   * A static single assignment (SSA) definition. Either an explicit variable
+   * definition (`ExplicitDefinition`), an implicit variable definition
+   * (`ImplicitDefinition`), or a phi node (`PhiNode`).
+   */
+  deprecated class Definition extends SsaImpl::Definition {
+    /** Gets the control flow node of this SSA definition. */
+    final ControlFlowNode getControlFlowNode() {
+      exists(BasicBlock bb, int i | this.definesAt(_, bb, i) | result = bb.getNode(0.maximum(i)))
+    }
+
+    /**
+     * Holds if this SSA definition is live at the end of basic block `bb`.
+     * That is, this definition reaches the end of basic block `bb`, at which
+     * point it is still live, without crossing another SSA definition of the
+     * same source variable.
+     */
+    final predicate isLiveAtEndOfBlock(BasicBlock bb) { SsaImpl::isLiveAtEndOfBlock(this, bb) }
+
+    /**
+     * Gets a read of the source variable underlying this SSA definition that
+     * can be reached from this SSA definition without passing through any
+     * other SSA definitions. Example:
+     *
+     * ```csharp
+     * int Field;
+     *
+     * void SetField(int i) {
+     *   this.Field = i;
+     *   Use(this.Field);
+     *   if (i > 0)
+     *     this.Field = i - 1;
+     *   else if (i < 0)
+     *     SetField(1);
+     *   Use(this.Field);
+     *   Use(this.Field);
+     * }
+     * ```
+     *
+     * - The reads of `i` on lines 4, 6, 7, and 8 can be reached from the explicit
+     *   SSA definition (wrapping an implicit entry definition) on line 3.
+     * - The read of `this.Field` on line 5 can be reached from the explicit SSA
+     *   definition on line 4.
+     * - The reads of `this.Field` on lines 10 and 11 can be reached from the phi
+     *   node between lines 9 and 10.
+     */
+    final AssignableRead getARead() { result = SsaImpl::getAReadAtNode(this, _) }
+
+    /**
+     * DEPRECATED: Use `getARead()` instead.
+     *
+     * Gets a read of the source variable underlying this SSA definition at
+     * control flow node `cfn` that can be reached from this SSA definition
+     * without passing through any other SSA definitions. Example:
+     *
+     * ```csharp
+     * int Field;
+     *
+     * void SetField(int i) {
+     *   this.Field = i;
+     *   Use(this.Field);
+     *   if (i > 0)
+     *     this.Field = i - 1;
+     *   else if (i < 0)
+     *     SetField(1);
+     *   Use(this.Field);
+     *   Use(this.Field);
+     * }
+     * ```
+     *
+     * - The reads of `i` on lines 4, 6, 7, and 8 can be reached from the implicit
+     *   entry definition on line 3.
+     * - The read of `this.Field` on line 5 can be reached from the explicit SSA
+     *   definition on line 4.
+     * - The reads of `this.Field` on lines 10 and 11 can be reached from the phi
+     *   node between lines 9 and 10.
+     */
+    deprecated final AssignableRead getAReadAtNode(ControlFlowNode cfn) {
+      result = SsaImpl::getAReadAtNode(this, cfn)
+    }
+
+    /**
+     * DEPRECATED: Use `ssaGetAFirstUse` instead.
+     *
+     * Gets a read of the source variable underlying this SSA definition that
+     * can be reached from this SSA definition without passing through any
+     * other SSA definition or read. Example:
+     *
+     * ```csharp
+     * int Field;
+     *
+     * void SetField(int i) {
+     *   this.Field = i;
+     *   Use(this.Field);
+     *   if (i > 0)
+     *     this.Field = i - 1;
+     *   else if (i < 0)
+     *     SetField(1);
+     *   Use(this.Field);
+     *   Use(this.Field);
+     * }
+     * ```
+     *
+     * - The read of `i` on line 4 can be reached from the explicit SSA
+     *   definition (wrapping an implicit entry definition) on line 3.
+     * - The reads of `i` on lines 6 and 7 are not the first reads of any SSA
+     *   definition.
+     * - The read of `this.Field` on line 5 can be reached from the explicit SSA
+     *   definition on line 4.
+     * - The read of `this.Field` on line 10 can be reached from the phi node
+     *   between lines 9 and 10.
+     * - The read of `this.Field` on line 11 is not the first read of any SSA
+     *   definition.
+     *
+     * Subsequent reads can be found by following the steps defined by
+     * `AssignableRead.getANextRead()`.
+     */
+    deprecated final AssignableRead getAFirstRead() { result = this.getAFirstReadAtNode(_) }
+
+    /**
+     * DEPRECATED: Use `ssaGetAFirstUse` instead.
+     *
+     * Gets a read of the source variable underlying this SSA definition at
+     * control flow node `cfn` that can be reached from this SSA definition
+     * without passing through any other SSA definition or read. Example:
+     *
+     * ```csharp
+     * int Field;
+     *
+     * void SetField(int i) {
+     *   this.Field = i;
+     *   Use(this.Field);
+     *   if (i > 0)
+     *     this.Field = i - 1;
+     *   else if (i < 0)
+     *     SetField(1);
+     *   Use(this.Field);
+     *   Use(this.Field);
+     * }
+     * ```
+     *
+     * - The read of `i` on line 4 can be reached from the explicit SSA
+     *   definition (wrapping an implicit entry definition) on line 3.
+     * - The reads of `i` on lines 6 and 7 are not the first reads of any SSA
+     *   definition.
+     * - The read of `this.Field` on line 5 can be reached from the explicit SSA
+     *   definition on line 4.
+     * - The read of `this.Field` on line 10 can be reached from the phi node
+     *   between lines 9 and 10.
+     * - The read of `this.Field` on line 11 is not the first read of any SSA
+     *   definition.
+     *
+     * Subsequent reads can be found by following the steps defined by
+     * `AssignableRead.getANextRead()`.
+     */
+    deprecated final AssignableRead getAFirstReadAtNode(ControlFlowNode cfn) {
+      SsaImpl::firstReadSameVar(this, result) and
+      result.getControlFlowNode() = cfn
+    }
+
+    /**
+     * Gets an SSA definition whose value can flow to this one in one step. This
+     * includes inputs to phi nodes and the prior definitions of uncertain writes.
+     */
+    private Definition getAPhiInputOrPriorDefinition() {
+      result = this.(SsaPhiDefinition).getAnInput() or
+      result = this.(SsaUncertainWrite).getPriorDefinition()
+    }
+
+    /**
+     * Gets a definition that ultimately defines this SSA definition and is
+     * not itself a phi node. Example:
+     *
+     * ```csharp
+     * int Field;
+     *
+     * void SetField(int i) {
+     *   this.Field = i;
+     *   Use(this.Field);
+     *   if (i > 0)
+     *     this.Field = i - 1;
+     *   else if (i < 0)
+     *     SetField(1);
+     *   Use(this.Field);
+     *   Use(this.Field);
+     * }
+     * ```
+     *
+     * - The explicit SSA definition (wrapping an implicit entry definition) of `i`
+     *   on line 3 is defined in terms of itself.
+     * - The explicit SSA definitions of `this.Field` on lines 4 and 7 are defined
+     *   in terms of themselves.
+     * - The implicit SSA definition of `this.Field` on line 9 is defined in terms
+     *   of itself and the explicit definition on line 4.
+     * - The phi node between lines 9 and 10 is defined in terms of the explicit
+     *   definition on line 4, the explicit definition on line 7, and the implicit
+     *   definition on line 9.
+     */
+    final Definition getAnUltimateDefinition() {
+      result = this.getAPhiInputOrPriorDefinition*() and
+      not result instanceof SsaPhiDefinition
+    }
+
+    /**
+     * Gets the syntax element associated with this SSA definition, if any.
+     * This is either an expression, for example `x = 0`, a parameter, or a
+     * callable. Phi nodes have no associated syntax element.
+     */
+    Element getElement() {
+      result.(ControlFlowElement).getControlFlowNode() = this.getControlFlowNode()
+    }
+
+    /**
+     * DEPRECATED: Use `getSourceVariable().getEnclosingCallable()` instead.
+     *
+     * Gets the callable to which this SSA definition belongs.
+     */
+    deprecated final Callable getEnclosingCallable() {
+      result = this.getSourceVariable().getEnclosingCallable()
+    }
+
+    /**
+     * DEPRECATED.
+     *
+     * Holds if this SSA definition assigns to `out`/`ref` parameter `p`, and the
+     * parameter may remain unchanged throughout the rest of the enclosing callable.
+     */
+    deprecated final predicate isLiveOutRefParameterDefinition(Parameter p) {
+      SsaImpl::isLiveOutRefParameterDefinition(this, p)
+    }
+  }
+
+  /**
+   * DEPRECATED: Use `SsaExplicitWrite` instead.
+   *
+   * An SSA definition that corresponds to an explicit assignable definition.
+   */
+  deprecated class ExplicitDefinition extends Definition, SsaImpl::WriteDefinition {
+    AssignableDefinition ad;
+
+    ExplicitDefinition() { SsaImpl::explicitDefinition(this, _, ad) }
+
+    /**
+     * DEPRECATED: Use `SsaExplicitWrite.getDefinition()` instead.
+     *
+     * Gets an underlying assignable definition. The result is always unique,
+     * except for pathological `out`/`ref` assignments like `M(out x, out x)`,
+     * where there may be more than one underlying definition.
+     */
+    deprecated final AssignableDefinition getADefinition() {
+      result = SsaImpl::getADefinition(this)
+    }
+
+    /**
+     * DEPRECATED.
+     *
+     * Holds if this definition updates a captured local scope variable, and the updated
+     * value may be read from the implicit entry definition `def` using one or more calls
+     * (as indicated by `additionalCalls`), starting from call `c`.
+     *
+     * Example:
+     *
+     * ```csharp
+     * class C {
+     *   void M1() {
+     *     int i = 0;
+     *     void M2() => System.Console.WriteLine(i);
+     *     i = 1;
+     *     M2();
+     *   }
+     * }
+     * ```
+     *
+     * If this definition is the update of `i` on line 5, then the value may be read inside
+     * `M2` via the call on line 6.
+     */
+    deprecated final predicate isCapturedVariableDefinitionFlowIn(
+      ImplicitEntryDefinition def, ControlFlowNodes::ElementNode c, boolean additionalCalls
+    ) {
+      none()
+    }
+
+    /**
+     * DEPRECATED.
+     *
+     * Holds if this definition updates a captured local scope variable, and the updated
+     * value may be read from the implicit call definition `cdef` using one or more calls
+     * (as indicated by `additionalCalls`).
+     *
+     * Example:
+     *
+     * ```csharp
+     * class C {
+     *   void M1() {
+     *     int i = 0;
+     *     void M2() { i = 2; };
+     *     M2();
+     *     System.Console.WriteLine(i);
+     *   }
+     * }
+     * ```
+     *
+     * If this definition is the update of `i` on line 4, then the value may be read outside
+     * of `M2` via the call on line 5.
+     */
+    deprecated final predicate isCapturedVariableDefinitionFlowOut(
+      ImplicitCallDefinition cdef, boolean additionalCalls
+    ) {
+      none()
+    }
+
+    override Element getElement() { result = ad.getElement() }
+  }
+
+  /**
+   * DEPRECATED: Use `SsaParameterInit` or `SsaImplicitWrite` instead.
+   *
+   * An SSA definition that does not correspond to an explicit variable definition.
+   * Either an implicit initialization of a variable at the beginning of a callable
+   * (`ImplicitEntryDefinition`), an implicit definition via a call
+   * (`ImplicitCallDefinition`), or an implicit definition where the qualifier is
+   * updated (`ImplicitQualifierDefinition`).
+   */
+  deprecated class ImplicitDefinition extends Definition, SsaImpl::WriteDefinition {
+    ImplicitDefinition() {
+      exists(BasicBlock bb, SourceVariable v, int i | this.definesAt(v, bb, i) |
+        SsaImpl::implicitEntryDefinition(bb, v) and
+        i = -1
+        or
+        SsaImpl::updatesNamedFieldOrProp(bb, i, _, v, _)
+        or
+        SsaImpl::variableWriteQualifier(bb, i, v, _)
+      )
+    }
+  }
+
+  /**
+   * DEPRECATED: Use `SsaParameterInit` or `SsaImplicitEntryDefinition` instead.
+   *
+   * An SSA definition representing the implicit initialization of a variable
+   * at the beginning of a callable. Either a local scope variable captured by
+   * the callable or a field or property accessed inside the callable.
+   */
+  deprecated class ImplicitEntryDefinition extends ImplicitDefinition {
+    ImplicitEntryDefinition() {
+      exists(BasicBlock bb, SourceVariable v |
+        this.definesAt(v, bb, -1) and
+        SsaImpl::implicitEntryDefinition(bb, v)
+      )
+    }
+
+    /** Gets the callable that this entry definition belongs to. */
+    final Callable getCallable() { result = this.getBasicBlock().getEnclosingCallable() }
+
+    override Element getElement() { result = this.getCallable() }
+  }
+
+  /**
+   * DEPRECATED: Use `SsaParameterInit` instead.
+   */
+  deprecated final class ImplicitParameterDefinition = SsaImpl::ParameterDefinitionImpl;
+
+  deprecated private class ExplicitParameterDefinition extends ExplicitDefinition,
+    SsaImpl::ParameterDefinitionImpl
+  {
+    private Parameter p;
+    override AssignableDefinitions::ImplicitParameterDefinition ad;
+
+    ExplicitParameterDefinition() { p = ad.getParameter() }
+
+    override Parameter getParameter() { result = p }
+
+    override string toString() { result = SsaImpl::ParameterDefinitionImpl.super.toString() }
+  }
+
+  /** An SSA definition in a closure that captures a variable. */
+  class SsaCapturedDefinition extends SsaImplicitEntryDefinition {
+    SsaCapturedDefinition() {
+      this.getSourceVariable().getAssignable() instanceof LocalScopeVariable
+    }
+
+    override string toString() { result = "SSA capture def(" + this.getSourceVariable() + ")" }
+  }
+
+  /**
+   * An SSA definition representing the potential definition of a variable
+   * via a call.
+   */
+  class ImplicitCallDefinition extends SsaImplicitWrite {
+    private Call c;
+
+    ImplicitCallDefinition() {
+      exists(BasicBlock bb, SourceVariable v, int i |
+        this.definesAt(v, bb, i) and
+        SsaImpl::updatesNamedFieldOrProp(bb, i, c, v, _)
+      )
+    }
+
+    /** Gets the underlying call. */
+    final Call getCall() { result = c }
+
+    /**
+     * Gets one of the definitions that may contribute to this implicit
+     * call definition. That is, a definition that can be reached from
+     * the target of this call following zero or more additional calls,
+     * and which targets the same assignable as this SSA definition.
+     */
+    final AssignableDefinition getAPossibleDefinition() {
+      exists(Callable setter | SsaImpl::updatesNamedFieldOrProp(_, _, this.getCall(), _, setter) |
+        result.getEnclosingCallable() = setter and
+        result.getTarget() = this.getSourceVariable().getAssignable()
+      )
+    }
+
+    override string toString() { result = "SSA call def(" + this.getSourceVariable() + ")" }
+  }
+
+  /**
+   * An SSA definition representing the potential definition of a variable
+   * via an SSA definition for the qualifier.
+   */
+  class ImplicitQualifierDefinition extends SsaImplicitWrite {
+    private SsaDefinition q;
+
+    ImplicitQualifierDefinition() {
+      not this instanceof SsaImplicitEntryDefinition and
+      exists(BasicBlock bb, int i, SourceVariables::QualifiedFieldOrPropSourceVariable v |
+        this.definesAt(v, bb, i)
+      |
+        SsaImpl::variableWriteQualifier(bb, i, v, _) and
+        q.definesAt(v.getQualifier(), bb, i)
+      )
+    }
+
+    /** Gets the SSA definition for the qualifier. */
+    final SsaDefinition getQualifierDefinition() { result = q }
+
+    override string toString() { result = "SSA qualifier def(" + this.getSourceVariable() + ")" }
+  }
+
+  /**
+   * DEPRECATED: Use `SsaPhiDefinition` instead.
+   *
+   * An SSA phi node, that is, a pseudo definition for a variable at a point
+   * in the flow graph where otherwise two or more definitions for the variable
+   * would be visible.
+   */
+  deprecated class PhiNode extends Definition, SsaImpl::PhiNode {
+    /**
+     * Gets an input of this phi node. Example:
+     *
+     * ```csharp
+     * int Field;
+     *
+     * void SetField(int i) {
+     *   this.Field = i;
+     *   Use(this.Field);
+     *   if (i > 0)
+     *     this.Field = i - 1;
+     *   else if (i < 0)
+     *     SetField(1);
+     *   Use(this.Field);
+     *   Use(this.Field);
+     * }
+     * ```
+     *
+     * - The phi node for `this.Field` between lines 9 and 10 has the explicit
+     *   definition on line 4, the explicit definition on line 7, and the implicit
+     *   call definition on line 9 as inputs.
+     */
+    final Definition getAnInput() { this.hasInputFromBlock(result, _) }
+
+    /** Holds if `inp` is an input to this phi node along the edge originating in `bb`. */
+    predicate hasInputFromBlock(Definition inp, BasicBlock bb) {
+      inp = SsaImpl::phiHasInputFromBlock(this, bb)
+    }
+  }
+
+  /**
+   * DEPRECATED: Use `SsaUncertainWrite` instead.
+   *
+   * An SSA definition that represents an uncertain update of the underlying
+   * assignable. Either an explicit update that is uncertain (`ref` assignments
+   * need not be certain), an implicit non-local update via a call, or an
+   * uncertain update of the qualifier.
+   */
+  deprecated class UncertainDefinition extends Definition, SsaImpl::UncertainWriteDefinition {
+    /**
+     * Gets the immediately preceding definition. Since this update is uncertain,
+     * the value from the preceding definition might still be valid.
+     */
+    Definition getPriorDefinition() { result = SsaImpl::uncertainWriteDefinitionInput(this) }
+  }
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Copying an object using the <code>Cloneable</code> interface and the <code>Object.clone</code> method
+is error-prone. This is because the <code>Cloneable</code> interface and the <code>clone</code> 
+method are unusual:</p>
+
+<ul>
+<li>The <code>Cloneable</code> interface has no methods. Its only use is to trigger different 
+behavior of <code>Object.clone</code>.</li>
+<li><code>Object.clone</code> is protected.</li>
+<li><code>Object.clone</code> creates a shallow copy without calling a constructor.</li>
+</ul>
+
+<p>The first two points mean that a programmer must do two things to get a useful implementation of 
+<code>clone</code>: first, make the class implement <code>Cloneable</code> to change the behavior of 
+<code>Object.clone</code> so that it makes a copy instead of throwing a <code>CloneNotSupportedException</code>;
+second, override <code>clone</code> to make it public, to allow it to be called. Another 
+consequence of <code>Cloneable</code> not having any methods is that it does not say anything about 
+an object that implements it, which means that you cannot perform a polymorphic clone operation.</p>
+
+<p>The third point, <code>Object.clone</code> creating a shallow copy, is the most serious one. A 
+shallow copy shares internal state with the original object. This includes private 
+fields that the programmer might not be aware of. A change to the internal state of the original 
+object could affect the copy, and conversely the opposite is true, which could easily lead to 
+unexpected behavior.</p>
+
+</overview>
+<recommendation>
+
+<p>
+Define either a dedicated copy method or a copy constructor (with a parameter whose type is the same 
+as the type that declares the constructor). In most cases, this is at least as good as 
+using the <code>Cloneable</code> interface and the <code>Object.clone</code> method, without the 
+subtlety involved in implementing and using <code>clone</code> correctly.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, class <code>Galaxy</code> includes a copy constructor. Its parameter is
+of type <code>Galaxy</code>.</p>
+
+<sample src="AvoidCloneableInterface.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>,
+  Item 11.
+  Addison-Wesley, 2008.
+</li>
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Cloneable.html">Interface Cloneable</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#clone()">Object.clone</a>.
+</li>
+
+
+</references>
+</qhelp>

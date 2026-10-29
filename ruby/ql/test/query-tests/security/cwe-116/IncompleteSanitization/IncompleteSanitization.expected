@@ -1,0 +1,54 @@
+| tst.rb:3:3:3:16 | call to sub | This replaces only the first occurrence of "'". |
+| tst.rb:4:3:4:16 | call to sub! | This replaces only the first occurrence of "'". |
+| tst.rb:8:3:8:16 | call to sub | This replaces only the first occurrence of /'/. |
+| tst.rb:9:3:9:16 | call to sub! | This replaces only the first occurrence of /'/. |
+| tst.rb:13:3:13:21 | call to gsub | This does not escape backslash characters in the input. |
+| tst.rb:14:3:14:22 | call to gsub | This does not escape backslash characters in the input. |
+| tst.rb:15:3:15:21 | call to gsub! | This does not escape backslash characters in the input. |
+| tst.rb:16:3:16:22 | call to gsub! | This does not escape backslash characters in the input. |
+| tst.rb:20:3:20:25 | call to gsub | This does not escape backslash characters in the input. |
+| tst.rb:21:3:21:24 | call to gsub | This does not escape backslash characters in the input. |
+| tst.rb:22:3:22:25 | call to gsub! | This does not escape backslash characters in the input. |
+| tst.rb:23:3:23:24 | call to gsub! | This does not escape backslash characters in the input. |
+| tst.rb:27:3:27:26 | call to gsub | This does not escape backslash characters in the input. |
+| tst.rb:28:3:28:26 | call to gsub! | This does not escape backslash characters in the input. |
+| tst.rb:32:3:32:29 | call to gsub | This does not escape backslash characters in the input. |
+| tst.rb:33:3:33:29 | call to gsub! | This does not escape backslash characters in the input. |
+| tst.rb:37:3:37:27 | call to gsub | This does not escape backslash characters in the input. |
+| tst.rb:38:3:38:27 | call to gsub! | This does not escape backslash characters in the input. |
+| tst.rb:42:3:42:16 | call to sub | This replaces only the first occurrence of "\|". |
+| tst.rb:43:3:43:16 | call to sub! | This replaces only the first occurrence of "\|". |
+| tst.rb:47:3:47:22 | call to gsub | This does not escape backslash characters in the input. |
+| tst.rb:48:3:48:21 | call to gsub | This does not escape backslash characters in the input. |
+| tst.rb:49:3:49:21 | call to gsub | This does not escape backslash characters in the input. |
+| tst.rb:50:3:50:22 | call to gsub! | This does not escape backslash characters in the input. |
+| tst.rb:51:3:51:21 | call to gsub! | This does not escape backslash characters in the input. |
+| tst.rb:52:3:52:21 | call to gsub! | This does not escape backslash characters in the input. |
+| tst.rb:56:3:56:19 | call to sub | This replaces only the first occurrence of "/". |
+| tst.rb:57:3:57:19 | call to sub! | This replaces only the first occurrence of "/". |
+| tst.rb:61:3:61:19 | call to sub | This replaces only the first occurrence of "%25". |
+| tst.rb:62:3:62:19 | call to sub! | This replaces only the first occurrence of "%25". |
+| tst.rb:66:3:66:20 | call to sub | This replaces only the first occurrence of "'". |
+| tst.rb:67:3:67:20 | call to sub! | This replaces only the first occurrence of "'". |
+| tst.rb:71:3:71:21 | call to sub | This replaces only the first occurrence of ... + .... |
+| tst.rb:72:3:72:21 | call to sub! | This replaces only the first occurrence of ... + .... |
+| tst.rb:76:3:76:21 | call to sub | This replaces only the first occurrence of "'". |
+| tst.rb:77:3:77:21 | call to sub! | This replaces only the first occurrence of "'". |
+| tst.rb:81:3:81:26 | call to sub | This replaces only the first occurrence of ... + .... |
+| tst.rb:82:3:82:26 | call to sub! | This replaces only the first occurrence of ... + .... |
+| tst.rb:87:3:87:21 | call to sub | This replaces only the first occurrence of indirect. |
+| tst.rb:88:3:88:22 | call to sub! | This replaces only the first occurrence of indirect. |
+| tst.rb:215:3:215:16 | call to sub | This replaces only the first occurrence of "<". |
+| tst.rb:215:3:215:29 | call to sub | This replaces only the first occurrence of ">". |
+| tst.rb:217:3:217:19 | call to sub | This replaces only the first occurrence of "[". |
+| tst.rb:217:3:217:35 | call to sub | This replaces only the first occurrence of "]". |
+| tst.rb:218:3:218:19 | call to sub | This replaces only the first occurrence of "{". |
+| tst.rb:218:3:218:35 | call to sub | This replaces only the first occurrence of "}". |
+| tst.rb:223:3:223:16 | call to sub | This replaces only the first occurrence of "]". |
+| tst.rb:223:3:223:29 | call to sub | This replaces only the first occurrence of "[". |
+| tst.rb:248:3:248:17 | call to sub | This replaces only the first occurrence of "\\n". |
+| tst.rb:249:3:249:27 | call to sub | This replaces only the first occurrence of "\\n". |
+| tst.rb:258:3:258:18 | call to sub! | This replaces only the first occurrence of "\\n". |
+| tst.rb:263:3:263:18 | call to sub! | This replaces only the first occurrence of "\\n". |
+| tst.rb:268:3:268:20 | call to sub! | This replaces only the first occurrence of "/../". |
+| tst.rb:269:3:269:20 | call to sub | This replaces only the first occurrence of "/../". |

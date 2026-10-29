@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["openapitools/openapi-generator", "*", "input.args", "code-injection", "generated"]
+     - ["openapitools/openapi-generator", "*", "input.name", "code-injection", "generated"]
+     - ["openapitools/openapi-generator", "*", "input.goal", "code-injection", "generated"]

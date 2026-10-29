@@ -1,0 +1,64 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+    <overview>
+        <p>
+
+            Directly incorporating user input in the URL of an outgoing HTTP request
+            can enable a request forgery attack, in which the request is altered to 
+            target an unintended API endpoint or resource.
+
+            A client-side forged request may perform an unwanted action affecting the victim's account,
+            or may lead to cross-site scripting if the request response is handled in an unsafe way.
+
+            This is different from CSRF (cross-site request forgery), and will usually bypass CSRF protections.
+
+            This is usually less severe than SSRF (server-side request forgery), as it does not expose internal services.
+        </p>
+    </overview>
+
+    <include src="RequestForgeryRecommendation.inc.qhelp"/>
+
+    <example>
+
+        <p>
+
+            The following example shows an HTTP request used to fetch the pre-rendered
+            HTML body of a message. It is using the endpoint <code>/api/messages/ID</code>, which
+            is believed to respond with a safe HTML string, to be embedded in the page:
+
+        </p>
+
+        <sample src="examples/ClientSideRequestForgeryBad.js"/>
+
+        <p>
+
+            However, the format of the message ID is not checked, and an attacker can abuse this to
+            alter the endpoint targeted by the request. If they can redirect it to an endpoint that returns
+            an untrusted value, this leads to cross-site scripting.
+        </p>
+
+        <p>
+            For example, given the query string <code>message_id=../pastebin/123</code>, the request will
+            end up targeting the <code>/api/pastebin</code> endpoint. Or if there is an open redirect on the login page,
+            a query string like <code>message_id=../../login?redirect_url=https://evil.com</code> could give
+            the attacker full control over the response as well.
+        </p>
+
+        <p>
+            In example below, the input has been restricted to a number so that the endpoint cannot be altered:
+        </p>
+
+        <sample src="examples/ClientSideRequestForgeryGood.js"/>
+
+    </example>
+
+    <references>
+
+        <li>OWASP: <a href="https://cwe.mitre.org/data/definitions/918.html">Server-side request forgery</a></li>
+        <li>OWASP: <a href="https://cwe.mitre.org/data/definitions/352.html">Cross-site request forgery</a></li>
+
+    </references>
+</qhelp>

@@ -1,0 +1,10 @@
+| tst.js:1:19:1:21 | 0-9 | Suspicious character range that overlaps with 3-5 in the same character class. |
+| tst.js:3:21:3:23 | A-z | Suspicious character range that overlaps with A-Z in the same character class, and is equivalent to [A-Z\\[\\\\\\]^_`a-z]. |
+| tst.js:5:18:5:20 | z-a | Suspicious character range that is empty. |
+| tst.js:15:28:15:30 | A-f | Suspicious character range that overlaps with a-f in the same character class, and is equivalent to [A-Z\\[\\\\\\]^_`a-f]. |
+| tst.js:17:20:17:22 | $-` | Suspicious character range that is equivalent to [$%&'()*+,\\-.\\/0-9:;<=>?@A-Z\\[\\\\\\]^_`]. |
+| tst.js:19:33:19:35 | +-< | Suspicious character range that is equivalent to [+,\\-.\\/0-9:;<]. |
+| tst.js:21:37:21:39 | .-_ | Suspicious character range that overlaps with 1-9 in the same character class, and is equivalent to [.\\/0-9:;<=>?@A-Z\\[\\\\\\]^_]. |
+| tst.js:23:24:23:26 | 7-F | Suspicious character range that is equivalent to [7-9:;<=>?@A-F]. |
+| tst.js:25:28:25:30 | 0-9 | Suspicious character range that overlaps with \\d in the same character class. |
+| tst.js:27:31:27:33 | .-? | Suspicious character range that overlaps with \\w in the same character class, and is equivalent to [.\\/0-9:;<=>?]. |

@@ -1,0 +1,16 @@
+obj/
+TestResults/
+*.manifest
+*.pdb
+*.suo
+*.mdb
+*.vsmdi
+csharp.log
+**/bin/Debug
+**/bin/Release
+*.tlog
+.vs
+*.user
+
+extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json
+paket-files/

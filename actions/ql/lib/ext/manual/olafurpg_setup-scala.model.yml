@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["olafurpg/setup-scala", "*", "input.jabba-version", "command-injection", "manual"]

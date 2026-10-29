@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Runtime.InteropServices.Swift", "SwiftError", "SwiftError", "(System.Void*)", "summary", "df-generated"]
+      - ["System.Runtime.InteropServices.Swift", "SwiftError", "get_Value", "()", "summary", "df-generated"]
+      - ["System.Runtime.InteropServices.Swift", "SwiftIndirectResult", "SwiftIndirectResult", "(System.Void*)", "summary", "df-generated"]
+      - ["System.Runtime.InteropServices.Swift", "SwiftIndirectResult", "get_Value", "()", "summary", "df-generated"]
+      - ["System.Runtime.InteropServices.Swift", "SwiftSelf", "SwiftSelf", "(System.Void*)", "summary", "df-generated"]
+      - ["System.Runtime.InteropServices.Swift", "SwiftSelf", "get_Value", "()", "summary", "df-generated"]
+      - ["System.Runtime.InteropServices.Swift", "SwiftSelf<T>", "SwiftSelf", "(T)", "summary", "df-generated"]
+      - ["System.Runtime.InteropServices.Swift", "SwiftSelf<T>", "get_Value", "()", "summary", "df-generated"]

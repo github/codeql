@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      - ['Anthropic', 'Member[messages].Member[create].Argument[system:]', 'prompt-injection']
+      - ['Anthropic', 'Member[messages].Member[stream].Argument[system:]', 'prompt-injection']
+      - ['Anthropic', 'Member[beta].Member[messages].Member[create].Argument[system:]', 'prompt-injection']
+      - ['Anthropic', 'Member[messages].Member[create].Argument[messages:].ListElement.DictionaryElement[content]', 'prompt-injection']
+      - ['Anthropic', 'Member[messages].Member[stream].Argument[messages:].ListElement.DictionaryElement[content]', 'prompt-injection']
+      - ['Anthropic', 'Member[beta].Member[messages].Member[create].Argument[messages:].ListElement.DictionaryElement[content]', 'prompt-injection']
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data:
+      - ['Anthropic', 'anthropic', 'Member[Anthropic,AsyncAnthropic].ReturnValue']

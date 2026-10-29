@@ -1,0 +1,54 @@
+name: "Check QLdoc coverage"
+
+on:
+  pull_request:
+    paths:
+      - "*/ql/lib/**"
+      - .github/workflows/check-qldoc.yml
+      - .github/actions/fetch-codeql/action.yml
+    branches:
+      - main
+      - "rc/*"
+
+permissions:
+  contents: read
+
+jobs:
+  qldoc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+
+      - name: Install CodeQL
+        uses: ./.github/actions/fetch-codeql
+
+      - name: Check QLdoc coverage
+        shell: bash
+        run: |
+          EXIT_CODE=0
+          # TODO: remove the shared exception from the regex when coverage of qlpacks without dbschemes is supported
+          # TODO: remove the actions exception once https://github.com/github/codeql-team/issues/3656 is fixed
+          changed_lib_packs="$(git diff --name-only --diff-filter=ACMRT HEAD^ HEAD | { grep -Po '^(?!(shared|actions))[a-z]*/ql/lib' || true; } | sort -u)"
+          for pack_dir in ${changed_lib_packs}; do
+            lang="${pack_dir%/ql/lib}"
+            codeql generate library-doc-coverage --output="${RUNNER_TEMP}/${lang}-current.txt" --dir="${pack_dir}"
+          done
+          git checkout HEAD^
+          for pack_dir in ${changed_lib_packs}; do
+            # When we add a new language, pack_dir would not exist in HEAD^.
+            # In this case the right thing to do is to skip the check.
+            [[ ! -d "${pack_dir}" ]] && continue
+            lang="${pack_dir%/ql/lib}"
+            codeql generate library-doc-coverage --output="${RUNNER_TEMP}/${lang}-baseline.txt" --dir="${pack_dir}"
+            awk -F, '{gsub(/"/,""); if ($4==0 && $6=="public") print "\""$3"\"" }' "${RUNNER_TEMP}/${lang}-current.txt" | sort -u > "${RUNNER_TEMP}/current-undocumented.txt"
+            awk -F, '{gsub(/"/,""); if ($4==0 && $6=="public") print "\""$3"\"" }' "${RUNNER_TEMP}/${lang}-baseline.txt" | sort -u > "${RUNNER_TEMP}/baseline-undocumented.txt"
+            UNDOCUMENTED="$(grep -f <(comm -13 "${RUNNER_TEMP}/baseline-undocumented.txt" "${RUNNER_TEMP}/current-undocumented.txt") "${RUNNER_TEMP}/${lang}-current.txt" || true)"
+            if [ -n "$UNDOCUMENTED" ]; then
+              echo "$UNDOCUMENTED" | awk -F, '{gsub(/"/,""); print "::warning file='"${pack_dir}"'/"$1",line="$2"::Missing QLdoc for "$5, $3 }'
+              EXIT_CODE=1
+            fi
+          done
+          exit "${EXIT_CODE}"

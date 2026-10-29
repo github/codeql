@@ -1,0 +1,42 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.nio.file.attribute", "AclEntry$Builder", False, "build", "()", "", "Argument[this].SyntheticField[java.nio.file.attribute.AclEntry$Builder.who]", "ReturnValue.SyntheticField[java.nio.file.attribute.AclEntry.who]", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "AclEntry$Builder", False, "setFlags", "(AclEntryFlag[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "AclEntry$Builder", False, "setFlags", "(Set)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "AclEntry$Builder", False, "setPermissions", "(AclEntryPermission[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "AclEntry$Builder", False, "setPermissions", "(Set)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "AclEntry$Builder", False, "setPrincipal", "(UserPrincipal)", "", "Argument[0]", "Argument[this].SyntheticField[java.nio.file.attribute.AclEntry$Builder.who]", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "AclEntry$Builder", False, "setPrincipal", "(UserPrincipal)", "", "Argument[0]", "ReturnValue.SyntheticField[java.nio.file.attribute.AclEntry$Builder.who]", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "AclEntry$Builder", False, "setPrincipal", "(UserPrincipal)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "AclEntry$Builder", False, "setType", "(AclEntryType)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "AclEntry", False, "flags", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.attribute", "AclEntry", False, "newBuilder", "(AclEntry)", "", "Argument[0].SyntheticField[java.nio.file.attribute.AclEntry.who]", "ReturnValue.SyntheticField[java.nio.file.attribute.AclEntry$Builder.who]", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "AclEntry", False, "permissions", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.attribute", "AclEntry", False, "principal", "()", "", "Argument[this].SyntheticField[java.nio.file.attribute.AclEntry.who]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "BasicFileAttributeView", True, "readAttributes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.attribute", "BasicFileAttributes", True, "fileKey", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.attribute", "FileTime", False, "from", "(Instant)", "", "Argument[0]", "ReturnValue.SyntheticField[java.nio.file.attribute.FileTime.instant]", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "FileTime", False, "toInstant", "()", "", "Argument[this].SyntheticField[java.nio.file.attribute.FileTime.instant]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "PosixFileAttributes", True, "group", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.attribute", "PosixFileAttributes", True, "owner", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.attribute", "UserPrincipalLookupService", True, "lookupPrincipalByGroupName", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.attribute", "UserPrincipalLookupService", True, "lookupPrincipalByName", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.attribute", "UserPrincipalNotFoundException", True, "UserPrincipalNotFoundException", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.nio.file.attribute.UserPrincipalNotFoundException.name]", "value", "dfc-generated"]
+      - ["java.nio.file.attribute", "UserPrincipalNotFoundException", True, "getName", "()", "", "Argument[this].SyntheticField[java.nio.file.attribute.UserPrincipalNotFoundException.name]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.nio.file.attribute", "AclEntry", "newBuilder", "()", "summary", "df-generated"]
+      - ["java.nio.file.attribute", "AclEntry", "type", "()", "summary", "df-generated"]
+      - ["java.nio.file.attribute", "FileTime", "from", "(long,TimeUnit)", "summary", "df-generated"]
+      - ["java.nio.file.attribute", "FileTime", "fromMillis", "(long)", "summary", "df-generated"]
+      - ["java.nio.file.attribute", "FileTime", "to", "(TimeUnit)", "summary", "df-generated"]
+      - ["java.nio.file.attribute", "FileTime", "toMillis", "()", "summary", "df-generated"]
+      - ["java.nio.file.attribute", "PosixFilePermissions", "asFileAttribute", "(Set)", "summary", "df-generated"]
+      - ["java.nio.file.attribute", "PosixFilePermissions", "fromString", "(String)", "summary", "df-generated"]
+      - ["java.nio.file.attribute", "PosixFilePermissions", "toString", "(Set)", "summary", "df-generated"]

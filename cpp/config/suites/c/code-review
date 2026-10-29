@@ -1,0 +1,31 @@
++ semmlecode-cpp-queries/Likely Bugs/Conversion/LossyPointerCast.ql: /Critical/Critical_Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Best Practices/Likely Errors/Slicing.ql: /Critical/Critical_Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/BadCheckOdd.ql: /Critical/Critical_Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/IntMultToLong.ql: /Critical/Critical_Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Likely Bugs/Conversion/NonzeroValueCastToPointer.ql: /Critical/Critical_Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Likely Bugs/Conversion/ImplicitDowncastFromBitfield.ql: /Critical/Critical_Correctness/Dangerous Conversions
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/AssignWhereCompareMeant.ql: /Critical/Critical_Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/CompareWhereAssignMeant.ql: /Critical/Critical_Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/ExprHasNoEffect.ql: /Critical/Critical_Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/ShortCircuitBitMask.ql: /Critical/Critical_Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/MissingEnumCaseInSwitch.ql: /Critical/Critical_Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/BitwiseSignCheck.ql: /Critical/Critical_Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/SuspiciousCallToMemset.ql: /Critical/Critical_Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/SuspiciousSizeof.ql: /Critical/Critical_Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/UnsafeUseOfStrcat.ql: /Critical/Critical_Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/SuspiciousCallToStrncat.ql: /Critical/Critical_Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/StrncpyFlippedArgs.ql: /Critical/Critical_Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Format/WrongNumberOfFormatArguments.ql: /Critical/Critical_Correctness/Use of Libraries
++ semmlecode-cpp-queries/Likely Bugs/Format/TooManyFormatArguments.ql: /Critical/Critical_Correctness/Use of Libraries
++ semmlecode-cpp-queries/jsf/4.21 Operators/AV Rule 166.ql: /Critical/Critical_Correctness/Use of Libraries # Sizeof with side effects
++ semmlecode-cpp-queries/jsf/4.07 Header Files/AV Rule 35.ql: /Critical/Critical_Maintainability/Coupling # Missing header guard
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/ComparisonPrecedence.ql: /Critical/Critical_Readability/Expressions
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/UnsignedGEZero.ql: /Critical/Critical_Readability/Expressions
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/PointlessComparison.ql: /Critical/Critical_Readability/Expressions
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/BadAdditionOverflowCheck.ql: /Critical/Critical_Readability/Expressions
++ semmlecode-cpp-queries/Likely Bugs/Arithmetic/PointlessSelfComparison.ql: /Critical/Critical_Readability/Expressions
++ semmlecode-cpp-queries/Likely Bugs/Likely Typos/DubiousNullCheck.ql: /Critical/Critical_Readability/Control Flow
++ semmlecode-cpp-queries/jsf/4.24 Control Flow Structures/AV Rule 197.ql: /Critical/Critical_Readability/Control Flow
+
+## FLinesOfCode.ql is used internally.
++ odasa-cpp-metrics/Files/FLinesOfCode.ql

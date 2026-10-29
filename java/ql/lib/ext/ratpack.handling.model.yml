@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      # All Context#parse methods that return a Promise are remote flow sources.
+      - ["ratpack.handling", "Context", True, "parse", "(com.google.common.reflect.TypeToken)", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.handling", "Context", True, "parse", "(com.google.common.reflect.TypeToken,java.lang.Object)", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.handling", "Context", True, "parse", "(java.lang.Class)", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.handling", "Context", True, "parse", "(java.lang.Class,java.lang.Object)", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.handling", "Context", True, "parse", "(ratpack.core.parse.Parse)", "", "ReturnValue", "remote", "manual"]
+      - ["ratpack.handling", "Context", True, "parse", "(ratpack.parse.Parse)", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["ratpack.handling", "Context", True, "parse", "(ratpack.core.http.TypedData,ratpack.core.parse.Parse)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["ratpack.handling", "Context", True, "parse", "(ratpack.core.http.TypedData,ratpack.core.parse.Parse)", "", "Argument[0]", "ReturnValue.MapKey", "taint", "manual"]
+      - ["ratpack.handling", "Context", True, "parse", "(ratpack.core.http.TypedData,ratpack.core.parse.Parse)", "", "Argument[0]", "ReturnValue.MapValue", "taint", "manual"]
+      - ["ratpack.handling", "Context", True, "parse", "(ratpack.http.TypedData,ratpack.parse.Parse)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

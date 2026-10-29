@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This query finds pointer dereferences that do not first check the pointer for nullness, 
+even though the same pointer is checked for nullness in other 
+parts of the code. It is likely that the nullness check was accidentally omitted, and that a null pointer dereference can occur.
+Dereferencing a null pointer and attempting to modify its contents can lead to anything from a segmentation fault to corrupting
+important system data (including the interrupt table in some architectures).
+</p>
+
+<include src="pointsToWarning.inc.qhelp" />
+</overview>
+
+<recommendation>
+<p>Use a nullness check consistently in all cases where a pointer is dereferenced.</p>
+
+</recommendation>
+<example>
+<p>
+This code shows two examples where a pointer is dereferenced. 
+The first example checks that the pointer is not null before dereferencing it. 
+The second example fails to perform a nullness check, leading to a potential vulnerability in the code.
+</p>
+<sample src="InconsistentNullnessTesting.cpp" />
+</example>
+
+<references>
+<li>SEI CERT C++ Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/MEM10-C.+Define+and+use+a+pointer+validation+function">MEM10-C. Define and use a pointer validation function</a>.</li>
+</references>
+</qhelp>

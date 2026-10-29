@@ -1,0 +1,7 @@
+instances
+| gen_field_expr.rs:5:5:5:9 | x.foo |
+getAttr
+getContainer
+| gen_field_expr.rs:5:5:5:9 | x.foo | gen_field_expr.rs:5:5:5:5 | x |
+getIdentifier
+| gen_field_expr.rs:5:5:5:9 | x.foo | gen_field_expr.rs:5:7:5:9 | foo |

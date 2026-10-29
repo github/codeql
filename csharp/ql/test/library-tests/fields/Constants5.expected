@@ -1,0 +1,10 @@
+| fields.cs:74:26:74:26 | X | fields.cs:74:26:74:26 | access to constant X | 74 |
+| fields.cs:75:26:75:26 | Y | fields.cs:75:26:75:26 | access to constant Y | 75 |
+| fields.cs:75:26:75:26 | Y | fields.cs:80:30:80:32 | access to constant Y | 80 |
+| fields.cs:80:26:80:26 | Z | fields.cs:74:30:74:32 | access to constant Z | 74 |
+| fields.cs:80:26:80:26 | Z | fields.cs:80:26:80:26 | access to constant Z | 80 |
+| fields.cs:85:26:85:28 | Foo | fields.cs:85:26:85:28 | access to constant Foo | 85 |
+| fields.cs:85:26:85:28 | Foo | fields.cs:89:17:89:19 | access to constant Foo | 89 |
+| fields.cs:85:26:85:28 | Foo | fields.cs:90:27:90:29 | access to constant Foo | 90 |
+| fields.cs:85:26:85:28 | Foo | fields.cs:91:19:91:21 | access to constant Foo | 91 |
+| fields.cs:85:26:85:28 | Foo | fields.cs:92:31:92:33 | access to constant Foo | 92 |

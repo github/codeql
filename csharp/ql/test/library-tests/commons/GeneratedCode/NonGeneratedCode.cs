@@ -1,0 +1,3 @@
+using System;
+
+class NonGeneratedCode { }

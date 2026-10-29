@@ -1,0 +1,2 @@
+query: queries/security/cwe-611/Xxe.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,2 @@
+query: Security/CWE/CWE-311/CleartextBufferWrite.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

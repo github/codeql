@@ -1,0 +1,9 @@
+| my_struct.rs:0:0:0:0 | my_struct.rs | 20 |
+| comments.rs:0:0:0:0 | comments.rs | 13 |
+| main.rs:0:0:0:0 | main.rs | 8 |
+| my_macro.rs:0:0:0:0 | my_macro.rs | 8 |
+| lib.rs:0:0:0:0 | lib.rs | 5 |
+| does_not_compile.rs:0:0:0:0 | does_not_compile.rs | 3 |
+| error.rs:0:0:0:0 | error.rs | 3 |
+| Cargo.toml:0:0:0:0 | Cargo.toml | 0 |
+| options.yml:0:0:0:0 | options.yml | 0 |

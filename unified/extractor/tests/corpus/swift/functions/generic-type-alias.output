@@ -1,0 +1,71 @@
+typealias Box<T: Equatable, U> = Dictionary<T, U>
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        typeAliasDecl
+          attributes:
+          name: identifier "Box"
+          genericParameterClause:
+            genericParameterClause
+              parameters:
+                genericParameter
+                  colon: :
+                  attributes:
+                  name: identifier "T"
+                  trailingComma: ,
+                  inheritedType:
+                    identifierType
+                      name: identifier "Equatable"
+                genericParameter
+                  attributes:
+                  name: identifier "U"
+              leftAngle: <
+              rightAngle: >
+          modifiers:
+          initializer:
+            typeInitializerClause
+              equal: =
+              value:
+                identifierType
+                  name: identifier "Dictionary"
+                  genericArgumentClause:
+                    genericArgumentClause
+                      arguments:
+                        genericArgument
+                          trailingComma: ,
+                          argument:
+                            identifierType
+                              name: identifier "T"
+                        genericArgument
+                          argument:
+                            identifierType
+                              name: identifier "U"
+                      leftAngle: <
+                      rightAngle: >
+          typealiasKeyword: typealias
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        type_alias_declaration source="typealias ⟨name_node⟩<⟨type_parameter⟩, ⟨type_parameter⟩> = ⟨type⟩"
+          name_node: identifier "Box" source="Box"
+          type_parameter:
+            type_parameter source="⟨name_node⟩: ⟨bound⟩"
+              name_node: identifier "T" source="T"
+              bound: identifier "Equatable" source="Equatable"
+            type_parameter source="⟨name_node⟩"
+              name_node: identifier "U" source="U"
+          type:
+            generic_type_expr source="⟨base⟩<⟨type_argument⟩, ⟨type_argument⟩>"
+              base: identifier "Dictionary" source="Dictionary"
+              type_argument:
+                identifier "T" source="T"
+                identifier "U" source="U"

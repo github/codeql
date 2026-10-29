@@ -1,0 +1,6 @@
+| MagicNumbersUseConstant.cs:19:19:19:21 | 241 | Literal value '241' used instead of constant $@. | MagicNumbersUseConstant.cs:6:32:6:46 | PUBLIC_READONLY | PUBLIC_READONLY |
+| MagicNumbersUseConstant.cs:19:19:19:21 | 241 | Literal value '241' used instead of constant $@. | MagicNumbersUseConstant.cs:7:22:7:33 | PUBLIC_CONST | PUBLIC_CONST |
+| MagicNumbersUseConstant.cs:19:19:19:21 | 241 | Literal value '241' used instead of constant $@. | MagicNumbersUseConstant.cs:12:15:12:22 | CONSTANT | CONSTANT |
+| MagicNumbersUseConstant.cs:24:18:24:20 | 241 | Literal value '241' used instead of constant $@. | MagicNumbersUseConstant.cs:6:32:6:46 | PUBLIC_READONLY | PUBLIC_READONLY |
+| MagicNumbersUseConstant.cs:24:18:24:20 | 241 | Literal value '241' used instead of constant $@. | MagicNumbersUseConstant.cs:7:22:7:33 | PUBLIC_CONST | PUBLIC_CONST |
+| MagicNumbersUseConstant.cs:24:18:24:20 | 241 | Literal value '241' used instead of constant $@. | MagicNumbersUseConstant.cs:12:15:12:22 | CONSTANT | CONSTANT |

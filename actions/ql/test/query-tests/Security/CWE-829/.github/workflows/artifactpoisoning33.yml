@@ -1,0 +1,21 @@
+name: Pull Request Open
+
+on: 
+  workflow_run:
+    workflows: ["Prev"]
+    types:
+      - completed
+
+jobs:
+  Download:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          gh run download "${{github.event.workflow_run.id}}" --repo "${GITHUB_REPOSITORY}" --name "artifact_name" --dir foo
+          unzip foo/artifact_name.zip
+      - name: Run command
+        run: |
+          ./bar/cmd
+
+
+

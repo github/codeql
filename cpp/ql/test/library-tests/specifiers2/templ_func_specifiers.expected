@@ -1,0 +1,4 @@
+| cpp20.cpp:17:5:17:20 | TestExplicitBool | extern, public |
+| cpp20.cpp:40:1:40:39 | TestExplicitBool2 | public |
+| cpp20.cpp:40:23:40:23 | TestExplicitBool2 | public |
+| cpp20.cpp:55:1:55:39 | TestExplicitBool3 | public |

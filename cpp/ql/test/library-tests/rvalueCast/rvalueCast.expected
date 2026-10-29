@@ -1,0 +1,3 @@
+| default.cpp:1:6:1:8 | def | 8 | 0 |
+| disabled.cpp:1:6:1:13 | disabled | 8 | 0 |
+| enabled.cpp:1:6:1:12 | enabled | 6 | 1 |

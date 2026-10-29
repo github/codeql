@@ -1,0 +1,22 @@
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
+
+sh_binary(
+    name = "qltest",
+    srcs = ["qltest.sh"],
+    visibility = ["//swift/tools/test/qltest:__pkg__"],
+)
+
+codeql_pkg_files(
+    name = "tools",
+    srcs = [
+        "autobuild.cmd",
+        "tracing-config.lua",
+    ],
+    exes = [
+        "autobuild.sh",
+        "identify-environment.sh",
+        "qltest.sh",
+    ],
+    visibility = ["//swift:__pkg__"],
+)

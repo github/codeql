@@ -1,0 +1,7 @@
+instances
+| gen_type_param.rs:7:12:7:12 | T |
+getAttr
+getDefaultType
+getName
+| gen_type_param.rs:7:12:7:12 | T | gen_type_param.rs:7:12:7:12 | T |
+getTypeBoundList

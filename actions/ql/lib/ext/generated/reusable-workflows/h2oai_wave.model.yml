@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["h2oai/wave/.github/workflows/wave-bundle-docker-build-publish.yaml", "*", "input.build-version", "code-injection", "generated"]
+     - ["h2oai/wave/.github/workflows/wave-bundle-docker-build-publish.yaml", "*", "input.wave-app-name", "code-injection", "generated"]
+     - ["h2oai/wave/.github/workflows/wave-bundle-docker-build-publish.yaml", "*", "input.working-directory", "code-injection", "generated"]

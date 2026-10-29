@@ -1,0 +1,2 @@
+var React = x;
+(<e/>);

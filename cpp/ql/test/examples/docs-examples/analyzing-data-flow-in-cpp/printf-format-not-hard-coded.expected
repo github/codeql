@@ -1,0 +1,1 @@
+| printf.cpp:5:5:5:10 | call to printf | Argument to printf isn't hard-coded. |

@@ -1,0 +1,127 @@
+#select
+| UrlForwardTest.java:29:27:29:29 | url | UrlForwardTest.java:28:27:28:36 | url : String | UrlForwardTest.java:29:27:29:29 | url | Untrusted URL forward depends on a $@. | UrlForwardTest.java:28:27:28:36 | url | user-provided value |
+| UrlForwardTest.java:35:28:35:30 | url | UrlForwardTest.java:33:27:33:36 | url : String | UrlForwardTest.java:35:28:35:30 | url | Untrusted URL forward depends on a $@. | UrlForwardTest.java:33:27:33:36 | url | user-provided value |
+| UrlForwardTest.java:42:23:42:25 | url | UrlForwardTest.java:41:21:41:30 | url : String | UrlForwardTest.java:42:23:42:25 | url | Untrusted URL forward depends on a $@. | UrlForwardTest.java:41:21:41:30 | url | user-provided value |
+| UrlForwardTest.java:47:48:47:63 | ... + ... | UrlForwardTest.java:46:27:46:36 | url : String | UrlForwardTest.java:47:48:47:63 | ... + ... | Untrusted URL forward depends on a $@. | UrlForwardTest.java:46:27:46:36 | url | user-provided value |
+| UrlForwardTest.java:47:61:47:63 | url | UrlForwardTest.java:46:27:46:36 | url : String | UrlForwardTest.java:47:61:47:63 | url | Untrusted URL forward depends on a $@. | UrlForwardTest.java:46:27:46:36 | url | user-provided value |
+| UrlForwardTest.java:63:33:63:35 | url | UrlForwardTest.java:61:19:61:28 | url : String | UrlForwardTest.java:63:33:63:35 | url | Untrusted URL forward depends on a $@. | UrlForwardTest.java:61:19:61:28 | url | user-provided value |
+| UrlForwardTest.java:74:33:74:62 | ... + ... | UrlForwardTest.java:72:19:72:28 | url : String | UrlForwardTest.java:74:33:74:62 | ... + ... | Untrusted URL forward depends on a $@. | UrlForwardTest.java:72:19:72:28 | url | user-provided value |
+| UrlForwardTest.java:85:33:85:62 | ... + ... | UrlForwardTest.java:83:19:83:28 | url : String | UrlForwardTest.java:85:33:85:62 | ... + ... | Untrusted URL forward depends on a $@. | UrlForwardTest.java:83:19:83:28 | url | user-provided value |
+| UrlForwardTest.java:109:33:109:35 | url | UrlForwardTest.java:106:19:106:32 | urlPath : String | UrlForwardTest.java:109:33:109:35 | url | Untrusted URL forward depends on a $@. | UrlForwardTest.java:106:19:106:32 | urlPath | user-provided value |
+| UrlForwardTest.java:148:33:148:36 | path | UrlForwardTest.java:145:17:145:63 | getServletPath(...) : String | UrlForwardTest.java:148:33:148:36 | path | Untrusted URL forward depends on a $@. | UrlForwardTest.java:145:17:145:63 | getServletPath(...) | user-provided value |
+| UrlForwardTest.java:161:33:161:36 | path | UrlForwardTest.java:158:17:158:63 | getServletPath(...) : String | UrlForwardTest.java:161:33:161:36 | path | Untrusted URL forward depends on a $@. | UrlForwardTest.java:158:17:158:63 | getServletPath(...) | user-provided value |
+| UrlForwardTest.java:193:51:193:59 | returnURL | UrlForwardTest.java:184:22:184:54 | getParameter(...) : String | UrlForwardTest.java:193:51:193:59 | returnURL | Untrusted URL forward depends on a $@. | UrlForwardTest.java:184:22:184:54 | getParameter(...) | user-provided value |
+| UrlForwardTest.java:209:56:209:64 | returnURL | UrlForwardTest.java:203:22:203:54 | getParameter(...) : String | UrlForwardTest.java:209:56:209:64 | returnURL | Untrusted URL forward depends on a $@. | UrlForwardTest.java:203:22:203:54 | getParameter(...) | user-provided value |
+| UrlForwardTest.java:236:53:236:56 | path | UrlForwardTest.java:232:17:232:44 | getParameter(...) : String | UrlForwardTest.java:236:53:236:56 | path | Untrusted URL forward depends on a $@. | UrlForwardTest.java:232:17:232:44 | getParameter(...) | user-provided value |
+| UrlForwardTest.java:247:53:247:56 | path | UrlForwardTest.java:244:17:244:44 | getParameter(...) : String | UrlForwardTest.java:247:53:247:56 | path | Untrusted URL forward depends on a $@. | UrlForwardTest.java:244:17:244:44 | getParameter(...) | user-provided value |
+| UrlForwardTest.java:261:53:261:76 | toString(...) | UrlForwardTest.java:255:17:255:44 | getParameter(...) : String | UrlForwardTest.java:261:53:261:76 | toString(...) | Untrusted URL forward depends on a $@. | UrlForwardTest.java:255:17:255:44 | getParameter(...) | user-provided value |
+| UrlForwardTest.java:273:53:273:76 | toString(...) | UrlForwardTest.java:268:17:268:44 | getParameter(...) : String | UrlForwardTest.java:273:53:273:76 | toString(...) | Untrusted URL forward depends on a $@. | UrlForwardTest.java:268:17:268:44 | getParameter(...) | user-provided value |
+| UrlForwardTest.java:284:53:284:56 | path | UrlForwardTest.java:280:17:280:44 | getParameter(...) : String | UrlForwardTest.java:284:53:284:56 | path | Untrusted URL forward depends on a $@. | UrlForwardTest.java:280:17:280:44 | getParameter(...) | user-provided value |
+| UrlForwardTest.java:322:54:322:57 | path | UrlForwardTest.java:319:17:319:44 | getParameter(...) : String | UrlForwardTest.java:322:54:322:57 | path | Untrusted URL forward depends on a $@. | UrlForwardTest.java:319:17:319:44 | getParameter(...) | user-provided value |
+| UrlForwardTest.java:365:53:365:56 | path | UrlForwardTest.java:355:17:355:44 | getParameter(...) : String | UrlForwardTest.java:365:53:365:56 | path | Untrusted URL forward depends on a $@. | UrlForwardTest.java:355:17:355:44 | getParameter(...) | user-provided value |
+| UrlForwardTest.java:372:20:372:22 | url | UrlForwardTest.java:371:16:371:41 | getParameter(...) : String | UrlForwardTest.java:372:20:372:22 | url | Untrusted URL forward depends on a $@. | UrlForwardTest.java:371:16:371:41 | getParameter(...) | user-provided value |
+| UrlForwardTest.java:384:27:384:56 | getParameter(...) | UrlForwardTest.java:384:27:384:56 | getParameter(...) | UrlForwardTest.java:384:27:384:56 | getParameter(...) | Untrusted URL forward depends on a $@. | UrlForwardTest.java:384:27:384:56 | getParameter(...) | user-provided value |
+edges
+| UrlForwardTest.java:28:27:28:36 | url : String | UrlForwardTest.java:29:27:29:29 | url | provenance | Sink:MaD:4 |
+| UrlForwardTest.java:33:27:33:36 | url : String | UrlForwardTest.java:35:28:35:30 | url | provenance | Sink:MaD:5 |
+| UrlForwardTest.java:41:21:41:30 | url : String | UrlForwardTest.java:42:23:42:25 | url | provenance |  |
+| UrlForwardTest.java:46:27:46:36 | url : String | UrlForwardTest.java:47:48:47:63 | ... + ... | provenance | Sink:MaD:4 |
+| UrlForwardTest.java:46:27:46:36 | url : String | UrlForwardTest.java:47:61:47:63 | url | provenance |  |
+| UrlForwardTest.java:61:19:61:28 | url : String | UrlForwardTest.java:63:33:63:35 | url | provenance | Sink:MaD:2 |
+| UrlForwardTest.java:72:19:72:28 | url : String | UrlForwardTest.java:74:33:74:62 | ... + ... | provenance | Sink:MaD:2 |
+| UrlForwardTest.java:83:19:83:28 | url : String | UrlForwardTest.java:85:33:85:62 | ... + ... | provenance | Sink:MaD:2 |
+| UrlForwardTest.java:106:19:106:32 | urlPath : String | UrlForwardTest.java:109:33:109:35 | url | provenance | Sink:MaD:2 |
+| UrlForwardTest.java:145:17:145:63 | getServletPath(...) : String | UrlForwardTest.java:148:33:148:36 | path | provenance | Src:MaD:6 Sink:MaD:2 |
+| UrlForwardTest.java:158:17:158:63 | getServletPath(...) : String | UrlForwardTest.java:161:33:161:36 | path | provenance | Src:MaD:6 Sink:MaD:2 |
+| UrlForwardTest.java:184:22:184:54 | getParameter(...) : String | UrlForwardTest.java:193:51:193:59 | returnURL | provenance | Src:MaD:7 Sink:MaD:1 |
+| UrlForwardTest.java:203:22:203:54 | getParameter(...) : String | UrlForwardTest.java:209:56:209:64 | returnURL | provenance | Src:MaD:7 Sink:MaD:2 |
+| UrlForwardTest.java:232:17:232:44 | getParameter(...) : String | UrlForwardTest.java:236:53:236:56 | path | provenance | Src:MaD:7 Sink:MaD:1 |
+| UrlForwardTest.java:244:17:244:44 | getParameter(...) : String | UrlForwardTest.java:247:53:247:56 | path | provenance | Src:MaD:7 Sink:MaD:1 |
+| UrlForwardTest.java:255:17:255:44 | getParameter(...) : String | UrlForwardTest.java:258:53:258:56 | path : String | provenance | Src:MaD:7  |
+| UrlForwardTest.java:258:24:258:57 | resolve(...) : Path | UrlForwardTest.java:258:24:258:69 | normalize(...) : Path | provenance | MaD:9 |
+| UrlForwardTest.java:258:24:258:69 | normalize(...) : Path | UrlForwardTest.java:261:53:261:65 | requestedPath : Path | provenance |  |
+| UrlForwardTest.java:258:53:258:56 | path : String | UrlForwardTest.java:258:24:258:57 | resolve(...) : Path | provenance | MaD:10 |
+| UrlForwardTest.java:261:53:261:65 | requestedPath : Path | UrlForwardTest.java:261:53:261:76 | toString(...) | provenance | MaD:11 Sink:MaD:1 |
+| UrlForwardTest.java:268:17:268:44 | getParameter(...) : String | UrlForwardTest.java:270:53:270:56 | path : String | provenance | Src:MaD:7  |
+| UrlForwardTest.java:270:24:270:57 | resolve(...) : Path | UrlForwardTest.java:270:24:270:69 | normalize(...) : Path | provenance | MaD:9 |
+| UrlForwardTest.java:270:24:270:69 | normalize(...) : Path | UrlForwardTest.java:273:53:273:65 | requestedPath : Path | provenance |  |
+| UrlForwardTest.java:270:53:270:56 | path : String | UrlForwardTest.java:270:24:270:57 | resolve(...) : Path | provenance | MaD:10 |
+| UrlForwardTest.java:273:53:273:65 | requestedPath : Path | UrlForwardTest.java:273:53:273:76 | toString(...) | provenance | MaD:11 Sink:MaD:1 |
+| UrlForwardTest.java:280:17:280:44 | getParameter(...) : String | UrlForwardTest.java:281:28:281:31 | path : String | provenance | Src:MaD:7  |
+| UrlForwardTest.java:281:10:281:41 | decode(...) : String | UrlForwardTest.java:284:53:284:56 | path | provenance | Sink:MaD:1 |
+| UrlForwardTest.java:281:28:281:31 | path : String | UrlForwardTest.java:281:10:281:41 | decode(...) : String | provenance | MaD:8 |
+| UrlForwardTest.java:319:17:319:44 | getParameter(...) : String | UrlForwardTest.java:322:54:322:57 | path | provenance | Src:MaD:7 Sink:MaD:1 |
+| UrlForwardTest.java:355:17:355:44 | getParameter(...) : String | UrlForwardTest.java:360:29:360:32 | path : String | provenance | Src:MaD:7  |
+| UrlForwardTest.java:355:17:355:44 | getParameter(...) : String | UrlForwardTest.java:365:53:365:56 | path | provenance | Src:MaD:7 Sink:MaD:1 |
+| UrlForwardTest.java:360:11:360:42 | decode(...) : String | UrlForwardTest.java:360:29:360:32 | path : String | provenance |  |
+| UrlForwardTest.java:360:11:360:42 | decode(...) : String | UrlForwardTest.java:365:53:365:56 | path | provenance | Sink:MaD:1 |
+| UrlForwardTest.java:360:29:360:32 | path : String | UrlForwardTest.java:360:11:360:42 | decode(...) : String | provenance | MaD:8 |
+| UrlForwardTest.java:371:16:371:41 | getParameter(...) : String | UrlForwardTest.java:372:20:372:22 | url | provenance | Src:MaD:7 Sink:MaD:3 |
+models
+| 1 | Sink: javax.servlet; ServletContext; true; getRequestDispatcher; (String); ; Argument[0]; url-forward; manual |
+| 2 | Sink: javax.servlet; ServletRequest; true; getRequestDispatcher; (String); ; Argument[0]; url-forward; manual |
+| 3 | Sink: org.kohsuke.stapler; StaplerResponse; true; forward; (Object,String,StaplerRequest); ; Argument[1]; url-forward; manual |
+| 4 | Sink: org.springframework.web.servlet; ModelAndView; false; ModelAndView; ; ; Argument[0]; url-forward; manual |
+| 5 | Sink: org.springframework.web.servlet; ModelAndView; false; setViewName; ; ; Argument[0]; url-forward; manual |
+| 6 | Source: javax.servlet.http; HttpServletRequest; false; getServletPath; (); ; ReturnValue; remote; manual |
+| 7 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 8 | Summary: java.net; URLDecoder; false; decode; ; ; Argument[0]; ReturnValue; taint; manual |
+| 9 | Summary: java.nio.file; Path; true; normalize; ; ; Argument[this]; ReturnValue; taint; manual |
+| 10 | Summary: java.nio.file; Path; true; resolve; ; ; Argument[0]; ReturnValue; taint; manual |
+| 11 | Summary: java.nio.file; Path; true; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+nodes
+| UrlForwardTest.java:28:27:28:36 | url : String | semmle.label | url : String |
+| UrlForwardTest.java:29:27:29:29 | url | semmle.label | url |
+| UrlForwardTest.java:33:27:33:36 | url : String | semmle.label | url : String |
+| UrlForwardTest.java:35:28:35:30 | url | semmle.label | url |
+| UrlForwardTest.java:41:21:41:30 | url : String | semmle.label | url : String |
+| UrlForwardTest.java:42:23:42:25 | url | semmle.label | url |
+| UrlForwardTest.java:46:27:46:36 | url : String | semmle.label | url : String |
+| UrlForwardTest.java:47:48:47:63 | ... + ... | semmle.label | ... + ... |
+| UrlForwardTest.java:47:61:47:63 | url | semmle.label | url |
+| UrlForwardTest.java:61:19:61:28 | url : String | semmle.label | url : String |
+| UrlForwardTest.java:63:33:63:35 | url | semmle.label | url |
+| UrlForwardTest.java:72:19:72:28 | url : String | semmle.label | url : String |
+| UrlForwardTest.java:74:33:74:62 | ... + ... | semmle.label | ... + ... |
+| UrlForwardTest.java:83:19:83:28 | url : String | semmle.label | url : String |
+| UrlForwardTest.java:85:33:85:62 | ... + ... | semmle.label | ... + ... |
+| UrlForwardTest.java:106:19:106:32 | urlPath : String | semmle.label | urlPath : String |
+| UrlForwardTest.java:109:33:109:35 | url | semmle.label | url |
+| UrlForwardTest.java:145:17:145:63 | getServletPath(...) : String | semmle.label | getServletPath(...) : String |
+| UrlForwardTest.java:148:33:148:36 | path | semmle.label | path |
+| UrlForwardTest.java:158:17:158:63 | getServletPath(...) : String | semmle.label | getServletPath(...) : String |
+| UrlForwardTest.java:161:33:161:36 | path | semmle.label | path |
+| UrlForwardTest.java:184:22:184:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlForwardTest.java:193:51:193:59 | returnURL | semmle.label | returnURL |
+| UrlForwardTest.java:203:22:203:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlForwardTest.java:209:56:209:64 | returnURL | semmle.label | returnURL |
+| UrlForwardTest.java:232:17:232:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlForwardTest.java:236:53:236:56 | path | semmle.label | path |
+| UrlForwardTest.java:244:17:244:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlForwardTest.java:247:53:247:56 | path | semmle.label | path |
+| UrlForwardTest.java:255:17:255:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlForwardTest.java:258:24:258:57 | resolve(...) : Path | semmle.label | resolve(...) : Path |
+| UrlForwardTest.java:258:24:258:69 | normalize(...) : Path | semmle.label | normalize(...) : Path |
+| UrlForwardTest.java:258:53:258:56 | path : String | semmle.label | path : String |
+| UrlForwardTest.java:261:53:261:65 | requestedPath : Path | semmle.label | requestedPath : Path |
+| UrlForwardTest.java:261:53:261:76 | toString(...) | semmle.label | toString(...) |
+| UrlForwardTest.java:268:17:268:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlForwardTest.java:270:24:270:57 | resolve(...) : Path | semmle.label | resolve(...) : Path |
+| UrlForwardTest.java:270:24:270:69 | normalize(...) : Path | semmle.label | normalize(...) : Path |
+| UrlForwardTest.java:270:53:270:56 | path : String | semmle.label | path : String |
+| UrlForwardTest.java:273:53:273:65 | requestedPath : Path | semmle.label | requestedPath : Path |
+| UrlForwardTest.java:273:53:273:76 | toString(...) | semmle.label | toString(...) |
+| UrlForwardTest.java:280:17:280:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlForwardTest.java:281:10:281:41 | decode(...) : String | semmle.label | decode(...) : String |
+| UrlForwardTest.java:281:28:281:31 | path : String | semmle.label | path : String |
+| UrlForwardTest.java:284:53:284:56 | path | semmle.label | path |
+| UrlForwardTest.java:319:17:319:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlForwardTest.java:322:54:322:57 | path | semmle.label | path |
+| UrlForwardTest.java:355:17:355:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlForwardTest.java:360:11:360:42 | decode(...) : String | semmle.label | decode(...) : String |
+| UrlForwardTest.java:360:29:360:32 | path : String | semmle.label | path : String |
+| UrlForwardTest.java:365:53:365:56 | path | semmle.label | path |
+| UrlForwardTest.java:371:16:371:41 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UrlForwardTest.java:372:20:372:22 | url | semmle.label | url |
+| UrlForwardTest.java:384:27:384:56 | getParameter(...) | semmle.label | getParameter(...) |
+subpaths

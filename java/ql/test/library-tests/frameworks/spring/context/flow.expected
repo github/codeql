@@ -1,0 +1,25 @@
+models
+| 1 | Summary: org.springframework.context; MessageSource; true; getMessage; (String,Object[],Locale); ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+| 2 | Summary: org.springframework.context; MessageSource; true; getMessage; (String,Object[],String,Locale); ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+| 3 | Summary: org.springframework.context; MessageSource; true; getMessage; (String,Object[],String,Locale); ; Argument[2]; ReturnValue; taint; manual |
+edges
+| Test.java:16:29:16:51 | new String[] : String[] [[]] : String | Test.java:16:8:16:60 | getMessage(...) | provenance | MaD:1 |
+| Test.java:16:29:16:51 | {...} : String[] [[]] : String | Test.java:16:29:16:51 | new String[] : String[] [[]] : String | provenance |  |
+| Test.java:16:43:16:49 | taint(...) : String | Test.java:16:29:16:51 | {...} : String[] [[]] : String | provenance |  |
+| Test.java:17:29:17:51 | new String[] : String[] [[]] : String | Test.java:17:8:17:64 | getMessage(...) | provenance | MaD:2 |
+| Test.java:17:29:17:51 | {...} : String[] [[]] : String | Test.java:17:29:17:51 | new String[] : String[] [[]] : String | provenance |  |
+| Test.java:17:43:17:49 | taint(...) : String | Test.java:17:29:17:51 | {...} : String[] [[]] : String | provenance |  |
+| Test.java:18:35:18:41 | taint(...) : String | Test.java:18:8:18:50 | getMessage(...) | provenance | MaD:3 |
+nodes
+| Test.java:16:8:16:60 | getMessage(...) | semmle.label | getMessage(...) |
+| Test.java:16:29:16:51 | new String[] : String[] [[]] : String | semmle.label | new String[] : String[] [[]] : String |
+| Test.java:16:29:16:51 | {...} : String[] [[]] : String | semmle.label | {...} : String[] [[]] : String |
+| Test.java:16:43:16:49 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:17:8:17:64 | getMessage(...) | semmle.label | getMessage(...) |
+| Test.java:17:29:17:51 | new String[] : String[] [[]] : String | semmle.label | new String[] : String[] [[]] : String |
+| Test.java:17:29:17:51 | {...} : String[] [[]] : String | semmle.label | {...} : String[] [[]] : String |
+| Test.java:17:43:17:49 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:18:8:18:50 | getMessage(...) | semmle.label | getMessage(...) |
+| Test.java:18:35:18:41 | taint(...) : String | semmle.label | taint(...) : String |
+subpaths
+testFailures

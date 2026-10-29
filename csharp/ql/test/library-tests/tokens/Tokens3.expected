@@ -1,0 +1,9 @@
+| tokens.cs:7:27:7:33 | param1 |
+| tokens.cs:16:13:16:19 | field1 |
+| tokens.cs:17:13:17:19 | field2 |
+| tokens.cs:18:13:18:18 | field3 |
+| tokens.cs:20:34:20:40 | param1 |
+| tokens.cs:22:20:22:26 | local1 |
+| tokens.cs:23:28:23:34 | local2 |
+| tokens.cs:23:38:23:39 | x |
+| tokens.cs:24:20:24:25 | local3 |
