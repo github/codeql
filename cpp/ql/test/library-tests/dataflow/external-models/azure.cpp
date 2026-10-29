@@ -1,80 +1,10 @@
+#include "../taint-tests/stl.h"
 using uint16_t = unsigned short;
 using int64_t = long long;
 using size_t = unsigned long;
 using uint8_t = unsigned char;
 using int32_t = int;
 using uint32_t = unsigned int;
-
-namespace std
-{
-	template <class T1, class T2>
-	struct pair {
-		typedef T1 first_type;
-		typedef T2 second_type;
-
-		T1 first;
-		T2 second;
-		pair();
-		pair(const T1& x, const T2& y);
-		template<class U, class V> pair(const pair<U, V> &p);
-
-		void swap(pair& p) /*noexcept(...)*/;
-	};
-
-	template<class charT> struct char_traits;
-
-	typedef size_t streamsize;
-
-	template <class T> class allocator {
-	public:
-		allocator() throw();
-		typedef size_t size_type;
-	};
-
-	template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
-	class basic_string {
-	public:
-		using value_type = charT;
-		using reference = value_type&;
-		using const_reference = const value_type&;
-		typedef typename Allocator::size_type size_type;
-
-    basic_string(const charT* s, const Allocator& a = Allocator());
-	};
-
-	typedef basic_string<char> string;
-
-  template <typename K, typename V>
-  class map
-  {
-  public:
-    using key_type = K;
-    using value_type = pair<const K, V>;
-    map();
-    ~map();
-
-    V& operator[](const key_type& key);
-  };
-
-  template <typename T>
-  class vector
-  {
-  public:
-    vector();
-    ~vector();
-
-    T& operator[](size_t);
-  };
-
-  template<typename T>
-  class unique_ptr {
-  public:
-    unique_ptr();
-    ~unique_ptr();
-
-    T* get();
-  };
-}
 
 namespace Azure
 {

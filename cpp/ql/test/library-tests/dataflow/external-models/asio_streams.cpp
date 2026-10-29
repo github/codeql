@@ -1,16 +1,9 @@
 
 // --- stub library headers ---
 
-#include "std_string.h"
+#include "../taint-tests/stl.h"
 
 #define SIZE_MAX 0xFFFFFFFF
-
-namespace std {
-	class string_view {
-	public:
-		string_view(const char* s);
-	};
-};
 
 namespace boost {
 	namespace system {
