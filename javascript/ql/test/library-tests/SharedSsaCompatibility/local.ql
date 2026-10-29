@@ -149,7 +149,7 @@ module InlineTest implements TestSig {
       value = "" and
       exists(FieldDefinition field, Ssa2::ExprNode read, DataFlow::Node node |
         read.getExpr() = field and
-        node = TSsaUseNode(read.getExpr()) and
+        node = TSharedSsaReadNode(read) and
         node.getContainer() != field.getDeclaringClass().getConstructor().getBody() and
         location = field.getLocation()
       )

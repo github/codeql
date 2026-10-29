@@ -67,7 +67,7 @@ function sharedDefinitionApi(parameter) {
   const { value } = { value: parameter };
   CHECK_NATIVE(value); // $ sharedDefinition
   if (typeof value === "object") {
-    CHECK_NATIVE(value); // $ MISSING: sharedDefinition
+    CHECK_NATIVE(value); // $ sharedDefinition
   }
 }
 
@@ -78,11 +78,11 @@ function capturedDefinitionApi() {
     value = 2;
   }
   function* read() {
-    CHECK_NATIVE(value); // $ MISSING: sharedDefinition
+    CHECK_NATIVE(value); // $ sharedDefinition
     yield;
-    CHECK_NATIVE(value); // $ MISSING: sharedDefinition
+    CHECK_NATIVE(value); // $ sharedDefinition
   }
   write();
-  CHECK_NATIVE(value); // $ MISSING: sharedDefinition
+  CHECK_NATIVE(value); // $ sharedDefinition
   return read;
 }

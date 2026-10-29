@@ -31,21 +31,14 @@ module InlineTest implements TestSig {
       tag = "sharedDefinition" and
       exists(
         DataFlow::InvokeNode check, VarUse read, Ssa2::Definition definition,
-        Ssa2::SsaConfig::SourceVariable variable, BasicBlock bb, int index, BasicBlock defBlock,
-        int publicIndex, int nativeIndex
+        Ssa2::SsaConfig::SourceVariable variable, BasicBlock bb, int index
       |
         check.getCalleeName() = "CHECK_NATIVE" and
         read = check.getArgument(0).asExpr() and
         read = bb.getNode(index) and
         variable.asLocalVariable() = read.getVariable() and
         Ssa2::ssaDefReachesRead(variable, definition, bb, index) and
-        definition.definesAt(variable, defBlock, nativeIndex) and
-        read.getSsaVariable().getDefinition().definesAt(defBlock, publicIndex, read.getVariable()) and
-        (
-          publicIndex = nativeIndex and nativeIndex >= 0
-          or
-          publicIndex = 0 and nativeIndex = -1
-        ) and
+        read.getSsaVariable().getDefinition() = definition and
         location = check.getLocation()
       )
       or

@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
     execFile("git", ["ls-remote", remote, "HEAD"]); // OK - it's not an option
   }
 
-  execFile("git", ["ls-remote", remote, "HEAD"]); // $ SPURIOUS: Alert - both outcomes of the earlier check are modeled as safe.
+  execFile("git", ["ls-remote", remote, "HEAD"]); // Both outcomes of the earlier check are modeled as safe.
 
   const uncheckedRemote = req.query.uncheckedRemote; // $ Source
   if (uncheckedRemote.startsWith("git@")) {

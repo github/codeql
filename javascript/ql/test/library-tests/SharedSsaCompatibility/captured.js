@@ -96,7 +96,7 @@ function legacyGuardedPhi(condition) {
   } else {
     value = "safe";
   }
-  SINK(value); // $ SPURIOUS: capturedFlow=legacy-guarded-phi
+  SINK(value);
 }
 
 function legacyGuardedWithReads(condition) {
@@ -110,5 +110,5 @@ function legacyGuardedWithReads(condition) {
       value = "safe";
     }
   }
-  SINK(value); // $ SPURIOUS: capturedFlow=legacy-with-guard
+  SINK(value);
 }

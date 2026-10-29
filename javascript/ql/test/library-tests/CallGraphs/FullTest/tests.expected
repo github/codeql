@@ -102,12 +102,14 @@ test_getAFunctionValue
 | protoclass.js:3:10:3:10 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
 | protoclass.js:4:3:4:11 | this.init | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
 | protoclass.js:7:1:7:1 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
+| protoclass.js:7:1:7:11 | [ssa-synth-read] F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
 | protoclass.js:7:1:7:16 | F.prototype.init | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
 | protoclass.js:7:1:11:1 | F.proto ...  m();\\n} | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
 | protoclass.js:7:20:11:1 | functio ...  m();\\n} | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
 | protoclass.js:8:3:8:13 | this.method | protoclass.js:13:22:13:34 | function() {} |
 | protoclass.js:9:11:9:21 | this.method | protoclass.js:13:22:13:34 | function() {} |
 | protoclass.js:13:1:13:1 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
+| protoclass.js:13:1:13:11 | [ssa-synth-read] F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
 | protoclass.js:13:1:13:18 | F.prototype.method | protoclass.js:13:22:13:34 | function() {} |
 | protoclass.js:13:1:13:34 | F.proto ... on() {} | protoclass.js:13:22:13:34 | function() {} |
 | protoclass.js:13:22:13:34 | function() {} | protoclass.js:13:22:13:34 | function() {} |

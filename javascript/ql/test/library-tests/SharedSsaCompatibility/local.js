@@ -15,21 +15,21 @@ function ordinaryPhiLocalFlow(condition, otherCondition) {
 function postUpdateOrdering(value) {
   SINK(value); // $ noPostUpdateFlow=post-update
   value.property = SOURCE("post-update");
-  SINK(value); // $ SPURIOUS: noPostUpdateFlow=post-update MISSING: postUpdateFlow=post-update
+  SINK(value); // $ postUpdateFlow=post-update
 }
 
 function assignmentUpdateCompletion(value) {
-  value.property = SOURCE("store-completion", SINK(value)); // $ noPostUpdateFlow=store-completion SPURIOUS: globalPostUpdateFlow=store-completion MISSING: noGlobalPostUpdateFlow=store-completion
-  SINK(value); // $ globalPostUpdateFlow=store-completion SPURIOUS: noPostUpdateFlow=store-completion MISSING: postUpdateFlow=store-completion
+  value.property = SOURCE("store-completion", SINK(value)); // $ noPostUpdateFlow=store-completion noGlobalPostUpdateFlow=store-completion
+  SINK(value); // $ postUpdateFlow=store-completion globalPostUpdateFlow=store-completion
 }
 
 function callUpdateCompletion(value) {
-  UPDATE("call-completion", value, SINK(value)); // $ noPostUpdateFlow=call-completion SPURIOUS: globalPostUpdateFlow=call-completion MISSING: noGlobalPostUpdateFlow=call-completion
-  SINK(value); // $ globalPostUpdateFlow=call-completion SPURIOUS: noPostUpdateFlow=call-completion MISSING: postUpdateFlow=call-completion
+  UPDATE("call-completion", value, SINK(value)); // $ noPostUpdateFlow=call-completion noGlobalPostUpdateFlow=call-completion
+  SINK(value); // $ postUpdateFlow=call-completion globalPostUpdateFlow=call-completion
 }
 
 function nestedCallUpdateCompletion(value) {
-  use(UPDATE("nested-call-completion", value), SINK(value)); // $ globalPostUpdateFlow=nested-call-completion SPURIOUS: noPostUpdateFlow=nested-call-completion MISSING: postUpdateFlow=nested-call-completion
+  use(UPDATE("nested-call-completion", value), SINK(value)); // $ postUpdateFlow=nested-call-completion globalPostUpdateFlow=nested-call-completion
 }
 
 function overwrittenCallArgument(value) {
@@ -39,17 +39,17 @@ function overwrittenCallArgument(value) {
 
 function selfAssignedCallUpdate(value) {
   UPDATE("self-assigned-call-update", value, value = value);
-  SINK(value); // $ globalPostUpdateFlow=self-assigned-call-update SPURIOUS: noPostUpdateFlow=self-assigned-call-update MISSING: postUpdateFlow=self-assigned-call-update
+  SINK(value); // $ postUpdateFlow=self-assigned-call-update globalPostUpdateFlow=self-assigned-call-update
 }
 
 function selfAssignedStoreUpdate(value) {
   value.property = (value = value, SOURCE("self-assigned-store-update"));
-  SINK(value); // $ globalPostUpdateFlow=self-assigned-store-update SPURIOUS: noPostUpdateFlow=self-assigned-store-update MISSING: postUpdateFlow=self-assigned-store-update
+  SINK(value); // $ postUpdateFlow=self-assigned-store-update globalPostUpdateFlow=self-assigned-store-update
 }
 
 function conditionalCallUpdate(value, condition) {
   UPDATE("conditional-call-update", value, value = condition ? value : {});
-  SINK(value); // $ globalPostUpdateFlow=conditional-call-update SPURIOUS: noPostUpdateFlow=conditional-call-update MISSING: postUpdateFlow=conditional-call-update
+  SINK(value); // $ postUpdateFlow=conditional-call-update globalPostUpdateFlow=conditional-call-update
 }
 
 function unusedOverwrittenCallArgument(value) {
@@ -58,38 +58,38 @@ function unusedOverwrittenCallArgument(value) {
 
 function refinedCallArgument(value) {
   UPDATE("refined-call-argument", value, typeof value === "object" ? 1 : 2);
-  SINK(value); // $ globalPostUpdateFlow=refined-call-argument SPURIOUS: noPostUpdateFlow=refined-call-argument MISSING: postUpdateFlow=refined-call-argument
+  SINK(value); // $ postUpdateFlow=refined-call-argument globalPostUpdateFlow=refined-call-argument
 }
 
 function computedStoreCompletion(value) {
   value[
-    SINK(value) // $ noPostUpdateFlow=computed-store-completion SPURIOUS: globalPostUpdateFlow=computed-store-completion MISSING: noGlobalPostUpdateFlow=computed-store-completion
+    SINK(value) // $ noPostUpdateFlow=computed-store-completion noGlobalPostUpdateFlow=computed-store-completion
   ] = SOURCE(
     "computed-store-completion",
-    SINK(value) // $ noPostUpdateFlow=computed-store-completion SPURIOUS: globalPostUpdateFlow=computed-store-completion MISSING: noGlobalPostUpdateFlow=computed-store-completion
+    SINK(value) // $ noPostUpdateFlow=computed-store-completion noGlobalPostUpdateFlow=computed-store-completion
   );
-  SINK(value); // $ globalPostUpdateFlow=computed-store-completion SPURIOUS: noPostUpdateFlow=computed-store-completion MISSING: postUpdateFlow=computed-store-completion
+  SINK(value); // $ postUpdateFlow=computed-store-completion globalPostUpdateFlow=computed-store-completion
 }
 
 function destructuringStoreCompletion(value) {
-  [value.first, value[SINK(value)]] = SOURCE("destructuring-store-completion"); // $ globalPostUpdateFlow=destructuring-store-completion SPURIOUS: noPostUpdateFlow=destructuring-store-completion MISSING: postUpdateFlow=destructuring-store-completion
-  SINK(value); // $ globalPostUpdateFlow=destructuring-store-completion SPURIOUS: noPostUpdateFlow=destructuring-store-completion MISSING: postUpdateFlow=destructuring-store-completion
+  [value.first, value[SINK(value)]] = SOURCE("destructuring-store-completion"); // $ postUpdateFlow=destructuring-store-completion globalPostUpdateFlow=destructuring-store-completion
+  SINK(value); // $ postUpdateFlow=destructuring-store-completion globalPostUpdateFlow=destructuring-store-completion
 }
 
 function exceptionalCallUpdate(value) {
   try {
     UPDATE("exceptional-call-completion", value);
   } catch (error) {
-    SINK(value); // $ globalPostUpdateFlow=exceptional-call-completion SPURIOUS: noPostUpdateFlow=exceptional-call-completion MISSING: postUpdateFlow=exceptional-call-completion
+    SINK(value); // $ postUpdateFlow=exceptional-call-completion globalPostUpdateFlow=exceptional-call-completion
   }
-  SINK(value); // $ globalPostUpdateFlow=exceptional-call-completion SPURIOUS: noPostUpdateFlow=exceptional-call-completion MISSING: postUpdateFlow=exceptional-call-completion
+  SINK(value); // $ postUpdateFlow=exceptional-call-completion globalPostUpdateFlow=exceptional-call-completion
 }
 
 function loopUpdateCompletion(value) {
   while (condition()) {
-    SINK(value); // $ globalPostUpdateFlow=loop-completion SPURIOUS: noPostUpdateFlow=loop-completion MISSING: postUpdateFlow=loop-completion
+    SINK(value); // $ postUpdateFlow=loop-completion globalPostUpdateFlow=loop-completion
     UPDATE("loop-completion", value);
-    SINK(value); // $ globalPostUpdateFlow=loop-completion SPURIOUS: noPostUpdateFlow=loop-completion MISSING: postUpdateFlow=loop-completion
+    SINK(value); // $ postUpdateFlow=loop-completion globalPostUpdateFlow=loop-completion
   }
 }
 
@@ -106,7 +106,7 @@ function nestedRefinementPostUpdate(value) {
   if (value) {
     if (typeof value === "object") {
       value.property = SOURCE("nested-post-update");
-      SINK(value); // $ SPURIOUS: noPostUpdateFlow=nested-post-update MISSING: postUpdateFlow=nested-post-update
+      SINK(value); // $ postUpdateFlow=nested-post-update
     }
   }
 }
@@ -116,7 +116,7 @@ function refinedPostUpdateReads(value) {
     SINK(value); // $ noPostUpdateFlow=refined-post-update
     value.property = SOURCE("refined-post-update");
     use(value);
-    SINK(value); // $ SPURIOUS: noPostUpdateFlow=refined-post-update MISSING: postUpdateFlow=refined-post-update
+    SINK(value); // $ postUpdateFlow=refined-post-update
   }
 }
 
@@ -125,7 +125,7 @@ function compatibilityPhiPostUpdateReads(value) {
     SINK(value); // $ noPostUpdateFlow=compatibility-phi-post-update
     value.property = SOURCE("compatibility-phi-post-update");
     use(value);
-    SINK(value); // $ SPURIOUS: noPostUpdateFlow=compatibility-phi-post-update MISSING: postUpdateFlow=compatibility-phi-post-update
+    SINK(value); // $ postUpdateFlow=compatibility-phi-post-update
   }
 }
 
@@ -133,7 +133,7 @@ function postUpdateBeforeNestedRefinement(value) {
   if (value) {
     value.property = SOURCE("update-before-refinement");
     if (typeof value === "object") {
-      SINK(value); // $ SPURIOUS: noPostUpdateFlow=update-before-refinement MISSING: postUpdateFlow=update-before-refinement
+      SINK(value); // $ postUpdateFlow=update-before-refinement
     }
   }
 }
@@ -143,12 +143,12 @@ function postUpdateBeforeCompatibilityPhi(value) {
     value.property = SOURCE("update-before-phi");
     use(value);
   }
-  SINK(value); // $ SPURIOUS: noPostUpdateFlow=update-before-phi MISSING: postUpdateFlow=update-before-phi
+  SINK(value); // $ postUpdateFlow=update-before-phi
 }
 
 function postUpdateImmediatePredecessor(value) {
   value.property = SOURCE("update-immediate-predecessor");
-  SINK(value); // $ noImmediatePostUpdate=update-immediate-predecessor SPURIOUS: noPostUpdateFlow=update-immediate-predecessor MISSING: postUpdateFlow=update-immediate-predecessor
+  SINK(value); // $ postUpdateFlow=update-immediate-predecessor noImmediatePostUpdate=update-immediate-predecessor
 }
 
 function capturedRefinementLocalFlow() {
@@ -179,7 +179,7 @@ function unreachableLocalSsaCode() {
 class SharedSsaBase {}
 
 class SharedSsaDerived extends SharedSsaBase {
-  field = this.condition ? 1 : 2; // $ SPURIOUS: fieldReadContainerMismatch
+  field = this.condition ? 1 : 2;
 
   constructor(condition) {
     if (condition) {

@@ -22,7 +22,7 @@ function phiReadInsideRefinement(condition) {
     } else {
       if (!BARRIER(phiReadSource)) return;
     }
-    SINK(phiReadSource); // $ localRefinementFlow=refined-phi-read noRefinementBypass=refined-phi-read SPURIOUS: refinementFlow=refined-phi-read refinementTaint=refined-phi-read MISSING: noRefinementFlow=refined-phi-read noRefinementTaint=refined-phi-read
+    SINK(phiReadSource); // $ noRefinementFlow=refined-phi-read noRefinementTaint=refined-phi-read localRefinementFlow=refined-phi-read noRefinementBypass=refined-phi-read
   }
 }
 
@@ -155,7 +155,7 @@ function filteredPhiInputWithReplacement(condition, otherCondition) {
         if (!BARRIER(value)) return;
       }
       if (typeof value === "object") {
-        SINK(value); // $ localRefinementFlow=refinement-after-guarded-join noRefinementBypass=refinement-after-guarded-join SPURIOUS: refinementFlow=refinement-after-guarded-join refinementTaint=refinement-after-guarded-join MISSING: noRefinementFlow=refinement-after-guarded-join noRefinementTaint=refinement-after-guarded-join
+        SINK(value); // $ localRefinementFlow=refinement-after-guarded-join noRefinementBypass=refinement-after-guarded-join noRefinementFlow=refinement-after-guarded-join noRefinementTaint=refinement-after-guarded-join
       }
     }
   }
@@ -219,7 +219,7 @@ function filteredPhiInputWithReplacement(condition, otherCondition) {
     } else {
       value = "safe";
     }
-    SINK(value); // $ localRefinementFlow=indirect-barrier-read-join SPURIOUS: refinementFlow=indirect-barrier-read-join refinementTaint=indirect-barrier-read-join MISSING: noRefinementFlow=indirect-barrier-read-join noRefinementTaint=indirect-barrier-read-join
+    SINK(value); // $ localRefinementFlow=indirect-barrier-read-join noRefinementFlow=indirect-barrier-read-join noRefinementTaint=indirect-barrier-read-join
   }
 
   function indirectBarrierGuardEmptyBranchBeforeJoin() {
@@ -229,7 +229,7 @@ function filteredPhiInputWithReplacement(condition, otherCondition) {
     } else {
       value = "safe";
     }
-    SINK(value); // $ localRefinementFlow=indirect-barrier-empty-join SPURIOUS: refinementFlow=indirect-barrier-empty-join refinementTaint=indirect-barrier-empty-join MISSING: noRefinementFlow=indirect-barrier-empty-join noRefinementTaint=indirect-barrier-empty-join
+    SINK(value); // $ localRefinementFlow=indirect-barrier-empty-join noRefinementFlow=indirect-barrier-empty-join noRefinementTaint=indirect-barrier-empty-join
   }
 
   function indirectBarrierGuardAfterRefinementBeforeJoin() {
@@ -240,7 +240,7 @@ function filteredPhiInputWithReplacement(condition, otherCondition) {
       } else {
         value = "safe";
       }
-      SINK(value); // $ localRefinementFlow=indirect-barrier-after-refinement-join noRefinementBypass=indirect-barrier-after-refinement-join SPURIOUS: refinementFlow=indirect-barrier-after-refinement-join refinementTaint=indirect-barrier-after-refinement-join MISSING: noRefinementFlow=indirect-barrier-after-refinement-join noRefinementTaint=indirect-barrier-after-refinement-join
+      SINK(value); // $ localRefinementFlow=indirect-barrier-after-refinement-join noRefinementBypass=indirect-barrier-after-refinement-join noRefinementFlow=indirect-barrier-after-refinement-join noRefinementTaint=indirect-barrier-after-refinement-join
     }
   }
 
@@ -253,7 +253,7 @@ function filteredPhiInputWithReplacement(condition, otherCondition) {
         value = "safe";
       }
     }
-    SINK(value); // $ localRefinementFlow=barrier-in-with SPURIOUS: refinementFlow=barrier-in-with refinementTaint=barrier-in-with MISSING: noRefinementFlow=barrier-in-with noRefinementTaint=barrier-in-with
+    SINK(value); // $ localRefinementFlow=barrier-in-with noRefinementFlow=barrier-in-with noRefinementTaint=barrier-in-with
   }
 
   function mutatePreservedArgument(target, payload) {
@@ -278,7 +278,7 @@ function filteredPhiInputWithReplacement(condition, otherCondition) {
   function copiedArgument(value) {
     const alias = value;
     mutatePreservedArgument(value, SOURCE("copied-argument"), value = alias);
-    SINK(value.property); // $ SPURIOUS: noRefinementFlow=copied-argument noRefinementTaint=copied-argument MISSING: refinementFlow=copied-argument refinementTaint=copied-argument
+    SINK(value.property); // $ refinementFlow=copied-argument refinementTaint=copied-argument
   }
 
   function conditionalArgumentCopy(value, condition) {
@@ -314,7 +314,7 @@ function filteredPhiInputWithReplacement(condition, otherCondition) {
   function conditionalAliasArgument(value, condition) {
     const alias = condition ? value : {};
     mutatePreservedArgument(value, SOURCE("conditional-alias-argument"), value = alias);
-    SINK(value.property); // $ SPURIOUS: noRefinementFlow=conditional-alias-argument noRefinementTaint=conditional-alias-argument MISSING: refinementFlow=conditional-alias-argument refinementTaint=conditional-alias-argument
+    SINK(value.property); // $ refinementFlow=conditional-alias-argument refinementTaint=conditional-alias-argument
   }
 
   function conditionalStoreCopy(value, condition) {
@@ -368,7 +368,7 @@ function filteredPhiInputWithReplacement(condition, otherCondition) {
   function identityCopyUpdateTiming(value) {
     mutatePreservedArgument(
       value, SOURCE("identity-copy-timing"), value = identityPreservedArgument(value),
-      SINK(value.property) // $ SPURIOUS: refinementFlow=identity-copy-timing refinementTaint=identity-copy-timing MISSING: noRefinementFlow=identity-copy-timing noRefinementTaint=identity-copy-timing
+      SINK(value.property) // $ noRefinementFlow=identity-copy-timing noRefinementTaint=identity-copy-timing
     );
     SINK(value.property); // $ refinementFlow=identity-copy-timing refinementTaint=identity-copy-timing
   }
@@ -480,7 +480,7 @@ function filteredPhiInputWithReplacement(condition, otherCondition) {
       } else {
         if (!BARRIER(this)) return;
       }
-      SINK(this); // $ localRefinementFlow=this-guard SPURIOUS: refinementFlow=this-guard refinementTaint=this-guard MISSING: noRefinementFlow=this-guard noRefinementTaint=this-guard
+      SINK(this); // $ localRefinementFlow=this-guard noRefinementFlow=this-guard noRefinementTaint=this-guard
     }
 
     occurrenceBarrierThisMethod() {
