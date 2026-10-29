@@ -1,3 +1,9 @@
+## 1.10.0
+
+### Query Metadata Changes
+
+* Added a new `cpp-code-quality` query suite containing queries that identify maintainability and reliability issues in C and C++ code.
+
 ## 1.9.2
 
 ### Minor Analysis Improvements
