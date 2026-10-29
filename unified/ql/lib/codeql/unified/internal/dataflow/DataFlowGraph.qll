@@ -92,12 +92,23 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
   or
   exists(UnqualifiedMemberAccess access | access.isInstanceAccess() |
     node1.isLocalVariableRead(access, access.getImplicitQualifierVariable()) and
-    step.readName(access.getName()) and
+    step.readName(access.getMemberName()) and
     node2.isResultValue(access)
     or
     (node1.isIncomingValue(access) or node1.isPostUpdate(access)) and
-    step.storeName(access.getName()) and
+    step.storeName(access.getMemberName()) and
     node2.isLocalVariablePostUpdate(access, access.getImplicitQualifierVariable())
+    or
+    // Pass the receiver along to the getter/setter invoked by this expression
+    exists(DataFlowCall call | access = [call.asGetterCall(), call.asSetterCall()] |
+      node1.isLocalVariableRead(access, access.getImplicitQualifierVariable()) and
+      step.value() and
+      node2.isReceiverArgumentEx(call)
+      or
+      node1.isReceiverPostUpdateEx(call) and
+      step.value() and
+      node2.isLocalVariablePostUpdate(access, access.getImplicitQualifierVariable())
+    )
   )
   or
   exists(StringInterpolationExpr expr |
@@ -124,6 +135,17 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     (node1.isIncomingValue(expr) or node1.isPostUpdate(expr)) and
     step.storeName(expr.getMemberName()) and
     node2.isPostUpdate(expr.getBase())
+    or
+    // Pass the receiver along to the getter/setter invoked by this expression
+    exists(DataFlowCall call | expr = [call.asGetterCall(), call.asSetterCall()] |
+      node1.isResultValue(expr.getBase()) and
+      step.value() and
+      node2.isReceiverArgumentEx(call)
+      or
+      node1.isReceiverPostUpdateEx(call) and
+      step.value() and
+      node2.isPostUpdate(expr.getBase())
+    )
   )
   or
   // Calls and constructor-patterns targeting an enum-case constructor.
@@ -137,6 +159,20 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node1.isIncomingValue(call) and
     step.readName(field) and
     node2.isIncomingValue(arg.getValue())
+  )
+  or
+  // For local getters/setters, pass the callable into the callee argument.
+  // Capture SSA depends on this.
+  exists(ComputedLocalVariable local, AccessorDeclaration accessor, DataFlowCall call |
+    accessor = local.getAnAccessor() and
+    node1.isCallable(accessor) and
+    step.callGraph() and
+    (
+      call.asGetterCall() = local.getAnAccess() and accessor instanceof GetterDeclaration
+      or
+      call.asSetterCall() = local.getAnAccess() and accessor instanceof SetterDeclaration
+    ) and
+    node2.isImplicitArgument(call, any(ArgumentPosition pos | pos.isCallee()), false)
   )
   or
   exists(SwitchExpr expr |

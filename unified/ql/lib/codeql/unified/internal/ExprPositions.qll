@@ -16,7 +16,7 @@ predicate isInTypeContext(Expr expr) {
   or
   expr = any(FunctionExpr n).getReturnType()
   or
-  expr = any(AccessorDeclaration n).getType()
+  expr = any(AccessorDeclaration n).getReturnType()
   or
   expr = any(Parameter n).getType()
   or

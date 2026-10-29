@@ -10,7 +10,7 @@ private import codeql.util.Void
 
 module LocalSsaInput implements InputSig<Location, BasicBlock> {
   class SourceVariable extends LocalVariable {
-    SourceVariable() { not this.isCaptured() }
+    SourceVariable() { not this.isCaptured() and not this instanceof ComputedLocalVariable }
   }
 
   predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {

@@ -88,6 +88,9 @@ abstract private class TypeImpl extends TType {
 
   /** Gets the location of this type. */
   abstract Location getLocation();
+
+  /** Gets the class whose instances are described by this type. */
+  ClassLikeDeclaration asClass() { this = TClassLikeDeclarationType(result) }
 }
 
 /**

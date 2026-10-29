@@ -81,6 +81,7 @@ predicate isInstanceMember(Member member) {
   (
     member instanceof VariableDeclaration or
     member instanceof FunctionDeclaration or
+    member instanceof AccessorDeclaration or
     member instanceof ConstructorDeclaration
   ) and
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |

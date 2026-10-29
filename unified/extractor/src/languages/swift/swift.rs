@@ -12,15 +12,15 @@ struct SwiftContext {
     /// `variableDecl` rule before translating the accessor block; read by the
     /// inner `accessorDecl` rules to name each `accessor_declaration`.
     property_name_node: Option<yeast::OutputId>,
-    /// Translated type node for the property type. Set (for computed
-    /// properties) by the accessor-bearing `variableDecl` rule; read by the
-    /// inner `accessorDecl` rules. Left `None` for stored properties with
-    /// observers, so their `willSet`/`didSet` accessors carry no type.
+    /// Translated type node for the property type. Set by the
+    /// accessor-bearing `variableDecl` rule; read by the inner `accessorDecl`
+    /// rules for both the getter return type and its `newValue`/`oldValue`
+    /// parameter type, when available.
     property_type: Option<yeast::OutputId>,
     /// Translated outer modifiers to attach to each child of a flattening
-    /// outer rule — e.g. the `let`/`var` binding modifier on each
-    /// `patternBinding` of a `variableDecl`, or the binding modifier on each
-    /// accessor of a property.
+    /// outer rule — e.g. the `let`/`var` binding modifier, attributes and
+    /// modifiers (`static`, `public`, …) on each `patternBinding` of a
+    /// `variableDecl`, or on each accessor of a property.
     outer_modifiers: Vec<yeast::OutputId>,
     /// True when the current child of a flattening outer rule is not
     /// the first one — its inner rule should emit a
@@ -325,6 +325,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // block.
         rule!(
             (variableDecl
+                attributes: _* @attrs
+                modifiers: _* @mods
                 bindingSpecifier: @@spec
                 bindings: (patternBinding
                     pattern: (identifierPattern identifier: @@name)
@@ -333,8 +335,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (accessor_declaration
                 modifier: (modifier #{spec})
+                modifier: {attrs}
+                modifier: {mods}
                 name_node: (identifier #{name})
-                type: {ty}
+                return_type: {ty}
                 accessor_kind: {ctx.literal_at_start_of("accessor_kind", "get", body)}
                 body: {body})
         ),
@@ -345,16 +349,18 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         //  * With an initializer (`var x: T = e { willSet {…} didSet {…} }`) it is
         //    a *stored* property with observers: emit the backing
         //    `variable_declaration` first, then one `accessor_declaration` per
-        //    observer (observers carry no type).
+        //    observer.
         //  * Without an initializer (`var v: T { get set }`, incl. protocol
-        //    requirements) it is a *computed* property: no backing variable; the
-        //    type is published so the get/set accessors carry it.
+        //    requirements) it is a *computed* property: no backing variable.
         //
-        // In both cases the first emitted declaration is unchained and every
+        // In both cases the type is published so every accessor carries it, and
+        // the first emitted declaration is unchained and every
         // subsequent one is tagged `chained_declaration` (the `!result.is_empty()`
         // test). Must precede the plain `variableDecl` rules.
         rule!(
             (variableDecl
+                attributes: _* @attrs
+                modifiers: _* @mods
                 bindingSpecifier: @@spec
                 bindings: (patternBinding
                     pattern: (identifierPattern identifier: @@name)
@@ -363,8 +369,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     accessorBlock: (accessorBlock accessors: (accessorDecl)+ @@accessors)))
             =>
             member* {
-                ctx.outer_modifiers = vec![tree!((modifier #{spec}))];
+                // The binding (`let`/`var`) leads, then attributes then modifiers,
+                // matching the plain `variableDecl` rule.
+                ctx.outer_modifiers = std::iter::once(tree!((modifier #{spec})))
+                    .chain(attrs)
+                    .chain(mods)
+                    .collect();
                 ctx.property_name_node = Some(tree!((identifier #{name})));
+                ctx.property_type = Some(ty);
                 let mut result = Vec::new();
                 if let Some(val) = val {
                     // Stored property with observers: the initializer is not part
@@ -380,9 +392,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                             type: {ty}
                             value: {val})
                     ));
-                } else {
-                    // Computed property: the accessors carry the type.
-                    ctx.property_type = Some(ty);
                 }
                 for acc in accessors.into_iter() {
                     ctx.is_chained = !result.is_empty();
@@ -392,35 +401,74 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             }
         ),
         // Each `accessorDecl` becomes an `accessor_declaration`, reading the
-        // property name/type and the binding/chained modifiers from `ctx`. The
+        // property name/type and the modifiers from `ctx`. The
         // accessor kind comes straight from the specifier keyword
         // (`get`/`set`/`willSet`/`didSet`). The body is optional: a body-bearing
         // accessor (a computed getter/setter, or a `willSet`/`didSet` observer)
-        // carries the binding modifier and a translated body, whereas a bodyless
-        // one (a protocol requirement) carries neither. The property context is
+        // has a translated body, whereas a bodyless one (a protocol requirement)
+        // has none. The property context is
         // read out *before* translating the body, which resets `ctx` so the
         // accessor's context does not leak into the body subtree.
+        //
+        // `set` and `willSet` accessors get a parameter holding the incoming
+        // value, and `didSet` gets one holding the previous value. It is named
+        // explicitly (`set(v)`) or else implicitly `newValue`/`oldValue`.
         rule!(
-            (accessorDecl accessorSpecifier: @@spec body: _? @@body)
+            (accessorDecl
+                accessorSpecifier: @@spec
+                parameters: (accessorParameters name: @@param_name)?
+                body: _? @@body)
             =>
-            (accessor_declaration
-                modifier: {
-                    if body.is_some() {
-                        ctx.outer_modifiers.clone()
-                    } else {
-                        Vec::new()
+            accessor_declaration {
+                let spec_text = ctx.source_text(spec);
+                let implicit_param_name = match spec_text.as_str() {
+                    "set" | "willSet" => Some("newValue"),
+                    "didSet" => Some("oldValue"),
+                    _ => None,
+                };
+                let param_ty = ctx.property_type;
+                let param = match (param_name, implicit_param_name) {
+                    (Some(n), _) => {
+                        Some(tree!((parameter pattern: (identifier #{n}) type: {param_ty})))
                     }
-                }
-                modifier: {chained_modifier(&mut ctx)}
-                name_node: {
-                    ctx.property_name_node
-                        .ok_or("accessor outside property context")?
-                }
-                type: {ctx.property_type}
-                accessor_kind: (accessor_kind #{spec})
-                body: {ctx.reset(); body}
-                location: {spec}
-                location: {body})
+                    (None, Some(n)) => {
+                        let n = n.to_string();
+                        Some(tree!((parameter
+                            modifier: (modifier "generated")
+                            pattern: (identifier #{n} location: {spec})
+                            type: {param_ty}
+                            location: {spec})))
+                    }
+                    (None, None) => None,
+                };
+                let modifiers = ctx.outer_modifiers.clone();
+                let chained = chained_modifier(&mut ctx);
+                let name = ctx
+                    .property_name_node
+                    .ok_or("accessor outside property context")?;
+                let return_ty = if spec_text == "get" {
+                    ctx.property_type
+                } else {
+                    None
+                };
+                let body = match body {
+                    Some(block) => {
+                        ctx.reset();
+                        ctx.translate(block)?.into_iter().next()
+                    }
+                    None => None,
+                };
+                tree!((accessor_declaration
+                    modifier: {modifiers}
+                    modifier: {chained}
+                    name_node: {name}
+                    return_type: {return_ty}
+                    accessor_kind: (accessor_kind #{spec})
+                    parameter: {param}
+                    body: {body}
+                    location: {spec}
+                    location: {body}))
+            }
         ),
         // ---- Variables ----
         // The individual bindings of a `variableDecl`. The binding modifier and
