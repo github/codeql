@@ -63,8 +63,13 @@ pub fn parse_rules_top(input: TokenStream) -> Result<TokenStream> {
     let emitted_items = split_top_level_commas(list.stream())
         .into_iter()
         .map(|item| {
-            if has_top_level_arrow(&item) {
-                Ok(crate::rule_parse::parse_rule(item)?.lower())
+            let rule_body = if has_top_level_arrow(&item) {
+                Some(item.clone())
+            } else {
+                explicit_rule_body(&item)
+            };
+            if let Some(rule_body) = rule_body {
+                Ok(crate::rule_parse::parse_rule(rule_body)?.lower())
             } else {
                 Ok(item)
             }
@@ -152,6 +157,17 @@ fn has_top_level_arrow(stream: &TokenStream) -> bool {
     })
 }
 
+fn explicit_rule_body(stream: &TokenStream) -> Option<TokenStream> {
+    let expression = syn::parse2::<syn::ExprMacro>(stream.clone()).ok()?;
+    let is_rule = expression
+        .mac
+        .path
+        .segments
+        .last()
+        .is_some_and(|segment| segment.ident == "rule");
+    is_rule.then_some(expression.mac.tokens)
+}
+
 type Tokens = std::iter::Peekable<proc_macro2::token_stream::IntoIter>;
 
 fn expect_ident(tokens: &mut Tokens, message: &str) -> Result<syn::Ident> {
@@ -211,5 +227,13 @@ mod tests {
         assert!(!has_top_level_arrow(
             &quote! { { match x { 1 => 2, _ => 3 } } }
         ));
+    }
+
+    #[test]
+    fn recognizes_explicit_rule_macros() {
+        assert!(explicit_rule_body(&quote! { rule!((a) => (b)) }).is_some());
+        assert!(explicit_rule_body(&quote! { yeast::rule!((a) => (b)) }).is_some());
+        assert!(explicit_rule_body(&quote! { other!((a) => (b)) }).is_none());
+        assert!(explicit_rule_body(&quote! { make_rule() }).is_none());
     }
 }
