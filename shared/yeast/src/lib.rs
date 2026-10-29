@@ -1117,6 +1117,12 @@ impl<C> Clone for TranslatorHandle<'_, C> {
     }
 }
 
+impl<C> TranslatorHandle<'_, C> {
+    pub(crate) fn matched_root(&self) -> Id {
+        self.matched_root
+    }
+}
+
 impl<'a, C: Clone> TranslatorHandle<'a, C> {
     /// Recursively apply the current phase's rules to `id` and return the
     /// resulting node ids.

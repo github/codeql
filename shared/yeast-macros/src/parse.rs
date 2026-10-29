@@ -51,6 +51,25 @@ pub fn parse_rules_top(input: TokenStream) -> Result<TokenStream> {
     };
     let input_abs = resolve_path(&input_path.value);
     let output_abs = resolve_path(&output_path.value);
+    let output_yaml = std::fs::read_to_string(&output_abs).map_err(|error| {
+        syn::Error::new(
+            output_path.literal_span,
+            format!(
+                "rules!: failed to read output schema `{}`: {error}",
+                output_abs.display()
+            ),
+        )
+    })?;
+    let output_leaf_kinds = yeast_schema::node_types_yaml::leaf_kinds_from_yaml(&output_yaml)
+        .map_err(|error| {
+            syn::Error::new(
+                output_path.literal_span,
+                format!(
+                    "rules!: failed to parse output schema `{}`: {error}",
+                    output_abs.display()
+                ),
+            )
+        })?;
 
     let list = expect_group(&mut tokens, proc_macro2::Delimiter::Bracket)?;
     if let Some(token) = tokens.next() {
@@ -69,7 +88,9 @@ pub fn parse_rules_top(input: TokenStream) -> Result<TokenStream> {
                 explicit_rule_body(&item)
             };
             if let Some(rule_body) = rule_body {
-                Ok(crate::rule_parse::parse_rule(rule_body)?.lower())
+                let mut rule = crate::rule_parse::parse_rule(rule_body)?;
+                rule.resolve_bare_leaf_content(&output_leaf_kinds)?;
+                Ok(rule.lower())
             } else {
                 Ok(item)
             }
@@ -89,6 +110,7 @@ pub fn parse_rules_top(input: TokenStream) -> Result<TokenStream> {
 
 struct NamedString {
     value: String,
+    literal_span: Span,
 }
 
 fn parse_named_string_arg(
@@ -114,7 +136,10 @@ fn parse_named_string_arg(
             format!("`{expected_name}` must be a string literal path"),
         )
     })?;
-    Ok(NamedString { value })
+    Ok(NamedString {
+        value,
+        literal_span: literal.span(),
+    })
 }
 
 fn string_literal_value(literal: &proc_macro2::Literal) -> Option<String> {
