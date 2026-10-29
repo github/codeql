@@ -235,6 +235,7 @@ module DataFlowInput implements InputSig<Location> {
   //
   additional predicate nodeIsVisible(Node node) {
     exists(Expr e |
+      e.fromSource() and
       node = TValueNode(e) and
       not e instanceof ExprPattern
     )
