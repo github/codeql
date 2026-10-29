@@ -9,17 +9,26 @@ use crate::ast::{
 
 #[derive(Clone, Copy, Default)]
 struct LoweringContext<'a> {
-    dependency_scope: Option<DependencyScope<'a>>,
+    choice_alternative_scope: Option<ChoiceAlternativeScope<'a>>,
 }
 
 #[derive(Clone, Copy)]
-struct DependencyScope<'a> {
-    preparations: &'a RefCell<Vec<DependencyPreparation>>,
+struct ChoiceAlternativeScope<'a> {
+    interpolations: &'a RefCell<Vec<GuardingInterpolation>>,
 }
 
-struct DependencyPreparation {
+/// A `#{expr}` interpolation that must succeed before constructing a choice
+/// alternative. Lowering first emits `expression`, which evaluates `expr` and
+/// returns its rendered text and optional source range. A `None` result rejects
+/// the alternative without constructing any nodes. On success, the generated
+/// bindings are reused later when constructing the interpolated leaf.
+struct GuardingInterpolation {
+    /// Generated binding for the interpolation's rendered text.
     value: Ident,
+    /// Generated binding for the interpolation's optional source range.
     source_range: Ident,
+    /// Generated `Option<(String, Option<Range>)>` expression that evaluates
+    /// the original interpolation exactly once.
     expression: TokenStream,
 }
 
@@ -368,20 +377,20 @@ impl Template {
 
 impl Alternative {
     fn lower_candidate(&self, fallback: TokenStream) -> TokenStream {
-        let preparations = RefCell::new(Vec::new());
+        let interpolations = RefCell::new(Vec::new());
         let context = LoweringContext {
-            dependency_scope: Some(DependencyScope {
-                preparations: &preparations,
+            choice_alternative_scope: Some(ChoiceAlternativeScope {
+                interpolations: &interpolations,
             }),
         };
         let value = self.template.lower_single(context);
-        let preparations = preparations.into_inner();
-        let prepared_values = preparations
+        let interpolations = interpolations.into_inner();
+        let prepared_values = interpolations
             .iter()
-            .flat_map(|preparation| {
+            .flat_map(|interpolation| {
                 [
-                    preparation.value.clone(),
-                    preparation.source_range.clone(),
+                    interpolation.value.clone(),
+                    interpolation.source_range.clone(),
                 ]
             })
             .collect::<Vec<_>>();
@@ -393,14 +402,14 @@ impl Alternative {
         // evaluated in source order. Construction happens only after the
         // resulting option has been matched, keeping it in a separate branch
         // from the fallback.
-        let prepared = preparations.into_iter().rev().fold(
+        let prepared = interpolations.into_iter().rev().fold(
             prepared,
-            |candidate, preparation| {
-                let DependencyPreparation {
+            |candidate, interpolation| {
+                let GuardingInterpolation {
                     value,
                     source_range,
                     expression,
-                } = preparation;
+                } = interpolation;
                 // Do not use `map`/`and_then` here: `candidate` may contain
                 // embedded user Rust, and putting it in a closure would change
                 // the target of `return` and the result type seen by `?`.
@@ -446,10 +455,13 @@ impl Node {
                 Content::Static(lit) => quote! { #ctx.literal(#kind_str, #lit) },
                 Content::Computed(block) => {
                     let block = rust_block(block);
-                    if let Some(scope) = context.dependency_scope {
+                    if let Some(scope) = context.choice_alternative_scope {
                         let value = fresh_prepared_ident("value");
                         let source_range = fresh_prepared_ident("source_range");
-                        scope.preparations.borrow_mut().push(DependencyPreparation {
+                        scope
+                            .interpolations
+                            .borrow_mut()
+                            .push(GuardingInterpolation {
                             value: value.clone(),
                             source_range: source_range.clone(),
                             expression: quote! {
@@ -471,7 +483,7 @@ impl Node {
                                     )
                                 }
                             },
-                        });
+                            });
                         quote! {
                             #ctx.literal_with_source_range(
                                 #kind_str,
