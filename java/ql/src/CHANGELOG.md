@@ -1,3 +1,9 @@
+## 1.12.0
+
+### Query Metadata Changes
+
+* The `external/cwe/cwe-730` tag has been removed from `java/redos`, `java/polynomial-redos` and `java/regex-injection`, because MITRE has marked CWE-730 as prohibited for vulnerability mapping. The queries retain their other CWE tags.
+
 ## 1.11.13
 
 No user-facing changes.
