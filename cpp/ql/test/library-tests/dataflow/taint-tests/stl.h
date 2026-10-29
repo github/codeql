@@ -1,28 +1,4 @@
-
-typedef unsigned long size_t;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#include "type_traits.h"
+#include "../../../include/type_traits.h"
 
 namespace std
 {
@@ -176,6 +152,7 @@ namespace std
 		const charT* c_str() const;
 		charT* data() noexcept;
 		size_t length() const;
+		size_t size() const;
 
 		typedef std::iterator<random_access_iterator_tag, charT> iterator;
 		typedef std::iterator<random_access_iterator_tag, const charT> const_iterator;
@@ -343,7 +320,9 @@ namespace std {
 		using iterator = std::iterator<random_access_iterator_tag, T>;
 		using const_iterator = std::iterator<random_access_iterator_tag, const T>;
 
-		vector() noexcept(noexcept(Allocator())) : vector(Allocator()) { }
+		vector() noexcept(noexcept(Allocator()));
+		vector(const vector& x);
+		vector(vector&& x) noexcept;
 		explicit vector(const Allocator&) noexcept;
 		explicit vector(size_type n, const Allocator& = Allocator());
 		vector(size_type n, const T& value, const Allocator& = Allocator());
