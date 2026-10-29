@@ -4,6 +4,8 @@
 
 private import unified
 private import AllDataFlow
+private import codeql.unified.internal.ExprPositions
+private import codeql.unified.internal.typeinference.TypeInference as T
 
 private class SwiftDataFlowPlugin extends DataFlowPlugin {
   // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
@@ -13,7 +15,10 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
 
   // Swift writes back mutated values of computed properties via their setter
   bindingset[expr]
-  override predicate mayWriteBackViaSetterCall(Expr expr) { any() }
+  override predicate mayWriteBackViaSetterCall(Expr expr) {
+    isInWriteBackPosition(expr)
+    // TODO: Check that 'expr' has a value type. Reference types don't cause writebacks.
+  }
 
   override predicate exprStep(Expr expr1, Expr expr2, boolean mustFlow) {
     mustFlow = true and
@@ -89,4 +94,31 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       node2.isResultValue(block)
     )
   }
+}
+
+/**
+ * Holds if `expr` is target of an assignment or 'inout' argument,
+ * or the base of such an expression, e.g. `x` in `x.f1.f2 = foo()`
+ */
+private predicate isInWriteBackPosition(Expr expr) {
+  isInAssignmentContext(expr, _)
+  or
+  // Arguments to an 'inout' parameter must be prefixed with '&'
+  exists(UnaryExpr unary |
+    unary.getOperator().(PrefixOperator).getValue() = "&" and
+    unary.getOperand() = expr
+    // TODO: support custom operators with an 'inout' parameter, which lack the '&' indicator
+  )
+  or
+  // The receiver of a call to a 'mutating' function counts as an 'inout' argument
+  exists(CallExpr call, Callable target |
+    target = T::resolveCallTarget(call) and
+    target.hasModifier("mutating") and
+    expr = call.getCallee().(MemberAccessExpr).getBase()
+  )
+  or
+  exists(MemberAccessExpr member |
+    isInWriteBackPosition(member) and
+    expr = member.getBase()
+  )
 }
