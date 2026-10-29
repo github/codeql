@@ -10,7 +10,7 @@ static __attribute__((__unused__)) int staticVar7; // GOOD (unused but this is e
 const int constVar8 = 8; // $ Alert // BAD (const defaults to static)
 extern const int constVar9 = 9; // GOOD
 static int staticVar10 = 10; // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE] (referenced in a never instantiated template)
-[[maybe_unused]] static int staticVar11; // $ SPURIOUS: Alert // GOOD (false positive for maybe_unused)
+[[maybe_unused]] static int staticVar11; // GOOD (explicitly marked as maybe_unused)
 
 void f()
 {
