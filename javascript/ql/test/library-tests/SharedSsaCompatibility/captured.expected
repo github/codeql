@@ -1,0 +1,3 @@
+WARNING: type 'BarrierGuardNode' has been deprecated and may be removed in future (captured.ql:32,40-66)
+WARNING: type 'BarrierGuardNode' has been deprecated and may be removed in future (captured.ql:43,37-63)
+WARNING: type 'Configuration' has been deprecated and may be removed in future (captured.ql:36,36-59)
