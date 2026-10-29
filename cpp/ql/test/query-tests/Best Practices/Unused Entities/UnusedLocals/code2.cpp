@@ -181,3 +181,15 @@ void test_maybe_unused()
 {
 	[[maybe_unused]] int unused; // GOOD: explicitly marked as maybe_unused
 }
+
+int globalVar;
+
+int initialize()
+{
+	return ++globalVar;
+}
+
+void test_initializer_side_effect()
+{
+	int initialized = initialize(); // $ SPURIOUS: Alert // GOOD (initializer has a side effect)
+}
