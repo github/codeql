@@ -29,3 +29,23 @@ public:
 		// ...
 	}
 };
+
+int initialize()
+{
+	return ++globalVar;
+}
+
+static int initialized = initialize(); // GOOD (initializer has a side effect)
+
+struct WithConstructor
+{
+	WithConstructor() { ++globalVar; }
+};
+
+struct WithDestructor
+{
+	~WithDestructor() { ++globalVar; }
+};
+
+static WithConstructor constructed; // GOOD (constructor has a side effect)
+static WithDestructor destructed; // GOOD (destructor has a side effect)

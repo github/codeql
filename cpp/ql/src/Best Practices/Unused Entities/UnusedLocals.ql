@@ -46,6 +46,8 @@ predicate declarationHasSideEffects(Variable v) {
   )
   or
   v.getType() instanceof TemplateDependentType // may have a constructor/destructor
+  or
+  v.getInitializer().getExpr().mayBeImpure()
 }
 
 from LocalVariable v, Function f
