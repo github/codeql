@@ -50,7 +50,7 @@ struct WithDestructor
 static WithConstructor constructed; // GOOD (constructor has a side effect)
 static WithDestructor destructed; // GOOD (destructor has a side effect)
 
-static auto sum(auto... values) // $ SPURIOUS: Alert
+static auto sum(auto... values)
 {
 	return (0 + ... + values);
 }

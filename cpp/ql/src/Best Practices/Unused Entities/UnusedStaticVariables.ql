@@ -22,6 +22,7 @@ predicate declarationHasSideEffects(Variable v) {
 from Variable v
 where
   v.isStatic() and
+  not v.isCompilerGenerated() and
   v.hasDefinition() and
   not v.isConstexpr() and
   not exists(VariableAccess a | a.getTarget() = v) and
