@@ -1092,6 +1092,7 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
  * as a part of a regular expression.
  */
 overlay[global]
+pragma[no_dynamic_join_order]
 private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker t) {
   t.start() and
   re = result and
