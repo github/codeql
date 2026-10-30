@@ -1,5 +1,5 @@
 {
-    "homepage": "https://github.com/bazelbuild/rules_kotlin",
+    "homepage": "https://github.com/bazel-contrib/rules_kotlin",
     "maintainers": [
         {
             "email": "ben@ben.cm",
@@ -18,7 +18,8 @@
         }
     ],
     "repository": [
-        "github:bazelbuild/rules_kotlin"
+        "github:bazelbuild/rules_kotlin",
+        "github:bazel-contrib/rules_kotlin"
     ],
     "versions": [
         "2.4.21-codeql.1"
