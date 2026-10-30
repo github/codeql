@@ -397,9 +397,9 @@ func t41() {
     // This function and its parameter have the same name
     // The parameter default value must resolve to the outer name (the function)
     // swift-format-ignore
-    func foo(  // name=foo1
+    func foo(  // $ captured=foo1 // name=foo1
         _ foo: Any = // name=foo2
-            foo  // $ MISSING: access=foo1 SPURIOUS: access=foo2
+            foo  // $ access=foo1
     ) {
         foo  // $ access=foo2
     }

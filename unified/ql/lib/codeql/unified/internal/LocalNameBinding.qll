@@ -203,8 +203,17 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
         declaration = func
       )
       or
-      exists(Parameter param |
-        scope = param.getDeclaringCallable() and
+      exists(Parameter param, Callable callable |
+        callable = param.getDeclaringCallable() and
+        (
+          // Scope to the body so parameter defaults cannot see the parameter list
+          // TODO: Use a plugin for languages where parameter defaults can reference earlier parameters
+          scope = callable.getBody()
+          or
+          // For bodyless functions, choose an arbitrary scope
+          not exists(callable.getBody()) and
+          scope = param
+        ) and
         pattern = param.getPattern() and
         declaration = param
       )
