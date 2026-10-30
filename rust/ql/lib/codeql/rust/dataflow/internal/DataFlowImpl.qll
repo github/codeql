@@ -11,6 +11,7 @@ private import rust
 private import SsaImpl as SsaImpl
 private import codeql.rust.controlflow.internal.Scope as Scope
 private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
+private import codeql.rust.elements.internal.VariableImpl::Impl as VariableImpl
 private import codeql.rust.internal.PathResolution
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.dataflow.Ssa
@@ -230,7 +231,16 @@ module LocalFlow {
       nodeTo.asPat() = match.getAnArm().getPat()
     )
     or
-    nodeFrom.asExpr() = nodeTo.asExpr().(ParenExpr).getExpr()
+    exists(ParenExpr pe, Expr e |
+      e = pe.getExpr() and
+      if VariableImpl::assignmentOperationDescendant(_, pe)
+      then nodeTo.asExpr() = e and nodeFrom.asExpr() = pe
+      else (
+        nodeFrom.asExpr() = e and nodeTo.asExpr() = pe
+      )
+    )
+    or
+    nodeTo.asPat() = nodeFrom.asPat().(ParenPat).getPat()
   }
 
   pragma[nomagic]
@@ -1070,43 +1080,36 @@ module VariableCapture {
     final class CapturedParameter extends CapturedVariable {
       ParamBase p;
 
-      CapturedParameter() { p = this.getParameter() }
+      CapturedParameter() { this.isParameter(p) }
 
       SourceParameterNode getParameterNode() { result.getParameter() = p }
     }
 
     class Expr extends AstNode {
-      predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) { this = bb.getNode(i).getAstNode() }
+      predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) {
+        this = bb.getNode(i).getAstNode()
+        or
+        this.(ParenExpr).getExpr().(Expr).hasCfgNode(bb, i)
+      }
     }
 
     class VariableWrite extends Expr {
-      Expr source;
       CapturedVariable v;
 
       VariableWrite() {
-        exists(AssignmentExpr assign, Variable::VariableWriteAccess write |
-          this = assign and
-          v = write.getVariable() and
-          assign.getLhs() = write and
-          assign.getRhs() = source
-        )
+        this = v.getName()
         or
-        this =
-          any(LetStmt ls |
-            v.getPat() = ls.getPat() and
-            ls.getInitializer() = source
-          )
+        v = this.(Variable::VariableWriteAccess).getVariable()
+      }
+
+      override predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) {
+        not this instanceof VariableWriteAccess and
+        super.hasCfgNode(bb, i)
         or
-        this =
-          any(LetExpr le |
-            v.getPat() = le.getPat() and
-            le.getScrutinee() = source
-          )
+        this.(VariableWriteAccess).getAssignmentExpr() = bb.getNode(i).getAstNode()
       }
 
       CapturedVariable getVariable() { result = v }
-
-      Expr getSource() { result = source }
     }
 
     class VariableRead extends Expr {
@@ -1145,7 +1148,7 @@ module VariableCapture {
     or
     result.(Flow::ExprNode).getExpr() = n.asExpr()
     or
-    result.(Flow::VariableWriteSourceNode).getVariableWrite().getSource() = n.asExpr()
+    result.(Flow::VariableWriteSourceNode).getVariableWrite() = n.getAstNode()
     or
     result.(Flow::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
