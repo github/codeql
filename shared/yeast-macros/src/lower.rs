@@ -304,11 +304,11 @@ impl Template {
                 }
                 Template::Splice(block) => {
                     let block = rust_block(block);
-                    quote! {
+                    isolated_interpolation(quote! {
                         let __value = ::std::iter::IntoIterator::into_iter(#block)
                             .collect::<Vec<_>>();
                         ctx.extend_field_ids(__value, &mut __nodes);
-                    }
+                    })
                 }
             })
             .collect::<Vec<_>>();
@@ -327,7 +327,9 @@ impl Template {
             Template::Node(node) => node.lower(context),
             Template::Splice(block) => {
                 let block = rust_block(block);
-                quote! { ::std::convert::Into::<yeast::OutputId>::into(#block) }
+                isolated_interpolation(quote! {
+                    ::std::convert::Into::<yeast::OutputId>::into(#block)
+                })
             }
         }
     }
@@ -344,40 +346,36 @@ impl Node {
                 Content::Computed(block) => {
                     let block = rust_block(block);
                     if let Some(label) = context.fallible_scope {
-                        quote! {
-                            {
-                                let __expr = #block;
-                                let ::std::option::Option::Some(__value_ref) =
-                                    yeast::MaybeYeastValue::maybe_yeast_value(&__expr)
-                                else {
-                                    break #label ::std::option::Option::None;
-                                };
-                                let __value =
-                                    yeast::YeastDisplay::yeast_to_string(__value_ref, &#ctx);
-                                let __source_range =
-                                    yeast::YeastSourceRange::yeast_source_range(__value_ref, &#ctx);
-                                #ctx.literal_with_source_range(
-                                    #kind_str,
-                                    &__value,
-                                    __source_range,
-                                )
-                            }
-                        }
+                        isolated_interpolation(quote! {
+                            let __expr = #block;
+                            let ::std::option::Option::Some(__value_ref) =
+                                yeast::MaybeYeastValue::maybe_yeast_value(&__expr)
+                            else {
+                                break #label ::std::option::Option::None;
+                            };
+                            let __value =
+                                yeast::YeastDisplay::yeast_to_string(__value_ref, &#ctx);
+                            let __source_range =
+                                yeast::YeastSourceRange::yeast_source_range(__value_ref, &#ctx);
+                            #ctx.literal_with_source_range(
+                                #kind_str,
+                                &__value,
+                                __source_range,
+                            )
+                        })
                     } else {
-                        quote! {
-                            {
-                                let __expr = #block;
-                                let __value =
-                                    yeast::YeastDisplay::yeast_to_string(&__expr, &#ctx);
-                                let __source_range =
-                                    yeast::YeastSourceRange::yeast_source_range(&__expr, &#ctx);
-                                #ctx.literal_with_source_range(
-                                    #kind_str,
-                                    &__value,
-                                    __source_range,
-                                )
-                            }
-                        }
+                        isolated_interpolation(quote! {
+                            let __expr = #block;
+                            let __value =
+                                yeast::YeastDisplay::yeast_to_string(&__expr, &#ctx);
+                            let __source_range =
+                                yeast::YeastSourceRange::yeast_source_range(&__expr, &#ctx);
+                            #ctx.literal_with_source_range(
+                                #kind_str,
+                                &__value,
+                                __source_range,
+                            )
+                        })
                     }
                 }
             };
@@ -393,11 +391,11 @@ impl Node {
             match field {
                 Field::Location { block } => {
                     let block = rust_block(block);
-                    stmts.push(quote! {
+                    stmts.push(isolated_interpolation(quote! {
                         let __value = ::std::iter::IntoIterator::into_iter(#block)
                             .collect::<Vec<_>>();
                         #ctx.extend_location_ranges(__value, &mut __location_ranges);
-                    });
+                    }));
                 }
                 Field::Named {
                     name,
@@ -418,11 +416,14 @@ impl Node {
                         Template::Splice(block) => {
                             debug_assert!(!optional);
                             let block = rust_block(block);
-                            stmts.push(quote! {
-                                let mut #temp: Vec<yeast::OutputId> = Vec::new();
+                            let interpolation = isolated_interpolation(quote! {
                                 let __value = ::std::iter::IntoIterator::into_iter(#block)
                                     .collect::<Vec<_>>();
                                 #ctx.extend_field_ids(__value, &mut #temp);
+                            });
+                            stmts.push(quote! {
+                                let mut #temp: Vec<yeast::OutputId> = Vec::new();
+                                #interpolation
                             });
                             field_args.push(quote! {
                                 if !#temp.is_empty() {
@@ -485,4 +486,11 @@ impl Node {
 fn rust_block(block: &syn::Block) -> TokenStream {
     let statements = &block.stmts;
     quote!({ #(#statements)* })
+}
+
+fn isolated_interpolation(body: TokenStream) -> TokenStream {
+    quote! {{
+        let mut ctx = ctx.cloned_user_ctx();
+        #body
+    }}
 }
