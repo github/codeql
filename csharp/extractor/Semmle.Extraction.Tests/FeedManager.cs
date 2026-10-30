@@ -249,6 +249,113 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
+        /// Verify that NuGet CLI restore excludes private registries and unreachable feeds,
+        /// while leaving private registries available to dotnet restore.
+        /// </summary>
+        [Fact]
+        public void TestNugetExeRestoreFeedsExcludePrivateRegistries()
+        {
+            // Setup
+            var logger = new LoggerStub();
+            var dotnet = new DotNetStub([], [], [],
+                ["E https://example.com/registry2", "E https://feed.from/folder1", "E https://feed.from/folder2"]);
+            using var feedManager = new FeedManager(logger, dotnet, new RegistryProxyStub(),
+                new FileProviderStub(), new FeedManagerIOStub(["https://feed.from/folder2"]));
+
+            // Execute
+            var feeds = feedManager.MakeNugetExeRestoreFeeds("/path/to/packages.config");
+            var dotnetFeeds = feedManager.MakeRestoreFeeds("/path/to/project.csproj");
+
+            // Verify
+            Assert.Equal(["https://feed.from/folder1"], feeds);
+            Assert.Contains("https://example.com/registry2", dotnetFeeds);
+        }
+
+        /// <summary>
+        /// Verify that NuGet CLI restore excludes private registries that replace NuGet.org,
+        /// retaining other configured feeds.
+        /// </summary>
+        [Fact]
+        public void TestNugetExeRestoreFeedsExcludePrivateBaseRegistries()
+        {
+            // Setup
+            var logger = new LoggerStub();
+            var dotnet = new DotNetStub([], [], [],
+                ["E https://api.nuget.org/v3/index.json", "E https://feed.from/folder1"]);
+            using var feedManager = new FeedManager(logger, dotnet, new RegistryProxyStubWithBaseUrls(),
+                new FileProviderStub(), new FeedManagerIOStub([]));
+
+            // Execute
+            var feeds = feedManager.MakeNugetExeRestoreFeeds("/path/to/packages.config");
+
+            // Verify
+            Assert.Equal(["https://feed.from/folder1"], feeds);
+        }
+
+        /// <summary>
+        /// Verify that NuGet CLI restore uses an empty local source when only private registries are configured,
+        /// regardless of their reachability.
+        /// </summary>
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void TestNugetExeRestoreFeedsWithOnlyPrivateRegistries(bool unreachable)
+        {
+            // Setup
+            var logger = new LoggerStub();
+            var registryProxy = new RegistryProxyStubWithBaseUrls();
+            var dotnet = new DotNetStub([], [], [], ["E https://api.nuget.org/v3/index.json"]);
+            using var feedManager = new FeedManager(logger, dotnet, registryProxy,
+                new FileProviderStub(), new FeedManagerIOStub(unreachable ? registryProxy.RegistryURLs.ToList() : []));
+
+            // Execute
+            var feeds = feedManager.MakeNugetExeRestoreFeeds("/path/to/packages.config");
+
+            // Verify
+            var source = Assert.Single(feeds);
+            Assert.True(Path.IsPathFullyQualified(source));
+            Assert.True(Directory.Exists(source));
+        }
+
+        /// <summary>
+        /// Verify that NuGet CLI restore explicitly selects reachable feeds when no private registries are configured.
+        /// </summary>
+        [Fact]
+        public void TestNugetExeRestoreFeedsWithoutPrivateRegistries()
+        {
+            // Setup
+            var logger = new LoggerStub();
+            var dotnet = new DotNetStub([], [], [], ["E https://feed.from/folder1"]);
+            using var feedManager = new FeedManager(logger, dotnet, null,
+                new FileProviderStub(), new FeedManagerIOStub([]));
+
+            // Execute
+            var feeds = feedManager.MakeNugetExeRestoreFeeds("/path/to/packages.config");
+
+            // Verify
+            Assert.Equal(["https://feed.from/folder1"], feeds);
+        }
+
+        /// <summary>
+        /// Verify that NuGet CLI restore falls back to the default NuGet.org feed when no feeds are configured.
+        /// </summary>
+        [Fact]
+        public void TestNugetExeRestoreFeedsUseDefaults()
+        {
+            // Setup
+            var logger = new LoggerStub();
+            var dotnet = new DotNetStub([], [], [], []);
+            using var feedManager = new FeedManager(logger, dotnet, null,
+                new FileProviderStub(), new FeedManagerIOStub([]));
+
+            // Execute
+            var feeds = feedManager.MakeNugetExeRestoreFeeds("/path/to/packages.config");
+
+            // Verify
+            Assert.Equal(["https://api.nuget.org/v3/index.json"], feeds);
+        }
+
+        /// <summary>
         /// Verify that `FeedManager` correctly computes the default feeds and reachable default feeds
         /// when no private registries are configured.
         /// </summary>
