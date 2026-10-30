@@ -330,7 +330,9 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   predicate implicitDeclInScope(string name, AstNode scope) { implicitDeclInScope(name, scope, _) }
 
-  predicate accessCand(AstNode n, string name) { n.(PotentialLocalNameAccess).getName() = name }
+  predicate accessCand(AstNode n, string name) {
+    n.(PotentialLocalNameAccess).getName() = name and not n instanceof NameBinding
+  }
 
   predicate uncertainScope(AstNode scope) {
     // Classes can have uncertain members due to unqualified access to inherited members.
