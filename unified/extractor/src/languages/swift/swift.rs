@@ -60,16 +60,6 @@ impl SwiftContext {
     }
 }
 
-/// Build a freshly-created `chained_declaration` modifier node if
-/// `ctx.is_chained`, else `None`.
-fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Option<yeast::OutputId> {
-    if ctx.is_chained {
-        Some(tree!((modifier "chained_declaration")))
-    } else {
-        None
-    }
-}
-
 fn implicit_parameterless_initializer(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
     members: &[yeast::OutputId],
@@ -425,22 +415,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     _ => None,
                 };
                 let param_ty = ctx.property_type;
-                let param = match (param_name, implicit_param_name) {
-                    (Some(n), _) => {
-                        Some(tree!((parameter pattern: (identifier #{n}) type: {param_ty})))
-                    }
-                    (None, Some(n)) => {
-                        let n = n.to_string();
-                        Some(tree!((parameter
-                            modifier: (modifier "generated")
-                            pattern: (identifier #{n} location: {spec})
-                            type: {param_ty}
-                            location: {spec})))
-                    }
-                    (None, None) => None,
-                };
                 let modifiers = ctx.outer_modifiers.clone();
-                let chained = chained_modifier(&mut ctx);
                 let name = ctx
                     .property_name_node
                     .ok_or("accessor outside property context")?;
@@ -450,19 +425,28 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     None
                 };
                 let body = match body {
-                    Some(block) => {
+                    Some(block) => ctx.scoped(|ctx| {
                         ctx.reset();
-                        ctx.translate(block)?.into_iter().next()
-                    }
+                        ctx.translate(block)
+                    })?.into_iter().next(),
                     None => None,
                 };
                 tree!((accessor_declaration
                     modifier: {modifiers}
-                    modifier: {chained}
+                    modifier: [(modifier "chained_declaration") if { ctx.is_chained }]
                     name_node: {name}
                     return_type: {return_ty}
                     accessor_kind: (accessor_kind #{spec})
-                    parameter: {param}
+                    parameter: [
+                        (parameter
+                            pattern: (identifier #{param_name})
+                            type: {param_ty})
+                        (parameter
+                            modifier: (modifier "generated")
+                            pattern: (identifier #{implicit_param_name} location: {spec})
+                            type: {param_ty}
+                            location: {spec})
+                    ]
                     body: {body}
                     location: {spec}
                     location: {body}))
