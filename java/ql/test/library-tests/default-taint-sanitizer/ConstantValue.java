@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class A {
+public class ConstantValue {
   private static final Set<String> SEPARATORS =
       Collections.unmodifiableSet(
           new HashSet<>(Arrays.asList("\t", "\n", ";")));
@@ -30,6 +30,30 @@ public class A {
     s.add("BB");
     if (s.contains(inp.toUpperCase())) {
       sink(inp);
+    }
+  }
+
+  private void checkEquals(String input) {
+    if ("AA".equals(input)) {
+      sink(input);
+    }
+  }
+
+  private void checkEqualsIgnoreCase(String input) {
+    if (input.equalsIgnoreCase("AA")) {
+      sink(input);
+    }
+  }
+
+  private void checkWrongBranch(String input) {
+    if (!"AA".equals(input)) {
+      sink(input);
+    }
+  }
+
+  private void checkUntrustedValue(String input, String allowed) {
+    if (allowed.equals(input)) {
+      sink(input);
     }
   }
 }
