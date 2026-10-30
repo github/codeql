@@ -60,6 +60,16 @@ impl SwiftContext {
     }
 }
 
+/// Build a freshly-created `chained_declaration` modifier node if
+/// `ctx.is_chained`, else `None`.
+fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Option<yeast::OutputId> {
+    if ctx.is_chained {
+        Some(tree!((modifier "chained_declaration")))
+    } else {
+        None
+    }
+}
+
 fn implicit_parameterless_initializer(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
     members: &[yeast::OutputId],
@@ -399,7 +409,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                         Vec::new()
                     }
                 }
-                modifier: [(modifier "chained_declaration") if { ctx.is_chained }]
+                modifier: {chained_modifier(&mut ctx)}
                 name_node: {
                     ctx.property_name_node
                         .ok_or("accessor outside property context")?
