@@ -99,6 +99,30 @@ use_repo(
     "vendor_py__tree-sitter-graph-0.12.0",
 )
 
+# deps for C/C++ build mode none extractor
+# keep in sync by running `misc/bazel/3rdparty/update_cpp_bmn_deps.sh`
+cpp_bmn_deps = use_extension("//misc/bazel/3rdparty:cpp_bmn_deps_extension.bzl", "b")
+use_repo(
+    cpp_bmn_deps,
+    "vendor_cpp_bmn",
+    "vendor_cpp_bmn__all_asserts-2.3.3",
+    "vendor_cpp_bmn__anyhow-1.0.98",
+    "vendor_cpp_bmn__cached-0.54.0",
+    "vendor_cpp_bmn__chrono-0.4.41",
+    "vendor_cpp_bmn__itertools-0.14.0",
+    "vendor_cpp_bmn__num_cpus-1.17.0",
+    "vendor_cpp_bmn__os_str_bytes-7.1.1",
+    "vendor_cpp_bmn__rayon-1.11.0",
+    "vendor_cpp_bmn__regex-1.11.1",
+    "vendor_cpp_bmn__serde-1.0.219",
+    "vendor_cpp_bmn__serde_json-1.0.140",
+    "vendor_cpp_bmn__serde_with-1.14.0",
+    "vendor_cpp_bmn__tempfile-3.20.0",
+    "vendor_cpp_bmn__walkdir-2.5.0",
+    "vendor_cpp_bmn__which-8.0.0",
+    "vendor_cpp_bmn__zip-6.0.0",
+)
+
 # deps for ruby+rust
 # keep in sync by running `misc/bazel/3rdparty/update_cargo_deps.sh`
 tree_sitter_extractors_deps = use_extension("//misc/bazel/3rdparty:tree_sitter_extractors_extension.bzl", "r")

@@ -22,3 +22,14 @@ crates_vendor(
     tags = ["manual"],
     vendor_path = "py_deps",
 )
+
+crates_vendor(
+    name = "vendor_cpp_bmn_deps",
+    cargo_lockfile = "//cpp/extractor/bmn:Cargo.lock",
+    generate_build_scripts = True,
+    manifests = ["//cpp/extractor/bmn:Cargo.toml"],
+    mode = "remote",
+    repository_name = "vendor_cpp_bmn",
+    tags = ["manual"],
+    vendor_path = "cpp_bmn_deps",
+)
