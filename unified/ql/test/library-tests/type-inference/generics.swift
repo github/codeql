@@ -241,7 +241,7 @@ extension MyClass: MyProtocol2 {
   typealias MyType = T
 
   func baz() -> T {
-    return value  // $ field=MyClass.value $ MISSING: type=value:T
+    return value  // $ field=MyClass.value type=value:T
   }
 }
 
