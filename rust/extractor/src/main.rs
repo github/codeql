@@ -240,6 +240,7 @@ fn cwd() -> anyhow::Result<AbsPathBuf> {
 }
 
 fn main() -> anyhow::Result<()> {
+    let start = Instant::now();
     let config = config::Config::extract().context("failed to load configuration")?;
     let inputs = if config.qltest {
         qltest::prepare(&config)?
@@ -254,7 +255,6 @@ fn main() -> anyhow::Result<()> {
     } else {
         Vec::new()
     };
-    let start = Instant::now();
     let (flame_layer, _flush_guard) = if let Some(path) = &config.logging_flamegraph {
         tracing_flame::FlameLayer::with_file(path)
             .ok()
