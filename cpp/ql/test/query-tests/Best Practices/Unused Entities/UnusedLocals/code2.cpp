@@ -176,3 +176,8 @@ void test_switch_initializer()
 		// ...
 	}
 }
+
+void test_maybe_unused()
+{
+	[[maybe_unused]] int unused; // GOOD: explicitly marked as maybe_unused
+}

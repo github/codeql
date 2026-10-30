@@ -1,0 +1,232 @@
+#select
+| main.rs:33:53:33:65 | &remote_bytes | main.rs:15:24:15:68 | ...::get(...) | main.rs:33:53:33:65 | &remote_bytes | This deserialization operation processes $@ without validation. | main.rs:15:24:15:68 | ...::get(...) | user-provided data |
+| main.rs:36:51:36:64 | &remote_string | main.rs:19:25:19:69 | ...::get(...) | main.rs:36:51:36:64 | &remote_string | This deserialization operation processes $@ without validation. | main.rs:19:25:19:69 | ...::get(...) | user-provided data |
+| main.rs:46:48:46:60 | &remote_bytes | main.rs:40:24:40:72 | ...::get(...) | main.rs:46:48:46:60 | &remote_bytes | This deserialization operation processes $@ without validation. | main.rs:40:24:40:72 | ...::get(...) | user-provided data |
+| main.rs:58:52:58:65 | &remote_string | main.rs:50:25:50:69 | ...::get(...) | main.rs:58:52:58:65 | &remote_string | This deserialization operation processes $@ without validation. | main.rs:50:25:50:69 | ...::get(...) | user-provided data |
+| main.rs:72:51:72:67 | &... | main.rs:63:24:63:72 | ...::get(...) | main.rs:72:51:72:67 | &... | This deserialization operation processes $@ without validation. | main.rs:63:24:63:72 | ...::get(...) | user-provided data |
+| main.rs:73:54:73:70 | &... | main.rs:63:24:63:72 | ...::get(...) | main.rs:73:54:73:70 | &... | This deserialization operation processes $@ without validation. | main.rs:63:24:63:72 | ...::get(...) | user-provided data |
+| main.rs:74:56:74:68 | &remote_bytes | main.rs:63:24:63:72 | ...::get(...) | main.rs:74:56:74:68 | &remote_bytes | This deserialization operation processes $@ without validation. | main.rs:63:24:63:72 | ...::get(...) | user-provided data |
+| main.rs:75:56:75:72 | &... | main.rs:63:24:63:72 | ...::get(...) | main.rs:75:56:75:72 | &... | This deserialization operation processes $@ without validation. | main.rs:63:24:63:72 | ...::get(...) | user-provided data |
+| main.rs:76:47:76:63 | &... | main.rs:63:24:63:72 | ...::get(...) | main.rs:76:47:76:63 | &... | This deserialization operation processes $@ without validation. | main.rs:63:24:63:72 | ...::get(...) | user-provided data |
+| main.rs:77:50:77:63 | &remote_string | main.rs:67:25:67:73 | ...::get(...) | main.rs:77:50:77:63 | &remote_string | This deserialization operation processes $@ without validation. | main.rs:67:25:67:73 | ...::get(...) | user-provided data |
+| main.rs:78:54:78:66 | &remote_bytes | main.rs:63:24:63:72 | ...::get(...) | main.rs:78:54:78:66 | &remote_bytes | This deserialization operation processes $@ without validation. | main.rs:63:24:63:72 | ...::get(...) | user-provided data |
+| main.rs:79:56:79:72 | &... | main.rs:63:24:63:72 | ...::get(...) | main.rs:79:56:79:72 | &... | This deserialization operation processes $@ without validation. | main.rs:63:24:63:72 | ...::get(...) | user-provided data |
+| main.rs:80:40:80:53 | &remote_string | main.rs:67:25:67:73 | ...::get(...) | main.rs:80:40:80:53 | &remote_string | This deserialization operation processes $@ without validation. | main.rs:67:25:67:73 | ...::get(...) | user-provided data |
+| main.rs:81:54:81:93 | ...::String(...) | main.rs:67:25:67:73 | ...::get(...) | main.rs:81:54:81:93 | ...::String(...) | This deserialization operation processes $@ without validation. | main.rs:67:25:67:73 | ...::get(...) | user-provided data |
+| main.rs:95:32:95:35 | body | main.rs:133:24:133:72 | ...::get(...) | main.rs:95:32:95:35 | body | This deserialization operation processes $@ without validation. | main.rs:133:24:133:72 | ...::get(...) | user-provided data |
+| main.rs:128:32:128:35 | body | main.rs:133:24:133:72 | ...::get(...) | main.rs:128:32:128:35 | body | This deserialization operation processes $@ without validation. | main.rs:133:24:133:72 | ...::get(...) | user-provided data |
+edges
+| main.rs:15:9:15:20 | remote_bytes | main.rs:33:54:33:65 | remote_bytes | provenance |  |
+| main.rs:15:24:15:68 | ...::get(...) | main.rs:15:24:15:68 | ...::get(...) [Ok] | provenance | Src:MaD:14  |
+| main.rs:15:24:15:68 | ...::get(...) [Ok] | main.rs:15:24:16:17 | ... .unwrap() | provenance | MaD:16 |
+| main.rs:15:24:16:17 | ... .unwrap() | main.rs:15:24:17:16 | ... .bytes() [Ok] | provenance | MaD:18 |
+| main.rs:15:24:17:16 | ... .bytes() [Ok] | main.rs:15:24:18:17 | ... .unwrap() | provenance | MaD:16 |
+| main.rs:15:24:18:17 | ... .unwrap() | main.rs:15:9:15:20 | remote_bytes | provenance |  |
+| main.rs:19:9:19:21 | remote_string | main.rs:36:52:36:64 | remote_string | provenance |  |
+| main.rs:19:25:19:69 | ...::get(...) | main.rs:19:25:19:69 | ...::get(...) [Ok] | provenance | Src:MaD:14  |
+| main.rs:19:25:19:69 | ...::get(...) [Ok] | main.rs:19:25:20:17 | ... .unwrap() | provenance | MaD:16 |
+| main.rs:19:25:20:17 | ... .unwrap() | main.rs:19:25:21:15 | ... .text() [Ok] | provenance | MaD:19 |
+| main.rs:19:25:21:15 | ... .text() [Ok] | main.rs:19:25:22:38 | ... .unwrap_or(...) | provenance | MaD:17 |
+| main.rs:19:25:22:38 | ... .unwrap_or(...) | main.rs:19:9:19:21 | remote_string | provenance |  |
+| main.rs:33:53:33:65 | &remote_bytes [&ref] | main.rs:33:53:33:65 | &remote_bytes | provenance | Sink:MaD:7 |
+| main.rs:33:54:33:65 | remote_bytes | main.rs:33:53:33:65 | &remote_bytes [&ref] | provenance |  |
+| main.rs:36:51:36:64 | &remote_string [&ref] | main.rs:36:51:36:64 | &remote_string | provenance | Sink:MaD:8 |
+| main.rs:36:52:36:64 | remote_string | main.rs:36:51:36:64 | &remote_string [&ref] | provenance |  |
+| main.rs:40:9:40:20 | remote_bytes | main.rs:46:49:46:60 | remote_bytes | provenance |  |
+| main.rs:40:24:40:72 | ...::get(...) | main.rs:40:24:40:72 | ...::get(...) [Ok] | provenance | Src:MaD:14  |
+| main.rs:40:24:40:72 | ...::get(...) [Ok] | main.rs:40:24:41:17 | ... .unwrap() | provenance | MaD:16 |
+| main.rs:40:24:41:17 | ... .unwrap() | main.rs:40:24:42:16 | ... .bytes() [Ok] | provenance | MaD:18 |
+| main.rs:40:24:42:16 | ... .bytes() [Ok] | main.rs:40:24:43:17 | ... .unwrap() | provenance | MaD:16 |
+| main.rs:40:24:43:17 | ... .unwrap() | main.rs:40:9:40:20 | remote_bytes | provenance |  |
+| main.rs:46:48:46:60 | &remote_bytes [&ref] | main.rs:46:48:46:60 | &remote_bytes | provenance | Sink:MaD:1 |
+| main.rs:46:49:46:60 | remote_bytes | main.rs:46:48:46:60 | &remote_bytes [&ref] | provenance |  |
+| main.rs:50:9:50:21 | remote_string | main.rs:58:53:58:65 | remote_string | provenance |  |
+| main.rs:50:25:50:69 | ...::get(...) | main.rs:50:25:50:69 | ...::get(...) [Ok] | provenance | Src:MaD:14  |
+| main.rs:50:25:50:69 | ...::get(...) [Ok] | main.rs:50:25:51:17 | ... .unwrap() | provenance | MaD:16 |
+| main.rs:50:25:51:17 | ... .unwrap() | main.rs:50:25:52:15 | ... .text() [Ok] | provenance | MaD:19 |
+| main.rs:50:25:52:15 | ... .text() [Ok] | main.rs:50:25:53:38 | ... .unwrap_or(...) | provenance | MaD:17 |
+| main.rs:50:25:53:38 | ... .unwrap_or(...) | main.rs:50:9:50:21 | remote_string | provenance |  |
+| main.rs:58:52:58:65 | &remote_string [&ref] | main.rs:58:52:58:65 | &remote_string | provenance | Sink:MaD:8 |
+| main.rs:58:53:58:65 | remote_string | main.rs:58:52:58:65 | &remote_string [&ref] | provenance |  |
+| main.rs:63:9:63:20 | remote_bytes | main.rs:72:52:72:63 | remote_bytes | provenance |  |
+| main.rs:63:9:63:20 | remote_bytes | main.rs:72:52:72:67 | remote_bytes[...] | provenance |  |
+| main.rs:63:9:63:20 | remote_bytes | main.rs:73:55:73:66 | remote_bytes | provenance |  |
+| main.rs:63:9:63:20 | remote_bytes | main.rs:73:55:73:70 | remote_bytes[...] | provenance |  |
+| main.rs:63:9:63:20 | remote_bytes | main.rs:74:57:74:68 | remote_bytes | provenance |  |
+| main.rs:63:9:63:20 | remote_bytes | main.rs:75:57:75:68 | remote_bytes | provenance |  |
+| main.rs:63:9:63:20 | remote_bytes | main.rs:75:57:75:72 | remote_bytes[...] | provenance |  |
+| main.rs:63:9:63:20 | remote_bytes | main.rs:76:48:76:59 | remote_bytes | provenance |  |
+| main.rs:63:9:63:20 | remote_bytes | main.rs:76:48:76:63 | remote_bytes[...] | provenance |  |
+| main.rs:63:9:63:20 | remote_bytes | main.rs:78:55:78:66 | remote_bytes | provenance |  |
+| main.rs:63:9:63:20 | remote_bytes | main.rs:79:57:79:68 | remote_bytes | provenance |  |
+| main.rs:63:9:63:20 | remote_bytes | main.rs:79:57:79:72 | remote_bytes[...] | provenance |  |
+| main.rs:63:24:63:72 | ...::get(...) | main.rs:63:24:63:72 | ...::get(...) [Ok] | provenance | Src:MaD:14  |
+| main.rs:63:24:63:72 | ...::get(...) [Ok] | main.rs:63:24:64:17 | ... .unwrap() | provenance | MaD:16 |
+| main.rs:63:24:64:17 | ... .unwrap() | main.rs:63:24:65:16 | ... .bytes() [Ok] | provenance | MaD:18 |
+| main.rs:63:24:65:16 | ... .bytes() [Ok] | main.rs:63:24:66:17 | ... .unwrap() | provenance | MaD:16 |
+| main.rs:63:24:66:17 | ... .unwrap() | main.rs:63:9:63:20 | remote_bytes | provenance |  |
+| main.rs:67:9:67:21 | remote_string | main.rs:77:51:77:63 | remote_string | provenance |  |
+| main.rs:67:9:67:21 | remote_string | main.rs:80:41:80:53 | remote_string | provenance |  |
+| main.rs:67:9:67:21 | remote_string | main.rs:81:80:81:92 | remote_string | provenance |  |
+| main.rs:67:25:67:73 | ...::get(...) | main.rs:67:25:67:73 | ...::get(...) [Ok] | provenance | Src:MaD:14  |
+| main.rs:67:25:67:73 | ...::get(...) [Ok] | main.rs:67:25:68:17 | ... .unwrap() | provenance | MaD:16 |
+| main.rs:67:25:68:17 | ... .unwrap() | main.rs:67:25:69:15 | ... .text() [Ok] | provenance | MaD:19 |
+| main.rs:67:25:69:15 | ... .text() [Ok] | main.rs:67:25:70:17 | ... .unwrap() | provenance | MaD:16 |
+| main.rs:67:25:70:17 | ... .unwrap() | main.rs:67:9:67:21 | remote_string | provenance |  |
+| main.rs:72:51:72:67 | &... [&ref] | main.rs:72:51:72:67 | &... | provenance | Sink:MaD:6 |
+| main.rs:72:52:72:63 | remote_bytes | main.rs:72:52:72:67 | remote_bytes[...] | provenance | MaD:15 |
+| main.rs:72:52:72:67 | remote_bytes[...] | main.rs:72:51:72:67 | &... [&ref] | provenance |  |
+| main.rs:73:54:73:70 | &... [&ref] | main.rs:73:54:73:70 | &... | provenance | Sink:MaD:2 |
+| main.rs:73:55:73:66 | remote_bytes | main.rs:73:55:73:70 | remote_bytes[...] | provenance | MaD:15 |
+| main.rs:73:55:73:70 | remote_bytes[...] | main.rs:73:54:73:70 | &... [&ref] | provenance |  |
+| main.rs:74:56:74:68 | &remote_bytes [&ref] | main.rs:74:56:74:68 | &remote_bytes | provenance | Sink:MaD:5 |
+| main.rs:74:57:74:68 | remote_bytes | main.rs:74:56:74:68 | &remote_bytes [&ref] | provenance |  |
+| main.rs:75:56:75:72 | &... [&ref] | main.rs:75:56:75:72 | &... | provenance | Sink:MaD:4 |
+| main.rs:75:57:75:68 | remote_bytes | main.rs:75:57:75:72 | remote_bytes[...] | provenance | MaD:15 |
+| main.rs:75:57:75:72 | remote_bytes[...] | main.rs:75:56:75:72 | &... [&ref] | provenance |  |
+| main.rs:76:47:76:63 | &... [&ref] | main.rs:76:47:76:63 | &... | provenance | Sink:MaD:3 |
+| main.rs:76:48:76:59 | remote_bytes | main.rs:76:48:76:63 | remote_bytes[...] | provenance | MaD:15 |
+| main.rs:76:48:76:63 | remote_bytes[...] | main.rs:76:47:76:63 | &... [&ref] | provenance |  |
+| main.rs:77:50:77:63 | &remote_string [&ref] | main.rs:77:50:77:63 | &remote_string | provenance | Sink:MaD:12 |
+| main.rs:77:51:77:63 | remote_string | main.rs:77:50:77:63 | &remote_string [&ref] | provenance |  |
+| main.rs:78:54:78:66 | &remote_bytes [&ref] | main.rs:78:54:78:66 | &remote_bytes | provenance | Sink:MaD:11 |
+| main.rs:78:55:78:66 | remote_bytes | main.rs:78:54:78:66 | &remote_bytes [&ref] | provenance |  |
+| main.rs:79:56:79:72 | &... [&ref] | main.rs:79:56:79:72 | &... | provenance | Sink:MaD:10 |
+| main.rs:79:57:79:68 | remote_bytes | main.rs:79:57:79:72 | remote_bytes[...] | provenance | MaD:15 |
+| main.rs:79:57:79:72 | remote_bytes[...] | main.rs:79:56:79:72 | &... [&ref] | provenance |  |
+| main.rs:80:40:80:53 | &remote_string [&ref] | main.rs:80:40:80:53 | &remote_string | provenance | Sink:MaD:13 |
+| main.rs:80:41:80:53 | remote_string | main.rs:80:40:80:53 | &remote_string [&ref] | provenance |  |
+| main.rs:81:54:81:93 | ...::String(...) [String] | main.rs:81:54:81:93 | ...::String(...) | provenance | Sink:MaD:9 |
+| main.rs:81:80:81:92 | remote_string | main.rs:81:54:81:93 | ...::String(...) [String] | provenance |  |
+| main.rs:93:27:93:37 | ...: ... [&ref] | main.rs:95:32:95:35 | body | provenance | Sink:MaD:7 |
+| main.rs:123:27:123:37 | ...: ... [&ref] | main.rs:128:32:128:35 | body | provenance | Sink:MaD:7 |
+| main.rs:133:9:133:20 | remote_bytes | main.rs:142:48:142:59 | remote_bytes | provenance |  |
+| main.rs:133:9:133:20 | remote_bytes | main.rs:143:49:143:60 | remote_bytes | provenance |  |
+| main.rs:133:24:133:72 | ...::get(...) | main.rs:133:24:133:72 | ...::get(...) [Ok] | provenance | Src:MaD:14  |
+| main.rs:133:24:133:72 | ...::get(...) [Ok] | main.rs:133:24:134:17 | ... .unwrap() | provenance | MaD:16 |
+| main.rs:133:24:134:17 | ... .unwrap() | main.rs:133:24:135:16 | ... .bytes() [Ok] | provenance | MaD:18 |
+| main.rs:133:24:135:16 | ... .bytes() [Ok] | main.rs:133:24:136:17 | ... .unwrap() | provenance | MaD:16 |
+| main.rs:133:24:136:17 | ... .unwrap() | main.rs:133:9:133:20 | remote_bytes | provenance |  |
+| main.rs:142:47:142:59 | &remote_bytes [&ref] | main.rs:93:27:93:37 | ...: ... [&ref] | provenance |  |
+| main.rs:142:48:142:59 | remote_bytes | main.rs:142:47:142:59 | &remote_bytes [&ref] | provenance |  |
+| main.rs:143:48:143:60 | &remote_bytes [&ref] | main.rs:123:27:123:37 | ...: ... [&ref] | provenance |  |
+| main.rs:143:49:143:60 | remote_bytes | main.rs:143:48:143:60 | &remote_bytes [&ref] | provenance |  |
+models
+| 1 | Sink: bincode::deserialize; Argument[0]; unsafe-deserialization |
+| 2 | Sink: bincode::deserialize_from; Argument[0]; unsafe-deserialization |
+| 3 | Sink: ciborium::de::from_reader; Argument[0]; unsafe-deserialization |
+| 4 | Sink: rmp_serde::decode::from_read; Argument[0]; unsafe-deserialization |
+| 5 | Sink: rmp_serde::decode::from_slice; Argument[0]; unsafe-deserialization |
+| 6 | Sink: serde_json::de::from_reader; Argument[0]; unsafe-deserialization |
+| 7 | Sink: serde_json::de::from_slice; Argument[0]; unsafe-deserialization |
+| 8 | Sink: serde_json::de::from_str; Argument[0]; unsafe-deserialization |
+| 9 | Sink: serde_json::value::from_value; Argument[0].Field[serde_json::value::Value::String(0)]; unsafe-deserialization |
+| 10 | Sink: serde_yaml::de::from_reader; Argument[0]; unsafe-deserialization |
+| 11 | Sink: serde_yaml::de::from_slice; Argument[0]; unsafe-deserialization |
+| 12 | Sink: serde_yaml::de::from_str; Argument[0]; unsafe-deserialization |
+| 13 | Sink: toml::de::from_str; Argument[0]; unsafe-deserialization |
+| 14 | Source: reqwest::blocking::get; ReturnValue.Field[core::result::Result::Ok(0)]; remote |
+| 15 | Summary: <core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue.Reference; taint |
+| 16 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 17 | Summary: <core::result::Result>::unwrap_or; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 18 | Summary: <reqwest::blocking::response::Response>::bytes; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 19 | Summary: <reqwest::blocking::response::Response>::text; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+nodes
+| main.rs:15:9:15:20 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:15:24:15:68 | ...::get(...) | semmle.label | ...::get(...) |
+| main.rs:15:24:15:68 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
+| main.rs:15:24:16:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:15:24:17:16 | ... .bytes() [Ok] | semmle.label | ... .bytes() [Ok] |
+| main.rs:15:24:18:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:19:9:19:21 | remote_string | semmle.label | remote_string |
+| main.rs:19:25:19:69 | ...::get(...) | semmle.label | ...::get(...) |
+| main.rs:19:25:19:69 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
+| main.rs:19:25:20:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:19:25:21:15 | ... .text() [Ok] | semmle.label | ... .text() [Ok] |
+| main.rs:19:25:22:38 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:33:53:33:65 | &remote_bytes | semmle.label | &remote_bytes |
+| main.rs:33:53:33:65 | &remote_bytes [&ref] | semmle.label | &remote_bytes [&ref] |
+| main.rs:33:54:33:65 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:36:51:36:64 | &remote_string | semmle.label | &remote_string |
+| main.rs:36:51:36:64 | &remote_string [&ref] | semmle.label | &remote_string [&ref] |
+| main.rs:36:52:36:64 | remote_string | semmle.label | remote_string |
+| main.rs:40:9:40:20 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:40:24:40:72 | ...::get(...) | semmle.label | ...::get(...) |
+| main.rs:40:24:40:72 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
+| main.rs:40:24:41:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:40:24:42:16 | ... .bytes() [Ok] | semmle.label | ... .bytes() [Ok] |
+| main.rs:40:24:43:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:46:48:46:60 | &remote_bytes | semmle.label | &remote_bytes |
+| main.rs:46:48:46:60 | &remote_bytes [&ref] | semmle.label | &remote_bytes [&ref] |
+| main.rs:46:49:46:60 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:50:9:50:21 | remote_string | semmle.label | remote_string |
+| main.rs:50:25:50:69 | ...::get(...) | semmle.label | ...::get(...) |
+| main.rs:50:25:50:69 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
+| main.rs:50:25:51:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:50:25:52:15 | ... .text() [Ok] | semmle.label | ... .text() [Ok] |
+| main.rs:50:25:53:38 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:58:52:58:65 | &remote_string | semmle.label | &remote_string |
+| main.rs:58:52:58:65 | &remote_string [&ref] | semmle.label | &remote_string [&ref] |
+| main.rs:58:53:58:65 | remote_string | semmle.label | remote_string |
+| main.rs:63:9:63:20 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:63:24:63:72 | ...::get(...) | semmle.label | ...::get(...) |
+| main.rs:63:24:63:72 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
+| main.rs:63:24:64:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:63:24:65:16 | ... .bytes() [Ok] | semmle.label | ... .bytes() [Ok] |
+| main.rs:63:24:66:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:67:9:67:21 | remote_string | semmle.label | remote_string |
+| main.rs:67:25:67:73 | ...::get(...) | semmle.label | ...::get(...) |
+| main.rs:67:25:67:73 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
+| main.rs:67:25:68:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:67:25:69:15 | ... .text() [Ok] | semmle.label | ... .text() [Ok] |
+| main.rs:67:25:70:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:72:51:72:67 | &... | semmle.label | &... |
+| main.rs:72:51:72:67 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:72:52:72:63 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:72:52:72:67 | remote_bytes[...] | semmle.label | remote_bytes[...] |
+| main.rs:73:54:73:70 | &... | semmle.label | &... |
+| main.rs:73:54:73:70 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:73:55:73:66 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:73:55:73:70 | remote_bytes[...] | semmle.label | remote_bytes[...] |
+| main.rs:74:56:74:68 | &remote_bytes | semmle.label | &remote_bytes |
+| main.rs:74:56:74:68 | &remote_bytes [&ref] | semmle.label | &remote_bytes [&ref] |
+| main.rs:74:57:74:68 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:75:56:75:72 | &... | semmle.label | &... |
+| main.rs:75:56:75:72 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:75:57:75:68 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:75:57:75:72 | remote_bytes[...] | semmle.label | remote_bytes[...] |
+| main.rs:76:47:76:63 | &... | semmle.label | &... |
+| main.rs:76:47:76:63 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:76:48:76:59 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:76:48:76:63 | remote_bytes[...] | semmle.label | remote_bytes[...] |
+| main.rs:77:50:77:63 | &remote_string | semmle.label | &remote_string |
+| main.rs:77:50:77:63 | &remote_string [&ref] | semmle.label | &remote_string [&ref] |
+| main.rs:77:51:77:63 | remote_string | semmle.label | remote_string |
+| main.rs:78:54:78:66 | &remote_bytes | semmle.label | &remote_bytes |
+| main.rs:78:54:78:66 | &remote_bytes [&ref] | semmle.label | &remote_bytes [&ref] |
+| main.rs:78:55:78:66 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:79:56:79:72 | &... | semmle.label | &... |
+| main.rs:79:56:79:72 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:79:57:79:68 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:79:57:79:72 | remote_bytes[...] | semmle.label | remote_bytes[...] |
+| main.rs:80:40:80:53 | &remote_string | semmle.label | &remote_string |
+| main.rs:80:40:80:53 | &remote_string [&ref] | semmle.label | &remote_string [&ref] |
+| main.rs:80:41:80:53 | remote_string | semmle.label | remote_string |
+| main.rs:81:54:81:93 | ...::String(...) | semmle.label | ...::String(...) |
+| main.rs:81:54:81:93 | ...::String(...) [String] | semmle.label | ...::String(...) [String] |
+| main.rs:81:80:81:92 | remote_string | semmle.label | remote_string |
+| main.rs:93:27:93:37 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
+| main.rs:95:32:95:35 | body | semmle.label | body |
+| main.rs:123:27:123:37 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
+| main.rs:128:32:128:35 | body | semmle.label | body |
+| main.rs:133:9:133:20 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:133:24:133:72 | ...::get(...) | semmle.label | ...::get(...) |
+| main.rs:133:24:133:72 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
+| main.rs:133:24:134:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:133:24:135:16 | ... .bytes() [Ok] | semmle.label | ... .bytes() [Ok] |
+| main.rs:133:24:136:17 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:142:47:142:59 | &remote_bytes [&ref] | semmle.label | &remote_bytes [&ref] |
+| main.rs:142:48:142:59 | remote_bytes | semmle.label | remote_bytes |
+| main.rs:143:48:143:60 | &remote_bytes [&ref] | semmle.label | &remote_bytes [&ref] |
+| main.rs:143:49:143:60 | remote_bytes | semmle.label | remote_bytes |
+subpaths

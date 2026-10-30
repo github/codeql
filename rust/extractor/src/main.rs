@@ -5,7 +5,7 @@ use crate::translate::SourceKind;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
-use ra_ap_base_db::SourceDatabase;
+use configuration::{DependencyFiles, dependency_files, manifest_parent};
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
@@ -14,15 +14,11 @@ use ra_ap_paths::{AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{CargoConfig, ProjectManifest};
 use ra_ap_vfs::Vfs;
 use rust_analyzer::{ParseResult, RustAnalyzer};
-use std::collections::HashSet;
+use std::collections::{BTreeMap, HashSet};
 use std::fs::File;
-use std::hash::RandomState;
 use std::io::{self, BufRead, BufReader};
+use std::path::{Path, PathBuf};
 use std::time::Instant;
-use std::{
-    collections::HashMap,
-    path::{Path, PathBuf},
-};
 use std::{env, fs};
 use tracing::{error, info, warn};
 use tracing_subscriber::layer::SubscriberExt;
@@ -30,6 +26,7 @@ use tracing_subscriber::util::SubscriberInitExt;
 
 mod archive;
 mod config;
+mod configuration;
 mod crate_graph;
 mod diagnostics;
 pub mod generated;
@@ -38,6 +35,7 @@ mod rust_analyzer;
 mod toolchain;
 mod translate;
 pub mod trap;
+mod util;
 
 struct Extractor<'a> {
     archiver: &'a Archiver,
@@ -202,6 +200,34 @@ impl<'a> Extractor<'a> {
         self.steps.push(ExtractionStep::find_manifests(before));
         ret
     }
+
+    fn group_files<'b>(
+        &mut self,
+        manifests: &'b [ProjectManifest],
+        files: &'b [PathBuf],
+    ) -> BTreeMap<&'b Path, (&'b ProjectManifest, Vec<&'b Path>)> {
+        let mut workspaces: BTreeMap<&Path, (&ProjectManifest, Vec<&Path>)> = manifests
+            .iter()
+            .map(|manifest| (manifest_parent(manifest), (manifest, Vec::new())))
+            .collect();
+
+        'outer: for file in files {
+            for ancestor in file.as_path().ancestors() {
+                if let Some((_, files)) = workspaces.get_mut(ancestor) {
+                    files.push(file);
+                    continue 'outer;
+                }
+            }
+            self.extract_without_semantics(
+                file,
+                SourceKind::Source,
+                RustAnalyzerNoSemantics::warning("no manifest found"),
+            );
+        }
+
+        workspaces.retain(|_, (_, files)| !files.is_empty());
+        workspaces
+    }
 }
 
 fn cwd() -> anyhow::Result<AbsPathBuf> {
@@ -214,10 +240,10 @@ fn cwd() -> anyhow::Result<AbsPathBuf> {
 }
 
 fn main() -> anyhow::Result<()> {
-    let cfg = config::Config::extract().context("failed to load configuration")?;
-    let inputs = if cfg.qltest {
-        qltest::prepare(&cfg)?
-    } else if let Some(path) = &cfg.file_list {
+    let config = config::Config::extract().context("failed to load configuration")?;
+    let inputs = if config.qltest {
+        qltest::prepare(&config)?
+    } else if let Some(path) = &config.file_list {
         let file =
             File::open(path).with_context(|| format!("opening file list {}", path.display()))?;
         BufReader::new(file)
@@ -229,7 +255,7 @@ fn main() -> anyhow::Result<()> {
         Vec::new()
     };
     let start = Instant::now();
-    let (flame_layer, _flush_guard) = if let Some(path) = &cfg.logging_flamegraph {
+    let (flame_layer, _flush_guard) = if let Some(path) = &config.logging_flamegraph {
         tracing_flame::FlameLayer::with_file(path)
             .ok()
             .map(|(a, b)| (Some(a), Some(b)))
@@ -241,19 +267,19 @@ fn main() -> anyhow::Result<()> {
     tracing_subscriber::registry()
         .with(codeql_extractor::extractor::default_subscriber_with_level(
             "single_arch",
-            &cfg.logging_verbosity,
+            &config.logging_verbosity,
         ))
         .with(flame_layer)
         .init();
-    info!("{cfg:#?}\n");
+    info!("{config:#?}\n");
     info!("number of inputs: {}", inputs.len());
 
-    let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
+    let traps = trap::TrapFileProvider::new(&config).context("failed to set up trap files")?;
     let archiver = archive::Archiver {
-        root: cfg.source_archive_dir.clone(),
+        root: config.source_archive_dir.clone(),
     };
     let mut extractor = Extractor::new(&archiver, &traps);
-    let files: Vec<PathBuf> = inputs
+    let files = inputs
         .iter()
         .map(|file| {
             let file = std::path::absolute(file).unwrap_or(file.to_path_buf());
@@ -262,69 +288,53 @@ fn main() -> anyhow::Result<()> {
             // [1]: https://github.com/rust-lang/rust-analyzer/issues/18894#issuecomment-2580014730
             dunce::canonicalize(&file).unwrap_or(file)
         })
-        .collect();
+        .collect::<Vec<_>>();
     let manifests = extractor.find_manifests(&files)?;
-    let mut map: HashMap<&Path, (&ProjectManifest, Vec<&Path>)> = manifests
-        .iter()
-        .map(|x| (x.manifest_path().parent().as_ref(), (x, Vec::new())))
-        .collect();
-
-    'outer: for file in &files {
-        for ancestor in file.as_path().ancestors() {
-            if let Some((_, files)) = map.get_mut(ancestor) {
-                files.push(file);
-                continue 'outer;
-            }
-        }
-        extractor.extract_without_semantics(
-            file,
-            SourceKind::Source,
-            RustAnalyzerNoSemantics::warning("no manifest found"),
-        );
-    }
+    let workspaces = extractor.group_files(&manifests, &files);
     let cwd = cwd()?;
     log_project_toolchain();
-    let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
-    let library_mode = if cfg.extract_dependencies_as_source {
+    let (cargo_config, load_cargo_config) = config.to_cargo_config(&cwd);
+    let library_mode = if config.extract_dependencies_as_source {
         SourceKind::Source
     } else {
         SourceKind::Library
     };
-    let source_mode = if cfg.force_library_mode {
+    let source_mode = if config.force_library_mode {
         library_mode
     } else {
         SourceKind::Source
     };
-    let mut processed_files: HashSet<PathBuf, RandomState> =
-        HashSet::from_iter(files.iter().cloned());
-    for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
-        if let Some((ref db, ref vfs)) =
+    let source_files = HashSet::from_iter(files.iter().cloned());
+
+    let mut dependencies = DependencyFiles::default();
+
+    // When there more than one workspace, it's not a priori clear in which
+    // workspace a dependency file should be extracted.
+    let dependency_extraction_ambiguity = workspaces.len() == 1;
+
+    for (manifest, files) in workspaces.values() {
+        if let Some((db, vfs)) =
             extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
         {
             let before_crate_graph = Instant::now();
-            crate_graph::extract_crate_graph(extractor.traps, db, vfs);
+            crate_graph::extract_crate_graph(extractor.traps, &db, &vfs);
             extractor
                 .steps
                 .push(ExtractionStep::crate_graph(before_crate_graph));
-            let semantics = Semantics::new(db);
+            let semantics = Semantics::new(&db);
             for file in files {
-                match extractor.load_source(file, &semantics, vfs) {
-                    Ok(()) => extractor.extract_with_semantics(file, &semantics, vfs, source_mode),
+                match extractor.load_source(file, &semantics, &vfs) {
+                    Ok(()) => extractor.extract_with_semantics(file, &semantics, &vfs, source_mode),
                     Err(e) => extractor.extract_without_semantics(file, source_mode, e),
                 };
             }
-            for (file_id, file) in vfs.iter() {
-                if let Some(file) = file.as_path().map(<_ as AsRef<Path>>::as_ref)
-                    && file.extension().is_some_and(|ext| ext == "rs")
-                    && processed_files.insert(file.to_owned())
-                    && db
-                        .source_root(db.file_source_root(file_id).source_root_id(db))
-                        .source_root(db)
-                        .is_library
-                {
-                    extractor.extract_with_semantics(file, &semantics, vfs, library_mode);
-                    extractor.archiver.archive(file);
+            // Fast path when there is no ambiguity in dependency extraction.
+            if dependency_extraction_ambiguity {
+                for (_, file) in dependency_files(&db, &vfs, &source_files) {
+                    extractor.extract_with_semantics(file, &semantics, &vfs, library_mode);
                 }
+            } else {
+                dependencies.add_manifest(manifest, &semantics, &vfs, &source_files);
             }
         } else {
             for file in files {
@@ -336,6 +346,49 @@ fn main() -> anyhow::Result<()> {
             }
         }
     }
+
+    // For each manifest, extract the dependency files for which it is
+    // preferred. Note that when `dependency_extraction_ambiguity` is true then
+    // `selected` below is empty.
+    loop {
+        let selected = dependencies.by_manifests();
+        if selected.is_empty() {
+            break;
+        }
+        for (manifest, files) in selected {
+            if let Some((db, vfs)) =
+                extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
+            {
+                let semantics = Semantics::new(&db);
+                for file in files {
+                    // A richer configuration can disable a file when using cfg
+                    // options like `#[cfg(not(feature = "foo"))]`. When this is
+                    // the case `file_to_module_def` will return `None` for the
+                    // file. When this is the case and there are alternatives we
+                    // do not extract the file yet. Instead the file will be
+                    // considered again in the next iteration of the loop.
+                    if !dependencies.has_alternative(&file)
+                        || path_to_file_id(&file, &vfs)
+                            .and_then(|id| semantics.file_to_module_def(id))
+                            .is_some()
+                    {
+                        extractor.extract_with_semantics(&file, &semantics, &vfs, library_mode);
+                        dependencies.extracted(&file);
+                    }
+                }
+            } else {
+                for file in files {
+                    extractor.extract_without_semantics(
+                        &file,
+                        library_mode,
+                        RustAnalyzerNoSemantics::warning("unable to reload manifest"),
+                    );
+                    dependencies.extracted(&file);
+                }
+            }
+        }
+    }
+
     let builtins_dir = env::var("CODEQL_EXTRACTOR_RUST_ROOT")
         .map(|path| Path::new(&path).join("tools").join("builtins"))?;
     let builtins = fs::read_dir(builtins_dir).context("failed to read builtins directory")?;
@@ -347,5 +400,5 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
-    extractor.emit_extraction_diagnostics(start, &cfg)
+    extractor.emit_extraction_diagnostics(start, &config)
 }

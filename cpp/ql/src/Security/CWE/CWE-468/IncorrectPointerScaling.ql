@@ -22,11 +22,12 @@ where
   destBase = baseType(destType) and
   destBase.getSize() != sourceBase.getSize() and
   not dest.isInMacroExpansion() and
-  // If the source type is a `char*` or `void*` then don't
+  // If the source type is a `char*`, `void*` or `std::byte*` then don't
   // produce a result, because it is likely to be a false
   // positive.
   not sourceBase instanceof CharType and
   not sourceBase instanceof VoidType and
+  not sourceBase.(Enum).hasQualifiedName("std", "byte") and
   // Low-level pointer tricks often involve casting a struct pointer to a
   // char pointer, then accessing it at byte offsets. For example, this can
   // be necessary in order to resume an interrupted `write(2)`.

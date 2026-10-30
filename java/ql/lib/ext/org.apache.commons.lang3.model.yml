@@ -1,6 +1,13 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: barrierModel
+    data:
+      - ["org.apache.commons.lang3", "StringEscapeUtils", False, "escapeJava", "(String)", "", "ReturnValue", "log-injection", "manual"]
+      - ["org.apache.commons.lang3", "StringUtils", False, "deleteWhitespace", "", "", "ReturnValue", "log-injection", "manual"]
+      - ["org.apache.commons.lang3", "StringUtils", False, "normalizeSpace", "", "", "ReturnValue", "log-injection", "manual"]
+  - addsTo:
+      pack: codeql/java-all
       extensible: sinkModel
     data:
       - ["org.apache.commons.lang3", "SerializationUtils", False, "deserialize", "", "", "Argument[0]", "unsafe-deserialization", "manual"]
@@ -75,6 +82,7 @@ extensions:
       - ["org.apache.commons.lang3", "RegExUtils", False, "replaceFirst", "", "", "Argument[2]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "RegExUtils", False, "replacePattern", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "RegExUtils", False, "replacePattern", "", "", "Argument[2]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.lang3", "StringEscapeUtils", False, "escapeJava", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "StringEscapeUtils", False, "escapeJson", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "StringUtils", False, "abbreviate", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "StringUtils", False, "abbreviate", "(java.lang.String,java.lang.String,int)", "", "Argument[1]", "ReturnValue", "taint", "manual"]

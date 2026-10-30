@@ -38,8 +38,28 @@ signature module InputSig<LocationSig Location, TypSig BasicBlock> {
    * Examples of uncertain reads are pseudo-reads inserted at the end of a C# method
    * with a `ref` or `out` parameter, where it is the caller that may or may not read
    * the argument.
+   *
+   * Uncertain reads are skipped in the use-use relations and in the data flow
+   * integration.
    */
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain);
+
+  /**
+   * Holds if the `i1`th node of basic block `bb1` reads source variable `v`
+   * and this read has an associated post-update that occurs at the `i2`th node
+   * of basic block `bb2`.
+   *
+   * If left empty, post-updates are considered to occur at the same control
+   * flow node as the read.
+   *
+   * If specified for only some reads, the remaining reads are assumed to not
+   * have post-updates.
+   */
+  default predicate variableReadWithPostUpdate(
+    BasicBlock bb1, int i1, SourceVariable v, BasicBlock bb2, int i2
+  ) {
+    none()
+  }
 }
 
 /**
@@ -332,6 +352,10 @@ module Make<
     }
   }
 
+  private predicate postUpdate(BasicBlock bb, int i, SourceVariable v) {
+    variableReadWithPostUpdate(_, _, v, bb, i)
+  }
+
   /**
    * Liveness analysis (based on source variables) to restrict the size of the
    * SSA representation.
@@ -436,8 +460,7 @@ module Make<
   pragma[nomagic]
   private predicate inReadDominanceFrontier(BasicBlock bb, SourceVariable v) {
     exists(BasicBlock readbb | readbb.inDominanceFrontier(bb) |
-      ssaDefReachesRead(v, _, readbb, _) and
-      variableRead(readbb, _, v, true) and
+      (variableRead(readbb, _, v, true) or postUpdate(readbb, _, v)) and
       not variableWrite(readbb, _, v, _)
       or
       synthPhiRead(readbb, v) and
@@ -484,7 +507,7 @@ module Make<
      * associated with uncertain writes.
      */
     pragma[nomagic]
-    predicate ssaRef(BasicBlock bb, int i, SourceVariable v, RefKind k) {
+    private predicate ssaRef(BasicBlock bb, int i, SourceVariable v, RefKind k) {
       variableRead(bb, i, v, _) and
       k = Read()
       or
@@ -501,7 +524,7 @@ module Make<
      * Holds if the SSA definition `def` reaches rank index `rnk` in its own
      * basic block `bb`.
      */
-    predicate ssaDefReachesRank(BasicBlock bb, Definition def, int rnk, SourceVariable v) {
+    private predicate ssaDefReachesRank(BasicBlock bb, Definition def, int rnk, SourceVariable v) {
       exists(int i |
         rnk = refRank(bb, i, v, Def()) and
         def.definesAt(v, bb, i)
@@ -590,8 +613,11 @@ module Make<
      * reads.
      */
     pragma[nomagic]
-    predicate ssaRef(BasicBlock bb, int i, SourceVariable v, RefKind k) {
+    private predicate ssaRef(BasicBlock bb, int i, SourceVariable v, RefKind k) {
       variableRead(bb, i, v, true) and
+      k = Read()
+      or
+      postUpdate(bb, i, v) and
       k = Read()
       or
       variableWrite(bb, i, v, false) and
@@ -628,6 +654,12 @@ module Make<
       )
     }
 
+    private predicate justPostUpdate(BasicBlock bb, int i, SourceVariable v) {
+      postUpdate(bb, i, v) and
+      not variableRead(bb, i, v, true) and
+      not variableWrite(bb, i, v, _)
+    }
+
     /**
      * Holds if `v` has adjacent references at index `i1` in basic block `bb1`
      * and index `i2` in basic block `bb2`, that is, there is a path between
@@ -649,6 +681,33 @@ module Make<
       1 = refRank(bb2, i2, v, Read())
     }
 
+    private predicate closestPriorNonPostUpdateRef(
+      BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v
+    ) {
+      exists(RefKind k |
+        ssaRef(bb1, i1, v, k) and
+        bb1 = bb2 and
+        i1 = i2
+      |
+        k = Def() or not justPostUpdate(bb1, i1, v)
+      )
+      or
+      exists(BasicBlock bb0, int i0 |
+        closestPriorNonPostUpdateRef(bb1, i1, bb0, i0, v) and
+        justPostUpdate(bb2, i2, v) and
+        adjacentRefRead(bb0, i0, bb2, i2, v)
+      )
+    }
+
+    predicate adjacentRefReadSkipPostUpd(
+      BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v
+    ) {
+      exists(BasicBlock bb0, int i0 |
+        adjacentRefRead(bb0, i0, bb2, i2, v) and
+        closestPriorNonPostUpdateRef(bb1, i1, bb0, i0, v)
+      )
+    }
+
     /**
      * Holds if the phi node or phi-read for `v` in basic block `bbPhi` takes
      * input from basic block `input`, and that the reference to `v` at index
@@ -663,10 +722,19 @@ module Make<
       1 = refRank(bbPhi, -1, v, _)
     }
 
+    predicate adjacentRefPhiSkipPostUpd(
+      BasicBlock bb, int i, BasicBlock input, BasicBlock bbPhi, SourceVariable v
+    ) {
+      exists(BasicBlock bb0, int i0 |
+        adjacentRefPhi(bb0, i0, input, bbPhi, v) and
+        closestPriorNonPostUpdateRef(bb, i, bb0, i0, v)
+      )
+    }
+
     private predicate adjacentRefs(BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v) {
-      adjacentRefRead(bb1, i1, bb2, i2, v)
+      adjacentRefReadSkipPostUpd(bb1, i1, bb2, i2, v)
       or
-      adjacentRefPhi(bb1, i1, _, bb2, v) and i2 = -1
+      adjacentRefPhiSkipPostUpd(bb1, i1, _, bb2, v) and i2 = -1
     }
 
     /**
@@ -1290,7 +1358,7 @@ module Make<
     /** Holds if a certain read does not have a prior reference. */
     query predicate readWithoutPriorRef(SourceVariable v, BasicBlock bb, int i) {
       variableRead(bb, i, v, true) and
-      not AdjacentSsaRefs::adjacentRefRead(_, _, bb, i, v)
+      not AdjacentSsaRefs::adjacentRefReadSkipPostUpd(_, _, bb, i, v)
     }
 
     /**
@@ -1310,7 +1378,8 @@ module Make<
       PhiNode phi, BasicBlock bbPhi, SourceVariable v, int inputRefs
     ) {
       phi.definesAt(v, bbPhi, _) and
-      inputRefs = count(BasicBlock bb, int i | AdjacentSsaRefs::adjacentRefPhi(bb, i, _, bbPhi, v)) and
+      inputRefs =
+        count(BasicBlock bb, int i | AdjacentSsaRefs::adjacentRefPhiSkipPostUpd(bb, i, _, bbPhi, v)) and
       inputRefs < 2
     }
 
@@ -1325,55 +1394,69 @@ module Make<
     }
 
     /**
+     * Holds if the supposed read at `bb` and `i` has a post-update, but no
+     * actual certain read.
+     */
+    query predicate postUpdateWithoutRead(SourceVariable v, BasicBlock bb, int i) {
+      variableReadWithPostUpdate(bb, i, v, _, _) and
+      not variableRead(bb, i, v, true)
+    }
+
+    /**
      * Gets counts of inconsistencies of each type.
      */
     int getInconsistencyCounts(string type) {
       // total results from all the SSA consistency query predicates.
       type = "Read can be reached from multiple definitions" and
       result =
-        count(Definition def, SourceVariable v, BasicBlock bb, int i | nonUniqueDef(def, v, bb, i))
+        strictcount(Definition def, SourceVariable v, BasicBlock bb, int i |
+          nonUniqueDef(def, v, bb, i)
+        )
       or
       type = "Read cannot be reached from a definition" and
-      result = count(SourceVariable v, BasicBlock bb, int i | readWithoutDef(v, bb, i))
+      result = strictcount(SourceVariable v, BasicBlock bb, int i | readWithoutDef(v, bb, i))
       or
       type = "Definition cannot reach a read" and
-      result = count(Definition def, SourceVariable v | deadDef(def, v))
+      result = strictcount(Definition def, SourceVariable v | deadDef(def, v))
       or
       type = "Read is not dominated by a definition" and
       result =
-        count(Definition def, SourceVariable v, BasicBlock bb, int i |
+        strictcount(Definition def, SourceVariable v, BasicBlock bb, int i |
           notDominatedByDef(def, v, bb, i)
         )
       or
       type = "End of a basic block can be reached by multiple definitions" and
       result =
-        count(Definition def, SourceVariable v, BasicBlock bb |
+        strictcount(Definition def, SourceVariable v, BasicBlock bb |
           nonUniqueDefReachesEndOfBlock(def, v, bb)
         )
       or
       type = "Phi node has less than two inputs" and
-      result = count(PhiNode phi, int inputs | uselessPhiNode(phi, inputs))
+      result = strictcount(PhiNode phi, int inputs | uselessPhiNode(phi, inputs))
       or
       type = "Read does not have a prior reference" and
-      result = count(SourceVariable v, BasicBlock bb, int i | readWithoutPriorRef(v, bb, i))
+      result = strictcount(SourceVariable v, BasicBlock bb, int i | readWithoutPriorRef(v, bb, i))
       or
       type = "Read has multiple prior references" and
       result =
-        count(SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+        strictcount(SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
           readWithMultiplePriorRefs(v, bb1, i1, bb2, i2)
         )
       or
       type = "Phi has less than 2 immediately prior references" and
       result =
-        count(PhiNode phi, BasicBlock bbPhi, SourceVariable v, int inputRefs |
+        strictcount(PhiNode phi, BasicBlock bbPhi, SourceVariable v, int inputRefs |
           phiWithoutTwoPriorRefs(phi, bbPhi, v, inputRefs)
         )
       or
       type = "Phi read has less than 2 immediately prior references" and
       result =
-        count(BasicBlock bbPhi, SourceVariable v, int inputRefs |
+        strictcount(BasicBlock bbPhi, SourceVariable v, int inputRefs |
           phiReadWithoutTwoPriorRefs(bbPhi, v, inputRefs)
         )
+      or
+      type = "Post-update without read" and
+      result = strictcount(SourceVariable v, BasicBlock bb, int i | postUpdateWithoutRead(v, bb, i))
     }
   }
 
@@ -1418,22 +1501,6 @@ module Make<
      * previous definitions or reads.
      */
     default predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) { none() }
-
-    /**
-     * Holds if the post-update node corresponding to the given `read` occurs at `bb,i`, meaning
-     * it will propagate to the next use (strictly) after that point in the CFG.
-     *
-     * The default is to use the CFG node associated with the read itself, meaning the post-update
-     * always flows to the next use. The default can however lead to spurious flow in cases like:
-     * ```
-     * x.f = foo(x)
-     * ```
-     * where the post-update node for `x` on the left-hand side flows into the `x` on the right-hand side.
-     *
-     * NOTE: When implementing this predicate, you must ensure that `variableRead` is defined to contain
-     * a synthetic read of this variable at `bb,i`.
-     */
-    default predicate postUpdateCfgNode(Expr read, BasicBlock bb, int i) { read.hasCfgNode(bb, i) }
 
     /** An abstract value that a `Guard` may evaluate to. */
     class GuardValue {
@@ -1570,7 +1637,8 @@ module Make<
     private predicate phiInputIsGuardEquivalentWithPreviousRef(SsaPhiExt phi, BasicBlock input) {
       exists(BasicBlock prev |
         phiInputHasRead(phi, input) and
-        AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(), phi.getSourceVariable()) and
+        AdjacentSsaRefs::adjacentRefPhiSkipPostUpd(prev, _, input, phi.getBasicBlock(),
+          phi.getSourceVariable()) and
         prev = getGuardEquivalentImmediateDominator*(input)
       )
     }
@@ -1612,7 +1680,7 @@ module Make<
         // An equivalent, but less performant, way to express this is as follows:
         // ```
         // exists(BasicBlock prev |
-        //   AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(),
+        //   AdjacentSsaRefs::adjacentRefPhiSkipPostUpd(prev, _, input, phi.getBasicBlock(),
         //     phi.getSourceVariable()) and
         //   prev != input and
         //   exists(DfInput::Guard g, DfInput::GuardValue val |
@@ -1634,7 +1702,7 @@ module Make<
     ) {
       exists(BasicBlock bb1, int i, SourceVariable v, BasicBlock bb2 |
         phi.definesAt(pragma[only_bind_into](v), bb1, i) and
-        AdjacentSsaRefs::adjacentRefPhi(bb1, i, input, bb2, v) and
+        AdjacentSsaRefs::adjacentRefPhiSkipPostUpd(bb1, i, input, bb2, v) and
         phi2.definesAt(pragma[only_bind_into](v), bb2, _) and
         if relevantPhiInputNode(phi2, input) then relevant = true else relevant = false
       )
@@ -1648,7 +1716,7 @@ module Make<
     private predicate phiStepsToRef(SsaPhiExt phi, BasicBlock bb, int i, boolean isUse) {
       exists(SourceVariable v, BasicBlock bb1, int i1 |
         phi.definesAt(v, bb1, i1) and
-        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb, i, v)
+        AdjacentSsaRefs::adjacentRefReadSkipPostUpd(bb1, i1, bb, i, v)
       |
         isUse = true and
         variableRead(bb, i, v, true)
@@ -1680,14 +1748,22 @@ module Make<
     cached
     private newtype TNode =
       TWriteDefSource(WriteDefinition def) { DfInput::ssaDefHasSource(def) } or
-      TExprNode(DfInput::Expr e, SourceVariable v, Boolean isPost) {
-        exists(BasicBlock bb, int i |
-          e.hasCfgNode(bb, i) and
+      TExprNode(DfInput::Expr e, SourceVariable v, boolean isPost) {
+        exists(BasicBlock bb, int i | e.hasCfgNode(bb, i) |
           variableRead(bb, i, v, true) and
+          isPost = false and
           // Only materialise if 'expr' has a reaching definition.
           // Note that the read may correspond to a different variable than 'v', but the C++
           // instantiation currently expects this particular behaviour.
           DfInput::getARead(_) = e
+          or
+          not postUpdate(_, _, _) and
+          variableRead(bb, i, v, true) and
+          isPost = true and
+          DfInput::getARead(_) = e
+          or
+          postUpdate(bb, i, v) and
+          isPost = true
         )
       } or
       TSsaDefinitionNode(DefinitionExt def) {
@@ -1776,7 +1852,17 @@ module Make<
       ExprPostUpdateNodeImpl() { isPost = true }
 
       /** Gets the pre-update expression node. */
-      ExprNode getPreUpdateNode() { result = TExprNode(e, v_, false) }
+      ExprNode getPreUpdateNode() {
+        not postUpdate(_, _, _) and
+        result = TExprNode(e, v_, false)
+        or
+        exists(DfInput::Expr e1, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+          result = TExprNode(e1, v_, false) and
+          e1.hasCfgNode(bb1, i1) and
+          variableReadWithPostUpdate(bb1, i1, v_, bb2, i2) and
+          e.hasCfgNode(bb2, i2)
+        )
+      }
 
       override string toString() { result = e.toString() + " [postupdate]" }
     }
@@ -1787,7 +1873,6 @@ module Make<
     private predicate exprReadAt(
       DfInput::Expr e, BasicBlock bb, int i, SourceVariable v, boolean isPost, TExprNode node
     ) {
-      variableRead(bb, i, v, true) and
       e.hasCfgNode(bb, i) and
       node = TExprNode(e, v, isPost)
     }
@@ -1926,13 +2011,6 @@ module Make<
       override string toString() { result = "[input] " + def_.toString() }
     }
 
-    private predicate postUpdateNodeAt(
-      ExprPostUpdateNode node, BasicBlock bb, int i, SourceVariable v
-    ) {
-      node.getPreUpdateNode().(ReadNode).readsAt(_, _, v) and
-      DfInput::postUpdateCfgNode(node.getExpr(), bb, i)
-    }
-
     /**
      * Holds if `nodeFrom` corresponds to the reference to `v` at index `i` in
      * `bb`. The boolean `isUseStep` indicates whether `nodeFrom` is an actual
@@ -1948,10 +2026,8 @@ module Make<
         isUseStep = false
       )
       or
-      nodeFrom.(ReadNode).readsAt(bb, i, v) and
-      isUseStep = true
-      or
-      postUpdateNodeAt(nodeFrom, bb, i, v) and
+      exprReadAt(_, bb, i, v, _, nodeFrom) and
+      not variableWrite(bb, i, v, true) and
       isUseStep = true
     }
 
@@ -1970,6 +2046,15 @@ module Make<
           nodeTo.(SsaDefinitionNode).getDefinition() = def2 and
           def2.definesAt(v, bb2, i2)
         )
+      )
+      or
+      // Flow from definition/read via post-update node
+      exists(BasicBlock bb2, int i2 |
+        AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
+        postUpdate(bb2, i2, v) and
+        not any(ReadNode r).readsAt(bb2, i2, v) and
+        not any(UncertainWriteDefinition def2).definesAt(v, bb2, i2) and
+        flowFromRefToNode(v, bb2, i2, nodeTo)
       )
       or
       // Flow from definition/read to phi input
@@ -2182,6 +2267,7 @@ module Make<
   module TestAdjacentRefs {
     private newtype TRef =
       TRefRead(BasicBlock bb, int i, SourceVariable v) { variableRead(bb, i, v, true) } or
+      TRefPostUpdate(BasicBlock bb, int i, SourceVariable v) { postUpdate(bb, i, v) } or
       TRefDef(Definition def) or
       TRefPhiRead(BasicBlock bb, SourceVariable v) { synthPhiRead(bb, v) }
 
@@ -2193,6 +2279,8 @@ module Make<
       /** Gets the source variable referenced by this reference. */
       SourceVariable getSourceVariable() {
         this = TRefRead(_, _, result)
+        or
+        this = TRefPostUpdate(_, _, result)
         or
         exists(Definition def | this = TRefDef(def) and def.getSourceVariable() = result)
         or
@@ -2206,6 +2294,9 @@ module Make<
       string toString() {
         this = TRefRead(_, _, _) and result = "SSA read(" + this.getSourceVariable() + ")"
         or
+        this = TRefPostUpdate(_, _, _) and
+        result = "SSA post update(" + this.getSourceVariable() + ")"
+        or
         exists(Definition def | this = TRefDef(def) and result = def.toString())
         or
         this = TRefPhiRead(_, _) and result = "SSA phi read(" + this.getSourceVariable() + ")"
@@ -2213,8 +2304,8 @@ module Make<
 
       /** Gets the location of this SSA reference. */
       Location getLocation() {
-        exists(BasicBlock bb, int i |
-          this = TRefRead(bb, i, _) and bb.getNode(i).getLocation() = result
+        exists(BasicBlock bb, int i | this = TRefRead(bb, i, _) or this = TRefPostUpdate(bb, i, _) |
+          bb.getNode(i).getLocation() = result
         )
         or
         exists(Definition def | this = TRefDef(def) and def.getLocation() = result)
@@ -2225,6 +2316,8 @@ module Make<
       /** Holds if this reference of `v` occurs in `bb` at index `i`. */
       predicate accessAt(BasicBlock bb, int i, SourceVariable v) {
         this = TRefRead(bb, i, v)
+        or
+        this = TRefPostUpdate(bb, i, v)
         or
         exists(Definition def | this = TRefDef(def) and def.definesAt(v, bb, i))
         or

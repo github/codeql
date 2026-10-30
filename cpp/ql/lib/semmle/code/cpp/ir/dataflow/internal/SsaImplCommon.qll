@@ -217,6 +217,16 @@ private module IteratorIndirections {
       )
     }
 
+    // A by-value crement result loads the iterator, rather than aliasing its address.
+    override predicate isAdditionalDereference(Instruction deref, Operand address) {
+      exists(CallInstruction call |
+        deref = call and
+        call.getStaticCallTarget() instanceof Iterator::IteratorCrementMemberOperator and
+        not call.getResultType() instanceof Cpp::ReferenceType and
+        address = call.getThisArgumentOperand()
+      )
+    }
+
     override predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) {
       // This is a bit annoying: Consider the following snippet:
       // ```
@@ -255,11 +265,11 @@ private module IteratorIndirections {
         store.getDestinationAddress() = var
       )
       or
-      // A call to `operator++` or `operator--` is the iterator equivalent version of a
-      // pointer arithmetic instruction.
+      // A reference-returning `operator++` or `operator--` preserves the iterator's address.
       exists(CallInstruction call |
         instrTo = call and
         call.getStaticCallTarget() instanceof Iterator::IteratorCrementMemberOperator and
+        call.getResultType() instanceof Cpp::ReferenceType and
         opFrom = call.getThisArgumentOperand()
       )
     }
