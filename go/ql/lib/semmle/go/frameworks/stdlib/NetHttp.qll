@@ -15,7 +15,7 @@ module NetHttp {
     SsaWithFields v;
 
     StdlibResponseWriter() {
-      this = v.getBaseVariable().getSourceVariable() and
+      this = v.getBaseDefinition().getSourceVariable() and
       exists(Type t | t.implements("net/http", "ResponseWriter") | v.getType() = t)
     }
 
