@@ -6,12 +6,15 @@ class A {
     }
 
     typealias BAlias = B  // $ access=A.B
+
+    enum Enum { case empty }
 }
 
 let x1: B = nil  // $ access=top.B
 let x2: A.B = nil  // $ access=A access=A.B
 let x3: A.B.C = nil  // $ access=A access=A.B access=A.B.C
 let x4: A.BAlias.C = nil  // $ access=A access=A.BAlias access=A.B.C
+let x5 = A.Enum.empty  // $ access=A $ MISSING: access=A.Enum access=A.Enum.empty
 
 class D {
     let x1: B = nil  // $ access=top.B
