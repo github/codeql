@@ -56,6 +56,39 @@ pub struct BuildCtx<'a, C: 'a = ()> {
     created_nodes_without_source_range: BTreeSet<OutputId>,
 }
 
+#[doc(hidden)]
+/// RAII guard that gives an output-template interpolation its own user context
+/// while preserving the surrounding lexical scope for control flow.
+///
+/// It temporarily swaps a clone into the existing [`BuildCtx`] and restores
+/// the original context on drop.
+pub struct ClonedUserCtx<'ctx, 'a, C: 'a> {
+    ctx: &'ctx mut BuildCtx<'a, C>,
+    original_user_ctx: Option<C>,
+}
+
+impl<'a, C> std::ops::Deref for ClonedUserCtx<'_, 'a, C> {
+    type Target = BuildCtx<'a, C>;
+
+    fn deref(&self) -> &Self::Target {
+        self.ctx
+    }
+}
+
+impl<C> std::ops::DerefMut for ClonedUserCtx<'_, '_, C> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.ctx
+    }
+}
+
+impl<C> Drop for ClonedUserCtx<'_, '_, C> {
+    fn drop(&mut self) {
+        if let Some(original_user_ctx) = self.original_user_ctx.take() {
+            *self.ctx.user_ctx = original_user_ctx;
+        }
+    }
+}
+
 impl<'a, C> BuildCtx<'a, C> {
     pub fn new(ast: &'a Ast, output: &'a mut OutputAst, user_ctx: &'a mut C) -> Self {
         Self {
@@ -263,7 +296,17 @@ impl<'a, C> BuildCtx<'a, C> {
     }
 }
 
-impl<C: Clone> BuildCtx<'_, C> {
+impl<'a, C: Clone> BuildCtx<'a, C> {
+    #[doc(hidden)]
+    pub fn cloned_user_ctx(&mut self) -> ClonedUserCtx<'_, 'a, C> {
+        let cloned_user_ctx = (*self.user_ctx).clone();
+        let original_user_ctx = std::mem::replace(self.user_ctx, cloned_user_ctx);
+        ClonedUserCtx {
+            ctx: self,
+            original_user_ctx: Some(original_user_ctx),
+        }
+    }
+
     #[doc(hidden)]
     pub fn extend_field_ids<V: IntoFieldIds<C>>(&mut self, value: V, out: &mut Vec<OutputId>) {
         value.extend_into(self, out);
