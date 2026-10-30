@@ -68,6 +68,8 @@ fn parse_node(group: proc_macro2::Group) -> Result<Node> {
     };
 
     let mut fields = Vec::new();
+    let mut has_location = false;
+    let mut has_location_none = false;
     while peek_is_field(&mut tokens) {
         let name = expect_ident(&mut tokens, "expected field name")?;
         let is_location = name == "location";
@@ -79,20 +81,39 @@ fn parse_node(group: proc_macro2::Group) -> Result<Node> {
         }
         expect_punct(&mut tokens, ':', "expected `:` after field name")?;
         if is_location {
-            if !peek_is_group(&mut tokens, Delimiter::Brace) {
+            if matches!(tokens.peek(), Some(TokenTree::Ident(ident)) if ident == "none") {
+                let none = tokens.next().unwrap();
+                if has_location || has_location_none {
+                    return Err(syn::Error::new_spanned(
+                        none,
+                        "`location: none` cannot be combined with another `location` field",
+                    ));
+                }
+                has_location_none = true;
+                fields.push(Field::LocationNone);
+            } else if peek_is_group(&mut tokens, Delimiter::Brace) {
+                if has_location_none {
+                    return Err(syn::Error::new_spanned(
+                        tokens.peek().unwrap().clone(),
+                        "`location: none` cannot be combined with another `location` field",
+                    ));
+                }
+                has_location = true;
+                let block = parse_block(expect_group(&mut tokens, Delimiter::Brace)?)?;
+                fields.push(Field::Location { block });
+            } else {
                 let error = match tokens.peek() {
                     Some(token) => syn::Error::new_spanned(
                         token.clone(),
-                        "`location` field value must be a Rust block",
+                        "`location` field value must be a Rust block or `none`",
                     ),
                     None => syn::Error::new(
                         Span::call_site(),
-                        "`location` field value must be a Rust block",
+                        "`location` field value must be a Rust block or `none`",
                     ),
                 };
                 return Err(error);
             }
-            let block = parse_block(expect_group(&mut tokens, Delimiter::Brace)?)?;
             if let Some(TokenTree::Punct(punctuation)) = tokens.peek() {
                 if punctuation.as_char() == '?' {
                     return Err(syn::Error::new_spanned(
@@ -101,7 +122,6 @@ fn parse_node(group: proc_macro2::Group) -> Result<Node> {
                     ));
                 }
             }
-            fields.push(Field::Location { block });
             continue;
         }
 
@@ -284,6 +304,19 @@ mod tests {
     }
 
     #[test]
+    fn parses_location_none() {
+        let template = parse_template(quote! {
+            (identifier "name" location: none)
+        })
+        .unwrap();
+
+        let Template::Node(node) = template else {
+            panic!("expected node template");
+        };
+        assert!(matches!(node.fields.as_slice(), [Field::LocationNone]));
+    }
+
+    #[test]
     fn rejects_non_block_location_fields() {
         let result = parse_template(quote! {
             (identifier "name" location: (identifier "source"))
@@ -293,7 +326,21 @@ mod tests {
         };
         assert_eq!(
             error.to_string(),
-            "`location` field value must be a Rust block"
+            "`location` field value must be a Rust block or `none`"
+        );
+    }
+
+    #[test]
+    fn rejects_location_none_with_other_locations() {
+        let result = parse_template(quote! {
+            (identifier "name" location: none location: {source})
+        });
+        let Err(error) = result else {
+            panic!("expected mixed location metadata to be rejected");
+        };
+        assert_eq!(
+            error.to_string(),
+            "`location: none` cannot be combined with another `location` field"
         );
     }
 

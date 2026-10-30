@@ -136,4 +136,6 @@ pub(crate) enum Field {
         /// A Rust block yielding the node or nodes whose locations should be combined.
         block: syn::Block,
     },
+    /// Explicitly omit source-location metadata: `location: none`.
+    LocationNone,
 }

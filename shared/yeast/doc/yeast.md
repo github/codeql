@@ -300,6 +300,17 @@ leaf nodes:
 The override applies only to the node carrying the `location` field; nested
 nodes still derive their locations normally.
 
+As an exception to the Rust-block requirement above, use `location: none` for a
+synthetic node that intentionally has no source location. The field-combination
+rules above apply only to block-valued fields: `location: none` cannot be
+combined with any other `location` field on the same node. A locationless node
+does not contribute to its parent's derived range, and a returned rule result
+marked this way does not inherit the matched input range:
+
+```rust
+(metadata_node location: none)
+```
+
 For input fields whose leading or trailing syntax should never belong to rule
 results, configure them once with
 `DesugaringConfig::with_ignored_location_fields(...)`. For example, ignoring

@@ -67,6 +67,7 @@ pub fn query(input: TokenStream) -> TokenStream {
 ///                                beneath it has a value (see below)
 /// location: {expr}             - override this node's source range with the
 ///                                span of one or more nodes; may be repeated
+/// location: none               - explicitly make this node locationless
 /// ```
 ///
 /// # Optional fields
