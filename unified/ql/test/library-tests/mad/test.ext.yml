@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: legacySourceModel
+    data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
+      - ["", "ShorthandTest", true, "sourceParams(_:)", "", "", "Parameter[self,0]", "shorthand-source", "manual"]
+  - addsTo:
+      pack: codeql/unified-all
+      extensible: legacySinkModel
+    data: # namespace, type, subtypes, name, signature, ext, input, kind, provenance
+      - ["", "ShorthandTest", true, "sinkArgs(_:)", "", "", "Argument[self,0]", "shorthand-sink", "manual"]
