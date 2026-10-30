@@ -1,5 +1,6 @@
 models
 | 1 | Summary: <& as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue; value |
+| 2 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 edges
 | main.rs:10:20:10:52 | if cond {...} else {...} | main.rs:11:10:11:16 | f(...) | provenance |  |
 | main.rs:10:30:10:39 | source(...) | main.rs:10:20:10:52 | if cond {...} else {...} | provenance |  |
@@ -88,6 +89,11 @@ edges
 | main.rs:152:9:154:9 | [post] { ... } : ... => .. [captured captured] | main.rs:156:14:156:21 | captured | provenance |  |
 | main.rs:153:13:153:20 | captured | main.rs:152:9:154:9 | [post] { ... } : ... => .. [captured captured] | provenance |  |
 | main.rs:153:24:153:34 | source(...) | main.rs:153:13:153:20 | captured | provenance |  |
+| main.rs:183:16:183:40 | TryExpr [Some] | main.rs:184:10:184:12 | f(...) [Some] | provenance |  |
+| main.rs:183:17:183:38 | Some(...) [Some, Some] | main.rs:183:16:183:40 | TryExpr [Some] | provenance |  |
+| main.rs:183:22:183:37 | Some(...) [Some] | main.rs:183:17:183:38 | Some(...) [Some, Some] | provenance |  |
+| main.rs:183:27:183:36 | source(...) | main.rs:183:22:183:37 | Some(...) [Some] | provenance |  |
+| main.rs:184:10:184:12 | f(...) [Some] | main.rs:184:10:184:21 | ... .unwrap() | provenance | MaD:2 |
 nodes
 | main.rs:10:20:10:52 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
 | main.rs:10:30:10:39 | source(...) | semmle.label | source(...) |
@@ -193,6 +199,12 @@ nodes
 | main.rs:153:13:153:20 | captured | semmle.label | captured |
 | main.rs:153:24:153:34 | source(...) | semmle.label | source(...) |
 | main.rs:156:14:156:21 | captured | semmle.label | captured |
+| main.rs:183:16:183:40 | TryExpr [Some] | semmle.label | TryExpr [Some] |
+| main.rs:183:17:183:38 | Some(...) [Some, Some] | semmle.label | Some(...) [Some, Some] |
+| main.rs:183:22:183:37 | Some(...) [Some] | semmle.label | Some(...) [Some] |
+| main.rs:183:27:183:36 | source(...) | semmle.label | source(...) |
+| main.rs:184:10:184:12 | f(...) [Some] | semmle.label | f(...) [Some] |
+| main.rs:184:10:184:21 | ... .unwrap() | semmle.label | ... .unwrap() |
 subpaths
 | main.rs:40:21:40:21 | a | main.rs:38:20:38:27 | ... | main.rs:38:30:38:56 | if cond {...} else {...} | main.rs:40:13:40:22 | f(...) |
 | main.rs:88:21:88:21 | a | main.rs:77:24:77:32 | ...: i64 | main.rs:77:42:83:1 | { ... } | main.rs:88:13:88:22 | f(...) |
@@ -223,3 +235,4 @@ testFailures
 | main.rs:138:18:138:21 | data | main.rs:136:20:136:30 | source(...) | main.rs:138:18:138:21 | data | $@ | main.rs:136:20:136:30 | source(...) | source(...) |
 | main.rs:146:14:146:25 | await future | main.rs:144:20:144:30 | source(...) | main.rs:146:14:146:25 | await future | $@ | main.rs:144:20:144:30 | source(...) | source(...) |
 | main.rs:156:14:156:21 | captured | main.rs:153:24:153:34 | source(...) | main.rs:156:14:156:21 | captured | $@ | main.rs:153:24:153:34 | source(...) | source(...) |
+| main.rs:184:10:184:21 | ... .unwrap() | main.rs:183:27:183:36 | source(...) | main.rs:184:10:184:21 | ... .unwrap() | $@ | main.rs:183:27:183:36 | source(...) | source(...) |
