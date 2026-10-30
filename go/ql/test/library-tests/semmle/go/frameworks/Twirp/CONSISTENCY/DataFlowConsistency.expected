@@ -20,19 +20,23 @@ reverseRead
 | rpc/notes/service.pb.go:335:13:335:13 | implicit-deref v | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.pb.go:337:13:337:13 | implicit-deref v | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:82:40:82:49 | clientOpts | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:94:17:94:17 | implicit-deref c | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:118:37:118:37 | implicit-deref c | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:118:47:118:52 | selection of opts | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:124:24:124:29 | selection of opts | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:128:34:128:39 | selection of opts | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:140:17:140:17 | implicit-deref c | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:164:37:164:37 | implicit-deref c | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:164:47:164:52 | selection of opts | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:170:24:170:29 | selection of opts | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:174:34:174:39 | selection of opts | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:221:40:221:49 | clientOpts | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:233:17:233:17 | implicit-deref c | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:257:33:257:33 | implicit-deref c | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:257:43:257:48 | selection of opts | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:263:24:263:29 | selection of opts | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:267:34:267:39 | selection of opts | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:279:17:279:17 | implicit-deref c | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:303:33:303:33 | implicit-deref c | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:303:43:303:48 | selection of opts | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:309:24:309:29 | selection of opts | Origin of readStep is missing a PostUpdateNode. |
@@ -53,6 +57,7 @@ reverseRead
 | rpc/notes/service.twirp.go:441:43:441:45 | implicit-deref req | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:449:36:449:36 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:455:23:455:25 | implicit-deref req | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:471:17:471:17 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:477:13:477:13 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:494:41:494:41 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:507:34:507:34 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
@@ -60,6 +65,7 @@ reverseRead
 | rpc/notes/service.twirp.go:526:24:526:24 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:532:36:532:36 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:538:25:538:27 | implicit-deref req | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:552:17:552:17 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:558:13:558:13 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:575:41:575:41 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:588:34:588:34 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
@@ -70,6 +76,7 @@ reverseRead
 | rpc/notes/service.twirp.go:621:43:621:45 | implicit-deref req | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:629:36:629:36 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:635:23:635:25 | implicit-deref req | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:651:17:651:17 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:657:13:657:13 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:674:41:674:41 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:687:34:687:34 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
@@ -77,6 +84,7 @@ reverseRead
 | rpc/notes/service.twirp.go:706:24:706:24 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:712:36:712:36 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:718:25:718:27 | implicit-deref req | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:732:17:732:17 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:738:13:738:13 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:755:41:755:41 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:768:34:768:34 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |
@@ -90,8 +98,17 @@ reverseRead
 | rpc/notes/service.twirp.go:1037:35:1037:38 | implicit-deref resp | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:1116:66:1116:66 | implicit-deref e | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:1159:98:1159:98 | implicit-deref e | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:1194:11:1194:12 | implicit-deref in | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:1227:21:1227:24 | implicit-deref resp | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:1237:35:1237:38 | implicit-deref resp | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:1278:11:1278:14 | implicit-deref resp | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:1292:23:1292:26 | implicit-deref resp | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:1312:9:1312:9 | implicit-deref h | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:1320:9:1320:9 | implicit-deref h | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:1328:9:1328:9 | implicit-deref h | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:1336:2:1336:2 | implicit-deref h | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:1344:9:1344:9 | implicit-deref h | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:1351:2:1351:2 | implicit-deref h | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:1358:9:1358:9 | implicit-deref h | Origin of readStep is missing a PostUpdateNode. |
+| rpc/notes/service.twirp.go:1365:2:1365:2 | implicit-deref h | Origin of readStep is missing a PostUpdateNode. |
 | server/main.go:33:19:33:19 | implicit-deref s | Origin of readStep is missing a PostUpdateNode. |

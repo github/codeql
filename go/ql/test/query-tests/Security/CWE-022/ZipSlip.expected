@@ -6,12 +6,12 @@
 | tst.go:23:2:43:2 | extract:1 range element | tst.go:23:2:43:2 | extract:1 range element | tst.go:29:20:29:23 | path | Unsanitized archive entry, which may contain '..', is used in a $@. | tst.go:29:20:29:23 | path | file system operation |
 | tst.go:23:2:43:2 | extract:1 range element | tst.go:23:2:43:2 | extract:1 range element | tst.go:31:21:31:24 | path | Unsanitized archive entry, which may contain '..', is used in a $@. | tst.go:31:21:31:24 | path | file system operation |
 edges
-| UnsafeUnzipSymlinkGood.go:52:24:52:32 | SSA def(candidate) | UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | provenance |  |
+| UnsafeUnzipSymlinkGood.go:52:24:52:32 | SSA param(candidate) | UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | provenance |  |
 | UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | provenance | FunctionModel Sink:MaD:3 |
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | extract:0 ... := ... | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | provenance |  |
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | extract:0 ... := ... | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | provenance |  |
-| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | UnsafeUnzipSymlinkGood.go:52:24:52:32 | SSA def(candidate) | provenance |  |
-| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | UnsafeUnzipSymlinkGood.go:52:24:52:32 | SSA def(candidate) | provenance |  |
+| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | UnsafeUnzipSymlinkGood.go:52:24:52:32 | SSA param(candidate) | provenance |  |
+| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | UnsafeUnzipSymlinkGood.go:52:24:52:32 | SSA param(candidate) | provenance |  |
 | ZipSlip.go:11:2:15:2 | extract:1 range element | ZipSlip.go:12:24:12:29 | selection of Name | provenance |  |
 | ZipSlip.go:12:3:12:30 | extract:0 ... := ... | ZipSlip.go:14:20:14:20 | p | provenance | Sink:MaD:1 |
 | ZipSlip.go:12:24:12:29 | selection of Name | ZipSlip.go:12:3:12:30 | extract:0 ... := ... | provenance | MaD:4 |
@@ -31,7 +31,7 @@ models
 | 5 | Summary: path/filepath; ; false; Rel; ; ; Argument[0..1]; ReturnValue[0]; taint; manual |
 | 6 | Summary: path; ; false; Dir; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
-| UnsafeUnzipSymlinkGood.go:52:24:52:32 | SSA def(candidate) | semmle.label | SSA def(candidate) |
+| UnsafeUnzipSymlinkGood.go:52:24:52:32 | SSA param(candidate) | semmle.label | SSA param(candidate) |
 | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | semmle.label | call to Join |
 | UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | semmle.label | candidate |
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
