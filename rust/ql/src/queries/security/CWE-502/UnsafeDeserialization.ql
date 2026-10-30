@@ -1,6 +1,6 @@
 /**
  * @name Deserialization of user-controlled data
- * @description Deserializing user-controlled data may allow an attacker to trigger unexpected
+ * @description Deserializing user-controlled data without validation can cause a denial of service and, in some cases, arbitrary code execution.
  *              code execution, denial of service, or other harmful effects.
  * @kind path-problem
  * @problem.severity error
