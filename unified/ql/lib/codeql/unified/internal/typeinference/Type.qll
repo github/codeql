@@ -210,6 +210,8 @@ class ClosureParameterPseudoType extends PseudoType, TClosureParameterPseudoType
 
 /** A type parameter. */
 abstract class TypeParameter extends TypeImpl {
+  abstract AstNode getScope();
+
   override TypeParameter getPositionalTypeParameter(int i) { none() }
 
   abstract AstNode getDeclaringItem();
@@ -233,6 +235,12 @@ class TypeParameterType extends TypeParameter, TTypeParameterType {
 
   Unified::TypeParameter getTypeParameter() { result = typeParam }
 
+  override AstNode getScope() {
+    result = typeParam.getParent()
+    or
+    result.(ClassLikeDeclaration).resolve().getEnclosingClassResolved*() = typeParam.getParent()
+  }
+
   override ClassLikeDeclaration getDeclaringItem() { typeParam = result.getATypeParameter() }
 
   override Identifier getNameNode() { result = typeParam.getNameNode() }
@@ -253,6 +261,8 @@ class AssociatedTypeParameterType extends TypeParameter, TAssociatedTypeParamete
   AssociatedTypeParameterType() { this = TAssociatedTypeParameterType(c, assocTypeDecl, inherited) }
 
   Unified::AssociatedTypeDeclaration getAssociatedTypeDeclaration() { result = assocTypeDecl }
+
+  override AstNode getScope() { result.(ClassLikeDeclaration).resolve() = c }
 
   override ClassLikeDeclaration getDeclaringItem() { result = c }
 
@@ -301,6 +311,8 @@ class ParentTypeParameterType extends TypeParameter, TParentTypeParameterType {
 
   override Member getDeclaringItem() { result = m }
 
+  override AstNode getScope() { none() }
+
   override Identifier getNameNode() { none() }
 
   override string toString() { result = "(parent:" + m.getNameOrFallback() + ")" }
@@ -315,6 +327,8 @@ class UnknownTypeTypeParameter extends TypeParameter, TUnknownTypeTypeParameter 
   private int i;
 
   UnknownTypeTypeParameter() { this = TUnknownTypeTypeParameter(i) }
+
+  override AstNode getScope() { none() }
 
   override AstNode getDeclaringItem() { none() }
 
