@@ -105,6 +105,15 @@ fn synthesized_condition_and_switch_nodes_use_child_ranges() {
 }
 
 #[test]
+fn switch_default_patterns_span_the_default_keyword() {
+    let source = "switch x { case _: break; @unknown default: break }";
+    let ast = desugar(source);
+
+    assert_has_span(&ast, source, "ignore_pattern", Some("_"), "_");
+    assert_has_span(&ast, source, "ignore_pattern", Some("default"), "default");
+}
+
+#[test]
 fn declaration_and_operator_tokens_keep_precise_ranges() {
     let source = "func f() { return x }\nlet y = try? await value! as? T\nlet z = value is T";
     let ast = desugar(source);

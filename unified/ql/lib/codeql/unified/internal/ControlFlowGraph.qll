@@ -247,7 +247,7 @@ module Ast implements AstSig<Location> {
   }
 
   class DefaultCase extends Case {
-    DefaultCase() { not exists(super.getPattern()) }
+    DefaultCase() { super.getPattern() instanceof U::IgnorePattern }
   }
 
   class ConditionalExpr = U::IfExpr;
