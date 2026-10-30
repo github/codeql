@@ -293,7 +293,7 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
-        /// Verify that NuGet CLI restore uses an empty local source when only private registries are configured,
+        /// Verify that NuGet CLI restore uses an empty local source when private registries replace the default feeds,
         /// regardless of their reachability.
         /// </summary>
         [Theory]
@@ -346,6 +346,52 @@ namespace Semmle.Extraction.Tests
             var logger = new LoggerStub();
             var dotnet = new DotNetStub([], [], [], []);
             using var feedManager = new FeedManager(logger, dotnet, null,
+                new FileProviderStub(), new FeedManagerIOStub([]));
+
+            // Execute
+            var feeds = feedManager.MakeNugetExeRestoreFeeds("/path/to/packages.config");
+
+            // Verify
+            Assert.Equal(["https://api.nuget.org/v3/index.json"], feeds);
+        }
+
+        /// <summary>
+        /// Verify that non-base private registries do not prevent NuGet CLI restore from falling back to NuGet.org
+        /// when no usable folder feeds remain.
+        /// </summary>
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void TestNugetExeRestoreFeedsUseDefaultsWithPrivateRegistries(bool unreachableFolderFeed)
+        {
+            // Setup
+            var logger = new LoggerStub();
+            var dotnet = new DotNetStub([], [], [],
+                unreachableFolderFeed ? ["E https://feed.from/folder1"] : []);
+            using var feedManager = new FeedManager(logger, dotnet, new RegistryProxyStub(),
+                new FileProviderStub(), new FeedManagerIOStub(["https://feed.from/folder1"]));
+
+            // Execute
+            var feeds = feedManager.MakeNugetExeRestoreFeeds("/path/to/packages.config");
+
+            // Verify
+            Assert.Equal(["https://api.nuget.org/v3/index.json"], feeds);
+        }
+
+        /// <summary>
+        /// Verify that NuGet CLI restore identifies equivalent private registry URLs regardless of host case
+        /// or explicit default ports, while preserving case-sensitive registry paths.
+        /// </summary>
+        [Theory]
+        [InlineData("https://EXAMPLE.COM/registry2")]
+        [InlineData("https://example.com:443/registry2")]
+        [InlineData("https://EXAMPLE.COM:443/registry2")]
+        public void TestNugetExeRestoreFeedsCompareRegistryUris(string folderFeed)
+        {
+            // Setup
+            var logger = new LoggerStub();
+            var dotnet = new DotNetStub([], [], [], [$"E {folderFeed}"]);
+            using var feedManager = new FeedManager(logger, dotnet, new RegistryProxyStub(),
                 new FileProviderStub(), new FeedManagerIOStub([]));
 
             // Execute
