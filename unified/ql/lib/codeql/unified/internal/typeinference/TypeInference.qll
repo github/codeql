@@ -64,6 +64,13 @@ private module Input1 implements InputSig1<Location> {
         kind = 3 and
         tp0 = TUnknownTypeTypeParameter(id1) and
         id2 = 0
+        or
+        kind = 4 and
+        exists(Member m |
+          m = tp0.(ParentTypeParameterType).getDeclaringItem() and
+          id1 = idOfTypeParameterAstNode(m) and
+          id2 = 0
+        )
       |
         tp0 order by kind, id1, id2
       )
@@ -273,7 +280,7 @@ module Input3 implements InputSig3 {
   private class EnumField_ extends VariableDeclarationField {
     override EnumField decl;
 
-    override TypeMention getType() { result = decl.getEnum().getNameNode() }
+    override TypeMention getType() { result = decl.getEnumClass().getNameNode() }
   }
 
   private class AccessorField extends FieldImpl, Callable {
@@ -421,9 +428,6 @@ module Input3 implements InputSig3 {
     Unified::Callable getCallable() { result = c }
 
     override TypeMention getDeclaringType() {
-      result = c.(EnumConstructor).getEnum().getNameNode()
-      or
-      not c instanceof EnumConstructor and
       exists(ClassLikeDeclaration cls |
         c = cls.getAMember() and
         result = getClassLikeDeclarationTypeMention(cls)
@@ -437,9 +441,9 @@ module Input3 implements InputSig3 {
       or
       result = c.(FunctionDeclaration).getNameNode()
       or
-      result = c.(EnumConstructor).getEnclosingClass().getNameNode()
+      result = c.(EnumCaseConstructor).getEnumCaseClass().getNameNode()
       or
-      not c instanceof EnumConstructor and
+      not c instanceof EnumCaseConstructor and
       result = c.(ConstructorDeclaration).getNameNode()
     }
 
@@ -524,15 +528,21 @@ module Input3 implements InputSig3 {
     }
 
     Callable getTargetViaStaticNameBinding() {
-      exists(NameBinding b | b = getStaticBindingTargetFromRef(this.getCallee()) |
-        // object creation (including enum constructors): `String(42)`, `Optional.Some(42)`
-        exists(ClassLikeDeclaration cls |
-          cls.getNameNode() = b and
-          result.isInstanceMemberOf(cls, _) and
-          result.asCallable() instanceof ConstructorDeclaration
-        )
-        or
-        // call without explicit receiver: `foo(42)`
+      // object creation (including enum constructors): `String(42)`, `Optional.Some(42)`
+      exists(ClassLikeDeclaration cls |
+        cls =
+          this.getCallee()
+              .(TypeMention)
+              .getType()
+              .(ClassLikeDeclarationType)
+              .getClassLikeDeclaration() and
+        result.isInstanceMemberOf(cls, _) and
+        result.asCallable() instanceof ConstructorDeclaration
+      )
+      or
+      // call without explicit receiver: `foo(42)`
+      exists(NameBinding b |
+        b = getStaticBindingTargetFromRef(this.getCallee()) and
         result.getNameNode() = b
       )
     }
@@ -695,10 +705,20 @@ module Input3 implements InputSig3 {
       result = getQualifierTypeMention(invocation)
     }
 
-    private predicate constructionReceiver(Invocation i, Callable constructor, Expr receiver) {
-      constructor = i.getTargetImpl(_) and
-      constructor.asCallable() instanceof ConstructorDeclaration and
-      receiver = i.getArgument(0)
+    private predicate constructionReceiver(
+      Invocation i, Callable constructor, Expr receiver, TypePath enumPrefixPath
+    ) {
+      exists(ConstructorDeclaration cd |
+        constructor = i.getTargetImpl(_) and
+        cd = constructor.asCallable() and
+        receiver = i.getArgument(0)
+      |
+        enumPrefixPath =
+          TypePath::singleton(TParentTypeParameterType(cd.(EnumCaseConstructor).getEnumCaseClass()))
+        or
+        not cd instanceof EnumCaseConstructor and
+        enumPrefixPath.isEmpty()
+      )
     }
 
     /**
@@ -732,11 +752,15 @@ module Input3 implements InputSig3 {
       M3::ContextualTyping::ContextualReturnType<ContextualConstructorReturnTypeInput>;
 
     private predicate needsContextualTyping(Invocation i, TypePath path) {
-      exists(Callable constructor, Expr receiver, ClassLikeDeclarationType receiverType |
-        constructionReceiver(i, constructor, receiver) and
-        receiverType = inferType(receiver)
+      exists(
+        Callable constructor, Expr receiver, TypePath enumPrefixPath,
+        ClassLikeDeclarationType receiverType, TypePath path0
       |
-        ContextualConstructorReturnType::needsContextualTyping(i, path) and
+        constructionReceiver(i, constructor, receiver, enumPrefixPath) and
+        receiverType = inferType(receiver) and
+        path = path0.stripPrefix(enumPrefixPath)
+      |
+        ContextualConstructorReturnType::needsContextualTyping(i, path0) and
         receiverType = constructor.getDeclaringType().getType()
         or
         // inherited constructor
@@ -746,18 +770,19 @@ module Input3 implements InputSig3 {
         |
           declType = constructor.getDeclaringType().getType() and
           BaseTypes::rootTypesSatisfaction(receiverType, declType, abs, _, constraint) and
-          path = TypePath::singleton(tp)
+          tp =
+            getClassLikeDeclarationTypeMention(receiverType.getClassLikeDeclaration())
+                .getTypeAt(path0)
         |
           // `A<T> : B<T>`
-          exists(TypePath path0 |
-            BaseTypes::conditionSatisfiesConstraintTypeAt(abs, _, constraint, path0, tp) and
-            ContextualConstructorReturnType::needsContextualTyping(i, path0)
+          exists(TypePath path1 |
+            BaseTypes::conditionSatisfiesConstraintTypeAt(abs, _, constraint, path1, tp) and
+            ContextualConstructorReturnType::needsContextualTyping(i, path1)
           )
           or
           // `A<T> : B`
-          tp = receiverType.getATypeParameter() and
           not BaseTypes::conditionSatisfiesConstraintTypeAt(abs, _, constraint, _, tp) and
-          not exists(Type t | t = i.getTypeQualifier(path) and not t instanceof PseudoType)
+          not exists(Type t | t = i.getTypeQualifier(path0) and not t instanceof PseudoType)
         )
       )
     }
@@ -770,8 +795,7 @@ module Input3 implements InputSig3 {
      * as well as calls receivers, `self.init(0)` or `super.init(0)`.
      */
     predicate step(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
-      constructionReceiver(n2, _, n1) and
-      prefix1.isEmpty() and
+      constructionReceiver(n2, _, n1, prefix1) and
       prefix2.isEmpty()
     }
 

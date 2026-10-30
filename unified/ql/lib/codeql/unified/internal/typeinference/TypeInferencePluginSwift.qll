@@ -94,31 +94,6 @@ TypeParameter getTupleTypeParameter(int arity, int i) {
   result = any(TupleType t | t.getArity() = arity).getPositionalTypeParameter(i)
 }
 
-private class Enum extends ClassLikeDeclaration {
-  Enum() { this.getAModifier().getValue() = "enum" }
-}
-
-private class EnumConstructor extends EnumCaseConstructor {
-  private Enum e;
-
-  EnumConstructor() { this = e.getAMember().(EnumCaseClass).getConstructor() }
-
-  Identifier getNameNode() { result = this.getEnumCaseClass().getNameNode() }
-
-  Enum getEnum() { result = e }
-}
-
-private class EnumField extends VariableDeclaration {
-  private Enum e;
-
-  EnumField() {
-    this = e.getAMember() and
-    this.getAModifier().getValue() = "enum_case"
-  }
-
-  Enum getEnum() { result = e }
-}
-
 private predicate inferTypeAlias = inferType/2;
 
 private class SwiftTypeInferencePlugin extends Plugin::TypeInferencePlugin {
@@ -167,20 +142,6 @@ private class SwiftTypeInferencePlugin extends Plugin::TypeInferencePlugin {
 
   override predicate tupleField(Type tuple, string name, VariableDeclaration field) {
     field = tuple.(TupleType).getField(name)
-  }
-
-  override predicate isEnumConstructor(
-    ClassLikeDeclaration enum, ConstructorDeclaration case, Identifier i
-  ) {
-    case =
-      any(EnumConstructor ec |
-        enum = ec.getEnum() and
-        i = ec.getNameNode()
-      )
-  }
-
-  override predicate isEnumField(ClassLikeDeclaration enum, VariableDeclaration field) {
-    enum = field.(EnumField).getEnum()
   }
 
   override Type inferType(AstNode n, TypePath path) {

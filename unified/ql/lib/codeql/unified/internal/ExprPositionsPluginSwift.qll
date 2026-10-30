@@ -2,7 +2,7 @@ private import unified
 private import ExprPositionsPlugin
 
 private class ExprPositionsPluginSwift extends ExprPositionsPlugin {
-  override predicate isInTypeContext(Expr e) { e = any(GenericTypeExpr g).getBase() }
+  override predicate isInSyntacticTypeContext(Expr e) { e = any(GenericTypeExpr g).getBase() }
 
   override predicate isReturnedExpr(Callable callable, Expr e) {
     // Short-hand return from a function body, e.g. `func foo() -> String { "42" }`
