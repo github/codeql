@@ -99,7 +99,8 @@ predicate isStaticMember(Member member) {
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |
     not any(NameBindingPlugin p).isInstanceMember(cls, member) or
     member instanceof ConstructorDeclaration or
-    member instanceof TypeAliasDeclaration
+    member instanceof TypeAliasDeclaration or
+    member instanceof ClassLikeDeclaration
   )
   or
   member = any(TopLevel t).getBody().getAStmt()
