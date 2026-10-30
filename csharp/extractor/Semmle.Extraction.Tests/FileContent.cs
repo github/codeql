@@ -37,8 +37,11 @@ namespace Semmle.Extraction.Tests
 
     public class FileContentTests
     {
+        /// <summary>
+        /// Verifies that `FileContent` correctly identifies SDK project structure, package references, and no ASP.NET Core usage.
+        /// </summary>
         [Fact]
-        public void TestFileContent1()
+        public void TestFileContent_ProjectSdkAndNoAspNet()
         {
             // Setup
             var lines =
@@ -55,16 +58,21 @@ namespace Semmle.Extraction.Tests
 
             // Execute
             var allPackages = fileContent.AllPackages;
+            var isSdkProject = fileContent.IsSdkProjectStructureUsed;
             var useAspNetDlls = fileContent.UseAspNetCoreDlls;
 
             // Verify
             Assert.False(useAspNetDlls);
+            Assert.True(isSdkProject);
             Assert.Equal(3, allPackages.Count);
             Assert.Contains(new PackageReference("DotNetAnalyzers.DocumentationAnalyzers".ToLowerInvariant(), PackageReferenceSource.SdkCsProj), allPackages);
             Assert.Contains(new PackageReference("Microsoft.CodeAnalysis.NetAnalyzers".ToLowerInvariant(), PackageReferenceSource.SdkCsProj), allPackages);
             Assert.Contains(new PackageReference("StyleCop.Analyzers".ToLowerInvariant(), PackageReferenceSource.SdkCsProj), allPackages);
         }
 
+        /// <summary>
+        /// Verifies that `FileContent` correctly identifies package references and ASP.NET Core usage.
+        /// </summary>
         [Fact]
         public void TestFileContent2()
         {
@@ -90,60 +98,64 @@ namespace Semmle.Extraction.Tests
             Assert.Contains(new PackageReference("StyleCop.Analyzers".ToLowerInvariant(), PackageReferenceSource.SdkCsProj), allPackages);
         }
 
-        private static void CsProjSettingsTest(string content, bool expected, Func<FileContent, bool> func)
+        /// <summary>
+        /// Verifies that `FileContent` correctly identifies the use of implicit usings.
+        /// </summary>
+        [Theory]
+        [InlineData("<ImplicitUsings>false</ImplicitUsings>", false)]
+        [InlineData("<ImplicitUsings>true</ImplicitUsings>", true)]
+        [InlineData("<ImplicitUsings>enable</ImplicitUsings>", true)]
+        public void TestFileContent_ImplicitUsings(string content, bool expectedImplicitUsings)
         {
             // Setup
             var fileContent = new TestFileContent(content);
 
             // Execute
-            var actual = func(fileContent);
+            var actual = fileContent.UseImplicitUsings;
 
             // Verify
-            Assert.Equal(expected, actual);
+            Assert.Equal(expectedImplicitUsings, actual);
         }
 
-        [Fact]
-        public void TestFileContent_ImplicitUsings0()
+        /// <summary>
+        /// Verifies that `FileContent` correctly identifies the use of WPF.
+        /// </summary>
+        [Theory]
+        [InlineData("<UseWPF>false</UseWPF>", false)]
+        [InlineData("<UseWPF>true</UseWPF>", true)]
+        public void TestFileContent_UseWpf(string content, bool expectedUseWpf)
         {
-            CsProjSettingsTest("<ImplicitUsings>false</ImplicitUsings>", false, fc => fc.UseImplicitUsings);
+            // Setup
+            var fileContent = new TestFileContent(content);
+
+            // Execute
+            var actual = fileContent.UseWpf;
+
+            // Verify
+            Assert.Equal(expectedUseWpf, actual);
         }
 
-        [Fact]
-        public void TestFileContent_ImplicitUsings1()
+        /// <summary>
+        /// Verifies that `FileContent` correctly identifies the use of Windows Forms.
+        /// </summary>
+        [Theory]
+        [InlineData("<UseWindowsForms>false</UseWindowsForms>", false)]
+        [InlineData("<UseWindowsForms>true</UseWindowsForms>", true)]
+        public void TestFileContent_UseWindowsForms(string content, bool expectedUseWindowsForms)
         {
-            CsProjSettingsTest("<ImplicitUsings>true</ImplicitUsings>", true, fc => fc.UseImplicitUsings);
+            // Setup
+            var fileContent = new TestFileContent(content);
+
+            // Execute
+            var actual = fileContent.UseWindowsForms;
+
+            // Verify
+            Assert.Equal(expectedUseWindowsForms, actual);
         }
 
-        [Fact]
-        public void TestFileContent_ImplicitUsings2()
-        {
-            CsProjSettingsTest("<ImplicitUsings>enable</ImplicitUsings>", true, fc => fc.UseImplicitUsings);
-        }
-
-        [Fact]
-        public void TestFileContent_UseWpf0()
-        {
-            CsProjSettingsTest("<UseWPF>false</UseWPF>", false, fc => fc.UseWpf);
-        }
-
-        [Fact]
-        public void TestFileContent_UseWpf1()
-        {
-            CsProjSettingsTest("<UseWPF>true</UseWPF>", true, fc => fc.UseWpf);
-        }
-
-        [Fact]
-        public void TestFileContent_UseWindowsForms0()
-        {
-            CsProjSettingsTest("<UseWindowsForms>false</UseWindowsForms>", false, fc => fc.UseWindowsForms);
-        }
-
-        [Fact]
-        public void TestFileContent_UseWindowsForms1()
-        {
-            CsProjSettingsTest("<UseWindowsForms>true</UseWindowsForms>", true, fc => fc.UseWindowsForms);
-        }
-
+        /// <summary>
+        /// Verifies that `FileContent` correctly identifies custom implicit usings.
+        /// </summary>
         [Fact]
         public void TestFileContent_ImplicitUsingsAdditional()
         {
@@ -162,11 +174,12 @@ namespace Semmle.Extraction.Tests
             var customImplicitUsings = fileContent.CustomImplicitUsings;
 
             // Verify
-            Assert.Equal(2, customImplicitUsings.Count);
-            Assert.Contains("Ns0.Ns1", customImplicitUsings);
-            Assert.Contains("Ns2", customImplicitUsings);
+            Assert.Equal(["Ns0.Ns1", "Ns2"], customImplicitUsings);
         }
 
+        /// <summary>
+        /// Verifies that `FileContent` correctly identifies legacy project structure.
+        /// </summary>
         [Fact]
         public void TestFileContent_LegacyProjectStructure()
         {
@@ -190,6 +203,9 @@ namespace Semmle.Extraction.Tests
             Assert.False(isSdk);
         }
 
+        /// <summary>
+        /// Verifies that `FileContent` correctly identifies SDK project structure.
+        /// </summary>
         [Fact]
         public void TestFileContent_SdkProjectStructure()
         {
@@ -213,6 +229,9 @@ namespace Semmle.Extraction.Tests
             Assert.False(isLegacy);
         }
 
+        /// <summary>
+        /// Verifies that `FileContent` correctly handles XML syntax with namespaces and various elements.
+        /// </summary>
         [Fact]
         public void TestFileContent_XmlSyntax()
         {
@@ -257,9 +276,12 @@ namespace Semmle.Extraction.Tests
             Assert.True(useImplicitUsings);
             Assert.True(useWpf);
             Assert.True(useWindowsForms);
-            Assert.Contains("My.Namespace", customImplicitUsings);
+            Assert.Equal(["My.Namespace"], customImplicitUsings);
         }
 
+        /// <summary>
+        /// Verify that `FileContent` correctly ignores commented-out XML elements.
+        /// </summary>
         [Fact]
         public void TestFileContent_CommentsAreIgnored()
         {
@@ -302,6 +324,9 @@ namespace Semmle.Extraction.Tests
             Assert.False(isSdkProjectStructureUsed);
         }
 
+        /// <summary>
+        /// Verify that `FileContent` correctly reads package references from a `packages.config` file.
+        /// </summary>
         [Fact]
         public void TestFileContent_PackagesConfig()
         {
@@ -337,6 +362,9 @@ namespace Semmle.Extraction.Tests
             public void Dispose() { }
         }
 
+        /// <summary>
+        /// Verify that `FileContent` correctly handles invalid XML files without preventing reading other valid files.
+        /// </summary>
         [Theory]
         [InlineData("This is not XML.")]
         [InlineData("<Project><PackageReference Include='Incomplete'")]
