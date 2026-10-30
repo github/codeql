@@ -204,7 +204,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       )
       or
       exists(Parameter param |
-        scope = param.getParent() and // TODO: add SourceCallable and use .getParameter() instead
+        scope = param.getDeclaringCallable() and
         pattern = param.getPattern() and
         declaration = param
       )
