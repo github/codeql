@@ -142,9 +142,7 @@ private predicate classMatchesType(ClassLikeDeclaration cls, string type, boolea
  * type `cls`.
  */
 pragma[nomagic]
-private predicate propertyAccessSelector(
-  MemberAccess access, ClassLikeDeclaration cls, string name
-) {
+private predicate propertyAccessSelector(MemberAccess access, ClassLikeDeclaration cls, string name) {
   name = access.getMemberName() and
   name = any(Selector s).getPropertyName() and
   not access = any(CallExpr call).getCallee() and
