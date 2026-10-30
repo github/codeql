@@ -110,9 +110,10 @@ module ZipFile {
   API::Node zipFile() { result = API::getTopLevelMember("Zip").getMember("File") }
 
   /**
-   * Gets nodes that have a `base` at the beginning
+   * Gets nodes that have a `base` at the beginning, where `base` is `Zip::File` or `Zip::File.open`.
    */
   API::Node rubyZipNode(API::Node base) {
+    base = [zipFile(), zipFile().getMethod("open")] and
     result = base
     or
     result = rubyZipNode(base).getMethod(_)
