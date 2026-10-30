@@ -5,7 +5,8 @@
 <overview>
 
 <p>
-Deserializing untrusted data without validation can allow an attacker to cause denial of service, consume excessive resources, or in some cases execute arbitrary code. In Rust, while memory safety mitigates some risks, deserializing untrusted data with libraries like <code>serde</code>, <code>bincode</code>, or <code>rmp-serde</code> can still lead to panics, excessive memory allocation, or logic bugs when trait objects or polymorphic types are involved.
+Deserializing untrusted data without validation can allow an attacker to cause denial of service, consume excessive resources, or in some cases execute arbitrary code. Rust's memory safety mitigates some risks, but deserializing untrusted data with libraries like<code>serde</code>, <code>bincode</code>, or <code>rmp-serde</code> can still lead to panics, excessive memory allocation, or logic bugs. This is especially true when trait objects or polymorphic types are involved.
+
 </p>
 
 </overview>
