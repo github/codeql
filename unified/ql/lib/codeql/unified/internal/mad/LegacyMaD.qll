@@ -224,7 +224,8 @@ private DataFlow::Node getSinkFromCall(CallExpr call, AccessPathToken token) {
     arg.getName() + ":" = token.getAnArgument()
   )
   or
-  token = "Argument[self]" and
+  token.getName() = "Argument" and
+  token.getAnArgument() = "self" and
   result.isReceiverArgument(call)
 }
 
@@ -263,7 +264,8 @@ private DataFlow::Node getSourceFromCallable(Callable callable, AccessPathToken 
     param.getExternalName() + ":" = token.getAnArgument()
   )
   or
-  token = "Parameter[self]" and
+  token.getName() = "Parameter" and
+  token.getAnArgument() = "self" and
   result.isReceiverParameter(callable)
 }
 
