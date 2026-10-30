@@ -49,17 +49,69 @@ func testProperties(
     textField: UITextField,
     configuration: URLSessionConfiguration
 ) {
-    _ = string.count  // $ MISSING: isSource=string-length
-    _ = textField.text  // $ MISSING: isSource=local
+    _ = string.count  // $ isSource=string-length
+    _ = textField.text  // $ isSource=local
 
-    configuration.tlsMaximumSupportedProtocol = 0  // $ MISSING: isSink=tls-protocol-version
-    configuration.tlsMinimumSupportedProtocol = 0  // $ MISSING: isSink=tls-protocol-version
-    configuration.tlsMaximumSupportedProtocolVersion = 0  // $ MISSING: isSink=tls-protocol-version
-    configuration.tlsMinimumSupportedProtocolVersion = 0  // $ MISSING: isSink=tls-protocol-version
+    configuration.tlsMaximumSupportedProtocol = 0  // $ isSink=tls-protocol-version
+    configuration.tlsMinimumSupportedProtocol = 0  // $ isSink=tls-protocol-version
+    configuration.tlsMaximumSupportedProtocolVersion = 0  // $ isSink=tls-protocol-version
+    configuration.tlsMinimumSupportedProtocolVersion = 0  // $ isSink=tls-protocol-version
+
+    _ = configuration.tlsMaximumSupportedProtocol  // reading a sink property is not a sink
+    textField.text = ""  // writing a source property is not a source
+}
+
+class MyTextField: UITextField {}
+
+class NotATextField {
+    var text: String = ""
+    var arguments: [String] = []
+}
+
+class Process {
+    var arguments: [String] = []
+    var launchPath: String = ""
+}
+
+class MyProcess: Process {}
+
+class MyURLSessionConfiguration: URLSessionConfiguration {}
+
+func testMoreProperties(
+    myTextField: MyTextField,
+    notATextField: NotATextField,
+    unknown: UnknownType,
+    process: Process,
+    myProcess: MyProcess,
+    myConfiguration: MyURLSessionConfiguration,
+    string: String
+) {
+    _ = myTextField.text  // $ isSource=local
+    _ = notATextField.text  // not a source: unrelated type
+    _ = unknown.text  // not a source: unknown type
+
+    process.launchPath = string  // $ isSink=command-injection
+    process.arguments = [string]  // $ isSink=command-injection
+    process.arguments.append(string)  // $ isSink=command-injection
+    myProcess.arguments = [string]  // $ isSink=command-injection
+    notATextField.arguments = [string]  // not a sink: unrelated type
+
+    // `tlsMaximumSupportedProtocol` is modeled with subtypes=false
+    myConfiguration.tlsMaximumSupportedProtocol = 0
 }
 
 class Realm {
-    struct Configuration {}
+    struct Configuration {
+        var encryptionKey: String = ""
+    }
+}
+
+func testNestedTypeProperty(configuration: Realm.Configuration, key: String) {
+    var c1 = Realm.Configuration()
+    c1.encryptionKey = key  // $ MISSING: isSink=encryption-key // nested types are not yet resolved by type inference
+
+    var c2 = configuration
+    c2.encryptionKey = key  // $ MISSING: isSink=encryption-key // nested types are not yet resolved by type inference
 }
 
 func testQualifiedConstructors(
@@ -117,4 +169,32 @@ class Connection {
 
 func testConnectionLocation(string: String) {
     Connection.Location.uri(string, parameters: "")  // $ isSink=path-injection
+}
+
+extension UITextField {
+    func testImplicitSelfSource() {
+        _ = text  // $ isSource=local
+        _ = self.text  // $ isSource=local
+    }
+}
+
+extension Process {
+    func testImplicitSelfSink(string: String) {
+        launchPath = string  // $ isSink=command-injection
+        arguments = [string]  // $ isSink=command-injection
+        arguments.append(string)  // $ isSink=command-injection
+    }
+}
+
+class MyProcess2: Process {
+    func testImplicitSelfSinkInSubclass(string: String) {
+        launchPath = string  // $ isSink=command-injection
+    }
+}
+
+extension NotATextField {
+    func testImplicitSelfUnrelated(string: String) {
+        _ = text  // not a source: unrelated type
+        arguments = [string]  // not a sink: unrelated type
+    }
 }
