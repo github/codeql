@@ -130,11 +130,11 @@ class ShorthandTestSub: ShorthandTest {
         _ x: String  // $ isSource=shorthand-source
     ) {
         _ = self
-    }  // $ MISSING: isSource=shorthand-source
+    }  // $ isSource=shorthand-source
 }
 
 func testShorthandTokens(obj: ShorthandTest, string: String) {
     obj.sinkArgs(
         string  // $ isSink=shorthand-sink
-    )  // $ MISSING: isSink=shorthand-sink
+    )  // $ isSink=shorthand-sink
 }

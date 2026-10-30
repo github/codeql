@@ -16,6 +16,7 @@ isSink
 | test.swift:101:18:101:24 | fileURL | path-injection |
 | test.swift:107:23:107:34 | seedFilePath | path-injection |
 | test.swift:119:29:119:34 | string | path-injection |
+| test.swift:137:5:139:5 | [self arg] ... .sinkArgs(...) | shorthand-sink |
 | test.swift:138:9:138:14 | string | shorthand-sink |
 isSource
 | test.swift:4:5:4:27 | String(...) | remote |
@@ -26,4 +27,5 @@ isSource
 | test.swift:10:5:12:24 | String(...) | local |
 | test.swift:13:5:15:28 | String(...) | local |
 | test.swift:29:29:29:32 | text | local |
+| test.swift:129:5:133:5 | [self param] func ShorthandTestSub.sourceParams | shorthand-source |
 | test.swift:130:11:130:11 | x | shorthand-source |
