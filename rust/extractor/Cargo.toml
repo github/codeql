@@ -30,7 +30,6 @@ ra_ap_intern = "0.0.358"
 serde = "1.0.229"
 serde_with = "3.24.0"
 triomphe = "0.1.17"
-argfile = "1.0.0"
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
 rust-extractor-macros = { path = "macros" }
 itertools = "0.15.0"

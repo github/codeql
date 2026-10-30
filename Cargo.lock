@@ -89,16 +89,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470"
 
 [[package]]
-name = "argfile"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "99489a733dea0d2930bfa59c243146a8513ce7b0991b9d006647687cc61f53e7"
-dependencies = [
- "fs-err",
- "os_str_bytes",
-]
-
-[[package]]
 name = "arrayvec"
 version = "0.7.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -430,7 +420,6 @@ name = "codeql-rust"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "argfile",
  "chalk-ir",
  "chrono",
  "clap",
@@ -821,15 +810,6 @@ name = "foldhash"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "77ce24cb58228fbb8aa041425bb1050850ac19177686ea6e0f41a70416f56fdb"
-
-[[package]]
-name = "fs-err"
-version = "3.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "73fde052dbfc920003cfd2c8e2c6e6d4cc7c1091538c3a24226cec0665ab08c0"
-dependencies = [
- "autocfg",
-]
 
 [[package]]
 name = "fsevent-sys"
@@ -1386,15 +1366,6 @@ name = "oorandom"
 version = "11.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d6790f58c7ff633d8771f42965289203411a5e5c68388703c06e14f24770b41e"
-
-[[package]]
-name = "os_str_bytes"
-version = "7.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "89284d0c2af7b0eb5e814798aa07265413c8fd72009f7fc82ea25a81fb287ce9"
-dependencies = [
- "memchr",
-]
 
 [[package]]
 name = "parking_lot"
