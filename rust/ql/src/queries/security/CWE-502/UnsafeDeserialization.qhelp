@@ -12,7 +12,10 @@ Deserializing untrusted data without validation can allow an attacker to cause d
 <recommendation>
 
 <p>
-Avoid deserializing untrusted data with formats that allow unbounded allocation or polymorphic dispatch. Prefer formats with schema validation (like Protocol Buffers) when processing untrusted input. If using <code>serde</code>, consider:
+
+Avoid deserializing untrusted data with formats that allow unbounded allocation or polymorphic dispatch. Where possible, prefer formats with schema validation, such as Protocol Buffers, when processing untrusted input.
+If you do use <code>serde</code>, consider:
+
 </p>
 <ul>
 <li>Validating input size before deserialization.</li>
