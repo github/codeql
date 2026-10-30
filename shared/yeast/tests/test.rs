@@ -1723,6 +1723,42 @@ fn test_location_none_makes_result_root_locationless() {
     assert_eq!(call.source_range(), None);
 }
 
+/// A nested `location: none` node stays locationless and does not widen its
+/// parent's derived range with an empty range at the match start.
+#[test]
+fn test_location_none_nested_node_does_not_widen_parent() {
+    let rule: Rule = rule!(
+        (call method: (identifier) @method)
+        =>
+        (call
+            method: (identifier "outer")
+            receiver: (call
+                method: {method}
+                arguments: (argument_list location: none)))
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let nodes: Vec<_> = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .collect();
+    let arguments = nodes
+        .iter()
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    assert_eq!(arguments.source_range(), None);
+
+    let mut call_ranges: Vec<_> = nodes
+        .iter()
+        .filter(|node| node.kind_name() == "call")
+        .map(|node| node.byte_range())
+        .collect();
+    call_ranges.sort_by_key(|range| (range.start, range.end));
+    // Without `location: none`, the inner call would be widened to 0..7.
+    assert_eq!(call_ranges, [0..9, 4..7]);
+}
+
 #[test]
 fn test_multiple_location_fields_combine_iterable_locations() {
     let rule: Rule = rule!(
