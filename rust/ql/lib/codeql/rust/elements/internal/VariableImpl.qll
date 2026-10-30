@@ -310,13 +310,26 @@ module Impl {
     /** Holds if this variable is captured. */
     predicate isCaptured() { this.getAnAccess().isCapture() }
 
-    /** Gets the parameter that introduces this variable, if any. */
+    /**
+     * Gets the parameter that introduces this variable, if any.
+     *
+     * Note that this variable need not be a direct parameter; it could
+     * also be introduced through a destructuring pattern.
+     */
     cached
     ParamBase getParameter() {
       CachedStage::ref() and
       result = this.getSelfParam()
       or
       result.(Param).getPat() = getAPatAncestor*(this.getPat())
+    }
+
+    /** Holds if this variable corresponds directly to the parameter `p`. */
+    predicate isParameter(ParamBase p) {
+      CachedStage::ref() and
+      p = this.getSelfParam()
+      or
+      p.(Param).getPat() = this.getPat()
     }
 
     /** Holds if this variable is mutable. */

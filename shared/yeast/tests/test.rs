@@ -1104,20 +1104,16 @@ fn test_desugar_for_loop() {
 #[derive(Clone, Default)]
 struct GuardTestContext {
     enabled: bool,
-    selected: bool,
 }
 
 fn guarded_integer_rules() -> Vec<Rule<GuardTestContext>> {
     vec![
         yeast::rule!(
             (integer) @@raw
-            where {
-                ctx.selected = ctx.enabled && ast.source_text(raw) == "1";
-                ctx.selected
-            }
+            where ctx.enabled && ast.source_text(raw) == "1"
             =>
             identifier {
-                assert!(ctx.selected);
+                assert!(ctx.enabled);
                 tree!((identifier "guarded"))
             }
         ),
@@ -1137,10 +1133,7 @@ fn test_rule_guard_reads_raw_capture_and_user_context() {
             with_passthrough_rules(guarded_integer_rules()),
         )];
         let runner = Runner::with_schema(lang, &schema, &phases);
-        let mut user_ctx = GuardTestContext {
-            enabled,
-            selected: false,
-        };
+        let mut user_ctx = GuardTestContext { enabled };
         let ast = runner.run_with_ctx(input, &mut user_ctx).unwrap();
         dump_ast(&ast, ast.get_root(), input)
     }
@@ -1362,35 +1355,34 @@ fn test_guard_runs_before_capture_translation() {
 }
 
 #[test]
-fn test_guard_context_mutation_is_visible_to_transform() {
+fn test_transform_context_propagates_to_nested_guard_without_mutating_caller() {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
     let rules: Vec<Rule<GuardTestContext>> = vec![
         yeast::rule!(
-            (program (_)* @stmts)
+            (program (_) @@stmt)
             =>
-            (program stmt: {stmts})
+            program {
+                ctx.enabled = true;
+                let stmt = ctx.translate(stmt)?;
+                tree!((program stmt: {stmt}))
+            }
         ),
         yeast::rule!(
             (integer)
-            where {
-                ctx.selected = true;
-                true
-            }
+            where ctx.enabled
             =>
-            identifier {
-                assert!(ctx.selected);
-                tree!((identifier "guarded"))
-            }
+            (identifier "guarded")
         ),
     ];
     let phases = vec![Phase::new("translate", rules)];
     let runner = Runner::with_schema(lang, &schema, &phases);
-    let mut user_ctx = GuardTestContext::default();
+    let mut user_ctx = GuardTestContext { enabled: false };
 
     let input = "1";
     let ast = runner.run_with_ctx(input, &mut user_ctx).unwrap();
+    assert!(!user_ctx.enabled);
     let dump = dump_ast(&ast, ast.get_root(), input);
     assert_dump_eq(
         &dump,

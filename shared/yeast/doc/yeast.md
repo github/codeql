@@ -523,22 +523,17 @@ rule, while a capture marked `@@` would remain raw in the transform as well.
 In this example `label` and `rest` are empty whenever the guard succeeds, so
 there is nothing to translate for those captures.
 
-Guards receive the mutable user context as `ctx` and the raw AST as `ast`.
-The framework clones the user context before evaluating each guard. If the
-guard succeeds, its context mutations are visible to the rule transform and
-recursive translation; if it fails, the clone is discarded before the next
-rule is tried:
+Guards receive the user context as read-only `ctx` and the raw AST as `ast`.
+The transform receives a private clone of the context after the guard succeeds:
 
 ```rust
 rule!(
     (tupleExpr elements: _* @elements)
-    where {
-        ctx.in_pattern = true;
-        elements
+    where ctx.in_pattern
+        && elements
             .first()
             .and_then(|element| ast.get_node(*element))
             .is_some()
-    }
     =>
     (tuple_pattern element: {elements})
 )

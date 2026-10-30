@@ -14,28 +14,28 @@ local_path_override(
 
 # see https://registry.bazel.build/ for a list of available packages
 
-bazel_dep(name = "platforms", version = "1.0.0")
-bazel_dep(name = "rules_cc", version = "0.2.20")
-bazel_dep(name = "rules_go", version = "0.60.0")
+bazel_dep(name = "platforms", version = "1.1.0")
+bazel_dep(name = "rules_cc", version = "0.2.27")
+bazel_dep(name = "rules_go", version = "0.65.0")
 bazel_dep(name = "rules_java", version = "9.6.1")
 bazel_dep(name = "rules_pkg", version = "1.2.0")
-bazel_dep(name = "rules_nodejs", version = "6.7.5")
-bazel_dep(name = "rules_python", version = "1.9.0")
-bazel_dep(name = "rules_shell", version = "0.7.1")
+bazel_dep(name = "rules_nodejs", version = "6.7.7")
+bazel_dep(name = "rules_python", version = "2.4.5")
+bazel_dep(name = "rules_shell", version = "0.8.0")
 bazel_dep(name = "bazel_skylib", version = "1.9.0")
 bazel_dep(name = "abseil-cpp", version = "20260107.1", repo_name = "absl")
-bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.1", repo_name = "json")
+bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.2", repo_name = "json")
 bazel_dep(name = "fmt", version = "12.1.0-codeql.1")
 bazel_dep(name = "rules_kotlin", version = "2.2.2-codeql.1")
-bazel_dep(name = "gazelle", version = "0.50.0")
+bazel_dep(name = "gazelle", version = "0.54.0")
 bazel_dep(name = "rules_dotnet", version = "0.21.5-codeql.1")
-bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
+bazel_dep(name = "googletest", version = "1.18.0.bcr.1")
 bazel_dep(name = "rules_rust", version = "0.74.0")
-bazel_dep(name = "rules_swift", version = "4.0.0-rc5-codeql.2")
+bazel_dep(name = "rules_swift", version = "4.0.0-rc5-codeql.3")
 bazel_dep(name = "swift-syntax", version = "603.0.2")
 bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
 
-bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
+bazel_dep(name = "buildifier_prebuilt", version = "10.1.0", dev_dependency = True)
 
 # Keep edition and version approximately in sync with internal repo.
 # the versions there are canonical, the versions here are used for CI in github/codeql, as well as for the vendoring of dependencies.

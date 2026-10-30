@@ -409,6 +409,7 @@ module Public {
       |
         decl instanceof VariableDeclaration or
         decl instanceof FunctionDeclaration or // treat functions as values
+        decl instanceof AccessorDeclaration or
         decl instanceof Parameter or
         decl instanceof ForEachStmt or
         decl instanceof PatternGuardExpr or
@@ -444,6 +445,25 @@ module Public {
       name = any(NameBindingPlugin p).getImplicitReceiverParameterName(scope) and
       scope = c
     }
+  }
+
+  private AccessorDeclaration getAnAccessor(LocalVariable v) {
+    v.getABinding() = result.getNameNode() and
+    (result instanceof GetterDeclaration or result instanceof SetterDeclaration)
+  }
+
+  /** A local variable defined by a getter/setter pair, which does not store a value on its own. */
+  final class ComputedLocalVariable extends LocalVariable {
+    ComputedLocalVariable() { exists(getAnAccessor(this)) }
+
+    /** Gets the getter or setter for this computed variable. */
+    AccessorDeclaration getAnAccessor() { result = getAnAccessor(this) }
+
+    /** Gets the getter for this computed variable. */
+    GetterDeclaration getGetterDeclaration() { result = getAnAccessor(this) }
+
+    /** Gets the setter for this computed variable. */
+    SetterDeclaration getSetterDeclaration() { result = getAnAccessor(this) }
   }
 
   /** An access to a locally-declared name. */

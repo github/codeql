@@ -1180,10 +1180,9 @@ pub type Transform<C = ()> = Box<
 
 /// Predicate evaluated after a rule's query matches and before its transform
 /// runs. Returning `false` makes the rule behave as if its query did not
-/// match, so the driver continues to the next rule. The user context is a
-/// private clone for this rule attempt; mutations are retained for the
-/// transform when the guard succeeds and discarded when it fails.
-pub type Guard<C = ()> = Box<dyn Fn(&Ast, &Captures, &mut C) -> Result<bool, String> + Send + Sync>;
+/// match, so the driver continues to the next rule. Guards have read-only
+/// access to the shared user context.
+pub type Guard<C = ()> = Box<dyn Fn(&Ast, &Captures, &C) -> Result<bool, String> + Send + Sync>;
 
 pub struct Rule<C = ()> {
     query: QueryNode,
@@ -1203,8 +1202,8 @@ impl<C> Rule<C> {
         }
     }
 
-    /// Construct a guarded rule. The guard sees raw captures and shares its
-    /// private user-context clone with the transform when it succeeds.
+    /// Construct a guarded rule. The guard sees raw captures and has read-only
+    /// access to the user context.
     pub fn guarded(query: QueryNode, guard: Guard<C>, transform: Transform<C>) -> Self {
         Self {
             query,
@@ -1231,12 +1230,7 @@ impl<C> Rule<C> {
 
     /// Evaluate this rule's guard against a successful query match. An
     /// unguarded rule always succeeds.
-    fn guard_matches(
-        &self,
-        ast: &Ast,
-        captures: &Captures,
-        user_ctx: &mut C,
-    ) -> Result<bool, String> {
+    fn guard_matches(&self, ast: &Ast, captures: &Captures, user_ctx: &C) -> Result<bool, String> {
         if let Some(guard) = &self.guard {
             guard(ast, captures, user_ctx)
         } else {
@@ -1328,14 +1322,13 @@ fn apply_rules_inner<C: Clone>(
             continue;
         };
 
-        // Clone only after the query matches, but before the guard runs.
-        // Guard mutations are visible to the transform and transitively-
-        // translated captures when the guard succeeds; a failed guard drops
-        // the clone before trying the next rule.
-        let mut local = user_ctx.clone();
-        if !rule.guard_matches(ast, &captures, &mut local)? {
+        if !rule.guard_matches(ast, &captures, user_ctx)? {
             continue;
         }
+
+        // The transform gets a private context clone. Its mutations are visible
+        // to transitively translated captures, but not to sibling rule attempts.
+        let mut local = user_ctx.clone();
 
         // Build the translator handle the transform will use to recursively
         // translate captured input nodes when they are consumed.

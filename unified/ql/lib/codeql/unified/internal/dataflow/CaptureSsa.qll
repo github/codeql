@@ -21,7 +21,7 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
   Callable basicBlockGetEnclosingCallable(BasicBlock bb) { result = bb.getEnclosingCallable() }
 
   class CapturedVariable extends LocalVariable {
-    CapturedVariable() { this.isCaptured() }
+    CapturedVariable() { this.isCaptured() and not this instanceof ComputedLocalVariable }
 
     Callable getCallable() { result = super.getDeclaringCallable() }
   }
@@ -35,27 +35,14 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     CapturedParameter() { none() }
   }
 
-  private class TExpr = TCallableNode or TLocalVariableRefNode;
-
   private predicate isTopLevelCallable(BuilderNode callable) {
     callable.isCallable(any(TopLevel t))
   }
 
-  class Expr extends TExpr {
+  class Expr extends Stage2Node {
     Expr() { not isTopLevelCallable(this) }
 
-    string toString() { result = this.(BuilderNode).toString() }
-
-    Location getLocation() { result = this.(BuilderNode).getLocation() }
-
-    predicate hasCfgNode(BasicBlock bb, int i) {
-      this.(LocalVariableRefNode).hasCfgNode(bb, i)
-      or
-      exists(DataFlowCallable callable |
-        this = TCallableNode(callable) and
-        bb.getNode(i).injects(callable.asSourceCallable())
-      )
-    }
+    predicate hasCfgNode(BasicBlock bb, int i) { this.hasControlFlowPosition(bb, i) }
   }
 
   final private class FinalLocalVariableRefNode = LocalVariableRefNode;
@@ -84,7 +71,7 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     node.(BuilderNode).isCallable(callable)
     or
     exists(Stage2Node prev | callableHasLocalAlias(callable, prev) |
-      step(prev, any(Step s | s.value()), node)
+      step(prev, any(Step s | s.value() or s.valueMustFlow() or s.callGraph()), node)
       or
       localSsaStep(prev, node, _)
     )
@@ -103,6 +90,21 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     )
   }
 
+  private predicate isEscape(BuilderNode node) {
+    node.isResultValue(any(Argument arg).getValue())
+    or
+    node.isSetterValueArgument(_)
+    or
+    node.isImplicitArgument(_, _, _)
+    or
+    exists(U::Expr e |
+      isReturnedExpr(_, e) and
+      node.isResultValue(e)
+    )
+    or
+    step(node, any(Step s | s.store(_)), _)
+  }
+
   class ClosureExpr extends Expr instanceof TCallableNode {
     // TODO: In order to support classes with captures, this needs to cover constructor calls to such classes as well.
     private Callable callable;
@@ -112,8 +114,8 @@ module CaptureSsaInput implements InputSig<Location, BasicBlock> {
     predicate hasBody(Callable body) { callable = body }
 
     predicate hasAliasedAccess(Expr f) {
-      // TODO: Restrict to places where the function is called or escapes into a call where it might get called.
-      callableHasLocalAlias(callable, f) and not f.(LocalVariableRefNode).getRefKind().isWrite()
+      callableHasLocalAlias(callable, f) and
+      isEscape(f)
     }
   }
 }

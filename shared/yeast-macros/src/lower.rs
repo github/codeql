@@ -81,7 +81,7 @@ impl Rule {
                 let __query = #query;
                 yeast::Rule::guarded(
                     __query,
-                    Box::new(|__ast: &yeast::Ast, __captures: &yeast::captures::Captures, __user_ctx: &mut _| {
+                    Box::new(|__ast: &yeast::Ast, __captures: &yeast::captures::Captures, __user_ctx: &_| {
                         #(#guard_bindings)*
                         let ast = __ast;
                         let #ctx = __user_ctx;

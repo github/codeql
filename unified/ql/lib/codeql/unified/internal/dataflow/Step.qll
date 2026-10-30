@@ -7,7 +7,8 @@ private newtype TStep =
   TJumpStep() or
   TTaintStep() or
   TReadStep(ContentSet contents) or
-  TStoreStep(ContentSet contents)
+  TStoreStep(ContentSet contents) or
+  TCallGraphStep()
 
 /**
  * A type of data flow step, used during construction of the data flow graph.
@@ -47,6 +48,9 @@ class Step extends TStep {
   pragma[nomagic]
   predicate storeArrayElement() { this.store(ContentSet::arrayElement()) }
 
+  /** Holds if this step can only be used for call graph construction. */
+  predicate callGraph() { this = TCallGraphStep() }
+
   string toString() {
     this.value() and result = "value"
     or
@@ -61,5 +65,7 @@ class Step extends TStep {
       or
       this.store(contents) and result = "store[" + contents + "]"
     )
+    or
+    this.callGraph() and result = "call-graph"
   }
 }
