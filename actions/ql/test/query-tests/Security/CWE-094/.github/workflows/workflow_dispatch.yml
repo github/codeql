@@ -1,0 +1,58 @@
+name: Code Injection via workflow_dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: "Title for the issue"
+        required: true
+        type: string
+      body:
+        description: "Body with no explicit type (defaults to string)"
+        required: false
+      flag:
+        description: "A boolean input"
+        required: false
+        type: boolean
+      option:
+        description: "A choice input"
+        required: false
+        type: choice
+        options:
+          - "option1"
+          - "option2"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Vulnerable: string input used directly in run script
+      - name: vulnerable string input
+        run: |
+          echo "${{ inputs.title }}"
+
+      # Vulnerable: input with no explicit type (defaults to string) used directly
+      - name: vulnerable untyped input
+        run: |
+          echo "${{ inputs.body }}"
+
+      # Not vulnerable: string input passed safely through env var
+      - name: safe string input via env
+        run: |
+          echo "$title"
+        env:
+          title: ${{ inputs.title }}
+
+      # Not vulnerable: boolean input used directly
+      - name: safe boolean input
+        run: |
+          echo "${{ inputs.flag }}"
+
+      # Not vulnerable: choice input used directly
+      - name: safe choice input
+        run: |
+          echo "${{ inputs.option }}"
