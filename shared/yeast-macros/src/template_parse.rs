@@ -1,7 +1,7 @@
 use proc_macro2::{Delimiter, Ident, Literal, Span, TokenStream, TokenTree};
 use std::iter::Peekable;
 
-use crate::ast::{Content, Field, Node, Template};
+use crate::ast::{Alternative, Content, Field, Node, Template};
 
 type Tokens = Peekable<proc_macro2::token_stream::IntoIter>;
 type Result<T> = std::result::Result<T, syn::Error>;
@@ -9,7 +9,6 @@ type Result<T> = std::result::Result<T, syn::Error>;
 pub(crate) fn parse_template(input: TokenStream) -> Result<Template> {
     let mut tokens = input.into_iter().peekable();
     let template = parse_one(&mut tokens)?;
-    reject_stray_optional(&mut tokens, false)?;
     if let Some(token) = tokens.next() {
         return Err(syn::Error::new_spanned(
             token,
@@ -41,9 +40,13 @@ fn parse_one(tokens: &mut Tokens) -> Result<Template> {
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
             Ok(Template::Node(parse_node(group)?))
         }
+        Some(TokenTree::Group(group)) if group.delimiter() == Delimiter::Bracket => {
+            let group = expect_group(tokens, Delimiter::Bracket)?;
+            Ok(Template::Choice(parse_alternatives(group)?))
+        }
         Some(token) => Err(syn::Error::new_spanned(
             token.clone(),
-            "expected `(` or `{` in tree template",
+            "expected `(`, `{`, or `[` in tree template",
         )),
         None => Err(syn::Error::new(
             Span::call_site(),
@@ -93,33 +96,12 @@ fn parse_node(group: proc_macro2::Group) -> Result<Node> {
                 return Err(error);
             }
             let block = parse_block(expect_group(&mut tokens, Delimiter::Brace)?)?;
-            if let Some(TokenTree::Punct(punctuation)) = tokens.peek() {
-                if punctuation.as_char() == '?' {
-                    return Err(syn::Error::new_spanned(
-                        punctuation.clone(),
-                        "`?` is not valid on a `location` field",
-                    ));
-                }
-            }
             fields.push(Field::Location { block });
             continue;
         }
 
         let value = parse_one(&mut tokens)?;
-        let optional = if matches!(value, Template::Splice(_)) {
-            reject_stray_optional(&mut tokens, true)?;
-            false
-        } else if peek_is_punct(&mut tokens, '?') {
-            tokens.next();
-            true
-        } else {
-            false
-        };
-        fields.push(Field::Named {
-            name,
-            value,
-            optional,
-        });
+        fields.push(Field::Named { name, value });
     }
 
     if let Some(token) = tokens.next() {
@@ -137,6 +119,42 @@ fn parse_node(group: proc_macro2::Group) -> Result<Node> {
     })
 }
 
+fn parse_alternatives(group: proc_macro2::Group) -> Result<Vec<Alternative>> {
+    let mut tokens = group.stream().into_iter().peekable();
+    let mut alternatives = Vec::new();
+    while tokens.peek().is_some() {
+        if peek_is_group(&mut tokens, Delimiter::Bracket) {
+            let nested = expect_group(&mut tokens, Delimiter::Bracket)?;
+            return Err(syn::Error::new(
+                nested.span(),
+                "a choice cannot be used directly as another choice's alternative; \
+                 list its alternatives directly in the enclosing choice",
+            ));
+        }
+        let template = parse_one(&mut tokens)?;
+        let guard = if peek_is_ident(&mut tokens, "if") {
+            tokens.next();
+            let group = expect_group(&mut tokens, Delimiter::Brace).map_err(|error| {
+                syn::Error::new(
+                    error.span(),
+                    "expected `{ ... }` guard condition after `if`",
+                )
+            })?;
+            Some(parse_block(group)?)
+        } else {
+            None
+        };
+        alternatives.push(Alternative { template, guard });
+    }
+    if alternatives.is_empty() {
+        return Err(syn::Error::new(
+            group.span(),
+            "template choices must contain at least one alternative",
+        ));
+    }
+    Ok(alternatives)
+}
+
 fn parse_list(tokens: &mut Tokens) -> Result<Vec<Template>> {
     let mut templates = Vec::new();
     while tokens.peek().is_some() {
@@ -146,7 +164,6 @@ fn parse_list(tokens: &mut Tokens) -> Result<Vec<Template>> {
                 continue;
             }
             templates.push(Template::Node(parse_node(group)?));
-            reject_stray_optional(tokens, false)?;
             continue;
         }
 
@@ -155,30 +172,20 @@ fn parse_list(tokens: &mut Tokens) -> Result<Vec<Template>> {
                 tokens,
                 Delimiter::Brace,
             )?)?));
-            reject_stray_optional(tokens, true)?;
+            continue;
+        }
+
+        if peek_is_group(tokens, Delimiter::Bracket) {
+            templates.push(Template::Choice(parse_alternatives(expect_group(
+                tokens,
+                Delimiter::Bracket,
+            )?)?));
             continue;
         }
 
         break;
     }
     Ok(templates)
-}
-
-fn reject_stray_optional(tokens: &mut Tokens, after_splice: bool) -> Result<()> {
-    let Some(TokenTree::Punct(punctuation)) = tokens.peek() else {
-        return Ok(());
-    };
-    if punctuation.as_char() != '?' {
-        return Ok(());
-    }
-    let message = if after_splice {
-        "`?` is not valid on a `{...}` splice; a splice that yields no value \
-         already leaves its field unset"
-    } else {
-        "`?` is only valid on the value of a named field, as in \
-         `label: (identifier #{lbl})?`"
-    };
-    Err(syn::Error::new_spanned(punctuation.clone(), message))
 }
 
 fn parse_block(group: proc_macro2::Group) -> Result<syn::Block> {
@@ -201,8 +208,8 @@ fn peek_is_group(tokens: &mut Tokens, delimiter: Delimiter) -> bool {
     matches!(tokens.peek(), Some(TokenTree::Group(group)) if group.delimiter() == delimiter)
 }
 
-fn peek_is_punct(tokens: &mut Tokens, expected: char) -> bool {
-    matches!(tokens.peek(), Some(TokenTree::Punct(punctuation)) if punctuation.as_char() == expected)
+fn peek_is_ident(tokens: &mut Tokens, expected: &str) -> bool {
+    matches!(tokens.peek(), Some(TokenTree::Ident(identifier)) if identifier == expected)
 }
 
 fn expect_ident(tokens: &mut Tokens, message: &str) -> Result<Ident> {
@@ -256,7 +263,7 @@ mod tests {
         let template = parse_template(quote! {
             (call
                 argument: {args}
-                method: (identifier #{name})?)
+                method: [(identifier #{name})])
         })
         .unwrap();
 
@@ -298,14 +305,51 @@ mod tests {
     }
 
     #[test]
-    fn rejects_optional_location_fields() {
+    fn parses_choice_guards() {
+        let template = parse_template(quote! {
+            [
+                (parameter type: {ty}) if { in_function_type }
+                (argument value: {ty})
+            ]
+        })
+        .unwrap();
+
+        let Template::Choice(alternatives) = template else {
+            panic!("expected template choice");
+        };
+        assert_eq!(alternatives.len(), 2);
+        assert!(alternatives[0].guard.is_some());
+        assert!(alternatives[1].guard.is_none());
+    }
+
+    #[test]
+    fn rejects_empty_choices() {
+        let result = parse_template(quote! { [] });
+        let Err(error) = result else {
+            panic!("expected empty choice to be rejected");
+        };
+        assert_eq!(
+            error.to_string(),
+            "template choices must contain at least one alternative"
+        );
+    }
+
+    #[test]
+    fn rejects_choice_as_direct_alternative() {
         let result = parse_template(quote! {
-            (identifier "name" location: {source}?)
+            [
+                [(identifier "nested")]
+                (identifier "fallback")
+            ]
         });
         let Err(error) = result else {
-            panic!("expected an optional location field to be rejected");
+            panic!("expected a direct nested choice to be rejected");
         };
-        assert_eq!(error.to_string(), "`?` is not valid on a `location` field");
+        assert_eq!(
+            error.to_string(),
+            "a choice cannot be used directly as another choice's alternative; \
+             list its alternatives directly in the enclosing choice"
+        );
     }
 
     #[test]

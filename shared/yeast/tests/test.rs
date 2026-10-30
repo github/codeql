@@ -713,13 +713,13 @@ fn test_tree_builder() {
     );
 }
 
-/// Builds `(assignment left: … right: (integer #{value})?)`, where a `None`
+/// Builds `(assignment left: … right: [(integer #{value})])`, where a `None`
 /// `value` leaves `right` unset rather than producing an `integer` with no
 /// content.
-fn build_optional_right(
+fn build_choice_right(
     input_ast: &Ast,
     ast: &mut OutputAst,
-    value: Option<yeast::OutputId>,
+    value: Option<yeast::Id>,
 ) -> (yeast::OutputId, yeast::OutputId) {
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(input_ast, ast, &mut user_ctx);
@@ -727,22 +727,26 @@ fn build_optional_right(
     let root = yeast::tree!(
         (assignment
             left: {left}
-            right: (integer #{value})?
+            right: [(integer #{value})]
         )
     );
     (root, left)
 }
 
 #[test]
-fn test_optional_field_is_set_when_the_value_is_present() {
-    let input_ast = parse_input("x = 1");
-    let mut ast = empty_output_ast("x = 1");
+fn test_choice_is_set_when_the_value_is_present() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
 
-    let some = ast.create_named_token("identifier", "x = 1".to_string());
+    // Any node will do as the interpolated value; `#{…}` renders its source text.
+    let mut cursor = AstCursor::new(&input_ast);
+    cursor.goto_first_child();
+    let some = cursor.node_id();
 
-    let (root, _) = build_optional_right(&input_ast, &mut ast, Some(some));
+    let (root, _) = build_choice_right(&input_ast, &mut ast, Some(some));
     assert_dump_eq(
-        &dump_ast(&ast, root, "x = 1"),
+        &dump_ast(&ast, root, input),
         r#"
         assignment
           left: identifier "x"
@@ -752,13 +756,14 @@ fn test_optional_field_is_set_when_the_value_is_present() {
 }
 
 #[test]
-fn test_optional_field_is_unset_when_the_value_is_absent() {
-    let input_ast = parse_input("x = 1");
-    let mut ast = empty_output_ast("x = 1");
+fn test_choice_is_unset_when_the_value_is_absent() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
 
-    let (root, _) = build_optional_right(&input_ast, &mut ast, None);
+    let (root, _) = build_choice_right(&input_ast, &mut ast, None);
     assert_dump_eq(
-        &dump_ast(&ast, root, "x = 1"),
+        &dump_ast(&ast, root, input),
         r#"
         assignment
           left: identifier "x"
@@ -767,26 +772,189 @@ fn test_optional_field_is_unset_when_the_value_is_absent() {
 }
 
 #[test]
-fn test_optional_field_propagates_through_nested_nodes() {
-    let input_ast = parse_input("x = 1");
-    let mut ast = empty_output_ast("x = 1");
+fn test_choice_uses_first_constructible_alternative() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let absent: Option<yeast::Id> = None;
+    let root = yeast::tree!(
+        (assignment
+            left: [
+                (identifier #{absent})
+                (identifier "fallback")
+            ]
+        )
+    );
+
+    assert_dump_eq(
+        &dump_ast(ctx.output, root, input),
+        r#"
+        assignment
+          left: identifier "fallback"
+    "#,
+    );
+}
+
+#[test]
+fn test_choice_guard_skips_an_alternative() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let use_first = false;
+    let root = yeast::tree!(
+        (assignment
+            left: [
+                (identifier "first") if { use_first }
+                (identifier "fallback")
+            ]
+        )
+    );
+
+    assert_dump_eq(
+        &dump_ast(ctx.output, root, input),
+        r#"
+        assignment
+          left: identifier "fallback"
+    "#,
+    );
+}
+
+#[test]
+fn test_choice_fallback_can_reuse_consumed_splice() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let items = vec![
+        yeast::tree!((identifier "x")),
+        yeast::tree!((identifier "y")),
+    ];
+    let use_first = false;
+    let root = yeast::tree!(
+        (assignment
+            left: [
+                (left_assignment_list
+                    child: {items}
+                    child: (identifier "first")) if { use_first }
+                (left_assignment_list
+                    child: {items}
+                    child: (identifier "fallback"))
+            ]
+        )
+    );
+
+    assert_dump_eq(
+        &dump_ast(ctx.output, root, input),
+        r#"
+        assignment
+          left:
+            left_assignment_list
+              identifier "x"
+              identifier "y"
+              identifier "fallback"
+    "#,
+    );
+}
+
+#[test]
+fn test_root_choice_returns_an_optional_node() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+    let node_count = ast.nodes().len();
+
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let absent: Option<yeast::Id> = None;
+    let missing = yeast::tree!([(identifier #{absent})]);
+    assert_eq!(missing, None);
+    assert_eq!(ctx.output.nodes().len(), node_count);
+
+    let root = yeast::tree!([
+        (identifier #{absent})
+        (identifier "fallback")
+    ])
+    .unwrap();
+    assert_dump_eq(
+        &dump_ast(ctx.output, root, input),
+        r#"
+        identifier "fallback"
+    "#,
+    );
+
+    let source = ctx.ast().get_root();
+    let located = yeast::tree!([
+        (identifier #{absent})
+        (identifier "located fallback" location: {source})
+    ])
+    .unwrap();
+    assert_eq!(
+        ctx.output.get_node(located).unwrap().source_range(),
+        ctx.ast().get_node(source).unwrap().source_range()
+    );
+}
+
+#[test]
+fn test_choice_preflights_dependencies_before_constructing() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+    let node_count = ast.nodes().len();
+
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let absent: Option<yeast::Id> = None;
+    let root = yeast::tree!(
+        (assignment
+            left: [
+                (left_assignment_list
+                    child: (identifier "would-be-orphan")
+                    child: (identifier #{absent}))
+                (identifier "fallback")
+            ]
+        )
+    );
+
+    assert_eq!(ctx.output.nodes().len(), node_count + 2);
+    assert_dump_eq(
+        &dump_ast(ctx.output, root, input),
+        r#"
+        assignment
+          left: identifier "fallback"
+    "#,
+    );
+}
+
+#[test]
+fn test_choice_propagates_through_nested_nodes() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
 
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
 
-    // The absent value sits two levels below the `?`, so the whole
+    // The absent value sits two levels below the choice, so the whole
     // `left_assignment_list` subtree is abandoned along with it.
-    let absent: Option<yeast::OutputId> = None;
+    let absent: Option<yeast::Id> = None;
     let right = yeast::tree!((integer "1"));
     let root = yeast::tree!(
         (assignment
-            left: (left_assignment_list child: (identifier #{absent}))?
+            left: [(left_assignment_list child: (identifier #{absent}))]
             right: {right}
         )
     );
 
     assert_dump_eq(
-        &dump_ast(&ast, root, "x = 1"),
+        &dump_ast(ctx.output, root, input),
         r#"
         assignment
           right: integer "1"
@@ -795,23 +963,26 @@ fn test_optional_field_propagates_through_nested_nodes() {
 }
 
 #[test]
-fn test_innermost_optional_field_catches_first() {
-    let input_ast = parse_input("x = 1");
-    let mut ast = empty_output_ast("x = 1");
+fn test_innermost_choice_catches_first() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
 
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
 
-    // The inner `?` catches, so only `child` is dropped; `left` survives.
-    let absent: Option<yeast::OutputId> = None;
+    // The inner choice catches, so only `child` is dropped; `left` survives.
+    let absent: Option<yeast::Id> = None;
     let root = yeast::tree!(
         (assignment
-            left: (left_assignment_list child: (identifier #{absent})?)?
+            left: [
+                (left_assignment_list child: [(identifier #{absent})])
+            ]
         )
     );
 
     assert_dump_eq(
-        &dump_ast(&ast, root, "x = 1"),
+        &dump_ast(ctx.output, root, input),
         r#"
         assignment
           left: left_assignment_list
@@ -1477,6 +1648,28 @@ fn test_hash_brace_renders_capture_source_text() {
             arguments: argument_list
             method: identifier "bar"
             receiver: identifier "foo"
+    "#,
+    );
+}
+
+#[test]
+fn test_choice_accepts_optional_translated_capture() {
+    let rule: Rule = rule!(
+        (call method: (identifier) @name)
+        =>
+        (call
+            method: [(identifier #{Some(name)})]
+            arguments: (argument_list)
+        )
+    );
+    let dump = run_and_dump("foo()", vec![rule]);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          call
+            arguments: argument_list
+            method: identifier "foo"
     "#,
     );
 }

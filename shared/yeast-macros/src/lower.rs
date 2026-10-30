@@ -1,19 +1,41 @@
 use proc_macro2::{Ident, Span, TokenStream};
 use quote::quote;
+use std::cell::RefCell;
 use std::sync::atomic::{AtomicUsize, Ordering};
-use syn::Lifetime;
 
-use crate::ast::{Cardinality, Content, Field, Node, Pattern, Replacement, Rule, Template};
+use crate::ast::{
+    Alternative, Cardinality, Content, Field, Node, Pattern, Replacement, Rule, Template,
+};
 
+#[derive(Clone, Copy, Default)]
 struct LoweringContext<'a> {
-    /// Enclosing optional-field label to exit when a computed value is absent.
-    fallible_scope: Option<&'a Lifetime>,
+    choice_alternative_scope: Option<ChoiceAlternativeScope<'a>>,
 }
 
-fn fresh_fallible_label() -> Lifetime {
+#[derive(Clone, Copy)]
+struct ChoiceAlternativeScope<'a> {
+    interpolations: &'a RefCell<Vec<GuardingInterpolation>>,
+}
+
+/// A `#{expr}` interpolation that must succeed before constructing a choice
+/// alternative. Lowering first emits `expression`, which evaluates `expr` and
+/// returns its rendered text and optional source range. A `None` result rejects
+/// the alternative without constructing any nodes. On success, the generated
+/// bindings are reused later when constructing the interpolated leaf.
+struct GuardingInterpolation {
+    /// Generated binding for the interpolation's rendered text.
+    value: Ident,
+    /// Generated binding for the interpolation's optional source range.
+    source_range: Ident,
+    /// Generated `Option<(String, Option<Range>)>` expression that evaluates
+    /// the original interpolation exactly once.
+    expression: TokenStream,
+}
+
+fn fresh_prepared_ident(suffix: &str) -> Ident {
     static COUNTER: AtomicUsize = AtomicUsize::new(0);
     let n = COUNTER.fetch_add(1, Ordering::Relaxed);
-    Lifetime::new(&format!("'__yeast_field_{n}"), Span::call_site())
+    Ident::new(&format!("__yeast_prepared_{suffix}_{n}"), Span::call_site())
 }
 
 #[derive(Clone)]
@@ -286,20 +308,19 @@ fn capture_bindings<'a>(
 
 impl Template {
     pub(crate) fn lower_root(&self) -> TokenStream {
-        self.lower(&LoweringContext {
-            fallible_scope: None,
-        })
+        match self {
+            Template::Choice(alternatives) => Self::lower_choice(alternatives),
+            _ => self.lower_single(LoweringContext::default()),
+        }
     }
 
     pub(crate) fn lower_list(templates: &[Self]) -> TokenStream {
-        let context = LoweringContext {
-            fallible_scope: None,
-        };
+        let context = LoweringContext::default();
         let items = templates
             .iter()
             .map(|template| match template {
                 Template::Node(node) => {
-                    let node = node.lower(&context);
+                    let node = node.lower(context);
                     quote! { __nodes.push(#node); }
                 }
                 Template::Splice(block) => {
@@ -308,6 +329,14 @@ impl Template {
                         let __value = ::std::iter::IntoIterator::into_iter(#block)
                             .collect::<Vec<_>>();
                         ctx.extend_field_ids(__value, &mut __nodes);
+                    }
+                }
+                Template::Choice(alternatives) => {
+                    let pick = Self::lower_choice(alternatives);
+                    quote! {
+                        if let ::std::option::Option::Some(__id) = #pick {
+                            __nodes.push(__id);
+                        }
                     }
                 }
             })
@@ -322,19 +351,102 @@ impl Template {
         }
     }
 
-    fn lower(&self, context: &LoweringContext<'_>) -> TokenStream {
+    fn lower_single(&self, context: LoweringContext<'_>) -> TokenStream {
         match self {
             Template::Node(node) => node.lower(context),
             Template::Splice(block) => {
                 let block = rust_block(block);
                 quote! { ::std::convert::Into::<yeast::OutputId>::into(#block) }
             }
+            Template::Choice(_) => {
+                unreachable!("choices are lowered through Template::lower_choice")
+            }
+        }
+    }
+
+    fn lower_choice(alternatives: &[Alternative]) -> TokenStream {
+        let pick = alternatives.iter().rev().fold(
+            quote! { ::std::option::Option::None },
+            |fallback, alternative| {
+                alternative.lower_candidate(fallback)
+            },
+        );
+        quote! {{ #pick }}
+    }
+}
+
+impl Alternative {
+    fn lower_candidate(&self, fallback: TokenStream) -> TokenStream {
+        let interpolations = RefCell::new(Vec::new());
+        let context = LoweringContext {
+            choice_alternative_scope: Some(ChoiceAlternativeScope {
+                interpolations: &interpolations,
+            }),
+        };
+        let value = self.template.lower_single(context);
+        let interpolations = interpolations.into_inner();
+        let prepared_values = interpolations
+            .iter()
+            .flat_map(|interpolation| {
+                [
+                    interpolation.value.clone(),
+                    interpolation.source_range.clone(),
+                ]
+            })
+            .collect::<Vec<_>>();
+        let prepared = quote! {
+            ::std::option::Option::Some((#(#prepared_values),*))
+        };
+
+        // Nest dependency matches around preparation in reverse, so they are
+        // evaluated in source order. Construction happens only after the
+        // resulting option has been matched, keeping it in a separate branch
+        // from the fallback.
+        let prepared = interpolations.into_iter().rev().fold(
+            prepared,
+            |candidate, interpolation| {
+                let GuardingInterpolation {
+                    value,
+                    source_range,
+                    expression,
+                } = interpolation;
+                // Do not use `map`/`and_then` here: `candidate` may contain
+                // embedded user Rust, and putting it in a closure would change
+                // the target of `return` and the result type seen by `?`.
+                quote! {
+                    match #expression {
+                        ::std::option::Option::Some((#value, #source_range)) => #candidate,
+                        ::std::option::Option::None => ::std::option::Option::None,
+                    }
+                }
+            },
+        );
+        let prepared = if let Some(guard) = &self.guard {
+            let guard = rust_block(guard);
+            quote! {
+                if #guard {
+                    #prepared
+                } else {
+                    ::std::option::Option::None
+                }
+            }
+        } else {
+            prepared
+        };
+
+        quote! {
+            match #prepared {
+                ::std::option::Option::Some((#(#prepared_values),*)) => {
+                    ::std::option::Option::Some(#value)
+                }
+                ::std::option::Option::None => #fallback,
+            }
         }
     }
 }
 
 impl Node {
-    fn lower(&self, context: &LoweringContext<'_>) -> TokenStream {
+    fn lower(&self, context: LoweringContext<'_>) -> TokenStream {
         let ctx = Ident::new("ctx", Span::call_site());
         let kind_str = self.kind.to_string();
 
@@ -343,25 +455,41 @@ impl Node {
                 Content::Static(lit) => quote! { #ctx.literal(#kind_str, #lit) },
                 Content::Computed(block) => {
                     let block = rust_block(block);
-                    if let Some(label) = context.fallible_scope {
+                    if let Some(scope) = context.choice_alternative_scope {
+                        let value = fresh_prepared_ident("value");
+                        let source_range = fresh_prepared_ident("source_range");
+                        scope
+                            .interpolations
+                            .borrow_mut()
+                            .push(GuardingInterpolation {
+                            value: value.clone(),
+                            source_range: source_range.clone(),
+                            expression: quote! {
+                                {
+                                    let __expr = #block;
+                                    yeast::MaybeYeastValue::maybe_yeast_value(&__expr).map(
+                                        |__value_ref| {
+                                            (
+                                                yeast::YeastDisplay::yeast_to_string(
+                                                    __value_ref,
+                                                    &#ctx,
+                                                ),
+                                                yeast::YeastSourceRange::yeast_source_range(
+                                                    __value_ref,
+                                                    &#ctx,
+                                                ),
+                                            )
+                                        },
+                                    )
+                                }
+                            },
+                            });
                         quote! {
-                            {
-                                let __expr = #block;
-                                let ::std::option::Option::Some(__value_ref) =
-                                    yeast::MaybeYeastValue::maybe_yeast_value(&__expr)
-                                else {
-                                    break #label ::std::option::Option::None;
-                                };
-                                let __value =
-                                    yeast::YeastDisplay::yeast_to_string(__value_ref, &#ctx);
-                                let __source_range =
-                                    yeast::YeastSourceRange::yeast_source_range(__value_ref, &#ctx);
-                                #ctx.literal_with_source_range(
-                                    #kind_str,
-                                    &__value,
-                                    __source_range,
-                                )
-                            }
+                            #ctx.literal_with_source_range(
+                                #kind_str,
+                                &#value,
+                                #source_range,
+                            )
                         }
                     } else {
                         quote! {
@@ -399,11 +527,7 @@ impl Node {
                         #ctx.extend_location_ranges(__value, &mut __location_ranges);
                     });
                 }
-                Field::Named {
-                    name,
-                    value,
-                    optional,
-                } => {
+                Field::Named { name, value } => {
                     let field_name = name.to_string();
                     let field_str = field_name
                         .strip_prefix("r#")
@@ -413,10 +537,8 @@ impl Node {
                         &format!("__field_{field_str}_{field_counter}"),
                         Span::call_site(),
                     );
-
                     match value {
                         Template::Splice(block) => {
-                            debug_assert!(!optional);
                             let block = rust_block(block);
                             stmts.push(quote! {
                                 let mut #temp: Vec<yeast::OutputId> = Vec::new();
@@ -430,16 +552,10 @@ impl Node {
                                 }
                             });
                         }
-                        Template::Node(child) if *optional => {
-                            let label = fresh_fallible_label();
-                            let value = child.lower(&LoweringContext {
-                                fallible_scope: Some(&label),
-                            });
+                        Template::Choice(alternatives) => {
+                            let pick = Template::lower_choice(alternatives);
                             stmts.push(quote! {
-                                #[allow(unused_labels)]
-                                let #temp: ::std::option::Option<yeast::OutputId> = #label: {
-                                    ::std::option::Option::Some(#value)
-                                };
+                                let #temp: ::std::option::Option<yeast::OutputId> = #pick;
                             });
                             field_args.push(quote! {
                                 if let ::std::option::Option::Some(__id) = #temp {

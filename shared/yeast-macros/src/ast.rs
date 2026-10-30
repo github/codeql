@@ -100,6 +100,15 @@ pub(crate) enum Template {
     Node(Node),
     /// An embedded Rust block such as `{args}`.
     Splice(syn::Block),
+    /// Ordered alternatives such as `[(identifier #{name}) (missing)]`.
+    Choice(Vec<Alternative>),
+}
+
+pub(crate) struct Alternative {
+    /// Template to construct when the guard and dependencies succeed.
+    pub(crate) template: Template,
+    /// Optional postfix guard such as `if { name.is_some() }`.
+    pub(crate) guard: Option<syn::Block>,
 }
 
 pub(crate) struct Node {
@@ -121,15 +130,13 @@ pub(crate) enum Content {
 
 pub(crate) enum Field {
     /// A named field such as `argument: {args}` or
-    /// `label: (identifier #{name})?`.
+    /// `label: (identifier #{name})`.
     Named {
         /// The field name before `:`, such as `argument`.
         name: Ident,
         /// The node or Rust splice after `:`, such as `(identifier "x")` or
         /// `{args}`.
         value: Template,
-        /// Whether the field value has a trailing `?`.
-        optional: bool,
     },
     /// Source-location metadata such as `location: {source}`.
     Location {

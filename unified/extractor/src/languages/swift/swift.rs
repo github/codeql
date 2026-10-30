@@ -60,18 +60,6 @@ impl SwiftContext {
     }
 }
 
-/// Build a freshly-created `chained_declaration` modifier node if
-/// `ctx.is_chained`, else `None`. Used by inner declaration rules to
-/// emit the chained tag for non-first children of a flattening outer
-/// rule. Returns `Option<OutputId>` so it splices via `{…}` to 0 or 1 ids.
-fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Option<yeast::OutputId> {
-    if ctx.is_chained {
-        Some(tree!((modifier "chained_declaration")))
-    } else {
-        None
-    }
-}
-
 fn implicit_parameterless_initializer(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
     members: &[yeast::OutputId],
@@ -427,22 +415,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     _ => None,
                 };
                 let param_ty = ctx.property_type;
-                let param = match (param_name, implicit_param_name) {
-                    (Some(n), _) => {
-                        Some(tree!((parameter pattern: (identifier #{n}) type: {param_ty})))
-                    }
-                    (None, Some(n)) => {
-                        let n = n.to_string();
-                        Some(tree!((parameter
-                            modifier: (modifier "generated")
-                            pattern: (identifier #{n} location: {spec})
-                            type: {param_ty}
-                            location: {spec})))
-                    }
-                    (None, None) => None,
-                };
                 let modifiers = ctx.outer_modifiers.clone();
-                let chained = chained_modifier(&mut ctx);
                 let name = ctx
                     .property_name_node
                     .ok_or("accessor outside property context")?;
@@ -452,19 +425,28 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     None
                 };
                 let body = match body {
-                    Some(block) => {
+                    Some(block) => ctx.scoped(|ctx| {
                         ctx.reset();
-                        ctx.translate(block)?.into_iter().next()
-                    }
+                        ctx.translate(block)
+                    })?.into_iter().next(),
                     None => None,
                 };
                 tree!((accessor_declaration
                     modifier: {modifiers}
-                    modifier: {chained}
+                    modifier: [(modifier "chained_declaration") if { ctx.is_chained }]
                     name_node: {name}
                     return_type: {return_ty}
                     accessor_kind: (accessor_kind #{spec})
-                    parameter: {param}
+                    parameter: [
+                        (parameter
+                            pattern: (identifier #{param_name})
+                            type: {param_ty})
+                        (parameter
+                            modifier: (modifier "generated")
+                            pattern: (identifier #{implicit_param_name} location: {spec})
+                            type: {param_ty}
+                            location: {spec})
+                    ]
                     body: {body}
                     location: {spec}
                     location: {body}))
@@ -485,7 +467,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
+                modifier: [(modifier "chained_declaration") if { ctx.is_chained }]
                 pattern: {pattern}
                 type: {ty}
                 value: {ctx.reset(); val})
@@ -522,7 +504,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (enumCaseParameter firstName: _? @@name type: @ty)
             =>
-            (parameter pattern: (identifier #{name})? type: {ty})
+            (parameter pattern: [(identifier #{name})] type: {ty})
         ),
         // An enum element with associated values (`case circle(radius: Double)`)
         // becomes a nested `class_like_declaration` whose constructor carries the
@@ -544,7 +526,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     location: {clause}));
                 tree!((class_like_declaration
                     modifier: {ctx.outer_modifiers.clone()}
-                    modifier: {chained_modifier(&mut ctx)}
+                    modifier: [(modifier "chained_declaration") if { ctx.is_chained }]
                     modifier: (modifier "enum_case")
                     name_node: (identifier #{name})
                     member: {constructor}))
@@ -555,7 +537,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
+                modifier: [(modifier "chained_declaration") if { ctx.is_chained }]
                 modifier: (modifier "enum_case")
                 pattern: (identifier #{name})
                 value: {val})
@@ -565,7 +547,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
+                modifier: [(modifier "chained_declaration") if { ctx.is_chained }]
                 modifier: (modifier "enum_case")
                 pattern: (identifier #{name}))
         ),
@@ -614,7 +596,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (tuplePatternElement label: _? @@label pattern: @p)
             =>
-            (argument name_node: (identifier #{label})? value: {p})
+            (argument name_node: [(identifier #{label})] value: {p})
         ),
         // A type-casting pattern (`case is T`). Not yet supported, so it is
         // mapped to `unsupported_node` — an explicit reminder that this needs
@@ -768,7 +750,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (labeledExpr label: _? @@lbl expression: @val)
             =>
-            (argument name_node: (identifier #{lbl})? value: {val})
+            (argument name_node: [(identifier #{lbl})] value: {val})
         ),
         // An additional labeled trailing closure, such as the `c: { ... }` in
         // `foo { 42 } c: { ... }`, is turned into an argument to the function.
@@ -829,8 +811,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // value; `break` / `continue` an optional target label; `throw` its
         // thrown expression.
         rule!((returnStmt expression: _? @val) => (return_expr value: {val})),
-        rule!((breakStmt label: _? @@lbl) => (break_expr label_name_node: (identifier #{lbl})?)),
-        rule!((continueStmt label: _? @@lbl) => (continue_expr label_name_node: (identifier #{lbl})?)),
+        rule!((breakStmt label: _? @@lbl) => (break_expr label_name_node: [(identifier #{lbl})])),
+        rule!((continueStmt label: _? @@lbl) => (continue_expr label_name_node: [(identifier #{lbl})])),
         rule!((throwStmt expression: @val) => (throw_expr value: {val})),
         // ---- Closures ----
         // A closure (`{ (x: Int) -> Int in … }`) becomes a `function_expr`. The
@@ -864,7 +846,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 initializer: (initializerClause value: @val)?)
             =>
             (variable_declaration
-                modifier: (modifier #{spec})?
+                modifier: [(modifier #{spec})]
                 pattern: (identifier #{name})
                 value: {
                     // Expand [x] into [x = x]
@@ -1175,20 +1157,16 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             import_declaration {
                 let last = *parts.last().ok_or("import has no path")?;
-                let pattern = match kind {
-                    None => {
-                        let bulk = tree!((bulk_importing_pattern location: {decl}));
-                        tree!((named_pattern
-                            name_node: (identifier #{last})
-                            sub_pattern: {bulk}))
-                    }
-                    Some(_) => tree!((identifier #{last})),
-                };
                 tree!((import_declaration
-                    modifier: (modifier #{kind})?
+                    modifier: [(modifier #{kind})]
                     modifier: {attrs}
                     modifier: {mods}
-                    pattern: {pattern}
+                    pattern: [
+                        (identifier #{last}) if { kind.is_some() }
+                        (named_pattern
+                            name_node: (identifier #{last})
+                            sub_pattern: (bulk_importing_pattern location: {decl}))
+                    ]
                     imported_expr: {member_chain(&mut ctx, parts)}))
             }
         ),
@@ -1295,13 +1273,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 firstName: _? @@name
                 type: @ty)
             =>
-            argument {
-                if ctx.in_function_type {
-                    tree!((parameter external_name_node: (identifier #{name})? type: {ty}))
-                } else {
-                    tree!((argument name_node: (identifier #{name})? value: {ty}))
-                }
-            }
+            [
+                (parameter external_name_node: [(identifier #{name})] type: {ty})
+                    if { ctx.in_function_type }
+                (argument name_node: [(identifier #{name})] value: {ty})
+            ]
         ),
         // A nominal type's `inheritanceClause` (`: Base, Proto`) becomes a list
         // of `base_type`s, one per inherited type. Each declaration keyword
@@ -1315,7 +1291,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (type_parameter
                 modifier: {attrs}
-                modifier: (modifier #{spec})?
+                modifier: [(modifier #{spec})]
                 name_node: (identifier #{name})
                 bound: {bound})
         ),
