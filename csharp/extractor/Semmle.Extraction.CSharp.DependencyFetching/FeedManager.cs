@@ -33,6 +33,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public bool CheckNugetFeedResponsiveness { get; } = EnvironmentVariables.GetBooleanOptOut(EnvironmentVariableNames.CheckNugetFeedResponsiveness);
 
+        private readonly Lazy<ImmutableHashSet<Uri>> lazyPrivateRegistryUris;
+        private ImmutableHashSet<Uri> PrivateRegistryUris => lazyPrivateRegistryUris.Value;
+
         private readonly Lazy<ImmutableHashSet<string>> lazyExplicitFeeds;
 
         /// <summary>
@@ -96,6 +99,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.fileProvider = fileProvider;
             this.feedManagerIo = feedManagerIo;
             privateRegistryFeeds = registryProxy?.RegistryURLs ?? [];
+            lazyPrivateRegistryUris = MakePrivateRegistryUris();
             HasPrivateRegistryFeeds = privateRegistryFeeds.Count > 0;
             privateRegistryBaseFeeds = registryProxy?.RegistryBaseURLs ?? [];
             hasPrivateRegistryBaseFeeds = privateRegistryBaseFeeds.Count > 0;
@@ -122,6 +126,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             : this(logger, dotnet, registryProxy, fileProvider, new FeedManagerIO(logger, registryProxy))
         {
         }
+
+        private Lazy<ImmutableHashSet<Uri>> MakePrivateRegistryUris() =>
+            new Lazy<ImmutableHashSet<Uri>>(() =>
+            {
+                var uris = ImmutableHashSet.CreateBuilder<Uri>();
+                foreach (var registry in privateRegistryFeeds)
+                {
+                    if (Uri.TryCreate(registry, UriKind.Absolute, out var uri))
+                    {
+                        uris.Add(uri);
+                    }
+                }
+                return uris.ToImmutable();
+            });
 
         private bool IsNugetOrgFeed(string url)
         {
@@ -242,6 +260,34 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             var feedsToUse = FeedsToUse(path);
+
+            return RestoreFeeds(feedsToUse);
+        }
+
+        private bool IsPrivateRegistryFeed(string feed) =>
+            privateRegistryFeeds.Contains(feed) ||
+            (Uri.TryCreate(feed, UriKind.Absolute, out var uri) && PrivateRegistryUris.Contains(uri));
+
+        /// <summary>
+        /// Constructs the NuGet CLI restore sources, excluding private registries that require the registry proxy.
+        /// An empty list leaves source selection to NuGet only when no filtering or default feeds are needed.
+        /// </summary>
+        public List<string> MakeNugetExeRestoreFeeds(string path)
+        {
+            var feedsToUse = FeedsToUse(path).Where(feed => !IsPrivateRegistryFeed(feed)).ToList();
+            var defaultFeeds = (CheckNugetFeedResponsiveness ? ReachableDefaultFeeds : DefaultFeeds)
+                .Where(feed => !IsPrivateRegistryFeed(feed)).ToList();
+            var useDefaultFeeds = feedsToUse.Count == 0 && defaultFeeds.Count > 0;
+
+            if (!CheckNugetFeedResponsiveness && !HasPrivateRegistryFeeds && !useDefaultFeeds)
+            {
+                return [];
+            }
+
+            if (useDefaultFeeds)
+            {
+                feedsToUse.AddRange(defaultFeeds);
+            }
 
             return RestoreFeeds(feedsToUse);
         }
