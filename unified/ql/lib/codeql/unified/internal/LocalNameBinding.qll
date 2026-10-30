@@ -76,28 +76,21 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     or
     result = n.(LogicalAndRoot).getNthLeaf(index)
     or
-    index = 0 and
-    relocatedClassMember(n, result)
-  }
-
-  /**
-   * Holds if `member` is moved onto a child of `className` instead of the class itself,
-   * so the member name is not in scope in the base types and type parameter constraints.
-   */
-  private predicate relocatedClassMember(Identifier className, Member member) {
+    // Move members under the name node of its class, so the member name is not in scope
+    // in the base types and type parameter constraints.
     exists(ClassLikeDeclaration cls |
-      className = cls.getNameNode() and
-      member = cls.getAMember()
+      n = cls.getNameNode() and
+      result = cls.getAMember() and
+      index = 0
     )
   }
 
   AstNode getChild(AstNode n, int index) {
     result = getChild1(n, index)
     or
-    not exists(getChild1(n, _)) and
+    not result = getChild1(_, _) and
     not n instanceof LogicalAndExpr and // also ignore intermediate nodes within a 'logical and' tree
     not n instanceof GuardIfStmt and
-    not relocatedClassMember(_, result) and
     index = result.getParentIndex() and
     result = n.getAFieldOrChild()
   }
@@ -203,8 +196,17 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
         declaration = func
       )
       or
-      exists(Parameter param |
-        scope = param.getParent() and // TODO: add SourceCallable and use .getParameter() instead
+      exists(Parameter param, Callable callable |
+        callable = param.getDeclaringCallable() and
+        (
+          // Scope to the body so parameter defaults cannot see the parameter list
+          // TODO: Use a plugin for languages where parameter defaults can reference earlier parameters
+          scope = callable.getBody()
+          or
+          // For bodyless functions, choose an arbitrary scope
+          not exists(callable.getBody()) and
+          scope = param
+        ) and
         pattern = param.getPattern() and
         declaration = param
       )
@@ -330,7 +332,9 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   predicate implicitDeclInScope(string name, AstNode scope) { implicitDeclInScope(name, scope, _) }
 
-  predicate accessCand(AstNode n, string name) { n.(PotentialLocalNameAccess).getName() = name }
+  predicate accessCand(AstNode n, string name) {
+    n.(PotentialLocalNameAccess).getName() = name and not n instanceof NameBinding
+  }
 
   predicate uncertainScope(AstNode scope) {
     // Classes can have uncertain members due to unqualified access to inherited members.
@@ -346,6 +350,17 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 predicate bindingContext = LocalNameBindingInput::bindingContext/3;
 
 module LocalNameBindingOutput = LocalNameBinding<Location, LocalNameBindingInput>;
+
+private LocalNameBindingOutput::Local resolveId(Identifier id) {
+  // For names in binding position, always resolve to the scope set by the bindingContext predicate
+  exists(AstNode scope |
+    bindingContext(id, scope, _) and
+    result.hasNameAndScope(id.getValue(), scope)
+  )
+  or
+  not bindingContext(id, _, _) and
+  result = id.(LocalNameBindingOutput::LocalAccess).getLocal()
+}
 
 module Public {
   /**
@@ -379,7 +394,7 @@ module Public {
     string getName() { result = this.getValue() }
 
     /** Gets the representative for the local name introduced by this declaration. */
-    LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
+    LocalName getLocalName() { result = resolveId(this) }
   }
 
   final class LocalVariable = LocalVariableImpl;
@@ -495,7 +510,7 @@ module Public {
  */
 class PotentialLocalNameAccess extends IdentifierExpr {
   /** Gets the representative for the local name being accessed. */
-  LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
+  LocalName getLocalName() { result = resolveId(this) }
 
   /** Gets the name being accessed. */
   string getName() { result = this.getValue() }
