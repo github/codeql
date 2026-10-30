@@ -1,4 +1,4 @@
-// semmle-extractor-options: -std=c++17
+// semmle-extractor-options: -std=c++20
 int globalVar; // GOOD (not static)
 static int staticVar1; // GOOD (used)
 static int staticVar2; // GOOD (used)
@@ -49,3 +49,10 @@ struct WithDestructor
 
 static WithConstructor constructed; // GOOD (constructor has a side effect)
 static WithDestructor destructed; // GOOD (destructor has a side effect)
+
+static auto sum(auto... values) // $ SPURIOUS: Alert
+{
+	return (0 + ... + values);
+}
+
+int globalVar2 = sum() + sum(2);
