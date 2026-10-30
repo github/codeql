@@ -1278,7 +1278,7 @@ module Unified {
     final override string getAPrimaryQlClass() { result = "SwitchCase" }
 
     /** Gets the node corresponding to the field `body`. */
-    final F::Block getBody() { unified_switch_case_def(this, result) }
+    final F::Block getBody() { unified_switch_case_def(this, result, _) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_switch_case_modifier(this, i, result) }
@@ -1287,13 +1287,13 @@ module Unified {
     final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final F::Expr getPattern() { unified_switch_case_pattern(this, result) }
+    final F::Expr getPattern() { unified_switch_case_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
-      unified_switch_case_def(this, result) or
+      unified_switch_case_def(this, result, _) or
       unified_switch_case_modifier(this, _, result) or
-      unified_switch_case_pattern(this, result)
+      unified_switch_case_def(this, _, result)
     }
   }
 

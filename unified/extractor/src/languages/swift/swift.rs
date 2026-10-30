@@ -918,7 +918,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // A `switch` statement. Each `switchCase` becomes a `switch_case` with a
         // pattern (or an `or_pattern` for comma-separated `case a, b:`) and a
-        // body; a `default:` case has a body but no pattern. The case items and
+        // body; a `default:` case uses an `ignore_pattern`. The case items and
         // body are auto-translated; the Rust block only picks the pattern shape
         // by arity (the query engine can't branch on list length).
         rule!(
@@ -934,9 +934,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 body: (block stmt: {body}))
         ),
         rule!(
-            (switchCase label: (switchDefaultLabel) statements: _* @body)
+            (switchCase label: (switchDefaultLabel defaultKeyword: @@keyword) statements: _* @body)
             =>
-            (switch_case body: (block stmt: {body}))
+            (switch_case
+                pattern: (ignore_pattern #{keyword})
+                body: (block stmt: {body}))
         ),
         // A single case item unwraps to its pattern, possibly boxed in conditional_pattern
         rule!(

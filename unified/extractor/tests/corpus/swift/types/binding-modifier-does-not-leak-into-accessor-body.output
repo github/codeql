@@ -114,7 +114,8 @@ top_level source="var p: Int {\n  ⟨body⟩\n}"
                           stmt:
                             return_expr source="return ⟨value⟩"
                               value: int_literal "1" source="1"
-                    switch_case source="default:\n      ⟨body⟩"
+                    switch_case source="⟨pattern⟩:\n      ⟨body⟩"
+                      pattern: ignore_pattern "default" source="default"
                       body:
                         block source="⟨stmt⟩"
                           stmt:

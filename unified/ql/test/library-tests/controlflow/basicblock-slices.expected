@@ -132,7 +132,7 @@
 | 155 | cfg.swift:155:5:157:17 | SwitchCase | 'SwitchCase -V 42' |
 | 156 | cfg.swift:156:7:157:17 | Block | 'Block -V print -> Argument -V "42!" -^ print(...)' |
 | 157 | cfg.swift:157:7:157:17 |  | '' |
-| 158 | cfg.swift:158:5:159:34 | SwitchCase | 'SwitchCase' |
+| 158 | cfg.swift:158:5:159:34 | SwitchCase | 'SwitchCase -V default' |
 | 159 | cfg.swift:159:7:159:34 | Block | 'Block -V IfExpr -V x -> 10 -^ ... > ...' |
 | 159 | cfg.swift:159:19:159:34 | Block | 'Block -V false -^ ReturnExpr' |
 | 162 | cfg.swift:162:3:162:31 | var obj | 'var obj -V obj -> AnyObject -> C -> Argument -V x -^ C(...)' |
@@ -482,7 +482,7 @@
 | 595 | cfg.swift:595:3:598:3 | let a | 'let a -V a -> SwitchExpr -V x' |
 | 596 | cfg.swift:596:5:596:17 | SwitchCase | 'SwitchCase -V 0 -> 5 -^ ... ..< ...' |
 | 596 | cfg.swift:596:17:596:17 | Block | 'Block -V 1' |
-| 597 | cfg.swift:597:5:597:14 | SwitchCase | 'SwitchCase -V Block -V 2' |
+| 597 | cfg.swift:597:5:597:14 | SwitchCase | 'SwitchCase -V default -> Block -V 2' |
 | 599 | cfg.swift:599:3:601:18 | let b | 'let b -V b' |
 | 600 | cfg.swift:600:9:601:18 | IfExpr | 'IfExpr -V x -> 42 -^ ... < ...' |
 | 600 | cfg.swift:600:21:600:25 | Block | 'Block -V 1' |
