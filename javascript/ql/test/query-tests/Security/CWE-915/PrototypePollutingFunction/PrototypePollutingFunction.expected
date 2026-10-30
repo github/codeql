@@ -17,7 +17,6 @@
 | tests.js:280:13:280:15 | dst | tests.js:276:34:276:36 | key | tests.js:280:13:280:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:276:21:276:23 | src | src | tests.js:280:13:280:15 | dst | dst |
 | tests.js:308:17:308:19 | dst | tests.js:302:14:302:16 | key | tests.js:308:17:308:19 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:302:21:302:23 | src | src | tests.js:308:17:308:19 | dst | dst |
 | tests.js:322:17:322:19 | dst | tests.js:315:14:315:16 | key | tests.js:322:17:322:19 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:315:21:315:23 | src | src | tests.js:322:17:322:19 | dst | dst |
-| tests.js:338:17:338:19 | dst | tests.js:329:14:329:16 | key | tests.js:338:17:338:19 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:329:21:329:23 | src | src | tests.js:338:17:338:19 | dst | dst |
 | tests.js:357:17:357:22 | target | tests.js:350:37:350:39 | key | tests.js:357:17:357:22 | target | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:350:21:350:26 | source | source | tests.js:357:17:357:22 | target | target |
 | tests.js:403:13:403:15 | dst | tests.js:381:14:381:16 | key | tests.js:403:13:403:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:381:21:381:23 | obj | obj | tests.js:403:13:403:15 | dst | dst |
 | tests.js:419:13:419:15 | dst | tests.js:413:14:413:16 | key | tests.js:419:13:419:15 | dst | Properties are copied from $@ to $@ without guarding against prototype pollution. | tests.js:413:21:413:23 | src | src | tests.js:419:13:419:15 | dst | dst |
@@ -396,22 +395,11 @@ edges
 | tests.js:320:38:320:45 | dst[key] | tests.js:314:31:314:33 | dst | provenance |  |
 | tests.js:320:42:320:44 | key | tests.js:320:38:320:45 | dst[key] | provenance | Config |
 | tests.js:320:48:320:52 | value | tests.js:314:36:314:38 | src | provenance |  |
-| tests.js:328:25:328:27 | dst | tests.js:336:32:336:34 | dst | provenance |  |
-| tests.js:328:25:328:27 | dst | tests.js:338:17:338:19 | dst | provenance |  |
 | tests.js:328:30:328:32 | src | tests.js:336:42:336:44 | src | provenance |  |
 | tests.js:328:30:328:32 | src | tests.js:338:28:338:30 | src | provenance |  |
-| tests.js:329:14:329:16 | key | tests.js:336:36:336:38 | key | provenance |  |
-| tests.js:329:14:329:16 | key | tests.js:336:46:336:48 | key | provenance |  |
-| tests.js:329:14:329:16 | key | tests.js:338:21:338:23 | key | provenance |  |
-| tests.js:329:14:329:16 | key | tests.js:338:32:338:34 | key | provenance |  |
-| tests.js:336:32:336:34 | dst | tests.js:336:32:336:39 | dst[key] | provenance | Config |
-| tests.js:336:32:336:39 | dst[key] | tests.js:328:25:328:27 | dst | provenance |  |
-| tests.js:336:36:336:38 | key | tests.js:336:32:336:39 | dst[key] | provenance | Config |
 | tests.js:336:42:336:44 | src | tests.js:336:42:336:49 | src[key] | provenance | Config |
 | tests.js:336:42:336:49 | src[key] | tests.js:328:30:328:32 | src | provenance |  |
-| tests.js:336:46:336:48 | key | tests.js:336:42:336:49 | src[key] | provenance | Config |
 | tests.js:338:28:338:30 | src | tests.js:338:28:338:35 | src[key] | provenance | Config |
-| tests.js:338:32:338:34 | key | tests.js:338:28:338:35 | src[key] | provenance | Config |
 | tests.js:348:32:348:37 | target | tests.js:349:26:349:31 | target | provenance |  |
 | tests.js:348:32:348:37 | target | tests.js:361:12:361:17 | target | provenance |  |
 | tests.js:348:40:348:45 | source | tests.js:349:54:349:59 | source | provenance |  |
@@ -1092,20 +1080,11 @@ nodes
 | tests.js:322:17:322:19 | dst | semmle.label | dst |
 | tests.js:322:21:322:23 | key | semmle.label | key |
 | tests.js:322:28:322:32 | value | semmle.label | value |
-| tests.js:328:25:328:27 | dst | semmle.label | dst |
 | tests.js:328:30:328:32 | src | semmle.label | src |
-| tests.js:329:14:329:16 | key | semmle.label | key |
-| tests.js:336:32:336:34 | dst | semmle.label | dst |
-| tests.js:336:32:336:39 | dst[key] | semmle.label | dst[key] |
-| tests.js:336:36:336:38 | key | semmle.label | key |
 | tests.js:336:42:336:44 | src | semmle.label | src |
 | tests.js:336:42:336:49 | src[key] | semmle.label | src[key] |
-| tests.js:336:46:336:48 | key | semmle.label | key |
-| tests.js:338:17:338:19 | dst | semmle.label | dst |
-| tests.js:338:21:338:23 | key | semmle.label | key |
 | tests.js:338:28:338:30 | src | semmle.label | src |
 | tests.js:338:28:338:35 | src[key] | semmle.label | src[key] |
-| tests.js:338:32:338:34 | key | semmle.label | key |
 | tests.js:348:32:348:37 | target | semmle.label | target |
 | tests.js:348:40:348:45 | source | semmle.label | source |
 | tests.js:349:26:349:31 | target | semmle.label | target |

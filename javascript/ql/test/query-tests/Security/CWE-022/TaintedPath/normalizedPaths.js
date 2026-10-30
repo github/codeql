@@ -205,7 +205,7 @@ app.get('/join-regression', (req, res) => {
     fs.readFileSync(normalizedPath); // $ Alert
 
   if (normalizedPath.startsWith('/home/user/www') || normalizedPath.startsWith('/home/user/public'))
-    fs.readFileSync(normalizedPath); // $ SPURIOUS: Alert
+    fs.readFileSync(normalizedPath);
   else
     fs.readFileSync(normalizedPath); // $ Alert
 });

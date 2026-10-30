@@ -36,11 +36,13 @@ basicBlock
 | arguments.js:4:13:4:24 | alsoFirstArg | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:4:13:4:39 | alsoFir ... ents[0] | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:4:28:4:36 | arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
+| arguments.js:4:28:4:39 | [ssa-synth-read] arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:4:28:4:39 | arguments[0] | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:4:38:4:38 | 0 | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:5:13:5:21 | secondArg | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:5:13:5:36 | secondA ... ents[1] | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:5:25:5:33 | arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
+| arguments.js:5:25:5:36 | [ssa-synth-read] arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:5:25:5:36 | arguments[1] | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:5:35:5:35 | 1 | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:6:13:6:16 | args | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
@@ -171,6 +173,7 @@ basicBlock
 | tst2.ts:13:39:13:38 | (...arg ... rgs); } | tst2.ts:1:1:1:0 | entry node of <toplevel> |
 | tst2.ts:13:39:13:38 | ...args | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | [function self-reference] (...arg ... rgs); } | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
+| tst2.ts:13:39:13:38 | [ssa-synth-read] this | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
@@ -212,15 +215,18 @@ basicBlock
 | tst.js:10:1:10:1 | x | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:10:1:10:4 | x, y | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:10:4:10:4 | y | tst.js:1:1:1:0 | entry node of <toplevel> |
+| tst.js:11:1:11:1 | [ssa-synth-read] y | tst.js:11:1:11:1 | guard: x is false |
 | tst.js:11:1:11:1 | x | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:11:1:11:1 | x | tst.js:11:1:11:1 | guard: x is false |
 | tst.js:11:1:11:1 | x | tst.js:11:1:11:1 | guard: x is true |
 | tst.js:11:1:11:6 | x && y | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:11:6:11:6 | y | tst.js:11:1:11:1 | guard: x is true |
+| tst.js:12:1:12:1 | [ssa-synth-read] y | tst.js:12:1:12:1 | guard: x is true |
 | tst.js:12:1:12:1 | x | tst.js:12:1:12:1 | guard: x is false |
 | tst.js:12:1:12:1 | x | tst.js:12:1:12:1 | guard: x is true |
 | tst.js:12:1:12:1 | x | tst.js:12:1:12:7 | x \|\| y; |
 | tst.js:12:1:12:6 | x \|\| y | tst.js:12:1:12:7 | x \|\| y; |
+| tst.js:12:1:12:7 | [ssa-synth-read] y | tst.js:12:1:12:7 | x \|\| y; |
 | tst.js:12:1:12:7 | x | tst.js:12:1:12:7 | x \|\| y; |
 | tst.js:12:6:12:6 | y | tst.js:12:1:12:1 | guard: x is false |
 | tst.js:13:1:13:1 | z | tst.js:13:1:13:6 | z = y; |
@@ -230,6 +236,7 @@ basicBlock
 | tst.js:13:5:13:5 | y | tst.js:13:1:13:6 | z = y; |
 | tst.js:14:1:14:1 | z | tst.js:13:1:13:6 | z = y; |
 | tst.js:14:1:14:9 | z ? x : y | tst.js:13:1:13:6 | z = y; |
+| tst.js:14:5:14:5 | [ssa-synth-read] y | tst.js:14:1:14:1 | guard: z is true |
 | tst.js:14:5:14:5 | x | tst.js:14:1:14:1 | guard: z is true |
 | tst.js:14:9:14:9 | y | tst.js:14:1:14:1 | guard: z is false |
 | tst.js:16:1:20:2 | (functi ...  "";\\n}) | tst.js:16:1:20:10 | (functi ... "arg"); |
@@ -286,6 +293,7 @@ basicBlock
 | tst.js:32:12:32:12 | b | tst.js:32:1:32:0 | entry node of functio ... ables\\n} |
 | tst.js:33:10:33:10 | x | tst.js:32:1:32:0 | entry node of functio ... ables\\n} |
 | tst.js:35:1:35:1 | g | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:35:1:35:7 | [ssa-synth-read] g | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:35:1:35:7 | exceptional return of g(true) | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:35:1:35:7 | g(true) | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:35:3:35:6 | true | tst.js:16:1:20:10 | (functi ... "arg"); |
@@ -307,10 +315,13 @@ basicBlock
 | tst.js:39:4:41:3 | return of method m | tst.js:39:4:39:3 | entry node of () {\\n    this;\\n  } |
 | tst.js:40:5:40:8 | this | tst.js:39:4:39:3 | entry node of () {\\n    this;\\n  } |
 | tst.js:43:1:43:1 | o | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:43:1:43:3 | [ssa-synth-read] o | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:43:1:43:3 | o.x | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:43:3:43:3 | x | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:44:1:44:1 | o | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:44:1:44:3 | [ssa-synth-read] o | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:44:1:44:3 | o.m | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:44:1:44:5 | [ssa-synth-read] o | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:44:1:44:5 | exceptional return of o.m() | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:44:1:44:5 | o.m() | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:44:3:44:3 | m | tst.js:16:1:20:10 | (functi ... "arg"); |
@@ -331,6 +342,7 @@ basicBlock
 | tst.js:50:14:53:3 | exceptional return of constructor of class A | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:50:14:53:3 | return of constructor of class A | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:51:5:51:9 | super | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
+| tst.js:51:5:51:13 | [ssa-synth-read] this | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:51:5:51:13 | exceptional return of super(42) | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:51:5:51:13 | super(42) | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:51:11:51:12 | 42 | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
@@ -347,6 +359,7 @@ basicBlock
 | tst.js:60:1:60:1 | g | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:61:1:61:5 | ::o.m | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:61:3:61:3 | o | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:61:3:61:5 | [ssa-synth-read] o | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:61:3:61:5 | o.m | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:61:5:61:5 | m | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:62:1:62:1 | o | tst.js:16:1:20:10 | (functi ... "arg"); |
@@ -947,8 +960,6 @@ enclosingExpr
 flowStep
 | arguments.js:1:2:12:1 | functio ... , 3);\\n} | arguments.js:1:1:12:2 | (functi ...  3);\\n}) |
 | arguments.js:2:5:2:4 | arguments | arguments.js:4:28:4:36 | arguments |
-| arguments.js:2:5:2:4 | arguments | arguments.js:5:25:5:33 | arguments |
-| arguments.js:2:5:2:4 | arguments | arguments.js:6:20:6:28 | arguments |
 | arguments.js:2:5:10:5 | 'arguments' object of function f | arguments.js:4:28:4:36 | arguments |
 | arguments.js:2:5:10:5 | 'arguments' object of function f | arguments.js:5:25:5:33 | arguments |
 | arguments.js:2:5:10:5 | 'arguments' object of function f | arguments.js:6:20:6:28 | arguments |
@@ -958,6 +969,12 @@ flowStep
 | arguments.js:2:14:2:14 | f | arguments.js:11:5:11:5 | f |
 | arguments.js:2:16:2:16 | x | arguments.js:2:16:2:16 | x |
 | arguments.js:2:16:2:16 | x | arguments.js:3:24:3:24 | x |
+| arguments.js:4:28:4:36 | [post update] arguments | arguments.js:5:25:5:33 | arguments |
+| arguments.js:4:28:4:36 | arguments | arguments.js:4:28:4:39 | [ssa-synth-read] arguments |
+| arguments.js:4:28:4:39 | [ssa-synth-read] arguments | arguments.js:5:25:5:33 | arguments |
+| arguments.js:5:25:5:33 | [post update] arguments | arguments.js:6:20:6:28 | arguments |
+| arguments.js:5:25:5:33 | arguments | arguments.js:5:25:5:36 | [ssa-synth-read] arguments |
+| arguments.js:5:25:5:36 | [ssa-synth-read] arguments | arguments.js:6:20:6:28 | arguments |
 | arguments.js:6:13:6:16 | args | arguments.js:7:24:7:27 | args |
 | arguments.js:6:20:6:28 | arguments | arguments.js:6:13:6:16 | args |
 | arguments.js:8:9:8:17 | arguments | arguments.js:9:27:9:35 | arguments |
@@ -978,8 +995,8 @@ flowStep
 | sources.js:5:4:5:5 | 23 | sources.js:3:11:3:11 | x |
 | sources.js:9:14:9:18 | array | sources.js:9:14:9:18 | array |
 | sources.js:9:14:9:18 | array | sources.js:10:19:10:23 | array |
-| sources.js:9:14:9:18 | array | sources.js:11:23:11:27 | array |
 | sources.js:10:12:10:14 | key | sources.js:10:28:10:30 | key |
+| sources.js:10:19:10:23 | array | sources.js:11:23:11:27 | array |
 | sources.js:11:14:11:16 | key | sources.js:11:14:11:16 | key |
 | sources.js:11:14:11:16 | key | sources.js:11:32:11:34 | key |
 | tst2.ts:1:1:1:0 | A | tst2.ts:1:18:1:18 | A |
@@ -999,12 +1016,12 @@ flowStep
 | tst2.ts:13:26:13:29 | List | tst2.ts:13:26:13:37 | List<string> |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
+| tst2.ts:13:39:13:38 | implicit 'this' | tst2.ts:13:39:13:38 | [ssa-synth-read] this |
 | tst2.ts:13:39:13:38 | this | tst2.ts:13:39:13:38 | implicit 'this' |
 | tst2.ts:15:11:15:13 | A.x | tst2.ts:15:11:15:30 | A.x satisfies number |
 | tst.js:1:1:1:0 | x | tst.js:3:5:3:5 | x |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:7:1:7:2 | fs |
-| tst.js:1:10:1:11 | fs | tst.js:22:24:22:25 | fs |
 | tst.js:3:5:3:5 | x | tst.js:3:5:3:5 | x |
 | tst.js:3:5:3:5 | x | tst.js:8:1:8:1 | x |
 | tst.js:3:5:3:5 | x | tst.js:9:2:9:2 | x |
@@ -1016,31 +1033,39 @@ flowStep
 | tst.js:3:5:3:5 | x | tst.js:32:1:32:0 | x |
 | tst.js:3:9:3:10 | 42 | tst.js:3:5:3:5 | x |
 | tst.js:4:5:4:5 | y | tst.js:10:4:10:4 | y |
-| tst.js:4:5:4:5 | y | tst.js:11:6:11:6 | y |
-| tst.js:4:5:4:5 | y | tst.js:12:6:12:6 | y |
-| tst.js:4:5:4:5 | y | tst.js:13:5:13:5 | y |
-| tst.js:4:5:4:5 | y | tst.js:14:9:14:9 | y |
-| tst.js:4:5:4:5 | y | tst.js:105:6:105:6 | y |
 | tst.js:4:9:4:12 | "hi" | tst.js:4:5:4:5 | y |
+| tst.js:7:1:7:2 | fs | tst.js:22:24:22:25 | fs |
 | tst.js:9:2:9:2 | x | tst.js:9:1:9:3 | (x) |
 | tst.js:10:4:10:4 | y | tst.js:10:1:10:4 | x, y |
+| tst.js:10:4:10:4 | y | tst.js:11:1:11:1 | [ssa-synth-read] y |
+| tst.js:10:4:10:4 | y | tst.js:11:6:11:6 | y |
+| tst.js:11:1:11:1 | [ssa-synth-read] y | tst.js:12:1:12:7 | [ssa-synth-read] y |
 | tst.js:11:1:11:1 | x | tst.js:12:1:12:7 | x |
 | tst.js:11:1:11:1 | x | tst.js:12:1:12:7 | x |
 | tst.js:11:6:11:6 | y | tst.js:11:1:11:6 | x && y |
+| tst.js:11:6:11:6 | y | tst.js:12:1:12:7 | [ssa-synth-read] y |
+| tst.js:12:1:12:1 | [ssa-synth-read] y | tst.js:13:5:13:5 | y |
 | tst.js:12:1:12:1 | x | tst.js:12:1:12:6 | x \|\| y |
 | tst.js:12:1:12:1 | x | tst.js:13:1:13:6 | x |
 | tst.js:12:1:12:1 | x | tst.js:13:1:13:6 | x |
+| tst.js:12:1:12:7 | [ssa-synth-read] y | tst.js:12:1:12:1 | [ssa-synth-read] y |
+| tst.js:12:1:12:7 | [ssa-synth-read] y | tst.js:12:6:12:6 | y |
 | tst.js:12:1:12:7 | x | tst.js:12:1:12:1 | x |
 | tst.js:12:1:12:7 | x | tst.js:12:1:12:1 | x |
 | tst.js:12:1:12:7 | x | tst.js:12:1:12:1 | x |
 | tst.js:12:6:12:6 | y | tst.js:12:1:12:6 | x \|\| y |
+| tst.js:12:6:12:6 | y | tst.js:13:5:13:5 | y |
 | tst.js:13:1:13:1 | z | tst.js:14:1:14:1 | z |
 | tst.js:13:1:13:6 | x | tst.js:14:5:14:5 | x |
 | tst.js:13:1:13:6 | x | tst.js:25:3:25:3 | x |
 | tst.js:13:5:13:5 | y | tst.js:13:1:13:1 | z |
 | tst.js:13:5:13:5 | y | tst.js:13:1:13:5 | z = y |
+| tst.js:13:5:13:5 | y | tst.js:14:5:14:5 | [ssa-synth-read] y |
+| tst.js:13:5:13:5 | y | tst.js:14:9:14:9 | y |
+| tst.js:14:5:14:5 | [ssa-synth-read] y | tst.js:105:6:105:6 | y |
 | tst.js:14:5:14:5 | x | tst.js:14:1:14:9 | z ? x : y |
 | tst.js:14:9:14:9 | y | tst.js:14:1:14:9 | z ? x : y |
+| tst.js:14:9:14:9 | y | tst.js:105:6:105:6 | y |
 | tst.js:16:2:20:1 | functio ... n "";\\n} | tst.js:16:1:20:2 | (functi ...  "";\\n}) |
 | tst.js:16:13:16:13 | a | tst.js:16:13:16:13 | a |
 | tst.js:16:13:16:13 | a | tst.js:18:12:18:12 | a |
@@ -1064,40 +1089,51 @@ flowStep
 | tst.js:32:1:32:0 | x | tst.js:33:10:33:10 | x |
 | tst.js:32:1:34:1 | functio ... ables\\n} | tst.js:32:10:32:10 | g |
 | tst.js:32:10:32:10 | g | tst.js:35:1:35:1 | g |
-| tst.js:32:10:32:10 | g | tst.js:60:1:60:1 | g |
-| tst.js:32:10:32:10 | g | tst.js:62:4:62:4 | g |
 | tst.js:33:10:33:10 | x | tst.js:32:1:34:1 | return of function g |
+| tst.js:35:1:35:1 | [post update] g | tst.js:60:1:60:1 | g |
+| tst.js:35:1:35:1 | g | tst.js:35:1:35:7 | [ssa-synth-read] g |
+| tst.js:35:1:35:7 | [ssa-synth-read] g | tst.js:60:1:60:1 | g |
 | tst.js:37:5:37:5 | o | tst.js:43:1:43:1 | o |
-| tst.js:37:5:37:5 | o | tst.js:44:1:44:1 | o |
-| tst.js:37:5:37:5 | o | tst.js:61:3:61:3 | o |
-| tst.js:37:5:37:5 | o | tst.js:62:1:62:1 | o |
-| tst.js:37:5:37:5 | o | tst.js:77:15:77:15 | o |
-| tst.js:37:5:37:5 | o | tst.js:80:15:80:15 | o |
-| tst.js:37:5:37:5 | o | tst.js:83:23:83:23 | o |
-| tst.js:37:5:37:5 | o | tst.js:85:23:85:23 | o |
 | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} | tst.js:37:5:37:5 | o |
 | tst.js:39:4:39:3 | this | tst.js:40:5:40:8 | this |
+| tst.js:43:1:43:1 | [post update] o | tst.js:44:1:44:1 | o |
+| tst.js:43:1:43:1 | o | tst.js:43:1:43:3 | [ssa-synth-read] o |
+| tst.js:43:1:43:3 | [ssa-synth-read] o | tst.js:44:1:44:1 | o |
+| tst.js:44:1:44:1 | [post update] o | tst.js:44:1:44:5 | [ssa-synth-read] o |
+| tst.js:44:1:44:1 | [post update] o | tst.js:61:3:61:3 | o |
+| tst.js:44:1:44:1 | o | tst.js:44:1:44:3 | [ssa-synth-read] o |
+| tst.js:44:1:44:3 | [ssa-synth-read] o | tst.js:44:1:44:5 | [ssa-synth-read] o |
+| tst.js:44:1:44:5 | [ssa-synth-read] o | tst.js:61:3:61:3 | o |
 | tst.js:46:10:46:11 | "" | tst.js:46:1:46:11 | global = "" |
 | tst.js:49:1:54:1 | class A ... `\\n  }\\n} | tst.js:49:7:49:7 | A |
 | tst.js:49:7:49:7 | A | tst.js:55:1:55:1 | A |
 | tst.js:50:14:50:13 | this | tst.js:51:5:51:9 | implicit 'this' |
+| tst.js:51:5:51:9 | implicit 'this' | tst.js:51:5:51:13 | [ssa-synth-read] this |
+| tst.js:60:1:60:1 | g | tst.js:62:4:62:4 | g |
+| tst.js:61:3:61:3 | [post update] o | tst.js:62:1:62:1 | o |
+| tst.js:61:3:61:3 | o | tst.js:61:3:61:5 | [ssa-synth-read] o |
+| tst.js:61:3:61:5 | [ssa-synth-read] o | tst.js:62:1:62:1 | o |
+| tst.js:62:1:62:1 | o | tst.js:77:15:77:15 | o |
 | tst.js:64:1:67:1 | functio ... lysed\\n} | tst.js:64:11:64:11 | h |
 | tst.js:64:11:64:11 | h | tst.js:68:12:68:12 | h |
 | tst.js:68:5:68:8 | iter | tst.js:69:1:69:4 | iter |
 | tst.js:68:12:68:14 | h() | tst.js:68:5:68:8 | iter |
 | tst.js:77:10:77:10 | i | tst.js:78:3:78:3 | i |
+| tst.js:77:15:77:15 | o | tst.js:80:15:80:15 | o |
 | tst.js:80:10:80:10 | v | tst.js:81:3:81:3 | v |
+| tst.js:80:15:80:15 | o | tst.js:83:23:83:23 | o |
 | tst.js:83:18:83:18 | v | tst.js:83:26:83:26 | v |
+| tst.js:83:23:83:23 | o | tst.js:85:23:85:23 | o |
 | tst.js:85:18:85:18 | v | tst.js:85:26:85:26 | v |
 | tst.js:87:2:92:1 | functio ...  + z;\\n} | tst.js:87:1:92:2 | (functi ... + z;\\n}) |
 | tst.js:87:13:87:16 | p: x | tst.js:87:16:87:16 | x |
 | tst.js:87:16:87:16 | x | tst.js:91:10:91:10 | x |
 | tst.js:87:22:87:22 | ...o | tst.js:87:22:87:22 | o |
 | tst.js:87:22:87:22 | o | tst.js:88:18:88:18 | o |
-| tst.js:87:22:87:22 | o | tst.js:90:15:90:15 | o |
 | tst.js:88:9:88:12 | q: y | tst.js:88:12:88:12 | y |
 | tst.js:88:12:88:12 | y | tst.js:91:14:91:14 | y |
 | tst.js:88:18:88:18 | o | tst.js:88:7:88:14 | { q: y } |
+| tst.js:88:18:88:18 | o | tst.js:90:15:90:15 | o |
 | tst.js:90:4:90:15 | { r: z } = o | tst.js:90:3:90:16 | ({ r: z } = o) |
 | tst.js:90:6:90:9 | r: z | tst.js:90:9:90:9 | z |
 | tst.js:90:9:90:9 | z | tst.js:91:18:91:18 | z |
@@ -1111,10 +1147,10 @@ flowStep
 | tst.js:98:13:98:13 | x | tst.js:102:10:102:10 | x |
 | tst.js:98:19:98:22 | ...rest | tst.js:98:19:98:22 | rest |
 | tst.js:98:19:98:22 | rest | tst.js:99:15:99:18 | rest |
-| tst.js:98:19:98:22 | rest | tst.js:101:13:101:16 | rest |
 | tst.js:99:9:99:9 | y | tst.js:99:9:99:9 | y |
 | tst.js:99:9:99:9 | y | tst.js:102:14:102:14 | y |
 | tst.js:99:15:99:18 | rest | tst.js:99:7:99:11 | [ y ] |
+| tst.js:99:15:99:18 | rest | tst.js:101:13:101:16 | rest |
 | tst.js:101:7:101:7 | z | tst.js:101:7:101:7 | z |
 | tst.js:101:7:101:7 | z | tst.js:102:18:102:18 | z |
 | tst.js:101:13:101:16 | rest | tst.js:101:3:101:9 | [ , z ] |
@@ -1147,7 +1183,9 @@ flowStep
 getImmediatePredecessor
 | arguments.js:1:2:12:1 | functio ... , 3);\\n} | arguments.js:1:1:12:2 | (functi ...  3);\\n}) |
 | arguments.js:2:5:2:4 | arguments | arguments.js:4:28:4:36 | arguments |
+| arguments.js:2:5:2:4 | arguments | arguments.js:4:28:4:39 | [ssa-synth-read] arguments |
 | arguments.js:2:5:2:4 | arguments | arguments.js:5:25:5:33 | arguments |
+| arguments.js:2:5:2:4 | arguments | arguments.js:5:25:5:36 | [ssa-synth-read] arguments |
 | arguments.js:2:5:2:4 | arguments | arguments.js:6:20:6:28 | arguments |
 | arguments.js:2:5:10:5 | functio ... ;\\n    } | arguments.js:2:14:2:14 | f |
 | arguments.js:2:14:2:14 | f | arguments.js:11:5:11:5 | f |
@@ -1189,6 +1227,7 @@ getImmediatePredecessor
 | tst2.ts:13:26:13:29 | List | tst2.ts:13:26:13:37 | List<string> |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
+| tst2.ts:13:39:13:38 | this | tst2.ts:13:39:13:38 | [ssa-synth-read] this |
 | tst2.ts:13:39:13:38 | this | tst2.ts:13:39:13:38 | implicit 'this' |
 | tst2.ts:15:11:15:13 | A.x | tst2.ts:15:11:15:30 | A.x satisfies number |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
@@ -1237,11 +1276,16 @@ getImmediatePredecessor
 | tst.js:32:1:32:0 | x | tst.js:33:10:33:10 | x |
 | tst.js:32:1:34:1 | functio ... ables\\n} | tst.js:32:10:32:10 | g |
 | tst.js:32:10:32:10 | g | tst.js:35:1:35:1 | g |
+| tst.js:32:10:32:10 | g | tst.js:35:1:35:7 | [ssa-synth-read] g |
 | tst.js:32:10:32:10 | g | tst.js:60:1:60:1 | g |
 | tst.js:32:10:32:10 | g | tst.js:62:4:62:4 | g |
 | tst.js:37:5:37:5 | o | tst.js:43:1:43:1 | o |
+| tst.js:37:5:37:5 | o | tst.js:43:1:43:3 | [ssa-synth-read] o |
 | tst.js:37:5:37:5 | o | tst.js:44:1:44:1 | o |
+| tst.js:37:5:37:5 | o | tst.js:44:1:44:3 | [ssa-synth-read] o |
+| tst.js:37:5:37:5 | o | tst.js:44:1:44:5 | [ssa-synth-read] o |
 | tst.js:37:5:37:5 | o | tst.js:61:3:61:3 | o |
+| tst.js:37:5:37:5 | o | tst.js:61:3:61:5 | [ssa-synth-read] o |
 | tst.js:37:5:37:5 | o | tst.js:62:1:62:1 | o |
 | tst.js:37:5:37:5 | o | tst.js:77:15:77:15 | o |
 | tst.js:37:5:37:5 | o | tst.js:80:15:80:15 | o |
@@ -1253,6 +1297,7 @@ getImmediatePredecessor
 | tst.js:49:1:54:1 | class A ... `\\n  }\\n} | tst.js:49:7:49:7 | A |
 | tst.js:49:7:49:7 | A | tst.js:55:1:55:1 | A |
 | tst.js:50:14:50:13 | this | tst.js:51:5:51:9 | implicit 'this' |
+| tst.js:50:14:50:13 | this | tst.js:51:5:51:13 | [ssa-synth-read] this |
 | tst.js:64:1:67:1 | functio ... lysed\\n} | tst.js:64:11:64:11 | h |
 | tst.js:64:11:64:11 | h | tst.js:68:12:68:12 | h |
 | tst.js:68:5:68:8 | iter | tst.js:69:1:69:4 | iter |

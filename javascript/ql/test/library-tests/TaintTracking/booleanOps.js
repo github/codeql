@@ -16,7 +16,7 @@ function test() {
     sink(x); // OK
 
   if (isSafe(x, y) || isSafe(x, z))
-    sink(x); // OK [INCONSISTENCY]
+    sink(x); // OK
 
   if (isSafe(x) || 1 === 1)
     sink(x); // NOT OK
