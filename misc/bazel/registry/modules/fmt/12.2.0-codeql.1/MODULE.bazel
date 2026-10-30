@@ -1,0 +1,10 @@
+module(
+    name = "fmt",
+    version = "12.2.0-codeql.1",
+    bazel_compatibility = [">=7.2.1"],
+    compatibility_level = 10,
+)
+
+bazel_dep(name = "package_metadata", version = "0.0.13")
+bazel_dep(name = "rules_cc", version = "0.2.20")
+bazel_dep(name = "rules_license", version = "1.0.0")
