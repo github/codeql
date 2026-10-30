@@ -449,6 +449,12 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
 
     /** Gets a textual representation of this local entity. */
     string toString() { result = this.getName() }
+
+    /** Holds if this variable has the given name and scope. */
+    pragma[nomagic]
+    predicate hasNameAndScope(string name, AstNode scope) {
+      this = TExplicitLocal(_, name, scope) or this = TImplicitLocal(name, scope)
+    }
   }
 
   final class Local = LocalImpl;
@@ -484,10 +490,6 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
     override string getName() { result = name }
 
     override Location getLocation() { result = scope.getLocation() }
-
-    /** Holds if this variable has the given name and scope. */
-    pragma[nomagic]
-    predicate hasNameAndScope(string name_, AstNode scope_) { name = name_ and scope = scope_ }
   }
 
   /** A local access. */

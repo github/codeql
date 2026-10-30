@@ -347,6 +347,17 @@ predicate bindingContext = LocalNameBindingInput::bindingContext/3;
 
 module LocalNameBindingOutput = LocalNameBinding<Location, LocalNameBindingInput>;
 
+private LocalNameBindingOutput::Local resolveId(Identifier id) {
+  // For names in binding position, always resolve to the scope set by the bindingContext predicate
+  exists(AstNode scope |
+    bindingContext(id, scope, _) and
+    result.hasNameAndScope(id.getValue(), scope)
+  )
+  or
+  not bindingContext(id, _, _) and
+  result = id.(LocalNameBindingOutput::LocalAccess).getLocal()
+}
+
 module Public {
   /**
    * A representative for a lexically scoped entity, such as a local variable, type name, or module name.
@@ -379,7 +390,7 @@ module Public {
     string getName() { result = this.getValue() }
 
     /** Gets the representative for the local name introduced by this declaration. */
-    LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
+    LocalName getLocalName() { result = resolveId(this) }
   }
 
   final class LocalVariable = LocalVariableImpl;
@@ -495,7 +506,7 @@ module Public {
  */
 class PotentialLocalNameAccess extends IdentifierExpr {
   /** Gets the representative for the local name being accessed. */
-  LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
+  LocalName getLocalName() { result = resolveId(this) }
 
   /** Gets the name being accessed. */
   string getName() { result = this.getValue() }

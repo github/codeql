@@ -385,23 +385,23 @@ func t39(value: Int) {
 
 func t40() {
     // This function and its parameter have the same name
-    func foo(  // $ SPURIOUS: access=foo2 // name=foo1
-        _ foo: String  // $ SPURIOUS: access=foo2 captured=foo2 // name=foo2
+    func foo(  // name=foo1
+        _ foo: String  // name=foo2
     ) {
         foo  // $ access=foo2
     }
-    foo()  // $ MISSING: access=foo1
+    foo()  // $ access=foo1
 }
 
 func t41() {
     // This function and its parameter have the same name
     // The parameter default value must resolve to the outer name (the function)
     // swift-format-ignore
-    func foo(  // $ SPURIOUS: access=foo2 // name=foo1
-        _ foo: Any = // $ SPURIOUS: access=foo2 captured=foo2 // name=foo2
+    func foo(  // name=foo1
+        _ foo: Any = // name=foo2
             foo  // $ MISSING: access=foo1 SPURIOUS: access=foo2
     ) {
         foo  // $ access=foo2
     }
-    foo()  // $ MISSING: access=foo1
+    foo()  // $ access=foo1
 }
