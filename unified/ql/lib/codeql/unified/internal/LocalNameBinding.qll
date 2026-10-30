@@ -76,28 +76,21 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     or
     result = n.(LogicalAndRoot).getNthLeaf(index)
     or
-    index = 0 and
-    relocatedClassMember(n, result)
-  }
-
-  /**
-   * Holds if `member` is moved onto a child of `className` instead of the class itself,
-   * so the member name is not in scope in the base types and type parameter constraints.
-   */
-  private predicate relocatedClassMember(Identifier className, Member member) {
+    // Move members under the name node of its class, so the member name is not in scope
+    // in the base types and type parameter constraints.
     exists(ClassLikeDeclaration cls |
-      className = cls.getNameNode() and
-      member = cls.getAMember()
+      n = cls.getNameNode() and
+      result = cls.getAMember() and
+      index = 0
     )
   }
 
   AstNode getChild(AstNode n, int index) {
     result = getChild1(n, index)
     or
-    not exists(getChild1(n, _)) and
+    not result = getChild1(_, _) and
     not n instanceof LogicalAndExpr and // also ignore intermediate nodes within a 'logical and' tree
     not n instanceof GuardIfStmt and
-    not relocatedClassMember(_, result) and
     index = result.getParentIndex() and
     result = n.getAFieldOrChild()
   }
