@@ -1,0 +1,76 @@
+/**
+ * @name Database query built from user-controlled sources
+ * @description Building a database query from user-controlled sources is vulnerable to insertion of malicious code by the user.
+ * @kind path-problem
+ * @problem.severity error
+ * @security-severity 8.8
+ * @precision high
+ * @id unified/swift/sql-injection
+ * @tags security
+ *       external/cwe/cwe-089
+ */
+
+import unified
+private import codeql.unified.internal.typeinference.TypeInference as TypeInference
+
+private predicate sqliteSwiftSink(DataFlow::Node node) {
+  // TODO: Use MaD once legacy selectors distinguish Connection methods from Statement bindings.
+  exists(CallExpr call, FunctionDeclaration target |
+    target = TypeInference::resolveCallTarget(call) and
+    target.getEnclosingClass().getName() = "Connection" and
+    target.getName() = ["run", "scalar"] and
+    node.asExpr() = call.getArgument(0).getValue()
+  )
+}
+
+/**
+ * An SQL injection sink that is determined by imprecise methods.
+ */
+private predicate heuristicSink(DataFlow::Node node) {
+  exists(Argument arg |
+    node.asExpr() = arg.getValue() and
+    (
+      // by argument name
+      arg.getName() = "sql"
+      or
+      // by parameter name
+      // TODO: make a helper predicate `Argument.getParameter` for this?
+      exists(CallExpr call, int index, Parameter param |
+        arg = call.getArgument(index) and
+        param = TypeInference::resolveCallTarget(call).getParameter(index) and
+        param.getPattern().(Identifier).getValue() = "sql"
+      )
+    )
+  )
+}
+
+/**
+ * A taint configuration for tainted data that reaches a SQL sink.
+ */
+module SqlInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
+
+  predicate isSink(DataFlow::Node node) {
+    Models::isSink(node, "sql-injection")
+    or
+    sqliteSwiftSink(node)
+    or
+    heuristicSink(node)
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    // TODO: Port the numeric-type barrier from original Swift's SqlInjectionExtensions.qll.
+    none()
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+module SqlInjectionFlow = TaintTracking::Global<SqlInjectionConfig>;
+
+import SqlInjectionFlow::PathGraph
+
+from SqlInjectionFlow::PathNode sourceNode, SqlInjectionFlow::PathNode sinkNode
+where SqlInjectionFlow::flowPath(sourceNode, sinkNode)
+select sinkNode.getNode(), sourceNode, sinkNode, "This query depends on a $@.",
+  sourceNode.getNode(), "user-provided value"

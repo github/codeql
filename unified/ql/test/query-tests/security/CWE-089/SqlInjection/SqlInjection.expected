@@ -1,0 +1,465 @@
+#select
+| GRDB.swift:106:41:106:52 | remoteString | GRDB.swift:104:25:104:79 | String(...) | GRDB.swift:106:41:106:52 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | String(...) | user-provided value |
+| GRDB.swift:108:41:108:52 | remoteString | GRDB.swift:104:25:104:79 | String(...) | GRDB.swift:108:41:108:52 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | String(...) | user-provided value |
+| GRDB.swift:111:43:111:54 | remoteString | GRDB.swift:104:25:104:79 | String(...) | GRDB.swift:111:43:111:54 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | String(...) | user-provided value |
+| GRDB.swift:114:51:114:62 | remoteString | GRDB.swift:104:25:104:79 | String(...) | GRDB.swift:114:51:114:62 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | String(...) | user-provided value |
+| GRDB.swift:117:27:117:38 | remoteString | GRDB.swift:104:25:104:79 | String(...) | GRDB.swift:117:27:117:38 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | String(...) | user-provided value |
+| GRDB.swift:119:27:119:38 | remoteString | GRDB.swift:104:25:104:79 | String(...) | GRDB.swift:119:27:119:38 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | String(...) | user-provided value |
+| GRDB.swift:122:41:122:52 | remoteString | GRDB.swift:104:25:104:79 | String(...) | GRDB.swift:122:41:122:52 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | String(...) | user-provided value |
+| GRDB.swift:124:41:124:52 | remoteString | GRDB.swift:104:25:104:79 | String(...) | GRDB.swift:124:41:124:52 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | String(...) | user-provided value |
+| GRDB.swift:132:39:132:50 | remoteString | GRDB.swift:130:26:130:80 | String(...) | GRDB.swift:132:39:132:50 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | String(...) | user-provided value |
+| GRDB.swift:135:46:135:57 | remoteString | GRDB.swift:130:26:130:80 | String(...) | GRDB.swift:135:46:135:57 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | String(...) | user-provided value |
+| GRDB.swift:138:56:138:67 | remoteString | GRDB.swift:130:26:130:80 | String(...) | GRDB.swift:138:56:138:67 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | String(...) | user-provided value |
+| GRDB.swift:141:45:141:56 | remoteString | GRDB.swift:130:26:130:80 | String(...) | GRDB.swift:141:45:141:56 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | String(...) | user-provided value |
+| GRDB.swift:144:29:144:40 | remoteString | GRDB.swift:130:26:130:80 | String(...) | GRDB.swift:144:29:144:40 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | String(...) | user-provided value |
+| GRDB.swift:145:29:145:40 | remoteString | GRDB.swift:130:26:130:80 | String(...) | GRDB.swift:145:29:145:40 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | String(...) | user-provided value |
+| GRDB.swift:146:29:146:40 | remoteString | GRDB.swift:130:26:130:80 | String(...) | GRDB.swift:146:29:146:40 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | String(...) | user-provided value |
+| GRDB.swift:147:29:147:40 | remoteString | GRDB.swift:130:26:130:80 | String(...) | GRDB.swift:147:29:147:40 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | String(...) | user-provided value |
+| GRDB.swift:148:29:148:40 | remoteString | GRDB.swift:130:26:130:80 | String(...) | GRDB.swift:148:29:148:40 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | String(...) | user-provided value |
+| GRDB.swift:149:29:149:40 | remoteString | GRDB.swift:130:26:130:80 | String(...) | GRDB.swift:149:29:149:40 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | String(...) | user-provided value |
+| GRDB.swift:150:29:150:40 | remoteString | GRDB.swift:130:26:130:80 | String(...) | GRDB.swift:150:29:150:40 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | String(...) | user-provided value |
+| GRDB.swift:151:29:151:40 | remoteString | GRDB.swift:130:26:130:80 | String(...) | GRDB.swift:151:29:151:40 | remoteString | This query depends on a $@. | GRDB.swift:130:26:130:80 | String(...) | user-provided value |
+| GRDB.swift:166:32:166:43 | remoteString | GRDB.swift:164:26:164:80 | String(...) | GRDB.swift:166:32:166:43 | remoteString | This query depends on a $@. | GRDB.swift:164:26:164:80 | String(...) | user-provided value |
+| GRDB.swift:167:39:167:50 | remoteString | GRDB.swift:164:26:164:80 | String(...) | GRDB.swift:167:39:167:50 | remoteString | This query depends on a $@. | GRDB.swift:164:26:164:80 | String(...) | user-provided value |
+| GRDB.swift:168:49:168:60 | remoteString | GRDB.swift:164:26:164:80 | String(...) | GRDB.swift:168:49:168:60 | remoteString | This query depends on a $@. | GRDB.swift:164:26:164:80 | String(...) | user-provided value |
+| GRDB.swift:169:38:169:49 | remoteString | GRDB.swift:164:26:164:80 | String(...) | GRDB.swift:169:38:169:49 | remoteString | This query depends on a $@. | GRDB.swift:164:26:164:80 | String(...) | user-provided value |
+| GRDB.swift:170:22:170:33 | remoteString | GRDB.swift:164:26:164:80 | String(...) | GRDB.swift:170:22:170:33 | remoteString | This query depends on a $@. | GRDB.swift:164:26:164:80 | String(...) | user-provided value |
+| GRDB.swift:172:22:172:33 | remoteString | GRDB.swift:164:26:164:80 | String(...) | GRDB.swift:172:22:172:33 | remoteString | This query depends on a $@. | GRDB.swift:164:26:164:80 | String(...) | user-provided value |
+| GRDB.swift:187:33:187:44 | remoteString | GRDB.swift:185:26:185:80 | String(...) | GRDB.swift:187:33:187:44 | remoteString | This query depends on a $@. | GRDB.swift:185:26:185:80 | String(...) | user-provided value |
+| GRDB.swift:190:32:190:43 | remoteString | GRDB.swift:185:26:185:80 | String(...) | GRDB.swift:190:32:190:43 | remoteString | This query depends on a $@. | GRDB.swift:185:26:185:80 | String(...) | user-provided value |
+| GRDB.swift:193:37:193:48 | remoteString | GRDB.swift:185:26:185:80 | String(...) | GRDB.swift:193:37:193:48 | remoteString | This query depends on a $@. | GRDB.swift:185:26:185:80 | String(...) | user-provided value |
+| GRDB.swift:201:36:201:47 | remoteString | GRDB.swift:199:26:199:80 | String(...) | GRDB.swift:201:36:201:47 | remoteString | This query depends on a $@. | GRDB.swift:199:26:199:80 | String(...) | user-provided value |
+| GRDB.swift:209:41:209:52 | remoteString | GRDB.swift:207:26:207:80 | String(...) | GRDB.swift:209:41:209:52 | remoteString | This query depends on a $@. | GRDB.swift:207:26:207:80 | String(...) | user-provided value |
+| GRDB.swift:210:44:210:55 | remoteString | GRDB.swift:207:26:207:80 | String(...) | GRDB.swift:210:44:210:55 | remoteString | This query depends on a $@. | GRDB.swift:207:26:207:80 | String(...) | user-provided value |
+| GRDB.swift:211:47:211:58 | remoteString | GRDB.swift:207:26:207:80 | String(...) | GRDB.swift:211:47:211:58 | remoteString | This query depends on a $@. | GRDB.swift:207:26:207:80 | String(...) | user-provided value |
+| GRDB.swift:212:47:212:58 | remoteString | GRDB.swift:207:26:207:80 | String(...) | GRDB.swift:212:47:212:58 | remoteString | This query depends on a $@. | GRDB.swift:207:26:207:80 | String(...) | user-provided value |
+| GRDB.swift:224:37:224:48 | remoteString | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:224:37:224:48 | remoteString | This query depends on a $@. | GRDB.swift:222:26:222:80 | String(...) | user-provided value |
+| GRDB.swift:225:37:225:48 | remoteString | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:225:37:225:48 | remoteString | This query depends on a $@. | GRDB.swift:222:26:222:80 | String(...) | user-provided value |
+| GRDB.swift:229:37:229:48 | remoteString | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:229:37:229:48 | remoteString | This query depends on a $@. | GRDB.swift:222:26:222:80 | String(...) | user-provided value |
+| GRDB.swift:230:37:230:48 | remoteString | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:230:37:230:48 | remoteString | This query depends on a $@. | GRDB.swift:222:26:222:80 | String(...) | user-provided value |
+| GRDB.swift:234:36:234:47 | remoteString | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:234:36:234:47 | remoteString | This query depends on a $@. | GRDB.swift:222:26:222:80 | String(...) | user-provided value |
+| GRDB.swift:235:36:235:47 | remoteString | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:235:36:235:47 | remoteString | This query depends on a $@. | GRDB.swift:222:26:222:80 | String(...) | user-provided value |
+| GRDB.swift:244:38:244:49 | remoteString | GRDB.swift:242:26:242:80 | String(...) | GRDB.swift:244:38:244:49 | remoteString | This query depends on a $@. | GRDB.swift:242:26:242:80 | String(...) | user-provided value |
+| GRDB.swift:252:32:252:43 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:252:32:252:43 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:253:32:253:43 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:253:32:253:43 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:254:32:254:43 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:254:32:254:43 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:255:32:255:43 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:255:32:255:43 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:261:29:261:40 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:261:29:261:40 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:262:29:262:40 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:262:29:262:40 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:263:29:263:40 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:263:29:263:40 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:264:29:264:40 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:264:29:264:40 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:270:29:270:40 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:270:29:270:40 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:271:29:271:40 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:271:29:271:40 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:272:29:272:40 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:272:29:272:40 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:273:29:273:40 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:273:29:273:40 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:279:29:279:40 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:279:29:279:40 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:280:29:280:40 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:280:29:280:40 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:281:29:281:40 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:281:29:281:40 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:282:29:282:40 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:282:29:282:40 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
+| GRDB.swift:293:53:293:64 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:293:53:293:64 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:294:53:294:64 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:294:53:294:64 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:295:53:295:64 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:295:53:295:64 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:296:53:296:64 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:296:53:296:64 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:302:50:302:61 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:302:50:302:61 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:303:50:303:61 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:303:50:303:61 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:304:50:304:61 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:304:50:304:61 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:305:50:305:61 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:305:50:305:61 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:311:50:311:61 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:311:50:311:61 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:312:50:312:61 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:312:50:312:61 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:313:50:313:61 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:313:50:313:61 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:314:50:314:61 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:314:50:314:61 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:320:50:320:61 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:320:50:320:61 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:321:50:321:61 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:321:50:321:61 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:322:50:322:61 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:322:50:322:61 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:323:50:323:61 | remoteString | GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:323:50:323:61 | remoteString | This query depends on a $@. | GRDB.swift:291:26:291:80 | String(...) | user-provided value |
+| GRDB.swift:334:57:334:68 | remoteString | GRDB.swift:332:26:332:80 | String(...) | GRDB.swift:334:57:334:68 | remoteString | This query depends on a $@. | GRDB.swift:332:26:332:80 | String(...) | user-provided value |
+| GRDB.swift:335:57:335:68 | remoteString | GRDB.swift:332:26:332:80 | String(...) | GRDB.swift:335:57:335:68 | remoteString | This query depends on a $@. | GRDB.swift:332:26:332:80 | String(...) | user-provided value |
+| GRDB.swift:344:51:344:62 | remoteString | GRDB.swift:342:26:342:80 | String(...) | GRDB.swift:344:51:344:62 | remoteString | This query depends on a $@. | GRDB.swift:342:26:342:80 | String(...) | user-provided value |
+| GRDB.swift:345:51:345:62 | remoteString | GRDB.swift:342:26:342:80 | String(...) | GRDB.swift:345:51:345:62 | remoteString | This query depends on a $@. | GRDB.swift:342:26:342:80 | String(...) | user-provided value |
+| GRDB.swift:346:66:346:77 | remoteString | GRDB.swift:342:26:342:80 | String(...) | GRDB.swift:346:66:346:77 | remoteString | This query depends on a $@. | GRDB.swift:342:26:342:80 | String(...) | user-provided value |
+| GRDB.swift:347:66:347:77 | remoteString | GRDB.swift:342:26:342:80 | String(...) | GRDB.swift:347:66:347:77 | remoteString | This query depends on a $@. | GRDB.swift:342:26:342:80 | String(...) | user-provided value |
+| GRDB.swift:348:69:348:80 | remoteString | GRDB.swift:342:26:342:80 | String(...) | GRDB.swift:348:69:348:80 | remoteString | This query depends on a $@. | GRDB.swift:342:26:342:80 | String(...) | user-provided value |
+| GRDB.swift:349:84:349:95 | remoteString | GRDB.swift:342:26:342:80 | String(...) | GRDB.swift:349:84:349:95 | remoteString | This query depends on a $@. | GRDB.swift:342:26:342:80 | String(...) | user-provided value |
+| GRDB.swift:350:69:350:80 | remoteString | GRDB.swift:342:26:342:80 | String(...) | GRDB.swift:350:69:350:80 | remoteString | This query depends on a $@. | GRDB.swift:342:26:342:80 | String(...) | user-provided value |
+| GRDB.swift:351:84:351:95 | remoteString | GRDB.swift:342:26:342:80 | String(...) | GRDB.swift:351:84:351:95 | remoteString | This query depends on a $@. | GRDB.swift:342:26:342:80 | String(...) | user-provided value |
+| SQLite.swift:73:17:73:28 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:73:17:73:28 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:74:17:74:28 | unsafeQuery2 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:74:17:74:28 | unsafeQuery2 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:75:17:75:28 | unsafeQuery3 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:75:17:75:28 | unsafeQuery3 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:83:29:83:40 | unsafeQuery3 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:83:29:83:40 | unsafeQuery3 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:95:32:95:43 | remoteString | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:95:32:95:43 | remoteString | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:100:29:100:40 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:100:29:100:40 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:103:29:103:40 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:103:29:103:40 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:106:29:106:40 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:106:29:106:40 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:109:13:109:24 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:109:13:109:24 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:111:13:111:24 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:111:13:111:24 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:113:13:113:24 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:113:13:113:24 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:115:16:115:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:115:16:115:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:117:16:117:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:117:16:117:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:119:16:119:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:119:16:119:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:134:20:134:31 | remoteString | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:134:20:134:31 | remoteString | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:136:13:136:24 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:136:13:136:24 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:138:13:138:24 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:138:13:138:24 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:140:16:140:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:140:16:140:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| SQLite.swift:142:16:142:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:142:16:142:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
+| other.swift:55:22:55:33 | remoteString | other.swift:51:25:51:79 | String(...) | other.swift:55:22:55:33 | remoteString | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:57:14:57:25 | remoteString | other.swift:51:25:51:79 | String(...) | other.swift:57:14:57:25 | remoteString | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:58:14:58:25 | remoteString | other.swift:51:25:51:79 | String(...) | other.swift:58:14:58:25 | remoteString | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:59:14:59:43 | NSString(...) | other.swift:51:25:51:79 | String(...) | other.swift:59:14:59:43 | NSString(...) | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:60:14:60:33 | TypeCastExpr | other.swift:51:25:51:79 | String(...) | other.swift:60:14:60:33 | TypeCastExpr | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:62:25:62:36 | remoteString | other.swift:51:25:51:79 | String(...) | other.swift:62:25:62:36 | remoteString | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:64:34:64:45 | remoteString | other.swift:51:25:51:79 | String(...) | other.swift:64:34:64:45 | remoteString | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:67:21:67:32 | remoteString | other.swift:51:25:51:79 | String(...) | other.swift:67:21:67:32 | remoteString | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:69:21:69:32 | remoteString | other.swift:51:25:51:79 | String(...) | other.swift:69:21:69:32 | remoteString | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:72:16:72:27 | remoteString | other.swift:51:25:51:79 | String(...) | other.swift:72:16:72:27 | remoteString | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:73:23:73:34 | remoteString | other.swift:51:25:51:79 | String(...) | other.swift:73:23:73:34 | remoteString | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:74:25:74:36 | remoteString | other.swift:51:25:51:79 | String(...) | other.swift:74:25:74:36 | remoteString | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:75:28:75:39 | remoteString | other.swift:51:25:51:79 | String(...) | other.swift:75:28:75:39 | remoteString | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:76:34:76:45 | remoteString | other.swift:51:25:51:79 | String(...) | other.swift:76:34:76:45 | remoteString | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| other.swift:77:19:77:30 | remoteString | other.swift:51:25:51:79 | String(...) | other.swift:77:19:77:30 | remoteString | This query depends on a $@. | other.swift:51:25:51:79 | String(...) | user-provided value |
+| sqlite3_c_api.swift:133:33:133:44 | unsafeQuery1 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:133:33:133:44 | unsafeQuery1 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
+| sqlite3_c_api.swift:134:33:134:44 | unsafeQuery2 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:134:33:134:44 | unsafeQuery2 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
+| sqlite3_c_api.swift:135:33:135:44 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:135:33:135:44 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
+| sqlite3_c_api.swift:145:26:145:37 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:145:26:145:37 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
+| sqlite3_c_api.swift:175:29:175:40 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:175:29:175:40 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
+| sqlite3_c_api.swift:183:29:183:40 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:183:29:183:40 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
+| sqlite3_c_api.swift:194:28:194:33 | buffer | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:194:28:194:33 | buffer | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
+| sqlite3_c_api.swift:202:31:202:36 | buffer | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:202:31:202:36 | buffer | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
+| sqlite3_c_api.swift:210:31:210:36 | buffer | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:210:31:210:36 | buffer | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
+edges
+| GRDB.swift:104:6:104:17 | remoteString | GRDB.swift:106:41:106:52 | remoteString | provenance |  |
+| GRDB.swift:104:6:104:17 | remoteString | GRDB.swift:108:41:108:52 | remoteString | provenance |  |
+| GRDB.swift:104:6:104:17 | remoteString | GRDB.swift:111:43:111:54 | remoteString | provenance |  |
+| GRDB.swift:104:6:104:17 | remoteString | GRDB.swift:114:51:114:62 | remoteString | provenance |  |
+| GRDB.swift:104:6:104:17 | remoteString | GRDB.swift:117:27:117:38 | remoteString | provenance |  |
+| GRDB.swift:104:6:104:17 | remoteString | GRDB.swift:119:27:119:38 | remoteString | provenance |  |
+| GRDB.swift:104:6:104:17 | remoteString | GRDB.swift:122:41:122:52 | remoteString | provenance |  |
+| GRDB.swift:104:6:104:17 | remoteString | GRDB.swift:124:41:124:52 | remoteString | provenance |  |
+| GRDB.swift:104:25:104:79 | String(...) | GRDB.swift:104:6:104:17 | remoteString | provenance |  |
+| GRDB.swift:130:6:130:17 | remoteString | GRDB.swift:132:39:132:50 | remoteString | provenance |  |
+| GRDB.swift:130:6:130:17 | remoteString | GRDB.swift:135:46:135:57 | remoteString | provenance |  |
+| GRDB.swift:130:6:130:17 | remoteString | GRDB.swift:138:56:138:67 | remoteString | provenance |  |
+| GRDB.swift:130:6:130:17 | remoteString | GRDB.swift:141:45:141:56 | remoteString | provenance |  |
+| GRDB.swift:130:6:130:17 | remoteString | GRDB.swift:144:29:144:40 | remoteString | provenance |  |
+| GRDB.swift:130:6:130:17 | remoteString | GRDB.swift:145:29:145:40 | remoteString | provenance |  |
+| GRDB.swift:130:6:130:17 | remoteString | GRDB.swift:146:29:146:40 | remoteString | provenance |  |
+| GRDB.swift:130:6:130:17 | remoteString | GRDB.swift:147:29:147:40 | remoteString | provenance |  |
+| GRDB.swift:130:6:130:17 | remoteString | GRDB.swift:148:29:148:40 | remoteString | provenance |  |
+| GRDB.swift:130:6:130:17 | remoteString | GRDB.swift:149:29:149:40 | remoteString | provenance |  |
+| GRDB.swift:130:6:130:17 | remoteString | GRDB.swift:150:29:150:40 | remoteString | provenance |  |
+| GRDB.swift:130:6:130:17 | remoteString | GRDB.swift:151:29:151:40 | remoteString | provenance |  |
+| GRDB.swift:130:26:130:80 | String(...) | GRDB.swift:130:6:130:17 | remoteString | provenance |  |
+| GRDB.swift:164:6:164:17 | remoteString | GRDB.swift:166:32:166:43 | remoteString | provenance |  |
+| GRDB.swift:164:6:164:17 | remoteString | GRDB.swift:167:39:167:50 | remoteString | provenance |  |
+| GRDB.swift:164:6:164:17 | remoteString | GRDB.swift:168:49:168:60 | remoteString | provenance |  |
+| GRDB.swift:164:6:164:17 | remoteString | GRDB.swift:169:38:169:49 | remoteString | provenance |  |
+| GRDB.swift:164:6:164:17 | remoteString | GRDB.swift:170:22:170:33 | remoteString | provenance |  |
+| GRDB.swift:164:6:164:17 | remoteString | GRDB.swift:172:22:172:33 | remoteString | provenance |  |
+| GRDB.swift:164:26:164:80 | String(...) | GRDB.swift:164:6:164:17 | remoteString | provenance |  |
+| GRDB.swift:185:6:185:17 | remoteString | GRDB.swift:187:33:187:44 | remoteString | provenance |  |
+| GRDB.swift:185:6:185:17 | remoteString | GRDB.swift:190:32:190:43 | remoteString | provenance |  |
+| GRDB.swift:185:6:185:17 | remoteString | GRDB.swift:193:37:193:48 | remoteString | provenance |  |
+| GRDB.swift:185:26:185:80 | String(...) | GRDB.swift:185:6:185:17 | remoteString | provenance |  |
+| GRDB.swift:199:6:199:17 | remoteString | GRDB.swift:201:36:201:47 | remoteString | provenance |  |
+| GRDB.swift:199:26:199:80 | String(...) | GRDB.swift:199:6:199:17 | remoteString | provenance |  |
+| GRDB.swift:207:6:207:17 | remoteString | GRDB.swift:209:41:209:52 | remoteString | provenance |  |
+| GRDB.swift:207:6:207:17 | remoteString | GRDB.swift:210:44:210:55 | remoteString | provenance |  |
+| GRDB.swift:207:6:207:17 | remoteString | GRDB.swift:211:47:211:58 | remoteString | provenance |  |
+| GRDB.swift:207:6:207:17 | remoteString | GRDB.swift:212:47:212:58 | remoteString | provenance |  |
+| GRDB.swift:207:26:207:80 | String(...) | GRDB.swift:207:6:207:17 | remoteString | provenance |  |
+| GRDB.swift:222:6:222:17 | remoteString | GRDB.swift:224:37:224:48 | remoteString | provenance |  |
+| GRDB.swift:222:6:222:17 | remoteString | GRDB.swift:225:37:225:48 | remoteString | provenance |  |
+| GRDB.swift:222:6:222:17 | remoteString | GRDB.swift:229:37:229:48 | remoteString | provenance |  |
+| GRDB.swift:222:6:222:17 | remoteString | GRDB.swift:230:37:230:48 | remoteString | provenance |  |
+| GRDB.swift:222:6:222:17 | remoteString | GRDB.swift:234:36:234:47 | remoteString | provenance |  |
+| GRDB.swift:222:6:222:17 | remoteString | GRDB.swift:235:36:235:47 | remoteString | provenance |  |
+| GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:222:6:222:17 | remoteString | provenance |  |
+| GRDB.swift:242:6:242:17 | remoteString | GRDB.swift:244:38:244:49 | remoteString | provenance |  |
+| GRDB.swift:242:26:242:80 | String(...) | GRDB.swift:242:6:242:17 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:252:32:252:43 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:253:32:253:43 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:254:32:254:43 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:255:32:255:43 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:261:29:261:40 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:262:29:262:40 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:263:29:263:40 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:264:29:264:40 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:270:29:270:40 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:271:29:271:40 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:272:29:272:40 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:273:29:273:40 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:279:29:279:40 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:280:29:280:40 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:281:29:281:40 | remoteString | provenance |  |
+| GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:282:29:282:40 | remoteString | provenance |  |
+| GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:250:6:250:17 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:293:53:293:64 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:294:53:294:64 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:295:53:295:64 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:296:53:296:64 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:302:50:302:61 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:303:50:303:61 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:304:50:304:61 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:305:50:305:61 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:311:50:311:61 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:312:50:312:61 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:313:50:313:61 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:314:50:314:61 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:320:50:320:61 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:321:50:321:61 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:322:50:322:61 | remoteString | provenance |  |
+| GRDB.swift:291:6:291:17 | remoteString | GRDB.swift:323:50:323:61 | remoteString | provenance |  |
+| GRDB.swift:291:26:291:80 | String(...) | GRDB.swift:291:6:291:17 | remoteString | provenance |  |
+| GRDB.swift:332:6:332:17 | remoteString | GRDB.swift:334:57:334:68 | remoteString | provenance |  |
+| GRDB.swift:332:6:332:17 | remoteString | GRDB.swift:335:57:335:68 | remoteString | provenance |  |
+| GRDB.swift:332:26:332:80 | String(...) | GRDB.swift:332:6:332:17 | remoteString | provenance |  |
+| GRDB.swift:342:6:342:17 | remoteString | GRDB.swift:344:51:344:62 | remoteString | provenance |  |
+| GRDB.swift:342:6:342:17 | remoteString | GRDB.swift:345:51:345:62 | remoteString | provenance |  |
+| GRDB.swift:342:6:342:17 | remoteString | GRDB.swift:346:66:346:77 | remoteString | provenance |  |
+| GRDB.swift:342:6:342:17 | remoteString | GRDB.swift:347:66:347:77 | remoteString | provenance |  |
+| GRDB.swift:342:6:342:17 | remoteString | GRDB.swift:348:69:348:80 | remoteString | provenance |  |
+| GRDB.swift:342:6:342:17 | remoteString | GRDB.swift:349:84:349:95 | remoteString | provenance |  |
+| GRDB.swift:342:6:342:17 | remoteString | GRDB.swift:350:69:350:80 | remoteString | provenance |  |
+| GRDB.swift:342:6:342:17 | remoteString | GRDB.swift:351:84:351:95 | remoteString | provenance |  |
+| GRDB.swift:342:26:342:80 | String(...) | GRDB.swift:342:6:342:17 | remoteString | provenance |  |
+| SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:65:21:65:32 | remoteString | provenance |  |
+| SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:66:62:66:73 | remoteString | provenance |  |
+| SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:67:60:67:71 | remoteString | provenance |  |
+| SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:95:32:95:43 | remoteString | provenance |  |
+| SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:134:20:134:31 | remoteString | provenance |  |
+| SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:62:6:62:17 | remoteString | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:73:17:73:28 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:100:29:100:40 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:103:29:103:40 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:106:29:106:40 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:109:13:109:24 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:111:13:111:24 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:113:13:113:24 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:115:16:115:27 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:117:16:117:27 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:119:16:119:27 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:136:13:136:24 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:138:13:138:24 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:140:16:140:27 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:142:16:142:27 | unsafeQuery1 | provenance |  |
+| SQLite.swift:65:21:65:32 | remoteString | SQLite.swift:65:6:65:17 | unsafeQuery1 | provenance |  |
+| SQLite.swift:66:6:66:17 | unsafeQuery2 | SQLite.swift:74:17:74:28 | unsafeQuery2 | provenance |  |
+| SQLite.swift:66:62:66:73 | remoteString | SQLite.swift:66:6:66:17 | unsafeQuery2 | provenance |  |
+| SQLite.swift:67:6:67:17 | unsafeQuery3 | SQLite.swift:75:17:75:28 | unsafeQuery3 | provenance |  |
+| SQLite.swift:67:6:67:17 | unsafeQuery3 | SQLite.swift:83:29:83:40 | unsafeQuery3 | provenance |  |
+| SQLite.swift:67:60:67:71 | remoteString | SQLite.swift:67:6:67:17 | unsafeQuery3 | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:55:22:55:33 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:57:14:57:25 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:58:14:58:25 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:59:31:59:42 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:60:14:60:25 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:62:25:62:36 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:64:34:64:45 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:67:21:67:32 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:69:21:69:32 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:72:16:72:27 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:73:23:73:34 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:74:25:74:36 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:75:28:75:39 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:76:34:76:45 | remoteString | provenance |  |
+| other.swift:51:6:51:17 | remoteString | other.swift:77:19:77:30 | remoteString | provenance |  |
+| other.swift:51:25:51:79 | String(...) | other.swift:51:6:51:17 | remoteString | provenance |  |
+| other.swift:59:31:59:42 | remoteString | other.swift:59:14:59:43 | NSString(...) | provenance |  |
+| other.swift:60:14:60:25 | remoteString | other.swift:60:14:60:33 | TypeCastExpr | provenance |  |
+| sqlite3_c_api.swift:122:6:122:17 | remoteString | sqlite3_c_api.swift:125:21:125:32 | remoteString | provenance |  |
+| sqlite3_c_api.swift:122:6:122:17 | remoteString | sqlite3_c_api.swift:126:62:126:73 | remoteString | provenance |  |
+| sqlite3_c_api.swift:122:6:122:17 | remoteString | sqlite3_c_api.swift:127:60:127:71 | remoteString | provenance |  |
+| sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:122:6:122:17 | remoteString | provenance |  |
+| sqlite3_c_api.swift:125:6:125:17 | unsafeQuery1 | sqlite3_c_api.swift:133:33:133:44 | unsafeQuery1 | provenance |  |
+| sqlite3_c_api.swift:125:21:125:32 | remoteString | sqlite3_c_api.swift:125:6:125:17 | unsafeQuery1 | provenance |  |
+| sqlite3_c_api.swift:126:6:126:17 | unsafeQuery2 | sqlite3_c_api.swift:134:33:134:44 | unsafeQuery2 | provenance |  |
+| sqlite3_c_api.swift:126:62:126:73 | remoteString | sqlite3_c_api.swift:126:6:126:17 | unsafeQuery2 | provenance |  |
+| sqlite3_c_api.swift:127:6:127:17 | unsafeQuery3 | sqlite3_c_api.swift:135:33:135:44 | unsafeQuery3 | provenance |  |
+| sqlite3_c_api.swift:127:6:127:17 | unsafeQuery3 | sqlite3_c_api.swift:145:26:145:37 | unsafeQuery3 | provenance |  |
+| sqlite3_c_api.swift:127:6:127:17 | unsafeQuery3 | sqlite3_c_api.swift:175:29:175:40 | unsafeQuery3 | provenance |  |
+| sqlite3_c_api.swift:127:6:127:17 | unsafeQuery3 | sqlite3_c_api.swift:183:29:183:40 | unsafeQuery3 | provenance |  |
+| sqlite3_c_api.swift:127:6:127:17 | unsafeQuery3 | sqlite3_c_api.swift:189:13:189:24 | unsafeQuery3 | provenance |  |
+| sqlite3_c_api.swift:127:60:127:71 | remoteString | sqlite3_c_api.swift:127:6:127:17 | unsafeQuery3 | provenance |  |
+| sqlite3_c_api.swift:189:6:189:9 | data | sqlite3_c_api.swift:190:2:190:5 | data | provenance |  |
+| sqlite3_c_api.swift:189:13:189:24 | unsafeQuery3 | sqlite3_c_api.swift:189:13:189:58 | ... .data(...) | provenance |  |
+| sqlite3_c_api.swift:189:13:189:58 | ... .data(...) | sqlite3_c_api.swift:189:6:189:9 | data | provenance |  |
+| sqlite3_c_api.swift:190:2:190:5 | data | sqlite3_c_api.swift:190:21:190:26 | [post] buffer | provenance |  |
+| sqlite3_c_api.swift:190:21:190:26 | [post] buffer | sqlite3_c_api.swift:194:28:194:33 | buffer | provenance |  |
+| sqlite3_c_api.swift:190:21:190:26 | [post] buffer | sqlite3_c_api.swift:202:31:202:36 | buffer | provenance |  |
+| sqlite3_c_api.swift:190:21:190:26 | [post] buffer | sqlite3_c_api.swift:210:31:210:36 | buffer | provenance |  |
+nodes
+| GRDB.swift:104:6:104:17 | remoteString | semmle.label | remoteString |
+| GRDB.swift:104:25:104:79 | String(...) | semmle.label | String(...) |
+| GRDB.swift:106:41:106:52 | remoteString | semmle.label | remoteString |
+| GRDB.swift:108:41:108:52 | remoteString | semmle.label | remoteString |
+| GRDB.swift:111:43:111:54 | remoteString | semmle.label | remoteString |
+| GRDB.swift:114:51:114:62 | remoteString | semmle.label | remoteString |
+| GRDB.swift:117:27:117:38 | remoteString | semmle.label | remoteString |
+| GRDB.swift:119:27:119:38 | remoteString | semmle.label | remoteString |
+| GRDB.swift:122:41:122:52 | remoteString | semmle.label | remoteString |
+| GRDB.swift:124:41:124:52 | remoteString | semmle.label | remoteString |
+| GRDB.swift:130:6:130:17 | remoteString | semmle.label | remoteString |
+| GRDB.swift:130:26:130:80 | String(...) | semmle.label | String(...) |
+| GRDB.swift:132:39:132:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:135:46:135:57 | remoteString | semmle.label | remoteString |
+| GRDB.swift:138:56:138:67 | remoteString | semmle.label | remoteString |
+| GRDB.swift:141:45:141:56 | remoteString | semmle.label | remoteString |
+| GRDB.swift:144:29:144:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:145:29:145:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:146:29:146:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:147:29:147:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:148:29:148:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:149:29:149:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:150:29:150:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:151:29:151:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:164:6:164:17 | remoteString | semmle.label | remoteString |
+| GRDB.swift:164:26:164:80 | String(...) | semmle.label | String(...) |
+| GRDB.swift:166:32:166:43 | remoteString | semmle.label | remoteString |
+| GRDB.swift:167:39:167:50 | remoteString | semmle.label | remoteString |
+| GRDB.swift:168:49:168:60 | remoteString | semmle.label | remoteString |
+| GRDB.swift:169:38:169:49 | remoteString | semmle.label | remoteString |
+| GRDB.swift:170:22:170:33 | remoteString | semmle.label | remoteString |
+| GRDB.swift:172:22:172:33 | remoteString | semmle.label | remoteString |
+| GRDB.swift:185:6:185:17 | remoteString | semmle.label | remoteString |
+| GRDB.swift:185:26:185:80 | String(...) | semmle.label | String(...) |
+| GRDB.swift:187:33:187:44 | remoteString | semmle.label | remoteString |
+| GRDB.swift:190:32:190:43 | remoteString | semmle.label | remoteString |
+| GRDB.swift:193:37:193:48 | remoteString | semmle.label | remoteString |
+| GRDB.swift:199:6:199:17 | remoteString | semmle.label | remoteString |
+| GRDB.swift:199:26:199:80 | String(...) | semmle.label | String(...) |
+| GRDB.swift:201:36:201:47 | remoteString | semmle.label | remoteString |
+| GRDB.swift:207:6:207:17 | remoteString | semmle.label | remoteString |
+| GRDB.swift:207:26:207:80 | String(...) | semmle.label | String(...) |
+| GRDB.swift:209:41:209:52 | remoteString | semmle.label | remoteString |
+| GRDB.swift:210:44:210:55 | remoteString | semmle.label | remoteString |
+| GRDB.swift:211:47:211:58 | remoteString | semmle.label | remoteString |
+| GRDB.swift:212:47:212:58 | remoteString | semmle.label | remoteString |
+| GRDB.swift:222:6:222:17 | remoteString | semmle.label | remoteString |
+| GRDB.swift:222:26:222:80 | String(...) | semmle.label | String(...) |
+| GRDB.swift:224:37:224:48 | remoteString | semmle.label | remoteString |
+| GRDB.swift:225:37:225:48 | remoteString | semmle.label | remoteString |
+| GRDB.swift:229:37:229:48 | remoteString | semmle.label | remoteString |
+| GRDB.swift:230:37:230:48 | remoteString | semmle.label | remoteString |
+| GRDB.swift:234:36:234:47 | remoteString | semmle.label | remoteString |
+| GRDB.swift:235:36:235:47 | remoteString | semmle.label | remoteString |
+| GRDB.swift:242:6:242:17 | remoteString | semmle.label | remoteString |
+| GRDB.swift:242:26:242:80 | String(...) | semmle.label | String(...) |
+| GRDB.swift:244:38:244:49 | remoteString | semmle.label | remoteString |
+| GRDB.swift:250:6:250:17 | remoteString | semmle.label | remoteString |
+| GRDB.swift:250:26:250:80 | String(...) | semmle.label | String(...) |
+| GRDB.swift:252:32:252:43 | remoteString | semmle.label | remoteString |
+| GRDB.swift:253:32:253:43 | remoteString | semmle.label | remoteString |
+| GRDB.swift:254:32:254:43 | remoteString | semmle.label | remoteString |
+| GRDB.swift:255:32:255:43 | remoteString | semmle.label | remoteString |
+| GRDB.swift:261:29:261:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:262:29:262:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:263:29:263:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:264:29:264:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:270:29:270:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:271:29:271:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:272:29:272:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:273:29:273:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:279:29:279:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:280:29:280:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:281:29:281:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:282:29:282:40 | remoteString | semmle.label | remoteString |
+| GRDB.swift:291:6:291:17 | remoteString | semmle.label | remoteString |
+| GRDB.swift:291:26:291:80 | String(...) | semmle.label | String(...) |
+| GRDB.swift:293:53:293:64 | remoteString | semmle.label | remoteString |
+| GRDB.swift:294:53:294:64 | remoteString | semmle.label | remoteString |
+| GRDB.swift:295:53:295:64 | remoteString | semmle.label | remoteString |
+| GRDB.swift:296:53:296:64 | remoteString | semmle.label | remoteString |
+| GRDB.swift:302:50:302:61 | remoteString | semmle.label | remoteString |
+| GRDB.swift:303:50:303:61 | remoteString | semmle.label | remoteString |
+| GRDB.swift:304:50:304:61 | remoteString | semmle.label | remoteString |
+| GRDB.swift:305:50:305:61 | remoteString | semmle.label | remoteString |
+| GRDB.swift:311:50:311:61 | remoteString | semmle.label | remoteString |
+| GRDB.swift:312:50:312:61 | remoteString | semmle.label | remoteString |
+| GRDB.swift:313:50:313:61 | remoteString | semmle.label | remoteString |
+| GRDB.swift:314:50:314:61 | remoteString | semmle.label | remoteString |
+| GRDB.swift:320:50:320:61 | remoteString | semmle.label | remoteString |
+| GRDB.swift:321:50:321:61 | remoteString | semmle.label | remoteString |
+| GRDB.swift:322:50:322:61 | remoteString | semmle.label | remoteString |
+| GRDB.swift:323:50:323:61 | remoteString | semmle.label | remoteString |
+| GRDB.swift:332:6:332:17 | remoteString | semmle.label | remoteString |
+| GRDB.swift:332:26:332:80 | String(...) | semmle.label | String(...) |
+| GRDB.swift:334:57:334:68 | remoteString | semmle.label | remoteString |
+| GRDB.swift:335:57:335:68 | remoteString | semmle.label | remoteString |
+| GRDB.swift:342:6:342:17 | remoteString | semmle.label | remoteString |
+| GRDB.swift:342:26:342:80 | String(...) | semmle.label | String(...) |
+| GRDB.swift:344:51:344:62 | remoteString | semmle.label | remoteString |
+| GRDB.swift:345:51:345:62 | remoteString | semmle.label | remoteString |
+| GRDB.swift:346:66:346:77 | remoteString | semmle.label | remoteString |
+| GRDB.swift:347:66:347:77 | remoteString | semmle.label | remoteString |
+| GRDB.swift:348:69:348:80 | remoteString | semmle.label | remoteString |
+| GRDB.swift:349:84:349:95 | remoteString | semmle.label | remoteString |
+| GRDB.swift:350:69:350:80 | remoteString | semmle.label | remoteString |
+| GRDB.swift:351:84:351:95 | remoteString | semmle.label | remoteString |
+| SQLite.swift:62:6:62:17 | remoteString | semmle.label | remoteString |
+| SQLite.swift:62:25:62:79 | String(...) | semmle.label | String(...) |
+| SQLite.swift:65:6:65:17 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:65:21:65:32 | remoteString | semmle.label | remoteString |
+| SQLite.swift:66:6:66:17 | unsafeQuery2 | semmle.label | unsafeQuery2 |
+| SQLite.swift:66:62:66:73 | remoteString | semmle.label | remoteString |
+| SQLite.swift:67:6:67:17 | unsafeQuery3 | semmle.label | unsafeQuery3 |
+| SQLite.swift:67:60:67:71 | remoteString | semmle.label | remoteString |
+| SQLite.swift:73:17:73:28 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:74:17:74:28 | unsafeQuery2 | semmle.label | unsafeQuery2 |
+| SQLite.swift:75:17:75:28 | unsafeQuery3 | semmle.label | unsafeQuery3 |
+| SQLite.swift:83:29:83:40 | unsafeQuery3 | semmle.label | unsafeQuery3 |
+| SQLite.swift:95:32:95:43 | remoteString | semmle.label | remoteString |
+| SQLite.swift:100:29:100:40 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:103:29:103:40 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:106:29:106:40 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:109:13:109:24 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:111:13:111:24 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:113:13:113:24 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:115:16:115:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:117:16:117:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:119:16:119:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:134:20:134:31 | remoteString | semmle.label | remoteString |
+| SQLite.swift:136:13:136:24 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:138:13:138:24 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:140:16:140:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| SQLite.swift:142:16:142:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| other.swift:51:6:51:17 | remoteString | semmle.label | remoteString |
+| other.swift:51:25:51:79 | String(...) | semmle.label | String(...) |
+| other.swift:55:22:55:33 | remoteString | semmle.label | remoteString |
+| other.swift:57:14:57:25 | remoteString | semmle.label | remoteString |
+| other.swift:58:14:58:25 | remoteString | semmle.label | remoteString |
+| other.swift:59:14:59:43 | NSString(...) | semmle.label | NSString(...) |
+| other.swift:59:31:59:42 | remoteString | semmle.label | remoteString |
+| other.swift:60:14:60:25 | remoteString | semmle.label | remoteString |
+| other.swift:60:14:60:33 | TypeCastExpr | semmle.label | TypeCastExpr |
+| other.swift:62:25:62:36 | remoteString | semmle.label | remoteString |
+| other.swift:64:34:64:45 | remoteString | semmle.label | remoteString |
+| other.swift:67:21:67:32 | remoteString | semmle.label | remoteString |
+| other.swift:69:21:69:32 | remoteString | semmle.label | remoteString |
+| other.swift:72:16:72:27 | remoteString | semmle.label | remoteString |
+| other.swift:73:23:73:34 | remoteString | semmle.label | remoteString |
+| other.swift:74:25:74:36 | remoteString | semmle.label | remoteString |
+| other.swift:75:28:75:39 | remoteString | semmle.label | remoteString |
+| other.swift:76:34:76:45 | remoteString | semmle.label | remoteString |
+| other.swift:77:19:77:30 | remoteString | semmle.label | remoteString |
+| sqlite3_c_api.swift:122:6:122:17 | remoteString | semmle.label | remoteString |
+| sqlite3_c_api.swift:122:26:122:80 | String(...) | semmle.label | String(...) |
+| sqlite3_c_api.swift:125:6:125:17 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| sqlite3_c_api.swift:125:21:125:32 | remoteString | semmle.label | remoteString |
+| sqlite3_c_api.swift:126:6:126:17 | unsafeQuery2 | semmle.label | unsafeQuery2 |
+| sqlite3_c_api.swift:126:62:126:73 | remoteString | semmle.label | remoteString |
+| sqlite3_c_api.swift:127:6:127:17 | unsafeQuery3 | semmle.label | unsafeQuery3 |
+| sqlite3_c_api.swift:127:60:127:71 | remoteString | semmle.label | remoteString |
+| sqlite3_c_api.swift:133:33:133:44 | unsafeQuery1 | semmle.label | unsafeQuery1 |
+| sqlite3_c_api.swift:134:33:134:44 | unsafeQuery2 | semmle.label | unsafeQuery2 |
+| sqlite3_c_api.swift:135:33:135:44 | unsafeQuery3 | semmle.label | unsafeQuery3 |
+| sqlite3_c_api.swift:145:26:145:37 | unsafeQuery3 | semmle.label | unsafeQuery3 |
+| sqlite3_c_api.swift:175:29:175:40 | unsafeQuery3 | semmle.label | unsafeQuery3 |
+| sqlite3_c_api.swift:183:29:183:40 | unsafeQuery3 | semmle.label | unsafeQuery3 |
+| sqlite3_c_api.swift:189:6:189:9 | data | semmle.label | data |
+| sqlite3_c_api.swift:189:13:189:24 | unsafeQuery3 | semmle.label | unsafeQuery3 |
+| sqlite3_c_api.swift:189:13:189:58 | ... .data(...) | semmle.label | ... .data(...) |
+| sqlite3_c_api.swift:190:2:190:5 | data | semmle.label | data |
+| sqlite3_c_api.swift:190:21:190:26 | [post] buffer | semmle.label | [post] buffer |
+| sqlite3_c_api.swift:194:28:194:33 | buffer | semmle.label | buffer |
+| sqlite3_c_api.swift:202:31:202:36 | buffer | semmle.label | buffer |
+| sqlite3_c_api.swift:210:31:210:36 | buffer | semmle.label | buffer |
+subpaths
