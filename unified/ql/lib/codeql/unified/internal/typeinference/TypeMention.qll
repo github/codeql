@@ -332,6 +332,7 @@ class ExprTypeMention extends TypeMentionImpl, Expr {
     result instanceof UnknownType
   }
 
+  pragma[nomagic]
   TypePath getTypeArgumentPath(int i) {
     result = TypePath::singleton(this.getUnexpandedType().getPositionalTypeParameter(i))
     or

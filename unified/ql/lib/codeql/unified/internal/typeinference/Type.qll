@@ -101,6 +101,12 @@ abstract private class TypeImpl extends TType {
     )
   }
 
+  /** Gets the parent type of this nested type, if any. */
+  ClassLikeDeclarationType getParentType() {
+    result.getClassLikeDeclaration() =
+      this.getATypeParameter().(ParentTypeParameterType).getParent()
+  }
+
   /** Gets the name node of this type, if any. */
   abstract Identifier getNameNode();
 

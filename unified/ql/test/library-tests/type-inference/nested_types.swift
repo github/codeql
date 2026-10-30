@@ -114,7 +114,11 @@ class Outer<TOuter> {
         let c = p2.0.getOuter()  // $ target=Outer.Inner.getOuter field=Tuple2.0 type=c:Bool
         let d = p2.0.getInner()  // $ target=Outer.Inner.getInner field=Tuple2.0 type=d:Int
     }
+
+    enum E { case empty }
 }
+
+let e: Outer<Int>.E = Outer.E.empty  // $ field=Outer.E.empty type=.empty@Outer.E<(parent:E)>.Outer<TOuter>:Int
 
 class Foo: Outer<String> {
     func f(x: Pair, y: Outer<Bool>.Pair) {
