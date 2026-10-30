@@ -114,7 +114,7 @@ module InsecureCookie {
         exists(BasicBlock bb, int i |
           // associated SSA node
           node.(SsaNode).asDefinition().definesAt(_, bb, i) and
-          call.getReceiver() = bb.getNode(i).getAstNode()
+          bb.getNode(i).injects(call.getReceiver())
         )
       )
     )
