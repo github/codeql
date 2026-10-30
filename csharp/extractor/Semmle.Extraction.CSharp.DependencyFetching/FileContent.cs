@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
 
     /// <summary>
-    /// Lazily reads XML files once to detect dependency and project settings without evaluating MSBuild.
+    /// Lazily reads XML files to detect dependency and project settings without evaluating MSBuild.
     /// </summary>
     internal class FileContent
     {
@@ -239,38 +239,38 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             ProcessFile(file, reader =>
             {
-                switch (reader.LocalName)
+                switch (reader.LocalName.ToLowerInvariant())
                 {
-                    case "PackageReference":
+                    case "packagereference":
                         AddPackageReference(reader.GetAttribute("Include"), PackageReferenceSource.SdkCsProj);
                         break;
-                    case "Project":
+                    case "project":
                         var sdk = reader.GetAttribute("Sdk");
                         isSdkProjectStructureUsed |= sdk != null;
                         useAspNetCoreDlls |= string.Equals(sdk, "Microsoft.NET.Sdk.Web", StringComparison.OrdinalIgnoreCase);
                         break;
-                    case "FrameworkReference":
+                    case "frameworkreference":
                         var framework = reader.GetAttribute("Include");
                         isSdkProjectStructureUsed |= framework != null;
                         useAspNetCoreDlls |= string.Equals(framework, "Microsoft.AspNetCore.App", StringComparison.OrdinalIgnoreCase);
                         break;
-                    case "ImplicitUsings":
+                    case "implicitusings":
                         useImplicitUsings = useImplicitUsings || ElementContentEquals(reader, "enable", "true");
                         break;
-                    case "UseWPF":
+                    case "usewpf":
                         useWpf = useWpf || ElementContentEquals(reader, "true");
                         break;
-                    case "UseWindowsForms":
+                    case "usewindowsforms":
                         useWindowsForms = useWindowsForms || ElementContentEquals(reader, "true");
                         break;
-                    case "Using":
+                    case "using":
                         var ns = reader.GetAttribute("Include");
                         if (!string.IsNullOrEmpty(ns))
                         {
                             implicitUsingNamespaces.Add(ns);
                         }
                         break;
-                    case "Import":
+                    case "import":
                         isLegacyProjectStructureUsed = isLegacyProjectStructureUsed || reader.GetAttribute("Project")?.EndsWith("Microsoft.CSharp.targets", StringComparison.OrdinalIgnoreCase) == true;
                         break;
                 }
