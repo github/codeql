@@ -35,7 +35,7 @@ predicate associatedTypeParameterInherited(
 ) {
   associatedTypeParameter(base, a, _) and
   baseRef = c.getABaseType().getType() and
-  base.getNameNode() = getStaticBindingTargetFromRef(baseRef) and
+  base.getNameNode() = getExpandedTypeFromRef(baseRef) and
   name = a.getName()
 }
 
@@ -213,6 +213,8 @@ abstract class TypeParameter extends TypeImpl {
   override TypeParameter getPositionalTypeParameter(int i) { none() }
 
   abstract Member getDeclaringItem();
+
+  Member getScope() { result = this.getDeclaringItem() }
 }
 
 private class IdAstNode =
@@ -241,6 +243,12 @@ class TypeParameterType extends TypeParameter, TTypeParameterType {
     typeParam = result.(Unified::FunctionDeclaration).getATypeParameter()
   }
 
+  override Member getScope() {
+    result = super.getScope()
+    or
+    result.(ClassLikeDeclaration).resolve().getEnclosingClassResolved*() = this.getDeclaringItem()
+  }
+
   override Identifier getNameNode() { result = typeParam.getNameNode() }
 
   override string toString() { result = typeParam.getName() }
@@ -261,6 +269,12 @@ class AssociatedTypeParameterType extends TypeParameter, TAssociatedTypeParamete
   Unified::AssociatedTypeDeclaration getAssociatedTypeDeclaration() { result = assocTypeDecl }
 
   override ClassLikeDeclaration getDeclaringItem() { result = c }
+
+  override ClassLikeDeclaration getScope() {
+    result = c
+    or
+    result.resolve().getEnclosingClassResolved*() = c
+  }
 
   override Identifier getNameNode() { result = assocTypeDecl.getNameNode() }
 
@@ -306,6 +320,8 @@ class ParentTypeParameterType extends TypeParameter, TParentTypeParameterType {
   ClassLikeDeclaration getParent() { isNestedType(m, _, result) }
 
   override Member getDeclaringItem() { result = m }
+
+  override Member getScope() { none() }
 
   override Identifier getNameNode() { none() }
 
