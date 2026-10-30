@@ -1,0 +1,5 @@
+--- a/dotnet/private/rules/nuget/nuget_archive.bzl
++++ b/dotnet/private/rules/nuget/nuget_archive.bzl
+@@ -142 +142 @@
+-    if file.endswith(tfm) or file.endswith(tfm + "/"):
++    if file.find("/", tfm_end + 1) != -1:
