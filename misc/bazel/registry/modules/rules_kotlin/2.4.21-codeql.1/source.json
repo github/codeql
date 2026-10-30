@@ -1,0 +1,10 @@
+{
+    "integrity": "sha256-qjJVRS2+m1LaK6d4fwhl8QeAWIUQnznD1br8IaUhvLY=",
+    "url": "https://github.com/bazel-contrib/rules_kotlin/releases/download/v2.4.21/rules_kotlin-v2.4.21.tar.gz",
+    "patches": {
+        "codeql_add_language_version_option.patch": "sha256-ml0fzhPwNozMi6yKtEn9YLM8LSQE4BWiimdwYzennCo=",
+        "codeql_do_not_emit_jdeps.patch": "sha256-yoBFnSWJyeF+gyhX+03TMTnRxUQJjup/f/KORdxVsAE=",
+        "codeql_do_not_propagate_kotlin_warning_mode_to_javac.patch": "sha256-TvfKfINvi1/tcLq3HDUs2doD4kr8AkMv0nsZvUHPjwg="
+    },
+    "patch_strip": 1
+}
