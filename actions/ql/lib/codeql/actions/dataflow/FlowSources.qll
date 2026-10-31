@@ -225,7 +225,9 @@ class GitHubEventJsonSource extends RemoteFlowSource {
         or
         not exists(e.getATriggerEvent()) and
         event = "unknown" and
-        untrustedEventPropertiesDataModel(_, _)
+        untrustedEventPropertiesDataModel(_, _) and
+        not normalizeExpr(e.getExpression())
+            .regexpMatch("(?i)job\\.workflow_(ref|sha|repository|file_path)")
       ) and
       flag = "json"
     )
