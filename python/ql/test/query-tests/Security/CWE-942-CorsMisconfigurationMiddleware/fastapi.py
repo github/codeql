@@ -7,13 +7,13 @@ origins = [
     "*"
 ]
 
-app.add_middleware(
+app.add_middleware( # $ Alert
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-) # $ Alert
+)
 
 
 @app.get("/")

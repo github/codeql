@@ -256,62 +256,62 @@ func minMaxTlsVersion() {
 func cipherSuites() {
 	{
 		config := &tls.Config{
-			CipherSuites: []uint16{
+			CipherSuites: []uint16{ // $ Alert[go/insecure-tls]
 				tls.TLS_RSA_WITH_RC4_128_SHA,                // $ Source[go/insecure-tls] // BAD
 				tls.TLS_RSA_WITH_AES_128_CBC_SHA256,         // $ Source[go/insecure-tls] // BAD
 				tls.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,        // $ Source[go/insecure-tls] // BAD
 				tls.TLS_ECDHE_RSA_WITH_RC4_128_SHA,          // $ Source[go/insecure-tls] // BAD
 				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
 				tls.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,   // $ Source[go/insecure-tls] // BAD
-			}, // $ Alert[go/insecure-tls]
+			},
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
-			CipherSuites: []uint16{
+			CipherSuites: []uint16{ // $ Alert[go/insecure-tls]
 				tls.TLS_RSA_WITH_RC4_128_SHA, // $ Source[go/insecure-tls] // BAD
-			}, // $ Alert[go/insecure-tls]
+			},
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
-			CipherSuites: []uint16{
+			CipherSuites: []uint16{ // $ Alert[go/insecure-tls]
 				tls.TLS_RSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
-			}, // $ Alert[go/insecure-tls]
+			},
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
-			CipherSuites: []uint16{
+			CipherSuites: []uint16{ // $ Alert[go/insecure-tls]
 				tls.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA, // $ Source[go/insecure-tls] // BAD
-			}, // $ Alert[go/insecure-tls]
+			},
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
-			CipherSuites: []uint16{
+			CipherSuites: []uint16{ // $ Alert[go/insecure-tls]
 				tls.TLS_ECDHE_RSA_WITH_RC4_128_SHA, // $ Source[go/insecure-tls] // BAD
-			}, // $ Alert[go/insecure-tls]
+			},
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
-			CipherSuites: []uint16{
+			CipherSuites: []uint16{ // $ Alert[go/insecure-tls]
 				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
-			}, // $ Alert[go/insecure-tls]
+			},
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
-			CipherSuites: []uint16{
+			CipherSuites: []uint16{ // $ Alert[go/insecure-tls]
 				tls.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
-			}, // $ Alert[go/insecure-tls]
+			},
 		}
 		_ = config
 	}
@@ -359,9 +359,9 @@ func cipherSuites() {
 	oldVersionFlag := len(os.Args) > 3
 	if unknown {
 		config := &tls.Config{
-			CipherSuites: []uint16{
+			CipherSuites: []uint16{ // $ Alert[go/insecure-tls]
 				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
-			}, // $ Alert[go/insecure-tls]
+			},
 		}
 		_ = config
 	}
@@ -429,9 +429,9 @@ func cipherSuites() {
 			_ = config
 		default:
 			config := &tls.Config{
-				CipherSuites: []uint16{
+				CipherSuites: []uint16{ // $ Alert[go/insecure-tls]
 					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
-				}, // $ Alert[go/insecure-tls]
+				},
 			}
 			_ = config
 		}
@@ -453,9 +453,9 @@ func cipherSuites() {
 			_ = config
 		default:
 			config := &tls.Config{
-				CipherSuites: []uint16{
+				CipherSuites: []uint16{ // $ Alert[go/insecure-tls]
 					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
-				}, // $ Alert[go/insecure-tls]
+				},
 			}
 			_ = config
 		}

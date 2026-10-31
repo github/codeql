@@ -10,11 +10,11 @@ externalLib({ ...untrusted }); // $ Alert
 externalLib(['x', untrusted, 'y']); // $ Alert
 externalLib('foo', untrusted); // $ Alert
 externalLib({
-    x: {
+    x: { // $ Alert
         y: {
             z: untrusted
         }
-    } // $ Alert
+    }
 });
 
 function getDeepUntrusted() {
@@ -42,4 +42,4 @@ merge({}, { // $ Alert
     x: untrusted, // should not be treated as individual named parameters
     y: untrusted,
     z: untrusted
-}); // $ Alert
+});

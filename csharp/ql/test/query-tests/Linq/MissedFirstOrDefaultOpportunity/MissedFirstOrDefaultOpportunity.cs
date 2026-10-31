@@ -7,11 +7,11 @@ class MissedFirstOrDefaultOpportunity
     public Operation M1(IEnumerable<Operation> operations, string operationId)
     {
         // BAD: Can be replaced with operations.FirstOrDefault(operation => ...).
-        foreach (var operation in operations)
+        foreach (var operation in operations) // $ Alert
         {
             if (string.Equals(operation.OperationId, operationId, StringComparison.Ordinal))
                 return operation;
-        } // $ Alert
+        }
 
         return null;
     }
@@ -19,13 +19,13 @@ class MissedFirstOrDefaultOpportunity
     public int M2(IEnumerable<int> values)
     {
         // BAD: Can be replaced with values.FirstOrDefault(value => ...).
-        foreach (var value in values)
+        foreach (var value in values) // $ Alert
         {
             if (value > 0)
             {
                 return value;
             }
-        } // $ Alert
+        }
 
         return default;
     }
@@ -33,11 +33,11 @@ class MissedFirstOrDefaultOpportunity
     public int? M3(List<int> values)
     {
         // BAD: Can be replaced with values.FirstOrDefault(value => ...).
-        foreach (var value in values)
+        foreach (var value in values) // $ Alert
         {
             if (value > 0)
                 return value;
-        } // $ Alert
+        }
 
         return default(int);
     }
@@ -146,11 +146,11 @@ class MissedFirstOrDefaultOpportunity
     public object M12(IEnumerable<string> values)
     {
         // BAD: FirstOrDefault returns null for missing reference-type elements, matching the fallback.
-        foreach (var value in values)
+        foreach (var value in values) // $ Alert
         {
             if (value.Length > 0)
                 return value;
-        } // $ Alert
+        }
 
         return null;
     }
@@ -158,11 +158,11 @@ class MissedFirstOrDefaultOpportunity
     public object M13(IEnumerable<int> values)
     {
         // BAD: FirstOrDefault returns 0 for missing int elements, matching the fallback before boxing.
-        foreach (var value in values)
+        foreach (var value in values) // $ Alert
         {
             if (value > 0)
                 return value;
-        } // $ Alert
+        }
 
         return default(int);
     }

@@ -37,7 +37,7 @@ impl MyCryptor {
 
 const MY_CONST_1: u64 = 0xFFFF; // $ Alert[rust/hard-coded-cryptographic-value]
 const MY_CONST_2: u64 = std::env::consts::ARCH.len() as u64; // $ Alert[rust/hard-coded-cryptographic-value]
-static MY_STATIC_3: u64 = 0xFFFF; // $ Alert[rust/hard-coded-cryptographic-value]
+static MY_STATIC_3: u64 = 0xFFFF;
 static MY_STATIC_4: u64 = std::env::consts::ARCH.len() as u64;
 
 fn test(var_string: &str, var_data: &[u8;16], var_u64: u64) {

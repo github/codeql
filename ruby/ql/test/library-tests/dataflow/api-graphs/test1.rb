@@ -13,9 +13,9 @@ Unknown.new.run # $ source=Member[Unknown].Method[new].ReturnValue.Method[run].R
 Foo::Bar::Baz # $ source=Member[Foo].Member[Bar].Member[Baz]
 
 Const = [1, 2, 3] # $ source=Member[Array].MethodBracket.ReturnValue
-Const.each do |c| # $ source=Member[Const]
+Const.each do |c| # $ source=Member[Const] source=Member[Const].Method[each].ReturnValue sink=Member[Const].Method[each].Argument[block]
     puts c # $ reachableFromSource=Member[Const].Method[each].Argument[block].Parameter[0] reachableFromSource=Member[Const].Element[any]
-end # $ source=Member[Const].Method[each].ReturnValue sink=Member[Const].Method[each].Argument[block]
+end
 
 foo = Foo # $ source=Member[Foo]
 foo::Bar::Baz # $ source=Member[Foo].Member[Bar].Member[Baz]
