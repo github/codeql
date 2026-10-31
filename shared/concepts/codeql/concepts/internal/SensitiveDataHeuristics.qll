@@ -57,7 +57,7 @@ module HeuristicNames {
    * or trusted data.
    */
   string maybeSecret() {
-    result = "(?is).*((?<!is|is_)secret|(?<!un|un_|is|is_)trusted(?!_iter)|confidential).*"
+    result = "(?is).*((?<!is|is_)secret|(?<!un|un_|is|is_)trusted(?!_iter|_?schema)|confidential).*"
   }
 
   /**
