@@ -261,7 +261,7 @@ public class TypeScriptASTConverter {
       SourceLocation loc = new SourceLocation(text, start, end);
       String kind = getKind(token);
       switch (kind) {
-        case "EndOfFileToken":
+        case "EndOfFile":
           tokens.add(new Token(loc, Token.Type.EOF));
           break;
         case "SingleLineCommentTrivia":
@@ -927,22 +927,6 @@ public class TypeScriptASTConverter {
     return new CatchClause(loc, pattern, null, convertChild(node, "block"));
   }
 
-  private List<ITypeExpression> convertSuperInterfaceClause(JsonArray supers) throws ParseError {
-    List<ITypeExpression> result = new ArrayList<>();
-    for (JsonElement elt : supers) {
-      JsonObject superType = elt.getAsJsonObject();
-      ITypeExpression objectType = convertChildAsType(superType, "expression");
-      if (objectType == null) continue;
-      List<ITypeExpression> typeArguments = convertChildrenAsTypes(superType, "typeArguments");
-      if (typeArguments.isEmpty()) {
-        result.add(objectType);
-      } else {
-        result.add(new GenericTypeExpr(getSourceLocation(superType), objectType, typeArguments));
-      }
-    }
-    return result;
-  }
-
   private Node convertClass(JsonObject node, String kind, SourceLocation loc) throws ParseError {
     Identifier id = convertChild(node, "name");
     List<TypeParameter> typeParameters = convertChildrenNotNull(node, "typeParameters");
@@ -957,7 +941,7 @@ public class TypeScriptASTConverter {
           superClass = (Expression) convertNode(supers.get(0).getAsJsonObject());
         }
       } else {
-        superInterfaces = convertSuperInterfaceClause(supers);
+        superInterfaces = convertChildrenAsTypes(heritageClause, "types");
       }
       afterHead = heritageClause.get("$end").getAsInt();
     }
@@ -1562,7 +1546,7 @@ public class TypeScriptASTConverter {
     for (JsonElement elt : getChildIterable(node, "heritageClauses")) {
       JsonObject heritageClause = elt.getAsJsonObject();
       if (heritageClause.get("token").getAsInt() == syntaxKindExtends) {
-        superInterfaces = convertSuperInterfaceClause(heritageClause.get("types").getAsJsonArray());
+        superInterfaces = convertChildrenAsTypes(heritageClause, "types");
         break;
       }
     }
@@ -1762,6 +1746,10 @@ public class TypeScriptASTConverter {
     Node nameNode = convertChild(node, "name");
     List<Statement> body;
     Statement b = convertChild(node, "body");
+    if (hasKind(node.get("body"), "ModuleDeclaration")) {
+      // The inner declarations in `namespace A.B` are implicitly exported.
+      b = new ExportNamedDeclaration(b.getLoc(), b, new ArrayList<>(), null, null);
+    }
     if (b instanceof BlockStatement) {
       body = ((BlockStatement) b).getBody();
     } else {
@@ -1774,11 +1762,11 @@ public class TypeScriptASTConverter {
       attachSymbolInformation(decl, node);
       return decl;
     }
-    if (hasFlag(node, "GlobalAugmentation")) {
+    Identifier name = (Identifier) nameNode;
+    if (isGlobalAugmentation(node, loc, name)) {
       // Declaration of form: declare global {...}
       return new GlobalAugmentationDeclaration(loc, body);
     }
-    Identifier name = (Identifier) nameNode;
     boolean isInstantiated = false;
     for (Statement stmt : body) {
       isInstantiated = isInstantiated || isInstantiatingNamespaceMember(stmt);
@@ -1787,13 +1775,18 @@ public class TypeScriptASTConverter {
     NamespaceDeclaration decl =
         new NamespaceDeclaration(loc, name, body, isInstantiated, hasDeclareKeyword);
     attachSymbolInformation(decl, node);
-    if (hasFlag(node, "NestedNamespace")) {
-      // In a nested namespace declaration `namespace A.B`, the nested namespace `B`
-      // is implicitly exported.
-      return new ExportNamedDeclaration(loc, decl, new ArrayList<>(), null, null);
-    } else {
-      return fixExports(loc, decl);
+    return fixExports(loc, decl);
+  }
+
+  private boolean isGlobalAugmentation(JsonObject node, SourceLocation loc, Identifier name) {
+    if (!name.getName().equals("global")) return false;
+    // There is no `module` or `namespace` keyword between the modifiers and `global`.
+    int start = loc.getStart().getOffset();
+    for (JsonElement modifier : getModifiers(node)) {
+      start = modifier.getAsJsonObject().get("$end").getAsInt();
     }
+    return source.substring(start, name.getLoc().getStart().getOffset())
+        .matches("(?U)(?:\\uFEFF|" + WHITESPACE_CHAR + ")*");
   }
 
   private boolean isInstantiatingNamespaceMember(Statement node) {
@@ -2123,10 +2116,10 @@ public class TypeScriptASTConverter {
     if (kind.equals("PropertySignature")) {
       flags |= DeclarationFlags.abstract_;
     }
-    if (node.get("questionToken") != null) {
+    if (hasKind(node.get("postfixToken"), "QuestionToken")) {
       flags |= DeclarationFlags.optional;
     }
-    if (node.get("exclamationToken") != null) {
+    if (hasKind(node.get("postfixToken"), "ExclamationToken")) {
       flags |= DeclarationFlags.definiteAssignmentAssertion;
     }
     if (hasModifier(node, "DeclareKeyword")) {
@@ -2323,7 +2316,7 @@ public class TypeScriptASTConverter {
 
   private Node convertImportAttributes(JsonObject node, SourceLocation loc) throws ParseError {
     List<Property> properties = new ArrayList<>();
-    for (INode child : convertChildren(node, "elements")) {
+    for (INode child : convertChildren(node, "attributes")) {
       properties.add((Property) child);
     }
     // Adjust location to skip over the `with` or `assert` keyword.
@@ -2336,7 +2329,7 @@ public class TypeScriptASTConverter {
 
   private Node convertImportAttribute(JsonObject node, SourceLocation loc) throws ParseError {
     return new Property(
-        loc, convertChild(node, "key"), convertChild(node, "value"), "init", false, false);
+        loc, convertChild(node, "name"), convertChild(node, "value"), "init", false, false);
   }
 
   private Node convertSatisfiesExpression(JsonObject node, SourceLocation loc) throws ParseError {
@@ -2371,7 +2364,7 @@ public class TypeScriptASTConverter {
         loc,
         convertChild(node, "name"),
         convertChildAsType(node, "constraint"),
-        convertChildAsType(node, "default"));
+        convertChildAsType(node, "defaultType"));
   }
 
   private Node convertTypePredicate(JsonObject node, SourceLocation loc) throws ParseError {
@@ -2720,6 +2713,9 @@ public class TypeScriptASTConverter {
     if (hasFlag(declarationList, "Using")) {
       return "using";
     }
-    return declarationList.get("$declarationKind").getAsString();
+    if (hasFlag(declarationList, "Let")) {
+      return "let";
+    }
+    return hasFlag(declarationList, "Const") ? "const" : "var";
   }
 }
