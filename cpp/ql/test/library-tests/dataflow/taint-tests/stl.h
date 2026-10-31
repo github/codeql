@@ -1,28 +1,4 @@
-
-typedef unsigned long size_t;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#include "type_traits.h"
+#include "../../../include/type_traits.h"
 
 namespace std
 {
@@ -135,6 +111,25 @@ namespace std
 		typedef size_t size_type;
 	};
 
+	template<bool, class T = void>
+	struct enable_if {};
+	
+	template<class T>
+	struct enable_if<true, T> { typedef T type; };
+	
+	template<class CharT, class Traits>
+	class basic_string_view;
+	
+	template<class T>
+	struct is_string_view_like {
+		static const bool value = false; 
+	};
+	
+	template<class CharT, class Traits>
+	struct is_string_view_like<basic_string_view<CharT, Traits>> {
+		static const bool value = true;
+	};
+
 	template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
 	class basic_string {
 	public:
@@ -147,10 +142,17 @@ namespace std
 		explicit basic_string(const Allocator& a = Allocator());
 		basic_string(const charT* s, const Allocator& a = Allocator());
 		template<class InputIterator> basic_string(InputIterator begin, InputIterator end, const Allocator& a = Allocator());
+		
+		template<class StringViewLike, typename enable_if<is_string_view_like<StringViewLike>::value>::type* = nullptr>
+		explicit basic_string(const StringViewLike&, const Allocator& = Allocator());
+		
+		template<class StringViewLike, typename enable_if<is_string_view_like<StringViewLike>::value>::type* = nullptr>
+		basic_string(const StringViewLike&, size_type, size_type, const Allocator& = Allocator());
 
 		const charT* c_str() const;
 		charT* data() noexcept;
 		size_t length() const;
+		size_t size() const;
 
 		typedef std::iterator<random_access_iterator_tag, charT> iterator;
 		typedef std::iterator<random_access_iterator_tag, const charT> const_iterator;
@@ -176,18 +178,41 @@ namespace std
 		template<class T> basic_string& operator+=(const T& t);
 		basic_string& operator+=(const charT* s);
 		basic_string& append(const basic_string& str);
+		
+		template<class StringViewLike, typename enable_if<is_string_view_like<StringViewLike>::value>::type* = nullptr>
+		basic_string& append(const StringViewLike&); template<class StringViewLike, typename enable_if<is_string_view_like<StringViewLike>::value>::type* = nullptr> basic_string& append(const StringViewLike&, size_type, size_type);
+		
 		basic_string& append(const charT* s);
 		basic_string& append(size_type n, charT c);
 		template<class InputIterator> basic_string& append(InputIterator first, InputIterator last); 
 		basic_string& assign(const basic_string& str);
+		
+		template<class StringViewLike, typename enable_if<is_string_view_like<StringViewLike>::value>::type* = nullptr>
+		basic_string& assign(const StringViewLike&); template<class StringViewLike, typename enable_if<is_string_view_like<StringViewLike>::value>::type* = nullptr>
+		
+		basic_string& assign(const StringViewLike&, size_type, size_type);
+		
 		basic_string& assign(size_type n, charT c);
 		template<class InputIterator> basic_string& assign(InputIterator first, InputIterator last);
 		basic_string& insert(size_type pos, const basic_string& str);
+		
+		template<class StringViewLike, typename enable_if<is_string_view_like<StringViewLike>::value>::type* = nullptr>
+		basic_string& insert(size_type, const StringViewLike&); template<class StringViewLike, typename enable_if<is_string_view_like<StringViewLike>::value>::type* = nullptr>
+		basic_string& insert(size_type, const StringViewLike&, size_type, size_type);
+
 		basic_string& insert(size_type pos, size_type n, charT c);
 		basic_string& insert(size_type pos, const charT* s);
 		iterator insert(const_iterator p, size_type n, charT c);
 		template<class InputIterator> iterator insert(const_iterator p, InputIterator first, InputIterator last); 
 		basic_string& replace(size_type pos1, size_type n1, const basic_string& str);
+
+		template<class StringViewLike, typename enable_if<is_string_view_like<StringViewLike>::value>::type* = nullptr>
+		basic_string& replace(size_type, size_type, const StringViewLike&); template<class StringViewLike, typename enable_if<is_string_view_like<StringViewLike>::value>::type* = nullptr>
+		
+		basic_string& replace(const_iterator, const_iterator, const StringViewLike&);
+		
+		template<class StringViewLike, typename enable_if<is_string_view_like<StringViewLike>::value>::type* = nullptr>
+		basic_string& replace(size_type, size_type, const StringViewLike&, size_type, size_type);
 		basic_string& replace(size_type pos1, size_type n1, size_type n2, charT c);
 		size_type copy(charT* s, size_type n, size_type pos = 0) const;
 		void clear() noexcept;
@@ -197,6 +222,12 @@ namespace std
 
 	template<class charT, class traits, class Allocator> basic_string<charT, traits, Allocator> operator+(const basic_string<charT, traits, Allocator>& lhs, const basic_string<charT, traits, Allocator>& rhs);
 	template<class charT, class traits, class Allocator> basic_string<charT, traits, Allocator> operator+(const basic_string<charT, traits, Allocator>& lhs, const charT* rhs);
+	
+	template<class charT, class traits, class Allocator>
+	basic_string<charT, traits, Allocator> operator+(charT, const basic_string<charT, traits, Allocator>&);
+	
+	template<class charT, class traits, class Allocator>
+	basic_string<charT, traits, Allocator> operator+(charT, basic_string<charT, traits, Allocator>&&);
 
 	typedef basic_string<char> string;
 }
@@ -289,7 +320,9 @@ namespace std {
 		using iterator = std::iterator<random_access_iterator_tag, T>;
 		using const_iterator = std::iterator<random_access_iterator_tag, const T>;
 
-		vector() noexcept(noexcept(Allocator())) : vector(Allocator()) { }
+		vector() noexcept(noexcept(Allocator()));
+		vector(const vector& x);
+		vector(vector&& x) noexcept;
 		explicit vector(const Allocator&) noexcept;
 		explicit vector(size_type n, const Allocator& = Allocator());
 		vector(size_type n, const T& value, const Allocator& = Allocator());
@@ -392,9 +425,10 @@ namespace std {
 
 		T1 first;
 		T2 second;
-		pair();
-		pair(const T1& x, const T2& y) : first(x), second(y) {};
+		pair(); pair(const pair&); pair(pair&&); pair& operator=(const pair&); pair& operator=(pair&&);
+		pair(const T1& x, const T2& y);
 		template<class U, class V> pair(const pair<U, V> &p);
+		template<class U, class V> pair(U&&, V&&);
 
 		void swap(pair& p) /*noexcept(...)*/;
 	};
@@ -419,6 +453,11 @@ namespace std {
 		using const_iterator = std::iterator<random_access_iterator_tag, const value_type >;
 
 		map() /*: map(Compare()) { }*/;
+		template<class InputIt> map(InputIt, InputIt);
+		
+		template<class InputIt> map(InputIt, InputIt, const Compare&);
+		
+		template<class InputIt> map(InputIt, InputIt, const Compare&, const Allocator&);
 		map(const map& x);
 		map(map&& x);
 		~map();
@@ -433,6 +472,7 @@ namespace std {
 
 		T& operator[](const key_type& x);
 		T& operator[](key_type&& x);
+		template<class K> T& operator[](K&& x);
 		T& at(const key_type& x);
 		const T& at(const key_type& x) const;
 
@@ -441,9 +481,10 @@ namespace std {
 
 		pair<iterator, bool> insert(const value_type& x);
 		pair<iterator, bool> insert(value_type&& x);
+		template<class P> pair<iterator, bool> insert(P&& x);
 		iterator insert(const_iterator position, const value_type& x);
 		iterator insert(const_iterator position, value_type&& x);
-
+		template<class P> iterator insert(const_iterator position, P&& x);
 		template<class... Args> pair<iterator, bool> try_emplace(const key_type& k, Args&&... args);
 		template<class... Args> pair<iterator, bool> try_emplace(key_type&& k, Args&&... args);
 		template<class... Args> iterator try_emplace(const_iterator hint, const key_type& k, Args&&... args);
@@ -650,14 +691,43 @@ namespace std {
 	class basic_string_view {
 	public:
 		using size_type = size_t;
+		using const_iterator = const CharT*;
 
 		basic_string_view() noexcept;
 		basic_string_view(const basic_string_view&) noexcept;
 		basic_string_view(const CharT*, size_type);
 		basic_string_view(const CharT*);
 		template<class It, class End> basic_string_view(It, End);
-		template<class R> explicit basic_string_view(R&&);
+		template<class R, typename enable_if<!is_string_view_like<remove_const_t<remove_reference_t<R>>>::value>::type* = nullptr>
+		explicit basic_string_view(R&&);
 		basic_string_view& operator=(const basic_string_view&) noexcept;
+
+		const_iterator begin() const;
+		const_iterator end() const;
+		const_iterator cbegin() const;
+		const_iterator cend() const;
+		const CharT& operator[](size_type) const;
+		const CharT& at(size_type) const;
+		const CharT& front() const;
+		const CharT& back() const;
+		const CharT* data() const;
+		void remove_prefix(size_type);
+		void remove_suffix(size_type);
+		void swap(basic_string_view&);
+		size_type copy(CharT*, size_type, size_type = 0) const;
+		basic_string_view substr(size_type = 0, size_type = -1) const;
+		basic_string_view subview(size_type = 0, size_type = -1) const;
+
+		size_type size() const;
+		size_type length() const;
+		size_type max_size() const;
+		bool empty() const;
+		int compare(basic_string_view) const;
+		bool starts_with(basic_string_view) const;
+		bool ends_with(basic_string_view) const;
+		bool contains(basic_string_view) const;
+		size_type find(basic_string_view) const;
+		size_type rfind(basic_string_view) const;
 	};
 
 	using string_view = basic_string_view<char>;

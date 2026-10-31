@@ -19,6 +19,7 @@ void sink(const std::string &s);
 void sink(const char *filename, const char *mode);
 void sink(char);
 void sink(std::string::iterator);
+void sink(std::string_view);
 
 void test_string()
 {
@@ -30,20 +31,20 @@ void test_string()
 	sink(b);
 	sink(c); // $ ast,ir
 	sink(b.c_str());
-	sink(c.c_str()); // $ ast,ir
+	sink(c.c_str()); // $ ir MISSING: ast
 }
 
 void test_strings2()
 {
 	string path1 = user_input();
-	sink(path1.c_str(), "r"); // $ ast,ir
+	sink(path1.c_str(), "r"); // $ ir MISSING: ast
 
 	string path2;
 	path2 = user_input();
-	sink(path2.c_str(), "r"); // $ ast,ir
+	sink(path2.c_str(), "r"); // $ ir MISSING: ast
 
 	string path3(user_input());
-	sink(path3.c_str(), "r"); // $ ast,ir
+	sink(path3.c_str(), "r"); // $ ir MISSING: ast
 }
 
 void test_string3()
@@ -67,7 +68,7 @@ void test_string4()
 	// convert back std::string -> char *
 	cs = ss.c_str();
 
-	sink(cs); // $ ast,ir
+	sink(cs); // $ ir MISSING: ast
 	sink(ss); // $ ast,ir
 }
 
@@ -142,9 +143,9 @@ void test_string_append() {
 		std::string s2(source());
 
 		sink(s1 + s1);
-		sink(s1 + s2); // $ ast,ir
-		sink(s2 + s1); // $ ast,ir
-		sink(s2 + s2); // $ ast,ir
+		sink(s1 + s2); // $ ir MISSING: ast
+		sink(s2 + s1); // $ ir MISSING: ast
+		sink(s2 + s2); // $ ir MISSING: ast
 	
 		sink(s1 + " world");
 		sink(s1 + source()); // $ ast,ir
@@ -156,25 +157,25 @@ void test_string_append() {
 		std::string s5, s6, s7, s8, s9;
 
 		s5 = s3 + s4;
-		sink(s5); // $ ast,ir
+		sink(s5); // $ ir MISSING: ast
 
 		s6 = s3;
-		sink(s6 += s4); // $ ast,ir
-		sink(s6); // $ ast,ir
+		sink(s6 += s4); // $ ir MISSING: ast
+		sink(s6); // $ ir MISSING: ast
 
 		s7 = s3;
 		sink(s7 += source()); // $ ast,ir
-		sink(s7 += " "); // $ ast,ir
-		sink(s7); // $ ast,ir
+		sink(s7 += " "); // $ ir MISSING: ast
+		sink(s7); // $ ir MISSING: ast
 
 		s8 = s3;
 		s8.append(s4);
-		sink(s8); // $ ast,ir
+		sink(s8); // $ ir MISSING: ast
 
 		s9 = s3;
 		s9.append(source());
 		s9.append(" ");
-		sink(s9); // $ ast,ir
+		sink(s9); // $ ir MISSING: ast
 	}
 
 	{
@@ -182,7 +183,7 @@ void test_string_append() {
 		char c = ns_char::source();
 
 		s10.append(1, c);
-		sink(s10); // $ ast,ir
+		sink(s10); // $ ir MISSING: ast
 	}
 }
 
@@ -196,14 +197,14 @@ void test_string_assign() {
 	sink(s3.assign(s1));
 	sink(s3);
 
-	sink(s4.assign(s2)); // $ ast,ir
-	sink(s4); // $ ast,ir
+	sink(s4.assign(s2)); // $ ir MISSING: ast
+	sink(s4); // $ ir MISSING: ast
 
-	sink(s5.assign(10, c)); // $ ast,ir
-	sink(s5); // $ ast,ir
+	sink(s5.assign(10, c)); // $ ir MISSING: ast
+	sink(s5); // $ ir MISSING: ast
 
 	sink(s6.assign(s1));
-	sink(s6); // $ SPURIOUS: ast
+	sink(s6); // $ SPURIOUS: ast,ir
 }
 
 void test_string_insert() {
@@ -217,16 +218,16 @@ void test_string_insert() {
 	sink(s3);
 
 	s4 = s2;
-	sink(s4.insert(0, s1)); // $ ast,ir
+	sink(s4.insert(0, s1)); // $ ir MISSING: ast
 	sink(s4); // $ ast,ir
 
 	s5 = s1;
-	sink(s5.insert(0, s2)); // $ ast,ir
-	sink(s5); // $ ast,ir
+	sink(s5.insert(0, s2)); // $ ir MISSING: ast
+	sink(s5); // $ ir MISSING: ast
 
 	s6 = s1;
-	sink(s6.insert(0, 10, c)); // $ ast,ir
-	sink(s6); // $ ast,ir
+	sink(s6.insert(0, 10, c)); // $ ir MISSING: ast
+	sink(s6); // $ ir MISSING: ast
 }
 
 void test_string_replace() {
@@ -240,16 +241,16 @@ void test_string_replace() {
 	sink(s3);
 
 	s4 = s2;
-	sink(s4.replace(1, 2, s1)); // $ ast,ir
+	sink(s4.replace(1, 2, s1)); // $ ir MISSING: ast
 	sink(s4); // $ ast,ir
 
 	s5 = s1;
-	sink(s5.replace(1, 2, s2)); // $ ast,ir
-	sink(s5); // $ ast,ir
+	sink(s5.replace(1, 2, s2)); // $ ir MISSING: ast
+	sink(s5); // $ ir MISSING: ast
 
 	s6 = s1;
-	sink(s6.replace(1, 2, 10, c)); // $ ast,ir
-	sink(s6); // $ ast,ir
+	sink(s6.replace(1, 2, 10, c)); // $ ir MISSING: ast
+	sink(s6); // $ ir MISSING: ast
 }
 
 void test_string_copy() {
@@ -262,7 +263,7 @@ void test_string_copy() {
 	sink(b1);
 
 	s2.copy(b2, s1.length(), 0);
-	sink(b2); // $ ast,ir
+	sink(b2); // $ ir MISSING: ast
 }
 
 void test_string_swap() {
@@ -309,7 +310,7 @@ void test_string_data()
 	std::string b(source());
 
 	sink(a.data());
-	sink(b.data()); // $ ast,ir
+	sink(b.data()); // $ ir MISSING: ast
 	sink(a.length());
 	sink(b.length());
 }
@@ -320,7 +321,7 @@ void test_string_substr()
 	std::string b(source());
 
 	sink(a.substr(0, a.length()));
-	sink(b.substr(0, b.length())); // $ ast,ir
+	sink(b.substr(0, b.length())); // $ ir MISSING: ast
 }
 
 void test_string_at()
@@ -337,9 +338,9 @@ void test_string_at()
 	b.at(0) = ns_char::source();
 	c[0] = a[0];
 
-	sink(a); // $ ast,ir
-	sink(b); // $ ast,ir
-	sink(c); // $ ast,ir
+	sink(a); // $ ir MISSING: ast
+	sink(b); // $ ir MISSING: ast
+	sink(c); // $ ir MISSING: ast
 }
 
 void test_string_data_more()
@@ -347,8 +348,8 @@ void test_string_data_more()
 	std::string str("123");
 
 	str.data()[1] = ns_char::source();
-	sink(str); // $ ast,ir
-	sink(str.data()); // $ ast,ir
+	sink(str); // $ ir MISSING: ast
+	sink(str.data()); // $ ir MISSING: ast
 }
 
 void test_string_iterators() {
@@ -360,8 +361,8 @@ void test_string_iterators() {
 		std::string s4("world");
 
 		sink(s1);
-		sink(s1.append(s2.begin(), s2.end())); // $ ast,ir
-		sink(s1); // $ ast,ir
+		sink(s1.append(s2.begin(), s2.end())); // $ ir MISSING: ast
+		sink(s1); // $ ir MISSING: ast
 
 		sink(s3);
 		sink(s3.append(s4.begin(), s4.end()));
@@ -433,8 +434,8 @@ void test_string_insert_more()
 	sink(s1.insert(0, cs1));
 	sink(s1);
 
-	sink(s2.insert(0, cs2)); // $ ast,ir
-	sink(s2); // $ ast,ir
+	sink(s2.insert(0, cs2)); // $ ir MISSING: ast
+	sink(s2); // $ ir MISSING: ast
 }
 
 void test_string_iterator_methods()
@@ -446,8 +447,8 @@ void test_string_iterator_methods()
 		sink(a.insert(a.begin(), 10, 'x'));
 		sink(a);
 
-		sink(b.insert(b.begin(), 10, ns_char::source())); // $ ast,ir
-		sink(b); // $ ast,ir
+		sink(b.insert(b.begin(), 10, ns_char::source())); // $ ir MISSING: ast
+		sink(b); // $ ir MISSING: ast
 	}
 
 	{
@@ -459,10 +460,10 @@ void test_string_iterator_methods()
 		sink(c.insert(c.end(), s1.begin(), s1.end()));
 		sink(c);
 
-		sink(d.insert(d.end(), s2.begin(), s2.end())); // $ ast,ir
-		sink(d); // $ ast,ir
+		sink(d.insert(d.end(), s2.begin(), s2.end())); // $ ir MISSING: ast
+		sink(d); // $ ir MISSING: ast
 
-		sink(s2.insert(s2.end(), s1.begin(), s1.end())); // $ ast,ir
+		sink(s2.insert(s2.end(), s1.begin(), s1.end())); // $ ir MISSING: ast
 		sink(s2); // $ ast,ir
 	}
 
@@ -475,10 +476,10 @@ void test_string_iterator_methods()
 		sink(e.append(s3.begin(), s3.end()));
 		sink(e);
 
-		sink(f.append(s4.begin(), s4.end())); // $ ast,ir
-		sink(f); // $ ast,ir
+		sink(f.append(s4.begin(), s4.end())); // $ ir MISSING: ast
+		sink(f); // $ ir MISSING: ast
 
-		sink(s4.append(s3.begin(), s3.end())); // $ ast,ir
+		sink(s4.append(s3.begin(), s3.end())); // $ ir MISSING: ast
 		sink(s4); // $ ast,ir
 	}
 
@@ -491,11 +492,11 @@ void test_string_iterator_methods()
 		sink(g.assign(s5.cbegin(), s5.cend()));
 		sink(g);
 
-		sink(h.assign(s6.cbegin(), s6.cend())); // $ ast,ir
-		sink(h); // $ ast,ir
+		sink(h.assign(s6.cbegin(), s6.cend())); // $ ir MISSING: ast
+		sink(h); // $ ir MISSING: ast
 
 		sink(s6.assign(s5.cbegin(), s5.cend()));
-		sink(s6); // $ SPURIOUS: ast
+		sink(s6); // $ SPURIOUS: ast,ir
 	}
 }
 
@@ -510,7 +511,7 @@ void test_string_constructors_more() {
 	sink(s1);
 	sink(s2); // $ ast,ir
 	sink(s3);
-	sink(s4); // $ ast,ir
+	sink(s4); // $ ir MISSING: ast
 }
 
 void test_string_front_back() {
@@ -519,8 +520,8 @@ void test_string_front_back() {
 	sink(a.front());
 	sink(a.back());
 	a.push_back(ns_char::source());
-	sink(a.front()); // $ SPURIOUS: ast,ir
-	sink(a.back()); // $ ast,ir
+	sink(a.front()); // $ SPURIOUS: ir
+	sink(a.back()); // $ ir MISSING: ast
 }
 
 void test_string_return_assign() {
@@ -533,15 +534,15 @@ void test_string_return_assign() {
 		std::string f("ff");
 
 		sink( a += (b += "bb") );
-		sink( c += (d += source()) ); // $ ast,ir
+		sink( c += (d += source()) ); // $ ir MISSING: ast
 		sink( (e += "ee") += source() ); // $ ast,ir
-		sink( (f += source()) += "ff" ); // $ ast,ir
+		sink( (f += source()) += "ff" ); // $ ir MISSING: ast
 		sink(a);
 		sink(b);
-		sink(c); // $ ast,ir
-		sink(d); // $ ast,ir
-		sink(e); // $ ast,ir
-		sink(f); // $ ast,ir
+		sink(c); // $ ir MISSING: ast
+		sink(d); // $ ir MISSING: ast
+		sink(e); // $ ir MISSING: ast
+		sink(f); // $ ir MISSING: ast
 	}
 
 	{
@@ -553,14 +554,187 @@ void test_string_return_assign() {
 		std::string f("ff");
 
 		sink( a.assign(b.assign("bb")) );
-		sink( c.assign(d.assign(source())) ); // $ ast,ir
-		sink( e.assign("ee").assign(source()) ); // $ ast,ir
+		sink( c.assign(d.assign(source())) ); // $ ir MISSING: ast
+		sink( e.assign("ee").assign(source()) ); // $ ir MISSING: ast
 		sink( f.assign(source()).assign("ff") );
 		sink(a);
 		sink(b);
-		sink(c); // $ ast,ir
-		sink(d); // $ ast,ir
-		sink(e); // $ ast,ir
-		sink(f); // $ SPURIOUS: ast,ir
+		sink(c); // $ ir MISSING: ast
+		sink(d); // $ ir MISSING: ast
+		sink(e); // $ ir MISSING: ast
+		sink(f); // $ SPURIOUS: ir
+	}
+}
+
+namespace ns_string_view {
+	std::string_view source();
+}
+
+void test_string_view_like() {
+	std::string_view view = ns_string_view::source();
+	std::string constructed(view), sliced(view, 0, 1);
+	sink(constructed); // $ ir
+	sink(sliced); // $ ir
+
+	std::string assigned, appended, inserted, replaced;
+	sink(assigned.assign(view)); // $ ir
+	sink(appended.append(view, 0, 1)); // $ ir
+	sink(inserted.insert(0, view)); // $ ir
+	sink(replaced.replace(0, 0, view)); // $ ir
+
+	char tainted = ns_char::source();
+	sink(tainted + std::string("clean")); // $ ir
+}
+
+namespace string_view_tests {
+
+namespace iterators {
+struct Iterator {};
+Iterator source();
+}
+
+namespace ranges {
+	struct Range {};
+	Range source();
+}
+
+void constructors() {
+	const char* data = source();
+	std::string_view terminated(data);
+	sink(terminated); // $ ast,ir
+	sink(terminated.data()); // $ ir MISSING: ast
+
+	std::string_view counted(data, 5);
+	sink(counted); // $ ir MISSING: ast
+	sink(counted.data()); // $ ir MISSING: ast
+
+	std::string_view iterators(data, data + 5);
+	sink(iterators); // $ ir MISSING: ast
+}
+
+void copy_and_assignment() {
+	const auto original = ns_string_view::source();
+	std::string_view copied(original);
+	sink(copied); // $ ast,ir
+	sink(copied.data()); // $ ir MISSING: ast
+	std::string_view moved(static_cast<const std::string_view&&>(original));
+	sink(moved); // $ ast,ir
+
+	std::string_view assigned;
+	sink(assigned = original); // $ ast,ir
+	sink(assigned); // $ ast,ir
+
+	const std::string_view clean;
+	std::string_view chained;
+	(chained = clean) = original;
+	sink(chained); // $ ir MISSING: ast
+
+	copied = clean;
+	sink(copied); // $ SPURIOUS: ast
+}
+
+void iterator_and_range_constructors() {
+	iterators::Iterator it = iterators::source();
+	std::string_view iterators(it, it);
+	sink(iterators); // $ ir MISSING: ast
+
+	ranges::Range range = ranges::source();
+	std::string_view from_range(range);
+	sink(from_range); // $ ir MISSING: ast
+
+	std::vector<char> container;
+	container.push_back(ns_char::source());
+	std::string_view from_container(container);
+	sink(from_container); // $ MISSING: ir
+	std::string_view from_container_iterators(container.begin(), container.end());
+	sink(from_container_iterators); // $ MISSING: ir
+}
+
+void accessors() {
+	auto view = ns_string_view::source();
+	sink(view.data()); // $ ir MISSING: ast
+	sink(view[0]); // $ ir MISSING: ast
+	sink(view.at(0)); // $ ir MISSING: ast
+	sink(view.front()); // $ ir MISSING: ast
+	sink(view.back()); // $ ir MISSING: ast
+	sink(*view.begin()); // $ ast,ir
+	sink(*view.cbegin()); // $ ast,ir
+}
+
+void trimming() {
+	auto prefix = ns_string_view::source();
+	prefix.remove_prefix(1);
+	sink(prefix); // $ ast,ir
+	sink(prefix.data()); // $ ir MISSING: ast
+
+	auto suffix = ns_string_view::source();
+	suffix.remove_suffix(1);
+	sink(suffix); // $ ast,ir
+	sink(suffix.data()); // $ ir MISSING: ast
+}
+
+void operations() {
+	auto view = ns_string_view::source();
+	sink(view.substr(1, 2)); // $ ir MISSING: ast
+	sink(view.subview(1, 2)); // $ ir MISSING: ast
+
+	char buffer[10] = {};
+	sink(view.copy(buffer, 2));
+	sink(buffer); // $ ir MISSING: ast
+
+	std::string_view clean;
+	view.swap(clean);
+	sink(view); // $ SPURIOUS: ast
+	sink(clean); // $ ir MISSING: ast
+}
+}
+
+void test_string_reverse_flow() {
+	{
+		std::string s("aa");
+		(s = "bb") += source();
+		sink(s); // $ ir MISSING: ast
+	}
+
+	{
+		std::string s("aa");
+		s.front() = ns_char::source();
+		sink(s); // $ ir MISSING: ast
+	}
+
+	{
+		std::string s("aa");
+		s.back() = ns_char::source();
+		sink(s); // $ ir MISSING: ast
+	}
+
+	{
+		std::string s("aa");
+		s.data()[0] = ns_char::source();
+		sink(s); // $ ir MISSING: ast
+	}
+
+	{
+		std::string s("aa");
+		s.insert(0, "bb") = source();
+		sink(s); // $ ir MISSING: ast
+	}
+
+	{
+		std::string s("aa");
+		s.append("bb") = source();
+		sink(s); // $ ir MISSING: ast
+	}
+
+	{
+		std::string s("aa");
+		(s += "bb") = source();
+		sink(s); // $ ir MISSING: ast
+	}
+
+	{
+		std::string s("aa");
+		s.replace(0, 1, "bb") = source();
+		sink(s); // $ ir MISSING: ast
 	}
 }

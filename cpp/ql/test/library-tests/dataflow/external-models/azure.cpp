@@ -1,3 +1,4 @@
+#include "../taint-tests/stl.h"
 using uint16_t = unsigned short;
 using int64_t = long long;
 using size_t = unsigned long;
@@ -5,51 +6,13 @@ using uint8_t = unsigned char;
 using int32_t = int;
 using uint32_t = unsigned int;
 
-namespace std
-{
-  class string
-  {
-  public:
-    string();
-    string(const char *);
-    ~string();
-  };
-
-  template <typename K, typename V>
-  class map
-  {
-  public:
-    map();
-    ~map();
-
-    V& operator[](const K& key);
-  };
-
-  template <typename T>
-  class vector
-  {
-  public:
-    vector();
-    ~vector();
-
-    T& operator[](size_t);
-  };
-
-  template<typename T>
-  class unique_ptr {
-  public:
-    unique_ptr();
-    ~unique_ptr();
-
-    T* get();
-  };
-}
-
 namespace Azure
 {
   template <typename T>
     class Nullable
     {
+      T m_value;
+
     public:
       Nullable();
       Nullable(const T);
@@ -284,6 +247,7 @@ void test_RawResponse(Azure::Core::Http::RawResponse& resp) {
 }
 
 void test_GetHeader() {
+  std::pair<std::string, std::string>();
   Azure::Core::Http::Request request(Azure::Core::Http::Get, Azure::Core::Url("http://example.com"));
   {
     auto headerValue = request.GetHeader("Content-Type").Value();
@@ -294,4 +258,11 @@ void test_GetHeader() {
     std::string contentType = headers["Content-Type"];
     sink(contentType); // $ ir
   }
+}
+
+void test_QueryParameters() {
+  Azure::Core::Http::Request request(Azure::Core::Http::Get, Azure::Core::Url("http://example.com"));
+  Azure::Core::Url url;
+  url.SetQueryParameters(request.GetHeaders());
+  sink(url.GetQueryParameters()["query"]); // $ ir
 }
