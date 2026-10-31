@@ -1,20 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Xml;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
 
-    // <summary>
-    // This class is used to read a set of files and decide different properties about the
-    // content (by reading the content of the files only once).
-    // The implementation is lazy, so the properties are only calculated when
-    // the first property is accessed.
-    // </summary>
-    internal partial class FileContent
+    /// <summary>
+    /// Lazily reads XML files to detect dependency and project settings without evaluating MSBuild.
+    /// </summary>
+    internal class FileContent
     {
         private readonly ILogger logger;
         private readonly IUnsafeFileReader unsafeFileReader;
@@ -23,6 +20,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly HashSet<string> implicitUsingNamespaces = new HashSet<string>();
         private readonly Initializer initialize;
 
+        /// <summary>
+        /// All detected package references in the project.
+        /// </summary>
         public HashSet<PackageReference> AllPackages
         {
             get
@@ -37,7 +37,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// True if any file in the source directory indicates that ASP.NET Core is used.
         /// The following heuristic is used to decide, if ASP.NET Core is used:
-        /// If any file in the source directory contains something like (this will most like be a .csproj file)
+        /// If any XML file in the source directory contains something like (this will most like be a .csproj file)
         ///     &lt;Project Sdk="Microsoft.NET.Sdk.Web"&gt;
         ///     &lt;FrameworkReference Include="Microsoft.AspNetCore.App"/&gt;
         /// </summary>
@@ -50,6 +50,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        /// <summary>
+        /// True if there is an indication that ASP.NET Core is used.
+        /// </summary>
         public bool IsAspNetCoreDetected
         {
             get
@@ -60,6 +63,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private bool useImplicitUsings = false;
 
+        /// <summary>
+        /// True if there is an indication that implicit usings are used.
+        /// </summary>
         public bool UseImplicitUsings
         {
             get
@@ -71,6 +77,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private bool useWpf = false;
 
+        /// <summary>
+        /// True if there is an indication that WPF is used.
+        /// </summary>
         public bool UseWpf
         {
             get
@@ -82,6 +91,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private bool useWindowsForms = false;
 
+        /// <summary>
+        /// True if there is an indication that Windows Forms is used.
+        /// </summary>
         public bool UseWindowsForms
         {
             get
@@ -93,6 +105,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private bool isLegacyProjectStructureUsed = false;
 
+        /// <summary>
+        /// True if there is an indication that the legacy project structure is used (e.g., non-SDK-style .csproj files).
+        /// </summary>
         public bool IsLegacyProjectStructureUsed
         {
             get
@@ -103,6 +118,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         private bool isSdkProjectStructureUsed = false;
+
+        /// <summary>
+        /// True if there is an indication that the new project structure is used (e.g., SDK-style .csproj files).
+        /// </summary>
         public bool IsSdkProjectStructureUsed
         {
             get
@@ -135,47 +154,127 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public FileContent(ILogger logger, IEnumerable<string> files) : this(logger, files, new UnsafeFileReader())
         { }
 
-        private static string GetGroup(ReadOnlySpan<char> input, ValueMatch valueMatch, string groupPrefix)
+        private void AddPackageReference(string? packageName, PackageReferenceSource source)
         {
-            var match = input.Slice(valueMatch.Index, valueMatch.Length);
-            var includeIndex = match.IndexOf(groupPrefix, StringComparison.OrdinalIgnoreCase);
-            if (includeIndex == -1)
+            if (!string.IsNullOrEmpty(packageName))
             {
-                return string.Empty;
+                allPackages.Add(new PackageReference(packageName.ToLowerInvariant(), source));
             }
-
-            match = match.Slice(includeIndex + groupPrefix.Length + 1);
-
-            var quoteIndex1 = match.IndexOf("\"");
-            var quoteIndex2 = match.Slice(quoteIndex1 + 1).IndexOf("\"");
-
-            return match.Slice(quoteIndex1 + 1, quoteIndex2).ToString();
         }
 
-        private static bool IsGroupMatch(ReadOnlySpan<char> line, Regex regex, string groupPrefix, string value)
+        private void ProcessFile(string file, Action<XmlReader> processElement)
         {
-            foreach (var valueMatch in regex.EnumerateMatches(line))
+            try
             {
-                // We can't get the group from the ValueMatch, so doing it manually:
-                if (string.Equals(GetGroup(line, valueMatch, groupPrefix), value, StringComparison.OrdinalIgnoreCase))
+                using var stream = unsafeFileReader.OpenRead(file);
+                using var reader = XmlReader.Create(stream, new XmlReaderSettings
                 {
-                    return true;
+                    DtdProcessing = DtdProcessing.Prohibit,
+                    XmlResolver = null,
+                    IgnoreComments = true,
+                    IgnoreProcessingInstructions = true
+                });
+
+                while (reader.Read())
+                {
+                    if (reader.NodeType != XmlNodeType.Element)
+                    {
+                        continue;
+                    }
+
+                    processElement(reader);
+                }
+            }
+            catch (XmlException)
+            {
+                logger.LogDebug($"Failed to parse {file} as an XML file.");
+            }
+        }
+
+        /// <summary>
+        /// Parses a packages.config XML file to extract package references.
+        /// </summary>
+        /// <param name="file"></param>
+        private void ParsePackagesConfigFile(string file)
+        {
+            ProcessFile(file, r =>
+            {
+                if (r.LocalName == "package")
+                {
+                    AddPackageReference(r.GetAttribute("id"), PackageReferenceSource.PackagesConfig);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Checks if the content of the current XML element equals any of the specified values, ignoring case.
+        /// A new reader is created to avoid modifying the state of the original reader.
+        /// </summary>
+        /// <param name="reader">The XML reader positioned at the element to read.</param>
+        /// <returns>True if the element content equals any of the specified values, ignoring case; otherwise, false.</returns>
+        private bool ElementContentEquals(XmlReader reader, params string[] values)
+        {
+            using (XmlReader subReader = reader.ReadSubtree())
+            {
+                if (subReader.Read())
+                {
+                    var content = subReader.ReadElementContentAsString().Trim();
+                    foreach (var value in values)
+                    {
+                        if (string.Equals(content, value, StringComparison.OrdinalIgnoreCase))
+                        {
+                            return true;
+                        }
+                    }
                 }
             }
             return false;
         }
 
-        private void AddPackageReference(ReadOnlySpan<char> line, string groupName, Func<Regex> regex, PackageReferenceSource source)
+        /// <summary>
+        /// Attempt to parse the specified file as an XML file for project dependencies and settings.
+        /// </summary>
+        /// <param name="file"></param>
+        private void Parse(string file)
         {
-            foreach (var valueMatch in regex().EnumerateMatches(line))
+            ProcessFile(file, reader =>
             {
-                // We can't get the group from the ValueMatch, so doing it manually:
-                var packageName = GetGroup(line, valueMatch, groupName).ToLowerInvariant();
-                if (!string.IsNullOrEmpty(packageName))
+                switch (reader.LocalName.ToLowerInvariant())
                 {
-                    allPackages.Add(new PackageReference(packageName, source));
+                    case "packagereference":
+                        AddPackageReference(reader.GetAttribute("Include"), PackageReferenceSource.SdkCsProj);
+                        break;
+                    case "project":
+                        var sdk = reader.GetAttribute("Sdk");
+                        isSdkProjectStructureUsed |= sdk != null;
+                        useAspNetCoreDlls |= string.Equals(sdk, "Microsoft.NET.Sdk.Web", StringComparison.OrdinalIgnoreCase);
+                        break;
+                    case "frameworkreference":
+                        var framework = reader.GetAttribute("Include");
+                        isSdkProjectStructureUsed |= framework != null;
+                        useAspNetCoreDlls |= string.Equals(framework, "Microsoft.AspNetCore.App", StringComparison.OrdinalIgnoreCase);
+                        break;
+                    case "implicitusings":
+                        useImplicitUsings = useImplicitUsings || ElementContentEquals(reader, "enable", "true");
+                        break;
+                    case "usewpf":
+                        useWpf = useWpf || ElementContentEquals(reader, "true");
+                        break;
+                    case "usewindowsforms":
+                        useWindowsForms = useWindowsForms || ElementContentEquals(reader, "true");
+                        break;
+                    case "using":
+                        var ns = reader.GetAttribute("Include");
+                        if (!string.IsNullOrEmpty(ns))
+                        {
+                            implicitUsingNamespaces.Add(ns);
+                        }
+                        break;
+                    case "import":
+                        isLegacyProjectStructureUsed = isLegacyProjectStructureUsed || reader.GetAttribute("Project")?.EndsWith("Microsoft.CSharp.targets", StringComparison.OrdinalIgnoreCase) == true;
+                        break;
                 }
-            }
+            });
         }
 
         private void DoInitialize()
@@ -185,53 +284,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 try
                 {
                     var isPackagesConfig = string.Equals(FileUtils.SafeGetFileName(file, logger), "packages.config", StringComparison.OrdinalIgnoreCase);
-
-                    foreach (ReadOnlySpan<char> line in unsafeFileReader.ReadLines(file))
+                    if (isPackagesConfig)
                     {
-                        // Find all the packages.
-                        if (isPackagesConfig)
-                        {
-                            AddPackageReference(line, "id", LegacyPackageReference, PackageReferenceSource.PackagesConfig);
-                        }
-                        else
-                        {
-                            AddPackageReference(line, "Include", PackageReference, PackageReferenceSource.SdkCsProj);
-                        }
-
-                        // Determine if ASP.NET is used.
-                        useAspNetCoreDlls = useAspNetCoreDlls
-                            || IsGroupMatch(line, ProjectSdk(), "Sdk", "Microsoft.NET.Sdk.Web")
-                            || IsGroupMatch(line, FrameworkReference(), "Include", "Microsoft.AspNetCore.App");
-
-                        // Determine if implicit usings are used.
-                        useImplicitUsings = useImplicitUsings
-                            || line.Contains("<ImplicitUsings>enable</ImplicitUsings>".AsSpan(), StringComparison.OrdinalIgnoreCase)
-                            || line.Contains("<ImplicitUsings>true</ImplicitUsings>".AsSpan(), StringComparison.OrdinalIgnoreCase);
-
-                        // Determine if WPF is used.
-                        useWpf = useWpf
-                            || line.Contains("<UseWPF>true</UseWPF>".AsSpan(), StringComparison.OrdinalIgnoreCase);
-
-                        // Determine if Windows Forms is used.
-                        useWindowsForms = useWindowsForms
-                            || line.Contains("<UseWindowsForms>true</UseWindowsForms>".AsSpan(), StringComparison.OrdinalIgnoreCase);
-
-                        // Find all custom implicit usings.
-                        foreach (var valueMatch in CustomImplicitUsingDeclarations().EnumerateMatches(line))
-                        {
-                            var ns = GetGroup(line, valueMatch, "Include");
-                            if (!string.IsNullOrEmpty(ns))
-                            {
-                                implicitUsingNamespaces.Add(ns);
-                            }
-                        }
-
-                        // Determine project structure:
-                        isLegacyProjectStructureUsed = isLegacyProjectStructureUsed || MicrosoftCSharpTargets().IsMatch(line);
-                        isSdkProjectStructureUsed = isSdkProjectStructureUsed
-                            || ProjectSdk().IsMatch(line)
-                            || FrameworkReference().IsMatch(line);
-                        // TODO: we could also check `<Sdk Name="Microsoft.NET.Sdk" />`
+                        ParsePackagesConfigFile(file);
+                    }
+                    else
+                    {
+                        Parse(file);
                     }
                 }
                 catch (Exception ex)
@@ -250,41 +309,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             logger.LogInfo($"Implicit usings enabled: {useImplicitUsings}");
         }
 
-        [GeneratedRegex("(?<!<!--.*)<PackageReference.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
-        private static partial Regex PackageReference();
-
-        [GeneratedRegex("(?<!<!--.*)<package.*\\sid=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
-        private static partial Regex LegacyPackageReference();
-
-        [GeneratedRegex("(?<!<!--.*)<FrameworkReference.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
-        private static partial Regex FrameworkReference();
-
-        [GeneratedRegex("(?<!<!--.*)<(.*\\s)?Project.*\\sSdk=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
-        private static partial Regex ProjectSdk();
-
-        [GeneratedRegex("(?<!<!--.*)<Using.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
-        private static partial Regex CustomImplicitUsingDeclarations();
-
-        [GeneratedRegex("(?<!<!--.*)<Import.*\\sProject=\".*Microsoft\\.CSharp\\.targets\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
-        private static partial Regex MicrosoftCSharpTargets();
     }
 
     internal interface IUnsafeFileReader
     {
-        IEnumerable<string> ReadLines(string file);
+        Stream OpenRead(string file);
     }
 
     internal class UnsafeFileReader : IUnsafeFileReader
     {
-        public IEnumerable<string> ReadLines(string file)
-        {
-            using var sr = new StreamReader(file);
-            string? line;
-            while ((line = sr.ReadLine()) != null)
-            {
-                yield return line;
-            }
-        }
+        public Stream OpenRead(string file) => File.OpenRead(file);
     }
 
     public enum PackageReferenceSource
