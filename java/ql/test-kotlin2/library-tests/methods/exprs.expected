@@ -48,7 +48,6 @@
 | dataClass.kt:0:0:0:0 | String | TypeAccess |
 | dataClass.kt:0:0:0:0 | String | TypeAccess |
 | dataClass.kt:0:0:0:0 | String | TypeAccess |
-| dataClass.kt:0:0:0:0 | String | TypeAccess |
 | dataClass.kt:0:0:0:0 | boolean | TypeAccess |
 | dataClass.kt:0:0:0:0 | copy(...) | MethodCall |
 | dataClass.kt:0:0:0:0 | false | BooleanLiteral |
@@ -56,7 +55,6 @@
 | dataClass.kt:0:0:0:0 | false | BooleanLiteral |
 | dataClass.kt:0:0:0:0 | hashCode(...) | MethodCall |
 | dataClass.kt:0:0:0:0 | hashCode(...) | MethodCall |
-| dataClass.kt:0:0:0:0 | int | TypeAccess |
 | dataClass.kt:0:0:0:0 | int | TypeAccess |
 | dataClass.kt:0:0:0:0 | int | TypeAccess |
 | dataClass.kt:0:0:0:0 | int | TypeAccess |
@@ -114,6 +112,7 @@
 | dataClass.kt:1:22:1:31 | int | TypeAccess |
 | dataClass.kt:1:22:1:31 | int | TypeAccess |
 | dataClass.kt:1:22:1:31 | int | TypeAccess |
+| dataClass.kt:1:22:1:31 | int | TypeAccess |
 | dataClass.kt:1:22:1:31 | this | ThisAccess |
 | dataClass.kt:1:22:1:31 | this.x | VarAccess |
 | dataClass.kt:1:22:1:31 | x | VarAccess |
@@ -121,6 +120,7 @@
 | dataClass.kt:1:34:1:46 | ...=... | AssignExpr |
 | dataClass.kt:1:34:1:46 | ...=... | KtInitializerAssignExpr |
 | dataClass.kt:1:34:1:46 | <set-?> | VarAccess |
+| dataClass.kt:1:34:1:46 | String | TypeAccess |
 | dataClass.kt:1:34:1:46 | String | TypeAccess |
 | dataClass.kt:1:34:1:46 | String | TypeAccess |
 | dataClass.kt:1:34:1:46 | String | TypeAccess |
@@ -346,8 +346,8 @@
 | methods5.kt:5:23:5:23 | i | VarAccess |
 | methods5.kt:5:23:5:27 | ... + ... | AddExpr |
 | methods5.kt:5:27:5:27 | x | VarAccess |
+| methods5.kt:6:3:6:3 | x | VarAccess |
 | methods5.kt:6:3:6:7 | ...=... | AssignExpr |
-| methods5.kt:6:3:6:7 | x | VarAccess |
 | methods5.kt:6:7:6:7 | 6 | IntegerLiteral |
 | methods5.kt:7:3:7:15 | <implicit coercion to unit> | ImplicitCoercionToUnitExpr |
 | methods5.kt:7:3:7:15 | Object | TypeAccess |
@@ -356,8 +356,8 @@
 | methods5.kt:7:3:7:15 | a(...) | MethodCall |
 | methods5.kt:7:3:7:15 | new (...) | ClassInstanceExpr |
 | methods5.kt:7:13:7:14 | 42 | IntegerLiteral |
+| methods5.kt:8:3:8:3 | x | VarAccess |
 | methods5.kt:8:3:8:7 | ...=... | AssignExpr |
-| methods5.kt:8:3:8:7 | x | VarAccess |
 | methods5.kt:8:7:8:7 | 7 | IntegerLiteral |
 | methods5.kt:9:3:9:32 | int | TypeAccess |
 | methods5.kt:9:12:9:17 | C1<T1> | TypeAccess |
