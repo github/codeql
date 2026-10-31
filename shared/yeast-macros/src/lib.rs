@@ -201,8 +201,18 @@ pub fn rule(input: TokenStream) -> TokenStream {
 /// Paths are resolved relative to the consuming crate's `CARGO_MANIFEST_DIR`
 /// (the same convention `include_str!` uses for relative paths). The
 /// resolved paths are also emitted as `include_str!` references so the
-/// consuming crate gets invalidated when a schema YAML changes, prepping
-/// the ground for compile-time type-checking against those schemas.
+/// consuming crate gets invalidated when a schema YAML changes.
+///
+/// A bare output leaf used as a top-level rule result inherits the matched
+/// input node's value:
+///
+/// ```text
+/// rule!((superExpr) => (super_expr))
+/// ```
+///
+/// Whether the output kind is a leaf is determined from the output schema.
+/// Nested bare leaves are rejected at compile time because they have no
+/// unambiguous input node from which to inherit a value.
 #[proc_macro]
 pub fn rules(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();

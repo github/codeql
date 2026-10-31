@@ -236,6 +236,27 @@ impl<'a, C> BuildCtx<'a, C> {
         )
     }
 
+    /// Create a leaf whose value is inherited from the current rule's match.
+    #[doc(hidden)]
+    pub fn inherited_literal(&mut self, kind: &'static str) -> OutputId {
+        let source = self
+            .translator
+            .as_ref()
+            .expect("inherited leaf content requires a rule match")
+            .matched_root();
+        let node = self
+            .ast
+            .get_node(source)
+            .expect("rule source node must exist");
+        let stored = node.opt_string_content();
+        let has_children = node.fields.values().any(|children| !children.is_empty());
+        let content = match stored {
+            Some(value) if !value.is_empty() || !has_children => value,
+            _ => self.ast.source_text(source),
+        };
+        self.create_named_token_with_range(kind, content, None)
+    }
+
     /// Create a leaf node with a fixed string content.
     pub fn literal(&mut self, kind: &'static str, value: &str) -> OutputId {
         self.create_named_token_with_range(kind, value.to_string(), None)
