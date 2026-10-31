@@ -3,6 +3,7 @@
 import java
 private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.CharacterFiltering
 import semmle.code.java.security.SensitiveActions
 import semmle.code.java.frameworks.android.Compose
 private import semmle.code.java.security.Sanitizers
@@ -137,6 +138,10 @@ module SensitiveLoggerConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof SensitiveLoggerBarrier }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
+  predicate isAdditionalFlowStep(DataFlow::Node source, DataFlow::Node sink) {
+    characterFilteringCallStep(source, sink)
+  }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }
