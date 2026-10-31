@@ -1,0 +1,16 @@
+name: Workflow run untrusted checkout path
+
+on:
+  workflow_run:
+    workflows: [Test]
+    types: [completed]
+
+jobs:
+  nested-path:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          path: nested/checkout
+      - run: ./nested/checkout/build.sh
