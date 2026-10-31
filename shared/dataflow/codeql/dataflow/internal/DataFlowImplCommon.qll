@@ -1004,6 +1004,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     private predicate relevantType(Type t) { t = getNodeType(_) }
 
+    pragma[no_dynamic_join_order]
     cached
     predicate isTopType(Type t) {
       strictcount(Type t0 | relevantType(t0)) =
@@ -1513,6 +1514,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           Cand::argumentValueFlowsThroughCand(arg, _, _)
         }
 
+        pragma[no_dynamic_join_order]
         pragma[nomagic]
         private predicate argumentValueFlowsThrough0(
           Call call, ArgNode arg, ReturnKind kind, ReadStepTypesOption read, string model,
@@ -2132,6 +2134,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * the current data flow stage has reached the call of `arg` from one of its
      * call targets.
      */
+    pragma[no_dynamic_join_order]
     private predicate typeFlowArgTypeFromReturn(ArgNode arg, Type t) {
       exists(ParamNode p, Type t1, Type t2 |
         dataFlowTakenCallEdgeOut(_, _, arg, p) and
