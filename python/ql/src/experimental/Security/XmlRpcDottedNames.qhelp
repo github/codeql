@@ -1,0 +1,17 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Enabling the <code>allow_dotted_names</code> option allows intruders to access your module’s global
+ variables and may allow intruders to execute arbitrary code on your machine. Only use this example only within a secure, closed network.
+</p>
+
+<references>
+
+<li>Python Language Reference: <a href="https://docs.python.org/3/library/xmlrpc.server.html#xmlrpc.server.SimpleXMLRPCServer">
+Basic XML-RPC servers</a>.
+</li>
+
+</references>
+</qhelp>
