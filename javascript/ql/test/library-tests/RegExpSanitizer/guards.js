@@ -80,6 +80,17 @@ function constructors(flags) {
     }
 }
 
+function overriddenFlags() {
+    const value = source();
+    // Explicit overrides removing a literal's `m` flag are not currently covered by the sanitizer model.
+    if (new RegExp(/^[\w.-]+$/m, "").test(value)) {
+        sink(value); // $ SPURIOUS: flow
+    }
+    if (new RegExp(/^[\w.-]+$/m, "i").test(value)) {
+        sink(value); // $ SPURIOUS: flow
+    }
+}
+
 function groupsAndAlternatives() {
     const value = source();
     if (/(^[\w.-]+$)/m.test(value)) {

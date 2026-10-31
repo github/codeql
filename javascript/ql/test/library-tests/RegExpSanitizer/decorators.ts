@@ -12,4 +12,11 @@ class Validated {
 
     @Matches(new RegExp("^\\w+$", "m"))
     constructedMultiline: string;
+
+    @Matches("^\\w+$", "i") // $ sanitizer
+    stringSingleLine: string;
+
+    // Separate flags for string patterns are not currently covered by the sanitizer model.
+    @Matches("^\\w+$", "m") // $ SPURIOUS: sanitizer
+    stringMultiline: string;
 }
