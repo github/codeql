@@ -34,14 +34,20 @@ predicate no_inheritance(Class c) {
 
 predicate is_decorated(Class c) { exists(c.getADecorator()) }
 
+private predicate is_stateful_store(Expr e) {
+  e.isStoreContext()
+  or
+  e = any(AugAssign a).getTarget()
+}
+
 predicate is_stateful(Class c) {
-  exists(Function method, ExprContext ctx |
+  exists(Function method |
     method.getScope() = c and
-    (ctx instanceof Store or ctx instanceof AugStore)
-  |
-    exists(Subscript s | s.getScope() = method and s.getCtx() = ctx)
-    or
-    exists(Attribute a | a.getScope() = method and a.getCtx() = ctx)
+    (
+      exists(Subscript s | s.getScope() = method and is_stateful_store(s))
+      or
+      exists(Attribute a | a.getScope() = method and is_stateful_store(a))
+    )
   )
   or
   exists(Function method, Call call, Attribute a, string name |
