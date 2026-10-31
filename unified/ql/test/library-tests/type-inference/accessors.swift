@@ -112,7 +112,7 @@ class InheritedAccessors: GenericAccessors<Int> {
 
 extension GenericAccessors {
   var extensionValue: T {
-    return stored  // $ field=GenericAccessors.stored $ MISSING: type=stored:T
+    return stored  // $ field=GenericAccessors.stored type=stored:T
   }
 }
 

@@ -8,6 +8,7 @@ private import unified as U
 private import AstPlugin
 private import codeql.files.FileSystem
 private import codeql.unified.internal.NameBinding as NameBinding
+private import codeql.unified.internal.typeinference.TypeMention as TypeMention
 
 module Unified {
   private import Ast::Unified as G
@@ -49,6 +50,11 @@ module Unified {
         result = parent.getEnclosingClass()
       )
     }
+
+    /**
+     * Gets the nearest resolved enclosing class declaration, if any.
+     */
+    ClassLikeDeclaration getEnclosingClassResolved() { result = this.getEnclosingClass().resolve() }
 
     private AstNode overrideEnclosingCallableParent() {
       exists(FunctionExpr func |
@@ -239,15 +245,16 @@ module Unified {
     /** Gets the name of this declaration. */
     string getName() { result = this.getNameNode().getValue() }
 
-    /** Gets a direct base class of this class. */
+    /** Gets a direct base class of this class, where type aliases are resolved. */
+    pragma[nomagic]
     ClassLikeDeclaration getABaseClass() {
-      result.getNameNode() =
-        NameBinding::getStaticBindingTargetFromRef(this.getABaseType().getType())
+      result = this.getABaseType().getType().(TypeMention::TypeMention).getClassLikeDeclaration()
     }
 
     /**
      * Gets the target of this extension class, or this class itself if it is not an extension.
      */
+    pragma[nomagic]
     ClassLikeDeclaration resolve() {
       not exists(this.getExtensionTarget()) and
       result = this
