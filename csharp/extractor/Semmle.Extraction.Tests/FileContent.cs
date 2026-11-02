@@ -230,6 +230,24 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
+        /// Verifies that an SDK attribute on an import indicates SDK project structure.
+        /// </summary>
+        [Fact]
+        public void TestFileContent_SdkProjectImport()
+        {
+            // Setup
+            var fileContent = new TestFileContent("<Project><Import Project='Sdk.props' Sdk='Microsoft.NET.Sdk' /></Project>");
+
+            // Execute
+            var isLegacy = fileContent.IsLegacyProjectStructureUsed;
+            var isSdk = fileContent.IsSdkProjectStructureUsed;
+
+            // Verify
+            Assert.True(isSdk);
+            Assert.False(isLegacy);
+        }
+
+        /// <summary>
         /// Verifies that `FileContent` correctly handles XML syntax with namespaces and various elements.
         /// </summary>
         [Fact]

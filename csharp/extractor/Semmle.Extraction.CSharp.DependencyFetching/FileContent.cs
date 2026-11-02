@@ -271,8 +271,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         }
                         break;
                     case "import":
-                        isLegacyProjectStructureUsed = isLegacyProjectStructureUsed || reader.GetAttribute("Project")?.EndsWith("Microsoft.CSharp.targets", StringComparison.OrdinalIgnoreCase) == true;
+                        var project = reader.GetAttribute("Project");
+                        isSdkProjectStructureUsed = isSdkProjectStructureUsed || project is not null && reader.GetAttribute("Sdk") is not null;
+                        isLegacyProjectStructureUsed = isLegacyProjectStructureUsed || project?.EndsWith("Microsoft.CSharp.targets", StringComparison.OrdinalIgnoreCase) == true;
                         break;
+                        // TODO: we could also check `<Sdk Name="Microsoft.NET.Sdk" />`
                 }
             });
         }
