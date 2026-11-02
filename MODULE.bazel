@@ -33,7 +33,7 @@ bazel_dep(name = "googletest", version = "1.18.0.bcr.1")
 bazel_dep(name = "rules_rust", version = "0.74.0")
 bazel_dep(name = "rules_swift", version = "4.0.0-rc5-codeql.3")
 bazel_dep(name = "swift-syntax", version = "603.0.2")
-bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
+bazel_dep(name = "zstd", version = "1.5.7.bcr.3")
 
 bazel_dep(name = "buildifier_prebuilt", version = "10.1.0", dev_dependency = True)
 
