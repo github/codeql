@@ -750,7 +750,8 @@ predicate unqualifiedMemberAccess(
   ClassLikeDeclaration accessingClass
 ) {
   CachedStage::ref() and
-  unqualifiedMemberAccessCand(access, instanceAccess, target, accessingClass) and
+  unqualifiedMemberAccessCand(pragma[only_bind_into](access), instanceAccess, target,
+    pragma[only_bind_into](accessingClass)) and
   accessingClass.getDepth() = unqualifiedMemberAccessDepth(access)
 }
 
