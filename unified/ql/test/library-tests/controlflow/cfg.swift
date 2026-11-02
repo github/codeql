@@ -63,7 +63,7 @@ func createClosure3(x : Int) -> (_ : Int) -> Int { // $ noCfg
   }
 }
 
-func callClosures() { // $ noCfg
+func callClosures() {
   var x1 = createClosure1(s: "")()
   var x2 = createClosure2(x: 0)(10)
   var x3 = createClosure3(x: 0)(10)
@@ -137,8 +137,12 @@ func testMemberRef(param : C, inoutParam : inout C, opt : C?) {
 }
 
 func patterns(x : Int) -> Bool {
-  for _ in 0...10 // $ bbStep='... ... ... : empty -> SwitchExpr(+3)' bbStep='... ... ... : non-empty -> _(+0)'
-        {  } // $ bbStep='Block : successor -> _(-1)' bbStep='Block : successor -> SwitchExpr(+2)'
+  for _ in 0...10 // $ bbStep='... ... ... : empty -> ForEachStmt(+3)' bbStep='... ... ... : non-empty -> _(+0)'
+        {  } // $ bbStep='Block : successor -> _(-1)' bbStep='Block : successor -> ForEachStmt(+2)'
+
+  for y in 0...10 where y != 5 { // $ bbStep='... ... ... : empty -> SwitchExpr(+4)' bbStep='... ... ... : non-empty -> y(+0)' bbStep='... != ... : false -> SwitchExpr(+4)' bbStep='... != ... : false -> y(+0)' bbStep='... != ... : true -> Block(+0)'
+    print(y) // $ bbStep='print(...) : successor -> SwitchExpr(+3)' bbStep='print(...) : successor -> y(-1)'
+  }
 
   switch x {
     case 0, 1: // $ bbStep='OrPattern : match -> Block(+1)' bbStep='OrPattern : no-match -> SwitchCase(+3)'
@@ -148,37 +152,42 @@ func patterns(x : Int) -> Bool {
         (x >= 2) && // $ bbStep='... >= ... : false -> x(-1)' bbStep='... >= ... : true -> x(+1)'
             x < 5: // $ bbStep='... < ... : successor -> x(-2)'
       return true
+    case 42: // $ bbStep='42 : match -> Block(+1)' bbStep='42 : no-match -> SwitchCase(+3)'
+      print("42!")
+      fallthrough // $ bbStep=' : successor -> var obj(+5)'
     default:
-      return false
+      if (x > 10) { return false } // $ bbStep='... > ... : false -> var obj(+3)' bbStep='... > ... : true -> Block(+0)'
   }
 
-  var obj : AnyObject = C(n: x) // $ noCfg
-  if obj is C { // $ noCfg
-    return true // $ noCfg
+  var obj : AnyObject = C(n: x)
+  if obj is C { // $ bbStep='TypeTestExpr : false -> let xOptional(+4)' bbStep='TypeTestExpr : true -> Block(+0)'
+    return true
   }
 
-  let xOptional: Int? = x // $ noCfg
-  if case .some(let x) = xOptional { // $ noCfg
-    return x == 0 // $ noCfg
+  let xOptional: Int? = x
+  if case .some(let x) = xOptional { // $ bbStep='PatternGuardExpr : false -> Block(+2)' bbStep='PatternGuardExpr : true -> .(+0)'
+    return x == 0
   } else {
-    return false // $ noCfg
+    return false
   }
 }
 
 func testDefer(x : inout Int) {
-  // Will print 1, 2, 3, 4
-  defer {
-    print("4")
+  // Will print 1, 2, 3, 4, 5, 6
+  defer { // $ bbContinues='DeferStmt goto print(+3)'
+    print("6")
+  }
+  print("1")
+  print("2")
+
+  defer { // $ bbContinues='DeferStmt goto DeferStmt(+4)'
+    print("5") // $ bbContinues='print(...) goto Block(-7)'
   }
 
   defer {
     print("3")
-  }
-
-  defer {
-    print("1")
-     defer {
-      print("2")
+    defer {
+      print("4") // $ bbContinues='print(...) goto Block(-7)'
     }
   }
 }
@@ -197,7 +206,7 @@ func m1(x : Int) {
   }
 }
 
-func m2(b : Bool) -> Int {
+func m2(b : Bool = false) -> Int { // $ bbStep='b : match -> Block(+0)' bbStep='b : no-match -> false(+0)' bbStep='false : successor -> Block(+0)'
   if b { // $ bbStep='b : false -> 1(+3)' bbStep='b : true -> Block(+0)'
     return 0
   }
@@ -233,7 +242,7 @@ func conversionsInSplitEntry (b : Bool) -> String {
   }
 }
 
-func constant_condition() { // $ noCfg
+func constant_condition() {
   if !true {
     print("Impossible") // $ noCfg
   }
@@ -355,7 +364,7 @@ func testRepeat(x : inout Int) {
   } while x >= 0 // $ bbStep='... >= ... : true -> Block(-3)'
 }
 
-func loop_with_identity_expr() { // $ noCfg
+func loop_with_identity_expr() {
   var x = 0
   while(x < 10) { // $ bbStep='WhileStmt : successor -> x(+0)' bbStep='... < ... : true -> Block(+0)'
     x += 1 // $ bbStep='... += ... : successor -> x(-1)'
@@ -465,7 +474,7 @@ func test(a : A) {
   var apply_kpGet_mayB_x = a[keyPath: kpGet_mayB_x]
 }
 
-func testIfConfig() { // $ noCfg
+func testIfConfig() {
 #if FOO
   1
   2
@@ -521,7 +530,7 @@ func testAvailable() -> Int { // $ noCfg
   return x
 }
 
-func testAsyncFor () async { // $ noCfg
+func testAsyncFor () async {
     var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), {
         continuation in
             Task.detached {
@@ -552,11 +561,11 @@ func testNilCoalescing2(x: Bool?) -> Int {
   }
 }
 
-func usesAutoclosure(_ expr: @autoclosure () -> Int) -> Int {
+func usesAutoclosure(_ expr: @autoclosure () -> Int) -> Int { // $ noCfg
   return expr()
 }
 
-func autoclosureTest() { // $ noCfg
+func autoclosureTest() {
   usesAutoclosure(1)
 }
 

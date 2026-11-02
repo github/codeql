@@ -1,0 +1,238 @@
+func f<D, T>(
+    a: inout D,
+    b: sending T,
+    c: borrowing T,
+    d: consuming T,
+    e: @escaping (T) -> Void,
+    g: @Sendable @escaping () -> D
+) {}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+          name: identifier "f"
+          genericParameterClause:
+            genericParameterClause
+              parameters:
+                genericParameter
+                  attributes:
+                  name: identifier "D"
+                  trailingComma: ,
+                genericParameter
+                  attributes:
+                  name: identifier "T"
+              leftAngle: <
+              rightAngle: >
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        attributedType
+                          attributes:
+                          baseType:
+                            identifierType
+                              name: identifier "D"
+                          lateSpecifiers:
+                          specifiers:
+                            simpleTypeSpecifier
+                              specifier: inout
+                      firstName: identifier "a"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        attributedType
+                          attributes:
+                          baseType:
+                            identifierType
+                              name: identifier "T"
+                          lateSpecifiers:
+                          specifiers:
+                            simpleTypeSpecifier
+                              specifier: sending
+                      firstName: identifier "b"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        attributedType
+                          attributes:
+                          baseType:
+                            identifierType
+                              name: identifier "T"
+                          lateSpecifiers:
+                          specifiers:
+                            simpleTypeSpecifier
+                              specifier: borrowing
+                      firstName: identifier "c"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        attributedType
+                          attributes:
+                          baseType:
+                            identifierType
+                              name: identifier "T"
+                          lateSpecifiers:
+                          specifiers:
+                            simpleTypeSpecifier
+                              specifier: consuming
+                      firstName: identifier "d"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        attributedType
+                          attributes:
+                            attribute
+                              atSign: @
+                              attributeName:
+                                identifierType
+                                  name: identifier "escaping"
+                          baseType:
+                            functionType
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                                tupleTypeElement
+                                  type:
+                                    identifierType
+                                      name: identifier "T"
+                              returnClause:
+                                returnClause
+                                  arrow: ->
+                                  type:
+                                    identifierType
+                                      name: identifier "Void"
+                          lateSpecifiers:
+                          specifiers:
+                      firstName: identifier "e"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        attributedType
+                          attributes:
+                            attribute
+                              atSign: @
+                              attributeName:
+                                identifierType
+                                  name: identifier "Sendable"
+                            attribute
+                              atSign: @
+                              attributeName:
+                                identifierType
+                                  name: identifier "escaping"
+                          baseType:
+                            functionType
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                              returnClause:
+                                returnClause
+                                  arrow: ->
+                                  type:
+                                    identifierType
+                                      name: identifier "D"
+                          lateSpecifiers:
+                          specifiers:
+                      firstName: identifier "g"
+          funcKeyword: func
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        function_declaration source="func ⟨name_node⟩<⟨type_parameter⟩, ⟨type_parameter⟩>(\n    ⟨parameter⟩,\n    ⟨parameter⟩,\n    ⟨parameter⟩,\n    ⟨parameter⟩,\n    ⟨parameter⟩,\n    ⟨parameter⟩\n) ⟨body⟩"
+          name_node: identifier "f" source="f"
+          type_parameter:
+            type_parameter source="⟨name_node⟩"
+              name_node: identifier "D" source="D"
+            type_parameter source="⟨name_node⟩"
+              name_node: identifier "T" source="T"
+          parameter:
+            parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "a" source="a"
+              type:
+                modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+                  modifier: modifier "inout" source="inout"
+                  type: identifier "D" source="D"
+              pattern: identifier "a" source="a"
+            parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "b" source="b"
+              type:
+                modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+                  modifier: modifier "sending" source="sending"
+                  type: identifier "T" source="T"
+              pattern: identifier "b" source="b"
+            parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "c" source="c"
+              type:
+                modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+                  modifier: modifier "borrowing" source="borrowing"
+                  type: identifier "T" source="T"
+              pattern: identifier "c" source="c"
+            parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "d" source="d"
+              type:
+                modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+                  modifier: modifier "consuming" source="consuming"
+                  type: identifier "T" source="T"
+              pattern: identifier "d" source="d"
+            parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "e" source="e"
+              type:
+                modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+                  modifier: modifier "@escaping" source="@escaping"
+                  type:
+                    function_expr source="(⟨parameter⟩) -> ⟨return_type⟩"
+                      parameter:
+                        parameter source="⟨type⟩"
+                          type: identifier "T" source="T"
+                      return_type: identifier "Void" source="Void"
+              pattern: identifier "e" source="e"
+            parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "g" source="g"
+              type:
+                modified_type_expr source="⟨modifier⟩ ⟨modifier⟩ ⟨type⟩"
+                  modifier:
+                    modifier "@Sendable" source="@Sendable"
+                    modifier "@escaping" source="@escaping"
+                  type:
+                    function_expr source="() -> ⟨return_type⟩"
+                      return_type: identifier "D" source="D"
+              pattern: identifier "g" source="g"
+          body: block "{}" source="{}"

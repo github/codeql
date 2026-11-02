@@ -100,7 +100,7 @@ top_level source="var p: Int {\n  ⟨body⟩\n}"
           modifier: modifier "var" source="var" (external)
           name_node: identifier "p" source="p" (external)
           accessor_kind: accessor_kind "get" source="get"
-          type: identifier "Int" source="Int" (external)
+          return_type: identifier "Int" source="Int" (external)
           body:
             block source="{\n    ⟨stmt⟩\n  }"
               stmt:

@@ -68,75 +68,167 @@
 | azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument |
 | azure.cpp:287:79:287:98 | call to string | azure.cpp:287:62:287:99 | call to Url |
 | azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value |
-| bal.cpp:149:17:149:18 | *sb | bal.cpp:149:21:149:24 | decode output argument |
-| bal.cpp:158:17:158:19 | ** ... | bal.cpp:158:22:158:25 | decode output argument |
-| bal.cpp:167:20:167:21 | *sb | bal.cpp:167:24:167:27 | decodeAny output argument |
-| bal.cpp:176:40:176:42 | *obj | bal.cpp:176:17:176:37 | encode output argument |
-| bal.cpp:184:43:184:45 | *obj | bal.cpp:184:20:184:40 | encodeAny output argument |
-| bal.cpp:197:17:197:18 | *sb | bal.cpp:197:21:197:24 | decode output argument |
-| bal.cpp:207:17:207:19 | ** ... | bal.cpp:207:22:207:25 | decode output argument |
-| bal.cpp:216:20:216:21 | *sb | bal.cpp:216:24:216:27 | decodeAny output argument |
-| bal.cpp:225:40:225:42 | *obj | bal.cpp:225:17:225:37 | encode output argument |
-| bal.cpp:233:43:233:45 | *obj | bal.cpp:233:20:233:40 | encodeAny output argument |
-| bal.cpp:243:17:243:18 | *sb | bal.cpp:243:21:243:24 | decode output argument |
-| bal.cpp:246:40:246:42 | *rec | bal.cpp:246:17:246:37 | encode output argument |
-| bal.cpp:255:17:255:18 | *sb | bal.cpp:255:21:255:24 | decode output argument |
-| bal.cpp:266:17:266:19 | ** ... | bal.cpp:266:16:266:27 | *call to decode |
-| bal.cpp:266:17:266:19 | ** ... | bal.cpp:266:22:266:25 | decode output argument |
-| bal.cpp:275:35:275:37 | ** ... | bal.cpp:275:34:275:52 | *call to decode |
-| bal.cpp:275:35:275:37 | ** ... | bal.cpp:275:40:275:43 | decode output argument |
-| bal.cpp:285:17:285:18 | *sb | bal.cpp:285:21:285:24 | decode output argument |
-| bal.cpp:293:22:293:25 | *call to data | bal.cpp:293:43:293:46 | decode output argument |
-| bal.cpp:322:20:322:22 | ** ... | bal.cpp:322:19:322:30 | *call to decodeAny |
-| bal.cpp:322:20:322:22 | ** ... | bal.cpp:322:25:322:28 | decodeAny output argument |
-| bal.cpp:331:38:331:40 | ** ... | bal.cpp:331:37:331:48 | *call to decodeAny |
-| bal.cpp:331:38:331:40 | ** ... | bal.cpp:331:43:331:46 | decodeAny output argument |
-| bal.cpp:341:20:341:21 | *sb | bal.cpp:341:24:341:27 | decodeAny output argument |
-| bal.cpp:350:20:350:22 | ** ... | bal.cpp:350:19:350:30 | *call to decodeAny |
-| bal.cpp:350:20:350:22 | ** ... | bal.cpp:350:25:350:28 | decodeAny output argument |
-| bal.cpp:359:38:359:40 | ** ... | bal.cpp:359:37:359:48 | *call to decodeAny |
-| bal.cpp:359:38:359:40 | ** ... | bal.cpp:359:43:359:46 | decodeAny output argument |
-| bal.cpp:369:20:369:21 | *sb | bal.cpp:369:24:369:27 | decodeAny output argument |
-| bal.cpp:377:40:377:42 | *obj | bal.cpp:377:17:377:37 | encode output argument |
-| bal.cpp:385:17:385:36 | ** ... | bal.cpp:385:16:385:43 | *call to encode |
-| bal.cpp:385:39:385:41 | *obj | bal.cpp:385:16:385:43 | *call to encode |
-| bal.cpp:385:39:385:41 | *obj | bal.cpp:385:17:385:36 | encode output argument |
-| bal.cpp:393:35:393:54 | ** ... | bal.cpp:393:34:393:61 | *call to encode |
-| bal.cpp:393:57:393:59 | *obj | bal.cpp:393:34:393:61 | *call to encode |
-| bal.cpp:393:57:393:59 | *obj | bal.cpp:393:35:393:54 | encode output argument |
-| bal.cpp:403:35:403:37 | ** ... | bal.cpp:403:34:403:44 | *call to encode |
-| bal.cpp:403:40:403:42 | *obj | bal.cpp:403:34:403:44 | *call to encode |
-| bal.cpp:403:40:403:42 | *obj | bal.cpp:403:35:403:37 | encode output argument |
-| bal.cpp:411:47:411:49 | *obj | bal.cpp:411:25:411:44 | encodeToStream output argument |
-| bal.cpp:429:43:429:45 | *obj | bal.cpp:429:20:429:40 | encodeAny output argument |
-| bal.cpp:437:20:437:39 | ** ... | bal.cpp:437:19:437:46 | *call to encodeAny |
-| bal.cpp:437:42:437:44 | *obj | bal.cpp:437:19:437:46 | *call to encodeAny |
-| bal.cpp:437:42:437:44 | *obj | bal.cpp:437:20:437:39 | encodeAny output argument |
-| bal.cpp:445:38:445:57 | ** ... | bal.cpp:445:37:445:64 | *call to encodeAny |
-| bal.cpp:445:60:445:62 | *obj | bal.cpp:445:37:445:64 | *call to encodeAny |
-| bal.cpp:445:60:445:62 | *obj | bal.cpp:445:38:445:57 | encodeAny output argument |
-| bal.cpp:454:50:454:52 | *obj | bal.cpp:454:28:454:47 | encodeAnyToStream output argument |
-| bal.cpp:463:43:463:46 | ** ... | bal.cpp:463:20:463:40 | encodeAny output argument |
-| bal.cpp:472:20:472:39 | ** ... | bal.cpp:472:19:472:47 | *call to encodeAny |
-| bal.cpp:472:42:472:45 | ** ... | bal.cpp:472:19:472:47 | *call to encodeAny |
-| bal.cpp:472:42:472:45 | ** ... | bal.cpp:472:20:472:39 | encodeAny output argument |
-| bal.cpp:481:38:481:57 | ** ... | bal.cpp:481:37:481:65 | *call to encodeAny |
-| bal.cpp:481:60:481:63 | ** ... | bal.cpp:481:37:481:65 | *call to encodeAny |
-| bal.cpp:481:60:481:63 | ** ... | bal.cpp:481:38:481:57 | encodeAny output argument |
-| bdlbb.cpp:56:49:56:52 | *call to data | bdlbb.cpp:56:37:56:41 | copy output argument |
-| bdlbb.cpp:58:42:58:45 | *blob | bdlbb.cpp:58:37:58:39 | copy output argument |
+| bal.cpp:132:17:132:18 | *sb | bal.cpp:132:21:132:24 | decode output argument |
+| bal.cpp:141:17:141:19 | ** ... | bal.cpp:141:22:141:25 | decode output argument |
+| bal.cpp:150:20:150:21 | *sb | bal.cpp:150:24:150:27 | decodeAny output argument |
+| bal.cpp:159:40:159:42 | *obj | bal.cpp:159:17:159:37 | encode output argument |
+| bal.cpp:167:43:167:45 | *obj | bal.cpp:167:20:167:40 | encodeAny output argument |
+| bal.cpp:180:17:180:18 | *sb | bal.cpp:180:21:180:24 | decode output argument |
+| bal.cpp:190:17:190:19 | ** ... | bal.cpp:190:22:190:25 | decode output argument |
+| bal.cpp:199:20:199:21 | *sb | bal.cpp:199:24:199:27 | decodeAny output argument |
+| bal.cpp:208:40:208:42 | *obj | bal.cpp:208:17:208:37 | encode output argument |
+| bal.cpp:216:43:216:45 | *obj | bal.cpp:216:20:216:40 | encodeAny output argument |
+| bal.cpp:226:17:226:18 | *sb | bal.cpp:226:21:226:24 | decode output argument |
+| bal.cpp:229:40:229:42 | *rec | bal.cpp:229:17:229:37 | encode output argument |
+| bal.cpp:238:17:238:18 | *sb | bal.cpp:238:21:238:24 | decode output argument |
+| bal.cpp:249:17:249:19 | ** ... | bal.cpp:249:16:249:27 | *call to decode |
+| bal.cpp:249:17:249:19 | ** ... | bal.cpp:249:22:249:25 | decode output argument |
+| bal.cpp:258:35:258:37 | ** ... | bal.cpp:258:34:258:52 | *call to decode |
+| bal.cpp:258:35:258:37 | ** ... | bal.cpp:258:40:258:43 | decode output argument |
+| bal.cpp:268:17:268:18 | *sb | bal.cpp:268:21:268:24 | decode output argument |
+| bal.cpp:276:22:276:25 | *call to data | bal.cpp:276:43:276:46 | decode output argument |
+| bal.cpp:305:20:305:22 | ** ... | bal.cpp:305:19:305:30 | *call to decodeAny |
+| bal.cpp:305:20:305:22 | ** ... | bal.cpp:305:25:305:28 | decodeAny output argument |
+| bal.cpp:314:38:314:40 | ** ... | bal.cpp:314:37:314:48 | *call to decodeAny |
+| bal.cpp:314:38:314:40 | ** ... | bal.cpp:314:43:314:46 | decodeAny output argument |
+| bal.cpp:324:20:324:21 | *sb | bal.cpp:324:24:324:27 | decodeAny output argument |
+| bal.cpp:333:20:333:22 | ** ... | bal.cpp:333:19:333:30 | *call to decodeAny |
+| bal.cpp:333:20:333:22 | ** ... | bal.cpp:333:25:333:28 | decodeAny output argument |
+| bal.cpp:342:38:342:40 | ** ... | bal.cpp:342:37:342:48 | *call to decodeAny |
+| bal.cpp:342:38:342:40 | ** ... | bal.cpp:342:43:342:46 | decodeAny output argument |
+| bal.cpp:352:20:352:21 | *sb | bal.cpp:352:24:352:27 | decodeAny output argument |
+| bal.cpp:360:40:360:42 | *obj | bal.cpp:360:17:360:37 | encode output argument |
+| bal.cpp:368:17:368:36 | ** ... | bal.cpp:368:16:368:43 | *call to encode |
+| bal.cpp:368:39:368:41 | *obj | bal.cpp:368:16:368:43 | *call to encode |
+| bal.cpp:368:39:368:41 | *obj | bal.cpp:368:17:368:36 | encode output argument |
+| bal.cpp:376:35:376:54 | ** ... | bal.cpp:376:34:376:61 | *call to encode |
+| bal.cpp:376:57:376:59 | *obj | bal.cpp:376:34:376:61 | *call to encode |
+| bal.cpp:376:57:376:59 | *obj | bal.cpp:376:35:376:54 | encode output argument |
+| bal.cpp:386:35:386:37 | ** ... | bal.cpp:386:34:386:44 | *call to encode |
+| bal.cpp:386:40:386:42 | *obj | bal.cpp:386:34:386:44 | *call to encode |
+| bal.cpp:386:40:386:42 | *obj | bal.cpp:386:35:386:37 | encode output argument |
+| bal.cpp:394:47:394:49 | *obj | bal.cpp:394:25:394:44 | encodeToStream output argument |
+| bal.cpp:412:43:412:45 | *obj | bal.cpp:412:20:412:40 | encodeAny output argument |
+| bal.cpp:420:20:420:39 | ** ... | bal.cpp:420:19:420:46 | *call to encodeAny |
+| bal.cpp:420:42:420:44 | *obj | bal.cpp:420:19:420:46 | *call to encodeAny |
+| bal.cpp:420:42:420:44 | *obj | bal.cpp:420:20:420:39 | encodeAny output argument |
+| bal.cpp:428:38:428:57 | ** ... | bal.cpp:428:37:428:64 | *call to encodeAny |
+| bal.cpp:428:60:428:62 | *obj | bal.cpp:428:37:428:64 | *call to encodeAny |
+| bal.cpp:428:60:428:62 | *obj | bal.cpp:428:38:428:57 | encodeAny output argument |
+| bal.cpp:437:50:437:52 | *obj | bal.cpp:437:28:437:47 | encodeAnyToStream output argument |
+| bal.cpp:446:43:446:46 | ** ... | bal.cpp:446:20:446:40 | encodeAny output argument |
+| bal.cpp:455:20:455:39 | ** ... | bal.cpp:455:19:455:47 | *call to encodeAny |
+| bal.cpp:455:42:455:45 | ** ... | bal.cpp:455:19:455:47 | *call to encodeAny |
+| bal.cpp:455:42:455:45 | ** ... | bal.cpp:455:20:455:39 | encodeAny output argument |
+| bal.cpp:464:38:464:57 | ** ... | bal.cpp:464:37:464:65 | *call to encodeAny |
+| bal.cpp:464:60:464:63 | ** ... | bal.cpp:464:37:464:65 | *call to encodeAny |
+| bal.cpp:464:60:464:63 | ** ... | bal.cpp:464:38:464:57 | encodeAny output argument |
+| bdlbb.cpp:39:49:39:52 | *call to data | bdlbb.cpp:39:37:39:41 | copy output argument |
+| bdlbb.cpp:41:42:41:45 | *blob | bdlbb.cpp:41:37:41:39 | copy output argument |
+| bdlbb.cpp:48:49:48:52 | *call to data | bdlbb.cpp:48:37:48:41 | copy output argument |
+| bdlbb.cpp:49:18:49:21 | *blob | bdlbb.cpp:49:29:49:32 | *call to buffer |
+| bdlbb.cpp:49:29:49:32 | *call to buffer | bdlbb.cpp:49:18:49:38 | *call to data |
+| bdlbb.cpp:57:49:57:52 | *call to data | bdlbb.cpp:57:37:57:41 | copy output argument |
+| bdlbb.cpp:58:18:58:21 | *blob | bdlbb.cpp:58:29:58:32 | *call to buffer |
+| bdlbb.cpp:58:29:58:32 | *call to buffer | bdlbb.cpp:58:39:58:41 | *call to buffer |
 | bdlbb.cpp:65:49:65:52 | *call to data | bdlbb.cpp:65:37:65:41 | copy output argument |
-| bdlbb.cpp:66:18:66:21 | *blob | bdlbb.cpp:66:29:66:32 | *call to buffer |
-| bdlbb.cpp:66:29:66:32 | *call to buffer | bdlbb.cpp:66:18:66:38 | *call to data |
-| bdlbb.cpp:74:49:74:52 | *call to data | bdlbb.cpp:74:37:74:41 | copy output argument |
-| bdlbb.cpp:75:18:75:21 | *blob | bdlbb.cpp:75:29:75:32 | *call to buffer |
-| bdlbb.cpp:75:29:75:32 | *call to buffer | bdlbb.cpp:75:39:75:41 | *call to buffer |
-| bdlbb.cpp:82:49:82:52 | *call to data | bdlbb.cpp:82:37:82:41 | copy output argument |
-| bdlbb.cpp:84:72:84:75 | *blob | bdlbb.cpp:84:12:84:65 | *call to getContiguousRangeOrCopy |
-| bdlbb.cpp:84:72:84:75 | *blob | bdlbb.cpp:84:67:84:69 | getContiguousRangeOrCopy output argument |
-| bdlbb.cpp:92:48:92:51 | *call to data | bdlbb.cpp:92:37:92:40 | copy output argument |
-| bdlbb.cpp:94:46:94:48 | *src | bdlbb.cpp:94:37:94:40 | copy output argument |
-| bdlbb.cpp:96:42:96:44 | *dst | bdlbb.cpp:96:37:96:39 | copy output argument |
+| bdlbb.cpp:67:72:67:75 | *blob | bdlbb.cpp:67:12:67:65 | *call to getContiguousRangeOrCopy |
+| bdlbb.cpp:67:72:67:75 | *blob | bdlbb.cpp:67:67:67:69 | getContiguousRangeOrCopy output argument |
+| bdlbb.cpp:75:48:75:51 | *call to data | bdlbb.cpp:75:37:75:40 | copy output argument |
+| bdlbb.cpp:77:46:77:48 | *src | bdlbb.cpp:77:37:77:40 | copy output argument |
+| bdlbb.cpp:79:42:79:44 | *dst | bdlbb.cpp:79:37:79:39 | copy output argument |
+| bmqa.cpp:90:2:90:4 | *msg | bmqa.cpp:90:15:90:19 | getData output argument |
+| bmqa.cpp:92:42:92:45 | *blob | bmqa.cpp:92:37:92:39 | copy output argument |
+| bmqa.cpp:99:42:99:46 | *event | bmqa.cpp:99:49:99:63 | call to messageIterator |
+| bmqa.cpp:101:43:101:44 | *it | bmqa.cpp:101:53:101:55 | *call to message |
+| bmqa.cpp:103:3:103:5 | *msg | bmqa.cpp:103:15:103:19 | getData output argument |
+| bmqa.cpp:105:43:105:46 | *blob | bmqa.cpp:105:38:105:40 | copy output argument |
+| bmqa.cpp:113:47:113:50 | *call to data | bmqa.cpp:113:37:113:39 | copy output argument |
+| bmqa.cpp:115:2:115:4 | *msg | bmqa.cpp:115:16:115:21 | *call to setDataRef |
+| bmqa.cpp:115:17:115:19 | *& ... | bmqa.cpp:115:2:115:4 | setDataRef output argument |
+| bmqa.cpp:115:17:115:19 | *& ... | bmqa.cpp:115:16:115:21 | *call to setDataRef |
+| bmqa.cpp:117:2:117:4 | *msg | bmqa.cpp:117:14:117:17 | getData output argument |
+| bmqa.cpp:119:42:119:44 | *out | bmqa.cpp:119:37:119:39 | copy output argument |
+| bmqa.cpp:126:2:126:4 | *msg | bmqa.cpp:126:16:126:36 | *call to setDataRef |
+| bmqa.cpp:126:19:126:22 | *call to data | bmqa.cpp:126:2:126:4 | setDataRef output argument |
+| bmqa.cpp:126:19:126:22 | *call to data | bmqa.cpp:126:16:126:36 | *call to setDataRef |
+| bmqa.cpp:128:2:128:4 | *msg | bmqa.cpp:128:14:128:17 | getData output argument |
+| bmqa.cpp:130:42:130:44 | *out | bmqa.cpp:130:37:130:39 | copy output argument |
+| bmqa.cpp:137:2:137:4 | *msg | bmqa.cpp:137:13:137:33 | *call to setData |
+| bmqa.cpp:137:16:137:19 | *call to data | bmqa.cpp:137:2:137:4 | setData output argument |
+| bmqa.cpp:137:16:137:19 | *call to data | bmqa.cpp:137:13:137:33 | *call to setData |
+| bmqa.cpp:139:2:139:4 | *msg | bmqa.cpp:139:14:139:17 | getData output argument |
+| bmqa.cpp:141:42:141:44 | *out | bmqa.cpp:141:37:141:39 | copy output argument |
+| bmqa.cpp:148:36:148:38 | *msg | bmqa.cpp:148:41:148:45 | call to clone |
+| bmqa.cpp:150:2:150:5 | *copy | bmqa.cpp:150:15:150:19 | getData output argument |
+| bmqa.cpp:152:42:152:45 | *blob | bmqa.cpp:152:37:152:39 | copy output argument |
+| bmqa.cpp:160:2:160:4 | *msg | bmqa.cpp:160:22:160:27 | loadProperties output argument |
+| bmqa.cpp:161:29:161:33 | *props | bmqa.cpp:161:54:161:61 | *call to getPropertyAsString |
+| bmqa.cpp:169:2:169:4 | *msg | bmqa.cpp:169:22:169:27 | loadProperties output argument |
+| bmqa.cpp:178:2:178:4 | *msg | bmqa.cpp:178:22:178:27 | loadProperties output argument |
+| bmqa.cpp:187:2:187:4 | *msg | bmqa.cpp:187:22:187:27 | loadProperties output argument |
+| bmqa.cpp:189:29:189:33 | *props | bmqa.cpp:189:56:189:69 | *call to getPropertyAsStringOr |
+| bmqa.cpp:197:29:197:33 | *props | bmqa.cpp:197:56:197:69 | *call to getPropertyAsStringOr |
+| bmqa.cpp:205:2:205:4 | *msg | bmqa.cpp:205:22:205:27 | loadProperties output argument |
+| bmqa.cpp:224:2:224:4 | *msg | bmqa.cpp:224:22:224:27 | loadProperties output argument |
+| bmqa.cpp:231:49:231:52 | *call to data | bmqa.cpp:231:37:231:41 | copy output argument |
+| bmqa.cpp:233:17:233:20 | *blob | bmqa.cpp:233:2:233:6 | streamIn output argument |
+| bmqa.cpp:234:8:234:12 | *props | bmqa.cpp:234:33:234:40 | *call to getPropertyAsString |
+| bmqa.cpp:240:49:240:52 | *call to data | bmqa.cpp:240:37:240:41 | copy output argument |
+| bmqa.cpp:242:14:242:17 | *blob | bmqa.cpp:242:2:242:3 | streamIn output argument |
+| bmqa.cpp:244:2:244:4 | *msg | bmqa.cpp:244:22:244:27 | *call to setPropertiesRef |
+| bmqa.cpp:244:23:244:25 | *& ... | bmqa.cpp:244:2:244:4 | setPropertiesRef output argument |
+| bmqa.cpp:244:23:244:25 | *& ... | bmqa.cpp:244:22:244:27 | *call to setPropertiesRef |
+| bmqa.cpp:246:2:246:4 | *msg | bmqa.cpp:246:21:246:24 | loadProperties output argument |
+| bmqa.cpp:247:8:247:10 | *out | bmqa.cpp:247:31:247:38 | *call to getPropertyAsString |
+| bmqa.cpp:254:2:254:4 | *msg | bmqa.cpp:254:22:254:27 | loadProperties output argument |
+| bmqa.cpp:256:41:256:45 | *props | bmqa.cpp:256:56:256:66 | *call to streamOut |
+| bmqa.cpp:258:42:258:45 | *blob | bmqa.cpp:258:37:258:39 | copy output argument |
+| bmqa.cpp:266:2:266:4 | *msg | bmqa.cpp:266:22:266:27 | loadProperties output argument |
+| bmqa.cpp:268:8:268:11 | *copy | bmqa.cpp:268:32:268:39 | *call to getPropertyAsString |
+| bmqa.cpp:275:2:275:4 | *msg | bmqa.cpp:275:22:275:27 | loadProperties output argument |
+| bmqa.cpp:278:8:278:11 | *copy | bmqa.cpp:278:32:278:39 | *call to getPropertyAsString |
+| bmqa.cpp:285:2:285:4 | *msg | bmqa.cpp:285:22:285:27 | loadProperties output argument |
+| bmqa.cpp:287:8:287:21 | *call to operator= | bmqa.cpp:287:42:287:49 | *call to getPropertyAsString |
+| bmqa.cpp:294:28:294:32 | call to basic_string_view | bmqa.cpp:294:2:294:6 | setPropertyAsString output argument |
+| bmqa.cpp:294:35:294:40 | * ... | bmqa.cpp:294:2:294:6 | setPropertyAsString output argument |
+| bmqa.cpp:295:8:295:12 | *props | bmqa.cpp:295:33:295:40 | *call to getPropertyAsString |
+| bmqa.cpp:301:28:301:32 | call to basic_string_view | bmqa.cpp:301:2:301:6 | setPropertyAsString output argument |
+| bmqa.cpp:301:35:301:39 | value | bmqa.cpp:301:2:301:6 | setPropertyAsString output argument |
+| bmqa.cpp:302:8:302:12 | *props | bmqa.cpp:302:33:302:40 | *call to getPropertyAsString |
+| bmqa.cpp:309:28:309:32 | call to basic_string_view | bmqa.cpp:309:2:309:6 | setPropertyAsBinary output argument |
+| bmqa.cpp:309:35:309:40 | * ... | bmqa.cpp:309:2:309:6 | setPropertyAsBinary output argument |
+| bmqa.cpp:317:26:317:29 | name | bmqa.cpp:317:2:317:6 | setPropertyAsBool output argument |
+| bmqa.cpp:318:50:318:55 | *& ... | bmqa.cpp:318:47:318:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:319:8:319:9 | *it | bmqa.cpp:319:15:319:17 | *call to name |
+| bmqa.cpp:325:26:325:29 | name | bmqa.cpp:325:2:325:6 | setPropertyAsChar output argument |
+| bmqa.cpp:326:50:326:55 | *& ... | bmqa.cpp:326:47:326:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:327:8:327:9 | *it | bmqa.cpp:327:15:327:17 | *call to name |
+| bmqa.cpp:333:27:333:30 | name | bmqa.cpp:333:2:333:6 | setPropertyAsShort output argument |
+| bmqa.cpp:334:50:334:55 | *& ... | bmqa.cpp:334:47:334:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:335:8:335:9 | *it | bmqa.cpp:335:15:335:17 | *call to name |
+| bmqa.cpp:341:27:341:30 | name | bmqa.cpp:341:2:341:6 | setPropertyAsInt32 output argument |
+| bmqa.cpp:342:50:342:55 | *& ... | bmqa.cpp:342:47:342:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:343:8:343:9 | *it | bmqa.cpp:343:15:343:17 | *call to name |
+| bmqa.cpp:349:27:349:30 | name | bmqa.cpp:349:2:349:6 | setPropertyAsInt64 output argument |
+| bmqa.cpp:350:50:350:55 | *& ... | bmqa.cpp:350:47:350:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:351:8:351:9 | *it | bmqa.cpp:351:15:351:17 | *call to name |
+| bmqa.cpp:357:28:357:31 | name | bmqa.cpp:357:2:357:6 | setPropertyAsString output argument |
+| bmqa.cpp:357:34:357:40 | call to basic_string_view | bmqa.cpp:357:2:357:6 | setPropertyAsString output argument |
+| bmqa.cpp:358:50:358:55 | *& ... | bmqa.cpp:358:47:358:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:359:8:359:9 | *it | bmqa.cpp:359:15:359:17 | *call to name |
+| bmqa.cpp:365:28:365:31 | name | bmqa.cpp:365:2:365:6 | setPropertyAsBinary output argument |
+| bmqa.cpp:365:34:365:56 | call to span | bmqa.cpp:365:2:365:6 | setPropertyAsBinary output argument |
+| bmqa.cpp:366:50:366:55 | *& ... | bmqa.cpp:366:47:366:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:367:8:367:9 | *it | bmqa.cpp:367:15:367:17 | *call to name |
+| bmqa.cpp:374:2:374:4 | *msg | bmqa.cpp:374:22:374:27 | loadProperties output argument |
+| bmqa.cpp:375:50:375:55 | *& ... | bmqa.cpp:375:47:375:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:377:9:377:10 | *it | bmqa.cpp:377:16:377:18 | *call to name |
+| bmqa.cpp:378:9:378:10 | *it | bmqa.cpp:378:23:378:25 | *call to getAsString |
+| bmqa.cpp:388:2:388:4 | *msg | bmqa.cpp:388:22:388:27 | loadProperties output argument |
+| bmqa.cpp:389:50:389:55 | *& ... | bmqa.cpp:389:47:389:48 | call to MessagePropertiesIterator |
+| bmqa.cpp:392:8:392:11 | *copy | bmqa.cpp:392:24:392:26 | *call to getAsString |
+| bmqa.cpp:393:8:393:18 | *call to operator= | bmqa.cpp:393:24:393:26 | *call to name |
 | bslx.cpp:138:11:138:16 | *stream | bslx.cpp:138:26:138:36 | *call to getInt32 |
 | bslx.cpp:154:46:154:49 | *call to data | bslx.cpp:154:34:154:39 | call to ByteInStream |
 | bslx.cpp:156:2:156:7 | *stream | bslx.cpp:156:17:156:20 | *call to getInt32 |

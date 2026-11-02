@@ -1,3 +1,16 @@
+## 9.3.4
+
+### Minor Analysis Improvements
+
+* The `java/log-injection` query now recognizes additional sanitizers and sanitizer guards from the JDK, Apache Commons Lang and Text, Guava, OWASP Java Encoder, and Spring Framework.
+* Queries that use path-injection sanitizers now recognize additional substring guards and string replacement and removal operations from Apache Commons Lang and Guava.
+
+## 9.3.3
+
+### Minor Analysis Improvements
+
+* The queries `java/ssrf` and `java/unvalidated-url-redirection` recognize case-insensitive comparisons of `URI.getHost()` with fixed string allowlist entries, as well as equality and case-insensitive comparisons when the host is stored in a local variable.
+
 ## 9.3.2
 
 No user-facing changes.

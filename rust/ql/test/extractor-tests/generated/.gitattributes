@@ -27,6 +27,8 @@
 /BreakExpr/gen_break_expr.rs linguist-generated
 /CallExpr/gen_call_expr.rs linguist-generated
 /CastExpr/gen_cast_expr.rs linguist-generated
+/CfgPredExpr/gen_cfg_pred_expr.rs linguist-generated
+/CfgPredPat/gen_cfg_pred_pat.rs linguist-generated
 /ClosureExpr/gen_closure_expr.rs linguist-generated
 /Comment/gen_comment.rs linguist-generated
 /Const/gen_const.rs linguist-generated

@@ -744,8 +744,8 @@
 /test/extractor-tests/generated/CfgAttrMeta/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/CfgComposite/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/CfgMeta/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/CfgPredExpr/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/CfgPredPat/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/CfgPredExpr/CfgPredExpr.ql linguist-generated
+/test/extractor-tests/generated/CfgPredPat/CfgPredPat.ql linguist-generated
 /test/extractor-tests/generated/ClosureExpr/ClosureExpr.ql linguist-generated
 /test/extractor-tests/generated/Comment/Comment.ql linguist-generated
 /test/extractor-tests/generated/Const/Const.ql linguist-generated

@@ -3295,6 +3295,16 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A configuration predicate expression resulting from expansion of a `cfg!` macro call.
+   * It has type `bool` and evaluates to whether the configuration predicate holds.
+   *
+   * Rust-analyzer expands `cfg!(...)` in expression position to its internal `builtin#cfg(...)`
+   * syntax, as illustrated below:
+   * ```rust
+   * builtin#cfg(unix);
+   * builtin#cfg(target_os = "windows");
+   * builtin#cfg(any(unix, target_os = "windows"));
+   * ```
    */
   class CfgPredExpr extends @cfg_pred_expr, Expr {
     override string toString() { result = "CfgPredExpr" }
@@ -3319,6 +3329,19 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A configuration predicate pattern resulting from expansion of a `cfg!` macro call.
+   * It matches `true` when the configuration predicate holds and `false` otherwise.
+   *
+   * Rust-analyzer expands `cfg!(...)` in pattern position to its internal `builtin#cfg(...)`
+   * syntax, as illustrated below:
+   * ```rust
+   * match true {
+   *     builtin#cfg(unix) => (),
+   *     builtin#cfg(target_os = "windows") => (),
+   *     builtin#cfg(any(unix, target_os = "windows")) => (),
+   *     _ => (),
+   * };
+   * ```
    */
   class CfgPredPat extends @cfg_pred_pat, Pat {
     override string toString() { result = "CfgPredPat" }

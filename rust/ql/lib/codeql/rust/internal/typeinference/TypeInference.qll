@@ -2348,7 +2348,7 @@ private module Input3 implements InputSig3 {
 
     AstNode getDefiningNode() {
       result = this.asLocalVariable().getPat().getName() or
-      result = this.asLocalVariable().getParameter().(SelfParam) or
+      this.asLocalVariable().isParameter(result.(SelfParam)) or
       result = this.asConst().getName() or
       result = this.asStatic().getName()
     }
@@ -3118,6 +3118,10 @@ private module Input3 implements InputSig3 {
   pragma[nomagic]
   Type inferTypeCertainLanguageSpecific(AstNode n, TypePath path) {
     result = inferLiteralType(n, path, true)
+    or
+    (n instanceof CfgPredExpr or n instanceof CfgPredPat) and
+    path.isEmpty() and
+    result instanceof BoolType
     or
     result = inferRefPatType(n) and
     path.isEmpty()

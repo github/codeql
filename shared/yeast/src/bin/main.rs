@@ -20,7 +20,14 @@ fn main() {
     let args = Cli::parse();
     let language = get_language(&args.language);
     let source = std::fs::read_to_string(&args.file).unwrap();
-    let runner: yeast::Runner = yeast::Runner::new(language, &[]);
-    let ast = runner.run(&source).unwrap();
+    let mut parser = tree_sitter::Parser::new();
+    parser.set_language(&language).unwrap();
+    let tree = parser.parse(&source, None).unwrap();
+    let ast = yeast::Ast::from_tree_with_schema_and_source(
+        yeast::schema::from_language(&language),
+        &tree,
+        &language,
+        source.as_bytes().to_vec(),
+    );
     println!("{}", ast.print(&source, ast.get_root()));
 }

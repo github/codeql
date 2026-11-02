@@ -10,6 +10,6 @@ package(default_visibility = ["//visibility:public"])
 
 alias(
     name = "triomphe",
-    actual = "@vendor_ts__triomphe-0.1.16//:triomphe",
+    actual = "@vendor_ts__triomphe-0.1.17//:triomphe",
     tags = ["manual"],
 )

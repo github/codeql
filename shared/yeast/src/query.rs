@@ -143,7 +143,8 @@ impl QueryListElem {
         match self {
             QueryListElem::Repeated { children, rep } => {
                 if children.is_empty() {
-                    // Empty repetition always succeeds without consuming
+                    // Macro parsing rejects empty groups. Retain safe
+                    // zero-width behavior for manually constructed queries.
                     return Ok(*rep != Rep::OneOrMore);
                 }
 

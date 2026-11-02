@@ -8,7 +8,6 @@
  * @id js/loop-bound-injection
  * @tags security
  *       external/cwe/cwe-834
- *       external/cwe/cwe-730
  * @precision high
  */
 

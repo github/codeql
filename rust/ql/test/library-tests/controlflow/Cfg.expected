@@ -1,4 +1,25 @@
 edges
+| cfg.rs:1:1:3:1 | enter fn cfg_expr | cfg.rs:2:9:2:14 | CfgPredExpr |  |
+| cfg.rs:1:1:3:1 | exit fn cfg_expr (normal) | cfg.rs:1:1:3:1 | exit fn cfg_expr |  |
+| cfg.rs:1:27:3:1 | { ... } | cfg.rs:1:1:3:1 | exit fn cfg_expr (normal) |  |
+| cfg.rs:2:5:2:14 | MacroExpr | cfg.rs:1:27:3:1 | { ... } |  |
+| cfg.rs:2:5:2:14 | cfg!... | cfg.rs:2:5:2:14 | MacroExpr |  |
+| cfg.rs:2:9:2:14 | CfgPredExpr | cfg.rs:2:9:2:14 | { ... } |  |
+| cfg.rs:2:9:2:14 | { ... } | cfg.rs:2:5:2:14 | cfg!... |  |
+| cfg.rs:5:1:10:1 | enter fn cfg_pat | cfg.rs:5:16:5:20 | value |  |
+| cfg.rs:5:1:10:1 | exit fn cfg_pat (normal) | cfg.rs:5:1:10:1 | exit fn cfg_pat |  |
+| cfg.rs:5:16:5:20 | value | cfg.rs:5:16:5:20 | value |  |
+| cfg.rs:5:16:5:20 | value | cfg.rs:5:16:5:26 | ...: bool | match |
+| cfg.rs:5:16:5:26 | ...: bool | cfg.rs:6:11:6:15 | value |  |
+| cfg.rs:5:37:10:1 | { ... } | cfg.rs:5:1:10:1 | exit fn cfg_pat (normal) |  |
+| cfg.rs:6:5:9:5 | match value { ... } | cfg.rs:5:37:10:1 | { ... } |  |
+| cfg.rs:6:11:6:15 | value | cfg.rs:7:9:7:18 | MacroPat |  |
+| cfg.rs:7:9:7:18 | MacroPat | cfg.rs:7:13:7:18 | CfgPredPat | match |
+| cfg.rs:7:13:7:18 | CfgPredPat | cfg.rs:7:23:7:26 | true | match |
+| cfg.rs:7:13:7:18 | CfgPredPat | cfg.rs:8:9:8:9 | _ | no-match |
+| cfg.rs:7:23:7:26 | true | cfg.rs:6:5:9:5 | match value { ... } |  |
+| cfg.rs:8:9:8:9 | _ | cfg.rs:8:14:8:18 | false | match |
+| cfg.rs:8:14:8:18 | false | cfg.rs:6:5:9:5 | match value { ... } |  |
 | test.rs:5:5:8:5 | enter fn function_call | test.rs:6:9:6:64 | ExprStmt |  |
 | test.rs:5:5:8:5 | exit fn function_call (normal) | test.rs:5:5:8:5 | exit fn function_call |  |
 | test.rs:5:24:8:5 | { ... } | test.rs:5:5:8:5 | exit fn function_call (normal) |  |

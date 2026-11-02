@@ -1,0 +1,106 @@
+| atomic.cpp:3:10:3:27 | call to __atomic_fetch_add_4 | ptr,1,0 | <none> |
+| atomic.cpp:3:10:3:38 | (int)... |  | <none> |
+| atomic.cpp:3:29:3:31 | (volatile void *)... |  | <none> |
+| atomic.cpp:3:29:3:31 | ptr |  | <none> |
+| atomic.cpp:3:34:3:34 | 1 |  | 1 |
+| atomic.cpp:3:34:3:34 | (unsigned int)... |  | 1 |
+| atomic.cpp:3:37:3:37 | 0 |  | 0 |
+| atomic.cpp:8:10:8:27 | call to __atomic_fetch_add_1 | ptr,1,0 | <none> |
+| atomic.cpp:8:10:8:38 | (char)... |  | <none> |
+| atomic.cpp:8:10:8:38 | (double)... |  | <none> |
+| atomic.cpp:8:29:8:31 | (volatile void *)... |  | <none> |
+| atomic.cpp:8:29:8:31 | ptr |  | <none> |
+| atomic.cpp:8:34:8:34 | 1 |  | 1 |
+| atomic.cpp:8:34:8:34 | (unsigned char)... |  | 1 |
+| atomic.cpp:8:37:8:37 | 0 |  | 0 |
+| atomic.cpp:13:10:13:29 | call to __atomic_fetch_add_4 | ptr,1,0 | <none> |
+| atomic.cpp:13:10:13:40 | (int)... |  | <none> |
+| atomic.cpp:13:31:13:33 | (volatile void *)... |  | <none> |
+| atomic.cpp:13:31:13:33 | ptr |  | <none> |
+| atomic.cpp:13:36:13:36 | 1 |  | 1 |
+| atomic.cpp:13:36:13:36 | (unsigned int)... |  | 1 |
+| atomic.cpp:13:39:13:39 | 0 |  | 0 |
+| atomic.cpp:18:10:18:29 | call to __atomic_fetch_add_1 | ptr,1,0 | <none> |
+| atomic.cpp:18:10:18:40 | (char)... |  | <none> |
+| atomic.cpp:18:31:18:33 | (volatile void *)... |  | <none> |
+| atomic.cpp:18:31:18:33 | ptr |  | <none> |
+| atomic.cpp:18:36:18:36 | 1 |  | 1 |
+| atomic.cpp:18:36:18:36 | (unsigned char)... |  | 1 |
+| atomic.cpp:18:39:18:39 | 0 |  | 0 |
+| choose_expr.c:3:13:3:42 | __builtin_choose_expr | 1,5,6 | <none> |
+| choose_expr.c:3:35:3:35 | 1 |  | 1 |
+| choose_expr.c:3:38:3:38 | 5 |  | 5 |
+| choose_expr.c:3:41:3:41 | 6 |  | 6 |
+| spaceship.cpp:6:45:6:45 | n | this | <none> |
+| spaceship.cpp:6:45:6:45 | this |  | <none> |
+| spaceship.cpp:9:53:9:56 | {...} | - ... | <none> |
+| spaceship.cpp:9:54:9:55 | - ... | 1 | -1 |
+| spaceship.cpp:9:55:9:55 | 1 |  | 1 |
+| spaceship.cpp:10:54:10:56 | {...} | 0 | <none> |
+| spaceship.cpp:10:55:10:55 | 0 |  | 0 |
+| spaceship.cpp:11:56:11:58 | {...} | 1 | <none> |
+| spaceship.cpp:11:57:11:57 | 1 |  | 1 |
+| spaceship.cpp:18:12:18:14 | rhs |  | <none> |
+| spaceship.cpp:18:12:18:24 | ... <=> ... | rhs,i | <none> |
+| spaceship.cpp:18:20:18:22 | lhs |  | <none> |
+| spaceship.cpp:18:24:18:24 | i | lhs | <none> |
+| spaceship.cpp:22:41:22:101 | __builtin_lt_synthesizes_from_spaceship | const S &,const int & | 1 |
+| spaceship.cpp:22:41:22:101 | const S & |  | <none> |
+| spaceship.cpp:22:41:22:101 | const int & |  | <none> |
+| spaceship.cpp:23:41:23:89 | __builtin_lt_synthesizes_from_spaceship | int,int | 0 |
+| spaceship.cpp:23:41:23:89 | int |  | <none> |
+| spaceship.cpp:23:41:23:89 | int |  | <none> |
+| spaceship.cpp:24:41:24:101 | __builtin_gt_synthesizes_from_spaceship | const S &,const int & | 1 |
+| spaceship.cpp:24:41:24:101 | const S & |  | <none> |
+| spaceship.cpp:24:41:24:101 | const int & |  | <none> |
+| spaceship.cpp:25:41:25:89 | __builtin_gt_synthesizes_from_spaceship | int,int | 0 |
+| spaceship.cpp:25:41:25:89 | int |  | <none> |
+| spaceship.cpp:25:41:25:89 | int |  | <none> |
+| spaceship.cpp:26:41:26:101 | __builtin_le_synthesizes_from_spaceship | const S &,const int & | 1 |
+| spaceship.cpp:26:41:26:101 | const S & |  | <none> |
+| spaceship.cpp:26:41:26:101 | const int & |  | <none> |
+| spaceship.cpp:27:41:27:89 | __builtin_le_synthesizes_from_spaceship | int,int | 0 |
+| spaceship.cpp:27:41:27:89 | int |  | <none> |
+| spaceship.cpp:27:41:27:89 | int |  | <none> |
+| spaceship.cpp:28:41:28:101 | __builtin_ge_synthesizes_from_spaceship | const S &,const int & | 1 |
+| spaceship.cpp:28:41:28:101 | const S & |  | <none> |
+| spaceship.cpp:28:41:28:101 | const int & |  | <none> |
+| spaceship.cpp:29:41:29:89 | __builtin_ge_synthesizes_from_spaceship | int,int | 0 |
+| spaceship.cpp:29:41:29:89 | int |  | <none> |
+| spaceship.cpp:29:41:29:89 | int |  | <none> |
+| types.c:4:9:4:57 | __builtin_types_compatible_p | typeof(...),long | 0 |
+| types.c:4:9:4:57 | long |  | <none> |
+| types.c:4:9:4:57 | typeof(...) |  | <none> |
+| types.c:4:49:4:49 | s |  | <none> |
+| types.c:5:9:5:12 | call to puts | long | <none> |
+| types.c:5:14:5:19 | array to pointer conversion |  | <none> |
+| types.c:5:14:5:19 | long |  | long |
+| types.c:6:16:6:65 | __builtin_types_compatible_p | typeof(...),char * | 1 |
+| types.c:6:16:6:65 | char * |  | <none> |
+| types.c:6:16:6:65 | typeof(...) |  | <none> |
+| types.c:6:56:6:56 | s |  | <none> |
+| types.c:7:9:7:12 | call to puts | str | <none> |
+| types.c:7:14:7:18 | array to pointer conversion |  | <none> |
+| types.c:7:14:7:18 | str |  | str |
+| types.c:9:12:9:14 | (...) |  | 0 |
+| types.c:9:13:9:13 | 0 |  | 0 |
+| varargs.c:7:5:7:32 | __builtin_va_start | ap,args | <none> |
+| varargs.c:7:24:7:25 | ap |  | <none> |
+| varargs.c:7:24:7:25 | array to pointer conversion |  | <none> |
+| varargs.c:7:28:7:31 | args |  | <none> |
+| varargs.c:8:10:8:10 | i |  | <none> |
+| varargs.c:8:10:8:14 | ... = ... | i,0 | <none> |
+| varargs.c:8:14:8:14 | 0 |  | 0 |
+| varargs.c:8:17:8:17 | i |  | <none> |
+| varargs.c:8:17:8:24 | ... < ... | i,args | <none> |
+| varargs.c:8:21:8:24 | args |  | <none> |
+| varargs.c:8:27:8:27 | i |  | <none> |
+| varargs.c:8:27:8:29 | ... ++ | i | <none> |
+| varargs.c:9:9:9:9 | j |  | <none> |
+| varargs.c:9:9:9:37 | ... = ... | j,__builtin_va_arg | <none> |
+| varargs.c:9:13:9:37 | __builtin_va_arg | ap | <none> |
+| varargs.c:9:30:9:31 | ap |  | <none> |
+| varargs.c:9:30:9:31 | array to pointer conversion |  | <none> |
+| varargs.c:11:5:11:24 | __builtin_va_end | ap | <none> |
+| varargs.c:11:22:11:23 | ap |  | <none> |
+| varargs.c:11:22:11:23 | array to pointer conversion |  | <none> |

@@ -165,10 +165,20 @@
 | clang.cpp:122:36:122:66 | int |  | <none> |
 | clang.cpp:123:36:123:67 | __is_trivially_relocatable | void | 0 |
 | clang.cpp:123:36:123:67 | void |  | <none> |
-| clang.cpp:130:34:130:60 | __is_bitwise_cloneable | int | 1 |
-| clang.cpp:130:34:130:60 | int |  | <none> |
-| clang.cpp:131:34:131:59 | S3 |  | <none> |
-| clang.cpp:131:34:131:59 | __is_bitwise_cloneable | S3 | 0 |
+| clang.cpp:130:32:130:58 | __is_bitwise_cloneable | int | 1 |
+| clang.cpp:130:32:130:58 | int |  | <none> |
+| clang.cpp:131:32:131:57 | S3 |  | <none> |
+| clang.cpp:131:32:131:57 | __is_bitwise_cloneable | S3 | 0 |
+| clang.cpp:137:30:137:66 | S4 |  | <none> |
+| clang.cpp:137:30:137:66 | __builtin_is_virtual_base_of | int,S4 | 0 |
+| clang.cpp:137:30:137:66 | int |  | <none> |
+| clang.cpp:138:30:138:65 | S3 |  | <none> |
+| clang.cpp:138:30:138:65 | S4 |  | <none> |
+| clang.cpp:138:30:138:65 | __builtin_is_virtual_base_of | S3,S4 | 1 |
+| clang.cpp:140:32:140:66 | __builtin_is_implicit_lifetime | int | 1 |
+| clang.cpp:140:32:140:66 | int |  | <none> |
+| clang.cpp:141:32:141:65 | S4 |  | <none> |
+| clang.cpp:141:32:141:65 | __builtin_is_implicit_lifetime | S4 | 0 |
 | file://:0:0:0:0 | 0 |  | 0 |
 | file://:0:0:0:0 | 0 |  | 0 |
 | file://:0:0:0:0 | 1 |  | 1 |
@@ -225,6 +235,10 @@
 | gcc.cpp:37:32:37:67 | __is_nothrow_invocable | f_type,bool | 0 |
 | gcc.cpp:37:32:37:67 | bool |  | <none> |
 | gcc.cpp:37:32:37:67 | f_type |  | <none> |
+| gcc.cpp:39:25:39:52 | __builtin_is_structural | int | 1 |
+| gcc.cpp:39:25:39:52 | int |  | <none> |
+| gcc.cpp:40:25:40:54 | __builtin_is_structural | int && | 0 |
+| gcc.cpp:40:25:40:54 | int && |  | <none> |
 | ms.cpp:38:41:38:45 | 0 |  | 0 |
 | ms.cpp:88:27:88:45 | __has_assign | empty | 0 |
 | ms.cpp:88:27:88:45 | empty |  | <none> |

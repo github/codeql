@@ -1,9 +1,22 @@
 private import unified
 private import AllDataFlow
 private import codeql.unified.internal.LocalNameBinding
+private import codeql.unified.internal.ExprPositions
 
-predicate step(Node node1, Step step, Node node2) {
+predicate step(BuilderNode node1, Step step, BuilderNode node2) {
   any(DataFlowPlugin p).step(node1, step, node2)
+  or
+  exists(Expr expr1, Expr expr2, boolean mustFlow |
+    any(DataFlowPlugin p).exprStep(expr1, expr2, mustFlow)
+  |
+    node1.isResultValue(expr1) and
+    (if mustFlow = true then step.valueMustFlow() else step.value()) and
+    node2.isResultValue(expr2)
+    or
+    node1.isPostUpdate(expr2) and
+    step.value() and
+    node2.isPostUpdate(expr1)
+  )
   or
   exists(Callable callable |
     node1.isReceiverParameter(callable) and
@@ -21,6 +34,16 @@ predicate step(Node node1, Step step, Node node2) {
     node1.isReceiverPostUpdate(call) and
     step.value() and
     node2.isPostUpdate(receiverExpr)
+  )
+  or
+  exists(CallExpr call |
+    node1.isResultValue(call.getCallee()) and
+    step.value() and
+    node2.isCalleeArgument(call)
+    or
+    node1.isCalleePostUpdate(call) and
+    step.value() and
+    node2.isPostUpdate(call.getCallee())
   )
   or
   exists(CallExpr call, UnqualifiedMemberAccess callee | callee = call.getCallee() |
@@ -69,12 +92,23 @@ predicate step(Node node1, Step step, Node node2) {
   or
   exists(UnqualifiedMemberAccess access | access.isInstanceAccess() |
     node1.isLocalVariableRead(access, access.getImplicitQualifierVariable()) and
-    step.readName(access.getName()) and
+    step.readName(access.getMemberName()) and
     node2.isResultValue(access)
     or
     (node1.isIncomingValue(access) or node1.isPostUpdate(access)) and
-    step.storeName(access.getName()) and
+    step.storeName(access.getMemberName()) and
     node2.isLocalVariablePostUpdate(access, access.getImplicitQualifierVariable())
+    or
+    // Pass the receiver along to the getter/setter invoked by this expression
+    exists(DataFlowCall call | access = [call.asGetterCall(), call.asSetterCall()] |
+      node1.isLocalVariableRead(access, access.getImplicitQualifierVariable()) and
+      step.value() and
+      node2.isReceiverArgumentEx(call)
+      or
+      node1.isReceiverPostUpdateEx(call) and
+      step.value() and
+      node2.isLocalVariablePostUpdate(access, access.getImplicitQualifierVariable())
+    )
   )
   or
   exists(StringInterpolationExpr expr |
@@ -101,6 +135,17 @@ predicate step(Node node1, Step step, Node node2) {
     (node1.isIncomingValue(expr) or node1.isPostUpdate(expr)) and
     step.storeName(expr.getMemberName()) and
     node2.isPostUpdate(expr.getBase())
+    or
+    // Pass the receiver along to the getter/setter invoked by this expression
+    exists(DataFlowCall call | expr = [call.asGetterCall(), call.asSetterCall()] |
+      node1.isResultValue(expr.getBase()) and
+      step.value() and
+      node2.isReceiverArgumentEx(call)
+      or
+      node1.isReceiverPostUpdateEx(call) and
+      step.value() and
+      node2.isPostUpdate(expr.getBase())
+    )
   )
   or
   // Calls and constructor-patterns targeting an enum-case constructor.
@@ -114,6 +159,20 @@ predicate step(Node node1, Step step, Node node2) {
     node1.isIncomingValue(call) and
     step.readName(field) and
     node2.isIncomingValue(arg.getValue())
+  )
+  or
+  // For local getters/setters, pass the callable into the callee argument.
+  // Capture SSA depends on this.
+  exists(ComputedLocalVariable local, AccessorDeclaration accessor, DataFlowCall call |
+    accessor = local.getAnAccessor() and
+    node1.isCallable(accessor) and
+    step.callGraph() and
+    (
+      call.asGetterCall() = local.getAnAccess() and accessor instanceof GetterDeclaration
+      or
+      call.asSetterCall() = local.getAnAccess() and accessor instanceof SetterDeclaration
+    ) and
+    node2.isImplicitArgument(call, any(ArgumentPosition pos | pos.isCallee()), false)
   )
   or
   exists(SwitchExpr expr |
@@ -146,6 +205,31 @@ predicate step(Node node1, Step step, Node node2) {
     node2.isIncomingValue(stmt.getPattern())
   )
   or
+  exists(FunctionExpr expr |
+    node1.isCallable(expr) and
+    step.value() and
+    node2.isResultValue(expr)
+  )
+  or
+  exists(FunctionDeclaration fun |
+    node1.isCallable(fun) and
+    step.value() and
+    node2.isIncomingValue(fun.getNameNode())
+  )
+  or
+  exists(Callable callable, Expr expr |
+    isReturnedExpr(callable, expr) and
+    node1.isResultValue(expr) and
+    step.value() and
+    node2.isReturnNode(callable)
+  )
+  or
+  exists(IfExpr expr |
+    node1.isResultValue(expr.getABranch()) and
+    step.value() and
+    node2.isResultValue(expr)
+  )
+  or
   none() // Temporarily disable compilation errors from unsatisfiable types
 }
 
@@ -153,14 +237,24 @@ predicate step(Node node1, Step step, Node node2) {
 private signature predicate relevantNodeSig(AstNode node);
 
 module DebugGraph<relevantNodeSig/1 relevantNode> {
-  private Node adjacent(Node n) {
+  private Node adjacent1(Node n) {
     step(n, _, result)
-    or
-    step(result, _, n)
     or
     localSsaStep(n, result, _)
     or
-    localSsaStep(result, n, _)
+    captureSsaLocalFlowStep(n, result)
+    or
+    captureSsaReadStep(n, _, result)
+    or
+    captureSsaStoreStep(n, _, result)
+    or
+    result = n.getPostUpdateNode()
+  }
+
+  private Node adjacent(Node n) {
+    result = adjacent1(n)
+    or
+    n = adjacent1(result)
   }
 
   private predicate relevantDataFlowNode(Node node) {
@@ -170,10 +264,16 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
     relevantDataFlowNode(adjacent(node))
   }
 
+  private string getANodeAnnotation(Node n) {
+    result =
+      " [capture-clear: " +
+        strictconcat(ContentSet c | captureSsaClearsContent(n, c) | c.toString(), ",") + "]"
+  }
+
   query predicate nodes(Node node, string key, string value) {
     relevantDataFlowNode(node) and
     key = "semmle.label" and
-    value = node.toString()
+    value = node.toString() + concat(getANodeAnnotation(node))
   }
 
   private predicate isBypassedStoreReadStep(Step s) {
@@ -205,6 +305,17 @@ module DebugGraph<relevantNodeSig/1 relevantNode> {
       or
       node2 = node1.getPostUpdateNode() and
       value = "post-update"
+      or
+      captureSsaLocalFlowStep(node1, node2) and
+      value = "value"
+      or
+      exists(ContentSet contents |
+        captureSsaReadStep(node1, contents, node2) and
+        value = "read[" + contents.toString() + "]"
+        or
+        captureSsaStoreStep(node1, contents, node2) and
+        value = "store[" + contents.toString() + "]"
+      )
     )
   }
 }

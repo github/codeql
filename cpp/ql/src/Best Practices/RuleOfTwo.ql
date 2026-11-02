@@ -7,8 +7,9 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/rule-of-two
- * @tags reliability
- *       readability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       language-features
  */
 

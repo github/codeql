@@ -241,6 +241,7 @@ def generate_models(config, args, project: Project, database_dir: str) -> None:
     generator.with_summaries = should_generate_summaries(project)
     generator.threads = args.codeql_threads
     generator.ram = args.codeql_ram
+    generator.extension_format = args.extension_format
     if config.get("single-file", False):
         generator.single_file = name
     else:
@@ -430,10 +431,11 @@ def download_dca_databases(
 def clean_up_mad_destination_for_project(config, name: str):
     target = pathlib.Path(config["destination"], name)
     if config.get("single-file", False):
-        target = target.with_suffix(".model.yml")
-        if target.exists():
-            print(f"Deleting existing MaD file at {target}")
-            target.unlink()
+        for extension in (".model.json", ".model.yml"):
+            model_target = target.with_suffix(extension)
+            if model_target.exists():
+                print(f"Deleting existing MaD file at {model_target}")
+                model_target.unlink()
     elif target.exists():
         print(f"Deleting existing MaD directory at {target}")
         shutil.rmtree(target, ignore_errors=True)
@@ -542,6 +544,12 @@ if __name__ == "__main__":
         type=int,
         help="What `--threads` value to pass to `codeql` (default %(default)s)",
         default=0,
+    )
+    parser.add_argument(
+        "--extension-format",
+        choices=["json", "yaml"],
+        default="yaml",
+        help="Format for the generated data extension files (default %(default)s)",
     )
     args = parser.parse_args()
 

@@ -81,9 +81,8 @@ the platform string here; use `os.bzl`.
 
 [`codeql_platform_select`](../../../misc/bazel/os.bzl) takes one keyword argument per CodeQL platform: `linux64`,
 `linux_arm64`, `osx64` and `win64`. `otherwise` supplies the value for whichever of those you leave unset; it is **not**
-a `//conditions:default`. **There is deliberately no fallback from `linux_arm64` to `linux64`.** If you only care about
-the OS, use `os_select`, which gives Linux the same value on both architectures and has a `posix` shorthand for the
-shared Linux/macOS value.
+a `//conditions:default`. If you only care about the OS, use `os_select`, which gives Linux the same value on both
+architectures and has a `posix` shorthand for the shared Linux/macOS value.
 
 In a macro (no `ctx`) it returns a `select()`:
 

@@ -107,12 +107,35 @@ pkg-config`.
    toolchain, running `rust/lint.py` might reformat or apply new lints to the
    code.
 
-7. Check with CI if everything is in order.
+7. Update `.expected` files by running:
+   ```
+   codeql test run --learn --search-path=rust/extractor-pack:. \
+     --consistency-queries=rust/ql/consistency-queries rust/ql/test
+   ```
+   The search path selects the newly built extractor from step 6.
 
-8. Run DCA with database caching disabled. Iterate on the code if needed.
+   If there are changes, commit the updated expectations:
+   ```
+   git add 'rust/ql/test/**/*.expected'
+   git commit -m 'Rust: Update test expectations'
+   ```
+
+8. Check the `.expected` files for `testFailures` and fix the underlying
+   problems.
+
+   For each separate problem address the issue, regenerate the `.expected`
+   files with the command from step 7, and create a commit.
+
+   Repeat until no rows under `testFailures` remain and the tests pass.
 
 9. If in step 5 the schema was updated, add upgrade/downgrade scripts and a
    change note. This is best done last to reduce the chance of merge conflicts
    (none of the other testing depends on having upgrade and downgrade scripts
    in place). See [Upgrading a language database
    schema](docs/prepare-db-upgrade.md).
+
+10. Create a PR with the changes thus far.
+
+11. Check with CI if everything is in order.
+
+12. Run DCA with database caching disabled. Iterate on the code if needed.

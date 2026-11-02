@@ -1,3 +1,17 @@
+## 7.4.2
+
+### Minor Analysis Improvements
+
+* Rolled back the change that set proxy and certificate environment variables for the subprocess that invokes the NuGet CLI because the environment variables were only partially respected by the target process in some cases.
+
+## 7.4.1
+
+### Minor Analysis Improvements
+
+* Avoid logging warnings when there are no explicit or inherited feeds to check for reachability.
+* The subprocess for the NuGet CLI is now provided with the proxy and certificate environment variables needed to access private registries if any are configured.
+* Added support for data flow through positional patterns in `is` expressions and `switch` cases.
+
 ## 7.4.0
 
 ### Major Analysis Improvements
