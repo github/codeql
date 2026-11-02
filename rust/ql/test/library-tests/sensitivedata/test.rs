@@ -105,8 +105,8 @@ fn test_credentials(
 ) {
 	// credentials
 
-	sink(account_key); // $ sensitive=id
-	sink(accnt_key); // $ sensitive=id
+	sink(account_key); // $ sensitive=secret
+	sink(accnt_key); // $ sensitive=secret
 	sink(license_key); // $ MISSING: sensitive=secret
 	sink(secret_key); // $ sensitive=secret
 
@@ -116,8 +116,8 @@ fn test_credentials(
 	sink(user_id); // $ sensitive=id
 	sink(my_user_id_64); // $ sensitive=id
 
-	sink(sessionkey); // $ sensitive=id
-	sink(session_key); // $ sensitive=id
+	sink(sessionkey); // $ sensitive=secret
+	sink(session_key); // $ sensitive=secret
 
 	sink(ms.get_certificate()); // $ sensitive=certificate
 

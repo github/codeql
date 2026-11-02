@@ -56,7 +56,8 @@
 | test_logging.rs:248:15:248:60 | ... .as_bytes() | test_logging.rs:248:41:248:48 | password | test_logging.rs:248:15:248:60 | ... .as_bytes() | This operation writes $@ to a log file. | test_logging.rs:248:41:248:48 | password | password |
 | test_logging.rs:251:15:251:60 | ... .as_bytes() | test_logging.rs:251:41:251:48 | password | test_logging.rs:251:15:251:60 | ... .as_bytes() | This operation writes $@ to a log file. | test_logging.rs:251:41:251:48 | password | password |
 | test_logging.rs:276:11:276:42 | MacroExpr | test_logging.rs:276:27:276:42 | account_password | test_logging.rs:276:11:276:42 | MacroExpr | This operation writes $@ to a log file. | test_logging.rs:276:27:276:42 | account_password | account_password |
-| test_logging.rs:295:11:295:31 | MacroExpr | test_logging.rs:294:17:294:39 | get_password_or_error(...) | test_logging.rs:295:11:295:31 | MacroExpr | This operation writes $@ to a log file. | test_logging.rs:294:17:294:39 | get_password_or_error(...) | get_password_or_error(...) |
+| test_logging.rs:277:11:277:37 | MacroExpr | test_logging.rs:277:27:277:37 | session_key | test_logging.rs:277:11:277:37 | MacroExpr | This operation writes $@ to a log file. | test_logging.rs:277:27:277:37 | session_key | session_key |
+| test_logging.rs:296:11:296:31 | MacroExpr | test_logging.rs:295:17:295:39 | get_password_or_error(...) | test_logging.rs:296:11:296:31 | MacroExpr | This operation writes $@ to a log file. | test_logging.rs:295:17:295:39 | get_password_or_error(...) | get_password_or_error(...) |
 edges
 | test_logging.rs:42:28:42:35 | password | test_logging.rs:42:12:42:35 | MacroExpr | provenance | Sink:MaD:11 |
 | test_logging.rs:43:28:43:35 | password | test_logging.rs:43:12:43:35 | MacroExpr | provenance | Sink:MaD:11 |
@@ -228,8 +229,9 @@ edges
 | test_logging.rs:251:23:251:48 | { ... } | test_logging.rs:251:23:251:48 | ...::must_use(...) | provenance | MaD:21 |
 | test_logging.rs:251:41:251:48 | password | test_logging.rs:251:23:251:48 | MacroExpr | provenance |  |
 | test_logging.rs:276:27:276:42 | account_password | test_logging.rs:276:11:276:42 | MacroExpr | provenance | Sink:MaD:11 |
-| test_logging.rs:294:9:294:13 | value | test_logging.rs:295:11:295:31 | MacroExpr | provenance | Sink:MaD:11 |
-| test_logging.rs:294:17:294:39 | get_password_or_error(...) | test_logging.rs:294:9:294:13 | value | provenance |  |
+| test_logging.rs:277:27:277:37 | session_key | test_logging.rs:277:11:277:37 | MacroExpr | provenance | Sink:MaD:11 |
+| test_logging.rs:295:9:295:13 | value | test_logging.rs:296:11:296:31 | MacroExpr | provenance | Sink:MaD:11 |
+| test_logging.rs:295:17:295:39 | get_password_or_error(...) | test_logging.rs:295:9:295:13 | value | provenance |  |
 models
 | 1 | Sink: <core::option::Option as log_err::LogErrOption>::log_expect; Argument[0]; log-injection |
 | 2 | Sink: <core::option::Option>::expect; Argument[0]; log-injection |
@@ -469,7 +471,9 @@ nodes
 | test_logging.rs:251:41:251:48 | password | semmle.label | password |
 | test_logging.rs:276:11:276:42 | MacroExpr | semmle.label | MacroExpr |
 | test_logging.rs:276:27:276:42 | account_password | semmle.label | account_password |
-| test_logging.rs:294:9:294:13 | value | semmle.label | value |
-| test_logging.rs:294:17:294:39 | get_password_or_error(...) | semmle.label | get_password_or_error(...) |
-| test_logging.rs:295:11:295:31 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:277:11:277:37 | MacroExpr | semmle.label | MacroExpr |
+| test_logging.rs:277:27:277:37 | session_key | semmle.label | session_key |
+| test_logging.rs:295:9:295:13 | value | semmle.label | value |
+| test_logging.rs:295:17:295:39 | get_password_or_error(...) | semmle.label | get_password_or_error(...) |
+| test_logging.rs:296:11:296:31 | MacroExpr | semmle.label | MacroExpr |
 subpaths

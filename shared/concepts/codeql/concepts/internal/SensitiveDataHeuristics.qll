@@ -57,7 +57,8 @@ module HeuristicNames {
    * or trusted data.
    */
   string maybeSecret() {
-    result = "(?is).*((?<!is|is_)secret|(?<!un|un_|is|is_)trusted(?!_iter)|confidential).*"
+    result =
+      "(?is).*((?<!is|is_)secret|(?<!un|un_|is|is_)trusted(?!_iter)|confidential|(session|acc(ou)?nt).?key).*"
   }
 
   /**
@@ -65,7 +66,7 @@ module HeuristicNames {
    * user names or other account information.
    */
   string maybeAccountInfo() {
-    result = "(?is).*(acc(ou)?nt|puid|user.?(name|id)|session.?(id|key)).*" or
+    result = "(?is).*(acc(ou)?nt(?!.?key)|puid|user.?(name|id)|session.?id).*" or
     result = "(?s).*([uU]|^|_|[a-z](?=U))([uU][iI][dD]).*"
   }
 
