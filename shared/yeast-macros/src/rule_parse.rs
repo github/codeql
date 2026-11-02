@@ -641,6 +641,60 @@ mod tests {
     }
 
     #[test]
+    fn parses_quantified_query_choice_alternatives() {
+        let pattern = parse_pattern(quote! {
+            [
+                (identifier)+ @items
+                (integer)?
+                ","*
+            ]
+        })
+        .unwrap();
+
+        let Pattern::Choice { alternatives } = pattern else {
+            panic!("expected query choice");
+        };
+        assert!(matches!(
+            &alternatives[0],
+            Pattern::Capture {
+                cardinality: Cardinality::ONE_OR_MORE,
+                ..
+            }
+        ));
+        assert!(matches!(
+            &alternatives[1],
+            Pattern::Repeated {
+                cardinality: Cardinality::OPTIONAL,
+                ..
+            }
+        ));
+        assert!(matches!(
+            &alternatives[2],
+            Pattern::Repeated {
+                cardinality: Cardinality::ZERO_OR_MORE,
+                ..
+            }
+        ));
+    }
+
+    #[test]
+    fn rejects_mixed_capture_modes_in_query_choice() {
+        for pattern in [
+            quote!([(identifier) @value (integer) @@value]),
+            quote!([(identifier) @@value (integer) @value]),
+        ] {
+            let result = parse_pattern(pattern);
+            let Err(error) = result else {
+                panic!("expected mixed capture modes to be rejected");
+            };
+            assert_eq!(
+                error.to_string(),
+                "capture `value` must consistently use `@` or `@@` across query choice alternatives"
+            );
+        }
+    }
+
+    #[test]
     fn rejects_eager_capture_of_rule_root() {
         let result = parse_rule(quote! {
             (identifier) @name
@@ -649,6 +703,25 @@ mod tests {
         });
         let Err(error) = result else {
             panic!("expected eager rule-root capture to be rejected");
+        };
+        assert_eq!(
+            error.to_string(),
+            "a capture of the rule root must use `@@`; the matched root cannot be eagerly translated"
+        );
+    }
+
+    #[test]
+    fn rejects_eager_capture_in_rule_root_choice() {
+        let result = parse_rule(quote! {
+            [
+                (identifier) @name
+                (integer)
+            ]
+            =>
+            (identifier "replacement")
+        });
+        let Err(error) = result else {
+            panic!("expected eager capture in rule-root choice to be rejected");
         };
         assert_eq!(
             error.to_string(),
@@ -794,6 +867,31 @@ mod tests {
                         },
                         Pattern::Unnamed(comma)
                     ] if comma == ","
+                )
+        ));
+    }
+
+    #[test]
+    fn parses_choice_led_repeated_sequence() {
+        let pattern = parse_pattern(quote!((root ([(identifier) (integer)] ",")*))).unwrap();
+        let Pattern::Node { fields, .. } = pattern else {
+            panic!("expected root node");
+        };
+        let Pattern::Sequence(children) = &fields[0].1 else {
+            panic!("expected child sequence");
+        };
+        let Pattern::Repeated {
+            pattern: repeated, ..
+        } = &children[0]
+        else {
+            panic!("expected repetition");
+        };
+        assert!(matches!(
+            repeated.as_ref(),
+            Pattern::Sequence(patterns)
+                if matches!(
+                    patterns.as_slice(),
+                    [Pattern::Choice { .. }, Pattern::Unnamed(comma)] if comma == ","
                 )
         ));
     }
