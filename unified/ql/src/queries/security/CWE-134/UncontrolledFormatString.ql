@@ -19,10 +19,12 @@ module TaintedFormatConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
 
   predicate isSink(DataFlow::Node node) {
-    // TODO: Model the remaining printf variants from original Swift's StringFormat.qll.
+    // TODO: the MaD format currently has the varargs argument first in the
+    //  signature, rather than in its normal position.
+    // TODO: we currently model `printf(_:_:)` etc explicitly, rather than with a
+    //  more flexible pattern as in the original Swift's `StringFormat.qll`.
     // TODO: Port the variadic-call heuristic from original Swift's
-    // UncontrolledFormatStringExtensions.qll once variadic parameters are extracted,
-    // excluding predicate-injection sinks.
+    //  `UncontrolledFormatStringExtensions.qll` once variadic parameters are extracted.
     Models::isSink(node, "format-string")
   }
 
