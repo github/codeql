@@ -98,36 +98,7 @@ module Impl {
      */
     predicate isFromMacroExpansion() { ElementImpl::MacroExpansion::isFromMacroExpansion(this) }
 
-    /**
-     * Gets a control flow node for this AST node, if any.
-     *
-     * Note that because of _control flow splitting_, one `AstNode` node may correspond
-     * to multiple `CfgNode`s. Example:
-     *
-     * ```rust
-     * if a && b {
-     *   // ...
-     * }
-     * ```
-     *
-     * The CFG for the condition above looks like
-     *
-     * ```mermaid
-     * flowchart TD
-     * 1["a"]
-     * 2["b"]
-     * 3["[false] a && b"]
-     * 4["[true] a && b"]
-     *
-     * 1 -- false --> 3
-     * 1 -- true --> 2
-     * 2 -- false --> 3
-     * 2 -- true --> 4
-     * ```
-     *
-     * That is, the AST node for `a && b` corresponds to _two_ CFG nodes (it is
-     * split into two).
-     */
-    CfgNode getACfgNode() { this = result.getAstNode() }
+    /** Gets the control flow node that uniquely represents this AST node, if any. */
+    CfgNode getACfgNode() { result.injects(this) }
   }
 }
