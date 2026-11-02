@@ -813,8 +813,8 @@ module NodeJSLib {
         methodName.matches("%Sync")
       then result = this.getLastArgument()
       else
-        // the rest (exec/execFile) has the options argument as their second last.
-        result = this.getParameter(this.getNumArgument() - 2).asSink()
+        // exec/execFile may have a callback after the options argument.
+        result = this.getParameter([this.getNumArgument() - 2, this.getNumArgument() - 1]).asSink()
     }
   }
 

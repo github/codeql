@@ -175,20 +175,20 @@ module UnsafeShellCommandConstruction {
   }
 
   /**
-   * Holds if the arguments array given to `sys` is joined as a string because `shell` is set to true.
+   * Holds if the arguments array given to `sys` is joined as a string because the `shell` option is enabled.
    */
   predicate executesArrayAsShell(SystemCommandExecution sys) {
-    sys.getOptionsArg()
-        .getALocalSource()
-        .getAPropertyWrite("shell")
-        .getRhs()
-        .asExpr()
-        .(BooleanLiteral)
-        .getValue() = "true"
-    or
-    exists(API::Node node |
-      node.asSink() = sys.getOptionsArg() and
-      node.getMember("shell").asSink().mayHaveBooleanValue(true)
+    exists(DataFlow::Node shell |
+      shell = sys.getOptionsArg().getALocalSource().getAPropertyWrite("shell").getRhs()
+      or
+      exists(API::Node node |
+        node.asSink() = sys.getOptionsArg() and
+        shell = node.getMember("shell").asSink()
+      )
+    |
+      shell.mayHaveBooleanValue(true)
+      or
+      exists(string path | shell.mayHaveStringValue(path) and path != "")
     )
   }
 
@@ -208,13 +208,13 @@ module UnsafeShellCommandConstruction {
   }
 
   /**
-   * An argument to a command invocation where the `shell` option is set to true.
+   * An argument to a command invocation where the `shell` option is enabled.
    */
   class ShellTrueCommandExecutionSink extends Sink {
     SystemCommandExecution sys;
 
     ShellTrueCommandExecutionSink() {
-      // `shell` is set to true. That means string-concatenation happens behind the scenes.
+      // `shell` is enabled. That means string-concatenation happens behind the scenes.
       // We just assume that a `shell` option in any library means the same thing as it does in NodeJS.
       exists(DataFlow::SourceNode arr |
         arr = endsInShellExecutedArray(DataFlow::TypeBackTracker::end(), sys)
