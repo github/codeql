@@ -159,6 +159,14 @@ impl Pattern {
                     }
                 }
             }
+            Pattern::Choice { alternatives } => {
+                let alternatives = alternatives.iter().map(Pattern::lower);
+                quote! {
+                    yeast::query::QueryNode::Choice {
+                        alternatives: vec![#(#alternatives),*],
+                    }
+                }
+            }
             Pattern::Sequence(_) | Pattern::Repeated { .. } => {
                 unreachable!("sequence and repeated patterns cannot match a single node")
             }
@@ -168,6 +176,9 @@ impl Pattern {
     fn lower_list(&self) -> Vec<TokenStream> {
         match self {
             Pattern::Sequence(patterns) => patterns.iter().flat_map(Pattern::lower_list).collect(),
+            Pattern::Choice { .. } if !self.matches_single_node() => {
+                vec![self.lower_list_choice()]
+            }
             Pattern::Capture {
                 name,
                 pattern,
@@ -226,6 +237,21 @@ impl Pattern {
         }
     }
 
+    fn lower_list_choice(&self) -> TokenStream {
+        let Pattern::Choice { alternatives } = self else {
+            unreachable!("expected query choice pattern");
+        };
+        let alternatives = alternatives.iter().map(|alternative| {
+            let children = alternative.lower_list();
+            quote! { vec![#(#children),*] }
+        });
+        quote! {
+            yeast::query::QueryListElem::Choice {
+                alternatives: vec![#(#alternatives),*],
+            }
+        }
+    }
+
     fn captures(&self) -> Vec<CaptureBinding> {
         let mut captures = Vec::new();
         self.collect_captures(Cardinality::SINGLE, &mut captures);
@@ -254,6 +280,9 @@ impl Pattern {
                     cardinality,
                 });
             }
+            Pattern::Choice { alternatives } => {
+                captures.extend(unify_choice_captures(alternatives, cardinality));
+            }
             Pattern::Sequence(patterns) => {
                 for pattern in patterns {
                     pattern.collect_captures(cardinality, captures);
@@ -267,6 +296,41 @@ impl Pattern {
             }
         }
     }
+}
+
+fn unify_choice_captures(
+    alternatives: &[Pattern],
+    parent: Cardinality,
+) -> Vec<CaptureBinding> {
+    let alternative_count = alternatives.len();
+    let mut order = Vec::new();
+    let mut by_name = std::collections::BTreeMap::<String, Vec<CaptureBinding>>::new();
+
+    for alternative in alternatives {
+        for capture in alternative.captures() {
+            let name = capture.name.to_string();
+            if !by_name.contains_key(&name) {
+                order.push(name.clone());
+            }
+            by_name.entry(name).or_default().push(capture);
+        }
+    }
+
+    order
+        .into_iter()
+        .map(|name| {
+            let captures = by_name.remove(&name).unwrap();
+            let present_in_every_alternative = captures.len() == alternative_count;
+            let mut capture = captures[0].clone();
+            for other in captures.iter().skip(1) {
+                capture.cardinality.multiple |= other.cardinality.multiple;
+                capture.cardinality.required &= other.cardinality.required;
+            }
+            capture.cardinality.required &= present_in_every_alternative;
+            capture.cardinality = combine_cardinality(parent, capture.cardinality);
+            capture
+        })
+        .collect()
 }
 
 fn combine_cardinality(parent: Cardinality, child: Cardinality) -> Cardinality {
