@@ -27,7 +27,6 @@ platform-specific optional dependencies are recorded in `package-lock.json`.
 ```sh
 npm ci
 npm run build
-npm test
 node build/main.js --version
 ```
 
@@ -73,17 +72,7 @@ the architecture archive installs native packages into
 be installed, with executable permissions preserved. No separate TypeScript
 installation is needed.
 
-Run the installed-package smoke test with:
-
-```sh
-bazel test //javascript/extractor/lib/typescript:package-test
-```
-
-It checks all distribution selections, mismatched runtime rejection, common/arch
-ZIP separation and executable metadata, then installs the merged archives with
-the production `ripunzip` and parses TS, TSX, and malformed source through the
-installed JSON protocol. It runs on the host platform and uses Bazel's Node.js
-runtime. The Java extractor test suite also installs both ZIPs and restores
+The Java extractor test suite installs both ZIPs and restores
 executable permissions using their central-directory metadata.
 
 All four distribution runtime ZIPs have been cross-assembled and inspected.
@@ -108,15 +97,11 @@ are reported on stderr and terminate the wrapper with a nonzero exit status.
 Reset, quit, EOF, and failure invalidate queued prefetch work; quit also closes
 stdin without requiring the sender to close its pipe.
 
-AST projection and regression tests
------------------------------------
+AST projection
+--------------
 
 The wrapper targets the native `typescript/sync` and `typescript/ast` entry
 points, using the same pinned dependency in the production ESM build.
-`npm test` builds the production wrapper with the pinned compiler and runs
-`test/wrapper.test.mjs` and `test/lifecycle.test.mjs` against its compiled output,
-copied with its ESM package boundary into temporary installations. No separate
-probe installation or legacy compiler is needed for these tests.
 
 AST nodes are explicitly projected into plain objects before their native
 program is disposed. Syntax-kind and node-flag metadata are sent unchanged.
@@ -131,11 +116,6 @@ The Java converter consumes native fields directly, including `postfixToken`,
 `defaultType`, and import attributes, and recognizes the native `EndOfFile`
 spelling. Namespace classification and variable declaration kinds are derived
 in Java without synthetic flags or properties.
-
-The tests cover AST projection, metadata, UTF-16 source positions, syntax
-diagnostics, TSX, repeated parses, native process reuse and disposal, the child memory
-budget, reset/quit/EOF, cancelled prefetch, the ignored legacy override, and fatal native
-failures. Run them with Node.js 16.20.0 to verify the minimum supported runtime.
 
 Compatibility and regression coverage
 ------------------------------------
@@ -159,18 +139,12 @@ keep the classifications expected by existing TRAP tests.
 
 Source-phase imports (`import source wasm from "./module.wasm"`) are accepted.
 Their declaration, imported path, and variable bindings use the existing import
-representation; the schema does not yet distinguish the source phase. The new
-`TypeScript/SourceImports` QL test covers these bindings.
+representation; the schema does not yet distinguish the source phase.
 
-Validation on October 19, 2026 passed the pinned-compiler build/type check,
-existing TSLint rules, parser compatibility and lifecycle tests,
-500 Java tests, 68 TypeScript QL tests, the syntax-error query test, both extraction
-diagnostic integration tests, and the installed-package smoke test. The
+The existing Java extractor, TypeScript QL, syntax-error query, and extraction
+diagnostic integration tests cover parser compatibility. The
 internal-error integration test deliberately terminates the native child rather
 than relying on the old parser's stack overflow.
-
-All 19 production-output regression tests also pass on Node.js 16.20.0, the
-minimum supported runtime.
 
 For QL tests, install the newly built extractor and explicitly select it; otherwise
 the CLI may silently exercise an older installed extractor:

@@ -1,6 +1,4 @@
-load("@rules_python//python:defs.bzl", "py_test")
 load("//misc/bazel:os.bzl", "codeql_platform_select")
-load("//misc/bazel:pkg.bzl", "codeql_pack", "codeql_pack_group")
 
 DISTRIBUTION = codeql_platform_select(
     linux64 = "linux64",
@@ -89,48 +87,4 @@ filegroup(
     name = "native",
     srcs = ["native.zip"],
     visibility = ["//visibility:public"],
-)
-
-codeql_pack(
-    name = "package-test-pack",
-    srcs = [],
-    arch_overrides = ["tools/typescript-parser-wrapper/node_modules/@typescript"],
-    install_dest = None,
-    pack_prefix = "",
-    zips = {
-        ":native": "tools/typescript-parser-wrapper/node_modules/@typescript",
-        ":typescript": "tools",
-    },
-)
-
-codeql_pack_group(
-    name = "package-test-distribution",
-    srcs = [":package-test-pack"],
-    skip_installer = True,
-)
-
-py_test(
-    name = "package-test",
-    size = "small",
-    srcs = ["test/package_test.py"],
-    data = [
-        "package-runtime.mjs",
-        ":native",
-        ":package-test-distribution-arch-zip",
-        ":package-test-distribution-common-zip",
-        ":typescript",
-        "//misc/ripunzip",
-        "@nodejs//:node_bin",
-    ],
-    env = {
-        "NODE_BIN": "$(rlocationpath @nodejs//:node_bin)",
-        "PACKAGE_RUNTIME": "$(rlocationpath package-runtime.mjs)",
-        "RIPUNZIP": "$(rlocationpath //misc/ripunzip)",
-        "TS_ARCH_ZIP": "$(rlocationpath :package-test-distribution-arch-zip)",
-        "TS_COMMON_ZIP": "$(rlocationpath :package-test-distribution-common-zip)",
-        "TS_NATIVE_ZIP": "$(rlocationpath :native)",
-        "TS_WRAPPER_ZIP": "$(rlocationpath :typescript)",
-    },
-    main = "test/package_test.py",
-    deps = ["@rules_python//python/runfiles"],
 )

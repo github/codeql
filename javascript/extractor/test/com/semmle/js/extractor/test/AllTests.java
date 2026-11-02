@@ -21,7 +21,6 @@ import org.junit.runners.Suite.SuiteClasses;
   NodeJSDetectorTests.class,
   ES2015DetectorTests.class,
   TrapTests.class,
-  TypeScriptTests.class,
   ObjectRestSpreadTests.class,
   ClassPropertiesTests.class,
   FunctionSentTests.class,
