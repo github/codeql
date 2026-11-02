@@ -134,7 +134,7 @@ func tests() throws {
     s.appendFormat(NSString(string: "%s"), "abc") // GOOD: not tainted
     s.appendFormat(NSString(string: tainted), "abc") // $ Alert
 
-    _ = NSPredicate(format: tainted) // GOOD: this should be flagged by `swift/predicate-injection`, not `swift/uncontrolled-format-string`
+    _ = NSPredicate(format: tainted) // GOOD: predicate injection, not printf-style formatting
 
     tainted.withCString({
         cstr in

@@ -31,7 +31,7 @@ an untrusted source. This also helps to prevent errors where the format argument
 
 <li>
 OWASP:
-<a href="https://owasp.org/www-community/attacks/Format_string_attack">Format string attack</a>.
+<a href="https://community.owasp.org/attacks/Format_string_attack">Format string attack</a>.
 </li>
 
 </references>
