@@ -6,6 +6,7 @@
 | UncontrolledFormatString.swift:107:24:107:30 | tainted | UncontrolledFormatString.swift:93:24:93:77 | String(...) | UncontrolledFormatString.swift:107:24:107:30 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:93:24:93:77 | String(...) | this user-provided value |
 | UncontrolledFormatString.swift:110:26:110:50 | NSString(...) | UncontrolledFormatString.swift:93:24:93:77 | String(...) | UncontrolledFormatString.swift:110:26:110:50 | NSString(...) | This format string depends on $@. | UncontrolledFormatString.swift:93:24:93:77 | String(...) | this user-provided value |
 | UncontrolledFormatString.swift:113:33:113:57 | NSString(...) | UncontrolledFormatString.swift:93:24:93:77 | String(...) | UncontrolledFormatString.swift:113:33:113:57 | NSString(...) | This format string depends on $@. | UncontrolledFormatString.swift:93:24:93:77 | String(...) | this user-provided value |
+| UncontrolledFormatString.swift:120:65:120:71 | tainted | UncontrolledFormatString.swift:93:24:93:77 | String(...) | UncontrolledFormatString.swift:120:65:120:71 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:93:24:93:77 | String(...) | this user-provided value |
 | UncontrolledFormatString.swift:121:61:121:67 | tainted | UncontrolledFormatString.swift:93:24:93:77 | String(...) | UncontrolledFormatString.swift:121:61:121:67 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:93:24:93:77 | String(...) | this user-provided value |
 | UncontrolledFormatString.swift:133:39:133:45 | tainted | UncontrolledFormatString.swift:93:24:93:77 | String(...) | UncontrolledFormatString.swift:133:39:133:45 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:93:24:93:77 | String(...) | this user-provided value |
 | UncontrolledFormatString.swift:138:20:138:44 | NSString(...) | UncontrolledFormatString.swift:93:24:93:77 | String(...) | UncontrolledFormatString.swift:138:20:138:44 | NSString(...) | This format string depends on $@. | UncontrolledFormatString.swift:93:24:93:77 | String(...) | this user-provided value |
@@ -27,6 +28,7 @@ edges
 | UncontrolledFormatString.swift:93:9:93:15 | tainted | UncontrolledFormatString.swift:110:43:110:49 | tainted | provenance |  |
 | UncontrolledFormatString.swift:93:9:93:15 | tainted | UncontrolledFormatString.swift:113:50:113:56 | tainted | provenance |  |
 | UncontrolledFormatString.swift:93:9:93:15 | tainted | UncontrolledFormatString.swift:118:11:118:17 | tainted | provenance |  |
+| UncontrolledFormatString.swift:93:9:93:15 | tainted | UncontrolledFormatString.swift:120:65:120:71 | tainted | provenance |  |
 | UncontrolledFormatString.swift:93:9:93:15 | tainted | UncontrolledFormatString.swift:121:61:121:67 | tainted | provenance |  |
 | UncontrolledFormatString.swift:93:9:93:15 | tainted | UncontrolledFormatString.swift:133:39:133:45 | tainted | provenance |  |
 | UncontrolledFormatString.swift:93:9:93:15 | tainted | UncontrolledFormatString.swift:138:37:138:43 | tainted | provenance |  |
@@ -61,6 +63,7 @@ nodes
 | UncontrolledFormatString.swift:113:33:113:57 | NSString(...) | semmle.label | NSString(...) |
 | UncontrolledFormatString.swift:113:50:113:56 | tainted | semmle.label | tainted |
 | UncontrolledFormatString.swift:118:11:118:17 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:120:65:120:71 | tainted | semmle.label | tainted |
 | UncontrolledFormatString.swift:121:61:121:67 | tainted | semmle.label | tainted |
 | UncontrolledFormatString.swift:133:39:133:45 | tainted | semmle.label | tainted |
 | UncontrolledFormatString.swift:138:20:138:44 | NSString(...) | semmle.label | NSString(...) |

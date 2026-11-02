@@ -117,7 +117,7 @@ func tests() throws {
     NSLog(tainted) // $ MISSING: Alert
     MyLog(tainted) // $ MISSING: Alert
 
-    _ = NSException(name: NSExceptionName("exception"), reason: tainted, userInfo: nil) // $ MISSING: Alert
+    _ = NSException(name: NSExceptionName("exception"), reason: tainted, userInfo: nil) // $ Alert
     NSException.raise(NSExceptionName("exception"), format: tainted, arguments: getVaList([])) // $ Alert
 
     let taintedVal = Int(tainted)!

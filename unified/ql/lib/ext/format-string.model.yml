@@ -20,6 +20,7 @@ extensions:
       - ["", "NSMutableString", true, "localizedStringWithFormat(_:_:)", "", "", "Argument[0]", "format-string", "manual"]
       - ["", "NSMutableString", true, "appendFormat(_:_:)", "", "", "Argument[0]", "format-string", "manual"]
       - ["", "StringProtocol", true, "appendingFormat(_:_:)", "", "", "Argument[0]", "format-string", "manual"]
+      - ["", "NSException", true, "init(name:reason:userInfo:)", "", "", "Argument[reason:]", "format-string", "manual"]
       - ["", "NSException", true, "raise(_:arguments:format:)", "", "", "Argument[format:]", "format-string", "manual"]
       - ["", "", false, "NSLog(_:_:)", "", "", "Argument[0]", "format-string", "manual"]
       - ["", "", false, "NSLogv(_:_:)", "", "", "Argument[0]", "format-string", "manual"]
