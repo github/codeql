@@ -156,3 +156,26 @@ func tests() throws {
     _ = MyString(formatString: tainted, "abc") // $ MISSING: Alert
     _ = MyString(formatString: "%s", tainted) // GOOD: format not tainted
 }
+
+func testModeledFormatStrings() throws {
+    let tainted = try! String(contentsOf: URL(string: "http://example.com")!) // $ Source
+
+    _ = String.localizedStringWithFormat(tainted, "abc") // $ Alert
+    _ = String.localizedStringWithFormat("%@", tainted) // GOOD: format not tainted
+    NSString.localizedStringWithFormat(NSString(string: tainted), "abc") // $ Alert
+    NSString.localizedStringWithFormat(NSString(string: "%@"), tainted) // GOOD: format not tainted
+    NSMutableString.localizedStringWithFormat(NSString(string: tainted), "abc") // $ Alert
+    NSMutableString.localizedStringWithFormat(NSString(string: "%@"), tainted) // GOOD: format not tainted
+
+    NSLog(tainted, "abc") // $ Alert
+    NSLog("%@", tainted) // GOOD: format not tainted
+
+    _ = dprintf(0, tainted, "abc") // $ Alert
+    _ = dprintf(0, "%s", tainted) // GOOD: format not tainted
+    _ = vprintf(tainted, getVaList([])) // $ Alert
+    _ = vprintf("%s", getVaList([tainted])) // GOOD: format not tainted
+    _ = vfprintf(nil, tainted, getVaList([])) // $ Alert
+    _ = vfprintf(nil, "%s", getVaList([tainted])) // GOOD: format not tainted
+    _ = vasprintf_l(nil, nil, tainted, getVaList([])) // $ Alert
+    _ = vasprintf_l(nil, nil, "%s", getVaList([tainted])) // GOOD: format not tainted
+}
