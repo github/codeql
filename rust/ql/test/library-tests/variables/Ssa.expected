@@ -60,7 +60,7 @@ definition
 | main.rs:259:54:259:55 | a4 | main.rs:259:9:259:81 | a4 |
 | main.rs:259:79:259:80 | a4 | main.rs:259:9:259:81 | a4 |
 | main.rs:263:9:263:83 | SSA phi(a5) | main.rs:263:9:263:83 | a5 |
-| main.rs:263:10:263:57 | [match(true)] SSA phi(a5) | main.rs:263:9:263:83 | a5 |
+| main.rs:263:10:263:57 | SSA phi(a5) | main.rs:263:9:263:83 | a5 |
 | main.rs:263:29:263:30 | a5 | main.rs:263:9:263:83 | a5 |
 | main.rs:263:55:263:56 | a5 | main.rs:263:9:263:83 | a5 |
 | main.rs:263:81:263:82 | a5 | main.rs:263:9:263:83 | a5 |
@@ -70,19 +70,19 @@ definition
 | main.rs:267:55:267:56 | a6 | main.rs:267:9:267:83 | a6 |
 | main.rs:267:80:267:81 | a6 | main.rs:267:9:267:83 | a6 |
 | main.rs:273:9:273:14 | either | main.rs:273:9:273:14 | either |
-| main.rs:275:9:275:44 | [match(true)] SSA phi(a7) | main.rs:275:9:275:44 | a7 |
+| main.rs:275:9:275:44 | SSA phi(a7) | main.rs:275:9:275:44 | a7 |
 | main.rs:275:22:275:23 | a7 | main.rs:275:9:275:44 | a7 |
 | main.rs:275:42:275:43 | a7 | main.rs:275:9:275:44 | a7 |
 | main.rs:283:9:283:14 | either | main.rs:283:9:283:14 | either |
 | main.rs:286:13:286:13 | e | main.rs:286:13:286:13 | e |
-| main.rs:287:14:287:51 | [match(true)] SSA phi(a11) | main.rs:287:14:287:51 | a11 |
+| main.rs:287:14:287:51 | SSA phi(a11) | main.rs:287:14:287:51 | a11 |
 | main.rs:287:27:287:29 | a11 | main.rs:287:14:287:51 | a11 |
 | main.rs:287:48:287:50 | a11 | main.rs:287:14:287:51 | a11 |
 | main.rs:290:33:290:35 | a12 | main.rs:290:33:290:35 | a12 |
 | main.rs:307:9:307:10 | fv | main.rs:307:9:307:10 | fv |
 | main.rs:309:9:309:109 | SSA phi(a13) | main.rs:309:9:309:109 | a13 |
 | main.rs:309:27:309:29 | a13 | main.rs:309:9:309:109 | a13 |
-| main.rs:309:35:309:82 | [match(true)] SSA phi(a13) | main.rs:309:9:309:109 | a13 |
+| main.rs:309:35:309:82 | SSA phi(a13) | main.rs:309:9:309:109 | a13 |
 | main.rs:309:54:309:56 | a13 | main.rs:309:9:309:109 | a13 |
 | main.rs:309:79:309:81 | a13 | main.rs:309:9:309:109 | a13 |
 | main.rs:309:106:309:108 | a13 | main.rs:309:9:309:109 | a13 |
@@ -281,11 +281,11 @@ read
 | main.rs:263:9:263:83 | SSA phi(a5) | main.rs:263:9:263:83 | a5 | main.rs:264:26:264:27 | a5 |
 | main.rs:267:9:267:83 | SSA phi(a6) | main.rs:267:9:267:83 | a6 | main.rs:268:26:268:27 | a6 |
 | main.rs:273:9:273:14 | either | main.rs:273:9:273:14 | either | main.rs:274:11:274:16 | either |
-| main.rs:275:9:275:44 | [match(true)] SSA phi(a7) | main.rs:275:9:275:44 | a7 | main.rs:276:16:276:17 | a7 |
-| main.rs:275:9:275:44 | [match(true)] SSA phi(a7) | main.rs:275:9:275:44 | a7 | main.rs:277:26:277:27 | a7 |
+| main.rs:275:9:275:44 | SSA phi(a7) | main.rs:275:9:275:44 | a7 | main.rs:276:16:276:17 | a7 |
+| main.rs:275:9:275:44 | SSA phi(a7) | main.rs:275:9:275:44 | a7 | main.rs:277:26:277:27 | a7 |
 | main.rs:283:9:283:14 | either | main.rs:283:9:283:14 | either | main.rs:285:11:285:16 | either |
 | main.rs:286:13:286:13 | e | main.rs:286:13:286:13 | e | main.rs:291:15:291:15 | e |
-| main.rs:287:14:287:51 | [match(true)] SSA phi(a11) | main.rs:287:14:287:51 | a11 | main.rs:289:23:289:25 | a11 |
+| main.rs:287:14:287:51 | SSA phi(a11) | main.rs:287:14:287:51 | a11 | main.rs:289:23:289:25 | a11 |
 | main.rs:290:33:290:35 | a12 | main.rs:290:33:290:35 | a12 | main.rs:292:28:292:30 | a12 |
 | main.rs:307:9:307:10 | fv | main.rs:307:9:307:10 | fv | main.rs:308:11:308:12 | fv |
 | main.rs:309:9:309:109 | SSA phi(a13) | main.rs:309:9:309:109 | a13 | main.rs:310:26:310:28 | a13 |
@@ -504,10 +504,10 @@ firstRead
 | main.rs:263:9:263:83 | SSA phi(a5) | main.rs:263:9:263:83 | a5 | main.rs:264:26:264:27 | a5 |
 | main.rs:267:9:267:83 | SSA phi(a6) | main.rs:267:9:267:83 | a6 | main.rs:268:26:268:27 | a6 |
 | main.rs:273:9:273:14 | either | main.rs:273:9:273:14 | either | main.rs:274:11:274:16 | either |
-| main.rs:275:9:275:44 | [match(true)] SSA phi(a7) | main.rs:275:9:275:44 | a7 | main.rs:276:16:276:17 | a7 |
+| main.rs:275:9:275:44 | SSA phi(a7) | main.rs:275:9:275:44 | a7 | main.rs:276:16:276:17 | a7 |
 | main.rs:283:9:283:14 | either | main.rs:283:9:283:14 | either | main.rs:285:11:285:16 | either |
 | main.rs:286:13:286:13 | e | main.rs:286:13:286:13 | e | main.rs:291:15:291:15 | e |
-| main.rs:287:14:287:51 | [match(true)] SSA phi(a11) | main.rs:287:14:287:51 | a11 | main.rs:289:23:289:25 | a11 |
+| main.rs:287:14:287:51 | SSA phi(a11) | main.rs:287:14:287:51 | a11 | main.rs:289:23:289:25 | a11 |
 | main.rs:290:33:290:35 | a12 | main.rs:290:33:290:35 | a12 | main.rs:292:28:292:30 | a12 |
 | main.rs:307:9:307:10 | fv | main.rs:307:9:307:10 | fv | main.rs:308:11:308:12 | fv |
 | main.rs:309:9:309:109 | SSA phi(a13) | main.rs:309:9:309:109 | a13 | main.rs:310:26:310:28 | a13 |
@@ -640,7 +640,7 @@ adjacentReads
 | main.rs:174:9:174:15 | numbers | main.rs:174:9:174:15 | numbers | main.rs:176:11:176:17 | numbers | main.rs:191:11:191:17 | numbers |
 | main.rs:257:9:257:10 | tv | main.rs:257:9:257:10 | tv | main.rs:258:11:258:12 | tv | main.rs:262:11:262:12 | tv |
 | main.rs:257:9:257:10 | tv | main.rs:257:9:257:10 | tv | main.rs:262:11:262:12 | tv | main.rs:266:11:266:12 | tv |
-| main.rs:275:9:275:44 | [match(true)] SSA phi(a7) | main.rs:275:9:275:44 | a7 | main.rs:276:16:276:17 | a7 | main.rs:277:26:277:27 | a7 |
+| main.rs:275:9:275:44 | SSA phi(a7) | main.rs:275:9:275:44 | a7 | main.rs:276:16:276:17 | a7 | main.rs:277:26:277:27 | a7 |
 | main.rs:316:9:316:9 | x | main.rs:316:9:316:9 | x | main.rs:318:7:318:7 | x | main.rs:325:13:325:13 | x |
 | main.rs:317:17:317:17 | x | main.rs:317:17:317:17 | x | main.rs:320:5:320:5 | x | main.rs:322:19:322:19 | x |
 | main.rs:332:9:332:9 | x | main.rs:332:9:332:9 | x | main.rs:334:7:334:7 | x | main.rs:344:13:344:13 | x |
@@ -685,23 +685,23 @@ phi
 | main.rs:259:9:259:81 | SSA phi(a4) | main.rs:259:9:259:81 | a4 | main.rs:259:28:259:29 | a4 |
 | main.rs:259:9:259:81 | SSA phi(a4) | main.rs:259:9:259:81 | a4 | main.rs:259:54:259:55 | a4 |
 | main.rs:259:9:259:81 | SSA phi(a4) | main.rs:259:9:259:81 | a4 | main.rs:259:79:259:80 | a4 |
-| main.rs:263:9:263:83 | SSA phi(a5) | main.rs:263:9:263:83 | a5 | main.rs:263:10:263:57 | [match(true)] SSA phi(a5) |
+| main.rs:263:9:263:83 | SSA phi(a5) | main.rs:263:9:263:83 | a5 | main.rs:263:10:263:57 | SSA phi(a5) |
 | main.rs:263:9:263:83 | SSA phi(a5) | main.rs:263:9:263:83 | a5 | main.rs:263:81:263:82 | a5 |
-| main.rs:263:10:263:57 | [match(true)] SSA phi(a5) | main.rs:263:9:263:83 | a5 | main.rs:263:29:263:30 | a5 |
-| main.rs:263:10:263:57 | [match(true)] SSA phi(a5) | main.rs:263:9:263:83 | a5 | main.rs:263:55:263:56 | a5 |
+| main.rs:263:10:263:57 | SSA phi(a5) | main.rs:263:9:263:83 | a5 | main.rs:263:29:263:30 | a5 |
+| main.rs:263:10:263:57 | SSA phi(a5) | main.rs:263:9:263:83 | a5 | main.rs:263:55:263:56 | a5 |
 | main.rs:267:9:267:83 | SSA phi(a6) | main.rs:267:9:267:83 | a6 | main.rs:267:28:267:29 | a6 |
 | main.rs:267:9:267:83 | SSA phi(a6) | main.rs:267:9:267:83 | a6 | main.rs:267:35:267:82 | SSA phi(a6) |
 | main.rs:267:35:267:82 | SSA phi(a6) | main.rs:267:9:267:83 | a6 | main.rs:267:55:267:56 | a6 |
 | main.rs:267:35:267:82 | SSA phi(a6) | main.rs:267:9:267:83 | a6 | main.rs:267:80:267:81 | a6 |
-| main.rs:275:9:275:44 | [match(true)] SSA phi(a7) | main.rs:275:9:275:44 | a7 | main.rs:275:22:275:23 | a7 |
-| main.rs:275:9:275:44 | [match(true)] SSA phi(a7) | main.rs:275:9:275:44 | a7 | main.rs:275:42:275:43 | a7 |
-| main.rs:287:14:287:51 | [match(true)] SSA phi(a11) | main.rs:287:14:287:51 | a11 | main.rs:287:27:287:29 | a11 |
-| main.rs:287:14:287:51 | [match(true)] SSA phi(a11) | main.rs:287:14:287:51 | a11 | main.rs:287:48:287:50 | a11 |
+| main.rs:275:9:275:44 | SSA phi(a7) | main.rs:275:9:275:44 | a7 | main.rs:275:22:275:23 | a7 |
+| main.rs:275:9:275:44 | SSA phi(a7) | main.rs:275:9:275:44 | a7 | main.rs:275:42:275:43 | a7 |
+| main.rs:287:14:287:51 | SSA phi(a11) | main.rs:287:14:287:51 | a11 | main.rs:287:27:287:29 | a11 |
+| main.rs:287:14:287:51 | SSA phi(a11) | main.rs:287:14:287:51 | a11 | main.rs:287:48:287:50 | a11 |
 | main.rs:309:9:309:109 | SSA phi(a13) | main.rs:309:9:309:109 | a13 | main.rs:309:27:309:29 | a13 |
-| main.rs:309:9:309:109 | SSA phi(a13) | main.rs:309:9:309:109 | a13 | main.rs:309:35:309:82 | [match(true)] SSA phi(a13) |
+| main.rs:309:9:309:109 | SSA phi(a13) | main.rs:309:9:309:109 | a13 | main.rs:309:35:309:82 | SSA phi(a13) |
 | main.rs:309:9:309:109 | SSA phi(a13) | main.rs:309:9:309:109 | a13 | main.rs:309:106:309:108 | a13 |
-| main.rs:309:35:309:82 | [match(true)] SSA phi(a13) | main.rs:309:9:309:109 | a13 | main.rs:309:54:309:56 | a13 |
-| main.rs:309:35:309:82 | [match(true)] SSA phi(a13) | main.rs:309:9:309:109 | a13 | main.rs:309:79:309:81 | a13 |
+| main.rs:309:35:309:82 | SSA phi(a13) | main.rs:309:9:309:109 | a13 | main.rs:309:54:309:56 | a13 |
+| main.rs:309:35:309:82 | SSA phi(a13) | main.rs:309:9:309:109 | a13 | main.rs:309:79:309:81 | a13 |
 | main.rs:431:20:431:55 | SSA phi(a9) | main.rs:431:20:431:55 | a9 | main.rs:431:33:431:34 | a9 |
 | main.rs:431:20:431:55 | SSA phi(a9) | main.rs:431:20:431:55 | a9 | main.rs:431:53:431:54 | a9 |
 | main.rs:647:13:656:5 | SSA phi(x) | main.rs:643:13:643:13 | x | main.rs:649:9:649:9 | x |
@@ -709,15 +709,15 @@ phi
 | main.rs:784:17:786:9 | SSA phi(x) | main.rs:781:13:781:13 | x | main.rs:782:19:787:5 | <captured entry> x |
 | main.rs:784:17:786:9 | SSA phi(x) | main.rs:781:13:781:13 | x | main.rs:785:13:785:13 | x |
 phiReadNode
-| main.rs:116:11:116:11 | SSA phi read(s) | main.rs:113:9:113:9 | s |
+| main.rs:115:5:118:5 | SSA phi read(s) | main.rs:113:9:113:9 | s |
 | main.rs:663:13:668:5 | SSA phi read(x) | main.rs:661:9:661:9 | x |
 phiReadNodeFirstRead
-| main.rs:116:11:116:11 | SSA phi read(s) | main.rs:113:9:113:9 | s | main.rs:116:11:116:11 | s |
+| main.rs:115:5:118:5 | SSA phi read(s) | main.rs:113:9:113:9 | s | main.rs:116:11:116:11 | s |
 | main.rs:663:13:668:5 | SSA phi read(x) | main.rs:661:9:661:9 | x | main.rs:673:19:673:19 | x |
 | main.rs:663:13:668:5 | SSA phi read(x) | main.rs:661:9:661:9 | x | main.rs:675:19:675:19 | x |
 phiReadInput
-| main.rs:116:11:116:11 | SSA phi read(s) | main.rs:113:9:113:9 | s |
-| main.rs:116:11:116:11 | SSA phi read(s) | main.rs:116:11:116:11 | SSA read(s) |
+| main.rs:115:5:118:5 | SSA phi read(s) | main.rs:113:9:113:9 | s |
+| main.rs:115:5:118:5 | SSA phi read(s) | main.rs:116:11:116:11 | SSA read(s) |
 | main.rs:663:13:668:5 | SSA phi read(x) | main.rs:665:19:665:19 | SSA read(x) |
 | main.rs:663:13:668:5 | SSA phi read(x) | main.rs:667:19:667:19 | SSA read(x) |
 ultimateDef
@@ -729,23 +729,23 @@ ultimateDef
 | main.rs:263:9:263:83 | SSA phi(a5) | main.rs:263:29:263:30 | a5 |
 | main.rs:263:9:263:83 | SSA phi(a5) | main.rs:263:55:263:56 | a5 |
 | main.rs:263:9:263:83 | SSA phi(a5) | main.rs:263:81:263:82 | a5 |
-| main.rs:263:10:263:57 | [match(true)] SSA phi(a5) | main.rs:263:29:263:30 | a5 |
-| main.rs:263:10:263:57 | [match(true)] SSA phi(a5) | main.rs:263:55:263:56 | a5 |
+| main.rs:263:10:263:57 | SSA phi(a5) | main.rs:263:29:263:30 | a5 |
+| main.rs:263:10:263:57 | SSA phi(a5) | main.rs:263:55:263:56 | a5 |
 | main.rs:267:9:267:83 | SSA phi(a6) | main.rs:267:28:267:29 | a6 |
 | main.rs:267:9:267:83 | SSA phi(a6) | main.rs:267:55:267:56 | a6 |
 | main.rs:267:9:267:83 | SSA phi(a6) | main.rs:267:80:267:81 | a6 |
 | main.rs:267:35:267:82 | SSA phi(a6) | main.rs:267:55:267:56 | a6 |
 | main.rs:267:35:267:82 | SSA phi(a6) | main.rs:267:80:267:81 | a6 |
-| main.rs:275:9:275:44 | [match(true)] SSA phi(a7) | main.rs:275:22:275:23 | a7 |
-| main.rs:275:9:275:44 | [match(true)] SSA phi(a7) | main.rs:275:42:275:43 | a7 |
-| main.rs:287:14:287:51 | [match(true)] SSA phi(a11) | main.rs:287:27:287:29 | a11 |
-| main.rs:287:14:287:51 | [match(true)] SSA phi(a11) | main.rs:287:48:287:50 | a11 |
+| main.rs:275:9:275:44 | SSA phi(a7) | main.rs:275:22:275:23 | a7 |
+| main.rs:275:9:275:44 | SSA phi(a7) | main.rs:275:42:275:43 | a7 |
+| main.rs:287:14:287:51 | SSA phi(a11) | main.rs:287:27:287:29 | a11 |
+| main.rs:287:14:287:51 | SSA phi(a11) | main.rs:287:48:287:50 | a11 |
 | main.rs:309:9:309:109 | SSA phi(a13) | main.rs:309:27:309:29 | a13 |
 | main.rs:309:9:309:109 | SSA phi(a13) | main.rs:309:54:309:56 | a13 |
 | main.rs:309:9:309:109 | SSA phi(a13) | main.rs:309:79:309:81 | a13 |
 | main.rs:309:9:309:109 | SSA phi(a13) | main.rs:309:106:309:108 | a13 |
-| main.rs:309:35:309:82 | [match(true)] SSA phi(a13) | main.rs:309:54:309:56 | a13 |
-| main.rs:309:35:309:82 | [match(true)] SSA phi(a13) | main.rs:309:79:309:81 | a13 |
+| main.rs:309:35:309:82 | SSA phi(a13) | main.rs:309:54:309:56 | a13 |
+| main.rs:309:35:309:82 | SSA phi(a13) | main.rs:309:79:309:81 | a13 |
 | main.rs:431:20:431:55 | SSA phi(a9) | main.rs:431:33:431:34 | a9 |
 | main.rs:431:20:431:55 | SSA phi(a9) | main.rs:431:53:431:54 | a9 |
 | main.rs:647:13:656:5 | SSA phi(x) | main.rs:649:9:649:9 | x |
