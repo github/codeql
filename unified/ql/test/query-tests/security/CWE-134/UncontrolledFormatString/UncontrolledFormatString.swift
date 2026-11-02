@@ -48,6 +48,8 @@ struct NSExceptionName {
 
 class NSException: NSObject
 {
+    init(name aName: NSExceptionName, reason aReason: String?, userInfo aUserInfo: [AnyHashable: Any]? = nil) {}
+
     class func raise(_ name: NSExceptionName, format: String, arguments argList: CVaListPointer) {}
 }
 
@@ -115,6 +117,7 @@ func tests() throws {
     NSLog(tainted) // $ MISSING: Alert
     MyLog(tainted) // $ MISSING: Alert
 
+    _ = NSException(name: NSExceptionName("exception"), reason: tainted, userInfo: nil) // $ MISSING: Alert
     NSException.raise(NSExceptionName("exception"), format: tainted, arguments: getVaList([])) // $ Alert
 
     let taintedVal = Int(tainted)!
