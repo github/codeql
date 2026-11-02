@@ -271,6 +271,11 @@ fn test_collections(harmless: String) {
     password_queue.make_contiguous();
 }
 
+fn test_account_identifiers(user_id: i32, user_uuid: String, account_password: String) {
+    info!("message = {} {}", user_id, user_uuid);
+    info!("message = {}", account_password); // $ Alert[rust/cleartext-logging]
+}
+
 fn get_password_or_error() -> Result<String, std::io::Error> {
     Ok("123456".to_string())
 }
@@ -305,5 +310,6 @@ fn main() {
     );
     test_std("123456".to_string(), 0, None);
     test_collections("harmless".to_string());
+    test_account_identifiers(123, "uuid".to_string(), "123456".to_string());
     _ = test_try_operator();
 }

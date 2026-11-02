@@ -35,10 +35,21 @@ fn request_put_with_password_in_url() {
     client.request(Method::PUT, url).body("body").send(); // $ Alert[rust/cleartext-transmission]
 }
 
+fn get_with_account_identifiers_in_url() {
+    let user_uuid = "uuid";
+    let url = format!("example.com?user={}", user_uuid);
+    reqwest::blocking::get(url).unwrap().text().unwrap();
+
+    let account_password = "Hunter12";
+    let url = format!("example.com?password={}", account_password); // $ Source
+    reqwest::blocking::get(url).unwrap().text().unwrap(); // $ Alert[rust/cleartext-transmission]
+}
+
 fn main() {
     get_with_password_in_url();
     get_with_password_in_constructed_url();
     post_with_password_in_url();
     request_blocking_put_with_password_in_url();
     request_put_with_password_in_url();
+    get_with_account_identifiers_in_url();
 }

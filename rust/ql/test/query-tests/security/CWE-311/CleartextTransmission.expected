@@ -4,6 +4,7 @@
 | main.rs:21:17:21:19 | url | main.rs:19:50:19:57 | password | main.rs:21:17:21:19 | url | This 'url' operation transmits data which may contain unencrypted sensitive data from $@. | main.rs:19:50:19:57 | password | password |
 | main.rs:28:33:28:35 | url | main.rs:26:50:26:57 | password | main.rs:28:33:28:35 | url | This 'url' operation transmits data which may contain unencrypted sensitive data from $@. | main.rs:26:50:26:57 | password | password |
 | main.rs:35:33:35:35 | url | main.rs:33:50:33:57 | password | main.rs:35:33:35:35 | url | This 'url' operation transmits data which may contain unencrypted sensitive data from $@. | main.rs:33:50:33:57 | password | password |
+| main.rs:45:28:45:30 | url | main.rs:44:50:44:65 | account_password | main.rs:45:28:45:30 | url | This 'url' operation transmits data which may contain unencrypted sensitive data from $@. | main.rs:44:50:44:65 | account_password | account_password |
 edges
 | main.rs:6:9:6:11 | url | main.rs:7:28:7:30 | url | provenance | Sink:MaD:4 |
 | main.rs:6:23:6:57 | ...::format(...) | main.rs:6:23:6:57 | { ... } | provenance |  |
@@ -40,6 +41,12 @@ edges
 | main.rs:33:23:33:57 | MacroExpr | main.rs:33:23:33:57 | ...::format(...) | provenance | MaD:7 |
 | main.rs:33:23:33:57 | { ... } | main.rs:33:23:33:57 | ...::must_use(...) | provenance | MaD:8 |
 | main.rs:33:50:33:57 | password | main.rs:33:23:33:57 | MacroExpr | provenance |  |
+| main.rs:44:9:44:11 | url | main.rs:45:28:45:30 | url | provenance | Sink:MaD:4 |
+| main.rs:44:23:44:65 | ...::format(...) | main.rs:44:23:44:65 | { ... } | provenance |  |
+| main.rs:44:23:44:65 | ...::must_use(...) | main.rs:44:9:44:11 | url | provenance |  |
+| main.rs:44:23:44:65 | MacroExpr | main.rs:44:23:44:65 | ...::format(...) | provenance | MaD:7 |
+| main.rs:44:23:44:65 | { ... } | main.rs:44:23:44:65 | ...::must_use(...) | provenance | MaD:8 |
+| main.rs:44:50:44:65 | account_password | main.rs:44:23:44:65 | MacroExpr | provenance |  |
 models
 | 1 | Sink: <reqwest::async_impl::client::Client>::post; Argument[0]; request-url |
 | 2 | Sink: <reqwest::async_impl::client::Client>::request; Argument[1]; request-url |
@@ -90,4 +97,11 @@ nodes
 | main.rs:33:23:33:57 | { ... } | semmle.label | { ... } |
 | main.rs:33:50:33:57 | password | semmle.label | password |
 | main.rs:35:33:35:35 | url | semmle.label | url |
+| main.rs:44:9:44:11 | url | semmle.label | url |
+| main.rs:44:23:44:65 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:44:23:44:65 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:44:23:44:65 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:44:23:44:65 | { ... } | semmle.label | { ... } |
+| main.rs:44:50:44:65 | account_password | semmle.label | account_password |
+| main.rs:45:28:45:30 | url | semmle.label | url |
 subpaths
