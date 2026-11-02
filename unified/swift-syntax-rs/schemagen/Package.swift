@@ -13,7 +13,7 @@ import PackageDescription
 let package = Package(
     name: "schemagen",
     platforms: [
-        // Matches the FFI package: swift-syntax 603 requires macOS 10.15.
+        // Matches the FFI package: swift-syntax 604 requires macOS 10.15.
         .macOS(.v10_15),
     ],
     dependencies: [
@@ -21,7 +21,7 @@ let package = Package(
         // `../swift/Package.swift` and the repository's `MODULE.bazel`.
         .package(
             url: "https://github.com/swiftlang/swift-syntax.git",
-            exact: "603.0.2"
+            exact: "604.0.0"
         ),
     ],
     targets: [

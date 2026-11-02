@@ -15,6 +15,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Box"
           memberBlock:
             memberBlock
@@ -99,7 +100,6 @@ sourceFile
                                   modifiers:
                               leftBrace: {
                               rightBrace: }
-          modifiers:
           classKeyword: class
 
 ---

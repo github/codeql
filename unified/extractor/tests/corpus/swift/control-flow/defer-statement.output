@@ -62,8 +62,8 @@ sourceFile
                       calledExpression:
                         declReferenceExpr
                           baseName: identifier "print"
-          name: identifier "withCleanup"
           modifiers:
+          name: identifier "withCleanup"
           signature:
             functionSignature
               parameterClause:

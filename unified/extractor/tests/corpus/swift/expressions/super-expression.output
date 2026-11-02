@@ -20,6 +20,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Base"
           memberBlock:
             memberBlock
@@ -52,8 +53,8 @@ sourceFile
                           leftBrace: {
                           rightBrace: }
                           statements:
-                      name: identifier "update"
                       modifiers:
+                      name: identifier "update"
                       signature:
                         functionSignature
                           parameterClause:
@@ -62,12 +63,12 @@ sourceFile
                               rightParen: )
                               parameters:
                       funcKeyword: func
-          modifiers:
           classKeyword: class
     codeBlockItem
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Derived"
           inheritanceClause:
             inheritanceClause
@@ -125,10 +126,10 @@ sourceFile
                                       base:
                                         superExpr
                                           superKeyword: super
-                      name: identifier "update"
                       modifiers:
                         declModifier
                           name: override
+                      name: identifier "update"
                       signature:
                         functionSignature
                           parameterClause:
@@ -137,7 +138,6 @@ sourceFile
                               rightParen: )
                               parameters:
                       funcKeyword: func
-          modifiers:
           classKeyword: class
 
 ---

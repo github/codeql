@@ -11,6 +11,7 @@ sourceFile
       item:
         structDecl
           attributes:
+          modifiers:
           name: identifier "FileHandle"
           inheritanceClause:
             inheritanceClause
@@ -45,7 +46,6 @@ sourceFile
                               type:
                                 identifierType
                                   name: identifier "Int"
-          modifiers:
           structKeyword: struct
 
 ---

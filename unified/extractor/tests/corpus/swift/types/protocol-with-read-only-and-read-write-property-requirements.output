@@ -13,6 +13,7 @@ sourceFile
       item:
         protocolDecl
           attributes:
+          modifiers:
           name: identifier "P"
           memberBlock:
             memberBlock
@@ -101,7 +102,6 @@ sourceFile
                                   modifiers:
                               leftBrace: {
                               rightBrace: }
-          modifiers:
           protocolKeyword: protocol
 
 ---

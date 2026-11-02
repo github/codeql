@@ -14,6 +14,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "C"
           memberBlock:
             memberBlock
@@ -94,7 +95,6 @@ sourceFile
                                   modifiers:
                               leftBrace: {
                               rightBrace: }
-          modifiers:
           classKeyword: class
 
 ---
