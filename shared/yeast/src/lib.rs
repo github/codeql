@@ -248,8 +248,8 @@ where
 /// blanket `impl<T: Display>`, so additional types must be added explicitly.
 #[diagnostic::on_unimplemented(
     message = "`{Self}` cannot be interpolated with `#{{...}}`",
-    note = "if the value is optional, mark the enclosing field's value with `?` to leave \
-            that field unset when it is absent, as in `label: (identifier #{{lbl}})?`"
+    note = "if the value is optional, place the node in a template choice to leave \
+            that field unset when it is absent, as in `label: [(identifier #{{lbl}})]`"
 )]
 pub trait YeastDisplay {
     fn yeast_to_string<C>(&self, ctx: &build::BuildCtx<'_, C>) -> String;
@@ -327,8 +327,8 @@ impl<T: YeastSourceRange + ?Sized> YeastSourceRange for &T {
 }
 
 /// Normalizes a `#{expr}` interpolation to an optional value, so that a
-/// fallible field — `field: (kind #{expr})?` — can tell "there is a value to
-/// interpolate" apart from "there is none, so leave the field unset".
+/// template choice — `field: [(kind #{expr})]` — can tell "there is a value
+/// to interpolate" apart from "there is none, so try the next alternative".
 ///
 /// Implemented for every [`YeastDisplay`] type, which always yields a value,
 /// and for `Option` of the same, which yields one only when it is `Some`.
@@ -338,14 +338,15 @@ impl<T: YeastSourceRange + ?Sized> YeastSourceRange for &T {
 /// coherence cannot rule out a future `impl YeastDisplay for Option<T>`.
 /// [`YeastDisplay`] itself is enumerated for the same reason.
 ///
-/// Note that this is used *only* inside a fallible field. Elsewhere `#{expr}`
-/// still goes directly through [`YeastDisplay`], so interpolating an `Option`
-/// without a `?` remains a compile error rather than silently dropping a node.
+/// Note that this is used *only* while preparing a choice alternative.
+/// Elsewhere `#{expr}` still goes directly through [`YeastDisplay`], so
+/// interpolating an `Option` outside a choice remains a compile error rather
+/// than silently dropping a node.
 pub trait MaybeYeastValue {
     /// The interpolated value's type, which knows how to render itself.
     type Value: YeastDisplay + YeastSourceRange + ?Sized;
 
-    /// Returns the value to interpolate, or `None` to leave the field unset.
+    /// Returns the value to interpolate, or `None` to reject the alternative.
     fn maybe_yeast_value(&self) -> Option<&Self::Value>;
 }
 
