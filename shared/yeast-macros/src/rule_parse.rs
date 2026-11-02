@@ -1,11 +1,13 @@
 use proc_macro2::{Delimiter, Ident, Span, TokenStream, TokenTree};
-use std::collections::BTreeSet;
+use std::collections::BTreeMap;
 use std::iter::Peekable;
 
 use crate::ast::{Cardinality, Pattern, Replacement, ReturnAnnotation, Rule};
 
 type Tokens = Peekable<proc_macro2::token_stream::IntoIter>;
 type Result<T> = std::result::Result<T, syn::Error>;
+/// Maps each capture name to whether it uses `@@` and its identifier for diagnostics.
+type CaptureNames = BTreeMap<String, (bool, Ident)>;
 
 pub(crate) fn parse_pattern(input: TokenStream) -> Result<Pattern> {
     let mut tokens = input.into_iter().peekable();
@@ -16,13 +18,13 @@ pub(crate) fn parse_pattern(input: TokenStream) -> Result<Pattern> {
             "unexpected token after query",
         ));
     }
-    validate_unique_capture_names(&pattern, &mut BTreeSet::new())?;
+    validate_unique_capture_names(&pattern, &mut CaptureNames::new())?;
     Ok(pattern)
 }
 
 fn validate_unique_capture_names(
     pattern: &Pattern,
-    capture_names: &mut BTreeSet<String>,
+    capture_names: &mut CaptureNames,
 ) -> Result<()> {
     match pattern {
         Pattern::Any { .. } | Pattern::Unnamed(_) => {}
@@ -31,10 +33,12 @@ fn validate_unique_capture_names(
                 validate_unique_capture_names(pattern, capture_names)?;
             }
         }
-        Pattern::Capture { name, pattern, .. } => {
+        Pattern::Capture {
+            name, raw, pattern, ..
+        } => {
             validate_unique_capture_names(pattern, capture_names)?;
             let name_string = name.to_string();
-            if !capture_names.insert(name_string.clone()) {
+            if capture_names.contains_key(&name_string) {
                 return Err(syn::Error::new_spanned(
                     name,
                     format!(
@@ -43,6 +47,30 @@ fn validate_unique_capture_names(
                     ),
                 ));
             }
+            capture_names.insert(name_string, (*raw, name.clone()));
+        }
+        Pattern::Choice { alternatives } => {
+            let mut unified_names = capture_names.clone();
+            for alternative in alternatives {
+                let mut alternative_names = capture_names.clone();
+                validate_unique_capture_names(alternative, &mut alternative_names)?;
+                for (name, (raw, identifier)) in alternative_names {
+                    if let Some((unified_raw, _)) = unified_names.get(&name) {
+                        if *unified_raw != raw {
+                            return Err(syn::Error::new_spanned(
+                                identifier,
+                                format!(
+                                    "capture `{name}` must consistently use `@` or `@@` \
+                                     across query choice alternatives"
+                                ),
+                            ));
+                        }
+                    } else {
+                        unified_names.insert(name, (raw, identifier));
+                    }
+                }
+            }
+            *capture_names = unified_names;
         }
         Pattern::Sequence(patterns) => {
             for pattern in patterns {
@@ -60,20 +88,31 @@ pub(crate) fn parse_rule(input: TokenStream) -> Result<Rule> {
     let (pattern_and_guard, replacement) = split_arrow(input)?;
     let (pattern, guard) = split_guard(pattern_and_guard)?;
     let pattern = parse_pattern(pattern)?;
-    if let Pattern::Capture {
-        name, raw: false, ..
-    } = &pattern
-    {
-        return Err(syn::Error::new_spanned(
-            name,
-            "a capture of the rule root must use `@@`; the matched root cannot be eagerly translated",
-        ));
-    }
+    validate_rule_root_captures(&pattern)?;
     Ok(Rule {
         pattern,
         guard,
         replacement: parse_replacement(replacement)?,
     })
+}
+
+fn validate_rule_root_captures(pattern: &Pattern) -> Result<()> {
+    match pattern {
+        Pattern::Capture {
+            name, raw: false, ..
+        } => Err(syn::Error::new_spanned(
+            name,
+            "a capture of the rule root must use `@@`; the matched root cannot be eagerly translated",
+        )),
+        Pattern::Capture { pattern, .. } => validate_rule_root_captures(pattern),
+        Pattern::Choice { alternatives } => {
+            for alternative in alternatives {
+                validate_rule_root_captures(alternative)?;
+            }
+            Ok(())
+        }
+        _ => Ok(()),
+    }
 }
 
 fn parse_pattern_with_capture(tokens: &mut Tokens) -> Result<Pattern> {
@@ -92,6 +131,10 @@ fn parse_pattern_atom(tokens: &mut Tokens) -> Result<Pattern> {
             let mut inner = group.stream().into_iter().peekable();
             parse_parenthesized_pattern(&mut inner, group.span())
         }
+        Some(TokenTree::Group(group)) if group.delimiter() == Delimiter::Bracket => {
+            let group = expect_group(tokens, Delimiter::Bracket)?;
+            parse_choice(group)
+        }
         Some(TokenTree::Ident(identifier)) if *identifier == "_" => {
             tokens.next();
             Ok(Pattern::Any {
@@ -101,9 +144,27 @@ fn parse_pattern_atom(tokens: &mut Tokens) -> Result<Pattern> {
         Some(TokenTree::Literal(_)) => Ok(Pattern::Unnamed(expect_string_literal(tokens)?)),
         Some(token) => Err(syn::Error::new_spanned(
             token.clone(),
-            "expected `(`, `_`, or string literal in query",
+            "expected `(`, `[`, `_`, or string literal in query",
         )),
     }
+}
+
+fn parse_choice(group: proc_macro2::Group) -> Result<Pattern> {
+    let span = group.span();
+    let mut tokens = group.stream().into_iter().peekable();
+    let mut alternatives = Vec::new();
+    while tokens.peek().is_some() {
+        let pattern = parse_pattern_atom(&mut tokens)?;
+        let pattern = maybe_repeat(&mut tokens, pattern)?;
+        alternatives.push(pattern);
+    }
+    if alternatives.is_empty() {
+        return Err(syn::Error::new(
+            span,
+            "choice must contain at least one query",
+        ));
+    }
+    Ok(Pattern::Choice { alternatives })
 }
 
 fn parse_parenthesized_pattern(tokens: &mut Tokens, span: Span) -> Result<Pattern> {
@@ -148,7 +209,12 @@ fn parse_parenthesized_pattern(tokens: &mut Tokens, span: Span) -> Result<Patter
                 Ok(pattern)
             }
         }
-        Some(TokenTree::Group(group)) if group.delimiter() == Delimiter::Parenthesis => {
+        Some(TokenTree::Group(group))
+            if matches!(
+                group.delimiter(),
+                Delimiter::Parenthesis | Delimiter::Bracket
+            ) =>
+        {
             let patterns = parse_pattern_list(tokens)?;
             finish_sequence(tokens, patterns, span)
         }
@@ -222,6 +288,12 @@ fn push_field_pattern(fields: &mut Vec<(String, Pattern)>, name: String, pattern
 fn parse_pattern_list(tokens: &mut Tokens) -> Result<Vec<Pattern>> {
     let mut patterns = Vec::new();
     while tokens.peek().is_some() {
+        if peek_is_group(tokens, Delimiter::Bracket) {
+            let pattern = parse_pattern_atom(tokens)?;
+            patterns.push(maybe_repeat(tokens, pattern)?);
+            continue;
+        }
+
         if peek_is_group(tokens, Delimiter::Parenthesis) {
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
             let mut inner = group.stream().into_iter().peekable();
