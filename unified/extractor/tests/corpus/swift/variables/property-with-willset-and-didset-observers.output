@@ -68,6 +68,7 @@ sourceFile
                                               calledExpression:
                                                 declReferenceExpr
                                                   baseName: identifier "print"
+                                  modifiers:
                                 accessorDecl
                                   accessorSpecifier: didSet
                                   attributes:
@@ -90,6 +91,7 @@ sourceFile
                                               calledExpression:
                                                 declReferenceExpr
                                                   baseName: identifier "print"
+                                  modifiers:
                               leftBrace: {
                               rightBrace: }
           modifiers:

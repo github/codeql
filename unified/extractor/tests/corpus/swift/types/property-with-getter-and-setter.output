@@ -75,6 +75,7 @@ sourceFile
                                                 declReferenceExpr
                                                   baseName: identifier "_v"
                                               returnKeyword: return
+                                  modifiers:
                                 accessorDecl
                                   accessorSpecifier: set
                                   attributes:
@@ -95,6 +96,7 @@ sourceFile
                                               rightOperand:
                                                 declReferenceExpr
                                                   baseName: identifier "newValue"
+                                  modifiers:
                               leftBrace: {
                               rightBrace: }
           modifiers:
