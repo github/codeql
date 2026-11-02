@@ -50,7 +50,9 @@ pub fn query(input: TokenStream) -> TokenStream {
     }
 }
 
-/// Build a single AST node from a template, returning its `Id`.
+/// Build a single AST node from a template, returning its `OutputId`.
+///
+/// A top-level choice returns `Option<OutputId>`.
 ///
 /// # Template syntax
 ///
@@ -58,39 +60,48 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// (kind "literal")             - leaf with static content
 /// (kind #{expr})               - leaf with computed content (expr.to_string())
 /// {expr}                       - embed a Rust expression, dispatched via
-///                                the `IntoFieldIds` trait: `Id` pushes a
-///                                single id; iterables (`Vec<Id>`,
-///                                `Option<Id>`, iterator chains) splice
+///                                the `IntoFieldIds` trait: `OutputId` pushes a
+///                                single id; iterables (`Vec<OutputId>`,
+///                                `Option<OutputId>`, iterator chains) splice
 ///                                their elements
 /// field: {expr}                - extend a named field with `{expr}`'s ids
-/// field: (kind ...)?           - set the field only if every `#{expr}`
-///                                beneath it has a value (see below)
+/// location: {expr}             - override this node's source range with the
+///                                span of one or more nodes; may be repeated
+/// field: [(kind ...)]          - set the field only if the alternative can
+///                                be constructed (see below)
+/// field: [(a) (b)]             - use the first constructible alternative
+/// field: [(a) if {guard} (b)]  - skip an alternative when its guard is false
 /// ```
 ///
-/// # Optional fields
+/// # Template choices
 ///
-/// A `?` on a field's value makes that field fallible: if a `#{expr}`
-/// anywhere beneath it interpolates an absent value — an `Option` that is
-/// `None` — the subtree is abandoned and the field is left unset. This
-/// replaces the surrounding `Option::map` that would otherwise be needed:
+/// Brackets contain one or more ordered alternatives. For each alternative,
+/// its optional `if {guard}` is evaluated first, followed by every `#{expr}`
+/// dependency beneath it. An absent dependency — an `Option` that is `None` —
+/// skips the alternative without constructing any of its template nodes. The
+/// first alternative whose guard and dependencies succeed is constructed:
 ///
 /// ```text
 /// (break_expr label: {lbl.map(|l| tree!((identifier #{l})))})   // before
-/// (break_expr label: (identifier #{lbl})?)                      // after
+/// (break_expr label: [(identifier #{lbl})])                     // after
 /// ```
 ///
-/// The value may be nested arbitrarily deeply, and a nested `?` catches
-/// first, so an inner absent value need not discard the outer node:
+/// Dependencies may be nested arbitrarily deeply. A nested choice handles its
+/// own dependencies, so an inner absent value need not discard an outer node:
 ///
 /// ```text
-/// (parameter pattern: (name_pattern identifier: (identifier #{name}))? type: {ty})
+/// (parameter pattern: [
+///     (name_pattern identifier: [(identifier #{name})])
+/// ] type: {ty})
 /// ```
 ///
-/// Only `#{expr}` propagates absence. A `{expr}` splice is unaffected, since
-/// yielding no ids already leaves a field unset, and `?` is rejected on one.
-/// Outside a `?`, interpolating an `Option` with `#{expr}` remains a compile
-/// error, so the choice between "unset the field" and "unwrap it" stays
-/// explicit.
+/// Only `#{expr}` is treated as a dependency. A `{expr}` splice is unaffected,
+/// since yielding no ids already leaves its field unset. Outside a choice,
+/// interpolating an `Option` with `#{expr}` remains a compile error.
+///
+/// A choice used as a field or list item contributes zero or one node. A
+/// top-level choice passed to `tree!` returns `Option<OutputId>`; ordinary
+/// templates continue to return `OutputId`.
 ///
 /// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
 ///
@@ -106,9 +117,9 @@ pub fn tree(input: TokenStream) -> TokenStream {
     }
 }
 
-/// Build a list of AST nodes from a template, returning `Vec<Id>`.
+/// Build a list of AST nodes from a template, returning `Vec<OutputId>`.
 ///
-/// Like `tree!` but returns `Vec<Id>` and supports multiple top-level
+/// Like `tree!` but returns `Vec<OutputId>` and supports multiple top-level
 /// elements. All syntax from `tree!` is available.
 ///
 /// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
@@ -120,38 +131,6 @@ pub fn tree(input: TokenStream) -> TokenStream {
 pub fn trees(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
     match parse::parse_trees_top(input2) {
-        Ok(output) => output.into(),
-        Err(err) => err.to_compile_error().into(),
-    }
-}
-
-/// Build one AST node whose root uses another node's source range.
-///
-/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
-///
-/// ```text
-/// tree_at!(source, (kind ...))
-/// ```
-#[proc_macro]
-pub fn tree_at(input: TokenStream) -> TokenStream {
-    let input2: TokenStream2 = input.into();
-    match parse::parse_tree_at_top(input2) {
-        Ok(output) => output.into(),
-        Err(err) => err.to_compile_error().into(),
-    }
-}
-
-/// Build one AST node whose root spans a collection of nodes.
-///
-/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
-///
-/// ```text
-/// tree_spanning!(sources, (kind ...))
-/// ```
-#[proc_macro]
-pub fn tree_spanning(input: TokenStream) -> TokenStream {
-    let input2: TokenStream2 = input.into();
-    match parse::parse_tree_spanning_top(input2) {
         Ok(output) => output.into(),
         Err(err) => err.to_compile_error().into(),
     }
@@ -178,18 +157,19 @@ pub fn tree_spanning(input: TokenStream) -> TokenStream {
 /// ```
 ///
 /// Captures become Rust variables automatically:
-/// - `@name` (no quantifier) → `name: Id`
-/// - `@name` (after `*`/`+`) → `name: Vec<Id>`
-/// - `@name` (after `?`) → `name: Option<Id>`
+/// - `@name` (no quantifier) → `name: OutputId`
+/// - `@name` (after `*`/`+`) → `name: Vec<OutputId>`
+/// - `@name` (after `?`) → `name: Option<OutputId>`
+///
+/// Raw `@@name` captures use the corresponding input `Id` types instead.
 ///
 /// A guard is an optional Rust condition between the query and `=>`. It is
 /// evaluated after the query matches and before any `@` captures are
 /// translated. Returning false makes the driver try the next rule. All
 /// captures are therefore raw in the guard; `@` versus `@@` controls only
-/// whether the capture is translated for the transform. `ctx` provides
-/// mutable user-context access, and `ast` provides read-only AST access.
-/// Mutations to `ctx` are visible to the transform when the guard succeeds.
-/// Omitting the guard is equivalent to writing `where true`.
+/// whether the capture is translated for the transform. Both `ctx` and `ast`
+/// provide read-only access. Omitting the guard is equivalent to writing
+/// `where true`.
 ///
 /// `tree!` and `trees!` use the rule transform's `ctx` binding inside `{...}`.
 #[proc_macro]
@@ -220,8 +200,8 @@ pub fn rule(input: TokenStream) -> TokenStream {
 ///     output: "ast_types.yml",
 ///     [
 ///         (source_file (_)* @cs) => (top_level body: {..cs}),
-///         (simple_identifier) @id => (name_expr identifier: (identifier #{id})),
-///         rule!((integer_literal) @lit => (int_literal #{lit})),
+///         (simple_identifier) @@id => (name_expr identifier: (identifier #{id})),
+///         rule!((integer_literal) @@lit => (int_literal #{lit})),
 ///         helper_fn(),
 ///     ]
 /// };

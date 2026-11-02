@@ -54,7 +54,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             get
             {
-                return IsNewProjectStructureUsed && UseAspNetCoreDlls;
+                return IsSdkProjectStructureUsed && UseAspNetCoreDlls;
             }
         }
 
@@ -102,13 +102,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private bool isNewProjectStructureUsed = false;
-        public bool IsNewProjectStructureUsed
+        private bool isSdkProjectStructureUsed = false;
+        public bool IsSdkProjectStructureUsed
         {
             get
             {
                 initialize.Run();
-                return isNewProjectStructureUsed;
+                return isSdkProjectStructureUsed;
             }
         }
 
@@ -228,7 +228,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                         // Determine project structure:
                         isLegacyProjectStructureUsed = isLegacyProjectStructureUsed || MicrosoftCSharpTargets().IsMatch(line);
-                        isNewProjectStructureUsed = isNewProjectStructureUsed
+                        isSdkProjectStructureUsed = isSdkProjectStructureUsed
                             || ProjectSdk().IsMatch(line)
                             || FrameworkReference().IsMatch(line);
                         // TODO: we could also check `<Sdk Name="Microsoft.NET.Sdk" />`
@@ -240,6 +240,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     logger.LogDebug($"Failed to read file {file}, exception: {ex}");
                 }
             }
+
+            logger.LogInfo("Finished reading project files.");
+            logger.LogInfo($"Legacy project structure usage detected: {isLegacyProjectStructureUsed}");
+            logger.LogInfo($"SDK project structure usage detected: {isSdkProjectStructureUsed}");
+            logger.LogInfo($"ASP.NET usage detected: {useAspNetCoreDlls}");
+            logger.LogInfo($"Windows Forms usage detected: {useWindowsForms}");
+            logger.LogInfo($"WPF usage detected: {useWpf}");
+            logger.LogInfo($"Implicit usings enabled: {useImplicitUsings}");
         }
 
         [GeneratedRegex("(?<!<!--.*)<PackageReference.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]

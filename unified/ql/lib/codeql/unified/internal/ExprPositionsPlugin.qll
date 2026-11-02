@@ -7,4 +7,6 @@ private module Plugins {
 
 class ExprPositionsPlugin extends Unit {
   predicate isInTypeContext(Expr e) { none() }
+
+  predicate isReturnedExpr(Callable callable, Expr e) { none() }
 }

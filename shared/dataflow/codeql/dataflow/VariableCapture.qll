@@ -214,9 +214,11 @@ module Flow<
   final private class CfgBb = Cfg::BasicBlock;
 
   private class BasicBlock extends CfgBb {
+    /** Gets the callable enclosing this basic block. */
     Callable getEnclosingCallable() { result = basicBlockGetEnclosingCallable(this) }
   }
 
+  /** Provides consistency checks for an instantiation of the variable capture library. */
   additional module ConsistencyChecks {
     final private class FinalExpr = Expr;
 
@@ -250,6 +252,10 @@ module Flow<
       }
     }
 
+    /**
+     * Holds if `n` relevant elements have either no textual representation or multiple textual
+     * representations, as described by `msg`.
+     */
     query predicate uniqueToString(string msg, int n) {
       exists(string elem |
         n = strictcount(RelevantBasicBlock bb | not exists(bb.toString())) and
@@ -282,6 +288,9 @@ module Flow<
       )
     }
 
+    /**
+     * Holds if `bb` does not have exactly one enclosing callable, as described by `msg`.
+     */
     query predicate uniqueEnclosingCallable(RelevantBasicBlock bb, string msg) {
       msg = "BasicBlock has no enclosing callable" and not exists(bb.getEnclosingCallable())
       or
@@ -289,38 +298,62 @@ module Flow<
       2 <= strictcount(bb.getEnclosingCallable())
     }
 
+    /**
+     * Holds if `bb` has multiple immediate dominators, as described by `msg`.
+     */
     query predicate uniqueDominator(RelevantBasicBlock bb, string msg) {
       msg = "BasicBlock has multiple immediate dominators" and
       2 <= strictcount(bb.getImmediateDominator())
     }
 
+    /**
+     * Holds if an immediate dominator of `bb` belongs to a different callable, as described by
+     * `msg`.
+     */
     query predicate localDominator(RelevantBasicBlock bb, string msg) {
       msg = "BasicBlock has non-local dominator" and
       bb.getEnclosingCallable() != bb.getImmediateDominator().(BasicBlock).getEnclosingCallable()
     }
 
+    /**
+     * Holds if a successor of `bb` belongs to a different callable, as described by `msg`.
+     */
     query predicate localSuccessor(RelevantBasicBlock bb, string msg) {
       msg = "BasicBlock has non-local successor" and
       bb.getEnclosingCallable() != bb.getASuccessor().(BasicBlock).getEnclosingCallable()
     }
 
+    /**
+     * Holds if captured variable `v` does not have exactly one defining callable, as described by
+     * `msg`.
+     */
     query predicate uniqueDefiningScope(CapturedVariable v, string msg) {
       msg = "CapturedVariable has no defining callable" and not exists(v.getCallable())
       or
       msg = "CapturedVariable has multiple defining callables" and 2 <= strictcount(v.getCallable())
     }
 
+    /**
+     * Holds if `v` is classified as a captured variable but has no access from a capturing
+     * callable, as described by `msg`.
+     */
     query predicate variableIsCaptured(CapturedVariable v, string msg) {
       msg = "CapturedVariable is not captured" and
       not captureAccess(v, _)
     }
 
+    /**
+     * Holds if relevant expression `e` does not have exactly one location, as described by `msg`.
+     */
     query predicate uniqueLocation(RelevantExpr e, string msg) {
       msg = "Expr has no location" and not exists(e.getLocation())
       or
       msg = "Expr has multiple locations" and 2 <= strictcount(e.getLocation())
     }
 
+    /**
+     * Holds if relevant expression `e` does not have exactly one CFG node, as described by `msg`.
+     */
     query predicate uniqueCfgNode(RelevantExpr e, string msg) {
       msg = "Expr has no cfg node" and not e.hasCfgNode(_, _)
       or
@@ -334,6 +367,10 @@ module Flow<
       msg = "VariableWrite has multiple target variables" and 2 <= strictcount(vw.getVariable())
     }
 
+    /**
+     * Holds if a captured-variable write does not have exactly one target variable, as described
+     * by `msg`.
+     */
     query predicate uniqueWriteTarget(string msg) { uniqueWriteTarget(_, msg) }
 
     private predicate uniqueWriteCfgNode(VariableWrite vw, string msg) {
@@ -343,18 +380,33 @@ module Flow<
       2 <= strictcount(BasicBlock bb, int i | vw.hasCfgNode(bb, i))
     }
 
+    /**
+     * Holds if a captured-variable write does not have exactly one CFG node, as described by
+     * `msg`.
+     */
     query predicate uniqueWriteCfgNode(string msg) { uniqueWriteCfgNode(_, msg) }
 
+    /**
+     * Holds if variable read `vr` does not have exactly one source variable, as described by
+     * `msg`.
+     */
     query predicate uniqueReadVariable(VariableRead vr, string msg) {
       msg = "VariableRead has no source variable" and not exists(vr.getVariable())
       or
       msg = "VariableRead has multiple source variables" and 2 <= strictcount(vr.getVariable())
     }
 
+    /**
+     * Holds if closure expression `ce` has no callable body, as described by `msg`.
+     */
     query predicate closureMustHaveBody(ClosureExpr ce, string msg) {
       msg = "ClosureExpr has no body" and not ce.hasBody(_)
     }
 
+    /**
+     * Holds if `access` is an alias of closure expression `ce` outside the lexical scope of `ce`,
+     * as described by `msg`.
+     */
     query predicate closureAliasMustBeInSameScope(ClosureExpr ce, Expr access, string msg) {
       exists(BasicBlock bb1, BasicBlock bb2 |
         ce.hasAliasedAccess(access) and
@@ -372,6 +424,10 @@ module Flow<
       )
     }
 
+    /**
+     * Holds if callable `c` accesses captured variable `v` but is not lexically nested in the
+     * callable that defines `v`, as described by `msg`.
+     */
     query predicate variableAccessAstNesting(CapturedVariable v, Callable c, string msg) {
       exists(BasicBlock bb, Callable parent |
         captureRead(v, bb, _, false, _) or captureWrite(v, bb, _, false, _)
@@ -383,6 +439,9 @@ module Flow<
       )
     }
 
+    /**
+     * Holds if relevant callable `c` does not have exactly one location, as described by `msg`.
+     */
     query predicate uniqueCallableLocation(RelevantCallable c, string msg) {
       msg = "Callable has no location" and not exists(c.getLocation())
       or
@@ -391,6 +450,9 @@ module Flow<
 
     import SsaFlow::DfConsistency
 
+    /**
+     * Holds if `n` elements violate a variable capture consistency check, as described by `msg`.
+     */
     query predicate consistencyOverview(string msg, int n) {
       uniqueToString(msg, n) or
       n = strictcount(BasicBlock bb | uniqueEnclosingCallable(bb, msg)) or
@@ -799,6 +861,7 @@ module Flow<
   private class TSynthesizedCaptureNode = TSynthRead or TSynthThisQualifier or TSynthSsa;
 
   class SynthesizedCaptureNode extends ClosureNode, TSynthesizedCaptureNode {
+    /** Gets the basic block containing this synthesized capture node. */
     BasicBlock getBasicBlock() {
       this = TSynthRead(_, result, _, _)
       or
@@ -821,6 +884,9 @@ module Flow<
       exists(SsaFlow::SsaNode n | this = TSynthSsa(n) and n.getSourceVariable() = TThis(_))
     }
 
+    /**
+     * Holds if this is the synthesized capture node at index `i` in basic block `bb`.
+     */
     predicate hasCfgNode(BasicBlock bb, int i) {
       this = TSynthRead(_, bb, i, _)
       or

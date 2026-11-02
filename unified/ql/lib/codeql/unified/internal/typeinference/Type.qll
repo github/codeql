@@ -80,11 +80,17 @@ abstract private class TypeImpl extends TType {
    */
   TypeParameter getATypeParameter() { result = this.getPositionalTypeParameter(_) }
 
+  /** Gets the name node of this type, if any. */
+  abstract Identifier getNameNode();
+
   /** Gets a textual representation of this type. */
   abstract string toString();
 
   /** Gets the location of this type. */
   abstract Location getLocation();
+
+  /** Gets the class whose instances are described by this type. */
+  ClassLikeDeclaration asClass() { this = TClassLikeDeclarationType(result) }
 }
 
 /**
@@ -98,6 +104,8 @@ class ClassLikeDeclarationType extends TypeImpl, TClassLikeDeclarationType {
   ClassLikeDeclaration getClassLikeDeclaration() { result = c }
 
   string getName() { result = c.getName() }
+
+  override Identifier getNameNode() { result = c.getNameNode() }
 
   override TypeParameter getPositionalTypeParameter(int i) {
     result = TTypeParameterType(c.getTypeParameter(i))
@@ -117,7 +125,9 @@ class ClassLikeDeclarationType extends TypeImpl, TClassLikeDeclarationType {
 /**
  * A pseudo type that does not correspond to any concrete type in the source code.
  */
-abstract class PseudoType extends TypeImpl { }
+abstract class PseudoType extends TypeImpl {
+  override Identifier getNameNode() { none() }
+}
 
 /**
  * A type representing an unknown type.
@@ -173,6 +183,8 @@ class TypeParameterType extends TypeParameter, TTypeParameterType {
 
   override ClassLikeDeclaration getDeclaringItem() { typeParam = result.getATypeParameter() }
 
+  override Identifier getNameNode() { result = typeParam.getNameNode() }
+
   override string toString() { result = typeParam.getName() }
 
   override Location getLocation() { result = typeParam.getLocation() }
@@ -191,6 +203,8 @@ class AssociatedTypeParameterType extends TypeParameter, TAssociatedTypeParamete
   Unified::AssociatedTypeDeclaration getAssociatedTypeDeclaration() { result = assocTypeDecl }
 
   override ClassLikeDeclaration getDeclaringItem() { result = c }
+
+  override Identifier getNameNode() { result = assocTypeDecl.getNameNode() }
 
   override string toString() {
     if inherited = true
@@ -212,6 +226,8 @@ class UnknownTypeTypeParameter extends TypeParameter, TUnknownTypeTypeParameter 
   UnknownTypeTypeParameter() { this = TUnknownTypeTypeParameter(i) }
 
   override AstNode getDeclaringItem() { none() }
+
+  override Identifier getNameNode() { none() }
 
   override TypeParameter getPositionalTypeParameter(int j) { none() }
 

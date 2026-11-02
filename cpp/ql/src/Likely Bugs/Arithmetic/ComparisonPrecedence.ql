@@ -7,7 +7,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id cpp/comparison-precedence
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
  */
 

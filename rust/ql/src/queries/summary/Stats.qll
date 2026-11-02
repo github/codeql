@@ -33,6 +33,7 @@ private import codeql.rust.security.UncontrolledAllocationSizeExtensions
 private import codeql.rust.security.UseOfHttpExtensions
 private import codeql.rust.security.WeakSensitiveDataHashingExtensions
 private import codeql.rust.security.XssExtensions
+private import codeql.rust.security.UnsafeDeserializationExtensions
 
 /**
  * Gets a count of the total number of lines of code in the database.

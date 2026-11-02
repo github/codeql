@@ -14,28 +14,49 @@ local_path_override(
 
 # see https://registry.bazel.build/ for a list of available packages
 
-bazel_dep(name = "platforms", version = "1.0.0")
-bazel_dep(name = "rules_cc", version = "0.2.20")
-bazel_dep(name = "rules_go", version = "0.60.0")
+bazel_dep(name = "platforms", version = "1.1.0")
+bazel_dep(name = "rules_cc", version = "0.2.27")
+bazel_dep(name = "rules_go", version = "0.65.0")
 bazel_dep(name = "rules_java", version = "9.6.1")
 bazel_dep(name = "rules_pkg", version = "1.2.0")
-bazel_dep(name = "rules_nodejs", version = "6.7.5")
-bazel_dep(name = "rules_python", version = "1.9.0")
-bazel_dep(name = "rules_shell", version = "0.7.1")
-bazel_dep(name = "bazel_skylib", version = "1.9.0")
-bazel_dep(name = "abseil-cpp", version = "20260107.1", repo_name = "absl")
-bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.1", repo_name = "json")
+bazel_dep(name = "rules_nodejs", version = "6.7.7")
+bazel_dep(name = "rules_python", version = "2.4.6")
+bazel_dep(name = "rules_shell", version = "0.8.0")
+bazel_dep(name = "bazel_skylib", version = "1.9.2")
+bazel_dep(name = "abseil-cpp", version = "20260817.0", repo_name = "absl")
+bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.2", repo_name = "json")
 bazel_dep(name = "fmt", version = "12.1.0-codeql.1")
-bazel_dep(name = "rules_kotlin", version = "2.2.2-codeql.1")
-bazel_dep(name = "gazelle", version = "0.50.0")
+bazel_dep(name = "rules_kotlin", version = "2.4.21-codeql.1")
+bazel_dep(name = "gazelle", version = "0.54.0")
 bazel_dep(name = "rules_dotnet", version = "0.21.5-codeql.1")
-bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
+bazel_dep(name = "googletest", version = "1.18.0.bcr.1")
 bazel_dep(name = "rules_rust", version = "0.74.0")
-bazel_dep(name = "rules_swift", version = "4.0.0-rc5-codeql.2")
+bazel_dep(name = "rules_swift", version = "4.0.0-rc5-codeql.3")
 bazel_dep(name = "swift-syntax", version = "603.0.2")
-bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
+bazel_dep(name = "zstd", version = "1.5.7.bcr.3")
 
-bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
+bazel_dep(name = "buildifier_prebuilt", version = "10.1.0", dev_dependency = True)
+
+# Pin the compiler to support the Kotlin 1.8 and 1.9 language versions required by older extractors.
+kotlin = use_extension("@rules_kotlin//src/main/starlark/core/repositories:bzlmod_setup.bzl", "rules_kotlin_extensions")
+kotlin.kotlinc_version(
+    sha256 = "a623871f1cd9c938946948b70ef9170879f0758043885bbd30c32f024e511714",
+    version = "2.2.21",
+)
+use_repo(
+    kotlin,
+    "btapi_impl",
+    "com_github_google_ksp",
+    "com_github_jetbrains_kotlin",
+    "com_github_jetbrains_kotlin_git",
+    "com_github_pinterest_ktlint",
+    "jarjar",
+    "kotlin_build_tools_api",
+    "kotlinx_coroutines_core_jvm",
+    "kotlinx_serialization_core_jvm",
+    "kotlinx_serialization_json",
+    "kotlinx_serialization_json_jvm",
+)
 
 # Keep edition and version approximately in sync with internal repo.
 # the versions there are canonical, the versions here are used for CI in github/codeql, as well as for the vendoring of dependencies.
@@ -106,7 +127,6 @@ use_repo(
     tree_sitter_extractors_deps,
     "vendor_ts",
     "vendor_ts__anyhow-1.0.104",
-    "vendor_ts__argfile-1.0.0",
     "vendor_ts__chalk-ir-0.104.0",
     "vendor_ts__chrono-0.4.45",
     "vendor_ts__clap-4.6.7",
@@ -315,7 +335,7 @@ use_repo(
 )
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.27.2")
+go_sdk.download(version = "1.27.3")
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 go_deps.from_file(go_mod = "//go/extractor:go.mod")

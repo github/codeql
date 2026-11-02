@@ -454,3 +454,22 @@ fn main() {
     test_operator_overloading();
     test_async_await();
 }
+
+mod try_operator {
+    use super::{sink, source};
+
+    fn unwrapped_value_not_returned() -> Option<i64> {
+        let _a = Some(source(50))?;
+        Some(0)
+    }
+
+    fn unwrapped_value_returned() -> Result<i64, i64> {
+        let a: Result<Result<i64, i64>, i64> = Ok(Ok(source(51)));
+        a?
+    }
+
+    fn test_try_operator() {
+        sink(unwrapped_value_not_returned().unwrap());
+        sink(unwrapped_value_returned().unwrap()); // $ hasValueFlow=51
+    }
+}

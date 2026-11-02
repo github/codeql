@@ -2348,7 +2348,7 @@ private module Input3 implements InputSig3 {
 
     AstNode getDefiningNode() {
       result = this.asLocalVariable().getPat().getName() or
-      result = this.asLocalVariable().getParameter().(SelfParam) or
+      this.asLocalVariable().isParameter(result.(SelfParam)) or
       result = this.asConst().getName() or
       result = this.asStatic().getName()
     }

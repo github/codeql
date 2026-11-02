@@ -1,9 +1,22 @@
 private import unified
 private import AllDataFlow
 private import codeql.unified.internal.LocalNameBinding
+private import codeql.unified.internal.ExprPositions
 
 predicate step(BuilderNode node1, Step step, BuilderNode node2) {
   any(DataFlowPlugin p).step(node1, step, node2)
+  or
+  exists(Expr expr1, Expr expr2, boolean mustFlow |
+    any(DataFlowPlugin p).exprStep(expr1, expr2, mustFlow)
+  |
+    node1.isResultValue(expr1) and
+    (if mustFlow = true then step.valueMustFlow() else step.value()) and
+    node2.isResultValue(expr2)
+    or
+    node1.isPostUpdate(expr2) and
+    step.value() and
+    node2.isPostUpdate(expr1)
+  )
   or
   exists(Callable callable |
     node1.isReceiverParameter(callable) and
@@ -79,12 +92,23 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
   or
   exists(UnqualifiedMemberAccess access | access.isInstanceAccess() |
     node1.isLocalVariableRead(access, access.getImplicitQualifierVariable()) and
-    step.readName(access.getName()) and
+    step.readName(access.getMemberName()) and
     node2.isResultValue(access)
     or
     (node1.isIncomingValue(access) or node1.isPostUpdate(access)) and
-    step.storeName(access.getName()) and
+    step.storeName(access.getMemberName()) and
     node2.isLocalVariablePostUpdate(access, access.getImplicitQualifierVariable())
+    or
+    // Pass the receiver along to the getter/setter invoked by this expression
+    exists(DataFlowCall call | access = [call.asGetterCall(), call.asSetterCall()] |
+      node1.isLocalVariableRead(access, access.getImplicitQualifierVariable()) and
+      step.value() and
+      node2.isReceiverArgumentEx(call)
+      or
+      node1.isReceiverPostUpdateEx(call) and
+      step.value() and
+      node2.isLocalVariablePostUpdate(access, access.getImplicitQualifierVariable())
+    )
   )
   or
   exists(StringInterpolationExpr expr |
@@ -111,6 +135,17 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     (node1.isIncomingValue(expr) or node1.isPostUpdate(expr)) and
     step.storeName(expr.getMemberName()) and
     node2.isPostUpdate(expr.getBase())
+    or
+    // Pass the receiver along to the getter/setter invoked by this expression
+    exists(DataFlowCall call | expr = [call.asGetterCall(), call.asSetterCall()] |
+      node1.isResultValue(expr.getBase()) and
+      step.value() and
+      node2.isReceiverArgumentEx(call)
+      or
+      node1.isReceiverPostUpdateEx(call) and
+      step.value() and
+      node2.isPostUpdate(expr.getBase())
+    )
   )
   or
   // Calls and constructor-patterns targeting an enum-case constructor.
@@ -124,6 +159,20 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node1.isIncomingValue(call) and
     step.readName(field) and
     node2.isIncomingValue(arg.getValue())
+  )
+  or
+  // For local getters/setters, pass the callable into the callee argument.
+  // Capture SSA depends on this.
+  exists(ComputedLocalVariable local, AccessorDeclaration accessor, DataFlowCall call |
+    accessor = local.getAnAccessor() and
+    node1.isCallable(accessor) and
+    step.callGraph() and
+    (
+      call.asGetterCall() = local.getAnAccess() and accessor instanceof GetterDeclaration
+      or
+      call.asSetterCall() = local.getAnAccess() and accessor instanceof SetterDeclaration
+    ) and
+    node2.isImplicitArgument(call, any(ArgumentPosition pos | pos.isCallee()), false)
   )
   or
   exists(SwitchExpr expr |
@@ -166,6 +215,19 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node1.isCallable(fun) and
     step.value() and
     node2.isIncomingValue(fun.getNameNode())
+  )
+  or
+  exists(Callable callable, Expr expr |
+    isReturnedExpr(callable, expr) and
+    node1.isResultValue(expr) and
+    step.value() and
+    node2.isReturnNode(callable)
+  )
+  or
+  exists(IfExpr expr |
+    node1.isResultValue(expr.getABranch()) and
+    step.value() and
+    node2.isResultValue(expr)
   )
   or
   none() // Temporarily disable compilation errors from unsatisfiable types

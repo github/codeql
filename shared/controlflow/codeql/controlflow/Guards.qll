@@ -93,6 +93,19 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
     ConstantValue asConstantValue();
   }
 
+  /**
+   * Holds if taking the edge from `bb1` to `bb2` establishes whether `left` and `right` are
+   * equal.
+   *
+   * This supports implicit equality tests that do not have a corresponding source expression,
+   * such as comparisons between a switch expression and a case expression.
+   */
+  default predicate equalityBranchEdge(
+    Expr left, Expr right, BasicBlock bb1, BasicBlock bb2, boolean equal
+  ) {
+    none()
+  }
+
   class NonNullExpr extends Expr;
 
   class Case extends AstNode {
@@ -404,6 +417,24 @@ module Make<
     c.nonMatchEdge(bb1, bb2)
   }
 
+  private predicate implicitEqualityBranchEdge(
+    Expr guard, BasicBlock bb1, BasicBlock bb2, GuardValue v
+  ) {
+    exists(ConstantExpr constant, boolean equal, GuardValue constantValue |
+      (
+        equalityBranchEdge(guard, constant, bb1, bb2, equal)
+        or
+        equalityBranchEdge(constant, guard, bb1, bb2, equal)
+      ) and
+      constantHasValue(constant, constantValue) and
+      (
+        equal = true and v = constantValue
+        or
+        equal = false and v = constantValue.getDualValue()
+      )
+    )
+  }
+
   private predicate equalityTestSymmetric(Expr eqtest, Expr e1, Expr e2, boolean eqval) {
     equalityTest(eqtest, e1, e2, eqval)
     or
@@ -435,6 +466,8 @@ module Make<
     predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue v) {
       bb1.getLastNode() = this.(Expr).getControlFlowNode() and
       branchEdge(bb1, bb2, v)
+      or
+      implicitEqualityBranchEdge(this, bb1, bb2, v)
       or
       caseBranchEdge(bb1, bb2, v, this)
     }
@@ -563,6 +596,32 @@ module Make<
     }
 
     /**
+     * Holds if `def` supplies an implicit return value of `method`.
+     *
+     * This supports languages where a return statement can return a named result
+     * without containing a return expression.
+     */
+    default predicate implicitReturnDefinition(NonOverridableMethod method, SsaDefinition def) {
+      none()
+    }
+
+    /**
+     * Holds if `def` has the known abstract value `value`, even though it does
+     * not expose a source expression through `SsaExplicitWrite`.
+     */
+    default predicate additionalSsaDefinitionValue(SsaDefinition def, GuardValue value) { none() }
+
+    /**
+     * Holds if `def` defines the implicit return value represented by `method`, or is an SSA
+     * definition traversed while determining that value.
+     */
+    default predicate relevantImplicitReturnSsaDefinition(
+      NonOverridableMethod method, SsaDefinition def
+    ) {
+      none()
+    }
+
+    /**
      * Holds if `guard` evaluating to `val` ensures that:
      * `e <= k` when `upper = true`
      * `e >= k` when `upper = false`
@@ -629,23 +688,31 @@ module Make<
       )
     }
 
+    private predicate ssaDefinitionHasValue(SsaDefinition def, GuardValue value) {
+      exists(SsaExplicitWrite write | def = write and exprHasValue(write.getValue(), value))
+      or
+      additionalSsaDefinitionValue(def, value)
+    }
+
     /**
-     * Holds if `phi` takes `input` exactly when `guard` is `v`. That is,
-     * `guard == v` directly controls `input` and `guard == v.getDualValue()`
+     * Holds if `phi` takes an input with value `inputValue` exactly when `guard`
+     * is `v`. That is, `guard == v` directly controls that input and
+     * `guard == v.getDualValue()`
      * directly controls all other inputs to `phi`.
      *
-     * This makes `phi` similar to the conditional `phi = guard==v ? input : ...`.
+     * This makes `phi` similar to the conditional
+     * `phi = guard==v ? inputValue : ...`.
      */
     private predicate guardDeterminesPhiInput(
-      Guard guard, GuardValue v, SsaPhiDefinition phi, Expr input
+      Guard guard, GuardValue v, SsaPhiDefinition phi, GuardValue inputValue
     ) {
-      exists(GuardValue dv, SsaExplicitWrite inp |
+      exists(GuardValue dv, SsaDefinition inp |
         // The `forall` below implies that there's only one `inp` guarded by
         // `guard == v`, but checking this upfront using `unique` as opposed to
         // merely stating `guardControlsPhiBranch(guard, v, phi, inp)` improves
         // performance of the `forall` check.
         inp = unique(SsaDefinition inp0 | guardControlsPhiBranch(guard, v, phi, inp0)) and
-        inp.getValue() = input and
+        ssaDefinitionHasValue(inp, inputValue) and
         dv = v.getDualValue() and
         forall(SsaDefinition other | phi.hasInputFromBlock(other, _) and other != inp |
           guardControlsPhiBranch(guard, dv, phi, other)
@@ -874,9 +941,8 @@ module Make<
       v1 = v2 and
       not trivialHasValue(g2, v2) // disregard trivial guard
       or
-      exists(Expr e, GuardValue ev |
-        guardDeterminesPhiInput(g2, v2.getDualValue(), def1, e) and
-        exprHasValue(e, ev) and
+      exists(GuardValue ev |
+        guardDeterminesPhiInput(g2, v2.getDualValue(), def1, ev) and
         disjointValues(v1, ev)
       )
     }
@@ -1170,6 +1236,25 @@ module Make<
       }
 
       /**
+       * Holds if `def` evaluating to `defVal` implies that `guard` evaluates to `guardVal`.
+       */
+      predicate ssaImpliesGuard(
+        NonOverridableMethod method, SsaDefinition def, GuardValue defVal, Guard guard,
+        GuardValue guardVal
+      ) {
+        relevantReturnValue(method, defVal) and
+        relevantImplicitReturnSsaDefinition(method, def) and
+        (
+          impliesStepSsaGuard(def, defVal, guard, guardVal)
+          or
+          exists(SsaDefinition next |
+            impliesStepSsa(def, defVal, next) and
+            ssaImpliesGuard(method, next, defVal, guard, guardVal)
+          )
+        )
+      }
+
+      /**
        * Holds if a call to `m` having a return value of `retval` is reachable
        * by a chain of implications, and `ret` is a return expression in `m`
        * that could possibly have the value `retval`.
@@ -1185,6 +1270,12 @@ module Make<
 
       private predicate returnGuard(Guard guard, GuardValue val) {
         relevantReturnExprValue(_, guard, val)
+        or
+        exists(NonOverridableMethod m, SsaDefinition ret, GuardValue retval |
+          relevantReturnValue(m, retval) and
+          implicitReturnDefinition(m, ret) and
+          ssaImpliesGuard(m, ret, retval, guard, val)
+        )
       }
 
       module ReturnImplies = ImpliesTC<returnGuard/2>;
@@ -1262,6 +1353,13 @@ module Make<
         ParameterPosition ppos, GuardValue retval, GuardValue val
       ) {
         validReturnInCustomGuardToRank(maxRank(result), result, ppos, retval, val)
+        or
+        exists(SsaDefinition ret, SsaParameterInit param, Guard guard, GuardValue guardVal |
+          implicitReturnDefinition(result, ret) and
+          param.getParameter() = result.getParameter(ppos) and
+          ssaImpliesGuard(result, ret, retval, guard, guardVal) and
+          ReturnImplies::ssaControls(param, val, guard, guardVal)
+        )
         or
         exists(SsaParameterInit param, Guard g0, GuardValue v0 |
           param.getParameter() = result.getParameter(ppos) and
@@ -1360,6 +1458,13 @@ module Make<
           )
         |
           validReturnInValidationWrapper(ret, ppos, retval, par)
+        )
+        or
+        exists(SsaDefinition ret, SsaParameterInit param, Guard guard, GuardValue guardVal |
+          implicitReturnDefinition(result, ret) and
+          param.getParameter() = result.getParameter(ppos) and
+          ssaImpliesGuard(result, ret, retval, guard, guardVal) and
+          guardChecksDef(guard, param, guardVal, par)
         )
         or
         exists(SsaParameterInit param, BasicBlock bb, Guard guard, GuardValue val |

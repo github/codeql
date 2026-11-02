@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      # serde_json deserialization functions
+      - ["serde_json::de::from_str", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["serde_json::de::from_slice", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["serde_json::de::from_reader", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["serde_json::value::from_value", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["serde_json::value::from_value", "Argument[0].Field[serde_json::value::Value::String(0)]", "unsafe-deserialization", "manual"]
+      # bincode deserialization functions
+      - ["bincode::deserialize", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["bincode::deserialize_from", "Argument[0]", "unsafe-deserialization", "manual"]
+      # rmp_serde (MessagePack) deserialization functions
+      - ["rmp_serde::decode::from_slice", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["rmp_serde::decode::from_read", "Argument[0]", "unsafe-deserialization", "manual"]
+      # ciborium (CBOR) deserialization functions
+      - ["ciborium::de::from_reader", "Argument[0]", "unsafe-deserialization", "manual"]
+      # serde_yaml deserialization functions
+      - ["serde_yaml::de::from_str", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["serde_yaml::de::from_slice", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["serde_yaml::de::from_reader", "Argument[0]", "unsafe-deserialization", "manual"]
+      # toml deserialization
+      - ["toml::de::from_str", "Argument[0]", "unsafe-deserialization", "manual"]

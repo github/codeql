@@ -1,3 +1,14 @@
+## 1.10.0
+
+### Query Metadata Changes
+
+* Added a new `cpp-code-quality` query suite containing queries that identify maintainability and reliability issues in C and C++ code.
+
+### Minor Analysis Improvements
+
+* The `cpp/suspicious-pointer-scaling` query no longer reports false positives for intentional pointer arithmetic from `std::byte*` buffers.
+* The `cpp/unused-local-variable` and `cpp/unused-static-variable` queries no longer report variables marked with the C++17 `[[maybe_unused]]` attribute.
+
 ## 1.9.2
 
 ### Minor Analysis Improvements

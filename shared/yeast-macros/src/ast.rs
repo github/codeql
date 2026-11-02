@@ -100,6 +100,15 @@ pub(crate) enum Template {
     Node(Node),
     /// An embedded Rust block such as `{args}`.
     Splice(syn::Block),
+    /// Ordered alternatives such as `[(identifier #{name}) (missing)]`.
+    Choice(Vec<Alternative>),
+}
+
+pub(crate) struct Alternative {
+    /// Template to construct when the guard and dependencies succeed.
+    pub(crate) template: Template,
+    /// Optional postfix guard such as `if { name.is_some() }`.
+    pub(crate) guard: Option<syn::Block>,
 }
 
 pub(crate) struct Node {
@@ -108,7 +117,7 @@ pub(crate) struct Node {
     /// Optional leaf content such as `"foo"` or `#{name}` in
     /// `(identifier "foo")` or `(identifier #{name})`.
     pub(crate) content: Option<Content>,
-    /// Named fields such as `method: {name}` in `(call method: {name})`.
+    /// Named fields and source-location metadata.
     pub(crate) fields: Vec<Field>,
 }
 
@@ -121,14 +130,17 @@ pub(crate) enum Content {
 
 pub(crate) enum Field {
     /// A named field such as `argument: {args}` or
-    /// `label: (identifier #{name})?`.
+    /// `label: (identifier #{name})`.
     Named {
         /// The field name before `:`, such as `argument`.
         name: Ident,
         /// The node or Rust splice after `:`, such as `(identifier "x")` or
         /// `{args}`.
         value: Template,
-        /// Whether the field value has a trailing `?`.
-        optional: bool,
+    },
+    /// Source-location metadata such as `location: {source}`.
+    Location {
+        /// A Rust block yielding the node or nodes whose locations should be combined.
+        block: syn::Block,
     },
 }

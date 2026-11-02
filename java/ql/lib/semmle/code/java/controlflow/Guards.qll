@@ -342,6 +342,18 @@ private module LogicInput_v3 implements GuardsImpl::LogicInputSig {
   private import semmle.code.java.dataflow.IntegerGuards as IntegerGuards
   import LogicInput_v2
 
+  predicate implicitReturnDefinition(GuardsInput::NonOverridableMethod method, SsaDefinition def) {
+    none()
+  }
+
+  predicate additionalSsaDefinitionValue(SsaDefinition def, GuardValue value) { none() }
+
+  predicate relevantImplicitReturnSsaDefinition(
+    GuardsInput::NonOverridableMethod method, SsaDefinition def
+  ) {
+    none()
+  }
+
   predicate rangeGuard(GuardsImpl::PreGuard guard, GuardValue val, Expr e, int k, boolean upper) {
     IntegerGuards::rangeGuard(guard, val.asBooleanValue(), e, k, upper)
   }

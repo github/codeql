@@ -1,6 +1,8 @@
 /**
  * Provides Swift-specific name binding rules.
  */
+overlay[local?]
+module;
 
 private import unified
 private import codeql.unified.internal.StaticNameBinding
@@ -86,10 +88,16 @@ class NameBindingPluginSwift extends NameBindingPlugin {
     or
     not m instanceof GeneratedConstructor and
     result =
-      concat(int i, Parameter p |
-        p = m.(Callable).getParameter(i)
+      concat(int i, Parameter p, string name |
+        p = m.(Callable).getParameter(i) and
+        (
+          name = p.getExternalNameNode().getValue()
+          or
+          not exists(p.getExternalNameNode()) and
+          name = "_"
+        )
       |
-        p.getExternalNameNode().getValue(), "," order by i
+        name, "," order by i
       )
   }
 
