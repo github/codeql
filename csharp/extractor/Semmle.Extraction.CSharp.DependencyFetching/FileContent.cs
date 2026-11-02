@@ -275,7 +275,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         isSdkProjectStructureUsed = isSdkProjectStructureUsed || project is not null && reader.GetAttribute("Sdk") is not null;
                         isLegacyProjectStructureUsed = isLegacyProjectStructureUsed || project?.EndsWith("Microsoft.CSharp.targets", StringComparison.OrdinalIgnoreCase) == true;
                         break;
-                        // TODO: we could also check `<Sdk Name="Microsoft.NET.Sdk" />`
+                    case "sdk":
+                        var sdkName = reader.GetAttribute("Name");
+                        isSdkProjectStructureUsed |= sdkName != null;
+                        useAspNetCoreDlls |= string.Equals(sdkName, "Microsoft.NET.Sdk.Web", StringComparison.OrdinalIgnoreCase);
+                        break;
                 }
             });
         }

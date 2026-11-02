@@ -248,6 +248,44 @@ namespace Semmle.Extraction.Tests
         }
 
         /// <summary>
+        /// Verifies that an SDK element indicates SDK project structure.
+        /// </summary>
+        [Fact]
+        public void TestFileContent_SdkElement()
+        {
+            // Setup
+            var fileContent = new TestFileContent("<Project><Sdk Name='Microsoft.NET.Sdk' /></Project>");
+
+            // Execute
+            var isSdk = fileContent.IsSdkProjectStructureUsed;
+            var isLegacy = fileContent.IsLegacyProjectStructureUsed;
+
+            // Verify
+            Assert.True(isSdk);
+            Assert.False(isLegacy);
+        }
+
+        /// <summary>
+        /// Verifies that an ASP.NET SDK element indicates ASP.NET Core usage.
+        /// </summary>
+        [Fact]
+        public void TestFileContent_AspNetCoreSdkElement()
+        {
+            // Setup
+            var fileContent = new TestFileContent("<Project><Sdk Name='Microsoft.NET.Sdk.Web' /></Project>");
+
+            // Execute
+            var isSdk = fileContent.IsSdkProjectStructureUsed;
+            var useAspNetCoreDlls = fileContent.UseAspNetCoreDlls;
+            var isAspNetCoreDetected = fileContent.IsAspNetCoreDetected;
+
+            // Verify
+            Assert.True(isSdk);
+            Assert.True(useAspNetCoreDlls);
+            Assert.True(isAspNetCoreDetected);
+        }
+
+        /// <summary>
         /// Verifies that `FileContent` correctly handles XML syntax with namespaces and various elements.
         /// </summary>
         [Fact]
