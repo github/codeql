@@ -1172,8 +1172,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A leading attribute (`@objc`) or access/function/member/mutation/
         // ownership modifier (swift-syntax models each as a single `declModifier`)
         // becomes a `modifier`; its source text is the modifier spelling.
-        rule!((attribute) @@m => (modifier #{m})),
-        rule!((declModifier) @@m => (modifier #{m})),
+        rule!(
+            [
+                (attribute)
+                (declModifier)
+            ] @@m
+            =>
+            (modifier #{m})
+        ),
         // Type specifiers (`inout`, `sending`, ...) are mapped to modifiers.
         rule!((simpleTypeSpecifier) @@m => (modifier #{m})),
         rule!((lifetimeTypeSpecifier) @@m => (modifier #{m})),
