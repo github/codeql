@@ -47,3 +47,4 @@ isSource
 | test.swift:209:5:213:5 | [self param] func ShorthandTestSub.sourceParams | shorthand-source |
 | test.swift:210:11:210:11 | x | shorthand-source |
 missingBuiltinType
+| ShorthandTest |
