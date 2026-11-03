@@ -89,6 +89,9 @@ func test_sqlite_swift_api(db: Connection) throws {
 	let stmt3 = try db.prepare(varQuery, remoteString) // GOOD
 	try stmt3.run()
 
+	let stmt3b = try db.prepare(varQuery, remoteString, remoteString) // GOOD
+	try stmt3b.run()
+
 	let stmt4 = try Statement(db, localString) // GOOD
 	try stmt4.run()
 
@@ -99,6 +102,9 @@ func test_sqlite_swift_api(db: Connection) throws {
 
 	let stmt6 = try db.prepare(unsafeQuery1, "") // $ Alert
 	try stmt6.run()
+
+	let stmt6b = try db.prepare(unsafeQuery1, "", "") // $ MISSING: Alert
+	try stmt6b.run()
 
 	let stmt7 = try db.prepare(unsafeQuery1, [""]) // $ Alert
 	try stmt7.run()
