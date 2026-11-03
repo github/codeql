@@ -88,7 +88,14 @@ private module Urllib {
         API::moduleImport("urllib")
             .getMember("parse")
             .getMember(["urlparse", "urlsplit"])
-            .getACall()
+            .getACall() and
+      forex(DataFlow::LocalSourceNode source | source = result.getFunction().getALocalSource() |
+        source =
+          API::moduleImport("urllib")
+              .getMember("parse")
+              .getMember(["urlparse", "urlsplit"])
+              .getAValueReachableFromSource()
+      )
     }
 
     /** A URL parser call whose URL argument resolves entirely to string literals. */

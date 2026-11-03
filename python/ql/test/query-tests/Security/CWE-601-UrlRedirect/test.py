@@ -890,3 +890,51 @@ def mixed_printable_method():
     ):
         return redirect(untrusted, code=302) # $ Alert
     return redirect("/", code=302)
+
+
+def ignores_target(target):
+    return urlsplit("/")
+
+
+def parses_request_target(target):
+    return urlsplit(request.args.get('target', ''))
+
+
+@app.route('/mixed_parser_callee')
+def mixed_parser_callee():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parse = urlsplit if request.args.get('use-parser') else ignores_target
+    parts = parse(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parts.scheme
+        and not parts.netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/mixed_constant_hostname_callee')
+def mixed_constant_hostname_callee():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    parse = urlsplit if request.args.get('use-parser') else parses_request_target
+    allowed_host = parse("https://example.com").hostname
+    if urlsplit(untrusted).netloc == allowed_host:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/aliased_parser')
+def aliased_parser():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parse = urlsplit if request.args.get('use-split') else urlparse
+    parts = parse(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parts.scheme
+        and not parts.netloc
+    ):
+        return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
