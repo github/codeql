@@ -34,8 +34,10 @@ signature module LocalNameBindingInputSig<LocationSig Location> {
   AstNode getChild(AstNode n, int index);
 
   /**
-   * A conditional where any local declarations in the condition are in scope
-   * in the then-branch but not the else-branch.
+   * A conditional with a condition, a then-branch, and an optional else-branch.
+   *
+   * Unless `isUnscopedConditional` holds, local declarations in the condition
+   * are in scope in the then-branch but not the else-branch.
    *
    * Example:
    *
@@ -61,6 +63,25 @@ signature module LocalNameBindingInputSig<LocationSig Location> {
     /** Gets the else-branch of this conditional. */
     AstNode getElse();
   }
+
+  /**
+   * Holds if local declarations in a branch of `cond` are in scope in the
+   * remainder of the branch _and_ following the conditional itself.
+   *
+   * Example:
+   *
+   * ```swift
+   * #if DEBUG
+   *     let x = def1
+   *     // x is in scope here and refers to `def1`
+   * #else
+   *     let x = def2
+   *     // x is in scope here and refers to `def2`
+   * #endif
+   * // x is in scope here and refers to either `def1` or `def2`
+   * ```
+   */
+  default predicate isUnscopedConditional(Conditional cond) { none() }
 
   /**
    * A declaration where all local declarations in the left-hand side are in
@@ -195,17 +216,23 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
    */
   private AstNode getChildAdj(AstNode parent, int index) {
     result = getChild(parent, index) and
-    not exists(Conditional cond | result = [cond.getElse(), cond.getThen()])
+    not exists(Conditional cond |
+      not isUnscopedConditional(cond) and
+      result = [cond.getElse(), cond.getThen()]
+    )
     or
     exists(Conditional cond |
-      parent = cond and
-      result = cond.getElse() and
-      index = -1
-      or
-      exists(int last |
-        result = cond.getThen() and
-        last = max(int i | conditionHasChildAt(cond, parent, i)) and
-        index = last + 1
+      not isUnscopedConditional(cond) and
+      (
+        parent = cond and
+        result = cond.getElse() and
+        index = -1
+        or
+        exists(int last |
+          result = cond.getThen() and
+          last = max(int i | conditionHasChildAt(cond, parent, i)) and
+          index = last + 1
+        )
       )
     )
   }
@@ -217,31 +244,132 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
 
     int getRank(C parent, Ranked child) {
       child = getChildAdj(parent, result) and
-      getChildAdj(parent, _) instanceof SiblingShadowingDecl
+      // Only rank children when necessary, i.e., when there are sibling
+      // shadowing declarations or unscoped conditionals among the children.
+      (
+        getChildAdj(parent, _) instanceof SiblingShadowingDecl
+        or
+        isUnscopedConditional(getChildAdj(parent, _))
+      )
     }
   }
 
   private predicate getRankedChild = DenseRank1<DenseRankInput>::denseRank/2;
 
+  /** Holds if `decl` is a possible final declaration introduced by `node`. */
+  private predicate lastDeclAfter(AstNode node, SiblingShadowingDecl decl) {
+    node = decl
+    or
+    node = any(Conditional cond | isUnscopedConditional(cond) and lastDeclInBranch(cond, decl))
+  }
+
+  private predicate lastDeclInBranch(Conditional cond, SiblingShadowingDecl decl) {
+    exists(AstNode branch | branch = [cond.getThen(), cond.getElse()] |
+      // An `#elseif` is itself a conditional rather than a block of statements.
+      isUnscopedConditional(branch) and lastDeclAfter(branch, decl)
+      or
+      not isUnscopedConditional(branch) and
+      lastDeclInPrefix(branch, max(int i | exists(getRankedChild(branch, i))), decl)
+    )
+  }
+
   /**
-   * Holds if `n` is the `i`th child of `parent`, but should instead be considered
-   * a child of a shadowing sibling declaration `decl` when resolving accesses.
+   * Holds if the unscoped conditional `cond` might not introduce any shadowing
+   * declarations. We need this property to determine whether declarations prior
+   * to the conditional are still in scope following the conditional.
    *
-   * This is the case when `decl` is the nearest shadowing sibling declaration
-   * preceding `n` amongst all the children of `parent`.
+   * For instance, in
+   * ```swift
+   * let x = 1
+   * #if DEBUG
+   *     let x = 2
+   * #else
+   *     let x = 3
+   * #endif
+   * print(x) // prints 2 or 3
+   * ```
+   * the initial declaration of `x` is certain to not be shadowed after the
+   * conditional.
+   *
+   * If the conditional instead had no else branch or had one of the branches
+   * not declared any shadowing declarations, then the initial declaration of
+   * `x` might not have been shadowed after the conditional.
+   */
+  private predicate unscopedConditionalPreservesIncoming(Conditional cond) {
+    isUnscopedConditional(cond) and
+    (
+      not exists(cond.getElse())
+      or
+      branchPreservesIncoming([cond.getThen(), cond.getElse()])
+    )
+  }
+
+  private predicate branchPreservesIncoming(AstNode branch) {
+    unscopedConditionalPreservesIncoming(branch)
+    or
+    not isUnscopedConditional(branch) and
+    (
+      // If the children are not ranked, then they do not contain any sibling
+      // shadowing declarations.
+      not exists(getRankedChild(branch, _))
+      or
+      prefixPreservesIncoming(branch, max(int i | exists(getRankedChild(branch, i))))
+    )
+  }
+
+  /**
+   * Holds if `node` might not introduce any shadowing declaration.
+   *
+   * For example, the following satisfies the predicate since the declaration
+   * might be removed at compile time.
+   * ```swift
+   * #if DEBUG
+   *     let value = 1
+   * #endif
+   *  ```
+   */
+  private predicate preservesIncoming(AstNode node) {
+    // A shadowing declaration always introduces a shadowing declaration.
+    not node instanceof SiblingShadowingDecl and
+    not isUnscopedConditional(node)
+    or
+    unscopedConditionalPreservesIncoming(node)
+  }
+
+  /** Summarizes the first `i` ranked children without entering ordinary nested scopes. */
+  private predicate lastDeclInPrefix(AstNode parent, int i, SiblingShadowingDecl decl) {
+    exists(AstNode child | child = getRankedChild(parent, i) |
+      lastDeclAfter(child, decl)
+      or
+      preservesIncoming(child) and lastDeclInPrefix(parent, i - 1, decl)
+    )
+  }
+
+  /**
+   * Holds if the first `i` children might not introduce any shadowing
+   * declarations.
+   */
+  private predicate prefixPreservesIncoming(AstNode parent, int i) {
+    i = 0 and exists(getRankedChild(parent, _))
+    or
+    prefixPreservesIncoming(parent, i - 1) and
+    preservesIncoming(getRankedChild(parent, i))
+  }
+
+  /**
+   * Holds if, instead of its parent, `n` should be considered a child of a
+   * shadowing sibling declaration `decl` when resolving accesses.
+   *
+   * Each alternative through preceding unscoped conditionals contributes its own
+   * nearest shadowing declaration.
    *
    * Note that `decl` may itself also have to be nested under another shadowing
    * sibling declaration.
    */
-  private predicate shouldBeShadowingDeclChild(
-    AstNode parent, SiblingShadowingDecl decl, int i, AstNode n
-  ) {
-    n = getRankedChild(parent, i) and
-    (
-      decl = getRankedChild(parent, i - 1)
-      or
-      shouldBeShadowingDeclChild(parent, decl, i - 1,
-        any(AstNode prev | not prev instanceof SiblingShadowingDecl))
+  private predicate shouldBeShadowingDeclChild(SiblingShadowingDecl decl, AstNode n) {
+    exists(AstNode parent, int i |
+      n = getRankedChild(parent, i) and
+      lastDeclInPrefix(parent, i - 1, decl)
     )
   }
 
@@ -289,11 +417,18 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
    * ```
    */
   private AstNode getParentForScoping(AstNode n) {
-    not shouldBeShadowingDeclChild(_, _, _, n) and
     not exists(SiblingShadowingDecl decl | n = [decl.getRhs(), decl.getElse()]) and
-    n = getChildAdj(result, _)
+    n = getChildAdj(result, _) and
+    (
+      not exists(int i | n = getRankedChild(result, i))
+      or
+      exists(int i |
+        n = getRankedChild(result, i) and
+        prefixPreservesIncoming(result, i - 1)
+      )
+    )
     or
-    shouldBeShadowingDeclChild(_, result, _, n)
+    shouldBeShadowingDeclChild(result, n)
     or
     exists(SiblingShadowingDecl decl |
       result = getParentForScoping(decl) and

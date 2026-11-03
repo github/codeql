@@ -6,7 +6,7 @@ func conditionalIfElse() {
         let inCond = 2  // name=releaseValue
         print("release")
     #endif
-    print(inCond)  // $ MISSING: access=debugValue access=releaseValue
+    print(inCond)  // $ access=debugValue access=releaseValue
 }
 
 func conditionalIfElseifElse() {
@@ -20,7 +20,7 @@ func conditionalIfElseifElse() {
         let alternative = 3  // name=fallbackValue
         print(alternative)  // $ access=fallbackValue
     #endif
-    print(alternative)  // $ MISSING: access=debugValue access=releaseValue access=fallbackValue
+    print(alternative)  // $ access=debugValue access=releaseValue access=fallbackValue
 }
 
 func conditionalNoElse(value: Int) {  // name=outerValue
@@ -29,7 +29,7 @@ func conditionalNoElse(value: Int) {  // name=outerValue
         let value = value + 1  // $ access=outerValue // name=conditionalValue
         print(value)  // $ access=conditionalValue
     #endif
-    print(value)  // $ access=outerValue MISSING: access=conditionalValue
+    print(value)  // $ access=outerValue access=conditionalValue
 }
 
 func conditionalIfNesting(nesting: Int) {  // name=nestingFirst
@@ -41,11 +41,11 @@ func conditionalIfNesting(nesting: Int) {  // name=nestingFirst
         #else
             let nesting = 2  // name=nestingNotExtra
         #endif
-        print(nesting)  // $ MISSING: access=nestingExtra access=nestingNotExtra SPURIOUS: access=nestingFirst
+        print(nesting)  // $ access=nestingExtra access=nestingNotExtra
     #else
         let nesting = 3  // name=outerNotDebug
     #endif
-    print(nesting)  // $ MISSING: access=nestingExtra access=nestingNotExtra access=outerNotDebug SPURIOUS: access=nestingFirst
+    print(nesting)  // $ access=nestingExtra access=nestingNotExtra access=outerNotDebug
 }
 
 func conditionalRealScopes() {
@@ -67,7 +67,7 @@ func conditionalGuard(opt: Int?) {  // name=guardOpt
     #else
         guard let value = opt else { return }  // $ access=guardOpt // name=fallbackGuardValue
     #endif
-    print(value)  // $ MISSING: access=guardValue access=fallbackGuardValue
+    print(value)  // $ access=guardValue access=fallbackGuardValue
 }
 
 func conditionalSequentialBindings(value: Int) {  // name=sequentialOuter
@@ -80,17 +80,17 @@ func conditionalSequentialBindings(value: Int) {  // name=sequentialOuter
     #else
         print(value)  // $ access=sequentialOuter
     #endif
-    print(value)  // $ access=sequentialOuter MISSING: access=sequentialSecond
+    print(value)  // $ access=sequentialSecond access=sequentialOuter
 }
 
 func conditionalCapture() {
     #if DEBUG
-        let value = 1  // $ MISSING: captured=capturedDebug // name=capturedDebug
+        let value = 1  // $ captured=capturedDebug // name=capturedDebug
     #else
-        let value = 2  // $ MISSING: captured=capturedElse // name=capturedElse
+        let value = 2  // $ captured=capturedElse // name=capturedElse
     #endif
     let closure = {  // name=conditionalClosure
-        print(value)  // $ MISSING: access=capturedDebug access=capturedElse
+        print(value)  // $ access=capturedDebug access=capturedElse
     }
     closure()  // $ access=conditionalClosure
 }
@@ -104,5 +104,5 @@ func conditionalNestedFallback(value: Int) {  // name=nestedFallbackOuter
     #else
         print(value)  // $ access=nestedFallbackOuter
     #endif
-    print(value)  // $ access=nestedFallbackOuter MISSING: access=nestedFallbackExtra
+    print(value)  // $ access=nestedFallbackOuter access=nestedFallbackExtra
 }
