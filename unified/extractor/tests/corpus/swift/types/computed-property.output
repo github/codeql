@@ -15,6 +15,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Rect"
           memberBlock:
             memberBlock
@@ -92,7 +93,6 @@ sourceFile
                                       returnKeyword: return
                               leftBrace: {
                               rightBrace: }
-          modifiers:
           classKeyword: class
 
 ---

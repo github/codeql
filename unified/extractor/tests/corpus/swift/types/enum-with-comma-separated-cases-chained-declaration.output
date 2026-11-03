@@ -11,6 +11,7 @@ sourceFile
       item:
         enumDecl
           attributes:
+          modifiers:
           name: identifier "Suit"
           memberBlock:
             memberBlock
@@ -35,7 +36,6 @@ sourceFile
                         enumCaseElement
                           name: identifier "spades"
                       caseKeyword: case
-          modifiers:
           enumKeyword: enum
 
 ---
