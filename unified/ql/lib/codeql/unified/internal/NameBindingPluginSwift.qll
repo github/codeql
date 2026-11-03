@@ -34,7 +34,7 @@ class NameBindingPluginSwift extends NameBindingPlugin {
   bindingset[member, binding]
   override predicate isPrivateToLocalScope(Stmt member, AstNode binding) {
     // Private top-level members
-    member = any(TopLevel top).getBody().getAStmt() and
+    member = any(TopLevel top).getBody().getASemanticStmt() and
     member.hasModifier(["private", "fileprivate"])
     or
     // Imports are always file-local, except `@_exported` import which re-export everything

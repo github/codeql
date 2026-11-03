@@ -186,7 +186,7 @@ module Unified {
   }
 
   /** A class representing `associated_type_declaration` nodes. */
-  class AssociatedTypeDeclaration extends @unified_associated_type_declaration, F::Member {
+  class AssociatedTypeDeclaration extends @unified_associated_type_declaration, F::Member, F::Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AssociatedTypeDeclaration" }
 
@@ -414,16 +414,18 @@ module Unified {
     /** Gets the node corresponding to the field `base_type`. */
     final F::BaseType getABaseType() { result = this.getBaseType(_) }
 
+    /** Gets the node corresponding to the field `direct_member`. */
+    final F::Member getDirectMember(int i) {
+      unified_class_like_declaration_direct_member(this, i, result)
+    }
+
+    /** Gets the node corresponding to the field `direct_member`. */
+    final F::Member getADirectMember() { result = this.getDirectMember(_) }
+
     /** Gets the node corresponding to the field `extension_target`. */
     final F::Expr getExtensionTarget() {
       unified_class_like_declaration_extension_target(this, result)
     }
-
-    /** Gets the node corresponding to the field `member`. */
-    final F::Member getMember(int i) { unified_class_like_declaration_member(this, i, result) }
-
-    /** Gets the node corresponding to the field `member`. */
-    final F::Member getAMember() { result = this.getMember(_) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) {
@@ -457,8 +459,8 @@ module Unified {
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       unified_class_like_declaration_base_type(this, _, result) or
+      unified_class_like_declaration_direct_member(this, _, result) or
       unified_class_like_declaration_extension_target(this, result) or
-      unified_class_like_declaration_member(this, _, result) or
       unified_class_like_declaration_modifier(this, _, result) or
       unified_class_like_declaration_name_node(this, result) or
       unified_class_like_declaration_type_constraint(this, _, result) or
@@ -848,7 +850,7 @@ module Unified {
   }
 
   /** A class representing `if_expr` nodes. */
-  class IfExpr extends @unified_if_expr, F::Expr {
+  class IfExpr extends @unified_if_expr, F::Expr, F::Member {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "IfExpr" }
 
@@ -858,6 +860,12 @@ module Unified {
     /** Gets the node corresponding to the field `else`. */
     final F::Expr getElse() { unified_if_expr_else(this, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getModifier(int i) { unified_if_expr_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `then`. */
     final F::Expr getThen() { unified_if_expr_then(this, result) }
 
@@ -865,6 +873,7 @@ module Unified {
     final override F::AstNode getAFieldOrChild() {
       unified_if_expr_def(this, result) or
       unified_if_expr_else(this, result) or
+      unified_if_expr_modifier(this, _, result) or
       unified_if_expr_then(this, result)
     }
   }
@@ -915,7 +924,9 @@ module Unified {
   }
 
   /** A class representing `initializer_declaration` nodes. */
-  class InitializerDeclaration extends @unified_initializer_declaration, F::Callable, F::Member {
+  class InitializerDeclaration extends @unified_initializer_declaration, F::Callable, F::Member,
+    F::Stmt
+  {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InitializerDeclaration" }
 
@@ -1676,11 +1687,11 @@ module Unified {
       or
       result = node.(ClassLikeDeclaration).getBaseType(i) and name = "getBaseType"
       or
+      result = node.(ClassLikeDeclaration).getDirectMember(i) and name = "getDirectMember"
+      or
       result = node.(ClassLikeDeclaration).getExtensionTarget() and
       i = -1 and
       name = "getExtensionTarget"
-      or
-      result = node.(ClassLikeDeclaration).getMember(i) and name = "getMember"
       or
       result = node.(ClassLikeDeclaration).getModifier(i) and name = "getModifier"
       or
@@ -1771,6 +1782,8 @@ module Unified {
       result = node.(IfExpr).getCondition() and i = -1 and name = "getCondition"
       or
       result = node.(IfExpr).getElse() and i = -1 and name = "getElse"
+      or
+      result = node.(IfExpr).getModifier(i) and name = "getModifier"
       or
       result = node.(IfExpr).getThen() and i = -1 and name = "getThen"
       or

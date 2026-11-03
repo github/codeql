@@ -68,10 +68,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨extension_target⟩ {\n  ⟨member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨extension_target⟩ {\n  ⟨direct_member⟩\n}"
           modifier: modifier "extension" source="extension"
           extension_target: identifier "Int" source="Int"
-          member:
+          direct_member:
             function_declaration source="func ⟨name_node⟩() -> ⟨return_type⟩ ⟨body⟩"
               name_node: identifier "squared" source="squared"
               return_type: identifier "Int" source="Int"

@@ -47,10 +47,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨direct_member⟩\n}"
           modifier: modifier "class" source="class"
           name_node: identifier "Factory" source="Factory"
-          member:
+          direct_member:
             function_declaration source="⟨modifier⟩ func ⟨name_node⟩() ⟨body⟩"
               modifier: modifier "static" source="static"
               name_node: identifier "make" source="make"

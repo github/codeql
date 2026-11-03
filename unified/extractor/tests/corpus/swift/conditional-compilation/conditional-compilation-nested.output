@@ -273,17 +273,76 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩\n\n⟨stmt⟩\n\n⟨stmt⟩"
       stmt:
-        unsupported_node "#if DEBUG\n    let first = 1\n    let second = 2\n    #if EXTRA\n        func f() {}\n    #elseif OTHER\n    #else\n        let third = 3\n    #endif\n#else\n#endif" source="#if DEBUG\n    let first = 1\n    let second = 2\n    #if EXTRA\n        func f() {}\n    #elseif OTHER\n    #else\n        let third = 3\n    #endif\n#else\n#endif"
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    ⟨member⟩\n}"
+        if_expr source="#if ⟨condition⟩\n    ⟨then⟩\n⟨else⟩\n#endif"
+          modifier: modifier "conditional_compilation" source=""
+          condition: identifier "DEBUG" source="DEBUG"
+          then:
+            block source="⟨stmt⟩\n    ⟨stmt⟩\n    ⟨stmt⟩"
+              stmt:
+                variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                  modifier: modifier "let" source="let"
+                  pattern: identifier "first" source="first"
+                  value: int_literal "1" source="1"
+                variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                  modifier: modifier "let" source="let"
+                  pattern: identifier "second" source="second"
+                  value: int_literal "2" source="2"
+                if_expr source="#if ⟨condition⟩\n        ⟨then⟩\n    ⟨else⟩\n    #endif"
+                  modifier: modifier "conditional_compilation" source=""
+                  condition: identifier "EXTRA" source="EXTRA"
+                  then:
+                    block source="⟨stmt⟩"
+                      stmt:
+                        function_declaration source="func ⟨name_node⟩() ⟨body⟩"
+                          name_node: identifier "f" source="f"
+                          body: block "{}" source="{}"
+                  else:
+                    if_expr source="#elseif ⟨condition⟩\n    ⟨else⟩"
+                      modifier: modifier "conditional_compilation" source=""
+                      condition: identifier "OTHER" source="OTHER"
+                      then: block source=""
+                      else:
+                        block source="#else\n        ⟨stmt⟩"
+                          stmt:
+                            variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                              modifier: modifier "let" source="let"
+                              pattern: identifier "third" source="third"
+                              value: int_literal "3" source="3"
+          else: block "#else" source="#else"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    ⟨direct_member⟩\n}"
           modifier: modifier "protocol" source="protocol"
           name_node: identifier "P" source="P"
-          member: unsupported_node "#if DEBUG\n        associatedtype T\n    #endif" source="#if DEBUG\n        associatedtype T\n    #endif"
+          direct_member:
+            if_expr source="#if ⟨condition⟩\n        ⟨then⟩\n    #endif"
+              modifier: modifier "conditional_compilation" source=""
+              condition: identifier "DEBUG" source="DEBUG"
+              then:
+                block source="⟨stmt⟩"
+                  stmt:
+                    associated_type_declaration source="associatedtype ⟨name_node⟩"
+                      name_node: identifier "T" source="T"
         function_declaration source="func ⟨name_node⟩() ⟨body⟩"
           name_node: identifier "use" source="use"
           body:
             block source="{\n    ⟨stmt⟩\n    ⟨stmt⟩\n}"
               stmt:
-                unsupported_node "#if DEBUG\n        let value = 1\n    #else\n        let value = 2\n    #endif" source="#if DEBUG\n        let value = 1\n    #else\n        let value = 2\n    #endif"
+                if_expr source="#if ⟨condition⟩\n        ⟨then⟩\n    ⟨else⟩\n    #endif"
+                  modifier: modifier "conditional_compilation" source=""
+                  condition: identifier "DEBUG" source="DEBUG"
+                  then:
+                    block source="⟨stmt⟩"
+                      stmt:
+                        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                          modifier: modifier "let" source="let"
+                          pattern: identifier "value" source="value"
+                          value: int_literal "1" source="1"
+                  else:
+                    block source="#else\n        ⟨stmt⟩"
+                      stmt:
+                        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                          modifier: modifier "let" source="let"
+                          pattern: identifier "value" source="value"
+                          value: int_literal "2" source="2"
                 if_expr source="if ⟨condition⟩ ⟨then⟩"
                   condition: boolean_literal "true" source="true"
                   then:

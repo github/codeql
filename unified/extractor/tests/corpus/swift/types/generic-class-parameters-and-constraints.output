@@ -82,7 +82,7 @@ top_level source="⟨body⟩"
             equality_type_constraint source="⟨left⟩ == ⟨right⟩"
               left: identifier "U" source="U"
               right: identifier "T" source="T"
-          member:
+          direct_member:
             constructor_declaration source=""
               modifier: modifier "generated" source=""
               name_node: identifier "init" source=""

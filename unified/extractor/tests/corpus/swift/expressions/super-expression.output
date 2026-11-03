@@ -146,10 +146,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩\n\n⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n\n  ⟨member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨direct_member⟩\n\n  ⟨direct_member⟩\n}"
           modifier: modifier "class" source="class"
           name_node: identifier "Base" source="Base"
-          member:
+          direct_member:
             variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
               modifier: modifier "var" source="var"
               pattern: identifier "value" source="value"
@@ -161,13 +161,13 @@ top_level source="⟨body⟩"
               modifier: modifier "generated" source=""
               name_node: identifier "init" source=""
               body: block source=""
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨base_type⟩ {\n  ⟨member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩: ⟨base_type⟩ {\n  ⟨direct_member⟩\n}"
           modifier: modifier "class" source="class"
           name_node: identifier "Derived" source="Derived"
           base_type:
             base_type source="⟨type⟩"
               type: identifier "Base" source="Base"
-          member:
+          direct_member:
             function_declaration source="⟨modifier⟩ func ⟨name_node⟩() ⟨body⟩"
               modifier: modifier "override" source="override"
               name_node: identifier "update" source="update"

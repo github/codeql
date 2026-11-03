@@ -77,10 +77,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  ⟨member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨direct_member⟩\n  ⟨direct_member⟩\n}"
           modifier: modifier "class" source="class"
           name_node: identifier "Counter" source="Counter"
-          member:
+          direct_member:
             variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
               modifier: modifier "var" source="var"
               pattern: identifier "n" source="n"

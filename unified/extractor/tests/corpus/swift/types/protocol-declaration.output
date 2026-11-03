@@ -57,10 +57,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  ⟨member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨direct_member⟩\n  ⟨direct_member⟩\n}"
           modifier: modifier "protocol" source="protocol"
           name_node: identifier "Drawable" source="Drawable"
-          member:
+          direct_member:
             function_declaration source="func ⟨name_node⟩()"
               name_node: identifier "draw" source="draw"
               body: block source=""

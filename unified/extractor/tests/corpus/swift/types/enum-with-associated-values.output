@@ -69,24 +69,24 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  case ⟨member⟩\n  case ⟨member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  case ⟨direct_member⟩\n  case ⟨direct_member⟩\n}"
           modifier: modifier "enum" source="enum"
           name_node: identifier "Shape" source="Shape"
-          member:
-            class_like_declaration source="⟨name_node⟩⟨member⟩"
+          direct_member:
+            class_like_declaration source="⟨name_node⟩⟨direct_member⟩"
               modifier: modifier "enum_case" source=""
               name_node: identifier "circle" source="circle"
-              member:
+              direct_member:
                 constructor_declaration source="circle(⟨parameter⟩)"
                   parameter:
                     parameter source="⟨pattern⟩: ⟨type⟩"
                       type: identifier "Double" source="Double"
                       pattern: identifier "radius" source="radius"
                   body: block source=""
-            class_like_declaration source="⟨name_node⟩⟨member⟩"
+            class_like_declaration source="⟨name_node⟩⟨direct_member⟩"
               modifier: modifier "enum_case" source=""
               name_node: identifier "square" source="square"
-              member:
+              direct_member:
                 constructor_declaration source="square(⟨parameter⟩)"
                   parameter:
                     parameter source="⟨pattern⟩: ⟨type⟩"

@@ -79,4 +79,33 @@ sourceFile
 top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
-      stmt: unsupported_node "#if (DEBUG && !RELEASE) || swift(<6.0)\n    let x = 1\n#endif" source="#if (DEBUG && !RELEASE) || swift(<6.0)\n    let x = 1\n#endif"
+      stmt:
+        if_expr source="#if ⟨condition⟩\n    ⟨then⟩\n#endif"
+          modifier: modifier "conditional_compilation" source=""
+          condition:
+            binary_expr source="(⟨left⟩) ⟨operator⟩ ⟨right⟩"
+              left:
+                binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                  left: identifier "DEBUG" source="DEBUG"
+                  operator: infix_operator "&&" source="&&"
+                  right:
+                    unary_expr source="⟨operator⟩⟨operand⟩"
+                      operand: identifier "RELEASE" source="RELEASE"
+                      operator: prefix_operator "!" source="!"
+              operator: infix_operator "||" source="||"
+              right:
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "swift" source="swift"
+                  argument:
+                    argument source="⟨value⟩"
+                      value:
+                        unary_expr source="⟨operator⟩⟨operand⟩"
+                          operand: float_literal "6.0" source="6.0"
+                          operator: prefix_operator "<" source="<"
+          then:
+            block source="⟨stmt⟩"
+              stmt:
+                variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                  modifier: modifier "let" source="let"
+                  pattern: identifier "x" source="x"
+                  value: int_literal "1" source="1"

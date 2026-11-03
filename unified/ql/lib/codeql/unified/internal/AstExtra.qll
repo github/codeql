@@ -94,7 +94,7 @@ module Public {
 
   /** A `Stmt` at the top-level. */
   final class TopLevelStmt extends Stmt {
-    TopLevelStmt() { this = any(TopLevel t).getBody().getAStmt() }
+    TopLevelStmt() { this = any(TopLevel t).getBody().getASemanticStmt() }
   }
 
   /** An identifier appearing in the context of a break/continue label, argument/parameter name, or name of a member lookup. */

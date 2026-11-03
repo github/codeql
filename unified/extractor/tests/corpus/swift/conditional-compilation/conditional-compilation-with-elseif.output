@@ -88,4 +88,32 @@ sourceFile
 top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
-      stmt: unsupported_node "#if DEBUG\nlet x = 1\n#elseif RELEASE\nlet x = 2\n#else\nlet x = 3\n#endif" source="#if DEBUG\nlet x = 1\n#elseif RELEASE\nlet x = 2\n#else\nlet x = 3\n#endif"
+      stmt:
+        if_expr source="#if ⟨condition⟩\n⟨then⟩\n⟨else⟩\n#endif"
+          modifier: modifier "conditional_compilation" source=""
+          condition: identifier "DEBUG" source="DEBUG"
+          then:
+            block source="⟨stmt⟩"
+              stmt:
+                variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                  modifier: modifier "let" source="let"
+                  pattern: identifier "x" source="x"
+                  value: int_literal "1" source="1"
+          else:
+            if_expr source="#elseif ⟨condition⟩\n⟨then⟩\n⟨else⟩"
+              modifier: modifier "conditional_compilation" source=""
+              condition: identifier "RELEASE" source="RELEASE"
+              then:
+                block source="⟨stmt⟩"
+                  stmt:
+                    variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                      modifier: modifier "let" source="let"
+                      pattern: identifier "x" source="x"
+                      value: int_literal "2" source="2"
+              else:
+                block source="#else\n⟨stmt⟩"
+                  stmt:
+                    variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                      modifier: modifier "let" source="let"
+                      pattern: identifier "x" source="x"
+                      value: int_literal "3" source="3"

@@ -65,10 +65,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  case ⟨member⟩\n  case ⟨member⟩\n  case ⟨member⟩\n  case ⟨member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  case ⟨direct_member⟩\n  case ⟨direct_member⟩\n  case ⟨direct_member⟩\n  case ⟨direct_member⟩\n}"
           modifier: modifier "enum" source="enum"
           name_node: identifier "Direction" source="Direction"
-          member:
+          direct_member:
             variable_declaration source="⟨pattern⟩"
               modifier: modifier "enum_case" source=""
               pattern: identifier "north" source="north"

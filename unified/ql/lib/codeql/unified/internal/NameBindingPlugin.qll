@@ -103,7 +103,7 @@ predicate isStaticMember(Member member) {
     member instanceof ClassLikeDeclaration
   )
   or
-  member = any(TopLevel t).getBody().getAStmt()
+  member = any(TopLevel t).getBody().getASemanticStmt()
 }
 
 /** Holds if `member` is an inheritable member. */

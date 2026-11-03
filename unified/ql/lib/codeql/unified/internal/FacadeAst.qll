@@ -99,6 +99,9 @@ module Unified {
 
   /** A block statement. */
   class Block extends G::Block {
+    /** Gets a statement, looking through conditional-compilation branches. */
+    Stmt getASemanticStmt() { result = compilationExpandedStmt(this.getAStmt()) }
+
     /** Gets the last statement in this block. */
     Stmt getLastStmt() {
       exists(int i | result = this.getStmt(i) and not exists(this.getStmt(i + 1)))
@@ -236,6 +239,24 @@ module Unified {
     QualifiedName<getEnclosingClass/1>::getQualifiedName/1;
 
   class ClassLikeDeclaration extends G::ClassLikeDeclaration {
+    /** Gets a member, looking through conditional-compilation branches. */
+    Member getAMember() { result = compilationExpandedStmt(this.getADirectMember()) }
+
+    /**
+     * Gets the `i`th member in source order across all conditional-compilation alternatives,
+     * indexed from zero.
+     */
+    Member getMember(int i) {
+      result =
+        rank[i + 1](Member m |
+          m = this.getAMember()
+        |
+          m
+          order by
+            m.getLocation().getStartLine(), m.getLocation().getStartColumn(), m.getParentIndex()
+        )
+    }
+
     /** Gets the name of this declaration. */
     string getName() { result = this.getNameNode().getValue() }
 
@@ -470,7 +491,24 @@ module Unified {
 
   /** An `if` statement or conditional expression. */
   class IfExpr extends G::IfExpr {
+    /** Holds if this expression represents conditional compilation. */
+    predicate isConditionalCompilation() { this.hasModifier("conditional_compilation") }
+
     /** Gets then `then` or `else` branch. */
     Expr getABranch() { result = [this.getThen(), this.getElse()] }
+  }
+
+  private Stmt compilationExpandedStmt(Stmt stmt) {
+    not stmt.(IfExpr).isConditionalCompilation() and
+    result = stmt
+    or
+    stmt =
+      any(IfExpr conditional |
+        conditional.isConditionalCompilation() and
+        result =
+          compilationExpandedStmt([
+              conditional.getABranch().(Block).getAStmt(), conditional.getABranch().(IfExpr)
+            ])
+      )
   }
 }

@@ -38,6 +38,9 @@ struct SwiftContext {
     /// True while translating a pattern. Optional chaining in this context is
     /// represented as an `Optional.some` call rather than being unwrapped.
     in_pattern: bool,
+    /// When iterating over the clauses of a conditional compilation block, this
+    /// holds the tail of the clauses that have already been translated.
+    conditional_compilation_tail: Option<yeast::OutputId>,
 }
 
 impl SwiftContext {
@@ -64,11 +67,29 @@ fn implicit_parameterless_initializer(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
     members: &[yeast::OutputId],
 ) -> Option<yeast::OutputId> {
-    let has_explicit_initializer = members.iter().any(|member| {
-        ctx.output
-            .get_node(*member)
-            .is_some_and(|node| node.kind_name() == "constructor_declaration")
-    });
+    // Search for an initializer while recursing into nodes for conditional
+    // compilation blocks.
+    fn find_initializer(ast: &yeast::OutputAst, id: yeast::OutputId) -> Option<yeast::OutputId> {
+        let node = ast.get_node(id)?;
+        match node.kind_name() {
+            "constructor_declaration" => Some(id),
+            name => {
+                let fields: &[&str] = match name {
+                    "if_expr" => &["then", "else"], // look into conditional compilation
+                    "block" => &["stmt"],           // look into blocks in branches
+                    _ => &[],
+                };
+                fields.iter().find_map(|field| {
+                    node.field_children(ast.field_id_for_name(field)?)
+                        .iter()
+                        .find_map(|child| find_initializer(ast, *child))
+                })
+            }
+        }
+    }
+    let has_explicit_initializer = members
+        .iter()
+        .any(|member| find_initializer(ctx.output, *member).is_some());
     (!has_explicit_initializer).then(|| {
         tree!((constructor_declaration
             modifier: (modifier "generated")
@@ -529,7 +550,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     modifier: [(modifier "chained_declaration") if { ctx.is_chained }]
                     modifier: (modifier "enum_case")
                     name_node: (identifier #{name})
-                    member: {constructor}))
+                    direct_member: {constructor}))
             }
         ),
         rule!(
@@ -871,6 +892,53 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (closureShorthandParameter name: @@name)
             =>
             (parameter pattern: (identifier #{name}))
+        ),
+        // ---- Conditioal compilation blocks ----
+        // Conditional compilation blocks (`#if … #elseif … #else … #endif`) are
+        // represented with a `ifConfigDecl` node for the entire block and an
+        // `ifConfigClause` for each branch. We translate them into nested
+        // `if_expr` nodes.
+
+        // When a conditional compilation block contains a switch case it
+        // appears within a `switch` -- we do not support this yet.
+        rule!(
+            (ifConfigDecl clauses: (ifConfigClause elements: (switchCase)))
+            =>
+            (unsupported_node)
+        ),
+        // A conditional compilation block is translated into `if_expr` nodes
+        // with branches occurring nested within the else branch.
+        rule!(
+            (ifConfigDecl clauses: _* @@clauses) @@declaration
+            =>
+            expr {
+                ctx.conditional_compilation_tail = None;
+                for clause in clauses.into_iter().rev() {
+                    ctx.conditional_compilation_tail = ctx.translate(clause)?.into_iter().next();
+                }
+                let result = ctx.conditional_compilation_tail.ok_or("conditional compilation has no clauses")?;
+                ctx.set_node_source_range(result, ctx.source_range(declaration))
+            }
+        ),
+        // A single clause is mapped to an if expression with the tail of
+        // already processed clauses (stored in `conditional_compilation_tail`)
+        // inserted into the else branch.
+        rule!(
+            (ifConfigClause condition: @condition elements: _* @items)
+            =>
+            (if_expr
+                // Mark this `if_expr` as coming from conditional compilation.
+                modifier: (modifier "conditional_compilation")
+                condition: {condition}
+                then: (block stmt: {items})
+                else: {ctx.conditional_compilation_tail})
+        ),
+        // A conditional compilation clause without a condition (a final `#else`
+        // block).
+        rule!(
+            (ifConfigClause elements: _* @items)
+            =>
+            (block stmt: {items})
         ),
         // ---- Control flow ----
         // An `if`/`else` expression. Conditions are joined via `and_chain`; the
@@ -1333,8 +1401,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     type_constraint: {parameter_constraints}
                     type_constraint: {declaration_constraints}
                     base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
-                    member: {members}
-                    member: {implicit_initializer}))
+                    direct_member: {members}
+                    direct_member: {implicit_initializer}))
             }
         ),
         // Enum class declaration: same as a regular class but with an enum body.
@@ -1358,7 +1426,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 type_constraint: {parameter_constraints}
                 type_constraint: {declaration_constraints}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
-                member: {members})
+                direct_member: {members})
         ),
         // A `struct` declaration, including an implicit parameter-less `init`
         // when no explicit initializer is present.
@@ -1384,8 +1452,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     type_constraint: {parameter_constraints}
                     type_constraint: {declaration_constraints}
                     base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
-                    member: {members}
-                    member: {implicit_initializer}))
+                    direct_member: {members}
+                    direct_member: {implicit_initializer}))
             }
         ),
         // Protocol declaration
@@ -1406,7 +1474,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 type_parameter: {params}
                 type_constraint: {declaration_constraints}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
-                member: {members})
+                direct_member: {members})
         ),
         // An `extension Foo.Bar { … }` is likewise a `class_like_declaration`.
         rule!(
@@ -1422,7 +1490,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 modifier: {mods}
                 extension_target: {extendedType}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
-                member: {members})
+                direct_member: {members})
         ),
         // A member of a type declaration unwraps to the contained declaration.
         rule!((memberBlockItem decl: _* @d) => member* { d }),
@@ -1504,7 +1572,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((copyExpr) => (unsupported_node)),
         rule!((discardStmt) => (unsupported_node)),
         rule!((fallThroughStmt) => (unsupported_node)),
-        rule!((ifConfigDecl) => (unsupported_node)),
         rule!((implicitlyUnwrappedOptionalType) => (unsupported_node)),
         rule!((inlineArrayType) => (unsupported_node)),
         rule!((keyPathExpr) => (unsupported_node)),

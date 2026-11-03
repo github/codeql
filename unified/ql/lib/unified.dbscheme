@@ -312,16 +312,16 @@ unified_class_like_declaration_base_type(
   unique int base_type: @unified_base_type ref
 );
 
+#keyset[unified_class_like_declaration, index]
+unified_class_like_declaration_direct_member(
+  int unified_class_like_declaration: @unified_class_like_declaration ref,
+  int index: int ref,
+  unique int direct_member: @unified_member ref
+);
+
 unified_class_like_declaration_extension_target(
   unique int unified_class_like_declaration: @unified_class_like_declaration ref,
   unique int extension_target: @unified_expr ref
-);
-
-#keyset[unified_class_like_declaration, index]
-unified_class_like_declaration_member(
-  int unified_class_like_declaration: @unified_class_like_declaration ref,
-  int index: int ref,
-  unique int member: @unified_member ref
 );
 
 #keyset[unified_class_like_declaration, index]
@@ -580,6 +580,13 @@ unified_if_expr_else(
   unique int else: @unified_expr ref
 );
 
+#keyset[unified_if_expr, index]
+unified_if_expr_modifier(
+  int unified_if_expr: @unified_if_expr ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
 unified_if_expr_then(
   unique int unified_if_expr: @unified_if_expr ref,
   unique int then: @unified_expr ref
@@ -661,7 +668,7 @@ unified_map_literal_def(
   unique int id: @unified_map_literal
 );
 
-@unified_member = @unified_accessor_declaration | @unified_associated_type_declaration | @unified_class_like_declaration | @unified_constructor_declaration | @unified_destructor_declaration | @unified_function_declaration | @unified_initializer_declaration | @unified_token_unhandled_node | @unified_token_unsupported_node | @unified_type_alias_declaration | @unified_variable_declaration
+@unified_member = @unified_accessor_declaration | @unified_associated_type_declaration | @unified_class_like_declaration | @unified_constructor_declaration | @unified_destructor_declaration | @unified_function_declaration | @unified_if_expr | @unified_initializer_declaration | @unified_token_unhandled_node | @unified_token_unsupported_node | @unified_type_alias_declaration | @unified_variable_declaration
 
 unified_member_access_expr_def(
   unique int id: @unified_member_access_expr,
@@ -782,7 +789,7 @@ unified_return_expr_def(
   unique int id: @unified_return_expr
 );
 
-@unified_stmt = @unified_accessor_declaration | @unified_class_like_declaration | @unified_constructor_declaration | @unified_defer_stmt | @unified_destructor_declaration | @unified_do_while_stmt | @unified_expr | @unified_for_each_stmt | @unified_function_declaration | @unified_guard_if_stmt | @unified_import_declaration | @unified_labeled_stmt | @unified_operator_syntax_declaration | @unified_type_alias_declaration | @unified_variable_declaration | @unified_while_stmt
+@unified_stmt = @unified_accessor_declaration | @unified_associated_type_declaration | @unified_class_like_declaration | @unified_constructor_declaration | @unified_defer_stmt | @unified_destructor_declaration | @unified_do_while_stmt | @unified_expr | @unified_for_each_stmt | @unified_function_declaration | @unified_guard_if_stmt | @unified_import_declaration | @unified_initializer_declaration | @unified_labeled_stmt | @unified_operator_syntax_declaration | @unified_type_alias_declaration | @unified_variable_declaration | @unified_while_stmt
 
 #keyset[unified_string_interpolation_expr, index]
 unified_string_interpolation_expr_element(

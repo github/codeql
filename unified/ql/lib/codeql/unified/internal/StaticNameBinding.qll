@@ -148,7 +148,7 @@ private predicate isPrivateToLocalScope(AstNode binding) {
     bindingContext(binding, _, member) and
     (
       member = any(ClassLikeDeclaration cls).getAMember() or
-      member = any(TopLevel t).getBody().getAStmt()
+      member = any(TopLevel t).getBody().getASemanticStmt()
     ) and
     (binding instanceof NameBinding or binding instanceof BulkImportingPattern) and
     any(NameBindingPlugin p).isPrivateToLocalScope(member, binding)
@@ -209,7 +209,7 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
   )
   or
   exists(TopLevel top, Stmt stmt, NameBinding nameDecl |
-    stmt = top.getBody().getAStmt() and
+    stmt = top.getBody().getASemanticStmt() and
     not isPrivateToLocalScope(nameDecl) and
     nameDecl.getDeclaration() = stmt and
     node1.isIdentifier(nameDecl) and
@@ -265,7 +265,7 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
     or
     // Bulk re-exporting declarations
     exists(TopLevel top |
-      declaration = top.getBody().getAStmt() and
+      declaration = top.getBody().getASemanticStmt() and
       not isPrivateToLocalScope(p) and
       node2 = getModuleNodeFromFile(top.getFile())
     )
@@ -597,7 +597,7 @@ private module FolderHeuristic {
   private predicate topLevelNameDef(File file, string name, NameBindingNode node) {
     exists(TopLevel top, Stmt stmt, NameBinding nameDecl |
       top.getFile() = file and
-      stmt = top.getBody().getAStmt() and
+      stmt = top.getBody().getASemanticStmt() and
       not isPrivateToLocalScope(nameDecl) and
       nameDecl.getDeclaration() = stmt and
       name = nameDecl.getName() and

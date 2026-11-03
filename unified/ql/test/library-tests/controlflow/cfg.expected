@@ -114,6 +114,17 @@ bbStep
 | cfg.swift:369:9:369:14 | ... < ... | '... < ... : true -> Block(+0)' |
 | cfg.swift:370:5:370:10 | ... += ... | '... += ... : successor -> x(-1)' |
 | cfg.swift:407:9:407:24 | mightThrow(...) | 'mightThrow(...) : successor -> try ...(+0)' |
+| cfg.swift:478:5:478:7 | FOO | 'FOO : false -> Block(+3)' |
+| cfg.swift:478:5:478:7 | FOO | 'FOO : true -> Block(+1)' |
+| cfg.swift:480:3:480:3 | 2 | '2 : successor -> 5(+6)' |
+| cfg.swift:483:3:483:3 | 4 | '4 : successor -> 5(+3)' |
+| cfg.swift:488:5:488:7 | BAR | 'BAR : false -> 8(+5)' |
+| cfg.swift:488:5:488:7 | BAR | 'BAR : true -> Block(+1)' |
+| cfg.swift:490:3:490:3 | 7 | '7 : successor -> 8(+3)' |
+| cfg.swift:495:5:495:7 | FOO | 'FOO : false -> IfExpr(+3)' |
+| cfg.swift:495:5:495:7 | FOO | 'FOO : true -> Block(+1)' |
+| cfg.swift:497:3:497:4 | 10 | '10 : successor -> 13(+6)' |
+| cfg.swift:500:3:500:4 | 12 | '12 : successor -> 13(+3)' |
 | cfg.swift:509:6:509:28 |  | ' : false -> IfExpr(+4)' |
 | cfg.swift:509:6:509:28 |  | ' : true -> Block(+0)' |
 | cfg.swift:510:5:510:10 | ... += ... | '... += ... : successor -> IfExpr(+3)' |

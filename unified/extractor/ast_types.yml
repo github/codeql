@@ -68,6 +68,8 @@ supertypes:
     - do_while_stmt
     - defer_stmt
     - labeled_stmt
+    - associated_type_declaration
+    - initializer_declaration
   callable:
     subtypes:
       - top_level
@@ -93,6 +95,7 @@ supertypes:
       - class_like_declaration
       - type_alias_declaration
       - associated_type_declaration
+      - if_expr # For conditional compilation
       - unsupported_node
       - unhandled_node
     fields:
@@ -261,7 +264,10 @@ named:
   block:
     stmt*: stmt
 
+  # An if expression or a conditional compilation directive (which we view as a
+  # compile-time evaluated if expression).
   if_expr:
+    modifier*: modifier
     condition: expr
     then?: expr
     else?: expr
@@ -499,7 +505,7 @@ named:
     type_parameter*: type_parameter
     type_constraint*: type_constraint
     base_type*: base_type
-    member*: member
+    direct_member*: member
 
   # One of the base types of a class declaration.
   #
