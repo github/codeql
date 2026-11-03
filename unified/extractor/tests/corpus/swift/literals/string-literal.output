@@ -16,7 +16,7 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
-      stmt: string_literal "\"hello\""
+    block source="⟨stmt⟩"
+      stmt: string_literal "\"hello\"" source="\"hello\""

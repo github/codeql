@@ -409,7 +409,7 @@ module AzurePipelines {
     string getName() { result = yamlToString(this.lookup("name")) }
 
     /**
-     * Gets the referenced revision.
+     * Gets the referenced revision, if any.
      */
     string getRef() { result = yamlToString(this.lookup("ref")) }
   }
@@ -444,7 +444,7 @@ module AzurePipelines {
     string getSource() { result = yamlToString(this.lookup("source")) }
 
     /**
-     * Gets the branch selector
+     * Gets the branch selector, if any.
      */
     string getBranch() { result = yamlToString(this.lookup("branch")) }
   }

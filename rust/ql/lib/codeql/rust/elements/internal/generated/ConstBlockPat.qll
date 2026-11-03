@@ -28,6 +28,8 @@ module Generated {
   class ConstBlockPat extends Synth::TConstBlockPat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "ConstBlockPat" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the block expression of this const block pattern, if it exists.
      */

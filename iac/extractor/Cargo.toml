@@ -4,7 +4,7 @@ version = "0.5.1"
 authors = ["GitHub"]
 
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.91"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -24,5 +24,4 @@ tree-sitter-hcl = { git = "https://github.com/GeekMasher/tree-sitter-hcl", rev =
 # tree-sitter-dockerfile = { path = "./tree-sitter-dockerfile" }
 tree-sitter-dockerfile = { git = "https://github.com/GeekMasher/tree-sitter-dockerfile", rev = "54af8c9009d1c55f47e09fc896ba9857edf09f23" }
 
-# CodeQL - v2.20.4
-codeql-extractor = { git = "https://github.com/github/codeql", rev = "c524a98eb91c769cb2994b8373181c2ebd27c20f" }
+codeql-extractor = { path = "../../shared/tree-sitter-extractor" }

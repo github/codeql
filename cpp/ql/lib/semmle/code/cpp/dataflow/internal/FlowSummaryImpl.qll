@@ -111,6 +111,9 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
         pos = -1 and result = TIndirectionPosition(pos, indirection + 1)
       )
     )
+    or
+    argString = "forward" and
+    result = TForwardPosition()
   }
 
   bindingset[token]
@@ -256,7 +259,7 @@ private module Input2 implements Impl::Private::InputSig2 {
   pragma[nomagic]
   private predicate hasKindAndEnclosingFunction(Function f, ReturnKind rk, ReturnNode r) {
     r.getEnclosingCallable().asSourceCallable() = f and
-    r.getKind() = rk
+    pragma[only_bind_into](r).getKind() = rk
   }
 
   pragma[nomagic]

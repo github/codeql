@@ -1,0 +1,18 @@
+# Model of the BDE bdlbb::Blob segmented byte buffer (BloombergLP::bdlbb).
+# Lets taint reach a blob's payload bytes, e.g. a message body filled by bmqa::Message::getData.
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      # Accessor chain
+      - ["BloombergLP::bdlbb", "Blob", true, "buffer", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::bdlbb", "BlobBuffer", true, "data", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["BloombergLP::bdlbb", "BlobBuffer", true, "buffer", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      # BlobUtil read-out
+      - ["BloombergLP::bdlbb", "BlobUtil", true, "copy", "(char *,const Blob &,int,int)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bdlbb", "BlobUtil", true, "getContiguousRangeOrCopy", "", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bdlbb", "BlobUtil", true, "getContiguousRangeOrCopy", "", "", "Argument[*1]", "ReturnValue[*]", "taint", "manual"]
+      # BlobUtil write-in
+      - ["BloombergLP::bdlbb", "BlobUtil", true, "copy", "(Blob *,int,const char *,int)", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["BloombergLP::bdlbb", "BlobUtil", true, "copy", "(Blob *,int,const Blob &,int,int)", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]

@@ -149,6 +149,14 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TCfgPredExpr(Raw::CfgPredExpr id) { constructCfgPredExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TCfgPredPat(Raw::CfgPredPat id) { constructCfgPredPat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TClosureExpr(Raw::ClosureExpr id) { constructClosureExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -178,6 +186,14 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TCrate(Raw::Crate id) { constructCrate(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TDerefPat(Raw::DerefPat id) { constructDerefPat(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TDocComment(Raw::DocComment id) { constructDocComment(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -239,10 +255,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TFormatArgsArgName(Raw::FormatArgsArgName id) { constructFormatArgsArgName(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TFormatArgsExpr(Raw::FormatArgsExpr id) { constructFormatArgsExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -285,7 +297,15 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TImplRestriction(Raw::ImplRestriction id) { constructImplRestriction(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TImplTraitTypeRepr(Raw::ImplTraitTypeRepr id) { constructImplTraitTypeRepr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TIncludeBytesExpr(Raw::IncludeBytesExpr id) { constructIncludeBytesExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -401,6 +421,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TMutRestriction(Raw::MutRestriction id) { constructMutRestriction(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TName(Raw::Name id) { constructName(id) } or
     /**
      * INTERNAL: Do not use.
@@ -414,6 +438,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TNeverTypeRepr(Raw::NeverTypeRepr id) { constructNeverTypeRepr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TNotNull(Raw::NotNull id) { constructNotNull(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -470,6 +498,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TPathTypeRepr(Raw::PathTypeRepr id) { constructPathTypeRepr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TPatternTypeRepr(Raw::PatternTypeRepr id) { constructPatternTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -689,6 +721,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TVisibilityInner(Raw::VisibilityInner id) { constructVisibilityInner(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TWhereClause(Raw::WhereClause id) { constructWhereClause(id) } or
     /**
      * INTERNAL: Do not use.
@@ -719,6 +755,11 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TAnyAttr = TAttr or TDocComment;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TArrayExpr = TArrayListExpr or TArrayRepeatExpr;
 
   /**
@@ -740,18 +781,18 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TAstNode =
-    TAbi or TAddressable or TArgList or TAsmDirSpec or TAsmOperand or TAsmOperandExpr or
-        TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItemList or TAttr or TCallable or
-        TCfgPredicate or TExpr or TExternItemList or TFieldList or TForBinder or TFormatArgsArg or
-        TFormatArgsArgName or TGenericArg or TGenericArgList or TGenericParam or
-        TGenericParamList or TItemList or TLabel or TLetElse or TMacroItems or TMatchArm or
-        TMatchArmList or TMatchGuard or TMeta or TName or TParamBase or TParamList or
-        TParenthesizedArgList or TPat or TPath or TPathAstNode or TPathSegment or TRename or
-        TRetTypeRepr or TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or
-        TStructExprField or TStructExprFieldList or TStructField or TStructPatField or
-        TStructPatFieldList or TToken or TTokenTree or TTryBlockModifier or TTupleField or
-        TTypeBound or TTypeBoundList or TTypeRepr or TUseBoundGenericArg or TUseBoundGenericArgs or
-        TUseTree or TUseTreeList or TVariantList or TVisibility or TWhereClause or TWherePred;
+    TAbi or TAddressable or TAnyAttr or TArgList or TAsmDirSpec or TAsmOperand or TAsmOperandExpr or
+        TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItemList or TCallable or TCfgPredicate or
+        TExpr or TExternItemList or TFieldList or TForBinder or TFormatArgsArg or TGenericArg or
+        TGenericArgList or TGenericParam or TGenericParamList or TImplRestriction or TItemList or
+        TLabel or TLetElse or TMacroItems or TMatchArm or TMatchArmList or TMatchGuard or TMeta or
+        TMutRestriction or TName or TParamBase or TParamList or TParenthesizedArgList or TPat or
+        TPath or TPathAstNode or TPathSegment or TRename or TRetTypeRepr or TReturnTypeSyntax or
+        TSourceFile or TStmt or TStmtList or TStructExprField or TStructExprFieldList or
+        TStructField or TStructPatField or TStructPatFieldList or TToken or TTokenTree or
+        TTryBlockModifier or TTupleField or TTypeBound or TTypeBoundList or TTypeRepr or
+        TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or TUseTreeList or TVariantList or
+        TVisibility or TVisibilityInner or TWhereClause or TWherePred;
 
   /**
    * INTERNAL: Do not use.
@@ -768,11 +809,12 @@ module Synth {
    */
   class TExpr =
     TArrayExpr or TArrayExprInternal or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or
-        TBreakExpr or TCallExpr or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
-        TFormatArgsExpr or TIfExpr or TIndexExpr or TLabelableExpr or TLetExpr or TLiteralExpr or
-        TMacroExpr or TMatchExpr or TMethodCallExpr or TOffsetOfExpr or TParenExpr or
-        TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or TReturnExpr or TStructExpr or
-        TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or TYieldExpr;
+        TBreakExpr or TCallExpr or TCastExpr or TCfgPredExpr or TClosureExpr or TContinueExpr or
+        TFieldExpr or TFormatArgsExpr or TIfExpr or TIncludeBytesExpr or TIndexExpr or
+        TLabelableExpr or TLetExpr or TLiteralExpr or TMacroExpr or TMatchExpr or TMethodCallExpr or
+        TOffsetOfExpr or TParenExpr or TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or
+        TReturnExpr or TStructExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or
+        TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -831,9 +873,9 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TPat =
-    TBoxPat or TConstBlockPat or TIdentPat or TLiteralPat or TMacroPat or TOrPat or TParenPat or
-        TPathPat or TRangePat or TRefPat or TRestPat or TSlicePat or TStructPat or TTuplePat or
-        TTupleStructPat or TWildcardPat;
+    TBoxPat or TCfgPredPat or TConstBlockPat or TDerefPat or TIdentPat or TLiteralPat or
+        TMacroPat or TNotNull or TOrPat or TParenPat or TPathPat or TRangePat or TRefPat or
+        TRestPat or TSlicePat or TStructPat or TTuplePat or TTupleStructPat or TWildcardPat;
 
   /**
    * INTERNAL: Do not use.
@@ -866,7 +908,7 @@ module Synth {
   class TTypeRepr =
     TArrayTypeRepr or TDynTraitTypeRepr or TFnPtrTypeRepr or TForTypeRepr or TImplTraitTypeRepr or
         TInferTypeRepr or TMacroTypeRepr or TNeverTypeRepr or TParenTypeRepr or TPathTypeRepr or
-        TPtrTypeRepr or TRefTypeRepr or TSliceTypeRepr or TTupleTypeRepr;
+        TPatternTypeRepr or TPtrTypeRepr or TRefTypeRepr or TSliceTypeRepr or TTupleTypeRepr;
 
   /**
    * INTERNAL: Do not use.
@@ -1129,6 +1171,20 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    *
+   * Converts a raw element to a synthesized `TCfgPredExpr`, if possible.
+   */
+  TCfgPredExpr convertCfgPredExprFromRaw(Raw::Element e) { result = TCfgPredExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TCfgPredPat`, if possible.
+   */
+  TCfgPredPat convertCfgPredPatFromRaw(Raw::Element e) { result = TCfgPredPat(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
    * Converts a raw element to a synthesized `TClosureExpr`, if possible.
    */
   TClosureExpr convertClosureExprFromRaw(Raw::Element e) { result = TClosureExpr(e) }
@@ -1181,6 +1237,20 @@ module Synth {
    * Converts a raw element to a synthesized `TCrate`, if possible.
    */
   TCrate convertCrateFromRaw(Raw::Element e) { result = TCrate(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TDerefPat`, if possible.
+   */
+  TDerefPat convertDerefPatFromRaw(Raw::Element e) { result = TDerefPat(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TDocComment`, if possible.
+   */
+  TDocComment convertDocCommentFromRaw(Raw::Element e) { result = TDocComment(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1283,15 +1353,6 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    *
-   * Converts a raw element to a synthesized `TFormatArgsArgName`, if possible.
-   */
-  TFormatArgsArgName convertFormatArgsArgNameFromRaw(Raw::Element e) {
-    result = TFormatArgsArgName(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   *
    * Converts a raw element to a synthesized `TFormatArgsExpr`, if possible.
    */
   TFormatArgsExpr convertFormatArgsExprFromRaw(Raw::Element e) { result = TFormatArgsExpr(e) }
@@ -1357,11 +1418,25 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    *
+   * Converts a raw element to a synthesized `TImplRestriction`, if possible.
+   */
+  TImplRestriction convertImplRestrictionFromRaw(Raw::Element e) { result = TImplRestriction(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
    * Converts a raw element to a synthesized `TImplTraitTypeRepr`, if possible.
    */
   TImplTraitTypeRepr convertImplTraitTypeReprFromRaw(Raw::Element e) {
     result = TImplTraitTypeRepr(e)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TIncludeBytesExpr`, if possible.
+   */
+  TIncludeBytesExpr convertIncludeBytesExprFromRaw(Raw::Element e) { result = TIncludeBytesExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1562,6 +1637,13 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    *
+   * Converts a raw element to a synthesized `TMutRestriction`, if possible.
+   */
+  TMutRestriction convertMutRestrictionFromRaw(Raw::Element e) { result = TMutRestriction(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
    * Converts a raw element to a synthesized `TName`, if possible.
    */
   TName convertNameFromRaw(Raw::Element e) { result = TName(e) }
@@ -1586,6 +1668,13 @@ module Synth {
    * Converts a raw element to a synthesized `TNeverTypeRepr`, if possible.
    */
   TNeverTypeRepr convertNeverTypeReprFromRaw(Raw::Element e) { result = TNeverTypeRepr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TNotNull`, if possible.
+   */
+  TNotNull convertNotNullFromRaw(Raw::Element e) { result = TNotNull(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1686,6 +1775,13 @@ module Synth {
    * Converts a raw element to a synthesized `TPathTypeRepr`, if possible.
    */
   TPathTypeRepr convertPathTypeReprFromRaw(Raw::Element e) { result = TPathTypeRepr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TPatternTypeRepr`, if possible.
+   */
+  TPatternTypeRepr convertPatternTypeReprFromRaw(Raw::Element e) { result = TPatternTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2074,6 +2170,13 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    *
+   * Converts a raw element to a synthesized `TVisibilityInner`, if possible.
+   */
+  TVisibilityInner convertVisibilityInnerFromRaw(Raw::Element e) { result = TVisibilityInner(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
    * Converts a raw element to a synthesized `TWhereClause`, if possible.
    */
   TWhereClause convertWhereClauseFromRaw(Raw::Element e) { result = TWhereClause(e) }
@@ -2121,6 +2224,16 @@ module Synth {
     result = convertItemFromRaw(e)
     or
     result = convertVariantFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TAnyAttr`, if possible.
+   */
+  TAnyAttr convertAnyAttrFromRaw(Raw::Element e) {
+    result = convertAttrFromRaw(e)
+    or
+    result = convertDocCommentFromRaw(e)
   }
 
   /**
@@ -2182,6 +2295,8 @@ module Synth {
     or
     result = convertAddressableFromRaw(e)
     or
+    result = convertAnyAttrFromRaw(e)
+    or
     result = convertArgListFromRaw(e)
     or
     result = convertAsmDirSpecFromRaw(e)
@@ -2198,8 +2313,6 @@ module Synth {
     or
     result = convertAssocItemListFromRaw(e)
     or
-    result = convertAttrFromRaw(e)
-    or
     result = convertCallableFromRaw(e)
     or
     result = convertCfgPredicateFromRaw(e)
@@ -2214,8 +2327,6 @@ module Synth {
     or
     result = convertFormatArgsArgFromRaw(e)
     or
-    result = convertFormatArgsArgNameFromRaw(e)
-    or
     result = convertGenericArgFromRaw(e)
     or
     result = convertGenericArgListFromRaw(e)
@@ -2223,6 +2334,8 @@ module Synth {
     result = convertGenericParamFromRaw(e)
     or
     result = convertGenericParamListFromRaw(e)
+    or
+    result = convertImplRestrictionFromRaw(e)
     or
     result = convertItemListFromRaw(e)
     or
@@ -2239,6 +2352,8 @@ module Synth {
     result = convertMatchGuardFromRaw(e)
     or
     result = convertMetaFromRaw(e)
+    or
+    result = convertMutRestrictionFromRaw(e)
     or
     result = convertNameFromRaw(e)
     or
@@ -2304,6 +2419,8 @@ module Synth {
     or
     result = convertVisibilityFromRaw(e)
     or
+    result = convertVisibilityInnerFromRaw(e)
+    or
     result = convertWhereClauseFromRaw(e)
     or
     result = convertWherePredFromRaw(e)
@@ -2366,6 +2483,8 @@ module Synth {
     or
     result = convertCastExprFromRaw(e)
     or
+    result = convertCfgPredExprFromRaw(e)
+    or
     result = convertClosureExprFromRaw(e)
     or
     result = convertContinueExprFromRaw(e)
@@ -2375,6 +2494,8 @@ module Synth {
     result = convertFormatArgsExprFromRaw(e)
     or
     result = convertIfExprFromRaw(e)
+    or
+    result = convertIncludeBytesExprFromRaw(e)
     or
     result = convertIndexExprFromRaw(e)
     or
@@ -2568,13 +2689,19 @@ module Synth {
   TPat convertPatFromRaw(Raw::Element e) {
     result = convertBoxPatFromRaw(e)
     or
+    result = convertCfgPredPatFromRaw(e)
+    or
     result = convertConstBlockPatFromRaw(e)
+    or
+    result = convertDerefPatFromRaw(e)
     or
     result = convertIdentPatFromRaw(e)
     or
     result = convertLiteralPatFromRaw(e)
     or
     result = convertMacroPatFromRaw(e)
+    or
+    result = convertNotNullFromRaw(e)
     or
     result = convertOrPatFromRaw(e)
     or
@@ -2679,6 +2806,8 @@ module Synth {
     result = convertParenTypeReprFromRaw(e)
     or
     result = convertPathTypeReprFromRaw(e)
+    or
+    result = convertPatternTypeReprFromRaw(e)
     or
     result = convertPtrTypeReprFromRaw(e)
     or
@@ -2911,6 +3040,18 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TCfgPredExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertCfgPredExprToRaw(TCfgPredExpr e) { e = TCfgPredExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCfgPredPat` to a raw DB element, if possible.
+   */
+  Raw::Element convertCfgPredPatToRaw(TCfgPredPat e) { e = TCfgPredPat(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TClosureExpr` to a raw DB element, if possible.
    */
   Raw::Element convertClosureExprToRaw(TClosureExpr e) { e = TClosureExpr(result) }
@@ -2956,6 +3097,18 @@ module Synth {
    * Converts a synthesized `TCrate` to a raw DB element, if possible.
    */
   Raw::Element convertCrateToRaw(TCrate e) { e = TCrate(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TDerefPat` to a raw DB element, if possible.
+   */
+  Raw::Element convertDerefPatToRaw(TDerefPat e) { e = TDerefPat(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TDocComment` to a raw DB element, if possible.
+   */
+  Raw::Element convertDocCommentToRaw(TDocComment e) { e = TDocComment(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3043,14 +3196,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TFormatArgsArgName` to a raw DB element, if possible.
-   */
-  Raw::Element convertFormatArgsArgNameToRaw(TFormatArgsArgName e) {
-    e = TFormatArgsArgName(result)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TFormatArgsExpr` to a raw DB element, if possible.
    */
   Raw::Element convertFormatArgsExprToRaw(TFormatArgsExpr e) { e = TFormatArgsExpr(result) }
@@ -3105,11 +3250,23 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TImplRestriction` to a raw DB element, if possible.
+   */
+  Raw::Element convertImplRestrictionToRaw(TImplRestriction e) { e = TImplRestriction(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TImplTraitTypeRepr` to a raw DB element, if possible.
    */
   Raw::Element convertImplTraitTypeReprToRaw(TImplTraitTypeRepr e) {
     e = TImplTraitTypeRepr(result)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TIncludeBytesExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertIncludeBytesExprToRaw(TIncludeBytesExpr e) { e = TIncludeBytesExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3281,6 +3438,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TMutRestriction` to a raw DB element, if possible.
+   */
+  Raw::Element convertMutRestrictionToRaw(TMutRestriction e) { e = TMutRestriction(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TName` to a raw DB element, if possible.
    */
   Raw::Element convertNameToRaw(TName e) { e = TName(result) }
@@ -3302,6 +3465,12 @@ module Synth {
    * Converts a synthesized `TNeverTypeRepr` to a raw DB element, if possible.
    */
   Raw::Element convertNeverTypeReprToRaw(TNeverTypeRepr e) { e = TNeverTypeRepr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TNotNull` to a raw DB element, if possible.
+   */
+  Raw::Element convertNotNullToRaw(TNotNull e) { e = TNotNull(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3388,6 +3557,12 @@ module Synth {
    * Converts a synthesized `TPathTypeRepr` to a raw DB element, if possible.
    */
   Raw::Element convertPathTypeReprToRaw(TPathTypeRepr e) { e = TPathTypeRepr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TPatternTypeRepr` to a raw DB element, if possible.
+   */
+  Raw::Element convertPatternTypeReprToRaw(TPatternTypeRepr e) { e = TPatternTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3721,6 +3896,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TVisibilityInner` to a raw DB element, if possible.
+   */
+  Raw::Element convertVisibilityInnerToRaw(TVisibilityInner e) { e = TVisibilityInner(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TWhereClause` to a raw DB element, if possible.
    */
   Raw::Element convertWhereClauseToRaw(TWhereClause e) { e = TWhereClause(result) }
@@ -3763,6 +3944,16 @@ module Synth {
     result = convertItemToRaw(e)
     or
     result = convertVariantToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TAnyAttr` to a raw DB element, if possible.
+   */
+  Raw::Element convertAnyAttrToRaw(TAnyAttr e) {
+    result = convertAttrToRaw(e)
+    or
+    result = convertDocCommentToRaw(e)
   }
 
   /**
@@ -3824,6 +4015,8 @@ module Synth {
     or
     result = convertAddressableToRaw(e)
     or
+    result = convertAnyAttrToRaw(e)
+    or
     result = convertArgListToRaw(e)
     or
     result = convertAsmDirSpecToRaw(e)
@@ -3840,8 +4033,6 @@ module Synth {
     or
     result = convertAssocItemListToRaw(e)
     or
-    result = convertAttrToRaw(e)
-    or
     result = convertCallableToRaw(e)
     or
     result = convertCfgPredicateToRaw(e)
@@ -3856,8 +4047,6 @@ module Synth {
     or
     result = convertFormatArgsArgToRaw(e)
     or
-    result = convertFormatArgsArgNameToRaw(e)
-    or
     result = convertGenericArgToRaw(e)
     or
     result = convertGenericArgListToRaw(e)
@@ -3865,6 +4054,8 @@ module Synth {
     result = convertGenericParamToRaw(e)
     or
     result = convertGenericParamListToRaw(e)
+    or
+    result = convertImplRestrictionToRaw(e)
     or
     result = convertItemListToRaw(e)
     or
@@ -3881,6 +4072,8 @@ module Synth {
     result = convertMatchGuardToRaw(e)
     or
     result = convertMetaToRaw(e)
+    or
+    result = convertMutRestrictionToRaw(e)
     or
     result = convertNameToRaw(e)
     or
@@ -3946,6 +4139,8 @@ module Synth {
     or
     result = convertVisibilityToRaw(e)
     or
+    result = convertVisibilityInnerToRaw(e)
+    or
     result = convertWhereClauseToRaw(e)
     or
     result = convertWherePredToRaw(e)
@@ -4008,6 +4203,8 @@ module Synth {
     or
     result = convertCastExprToRaw(e)
     or
+    result = convertCfgPredExprToRaw(e)
+    or
     result = convertClosureExprToRaw(e)
     or
     result = convertContinueExprToRaw(e)
@@ -4017,6 +4214,8 @@ module Synth {
     result = convertFormatArgsExprToRaw(e)
     or
     result = convertIfExprToRaw(e)
+    or
+    result = convertIncludeBytesExprToRaw(e)
     or
     result = convertIndexExprToRaw(e)
     or
@@ -4210,13 +4409,19 @@ module Synth {
   Raw::Element convertPatToRaw(TPat e) {
     result = convertBoxPatToRaw(e)
     or
+    result = convertCfgPredPatToRaw(e)
+    or
     result = convertConstBlockPatToRaw(e)
+    or
+    result = convertDerefPatToRaw(e)
     or
     result = convertIdentPatToRaw(e)
     or
     result = convertLiteralPatToRaw(e)
     or
     result = convertMacroPatToRaw(e)
+    or
+    result = convertNotNullToRaw(e)
     or
     result = convertOrPatToRaw(e)
     or
@@ -4321,6 +4526,8 @@ module Synth {
     result = convertParenTypeReprToRaw(e)
     or
     result = convertPathTypeReprToRaw(e)
+    or
+    result = convertPatternTypeReprToRaw(e)
     or
     result = convertPtrTypeReprToRaw(e)
     or

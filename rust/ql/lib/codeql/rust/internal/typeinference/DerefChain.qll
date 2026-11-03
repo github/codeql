@@ -60,7 +60,10 @@ private module UnboundListInput implements UnboundListImpl::InputSig<Location> {
 
   class Element = DerefImplItemNode;
 
-  int getId(Element e) { idOfRaw(Synth::convertAstNodeToRaw(e), result) }
+  int getId(Element e) {
+    CachedStage::ref() and
+    idOfRaw(Synth::convertAstNodeToRaw(e), result)
+  }
 
   string getElementString(Element e) { result = e.resolveSelfTy().getName() }
 

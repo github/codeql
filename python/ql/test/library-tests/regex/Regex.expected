@@ -108,6 +108,8 @@
 | (?aimsx:a+) | qualified | 8 | 10 |
 | (?aimsx:a+) | sequence | 0 | 11 |
 | (?aimsx:a+) | sequence | 7 | 10 |
+| (?i) | empty group | 0 | 4 |
+| (?i) | sequence | 0 | 4 |
 | (?m)^(?!$) | $ | 8 | 9 |
 | (?m)^(?!$) | ^ | 4 | 5 |
 | (?m)^(?!$) | empty group | 0 | 4 |

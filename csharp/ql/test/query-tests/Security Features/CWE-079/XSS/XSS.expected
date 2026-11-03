@@ -1,5 +1,7 @@
 #select
 | Index.cshtml:14:16:14:22 | call to operator implicit conversion | Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | Index.cshtml:14:16:14:22 | call to operator implicit conversion | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | User-provided value |
+| RazorTagHelperAttribute.cshtml.g.cs:52:26:52:30 | call to operator implicit conversion | RazorTagHelperAttribute.cshtml:4:17:4:29 | access to property Query : IQueryCollection | RazorTagHelperAttribute.cshtml.g.cs:52:26:52:30 | call to operator implicit conversion | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.Razor.RazorPageBase.WriteLiteral() method. | RazorTagHelperAttribute.cshtml:4:17:4:29 | access to property Query : IQueryCollection | User-provided value |
+| RazorTagHelperAttribute.cshtml.g.cs:70:26:70:30 | call to operator implicit conversion | RazorTagHelperAttribute.cshtml:4:17:4:29 | access to property Query : IQueryCollection | RazorTagHelperAttribute.cshtml.g.cs:70:26:70:30 | call to operator implicit conversion | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.Razor.RazorPageBase.WriteLiteral() method. | RazorTagHelperAttribute.cshtml:4:17:4:29 | access to property Query : IQueryCollection | User-provided value |
 | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteral() method. | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | User-provided value |
 | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteralTo() method. | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | User-provided value |
 | XSSAspNet.cs:44:28:44:33 | access to local variable sayHi2 | XSSAspNet.cs:43:26:43:44 | access to property QueryString : NameValueCollection | XSSAspNet.cs:44:28:44:33 | access to local variable sayHi2 | $@ flows to here and is written to HTML or JavaScript. | XSSAspNet.cs:43:26:43:44 | access to property QueryString : NameValueCollection | User-provided value |
@@ -13,6 +15,9 @@
 edges
 | Index.cshtml:5:9:5:15 | access to local variable message : StringValues | Index.cshtml:14:16:14:22 | call to operator implicit conversion | provenance |  |
 | Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | Index.cshtml:5:9:5:15 | access to local variable message : StringValues | provenance |  |
+| RazorTagHelperAttribute.cshtml:4:9:4:13 | access to local variable model : StringValues | RazorTagHelperAttribute.cshtml.g.cs:52:26:52:30 | call to operator implicit conversion | provenance |  |
+| RazorTagHelperAttribute.cshtml:4:9:4:13 | access to local variable model : StringValues | RazorTagHelperAttribute.cshtml.g.cs:70:26:70:30 | call to operator implicit conversion | provenance |  |
+| RazorTagHelperAttribute.cshtml:4:17:4:29 | access to property Query : IQueryCollection | RazorTagHelperAttribute.cshtml:4:9:4:13 | access to local variable model : StringValues | provenance |  |
 | XSSAspNet.cs:19:17:19:21 | access to local variable sayHi : String | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | provenance |  |
 | XSSAspNet.cs:19:17:19:21 | access to local variable sayHi : String | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | provenance |  |
 | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:19:17:19:21 | access to local variable sayHi : String | provenance |  |
@@ -49,6 +54,10 @@ nodes
 | Index.cshtml:5:9:5:15 | access to local variable message : StringValues | semmle.label | access to local variable message : StringValues |
 | Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | semmle.label | access to property Query : IQueryCollection |
 | Index.cshtml:14:16:14:22 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
+| RazorTagHelperAttribute.cshtml.g.cs:52:26:52:30 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
+| RazorTagHelperAttribute.cshtml.g.cs:70:26:70:30 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
+| RazorTagHelperAttribute.cshtml:4:9:4:13 | access to local variable model : StringValues | semmle.label | access to local variable model : StringValues |
+| RazorTagHelperAttribute.cshtml:4:17:4:29 | access to property Query : IQueryCollection | semmle.label | access to property Query : IQueryCollection |
 | XSSAspNet.cs:19:17:19:21 | access to local variable sayHi : String | semmle.label | access to local variable sayHi : String |
 | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | XSSAspNet.cs:19:25:19:52 | access to indexer : String | semmle.label | access to indexer : String |

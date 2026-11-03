@@ -33,6 +33,8 @@ module Generated {
   class TypeBound extends Synth::TTypeBound, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "TypeBound" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the for binder of this type bound, if it exists.
      */

@@ -96,8 +96,7 @@ class MetaAnnotationSupport(
         val metaAnnotations = annotationClass.annotations
         val jvmRepeatable =
             metaAnnotations.find {
-                it.symbol.owner.parentAsClass.fqNameWhenAvailable ==
-                    JvmAnnotationNames.REPEATABLE_ANNOTATION
+                it.annotationClass.fqNameWhenAvailable == JvmAnnotationNames.REPEATABLE_ANNOTATION
             }
         return if (jvmRepeatable != null) {
             ((jvmRepeatable.codeQlGetValueArgument(0) as? IrClassReference)?.symbol as? IrClassSymbol)

@@ -15,7 +15,7 @@ query predicate getAttributeMacroExpansion(TypeAlias x, MacroItems getAttributeM
   getAttributeMacroExpansion = x.getAttributeMacroExpansion()
 }
 
-query predicate getAttr(TypeAlias x, int index, Attr getAttr) {
+query predicate getAttr(TypeAlias x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

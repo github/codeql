@@ -29,6 +29,8 @@ module Generated {
   class ParamList extends Synth::TParamList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "ParamList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th parameter of this parameter list (0-based).
      */

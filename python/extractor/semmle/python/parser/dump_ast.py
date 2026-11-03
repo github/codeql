@@ -119,7 +119,8 @@ class StdoutLogger(logging.Logger):
         self.error_count = 0
 
 def old_parser(inputfile, logger):
-    mod = PythonSourceModule(None, inputfile, logger)
+    from semmle.worker import DiagnosticsWriter
+    mod = PythonSourceModule(None, inputfile, logger, DiagnosticsWriter(0))
     logger.close()
     return mod.old_py_ast
 

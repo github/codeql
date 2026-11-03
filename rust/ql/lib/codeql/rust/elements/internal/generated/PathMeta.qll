@@ -21,6 +21,8 @@ module Generated {
   class PathMeta extends Synth::TPathMeta, MetaImpl::Meta {
     override string getAPrimaryQlClass() { result = "PathMeta" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the path of this path meta, if it exists.
      */

@@ -14,7 +14,7 @@ query predicate getArgs(MacroDef x, TokenTree getArgs) {
   toBeTested(x) and not x.isUnknown() and getArgs = x.getArgs()
 }
 
-query predicate getAttr(MacroDef x, int index, Attr getAttr) {
+query predicate getAttr(MacroDef x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

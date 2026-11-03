@@ -134,6 +134,41 @@ class Tuples
         Sink(y4);               // $ hasValueFlow=9
     }
 
+    static void M7()
+    {
+        var o1 = Source<string>(10);
+        var o2 = Source<string>(11);
+        var x = (o1, (2, o2), 3);
+        switch (x)
+        {
+            case (var a1, (var b1, var c1), _):
+                Sink(a1);        // $ hasValueFlow=10
+                Sink(c1);        // $ hasValueFlow=11
+                Sink(b1);
+                break;
+        }
+
+        var o3 = Source<string>(12);
+        var o4 = Source<string>(13);
+        var y = (o3, (2, o4), 3);
+        if (y is (var a2, var (b2, c2), _))
+        {
+            Sink(a2);        // $ hasValueFlow=12
+            Sink(c2);        // $ hasValueFlow=13
+            Sink(b2);
+        }
+
+        var o5 = Source<string>(14);
+        var o6 = Source<string>(15);
+        var z = (o5, (2, o6), 3);
+        if (z is (var a3, (var b3, var _) t, _))
+        {
+            Sink(a3);        // $ hasValueFlow=14
+            Sink(t.Item2);   // $ hasValueFlow=15
+            Sink(b3);
+        }
+    }
+
     public static void Sink(object o) { }
 
     static T Source<T>(object source) => throw null;

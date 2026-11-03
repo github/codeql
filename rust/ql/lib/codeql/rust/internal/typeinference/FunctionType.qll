@@ -329,8 +329,7 @@ module ArgIsInstantiationOf<ArgSig Arg, IsInstantiationOfInputSig<Arg, AssocFunc
   private class ArgSubst extends ArgFinal {
     Type getTypeAt(TypePath path) {
       result = substituteLookupTraits0(this.getEnclosingItemNode(), super.getTypeAt(path)) and
-      not result = TNeverType() and
-      not result = TUnknownType()
+      not result instanceof PseudoType
     }
   }
 

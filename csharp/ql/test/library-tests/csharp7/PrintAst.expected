@@ -864,19 +864,19 @@ CSharp7.cs:
 #  283|                   -1: [ParameterAccess] access to parameter item
 #  283|                 1: [PropertyCall] access to property Value
 #  283|                   -1: [ParameterAccess] access to parameter item
-#  285|       2: [ForeachStmt] foreach (... ... in ...) ...
+#  285|       2: [ForEachStmt] foreach (... ... in ...) ...
 #  285|         0: [TupleExpr] (..., ...)
 #  285|           0: [LocalVariableDeclExpr] Int32 a
 #  285|           1: [LocalVariableDeclExpr] String b
 #  285|         1: [LocalVariableAccess] access to local variable list
 #  285|         2: [BlockStmt] {...}
-#  287|       3: [ForeachStmt] foreach (... ... in ...) ...
+#  287|       3: [ForEachStmt] foreach (... ... in ...) ...
 #  287|         0: [TupleExpr] (..., ...)
 #  287|           0: [LocalVariableDeclExpr] Int32 a
 #  287|           1: [LocalVariableDeclExpr] String b
 #  287|         1: [LocalVariableAccess] access to local variable list
 #  287|         2: [BlockStmt] {...}
-#  289|       4: [ForeachStmt] foreach (... ... in ...) ...
+#  289|       4: [ForEachStmt] foreach (... ... in ...) ...
 #  289|         0: [TupleExpr] (..., ...)
 #  289|           0: [LocalVariableDeclExpr] Int32 a
 #  289|           1: [LocalVariableDeclExpr] String b

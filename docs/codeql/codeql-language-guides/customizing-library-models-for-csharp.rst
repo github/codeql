@@ -25,7 +25,29 @@ Syntax used to define an element in an extension file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Each model of an element is defined using a data extension where each tuple constitutes a model.
-A data extension file to extend the standard C# queries included with CodeQL is a YAML file with the form:
+A data extension file to extend the standard C# queries included with CodeQL can be written using either JSON or YAML. JSON is the preferred format, for performance reasons, and takes the following form:
+
+.. code-block:: json
+
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/csharp-all",
+           "extensible": "<name of extensible predicate>"
+         },
+         "data": [
+           ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."],
+           ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
+           // ...
+         ]
+       }
+     ]
+   }
+
+Files in the JSON format must use the ``.json`` file extension. Single-line (``//``) and multi-line (``/* ... */``) comments are supported as a non-standard JSON extension.
+
+A YAML file has the following form:
 
 .. code-block:: yaml
 
@@ -34,11 +56,11 @@ A data extension file to extend the standard C# queries included with CodeQL is 
          pack: codeql/csharp-all
          extensible: <name of extensible predicate>
        data:
-         - <tuple1>
-         - <tuple2>
+         - ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."]
+         - ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
          - ...
 
-Each YAML file may contain one or more top-level extensions.
+Each data extension file may contain one or more top-level extensions.
 
 - ``addsTo`` defines the CodeQL pack name and extensible predicate that the extension is injected into.
 - ``data`` defines one or more rows of tuples that are injected as values into the extensible predicate. The number of columns and their types must match the definition of the extensible predicate.
@@ -84,20 +106,27 @@ This is the constructor of the ``SqlCommand`` class, which is located in the ``S
 
 We need to add a tuple to the ``sinkModel``\(namespace, type, subtypes, name, signature, ext, input, kind, provenance) extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/csharp-all
-         extensible: sinkModel
-       data:
-         - ["System.Data.SqlClient", "SqlCommand", False, "SqlCommand", "(System.String,System.Data.SqlClient.SqlConnection)", "", "Argument[0]", "sql-injection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/csharp-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["System.Data.SqlClient", "SqlCommand", false, "SqlCommand", "(System.String,System.Data.SqlClient.SqlConnection)", "", "Argument[0]", "sql-injection", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the callable (in this case a method) to be modeled as a sink.
 
 - The first value ``System.Data.SqlClient`` is the namespace name.
 - The second value ``SqlCommand`` is the name of the class (type) that contains the method.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to all overrides of the method.
 - The fourth value ``SqlCommand`` is the method name. Constructors are named after the class.
 - The fifth value ``(System.String,System.Data.SqlClient.SqlConnection)`` is the method input type signature. The type names must be fully qualified.
 
@@ -122,20 +151,27 @@ This is the ``GetStream`` method in the ``TcpClient`` class, which is located in
 
 We need to add a tuple to the ``sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/csharp-all
-         extensible: sourceModel
-       data:
-         - ["System.Net.Sockets", "TcpClient", False, "GetStream", "()", "", "ReturnValue", "remote", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/csharp-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["System.Net.Sockets", "TcpClient", false, "GetStream", "()", "", "ReturnValue", "remote", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the callable (in this case a method) to be modeled as a source.
 
 - The first value ``System.Net.Sockets`` is the namespace name.
 - The second value ``TcpClient`` is the name of the class (type) that contains the source.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to all overrides of the method.
 - The fourth value ``GetStream`` is the method name.
 - The fifth value ``()`` is the method input type signature.
 
@@ -160,15 +196,22 @@ This pattern covers many of the cases where we need to summarize flow through a 
 
 We need to add tuples to the ``summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/csharp-all
-         extensible: summaryModel
-       data:
-         - ["System", "String", False, "Concat", "(System.Object,System.Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-         - ["System", "String", False, "Concat", "(System.Object,System.Object)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/csharp-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["System", "String", false, "Concat", "(System.Object,System.Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+           ["System", "String", false, "Concat", "(System.Object,System.Object)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+         ]
+       }
+     ]
+   }
 
 Each tuple defines flow from one argument to the return value.
 The first row defines flow from the first argument (``s1`` in the example) to the return value (``t`` in the example) and the second row defines flow from the second argument (``s2`` in the example) to the return value (``t`` in the example).
@@ -178,7 +221,7 @@ These are the same for both of the rows above as we are adding two summaries for
 
 - The first value ``System`` is the namespace name.
 - The second value ``String`` is the class (type) name.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to all overrides of the method.
 - The fourth value ``Concat`` is the method name.
 - The fifth value ``(System.Object,System.Object)`` is the method input type signature.
 
@@ -192,14 +235,21 @@ The remaining values are used to define the ``access-path``, the ``kind``, and t
 
 It would also be possible to merge the two rows into one by using a comma-separated list in the seventh value. This would be useful if the method has many arguments and the flow is the same for all of them.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/csharp-all
-         extensible: summaryModel
-       data:
-         - ["System", "String", False, "Concat", "(System.Object,System.Object)", "", "Argument[0,1]", "ReturnValue", "taint", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/csharp-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["System", "String", false, "Concat", "(System.Object,System.Object)", "", "Argument[0,1]", "ReturnValue", "taint", "manual"]
+         ]
+       }
+     ]
+   }
 
 This row defines flow from both the first and the second argument to the return value. The seventh value ``Argument[0,1]`` is shorthand for specifying an access path to both ``Argument[0]`` and ``Argument[1]``.
 
@@ -216,14 +266,21 @@ This example shows how the C# query pack models flow through a method for a simp
 
 We need to add a tuple to the ``summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/csharp-all
-         extensible: summaryModel
-       data:
-         - ["System", "String", False, "Trim", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/csharp-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["System", "String", false, "Trim", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+         ]
+       }
+     ]
+   }
 
 Each tuple defines flow from one argument to the return value.
 The first row defines flow from the qualifier of the method call (``s1`` in the example) to the return value (``t`` in the example).
@@ -233,7 +290,7 @@ These are the same for both of the rows above as we are adding two summaries for
 
 - The first value ``System`` is the namespace name.
 - The second value ``String`` is the class (type) name.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to all overrides of the method.
 - The fourth value ``Trim`` is the method name.
 - The fifth value ``()`` is the method input type signature.
 
@@ -259,15 +316,22 @@ Here we model flow through higher order methods and collection types, as well as
 
 We need to add tuples to the ``summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/csharp-all
-         extensible: summaryModel
-       data:
-         - ["System.Linq", "Enumerable", False, "Select<TSource,TResult>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>)", "", "Argument[0].Element", "Argument[1].Parameter[0]", "value", "manual"]
-         - ["System.Linq", "Enumerable", False, "Select<TSource,TResult>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>)", "", "Argument[1].ReturnValue", "ReturnValue.Element", "value", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/csharp-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["System.Linq", "Enumerable", false, "Select<TSource,TResult>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>)", "", "Argument[0].Element", "Argument[1].Parameter[0]", "value", "manual"],
+           ["System.Linq", "Enumerable", false, "Select<TSource,TResult>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>)", "", "Argument[1].ReturnValue", "ReturnValue.Element", "value", "manual"]
+         ]
+       }
+     ]
+   }
 
 Each tuple defines part of the flow that comprises the total flow through the ``Select`` method.
 The first five values identify the callable (in this case a method) to be modeled as a summary.
@@ -275,7 +339,7 @@ These are the same for both of the rows above as we are adding two summaries for
 
 - The first value ``System.Linq`` is the namespace name.
 - The second value ``Enumerable`` is the class (type) name.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to all overrides of the method.
 - The fourth value ``Select<TSource,TResult>`` is the method name, along with the type parameters for the method. The names of the generic type parameters provided in the model must match the names of the generic type parameters in the method signature in the source code.
 - The fifth value ``(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>)`` is the method input type signature. The generics in the signature must match the generics in the method signature in the source code.
 
@@ -318,20 +382,27 @@ The ``RawUrl`` property returns the raw URL of the current request, which is con
 
 We need to add a tuple to the ``barrierModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/csharp-all
-         extensible: barrierModel
-       data:
-         - ["System.Web", "HttpRequest", False, "get_RawUrl", "()", "", "ReturnValue", "url-redirection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/csharp-all",
+           "extensible": "barrierModel"
+         },
+         "data": [
+           ["System.Web", "HttpRequest", false, "get_RawUrl", "()", "", "ReturnValue", "url-redirection", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the callable (in this case the getter of a property) to be modeled as a barrier.
 
 - The first value ``System.Web`` is the namespace name.
 - The second value ``HttpRequest`` is the class (type) name.
-- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method.
+- The third value ``false`` is a flag that indicates whether or not the model also applies to all overrides of the method.
 - The fourth value ``get_RawUrl`` is the method name. Getter and setter methods are named ``get_<name>`` and ``set_<name>`` respectively.
 - The fifth value ``()`` is the method input type signature.
 
@@ -359,20 +430,27 @@ When the ``IsAbsoluteUri`` property returns ``false``, the URL is relative and t
 
 We need to add a tuple to the ``barrierGuardModel(namespace, type, subtypes, name, signature, ext, input, acceptingValue, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-     - addsTo:
-         pack: codeql/csharp-all
-         extensible: barrierGuardModel
-       data:
-         - ["System", "Uri", False, "get_IsAbsoluteUri", "()", "", "Argument[this]", "false", "url-redirection", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/csharp-all",
+           "extensible": "barrierGuardModel"
+         },
+         "data": [
+           ["System", "Uri", false, "get_IsAbsoluteUri", "()", "", "Argument[this]", "false", "url-redirection", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first five values identify the callable (in this case the getter of a property) to be modeled as a barrier guard.
 
 - The first value ``System`` is the namespace name.
 - The second value ``Uri`` is the class (type) name.
-- The third value ``False`` is a flag that indicates whether or not the model guard also applies to all overrides of the method.
+- The third value ``false`` is a flag that indicates whether or not the model guard also applies to all overrides of the method.
 - The fourth value ``get_IsAbsoluteUri`` is the method name. Getter and setter methods are named ``get_<name>`` and ``set_<name>`` respectively.
 - The fifth value ``()`` is the method input type signature.
 
@@ -398,14 +476,21 @@ A neutral model is used to define that there is no flow through a method.
 
 We need to add a tuple to the ``neutralModel(namespace, type, name, signature, kind, provenance)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-   extensions:
-   - addsTo:
-       pack: codeql/csharp-all
-       extensible: neutralModel
-     data:
-       - ["System", "DateTime", "get_Now", "()", "summary", "manual"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/csharp-all",
+           "extensible": "neutralModel"
+         },
+         "data": [
+           ["System", "DateTime", "get_Now", "()", "summary", "manual"]
+         ]
+       }
+     ]
+   }
 
 The first four values identify the callable (in this case the getter of the ``Now`` property) to be modeled as a neutral, the fifth value is the kind, and the sixth value is the provenance (origin) of the neutral.
 

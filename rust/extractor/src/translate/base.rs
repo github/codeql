@@ -5,7 +5,6 @@ use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use ra_ap_base_db::EditionedFileId;
 use ra_ap_hir::Semantics;
-use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir_expand::builtin::{BuiltinDeriveExpander, find_builtin_derive};
 use ra_ap_hir_expand::span_map::ExpansionSpanMap;
 use ra_ap_hir_expand::{ExpandResult, ExpandTo, HirFileId, InFile, map_node_range_up_rooted};
@@ -21,6 +20,7 @@ use ra_ap_syntax::{
 use ra_ap_syntax_bridge::{
     DocCommentDesugarMode, syntax_node_to_token_tree, token_tree_to_syntax_node,
 };
+use std::path::{Path, PathBuf};
 
 impl Emission<ast::Item> for Translator<'_> {
     fn pre_emit(&mut self, node: &ast::Item) -> Option<Label<generated::Item>> {
@@ -123,13 +123,13 @@ pub enum SourceKind {
     Library,
 }
 
-pub struct Translator<'a> {
+pub struct Translator<'db> {
     pub trap: TrapFile,
-    path: &'a str,
+    path: PathBuf,
     label: Label<generated::File>,
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
-    pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
+    pub semantics: Option<&'db Semantics<'db, RootDatabase>>,
     source_kind: SourceKind,
     pub(crate) macro_context_depth: usize,
     diagnostic_count: usize,
@@ -144,18 +144,18 @@ const UNKNOWN_LOCATION: (LineCol, LineCol) =
 
 const DIAGNOSTIC_LIMIT_PER_FILE: usize = 100;
 
-impl<'a> Translator<'a> {
+impl<'db> Translator<'db> {
     pub fn new(
         trap: TrapFile,
-        path: &'a str,
+        path: &Path,
         label: Label<generated::File>,
         line_index: LineIndex,
-        semantic_info: Option<&FileSemanticInformation<'a>>,
+        semantic_info: Option<&FileSemanticInformation<'db>>,
         source_kind: SourceKind,
-    ) -> Translator<'a> {
+    ) -> Translator<'db> {
         Translator {
             trap,
-            path,
+            path: path.to_path_buf(),
             label,
             line_index,
             file_id: semantic_info.map(|i| i.file_id),
@@ -293,7 +293,7 @@ impl<'a> Translator<'a> {
         dispatch_to_tracing!(
             severity,
             "{}:{}:{}: {}",
-            self.path,
+            self.path.display(),
             start.line + 1,
             start.col + 1,
             &full_message,
@@ -372,7 +372,7 @@ impl<'a> Translator<'a> {
         if let Some(value) = semantics
             .hir_file_for(expanded)
             .macro_file()
-            .and_then(|macro_call_id| semantics.db.parse_macro_expansion_error(macro_call_id))
+            .and_then(|macro_call_id| macro_call_id.parse_macro_expansion_error(semantics.db))
         {
             if let Some(err) = &value.err {
                 let error = err.render_to_string(semantics.db);
@@ -381,9 +381,8 @@ impl<'a> Translator<'a> {
                     == hir_file_id.file_id().map(|f| f.file_id(semantics.db))
                 {
                     let location = err.span().range
-                        + semantics
-                            .db
-                            .ast_id_map(hir_file_id)
+                        + hir_file_id
+                            .ast_id_map(semantics.db)
                             .get_erased(err.span().anchor.ast_id)
                             .text_range()
                             .start();
@@ -515,11 +514,9 @@ impl<'a> Translator<'a> {
                             None => return false,
                         }
                     }
-                    HirFileId::MacroFile(macro_call) => sema
-                        .db
-                        .lookup_intern_macro_call(macro_call)
-                        .krate
-                        .cfg_options(sema.db),
+                    HirFileId::MacroFile(macro_call) => {
+                        macro_call.loc(sema.db).krate.cfg_options(sema.db)
+                    }
                 };
                 cfg_options.check(&cfg_expr) == Some(false)
             })
@@ -755,11 +752,11 @@ impl<'a> Translator<'a> {
         let semantics = self.semantics?;
         let db = semantics.db;
         let file_id = semantics.hir_file_for(adt.syntax());
-        let span_map = db.span_map(file_id);
+        let span_map = file_id.span_map(db);
         let call_site = span_map.span_for_range(adt.syntax().text_range());
         let input = syntax_node_to_token_tree(
             adt.syntax(),
-            span_map.as_ref(),
+            span_map,
             call_site,
             DocCommentDesugarMode::ProcMacro,
         );

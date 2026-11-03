@@ -1,0 +1,2 @@
+| FutileConditional.cpp:2:3:2:15 | if (...) ...  | If-statement with an empty then-branch and no else-branch. |
+| FutileConditional.cpp:4:3:5:3 | if (...) ...  | If-statement with an empty then-branch and no else-branch. |

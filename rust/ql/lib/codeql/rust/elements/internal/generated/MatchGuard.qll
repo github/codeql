@@ -31,6 +31,8 @@ module Generated {
   class MatchGuard extends Synth::TMatchGuard, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "MatchGuard" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the condition of this match guard, if it exists.
      */

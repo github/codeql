@@ -1,0 +1,19 @@
+services:
+  web:
+    container_name: web-container
+    image: nginx:1.25
+    environment:
+      PASSWORD: ${PASSWORD}
+      DEBUG: "true"
+    secrets:
+      - app-password
+    cap_drop:
+      - ALL
+    read_only: true
+    user: "1000:1000"
+    network_mode: bridge
+    volumes:
+      - ./web:/srv/web
+secrets:
+  app-password:
+    file: ./password.txt

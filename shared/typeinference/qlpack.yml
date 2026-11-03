@@ -1,5 +1,5 @@
 name: codeql/typeinference
-version: 0.0.38
+version: 0.0.41
 groups: shared
 library: true
 dependencies:

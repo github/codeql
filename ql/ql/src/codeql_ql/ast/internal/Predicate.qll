@@ -169,9 +169,20 @@ private module Cached {
     )
   }
 
+  pragma[noinline]
+  private predicate builtin(BuiltinClassless pred, string name, int arity) {
+    name = pred.getName() and
+    arity = count(int i | exists(pred.getParameterType(i)))
+  }
+
+  pragma[noinline]
+  private predicate call(PredicateCall call, string name, int arity) {
+    name = call.getPredicateName() and
+    arity = call.getNumberOfArguments()
+  }
+
   private predicate resolveBuiltinPredicateCall(PredicateCall call, BuiltinClassless pred) {
-    call.getNumberOfArguments() = pred.getArity() and
-    call.getPredicateName() = pred.getName()
+    exists(string name, int arity | builtin(pred, name, arity) and call(call, name, arity))
   }
 
   cached

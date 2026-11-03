@@ -2,7 +2,7 @@ private import python
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.ApiGraphs
-private import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.Concepts
 private import semmle.python.frameworks.Flask
 private import semmle.python.frameworks.Django
 
@@ -268,7 +268,7 @@ private string sensitiveheaders() {
  * A config that tracks data flow from remote user input to Variable that hold sensitive info
  */
 module UserInputSecretConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CredentialExpr }
 }
@@ -279,7 +279,7 @@ module UserInputSecretFlow = TaintTracking::Global<UserInputSecretConfig>;
  * A config that tracks data flow from remote user input to Equality test
  */
 module UserInputInComparisonConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(Compare cmp, Expr left, Expr right, Cmpop cmpop |

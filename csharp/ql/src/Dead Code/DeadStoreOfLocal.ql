@@ -31,11 +31,11 @@ class RelevantDefinition extends AssignableDefinition {
       any(LocalVariableDeclExpr lvde |
         lvde = any(SpecificCatchClause scc).getVariableDeclExpr()
         or
-        lvde = any(ForeachStmt fs).getVariableDeclExpr() and
+        lvde = any(ForEachStmt fs).getVariableDeclExpr() and
         not lvde.getName() = "_"
       )
     or
-    this instanceof AssignableDefinitions::PatternDefinition
+    this instanceof AssignableDefinitions::TopLevelPatternDefinition
     or
     this instanceof AssignableDefinitions::AssignOperationDefinition
   }

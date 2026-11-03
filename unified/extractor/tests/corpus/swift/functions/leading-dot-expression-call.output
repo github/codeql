@@ -38,21 +38,19 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "y"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "y" source="y"
           value:
-            call_expr
+            call_expr source="⟨callee⟩(⟨argument⟩)"
               callee:
-                member_access_expr
-                  base: inferred_type_expr "."
-                  member: identifier "some"
+                member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                  base: inferred_type_expr "." source="."
+                  member_name_node: identifier "some" source="some"
               argument:
-                argument
-                  value: int_literal "1"
+                argument source="⟨value⟩"
+                  value: int_literal "1" source="1"

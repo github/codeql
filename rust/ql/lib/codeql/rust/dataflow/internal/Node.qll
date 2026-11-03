@@ -435,6 +435,20 @@ final class ClosureArgumentNode extends ArgumentNode, ExprNode {
   }
 }
 
+/**
+ * A data flow node that represents the run-time representation of an async
+ * block passed into its body when awaited.
+ */
+final class AsyncBlockArgumentNode extends ArgumentNode, ExprNode {
+  private AwaitExpr await;
+
+  AsyncBlockArgumentNode() { this.asExpr() = await.getExpr() }
+
+  override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
+    call.asAwaitExpr() = await and pos.isClosureSelf()
+  }
+}
+
 /** An SSA node. */
 class SsaNode extends Node, TSsaNode {
   SsaImpl::DataFlowIntegration::SsaNode node;
@@ -485,11 +499,16 @@ final private class ExprOutNode extends ExprNode, OutNode {
       not call instanceof DerefExpr and // Handled by `DerefOutNode`
       not call instanceof IndexExpr // Handled by `IndexOutNode`
     )
+    or
+    this.asExpr() instanceof AwaitExpr
   }
 
   /** Gets the underlying call node that includes this out node. */
   override DataFlowCall getCall(ReturnKind kind) {
     result.asCall() = n and
+    kind = TNormalReturnKind()
+    or
+    result.asAwaitExpr() = n and
     kind = TNormalReturnKind()
   }
 }

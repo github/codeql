@@ -1,0 +1,61 @@
+| BinaryPattern.cs:8:14:8:16 | a | Char |
+| BinaryPattern.cs:8:14:8:23 | ... or ... | Char |
+| BinaryPattern.cs:8:21:8:23 | b | Char |
+| BinaryPattern.cs:10:14:10:21 | Object o | Object |
+| BinaryPattern.cs:10:14:10:51 | ... and ... | BinaryPattern |
+| BinaryPattern.cs:10:27:10:39 | access to type BinaryPattern | BinaryPattern |
+| BinaryPattern.cs:10:27:10:51 | BinaryPattern u | BinaryPattern |
+| BinaryPattern.cs:10:27:10:51 | { ... } | BinaryPattern |
+| BinaryPattern.cs:10:41:10:49 | { ... } | null |
+| BinaryPattern.cs:10:47:10:47 | 1 | Int32 |
+| BinaryPattern.cs:12:14:12:21 | Object o | Object |
+| BinaryPattern.cs:12:14:12:41 | ... and ... | BinaryPattern |
+| BinaryPattern.cs:12:27:12:41 | BinaryPattern u | BinaryPattern |
+| BinaryPattern.cs:18:13:18:13 | 1 | Int32 |
+| BinaryPattern.cs:18:13:18:18 | ... or ... | Int32 |
+| BinaryPattern.cs:18:18:18:18 | 2 | Int32 |
+| BinaryPattern.cs:19:13:19:13 | _ | Int32 |
+| ParenthesizedPattern.cs:9:18:9:19 | { ... } | null |
+| ParenthesizedPattern.cs:9:18:9:22 | Object p1 | Object |
+| ParenthesizedPattern.cs:9:18:9:22 | { ... } | Object |
+| ParenthesizedPattern.cs:13:19:13:20 | { ... } | null |
+| ParenthesizedPattern.cs:13:19:13:23 | Object p2 | Object |
+| ParenthesizedPattern.cs:13:19:13:23 | { ... } | Object |
+| ParenthesizedPattern.cs:22:13:22:13 | 1 | Int32 |
+| ParenthesizedPattern.cs:23:14:23:14 | 2 | Int32 |
+| ParenthesizedPattern.cs:24:13:24:15 | T t | T |
+| ParenthesizedPattern.cs:24:27:24:28 | { ... } | T |
+| ParenthesizedPattern.cs:24:27:24:28 | { ... } | null |
+| ParenthesizedPattern.cs:25:14:25:22 | Object o1 | Object |
+| ParenthesizedPattern.cs:25:37:25:38 | { ... } | Object |
+| ParenthesizedPattern.cs:25:37:25:38 | { ... } | null |
+| ParenthesizedPattern.cs:26:14:26:19 | access to type String | String |
+| RelationalPattern.cs:6:14:6:19 | >= ... | Char |
+| RelationalPattern.cs:8:14:8:18 | > ... | Char |
+| RelationalPattern.cs:10:14:10:19 | <= ... | Char |
+| RelationalPattern.cs:12:14:12:18 | < ... | Char |
+| RelationalPattern.cs:18:13:18:13 | 1 | Int32 |
+| RelationalPattern.cs:19:13:19:14 | > ... | Int32 |
+| RelationalPattern.cs:20:13:20:13 | _ | Int32 |
+| TargetType.cs:31:38:31:41 | null | null |
+| TypePattern.cs:8:18:8:30 | ( ... ) | null |
+| TypePattern.cs:8:18:8:30 | { ... } | (Object,Object) |
+| TypePattern.cs:8:19:8:21 | access to type Int32 | Int32 |
+| TypePattern.cs:8:24:8:29 | access to type String | String |
+| TypePattern.cs:11:13:11:15 | access to type Int32 | Int32 |
+| TypePattern.cs:12:13:12:20 | Double d | Double |
+| TypePattern.cs:13:13:13:25 | access to type String | String |
+| TypePattern.cs:14:13:14:27 | Object o | Object |
+| UnaryPattern.cs:8:14:8:20 | not ... | Char |
+| UnaryPattern.cs:8:18:8:20 | a | Char |
+| UnaryPattern.cs:10:14:10:21 | not ... | Object |
+| UnaryPattern.cs:10:18:10:21 | null | null |
+| UnaryPattern.cs:12:14:12:41 | not ... | Object |
+| UnaryPattern.cs:12:18:12:29 | access to type UnaryPattern | UnaryPattern |
+| UnaryPattern.cs:12:18:12:41 | UnaryPattern u | UnaryPattern |
+| UnaryPattern.cs:12:18:12:41 | { ... } | UnaryPattern |
+| UnaryPattern.cs:12:31:12:39 | { ... } | null |
+| UnaryPattern.cs:12:37:12:37 | 1 | Int32 |
+| UnaryPattern.cs:18:13:18:17 | not ... | Int32 |
+| UnaryPattern.cs:18:17:18:17 | 1 | Int32 |
+| UnaryPattern.cs:19:13:19:13 | _ | Int32 |

@@ -5,8 +5,8 @@ class A {
         let b: B = nil // $ access=A.B
         let c: C = nil // $ access=A.C
     }
-    func instance_before() {
-        print(instanceVar) // $ access=instanceVar
+    func instance_before() { // implicit-self=instance_before.self
+        print(instanceVar) // $ access=instanceVar implicit-qualifier=instance_before.self
         B(); // $ access=A.B
         let b: B = nil // $ access=A.B
         let c: C = nil // $ access=A.C
@@ -25,8 +25,8 @@ class A {
         let c: C = nil // $ access=A.C
 
     }
-    func instance_after() {
-        print(instanceVar) // $ access=instanceVar
+    func instance_after() { // implicit-self=instance_after.self
+        print(instanceVar) // $ access=instanceVar implicit-qualifier=instance_after.self
         B(); // $ access=A.B
         let b: B = nil // $ access=A.B
         let c: C = nil // $ access=A.C

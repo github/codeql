@@ -1,0 +1,1 @@
+| test.cpp:5:3:5:25 | throw ... | This should throw a MyException rather than a pointer to one. |

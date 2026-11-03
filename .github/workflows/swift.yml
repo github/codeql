@@ -7,6 +7,10 @@ on:
       - "misc/bazel/**"
       - "misc/codegen/**"
       - "shared/**"
+      - "!shared/tree-sitter-extractor/**"
+      - "!shared/yeast/**"
+      - "!shared/yeast-macros/**"
+      - "!shared/yeast-schema/**"
       - "*.bazel*"
       - .github/workflows/swift.yml
       - .github/actions/**

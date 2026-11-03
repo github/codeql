@@ -1,0 +1,2 @@
+query: Best Practices/UseOfGoto.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

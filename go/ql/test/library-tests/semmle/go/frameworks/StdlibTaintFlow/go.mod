@@ -1,6 +1,6 @@
 module example.com/m
 
-go 1.26
+go 1.27
 
 require (
 	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb

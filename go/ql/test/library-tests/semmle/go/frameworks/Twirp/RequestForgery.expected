@@ -4,8 +4,8 @@
 edges
 | client/main.go:16:35:16:78 | &... | server/main.go:19:56:19:61 | SSA def(params) | provenance |  |
 | client/main.go:16:35:16:78 | &... [postupdate] | client/main.go:16:35:16:78 | &... | provenance |  |
-| rpc/notes/service.twirp.go:538:2:538:33 | ... := ...[0] | rpc/notes/service.twirp.go:544:27:544:29 | buf | provenance |  |
-| rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | rpc/notes/service.twirp.go:538:2:538:33 | ... := ...[0] | provenance | Src:MaD:1 MaD:3 |
+| rpc/notes/service.twirp.go:538:2:538:33 | extract:0 ... := ... | rpc/notes/service.twirp.go:544:27:544:29 | buf | provenance |  |
+| rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | rpc/notes/service.twirp.go:538:2:538:33 | extract:0 ... := ... | provenance | Src:MaD:1 MaD:3 |
 | rpc/notes/service.twirp.go:544:27:544:29 | buf | rpc/notes/service.twirp.go:544:32:544:41 | reqContent [postupdate] | provenance | MaD:2 |
 | rpc/notes/service.twirp.go:544:32:544:41 | reqContent [postupdate] | rpc/notes/service.twirp.go:574:2:577:2 | SSA def(reqContent) | provenance |  |
 | rpc/notes/service.twirp.go:574:2:577:2 | SSA def(reqContent) | rpc/notes/service.twirp.go:576:35:576:44 | reqContent | provenance |  |
@@ -21,7 +21,7 @@ models
 nodes
 | client/main.go:16:35:16:78 | &... | semmle.label | &... |
 | client/main.go:16:35:16:78 | &... [postupdate] | semmle.label | &... [postupdate] |
-| rpc/notes/service.twirp.go:538:2:538:33 | ... := ...[0] | semmle.label | ... := ...[0] |
+| rpc/notes/service.twirp.go:538:2:538:33 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
 | rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | semmle.label | selection of Body |
 | rpc/notes/service.twirp.go:544:27:544:29 | buf | semmle.label | buf |
 | rpc/notes/service.twirp.go:544:32:544:41 | reqContent [postupdate] | semmle.label | reqContent [postupdate] |

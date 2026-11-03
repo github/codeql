@@ -31,11 +31,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, IDependabotProxy? dependabotProxy) : this(new DotNetCliInvoker(logger, Path.Join(dotNetPath ?? string.Empty, "dotnet"), dependabotProxy), logger, dotNetPath is null, tempWorkingDirectory) { }
+        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, IRegistryProxy? registryProxy) : this(new DotNetCliInvoker(logger, Path.Join(dotNetPath ?? string.Empty, "dotnet"), registryProxy), logger, dotNetPath is null, tempWorkingDirectory) { }
 
         internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, bool runDotnetInfo) => new DotNet(dotnetCliInvoker, logger, runDotnetInfo);
 
-        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, IDependabotProxy? dependabotProxy) => new DotNet(logger, dotNetPath, tempWorkingDirectory, dependabotProxy);
+        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, IRegistryProxy? registryProxy) => new DotNet(logger, dotNetPath, tempWorkingDirectory, registryProxy);
 
         private static void HandleRetryExitCode143(string dotnet, int attempt, ILogger logger)
         {
@@ -137,7 +137,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private static readonly IReadOnlyList<string> nugetListSourceCommandArgs = ["nuget", "list", "source", "--format", "Short"];
 
-        public IList<string> GetNugetFeeds(string nugetConfig)
+        public IList<string> GetNugetFeedsFromConfig(string nugetConfig)
         {
             logger.LogInfo($"Getting NuGet feeds from '{nugetConfig}'...");
             return GetResultList([.. nugetListSourceCommandArgs, "--configfile", nugetConfig]);
@@ -280,9 +280,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     getInstall = version =>
                     {
                         var psCommand = $"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version {version} -InstallDir {path}";
+                        var environment = new Dictionary<string, string>
+                        {
+                            // Starting with .NET 11, the installation script uses tar by default. However,
+                            // tar extraction fails in dotnet-install.ps1, so force the script to download
+                            // and extract the ZIP archive instead. This workaround may be removable in the future.
+                            {"DOTNET_INSTALL_SKIP_TAR", "1"}
+                        };
 
                         BuildScript GetInstall(string pwsh) =>
-                            new CommandBuilder(actions).
+                            new CommandBuilder(actions, environment: environment).
                             RunCommand(pwsh).
                             Argument("-NoProfile").
                             Argument("-ExecutionPolicy").

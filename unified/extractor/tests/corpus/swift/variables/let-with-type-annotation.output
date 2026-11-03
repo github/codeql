@@ -31,16 +31,12 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "x"
-          type:
-            named_type_expr
-              name: identifier "Int"
-          value: int_literal "1"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "x" source="x"
+          type: identifier "Int" source="Int"
+          value: int_literal "1" source="1"

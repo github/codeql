@@ -237,7 +237,7 @@ public class FlowParser extends ESNextParser {
     this.next();
 
     if (this.type == TokenType.string) {
-      this.parseExprAtom(null);
+      this.parseExprAtom();
     } else {
       this.parseIdent(false);
     }
@@ -458,7 +458,7 @@ public class FlowParser extends ESNextParser {
 
   private void flowParseObjectPropertyKey() {
     if (this.type == TokenType.num || this.type == TokenType.string) {
-      this.parseExprAtom(null);
+      this.parseExprAtom();
     } else if ("@@iterator".equals(inputSubstring(start, start + 10))) {
       // allow `@@iterator` as property name; this doesn't appear to be standard Flow syntax,
       // but is used a few times in react-native
@@ -1158,9 +1158,8 @@ public class FlowParser extends ESNextParser {
   }
 
   @Override
-  protected ParenthesisedExpressions parseParenthesisedExpressions(
-      DestructuringErrors refDestructuringErrors) {
-    ParenthesisedExpressions pe = super.parseParenthesisedExpressions(refDestructuringErrors);
+  protected ParenthesisedExpressions parseParenthesisedExpressions() {
+    ParenthesisedExpressions pe = super.parseParenthesisedExpressions();
 
     // handle return types for arrow functions
     if (flow() && this.type == TokenType.colon) {
@@ -1218,14 +1217,14 @@ public class FlowParser extends ESNextParser {
 
   // parse type parameters for object method shorthand
   @Override
-  protected void parsePropertyValue(PropertyInfo pi, DestructuringErrors refDestructuringErrors) {
+  protected void parsePropertyValue(PropertyInfo pi) {
     // method shorthand
     if (flow() && this.isRelational("<")) {
       this.flowParseTypeParameterDeclaration();
       if (this.type != TokenType.parenL) this.unexpected();
     }
 
-    super.parsePropertyValue(pi, refDestructuringErrors);
+    super.parsePropertyValue(pi);
   }
 
   @Override

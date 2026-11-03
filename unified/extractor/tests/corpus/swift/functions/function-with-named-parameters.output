@@ -52,30 +52,22 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          name: identifier "greet"
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩) ⟨body⟩"
+          name_node: identifier "greet" source="greet"
           parameter:
-            parameter
-              external_name: identifier "person"
-              type:
-                named_type_expr
-                  name: identifier "String"
-              pattern:
-                name_pattern
-                  identifier: identifier "name"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "person" source="person"
+              type: identifier "String" source="String"
+              pattern: identifier "name" source="name"
           body:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                call_expr
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
                   argument:
-                    argument
-                      value:
-                        name_expr
-                          identifier: identifier "name"
+                    argument source="⟨value⟩"
+                      value: identifier "name" source="name"

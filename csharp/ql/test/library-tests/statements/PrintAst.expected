@@ -357,7 +357,7 @@ statements.cs:
 #  139|           -1: [TypeMention] String[]
 #  139|             1: [TypeMention] string
 #  140|       4: [BlockStmt] {...}
-#  141|         0: [ForeachStmt] foreach (... ... in ...) ...
+#  141|         0: [ForEachStmt] foreach (... ... in ...) ...
 #  141|           0: [LocalVariableDeclExpr] String s
 #  141|             0: [TypeMention] string
 #  141|           1: [ParameterAccess] access to parameter args
@@ -501,7 +501,7 @@ statements.cs:
 #  192|     24: [Method] MainYield
 #  192|       -1: [TypeMention] Void
 #  193|       4: [BlockStmt] {...}
-#  194|         0: [ForeachStmt] foreach (... ... in ...) ...
+#  194|         0: [ForEachStmt] foreach (... ... in ...) ...
 #  194|           0: [LocalVariableDeclExpr] Int32 x
 #  194|             0: [TypeMention] int
 #  194|           1: [MethodCall] call to method Range

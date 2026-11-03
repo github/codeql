@@ -39,7 +39,7 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
-      stmt: unsupported_node "actor Counter {\n  var value = 0\n}"
+    block source="⟨stmt⟩"
+      stmt: unsupported_node "actor Counter {\n  var value = 0\n}" source="actor Counter {\n  var value = 0\n}"

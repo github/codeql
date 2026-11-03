@@ -1,3 +1,15 @@
+## 2.4.8
+
+No user-facing changes.
+
+## 2.4.7
+
+No user-facing changes.
+
+## 2.4.6
+
+No user-facing changes.
+
 ## 2.4.5
 
 ### Minor Analysis Improvements

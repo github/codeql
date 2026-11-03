@@ -49,9 +49,11 @@ private string reorderName(string name) {
 }
 
 class PrintAstNode extends AstNode {
+  PrintAstNode() { shouldPrintNode(this) }
+
   final int getOrder() {
     this =
-      rank[result](AstNode parent, AstNode child, string name, int i |
+      rank[result](PrintAstNode parent, PrintAstNode child, string name, int i |
         child = PrintAst::getChild(parent, name, i)
       |
         child order by reorderName(name), i
@@ -70,10 +72,7 @@ class PrintAstNode extends AstNode {
  * Holds if `node` belongs to the output tree, and its property `key` has the
  * given `value`.
  */
-query predicate nodes(PrintAstNode node, string key, string value) {
-  shouldPrintNode(node) and
-  value = node.getProperty(key)
-}
+query predicate nodes(PrintAstNode node, string key, string value) { value = node.getProperty(key) }
 
 /**
  * Holds if `target` is a child of `source` in the AST, and property `key` of

@@ -1,0 +1,32 @@
+name: Test Yeast
+
+on:
+  push:
+    paths:
+      - "shared/yeast/**"
+      - "shared/yeast-macros/**"
+      - "shared/yeast-schema/**"
+      - .github/workflows/yeast-test.yml
+    branches:
+      - main
+      - "rc/*"
+  pull_request:
+    paths:
+      - "shared/yeast/**"
+      - "shared/yeast-macros/**"
+      - "shared/yeast-schema/**"
+      - .github/workflows/yeast-test.yml
+
+env:
+  CARGO_TERM_COLOR: always
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run tests
+        run: cargo test --verbose --package codeql-extractor --package yeast --package yeast-macros --package yeast-schema

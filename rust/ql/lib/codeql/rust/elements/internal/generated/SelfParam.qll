@@ -33,6 +33,8 @@ module Generated {
   class SelfParam extends Synth::TSelfParam, ParamBaseImpl::ParamBase {
     override string getAPrimaryQlClass() { result = "SelfParam" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Holds if this self parameter is reference.
      */

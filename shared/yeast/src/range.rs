@@ -30,3 +30,101 @@ pub struct Range {
     pub start_point: Point,
     pub end_point: Point,
 }
+
+impl Range {
+    /// Return the smallest range containing both ranges.
+    pub fn union(self, other: Self) -> Self {
+        let (start_byte, start_point) = if self.start_byte <= other.start_byte {
+            (self.start_byte, self.start_point)
+        } else {
+            (other.start_byte, other.start_point)
+        };
+        let (end_byte, end_point) = if self.end_byte >= other.end_byte {
+            (self.end_byte, self.end_point)
+        } else {
+            (other.end_byte, other.end_point)
+        };
+        Self {
+            start_byte,
+            end_byte,
+            start_point,
+            end_point,
+        }
+    }
+
+    /// Return an empty range anchored at this range's start.
+    pub fn empty_at_start(self) -> Self {
+        Self {
+            end_byte: self.start_byte,
+            end_point: self.start_point,
+            ..self
+        }
+    }
+
+    /// Return an empty range anchored at this range's end.
+    pub fn empty_at_end(self) -> Self {
+        Self {
+            start_byte: self.end_byte,
+            start_point: self.end_point,
+            ..self
+        }
+    }
+
+    /// Return whether this range contains no source bytes.
+    pub fn is_empty(self) -> bool {
+        self.start_byte == self.end_byte
+    }
+
+    pub(crate) fn ignoring_boundary_ranges(
+        mut self,
+        ignored: impl IntoIterator<Item = Self>,
+    ) -> Self {
+        let ignored: Vec<_> = ignored
+            .into_iter()
+            .filter(|range| !range.is_empty())
+            .collect();
+        loop {
+            let previous = self;
+            for range in &ignored {
+                if *range == self {
+                    return self.empty_at_start();
+                }
+                if range.start_byte == self.start_byte {
+                    self.start_byte = range.end_byte;
+                    self.start_point = range.end_point;
+                }
+                if range.end_byte == self.end_byte {
+                    self.end_byte = range.start_byte;
+                    self.end_point = range.start_point;
+                }
+            }
+            if self == previous {
+                return self;
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{Point, Range};
+
+    fn range(start_byte: usize, end_byte: usize) -> Range {
+        Range {
+            start_byte,
+            end_byte,
+            start_point: Point::new(0, start_byte),
+            end_point: Point::new(0, end_byte),
+        }
+    }
+
+    #[test]
+    fn empty_ignored_ranges_do_not_change_boundaries() {
+        let source = range(0, 5);
+
+        assert_eq!(
+            source.ignoring_boundary_ranges([range(0, 0), range(5, 5)]),
+            source
+        );
+    }
+}

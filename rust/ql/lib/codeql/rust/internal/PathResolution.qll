@@ -427,7 +427,7 @@ abstract class ItemNode extends Locatable {
       if
         this instanceof Module or
         this instanceof Enum or
-        this instanceof Struct or
+        this instanceof Trait or
         this instanceof Crate
       then (
         kind.isBoth() and
@@ -1400,7 +1400,7 @@ private predicate fileModuleInlineLate(SourceFile f, string name, Folder folder)
  * [1]: https://doc.rust-lang.org/reference/items/modules.html#r-items.mod.outlined.path
  */
 private Meta getPathAttrMeta(Module m) {
-  result = m.getAnAttr().getMeta() and
+  result = m.getAnAttr().(Attr).getMeta() and
   result.getMetaPath().getText() = "path"
 }
 
@@ -1983,7 +1983,7 @@ private predicate pathUsesNamespace(PathExt p, Namespace n) {
   or
   n.isType() and
   (
-    p = any(Visibility v).getPath()
+    p = any(Visibility v).getVisibilityInner().getPath()
     or
     p = any(StructExpr re).getPath()
     or

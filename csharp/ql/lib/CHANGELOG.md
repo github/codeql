@@ -1,3 +1,27 @@
+## 7.4.1
+
+### Minor Analysis Improvements
+
+* Avoid logging warnings when there are no explicit or inherited feeds to check for reachability.
+* The subprocess for the NuGet CLI is now provided with the proxy and certificate environment variables needed to access private registries if any are configured.
+* Added support for data flow through positional patterns in `is` expressions and `switch` cases.
+
+## 7.4.0
+
+### Major Analysis Improvements
+
+* Fixed a false positive in `cs/web/xss` for ASP.NET Core Razor Pages/MVC views: `WriteLiteral` calls generated for tag helper attribute values (for example, `asp-for`) capture the value into an internal buffer instead of writing it directly to the response, so they are no longer treated as XSS sinks.
+
+### Bug Fixes
+
+* Fixed an issue where types for pattern expressions were not extracted correctly.
+
+## 7.3.1
+
+### Minor Analysis Improvements
+
+* Private NuGet registries for which the "Replaces base" option is enabled in the organization-level private registry configuration now replace default NuGet feeds whenever dependencies are downloaded, including when default NuGet feeds are configured explicitly for a project.
+
 ## 7.3.0
 
 ### New Features

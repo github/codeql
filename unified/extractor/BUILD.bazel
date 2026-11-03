@@ -34,6 +34,11 @@ _TESTS = {
         "compile_data": [],
         "size": "medium",
     },
+    "location_tests": {
+        "data": [],
+        "compile_data": [],
+        "size": "small",
+    },
     # `include_str!`s a checked-in `parse_to_json` dump.
     "swift_syntax_pipeline": {
         "data": [],

@@ -1,0 +1,11 @@
+services:
+  worker:
+    image: example/worker:1.0
+    environment:
+      - DEBUG=true
+      - API_TOKEN
+    secrets:
+      - worker-token
+secrets:
+  worker-token:
+    file: ./worker-token.txt

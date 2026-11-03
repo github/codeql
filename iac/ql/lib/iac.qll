@@ -12,6 +12,8 @@ import codeql.iac.containers.Containers
 import codeql.iac.containers.Images
 // Compose
 import codeql.iac.compose.Compose
+// Kubernetes
+import codeql.iac.kubernetes.Kubernetes
 // HelmCharts
 import codeql.iac.helmcharts.HelmChart
 // Terraform / HCL
@@ -20,3 +22,4 @@ import hcl
 import codeql.iac.openapi.OpenApi
 // YAML
 import codeql.iac.YAML
+import codeql.iac.YamlDocumentClassification

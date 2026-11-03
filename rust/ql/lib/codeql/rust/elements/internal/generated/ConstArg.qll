@@ -28,6 +28,8 @@ module Generated {
   class ConstArg extends Synth::TConstArg, GenericArgImpl::GenericArg {
     override string getAPrimaryQlClass() { result = "ConstArg" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the expression of this const argument, if it exists.
      */

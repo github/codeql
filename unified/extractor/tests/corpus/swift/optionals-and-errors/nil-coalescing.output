@@ -33,19 +33,15 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "n"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "n" source="n"
           value:
-            binary_expr
-              left:
-                name_expr
-                  identifier: identifier "opt"
-              operator: infix_operator "??"
-              right: int_literal "0"
+            binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+              left: identifier "opt" source="opt"
+              operator: infix_operator "??" source="??"
+              right: int_literal "0" source="0"

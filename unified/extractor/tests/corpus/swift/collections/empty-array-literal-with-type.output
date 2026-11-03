@@ -37,21 +37,15 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "xs"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "xs" source="xs"
           type:
-            generic_type_expr
-              base:
-                named_type_expr
-                  name: identifier "Array"
-              type_argument:
-                named_type_expr
-                  name: identifier "Int"
-          value: array_literal "[]"
+            generic_type_expr source="[⟨type_argument⟩]"
+              base: identifier "Array" source=""
+              type_argument: identifier "Int" source="Int"
+          value: array_literal "[]" source="[]"

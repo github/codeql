@@ -18,6 +18,6 @@ query predicate getExpr(ArrayRepeatExpr x, int index, Expr getExpr) {
   toBeTested(x) and not x.isUnknown() and getExpr = x.getExpr(index)
 }
 
-query predicate getAttr(ArrayRepeatExpr x, int index, Attr getAttr) {
+query predicate getAttr(ArrayRepeatExpr x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }

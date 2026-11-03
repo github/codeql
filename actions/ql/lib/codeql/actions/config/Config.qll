@@ -130,9 +130,16 @@ predicate immutableActionsDataModel(string action) { Extensions::immutableAction
  * MaD models for trusted actions owners
  * Fields:
  *    - owner: owner name
+ *
+ * An entry may be prefixed with `!` to remove an owner from the trusted set,
+ * overriding any plain entry for the same owner (for example, `!github` distrusts
+ * the first-party `github` owner). This is unambiguous because GitHub owner names
+ * can never start with `!`.
  */
 predicate trustedActionsOwnerDataModel(string owner) {
-  Extensions::trustedActionsOwnerDataModel(owner)
+  Extensions::trustedActionsOwnerDataModel(owner) and
+  not owner.matches("!%") and
+  not Extensions::trustedActionsOwnerDataModel("!" + owner)
 }
 
 /**

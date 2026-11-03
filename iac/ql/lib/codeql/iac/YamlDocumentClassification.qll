@@ -22,6 +22,7 @@ import iac
 private import codeql.iac.YAML
 private import codeql.iac.azure.Pipelines
 private import codeql.iac.helmcharts.HelmChart
+private import codeql.iac.kubernetes.Kubernetes
 private import codeql.iac.compose.Compose
 private import codeql.iac.openapi.OpenApi
 private import codeql.iac.aws.CloudFormation
@@ -69,7 +70,8 @@ module YamlDocumentClassification {
     (
       doc instanceof AzurePipelines::Document and kind = "ado-pipeline"
       or
-      doc instanceof HelmChart::Document and kind = "kubernetes-helm"
+      (doc instanceof HelmChart::Document or doc instanceof YamlKubernetes::Document) and
+      kind = "kubernetes-helm"
       or
       doc instanceof Compose::Document and kind = "compose"
       or

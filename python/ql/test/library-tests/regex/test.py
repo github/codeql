@@ -86,3 +86,9 @@ baz = re.compile(r'\+0')
 # Anchors
 re.compile(r'\Afoo\Z')
 re.compile(r'\bfoo\B')
+
+# Python 3.15 prefixmatch flags
+re.prefixmatch("", "", re.IGNORECASE)
+re.prefixmatch("", "", flags=re.DOTALL | re.MULTILINE)
+re.prefixmatch(pattern="", string="", flags=re.VERBOSE)
+re.prefixmatch("(?i)", "")

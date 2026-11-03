@@ -23,7 +23,7 @@ module Impl {
    * ```
    */
   class Enum extends Generated::Enum {
-    override string toStringImpl() { result = "enum " + this.getName().getText() }
+    override string toStringImpl() { result = "enum " + concat(this.getName().getText()) }
 
     /** Gets the variant named `name`, if any. */
     pragma[nomagic]

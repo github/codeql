@@ -26,12 +26,20 @@ pub fn run(options: Options) -> std::io::Result<()> {
         Language {
             name: "HCL".to_owned(),
             node_types: tree_sitter_hcl::NODE_TYPES,
+            desugar: None,
         },
         Language {
             name: "DOCKERFILE".to_owned(),
             node_types: tree_sitter_dockerfile::NODE_TYPES,
+            desugar: None,
         },
     ];
 
-    generate(languages, options.dbscheme, options.library)
+    generate(
+        languages,
+        options.dbscheme,
+        options.library,
+        false,
+        "run 'cargo run --release --bin codeql-extractor-iac -- generate --dbscheme ql/lib/iac.dbscheme --library ql/lib/codeql/iac/ast/internal/TreeSitter.qll' in iac/",
+    )
 }

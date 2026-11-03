@@ -1,3 +1,19 @@
+## 0.7.0
+
+### Breaking Changes
+
+* The GitHub Actions control flow graph (CFG) now uses the shared CFG library. The CFG includes explicit before and after nodes and uses the shared entry and exit node representations. Existing code that relies on specific CFG nodes, edges, textual representations, or basic block boundaries may need to be updated. The legacy `Completion`, `NormalCompletion`, `SimpleCompletion`, `BooleanCompletion`, and `ReturnCompletion` classes have been removed because completions are no longer part of the Actions CFG API. Code that inspected completions should inspect CFG edge labels such as `DirectSuccessor`, `BooleanSuccessor`, and `ReturnSuccessor` instead.
+
+## 0.6.3
+
+### Minor Analysis Improvements
+
+* The `trustedActionsOwnerDataModel` extensible predicate, used by the `actions/unpinned-tag` query, now supports removing an owner from the trusted set by adding an entry prefixed with `!` (for example, `!github`). This makes it possible to distrust first-party owners (`actions`, `github`, `advanced-security`) so that unpinned tags for their Actions are reported.
+
+## 0.6.2
+
+No user-facing changes.
+
 ## 0.6.1
 
 ### New Features

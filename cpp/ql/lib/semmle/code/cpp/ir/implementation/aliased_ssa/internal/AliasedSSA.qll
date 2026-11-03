@@ -295,6 +295,11 @@ abstract class MemoryLocation0 extends TMemoryLocation {
  */
 abstract class VirtualVariable extends MemoryLocation0 { }
 
+pragma[nomagic]
+private VirtualVariable getAllocationMemoryLocation(Allocation alloc) {
+  result.getAnAllocation() = alloc
+}
+
 abstract class AllocationMemoryLocation extends MemoryLocation0 {
   Allocation var;
   boolean isMayAccess;
@@ -313,7 +318,7 @@ abstract class AllocationMemoryLocation extends MemoryLocation0 {
       result = getGroupedMemoryLocation(var, false, false).getVirtualVariable()
       or
       not exists(getGroupedMemoryLocation(var, false, false)) and
-      result.(AllocationMemoryLocation).getAnAllocation() = var
+      result = getAllocationMemoryLocation(var)
     )
   }
 
