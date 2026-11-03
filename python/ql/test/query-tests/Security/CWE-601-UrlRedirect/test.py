@@ -216,7 +216,7 @@ def checked_relative_url_early_return():
         not untrusted.isprintable()
         or untrusted.startswith("///")
         or parsed.scheme != ""
-        or parsed.netloc not in ["", request.host]
+        or parsed.netloc not in ["", "example.com"]
     ):
         return redirect("/", code=302) # OK
     return redirect(untrusted, code=302) # OK
@@ -230,7 +230,7 @@ def checked_split_url():
         untrusted.isprintable()
         and not untrusted.startswith("///")
         and not parsed.scheme
-        and parsed.netloc in ["", request.host]
+        and parsed.netloc in ["", "example.com"]
     ):
         return redirect(untrusted, code=302) # OK
     return redirect("/", code=302)
@@ -264,27 +264,27 @@ def named_empty_scheme():
     return redirect("/", code=302)
 
 
-@app.route('/checked_named_host_collections')
-def checked_named_host_collections():
+@app.route('/checked_host_collections')
+def checked_host_collections():
     untrusted = request.args.get('target', '').replace("\\", "/").strip()
     kind = request.args.get('kind')
-    if kind == "list":
-        allowed_hosts = ["", request.host]
-    elif kind == "tuple":
-        allowed_hosts = ("", request.host)
-    elif kind == "set":
-        allowed_hosts = {"", request.host}
-    else:
-        allowed_hosts = {"": True, request.host: True}
-    hosts = allowed_hosts
     parsed = urlsplit(untrusted)
     if (
         untrusted.isprintable()
         and not untrusted.startswith("///")
         and not parsed.scheme
-        and parsed.netloc in hosts
     ):
-        return redirect(untrusted, code=302) # OK
+        if kind == "list" and parsed.netloc in ["", "example.com"]:
+            return redirect(untrusted, code=302) # OK
+        elif kind == "tuple":
+            allowed_hosts = ("", "example.com")
+            hosts = allowed_hosts
+            if parsed.netloc in hosts:
+                return redirect(untrusted, code=302) # OK
+        elif kind == "set" and parsed.netloc in {"", "example.com"}:
+            return redirect(untrusted, code=302) # OK
+        elif kind == "dict" and parsed.netloc in {"": True, "example.com": True}:
+            return redirect(untrusted, code=302) # OK
     return redirect("/", code=302)
 
 
@@ -937,4 +937,62 @@ def aliased_parser():
         and not parts.netloc
     ):
         return redirect(untrusted, code=302) # OK
+    return redirect("/", code=302)
+
+
+@app.route('/guarded_request_derived_hostname')
+def guarded_request_derived_hostname():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parts = urlsplit(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parts.scheme
+        and parts.netloc == parts.hostname
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/guarded_request_derived_host_list')
+def guarded_request_derived_host_list():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parts = urlsplit(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parts.scheme
+        and parts.netloc in ["", parts.hostname]
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/guarded_request_host')
+def guarded_request_host():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parts = urlsplit(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parts.scheme
+        and parts.netloc in ["", request.host]
+    ):
+        return redirect(untrusted, code=302) # $ SPURIOUS: Alert
+    return redirect("/", code=302)
+
+
+@app.route('/guarded_mutated_host_list')
+def guarded_mutated_host_list():
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    allowed_hosts = [""]
+    allowed_hosts.append(request.args.get('host', ''))
+    parts = urlsplit(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parts.scheme
+        and parts.netloc in allowed_hosts
+    ):
+        return redirect(untrusted, code=302) # $ Alert
     return redirect("/", code=302)

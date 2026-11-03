@@ -61,6 +61,10 @@
 | test.py:891:25:891:33 | ControlFlowNode for untrusted | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:891:25:891:33 | ControlFlowNode for untrusted | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | test.py:914:25:914:33 | ControlFlowNode for untrusted | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:914:25:914:33 | ControlFlowNode for untrusted | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | test.py:924:25:924:33 | ControlFlowNode for untrusted | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:924:25:924:33 | ControlFlowNode for untrusted | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| test.py:953:25:953:33 | ControlFlowNode for untrusted | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:953:25:953:33 | ControlFlowNode for untrusted | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| test.py:967:25:967:33 | ControlFlowNode for untrusted | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:967:25:967:33 | ControlFlowNode for untrusted | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| test.py:981:25:981:33 | ControlFlowNode for untrusted | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:981:25:981:33 | ControlFlowNode for untrusted | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| test.py:997:25:997:33 | ControlFlowNode for untrusted | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:997:25:997:33 | ControlFlowNode for untrusted | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 edges
 | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
 | test.py:1:26:1:32 | ControlFlowNode for request | test.py:7:14:7:20 | ControlFlowNode for request | provenance |  |
@@ -125,6 +129,10 @@ edges
 | test.py:1:26:1:32 | ControlFlowNode for request | test.py:883:17:883:23 | ControlFlowNode for request | provenance |  |
 | test.py:1:26:1:32 | ControlFlowNode for request | test.py:905:17:905:23 | ControlFlowNode for request | provenance |  |
 | test.py:1:26:1:32 | ControlFlowNode for request | test.py:920:17:920:23 | ControlFlowNode for request | provenance |  |
+| test.py:1:26:1:32 | ControlFlowNode for request | test.py:945:17:945:23 | ControlFlowNode for request | provenance |  |
+| test.py:1:26:1:32 | ControlFlowNode for request | test.py:959:17:959:23 | ControlFlowNode for request | provenance |  |
+| test.py:1:26:1:32 | ControlFlowNode for request | test.py:973:17:973:23 | ControlFlowNode for request | provenance |  |
+| test.py:1:26:1:32 | ControlFlowNode for request | test.py:987:17:987:23 | ControlFlowNode for request | provenance |  |
 | test.py:7:5:7:10 | ControlFlowNode for target | test.py:8:21:8:26 | ControlFlowNode for target | provenance |  |
 | test.py:7:14:7:20 | ControlFlowNode for request | test.py:7:14:7:25 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
 | test.py:7:14:7:25 | ControlFlowNode for Attribute | test.py:7:14:7:43 | ControlFlowNode for Attribute() | provenance | dict.get |
@@ -438,6 +446,26 @@ edges
 | test.py:920:17:920:28 | ControlFlowNode for Attribute | test.py:920:17:920:46 | ControlFlowNode for Attribute() | provenance | dict.get |
 | test.py:920:17:920:46 | ControlFlowNode for Attribute() | test.py:920:17:920:65 | ControlFlowNode for Attribute() | provenance | Config |
 | test.py:920:17:920:65 | ControlFlowNode for Attribute() | test.py:920:5:920:13 | ControlFlowNode for untrusted | provenance |  |
+| test.py:945:5:945:13 | ControlFlowNode for untrusted | test.py:953:25:953:33 | ControlFlowNode for untrusted | provenance |  |
+| test.py:945:17:945:23 | ControlFlowNode for request | test.py:945:17:945:28 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| test.py:945:17:945:28 | ControlFlowNode for Attribute | test.py:945:17:945:46 | ControlFlowNode for Attribute() | provenance | dict.get |
+| test.py:945:17:945:46 | ControlFlowNode for Attribute() | test.py:945:17:945:65 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:945:17:945:65 | ControlFlowNode for Attribute() | test.py:945:5:945:13 | ControlFlowNode for untrusted | provenance |  |
+| test.py:959:5:959:13 | ControlFlowNode for untrusted | test.py:967:25:967:33 | ControlFlowNode for untrusted | provenance |  |
+| test.py:959:17:959:23 | ControlFlowNode for request | test.py:959:17:959:28 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| test.py:959:17:959:28 | ControlFlowNode for Attribute | test.py:959:17:959:46 | ControlFlowNode for Attribute() | provenance | dict.get |
+| test.py:959:17:959:46 | ControlFlowNode for Attribute() | test.py:959:17:959:65 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:959:17:959:65 | ControlFlowNode for Attribute() | test.py:959:5:959:13 | ControlFlowNode for untrusted | provenance |  |
+| test.py:973:5:973:13 | ControlFlowNode for untrusted | test.py:981:25:981:33 | ControlFlowNode for untrusted | provenance |  |
+| test.py:973:17:973:23 | ControlFlowNode for request | test.py:973:17:973:28 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| test.py:973:17:973:28 | ControlFlowNode for Attribute | test.py:973:17:973:46 | ControlFlowNode for Attribute() | provenance | dict.get |
+| test.py:973:17:973:46 | ControlFlowNode for Attribute() | test.py:973:17:973:65 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:973:17:973:65 | ControlFlowNode for Attribute() | test.py:973:5:973:13 | ControlFlowNode for untrusted | provenance |  |
+| test.py:987:5:987:13 | ControlFlowNode for untrusted | test.py:997:25:997:33 | ControlFlowNode for untrusted | provenance |  |
+| test.py:987:17:987:23 | ControlFlowNode for request | test.py:987:17:987:28 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| test.py:987:17:987:28 | ControlFlowNode for Attribute | test.py:987:17:987:46 | ControlFlowNode for Attribute() | provenance | dict.get |
+| test.py:987:17:987:46 | ControlFlowNode for Attribute() | test.py:987:17:987:65 | ControlFlowNode for Attribute() | provenance | Config |
+| test.py:987:17:987:65 | ControlFlowNode for Attribute() | test.py:987:5:987:13 | ControlFlowNode for untrusted | provenance |  |
 nodes
 | test.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | test.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -816,4 +844,28 @@ nodes
 | test.py:920:17:920:46 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:920:17:920:65 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:924:25:924:33 | ControlFlowNode for untrusted | semmle.label | ControlFlowNode for untrusted |
+| test.py:945:5:945:13 | ControlFlowNode for untrusted | semmle.label | ControlFlowNode for untrusted |
+| test.py:945:17:945:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:945:17:945:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:945:17:945:46 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:945:17:945:65 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:953:25:953:33 | ControlFlowNode for untrusted | semmle.label | ControlFlowNode for untrusted |
+| test.py:959:5:959:13 | ControlFlowNode for untrusted | semmle.label | ControlFlowNode for untrusted |
+| test.py:959:17:959:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:959:17:959:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:959:17:959:46 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:959:17:959:65 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:967:25:967:33 | ControlFlowNode for untrusted | semmle.label | ControlFlowNode for untrusted |
+| test.py:973:5:973:13 | ControlFlowNode for untrusted | semmle.label | ControlFlowNode for untrusted |
+| test.py:973:17:973:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:973:17:973:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:973:17:973:46 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:973:17:973:65 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:981:25:981:33 | ControlFlowNode for untrusted | semmle.label | ControlFlowNode for untrusted |
+| test.py:987:5:987:13 | ControlFlowNode for untrusted | semmle.label | ControlFlowNode for untrusted |
+| test.py:987:17:987:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:987:17:987:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:987:17:987:46 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:987:17:987:65 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:997:25:997:33 | ControlFlowNode for untrusted | semmle.label | ControlFlowNode for untrusted |
 subpaths

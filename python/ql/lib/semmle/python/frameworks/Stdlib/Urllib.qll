@@ -144,10 +144,11 @@ private module Urllib {
 
     /**
      * Holds if every local source of `e` is an immutable collection literal, or a mutable
-     * collection literal used directly in the membership test, whose elements or keys all exclude
-     * `""`.
+     * collection literal used directly in the membership test, with known host elements or keys.
+     * Empty strings are accepted only when `allowEmpty` is true.
      */
-    private predicate membershipExcludesEmptyString(Expr e) {
+    private predicate membershipChecksKnownHosts(Expr e, boolean allowEmpty) {
+      allowEmpty in [true, false] and
       forex(DataFlow::LocalSourceNode source | source = DataFlow::exprNode(e).getALocalSource() |
         exists(Expr collection | collection = source.asExpr() |
           (collection instanceof List or collection instanceof Tuple or collection instanceof Set) and
@@ -160,12 +161,18 @@ private module Urllib {
               ]
           |
             excludesEmptyString(elt)
+            or
+            allowEmpty = true and isEmptyString(elt)
           )
           or
           collection instanceof Dict and
           collection = e and
           not collection.(Dict).getAnItem() instanceof DictUnpacking and
-          forall(Expr key | key = collection.(Dict).getAKey() | excludesEmptyString(key))
+          forall(Expr key | key = collection.(Dict).getAKey() |
+            excludesEmptyString(key)
+            or
+            allowEmpty = true and isEmptyString(key)
+          )
         )
       )
     }
@@ -179,7 +186,7 @@ private module Urllib {
 
     /** Holds if comparing against `e` using `op` cannot accept `""`. */
     private predicate comparisonExcludesEmptyString(Cmpop op, Expr e) {
-      op.getSymbol() in ["in", "not in"] and membershipExcludesEmptyString(e)
+      op.getSymbol() in ["in", "not in"] and membershipChecksKnownHosts(e, false)
       or
       op.getSymbol() in ["==", "is", "!=", "is not"] and excludesEmptyString(e)
     }
@@ -264,7 +271,7 @@ private module Urllib {
       )
     }
 
-    /** A `netloc` check that allows `""` (e.g. `not parsed.netloc` or `parsed.netloc in ["", host]`). */
+    /** A `netloc` check allowing `""` and otherwise only known hosts. */
     private predicate possiblyEmptyNetlocCheck(
       DataFlow::GuardNode g, ControlFlowNode node, boolean branch
     ) {
@@ -272,7 +279,11 @@ private module Urllib {
       or
       exists(Cmpop op, Expr other |
         parsedUrlAttributeComparison(g, node, branch, "netloc", op, other) and
-        not comparisonExcludesEmptyString(op, other)
+        (
+          op.getSymbol() in ["==", "is", "!=", "is not"] and isEmptyString(other)
+          or
+          op.getSymbol() in ["in", "not in"] and membershipChecksKnownHosts(other, true)
+        )
       )
     }
 
