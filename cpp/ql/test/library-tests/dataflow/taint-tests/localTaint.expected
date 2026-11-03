@@ -1892,8 +1892,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:69:9:69:9 | ref arg l | map.cpp:79:7:79:7 | l |  |
 | map.cpp:69:9:69:9 | ref arg l | map.cpp:80:7:80:7 | l |  |
 | map.cpp:69:9:69:9 | ref arg l | map.cpp:81:7:81:7 | l |  |
-| map.cpp:86:7:86:15 | call to make_pair | map.cpp:86:7:86:32 | call to pair | TAINT |
-| map.cpp:89:7:89:15 | call to make_pair | map.cpp:89:7:89:32 | call to pair | TAINT |
 | map.cpp:94:6:94:14 | call to make_pair | map.cpp:94:6:94:49 | call to pair | TAINT |
 | map.cpp:94:6:94:49 | call to pair | map.cpp:94:2:94:49 | ... = ... |  |
 | map.cpp:94:6:94:49 | call to pair | map.cpp:95:7:95:7 | m |  |
@@ -1901,7 +1899,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:94:6:94:49 | call to pair | map.cpp:97:7:97:7 | m |  |
 | map.cpp:94:6:94:49 | call to pair | map.cpp:98:7:98:7 | m |  |
 | map.cpp:94:6:94:49 | call to pair | map.cpp:99:7:99:7 | m |  |
-| map.cpp:95:7:95:7 | m | map.cpp:95:7:95:7 | call to pair | TAINT |
 | map.cpp:105:39:105:40 | call to map | map.cpp:107:7:107:8 | m1 |  |
 | map.cpp:105:39:105:40 | call to map | map.cpp:113:7:113:8 | m1 |  |
 | map.cpp:105:39:105:40 | call to map | map.cpp:119:7:119:8 | m1 |  |
@@ -2105,7 +2102,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:146:40:146:41 | ref arg i1 | map.cpp:148:9:148:10 | i1 |  |
 | map.cpp:146:40:146:41 | ref arg i1 | map.cpp:149:8:149:9 | i1 |  |
 | map.cpp:146:40:146:41 | ref arg i1 | map.cpp:150:8:150:9 | i1 |  |
-| map.cpp:148:8:148:8 | call to operator* | map.cpp:148:8:148:10 | call to pair | TAINT |
 | map.cpp:148:9:148:10 | i1 | map.cpp:148:8:148:8 | call to operator* | TAINT |
 | map.cpp:148:9:148:10 | ref arg i1 | map.cpp:146:24:146:25 | i1 |  |
 | map.cpp:148:9:148:10 | ref arg i1 | map.cpp:146:40:146:41 | i1 |  |
@@ -2142,7 +2138,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:152:40:152:41 | ref arg i2 | map.cpp:154:9:154:10 | i2 |  |
 | map.cpp:152:40:152:41 | ref arg i2 | map.cpp:155:8:155:9 | i2 |  |
 | map.cpp:152:40:152:41 | ref arg i2 | map.cpp:156:8:156:9 | i2 |  |
-| map.cpp:154:8:154:8 | call to operator* | map.cpp:154:8:154:10 | call to pair | TAINT |
 | map.cpp:154:9:154:10 | i2 | map.cpp:154:8:154:8 | call to operator* | TAINT |
 | map.cpp:154:9:154:10 | ref arg i2 | map.cpp:152:24:152:25 | i2 |  |
 | map.cpp:154:9:154:10 | ref arg i2 | map.cpp:152:40:152:41 | i2 |  |
@@ -2179,7 +2174,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:158:40:158:41 | ref arg i3 | map.cpp:160:9:160:10 | i3 |  |
 | map.cpp:158:40:158:41 | ref arg i3 | map.cpp:161:8:161:9 | i3 |  |
 | map.cpp:158:40:158:41 | ref arg i3 | map.cpp:162:8:162:9 | i3 |  |
-| map.cpp:160:8:160:8 | call to operator* | map.cpp:160:8:160:10 | call to pair | TAINT |
 | map.cpp:160:9:160:10 | i3 | map.cpp:160:8:160:8 | call to operator* | TAINT |
 | map.cpp:160:9:160:10 | ref arg i3 | map.cpp:158:24:158:25 | i3 |  |
 | map.cpp:160:9:160:10 | ref arg i3 | map.cpp:158:40:158:41 | i3 |  |
@@ -2448,6 +2442,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:222:39:222:41 | call to map | map.cpp:228:2:228:4 | m23 |  |
 | map.cpp:222:39:222:41 | call to map | map.cpp:229:7:229:9 | m23 |  |
 | map.cpp:222:39:222:41 | call to map | map.cpp:252:1:252:1 | m23 |  |
+| map.cpp:222:103:222:108 | call to source | map.cpp:222:44:222:111 | call to pair | TAINT |
 | map.cpp:223:2:223:4 | ref arg m23 | map.cpp:224:2:224:4 | m23 |  |
 | map.cpp:223:2:223:4 | ref arg m23 | map.cpp:225:7:225:9 | m23 |  |
 | map.cpp:223:2:223:4 | ref arg m23 | map.cpp:226:7:226:9 | m23 |  |
@@ -2497,6 +2492,7 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:232:44:232:46 | call to map | map.cpp:239:24:239:26 | m25 |  |
 | map.cpp:232:44:232:46 | call to map | map.cpp:240:7:240:9 | m25 |  |
 | map.cpp:232:44:232:46 | call to map | map.cpp:252:1:252:1 | m25 |  |
+| map.cpp:232:105:232:110 | call to source | map.cpp:232:49:232:113 | call to pair | TAINT |
 | map.cpp:233:7:233:9 | m24 | map.cpp:233:11:233:17 | call to emplace | TAINT |
 | map.cpp:233:7:233:9 | ref arg m24 | map.cpp:234:7:234:9 | m24 |  |
 | map.cpp:233:7:233:9 | ref arg m24 | map.cpp:235:7:235:9 | m24 |  |
@@ -2804,7 +2800,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:298:40:298:41 | ref arg i1 | map.cpp:300:9:300:10 | i1 |  |
 | map.cpp:298:40:298:41 | ref arg i1 | map.cpp:301:8:301:9 | i1 |  |
 | map.cpp:298:40:298:41 | ref arg i1 | map.cpp:302:8:302:9 | i1 |  |
-| map.cpp:300:8:300:8 | call to operator* | map.cpp:300:8:300:10 | call to pair | TAINT |
 | map.cpp:300:9:300:10 | i1 | map.cpp:300:8:300:8 | call to operator* | TAINT |
 | map.cpp:300:9:300:10 | ref arg i1 | map.cpp:298:24:298:25 | i1 |  |
 | map.cpp:300:9:300:10 | ref arg i1 | map.cpp:298:40:298:41 | i1 |  |
@@ -2841,7 +2836,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:304:40:304:41 | ref arg i2 | map.cpp:306:9:306:10 | i2 |  |
 | map.cpp:304:40:304:41 | ref arg i2 | map.cpp:307:8:307:9 | i2 |  |
 | map.cpp:304:40:304:41 | ref arg i2 | map.cpp:308:8:308:9 | i2 |  |
-| map.cpp:306:8:306:8 | call to operator* | map.cpp:306:8:306:10 | call to pair | TAINT |
 | map.cpp:306:9:306:10 | i2 | map.cpp:306:8:306:8 | call to operator* | TAINT |
 | map.cpp:306:9:306:10 | ref arg i2 | map.cpp:304:24:304:25 | i2 |  |
 | map.cpp:306:9:306:10 | ref arg i2 | map.cpp:304:40:304:41 | i2 |  |
@@ -2878,7 +2872,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:310:40:310:41 | ref arg i3 | map.cpp:312:9:312:10 | i3 |  |
 | map.cpp:310:40:310:41 | ref arg i3 | map.cpp:313:8:313:9 | i3 |  |
 | map.cpp:310:40:310:41 | ref arg i3 | map.cpp:314:8:314:9 | i3 |  |
-| map.cpp:312:8:312:8 | call to operator* | map.cpp:312:8:312:10 | call to pair | TAINT |
 | map.cpp:312:9:312:10 | i3 | map.cpp:312:8:312:8 | call to operator* | TAINT |
 | map.cpp:312:9:312:10 | ref arg i3 | map.cpp:310:24:310:25 | i3 |  |
 | map.cpp:312:9:312:10 | ref arg i3 | map.cpp:310:40:310:41 | i3 |  |
@@ -3344,11 +3337,14 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:409:71:409:73 | call to unordered_map | map.cpp:420:7:420:9 | m32 |  |
 | map.cpp:409:71:409:73 | call to unordered_map | map.cpp:421:7:421:9 | m32 |  |
 | map.cpp:409:71:409:73 | call to unordered_map | map.cpp:438:1:438:1 | m32 |  |
+| map.cpp:409:105:409:105 | 0 | map.cpp:409:102:409:106 | call to pair | TAINT |
+| map.cpp:409:113:409:113 | x | map.cpp:409:142:409:142 | x |  |
+| map.cpp:409:113:409:113 | x | map.cpp:409:145:409:145 | x |  |
+| map.cpp:409:145:409:145 | x | map.cpp:409:142:409:146 | call to pair | TAINT |
 | map.cpp:410:7:410:9 | m29 | map.cpp:410:11:410:21 | call to try_emplace | TAINT |
 | map.cpp:410:7:410:9 | ref arg m29 | map.cpp:411:7:411:9 | m29 |  |
 | map.cpp:410:7:410:9 | ref arg m29 | map.cpp:412:7:412:9 | m29 |  |
 | map.cpp:410:7:410:9 | ref arg m29 | map.cpp:438:1:438:1 | m29 |  |
-| map.cpp:410:11:410:21 | call to try_emplace | map.cpp:410:7:410:34 | call to pair | TAINT |
 | map.cpp:410:30:410:30 | 1 | map.cpp:410:7:410:9 | ref arg m29 | TAINT |
 | map.cpp:410:30:410:30 | 1 | map.cpp:410:11:410:21 | call to try_emplace | TAINT |
 | map.cpp:410:33:410:33 | 2 | map.cpp:410:7:410:9 | ref arg m29 | TAINT |
@@ -3356,12 +3352,10 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:411:7:411:9 | m29 | map.cpp:411:7:411:9 | call to unordered_map |  |
 | map.cpp:412:7:412:9 | m29 | map.cpp:412:10:412:10 | call to operator[] | TAINT |
 | map.cpp:412:7:412:9 | ref arg m29 | map.cpp:438:1:438:1 | m29 |  |
-| map.cpp:412:10:412:10 | call to operator[] | map.cpp:412:7:412:16 | call to pair | TAINT |
 | map.cpp:413:7:413:9 | m30 | map.cpp:413:11:413:21 | call to try_emplace | TAINT |
 | map.cpp:413:7:413:9 | ref arg m30 | map.cpp:414:7:414:9 | m30 |  |
 | map.cpp:413:7:413:9 | ref arg m30 | map.cpp:415:7:415:9 | m30 |  |
 | map.cpp:413:7:413:9 | ref arg m30 | map.cpp:438:1:438:1 | m30 |  |
-| map.cpp:413:11:413:21 | call to try_emplace | map.cpp:413:7:413:37 | call to pair | TAINT |
 | map.cpp:413:33:413:33 | 1 | map.cpp:413:7:413:9 | ref arg m30 | TAINT |
 | map.cpp:413:33:413:33 | 1 | map.cpp:413:11:413:21 | call to try_emplace | TAINT |
 | map.cpp:413:36:413:36 | 2 | map.cpp:413:7:413:9 | ref arg m30 | TAINT |
@@ -3369,25 +3363,21 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:414:7:414:9 | m30 | map.cpp:414:7:414:9 | call to unordered_map |  |
 | map.cpp:415:7:415:9 | m30 | map.cpp:415:10:415:10 | call to operator[] | TAINT |
 | map.cpp:415:7:415:9 | ref arg m30 | map.cpp:438:1:438:1 | m30 |  |
-| map.cpp:415:10:415:10 | call to operator[] | map.cpp:415:7:415:16 | call to pair | TAINT |
 | map.cpp:416:7:416:9 | m31 | map.cpp:416:11:416:21 | call to try_emplace | TAINT |
 | map.cpp:416:7:416:9 | ref arg m31 | map.cpp:417:7:417:9 | m31 |  |
 | map.cpp:416:7:416:9 | ref arg m31 | map.cpp:418:7:418:9 | m31 |  |
 | map.cpp:416:7:416:9 | ref arg m31 | map.cpp:438:1:438:1 | m31 |  |
-| map.cpp:416:11:416:21 | call to try_emplace | map.cpp:416:7:416:41 | call to pair | TAINT |
 | map.cpp:416:30:416:35 | call to source | map.cpp:416:7:416:9 | ref arg m31 | TAINT |
 | map.cpp:416:30:416:35 | call to source | map.cpp:416:11:416:21 | call to try_emplace | TAINT |
-| map.cpp:416:40:416:40 | 2 | map.cpp:416:7:416:9 | ref arg m31 | TAINT |
-| map.cpp:416:40:416:40 | 2 | map.cpp:416:11:416:21 | call to try_emplace | TAINT |
+| map.cpp:416:41:416:41 | 2 | map.cpp:416:7:416:9 | ref arg m31 | TAINT |
+| map.cpp:416:41:416:41 | 2 | map.cpp:416:11:416:21 | call to try_emplace | TAINT |
 | map.cpp:417:7:417:9 | m31 | map.cpp:417:7:417:9 | call to unordered_map |  |
 | map.cpp:418:7:418:9 | m31 | map.cpp:418:10:418:10 | call to operator[] | TAINT |
 | map.cpp:418:7:418:9 | ref arg m31 | map.cpp:438:1:438:1 | m31 |  |
-| map.cpp:418:10:418:10 | call to operator[] | map.cpp:418:7:418:16 | call to pair | TAINT |
 | map.cpp:419:7:419:9 | m32 | map.cpp:419:11:419:21 | call to try_emplace | TAINT |
 | map.cpp:419:7:419:9 | ref arg m32 | map.cpp:420:7:420:9 | m32 |  |
 | map.cpp:419:7:419:9 | ref arg m32 | map.cpp:421:7:421:9 | m32 |  |
 | map.cpp:419:7:419:9 | ref arg m32 | map.cpp:438:1:438:1 | m32 |  |
-| map.cpp:419:11:419:21 | call to try_emplace | map.cpp:419:7:419:41 | call to pair | TAINT |
 | map.cpp:419:30:419:30 | 1 | map.cpp:419:7:419:9 | ref arg m32 | TAINT |
 | map.cpp:419:30:419:30 | 1 | map.cpp:419:11:419:21 | call to try_emplace | TAINT |
 | map.cpp:419:33:419:38 | call to source | map.cpp:419:7:419:9 | ref arg m32 | TAINT |
@@ -3395,7 +3385,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | map.cpp:420:7:420:9 | m32 | map.cpp:420:7:420:9 | call to unordered_map |  |
 | map.cpp:421:7:421:9 | m32 | map.cpp:421:10:421:10 | call to operator[] | TAINT |
 | map.cpp:421:7:421:9 | ref arg m32 | map.cpp:438:1:438:1 | m32 |  |
-| map.cpp:421:10:421:10 | call to operator[] | map.cpp:421:7:421:16 | call to pair | TAINT |
 | map.cpp:424:49:424:51 | call to unordered_map | map.cpp:425:7:425:9 | m33 |  |
 | map.cpp:424:49:424:51 | call to unordered_map | map.cpp:426:7:426:9 | m33 |  |
 | map.cpp:424:49:424:51 | call to unordered_map | map.cpp:438:1:438:1 | m33 |  |
@@ -4856,111 +4845,116 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | standalone_iterators.cpp:128:2:128:3 | it | standalone_iterators.cpp:128:5:128:5 | call to operator+= | TAINT |
 | standalone_iterators.cpp:128:2:128:3 | ref arg it | standalone_iterators.cpp:129:7:129:8 | it |  |
 | standalone_iterators.cpp:128:8:128:13 | call to source | standalone_iterators.cpp:128:2:128:3 | ref arg it | TAINT |
-| stl.h:95:69:95:69 | x | stl.h:95:69:95:69 | x |  |
-| stl.h:95:69:95:69 | x | stl.h:95:69:95:69 | x |  |
-| stl.h:95:69:95:69 | x | stl.h:95:69:95:69 | x |  |
-| stl.h:95:69:95:69 | x | stl.h:96:42:96:42 | x |  |
-| stl.h:95:69:95:69 | x | stl.h:96:42:96:42 | x |  |
-| stl.h:95:69:95:69 | x | stl.h:96:42:96:42 | x |  |
-| stl.h:96:42:96:42 | ref arg x | stl.h:95:69:95:69 | x |  |
-| stl.h:96:42:96:42 | ref arg x | stl.h:95:69:95:69 | x |  |
-| stl.h:346:30:346:40 | 0 | file://:0:0:0:0 | noexcept(...) | TAINT |
-| stl.h:346:30:346:40 | 0 | file://:0:0:0:0 | noexcept(...) | TAINT |
-| stl.h:346:30:346:40 | call to allocator | stl.h:346:21:346:41 | noexcept(...) | TAINT |
-| stl.h:346:30:346:40 | call to allocator | stl.h:346:21:346:41 | noexcept(...) | TAINT |
-| stl.h:346:30:346:40 | call to allocator | stl.h:346:21:346:41 | noexcept(...) | TAINT |
-| stl.h:346:30:346:40 | call to allocator | stl.h:346:21:346:41 | noexcept(...) | TAINT |
-| stl.h:346:30:346:40 | call to allocator | stl.h:346:21:346:41 | noexcept(...) | TAINT |
-| stl.h:346:30:346:40 | call to allocator | stl.h:346:21:346:41 | noexcept(...) | TAINT |
-| stl.h:346:30:346:40 | call to allocator | stl.h:346:21:346:41 | noexcept(...) | TAINT |
-| stl.h:346:53:346:63 | 0 | stl.h:346:46:346:64 | constructor init | TAINT |
-| stl.h:450:3:450:3 | this | stl.h:450:36:450:43 | constructor init of field first [pre-this] |  |
-| stl.h:450:3:450:3 | this | stl.h:450:36:450:43 | constructor init of field first [pre-this] |  |
-| stl.h:450:3:450:3 | this | stl.h:450:36:450:43 | constructor init of field first [pre-this] |  |
-| stl.h:450:3:450:3 | this | stl.h:450:36:450:43 | constructor init of field first [pre-this] |  |
-| stl.h:450:3:450:6 | this | stl.h:450:36:450:43 | constructor init of field first [pre-this] |  |
-| stl.h:450:18:450:18 | x | stl.h:450:42:450:42 | x |  |
-| stl.h:450:18:450:18 | x | stl.h:450:42:450:42 | x |  |
-| stl.h:450:18:450:18 | x | stl.h:450:42:450:42 | x |  |
-| stl.h:450:18:450:18 | x | stl.h:450:42:450:42 | x |  |
-| stl.h:450:18:450:18 | x | stl.h:450:42:450:42 | x |  |
-| stl.h:450:31:450:31 | y | stl.h:450:53:450:53 | y |  |
-| stl.h:450:31:450:31 | y | stl.h:450:53:450:53 | y |  |
-| stl.h:450:31:450:31 | y | stl.h:450:53:450:53 | y |  |
-| stl.h:450:31:450:31 | y | stl.h:450:53:450:53 | y |  |
-| stl.h:450:31:450:31 | y | stl.h:450:53:450:53 | y |  |
-| stl.h:450:36:450:43 | call to unknown function | stl.h:450:36:450:43 | constructor init of field first | TAINT |
-| stl.h:450:36:450:43 | constructor init of field first [post-this] | stl.h:450:46:450:54 | constructor init of field second [pre-this] |  |
-| stl.h:450:36:450:43 | constructor init of field first [post-this] | stl.h:450:46:450:54 | constructor init of field second [pre-this] |  |
-| stl.h:450:36:450:43 | constructor init of field first [post-this] | stl.h:450:46:450:54 | constructor init of field second [pre-this] |  |
-| stl.h:450:36:450:43 | constructor init of field first [post-this] | stl.h:450:46:450:54 | constructor init of field second [pre-this] |  |
-| stl.h:450:36:450:43 | constructor init of field first [post-this] | stl.h:450:46:450:54 | constructor init of field second [pre-this] |  |
-| stl.h:450:36:450:43 | constructor init of field first [pre-this] | stl.h:450:46:450:54 | constructor init of field second [pre-this] |  |
-| stl.h:450:36:450:43 | constructor init of field first [pre-this] | stl.h:450:46:450:54 | constructor init of field second [pre-this] |  |
-| stl.h:450:36:450:43 | constructor init of field first [pre-this] | stl.h:450:46:450:54 | constructor init of field second [pre-this] |  |
-| stl.h:450:36:450:43 | constructor init of field first [pre-this] | stl.h:450:46:450:54 | constructor init of field second [pre-this] |  |
-| stl.h:450:36:450:43 | constructor init of field first [pre-this] | stl.h:450:46:450:54 | constructor init of field second [pre-this] |  |
-| stl.h:450:42:450:42 | x | stl.h:450:36:450:43 | constructor init of field first | TAINT |
-| stl.h:450:42:450:42 | x | stl.h:450:36:450:43 | constructor init of field first | TAINT |
-| stl.h:450:42:450:42 | x | stl.h:450:36:450:43 | constructor init of field first | TAINT |
-| stl.h:450:42:450:42 | x | stl.h:450:36:450:43 | constructor init of field first | TAINT |
-| stl.h:450:46:450:54 | call to unknown function | stl.h:450:46:450:54 | constructor init of field second | TAINT |
-| stl.h:450:53:450:53 | y | stl.h:450:46:450:54 | constructor init of field second | TAINT |
-| stl.h:450:53:450:53 | y | stl.h:450:46:450:54 | constructor init of field second | TAINT |
-| stl.h:450:53:450:53 | y | stl.h:450:46:450:54 | constructor init of field second | TAINT |
-| stl.h:450:53:450:53 | y | stl.h:450:46:450:54 | constructor init of field second | TAINT |
-| stl.h:456:87:456:87 | x | stl.h:456:87:456:87 | x |  |
-| stl.h:456:87:456:87 | x | stl.h:456:87:456:87 | x |  |
-| stl.h:456:87:456:87 | x | stl.h:456:87:456:87 | x |  |
-| stl.h:456:87:456:87 | x | stl.h:456:87:456:87 | x |  |
-| stl.h:456:87:456:87 | x | stl.h:456:87:456:87 | x |  |
-| stl.h:456:87:456:87 | x | stl.h:456:87:456:87 | x |  |
-| stl.h:456:87:456:87 | x | stl.h:456:87:456:87 | x |  |
-| stl.h:456:87:456:87 | x | stl.h:457:58:457:58 | x |  |
-| stl.h:456:87:456:87 | x | stl.h:457:58:457:58 | x |  |
-| stl.h:456:87:456:87 | x | stl.h:457:58:457:58 | x |  |
-| stl.h:456:87:456:87 | x | stl.h:457:58:457:58 | x |  |
-| stl.h:456:87:456:87 | x | stl.h:457:58:457:58 | x |  |
-| stl.h:456:87:456:87 | x | stl.h:457:58:457:58 | x |  |
-| stl.h:456:87:456:87 | x | stl.h:457:58:457:58 | x |  |
-| stl.h:456:95:456:95 | y | stl.h:456:95:456:95 | y |  |
-| stl.h:456:95:456:95 | y | stl.h:456:95:456:95 | y |  |
-| stl.h:456:95:456:95 | y | stl.h:456:95:456:95 | y |  |
-| stl.h:456:95:456:95 | y | stl.h:456:95:456:95 | y |  |
-| stl.h:456:95:456:95 | y | stl.h:456:95:456:95 | y |  |
-| stl.h:456:95:456:95 | y | stl.h:456:95:456:95 | y |  |
-| stl.h:456:95:456:95 | y | stl.h:456:95:456:95 | y |  |
-| stl.h:456:95:456:95 | y | stl.h:457:79:457:79 | y |  |
-| stl.h:456:95:456:95 | y | stl.h:457:79:457:79 | y |  |
-| stl.h:456:95:456:95 | y | stl.h:457:79:457:79 | y |  |
-| stl.h:456:95:456:95 | y | stl.h:457:79:457:79 | y |  |
-| stl.h:456:95:456:95 | y | stl.h:457:79:457:79 | y |  |
-| stl.h:456:95:456:95 | y | stl.h:457:79:457:79 | y |  |
-| stl.h:456:95:456:95 | y | stl.h:457:79:457:79 | y |  |
-| stl.h:457:58:457:58 | x | stl.h:457:41:457:56 | call to forward | TAINT |
-| stl.h:457:58:457:58 | x | stl.h:457:41:457:56 | call to forward | TAINT |
-| stl.h:457:58:457:58 | x | stl.h:457:41:457:56 | call to forward | TAINT |
-| stl.h:457:58:457:58 | x | stl.h:457:41:457:56 | call to forward | TAINT |
-| stl.h:457:58:457:58 | x | stl.h:457:41:457:56 | call to forward | TAINT |
-| stl.h:457:58:457:58 | x | stl.h:457:41:457:56 | call to forward | TAINT |
-| stl.h:457:62:457:77 | call to forward | stl.h:457:3:457:82 | call to pair | TAINT |
-| stl.h:457:62:457:77 | call to forward | stl.h:457:3:457:82 | call to pair | TAINT |
-| stl.h:457:62:457:77 | call to forward | stl.h:457:3:457:82 | call to pair | TAINT |
-| stl.h:457:62:457:77 | call to forward | stl.h:457:3:457:82 | call to pair | TAINT |
-| stl.h:457:62:457:77 | call to forward | stl.h:457:3:457:82 | call to pair | TAINT |
-| stl.h:457:62:457:77 | call to forward | stl.h:457:3:457:82 | call to pair | TAINT |
-| stl.h:457:79:457:79 | y | stl.h:457:3:457:82 | call to pair | TAINT |
-| stl.h:457:79:457:79 | y | stl.h:457:3:457:82 | call to pair | TAINT |
-| stl.h:457:79:457:79 | y | stl.h:457:3:457:82 | call to pair | TAINT |
-| stl.h:457:79:457:79 | y | stl.h:457:3:457:82 | call to pair | TAINT |
-| stl.h:457:79:457:79 | y | stl.h:457:3:457:82 | call to pair | TAINT |
-| stl.h:457:79:457:79 | y | stl.h:457:3:457:82 | call to pair | TAINT |
-| stl.h:457:79:457:79 | y | stl.h:457:62:457:77 | call to forward | TAINT |
-| stl.h:457:79:457:79 | y | stl.h:457:62:457:77 | call to forward | TAINT |
-| stl.h:457:79:457:79 | y | stl.h:457:62:457:77 | call to forward | TAINT |
-| stl.h:457:79:457:79 | y | stl.h:457:62:457:77 | call to forward | TAINT |
-| stl.h:457:79:457:79 | y | stl.h:457:62:457:77 | call to forward | TAINT |
-| stl.h:457:79:457:79 | y | stl.h:457:62:457:77 | call to forward | TAINT |
+| stl.h:71:69:71:69 | x | stl.h:71:69:71:69 | x |  |
+| stl.h:71:69:71:69 | x | stl.h:71:69:71:69 | x |  |
+| stl.h:71:69:71:69 | x | stl.h:71:69:71:69 | x |  |
+| stl.h:71:69:71:69 | x | stl.h:72:42:72:42 | x |  |
+| stl.h:71:69:71:69 | x | stl.h:72:42:72:42 | x |  |
+| stl.h:71:69:71:69 | x | stl.h:72:42:72:42 | x |  |
+| stl.h:72:42:72:42 | ref arg x | stl.h:71:69:71:69 | x |  |
+| stl.h:72:42:72:42 | ref arg x | stl.h:71:69:71:69 | x |  |
+| stl.h:323:30:323:40 | 0 | file://:0:0:0:0 | noexcept(...) | TAINT |
+| stl.h:429:3:429:3 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
+| stl.h:429:3:429:3 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
+| stl.h:429:3:429:3 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
+| stl.h:429:3:429:3 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
+| stl.h:429:3:429:3 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
+| stl.h:429:3:429:3 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
+| stl.h:429:3:429:6 | this | stl.h:429:36:429:43 | constructor init of field first [pre-this] |  |
+| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
+| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
+| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
+| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
+| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
+| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
+| stl.h:429:18:429:18 | x | stl.h:429:42:429:42 | x |  |
+| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
+| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
+| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
+| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
+| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
+| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
+| stl.h:429:31:429:31 | y | stl.h:429:53:429:53 | y |  |
+| stl.h:429:36:429:43 | call to unknown function | stl.h:429:36:429:43 | constructor init of field first | TAINT |
+| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:36:429:43 | constructor init of field first [post-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:36:429:43 | constructor init of field first [pre-this] | stl.h:429:46:429:54 | constructor init of field second [pre-this] |  |
+| stl.h:429:42:429:42 | x | stl.h:429:36:429:43 | constructor init of field first | TAINT |
+| stl.h:429:42:429:42 | x | stl.h:429:36:429:43 | constructor init of field first | TAINT |
+| stl.h:429:42:429:42 | x | stl.h:429:36:429:43 | constructor init of field first | TAINT |
+| stl.h:429:42:429:42 | x | stl.h:429:36:429:43 | constructor init of field first | TAINT |
+| stl.h:429:42:429:42 | x | stl.h:429:36:429:43 | constructor init of field first | TAINT |
+| stl.h:429:42:429:42 | x | stl.h:429:36:429:43 | constructor init of field first | TAINT |
+| stl.h:429:46:429:54 | call to unknown function | stl.h:429:46:429:54 | constructor init of field second | TAINT |
+| stl.h:429:53:429:53 | y | stl.h:429:46:429:54 | constructor init of field second | TAINT |
+| stl.h:429:53:429:53 | y | stl.h:429:46:429:54 | constructor init of field second | TAINT |
+| stl.h:429:53:429:53 | y | stl.h:429:46:429:54 | constructor init of field second | TAINT |
+| stl.h:429:53:429:53 | y | stl.h:429:46:429:54 | constructor init of field second | TAINT |
+| stl.h:429:53:429:53 | y | stl.h:429:46:429:54 | constructor init of field second | TAINT |
+| stl.h:429:53:429:53 | y | stl.h:429:46:429:54 | constructor init of field second | TAINT |
+| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
+| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
+| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
+| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
+| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
+| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
+| stl.h:435:87:435:87 | x | stl.h:435:87:435:87 | x |  |
+| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
+| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
+| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
+| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
+| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
+| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
+| stl.h:435:87:435:87 | x | stl.h:436:58:436:58 | x |  |
+| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
+| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
+| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
+| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
+| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
+| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
+| stl.h:435:95:435:95 | y | stl.h:435:95:435:95 | y |  |
+| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
+| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
+| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
+| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
+| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
+| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
+| stl.h:435:95:435:95 | y | stl.h:436:79:436:79 | y |  |
+| stl.h:436:58:436:58 | x | stl.h:436:41:436:56 | call to forward | TAINT |
+| stl.h:436:58:436:58 | x | stl.h:436:41:436:56 | call to forward | TAINT |
+| stl.h:436:58:436:58 | x | stl.h:436:41:436:56 | call to forward | TAINT |
+| stl.h:436:58:436:58 | x | stl.h:436:41:436:56 | call to forward | TAINT |
+| stl.h:436:58:436:58 | x | stl.h:436:41:436:56 | call to forward | TAINT |
+| stl.h:436:58:436:58 | x | stl.h:436:41:436:56 | call to forward | TAINT |
+| stl.h:436:62:436:77 | call to forward | stl.h:436:3:436:82 | call to pair | TAINT |
+| stl.h:436:62:436:77 | call to forward | stl.h:436:3:436:82 | call to pair | TAINT |
+| stl.h:436:62:436:77 | call to forward | stl.h:436:3:436:82 | call to pair | TAINT |
+| stl.h:436:62:436:77 | call to forward | stl.h:436:3:436:82 | call to pair | TAINT |
+| stl.h:436:62:436:77 | call to forward | stl.h:436:3:436:82 | call to pair | TAINT |
+| stl.h:436:62:436:77 | call to forward | stl.h:436:3:436:82 | call to pair | TAINT |
+| stl.h:436:79:436:79 | y | stl.h:436:3:436:82 | call to pair | TAINT |
+| stl.h:436:79:436:79 | y | stl.h:436:3:436:82 | call to pair | TAINT |
+| stl.h:436:79:436:79 | y | stl.h:436:3:436:82 | call to pair | TAINT |
+| stl.h:436:79:436:79 | y | stl.h:436:3:436:82 | call to pair | TAINT |
+| stl.h:436:79:436:79 | y | stl.h:436:3:436:82 | call to pair | TAINT |
+| stl.h:436:79:436:79 | y | stl.h:436:3:436:82 | call to pair | TAINT |
+| stl.h:436:79:436:79 | y | stl.h:436:62:436:77 | call to forward | TAINT |
+| stl.h:436:79:436:79 | y | stl.h:436:62:436:77 | call to forward | TAINT |
+| stl.h:436:79:436:79 | y | stl.h:436:62:436:77 | call to forward | TAINT |
+| stl.h:436:79:436:79 | y | stl.h:436:62:436:77 | call to forward | TAINT |
+| stl.h:436:79:436:79 | y | stl.h:436:62:436:77 | call to forward | TAINT |
+| stl.h:436:79:436:79 | y | stl.h:436:62:436:77 | call to forward | TAINT |
 | string.cpp:26:12:26:17 | call to source | string.cpp:30:7:30:7 | a |  |
 | string.cpp:27:16:27:20 | 123 | string.cpp:27:16:27:21 | call to basic_string | TAINT |
 | string.cpp:27:16:27:21 | call to basic_string | string.cpp:31:7:31:7 | b |  |

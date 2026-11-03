@@ -83,7 +83,7 @@ void test_pair()
 	sink(make_pair("123", "456"));
 	sink(make_pair("123", "456").first);
 	sink(make_pair("123", "456").second);
-	sink(make_pair(source(), "456")); // $ MISSING: ast,ir
+	sink(make_pair(source(), "456")); // $ ir MISSING: ast
 	sink(make_pair(source(), "456").first); // $ ast,ir
 	sink(make_pair(source(), "456").second);
 	sink(make_pair("123", source())); // $ ast,ir
@@ -222,11 +222,11 @@ void test_map()
 	std::map<const char *, const char *> m23; std::map<const char *, const char *>::value_type(source(), source()); // ensure instantiation
 	m23.insert(std::pair<const char *, const char *>(source(), source()));
 	m23.insert(std::pair<const char *, const char *>(source(), source()));
-	sink(m23); // $ ast,ir=223:49 ast,ir=224:49
-	sink(m23.erase(m23.begin())); // $ ast,ir=223:49 ast,ir=224:49
-	sink(m23); // $ ast,ir=223:49 ast,ir=224:49
+	sink(m23); // $ ast,ir=223:61 ast,ir=224:61
+	sink(m23.erase(m23.begin())); // $ ast,ir=223:61 ast,ir=224:61
+	sink(m23); // $ ast,ir=223:61 ast,ir=224:61
 	m23.clear();
-	sink(m23); // $ SPURIOUS: ast,ir=223:49 ast,ir=224:49
+	sink(m23); // $ SPURIOUS: ast,ir=223:61 ast,ir=224:61
 
 	// emplace, emplace_hint
 	std::map<const char *, const char *> m24, m25; std::map<const char *, const char *>::value_type("abc", source()); // force the template instantiation
@@ -371,11 +371,11 @@ void test_unordered_map()
 	std::unordered_map<const char *, const char *> m23;
 	m23.insert(std::pair<const char *, const char *>(source(), source()));
 	m23.insert(std::pair<const char *, const char *>(source(), source()));
-	sink(m23); // $ ast,ir=372:49 ast,ir=373:49
-	sink(m23.erase(m23.begin())); // $ ast,ir=372:49 ast,ir=373:49
-	sink(m23); // $ ast,ir=372:49 ast,ir=373:49
+	sink(m23); // $ ast,ir=372:61 ast,ir=373:61
+	sink(m23.erase(m23.begin())); // $ ast,ir=372:61 ast,ir=373:61
+	sink(m23); // $ ast,ir=372:61 ast,ir=373:61
 	m23.clear();
-	sink(m23); // $ SPURIOUS: ast,ir=372:49 ast,ir=373:49
+	sink(m23); // $ SPURIOUS: ast,ir=372:61 ast,ir=373:61
 
 	// emplace, emplace_hint
 	std::unordered_map<const char *, const char *> m24, m25;
