@@ -420,7 +420,7 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
     not exists(SiblingShadowingDecl decl | n = [decl.getRhs(), decl.getElse()]) and
     n = getChildAdj(result, _) and
     (
-      not exists(int i | n = getRankedChild(result, i))
+      not n = getRankedChild(result, _)
       or
       exists(int i |
         n = getRankedChild(result, i) and
