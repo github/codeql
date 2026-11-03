@@ -239,53 +239,6 @@ final class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
 
 final class PhiNode = Impl::PhiNode;
 
-deprecated predicate ssaExplicitUpdate(SsaUpdate def, VariableUpdate upd) {
-  exists(SsaSourceVariable v, BasicBlock bb, int i |
-    def.definesAt(v, bb, i) and
-    certainVariableUpdate(v, upd.getControlFlowNode(), bb, i) and
-    getDestVar(upd) = def.getSourceVariable()
-  )
-}
-
-deprecated predicate ssaUncertainImplicitUpdate(SsaImplicitUpdate def) {
-  exists(SsaSourceVariable v, BasicBlock bb, int i |
-    def.definesAt(v, bb, i) and
-    uncertainVariableUpdate(v, _, bb, i)
-  )
-}
-
-deprecated predicate ssaImplicitInit(WriteDefinition def) {
-  exists(SsaSourceVariable v, BasicBlock bb, int i |
-    def.definesAt(v, bb, i) and
-    hasEntryDef(v, bb) and
-    i = -1
-  )
-}
-
-/**
- * Holds if the SSA definition of `v` at `def` reaches `redef` without crossing another
- * SSA definition of `v`.
- */
-deprecated predicate ssaDefReachesUncertainDef(TrackedSsaDef def, SsaUncertainImplicitUpdate redef) {
-  Impl::uncertainWriteDefinitionInput(redef, def)
-}
-
-deprecated VarRead getAUse(Definition def) {
-  exists(SsaSourceVariable v, BasicBlock bb, int i |
-    Impl::ssaDefReachesRead(v, def, bb, i) and
-    result.getControlFlowNode() = bb.getNode(i) and
-    result = v.getAnAccess()
-  )
-}
-
-deprecated predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def) {
-  Impl::ssaDefReachesEndOfBlock(bb, def, _)
-}
-
-deprecated predicate phiHasInputFromBlock(PhiNode phi, Definition inp, BasicBlock bb) {
-  Impl::phiHasInputFromBlock(phi, inp, bb)
-}
-
 cached
 private module Cached {
   /** Gets the destination variable of an update of a tracked variable. */
