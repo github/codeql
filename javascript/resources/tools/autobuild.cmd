@@ -3,13 +3,6 @@ SETLOCAL EnableDelayedExpansion
 
 set jvm_args=-Xss16m
 
-rem If CODEQL_RAM is set, use half for Java and half for TS.
-if NOT [%CODEQL_RAM%] == [] (
-    set /a "half_ram=CODEQL_RAM/2"
-    set LGTM_TYPESCRIPT_RAM=!half_ram!
-    set jvm_args=!jvm_args! -Xmx!half_ram!m
-)
-
 rem If CODEQL_THREADS is set, propagate via LGTM_THREADS.
 if NOT [%CODEQL_THREADS%] == [] (
     set LGTM_THREADS=%CODEQL_THREADS%

@@ -4,14 +4,6 @@ set -eu
 
 jvm_args=-Xss16m
 
-# If CODEQL_RAM is set, use half for Java and half for TS.
-if [ -n "${CODEQL_RAM:-}" ] ; then
-    half_ram="$(( CODEQL_RAM / 2 ))"
-    LGTM_TYPESCRIPT_RAM="$half_ram"
-    export LGTM_TYPESCRIPT_RAM
-    jvm_args="$jvm_args -Xmx${half_ram}m"
-fi
-
 # If CODEQL_THREADS is set, propagate via LGTM_THREADS.
 if [ -n "${CODEQL_THREADS:-}" ] ; then
     LGTM_THREADS="$CODEQL_THREADS"

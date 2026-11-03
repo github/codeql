@@ -36,7 +36,6 @@ import com.semmle.js.parser.JSParser;
 import com.semmle.js.parser.ParsedProject;
 import com.semmle.js.parser.JSParser.Result;
 import com.semmle.util.data.StringUtil;
-import com.semmle.util.data.UnitParser;
 import com.semmle.util.exception.CatastrophicError;
 import com.semmle.util.exception.Exceptions;
 import com.semmle.util.exception.InterruptedError;
@@ -97,24 +96,6 @@ public class TypeScriptParser {
   public static final String TYPESCRIPT_RETRIES_VAR = "SEMMLE_TYPESCRIPT_RETRIES";
 
   /**
-   * An environment variable (without the <code>SEMMLE_</code> or <code>LGTM_</code> prefix), that can be
-   * set to indicate the maximum heap space usable by the Node.js process, in addition to its
-   * "reserve memory".
-   *
-   * <p>Defaults to 2000 MB (for a total heap space of 2400 MB by default).
-   */
-  public static final String TYPESCRIPT_RAM_SUFFIX = "TYPESCRIPT_RAM";
-
-  /**
-   * An environment variable (without the <code>SEMMLE_</code> or <code>LGTM_</code> prefix), that can be
-   * set to indicate the additional heap space added to <code>TYPESCRIPT_RAM</code> when setting the
-   * Node.js heap limit.
-   *
-   * <p>Defaults to 400 MB (for a total heap space of 2400 MB by default).
-   */
-  public static final String TYPESCRIPT_RAM_RESERVE_SUFFIX = "TYPESCRIPT_RAM_RESERVE";
-
-  /**
    * An environment variable with additional VM arguments to pass to the Node process.
    *
    * <p>Only <code>--inspect</code> or <code>--inspect-brk</code> may be used at the moment.
@@ -154,16 +135,8 @@ public class TypeScriptParser {
    */
   private List<String> nodeJsRuntimeExtraArgs = Collections.emptyList();
 
-  /** If non-zero, we use this instead of relying on the corresponding environment variable. */
-  private int typescriptRam = 0;
-
   /** Metadata requested immediately after starting the TypeScript parser. */
   private TypeScriptParserMetadata metadata;
-
-  /** Sets the amount of RAM to allocate to the TypeScript compiler.s */
-  public void setTypescriptRam(int megabytes) {
-    this.typescriptRam = megabytes;
-  }
 
   /**
    * Verifies that Node.js and TypeScript are installed and throws an exception otherwise.
@@ -274,14 +247,6 @@ public class TypeScriptParser {
   private void setupParserWrapper() {
     verifyNodeInstallation();
 
-    int mainMemoryMb =
-        typescriptRam != 0
-            ? typescriptRam
-            : EnvironmentVariables.getMegabyteCountFromPrefixedEnv(TYPESCRIPT_RAM_SUFFIX, 2000);
-    int reserveMemoryMb = EnvironmentVariables.getMegabyteCountFromPrefixedEnv(TYPESCRIPT_RAM_RESERVE_SUFFIX, 400);
-
-    System.out.println("Memory for TypeScript process: " + mainMemoryMb + " MB, and " + reserveMemoryMb + " MB reserve");
-
     File parserWrapper = getParserWrapper();
 
     String debugFlagString = Env.systemEnv().getNonEmpty(TYPESCRIPT_NODE_FLAGS);
@@ -297,7 +262,6 @@ public class TypeScriptParser {
     }
 
     List<String> cmd = getNodeJsRuntimeInvocation();
-    cmd.add("--max_old_space_size=" + (mainMemoryMb + reserveMemoryMb));
     cmd.addAll(debugFlags);
     cmd.add(parserWrapper.getAbsolutePath());
 

@@ -224,9 +224,6 @@ public class ExtractorConfig {
   /** Should textual information be extracted into the lines/4 relation? */
   private boolean extractLines;
 
-  /** Override amount of RAM to allocate to the TypeScript compiler. */
-  private int typescriptRam;
-
   /** The default character encoding to use for parsing source files. */
   private String defaultEncoding;
 
@@ -267,7 +264,6 @@ public class ExtractorConfig {
     this.sourceType = that.sourceType;
     this.htmlHandling = that.htmlHandling;
     this.extractLines = that.extractLines;
-    this.typescriptRam = that.typescriptRam;
     this.defaultEncoding = that.defaultEncoding;
     this.virtualSourceRoot = that.virtualSourceRoot;
   }
@@ -423,16 +419,6 @@ public class ExtractorConfig {
   public ExtractorConfig withExtractLines(boolean extractLines) {
     ExtractorConfig res = new ExtractorConfig(this);
     res.extractLines = extractLines;
-    return res;
-  }
-
-  public int getTypeScriptRam() {
-    return typescriptRam;
-  }
-
-  public ExtractorConfig withTypeScriptRam(int ram) {
-    ExtractorConfig res = new ExtractorConfig(this);
-    res.typescriptRam = ram;
     return res;
   }
 

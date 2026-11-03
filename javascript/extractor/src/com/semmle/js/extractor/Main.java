@@ -20,7 +20,6 @@ import com.semmle.js.extractor.trapcache.ITrapCache;
 import com.semmle.js.parser.ParsedProject;
 import com.semmle.ts.extractor.TypeScriptParser;
 import com.semmle.util.data.StringUtil;
-import com.semmle.util.data.UnitParser;
 import com.semmle.util.exception.ResourceError;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.extraction.ExtractorOutputConfig;
@@ -60,9 +59,9 @@ public class Main {
   private static final String P_SOURCE_TYPE = "--source-type";
   private static final String P_TYPESCRIPT = "--typescript";
   private static final String P_TYPESCRIPT_FULL = "--typescript-full";
-  private static final String P_TYPESCRIPT_RAM = "--typescript-ram";
 
   // symbolic constants for deprecated command line parameter names
+  private static final String P_TYPESCRIPT_RAM = "--typescript-ram";
   private static final String P_EXCLUDE_PATH = "--exclude-path";
   private static final String P_TOLERATE_PARSE_ERRORS = "--tolerate-parse-errors";
   private static final String P_NODEJS = "--nodejs";
@@ -130,7 +129,6 @@ public class Main {
     }
 
     TypeScriptParser tsParser = extractorState.getTypeScriptParser();
-    tsParser.setTypescriptRam(extractorConfig.getTypeScriptRam());
     if (containsTypeScriptFiles()) {
       tsParser.verifyInstallation(!ap.has(P_QUIET));
     }
@@ -373,10 +371,7 @@ public class Main {
     argsParser.addFlag(P_TYPESCRIPT, 0, "Enable basic TypesScript support.");
     argsParser.addFlag(
         P_TYPESCRIPT_FULL, 0, "Enable full TypeScript support with static type information.");
-    argsParser.addFlag(
-        P_TYPESCRIPT_RAM,
-        1,
-        "Amount of memory allocated to the TypeScript compiler process. The default is 1G.");
+    argsParser.addToleratedFlag(P_TYPESCRIPT_RAM, 1);
     argsParser.addToleratedFlag(P_DEBUG_EXCLUSIONS, 0);
     argsParser.addTrailingParam("files", "Files and directories to extract.");
     return argsParser;
@@ -415,11 +410,7 @@ public class Main {
                     ap.has(P_EXPERIMENTAL) ? HtmlPopulator.Config.ALL : HtmlPopulator.Config.ELEMENTS))
             .withFileType(getFileType(ap))
             .withSourceType(ap.getEnum(P_SOURCE_TYPE, SourceType.class, SourceType.AUTO))
-            .withExtractLines(ap.has(P_EXTRACT_PROGRAM_TEXT))
-            .withTypeScriptRam(
-                ap.has(P_TYPESCRIPT_RAM)
-                    ? UnitParser.parseOpt(ap.getString(P_TYPESCRIPT_RAM), UnitParser.MEGABYTES)
-                    : 0);
+            .withExtractLines(ap.has(P_EXTRACT_PROGRAM_TEXT));
     if (ap.has(P_DEFAULT_ENCODING)) cfg = cfg.withDefaultEncoding(ap.getString(P_DEFAULT_ENCODING));
 
     // Make a usable virtual source root mapping.
