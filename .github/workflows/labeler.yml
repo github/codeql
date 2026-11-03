@@ -137,7 +137,7 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-      - uses: actions/labeler@v4
+      - uses: actions/labeler@v7
         if: steps.validate.outputs.has_prs == 'true'
         with:
           repo-token: "${{ github.token }}"
