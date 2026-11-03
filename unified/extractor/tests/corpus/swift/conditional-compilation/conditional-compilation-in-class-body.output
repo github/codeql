@@ -1,12 +1,9 @@
-// Conditional compilation is not yet supported: swift-syntax reports a
-// structured `ifConfigDecl` (whose branches hold ordinary member items), but
-// the mapping has no rule for it, so the whole block becomes one
-// `unsupported_node` and its members are not extracted.
+// Conditional compilation branches hold ordinary member declarations.
 class C {
-#if DEBUG
-    init(x: Int) {}
-    deinit {}
-#endif
+    #if DEBUG
+        init(x: Int) {}
+        deinit {}
+    #endif
 }
 
 ---
@@ -81,11 +78,11 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n⟨member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    ⟨member⟩\n}"
           modifier: modifier "class" source="class"
           name_node: identifier "C" source="C"
           member:
-            unsupported_node "#if DEBUG\n    init(x: Int) {}\n    deinit {}\n#endif" source="#if DEBUG\n    init(x: Int) {}\n    deinit {}\n#endif"
+            unsupported_node "#if DEBUG\n        init(x: Int) {}\n        deinit {}\n    #endif" source="#if DEBUG\n        init(x: Int) {}\n        deinit {}\n    #endif"
             constructor_declaration source=""
               modifier: modifier "generated" source=""
               name_node: identifier "init" source=""

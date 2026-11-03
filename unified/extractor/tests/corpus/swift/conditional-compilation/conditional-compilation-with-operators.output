@@ -1,0 +1,82 @@
+#if (DEBUG && !RELEASE) || swift(<6.0)
+    let x = 1
+#endif
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        ifConfigDecl
+          clauses:
+            ifConfigClause
+              elements:
+                codeBlockItem
+                  item:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "1"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+              condition:
+                infixOperatorExpr
+                  operator:
+                    binaryOperatorExpr
+                      operator: binaryOperator "||"
+                  leftOperand:
+                    tupleExpr
+                      leftParen: (
+                      rightParen: )
+                      elements:
+                        labeledExpr
+                          expression:
+                            infixOperatorExpr
+                              operator:
+                                binaryOperatorExpr
+                                  operator: binaryOperator "&&"
+                              leftOperand:
+                                declReferenceExpr
+                                  baseName: identifier "DEBUG"
+                              rightOperand:
+                                prefixOperatorExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "RELEASE"
+                                  operator: prefixOperator "!"
+                  rightOperand:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            prefixOperatorExpr
+                              expression:
+                                floatLiteralExpr
+                                  literal: floatLiteral "6.0"
+                              operator: prefixOperator "<"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "swift"
+              poundKeyword: #if
+          poundEndif: #endif
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt: unsupported_node "#if (DEBUG && !RELEASE) || swift(<6.0)\n    let x = 1\n#endif" source="#if (DEBUG && !RELEASE) || swift(<6.0)\n    let x = 1\n#endif"

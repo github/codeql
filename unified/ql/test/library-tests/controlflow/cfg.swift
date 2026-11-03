@@ -475,29 +475,29 @@ func test(a : A) {
 }
 
 func testIfConfig() {
-#if FOO
+#if FOO // $ MISSING: bbStep='FOO : false -> Block(+3)' bbStep='FOO : true -> Block(+1)'
   1
-  2
+  2 // $ MISSING: bbStep='2 : successor -> 5(+6)'
 #else
   3
-  4
+  4 // $ MISSING: bbStep='4 : successor -> 5(+3)'
 #endif
 
   5
 
-#if BAR
+#if BAR // $ MISSING: bbStep='BAR : false -> 8(+5)' bbStep='BAR : true -> Block(+1)'
   6
-  7
+  7 // $ MISSING: bbStep='7 : successor -> 8(+3)'
 #endif
 
   8
 
-#if FOO
+#if FOO // $ MISSING: bbStep='FOO : false -> IfExpr(+3)' bbStep='FOO : true -> Block(+1)'
   9
-  10
+  10 // $ MISSING: bbStep='10 : successor -> 13(+6)'
 #elseif true
   11
-  12
+  12 // $ MISSING: bbStep='12 : successor -> 13(+3)'
 #endif
 
   13

@@ -1,0 +1,111 @@
+#if DEBUG
+    @available(*, deprecated)
+#endif
+func f() {}
+
+#if DEBUG
+    @available(*, deprecated)
+#endif
+let x = 1
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+            ifConfigDecl
+              clauses:
+                ifConfigClause
+                  elements:
+                    attribute
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        availabilityArgument
+                          trailingComma: ,
+                          argument: binaryOperator "*"
+                        availabilityArgument
+                          argument: deprecated
+                      atSign: @
+                      attributeName:
+                        identifierType
+                          name: identifier "available"
+                  condition:
+                    declReferenceExpr
+                      baseName: identifier "DEBUG"
+                  poundKeyword: #if
+              poundEndif: #endif
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+          name: identifier "f"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+          funcKeyword: func
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+            ifConfigDecl
+              clauses:
+                ifConfigClause
+                  elements:
+                    attribute
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        availabilityArgument
+                          trailingComma: ,
+                          argument: binaryOperator "*"
+                        availabilityArgument
+                          argument: deprecated
+                      atSign: @
+                      attributeName:
+                        identifierType
+                          name: identifier "available"
+                  condition:
+                    declReferenceExpr
+                      baseName: identifier "DEBUG"
+                  poundKeyword: #if
+              poundEndif: #endif
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    integerLiteralExpr
+                      literal: integerLiteral "1"
+              pattern:
+                identifierPattern
+                  identifier: identifier "x"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩\n\n⟨stmt⟩"
+      stmt:
+        function_declaration source="#if DEBUG\n    @available(*, deprecated)\n#endif\nfunc ⟨name_node⟩() ⟨body⟩"
+          name_node: identifier "f" source="f"
+          body: block "{}" source="{}"
+        variable_declaration source="⟨modifier⟩\n⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier:
+            modifier "let" source="let"
+            unsupported_node "#if DEBUG\n    @available(*, deprecated)\n#endif" source="#if DEBUG\n    @available(*, deprecated)\n#endif" <-- ERROR: The field variable_declaration.modifier should contain modifier, but got unsupported_node
+          pattern: identifier "x" source="x"
+          value: int_literal "1" source="1"

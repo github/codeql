@@ -1,0 +1,133 @@
+func f(_ x: Int) {
+    switch x {
+    #if DEBUG
+        case 0: break
+        case 1: break
+    #endif
+    default: break
+    }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    expressionStmt
+                      expression:
+                        switchExpr
+                          leftBrace: {
+                          rightBrace: }
+                          cases:
+                            ifConfigDecl
+                              clauses:
+                                ifConfigClause
+                                  elements:
+                                    switchCase
+                                      label:
+                                        switchCaseLabel
+                                          colon: :
+                                          caseKeyword: case
+                                          caseItems:
+                                            switchCaseItem
+                                              pattern:
+                                                expressionPattern
+                                                  expression:
+                                                    integerLiteralExpr
+                                                      literal: integerLiteral "0"
+                                      statements:
+                                        codeBlockItem
+                                          item:
+                                            breakStmt
+                                              breakKeyword: break
+                                    switchCase
+                                      label:
+                                        switchCaseLabel
+                                          colon: :
+                                          caseKeyword: case
+                                          caseItems:
+                                            switchCaseItem
+                                              pattern:
+                                                expressionPattern
+                                                  expression:
+                                                    integerLiteralExpr
+                                                      literal: integerLiteral "1"
+                                      statements:
+                                        codeBlockItem
+                                          item:
+                                            breakStmt
+                                              breakKeyword: break
+                                  condition:
+                                    declReferenceExpr
+                                      baseName: identifier "DEBUG"
+                                  poundKeyword: #if
+                              poundEndif: #endif
+                            switchCase
+                              label:
+                                switchDefaultLabel
+                                  colon: :
+                                  defaultKeyword: default
+                              statements:
+                                codeBlockItem
+                                  item:
+                                    breakStmt
+                                      breakKeyword: break
+                          subject:
+                            declReferenceExpr
+                              baseName: identifier "x"
+                          switchKeyword: switch
+          name: identifier "f"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: _
+                      secondName: identifier "x"
+          funcKeyword: func
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩) ⟨body⟩"
+          name_node: identifier "f" source="f"
+          parameter:
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "x" source="x"
+          body:
+            block source="{\n    ⟨stmt⟩\n}"
+              stmt:
+                switch_expr source="switch ⟨value⟩ {\n    ⟨case⟩\n    ⟨case⟩\n    }"
+                  value: identifier "x" source="x"
+                  case:
+                    unsupported_node "#if DEBUG\n        case 0: break\n        case 1: break\n    #endif" source="#if DEBUG\n        case 0: break\n        case 1: break\n    #endif" <-- ERROR: The field switch_expr.case should contain switch_case, but got unsupported_node
+                    switch_case source="default: ⟨body⟩"
+                      body:
+                        block source="⟨stmt⟩"
+                          stmt: break_expr "break" source="break"

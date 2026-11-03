@@ -1,0 +1,91 @@
+#if DEBUG
+let x = 1
+#elseif RELEASE
+let x = 2
+#else
+let x = 3
+#endif
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        ifConfigDecl
+          clauses:
+            ifConfigClause
+              elements:
+                codeBlockItem
+                  item:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "1"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+              condition:
+                declReferenceExpr
+                  baseName: identifier "DEBUG"
+              poundKeyword: #if
+            ifConfigClause
+              elements:
+                codeBlockItem
+                  item:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "2"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+              condition:
+                declReferenceExpr
+                  baseName: identifier "RELEASE"
+              poundKeyword: #elseif
+            ifConfigClause
+              elements:
+                codeBlockItem
+                  item:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "3"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+              poundKeyword: #else
+          poundEndif: #endif
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt: unsupported_node "#if DEBUG\nlet x = 1\n#elseif RELEASE\nlet x = 2\n#else\nlet x = 3\n#endif" source="#if DEBUG\nlet x = 1\n#elseif RELEASE\nlet x = 2\n#else\nlet x = 3\n#endif"

@@ -1,0 +1,133 @@
+class C {
+    #if DEBUG
+        init(x: Int) {}
+    #elseif RELEASE
+        init(x: String) {}
+    #else
+        init() {}
+    #endif
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "C"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    ifConfigDecl
+                      clauses:
+                        ifConfigClause
+                          elements:
+                            memberBlockItem
+                              decl:
+                                initializerDecl
+                                  attributes:
+                                  body:
+                                    codeBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      statements:
+                                  modifiers:
+                                  signature:
+                                    functionSignature
+                                      parameterClause:
+                                        functionParameterClause
+                                          leftParen: (
+                                          rightParen: )
+                                          parameters:
+                                            functionParameter
+                                              colon: :
+                                              attributes:
+                                              modifiers:
+                                              type:
+                                                identifierType
+                                                  name: identifier "Int"
+                                              firstName: identifier "x"
+                                  initKeyword: init
+                          condition:
+                            declReferenceExpr
+                              baseName: identifier "DEBUG"
+                          poundKeyword: #if
+                        ifConfigClause
+                          elements:
+                            memberBlockItem
+                              decl:
+                                initializerDecl
+                                  attributes:
+                                  body:
+                                    codeBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      statements:
+                                  modifiers:
+                                  signature:
+                                    functionSignature
+                                      parameterClause:
+                                        functionParameterClause
+                                          leftParen: (
+                                          rightParen: )
+                                          parameters:
+                                            functionParameter
+                                              colon: :
+                                              attributes:
+                                              modifiers:
+                                              type:
+                                                identifierType
+                                                  name: identifier "String"
+                                              firstName: identifier "x"
+                                  initKeyword: init
+                          condition:
+                            declReferenceExpr
+                              baseName: identifier "RELEASE"
+                          poundKeyword: #elseif
+                        ifConfigClause
+                          elements:
+                            memberBlockItem
+                              decl:
+                                initializerDecl
+                                  attributes:
+                                  body:
+                                    codeBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      statements:
+                                  modifiers:
+                                  signature:
+                                    functionSignature
+                                      parameterClause:
+                                        functionParameterClause
+                                          leftParen: (
+                                          rightParen: )
+                                          parameters:
+                                  initKeyword: init
+                          poundKeyword: #else
+                      poundEndif: #endif
+          modifiers:
+          classKeyword: class
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    ⟨member⟩\n}"
+          modifier: modifier "class" source="class"
+          name_node: identifier "C" source="C"
+          member:
+            unsupported_node "#if DEBUG\n        init(x: Int) {}\n    #elseif RELEASE\n        init(x: String) {}\n    #else\n        init() {}\n    #endif" source="#if DEBUG\n        init(x: Int) {}\n    #elseif RELEASE\n        init(x: String) {}\n    #else\n        init() {}\n    #endif"
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""

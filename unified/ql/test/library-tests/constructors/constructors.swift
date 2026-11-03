@@ -60,3 +60,21 @@ struct S1 {  // implicit `init(f1: Int = 0, f2: String, f4: Double, f6: Double, 
     }
     var f8: Int?
 }
+
+class ConditionalConstructor {
+    // Constructor nested in conditonal compilation block
+    #if DEBUG
+        init(_ x: Int) {}
+    #else
+        init(_ x: String) {}
+    #endif
+}
+
+struct ConditionalFields {
+    #if DEBUG
+        var first: Int
+    #else
+        var second: String
+    #endif
+    var third: Bool
+}
