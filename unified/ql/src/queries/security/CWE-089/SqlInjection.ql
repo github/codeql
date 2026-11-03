@@ -18,7 +18,7 @@ private predicate sqliteSwiftSink(DataFlow::Node node) {
   exists(CallExpr call, FunctionDeclaration target |
     target = TypeInference::resolveCallTarget(call) and
     target.getEnclosingClass().getName() = "Connection" and
-    target.getName() = ["run", "scalar"] and
+    target.getName() = ["prepare", "run", "scalar"] and
     node.asExpr() = call.getArgument(0).getValue()
   )
 }

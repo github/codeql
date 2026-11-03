@@ -103,7 +103,7 @@ func test_sqlite_swift_api(db: Connection) throws {
 	let stmt6 = try db.prepare(unsafeQuery1, "") // $ Alert
 	try stmt6.run()
 
-	let stmt6b = try db.prepare(unsafeQuery1, "", "") // $ MISSING: Alert
+	let stmt6b = try db.prepare(unsafeQuery1, "", "") // $ Alert
 	try stmt6b.run()
 
 	let stmt7 = try db.prepare(unsafeQuery1, [""]) // $ Alert
