@@ -149,6 +149,15 @@ signature module InlineExpectationsTestSig {
   }
 }
 
+bindingset[loc]
+private predicate parseRelativeUrl(string loc, string relativePath, int sl, int sc, int el, int ec) {
+  relativePath = loc.splitAt(":", 0) and
+  sl = loc.splitAt(":", 1).toInt() and
+  sc = loc.splitAt(":", 2).toInt() and
+  el = loc.splitAt(":", 3).toInt() and
+  ec = loc.splitAt(":", 4).toInt()
+}
+
 /**
  * Module implementing inline expectations.
  */
@@ -175,6 +184,15 @@ module Make<InlineExpectationsTestSig Impl> {
      */
     bindingset[expectedTag, actualTag]
     default predicate tagMatches(string expectedTag, string actualTag) { expectedTag = actualTag }
+
+    /**
+     * Gets an expected tag that belongs to this test.
+     *
+     * This should be overridden when `tagMatches` accepts aliases other than the tags returned by
+     * `getARelevantTag`.
+     */
+    bindingset[result]
+    default string getARelevantExpectedTag() { result = getARelevantTag() }
 
     /** Holds if expectations marked with `expectedTag` are ignored. */
     bindingset[expectedTag]
@@ -214,6 +232,118 @@ module Make<InlineExpectationsTestSig Impl> {
       Impl::Location location, string element, string tag, string value
     ) {
       none()
+    }
+  }
+
+  /**
+   * Grammar-local operations shared by direct tests and postprocessing queries when rendering edits.
+   */
+  module CommentRenderer {
+    bindingset[relativePath, content]
+    string wrapInComment(string relativePath, string content) {
+      exists(string startMarker |
+        startMarker = Impl::getStartCommentMarker(relativePath) and
+        if exists(Impl::getEndCommentMarker(relativePath))
+        then result = startMarker + " " + content + " " + Impl::getEndCommentMarker(relativePath)
+        else result = startMarker + " " + content
+      )
+    }
+
+    /**
+     * Gets the exclusive end column for replacing `comment`. Same-line locations use inclusive end
+     * columns, while a multi-line comment location uses the engine's replace-to-EOL sentinel.
+     */
+    int getReplacementEndColumn(Impl::ExpectationComment comment) {
+      exists(int sl, int el, int ec |
+        parseRelativeUrl(Impl::getRelativeUrl(comment.getLocation()), _, sl, _, el, ec) and
+        if sl = el then result = ec + 1 else result = 0
+      )
+    }
+  }
+
+  /**
+   * The reconciliation decisions needed by the shared edit emitter.
+   *
+   * Direct tests and postprocessing queries implement this differently, but both use the same edit
+   * protocol and grammar-local comment rendering.
+   */
+  signature module LearningPlanSig {
+    predicate unexpectedResultExpectation(string relativePath, int line, string text);
+
+    predicate canRewriteComment(Impl::ExpectationComment comment);
+
+    predicate commentNeedsRewrite(Impl::ExpectationComment comment);
+
+    predicate hasDesiredExpectation(Impl::ExpectationComment comment);
+
+    bindingset[relativePath, comment]
+    string renderReplacementComment(string relativePath, Impl::ExpectationComment comment);
+
+    bindingset[relativePath, comment]
+    predicate renderWithoutExpectations(
+      string relativePath, Impl::ExpectationComment comment, string text, int endColumn
+    );
+  }
+
+  /**
+   * Emits the engine's `learnEdits` protocol from a mode-specific reconciliation plan.
+   *
+   * Each row requests either:
+   *
+   * - `append`, with both columns set to 0, to add `text` at the end of `line`; or
+   * - `replace`, with a 1-based half-open column range. An `endColumn` of 0 replaces through the end
+   *   of the line.
+   */
+  module LearnEdits<LearningPlanSig Plan> {
+    bindingset[relativePath, line]
+    private string renderAppendedComment(string relativePath, int line) {
+      exists(string body |
+        Plan::unexpectedResultExpectation(relativePath, line, _) and
+        body =
+          concat(string text |
+            Plan::unexpectedResultExpectation(relativePath, line, text)
+          |
+            text, " " order by text
+          ) and
+        result = " " + CommentRenderer::wrapInComment(relativePath, "$ " + body)
+      )
+    }
+
+    query predicate learnEdits(
+      string file, int line, string operation, int startColumn, int endColumn, string text
+    ) {
+      exists(string relativePath, int resultLine |
+        Plan::unexpectedResultExpectation(relativePath, resultLine, _) and
+        not exists(Impl::ExpectationComment comment |
+          parseRelativeUrl(Impl::getRelativeUrl(comment.getLocation()), relativePath, resultLine, _,
+            _, _)
+        ) and
+        file = relativePath and
+        line = resultLine and
+        operation = "append" and
+        startColumn = 0 and
+        endColumn = 0 and
+        text = renderAppendedComment(relativePath, resultLine)
+      )
+      or
+      exists(Impl::ExpectationComment comment, string relativePath, int sl, int sc |
+        Plan::canRewriteComment(comment) and
+        Plan::commentNeedsRewrite(comment) and
+        parseRelativeUrl(Impl::getRelativeUrl(comment.getLocation()), relativePath, sl, sc, _, _) and
+        exists(Impl::getStartCommentMarker(relativePath)) and
+        file = relativePath and
+        line = sl and
+        operation = "replace" and
+        startColumn = sc and
+        (
+          Plan::hasDesiredExpectation(comment) and
+          text = Plan::renderReplacementComment(relativePath, comment) and
+          endColumn = CommentRenderer::getReplacementEndColumn(comment)
+          or
+          not Plan::hasDesiredExpectation(comment) and
+          Plan::renderWithoutExpectations(relativePath, comment, text, endColumn)
+        )
+      )
     }
   }
 
@@ -410,6 +540,148 @@ module Make<InlineExpectationsTestSig Impl> {
     query predicate testFailures(FailureLocatable element, string message) {
       hasFailureMessage(element, message)
     }
+
+    /**
+     * Implements direct-query learning for the deliberately narrow syntax that can be reconciled
+     * without query metadata:
+     *
+     * - line comments containing default-column expectations separated by ASCII spaces;
+     * - arbitrary tags declared by `getARelevantExpectedTag`, with unrelated tags preserved; and
+     * - single-line actual-result locations.
+     *
+     * Tabs between expectation atoms, named columns, comma groups, trailing notes, block comments,
+     * and multi-line results are left untouched. If one of those forms needs an edit, the
+     * verification run reports the remaining test failure instead of risking source corruption. The
+     * runner must also reject directories with more than one direct producer, because this module
+     * does not reconcile edits from independent queries.
+     */
+    private module DirectLearningPlan implements LearningPlanSig {
+      bindingset[tag]
+      private predicate tagIsForeign(string tag) {
+        TestImpl::tagIsIgnored(tag)
+        or
+        not tag = TestImpl::getARelevantExpectedTag()
+      }
+
+      private string directExpectationPattern() {
+        exists(string tag |
+          tag = "[A-Za-z_-][A-Za-z0-9_-]*(?:\\[[^\\[\\]]+\\])?" and
+          result = tag + "(?:=\\S*)?"
+        )
+      }
+
+      predicate canRewriteComment(Impl::ExpectationComment comment) {
+        comment.isLineComment() and
+        hasExpectation(comment, _, _, _, _) and
+        not exists(InvalidTestExpectation invalid | invalid.getLocation() = comment.getLocation()) and
+        not hasExpectation(comment, TNamedColumn(_), _, _, _) and
+        not exists(string tags |
+          hasExpectation(comment, TDefaultColumn(), _, tags, _) and tags.matches("%,%")
+        ) and
+        not exists(comment.getContents().regexpCapture(expectationCommentPattern(), 2)) and
+        exists(string content |
+          content = comment.getContents().regexpCapture(expectationCommentPattern(), 1).trim() and
+          content != "" and
+          not content.matches("%\t%") and
+          forall(string token | token = content.splitAt(" ") and token != "" |
+            token.regexpMatch(directExpectationPattern())
+          )
+        ) and
+        not exists(ActualTestResult actualResult, string relativePath, int sl, int el |
+          not actualResult.isOptional() and
+          actualResult.getTag() = TestImpl::getARelevantTag() and
+          not exists(
+            getAMatchingExpectation(actualResult.getLocation(), actualResult.toString(),
+              actualResult.getTag(), actualResult.getValue(), false)
+          ) and
+          parseRelativeUrl(Impl::getRelativeUrl(actualResult.getLocation()), relativePath, sl, _,
+            el, _) and
+          sl != el and
+          parseRelativeUrl(Impl::getRelativeUrl(comment.getLocation()), relativePath, el, _, _, _)
+        )
+      }
+
+      private predicate foreignExpectation(Impl::ExpectationComment comment, string text) {
+        exists(string tags |
+          hasExpectation(comment, TDefaultColumn(), text, tags, _) and
+          forall(string tag | tag = tags.splitAt(",") | tagIsForeign(tag))
+        )
+      }
+
+      private predicate survivingExpectation(Impl::ExpectationComment comment, string text) {
+        exists(GoodTestExpectation expectation |
+          expectation.getLocation() = comment.getLocation() and
+          expectation = getAMatchingExpectation(_, _, _, _, _) and
+          text = expectation.getExpectationText()
+        )
+      }
+
+      predicate unexpectedResultExpectation(string relativePath, int line, string text) {
+        exists(ActualTestResult actualResult |
+          not actualResult.isOptional() and
+          actualResult.getTag() = TestImpl::getARelevantTag() and
+          not exists(
+            getAMatchingExpectation(actualResult.getLocation(), actualResult.toString(),
+              actualResult.getTag(), actualResult.getValue(), false)
+          ) and
+          parseRelativeUrl(Impl::getRelativeUrl(actualResult.getLocation()), relativePath, line, _,
+            line, _) and
+          text = actualResult.getExpectationText()
+        )
+      }
+
+      private predicate desiredExpectation(Impl::ExpectationComment comment, string text) {
+        survivingExpectation(comment, text)
+        or
+        foreignExpectation(comment, text)
+        or
+        exists(string relativePath, int line |
+          parseRelativeUrl(Impl::getRelativeUrl(comment.getLocation()), relativePath, line, _, _, _) and
+          unexpectedResultExpectation(relativePath, line, text)
+        )
+      }
+
+      private predicate currentExpectation(Impl::ExpectationComment comment, string text) {
+        foreignExpectation(comment, text)
+        or
+        exists(string tags, string value |
+          hasExpectation(comment, TDefaultColumn(), _, tags, value) and
+          not tagIsForeign(tags) and
+          if value = "" then text = tags else text = tags + "=" + value
+        )
+      }
+
+      predicate commentNeedsRewrite(Impl::ExpectationComment comment) {
+        exists(string text |
+          desiredExpectation(comment, text) and not currentExpectation(comment, text)
+        )
+        or
+        exists(string text |
+          currentExpectation(comment, text) and not desiredExpectation(comment, text)
+        )
+      }
+
+      predicate hasDesiredExpectation(Impl::ExpectationComment comment) {
+        desiredExpectation(comment, _)
+      }
+
+      bindingset[relativePath, comment]
+      string renderReplacementComment(string relativePath, Impl::ExpectationComment comment) {
+        exists(string body |
+          body = concat(string text | desiredExpectation(comment, text) | text, " " order by text) and
+          result = CommentRenderer::wrapInComment(relativePath, "$ " + body)
+        )
+      }
+
+      bindingset[relativePath, comment]
+      predicate renderWithoutExpectations(
+        string relativePath, Impl::ExpectationComment comment, string text, int endColumn
+      ) {
+        exists(relativePath) and exists(comment) and text = "" and endColumn = 0
+      }
+    }
+
+    import LearnEdits<DirectLearningPlan>
   }
 
   /**
@@ -432,6 +704,13 @@ module Make<InlineExpectationsTestSig Impl> {
     bindingset[result]
     string getARelevantTag() {
       result = TestImpl1::getARelevantTag() or result = TestImpl2::getARelevantTag()
+    }
+
+    bindingset[result]
+    string getARelevantExpectedTag() {
+      result = TestImpl1::getARelevantExpectedTag()
+      or
+      result = TestImpl2::getARelevantExpectedTag()
     }
 
     bindingset[expectedTag]
@@ -461,6 +740,8 @@ module Make<InlineExpectationsTestSig Impl> {
 
     predicate getARelevantTag = M::getARelevantTag/0;
 
+    predicate getARelevantExpectedTag = M::getARelevantExpectedTag/0;
+
     predicate tagIsIgnored = M::tagIsIgnored/1;
 
     predicate hasActualResult = M::hasActualResult/4;
@@ -477,6 +758,8 @@ module Make<InlineExpectationsTestSig Impl> {
     private module M = MergeTests<MergeTests3<TestImpl1, TestImpl2, TestImpl3>, TestImpl4>;
 
     predicate getARelevantTag = M::getARelevantTag/0;
+
+    predicate getARelevantExpectedTag = M::getARelevantExpectedTag/0;
 
     predicate tagIsIgnored = M::tagIsIgnored/1;
 
@@ -496,6 +779,8 @@ module Make<InlineExpectationsTestSig Impl> {
       MergeTests<MergeTests4<TestImpl1, TestImpl2, TestImpl3, TestImpl4>, TestImpl5>;
 
     predicate getARelevantTag = M::getARelevantTag/0;
+
+    predicate getARelevantExpectedTag = M::getARelevantExpectedTag/0;
 
     predicate tagIsIgnored = M::tagIsIgnored/1;
 
@@ -710,22 +995,11 @@ module TestPostProcessing {
   module Make<InlineExpectationsTestSig Input> {
     private import InlineExpectationsTest as InlineExpectationsTest
 
-    bindingset[loc]
-    private predicate parseLocationString(
-      string loc, string relativePath, int sl, int sc, int el, int ec
-    ) {
-      relativePath = loc.splitAt(":", 0) and
-      sl = loc.splitAt(":", 1).toInt() and
-      sc = loc.splitAt(":", 2).toInt() and
-      el = loc.splitAt(":", 3).toInt() and
-      ec = loc.splitAt(":", 4).toInt()
-    }
-
     pragma[nomagic]
     private string getRelativePathTo(string absolutePath) {
       exists(Input::Location loc |
         loc.hasLocationInfo(absolutePath, _, _, _, _) and
-        parseLocationString(Input::getRelativeUrl(loc), result, _, _, _, _)
+        parseRelativeUrl(Input::getRelativeUrl(loc), result, _, _, _, _)
       )
     }
 
@@ -734,7 +1008,7 @@ module TestPostProcessing {
       MkResultLocation(string relativePath, int sl, int sc, int el, int ec) {
         exists(string data |
           queryResults(_, _, _, data) and
-          parseLocationString(data, relativePath, sl, sc, el, ec) and
+          parseRelativeUrl(data, relativePath, sl, sc, el, ec) and
           not Input::getRelativeUrl(_) = data // avoid duplicate locations
         )
       }
@@ -1110,58 +1384,8 @@ module TestPostProcessing {
       relation = "testFailures"
     }
 
-    /**
-     * The implementation of `--learn`'s inline-expectation editing. Every helper is grouped in this
-     * private module so that only the public `query predicate learnEdits` leaks into the enclosing
-     * scope (re-exposed by the `import LearnEditsImpl` below); all the supporting predicates stay
-     * private to this module.
-     */
-    private module LearnEditsImpl {
-      /**
-       * Gets `content` wrapped in the comment markers of the file with the given `relativePath`, for
-       * example `// content` for a line-comment file or `<!-- content -->` for a block-comment file,
-       * or has no result if that file's comment syntax is not supported.
-       *
-       * This renders the comment markers only; the caller supplies whatever `content` goes between
-       * them, whether a ` $ `-prefixed inline expectation or a plain trailing note kept when the last
-       * expectation is removed. No leading whitespace is added: the append path adds its own separator
-       * from the preceding code, while the replace path substitutes the comment in place.
-       */
-      bindingset[relativePath, content]
-      private string wrapInComment(string relativePath, string content) {
-        exists(string startMarker |
-          startMarker = Input::getStartCommentMarker(relativePath) and
-          if exists(Input::getEndCommentMarker(relativePath))
-          then result = startMarker + " " + content + " " + Input::getEndCommentMarker(relativePath)
-          else result = startMarker + " " + content
-        )
-      }
-
-      /**
-       * Gets the fully rendered inline expectation comment (including the leading separator and the
-       * comment markers) that `--learn` should *append* to `line` of `relativePath`, carrying *every*
-       * expectation freshly learned for that line (see `unexpectedResultExpectation`) in a single
-       * comment, or has no result if that file's comment syntax is not supported.
-       *
-       * The leading space separates the appended comment from the existing code on the line (for a
-       * `//`-comment file this yields ` // $ Alert`). The expectations are ordered lexically, matching
-       * `renderLearnedColumn`, so that a line on which several results fire (for example a path-problem
-       * source and sink that coincide) grows one deterministic comment such as `// $ Sink Source`
-       * rather than several separate comments.
-       */
-      bindingset[relativePath, line]
-      private string renderAppendedComment(string relativePath, int line) {
-        exists(string body |
-          body =
-            concat(string text |
-              unexpectedResultExpectation(relativePath, line, text)
-            |
-              text, " " order by text
-            ) and
-          result = " " + wrapInComment(relativePath, "$ " + body)
-        )
-      }
-
+    /** The qlref reconciliation policy used by the shared edit emitter. */
+    private module PostprocessingLearningPlan implements LearningPlanSig {
       /**
        * Holds if `comment` is one that `codeql test run --learn` may rewrite as a whole.
        *
@@ -1183,7 +1407,7 @@ module TestPostProcessing {
        * belongs to a different query sharing the same source file. A comment carrying *only* such
        * ignored expectations (or nothing to change) is therefore rewritable but is left as is.
        */
-      private predicate canRewriteComment(TestImpl2::ExpectationComment comment) {
+      predicate canRewriteComment(TestImpl2::ExpectationComment comment) {
         comment.isLineComment() and
         not exists(Test::InvalidTestExpectation invalid |
           invalid.getLocation() = comment.getLocation()
@@ -1286,7 +1510,7 @@ module TestPostProcessing {
         string relativePath, int line, string tag, string value, string queryId
       ) {
         exists(TestImpl2::ExpectationComment comment, string full, string base, string qualifier |
-          parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
+          parseRelativeUrl(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
           hasExpectation(comment, TDefaultColumn(), _, full, value) and
           not full.matches("%,%") and
           parseQualifiedTag(full, base, qualifier) and
@@ -1304,8 +1528,8 @@ module TestPostProcessing {
         exists(Test::ActualTestResult actualResult |
           not actualResult.isOptional() and
           actualResult.getTag() != "RelatedLocation" and
-          parseLocationString(actualResult.getLocation().getRelativeUrl(), relativePath, _, _,
-            endLine, _) and
+          parseRelativeUrl(actualResult.getLocation().getRelativeUrl(), relativePath, _, _, endLine,
+            _) and
           tag = actualResult.getTag() and
           value = actualResult.getValue()
         )
@@ -1388,8 +1612,7 @@ module TestPostProcessing {
       private string renderSurvivingDefaultExpectation(Test::FailureLocatable expectation) {
         exists(string relativePath, int line, string base, string queryId |
           parseQualifiedTag(expectation.getTag(), base, queryId) and
-          parseLocationString(expectation.getLocation().getRelativeUrl(), relativePath, line, _, _,
-            _) and
+          parseRelativeUrl(expectation.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
           (
             inCohortMode() and
             (queryId = "" or queryId = getQueryId()) and
@@ -1397,19 +1620,6 @@ module TestPostProcessing {
             or
             not inCohortMode() and result = expectation.getExpectationText()
           )
-        )
-      }
-
-      /**
-       * Gets the exclusive end column for replacing `comment`. Same-line CodeQL locations use
-       * inclusive end columns, so their end boundary is one column later. A comment whose location
-       * ends on another line uses 0, the engine's replace-to-EOL sentinel; this covers extractors
-       * that report a line comment as ending at column 1 of the next line.
-       */
-      private int getReplacementEndColumn(TestImpl2::ExpectationComment comment) {
-        exists(int sl, int el, int ec |
-          parseLocationString(comment.getLocation().getRelativeUrl(), _, sl, _, el, ec) and
-          if sl = el then result = ec + 1 else result = 0
         )
       }
 
@@ -1479,7 +1689,7 @@ module TestPostProcessing {
        * line already references them (see `hasRelatedLocation`/`shouldReportRelatedLocations`), so
        * they never constitute a genuinely new result that learning should introduce on its own.
        */
-      private predicate unexpectedResultExpectation(string relativePath, int endLine, string text) {
+      predicate unexpectedResultExpectation(string relativePath, int endLine, string text) {
         exists(Test::ActualTestResult actualResult |
           not actualResult.isOptional() and
           actualResult.getTag() != "RelatedLocation" and
@@ -1487,7 +1697,7 @@ module TestPostProcessing {
             Test::getAMatchingExpectation(actualResult.getLocation(), actualResult.toString(),
               actualResult.getTag(), actualResult.getValue(), false)
           ) and
-          parseLocationString(actualResult.getLocation().getRelativeUrl(), relativePath, endLine, _,
+          parseRelativeUrl(actualResult.getLocation().getRelativeUrl(), relativePath, endLine, _,
             endLine, _) and
           text =
             renderCohortAtom(relativePath, endLine, actualResult.getTag(), actualResult.getValue())
@@ -1505,7 +1715,7 @@ module TestPostProcessing {
         TestImpl2::ExpectationComment comment, string column, string text
       ) {
         exists(string relativePath, int line |
-          parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
+          parseRelativeUrl(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
           unexpectedResultExpectation(relativePath, line, text) and
           column = ""
         )
@@ -1600,7 +1810,7 @@ module TestPostProcessing {
         or
         exists(string relativePath, int line, string tag, string value |
           column = "" and
-          parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
+          parseRelativeUrl(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
           isCollapsedAtom(relativePath, line, tag, value) and
           hasCompleteQualifiedRepresentation(comment, tag, value) and
           text = renderAtom(tag, value)
@@ -1621,14 +1831,14 @@ module TestPostProcessing {
           hasExpectation(comment, TDefaultColumn(), _, full, value) and
           parseQualifiedTag(full, tag, queryId) and
           cohortMember(queryId) and
-          parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
+          parseRelativeUrl(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
           isCollapsedAtom(relativePath, line, tag, value) and
           hasCompleteQualifiedRepresentation(comment, tag, value)
         )
       }
 
       /** Holds if `--learn` should change the set of expectations carried by `comment`. */
-      private predicate commentNeedsRewrite(TestImpl2::ExpectationComment comment) {
+      predicate commentNeedsRewrite(TestImpl2::ExpectationComment comment) {
         exists(string column, string text |
           desiredExpectation(comment, column, text) and
           not desiredExpectationIsRepresented(comment, column, text)
@@ -1674,9 +1884,7 @@ module TestPostProcessing {
        * caller deletes the comment instead) or the file's comment syntax is unsupported.
        */
       bindingset[relativePath]
-      private string renderReplacementComment(
-        string relativePath, TestImpl2::ExpectationComment comment
-      ) {
+      string renderReplacementComment(string relativePath, TestImpl2::ExpectationComment comment) {
         exists(string body, string trailingSuffix |
           // Preserve a trailing regular note (e.g. the `note` in `// $ Alert // note`) that sits
           // after the expectations, so rewriting the expectations never drops an explanatory note.
@@ -1696,112 +1904,30 @@ module TestPostProcessing {
             |
               renderLearnedColumn(comment, column), " " order by getColumnRank(column)
             ) and
-          result = wrapInComment(relativePath, "$ " + body + trailingSuffix)
+          result = CommentRenderer::wrapInComment(relativePath, "$ " + body + trailingSuffix)
         )
       }
 
-      /**
-       * Holds if `codeql test run --learn` should edit the source file `file` so that its inline
-       * expectations match the current query results. Each row asks the test runner to change
-       * `line`, where `operation` is either:
-       *
-       * - `"append"`: add `text` (a fully rendered comment) at the end of the line; `startColumn`
-       *   and `endColumn` are both 0.
-       * - `"replace"`: replace the 1-based half-open column range `[startColumn, endColumn)` with
-       *   `text`. Equal boundaries insert `text`; the empty string deletes a non-empty range.
-       *   `endColumn = 0` extends the range to the end of the line.
-       *
-       * The following edits are emitted:
-       *
-       * - an actual result with no matching expectation records a new expectation (an *unexpected
-       *   result*): the expectation is the result's tag, carrying a value where the result has one
-       *   (`Alert`, a path-problem `Source`/`Sink`, or a custom `tag=value`). If the result's line
-       *   already has a rewritable comment the expectation is merged into it (see below), otherwise a
-       *   fresh comment carrying every expectation learned for the line is appended (for example
-       *   `// $ Alert`, or `// $ Sink Source` when several results fire on one line); and
-       * - an existing rewritable expectation comment is rewritten as a whole so that it matches the
-       *   current results: obsolete default and `// $ SPURIOUS:` expectations are dropped (a *missing
-       *   result* or a *fixed spurious result*), a `// $ MISSING:` expectation whose result now fires
-       *   is promoted to the default column (a *fixed missing result*), any freshly learned tags on
-       *   the line are merged in, and the resulting expectations are re-rendered. If nothing remains,
-       *   the comment is deleted.
-       *
-       * The rewrite handles comments that carry several expectations across the default,
-       * `SPURIOUS:`, and `MISSING:` columns. Expectations this test ignores (for example a tag
-       * annotated with a different query's ID) are preserved verbatim, so the comment keeps any
-       * expectation belonging to a different query that shares the same source file; see
-       * `isRewritableComment` and `foreignExpectation`. A trailing regular note after the
-       * expectations (for example the `note` in `// $ Alert // note` or `# $ Alert // note`) is
-       * likewise preserved, and freshly learned tags can be merged into a plain comment that carries
-       * only such a note (`// note` -> `// $ Alert // note`); see `getTrailingNote`.
-       */
-      query predicate learnEdits(
-        string file, int line, string operation, int startColumn, int endColumn, string text
+      predicate hasDesiredExpectation(TestImpl2::ExpectationComment comment) {
+        desiredExpectation(comment, _, _)
+      }
+
+      bindingset[relativePath, comment]
+      predicate renderWithoutExpectations(
+        string relativePath, TestImpl2::ExpectationComment comment, string text, int endColumn
       ) {
-        // Unexpected result with no comment to merge into: append a fresh comment carrying every
-        // expectation learned for the result's line (see `unexpectedResultExpectation`). The comment must
-        // go on the result's *end* line, because an expectation matches a result when the
-        // expectation's start line equals the result's end line (see `onSameLine`).
-        // `unexpectedResultExpectation` deliberately has no result for a multi-line location because
-        // appending at either endpoint is not generally source-safe. If the line already has a
-        // comment, appending would place the new marker inside that comment. A rewritable comment
-        // is merged by the rewrite disjunct below (see `mergedNewExpectation`); an excluded comment
-        // is left untouched so the verification run reports the residual mismatch.
-        exists(string relativePath, int el, string comment |
-          unexpectedResultExpectation(relativePath, el, _) and
-          not exists(TestImpl2::ExpectationComment existing |
-            parseLocationString(existing.getLocation().getRelativeUrl(), relativePath, el, _, _, _)
-          ) and
-          comment = renderAppendedComment(relativePath, el) and
-          file = relativePath and
-          line = el and
-          operation = "append" and
-          startColumn = 0 and
-          endColumn = 0 and
-          text = comment
+        exists(string note |
+          note = getTrailingNote(comment) and
+          text = CommentRenderer::wrapInComment(relativePath, note) and
+          endColumn = CommentRenderer::getReplacementEndColumn(comment)
         )
         or
-        // Rewrite an existing expectation comment as a whole so that it matches the current results.
-        // This subsumes the single-expectation removal and MISSING-promotion cases and additionally
-        // handles comments that carry several expectations across the default, `SPURIOUS:`, and
-        // `MISSING:` columns. A replacement that leaves a comment uses the protocol's exclusive end
-        // boundary, converted from the comment's inclusive same-line location. Deleting the whole
-        // comment uses `endColumn = 0`, the engine's to-EOL convention, so the whitespace gap before
-        // the removed comment is trimmed. Multi-line locations also use the to-EOL convention because
-        // some extractors (e.g. Swift) report a line comment as ending at column 1 of the next line.
-        exists(TestImpl2::ExpectationComment comment, string relativePath, int sl, int sc |
-          canRewriteComment(comment) and
-          commentNeedsRewrite(comment) and
-          parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, sl, sc, _, _) and
-          exists(Input::getStartCommentMarker(relativePath)) and
-          file = relativePath and
-          line = sl and
-          operation = "replace" and
-          startColumn = sc and
-          (
-            desiredExpectation(comment, _, _) and
-            text = renderReplacementComment(relativePath, comment) and
-            endColumn = getReplacementEndColumn(comment)
-            or
-            not desiredExpectation(comment, _, _) and
-            // No expectation survives, so drop the `$ ...` part of the comment. If it carried a
-            // trailing regular note, keep that note re-wrapped in the file's own comment markers (so a
-            // `#`-comment file yields `# note`, not an invalid `// note`, and a block-comment file
-            // yields `<!-- note -->`); otherwise delete to the end of line.
-            (
-              exists(string note |
-                note = getTrailingNote(comment) and
-                text = wrapInComment(relativePath, note) and
-                endColumn = getReplacementEndColumn(comment)
-              )
-              or
-              not exists(getTrailingNote(comment)) and text = "" and endColumn = 0
-            )
-          )
-        )
+        not exists(getTrailingNote(comment)) and
+        text = "" and
+        endColumn = 0
       }
     }
 
-    import LearnEditsImpl
+    import LearnEdits<PostprocessingLearningPlan>
   }
 }
