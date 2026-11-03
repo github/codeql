@@ -4,11 +4,15 @@ updates:
     directory: "ruby"
     schedule:
       interval: "daily"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "cargo"
     directory: "ql"
     schedule:
       interval: "daily"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -24,6 +28,8 @@ updates:
     directory: "go/extractor"
     schedule:
       interval: "daily"
+    cooldown:
+      default-days: 7
     allow:
       - dependency-name: "golang.org/x/mod"
       - dependency-name: "golang.org/x/tools"
@@ -38,6 +44,8 @@ updates:
     directory: "go/ql/test"
     schedule:
       interval: "monthly"
+    cooldown:
+      default-days: 7
     ignore:
       - dependency-name: "*"
     reviewers:
