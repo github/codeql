@@ -1,6 +1,6 @@
 module(
     name = "fmt",
-    version = "12.2.0-codeql.1",
+    version = "12.2.0.bcr.1-codeql.1",
     bazel_compatibility = [">=7.2.1"],
     compatibility_level = 10,
 )

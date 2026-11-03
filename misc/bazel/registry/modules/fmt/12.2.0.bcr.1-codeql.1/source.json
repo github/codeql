@@ -4,6 +4,6 @@
     "strip_prefix": "fmt-12.2.0",
     "overlay": {
         "BUILD.bazel": "sha256-Zn5kky5jBkuqoek9UpzuHX4sTkqyhUKnjENJwJxRCEI=",
-        "MODULE.bazel": "sha256-VcjblZqKNctLUTX1rWpwOehV8rd4X23XeJzs+S5tfCk="
+        "MODULE.bazel": "sha256-WdW/GI1Ho1qVF/BZ8ZQTa71rB8F5QHkLv07kySMJfGI="
     }
 }
