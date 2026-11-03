@@ -868,7 +868,7 @@ predicate inferTypeUnique = M3::inferTypeUnique/2;
 predicate inferTypeCertain = M3::inferTypeCertain/2;
 
 Type inferVariableType(LocalVariable variable) {
-  result = Input3::inferTypeFromVariable(variable, _)
+  result = Input3::inferTypeFromVariable(variable, TypePath::nil())
 }
 
 Type inferBaseType(MemberAccess access) {
