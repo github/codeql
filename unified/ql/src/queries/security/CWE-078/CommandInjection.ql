@@ -18,7 +18,7 @@ import unified
  * A taint configuration for tainted data that reaches a command injection sink.
  */
 module CommandInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, ["local", "remote"]) }
 
   predicate isSink(DataFlow::Node node) { Models::isSink(node, "command-injection") }
 
