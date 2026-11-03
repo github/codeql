@@ -66,11 +66,11 @@
 | azure.cpp:215:79:215:98 | call to basic_string | azure.cpp:215:62:215:99 | call to Url |
 | azure.cpp:220:5:220:8 | *resp | azure.cpp:220:16:220:21 | Read output argument |
 | azure.cpp:225:5:225:8 | *resp | azure.cpp:225:23:225:28 | ReadToCount output argument |
-| azure.cpp:251:79:251:98 | call to basic_string | azure.cpp:251:62:251:99 | call to Url |
-| azure.cpp:253:24:253:56 | call to GetHeader | azure.cpp:253:63:253:65 | call to Value |
-| azure.cpp:264:79:264:98 | call to basic_string | azure.cpp:264:62:264:99 | call to Url |
-| azure.cpp:266:26:266:45 | call to GetHeaders | azure.cpp:266:3:266:5 | SetQueryParameters output argument |
-| azure.cpp:267:8:267:10 | *url | azure.cpp:267:12:267:29 | call to GetQueryParameters |
+| azure.cpp:253:79:253:98 | call to basic_string | azure.cpp:253:62:253:99 | call to Url |
+| azure.cpp:255:24:255:56 | call to GetHeader | azure.cpp:255:63:255:65 | call to Value |
+| azure.cpp:266:79:266:98 | call to basic_string | azure.cpp:266:62:266:99 | call to Url |
+| azure.cpp:268:26:268:45 | call to GetHeaders | azure.cpp:268:3:268:5 | SetQueryParameters output argument |
+| azure.cpp:269:8:269:10 | *url | azure.cpp:269:12:269:29 | call to GetQueryParameters |
 | bal.cpp:132:17:132:18 | *sb | bal.cpp:132:21:132:24 | decode output argument |
 | bal.cpp:141:17:141:19 | ** ... | bal.cpp:141:22:141:25 | decode output argument |
 | bal.cpp:150:20:150:21 | *sb | bal.cpp:150:24:150:27 | decodeAny output argument |

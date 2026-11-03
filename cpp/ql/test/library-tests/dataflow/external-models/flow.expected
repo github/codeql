@@ -384,21 +384,21 @@ edges
 | azure.cpp:245:21:245:23 | *call to get | azure.cpp:245:28:245:36 | call to ReadToEnd [element] | provenance | MaD:97 |
 | azure.cpp:245:28:245:36 | call to ReadToEnd [element] | azure.cpp:245:10:245:38 | call to ReadToEnd | provenance |  |
 | azure.cpp:245:28:245:36 | call to ReadToEnd [element] | azure.cpp:245:28:245:36 | call to ReadToEnd [element] | provenance |  |
-| azure.cpp:253:24:253:56 | call to GetHeader | azure.cpp:253:63:253:65 | call to Value | provenance | MaD:100 |
-| azure.cpp:253:32:253:40 | call to GetHeader | azure.cpp:253:24:253:56 | call to GetHeader | provenance |  |
-| azure.cpp:253:32:253:40 | call to GetHeader | azure.cpp:253:32:253:40 | call to GetHeader | provenance | Src:MaD:54  |
-| azure.cpp:253:63:253:65 | call to Value | azure.cpp:253:63:253:65 | call to Value | provenance |  |
-| azure.cpp:253:63:253:65 | call to Value | azure.cpp:254:10:254:20 | headerValue | provenance |  |
-| azure.cpp:257:58:257:67 | call to GetHeaders | azure.cpp:257:58:257:67 | call to GetHeaders | provenance | Src:MaD:55  |
-| azure.cpp:257:58:257:67 | call to GetHeaders | azure.cpp:258:38:258:53 | call to operator[] | provenance | TaintFunction |
-| azure.cpp:258:38:258:53 | call to operator[] | azure.cpp:259:10:259:20 | contentType | provenance |  |
-| azure.cpp:266:3:266:5 | SetQueryParameters output argument | azure.cpp:267:8:267:10 | *url | provenance |  |
-| azure.cpp:266:26:266:45 | call to GetHeaders | azure.cpp:266:3:266:5 | SetQueryParameters output argument | provenance | MaD:99 |
-| azure.cpp:266:34:266:43 | call to GetHeaders | azure.cpp:266:26:266:45 | call to GetHeaders | provenance |  |
-| azure.cpp:266:34:266:43 | call to GetHeaders | azure.cpp:266:34:266:43 | call to GetHeaders | provenance | Src:MaD:55  |
-| azure.cpp:267:8:267:10 | *url | azure.cpp:267:12:267:29 | call to GetQueryParameters | provenance | MaD:98 |
-| azure.cpp:267:12:267:29 | call to GetQueryParameters | azure.cpp:267:12:267:29 | call to GetQueryParameters | provenance |  |
-| azure.cpp:267:12:267:29 | call to GetQueryParameters | azure.cpp:267:32:267:40 | call to operator[] | provenance | TaintFunction |
+| azure.cpp:255:24:255:56 | call to GetHeader | azure.cpp:255:63:255:65 | call to Value | provenance | MaD:100 |
+| azure.cpp:255:32:255:40 | call to GetHeader | azure.cpp:255:24:255:56 | call to GetHeader | provenance |  |
+| azure.cpp:255:32:255:40 | call to GetHeader | azure.cpp:255:32:255:40 | call to GetHeader | provenance | Src:MaD:54  |
+| azure.cpp:255:63:255:65 | call to Value | azure.cpp:255:63:255:65 | call to Value | provenance |  |
+| azure.cpp:255:63:255:65 | call to Value | azure.cpp:256:10:256:20 | headerValue | provenance |  |
+| azure.cpp:259:58:259:67 | call to GetHeaders | azure.cpp:259:58:259:67 | call to GetHeaders | provenance | Src:MaD:55  |
+| azure.cpp:259:58:259:67 | call to GetHeaders | azure.cpp:260:38:260:53 | call to operator[] | provenance | TaintFunction |
+| azure.cpp:260:38:260:53 | call to operator[] | azure.cpp:261:10:261:20 | contentType | provenance |  |
+| azure.cpp:268:3:268:5 | SetQueryParameters output argument | azure.cpp:269:8:269:10 | *url | provenance |  |
+| azure.cpp:268:26:268:45 | call to GetHeaders | azure.cpp:268:3:268:5 | SetQueryParameters output argument | provenance | MaD:99 |
+| azure.cpp:268:34:268:43 | call to GetHeaders | azure.cpp:268:26:268:45 | call to GetHeaders | provenance |  |
+| azure.cpp:268:34:268:43 | call to GetHeaders | azure.cpp:268:34:268:43 | call to GetHeaders | provenance | Src:MaD:55  |
+| azure.cpp:269:8:269:10 | *url | azure.cpp:269:12:269:29 | call to GetQueryParameters | provenance | MaD:98 |
+| azure.cpp:269:12:269:29 | call to GetQueryParameters | azure.cpp:269:12:269:29 | call to GetQueryParameters | provenance |  |
+| azure.cpp:269:12:269:29 | call to GetQueryParameters | azure.cpp:269:32:269:40 | call to operator[] | provenance | TaintFunction |
 | bal.cpp:128:19:128:26 | call to source | bal.cpp:129:23:129:51 | *call to data | provenance | TaintFunction |
 | bal.cpp:129:23:129:51 | *call to data | bal.cpp:132:17:132:18 | *sb | provenance |  |
 | bal.cpp:132:17:132:18 | *sb | bal.cpp:132:21:132:24 | decode output argument | provenance | MaD:101 |
@@ -1702,24 +1702,24 @@ nodes
 | azure.cpp:245:21:245:23 | *call to get | semmle.label | *call to get |
 | azure.cpp:245:28:245:36 | call to ReadToEnd [element] | semmle.label | call to ReadToEnd [element] |
 | azure.cpp:245:28:245:36 | call to ReadToEnd [element] | semmle.label | call to ReadToEnd [element] |
-| azure.cpp:253:24:253:56 | call to GetHeader | semmle.label | call to GetHeader |
-| azure.cpp:253:32:253:40 | call to GetHeader | semmle.label | call to GetHeader |
-| azure.cpp:253:32:253:40 | call to GetHeader | semmle.label | call to GetHeader |
-| azure.cpp:253:63:253:65 | call to Value | semmle.label | call to Value |
-| azure.cpp:253:63:253:65 | call to Value | semmle.label | call to Value |
-| azure.cpp:254:10:254:20 | headerValue | semmle.label | headerValue |
-| azure.cpp:257:58:257:67 | call to GetHeaders | semmle.label | call to GetHeaders |
-| azure.cpp:257:58:257:67 | call to GetHeaders | semmle.label | call to GetHeaders |
-| azure.cpp:258:38:258:53 | call to operator[] | semmle.label | call to operator[] |
-| azure.cpp:259:10:259:20 | contentType | semmle.label | contentType |
-| azure.cpp:266:3:266:5 | SetQueryParameters output argument | semmle.label | SetQueryParameters output argument |
-| azure.cpp:266:26:266:45 | call to GetHeaders | semmle.label | call to GetHeaders |
-| azure.cpp:266:34:266:43 | call to GetHeaders | semmle.label | call to GetHeaders |
-| azure.cpp:266:34:266:43 | call to GetHeaders | semmle.label | call to GetHeaders |
-| azure.cpp:267:8:267:10 | *url | semmle.label | *url |
-| azure.cpp:267:12:267:29 | call to GetQueryParameters | semmle.label | call to GetQueryParameters |
-| azure.cpp:267:12:267:29 | call to GetQueryParameters | semmle.label | call to GetQueryParameters |
-| azure.cpp:267:32:267:40 | call to operator[] | semmle.label | call to operator[] |
+| azure.cpp:255:24:255:56 | call to GetHeader | semmle.label | call to GetHeader |
+| azure.cpp:255:32:255:40 | call to GetHeader | semmle.label | call to GetHeader |
+| azure.cpp:255:32:255:40 | call to GetHeader | semmle.label | call to GetHeader |
+| azure.cpp:255:63:255:65 | call to Value | semmle.label | call to Value |
+| azure.cpp:255:63:255:65 | call to Value | semmle.label | call to Value |
+| azure.cpp:256:10:256:20 | headerValue | semmle.label | headerValue |
+| azure.cpp:259:58:259:67 | call to GetHeaders | semmle.label | call to GetHeaders |
+| azure.cpp:259:58:259:67 | call to GetHeaders | semmle.label | call to GetHeaders |
+| azure.cpp:260:38:260:53 | call to operator[] | semmle.label | call to operator[] |
+| azure.cpp:261:10:261:20 | contentType | semmle.label | contentType |
+| azure.cpp:268:3:268:5 | SetQueryParameters output argument | semmle.label | SetQueryParameters output argument |
+| azure.cpp:268:26:268:45 | call to GetHeaders | semmle.label | call to GetHeaders |
+| azure.cpp:268:34:268:43 | call to GetHeaders | semmle.label | call to GetHeaders |
+| azure.cpp:268:34:268:43 | call to GetHeaders | semmle.label | call to GetHeaders |
+| azure.cpp:269:8:269:10 | *url | semmle.label | *url |
+| azure.cpp:269:12:269:29 | call to GetQueryParameters | semmle.label | call to GetQueryParameters |
+| azure.cpp:269:12:269:29 | call to GetQueryParameters | semmle.label | call to GetQueryParameters |
+| azure.cpp:269:32:269:40 | call to operator[] | semmle.label | call to operator[] |
 | bal.cpp:128:19:128:26 | call to source | semmle.label | call to source |
 | bal.cpp:129:23:129:51 | *call to data | semmle.label | *call to data |
 | bal.cpp:132:17:132:18 | *sb | semmle.label | *sb |
