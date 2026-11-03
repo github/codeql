@@ -1,0 +1,54 @@
+name: Run tests for changed queries
+
+on:
+  pull_request:
+    paths:
+      - "**/*.ql"
+      - "**/*.qll"
+      - "**/*.qlref"
+      - "**/qlpack.yml"
+      - ".github/scripts/find-query-tests.py"
+      - ".github/workflows/changed-query-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  query-tests:
+    name: Find and run corresponding query tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Find corresponding tests
+        id: tests
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          TEST_LIST: ${{ runner.temp }}/query-tests.txt
+        run: |
+          python3 .github/scripts/find-query-tests.py \
+            --base "$BASE_SHA" \
+            --head "$HEAD_SHA" \
+            --output "$TEST_LIST"
+          if [ -s "$TEST_LIST" ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup CodeQL
+        if: steps.tests.outputs.found == 'true'
+        uses: ./.github/actions/fetch-codeql
+
+      - name: Run corresponding tests
+        if: steps.tests.outputs.found == 'true'
+        env:
+          TEST_LIST: ${{ runner.temp }}/query-tests.txt
+        run: |
+          mapfile -t tests < "$TEST_LIST"
+          codeql test run --threads=0 --search-path "$GITHUB_WORKSPACE" -- "${tests[@]}"
