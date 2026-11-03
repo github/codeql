@@ -1,5 +1,6 @@
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -200,6 +201,46 @@ public class HostComparisonRedirect {
         String host = uri.getHost();
         if (ALLOWED_HOST.equalsIgnoreCase(host)) {
             response.sendRedirect(uri.toString());
+        }
+    }
+
+    public void constantCollection(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        URI uri = new URI(request.getParameter("url"));
+        String host = uri.getHost();
+        if (Set.of("example.com", "example.org").contains(host)) {
+            response.sendRedirect(uri.toString());
+        }
+    }
+
+    public void normalizedConstantCollection(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        URI uri = new URI(request.getParameter("url"));
+        String host = uri.getHost();
+        if (Set.of("EXAMPLE.COM", "EXAMPLE.ORG").contains(host.toUpperCase())) {
+            response.sendRedirect(uri.toString());
+        }
+    }
+
+    public void nullContainingCollection(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        URI uri = new URI(request.getParameter("url")); // $ Source
+        String host = uri.getHost();
+        if (Arrays.asList("example.com", null).contains(host)) {
+            response.sendRedirect(uri.toString()); // $ Alert
+        }
+    }
+
+    public void nullContainingCollectionWithNonNullHost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        URI uri = new URI(request.getParameter("url"));
+        String host = uri.getHost();
+        if (host != null && Arrays.asList("example.com", null).contains(host)) {
+            response.sendRedirect(uri.toString());
+        }
+    }
+
+    public void untrustedCollection(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        URI uri = new URI(request.getParameter("url")); // $ Source
+        String host = uri.getHost();
+        if (Set.of(request.getParameter("allowed")).contains(host)) {
+            response.sendRedirect(uri.toString()); // $ Alert
         }
     }
 
