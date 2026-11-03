@@ -2,11 +2,15 @@ package p
 
 func sharedTarget() {} // $ hit
 
+func qualifiedTarget() {} // $ hit[go/test/q1] hit[go/test/q2]
+
 func valuedTarget() {} // $ mark[go/test/q1]=q1 mark[go/test/q2]=q2
 
 func q1Target() {} // $ one[go/test/q1]
 
 func q2Target() {} // $ two[go/test/q2]
+
+func survivingSiblingTarget() {} // $ two[go/test/q2]
 
 func foreignTarget() {} // $ hit hit[go/test/other]
 
