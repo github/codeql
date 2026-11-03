@@ -91,6 +91,7 @@ rust_library(
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv32imac-unknown-none-elf": [],
         "@rules_rust//rust/platform:riscv32imc-unknown-none-elf": [],
+        "@rules_rust//rust/platform:riscv64gc-unknown-fuchsia": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-none-elf": [],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [],
@@ -191,6 +192,9 @@ rust_library(
         ],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
             "@vendor_ts__iana-time-zone-0.1.65//:iana_time_zone",  # powerpc-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:riscv64gc-unknown-fuchsia": [
+            "@vendor_ts__iana-time-zone-0.1.65//:iana_time_zone",  # riscv64gc-unknown-fuchsia
         ],
         "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [
             "@vendor_ts__iana-time-zone-0.1.65//:iana_time_zone",  # riscv64gc-unknown-linux-gnu
