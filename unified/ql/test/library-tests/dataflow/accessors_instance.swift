@@ -175,5 +175,5 @@ func t13() {
     }
     var c2 = C2()
     c2.updateX(newValue: source("t13.1"))
-    sink(c2.getX())  // $ MISSING: hasValueFlow=t13.1
+    sink(c2.getX())  // $ hasValueFlow=t13.1
 }
