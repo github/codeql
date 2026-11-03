@@ -34,6 +34,13 @@ private module Cached {
     TValueNode(AST::ValueNode nd) or
     /** An SSA node from the legacy SSA library */
     TSsaDefNode(SsaDefinition d) or
+    /** The input to a phi node from one predecessor block, for branch-specific barriers. */
+    TSsaPhiInputNode(SsaPhiNode phi, BasicBlock predecessor) {
+      exists(phi.getInputFromBlock(predecessor)) and
+      // Only split inputs whose incoming branch is controlled by a condition.
+      // Other inputs retain their direct SSA flow edge.
+      exists(ConditionGuardNode guard | guard.dominates(predecessor))
+    } or
     /** Use of a variable or 'this', with flow from a post-update node (from an earlier use) */
     TSsaUseNode(ControlFlowNode use) { use = any(Ssa2::SsaConfig::SourceVariable v).getAUse() } or
     /** A synthesized variable read (new SSA library). Definitions are represented by TSsaDefNode. */
@@ -130,8 +137,8 @@ private module Cached {
 import Cached
 
 private class TEarlyStageNode =
-  TValueNode or TSsaDefNode or TCapturedVariableNode or TPropNode or TRestPatternNode or
-      TElementPatternNode or TElementNode or TReflectiveCallNode or TThisNode or
+  TValueNode or TSsaDefNode or TSsaPhiInputNode or TCapturedVariableNode or TPropNode or
+      TRestPatternNode or TElementPatternNode or TElementNode or TReflectiveCallNode or TThisNode or
       TFunctionSelfReferenceNode or TDestructuredModuleImportNode or THtmlAttributeNode or
       TFunctionReturnNode or TExceptionalFunctionReturnNode or TExceptionalInvocationReturnNode or
       TGlobalAccessPathRoot or TTemplatePlaceholderTag or TReflectiveParametersNode or

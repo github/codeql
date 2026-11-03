@@ -103,3 +103,11 @@ function browser() {
         setTimeout(() => {}, e.data); // OK - source is client side
     }
 }
+
+function clampedAllocation(req) {
+  let n = parseInt(req.query.n);
+  if (n > 1024) {
+    n = 1024;
+  }
+  Buffer.alloc(n); // OK - n is at most 1024 (or an invalid allocation size)
+}
