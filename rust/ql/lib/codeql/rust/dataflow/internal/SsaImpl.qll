@@ -236,11 +236,6 @@ private module Cached {
     )
   }
 
-  cached
-  Definition phiHasInputFromBlock(PhiDefinition phi, BasicBlock bb) {
-    Impl::phiHasInputFromBlock(phi, result, bb)
-  }
-
   /**
    * Holds if the value defined at SSA definition `def` can reach a read at `read`,
    * without passing through any other non-pseudo read.
@@ -265,11 +260,6 @@ private module Cached {
       read1 = bb1.getNode(i1).getAstNode() and
       read2 = bb2.getNode(i2).getAstNode()
     )
-  }
-
-  cached
-  Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
-    Impl::uncertainWriteDefinitionInput(def, result)
   }
 
   cached
