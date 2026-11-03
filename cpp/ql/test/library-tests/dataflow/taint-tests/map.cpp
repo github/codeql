@@ -8,7 +8,7 @@ char *source();
 void sink(char *);
 void sink(const char *);
 void sink(bool);
-void sink(std::pair<const char *, const char *>);
+template<typename T, typename U> void sink(std::pair<T, U>);
 void sink(std::map<const char *, const char *>);
 void sink(std::map<const char *, const char *>::iterator);
 void sink(std::unordered_map<const char *, const char *>);
