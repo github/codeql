@@ -702,16 +702,17 @@ module TestPostProcessing {
   /**
    * Parses `full` into a bare tag and an optional query ID qualifier. For example,
    * `mark[ql/test/q1]` becomes `mark` and `ql/test/q1`, while `mark` becomes `mark` and `""`.
+   * Empty qualifiers and tags containing unmatched brackets have no result.
    */
   bindingset[full]
   private predicate parseQualifiedTag(string full, string base, string queryId) {
-    if full.regexpMatch("[^\\[\\]]+\\[[^\\[\\]]*\\]")
-    then
-      base = full.regexpCapture("([^\\[\\]]+)\\[([^\\[\\]]*)\\]", 1) and
-      queryId = full.regexpCapture("([^\\[\\]]+)\\[([^\\[\\]]*)\\]", 2)
-    else (
-      base = full and queryId = ""
-    )
+    full.regexpMatch("[^\\[\\]]+\\[[^\\[\\]]+\\]") and
+    base = full.regexpCapture("([^\\[\\]]+)\\[([^\\[\\]]+)\\]", 1) and
+    queryId = full.regexpCapture("([^\\[\\]]+)\\[([^\\[\\]]+)\\]", 2)
+    or
+    full.regexpMatch("[^\\[\\]]+") and
+    base = full and
+    queryId = ""
   }
 
   module Make<InlineExpectationsTestSig Input> {
@@ -1180,7 +1181,9 @@ module TestPostProcessing {
        * group) a tag this test understands with a tag it ignores (for example a query ID that does
        * not match the current query). The latter keeps the rewrite from having to take apart a group
        * such as `Alert,Source[other-query]` whose parts this test treats differently; such comments
-       * are left untouched.
+       * are left untouched. A qualifier containing whitespace is also left untouched in cohort mode:
+       * it may be domain-specific bracket syntax or an unsupported attempt to name several producer
+       * queries, neither of which can be reconciled as one query ID.
        *
        * A rewritable comment may still carry whole expectations this test ignores (for example
        * `// $ Alert[other-query]`). Those are preserved verbatim by `foreignExpectation` when the
@@ -1197,6 +1200,20 @@ module TestPostProcessing {
           hasExpectation(comment, _, _, tags, _) and
           not TestInput::tagIsIgnored(tags.splitAt(",")) and
           TestInput::tagIsIgnored(tags.splitAt(","))
+        ) and
+        // A comma group cannot express per-query ownership without changing its grammar. Leave the
+        // whole comment untouched in cohort mode so verification reports the unsupported syntax.
+        not exists(string tags |
+          inCohortMode() and
+          hasExpectation(comment, TDefaultColumn(), _, tags, _) and
+          tags.matches("%,%")
+        ) and
+        not exists(string tags, string queryId |
+          inCohortMode() and
+          hasExpectation(comment, TDefaultColumn(), _, tags, _) and
+          not tags.matches("%,%") and
+          parseQualifiedTag(tags, _, queryId) and
+          queryId.regexpMatch(".*\\s+.*")
         )
       }
 
@@ -1262,7 +1279,7 @@ module TestPostProcessing {
       }
 
       /** Holds if this is a shared-source cohort pass rather than an ordinary single-query run. */
-      private predicate inCohortMode() { exists(string queryId | cohortMember(queryId)) }
+      private predicate inCohortMode() { cohortMember(_) }
 
       /**
        * Holds if `queryId` is recorded on disk as a producer of `(tag, value)` on the given line.
@@ -1313,11 +1330,7 @@ module TestPostProcessing {
       /** Holds if the reconciled producer set for the atom is the whole cohort. */
       private predicate isCollapsedAtom(string relativePath, int line, string tag, string value) {
         inCohortMode() and
-        (
-          selfProducesAtom(relativePath, line, tag, value)
-          or
-          onDiskProducer(relativePath, line, tag, value, _)
-        ) and
+        reconciledProducer(relativePath, line, tag, value, _) and
         forall(string queryId | cohortMember(queryId) |
           reconciledProducer(relativePath, line, tag, value, queryId)
         )
@@ -1348,9 +1361,35 @@ module TestPostProcessing {
       }
 
       /**
-       * Renders a matching default-column expectation for the current query. This also normalizes
-       * pre-existing cohort comments: a complete qualified set collapses to bare, while a bare atom
-       * no longer produced by the whole cohort becomes current-query-qualified.
+       * Carries forward a sibling producer when a bare on-disk atom has a partial reconciled producer
+       * set. The current query is taken from its actual result, and each surviving sibling is
+       * rendered explicitly.
+       */
+      private predicate carriedSiblingExpectation(
+        TestImpl2::ExpectationComment comment, string column, string text
+      ) {
+        exists(
+          string relativePath, int line, string full, string base, string qualifier, string value,
+          string queryId
+        |
+          inCohortMode() and
+          hasExpectation(comment, TDefaultColumn(), _, full, value) and
+          not full.matches("%,%") and
+          parseQualifiedTag(full, base, qualifier) and
+          qualifier = "" and
+          not TestInput::tagIsIgnored(full) and
+          parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
+          not isCollapsedAtom(relativePath, line, base, value) and
+          queryId != getQueryId() and
+          reconciledProducer(relativePath, line, base, value, queryId) and
+          column = "" and
+          text = renderAtom(base + "[" + queryId + "]", value)
+        )
+      }
+
+      /**
+       * Renders a matching default-column expectation for the current query. A complete qualified
+       * producer set collapses to bare, while a partial set is rendered with explicit query IDs.
        */
       private string renderSurvivingDefaultExpectation(Test::FailureLocatable expectation) {
         exists(string relativePath, int line, string base, string queryId |
@@ -1485,8 +1524,9 @@ module TestPostProcessing {
        * This combines the surviving expectations this test understands (see `survivingExpectation`)
        * with the expectations it ignores (see `foreignExpectation`), which are preserved
        * verbatim so that rewriting a comment for one query never drops another query's expectation on
-       * the same line, and with any freshly learned expectations merged into the comment (see
-       * `mergedNewExpectation`).
+       * the same line, sibling producers carried forward from a formerly bare atom (see
+       * `carriedSiblingExpectation`), and any freshly learned expectations merged into the comment
+       * (see `mergedNewExpectation`).
        */
       private predicate desiredExpectation(
         TestImpl2::ExpectationComment comment, string column, string text
@@ -1494,6 +1534,8 @@ module TestPostProcessing {
         survivingExpectation(comment, column, text)
         or
         foreignExpectation(comment, column, text)
+        or
+        carriedSiblingExpectation(comment, column, text)
         or
         mergedNewExpectation(comment, column, text)
       }
@@ -1519,16 +1561,73 @@ module TestPostProcessing {
         foreignExpectation(comment, column, text)
       }
 
+      /**
+       * Holds if `comment` uses a complete qualified representation of a collapsed default-column
+       * atom. This representation is semantically equivalent to the bare desired atom, but retains
+       * useful query provenance.
+       */
+      private predicate hasCompleteQualifiedRepresentation(
+        TestImpl2::ExpectationComment comment, string tag, string value
+      ) {
+        exists(string full, string queryId |
+          hasExpectation(comment, TDefaultColumn(), _, full, value) and
+          parseQualifiedTag(full, tag, queryId) and
+          cohortMember(queryId)
+        ) and
+        not hasExpectation(comment, TDefaultColumn(), _, tag, value) and
+        forall(string queryId | cohortMember(queryId) |
+          exists(string full |
+            hasExpectation(comment, TDefaultColumn(), _, full, value) and
+            parseQualifiedTag(full, tag, queryId)
+          )
+        )
+      }
+
+      /** Holds if a desired bare atom is already represented by a complete qualified set. */
+      private predicate desiredExpectationIsRepresented(
+        TestImpl2::ExpectationComment comment, string column, string text
+      ) {
+        currentExpectation(comment, column, text)
+        or
+        exists(string relativePath, int line, string tag, string value |
+          column = "" and
+          parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
+          isCollapsedAtom(relativePath, line, tag, value) and
+          hasCompleteQualifiedRepresentation(comment, tag, value) and
+          text = renderAtom(tag, value)
+        )
+      }
+
+      /** Holds if a current qualified atom is covered by the desired collapsed bare atom. */
+      private predicate currentExpectationIsRepresented(
+        TestImpl2::ExpectationComment comment, string column, string text
+      ) {
+        desiredExpectation(comment, column, text)
+        or
+        exists(
+          string relativePath, int line, string full, string tag, string queryId, string value
+        |
+          column = "" and
+          text = renderAtom(full, value) and
+          hasExpectation(comment, TDefaultColumn(), _, full, value) and
+          parseQualifiedTag(full, tag, queryId) and
+          cohortMember(queryId) and
+          parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
+          isCollapsedAtom(relativePath, line, tag, value) and
+          hasCompleteQualifiedRepresentation(comment, tag, value)
+        )
+      }
+
       /** Holds if `--learn` should change the set of expectations carried by `comment`. */
       private predicate commentNeedsRewrite(TestImpl2::ExpectationComment comment) {
         exists(string column, string text |
           desiredExpectation(comment, column, text) and
-          not currentExpectation(comment, column, text)
+          not desiredExpectationIsRepresented(comment, column, text)
         )
         or
         exists(string column, string text |
           currentExpectation(comment, column, text) and
-          not desiredExpectation(comment, column, text)
+          not currentExpectationIsRepresented(comment, column, text)
         )
       }
 
