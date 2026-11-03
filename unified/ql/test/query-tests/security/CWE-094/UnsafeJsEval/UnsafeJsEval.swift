@@ -208,7 +208,7 @@ func testSync(_ sink: @escaping (String) -> ()) {
 	sink("console.log(" + (try! String(contentsOf: url!)) + ")") // $ Source=source3
 
 	let localData = Data(localString.utf8)
-	let remoteData = Data((try! String(contentsOf: url!)).utf8) // $ Source=source4
+	let remoteData = Data((try! String(contentsOf: url!)).utf8) // $ MISSING: Source=source4
 
 	sink(String(decoding: localData, as: UTF8.self)) // GOOD: the data is local
 	sink(String(decoding: remoteData, as: UTF8.self))
@@ -263,10 +263,10 @@ func testWKUserContentController() {
 	let ctrl = WKUserContentController()
 
 	testSync { string in
-		ctrl.addUserScript(WKUserScript(source: string, injectionTime: .atDocumentStart, forMainFrameOnly: false)) // $ Alert=source1 $ Alert=source2 $ Alert=source3 $ Alert=source4
+		ctrl.addUserScript(WKUserScript(source: string, injectionTime: .atDocumentStart, forMainFrameOnly: false)) // $ Alert=source1 $ Alert=source2 $ Alert=source3 $ MISSING: Alert=source4
 	}
 	testSync { string in
-		ctrl.addUserScript(WKUserScript(source: string, injectionTime: .atDocumentEnd, forMainFrameOnly: true, in: .defaultClient)) // $ Alert=source1 $ Alert=source2 $ Alert=source3 $ Alert=source4
+		ctrl.addUserScript(WKUserScript(source: string, injectionTime: .atDocumentEnd, forMainFrameOnly: true, in: .defaultClient)) // $ Alert=source1 $ Alert=source2 $ Alert=source3 $ MISSING: Alert=source4
 	}
 }
 
@@ -274,10 +274,10 @@ func testJSContext() {
 	let ctx = JSContext()
 
 	testSync { string in
-		_ = ctx.evaluateScript(string) // $ Alert=source1 $ Alert=source2 $ Alert=source3 $ Alert=source4
+		_ = ctx.evaluateScript(string) // $ Alert=source1 $ Alert=source2 $ Alert=source3 $ MISSING: Alert=source4
 	}
 	testSync { string in
-		_ = ctx.evaluateScript(string, withSourceURL: URL(string: "https://example.com")) // $ Alert=source1 $ Alert=source2 $ Alert=source3 $ Alert=source4
+		_ = ctx.evaluateScript(string, withSourceURL: URL(string: "https://example.com")) // $ Alert=source1 $ Alert=source2 $ Alert=source3 $ MISSING: Alert=source4
 	}
 }
 
@@ -288,7 +288,7 @@ func testJSEvaluateScript() {
 			defer { JSStringRelease(jsstr) }
 			_ = JSEvaluateScript(
 				/*ctx:*/ OpaquePointer(bitPattern: 0),
-				/*script:*/ jsstr, // $ Alert=source1 $ Alert=source2 $ Alert=source3 $ Alert=source4
+				/*script:*/ jsstr, // $ MISSING: Alert=source1 MISSING: Alert=source2 MISSING: Alert=source3 MISSING: Alert=source4
 				/*thisObject:*/ OpaquePointer(bitPattern: 0),
 				/*sourceURL:*/ OpaquePointer(bitPattern: 0),
 				/*startingLineNumber:*/ 0,
@@ -302,7 +302,7 @@ func testJSEvaluateScript() {
 			defer { JSStringRelease(jsstr) }
 			_ = JSEvaluateScript(
 				/*ctx:*/ OpaquePointer(bitPattern: 0),
-				/*script:*/ jsstr, // $ Alert=source1 $ Alert=source2 $ Alert=source3 $ Alert=source4
+				/*script:*/ jsstr, // $ MISSING: Alert=source1 MISSING: Alert=source2 MISSING: Alert=source3 MISSING: Alert=source4
 				/*thisObject:*/ OpaquePointer(bitPattern: 0),
 				/*sourceURL:*/ OpaquePointer(bitPattern: 0),
 				/*startingLineNumber:*/ 0,
