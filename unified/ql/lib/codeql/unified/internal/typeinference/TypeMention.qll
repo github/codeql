@@ -280,6 +280,8 @@ class ExprTypeMention extends TypeMentionImpl, Expr {
     result = Plugin::getFunctionExprType(this)
     or
     result.(Plugin::TupleType).getArity() = this.(TupleExpr).getNumberOfElements()
+    or
+    result.(ModelType).getTypeSelector().getAStaticRef() = this
   }
 
   override Type getUnexpandedType() {
