@@ -1,12 +1,24 @@
-from fastmcp import FastMCP
+from typing import Annotated, Optional
+
+from fastmcp import Context, FastMCP
+from fastmcp.prompts import FunctionPrompt, Prompt, prompt
+from fastmcp.prompts.base import Prompt as BasePrompt
+from fastmcp.prompts.function_prompt import FunctionPrompt as ModuleFunctionPrompt
+from fastmcp.prompts.function_prompt import prompt as module_prompt
+from fastmcp.prompts.prompt import FunctionPrompt as PromptModuleFunctionPrompt
+from fastmcp.prompts.prompt import Prompt as PromptModulePrompt
 from fastmcp.server import FastMCP as ServerFastMCP
-from fastmcp.server.server import FastMCP as ModuleFastMCP
 from fastmcp.server.auth import AuthProvider, TokenVerifier
 from fastmcp.server.auth.auth import TokenVerifier as ModuleTokenVerifier
+from fastmcp.server.context import Context as ModuleContext
 from fastmcp.server.dependencies import get_access_token, get_http_headers, get_http_request
+from fastmcp.server.server import FastMCP as ModuleFastMCP
 from fastmcp.tools import FunctionTool, Tool, tool
 from fastmcp.tools.base import Tool as BaseTool
 from fastmcp.tools.function_tool import FunctionTool as ModuleFunctionTool
+from fastmcp.tools.function_tool import tool as module_tool
+from fastmcp.tools.tool import FunctionTool as ToolModuleFunctionTool
+from fastmcp.tools.tool import Tool as ToolModuleTool
 
 app = FastMCP("test")
 server_app = ServerFastMCP("test")
@@ -14,57 +26,91 @@ module_app = ModuleFastMCP("test")
 
 
 @app.tool
-def bare(command): # $ mad-source__ai=command
+def bare(command): # $ threatModelSource[ai]=command
     return command
 
 
 @server_app.tool(name="exec")
-def called(command): # $ mad-source__ai=command
+def called(command): # $ threatModelSource[ai]=command
     return command
 
 
 @module_app.resource("files://{path}")
-def resource(path): # $ mad-source__ai=path
+def resource(path): # $ threatModelSource[ai]=path
     return path
 
 
 @app.prompt
-def bare_prompt(topic): # $ mad-source__ai=topic
+def bare_prompt(topic): # $ threatModelSource[ai]=topic
     return topic
 
 
 @app.prompt()
-def called_prompt(topic, style="short"): # $ mad-source__ai=topic mad-source__ai=style
+def called_prompt(topic, style="short"): # $ threatModelSource[ai]=topic threatModelSource[ai]=style
     return topic + style
 
 
-def added(command): # $ mad-source__ai=command
+def added(command): # $ threatModelSource[ai]=command
     return command
 
 
 app.add_tool(added)
 
 
-def added_prompt(topic): # $ mad-source__ai=topic
+def added_prompt(topic): # $ threatModelSource[ai]=topic
     return topic
 
 
 app.add_prompt(prompt=added_prompt)
 
 
-def via_tool(url): # $ mad-source__ai=url
+# The SDK injects the `Context` parameter itself, so it is not chosen by the client.
+@app.tool
+def with_context(command, ctx: Context): # $ threatModelSource[ai]=command
+    return command
+
+
+@app.tool
+async def with_optional_context(command, ctx: Context | None = None): # $ threatModelSource[ai]=command
+    return command
+
+
+@app.tool
+async def with_typing_context(command, ctx: Optional[ModuleContext] = None): # $ threatModelSource[ai]=command
+    return command
+
+
+@app.tool
+async def with_annotated_context(command, ctx: Annotated[Context, "injected"]): # $ threatModelSource[ai]=command
+    return command
+
+
+@app.tool
+async def with_string_context(command, ctx: "Context"): # $ threatModelSource[ai]=command
+    return command
+
+
+def via_tool(url): # $ threatModelSource[ai]=url
     return url
 
 
-def via_function_tool(url): # $ mad-source__ai=url
+def via_function_tool(url): # $ threatModelSource[ai]=url
     return url
 
 
-def via_base_tool(url): # $ mad-source__ai=url
+def via_base_tool(url): # $ threatModelSource[ai]=url
     return url
 
 
-def via_module_function_tool(url): # $ mad-source__ai=url
+def via_module_function_tool(url): # $ threatModelSource[ai]=url
+    return url
+
+
+def via_tool_module_tool(url): # $ threatModelSource[ai]=url
+    return url
+
+
+def via_tool_module_function_tool(url): # $ threatModelSource[ai]=url
     return url
 
 
@@ -72,16 +118,70 @@ Tool.from_function(via_tool)
 FunctionTool.from_function(via_function_tool)
 BaseTool.from_function(fn=via_base_tool)
 ModuleFunctionTool.from_function(via_module_function_tool)
+ToolModuleTool.from_function(via_tool_module_tool)
+ToolModuleFunctionTool.from_function(via_tool_module_function_tool)
+
+
+def via_prompt(topic): # $ threatModelSource[ai]=topic
+    return topic
+
+
+def via_function_prompt(topic): # $ threatModelSource[ai]=topic
+    return topic
+
+
+def via_base_prompt(topic): # $ threatModelSource[ai]=topic
+    return topic
+
+
+def via_module_function_prompt(topic): # $ threatModelSource[ai]=topic
+    return topic
+
+
+def via_prompt_module_prompt(topic): # $ threatModelSource[ai]=topic
+    return topic
+
+
+def via_prompt_module_function_prompt(topic): # $ threatModelSource[ai]=topic
+    return topic
+
+
+app.add_prompt(Prompt.from_function(via_prompt))
+FunctionPrompt.from_function(via_function_prompt)
+BasePrompt.from_function(fn=via_base_prompt)
+ModuleFunctionPrompt.from_function(via_module_function_prompt)
+PromptModulePrompt.from_function(via_prompt_module_prompt)
+PromptModuleFunctionPrompt.from_function(via_prompt_module_function_prompt)
 
 
 @tool
-def standalone(command): # $ mad-source__ai=command
+def standalone(command): # $ threatModelSource[ai]=command
     return command
 
 
 @tool()
-def standalone_called(command): # $ mad-source__ai=command
+def standalone_called(command): # $ threatModelSource[ai]=command
     return command
+
+
+@module_tool
+def standalone_module(command): # $ threatModelSource[ai]=command
+    return command
+
+
+@module_tool(name="exec")
+def standalone_module_called(command): # $ threatModelSource[ai]=command
+    return command
+
+
+@prompt
+def standalone_prompt(topic): # $ threatModelSource[ai]=topic
+    return topic
+
+
+@module_prompt()
+def standalone_module_prompt(topic): # $ threatModelSource[ai]=topic
+    return topic
 
 
 @app.tool
@@ -92,6 +192,18 @@ def forward_header():
 @app.tool
 def forward_request_header():
     return get_http_request().headers["x-target"] # $ mad-source__remote=get_http_request().headers
+
+
+class Handlers:
+    # The receiver of a method is not chosen by the client, the first parameter of a static method is.
+    @app.tool
+    def method(self, command): # $ threatModelSource[ai]=command
+        return command
+
+    @staticmethod
+    @app.tool
+    def static(command): # $ threatModelSource[ai]=command
+        return command
 
 
 def not_registered(value):

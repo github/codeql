@@ -8,15 +8,15 @@ module_server = ModuleServer("test")
 
 
 @server.call_tool()
-async def call_tool(name, arguments): # $ mad-source__ai=name mad-source__ai=arguments
+async def call_tool(name, arguments): # $ mad-source__ai=name threatModelSource[ai]=name mad-source__ai=arguments threatModelSource[ai]=arguments
     return arguments
 
 
 @lowlevel_server.read_resource()
-async def read_resource(uri): # $ mad-source__ai=uri
+async def read_resource(uri): # $ mad-source__ai=uri threatModelSource[ai]=uri
     return uri
 
 
 @module_server.get_prompt()
-async def get_prompt(name, arguments): # $ mad-source__ai=name mad-source__ai=arguments
+async def get_prompt(name, arguments): # $ mad-source__ai=name threatModelSource[ai]=name mad-source__ai=arguments threatModelSource[ai]=arguments
     return arguments
