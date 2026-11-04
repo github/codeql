@@ -35,7 +35,11 @@ module CleartextStorageDatabase {
   /**
    * Sensitive data, considered as a flow source.
    */
-  private class SensitiveDataAsSource extends Source instanceof SensitiveData { }
+  private class SensitiveDataAsSource extends Source instanceof SensitiveData {
+    SensitiveDataAsSource() {
+      SensitiveData.super.getClassification() != SensitiveDataClassification::id()
+    }
+  }
 
   /**
    * A sink for cleartext storage vulnerabilities from model data.
