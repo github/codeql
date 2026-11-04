@@ -115,6 +115,13 @@ class Outer<TOuter> {
         let d = p2.0.getInner()  // $ target=Outer.Inner.getInner field=Tuple2.0 type=d:Int
     }
 
+    typealias Unbound = Holder.InnerAlias
+
+    func f4(x: Outer<String>.Unbound<Int>) {
+        let outer = x.getOuter()  // $ target=Outer.Inner.getOuter type=outer:String
+        let inner = x.getInner()  // $ target=Outer.Inner.getInner type=inner:Int
+    }
+
     enum E { case empty }
 }
 
@@ -271,4 +278,32 @@ typealias G<A> = Outer<A>.Holder
 func f(_ x: G<String>.InnerAlias<Bool>) {
     let outer = x.getOuter()  // $ target=Outer.Inner.getOuter type=outer:String
     let inner = x.getInner()  // $ target=Outer.Inner.getInner type=inner:Bool
+}
+
+class Base2<T> {
+    struct Nested {
+        var x: T
+
+        func getX() -> T {
+            return x  // $ field=Base2.Nested.x
+        }
+    }
+}
+class Sub: Base2<String> {
+    typealias Element = Nested
+
+    typealias Element2 = Sub.Nested
+}
+class SubSub: Sub {
+    func f(
+        x1: Sub.Element,  // $ MISSING: type=x1@Base2.Nested<(parent:Nested)>:Sub
+        x2: Element,  // $ type=x2@Base2.Nested<(parent:Nested)>:SubSub
+        x3: Element2,  // $ type=x3@Base2.Nested<(parent:Nested)>:Sub
+        x4: SubSub.Element2  // $ type=x4@Base2.Nested<(parent:Nested)>:Sub
+    ) {
+        let a = x1.getX()  // $ target=Base2.Nested.getX $ MISSING: type=a:String -- this is an instance of variance sub typing
+        let b = x2.getX()  // $ target=Base2.Nested.getX $ MISSING: type=b:String -- this is an instance of variance sub typing
+        let c = x3.getX()  // $ target=Base2.Nested.getX $ MISSING: type=c:String -- this is an instance of variance sub typing
+        let d = x4.getX()  // $ target=Base2.Nested.getX $ MISSING: type=d:String -- this is an instance of variance sub typing
+    }
 }
