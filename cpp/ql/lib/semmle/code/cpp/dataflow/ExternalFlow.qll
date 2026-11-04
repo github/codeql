@@ -1329,21 +1329,12 @@ module ConstructorForwarding {
     result.getBaseType() = base.getUnderlyingType()
   }
 
-  private predicate arrayToPointerStep(TypeState argState, TypeState paramState) {
-    exists(Cpp::ArrayType array, boolean conversionUsed |
-      argState = MkTypeState(array, _, conversionUsed, Initial()) and
-      paramState =
-        MkTypeState(pointerType(array.getBaseType()), PRValue(), conversionUsed,
-          AfterTransformation())
-    )
+  private predicate arrayToPointerStep(Cpp::ArrayType array, Cpp::PointerType pointer) {
+    pointer = pointerType(array.getBaseType())
   }
 
-  private predicate functionToPointerStep(TypeState argState, TypeState paramState) {
-    exists(RoutineType routine, FunctionPointerType pointer, boolean conversionUsed |
-      argState = MkTypeState(routine, _, conversionUsed, Initial()) and
-      routine = pointer.getBaseType().getUnderlyingType() and
-      paramState = MkTypeState(pointer, PRValue(), conversionUsed, AfterTransformation())
-    )
+  private predicate functionToPointerStep(RoutineType routine, FunctionPointerType pointer) {
+    routine = pointer.getBaseType().getUnderlyingType()
   }
 
   private predicate arithmeticConversion(Type t) {
@@ -1354,14 +1345,12 @@ module ConstructorForwarding {
 
   private predicate hasNoTopLevelSpecifiers(Type type) { type = type.stripTopLevelSpecifiers() }
 
-  private predicate valueConversionStep(TypeState argState, TypeState paramState) {
-    exists(Type argType, Type paramType, boolean conversionUsed |
-      argState = MkTypeState(_, _, conversionUsed, _) and
-      argState.canConvertValue() and
-      argType = argState.getType().stripTopLevelSpecifiers() and
+  bindingset[type]
+  private predicate valueConversionStep(Type type, Type paramType) {
+    exists(Type argType |
+      argType = type.stripTopLevelSpecifiers() and
       hasNoTopLevelSpecifiers(paramType) and
-      argType != paramType and
-      paramState = MkTypeState(paramType, PRValue(), conversionUsed, AfterValueConversion())
+      argType != paramType
     |
       paramType instanceof ArithmeticType and
       arithmeticConversion(argType)
@@ -1388,64 +1377,82 @@ module ConstructorForwarding {
     k = FunPtrKind()
   }
 
-  private predicate pointerQualificationStep(TypeState argState, TypeState paramState) {
-    exists(Type argType, Type paramType, boolean conversionUsed, PtrKind k |
-      argState = MkTypeState(_, _, conversionUsed, _) and
-      argState.getPhase() != AfterQualification() and
-      argType = argState.getType().stripTopLevelSpecifiers() and
+  bindingset[type]
+  private predicate pointerQualificationStep(Type type, Type paramType) {
+    exists(Type argType, PtrKind k |
+      argType = type.stripTopLevelSpecifiers() and
       hasNoTopLevelSpecifiers(paramType) and
       argType != paramType and
-      qualificationCompatible(pointerBase(argType, k), pointerBase(paramType, k)) and
-      paramState = MkTypeState(paramType, PRValue(), conversionUsed, AfterQualification())
+      qualificationCompatible(pointerBase(argType, pragma[only_bind_into](k)),
+        pointerBase(paramType, pragma[only_bind_into](k)))
     )
   }
 
-  private predicate baseClassStep(TypeState argState, TypeState paramState) {
-    exists(Type arg, Type param, ValueCategory category, boolean conversionUsed |
-      argState = MkTypeState(arg, category, conversionUsed, _) and
-      argState.canConvertValue() and
-      baseTypeCompatible(arg, param) and
-      paramState = MkTypeState(param, category, conversionUsed, AfterValueConversion())
-    )
+  bindingset[argType]
+  private predicate baseClassStep(Type argType, Type paramType) {
+    baseTypeCompatible(argType, paramType)
   }
 
-  private predicate convertingConstructorStep(TypeState argState, TypeState paramState) {
+  bindingset[argType, argCategory]
+  private predicate convertingConstructorStep(
+    Type argType, ValueCategory argCategory, Class paramType
+  ) {
     exists(ConvertingConstructor constructor |
-      argState.hasNotUsedConversion() and
-      matchesParameter(argState.getType(), argState.getCategory(),
-        constructor.getUnderlyingFromType()) and
-      paramState = MkTypeState(constructor.getDeclaringType(), PRValue(), true, Initial())
+      matchesParameter(argType, argCategory, constructor.getUnderlyingFromType()) and
+      paramType = constructor.getDeclaringType()
     )
   }
 
-  private predicate conversionOperatorStep(TypeState argState, TypeState paramState) {
-    exists(ConversionOperator conversion, ValueCategory category |
+  bindingset[argType]
+  private predicate conversionOperatorStep(Type argType, Type paramType, ValueCategory paramCategory) {
+    exists(ConversionOperator conversion |
       not conversion.isFromUninstantiatedTemplate(_) and
       not conversion.isExplicit() and
       not conversion.isDeleted() and
-      argState.hasNotUsedConversion() and
-      conversion.getSourceType() =
-        argState.getType().stripTopLevelSpecifiers().(Class).getABaseClass*() and
-      paramState =
-        MkTypeState(getValueType(conversion.getDestType().getUnderlyingType(), category), category,
-          true, Initial())
+      conversion.getSourceType() = argType.stripTopLevelSpecifiers().(Class).getABaseClass*() and
+      paramType = getValueType(conversion.getDestType().getUnderlyingType(), paramCategory)
     )
   }
 
-  private predicate step(TypeState argState, TypeState paramState) {
-    arrayToPointerStep(argState, paramState)
+  bindingset[argType, argCategory, argConversionUsed, argPhase]
+  pragma[inline_late]
+  private predicate typeStep(
+    Type argType, ValueCategory argCategory, boolean argConversionUsed, Phase argPhase,
+    Type paramType, ValueCategory paramCategory, boolean paramConversionUsed, Phase paramPhase
+  ) {
+    paramConversionUsed = argConversionUsed and
+    (
+      argPhase = Initial() and
+      paramCategory = PRValue() and
+      paramPhase = AfterTransformation() and
+      (
+        arrayToPointerStep(argType, paramType)
+        or
+        functionToPointerStep(argType, paramType)
+      )
+      or
+      (argPhase = Initial() or argPhase = AfterTransformation()) and
+      paramPhase = AfterValueConversion() and
+      (
+        valueConversionStep(argType, paramType) and paramCategory = PRValue()
+        or
+        baseClassStep(argType, paramType) and paramCategory = argCategory
+      )
+      or
+      argPhase != AfterQualification() and
+      pointerQualificationStep(argType, paramType) and
+      paramCategory = PRValue() and
+      paramPhase = AfterQualification()
+    )
     or
-    functionToPointerStep(argState, paramState)
-    or
-    valueConversionStep(argState, paramState)
-    or
-    pointerQualificationStep(argState, paramState)
-    or
-    baseClassStep(argState, paramState)
-    or
-    convertingConstructorStep(argState, paramState)
-    or
-    conversionOperatorStep(argState, paramState)
+    argConversionUsed = false and
+    paramConversionUsed = true and
+    paramPhase = Initial() and
+    (
+      convertingConstructorStep(argType, argCategory, paramType) and paramCategory = PRValue()
+      or
+      conversionOperatorStep(argType, paramType, paramCategory)
+    )
   }
 
   private predicate typeFwd(TypeState state) {
@@ -1471,13 +1478,6 @@ module ConstructorForwarding {
 
     Phase getPhase() { this = MkTypeState(_, _, _, result) }
 
-    /** Holds if this state's phase permits a value or base-class conversion. */
-    predicate canConvertValue() {
-      this.getPhase() = Initial() or this.getPhase() = AfterTransformation()
-    }
-
-    predicate hasNotUsedConversion() { this = MkTypeState(_, _, false, _) }
-
     string toString() { result = this.getType().toString() }
 
     predicate isSource(Type argType) {
@@ -1491,6 +1491,17 @@ module ConstructorForwarding {
       paramType = getConstructorParameterType(constructor, _) and
       matchesParameter(this.getType(), this.getCategory(), paramType)
     }
+  }
+
+  private predicate step(TypeState argState, TypeState paramState) {
+    exists(
+      Type t1, Type t2, ValueCategory vc1, ValueCategory vc2, boolean b1, boolean b2, Phase p1,
+      Phase p2
+    |
+      argState = MkTypeState(t1, vc1, b1, p1) and
+      paramState = MkTypeState(t2, vc2, b2, p2) and
+      typeStep(t1, vc1, b1, p1, t2, vc2, b2, p2)
+    )
   }
 
   private predicate typeRev(TypeState state, Cpp::Constructor constructor) {
