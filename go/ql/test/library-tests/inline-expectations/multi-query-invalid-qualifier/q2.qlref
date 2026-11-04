@@ -1,0 +1,2 @@
+query: q2.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

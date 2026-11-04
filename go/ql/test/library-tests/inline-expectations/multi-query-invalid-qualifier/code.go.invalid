@@ -1,0 +1,5 @@
+package p
+
+func emptyQualifierTarget() {} // $ hit[]
+
+func repeatedQualifierTarget() {} // $ hit[go/test/q1][go/test/q2]

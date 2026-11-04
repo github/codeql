@@ -685,6 +685,28 @@ module TestPostProcessing {
 
   private string getQueryKind() { queryMetadata("kind", result) }
 
+  /**
+   * Holds if `queryId` is the `@id` of a query in the shared-source cohort for this `--learn` run.
+   * Empty for an ordinary single-query run.
+   */
+  private predicate cohortMember(string queryId) { queryMetadata("cohortMember", queryId) }
+
+  /**
+   * Parses `full` into a bare tag and an optional query ID qualifier. For example,
+   * `mark[ql/test/q1]` becomes `mark` and `ql/test/q1`, while `mark` becomes `mark` and `""`.
+   * Empty qualifiers and tags containing unmatched brackets have no result.
+   */
+  bindingset[full]
+  private predicate parseQualifiedTag(string full, string base, string queryId) {
+    full.regexpMatch("[^\\[\\]]+\\[[^\\[\\]]+\\]") and
+    base = full.regexpCapture("([^\\[\\]]+)\\[([^\\[\\]]+)\\]", 1) and
+    queryId = full.regexpCapture("([^\\[\\]]+)\\[([^\\[\\]]+)\\]", 2)
+    or
+    full.regexpMatch("[^\\[\\]]+") and
+    base = full and
+    queryId = ""
+  }
+
   module Make<InlineExpectationsTestSig Input> {
     private import InlineExpectationsTest as InlineExpectationsTest
 
@@ -921,8 +943,14 @@ module TestPostProcessing {
       predicate tagMatches(string expectedTag, string actualTag) {
         PathProblemSourceTestInput::tagMatches(expectedTag, actualTag)
         or
+        // Kind-less query predicates use the predicate name as their tag. A qualifier restricts
+        // that expectation to the query with the corresponding `@id`.
         not exists(getQueryKind()) and
-        expectedTag = actualTag
+        exists(string base, string queryId |
+          parseQualifiedTag(expectedTag, base, queryId) and
+          base = actualTag and
+          (queryId = "" or queryId = getQueryId())
+        )
       }
 
       bindingset[expectedTag]
@@ -937,6 +965,15 @@ module TestPostProcessing {
             queryId = expectedTag.regexpCapture(getTagRegex(), 3) and
             queryId != getQueryId()
           )
+        )
+        or
+        // A qualified kind-less tag for another query is foreign to this query and must survive
+        // any rewrite it performs.
+        not exists(getQueryKind()) and
+        exists(string queryId |
+          parseQualifiedTag(expectedTag, _, queryId) and
+          queryId != "" and
+          queryId != getQueryId()
         )
       }
 
@@ -1136,7 +1173,9 @@ module TestPostProcessing {
        * group) a tag this test understands with a tag it ignores (for example a query ID that does
        * not match the current query). The latter keeps the rewrite from having to take apart a group
        * such as `Alert,Source[other-query]` whose parts this test treats differently; such comments
-       * are left untouched.
+       * are left untouched. An unsupported qualifier is also left untouched in cohort mode: it may
+       * be domain-specific bracket syntax or an unsupported attempt to name producer queries, neither
+       * of which can be reconciled as one query ID.
        *
        * A rewritable comment may still carry whole expectations this test ignores (for example
        * `// $ Alert[other-query]`). Those are preserved verbatim by `foreignExpectation` when the
@@ -1153,6 +1192,25 @@ module TestPostProcessing {
           hasExpectation(comment, _, _, tags, _) and
           not TestInput::tagIsIgnored(tags.splitAt(",")) and
           TestInput::tagIsIgnored(tags.splitAt(","))
+        ) and
+        // A comma group cannot express per-query ownership without changing its grammar. Leave the
+        // whole comment untouched in cohort mode so verification reports the unsupported syntax.
+        not exists(string tags |
+          inCohortMode() and
+          hasExpectation(comment, TDefaultColumn(), _, tags, _) and
+          tags.matches("%,%")
+        ) and
+        not exists(string tags |
+          inCohortMode() and
+          hasExpectation(comment, _, _, tags, _) and
+          not tags.matches("%,%") and
+          (
+            not parseQualifiedTag(tags, _, _)
+            or
+            exists(string queryId |
+              parseQualifiedTag(tags, _, queryId) and queryId.regexpMatch(".*\\s+.*")
+            )
+          )
         )
       }
 
@@ -1169,10 +1227,20 @@ module TestPostProcessing {
       private predicate foreignExpectation(
         TestImpl2::ExpectationComment comment, string column, string text
       ) {
-        exists(TColumn col, string tags |
-          hasExpectation(comment, col, text, tags, _) and
+        exists(TColumn col, string tags, string value |
+          hasExpectation(comment, col, text, tags, value) and
           column = getColumnString(col) and
-          forall(string tag | tag = tags.splitAt(",") | TestInput::tagIsIgnored(tag))
+          forall(string tag | tag = tags.splitAt(",") | TestInput::tagIsIgnored(tag)) and
+          // Once this pass collapses an atom to its bare form, an earlier cohort member's
+          // qualified default-column tag is redundant. Named-column expectations and genuinely
+          // foreign query IDs remain untouched.
+          not exists(string base, string queryId |
+            col = TDefaultColumn() and
+            not tags.matches("%,%") and
+            parseQualifiedTag(tags, base, queryId) and
+            cohortMember(queryId) and
+            emittedBareExpectation(comment, "", base, value)
+          )
         )
       }
 
@@ -1207,6 +1275,131 @@ module TestPostProcessing {
         result != ""
       }
 
+      /** Holds if this is a shared-source cohort pass rather than an ordinary single-query run. */
+      private predicate inCohortMode() { cohortMember(_) }
+
+      /**
+       * Holds if `queryId` is recorded on disk as a producer of `(tag, value)` on the given line.
+       * A bare tag denotes the full cohort, while a qualified tag denotes its named cohort member.
+       */
+      private predicate onDiskProducer(
+        string relativePath, int line, string tag, string value, string queryId
+      ) {
+        exists(TestImpl2::ExpectationComment comment, string full, string base, string qualifier |
+          parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
+          hasExpectation(comment, TDefaultColumn(), _, full, value) and
+          not full.matches("%,%") and
+          parseQualifiedTag(full, base, qualifier) and
+          base = tag and
+          (
+            qualifier = "" and cohortMember(queryId)
+            or
+            qualifier != "" and queryId = qualifier and cohortMember(qualifier)
+          )
+        )
+      }
+
+      /** Holds if the current query produces `(tag, value)` on the given result end line. */
+      private predicate selfProducesAtom(string relativePath, int endLine, string tag, string value) {
+        exists(Test::ActualTestResult actualResult |
+          not actualResult.isOptional() and
+          actualResult.getTag() != "RelatedLocation" and
+          parseLocationString(actualResult.getLocation().getRelativeUrl(), relativePath, _, _,
+            endLine, _) and
+          tag = actualResult.getTag() and
+          value = actualResult.getValue()
+        )
+      }
+
+      /**
+       * Holds if `queryId` produces the atom after reconciling the current query's on-disk state
+       * with its actual results. Other cohort members come from disk; the current member comes only
+       * from its current results, so a stale self-qualified tag does not count as a producer.
+       */
+      private predicate reconciledProducer(
+        string relativePath, int line, string tag, string value, string queryId
+      ) {
+        queryId = getQueryId() and selfProducesAtom(relativePath, line, tag, value)
+        or
+        queryId != getQueryId() and onDiskProducer(relativePath, line, tag, value, queryId)
+      }
+
+      /** Holds if the reconciled producer set for the atom is the whole cohort. */
+      private predicate isCollapsedAtom(string relativePath, int line, string tag, string value) {
+        inCohortMode() and
+        reconciledProducer(relativePath, line, tag, value, _) and
+        forall(string queryId | cohortMember(queryId) |
+          reconciledProducer(relativePath, line, tag, value, queryId)
+        )
+      }
+
+      /** Renders a bare or qualified tag with its optional value. */
+      bindingset[tag, value]
+      private string renderAtom(string tag, string value) {
+        if value = "" then result = tag else result = tag + "=" + value
+      }
+
+      /**
+       * Renders a current-query atom in its canonical cohort form: bare when every member produces
+       * it, otherwise qualified with the current query ID.
+       */
+      bindingset[relativePath, line, tag, value]
+      private string renderCohortAtom(string relativePath, int line, string tag, string value) {
+        (
+          not inCohortMode()
+          or
+          isCollapsedAtom(relativePath, line, tag, value)
+        ) and
+        result = renderAtom(tag, value)
+        or
+        inCohortMode() and
+        not isCollapsedAtom(relativePath, line, tag, value) and
+        result = renderAtom(tag + "[" + getQueryId() + "]", value)
+      }
+
+      /**
+       * Carries forward sibling ownership when a bare on-disk atom is no longer emitted in its
+       * original column. Each sibling is rendered explicitly in that column.
+       */
+      private predicate carriedSiblingExpectation(
+        TestImpl2::ExpectationComment comment, string column, string text
+      ) {
+        exists(
+          TColumn col, string full, string base, string qualifier, string value, string queryId
+        |
+          inCohortMode() and
+          hasExpectation(comment, col, _, full, value) and
+          not full.matches("%,%") and
+          parseQualifiedTag(full, base, qualifier) and
+          qualifier = "" and
+          not TestInput::tagIsIgnored(full) and
+          column = getColumnString(col) and
+          not emittedBareExpectation(comment, column, base, value) and
+          queryId != getQueryId() and
+          cohortMember(queryId) and
+          text = renderAtom(base + "[" + queryId + "]", value)
+        )
+      }
+
+      /**
+       * Renders a matching default-column expectation for the current query. A complete qualified
+       * producer set collapses to bare, while a partial set is rendered with explicit query IDs.
+       */
+      private string renderSurvivingDefaultExpectation(Test::FailureLocatable expectation) {
+        exists(string relativePath, int line, string base, string queryId |
+          parseQualifiedTag(expectation.getTag(), base, queryId) and
+          parseLocationString(expectation.getLocation().getRelativeUrl(), relativePath, line, _, _,
+            _) and
+          (
+            inCohortMode() and
+            (queryId = "" or queryId = getQueryId()) and
+            result = renderCohortAtom(relativePath, line, base, expectation.getValue())
+            or
+            not inCohortMode() and result = expectation.getExpectationText()
+          )
+        )
+      }
+
       /**
        * Gets the exclusive end column for replacing `comment`. Same-line CodeQL locations use
        * inclusive end columns, so their end boundary is one column later. A comment whose location
@@ -1237,28 +1430,30 @@ module TestPostProcessing {
       private predicate survivingExpectation(
         TestImpl2::ExpectationComment comment, string column, string text
       ) {
-        exists(Test::FailureLocatable e |
-          e.getLocation() = comment.getLocation() and text = e.getExpectationText()
-        |
+        exists(Test::FailureLocatable e | e.getLocation() = comment.getLocation() |
           // a default expectation that still matches a result is kept
           e instanceof Test::GoodTestExpectation and
           e = Test::getAMatchingExpectation(_, _, _, _, _) and
-          column = ""
+          column = "" and
+          text = renderSurvivingDefaultExpectation(e)
           or
           // a `SPURIOUS:` expectation whose result still fires is kept
           e instanceof Test::FalsePositiveTestExpectation and
           e = Test::getAMatchingExpectation(_, _, _, _, _) and
-          column = "SPURIOUS"
+          column = "SPURIOUS" and
+          text = e.getExpectationText()
           or
           // a `MISSING:` expectation whose result now fires is promoted to the default column
           e instanceof Test::FalseNegativeTestExpectation and
           e = Test::getAMatchingExpectation(_, _, _, _, _) and
-          column = ""
+          column = "" and
+          text = renderSurvivingDefaultExpectation(e)
           or
           // a `MISSING:` expectation whose result is still absent is kept
           e instanceof Test::FalseNegativeTestExpectation and
           not e = Test::getAMatchingExpectation(_, _, _, _, _) and
-          column = "MISSING"
+          column = "MISSING" and
+          text = e.getExpectationText()
         )
       }
 
@@ -1292,9 +1487,10 @@ module TestPostProcessing {
             Test::getAMatchingExpectation(actualResult.getLocation(), actualResult.toString(),
               actualResult.getTag(), actualResult.getValue(), false)
           ) and
-          text = actualResult.getExpectationText() and
           parseLocationString(actualResult.getLocation().getRelativeUrl(), relativePath, endLine, _,
-            endLine, _)
+            endLine, _) and
+          text =
+            renderCohortAtom(relativePath, endLine, actualResult.getTag(), actualResult.getValue())
         )
       }
 
@@ -1315,6 +1511,21 @@ module TestPostProcessing {
         )
       }
 
+      /** Holds if the rewritten comment emits the bare atom in `column`. */
+      bindingset[comment, column, tag, value]
+      private predicate emittedBareExpectation(
+        TestImpl2::ExpectationComment comment, string column, string tag, string value
+      ) {
+        exists(string text |
+          text = renderAtom(tag, value) and
+          (
+            survivingExpectation(comment, column, text)
+            or
+            mergedNewExpectation(comment, column, text)
+          )
+        )
+      }
+
       /**
        * Holds if, after `--learn`, `comment` should carry the expectation `text` in `column` (`""`
        * for the default column, or a named column such as `"SPURIOUS"` / `"MISSING"`).
@@ -1322,8 +1533,9 @@ module TestPostProcessing {
        * This combines the surviving expectations this test understands (see `survivingExpectation`)
        * with the expectations it ignores (see `foreignExpectation`), which are preserved
        * verbatim so that rewriting a comment for one query never drops another query's expectation on
-       * the same line, and with any freshly learned expectations merged into the comment (see
-       * `mergedNewExpectation`).
+       * the same line, sibling producers carried forward from a formerly bare atom (see
+       * `carriedSiblingExpectation`), and any freshly learned expectations merged into the comment
+       * (see `mergedNewExpectation`).
        */
       private predicate desiredExpectation(
         TestImpl2::ExpectationComment comment, string column, string text
@@ -1331,6 +1543,8 @@ module TestPostProcessing {
         survivingExpectation(comment, column, text)
         or
         foreignExpectation(comment, column, text)
+        or
+        carriedSiblingExpectation(comment, column, text)
         or
         mergedNewExpectation(comment, column, text)
       }
@@ -1356,16 +1570,73 @@ module TestPostProcessing {
         foreignExpectation(comment, column, text)
       }
 
+      /**
+       * Holds if `comment` uses a complete qualified representation of a collapsed default-column
+       * atom. This representation is semantically equivalent to the bare desired atom, but retains
+       * useful query provenance.
+       */
+      private predicate hasCompleteQualifiedRepresentation(
+        TestImpl2::ExpectationComment comment, string tag, string value
+      ) {
+        exists(string full, string queryId |
+          hasExpectation(comment, TDefaultColumn(), _, full, value) and
+          parseQualifiedTag(full, tag, queryId) and
+          cohortMember(queryId)
+        ) and
+        not hasExpectation(comment, TDefaultColumn(), _, tag, value) and
+        forall(string queryId | cohortMember(queryId) |
+          exists(string full |
+            hasExpectation(comment, TDefaultColumn(), _, full, value) and
+            parseQualifiedTag(full, tag, queryId)
+          )
+        )
+      }
+
+      /** Holds if a desired bare atom is already represented by a complete qualified set. */
+      private predicate desiredExpectationIsRepresented(
+        TestImpl2::ExpectationComment comment, string column, string text
+      ) {
+        currentExpectation(comment, column, text)
+        or
+        exists(string relativePath, int line, string tag, string value |
+          column = "" and
+          parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
+          isCollapsedAtom(relativePath, line, tag, value) and
+          hasCompleteQualifiedRepresentation(comment, tag, value) and
+          text = renderAtom(tag, value)
+        )
+      }
+
+      /** Holds if a current qualified atom is covered by the desired collapsed bare atom. */
+      private predicate currentExpectationIsRepresented(
+        TestImpl2::ExpectationComment comment, string column, string text
+      ) {
+        desiredExpectation(comment, column, text)
+        or
+        exists(
+          string relativePath, int line, string full, string tag, string queryId, string value
+        |
+          column = "" and
+          text = renderAtom(full, value) and
+          hasExpectation(comment, TDefaultColumn(), _, full, value) and
+          parseQualifiedTag(full, tag, queryId) and
+          cohortMember(queryId) and
+          parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
+          isCollapsedAtom(relativePath, line, tag, value) and
+          hasCompleteQualifiedRepresentation(comment, tag, value)
+        )
+      }
+
       /** Holds if `--learn` should change the set of expectations carried by `comment`. */
       private predicate commentNeedsRewrite(TestImpl2::ExpectationComment comment) {
         exists(string column, string text |
           desiredExpectation(comment, column, text) and
-          not currentExpectation(comment, column, text)
+          not desiredExpectationIsRepresented(comment, column, text)
         )
         or
         exists(string column, string text |
           currentExpectation(comment, column, text) and
-          not desiredExpectation(comment, column, text)
+          not currentExpectationIsRepresented(comment, column, text)
         )
       }
 
