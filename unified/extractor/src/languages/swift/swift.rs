@@ -539,7 +539,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             }
         ),
         rule!(
-            (enumCaseElement name: @@name rawValue: (initializerClause value: @val))
+            (enumCaseElement
+                name: @@name
+                rawValue: (initializerClause value: @val)?)
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
@@ -547,15 +549,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 modifier: (modifier "enum_case")
                 pattern: (identifier #{name})
                 value: {val})
-        ),
-        rule!(
-            (enumCaseElement name: @@name)
-            =>
-            (variable_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: [(modifier "chained_declaration") if { ctx.is_chained }]
-                modifier: (modifier "enum_case")
-                pattern: (identifier #{name}))
         ),
         // Enum cases. A single `case` declaration may carry modifiers
         // (e.g. `indirect`) and list several comma-separated elements; each
