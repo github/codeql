@@ -219,12 +219,12 @@ predicate isSinkEncrypt(DataFlow::Node sink, Encrypted enc) { sink.asExpr() = en
  * function returning sensitive data.
  */
 predicate isSourceImpl(DataFlow::Node source) {
-  exists(VariableAccess e |
-    e = source.asExpr() and
-    e.getTarget() instanceof SourceVariable
+  exists(Expr e |
+    e.(VariableAccess).getTarget() instanceof SourceVariable or
+    e.(FunctionCall).getTarget() instanceof SourceFunction
+  |
+    ClearText::isSource(source, e)
   )
-  or
-  source.asExpr().(FunctionCall).getTarget() instanceof SourceFunction
 }
 
 /**

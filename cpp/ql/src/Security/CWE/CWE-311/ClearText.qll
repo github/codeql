@@ -16,3 +16,22 @@ predicate isBarrier(DataFlow::Node node) {
   )
 }
 
+private Expr asExprOrIndirectExpr(DataFlow::Node node, int indirectionIndex) {
+  indirectionIndex = 0 and
+  result = node.asExpr()
+  or
+  result = node.asIndirectExpr(indirectionIndex)
+}
+
+/**
+ * Holds if `source` is the relevant `DataFlow::Node` for
+ * expression `e`.
+ */
+predicate isSource(DataFlow::Node source, Expr e) {
+  exists(int indirectionIndex |
+    e = asExprOrIndirectExpr(source, indirectionIndex) and
+    if e.getUnspecifiedType() instanceof ReferenceType
+    then indirectionIndex = 1
+    else indirectionIndex = 0
+  )
+}

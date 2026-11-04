@@ -60,7 +60,7 @@ predicate isSinkImpl(DataFlow::Node sink, FileWrite w, Expr dest) {
 
 predicate isSourceImpl(DataFlow::Node source, SensitiveExpr sensitive) {
   not isFileName(globalValueNumber(sensitive)) and // file names are not passwords
-  source.asExpr() = sensitive
+  ClearText::isSource(source, sensitive)
 }
 
 /**
