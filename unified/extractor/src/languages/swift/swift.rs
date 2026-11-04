@@ -260,9 +260,15 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // to an opaque `unsupported_node`. These bare nodes only occur inside an
         // unresolved sequence — folded forms are handled by the dedicated rules
         // above (assignment) and below (`ternaryExpr`).
-        rule!((assignmentExpr) @@op => (infix_operator #{op})),
-        rule!((unresolvedAsExpr) @@op => (infix_operator #{op})),
-        rule!((unresolvedIsExpr) @@op => (infix_operator #{op})),
+        rule!(
+            [
+                (assignmentExpr)
+                (unresolvedAsExpr)
+                (unresolvedIsExpr)
+            ] @@op
+            =>
+            (infix_operator #{op})
+        ),
         // The ternary is a three-part operator (`? thenExpr :`) that *wraps* a
         // nested expression. Splice it into `?`, the then-expression, `:` so the
         // then-expression survives as a real (traversable) operand rather than
