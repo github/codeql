@@ -353,13 +353,15 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
    * call `cls(...)` (resolved via the call graph by `resolveClassCall`), rather than a
    * dedicated instance type-tracker (`classInstanceTracker`).
    *
-   * Using `classInstanceTracker` here would make `levelStepCall` mutually recursive with
-   * `classInstanceTracker` -- itself a full type-tracker run -- which caused catastrophic
-   * query slowdowns on some OOP-heavy Python code bases (e.g. `mypy` and `dask`). Relying
-   * on local flow from a resolved constructor call instead depends only on `classTracker`
-   * (the same call-graph machinery already used by `inheritedFieldStep`), avoiding that
-   * blow-up. The trade-off is reduced precision: instances that flow across a call or
-   * return before being read are no longer covered by this step.
+   * This removes the direct use of `classInstanceTracker` here, which previously caused
+   * catastrophic query slowdowns on some OOP-heavy Python code bases (e.g. `mypy` and
+   * `dask`). Indirect recursion remains: `resolveClassCall` uses `classTracker` and
+   * `clsArgumentTracker`, and `classTracker` can depend on `classInstanceTracker` through
+   * `type(obj)`. The performance impact on those code bases still needs validation.
+   *
+   * Only instances reachable by local flow from a resolved constructor call are covered
+   * by this step. This excludes, for example, instances returned by a function and
+   * module-level instances read inside a function.
    */
   private predicate instanceAttrRead(Class cls, string attr, DataFlowPublic::AttrRead read) {
     exists(DataFlowPublic::CallCfgNode construction |
