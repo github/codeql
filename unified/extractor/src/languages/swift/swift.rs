@@ -922,13 +922,23 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // A single case item unwraps to its pattern, possibly boxed in conditional_pattern
         rule!(
-            (switchCaseItem
-                pattern: @p
-                whereClause: (whereClause condition: @cond))
+            [
+                (switchCaseItem
+                    pattern: @pattern
+                    whereClause: (whereClause condition: @condition)?)
+                (catchItem
+                    pattern: @pattern
+                    whereClause: (whereClause condition: @condition)?)
+            ]
             =>
-            (conditional_pattern pattern: {p} condition: {cond})
+            [
+                (conditional_pattern
+                    pattern: {pattern}
+                    condition: {condition})
+                    if { condition.is_some() }
+                {pattern}
+            ]
         ),
-        rule!((switchCaseItem pattern: @p) => pattern { p }),
         // A pattern-matching condition (`if case let x = e`, `if case .foo(let x)
         // = e`) becomes a `pattern_guard_expr`: the matched pattern and the
         // scrutinee value are translated recursively.
@@ -1092,18 +1102,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (try_expr
                 body: {body}
                 catch_clause: {catches})
-        ),
-        rule!(
-            (catchItem
-                pattern: @pattern
-                whereClause: (whereClause condition: @guard))
-            =>
-            (conditional_pattern pattern: {pattern} condition: {guard})
-        ),
-        rule!(
-            (catchItem pattern: @pattern)
-            =>
-            pattern {pattern}
         ),
         // Catch block with one or more patterns (which have been translated by the catchItem rules)
         rule!(
