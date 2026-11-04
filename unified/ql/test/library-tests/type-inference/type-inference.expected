@@ -804,7 +804,7 @@ inferCertainType
 | nested_types.swift:285:13:285:13 | x |  | nested_types.swift:283:13:283:13 | T |
 | nested_types.swift:288:20:288:20 | x |  | nested_types.swift:283:13:283:13 | T |
 | nested_types.swift:299:9:299:10 | x1 |  | nested_types.swift:284:5:290:5 | Base2.Nested |
-| nested_types.swift:299:9:299:10 | x1 | (parent:Nested) | nested_types.swift:297:1:309:1 | SubSub |
+| nested_types.swift:299:9:299:10 | x1 | (parent:Nested) | nested_types.swift:292:1:296:1 | Sub |
 | nested_types.swift:300:9:300:10 | x2 |  | nested_types.swift:284:5:290:5 | Base2.Nested |
 | nested_types.swift:300:9:300:10 | x2 | (parent:Nested) | nested_types.swift:297:1:309:1 | SubSub |
 | nested_types.swift:301:9:301:10 | x3 |  | nested_types.swift:284:5:290:5 | Base2.Nested |
@@ -812,7 +812,7 @@ inferCertainType
 | nested_types.swift:302:9:302:10 | x4 |  | nested_types.swift:284:5:290:5 | Base2.Nested |
 | nested_types.swift:302:9:302:10 | x4 | (parent:Nested) | nested_types.swift:292:1:296:1 | Sub |
 | nested_types.swift:304:17:304:18 | x1 |  | nested_types.swift:284:5:290:5 | Base2.Nested |
-| nested_types.swift:304:17:304:18 | x1 | (parent:Nested) | nested_types.swift:297:1:309:1 | SubSub |
+| nested_types.swift:304:17:304:18 | x1 | (parent:Nested) | nested_types.swift:292:1:296:1 | Sub |
 | nested_types.swift:305:17:305:18 | x2 |  | nested_types.swift:284:5:290:5 | Base2.Nested |
 | nested_types.swift:305:17:305:18 | x2 | (parent:Nested) | nested_types.swift:297:1:309:1 | SubSub |
 | nested_types.swift:306:17:306:18 | x3 |  | nested_types.swift:284:5:290:5 | Base2.Nested |
@@ -3615,7 +3615,7 @@ inferType
 | nested_types.swift:287:26:289:9 | Block |  | nested_types.swift:283:13:283:13 | T |
 | nested_types.swift:288:20:288:20 | x |  | nested_types.swift:283:13:283:13 | T |
 | nested_types.swift:299:9:299:10 | x1 |  | nested_types.swift:284:5:290:5 | Base2.Nested |
-| nested_types.swift:299:9:299:10 | x1 | (parent:Nested) | nested_types.swift:297:1:309:1 | SubSub |
+| nested_types.swift:299:9:299:10 | x1 | (parent:Nested) | nested_types.swift:292:1:296:1 | Sub |
 | nested_types.swift:300:9:300:10 | x2 |  | nested_types.swift:284:5:290:5 | Base2.Nested |
 | nested_types.swift:300:9:300:10 | x2 | (parent:Nested) | nested_types.swift:297:1:309:1 | SubSub |
 | nested_types.swift:301:9:301:10 | x3 |  | nested_types.swift:284:5:290:5 | Base2.Nested |
@@ -3623,7 +3623,7 @@ inferType
 | nested_types.swift:302:9:302:10 | x4 |  | nested_types.swift:284:5:290:5 | Base2.Nested |
 | nested_types.swift:302:9:302:10 | x4 | (parent:Nested) | nested_types.swift:292:1:296:1 | Sub |
 | nested_types.swift:304:17:304:18 | x1 |  | nested_types.swift:284:5:290:5 | Base2.Nested |
-| nested_types.swift:304:17:304:18 | x1 | (parent:Nested) | nested_types.swift:297:1:309:1 | SubSub |
+| nested_types.swift:304:17:304:18 | x1 | (parent:Nested) | nested_types.swift:292:1:296:1 | Sub |
 | nested_types.swift:305:17:305:18 | x2 |  | nested_types.swift:284:5:290:5 | Base2.Nested |
 | nested_types.swift:305:17:305:18 | x2 | (parent:Nested) | nested_types.swift:297:1:309:1 | SubSub |
 | nested_types.swift:306:17:306:18 | x3 |  | nested_types.swift:284:5:290:5 | Base2.Nested |

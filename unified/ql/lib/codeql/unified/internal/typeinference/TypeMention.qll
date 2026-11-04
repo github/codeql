@@ -6,52 +6,58 @@ private import codeql.unified.internal.StaticNameBinding
 private import codeql.unified.internal.ExprPositions
 
 /**
- * Holds if `alias` is an alias at `pathToNested` for nested type `nested` with
- * enclosing type `parent`, where the alias itself is also enclosed by `parent`:
+ * Holds if `alias` is an alias where the type mentioned at `pathToNested` in the
+ * right-hand side is the nested type `nested`, and the alias is enclosed by `encl`,
+ * which is (a sub class of) the parent class of `nested`. Furthermore, the mention
+ * of `nested` must be "orphaned", meaning it's parent type is not mentioned explicitly:
  *
  * ```swift
- * class Parent {
+ * class Parent<TParent> {
  *   class Nested {}
- *   typealias Alias = Nested       // example
+ *   typealias Alias = Nested               // example
+ *   typealias Alias2 = Parent<Int>.Nested  // non-example (not orphaned)
  *   class MoreNested {
- *      typealias Alias = Nested    // example
+ *      typealias Alias = Nested            // example
  *   }
  * }
- * typealias Alias = Parent.Nested  // non-example
+ * typealias Alias = Parent<Int>.Nested     // non-example (not orphaned, not enclosed by `Parent`)
+ * class Sub : Parent<Int> {
+ *   typealias SubAlias = Nested            // example
+ * }
  * ```
  *
  * The type path `pathParents` is any valid sequence of `ParentTypeParameterType`s starting
- * from the alias declaration and not escaping `parent`, while `encl` is the enclosing
- * class of the last element of `pathParents`.
- *
- * Restricted to aliases without a qualifier for `nested`.
+ * from the alias declaration and not escaping `encl`, while `last` is the enclosing
+ * class of the last element of `pathParents` (used to build up `pathParents` recursively).
  */
-private predicate isInnerUnqualifiedAlias(
+private predicate isInnerAliasWithOrphanedNestedType(
   TypeAliasDeclaration alias, TypePath pathToNested, ClassLikeDeclaration nested,
-  ClassLikeDeclaration parent, TypePath pathParents, ClassLikeDeclaration encl
+  ClassLikeDeclaration encl, TypePath pathParents, ClassLikeDeclaration last
 ) {
-  nested = alias.getType().(TypeMention).getSimpleExpandedTypeAt(pathToNested).asClass() and
-  // if the alias already has a qualifier that mentions the parent type, then we assume
-  // it applies
-  not exists(ParentTypeParameterType ptp |
-    ptp.getParent() = parent and
-    exists(
-      alias
-          .getType()
-          .(TypeMention)
-          .getSimpleExpandedTypeAt(pathToNested.append(TypePath::singleton(ptp)))
-    )
-  ) and
-  parent = nested.getEnclosingClassResolved() and
-  alias.getEnclosingClassResolved+() = parent and
-  pathParents = TypePath::singleton(TParentTypeParameterType(alias)) and
-  encl = alias.getEnclosingClassResolved()
+  exists(ClassLikeDeclaration parent |
+    parent = nested.getEnclosingClassResolved() and
+    nested = alias.getType().(TypeMention).getSimpleExpandedTypeAt(pathToNested).asClass() and
+    // if the alias already mentions the parent type (or a sub class thereof), then we assume it applies
+    not exists(ParentTypeParameterType ptp |
+      ptp.getParent().getABaseClass*() = parent and
+      exists(
+        alias
+            .getType()
+            .(TypeMention)
+            .getSimpleExpandedTypeAt(pathToNested.append(TypePath::singleton(ptp)))
+      )
+    ) and
+    encl.getABaseClass*() = parent and
+    alias.getEnclosingClassResolved+() = encl and
+    pathParents = TypePath::singleton(TParentTypeParameterType(alias)) and
+    last = alias.getEnclosingClassResolved()
+  )
   or
-  exists(TypePath mid, ClassLikeDeclaration enclMid |
-    isInnerUnqualifiedAlias(alias, pathToNested, nested, parent, mid, enclMid) and
-    not enclMid = parent and
-    pathParents = mid.append(TypePath::singleton(TParentTypeParameterType(enclMid))) and
-    encl = enclMid.getEnclosingClassResolved()
+  exists(TypePath mid, ClassLikeDeclaration lastMid |
+    isInnerAliasWithOrphanedNestedType(alias, pathToNested, nested, encl, mid, lastMid) and
+    not lastMid = encl and
+    pathParents = mid.append(TypePath::singleton(TParentTypeParameterType(lastMid))) and
+    last = lastMid.getEnclosingClassResolved()
   )
 }
 
@@ -95,16 +101,17 @@ abstract private class TypeMentionImpl extends AstNode {
       not result = alias.getATypeParameter()
       or
       // substitute for type parameters in alias RHS
-      exists(TypeParameter tp, TypePath mid |
+      exists(TypeParameter tp, TypePath pathToTp, TypePath mid |
         tp = alias.getATypeParameter() and
-        tp = alias.getAlias().getSimpleExpandedTypeAt(mid) and
-        result =
-          this.getSimpleExpandedTypeAt(prefix
-                .appendInverse(any(TypePath cons | cons.isCons(tp, suffix)))) and
-        path = prefix.append(mid).append(suffix)
+        tp = alias.getAlias().getSimpleExpandedTypeAt(pathToTp) and
+        result = this.getSimpleExpandedTypeAt(prefix.appendInverse(mid)) and
+        mid.isCons(tp, suffix) and
+        path = prefix.append(pathToTp).append(suffix)
       )
     )
   }
+
+  Type getSimpleExpandedType() { result = this.getSimpleExpandedTypeAt(TypePath::nil()) }
 
   /**
    * Same as `getSimpleExpandedTypeAt`, but also handles inner unqualified aliases where
@@ -130,8 +137,8 @@ abstract private class TypeMentionImpl extends AstNode {
       ClassLikeDeclaration parent, TypePath pathParents, TypePath suffix
     |
       this.getExpandedTypeAt(prefix) = alias and
-      isInnerUnqualifiedAlias(alias.getTypeAliasDeclaration(), pathToNested, nested, parent,
-        pathParents, _) and
+      isInnerAliasWithOrphanedNestedType(alias.getTypeAliasDeclaration(), pathToNested, nested,
+        parent, pathParents, _) and
       this.getExpandedTypeAt(prefix.append(pathParents)).asClass().getABaseClass*() = parent and
       result = this.getExpandedTypeAt(prefix.append(pathParents).appendInverse(suffix)) and
       path =
@@ -139,13 +146,11 @@ abstract private class TypeMentionImpl extends AstNode {
     )
   }
 
-  private Type getExpandedType() { result = this.getExpandedTypeAt(TypePath::nil()) }
-
   /**
    * Gets the class-like declaration mentioned by this type mention, if any.
    */
   ClassLikeDeclaration getClassLikeDeclaration() {
-    result = this.getExpandedType().(ClassLikeDeclarationType).getClassLikeDeclaration()
+    result = this.getSimpleExpandedType().(ClassLikeDeclarationType).getClassLikeDeclaration()
   }
 
   pragma[nomagic]
