@@ -159,3 +159,21 @@ func t12() {
     let c = C()
     c.s.update()
 }
+
+func t13() {
+    class C1 {
+        var x: String = "safe"
+    }
+    class C2: C1 {
+        func updateX(newValue: String) {
+            super.x = newValue
+        }
+
+        func getX() -> String {
+            return super.x
+        }
+    }
+    var c2 = C2()
+    c2.updateX(newValue: source("t13.1"))
+    sink(c2.getX())  // $ MISSING: hasValueFlow=t13.1
+}
