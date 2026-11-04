@@ -1,0 +1,2 @@
+| Test.java | 3 | append | 0 | 0 |  // $ java-direct=safe |
+| Test.java | 4 | replace | 25 | 37 | // $ foreign java-direct=safe |

@@ -125,6 +125,12 @@ signature module InlineExpectationsTestSig {
   string getStartCommentMarker(string relativePath);
 
   /**
+   * Holds if a comment can safely be appended at the end of `line` in `relativePath`.
+   */
+  bindingset[relativePath, line]
+  default predicate canAppendCommentAtEndOfLine(string relativePath, int line) { any() }
+
+  /**
    * Gets the marker that ends a comment (for example `"-->"`) in the source file with the
    * given `relativePath`. Has no result by default, which is correct for languages whose
    * inline expectations use line comments (so `--learn` renders no closing marker);
@@ -318,6 +324,7 @@ module Make<InlineExpectationsTestSig Impl> {
           parseRelativeUrl(Impl::getRelativeUrl(comment.getLocation()), relativePath, resultLine, _,
             _, _)
         ) and
+        Impl::canAppendCommentAtEndOfLine(relativePath, resultLine) and
         file = relativePath and
         line = resultLine and
         operation = "append" and
@@ -626,7 +633,8 @@ module Make<InlineExpectationsTestSig Impl> {
           ) and
           parseRelativeUrl(Impl::getRelativeUrl(actualResult.getLocation()), relativePath, line, _,
             line, _) and
-          text = actualResult.getExpectationText()
+          text = actualResult.getExpectationText() and
+          expectationAtomRoundTrips(actualResult.getTag(), actualResult.getValue(), text)
         )
       }
 
@@ -917,6 +925,23 @@ private module ExpectationParser<InlineExpectationsTestSig Impl> {
     then value = expectation.regexpCapture(expectationPattern(), 2)
     else value = ""
   }
+}
+
+bindingset[tag, value, text]
+private predicate expectationAtomRoundTrips(string tag, string value, string text) {
+  exists(string content, string parsedTag, string parsedValue |
+    content = ("$ " + text).regexpCapture(expectationCommentPattern(), 1).trim() and
+    content = text and
+    content.regexpMatch(expectationPattern()) and
+    parsedTag = content.regexpCapture(expectationPattern(), 1) and
+    parsedTag = tag and
+    (
+      parsedValue = content.regexpCapture(expectationPattern(), 2)
+      or
+      not exists(content.regexpCapture(expectationPattern(), 2)) and parsedValue = ""
+    ) and
+    parsedValue = value
+  )
 }
 
 /**
@@ -1564,21 +1589,29 @@ module TestPostProcessing {
       }
 
       /**
-       * Renders a current-query atom in its canonical cohort form: bare when every member produces
-       * it, otherwise qualified with the current query ID.
+       * Renders a current-query tag in its canonical cohort form: bare when every member produces
+       * the atom, otherwise qualified with the current query ID.
        */
       bindingset[relativePath, line, tag, value]
-      private string renderCohortAtom(string relativePath, int line, string tag, string value) {
+      private string renderCohortTag(string relativePath, int line, string tag, string value) {
         (
           not inCohortMode()
           or
           isCollapsedAtom(relativePath, line, tag, value)
         ) and
-        result = renderAtom(tag, value)
+        result = tag
         or
         inCohortMode() and
         not isCollapsedAtom(relativePath, line, tag, value) and
-        result = renderAtom(tag + "[" + getQueryId() + "]", value)
+        result = tag + "[" + getQueryId() + "]"
+      }
+
+      /**
+       * Renders a current-query atom in its canonical cohort form.
+       */
+      bindingset[relativePath, line, tag, value]
+      private string renderCohortAtom(string relativePath, int line, string tag, string value) {
+        result = renderAtom(renderCohortTag(relativePath, line, tag, value), value)
       }
 
       /**
@@ -1699,8 +1732,12 @@ module TestPostProcessing {
           ) and
           parseRelativeUrl(actualResult.getLocation().getRelativeUrl(), relativePath, endLine, _,
             endLine, _) and
-          text =
-            renderCohortAtom(relativePath, endLine, actualResult.getTag(), actualResult.getValue())
+          exists(string renderedTag |
+            renderedTag =
+              renderCohortTag(relativePath, endLine, actualResult.getTag(), actualResult.getValue()) and
+            text = renderAtom(renderedTag, actualResult.getValue()) and
+            expectationAtomRoundTrips(renderedTag, actualResult.getValue(), text)
+          )
         )
       }
 
