@@ -513,7 +513,7 @@ private class IdentifierPotentialLocalNameAccess extends PotentialLocalNameAcces
 }
 
 private class SuperPotentialLocalNameAccess extends PotentialLocalNameAccessImpl, SuperExpr {
-  override string getName() { result = any(NameBindingPlugin p).getSuperLocalName() }
+  override string getName() { result = any(NameBindingPlugin p).getSuperLocalName(this) }
 }
 
 /** Gets the implicitly-declared variable through which the given callable refers to its receiver. */
