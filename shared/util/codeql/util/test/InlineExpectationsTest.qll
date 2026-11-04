@@ -1173,9 +1173,9 @@ module TestPostProcessing {
        * group) a tag this test understands with a tag it ignores (for example a query ID that does
        * not match the current query). The latter keeps the rewrite from having to take apart a group
        * such as `Alert,Source[other-query]` whose parts this test treats differently; such comments
-       * are left untouched. A qualifier containing whitespace is also left untouched in cohort mode:
-       * it may be domain-specific bracket syntax or an unsupported attempt to name several producer
-       * queries, neither of which can be reconciled as one query ID.
+       * are left untouched. An unsupported qualifier is also left untouched in cohort mode: it may
+       * be domain-specific bracket syntax or an unsupported attempt to name producer queries, neither
+       * of which can be reconciled as one query ID.
        *
        * A rewritable comment may still carry whole expectations this test ignores (for example
        * `// $ Alert[other-query]`). Those are preserved verbatim by `foreignExpectation` when the
@@ -1200,12 +1200,17 @@ module TestPostProcessing {
           hasExpectation(comment, TDefaultColumn(), _, tags, _) and
           tags.matches("%,%")
         ) and
-        not exists(string tags, string queryId |
+        not exists(string tags |
           inCohortMode() and
-          hasExpectation(comment, TDefaultColumn(), _, tags, _) and
+          hasExpectation(comment, _, _, tags, _) and
           not tags.matches("%,%") and
-          parseQualifiedTag(tags, _, queryId) and
-          queryId.regexpMatch(".*\\s+.*")
+          (
+            not parseQualifiedTag(tags, _, _)
+            or
+            exists(string queryId |
+              parseQualifiedTag(tags, _, queryId) and queryId.regexpMatch(".*\\s+.*")
+            )
+          )
         )
       }
 
@@ -1229,13 +1234,12 @@ module TestPostProcessing {
           // Once this pass collapses an atom to its bare form, an earlier cohort member's
           // qualified default-column tag is redundant. Named-column expectations and genuinely
           // foreign query IDs remain untouched.
-          not exists(string relativePath, int line, string base, string queryId |
+          not exists(string base, string queryId |
             col = TDefaultColumn() and
             not tags.matches("%,%") and
             parseQualifiedTag(tags, base, queryId) and
             cohortMember(queryId) and
-            parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
-            isCollapsedAtom(relativePath, line, base, value)
+            emittedBareExpectation(comment, "", base, value)
           )
         )
       }
@@ -1354,28 +1358,25 @@ module TestPostProcessing {
       }
 
       /**
-       * Carries forward a sibling producer when a bare on-disk atom has a partial reconciled producer
-       * set. The current query is taken from its actual result, and each surviving sibling is
-       * rendered explicitly.
+       * Carries forward sibling ownership when a bare on-disk atom is no longer emitted in its
+       * original column. Each sibling is rendered explicitly in that column.
        */
       private predicate carriedSiblingExpectation(
         TestImpl2::ExpectationComment comment, string column, string text
       ) {
         exists(
-          string relativePath, int line, string full, string base, string qualifier, string value,
-          string queryId
+          TColumn col, string full, string base, string qualifier, string value, string queryId
         |
           inCohortMode() and
-          hasExpectation(comment, TDefaultColumn(), _, full, value) and
+          hasExpectation(comment, col, _, full, value) and
           not full.matches("%,%") and
           parseQualifiedTag(full, base, qualifier) and
           qualifier = "" and
           not TestInput::tagIsIgnored(full) and
-          parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
-          not isCollapsedAtom(relativePath, line, base, value) and
+          column = getColumnString(col) and
+          not emittedBareExpectation(comment, column, base, value) and
           queryId != getQueryId() and
-          reconciledProducer(relativePath, line, base, value, queryId) and
-          column = "" and
+          cohortMember(queryId) and
           text = renderAtom(base + "[" + queryId + "]", value)
         )
       }
@@ -1507,6 +1508,21 @@ module TestPostProcessing {
           parseLocationString(comment.getLocation().getRelativeUrl(), relativePath, line, _, _, _) and
           unexpectedResultExpectation(relativePath, line, text) and
           column = ""
+        )
+      }
+
+      /** Holds if the rewritten comment emits the bare atom in `column`. */
+      bindingset[comment, column, tag, value]
+      private predicate emittedBareExpectation(
+        TestImpl2::ExpectationComment comment, string column, string tag, string value
+      ) {
+        exists(string text |
+          text = renderAtom(tag, value) and
+          (
+            survivingExpectation(comment, column, text)
+            or
+            mergedNewExpectation(comment, column, text)
+          )
         )
       }
 

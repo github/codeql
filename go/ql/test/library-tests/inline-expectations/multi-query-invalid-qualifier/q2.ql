@@ -4,4 +4,6 @@
 
 private import go
 
-query predicate hit(Function function) { function.getName() = "sharedTarget" }
+query predicate hit(Function function) {
+  function.getName() = ["emptyQualifierTarget", "repeatedQualifierTarget"]
+}
