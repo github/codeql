@@ -1285,13 +1285,6 @@ module ConstructorForwarding {
 
   private predicate isUnderlyingType(Type type) { type = type.getUnderlyingType() }
 
-  private newtype TTypeState =
-    MkTypeState(Type type, ValueCategory category, Boolean conversionUsed, Phase phase) {
-      not type instanceof Cpp::ReferenceType and
-      not type instanceof FunctionReferenceType and
-      isUnderlyingType(type)
-    }
-
   private ValueCategory getCategoryForRef(Cpp::ReferenceType reference) {
     reference instanceof Cpp::LValueReferenceType and result = LValue()
     or
@@ -1316,45 +1309,6 @@ module ConstructorForwarding {
   private predicate qualificationCompatible(Type arg, Type param) {
     arg.stripTopLevelSpecifiers() = param.stripTopLevelSpecifiers() and
     preservesQualifiers(arg, param)
-  }
-
-  private class TypeState extends TTypeState {
-    Type getType() { this = MkTypeState(result, _, _, _) }
-
-    ValueCategory getCategory() { this = MkTypeState(_, result, _, _) }
-
-    Phase getPhase() { this = MkTypeState(_, _, _, result) }
-
-    /** Holds if this state's phase permits a value or base-class conversion. */
-    predicate canConvertValue() {
-      this.getPhase() = Initial() or this.getPhase() = AfterTransformation()
-    }
-
-    predicate hasNotUsedConversion() { this = MkTypeState(_, _, false, _) }
-
-    string toString() { result = this.getType().toString() }
-
-    predicate isSource(Type argType) {
-      argType = getForwardedArgumentType(_, _, _) and
-      exists(ValueCategory category |
-        this = MkTypeState(getValueType(argType, category), category, false, Initial())
-      )
-    }
-
-    predicate matchesParameter(Type paramType) {
-      exists(Type base | base = paramType.(Cpp::ReferenceType).getBaseType() |
-        qualificationCompatible(this.getType(), base) and
-        referenceAcceptsCategory(paramType, this.getCategory())
-      )
-      or
-      not paramType instanceof Cpp::ReferenceType and
-      this.getType().stripTopLevelSpecifiers() = paramType.stripTopLevelSpecifiers()
-    }
-
-    predicate isSink(Type paramType, Cpp::Constructor constructor) {
-      paramType = getConstructorParameterType(constructor, _) and
-      this.matchesParameter(paramType)
-    }
   }
 
   private Cpp::PointerType pointerType(Type base) {
@@ -1486,6 +1440,52 @@ module ConstructorForwarding {
       typeFwd(previous) and
       step(previous, state)
     )
+  }
+
+  private newtype TTypeState =
+    MkTypeState(Type type, ValueCategory category, Boolean conversionUsed, Phase phase) {
+      not type instanceof Cpp::ReferenceType and
+      not type instanceof FunctionReferenceType and
+      isUnderlyingType(type)
+    }
+
+  private class TypeState extends TTypeState {
+    Type getType() { this = MkTypeState(result, _, _, _) }
+
+    ValueCategory getCategory() { this = MkTypeState(_, result, _, _) }
+
+    Phase getPhase() { this = MkTypeState(_, _, _, result) }
+
+    /** Holds if this state's phase permits a value or base-class conversion. */
+    predicate canConvertValue() {
+      this.getPhase() = Initial() or this.getPhase() = AfterTransformation()
+    }
+
+    predicate hasNotUsedConversion() { this = MkTypeState(_, _, false, _) }
+
+    string toString() { result = this.getType().toString() }
+
+    predicate isSource(Type argType) {
+      argType = getForwardedArgumentType(_, _, _) and
+      exists(ValueCategory category |
+        this = MkTypeState(getValueType(argType, category), category, false, Initial())
+      )
+    }
+
+    predicate matchesParameter(Type paramType) {
+      exists(Type base | base = paramType.(Cpp::ReferenceType).getBaseType() |
+        qualificationCompatible(this.getType(), base) and
+        referenceAcceptsCategory(paramType, this.getCategory())
+      )
+      or
+      not paramType instanceof Cpp::ReferenceType and
+      this.getType().stripTopLevelSpecifiers() = paramType.stripTopLevelSpecifiers()
+    }
+
+    predicate isSink(Type paramType, Cpp::Constructor constructor) {
+      paramType = getConstructorParameterType(constructor, _) and
+      this.matchesParameter(paramType)
+    }
   }
 
   private predicate typeRev(TypeState state, Cpp::Constructor constructor) {
