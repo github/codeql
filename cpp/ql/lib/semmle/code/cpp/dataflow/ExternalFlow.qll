@@ -1220,6 +1220,7 @@ module ConstructorForwarding {
     (t1.isVolatile() implies t2.isVolatile())
   }
 
+  bindingset[arg]
   private predicate baseTypeCompatible(Type arg, Type param) {
     param.stripTopLevelSpecifiers() = arg.stripTopLevelSpecifiers().(Class).getABaseClass+() and
     preservesQualifiers(arg, param)
@@ -1229,6 +1230,7 @@ module ConstructorForwarding {
 
   private predicate routineType(Type t) { t.stripTopLevelSpecifiers() instanceof RoutineType }
 
+  bindingset[arg]
   private predicate pointerConversion(Cpp::PointerType arg, Cpp::PointerType param) {
     exists(Type argBase, Type paramBase |
       argBase = arg.getBaseType() and
@@ -1256,6 +1258,7 @@ module ConstructorForwarding {
     t instanceof RoutineType
   }
 
+  bindingset[t, category]
   private predicate referenceAcceptsCategory(Cpp::ReferenceType t, ValueCategory category) {
     if t instanceof Cpp::LValueReferenceType
     then
@@ -1291,6 +1294,7 @@ module ConstructorForwarding {
     reference instanceof Cpp::RValueReferenceType and result = XValue()
   }
 
+  bindingset[t]
   private Type getValueType(Type t, ValueCategory category) {
     result = t.(FunctionReferenceType).getBaseType().getUnderlyingType() and
     category = LValue()
@@ -1304,11 +1308,21 @@ module ConstructorForwarding {
     category = PRValue()
   }
 
-  bindingset[arg, param]
-  pragma[inline_late]
+  bindingset[arg]
   private predicate qualificationCompatible(Type arg, Type param) {
     arg.stripTopLevelSpecifiers() = param.stripTopLevelSpecifiers() and
     preservesQualifiers(arg, param)
+  }
+
+  bindingset[argType, category]
+  private predicate matchesParameter(Type argType, ValueCategory category, Type paramType) {
+    exists(Type base | base = paramType.(Cpp::ReferenceType).getBaseType() |
+      qualificationCompatible(argType, base) and
+      referenceAcceptsCategory(paramType, category)
+    )
+    or
+    not paramType instanceof Cpp::ReferenceType and
+    argType.stripTopLevelSpecifiers() = paramType.stripTopLevelSpecifiers()
   }
 
   private Cpp::PointerType pointerType(Type base) {
@@ -1398,7 +1412,8 @@ module ConstructorForwarding {
   private predicate convertingConstructorStep(TypeState argState, TypeState paramState) {
     exists(ConvertingConstructor constructor |
       argState.hasNotUsedConversion() and
-      argState.matchesParameter(constructor.getUnderlyingFromType()) and
+      matchesParameter(argState.getType(), argState.getCategory(),
+        constructor.getUnderlyingFromType()) and
       paramState = MkTypeState(constructor.getDeclaringType(), PRValue(), true, Initial())
     )
   }
@@ -1472,19 +1487,9 @@ module ConstructorForwarding {
       )
     }
 
-    predicate matchesParameter(Type paramType) {
-      exists(Type base | base = paramType.(Cpp::ReferenceType).getBaseType() |
-        qualificationCompatible(this.getType(), base) and
-        referenceAcceptsCategory(paramType, this.getCategory())
-      )
-      or
-      not paramType instanceof Cpp::ReferenceType and
-      this.getType().stripTopLevelSpecifiers() = paramType.stripTopLevelSpecifiers()
-    }
-
     predicate isSink(Type paramType, Cpp::Constructor constructor) {
       paramType = getConstructorParameterType(constructor, _) and
-      this.matchesParameter(paramType)
+      matchesParameter(this.getType(), this.getCategory(), paramType)
     }
   }
 
