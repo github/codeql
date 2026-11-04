@@ -5,6 +5,7 @@
 private import unified
 private import codeql.dataflow.internal.AccessPathSyntax
 private import codeql.unified.internal.typeinference.TypeInference as T
+private import codeql.unified.internal.StaticNameBinding as N
 
 extensible predicate legacySourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
@@ -245,6 +246,45 @@ class Selector extends TSelector {
   int getPositionalArity() { result = count(int n | this.getArgLabels().splitAt(":", n) = "_") }
 
   string getANamedArgument() { result = this.getArgLabels().splitAt(":") and result != "_" }
+}
+
+/** Gets the `n`th `.`-separated component in the given `type` string. */
+pragma[nomagic]
+private string getTypeComponent(string type, int n) {
+  type = any(Selector s).getTypeString() and
+  result = type.splitAt(".", n)
+}
+
+/** Holds if the `n`th prefix of `type` is `prefix`, which itself consists of `qualifier` followed by a single `component`. */
+private predicate splitTypeString(
+  string type, int n, string qualifier, string component, string prefix
+) {
+  component = getTypeComponent(type, n) and
+  (
+    n = 0 and qualifier = "" and prefix = component
+    or
+    splitTypeString(type, n - 1, _, _, qualifier) and
+    prefix = qualifier + "." + component
+  )
+}
+
+pragma[nomagic]
+private string typeSelectorCons(string qualifier, string component) {
+  splitTypeString(_, _, qualifier, component, result)
+}
+
+/** A type, or prefix thereof, mentioned in a model. */
+class TypeSelector extends string {
+  TypeSelector() { splitTypeString(_, _, _, _, this) }
+
+  TypeSelector append(string component) { result = typeSelectorCons(this, component) }
+
+  TypeSelector getQualifier() { this = result.append(_) }
+
+  string getHead() { this = typeSelectorCons(_, result) }
+
+  /** Gets a static reference to this type. */
+  AstNode getAStaticRef() { N::trackTypeSelector(this) = N::getNodeFromRef(result) }
 }
 
 private predicate isAccessPath(string path) {
