@@ -37,6 +37,8 @@ module LocalSsaInput implements InputSig<Location, BasicBlock> {
       performsVariableAccess(repr, v, TPostUpdate(), bb2.getNode(i2))
     )
   }
+
+  predicate ssaCachedStageRevRef() { LocalSsaDataFlowOutput::ssaCachedStageRevRef2() }
 }
 
 module LocalSsaOutput = Make<Location, Cfg, LocalSsaInput>;

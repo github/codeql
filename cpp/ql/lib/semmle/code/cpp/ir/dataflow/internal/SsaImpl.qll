@@ -1104,6 +1104,8 @@ private module SsaInput implements Ssa::InputSig<Location, IRCfg::BasicBlock> {
       if use.isCertain() then certain = true else certain = false
     )
   }
+
+  predicate ssaCachedStageRevRef() { DataFlowIntegrationImpl::ssaCachedStageRevRef2() }
 }
 
 predicate ssaDefReachesRead(SourceVariable v, Definition def, IRBlock bb, int i) {
@@ -1161,14 +1163,6 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
     }
 
     predicate hasCfgNode(IRCfg::BasicBlock bb, int i) { bb.getInstruction(i) = this }
-  }
-
-  Expr getARead(SsaImpl::Definition def) {
-    exists(SourceVariable v, IRBlock bb, int i |
-      ssaDefReachesRead(v, def, bb, i) and
-      variableRead(bb, i, v, true) and
-      result.hasCfgNode(bb, i)
-    )
   }
 
   predicate ssaDefHasSource(SsaImpl::WriteDefinition def) { none() }

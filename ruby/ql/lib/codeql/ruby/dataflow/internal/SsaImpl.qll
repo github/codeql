@@ -56,6 +56,8 @@ module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
     namespaceSelfExitRead(bb, i, v) and
     certain = false
   }
+
+  predicate ssaCachedStageRevRef() { DataFlowIntegrationImpl::ssaCachedStageRevRef2() }
 }
 
 import SsaImplCommon::Make<Location, Cfg::Cfg, SsaInput> as Impl
@@ -435,8 +437,6 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   class Expr extends Cfg::CfgNodes::ExprCfgNode {
     predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
   }
-
-  Expr getARead(Definition def) { result = Cached::getARead(def) }
 
   predicate ssaDefHasSource(WriteDefinition def) {
     any(ParameterExt p).isInitializedBy(def) or def.(Ssa::WriteDefinition).assigns(_)

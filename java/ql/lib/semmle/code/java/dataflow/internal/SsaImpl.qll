@@ -199,6 +199,10 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBl
     variableCapture(v, _, bb, i) and
     certain = false
   }
+
+  predicate ssaCachedStageRevRef() {
+    Ssa::ssaCachedStageRevRef1() and DataFlowIntegrationImpl::ssaCachedStageRevRef2()
+  }
 }
 
 import SsaImplCommon::Make<Location, Cfg, SsaImplInput> as Impl
@@ -641,8 +645,6 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
       super.getControlFlowNode() = bb.(J::BasicBlock).getNode(i)
     }
   }
-
-  Expr getARead(Definition def) { result = def.(SsaDefinition).getARead() }
 
   predicate ssaDefHasSource(WriteDefinition def) { def instanceof SsaExplicitWrite }
 
