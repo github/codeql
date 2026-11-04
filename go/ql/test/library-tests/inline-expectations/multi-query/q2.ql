@@ -7,7 +7,11 @@ private import go
 private predicate isFixtureFunction(Function function, string name) { function.getName() = name }
 
 query predicate hit(Function function) {
-  isFixtureFunction(function, ["sharedTarget", "qualifiedTarget", "foreignTarget", "noteTarget"])
+  isFixtureFunction(function,
+    [
+      "sharedTarget", "qualifiedTarget", "foreignTarget", "suppressedSiblingTarget",
+      "namedSpuriousTarget", "noteTarget"
+    ])
 }
 
 query predicate mark(Function function, string value) {

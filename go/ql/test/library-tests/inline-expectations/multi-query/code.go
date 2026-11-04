@@ -18,4 +18,10 @@ func missingTarget() {} // $ MISSING: absent[go/test/q1] absent[go/test/q2]
 
 func spuriousTarget() {} // $ SPURIOUS: spurious[go/test/q1]
 
+func suppressedSiblingTarget() {} // $ hit[go/test/q2] SPURIOUS: hit[go/test/q1]
+
+func namedMissingTarget() {} // $ hit[go/test/q1] MISSING: hit[go/test/q2]
+
+func namedSpuriousTarget() {} // $ SPURIOUS: hit[go/test/q2]
+
 func noteTarget() {} // $ hit // trailing note
