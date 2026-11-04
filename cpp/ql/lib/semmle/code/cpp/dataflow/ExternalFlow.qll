@@ -1455,20 +1455,29 @@ module ConstructorForwarding {
     )
   }
 
-  private predicate typeFwd(TypeState state) {
-    state.isSource(_)
-    or
-    exists(TypeState previous |
-      typeFwd(previous) and
-      step(previous, state)
+  private predicate typeFwd(Type type, ValueCategory category, boolean conversionUsed, Phase phase) {
+    not type instanceof Cpp::ReferenceType and
+    not type instanceof FunctionReferenceType and
+    isUnderlyingType(type) and
+    (
+      type = getValueType(getForwardedArgumentType(_, _, _), category) and
+      conversionUsed = false and
+      phase = Initial()
+      or
+      exists(
+        Type previousType, ValueCategory previousCategory, boolean previousConversionUsed,
+        Phase previousPhase
+      |
+        typeFwd(previousType, previousCategory, previousConversionUsed, previousPhase) and
+        typeStep(previousType, previousCategory, previousConversionUsed, previousPhase, type,
+          category, conversionUsed, phase)
+      )
     )
   }
 
   private newtype TTypeState =
     MkTypeState(Type type, ValueCategory category, Boolean conversionUsed, Phase phase) {
-      not type instanceof Cpp::ReferenceType and
-      not type instanceof FunctionReferenceType and
-      isUnderlyingType(type)
+      typeFwd(type, category, conversionUsed, phase)
     }
 
   private class TypeState extends TTypeState {
@@ -1505,14 +1514,11 @@ module ConstructorForwarding {
   }
 
   private predicate typeRev(TypeState state, Cpp::Constructor constructor) {
-    typeFwd(state) and
-    (
-      state.isSink(_, constructor)
-      or
-      exists(TypeState next |
-        typeRev(next, constructor) and
-        step(state, next)
-      )
+    state.isSink(_, constructor)
+    or
+    exists(TypeState next |
+      typeRev(next, constructor) and
+      step(state, next)
     )
   }
 
