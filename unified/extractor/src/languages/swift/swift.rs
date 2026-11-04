@@ -206,9 +206,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (unsupported_node)
         ),
-        rule!((declReferenceExpr baseName: (identifier) @@name) => expr {
-            tree!((identifier #{name}))
-        }),
         // A bare name reference (`x`), and an operator used as a value (`+` in
         // `reduce(0, +)`), are both `declReferenceExpr`; its `baseName` is the
         // referenced identifier / operator symbol.
