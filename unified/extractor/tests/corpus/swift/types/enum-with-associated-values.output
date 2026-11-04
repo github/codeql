@@ -12,6 +12,7 @@ sourceFile
       item:
         enumDecl
           attributes:
+          modifiers:
           name: identifier "Shape"
           memberBlock:
             memberBlock
@@ -60,7 +61,6 @@ sourceFile
                                       name: identifier "Double"
                                   firstName: identifier "side"
                       caseKeyword: case
-          modifiers:
           enumKeyword: enum
 
 ---

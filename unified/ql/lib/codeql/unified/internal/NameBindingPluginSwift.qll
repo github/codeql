@@ -107,6 +107,9 @@ class NameBindingPluginSwift extends NameBindingPlugin {
     result = "self"
   }
 
+  bindingset[se]
+  override string getSuperLocalName(SuperExpr se) { exists(se) and result = "self" }
+
   bindingset[cls]
   override string getStaticSelfName(ClassLikeDeclaration cls) { exists(cls) and result = "Self" }
 }

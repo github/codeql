@@ -13,6 +13,7 @@ sourceFile
       item:
         protocolDecl
           attributes:
+          modifiers:
           name: identifier "P"
           memberBlock:
             memberBlock
@@ -42,6 +43,7 @@ sourceFile
                                 accessorDecl
                                   accessorSpecifier: get
                                   attributes:
+                                  modifiers:
                               leftBrace: {
                               rightBrace: }
                 memberBlockItem
@@ -67,9 +69,11 @@ sourceFile
                                 accessorDecl
                                   accessorSpecifier: get
                                   attributes:
+                                  modifiers:
                                 accessorDecl
                                   accessorSpecifier: set
                                   attributes:
+                                  modifiers:
                               leftBrace: {
                               rightBrace: }
                 memberBlockItem
@@ -95,9 +99,9 @@ sourceFile
                                 accessorDecl
                                   accessorSpecifier: get
                                   attributes:
+                                  modifiers:
                               leftBrace: {
                               rightBrace: }
-          modifiers:
           protocolKeyword: protocol
 
 ---

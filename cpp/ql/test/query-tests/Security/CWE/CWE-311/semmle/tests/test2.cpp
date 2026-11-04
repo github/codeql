@@ -110,3 +110,66 @@ void test_gets()
 		gets(password); // $ Alert[cpp/cleartext-storage-buffer] // BAD
 	}
 }
+
+namespace std
+{
+	template<class CharT> struct char_traits;
+	template<class T> class allocator;
+
+	template<class CharT, class Traits = char_traits<CharT>>
+	class basic_string_view
+	{
+	public:
+		const CharT* data() const;
+	};
+
+	template<class CharT, class Traits = char_traits<CharT>, class Allocator = allocator<CharT>>
+	class basic_string
+	{
+	public:
+		const CharT* data() const;
+		size_t size() const;
+		basic_string();
+		basic_string& operator+=(CharT);
+		const CharT* c_str() const;
+		const CharT* begin() const;
+		const CharT* end() const;
+
+		operator basic_string_view<CharT, Traits>() const;
+	};
+
+	using string = basic_string<char>;
+	using string_view = basic_string_view<char>;
+}
+
+struct StringCredentials
+{
+	std::string password;
+	std::string username;
+};
+
+void test_source_glvalue(FILE* log, const StringCredentials& credentials)
+{
+	const char* pw = credentials.password.c_str(); // $ Source[cpp/cleartext-storage-file]
+	fprintf(log, "%s", pw); // $ Alert[cpp/cleartext-storage-file]
+}
+
+std::string copy_characters(std::string s)
+{
+	std::string result;
+	for (char ch : s)
+		result += ch;
+	return result;
+}
+
+void test_character_iteration(FILE* log, const StringCredentials& credentials)
+{
+	std::string by_value = copy_characters(credentials.password); // $ MISSING: Source[cpp/cleartext-storage-file]
+	fprintf(log, "%s", by_value.c_str()); // $ MISSING: Alert[cpp/cleartext-storage-file]
+}
+
+void test_reference(FILE* log, std::string s) {
+	const std::string& password = s;
+	const std::string& copy = password; // $ Source[cpp/cleartext-storage-file]
+	fprintf(log, "%s", copy.c_str()); // $ Alert[cpp/cleartext-storage-file]
+}

@@ -1254,28 +1254,28 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         or
         n.isIn(ast) and
         always = true and
-        (
+        exists(SuccessorType st |
           ast instanceof ReturnStmt and
-          c.getSuccessorType() instanceof ReturnSuccessor
+          st instanceof ReturnSuccessor
           or
           ast instanceof Throw and
-          c.getSuccessorType() instanceof ExceptionSuccessor
+          st instanceof ExceptionSuccessor
           or
           ast instanceof BreakStmt and
-          c.getSuccessorType() instanceof BreakSuccessor
+          st instanceof BreakSuccessor
           or
           ast instanceof ContinueStmt and
-          c.getSuccessorType() instanceof ContinueSuccessor
+          st instanceof ContinueSuccessor
           or
           ast instanceof GotoStmt and
-          c.getSuccessorType() instanceof GotoSuccessor
-        ) and
-        (
-          not Input1::hasLabel(ast, _) and not c.hasLabel(_)
+          st instanceof GotoSuccessor
+        |
+          not Input1::hasLabel(ast, _) and
+          c = TSimpleAbruptCompletion(st)
           or
           exists(Input1::Label l |
             Input1::hasLabel(ast, l) and
-            c.hasLabel(l)
+            c = TLabeledAbruptCompletion(st, l)
           )
         )
         or
@@ -1319,20 +1319,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n.(ExceptionalExitNodeImpl).getEnclosingCallable() = callable
         )
         or
-        exists(LoopStmt loop | ast = pragma[only_bind_into](loop).getBody() |
+        exists(LoopStmt loop, SuccessorType st | ast = pragma[only_bind_into](loop).getBody() |
           (
-            c.getSuccessorType() instanceof BreakSuccessor and
+            st instanceof BreakSuccessor and
             n.isAfter(loop)
             or
-            c.getSuccessorType() instanceof ContinueSuccessor and
+            st instanceof ContinueSuccessor and
             n.isAdditional(loop, loopHeaderTag())
           ) and
           (
-            not c.hasLabel(_)
+            c = TSimpleAbruptCompletion(st)
             or
-            exists(Input1::Label l |
-              c.hasLabel(l) and
-              (Input1::hasLabel(loop, l) or hasEnclosingLabel(loop, l))
+            exists(Input1::Label l | c = TLabeledAbruptCompletion(st, l) |
+              Input1::hasLabel(loop, l) or hasEnclosingLabel(loop, l)
             )
           )
         )

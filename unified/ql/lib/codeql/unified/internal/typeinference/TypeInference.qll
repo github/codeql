@@ -219,7 +219,11 @@ module Input3 implements InputSig3 {
   }
 
   class Variable extends LocalNameBindingOutput::Local {
-    Expr getAnAccess() { result = super.getAnAccess() }
+    Expr getAnAccess() {
+      result = super.getAnAccess() and
+      // for type inference, we want super expressions to have the type of the base class
+      not result instanceof SuperExpr
+    }
   }
 
   final class VariableDeclaration = VariableDeclarationImpl;

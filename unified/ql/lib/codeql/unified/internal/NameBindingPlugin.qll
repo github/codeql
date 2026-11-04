@@ -69,6 +69,12 @@ class NameBindingPlugin extends Unit {
   string getImplicitReceiverParameterName(Callable callable) { none() }
 
   /**
+   * Gets the name to be used when resolving `super`, for example `this` or `self`.
+   */
+  bindingset[se]
+  string getSuperLocalName(SuperExpr se) { none() }
+
+  /**
    * Gets the name through which static members of the enclosing class `cls` can be
    * accessed, for example `Self` in Swift.
    */

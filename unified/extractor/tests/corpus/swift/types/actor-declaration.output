@@ -11,6 +11,7 @@ sourceFile
       item:
         actorDecl
           attributes:
+          modifiers:
           name: identifier "Counter"
           actorKeyword: actor
           memberBlock:
@@ -35,7 +36,6 @@ sourceFile
                           pattern:
                             identifierPattern
                               identifier: identifier "value"
-          modifiers:
 
 ---
 
