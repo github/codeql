@@ -2322,8 +2322,9 @@ private module Input3 implements InputSig3 {
 
   class AssignExpr extends AssignmentImpl, Rust::AssignmentExpr { }
 
-  class ParenExpr extends Expr instanceof Rust::ParenExpr {
-    Expr getExpr() { result = super.getExpr() }
+  // Required by the shared type-inference signature; parenthesized expressions are transparent.
+  abstract class ParenExpr extends Expr {
+    Expr getExpr() { none() }
   }
 
   final class Declaration = DeclarationImpl;
@@ -3039,8 +3040,6 @@ private module Input3 implements InputSig3 {
       prefix2.isEmpty() and
       (
         n2 = n1.(OrPat).getAPat()
-        or
-        n2 = n1.(ParenPat).getPat()
         or
         n2 = n1.(LiteralPat).getLiteral()
         or
