@@ -85,3 +85,10 @@ class Service:
 @mcp_app.tool()
 def stacked_with_context(ctx: Context, payload: str) -> str:
     return payload
+
+
+class StaticMcpHandlers:
+    @mcp_app.tool()
+    @staticmethod
+    def static_mcp_tool(host: str) -> str:
+        return host

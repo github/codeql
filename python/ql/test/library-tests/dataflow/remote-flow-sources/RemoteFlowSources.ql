@@ -1,6 +1,6 @@
 import python
-import semmle.python.dataflow.new.RemoteFlowSources
+import semmle.python.Concepts
 
-from RemoteFlowSource src
-where exists(src.getLocation().getFile().getRelativePath())
+from ThreatModelSource src
+where src.getThreatModel() = "ai" and exists(src.getLocation().getFile().getRelativePath())
 select src, src.getSourceType()

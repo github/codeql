@@ -9,11 +9,12 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
+private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
 /**
- * Provides models for MCP server handler parameters as remote flow sources.
+ * Provides models for MCP server handler parameters as AI threat-model sources.
  */
 module Mcp {
   private string registrationMethod() { result in ["tool", "prompt", "resource"] }
@@ -93,9 +94,15 @@ module Mcp {
   private predicate isContextAnnotation(Expr ann) {
     exists(API::Node ctx |
       ctx in [
-          API::moduleImport("fastmcp").getMember("Context"),
-          API::moduleImport("mcp").getMember("server").getMember("fastmcp").getMember("Context"),
-        ] and
+        API::moduleImport("fastmcp").getMember("Context"),
+        API::moduleImport("fastmcp").getMember("server").getMember("context").getMember("Context"),
+        API::moduleImport("mcp").getMember("server").getMember("fastmcp").getMember("Context"),
+        API::moduleImport("mcp")
+            .getMember("server")
+            .getMember("fastmcp")
+            .getMember("server")
+            .getMember("Context"),
+      ] and
       ann = ctx.getAValueReachableFromSource().asExpr()
     )
   }
@@ -122,17 +129,23 @@ module Mcp {
       or
       p = handler.getKwarg()
     ) and
-    not (handler.isMethod() and p = handler.getArg(0)) and
+    not (
+      handler.isMethod() and
+      not isStaticmethod(handler) and
+      p = handler.getArg(0)
+    ) and
     not isMcpContextParameter(p)
   }
 
-  private class McpHandlerParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+  private class McpHandlerParameter extends ThreatModelSource::Range, DataFlow::ParameterNode {
     McpHandlerParameter() {
       exists(Function handler |
         isMcpHandler(handler) and
         isHandlerParameter(handler, this.getParameter())
       )
     }
+
+    override string getThreatModel() { result = "ai" }
 
     override string getSourceType() { result = "MCP server handler parameter" }
   }
