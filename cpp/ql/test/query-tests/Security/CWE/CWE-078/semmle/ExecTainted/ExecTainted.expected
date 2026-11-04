@@ -17,21 +17,21 @@ edges
 | test.cpp:94:11:94:14 | strncat output argument | test.cpp:95:45:95:48 | *path | provenance |  |
 | test.cpp:94:17:94:24 | *filename | test.cpp:94:11:94:14 | strncat output argument | provenance | Config |
 | test.cpp:107:15:107:18 | call to basic_string | test.cpp:108:33:108:36 | *path | provenance |  |
-| test.cpp:107:20:107:38 | *call to getenv | test.cpp:107:15:107:18 | call to basic_string | provenance | MaD:33404 |
+| test.cpp:107:20:107:38 | *call to getenv | test.cpp:107:15:107:18 | call to basic_string | provenance | MaD:3 |
 | test.cpp:107:20:107:38 | *call to getenv | test.cpp:108:33:108:36 | *path | provenance | TaintFunction |
 | test.cpp:108:31:108:31 | call to operator+ | test.cpp:108:31:108:31 | call to operator+ | provenance |  |
 | test.cpp:108:31:108:31 | call to operator+ | test.cpp:109:10:109:16 | command | provenance |  |
 | test.cpp:108:33:108:36 | *path | test.cpp:108:31:108:31 | call to operator+ | provenance | Config |
-| test.cpp:109:10:109:16 | command | test.cpp:109:18:109:22 | *call to c_str | provenance | MaD:33449 |
+| test.cpp:109:10:109:16 | command | test.cpp:109:18:109:22 | *call to c_str | provenance | MaD:1 |
 | test.cpp:114:15:114:18 | call to basic_string | test.cpp:115:19:115:22 | *path | provenance |  |
-| test.cpp:114:20:114:38 | *call to getenv | test.cpp:114:15:114:18 | call to basic_string | provenance | MaD:33404 |
+| test.cpp:114:20:114:38 | *call to getenv | test.cpp:114:15:114:18 | call to basic_string | provenance | MaD:3 |
 | test.cpp:114:20:114:38 | *call to getenv | test.cpp:115:19:115:22 | *path | provenance | TaintFunction |
-| test.cpp:115:10:115:23 | call to operator+ | test.cpp:115:25:115:29 | *call to c_str | provenance | MaD:33449 |
+| test.cpp:115:10:115:23 | call to operator+ | test.cpp:115:25:115:29 | *call to c_str | provenance | MaD:1 |
 | test.cpp:115:19:115:22 | *path | test.cpp:115:10:115:23 | call to operator+ | provenance | Config |
 | test.cpp:120:15:120:18 | call to basic_string | test.cpp:121:19:121:22 | *path | provenance |  |
-| test.cpp:120:20:120:38 | *call to getenv | test.cpp:120:15:120:18 | call to basic_string | provenance | MaD:33404 |
+| test.cpp:120:20:120:38 | *call to getenv | test.cpp:120:15:120:18 | call to basic_string | provenance | MaD:3 |
 | test.cpp:120:20:120:38 | *call to getenv | test.cpp:121:19:121:22 | *path | provenance | TaintFunction |
-| test.cpp:121:17:121:17 | call to operator+ | test.cpp:121:10:121:30 | *call to data | provenance | MaD:33447 |
+| test.cpp:121:17:121:17 | call to operator+ | test.cpp:121:10:121:30 | *call to data | provenance | MaD:2 |
 | test.cpp:121:19:121:22 | *path | test.cpp:121:17:121:17 | call to operator+ | provenance | Config |
 | test.cpp:141:9:141:11 | fread output argument | test.cpp:143:31:143:33 | *str | provenance |  |
 | test.cpp:143:11:143:17 | sprintf output argument | test.cpp:144:10:144:16 | *command | provenance |  |
@@ -93,6 +93,10 @@ edges
 | test.cpp:248:5:248:10 | *call to getenv | test.cpp:245:11:245:17 | sprintf output argument | provenance | Config |
 | test.cpp:259:13:259:18 | strncat output argument | test.cpp:261:10:261:15 | *buffer | provenance |  |
 | test.cpp:259:21:259:35 | *call to getenv | test.cpp:259:13:259:18 | strncat output argument | provenance | Config |
+models
+| 1 | Summary: std; basic_string; true; c_str; ; ; Argument[-1]; ReturnValue[*]; value; manual |
+| 2 | Summary: std; basic_string; true; data; ; ; Argument[-1]; ReturnValue[*]; value; manual |
+| 3 | Summary: std; basic_string<CharT,Traits,Allocator>; true; basic_string; (const CharT *,const Allocator &); ; Argument[*0]; Argument[-1]; value; manual |
 nodes
 | test.cpp:15:27:15:30 | **argv | semmle.label | **argv |
 | test.cpp:16:20:16:26 | *access to array | semmle.label | *access to array |
