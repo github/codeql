@@ -711,6 +711,9 @@ module Input3 implements InputSig3 {
         cd = constructor.asCallable() and
         receiver = i.getArgument(0)
       |
+        // For enum case constructors, we want the type of the enum, which means the
+        // parent type of the enum case class. For example, for `Optional.some(42)`,
+        // we want the type `Optional<Int>` instead of `Optional<42>.some`.
         enumPrefixPath =
           TypePath::singleton(TParentTypeParameterType(cd.(EnumCaseConstructor).getEnumCaseClass()))
         or
