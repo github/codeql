@@ -1,0 +1,9 @@
+| file:///Users/geoffw0/semmle-code/ql/unified/extractor-pack/tools/builtins/types.swift:9:20:9:42 | "Dummy implementation." | Dummy implementation. |
+| file:///Users/geoffw0/semmle-code/ql/unified/extractor-pack/tools/builtins/types.swift:46:20:46:42 | "Dummy implementation." | Dummy implementation. |
+| file:///Users/geoffw0/semmle-code/ql/unified/extractor-pack/tools/builtins/types.swift:100:20:100:42 | "Dummy implementation." | Dummy implementation. |
+| test.swift:1:13:1:14 | "" |  |
+| test.swift:2:14:2:18 | "abc" | abc |
+| test.swift:4:24:4:28 | "\\\\n" | \\\\n |
+| test.swift:5:15:5:31 | "\\u{61}\\u{1F600}" | \\u{61}\\u{1F600} |
+| test.swift:6:11:6:21 | #"\\n\\"abc"# | #"\\n\\"abc"# |
+| test.swift:8:20:8:30 | #"abc#def"# | #"abc#def"# |
