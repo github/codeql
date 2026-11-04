@@ -30,4 +30,8 @@ module Impl implements InlineExpectationsTestSig {
     relativePath.regexpMatch(".*\\.(py|pyi)") and
     result = "#"
   }
+
+  // Python source lines are not available here, so an explicit `\` continuation cannot be excluded.
+  bindingset[relativePath, line]
+  predicate canAppendCommentAtEndOfLine(string relativePath, int line) { none() }
 }
