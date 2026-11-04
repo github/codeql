@@ -296,7 +296,7 @@ class Sub: Base2<String> {
 }
 class SubSub: Sub {
     func f(
-        x1: Sub.Element,  // $ MISSING: type=x1@Base2.Nested<(parent:Nested)>:Sub
+        x1: Sub.Element,  // $ type=x1@Base2.Nested<(parent:Nested)>:Sub
         x2: Element,  // $ type=x2@Base2.Nested<(parent:Nested)>:SubSub
         x3: Element2,  // $ type=x3@Base2.Nested<(parent:Nested)>:Sub
         x4: SubSub.Element2  // $ type=x4@Base2.Nested<(parent:Nested)>:Sub
