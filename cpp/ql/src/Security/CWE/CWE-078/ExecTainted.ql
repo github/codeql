@@ -50,7 +50,7 @@ predicate interestingConcatenation(DataFlow::Node incoming, DataFlow::Node outgo
     op.hasQualifiedName("std", "operator+") and
     op.getType().(UserType).hasQualifiedName("std", "basic_string") and
     incoming.asIndirectArgument() = call.getArgument(1) and // right operand
-    call = outgoing.asInstruction().getUnconvertedResultExpression()
+    call = outgoing.asExpr()
   )
 }
 

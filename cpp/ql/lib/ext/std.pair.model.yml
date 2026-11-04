@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["std", "", False, "make_pair<T1,T2>", "(T1 &&,T2 &&)", "", "Argument[*@0]", "ReturnValue.Field[@std::pair::first]", "value", "manual"]
+      - ["std", "", False, "make_pair<T1,T2>", "(T1 &&,T2 &&)", "", "Argument[*@1]", "ReturnValue.Field[@std::pair::second]", "value", "manual"]
+      - ["std", "pair", True, "operator=", "(const pair &)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["std", "pair", True, "operator=", "(const pair &)", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
+      - ["std", "pair", True, "operator=", "(pair &&)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["std", "pair", True, "operator=", "(pair &&)", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
+      - ["std", "pair", True, "pair", "(const pair &)", "", "Argument[*0].Field[@std::pair::first]", "Argument[-1].Field[@std::pair::first]", "value", "manual"]
+      - ["std", "pair", True, "pair", "(const pair &)", "", "Argument[*0].Field[@std::pair::second]", "Argument[-1].Field[@std::pair::second]", "value", "manual"]
+      - ["std", "pair", True, "pair", "(pair &&)", "", "Argument[*0].Field[@std::pair::first]", "Argument[-1].Field[@std::pair::first]", "value", "manual"]
+      - ["std", "pair", True, "pair", "(pair &&)", "", "Argument[*0].Field[@std::pair::second]", "Argument[-1].Field[@std::pair::second]", "value", "manual"]
+      - ["std", "pair<T1,T2>", True, "pair", "(const T1 &,const T2 &)", "", "Argument[*@0]", "Argument[-1].Field[@std::pair::first]", "value", "manual"]
+      - ["std", "pair<T1,T2>", True, "pair", "(const T1 &,const T2 &)", "", "Argument[*@1]", "Argument[-1].Field[@std::pair::second]", "value", "manual"]
+      - ["std", "pair", True, "pair<U1,U2>", "(U1 &&,U2 &&)", "", "Argument[*@0]", "Argument[-1].Field[@std::pair::first]", "value", "manual"]
+      - ["std", "pair", True, "pair<U1,U2>", "(U1 &&,U2 &&)", "", "Argument[*@1]", "Argument[-1].Field[@std::pair::second]", "value", "manual"]
+      - ["std", "pair", True, "swap", "", "", "Argument[-1]", "Argument[*0]", "value", "manual"]
+      - ["std", "pair", True, "swap", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]

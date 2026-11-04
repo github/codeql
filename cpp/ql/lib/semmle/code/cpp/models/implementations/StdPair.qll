@@ -18,30 +18,18 @@ private class StdPair extends ClassTemplateInstantiation {
  * instantiation of `std::pair`. These constructors allow conversion between pair types when the
  * underlying element types are convertible.
  */
-class StdPairCopyishConstructor extends Constructor, TaintFunction {
+class StdPairCopyishConstructor extends Constructor {
   StdPairCopyishConstructor() {
     this.getDeclaringType() instanceof StdPair and
     this.getNumberOfParameters() = 1 and
     this.getParameter(0).getUnspecifiedType().(ReferenceType).getBaseType() instanceof StdPair
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from the source object to the constructed object
-    input.isParameterDeref(0) and
-    (
-      output.isReturnValue()
-      or
-      output.isQualifierObject()
-    )
   }
 }
 
 /**
  * Additional model for `std::pair` constructors.
  */
-private class StdPairConstructor extends Constructor, TaintFunction, AliasFunction,
-  SideEffectFunction
-{
+private class StdPairConstructor extends Constructor, AliasFunction, SideEffectFunction {
   StdPairConstructor() { this.getDeclaringType() instanceof StdPair }
 
   /**
@@ -51,17 +39,6 @@ private class StdPairConstructor extends Constructor, TaintFunction, AliasFuncti
   int getAValueTypeParameterIndex() {
     this.getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
       this.getDeclaringType().getTemplateArgument(_).(Type).getUnspecifiedType() // i.e. the `T1` or `T2` of this `std::pair<T1, T2>`
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from second parameter of a value type to the qualifier
-    this.getAValueTypeParameterIndex() = 1 and
-    input.isParameterDeref(1) and
-    (
-      output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
-      or
-      output.isQualifierObject()
-    )
   }
 
   override predicate parameterNeverEscapes(int index) { index = -1 }

@@ -97,6 +97,106 @@ signatureMatches
 | atl.cpp:1333:13:1333:21 | operator= | Microsoft::WRL | (const ComPtr &) | ComPtr | operator= | 0 |
 | atl.cpp:1334:13:1334:21 | operator= | Microsoft::WRL | (ComPtr &&) | ComPtr | operator= | 0 |
 | atl.cpp:1336:13:1336:21 | operator= | Microsoft::WRL | (ComPtr &&) | ComPtr | operator= | 0 |
+| stl.h:143:3:143:14 | basic_string | std | (basic_string &&,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 |
+| stl.h:143:3:143:14 | basic_string | std | (const CharT *,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 0 |
+| stl.h:143:3:143:14 | basic_string | std | (const CharT *,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 |
+| stl.h:143:3:143:14 | basic_string | std | (const StringViewLike &,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<StringViewLike> | 1 |
+| stl.h:143:3:143:14 | basic_string | std | (const basic_string &,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 |
+| stl.h:144:33:144:44 | basic_string | std | (InputIt,InputIt,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<InputIt> | 0 |
+| stl.h:144:33:144:44 | basic_string | std | (InputIt,InputIt,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<InputIt> | 1 |
+| stl.h:144:33:144:44 | basic_string | std | (InputIt,InputIt,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<InputIt> | 2 |
+| stl.h:144:33:144:44 | basic_string | std | (basic_string &&,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 2 |
+| stl.h:144:33:144:44 | basic_string | std | (const CharT *,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 2 |
+| stl.h:144:33:144:44 | basic_string | std | (const basic_string &,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 2 |
+| stl.h:144:33:144:44 | basic_string | std | (size_type,CharT,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 2 |
+| stl.h:147:12:147:23 | basic_string | std | (basic_string &&,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 |
+| stl.h:147:12:147:23 | basic_string | std | (const CharT *,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 |
+| stl.h:147:12:147:23 | basic_string | std | (const StringViewLike &,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<StringViewLike> | 0 |
+| stl.h:147:12:147:23 | basic_string | std | (const StringViewLike &,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<StringViewLike> | 1 |
+| stl.h:147:12:147:23 | basic_string | std | (const basic_string &,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 |
+| stl.h:150:3:150:14 | basic_string | std | (basic_string &&,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 |
+| stl.h:150:3:150:14 | basic_string | std | (basic_string &&,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 2 |
+| stl.h:150:3:150:14 | basic_string | std | (basic_string &&,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 3 |
+| stl.h:150:3:150:14 | basic_string | std | (const StringViewLike &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<StringViewLike> | 0 |
+| stl.h:150:3:150:14 | basic_string | std | (const StringViewLike &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<StringViewLike> | 1 |
+| stl.h:150:3:150:14 | basic_string | std | (const StringViewLike &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<StringViewLike> | 2 |
+| stl.h:150:3:150:14 | basic_string | std | (const StringViewLike &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<StringViewLike> | 3 |
+| stl.h:150:3:150:14 | basic_string | std | (const basic_string &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 |
+| stl.h:150:3:150:14 | basic_string | std | (const basic_string &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 2 |
+| stl.h:150:3:150:14 | basic_string | std | (const basic_string &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 3 |
+| stl.h:167:8:167:16 | push_back | std | (CharT) | basic_string<CharT,Traits,Allocator> | push_back | 0 |
+| stl.h:178:35:178:44 | operator+= | std | (const StringViewLike &) | basic_string<CharT,Traits,Allocator> | operator+=<StringViewLike> | 0 |
+| stl.h:178:35:178:44 | operator+= | std | (const StringViewLike &) | basic_string<CharT,Traits,Allocator> | operator+=<StringViewLike> | 0 |
+| stl.h:179:17:179:26 | operator+= | std | (const CharT *) | basic_string<CharT,Traits,Allocator> | operator+= | 0 |
+| stl.h:180:17:180:22 | append | std | (const basic_string &) | basic_string | append | 0 |
+| stl.h:183:174:183:179 | append | std | (const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | append<StringViewLike> | 0 |
+| stl.h:183:174:183:179 | append | std | (const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | append<StringViewLike> | 1 |
+| stl.h:183:174:183:179 | append | std | (const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | append<StringViewLike> | 2 |
+| stl.h:183:174:183:179 | append | std | (const basic_string &,size_type,size_type) | basic_string | append | 1 |
+| stl.h:183:174:183:179 | append | std | (const basic_string &,size_type,size_type) | basic_string | append | 2 |
+| stl.h:185:17:185:22 | append | std | (const CharT *) | basic_string<CharT,Traits,Allocator> | append | 0 |
+| stl.h:186:17:186:22 | append | std | (size_type,CharT) | basic_string<CharT,Traits,Allocator> | append | 0 |
+| stl.h:186:17:186:22 | append | std | (size_type,CharT) | basic_string<CharT,Traits,Allocator> | append | 1 |
+| stl.h:187:47:187:52 | append | std | (InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | append<InputIt> | 0 |
+| stl.h:187:47:187:52 | append | std | (InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | append<InputIt> | 1 |
+| stl.h:188:17:188:22 | assign | std | (const basic_string &) | basic_string | assign | 0 |
+| stl.h:191:17:191:22 | assign | std | (const StringViewLike &) | basic_string<CharT,Traits,Allocator> | assign<StringViewLike> | 0 |
+| stl.h:195:17:195:22 | assign | std | (size_type,CharT) | basic_string<CharT,Traits,Allocator> | assign | 0 |
+| stl.h:195:17:195:22 | assign | std | (size_type,CharT) | basic_string<CharT,Traits,Allocator> | assign | 1 |
+| stl.h:196:47:196:52 | assign | std | (InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | assign<InputIt> | 0 |
+| stl.h:196:47:196:52 | assign | std | (InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | assign<InputIt> | 1 |
+| stl.h:197:17:197:22 | insert | std | (size_type,const basic_string &) | basic_string<CharT,Traits,Allocator> | insert | 0 |
+| stl.h:197:17:197:22 | insert | std | (size_type,const basic_string &) | basic_string<CharT,Traits,Allocator> | insert | 1 |
+| stl.h:200:17:200:22 | insert | std | (size_type,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | insert<StringViewLike> | 0 |
+| stl.h:200:17:200:22 | insert | std | (size_type,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | insert<StringViewLike> | 1 |
+| stl.h:203:17:203:22 | insert | std | (const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 1 |
+| stl.h:203:17:203:22 | insert | std | (const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 2 |
+| stl.h:203:17:203:22 | insert | std | (iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 1 |
+| stl.h:203:17:203:22 | insert | std | (iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 2 |
+| stl.h:203:17:203:22 | insert | std | (size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 0 |
+| stl.h:203:17:203:22 | insert | std | (size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 1 |
+| stl.h:203:17:203:22 | insert | std | (size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 2 |
+| stl.h:204:17:204:22 | insert | std | (size_type,const CharT *) | basic_string<CharT,Traits,Allocator> | insert | 0 |
+| stl.h:204:17:204:22 | insert | std | (size_type,const CharT *) | basic_string<CharT,Traits,Allocator> | insert | 1 |
+| stl.h:205:12:205:17 | insert | std | (const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 0 |
+| stl.h:205:12:205:17 | insert | std | (const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 1 |
+| stl.h:205:12:205:17 | insert | std | (const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 2 |
+| stl.h:205:12:205:17 | insert | std | (iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 1 |
+| stl.h:205:12:205:17 | insert | std | (iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 2 |
+| stl.h:205:12:205:17 | insert | std | (size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 1 |
+| stl.h:205:12:205:17 | insert | std | (size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 2 |
+| stl.h:206:42:206:47 | insert | std | (const_iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | insert<InputIt> | 0 |
+| stl.h:206:42:206:47 | insert | std | (const_iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | insert<InputIt> | 1 |
+| stl.h:206:42:206:47 | insert | std | (const_iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | insert<InputIt> | 2 |
+| stl.h:206:42:206:47 | insert | std | (iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | insert<InputIt> | 1 |
+| stl.h:206:42:206:47 | insert | std | (iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | insert<InputIt> | 2 |
+| stl.h:207:17:207:23 | replace | std | (const_iterator,const_iterator,const basic_string &) | basic_string<CharT,Traits,Allocator> | replace | 2 |
+| stl.h:207:17:207:23 | replace | std | (size_type,size_type,const basic_string &) | basic_string<CharT,Traits,Allocator> | replace | 0 |
+| stl.h:207:17:207:23 | replace | std | (size_type,size_type,const basic_string &) | basic_string<CharT,Traits,Allocator> | replace | 1 |
+| stl.h:207:17:207:23 | replace | std | (size_type,size_type,const basic_string &) | basic_string<CharT,Traits,Allocator> | replace | 2 |
+| stl.h:210:17:210:23 | replace | std | (const_iterator,const_iterator,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 2 |
+| stl.h:210:17:210:23 | replace | std | (size_type,size_type,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 0 |
+| stl.h:210:17:210:23 | replace | std | (size_type,size_type,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 1 |
+| stl.h:210:17:210:23 | replace | std | (size_type,size_type,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 2 |
+| stl.h:216:17:216:23 | replace | std | (const_iterator,const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 2 |
+| stl.h:216:17:216:23 | replace | std | (const_iterator,const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 3 |
+| stl.h:216:17:216:23 | replace | std | (size_type,size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 0 |
+| stl.h:216:17:216:23 | replace | std | (size_type,size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 1 |
+| stl.h:216:17:216:23 | replace | std | (size_type,size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 2 |
+| stl.h:216:17:216:23 | replace | std | (size_type,size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 3 |
+| stl.h:223:94:223:102 | operator+ | std | (CharT,const basic_string &) |  | operator+<CharT,Traits,Alloc> | 1 |
+| stl.h:223:94:223:102 | operator+ | std | (basic_string &&,const basic_string &) |  | operator+ | 1 |
+| stl.h:223:94:223:102 | operator+ | std | (const CharT *,const basic_string &) |  | operator+<CharT,Traits,Alloc> | 1 |
+| stl.h:223:94:223:102 | operator+ | std | (const basic_string &,const basic_string &) |  | operator+ | 0 |
+| stl.h:223:94:223:102 | operator+ | std | (const basic_string &,const basic_string &) |  | operator+ | 1 |
+| stl.h:224:94:224:102 | operator+ | std | (basic_string &&,const CharT *) |  | operator+<CharT,Traits,Alloc> | 1 |
+| stl.h:224:94:224:102 | operator+ | std | (const basic_string &,const CharT *) |  | operator+<CharT,Traits,Alloc> | 0 |
+| stl.h:224:94:224:102 | operator+ | std | (const basic_string &,const CharT *) |  | operator+<CharT,Traits,Alloc> | 1 |
+| stl.h:230:41:230:49 | operator+ | std | (CharT,basic_string &&) |  | operator+<CharT,Traits,Alloc> | 0 |
+| stl.h:230:41:230:49 | operator+ | std | (CharT,basic_string &&) |  | operator+<CharT,Traits,Alloc> | 1 |
+| stl.h:230:41:230:49 | operator+ | std | (basic_string &&,basic_string &&) |  | operator+ | 1 |
+| stl.h:230:41:230:49 | operator+ | std | (const CharT *,basic_string &&) |  | operator+<CharT,Traits,Alloc> | 1 |
+| stl.h:230:41:230:49 | operator+ | std | (const basic_string &,basic_string &&) |  | operator+ | 1 |
 | stl.h:327:12:327:17 | vector | std | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
 | stl.h:327:12:327:17 | vector | std | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
 | stl.h:327:12:327:17 | vector | std | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
@@ -131,10 +231,183 @@ signatureMatches
 | stl.h:366:42:366:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
 | stl.h:366:42:366:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
 | stl.h:366:42:366:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
-| stl.h:747:33:747:38 | format | std | (format_string,Args &&) |  | format<Args> | 0 |
-| stl.h:747:33:747:38 | format | std | (format_string,Args &&) |  | format<Args> | 0 |
-| stl.h:747:33:747:38 | format | std | (format_string,Args &&) |  | format<Args> | 1 |
-| stl.h:747:33:747:38 | format | std | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:368:37:368:43 | emplace | std | (const_iterator,Args &&) | vector<T> | emplace<Args> | 0 |
+| stl.h:368:37:368:43 | emplace | std | (const_iterator,Args &&) | vector<T> | emplace<Args> | 1 |
+| stl.h:369:33:369:44 | emplace_back | std | (Args &&) | vector<T> | emplace_back<Args> | 0 |
+| stl.h:428:11:428:14 | pair | std | (const pair &) | pair | pair | 0 |
+| stl.h:428:11:428:14 | pair | std | (const pair &) | pair | pair | 0 |
+| stl.h:428:11:428:14 | pair | std | (const pair &) | pair | pair | 0 |
+| stl.h:428:11:428:14 | pair | std | (const pair &) | pair | pair | 0 |
+| stl.h:428:50:428:58 | operator= | std | (const pair &) | pair | operator= | 0 |
+| stl.h:428:80:428:88 | operator= | std | (pair &&) | pair | operator= | 0 |
+| stl.h:429:3:429:6 | pair | std | (const T1 &,const T2 &) | pair<T1,T2> | pair | 0 |
+| stl.h:429:3:429:6 | pair | std | (const T1 &,const T2 &) | pair<T1,T2> | pair | 1 |
+| stl.h:430:30:430:33 | pair | std | (const pair &) | pair | pair | 0 |
+| stl.h:430:30:430:33 | pair | std | (const pair &) | pair | pair | 0 |
+| stl.h:430:30:430:33 | pair | std | (const pair &) | pair | pair | 0 |
+| stl.h:430:30:430:33 | pair | std | (const pair &) | pair | pair | 0 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 0 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 0 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 0 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 0 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 0 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 0 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 0 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 0 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 0 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 0 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 0 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 1 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 1 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 1 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 1 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 1 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 1 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 1 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 1 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 1 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 1 |
+| stl.h:431:30:431:33 | pair | std | (U1 &&,U2 &&) | pair | pair<U1,U2> | 1 |
+| stl.h:436:72:436:72 | make_pair | std | (T1 &&,T2 &&) |  | make_pair<T1,T2> | 0 |
+| stl.h:436:72:436:72 | make_pair | std | (T1 &&,T2 &&) |  | make_pair<T1,T2> | 0 |
+| stl.h:436:72:436:72 | make_pair | std | (T1 &&,T2 &&) |  | make_pair<T1,T2> | 0 |
+| stl.h:436:72:436:72 | make_pair | std | (T1 &&,T2 &&) |  | make_pair<T1,T2> | 0 |
+| stl.h:436:72:436:72 | make_pair | std | (T1 &&,T2 &&) |  | make_pair<T1,T2> | 0 |
+| stl.h:436:72:436:72 | make_pair | std | (T1 &&,T2 &&) |  | make_pair<T1,T2> | 0 |
+| stl.h:436:72:436:72 | make_pair | std | (T1 &&,T2 &&) |  | make_pair<T1,T2> | 1 |
+| stl.h:436:72:436:72 | make_pair | std | (T1 &&,T2 &&) |  | make_pair<T1,T2> | 1 |
+| stl.h:436:72:436:72 | make_pair | std | (T1 &&,T2 &&) |  | make_pair<T1,T2> | 1 |
+| stl.h:436:72:436:72 | make_pair | std | (T1 &&,T2 &&) |  | make_pair<T1,T2> | 1 |
+| stl.h:436:72:436:72 | make_pair | std | (T1 &&,T2 &&) |  | make_pair<T1,T2> | 1 |
+| stl.h:436:72:436:72 | make_pair | std | (T1 &&,T2 &&) |  | make_pair<T1,T2> | 1 |
+| stl.h:461:3:461:5 | map | std | (const map &) | map | map | 0 |
+| stl.h:465:8:465:16 | operator= | std | (const map &) | map | operator= | 0 |
+| stl.h:474:6:474:15 | operator[] | std | (key_type &&) | map | operator[] | 0 |
+| stl.h:474:6:474:15 | operator[] | std | (key_type &&) | map | operator[] | 0 |
+| stl.h:479:48:479:54 | emplace | std | (Args &&) | map | emplace<Args> | 0 |
+| stl.h:479:48:479:54 | emplace | std | (Args &&) | map | emplace<Args> | 0 |
+| stl.h:480:36:480:47 | emplace_hint | std | (const_iterator,Args &&) | map | emplace_hint<Args> | 0 |
+| stl.h:480:36:480:47 | emplace_hint | std | (const_iterator,Args &&) | map | emplace_hint<Args> | 0 |
+| stl.h:480:36:480:47 | emplace_hint | std | (const_iterator,Args &&) | map | emplace_hint<Args> | 1 |
+| stl.h:480:36:480:47 | emplace_hint | std | (const_iterator,Args &&) | map | emplace_hint<Args> | 1 |
+| stl.h:484:42:484:47 | insert | std | (P &&) | map | insert<P> | 0 |
+| stl.h:484:42:484:47 | insert | std | (P &&) | map | insert<P> | 0 |
+| stl.h:484:42:484:47 | insert | std | (P &&) | map | insert<P> | 0 |
+| stl.h:487:30:487:35 | insert | std | (const_iterator,P &&) | map | insert<P> | 0 |
+| stl.h:487:30:487:35 | insert | std | (const_iterator,P &&) | map | insert<P> | 1 |
+| stl.h:489:48:489:58 | try_emplace | std | (Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 0 |
+| stl.h:489:48:489:58 | try_emplace | std | (Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 0 |
+| stl.h:489:48:489:58 | try_emplace | std | (Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:489:48:489:58 | try_emplace | std | (Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:489:48:489:58 | try_emplace | std | (const Key &,Args &&) | map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:489:48:489:58 | try_emplace | std | (const Key &,Args &&) | map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:489:48:489:58 | try_emplace | std | (const key_type &,Args &&) | map | try_emplace<Args> | 1 |
+| stl.h:489:48:489:58 | try_emplace | std | (const key_type &,Args &&) | map | try_emplace<Args> | 1 |
+| stl.h:489:48:489:58 | try_emplace | std | (key_type &&,Args &&) | map | try_emplace<Args> | 0 |
+| stl.h:489:48:489:58 | try_emplace | std | (key_type &&,Args &&) | map | try_emplace<Args> | 0 |
+| stl.h:489:48:489:58 | try_emplace | std | (key_type &&,Args &&) | map | try_emplace<Args> | 1 |
+| stl.h:489:48:489:58 | try_emplace | std | (key_type &&,Args &&) | map | try_emplace<Args> | 1 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 0 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 0 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 2 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 2 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,const Key &,Args &&) | map<Key,T> | try_emplace<Args> | 2 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,const Key &,Args &&) | map<Key,T> | try_emplace<Args> | 2 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,const key_type &,Args &&) | map | try_emplace<Args> | 2 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,const key_type &,Args &&) | map | try_emplace<Args> | 2 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,key_type &&,Args &&) | map | try_emplace<Args> | 0 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,key_type &&,Args &&) | map | try_emplace<Args> | 0 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,key_type &&,Args &&) | map | try_emplace<Args> | 1 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,key_type &&,Args &&) | map | try_emplace<Args> | 1 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,key_type &&,Args &&) | map | try_emplace<Args> | 2 |
+| stl.h:491:36:491:46 | try_emplace | std | (const_iterator,key_type &&,Args &&) | map | try_emplace<Args> | 2 |
+| stl.h:493:42:493:57 | insert_or_assign | std | (const key_type &,M &&) | map | insert_or_assign<M> | 1 |
+| stl.h:493:42:493:57 | insert_or_assign | std | (key_type &&,M &&) | map | insert_or_assign<M> | 0 |
+| stl.h:493:42:493:57 | insert_or_assign | std | (key_type &&,M &&) | map | insert_or_assign<M> | 1 |
+| stl.h:495:30:495:45 | insert_or_assign | std | (const_iterator,const key_type &,M &&) | map | insert_or_assign<M> | 2 |
+| stl.h:495:30:495:45 | insert_or_assign | std | (const_iterator,key_type &&,M &&) | map | insert_or_assign<M> | 0 |
+| stl.h:495:30:495:45 | insert_or_assign | std | (const_iterator,key_type &&,M &&) | map | insert_or_assign<M> | 1 |
+| stl.h:495:30:495:45 | insert_or_assign | std | (const_iterator,key_type &&,M &&) | map | insert_or_assign<M> | 2 |
+| stl.h:503:27:503:31 | merge | std | (map &) | map | merge | 0 |
+| stl.h:531:3:531:15 | unordered_map | std | (const unordered_map &) | unordered_map | unordered_map | 0 |
+| stl.h:531:3:531:15 | unordered_map | std | (const unordered_map &) | unordered_map | unordered_map | 0 |
+| stl.h:535:18:535:26 | operator= | std | (const unordered_map &) | unordered_map | operator= | 0 |
+| stl.h:544:16:544:25 | operator[] | std | (key_type &&) | unordered_map | operator[] | 0 |
+| stl.h:544:16:544:25 | operator[] | std | (key_type &&) | unordered_map | operator[] | 0 |
+| stl.h:548:48:548:54 | emplace | std | (Args &&) | unordered_map | emplace<Args> | 0 |
+| stl.h:548:48:548:54 | emplace | std | (Args &&) | unordered_map | emplace<Args> | 0 |
+| stl.h:548:48:548:54 | emplace | std | (Args &&) | unordered_map | emplace<Args> | 0 |
+| stl.h:548:48:548:54 | emplace | std | (Args &&) | unordered_map | emplace<Args> | 0 |
+| stl.h:548:48:548:54 | emplace | std | (Args &&) | unordered_map | emplace<Args> | 0 |
+| stl.h:549:36:549:47 | emplace_hint | std | (const_iterator,Args &&) | unordered_map | emplace_hint<Args> | 0 |
+| stl.h:549:36:549:47 | emplace_hint | std | (const_iterator,Args &&) | unordered_map | emplace_hint<Args> | 0 |
+| stl.h:549:36:549:47 | emplace_hint | std | (const_iterator,Args &&) | unordered_map | emplace_hint<Args> | 1 |
+| stl.h:549:36:549:47 | emplace_hint | std | (const_iterator,Args &&) | unordered_map | emplace_hint<Args> | 1 |
+| stl.h:552:24:552:29 | insert | std | (value_type &&) | unordered_map | insert | 0 |
+| stl.h:554:12:554:17 | insert | std | (const_iterator,value_type &&) | unordered_map | insert | 0 |
+| stl.h:554:12:554:17 | insert | std | (const_iterator,value_type &&) | unordered_map | insert | 1 |
+| stl.h:557:48:557:58 | try_emplace | std | (Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 0 |
+| stl.h:557:48:557:58 | try_emplace | std | (Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 0 |
+| stl.h:557:48:557:58 | try_emplace | std | (Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 0 |
+| stl.h:557:48:557:58 | try_emplace | std | (Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:557:48:557:58 | try_emplace | std | (Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:557:48:557:58 | try_emplace | std | (Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:557:48:557:58 | try_emplace | std | (const Key &,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:557:48:557:58 | try_emplace | std | (const Key &,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:557:48:557:58 | try_emplace | std | (const Key &,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:557:48:557:58 | try_emplace | std | (const key_type &,Args &&) | unordered_map | try_emplace<Args> | 1 |
+| stl.h:557:48:557:58 | try_emplace | std | (const key_type &,Args &&) | unordered_map | try_emplace<Args> | 1 |
+| stl.h:557:48:557:58 | try_emplace | std | (const key_type &,Args &&) | unordered_map | try_emplace<Args> | 1 |
+| stl.h:557:48:557:58 | try_emplace | std | (key_type &&,Args &&) | unordered_map | try_emplace<Args> | 0 |
+| stl.h:557:48:557:58 | try_emplace | std | (key_type &&,Args &&) | unordered_map | try_emplace<Args> | 0 |
+| stl.h:557:48:557:58 | try_emplace | std | (key_type &&,Args &&) | unordered_map | try_emplace<Args> | 0 |
+| stl.h:557:48:557:58 | try_emplace | std | (key_type &&,Args &&) | unordered_map | try_emplace<Args> | 1 |
+| stl.h:557:48:557:58 | try_emplace | std | (key_type &&,Args &&) | unordered_map | try_emplace<Args> | 1 |
+| stl.h:557:48:557:58 | try_emplace | std | (key_type &&,Args &&) | unordered_map | try_emplace<Args> | 1 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 0 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 0 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 1 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 2 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 2 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,const Key &,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 2 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,const Key &,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 2 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,const key_type &,Args &&) | unordered_map | try_emplace<Args> | 2 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,const key_type &,Args &&) | unordered_map | try_emplace<Args> | 2 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,key_type &&,Args &&) | unordered_map | try_emplace<Args> | 0 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,key_type &&,Args &&) | unordered_map | try_emplace<Args> | 0 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,key_type &&,Args &&) | unordered_map | try_emplace<Args> | 1 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,key_type &&,Args &&) | unordered_map | try_emplace<Args> | 1 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,key_type &&,Args &&) | unordered_map | try_emplace<Args> | 2 |
+| stl.h:559:36:559:46 | try_emplace | std | (const_iterator,key_type &&,Args &&) | unordered_map | try_emplace<Args> | 2 |
+| stl.h:561:42:561:57 | insert_or_assign | std | (const key_type &,M &&) | unordered_map | insert_or_assign<M> | 1 |
+| stl.h:561:42:561:57 | insert_or_assign | std | (key_type &&,M &&) | unordered_map | insert_or_assign<M> | 0 |
+| stl.h:561:42:561:57 | insert_or_assign | std | (key_type &&,M &&) | unordered_map | insert_or_assign<M> | 1 |
+| stl.h:563:30:563:45 | insert_or_assign | std | (const_iterator,const key_type &,M &&) | unordered_map | insert_or_assign<M> | 2 |
+| stl.h:563:30:563:45 | insert_or_assign | std | (const_iterator,key_type &&,M &&) | unordered_map | insert_or_assign<M> | 0 |
+| stl.h:563:30:563:45 | insert_or_assign | std | (const_iterator,key_type &&,M &&) | unordered_map | insert_or_assign<M> | 1 |
+| stl.h:563:30:563:45 | insert_or_assign | std | (const_iterator,key_type &&,M &&) | unordered_map | insert_or_assign<M> | 2 |
+| stl.h:565:12:565:16 | erase | std | (iterator) | unordered_map | erase | 0 |
+| stl.h:571:37:571:41 | merge | std | (unordered_map &) | unordered_map | merge | 0 |
+| stl.h:697:3:697:19 | basic_string_view | std | (const basic_string_view &) | basic_string_view | basic_string_view | 0 |
+| stl.h:699:3:699:19 | basic_string_view | std | (const CharT *) | basic_string_view<CharT,Traits> | basic_string_view | 0 |
+| stl.h:700:33:700:49 | basic_string_view | std | (It,End) | basic_string_view | basic_string_view<It,End> | 0 |
+| stl.h:700:33:700:49 | basic_string_view | std | (It,End) | basic_string_view | basic_string_view<It,End> | 0 |
+| stl.h:700:33:700:49 | basic_string_view | std | (It,End) | basic_string_view | basic_string_view<It,End> | 0 |
+| stl.h:700:33:700:49 | basic_string_view | std | (It,End) | basic_string_view | basic_string_view<It,End> | 0 |
+| stl.h:700:33:700:49 | basic_string_view | std | (It,End) | basic_string_view | basic_string_view<It,End> | 1 |
+| stl.h:700:33:700:49 | basic_string_view | std | (It,End) | basic_string_view | basic_string_view<It,End> | 1 |
+| stl.h:700:33:700:49 | basic_string_view | std | (It,End) | basic_string_view | basic_string_view<It,End> | 1 |
+| stl.h:700:33:700:49 | basic_string_view | std | (It,End) | basic_string_view | basic_string_view<It,End> | 1 |
+| stl.h:702:12:702:28 | basic_string_view | std | (R &&) | basic_string_view | basic_string_view<R> | 0 |
+| stl.h:702:12:702:28 | basic_string_view | std | (R &&) | basic_string_view | basic_string_view<R> | 0 |
+| stl.h:703:22:703:30 | operator= | std | (const basic_string_view &) | basic_string_view | operator= | 0 |
+| stl.h:748:33:748:38 | format | std | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:748:33:748:38 | format | std | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:748:33:748:38 | format | std | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:748:33:748:38 | format | std | (format_string,Args &&) |  | format<Args> | 1 |
 | taint.cpp:847:5:847:11 | toupper |  | (int) |  | toupper | 0 |
 | taint.cpp:848:5:848:11 | tolower |  | (int) |  | tolower | 0 |
 getSignatureParameterName
@@ -562,6 +835,9 @@ getSignatureParameterName
 | (AUTHORITY_KEYID **,const unsigned char **,long) |  | d2i_AUTHORITY_KEYID | 0 | AUTHORITY_KEYID ** |
 | (AUTHORITY_KEYID **,const unsigned char **,long) |  | d2i_AUTHORITY_KEYID | 1 | const unsigned char ** |
 | (AUTHORITY_KEYID **,const unsigned char **,long) |  | d2i_AUTHORITY_KEYID | 2 | long |
+| (Args &&) | map | emplace<Args> | 0 | func:0 && |
+| (Args &&) | unordered_map | emplace<Args> | 0 | func:0 && |
+| (Args &&) | vector<T> | emplace_back<Args> | 0 | func:0 && |
 | (BASIC_CONSTRAINTS *) |  | BASIC_CONSTRAINTS_free | 0 | BASIC_CONSTRAINTS * |
 | (BASIC_CONSTRAINTS **,const unsigned char **,long) |  | d2i_BASIC_CONSTRAINTS | 0 | BASIC_CONSTRAINTS ** |
 | (BASIC_CONSTRAINTS **,const unsigned char **,long) |  | d2i_BASIC_CONSTRAINTS | 1 | const unsigned char ** |
@@ -2480,6 +2756,12 @@ getSignatureParameterName
 | (CURLU *,const char *,char **,OperationConfig *) |  | ipfs_url_rewrite | 1 | const char * |
 | (CURLU *,const char *,char **,OperationConfig *) |  | ipfs_url_rewrite | 2 | char ** |
 | (CURLU *,const char *,char **,OperationConfig *) |  | ipfs_url_rewrite | 3 | OperationConfig * |
+| (CharT) | basic_string<CharT,Traits,Allocator> | operator+= | 0 | class:0 |
+| (CharT) | basic_string<CharT,Traits,Allocator> | push_back | 0 | class:0 |
+| (CharT,basic_string &&) |  | operator+<CharT,Traits,Alloc> | 0 | func:0 |
+| (CharT,basic_string &&) |  | operator+<CharT,Traits,Alloc> | 1 | basic_string && |
+| (CharT,const basic_string &) |  | operator+<CharT,Traits,Alloc> | 0 | func:0 |
+| (CharT,const basic_string &) |  | operator+<CharT,Traits,Alloc> | 1 | const basic_string & |
 | (ComPtr &&) | ComPtr | ComPtr | 0 | ComPtr && |
 | (ComPtr &&) | ComPtr | operator= | 0 | ComPtr && |
 | (CompoundDictionary *,const PreparedDictionary *) |  | AttachPreparedDictionary | 0 | CompoundDictionary * |
@@ -5353,14 +5635,63 @@ getSignatureParameterName
 | (ISSUING_DIST_POINT **,const unsigned char **,long) |  | d2i_ISSUING_DIST_POINT | 0 | ISSUING_DIST_POINT ** |
 | (ISSUING_DIST_POINT **,const unsigned char **,long) |  | d2i_ISSUING_DIST_POINT | 1 | const unsigned char ** |
 | (ISSUING_DIST_POINT **,const unsigned char **,long) |  | d2i_ISSUING_DIST_POINT | 2 | long |
+| (InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | append<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | append<InputIt> | 1 | func:0 |
+| (InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | assign<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | assign<InputIt> | 1 | func:0 |
 | (InputIt,InputIt) | deque | assign<InputIt> | 0 | func:0 |
 | (InputIt,InputIt) | deque | assign<InputIt> | 1 | func:0 |
 | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 | func:0 |
 | (InputIt,InputIt) | forward_list | assign<InputIt> | 1 | func:0 |
 | (InputIt,InputIt) | list | assign<InputIt> | 0 | func:0 |
 | (InputIt,InputIt) | list | assign<InputIt> | 1 | func:0 |
+| (InputIt,InputIt) | map | insert<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | map | insert<InputIt> | 1 | func:0 |
+| (InputIt,InputIt) | map<Key,T,Compare,Allocator> | map<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | map<Key,T,Compare,Allocator> | map<InputIt> | 1 | func:0 |
+| (InputIt,InputIt) | unordered_map | insert<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | unordered_map | insert<InputIt> | 1 | func:0 |
+| (InputIt,InputIt) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 1 | func:0 |
 | (InputIt,InputIt) | vector | assign<InputIt> | 0 | func:0 |
 | (InputIt,InputIt) | vector | assign<InputIt> | 1 | func:0 |
+| (InputIt,InputIt,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<InputIt> | 0 | func:0 |
+| (InputIt,InputIt,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<InputIt> | 1 | func:0 |
+| (InputIt,InputIt,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<InputIt> | 2 | const class:2 & |
+| (InputIt,InputIt,const Compare &) | map<Key,T,Compare,Allocator> | map<InputIt> | 0 | func:0 |
+| (InputIt,InputIt,const Compare &) | map<Key,T,Compare,Allocator> | map<InputIt> | 1 | func:0 |
+| (InputIt,InputIt,const Compare &) | map<Key,T,Compare,Allocator> | map<InputIt> | 2 | const class:2 & |
+| (InputIt,InputIt,const Compare &,const Allocator &) | map<Key,T,Compare,Allocator> | map<InputIt> | 0 | func:0 |
+| (InputIt,InputIt,const Compare &,const Allocator &) | map<Key,T,Compare,Allocator> | map<InputIt> | 1 | func:0 |
+| (InputIt,InputIt,const Compare &,const Allocator &) | map<Key,T,Compare,Allocator> | map<InputIt> | 2 | const class:2 & |
+| (InputIt,InputIt,const Compare &,const Allocator &) | map<Key,T,Compare,Allocator> | map<InputIt> | 3 | const class:3 & |
+| (InputIt,InputIt,size_type) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 0 | func:0 |
+| (InputIt,InputIt,size_type) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 1 | func:0 |
+| (InputIt,InputIt,size_type) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 2 | size_type |
+| (InputIt,InputIt,size_type,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 0 | func:0 |
+| (InputIt,InputIt,size_type,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 1 | func:0 |
+| (InputIt,InputIt,size_type,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 2 | size_type |
+| (InputIt,InputIt,size_type,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 3 | const class:4 & |
+| (InputIt,InputIt,size_type,const Hash &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 0 | func:0 |
+| (InputIt,InputIt,size_type,const Hash &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 1 | func:0 |
+| (InputIt,InputIt,size_type,const Hash &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 2 | size_type |
+| (InputIt,InputIt,size_type,const Hash &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 3 | const class:2 & |
+| (InputIt,InputIt,size_type,const Hash &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 0 | func:0 |
+| (InputIt,InputIt,size_type,const Hash &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 1 | func:0 |
+| (InputIt,InputIt,size_type,const Hash &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 2 | size_type |
+| (InputIt,InputIt,size_type,const Hash &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 3 | const class:2 & |
+| (InputIt,InputIt,size_type,const Hash &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 4 | const class:4 & |
+| (InputIt,InputIt,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 0 | func:0 |
+| (InputIt,InputIt,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 1 | func:0 |
+| (InputIt,InputIt,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 2 | size_type |
+| (InputIt,InputIt,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 3 | const class:2 & |
+| (InputIt,InputIt,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 4 | const class:3 & |
+| (InputIt,InputIt,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 0 | func:0 |
+| (InputIt,InputIt,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 1 | func:0 |
+| (InputIt,InputIt,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 2 | size_type |
+| (InputIt,InputIt,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 3 | const class:2 & |
+| (InputIt,InputIt,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 4 | const class:3 & |
+| (InputIt,InputIt,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<InputIt> | 5 | const class:4 & |
 | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 0 | func:0 |
 | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 1 | func:0 |
 | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 2 | const class:1 & |
@@ -5373,6 +5704,8 @@ getSignatureParameterName
 | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 0 | func:0 |
 | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 1 | func:0 |
 | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 | const class:1 & |
+| (It,End) | basic_string_view | basic_string_view<It,End> | 0 | func:0 |
+| (It,End) | basic_string_view | basic_string_view<It,End> | 1 | func:1 |
 | (Jim_HashTable *) |  | Jim_GetHashTableIterator | 0 | Jim_HashTable * |
 | (Jim_HashTable *,const Jim_HashTableType *,void *) |  | Jim_InitHashTable | 0 | Jim_HashTable * |
 | (Jim_HashTable *,const Jim_HashTableType *,void *) |  | Jim_InitHashTable | 1 | const Jim_HashTableType * |
@@ -5687,6 +6020,8 @@ getSignatureParameterName
 | (Jim_Stack *) |  | Jim_StackPop | 0 | Jim_Stack * |
 | (Jim_Stack *,void *) |  | Jim_StackPush | 0 | Jim_Stack * |
 | (Jim_Stack *,void *) |  | Jim_StackPush | 1 | void * |
+| (K &&) | map | operator[]<K> | 0 | func:0 && |
+| (K &&) | unordered_map | operator[]<K> | 0 | func:0 && |
 | (KECCAK1600_CTX *,const void *,size_t) |  | ossl_sha3_update | 0 | KECCAK1600_CTX * |
 | (KECCAK1600_CTX *,const void *,size_t) |  | ossl_sha3_update | 1 | const void * |
 | (KECCAK1600_CTX *,const void *,size_t) |  | ossl_sha3_update | 2 | size_t |
@@ -5700,6 +6035,10 @@ getSignatureParameterName
 | (KECCAK1600_CTX *,unsigned char,size_t,size_t) |  | ossl_keccak_init | 1 | unsigned char |
 | (KECCAK1600_CTX *,unsigned char,size_t,size_t) |  | ossl_keccak_init | 2 | size_t |
 | (KECCAK1600_CTX *,unsigned char,size_t,size_t) |  | ossl_keccak_init | 3 | size_t |
+| (Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 0 | class:0 && |
+| (Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 1 | func:0 && |
+| (Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 0 | class:0 && |
+| (Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 1 | func:0 && |
 | (LIBSSH2_AGENT *) |  | libssh2_agent_get_identity_path | 0 | LIBSSH2_AGENT * |
 | (LIBSSH2_AGENT *,const char *) |  | libssh2_agent_set_identity_path | 0 | LIBSSH2_AGENT * |
 | (LIBSSH2_AGENT *,const char *) |  | libssh2_agent_set_identity_path | 1 | const char * |
@@ -8428,6 +8767,8 @@ getSignatureParameterName
 | (OperationConfig *,const char *const *,char **,const char *) |  | proto2num | 1 | const char *const * |
 | (OperationConfig *,const char *const *,char **,const char *) |  | proto2num | 2 | char ** |
 | (OperationConfig *,const char *const *,char **,const char *) |  | proto2num | 3 | const char * |
+| (P &&) | map | insert<P> | 0 | func:0 && |
+| (P &&) | unordered_map | insert<P> | 0 | func:0 && |
 | (PACKET *) |  | ossl_quic_wire_decode_padding | 0 | PACKET * |
 | (PACKET *,BIGNUM *) |  | ossl_decode_der_integer | 0 | PACKET * |
 | (PACKET *,BIGNUM *) |  | ossl_decode_der_integer | 1 | BIGNUM * |
@@ -9286,6 +9627,9 @@ getSignatureParameterName
 | (QUIC_TXPIM_PKT *,QUIC_CFQ_ITEM *) |  | ossl_quic_txpim_pkt_add_cfq_item | 1 | QUIC_CFQ_ITEM * |
 | (QUIC_TXPIM_PKT *,const QUIC_TXPIM_CHUNK *) |  | ossl_quic_txpim_pkt_append_chunk | 0 | QUIC_TXPIM_PKT * |
 | (QUIC_TXPIM_PKT *,const QUIC_TXPIM_CHUNK *) |  | ossl_quic_txpim_pkt_append_chunk | 1 | const QUIC_TXPIM_CHUNK * |
+| (R &&) | basic_string_view | basic_string_view<R> | 0 | func:0 && |
+| (R &&) | map | insert_range<R> | 0 | func:0 && |
+| (R &&) | unordered_map | insert_range<R> | 0 | func:0 && |
 | (RAND_POOL *) |  | ossl_pool_acquire_entropy | 0 | RAND_POOL * |
 | (RAND_POOL *) |  | ossl_rand_pool_buffer | 0 | RAND_POOL * |
 | (RAND_POOL *) |  | ossl_rand_pool_bytes_remaining | 0 | RAND_POOL * |
@@ -10897,6 +11241,8 @@ getSignatureParameterName
 | (Strtab *,const char *,size_t) |  | strtabadd | 2 | size_t |
 | (Strtab *,size_t *) |  | strtabfinalize | 0 | Strtab * |
 | (Strtab *,size_t *) |  | strtabfinalize | 1 | size_t * |
+| (T1 &&,T2 &&) |  | make_pair<T1,T2> | 0 | func:0 && |
+| (T1 &&,T2 &&) |  | make_pair<T1,T2> | 1 | func:1 && |
 | (T *) | ComPtr | ComPtr<T> | 0 | func:0 * |
 | (T *) | ComPtr<T> | operator= | 0 | class:0 * |
 | (T **) | ComPtr | CopyTo<T> | 0 | func:0 ** |
@@ -11093,6 +11439,8 @@ getSignatureParameterName
 | (TXT_DB *,int,..(*)(..),OPENSSL_LH_HASHFUNC,OPENSSL_LH_COMPFUNC) |  | TXT_DB_create_index | 2 | ..(*)(..) |
 | (TXT_DB *,int,..(*)(..),OPENSSL_LH_HASHFUNC,OPENSSL_LH_COMPFUNC) |  | TXT_DB_create_index | 3 | OPENSSL_LH_HASHFUNC |
 | (TXT_DB *,int,..(*)(..),OPENSSL_LH_HASHFUNC,OPENSSL_LH_COMPFUNC) |  | TXT_DB_create_index | 4 | OPENSSL_LH_COMPFUNC |
+| (U1 &&,U2 &&) | pair | pair<U1,U2> | 0 | func:0 && |
+| (U1 &&,U2 &&) | pair | pair<U1,U2> | 1 | func:1 && |
 | (U *) | ComPtr | operator=<U> | 0 | func:0 * |
 | (UI *) |  | UI_get0_user_data | 0 | UI * |
 | (UI *) |  | UI_get_method | 0 | UI * |
@@ -12699,6 +13047,25 @@ getSignatureParameterName
 | (argp_fmtstream_t,size_t) |  | __argp_fmtstream_set_rmargin | 1 | size_t |
 | (argp_fmtstream_t,size_t) |  | __argp_fmtstream_set_wmargin | 0 | argp_fmtstream_t |
 | (argp_fmtstream_t,size_t) |  | __argp_fmtstream_set_wmargin | 1 | size_t |
+| (basic_string &&) | basic_string | assign | 0 | basic_string && |
+| (basic_string &&) | basic_string | basic_string | 0 | basic_string && |
+| (basic_string &&,CharT) |  | operator+<CharT,Traits,Alloc> | 0 | basic_string && |
+| (basic_string &&,CharT) |  | operator+<CharT,Traits,Alloc> | 1 | func:0 |
+| (basic_string &&,basic_string &&) |  | operator+ | 0 | basic_string && |
+| (basic_string &&,basic_string &&) |  | operator+ | 1 | basic_string && |
+| (basic_string &&,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 0 | basic_string && |
+| (basic_string &&,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 | const class:2 & |
+| (basic_string &&,const CharT *) |  | operator+<CharT,Traits,Alloc> | 0 | basic_string && |
+| (basic_string &&,const CharT *) |  | operator+<CharT,Traits,Alloc> | 1 | const func:0 * |
+| (basic_string &&,const basic_string &) |  | operator+ | 0 | basic_string && |
+| (basic_string &&,const basic_string &) |  | operator+ | 1 | const basic_string & |
+| (basic_string &&,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 0 | basic_string && |
+| (basic_string &&,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 | size_type |
+| (basic_string &&,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 2 | const class:2 & |
+| (basic_string &&,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 0 | basic_string && |
+| (basic_string &&,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 | size_type |
+| (basic_string &&,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 2 | size_type |
+| (basic_string &&,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 3 | const class:2 & |
 | (brotli_alloc_func,brotli_free_func,void *) |  | BrotliCreateManagedDictionary | 0 | brotli_alloc_func |
 | (brotli_alloc_func,brotli_free_func,void *) |  | BrotliCreateManagedDictionary | 1 | brotli_free_func |
 | (brotli_alloc_func,brotli_free_func,void *) |  | BrotliCreateManagedDictionary | 2 | void * |
@@ -14048,6 +14415,25 @@ getSignatureParameterName
 | (const CURLU *,CURLUPart,char **,unsigned int) |  | curl_url_get | 1 | CURLUPart |
 | (const CURLU *,CURLUPart,char **,unsigned int) |  | curl_url_get | 2 | char ** |
 | (const CURLU *,CURLUPart,char **,unsigned int) |  | curl_url_get | 3 | unsigned int |
+| (const CharT *) | basic_string<CharT,Traits,Allocator> | append | 0 | const class:0 * |
+| (const CharT *) | basic_string<CharT,Traits,Allocator> | assign | 0 | const class:0 * |
+| (const CharT *) | basic_string<CharT,Traits,Allocator> | operator+= | 0 | const class:0 * |
+| (const CharT *) | basic_string_view<CharT,Traits> | basic_string_view | 0 | const class:0 * |
+| (const CharT *,basic_string &&) |  | operator+<CharT,Traits,Alloc> | 0 | const func:0 * |
+| (const CharT *,basic_string &&) |  | operator+<CharT,Traits,Alloc> | 1 | basic_string && |
+| (const CharT *,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 0 | const class:0 * |
+| (const CharT *,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 | const class:2 & |
+| (const CharT *,const basic_string &) |  | operator+<CharT,Traits,Alloc> | 0 | const func:0 * |
+| (const CharT *,const basic_string &) |  | operator+<CharT,Traits,Alloc> | 1 | const basic_string & |
+| (const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | append | 0 | const class:0 * |
+| (const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | append | 1 | size_type |
+| (const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | assign | 0 | const class:0 * |
+| (const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | assign | 1 | size_type |
+| (const CharT *,size_type) | basic_string_view<CharT,Traits> | basic_string_view | 0 | const class:0 * |
+| (const CharT *,size_type) | basic_string_view<CharT,Traits> | basic_string_view | 1 | size_type |
+| (const CharT *,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 0 | const class:0 * |
+| (const CharT *,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 | size_type |
+| (const CharT *,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 2 | const class:2 & |
 | (const ComPtr &) | ComPtr | ComPtr | 0 | const ComPtr & |
 | (const ComPtr &) | ComPtr | operator= | 0 | const ComPtr & |
 | (const Command *,const size_t,const BlockSplit *,const BlockSplit *,const BlockSplit *,const uint8_t *,size_t,size_t,uint8_t,uint8_t,const ContextType *,HistogramLiteral *,HistogramCommand *,HistogramDistance *) |  | BrotliBuildHistogramsWithContext | 0 | const Command * |
@@ -15076,6 +15462,10 @@ getSignatureParameterName
 | (const InternetProtocol &,string_view,string_view,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 2 | string_view |
 | (const InternetProtocol &,string_view,string_view,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 3 | flags |
 | (const InternetProtocol &,string_view,string_view,flags,error_code &) | basic_resolver<InternetProtocol> | resolve | 4 | error_code & |
+| (const Key &,Args &&) | map<Key,T> | try_emplace<Args> | 0 | const class:0 & |
+| (const Key &,Args &&) | map<Key,T> | try_emplace<Args> | 1 | func:0 && |
+| (const Key &,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 0 | const class:0 & |
+| (const Key &,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 1 | func:0 && |
 | (const MATRIX *,const VECTOR *,VECTOR *) |  | ossl_ml_dsa_matrix_mult_vector | 0 | const MATRIX * |
 | (const MATRIX *,const VECTOR *,VECTOR *) |  | ossl_ml_dsa_matrix_mult_vector | 1 | const VECTOR * |
 | (const MATRIX *,const VECTOR *,VECTOR *) |  | ossl_ml_dsa_matrix_mult_vector | 2 | VECTOR * |
@@ -16102,6 +16492,23 @@ getSignatureParameterName
 | (const SXNETID *,unsigned char **) |  | i2d_SXNETID | 0 | const SXNETID * |
 | (const SXNETID *,unsigned char **) |  | i2d_SXNETID | 1 | unsigned char ** |
 | (const StringRef &) | ByteInStream | reset | 0 | const StringRef & |
+| (const StringViewLike &) | basic_string<CharT,Traits,Allocator> | append<StringViewLike> | 0 | const func:0 & |
+| (const StringViewLike &) | basic_string<CharT,Traits,Allocator> | assign<StringViewLike> | 0 | const func:0 & |
+| (const StringViewLike &) | basic_string<CharT,Traits,Allocator> | operator+=<StringViewLike> | 0 | const func:0 & |
+| (const StringViewLike &,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<StringViewLike> | 0 | const func:0 & |
+| (const StringViewLike &,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<StringViewLike> | 1 | const class:2 & |
+| (const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | append<StringViewLike> | 0 | const func:0 & |
+| (const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | append<StringViewLike> | 1 | size_type |
+| (const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | append<StringViewLike> | 2 | size_type |
+| (const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | assign<StringViewLike> | 0 | const func:0 & |
+| (const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | assign<StringViewLike> | 1 | size_type |
+| (const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | assign<StringViewLike> | 2 | size_type |
+| (const StringViewLike &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<StringViewLike> | 0 | const func:0 & |
+| (const StringViewLike &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<StringViewLike> | 1 | size_type |
+| (const StringViewLike &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<StringViewLike> | 2 | size_type |
+| (const StringViewLike &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string<StringViewLike> | 3 | const class:2 & |
+| (const T1 &,const T2 &) | pair<T1,T2> | pair | 0 | const class:0 & |
+| (const T1 &,const T2 &) | pair<T1,T2> | pair | 1 | const class:1 & |
 | (const T &,BOOL) | CComSafeArray<T> | Add | 0 | const class:0 & |
 | (const T &,BOOL) | CComSafeArray<T> | Add | 1 | BOOL |
 | (const TS_ACCURACY *) |  | TS_ACCURACY_dup | 0 | const TS_ACCURACY * |
@@ -16584,6 +16991,35 @@ getSignatureParameterName
 | (const argp_state *,int,int,const char *,va_list,unsigned int) |  | __argp_failure_internal | 3 | const char * |
 | (const argp_state *,int,int,const char *,va_list,unsigned int) |  | __argp_failure_internal | 4 | va_list |
 | (const argp_state *,int,int,const char *,va_list,unsigned int) |  | __argp_failure_internal | 5 | unsigned int |
+| (const basic_string &) | basic_string | append | 0 | const basic_string & |
+| (const basic_string &) | basic_string | assign | 0 | const basic_string & |
+| (const basic_string &) | basic_string | basic_string | 0 | const basic_string & |
+| (const basic_string &) | basic_string | operator+= | 0 | const basic_string & |
+| (const basic_string &,CharT) |  | operator+<CharT,Traits,Alloc> | 0 | const basic_string & |
+| (const basic_string &,CharT) |  | operator+<CharT,Traits,Alloc> | 1 | func:0 |
+| (const basic_string &,basic_string &&) |  | operator+ | 0 | const basic_string & |
+| (const basic_string &,basic_string &&) |  | operator+ | 1 | basic_string && |
+| (const basic_string &,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 0 | const basic_string & |
+| (const basic_string &,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 | const class:2 & |
+| (const basic_string &,const CharT *) |  | operator+<CharT,Traits,Alloc> | 0 | const basic_string & |
+| (const basic_string &,const CharT *) |  | operator+<CharT,Traits,Alloc> | 1 | const func:0 * |
+| (const basic_string &,const basic_string &) |  | operator+ | 0 | const basic_string & |
+| (const basic_string &,const basic_string &) |  | operator+ | 1 | const basic_string & |
+| (const basic_string &,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 0 | const basic_string & |
+| (const basic_string &,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 | size_type |
+| (const basic_string &,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 2 | const class:2 & |
+| (const basic_string &,size_type,size_type) | basic_string | append | 0 | const basic_string & |
+| (const basic_string &,size_type,size_type) | basic_string | append | 1 | size_type |
+| (const basic_string &,size_type,size_type) | basic_string | append | 2 | size_type |
+| (const basic_string &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | assign | 0 | const basic_string & |
+| (const basic_string &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | assign | 1 | size_type |
+| (const basic_string &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | assign | 2 | size_type |
+| (const basic_string &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 0 | const basic_string & |
+| (const basic_string &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 | size_type |
+| (const basic_string &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 2 | size_type |
+| (const basic_string &,size_type,size_type,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 3 | const class:2 & |
+| (const basic_string_view &) | basic_string_view | basic_string_view | 0 | const basic_string_view & |
+| (const basic_string_view &) | basic_string_view | operator= | 0 | const basic_string_view & |
 | (const bufq *) |  | Curl_bufq_len | 0 | const bufq * |
 | (const bufref *) |  | Curl_bufref_len | 0 | const bufref * |
 | (const bufref *) |  | Curl_bufref_ptr | 0 | const bufref * |
@@ -18375,10 +18811,24 @@ getSignatureParameterName
 | (const int[],BIGNUM *) |  | BN_GF2m_arr2poly | 1 | BIGNUM * |
 | (const int_dhx942_dh *,unsigned char **) |  | i2d_int_dhx | 0 | const int_dhx942_dh * |
 | (const int_dhx942_dh *,unsigned char **) |  | i2d_int_dhx | 1 | unsigned char ** |
+| (const key_type &) | map | operator[] | 0 | const key_type & |
+| (const key_type &) | unordered_map | operator[] | 0 | const key_type & |
+| (const key_type &,Args &&) | map | try_emplace<Args> | 0 | const key_type & |
+| (const key_type &,Args &&) | map | try_emplace<Args> | 1 | func:0 && |
+| (const key_type &,Args &&) | unordered_map | try_emplace<Args> | 0 | const key_type & |
+| (const key_type &,Args &&) | unordered_map | try_emplace<Args> | 1 | func:0 && |
+| (const key_type &,M &&) | map | insert_or_assign<M> | 0 | const key_type & |
+| (const key_type &,M &&) | map | insert_or_assign<M> | 1 | func:0 && |
+| (const key_type &,M &&) | unordered_map | insert_or_assign<M> | 0 | const key_type & |
+| (const key_type &,M &&) | unordered_map | insert_or_assign<M> | 1 | func:0 && |
 | (const list &) | list | list | 0 | const list & |
 | (const list &,const Allocator &) | list<T,Allocator> | list | 0 | const list & |
 | (const list &,const Allocator &) | list<T,Allocator> | list | 1 | const class:1 & |
 | (const long double *) |  | __getpayloadl | 0 | const long double * |
+| (const map &) | map | map | 0 | const map & |
+| (const map &) | map | operator= | 0 | const map & |
+| (const map &,const Allocator &) | map<Key,T,Compare,Allocator> | map | 0 | const map & |
+| (const map &,const Allocator &) | map<Key,T,Compare,Allocator> | map | 1 | const class:3 & |
 | (const md5_ctx *,void *) |  | __md5_read_ctx | 0 | const md5_ctx * |
 | (const md5_ctx *,void *) |  | __md5_read_ctx | 1 | void * |
 | (const mntent *,const char *) |  | __hasmntopt | 0 | const mntent * |
@@ -18415,6 +18865,8 @@ getSignatureParameterName
 | (const ns_msg *,const ns_rr *,const char *,const char *,char *,size_t) |  | ns_sprintrr | 5 | size_t |
 | (const old_termios_t *) |  | __old_cfgetispeed | 0 | const old_termios_t * |
 | (const old_termios_t *) |  | __old_cfgetospeed | 0 | const old_termios_t * |
+| (const pair &) | pair | operator= | 0 | const pair & |
+| (const pair &) | pair | pair | 0 | const pair & |
 | (const passwd *,const passwd *__restrict__,FILE *,FILE *__restrict__) |  | putpwent | 0 | const passwd * |
 | (const passwd *,const passwd *__restrict__,FILE *,FILE *__restrict__) |  | putpwent | 1 | const passwd *__restrict__ |
 | (const passwd *,const passwd *__restrict__,FILE *,FILE *__restrict__) |  | putpwent | 2 | FILE * |
@@ -18821,6 +19273,10 @@ getSignatureParameterName
 | (const uint32_t *,size_t,uint32_t *,size_t *,int) |  | idn2_to_unicode_44i | 2 | uint32_t * |
 | (const uint32_t *,size_t,uint32_t *,size_t *,int) |  | idn2_to_unicode_44i | 3 | size_t * |
 | (const uint32_t *,size_t,uint32_t *,size_t *,int) |  | idn2_to_unicode_44i | 4 | int |
+| (const unordered_map &) | unordered_map | operator= | 0 | const unordered_map & |
+| (const unordered_map &) | unordered_map | unordered_map | 0 | const unordered_map & |
+| (const unordered_map &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 0 | const unordered_map & |
+| (const unordered_map &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 1 | const class:4 & |
 | (const unsigned char *) |  | Curl_read16_be | 0 | const unsigned char * |
 | (const unsigned char *) |  | Curl_read16_le | 0 | const unsigned char * |
 | (const unsigned char *) |  | Curl_read32_le | 0 | const unsigned char * |
@@ -19512,6 +19968,8 @@ getSignatureParameterName
 | (const uv_udp_t *,sockaddr *,int *) |  | uv_udp_getsockname | 0 | const uv_udp_t * |
 | (const uv_udp_t *,sockaddr *,int *) |  | uv_udp_getsockname | 1 | sockaddr * |
 | (const uv_udp_t *,sockaddr *,int *) |  | uv_udp_getsockname | 2 | int * |
+| (const value_type &) | map | insert | 0 | const value_type & |
+| (const value_type &) | unordered_map | insert | 0 | const value_type & |
 | (const vector &) | vector | vector | 0 | const vector & |
 | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 0 | const vector & |
 | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 | const class:1 & |
@@ -19899,6 +20357,18 @@ getSignatureParameterName
 | (const wchar_t *,wchar_t **,wchar_t) |  | __wcstold_nan | 1 | wchar_t ** |
 | (const wchar_t *,wchar_t **,wchar_t) |  | __wcstold_nan | 2 | wchar_t |
 | (const_DES_cblock *) |  | DES_check_key_parity | 0 | const_DES_cblock * |
+| (const_iterator) | unordered_map | erase | 0 | const_iterator |
+| (const_iterator,Args &&) | map | emplace_hint<Args> | 0 | const_iterator |
+| (const_iterator,Args &&) | map | emplace_hint<Args> | 1 | func:0 && |
+| (const_iterator,Args &&) | unordered_map | emplace_hint<Args> | 0 | const_iterator |
+| (const_iterator,Args &&) | unordered_map | emplace_hint<Args> | 1 | func:0 && |
+| (const_iterator,Args &&) | vector<T> | emplace<Args> | 0 | const_iterator |
+| (const_iterator,Args &&) | vector<T> | emplace<Args> | 1 | func:0 && |
+| (const_iterator,CharT) | basic_string<CharT,Traits,Allocator> | insert | 0 | const_iterator |
+| (const_iterator,CharT) | basic_string<CharT,Traits,Allocator> | insert | 1 | class:0 |
+| (const_iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | insert<InputIt> | 0 | const_iterator |
+| (const_iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | insert<InputIt> | 1 | func:0 |
+| (const_iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | insert<InputIt> | 2 | func:0 |
 | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 0 | const_iterator |
 | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 1 | func:0 |
 | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 2 | func:0 |
@@ -19911,6 +20381,16 @@ getSignatureParameterName
 | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 | const_iterator |
 | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 | func:0 |
 | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 | func:0 |
+| (const_iterator,Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 0 | const_iterator |
+| (const_iterator,Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 1 | class:0 && |
+| (const_iterator,Key &&,Args &&) | map<Key,T> | try_emplace<Args> | 2 | func:0 && |
+| (const_iterator,Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 0 | const_iterator |
+| (const_iterator,Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 1 | class:0 && |
+| (const_iterator,Key &&,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 2 | func:0 && |
+| (const_iterator,P &&) | map | insert<P> | 0 | const_iterator |
+| (const_iterator,P &&) | map | insert<P> | 1 | func:0 && |
+| (const_iterator,P &&) | unordered_map | insert<P> | 0 | const_iterator |
+| (const_iterator,P &&) | unordered_map | insert<P> | 1 | func:0 && |
 | (const_iterator,T &&) | deque<T> | insert | 0 | const_iterator |
 | (const_iterator,T &&) | deque<T> | insert | 1 | class:0 && |
 | (const_iterator,T &&) | forward_list<T> | insert_after | 0 | const_iterator |
@@ -19919,6 +20399,12 @@ getSignatureParameterName
 | (const_iterator,T &&) | list<T> | insert | 1 | class:0 && |
 | (const_iterator,T &&) | vector<T> | insert | 0 | const_iterator |
 | (const_iterator,T &&) | vector<T> | insert | 1 | class:0 && |
+| (const_iterator,const Key &,Args &&) | map<Key,T> | try_emplace<Args> | 0 | const_iterator |
+| (const_iterator,const Key &,Args &&) | map<Key,T> | try_emplace<Args> | 1 | const class:0 & |
+| (const_iterator,const Key &,Args &&) | map<Key,T> | try_emplace<Args> | 2 | func:0 && |
+| (const_iterator,const Key &,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 0 | const_iterator |
+| (const_iterator,const Key &,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 1 | const class:0 & |
+| (const_iterator,const Key &,Args &&) | unordered_map<Key,T> | try_emplace<Args> | 2 | func:0 && |
 | (const_iterator,const T &) | deque<T> | insert | 0 | const_iterator |
 | (const_iterator,const T &) | deque<T> | insert | 1 | const class:0 & |
 | (const_iterator,const T &) | forward_list<T> | insert_after | 0 | const_iterator |
@@ -19927,6 +20413,60 @@ getSignatureParameterName
 | (const_iterator,const T &) | list<T> | insert | 1 | const class:0 & |
 | (const_iterator,const T &) | vector<T> | insert | 0 | const_iterator |
 | (const_iterator,const T &) | vector<T> | insert | 1 | const class:0 & |
+| (const_iterator,const key_type &,Args &&) | map | try_emplace<Args> | 0 | const_iterator |
+| (const_iterator,const key_type &,Args &&) | map | try_emplace<Args> | 1 | const key_type & |
+| (const_iterator,const key_type &,Args &&) | map | try_emplace<Args> | 2 | func:0 && |
+| (const_iterator,const key_type &,Args &&) | unordered_map | try_emplace<Args> | 0 | const_iterator |
+| (const_iterator,const key_type &,Args &&) | unordered_map | try_emplace<Args> | 1 | const key_type & |
+| (const_iterator,const key_type &,Args &&) | unordered_map | try_emplace<Args> | 2 | func:0 && |
+| (const_iterator,const key_type &,M &&) | map | insert_or_assign<M> | 0 | const_iterator |
+| (const_iterator,const key_type &,M &&) | map | insert_or_assign<M> | 1 | const key_type & |
+| (const_iterator,const key_type &,M &&) | map | insert_or_assign<M> | 2 | func:0 && |
+| (const_iterator,const key_type &,M &&) | unordered_map | insert_or_assign<M> | 0 | const_iterator |
+| (const_iterator,const key_type &,M &&) | unordered_map | insert_or_assign<M> | 1 | const key_type & |
+| (const_iterator,const key_type &,M &&) | unordered_map | insert_or_assign<M> | 2 | func:0 && |
+| (const_iterator,const value_type &) | map | insert | 0 | const_iterator |
+| (const_iterator,const value_type &) | map | insert | 1 | const value_type & |
+| (const_iterator,const value_type &) | unordered_map | insert | 0 | const_iterator |
+| (const_iterator,const value_type &) | unordered_map | insert | 1 | const value_type & |
+| (const_iterator,const_iterator) | unordered_map | erase | 0 | const_iterator |
+| (const_iterator,const_iterator) | unordered_map | erase | 1 | const_iterator |
+| (const_iterator,const_iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | replace<InputIt> | 0 | const_iterator |
+| (const_iterator,const_iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | replace<InputIt> | 1 | const_iterator |
+| (const_iterator,const_iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | replace<InputIt> | 2 | func:0 |
+| (const_iterator,const_iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | replace<InputIt> | 3 | func:0 |
+| (const_iterator,const_iterator,const CharT *) | basic_string<CharT,Traits,Allocator> | replace | 0 | const_iterator |
+| (const_iterator,const_iterator,const CharT *) | basic_string<CharT,Traits,Allocator> | replace | 1 | const_iterator |
+| (const_iterator,const_iterator,const CharT *) | basic_string<CharT,Traits,Allocator> | replace | 2 | const class:0 * |
+| (const_iterator,const_iterator,const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | replace | 0 | const_iterator |
+| (const_iterator,const_iterator,const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | replace | 1 | const_iterator |
+| (const_iterator,const_iterator,const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | replace | 2 | const class:0 * |
+| (const_iterator,const_iterator,const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | replace | 3 | size_type |
+| (const_iterator,const_iterator,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 0 | const_iterator |
+| (const_iterator,const_iterator,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 1 | const_iterator |
+| (const_iterator,const_iterator,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 2 | const func:0 & |
+| (const_iterator,const_iterator,const basic_string &) | basic_string<CharT,Traits,Allocator> | replace | 0 | const_iterator |
+| (const_iterator,const_iterator,const basic_string &) | basic_string<CharT,Traits,Allocator> | replace | 1 | const_iterator |
+| (const_iterator,const_iterator,const basic_string &) | basic_string<CharT,Traits,Allocator> | replace | 2 | const basic_string & |
+| (const_iterator,const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 0 | const_iterator |
+| (const_iterator,const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 1 | const_iterator |
+| (const_iterator,const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 2 | size_type |
+| (const_iterator,const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 3 | class:0 |
+| (const_iterator,key_type &&,Args &&) | map | try_emplace<Args> | 0 | const_iterator |
+| (const_iterator,key_type &&,Args &&) | map | try_emplace<Args> | 1 | key_type && |
+| (const_iterator,key_type &&,Args &&) | map | try_emplace<Args> | 2 | func:0 && |
+| (const_iterator,key_type &&,Args &&) | unordered_map | try_emplace<Args> | 0 | const_iterator |
+| (const_iterator,key_type &&,Args &&) | unordered_map | try_emplace<Args> | 1 | key_type && |
+| (const_iterator,key_type &&,Args &&) | unordered_map | try_emplace<Args> | 2 | func:0 && |
+| (const_iterator,key_type &&,M &&) | map | insert_or_assign<M> | 0 | const_iterator |
+| (const_iterator,key_type &&,M &&) | map | insert_or_assign<M> | 1 | key_type && |
+| (const_iterator,key_type &&,M &&) | map | insert_or_assign<M> | 2 | func:0 && |
+| (const_iterator,key_type &&,M &&) | unordered_map | insert_or_assign<M> | 0 | const_iterator |
+| (const_iterator,key_type &&,M &&) | unordered_map | insert_or_assign<M> | 1 | key_type && |
+| (const_iterator,key_type &&,M &&) | unordered_map | insert_or_assign<M> | 2 | func:0 && |
+| (const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 0 | const_iterator |
+| (const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 1 | size_type |
+| (const_iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 2 | class:0 |
 | (const_iterator,size_type,const T &) | deque<T> | insert | 0 | const_iterator |
 | (const_iterator,size_type,const T &) | deque<T> | insert | 1 | size_type |
 | (const_iterator,size_type,const T &) | deque<T> | insert | 2 | const class:0 & |
@@ -19939,6 +20479,10 @@ getSignatureParameterName
 | (const_iterator,size_type,const T &) | vector<T> | insert | 0 | const_iterator |
 | (const_iterator,size_type,const T &) | vector<T> | insert | 1 | size_type |
 | (const_iterator,size_type,const T &) | vector<T> | insert | 2 | const class:0 & |
+| (const_iterator,value_type &&) | map | insert | 0 | const_iterator |
+| (const_iterator,value_type &&) | map | insert | 1 | value_type && |
+| (const_iterator,value_type &&) | unordered_map | insert | 0 | const_iterator |
+| (const_iterator,value_type &&) | unordered_map | insert | 1 | value_type && |
 | (const_nis_name) |  | __nis_domain_of | 0 | const_nis_name |
 | (const_nis_name) |  | nis_domain_of | 0 | const_nis_name |
 | (const_nis_name) |  | nis_getnames | 0 | const_nis_name |
@@ -20839,6 +21383,26 @@ getSignatureParameterName
 | (forward_list &&) | forward_list | forward_list | 0 | forward_list && |
 | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 | forward_list && |
 | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 | const class:1 & |
+| (from_range_t,R &&) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 0 | from_range_t |
+| (from_range_t,R &&) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 1 | func:0 && |
+| (from_range_t,R &&,size_type) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 0 | from_range_t |
+| (from_range_t,R &&,size_type) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 1 | func:0 && |
+| (from_range_t,R &&,size_type) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 2 | size_type |
+| (from_range_t,R &&,size_type,const Hash &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 0 | from_range_t |
+| (from_range_t,R &&,size_type,const Hash &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 1 | func:0 && |
+| (from_range_t,R &&,size_type,const Hash &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 2 | size_type |
+| (from_range_t,R &&,size_type,const Hash &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 3 | const class:2 & |
+| (from_range_t,R &&,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 0 | from_range_t |
+| (from_range_t,R &&,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 1 | func:0 && |
+| (from_range_t,R &&,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 2 | size_type |
+| (from_range_t,R &&,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 3 | const class:2 & |
+| (from_range_t,R &&,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 4 | const class:3 & |
+| (from_range_t,R &&,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 0 | from_range_t |
+| (from_range_t,R &&,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 1 | func:0 && |
+| (from_range_t,R &&,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 2 | size_type |
+| (from_range_t,R &&,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 3 | const class:2 & |
+| (from_range_t,R &&,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 4 | const class:3 & |
+| (from_range_t,R &&,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map<R> | 5 | const class:4 & |
 | (ftp_parselist_data *) |  | Curl_ftp_parselist_geterror | 0 | ftp_parselist_data * |
 | (ftp_parselist_data **) |  | Curl_ftp_parselist_data_free | 0 | ftp_parselist_data ** |
 | (fuse_in_header *,uint32_t) |  | support_fuse_cast_internal | 0 | fuse_in_header * |
@@ -21047,6 +21611,42 @@ getSignatureParameterName
 | (in_addr_t,uint32_t,char *,size_t) |  | inet_neta | 1 | uint32_t |
 | (in_addr_t,uint32_t,char *,size_t) |  | inet_neta | 2 | char * |
 | (in_addr_t,uint32_t,char *,size_t) |  | inet_neta | 3 | size_t |
+| (initializer_list) | map | insert | 0 | initializer_list |
+| (initializer_list) | map | map | 0 | initializer_list |
+| (initializer_list) | map | operator= | 0 | initializer_list |
+| (initializer_list) | unordered_map | insert | 0 | initializer_list |
+| (initializer_list) | unordered_map | operator= | 0 | initializer_list |
+| (initializer_list) | unordered_map | unordered_map | 0 | initializer_list |
+| (initializer_list,const Allocator &) | map<Key,T,Compare,Allocator> | map | 0 | initializer_list |
+| (initializer_list,const Allocator &) | map<Key,T,Compare,Allocator> | map | 1 | const class:3 & |
+| (initializer_list,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 0 | initializer_list |
+| (initializer_list,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 1 | const class:4 & |
+| (initializer_list,const Compare &) | map<Key,T,Compare,Allocator> | map | 0 | initializer_list |
+| (initializer_list,const Compare &) | map<Key,T,Compare,Allocator> | map | 1 | const class:2 & |
+| (initializer_list,const Compare &,const Allocator &) | map<Key,T,Compare,Allocator> | map | 0 | initializer_list |
+| (initializer_list,const Compare &,const Allocator &) | map<Key,T,Compare,Allocator> | map | 1 | const class:2 & |
+| (initializer_list,const Compare &,const Allocator &) | map<Key,T,Compare,Allocator> | map | 2 | const class:3 & |
+| (initializer_list,size_type) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 0 | initializer_list |
+| (initializer_list,size_type) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 1 | size_type |
+| (initializer_list,size_type,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 0 | initializer_list |
+| (initializer_list,size_type,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 1 | size_type |
+| (initializer_list,size_type,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 2 | const class:4 & |
+| (initializer_list,size_type,const Hash &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 0 | initializer_list |
+| (initializer_list,size_type,const Hash &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 1 | size_type |
+| (initializer_list,size_type,const Hash &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 2 | const class:2 & |
+| (initializer_list,size_type,const Hash &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 0 | initializer_list |
+| (initializer_list,size_type,const Hash &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 1 | size_type |
+| (initializer_list,size_type,const Hash &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 2 | const class:2 & |
+| (initializer_list,size_type,const Hash &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 3 | const class:4 & |
+| (initializer_list,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 0 | initializer_list |
+| (initializer_list,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 1 | size_type |
+| (initializer_list,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 2 | const class:2 & |
+| (initializer_list,size_type,const Hash &,const Pred &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 3 | const class:3 & |
+| (initializer_list,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 0 | initializer_list |
+| (initializer_list,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 1 | size_type |
+| (initializer_list,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 2 | const class:2 & |
+| (initializer_list,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 3 | const class:3 & |
+| (initializer_list,size_type,const Hash &,const Pred &,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 4 | const class:4 & |
 | (int32_t *,int32_t *,int32_t *,int32_t *) |  | nghttp2_adjust_local_window_size | 0 | int32_t * |
 | (int32_t *,int32_t *,int32_t *,int32_t *) |  | nghttp2_adjust_local_window_size | 1 | int32_t * |
 | (int32_t *,int32_t *,int32_t *,int32_t *) |  | nghttp2_adjust_local_window_size | 2 | int32_t * |
@@ -22168,6 +22768,25 @@ getSignatureParameterName
 | (istream &,TYPE *,const char *) | Decoder | decodeAny<TYPE> | 0 | istream & |
 | (istream &,TYPE *,const char *) | Decoder | decodeAny<TYPE> | 1 | func:0 * |
 | (istream &,TYPE *,const char *) | Decoder | decodeAny<TYPE> | 2 | const char * |
+| (iterator) | unordered_map | erase | 0 | iterator |
+| (iterator,CharT) | basic_string<CharT,Traits,Allocator> | insert | 0 | iterator |
+| (iterator,CharT) | basic_string<CharT,Traits,Allocator> | insert | 1 | class:0 |
+| (iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | insert<InputIt> | 0 | iterator |
+| (iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | insert<InputIt> | 1 | func:0 |
+| (iterator,InputIt,InputIt) | basic_string<CharT,Traits,Allocator> | insert<InputIt> | 2 | func:0 |
+| (iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 0 | iterator |
+| (iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 1 | size_type |
+| (iterator,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 2 | class:0 |
+| (key_type &&) | map | operator[] | 0 | key_type && |
+| (key_type &&) | unordered_map | operator[] | 0 | key_type && |
+| (key_type &&,Args &&) | map | try_emplace<Args> | 0 | key_type && |
+| (key_type &&,Args &&) | map | try_emplace<Args> | 1 | func:0 && |
+| (key_type &&,Args &&) | unordered_map | try_emplace<Args> | 0 | key_type && |
+| (key_type &&,Args &&) | unordered_map | try_emplace<Args> | 1 | func:0 && |
+| (key_type &&,M &&) | map | insert_or_assign<M> | 0 | key_type && |
+| (key_type &&,M &&) | map | insert_or_assign<M> | 1 | func:0 && |
+| (key_type &&,M &&) | unordered_map | insert_or_assign<M> | 0 | key_type && |
+| (key_type &&,M &&) | unordered_map | insert_or_assign<M> | 1 | func:0 && |
 | (lemon *) |  | ResortStates | 0 | lemon * |
 | (lemon *) |  | getstate | 0 | lemon * |
 | (lemon *,action *) |  | compute_action | 0 | lemon * |
@@ -22626,6 +23245,12 @@ getSignatureParameterName
 | (long,drand48_data *) |  | __srand48_r | 1 | drand48_data * |
 | (long,long) |  | ldiv | 0 | long |
 | (long,long) |  | ldiv | 1 | long |
+| (map &&) | map | map | 0 | map && |
+| (map &&) | map | merge | 0 | map && |
+| (map &&) | map | operator= | 0 | map && |
+| (map &&,const Allocator &) | map<Key,T,Compare,Allocator> | map | 0 | map && |
+| (map &&,const Allocator &) | map<Key,T,Compare,Allocator> | map | 1 | const class:3 & |
+| (map &) | map | merge | 0 | map & |
 | (md5_ctx *,void *) |  | __md5_finish_ctx | 0 | md5_ctx * |
 | (md5_ctx *,void *) |  | __md5_finish_ctx | 1 | void * |
 | (mp_ptr,mp_size_t,int *,int *,_Float128) |  | __mpn_extract_float128 | 0 | mp_ptr |
@@ -22710,6 +23335,8 @@ getSignatureParameterName
 | (mp_srcptr,mp_size_t,mp_limb_t) |  | __mpn_mod_1 | 2 | mp_limb_t |
 | (msghdr *,cmsghdr *) |  | __cmsg_nxthdr | 0 | msghdr * |
 | (msghdr *,cmsghdr *) |  | __cmsg_nxthdr | 1 | cmsghdr * |
+| (multimap &&) | map | merge | 0 | multimap && |
+| (multimap &) | map | merge | 0 | multimap & |
 | (netent *,char *,size_t,int *,int *) |  | _nss_files_getnetent_r | 0 | netent * |
 | (netent *,char *,size_t,int *,int *) |  | _nss_files_getnetent_r | 1 | char * |
 | (netent *,char *,size_t,int *,int *) |  | _nss_files_getnetent_r | 2 | size_t |
@@ -23463,6 +24090,8 @@ getSignatureParameterName
 | (ostream &,const TYPE &) | Encoder | encode<TYPE> | 1 | const func:0 & |
 | (ostream &,const TYPE &) | Encoder | encodeAny<TYPE> | 0 | ostream & |
 | (ostream &,const TYPE &) | Encoder | encodeAny<TYPE> | 1 | const func:0 & |
+| (pair &&) | pair | operator= | 0 | pair && |
+| (pair &&) | pair | pair | 0 | pair && |
 | (passwd *,char *,size_t,int *) |  | _nss_compat_getpwent_r | 0 | passwd * |
 | (passwd *,char *,size_t,int *) |  | _nss_compat_getpwent_r | 1 | char * |
 | (passwd *,char *,size_t,int *) |  | _nss_compat_getpwent_r | 2 | size_t |
@@ -23971,6 +24600,24 @@ getSignatureParameterName
 | (size_t,uint32_t *,uint8_t *) |  | BrotliOptimizeHuffmanCountsForRle | 2 | uint8_t * |
 | (size_t,void **) |  | __libc_alloc_buffer_allocate | 0 | size_t |
 | (size_t,void **) |  | __libc_alloc_buffer_allocate | 1 | void ** |
+| (size_type,CharT) | basic_string<CharT,Traits,Allocator> | append | 0 | size_type |
+| (size_type,CharT) | basic_string<CharT,Traits,Allocator> | append | 1 | class:0 |
+| (size_type,CharT) | basic_string<CharT,Traits,Allocator> | assign | 0 | size_type |
+| (size_type,CharT) | basic_string<CharT,Traits,Allocator> | assign | 1 | class:0 |
+| (size_type,CharT,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 0 | size_type |
+| (size_type,CharT,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 1 | class:0 |
+| (size_type,CharT,const Allocator &) | basic_string<CharT,Traits,Allocator> | basic_string | 2 | const class:2 & |
+| (size_type,const CharT *) | basic_string<CharT,Traits,Allocator> | insert | 0 | size_type |
+| (size_type,const CharT *) | basic_string<CharT,Traits,Allocator> | insert | 1 | const class:0 * |
+| (size_type,const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | insert | 0 | size_type |
+| (size_type,const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | insert | 1 | const class:0 * |
+| (size_type,const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | insert | 2 | size_type |
+| (size_type,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | insert<StringViewLike> | 0 | size_type |
+| (size_type,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | insert<StringViewLike> | 1 | const func:0 & |
+| (size_type,const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | insert<StringViewLike> | 0 | size_type |
+| (size_type,const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | insert<StringViewLike> | 1 | const func:0 & |
+| (size_type,const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | insert<StringViewLike> | 2 | size_type |
+| (size_type,const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | insert<StringViewLike> | 3 | size_type |
 | (size_type,const T &) | deque<T,Allocator> | assign | 0 | size_type |
 | (size_type,const T &) | deque<T,Allocator> | assign | 1 | const class:0 & |
 | (size_type,const T &) | forward_list<T,Allocator> | assign | 0 | size_type |
@@ -23991,6 +24638,42 @@ getSignatureParameterName
 | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 | size_type |
 | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 | const class:0 & |
 | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 | const class:1 & |
+| (size_type,const basic_string &) | basic_string<CharT,Traits,Allocator> | insert | 0 | size_type |
+| (size_type,const basic_string &) | basic_string<CharT,Traits,Allocator> | insert | 1 | const basic_string & |
+| (size_type,const basic_string &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | insert | 0 | size_type |
+| (size_type,const basic_string &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | insert | 1 | const basic_string & |
+| (size_type,const basic_string &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | insert | 2 | size_type |
+| (size_type,const basic_string &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | insert | 3 | size_type |
+| (size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 0 | size_type |
+| (size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 1 | size_type |
+| (size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | insert | 2 | class:0 |
+| (size_type,size_type,const CharT *) | basic_string<CharT,Traits,Allocator> | replace | 0 | size_type |
+| (size_type,size_type,const CharT *) | basic_string<CharT,Traits,Allocator> | replace | 1 | size_type |
+| (size_type,size_type,const CharT *) | basic_string<CharT,Traits,Allocator> | replace | 2 | const class:0 * |
+| (size_type,size_type,const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | replace | 0 | size_type |
+| (size_type,size_type,const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | replace | 1 | size_type |
+| (size_type,size_type,const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | replace | 2 | const class:0 * |
+| (size_type,size_type,const CharT *,size_type) | basic_string<CharT,Traits,Allocator> | replace | 3 | size_type |
+| (size_type,size_type,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 0 | size_type |
+| (size_type,size_type,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 1 | size_type |
+| (size_type,size_type,const StringViewLike &) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 2 | const func:0 & |
+| (size_type,size_type,const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 0 | size_type |
+| (size_type,size_type,const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 1 | size_type |
+| (size_type,size_type,const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 2 | const func:0 & |
+| (size_type,size_type,const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 3 | size_type |
+| (size_type,size_type,const StringViewLike &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | replace<StringViewLike> | 4 | size_type |
+| (size_type,size_type,const basic_string &) | basic_string<CharT,Traits,Allocator> | replace | 0 | size_type |
+| (size_type,size_type,const basic_string &) | basic_string<CharT,Traits,Allocator> | replace | 1 | size_type |
+| (size_type,size_type,const basic_string &) | basic_string<CharT,Traits,Allocator> | replace | 2 | const basic_string & |
+| (size_type,size_type,const basic_string &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | replace | 0 | size_type |
+| (size_type,size_type,const basic_string &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | replace | 1 | size_type |
+| (size_type,size_type,const basic_string &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | replace | 2 | const basic_string & |
+| (size_type,size_type,const basic_string &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | replace | 3 | size_type |
+| (size_type,size_type,const basic_string &,size_type,size_type) | basic_string<CharT,Traits,Allocator> | replace | 4 | size_type |
+| (size_type,size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 0 | size_type |
+| (size_type,size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 1 | size_type |
+| (size_type,size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 2 | size_type |
+| (size_type,size_type,size_type,CharT) | basic_string<CharT,Traits,Allocator> | replace | 3 | class:0 |
 | (slist_wc **,const char *) |  | easysrc_add | 0 | slist_wc ** |
 | (slist_wc **,const char *) |  | easysrc_add | 1 | const char * |
 | (slist_wc *,const char *) |  | slist_wc_append | 0 | slist_wc * |
@@ -25214,6 +25897,14 @@ getSignatureParameterName
 | (uninorm_t,const uint32_t *,size_t,uint32_t *,uint32_t *__restrict__,size_t *) |  | u32_normalize | 3 | uint32_t * |
 | (uninorm_t,const uint32_t *,size_t,uint32_t *,uint32_t *__restrict__,size_t *) |  | u32_normalize | 4 | uint32_t *__restrict__ |
 | (uninorm_t,const uint32_t *,size_t,uint32_t *,uint32_t *__restrict__,size_t *) |  | u32_normalize | 5 | size_t * |
+| (unordered_map &&) | unordered_map | merge | 0 | unordered_map && |
+| (unordered_map &&) | unordered_map | operator= | 0 | unordered_map && |
+| (unordered_map &&) | unordered_map | unordered_map | 0 | unordered_map && |
+| (unordered_map &&,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 0 | unordered_map && |
+| (unordered_map &&,const Allocator &) | unordered_map<Key,T,Hash,Pred,Allocator> | unordered_map | 1 | const class:4 & |
+| (unordered_map &) | unordered_map | merge | 0 | unordered_map & |
+| (unordered_multimap &&) | unordered_map | merge | 0 | unordered_multimap && |
+| (unordered_multimap &) | unordered_map | merge | 0 | unordered_multimap & |
 | (unsigned char *) | CStringT | CStringT | 0 | unsigned char * |
 | (unsigned char **) |  | ASN1_put_eoc | 0 | unsigned char ** |
 | (unsigned char **,X509_ALGOR *,ASN1_OCTET_STRING *,int) |  | CMS_SharedInfo_encode | 0 | unsigned char ** |
@@ -26206,6 +26897,8 @@ getSignatureParameterName
 | (uv_write_t *,uv_stream_t *,const uv_buf_t[],unsigned int,uv_write_cb) |  | uv_write | 2 | const uv_buf_t[] |
 | (uv_write_t *,uv_stream_t *,const uv_buf_t[],unsigned int,uv_write_cb) |  | uv_write | 3 | unsigned int |
 | (uv_write_t *,uv_stream_t *,const uv_buf_t[],unsigned int,uv_write_cb) |  | uv_write | 4 | uv_write_cb |
+| (value_type &&) | map | insert | 0 | value_type && |
+| (value_type &&) | unordered_map | insert | 0 | value_type && |
 | (vector &&) | vector | vector | 0 | vector && |
 | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 0 | vector && |
 | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 | const class:1 & |
@@ -27700,245 +28393,263 @@ getParameterTypeName
 | stl.h:415:52:415:62 | make_shared | 0 | func:1 && |
 | stl.h:415:52:415:62 | make_shared | 0 | func:1 && |
 | stl.h:415:52:415:62 | make_shared | 0 | func:1 && |
-| stl.h:429:3:429:3 | pair | 0 | const class:0 & |
-| stl.h:429:3:429:3 | pair | 0 | const class:0 & |
-| stl.h:429:3:429:3 | pair | 0 | const class:0 & |
-| stl.h:429:3:429:3 | pair | 0 | const class:0 & |
-| stl.h:429:3:429:3 | pair | 0 | const class:0 & |
-| stl.h:429:3:429:3 | pair | 0 | const class:0 & |
-| stl.h:429:3:429:3 | pair | 1 | const class:1 & |
-| stl.h:429:3:429:3 | pair | 1 | const class:1 & |
-| stl.h:429:3:429:3 | pair | 1 | const class:1 & |
-| stl.h:429:3:429:3 | pair | 1 | const class:1 & |
-| stl.h:429:3:429:3 | pair | 1 | const class:1 & |
-| stl.h:429:3:429:3 | pair | 1 | const class:1 & |
+| stl.h:428:11:428:14 | pair | 0 | const pair & |
+| stl.h:428:11:428:14 | pair | 0 | const pair & |
+| stl.h:428:11:428:14 | pair | 0 | const pair & |
+| stl.h:428:11:428:14 | pair | 0 | const pair & |
+| stl.h:428:50:428:58 | operator= | 0 | const pair & |
+| stl.h:428:80:428:88 | operator= | 0 | pair && |
+| stl.h:429:3:429:6 | pair | 0 | const class:0 & |
+| stl.h:429:3:429:6 | pair | 1 | const class:1 & |
 | stl.h:430:30:430:33 | pair | 0 | const pair & |
 | stl.h:430:30:430:33 | pair | 0 | const pair & |
 | stl.h:430:30:430:33 | pair | 0 | const pair & |
 | stl.h:430:30:430:33 | pair | 0 | const pair & |
-| stl.h:432:8:432:11 | swap | 0 | pair & |
-| stl.h:435:72:435:72 | make_pair | 0 | func:0 && |
-| stl.h:435:72:435:72 | make_pair | 0 | func:0 && |
-| stl.h:435:72:435:72 | make_pair | 0 | func:0 && |
-| stl.h:435:72:435:72 | make_pair | 0 | func:0 && |
-| stl.h:435:72:435:72 | make_pair | 0 | func:0 && |
-| stl.h:435:72:435:72 | make_pair | 0 | func:0 && |
-| stl.h:435:72:435:72 | make_pair | 1 | func:1 && |
-| stl.h:435:72:435:72 | make_pair | 1 | func:1 && |
-| stl.h:435:72:435:72 | make_pair | 1 | func:1 && |
-| stl.h:435:72:435:72 | make_pair | 1 | func:1 && |
-| stl.h:435:72:435:72 | make_pair | 1 | func:1 && |
-| stl.h:435:72:435:72 | make_pair | 1 | func:1 && |
-| stl.h:460:3:460:5 | map | 0 | const map & |
-| stl.h:464:8:464:16 | operator= | 0 | const map & |
-| stl.h:473:6:473:15 | operator[] | 0 | class:0 && |
-| stl.h:473:6:473:15 | operator[] | 0 | class:0 && |
-| stl.h:473:6:473:15 | operator[] | 0 | key_type && |
-| stl.h:473:6:473:15 | operator[] | 0 | key_type && |
-| stl.h:475:6:475:7 | at | 0 | const class:0 & |
-| stl.h:475:6:475:7 | at | 0 | const key_type & |
-| stl.h:478:48:478:54 | emplace | 0 | func:0 && |
-| stl.h:478:48:478:54 | emplace | 0 | func:0 && |
-| stl.h:479:36:479:47 | emplace_hint | 0 | const_iterator |
-| stl.h:479:36:479:47 | emplace_hint | 0 | const_iterator |
-| stl.h:479:36:479:47 | emplace_hint | 1 | func:0 && |
-| stl.h:479:36:479:47 | emplace_hint | 1 | func:0 && |
-| stl.h:483:42:483:47 | insert | 0 | func:0 && |
-| stl.h:483:42:483:47 | insert | 0 | func:0 && |
-| stl.h:483:42:483:47 | insert | 0 | func:0 && |
-| stl.h:486:30:486:35 | insert | 0 | const_iterator |
-| stl.h:486:30:486:35 | insert | 1 | func:0 && |
-| stl.h:488:48:488:58 | try_emplace | 0 | class:0 && |
-| stl.h:488:48:488:58 | try_emplace | 0 | class:0 && |
-| stl.h:488:48:488:58 | try_emplace | 0 | key_type && |
-| stl.h:488:48:488:58 | try_emplace | 0 | key_type && |
-| stl.h:488:48:488:58 | try_emplace | 1 | func:0 && |
-| stl.h:488:48:488:58 | try_emplace | 1 | func:0 && |
-| stl.h:490:36:490:46 | try_emplace | 0 | const_iterator |
-| stl.h:490:36:490:46 | try_emplace | 0 | const_iterator |
-| stl.h:490:36:490:46 | try_emplace | 1 | class:0 && |
-| stl.h:490:36:490:46 | try_emplace | 1 | class:0 && |
-| stl.h:490:36:490:46 | try_emplace | 1 | key_type && |
-| stl.h:490:36:490:46 | try_emplace | 1 | key_type && |
-| stl.h:490:36:490:46 | try_emplace | 2 | func:0 && |
-| stl.h:490:36:490:46 | try_emplace | 2 | func:0 && |
-| stl.h:492:42:492:57 | insert_or_assign | 0 | class:0 && |
-| stl.h:492:42:492:57 | insert_or_assign | 0 | key_type && |
-| stl.h:492:42:492:57 | insert_or_assign | 1 | func:0 && |
-| stl.h:494:30:494:45 | insert_or_assign | 0 | const_iterator |
-| stl.h:494:30:494:45 | insert_or_assign | 1 | class:0 && |
-| stl.h:494:30:494:45 | insert_or_assign | 1 | key_type && |
-| stl.h:494:30:494:45 | insert_or_assign | 2 | func:0 && |
-| stl.h:496:12:496:16 | erase | 0 | iterator |
-| stl.h:499:8:499:11 | swap | 0 | map & |
-| stl.h:502:27:502:31 | merge | 0 | map & |
-| stl.h:505:12:505:15 | find | 0 | const class:0 & |
-| stl.h:505:12:505:15 | find | 0 | const key_type & |
-| stl.h:508:12:508:22 | lower_bound | 0 | const class:0 & |
-| stl.h:508:12:508:22 | lower_bound | 0 | const key_type & |
-| stl.h:510:12:510:22 | upper_bound | 0 | const class:0 & |
-| stl.h:510:12:510:22 | upper_bound | 0 | const key_type & |
-| stl.h:513:28:513:38 | equal_range | 0 | const class:0 & |
-| stl.h:513:28:513:38 | equal_range | 0 | const key_type & |
-| stl.h:530:3:530:15 | unordered_map | 0 | const unordered_map & |
-| stl.h:530:3:530:15 | unordered_map | 0 | const unordered_map & |
-| stl.h:534:18:534:26 | operator= | 0 | const unordered_map & |
-| stl.h:543:16:543:25 | operator[] | 0 | class:0 && |
-| stl.h:543:16:543:25 | operator[] | 0 | class:0 && |
-| stl.h:543:16:543:25 | operator[] | 0 | key_type && |
-| stl.h:543:16:543:25 | operator[] | 0 | key_type && |
-| stl.h:544:16:544:17 | at | 0 | const class:0 & |
-| stl.h:544:16:544:17 | at | 0 | const key_type & |
-| stl.h:547:48:547:54 | emplace | 0 | func:0 && |
-| stl.h:547:48:547:54 | emplace | 0 | func:0 && |
-| stl.h:547:48:547:54 | emplace | 0 | func:0 && |
-| stl.h:547:48:547:54 | emplace | 0 | func:0 && |
-| stl.h:547:48:547:54 | emplace | 0 | func:0 && |
-| stl.h:548:36:548:47 | emplace_hint | 0 | const_iterator |
-| stl.h:548:36:548:47 | emplace_hint | 0 | const_iterator |
-| stl.h:548:36:548:47 | emplace_hint | 1 | func:0 && |
-| stl.h:548:36:548:47 | emplace_hint | 1 | func:0 && |
-| stl.h:551:24:551:29 | insert | 0 | value_type && |
-| stl.h:553:12:553:17 | insert | 0 | const_iterator |
-| stl.h:553:12:553:17 | insert | 1 | value_type && |
-| stl.h:556:48:556:58 | try_emplace | 0 | class:0 && |
-| stl.h:556:48:556:58 | try_emplace | 0 | class:0 && |
-| stl.h:556:48:556:58 | try_emplace | 0 | class:0 && |
-| stl.h:556:48:556:58 | try_emplace | 0 | key_type && |
-| stl.h:556:48:556:58 | try_emplace | 0 | key_type && |
-| stl.h:556:48:556:58 | try_emplace | 0 | key_type && |
-| stl.h:556:48:556:58 | try_emplace | 1 | func:0 && |
-| stl.h:556:48:556:58 | try_emplace | 1 | func:0 && |
-| stl.h:556:48:556:58 | try_emplace | 1 | func:0 && |
-| stl.h:558:36:558:46 | try_emplace | 0 | const_iterator |
-| stl.h:558:36:558:46 | try_emplace | 0 | const_iterator |
-| stl.h:558:36:558:46 | try_emplace | 1 | class:0 && |
-| stl.h:558:36:558:46 | try_emplace | 1 | class:0 && |
-| stl.h:558:36:558:46 | try_emplace | 1 | key_type && |
-| stl.h:558:36:558:46 | try_emplace | 1 | key_type && |
-| stl.h:558:36:558:46 | try_emplace | 2 | func:0 && |
-| stl.h:558:36:558:46 | try_emplace | 2 | func:0 && |
-| stl.h:560:42:560:57 | insert_or_assign | 0 | class:0 && |
-| stl.h:560:42:560:57 | insert_or_assign | 0 | key_type && |
-| stl.h:560:42:560:57 | insert_or_assign | 1 | func:0 && |
-| stl.h:562:30:562:45 | insert_or_assign | 0 | const_iterator |
-| stl.h:562:30:562:45 | insert_or_assign | 1 | class:0 && |
-| stl.h:562:30:562:45 | insert_or_assign | 1 | key_type && |
-| stl.h:562:30:562:45 | insert_or_assign | 2 | func:0 && |
-| stl.h:564:12:564:16 | erase | 0 | iterator |
-| stl.h:567:8:567:11 | swap | 0 | unordered_map & |
-| stl.h:570:37:570:41 | merge | 0 | unordered_map & |
-| stl.h:573:12:573:15 | find | 0 | const class:0 & |
-| stl.h:573:12:573:15 | find | 0 | const key_type & |
-| stl.h:576:28:576:38 | equal_range | 0 | const class:0 & |
-| stl.h:576:28:576:38 | equal_range | 0 | const key_type & |
-| stl.h:595:3:595:5 | set | 0 | const set & |
-| stl.h:597:33:597:35 | set | 0 | func:0 |
-| stl.h:597:33:597:35 | set | 1 | func:0 |
-| stl.h:600:8:600:16 | operator= | 0 | const set & |
-| stl.h:608:48:608:54 | emplace | 0 | func:0 && |
-| stl.h:608:48:608:54 | emplace | 0 | func:0 && |
-| stl.h:609:36:609:47 | emplace_hint | 0 | const_iterator |
-| stl.h:609:36:609:47 | emplace_hint | 0 | const_iterator |
-| stl.h:609:36:609:47 | emplace_hint | 1 | func:0 && |
-| stl.h:609:36:609:47 | emplace_hint | 1 | func:0 && |
-| stl.h:611:23:611:28 | insert | 0 | class:0 && |
-| stl.h:611:23:611:28 | insert | 0 | value_type && |
-| stl.h:613:12:613:17 | insert | 0 | const_iterator |
-| stl.h:613:12:613:17 | insert | 1 | class:0 && |
-| stl.h:613:12:613:17 | insert | 1 | value_type && |
-| stl.h:614:38:614:43 | insert | 0 | func:0 |
-| stl.h:614:38:614:43 | insert | 1 | func:0 |
-| stl.h:616:12:616:16 | erase | 0 | iterator |
-| stl.h:619:8:619:11 | swap | 0 | set & |
-| stl.h:622:27:622:31 | merge | 0 | set & |
-| stl.h:625:12:625:15 | find | 0 | const class:0 & |
-| stl.h:625:12:625:15 | find | 0 | const key_type & |
-| stl.h:628:12:628:22 | lower_bound | 0 | const class:0 & |
-| stl.h:628:12:628:22 | lower_bound | 0 | const key_type & |
-| stl.h:630:12:630:22 | upper_bound | 0 | const class:0 & |
-| stl.h:630:12:630:22 | upper_bound | 0 | const key_type & |
-| stl.h:632:28:632:38 | equal_range | 0 | const class:0 & |
-| stl.h:632:28:632:38 | equal_range | 0 | const key_type & |
-| stl.h:649:3:649:15 | unordered_set | 0 | const unordered_set & |
-| stl.h:651:33:651:45 | unordered_set | 0 | func:0 |
-| stl.h:651:33:651:45 | unordered_set | 1 | func:0 |
-| stl.h:651:33:651:45 | unordered_set | 2 | decltype(...) |
-| stl.h:651:33:651:45 | unordered_set | 2 | size_type |
-| stl.h:654:18:654:26 | operator= | 0 | const unordered_set & |
-| stl.h:662:48:662:54 | emplace | 0 | func:0 && |
-| stl.h:662:48:662:54 | emplace | 0 | func:0 && |
-| stl.h:663:36:663:47 | emplace_hint | 0 | const_iterator |
-| stl.h:663:36:663:47 | emplace_hint | 0 | const_iterator |
-| stl.h:663:36:663:47 | emplace_hint | 1 | func:0 && |
-| stl.h:663:36:663:47 | emplace_hint | 1 | func:0 && |
-| stl.h:665:24:665:29 | insert | 0 | class:0 && |
-| stl.h:665:24:665:29 | insert | 0 | value_type && |
-| stl.h:667:12:667:17 | insert | 0 | const_iterator |
-| stl.h:667:12:667:17 | insert | 1 | class:0 && |
-| stl.h:667:12:667:17 | insert | 1 | value_type && |
-| stl.h:668:38:668:43 | insert | 0 | func:0 |
-| stl.h:668:38:668:43 | insert | 1 | func:0 |
-| stl.h:670:12:670:16 | erase | 0 | iterator |
-| stl.h:673:8:673:11 | swap | 0 | unordered_set & |
-| stl.h:676:37:676:41 | merge | 0 | unordered_set & |
-| stl.h:679:12:679:15 | find | 0 | const class:0 & |
-| stl.h:679:12:679:15 | find | 0 | const key_type & |
-| stl.h:681:28:681:38 | equal_range | 0 | const class:0 & |
-| stl.h:681:28:681:38 | equal_range | 0 | const key_type & |
-| stl.h:696:3:696:19 | basic_string_view | 0 | const basic_string_view & |
-| stl.h:698:3:698:19 | basic_string_view | 0 | const class:0 * |
-| stl.h:699:33:699:49 | basic_string_view | 0 | func:0 |
-| stl.h:699:33:699:49 | basic_string_view | 0 | func:0 |
-| stl.h:699:33:699:49 | basic_string_view | 0 | func:0 |
-| stl.h:699:33:699:49 | basic_string_view | 0 | func:0 |
-| stl.h:699:33:699:49 | basic_string_view | 1 | func:1 |
-| stl.h:699:33:699:49 | basic_string_view | 1 | func:1 |
-| stl.h:699:33:699:49 | basic_string_view | 1 | func:1 |
-| stl.h:699:33:699:49 | basic_string_view | 1 | func:1 |
-| stl.h:701:12:701:28 | basic_string_view | 0 | func:0 && |
-| stl.h:701:12:701:28 | basic_string_view | 0 | func:0 && |
-| stl.h:702:22:702:30 | operator= | 0 | const basic_string_view & |
-| stl.h:708:16:708:25 | operator[] | 0 | decltype(...) |
-| stl.h:708:16:708:25 | operator[] | 0 | size_type |
-| stl.h:709:16:709:17 | at | 0 | decltype(...) |
-| stl.h:709:16:709:17 | at | 0 | size_type |
-| stl.h:713:8:713:20 | remove_prefix | 0 | decltype(...) |
-| stl.h:713:8:713:20 | remove_prefix | 0 | size_type |
-| stl.h:714:8:714:20 | remove_suffix | 0 | decltype(...) |
-| stl.h:714:8:714:20 | remove_suffix | 0 | size_type |
-| stl.h:715:8:715:11 | swap | 0 | basic_string_view & |
-| stl.h:716:13:716:16 | copy | 0 | class:0 * |
-| stl.h:716:13:716:16 | copy | 1 | decltype(...) |
-| stl.h:716:13:716:16 | copy | 1 | size_type |
-| stl.h:716:13:716:16 | copy | 2 | decltype(...) |
-| stl.h:716:13:716:16 | copy | 2 | size_type |
-| stl.h:717:21:717:26 | substr | 0 | decltype(...) |
-| stl.h:717:21:717:26 | substr | 0 | size_type |
-| stl.h:717:21:717:26 | substr | 1 | decltype(...) |
-| stl.h:717:21:717:26 | substr | 1 | size_type |
-| stl.h:718:21:718:27 | subview | 0 | decltype(...) |
-| stl.h:718:21:718:27 | subview | 0 | size_type |
-| stl.h:718:21:718:27 | subview | 1 | decltype(...) |
-| stl.h:718:21:718:27 | subview | 1 | size_type |
-| stl.h:740:21:740:39 | basic_format_string | 0 | const func:0 & |
-| stl.h:740:21:740:39 | basic_format_string | 0 | const func:0 & |
-| stl.h:747:33:747:38 | format | 0 | format_string |
-| stl.h:747:33:747:38 | format | 0 | format_string |
-| stl.h:747:33:747:38 | format | 1 | func:0 && |
-| stl.h:747:33:747:38 | format | 1 | func:0 && |
-| stl.h:752:6:752:48 | same_signature_as_format_but_different_name | 0 | format_string |
-| stl.h:752:6:752:48 | same_signature_as_format_but_different_name | 1 | func:0 && |
-| stl.h:756:8:756:8 | operator= | 0 | const thread & |
-| stl.h:756:8:756:8 | thread | 0 | const thread & |
-| stl.h:759:12:759:17 | thread | 0 | func:0 && |
-| stl.h:759:12:759:17 | thread | 0 | func:0 && |
-| stl.h:759:12:759:17 | thread | 0 | func:0 && |
-| stl.h:759:12:759:17 | thread | 0 | func:0 && |
-| stl.h:759:12:759:17 | thread | 1 | func:1 && |
-| stl.h:759:12:759:17 | thread | 1 | func:1 && |
-| stl.h:759:12:759:17 | thread | 1 | func:1 && |
-| stl.h:759:12:759:17 | thread | 1 | func:1 && |
+| stl.h:431:30:431:33 | pair | 0 | func:0 && |
+| stl.h:431:30:431:33 | pair | 0 | func:0 && |
+| stl.h:431:30:431:33 | pair | 0 | func:0 && |
+| stl.h:431:30:431:33 | pair | 0 | func:0 && |
+| stl.h:431:30:431:33 | pair | 0 | func:0 && |
+| stl.h:431:30:431:33 | pair | 0 | func:0 && |
+| stl.h:431:30:431:33 | pair | 0 | func:0 && |
+| stl.h:431:30:431:33 | pair | 0 | func:0 && |
+| stl.h:431:30:431:33 | pair | 0 | func:0 && |
+| stl.h:431:30:431:33 | pair | 0 | func:0 && |
+| stl.h:431:30:431:33 | pair | 0 | func:0 && |
+| stl.h:431:30:431:33 | pair | 1 | func:1 && |
+| stl.h:431:30:431:33 | pair | 1 | func:1 && |
+| stl.h:431:30:431:33 | pair | 1 | func:1 && |
+| stl.h:431:30:431:33 | pair | 1 | func:1 && |
+| stl.h:431:30:431:33 | pair | 1 | func:1 && |
+| stl.h:431:30:431:33 | pair | 1 | func:1 && |
+| stl.h:431:30:431:33 | pair | 1 | func:1 && |
+| stl.h:431:30:431:33 | pair | 1 | func:1 && |
+| stl.h:431:30:431:33 | pair | 1 | func:1 && |
+| stl.h:431:30:431:33 | pair | 1 | func:1 && |
+| stl.h:431:30:431:33 | pair | 1 | func:1 && |
+| stl.h:433:8:433:11 | swap | 0 | pair & |
+| stl.h:436:72:436:72 | make_pair | 0 | func:0 && |
+| stl.h:436:72:436:72 | make_pair | 0 | func:0 && |
+| stl.h:436:72:436:72 | make_pair | 0 | func:0 && |
+| stl.h:436:72:436:72 | make_pair | 0 | func:0 && |
+| stl.h:436:72:436:72 | make_pair | 0 | func:0 && |
+| stl.h:436:72:436:72 | make_pair | 0 | func:0 && |
+| stl.h:436:72:436:72 | make_pair | 1 | func:1 && |
+| stl.h:436:72:436:72 | make_pair | 1 | func:1 && |
+| stl.h:436:72:436:72 | make_pair | 1 | func:1 && |
+| stl.h:436:72:436:72 | make_pair | 1 | func:1 && |
+| stl.h:436:72:436:72 | make_pair | 1 | func:1 && |
+| stl.h:436:72:436:72 | make_pair | 1 | func:1 && |
+| stl.h:461:3:461:5 | map | 0 | const map & |
+| stl.h:465:8:465:16 | operator= | 0 | const map & |
+| stl.h:474:6:474:15 | operator[] | 0 | class:0 && |
+| stl.h:474:6:474:15 | operator[] | 0 | class:0 && |
+| stl.h:474:6:474:15 | operator[] | 0 | key_type && |
+| stl.h:474:6:474:15 | operator[] | 0 | key_type && |
+| stl.h:476:6:476:7 | at | 0 | const class:0 & |
+| stl.h:476:6:476:7 | at | 0 | const key_type & |
+| stl.h:479:48:479:54 | emplace | 0 | func:0 && |
+| stl.h:479:48:479:54 | emplace | 0 | func:0 && |
+| stl.h:480:36:480:47 | emplace_hint | 0 | const_iterator |
+| stl.h:480:36:480:47 | emplace_hint | 0 | const_iterator |
+| stl.h:480:36:480:47 | emplace_hint | 1 | func:0 && |
+| stl.h:480:36:480:47 | emplace_hint | 1 | func:0 && |
+| stl.h:484:42:484:47 | insert | 0 | func:0 && |
+| stl.h:484:42:484:47 | insert | 0 | func:0 && |
+| stl.h:484:42:484:47 | insert | 0 | func:0 && |
+| stl.h:487:30:487:35 | insert | 0 | const_iterator |
+| stl.h:487:30:487:35 | insert | 1 | func:0 && |
+| stl.h:489:48:489:58 | try_emplace | 0 | class:0 && |
+| stl.h:489:48:489:58 | try_emplace | 0 | class:0 && |
+| stl.h:489:48:489:58 | try_emplace | 0 | key_type && |
+| stl.h:489:48:489:58 | try_emplace | 0 | key_type && |
+| stl.h:489:48:489:58 | try_emplace | 1 | func:0 && |
+| stl.h:489:48:489:58 | try_emplace | 1 | func:0 && |
+| stl.h:491:36:491:46 | try_emplace | 0 | const_iterator |
+| stl.h:491:36:491:46 | try_emplace | 0 | const_iterator |
+| stl.h:491:36:491:46 | try_emplace | 1 | class:0 && |
+| stl.h:491:36:491:46 | try_emplace | 1 | class:0 && |
+| stl.h:491:36:491:46 | try_emplace | 1 | key_type && |
+| stl.h:491:36:491:46 | try_emplace | 1 | key_type && |
+| stl.h:491:36:491:46 | try_emplace | 2 | func:0 && |
+| stl.h:491:36:491:46 | try_emplace | 2 | func:0 && |
+| stl.h:493:42:493:57 | insert_or_assign | 0 | class:0 && |
+| stl.h:493:42:493:57 | insert_or_assign | 0 | key_type && |
+| stl.h:493:42:493:57 | insert_or_assign | 1 | func:0 && |
+| stl.h:495:30:495:45 | insert_or_assign | 0 | const_iterator |
+| stl.h:495:30:495:45 | insert_or_assign | 1 | class:0 && |
+| stl.h:495:30:495:45 | insert_or_assign | 1 | key_type && |
+| stl.h:495:30:495:45 | insert_or_assign | 2 | func:0 && |
+| stl.h:497:12:497:16 | erase | 0 | iterator |
+| stl.h:500:8:500:11 | swap | 0 | map & |
+| stl.h:503:27:503:31 | merge | 0 | map & |
+| stl.h:506:12:506:15 | find | 0 | const class:0 & |
+| stl.h:506:12:506:15 | find | 0 | const key_type & |
+| stl.h:509:12:509:22 | lower_bound | 0 | const class:0 & |
+| stl.h:509:12:509:22 | lower_bound | 0 | const key_type & |
+| stl.h:511:12:511:22 | upper_bound | 0 | const class:0 & |
+| stl.h:511:12:511:22 | upper_bound | 0 | const key_type & |
+| stl.h:514:28:514:38 | equal_range | 0 | const class:0 & |
+| stl.h:514:28:514:38 | equal_range | 0 | const key_type & |
+| stl.h:531:3:531:15 | unordered_map | 0 | const unordered_map & |
+| stl.h:531:3:531:15 | unordered_map | 0 | const unordered_map & |
+| stl.h:535:18:535:26 | operator= | 0 | const unordered_map & |
+| stl.h:544:16:544:25 | operator[] | 0 | class:0 && |
+| stl.h:544:16:544:25 | operator[] | 0 | class:0 && |
+| stl.h:544:16:544:25 | operator[] | 0 | key_type && |
+| stl.h:544:16:544:25 | operator[] | 0 | key_type && |
+| stl.h:545:16:545:17 | at | 0 | const class:0 & |
+| stl.h:545:16:545:17 | at | 0 | const key_type & |
+| stl.h:548:48:548:54 | emplace | 0 | func:0 && |
+| stl.h:548:48:548:54 | emplace | 0 | func:0 && |
+| stl.h:548:48:548:54 | emplace | 0 | func:0 && |
+| stl.h:548:48:548:54 | emplace | 0 | func:0 && |
+| stl.h:548:48:548:54 | emplace | 0 | func:0 && |
+| stl.h:549:36:549:47 | emplace_hint | 0 | const_iterator |
+| stl.h:549:36:549:47 | emplace_hint | 0 | const_iterator |
+| stl.h:549:36:549:47 | emplace_hint | 1 | func:0 && |
+| stl.h:549:36:549:47 | emplace_hint | 1 | func:0 && |
+| stl.h:552:24:552:29 | insert | 0 | value_type && |
+| stl.h:554:12:554:17 | insert | 0 | const_iterator |
+| stl.h:554:12:554:17 | insert | 1 | value_type && |
+| stl.h:557:48:557:58 | try_emplace | 0 | class:0 && |
+| stl.h:557:48:557:58 | try_emplace | 0 | class:0 && |
+| stl.h:557:48:557:58 | try_emplace | 0 | class:0 && |
+| stl.h:557:48:557:58 | try_emplace | 0 | key_type && |
+| stl.h:557:48:557:58 | try_emplace | 0 | key_type && |
+| stl.h:557:48:557:58 | try_emplace | 0 | key_type && |
+| stl.h:557:48:557:58 | try_emplace | 1 | func:0 && |
+| stl.h:557:48:557:58 | try_emplace | 1 | func:0 && |
+| stl.h:557:48:557:58 | try_emplace | 1 | func:0 && |
+| stl.h:559:36:559:46 | try_emplace | 0 | const_iterator |
+| stl.h:559:36:559:46 | try_emplace | 0 | const_iterator |
+| stl.h:559:36:559:46 | try_emplace | 1 | class:0 && |
+| stl.h:559:36:559:46 | try_emplace | 1 | class:0 && |
+| stl.h:559:36:559:46 | try_emplace | 1 | key_type && |
+| stl.h:559:36:559:46 | try_emplace | 1 | key_type && |
+| stl.h:559:36:559:46 | try_emplace | 2 | func:0 && |
+| stl.h:559:36:559:46 | try_emplace | 2 | func:0 && |
+| stl.h:561:42:561:57 | insert_or_assign | 0 | class:0 && |
+| stl.h:561:42:561:57 | insert_or_assign | 0 | key_type && |
+| stl.h:561:42:561:57 | insert_or_assign | 1 | func:0 && |
+| stl.h:563:30:563:45 | insert_or_assign | 0 | const_iterator |
+| stl.h:563:30:563:45 | insert_or_assign | 1 | class:0 && |
+| stl.h:563:30:563:45 | insert_or_assign | 1 | key_type && |
+| stl.h:563:30:563:45 | insert_or_assign | 2 | func:0 && |
+| stl.h:565:12:565:16 | erase | 0 | iterator |
+| stl.h:568:8:568:11 | swap | 0 | unordered_map & |
+| stl.h:571:37:571:41 | merge | 0 | unordered_map & |
+| stl.h:574:12:574:15 | find | 0 | const class:0 & |
+| stl.h:574:12:574:15 | find | 0 | const key_type & |
+| stl.h:577:28:577:38 | equal_range | 0 | const class:0 & |
+| stl.h:577:28:577:38 | equal_range | 0 | const key_type & |
+| stl.h:596:3:596:5 | set | 0 | const set & |
+| stl.h:598:33:598:35 | set | 0 | func:0 |
+| stl.h:598:33:598:35 | set | 1 | func:0 |
+| stl.h:601:8:601:16 | operator= | 0 | const set & |
+| stl.h:609:48:609:54 | emplace | 0 | func:0 && |
+| stl.h:609:48:609:54 | emplace | 0 | func:0 && |
+| stl.h:610:36:610:47 | emplace_hint | 0 | const_iterator |
+| stl.h:610:36:610:47 | emplace_hint | 0 | const_iterator |
+| stl.h:610:36:610:47 | emplace_hint | 1 | func:0 && |
+| stl.h:610:36:610:47 | emplace_hint | 1 | func:0 && |
+| stl.h:612:23:612:28 | insert | 0 | class:0 && |
+| stl.h:612:23:612:28 | insert | 0 | value_type && |
+| stl.h:614:12:614:17 | insert | 0 | const_iterator |
+| stl.h:614:12:614:17 | insert | 1 | class:0 && |
+| stl.h:614:12:614:17 | insert | 1 | value_type && |
+| stl.h:615:38:615:43 | insert | 0 | func:0 |
+| stl.h:615:38:615:43 | insert | 1 | func:0 |
+| stl.h:617:12:617:16 | erase | 0 | iterator |
+| stl.h:620:8:620:11 | swap | 0 | set & |
+| stl.h:623:27:623:31 | merge | 0 | set & |
+| stl.h:626:12:626:15 | find | 0 | const class:0 & |
+| stl.h:626:12:626:15 | find | 0 | const key_type & |
+| stl.h:629:12:629:22 | lower_bound | 0 | const class:0 & |
+| stl.h:629:12:629:22 | lower_bound | 0 | const key_type & |
+| stl.h:631:12:631:22 | upper_bound | 0 | const class:0 & |
+| stl.h:631:12:631:22 | upper_bound | 0 | const key_type & |
+| stl.h:633:28:633:38 | equal_range | 0 | const class:0 & |
+| stl.h:633:28:633:38 | equal_range | 0 | const key_type & |
+| stl.h:650:3:650:15 | unordered_set | 0 | const unordered_set & |
+| stl.h:652:33:652:45 | unordered_set | 0 | func:0 |
+| stl.h:652:33:652:45 | unordered_set | 1 | func:0 |
+| stl.h:652:33:652:45 | unordered_set | 2 | decltype(...) |
+| stl.h:652:33:652:45 | unordered_set | 2 | size_type |
+| stl.h:655:18:655:26 | operator= | 0 | const unordered_set & |
+| stl.h:663:48:663:54 | emplace | 0 | func:0 && |
+| stl.h:663:48:663:54 | emplace | 0 | func:0 && |
+| stl.h:664:36:664:47 | emplace_hint | 0 | const_iterator |
+| stl.h:664:36:664:47 | emplace_hint | 0 | const_iterator |
+| stl.h:664:36:664:47 | emplace_hint | 1 | func:0 && |
+| stl.h:664:36:664:47 | emplace_hint | 1 | func:0 && |
+| stl.h:666:24:666:29 | insert | 0 | class:0 && |
+| stl.h:666:24:666:29 | insert | 0 | value_type && |
+| stl.h:668:12:668:17 | insert | 0 | const_iterator |
+| stl.h:668:12:668:17 | insert | 1 | class:0 && |
+| stl.h:668:12:668:17 | insert | 1 | value_type && |
+| stl.h:669:38:669:43 | insert | 0 | func:0 |
+| stl.h:669:38:669:43 | insert | 1 | func:0 |
+| stl.h:671:12:671:16 | erase | 0 | iterator |
+| stl.h:674:8:674:11 | swap | 0 | unordered_set & |
+| stl.h:677:37:677:41 | merge | 0 | unordered_set & |
+| stl.h:680:12:680:15 | find | 0 | const class:0 & |
+| stl.h:680:12:680:15 | find | 0 | const key_type & |
+| stl.h:682:28:682:38 | equal_range | 0 | const class:0 & |
+| stl.h:682:28:682:38 | equal_range | 0 | const key_type & |
+| stl.h:697:3:697:19 | basic_string_view | 0 | const basic_string_view & |
+| stl.h:699:3:699:19 | basic_string_view | 0 | const class:0 * |
+| stl.h:700:33:700:49 | basic_string_view | 0 | func:0 |
+| stl.h:700:33:700:49 | basic_string_view | 0 | func:0 |
+| stl.h:700:33:700:49 | basic_string_view | 0 | func:0 |
+| stl.h:700:33:700:49 | basic_string_view | 0 | func:0 |
+| stl.h:700:33:700:49 | basic_string_view | 1 | func:1 |
+| stl.h:700:33:700:49 | basic_string_view | 1 | func:1 |
+| stl.h:700:33:700:49 | basic_string_view | 1 | func:1 |
+| stl.h:700:33:700:49 | basic_string_view | 1 | func:1 |
+| stl.h:702:12:702:28 | basic_string_view | 0 | func:0 && |
+| stl.h:702:12:702:28 | basic_string_view | 0 | func:0 && |
+| stl.h:703:22:703:30 | operator= | 0 | const basic_string_view & |
+| stl.h:709:16:709:25 | operator[] | 0 | decltype(...) |
+| stl.h:709:16:709:25 | operator[] | 0 | size_type |
+| stl.h:710:16:710:17 | at | 0 | decltype(...) |
+| stl.h:710:16:710:17 | at | 0 | size_type |
+| stl.h:714:8:714:20 | remove_prefix | 0 | decltype(...) |
+| stl.h:714:8:714:20 | remove_prefix | 0 | size_type |
+| stl.h:715:8:715:20 | remove_suffix | 0 | decltype(...) |
+| stl.h:715:8:715:20 | remove_suffix | 0 | size_type |
+| stl.h:716:8:716:11 | swap | 0 | basic_string_view & |
+| stl.h:717:13:717:16 | copy | 0 | class:0 * |
+| stl.h:717:13:717:16 | copy | 1 | decltype(...) |
+| stl.h:717:13:717:16 | copy | 1 | size_type |
+| stl.h:717:13:717:16 | copy | 2 | decltype(...) |
+| stl.h:717:13:717:16 | copy | 2 | size_type |
+| stl.h:718:21:718:26 | substr | 0 | decltype(...) |
+| stl.h:718:21:718:26 | substr | 0 | size_type |
+| stl.h:718:21:718:26 | substr | 1 | decltype(...) |
+| stl.h:718:21:718:26 | substr | 1 | size_type |
+| stl.h:719:21:719:27 | subview | 0 | decltype(...) |
+| stl.h:719:21:719:27 | subview | 0 | size_type |
+| stl.h:719:21:719:27 | subview | 1 | decltype(...) |
+| stl.h:719:21:719:27 | subview | 1 | size_type |
+| stl.h:741:21:741:39 | basic_format_string | 0 | const func:0 & |
+| stl.h:741:21:741:39 | basic_format_string | 0 | const func:0 & |
+| stl.h:748:33:748:38 | format | 0 | format_string |
+| stl.h:748:33:748:38 | format | 0 | format_string |
+| stl.h:748:33:748:38 | format | 1 | func:0 && |
+| stl.h:748:33:748:38 | format | 1 | func:0 && |
+| stl.h:753:6:753:48 | same_signature_as_format_but_different_name | 0 | format_string |
+| stl.h:753:6:753:48 | same_signature_as_format_but_different_name | 1 | func:0 && |
+| stl.h:757:8:757:8 | operator= | 0 | const thread & |
+| stl.h:757:8:757:8 | thread | 0 | const thread & |
+| stl.h:760:12:760:17 | thread | 0 | func:0 && |
+| stl.h:760:12:760:17 | thread | 0 | func:0 && |
+| stl.h:760:12:760:17 | thread | 0 | func:0 && |
+| stl.h:760:12:760:17 | thread | 0 | func:0 && |
+| stl.h:760:12:760:17 | thread | 1 | func:1 && |
+| stl.h:760:12:760:17 | thread | 1 | func:1 && |
+| stl.h:760:12:760:17 | thread | 1 | func:1 && |
+| stl.h:760:12:760:17 | thread | 1 | func:1 && |
 | string.cpp:17:6:17:9 | sink | 0 | const char * |
 | string.cpp:18:6:18:9 | sink | 0 | const string & |
 | string.cpp:19:6:19:9 | sink | 0 | const char * |
@@ -28329,9 +29040,9 @@ getParameterTypeName
 | thread.cpp:14:6:14:22 | thread_function_2 | 0 | S |
 | thread.cpp:18:6:18:22 | thread_function_3 | 0 | S * |
 | thread.cpp:18:6:18:22 | thread_function_3 | 1 | int |
-| thread.cpp:30:18:30:18 | (unnamed constructor) | 0 | const lambda [] type at line 841, col. 18 & |
-| thread.cpp:30:18:30:18 | (unnamed constructor) | 0 | lambda [] type at line 841, col. 18 && |
-| thread.cpp:30:18:30:18 | operator= | 0 | const lambda [] type at line 841, col. 18 & |
+| thread.cpp:30:18:30:18 | (unnamed constructor) | 0 | const lambda [] type at line 842, col. 18 & |
+| thread.cpp:30:18:30:18 | (unnamed constructor) | 0 | lambda [] type at line 842, col. 18 && |
+| thread.cpp:30:18:30:18 | operator= | 0 | const lambda [] type at line 842, col. 18 & |
 | thread.cpp:30:20:30:20 | _FUN | 0 | S * |
 | thread.cpp:30:20:30:20 | operator() | 0 | S * |
 | vector.cpp:13:6:13:9 | sink | 0 | int |
