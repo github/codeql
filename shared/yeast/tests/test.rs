@@ -109,6 +109,21 @@ fn run_and_ast(input: &str, rules: Vec<Rule>) -> OutputAst {
     runner.run(input).unwrap()
 }
 
+fn run_ast_with_rules(ast: Ast, rules: Vec<Rule>) -> OutputAst {
+    let schema = yeast::node_types_yaml::schema_from_yaml(OUTPUT_SCHEMA_YAML).unwrap();
+    let phases = [Phase::new("test", rules)];
+    let runner: Runner = Runner::with_schema_no_language(&schema, &phases);
+    runner.run_from_ast(ast).unwrap()
+}
+
+fn synthetic_integer_ast(content: &str) -> Ast {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let mut ast = Ast::with_schema(yeast::schema::from_language(&lang));
+    let root = ast.create_named_token("integer", content.to_owned());
+    ast.set_root(root);
+    ast
+}
+
 /// Helper: translate Ruby source with multiple rule phases and return its dump.
 fn run_phased_and_dump(input: &str, phases: Vec<Phase>) -> String {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
@@ -680,6 +695,74 @@ fn test_forward_scan_preserves_order() {
 }
 
 // ---- Tree builder tests ----
+
+#[test]
+fn test_bare_leaf_rule_result_inherits_parsed_source_text() {
+    let rules: Vec<Rule> = yeast::rules! {
+        input: "tests/input-types.yml",
+        output: "tests/node-types.yml",
+        [
+            (integer) => (identifier),
+        ]
+    };
+    let ast = run_and_ast("x = 1", rules);
+    let dump = dump_ast(&ast, ast.get_root(), "x = 1");
+
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          assignment
+            left: identifier "x"
+            right: identifier "1"
+    "#,
+    );
+    assert!(ast.reachable_node_ids().into_iter().any(|id| {
+        let node = ast.get_node(id).unwrap();
+        node.kind_name() == "identifier" && node.opt_string_content().as_deref() == Some("1")
+    }));
+}
+
+#[test]
+fn test_bare_leaf_rule_result_inherits_synthetic_content() {
+    let ast = run_ast_with_rules(
+        synthetic_integer_ast("synthetic"),
+        yeast::rules! {
+            input: "tests/input-types.yml",
+            output: "tests/node-types.yml",
+            [
+                rule!((integer) => (identifier)),
+            ]
+        },
+    );
+    let dump = dump_ast(&ast, ast.get_root(), "");
+
+    assert_dump_eq(
+        &dump,
+        r#"
+        identifier "synthetic"
+    "#,
+    );
+}
+
+#[test]
+fn test_bare_leaf_rule_result_inherits_empty_content() {
+    let ast = run_ast_with_rules(
+        synthetic_integer_ast(""),
+        yeast::rules! {
+            input: "tests/input-types.yml",
+            output: "tests/node-types.yml",
+            [
+                (integer) => (identifier),
+            ]
+        },
+    );
+
+    assert!(ast.reachable_node_ids().into_iter().any(|id| {
+        let node = ast.get_node(id).unwrap();
+        node.kind_name() == "identifier" && node.opt_string_content().as_deref() == Some("")
+    }));
+}
 
 #[test]
 fn test_tree_builder() {

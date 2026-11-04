@@ -508,6 +508,7 @@ impl Node {
                         }
                     }
                 }
+                Content::Inherited => quote! { #ctx.inherited_literal(#kind_str) },
             };
             quote! { let __node: yeast::OutputId = #node; }
         } else {
