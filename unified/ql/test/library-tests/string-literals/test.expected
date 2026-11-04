@@ -1,6 +1,14 @@
-| test.swift:1:13:1:14 | "" |  |
-| test.swift:2:14:2:18 | "abc" | abc |
-| test.swift:4:24:4:28 | "\\\\n" | \\\\n |
-| test.swift:5:15:5:31 | "\\u{61}\\u{1F600}" | \\u{61}\\u{1F600} |
-| test.swift:6:11:6:21 | #"\\n\\"abc"# | #"\\n\\"abc"# |
-| test.swift:8:20:8:30 | #"abc#def"# | #"abc#def"# |
+| test.swift:1:5:1:9 | empty |  |
+| test.swift:2:5:2:10 | simple | abc |
+| test.swift:3:5:3:11 | escaped |  |
+| test.swift:4:5:4:20 | escapedBackslash | \\\\n |
+| test.swift:5:5:5:11 | unicode | \\u{61}\\u{1F600} |
+| test.swift:6:5:6:7 | raw | #"\\n\\"abc"# |
+| test.swift:7:5:7:14 | rawEscapes |  |
+| test.swift:8:5:8:16 | hashesInside | #"abc#def"# |
+| test.swift:9:5:9:13 | multiline |  |
+| test.swift:13:5:13:19 | multilineIndent |  |
+| test.swift:17:5:17:22 | multilineEmptyLine |  |
+| test.swift:22:5:22:25 | multilineContinuation |  |
+| test.swift:26:5:26:16 | rawMultiline |  |
+| test.swift:30:5:30:17 | interpolation |  |

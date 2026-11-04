@@ -1,7 +1,5 @@
 import unified
 
-from StringLiteral literal
-where
-  literal.getFile().getRelativePath() = "test.swift" and
-  not literal.getParent() instanceof StringInterpolationExpr
-select literal, literal.getStringValue()
+from VariableDeclaration decl
+where decl.getFile().getRelativePath() = "test.swift"
+select decl.getPattern(), concat(decl.getValue().getStringValue())
