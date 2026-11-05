@@ -83,6 +83,23 @@ abstract private class TypeMentionImpl extends AstNode {
    */
   abstract Type getUnexpandedType();
 
+  private predicate isQualifierArgument(ParentTypeParameterType tp, TypePath path, Type t) {
+    // exists(TypeMention qualifier |
+    //   qualifier =
+    //     [
+    //       this.(MemberAccessExpr).getBase(),
+    //       this.(GenericTypeExpr).getBase().(MemberAccessExpr).getBase()
+    //     ] and
+    //   tp = this.getSimpleExpandedType().getATypeParameter() and
+    //   t = qualifier.getSimpleExpandedTypeAt(path)
+    // )
+    t = this.getSimpleExpandedTypeAt(TypePath::singleton(tp).appendInverse(path))
+    or
+    exists(ParentTypeParameterType mid |
+      this.isQualifierArgument(mid, TypePath::singleton(tp).appendInverse(path), t)
+    )
+  }
+
   /**
    * INTERNAL: Do not use; use `getType` instead.
    *
@@ -93,20 +110,68 @@ abstract private class TypeMentionImpl extends AstNode {
     result = this.getUnexpandedTypeAt(path)
     or
     exists(AliasType alias, TypePath prefix, TypePath suffix |
-      this.getSimpleExpandedTypeAt(prefix) = alias
+      this.getUnexpandedTypeAt(prefix) = alias
     |
       // expand alias RHS
       result = alias.getAlias().getSimpleExpandedTypeAt(suffix) and
       path = prefix.append(suffix) and
-      not result = alias.getATypeParameter()
+      not result instanceof TypeParameter //and
       or
       // substitute for type parameters in alias RHS
-      exists(TypeParameter tp, TypePath pathToTp, TypePath mid |
-        tp = alias.getATypeParameter() and
-        tp = alias.getAlias().getSimpleExpandedTypeAt(pathToTp) and
-        result = this.getSimpleExpandedTypeAt(prefix.appendInverse(mid)) and
-        mid.isCons(tp, suffix) and
+      exists(TypeParameter tp, TypePath pathToTp |
+        // tp = alias.getATypeParameter() and
+        tp = alias.getAlias().getSimpleExpandedTypeAt(pathToTp)
+      |
+        exists(TypePath mid |
+          result = this.getSimpleExpandedTypeAt(prefix.appendInverse(mid)) and
+          mid.isCons(tp, suffix) and
+          path = prefix.append(pathToTp).append(suffix)
+        )
+      )
+    )
+    or
+    exists(AliasType alias, TypePath prefix, TypePath suffix |
+      this.getUnexpandedTypeAt(prefix) = alias and
+      // substitute for type parameters in alias RHS
+      exists(TypeParameter tp, TypePath pathToTp |
+        // tp = alias.getATypeParameter() and
+        tp = alias.getAlias().getSimpleExpandedTypeAt(pathToTp)
+      |
+        this.isQualifierArgument(_, TypePath::singleton(tp).appendInverse(suffix), result) and
         path = prefix.append(pathToTp).append(suffix)
+      )
+    )
+    or
+    exists(AliasType alias, TypePath prefix, TypePath suffix |
+      // substitute for type parameters in alias RHS
+      exists(
+        TypeParameter tp, TypePath pathToTp, TypePath path1, ParentTypeParameterType ptp,
+        TypePath path2, ParentTypeParameterType ptp2
+      |
+        this.getUnexpandedTypeAt(prefix) = alias and
+        // tp = alias.getATypeParameter() and
+        tp = alias.getAlias().getSimpleExpandedTypeAt(pathToTp) and
+        pathToTp.isSnoc(path1, tp) and
+        path1.isSnoc(path2, ptp) and
+        this.isQualifierArgument(ptp2, suffix, result) and
+        ptp.getParent() = ptp2.getParent() and
+        path = prefix.append(path2).append(TypePath::cons(ptp, suffix))
+      )
+    )
+    // )
+  }
+
+  private predicate sdfasdfsf(
+    AliasType alias, ParentTypeParameterType parent, TypePath prefix, TypePath path, Type t
+  ) {
+    this.getSimpleExpandedTypeAt(prefix.append(path)) = t and
+    (
+      this.getSimpleExpandedTypeAt(prefix) = alias and
+      path = TypePath::singleton(parent)
+      or
+      exists(TypePath mid, Type t0 |
+        this.sdfasdfsf(alias, _, prefix, mid, t0) and
+        path = mid.append(TypePath::singleton(parent))
       )
     )
   }
@@ -132,6 +197,7 @@ abstract private class TypeMentionImpl extends AstNode {
   private Type getExpandedTypeAt(TypePath path) {
     result = this.getSimpleExpandedTypeAt(path)
     or
+    none() and
     exists(
       AliasType alias, TypePath prefix, TypePath pathToNested, ClassLikeDeclaration nested,
       ClassLikeDeclaration parent, TypePath pathParents, TypePath suffix
@@ -151,18 +217,6 @@ abstract private class TypeMentionImpl extends AstNode {
    */
   ClassLikeDeclaration getClassLikeDeclaration() {
     result = this.getSimpleExpandedType().(ClassLikeDeclarationType).getClassLikeDeclaration()
-  }
-
-  pragma[nomagic]
-  private ClassLikeDeclaration getImplicitQualifierCand(TypePath path, ParentTypeParameterType tp) {
-    exists(Type t |
-      tp = t.getATypeParameter() and
-      t = this.getExpandedTypeAt(path) and
-      not exists(this.getExpandedTypeAt(path.append(TypePath::singleton(tp)))) and
-      result = this.getEnclosingClassResolved()
-    )
-    or
-    result = this.getImplicitQualifierCand(path, tp).getEnclosingClassResolved()
   }
 
   /**
@@ -185,31 +239,7 @@ abstract private class TypeMentionImpl extends AstNode {
     (
       result = this.getExpandedTypeAt(path)
       or
-      // A mention of a nested type without an explicit qualifier implicitly mentions
-      // the parent type (including at the identifer that introduces the type)
-      //
-      // ```swift
-      // class Outer {
-      //     class Inner {
-      //         let y: Inner // short-hand for `Outer.Inner`
-      //     }
-      // }
-      // ```
-      exists(
-        TypePath prefix, ClassLikeDeclaration parent, ParentTypeParameterType tp, TypePath suffix,
-        ClassLikeDeclaration encl
-      |
-        encl = this.getImplicitQualifierCand(prefix, tp) and
-        parent = tp.getParent() and
-        result = encl.getNameNode().(TypeMention).getTypeAt(suffix) and
-        path = prefix.append(TypePath::cons(tp, suffix))
-      |
-        encl = parent
-        or
-        not parent = this.getImplicitQualifierCand(prefix, tp) and
-        encl.getABaseClass+() = parent
-      )
-      or
+      none() and
       // A mention of a generic type without explicit type arguments and within
       // the scope of the type, implicitly mentions all type parameters (including
       // at the identifer that introduces the type):
@@ -315,6 +345,38 @@ class ExprTypeMention extends TypeMentionImpl, Expr {
       path = TypePath::cons(tp, suffix) and
       result = qualifier.getUnexpandedTypeAt(suffix)
     )
+    or
+    // A mention of a nested type with an implicit qualifier
+    exists(Type nested, ParentTypeParameterType tp, TypeMention parent, TypePath suffix |
+      nested = this.getUnexpandedType() and
+      tp = nested.getATypeParameter() and
+      path = TypePath::cons(tp, suffix) and
+      result = parent.getUnexpandedTypeAt(suffix)
+    |
+      this = any(UnqualifiedMemberAccess uma | parent = uma.getAccessingClass().getNameNode())
+      or
+      this = nested.asClass().getNameNode() and
+      parent = nested.asClass().getEnclosingClassResolved().getNameNode()
+    )
+    or
+    // A mention of a generic type without explicit type arguments and within
+    // the scope of the type, implicitly mentions all type parameters (including
+    // at the identifer that introduces the type):
+    //
+    // ```swift
+    // class Generic<T> {
+    //     let x: Generic // short-hand for `Generic<T>
+    // }
+    // ```
+    not this = any(GenericTypeExpr g).getBase() and
+    exists(ClassLikeDeclarationType t |
+      t = this.getUnexpandedType() and
+      result = t.getATypeParameter() and
+      path = TypePath::singleton(result) and
+      not result instanceof ParentTypeParameterType
+    |
+      isInSyntacticTypeContext(this) or this = t.getNameNode()
+    )
   }
 
   private Type getUnexpandedType0() {
@@ -366,7 +428,6 @@ private class GenericTypeExprTypeMention extends TypeMentionImpl, GenericTypeExp
   override Type getUnexpandedTypeAt(TypePath path) {
     result = base.getUnexpandedTypeAt(path)
     or
-    base = this.getBase() and
     exists(int i, TypePath prefix, TypePath suffix |
       prefix = base.(ExprTypeMention).getTypeArgumentPath(i) and
       result = this.getTypeArgumentAt(i, suffix) and

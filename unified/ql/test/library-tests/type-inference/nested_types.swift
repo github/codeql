@@ -95,7 +95,7 @@ class Outer<TOuter> {
     typealias Captured = Outer<TOuter>.Inner<Int>
 
     func f(x: Outer<String>.Captured) {
-        let outer = x.getOuter()  // $ target=Outer.Inner.getOuter $ MISSING: type=outer:String $ SPURIOUS: type=outer:TOuter
+        let outer = x.getOuter()  // $ target=Outer.Inner.getOuter type=outer:String
         let inner = x.getInner()  // $ target=Outer.Inner.getInner type=inner:Int
     }
 
@@ -250,7 +250,7 @@ class Box<T> {
 
     func f(
         _ x: IntBox,
-        _ y: Box<Int>.Same  // $ MISSING: type=y@Box<T>:Int $ SPURIOUS: type=y@Box<T>:T
+        _ y: Box<Int>.Same  // $ type=y@Box<T>:Int
     ) {}
 }
 
@@ -305,5 +305,29 @@ class SubSub: Sub {
         let b = x2.getX()  // $ target=Base2.Nested.getX $ MISSING: type=b:String -- this is an instance of variance sub typing
         let c = x3.getX()  // $ target=Base2.Nested.getX $ MISSING: type=c:String -- this is an instance of variance sub typing
         let d = x4.getX()  // $ target=Base2.Nested.getX $ MISSING: type=d:String -- this is an instance of variance sub typing
+    }
+}
+
+class A<Ta> {
+
+    class B<Tb> {
+        var b: Tb
+
+        init(b: Tb) {
+            self.b = b  // $ field=A.B.b
+        }
+
+        func getB() -> Tb {
+            return b  // $ field=A.B.b
+        }
+        class C<Tc> {
+            typealias Alias = A<Bool>
+        }
+    }
+
+    func f(x: B<Int>.C<String>.Alias.B<String>, y: B<String>.C<String>.Alias.B<Int>) {
+        let b1 = x.getB()  // $ type=b1:String target=A.B.getB
+        let b2 = y.getB()  // $ type=b2:Int target=A.B.getB
+
     }
 }

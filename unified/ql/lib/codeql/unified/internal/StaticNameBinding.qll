@@ -457,7 +457,14 @@ class NamespaceNode extends NameBindingNode {
     or
     not this.hasOwnMemberWithShadowingKey(name, shadowingKey.asSome()) and
     result = this.getAnInheritanceParent().getMemberFull(name, shadowingKey) and
-    isInheritableMemberNode(result)
+    isInheritableMemberNode(result) and
+    not exists(ClassLikeDeclaration self |
+      this.isStaticMemberNamespace(self)
+      or
+      this.isInstanceMemberNamespace(self)
+    |
+      result.isMember(self)
+    )
     or
     result = this.getAnExtension().getMemberFull(name, shadowingKey)
   }
@@ -475,7 +482,14 @@ class NamespaceNode extends NameBindingNode {
         parent = this.getAnInheritanceParent() and
         not this.hasOwnMemberWithShadowingKey(name, shadowingKey.asSome()) and
         result = parent.getMember(name, shadowingKey) and
-        isInheritableMemberNode(result)
+        isInheritableMemberNode(result) and
+        not exists(ClassLikeDeclaration self |
+          this.isStaticMemberNamespace(self)
+          or
+          this.isInstanceMemberNamespace(self)
+        |
+          result.isMember(self)
+        )
       )
     )
   }
