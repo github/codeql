@@ -85,18 +85,18 @@ impl Rule {
                         #(#guard_bindings)*
                         let ast = __ast;
                         let #ctx = __user_ctx;
-                        Ok(#guard)
+                        let __guard: bool = #guard;
+                        __guard
                     }),
                     Box::new(|__ast: &yeast::Ast, __output: &mut yeast::OutputAst, __captures: yeast::captures::Captures, __source_range: Option<yeast::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
                         let __skip: &[&str] = &[#(#raw_capture_names),*];
                         let __translated_captures =
-                            __translator.translate_captures(&__captures, __ast, __output, __user_ctx, __skip)?;
+                            __translator.translate_captures(&__captures, __ast, __output, __user_ctx, __skip);
                         #(#raw_bindings)*
                         #(#translated_bindings)*
                         let mut #ctx = yeast::build::BuildCtx::with_translator(__ast, __output, __source_range, __user_ctx, __translator);
                         let __result: Vec<yeast::OutputId> = { #replacement };
-                        let __result = #ctx.finish_rule(__result)?;
-                        Ok(__result)
+                        #ctx.finish_rule(__result)
                     }),
                 )
             }
