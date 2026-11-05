@@ -538,14 +538,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     /** Holds if catch clause `catch` catches all exceptions. */
     default predicate catchAll(CatchClause catch) { not exists(catch.getPattern()) }
 
+    /** Holds if `switch` is exhaustive, so one of its cases must match. */
+    default predicate isExhaustive(Switch switch) { none() }
+
     /**
      * Holds if case `c` matches all possible values, for example, if it is a
-     * `default` case or a match-all pattern like `Object o` or if it is the
-     * final case in a switch that is known to be exhaustive.
+     * match-all pattern like `Object o`.
      *
      * A match-all case can still ultimately fail to match if it has a guard.
+     *
+     * Default cases are handled automatically. The final case in an exhaustive
+     * switch should not be handled here but through `isExhaustive`.
      */
-    default predicate matchAll(Case c) { c instanceof DefaultCase }
+    default predicate matchAll(Case c) { none() }
   }
 
   /**
@@ -847,11 +852,23 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       result = DenseRank2<ParameterCtxDenseRankInput>::denseRank(c, ctx.asSome(), rnk)
     }
 
+    private predicate matchAll(Case c) {
+      c instanceof DefaultCase
+      or
+      Input1::matchAll(c)
+      or
+      exists(Switch switch, int last |
+        Input1::isExhaustive(switch) and
+        switch.getCase(last) = c and
+        not exists(switch.getCase(last + 1))
+      )
+    }
+
     private predicate constantCondition(AstNode n, ConditionalSuccessor t) {
       n.(BooleanLiteral).getValue() = t.(BooleanSuccessor).getValue()
       or
       exists(Case c, int i |
-        Input1::matchAll(c) and
+        matchAll(c) and
         c.getPattern(i) = n and
         not exists(c.getPattern(i + 1)) and
         t.(MatchingSuccessor).getValue() = true
