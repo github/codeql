@@ -15,9 +15,13 @@ module DataFlowInput implements InputSig<Location> {
 
   class ContentSet = D::ContentSet;
 
-  class ContentApprox = Content; // TODO
+  class ContentApprox = D::ContentApprox;
 
-  ContentApprox getContentApprox(Content c) { result = c } // TODO
+  ContentApprox getContentApprox(Content c) {
+    result = c
+    or
+    result.asNamedMember() = c.asField().getName()
+  }
 
   //
   // Parameter, argument, return, and out nodes and their positions/kinds
