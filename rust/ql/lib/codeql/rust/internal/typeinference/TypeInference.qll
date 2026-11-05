@@ -2492,6 +2492,8 @@ private module Input3 implements InputSig3 {
   final class Parameter = ParameterImpl;
 
   abstract private class ParameterImpl extends VariableDeclarationImpl {
+    string getExternalName() { none() } // arguments cannot be passed by name in Rust
+
     override predicate preservesInitializerType() { none() } // doesn't really matter, since there are no initializers/default values
 
     override AstNode getInitializer() { none() }
@@ -2643,6 +2645,12 @@ private module Input3 implements InputSig3 {
     )
   }
 
+  class Argument extends Expr {
+    string getName() { none() }
+
+    Expr getValue() { result = this }
+  }
+
   final class Invocation = InvocationImpl;
 
   abstract private class InvocationImpl extends Expr {
@@ -2650,7 +2658,9 @@ private module Input3 implements InputSig3 {
 
     abstract Type getTypeArgument(int pos, TypePath path);
 
-    abstract Expr getArgument(int i);
+    abstract Argument getArgument(int i);
+
+    predicate hasImplicitArgument(int i) { none() }
 
     abstract Callable getTarget(string derefChainBorrow);
 
@@ -2679,7 +2689,7 @@ private module Input3 implements InputSig3 {
         this.(MethodCallExpr).getGenericArgList().getTypeArg(pos).(TypeMention).getTypeAt(path)
     }
 
-    override Expr getArgument(int i) {
+    override Argument getArgument(int i) {
       exists(FunctionPosition pos |
         i = pos.asPosition() and
         result = super.getNodeAt(pos)
@@ -2727,7 +2737,7 @@ private module Input3 implements InputSig3 {
       result = getCallExprTypeArgument(this, pos, path)
     }
 
-    override Expr getArgument(int i) { result = NonAssocCallExpr.super.getArgument(i) }
+    override Argument getArgument(int i) { result = NonAssocCallExpr.super.getArgument(i) }
 
     pragma[nomagic]
     private Callable getTarget() { result = super.resolveCallTargetViaPathResolution() }
@@ -2765,7 +2775,7 @@ private module Input3 implements InputSig3 {
 
     override Type getTypeArgument(int pos, TypePath path) { none() }
 
-    override Expr getArgument(int i) { result = NonAssocCallExpr.super.getArgument(i) }
+    override Argument getArgument(int i) { result = NonAssocCallExpr.super.getArgument(i) }
 
     override Constructor getTarget() { result = super.resolveCallTargetViaPathResolution() }
   }
@@ -2783,7 +2793,7 @@ private module Input3 implements InputSig3 {
   }
 
   private class StructExprConstruction extends StructConstruction, StructExpr {
-    override Expr getArgument(int i) {
+    override Argument getArgument(int i) {
       result =
         this.getFieldExpr(pragma[only_bind_into](this.getNthStructField(i).getName().getText()))
             .getExpr()
@@ -2794,7 +2804,7 @@ private module Input3 implements InputSig3 {
   private class PathExprConstruction extends StructConstruction, PathExpr {
     PathExprConstruction() { not exists(CallExpr ce | this = ce.getFunction()) }
 
-    override Expr getArgument(int i) { none() }
+    override Argument getArgument(int i) { none() }
   }
 
   pragma[nomagic]
@@ -2879,7 +2889,7 @@ private module Input3 implements InputSig3 {
     )
   }
 
-  Type inferInvocationArgumentTypeContextual(Expr arg, TypePath path) {
+  Type inferInvocationArgumentTypeContextual(Argument arg, TypePath path) {
     exists(Invocation invocation, FunctionPosition pos, TypePath path0 |
       result =
         inferInvocationArgumentTypeContextualDefault(invocation, pos.asPosition(), arg, _, _, path0) and
