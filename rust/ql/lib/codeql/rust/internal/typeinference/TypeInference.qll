@@ -2322,11 +2322,6 @@ private module Input3 implements InputSig3 {
 
   class AssignExpr extends AssignmentImpl, Rust::AssignmentExpr { }
 
-  // Required by the shared type-inference signature; parenthesized expressions are transparent.
-  abstract class ParenExpr extends Expr {
-    Expr getExpr() { none() }
-  }
-
   final class Declaration = DeclarationImpl;
 
   abstract private class DeclarationImpl extends AstNode {

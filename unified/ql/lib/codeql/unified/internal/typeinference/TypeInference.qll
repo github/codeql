@@ -182,12 +182,6 @@ module Input3 implements InputSig3 {
 
   class AssignExpr extends Assignment, Unified::AssignExpr { }
 
-  class ParenExpr extends Expr {
-    ParenExpr() { none() }
-
-    Expr getExpr() { none() }
-  }
-
   private newtype TDeclaration =
     TAstVariableDeclaration(Unified::VariableDeclaration decl) or
     TCallableDeclaration(Unified::Callable c) or
