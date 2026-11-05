@@ -9,7 +9,9 @@ test_RequestExpr
 | src/http.js:4:41:4:43 | req | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
 | src/http.js:4:41:4:43 | req | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
 | src/http.js:6:26:6:28 | req | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
+| src/http.js:6:26:6:32 | [ssa-synth-read] req | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
 | src/http.js:8:3:8:5 | req | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
+| src/http.js:8:3:8:13 | [ssa-synth-read] req | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
 | src/http.js:9:3:9:5 | req | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
 | src/http.js:12:28:12:30 | req | src/http.js:12:19:16:1 | functio ... ar");\\n} |
 | src/http.js:55:21:55:23 | req | src/http.js:55:12:55:30 | function(req,res){} |
@@ -27,18 +29,22 @@ test_RequestExpr
 | src/https.js:4:42:4:44 | req | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
 | src/https.js:4:42:4:44 | req | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
 | src/https.js:6:26:6:28 | req | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
+| src/https.js:6:26:6:32 | [ssa-synth-read] req | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
 | src/https.js:8:3:8:5 | req | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
+| src/https.js:8:3:8:13 | [ssa-synth-read] req | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
 | src/https.js:9:3:9:5 | req | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
 | src/https.js:12:29:12:31 | req | src/https.js:12:20:16:1 | functio ... ar");\\n} |
 | src/indirect2.js:9:14:9:16 | req | src/indirect2.js:9:1:11:1 | functio ... res);\\n} |
 | src/indirect2.js:9:14:9:16 | req | src/indirect2.js:9:1:11:1 | functio ... res);\\n} |
 | src/indirect2.js:10:12:10:14 | req | src/indirect2.js:9:1:11:1 | functio ... res);\\n} |
+| src/indirect2.js:10:12:10:21 | [ssa-synth-read] req | src/indirect2.js:9:1:11:1 | functio ... res);\\n} |
 | src/indirect2.js:10:42:10:44 | req | src/indirect2.js:9:1:11:1 | functio ... res);\\n} |
 | src/indirect2.js:13:28:13:30 | req | src/indirect2.js:9:1:11:1 | functio ... res);\\n} |
 | src/indirect2.js:13:28:13:30 | req | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} |
 | src/indirect.js:16:21:16:23 | req | src/indirect.js:16:12:20:5 | functio ... ;\\n    } |
 | src/indirect.js:16:21:16:23 | req | src/indirect.js:16:12:20:5 | functio ... ;\\n    } |
 | src/indirect.js:17:28:17:30 | req | src/indirect.js:16:12:20:5 | functio ... ;\\n    } |
+| src/indirect.js:17:28:17:34 | [ssa-synth-read] req | src/indirect.js:16:12:20:5 | functio ... ;\\n    } |
 | src/indirect.js:19:33:19:35 | req | src/indirect.js:16:12:20:5 | functio ... ;\\n    } |
 | src/indirect.js:25:25:25:27 | req | src/indirect.js:25:24:27:3 | (req, r ... ");\\n  } |
 | src/indirect.js:28:24:28:26 | req | src/indirect.js:28:15:30:3 | functio ... ");\\n  } |
@@ -58,13 +64,19 @@ test_ResponseExpr
 | src/http.js:12:33:12:35 | res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
 | src/http.js:12:33:12:35 | res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
 | src/http.js:13:3:13:5 | res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
+| src/http.js:13:3:13:15 | [ssa-synth-read] res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
+| src/http.js:13:3:13:44 | [ssa-synth-read] res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
 | src/http.js:14:3:14:5 | res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
+| src/http.js:14:3:14:11 | [ssa-synth-read] res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
+| src/http.js:14:3:14:18 | [ssa-synth-read] res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
 | src/http.js:15:3:15:5 | res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
 | src/http.js:55:25:55:27 | res | src/http.js:55:12:55:30 | function(req,res){} |
 | src/http.js:60:27:60:29 | res | src/http.js:60:14:60:32 | function(req,res){} |
 | src/http.js:62:33:62:35 | res | src/http.js:62:19:65:1 | functio ... r2");\\n} |
 | src/http.js:62:33:62:35 | res | src/http.js:62:19:65:1 | functio ... r2");\\n} |
 | src/http.js:63:3:63:5 | res | src/http.js:62:19:65:1 | functio ... r2");\\n} |
+| src/http.js:63:3:63:15 | [ssa-synth-read] res | src/http.js:62:19:65:1 | functio ... r2");\\n} |
+| src/http.js:63:3:63:40 | [ssa-synth-read] res | src/http.js:62:19:65:1 | functio ... r2");\\n} |
 | src/http.js:64:3:64:5 | res | src/http.js:62:19:65:1 | functio ... r2");\\n} |
 | src/http.js:68:17:68:19 | res | src/http.js:68:12:68:27 | (req,res) => f() |
 | src/http.js:72:34:72:36 | res | src/http.js:72:19:76:1 | functio ... \\n  })\\n} |
@@ -84,7 +96,11 @@ test_ResponseExpr
 | src/https.js:12:34:12:36 | res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
 | src/https.js:12:34:12:36 | res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
 | src/https.js:13:3:13:5 | res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
+| src/https.js:13:3:13:15 | [ssa-synth-read] res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
+| src/https.js:13:3:13:44 | [ssa-synth-read] res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
 | src/https.js:14:3:14:5 | res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
+| src/https.js:14:3:14:11 | [ssa-synth-read] res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
+| src/https.js:14:3:14:18 | [ssa-synth-read] res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
 | src/https.js:15:3:15:5 | res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
 | src/indirect2.js:9:19:9:21 | res | src/indirect2.js:9:1:11:1 | functio ... res);\\n} |
 | src/indirect2.js:9:19:9:21 | res | src/indirect2.js:9:1:11:1 | functio ... res);\\n} |
@@ -95,6 +111,10 @@ test_ResponseExpr
 | src/indirect2.js:13:33:13:35 | res | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} |
 | src/indirect2.js:14:3:14:5 | res | src/indirect2.js:9:1:11:1 | functio ... res);\\n} |
 | src/indirect2.js:14:3:14:5 | res | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} |
+| src/indirect2.js:14:3:14:15 | [ssa-synth-read] res | src/indirect2.js:9:1:11:1 | functio ... res);\\n} |
+| src/indirect2.js:14:3:14:15 | [ssa-synth-read] res | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} |
+| src/indirect2.js:14:3:14:51 | [ssa-synth-read] res | src/indirect2.js:9:1:11:1 | functio ... res);\\n} |
+| src/indirect2.js:14:3:14:51 | [ssa-synth-read] res | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} |
 | src/indirect2.js:15:3:15:5 | res | src/indirect2.js:9:1:11:1 | functio ... res);\\n} |
 | src/indirect2.js:15:3:15:5 | res | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} |
 | src/indirect.js:16:26:16:28 | res | src/indirect.js:16:12:20:5 | functio ... ;\\n    } |
@@ -285,7 +305,9 @@ test_RouteHandler_getARequestExpr
 | src/http.js:4:32:10:1 | functio ... .foo;\\n} | src/http.js:4:41:4:43 | req |
 | src/http.js:4:32:10:1 | functio ... .foo;\\n} | src/http.js:4:41:4:43 | req |
 | src/http.js:4:32:10:1 | functio ... .foo;\\n} | src/http.js:6:26:6:28 | req |
+| src/http.js:4:32:10:1 | functio ... .foo;\\n} | src/http.js:6:26:6:32 | [ssa-synth-read] req |
 | src/http.js:4:32:10:1 | functio ... .foo;\\n} | src/http.js:8:3:8:5 | req |
+| src/http.js:4:32:10:1 | functio ... .foo;\\n} | src/http.js:8:3:8:13 | [ssa-synth-read] req |
 | src/http.js:4:32:10:1 | functio ... .foo;\\n} | src/http.js:9:3:9:5 | req |
 | src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:12:28:12:30 | req |
 | src/http.js:55:12:55:30 | function(req,res){} | src/http.js:55:21:55:23 | req |
@@ -303,18 +325,22 @@ test_RouteHandler_getARequestExpr
 | src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:4:42:4:44 | req |
 | src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:4:42:4:44 | req |
 | src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:6:26:6:28 | req |
+| src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:6:26:6:32 | [ssa-synth-read] req |
 | src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:8:3:8:5 | req |
+| src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:8:3:8:13 | [ssa-synth-read] req |
 | src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:9:3:9:5 | req |
 | src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:12:29:12:31 | req |
 | src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:9:14:9:16 | req |
 | src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:9:14:9:16 | req |
 | src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:10:12:10:14 | req |
+| src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:10:12:10:21 | [ssa-synth-read] req |
 | src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:10:42:10:44 | req |
 | src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:13:28:13:30 | req |
 | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} | src/indirect2.js:13:28:13:30 | req |
 | src/indirect.js:16:12:20:5 | functio ... ;\\n    } | src/indirect.js:16:21:16:23 | req |
 | src/indirect.js:16:12:20:5 | functio ... ;\\n    } | src/indirect.js:16:21:16:23 | req |
 | src/indirect.js:16:12:20:5 | functio ... ;\\n    } | src/indirect.js:17:28:17:30 | req |
+| src/indirect.js:16:12:20:5 | functio ... ;\\n    } | src/indirect.js:17:28:17:34 | [ssa-synth-read] req |
 | src/indirect.js:16:12:20:5 | functio ... ;\\n    } | src/indirect.js:19:33:19:35 | req |
 | src/indirect.js:25:24:27:3 | (req, r ... ");\\n  } | src/indirect.js:25:25:25:27 | req |
 | src/indirect.js:28:15:30:3 | functio ... ");\\n  } | src/indirect.js:28:24:28:26 | req |
@@ -331,13 +357,19 @@ test_RouteHandler_getAResponseExpr
 | src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:12:33:12:35 | res |
 | src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:12:33:12:35 | res |
 | src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:13:3:13:5 | res |
+| src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:13:3:13:15 | [ssa-synth-read] res |
+| src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:13:3:13:44 | [ssa-synth-read] res |
 | src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:14:3:14:5 | res |
+| src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:14:3:14:11 | [ssa-synth-read] res |
+| src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:14:3:14:18 | [ssa-synth-read] res |
 | src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:15:3:15:5 | res |
 | src/http.js:55:12:55:30 | function(req,res){} | src/http.js:55:25:55:27 | res |
 | src/http.js:60:14:60:32 | function(req,res){} | src/http.js:60:27:60:29 | res |
 | src/http.js:62:19:65:1 | functio ... r2");\\n} | src/http.js:62:33:62:35 | res |
 | src/http.js:62:19:65:1 | functio ... r2");\\n} | src/http.js:62:33:62:35 | res |
 | src/http.js:62:19:65:1 | functio ... r2");\\n} | src/http.js:63:3:63:5 | res |
+| src/http.js:62:19:65:1 | functio ... r2");\\n} | src/http.js:63:3:63:15 | [ssa-synth-read] res |
+| src/http.js:62:19:65:1 | functio ... r2");\\n} | src/http.js:63:3:63:40 | [ssa-synth-read] res |
 | src/http.js:62:19:65:1 | functio ... r2");\\n} | src/http.js:64:3:64:5 | res |
 | src/http.js:68:12:68:27 | (req,res) => f() | src/http.js:68:17:68:19 | res |
 | src/http.js:72:19:76:1 | functio ... \\n  })\\n} | src/http.js:72:34:72:36 | res |
@@ -357,7 +389,11 @@ test_RouteHandler_getAResponseExpr
 | src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:12:34:12:36 | res |
 | src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:12:34:12:36 | res |
 | src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:13:3:13:5 | res |
+| src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:13:3:13:15 | [ssa-synth-read] res |
+| src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:13:3:13:44 | [ssa-synth-read] res |
 | src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:14:3:14:5 | res |
+| src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:14:3:14:11 | [ssa-synth-read] res |
+| src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:14:3:14:18 | [ssa-synth-read] res |
 | src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:15:3:15:5 | res |
 | src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:9:19:9:21 | res |
 | src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:9:19:9:21 | res |
@@ -365,10 +401,14 @@ test_RouteHandler_getAResponseExpr
 | src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:13:33:13:35 | res |
 | src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:13:33:13:35 | res |
 | src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:14:3:14:5 | res |
+| src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:14:3:14:15 | [ssa-synth-read] res |
+| src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:14:3:14:51 | [ssa-synth-read] res |
 | src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:15:3:15:5 | res |
 | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} | src/indirect2.js:13:33:13:35 | res |
 | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} | src/indirect2.js:13:33:13:35 | res |
 | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} | src/indirect2.js:14:3:14:5 | res |
+| src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} | src/indirect2.js:14:3:14:15 | [ssa-synth-read] res |
+| src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} | src/indirect2.js:14:3:14:51 | [ssa-synth-read] res |
 | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} | src/indirect2.js:15:3:15:5 | res |
 | src/indirect.js:16:12:20:5 | functio ... ;\\n    } | src/indirect.js:16:26:16:28 | res |
 | src/indirect.js:16:12:20:5 | functio ... ;\\n    } | src/indirect.js:16:26:16:28 | res |

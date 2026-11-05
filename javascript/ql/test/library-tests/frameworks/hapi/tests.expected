@@ -23,14 +23,20 @@ test_RequestExpr
 | src/hapi.js:20:19:20:25 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:20:19:20:25 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:21:3:21:9 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapi.js:21:3:21:20 | [ssa-synth-read] request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapi.js:22:3:22:21 | [ssa-synth-read] request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:22:3:22:21 | getRequest(request) | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:22:14:22:20 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapi.js:23:3:23:21 | [ssa-synth-read] request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:23:3:23:21 | getRequest(request) | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:23:14:23:20 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapi.js:23:34:23:52 | [ssa-synth-read] request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:23:34:23:52 | getRequest(request) | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:23:45:23:51 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:24:3:24:9 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapi.js:24:3:24:13 | [ssa-synth-read] request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:25:3:25:9 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapi.js:25:3:25:17 | [ssa-synth-read] request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:26:3:26:9 | request | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapi.js:34:22:34:24 | req | src/hapi.js:34:12:34:30 | function (req, h){} |
 | src/hapi.js:38:1:40:1 | return of function getRequest | src/hapi.js:20:1:27:1 | functio ... oken;\\n} |
@@ -44,12 +50,19 @@ test_RequestExpr
 | src/hapiglue.js:20:19:20:25 | request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:20:19:20:25 | request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:21:3:21:9 | request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
+| src/hapiglue.js:21:3:21:20 | [ssa-synth-read] request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:22:3:22:9 | request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
+| src/hapiglue.js:22:3:22:17 | [ssa-synth-read] request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:23:3:23:9 | request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
+| src/hapiglue.js:23:3:23:15 | [ssa-synth-read] request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:24:3:24:9 | request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
+| src/hapiglue.js:24:3:24:16 | [ssa-synth-read] request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:25:3:25:9 | request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
+| src/hapiglue.js:25:3:25:13 | [ssa-synth-read] request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:26:3:26:9 | request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
+| src/hapiglue.js:26:3:26:13 | [ssa-synth-read] request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:27:3:27:9 | request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
+| src/hapiglue.js:27:3:27:17 | [ssa-synth-read] request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:28:3:28:9 | request | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} |
 | src/hapiglue.js:36:22:36:24 | req | src/hapiglue.js:36:12:36:33 | functio ... hapi){} |
 | src/hapihapi.js:13:32:13:38 | request | src/hapihapi.js:13:14:15:5 | functio ... n\\n    } |
@@ -59,16 +72,23 @@ test_RequestExpr
 | src/hapihapi.js:20:19:20:25 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapihapi.js:20:19:20:25 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapihapi.js:21:3:21:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:21:3:21:20 | [ssa-synth-read] request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapihapi.js:22:3:22:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:22:3:22:17 | [ssa-synth-read] request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapihapi.js:23:3:23:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:23:3:23:15 | [ssa-synth-read] request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapihapi.js:24:3:24:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:24:3:24:13 | [ssa-synth-read] request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapihapi.js:25:3:25:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
+| src/hapihapi.js:25:3:25:17 | [ssa-synth-read] request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapihapi.js:26:3:26:9 | request | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} |
 | src/hapihapi.js:34:22:34:24 | req | src/hapihapi.js:34:12:34:30 | function (req, h){} |
 | src/wrapped-route-configurator.js:8:39:8:45 | request | src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } |
 | src/wrapped-route-configurator.js:8:39:8:45 | request | src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } |
 | src/wrapped-route-configurator.js:9:20:9:26 | request | src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } |
+| src/wrapped-route-configurator.js:9:20:9:33 | [ssa-synth-read] request | src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } |
 | src/wrapped-route-configurator.js:9:36:9:42 | request | src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } |
+| src/wrapped-route-configurator.js:9:36:9:48 | [ssa-synth-read] request | src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } |
 | src/wrapped-route-configurator.js:9:51:9:57 | request | src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } |
 test_HeaderAccess
 | src/hapi.js:25:3:25:21 | request.headers.baz | baz |
@@ -186,14 +206,20 @@ test_RouteHandler_getARequestExpr
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:20:19:20:25 | request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:20:19:20:25 | request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:21:3:21:9 | request |
+| src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:21:3:21:20 | [ssa-synth-read] request |
+| src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:22:3:22:21 | [ssa-synth-read] request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:22:3:22:21 | getRequest(request) |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:22:14:22:20 | request |
+| src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:23:3:23:21 | [ssa-synth-read] request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:23:3:23:21 | getRequest(request) |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:23:14:23:20 | request |
+| src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:23:34:23:52 | [ssa-synth-read] request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:23:34:23:52 | getRequest(request) |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:23:45:23:51 | request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:24:3:24:9 | request |
+| src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:24:3:24:13 | [ssa-synth-read] request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:25:3:25:9 | request |
+| src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:25:3:25:17 | [ssa-synth-read] request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:26:3:26:9 | request |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:38:1:40:1 | return of function getRequest |
 | src/hapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapi.js:38:21:38:27 | request |
@@ -207,12 +233,19 @@ test_RouteHandler_getARequestExpr
 | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:20:19:20:25 | request |
 | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:20:19:20:25 | request |
 | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:21:3:21:9 | request |
+| src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:21:3:21:20 | [ssa-synth-read] request |
 | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:22:3:22:9 | request |
+| src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:22:3:22:17 | [ssa-synth-read] request |
 | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:23:3:23:9 | request |
+| src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:23:3:23:15 | [ssa-synth-read] request |
 | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:24:3:24:9 | request |
+| src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:24:3:24:16 | [ssa-synth-read] request |
 | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:25:3:25:9 | request |
+| src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:25:3:25:13 | [ssa-synth-read] request |
 | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:26:3:26:9 | request |
+| src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:26:3:26:13 | [ssa-synth-read] request |
 | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:27:3:27:9 | request |
+| src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:27:3:27:17 | [ssa-synth-read] request |
 | src/hapiglue.js:20:1:29:1 | functio ... oken;\\n} | src/hapiglue.js:28:3:28:9 | request |
 | src/hapiglue.js:36:12:36:33 | functio ... hapi){} | src/hapiglue.js:36:22:36:24 | req |
 | src/hapihapi.js:13:14:15:5 | functio ... n\\n    } | src/hapihapi.js:13:32:13:38 | request |
@@ -222,16 +255,23 @@ test_RouteHandler_getARequestExpr
 | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:20:19:20:25 | request |
 | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:20:19:20:25 | request |
 | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:21:3:21:9 | request |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:21:3:21:20 | [ssa-synth-read] request |
 | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:22:3:22:9 | request |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:22:3:22:17 | [ssa-synth-read] request |
 | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:23:3:23:9 | request |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:23:3:23:15 | [ssa-synth-read] request |
 | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:24:3:24:9 | request |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:24:3:24:13 | [ssa-synth-read] request |
 | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:25:3:25:9 | request |
+| src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:25:3:25:17 | [ssa-synth-read] request |
 | src/hapihapi.js:20:1:27:1 | functio ... oken;\\n} | src/hapihapi.js:26:3:26:9 | request |
 | src/hapihapi.js:34:12:34:30 | function (req, h){} | src/hapihapi.js:34:22:34:24 | req |
 | src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } | src/wrapped-route-configurator.js:8:39:8:45 | request |
 | src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } | src/wrapped-route-configurator.js:8:39:8:45 | request |
 | src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } | src/wrapped-route-configurator.js:9:20:9:26 | request |
+| src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } | src/wrapped-route-configurator.js:9:20:9:33 | [ssa-synth-read] request |
 | src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } | src/wrapped-route-configurator.js:9:36:9:42 | request |
+| src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } | src/wrapped-route-configurator.js:9:36:9:48 | [ssa-synth-read] request |
 | src/wrapped-route-configurator.js:8:23:10:3 | async f ... d);\\n  } | src/wrapped-route-configurator.js:9:51:9:57 | request |
 test_HeaderDefinition_getAHeaderName
 | src/hapi.js:14:9:14:46 | request ... 1', '') | header1 |

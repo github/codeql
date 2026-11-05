@@ -335,8 +335,10 @@ module MakeStateBarrierGuard<
     Ssa2::SsaDataflowInput::Guard guard, Ssa2::SsaDataflowInput::Expr test, Boolean branch,
     FlowState state
   ) {
-    exists(BarrierGuard g |
-      g.asExpr() = guard and
+    exists(BarrierGuard g, ConditionGuardNode cond |
+      cond.getTest() = guard and
+      barrierGuardUsedInCondition(g, cond, branch) and
+      Ssa2::isExplicitRead(test) and
       g.blocksExpr(branch, test, state)
     )
   }
@@ -386,7 +388,15 @@ module MakeStateBarrierGuard<
     or
     exists(Expr use |
       barrierGuardBlocksAccessPathUse(use, state) and
-      nd = DataFlow::valueNode(use)
+      (
+        nd = DataFlow::valueNode(use)
+        or
+        exists(Ssa2::ExprNode read |
+          read.getExpr() = use and
+          not Ssa2::isPostUpdateRead(read) and
+          nd = DataFlowPrivate::getNodeFromSsa2(read)
+        )
+      )
     )
     or
     ssa2BlocksNode(nd, state)

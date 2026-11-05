@@ -326,7 +326,7 @@ function mergeRephinementNode(dst, src) {
 }
 
 function mergeSelective(dst, src) {
-    for (let key in src) { // $ Source
+    for (let key in src) {
         if (src.hasOwnProperty(key)) {
             // Only 'prefs' is merged recursively
             if (key in dst && key !== 'prefs') {
@@ -335,7 +335,7 @@ function mergeSelective(dst, src) {
             if (dst[key]) {
                 mergeSelective(dst[key], src[key]);
             } else {
-                dst[key] = src[key]; // $ Alert
+                dst[key] = src[key];
             }
         }
     }

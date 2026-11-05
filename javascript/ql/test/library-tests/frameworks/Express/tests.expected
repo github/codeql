@@ -84,6 +84,8 @@ test_isRequest
 | src/express3.js:4:32:4:34 | req |
 | src/express3.js:4:32:4:34 | req |
 | src/express3.js:5:14:5:16 | req |
+| src/express3.js:5:14:5:22 | [ssa-synth-read] req |
+| src/express3.js:5:14:5:32 | [ssa-synth-read] req |
 | src/express3.js:5:35:5:37 | req |
 | src/express3.js:10:22:10:24 | req |
 | src/express3.js:15:20:15:22 | req |
@@ -91,30 +93,46 @@ test_isRequest
 | src/express4.js:4:32:4:34 | req |
 | src/express4.js:4:32:4:34 | req |
 | src/express4.js:5:27:5:29 | req |
+| src/express4.js:5:27:5:35 | [ssa-synth-read] req |
 | src/express4.js:6:18:6:20 | req |
+| src/express4.js:6:18:6:26 | [ssa-synth-read] req |
 | src/express4.js:7:18:7:20 | req |
 | src/express.js:4:32:4:34 | req |
 | src/express.js:4:32:4:34 | req |
 | src/express.js:5:16:5:18 | req |
+| src/express.js:5:16:5:24 | [ssa-synth-read] req |
+| src/express.js:5:16:5:34 | [ssa-synth-read] req |
 | src/express.js:6:26:6:28 | req |
 | src/express.js:16:28:16:30 | req |
 | src/express.js:22:39:22:41 | req |
 | src/express.js:22:39:22:41 | req |
 | src/express.js:23:3:23:5 | req |
+| src/express.js:23:3:23:10 | [ssa-synth-read] req |
 | src/express.js:24:3:24:5 | req |
+| src/express.js:24:3:24:12 | [ssa-synth-read] req |
 | src/express.js:25:3:25:5 | req |
+| src/express.js:25:3:25:11 | [ssa-synth-read] req |
 | src/express.js:26:3:26:5 | req |
+| src/express.js:26:3:26:9 | [ssa-synth-read] req |
 | src/express.js:27:3:27:5 | req |
+| src/express.js:27:3:27:17 | [ssa-synth-read] req |
 | src/express.js:28:3:28:5 | req |
+| src/express.js:28:3:28:9 | [ssa-synth-read] req |
+| src/express.js:28:3:28:16 | [ssa-synth-read] req |
 | src/express.js:29:3:29:5 | req |
+| src/express.js:29:3:29:12 | [ssa-synth-read] req |
+| src/express.js:29:3:29:19 | [ssa-synth-read] req |
 | src/express.js:30:3:30:5 | req |
 | src/express.js:37:19:37:21 | req |
 | src/express.js:42:11:42:13 | req |
 | src/express.js:46:31:46:33 | req |
 | src/express.js:46:31:46:33 | req |
 | src/express.js:47:3:47:5 | req |
+| src/express.js:47:3:47:13 | [ssa-synth-read] req |
 | src/express.js:48:3:48:5 | req |
+| src/express.js:48:3:48:10 | [ssa-synth-read] req |
 | src/express.js:49:3:49:5 | req |
+| src/express.js:49:3:49:14 | [ssa-synth-read] req |
 | src/express.js:50:3:50:5 | req |
 | src/express.js:53:32:53:34 | req |
 | src/express.js:53:32:53:34 | req |
@@ -140,12 +158,16 @@ test_isRequest
 | src/middleware-flow.js:5:20:5:22 | req |
 | src/middleware-flow.js:5:20:5:22 | req |
 | src/middleware-flow.js:6:5:6:7 | req |
+| src/middleware-flow.js:6:5:6:21 | [ssa-synth-read] req |
 | src/middleware-flow.js:7:5:7:7 | req |
+| src/middleware-flow.js:7:5:7:12 | [ssa-synth-read] req |
 | src/middleware-flow.js:8:5:8:7 | req |
 | src/middleware-flow.js:17:25:17:27 | req |
 | src/middleware-flow.js:17:25:17:27 | req |
 | src/middleware-flow.js:18:9:18:11 | req |
+| src/middleware-flow.js:18:9:18:14 | [ssa-synth-read] req |
 | src/middleware-flow.js:19:9:19:11 | req |
+| src/middleware-flow.js:19:9:19:16 | [ssa-synth-read] req |
 | src/middleware-flow.js:20:9:20:11 | req |
 | src/middleware-flow.js:23:18:23:20 | req |
 | src/middleware-flow.js:23:18:23:20 | req |
@@ -156,11 +178,14 @@ test_isRequest
 | src/middleware-flow.js:39:24:39:26 | req |
 | src/middleware-flow.js:39:24:39:26 | req |
 | src/middleware-flow.js:40:5:40:7 | req |
+| src/middleware-flow.js:40:5:40:10 | [ssa-synth-read] req |
 | src/middleware-flow.js:41:5:41:7 | req |
+| src/middleware-flow.js:41:5:41:12 | [ssa-synth-read] req |
 | src/middleware-flow.js:42:5:42:7 | req |
 | src/params.js:4:19:4:21 | req |
 | src/params.js:4:19:4:21 | req |
 | src/params.js:5:17:5:19 | req |
+| src/params.js:5:17:5:25 | [ssa-synth-read] req |
 | src/params.js:6:17:6:19 | req |
 | src/params.js:14:33:14:35 | req |
 | src/passport.js:27:13:27:15 | req |
@@ -288,6 +313,8 @@ test_isResponse
 | src/express3.js:4:37:4:39 | res |
 | src/express3.js:4:37:4:39 | res |
 | src/express3.js:5:3:5:5 | res |
+| src/express3.js:5:3:5:12 | [ssa-synth-read] res |
+| src/express3.js:5:3:5:51 | [ssa-synth-read] res |
 | src/express3.js:5:3:5:51 | res.hea ... "val")) |
 | src/express3.js:6:3:6:5 | res |
 | src/express3.js:6:3:6:17 | res.send("val") |
@@ -301,9 +328,15 @@ test_isResponse
 | src/express.js:4:37:4:39 | res |
 | src/express.js:4:37:4:39 | res |
 | src/express.js:5:3:5:5 | res |
+| src/express.js:5:3:5:14 | [ssa-synth-read] res |
+| src/express.js:5:3:5:35 | [ssa-synth-read] res |
 | src/express.js:6:3:6:5 | res |
+| src/express.js:6:3:6:12 | [ssa-synth-read] res |
+| src/express.js:6:3:6:45 | [ssa-synth-read] res |
 | src/express.js:6:3:6:45 | res.hea ... rget")) |
 | src/express.js:7:3:7:5 | res |
+| src/express.js:7:3:7:12 | [ssa-synth-read] res |
+| src/express.js:7:3:7:42 | [ssa-synth-read] res |
 | src/express.js:7:3:7:42 | res.hea ... plain") |
 | src/express.js:8:7:8:9 | res |
 | src/express.js:11:14:11:16 | arg |
@@ -324,34 +357,52 @@ test_isResponse
 | src/express.js:53:37:53:39 | res |
 | src/express.js:53:37:53:39 | res |
 | src/express.js:54:3:54:5 | res |
+| src/express.js:54:3:54:12 | [ssa-synth-read] res |
+| src/express.js:54:3:54:41 | [ssa-synth-read] res |
 | src/express.js:54:3:54:41 | res.hea ... /html") |
 | src/express.js:55:3:55:5 | res |
+| src/express.js:55:3:55:10 | [ssa-synth-read] res |
+| src/express.js:55:3:55:26 | [ssa-synth-read] res |
 | src/express.js:55:3:55:26 | res.sen ... ms.foo) |
 | src/express.js:56:7:56:9 | res |
 | src/express.js:59:37:59:39 | res |
 | src/express.js:59:37:59:39 | res |
 | src/express.js:60:3:60:5 | res |
+| src/express.js:60:3:60:12 | [ssa-synth-read] res |
+| src/express.js:60:3:60:47 | [ssa-synth-read] res |
 | src/express.js:60:3:60:47 | res.hea ... n/xml") |
 | src/express.js:61:3:61:5 | res |
+| src/express.js:61:3:61:10 | [ssa-synth-read] res |
+| src/express.js:61:3:61:26 | [ssa-synth-read] res |
 | src/express.js:61:3:61:26 | res.sen ... ms.foo) |
 | src/express.js:62:7:62:9 | res |
 | src/express.js:65:41:65:43 | res |
 | src/express.js:65:41:65:43 | res |
 | src/express.js:66:3:66:5 | res |
+| src/express.js:66:3:66:12 | [ssa-synth-read] res |
+| src/express.js:66:3:66:42 | [ssa-synth-read] res |
 | src/express.js:66:3:66:42 | res.hea ... plain") |
 | src/express.js:67:3:67:5 | res |
+| src/express.js:67:3:67:10 | [ssa-synth-read] res |
+| src/express.js:67:3:67:26 | [ssa-synth-read] res |
 | src/express.js:67:3:67:26 | res.sen ... ms.foo) |
 | src/express.js:68:7:68:9 | res |
 | src/express.js:71:37:71:39 | res |
 | src/express.js:71:37:71:39 | res |
 | src/express.js:72:3:72:5 | res |
+| src/express.js:72:3:72:12 | [ssa-synth-read] res |
+| src/express.js:72:3:72:41 | [ssa-synth-read] res |
 | src/express.js:72:3:72:41 | res.hea ... /html") |
 | src/express.js:73:3:73:5 | res |
+| src/express.js:73:3:73:10 | [ssa-synth-read] res |
+| src/express.js:73:3:73:20 | [ssa-synth-read] res |
 | src/express.js:73:3:73:20 | res.send(req.path) |
 | src/express.js:74:7:74:9 | res |
 | src/inheritedFromNode.js:4:29:4:31 | res |
 | src/inheritedFromNode.js:4:29:4:31 | res |
 | src/inheritedFromNode.js:5:2:5:4 | res |
+| src/inheritedFromNode.js:5:2:5:8 | [ssa-synth-read] res |
+| src/inheritedFromNode.js:5:2:5:10 | [ssa-synth-read] res |
 | src/inheritedFromNode.js:6:2:6:4 | res |
 | src/json.js:4:37:4:39 | res |
 | src/json.js:4:37:4:39 | res |
@@ -389,36 +440,68 @@ test_isResponse
 | src/responseExprs.js:16:44:16:46 | res |
 | src/responseExprs.js:16:44:16:46 | res |
 | src/responseExprs.js:19:5:19:7 | res |
+| src/responseExprs.js:19:5:19:14 | [ssa-synth-read] res |
+| src/responseExprs.js:19:5:19:16 | [ssa-synth-read] res |
 | src/responseExprs.js:19:5:19:16 | res.append() |
 | src/responseExprs.js:20:5:20:7 | res |
+| src/responseExprs.js:20:5:20:18 | [ssa-synth-read] res |
+| src/responseExprs.js:20:5:20:20 | [ssa-synth-read] res |
 | src/responseExprs.js:20:5:20:20 | res.attachment() |
 | src/responseExprs.js:21:5:21:7 | res |
+| src/responseExprs.js:21:5:21:19 | [ssa-synth-read] res |
+| src/responseExprs.js:21:5:21:21 | [ssa-synth-read] res |
 | src/responseExprs.js:21:5:21:21 | res.clearCookie() |
 | src/responseExprs.js:22:5:22:7 | res |
+| src/responseExprs.js:22:5:22:19 | [ssa-synth-read] res |
+| src/responseExprs.js:22:5:22:21 | [ssa-synth-read] res |
 | src/responseExprs.js:22:5:22:21 | res.contentType() |
 | src/responseExprs.js:23:5:23:7 | res |
+| src/responseExprs.js:23:5:23:14 | [ssa-synth-read] res |
+| src/responseExprs.js:23:5:23:16 | [ssa-synth-read] res |
 | src/responseExprs.js:23:5:23:16 | res.cookie() |
 | src/responseExprs.js:24:5:24:7 | res |
+| src/responseExprs.js:24:5:24:14 | [ssa-synth-read] res |
+| src/responseExprs.js:24:5:24:16 | [ssa-synth-read] res |
 | src/responseExprs.js:24:5:24:16 | res.format() |
 | src/responseExprs.js:25:5:25:7 | res |
+| src/responseExprs.js:25:5:25:14 | [ssa-synth-read] res |
+| src/responseExprs.js:25:5:25:16 | [ssa-synth-read] res |
 | src/responseExprs.js:25:5:25:16 | res.header() |
 | src/responseExprs.js:26:5:26:7 | res |
+| src/responseExprs.js:26:5:26:13 | [ssa-synth-read] res |
+| src/responseExprs.js:26:5:26:15 | [ssa-synth-read] res |
 | src/responseExprs.js:26:5:26:15 | res.links() |
 | src/responseExprs.js:27:5:27:7 | res |
+| src/responseExprs.js:27:5:27:16 | [ssa-synth-read] res |
+| src/responseExprs.js:27:5:27:18 | [ssa-synth-read] res |
 | src/responseExprs.js:27:5:27:18 | res.location() |
 | src/responseExprs.js:28:5:28:7 | res |
+| src/responseExprs.js:28:5:28:12 | [ssa-synth-read] res |
+| src/responseExprs.js:28:5:28:14 | [ssa-synth-read] res |
 | src/responseExprs.js:28:5:28:14 | res.send() |
 | src/responseExprs.js:29:5:29:7 | res |
+| src/responseExprs.js:29:5:29:18 | [ssa-synth-read] res |
+| src/responseExprs.js:29:5:29:20 | [ssa-synth-read] res |
 | src/responseExprs.js:29:5:29:20 | res.sendStatus() |
 | src/responseExprs.js:30:5:30:7 | res |
+| src/responseExprs.js:30:5:30:11 | [ssa-synth-read] res |
+| src/responseExprs.js:30:5:30:13 | [ssa-synth-read] res |
 | src/responseExprs.js:30:5:30:13 | res.set() |
 | src/responseExprs.js:31:5:31:7 | res |
+| src/responseExprs.js:31:5:31:14 | [ssa-synth-read] res |
+| src/responseExprs.js:31:5:31:16 | [ssa-synth-read] res |
 | src/responseExprs.js:31:5:31:16 | res.status() |
 | src/responseExprs.js:32:5:32:7 | res |
+| src/responseExprs.js:32:5:32:12 | [ssa-synth-read] res |
+| src/responseExprs.js:32:5:32:14 | [ssa-synth-read] res |
 | src/responseExprs.js:32:5:32:14 | res.type() |
 | src/responseExprs.js:33:5:33:7 | res |
+| src/responseExprs.js:33:5:33:12 | [ssa-synth-read] res |
+| src/responseExprs.js:33:5:33:14 | [ssa-synth-read] res |
 | src/responseExprs.js:33:5:33:14 | res.vary() |
 | src/responseExprs.js:35:5:35:7 | res |
+| src/responseExprs.js:35:5:35:14 | [ssa-synth-read] res |
+| src/responseExprs.js:35:5:35:16 | [ssa-synth-read] res |
 | src/responseExprs.js:35:5:35:16 | res.status() |
 | src/responseExprs.js:35:5:35:23 | res.status().send() |
 | src/responseExprs.js:37:5:37:19 | f(res.append()) |
@@ -544,6 +627,8 @@ test_RequestExpr
 | src/express3.js:4:32:4:34 | req | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:4:32:4:34 | req | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:5:14:5:16 | req | src/express3.js:4:23:7:1 | functio ... al");\\n} |
+| src/express3.js:5:14:5:22 | [ssa-synth-read] req | src/express3.js:4:23:7:1 | functio ... al");\\n} |
+| src/express3.js:5:14:5:32 | [ssa-synth-read] req | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:5:35:5:37 | req | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:10:22:10:24 | req | src/express3.js:10:12:10:32 | functio ...  res){} |
 | src/express3.js:15:20:15:22 | req | src/express3.js:15:10:15:30 | functio ...  res){} |
@@ -551,30 +636,46 @@ test_RequestExpr
 | src/express4.js:4:32:4:34 | req | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express4.js:4:32:4:34 | req | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express4.js:5:27:5:29 | req | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
+| src/express4.js:5:27:5:35 | [ssa-synth-read] req | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express4.js:6:18:6:20 | req | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
+| src/express4.js:6:18:6:26 | [ssa-synth-read] req | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express4.js:7:18:7:20 | req | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:4:32:4:34 | req | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:4:32:4:34 | req | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:5:16:5:18 | req | src/express.js:4:23:9:1 | functio ... res);\\n} |
+| src/express.js:5:16:5:24 | [ssa-synth-read] req | src/express.js:4:23:9:1 | functio ... res);\\n} |
+| src/express.js:5:16:5:34 | [ssa-synth-read] req | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:6:26:6:28 | req | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:16:28:16:30 | req | src/express.js:16:19:18:3 | functio ... ");\\n  } |
 | src/express.js:22:39:22:41 | req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:22:39:22:41 | req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:23:3:23:5 | req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
+| src/express.js:23:3:23:10 | [ssa-synth-read] req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:24:3:24:5 | req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
+| src/express.js:24:3:24:12 | [ssa-synth-read] req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:25:3:25:5 | req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
+| src/express.js:25:3:25:11 | [ssa-synth-read] req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:26:3:26:5 | req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
+| src/express.js:26:3:26:9 | [ssa-synth-read] req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:27:3:27:5 | req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
+| src/express.js:27:3:27:17 | [ssa-synth-read] req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:28:3:28:5 | req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
+| src/express.js:28:3:28:9 | [ssa-synth-read] req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
+| src/express.js:28:3:28:16 | [ssa-synth-read] req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:29:3:29:5 | req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
+| src/express.js:29:3:29:12 | [ssa-synth-read] req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
+| src/express.js:29:3:29:19 | [ssa-synth-read] req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:30:3:30:5 | req | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:37:19:37:21 | req | src/express.js:37:10:37:31 | functio ... es) { } |
 | src/express.js:42:11:42:13 | req | src/express.js:42:10:42:26 | (req, res) => f() |
 | src/express.js:46:31:46:33 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:46:31:46:33 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:47:3:47:5 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
+| src/express.js:47:3:47:13 | [ssa-synth-read] req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:48:3:48:5 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
+| src/express.js:48:3:48:10 | [ssa-synth-read] req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:49:3:49:5 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
+| src/express.js:49:3:49:14 | [ssa-synth-read] req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:50:3:50:5 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:53:32:53:34 | req | src/express.js:53:23:57:1 | functio ... res);\\n} |
 | src/express.js:53:32:53:34 | req | src/express.js:53:23:57:1 | functio ... res);\\n} |
@@ -600,12 +701,16 @@ test_RequestExpr
 | src/middleware-flow.js:5:20:5:22 | req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
 | src/middleware-flow.js:5:20:5:22 | req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
 | src/middleware-flow.js:6:5:6:7 | req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
+| src/middleware-flow.js:6:5:6:21 | [ssa-synth-read] req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
 | src/middleware-flow.js:7:5:7:7 | req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
+| src/middleware-flow.js:7:5:7:12 | [ssa-synth-read] req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
 | src/middleware-flow.js:8:5:8:7 | req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
 | src/middleware-flow.js:17:25:17:27 | req | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
 | src/middleware-flow.js:17:25:17:27 | req | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
 | src/middleware-flow.js:18:9:18:11 | req | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
+| src/middleware-flow.js:18:9:18:14 | [ssa-synth-read] req | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
 | src/middleware-flow.js:19:9:19:11 | req | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
+| src/middleware-flow.js:19:9:19:16 | [ssa-synth-read] req | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
 | src/middleware-flow.js:20:9:20:11 | req | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
 | src/middleware-flow.js:23:18:23:20 | req | src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } |
 | src/middleware-flow.js:23:18:23:20 | req | src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } |
@@ -616,11 +721,14 @@ test_RequestExpr
 | src/middleware-flow.js:39:24:39:26 | req | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
 | src/middleware-flow.js:39:24:39:26 | req | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
 | src/middleware-flow.js:40:5:40:7 | req | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
+| src/middleware-flow.js:40:5:40:10 | [ssa-synth-read] req | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
 | src/middleware-flow.js:41:5:41:7 | req | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
+| src/middleware-flow.js:41:5:41:12 | [ssa-synth-read] req | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
 | src/middleware-flow.js:42:5:42:7 | req | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
 | src/params.js:4:19:4:21 | req | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:4:19:4:21 | req | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:5:17:5:19 | req | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
+| src/params.js:5:17:5:25 | [ssa-synth-read] req | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:6:17:6:19 | req | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:14:33:14:35 | req | src/params.js:14:24:16:1 | functio ... lo");\\n} |
 | src/passport.js:27:13:27:15 | req | src/passport.js:27:4:29:1 | functio ... ccss`\\n} |
@@ -764,6 +872,8 @@ test_ResponseExpr
 | src/express3.js:4:37:4:39 | res | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:4:37:4:39 | res | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:5:3:5:5 | res | src/express3.js:4:23:7:1 | functio ... al");\\n} |
+| src/express3.js:5:3:5:12 | [ssa-synth-read] res | src/express3.js:4:23:7:1 | functio ... al");\\n} |
+| src/express3.js:5:3:5:51 | [ssa-synth-read] res | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:5:3:5:51 | res.hea ... "val")) | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:6:3:6:5 | res | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:6:3:6:17 | res.send("val") | src/express3.js:4:23:7:1 | functio ... al");\\n} |
@@ -777,9 +887,15 @@ test_ResponseExpr
 | src/express.js:4:37:4:39 | res | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:4:37:4:39 | res | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:5:3:5:5 | res | src/express.js:4:23:9:1 | functio ... res);\\n} |
+| src/express.js:5:3:5:14 | [ssa-synth-read] res | src/express.js:4:23:9:1 | functio ... res);\\n} |
+| src/express.js:5:3:5:35 | [ssa-synth-read] res | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:6:3:6:5 | res | src/express.js:4:23:9:1 | functio ... res);\\n} |
+| src/express.js:6:3:6:12 | [ssa-synth-read] res | src/express.js:4:23:9:1 | functio ... res);\\n} |
+| src/express.js:6:3:6:45 | [ssa-synth-read] res | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:6:3:6:45 | res.hea ... rget")) | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:7:3:7:5 | res | src/express.js:4:23:9:1 | functio ... res);\\n} |
+| src/express.js:7:3:7:12 | [ssa-synth-read] res | src/express.js:4:23:9:1 | functio ... res);\\n} |
+| src/express.js:7:3:7:42 | [ssa-synth-read] res | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:7:3:7:42 | res.hea ... plain") | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:8:7:8:9 | res | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:11:14:11:16 | arg | src/express.js:4:23:9:1 | functio ... res);\\n} |
@@ -816,34 +932,52 @@ test_ResponseExpr
 | src/express.js:53:37:53:39 | res | src/express.js:53:23:57:1 | functio ... res);\\n} |
 | src/express.js:53:37:53:39 | res | src/express.js:53:23:57:1 | functio ... res);\\n} |
 | src/express.js:54:3:54:5 | res | src/express.js:53:23:57:1 | functio ... res);\\n} |
+| src/express.js:54:3:54:12 | [ssa-synth-read] res | src/express.js:53:23:57:1 | functio ... res);\\n} |
+| src/express.js:54:3:54:41 | [ssa-synth-read] res | src/express.js:53:23:57:1 | functio ... res);\\n} |
 | src/express.js:54:3:54:41 | res.hea ... /html") | src/express.js:53:23:57:1 | functio ... res);\\n} |
 | src/express.js:55:3:55:5 | res | src/express.js:53:23:57:1 | functio ... res);\\n} |
+| src/express.js:55:3:55:10 | [ssa-synth-read] res | src/express.js:53:23:57:1 | functio ... res);\\n} |
+| src/express.js:55:3:55:26 | [ssa-synth-read] res | src/express.js:53:23:57:1 | functio ... res);\\n} |
 | src/express.js:55:3:55:26 | res.sen ... ms.foo) | src/express.js:53:23:57:1 | functio ... res);\\n} |
 | src/express.js:56:7:56:9 | res | src/express.js:53:23:57:1 | functio ... res);\\n} |
 | src/express.js:59:37:59:39 | res | src/express.js:59:23:63:1 | functio ... res);\\n} |
 | src/express.js:59:37:59:39 | res | src/express.js:59:23:63:1 | functio ... res);\\n} |
 | src/express.js:60:3:60:5 | res | src/express.js:59:23:63:1 | functio ... res);\\n} |
+| src/express.js:60:3:60:12 | [ssa-synth-read] res | src/express.js:59:23:63:1 | functio ... res);\\n} |
+| src/express.js:60:3:60:47 | [ssa-synth-read] res | src/express.js:59:23:63:1 | functio ... res);\\n} |
 | src/express.js:60:3:60:47 | res.hea ... n/xml") | src/express.js:59:23:63:1 | functio ... res);\\n} |
 | src/express.js:61:3:61:5 | res | src/express.js:59:23:63:1 | functio ... res);\\n} |
+| src/express.js:61:3:61:10 | [ssa-synth-read] res | src/express.js:59:23:63:1 | functio ... res);\\n} |
+| src/express.js:61:3:61:26 | [ssa-synth-read] res | src/express.js:59:23:63:1 | functio ... res);\\n} |
 | src/express.js:61:3:61:26 | res.sen ... ms.foo) | src/express.js:59:23:63:1 | functio ... res);\\n} |
 | src/express.js:62:7:62:9 | res | src/express.js:59:23:63:1 | functio ... res);\\n} |
 | src/express.js:65:41:65:43 | res | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:65:41:65:43 | res | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:66:3:66:5 | res | src/express.js:65:27:69:1 | functio ... res);\\n} |
+| src/express.js:66:3:66:12 | [ssa-synth-read] res | src/express.js:65:27:69:1 | functio ... res);\\n} |
+| src/express.js:66:3:66:42 | [ssa-synth-read] res | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:66:3:66:42 | res.hea ... plain") | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:67:3:67:5 | res | src/express.js:65:27:69:1 | functio ... res);\\n} |
+| src/express.js:67:3:67:10 | [ssa-synth-read] res | src/express.js:65:27:69:1 | functio ... res);\\n} |
+| src/express.js:67:3:67:26 | [ssa-synth-read] res | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:67:3:67:26 | res.sen ... ms.foo) | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:68:7:68:9 | res | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:71:37:71:39 | res | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/express.js:71:37:71:39 | res | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/express.js:72:3:72:5 | res | src/express.js:71:23:75:1 | functio ... res);\\n} |
+| src/express.js:72:3:72:12 | [ssa-synth-read] res | src/express.js:71:23:75:1 | functio ... res);\\n} |
+| src/express.js:72:3:72:41 | [ssa-synth-read] res | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/express.js:72:3:72:41 | res.hea ... /html") | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/express.js:73:3:73:5 | res | src/express.js:71:23:75:1 | functio ... res);\\n} |
+| src/express.js:73:3:73:10 | [ssa-synth-read] res | src/express.js:71:23:75:1 | functio ... res);\\n} |
+| src/express.js:73:3:73:20 | [ssa-synth-read] res | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/express.js:73:3:73:20 | res.send(req.path) | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/express.js:74:7:74:9 | res | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/inheritedFromNode.js:4:29:4:31 | res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/inheritedFromNode.js:4:29:4:31 | res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/inheritedFromNode.js:5:2:5:4 | res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/inheritedFromNode.js:5:2:5:8 | [ssa-synth-read] res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/inheritedFromNode.js:5:2:5:10 | [ssa-synth-read] res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/inheritedFromNode.js:6:2:6:4 | res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/json.js:4:37:4:39 | res | src/json.js:4:23:6:1 | functio ... ata);\\n} |
 | src/json.js:4:37:4:39 | res | src/json.js:4:23:6:1 | functio ... ata);\\n} |
@@ -881,36 +1015,68 @@ test_ResponseExpr
 | src/responseExprs.js:16:44:16:46 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:16:44:16:46 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:19:5:19:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:19:5:19:14 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:19:5:19:16 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:19:5:19:16 | res.append() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:20:5:20:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:20:5:20:18 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:20:5:20:20 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:20:5:20:20 | res.attachment() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:21:5:21:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:21:5:21:19 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:21:5:21:21 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:21:5:21:21 | res.clearCookie() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:22:5:22:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:22:5:22:19 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:22:5:22:21 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:22:5:22:21 | res.contentType() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:23:5:23:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:23:5:23:14 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:23:5:23:16 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:23:5:23:16 | res.cookie() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:24:5:24:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:24:5:24:14 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:24:5:24:16 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:24:5:24:16 | res.format() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:25:5:25:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:25:5:25:14 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:25:5:25:16 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:25:5:25:16 | res.header() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:26:5:26:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:26:5:26:13 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:26:5:26:15 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:26:5:26:15 | res.links() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:27:5:27:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:27:5:27:16 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:27:5:27:18 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:27:5:27:18 | res.location() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:28:5:28:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:28:5:28:12 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:28:5:28:14 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:28:5:28:14 | res.send() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:29:5:29:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:29:5:29:18 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:29:5:29:20 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:29:5:29:20 | res.sendStatus() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:30:5:30:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:30:5:30:11 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:30:5:30:13 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:30:5:30:13 | res.set() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:31:5:31:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:31:5:31:14 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:31:5:31:16 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:31:5:31:16 | res.status() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:32:5:32:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:32:5:32:12 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:32:5:32:14 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:32:5:32:14 | res.type() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:33:5:33:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:33:5:33:12 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:33:5:33:14 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:33:5:33:14 | res.vary() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:35:5:35:7 | res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:35:5:35:14 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/responseExprs.js:35:5:35:16 | [ssa-synth-read] res | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:35:5:35:16 | res.status() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:35:5:35:23 | res.status().send() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:37:5:37:19 | f(res.append()) | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
@@ -1710,6 +1876,8 @@ test_RouteHandler_getARequestExpr
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:4:32:4:34 | req |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:4:32:4:34 | req |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:5:14:5:16 | req |
+| src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:5:14:5:22 | [ssa-synth-read] req |
+| src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:5:14:5:32 | [ssa-synth-read] req |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:5:35:5:37 | req |
 | src/express3.js:10:12:10:32 | functio ...  res){} | src/express3.js:10:22:10:24 | req |
 | src/express3.js:15:10:15:30 | functio ...  res){} | src/express3.js:15:20:15:22 | req |
@@ -1717,30 +1885,46 @@ test_RouteHandler_getARequestExpr
 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:4:32:4:34 | req |
 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:4:32:4:34 | req |
 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:5:27:5:29 | req |
+| src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:5:27:5:35 | [ssa-synth-read] req |
 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:6:18:6:20 | req |
+| src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:6:18:6:26 | [ssa-synth-read] req |
 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:7:18:7:20 | req |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:4:32:4:34 | req |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:4:32:4:34 | req |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:5:16:5:18 | req |
+| src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:5:16:5:24 | [ssa-synth-read] req |
+| src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:5:16:5:34 | [ssa-synth-read] req |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:6:26:6:28 | req |
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:16:28:16:30 | req |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:22:39:22:41 | req |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:22:39:22:41 | req |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:23:3:23:5 | req |
+| src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:23:3:23:10 | [ssa-synth-read] req |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:24:3:24:5 | req |
+| src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:24:3:24:12 | [ssa-synth-read] req |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:25:3:25:5 | req |
+| src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:25:3:25:11 | [ssa-synth-read] req |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:26:3:26:5 | req |
+| src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:26:3:26:9 | [ssa-synth-read] req |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:27:3:27:5 | req |
+| src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:27:3:27:17 | [ssa-synth-read] req |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:28:3:28:5 | req |
+| src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:28:3:28:9 | [ssa-synth-read] req |
+| src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:28:3:28:16 | [ssa-synth-read] req |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:29:3:29:5 | req |
+| src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:29:3:29:12 | [ssa-synth-read] req |
+| src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:29:3:29:19 | [ssa-synth-read] req |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:30:3:30:5 | req |
 | src/express.js:37:10:37:31 | functio ... es) { } | src/express.js:37:19:37:21 | req |
 | src/express.js:42:10:42:26 | (req, res) => f() | src/express.js:42:11:42:13 | req |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:46:31:46:33 | req |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:46:31:46:33 | req |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:47:3:47:5 | req |
+| src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:47:3:47:13 | [ssa-synth-read] req |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:48:3:48:5 | req |
+| src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:48:3:48:10 | [ssa-synth-read] req |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:49:3:49:5 | req |
+| src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:49:3:49:14 | [ssa-synth-read] req |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:50:3:50:5 | req |
 | src/express.js:53:23:57:1 | functio ... res);\\n} | src/express.js:53:32:53:34 | req |
 | src/express.js:53:23:57:1 | functio ... res);\\n} | src/express.js:53:32:53:34 | req |
@@ -1766,12 +1950,16 @@ test_RouteHandler_getARequestExpr
 | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:5:20:5:22 | req |
 | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:5:20:5:22 | req |
 | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:6:5:6:7 | req |
+| src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:6:5:6:21 | [ssa-synth-read] req |
 | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:7:5:7:7 | req |
+| src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:7:5:7:12 | [ssa-synth-read] req |
 | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:8:5:8:7 | req |
 | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:17:25:17:27 | req |
 | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:17:25:17:27 | req |
 | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:18:9:18:11 | req |
+| src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:18:9:18:14 | [ssa-synth-read] req |
 | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:19:9:19:11 | req |
+| src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:19:9:19:16 | [ssa-synth-read] req |
 | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:20:9:20:11 | req |
 | src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } | src/middleware-flow.js:23:18:23:20 | req |
 | src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } | src/middleware-flow.js:23:18:23:20 | req |
@@ -1782,11 +1970,14 @@ test_RouteHandler_getARequestExpr
 | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:39:24:39:26 | req |
 | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:39:24:39:26 | req |
 | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:40:5:40:7 | req |
+| src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:40:5:40:10 | [ssa-synth-read] req |
 | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:41:5:41:7 | req |
+| src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:41:5:41:12 | [ssa-synth-read] req |
 | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:42:5:42:7 | req |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:4:19:4:21 | req |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:4:19:4:21 | req |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:5:17:5:19 | req |
+| src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:5:17:5:25 | [ssa-synth-read] req |
 | src/params.js:4:18:12:1 | (req, r ...     }\\n} | src/params.js:6:17:6:19 | req |
 | src/params.js:14:24:16:1 | functio ... lo");\\n} | src/params.js:14:33:14:35 | req |
 | src/passport.js:27:4:29:1 | functio ... ccss`\\n} | src/passport.js:27:13:27:15 | req |
@@ -1892,6 +2083,8 @@ test_RouteHandler_getAResponseExpr
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:4:37:4:39 | res |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:4:37:4:39 | res |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:5:3:5:5 | res |
+| src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:5:3:5:12 | [ssa-synth-read] res |
+| src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:5:3:5:51 | [ssa-synth-read] res |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:5:3:5:51 | res.hea ... "val")) |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:6:3:6:5 | res |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:6:3:6:17 | res.send("val") |
@@ -1905,9 +2098,15 @@ test_RouteHandler_getAResponseExpr
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:4:37:4:39 | res |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:4:37:4:39 | res |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:5:3:5:5 | res |
+| src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:5:3:5:14 | [ssa-synth-read] res |
+| src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:5:3:5:35 | [ssa-synth-read] res |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:6:3:6:5 | res |
+| src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:6:3:6:12 | [ssa-synth-read] res |
+| src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:6:3:6:45 | [ssa-synth-read] res |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:6:3:6:45 | res.hea ... rget")) |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:7:3:7:5 | res |
+| src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:7:3:7:12 | [ssa-synth-read] res |
+| src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:7:3:7:42 | [ssa-synth-read] res |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:7:3:7:42 | res.hea ... plain") |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:8:7:8:9 | res |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:11:14:11:16 | arg |
@@ -1932,8 +2131,12 @@ test_RouteHandler_getAResponseExpr
 | src/express.js:53:23:57:1 | functio ... res);\\n} | src/express.js:53:37:53:39 | res |
 | src/express.js:53:23:57:1 | functio ... res);\\n} | src/express.js:53:37:53:39 | res |
 | src/express.js:53:23:57:1 | functio ... res);\\n} | src/express.js:54:3:54:5 | res |
+| src/express.js:53:23:57:1 | functio ... res);\\n} | src/express.js:54:3:54:12 | [ssa-synth-read] res |
+| src/express.js:53:23:57:1 | functio ... res);\\n} | src/express.js:54:3:54:41 | [ssa-synth-read] res |
 | src/express.js:53:23:57:1 | functio ... res);\\n} | src/express.js:54:3:54:41 | res.hea ... /html") |
 | src/express.js:53:23:57:1 | functio ... res);\\n} | src/express.js:55:3:55:5 | res |
+| src/express.js:53:23:57:1 | functio ... res);\\n} | src/express.js:55:3:55:10 | [ssa-synth-read] res |
+| src/express.js:53:23:57:1 | functio ... res);\\n} | src/express.js:55:3:55:26 | [ssa-synth-read] res |
 | src/express.js:53:23:57:1 | functio ... res);\\n} | src/express.js:55:3:55:26 | res.sen ... ms.foo) |
 | src/express.js:53:23:57:1 | functio ... res);\\n} | src/express.js:56:7:56:9 | res |
 | src/express.js:59:23:63:1 | functio ... res);\\n} | src/express.js:11:14:11:16 | arg |
@@ -1943,8 +2146,12 @@ test_RouteHandler_getAResponseExpr
 | src/express.js:59:23:63:1 | functio ... res);\\n} | src/express.js:59:37:59:39 | res |
 | src/express.js:59:23:63:1 | functio ... res);\\n} | src/express.js:59:37:59:39 | res |
 | src/express.js:59:23:63:1 | functio ... res);\\n} | src/express.js:60:3:60:5 | res |
+| src/express.js:59:23:63:1 | functio ... res);\\n} | src/express.js:60:3:60:12 | [ssa-synth-read] res |
+| src/express.js:59:23:63:1 | functio ... res);\\n} | src/express.js:60:3:60:47 | [ssa-synth-read] res |
 | src/express.js:59:23:63:1 | functio ... res);\\n} | src/express.js:60:3:60:47 | res.hea ... n/xml") |
 | src/express.js:59:23:63:1 | functio ... res);\\n} | src/express.js:61:3:61:5 | res |
+| src/express.js:59:23:63:1 | functio ... res);\\n} | src/express.js:61:3:61:10 | [ssa-synth-read] res |
+| src/express.js:59:23:63:1 | functio ... res);\\n} | src/express.js:61:3:61:26 | [ssa-synth-read] res |
 | src/express.js:59:23:63:1 | functio ... res);\\n} | src/express.js:61:3:61:26 | res.sen ... ms.foo) |
 | src/express.js:59:23:63:1 | functio ... res);\\n} | src/express.js:62:7:62:9 | res |
 | src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:11:14:11:16 | arg |
@@ -1954,8 +2161,12 @@ test_RouteHandler_getAResponseExpr
 | src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:65:41:65:43 | res |
 | src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:65:41:65:43 | res |
 | src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:66:3:66:5 | res |
+| src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:66:3:66:12 | [ssa-synth-read] res |
+| src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:66:3:66:42 | [ssa-synth-read] res |
 | src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:66:3:66:42 | res.hea ... plain") |
 | src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:67:3:67:5 | res |
+| src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:67:3:67:10 | [ssa-synth-read] res |
+| src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:67:3:67:26 | [ssa-synth-read] res |
 | src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:67:3:67:26 | res.sen ... ms.foo) |
 | src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:68:7:68:9 | res |
 | src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:11:14:11:16 | arg |
@@ -1965,13 +2176,19 @@ test_RouteHandler_getAResponseExpr
 | src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:71:37:71:39 | res |
 | src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:71:37:71:39 | res |
 | src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:72:3:72:5 | res |
+| src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:72:3:72:12 | [ssa-synth-read] res |
+| src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:72:3:72:41 | [ssa-synth-read] res |
 | src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:72:3:72:41 | res.hea ... /html") |
 | src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:73:3:73:5 | res |
+| src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:73:3:73:10 | [ssa-synth-read] res |
+| src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:73:3:73:20 | [ssa-synth-read] res |
 | src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:73:3:73:20 | res.send(req.path) |
 | src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:74:7:74:9 | res |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:29:4:31 | res |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:29:4:31 | res |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:5:2:5:4 | res |
+| src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:5:2:5:8 | [ssa-synth-read] res |
+| src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:5:2:5:10 | [ssa-synth-read] res |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:6:2:6:4 | res |
 | src/json.js:4:23:6:1 | functio ... ata);\\n} | src/json.js:4:37:4:39 | res |
 | src/json.js:4:23:6:1 | functio ... ata);\\n} | src/json.js:4:37:4:39 | res |
@@ -2009,36 +2226,68 @@ test_RouteHandler_getAResponseExpr
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:16:44:16:46 | res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:16:44:16:46 | res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:19:5:19:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:19:5:19:14 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:19:5:19:16 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:19:5:19:16 | res.append() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:20:5:20:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:20:5:20:18 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:20:5:20:20 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:20:5:20:20 | res.attachment() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:21:5:21:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:21:5:21:19 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:21:5:21:21 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:21:5:21:21 | res.clearCookie() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:22:5:22:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:22:5:22:19 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:22:5:22:21 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:22:5:22:21 | res.contentType() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:23:5:23:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:23:5:23:14 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:23:5:23:16 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:23:5:23:16 | res.cookie() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:24:5:24:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:24:5:24:14 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:24:5:24:16 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:24:5:24:16 | res.format() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:25:5:25:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:25:5:25:14 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:25:5:25:16 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:25:5:25:16 | res.header() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:26:5:26:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:26:5:26:13 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:26:5:26:15 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:26:5:26:15 | res.links() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:27:5:27:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:27:5:27:16 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:27:5:27:18 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:27:5:27:18 | res.location() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:28:5:28:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:28:5:28:12 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:28:5:28:14 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:28:5:28:14 | res.send() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:29:5:29:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:29:5:29:18 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:29:5:29:20 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:29:5:29:20 | res.sendStatus() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:30:5:30:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:30:5:30:11 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:30:5:30:13 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:30:5:30:13 | res.set() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:31:5:31:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:31:5:31:14 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:31:5:31:16 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:31:5:31:16 | res.status() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:32:5:32:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:32:5:32:12 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:32:5:32:14 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:32:5:32:14 | res.type() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:33:5:33:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:33:5:33:12 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:33:5:33:14 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:33:5:33:14 | res.vary() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:35:5:35:7 | res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:35:5:35:14 | [ssa-synth-read] res |
+| src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:35:5:35:16 | [ssa-synth-read] res |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:35:5:35:16 | res.status() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:35:5:35:23 | res.status().send() |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:37:5:37:19 | f(res.append()) |

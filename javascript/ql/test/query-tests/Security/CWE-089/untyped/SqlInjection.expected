@@ -45,7 +45,6 @@
 | json-schema-validator.js:55:22:55:26 | query | json-schema-validator.js:50:34:50:47 | req.query.data | json-schema-validator.js:55:22:55:26 | query | This query object depends on a $@. | json-schema-validator.js:50:34:50:47 | req.query.data | user-provided value |
 | json-schema-validator.js:59:22:59:26 | query | json-schema-validator.js:50:34:50:47 | req.query.data | json-schema-validator.js:59:22:59:26 | query | This query object depends on a $@. | json-schema-validator.js:50:34:50:47 | req.query.data | user-provided value |
 | json-schema-validator.js:61:22:61:26 | query | json-schema-validator.js:50:34:50:47 | req.query.data | json-schema-validator.js:61:22:61:26 | query | This query object depends on a $@. | json-schema-validator.js:50:34:50:47 | req.query.data | user-provided value |
-| koarouter.js:17:27:17:77 | `SELECT ... nd ')}` | koarouter.js:5:13:5:19 | version | koarouter.js:17:27:17:77 | `SELECT ... nd ')}` | This query string depends on a $@. | koarouter.js:5:13:5:19 | version | user-provided value |
 | ldap.js:28:30:28:34 | opts1 | ldap.js:20:21:20:27 | req.url | ldap.js:28:30:28:34 | opts1 | This query string depends on a $@. | ldap.js:20:21:20:27 | req.url | user-provided value |
 | ldap.js:32:5:32:61 | { filte ... e}))` } | ldap.js:20:21:20:27 | req.url | ldap.js:32:5:32:61 | { filte ... e}))` } | This query string depends on a $@. | ldap.js:20:21:20:27 | req.url | user-provided value |
 | ldap.js:66:30:66:53 | { filte ... ilter } | ldap.js:20:21:20:27 | req.url | ldap.js:66:30:66:53 | { filte ... ilter } | This query string depends on a $@. | ldap.js:20:21:20:27 | req.url | user-provided value |
@@ -302,13 +301,6 @@ edges
 | json-schema-validator.js:50:15:50:19 | query | json-schema-validator.js:61:22:61:26 | query | provenance |  |
 | json-schema-validator.js:50:23:50:48 | JSON.pa ... y.data) | json-schema-validator.js:50:15:50:19 | query | provenance |  |
 | json-schema-validator.js:50:34:50:47 | req.query.data | json-schema-validator.js:50:23:50:48 | JSON.pa ... y.data) | provenance | Config |
-| koarouter.js:5:13:5:19 | version | koarouter.js:5:13:5:19 | version | provenance |  |
-| koarouter.js:5:13:5:19 | version | koarouter.js:14:38:14:44 | version | provenance |  |
-| koarouter.js:14:9:14:18 | [post update] conditions [ArrayElement] | koarouter.js:17:52:17:61 | conditions [ArrayElement] | provenance |  |
-| koarouter.js:14:25:14:46 | `versio ... rsion}` | koarouter.js:14:9:14:18 | [post update] conditions [ArrayElement] | provenance |  |
-| koarouter.js:14:38:14:44 | version | koarouter.js:14:25:14:46 | `versio ... rsion}` | provenance |  |
-| koarouter.js:17:52:17:61 | conditions [ArrayElement] | koarouter.js:17:52:17:75 | conditi ...  and ') | provenance |  |
-| koarouter.js:17:52:17:75 | conditi ...  and ') | koarouter.js:17:27:17:77 | `SELECT ... nd ')}` | provenance |  |
 | ldap.js:20:7:20:7 | q | ldap.js:22:18:22:18 | q | provenance |  |
 | ldap.js:20:11:20:34 | url.par ... , true) | ldap.js:20:7:20:7 | q | provenance |  |
 | ldap.js:20:21:20:27 | req.url | ldap.js:20:11:20:34 | url.par ... , true) | provenance |  |
@@ -790,14 +782,6 @@ nodes
 | json-schema-validator.js:55:22:55:26 | query | semmle.label | query |
 | json-schema-validator.js:59:22:59:26 | query | semmle.label | query |
 | json-schema-validator.js:61:22:61:26 | query | semmle.label | query |
-| koarouter.js:5:13:5:19 | version | semmle.label | version |
-| koarouter.js:5:13:5:19 | version | semmle.label | version |
-| koarouter.js:14:9:14:18 | [post update] conditions [ArrayElement] | semmle.label | [post update] conditions [ArrayElement] |
-| koarouter.js:14:25:14:46 | `versio ... rsion}` | semmle.label | `versio ... rsion}` |
-| koarouter.js:14:38:14:44 | version | semmle.label | version |
-| koarouter.js:17:27:17:77 | `SELECT ... nd ')}` | semmle.label | `SELECT ... nd ')}` |
-| koarouter.js:17:52:17:61 | conditions [ArrayElement] | semmle.label | conditions [ArrayElement] |
-| koarouter.js:17:52:17:75 | conditi ...  and ') | semmle.label | conditi ...  and ') |
 | ldap.js:20:7:20:7 | q | semmle.label | q |
 | ldap.js:20:11:20:34 | url.par ... , true) | semmle.label | url.par ... , true) |
 | ldap.js:20:21:20:27 | req.url | semmle.label | req.url |

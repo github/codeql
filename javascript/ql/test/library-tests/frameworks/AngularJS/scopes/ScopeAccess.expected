@@ -59,6 +59,8 @@
 | scope for <div>...</> | dev-guide-5.js:4:47:4:52 | $scope |
 | scope for <div>...</> | dev-guide-5.js:5:3:5:8 | $scope |
 | scope for <div>...</> | dev-guide-5.js:5:3:5:8 | $scope |
+| scope for <div>...</> | dev-guide-5.js:5:3:5:64 | [ssa-synth-read] $scope |
+| scope for <div>...</> | dev-guide-5.js:5:3:5:64 | [ssa-synth-read] $scope |
 | scope for <div>...</> | dev-guide-5.js:6:3:6:8 | $scope |
 | scope for <div>...</> | dev-guide-5.js:6:3:6:8 | $scope |
 | scope for <div>...</> | dev-guide-6.js:4:47:4:52 | $scope |
@@ -67,6 +69,8 @@
 | scope for <div>...</> | dev-guide-6.js:4:47:4:52 | $scope |
 | scope for <div>...</> | dev-guide-6.js:5:3:5:8 | $scope |
 | scope for <div>...</> | dev-guide-6.js:5:3:5:8 | $scope |
+| scope for <div>...</> | dev-guide-6.js:5:3:5:64 | [ssa-synth-read] $scope |
+| scope for <div>...</> | dev-guide-6.js:5:3:5:64 | [ssa-synth-read] $scope |
 | scope for <div>...</> | dev-guide-6.js:6:3:6:8 | $scope |
 | scope for <div>...</> | dev-guide-6.js:6:3:6:8 | $scope |
 | scope for <elementthatusescontroller1>...</> | scope-access.js:59:52:59:57 | $scope |
@@ -116,18 +120,22 @@
 | scope in dev-guide-5.html | dev-guide-5.js:4:47:4:52 | $scope |
 | scope in dev-guide-5.html | dev-guide-5.js:4:47:4:52 | $scope |
 | scope in dev-guide-5.html | dev-guide-5.js:5:3:5:8 | $scope |
+| scope in dev-guide-5.html | dev-guide-5.js:5:3:5:64 | [ssa-synth-read] $scope |
 | scope in dev-guide-5.html | dev-guide-5.js:6:3:6:8 | $scope |
 | scope in dev-guide-5.html | dev-guide-6.js:4:47:4:52 | $scope |
 | scope in dev-guide-5.html | dev-guide-6.js:4:47:4:52 | $scope |
 | scope in dev-guide-5.html | dev-guide-6.js:5:3:5:8 | $scope |
+| scope in dev-guide-5.html | dev-guide-6.js:5:3:5:64 | [ssa-synth-read] $scope |
 | scope in dev-guide-5.html | dev-guide-6.js:6:3:6:8 | $scope |
 | scope in dev-guide-6.html | dev-guide-5.js:4:47:4:52 | $scope |
 | scope in dev-guide-6.html | dev-guide-5.js:4:47:4:52 | $scope |
 | scope in dev-guide-6.html | dev-guide-5.js:5:3:5:8 | $scope |
+| scope in dev-guide-6.html | dev-guide-5.js:5:3:5:64 | [ssa-synth-read] $scope |
 | scope in dev-guide-6.html | dev-guide-5.js:6:3:6:8 | $scope |
 | scope in dev-guide-6.html | dev-guide-6.js:4:47:4:52 | $scope |
 | scope in dev-guide-6.html | dev-guide-6.js:4:47:4:52 | $scope |
 | scope in dev-guide-6.html | dev-guide-6.js:5:3:5:8 | $scope |
+| scope in dev-guide-6.html | dev-guide-6.js:5:3:5:64 | [ssa-synth-read] $scope |
 | scope in dev-guide-6.html | dev-guide-6.js:6:3:6:8 | $scope |
 | scope in scope-access.html | scope-access.js:54:34:54:39 | $scope |
 | scope in scope-access.html | scope-access.js:54:34:54:39 | $scope |

@@ -658,7 +658,6 @@ nodes
 | tst.js:389:18:389:30 | target.taint7 | semmle.label | target.taint7 |
 | tst.js:391:3:391:8 | [post update] target [taint8] | semmle.label | [post update] target [taint8] |
 | tst.js:391:19:391:24 | target | semmle.label | target |
-| tst.js:391:19:391:24 | target [taint8] | semmle.label | target [taint8] |
 | tst.js:391:19:391:31 | target.taint8 | semmle.label | target.taint8 |
 | tst.js:392:18:392:23 | target [taint8] | semmle.label | target [taint8] |
 | tst.js:392:18:392:30 | target.taint8 | semmle.label | target.taint8 |
@@ -1302,10 +1301,8 @@ edges
 | tst.js:375:18:375:23 | target [taint3] | tst.js:375:18:375:30 | target.taint3 | provenance |  |
 | tst.js:380:18:380:23 | target | tst.js:380:18:380:30 | target.taint5 | provenance |  |
 | tst.js:389:18:389:23 | target | tst.js:389:18:389:30 | target.taint7 | provenance |  |
-| tst.js:391:3:391:8 | [post update] target [taint8] | tst.js:391:19:391:24 | target [taint8] | provenance |  |
 | tst.js:391:3:391:8 | [post update] target [taint8] | tst.js:392:18:392:23 | target [taint8] | provenance |  |
 | tst.js:391:19:391:24 | target | tst.js:391:19:391:31 | target.taint8 | provenance |  |
-| tst.js:391:19:391:24 | target [taint8] | tst.js:391:19:391:31 | target.taint8 | provenance |  |
 | tst.js:391:19:391:31 | target.taint8 | tst.js:391:3:391:8 | [post update] target [taint8] | provenance |  |
 | tst.js:392:18:392:23 | target [taint8] | tst.js:392:18:392:30 | target.taint8 | provenance |  |
 | tst.js:399:7:399:13 | payload | tst.js:400:18:400:24 | payload | provenance |  |

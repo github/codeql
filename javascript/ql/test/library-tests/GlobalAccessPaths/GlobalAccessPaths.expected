@@ -13,6 +13,7 @@ test_getAReferenceTo
 | test.js:2:11:2:13 | foo | foo |
 | test.js:2:11:2:17 | foo.bar | foo.bar |
 | test.js:3:3:3:3 | v | foo.bar |
+| test.js:3:3:3:7 | [ssa-synth-read] v | foo.bar |
 | test.js:3:3:3:7 | v.baz | foo.bar.baz |
 | test.js:4:7:4:24 | { baz, a, b: {c} } | foo.bar |
 | test.js:4:9:4:11 | baz | foo.bar.baz |
