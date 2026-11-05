@@ -251,6 +251,65 @@ edges
 | enums.swift:82:12:82:12 | e [foo.0] | enums.swift:83:10:83:23 | ... .foo(...) [foo.0] | provenance |  |
 | enums.swift:83:10:83:23 | ... .foo(...) [foo.0] | enums.swift:83:22:83:22 | x | provenance |  |
 | enums.swift:83:22:83:22 | x | enums.swift:84:14:84:14 | x | provenance |  |
+| fields.swift:18:5:18:7 | [post] box [field] | fields.swift:19:10:19:12 | box [field] | provenance |  |
+| fields.swift:18:5:18:7 | [post] box [field] | fields.swift:20:11:20:13 | box [field] | provenance |  |
+| fields.swift:18:5:18:13 | ... .field | fields.swift:18:5:18:7 | [post] box [field] | provenance |  |
+| fields.swift:18:17:18:41 | source(...) | fields.swift:18:5:18:13 | ... .field | provenance |  |
+| fields.swift:19:10:19:12 | box [field] | fields.swift:19:10:19:18 | ... .field | provenance |  |
+| fields.swift:20:11:20:13 | box [field] | fields.swift:20:11:20:31 | TypeCastExpr [field] | provenance |  |
+| fields.swift:20:11:20:31 | TypeCastExpr [field] | fields.swift:20:10:20:38 | ... .field | provenance |  |
+| fields.swift:25:5:25:7 | [post] box [field] | fields.swift:26:11:26:13 | box [field] | provenance |  |
+| fields.swift:25:5:25:13 | ... .field | fields.swift:25:5:25:7 | [post] box [field] | provenance |  |
+| fields.swift:25:17:25:42 | source(...) | fields.swift:25:5:25:13 | ... .field | provenance |  |
+| fields.swift:26:11:26:13 | box [field] | fields.swift:26:11:26:26 | TypeCastExpr [field] | provenance |  |
+| fields.swift:26:11:26:26 | TypeCastExpr [field] | fields.swift:26:10:26:33 | ... .field | provenance |  |
+| fields.swift:31:5:31:7 | [post] box [field] | fields.swift:32:11:32:13 | box [field] | provenance |  |
+| fields.swift:31:5:31:13 | ... .field | fields.swift:31:5:31:7 | [post] box [field] | provenance |  |
+| fields.swift:31:17:31:48 | source(...) | fields.swift:31:5:31:13 | ... .field | provenance |  |
+| fields.swift:32:11:32:13 | box [field] | fields.swift:32:11:32:33 | TypeCastExpr [field] | provenance |  |
+| fields.swift:32:11:32:33 | TypeCastExpr [field] | fields.swift:32:10:32:40 | ... .field | provenance |  |
+| fields.swift:37:5:37:35 | ... .field | fields.swift:37:6:37:28 | [post] TypeCastExpr [field] | provenance |  |
+| fields.swift:37:6:37:28 | [post] TypeCastExpr [field] | fields.swift:38:10:38:12 | box [field] | provenance |  |
+| fields.swift:37:39:37:71 | source(...) | fields.swift:37:5:37:35 | ... .field | provenance |  |
+| fields.swift:38:10:38:12 | box [field] | fields.swift:38:10:38:18 | ... .field | provenance |  |
+| fields.swift:43:5:43:7 | [post] box [field] | fields.swift:44:29:44:31 | box [field] | provenance |  |
+| fields.swift:43:5:43:13 | ... .field | fields.swift:43:5:43:7 | [post] box [field] | provenance |  |
+| fields.swift:43:17:43:40 | source(...) | fields.swift:43:5:43:13 | ... .field | provenance |  |
+| fields.swift:44:29:44:31 | box [field] | fields.swift:44:10:44:32 | ... .readField(...) | provenance |  |
+| fields.swift:53:15:53:19 | super [field] | fields.swift:53:15:53:25 | ... .field | provenance |  |
+| fields.swift:60:5:60:8 | [post] base [field] | fields.swift:61:15:61:18 | base [field] | provenance |  |
+| fields.swift:60:5:60:14 | ... .field | fields.swift:60:5:60:8 | [post] base [field] | provenance |  |
+| fields.swift:60:18:60:47 | source(...) | fields.swift:60:5:60:14 | ... .field | provenance |  |
+| fields.swift:61:9:61:11 | sub [field] | fields.swift:62:10:62:12 | sub [field] | provenance |  |
+| fields.swift:61:15:61:18 | base [field] | fields.swift:61:9:61:11 | sub [field] | provenance |  |
+| fields.swift:62:10:62:12 | sub [field] | fields.swift:53:15:53:19 | super [field] | provenance |  |
+| fields.swift:62:10:62:12 | sub [field] | fields.swift:62:10:62:18 | ... .field | provenance |  |
+| fields.swift:79:5:79:7 | [post] box [field] | fields.swift:80:10:80:12 | box [field] | provenance |  |
+| fields.swift:79:5:79:7 | [post] box [field] | fields.swift:81:13:81:15 | box [field] | provenance |  |
+| fields.swift:79:5:79:7 | [post] box [field] | fields.swift:83:16:83:18 | box [field] | provenance |  |
+| fields.swift:79:5:79:7 | [post] box [field] | fields.swift:85:27:85:29 | box [field] | provenance |  |
+| fields.swift:79:5:79:13 | ... .field | fields.swift:79:5:79:7 | [post] box [field] | provenance |  |
+| fields.swift:79:17:79:41 | source(...) | fields.swift:79:5:79:13 | ... .field | provenance |  |
+| fields.swift:80:10:80:12 | box [field] | fields.swift:80:10:80:18 | ... .field | provenance |  |
+| fields.swift:81:9:81:9 | p [field] | fields.swift:82:10:82:10 | p [field] | provenance |  |
+| fields.swift:81:13:81:15 | box [field] | fields.swift:81:9:81:9 | p [field] | provenance |  |
+| fields.swift:82:10:82:10 | p [field] | fields.swift:82:10:82:16 | ... .field | provenance |  |
+| fields.swift:83:9:83:12 | box2 [field] | fields.swift:84:10:84:13 | box2 [field] | provenance |  |
+| fields.swift:83:9:83:12 | box2 [field] | fields.swift:85:50:85:53 | box2 [field] | provenance |  |
+| fields.swift:83:16:83:18 | box [field] | fields.swift:83:9:83:12 | box2 [field] | provenance |  |
+| fields.swift:84:10:84:13 | box2 [field] | fields.swift:84:10:84:19 | ... .field | provenance |  |
+| fields.swift:85:9:85:15 | box1or2 [field] | fields.swift:86:10:86:16 | box1or2 [field] | provenance |  |
+| fields.swift:85:27:85:29 | box [field] | fields.swift:85:9:85:15 | box1or2 [field] | provenance |  |
+| fields.swift:85:50:85:53 | box2 [field] | fields.swift:85:9:85:15 | box1or2 [field] | provenance |  |
+| fields.swift:86:10:86:16 | box1or2 [field] | fields.swift:86:10:86:22 | ... .field | provenance |  |
+| fields.swift:92:5:92:5 | [post] p [field] | fields.swift:93:10:93:10 | p [field] | provenance |  |
+| fields.swift:92:5:92:5 | [post] p [field] | fields.swift:95:16:95:16 | p [field] | provenance |  |
+| fields.swift:92:5:92:11 | ... .field | fields.swift:92:5:92:5 | [post] p [field] | provenance |  |
+| fields.swift:92:15:92:39 | source(...) | fields.swift:92:5:92:11 | ... .field | provenance |  |
+| fields.swift:93:10:93:10 | p [field] | fields.swift:93:10:93:16 | ... .field | provenance |  |
+| fields.swift:95:9:95:12 | box2 [field] | fields.swift:96:10:96:13 | box2 [field] | provenance |  |
+| fields.swift:95:16:95:16 | p [field] | fields.swift:95:9:95:12 | box2 [field] | provenance |  |
+| fields.swift:96:10:96:13 | box2 [field] | fields.swift:96:10:96:19 | ... .field | provenance |  |
 | flow-summaries.swift:2:9:2:9 | x | flow-summaries.swift:3:35:3:35 | x | provenance |  |
 | flow-summaries.swift:2:13:2:26 | source(...) | flow-summaries.swift:2:9:2:9 | x | provenance |  |
 | flow-summaries.swift:3:9:3:9 | y | flow-summaries.swift:4:10:4:10 | y | provenance |  |
@@ -849,6 +908,72 @@ nodes
 | enums.swift:83:10:83:23 | ... .foo(...) [foo.0] | semmle.label | ... .foo(...) [foo.0] |
 | enums.swift:83:22:83:22 | x | semmle.label | x |
 | enums.swift:84:14:84:14 | x | semmle.label | x |
+| fields.swift:18:5:18:7 | [post] box [field] | semmle.label | [post] box [field] |
+| fields.swift:18:5:18:13 | ... .field | semmle.label | ... .field |
+| fields.swift:18:17:18:41 | source(...) | semmle.label | source(...) |
+| fields.swift:19:10:19:12 | box [field] | semmle.label | box [field] |
+| fields.swift:19:10:19:18 | ... .field | semmle.label | ... .field |
+| fields.swift:20:10:20:38 | ... .field | semmle.label | ... .field |
+| fields.swift:20:11:20:13 | box [field] | semmle.label | box [field] |
+| fields.swift:20:11:20:31 | TypeCastExpr [field] | semmle.label | TypeCastExpr [field] |
+| fields.swift:25:5:25:7 | [post] box [field] | semmle.label | [post] box [field] |
+| fields.swift:25:5:25:13 | ... .field | semmle.label | ... .field |
+| fields.swift:25:17:25:42 | source(...) | semmle.label | source(...) |
+| fields.swift:26:10:26:33 | ... .field | semmle.label | ... .field |
+| fields.swift:26:11:26:13 | box [field] | semmle.label | box [field] |
+| fields.swift:26:11:26:26 | TypeCastExpr [field] | semmle.label | TypeCastExpr [field] |
+| fields.swift:31:5:31:7 | [post] box [field] | semmle.label | [post] box [field] |
+| fields.swift:31:5:31:13 | ... .field | semmle.label | ... .field |
+| fields.swift:31:17:31:48 | source(...) | semmle.label | source(...) |
+| fields.swift:32:10:32:40 | ... .field | semmle.label | ... .field |
+| fields.swift:32:11:32:13 | box [field] | semmle.label | box [field] |
+| fields.swift:32:11:32:33 | TypeCastExpr [field] | semmle.label | TypeCastExpr [field] |
+| fields.swift:37:5:37:35 | ... .field | semmle.label | ... .field |
+| fields.swift:37:6:37:28 | [post] TypeCastExpr [field] | semmle.label | [post] TypeCastExpr [field] |
+| fields.swift:37:39:37:71 | source(...) | semmle.label | source(...) |
+| fields.swift:38:10:38:12 | box [field] | semmle.label | box [field] |
+| fields.swift:38:10:38:18 | ... .field | semmle.label | ... .field |
+| fields.swift:43:5:43:7 | [post] box [field] | semmle.label | [post] box [field] |
+| fields.swift:43:5:43:13 | ... .field | semmle.label | ... .field |
+| fields.swift:43:17:43:40 | source(...) | semmle.label | source(...) |
+| fields.swift:44:10:44:32 | ... .readField(...) | semmle.label | ... .readField(...) |
+| fields.swift:44:29:44:31 | box [field] | semmle.label | box [field] |
+| fields.swift:53:15:53:19 | super [field] | semmle.label | super [field] |
+| fields.swift:53:15:53:25 | ... .field | semmle.label | ... .field |
+| fields.swift:60:5:60:8 | [post] base [field] | semmle.label | [post] base [field] |
+| fields.swift:60:5:60:14 | ... .field | semmle.label | ... .field |
+| fields.swift:60:18:60:47 | source(...) | semmle.label | source(...) |
+| fields.swift:61:9:61:11 | sub [field] | semmle.label | sub [field] |
+| fields.swift:61:15:61:18 | base [field] | semmle.label | base [field] |
+| fields.swift:62:10:62:12 | sub [field] | semmle.label | sub [field] |
+| fields.swift:62:10:62:18 | ... .field | semmle.label | ... .field |
+| fields.swift:79:5:79:7 | [post] box [field] | semmle.label | [post] box [field] |
+| fields.swift:79:5:79:13 | ... .field | semmle.label | ... .field |
+| fields.swift:79:17:79:41 | source(...) | semmle.label | source(...) |
+| fields.swift:80:10:80:12 | box [field] | semmle.label | box [field] |
+| fields.swift:80:10:80:18 | ... .field | semmle.label | ... .field |
+| fields.swift:81:9:81:9 | p [field] | semmle.label | p [field] |
+| fields.swift:81:13:81:15 | box [field] | semmle.label | box [field] |
+| fields.swift:82:10:82:10 | p [field] | semmle.label | p [field] |
+| fields.swift:82:10:82:16 | ... .field | semmle.label | ... .field |
+| fields.swift:83:9:83:12 | box2 [field] | semmle.label | box2 [field] |
+| fields.swift:83:16:83:18 | box [field] | semmle.label | box [field] |
+| fields.swift:84:10:84:13 | box2 [field] | semmle.label | box2 [field] |
+| fields.swift:84:10:84:19 | ... .field | semmle.label | ... .field |
+| fields.swift:85:9:85:15 | box1or2 [field] | semmle.label | box1or2 [field] |
+| fields.swift:85:27:85:29 | box [field] | semmle.label | box [field] |
+| fields.swift:85:50:85:53 | box2 [field] | semmle.label | box2 [field] |
+| fields.swift:86:10:86:16 | box1or2 [field] | semmle.label | box1or2 [field] |
+| fields.swift:86:10:86:22 | ... .field | semmle.label | ... .field |
+| fields.swift:92:5:92:5 | [post] p [field] | semmle.label | [post] p [field] |
+| fields.swift:92:5:92:11 | ... .field | semmle.label | ... .field |
+| fields.swift:92:15:92:39 | source(...) | semmle.label | source(...) |
+| fields.swift:93:10:93:10 | p [field] | semmle.label | p [field] |
+| fields.swift:93:10:93:16 | ... .field | semmle.label | ... .field |
+| fields.swift:95:9:95:12 | box2 [field] | semmle.label | box2 [field] |
+| fields.swift:95:16:95:16 | p [field] | semmle.label | p [field] |
+| fields.swift:96:10:96:13 | box2 [field] | semmle.label | box2 [field] |
+| fields.swift:96:10:96:19 | ... .field | semmle.label | ... .field |
 | flow-summaries.swift:2:9:2:9 | x | semmle.label | x |
 | flow-summaries.swift:2:13:2:26 | source(...) | semmle.label | source(...) |
 | flow-summaries.swift:3:9:3:9 | y | semmle.label | y |
@@ -1211,6 +1336,7 @@ subpaths
 | capture.swift:49:13:49:13 | x | capture.swift:45:22:45:24 | arg | capture.swift:46:9:46:9 | y | capture.swift:50:10:50:10 | y |
 | capture.swift:60:13:60:13 | x | capture.swift:56:22:56:24 | arg | capture.swift:57:9:57:9 | [post] y [0] | capture.swift:61:10:61:10 | y [0] |
 | capture.swift:93:9:93:9 | x | capture.swift:99:16:99:16 | x | capture.swift:99:16:99:16 | x | capture.swift:94:13:94:19 | local(...) |
+| fields.swift:62:10:62:12 | sub [field] | fields.swift:53:15:53:19 | super [field] | fields.swift:53:15:53:25 | ... .field | fields.swift:62:10:62:18 | ... .field |
 | flow-summaries.swift:54:35:54:48 | source(...) | flow-summaries.swift:54:53:54:53 | y | flow-summaries.swift:54:65:54:65 | y | flow-summaries.swift:54:10:54:67 | ... .throughCallback(...) |
 | flow-summaries.swift:55:35:55:48 | source(...) | flow-summaries.swift:55:53:55:53 | y | flow-summaries.swift:55:65:55:71 | ... + ... | flow-summaries.swift:55:10:55:73 | ... .throughCallback(...) |
 | test.swift:196:30:196:44 | source(...) | test.swift:189:22:189:22 | s | test.swift:189:58:189:58 | s | test.swift:196:16:196:45 | asyncIdentity(...) |
@@ -1308,6 +1434,19 @@ testFailures
 | enums.swift:65:10:65:14 | opt_x | enums.swift:63:31:63:44 | source(...) | enums.swift:65:10:65:14 | opt_x | $@ | enums.swift:63:31:63:44 | source(...) | source(...) |
 | enums.swift:76:14:76:14 | x | enums.swift:73:34:73:47 | source(...) | enums.swift:76:14:76:14 | x | $@ | enums.swift:73:34:73:47 | source(...) | source(...) |
 | enums.swift:84:14:84:14 | x | enums.swift:73:34:73:47 | source(...) | enums.swift:84:14:84:14 | x | $@ | enums.swift:73:34:73:47 | source(...) | source(...) |
+| fields.swift:19:10:19:18 | ... .field | fields.swift:18:17:18:41 | source(...) | fields.swift:19:10:19:18 | ... .field | $@ | fields.swift:18:17:18:41 | source(...) | source(...) |
+| fields.swift:20:10:20:38 | ... .field | fields.swift:18:17:18:41 | source(...) | fields.swift:20:10:20:38 | ... .field | $@ | fields.swift:18:17:18:41 | source(...) | source(...) |
+| fields.swift:26:10:26:33 | ... .field | fields.swift:25:17:25:42 | source(...) | fields.swift:26:10:26:33 | ... .field | $@ | fields.swift:25:17:25:42 | source(...) | source(...) |
+| fields.swift:32:10:32:40 | ... .field | fields.swift:31:17:31:48 | source(...) | fields.swift:32:10:32:40 | ... .field | $@ | fields.swift:31:17:31:48 | source(...) | source(...) |
+| fields.swift:38:10:38:18 | ... .field | fields.swift:37:39:37:71 | source(...) | fields.swift:38:10:38:18 | ... .field | $@ | fields.swift:37:39:37:71 | source(...) | source(...) |
+| fields.swift:44:10:44:32 | ... .readField(...) | fields.swift:43:17:43:40 | source(...) | fields.swift:44:10:44:32 | ... .readField(...) | $@ | fields.swift:43:17:43:40 | source(...) | source(...) |
+| fields.swift:62:10:62:18 | ... .field | fields.swift:60:18:60:47 | source(...) | fields.swift:62:10:62:18 | ... .field | $@ | fields.swift:60:18:60:47 | source(...) | source(...) |
+| fields.swift:80:10:80:18 | ... .field | fields.swift:79:17:79:41 | source(...) | fields.swift:80:10:80:18 | ... .field | $@ | fields.swift:79:17:79:41 | source(...) | source(...) |
+| fields.swift:82:10:82:16 | ... .field | fields.swift:79:17:79:41 | source(...) | fields.swift:82:10:82:16 | ... .field | $@ | fields.swift:79:17:79:41 | source(...) | source(...) |
+| fields.swift:84:10:84:19 | ... .field | fields.swift:79:17:79:41 | source(...) | fields.swift:84:10:84:19 | ... .field | $@ | fields.swift:79:17:79:41 | source(...) | source(...) |
+| fields.swift:86:10:86:22 | ... .field | fields.swift:79:17:79:41 | source(...) | fields.swift:86:10:86:22 | ... .field | $@ | fields.swift:79:17:79:41 | source(...) | source(...) |
+| fields.swift:93:10:93:16 | ... .field | fields.swift:92:15:92:39 | source(...) | fields.swift:93:10:93:16 | ... .field | $@ | fields.swift:92:15:92:39 | source(...) | source(...) |
+| fields.swift:96:10:96:19 | ... .field | fields.swift:92:15:92:39 | source(...) | fields.swift:96:10:96:19 | ... .field | $@ | fields.swift:92:15:92:39 | source(...) | source(...) |
 | flow-summaries.swift:4:10:4:10 | y | flow-summaries.swift:2:13:2:26 | source(...) | flow-summaries.swift:4:10:4:10 | y | $@ | flow-summaries.swift:2:13:2:26 | source(...) | source(...) |
 | flow-summaries.swift:11:14:11:14 | y | flow-summaries.swift:8:13:8:26 | source(...) | flow-summaries.swift:11:14:11:14 | y | $@ | flow-summaries.swift:8:13:8:26 | source(...) | source(...) |
 | flow-summaries.swift:18:10:18:10 | y | flow-summaries.swift:16:18:16:31 | source(...) | flow-summaries.swift:18:10:18:10 | y | $@ | flow-summaries.swift:16:18:16:31 | source(...) | source(...) |
