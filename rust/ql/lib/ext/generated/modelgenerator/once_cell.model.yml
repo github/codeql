@@ -2,6 +2,18 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["<once_cell::sync::Lazy as core::ops::deref::DerefMut>::deref_mut", "ReturnValue", "commandargs", "df-generated"]
+      - ["<once_cell::sync::Lazy as core::ops::deref::DerefMut>::deref_mut", "ReturnValue", "environment", "df-generated"]
+      - ["<once_cell::sync::Lazy>::force_mut", "ReturnValue", "commandargs", "df-generated"]
+      - ["<once_cell::sync::Lazy>::force_mut", "ReturnValue", "environment", "df-generated"]
+      - ["<once_cell::unsync::Lazy as core::ops::deref::DerefMut>::deref_mut", "ReturnValue", "commandargs", "df-generated"]
+      - ["<once_cell::unsync::Lazy as core::ops::deref::DerefMut>::deref_mut", "ReturnValue", "environment", "df-generated"]
+      - ["<once_cell::unsync::Lazy>::force_mut", "ReturnValue", "commandargs", "df-generated"]
+      - ["<once_cell::unsync::Lazy>::force_mut", "ReturnValue", "environment", "df-generated"]
+  - addsTo:
+      pack: codeql/rust-all
       extensible: summaryModel
     data:
       - ["<once_cell::imp::OnceCell>::get_mut", "Argument[self]", "ReturnValue", "taint", "df-generated"]
@@ -9,11 +21,10 @@ extensions:
       - ["<once_cell::imp::OnceCell>::into_inner", "Argument[self].Field[once_cell::imp::OnceCell::value].Field[core::cell::UnsafeCell::value]", "ReturnValue", "value", "dfc-generated"]
       - ["<once_cell::race::OnceBool as core::fmt::Debug>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["<once_cell::race::OnceNonZeroUsize as core::fmt::Debug>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["<once_cell::race::OnceNonZeroUsize>::get_or_init", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["<once_cell::race::OnceNonZeroUsize>::get_or_try_init", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["<once_cell::race::OnceRef as core::fmt::Debug>::fmt", "Argument[self].Reference.Field[once_cell::race::OnceRef::inner]", "Argument[0]", "taint", "dfc-generated"]
       - ["<once_cell::race::OnceRef>::get_or_init", "Argument[0].ReturnValue", "ReturnValue", "value", "dfc-generated"]
       - ["<once_cell::race::OnceRef>::get_or_try_init", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["<once_cell::race::once_box::OnceBox>::get_or_init", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["<once_cell::race::once_box::OnceBox>::get_or_init", "Argument[0].ReturnValue", "ReturnValue.Reference", "taint", "dfc-generated"]
       - ["<once_cell::race::once_box::OnceBox>::get_or_try_init", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["<once_cell::sync::Lazy as core::fmt::Debug>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["<once_cell::sync::Lazy as core::ops::deref::Deref>::deref", "Argument[self]", "ReturnValue", "taint", "df-generated"]
@@ -44,9 +55,7 @@ extensions:
       - ["<once_cell::unsync::OnceCell as core::fmt::Debug>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["<once_cell::unsync::OnceCell>::get", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["<once_cell::unsync::OnceCell>::get_mut", "Argument[self]", "ReturnValue", "taint", "df-generated"]
-      - ["<once_cell::unsync::OnceCell>::get_or_init", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["<once_cell::unsync::OnceCell>::get_or_init", "Argument[self]", "ReturnValue", "taint", "df-generated"]
-      - ["<once_cell::unsync::OnceCell>::get_or_try_init", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["<once_cell::unsync::OnceCell>::get_or_try_init", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["<once_cell::unsync::OnceCell>::into_inner", "Argument[self].Field[once_cell::unsync::OnceCell::inner].Field[core::cell::UnsafeCell::value]", "ReturnValue", "value", "dfc-generated"]
       - ["<once_cell::unsync::OnceCell>::set", "Argument[0]", "ReturnValue.Field[core::result::Result::Err(0)]", "value", "dfc-generated"]

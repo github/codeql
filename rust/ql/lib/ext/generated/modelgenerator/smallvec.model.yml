@@ -2,16 +2,36 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["<alloc::vec::Vec as bench::Vector>::from_elem", "Argument[1]", "alloc-layout", "df-generated"]
+      - ["<smallvec::Drain as core::iter::traits::iterator::Iterator>::next", "Argument[self]", "pointer-access", "df-generated"]
+      - ["<smallvec::SmallVec as bench::Vector>::from_elem", "Argument[1]", "alloc-layout", "df-generated"]
+      - ["<smallvec::SmallVec>::from_elem", "Argument[1]", "alloc-layout", "df-generated"]
+      - ["<smallvec::SmallVec>::into_inner", "Argument[self]", "pointer-access", "df-generated"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["<smallvec::SmallVec>::swap_remove", "ReturnValue", "commandargs", "df-generated"]
+      - ["<smallvec::SmallVec>::swap_remove", "ReturnValue", "environment", "df-generated"]
+  - addsTo:
+      pack: codeql/rust-all
       extensible: summaryModel
     data:
       - ["<alloc::vec::Vec as bench::Vector>::from_elem", "Argument[0]", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["<alloc::vec::Vec as bench::Vector>::from_elems", "Argument[0].Reference", "ReturnValue", "taint", "dfc-generated"]
       - ["<smallvec::CollectionAllocErr as core::fmt::Debug>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["<smallvec::CollectionAllocErr as core::fmt::Display>::fmt", "Argument[self]", "Argument[0]", "taint", "dfc-generated"]
       - ["<smallvec::ConstNonNull as core::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "dfc-generated"]
       - ["<smallvec::Drain as core::fmt::Debug>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["<smallvec::Drain as core::iter::traits::iterator::Iterator>::next", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["<smallvec::DrainFilter as core::fmt::Debug>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["<smallvec::DrainFilter as core::iter::traits::iterator::Iterator>::size_hint", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["<smallvec::DrainFilter as core::iter::traits::iterator::Iterator>::size_hint", "Argument[self].Reference.Field[smallvec::DrainFilter::idx]", "ReturnValue.Field[1].Field[core::option::Option::Some(0)]", "taint", "dfc-generated"]
+      - ["<smallvec::DrainFilter as core::iter::traits::iterator::Iterator>::size_hint", "Argument[self].Reference.Field[smallvec::DrainFilter::old_len]", "ReturnValue.Field[1].Field[core::option::Option::Some(0)]", "taint", "dfc-generated"]
       - ["<smallvec::IntoIter as core::fmt::Debug>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["<smallvec::IntoIter as core::iter::traits::iterator::Iterator>::size_hint", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["<smallvec::SmallVec as bench::Vector>::from_elem", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["<smallvec::SmallVec as core::borrow::Borrow>::borrow", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["<smallvec::SmallVec as core::borrow::BorrowMut>::borrow_mut", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["<smallvec::SmallVec as core::convert::AsMut>::as_mut", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
@@ -22,6 +42,7 @@ extensions:
       - ["<smallvec::SmallVec>::as_mut_slice", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["<smallvec::SmallVec>::as_slice", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["<smallvec::SmallVec>::capacity", "Argument[self].Reference.Field[smallvec::SmallVec::capacity]", "ReturnValue", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::drain", "Argument[self].Reference.Field[smallvec::SmallVec::capacity]", "ReturnValue.Field[smallvec::Drain::tail_len]", "taint", "dfc-generated"]
       - ["<smallvec::SmallVec>::drain", "Argument[self].Reference.Field[smallvec::SmallVec::capacity]", "ReturnValue.Field[smallvec::Drain::tail_start]", "value", "dfc-generated"]
       - ["<smallvec::SmallVec>::drain_filter", "Argument[0]", "ReturnValue.Field[smallvec::DrainFilter::pred]", "value", "dfc-generated"]
       - ["<smallvec::SmallVec>::drain_filter", "Argument[self].Reference.Field[smallvec::SmallVec::capacity]", "ReturnValue.Field[smallvec::DrainFilter::old_len]", "value", "dfc-generated"]
@@ -29,6 +50,7 @@ extensions:
       - ["<smallvec::SmallVec>::from_buf_and_len", "Argument[1]", "ReturnValue.Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
       - ["<smallvec::SmallVec>::from_buf_and_len_unchecked", "Argument[1]", "ReturnValue.Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
       - ["<smallvec::SmallVec>::from_const_with_len_unchecked", "Argument[1]", "ReturnValue.Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
+      - ["<smallvec::SmallVec>::from_elem", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["<smallvec::SmallVec>::from_raw_parts", "Argument[2]", "ReturnValue.Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
       - ["<smallvec::SmallVec>::from_vec", "Argument[0].Field[alloc::vec::Vec::len]", "ReturnValue.Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
       - ["<smallvec::SmallVec>::grow", "Argument[0]", "Argument[self].Reference.Field[smallvec::SmallVec::capacity]", "value", "dfc-generated"]
@@ -39,12 +61,3 @@ extensions:
       - ["<smallvec::tests::MockHintIter as core::iter::traits::iterator::Iterator>::next", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["<smallvec::tests::MockHintIter as core::iter::traits::iterator::Iterator>::size_hint", "Argument[self].Reference.Field[smallvec::tests::MockHintIter::hint]", "ReturnValue.Field[0]", "value", "dfc-generated"]
       - ["<smallvec::tests::insert_many_panic::BadIter as core::iter::traits::iterator::Iterator>::size_hint", "Argument[self].Reference.Field[smallvec::tests::insert_many_panic::BadIter::hint]", "ReturnValue.Field[0]", "value", "dfc-generated"]
-  - addsTo:
-      pack: codeql/rust-all
-      extensible: sinkModel
-    data:
-      - ["<alloc::vec::Vec as bench::Vector>::insert", "Argument[0]", "log-injection", "df-generated"]
-      - ["<alloc::vec::Vec as bench::Vector>::insert", "Argument[self]", "log-injection", "df-generated"]
-      - ["<alloc::vec::Vec as bench::Vector>::remove", "Argument[0]", "log-injection", "df-generated"]
-      - ["<alloc::vec::Vec as bench::Vector>::remove", "Argument[self]", "log-injection", "df-generated"]
-      - ["<smallvec::SmallVec>::into_inner", "Argument[self]", "pointer-access", "df-generated"]
