@@ -2292,7 +2292,10 @@ module IteratorFlow {
   predicate localFlowStep(Node nodeFrom, Node nodeTo) {
     exists(SourceVariable v |
       nodeFrom != nodeTo and
-      DataFlowIntegrationImpl::localFlowStep(v, fromDfNode(nodeFrom, v), fromDfNode(nodeTo, v), _)
+      // Skip use-use steps. These are already accounted for by regular SSA
+      // flow including proper handling of `modeledFlowBarrier`.
+      DataFlowIntegrationImpl::localFlowStep(v, fromDfNode(nodeFrom, v), fromDfNode(nodeTo, v),
+        false)
     )
   }
 }
