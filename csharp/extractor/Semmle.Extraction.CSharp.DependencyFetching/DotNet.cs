@@ -150,7 +150,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         // The version number should be kept in sync with the version .NET version used for building the application.
-        public const string LatestDotNetSdkVersion = "10.0.100";
+        public const string LatestDotNetSdkVersion = "10.0.201";
 
         public static ReadOnlyDictionary<string, string> MinimalEnvironment => IDotNetCliInvoker.MinimalEnvironment;
 
