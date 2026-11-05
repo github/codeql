@@ -816,6 +816,18 @@ impl<Id: TreeId> Ast<Id> {
         node.source_range = Some(source_range);
     }
 
+    /// Remove the source range from a synthetic node.
+    pub(crate) fn clear_source_range(&mut self, id: Id) {
+        let node = self
+            .nodes
+            .get_mut(id.index())
+            .unwrap_or_else(|| panic!("clear_source_range: invalid node id {}", id.index()));
+        if matches!(node.content, NodeContent::Range(_)) {
+            panic!("clear_source_range: cannot modify a parsed node");
+        }
+        node.source_range = None;
+    }
+
     /// Register a named node kind, returning its id (idempotent). Lets callers
     /// build an AST in a single pass, registering kinds as nodes are created
     /// rather than pre-populating the schema.
@@ -1115,6 +1127,12 @@ impl<C> Copy for TranslatorHandle<'_, C> {}
 impl<C> Clone for TranslatorHandle<'_, C> {
     fn clone(&self) -> Self {
         *self
+    }
+}
+
+impl<C> TranslatorHandle<'_, C> {
+    pub(crate) fn matched_root(&self) -> Id {
+        self.matched_root
     }
 }
 

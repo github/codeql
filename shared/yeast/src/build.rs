@@ -187,6 +187,14 @@ impl<'a, C> BuildCtx<'a, C> {
         node
     }
 
+    /// Explicitly make a newly-built node locationless.
+    #[doc(hidden)]
+    pub fn set_node_locationless(&mut self, node: OutputId) -> OutputId {
+        self.output.clear_source_range(node);
+        self.created_nodes_without_source_range.remove(&node);
+        node
+    }
+
     /// Return the immutable input AST. Available inside rule transforms.
     pub fn ast(&self) -> &Ast {
         self.ast
@@ -234,6 +242,27 @@ impl<'a, C> BuildCtx<'a, C> {
             true,
             None,
         )
+    }
+
+    /// Create a leaf whose value is inherited from the current rule's match.
+    #[doc(hidden)]
+    pub fn inherited_literal(&mut self, kind: &'static str) -> OutputId {
+        let source = self
+            .translator
+            .as_ref()
+            .expect("inherited leaf content requires a rule match")
+            .matched_root();
+        let node = self
+            .ast
+            .get_node(source)
+            .expect("rule source node must exist");
+        let stored = node.opt_string_content();
+        let has_children = node.fields.values().any(|children| !children.is_empty());
+        let content = match stored {
+            Some(value) if !value.is_empty() || !has_children => value,
+            _ => self.ast.source_text(source),
+        };
+        self.create_named_token_with_range(kind, content, None)
     }
 
     /// Create a leaf node with a fixed string content.

@@ -184,6 +184,8 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBl
     variableCapture(v, _, bb, i) and
     certain = false
   }
+
+  predicate ssaCachedStageRevRef() { Ssa::ssaCachedStageRevRef1() }
 }
 
 private module Impl = SsaImplCommon::Make<Location, Cfg, SsaImplInput>;

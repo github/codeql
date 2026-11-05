@@ -87,6 +87,7 @@ sourceFile
                                         declReferenceExpr
                                           baseName: identifier "y"
                                       switchKeyword: switch
+                      modifiers:
                   leftBrace: {
                   rightBrace: }
 

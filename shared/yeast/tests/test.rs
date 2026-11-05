@@ -109,6 +109,21 @@ fn run_and_ast(input: &str, rules: Vec<Rule>) -> OutputAst {
     runner.run(input).unwrap()
 }
 
+fn run_ast_with_rules(ast: Ast, rules: Vec<Rule>) -> OutputAst {
+    let schema = yeast::node_types_yaml::schema_from_yaml(OUTPUT_SCHEMA_YAML).unwrap();
+    let phases = [Phase::new("test", rules)];
+    let runner: Runner = Runner::with_schema_no_language(&schema, &phases);
+    runner.run_from_ast(ast).unwrap()
+}
+
+fn synthetic_integer_ast(content: &str) -> Ast {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let mut ast = Ast::with_schema(yeast::schema::from_language(&lang));
+    let root = ast.create_named_token("integer", content.to_owned());
+    ast.set_root(root);
+    ast
+}
+
 /// Helper: translate Ruby source with multiple rule phases and return its dump.
 fn run_phased_and_dump(input: &str, phases: Vec<Phase>) -> String {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
@@ -680,6 +695,74 @@ fn test_forward_scan_preserves_order() {
 }
 
 // ---- Tree builder tests ----
+
+#[test]
+fn test_bare_leaf_rule_result_inherits_parsed_source_text() {
+    let rules: Vec<Rule> = yeast::rules! {
+        input: "tests/input-types.yml",
+        output: "tests/node-types.yml",
+        [
+            (integer) => (identifier),
+        ]
+    };
+    let ast = run_and_ast("x = 1", rules);
+    let dump = dump_ast(&ast, ast.get_root(), "x = 1");
+
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          assignment
+            left: identifier "x"
+            right: identifier "1"
+    "#,
+    );
+    assert!(ast.reachable_node_ids().into_iter().any(|id| {
+        let node = ast.get_node(id).unwrap();
+        node.kind_name() == "identifier" && node.opt_string_content().as_deref() == Some("1")
+    }));
+}
+
+#[test]
+fn test_bare_leaf_rule_result_inherits_synthetic_content() {
+    let ast = run_ast_with_rules(
+        synthetic_integer_ast("synthetic"),
+        yeast::rules! {
+            input: "tests/input-types.yml",
+            output: "tests/node-types.yml",
+            [
+                rule!((integer) => (identifier)),
+            ]
+        },
+    );
+    let dump = dump_ast(&ast, ast.get_root(), "");
+
+    assert_dump_eq(
+        &dump,
+        r#"
+        identifier "synthetic"
+    "#,
+    );
+}
+
+#[test]
+fn test_bare_leaf_rule_result_inherits_empty_content() {
+    let ast = run_ast_with_rules(
+        synthetic_integer_ast(""),
+        yeast::rules! {
+            input: "tests/input-types.yml",
+            output: "tests/node-types.yml",
+            [
+                (integer) => (identifier),
+            ]
+        },
+    );
+
+    assert!(ast.reachable_node_ids().into_iter().any(|id| {
+        let node = ast.get_node(id).unwrap();
+        node.kind_name() == "identifier" && node.opt_string_content().as_deref() == Some("")
+    }));
+}
 
 #[test]
 fn test_tree_builder() {
@@ -1896,6 +1979,60 @@ fn test_location_field_overrides_derived_location() {
         .expect("call exists");
 
     assert_eq!(call.byte_range(), 4..5);
+}
+
+#[test]
+fn test_location_none_makes_result_root_locationless() {
+    let rule: Rule = rule!(
+        (call method: (identifier) @method)
+        =>
+        (call method: {method} location: none)
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let call = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "call")
+        .expect("call exists");
+    assert_eq!(call.source_range(), None);
+}
+
+/// A nested `location: none` node stays locationless and does not widen its
+/// parent's derived range with an empty range at the match start.
+#[test]
+fn test_location_none_nested_node_does_not_widen_parent() {
+    let rule: Rule = rule!(
+        (call method: (identifier) @method)
+        =>
+        (call
+            method: (identifier "outer")
+            receiver: (call
+                method: {method}
+                arguments: (argument_list location: none)))
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let nodes: Vec<_> = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .collect();
+    let arguments = nodes
+        .iter()
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    assert_eq!(arguments.source_range(), None);
+
+    let mut call_ranges: Vec<_> = nodes
+        .iter()
+        .filter(|node| node.kind_name() == "call")
+        .map(|node| node.byte_range())
+        .collect();
+    call_ranges.sort_by_key(|range| (range.start, range.end));
+    // Without `location: none`, the inner call would be widened to 0..7.
+    assert_eq!(call_ranges, [0..9, 4..7]);
 }
 
 #[test]

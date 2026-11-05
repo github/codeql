@@ -39,6 +39,10 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBl
     variableReadPseudo(bb, i, v) and
     certain = false
   }
+
+  predicate ssaCachedStageRevRef() {
+    Ssa_::ssaCachedStageRevRef1() and DataFlowIntegrationImpl::ssaCachedStageRevRef2()
+  }
 }
 
 import SsaImplCommon::Make<Location, Cfg, SsaImplInput> as Impl
@@ -1011,8 +1015,6 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   class Expr extends ControlFlowNode {
     predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
   }
-
-  Expr getARead(Definition def) { def.(SsaDefinition).getARead().getControlFlowNode() = result }
 
   predicate ssaDefHasSource(Impl::WriteDefinition def) {
     // exclude flow directly from RHS to SSA definition, as we instead want to
