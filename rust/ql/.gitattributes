@@ -128,8 +128,6 @@
 /lib/codeql/rust/elements/Param.qll linguist-generated
 /lib/codeql/rust/elements/ParamBase.qll linguist-generated
 /lib/codeql/rust/elements/ParamList.qll linguist-generated
-/lib/codeql/rust/elements/ParenExpr.qll linguist-generated
-/lib/codeql/rust/elements/ParenPat.qll linguist-generated
 /lib/codeql/rust/elements/ParenTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/ParenthesizedArgList.qll linguist-generated
 /lib/codeql/rust/elements/Pat.qll linguist-generated
@@ -382,8 +380,6 @@
 /lib/codeql/rust/elements/internal/OrPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParamConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParamListConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/ParenExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/ParenPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParenTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParenthesizedArgListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParenthesizedArgListImpl.qll linguist-generated
@@ -626,8 +622,6 @@
 /lib/codeql/rust/elements/internal/generated/Param.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ParamBase.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ParamList.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/ParenExpr.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/ParenPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ParenTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ParentChild.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ParenthesizedArgList.qll linguist-generated
@@ -817,8 +811,6 @@
 /test/extractor-tests/generated/OrPat/OrPat.ql linguist-generated
 /test/extractor-tests/generated/Param/Param.ql linguist-generated
 /test/extractor-tests/generated/ParamList/ParamList.ql linguist-generated
-/test/extractor-tests/generated/ParenExpr/ParenExpr.ql linguist-generated
-/test/extractor-tests/generated/ParenPat/ParenPat.ql linguist-generated
 /test/extractor-tests/generated/ParenTypeRepr/ParenTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/ParenthesizedArgList/ParenthesizedArgList.ql linguist-generated
 /test/extractor-tests/generated/Path/Path.ql linguist-generated
