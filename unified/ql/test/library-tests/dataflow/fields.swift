@@ -17,7 +17,7 @@ func resolvedFields() {
     let box = FieldBox()
     box.field = source("fields.resolved")
     sink(box.field)  // $ hasValueFlow=fields.resolved
-    sink((box as! OtherFieldBox).field)  // $ SPURIOUS: hasValueFlow=fields.resolved
+    sink((box as! OtherFieldBox).field)
 }
 
 func inheritedFields() {
@@ -81,7 +81,7 @@ func protocolFieldRead() {
     let p = box as FieldProtocol
     sink(p.field)  // $ hasValueFlow=fields.protocol
     let box2 = box as! ProtocolBox2
-    sink(box2.field)  // $ SPURIOUS: hasValueFlow=fields.protocol
+    sink(box2.field)
     let box1or2 = 2 > 3 ? box as FieldProtocol : box2
     sink(box1or2.field)  // $ hasValueFlow=fields.protocol
 }
