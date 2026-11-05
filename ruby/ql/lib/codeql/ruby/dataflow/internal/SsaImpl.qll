@@ -56,6 +56,8 @@ module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
     namespaceSelfExitRead(bb, i, v) and
     certain = false
   }
+
+  predicate ssaCachedStageRevRef() { DataFlowIntegrationImpl::ssaCachedStageRevRef2() }
 }
 
 import SsaImplCommon::Make<Location, Cfg::Cfg, SsaInput> as Impl
@@ -279,11 +281,6 @@ private module Cached {
 
   private import codeql.ruby.dataflow.SSA
 
-  cached
-  Definition phiHasInputFromBlock(PhiNode phi, Cfg::BasicBlock bb) {
-    Impl::phiHasInputFromBlock(phi, result, bb)
-  }
-
   /**
    * Holds if the value defined at SSA definition `def` can reach a read at `read`,
    * without passing through any other non-pseudo read.
@@ -308,11 +305,6 @@ private module Cached {
       read1 = bb1.getNode(i1) and
       read2 = bb2.getNode(i2)
     )
-  }
-
-  cached
-  Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
-    Impl::uncertainWriteDefinitionInput(def, result)
   }
 
   cached
@@ -445,8 +437,6 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   class Expr extends Cfg::CfgNodes::ExprCfgNode {
     predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
   }
-
-  Expr getARead(Definition def) { result = Cached::getARead(def) }
 
   predicate ssaDefHasSource(WriteDefinition def) {
     any(ParameterExt p).isInitializedBy(def) or def.(Ssa::WriteDefinition).assigns(_)
