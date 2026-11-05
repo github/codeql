@@ -1,4 +1,6 @@
 mod
+| included/tree/mod.rs:1:1:1:22 | mod included_module |
+| included/tree/mod.rs:1:1:1:24 | mod included_module |
 | invalid/main.rs:8:1:18:1 | mod self_import_from_struct |
 | lib.rs:1:1:1:11 | mod my |
 | main.rs:1:1:1:7 | mod my |
@@ -83,7 +85,7 @@ resolvePath
 | main.rs:37:17:37:24 | ...::f | main.rs:26:9:28:9 | fn f |
 | main.rs:39:17:39:23 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:40:17:40:17 | f | main.rs:26:9:28:9 | fn f |
-| main.rs:47:9:47:13 | super | main.rs:1:1:1193:2 | SourceFile |
+| main.rs:47:9:47:13 | super | main.rs:1:1:1196:34 | SourceFile |
 | main.rs:47:9:47:17 | ...::m1 | main.rs:20:1:44:1 | mod m1 |
 | main.rs:47:9:47:21 | ...::m2 | main.rs:25:5:43:5 | mod m2 |
 | main.rs:47:9:47:24 | ...::g | main.rs:30:9:34:9 | fn g |
@@ -98,7 +100,7 @@ resolvePath
 | main.rs:68:17:68:19 | Foo | main.rs:66:9:66:21 | struct Foo |
 | main.rs:71:13:71:15 | Foo | main.rs:60:5:60:17 | struct Foo |
 | main.rs:73:5:73:5 | f | main.rs:62:5:69:5 | fn f |
-| main.rs:75:5:75:8 | self | main.rs:1:1:1193:2 | SourceFile |
+| main.rs:75:5:75:8 | self | main.rs:1:1:1196:34 | SourceFile |
 | main.rs:75:5:75:11 | ...::i | main.rs:78:1:90:1 | fn i |
 | main.rs:79:5:79:11 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:81:13:81:15 | Foo | main.rs:55:1:55:13 | struct Foo |
@@ -120,7 +122,7 @@ resolvePath
 | main.rs:112:9:112:15 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:118:9:118:15 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:122:9:122:15 | println | {EXTERNAL LOCATION} | MacroRules |
-| main.rs:125:13:125:17 | super | main.rs:1:1:1193:2 | SourceFile |
+| main.rs:125:13:125:17 | super | main.rs:1:1:1196:34 | SourceFile |
 | main.rs:125:13:125:21 | ...::m5 | main.rs:110:1:114:1 | mod m5 |
 | main.rs:126:9:126:9 | f | main.rs:111:5:113:5 | fn f |
 | main.rs:126:9:126:9 | f | main.rs:117:5:119:5 | fn f |
@@ -697,6 +699,9 @@ resolvePath
 | main.rs:1191:5:1191:35 | ...::test | main.rs:984:5:987:5 | fn test |
 | main.rs:1192:5:1192:12 | patterns | main.rs:990:1:1031:1 | mod patterns |
 | main.rs:1192:5:1192:18 | ...::test | main.rs:991:5:1005:5 | fn test |
+| main.rs:1193:5:1193:19 | included_module | included/tree/mod.rs:1:1:1:22 | mod included_module |
+| main.rs:1193:5:1193:27 | ...::hidden | included/tree/included_module.rs:1:1:1:18 | fn hidden |
+| main.rs:1196:1:1196:7 | include | {EXTERNAL LOCATION} | MacroRules |
 | my2/mod.rs:4:5:4:11 | println | {EXTERNAL LOCATION} | MacroRules |
 | my2/mod.rs:5:5:5:11 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
 | my2/mod.rs:5:5:5:20 | ...::nested3 | my2/nested2.rs:1:1:11:1 | mod nested3 |
@@ -722,7 +727,7 @@ resolvePath
 | my2/my3/mod.rs:3:5:3:5 | g | my2/mod.rs:3:1:6:1 | fn g |
 | my2/my3/mod.rs:4:5:4:5 | h | main.rs:57:1:76:1 | fn h |
 | my2/my3/mod.rs:7:5:7:9 | super | my2/mod.rs:1:1:25:34 | SourceFile |
-| my2/my3/mod.rs:7:5:7:16 | ...::super | main.rs:1:1:1193:2 | SourceFile |
+| my2/my3/mod.rs:7:5:7:16 | ...::super | main.rs:1:1:1196:34 | SourceFile |
 | my2/my3/mod.rs:7:5:7:19 | ...::h | main.rs:57:1:76:1 | fn h |
 | my2/my3/mod.rs:8:5:8:9 | super | my2/mod.rs:1:1:25:34 | SourceFile |
 | my2/my3/mod.rs:8:5:8:12 | ...::g | my2/mod.rs:3:1:6:1 | fn g |

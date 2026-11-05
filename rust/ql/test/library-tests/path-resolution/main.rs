@@ -1190,4 +1190,7 @@ fn main() {
     AStruct {}.z_on_instance(); // $ item=I123 target=I125
     impl_with_attribute_macro::test(); // $ item=impl_with_attribute_macro::test
     patterns::test(); // $ item=patterns::test
+    included_module::hidden(); // $ item=I23009
 }
+
+include!("included/tree/mod.rs");
