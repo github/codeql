@@ -31,20 +31,21 @@ models
 | 30 | Summary: <std::ffi::os_str::OsString>::into_string; Argument[self].Field[std::ffi::os_str::OsString::inner].Field[std::sys::os_str::bytes::Buf::inner]; ReturnValue.Field[core::result::Result::Ok(0)].Field[alloc::string::String::vec]; value |
 | 31 | Summary: <std::fs::File as alloc::io::read::Read>::read_to_end; Argument[self].Reference; Argument[0].Reference; taint |
 | 32 | Summary: <std::fs::File as alloc::io::read::Read>::read_to_string; Argument[self].Reference; Argument[0].Reference; taint |
-| 33 | Summary: <std::path::PathBuf as core::convert::From>::from; Argument[0]; ReturnValue.Field[std::path::PathBuf::inner]; value |
-| 34 | Summary: <std::path::PathBuf as core::ops::deref::Deref>::deref; Argument[self].Reference.Field[std::path::PathBuf::inner]; ReturnValue.Reference; value |
-| 35 | Summary: <std::path::PathBuf>::as_path; Argument[self].Reference; ReturnValue.Reference; value |
-| 36 | Summary: <std::path::PathBuf>::into_boxed_path; Argument[self]; ReturnValue.Field[alloc::boxed::Box(0)]; taint |
-| 37 | Summary: <std::path::PathBuf>::into_os_string; Argument[self].Field[std::path::PathBuf::inner]; ReturnValue; value |
-| 38 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read; Argument[self].Reference; Argument[0].Reference; taint |
-| 39 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_buf; Argument[self].Reference; Argument[0].Reference; taint |
-| 40 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_exact; Argument[self].Reference; Argument[0].Reference; taint |
-| 41 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_f32; Argument[self].Reference; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
-| 42 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_i16; Argument[self].Reference; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
-| 43 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_i64_le; Argument[self].Reference; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
-| 44 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_to_end; Argument[self].Reference; Argument[0].Reference; taint |
-| 45 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_to_string; Argument[self].Reference; Argument[0].Reference; taint |
-| 46 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_u8; Argument[self].Reference; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
+| 33 | Summary: <std::path::PathBuf as core::convert::From>::from; Argument[0].Field[alloc::boxed::Box(0)]; ReturnValue; value |
+| 34 | Summary: <std::path::PathBuf as core::convert::From>::from; Argument[0]; ReturnValue.Field[std::path::PathBuf::inner]; value |
+| 35 | Summary: <std::path::PathBuf as core::ops::deref::Deref>::deref; Argument[self].Reference.Field[std::path::PathBuf::inner]; ReturnValue.Reference; value |
+| 36 | Summary: <std::path::PathBuf>::as_path; Argument[self].Reference; ReturnValue.Reference; value |
+| 37 | Summary: <std::path::PathBuf>::into_boxed_path; Argument[self]; ReturnValue.Field[alloc::boxed::Box(0)]; taint |
+| 38 | Summary: <std::path::PathBuf>::into_os_string; Argument[self].Field[std::path::PathBuf::inner]; ReturnValue; value |
+| 39 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read; Argument[self].Reference; Argument[0].Reference; taint |
+| 40 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_buf; Argument[self].Reference; Argument[0].Reference; taint |
+| 41 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_exact; Argument[self].Reference; Argument[0].Reference; taint |
+| 42 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_f32; Argument[self].Reference; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
+| 43 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_i16; Argument[self].Reference; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
+| 44 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_i64_le; Argument[self].Reference; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
+| 45 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_to_end; Argument[self].Reference; Argument[0].Reference; taint |
+| 46 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_to_string; Argument[self].Reference; Argument[0].Reference; taint |
+| 47 | Summary: <tokio::io::util::async_read_ext::AsyncReadExt>::read_u8; Argument[self].Reference; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
 edges
 | test.rs:12:13:12:18 | buffer | test.rs:13:14:13:19 | buffer | provenance |  |
 | test.rs:12:31:12:55 | ...::read(...) | test.rs:12:31:12:55 | ...::read(...) [Ok] | provenance | Src:MaD:11  |
@@ -73,23 +74,24 @@ edges
 | test.rs:30:20:30:27 | e.path() | test.rs:30:13:30:16 | path | provenance | Src:MaD:4  |
 | test.rs:31:14:31:17 | path | test.rs:31:14:31:25 | path.clone() | provenance | MaD:26 |
 | test.rs:32:14:32:17 | path | test.rs:32:14:32:25 | path.clone() | provenance | MaD:26 |
-| test.rs:32:14:32:25 | path.clone() | test.rs:32:14:32:35 | ... .as_path() | provenance | MaD:35 |
+| test.rs:32:14:32:25 | path.clone() | test.rs:32:14:32:35 | ... .as_path() | provenance | MaD:36 |
 | test.rs:33:14:33:17 | path | test.rs:33:14:33:25 | path.clone() | provenance | MaD:26 |
-| test.rs:33:14:33:25 | path.clone() | test.rs:33:14:33:42 | ... .into_os_string() | provenance | MaD:37 |
+| test.rs:33:14:33:25 | path.clone() | test.rs:33:14:33:42 | ... .into_os_string() | provenance | MaD:38 |
 | test.rs:34:39:34:42 | path | test.rs:34:39:34:50 | path.clone() | provenance | MaD:26 |
-| test.rs:34:39:34:50 | path.clone() | test.rs:34:39:34:68 | ... .into_boxed_path() [Box(0)] | provenance | MaD:36 |
+| test.rs:34:39:34:50 | path.clone() | test.rs:34:39:34:68 | ... .into_boxed_path() [Box(0)] | provenance | MaD:37 |
 | test.rs:34:39:34:68 | ... .into_boxed_path() [Box(0)] | test.rs:34:14:34:69 | ...::from(...) | provenance | MaD:33 |
+| test.rs:34:39:34:68 | ... .into_boxed_path() [Box(0)] | test.rs:34:14:34:69 | ...::from(...) | provenance | MaD:34 |
 | test.rs:35:14:35:17 | path | test.rs:35:14:35:25 | path.clone() | provenance | MaD:26 |
-| test.rs:35:14:35:25 | path.clone() | test.rs:35:14:35:37 | ... .as_os_str() | provenance | MaD:34 |
+| test.rs:35:14:35:25 | path.clone() | test.rs:35:14:35:37 | ... .as_os_str() | provenance | MaD:35 |
 | test.rs:36:14:36:17 | path | test.rs:36:14:36:25 | path.clone() | provenance | MaD:26 |
-| test.rs:36:14:36:25 | path.clone() | test.rs:36:14:36:41 | ... .as_mut_os_str() | provenance | MaD:34 |
-| test.rs:37:14:37:17 | path | test.rs:37:14:37:26 | path.to_str() | provenance | MaD:34 |
-| test.rs:38:14:38:17 | path | test.rs:38:14:38:31 | path.to_path_buf() | provenance | MaD:34 |
-| test.rs:39:14:39:17 | path | test.rs:39:14:39:29 | path.file_name() [Some, &ref] | provenance | MaD:34 |
+| test.rs:36:14:36:25 | path.clone() | test.rs:36:14:36:41 | ... .as_mut_os_str() | provenance | MaD:35 |
+| test.rs:37:14:37:17 | path | test.rs:37:14:37:26 | path.to_str() | provenance | MaD:35 |
+| test.rs:38:14:38:17 | path | test.rs:38:14:38:31 | path.to_path_buf() | provenance | MaD:35 |
+| test.rs:39:14:39:17 | path | test.rs:39:14:39:29 | path.file_name() [Some, &ref] | provenance | MaD:35 |
 | test.rs:39:14:39:29 | path.file_name() [Some, &ref] | test.rs:39:14:39:38 | ... .unwrap() | provenance | MaD:27 |
-| test.rs:40:14:40:17 | path | test.rs:40:14:40:29 | path.extension() [Some, &ref] | provenance | MaD:34 |
+| test.rs:40:14:40:17 | path | test.rs:40:14:40:29 | path.extension() [Some, &ref] | provenance | MaD:35 |
 | test.rs:40:14:40:29 | path.extension() [Some, &ref] | test.rs:40:14:40:38 | ... .unwrap() | provenance | MaD:27 |
-| test.rs:41:14:41:17 | path | test.rs:41:14:41:32 | path.canonicalize() [Ok] | provenance | MaD:34 |
+| test.rs:41:14:41:17 | path | test.rs:41:14:41:32 | path.canonicalize() [Ok] | provenance | MaD:35 |
 | test.rs:41:14:41:32 | path.canonicalize() [Ok] | test.rs:41:14:41:41 | ... .unwrap() | provenance | MaD:28 |
 | test.rs:44:13:44:21 | file_name | test.rs:45:14:45:22 | file_name | provenance |  |
 | test.rs:44:13:44:21 | file_name | test.rs:46:14:46:22 | file_name | provenance |  |
@@ -226,43 +228,43 @@ edges
 | test.rs:197:20:197:52 | ...::open(...) [future, Ok] | test.rs:197:20:197:58 | await ... [Ok] | provenance |  |
 | test.rs:197:20:197:58 | await ... [Ok] | test.rs:197:20:197:59 | TryExpr | provenance |  |
 | test.rs:197:20:197:59 | TryExpr | test.rs:197:9:197:16 | mut file | provenance |  |
-| test.rs:201:22:201:25 | file | test.rs:201:32:201:42 | [post] &mut buffer [&ref] | provenance | MaD:38 |
+| test.rs:201:22:201:25 | file | test.rs:201:32:201:42 | [post] &mut buffer [&ref] | provenance | MaD:39 |
 | test.rs:201:32:201:42 | [post] &mut buffer [&ref] | test.rs:201:37:201:42 | [post] buffer | provenance |  |
 | test.rs:201:37:201:42 | [post] buffer | test.rs:202:15:202:20 | buffer | provenance |  |
 | test.rs:202:15:202:20 | buffer | test.rs:202:14:202:20 | &buffer | provenance |  |
-| test.rs:207:22:207:25 | file | test.rs:207:39:207:49 | [post] &mut buffer [&ref] | provenance | MaD:44 |
+| test.rs:207:22:207:25 | file | test.rs:207:39:207:49 | [post] &mut buffer [&ref] | provenance | MaD:45 |
 | test.rs:207:39:207:49 | [post] &mut buffer [&ref] | test.rs:207:44:207:49 | [post] buffer | provenance |  |
 | test.rs:207:44:207:49 | [post] buffer | test.rs:208:15:208:20 | buffer | provenance |  |
 | test.rs:208:15:208:20 | buffer | test.rs:208:14:208:20 | &buffer | provenance |  |
-| test.rs:213:22:213:25 | file | test.rs:213:42:213:52 | [post] &mut buffer [&ref] | provenance | MaD:45 |
+| test.rs:213:22:213:25 | file | test.rs:213:42:213:52 | [post] &mut buffer [&ref] | provenance | MaD:46 |
 | test.rs:213:42:213:52 | [post] &mut buffer [&ref] | test.rs:213:47:213:52 | [post] buffer | provenance |  |
 | test.rs:213:47:213:52 | [post] buffer | test.rs:214:15:214:20 | buffer | provenance |  |
 | test.rs:214:15:214:20 | buffer | test.rs:214:14:214:20 | &buffer | provenance |  |
-| test.rs:219:9:219:12 | file | test.rs:219:25:219:35 | [post] &mut buffer [&ref] | provenance | MaD:40 |
+| test.rs:219:9:219:12 | file | test.rs:219:25:219:35 | [post] &mut buffer [&ref] | provenance | MaD:41 |
 | test.rs:219:25:219:35 | [post] &mut buffer [&ref] | test.rs:219:30:219:35 | [post] buffer | provenance |  |
 | test.rs:219:30:219:35 | [post] buffer | test.rs:220:15:220:20 | buffer | provenance |  |
 | test.rs:220:15:220:20 | buffer | test.rs:220:14:220:20 | &buffer | provenance |  |
 | test.rs:224:13:224:14 | v1 | test.rs:228:14:228:15 | v1 | provenance |  |
-| test.rs:224:18:224:21 | file | test.rs:224:18:224:31 | file.read_u8() [future, Ok] | provenance | MaD:46 |
+| test.rs:224:18:224:21 | file | test.rs:224:18:224:31 | file.read_u8() [future, Ok] | provenance | MaD:47 |
 | test.rs:224:18:224:31 | file.read_u8() [future, Ok] | test.rs:224:18:224:37 | await ... [Ok] | provenance |  |
 | test.rs:224:18:224:37 | await ... [Ok] | test.rs:224:18:224:38 | TryExpr | provenance |  |
 | test.rs:224:18:224:38 | TryExpr | test.rs:224:13:224:14 | v1 | provenance |  |
 | test.rs:225:13:225:14 | v2 | test.rs:229:14:229:15 | v2 | provenance |  |
-| test.rs:225:18:225:21 | file | test.rs:225:18:225:32 | file.read_i16() [future, Ok] | provenance | MaD:42 |
+| test.rs:225:18:225:21 | file | test.rs:225:18:225:32 | file.read_i16() [future, Ok] | provenance | MaD:43 |
 | test.rs:225:18:225:32 | file.read_i16() [future, Ok] | test.rs:225:18:225:38 | await ... [Ok] | provenance |  |
 | test.rs:225:18:225:38 | await ... [Ok] | test.rs:225:18:225:39 | TryExpr | provenance |  |
 | test.rs:225:18:225:39 | TryExpr | test.rs:225:13:225:14 | v2 | provenance |  |
 | test.rs:226:13:226:14 | v3 | test.rs:230:14:230:15 | v3 | provenance |  |
-| test.rs:226:18:226:21 | file | test.rs:226:18:226:32 | file.read_f32() [future, Ok] | provenance | MaD:41 |
+| test.rs:226:18:226:21 | file | test.rs:226:18:226:32 | file.read_f32() [future, Ok] | provenance | MaD:42 |
 | test.rs:226:18:226:32 | file.read_f32() [future, Ok] | test.rs:226:18:226:38 | await ... [Ok] | provenance |  |
 | test.rs:226:18:226:38 | await ... [Ok] | test.rs:226:18:226:39 | TryExpr | provenance |  |
 | test.rs:226:18:226:39 | TryExpr | test.rs:226:13:226:14 | v3 | provenance |  |
 | test.rs:227:13:227:14 | v4 | test.rs:231:14:231:15 | v4 | provenance |  |
-| test.rs:227:18:227:21 | file | test.rs:227:18:227:35 | file.read_i64_le() [future, Ok] | provenance | MaD:43 |
+| test.rs:227:18:227:21 | file | test.rs:227:18:227:35 | file.read_i64_le() [future, Ok] | provenance | MaD:44 |
 | test.rs:227:18:227:35 | file.read_i64_le() [future, Ok] | test.rs:227:18:227:41 | await ... [Ok] | provenance |  |
 | test.rs:227:18:227:41 | await ... [Ok] | test.rs:227:18:227:42 | TryExpr | provenance |  |
 | test.rs:227:18:227:42 | TryExpr | test.rs:227:13:227:14 | v4 | provenance |  |
-| test.rs:236:9:236:12 | file | test.rs:236:23:236:33 | [post] &mut buffer [&ref] | provenance | MaD:39 |
+| test.rs:236:9:236:12 | file | test.rs:236:23:236:33 | [post] &mut buffer [&ref] | provenance | MaD:40 |
 | test.rs:236:23:236:33 | [post] &mut buffer [&ref] | test.rs:236:28:236:33 | [post] buffer | provenance |  |
 | test.rs:236:28:236:33 | [post] buffer | test.rs:237:15:237:20 | buffer | provenance |  |
 | test.rs:237:15:237:20 | buffer | test.rs:237:14:237:20 | &buffer | provenance |  |
@@ -271,7 +273,7 @@ edges
 | test.rs:243:22:243:65 | ... .open(...) [future, Ok] | test.rs:243:22:243:71 | await ... [Ok] | provenance |  |
 | test.rs:243:22:243:71 | await ... [Ok] | test.rs:243:22:243:72 | TryExpr | provenance |  |
 | test.rs:243:22:243:72 | TryExpr | test.rs:243:13:243:18 | mut f1 | provenance |  |
-| test.rs:245:22:245:23 | f1 | test.rs:245:30:245:40 | [post] &mut buffer [&ref] | provenance | MaD:38 |
+| test.rs:245:22:245:23 | f1 | test.rs:245:30:245:40 | [post] &mut buffer [&ref] | provenance | MaD:39 |
 | test.rs:245:30:245:40 | [post] &mut buffer [&ref] | test.rs:245:35:245:40 | [post] buffer | provenance |  |
 | test.rs:245:35:245:40 | [post] buffer | test.rs:246:15:246:20 | buffer | provenance |  |
 | test.rs:246:15:246:20 | buffer | test.rs:246:14:246:20 | &buffer | provenance |  |

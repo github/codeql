@@ -70,7 +70,7 @@ models
 | 8 | Source: std::fs::exists; ReturnValue.Field[core::result::Result::Ok(0)]; file |
 | 9 | Source: std::fs::metadata; ReturnValue.Field[core::result::Result::Ok(0)]; file |
 | 10 | Source: std::io::stdio::stdin; ReturnValue; stdin |
-| 11 | Summary: <alloc::string::String as core::ops::deref::Deref>::deref; Argument[self]; ReturnValue; value |
+| 11 | Summary: <alloc::string::String as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue.Reference; taint |
 | 12 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 | 13 | Summary: <core::result::Result>::unwrap_or; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 | 14 | Summary: <std::fs::Metadata>::is_dir; Argument[self].Reference; ReturnValue; taint |
