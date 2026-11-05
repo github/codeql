@@ -80,6 +80,7 @@ rust_library(
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv32imac-unknown-none-elf": [],
         "@rules_rust//rust/platform:riscv32imc-unknown-none-elf": [],
+        "@rules_rust//rust/platform:riscv64gc-unknown-fuchsia": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-none-elf": [],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [],
@@ -192,6 +193,9 @@ rust_library(
             "@vendor_cpp_bmn__once_cell-1.21.3//:once_cell",  # cfg(not(all(target_arch = "arm", target_os = "none")))
         ],
         "@rules_rust//rust/platform:riscv32imc-unknown-none-elf": [
+            "@vendor_cpp_bmn__once_cell-1.21.3//:once_cell",  # cfg(not(all(target_arch = "arm", target_os = "none")))
+        ],
+        "@rules_rust//rust/platform:riscv64gc-unknown-fuchsia": [
             "@vendor_cpp_bmn__once_cell-1.21.3//:once_cell",  # cfg(not(all(target_arch = "arm", target_os = "none")))
         ],
         "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [

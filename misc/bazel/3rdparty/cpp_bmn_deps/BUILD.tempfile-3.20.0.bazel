@@ -80,6 +80,7 @@ rust_library(
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv32imac-unknown-none-elf": [],
         "@rules_rust//rust/platform:riscv32imc-unknown-none-elf": [],
+        "@rules_rust//rust/platform:riscv64gc-unknown-fuchsia": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-none-elf": [],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [],
@@ -201,6 +202,10 @@ rust_library(
         ],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
             "@vendor_cpp_bmn__getrandom-0.3.3//:getrandom",  # powerpc-unknown-linux-gnu
+            "@vendor_cpp_bmn__rustix-1.0.7//:rustix",  # cfg(any(unix, target_os = "wasi"))
+        ],
+        "@rules_rust//rust/platform:riscv64gc-unknown-fuchsia": [
+            "@vendor_cpp_bmn__getrandom-0.3.3//:getrandom",  # riscv64gc-unknown-fuchsia
             "@vendor_cpp_bmn__rustix-1.0.7//:rustix",  # cfg(any(unix, target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [
