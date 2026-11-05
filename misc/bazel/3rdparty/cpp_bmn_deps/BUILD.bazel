@@ -140,14 +140,14 @@ alias(
 )
 
 alias(
-    name = "serde-1.0.219",
-    actual = "@vendor_cpp_bmn__serde-1.0.219//:serde",
+    name = "serde-1.0.229",
+    actual = "@vendor_cpp_bmn__serde-1.0.229//:serde",
     tags = ["manual"],
 )
 
 alias(
     name = "serde",
-    actual = "@vendor_cpp_bmn__serde-1.0.219//:serde",
+    actual = "@vendor_cpp_bmn__serde-1.0.229//:serde",
     tags = ["manual"],
 )
 
@@ -212,13 +212,13 @@ alias(
 )
 
 alias(
-    name = "zip-6.0.0",
-    actual = "@vendor_cpp_bmn__zip-6.0.0//:zip",
+    name = "zip-9.0.5",
+    actual = "@vendor_cpp_bmn__zip-9.0.5//:zip",
     tags = ["manual"],
 )
 
 alias(
     name = "zip",
-    actual = "@vendor_cpp_bmn__zip-6.0.0//:zip",
+    actual = "@vendor_cpp_bmn__zip-9.0.5//:zip",
     tags = ["manual"],
 )

@@ -116,43 +116,43 @@ rust_library(
         "@vendor_cpp_bmn__shlex-1.3.0//:shlex",
     ] + select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # aarch64-apple-darwin
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # aarch64-apple-darwin
         ],
         "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # aarch64-unknown-linux-gnu
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # aarch64-unknown-linux-gnu
         ],
         "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # aarch64-unknown-linux-gnu, aarch64-unknown-nixos-gnu
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # aarch64-unknown-linux-gnu, aarch64-unknown-nixos-gnu
         ],
         "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # arm-unknown-linux-gnueabi
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # arm-unknown-linux-gnueabi
         ],
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # i686-unknown-linux-gnu
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # i686-unknown-linux-gnu
         ],
         "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # loongarch64-unknown-linux-gnu
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # loongarch64-unknown-linux-gnu
         ],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # powerpc-unknown-linux-gnu
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # powerpc-unknown-linux-gnu
         ],
         "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # riscv64gc-unknown-linux-gnu
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # riscv64gc-unknown-linux-gnu
         ],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # s390x-unknown-linux-gnu
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # s390x-unknown-linux-gnu
         ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # x86_64-apple-darwin
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # x86_64-apple-darwin
         ],
         "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # x86_64-unknown-freebsd
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # x86_64-unknown-freebsd
         ],
         "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # x86_64-unknown-linux-gnu
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # x86_64-unknown-linux-gnu
         ],
         "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # x86_64-unknown-linux-gnu, x86_64-unknown-nixos-gnu
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # x86_64-unknown-linux-gnu, x86_64-unknown-nixos-gnu
         ],
         "//conditions:default": [],
     }),
