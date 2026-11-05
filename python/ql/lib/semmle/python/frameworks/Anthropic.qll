@@ -11,6 +11,7 @@
 
 private import python
 private import semmle.python.ApiGraphs
+private import semmle.python.Concepts
 
 /** Provides classes modeling prompt-injection sinks of the `anthropic` package. */
 module Anthropic {
@@ -54,5 +55,15 @@ module Anthropic {
     |
       result = msg.getSubscript("content")
     )
+  }
+
+  private class MessagePrompt extends AIPrompt::Range {
+    MessagePrompt() { this = [getSystemOrAssistantPromptNode(), getUserPromptNode()].asSink() }
+
+    override DataFlow::Node getAPrompt() { result = this }
+
+    override predicate isSystemPrompt() { this = getSystemOrAssistantPromptNode().asSink() }
+
+    override predicate isUserPrompt() { this = getUserPromptNode().asSink() }
   }
 }

@@ -9,11 +9,6 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
-private import semmle.python.frameworks.data.ModelsAsData
-private import semmle.python.frameworks.OpenAI
-private import semmle.python.frameworks.Anthropic
-private import semmle.python.frameworks.GoogleGenAI
-private import semmle.python.frameworks.OpenRouter
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -45,25 +40,7 @@ module SystemPromptInjection {
    * A prompt to an AI model, considered as a flow sink.
    */
   class AIPromptAsSink extends Sink {
-    AIPromptAsSink() { this = any(AIPrompt p).getAPrompt() }
-  }
-
-  private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("system-prompt-injection").asSink() }
-  }
-
-  private class PromptContentSink extends Sink {
-    PromptContentSink() {
-      this = OpenAI::getSystemOrAssistantPromptNode().asSink()
-      or
-      this = AgentSdk::getSystemOrAssistantPromptNode().asSink()
-      or
-      this = Anthropic::getSystemOrAssistantPromptNode().asSink()
-      or
-      this = GoogleGenAI::getSystemOrAssistantPromptNode().asSink()
-      or
-      this = OpenRouter::getSystemOrAssistantPromptNode().asSink()
-    }
+    AIPromptAsSink() { this = any(AIPrompt p | p.isSystemPrompt()).getAPrompt() }
   }
 
   /**

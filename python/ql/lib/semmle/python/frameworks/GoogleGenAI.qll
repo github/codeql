@@ -11,6 +11,7 @@
 
 private import python
 private import semmle.python.ApiGraphs
+private import semmle.python.Concepts
 
 /** Provides classes modeling prompt-injection sinks of the `google-genai` package. */
 module GoogleGenAI {
@@ -54,5 +55,15 @@ module GoogleGenAI {
     |
       result = msg.getSubscript("parts").getASubscript().getSubscript("text")
     )
+  }
+
+  private class ContentPrompt extends AIPrompt::Range {
+    ContentPrompt() { this = [getSystemOrAssistantPromptNode(), getUserPromptNode()].asSink() }
+
+    override DataFlow::Node getAPrompt() { result = this }
+
+    override predicate isSystemPrompt() { this = getSystemOrAssistantPromptNode().asSink() }
+
+    override predicate isUserPrompt() { this = getUserPromptNode().asSink() }
   }
 }

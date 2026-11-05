@@ -14,6 +14,7 @@
 
 private import python
 private import semmle.python.ApiGraphs
+private import semmle.python.Concepts
 
 /** Holds if `msg` is a message dictionary with a privileged (system/developer/assistant) role. */
 private predicate isSystemOrDevMessage(API::Node msg) {
@@ -64,6 +65,16 @@ module AgentSdk {
     |
       result = msg.getSubscript("content")
     )
+  }
+
+  private class RunnerPrompt extends AIPrompt::Range {
+    RunnerPrompt() { this = [getSystemOrAssistantPromptNode(), getUserPromptNode()].asSink() }
+
+    override DataFlow::Node getAPrompt() { result = this }
+
+    override predicate isSystemPrompt() { this = getSystemOrAssistantPromptNode().asSink() }
+
+    override predicate isUserPrompt() { this = getUserPromptNode().asSink() }
   }
 }
 
@@ -173,5 +184,15 @@ module OpenAI {
     exists(API::Node item | item = realtimeItem() and not isSystemOrDevMessage(item) |
       result = realtimeItemContent(item)
     )
+  }
+
+  private class ClientPrompt extends AIPrompt::Range {
+    ClientPrompt() { this = [getSystemOrAssistantPromptNode(), getUserPromptNode()].asSink() }
+
+    override DataFlow::Node getAPrompt() { result = this }
+
+    override predicate isSystemPrompt() { this = getSystemOrAssistantPromptNode().asSink() }
+
+    override predicate isUserPrompt() { this = getUserPromptNode().asSink() }
   }
 }

@@ -281,6 +281,12 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    libxml2, XML processing library
    lxml, XML processing library
    xmltodict, XML processing library
+   anthropic, AI model SDK
+   google-genai, AI model SDK
+   langchain, AI framework
+   openai, AI model SDK
+   openai-agents, AI agent framework
+   openrouter, AI model SDK
 
 
 Ruby built-in support

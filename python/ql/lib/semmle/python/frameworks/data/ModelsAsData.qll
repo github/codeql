@@ -35,6 +35,22 @@ private class ThreatModelSourceFromDataExtension extends ThreatModelSource::Rang
   }
 }
 
+private class AIPromptFromDataExtension extends AIPrompt::Range {
+  AIPromptFromDataExtension() {
+    this = ModelOutput::getASinkNode(["system-prompt-injection", "user-prompt-injection"]).asSink()
+  }
+
+  override DataFlow::Node getAPrompt() { result = this }
+
+  override predicate isSystemPrompt() {
+    this = ModelOutput::getASinkNode("system-prompt-injection").asSink()
+  }
+
+  override predicate isUserPrompt() {
+    this = ModelOutput::getASinkNode("user-prompt-injection").asSink()
+  }
+}
+
 private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   string type;
   string path;
