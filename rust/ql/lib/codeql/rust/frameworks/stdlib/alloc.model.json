@@ -40,6 +40,9 @@
         ["<alloc::boxed::Box>::pin", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer].Field[alloc::boxed::Box(0)]", "value", "manual"],
         ["<alloc::boxed::Box>::new", "Argument[0]", "ReturnValue.Field[alloc::boxed::Box(0)]", "value", "manual"],
         ["<alloc::boxed::Box>::into_pin", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"],
+        // Cow
+        ["<alloc::borrow::Cow>::to_mut", "Argument[self].Reference.Field[alloc::borrow::Cow::Owned(0)]", "ReturnValue.Reference", "value", "manual"],
+        ["<alloc::borrow::Cow>::to_mut", "Argument[self].Reference.Field[alloc::borrow::Cow::Borrowed(0)].Reference", "ReturnValue.Reference", "taint", "manual"],
         // Fmt
         ["alloc::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"],
         // Layout
@@ -62,6 +65,9 @@
         ["<alloc::string::String>::as_str", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"],
         ["<alloc::string::String>::as_bytes", "Argument[self].Reference", "ReturnValue.Reference.Element", "taint", "manual"],
         ["<alloc::string::ToString>::to_string", "Argument[self].Reference", "ReturnValue", "taint", "manual"],
+        ["<alloc::string::String as core::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["<alloc::string::String as core::convert::From>::from", "Argument[0].Field[alloc::borrow::Cow::Owned(0)]", "ReturnValue", "value", "manual"],
+        ["<alloc::string::String as core::convert::From>::from", "Argument[0].Field[alloc::borrow::Cow::Borrowed(0)].Reference", "ReturnValue", "taint", "manual"],
         // Overwrite generated model
         ["<alloc::string::String as core::ops::arith::Add>::add", "Argument[self]", "ReturnValue", "taint", "manual"],
         ["<alloc::string::String as core::ops::arith::Add>::add", "Argument[0].Reference", "ReturnValue", "taint", "manual"],
