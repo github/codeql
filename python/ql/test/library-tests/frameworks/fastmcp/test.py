@@ -7,6 +7,7 @@ from fastmcp.prompts.function_prompt import FunctionPrompt as ModuleFunctionProm
 from fastmcp.prompts.function_prompt import prompt as module_prompt
 from fastmcp.prompts.prompt import FunctionPrompt as PromptModuleFunctionPrompt
 from fastmcp.prompts.prompt import Prompt as PromptModulePrompt
+from fastmcp.server import Context as ServerContext
 from fastmcp.server import FastMCP as ServerFastMCP
 from fastmcp.server.auth import AuthProvider, TokenVerifier
 from fastmcp.server.auth.auth import TokenVerifier as ModuleTokenVerifier
@@ -92,6 +93,11 @@ async def with_string_context(command, ctx: "Context"): # $ threatModelSource[ai
 
 @app.tool
 async def with_string_module_context(command, ctx: "ModuleContext"): # $ threatModelSource[ai]=command
+    return command
+
+
+@app.tool
+async def with_server_context(command, ctx: ServerContext): # $ threatModelSource[ai]=command
     return command
 
 

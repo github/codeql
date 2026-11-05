@@ -8,7 +8,6 @@
  */
 
 private import python
-private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
@@ -26,6 +25,8 @@ module Mcp {
   private API::Node serverClass() {
     exists(API::Node mcpServer | mcpServer = API::moduleImport("mcp").getMember("server") |
       // `FastMCP` in 1.x of `mcp`, renamed to `MCPServer` in 2.x
+      result = mcpServer.getMember("FastMCP")
+      or
       result = mcpServer.getMember("fastmcp").getMember("FastMCP")
       or
       result = mcpServer.getMember("fastmcp").getMember("server").getMember("FastMCP")
@@ -136,26 +137,78 @@ module Mcp {
     exists(API::Node fastmcp | fastmcp = API::moduleImport("fastmcp") |
       result = fastmcp.getMember("Context")
       or
+      result = fastmcp.getMember("server").getMember("Context")
+      or
       result = fastmcp.getMember("server").getMember("context").getMember("Context")
     )
   }
 
-  /** Gets a name under which the module `m` refers to the `Context` class. */
-  private string contextName(Module m) {
-    exists(Expr ref |
-      ref = contextClass().getAValueReachableFromSource().asExpr() and
-      m = ref.getEnclosingModule()
-    |
-      result = "Context"
+  /** Gets a reference to the `Context` class or to a subclass of it; the SDKs inject both. */
+  private API::Node contextClassOrSubclass() { result = contextClass().getASubclass*() }
+
+  /** Holds if `def` binds a module-level name to the `Context` class or to a subclass of it. */
+  private predicate bindsContext(Name def) {
+    def.getScope() instanceof Module and
+    (
+      // `class ProjectContext(Context): ...`
+      def = contextClassOrSubclass().getAValueReachableFromSource().asExpr()
       or
       // `from fastmcp import Context as Ctx`
-      exists(Alias alias | alias.getValue() = ref | result = alias.getAsname().(Name).getId())
+      exists(Alias alias | alias.getAsname() = def |
+        alias.getValue() = contextClassOrSubclass().getAValueReachableFromSource().asExpr()
+      )
     )
   }
 
-  /** Holds if `s` subscripts something named `name`, as in `name[...]` or `typing.name[...]`. */
-  private predicate subscripts(Subscript s, string name) {
-    s.getObject().(Name).getId() = name or s.getObject().(Attribute).getName() = name
+  /**
+   * Gets a name that refers to the `Context` class or to a subclass of it in the module `m`. The SDKs
+   * resolve string annotations through the globals of the module, so a name that `m` also binds to
+   * something else is left out.
+   */
+  private string contextName(Module m) {
+    exists(Name def | bindsContext(def) and def.getScope() = m and result = def.getId()) and
+    not exists(Name other |
+      other.getScope() = m and
+      other.isDefinition() and
+      other.getId() = result and
+      not bindsContext(other)
+    )
+  }
+
+  /** Holds if `s` subscripts the `typing` (or `typing_extensions`) member `name`. */
+  private predicate subscriptsTyping(Subscript s, string name) {
+    s.getObject() =
+      API::moduleImport(["typing", "typing_extensions"])
+          .getMember(name)
+          .getAValueReachableFromSource()
+          .asExpr()
+  }
+
+  /**
+   * Holds if the string annotation `s` refers to the `Context` class in a type position, as in
+   * `"Context"`, `"Context[...]"`, `"Context | None"`, `"Optional[Context]"`,
+   * `"Union[Context, None]"` or `"Annotated[Context, ...]"`. Strings of any other form, among them
+   * those with `Context` only in metadata or in `Literal` values, do not count.
+   */
+  private predicate isContextString(StringLiteral s) {
+    exists(string context, string other |
+      // the class, possibly with type arguments
+      context = contextName(s.getEnclosingModule()) + "(\\[.*\\])?" and
+      // a simple type in a union, such as `None`, `str` or `typing.Any`
+      other = "[\\w.]+(\\[[^\\]]*\\])?"
+    |
+      s.getText()
+          .regexpMatch("\\s*(" + other + "\\s*\\|\\s*)*" + context + "(\\s*\\|\\s*" + other +
+              ")*\\s*")
+      or
+      s.getText().regexpMatch("\\s*([\\w]+\\.)*Optional\\[\\s*" + context + "\\s*\\]\\s*")
+      or
+      s.getText()
+          .regexpMatch("\\s*([\\w]+\\.)*Union\\[\\s*(" + other + "\\s*,\\s*)*" + context +
+              "(\\s*,\\s*" + other + ")*\\s*\\]\\s*")
+      or
+      s.getText().regexpMatch("\\s*([\\w]+\\.)*Annotated\\[\\s*" + context + "\\s*,.*\\]\\s*")
+    )
   }
 
   /**
@@ -164,17 +217,17 @@ module Mcp {
    * `Annotated[Context, ...]` or as a string such as `"Context"`.
    */
   private predicate isContextAnnotation(Expr e) {
-    e = contextClass().getAValueReachableFromSource().asExpr()
+    e = contextClassOrSubclass().getAValueReachableFromSource().asExpr()
     or
     isContextAnnotation(e.(Subscript).getObject())
     or
     // Only the first argument of `Annotated` is a type, the others are metadata.
-    exists(Subscript s | s = e and subscripts(s, "Annotated") |
+    exists(Subscript s | s = e and subscriptsTyping(s, "Annotated") |
       isContextAnnotation(s.getIndex().(Tuple).getElt(0))
     )
     or
     // The arguments of `Literal` are values, not types.
-    exists(Subscript s | s = e and not subscripts(s, ["Annotated", "Literal"]) |
+    exists(Subscript s | s = e and not subscriptsTyping(s, ["Annotated", "Literal"]) |
       isContextAnnotation(s.getIndex())
     )
     or
@@ -184,8 +237,7 @@ module Mcp {
       isContextAnnotation(union.getLeft()) or isContextAnnotation(union.getRight())
     )
     or
-    // The SDKs resolve string annotations, so a string naming the class in this module counts.
-    e.(StringLiteral).getText().regexpMatch(".*\\b" + contextName(e.getEnclosingModule()) + "\\b.*")
+    isContextString(e)
   }
 
   /**

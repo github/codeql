@@ -1,9 +1,16 @@
+from mcp.server import FastMCP as ServerFastMCP
 from mcp.server.fastmcp import Context, FastMCP
 from mcp.server.fastmcp.server import FastMCP as ModuleFastMCP
 from mcp.server.session import ServerSession
 
 server = FastMCP("test")
 other = ModuleFastMCP("test")
+reexported = ServerFastMCP("test")
+
+
+@reexported.tool()
+def run_reexported(command): # $ threatModelSource[ai]=command
+    return command
 
 
 @server.tool()
