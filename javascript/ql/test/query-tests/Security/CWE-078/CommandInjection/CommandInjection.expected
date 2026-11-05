@@ -21,6 +21,29 @@
 | child_process-test.js:75:29:75:31 | cmd | child_process-test.js:73:25:73:31 | req.url | child_process-test.js:75:29:75:31 | cmd | This command line depends on a $@. | child_process-test.js:73:25:73:31 | req.url | user-provided value |
 | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | This command line depends on a $@. | child_process-test.js:83:19:83:36 | req.query.fileName | user-provided value |
 | child_process-test.js:94:11:94:35 | "ping " ... ms.host | child_process-test.js:94:21:94:30 | ctx.params | child_process-test.js:94:11:94:35 | "ping " ... ms.host | This command line depends on a $@. | child_process-test.js:94:21:94:30 | ctx.params | user-provided value |
+| child_process-test.js:100:22:100:36 | ["hello", name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:100:22:100:36 | ["hello", name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:101:22:101:36 | ["hello", name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:101:22:101:36 | ["hello", name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:102:26:102:40 | ["hello", name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:102:26:102:40 | ["hello", name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:103:26:103:40 | ["hello", name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:103:26:103:40 | ["hello", name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:104:25:104:39 | ["hello", name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:104:25:104:39 | ["hello", name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:105:25:105:39 | ["hello", name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:105:25:105:39 | ["hello", name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:106:25:106:39 | ["hello", name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:106:25:106:39 | ["hello", name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:107:25:107:39 | ["hello", name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:107:25:107:39 | ["hello", name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:108:29:108:43 | ["hello", name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:108:29:108:43 | ["hello", name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:109:29:109:43 | ["hello", name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:109:29:109:43 | ["hello", name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:110:41:110:55 | ["hello", name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:110:41:110:55 | ["hello", name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:111:41:111:55 | ["hello", name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:111:41:111:55 | ["hello", name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:116:22:116:25 | args | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:116:22:116:25 | args | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:117:25:117:28 | args | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:117:25:117:28 | args | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:122:22:122:38 | arrayWithProperty | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:122:22:122:38 | arrayWithProperty | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:126:22:126:27 | pushed | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:126:22:126:27 | pushed | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:129:25:129:31 | shifted | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:129:25:129:31 | shifted | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:161:22:161:27 | [name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:161:22:161:27 | [name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:171:22:171:27 | [name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:171:22:171:27 | [name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:180:22:180:27 | [name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:180:22:180:27 | [name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:184:26:184:29 | args | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:184:26:184:29 | args | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:185:29:185:32 | args | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:185:29:185:32 | args | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:191:26:191:31 | [name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:191:26:191:31 | [name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
 | command-line-libs.js:14:8:14:18 | options.cmd | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:14:8:14:18 | options.cmd | This command line depends on a $@. | command-line-libs.js:9:16:9:23 | req.body | user-provided value |
 | command-line-libs.js:15:8:15:18 | program.cmd | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:15:8:15:18 | program.cmd | This command line depends on a $@. | command-line-libs.js:9:16:9:23 | req.body | user-provided value |
 | command-line-libs.js:21:12:21:17 | script | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:21:12:21:17 | script | This command line depends on a $@. | command-line-libs.js:9:16:9:23 | req.body | user-provided value |
@@ -151,6 +174,122 @@ edges
 | child_process-test.js:73:15:73:38 | url.par ... , true) | child_process-test.js:73:9:73:11 | cmd | provenance |  |
 | child_process-test.js:73:25:73:31 | req.url | child_process-test.js:73:15:73:38 | url.par ... , true) | provenance |  |
 | child_process-test.js:94:21:94:30 | ctx.params | child_process-test.js:94:11:94:35 | "ping " ... ms.host | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:100:32:100:35 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:101:32:101:35 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:102:36:102:39 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:103:36:103:39 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:104:35:104:38 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:105:35:105:38 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:106:35:106:38 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:107:35:107:38 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:108:39:108:42 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:109:39:109:42 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:110:51:110:54 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:111:51:111:54 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:115:28:115:31 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:120:32:120:35 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:125:17:125:20 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:128:21:128:24 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:131:23:131:26 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:132:23:132:26 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:133:23:133:26 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:134:27:134:30 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:135:27:135:30 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:136:27:136:30 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:137:26:137:29 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:138:26:138:29 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:139:26:139:29 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:140:30:140:33 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:141:30:141:33 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:142:30:142:33 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:148:20:148:23 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:151:26:151:29 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:155:23:155:26 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:158:26:158:29 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:161:23:161:26 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:164:26:164:29 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:166:23:166:26 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:171:23:171:26 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:177:23:177:26 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:180:23:180:26 | name | provenance |  |
+| child_process-test.js:98:11:98:14 | name | child_process-test.js:187:18:187:21 | name | provenance |  |
+| child_process-test.js:98:18:98:41 | url.par ... , true) | child_process-test.js:98:11:98:14 | name | provenance |  |
+| child_process-test.js:98:28:98:34 | req.url | child_process-test.js:98:18:98:41 | url.par ... , true) | provenance |  |
+| child_process-test.js:100:32:100:35 | name | child_process-test.js:100:22:100:36 | ["hello", name] | provenance |  |
+| child_process-test.js:100:32:100:35 | name | child_process-test.js:101:32:101:35 | name | provenance |  |
+| child_process-test.js:101:32:101:35 | name | child_process-test.js:101:22:101:36 | ["hello", name] | provenance |  |
+| child_process-test.js:101:32:101:35 | name | child_process-test.js:102:36:102:39 | name | provenance |  |
+| child_process-test.js:102:36:102:39 | name | child_process-test.js:102:26:102:40 | ["hello", name] | provenance |  |
+| child_process-test.js:102:36:102:39 | name | child_process-test.js:103:36:103:39 | name | provenance |  |
+| child_process-test.js:103:36:103:39 | name | child_process-test.js:103:26:103:40 | ["hello", name] | provenance |  |
+| child_process-test.js:103:36:103:39 | name | child_process-test.js:104:35:104:38 | name | provenance |  |
+| child_process-test.js:104:35:104:38 | name | child_process-test.js:104:25:104:39 | ["hello", name] | provenance |  |
+| child_process-test.js:104:35:104:38 | name | child_process-test.js:105:35:105:38 | name | provenance |  |
+| child_process-test.js:105:35:105:38 | name | child_process-test.js:105:25:105:39 | ["hello", name] | provenance |  |
+| child_process-test.js:105:35:105:38 | name | child_process-test.js:106:35:106:38 | name | provenance |  |
+| child_process-test.js:106:35:106:38 | name | child_process-test.js:106:25:106:39 | ["hello", name] | provenance |  |
+| child_process-test.js:106:35:106:38 | name | child_process-test.js:107:35:107:38 | name | provenance |  |
+| child_process-test.js:107:35:107:38 | name | child_process-test.js:107:25:107:39 | ["hello", name] | provenance |  |
+| child_process-test.js:107:35:107:38 | name | child_process-test.js:108:39:108:42 | name | provenance |  |
+| child_process-test.js:108:39:108:42 | name | child_process-test.js:108:29:108:43 | ["hello", name] | provenance |  |
+| child_process-test.js:108:39:108:42 | name | child_process-test.js:109:39:109:42 | name | provenance |  |
+| child_process-test.js:109:39:109:42 | name | child_process-test.js:109:29:109:43 | ["hello", name] | provenance |  |
+| child_process-test.js:109:39:109:42 | name | child_process-test.js:110:51:110:54 | name | provenance |  |
+| child_process-test.js:110:51:110:54 | name | child_process-test.js:110:41:110:55 | ["hello", name] | provenance |  |
+| child_process-test.js:110:51:110:54 | name | child_process-test.js:111:51:111:54 | name | provenance |  |
+| child_process-test.js:111:51:111:54 | name | child_process-test.js:111:41:111:55 | ["hello", name] | provenance |  |
+| child_process-test.js:111:51:111:54 | name | child_process-test.js:115:28:115:31 | name | provenance |  |
+| child_process-test.js:115:11:115:14 | args [1] | child_process-test.js:116:22:116:25 | args | provenance |  |
+| child_process-test.js:115:11:115:14 | args [1] | child_process-test.js:117:25:117:28 | args | provenance |  |
+| child_process-test.js:115:18:115:32 | ["hello", name] [1] | child_process-test.js:115:11:115:14 | args [1] | provenance |  |
+| child_process-test.js:115:28:115:31 | name | child_process-test.js:115:18:115:32 | ["hello", name] [1] | provenance |  |
+| child_process-test.js:115:28:115:31 | name | child_process-test.js:120:32:120:35 | name | provenance |  |
+| child_process-test.js:120:11:120:27 | arrayWithProperty [0] | child_process-test.js:122:22:122:38 | arrayWithProperty | provenance |  |
+| child_process-test.js:120:31:120:36 | [name] [0] | child_process-test.js:120:11:120:27 | arrayWithProperty [0] | provenance |  |
+| child_process-test.js:120:32:120:35 | name | child_process-test.js:120:31:120:36 | [name] [0] | provenance |  |
+| child_process-test.js:120:32:120:35 | name | child_process-test.js:125:17:125:20 | name | provenance |  |
+| child_process-test.js:125:5:125:10 | [post update] pushed [ArrayElement] | child_process-test.js:126:22:126:27 | pushed | provenance |  |
+| child_process-test.js:125:17:125:20 | name | child_process-test.js:125:5:125:10 | [post update] pushed [ArrayElement] | provenance |  |
+| child_process-test.js:125:17:125:20 | name | child_process-test.js:128:21:128:24 | name | provenance |  |
+| child_process-test.js:128:5:128:11 | [post update] shifted [ArrayElement] | child_process-test.js:129:25:129:31 | shifted | provenance |  |
+| child_process-test.js:128:21:128:24 | name | child_process-test.js:128:5:128:11 | [post update] shifted [ArrayElement] | provenance |  |
+| child_process-test.js:128:21:128:24 | name | child_process-test.js:131:23:131:26 | name | provenance |  |
+| child_process-test.js:131:23:131:26 | name | child_process-test.js:132:23:132:26 | name | provenance |  |
+| child_process-test.js:132:23:132:26 | name | child_process-test.js:133:23:133:26 | name | provenance |  |
+| child_process-test.js:133:23:133:26 | name | child_process-test.js:134:27:134:30 | name | provenance |  |
+| child_process-test.js:134:27:134:30 | name | child_process-test.js:135:27:135:30 | name | provenance |  |
+| child_process-test.js:135:27:135:30 | name | child_process-test.js:136:27:136:30 | name | provenance |  |
+| child_process-test.js:136:27:136:30 | name | child_process-test.js:137:26:137:29 | name | provenance |  |
+| child_process-test.js:137:26:137:29 | name | child_process-test.js:138:26:138:29 | name | provenance |  |
+| child_process-test.js:138:26:138:29 | name | child_process-test.js:139:26:139:29 | name | provenance |  |
+| child_process-test.js:139:26:139:29 | name | child_process-test.js:140:30:140:33 | name | provenance |  |
+| child_process-test.js:140:30:140:33 | name | child_process-test.js:141:30:141:33 | name | provenance |  |
+| child_process-test.js:141:30:141:33 | name | child_process-test.js:142:30:142:33 | name | provenance |  |
+| child_process-test.js:142:30:142:33 | name | child_process-test.js:148:20:148:23 | name | provenance |  |
+| child_process-test.js:148:20:148:23 | name | child_process-test.js:151:26:151:29 | name | provenance |  |
+| child_process-test.js:151:26:151:29 | name | child_process-test.js:155:23:155:26 | name | provenance |  |
+| child_process-test.js:155:23:155:26 | name | child_process-test.js:158:26:158:29 | name | provenance |  |
+| child_process-test.js:158:26:158:29 | name | child_process-test.js:161:23:161:26 | name | provenance |  |
+| child_process-test.js:161:23:161:26 | name | child_process-test.js:161:22:161:27 | [name] | provenance |  |
+| child_process-test.js:161:23:161:26 | name | child_process-test.js:164:26:164:29 | name | provenance |  |
+| child_process-test.js:164:26:164:29 | name | child_process-test.js:166:23:166:26 | name | provenance |  |
+| child_process-test.js:166:23:166:26 | name | child_process-test.js:171:23:171:26 | name | provenance |  |
+| child_process-test.js:171:23:171:26 | name | child_process-test.js:171:22:171:27 | [name] | provenance |  |
+| child_process-test.js:171:23:171:26 | name | child_process-test.js:177:23:177:26 | name | provenance |  |
+| child_process-test.js:177:23:177:26 | name | child_process-test.js:180:23:180:26 | name | provenance |  |
+| child_process-test.js:180:23:180:26 | name | child_process-test.js:180:22:180:27 | [name] | provenance |  |
+| child_process-test.js:180:23:180:26 | name | child_process-test.js:187:18:187:21 | name | provenance |  |
+| child_process-test.js:183:26:183:29 | args [0] | child_process-test.js:184:26:184:29 | args | provenance |  |
+| child_process-test.js:183:26:183:29 | args [0] | child_process-test.js:185:29:185:32 | args | provenance |  |
+| child_process-test.js:187:17:187:22 | [name] [0] | child_process-test.js:183:26:183:29 | args [0] | provenance |  |
+| child_process-test.js:187:18:187:21 | name | child_process-test.js:187:17:187:22 | [name] [0] | provenance |  |
+| child_process-test.js:187:18:187:21 | name | child_process-test.js:189:5:192:5 | functio ... t\\n    } [name] | provenance |  |
+| child_process-test.js:187:18:187:21 | name | child_process-test.js:193:5:193:18 | runWithOptions [name] | provenance |  |
+| child_process-test.js:189:5:192:5 | functio ... t\\n    } [name] | child_process-test.js:189:14:189:27 | runWithOptions [name] | provenance |  |
+| child_process-test.js:189:5:192:5 | functio ... t\\n    } [name] | child_process-test.js:191:27:191:30 | name | provenance |  |
+| child_process-test.js:189:14:189:27 | runWithOptions [name] | child_process-test.js:193:5:193:18 | runWithOptions [name] | provenance |  |
+| child_process-test.js:191:27:191:30 | name | child_process-test.js:191:26:191:31 | [name] | provenance |  |
+| child_process-test.js:193:5:193:18 | runWithOptions [name] | child_process-test.js:191:27:191:30 | name | provenance |  |
 | command-line-libs.js:9:9:9:12 | args | command-line-libs.js:12:17:12:20 | args | provenance |  |
 | command-line-libs.js:9:9:9:12 | args | command-line-libs.js:23:29:23:32 | args | provenance |  |
 | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:9:9:9:12 | args | provenance |  |
@@ -390,6 +529,83 @@ nodes
 | child_process-test.js:83:19:83:36 | req.query.fileName | semmle.label | req.query.fileName |
 | child_process-test.js:94:11:94:35 | "ping " ... ms.host | semmle.label | "ping " ... ms.host |
 | child_process-test.js:94:21:94:30 | ctx.params | semmle.label | ctx.params |
+| child_process-test.js:98:11:98:14 | name | semmle.label | name |
+| child_process-test.js:98:18:98:41 | url.par ... , true) | semmle.label | url.par ... , true) |
+| child_process-test.js:98:28:98:34 | req.url | semmle.label | req.url |
+| child_process-test.js:100:22:100:36 | ["hello", name] | semmle.label | ["hello", name] |
+| child_process-test.js:100:32:100:35 | name | semmle.label | name |
+| child_process-test.js:101:22:101:36 | ["hello", name] | semmle.label | ["hello", name] |
+| child_process-test.js:101:32:101:35 | name | semmle.label | name |
+| child_process-test.js:102:26:102:40 | ["hello", name] | semmle.label | ["hello", name] |
+| child_process-test.js:102:36:102:39 | name | semmle.label | name |
+| child_process-test.js:103:26:103:40 | ["hello", name] | semmle.label | ["hello", name] |
+| child_process-test.js:103:36:103:39 | name | semmle.label | name |
+| child_process-test.js:104:25:104:39 | ["hello", name] | semmle.label | ["hello", name] |
+| child_process-test.js:104:35:104:38 | name | semmle.label | name |
+| child_process-test.js:105:25:105:39 | ["hello", name] | semmle.label | ["hello", name] |
+| child_process-test.js:105:35:105:38 | name | semmle.label | name |
+| child_process-test.js:106:25:106:39 | ["hello", name] | semmle.label | ["hello", name] |
+| child_process-test.js:106:35:106:38 | name | semmle.label | name |
+| child_process-test.js:107:25:107:39 | ["hello", name] | semmle.label | ["hello", name] |
+| child_process-test.js:107:35:107:38 | name | semmle.label | name |
+| child_process-test.js:108:29:108:43 | ["hello", name] | semmle.label | ["hello", name] |
+| child_process-test.js:108:39:108:42 | name | semmle.label | name |
+| child_process-test.js:109:29:109:43 | ["hello", name] | semmle.label | ["hello", name] |
+| child_process-test.js:109:39:109:42 | name | semmle.label | name |
+| child_process-test.js:110:41:110:55 | ["hello", name] | semmle.label | ["hello", name] |
+| child_process-test.js:110:51:110:54 | name | semmle.label | name |
+| child_process-test.js:111:41:111:55 | ["hello", name] | semmle.label | ["hello", name] |
+| child_process-test.js:111:51:111:54 | name | semmle.label | name |
+| child_process-test.js:115:11:115:14 | args [1] | semmle.label | args [1] |
+| child_process-test.js:115:18:115:32 | ["hello", name] [1] | semmle.label | ["hello", name] [1] |
+| child_process-test.js:115:28:115:31 | name | semmle.label | name |
+| child_process-test.js:116:22:116:25 | args | semmle.label | args |
+| child_process-test.js:117:25:117:28 | args | semmle.label | args |
+| child_process-test.js:120:11:120:27 | arrayWithProperty [0] | semmle.label | arrayWithProperty [0] |
+| child_process-test.js:120:31:120:36 | [name] [0] | semmle.label | [name] [0] |
+| child_process-test.js:120:32:120:35 | name | semmle.label | name |
+| child_process-test.js:122:22:122:38 | arrayWithProperty | semmle.label | arrayWithProperty |
+| child_process-test.js:125:5:125:10 | [post update] pushed [ArrayElement] | semmle.label | [post update] pushed [ArrayElement] |
+| child_process-test.js:125:17:125:20 | name | semmle.label | name |
+| child_process-test.js:126:22:126:27 | pushed | semmle.label | pushed |
+| child_process-test.js:128:5:128:11 | [post update] shifted [ArrayElement] | semmle.label | [post update] shifted [ArrayElement] |
+| child_process-test.js:128:21:128:24 | name | semmle.label | name |
+| child_process-test.js:129:25:129:31 | shifted | semmle.label | shifted |
+| child_process-test.js:131:23:131:26 | name | semmle.label | name |
+| child_process-test.js:132:23:132:26 | name | semmle.label | name |
+| child_process-test.js:133:23:133:26 | name | semmle.label | name |
+| child_process-test.js:134:27:134:30 | name | semmle.label | name |
+| child_process-test.js:135:27:135:30 | name | semmle.label | name |
+| child_process-test.js:136:27:136:30 | name | semmle.label | name |
+| child_process-test.js:137:26:137:29 | name | semmle.label | name |
+| child_process-test.js:138:26:138:29 | name | semmle.label | name |
+| child_process-test.js:139:26:139:29 | name | semmle.label | name |
+| child_process-test.js:140:30:140:33 | name | semmle.label | name |
+| child_process-test.js:141:30:141:33 | name | semmle.label | name |
+| child_process-test.js:142:30:142:33 | name | semmle.label | name |
+| child_process-test.js:148:20:148:23 | name | semmle.label | name |
+| child_process-test.js:151:26:151:29 | name | semmle.label | name |
+| child_process-test.js:155:23:155:26 | name | semmle.label | name |
+| child_process-test.js:158:26:158:29 | name | semmle.label | name |
+| child_process-test.js:161:22:161:27 | [name] | semmle.label | [name] |
+| child_process-test.js:161:23:161:26 | name | semmle.label | name |
+| child_process-test.js:164:26:164:29 | name | semmle.label | name |
+| child_process-test.js:166:23:166:26 | name | semmle.label | name |
+| child_process-test.js:171:22:171:27 | [name] | semmle.label | [name] |
+| child_process-test.js:171:23:171:26 | name | semmle.label | name |
+| child_process-test.js:177:23:177:26 | name | semmle.label | name |
+| child_process-test.js:180:22:180:27 | [name] | semmle.label | [name] |
+| child_process-test.js:180:23:180:26 | name | semmle.label | name |
+| child_process-test.js:183:26:183:29 | args [0] | semmle.label | args [0] |
+| child_process-test.js:184:26:184:29 | args | semmle.label | args |
+| child_process-test.js:185:29:185:32 | args | semmle.label | args |
+| child_process-test.js:187:17:187:22 | [name] [0] | semmle.label | [name] [0] |
+| child_process-test.js:187:18:187:21 | name | semmle.label | name |
+| child_process-test.js:189:5:192:5 | functio ... t\\n    } [name] | semmle.label | functio ... t\\n    } [name] |
+| child_process-test.js:189:14:189:27 | runWithOptions [name] | semmle.label | runWithOptions [name] |
+| child_process-test.js:191:26:191:31 | [name] | semmle.label | [name] |
+| child_process-test.js:191:27:191:30 | name | semmle.label | name |
+| child_process-test.js:193:5:193:18 | runWithOptions [name] | semmle.label | runWithOptions [name] |
 | command-line-libs.js:9:9:9:12 | args | semmle.label | args |
 | command-line-libs.js:9:16:9:23 | req.body | semmle.label | req.body |
 | command-line-libs.js:12:17:12:20 | args | semmle.label | args |
