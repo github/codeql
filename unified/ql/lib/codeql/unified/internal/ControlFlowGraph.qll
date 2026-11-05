@@ -325,6 +325,9 @@ private module Input implements InputSig1, InputSig2 {
 
   class CallableContext = Void;
 
+  // Swift switches are exhaustive.
+  predicate isExhaustive(Ast::Switch switch) { any() }
+
   predicate beginAbruptCompletion(
     AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
   ) {

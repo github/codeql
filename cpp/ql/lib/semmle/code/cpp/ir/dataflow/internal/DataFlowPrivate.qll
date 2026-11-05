@@ -2173,6 +2173,8 @@ module IteratorFlow {
     predicate variableRead(IRCfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
       Ssa::variableRead(bb, i, v, certain)
     }
+
+    predicate ssaCachedStageRevRef() { DataFlowIntegrationImpl::ssaCachedStageRevRef2() }
   }
 
   private module IteratorSsa = SsaImpl::Make<Location, IRCfg, SsaInput>;

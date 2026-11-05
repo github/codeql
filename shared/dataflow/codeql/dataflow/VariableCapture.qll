@@ -739,6 +739,8 @@ module Flow<
       ) and
       certain = true
     }
+
+    predicate ssaCachedStageRevRef() { SsaFlow::ssaCachedStageRevRef2() }
   }
 
   private module CaptureSsa = Ssa::Make<Location, Cfg, CaptureSsaInput>;

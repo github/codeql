@@ -611,3 +611,25 @@ func valueGenericsFn<let N: Int>(_ value: ValueGenericsStruct<N>) {
     print(x);
     _ = value;
 }
+
+func exhaustiveBoolSwitch(_ value: Bool) -> Int {
+  switch value {
+    case true: // $ bbStep='true : match -> Block(+1)' bbStep='true : no-match -> SwitchCase(+2)'
+      return 1
+    case false:
+      return 0
+  }
+  return -1 // $ noCfg
+}
+
+func exhaustiveEnumSwitch(_ value: MyError, _ flag: Bool) -> Int {
+  switch value {
+    case .error1 where flag: // $ bbStep='ConditionalPattern : match -> Block(+1)' bbStep='ConditionalPattern : no-match -> SwitchCase(+2)' nonSimple='SwitchCase -V flag -? . -^ ... .error1 -^ ConditionalPattern'
+      return 1
+    case .error1: // $ bbStep='... .error1 : match -> Block(+1)' bbStep='... .error1 : no-match -> SwitchCase(+2)'
+      return 2
+    case .error2, .error3:
+      return 3
+  }
+  return -1 // $ noCfg
+}

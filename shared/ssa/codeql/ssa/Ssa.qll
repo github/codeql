@@ -60,6 +60,16 @@ signature module InputSig<LocationSig Location, TypSig BasicBlock> {
   ) {
     none()
   }
+
+  /**
+   * Reverse references to predicates that should be cached in the cached stage
+   * of the SSA construction.
+   *
+   * If `MakeSsa` and/or `DataFlowIntegration` is used, then this predicate
+   * should be instantiated with (the union of) their respective
+   * `ssaCachedStageRevRef` predicates.
+   */
+  default predicate ssaCachedStageRevRef() { any() }
 }
 
 /**
@@ -269,18 +279,33 @@ signature module SsaSig<
  * block, the read is assumed to happen before the write.
  *
  * The result of invoking this parameterized module is not meant to be exposed directly;
- * instead, one should define a language-specific layer on top, and make sure to cache
- * all exposed predicates marked with
- *
- * ```
- * NB: If this predicate is exposed, it should be cached.
- * ```
+ * instead, one should invoke the nested `MakeSsa` module and expose the
+ * resulting class hierarchy.
  */
 module Make<
   LocationSig Location, BB::CfgSig<Location> Cfg, InputSig<Location, Cfg::BasicBlock> Input>
 {
   private import Cfg
   private import Input
+
+  /** The cached stage of the SSA construction. */
+  cached
+  private module SsaCachedStage {
+    /** Reference to the cached stage of the SSA construction. */
+    cached
+    predicate ref() { any() }
+
+    /** Reverse references to the predicates that reference `ref()`. */
+    cached
+    predicate revRef() {
+      (exists(TWriteDef(_, _, _)) implies any()) and
+      (ssaDefReachesEndOfBlock(_, _, _) implies any()) and
+      (phiHasInputFromBlock(_, _, _) implies any()) and
+      (ssaDefReachesRead(_, _, _, _) implies any()) and
+      (uncertainWriteDefinitionInput(_, _) implies any()) and
+      (Input::ssaCachedStageRevRef() implies any())
+    }
+  }
 
   private BasicBlock getABasicBlockPredecessor(BasicBlock bb) { result.getASuccessor() = bb }
 
@@ -486,6 +511,7 @@ module Make<
   cached
   private newtype TDefinitionExt =
     TWriteDef(SourceVariable v, BasicBlock bb, int i) {
+      SsaCachedStage::ref() and
       variableWrite(bb, i, v, _) and
       liveAfterWrite(bb, i, v)
     } or
@@ -550,9 +576,10 @@ module Make<
      * block `bb`, at which point it is still live, without crossing another
      * SSA definition of `v`.
      */
-    pragma[nomagic]
+    cached
     predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable v) {
       exists(int last |
+        SsaCachedStage::ref() and
         last = maxRefRank(pragma[only_bind_into](bb), pragma[only_bind_into](v)) and
         ssaDefReachesRank(bb, def, last, v) and
         liveAtExit(bb, v)
@@ -594,8 +621,10 @@ module Make<
       not ssaDefReachesReadWithinBlock(v, _, bb, i)
     }
 
+    cached
     predicate uncertainWriteDefinitionInput(UncertainWriteDefinition def, Definition inp) {
       exists(SourceVariable v, BasicBlock bb, int i |
+        SsaCachedStage::ref() and
         def.definesAt(v, bb, i) and
         ssaDefReachesRead(v, inp, bb, i)
       )
@@ -761,7 +790,7 @@ module Make<
         if any(Definition def).definesAt(v, bb0, i0)
         then samevar = false
         else (
-          samevar = samevar0 and synthPhiRead(bb0, v) and i0 = -1
+          samevar = samevar0 and exists(TPhiReadNode(v, bb0)) and i0 = -1
         )
       )
     }
@@ -805,21 +834,15 @@ module Make<
     )
   }
 
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Same as `ssaDefReachesEndOfBlockExt`, but ignores phi-reads.
-   */
   predicate ssaDefReachesEndOfBlock = SsaDefReaches::ssaDefReachesEndOfBlock/3;
 
   /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
    * Holds if `inp` is an input to the phi node `phi` along the edge originating in `bb`.
    */
-  pragma[nomagic]
+  cached
   predicate phiHasInputFromBlock(PhiNode phi, Definition inp, BasicBlock bb) {
     exists(SourceVariable v, BasicBlock bbDef |
+      SsaCachedStage::ref() and
       phi.definesAt(v, bbDef, _) and
       getABasicBlockPredecessor(bbDef) = bb and
       ssaDefReachesEndOfBlock(bb, inp, v)
@@ -827,18 +850,17 @@ module Make<
   }
 
   /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Same as `ssaDefReachesReadExt`, but ignores phi-reads.
+   * Holds if the SSA definition of `v` at `def` reaches a read at index `i` in
+   * basic block `bb`, without crossing another SSA definition of `v`.
    */
+  cached
   predicate ssaDefReachesRead(SourceVariable v, Definition def, BasicBlock bb, int i) {
+    SsaCachedStage::ref() and
     SsaDefReaches::ssaDefReachesRead(v, def, bb, i) and
     variableRead(bb, i, v, _)
   }
 
   /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
    * Holds if `inp` is an immediately preceding definition of uncertain definition
    * `def`. Since `def` is uncertain, the value from the preceding definition might
    * still be valid.
@@ -1092,21 +1114,6 @@ module Make<
       }
 
       cached
-      predicate isLiveAtEndOfBlock(Definition def, BasicBlock bb) {
-        ssaDefReachesEndOfBlock(bb, def, _)
-      }
-
-      cached
-      predicate phiHasInputFromBlockCached(PhiNode phi, Definition inp, BasicBlock bb) {
-        phiHasInputFromBlock(phi, inp, bb)
-      }
-
-      cached
-      predicate uncertainWriteDefinitionInputCached(UncertainWriteDefinition def, Definition inp) {
-        uncertainWriteDefinitionInput(def, inp)
-      }
-
-      cached
       predicate explicitWrite(WriteDefinition def, VariableWrite write) {
         exists(BasicBlock bb, int i, SourceVariable v |
           def.definesAt(v, bb, i) and
@@ -1118,9 +1125,14 @@ module Make<
       predicate parameterInit(WriteDefinition def, Parameter p) {
         exists(VariableWrite write | explicitWrite(def, write) and write.isParameterInit(p))
       }
+
+      cached
+      predicate revRef() { any() }
     }
 
     additional predicate ssaDefReachesUncertainRead = Cached::ssaDefReachesUncertainRead/4;
+
+    additional predicate ssaCachedStageRevRef1 = Cached::revRef/0;
 
     final private class FinalDefinition = Definition;
 
@@ -1148,7 +1160,7 @@ module Make<
        * point it is still live, without crossing another SSA definition of the
        * same source variable.
        */
-      predicate isLiveAtEndOfBlock(BasicBlock bb) { isLiveAtEndOfBlock(this, bb) }
+      predicate isLiveAtEndOfBlock(BasicBlock bb) { ssaDefReachesEndOfBlock(bb, this, _) }
 
       /**
        * Gets an SSA definition whose value can flow to this one in one step. This
@@ -1260,7 +1272,7 @@ module Make<
        * Gets the immediately preceding definition. Since this update is uncertain,
        * the value from the preceding definition might still be valid.
        */
-      SsaDefinition getPriorDefinition() { uncertainWriteDefinitionInputCached(this, result) }
+      SsaDefinition getPriorDefinition() { uncertainWriteDefinitionInput(this, result) }
     }
 
     /**
@@ -1284,7 +1296,7 @@ module Make<
 
       /** Holds if `inp` is an input to this phi definition along the edge originating in `bb`. */
       predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
-        phiHasInputFromBlockCached(this, inp, bb)
+        phiHasInputFromBlock(this, inp, bb)
       }
 
       /**
@@ -1475,19 +1487,6 @@ module Make<
     }
 
     /**
-     * Gets a read of SSA definition `def`.
-     *
-     * Override this with a cached version when applicable.
-     */
-    default Expr getARead(Definition def) {
-      exists(SourceVariable v, BasicBlock bb, int i |
-        ssaDefReachesRead(v, def, bb, i) and
-        variableRead(bb, i, v, true) and
-        result.hasCfgNode(bb, i)
-      )
-    }
-
-    /**
      * Holds if `def` has some form of input flow. For example, the right-hand
      * side of an assignment or a parameter of an SSA entry definition.
      *
@@ -1585,12 +1584,27 @@ module Make<
       }
     }
 
+    /** Reverse references to the cached predicates in this module. */
+    predicate ssaCachedStageRevRef2() {
+      (exists(getAPhiInputDef(_, _)) implies any()) and
+      (exists(TWriteDefSource(_)) implies any())
+    }
+
     cached
     private Definition getAPhiInputDef(SsaPhiExt phi, BasicBlock bb) {
       exists(SourceVariable v, BasicBlock bbDef |
         phi.definesAt(v, bbDef, _) and
         getABasicBlockPredecessor(bbDef) = bb and
         ssaDefReachesEndOfBlock(bb, result, v)
+      )
+    }
+
+    pragma[nomagic]
+    private DfInput::Expr getARead(Definition def) {
+      exists(SourceVariable v, BasicBlock bb, int i |
+        ssaDefReachesRead(v, def, bb, i) and
+        variableRead(bb, i, v, true) and
+        result.hasCfgNode(bb, i)
       )
     }
 
@@ -1609,7 +1623,7 @@ module Make<
 
     pragma[nomagic]
     private predicate phiInputHasRead(SsaPhiExt phi, BasicBlock input) {
-      exists(DfInput::getARead(getAPhiInputDef(phi, input)))
+      exists(getARead(getAPhiInputDef(phi, input)))
     }
 
     /** Holds if `bb` is the target end of a branch edge of a guard and the guard controls `bb`. */
@@ -1755,12 +1769,12 @@ module Make<
           // Only materialise if 'expr' has a reaching definition.
           // Note that the read may correspond to a different variable than 'v', but the C++
           // instantiation currently expects this particular behaviour.
-          DfInput::getARead(_) = e
+          getARead(_) = e
           or
           not postUpdate(_, _, _) and
           variableRead(bb, i, v, true) and
           isPost = true and
-          DfInput::getARead(_) = e
+          getARead(_) = e
           or
           postUpdate(bb, i, v) and
           isPost = true
@@ -2120,13 +2134,13 @@ module Make<
         v = def.getSourceVariable() and
         if DfInput::includeWriteDefsInFlowStep()
         then nodeTo.(SsaDefinitionNode).getDefinition() = def
-        else nodeTo.(ExprNode).isExprAndVariable(DfInput::getARead(def), v)
+        else nodeTo.(ExprNode).isExprAndVariable(getARead(def), v)
       )
       or
       // Flow from SSA definition to read
       exists(DefinitionExt def |
         nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
-        nodeTo.(ExprNode).isExprAndVariable(DfInput::getARead(def), v) and
+        nodeTo.(ExprNode).isExprAndVariable(getARead(def), v) and
         v = def.getSourceVariable()
       )
     }
@@ -2204,7 +2218,7 @@ module Make<
       private predicate guardChecksSsaDef(
         DfInput::Guard g, Definition def, DfInput::GuardValue val, State state
       ) {
-        guardChecks(g, DfInput::getARead(def), val, state)
+        guardChecks(g, getARead(def), val, state)
       }
 
       private module Barrier = BarrierGuardDefWithState<State, guardChecksSsaDef/4>;
@@ -2229,7 +2243,7 @@ module Make<
         |
           // guard controls a read
           exists(DfInput::Expr e |
-            e = DfInput::getARead(def) and
+            e = getARead(def) and
             e.hasCfgNode(bb, _) and
             DfInput::guardControlsBlock(g, bb, val) and
             result.(ExprNode).isExprAndVariable(e, def.getSourceVariable())
