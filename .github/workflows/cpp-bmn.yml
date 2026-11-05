@@ -2,7 +2,7 @@ name: C/C++ build mode none extractor
 
 on:
   pull_request:
-    paths:
+    paths: &bmn_paths
       - "cpp/extractor/bmn/**"
       - "misc/bazel/3rdparty/cpp_bmn_deps/**"
       - "misc/bazel/3rdparty/cpp_bmn_deps_extension.bzl"
@@ -15,15 +15,7 @@ on:
     branches:
       - main
       - "rc/*"
-    paths:
-      - "cpp/extractor/bmn/**"
-      - "misc/bazel/3rdparty/cpp_bmn_deps/**"
-      - "misc/bazel/3rdparty/cpp_bmn_deps_extension.bzl"
-      - "misc/bazel/3rdparty/update_cpp_bmn_deps.sh"
-      - "misc/bazel/3rdparty/BUILD.bazel"
-      - "misc/bazel/rust.bzl"
-      - "MODULE.bazel"
-      - ".github/workflows/cpp-bmn.yml"
+    paths: *bmn_paths
 
 permissions:
   contents: read
