@@ -9,7 +9,6 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.internal.DataFlowDispatch
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
@@ -141,6 +140,24 @@ module Mcp {
     )
   }
 
+  /** Gets a name under which the module `m` refers to the `Context` class. */
+  private string contextName(Module m) {
+    exists(Expr ref |
+      ref = contextClass().getAValueReachableFromSource().asExpr() and
+      m = ref.getEnclosingModule()
+    |
+      result = "Context"
+      or
+      // `from fastmcp import Context as Ctx`
+      exists(Alias alias | alias.getValue() = ref | result = alias.getAsname().(Name).getId())
+    )
+  }
+
+  /** Holds if `s` subscripts something named `name`, as in `name[...]` or `typing.name[...]`. */
+  private predicate subscripts(Subscript s, string name) {
+    s.getObject().(Name).getId() = name or s.getObject().(Attribute).getName() = name
+  }
+
   /**
    * Holds if the annotation `e` refers to the injected `Context` class, possibly as
    * `Context[...]`, `Context | None`, `Optional[Context]`, `Union[Context, ...]`,
@@ -151,7 +168,15 @@ module Mcp {
     or
     isContextAnnotation(e.(Subscript).getObject())
     or
-    isContextAnnotation(e.(Subscript).getIndex())
+    // Only the first argument of `Annotated` is a type, the others are metadata.
+    exists(Subscript s | s = e and subscripts(s, "Annotated") |
+      isContextAnnotation(s.getIndex().(Tuple).getElt(0))
+    )
+    or
+    // The arguments of `Literal` are values, not types.
+    exists(Subscript s | s = e and not subscripts(s, ["Annotated", "Literal"]) |
+      isContextAnnotation(s.getIndex())
+    )
     or
     isContextAnnotation(e.(Tuple).getAnElt())
     or
@@ -159,13 +184,16 @@ module Mcp {
       isContextAnnotation(union.getLeft()) or isContextAnnotation(union.getRight())
     )
     or
-    // The SDKs resolve string annotations, so `"Context"` counts in a module that imports it.
-    e.(StringLiteral).getText().regexpMatch(".*\\bContext\\b.*") and
-    contextClass().getAValueReachableFromSource().asExpr().getEnclosingModule() =
-      e.getEnclosingModule()
+    // The SDKs resolve string annotations, so a string naming the class in this module counts.
+    e.(StringLiteral).getText().regexpMatch(".*\\b" + contextName(e.getEnclosingModule()) + "\\b.*")
   }
 
-  /** Holds if `p` is a parameter of `handler` whose value is chosen by the MCP client. */
+  /**
+   * Holds if `p` is a parameter of `handler` whose value is chosen by the MCP client.
+   *
+   * A handler decorated in a class body is registered unbound, so the client supplies its first
+   * parameter as well.
+   */
   private predicate isClientParameter(Function handler, Parameter p) {
     handler = handlerNode().getAValueReachingSink().asExpr().(CallableExpr).getInnerScope() and
     (
@@ -176,11 +204,6 @@ module Mcp {
       p = handler.getVararg()
       or
       p = handler.getKwarg()
-    ) and
-    not (
-      handler.isMethod() and
-      not isStaticmethod(handler) and
-      p = handler.getArg(0)
     ) and
     not isContextAnnotation(p.getAnnotation())
   }

@@ -1,4 +1,4 @@
-from typing import Annotated, Optional
+from typing import Annotated, Literal, Optional
 
 from fastmcp import Context, FastMCP
 from fastmcp.prompts import FunctionPrompt, Prompt, prompt
@@ -88,6 +88,22 @@ async def with_annotated_context(command, ctx: Annotated[Context, "injected"]): 
 @app.tool
 async def with_string_context(command, ctx: "Context"): # $ threatModelSource[ai]=command
     return command
+
+
+@app.tool
+async def with_string_module_context(command, ctx: "ModuleContext"): # $ threatModelSource[ai]=command
+    return command
+
+
+# Only type positions refer to the injected class; metadata and `Literal` values do not.
+@app.tool
+def with_context_metadata(command: Annotated[str, "Context"]): # $ threatModelSource[ai]=command
+    return command
+
+
+@app.tool
+def with_context_literal(scope: Literal["Context", "Global"]): # $ threatModelSource[ai]=scope
+    return scope
 
 
 def via_tool(url): # $ threatModelSource[ai]=url
@@ -195,9 +211,14 @@ def forward_request_header():
 
 
 class Handlers:
-    # The receiver of a method is not chosen by the client, the first parameter of a static method is.
+    # A function decorated in a class body is registered unbound, so the client supplies every
+    # parameter, `self` included.
     @app.tool
-    def method(self, command): # $ threatModelSource[ai]=command
+    def method(self, command): # $ threatModelSource[ai]=self threatModelSource[ai]=command
+        return command
+
+    @app.tool()
+    def unbound(command): # $ threatModelSource[ai]=command
         return command
 
     @staticmethod
