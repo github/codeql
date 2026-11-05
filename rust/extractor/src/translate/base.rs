@@ -1,9 +1,9 @@
 use super::mappings::Emission;
 use crate::generated::{self};
-use crate::rust_analyzer::FileSemanticInformation;
+use crate::rust_analyzer::{FileSemanticInformation, path_to_file_id};
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
-use ra_ap_base_db::EditionedFileId;
+use ra_ap_base_db::{EditionedFileId, SourceDatabase};
 use ra_ap_hir::Semantics;
 use ra_ap_hir_expand::builtin::{BuiltinDeriveExpander, find_builtin_derive};
 use ra_ap_hir_expand::span_map::ExpansionSpanMap;
@@ -14,12 +14,13 @@ use ra_ap_parser::{SyntaxKind, TopEntryPoint};
 use ra_ap_span::TextSize;
 use ra_ap_syntax::ast::HasAttrs;
 use ra_ap_syntax::{
-    AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
-    ast,
+    AstNode, AstToken, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken,
+    TextRange, ast,
 };
 use ra_ap_syntax_bridge::{
     DocCommentDesugarMode, syntax_node_to_token_tree, token_tree_to_syntax_node,
 };
+use ra_ap_vfs::Vfs;
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
@@ -130,8 +131,11 @@ pub struct Translator<'db> {
     label: Label<generated::File>,
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
+    vfs: Option<&'db Vfs>,
     pub semantics: Option<&'db Semantics<'db, RootDatabase>>,
     source_kind: SourceKind,
+    location_file_labels: HashMap<PathBuf, Label<generated::File>>,
+    included_file_context: Option<IncludedFileContext>,
     pub(crate) macro_context_depth: usize,
     parenthesized_expr_attrs: HashMap<SyntaxNode, Vec<Label<generated::AnyAttr>>>,
     diagnostic_count: usize,
@@ -139,6 +143,11 @@ pub struct Translator<'db> {
     /// synthesized syntax tree. Those nodes are not registered in the semantics cache, so
     /// locations are resolved through this map instead of `Semantics::original_range`.
     builtin_derive_span_map: Option<ExpansionSpanMap>,
+}
+
+struct IncludedFileContext {
+    root: SyntaxNode,
+    file_id: EditionedFileId,
 }
 
 const UNKNOWN_LOCATION: (LineCol, LineCol) =
@@ -161,8 +170,11 @@ impl<'db> Translator<'db> {
             label,
             line_index,
             file_id: semantic_info.map(|i| i.file_id),
+            vfs: semantic_info.map(|i| i.vfs),
             semantics: semantic_info.map(|i| i.semantics),
             source_kind,
+            location_file_labels: HashMap::new(),
+            included_file_context: None,
             macro_context_depth: 0,
             parenthesized_expr_attrs: HashMap::new(),
             diagnostic_count: 0,
@@ -170,7 +182,91 @@ impl<'db> Translator<'db> {
         }
     }
     fn location(&self, range: TextRange) -> Option<(LineCol, LineCol)> {
-        let start = self.line_index.try_line_col(range.start())?;
+        Self::location_in_index(&self.line_index, range)
+    }
+
+    fn file_range_for_node(
+        &self,
+        node: &impl ast::AstNode,
+    ) -> Option<(Option<EditionedFileId>, TextRange)> {
+        if let Some(context) = self.included_file_context.as_ref()
+            && node.syntax().ancestors().last().as_ref() == Some(&context.root)
+        {
+            return Some((Some(context.file_id), node.syntax().text_range()));
+        }
+        if let Some(span_map) = self.builtin_derive_span_map.as_ref() {
+            // Nodes synthesized by a reconstructed built-in derive expansion are not in the
+            // semantics cache; resolve their original source range through the expansion span map.
+            let semantics = self.semantics.as_ref()?;
+            let file_range =
+                map_node_range_up_rooted(semantics.db, span_map, node.syntax().text_range())?;
+            return Some((Some(file_range.file_id), file_range.range));
+        }
+        if let Some(semantics) = self.semantics.as_ref() {
+            let file_range = semantics.original_range(node.syntax());
+            Some((Some(file_range.file_id), file_range.range))
+        } else {
+            Some((None, node.syntax().text_range()))
+        }
+    }
+
+    pub fn text_range_for_node(&mut self, node: &impl ast::AstNode) -> Option<TextRange> {
+        let (file_id, range) = self.file_range_for_node(node)?;
+        (self.semantics.is_none() || self.file_id == file_id).then_some(range)
+    }
+
+    fn location_in_file(
+        &mut self,
+        file_id: Option<EditionedFileId>,
+        range: TextRange,
+    ) -> Option<(Label<generated::File>, LineCol, LineCol)> {
+        let Some(file_id) = file_id else {
+            let (start, end) = self.location(range)?;
+            return Some((self.label, start, end));
+        };
+        if Some(file_id) == self.file_id {
+            let (start, end) = self.location(range)?;
+            return Some((self.label, start, end));
+        }
+        if !self
+            .included_file_context
+            .as_ref()
+            .is_some_and(|context| context.file_id == file_id)
+        {
+            return None;
+        }
+
+        let (path, line_index) = {
+            let semantics = self.semantics.as_ref()?;
+            let vfs = self.vfs.as_ref()?;
+            let file_id = file_id.file_id(semantics.db);
+            let vfs_path = vfs.file_path(file_id);
+            let path = vfs_path.as_path()?;
+            let path = dunce::canonicalize(path).unwrap_or_else(|_| path.to_path_buf().into());
+            let text = semantics.db.file_text(file_id);
+            let line_index = LineIndex::new(text.text(semantics.db).as_ref());
+            (path, line_index)
+        };
+
+        let (start, end) = Self::location_in_index(&line_index, range)?;
+        let file_label = match self.location_file_labels.get(&path) {
+            Some(label) => *label,
+            None => {
+                let label = self.trap.emit_file(&path);
+                self.location_file_labels.insert(path, label);
+                label
+            }
+        };
+        Some((file_label, start, end))
+    }
+
+    fn location_for_node(&mut self, node: &impl ast::AstNode) -> Option<(LineCol, LineCol)> {
+        self.text_range_for_node(node)
+            .and_then(|r| self.location(r))
+    }
+
+    fn location_in_index(line_index: &LineIndex, range: TextRange) -> Option<(LineCol, LineCol)> {
+        let start = line_index.try_line_col(range.start())?;
         let range_end = range.end();
         // QL end positions are inclusive, while TextRange offsets are exclusive and point at the position
         // right after the last character of the range. We need to shift the end offset one character to the left to
@@ -180,45 +276,62 @@ impl<'db> Translator<'db> {
         for i in 1..4 {
             if let Some(end) = range_end
                 .checked_sub(i.into())
-                .and_then(|x| self.line_index.try_line_col(x))
+                .and_then(|x| line_index.try_line_col(x))
             {
                 return Some((start, end));
             }
         }
-        let end = self.line_index.try_line_col(range_end)?;
+        let end = line_index.try_line_col(range_end)?;
         Some((start, end))
     }
 
-    pub fn text_range_for_node(&mut self, node: &impl ast::AstNode) -> Option<TextRange> {
-        if let Some(span_map) = self.builtin_derive_span_map.as_ref() {
-            // Nodes synthesized by a reconstructed built-in derive expansion are not in the
-            // semantics cache; resolve their original source range through the expansion span map.
-            let semantics = self.semantics.as_ref()?;
-            let file_id = self.file_id?;
-            let file_range =
-                map_node_range_up_rooted(semantics.db, span_map, node.syntax().text_range())?;
-            return (file_id == file_range.file_id).then_some(file_range.range);
+    fn included_file_context_for(
+        &self,
+        mcall: &ast::MacroCall,
+        expanded: &SyntaxNode,
+    ) -> Option<IncludedFileContext> {
+        if mcall.path()?.to_string() != "include" {
+            return None;
         }
-        if let Some(semantics) = self.semantics.as_ref() {
-            let file_range = semantics.original_range(node.syntax());
-            let file_id = self.file_id?;
-            if file_id == file_range.file_id {
-                Some(file_range.range)
-            } else {
-                None
-            }
-        } else {
-            Some(node.syntax().text_range())
+        let token_tree = mcall.token_tree()?;
+        let strings = token_tree
+            .syntax()
+            .descendants_with_tokens()
+            .filter_map(NodeOrToken::into_token)
+            .filter_map(ast::String::cast)
+            .collect::<Vec<_>>();
+        let [include_path] = strings.as_slice() else {
+            return None;
+        };
+        let argument = token_tree
+            .syntax()
+            .text()
+            .to_string()
+            .trim()
+            .strip_prefix('(')?
+            .strip_suffix(')')?
+            .trim()
+            .to_owned();
+        if argument != include_path.to_string() {
+            return None;
         }
-    }
 
-    fn location_for_node(&mut self, node: &impl ast::AstNode) -> Option<(LineCol, LineCol)> {
-        self.text_range_for_node(node)
-            .and_then(|r| self.location(r))
+        let semantics = self.semantics.as_ref()?;
+        let vfs = self.vfs.as_ref()?;
+        let include_path = include_path.value().ok()?.into_owned();
+        let path = self.path.parent()?.join(include_path);
+        let path = dunce::canonicalize(path).ok()?;
+        let file_id = path_to_file_id(&path, vfs)?;
+        let file_id = semantics.attach_first_edition_opt(file_id)?;
+        let root = expanded.ancestors().last()?.clone();
+        Some(IncludedFileContext { root, file_id })
     }
 
     pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: &impl ast::AstNode) {
-        match self.location_for_node(node) {
+        let location = self
+            .file_range_for_node(node)
+            .and_then(|(file_id, range)| self.location_in_file(file_id, range));
+        match location {
             None => self.emit_diagnostic(
                 DiagnosticSeverity::Debug,
                 "locations".to_owned(),
@@ -226,7 +339,7 @@ impl<'db> Translator<'db> {
                 "missing location for AstNode".to_owned(),
                 UNKNOWN_LOCATION,
             ),
-            Some((start, end)) => self.trap.emit_location(self.label, label, start, end),
+            Some((file, start, end)) => self.trap.emit_location(file, label, start, end),
         };
     }
     pub fn emit_location_token(
@@ -238,11 +351,11 @@ impl<'db> Translator<'db> {
         let parent_range = parent.syntax().text_range();
         let token_range = token.text_range();
         if let Some(clipped_range) = token_range.intersect(parent_range)
-            && let Some(parent_range2) = self.text_range_for_node(parent)
+            && let Some((file_id, parent_range2)) = self.file_range_for_node(parent)
         {
             let token_range = clipped_range + parent_range2.start() - parent_range.start();
-            if let Some((start, end)) = self.location(token_range) {
-                self.trap.emit_location(self.label, label, start, end)
+            if let Some((file, start, end)) = self.location_in_file(file_id, token_range) {
+                self.trap.emit_location(file, label, start, end)
             }
         }
     }
@@ -442,9 +555,17 @@ impl<'db> Translator<'db> {
             .as_ref()
             .and_then(|s| s.expand_macro_call(mcall))
         {
-            self.emit_macro_expansion_parse_errors(mcall, &expanded.value);
             let expand_to = ra_ap_hir_expand::ExpandTo::from_call_site(mcall);
             let kind = expanded.kind();
+            let previous_include_context = if expand_to == ra_ap_hir_expand::ExpandTo::Items {
+                self.included_file_context_for(mcall, &expanded.value)
+                    .map(|context| {
+                        std::mem::replace(&mut self.included_file_context, Some(context))
+                    })
+            } else {
+                None
+            };
+            self.emit_macro_expansion_parse_errors(mcall, &expanded.value);
             if let Some(value) = self.emit_expanded_as(expand_to, expanded.value) {
                 generated::MacroCall::emit_macro_call_expansion(
                     label,
@@ -461,6 +582,9 @@ impl<'db> Translator<'db> {
                     ),
                     range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
                 ));
+            }
+            if let Some(previous_context) = previous_include_context {
+                self.included_file_context = previous_context;
             }
         } else if self.semantics.is_some() {
             // let's not spam warnings if we don't have semantics, we already emitted one

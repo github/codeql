@@ -611,22 +611,24 @@ macro_expansion.rs:
 #   61|       getSegment(): [PathSegment] include
 #   61|         getIdentifier(): [NameRef] include
 #   61|     getTokenTree(): [TokenTree] TokenTree
-#   61|     getMacroCallExpansion(): [MacroItems] MacroItems
-#   61|       getItem(0): [Function] fn included
-#   61|         getParamList(): [ParamList] ParamList
-#   61|         getFunctionBody(): [BlockExpr] { ... }
-#   61|           getStmtList(): [StmtList] StmtList
-#   61|             getStatement(0): [ExprStmt] ExprStmt
-#   61|               getExpr(): [AssignmentExpr] ... = ...
-#   61|                 getLhs(): [UnderscoreExpr] _
-#   61|                 getRhs(): [MacroExpr] MacroExpr
-#   61|                   getMacroCall(): [MacroCall] concat!...
-#   61|                     getPath(): [Path] concat
-#   61|                       getSegment(): [PathSegment] concat
-#   61|                         getIdentifier(): [NameRef] concat
-#   61|                     getTokenTree(): [TokenTree] TokenTree
-#   61|                     getMacroCallExpansion(): [StringLiteralExpr] "Hello world!"
-#   61|         getName(): [Name] included
+included/included.rs:
+#    1|     getMacroCallExpansion(): [MacroItems] MacroItems
+#    1|       getItem(0): [Function] fn included
+#    1|         getParamList(): [ParamList] ParamList
+#    1|         getFunctionBody(): [BlockExpr] { ... }
+#    1|           getStmtList(): [StmtList] StmtList
+#    1|             getStatement(0): [ExprStmt] ExprStmt
+#    1|               getExpr(): [AssignmentExpr] ... = ...
+#    1|                 getLhs(): [UnderscoreExpr] _
+#    1|                 getRhs(): [MacroExpr] MacroExpr
+#    1|                   getMacroCall(): [MacroCall] concat!...
+#    1|                     getPath(): [Path] concat
+#    1|                       getSegment(): [PathSegment] concat
+#    1|                         getIdentifier(): [NameRef] concat
+#    2|                     getTokenTree(): [TokenTree] TokenTree
+#    2|                     getMacroCallExpansion(): [StringLiteralExpr] "Hello world!"
+#    1|         getName(): [Name] included
+macro_expansion.rs:
 #   63|   getItem(12): [Function] fn documented
 #   64|     getParamList(): [ParamList] ParamList
 #   63|     getAttr(0): [Attr] Attr
