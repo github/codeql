@@ -1,6 +1,6 @@
 use crate::trap;
 use itertools::Itertools;
-use ra_ap_base_db::{EditionedFileId, FileText, RootQueryDb, SourceDatabase};
+use ra_ap_base_db::{EditionedFileId, FileText, SourceDatabase};
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_load_cargo::{LoadCargoConfig, load_workspace_at};
@@ -99,7 +99,7 @@ impl<'a> RustAnalyzer<'a> {
     fn get_file_data(
         &self,
         path: &Path,
-    ) -> Result<(&Semantics<'_, RootDatabase>, EditionedFileId, FileText), RustAnalyzerNoSemantics>
+    ) -> Result<(&'a Semantics<'a, RootDatabase>, EditionedFileId, FileText), RustAnalyzerNoSemantics>
     {
         match self {
             RustAnalyzer::WithoutSemantics { severity, reason } => Err(RustAnalyzerNoSemantics {
@@ -115,21 +115,20 @@ impl<'a> RustAnalyzer<'a> {
                         "no text available for the file in the project",
                     )),
                 )?;
-                let editioned_file_id = semantics.attach_first_edition(file_id).ok_or(
+                let editioned_file_id = semantics.attach_first_edition_opt(file_id).ok_or(
                     RustAnalyzerNoSemantics::warning("failed to determine rust edition"),
                 )?;
-                Ok((semantics, editioned_file_id, input))
+                Ok((*semantics, editioned_file_id, input))
             }
         }
     }
 
-    pub fn parse(&self, path: &Path) -> ParseResult<'_> {
+    pub fn parse(&self, path: &Path) -> ParseResult<'a> {
         match self.get_file_data(path) {
             Ok((semantics, file_id, input)) => {
                 let source_file = semantics.parse(file_id);
-                let errors = semantics
-                    .db
-                    .parse_errors(file_id)
+                let errors = file_id
+                    .parse_errors(semantics.db)
                     .into_iter()
                     .flat_map(|x| x.to_vec())
                     .collect();
@@ -218,6 +217,12 @@ fn workspace_members_match(workspace_dir: &AbsPath, members: &[String], target: 
     })
 }
 
+/// Finds an enclosing Cargo workspace that includes `manifest`. That is, its
+/// `members` patterns include the manifest's directory and its `exclude`
+/// patterns do not.
+///
+/// Returns `None` if the manifest itself defines a workspace, is not a Cargo
+/// manifest, cannot be loaded, or has no matching workspace.
 fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option<ProjectManifest> {
     let ProjectManifest::CargoToml(cargo) = manifest else {
         return None;
@@ -225,12 +230,13 @@ fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option
     let parsed_cargo = reader.read(cargo).ok()?;
     if parsed_cargo.workspace.is_some() {
         debug!("{cargo} is a workspace");
-        return Some(manifest.clone());
+        return None;
     }
     let Some(parent_dir) = cargo.parent().parent() else {
         warn!("no parent dir for {cargo}");
         return None;
     };
+    // Search upward from `parent_dir` for manifest files.
     let discovered = ProjectManifest::discover(parent_dir)
         .map_err(|e| {
             error!(
@@ -241,25 +247,22 @@ fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option
         })
         .ok()?;
     discovered
-        .iter()
-        .find_map(|it| match it {
-            ProjectManifest::CargoToml(other)
-                if cargo.starts_with(other.parent())
-                    && reader.read(other).is_ok_and(|it| {
-                        it.workspace.as_ref().is_some_and(|w| {
-                            workspace_members_match(other.parent(), &w.members, cargo.parent())
-                                && !workspace_members_match(
-                                    other.parent(),
-                                    &w.exclude,
-                                    cargo.parent(),
-                                )
-                        })
-                    }) =>
+        .into_iter()
+        .find(|it| {
+            if let ProjectManifest::CargoToml(other) = it
+                && cargo.starts_with(other.parent())
+                && reader.read(other).is_ok_and(|it| {
+                    it.workspace.as_ref().is_some_and(|w| {
+                        workspace_members_match(other.parent(), &w.members, cargo.parent())
+                            && !workspace_members_match(other.parent(), &w.exclude, cargo.parent())
+                    })
+                })
             {
                 debug!("found workspace {other} containing {cargo}");
-                Some(it.clone())
+                true
+            } else {
+                false
             }
-            _ => None,
         })
         .or_else(|| {
             debug!("no workspace found for {cargo}");

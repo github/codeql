@@ -1,0 +1,69 @@
+let handler: @Sendable () -> Void = {}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    closureExpr
+                      leftBrace: {
+                      rightBrace: }
+                      statements:
+              pattern:
+                identifierPattern
+                  identifier: identifier "handler"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    attributedType
+                      attributes:
+                        attribute
+                          atSign: @
+                          attributeName:
+                            identifierType
+                              name: identifier "Sendable"
+                      baseType:
+                        functionType
+                          leftParen: (
+                          rightParen: )
+                          parameters:
+                          returnClause:
+                            returnClause
+                              arrow: ->
+                              type:
+                                identifierType
+                                  name: identifier "Void"
+                      lateSpecifiers:
+                      specifiers:
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "handler" source="handler"
+          type:
+            modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+              modifier: modifier "@Sendable" source="@Sendable"
+              type:
+                function_expr source="() -> ⟨return_type⟩"
+                  return_type: identifier "Void" source="Void"
+          value:
+            function_expr source="{}"
+              body: block source=""

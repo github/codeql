@@ -17,4 +17,4 @@ extensions:
       - ["workflow_run"] # depending on branch filter
       - ["workflow_call"] # depending on caller
       - ["workflow_dispatch"] 
-      - ["scheduled"]
+      - ["schedule"]

@@ -1,0 +1,35 @@
+name: Reusable workflow pinning
+
+on:
+  pull_request:
+
+jobs:
+  unpinned-tag:
+    uses: example/actions/.github/workflows/build.yml@v2
+
+  unpinned-branch:
+    uses: example/actions/.github/workflows/build.yml@main
+
+  unpinned-branch-with-slash:
+    uses: example/actions/.github/workflows/build.yml@release/v2
+
+  unpinned-short-sha:
+    uses: example/actions/.github/workflows/build.yml@25b062c917b0c75f8b47d8469aff6c94ffd89ab
+
+  pinned-sha1:
+    uses: example/actions/.github/workflows/build.yml@25b062c917b0c75f8b47d8469aff6c94ffd89abb
+
+  pinned-sha256:
+    uses: example/actions/.github/workflows/build.yml@25b062c917b0c75f8b47d8469aff6c94ffd89abb25b062c917b0c75f8b47d84d
+
+  pinned-uppercase-sha1:
+    uses: example/actions/.github/workflows/build.yml@25B062C917B0C75F8B47D8469AFF6C94FFD89ABB
+
+  trusted-owner:
+    uses: actions/reusable-workflows/.github/workflows/build.yml@main
+
+  local-workflow:
+    uses: ./.github/workflows/reusable_local.yml
+
+  local-workflow-dollar:
+    uses: $/.github/workflows/reusable_local.yml

@@ -3,7 +3,7 @@ use cookie::{CookieJar, SignedJar, PrivateJar, Key};
 
 // --- tests ---
 
-fn test_cookie_jar(array_var: &[u8]) {
+fn test_cookie_jar(array_var: &[u8], val: u64) {
     let mut jar = CookieJar::new();
 
     let key_generate = Key::generate(); // good
@@ -21,6 +21,22 @@ fn test_cookie_jar(array_var: &[u8]) {
     let array2: [u8; 64] = [0; 64]; // $ Alert[rust/hard-coded-cryptographic-value]
     let key2 = Key::from(&array2); // $ Sink
     _ = jar.private_mut(&key2);
+
+    let str3 = match(val) {
+        0 => "one",
+        1 => "two",
+        _ => "many"
+    }; // $ Alert[rust/hard-coded-cryptographic-value]
+    let key3 = Key::from(str3.as_bytes()); // $ Sink
+    _ = jar.signed_mut(&key3);
+
+    let array4: [u8; 3] = [
+        1,
+        2,
+        val as u8
+    ]; // $ Alert[rust/hard-coded-cryptographic-value]
+    let key4 = Key::from(&array4); // $ Sink
+    _ = jar.signed_mut(&key4);
 }
 
 fn test_biscotti_crypto(array_var: &[u8]) {

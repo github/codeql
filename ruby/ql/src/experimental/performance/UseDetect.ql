@@ -42,13 +42,11 @@ class EndCall extends MethodCall {
 }
 
 Expr getUniqueRead(Expr e) {
-  forex(CfgNode eNode | eNode.getAstNode() = e |
-    exists(Ssa::WriteDefinition def |
-      def.assigns(eNode) and
-      strictcount(def.getARead()) = 1 and
-      not def = any(Ssa::PhiNode phi).getAnInput() and
-      def.getARead().getAstNode() = result
-    )
+  exists(Ssa::WriteDefinition def |
+    def.assigns(e.getControlFlowNode()) and
+    strictcount(def.getARead()) = 1 and
+    not def = any(Ssa::PhiNode phi).getAnInput() and
+    def.getARead().getAstNode() = result
   )
 }
 

@@ -1,3 +1,4 @@
+/** Provides predicates for working with strings. */
 overlay[local?]
 module;
 

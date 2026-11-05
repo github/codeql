@@ -1,0 +1,12 @@
+on:
+  merge_group:
+    types: [checks_requested]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use merge group payload
+        run: echo '${{ toJSON(github.event) }}'
+      - name: Use merge group head ref
+        run: echo '${{ github.event.merge_group.head_ref }}'

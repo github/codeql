@@ -1,0 +1,19 @@
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch open issues
+        id: issues
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repos/foo/bar/issues?state=open
+
+      - name: Write issues to file
+        run: echo '${{ steps.issues.outputs.data }}' > issues.json

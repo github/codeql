@@ -1,5 +1,19 @@
 #select
+| fetch-promise-chain.js:21:47:21:49 | row | fetch-promise-chain.js:7:3:7:12 | fetch(url) | fetch-promise-chain.js:21:47:21:49 | row | Cross-site scripting vulnerability due to $@. | fetch-promise-chain.js:7:3:7:12 | fetch(url) | user-provided value |
+| fetch-promise-chain.js:30:33:30:36 | text | fetch-promise-chain.js:27:3:27:23 | fetch(" ... ssage") | fetch-promise-chain.js:30:33:30:36 | text | Cross-site scripting vulnerability due to $@. | fetch-promise-chain.js:27:3:27:23 | fetch(" ... ssage") | user-provided value |
+| fetch-promise-chain.js:47:33:47:44 | data.message | fetch-promise-chain.js:43:19:43:39 | fetch(" ... ssage") | fetch-promise-chain.js:47:33:47:44 | data.message | Cross-site scripting vulnerability due to $@. | fetch-promise-chain.js:43:19:43:39 | fetch(" ... ssage") | user-provided value |
+| fetch-promise-chain.js:57:33:57:36 | text | fetch-promise-chain.js:53:13:53:33 | fetch(" ... ssage") | fetch-promise-chain.js:57:33:57:36 | text | Cross-site scripting vulnerability due to $@. | fetch-promise-chain.js:53:13:53:33 | fetch(" ... ssage") | user-provided value |
+| fetch-promise-chain.js:67:55:67:66 | item.message | fetch-promise-chain.js:62:3:62:23 | fetch(" ... ssage") | fetch-promise-chain.js:67:55:67:66 | item.message | Cross-site scripting vulnerability due to $@. | fetch-promise-chain.js:62:3:62:23 | fetch(" ... ssage") | user-provided value |
+| fetch-promise-chain.js:76:33:76:39 | message | fetch-promise-chain.js:73:3:73:23 | fetch(" ... ssage") | fetch-promise-chain.js:76:33:76:39 | message | Cross-site scripting vulnerability due to $@. | fetch-promise-chain.js:73:3:73:23 | fetch(" ... ssage") | user-provided value |
+| fetch-promise-chain.js:84:33:84:44 | data.message | fetch-promise-chain.js:81:3:81:23 | fetch(" ... ssage") | fetch-promise-chain.js:84:33:84:44 | data.message | Cross-site scripting vulnerability due to $@. | fetch-promise-chain.js:81:3:81:23 | fetch(" ... ssage") | user-provided value |
+| fetch-promise-chain.js:93:31:93:42 | data.message | fetch-promise-chain.js:90:5:90:25 | fetch(" ... ssage") | fetch-promise-chain.js:93:31:93:42 | data.message | Cross-site scripting vulnerability due to $@. | fetch-promise-chain.js:90:5:90:25 | fetch(" ... ssage") | user-provided value |
+| fetch-promise-chain.js:102:33:102:47 | payload.message | fetch-promise-chain.js:98:3:98:23 | fetch(" ... ssage") | fetch-promise-chain.js:102:33:102:47 | payload.message | Cross-site scripting vulnerability due to $@. | fetch-promise-chain.js:98:3:98:23 | fetch(" ... ssage") | user-provided value |
 | interceptors.js:9:56:9:72 | userGeneratedHtml | interceptors.js:7:6:7:13 | response | interceptors.js:9:56:9:72 | userGeneratedHtml | Cross-site scripting vulnerability due to $@. | interceptors.js:7:6:7:13 | response | user-provided value |
+| non-fetch-promise-chain.js:5:33:5:36 | body | non-fetch-promise-chain.js:3:3:3:35 | rp("htt ... ssage") | non-fetch-promise-chain.js:5:33:5:36 | body | Cross-site scripting vulnerability due to $@. | non-fetch-promise-chain.js:3:3:3:35 | rp("htt ... ssage") | user-provided value |
+| non-fetch-promise-chain.js:13:33:13:44 | data.message | non-fetch-promise-chain.js:11:3:11:56 | rp({ ur ... true }) | non-fetch-promise-chain.js:13:33:13:44 | data.message | Cross-site scripting vulnerability due to $@. | non-fetch-promise-chain.js:11:3:11:56 | rp({ ur ... true }) | user-provided value |
+| non-fetch-promise-chain.js:21:31:21:51 | respons ... message | non-fetch-promise-chain.js:19:19:19:58 | axios.g ... ssage") | non-fetch-promise-chain.js:21:31:21:51 | respons ... message | Cross-site scripting vulnerability due to $@. | non-fetch-promise-chain.js:19:19:19:58 | axios.g ... ssage") | user-provided value |
+| non-fetch-promise-chain.js:29:33:29:53 | respons ... message | non-fetch-promise-chain.js:27:3:27:46 | needle( ... ssage") | non-fetch-promise-chain.js:29:33:29:53 | respons ... message | Cross-site scripting vulnerability due to $@. | non-fetch-promise-chain.js:27:3:27:46 | needle( ... ssage") | user-provided value |
+| non-fetch-promise-chain.js:37:33:37:45 | response.text | non-fetch-promise-chain.js:35:3:35:47 | superag ... ssage") | non-fetch-promise-chain.js:37:33:37:45 | response.text | Cross-site scripting vulnerability due to $@. | non-fetch-promise-chain.js:35:3:35:47 | superag ... ssage") | user-provided value |
 | test.jsx:27:29:27:32 | data | test.jsx:5:28:5:63 | fetch(" ... ntent") | test.jsx:27:29:27:32 | data | Cross-site scripting vulnerability due to $@. | test.jsx:5:28:5:63 | fetch(" ... ntent") | user-provided value |
 | test.ts:21:57:21:76 | response.description | test.ts:8:9:8:79 | this.#h ... query') | test.ts:21:57:21:76 | response.description | Cross-site scripting vulnerability due to $@. | test.ts:8:9:8:79 | this.#h ... query') | user-provided value |
 | test.ts:24:36:24:90 | `<h2>${ ... o}</p>` | test.ts:8:9:8:79 | this.#h ... query') | test.ts:24:36:24:90 | `<h2>${ ... o}</p>` | Cross-site scripting vulnerability due to $@. | test.ts:8:9:8:79 | this.#h ... query') | user-provided value |
@@ -19,9 +33,121 @@
 | testUseQueries2.vue:40:10:40:23 | v-html=data3 | testUseQueries2.vue:12:28:12:41 | fetch("${id}") | testUseQueries2.vue:40:10:40:23 | v-html=data3 | Cross-site scripting vulnerability due to $@. | testUseQueries2.vue:12:28:12:41 | fetch("${id}") | user-provided value |
 | testUseQueries.vue:25:10:25:23 | v-html=data2 | testUseQueries.vue:11:36:11:49 | fetch("${id}") | testUseQueries.vue:25:10:25:23 | v-html=data2 | Cross-site scripting vulnerability due to $@. | testUseQueries.vue:11:36:11:49 | fetch("${id}") | user-provided value |
 edges
+| fetch-promise-chain.js:7:3:7:12 | fetch(url) | fetch-promise-chain.js:8:11:8:18 | response | provenance |  |
+| fetch-promise-chain.js:7:3:8:38 | fetch(u ... json()) [PromiseValue] | fetch-promise-chain.js:9:11:9:14 | data | provenance |  |
+| fetch-promise-chain.js:8:11:8:18 | response | fetch-promise-chain.js:8:23:8:30 | response | provenance |  |
+| fetch-promise-chain.js:8:23:8:30 | response | fetch-promise-chain.js:8:23:8:37 | response.json() | provenance |  |
+| fetch-promise-chain.js:8:23:8:37 | response.json() | fetch-promise-chain.js:7:3:8:38 | fetch(u ... json()) [PromiseValue] | provenance |  |
+| fetch-promise-chain.js:9:11:9:14 | data | fetch-promise-chain.js:13:7:13:10 | data | provenance |  |
+| fetch-promise-chain.js:13:7:13:10 | data | fetch-promise-chain.js:13:7:13:16 | data.items | provenance |  |
+| fetch-promise-chain.js:13:7:13:16 | data.items | fetch-promise-chain.js:13:26:13:29 | item | provenance |  |
+| fetch-promise-chain.js:13:26:13:29 | item | fetch-promise-chain.js:14:55:14:58 | item | provenance |  |
+| fetch-promise-chain.js:13:26:13:29 | item | fetch-promise-chain.js:16:17:16:20 | item | provenance |  |
+| fetch-promise-chain.js:13:26:13:29 | item | fetch-promise-chain.js:17:17:17:20 | item | provenance |  |
+| fetch-promise-chain.js:13:26:13:29 | item | fetch-promise-chain.js:18:17:18:20 | item | provenance |  |
+| fetch-promise-chain.js:14:15:14:18 | link | fetch-promise-chain.js:19:17:19:20 | link | provenance |  |
+| fetch-promise-chain.js:14:22:14:88 | `<a hre ... ge</a>` | fetch-promise-chain.js:14:15:14:18 | link | provenance |  |
+| fetch-promise-chain.js:14:55:14:58 | item | fetch-promise-chain.js:14:55:14:68 | item.messageId | provenance |  |
+| fetch-promise-chain.js:14:55:14:68 | item.messageId | fetch-promise-chain.js:14:22:14:88 | `<a hre ... ge</a>` | provenance |  |
+| fetch-promise-chain.js:15:15:15:17 | row | fetch-promise-chain.js:21:47:21:49 | row | provenance |  |
+| fetch-promise-chain.js:15:21:20:14 | `<tr>\\n  ...  </tr>` | fetch-promise-chain.js:15:15:15:17 | row | provenance |  |
+| fetch-promise-chain.js:16:17:16:20 | item | fetch-promise-chain.js:16:17:16:32 | item.createdDate | provenance |  |
+| fetch-promise-chain.js:16:17:16:32 | item.createdDate | fetch-promise-chain.js:15:21:20:14 | `<tr>\\n  ...  </tr>` | provenance |  |
+| fetch-promise-chain.js:17:17:17:20 | item | fetch-promise-chain.js:17:17:17:30 | item.messageId | provenance |  |
+| fetch-promise-chain.js:17:17:17:30 | item.messageId | fetch-promise-chain.js:15:21:20:14 | `<tr>\\n  ...  </tr>` | provenance |  |
+| fetch-promise-chain.js:18:17:18:20 | item | fetch-promise-chain.js:18:17:18:33 | item.target ?? "" | provenance |  |
+| fetch-promise-chain.js:18:17:18:33 | item.target ?? "" | fetch-promise-chain.js:15:21:20:14 | `<tr>\\n  ...  </tr>` | provenance |  |
+| fetch-promise-chain.js:19:17:19:20 | link | fetch-promise-chain.js:15:21:20:14 | `<tr>\\n  ...  </tr>` | provenance |  |
+| fetch-promise-chain.js:27:3:27:23 | fetch(" ... ssage") | fetch-promise-chain.js:28:11:28:18 | response | provenance |  |
+| fetch-promise-chain.js:27:3:28:38 | fetch(" ... text()) [PromiseValue] | fetch-promise-chain.js:29:11:29:14 | text | provenance |  |
+| fetch-promise-chain.js:28:11:28:18 | response | fetch-promise-chain.js:28:23:28:30 | response | provenance |  |
+| fetch-promise-chain.js:28:23:28:30 | response | fetch-promise-chain.js:28:23:28:37 | response.text() | provenance |  |
+| fetch-promise-chain.js:28:23:28:37 | response.text() | fetch-promise-chain.js:27:3:28:38 | fetch(" ... text()) [PromiseValue] | provenance |  |
+| fetch-promise-chain.js:29:11:29:14 | text | fetch-promise-chain.js:30:33:30:36 | text | provenance |  |
+| fetch-promise-chain.js:43:9:43:15 | request | fetch-promise-chain.js:44:3:44:9 | request | provenance |  |
+| fetch-promise-chain.js:43:19:43:39 | fetch(" ... ssage") | fetch-promise-chain.js:43:9:43:15 | request | provenance |  |
+| fetch-promise-chain.js:44:3:44:9 | request | fetch-promise-chain.js:45:11:45:18 | response | provenance |  |
+| fetch-promise-chain.js:44:3:45:38 | request ... json()) [PromiseValue] | fetch-promise-chain.js:46:11:46:14 | data | provenance |  |
+| fetch-promise-chain.js:45:11:45:18 | response | fetch-promise-chain.js:45:23:45:30 | response | provenance |  |
+| fetch-promise-chain.js:45:23:45:30 | response | fetch-promise-chain.js:45:23:45:37 | response.json() | provenance |  |
+| fetch-promise-chain.js:45:23:45:37 | response.json() | fetch-promise-chain.js:44:3:45:38 | request ... json()) [PromiseValue] | provenance |  |
+| fetch-promise-chain.js:46:11:46:14 | data | fetch-promise-chain.js:47:33:47:36 | data | provenance |  |
+| fetch-promise-chain.js:47:33:47:36 | data | fetch-promise-chain.js:47:33:47:44 | data.message | provenance |  |
+| fetch-promise-chain.js:53:3:53:9 | request | fetch-promise-chain.js:54:3:54:9 | request | provenance |  |
+| fetch-promise-chain.js:53:13:53:33 | fetch(" ... ssage") | fetch-promise-chain.js:53:3:53:9 | request | provenance |  |
+| fetch-promise-chain.js:54:3:54:9 | request | fetch-promise-chain.js:55:11:55:18 | response | provenance |  |
+| fetch-promise-chain.js:54:3:55:38 | request ... text()) [PromiseValue] | fetch-promise-chain.js:56:11:56:14 | text | provenance |  |
+| fetch-promise-chain.js:55:11:55:18 | response | fetch-promise-chain.js:55:23:55:30 | response | provenance |  |
+| fetch-promise-chain.js:55:23:55:30 | response | fetch-promise-chain.js:55:23:55:37 | response.text() | provenance |  |
+| fetch-promise-chain.js:55:23:55:37 | response.text() | fetch-promise-chain.js:54:3:55:38 | request ... text()) [PromiseValue] | provenance |  |
+| fetch-promise-chain.js:56:11:56:14 | text | fetch-promise-chain.js:57:33:57:36 | text | provenance |  |
+| fetch-promise-chain.js:62:3:62:23 | fetch(" ... ssage") | fetch-promise-chain.js:63:11:63:18 | response | provenance |  |
+| fetch-promise-chain.js:62:3:63:38 | fetch(" ... json()) [PromiseValue] | fetch-promise-chain.js:62:3:64:29 | fetch(" ... .items) [PromiseValue] | provenance |  |
+| fetch-promise-chain.js:62:3:63:38 | fetch(" ... json()) [PromiseValue] | fetch-promise-chain.js:64:11:64:14 | data | provenance |  |
+| fetch-promise-chain.js:62:3:64:29 | fetch(" ... .items) [PromiseValue] | fetch-promise-chain.js:65:11:65:15 | items | provenance |  |
+| fetch-promise-chain.js:63:11:63:18 | response | fetch-promise-chain.js:63:23:63:30 | response | provenance |  |
+| fetch-promise-chain.js:63:23:63:30 | response | fetch-promise-chain.js:63:23:63:37 | response.json() | provenance |  |
+| fetch-promise-chain.js:63:23:63:37 | response.json() | fetch-promise-chain.js:62:3:63:38 | fetch(" ... json()) [PromiseValue] | provenance |  |
+| fetch-promise-chain.js:64:11:64:14 | data | fetch-promise-chain.js:64:19:64:22 | data | provenance |  |
+| fetch-promise-chain.js:64:19:64:22 | data | fetch-promise-chain.js:64:19:64:28 | data.items | provenance |  |
+| fetch-promise-chain.js:65:11:65:15 | items | fetch-promise-chain.js:66:7:66:11 | items | provenance |  |
+| fetch-promise-chain.js:66:7:66:11 | items | fetch-promise-chain.js:66:21:66:24 | item | provenance |  |
+| fetch-promise-chain.js:66:21:66:24 | item | fetch-promise-chain.js:67:55:67:58 | item | provenance |  |
+| fetch-promise-chain.js:67:55:67:58 | item | fetch-promise-chain.js:67:55:67:66 | item.message | provenance |  |
+| fetch-promise-chain.js:73:3:73:23 | fetch(" ... ssage") | fetch-promise-chain.js:74:11:74:18 | response | provenance |  |
+| fetch-promise-chain.js:73:3:74:38 | fetch(" ... json()) [PromiseValue] | fetch-promise-chain.js:75:12:75:22 | { message } | provenance |  |
+| fetch-promise-chain.js:74:11:74:18 | response | fetch-promise-chain.js:74:23:74:30 | response | provenance |  |
+| fetch-promise-chain.js:74:23:74:30 | response | fetch-promise-chain.js:74:23:74:37 | response.json() | provenance |  |
+| fetch-promise-chain.js:74:23:74:37 | response.json() | fetch-promise-chain.js:73:3:74:38 | fetch(" ... json()) [PromiseValue] | provenance |  |
+| fetch-promise-chain.js:75:12:75:22 | { message } | fetch-promise-chain.js:75:14:75:20 | message | provenance |  |
+| fetch-promise-chain.js:75:14:75:20 | message | fetch-promise-chain.js:76:33:76:39 | message | provenance |  |
+| fetch-promise-chain.js:81:3:81:23 | fetch(" ... ssage") | fetch-promise-chain.js:82:17:82:24 | response | provenance |  |
+| fetch-promise-chain.js:81:3:82:50 | fetch(" ... json()) [PromiseValue] | fetch-promise-chain.js:83:11:83:14 | data | provenance |  |
+| fetch-promise-chain.js:82:17:82:24 | response | fetch-promise-chain.js:82:35:82:42 | response | provenance |  |
+| fetch-promise-chain.js:82:29:82:49 | await r ... .json() | fetch-promise-chain.js:81:3:82:50 | fetch(" ... json()) [PromiseValue] | provenance |  |
+| fetch-promise-chain.js:82:35:82:42 | response | fetch-promise-chain.js:82:35:82:49 | response.json() | provenance |  |
+| fetch-promise-chain.js:82:35:82:49 | response.json() | fetch-promise-chain.js:82:29:82:49 | await r ... .json() | provenance |  |
+| fetch-promise-chain.js:83:11:83:14 | data | fetch-promise-chain.js:84:33:84:36 | data | provenance |  |
+| fetch-promise-chain.js:84:33:84:36 | data | fetch-promise-chain.js:84:33:84:44 | data.message | provenance |  |
+| fetch-promise-chain.js:89:3:92:4 | Promise ... ))\\n  ]) [PromiseValue, 0] | fetch-promise-chain.js:92:12:92:17 | [data] [0] | provenance |  |
+| fetch-promise-chain.js:89:15:92:3 | [\\n    f ... ())\\n  ] [0, PromiseValue] | fetch-promise-chain.js:89:3:92:4 | Promise ... ))\\n  ]) [PromiseValue, 0] | provenance |  |
+| fetch-promise-chain.js:90:5:90:25 | fetch(" ... ssage") | fetch-promise-chain.js:91:13:91:20 | response | provenance |  |
+| fetch-promise-chain.js:90:5:91:40 | fetch(" ... json()) [PromiseValue] | fetch-promise-chain.js:89:15:92:3 | [\\n    f ... ())\\n  ] [0, PromiseValue] | provenance |  |
+| fetch-promise-chain.js:91:13:91:20 | response | fetch-promise-chain.js:91:25:91:32 | response | provenance |  |
+| fetch-promise-chain.js:91:25:91:32 | response | fetch-promise-chain.js:91:25:91:39 | response.json() | provenance |  |
+| fetch-promise-chain.js:91:25:91:39 | response.json() | fetch-promise-chain.js:90:5:91:40 | fetch(" ... json()) [PromiseValue] | provenance |  |
+| fetch-promise-chain.js:92:12:92:17 | [data] [0] | fetch-promise-chain.js:92:13:92:16 | data | provenance |  |
+| fetch-promise-chain.js:92:13:92:16 | data | fetch-promise-chain.js:92:13:92:16 | data | provenance |  |
+| fetch-promise-chain.js:92:13:92:16 | data | fetch-promise-chain.js:93:31:93:34 | data | provenance |  |
+| fetch-promise-chain.js:93:31:93:34 | data | fetch-promise-chain.js:93:31:93:42 | data.message | provenance |  |
+| fetch-promise-chain.js:98:3:98:23 | fetch(" ... ssage") | fetch-promise-chain.js:99:11:99:18 | response | provenance |  |
+| fetch-promise-chain.js:98:3:99:38 | fetch(" ... json()) [PromiseValue] | fetch-promise-chain.js:100:11:100:14 | data | provenance |  |
+| fetch-promise-chain.js:99:11:99:18 | response | fetch-promise-chain.js:99:23:99:30 | response | provenance |  |
+| fetch-promise-chain.js:99:23:99:30 | response | fetch-promise-chain.js:99:23:99:37 | response.json() | provenance |  |
+| fetch-promise-chain.js:99:23:99:37 | response.json() | fetch-promise-chain.js:98:3:99:38 | fetch(" ... json()) [PromiseValue] | provenance |  |
+| fetch-promise-chain.js:100:11:100:14 | data | fetch-promise-chain.js:101:23:101:26 | data | provenance |  |
+| fetch-promise-chain.js:101:13:101:19 | payload | fetch-promise-chain.js:102:33:102:39 | payload | provenance |  |
+| fetch-promise-chain.js:101:23:101:26 | data | fetch-promise-chain.js:101:13:101:19 | payload | provenance |  |
+| fetch-promise-chain.js:102:33:102:39 | payload | fetch-promise-chain.js:102:33:102:47 | payload.message | provenance |  |
 | interceptors.js:7:6:7:13 | response | interceptors.js:8:35:8:42 | response | provenance |  |
 | interceptors.js:8:15:8:31 | userGeneratedHtml | interceptors.js:9:56:9:72 | userGeneratedHtml | provenance |  |
 | interceptors.js:8:35:8:42 | response | interceptors.js:8:15:8:31 | userGeneratedHtml | provenance |  |
+| non-fetch-promise-chain.js:3:3:3:35 | rp("htt ... ssage") | non-fetch-promise-chain.js:4:11:4:14 | body | provenance |  |
+| non-fetch-promise-chain.js:4:11:4:14 | body | non-fetch-promise-chain.js:5:33:5:36 | body | provenance |  |
+| non-fetch-promise-chain.js:11:3:11:56 | rp({ ur ... true }) | non-fetch-promise-chain.js:12:11:12:14 | data | provenance |  |
+| non-fetch-promise-chain.js:12:11:12:14 | data | non-fetch-promise-chain.js:13:33:13:36 | data | provenance |  |
+| non-fetch-promise-chain.js:13:33:13:36 | data | non-fetch-promise-chain.js:13:33:13:44 | data.message | provenance |  |
+| non-fetch-promise-chain.js:19:9:19:15 | request | non-fetch-promise-chain.js:20:3:20:9 | request | provenance |  |
+| non-fetch-promise-chain.js:19:19:19:58 | axios.g ... ssage") | non-fetch-promise-chain.js:19:9:19:15 | request | provenance |  |
+| non-fetch-promise-chain.js:20:3:20:9 | request | non-fetch-promise-chain.js:20:16:20:23 | response | provenance |  |
+| non-fetch-promise-chain.js:20:16:20:23 | response | non-fetch-promise-chain.js:21:31:21:38 | response | provenance |  |
+| non-fetch-promise-chain.js:21:31:21:38 | response | non-fetch-promise-chain.js:21:31:21:51 | respons ... message | provenance |  |
+| non-fetch-promise-chain.js:27:3:27:46 | needle( ... ssage") | non-fetch-promise-chain.js:28:11:28:18 | response | provenance |  |
+| non-fetch-promise-chain.js:28:11:28:18 | response | non-fetch-promise-chain.js:29:33:29:40 | response | provenance |  |
+| non-fetch-promise-chain.js:29:33:29:40 | response | non-fetch-promise-chain.js:29:33:29:53 | respons ... message | provenance |  |
+| non-fetch-promise-chain.js:35:3:35:47 | superag ... ssage") | non-fetch-promise-chain.js:36:11:36:18 | response | provenance |  |
+| non-fetch-promise-chain.js:36:11:36:18 | response | non-fetch-promise-chain.js:37:33:37:40 | response | provenance |  |
+| non-fetch-promise-chain.js:37:33:37:40 | response | non-fetch-promise-chain.js:37:33:37:45 | response.text | provenance |  |
 | test.jsx:5:11:5:18 | response | test.jsx:6:24:6:31 | response | provenance |  |
 | test.jsx:5:22:5:63 | await f ... ntent") | test.jsx:5:11:5:18 | response | provenance |  |
 | test.jsx:5:28:5:63 | fetch(" ... ntent") | test.jsx:5:22:5:63 | await f ... ntent") | provenance |  |
@@ -100,10 +226,133 @@ edges
 | testUseQueries.vue:12:20:12:34 | response.json() | testUseQueries.vue:18:22:18:36 | results[0].data | provenance |  |
 | testUseQueries.vue:18:22:18:36 | results[0].data | testUseQueries.vue:25:10:25:23 | v-html=data2 | provenance |  |
 nodes
+| fetch-promise-chain.js:7:3:7:12 | fetch(url) | semmle.label | fetch(url) |
+| fetch-promise-chain.js:7:3:8:38 | fetch(u ... json()) [PromiseValue] | semmle.label | fetch(u ... json()) [PromiseValue] |
+| fetch-promise-chain.js:8:11:8:18 | response | semmle.label | response |
+| fetch-promise-chain.js:8:23:8:30 | response | semmle.label | response |
+| fetch-promise-chain.js:8:23:8:37 | response.json() | semmle.label | response.json() |
+| fetch-promise-chain.js:9:11:9:14 | data | semmle.label | data |
+| fetch-promise-chain.js:13:7:13:10 | data | semmle.label | data |
+| fetch-promise-chain.js:13:7:13:16 | data.items | semmle.label | data.items |
+| fetch-promise-chain.js:13:26:13:29 | item | semmle.label | item |
+| fetch-promise-chain.js:14:15:14:18 | link | semmle.label | link |
+| fetch-promise-chain.js:14:22:14:88 | `<a hre ... ge</a>` | semmle.label | `<a hre ... ge</a>` |
+| fetch-promise-chain.js:14:55:14:58 | item | semmle.label | item |
+| fetch-promise-chain.js:14:55:14:68 | item.messageId | semmle.label | item.messageId |
+| fetch-promise-chain.js:15:15:15:17 | row | semmle.label | row |
+| fetch-promise-chain.js:15:21:20:14 | `<tr>\\n  ...  </tr>` | semmle.label | `<tr>\\n  ...  </tr>` |
+| fetch-promise-chain.js:16:17:16:20 | item | semmle.label | item |
+| fetch-promise-chain.js:16:17:16:32 | item.createdDate | semmle.label | item.createdDate |
+| fetch-promise-chain.js:17:17:17:20 | item | semmle.label | item |
+| fetch-promise-chain.js:17:17:17:30 | item.messageId | semmle.label | item.messageId |
+| fetch-promise-chain.js:18:17:18:20 | item | semmle.label | item |
+| fetch-promise-chain.js:18:17:18:33 | item.target ?? "" | semmle.label | item.target ?? "" |
+| fetch-promise-chain.js:19:17:19:20 | link | semmle.label | link |
+| fetch-promise-chain.js:21:47:21:49 | row | semmle.label | row |
+| fetch-promise-chain.js:27:3:27:23 | fetch(" ... ssage") | semmle.label | fetch(" ... ssage") |
+| fetch-promise-chain.js:27:3:28:38 | fetch(" ... text()) [PromiseValue] | semmle.label | fetch(" ... text()) [PromiseValue] |
+| fetch-promise-chain.js:28:11:28:18 | response | semmle.label | response |
+| fetch-promise-chain.js:28:23:28:30 | response | semmle.label | response |
+| fetch-promise-chain.js:28:23:28:37 | response.text() | semmle.label | response.text() |
+| fetch-promise-chain.js:29:11:29:14 | text | semmle.label | text |
+| fetch-promise-chain.js:30:33:30:36 | text | semmle.label | text |
+| fetch-promise-chain.js:43:9:43:15 | request | semmle.label | request |
+| fetch-promise-chain.js:43:19:43:39 | fetch(" ... ssage") | semmle.label | fetch(" ... ssage") |
+| fetch-promise-chain.js:44:3:44:9 | request | semmle.label | request |
+| fetch-promise-chain.js:44:3:45:38 | request ... json()) [PromiseValue] | semmle.label | request ... json()) [PromiseValue] |
+| fetch-promise-chain.js:45:11:45:18 | response | semmle.label | response |
+| fetch-promise-chain.js:45:23:45:30 | response | semmle.label | response |
+| fetch-promise-chain.js:45:23:45:37 | response.json() | semmle.label | response.json() |
+| fetch-promise-chain.js:46:11:46:14 | data | semmle.label | data |
+| fetch-promise-chain.js:47:33:47:36 | data | semmle.label | data |
+| fetch-promise-chain.js:47:33:47:44 | data.message | semmle.label | data.message |
+| fetch-promise-chain.js:53:3:53:9 | request | semmle.label | request |
+| fetch-promise-chain.js:53:13:53:33 | fetch(" ... ssage") | semmle.label | fetch(" ... ssage") |
+| fetch-promise-chain.js:54:3:54:9 | request | semmle.label | request |
+| fetch-promise-chain.js:54:3:55:38 | request ... text()) [PromiseValue] | semmle.label | request ... text()) [PromiseValue] |
+| fetch-promise-chain.js:55:11:55:18 | response | semmle.label | response |
+| fetch-promise-chain.js:55:23:55:30 | response | semmle.label | response |
+| fetch-promise-chain.js:55:23:55:37 | response.text() | semmle.label | response.text() |
+| fetch-promise-chain.js:56:11:56:14 | text | semmle.label | text |
+| fetch-promise-chain.js:57:33:57:36 | text | semmle.label | text |
+| fetch-promise-chain.js:62:3:62:23 | fetch(" ... ssage") | semmle.label | fetch(" ... ssage") |
+| fetch-promise-chain.js:62:3:63:38 | fetch(" ... json()) [PromiseValue] | semmle.label | fetch(" ... json()) [PromiseValue] |
+| fetch-promise-chain.js:62:3:64:29 | fetch(" ... .items) [PromiseValue] | semmle.label | fetch(" ... .items) [PromiseValue] |
+| fetch-promise-chain.js:63:11:63:18 | response | semmle.label | response |
+| fetch-promise-chain.js:63:23:63:30 | response | semmle.label | response |
+| fetch-promise-chain.js:63:23:63:37 | response.json() | semmle.label | response.json() |
+| fetch-promise-chain.js:64:11:64:14 | data | semmle.label | data |
+| fetch-promise-chain.js:64:19:64:22 | data | semmle.label | data |
+| fetch-promise-chain.js:64:19:64:28 | data.items | semmle.label | data.items |
+| fetch-promise-chain.js:65:11:65:15 | items | semmle.label | items |
+| fetch-promise-chain.js:66:7:66:11 | items | semmle.label | items |
+| fetch-promise-chain.js:66:21:66:24 | item | semmle.label | item |
+| fetch-promise-chain.js:67:55:67:58 | item | semmle.label | item |
+| fetch-promise-chain.js:67:55:67:66 | item.message | semmle.label | item.message |
+| fetch-promise-chain.js:73:3:73:23 | fetch(" ... ssage") | semmle.label | fetch(" ... ssage") |
+| fetch-promise-chain.js:73:3:74:38 | fetch(" ... json()) [PromiseValue] | semmle.label | fetch(" ... json()) [PromiseValue] |
+| fetch-promise-chain.js:74:11:74:18 | response | semmle.label | response |
+| fetch-promise-chain.js:74:23:74:30 | response | semmle.label | response |
+| fetch-promise-chain.js:74:23:74:37 | response.json() | semmle.label | response.json() |
+| fetch-promise-chain.js:75:12:75:22 | { message } | semmle.label | { message } |
+| fetch-promise-chain.js:75:14:75:20 | message | semmle.label | message |
+| fetch-promise-chain.js:76:33:76:39 | message | semmle.label | message |
+| fetch-promise-chain.js:81:3:81:23 | fetch(" ... ssage") | semmle.label | fetch(" ... ssage") |
+| fetch-promise-chain.js:81:3:82:50 | fetch(" ... json()) [PromiseValue] | semmle.label | fetch(" ... json()) [PromiseValue] |
+| fetch-promise-chain.js:82:17:82:24 | response | semmle.label | response |
+| fetch-promise-chain.js:82:29:82:49 | await r ... .json() | semmle.label | await r ... .json() |
+| fetch-promise-chain.js:82:35:82:42 | response | semmle.label | response |
+| fetch-promise-chain.js:82:35:82:49 | response.json() | semmle.label | response.json() |
+| fetch-promise-chain.js:83:11:83:14 | data | semmle.label | data |
+| fetch-promise-chain.js:84:33:84:36 | data | semmle.label | data |
+| fetch-promise-chain.js:84:33:84:44 | data.message | semmle.label | data.message |
+| fetch-promise-chain.js:89:3:92:4 | Promise ... ))\\n  ]) [PromiseValue, 0] | semmle.label | Promise ... ))\\n  ]) [PromiseValue, 0] |
+| fetch-promise-chain.js:89:15:92:3 | [\\n    f ... ())\\n  ] [0, PromiseValue] | semmle.label | [\\n    f ... ())\\n  ] [0, PromiseValue] |
+| fetch-promise-chain.js:90:5:90:25 | fetch(" ... ssage") | semmle.label | fetch(" ... ssage") |
+| fetch-promise-chain.js:90:5:91:40 | fetch(" ... json()) [PromiseValue] | semmle.label | fetch(" ... json()) [PromiseValue] |
+| fetch-promise-chain.js:91:13:91:20 | response | semmle.label | response |
+| fetch-promise-chain.js:91:25:91:32 | response | semmle.label | response |
+| fetch-promise-chain.js:91:25:91:39 | response.json() | semmle.label | response.json() |
+| fetch-promise-chain.js:92:12:92:17 | [data] [0] | semmle.label | [data] [0] |
+| fetch-promise-chain.js:92:13:92:16 | data | semmle.label | data |
+| fetch-promise-chain.js:92:13:92:16 | data | semmle.label | data |
+| fetch-promise-chain.js:93:31:93:34 | data | semmle.label | data |
+| fetch-promise-chain.js:93:31:93:42 | data.message | semmle.label | data.message |
+| fetch-promise-chain.js:98:3:98:23 | fetch(" ... ssage") | semmle.label | fetch(" ... ssage") |
+| fetch-promise-chain.js:98:3:99:38 | fetch(" ... json()) [PromiseValue] | semmle.label | fetch(" ... json()) [PromiseValue] |
+| fetch-promise-chain.js:99:11:99:18 | response | semmle.label | response |
+| fetch-promise-chain.js:99:23:99:30 | response | semmle.label | response |
+| fetch-promise-chain.js:99:23:99:37 | response.json() | semmle.label | response.json() |
+| fetch-promise-chain.js:100:11:100:14 | data | semmle.label | data |
+| fetch-promise-chain.js:101:13:101:19 | payload | semmle.label | payload |
+| fetch-promise-chain.js:101:23:101:26 | data | semmle.label | data |
+| fetch-promise-chain.js:102:33:102:39 | payload | semmle.label | payload |
+| fetch-promise-chain.js:102:33:102:47 | payload.message | semmle.label | payload.message |
 | interceptors.js:7:6:7:13 | response | semmle.label | response |
 | interceptors.js:8:15:8:31 | userGeneratedHtml | semmle.label | userGeneratedHtml |
 | interceptors.js:8:35:8:42 | response | semmle.label | response |
 | interceptors.js:9:56:9:72 | userGeneratedHtml | semmle.label | userGeneratedHtml |
+| non-fetch-promise-chain.js:3:3:3:35 | rp("htt ... ssage") | semmle.label | rp("htt ... ssage") |
+| non-fetch-promise-chain.js:4:11:4:14 | body | semmle.label | body |
+| non-fetch-promise-chain.js:5:33:5:36 | body | semmle.label | body |
+| non-fetch-promise-chain.js:11:3:11:56 | rp({ ur ... true }) | semmle.label | rp({ ur ... true }) |
+| non-fetch-promise-chain.js:12:11:12:14 | data | semmle.label | data |
+| non-fetch-promise-chain.js:13:33:13:36 | data | semmle.label | data |
+| non-fetch-promise-chain.js:13:33:13:44 | data.message | semmle.label | data.message |
+| non-fetch-promise-chain.js:19:9:19:15 | request | semmle.label | request |
+| non-fetch-promise-chain.js:19:19:19:58 | axios.g ... ssage") | semmle.label | axios.g ... ssage") |
+| non-fetch-promise-chain.js:20:3:20:9 | request | semmle.label | request |
+| non-fetch-promise-chain.js:20:16:20:23 | response | semmle.label | response |
+| non-fetch-promise-chain.js:21:31:21:38 | response | semmle.label | response |
+| non-fetch-promise-chain.js:21:31:21:51 | respons ... message | semmle.label | respons ... message |
+| non-fetch-promise-chain.js:27:3:27:46 | needle( ... ssage") | semmle.label | needle( ... ssage") |
+| non-fetch-promise-chain.js:28:11:28:18 | response | semmle.label | response |
+| non-fetch-promise-chain.js:29:33:29:40 | response | semmle.label | response |
+| non-fetch-promise-chain.js:29:33:29:53 | respons ... message | semmle.label | respons ... message |
+| non-fetch-promise-chain.js:35:3:35:47 | superag ... ssage") | semmle.label | superag ... ssage") |
+| non-fetch-promise-chain.js:36:11:36:18 | response | semmle.label | response |
+| non-fetch-promise-chain.js:37:33:37:40 | response | semmle.label | response |
+| non-fetch-promise-chain.js:37:33:37:45 | response.text | semmle.label | response.text |
 | test.jsx:5:11:5:18 | response | semmle.label | response |
 | test.jsx:5:22:5:63 | await f ... ntent") | semmle.label | await f ... ntent") |
 | test.jsx:5:28:5:63 | fetch(" ... ntent") | semmle.label | fetch(" ... ntent") |
@@ -197,3 +446,4 @@ nodes
 | testUseQueries.vue:18:22:18:36 | results[0].data | semmle.label | results[0].data |
 | testUseQueries.vue:25:10:25:23 | v-html=data2 | semmle.label | v-html=data2 |
 subpaths
+| fetch-promise-chain.js:62:3:63:38 | fetch(" ... json()) [PromiseValue] | fetch-promise-chain.js:64:11:64:14 | data | fetch-promise-chain.js:64:19:64:28 | data.items | fetch-promise-chain.js:62:3:64:29 | fetch(" ... .items) [PromiseValue] |

@@ -26,6 +26,7 @@ where
   or
   exists(Variable var |
     var = element and
+    not var.isCompilerGenerated() and
     var.getType() instanceof LeapYearUnsafeDaysOfTheYearArrayType and
     allocType = "an array allocation"
   )

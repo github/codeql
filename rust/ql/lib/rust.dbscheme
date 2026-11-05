@@ -183,6 +183,7 @@ named_crates(
 @ast_node =
   @abi
 | @addressable
+| @any_attr
 | @arg_list
 | @asm_dir_spec
 | @asm_operand
@@ -191,8 +192,8 @@ named_crates(
 | @asm_piece
 | @asm_reg_spec
 | @assoc_item_list
-| @attr
 | @callable
+| @cfg_predicate
 | @expr
 | @extern_item_list
 | @field_list
@@ -202,6 +203,7 @@ named_crates(
 | @generic_arg_list
 | @generic_param
 | @generic_param_list
+| @impl_restriction
 | @item_list
 | @label
 | @let_else
@@ -210,6 +212,7 @@ named_crates(
 | @match_arm_list
 | @match_guard
 | @meta
+| @mut_restriction
 | @name
 | @param_base
 | @param_list
@@ -231,6 +234,7 @@ named_crates(
 | @struct_pat_field_list
 | @token
 | @token_tree
+| @try_block_modifier
 | @tuple_field
 | @type_bound
 | @type_bound_list
@@ -241,6 +245,7 @@ named_crates(
 | @use_tree_list
 | @variant_list
 | @visibility
+| @visibility_inner
 | @where_clause
 | @where_pred
 ;
@@ -296,6 +301,11 @@ abi_abi_strings(
 @addressable =
   @item
 | @variant
+;
+
+@any_attr =
+  @attr
+| @doc_comment
 ;
 
 arg_lists(
@@ -376,17 +386,7 @@ assoc_item_list_assoc_items(
 assoc_item_list_attrs(
   int id: @assoc_item_list ref,
   int index: int ref,
-  int attr: @attr ref
-);
-
-attrs(
-  unique int id: @attr
-);
-
-#keyset[id]
-attr_meta(
-  int id: @attr ref,
-  int meta: @meta ref
+  int attr: @any_attr ref
 );
 
 @callable =
@@ -404,8 +404,13 @@ callable_param_lists(
 callable_attrs(
   int id: @callable ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
+
+@cfg_predicate =
+  @cfg_atom
+| @cfg_composite
+;
 
 @expr =
   @array_expr_internal
@@ -416,11 +421,13 @@ callable_attrs(
 | @break_expr
 | @call_expr
 | @cast_expr
+| @cfg_pred_expr
 | @closure_expr
 | @continue_expr
 | @field_expr
 | @format_args_expr
 | @if_expr
+| @include_bytes_expr
 | @index_expr
 | @labelable_expr
 | @let_expr
@@ -429,7 +436,6 @@ callable_attrs(
 | @match_expr
 | @method_call_expr
 | @offset_of_expr
-| @paren_expr
 | @path_expr_base
 | @prefix_expr
 | @range_expr
@@ -451,7 +457,7 @@ extern_item_lists(
 extern_item_list_attrs(
   int id: @extern_item_list ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -527,6 +533,16 @@ generic_param_list_generic_params(
   int generic_param: @generic_param ref
 );
 
+impl_restrictions(
+  unique int id: @impl_restriction
+);
+
+#keyset[id]
+impl_restriction_visibility_inners(
+  int id: @impl_restriction ref,
+  int visibility_inner: @visibility_inner ref
+);
+
 item_lists(
   unique int id: @item_list
 );
@@ -535,7 +551,7 @@ item_lists(
 item_list_attrs(
   int id: @item_list ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -584,7 +600,7 @@ match_arms(
 match_arm_attrs(
   int id: @match_arm ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -620,7 +636,7 @@ match_arm_list_arms(
 match_arm_list_attrs(
   int id: @match_arm_list ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 match_guards(
@@ -633,31 +649,28 @@ match_guard_conditions(
   int condition: @expr ref
 );
 
-meta(
-  unique int id: @meta
+@meta =
+  @cfg_attr_meta
+| @cfg_meta
+| @key_value_meta
+| @path_meta
+| @token_tree_meta
+| @unsafe_meta
+;
+
+mut_restrictions(
+  unique int id: @mut_restriction
 );
 
 #keyset[id]
-meta_exprs(
-  int id: @meta ref,
-  int expr: @expr ref
+mut_restriction_is_mut(
+  int id: @mut_restriction ref
 );
 
 #keyset[id]
-meta_is_unsafe(
-  int id: @meta ref
-);
-
-#keyset[id]
-meta_paths(
-  int id: @meta ref,
-  int path: @path ref
-);
-
-#keyset[id]
-meta_token_trees(
-  int id: @meta ref,
-  int token_tree: @token_tree ref
+mut_restriction_visibility_inners(
+  int id: @mut_restriction ref,
+  int visibility_inner: @visibility_inner ref
 );
 
 names(
@@ -679,7 +692,7 @@ name_texts(
 param_base_attrs(
   int id: @param_base ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -718,12 +731,14 @@ parenthesized_arg_list_type_args(
 
 @pat =
   @box_pat
+| @cfg_pred_pat
 | @const_block_pat
+| @deref_pat
 | @ident_pat
 | @literal_pat
 | @macro_pat
+| @not_null
 | @or_pat
-| @paren_pat
 | @path_pat
 | @range_pat
 | @ref_pat
@@ -843,7 +858,7 @@ source_files(
 source_file_attrs(
   int id: @source_file ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -867,7 +882,7 @@ stmt_lists(
 stmt_list_attrs(
   int id: @stmt_list ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -891,7 +906,7 @@ struct_expr_fields(
 struct_expr_field_attrs(
   int id: @struct_expr_field ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -914,7 +929,7 @@ struct_expr_field_lists(
 struct_expr_field_list_attrs(
   int id: @struct_expr_field_list ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -938,18 +953,24 @@ struct_fields(
 struct_field_attrs(
   int id: @struct_field ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
-struct_field_defaults(
+struct_field_default_vals(
   int id: @struct_field ref,
-  int default: @expr ref
+  int default_val: @const_arg ref
 );
 
 #keyset[id]
 struct_field_is_unsafe(
   int id: @struct_field ref
+);
+
+#keyset[id]
+struct_field_mut_restrictions(
+  int id: @struct_field ref,
+  int mut_restriction: @mut_restriction ref
 );
 
 #keyset[id]
@@ -978,7 +999,7 @@ struct_pat_fields(
 struct_pat_field_attrs(
   int id: @struct_pat_field ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1018,6 +1039,21 @@ token_trees(
   unique int id: @token_tree
 );
 
+try_block_modifiers(
+  unique int id: @try_block_modifier
+);
+
+#keyset[id]
+try_block_modifier_is_try(
+  int id: @try_block_modifier ref
+);
+
+#keyset[id]
+try_block_modifier_type_reprs(
+  int id: @try_block_modifier ref,
+  int type_repr: @type_repr ref
+);
+
 tuple_fields(
   unique int id: @tuple_field
 );
@@ -1026,7 +1062,13 @@ tuple_fields(
 tuple_field_attrs(
   int id: @tuple_field ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
+);
+
+#keyset[id]
+tuple_field_mut_restrictions(
+  int id: @tuple_field ref,
+  int mut_restriction: @mut_restriction ref
 );
 
 #keyset[id]
@@ -1101,6 +1143,7 @@ type_bound_list_bounds(
 | @never_type_repr
 | @paren_type_repr
 | @path_type_repr
+| @pattern_type_repr
 | @ptr_type_repr
 | @ref_type_repr
 | @slice_type_repr
@@ -1177,8 +1220,18 @@ visibilities(
 );
 
 #keyset[id]
-visibility_paths(
+visibility_visibility_inners(
   int id: @visibility ref,
+  int visibility_inner: @visibility_inner ref
+);
+
+visibility_inners(
+  unique int id: @visibility_inner
+);
+
+#keyset[id]
+visibility_inner_paths(
+  int id: @visibility_inner ref,
   int path: @path ref
 );
 
@@ -1229,7 +1282,7 @@ array_expr_internals(
 array_expr_internal_attrs(
   int id: @array_expr_internal ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -1262,6 +1315,13 @@ array_type_repr_element_type_reprs(
 
 asm_clobber_abis(
   unique int id: @asm_clobber_abi
+);
+
+#keyset[id, index]
+asm_clobber_abi_attrs(
+  int id: @asm_clobber_abi ref,
+  int index: int ref,
+  int attr: @any_attr ref
 );
 
 asm_consts(
@@ -1299,6 +1359,13 @@ asm_operand_named_asm_operands(
   int asm_operand: @asm_operand ref
 );
 
+#keyset[id, index]
+asm_operand_named_attrs(
+  int id: @asm_operand_named ref,
+  int index: int ref,
+  int attr: @any_attr ref
+);
+
 #keyset[id]
 asm_operand_named_names(
   int id: @asm_operand_named ref,
@@ -1314,6 +1381,13 @@ asm_options_list_asm_options(
   int id: @asm_options_list ref,
   int index: int ref,
   int asm_option: @asm_option ref
+);
+
+#keyset[id, index]
+asm_options_list_attrs(
+  int id: @asm_options_list ref,
+  int index: int ref,
+  int attr: @any_attr ref
 );
 
 asm_reg_operands(
@@ -1400,6 +1474,16 @@ assoc_type_arg_type_bound_lists(
   int type_bound_list: @type_bound_list ref
 );
 
+attrs(
+  unique int id: @attr
+);
+
+#keyset[id]
+attr_meta(
+  int id: @attr ref,
+  int meta: @meta ref
+);
+
 await_exprs(
   unique int id: @await_expr
 );
@@ -1408,7 +1492,7 @@ await_exprs(
 await_expr_attrs(
   int id: @await_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1425,7 +1509,7 @@ become_exprs(
 become_expr_attrs(
   int id: @become_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1442,7 +1526,7 @@ binary_exprs(
 binary_expr_attrs(
   int id: @binary_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1481,7 +1565,7 @@ break_exprs(
 break_expr_attrs(
   int id: @break_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1510,7 +1594,7 @@ call_expr_arg_lists(
 call_expr_attrs(
   int id: @call_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1527,7 +1611,7 @@ cast_exprs(
 cast_expr_attrs(
   int id: @cast_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1540,6 +1624,68 @@ cast_expr_exprs(
 cast_expr_type_reprs(
   int id: @cast_expr ref,
   int type_repr: @type_repr ref
+);
+
+cfg_atoms(
+  unique int id: @cfg_atom
+);
+
+cfg_attr_meta(
+  unique int id: @cfg_attr_meta
+);
+
+#keyset[id]
+cfg_attr_meta_cfg_predicates(
+  int id: @cfg_attr_meta ref,
+  int cfg_predicate: @cfg_predicate ref
+);
+
+#keyset[id, index]
+cfg_attr_meta_metas(
+  int id: @cfg_attr_meta ref,
+  int index: int ref,
+  int meta: @meta ref
+);
+
+cfg_composites(
+  unique int id: @cfg_composite
+);
+
+#keyset[id, index]
+cfg_composite_cfg_predicates(
+  int id: @cfg_composite ref,
+  int index: int ref,
+  int cfg_predicate: @cfg_predicate ref
+);
+
+cfg_meta(
+  unique int id: @cfg_meta
+);
+
+#keyset[id]
+cfg_meta_cfg_predicates(
+  int id: @cfg_meta ref,
+  int cfg_predicate: @cfg_predicate ref
+);
+
+cfg_pred_exprs(
+  unique int id: @cfg_pred_expr
+);
+
+#keyset[id]
+cfg_pred_expr_cfg_predicates(
+  int id: @cfg_pred_expr ref,
+  int cfg_predicate: @cfg_predicate ref
+);
+
+cfg_pred_pats(
+  unique int id: @cfg_pred_pat
+);
+
+#keyset[id]
+cfg_pred_pat_cfg_predicates(
+  int id: @cfg_pred_pat ref,
+  int cfg_predicate: @cfg_predicate ref
 );
 
 closure_exprs(
@@ -1628,7 +1774,7 @@ const_params(
 const_param_attrs(
   int id: @const_param ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1662,13 +1808,27 @@ continue_exprs(
 continue_expr_attrs(
   int id: @continue_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
 continue_expr_lifetimes(
   int id: @continue_expr ref,
   int lifetime: @lifetime ref
+);
+
+deref_pats(
+  unique int id: @deref_pat
+);
+
+#keyset[id]
+deref_pat_pats(
+  int id: @deref_pat ref,
+  int pat: @pat ref
+);
+
+doc_comments(
+  unique int id: @doc_comment
 );
 
 dyn_trait_type_reprs(
@@ -1699,7 +1859,7 @@ field_exprs(
 field_expr_attrs(
   int id: @field_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1782,7 +1942,7 @@ format_args_expr_args(
 format_args_expr_attrs(
   int id: @format_args_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1799,7 +1959,7 @@ ident_pats(
 ident_pat_attrs(
   int id: @ident_pat ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1832,7 +1992,7 @@ if_exprs(
 if_expr_attrs(
   int id: @if_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1863,6 +2023,10 @@ impl_trait_type_repr_type_bound_lists(
   int type_bound_list: @type_bound_list ref
 );
 
+include_bytes_exprs(
+  unique int id: @include_bytes_expr
+);
+
 index_exprs(
   unique int id: @index_expr
 );
@@ -1871,7 +2035,7 @@ index_exprs(
 index_expr_attrs(
   int id: @index_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1901,7 +2065,6 @@ infer_type_reprs(
 | @macro_rules
 | @module
 | @trait
-| @trait_alias
 | @type_item
 | @use
 ;
@@ -1910,6 +2073,22 @@ infer_type_reprs(
 item_attribute_macro_expansions(
   int id: @item ref,
   int attribute_macro_expansion: @macro_items ref
+);
+
+key_value_meta(
+  unique int id: @key_value_meta
+);
+
+#keyset[id]
+key_value_meta_exprs(
+  int id: @key_value_meta ref,
+  int expr: @expr ref
+);
+
+#keyset[id]
+key_value_meta_paths(
+  int id: @key_value_meta ref,
+  int path: @path ref
 );
 
 @labelable_expr =
@@ -1931,7 +2110,7 @@ let_exprs(
 let_expr_attrs(
   int id: @let_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -1954,7 +2133,7 @@ let_stmts(
 let_stmt_attrs(
   int id: @let_stmt ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2009,7 +2188,7 @@ lifetime_params(
 lifetime_param_attrs(
   int id: @lifetime_param ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2032,7 +2211,7 @@ literal_exprs(
 literal_expr_attrs(
   int id: @literal_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2053,6 +2232,13 @@ literal_pat_literals(
 
 macro_exprs(
   unique int id: @macro_expr
+);
+
+#keyset[id, index]
+macro_expr_attrs(
+  int id: @macro_expr ref,
+  int index: int ref,
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2089,7 +2275,7 @@ match_exprs(
 match_expr_attrs(
   int id: @match_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2118,7 +2304,7 @@ method_call_expr_arg_lists(
 method_call_expr_attrs(
   int id: @method_call_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2153,6 +2339,10 @@ never_type_reprs(
   unique int id: @never_type_repr
 );
 
+not_nulls(
+  unique int id: @not_null
+);
+
 offset_of_exprs(
   unique int id: @offset_of_expr
 );
@@ -2161,7 +2351,7 @@ offset_of_exprs(
 offset_of_expr_attrs(
   int id: @offset_of_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -2198,33 +2388,6 @@ param_pats(
   int pat: @pat ref
 );
 
-paren_exprs(
-  unique int id: @paren_expr
-);
-
-#keyset[id, index]
-paren_expr_attrs(
-  int id: @paren_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-paren_expr_exprs(
-  int id: @paren_expr ref,
-  int expr: @expr ref
-);
-
-paren_pats(
-  unique int id: @paren_pat
-);
-
-#keyset[id]
-paren_pat_pats(
-  int id: @paren_pat ref,
-  int pat: @pat ref
-);
-
 paren_type_reprs(
   unique int id: @paren_type_repr
 );
@@ -2238,6 +2401,16 @@ paren_type_repr_type_reprs(
 @path_expr_base =
   @path_expr
 ;
+
+path_meta(
+  unique int id: @path_meta
+);
+
+#keyset[id]
+path_meta_paths(
+  int id: @path_meta ref,
+  int path: @path ref
+);
 
 path_pats(
   unique int id: @path_pat
@@ -2253,6 +2426,22 @@ path_type_repr_paths(
   int path: @path ref
 );
 
+pattern_type_reprs(
+  unique int id: @pattern_type_repr
+);
+
+#keyset[id]
+pattern_type_repr_pats(
+  int id: @pattern_type_repr ref,
+  int pat: @pat ref
+);
+
+#keyset[id]
+pattern_type_repr_type_reprs(
+  int id: @pattern_type_repr ref,
+  int type_repr: @type_repr ref
+);
+
 prefix_exprs(
   unique int id: @prefix_expr
 );
@@ -2261,7 +2450,7 @@ prefix_exprs(
 prefix_expr_attrs(
   int id: @prefix_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2304,7 +2493,7 @@ range_exprs(
 range_expr_attrs(
   int id: @range_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2355,7 +2544,7 @@ ref_exprs(
 ref_expr_attrs(
   int id: @ref_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2423,7 +2612,7 @@ rest_pats(
 rest_pat_attrs(
   int id: @rest_pat ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 return_exprs(
@@ -2434,7 +2623,7 @@ return_exprs(
 return_expr_attrs(
   int id: @return_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2494,6 +2683,13 @@ struct_exprs(
   unique int id: @struct_expr
 );
 
+#keyset[id, index]
+struct_expr_attrs(
+  int id: @struct_expr ref,
+  int index: int ref,
+  int attr: @any_attr ref
+);
+
 #keyset[id]
 struct_expr_struct_expr_field_lists(
   int id: @struct_expr ref,
@@ -2521,6 +2717,22 @@ struct_pat_struct_pat_field_lists(
   int struct_pat_field_list: @struct_pat_field_list ref
 );
 
+token_tree_meta(
+  unique int id: @token_tree_meta
+);
+
+#keyset[id]
+token_tree_meta_paths(
+  int id: @token_tree_meta ref,
+  int path: @path ref
+);
+
+#keyset[id]
+token_tree_meta_token_trees(
+  int id: @token_tree_meta ref,
+  int token_tree: @token_tree ref
+);
+
 try_exprs(
   unique int id: @try_expr
 );
@@ -2529,7 +2741,7 @@ try_exprs(
 try_expr_attrs(
   int id: @try_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2546,7 +2758,7 @@ tuple_exprs(
 tuple_expr_attrs(
   int id: @tuple_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -2618,7 +2830,7 @@ type_params(
 type_param_attrs(
   int id: @type_param ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2647,7 +2859,22 @@ underscore_exprs(
 underscore_expr_attrs(
   int id: @underscore_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
+);
+
+unsafe_meta(
+  unique int id: @unsafe_meta
+);
+
+#keyset[id]
+unsafe_meta_is_unsafe(
+  int id: @unsafe_meta ref
+);
+
+#keyset[id]
+unsafe_meta_meta(
+  int id: @unsafe_meta ref,
+  int meta: @meta ref
 );
 
 variants(
@@ -2658,13 +2885,13 @@ variants(
 variant_attrs(
   int id: @variant ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
-variant_discriminants(
+variant_const_args(
   int id: @variant ref,
-  int discriminant: @expr ref
+  int const_arg: @const_arg ref
 );
 
 #keyset[id]
@@ -2697,7 +2924,7 @@ yeet_exprs(
 yeet_expr_attrs(
   int id: @yeet_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2714,7 +2941,7 @@ yield_exprs(
 yield_expr_attrs(
   int id: @yield_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2738,7 +2965,7 @@ asm_expr_asm_pieces(
 asm_expr_attrs(
   int id: @asm_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id, index]
@@ -2763,7 +2990,7 @@ block_exprs(
 block_expr_attrs(
   int id: @block_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2787,11 +3014,6 @@ block_expr_is_move(
 );
 
 #keyset[id]
-block_expr_is_try(
-  int id: @block_expr ref
-);
-
-#keyset[id]
 block_expr_is_unsafe(
   int id: @block_expr ref
 );
@@ -2800,6 +3022,12 @@ block_expr_is_unsafe(
 block_expr_stmt_lists(
   int id: @block_expr ref,
   int stmt_list: @stmt_list ref
+);
+
+#keyset[id]
+block_expr_try_block_modifiers(
+  int id: @block_expr ref,
+  int try_block_modifier: @try_block_modifier ref
 );
 
 extern_blocks(
@@ -2816,7 +3044,7 @@ extern_block_abis(
 extern_block_attrs(
   int id: @extern_block ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2838,7 +3066,7 @@ extern_crates(
 extern_crate_attrs(
   int id: @extern_crate ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2880,7 +3108,7 @@ impl_assoc_item_lists(
 impl_attrs(
   int id: @impl ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2954,7 +3182,7 @@ macro_def_args(
 macro_def_attrs(
   int id: @macro_def ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -2983,7 +3211,7 @@ macro_rules(
 macro_rules_attrs(
   int id: @macro_rules ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3012,7 +3240,7 @@ modules(
 module_attrs(
   int id: @module ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3041,7 +3269,7 @@ path_exprs(
 path_expr_attrs(
   int id: @path_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 traits(
@@ -3058,13 +3286,19 @@ trait_assoc_item_lists(
 trait_attrs(
   int id: @trait ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
 trait_generic_param_lists(
   int id: @trait ref,
   int generic_param_list: @generic_param_list ref
+);
+
+#keyset[id]
+trait_impl_restrictions(
+  int id: @trait ref,
+  int impl_restriction: @impl_restriction ref
 );
 
 #keyset[id]
@@ -3101,47 +3335,6 @@ trait_where_clauses(
   int where_clause: @where_clause ref
 );
 
-trait_aliases(
-  unique int id: @trait_alias
-);
-
-#keyset[id, index]
-trait_alias_attrs(
-  int id: @trait_alias ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-trait_alias_generic_param_lists(
-  int id: @trait_alias ref,
-  int generic_param_list: @generic_param_list ref
-);
-
-#keyset[id]
-trait_alias_names(
-  int id: @trait_alias ref,
-  int name: @name ref
-);
-
-#keyset[id]
-trait_alias_type_bound_lists(
-  int id: @trait_alias ref,
-  int type_bound_list: @type_bound_list ref
-);
-
-#keyset[id]
-trait_alias_visibilities(
-  int id: @trait_alias ref,
-  int visibility: @visibility ref
-);
-
-#keyset[id]
-trait_alias_where_clauses(
-  int id: @trait_alias ref,
-  int where_clause: @where_clause ref
-);
-
 @type_item =
   @enum
 | @struct
@@ -3159,7 +3352,7 @@ type_item_derive_macro_expansions(
 type_item_attrs(
   int id: @type_item ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3194,7 +3387,7 @@ uses(
 use_attrs(
   int id: @use ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3217,7 +3410,7 @@ consts(
 const_attrs(
   int id: @const ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3289,7 +3482,7 @@ for_exprs(
 for_expr_attrs(
   int id: @for_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3388,7 +3581,7 @@ loop_exprs(
 loop_expr_attrs(
   int id: @loop_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 macro_calls(
@@ -3399,7 +3592,7 @@ macro_calls(
 macro_call_attrs(
   int id: @macro_call ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3428,7 +3621,7 @@ statics(
 static_attrs(
   int id: @static ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3488,7 +3681,7 @@ type_aliases(
 type_alias_attrs(
   int id: @type_alias ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]
@@ -3550,7 +3743,7 @@ while_exprs(
 while_expr_attrs(
   int id: @while_expr ref,
   int index: int ref,
-  int attr: @attr ref
+  int attr: @any_attr ref
 );
 
 #keyset[id]

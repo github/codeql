@@ -19,7 +19,7 @@ query predicate getAbi(ExternBlock x, Abi getAbi) {
   toBeTested(x) and not x.isUnknown() and getAbi = x.getAbi()
 }
 
-query predicate getAttr(ExternBlock x, int index, Attr getAttr) {
+query predicate getAttr(ExternBlock x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

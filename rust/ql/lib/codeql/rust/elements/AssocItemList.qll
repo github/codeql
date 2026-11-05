@@ -4,9 +4,9 @@
  */
 
 private import internal.AssocItemListImpl
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.AssocItem
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.Attr
 
 /**
  * A list of `AssocItem` elements, as appearing in a `Trait` or `Impl`.

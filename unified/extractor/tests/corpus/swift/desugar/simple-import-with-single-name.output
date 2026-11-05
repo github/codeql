@@ -2,21 +2,28 @@ import Foundation
 
 ---
 
-source_file
-  statement:
-    import_declaration
-      name:
-        identifier
-          part: simple_identifier "Foundation"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        importDecl
+          attributes:
+          modifiers:
+          importKeyword: import
+          path:
+            importPathComponent
+              name: identifier "Foundation"
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        import_declaration
-          pattern: bulk_importing_pattern "import Foundation"
-          imported_expr:
-            name_expr
-              identifier: identifier "Foundation"
+        import_declaration source="⟨pattern⟩⟨imported_expr⟩"
+          imported_expr: identifier "Foundation" source="Foundation"
+          pattern:
+            named_pattern source="⟨sub_pattern⟩⟨name_node⟩"
+              name_node: identifier "Foundation" source="Foundation"
+              sub_pattern: bulk_importing_pattern "import Foundation" source="import Foundation"

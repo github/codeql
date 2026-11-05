@@ -41,6 +41,10 @@
 | ActiveRecordInjection.rb:217:38:217:53 | "role = #{...}" | ActiveRecordInjection.rb:223:29:223:34 | call to params | ActiveRecordInjection.rb:217:38:217:53 | "role = #{...}" | This SQL query depends on a $@. | ActiveRecordInjection.rb:223:29:223:34 | call to params | user-provided value |
 | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | This SQL query depends on a $@. | ArelInjection.rb:4:12:4:17 | call to params | user-provided value |
 | ArelInjection.rb:7:39:7:80 | "SELECT * FROM users WHERE nam..." | ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:7:39:7:80 | "SELECT * FROM users WHERE nam..." | This SQL query depends on a $@. | ArelInjection.rb:4:12:4:17 | call to params | user-provided value |
+| ConnectedToInjection.rb:10:9:10:93 | "SELECT * FROM events WHERE st..." | ConnectedToInjection.rb:5:19:5:24 | call to params | ConnectedToInjection.rb:10:9:10:93 | "SELECT * FROM events WHERE st..." | This SQL query depends on a $@. | ConnectedToInjection.rb:5:19:5:24 | call to params | user-provided value |
+| ConnectedToInjection.rb:10:9:10:93 | "SELECT * FROM events WHERE st..." | ConnectedToInjection.rb:6:19:6:24 | call to params | ConnectedToInjection.rb:10:9:10:93 | "SELECT * FROM events WHERE st..." | This SQL query depends on a $@. | ConnectedToInjection.rb:6:19:6:24 | call to params | user-provided value |
+| ConnectedToInjection.rb:20:44:20:101 | "SELECT * FROM events WHERE cr..." | ConnectedToInjection.rb:17:19:17:24 | call to params | ConnectedToInjection.rb:20:44:20:101 | "SELECT * FROM events WHERE cr..." | This SQL query depends on a $@. | ConnectedToInjection.rb:17:19:17:24 | call to params | user-provided value |
+| ConnectedToInjection.rb:35:42:35:44 | sql | ConnectedToInjection.rb:27:19:27:24 | call to params | ConnectedToInjection.rb:35:42:35:44 | sql | This SQL query depends on a $@. | ConnectedToInjection.rb:27:19:27:24 | call to params | user-provided value |
 | PgInjection.rb:14:15:14:18 | qry1 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:14:15:14:18 | qry1 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
 | PgInjection.rb:15:21:15:24 | qry1 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:15:21:15:24 | qry1 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
 | PgInjection.rb:20:22:20:25 | qry2 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:20:22:20:25 | qry2 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
@@ -130,6 +134,24 @@ edges
 | ArelInjection.rb:4:5:4:8 | name | ArelInjection.rb:7:39:7:80 | "SELECT * FROM users WHERE nam..." | provenance | AdditionalTaintStep |
 | ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:4:12:4:29 | ...[...] | provenance |  |
 | ArelInjection.rb:4:12:4:29 | ...[...] | ArelInjection.rb:4:5:4:8 | name | provenance |  |
+| ConnectedToInjection.rb:5:19:5:24 | call to params | ConnectedToInjection.rb:5:19:5:38 | ...[...] | provenance |  |
+| ConnectedToInjection.rb:5:19:5:38 | ...[...] | ConnectedToInjection.rb:8:52:12:7 | do ... end : [lambda] [captured lower_bound] | provenance |  |
+| ConnectedToInjection.rb:6:19:6:24 | call to params | ConnectedToInjection.rb:6:19:6:38 | ...[...] | provenance |  |
+| ConnectedToInjection.rb:6:19:6:38 | ...[...] | ConnectedToInjection.rb:8:52:12:7 | do ... end : [lambda] [captured upper_bound] | provenance |  |
+| ConnectedToInjection.rb:8:52:12:7 | do ... end : [lambda] [captured lower_bound] | ConnectedToInjection.rb:10:59:10:69 | lower_bound | provenance | heuristic-callback |
+| ConnectedToInjection.rb:8:52:12:7 | do ... end : [lambda] [captured upper_bound] | ConnectedToInjection.rb:10:80:10:90 | upper_bound | provenance | heuristic-callback |
+| ConnectedToInjection.rb:10:59:10:69 | lower_bound | ConnectedToInjection.rb:10:9:10:93 | "SELECT * FROM events WHERE st..." | provenance | AdditionalTaintStep |
+| ConnectedToInjection.rb:10:80:10:90 | upper_bound | ConnectedToInjection.rb:10:9:10:93 | "SELECT * FROM events WHERE st..." | provenance | AdditionalTaintStep |
+| ConnectedToInjection.rb:17:19:17:24 | call to params | ConnectedToInjection.rb:17:19:17:38 | ...[...] | provenance |  |
+| ConnectedToInjection.rb:17:19:17:38 | ...[...] | ConnectedToInjection.rb:19:52:21:7 | do ... end : [lambda] [captured lower_bound] | provenance |  |
+| ConnectedToInjection.rb:19:52:21:7 | do ... end : [lambda] [captured lower_bound] | ConnectedToInjection.rb:20:88:20:98 | lower_bound | provenance | heuristic-callback |
+| ConnectedToInjection.rb:20:88:20:98 | lower_bound | ConnectedToInjection.rb:20:44:20:101 | "SELECT * FROM events WHERE cr..." | provenance | AdditionalTaintStep |
+| ConnectedToInjection.rb:27:19:27:24 | call to params | ConnectedToInjection.rb:27:19:27:38 | ...[...] | provenance |  |
+| ConnectedToInjection.rb:27:19:27:38 | ...[...] | ConnectedToInjection.rb:30:52:32:7 | do ... end : [lambda] [captured lower_bound] | provenance |  |
+| ConnectedToInjection.rb:30:52:32:7 | [post] do ... end : [lambda] [captured captured] | ConnectedToInjection.rb:34:5:34:7 | sql : String | provenance | AdditionalTaintStep |
+| ConnectedToInjection.rb:30:52:32:7 | do ... end : [lambda] [captured lower_bound] | ConnectedToInjection.rb:30:52:32:7 | [post] do ... end : [lambda] [captured captured] | provenance | heuristic-callback |
+| ConnectedToInjection.rb:30:52:32:7 | do ... end : [lambda] [captured lower_bound] | ConnectedToInjection.rb:31:18:31:28 | lower_bound | provenance | heuristic-callback |
+| ConnectedToInjection.rb:34:5:34:7 | sql : String | ConnectedToInjection.rb:35:42:35:44 | sql | provenance |  |
 | PgInjection.rb:6:5:6:8 | name | PgInjection.rb:13:5:13:8 | qry1 : String | provenance | AdditionalTaintStep |
 | PgInjection.rb:6:5:6:8 | name | PgInjection.rb:19:5:19:8 | qry2 : String | provenance | AdditionalTaintStep |
 | PgInjection.rb:6:5:6:8 | name | PgInjection.rb:31:5:31:8 | qry3 : String | provenance | AdditionalTaintStep |
@@ -258,6 +280,27 @@ nodes
 | ArelInjection.rb:4:12:4:29 | ...[...] | semmle.label | ...[...] |
 | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | semmle.label | "SELECT * FROM users WHERE nam..." |
 | ArelInjection.rb:7:39:7:80 | "SELECT * FROM users WHERE nam..." | semmle.label | "SELECT * FROM users WHERE nam..." |
+| ConnectedToInjection.rb:5:19:5:24 | call to params | semmle.label | call to params |
+| ConnectedToInjection.rb:5:19:5:38 | ...[...] | semmle.label | ...[...] |
+| ConnectedToInjection.rb:6:19:6:24 | call to params | semmle.label | call to params |
+| ConnectedToInjection.rb:6:19:6:38 | ...[...] | semmle.label | ...[...] |
+| ConnectedToInjection.rb:8:52:12:7 | do ... end : [lambda] [captured lower_bound] | semmle.label | do ... end : [lambda] [captured lower_bound] |
+| ConnectedToInjection.rb:8:52:12:7 | do ... end : [lambda] [captured upper_bound] | semmle.label | do ... end : [lambda] [captured upper_bound] |
+| ConnectedToInjection.rb:10:9:10:93 | "SELECT * FROM events WHERE st..." | semmle.label | "SELECT * FROM events WHERE st..." |
+| ConnectedToInjection.rb:10:59:10:69 | lower_bound | semmle.label | lower_bound |
+| ConnectedToInjection.rb:10:80:10:90 | upper_bound | semmle.label | upper_bound |
+| ConnectedToInjection.rb:17:19:17:24 | call to params | semmle.label | call to params |
+| ConnectedToInjection.rb:17:19:17:38 | ...[...] | semmle.label | ...[...] |
+| ConnectedToInjection.rb:19:52:21:7 | do ... end : [lambda] [captured lower_bound] | semmle.label | do ... end : [lambda] [captured lower_bound] |
+| ConnectedToInjection.rb:20:44:20:101 | "SELECT * FROM events WHERE cr..." | semmle.label | "SELECT * FROM events WHERE cr..." |
+| ConnectedToInjection.rb:20:88:20:98 | lower_bound | semmle.label | lower_bound |
+| ConnectedToInjection.rb:27:19:27:24 | call to params | semmle.label | call to params |
+| ConnectedToInjection.rb:27:19:27:38 | ...[...] | semmle.label | ...[...] |
+| ConnectedToInjection.rb:30:52:32:7 | [post] do ... end : [lambda] [captured captured] | semmle.label | [post] do ... end : [lambda] [captured captured] |
+| ConnectedToInjection.rb:30:52:32:7 | do ... end : [lambda] [captured lower_bound] | semmle.label | do ... end : [lambda] [captured lower_bound] |
+| ConnectedToInjection.rb:31:18:31:28 | lower_bound | semmle.label | lower_bound |
+| ConnectedToInjection.rb:34:5:34:7 | sql : String | semmle.label | sql : String |
+| ConnectedToInjection.rb:35:42:35:44 | sql | semmle.label | sql |
 | PgInjection.rb:6:5:6:8 | name | semmle.label | name |
 | PgInjection.rb:6:12:6:17 | call to params | semmle.label | call to params |
 | PgInjection.rb:6:12:6:24 | ...[...] | semmle.label | ...[...] |
@@ -272,3 +315,4 @@ nodes
 | PgInjection.rb:43:5:43:8 | qry3 : String | semmle.label | qry3 : String |
 | PgInjection.rb:44:29:44:32 | qry3 | semmle.label | qry3 |
 subpaths
+| ConnectedToInjection.rb:30:52:32:7 | do ... end : [lambda] [captured lower_bound] | ConnectedToInjection.rb:31:18:31:28 | lower_bound | ConnectedToInjection.rb:31:18:31:28 | lower_bound | ConnectedToInjection.rb:30:52:32:7 | [post] do ... end : [lambda] [captured captured] |

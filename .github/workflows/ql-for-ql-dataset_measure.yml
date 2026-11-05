@@ -17,8 +17,6 @@ permissions:
 
 jobs:
   measure:
-    env:
-      CODEQL_THREADS: 4 # TODO: remove this once it's set by the CLI
     strategy:
       matrix:
         repo:
@@ -29,9 +27,7 @@ jobs:
 
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@main
-        with:
-          languages: javascript # does not matter
+        uses: github/codeql-action/setup-codeql@main
       - uses: ./.github/actions/os-version
         id: os_version
       - uses: actions/cache@v3

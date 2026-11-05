@@ -58,6 +58,10 @@ private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSummary
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
+private import codeql.rust.internal.CachedStages
+private import codeql.rust.internal.typeinference.FunctionType
+private import codeql.rust.internal.typeinference.TypeMention
+private import codeql.rust.frameworks.stdlib.Stdlib
 
 /**
  * Holds if in a call to the function with canonical path `path`, the value referred
@@ -170,6 +174,26 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
   )
 }
 
+bindingset[path]
+pragma[inline_late]
+private Function interpretPath0(string path) { path = result.getCanonicalPath() }
+
+bindingset[path, orig]
+pragma[inline_late]
+predicate interpretPath(string path, Function f, Provenance orig, Provenance p, boolean isExact) {
+  exists(Function f0 | f0 = interpretPath0(path) |
+    f = f0 and
+    isExact = true and
+    p = orig
+    or
+    f.implements(f0) and
+    isExact = false and
+    // making inherited models generated means that source code definitions and
+    // exact generated models take precedence
+    p = "hq-generated"
+  )
+}
+
 private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   string input_;
   string output_;
@@ -179,19 +203,9 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   QlBuiltins::ExtensionId madId;
 
   SummarizedCallableFromModel() {
-    exists(string path, Function f, Provenance p |
+    exists(string path, Provenance p |
       summaryModel(path, input_, output_, kind, p, madId) and
-      f.getCanonicalPath() = path
-    |
-      this = f and
-      isExact_ = true and
-      p_ = p
-      or
-      this.implements(f) and
-      isExact_ = false and
-      // making inherited models generated means that source code definitions and
-      // exact generated models take precedence
-      p_ = "hq-generated"
+      interpretPath(path, this, p, p_, isExact_)
     )
   }
 
@@ -207,80 +221,132 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   }
 }
 
+/**
+ * Holds if library function `f` has a callback at position `n`. In this case we
+ * add a flow model that achieves the effect of simulating that the callback is
+ * invoked, which is needed for flow through captured variables to work.
+ */
+cached
+predicate mayInvokeCallback(Function f, int n) {
+  Stages::TypeInferenceStage::ref() and
+  exists(TypeMention tm, Trait trait |
+    tm = f.getParam(n).getTypeRepr() and
+    trait = getALookupTrait(f, tm.getType()) and
+    trait.getSupertrait*() instanceof FnOnceTrait and
+    not f.fromSource()
+  )
+}
+
+private class SummarizedCallableWithCallback extends SummarizedCallable::Range {
+  private int pos;
+
+  SummarizedCallableWithCallback() { mayInvokeCallback(this, pos) }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
+  ) {
+    input = "Argument[" + pos + "]" and
+    output = "Argument[" + pos + "].Parameter[closure-self]" and
+    preservesValue = true and
+    p = "hq-generated" and
+    isExact = true and
+    model = "heuristic-callback"
+  }
+}
+
 private class FlowSourceFromModel extends FlowSource::Range {
   private string path;
+  private string kind_;
+  private Provenance orig;
+  private Provenance p_;
+  private boolean isExact_;
 
   FlowSourceFromModel() {
-    sourceModel(path, _, _, _, _) and
-    this.callResolvesTo(path)
+    sourceModel(path, _, kind_, orig, _) and
+    interpretPath(path, this, orig, p_, isExact_)
   }
 
-  override predicate isSource(string output, string kind, Provenance provenance, string model) {
+  override predicate isSource(
+    string output, string kind, Provenance provenance, boolean isExact, string model
+  ) {
     exists(QlBuiltins::ExtensionId madId |
-      sourceModel(path, output, kind, provenance, madId) and
-      model = "MaD:" + madId.toString()
-    ) and
-    // Only apply generated models when no neutral model exists
-    // (the shared code only applies neutral models to summaries at present)
-    not (
-      provenance.isGenerated() and
-      neutralModel(path, "source", _, _)
+      sourceModel(path, output, kind, orig, madId) and
+      model = "MaD:" + madId.toString() and
+      kind = kind_ and
+      provenance = p_ and
+      isExact = isExact_
     )
   }
 }
 
 private class FlowSinkFromModel extends FlowSink::Range {
   private string path;
+  private string kind_;
+  private Provenance orig;
+  private Provenance p_;
+  private boolean isExact_;
 
   FlowSinkFromModel() {
-    sinkModel(path, _, _, _, _) and
-    this.callResolvesTo(path)
+    sinkModel(path, _, kind_, orig, _) and
+    interpretPath(path, this, orig, p_, isExact_)
   }
 
-  override predicate isSink(string input, string kind, Provenance provenance, string model) {
+  override predicate isSink(
+    string input, string kind, Provenance provenance, boolean isExact, string model
+  ) {
     exists(QlBuiltins::ExtensionId madId |
-      sinkModel(path, input, kind, provenance, madId) and
-      model = "MaD:" + madId.toString()
-    ) and
-    // Only apply generated models when no neutral model exists
-    // (the shared code only applies neutral models to summaries at present)
-    not (
-      provenance.isGenerated() and
-      neutralModel(path, "sink", _, _)
+      sinkModel(path, input, kind, orig, madId) and
+      model = "MaD:" + madId.toString() and
+      kind = kind_ and
+      provenance = p_ and
+      isExact = isExact_
     )
   }
 }
 
 private class FlowBarrierFromModel extends FlowBarrier::Range {
   private string path;
+  private Provenance orig;
+  private Provenance p_;
+  private boolean isExact_;
 
   FlowBarrierFromModel() {
-    barrierModel(path, _, _, _, _) and
-    this.callResolvesTo(path)
+    barrierModel(path, _, _, orig, _) and
+    interpretPath(path, this, orig, p_, isExact_)
   }
 
-  override predicate isBarrier(string output, string kind, Provenance provenance, string model) {
+  override predicate isBarrier(
+    string output, string kind, Provenance provenance, boolean isExact, string model
+  ) {
     exists(QlBuiltins::ExtensionId madId |
-      barrierModel(path, output, kind, provenance, madId) and
-      model = "MaD:" + madId.toString()
+      barrierModel(path, output, kind, orig, madId) and
+      model = "MaD:" + madId.toString() and
+      provenance = p_ and
+      isExact = isExact_
     )
   }
 }
 
 private class FlowBarrierGuardFromModel extends FlowBarrierGuard::Range {
   private string path;
+  private Provenance orig;
+  private Provenance p_;
+  private boolean isExact_;
 
   FlowBarrierGuardFromModel() {
-    barrierGuardModel(path, _, _, _, _, _) and
-    this.callResolvesTo(path)
+    barrierGuardModel(path, _, _, _, orig, _) and
+    interpretPath(path, this, orig, p_, isExact_)
   }
 
   override predicate isBarrierGuard(
-    string input, string acceptingValue, string kind, Provenance provenance, string model
+    string input, string acceptingValue, string kind, Provenance provenance, boolean isExact,
+    string model
   ) {
     exists(QlBuiltins::ExtensionId madId |
-      barrierGuardModel(path, input, acceptingValue, kind, provenance, madId) and
-      model = "MaD:" + madId.toString()
+      barrierGuardModel(path, input, acceptingValue, kind, orig, madId) and
+      model = "MaD:" + madId.toString() and
+      provenance = p_ and
+      isExact = isExact_
     )
   }
 }

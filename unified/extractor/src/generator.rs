@@ -35,6 +35,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
         languages,
         options.dbscheme,
         options.library,
+        true, // use facade AST
         "run unified/scripts/create-extractor-pack.sh",
     )
 }

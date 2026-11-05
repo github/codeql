@@ -40,17 +40,7 @@ where
   job.getATriggerEvent() = event and
   // job can be triggered by an external user
   event.isExternallyTriggerable() and
-  (
-    // the workflow runs in the context of the default branch
-    runsOnDefaultBranch(event)
-    or
-    // the workflow's caller runs in the context of the default branch
-    event.getName() = "workflow_call" and
-    exists(ExternalJob caller |
-      caller.getCallee() = job.getLocation().getFile().getRelativePath() and
-      runsOnDefaultBranch(caller.getATriggerEvent())
-    )
-  ) and
+  hasDefaultBranchCacheWriteAccess(job, event) and
   // the job writes to the cache
   // (No need to follow the checkout/download step since the cache is normally write after the job completes)
   job.getAStep() = step and

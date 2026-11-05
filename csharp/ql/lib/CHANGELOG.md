@@ -1,3 +1,69 @@
+## 7.4.2
+
+### Minor Analysis Improvements
+
+* Rolled back the change that set proxy and certificate environment variables for the subprocess that invokes the NuGet CLI because the environment variables were only partially respected by the target process in some cases.
+
+## 7.4.1
+
+### Minor Analysis Improvements
+
+* Avoid logging warnings when there are no explicit or inherited feeds to check for reachability.
+* The subprocess for the NuGet CLI is now provided with the proxy and certificate environment variables needed to access private registries if any are configured.
+* Added support for data flow through positional patterns in `is` expressions and `switch` cases.
+
+## 7.4.0
+
+### Major Analysis Improvements
+
+* Fixed a false positive in `cs/web/xss` for ASP.NET Core Razor Pages/MVC views: `WriteLiteral` calls generated for tag helper attribute values (for example, `asp-for`) capture the value into an internal buffer instead of writing it directly to the response, so they are no longer treated as XSS sinks.
+
+### Bug Fixes
+
+* Fixed an issue where types for pattern expressions were not extracted correctly.
+
+## 7.3.1
+
+### Minor Analysis Improvements
+
+* Private NuGet registries for which the "Replaces base" option is enabled in the organization-level private registry configuration now replace default NuGet feeds whenever dependencies are downloaded, including when default NuGet feeds are configured explicitly for a project.
+
+## 7.3.0
+
+### New Features
+
+* Added taint modeling for OData action parameter binding (`Microsoft.AspNet.OData`/`Microsoft.AspNetCore.OData`). Values cast, `as`-converted, or type-tested out of `ODataActionParameters`, and entities tracked by `Delta<T>` (via `GetInstance`, `Patch`, `Put`, `CopyChangedValues`, and `CopyUnchangedValues`), now taint the members of the target type.
+
+### Minor Analysis Improvements
+
+* In `build-mode: none`, project and solution restoration is now always attempted using the feeds available.
+* C# analysis with build mode `none` now lists unreachable explicitly configured NuGet feeds in both the extraction warning and the tool status page note. This makes it easier to identify feeds that may cause dependencies to be missing from the analysis.
+* Improved ASP.NET Core MVC controller and action discovery to more closely match runtime behavior, including application parts, endpoint mappings, inherited actions, and controller and action exclusions. Service-injected action parameters are no longer modeled as remote input.
+
+## 7.2.0
+
+### New Features
+
+* Added the `AdditionalTaintStep` extension point (`semmle.code.csharp.dataflow.FlowSteps`). Extend this class to add additional taint steps that apply to all taint-tracking configurations.
+
+### Major Analysis Improvements
+
+* Simplified and streamlined the use of NuGet sources when downloading dependencies. In fallback scenarios and specialized package downloads, NuGet sources are now passed directly to `dotnet restore` via the CLI. Furthermore, no `nuget.config` files are created for fallback scenarios, and private registries are used when attempting to download missing packages that were not restored as part of the normal `dotnet restore` process.
+
+## 7.1.2
+
+No user-facing changes.
+
+## 7.1.1
+
+No user-facing changes.
+
+## 7.1.0
+
+### Major Analysis Improvements
+
+* Simplified and streamlined the use of NuGet sources when downloading dependencies via `[mono] nuget.exe` in `build-mode: none`: NuGet sources are now supplied via the `-Source` flag instead of moving or creating `nuget.config` files in the checked-out repository, private registries are used if configured, and only reachable feeds are used when NuGet feed checking is enabled (the default).
+
 ## 7.0.0
 
 ### Breaking Changes

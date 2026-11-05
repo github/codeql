@@ -4,7 +4,7 @@
  */
 
 private import internal.PathExprImpl
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.PathAstNode
 import codeql.rust.elements.PathExprBase
 

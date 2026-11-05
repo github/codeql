@@ -9,117 +9,154 @@ default:
 
 ---
 
-source_file
-  statement:
-    switch_statement
-      entry:
-        switch_entry
-          pattern:
-            switch_pattern
-              pattern:
-                pattern
-                  kind: integer_literal "1"
-          statement:
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value:
-                            line_string_literal
-                              text: line_str_text "one"
-        switch_entry
-          pattern:
-            switch_pattern
-              pattern:
-                pattern
-                  kind: integer_literal "2"
-            switch_pattern
-              pattern:
-                pattern
-                  kind: integer_literal "3"
-          statement:
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value:
-                            line_string_literal
-                              text: line_str_text "two or three"
-        switch_entry
-          default: default_keyword "default"
-          statement:
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value:
-                            line_string_literal
-                              text: line_str_text "other"
-      expr: simple_identifier "x"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            switchExpr
+              leftBrace: {
+              rightBrace: }
+              cases:
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                integerLiteralExpr
+                                  literal: integerLiteral "1"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "one"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            expressionPattern
+                              expression:
+                                integerLiteralExpr
+                                  literal: integerLiteral "2"
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                integerLiteralExpr
+                                  literal: integerLiteral "3"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "two or three"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchDefaultLabel
+                      colon: :
+                      defaultKeyword: default
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "other"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              subject:
+                declReferenceExpr
+                  baseName: identifier "x"
+              switchKeyword: switch
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        switch_expr
+        switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n⟨case⟩\n}"
+          value: identifier "x" source="x"
           case:
-            switch_case
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
+              pattern: int_literal "1" source="1"
               body:
-                block
+                block source="⟨stmt⟩"
                   stmt:
-                    call_expr
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: string_literal "\"one\""
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                        argument source="⟨value⟩"
+                          value: string_literal "\"one\"" source="\"one\""
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                expr_equality_pattern
-                  expr: int_literal "1"
-            switch_case
-              body:
-                block
-                  stmt:
-                    call_expr
-                      argument:
-                        argument
-                          value: string_literal "\"two or three\""
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
-              pattern:
-                or_pattern
+                or_pattern source="⟨pattern⟩, ⟨pattern⟩"
                   pattern:
-                    expr_equality_pattern
-                      expr: int_literal "2"
-                    expr_equality_pattern
-                      expr: int_literal "3"
-            switch_case
+                    int_literal "2" source="2"
+                    int_literal "3" source="3"
               body:
-                block
+                block source="⟨stmt⟩"
                   stmt:
-                    call_expr
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value: string_literal "\"other\""
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
-          value:
-            name_expr
-              identifier: identifier "x"
+                        argument source="⟨value⟩"
+                          value: string_literal "\"two or three\"" source="\"two or three\""
+            switch_case source="default:\n  ⟨body⟩"
+              body:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: string_literal "\"other\"" source="\"other\""

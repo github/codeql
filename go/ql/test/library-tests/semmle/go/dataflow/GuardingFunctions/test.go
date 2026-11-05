@@ -334,6 +334,62 @@ func deeplyNestedConditionalRight(p string) bool {
 	return p[1] == 'b' && len(p)%2 == 1 && p[0] == 'a' && !isBad(p)
 }
 
+// Valid when the second result is nil
+func guardMultiError(p string) (string, error) {
+	if isBad(p) {
+		return "", errors.New("invalid")
+	}
+	return p, nil
+}
+
+// Valid when the first result is true; the second result is unrelated
+func guardMultiResultIsolation(p string) (bool, bool) {
+	return !isBad(p), true
+}
+
+// Valid when the named error result is nil
+func guardMultiNamed(p string) (value string, err error) {
+	if isBad(p) {
+		err = errors.New("invalid")
+		return
+	}
+	value = p
+	return
+}
+
+// Not a guard: the naked return can return false without validating p
+func mixedNamedResultGuard(p string, bypass bool) (invalid bool) {
+	if bypass {
+		return
+	}
+	return isBad(p)
+}
+
+func uncheckedMultiResult(p string) (string, error) {
+	return p, nil
+}
+
+// Not a guard: the tuple-forwarding return can return nil without validating p
+func mixedTupleReturnGuard(p string, bypass bool) (string, error) {
+	if bypass {
+		return uncheckedMultiResult(p)
+	}
+	if isBad(p) {
+		return "", errors.New("invalid")
+	}
+	return p, nil
+}
+
+type multiGuard struct{}
+
+// Validates p when the second result is nil
+func (multiGuard) validate(p string) (string, error) {
+	if isBad(p) {
+		return "", errors.New("invalid")
+	}
+	return p, nil
+}
+
 // Finally, actually test the functions -- try sinking a tainted value in the is-true/false
 // or is-nil/non-nil case for each candidate:
 
@@ -842,7 +898,84 @@ func test() {
 		s := source()
 		isValid := !guardBool(s)
 		if isValid {
-			sink(s) // $ SPURIOUS: hasValueFlow="s"
+			sink(s)
+		} else {
+			sink(s) // $ hasValueFlow="s"
+		}
+	}
+
+	{
+		s := source()
+		_, err := guardMultiError(s)
+		if err == nil {
+			sink(s)
+		} else {
+			sink(s) // $ hasValueFlow="s"
+		}
+	}
+
+	{
+		s := source()
+		valid, _ := guardMultiResultIsolation(s)
+		if valid {
+			sink(s)
+		} else {
+			sink(s) // $ hasValueFlow="s"
+		}
+	}
+
+	{
+		s := source()
+		_, unrelated := guardMultiResultIsolation(s)
+		if unrelated {
+			sink(s) // $ hasValueFlow="s"
+		} else {
+			sink(s) // $ hasValueFlow="s"
+		}
+	}
+
+	{
+		s := source()
+		_, err := guardMultiNamed(s)
+		if err == nil {
+			sink(s)
+		} else {
+			sink(s) // $ hasValueFlow="s"
+		}
+	}
+
+	{
+		s := source()
+		invalid := mixedNamedResultGuard(s, true)
+		if !invalid {
+			sink(s) // $ hasValueFlow="s"
+		}
+	}
+
+	{
+		s := source()
+		_, err := mixedTupleReturnGuard(s, true)
+		if err == nil {
+			sink(s) // $ hasValueFlow="s"
+		}
+	}
+
+	{
+		s := source()
+		_, err := guardMultiError(s)
+		copiedErr := err
+		if copiedErr == nil {
+			sink(s)
+		} else {
+			sink(s) // $ hasValueFlow="s"
+		}
+	}
+
+	{
+		s := source()
+		_, err := (multiGuard{}).validate(s)
+		if err == nil {
+			sink(s)
 		} else {
 			sink(s) // $ hasValueFlow="s"
 		}

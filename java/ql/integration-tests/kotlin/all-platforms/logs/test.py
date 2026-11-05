@@ -6,9 +6,8 @@ import re
 
 def test(codeql, java_full, cwd: pathlib.Path, expected_files):
     codeql.database.create(command=["kotlinc test.kt"])
-    expected_files.add("logs.actual")
 
-    with open("logs.actual", "w") as f_out:
+    with expected_files.add("logs.actual") as f_out:
         log_dir = cwd / "test-db" / "log"
         for file_index, log_file in enumerate(log_dir.glob("kotlin-extractor*.log"), 1):
             f_out.write(f"Log file {file_index}\n")

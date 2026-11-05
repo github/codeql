@@ -21,3 +21,8 @@ extensions:
       # on
       - ["axum::routing::method_routing::on", "Argument[1].Parameter[0..7]", "remote", "manual"]
       - ["<axum::routing::method_routing::MethodRouter>::on", "Argument[1].Parameter[0..7]", "remote", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: excludeFieldTaintStep
+    data:
+      - ["axum::extract::state::State(0)"]

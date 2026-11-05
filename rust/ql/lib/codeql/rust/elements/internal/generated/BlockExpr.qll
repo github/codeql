@@ -6,9 +6,10 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.internal.LabelableExprImpl::Impl as LabelableExprImpl
 import codeql.rust.elements.StmtList
+import codeql.rust.elements.TryBlockModifier
 
 /**
  * INTERNAL: This module contains the fully generated definition of `BlockExpr` and should not
@@ -37,15 +38,17 @@ module Generated {
     /**
      * Gets the `index`th attr of this block expression (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).getAttr(index))
+        Synth::convertAnyAttrFromRaw(Synth::convertBlockExprToRaw(this)
+              .(Raw::BlockExpr)
+              .getAttr(index))
     }
 
     /**
      * Gets any of the attrs of this block expression.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this block expression.
@@ -73,11 +76,6 @@ module Generated {
     predicate isMove() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isMove() }
 
     /**
-     * Holds if this block expression is try.
-     */
-    predicate isTry() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isTry() }
-
-    /**
      * Holds if this block expression is unsafe.
      */
     predicate isUnsafe() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isUnsafe() }
@@ -96,5 +94,20 @@ module Generated {
      * Holds if `getStmtList()` exists.
      */
     final predicate hasStmtList() { exists(this.getStmtList()) }
+
+    /**
+     * Gets the try block modifier of this block expression, if it exists.
+     */
+    TryBlockModifier getTryBlockModifier() {
+      result =
+        Synth::convertTryBlockModifierFromRaw(Synth::convertBlockExprToRaw(this)
+              .(Raw::BlockExpr)
+              .getTryBlockModifier())
+    }
+
+    /**
+     * Holds if `getTryBlockModifier()` exists.
+     */
+    final predicate hasTryBlockModifier() { exists(this.getTryBlockModifier()) }
   }
 }

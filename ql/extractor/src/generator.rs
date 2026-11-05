@@ -44,6 +44,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
         languages,
         options.dbscheme,
         options.library,
+        false, // do not use facade AST
         "run 'scripts/create-extractor-pack.sh' in ql/",
     )
 }

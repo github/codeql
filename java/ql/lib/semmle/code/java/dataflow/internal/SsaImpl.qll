@@ -199,6 +199,10 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBl
     variableCapture(v, _, bb, i) and
     certain = false
   }
+
+  predicate ssaCachedStageRevRef() {
+    Ssa::ssaCachedStageRevRef1() and DataFlowIntegrationImpl::ssaCachedStageRevRef2()
+  }
 }
 
 import SsaImplCommon::Make<Location, Cfg, SsaImplInput> as Impl
@@ -238,53 +242,6 @@ final class WriteDefinition = Impl::WriteDefinition;
 final class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
 
 final class PhiNode = Impl::PhiNode;
-
-deprecated predicate ssaExplicitUpdate(SsaUpdate def, VariableUpdate upd) {
-  exists(SsaSourceVariable v, BasicBlock bb, int i |
-    def.definesAt(v, bb, i) and
-    certainVariableUpdate(v, upd.getControlFlowNode(), bb, i) and
-    getDestVar(upd) = def.getSourceVariable()
-  )
-}
-
-deprecated predicate ssaUncertainImplicitUpdate(SsaImplicitUpdate def) {
-  exists(SsaSourceVariable v, BasicBlock bb, int i |
-    def.definesAt(v, bb, i) and
-    uncertainVariableUpdate(v, _, bb, i)
-  )
-}
-
-deprecated predicate ssaImplicitInit(WriteDefinition def) {
-  exists(SsaSourceVariable v, BasicBlock bb, int i |
-    def.definesAt(v, bb, i) and
-    hasEntryDef(v, bb) and
-    i = -1
-  )
-}
-
-/**
- * Holds if the SSA definition of `v` at `def` reaches `redef` without crossing another
- * SSA definition of `v`.
- */
-deprecated predicate ssaDefReachesUncertainDef(TrackedSsaDef def, SsaUncertainImplicitUpdate redef) {
-  Impl::uncertainWriteDefinitionInput(redef, def)
-}
-
-deprecated VarRead getAUse(Definition def) {
-  exists(SsaSourceVariable v, BasicBlock bb, int i |
-    Impl::ssaDefReachesRead(v, def, bb, i) and
-    result.getControlFlowNode() = bb.getNode(i) and
-    result = v.getAnAccess()
-  )
-}
-
-deprecated predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def) {
-  Impl::ssaDefReachesEndOfBlock(bb, def, _)
-}
-
-deprecated predicate phiHasInputFromBlock(PhiNode phi, Definition inp, BasicBlock bb) {
-  Impl::phiHasInputFromBlock(phi, inp, bb)
-}
 
 cached
 private module Cached {
@@ -688,8 +645,6 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
       super.getControlFlowNode() = bb.(J::BasicBlock).getNode(i)
     }
   }
-
-  Expr getARead(Definition def) { result = def.(SsaDefinition).getARead() }
 
   predicate ssaDefHasSource(WriteDefinition def) { def instanceof SsaExplicitWrite }
 

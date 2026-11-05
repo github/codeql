@@ -2,6 +2,7 @@ overlay[local?]
 module;
 
 private import go
+private import semmle.go.controlflow.Guards
 private import DataFlowUtil
 private import DataFlowImplCommon
 private import ContainerFlow
@@ -153,8 +154,7 @@ predicate jumpStep(Node n1, Node n2) {
     n2 = recvRead
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1.(FlowSummaryNode).getSummaryNode(),
-    n2.(FlowSummaryNode).getSummaryNode())
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1, n2)
 }
 
 /**
@@ -391,19 +391,21 @@ private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
 }
 
 /**
- * Returns a guard that will certainly not hold in calling context `call`.
+ * Holds if `guard` evaluating to `branch` will certainly not happen in calling
+ * context `call`.
  *
  * In particular it does not hold because it checks that `param` has value `b`, but
  * in context `call` it is known to have value `!b`. Note this is `noinline`d in order
  * to avoid a bad join order in `isUnreachableInCall`.
  */
 pragma[noinline]
-private ControlFlow::ConditionGuardNode getAFalsifiedGuard(DataFlowCall call) {
+private predicate falsifiedGuard(DataFlowCall call, Guard guard, boolean branch) {
   exists(SsaParameterNode param, ConstantBooleanArgumentNode arg |
     // get constant bool argument and parameter for this call
     viableParamArg(call, pragma[only_bind_into](param), pragma[only_bind_into](arg)) and
     // which is used in a guard controlling `n` with the opposite value of `arg`
-    result.ensures(param.getAUse(), arg.getBooleanValue().booleanNot())
+    guard = param.getAUse().asExpr() and
+    branch = arg.getBooleanValue().booleanNot()
   )
 }
 
@@ -417,7 +419,10 @@ class NodeRegion instanceof BasicBlock {
  * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
 predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
-  getAFalsifiedGuard(call).dominates(nr)
+  exists(Guard guard, boolean branch |
+    falsifiedGuard(call, guard, branch) and
+    guard.controls(nr, branch)
+  )
 }
 
 /**

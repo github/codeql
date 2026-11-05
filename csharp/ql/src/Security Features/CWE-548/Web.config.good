@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
   <system.webServer>
-    <directoryBrowse enable="false"/>
+    <directoryBrowse enabled="false"/>
    ...
-  </system.web>
+  </system.webServer>
 </configuration>

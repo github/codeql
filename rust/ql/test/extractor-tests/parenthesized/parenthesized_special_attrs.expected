@@ -1,0 +1,2 @@
+| parenthesized.rs:10:32:10:38 | MacroExpr | parenthesized.rs:10:14:10:29 | Attr |
+| parenthesized.rs:14:32:14:45 | S {...} | parenthesized.rs:14:14:14:29 | Attr |

@@ -2,34 +2,41 @@ a + b * c
 
 ---
 
-source_file
-  statement:
-    additive_expression
-      lhs: simple_identifier "a"
-      op: +
-      rhs:
-        multiplicative_expression
-          lhs: simple_identifier "b"
-          op: *
-          rhs: simple_identifier "c"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "+"
+          leftOperand:
+            declReferenceExpr
+              baseName: identifier "a"
+          rightOperand:
+            infixOperatorExpr
+              operator:
+                binaryOperatorExpr
+                  operator: binaryOperator "*"
+              leftOperand:
+                declReferenceExpr
+                  baseName: identifier "b"
+              rightOperand:
+                declReferenceExpr
+                  baseName: identifier "c"
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        binary_expr
-          operator: infix_operator "+"
-          left:
-            name_expr
-              identifier: identifier "a"
+        binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+          left: identifier "a" source="a"
+          operator: infix_operator "+" source="+"
           right:
-            binary_expr
-              operator: infix_operator "*"
-              left:
-                name_expr
-                  identifier: identifier "b"
-              right:
-                name_expr
-                  identifier: identifier "c"
+            binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+              left: identifier "b" source="b"
+              operator: infix_operator "*" source="*"
+              right: identifier "c" source="c"

@@ -21,7 +21,7 @@ bindingset[val]
 private predicate isValidShiftExprShift(float val, Expr l) {
   val >= 0 and
   // We use getFullyConverted because the spec says to use the *promoted* left operand
-  val < (l.getFullyConverted().getUnderlyingType().getSize() * 8)
+  val < l.getFullyConverted().getUnderlyingType().getBitWidth()
 }
 
 bindingset[val, shift, max_val]

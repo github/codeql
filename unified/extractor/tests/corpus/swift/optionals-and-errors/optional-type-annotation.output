@@ -2,47 +2,47 @@ let x: Int? = nil
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: let
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "x"
-          type:
-            type_annotation
-              type:
-                type
-                  name:
-                    optional_type
-                      wrapped:
-                        user_type
-                          part:
-                            simple_user_type
-                              name: type_identifier "Int"
-          value: nil
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    nilLiteralExpr
+                      nilKeyword: nil
+              pattern:
+                identifierPattern
+                  identifier: identifier "x"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    optionalType
+                      wrappedType:
+                        identifierType
+                          name: identifier "Int"
+                      questionMark: ?
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "x"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "x" source="x"
           type:
-            generic_type_expr
-              base:
-                named_type_expr
-                  name: identifier "Optional"
-              type_argument:
-                named_type_expr
-                  name: identifier "Int"
-          value: builtin_expr "nil"
+            generic_type_expr source="⟨type_argument⟩?"
+              base: identifier "Optional" source=""
+              type_argument: identifier "Int" source="Int"
+          value: builtin_expr "nil" source="nil"

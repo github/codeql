@@ -31,7 +31,7 @@ module Impl {
     override string toStringImpl() {
       exists(string abbr, string name |
         abbr = this.getContainer().toAbbreviatedString() and
-        name = this.getIdentifier().getText() and
+        name = concat(this.getIdentifier().getText()) and
         if abbr = "..." then result = "... ." + name else result = abbr + "." + name
       )
     }

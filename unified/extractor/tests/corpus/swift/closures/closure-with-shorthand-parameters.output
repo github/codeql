@@ -2,46 +2,56 @@ let f = { $0 + $1 }
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: let
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "f"
-          value:
-            lambda_literal
-              statement:
-                additive_expression
-                  lhs: simple_identifier "$0"
-                  op: +
-                  rhs: simple_identifier "$1"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    closureExpr
+                      leftBrace: {
+                      rightBrace: }
+                      statements:
+                        codeBlockItem
+                          item:
+                            infixOperatorExpr
+                              operator:
+                                binaryOperatorExpr
+                                  operator: binaryOperator "+"
+                              leftOperand:
+                                declReferenceExpr
+                                  baseName: dollarIdentifier "$0"
+                              rightOperand:
+                                declReferenceExpr
+                                  baseName: dollarIdentifier "$1"
+              pattern:
+                identifierPattern
+                  identifier: identifier "f"
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "f"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "f" source="f"
           value:
-            function_expr
+            function_expr source="{ ⟨body⟩ }"
               body:
-                block
+                block source="⟨stmt⟩"
                   stmt:
-                    binary_expr
-                      operator: infix_operator "+"
-                      left:
-                        name_expr
-                          identifier: identifier "$0"
-                      right:
-                        name_expr
-                          identifier: identifier "$1"
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "$0" source="$0"
+                      operator: infix_operator "+" source="+"
+                      right: identifier "$1" source="$1"

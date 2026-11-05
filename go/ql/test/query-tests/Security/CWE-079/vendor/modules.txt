@@ -1,3 +1,6 @@
+# github.com/coder/websocket v1.8.5
+## explicit
+github.com/coder/websocket
 # github.com/gobwas/ws v1.0.3
 ## explicit
 github.com/gobwas/ws

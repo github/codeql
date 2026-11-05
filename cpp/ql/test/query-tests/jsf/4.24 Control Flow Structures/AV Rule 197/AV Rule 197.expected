@@ -1,0 +1,4 @@
+| test.cpp:5:14:5:14 | f | Floating point variables should not be used as loop counters. |
+| test.cpp:10:15:10:15 | d | Floating point variables should not be used as loop counters. |
+| test.cpp:15:15:15:16 | ld | Floating point variables should not be used as loop counters. |
+| test.cpp:36:13:36:13 | r | Floating point variables should not be used as loop counters. |

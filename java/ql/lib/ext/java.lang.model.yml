@@ -134,7 +134,6 @@ extensions:
       - ["java.lang", "String", False, "valueOf", "(char)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "valueOf", "(char[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "valueOf", "(char[],int,int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.lang", "String", False, "valueOf", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "StringBuffer", True, "StringBuffer", "(CharSequence)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.lang", "StringBuffer", True, "StringBuffer", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.lang", "StringBuilder", True, "StringBuilder", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]

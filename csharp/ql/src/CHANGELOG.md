@@ -1,3 +1,73 @@
+## 1.11.0
+
+### Query Metadata Changes
+
+* The `external/cwe/cwe-730` tag has been removed from `cs/redos` and `cs/regex-injection`, because MITRE has marked CWE-730 as prohibited for vulnerability mapping. The queries retain their other CWE tags.
+
+## 1.10.2
+
+### Minor Analysis Improvements
+
+* The `cs/simplifiable-boolean-expression` query now produces fewer false-positive results when type information is incomplete.
+
+## 1.10.1
+
+### Minor Analysis Improvements
+
+* The `cs/web/missing-x-frame-options` query now recognizes clickjacking protection configured
+  through ASP.NET Core response headers and enforced Content Security Policy `frame-ancestors`
+  directives.
+
+## 1.10.0
+
+### New Queries
+
+* Added a new query, `cs/linq/missed-firstordefault`, that detects `foreach` loops that can be expressed more clearly using LINQ's `FirstOrDefault` method.
+
+### Minor Analysis Improvements
+
+* The `cs/linq/missed-*` queries no longer suggest rewrites that would capture `in`, `out`, or `ref` parameters in a lambda, fixing false-positive results for transformations that would not compile.
+* The `cs/web/missing-token-validation` query now recognizes an ASP.NET Core `AutoValidateAntiforgeryTokenAttribute` registered as a global MVC filter through `AddControllersWithViews` (and friends), avoiding false-positive results for covered actions.
+
+## 1.9.3
+
+### Minor Analysis Improvements
+
+* The `cs/linq/missed-where` query no longer flags `foreach` loops where the matching branch terminates the method, iterator, or loop instead of continuing with filtered loop work.
+
+## 1.9.2
+
+### Minor Analysis Improvements
+
+* The `cs/simplifiable-boolean-expression` query no longer suggests replacing a negated comparison when the replacement could recursively call an enclosing user-defined operator in `build-mode: none` databases.
+* The `cs/web/missing-token-validation` query now recognizes enabled ASP.NET Core `RequireAntiforgeryToken` attributes when antiforgery middleware is used.
+* The query `cs/virtual-call-in-constructor` has been improved. Uses of virtual members in `nameof` expressions are no longer reported, since they are not calls.
+* Static constructors are now used as the enclosing callable for static member initializer expressions. This improves the precision of a range of queries, including `cs/useless-assignment-to-local` and `cs/dereferenced-value-may-be-null`.
+
+### Bug Fixes
+
+* The query `cs/useless-cast-to-self` no longer reports casts when both the expression type and the cast target type are unknown, which can occur in `build-mode: none` databases.
+
+## 1.9.1
+
+No user-facing changes.
+
+## 1.9.0
+
+### Query Metadata Changes
+
+* The query `cs/useless-assignment-to-local` has been removed from the `code-quality` suite, but it remains in the `code-quality-extended` suite.
+
+### Minor Analysis Improvements
+
+* `System.Web.HttpRequest.RawUrl` is no longer treated as a sanitizer for `cs/web/unvalidated-url-redirection`, since it contains the un-normalized request line. This may lead to more results.
+
+## 1.8.0
+
+### Query Metadata Changes
+
+* Added the tag `external/cwe/cwe-073` to `cs/assembly-path-injection`.
+
 ## 1.7.5
 
 No user-facing changes.

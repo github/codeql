@@ -136,6 +136,12 @@ signature module LocalNameBindingInputSig<LocationSig Location> {
    * full control of scope resolution for specific types of references.
    */
   default predicate lookupStartsAt(AstNode n, AstNode scope) { none() }
+
+  /**
+   * Holds if the set of names available in `scope` is not known ahead of time,
+   * and thus any lookup chain that goes through `scope` may need to be reconciled at a later stage.
+   */
+  default predicate uncertainScope(AstNode scope) { none() }
 }
 
 /**
@@ -154,6 +160,8 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
       implicitDeclInScope(_, this)
       or
       isTopScope(this)
+      or
+      uncertainScope(this)
     }
   }
 
@@ -329,29 +337,90 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
     )
   }
 
-  private predicate accessCandInLookupScope(AstNode n, string name, Scope lookup) {
-    accessCand(n, name) and
-    (
-      lookupStartsAt(n, lookup)
-      or
-      not lookupStartsAt(n, _) and
-      lookup = getEnclosingScope(n)
-    )
+  private predicate declInScope(string name, AstNode scope) {
+    declInScope(_, name, scope) or
+    implicitDeclInScope(name, scope)
   }
 
-  pragma[nomagic]
-  private predicate lookupInScope(string name, Scope lookup, Scope scope) {
-    accessCandInLookupScope(_, name, lookup) and
-    scope = lookup
-    or
-    exists(Scope mid |
-      lookupInScope(name, lookup, mid) and
-      not declInScope(_, name, mid) and
-      not implicitDeclInScope(name, mid) and
-      not isTopScope(mid) and
-      scope = getEnclosingScope(mid)
-    )
+  signature predicate accessCandSig(AstNode n, string name);
+
+  /**
+   * Allows resolution of access candidates.
+   *
+   * This is instantiated once by the local name binding library itself in order to populate `LocalAccess`.
+   * It can be instantiated further by the client, to resolve additional lookups at a later evaluation stage.
+   */
+  module ResolveAccesses<accessCandSig/2 accessCandInput> {
+    private predicate accessCandInLookupScope(AstNode n, string name, Scope lookup) {
+      accessCandInput(n, name) and
+      (
+        lookupStartsAt(n, lookup)
+        or
+        not lookupStartsAt(n, _) and
+        lookup = getEnclosingScope(n)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate lookupInScope(string name, Scope lookup, Scope scope) {
+      accessCandInLookupScope(_, name, lookup) and
+      scope = lookup
+      or
+      exists(Scope mid |
+        lookupInScope(name, lookup, mid) and
+        not declInScope(name, mid) and
+        not isTopScope(mid) and
+        scope = getEnclosingScope(mid)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate resolveInScope(string name, Scope lookup, Local l) {
+      exists(Scope scope | lookupInScope(name, lookup, scope) |
+        l = TExplicitLocal(_, name, scope) or
+        l = TImplicitLocal(name, scope)
+      )
+    }
+
+    /** Holds if `access` resolves to `l`. */
+    predicate access(AstNode access, Local l) {
+      exists(Scope lookup, string name |
+        accessCandInLookupScope(access, name, lookup) and
+        resolveInScope(name, lookup, l)
+      )
+    }
+
+    /**
+     * Holds if `name`, when resolved from `lookup`, may resolve to one of the uncertain members of `scope`.
+     */
+    pragma[nomagic]
+    private predicate lookupInUncertainScope(string name, Scope lookup, Scope scope) {
+      lookupInScope(name, lookup, scope) and
+      uncertainScope(scope) and
+      not declInScope(name, scope)
+    }
+
+    /**
+     * Gets an uncertain scope in which the `accessCand` pair may resolve.
+     */
+    AstNode getAnUncertainScope(AstNode access, string name) {
+      exists(Scope lookup |
+        accessCandInLookupScope(access, name, lookup) and
+        lookupInUncertainScope(name, lookup, result)
+      )
+    }
   }
+
+  private module DefaultAccesses = ResolveAccesses<accessCand/2>;
+
+  /** Holds if `access` resolves to `l`. */
+  cached
+  private predicate access(AstNode access, Local l) {
+    CachedStage::ref() and
+    DefaultAccesses::access(access, l)
+  }
+
+  predicate getAnUncertainScope = DefaultAccesses::getAnUncertainScope/2;
 
   cached
   private newtype TLocal =
@@ -415,23 +484,10 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
     override string getName() { result = name }
 
     override Location getLocation() { result = scope.getLocation() }
-  }
 
-  pragma[nomagic]
-  private predicate resolveInScope(string name, Scope lookup, Local l) {
-    exists(Scope scope | lookupInScope(name, lookup, scope) |
-      l = TExplicitLocal(_, name, scope) or
-      l = TImplicitLocal(name, scope)
-    )
-  }
-
-  cached
-  private predicate access(AstNode access, Local l) {
-    CachedStage::ref() and
-    exists(Scope lookup, string name |
-      accessCandInLookupScope(access, name, lookup) and
-      resolveInScope(name, lookup, l)
-    )
+    /** Holds if this variable has the given name and scope. */
+    pragma[nomagic]
+    predicate hasNameAndScope(string name_, AstNode scope_) { name = name_ and scope = scope_ }
   }
 
   /** A local access. */

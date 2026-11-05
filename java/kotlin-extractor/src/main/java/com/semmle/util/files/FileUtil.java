@@ -1237,14 +1237,15 @@ public class FileUtil
 
 	/**
 	 * Try to convert a file into a canonical file. Handles the possible IO exception by just making
-	 * the path absolute.
+	 * the path absolute. Also resolves subst drives on Windows.
 	 */
 	public static File tryMakeCanonical (File f)
 	{
 		try {
-			return f.getCanonicalFile();
-		}
-		catch (IOException ignored) {
+			// getCanonicalFile does not canonicalize subst drives on Windows, so do this separately. This
+			// is a no-op on non-Windows platforms.
+			return SubstResolver.resolve(f.getCanonicalFile());
+		} catch (IOException ignored) {
 			Exceptions.ignore(ignored, "Can't log error: Could be too verbose.");
 			return new File(simplifyPath(f));
 		}

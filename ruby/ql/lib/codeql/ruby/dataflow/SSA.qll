@@ -333,7 +333,9 @@ module Ssa {
      * Gets the immediately preceding definition. Since this update is uncertain,
      * the value from the preceding definition might still be valid.
      */
-    final Definition getPriorDefinition() { result = SsaImpl::uncertainWriteDefinitionInput(this) }
+    final Definition getPriorDefinition() {
+      SsaImpl::Impl::uncertainWriteDefinitionInput(this, result)
+    }
 
     override string toString() { result = "<captured exit> " + this.getSourceVariable() }
   }
@@ -381,23 +383,10 @@ module Ssa {
 
     /** Holds if `inp` is an input to this phi node along the edge originating in `bb`. */
     predicate hasInputFromBlock(Definition inp, BasicBlock bb) {
-      inp = SsaImpl::phiHasInputFromBlock(this, bb)
+      SsaImpl::Impl::phiHasInputFromBlock(this, inp, bb)
     }
 
-    private string getSplitString() {
-      result = this.getBasicBlock().getFirstNode().(CfgNodes::AstCfgNode).getSplitsString()
-    }
-
-    override string toString() {
-      exists(string prefix |
-        prefix = "[" + this.getSplitString() + "] "
-        or
-        not exists(this.getSplitString()) and
-        prefix = ""
-      |
-        result = prefix + "phi"
-      )
-    }
+    override string toString() { result = "phi" }
 
     /*
      * The location of a phi node is the same as the location of the first node

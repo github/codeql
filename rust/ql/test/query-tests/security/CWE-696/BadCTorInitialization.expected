@@ -22,8 +22,8 @@
 | test.rs:125:9:125:44 | ... .write_all(...) | test.rs:128:1:128:7 | Attr | test.rs:125:9:125:44 | ... .write_all(...) | Call to ... .write_all(...) from the standard library in a function with the ctor attribute. |
 | test.rs:125:9:125:44 | ... .write_all(...) | test.rs:144:1:144:7 | Attr | test.rs:125:9:125:44 | ... .write_all(...) | Call to ... .write_all(...) from the standard library in a function with the ctor attribute. |
 | test.rs:125:9:125:44 | ... .write_all(...) | test.rs:150:1:150:7 | Attr | test.rs:125:9:125:44 | ... .write_all(...) | Call to ... .write_all(...) from the standard library in a function with the ctor attribute. |
-| test.rs:168:1:168:7 | ... .write(...) | test.rs:168:1:168:7 | Attr | test.rs:168:1:168:7 | ... .write(...) | Call to ... .write(...) from the standard library in a function with the ctor attribute. |
-| test.rs:168:1:168:7 | ...::stdout(...) | test.rs:168:1:168:7 | Attr | test.rs:168:1:168:7 | ...::stdout(...) | Call to ...::stdout(...) from the standard library in a function with the ctor attribute. |
+| test.rs:168:3:168:6 | ... .write(...) | test.rs:168:1:168:7 | Attr | test.rs:168:3:168:6 | ... .write(...) | Call to ... .write(...) from the standard library in a function with the ctor attribute. |
+| test.rs:168:3:168:6 | ...::stdout(...) | test.rs:168:1:168:7 | Attr | test.rs:168:3:168:6 | ...::stdout(...) | Call to ...::stdout(...) from the standard library in a function with the ctor attribute. |
 edges
 | test.rs:28:1:28:13 | Attr | test.rs:29:4:31:1 | fn bad1_1 |
 | test.rs:29:4:31:1 | fn bad1_1 | test.rs:30:9:30:25 | ...::stdout(...) |
@@ -65,5 +65,5 @@ edges
 | test.rs:151:4:153:1 | fn bad3_4 | test.rs:152:5:152:12 | bad3_3(...) |
 | test.rs:152:5:152:12 | bad3_3(...) | test.rs:145:4:148:1 | fn bad3_3 |
 | test.rs:168:1:168:7 | Attr | test.rs:169:4:171:1 | fn bad4_1 |
-| test.rs:169:4:171:1 | fn bad4_1 | test.rs:168:1:168:7 | ... .write(...) |
-| test.rs:169:4:171:1 | fn bad4_1 | test.rs:168:1:168:7 | ...::stdout(...) |
+| test.rs:169:4:171:1 | fn bad4_1 | test.rs:168:3:168:6 | ... .write(...) |
+| test.rs:169:4:171:1 | fn bad4_1 | test.rs:168:3:168:6 | ...::stdout(...) |

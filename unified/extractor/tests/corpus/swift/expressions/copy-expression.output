@@ -1,0 +1,81 @@
+let original = [1, 2, 3]
+let copied = copy original
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    arrayExpr
+                      elements:
+                        arrayElement
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "1"
+                          trailingComma: ,
+                        arrayElement
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "2"
+                          trailingComma: ,
+                        arrayElement
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "3"
+                      leftSquare: [
+                      rightSquare: ]
+              pattern:
+                identifierPattern
+                  identifier: identifier "original"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    copyExpr
+                      expression:
+                        declReferenceExpr
+                          baseName: identifier "original"
+                      copyKeyword: copy
+              pattern:
+                identifierPattern
+                  identifier: identifier "copied"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩\n⟨stmt⟩"
+      stmt:
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "original" source="original"
+          value:
+            array_literal source="[⟨element⟩, ⟨element⟩, ⟨element⟩]"
+              element:
+                int_literal "1" source="1"
+                int_literal "2" source="2"
+                int_literal "3" source="3"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "copied" source="copied"
+          value: unsupported_node "copy original" source="copy original"

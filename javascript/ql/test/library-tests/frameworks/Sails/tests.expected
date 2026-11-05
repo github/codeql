@@ -1,0 +1,9 @@
+test_routeHandler
+| src/api/controllers/attachments/assigned-action.js:6:5:8:3 | (inputs ... e);\\n  } |
+| src/api/controllers/attachments/destructured-action.js:6:11:8:3 | ({ file ... e);\\n  } |
+| src/api/controllers/attachments/download-thumbnail.js:7:11:13:3 | (inputs ... });\\n  } |
+test_requestInputAccess
+| src/api/controllers/attachments/assigned-action.js:7:26:7:36 | inputs.name | parameter |
+| src/api/controllers/attachments/destructured-action.js:6:14:6:21 | filename | parameter |
+| src/api/controllers/attachments/download-thumbnail.js:8:16:8:24 | inputs.id | parameter |
+| src/api/controllers/attachments/download-thumbnail.js:9:22:9:36 | inputs.filename | parameter |

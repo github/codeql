@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      # std::process::Command - the command name itself
+      - ["<std::process::Command>::new", "Argument[0]", "command-injection", "manual"]
+      # std::process::Command - arguments passed to the command
+      - ["<std::process::Command>::arg", "Argument[0]", "command-injection", "manual"]
+      - ["<std::process::Command>::args", "Argument[0]", "command-injection", "manual"]
+      # tokio::process::Command - the command name itself
+      - ["<tokio::process::Command>::new", "Argument[0]", "command-injection", "manual"]
+      # tokio::process::Command - arguments passed to the command
+      - ["<tokio::process::Command>::arg", "Argument[0]", "command-injection", "manual"]
+      - ["<tokio::process::Command>::args", "Argument[0]", "command-injection", "manual"]

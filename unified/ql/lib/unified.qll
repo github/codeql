@@ -4,6 +4,9 @@
 
 import codeql.Locations
 import codeql.files.FileSystem
-import codeql.unified.Ast::Unified
+import codeql.unified.internal.Ast::UnifiedFinal
 import codeql.unified.internal.AstExtra::Public
-import codeql.unified.internal.Variables::Public
+import codeql.unified.internal.ControlFlowGraph::Public
+import codeql.unified.internal.NameBinding::Public
+import codeql.unified.internal.dataflow.DataFlowPublic
+import codeql.unified.internal.mad.LegacyMaD::Public

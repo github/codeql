@@ -1,3 +1,64 @@
+## 9.3.4
+
+### Minor Analysis Improvements
+
+* The `java/log-injection` query now recognizes additional sanitizers and sanitizer guards from the JDK, Apache Commons Lang and Text, Guava, OWASP Java Encoder, and Spring Framework.
+* Queries that use path-injection sanitizers now recognize additional substring guards and string replacement and removal operations from Apache Commons Lang and Guava.
+
+## 9.3.3
+
+### Minor Analysis Improvements
+
+* The queries `java/ssrf` and `java/unvalidated-url-redirection` recognize case-insensitive comparisons of `URI.getHost()` with fixed string allowlist entries, as well as equality and case-insensitive comparisons when the host is stored in a local variable.
+
+## 9.3.2
+
+No user-facing changes.
+
+## 9.3.1
+
+### Minor Analysis Improvements
+
+* Support for Kotlin 2.4.20 has been added.
+* Fixed an issue where `Foo::class.java` arguments were dropped during extraction under the Kotlin K2 compiler, which could cause false positives in queries such as `java/android/implicit-pendingintents`.
+
+## 9.3.0
+
+### New Features
+
+* Factories returned by the Apache Commons Secure XML (`org.apache.commons.xml.secure`) hardening library's `SecureDocumentBuilderFactory`, `SecureSAXParserFactory`, `SecureXMLInputFactory`, `SecureTransformerFactory` and `SecureSchemaFactory` classes are now recognized as safely configured by the XXE query.
+* A new extensible class `SafeXmlFactorySource` was added to `semmle.code.java.security.XmlParsers` for modeling sources of pre-hardened JAXP factories.
+
+### Minor Analysis Improvements
+
+* Added modeling for the Micronaut framework, including HTTP controllers, WebSocket endpoints, configuration injection, data access, security annotations, and HTTP client sinks.
+
+## 9.2.4
+
+### Minor Analysis Improvements
+
+* Removed the summary model for `String.valueOf(CharSequence)`, which does not exist. Instead, taint is now propagated through calls to `String.valueOf(Object)` when the argument is a `CharSequence`, for example a `String` or a `StringBuilder`.
+* Added SQL injection sink models for Spring R2DBC `DatabaseClient` and the R2DBC SPI.
+
+## 9.2.3
+
+No user-facing changes.
+
+## 9.2.2
+
+### Minor Analysis Improvements
+
+* Kotlin versions up to 2.4.10 are now supported.
+* `java.io.File.getName()` is no longer treated as a complete sanitizer for `java/path-injection`, since it does not remove a `..` path component (for example `new File("..").getName()` returns `".."`). It is now only recognized as a sanitizer when combined with a subsequent check for `..` components, which may result in new alerts.
+
+## 9.2.1
+
+### Minor Analysis Improvements
+
+* Regular expression checks via annotation with `@javax.validation.constraints.Pattern` are now recognized as sanitizers for `java/path-injection`.
+* Added summary and LLM-generated source and sink models for `org.apache.poi`.
+* The first argument of the `uri` method of `WebClient$UriSpec` in `org.springframework.web.reactive.function.client` is now considered a request forgery sink. Previously only the first arguments of the `WebClient.create` and `WebClient$Builder.baseUrl` methods were considered. This may lead to more alerts for the query `java/ssrf` (Server-side request forgery).
+
 ## 9.2.0
 
 ### New Features

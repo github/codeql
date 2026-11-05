@@ -39,4 +39,19 @@ function Number() {}
 
 Number.parseFloat = function(num) {};
 
+/**
+ * @param {*=} transformer
+ * @param {*=} writableStrategy
+ * @param {*=} readableStrategy
+ * @constructor
+ */
+function TransformStream(transformer, writableStrategy, readableStrategy) {}
+
+/**
+ * @constructor
+ * @param {string} type
+ * @param {StorageEventInit=} opt_eventInitDict
+ */
+function StorageEvent(type, opt_eventInitDict) {}
+
 /** @externs */

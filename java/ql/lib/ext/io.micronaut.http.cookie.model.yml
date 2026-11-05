@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.micronaut.http.cookie", "Cookie", True, "getDomain", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookie", True, "getName", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookie", True, "getPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookie", True, "getValue", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookies", True, "findCookie", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookies", True, "get", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookies", True, "getAll", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]

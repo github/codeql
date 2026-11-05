@@ -1,5 +1,16 @@
 load("@rules_shell//shell:sh_library.bzl", "sh_library")
 
+# Matches the Linux arm64 target, used to give it a distinct `CODEQL_PLATFORM` string
+# (`linux-arm64`). Every other configuration keeps its OS-only string.
+config_setting(
+    name = "linux_arm64",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:arm64",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 sh_library(
     name = "sh_runfiles",
     srcs = ["runfiles.sh"],

@@ -1,6 +1,8 @@
 package registries
 
 import (
+	"os"
+	"slices"
 	"testing"
 )
 
@@ -129,5 +131,25 @@ func TestParseRegistryConfigsMultipleGoProxyServers(t *testing.T) {
 
 	if second.URL != "https://goproxy.io" {
 		t.Fatalf("Expected `URL` to be `https://goproxy.io`, but got `%s`", second.URL)
+	}
+}
+
+func TestGetEnvVarsScopesCertificateToSubprocesses(t *testing.T) {
+	t.Setenv(PROXY_HOST, "")
+	t.Setenv(PROXY_PORT, "")
+	t.Setenv(PROXY_URLS, "")
+	t.Setenv(PROXY_CA_CERTIFICATE, "dummy certificate")
+
+	vars := getEnvVars()
+	defer os.Remove(proxy_cert_file)
+
+	if proxy_cert_file == "" {
+		t.Fatal("Expected a temporary certificate file to be created.")
+	}
+
+	for _, expected := range []string{"SSL_CERT_FILE=" + proxy_cert_file, "GIT_SSL_CAINFO=" + proxy_cert_file} {
+		if !slices.Contains(vars, expected) {
+			t.Errorf("Expected `getEnvVars` to return %q, but got %v.", expected, vars)
+		}
 	}
 }

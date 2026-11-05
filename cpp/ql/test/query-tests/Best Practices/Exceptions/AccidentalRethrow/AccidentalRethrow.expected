@@ -1,0 +1,2 @@
+| test.cpp:2:3:2:7 | re-throw exception  | As there is no current exception, this rethrow expression will terminate the program. |
+| test.cpp:6:3:6:7 | re-throw exception  | As there is no current exception, this rethrow expression will terminate the program. |

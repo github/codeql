@@ -4,85 +4,93 @@ func add(_ a: Int, _ b: Int) -> Int {
 
 ---
 
-source_file
-  statement:
-    function_declaration
-      body:
-        block
-          statement:
-            control_transfer_statement
-              kind: return
-              result:
-                additive_expression
-                  lhs: simple_identifier "a"
-                  op: +
-                  rhs: simple_identifier "b"
-      name: simple_identifier "add"
-      parameter:
-        function_parameter
-          parameter:
-            parameter
-              external_name: simple_identifier "_"
-              name: simple_identifier "a"
-              type:
-                type
-                  name:
-                    user_type
-                      part:
-                        simple_user_type
-                          name: type_identifier "Int"
-        function_parameter
-          parameter:
-            parameter
-              external_name: simple_identifier "_"
-              name: simple_identifier "b"
-              type:
-                type
-                  name:
-                    user_type
-                      part:
-                        simple_user_type
-                          name: type_identifier "Int"
-      return_type:
-        type
-          name:
-            user_type
-              part:
-                simple_user_type
-                  name: type_identifier "Int"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      expression:
+                        infixOperatorExpr
+                          operator:
+                            binaryOperatorExpr
+                              operator: binaryOperator "+"
+                          leftOperand:
+                            declReferenceExpr
+                              baseName: identifier "a"
+                          rightOperand:
+                            declReferenceExpr
+                              baseName: identifier "b"
+                      returnKeyword: return
+          modifiers:
+          name: identifier "add"
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: _
+                      secondName: identifier "a"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: _
+                      secondName: identifier "b"
+              returnClause:
+                returnClause
+                  arrow: ->
+                  type:
+                    identifierType
+                      name: identifier "Int"
+          funcKeyword: func
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        function_declaration
-          body:
-            block
-              stmt:
-                return_expr
-                  value:
-                    binary_expr
-                      operator: infix_operator "+"
-                      left:
-                        name_expr
-                          identifier: identifier "a"
-                      right:
-                        name_expr
-                          identifier: identifier "b"
-          name: identifier "add"
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) -> ⟨return_type⟩ ⟨body⟩"
+          name_node: identifier "add" source="add"
           parameter:
-            parameter
-              external_name: identifier "_"
-              pattern:
-                name_pattern
-                  identifier: identifier "a"
-            parameter
-              external_name: identifier "_"
-              pattern:
-                name_pattern
-                  identifier: identifier "b"
-          return_type:
-            named_type_expr
-              name: identifier "Int"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "a" source="a"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: identifier "b" source="b"
+          return_type: identifier "Int" source="Int"
+          body:
+            block source="{\n  ⟨stmt⟩\n}"
+              stmt:
+                return_expr source="return ⟨value⟩"
+                  value:
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "a" source="a"
+                      operator: infix_operator "+" source="+"
+                      right: identifier "b" source="b"

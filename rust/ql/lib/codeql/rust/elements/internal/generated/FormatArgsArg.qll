@@ -26,6 +26,8 @@ module Generated {
   class FormatArgsArg extends Synth::TFormatArgsArg, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "FormatArgsArg" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the expression of this format arguments argument, if it exists.
      */

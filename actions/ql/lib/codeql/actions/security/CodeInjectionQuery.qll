@@ -29,22 +29,10 @@ Event getRelevantCachePoisoningEventForSink(DataFlow::Node sink) {
   exists(LocalJob job |
     job = sink.asExpr().getEnclosingJob() and
     job.getATriggerEvent() = result and
-    // job can be triggered by an external user
-    result.isExternallyTriggerable() and
     // excluding privileged workflows since they can be exploited in easier circumstances
     // which is covered by `actions/code-injection/critical`
     not job.isPrivilegedExternallyTriggerable(result) and
-    (
-      // the workflow runs in the context of the default branch
-      runsOnDefaultBranch(result)
-      or
-      // the workflow caller runs in the context of the default branch
-      result.getName() = "workflow_call" and
-      exists(ExternalJob caller |
-        caller.getCallee() = job.getLocation().getFile().getRelativePath() and
-        runsOnDefaultBranch(caller.getATriggerEvent())
-      )
-    )
+    hasDefaultBranchCacheWriteAccess(job, result)
   )
 }
 

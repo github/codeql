@@ -25,8 +25,8 @@ options:
         title: Controls compression for the TRAP files written by the extractor.
         description: >
           This option is only intended for use in debugging the extractor. Accepted
-          values are 'gzip' (to write gzip-compressed TRAP) 'zstd' (to write
-          Zstandard-compressed TRAP) and 'none' (the default, to write uncompressed
+          values are 'gzip' (to write gzip-compressed TRAP) 'zstd' (the default,
+          to write Zstandard-compressed TRAP) and 'none' (to write uncompressed
           TRAP).
         type: string
         pattern: "^(none|gzip|zstd)$"
@@ -36,7 +36,8 @@ options:
       This value is an optional path to use as `CARGO_TARGET_DIR` for the internal
       cargo commands the extractor uses. Pointing it to a persistent directory may
       reduce execution time of consecutive extractor runs. By default, a new scratch
-      directory is used for each run.
+      directory is used for each extraction, while qltests use the test's `target`
+      directory so artifacts can be reused across runs.
     type: string
   cargo_target:
     title: Target architecture

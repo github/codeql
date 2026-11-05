@@ -31,6 +31,8 @@ module Generated {
   class MacroTypeRepr extends Synth::TMacroTypeRepr, TypeReprImpl::TypeRepr {
     override string getAPrimaryQlClass() { result = "MacroTypeRepr" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the macro call of this macro type representation, if it exists.
      */

@@ -62,14 +62,22 @@ module HardcodedCryptographicValue {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
-   * Holds if `e` is a literal or a combination of literals that is constant.
+   * Holds if `e` is a literal or an expression that contains a constant. For example:
+   * ```
+   * ["hello", "world", s]
+   * ```
    */
-  private predicate isConstant(Expr e) {
+  private predicate hasConstant(Expr e) {
     e instanceof LiteralExpr // e.g. `0`
     or
-    forex(Expr elem | elem = e.(ArrayListExpr).getExpr(_) | isConstant(elem)) // e.g. `[0, 0, 0, 0]`
+    exists(Expr elem | elem = e.(ArrayListExpr).getExpr(_) | hasConstant(elem)) // e.g. `[0, 0, 0, 0]`
     or
-    isConstant(e.(ArrayRepeatExpr).getRepeatOperand()) // e.g. `[0; 10]`
+    hasConstant(e.(ArrayRepeatExpr).getRepeatOperand()) // e.g. `[0; 10]`
+    or
+    // a match expression with one or more constant arms; taint would reach here
+    // anyway, but we make it a source to avoid reporting many similar results
+    // on each match arm.
+    hasConstant(e.(MatchExpr).getMatchArmList().getAnArm().getExpr())
     or
     // e.g. `const MY_CONST: u64 = ...`
     // the constant initializer / body is the preferred source location for flow paths, when available.
@@ -81,15 +89,15 @@ module HardcodedCryptographicValue {
     not exists(e.(ConstAccess).getConst().getBody())
     or
     // e.g. `1 << 4`
-    isConstant(e.(BinaryExpr).getLhs()) and
-    isConstant(e.(BinaryExpr).getRhs())
+    hasConstant(e.(BinaryExpr).getLhs()) and
+    hasConstant(e.(BinaryExpr).getRhs())
   }
 
   /**
    * A constant, considered as a flow source.
    */
   private class ConstantSource extends Source {
-    ConstantSource() { isConstant(this.asExpr()) }
+    ConstantSource() { hasConstant(this.asExpr()) }
   }
 
   /**
@@ -118,8 +126,9 @@ module HardcodedCryptographicValue {
 
     HeuristicSinks() {
       // any argument going to a parameter whose name matches a credential name
-      exists(Call c, Function f, int argIndex, string argName |
-        c.getPositionalArgument(argIndex) = this.asExpr() and
+      exists(Call c, Function f, Expr arg, int argIndex, string argName |
+        arg = this.asExpr() and
+        c.getPositionalArgument(argIndex) = arg and
         c.getStaticTarget() = f and
         f.getParam(argIndex).getPat().(IdentPat).getName().getText() = argName and
         (
@@ -134,7 +143,9 @@ module HardcodedCryptographicValue {
           // note: matching "key" results in too many false positives
         ) and
         // don't duplicate modeled sinks
-        not exists(ModelsAsDataSinks s | s.(Node::FlowSummaryNode).getSinkElement().getCall() = c)
+        not exists(ModelsAsDataSinks s |
+          s.(Node::FlowSummaryNode).getSummaryNode().getSourceSinkReportingElement() = arg
+        )
       )
     }
 

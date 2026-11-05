@@ -2,14 +2,21 @@
 
 ---
 
-source_file
-  statement:
-    line_string_literal
-      text: line_str_text "hello"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "hello"
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
-      stmt: string_literal "\"hello\""
+    block source="⟨stmt⟩"
+      stmt: string_literal "\"hello\"" source="\"hello\""

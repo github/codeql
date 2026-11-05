@@ -1,0 +1,279 @@
+//! Rust wrapper around the [swift-syntax](https://github.com/swiftlang/swift-syntax)
+//! package, allowing Swift source code to be parsed from Rust.
+//!
+//! The heavy lifting is done by a small Swift shim (see `swift/`) that links
+//! against `SwiftSyntax`/`SwiftParser` and exposes a tiny C ABI. This module
+//! provides safe Rust bindings on top of that ABI, exposing [`parse_to_json`]
+//! which turns Swift source into a JSON syntax tree.
+//!
+//! Converting that JSON into a `yeast::Ast` (for the CodeQL extractor) is done
+//! by the extractor's own pure-Rust adapter module, keeping the Swift toolchain
+//! out of the extractor's build.
+
+use std::ffi::CStr;
+use std::os::raw::c_char;
+
+// C ABI exported by the `SwiftSyntaxFFI` dynamic library.
+unsafe extern "C" {
+    /// Parse a UTF-8 Swift source buffer, returning a heap-allocated
+    /// NUL-terminated JSON string (or null on failure). The caller owns the
+    /// returned pointer and must release it with `ssr_string_free`.
+    fn ssr_parse_json(source: *const u8, source_len: usize) -> *mut c_char;
+
+    /// Free a string previously returned by `ssr_parse_json`.
+    fn ssr_string_free(ptr: *mut c_char);
+}
+
+/// Errors that can occur while parsing Swift source.
+#[derive(Debug)]
+pub enum ParseError {
+    /// The Swift shim returned no result. `SwiftParser` recovers from invalid
+    /// syntax (it always produces a tree, possibly with error nodes), so this
+    /// does *not* indicate a syntax error in the source — it means the shim
+    /// failed to serialize the tree to JSON or to allocate the result string.
+    SwiftFailure,
+}
+
+impl std::fmt::Display for ParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ParseError::SwiftFailure => {
+                write!(f, "the swift-syntax shim failed to produce a JSON result")
+            }
+        }
+    }
+}
+
+impl std::error::Error for ParseError {}
+
+/// Parse the given Swift `source` and return a JSON representation of its
+/// syntax tree.
+///
+/// # Example
+/// ```no_run
+/// let json = swift_syntax_rs::parse_to_json("let x = 1").unwrap();
+/// println!("{json}");
+/// ```
+pub fn parse_to_json(source: &str) -> Result<String, ParseError> {
+    // SAFETY: `source` is valid UTF-8 and its buffer remains alive for the
+    // duration of the call. The returned pointer, if non-null, is owned by us
+    // and freed via `ssr_string_free` before returning.
+    unsafe {
+        let ptr = ssr_parse_json(source.as_ptr(), source.len());
+        if ptr.is_null() {
+            return Err(ParseError::SwiftFailure);
+        }
+        let json = CStr::from_ptr(ptr).to_string_lossy().into_owned();
+        ssr_string_free(ptr);
+        Ok(json)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parses_simple_declaration() {
+        let json = parse_to_json("let x = 1").expect("parsing should succeed");
+        assert!(
+            json.contains("\"kind\":\"sourceFile\""),
+            "unexpected tree: {json}"
+        );
+        assert!(json.contains("\"text\":\"x\""), "unexpected tree: {json}");
+        // Compact UTF-8 source ranges are emitted for every node, with one
+        // source-wide line-start table.
+        assert!(
+            json.contains("\"$pos\"")
+                && json.contains("\"$end\"")
+                && json.contains("\"$lineStarts\""),
+            "missing location fields: {json}"
+        );
+        assert!(
+            !json.contains("\"range\""),
+            "unexpected verbose range: {json}"
+        );
+    }
+
+    #[test]
+    fn preserves_named_structure() {
+        let json = parse_to_json("let x = 1").expect("parsing should succeed");
+        // Layout children are embedded directly under their field name.
+        assert!(
+            json.contains("\"initializer\""),
+            "missing initializer field: {json}"
+        );
+        // Collection-valued fields are elided to plain JSON arrays.
+        assert!(
+            json.contains("\"statements\":["),
+            "statements should be an array: {json}"
+        );
+        assert!(
+            json.contains("\"bindings\":["),
+            "bindings should be an array: {json}"
+        );
+    }
+
+    #[test]
+    fn parses_empty_source() {
+        let json = parse_to_json("").expect("parsing empty source should succeed");
+        assert!(
+            json.contains("\"kind\":\"sourceFile\""),
+            "unexpected tree: {json}"
+        );
+        assert!(
+            json.contains("\"statements\":[]"),
+            "empty collections should be serialized as JSON arrays: {json}"
+        );
+    }
+
+    #[test]
+    fn parses_source_with_interior_nul() {
+        let json = parse_to_json("let x =\0 1").expect("parsing interior NUL should succeed");
+        assert!(
+            json.contains(r#"\u0000"#),
+            "interior NUL should be preserved in the JSON tree: {json}"
+        );
+    }
+
+    #[test]
+    fn rejects_excessively_deep_syntax_tree() {
+        let source = format!("let x = a{}\n", ".a".repeat(2100));
+        assert!(
+            matches!(parse_to_json(&source), Err(ParseError::SwiftFailure)),
+            "serialization should reject syntax trees beyond the supported depth"
+        );
+    }
+
+    #[test]
+    fn serializes_json_strings_and_keys_deterministically() {
+        let source = "/* quote \" slash / backslash \\ tab \t newline\n emoji 😀 combining e\u{301} control \u{1} */\nlet x = 1";
+        let json = parse_to_json(source).expect("parsing should succeed");
+
+        assert!(
+            json.contains(
+                r#""text":"\/* quote \" slash \/ backslash \\ tab \t newline\n emoji 😀 combining é control \u0001 *\/""#
+            ),
+            "JSON string was not escaped correctly: {json}"
+        );
+        assert!(
+            json.starts_with(r#"{"$end":"#) && json.contains(r#","$lineStarts":[0,"#),
+            "JSON object keys were not sorted: {json}"
+        );
+    }
+
+    #[test]
+    fn emits_utf8_offsets_with_swift_syntax_line_boundaries() {
+        let source = "// é😀\r\nlet x = 1\rlet y = 2\n";
+        let json = parse_to_json(source).expect("parsing should succeed");
+
+        // SwiftSyntax recognizes LF, CR, and CRLF as physical line breaks. The
+        // offsets are UTF-8 bytes, so the first CRLF ends at byte 11.
+        assert!(
+            json.contains(r#""$lineStarts":[0,11,21,31]"#),
+            "unexpected line starts: {json}"
+        );
+        assert!(
+            json.contains(r#""$end":16,"$pos":15,"kind":"token","text":"x""#),
+            "unexpected UTF-8 token range: {json}"
+        );
+        assert!(
+            json.contains(r#""$end":26,"$pos":25,"kind":"token","text":"y""#),
+            "unexpected UTF-8 token range: {json}"
+        );
+    }
+
+    #[test]
+    fn captures_trivia() {
+        // A leading comment is kept as trivia on the token it precedes.
+        let json = parse_to_json("// hi\nlet x = 1").expect("parsing should succeed");
+        assert!(json.contains("\"leadingTrivia\""), "missing trivia: {json}");
+        assert!(
+            json.contains("lineComment"),
+            "comment trivia not captured: {json}"
+        );
+    }
+
+    #[test]
+    fn folds_standard_library_operators() {
+        // Standard-library operators are folded into a precedence-correct tree:
+        // the flat `sequenceExpr` becomes nested `infixOperatorExpr` nodes.
+        let json = parse_to_json("let x = 1 + 2 * 3").expect("parsing should succeed");
+        assert!(
+            json.contains("\"kind\":\"infixOperatorExpr\""),
+            "operators were not folded: {json}"
+        );
+        assert!(
+            !json.contains("\"kind\":\"sequenceExpr\""),
+            "a foldable sequence was left flat: {json}"
+        );
+    }
+
+    #[test]
+    fn folds_file_defined_operators() {
+        // An operator declared in the same file (with a known precedence group)
+        // is folded, just like a standard-library one.
+        let json = parse_to_json("infix operator |>: AdditionPrecedence\nlet y = a |> b |> c")
+            .expect("parsing should succeed");
+        assert!(
+            json.contains("\"kind\":\"infixOperatorExpr\""),
+            "file-defined operator was not folded: {json}"
+        );
+        assert!(
+            !json.contains("\"kind\":\"sequenceExpr\""),
+            "a foldable sequence was left flat: {json}"
+        );
+    }
+
+    #[test]
+    fn leaves_unknown_operators_unfolded() {
+        // An operator that is neither in the standard library nor declared in
+        // this file (e.g. imported from another module) has unknown precedence,
+        // so its sequence is left flat rather than folded incorrectly.
+        let json = parse_to_json("let z = a <+> b").expect("parsing should succeed");
+        assert!(
+            json.contains("\"kind\":\"sequenceExpr\""),
+            "unknown-operator sequence should stay flat: {json}"
+        );
+        assert!(
+            !json.contains("\"kind\":\"infixOperatorExpr\""),
+            "unknown operator should not be folded: {json}"
+        );
+    }
+
+    #[test]
+    fn folds_each_sequence_independently() {
+        // Folding is isolated per sequence: a statement using a known operator
+        // folds even when another statement uses an unknown one. One unfoldable
+        // expression does not suppress folding elsewhere.
+        let json = parse_to_json("let x = 1 + 2\nlet y = a <+> b").expect("parsing should succeed");
+        assert!(
+            json.contains("\"kind\":\"infixOperatorExpr\""),
+            "the known-operator statement should fold: {json}"
+        );
+        assert!(
+            json.contains("\"kind\":\"sequenceExpr\""),
+            "the unknown-operator statement should stay flat: {json}"
+        );
+    }
+
+    #[test]
+    fn folds_grouped_subexpressions_under_unknown_operators() {
+        // A parenthesized (or otherwise bracketed) subexpression is its own
+        // sequence, so it folds independently even when the enclosing sequence
+        // uses an unknown operator. Here `***` is unknown (outer stays flat) but
+        // the grouped `b + c` still folds. Note this only works because the
+        // parentheses isolate `b + c`: in an unparenthesized `a *** b + c` the
+        // whole thing is one flat sequence whose structure can't be determined
+        // without `***`'s precedence, so it is left flat entirely.
+        let json = parse_to_json("let r = a *** (b + c)").expect("parsing should succeed");
+        assert!(
+            json.contains("\"kind\":\"infixOperatorExpr\""),
+            "the grouped known-operator subexpression should fold: {json}"
+        );
+        assert!(
+            json.contains("\"kind\":\"sequenceExpr\""),
+            "the enclosing unknown-operator sequence should stay flat: {json}"
+        );
+    }
+}

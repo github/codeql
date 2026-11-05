@@ -527,8 +527,9 @@ input.go:
 #  133|             Type = []int
 #  133|     2: [BlockStmt] block statement
 #  134|       0: [RangeStmt] range statement
-#  134|         0: [Ident, VariableName] x
-#  134|             Type = int
+#  134|         0: [RangeElementExpr] range element
+#  134|           0: [Ident, VariableName] x
+#  134|               Type = int
 #  134|         1: [Ident, VariableName] xs
 #  134|             Type = []int
 #  134|         2: [BlockStmt] block statement
@@ -553,13 +554,14 @@ input.go:
 #  138|               1: [Ident, VariableName] x
 #  138|                   Type = int
 #  141|       1: [RangeStmt] range statement
-#  141|         0: [Ident, VariableName] i
-#  141|             Type = int
-#  141|         1: [Ident, VariableName] v
-#  141|             Type = int
-#  141|         2: [Ident, VariableName] xs
+#  141|         0: [RangeElementExpr] range element
+#  141|           0: [Ident, VariableName] i
+#  141|               Type = int
+#  141|           1: [Ident, VariableName] v
+#  141|               Type = int
+#  141|         1: [Ident, VariableName] xs
 #  141|             Type = []int
-#  141|         3: [BlockStmt] block statement
+#  141|         2: [BlockStmt] block statement
 #  142|           0: [ExprStmt] expression statement
 #  142|             0: [CallExpr] call to Print
 #  142|                 Type = (int, error)
@@ -573,9 +575,10 @@ input.go:
 #  142|               2: [Ident, VariableName] v
 #  142|                   Type = int
 #  145|       2: [RangeStmt] range statement
-#  145|         0: [Ident, VariableName] xs
+#  145|         0: [RangeElementExpr] range element
+#  145|         1: [Ident, VariableName] xs
 #  145|             Type = []int
-#  145|         1: [BlockStmt] block statement
+#  145|         2: [BlockStmt] block statement
 other.go:
 #    0| [GoFile] other.go
 #    1|   package: [Ident] main

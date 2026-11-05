@@ -169,7 +169,7 @@ def test_update_extend(x, y):
     d = {"key" : SOURCE}
     x.extend(l)
     y.update(d)
-    SINK(x[0])  # Flow not found
+    SINK(x[0])
     SINK(y["key"])  # Flow not found
     l2 = list(l)
     d2 = dict(d)

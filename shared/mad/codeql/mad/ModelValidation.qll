@@ -126,13 +126,15 @@ module KindValidation<KindValidationConfigSig Config> {
         [
           // shared
           "local", "remote", "file", "commandargs", "database", "environment", "reverse-dns",
-          "stdin",
+          "stdin", "ai",
           // Java
           "android-external-storage-dir", "contentprovider",
           // C#
           "file-write", "windows-registry",
           // JavaScript
-          "database-access-result", "response", "request"
+          "database-access-result", "response", "request", "browser", "browser-url-query",
+          "browser-url-fragment", "browser-url-path", "browser-url", "browser-window-name",
+          "browser-message-event"
         ]
       or
       this.matches([

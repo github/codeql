@@ -6,4 +6,3 @@ Cargo.toml
 lib.rs
 .proc_macro/
 .lib/
-

@@ -8,18 +8,42 @@ Customizing library models for Ruby
 
 Ruby analysis can be customized by adding library models in data extension files.
 
-A data extension for Ruby is a YAML file of the form:
+A data extension for Ruby can be written using either JSON or YAML. JSON is the preferred format, for performance reasons, and takes the following form:
+
+.. code-block:: json
+
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/ruby-all",
+           "extensible": "<name of extensible predicate>"
+         },
+         "data": [
+           ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."],
+           ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
+           // ...
+         ]
+       }
+     ]
+   }
+
+Files in the JSON format must use the ``.json`` file extension. Single-line (``//``) and multi-line (``/* ... */``) comments are supported as a non-standard JSON extension.
+
+A YAML file has the following form:
 
 .. code-block:: yaml
 
-  extensions:
-    - addsTo:
-        pack: codeql/ruby-all
-        extensible: <name of extensible predicate>
-      data:
-        - <tuple1>
-        - <tuple2>
-        - ...
+   extensions:
+     - addsTo:
+         pack: codeql/ruby-all
+         extensible: <name of extensible predicate>
+       data:
+         - ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."]
+         - ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
+         - ...
+
+Each data extension file may contain one or more top-level extensions.
 
 The CodeQL library for Ruby exposes the following extensible predicates:
 
@@ -45,15 +69,21 @@ In this example, we'll show how to add the following argument, passed to ``tty-c
 
 We need to add a tuple to the ``sinkModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/ruby-all
-        extensible: sinkModel
-      data:
-        - ["TTY::Command", "Method[run].Argument[0]", "command-injection"]
-
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/ruby-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["TTY::Command", "Method[run].Argument[0]", "command-injection"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"TTY::Command"``, identifies a set of values from which to begin the search for the sink.
   The string ``"TTY::Command"`` means we start at the places where the codebase constructs instances of the class ``TTY::Command``.
@@ -79,18 +109,21 @@ In this example, we'll show how the 'x' parameter below could be marked as a rem
 
 We need to add a tuple to the ``sourceModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/ruby-all
-        extensible: sourceModel
-      data:
-        - [
-            "Sinatra::Base!",
-            "Method[get].Argument[block].Parameter[0]",
-            "remote",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/ruby-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["Sinatra::Base!", "Method[get].Argument[block].Parameter[0]", "remote"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"Sinatra::Base!"``, begins the search at references to the ``Sinatra::Base`` class.
   The ``!`` suffix indicates that we want to search for references to the class itself, rather than instances of the class.
@@ -113,14 +146,21 @@ In this example, we'll show how to add the following SQL injection sink:
 
 We need to add a tuple to the ``sinkModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/ruby-all
-        extensible: sinkModel
-      data:
-        - ["Mysql2::Client", "Method[query].Argument[0]", "sql-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/ruby-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["Mysql2::Client", "Method[query].Argument[0]", "sql-injection"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"Mysql2::Client"``, begins the search at any instance of the ``Mysql2::Client`` class.
 - ``Method[query]`` selects any call to the ``query`` method on that instance.
@@ -145,14 +185,21 @@ may have many models for the various methods available. Because ``Mysql2::EM::Cl
 Instead of updating all our models to include both classes, we can add a tuple to the ``typeModel(type, subtype, ext)`` extensible predicate to indicate that
 ``Mysql2::EM::Client`` is a subclass of ``Mysql2::Client``:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/ruby-all
-        extensible: typeModel
-      data:
-        - ["Mysql2::Client", "Mysql2::EM::Client", ""]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/ruby-all",
+           "extensible": "typeModel"
+         },
+         "data": [
+           ["Mysql2::Client", "Mysql2::EM::Client", ""]
+         ]
+       }
+     ]
+   }
 
 Example: Adding flow through 'URI.decode_uri_component'
 -------------------------------------------------------
@@ -165,20 +212,21 @@ In this example, we'll show how to add flow through calls to 'URI.decode_uri_com
 
 We need to add a tuple to the ``summaryModel(type, path, input, output, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/ruby-all
-        extensible: summaryModel
-      data:
-        - [
-            "URI!",
-            "Method[decode_uri_component]",
-            "Argument[0]",
-            "ReturnValue",
-            "taint",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/ruby-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["URI!", "Method[decode_uri_component]", "Argument[0]", "ReturnValue", "taint"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"URI!"``, begins the search for relevant calls at references to the ``URI`` class.
   The ``!`` suffix indicates that we are looking for the class itself, rather than instances of the class.
@@ -201,20 +249,21 @@ In this example, we'll show how to add flow through calls to ``File#each`` from 
 
 We need to add a tuple to the ``summaryModel(type, path, input, output, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/ruby-all
-        extensible: summaryModel
-      data:
-        - [
-            "File",
-            "Method[each]",
-            "Argument[self]",
-            "Argument[block].Parameter[0]",
-            "taint",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/ruby-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["File", "Method[each]", "Argument[self]", "Argument[block].Parameter[0]", "taint"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"File"``, begins the search for relevant calls at places where the ``File`` class is used.
 - The second column, ``Method[each]``, selects references to the ``each`` method on the ``File`` class.
@@ -240,14 +289,21 @@ In this example, we'll show how to add the return value of ``Mysql2::Client#esca
 
 We need to add a tuple to the ``barrierModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/ruby-all
-        extensible: barrierModel
-      data:
-        - ["Mysql2::Client!", "Method[escape].ReturnValue", "sql-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/ruby-all",
+           "extensible": "barrierModel"
+         },
+         "data": [
+           ["Mysql2::Client!", "Method[escape].ReturnValue", "sql-injection"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"Mysql2::Client!"``, begins the search for relevant calls at references to the ``Mysql2::Client`` class.
   The ``!`` suffix indicates that we want to search for references to the class itself, rather than instances of the class.
@@ -269,14 +325,21 @@ Consider a validation method ``Validator.is_safe`` which returns ``true`` when t
 
 We need to add a tuple to the ``barrierGuardModel(type, path, acceptingValue, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/ruby-all
-        extensible: barrierGuardModel
-      data:
-        - ["Validator!", "Method[is_safe].Argument[0]", "true", "sql-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/ruby-all",
+           "extensible": "barrierGuardModel"
+         },
+         "data": [
+           ["Validator!", "Method[is_safe].Argument[0]", "true", "sql-injection"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"Validator!"``, begins the search at references to the ``Validator`` class.
   The ``!`` suffix indicates that we want to search for references to the class itself, rather than instances of the class.
@@ -303,14 +366,21 @@ Adds a new taint source. Most taint-tracking queries will use the new source.
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/ruby-all
-        extensible: sourceModel
-      data:
-        - ["User", "Method[name]", "remote"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/ruby-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["User", "Method[name]", "remote"]
+         ]
+       }
+     ]
+   }
 
 sinkModel(type, path, kind)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -323,14 +393,21 @@ Adds a new taint sink. Sinks are query-specific and will typically affect one or
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/ruby-all
-        extensible: sinkModel
-      data:
-        - ["ExecuteShell", "Method[run].Argument[0]", "command-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/ruby-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["ExecuteShell", "Method[run].Argument[0]", "command-injection"]
+         ]
+       }
+     ]
+   }
 
 summaryModel(type, path, input, output, kind)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -345,20 +422,21 @@ Adds flow through a method call.
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/ruby-all
-        extensible: summaryModel
-      data:
-        - [
-            "URI",
-            "Method[decode_uri_component]",
-            "Argument[0]",
-            "ReturnValue",
-            "taint",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/ruby-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["URI", "Method[decode_uri_component]", "Argument[0]", "ReturnValue", "taint"]
+         ]
+       }
+     ]
+   }
 
 typeModel(type1, type2, path)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -371,18 +449,21 @@ Adds a new definition of a type.
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-  - addsTo:
-      pack: codeql/ruby-all
-      extensible: typeModel
-    data:
-      - [
-          "Mysql2::Client",
-          "MyDbWrapper",
-          "Method[getConnection].ReturnValue",
-        ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/ruby-all",
+           "extensible": "typeModel"
+         },
+         "data": [
+           ["Mysql2::Client", "MyDbWrapper", "Method[getConnection].ReturnValue"]
+         ]
+       }
+     ]
+   }
 
 Types
 -----

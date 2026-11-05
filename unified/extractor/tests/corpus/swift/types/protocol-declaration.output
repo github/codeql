@@ -1,29 +1,70 @@
 protocol Drawable {
   func draw()
+  static func make()
 }
 
 ---
 
-source_file
-  statement:
-    protocol_declaration
-      body:
-        protocol_body
-          member:
-            protocol_function_declaration
-              name: simple_identifier "draw"
-      name: type_identifier "Drawable"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        protocolDecl
+          attributes:
+          modifiers:
+          name: identifier "Drawable"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    functionDecl
+                      attributes:
+                      modifiers:
+                      name: identifier "draw"
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                      funcKeyword: func
+                memberBlockItem
+                  decl:
+                    functionDecl
+                      attributes:
+                      modifiers:
+                        declModifier
+                          name: static
+                      name: identifier "make"
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                      funcKeyword: func
+          protocolKeyword: protocol
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  ⟨member⟩\n}"
+          modifier: modifier "protocol" source="protocol"
+          name_node: identifier "Drawable" source="Drawable"
           member:
-            function_declaration
-              body: block "func draw()"
-              name: identifier "draw"
-          modifier: modifier "protocol"
-          name: identifier "Drawable"
+            function_declaration source="func ⟨name_node⟩()"
+              name_node: identifier "draw" source="draw"
+              body: block source=""
+            function_declaration source="⟨modifier⟩ func ⟨name_node⟩()"
+              modifier: modifier "static" source="static"
+              name_node: identifier "make" source="make"
+              body: block source=""

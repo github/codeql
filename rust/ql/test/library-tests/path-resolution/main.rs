@@ -685,29 +685,38 @@ mod m18 {
     }
 }
 
-mod m21 {
-    mod m22 {
+/// Test importing modules, traits, and enums with `{self}`.
+mod self_imports {
+    mod definitions {
+        pub mod my_module {
+            pub fn f() {} // I107
+        } // I104
+        pub trait MyTrait {} // I105
         pub enum MyEnum {
-            A, // I104
-        } // I105
+            A, // I108
+        } // I106
+    }
 
-        pub struct MyStruct; // I106
-    } // I107
-
-    mod m33 {
+    mod imports {
         #[rustfmt::skip]
-        use super::m22::MyEnum::{ // $ item=I105
+        use super::definitions::my_module::{ // $ item=I104
+            self // $ item=I104
+        };
+
+        #[rustfmt::skip]
+        use super::definitions::MyTrait::{ // $ item=I105
             self // $ item=I105
         };
 
         #[rustfmt::skip]
-        use super::m22::MyStruct::{ // $ item=I106
+        use super::definitions::MyEnum::{ // $ item=I106
             self // $ item=I106
         };
 
-        fn f() {
-            let _ = MyEnum::A; // $ item=I104
-            let _ = MyStruct {}; // $ item=I106
+        #[rustfmt::skip]
+        fn f<T: MyTrait>() { // $ item=I105
+            my_module::f(); // $ item=I107
+            let _ = MyEnum::A; // $ item=I108
         }
     }
 }

@@ -167,7 +167,7 @@ module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
   Parameter asParameter(NodeExtended node) { result = node.asParameter() }
 
   private J::Method getARelevantOverride(J::Method m) {
-    result = m.getAnOverride() and
+    result = m.getAnOverride().getSourceDeclaration() and
     relevant(result) and
     // Other exclusions for overrides.
     not m instanceof J::ToStringMethod

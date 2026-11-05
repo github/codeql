@@ -47,6 +47,7 @@
 | TaintedPath.js:205:31:205:69 | path.re ... '), '') | TaintedPath.js:200:24:200:30 | req.url | TaintedPath.js:205:31:205:69 | path.re ... '), '') | This path depends on a $@. | TaintedPath.js:200:24:200:30 | req.url | user-provided value |
 | TaintedPath.js:214:29:214:42 | improperEscape | TaintedPath.js:212:24:212:30 | req.url | TaintedPath.js:214:29:214:42 | improperEscape | This path depends on a $@. | TaintedPath.js:212:24:212:30 | req.url | user-provided value |
 | TaintedPath.js:216:29:216:43 | improperEscape2 | TaintedPath.js:212:24:212:30 | req.url | TaintedPath.js:216:29:216:43 | improperEscape2 | This path depends on a $@. | TaintedPath.js:212:24:212:30 | req.url | user-provided value |
+| api/controllers/attachments/download-thumbnail.js:18:42:18:49 | filePath | api/controllers/attachments/download-thumbnail.js:15:7:15:21 | inputs.filename | api/controllers/attachments/download-thumbnail.js:18:42:18:49 | filePath | This path depends on a $@. | api/controllers/attachments/download-thumbnail.js:15:7:15:21 | inputs.filename | user-provided value |
 | examples/TaintedPath.js:10:29:10:43 | ROOT + filePath | examples/TaintedPath.js:8:28:8:34 | req.url | examples/TaintedPath.js:10:29:10:43 | ROOT + filePath | This path depends on a $@. | examples/TaintedPath.js:8:28:8:34 | req.url | user-provided value |
 | execa.js:9:26:9:33 | filePath | execa.js:6:30:6:36 | req.url | execa.js:9:26:9:33 | filePath | This path depends on a $@. | execa.js:6:30:6:36 | req.url | user-provided value |
 | execa.js:12:37:12:44 | filePath | execa.js:6:30:6:36 | req.url | execa.js:12:37:12:44 | filePath | This path depends on a $@. | execa.js:6:30:6:36 | req.url | user-provided value |
@@ -397,6 +398,9 @@ edges
 | TaintedPath.js:215:9:215:23 | improperEscape2 | TaintedPath.js:216:29:216:43 | improperEscape2 | provenance |  |
 | TaintedPath.js:215:27:215:40 | unescape(path) | TaintedPath.js:215:9:215:23 | improperEscape2 | provenance |  |
 | TaintedPath.js:215:36:215:39 | path | TaintedPath.js:215:27:215:40 | unescape(path) | provenance | Config |
+| api/controllers/attachments/download-thumbnail.js:11:9:11:16 | filePath | api/controllers/attachments/download-thumbnail.js:18:42:18:49 | filePath | provenance |  |
+| api/controllers/attachments/download-thumbnail.js:11:20:16:5 | path.jo ... e\\n    ) | api/controllers/attachments/download-thumbnail.js:11:9:11:16 | filePath | provenance |  |
+| api/controllers/attachments/download-thumbnail.js:15:7:15:21 | inputs.filename | api/controllers/attachments/download-thumbnail.js:11:20:16:5 | path.jo ... e\\n    ) | provenance | Config |
 | examples/TaintedPath.js:8:7:8:14 | filePath | examples/TaintedPath.js:10:36:10:43 | filePath | provenance |  |
 | examples/TaintedPath.js:8:18:8:41 | url.par ... , true) | examples/TaintedPath.js:8:18:8:47 | url.par ... ).query | provenance | Config |
 | examples/TaintedPath.js:8:18:8:47 | url.par ... ).query | examples/TaintedPath.js:8:18:8:52 | url.par ... ry.path | provenance | Config |
@@ -950,6 +954,10 @@ nodes
 | TaintedPath.js:215:27:215:40 | unescape(path) | semmle.label | unescape(path) |
 | TaintedPath.js:215:36:215:39 | path | semmle.label | path |
 | TaintedPath.js:216:29:216:43 | improperEscape2 | semmle.label | improperEscape2 |
+| api/controllers/attachments/download-thumbnail.js:11:9:11:16 | filePath | semmle.label | filePath |
+| api/controllers/attachments/download-thumbnail.js:11:20:16:5 | path.jo ... e\\n    ) | semmle.label | path.jo ... e\\n    ) |
+| api/controllers/attachments/download-thumbnail.js:15:7:15:21 | inputs.filename | semmle.label | inputs.filename |
+| api/controllers/attachments/download-thumbnail.js:18:42:18:49 | filePath | semmle.label | filePath |
 | examples/TaintedPath.js:8:7:8:14 | filePath | semmle.label | filePath |
 | examples/TaintedPath.js:8:18:8:41 | url.par ... , true) | semmle.label | url.par ... , true) |
 | examples/TaintedPath.js:8:18:8:47 | url.par ... ).query | semmle.label | url.par ... ).query |

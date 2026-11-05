@@ -1,3 +1,49 @@
+## 0.1.46
+
+No user-facing changes.
+
+## 0.1.45
+
+No user-facing changes.
+
+## 0.1.44
+
+No user-facing changes.
+
+## 0.1.43
+
+No user-facing changes.
+
+## 0.1.42
+
+### New Queries
+
+* Added a new query, `rust/command-line-injection`, to detect uncontrolled command lines.
+
+### Minor Analysis Improvements
+
+* The `rust/hard-coded-cryptographic-value` query has been adjusted to produce
+fewer results in certain situations where many results were being produced with very similar source locations.
+* The `rust/unused-variable` query no longer reports variables in functions containing the standard `todo!()` or `unimplemented!()` macros.
+
+## 0.1.41
+
+No user-facing changes.
+
+## 0.1.40
+
+No user-facing changes.
+
+## 0.1.39
+
+No user-facing changes.
+
+## 0.1.38
+
+### Minor Analysis Improvements
+
+* The `rust/hard-coded-cryptographic-value` query now treats arithmetic and bitwise operations, including string append operations, as barriers. This addresses false positive results where hard-coded constants are combined with non-constant data, such as incrementing a nonce or appending variable data to a constant prefix.
+
 ## 0.1.37
 
 No user-facing changes.

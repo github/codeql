@@ -4,11 +4,11 @@ private string getLocation(Member m) {
   if m.fromSource() then result = m.getALocation().(SourceLocation).toString() else result = "-"
 }
 
-private string getIsAsync(ForeachStmt f) {
+private string getIsAsync(ForEachStmt f) {
   if f.isAsync() then result = "async" else result = "sync"
 }
 
-from ForeachStmt f
+from ForEachStmt f
 select f, f.getElementType().toString(), getIsAsync(f),
   f.getGetEnumerator().getDeclaringType().getFullyQualifiedNameDebug(),
   getLocation(f.getGetEnumerator()), f.getCurrent().getDeclaringType().getFullyQualifiedNameDebug(),

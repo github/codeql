@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>
+If a system command is built from user-provided data without sufficient sanitization, a user may be able to run malicious commands. An attacker can craft input to change the meaning of the command, potentially gaining control of the system.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+If possible, use hard-coded string literals for commands. If the command must be built from user-provided data, do not pass user input directly to shell commands. Instead, use APIs that accept command arguments as separate parameters (such as <code>std::process::Command</code> with individual <code>.arg()</code> calls for each argument), which avoids shell interpretation of special characters. If shell execution is necessary, validate and sanitize user input against an allowlist of permitted values.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, a command is constructed directly from user-controlled input obtained via an HTTP request. An attacker could supply a malicious value to execute arbitrary commands.
+</p>
+
+<sample src="CommandInjectionBad.rs" />
+
+<p>
+A safer approach uses a fixed command with validated arguments, or avoids shell interpretation entirely:
+</p>
+
+<sample src="CommandInjectionGood.rs" />
+
+</example>
+<references>
+
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Command_Injection">Command Injection</a>.</li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_injection#Shell_injection">Shell injection</a>.</li>
+
+</references>
+</qhelp>

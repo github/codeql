@@ -134,6 +134,19 @@ class StringLiteral extends TextLiteral {
 }
 
 /**
+ * A C++ raw string literal. For example:
+ * ```
+ * const char *s1 = R"(abcdef)";
+ * const wchar_t *s2 = LR"x(123456)x";
+ * ```
+ */
+class RawStringLiteral extends StringLiteral {
+  RawStringLiteral() { this.getValueText().regexpMatch("[^\"]*R\".*\\(.*") }
+
+  override string getAPrimaryQlClass() { result = "RawStringLiteral" }
+}
+
+/**
  * An octal literal. For example:
  * ```
  * char esc = 033;

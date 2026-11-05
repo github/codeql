@@ -7,12 +7,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut conn = postgres::Client::connect("host=localhost user=postgres", postgres::NoTls)?;
 
-    conn.execute(       // $ sql-sink
+    conn.execute(
         "CREATE TABLE person (
             id SERIAL PRIMARY KEY,
             name VARCHAR NOT NULL,
             age INT NOT NULL
-        )",
+        )", // $ sql-sink
         &[],
     )?;
 

@@ -1,5 +1,8 @@
 import java.sql.ResultSet;
 import java.util.Map;
+import java.util.function.Supplier;
+import io.r2dbc.spi.Batch;
+import io.r2dbc.spi.Connection;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -13,6 +16,7 @@ import org.springframework.jdbc.object.MappingSqlQueryWithParameters;
 import org.springframework.jdbc.object.SqlFunction;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.object.UpdatableSqlQuery;
+import org.springframework.r2dbc.core.DatabaseClient;
 
 public class SpringJdbc {
 
@@ -78,6 +82,45 @@ public class SpringJdbc {
     namedParamTemplate.update(source(), (SqlParameterSource) null); // $ sqlInjection
     namedParamTemplate.update(source(), null, null); // $ sqlInjection
     namedParamTemplate.update(source(), null, null, null); // $ sqlInjection
+  }
+
+  public static void testR2dbc(DatabaseClient client, Connection connection, Batch batch) {
+    client.sql(source()); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).fetch(); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).then(); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).map(row -> row); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).map((row, metadata) -> row); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).flatMap(row -> row); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).mapValue(String.class); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).mapProperties(String.class); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source)
+        .bind(0, "value")
+        .bind("name", "value")
+        .bindNull(0, String.class)
+        .bindNull("name", String.class)
+        .bindValues(java.util.List.of("value"))
+        .bindValues(java.util.Map.of("name", "value"))
+        .bindProperties(new Object())
+        .filter(statement -> statement)
+        .filter((org.springframework.r2dbc.core.StatementFilterFunction) null) // $ sqlInjection
+        .fetch();
+    connection.createStatement(source()); // $ sqlInjection
+    batch.add(source()); // $ sqlInjection
+    connection.createSavepoint(source()); // $ sqlInjection
+    connection.releaseSavepoint(source()); // $ sqlInjection
+    connection.rollbackTransactionToSavepoint(source()); // $ sqlInjection
+    connection.createStatement("INSERT INTO test VALUES (1)")
+        .returnGeneratedValues(source()); // $ sqlInjection
+
+    client.sql(() -> "SELECT * FROM test WHERE value = :value").bind("value", source()).fetch();
+    client.sql(() -> "SELECT * FROM test").filter(statement -> source()).fetch();
+    client.sql(() -> "SELECT * FROM test").map(row -> source());
+    connection.createStatement("SELECT * FROM test");
+    batch.add("SELECT * FROM test");
+    connection.createSavepoint("savepoint");
+    connection.releaseSavepoint("savepoint");
+    connection.rollbackTransactionToSavepoint("savepoint");
+    connection.createStatement("INSERT INTO test VALUES (1)").returnGeneratedValues("id");
   }
 
 }

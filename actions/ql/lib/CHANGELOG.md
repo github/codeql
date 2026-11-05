@@ -1,3 +1,65 @@
+## 0.7.1
+
+No user-facing changes.
+
+## 0.7.0
+
+### Breaking Changes
+
+* The GitHub Actions control flow graph (CFG) now uses the shared CFG library. The CFG includes explicit before and after nodes and uses the shared entry and exit node representations. Existing code that relies on specific CFG nodes, edges, textual representations, or basic block boundaries may need to be updated. The legacy `Completion`, `NormalCompletion`, `SimpleCompletion`, `BooleanCompletion`, and `ReturnCompletion` classes have been removed because completions are no longer part of the Actions CFG API. Code that inspected completions should inspect CFG edge labels such as `DirectSuccessor`, `BooleanSuccessor`, and `ReturnSuccessor` instead.
+
+## 0.6.3
+
+### Minor Analysis Improvements
+
+* The `trustedActionsOwnerDataModel` extensible predicate, used by the `actions/unpinned-tag` query, now supports removing an owner from the trusted set by adding an entry prefixed with `!` (for example, `!github`). This makes it possible to distrust first-party owners (`actions`, `github`, `advanced-security`) so that unpinned tags for their Actions are reported.
+
+## 0.6.2
+
+No user-facing changes.
+
+## 0.6.1
+
+### New Features
+
+* GitHub Actions databases now extract `actions.lock` files. The new `ActionsLock` class
+  provides access to their YAML abstract syntax trees.
+
+### Minor Analysis Improvements
+
+* Checks on author association fields read from the event payload (e.g. `github.event.pull_request.author_association`) now only count as protection for events whose payload actually populates that field. Previously, a condition such as `github.event.pull_request.author_association != 'NONE'` on a workflow triggered by `issues` events was treated as a protective check even though `github.event.pull_request` is not populated for `issues` events, which makes the condition vacuous. This change may result in more alerts for queries using the `ControlCheck` class.
+
+## 0.6.0
+
+### Breaking Changes
+
+* Checks on actor fields read from the event payload (e.g. `github.event.pull_request.user.login`) were split out of `ActorIfCheck` into a new class `EventActorIfCheck`. The `ActorIfCheck` class now only covers `github.actor` and `github.triggering_actor`.
+
+### Minor Analysis Improvements
+
+* Checks on actor fields read from the event payload (e.g. `github.event.pull_request.user.login`) now only count as protection for events whose payload actually populates that field. Previously, a condition such as `github.event.pull_request.user.login != 'name'` on a workflow triggered by `issues` events was treated as a protective check even though `github.event.pull_request` is not populated for `issues` events, which makes the condition vacuous. This change may result in more alerts for queries using the `ControlCheck` class.
+* Added an option to `EnvironmentCheck` to become specified by a MaD model, otherwise it will continue as the default it previously was. Without adding models to `actions/ql/lib/ext/config/deployment_environment.yml` the behavior of every query will be unchanged. When models are added queries using `ControlCheck` may find more results in cases where an environment is no longer a sufficient sanitizer.
+
+## 0.5.0
+
+### Breaking Changes
+
+* The `codeql.actions.security.SelfHostedQuery` module has been removed because runner labels do not reliably distinguish self-hosted runners from managed runners.
+
+### Minor Analysis Improvements
+
+* GitHub Actions analysis now recognizes untrusted data in `github.event.merge_group` for workflows triggered by the `merge_group` event.
+
+## 0.4.40
+
+### Minor Analysis Improvements
+
+* Altered the logic of `EnvironmentCheck` to make sure it is a check that protects only for non-toctou. This change will result in more results being found by the queries: `actions/untrusted-checkout-toctou/high` and `actions/untrusted-checkout-toctou/critical`.
+
+## 0.4.39
+
+No user-facing changes.
+
 ## 0.4.38
 
 ### Bug Fixes

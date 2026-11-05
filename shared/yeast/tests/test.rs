@@ -1,5 +1,7 @@
 #![cfg(test)]
 
+use std::collections::BTreeMap;
+
 use yeast::dump::{dump_ast, dump_ast_with_type_errors};
 use yeast::*;
 
@@ -7,29 +9,122 @@ const OUTPUT_SCHEMA_YAML: &str = include_str!("node-types.yml");
 
 /// Helper: parse Ruby source with no rules, return dump.
 fn parse_and_dump(input: &str) -> String {
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run(input).unwrap();
+    let ast = parse_input(input);
     dump_ast(&ast, ast.get_root(), input)
 }
 
-/// Helper: parse Ruby source with a custom output schema and a single
-/// phase of rules, return dump.
-fn run_and_dump(input: &str, rules: Vec<Rule>) -> String {
-    run_phased_and_dump(input, vec![Phase::new("test", PhaseKind::Repeating, rules)])
+fn parse_input(input: &str) -> Ast {
+    let language: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let mut parser = tree_sitter::Parser::new();
+    parser.set_language(&language).unwrap();
+    let tree = parser.parse(input, None).unwrap();
+    Ast::from_tree_with_schema_and_source(
+        yeast::schema::from_language(&language),
+        &tree,
+        &language,
+        input.as_bytes().to_vec(),
+    )
 }
 
-/// Helper: parse Ruby source with custom rules and return the transformed AST.
-fn run_and_ast(input: &str, rules: Vec<Rule>) -> Ast {
+fn empty_output_ast(input: &str) -> OutputAst {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
-    let phases = vec![Phase::new("test", PhaseKind::Repeating, rules)];
+    let mut ast = OutputAst::with_schema(schema);
+    ast.set_source(input.as_bytes().to_vec());
+    ast
+}
+
+fn with_passthrough_rules<C: Clone + 'static>(mut rules: Vec<Rule<C>>) -> Vec<Rule<C>> {
+    let program_rule = Rule::new(
+        yeast::query!((program (_)* @children)),
+        Box::new(
+            |ast, output, captures, source_range, user_ctx, translator| {
+                let mut children = Vec::new();
+                for child in captures.get_all("children") {
+                    children.extend(translator.translate(ast, output, user_ctx, child)?);
+                }
+                let kind = output
+                    .id_for_node_kind("program")
+                    .ok_or("program kind is not registered")?;
+                let fields = BTreeMap::from([(CHILD_FIELD, children)]);
+                let program = output.create_node_with_range(
+                    kind,
+                    NodeContent::DynamicString(String::new()),
+                    fields,
+                    true,
+                    source_range,
+                );
+                Ok(vec![program])
+            },
+        ),
+    );
+    let left_assignment_list_rule: Rule<C> = yeast::rule!(
+        (left_assignment_list (identifier)* @items)
+        =>
+        (left_assignment_list item: {items})
+    );
+    let assignment_rule: Rule<C> = yeast::rule!(
+        (assignment left: (_) @left right: (_) @right)
+        =>
+        (assignment left: {left} right: {right})
+    );
+    let identifier_rule: Rule<C> = yeast::rule!(
+        (identifier) @@node
+        =>
+        (identifier #{node})
+    );
+    let integer_rule: Rule<C> = yeast::rule!(
+        (integer) @@node
+        =>
+        (integer #{node})
+    );
+    rules.extend([
+        program_rule,
+        left_assignment_list_rule,
+        assignment_rule,
+        identifier_rule,
+        integer_rule,
+    ]);
+    rules
+}
+
+/// Helper: translate Ruby source with a custom output schema and rules, then
+/// return its dump. The appended pass-through rules make the small input
+/// subset used by these tests exhaustive.
+fn run_and_dump(input: &str, rules: Vec<Rule>) -> String {
+    run_phased_and_dump(
+        input,
+        vec![Phase::new("test", with_passthrough_rules(rules))],
+    )
+}
+
+/// Helper: translate Ruby source with custom rules and return the transformed AST.
+fn run_and_ast(input: &str, rules: Vec<Rule>) -> OutputAst {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let phases = vec![Phase::new("test", with_passthrough_rules(rules))];
     let runner: Runner = Runner::with_schema(lang, &schema, &phases);
     runner.run(input).unwrap()
 }
 
-/// Helper: parse Ruby source with a custom output schema and multiple
-/// rule phases, return dump.
+fn run_ast_with_rules(ast: Ast, rules: Vec<Rule>) -> OutputAst {
+    let schema = yeast::node_types_yaml::schema_from_yaml(OUTPUT_SCHEMA_YAML).unwrap();
+    let phases = [Phase::new("test", rules)];
+    let runner: Runner = Runner::with_schema_no_language(&schema, &phases);
+    runner.run_from_ast(ast).unwrap()
+}
+
+fn synthetic_integer_ast(content: &str) -> Ast {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let mut ast = Ast::with_schema(yeast::schema::from_language(&lang));
+    let root = ast.create_named_token("integer", content.to_owned());
+    ast.set_root(root);
+    ast
+}
+
+/// Helper: translate Ruby source with multiple rule phases and return its dump.
 fn run_phased_and_dump(input: &str, phases: Vec<Phase>) -> String {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
@@ -39,23 +134,9 @@ fn run_phased_and_dump(input: &str, phases: Vec<Phase>) -> String {
     dump_ast(&ast, ast.get_root(), input)
 }
 
-/// Helper: like `run_and_dump`, but returns the runner error (if any)
-/// instead of unwrapping.
-fn run_and_get_error(input: &str, rules: Vec<Rule>) -> String {
-    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
-    let schema =
-        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
-    let phases = vec![Phase::new("test", PhaseKind::Repeating, rules)];
-    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
-    runner
-        .run(input)
-        .expect_err("expected runner to return an error")
-}
-
 /// Helper: parse Ruby source with no rules and dump with schema type errors.
 fn parse_and_dump_typed(input: &str, schema_yaml: &str) -> String {
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run(input).unwrap();
+    let ast = parse_input(input);
     let schema = yeast::node_types_yaml::schema_from_yaml(schema_yaml).unwrap();
     dump_ast_with_type_errors(&ast, ast.get_root(), input, &schema)
 }
@@ -64,21 +145,22 @@ fn parse_and_dump_typed(input: &str, schema_yaml: &str) -> String {
 /// building schema with language IDs so field checks align with parser fields.
 fn parse_and_dump_typed_with_language(input: &str, schema_yaml: &str) -> String {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
-    let runner: Runner = Runner::new(lang.clone(), &[]);
-    let ast = runner.run(input).unwrap();
+    let ast = parse_input(input);
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(schema_yaml, &lang).unwrap();
     dump_ast_with_type_errors(&ast, ast.get_root(), input, &schema)
 }
 
-/// Helper: parse Ruby source with custom rules and dump with schema type errors.
+/// Helper: translate Ruby source with custom rules and dump with schema type errors.
 fn run_and_dump_typed(input: &str, rules: Vec<Rule>, schema_yaml: &str) -> String {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
-    let schema = yeast::node_types_yaml::schema_from_yaml(schema_yaml).unwrap();
-    let phases = vec![Phase::new("test", PhaseKind::Repeating, rules)];
-    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+    let runner_schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(schema_yaml, &lang).unwrap();
+    let validation_schema = yeast::node_types_yaml::schema_from_yaml(schema_yaml).unwrap();
+    let phases = vec![Phase::new("test", with_passthrough_rules(rules))];
+    let runner: Runner = Runner::with_schema(lang, &runner_schema, &phases);
     let ast = runner.run(input).unwrap();
-    dump_ast_with_type_errors(&ast, ast.get_root(), input, &schema)
+    dump_ast_with_type_errors(&ast, ast.get_root(), input, &validation_schema)
 }
 
 /// Assert that a dump equals the expected string, treating the expected
@@ -247,8 +329,7 @@ named:
 
 #[test]
 fn test_query_match() {
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run("x = 1").unwrap();
+    let ast = parse_input("x = 1");
 
     let query = yeast::query!(
         (program
@@ -267,9 +348,59 @@ fn test_query_match() {
 }
 
 #[test]
+fn test_run_from_ast_desugars_hand_built_tree() {
+    // Output schema for the desugared tree. Its kind/field names must become
+    // resolvable in the hand-built AST's schema for the rule to build them.
+    let schema_yaml = r#"
+named:
+    assignment:
+        left: leaf
+    leaf:
+"#;
+
+    // A rule over an *input* kind (`wrapper`) that is not in the output schema,
+    // rewriting to an output `assignment` node.
+    let rules: Vec<Rule> = vec![yeast::rule!(
+        (wrapper)
+        =>
+        (assignment left: (leaf "lit"))
+    )];
+
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let config = DesugaringConfig::<()>::new()
+        .add_phase("test", rules)
+        .with_output_node_types_yaml(schema_yaml);
+    let desugarer = ConcreteDesugarer::new(lang, config).unwrap();
+
+    // Build the input AST by hand, as an external parser adapter would. The
+    // schema starts empty and gains the `wrapper` input kind on the fly.
+    let mut ast = Ast::with_schema(yeast::schema::Schema::new());
+    let wrapper_kind = ast.register_kind("wrapper");
+    let root = ast.create_node_with_range(
+        wrapper_kind,
+        NodeContent::DynamicString(String::new()),
+        BTreeMap::new(),
+        true,
+        None,
+    );
+    ast.set_root(root);
+
+    // Desugaring the hand-built AST applies the rule, producing `assignment`
+    // even though the AST was built against a schema with no output kinds.
+    let out = desugarer
+        .run_from_ast(ast)
+        .expect("run_from_ast should succeed");
+    let out_root = out.get_node(out.get_root()).expect("root exists");
+    assert_eq!(out_root.kind_name(), "assignment");
+    let dump = dump_ast(&out, out.get_root(), "");
+    assert!(dump.contains("assignment"), "unexpected dump: {dump}");
+    assert!(dump.contains("left"), "unexpected dump: {dump}");
+    assert!(dump.contains("leaf"), "unexpected dump: {dump}");
+}
+
+#[test]
 fn test_query_no_match() {
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run("x = 1").unwrap();
+    let ast = parse_input("x = 1");
 
     let query = yeast::query!(
         (program
@@ -293,8 +424,7 @@ fn test_query_skips_extras_in_positional_match() {
     // captured comment to nothing (a common idiom, e.g.
     // `(comment) => ()` in Swift) leaves the capture's match-list empty
     // and causes the transform to fail with "Variable X has 0 matches".
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run("[1, # comment\n2]").unwrap();
+    let ast = parse_input("[1, # comment\n2]");
 
     // Navigate to the `array` node: program -> array.
     let mut cursor = AstCursor::new(&ast);
@@ -323,14 +453,13 @@ fn test_query_skips_extras_in_positional_match() {
 }
 
 #[test]
-fn test_reachable_nodes_excludes_orphaned_rewrite_nodes() {
+fn test_output_arena_contains_only_constructed_nodes() {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
     let phases: Vec<Phase> = vec![Phase::new(
         "test",
-        PhaseKind::Repeating,
-        vec![yeast::rule!((integer) => (identifier "replaced"))],
+        with_passthrough_rules(vec![yeast::rule!((integer) => (identifier "replaced"))]),
     )];
     let runner: Runner = Runner::with_schema(lang, &schema, &phases);
 
@@ -338,10 +467,7 @@ fn test_reachable_nodes_excludes_orphaned_rewrite_nodes() {
     let ast = runner.run(input).unwrap();
     let reachable_ids = ast.reachable_node_ids();
 
-    assert!(
-        ast.nodes().len() > reachable_ids.len(),
-        "expected rewrite to leave orphaned arena nodes"
-    );
+    assert_eq!(ast.nodes().len(), reachable_ids.len());
 
     let dump = dump_ast(&ast, ast.get_root(), input);
     assert!(dump.contains("identifier \"replaced\""));
@@ -350,8 +476,7 @@ fn test_reachable_nodes_excludes_orphaned_rewrite_nodes() {
 
 #[test]
 fn test_query_repeated_capture() {
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run("x, y, z = 1").unwrap();
+    let ast = parse_input("x, y, z = 1");
 
     let query = yeast::query!(
         (assignment
@@ -375,8 +500,7 @@ fn test_query_repeated_capture() {
 #[test]
 fn test_capture_unnamed_node_parenthesized() {
     // `("=") @op` captures the unnamed `=` token between left and right.
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run("x = 1").unwrap();
+    let ast = parse_input("x = 1");
 
     let query = yeast::query!(
         (assignment
@@ -403,8 +527,7 @@ fn test_capture_unnamed_node_parenthesized() {
 fn test_capture_bare_underscore_repeated() {
     // `_` matches named and unnamed nodes in bare-child position. On this
     // assignment shape, bare children correspond to unnamed tokens (the `=`).
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run("x = 1").unwrap();
+    let ast = parse_input("x = 1");
 
     let query = yeast::query!((assignment _* @all));
 
@@ -425,8 +548,7 @@ fn test_capture_bare_underscore_repeated() {
 #[test]
 fn test_capture_unnamed_node_bare_literal() {
     // `"=" @op` (without surrounding parens) is the same as `("=") @op`.
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run("x = 1").unwrap();
+    let ast = parse_input("x = 1");
 
     let query = yeast::query!(
         (assignment
@@ -454,8 +576,7 @@ fn test_bare_underscore_matches_unnamed() {
     // Bare `_` matches any node, including unnamed tokens, while `(_)`
     // matches only named nodes. Demonstrate by matching the unnamed `=`
     // token in the implicit `child` field of an `assignment`.
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run("x = 1").unwrap();
+    let ast = parse_input("x = 1");
 
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child();
@@ -493,8 +614,7 @@ fn test_bare_forms_in_field_position() {
     // field's value, not just in the bare-children position. This is
     // syntactic sugar for `(_)` / `("…")` and goes through the same
     // code paths.
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run("x = 1").unwrap();
+    let ast = parse_input("x = 1");
 
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child();
@@ -532,8 +652,7 @@ fn test_forward_scan_finds_unnamed_token_late() {
     // query for `("end")` skip past the first two and match the third.
     // Without forward-scan, the matcher took the first child unconditionally
     // and failed.
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run("for x in list do\n  y\nend").unwrap();
+    let ast = parse_input("for x in list do\n  y\nend");
 
     // Navigate: program > for > do (the body wrapper).
     let mut cursor = AstCursor::new(&ast);
@@ -559,8 +678,7 @@ fn test_forward_scan_preserves_order() {
     // order. A query for ("end") then ("do") should fail because `do`
     // appears before `end` in the source order; once forward-scan has
     // consumed `end`, the iterator is exhausted.
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run("for x in list do\n  y\nend").unwrap();
+    let ast = parse_input("for x in list do\n  y\nend");
 
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child();
@@ -579,37 +697,94 @@ fn test_forward_scan_preserves_order() {
 // ---- Tree builder tests ----
 
 #[test]
-fn test_tree_builder() {
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let mut ast = runner.run("x = 1").unwrap();
-    let input = "x = 1";
+fn test_bare_leaf_rule_result_inherits_parsed_source_text() {
+    let rules: Vec<Rule> = yeast::rules! {
+        input: "tests/input-types.yml",
+        output: "tests/node-types.yml",
+        [
+            (integer) => (identifier),
+        ]
+    };
+    let ast = run_and_ast("x = 1", rules);
+    let dump = dump_ast(&ast, ast.get_root(), "x = 1");
 
-    let query = yeast::query!(
-        (program
-            child: (assignment
-                left: (_) @left
-                right: (_) @right
-            )
-        )
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          assignment
+            left: identifier "x"
+            right: identifier "1"
+    "#,
+    );
+    assert!(ast.reachable_node_ids().into_iter().any(|id| {
+        let node = ast.get_node(id).unwrap();
+        node.kind_name() == "identifier" && node.opt_string_content().as_deref() == Some("1")
+    }));
+}
+
+#[test]
+fn test_bare_leaf_rule_result_inherits_synthetic_content() {
+    let ast = run_ast_with_rules(
+        synthetic_integer_ast("synthetic"),
+        yeast::rules! {
+            input: "tests/input-types.yml",
+            output: "tests/node-types.yml",
+            [
+                rule!((integer) => (identifier)),
+            ]
+        },
+    );
+    let dump = dump_ast(&ast, ast.get_root(), "");
+
+    assert_dump_eq(
+        &dump,
+        r#"
+        identifier "synthetic"
+    "#,
+    );
+}
+
+#[test]
+fn test_bare_leaf_rule_result_inherits_empty_content() {
+    let ast = run_ast_with_rules(
+        synthetic_integer_ast(""),
+        yeast::rules! {
+            input: "tests/input-types.yml",
+            output: "tests/node-types.yml",
+            [
+                (integer) => (identifier),
+            ]
+        },
     );
 
-    let mut captures = yeast::captures::Captures::new();
-    query.do_match(&ast, ast.get_root(), &mut captures).unwrap();
+    assert!(ast.reachable_node_ids().into_iter().any(|id| {
+        let node = ast.get_node(id).unwrap();
+        node.kind_name() == "identifier" && node.opt_string_content().as_deref() == Some("")
+    }));
+}
+
+#[test]
+fn test_tree_builder() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
 
     // Swap left and right
-    let fresh = yeast::tree_builder::FreshScope::new();
     let mut user_ctx = ();
-    let mut ctx = yeast::build::BuildCtx::new(&mut ast, &captures, &fresh, &mut user_ctx);
-    let new_id = yeast::tree!(ctx,
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let left = yeast::tree!((identifier "x"));
+    let right = yeast::tree!((integer "1"));
+    let new_id = yeast::tree!(
         (program
             child: (assignment
-                left: {ctx.capture("right")}
-                right: {ctx.capture("left")}
+                left: {right}
+                right: {left}
             )
         )
     );
 
-    let dump = dump_ast(ctx.ast, new_id, input);
+    let dump = dump_ast(ctx.output, new_id, input);
     assert_dump_eq(
         &dump,
         r#"
@@ -617,6 +792,283 @@ fn test_tree_builder() {
           assignment
             left: integer "1"
             right: identifier "x"
+    "#,
+    );
+}
+
+/// Builds `(assignment left: … right: [(integer #{value})])`, where a `None`
+/// `value` leaves `right` unset rather than producing an `integer` with no
+/// content.
+fn build_choice_right(
+    input_ast: &Ast,
+    ast: &mut OutputAst,
+    value: Option<yeast::Id>,
+) -> (yeast::OutputId, yeast::OutputId) {
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(input_ast, ast, &mut user_ctx);
+    let left = yeast::tree!((identifier "x"));
+    let root = yeast::tree!(
+        (assignment
+            left: {left}
+            right: [(integer #{value})]
+        )
+    );
+    (root, left)
+}
+
+#[test]
+fn test_choice_is_set_when_the_value_is_present() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+
+    // Any node will do as the interpolated value; `#{…}` renders its source text.
+    let mut cursor = AstCursor::new(&input_ast);
+    cursor.goto_first_child();
+    let some = cursor.node_id();
+
+    let (root, _) = build_choice_right(&input_ast, &mut ast, Some(some));
+    assert_dump_eq(
+        &dump_ast(&ast, root, input),
+        r#"
+        assignment
+          left: identifier "x"
+          right: integer "x = 1"
+    "#,
+    );
+}
+
+#[test]
+fn test_choice_is_unset_when_the_value_is_absent() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+
+    let (root, _) = build_choice_right(&input_ast, &mut ast, None);
+    assert_dump_eq(
+        &dump_ast(&ast, root, input),
+        r#"
+        assignment
+          left: identifier "x"
+    "#,
+    );
+}
+
+#[test]
+fn test_choice_uses_first_constructible_alternative() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let absent: Option<yeast::Id> = None;
+    let root = yeast::tree!(
+        (assignment
+            left: [
+                (identifier #{absent})
+                (identifier "fallback")
+            ]
+        )
+    );
+
+    assert_dump_eq(
+        &dump_ast(ctx.output, root, input),
+        r#"
+        assignment
+          left: identifier "fallback"
+    "#,
+    );
+}
+
+#[test]
+fn test_choice_guard_skips_an_alternative() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let use_first = false;
+    let root = yeast::tree!(
+        (assignment
+            left: [
+                (identifier "first") if { use_first }
+                (identifier "fallback")
+            ]
+        )
+    );
+
+    assert_dump_eq(
+        &dump_ast(ctx.output, root, input),
+        r#"
+        assignment
+          left: identifier "fallback"
+    "#,
+    );
+}
+
+#[test]
+fn test_choice_fallback_can_reuse_consumed_splice() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let items = vec![
+        yeast::tree!((identifier "x")),
+        yeast::tree!((identifier "y")),
+    ];
+    let use_first = false;
+    let root = yeast::tree!(
+        (assignment
+            left: [
+                (left_assignment_list
+                    child: {items}
+                    child: (identifier "first")) if { use_first }
+                (left_assignment_list
+                    child: {items}
+                    child: (identifier "fallback"))
+            ]
+        )
+    );
+
+    assert_dump_eq(
+        &dump_ast(ctx.output, root, input),
+        r#"
+        assignment
+          left:
+            left_assignment_list
+              identifier "x"
+              identifier "y"
+              identifier "fallback"
+    "#,
+    );
+}
+
+#[test]
+fn test_root_choice_returns_an_optional_node() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+    let node_count = ast.nodes().len();
+
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let absent: Option<yeast::Id> = None;
+    let missing = yeast::tree!([(identifier #{absent})]);
+    assert_eq!(missing, None);
+    assert_eq!(ctx.output.nodes().len(), node_count);
+
+    let root = yeast::tree!([
+        (identifier #{absent})
+        (identifier "fallback")
+    ])
+    .unwrap();
+    assert_dump_eq(
+        &dump_ast(ctx.output, root, input),
+        r#"
+        identifier "fallback"
+    "#,
+    );
+
+    let source = ctx.ast().get_root();
+    let located = yeast::tree!([
+        (identifier #{absent})
+        (identifier "located fallback" location: {source})
+    ])
+    .unwrap();
+    assert_eq!(
+        ctx.output.get_node(located).unwrap().source_range(),
+        ctx.ast().get_node(source).unwrap().source_range()
+    );
+}
+
+#[test]
+fn test_choice_preflights_dependencies_before_constructing() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+    let node_count = ast.nodes().len();
+
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let absent: Option<yeast::Id> = None;
+    let root = yeast::tree!(
+        (assignment
+            left: [
+                (left_assignment_list
+                    child: (identifier "would-be-orphan")
+                    child: (identifier #{absent}))
+                (identifier "fallback")
+            ]
+        )
+    );
+
+    assert_eq!(ctx.output.nodes().len(), node_count + 2);
+    assert_dump_eq(
+        &dump_ast(ctx.output, root, input),
+        r#"
+        assignment
+          left: identifier "fallback"
+    "#,
+    );
+}
+
+#[test]
+fn test_choice_propagates_through_nested_nodes() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+
+    // The absent value sits two levels below the choice, so the whole
+    // `left_assignment_list` subtree is abandoned along with it.
+    let absent: Option<yeast::Id> = None;
+    let right = yeast::tree!((integer "1"));
+    let root = yeast::tree!(
+        (assignment
+            left: [(left_assignment_list child: (identifier #{absent}))]
+            right: {right}
+        )
+    );
+
+    assert_dump_eq(
+        &dump_ast(ctx.output, root, input),
+        r#"
+        assignment
+          right: integer "1"
+    "#,
+    );
+}
+
+#[test]
+fn test_innermost_choice_catches_first() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+
+    // The inner choice catches, so only `child` is dropped; `left` survives.
+    let absent: Option<yeast::Id> = None;
+    let root = yeast::tree!(
+        (assignment
+            left: [
+                (left_assignment_list child: [(identifier #{absent})])
+            ]
+        )
+    );
+
+    assert_dump_eq(
+        &dump_ast(ctx.output, root, input),
+        r#"
+        assignment
+          left: left_assignment_list
     "#,
     );
 }
@@ -636,7 +1088,7 @@ fn ruby_rules() -> Vec<Rule> {
         )
         =>
         (assignment
-            left: (identifier $tmp)
+            left: (identifier "assignment_tmp")
             right: {right}
         )
         {left.iter().enumerate().map(|(i, &lhs)|
@@ -644,7 +1096,7 @@ fn ruby_rules() -> Vec<Rule> {
                 (assignment
                     left: {lhs}
                     right: (element_reference
-                        object: (identifier $tmp)
+                        object: (identifier "assignment_tmp")
                         index: (integer #{i})
                     )
                 )
@@ -664,12 +1116,12 @@ fn ruby_rules() -> Vec<Rule> {
             method: (identifier "each")
             block: (block
                 parameters: (block_parameters
-                    parameter: (identifier $tmp)
+                    parameter: (identifier "loop_tmp")
                 )
                 body: (block_body
                     stmt: (assignment
                         left: {pat}
-                        right: (identifier $tmp)
+                        right: (identifier "loop_tmp")
                     )
                     stmt: {body}
                 )
@@ -688,19 +1140,19 @@ fn test_desugar_multiple_assignment() {
         r#"
         program
           assignment
-            left: identifier "$tmp-0"
+            left: identifier "assignment_tmp"
             right: identifier "e"
           assignment
             left: identifier "x"
             right:
               element_reference
-                object: identifier "$tmp-0"
+                object: identifier "assignment_tmp"
                 index: integer "0"
           assignment
             left: identifier "y"
             right:
               element_reference
-                object: identifier "$tmp-0"
+                object: identifier "assignment_tmp"
                 index: integer "1"
     "#,
     );
@@ -721,77 +1173,136 @@ fn test_desugar_for_loop() {
                     stmt:
                       assignment
                         left: identifier "x"
-                        right: identifier "$tmp-0"
+                        right: identifier "loop_tmp"
                       identifier "y"
                 parameters:
                   block_parameters
-                    parameter: identifier "$tmp-0"
+                    parameter: identifier "loop_tmp"
             method: identifier "each"
             receiver: identifier "list"
     "#,
     );
 }
 
-#[test]
-fn test_shorthand_rule() {
-    let rule: Rule = yeast::rule!(
-        (assignment
-            left: (_) @method
-            right: (_) @receiver
-        )
-        => call
-    );
+#[derive(Clone, Default)]
+struct GuardTestContext {
+    enabled: bool,
+}
 
-    let dump = run_and_dump("x = 1", vec![rule]);
+fn guarded_integer_rules() -> Vec<Rule<GuardTestContext>> {
+    vec![
+        yeast::rule!(
+            (integer) @@raw
+            where ctx.enabled && ast.source_text(raw) == "1"
+            =>
+            identifier {
+                assert!(ctx.enabled);
+                tree!((identifier "guarded"))
+            }
+        ),
+        yeast::rule!((integer) => (identifier "fallback")),
+    ]
+}
+
+#[test]
+fn test_rule_guard_reads_raw_capture_and_user_context() {
+    fn run(input: &str, enabled: bool) -> String {
+        let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+        let schema =
+            yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang)
+                .unwrap();
+        let phases = vec![Phase::new(
+            "test",
+            with_passthrough_rules(guarded_integer_rules()),
+        )];
+        let runner = Runner::with_schema(lang, &schema, &phases);
+        let mut user_ctx = GuardTestContext { enabled };
+        let ast = runner.run_with_ctx(input, &mut user_ctx).unwrap();
+        dump_ast(&ast, ast.get_root(), input)
+    }
+
     assert_dump_eq(
-        &dump,
+        &run("1", true),
         r#"
         program
-          call
-            method: identifier "x"
-            receiver: integer "1"
+          identifier "guarded"
+    "#,
+    );
+    assert_dump_eq(
+        &run("2", true),
+        r#"
+        program
+          identifier "fallback"
+    "#,
+    );
+    assert_dump_eq(
+        &run("1", false),
+        r#"
+        program
+          identifier "fallback"
     "#,
     );
 }
 
 #[test]
-fn test_chained_rules_output_only_kind() {
-    // Exercise rule chaining where an intermediate kind exists only in the
-    // output schema (not in the input tree-sitter grammar):
-    //   assignment        → first_node          (input → output-only)
-    //   first_node        → second_node         (output-only → output-only)
-    // The matcher must look up `first_node` against the schema, which only
-    // knows about it via the YAML node-types file.
-    let assignment_to_first = yeast::rule!(
+fn test_rule_guard_binds_optional_and_repeated_raw_captures() {
+    fn rules() -> Vec<Rule> {
+        vec![
+            yeast::rule!(
+                (array (_)? @@first (_)* @@rest)
+                where first.is_some() && rest.is_empty()
+                =>
+                (identifier "single")
+            ),
+            yeast::rule!((array) => (identifier "multiple")),
+        ]
+    }
+
+    assert_dump_eq(
+        &run_and_dump("[1]", rules()),
+        r#"
+        program
+          identifier "single"
+    "#,
+    );
+    assert_dump_eq(
+        &run_and_dump("[1, 2]", rules()),
+        r#"
+        program
+          identifier "multiple"
+    "#,
+    );
+}
+
+#[test]
+fn test_multiple_translation_phases_are_rejected() {
+    let assignment_to_first: Rule = yeast::rule!(
         (assignment
             left: (_) @left
             right: (_) @right
         )
-        => first_node
+        => (first_node left: {left} right: {right})
     );
-    let first_to_second = yeast::rule!(
+    let first_to_second: Rule = yeast::rule!(
         (first_node
             left: (_) @left
             right: (_) @right
         )
-        => second_node
+        => (second_node left: {left} right: {right})
     );
 
-    let dump = run_and_dump("x = 1", vec![assignment_to_first, first_to_second]);
-    assert_dump_eq(
-        &dump,
-        r#"
-        program
-          second_node
-            left: identifier "x"
-            right: integer "1"
-    "#,
-    );
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let phases = vec![
+        Phase::new("first", with_passthrough_rules(vec![assignment_to_first])),
+        Phase::new("second", with_passthrough_rules(vec![first_to_second])),
+    ];
+    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+    let error = runner.run("x = 1").unwrap_err();
+    assert!(error.contains("requires exactly one translation phase"));
 }
 
-// A rule that swaps `assignment.left` and `assignment.right`. Each
-// application produces another `assignment` whose query the rule
-// matches again, so without the once-per-node default it would loop.
 fn swap_assignment_rule() -> Rule {
     yeast::rule!(
         (assignment
@@ -807,21 +1318,9 @@ fn swap_assignment_rule() -> Rule {
 }
 
 #[test]
-fn test_repeated_rule_hits_depth_limit() {
-    // With `.repeated()` the rule is allowed to fire on its own output,
-    // which cycles forever and trips the rewrite-depth safety net.
-    let err = run_and_get_error("x = 1", vec![swap_assignment_rule().repeated()]);
-    assert!(
-        err.contains("exceeded maximum rewrite depth"),
-        "expected depth-limit error, got: {err}"
-    );
-}
-
-#[test]
-fn test_default_rule_fires_at_most_once_per_node() {
-    // Without `.repeated()` (the default), a rule fires at most once on a
-    // given node. The swap therefore happens exactly once and the desugaring
-    // terminates cleanly.
+fn test_rule_output_is_not_reprocessed() {
+    // Translation applies a rule once to an input node and does not match
+    // rules against the output node.
     let dump = run_and_dump("x = 1", vec![swap_assignment_rule()]);
     assert_dump_eq(
         &dump,
@@ -834,75 +1333,9 @@ fn test_default_rule_fires_at_most_once_per_node() {
     );
 }
 
-// ---- Phase tests ----
-
-#[test]
-fn test_phased_desugaring() {
-    // Two phases that could equally have been a single one with chained
-    // rules. Splitting them makes the intent (cleanup, then desugar)
-    // explicit and provides per-phase error messages.
-    let cleanup = vec![yeast::rule!(
-        (assignment
-            left: (_) @left
-            right: (_) @right
-        )
-        => first_node
-    )];
-    let desugar = vec![yeast::rule!(
-        (first_node
-            left: (_) @left
-            right: (_) @right
-        )
-        => second_node
-    )];
-
-    let dump = run_phased_and_dump(
-        "x = 1",
-        vec![
-            Phase::new("cleanup", PhaseKind::Repeating, cleanup),
-            Phase::new("desugar", PhaseKind::Repeating, desugar),
-        ],
-    );
-    assert_dump_eq(
-        &dump,
-        r#"
-        program
-          second_node
-            left: identifier "x"
-            right: integer "1"
-    "#,
-    );
-}
-
-#[test]
-fn test_phase_error_includes_phase_name() {
-    // A repeated rule that loops; the error message should identify the
-    // phase that tripped the depth limit.
-    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
-    let schema =
-        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
-    let phases = vec![Phase::new(
-        "buggy",
-        PhaseKind::Repeating,
-        vec![swap_assignment_rule().repeated()],
-    )];
-    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
-    let err = runner
-        .run("x = 1")
-        .expect_err("expected runner to return an error");
-    assert!(
-        err.contains("Phase `buggy`"),
-        "error should mention the failing phase, got: {err}"
-    );
-    assert!(
-        err.contains("exceeded maximum rewrite depth"),
-        "error should mention the depth limit, got: {err}"
-    );
-}
-
-/// Helper: an exhaustive set of OneShot rules covering every node reachable
-/// (via captures) when translating `"x = 1"`.
-fn one_shot_xeq1_rules() -> Vec<Rule> {
+/// Helper: an exhaustive set of rules covering every node reachable via
+/// captures when translating `"x = 1"`.
+fn translation_xeq1_rules() -> Vec<Rule> {
     vec![
         yeast::rule!(
             (program (_)* @stmts)
@@ -920,15 +1353,11 @@ fn one_shot_xeq1_rules() -> Vec<Rule> {
 }
 
 #[test]
-fn test_one_shot_phase() {
+fn test_translation_phase() {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
-    let phases = vec![Phase::new(
-        "translate",
-        PhaseKind::OneShot,
-        one_shot_xeq1_rules(),
-    )];
+    let phases = vec![Phase::new("translate", translation_xeq1_rules())];
     let runner: Runner = Runner::with_schema(lang, &schema, &phases);
 
     let input = "x = 1";
@@ -947,19 +1376,19 @@ fn test_one_shot_phase() {
 }
 
 #[test]
-fn test_one_shot_phase_errors_when_no_rule_matches() {
+fn test_translation_phase_errors_when_no_rule_matches() {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
     // Drop the `integer` rule so the recursion has no rule for `integer`.
-    let mut rules = one_shot_xeq1_rules();
+    let mut rules = translation_xeq1_rules();
     rules.pop();
-    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let phases = vec![Phase::new("translate", rules)];
     let runner: Runner = Runner::with_schema(lang, &schema, &phases);
 
     let err = runner
         .run("x = 1")
-        .expect_err("expected OneShot to error on unmatched node");
+        .expect_err("expected translation to error on unmatched node");
     assert!(
         err.contains("Phase `translate`"),
         "error should name the phase, got: {err}"
@@ -970,12 +1399,89 @@ fn test_one_shot_phase_errors_when_no_rule_matches() {
     );
 }
 
-/// OneShot recursion must apply rules to *captured* nodes, even if the rule
+#[test]
+fn test_guard_runs_before_capture_translation() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let rules: Vec<Rule> = vec![
+        yeast::rule!(
+            (program (_)* @stmts)
+            =>
+            (program stmt: {stmts})
+        ),
+        // There is deliberately no rule for `identifier`. If this
+        // rule translated `@left` before binding it raw in the guard, the run
+        // would fail instead of evaluating the guard and falling through to
+        // the next assignment rule.
+        yeast::rule!(
+            (assignment left: (_) @left)
+            where ast.source_text(left) == "not-x"
+            =>
+            (first_node left: {left})
+        ),
+        yeast::rule!((assignment) => (identifier "fallback")),
+    ];
+    let phases = vec![Phase::new("translate", rules)];
+    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+
+    let input = "x = 1";
+    let ast = runner.run(input).unwrap();
+    let dump = dump_ast(&ast, ast.get_root(), input);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          stmt: identifier "fallback"
+    "#,
+    );
+}
+
+#[test]
+fn test_transform_context_propagates_to_nested_guard_without_mutating_caller() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let rules: Vec<Rule<GuardTestContext>> = vec![
+        yeast::rule!(
+            (program (_) @@stmt)
+            =>
+            program {
+                ctx.enabled = true;
+                let stmt = ctx.translate(stmt)?;
+                tree!((program stmt: {stmt}))
+            }
+        ),
+        yeast::rule!(
+            (integer)
+            where ctx.enabled
+            =>
+            (identifier "guarded")
+        ),
+    ];
+    let phases = vec![Phase::new("translate", rules)];
+    let runner = Runner::with_schema(lang, &schema, &phases);
+    let mut user_ctx = GuardTestContext { enabled: false };
+
+    let input = "1";
+    let ast = runner.run_with_ctx(input, &mut user_ctx).unwrap();
+    assert!(!user_ctx.enabled);
+    let dump = dump_ast(&ast, ast.get_root(), input);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          stmt: identifier "guarded"
+    "#,
+    );
+}
+
+/// Translation must apply rules to *captured* nodes, even if the rule
 /// returns a captured child verbatim. A buggy implementation that only
 /// recurses into the children of the rule's output (rather than into the
 /// captures) would leave the returned capture untransformed.
 #[test]
-fn test_one_shot_recurses_into_returned_capture() {
+fn test_translation_recurses_into_returned_capture() {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
@@ -994,13 +1500,13 @@ fn test_one_shot_recurses_into_returned_capture() {
         yeast::rule!((identifier) => (identifier "ID")),
         yeast::rule!((integer) => (integer "INT")),
     ];
-    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let phases = vec![Phase::new("translate", rules)];
     let runner: Runner = Runner::with_schema(lang, &schema, &phases);
 
     let input = "x = 1";
     let ast = runner.run(input).unwrap();
     let dump = dump_ast(&ast, ast.get_root(), input);
-    // `left` is an `identifier`; OneShot must apply the identifier rule to
+    // `left` is an `identifier`; translation must apply the identifier rule to
     // it before the assignment transform returns it verbatim.
     assert_dump_eq(
         &dump,
@@ -1011,13 +1517,13 @@ fn test_one_shot_recurses_into_returned_capture() {
     );
 }
 
-/// OneShot recursion must NOT descend into the children of the rule's output.
+/// Translation must NOT descend into the children of the rule's output.
 /// A rule may legitimately wrap a captured node in fresh output-schema nodes
 /// that have no matching rule of their own (since rule patterns target the
 /// input schema). Recursing into the output would erroneously try to find
 /// rules for those wrapper kinds and fail.
 #[test]
-fn test_one_shot_does_not_recurse_into_wrapper_output() {
+fn test_translation_does_not_recurse_into_wrapper_output() {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
@@ -1041,7 +1547,7 @@ fn test_one_shot_does_not_recurse_into_wrapper_output() {
         yeast::rule!((identifier) => (identifier "ID")),
         yeast::rule!((integer) => (integer "INT")),
     ];
-    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let phases = vec![Phase::new("translate", rules)];
     let runner: Runner = Runner::with_schema(lang, &schema, &phases);
 
     let input = "x = 1";
@@ -1063,7 +1569,7 @@ fn test_one_shot_does_not_recurse_into_wrapper_output() {
 }
 
 /// Verify that `@@name` capture markers skip the auto-translate prefix:
-/// the body sees the *raw* (input-schema) `Id` and can read its
+/// the body sees the *raw* (input-schema) `OutputId` and can read its
 /// source text or call `ctx.translate(...)` explicitly. Compare with
 /// the bare `@name` form, where the auto-translate prefix runs the
 /// same translation up front and the body sees the post-translate id.
@@ -1085,7 +1591,7 @@ fn test_raw_capture_marker() {
             (assignment left: (_) @@raw_lhs right: (_) @rhs)
             =>
             call {
-                let text = ctx.ast.source_text(raw_lhs);
+                let text = ctx.source_text(raw_lhs);
                 tree!((call
                     method: (identifier #{text.as_str()})
                     receiver: {rhs}))
@@ -1094,7 +1600,7 @@ fn test_raw_capture_marker() {
         yeast::rule!((identifier) => (identifier "ID")),
         yeast::rule!((integer) => (integer "INT")),
     ];
-    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let phases = vec![Phase::new("translate", rules)];
     let runner: Runner = Runner::with_schema(lang, &schema, &phases);
 
     let input = "x = 1";
@@ -1149,7 +1655,7 @@ fn test_raw_capture_marker_explicit_translate() {
         yeast::rule!((identifier) => (identifier "ID")),
         yeast::rule!((integer) => (integer "INT")),
     ];
-    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let phases = vec![Phase::new("translate", rules)];
     let runner: Runner = Runner::with_schema(lang, &schema, &phases);
 
     let input = "x = 1";
@@ -1171,8 +1677,7 @@ fn test_raw_capture_marker_explicit_translate() {
 
 #[test]
 fn test_cursor_navigation() {
-    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
-    let ast = runner.run("x = 1").unwrap();
+    let ast = parse_input("x = 1");
     let mut cursor = AstCursor::new(&ast);
 
     // Start at root
@@ -1200,46 +1705,8 @@ fn test_cursor_navigation() {
     assert!(!cursor.goto_parent());
 }
 
-#[test]
-fn test_desugar_for_with_multiple_assignment() {
-    let dump = run_and_dump("for a, b in list do\n  x\nend", ruby_rules());
-    assert_dump_eq(
-        &dump,
-        r#"
-        program
-          call
-            block:
-              block
-                body:
-                  block_body
-                    stmt:
-                      assignment
-                        left: identifier "$tmp-1"
-                        right: identifier "$tmp-0"
-                      assignment
-                        left: identifier "a"
-                        right:
-                          element_reference
-                            object: identifier "$tmp-1"
-                            index: integer "0"
-                      assignment
-                        left: identifier "b"
-                        right:
-                          element_reference
-                            object: identifier "$tmp-1"
-                            index: integer "1"
-                      identifier "x"
-                parameters:
-                  block_parameters
-                    parameter: identifier "$tmp-0"
-            method: identifier "each"
-            receiver: identifier "list"
-    "#,
-    );
-}
-
 /// Regression test: `#{capture}` in a template must render the *source text*
-/// of the captured node, not its arena `Id`. Captures are bound as `Id`,
+/// of the captured node, not its arena `OutputId`. Captures are bound as `OutputId`,
 /// whose `YeastDisplay` impl resolves to the captured node's source text.
 #[test]
 fn test_hash_brace_renders_capture_source_text() {
@@ -1261,19 +1728,41 @@ fn test_hash_brace_renders_capture_source_text() {
         r#"
         program
           call
-            arguments: argument_list "foo.bar()"
+            arguments: argument_list
             method: identifier "bar"
             receiver: identifier "foo"
     "#,
     );
 }
 
-/// Regression test: non-`Id` values in `#{expr}` still render via their
+#[test]
+fn test_choice_accepts_optional_translated_capture() {
+    let rule: Rule = rule!(
+        (call method: (identifier) @name)
+        =>
+        (call
+            method: [(identifier #{Some(name)})]
+            arguments: (argument_list)
+        )
+    );
+    let dump = run_and_dump("foo()", vec![rule]);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          call
+            arguments: argument_list
+            method: identifier "foo"
+    "#,
+    );
+}
+
+/// Regression test: non-`OutputId` values in `#{expr}` still render via their
 /// `Display` impl (covered by `YeastDisplay`'s blanket impls for primitives).
 #[test]
 fn test_hash_brace_renders_integer_expression() {
     let rule: Rule = rule!(
-        (identifier) @_
+        (identifier) @@_
         =>
         (identifier #{1 + 2})
     );
@@ -1306,7 +1795,7 @@ fn test_hash_brace_uses_capture_location_for_leaf() {
 
     let ast = run_and_ast("foo.bar()", vec![rule]);
 
-    let mut bar_ids: Vec<yeast::Id> = Vec::new();
+    let mut bar_ids: Vec<yeast::OutputId> = Vec::new();
     for id in ast.reachable_node_ids() {
         let Some(node) = ast.get_node(id) else {
             continue;
@@ -1321,6 +1810,508 @@ fn test_hash_brace_uses_capture_location_for_leaf() {
 
     assert_eq!(bar.start_byte(), 4);
     assert_eq!(bar.end_byte(), 7);
+}
+
+/// Regression test: tokens matched by a rule but elided from the output still
+/// contribute to the source location of the synthesized replacement node.
+#[test]
+fn test_elided_tokens_contribute_to_replacement_location() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        (call
+            method: {name}
+        )
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let call_ids: Vec<yeast::OutputId> = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter(|&id| {
+            ast.get_node(id)
+                .is_some_and(|node| node.kind_name() == "call")
+        })
+        .collect();
+
+    assert_eq!(call_ids.len(), 1, "expected exactly one reachable call");
+    let call_id = call_ids[0];
+    let call = ast.get_node(call_id).unwrap();
+
+    assert_eq!(call.start_byte(), 0);
+    assert_eq!(call.end_byte(), 9);
+}
+
+/// Nested nodes constructed by a rule derive their location from their own
+/// children rather than inheriting the range of the rule's matched root.
+#[test]
+fn test_nested_synthetic_node_uses_child_location() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        (call
+            method: {name}
+            receiver: {recv}
+            arguments: (argument_list argument: {recv})
+        )
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let call = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "call")
+        .expect("call exists");
+    assert_eq!(call.byte_range(), 0..9);
+
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    assert_eq!(arguments.byte_range(), 0..3);
+}
+
+/// A nested node with no explicit range or located children gets an empty
+/// location at the start of the rule's matched node.
+#[test]
+fn test_source_less_nested_node_uses_empty_match_start() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        (call
+            method: {name}
+            receiver: {recv}
+            arguments: (argument_list)
+        )
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    let range = arguments.source_range().unwrap();
+    assert_eq!(range.start_byte..range.end_byte, 0..0);
+}
+
+/// An explicit empty range at byte zero is a real location, not the sentinel
+/// for an absent location, and therefore contributes to parent ranges.
+#[test]
+fn test_empty_range_at_file_start_contributes_to_parent() {
+    use std::collections::BTreeMap;
+
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let mut ast = OutputAst::with_schema(schema);
+    let empty = Range {
+        start_byte: 0,
+        end_byte: 0,
+        start_point: Point::new(0, 0),
+        end_point: Point::new(0, 0),
+    };
+    let child =
+        ast.create_named_token_with_range("identifier", "synthetic".to_owned(), Some(empty));
+    let fields = BTreeMap::from([(ast.field_id_for_name("method").unwrap(), vec![child])]);
+    let parent = ast.create_node_with_range(
+        ast.id_for_node_kind("call").unwrap(),
+        NodeContent::DynamicString(String::new()),
+        fields,
+        true,
+        None,
+    );
+
+    assert_eq!(ast.get_node(parent).unwrap().source_range(), Some(empty));
+}
+
+/// A rule that only unwraps and returns a translated capture must not widen
+/// that capture to the wrapper's source range.
+#[test]
+fn test_returned_capture_keeps_its_location() {
+    let rule: Rule = rule!(
+        (call method: (identifier) @name)
+        =>
+        identifier { name }
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let identifier = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "identifier")
+        .expect("identifier exists");
+    assert_eq!(identifier.byte_range(), 4..7);
+}
+
+#[test]
+fn test_location_field_overrides_derived_location() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        (call
+            method: {left}
+            location: {right})
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let call = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "call")
+        .expect("call exists");
+
+    assert_eq!(call.byte_range(), 4..5);
+}
+
+#[test]
+fn test_location_none_makes_result_root_locationless() {
+    let rule: Rule = rule!(
+        (call method: (identifier) @method)
+        =>
+        (call method: {method} location: none)
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let call = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "call")
+        .expect("call exists");
+    assert_eq!(call.source_range(), None);
+}
+
+/// A nested `location: none` node stays locationless and does not widen its
+/// parent's derived range with an empty range at the match start.
+#[test]
+fn test_location_none_nested_node_does_not_widen_parent() {
+    let rule: Rule = rule!(
+        (call method: (identifier) @method)
+        =>
+        (call
+            method: (identifier "outer")
+            receiver: (call
+                method: {method}
+                arguments: (argument_list location: none)))
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let nodes: Vec<_> = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .collect();
+    let arguments = nodes
+        .iter()
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    assert_eq!(arguments.source_range(), None);
+
+    let mut call_ranges: Vec<_> = nodes
+        .iter()
+        .filter(|node| node.kind_name() == "call")
+        .map(|node| node.byte_range())
+        .collect();
+    call_ranges.sort_by_key(|range| (range.start, range.end));
+    // Without `location: none`, the inner call would be widened to 0..7.
+    assert_eq!(call_ranges, [0..9, 4..7]);
+}
+
+#[test]
+fn test_multiple_location_fields_combine_iterable_locations() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        (call
+            method: {left}
+            arguments: (argument_list
+                location: {[left]}
+                location: {[right, left]}))
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+
+    assert_eq!(arguments.byte_range(), 0..5);
+}
+
+#[test]
+fn test_location_and_named_fields_are_evaluated_left_to_right() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        call {
+            let mut order = Vec::new();
+            let call = tree!((call
+                location: {order.push("first location"); left}
+                method: {order.push("method"); left}
+                location: {order.push("second location"); right}
+                arguments: {order.push("arguments"); right}));
+            assert_eq!(
+                order,
+                ["first location", "method", "second location", "arguments"]
+            );
+            call
+        }
+    );
+
+    run_and_ast("x = 1", vec![rule]);
+}
+
+#[test]
+fn test_location_field_is_available_on_literal_nodes() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        (identifier "synthetic" location: {right})
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let identifier = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "identifier")
+        .expect("identifier exists");
+
+    assert_eq!(identifier.byte_range(), 4..5);
+}
+
+#[test]
+fn test_ignored_location_field_is_excluded_from_rule_result_location() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left)
+        =>
+        (call method: {left})
+    );
+
+    let language: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let config = DesugaringConfig::new()
+        .with_ignored_location_fields(["right"])
+        .add_phase("test", with_passthrough_rules(vec![rule]))
+        .with_output_node_types_yaml(OUTPUT_SCHEMA_YAML);
+    let runner: Runner = Runner::from_config(language, &config).unwrap();
+    let ast = runner.run("x = 1").unwrap();
+    let call = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "call")
+        .expect("call exists");
+    assert_eq!(call.byte_range(), 0..4);
+}
+
+/// Nodes allocated by an explicit recursive translation belong to that nested
+/// rule invocation, even when the outer rule returns one directly.
+#[test]
+fn test_explicit_recursive_translation_keeps_nested_rule_location() {
+    let program: Rule = rule!(
+        (program (_)* @stmts)
+        =>
+        (program stmt: {stmts})
+    );
+    let unwrap: Rule = rule!(
+        (call method: (identifier) @@name)
+        =>
+        identifier {
+            ctx.translate(name)?
+                .into_iter()
+                .next()
+                .ok_or("identifier translation produced no result")?
+        }
+    );
+    let translate_identifier: Rule = rule!((identifier) @@identifier => (identifier #{identifier}));
+
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let phases = vec![Phase::new(
+        "translate",
+        vec![program, unwrap, translate_identifier],
+    )];
+    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+    let ast = runner.run("foo.bar()").unwrap();
+    let identifier = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "identifier")
+        .expect("identifier exists");
+    assert_eq!(identifier.byte_range(), 4..7);
+}
+
+/// A `location` field assigns the captured node's range only to its node.
+#[test]
+fn test_location_field_assigns_capture_range_to_node_only() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        ) @@source
+        =>
+        call {
+            let arguments = tree!((argument_list
+                argument: (integer "0")
+                location: {source}));
+            tree!((call method: {name} receiver: {recv} arguments: {arguments}))
+        }
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    assert_eq!(arguments.byte_range(), 0..9);
+
+    let integer = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "integer")
+        .expect("integer exists");
+    assert_eq!(integer.byte_range(), 0..0);
+}
+
+/// Multiple `location` fields assign their union only to their node.
+#[test]
+fn test_multiple_location_fields_assign_union_to_node_only() {
+    let rule: Rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        call {
+            let arguments = tree!((argument_list
+                argument: (integer "0")
+                location: {recv}
+                location: {name}));
+            tree!((call method: {name} receiver: {recv} arguments: {arguments}))
+        }
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+    let arguments = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "argument_list")
+        .expect("argument list exists");
+    assert_eq!(arguments.byte_range(), 0..7);
+
+    let integer = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "integer")
+        .expect("integer exists");
+    assert_eq!(integer.byte_range(), 0..0);
+}
+
+/// Explicit ranges on multiple results must not be widened to the range of the
+/// input node matched by the rule.
+#[test]
+fn test_explicitly_located_multiple_results_keep_their_ranges() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @@left
+            right: (integer) @@right)
+        =>
+        identifier* {
+            let left_text = ctx.source_text(left);
+            let right_text = ctx.source_text(right);
+            let left_range = ctx.source_range(left);
+            let right_range = ctx.source_range(right);
+            vec![
+                ctx.literal_with_source_range("identifier", &left_text, left_range),
+                ctx.literal_with_source_range("identifier", &right_text, right_range),
+            ]
+        }
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let mut ranges: Vec<_> = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| {
+            let node = ast.get_node(id)?;
+            (node.kind_name() == "identifier").then(|| (ast.source_text(id), node.byte_range()))
+        })
+        .collect();
+    ranges.sort_by_key(|(_, range)| range.start);
+
+    assert_eq!(
+        ranges,
+        vec![("x".to_string(), 0..1), ("1".to_string(), 4..5)]
+    );
+}
+
+/// A range-backed node already carries an exact parsed range and must not be
+/// finalized as a synthetic result.
+#[test]
+fn test_range_backed_result_keeps_its_range() {
+    use std::collections::BTreeMap;
+
+    let rule: Rule = rule!(
+        (assignment left: (identifier) @@left)
+        =>
+        identifier {
+            let range = ctx.source_range(left).unwrap();
+            let kind = ctx.output.id_for_node_kind("identifier").unwrap();
+            ctx.create_node_with_range(
+                kind,
+                NodeContent::Range(range),
+                BTreeMap::new(),
+                true,
+                None,
+            )
+        }
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let identifiers: Vec<_> = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| {
+            let node = ast.get_node(id)?;
+            (node.kind_name() == "identifier").then(|| (ast.source_text(id), node.byte_range()))
+        })
+        .collect();
+
+    assert_eq!(identifiers, vec![("x".to_string(), 0..1)]);
 }
 
 // ---- `rules!` macro tests (compile-time type-checking) ----
@@ -1358,29 +2349,27 @@ fn test_rules_macro_accepts_bare_rule_body() {
     );
 }
 
-/// The bare-rule-body shorthand `=> output_kind` should also be accepted.
 #[test]
-fn test_rules_macro_accepts_bare_shorthand_form() {
+fn test_rules_macro_accepts_bare_guarded_rule() {
     let rules: Vec<Rule> = yeast::rules! {
         input: "tests/input-types.yml",
         output: "tests/node-types.yml",
         [
-            (assignment
-                left: (_) @method
-                right: (_) @receiver
-            )
-            => call,
+            (integer) @@raw
+            where ast.source_text(raw) == "1"
+            =>
+            (identifier "guarded"),
+
+            (integer) => (identifier "fallback"),
         ]
     };
 
-    let dump = run_and_dump("x = 1", rules);
+    let dump = run_and_dump("1", rules);
     assert_dump_eq(
         &dump,
         r#"
         program
-          call
-            method: identifier "x"
-            receiver: integer "1"
+          identifier "guarded"
     "#,
     );
 }
@@ -1449,11 +2438,11 @@ fn test_rules_macro_mixes_bare_and_explicit_forms() {
 // interface for Rust-bodied rules: the schema-vocabulary annotation
 // declares the rule's output kind for static analysis. Today's codegen
 // does NOT yet consume the annotation (it just adapts the returned
-// value to `Vec<Id>` via `IntoFieldIds`); these tests only exercise
+// value to `Vec<OutputId>` via `IntoFieldIds`); these tests only exercise
 // the parser + the runtime-equivalence property.
 
 /// Annotation form with `*` (repeated): the rule body returns a
-/// `Vec<Id>` and the annotation says the outputs are `assignment`s.
+/// `Vec<OutputId>` and the annotation says the outputs are `assignment`s.
 #[test]
 fn test_rule_annotation_repeated() {
     // Behaviourally equivalent to a two-node splice template.
@@ -1484,17 +2473,17 @@ fn test_rule_annotation_repeated() {
 }
 
 /// Annotation form with `?` (optional): the rule body returns
-/// `Option<Id>`. This uses `None` so the rule effectively deletes the
+/// `Option<OutputId>`. This uses `None` so the rule effectively deletes the
 /// node.
 #[test]
 fn test_rule_annotation_optional_none() {
     // Delete every `integer` (returning None yields no output nodes).
     let r: Rule = rule!(
-        (integer) @lit
+        (integer) @@lit
         =>
         integer? {
             let _ = lit;
-            None::<yeast::Id>
+            None::<yeast::OutputId>
         }
     );
     let ast = run_and_ast("42", vec![r]);
@@ -1506,7 +2495,7 @@ fn test_rule_annotation_optional_none() {
     }
 }
 
-/// Annotation form (single): the rule body returns a bare `Id`.
+/// Annotation form (single): the rule body returns a bare `OutputId`.
 #[test]
 fn test_rule_annotation_single() {
     // Identity on assignment nodes, expressed with the annotation form.
@@ -1527,28 +2516,4 @@ fn test_rule_annotation_single() {
         }
     }
     assert!(has_assignment, "expected an assignment node");
-}
-
-/// The shorthand `=> kind` form (no body, no annotation) must still be
-/// distinguished from the annotation form and continue to work.
-#[test]
-fn test_shorthand_still_works_alongside_annotation_syntax() {
-    let r: Rule = rule!(
-        (assignment left: (_) @method right: (_) @receiver)
-        =>
-        call
-    );
-    let ast = run_and_ast("x = 1", vec![r]);
-    let mut has_call = false;
-    for id in ast.reachable_node_ids() {
-        if let Some(n) = ast.get_node(id) {
-            if n.kind_name() == "call" {
-                has_call = true;
-            }
-        }
-    }
-    assert!(
-        has_call,
-        "shorthand form should still produce a `call` node"
-    );
 }

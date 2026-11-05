@@ -4,54 +4,66 @@ for i in 0..<10 {
 
 ---
 
-source_file
-  statement:
-    for_statement
-      body:
-        block
-          statement:
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value: simple_identifier "i"
-      collection:
-        range_expression
-          end: integer_literal "10"
-          op: ..<
-          start: integer_literal "0"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
       item:
-        pattern
-          bound_identifier: simple_identifier "i"
+        forStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "i"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          pattern:
+            identifierPattern
+              identifier: identifier "i"
+          inKeyword: in
+          forKeyword: for
+          sequence:
+            infixOperatorExpr
+              operator:
+                binaryOperatorExpr
+                  operator: binaryOperator "..<"
+              leftOperand:
+                integerLiteralExpr
+                  literal: integerLiteral "0"
+              rightOperand:
+                integerLiteralExpr
+                  literal: integerLiteral "10"
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        for_each_stmt
-          body:
-            block
-              stmt:
-                call_expr
-                  argument:
-                    argument
-                      value:
-                        name_expr
-                          identifier: identifier "i"
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
-          pattern:
-            name_pattern
-              identifier: identifier "i"
+        for_each_stmt source="for ⟨pattern⟩ in ⟨iterable⟩ ⟨body⟩"
+          pattern: identifier "i" source="i"
           iterable:
-            binary_expr
-              operator: infix_operator "..<"
-              left: int_literal "0"
-              right: int_literal "10"
+            binary_expr source="⟨left⟩⟨operator⟩⟨right⟩"
+              left: int_literal "0" source="0"
+              operator: infix_operator "..<" source="..<"
+              right: int_literal "10" source="10"
+          body:
+            block source="{\n  ⟨stmt⟩\n}"
+              stmt:
+                call_expr source="⟨callee⟩(⟨argument⟩)"
+                  callee: identifier "print" source="print"
+                  argument:
+                    argument source="⟨value⟩"
+                      value: identifier "i" source="i"

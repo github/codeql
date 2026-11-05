@@ -1,0 +1,80 @@
+{
+    "$end": 10,
+    "$lineStarts": [
+        0,
+        10
+    ],
+    "$pos": 0,
+    "endOfFileToken": {
+        "$end": 10,
+        "$pos": 10,
+        "kind": "token",
+        "text": "",
+        "tokenKind": "endOfFile"
+    },
+    "kind": "sourceFile",
+    "statements": [
+        {
+            "$end": 9,
+            "$pos": 0,
+            "item": {
+                "$end": 9,
+                "$pos": 0,
+                "attributes": [],
+                "bindings": [
+                    {
+                        "$end": 9,
+                        "$pos": 4,
+                        "initializer": {
+                            "$end": 9,
+                            "$pos": 6,
+                            "equal": {
+                                "$end": 7,
+                                "$pos": 6,
+                                "kind": "token",
+                                "text": "=",
+                                "tokenKind": "equal"
+                            },
+                            "kind": "initializerClause",
+                            "value": {
+                                "$end": 9,
+                                "$pos": 8,
+                                "kind": "integerLiteralExpr",
+                                "literal": {
+                                    "$end": 9,
+                                    "$pos": 8,
+                                    "kind": "token",
+                                    "text": "1",
+                                    "tokenKind": "integerLiteral(\"1\")"
+                                }
+                            }
+                        },
+                        "kind": "patternBinding",
+                        "pattern": {
+                            "$end": 5,
+                            "$pos": 4,
+                            "identifier": {
+                                "$end": 5,
+                                "$pos": 4,
+                                "kind": "token",
+                                "text": "x",
+                                "tokenKind": "identifier(\"x\")"
+                            },
+                            "kind": "identifierPattern"
+                        }
+                    }
+                ],
+                "bindingSpecifier": {
+                    "$end": 3,
+                    "$pos": 0,
+                    "kind": "token",
+                    "text": "let",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+                },
+                "kind": "variableDecl",
+                "modifiers": []
+            },
+            "kind": "codeBlockItem"
+        }
+    ]
+}

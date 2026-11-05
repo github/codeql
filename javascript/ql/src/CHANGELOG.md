@@ -1,3 +1,51 @@
+## 2.5.0
+
+### Query Metadata Changes
+
+* The `external/cwe/cwe-730` tag has been removed from `js/redos`, `js/polynomial-redos`, `js/regex-injection`, `js/regex-injection-more-sources`, `js/server-crash` and `js/loop-bound-injection`, because MITRE has marked CWE-730 as prohibited for vulnerability mapping. The queries retain their other CWE tags.
+
+### Minor Analysis Improvements
+
+* The `js/invalid-prototype-value` query no longer reports computed `__proto__` properties in object literals.
+
+## 2.4.8
+
+No user-facing changes.
+
+## 2.4.7
+
+No user-facing changes.
+
+## 2.4.6
+
+No user-facing changes.
+
+## 2.4.5
+
+### Minor Analysis Improvements
+
+* HTML files are now included in file-coverage stats, and will start showing up on the status page for CodeQL under "Scanned Files".
+
+## 2.4.4
+
+### Minor Analysis Improvements
+
+* The `js/superfluous-trailing-arguments` query no longer reports valid arguments passed to the `TransformStream` constructor.
+
+## 2.4.3
+
+### Minor Analysis Improvements
+
+* The `js/missing-rate-limiting` query now recognizes the `@fastify/rate-limit` package as a rate limiter.
+
+## 2.4.2
+
+No user-facing changes.
+
+## 2.4.1
+
+No user-facing changes.
+
 ## 2.4.0
 
 ### New Queries

@@ -21,6 +21,8 @@ module Generated {
   class NamedCrate extends Synth::TNamedCrate, ElementImpl::Element {
     override string getAPrimaryQlClass() { result = "NamedCrate" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the name of this named crate.
      */

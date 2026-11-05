@@ -16,7 +16,7 @@ query predicate instances(
   if x.isRaw() then isRaw = "yes" else isRaw = "no"
 }
 
-query predicate getAttr(RefExpr x, int index, Attr getAttr) {
+query predicate getAttr(RefExpr x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

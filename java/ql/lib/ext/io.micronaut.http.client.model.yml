@@ -1,0 +1,35 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "exchange", "(HttpRequest)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "exchange", "(HttpRequest,Argument)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "exchange", "(HttpRequest,Argument,Argument)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "exchange", "(HttpRequest,Class)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "exchange", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "exchange", "(String,Class)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "exchange", "(String,Class,Class)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "retrieve", "(HttpRequest)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "retrieve", "(HttpRequest,Argument)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "retrieve", "(HttpRequest,Argument,Argument)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "retrieve", "(HttpRequest,Class)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "retrieve", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "retrieve", "(String,Class)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "retrieve", "(String,Class,Class)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "HttpClient", True, "exchange", "(HttpRequest)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "HttpClient", True, "exchange", "(HttpRequest,Argument)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "HttpClient", True, "exchange", "(HttpRequest,Argument,Argument)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "HttpClient", True, "exchange", "(HttpRequest,Class)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "HttpClient", True, "exchange", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "HttpClient", True, "exchange", "(String,Class)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "HttpClient", True, "retrieve", "(HttpRequest)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "HttpClient", True, "retrieve", "(HttpRequest,Argument)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "HttpClient", True, "retrieve", "(HttpRequest,Argument,Argument)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "HttpClient", True, "retrieve", "(HttpRequest,Class)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "HttpClient", True, "retrieve", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.micronaut.http.client", "HttpClient", True, "toBlocking", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

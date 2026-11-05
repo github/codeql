@@ -1,4 +1,4 @@
-import Router from 'vue-router';
+import Router, { useRoute } from 'vue-router';
 
 export const router = new Router({
     routes: [
@@ -43,3 +43,5 @@ router.afterEach((to, from) => {
     to.query.x;
     from.query.x;
 });
+
+useRoute().query;

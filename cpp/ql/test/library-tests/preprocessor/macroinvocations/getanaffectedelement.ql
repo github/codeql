@@ -14,20 +14,8 @@ predicate reason(MacroInvocation mi, Element e, string reason) {
   mi.getEnclosingFunction() = e and reason = "getEnclosingFunction()"
 }
 
-string reasonspart(MacroInvocation mi, Element e) {
-  reason(mi, e, result)
-  or
-  exists(string a, string b |
-    a = reasonspart(mi, e) and
-    reason(mi, e, b) and
-    not a.splitAt(" ") >= b and
-    result = a + " " + b
-  )
-}
-
 string reasons(MacroInvocation mi, Element e) {
-  result = reasonspart(mi, e) and
-  not reasonspart(mi, e).length() > result.length()
+  result = concat(string reason | reason(mi, e, reason) | reason, " " order by reason)
 }
 
 from MacroInvocation mi, Element e

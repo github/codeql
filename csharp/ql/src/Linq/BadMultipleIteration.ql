@@ -38,7 +38,7 @@ predicate likelyNonRepeatableSequence(IEnumerableSequence seq) {
 
 /** An access to an enumerable sequence that potentially consumes sequence elements. */
 predicate potentiallyConsumingAccess(VariableAccess va) {
-  exists(ForeachStmt fes | va = fes.getIterableExpr())
+  exists(ForEachStmt fes | va = fes.getIterableExpr())
   or
   exists(MethodCall mc |
     va = mc.getArgument(0) and

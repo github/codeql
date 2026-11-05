@@ -31,7 +31,7 @@ is performed, making this safe from command injection.</p>
 Sanitize data passed to complex subsystems</a>.</li>
 <li>
 OWASP:
-<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+<a href="https://community.owasp.org/attacks/Command_Injection">Command Injection</a>.
 </li>
 
 

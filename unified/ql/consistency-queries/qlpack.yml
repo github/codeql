@@ -1,0 +1,5 @@
+name: codeql/unified-consistency-queries
+groups: [unified, test, consistency-queries]
+dependencies:
+  codeql/unified-all: ${workspace}
+warnOnImplicitThis: true

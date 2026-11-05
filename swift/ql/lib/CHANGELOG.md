@@ -1,3 +1,41 @@
+## 6.8.7
+
+No user-facing changes.
+
+## 6.8.6
+
+No user-facing changes.
+
+## 6.8.5
+
+No user-facing changes.
+
+## 6.8.4
+
+No user-facing changes.
+
+## 6.8.3
+
+No user-facing changes.
+
+## 6.8.2
+
+No user-facing changes.
+
+## 6.8.1
+
+No user-facing changes.
+
+## 6.8.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.3.3.
+
+## 6.7.2
+
+No user-facing changes.
+
 ## 6.7.1
 
 No user-facing changes.

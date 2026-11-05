@@ -189,7 +189,9 @@ class RouteHandlerLimitedByRateLimiterFlexible extends RateLimitingMiddleware in
 { }
 
 private class FastifyRateLimiter extends RateLimitingMiddleware {
-  FastifyRateLimiter() { this = DataFlow::moduleImport("fastify-rate-limit") }
+  FastifyRateLimiter() {
+    this = DataFlow::moduleImport(["fastify-rate-limit", "@fastify/rate-limit"])
+  }
 }
 
 /**

@@ -15,7 +15,7 @@
 import csharp
 import Linq.Helpers
 
-from ForeachStmtEnumerable fes, LocalVariableDeclStmt s
+from ForEachStmtEnumerable fes, LocalVariableDeclStmt s
 where missedOfTypeOpportunity(fes, s)
 select fes,
   "This foreach loop immediately uses 'as' to $@ - consider using '.OfType(...)' instead.", s,

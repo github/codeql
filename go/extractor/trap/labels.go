@@ -187,7 +187,7 @@ func findMethodOnTypeWithGivenReceiver(tp types.Type, object types.Object) *type
 	if definedType, ok := tp.(*types.Named); ok {
 		for i := 0; i < definedType.NumMethods(); i++ {
 			meth := definedType.Method(i)
-			if object == meth.Type().(*types.Signature).Recv() {
+			if object == meth.Type().(*types.Signature).Recv().Origin() {
 				return meth
 			}
 		}

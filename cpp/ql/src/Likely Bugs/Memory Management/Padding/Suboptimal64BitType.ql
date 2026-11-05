@@ -14,7 +14,7 @@ from
   PaddedType t, Architecture arch, WideCharType wc, int holes, int size, int percentage, int optimum
 where
   arch.pointerSize() = 64 and // Select 64-bit architecture
-  arch.wideCharSize() = (wc.getSize() * 8) and // Select Windows(sizeof(wchar_t == 2)) or non-Windows(sizeof(wchar_t == 4))
+  arch.wideCharSize() = wc.getBitWidth() and // Select Windows(sizeof(wchar_t == 2)) or non-Windows(sizeof(wchar_t == 4))
   t.isPrecise() and
   optimum = t.optimalSize(arch) and
   size = arch.paddedSize(t) and

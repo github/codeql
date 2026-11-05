@@ -36,7 +36,7 @@ void good() {
   <li>C++ FAQ: <a href="https://isocpp.org/wiki/faq/exceptions#what-to-throw">
     What should I throw?</a>, <a href="https://isocpp.org/wiki/faq/exceptions#what-to-catch">
     What should I catch?</a>.</li>
-  <li>Wikibooks: <a href="http://en.wikibooks.org/wiki/C%2B%2B_Programming/Exception_Handling#Throwing_objects">
+  <li>Wikibooks: <a href="https://en.wikibooks.org/wiki/C%2B%2B_Programming/Exception_Handling#Throwing_objects">
     Throwing objects</a>.</li>
 
 

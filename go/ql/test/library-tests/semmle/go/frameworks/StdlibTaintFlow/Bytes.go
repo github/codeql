@@ -335,6 +335,20 @@ func TaintStepTest_Cutright(sourceCQL interface{}) interface{} {
 	return right
 }
 
+func TaintStepTest_CutLastleft(sourceCQL interface{}) interface{} {
+	fromReader628 := sourceCQL.([]byte)
+	sep := []byte{}
+	left, _, _ := bytes.CutLast(fromReader628, sep)
+	return left
+}
+
+func TaintStepTest_CutLastright(sourceCQL interface{}) interface{} {
+	fromReader628 := sourceCQL.([]byte)
+	sep := []byte{}
+	_, right, _ := bytes.CutLast(fromReader628, sep)
+	return right
+}
+
 func TaintStepTest_CutPrefix(sourceCQL interface{}) interface{} {
 	fromReader628 := sourceCQL.([]byte)
 	sep := []byte{}
@@ -635,5 +649,15 @@ func RunAllTaints_Bytes() {
 		source := newSource(55)
 		out := TaintStepTest_BytesBufferPeek(source)
 		sink(55, out)
+	}
+	{
+		source := newSource(56)
+		out := TaintStepTest_CutLastleft(source)
+		sink(56, out)
+	}
+	{
+		source := newSource(57)
+		out := TaintStepTest_CutLastright(source)
+		sink(57, out)
 	}
 }

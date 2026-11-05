@@ -4,7 +4,7 @@
  */
 
 private import internal.ForExprImpl
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.LoopingExpr
 import codeql.rust.elements.Pat

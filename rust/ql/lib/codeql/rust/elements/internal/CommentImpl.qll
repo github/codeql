@@ -17,6 +17,7 @@ module Impl {
    * ```rust
    * // this is a comment
    * /// This is a doc comment
+   * fn documented() {}
    * ```
    */
   class Comment extends Generated::Comment {

@@ -8,11 +8,15 @@ load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "a
     "rust/extractor",
 )
 
-ra_ap_syntax_workspace, _, _ = str(ra_ap_syntax_label).partition("//")
+# `rust.ungram` is exported by the `ra_ap_syntax` crate, but only its default target is reachable
+# through the aggregated `@vendor_ts` repo (the per-crate package there is just an alias). The file
+# itself lives in the crate's own vendored repo, named `<vendor repo>__<crate package>`. Derive that
+# repo from the crate label so this stays version-independent.
+_vendor_repo, _, _crate_package = str(ra_ap_syntax_label).partition(":")[0].partition("//")
 
 alias(
     name = "rust.ungram",
-    actual = "%s//:rust.ungram" % ra_ap_syntax_workspace,
+    actual = "%s__%s//:rust.ungram" % (_vendor_repo, _crate_package),
     visibility = ["//rust/codegen:__pkg__"],
 )
 

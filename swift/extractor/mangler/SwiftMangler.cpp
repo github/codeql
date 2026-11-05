@@ -1,6 +1,5 @@
 #include "swift/extractor/mangler/SwiftMangler.h"
 #include "swift/extractor/infra/SwiftDispatcher.h"
-#include "swift/extractor/trap/generated/decl/TrapClasses.h"
 #include "swift/logging/SwiftLogging.h"
 
 #include <swift/AST/Module.h>
@@ -170,15 +169,12 @@ void SwiftMangler::indexExtensionsAndFilePrivateValues(llvm::ArrayRef<swift::Dec
   }
 }
 
-void SwiftMangler::indexClangExtensionsAndFilePrivateValues(
+uint32_t SwiftMangler::indexClangSubmoduleExtensionsAndFilePrivateValues(
     const clang::Module* clangModule,
-    swift::ClangModuleLoader* moduleLoader) {
-  if (!moduleLoader) {
-    return;
-  }
-
-  auto index = 0u;
+    swift::ClangModuleLoader* moduleLoader,
+    uint32_t index) {
   for (const auto& submodule : clangModule->submodules()) {
+    index = indexClangSubmoduleExtensionsAndFilePrivateValues(submodule, moduleLoader, index);
     if (auto* swiftSubmodule = moduleLoader->getWrapperForModule(submodule)) {
       llvm::SmallVector<swift::Decl*> children;
       swiftSubmodule->getTopLevelDecls(children);
@@ -191,6 +187,17 @@ void SwiftMangler::indexClangExtensionsAndFilePrivateValues(
       }
     }
   }
+  return index;
+}
+
+void SwiftMangler::indexClangExtensionsAndFilePrivateValues(
+    const clang::Module* clangModule,
+    swift::ClangModuleLoader* moduleLoader) {
+  if (!moduleLoader) {
+    return;
+  }
+
+  indexClangSubmoduleExtensionsAndFilePrivateValues(clangModule, moduleLoader, 0u);
 }
 
 SwiftMangledName SwiftMangler::visitGenericTypeParamDecl(const swift::GenericTypeParamDecl* decl) {

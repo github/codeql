@@ -5,7 +5,7 @@
 
 private import internal.VisibilityImpl
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.Path
+import codeql.rust.elements.VisibilityInner
 
 /**
  * A visibility modifier.

@@ -14,9 +14,9 @@ cd "$(dirname "$0")/.."
 
 # we are in a cargo workspace rooted at the git checkout
 BIN_DIR=../target/release
-"$BIN_DIR/codeql-extractor-unified" generate --dbscheme ql/lib/unified.dbscheme --library ql/lib/codeql/unified/Ast.qll
+"$BIN_DIR/codeql-extractor-unified" generate --dbscheme ql/lib/unified.dbscheme --library ql/lib/codeql/unified/internal/Ast.qll
 
-codeql query format -i ql/lib/codeql/unified/Ast.qll
+codeql query format -i ql/lib/codeql/unified/internal/Ast.qll
 
 rm -rf extractor-pack
 mkdir -p extractor-pack

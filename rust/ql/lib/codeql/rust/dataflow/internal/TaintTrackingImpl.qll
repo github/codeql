@@ -83,8 +83,7 @@ module RustTaintTrackingGen<DataFlowImpl::RustDataFlowInputSig I> implements
         pred.(Node::PostUpdateNode).getPreUpdateNode().asExpr(), _, succ, _)
     )
     or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(pred,
-      succ.(Node::FlowSummaryNode).getSummaryNode(), false, model)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(pred, succ, false, model)
   }
 
   /**

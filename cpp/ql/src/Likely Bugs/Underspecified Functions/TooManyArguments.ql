@@ -7,8 +7,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id cpp/futile-params
- * @tags correctness
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import cpp

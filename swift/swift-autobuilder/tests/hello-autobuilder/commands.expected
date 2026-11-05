@@ -1,1 +1,1 @@
-/usr/bin/xcodebuild build -project ./hello-autobuilder.xcodeproj -target hello-autobuilder CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+/usr/bin/xcodebuild build -project ./hello-autobuilder.xcodeproj -target hello-autobuilder CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO COMPILATION_CACHE_ENABLE_CACHING=NO SWIFT_ENABLE_COMPILE_CACHE=NO SWIFT_USE_INTEGRATED_DRIVER=NO

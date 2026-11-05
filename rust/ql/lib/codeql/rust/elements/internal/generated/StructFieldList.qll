@@ -28,6 +28,8 @@ module Generated {
   class StructFieldList extends Synth::TStructFieldList, FieldListImpl::FieldList {
     override string getAPrimaryQlClass() { result = "StructFieldList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th field of this struct field list (0-based).
      */

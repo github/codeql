@@ -11,6 +11,7 @@ private import rust
 private import SsaImpl as SsaImpl
 private import codeql.rust.controlflow.internal.Scope as Scope
 private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
+private import codeql.rust.elements.internal.VariableImpl::Impl as VariableImpl
 private import codeql.rust.internal.PathResolution
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.dataflow.Ssa
@@ -62,6 +63,9 @@ final class DataFlowCall extends TDataFlowCall {
   /** Gets the underlying call, if any. */
   Call asCall() { this = TCall(result) }
 
+  /** Gets the underlying await expression, if any. */
+  AwaitExpr asAwaitExpr() { this = TAwaitExpr(result) }
+
   predicate isImplicitDerefCall(Expr e, DerefChain derefChain, int i, Function target) {
     this = TImplicitDerefCall(e, derefChain, i, target)
   }
@@ -73,7 +77,8 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   DataFlowCallable getEnclosingCallable() {
-    result.asCfgScope() = this.asCall().getEnclosingCfgScope()
+    result.asCfgScope() =
+      [this.asCall().getEnclosingCfgScope(), this.asAwaitExpr().getEnclosingCfgScope()]
     or
     result.asCfgScope() = any(Expr e | this.isImplicitDerefCall(e, _, _, _)).getEnclosingCfgScope()
     or
@@ -81,7 +86,7 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   string toString() {
-    result = this.asCall().toString()
+    result = [this.asCall().toString(), this.asAwaitExpr().toString()]
     or
     exists(Expr e, DerefChain derefChain, int i |
       this.isImplicitDerefCall(e, derefChain, i, _) and
@@ -97,7 +102,7 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   Location getLocation() {
-    result = this.asCall().getLocation()
+    result = [this.asCall().getLocation(), this.asAwaitExpr().getLocation()]
     or
     result = any(Expr e | this.isImplicitDerefCall(e, _, _, _)).getLocation()
   }
@@ -150,8 +155,7 @@ private Expr getALastEvalNode(Expr e) {
     ) or
   result = e.(MatchExpr).getAnArm().getExpr() or
   result = e.(MacroExpr).getMacroCall().getMacroCallExpansion() or
-  result.(BreakExpr).getTarget() = e or
-  result = e.(ParenExpr).getExpr()
+  result.(BreakExpr).getTarget() = e
 }
 
 /**
@@ -179,17 +183,7 @@ Expr getPostUpdateReverseStep(Expr e, boolean preservesValue) {
 
 module LocalFlow {
   predicate flowSummaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
-    exists(FlowSummaryImpl::Public::SummarizedCallable c |
-      FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
-        nodeTo.(FlowSummaryNode).getSummaryNode(), true, model) and
-      c = nodeFrom.(FlowSummaryNode).getSummarizedCallable()
-    )
-    or
-    FlowSummaryImpl::Private::Steps::sourceLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-      nodeTo, model)
-    or
-    FlowSummaryImpl::Private::Steps::sinkLocalStep(nodeFrom,
-      nodeTo.(FlowSummaryNode).getSummaryNode(), model)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true, model)
   }
 
   pragma[nomagic]
@@ -235,8 +229,6 @@ module LocalFlow {
       nodeFrom.asExpr() = match.getScrutinee() and
       nodeTo.asPat() = match.getAnArm().getPat()
     )
-    or
-    nodeFrom.asExpr() = nodeTo.asExpr().(ParenExpr).getExpr()
   }
 
   pragma[nomagic]
@@ -367,7 +359,7 @@ private module Aliases {
  *
  * However, this would require support for [generalized reverse flow][1], which
  * is not yet implemented, so instead we simulate reverse flow where it would
- * have applied via the model for `<_ as core::ops::index::IndexMut>::index_mut`.
+ * have applied via the model for `<core::ops::index::IndexMut>::index_mut`.
  *
  * The same is the case for compound assignments like `a[i] += rhs`, which are
  * treated as `(*a.index_mut(i)).add_assign(rhs)`.
@@ -440,7 +432,7 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
       or
       result = "self" and this.isSelf()
       or
-      result = "closure self" and this.isClosureSelf()
+      result = "closure-self" and this.isClosureSelf()
     }
 
     ParamBase getParameterIn(ParamList ps) {
@@ -448,6 +440,8 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
       or
       result = ps.getSelfParam() and this.isSelf()
     }
+
+    ParamBase getParameter(Callable c) { result = this.getParameterIn(c.getParamList()) }
   }
 
   /**
@@ -488,15 +482,7 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
     node instanceof ImplicitBorrowNode or
     node instanceof DerefOutNode or
     node instanceof IndexOutNode or
-    node.asExpr() instanceof ParenExpr or
     nodeIsHidden(node.(PostUpdateNode).getPreUpdateNode())
-  }
-
-  private Expr stripParens(Expr e) {
-    not e instanceof ParenExpr and
-    result = e
-    or
-    result = stripParens(e.(ParenExpr).getExpr())
   }
 
   predicate neverSkipInPathGraph(Node node) {
@@ -504,16 +490,12 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
     or
     node.(Node::Node).asPat() = any(LetExpr e).getPat()
     or
-    node.(Node::Node).asExpr() = stripParens(any(AssignmentExpr a).getLhs())
+    node.(Node::Node).asExpr() = any(AssignmentExpr a).getLhs()
     or
     exists(MatchExpr match |
-      node.asExpr() = stripParens(match.getScrutinee()) or
+      node.asExpr() = match.getScrutinee() or
       node.asPat() = match.getAnArm().getPat()
     )
-    or
-    FlowSummaryImpl::Private::Steps::sourceLocalStep(_, node, _)
-    or
-    FlowSummaryImpl::Private::Steps::sinkLocalStep(node, _, _)
   }
 
   class DataFlowExpr = Expr;
@@ -583,7 +565,7 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
 
   class LambdaCallKind = LambdaCallKindAlias;
 
-  predicate forceHighPrecision(Content c) { none() }
+  predicate forceHighPrecision(Content c) { any() }
 
   class ContentApprox = ContentApproxAlias;
 
@@ -652,10 +634,7 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
    * variable.
    */
   predicate jumpStep(Node node1, Node node2) {
-    FlowSummaryImpl::Private::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
-      node2.(FlowSummaryNode).getSummaryNode())
-    or
-    FlowSummaryImpl::Private::Steps::sourceJumpStep(node1.(FlowSummaryNode).getSummaryNode(), node2)
+    FlowSummaryImpl::Private::Steps::summaryJumpStep(node1, node2)
     or
     exists(Const c |
       node1.asExpr() = c.getBody() and
@@ -1019,7 +998,11 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
    */
   predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
     (
-      receiver.asExpr() = call.asCall().(CallExprImpl::DynamicCallExpr).getFunction()
+      receiver.asExpr() =
+        [
+          call.asCall().(CallExprImpl::DynamicCallExpr).getFunction(),
+          call.asAwaitExpr().getExpr()
+        ]
       or
       call.isSummaryCall(_, receiver.(FlowSummaryNode).getSummaryNode())
     ) and
@@ -1077,7 +1060,7 @@ module VariableCapture {
     final class CapturedParameter extends CapturedVariable {
       ParamBase p;
 
-      CapturedParameter() { p = this.getParameter() }
+      CapturedParameter() { this.isParameter(p) }
 
       SourceParameterNode getParameterNode() { result.getParameter() = p }
     }
@@ -1087,33 +1070,22 @@ module VariableCapture {
     }
 
     class VariableWrite extends Expr {
-      Expr source;
       CapturedVariable v;
 
       VariableWrite() {
-        exists(AssignmentExpr assign, Variable::VariableWriteAccess write |
-          this = assign and
-          v = write.getVariable() and
-          assign.getLhs() = write and
-          assign.getRhs() = source
-        )
+        this = v.getName()
         or
-        this =
-          any(LetStmt ls |
-            v.getPat() = ls.getPat() and
-            ls.getInitializer() = source
-          )
+        v = this.(Variable::VariableWriteAccess).getVariable()
+      }
+
+      override predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) {
+        not this instanceof VariableWriteAccess and
+        super.hasCfgNode(bb, i)
         or
-        this =
-          any(LetExpr le |
-            v.getPat() = le.getPat() and
-            le.getScrutinee() = source
-          )
+        this.(VariableWriteAccess).getAssignmentExpr() = bb.getNode(i).getAstNode()
       }
 
       CapturedVariable getVariable() { result = v }
-
-      Expr getSource() { result = source }
     }
 
     class VariableRead extends Expr {
@@ -1152,7 +1124,7 @@ module VariableCapture {
     or
     result.(Flow::ExprNode).getExpr() = n.asExpr()
     or
-    result.(Flow::VariableWriteSourceNode).getVariableWrite().getSource() = n.asExpr()
+    result.(Flow::VariableWriteSourceNode).getVariableWrite() = n.getAstNode()
     or
     result.(Flow::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
@@ -1191,6 +1163,7 @@ private module Cached {
       Stages::DataFlowStage::ref() and
       call.hasEnclosingCfgScope()
     } or
+    TAwaitExpr(AwaitExpr await) { await.hasEnclosingCfgScope() } or
     TImplicitDerefCall(Expr e, DerefChain derefChain, int i, Function target) {
       TypeInference::implicitDerefChainBorrow(e, derefChain, _) and
       target = derefChain.getElement(i).getDerefFunction() and
@@ -1289,10 +1262,10 @@ private module Cached {
       FlowSummaryImpl::Public::AcceptingValue acceptingValue, string kind, string model
     |
       FlowSummaryImpl::Private::barrierGuardSpec(b, stack, acceptingValue, kind, model) and
-      e = FlowSummaryImpl::StepsInput::getSinkNode(b, stack.headOfSingleton()).asExpr() and
+      e = FlowSummaryImpl::Input2::getASinkReportingElement(b, stack.headOfSingleton()) and
       kmp = TMkPair(kind, model) and
       gv = convertAcceptingValue(acceptingValue) and
-      g = b.getCall()
+      g.(Call).getResolvedTarget() = b
     )
   }
 
@@ -1303,15 +1276,8 @@ private module Cached {
       FlowSummaryImpl::Public::BarrierElement b,
       FlowSummaryImpl::Private::SummaryComponentStack stack
     |
-      FlowSummaryImpl::Private::barrierSpec(b, stack, kind, model)
-    |
-      n = FlowSummaryImpl::StepsInput::getSourceNode(b, stack, false)
-      or
-      // For barriers like `Argument[0]` we want to target the pre-update node
-      n =
-        FlowSummaryImpl::StepsInput::getSourceNode(b, stack, true)
-            .(PostUpdateNode)
-            .getPreUpdateNode()
+      FlowSummaryImpl::Private::barrierSpec(b, stack, kind, model) and
+      n.asExpr() = FlowSummaryImpl::Input2::getASourceReportingElement(b, stack.headOfSingleton())
     )
     or
     ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,

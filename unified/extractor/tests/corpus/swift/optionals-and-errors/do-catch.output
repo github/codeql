@@ -6,66 +6,77 @@ do {
 
 ---
 
-source_file
-  statement:
-    do_statement
-      body:
-        block
-          statement:
-            try_expression
-              expr:
-                call_expression
-                  function: simple_identifier "foo"
-                  suffix:
-                    call_suffix
-                      arguments:
-                        value_arguments
-              operator:
-                try_operator
-      catch:
-        catch_block
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        doStmt
           body:
-            block
-              statement:
-                call_expression
-                  function: simple_identifier "print"
-                  suffix:
-                    call_suffix
-                      arguments:
-                        value_arguments
-                          argument:
-                            value_argument
-                              value: simple_identifier "error"
-          keyword: catch_keyword "catch"
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    tryExpr
+                      expression:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "foo"
+                      tryKeyword: try
+          catchClauses:
+            catchClause
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "error"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              catchItems:
+              catchKeyword: catch
+          doKeyword: do
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        try_expr
+        try_expr source="do ⟨body⟩ ⟨catch_clause⟩"
           body:
-            block
+            block source="{\n  ⟨stmt⟩\n}"
               stmt:
-                unary_expr
+                unary_expr source="⟨operator⟩ ⟨operand⟩"
                   operand:
-                    call_expr
-                      callee:
-                        name_expr
-                          identifier: identifier "foo"
-                  operator: prefix_operator "try"
+                    call_expr source="⟨callee⟩()"
+                      callee: identifier "foo" source="foo"
+                  operator: prefix_operator "try" source="try"
           catch_clause:
-            catch_clause
+            catch_clause source="catch ⟨body⟩"
               body:
-                block
+                block source="{\n  ⟨stmt⟩\n}"
                   stmt:
-                    call_expr
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
                       argument:
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "error"
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                        argument source="⟨value⟩"
+                          value: identifier "error" source="error"

@@ -5,82 +5,91 @@ enum Shape {
 
 ---
 
-source_file
-  statement:
-    class_declaration
-      body:
-        enum_class_body
-          member:
-            enum_entry
-              case:
-                enum_case_entry
-                  data_contents:
-                    enum_type_parameters
-                      parameter:
-                        enum_type_parameter
-                          name: simple_identifier "radius"
-                          type:
-                            type
-                              name:
-                                user_type
-                                  part:
-                                    simple_user_type
-                                      name: type_identifier "Double"
-                  name: simple_identifier "circle"
-            enum_entry
-              case:
-                enum_case_entry
-                  data_contents:
-                    enum_type_parameters
-                      parameter:
-                        enum_type_parameter
-                          name: simple_identifier "side"
-                          type:
-                            type
-                              name:
-                                user_type
-                                  part:
-                                    simple_user_type
-                                      name: type_identifier "Double"
-                  name: simple_identifier "square"
-      declaration_kind: enum
-      name: type_identifier "Shape"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        enumDecl
+          attributes:
+          modifiers:
+          name: identifier "Shape"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "circle"
+                          parameterClause:
+                            enumCaseParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                                enumCaseParameter
+                                  colon: :
+                                  modifiers:
+                                  type:
+                                    identifierType
+                                      name: identifier "Double"
+                                  firstName: identifier "radius"
+                      caseKeyword: case
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "square"
+                          parameterClause:
+                            enumCaseParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                                enumCaseParameter
+                                  colon: :
+                                  modifiers:
+                                  type:
+                                    identifierType
+                                      name: identifier "Double"
+                                  firstName: identifier "side"
+                      caseKeyword: case
+          enumKeyword: enum
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  case ⟨member⟩\n  case ⟨member⟩\n}"
+          modifier: modifier "enum" source="enum"
+          name_node: identifier "Shape" source="Shape"
           member:
-            class_like_declaration
+            class_like_declaration source="⟨name_node⟩⟨member⟩"
+              modifier: modifier "enum_case" source=""
+              name_node: identifier "circle" source="circle"
               member:
-                constructor_declaration
-                  body: block "circle(radius: Double)"
+                constructor_declaration source="circle(⟨parameter⟩)"
                   parameter:
-                    parameter
-                      pattern:
-                        name_pattern
-                          identifier: identifier "radius"
-                      type:
-                        named_type_expr
-                          name: identifier "Double"
-              modifier: modifier "enum_case"
-              name: identifier "circle"
-            class_like_declaration
+                    parameter source="⟨pattern⟩: ⟨type⟩"
+                      type: identifier "Double" source="Double"
+                      pattern: identifier "radius" source="radius"
+                  body: block source=""
+            class_like_declaration source="⟨name_node⟩⟨member⟩"
+              modifier: modifier "enum_case" source=""
+              name_node: identifier "square" source="square"
               member:
-                constructor_declaration
-                  body: block "square(side: Double)"
+                constructor_declaration source="square(⟨parameter⟩)"
                   parameter:
-                    parameter
-                      pattern:
-                        name_pattern
-                          identifier: identifier "side"
-                      type:
-                        named_type_expr
-                          name: identifier "Double"
-              modifier: modifier "enum_case"
-              name: identifier "square"
-          modifier: modifier "enum"
-          name: identifier "Shape"
+                    parameter source="⟨pattern⟩: ⟨type⟩"
+                      type: identifier "Double" source="Double"
+                      pattern: identifier "side" source="side"
+                  body: block source=""

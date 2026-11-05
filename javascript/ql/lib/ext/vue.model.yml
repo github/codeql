@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      # `useRoute()` — Vue Router's Composition API returns a route object whose URL-derived
+      # members are client-side remote flow sources.
+      - ["vue-router", "Member[useRoute].ReturnValue.Member[params,path,fullPath]", "browser-url-path"]
+      - ["vue-router", "Member[useRoute].ReturnValue.Member[query]", "browser-url-query"]
+      - ["vue-router", "Member[useRoute].ReturnValue.Member[hash]", "browser-url-fragment"]
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: summaryModel
+    data:
+      # `ref`, `shallowRef`, `toRef` — the wrapped argument flows to `.value`.
+      - ["vue", "Member[ref,shallowRef,toRef]", "Argument[0]", "ReturnValue.Member[value]", "value"]
+      # `reactive` — the wrapped argument taints the returned reactive object.
+      - ["vue", "Member[reactive]", "Argument[0]", "ReturnValue", "taint"]
+      # `computed(() => ...)` — function overload: the getter's return value flows to `.value`.
+      - ["vue", "Member[computed]", "Argument[0].ReturnValue", "ReturnValue.Member[value]", "value"]
+      # `computed({ get() { ... } })` — object overload: the `get` getter's return value flows to `.value`.
+      - ["vue", "Member[computed]", "Argument[0].Member[get].ReturnValue", "ReturnValue.Member[value]", "value"]

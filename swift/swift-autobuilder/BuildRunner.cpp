@@ -79,6 +79,9 @@ bool buildXcodeTarget(const XcodeTarget& target, bool dryRun) {
   argv.push_back(target.name);
   argv.push_back("CODE_SIGNING_REQUIRED=NO");
   argv.push_back("CODE_SIGNING_ALLOWED=NO");
+  argv.push_back("COMPILATION_CACHE_ENABLE_CACHING=NO");
+  argv.push_back("SWIFT_ENABLE_COMPILE_CACHE=NO");
+  argv.push_back("SWIFT_USE_INTEGRATED_DRIVER=NO");
   return run_build_command(argv, dryRun);
 }
 

@@ -1,3 +1,73 @@
+## 3.0.0
+
+### Breaking Changes
+
+* The `SEMMLE_TYPESCRIPT_HOME` environment variable is no longer supported. The JavaScript/TypeScript extractor now ignores the environment variable and always uses its bundled TypeScript compiler.
+
+### Minor Analysis Improvements
+
+* Added taint steps for `String.prototype.trimStart`, `trimEnd`, and `normalize`.
+* Fixed the flow summary for `Array.prototype.flatMap`. The `thisArg` argument now flows to the callback's `this` instead of its index parameter.
+
+## 2.10.4
+
+No user-facing changes.
+
+## 2.10.3
+
+### Minor Analysis Improvements
+
+* The Workflow SDK directives `"use workflow"` and `"use step"` are now recognized as known directives, so the `js/unknown-directive` query no longer flags them.
+
+### Bug Fixes
+
+* Improved Hapi route handler and request input tracking through custom route registration helpers and higher-order function wrappers.
+
+## 2.10.2
+
+### Minor Analysis Improvements
+
+* Fastify servers reached through a chainable configuration method, such as `fastify().withTypeProvider<T>()` or `fastify().setValidatorCompiler(...)`, are now recognized as the same server instance. Routes registered on such an instance are now attributed to their server, which may add results for queries such as `js/missing-rate-limiting` where routes were previously not recognized at all, and remove false positives where a globally registered plugin guards them.
+
+## 2.10.1
+
+No user-facing changes.
+
+## 2.10.0
+
+### New Features
+
+- Added support for recognizing the React Native Worklets `"worklet"` directive as a known directive.
+
+### Minor Analysis Improvements
+
+* Added support for regular expressions using the `d` flag.
+
+## 2.9.0
+
+### Major Analysis Improvements
+
+* It is now possible for custom models to refer to specific files in the codebase, using a package name of form `file:<path>`. The model should describe the public exports
+  of that file. This can be used to derive sources and sinks in code that imports the file, but note that sources and sinks will not generally be placed within the file itself.
+  For example, a source model `['file:lib/service.js', 'Member[getData].ReturnValue', 'remote']` could identify `require('../lib/service').getData()` as a source.
+
+### Minor Analysis Improvements
+
+* JavaScript security queries using the `response` threat model now track promise-wrapped client response data into promise fulfillment values. This may improve results for queries such as `js/xss` when response data is consumed through `.then(...)` chains.
+* The route object returned by Vue Router's `useRoute()` Composition API is now recognized as a client-side remote flow source, covering its `query`, `params`, `path`, `fullPath`, and `hash` members. These members are additionally reported under the corresponding `browser-url-query`, `browser-url-path`, and `browser-url-fragment` threat models.
+* Added flow models for Vue's `ref`, `shallowRef`, `toRef`, `reactive`, and `computed` Composition API helpers.
+* Added support for treating declared `inputs` properties in Sails Action2 controller files as remote flow sources. This may improve results for security queries such as `js/path-injection`.
+
+## 2.8.2
+
+No user-facing changes.
+
+## 2.8.1
+
+### Minor Analysis Improvements
+
+* Added support for Angular's `@HostListener('window:message', ...)` and `@HostListener('document:message', ...)` decorators as `postMessage` event handlers. The decorated method's event parameter is now recognized as a client-side remote flow source, and is considered by the `js/missing-origin-check` query.
+
 ## 2.8.0
 
 ### New Features
@@ -608,7 +678,7 @@ No user-facing changes.
 
 ### New Features
 
-* Improved support for [Restify](http://restify.com/) framework, leading to more results when scanning applications developed with this framework.
+* Improved support for [Restify](https://restify.com/) framework, leading to more results when scanning applications developed with this framework.
 * Added support for the [Spife](https://github.com/npm/spife) framework.
 
 ### Minor Analysis Improvements

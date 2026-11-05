@@ -36,10 +36,9 @@ module UserPromptInjection {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * An active threat-model source, considered as a flow source.
-   */
-  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
+  /** An active threat-model source, considered as a flow source. */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+  }
 
   /**
    * A prompt to an AI model, considered as a flow sink.

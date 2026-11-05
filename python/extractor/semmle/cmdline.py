@@ -1,4 +1,4 @@
-from optparse import OptionParser, OptionGroup, HelpFormatter
+from optparse import Option, OptionParser, OptionGroup, HelpFormatter
 import shlex
 import sys
 import os
@@ -8,9 +8,21 @@ from semmle import logging
 from semmle.util import VERSION
 
 
+DEFAULT_AUTOBUILDER_FLAGS = {"R", "c", "v", "verbosity", "z"}
+
+
+class RecordingOption(Option):
+    def process(self, opt, value, values, parser):
+        flag = (self._short_opts or self._long_opts)[0].lstrip("-")
+        if flag not in DEFAULT_AUTOBUILDER_FLAGS:
+            parser.extractor_flags.add(flag)
+        return Option.process(self, opt, value, values, parser)
+
+
 def make_parser():
     '''Parse command_line, returning options, arguments'''
-    parser = OptionParser(add_help_option=False, version='%s' % VERSION)
+    parser = OptionParser(option_class=RecordingOption, add_help_option=False, version='%s' % VERSION)
+    parser.extractor_flags = set()
 
     import_options = OptionGroup(parser, "Import following options",
         description="Note that -a -n -g and -t are included for backwards compatibility. They are ignored")
@@ -172,6 +184,7 @@ def parse(command_line):
                     setattr(options, attr, dval)
         args.extend(extra_args)
     del options.file
+    options.extractor_flags = sorted(parser.extractor_flags)
     if options.help:
         if options.verbose:
             for opt in parser._get_all_options():

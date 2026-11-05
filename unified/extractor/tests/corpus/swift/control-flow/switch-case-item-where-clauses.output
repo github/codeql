@@ -1,0 +1,211 @@
+switch n {
+case let x where x > 0:
+  print("positive")
+case let y where y < 0, 0:
+  print("non-positive")
+default:
+  print("other")
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            switchExpr
+              leftBrace: {
+              rightBrace: }
+              cases:
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            valueBindingPattern
+                              pattern:
+                                identifierPattern
+                                  identifier: identifier "x"
+                              bindingSpecifier: let
+                          whereClause:
+                            whereClause
+                              condition:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator ">"
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "x"
+                                  rightOperand:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "0"
+                              whereKeyword: where
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "positive"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          trailingComma: ,
+                          pattern:
+                            valueBindingPattern
+                              pattern:
+                                identifierPattern
+                                  identifier: identifier "y"
+                              bindingSpecifier: let
+                          whereClause:
+                            whereClause
+                              condition:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator "<"
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  rightOperand:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "0"
+                              whereKeyword: where
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                integerLiteralExpr
+                                  literal: integerLiteral "0"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "non-positive"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchDefaultLabel
+                      colon: :
+                      defaultKeyword: default
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "other"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              subject:
+                declReferenceExpr
+                  baseName: identifier "n"
+              switchKeyword: switch
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        switch_expr source="switch ⟨value⟩ {\n⟨case⟩\n⟨case⟩\n⟨case⟩\n}"
+          value: identifier "n" source="n"
+          case:
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
+              pattern:
+                conditional_pattern source="⟨pattern⟩ where ⟨condition⟩"
+                  condition:
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "x" source="x"
+                      operator: infix_operator ">" source=">"
+                      right: int_literal "0" source="0"
+                  pattern:
+                    expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                      modifier: modifier "let" source="let"
+                      expr: identifier "x" source="x"
+              body:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: string_literal "\"positive\"" source="\"positive\""
+            switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
+              pattern:
+                or_pattern source="⟨pattern⟩, ⟨pattern⟩"
+                  pattern:
+                    conditional_pattern source="⟨pattern⟩ where ⟨condition⟩"
+                      condition:
+                        binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                          left: identifier "y" source="y"
+                          operator: infix_operator "<" source="<"
+                          right: int_literal "0" source="0"
+                      pattern:
+                        expr_pattern source="⟨modifier⟩ ⟨expr⟩"
+                          modifier: modifier "let" source="let"
+                          expr: identifier "y" source="y"
+                    int_literal "0" source="0"
+              body:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: string_literal "\"non-positive\"" source="\"non-positive\""
+            switch_case source="default:\n  ⟨body⟩"
+              body:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: string_literal "\"other\"" source="\"other\""

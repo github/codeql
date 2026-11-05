@@ -1,3 +1,7 @@
+overlay[local]
+module;
+
+private import Parameterized as External
 import ql
 
 private module Mixed {
@@ -43,7 +47,9 @@ private module Input1 implements InputSig {
   predicate foo() { any() }
 }
 
-private module Input2 implements InputSig { // $ Alert
+private module Input2 // $ Alert
+  implements InputSig
+{
   predicate foo() { any() }
 }
 
@@ -56,6 +62,34 @@ module M1 = ParameterizedModule<Input1>;
 private module M2 = ParameterizedModule<Input2>; // $ Alert
 
 import ParameterizedModule<Input3>
+
+signature module DefaultInputSig {
+  default predicate callback() { none() }
+}
+
+module UsesDefaultInput<DefaultInputSig Input> {
+  predicate useCallback() { Input::callback() }
+}
+
+private module DefaultInput implements DefaultInputSig {
+  predicate callback() { any() }
+}
+
+module UsedDefaultInput = UsesDefaultInput<DefaultInput>;
+
+predicate usesDefaultInput() { UsedDefaultInput::useCallback() }
+
+module Empty { }
+
+private module OuterInstance = External::Outer<Empty>;
+
+private module NestedInput implements OuterInstance::InputSig {
+  predicate callback() { any() }
+}
+
+private module NestedUse = OuterInstance::Make<NestedInput>;
+
+predicate usesNestedDefaultInput() { NestedUse::useCallback() }
 
 private module MImpl { }
 

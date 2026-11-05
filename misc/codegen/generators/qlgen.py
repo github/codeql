@@ -83,6 +83,8 @@ def _humanize(s: str) -> str:
 
 
 _format_re = re.compile(r"\{(\w+)\}")
+# Regular expression to find manual `toStringImpl`s
+_to_string_impl_re = re.compile(r"\bstring\s+toStringImpl\s*\(")
 
 
 def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
@@ -117,6 +119,7 @@ def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
 @dataclasses.dataclass
 class Resolver:
     lookup: typing.Dict[str, schema.ClassBase]
+    custom_to_string_impls: typing.Set[str] = dataclasses.field(default_factory=set)
     _property_cache: typing.Dict[tuple[int, int], ql.Property] = dataclasses.field(
         default_factory=dict, init=False
     )
@@ -237,6 +240,10 @@ class Resolver:
                 hideable="ql_hideable" in cls.pragmas,
                 internal="ql_internal" in cls.pragmas,
                 cfg=cls.cfg,
+                to_string_impl_from_primary_class=bool(
+                    cls.pragmas.get("ql_to_string_impl_from_primary_class")
+                )
+                and cls.name not in self.custom_to_string_impls,
             )
         return self._class_cache[cache_key]
 
@@ -496,7 +503,15 @@ def generate(opts, renderer):
 
     data = schemaloader.load_file(input)
 
-    resolver = Resolver(data.classes)
+    # Schema class names whose wrapper define a manual `toStringImpl`
+    custom_to_string_impls = {
+        cls.name
+        for cls in data.classes.values()
+        if not cls.imported
+        and (stub_out / _get_path_impl(cls)).is_file()
+        and _to_string_impl_re.search((stub_out / _get_path_impl(cls)).read_text())
+    }
+    resolver = Resolver(data.classes, custom_to_string_impls)
 
     classes = {
         name: resolver.get_ql_class(cls)
@@ -522,7 +537,6 @@ def generate(opts, renderer):
     with renderer.manage(
         generated=generated, stubs=stubs, registry=registry, force=opts.force
     ) as renderer:
-
         db_classes = [
             cls for name, cls in classes.items() if not data.classes[name].synth
         ]

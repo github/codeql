@@ -19,6 +19,42 @@ import codeql.actions.dataflow.FlowSources
 import OutputClobberingFlow::PathGraph
 import codeql.actions.security.ControlChecks
 
+private predicate isEnvironmentFileSink(OutputClobberingFlow::PathNode sink) {
+  sink.getNode() instanceof OutputClobberingFromFileReadSink or
+  sink.getNode() instanceof OutputClobberingFromEnvVarSink
+}
+
+private predicate isWorkflowCommandSink(OutputClobberingFlow::PathNode sink) {
+  sink.getNode() instanceof WorkflowCommandClobberingFromFileReadSink or
+  sink.getNode() instanceof WorkflowCommandClobberingFromEnvVarSink
+}
+
+private string getMessage(OutputClobberingFlow::PathNode sink) {
+  isEnvironmentFileSink(sink) and
+  result =
+    "Attacker-controlled data may inject or overwrite step outputs written through " +
+      "`$GITHUB_OUTPUT` in $@."
+  or
+  not isEnvironmentFileSink(sink) and
+  isWorkflowCommandSink(sink) and
+  result =
+    "Attacker-controlled data printed to standard output may forge a `set-output` " +
+      "workflow command and overwrite step outputs in $@."
+  or
+  not isEnvironmentFileSink(sink) and
+  not isWorkflowCommandSink(sink) and
+  result = "Attacker-controlled data may inject or overwrite step outputs in $@."
+}
+
+private string getSinkLabel(OutputClobberingFlow::PathNode sink) {
+  (isEnvironmentFileSink(sink) or isWorkflowCommandSink(sink)) and
+  result = "this step"
+  or
+  not isEnvironmentFileSink(sink) and
+  not isWorkflowCommandSink(sink) and
+  result = "this action"
+}
+
 from OutputClobberingFlow::PathNode source, OutputClobberingFlow::PathNode sink, Event event
 where
   OutputClobberingFlow::flowPath(source, sink) and
@@ -40,5 +76,4 @@ where
       madSink(sink.getNode(), "output-clobbering")
     )
   )
-select sink.getNode(), source, sink, "Potential clobbering of a step output in $@.", sink,
-  sink.getNode().toString()
+select sink.getNode(), source, sink, getMessage(sink), sink, getSinkLabel(sink)

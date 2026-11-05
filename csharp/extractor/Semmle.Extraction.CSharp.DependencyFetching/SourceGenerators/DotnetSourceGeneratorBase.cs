@@ -9,14 +9,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal abstract class DotnetSourceGeneratorBase<T> : SourceGeneratorBase where T : DotnetSourceGeneratorWrapper
     {
-        protected readonly FileProvider fileProvider;
+        protected readonly IFileProvider fileProvider;
         protected readonly FileContent fileContent;
         protected readonly IDotNet dotnet;
         protected readonly ICompilationInfoContainer compilationInfoContainer;
         protected readonly IEnumerable<string> references;
 
         public DotnetSourceGeneratorBase(
-            FileProvider fileProvider,
+            IFileProvider fileProvider,
             FileContent fileContent,
             IDotNet dotnet,
             ICompilationInfoContainer compilationInfoContainer,
@@ -39,7 +39,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return [];
             }
 
-            if (!fileContent.IsNewProjectStructureUsed)
+            if (!fileContent.IsSdkProjectStructureUsed)
             {
                 logger.LogInfo($"Generating source files from {FileType} files is only supported for new (SDK-style) project files");
                 return [];

@@ -109,8 +109,7 @@ private module Cached {
     ) and
     model = ""
     or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
-      nodeTo.(FlowSummaryNode).getSummaryNode(), false, model)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false, model)
     or
     any(FlowSteps::AdditionalTaintStep s).step(nodeFrom, nodeTo) and model = "AdditionalTaintStep"
     or

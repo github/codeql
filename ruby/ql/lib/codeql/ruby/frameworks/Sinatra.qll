@@ -289,7 +289,7 @@ module Sinatra {
   private predicate blockPostSelf(DataFlow::PostUpdateNode n, DataFlow::BlockNode b) {
     exists(SelfVariableAccessCfgNode self |
       n.getPreUpdateNode().asExpr() = self and
-      self.getScope() = b.asExpr().getAstNode()
+      self.getEnclosingCallable() = b.asExpr().getAstNode()
     )
   }
 

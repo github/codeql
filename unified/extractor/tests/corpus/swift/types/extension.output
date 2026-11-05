@@ -4,65 +4,83 @@ extension Int {
 
 ---
 
-source_file
-  statement:
-    class_declaration
-      body:
-        class_body
-          member:
-            function_declaration
-              body:
-                block
-                  statement:
-                    control_transfer_statement
-                      kind: return
-                      result:
-                        multiplicative_expression
-                          lhs:
-                            self_expression
-                          op: *
-                          rhs:
-                            self_expression
-              name: simple_identifier "squared"
-              return_type:
-                type
-                  name:
-                    user_type
-                      part:
-                        simple_user_type
-                          name: type_identifier "Int"
-      declaration_kind: extension
-      name:
-        user_type
-          part:
-            simple_user_type
-              name: type_identifier "Int"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        extensionDecl
+          attributes:
+          modifiers:
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    functionDecl
+                      attributes:
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
+                            codeBlockItem
+                              item:
+                                returnStmt
+                                  expression:
+                                    infixOperatorExpr
+                                      operator:
+                                        binaryOperatorExpr
+                                          operator: binaryOperator "*"
+                                      leftOperand:
+                                        declReferenceExpr
+                                          baseName: self
+                                      rightOperand:
+                                        declReferenceExpr
+                                          baseName: self
+                                  returnKeyword: return
+                      modifiers:
+                      name: identifier "squared"
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                          returnClause:
+                            returnClause
+                              arrow: ->
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                      funcKeyword: func
+          extendedType:
+            identifierType
+              name: identifier "Int"
+          extensionKeyword: extension
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
+        class_like_declaration source="⟨modifier⟩ ⟨extension_target⟩ {\n  ⟨member⟩\n}"
+          modifier: modifier "extension" source="extension"
+          extension_target: identifier "Int" source="Int"
           member:
-            function_declaration
+            function_declaration source="func ⟨name_node⟩() -> ⟨return_type⟩ ⟨body⟩"
+              name_node: identifier "squared" source="squared"
+              return_type: identifier "Int" source="Int"
               body:
-                block
+                block source="{ ⟨stmt⟩ }"
                   stmt:
-                    return_expr
+                    return_expr source="return ⟨value⟩"
                       value:
-                        binary_expr
-                          operator: infix_operator "*"
-                          left:
-                            name_expr
-                              identifier: identifier "self"
-                          right:
-                            name_expr
-                              identifier: identifier "self"
-              name: identifier "squared"
-              return_type:
-                named_type_expr
-                  name: identifier "Int"
-          modifier: modifier "extension"
-          name: identifier "Int"
+                        binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                          left: identifier "self" source="self"
+                          operator: infix_operator "*" source="*"
+                          right: identifier "self" source="self"

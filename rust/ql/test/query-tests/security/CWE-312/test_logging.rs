@@ -100,15 +100,15 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     info!("{}", m3); // $ Alert[rust/cleartext-logging]=m3
 
     let mut m4 = String::new();
-    write!(&mut m4, "message = {}", password); // $ MISSING: Source=m4
-    info!("{}", m4); // $ MISSING: Alert[rust/cleartext-logging]=m4
+    write!(&mut m4, "message = {}", password); // $ Source[rust/cleartext-logging]=m4
+    info!("{}", m4); // $ Alert[rust/cleartext-logging]=m4
 
     let mut m5 = String::new();
-    writeln!(&mut m5, "message = {}", password); // $ MISSING: Source=m5
-    info!("{}", m5); // $ MISSING: Alert[rust/cleartext-logging]=m5
+    writeln!(&mut m5, "message = {}", password); // $ Source[rust/cleartext-logging]=m5
+    info!("{}", m5); // $ Alert[rust/cleartext-logging]=m5
 
     let mut m6 = Vec::new();
-    write!(&mut m6, "message = {}", password); // $ MISSING: Source=m6
+    write!(&mut m6, "message = {}", password); // $ MISSING: Source[rust/cleartext-logging]=m6
     info!("{}", std::str::from_utf8(&m6).unwrap()); // $ MISSING: Alert[rust/cleartext-logging]=m6
     unsafe {
         info!("{}", std::str::from_utf8_unchecked(&m6)); // $ MISSING: Alert[rust/cleartext-logging]=m6
@@ -135,7 +135,7 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     // logging from a struct
     let s1 = MyStruct1 {
         harmless: "foo".to_string(),
-        password: "123456".to_string(), // $ MISSING: Source=s1
+        password: "123456".to_string(), // $ MISSING: Source[rust/cleartext-logging]=s1
     };
     warn!("message = {}", s1.harmless);
     warn!("message = {}", s1.password); // $ Alert[rust/cleartext-logging]
@@ -145,7 +145,7 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
 
     let s2 = MyStruct2 {
         harmless: "foo".to_string(),
-        password: "123456".to_string(), // $ MISSING: Source=s2
+        password: "123456".to_string(), // $ MISSING: Source[rust/cleartext-logging]=s2
     };
     warn!("message = {}", s2.harmless);
     warn!("message = {}", s2.password); // $ Alert[rust/cleartext-logging]
@@ -251,6 +251,50 @@ fn test_std(password: String, i: i32, opt_i: Option<i32>) {
     err.write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
 }
 
+fn test_collections(harmless: String) {
+    // collection operations are not logging
+    let mut passwords = Vec::new();
+    passwords.insert(0, harmless.clone());
+    passwords.insert(1, harmless.clone());
+    _ = passwords.remove(1);
+    _ = passwords.swap_remove(0);
+
+    let mut password_queue = std::collections::VecDeque::new();
+    password_queue.push_back(harmless.clone());
+    password_queue.push_front(harmless.clone());
+    password_queue.insert(1, harmless.clone());
+    password_queue.append(&mut std::collections::VecDeque::from([harmless]));
+    password_queue.reserve(1);
+    password_queue.rotate_left(1);
+    password_queue.shrink_to(1);
+    _ = password_queue.remove(1);
+    password_queue.make_contiguous();
+}
+
+fn get_password_or_error() -> Result<String, std::io::Error> {
+    Ok("123456".to_string())
+}
+
+#[derive(Debug)]
+struct Outcome {
+    count: usize,
+}
+
+fn count_entries() -> Result<Outcome, std::io::Error> {
+    let _p = get_password_or_error()?;
+    Ok(Outcome { count: 1 })
+}
+
+fn test_try_operator() -> Result<(), std::io::Error> {
+    let value = get_password_or_error()?; // $ Source[rust/cleartext-logging]=try
+    info!("message = {}", value); // $ Alert[rust/cleartext-logging]=try
+
+    let outcome = count_entries()?;
+    info!("message = {:?}", outcome); // (the outcome does not contain the password)
+
+    Ok(())
+}
+
 fn main() {
     simple_logger::SimpleLogger::new().init().unwrap();
 
@@ -260,4 +304,6 @@ fn main() {
         "[encrypted]".to_string(),
     );
     test_std("123456".to_string(), 0, None);
+    test_collections("harmless".to_string());
+    _ = test_try_operator();
 }

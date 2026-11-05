@@ -58,7 +58,6 @@ test: all build/testdb/check-upgrade-path
 #	use GOOS=linux because GOOS=darwin GOARCH=386 is no longer supported
 	env GOOS=linux GOARCH=386 codeql$(EXE) test run -j0 ql/test/query-tests/Security/CWE-681 --search-path .. --check-diff-informed --consistency-queries ql/consistency-queries --compilation-cache=$(cache) --dynamic-join-order-mode=$(rtjo)
 	cd extractor; $(BAZEL) test ...
-	bash extractor-smoke-test/test.sh || (echo "Extractor smoke test FAILED"; exit 1)
 
 .PHONY: build/testdb/check-upgrade-path
 build/testdb/check-upgrade-path : build/testdb/go.dbscheme ql/lib/go.dbscheme

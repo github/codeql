@@ -2,30 +2,40 @@ import Foundation.Networking.URLSession
 
 ---
 
-source_file
-  statement:
-    import_declaration
-      name:
-        identifier
-          part:
-            simple_identifier "Foundation"
-            simple_identifier "Networking"
-            simple_identifier "URLSession"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        importDecl
+          attributes:
+          modifiers:
+          importKeyword: import
+          path:
+            importPathComponent
+              name: identifier "Foundation"
+              trailingPeriod: .
+            importPathComponent
+              name: identifier "Networking"
+              trailingPeriod: .
+            importPathComponent
+              name: identifier "URLSession"
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        import_declaration
-          pattern: bulk_importing_pattern "import Foundation.Networking.URLSession"
+        import_declaration source="⟨pattern⟩⟨imported_expr⟩"
           imported_expr:
-            member_access_expr
+            member_access_expr source="⟨base⟩.⟨member_name_node⟩"
               base:
-                member_access_expr
-                  base:
-                    name_expr
-                      identifier: identifier "Foundation"
-                  member: identifier "Networking"
-              member: identifier "URLSession"
+                member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                  base: identifier "Foundation" source="Foundation"
+                  member_name_node: identifier "Networking" source="Networking"
+              member_name_node: identifier "URLSession" source="URLSession"
+          pattern:
+            named_pattern source="⟨sub_pattern⟩⟨name_node⟩"
+              name_node: identifier "URLSession" source="URLSession"
+              sub_pattern: bulk_importing_pattern "import Foundation.Networking.URLSession" source="import Foundation.Networking.URLSession"

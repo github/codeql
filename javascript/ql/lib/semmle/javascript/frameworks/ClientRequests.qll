@@ -1017,6 +1017,18 @@ module ClientRequest {
   }
 
   /**
+   * A taint step from promise-wrapped response data to the value that the promise resolves to.
+   */
+  private class ClientRequestResponsePromiseStep extends TaintTracking::SharedTaintStep {
+    override predicate promiseStep(DataFlow::Node node1, DataFlow::Node node2) {
+      exists(ClientRequest r |
+        r.getAResponseDataNode(_, true).getALocalSource().flowsTo(node1) and
+        PromiseFlow::loadStep(node1, node2, Promises::valueProp())
+      )
+    }
+  }
+
+  /**
    * An additional taint step that captures taint propagation from the receiver of fetch response methods
    * (such as "json", "text", "blob", and "arrayBuffer") to the call result.
    */

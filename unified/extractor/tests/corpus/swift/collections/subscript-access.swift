@@ -1,4 +1,4 @@
-// TODO: tree-sitter-swift parses `xs[0]` as a call_expression (same shape
-// as `xs(0)`), so the mapping currently produces a call_expr. Update the
-// parser / add a separate subscript_expr node and remap when fixed.
+// TODO: `xs[0]` is mapped to a call_expr, even though swift-syntax reports a
+// distinct subscriptCallExpr. Giving subscripts their own shape needs only a
+// subscript_expr node in ast_types.yml and a remap.
 let first = xs[0]

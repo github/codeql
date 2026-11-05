@@ -117,6 +117,7 @@ class Class:
     doc: List[str] = field(default_factory=list)
     hideable: bool = False
     cfg: bool = False
+    to_string_impl_from_primary_class: bool = False
 
     def __post_init__(self):
         def get_bases(bases):

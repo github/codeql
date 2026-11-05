@@ -29,6 +29,8 @@ module Generated {
   class SlicePat extends Synth::TSlicePat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "SlicePat" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th pattern of this slice pattern (0-based).
      */

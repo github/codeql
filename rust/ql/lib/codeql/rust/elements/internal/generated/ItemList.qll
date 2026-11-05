@@ -6,8 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.rust.elements.Attr
 import codeql.rust.elements.Item
 
 /**
@@ -31,18 +31,22 @@ module Generated {
   class ItemList extends Synth::TItemList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "ItemList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th attr of this item list (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertItemListToRaw(this).(Raw::ItemList).getAttr(index))
+        Synth::convertAnyAttrFromRaw(Synth::convertItemListToRaw(this)
+              .(Raw::ItemList)
+              .getAttr(index))
     }
 
     /**
      * Gets any of the attrs of this item list.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this item list.

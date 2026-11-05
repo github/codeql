@@ -9,7 +9,8 @@ $DefaultPathFilters = @(
     'include:.github/reusable_workflows/**/*.yml',
     'include:.github/reusable_workflows/**/*.yaml',
     'include:**/action.yml',
-    'include:**/action.yaml'
+    'include:**/action.yaml',
+    'include:**/actions.lock'
 )
 
 if ($null -ne $env:LGTM_INDEX_FILTERS) {

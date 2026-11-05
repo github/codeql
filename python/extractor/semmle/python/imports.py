@@ -252,6 +252,6 @@ def importer_from_options(options, finder, logger):
         importer = CachingModuleImporter(options.trap_cache, finder, logger)
     except Exception as ex:
         if options.trap_cache is not None:
-            logger.warn("Failed to create caching importer: %s", ex)
+            logger.warning("Failed to create caching importer: %s", ex)
         importer = ModuleImporter(finder, logger)
     return importer
