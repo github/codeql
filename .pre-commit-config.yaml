@@ -85,3 +85,10 @@ repos:
         language: system
         entry: python3 rust/lint.py
         pass_filenames: false
+
+      - id: cpp-bmn-lint
+        name: Run fmt and clippy on C/C++ BMN Rust code
+        files: ^cpp/extractor/bmn/(.*rs|Cargo.toml)$
+        language: system
+        entry: cpp/extractor/bmn/lint --check
+        pass_filenames: false
