@@ -859,6 +859,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       exists(Switch switch, int last |
         Input1::isExhaustive(switch) and
+        // Default cases are always considered last in control flow order, so
+        // exhaustiveness does not apply to the last case if a default case
+        // exists.
+        not switch.getCase(_) instanceof DefaultCase and
         switch.getCase(last) = c and
         not exists(switch.getCase(last + 1))
       )
