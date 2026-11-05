@@ -152,14 +152,10 @@ bbStep
 | cfg.swift:600:13:600:18 | ... < ... | '... < ... : true -> Block(+0)' |
 | cfg.swift:617:10:617:13 | true | 'true : match -> Block(+1)' |
 | cfg.swift:617:10:617:13 | true | 'true : no-match -> SwitchCase(+2)' |
-| cfg.swift:619:10:619:14 | false | 'false : match -> Block(+1)' |
-| cfg.swift:619:10:619:14 | false | 'false : no-match -> 1(+3)' |
 | cfg.swift:627:10:627:27 | ConditionalPattern | 'ConditionalPattern : match -> Block(+1)' |
 | cfg.swift:627:10:627:27 | ConditionalPattern | 'ConditionalPattern : no-match -> SwitchCase(+2)' |
 | cfg.swift:629:10:629:16 | ... .error1 | '... .error1 : match -> Block(+1)' |
 | cfg.swift:629:10:629:16 | ... .error1 | '... .error1 : no-match -> SwitchCase(+2)' |
-| cfg.swift:631:10:631:25 | OrPattern | 'OrPattern : match -> Block(+1)' |
-| cfg.swift:631:10:631:25 | OrPattern | 'OrPattern : no-match -> 1(+3)' |
 noCfg
 | cfg.swift:47:42:47:47 | String |
 | cfg.swift:53:34:53:34 | _ |
@@ -179,6 +175,8 @@ noCfg
 | cfg.swift:440:5:440:8 | init |
 | cfg.swift:506:25:506:27 | Int |
 | cfg.swift:564:49:564:51 | Int |
+| cfg.swift:622:3:622:11 | ReturnExpr |
+| cfg.swift:634:3:634:11 | ReturnExpr |
 nonSimple
 | cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
 | cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern' |

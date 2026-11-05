@@ -501,7 +501,6 @@
 | 618 | cfg.swift:618:7:618:14 | Block | 'Block -V 1 -^ ReturnExpr' |
 | 619 | cfg.swift:619:5:620:14 | SwitchCase | 'SwitchCase -V false' |
 | 620 | cfg.swift:620:7:620:14 | Block | 'Block -V 0 -^ ReturnExpr' |
-| 622 | cfg.swift:622:11:622:11 | 1 | '1 -^ - ... -^ ReturnExpr' |
 | 625 | cfg.swift:625:1:635:1 | func exhaustiveEnumSwitch | 'func exhaustiveEnumSwitch -V exhaustiveEnumSwitch' |
 | 625 | cfg.swift:625:29:625:33 | value | 'value -> flag -> Block' |
 | 626 | cfg.swift:626:3:633:3 | SwitchExpr | 'SwitchExpr -V value' |
@@ -511,4 +510,3 @@
 | 630 | cfg.swift:630:7:630:14 | Block | 'Block -V 2 -^ ReturnExpr' |
 | 631 | cfg.swift:631:5:632:14 | SwitchCase | 'SwitchCase -V . -^ ... .error2 -> . -^ ... .error3 -^ OrPattern' |
 | 632 | cfg.swift:632:7:632:14 | Block | 'Block -V 3 -^ ReturnExpr' |
-| 634 | cfg.swift:634:11:634:11 | 1 | '1 -^ - ... -^ ReturnExpr' |

@@ -616,10 +616,10 @@ func exhaustiveBoolSwitch(_ value: Bool) -> Int {
   switch value {
     case true: // $ bbStep='true : match -> Block(+1)' bbStep='true : no-match -> SwitchCase(+2)'
       return 1
-    case false: // $ bbStep='false : match -> Block(+1)' bbStep='false : no-match -> 1(+3)'
+    case false:
       return 0
   }
-  return -1
+  return -1 // $ noCfg
 }
 
 func exhaustiveEnumSwitch(_ value: MyError, _ flag: Bool) -> Int {
@@ -628,8 +628,8 @@ func exhaustiveEnumSwitch(_ value: MyError, _ flag: Bool) -> Int {
       return 1
     case .error1: // $ bbStep='... .error1 : match -> Block(+1)' bbStep='... .error1 : no-match -> SwitchCase(+2)'
       return 2
-    case .error2, .error3: // $ bbStep='OrPattern : match -> Block(+1)' bbStep='OrPattern : no-match -> 1(+3)'
+    case .error2, .error3:
       return 3
   }
-  return -1
+  return -1 // $ noCfg
 }
