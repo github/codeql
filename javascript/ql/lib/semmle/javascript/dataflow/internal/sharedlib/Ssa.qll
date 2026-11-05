@@ -99,6 +99,6 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
   }
 }
 
-module DataFlowIntegrationImpl = DataFlowIntegration<SsaDataflowInput>;
+private module DataFlowIntegrationImpl = DataFlowIntegration<SsaDataflowInput>;
 
 import DataFlowIntegrationImpl
