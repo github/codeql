@@ -4,9 +4,11 @@ module;
 private import go
 private import semmle.go.dataflow.FunctionInputsAndOutputs
 private import semmle.go.dataflow.FlowSummary
+private import semmle.go.dataflow.SsaImpl as SsaImpl
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.go.dataflow.ExternalFlow
+private import VariableCapture as VariableCapture
 
 cached
 private newtype TNode =
@@ -19,7 +21,9 @@ private newtype TNode =
   } or
   MkSliceElementNode(SliceExpr se) or
   MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
-  MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) }
+  MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) } or
+  MkCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode capture) or
+  MkCapturedVariablesParameterNode(FuncLit function)
 
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
@@ -105,6 +109,63 @@ module Private {
       // We do not currently have support for callback-based library models.
       none()
     }
+  }
+
+  /** A synthesized access to captured storage. */
+  class CaptureNode extends Node, MkCaptureNode {
+    VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() {
+      this = MkCaptureNode(result)
+    }
+
+    override ControlFlow::Root getRoot() {
+      result = this.getSynthesizedCaptureNode().getEnclosingCallable()
+    }
+
+    override Type getType() {
+      exists(VariableCapture::CapturedVariable v |
+        this.getSynthesizedCaptureNode().isVariableAccess(v) and
+        result = v.getType()
+      )
+      or
+      this.getSynthesizedCaptureNode().isInstanceAccess() and
+      result = this.getRoot().(FuncLit).getType()
+    }
+
+    override string getNodeKind() { result = "captured variable" }
+
+    override string toString() { result = this.getSynthesizedCaptureNode().toString() }
+
+    override Location getLocation() { result = this.getSynthesizedCaptureNode().getLocation() }
+  }
+
+  /** The closure object passed implicitly when invoking a function literal. */
+  class CapturedVariablesParameterNode extends ParameterNode, MkCapturedVariablesParameterNode {
+    FuncLit getFunction() { this = MkCapturedVariablesParameterNode(result) }
+
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      c.asCallable().getFuncDef() = this.getFunction() and i = -2
+    }
+
+    override ControlFlow::Root getRoot() { result = this.getFunction() }
+
+    override Type getType() { result = this.getFunction().getType() }
+
+    override string getNodeKind() { result = "captured variables parameter" }
+
+    override string toString() { result = "captured variables" }
+
+    override Location getLocation() { result = this.getFunction().getLocation() }
+  }
+
+  private class CapturePostUpdateNode extends CaptureNode, PostUpdateNode {
+    CaptureNode pre;
+
+    CapturePostUpdateNode() {
+      VariableCapture::Flow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
+        pre.getSynthesizedCaptureNode())
+    }
+
+    override Node getPreUpdateNode() { result = pre }
   }
 }
 
@@ -286,19 +347,27 @@ module Public {
 
     SsaNode() { this = MkSsaNode(ssa) }
 
-    /** Gets the node whose value is stored in this SSA variable, if any. */
-    Node getInit() { result = DataFlow::instructionNode(ssa.(SsaExplicitDefinition).getRhs()) }
+    /** Gets the node whose value is stored in this SSA definition, if any. */
+    Node getInit() {
+      result = DataFlow::instructionNode(ssa.(SsaExplicitWrite).getDefinition().getRhs())
+    }
 
-    /** Gets a use of this SSA variable. */
-    InstructionNode getAUse() { result = DataFlow::instructionNode(ssa.getVariable().getAUse()) }
+    /** Gets a use of this SSA definition. */
+    InstructionNode getAUse() {
+      exists(BasicBlock bb, int i |
+        result.asInstruction() = bb.getNode(i) and
+        SsaImpl::ssaDefReachesRead(ssa.getSourceVariable(), ssa, bb, i) and
+        SsaImpl::useAt(bb, i, ssa.getSourceVariable())
+      )
+    }
 
-    /** Gets the program variable corresponding to this SSA variable. */
+    /** Gets the program variable corresponding to this SSA definition. */
     SsaSourceVariable getSourceVariable() { result = ssa.getSourceVariable() }
 
-    /** Gets the unique definition of this SSA variable. */
+    /** Gets this SSA definition. */
     SsaDefinition getDefinition() { result = ssa }
 
-    override ControlFlow::Root getRoot() { result = ssa.getRoot() }
+    override ControlFlow::Root getRoot() { result = SsaImpl::getSsaDefinitionRoot(ssa) }
 
     override Type getType() { result = ssa.getSourceVariable().getType() }
 
@@ -463,9 +532,19 @@ module Public {
    * pointless recomputation of `getACallee()` each recursive iteration.
    */
   private DataFlow::Node getACalleeSource(DataFlow::CallNode cn) {
-    result = cn.getCalleeNode() or
-    basicLocalFlowStep(result, getACalleeSource(cn)) or
-    jumpStep(result, getACalleeSource(cn)) or
+    result = cn.getCalleeNode()
+    or
+    basicLocalFlowStep(result, getACalleeSource(cn))
+    or
+    jumpStep(result, getACalleeSource(cn))
+    or
+    // every write to a captured function variable
+    exists(SsaSourceVariable v, IR::WriteInstruction write |
+      v.isCaptured() and
+      getACalleeSource(cn).asInstruction().reads(v) and
+      write.writes(v, result.asInstruction())
+    )
+    or
     result.asExpr() = getACalleeSource(cn).asExpr().(GenericFunctionInstantiationExpr).getBase()
   }
 
@@ -732,7 +811,7 @@ module Public {
 
     UnusedParameterNode() {
       insn = IR::initParamInstruction(parm) and
-      not exists(SsaExplicitDefinition ssa | ssa.getInstruction() = insn)
+      not exists(SsaExplicitWrite ssa | ssa.getDefinition() = insn)
     }
 
     /** Gets the parameter this node initializes. */
@@ -745,10 +824,10 @@ module Public {
 
   /** A representation of a parameter initialization, defined in source via an SSA node. */
   class SsaParameterNode extends ParameterNode, SsaNode {
-    override SsaExplicitDefinition ssa;
+    override SsaParameterInit ssa;
     Parameter parm;
 
-    SsaParameterNode() { ssa.getInstruction() = IR::initParamInstruction(parm) }
+    SsaParameterNode() { ssa.getParameter() = parm }
 
     /** Gets the parameter this node initializes. */
     override Parameter asParameter() { result = parm }
@@ -845,6 +924,8 @@ module Public {
 
   /** Holds if the node corresponding to `insn` has a post-update node. */
   predicate insnHasPostUpdateNode(IR::Instruction insn) {
+    insn = IR::evalExprInstruction(any(CallExpr call).getCalleeExpr())
+    or
     exists(Expr e | insn.(IR::EvalInstruction).getExpr() = e |
       e instanceof AddressExpr or
       e = any(AddressExpr ae).getOperand() or
@@ -976,9 +1057,11 @@ module Public {
     predicate reads(ValueEntity v) { insn.reads(v) }
 
     /**
-     * Holds if this data-flow node reads the value of SSA variable `v`.
+     * Holds if this data-flow node reads the value of SSA definition `def`.
      */
-    predicate readsSsaVariable(SsaVariable v) { insn = v.getAUse() }
+    predicate readsSsaDefinition(SsaDefinition def) {
+      insn.(IR::EvalInstruction).getExpr() = def.getARead()
+    }
 
     /**
      * Holds if this data-flow node reads the value of field `f` on the value of `base` or its

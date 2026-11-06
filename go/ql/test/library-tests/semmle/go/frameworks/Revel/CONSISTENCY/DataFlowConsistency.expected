@@ -109,6 +109,7 @@ reverseRead
 | examples/booking/app/init.go:53:2:53:11 | implicit-deref selection of Response | Origin of readStep is missing a PostUpdateNode. |
 | examples/booking/app/init.go:54:2:54:2 | implicit-deref c | Origin of readStep is missing a PostUpdateNode. |
 | examples/booking/app/init.go:54:2:54:11 | implicit-deref selection of Response | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/init.go:56:2:56:3 | fc | Origin of readStep is missing a PostUpdateNode. |
 | examples/booking/app/models/booking.go:33:13:33:19 | booking | Origin of readStep is missing a PostUpdateNode. |
 | examples/booking/app/models/booking.go:34:13:34:19 | booking | Origin of readStep is missing a PostUpdateNode. |
 | examples/booking/app/models/booking.go:35:13:35:19 | booking | Origin of readStep is missing a PostUpdateNode. |
