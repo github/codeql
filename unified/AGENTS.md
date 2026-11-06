@@ -40,7 +40,7 @@ by Apple's swift-syntax rather than by tree-sitter.
 ## CodeQL Testing
 - If you changed the extractor code, always rebuild it before running CodeQL tests.
 
-- To run all CodeQL tests, run `codeql test run --search-path extractor-pack ql/test`
+- To run all CodeQL tests, run `codeql test run --search-path extractor-pack --consistency-queries ql/consistency-queries ql/test`
 
 - Do not edit `.expected` files manually. To update the expected output, pass `--learn` to the `codeql test run` command.
 
