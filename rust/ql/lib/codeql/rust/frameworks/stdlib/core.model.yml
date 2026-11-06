@@ -88,6 +88,10 @@ extensions:
       # Conversions
       - ["<core::convert::Into>::into", "Argument[self].Element", "ReturnValue.Element", "taint", "manual"]
       - ["<core::convert::Into>::into", "Argument[self].Reference.Element", "ReturnValue.Element", "taint", "manual"]
+      # Exact models for the blanket implementation take precedence over inherited models.
+      - ["<_ as core::convert::Into>::into", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::convert::Into>::into", "Argument[self].Element", "ReturnValue.Element", "taint", "manual"]
+      - ["<_ as core::convert::Into>::into", "Argument[self].Reference.Element", "ReturnValue.Element", "taint", "manual"]
       # From
       - ["<core::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "manual"]
       # Iterator
