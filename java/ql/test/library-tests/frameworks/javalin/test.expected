@@ -1,0 +1,118 @@
+models
+| 1 | Summary: io.javalin.http; UploadedFile; true; content; ; ; Argument[this]; ReturnValue; taint; manual |
+| 2 | Summary: io.javalin.http; UploadedFile; true; contentType; ; ; Argument[this]; ReturnValue; taint; manual |
+| 3 | Summary: io.javalin.http; UploadedFile; true; extension; ; ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: io.javalin.http; UploadedFile; true; filename; ; ; Argument[this]; ReturnValue; taint; manual |
+| 5 | Summary: io.javalin.security; BasicAuthCredentials; true; getPassword; ; ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: io.javalin.security; BasicAuthCredentials; true; getUsername; ; ; Argument[this]; ReturnValue; taint; manual |
+| 7 | Summary: io.javalin.validation; Validator; true; get; ; ; Argument[this]; ReturnValue; taint; manual |
+| 8 | Summary: io.javalin.validation; Validator; true; getOrDefault; ; ; Argument[this]; ReturnValue; taint; manual |
+| 9 | Summary: io.javalin.validation; Validator; true; getOrNull; ; ; Argument[this]; ReturnValue; taint; manual |
+| 10 | Summary: io.javalin.validation; Validator; true; getOrThrow; ; ; Argument[this]; ReturnValue; taint; manual |
+edges
+| Test.java:84:23:84:45 | (...)... : UploadedFile | Test.java:85:8:85:11 | file : UploadedFile | provenance |  |
+| Test.java:84:38:84:45 | source(...) : Object | Test.java:84:23:84:45 | (...)... : UploadedFile | provenance |  |
+| Test.java:85:8:85:11 | file : UploadedFile | Test.java:85:8:85:21 | content(...) | provenance | MaD:1 |
+| Test.java:88:10:88:32 | (...)... : UploadedFile | Test.java:89:8:89:11 | file : UploadedFile | provenance |  |
+| Test.java:88:25:88:32 | source(...) : Object | Test.java:88:10:88:32 | (...)... : UploadedFile | provenance |  |
+| Test.java:89:8:89:11 | file : UploadedFile | Test.java:89:8:89:25 | contentType(...) | provenance | MaD:2 |
+| Test.java:92:10:92:32 | (...)... : UploadedFile | Test.java:93:8:93:11 | file : UploadedFile | provenance |  |
+| Test.java:92:25:92:32 | source(...) : Object | Test.java:92:10:92:32 | (...)... : UploadedFile | provenance |  |
+| Test.java:93:8:93:11 | file : UploadedFile | Test.java:93:8:93:23 | extension(...) | provenance | MaD:3 |
+| Test.java:96:10:96:32 | (...)... : UploadedFile | Test.java:97:8:97:11 | file : UploadedFile | provenance |  |
+| Test.java:96:25:96:32 | source(...) : Object | Test.java:96:10:96:32 | (...)... : UploadedFile | provenance |  |
+| Test.java:97:8:97:11 | file : UploadedFile | Test.java:97:8:97:22 | filename(...) | provenance | MaD:4 |
+| Test.java:102:38:102:68 | (...)... : BasicAuthCredentials | Test.java:103:8:103:18 | credentials : BasicAuthCredentials | provenance |  |
+| Test.java:102:61:102:68 | source(...) : Object | Test.java:102:38:102:68 | (...)... : BasicAuthCredentials | provenance |  |
+| Test.java:103:8:103:18 | credentials : BasicAuthCredentials | Test.java:103:8:103:32 | getPassword(...) | provenance | MaD:5 |
+| Test.java:106:17:106:47 | (...)... : BasicAuthCredentials | Test.java:107:8:107:18 | credentials : BasicAuthCredentials | provenance |  |
+| Test.java:106:40:106:47 | source(...) : Object | Test.java:106:17:106:47 | (...)... : BasicAuthCredentials | provenance |  |
+| Test.java:107:8:107:18 | credentials : BasicAuthCredentials | Test.java:107:8:107:32 | getUsername(...) | provenance | MaD:6 |
+| Test.java:112:33:112:60 | (...)... : Validator | Test.java:113:8:113:16 | validator : Validator | provenance |  |
+| Test.java:112:53:112:60 | source(...) : Object | Test.java:112:33:112:60 | (...)... : Validator | provenance |  |
+| Test.java:113:8:113:16 | validator : Validator | Test.java:113:8:113:22 | get(...) | provenance | MaD:7 |
+| Test.java:116:15:116:42 | (...)... : Validator | Test.java:117:8:117:16 | validator : Validator | provenance |  |
+| Test.java:116:35:116:42 | source(...) : Object | Test.java:116:15:116:42 | (...)... : Validator | provenance |  |
+| Test.java:117:8:117:16 | validator : Validator | Test.java:117:8:117:35 | getOrDefault(...) | provenance | MaD:8 |
+| Test.java:120:15:120:42 | (...)... : Validator | Test.java:121:8:121:16 | validator : Validator | provenance |  |
+| Test.java:120:35:120:42 | source(...) : Object | Test.java:120:15:120:42 | (...)... : Validator | provenance |  |
+| Test.java:121:8:121:16 | validator : Validator | Test.java:121:8:121:28 | getOrNull(...) | provenance | MaD:9 |
+| Test.java:124:15:124:42 | (...)... : Validator | Test.java:125:8:125:16 | validator : Validator | provenance |  |
+| Test.java:124:35:124:42 | source(...) : Object | Test.java:124:15:124:42 | (...)... : Validator | provenance |  |
+| Test.java:125:8:125:16 | validator : Validator | Test.java:125:8:125:33 | getOrThrow(...) | provenance | MaD:10 |
+nodes
+| Test.java:84:23:84:45 | (...)... : UploadedFile | semmle.label | (...)... : UploadedFile |
+| Test.java:84:38:84:45 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:85:8:85:11 | file : UploadedFile | semmle.label | file : UploadedFile |
+| Test.java:85:8:85:21 | content(...) | semmle.label | content(...) |
+| Test.java:88:10:88:32 | (...)... : UploadedFile | semmle.label | (...)... : UploadedFile |
+| Test.java:88:25:88:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:89:8:89:11 | file : UploadedFile | semmle.label | file : UploadedFile |
+| Test.java:89:8:89:25 | contentType(...) | semmle.label | contentType(...) |
+| Test.java:92:10:92:32 | (...)... : UploadedFile | semmle.label | (...)... : UploadedFile |
+| Test.java:92:25:92:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:93:8:93:11 | file : UploadedFile | semmle.label | file : UploadedFile |
+| Test.java:93:8:93:23 | extension(...) | semmle.label | extension(...) |
+| Test.java:96:10:96:32 | (...)... : UploadedFile | semmle.label | (...)... : UploadedFile |
+| Test.java:96:25:96:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:97:8:97:11 | file : UploadedFile | semmle.label | file : UploadedFile |
+| Test.java:97:8:97:22 | filename(...) | semmle.label | filename(...) |
+| Test.java:102:38:102:68 | (...)... : BasicAuthCredentials | semmle.label | (...)... : BasicAuthCredentials |
+| Test.java:102:61:102:68 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:103:8:103:18 | credentials : BasicAuthCredentials | semmle.label | credentials : BasicAuthCredentials |
+| Test.java:103:8:103:32 | getPassword(...) | semmle.label | getPassword(...) |
+| Test.java:106:17:106:47 | (...)... : BasicAuthCredentials | semmle.label | (...)... : BasicAuthCredentials |
+| Test.java:106:40:106:47 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:107:8:107:18 | credentials : BasicAuthCredentials | semmle.label | credentials : BasicAuthCredentials |
+| Test.java:107:8:107:32 | getUsername(...) | semmle.label | getUsername(...) |
+| Test.java:112:33:112:60 | (...)... : Validator | semmle.label | (...)... : Validator |
+| Test.java:112:53:112:60 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:113:8:113:16 | validator : Validator | semmle.label | validator : Validator |
+| Test.java:113:8:113:22 | get(...) | semmle.label | get(...) |
+| Test.java:116:15:116:42 | (...)... : Validator | semmle.label | (...)... : Validator |
+| Test.java:116:35:116:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:117:8:117:16 | validator : Validator | semmle.label | validator : Validator |
+| Test.java:117:8:117:35 | getOrDefault(...) | semmle.label | getOrDefault(...) |
+| Test.java:120:15:120:42 | (...)... : Validator | semmle.label | (...)... : Validator |
+| Test.java:120:35:120:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:121:8:121:16 | validator : Validator | semmle.label | validator : Validator |
+| Test.java:121:8:121:28 | getOrNull(...) | semmle.label | getOrNull(...) |
+| Test.java:124:15:124:42 | (...)... : Validator | semmle.label | (...)... : Validator |
+| Test.java:124:35:124:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:125:8:125:16 | validator : Validator | semmle.label | validator : Validator |
+| Test.java:125:8:125:33 | getOrThrow(...) | semmle.label | getOrThrow(...) |
+subpaths
+testFailures
+| Test.java:15:41:15:57 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:17:25:17:41 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:19:32:19:48 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:21:43:21:59 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:23:47:23:63 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:25:36:25:52 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:27:49:27:65 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:29:33:29:49 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:31:30:31:46 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:33:33:33:49 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:35:30:35:46 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:37:36:37:52 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:39:37:39:53 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:41:33:41:49 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:43:57:43:73 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:45:58:45:74 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:47:36:47:52 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:49:57:49:73 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:51:33:51:49 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:53:37:53:53 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:55:38:55:54 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:57:58:57:74 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:59:59:59:75 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:61:34:61:50 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:63:32:63:48 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:65:39:65:55 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:67:40:67:56 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:69:34:69:50 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:71:36:71:52 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:73:24:73:40 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:75:28:75:44 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:77:32:77:48 | // $ hasTaintFlow | Missing result: hasTaintFlow |
+| Test.java:79:30:79:46 | // $ hasTaintFlow | Missing result: hasTaintFlow |
