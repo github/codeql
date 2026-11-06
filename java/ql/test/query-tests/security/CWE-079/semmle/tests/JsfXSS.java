@@ -24,9 +24,9 @@ public class JsfXSS extends Renderer
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.write("<script type=\"text/javascript\">");
         writer.write("(function(){");
-        writer.write("dswh.init('" + windowId + "','"
+        writer.write("dswh.init('" + windowId + "','" // $ Alert[java/xss]
                 + "......" + "',"
-                + -1 + ",{"); // $ Alert[java/xss]
+                + -1 + ",{");
         writer.write("});");
         writer.write("})();");
         writer.write("</script>");

@@ -13,14 +13,14 @@ function PostJSON(jsonData)
 function PostXML(xmlData)
 {
 
-  request({
+  request({ // $ Alert[js/file-access-to-http]
     url: "http://example.com/myxml",
     method: "POST",
     headers: {
         "content-type": "application/xml",
     },
     body: xmlData    // passing data from file to the request body
-  }, function (error, response, body){ // $ Alert[js/file-access-to-http]
+  }, function (error, response, body){
     console.log(response);
   });
 }

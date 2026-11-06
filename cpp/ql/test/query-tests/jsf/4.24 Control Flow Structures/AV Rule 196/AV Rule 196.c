@@ -1,19 +1,19 @@
 static void f(int x) {
-  switch(x) {
-  } // $ Alert
+  switch(x) { // $ Alert
+  }
   
-  switch(x) {
+  switch(x) { // $ Alert
   default:;
-  } // $ Alert
+  }
   
-  switch(x) {
+  switch(x) { // $ Alert
   case 0:;
-  } // $ Alert
+  }
   
-  switch(x) {
+  switch(x) { // $ Alert
   default:
   case 0:;
-  } // $ Alert
+  }
   
   switch(x) {
   case 0:;

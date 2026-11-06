@@ -17,7 +17,7 @@ void testFunction(char c1,int i1)
       case 9:
     }
   }
-  switch(c1){ // BAD
+  switch(c1){ // $ Alert // BAD
     case 12:
       break;
     case 10:
@@ -25,9 +25,9 @@ void testFunction(char c1,int i1)
     case 9:
       break;
   dafault:
-  } // $ Alert
+  }
 
-  switch(c1){ // BAD
+  switch(c1){ // $ Alert // BAD
       c1=c1*2;
     case 12:
       break;
@@ -35,10 +35,10 @@ void testFunction(char c1,int i1)
       break;
     case 9:
       break;
-  } // $ Alert
+  }
 
   if((c1<6)&&(c1>0))
-  switch(c1){ // BAD
+  switch(c1){ // $ Alert // BAD
     case 8:
       break;
     case 5:
@@ -47,14 +47,14 @@ void testFunction(char c1,int i1)
       break;
     case 1:
       break;
-  } // $ Alert
+  }
 
   if((c1<6)&&(c1>0))
-  switch(c1){ // BAD
+  switch(c1){ // $ Alert // BAD
     case 3:
       break;
     case 1:
       break;
-  } // $ Alert
+  }
   
 }

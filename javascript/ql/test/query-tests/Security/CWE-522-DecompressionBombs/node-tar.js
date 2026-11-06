@@ -27,10 +27,10 @@ function zipBomb(tarFile) {
     // scenario 2
     fs.writeFileSync(tarFile.name, tarFile.data);
     fs.createReadStream(tarFile.name).pipe(
-        tar.x({
+        tar.x({ // $ Alert
             strip: 1,
             C: 'some-dir'
-        }) // $ Alert
+        })
     )
     // safe https://github.com/isaacs/node-tar/blob/8c5af15e43a769fd24aa7f1c84d93e54824d19d2/lib/list.js#L90
     fs.createReadStream(tarFile.name).pipe(
@@ -45,9 +45,9 @@ function zipBomb(tarFile) {
     fs.createReadStream(tarFile.name).pipe(
         decompressor
     ).pipe(
-        tar.x({
+        tar.x({ // $ Alert
             cwd: "dest"
-        }) // $ Alert
+        })
     )
 
     // scenario 4

@@ -52,10 +52,10 @@ public class StaticInitializationVector {
 
     // BAD: AES-GCM with static IV from a multidimensional byte array
     public byte[] encryptWithOneOfStaticIvs01(byte[] key, byte[] plaintext) throws Exception {
-        byte[][] staticIvs = new byte[][] {
+        byte[][] staticIvs = new byte[][] { // $ Source
             { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 },
             { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 42 }
-        }; // $ Source
+        };
 
         GCMParameterSpec ivSpec = new GCMParameterSpec(128, staticIvs[1]);
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
@@ -68,10 +68,10 @@ public class StaticInitializationVector {
 
     // BAD: AES-GCM with static IV from a multidimensional byte array
     public byte[] encryptWithOneOfStaticIvs02(byte[] key, byte[] plaintext) throws Exception {
-        byte[][] staticIvs = new byte[][] {
+        byte[][] staticIvs = new byte[][] { // $ Source
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 42 }
-        }; // $ Source
+        };
 
         GCMParameterSpec ivSpec = new GCMParameterSpec(128, staticIvs[1]);
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");

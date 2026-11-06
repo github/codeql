@@ -1,4 +1,4 @@
-class Reads extends React.Component {
+class Reads extends React.Component { // $ reactComponent
     constructor() {
         this.state.p1;
 
@@ -10,4 +10,4 @@ class Reads extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         prevState.p4;
     }
-} // $ reactComponent
+}

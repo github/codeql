@@ -8,11 +8,11 @@ app.use(session({
     httpOnly: true,
 }))
 
-app.use(session({
+app.use(session({ // $ Alert
     name: 'session',
     keys: ['key1', 'key2'],
     httpOnly: false
-})) // $ Alert
+}))
 
 app.use(session({
     name: 'session',
@@ -48,11 +48,11 @@ app.use(session(sess3)) // $ Alert - It is a session cookie, name doesn't matter
 
 var flag = false
 var flag2 = flag
-app.use(session({
+app.use(session({ // $ Alert
     name: 'session',
     keys: ['key1', 'key2'],
     httpOnly: flag2
-})) // $ Alert
+}))
 
 app.get('/a', function (req, res, next) {
     res.cookie('authkey', 'value',
@@ -65,20 +65,20 @@ app.get('/a', function (req, res, next) {
 })
 
 app.get('/a', function (req, res, next) {
-    res.cookie('authkey', 'value',
+    res.cookie('authkey', 'value', // $ Alert
         {
             maxAge: 9000000000,
             httpOnly: false,
             secure: false
-        }); // $ Alert
+        });
     res.end('ok')
 })
 
 app.get('/a', function (req, res, next) {
-    res.cookie('authkey', 'value',
+    res.cookie('authkey', 'value', // $ Alert
         {
             maxAge: 9000000000
-        }); // $ Alert
+        });
     res.end('ok')
 })
 
@@ -298,11 +298,11 @@ app.use(session({
     cookie: { httpOnly: true },
 }))
 
-app.use(session({
+app.use(session({ // $ Alert
     name: 'session',
     keys: ['key1', 'key2'],
     cookie: { httpOnly: false }
-})) // $ Alert
+}))
 
 app.use(session({
     name: 'session',
@@ -315,11 +315,11 @@ app.use(session({ // OK - httpOnly is true by default
     keys: ['key1', 'key2']
 }))
 
-app.use(session({
+app.use(session({ // $ Alert
     name: 'mycookie',
     keys: ['key1', 'key2'],
     cookie: { httpOnly: false } // It is a session cookie, name doesn't matter
-})) // $ Alert
+}))
 
 const http = require('http');
 function test10() {

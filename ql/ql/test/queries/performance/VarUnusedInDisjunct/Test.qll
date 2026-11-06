@@ -11,23 +11,23 @@ class MyStr extends string {
 }
 
 predicate bad1(Big b) {
-  b.toString().matches("%foo")
+  b.toString().matches("%foo") // $ Alert
   or
-  any() // $ Alert
+  any()
 }
 
 int bad2() {
   exists(Big big, Small small |
-    result = big.toString().toInt()
+    result = big.toString().toInt() // $ Alert
     or
-    result = small.toString().toInt() // $ Alert
+    result = small.toString().toInt()
   )
 }
 
 float bad3(Big t) {
-  result = [1 .. 10].toString().toFloat() or
+  result = [1 .. 10].toString().toFloat() or // $ Alert
   result = [11 .. 20].toString().toFloat() or
-  result = t.toString().toFloat() or // $ Alert
+  result = t.toString().toFloat() or
   result = [21 .. 30].toString().toFloat()
 }
 
@@ -46,11 +46,11 @@ predicate helper(Big a, Big b) {
 }
 
 predicate bad4(Big fromType, Big toType) {
-  helper(fromType, toType)
+  helper(fromType, toType) // $ Alert
   or
   fromType.toString().matches("%foo")
   or
-  helper(toType, fromType) // $ Alert
+  helper(toType, fromType)
 }
 
 predicate good2(Big t) {
@@ -124,14 +124,14 @@ predicate good5(Big a, Big b) {
 
 predicate bad6(Big a) {
   (
-    a.toString().matches("%foo") // bad
+    a.toString().matches("%foo") // $ Alert // bad
     or
-    any() // $ Alert
+    any()
   ) and
   (
-    a.toString().matches("%foo") // also bad
+    a.toString().matches("%foo") // $ Alert // also bad
     or
-    any() // $ Alert
+    any()
   )
 }
 
@@ -161,9 +161,9 @@ class HasField extends Big {
   Big field;
 
   HasField() {
-    field = this
+    field = this // $ Alert // <- field only defined here.
     or
-    this.toString().matches("%foo") // $ Alert // <- field only defined here.
+    this.toString().matches("%foo")
   }
 
   Big getField() { result = field }
