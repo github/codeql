@@ -182,12 +182,6 @@ module Input3 implements InputSig3 {
 
   class AssignExpr extends Assignment, Unified::AssignExpr { }
 
-  class ParenExpr extends Expr {
-    ParenExpr() { none() }
-
-    Expr getExpr() { none() }
-  }
-
   private newtype TDeclaration =
     TAstVariableDeclaration(Unified::VariableDeclaration decl) or
     TCallableDeclaration(Unified::Callable c) or
@@ -219,7 +213,11 @@ module Input3 implements InputSig3 {
   }
 
   class Variable extends LocalNameBindingOutput::Local {
-    Expr getAnAccess() { result = super.getAnAccess() }
+    Expr getAnAccess() {
+      result = super.getAnAccess() and
+      // for type inference, we want super expressions to have the type of the base class
+      not result instanceof SuperExpr
+    }
   }
 
   final class VariableDeclaration = VariableDeclarationImpl;

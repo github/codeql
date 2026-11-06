@@ -469,6 +469,22 @@ pub fn schema_from_yaml(yaml_input: &str) -> Result<crate::schema::Schema, Strin
     Ok(schema)
 }
 
+/// Return the named node kinds that declare no fields.
+pub fn leaf_kinds_from_yaml(yaml_input: &str) -> Result<BTreeSet<String>, String> {
+    let yaml: YamlNodeTypes =
+        serde_yaml::from_str(yaml_input).map_err(|e| format!("Failed to parse YAML: {e}"))?;
+    Ok(yaml
+        .named
+        .into_iter()
+        .filter_map(|(name, fields)| {
+            fields
+                .as_ref()
+                .map_or(true, BTreeMap::is_empty)
+                .then_some(name)
+        })
+        .collect())
+}
+
 // ---------------------------------------------------------------------------
 // JSON → YAML conversion
 // ---------------------------------------------------------------------------
@@ -808,6 +824,24 @@ unnamed:
         // Check unnamed tokens
         let end = result.iter().find(|n| n["type"] == "end").unwrap();
         assert_eq!(end["named"], false);
+    }
+
+    #[test]
+    fn test_leaf_kinds_from_yaml() {
+        let leaf_kinds = leaf_kinds_from_yaml(
+            r#"
+named:
+  identifier:
+  empty_fields: {}
+  call:
+    callee: identifier
+"#,
+        )
+        .unwrap();
+
+        assert!(leaf_kinds.contains("identifier"));
+        assert!(leaf_kinds.contains("empty_fields"));
+        assert!(!leaf_kinds.contains("call"));
     }
 
     #[test]

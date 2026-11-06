@@ -79,6 +79,8 @@ module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
     or
     capturedExitRead(bb, i, v) and certain = false
   }
+
+  predicate ssaCachedStageRevRef() { DataFlowIntegrationImpl::ssaCachedStageRevRef2() }
 }
 
 import SsaImplCommon::Make<Location, BasicBlocks::Cfg, SsaInput> as Impl
@@ -236,11 +238,6 @@ private module Cached {
     )
   }
 
-  cached
-  Definition phiHasInputFromBlock(PhiDefinition phi, BasicBlock bb) {
-    Impl::phiHasInputFromBlock(phi, result, bb)
-  }
-
   /**
    * Holds if the value defined at SSA definition `def` can reach a read at `read`,
    * without passing through any other non-pseudo read.
@@ -265,11 +262,6 @@ private module Cached {
       read1 = bb1.getNode(i1).getAstNode() and
       read2 = bb2.getNode(i2).getAstNode()
     )
-  }
-
-  cached
-  Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
-    Impl::uncertainWriteDefinitionInput(def, result)
   }
 
   cached
@@ -345,8 +337,6 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   class Expr extends ExprAlias {
     predicate hasCfgNode(BasicBlock bb, int i) { this.getACfgNode() = bb.getNode(i) }
   }
-
-  Expr getARead(Definition def) { result = Cached::getARead(def) }
 
   predicate ssaDefHasSource(WriteDefinition def) { none() } // handled in `DataFlowImpl.qll` instead
 

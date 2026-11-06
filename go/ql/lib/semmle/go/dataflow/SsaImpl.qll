@@ -140,32 +140,23 @@ final class PhiNode = Impl::PhiNode;
 module Consistency = Impl::Consistency;
 
 /**
- * NB: This predicate should be cached.
- *
  * Holds if the SSA definition of `v` at `def` reaches a read at index `i` in
  * basic block `bb`.
  */
-cached
 predicate ssaDefReachesRead(SsaSourceVariable v, Definition def, BasicBlock bb, int i) {
   Impl::ssaDefReachesRead(v, def, bb, i)
 }
 
 /**
- * NB: This predicate should be cached.
- *
  * Holds if the SSA definition of `v` at `def` reaches the end of basic block `bb`.
  */
-cached
 predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SsaSourceVariable v) {
   Impl::ssaDefReachesEndOfBlock(bb, def, v)
 }
 
 /**
- * NB: This predicate should be cached.
- *
  * Holds if `inp` is an input to the phi node `phi` along the edge originating in `bb`.
  */
-cached
 predicate phiHasInputFromBlock(PhiNode phi, Definition inp, BasicBlock bb) {
   Impl::phiHasInputFromBlock(phi, inp, bb)
 }
