@@ -3,8 +3,10 @@ import javax.crypto.Cipher;
 class RsaWithoutOaep {
     public void test() throws Exception {
         Cipher rsaBad = Cipher.getInstance("RSA/ECB/NoPadding"); // $ Alert
+        Cipher rsaBadLower = Cipher.getInstance("rsa/ECB/NoPadding"); // $ Alert
 
         Cipher rsaGood = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
+        Cipher rsaGoodLower = Cipher.getInstance("rsa/ecb/oaepwithsha-1andmgf1padding");
     }
 
     public Cipher getCipher(String spec) throws Exception {
