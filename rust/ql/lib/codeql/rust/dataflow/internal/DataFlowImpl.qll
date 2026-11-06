@@ -250,7 +250,7 @@ class LambdaCallKind = Unit;
 predicate lambdaCreationExpr(Expr creation) {
   creation instanceof ClosureExpr
   or
-  creation instanceof Scope::AsyncBlockScope
+  creation instanceof AsyncBlockExpr
 }
 
 /**
@@ -1066,7 +1066,7 @@ module VariableCapture {
     }
 
     class Expr extends AstNode {
-      predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) { this = bb.getNode(i).getAstNode() }
+      predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) { bb.getNode(i).injects(this) }
     }
 
     class VariableWrite extends Expr {
@@ -1082,7 +1082,7 @@ module VariableCapture {
         not this instanceof VariableWriteAccess and
         super.hasCfgNode(bb, i)
         or
-        this.(VariableWriteAccess).getAssignmentExpr() = bb.getNode(i).getAstNode()
+        bb.getNode(i).injects(this.(VariableWriteAccess).getAssignmentExpr())
       }
 
       CapturedVariable getVariable() { result = v }
