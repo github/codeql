@@ -466,9 +466,9 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
 
     var config = Realm.Configuration()  // GOOD
     config.fileURL = safeUrl  // GOOD
-    config.fileURL = remoteUrl  // $ MISSING: Alert
+    config.fileURL = remoteUrl  // $ Alert
     config.seedFilePath = safeUrl  // GOOD
-    config.seedFilePath = remoteUrl  // $ MISSING: Alert
+    config.seedFilePath = remoteUrl  // $ Alert
 
     // sqlite3
 
