@@ -64,56 +64,58 @@ impl QueryNode {
         }
     }
 
-    pub fn do_match(&self, ast: &Ast, node: Id, matches: &mut Captures) -> Result<bool, String> {
+    pub fn do_match(&self, ast: &Ast, node: Id, matches: &mut Captures) -> bool {
         match self {
             QueryNode::Any { match_unnamed } => {
                 if *match_unnamed {
-                    Ok(true)
+                    true
                 } else {
                     // `(_)` only matches named nodes, matching tree-sitter
                     // semantics. Bare `_` (with `match_unnamed = true`)
                     // matches any node.
                     let n = ast.get_node(node).unwrap();
-                    Ok(n.is_named())
+                    n.is_named()
                 }
             }
             QueryNode::Node { kind, children } => {
                 let node = ast.get_node(node).unwrap();
-                let target_kind = ast
-                    .id_for_node_kind(kind)
-                    .ok_or_else(|| format!("Node kind {kind} not found in language"))?;
+                let target_kind = ast.id_for_node_kind(kind).unwrap_or_else(|| {
+                    crate::translation_failure(format!("Node kind {kind} not found in language"))
+                });
                 if node.kind != target_kind {
-                    return Ok(false);
+                    return false;
                 }
                 for (field, field_children) in children {
-                    let field_id = ast
-                        .field_id_for_name(field)
-                        .ok_or_else(|| format!("Field {field} not found in language"))?;
+                    let field_id = ast.field_id_for_name(field).unwrap_or_else(|| {
+                        crate::translation_failure(format!("Field {field} not found in language"))
+                    });
                     let empty = Vec::new();
                     let mut child_iter =
                         node.fields.get(&field_id).unwrap_or(&empty).iter().cloned();
-                    if !match_children(field_children.iter(), ast, &mut child_iter, matches)? {
-                        return Ok(false);
+                    if !match_children(field_children.iter(), ast, &mut child_iter, matches) {
+                        return false;
                     }
                 }
-                Ok(true)
+                true
             }
             QueryNode::UnnamedNode { kind } => {
                 let node = ast.get_node(node).unwrap();
-                let target_kind = ast
-                    .id_for_unnamed_node_kind(kind)
-                    .ok_or_else(|| format!("unnamed Node kind {kind} not found in language"))?;
-                Ok(node.kind == target_kind)
+                let target_kind = ast.id_for_unnamed_node_kind(kind).unwrap_or_else(|| {
+                    crate::translation_failure(format!(
+                        "unnamed Node kind {kind} not found in language"
+                    ))
+                });
+                node.kind == target_kind
             }
             QueryNode::Capture {
                 capture,
                 node: sub_query,
             } => {
-                let matched = sub_query.do_match(ast, node, matches)?;
+                let matched = sub_query.do_match(ast, node, matches);
                 if matched {
                     matches.insert(capture, node);
                 }
-                Ok(matched)
+                matched
             }
         }
     }
@@ -124,13 +126,13 @@ fn match_children<'a>(
     ast: &Ast,
     remaining_children: &mut (impl Iterator<Item = Id> + Clone),
     matches: &mut Captures,
-) -> Result<bool, String> {
+) -> bool {
     for child in child_matchers {
-        if !child.do_match(ast, remaining_children, matches)? {
-            return Ok(false);
+        if !child.do_match(ast, remaining_children, matches) {
+            return false;
         }
     }
-    Ok(true)
+    true
 }
 
 impl QueryListElem {
@@ -139,13 +141,13 @@ impl QueryListElem {
         ast: &Ast,
         remaining_children: &mut (impl Iterator<Item = Id> + Clone),
         matches: &mut Captures,
-    ) -> Result<bool, String> {
+    ) -> bool {
         match self {
             QueryListElem::Repeated { children, rep } => {
                 if children.is_empty() {
                     // Macro parsing rejects empty groups. Retain safe
                     // zero-width behavior for manually constructed queries.
-                    return Ok(*rep != Rep::OneOrMore);
+                    return *rep != Rep::OneOrMore;
                 }
 
                 let mut iters = 0;
@@ -154,7 +156,7 @@ impl QueryListElem {
                     let matches_initial = matches.clone();
                     let start = remaining_children.clone();
                     let start_next = start.clone().next();
-                    if !match_children(children.iter(), ast, remaining_children, matches)? {
+                    if !match_children(children.iter(), ast, remaining_children, matches) {
                         *remaining_children = start;
                         *matches = matches_initial;
                         break;
@@ -172,9 +174,9 @@ impl QueryListElem {
                 }
                 if *rep == Rep::OneOrMore && iters == 0 {
                     // We didn't match any children but we were supposed to
-                    Ok(false)
+                    false
                 } else {
-                    Ok(true)
+                    true
                 }
             }
             QueryListElem::SingleNode(sub_query) => {
@@ -187,7 +189,7 @@ impl QueryListElem {
                 let skip_unnamed = sub_query.matches_named_only();
                 loop {
                     let Some(child) = remaining_children.next() else {
-                        return Ok(false);
+                        return false;
                     };
                     let node = ast.get_node(child).unwrap();
                     // Skip tree-sitter `extras` (e.g. comments) during
@@ -200,8 +202,8 @@ impl QueryListElem {
                         continue;
                     }
                     let snapshot = matches.clone();
-                    if sub_query.do_match(ast, child, matches)? {
-                        return Ok(true);
+                    if sub_query.do_match(ast, child, matches) {
+                        return true;
                     }
                     *matches = snapshot;
                 }

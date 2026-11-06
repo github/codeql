@@ -28,7 +28,7 @@ use crate::{
 /// When constructed by the framework (via the rule! macro), `BuildCtx` also
 /// carries a [`TranslatorHandle`] that the [`translate`] method delegates
 /// to. When constructed by hand (e.g. in tests), the translator is `None`
-/// and [`translate`] returns an error.
+/// and [`translate`] panics.
 pub struct BuildCtx<'a, C: 'a = ()> {
     ast: &'a Ast,
     pub output: &'a mut OutputAst,
@@ -44,10 +44,6 @@ pub struct BuildCtx<'a, C: 'a = ()> {
     /// Optional translator handle, populated when the context is built by
     /// the framework's rule driver. None when the context is built by hand.
     pub(crate) translator: Option<TranslatorHandle<'a, C>>,
-    /// First failure encountered while auto-translating an input `Id` during
-    /// template construction. Templates remain infallible expressions, so
-    /// [`finish_rule`](Self::finish_rule) returns this error at the rule boundary.
-    deferred_translation_error: Option<String>,
     /// Nodes built directly through this context without an explicit source
     /// range in either their content or constructor argument. Recursive
     /// translations use their own context and therefore do not contribute to
@@ -64,7 +60,6 @@ impl<'a, C> BuildCtx<'a, C> {
             source_range: None,
             user_ctx,
             translator: None,
-            deferred_translation_error: None,
             created_nodes_without_source_range: BTreeSet::new(),
         }
     }
@@ -82,7 +77,6 @@ impl<'a, C> BuildCtx<'a, C> {
             source_range,
             user_ctx,
             translator: None,
-            deferred_translation_error: None,
             created_nodes_without_source_range: BTreeSet::new(),
         }
     }
@@ -102,7 +96,6 @@ impl<'a, C> BuildCtx<'a, C> {
             source_range,
             user_ctx,
             translator: Some(translator),
-            deferred_translation_error: None,
             created_nodes_without_source_range: BTreeSet::new(),
         }
     }
@@ -159,10 +152,7 @@ impl<'a, C> BuildCtx<'a, C> {
     /// Finish the current rule invocation by applying the matched source range
     /// to locally-created result roots.
     #[doc(hidden)]
-    pub fn finish_rule(self, results: Vec<OutputId>) -> Result<Vec<OutputId>, String> {
-        if let Some(error) = self.deferred_translation_error {
-            return Err(error);
-        }
+    pub fn finish_rule(self, results: Vec<OutputId>) -> Vec<OutputId> {
         if let Some(source_range) = self.source_range {
             for &id in &results {
                 if self.created_nodes_without_source_range.contains(&id) {
@@ -170,7 +160,7 @@ impl<'a, C> BuildCtx<'a, C> {
                 }
             }
         }
-        Ok(results)
+        results
     }
 
     /// Assign an explicit source range to a newly-built result root.
@@ -300,13 +290,7 @@ impl<C: Clone> BuildCtx<'_, C> {
 
     #[doc(hidden)]
     pub fn translate_into(&mut self, id: Id, out: &mut Vec<OutputId>) {
-        if self.deferred_translation_error.is_some() {
-            return;
-        }
-        match self.translate(id) {
-            Ok(ids) => out.extend(ids),
-            Err(error) => self.deferred_translation_error = Some(error),
-        }
+        out.extend(self.translate(id));
     }
 
     /// Recursively translate every id in the given iterable via the
@@ -314,26 +298,23 @@ impl<C: Clone> BuildCtx<'_, C> {
     /// ids in order.
     ///
     /// The single-`Id` case works too, because `Id: IntoIterator<Item
-    /// = Id>` is a singleton iterator — so `ctx.translate(some_id)?`
+    /// = Id>` is a singleton iterator — so `ctx.translate(some_id)`
     /// returns a `Vec<OutputId>` containing whatever `some_id` translated to.
     ///
-    /// Errors if this `BuildCtx` was constructed by hand (without a
+    /// Panics if this `BuildCtx` was constructed by hand (without a
     /// translator handle) — for example, in unit tests that don't go
     /// through the rule driver.
-    pub fn translate(
-        &mut self,
-        ids: impl IntoIterator<Item = Id>,
-    ) -> Result<Vec<OutputId>, String> {
+    pub fn translate(&mut self, ids: impl IntoIterator<Item = Id>) -> Vec<OutputId> {
         let translator = self
             .translator
             .as_ref()
-            .ok_or("translate() called on a BuildCtx without a translator handle")?;
+            .expect("translate() called on a BuildCtx without a translator handle");
         let mut out = Vec::new();
         for id in ids {
-            let translated = translator.translate(self.ast, self.output, self.user_ctx, id)?;
+            let translated = translator.translate(self.ast, self.output, self.user_ctx, id);
             out.extend(translated);
         }
-        Ok(out)
+        out
     }
 
     /// Run `f` with a temporary child [`BuildCtx`] whose `user_ctx` is
@@ -358,9 +339,9 @@ impl<C: Clone> BuildCtx<'_, C> {
     /// let val = ctx.scoped(|ctx| {
     ///     ctx.reset();
     ///     ctx.translate(val)
-    /// })?;
+    /// });
     /// // `ctx` here is untouched by the reset inside the closure.
-    /// let other = ctx.translate(other_id)?;
+    /// let other = ctx.translate(other_id);
     /// ```
     pub fn scoped<F, R>(&mut self, f: F) -> R
     where
@@ -373,15 +354,11 @@ impl<C: Clone> BuildCtx<'_, C> {
             source_range: self.source_range,
             user_ctx: &mut child_user_ctx,
             translator: self.translator,
-            deferred_translation_error: None,
             created_nodes_without_source_range: BTreeSet::new(),
         };
         let result = f(&mut child);
         let created_nodes_without_source_range =
             std::mem::take(&mut child.created_nodes_without_source_range);
-        if self.deferred_translation_error.is_none() {
-            self.deferred_translation_error = child.deferred_translation_error.take();
-        }
         drop(child);
         self.created_nodes_without_source_range
             .extend(created_nodes_without_source_range);

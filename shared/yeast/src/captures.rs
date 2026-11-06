@@ -54,23 +54,23 @@ impl Captures {
         self.captures.entry(key).or_default().push(id);
     }
 
-    pub(crate) fn try_translate_except<E>(
+    pub(crate) fn translate_except(
         &self,
         skip: &[&str],
-        mut f: impl FnMut(Id) -> Result<Vec<OutputId>, E>,
-    ) -> Result<TranslatedCaptures, E> {
+        mut f: impl FnMut(Id) -> Vec<OutputId>,
+    ) -> TranslatedCaptures {
         let mut translated = TranslatedCaptures::new();
         for (name, ids) in &self.captures {
             if skip.contains(name) {
                 continue;
             }
             for &id in ids {
-                for translated_id in f(id)? {
+                for translated_id in f(id) {
                     translated.insert(name, translated_id);
                 }
             }
         }
-        Ok(translated)
+        translated
     }
 
     pub fn merge(&mut self, other: &Captures) {
