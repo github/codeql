@@ -788,3 +788,27 @@ class SystemReadOnlySpanStruct extends SystemUnboundGenericStruct {
     this.getNumberOfTypeParameters() = 1
   }
 }
+
+/**
+ * A `Deconstruct` method, which is an instance method returning `void` and having all `out` parameters.
+ * This can be used to implicitly deconstruct objects. In the example below, the `Deconstruct` method allows
+ * the object `c` (of type `C`) to be deconstructed into a tuple.
+ *
+ * ```csharp
+ * class C {
+ *   public void Deconstruct(out int x, out int y) {
+ *     ...
+ *   }
+ * }
+ *
+ * var (x, y) = c;
+ * ```
+ */
+class DeconstructMethod extends Method {
+  DeconstructMethod() {
+    this.hasName("Deconstruct") and
+    this.getReturnType() instanceof VoidType and
+    forex(int i | i in [0 .. this.getNumberOfParameters() - 1] | this.getParameter(i).isOut()) and
+    not this.isStatic()
+  }
+}
