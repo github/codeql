@@ -66,7 +66,7 @@ class CheckClass extends ClassObject {
   private predicate monkeyPatched(string name) {
     exists(Attribute a, ControlFlowNode objCfg |
       objCfg.getNode() = a.getObject() and
-      a.getCtx() instanceof Store and
+      a.isStoreContext() and
       PointsTo::points_to(objCfg, _, this, _, _) and
       a.getName() = name
     )

@@ -55,6 +55,16 @@ class Stateful2(object):
 
     def do_something(self, x):
         self.data = x
+
+class StatefulAugmentedAttribute(object):
+
+    def update(self):
+        self.value += 1
+
+class StatefulAugmentedSubscript(object):
+
+    def update(self):
+        self.values[0] += 1
         
 class Inherited(object):
     pass
