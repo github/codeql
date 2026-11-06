@@ -215,6 +215,18 @@ class Test {
     new ProcessBuilder(command).start(); // $ Alert[java/command-line-injection]
   }
 
+  public static void changedDelegatedCommandThroughDerivedContainer(String arg)
+      throws java.io.IOException {
+    List<String> command = Arrays.asList(new String[]{"/usr/bin/env", "/bin/cp", "-c", arg});
+    command.set(1, "/bin/sh");
+    new ProcessBuilder(command).start(); // $ Alert[java/command-line-injection]
+
+    String[] copied =
+        Arrays.copyOfRange(new String[]{"/usr/bin/env", "/bin/cp", "-c", arg}, 0, 4);
+    copied[1] = "/bin/sh";
+    new ProcessBuilder(copied).start(); // $ Alert[java/command-line-injection]
+  }
+
   public static void relativeCommand() throws java.io.IOException {
       ProcessBuilder pb = new ProcessBuilder("ls"); // $ Alert[java/relative-path-command]
       pb.start();
@@ -249,6 +261,7 @@ class Test {
       unsupportedEnvAssignment(arg);
       unsupportedSudoOption(arg);
       changedDelegatedCommandThroughAlias(arg);
+      changedDelegatedCommandThroughDerivedContainer(arg);
       relativeCommand();
   }
 }

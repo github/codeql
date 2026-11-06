@@ -83,15 +83,16 @@ private predicate isNonDelegatingCommand(Expr ex) {
   not exists(delegatedCommandIndex(ex))
 }
 
-/** Holds if `init` initializes an array passed directly to a call. */
+/** Holds if `init` initializes an array passed directly to a command consumer. */
 private predicate isInlineArgumentArray(ArrayInit init) {
   exists(ArrayCreationExpr array, Call call |
     array.getInit() = init and
-    array = call.getAnArgument() and
-    not exists(MethodCall methodCall |
-      call = methodCall and
-      methodCall.getMethod().getDeclaringType().hasQualifiedName("java.util", "Arrays") and
-      methodCall.getMethod().hasName("copyOf")
+    array = call.getArgument(0) and
+    (
+      call.getCallee().hasQualifiedName("java.lang", "Runtime", "exec")
+      or
+      call.getCallee()
+          .hasQualifiedName("java.lang", "ProcessBuilder", ["ProcessBuilder", "command"])
     )
   )
 }
