@@ -1,0 +1,33 @@
+# Contained-value access, including BDE inherited accessor declarations.
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data:
+      - ["std", "optional", False, "value", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "optional", False, "value", "", "", "ReturnValue[*]", "Argument[-1].Element[]", "value", "manual"]
+      - ["std", "optional", False, "value", "", "", "ReturnValue[**]", "Argument[-1].Element[*]", "value", "manual"]
+      - ["std", "optional", False, "operator*", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "optional", False, "operator*", "", "", "ReturnValue[*]", "Argument[-1].Element[]", "value", "manual"]
+      - ["std", "optional", False, "operator*", "", "", "ReturnValue[**]", "Argument[-1].Element[*]", "value", "manual"]
+      - ["std", "optional", False, "operator->", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "optional", False, "operator->", "", "", "ReturnValue[*]", "Argument[-1].Element[]", "value", "manual"]
+      - ["std", "optional", False, "operator->", "", "", "ReturnValue[**]", "Argument[-1].Element[*]", "value", "manual"]
+      - ["bsl", "optional", False, "value", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["bsl", "optional", False, "value", "", "", "ReturnValue[*]", "Argument[-1].Element[]", "value", "manual"]
+      - ["bsl", "optional", False, "value", "", "", "ReturnValue[**]", "Argument[-1].Element[*]", "value", "manual"]
+      - ["bsl", "optional", False, "operator*", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["bsl", "optional", False, "operator*", "", "", "ReturnValue[*]", "Argument[-1].Element[]", "value", "manual"]
+      - ["bsl", "optional", False, "operator*", "", "", "ReturnValue[**]", "Argument[-1].Element[*]", "value", "manual"]
+      - ["bsl", "optional", False, "operator->", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["bsl", "optional", False, "operator->", "", "", "ReturnValue[*]", "Argument[-1].Element[]", "value", "manual"]
+      - ["bsl", "optional", False, "operator->", "", "", "ReturnValue[**]", "Argument[-1].Element[*]", "value", "manual"]
+      - ["BloombergLP::bslstl", "Optional_Base", False, "value", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["BloombergLP::bslstl", "Optional_Base", False, "value", "", "", "ReturnValue[*]", "Argument[-1].Element[]", "value", "manual"]
+      - ["BloombergLP::bslstl", "Optional_Base", False, "value", "", "", "ReturnValue[**]", "Argument[-1].Element[*]", "value", "manual"]
+      - ["BloombergLP::bslstl", "Optional_Base", False, "operator*", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["BloombergLP::bslstl", "Optional_Base", False, "operator*", "", "", "ReturnValue[*]", "Argument[-1].Element[]", "value", "manual"]
+      - ["BloombergLP::bslstl", "Optional_Base", False, "operator*", "", "", "ReturnValue[**]", "Argument[-1].Element[*]", "value", "manual"]
+      - ["BloombergLP::bslstl", "Optional_Base", False, "operator->", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["BloombergLP::bslstl", "Optional_Base", False, "operator->", "", "", "ReturnValue[*]", "Argument[-1].Element[]", "value", "manual"]
+      - ["BloombergLP::bslstl", "Optional_Base", False, "operator->", "", "", "ReturnValue[**]", "Argument[-1].Element[*]", "value", "manual"]
