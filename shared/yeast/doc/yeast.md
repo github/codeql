@@ -178,6 +178,36 @@ Single-pattern and empty query groups are rejected as redundant or meaningless.
 This does not affect the empty output template `()`, which intentionally means
 “emit no replacement nodes.”
 
+### Query choices
+
+A query choice tries its alternatives from left to right and merges captures
+from the selected alternative:
+
+```rust
+[
+    (integer) @number
+    (identifier) @@name
+]
+```
+
+An alternative may contain any query pattern. Parenthesize a sequence of
+sibling patterns to use it as one alternative:
+
+```rust
+[
+    (
+        (item)* @items
+        (separator) @separator
+    )
+    (single_item) @item
+]
+```
+
+Capture bindings are unified by name. A capture present in every alternative
+remains required; one missing or optional in any alternative becomes optional;
+and any repeated occurrence makes the combined binding a vector. The same name
+must consistently use `@` or `@@`.
+
 ## Template language
 
 Templates construct new AST nodes using the `tree!` and `trees!` macros.

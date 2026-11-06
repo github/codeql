@@ -206,9 +206,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (unsupported_node)
         ),
-        rule!((declReferenceExpr baseName: (identifier) @@name) => expr {
-            tree!((identifier #{name}))
-        }),
         // A bare name reference (`x`), and an operator used as a value (`+` in
         // `reduce(0, +)`), are both `declReferenceExpr`; its `baseName` is the
         // referenced identifier / operator symbol.
@@ -263,9 +260,15 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // to an opaque `unsupported_node`. These bare nodes only occur inside an
         // unresolved sequence — folded forms are handled by the dedicated rules
         // above (assignment) and below (`ternaryExpr`).
-        rule!((assignmentExpr) @@op => (infix_operator #{op})),
-        rule!((unresolvedAsExpr) @@op => (infix_operator #{op})),
-        rule!((unresolvedIsExpr) @@op => (infix_operator #{op})),
+        rule!(
+            [
+                (assignmentExpr)
+                (unresolvedAsExpr)
+                (unresolvedIsExpr)
+            ] @@op
+            =>
+            (infix_operator #{op})
+        ),
         // The ternary is a three-part operator (`? thenExpr :`) that *wraps* a
         // nested expression. Splice it into `?`, the then-expression, `:` so the
         // then-expression survives as a real (traversable) operand rather than
@@ -536,7 +539,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             }
         ),
         rule!(
-            (enumCaseElement name: @@name rawValue: (initializerClause value: @val))
+            (enumCaseElement
+                name: @@name
+                rawValue: (initializerClause value: @val)?)
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
@@ -544,15 +549,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 modifier: (modifier "enum_case")
                 pattern: (identifier #{name})
                 value: {val})
-        ),
-        rule!(
-            (enumCaseElement name: @@name)
-            =>
-            (variable_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: [(modifier "chained_declaration") if { ctx.is_chained }]
-                modifier: (modifier "enum_case")
-                pattern: (identifier #{name}))
         ),
         // Enum cases. A single `case` declaration may carry modifiers
         // (e.g. `indirect`) and list several comma-separated elements; each
@@ -926,13 +922,23 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // A single case item unwraps to its pattern, possibly boxed in conditional_pattern
         rule!(
-            (switchCaseItem
-                pattern: @p
-                whereClause: (whereClause condition: @cond))
+            [
+                (switchCaseItem
+                    pattern: @pattern
+                    whereClause: (whereClause condition: @condition)?)
+                (catchItem
+                    pattern: @pattern
+                    whereClause: (whereClause condition: @condition)?)
+            ]
             =>
-            (conditional_pattern pattern: {p} condition: {cond})
+            [
+                (conditional_pattern
+                    pattern: {pattern}
+                    condition: {condition})
+                    if { condition.is_some() }
+                {pattern}
+            ]
         ),
-        rule!((switchCaseItem pattern: @p) => pattern { p }),
         // A pattern-matching condition (`if case let x = e`, `if case .foo(let x)
         // = e`) becomes a `pattern_guard_expr`: the matched pattern and the
         // scrutinee value are translated recursively.
@@ -1097,18 +1103,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 body: {body}
                 catch_clause: {catches})
         ),
-        rule!(
-            (catchItem
-                pattern: @pattern
-                whereClause: (whereClause condition: @guard))
-            =>
-            (conditional_pattern pattern: {pattern} condition: {guard})
-        ),
-        rule!(
-            (catchItem pattern: @pattern)
-            =>
-            pattern {pattern}
-        ),
         // Catch block with one or more patterns (which have been translated by the catchItem rules)
         rule!(
             (catchClause
@@ -1178,8 +1172,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A leading attribute (`@objc`) or access/function/member/mutation/
         // ownership modifier (swift-syntax models each as a single `declModifier`)
         // becomes a `modifier`; its source text is the modifier spelling.
-        rule!((attribute) @@m => (modifier #{m})),
-        rule!((declModifier) @@m => (modifier #{m})),
+        rule!(
+            [
+                (attribute)
+                (declModifier)
+            ] @@m
+            =>
+            (modifier #{m})
+        ),
         // Type specifiers (`inout`, `sending`, ...) are mapped to modifiers.
         rule!((simpleTypeSpecifier) @@m => (modifier #{m})),
         rule!((lifetimeTypeSpecifier) @@m => (modifier #{m})),
@@ -1502,35 +1502,41 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // these roots is discarded with its parent and needs no separate rule.
         // Explicit empty content preserves their existing representation
         // instead of inheriting the matched source text.
-        rule!((actorDecl) => (unsupported_node "")),
-        rule!((borrowExpr) => (unsupported_node "")),
-        rule!((classRestrictionType) => (unsupported_node "")),
-        rule!((compositionType) => (unsupported_node "")),
-        rule!((consumeExpr) => (unsupported_node "")),
-        rule!((copyExpr) => (unsupported_node "")),
-        rule!((discardStmt) => (unsupported_node "")),
-        rule!((fallThroughStmt) => (unsupported_node "")),
-        rule!((ifConfigDecl) => (unsupported_node "")),
-        rule!((implicitlyUnwrappedOptionalType) => (unsupported_node "")),
-        rule!((inlineArrayType) => (unsupported_node "")),
-        rule!((keyPathExpr) => (unsupported_node "")),
-        rule!((macroDecl) => (unsupported_node "")),
-        rule!((metatypeType) => (unsupported_node "")),
-        rule!((namedOpaqueReturnType) => (unsupported_node "")),
-        rule!((operatorDecl) => (unsupported_node "")),
-        rule!((packElementExpr) => (unsupported_node "")),
-        rule!((packElementType) => (unsupported_node "")),
-        rule!((packExpansionExpr) => (unsupported_node "")),
-        rule!((packExpansionType) => (unsupported_node "")),
-        rule!((postfixIfConfigExpr) => (unsupported_node "")),
-        rule!((poundSourceLocation) => (unsupported_node "")),
-        rule!((precedenceGroupDecl) => (unsupported_node "")),
-        rule!((someOrAnyType) => (unsupported_node "")),
-        rule!((subscriptDecl) => (unsupported_node "")),
-        rule!((suppressedType) => (unsupported_node "")),
-        rule!((typeExpr) => (unsupported_node "")),
-        rule!((unsafeExpr) => (unsupported_node "")),
-        rule!((yieldStmt) => (unsupported_node "")),
+        rule!(
+            [
+                (actorDecl)
+                (borrowExpr)
+                (classRestrictionType)
+                (compositionType)
+                (consumeExpr)
+                (copyExpr)
+                (discardStmt)
+                (fallThroughStmt)
+                (ifConfigDecl)
+                (implicitlyUnwrappedOptionalType)
+                (inlineArrayType)
+                (keyPathExpr)
+                (macroDecl)
+                (metatypeType)
+                (namedOpaqueReturnType)
+                (operatorDecl)
+                (packElementExpr)
+                (packElementType)
+                (packExpansionExpr)
+                (packExpansionType)
+                (postfixIfConfigExpr)
+                (poundSourceLocation)
+                (precedenceGroupDecl)
+                (someOrAnyType)
+                (subscriptDecl)
+                (suppressedType)
+                (typeExpr)
+                (unsafeExpr)
+                (yieldStmt)
+            ]
+            =>
+            (unsupported_node "")
+        ),
         // Anything reaching this final generic handler has neither a
         // dedicated rule nor an explicit unsupported entry.
         rule!(

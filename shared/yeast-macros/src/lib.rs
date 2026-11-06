@@ -26,6 +26,7 @@ mod template_parse;
 /// (kind)* @capture             - capture each repeated named-node match
 /// "literal"* @capture          - capture each repeated unnamed-token match
 /// (kind)?                      - zero or one named node
+/// [(pattern) (pattern)]        - query choice: try alternatives in order
 /// ```
 ///
 /// Named fields and bare child patterns may be intermixed in any order.
@@ -161,6 +162,9 @@ pub fn trees(input: TokenStream) -> TokenStream {
 /// - `@name` (no quantifier) → `name: OutputId`
 /// - `@name` (after `*`/`+`) → `name: Vec<OutputId>`
 /// - `@name` (after `?`) → `name: Option<OutputId>`
+/// - captures in a query choice are unified by name: a capture in every branch
+///   remains required, a missing/optional capture becomes optional, and any
+///   repeated occurrence makes the binding a vector
 ///
 /// Raw `@@name` captures use the corresponding input `Id` types instead.
 ///
