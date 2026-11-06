@@ -68,7 +68,9 @@ where
     then isPinnedContainer(version)
     else isPinnedCommit(version)
   ) and
-  not exists(UsesStep step | uses = step and isImmutableAction(step, nwo)) and
+  // An immutable Action is only immutable when referenced by a complete version tag (or SHA).
+  // Floating tags such as `v4` or `v4.1` are moved by the maintainers and remain mutable.
+  not exists(UsesStep step | uses = step and isImmutableAction(step, nwo) and isFullSemVer(version)) and
   if uses instanceof ExternalJob
   then
     message =

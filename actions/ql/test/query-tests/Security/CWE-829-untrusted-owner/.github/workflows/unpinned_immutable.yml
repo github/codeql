@@ -1,0 +1,22 @@
+name: Immutable Actions
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # `actions` is distrusted via `!actions`. `actions/checkout` is an immutable Action, but only
+      # a complete version tag (or a commit SHA) is immutable, so floating tags are still reported.
+      - uses: actions/checkout@v4 # $ Alert
+      - uses: actions/checkout@v4.1 # $ Alert
+      - uses: actions/checkout@main # $ Alert
+      - uses: actions/checkout@latest # $ Alert
+      # Complete version tags of an immutable Action are not reported.
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@4.2.2
+      - uses: actions/checkout@v4.2.2-rc.1
+      # A pinned commit is not reported.
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      # `octokit` is not trusted by default; `octokit/request-action` is an immutable Action.
+      - uses: octokit/request-action@v2 # $ Alert
+      - uses: octokit/request-action@v2.x # $ Alert
+      - uses: octokit/request-action@v2.1.9
