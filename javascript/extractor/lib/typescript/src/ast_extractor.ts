@@ -1,143 +1,217 @@
-import * as ts from "typescript";
+import { createRequire } from "node:module";
+import { dirname, join } from "node:path";
+import { pathToFileURL } from "node:url";
+import { SyntaxKind } from "typescript/ast";
+import * as ts from "typescript/ast";
+import type { Diagnostic } from "typescript/sync";
 
-/**
- * Interface that exposes some internal properties we rely on, as well as
- * some properties we add ourselves.
- */
-export interface AugmentedSourceFile extends ts.SourceFile {
-    parseDiagnostics?: any[];
-    /** Internal property that we expose as a workaround. */
-    redirectInfo?: object | null;
-    $tokens?: Token[];
-    $lineStarts?: ReadonlyArray<number>;
+export type JsonValue = string | number | boolean | JsonObject | JsonValue[];
+export interface JsonObject {
+    [property: string]: JsonValue;
 }
 
-export interface AugmentedNode extends ts.Node {
-    $pos?: any;
-    $end?: any;
-    $declarationKind?: string;
-}
+/** Child and scalar properties consumed by the Java AST converter. */
+const astProperties = [
+    "argument",
+    "argumentExpression",
+    "arguments",
+    "assertsModifier",
+    "asteriskToken",
+    "attributes",
+    "block",
+    "body",
+    "caseBlock",
+    "catchClause",
+    "checkType",
+    "children",
+    "clauses",
+    "closingElement",
+    "closingFragment",
+    "condition",
+    "constraint",
+    "declarationList",
+    "declarations",
+    "defaultType",
+    "dotDotDotToken",
+    "elements",
+    "elementType",
+    "elseStatement",
+    "exclamationToken",
+    "exportClause",
+    "expression",
+    "exprName",
+    "extendsType",
+    "falseType",
+    "finallyBlock",
+    "head",
+    "heritageClauses",
+    "importClause",
+    "incrementor",
+    "indexType",
+    "initializer",
+    "keywordToken",
+    "label",
+    "left",
+    "literal",
+    "members",
+    "modifiers",
+    "moduleReference",
+    "moduleSpecifier",
+    "name",
+    "namedBindings",
+    "objectType",
+    "openingElement",
+    "openingFragment",
+    "operand",
+    "operator",
+    "operatorToken",
+    "parameterName",
+    "parameters",
+    "phaseModifier",
+    "postfixToken",
+    "properties",
+    "propertyName",
+    "qualifier",
+    "questionDotToken",
+    "questionToken",
+    "right",
+    "statement",
+    "statements",
+    "tag",
+    "tagName",
+    "template",
+    "templateSpans",
+    "text",
+    "thenStatement",
+    "token",
+    "trueType",
+    "tryBlock",
+    "type",
+    "typeArguments",
+    "typeName",
+    "typeParameter",
+    "typeParameters",
+    "types",
+    "value",
+    "variableDeclaration",
+    "whenFalse",
+    "whenTrue",
+];
 
-export type AugmentedPos = number;
+const require = createRequire(import.meta.url);
+const packageRoot = dirname(require.resolve("typescript/package.json"));
 
-export interface Token {
-    kind: ts.SyntaxKind;
-    tokenPos: AugmentedPos;
-    text: string;
-}
+// NOTE: Importing this file directly from the `typescript` package is a bit
+// hacky, but the child properties are not exposed through the public API.
+const { childProperties } = await import(
+    pathToFileURL(join(packageRoot, "dist/api/node/protocol.generated.js")).href);
 
-let skipWhiteSpace = /(?:\s|\/\/.*|\/\*[^]*?\*\/)*/g;
-
-/**
- * Invokes the given callback for every AST node in the given tree.
- */
-function forEachNode(ast: ts.Node, callback: (node: ts.Node) => void) {
-    function visit(node: ts.Node) {
-        ts.forEachChild(node, visit);
-        callback(node);
+const scalarAstProperties = ["keywordToken", "operator", "phaseModifier", "text", "token"];
+const astPropertiesByKind = {} as Record<ts.SyntaxKind, readonly string[]>;
+for (const kind of Object.values(SyntaxKind)) {
+    if (typeof kind === "number" && kind !== SyntaxKind.Count) {
+        const children = childProperties[kind] ?? [];
+        astPropertiesByKind[kind] = astProperties.filter(property =>
+            scalarAstProperties.includes(property) || children.includes(property));
     }
-    visit(ast);
 }
 
-export function augmentAst(ast: AugmentedSourceFile, code: string) {
-    ast.$lineStarts = ast.getLineStarts();
+const skipWhiteSpace = /(?:\s|\/\/.*|\/\*[^]*?\*\/)*/g;
 
-    /**
-     * Converts a numeric offset to the value expected by the Java counterpart of the extractor.
-     */
-    function augmentPos(pos: number, shouldSkipWhitespace?: boolean): AugmentedPos {
-        // skip over leading spaces/comments
-        if (shouldSkipWhitespace) {
-            skipWhiteSpace.lastIndex = pos;
-            pos += skipWhiteSpace.exec(code)[0].length;
+export function extractAst(ast: ts.SourceFile, diagnostics: readonly Diagnostic[]): JsonObject {
+    const code = ast.text;
+    // The native parser still builds assertion ASTs, but now diagnoses this formerly accepted syntax.
+    const parseDiagnostics = diagnostics.filter(diagnostic => diagnostic.code !== 2880);
+
+    function augmentPos(pos: number): number {
+        skipWhiteSpace.lastIndex = pos;
+        return pos + skipWhiteSpace.exec(code)![0].length;
+    }
+
+    function projectValue(value: unknown): JsonValue {
+        if (Array.isArray(value)) return Array.from(value, projectValue);
+        if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+            return value;
         }
-        return pos;
+        if (value != null && typeof value === "object" && "forEachChild" in value) {
+            return projectNode(value as ts.Node);
+        }
+        throw new Error("Unexpected TypeScript AST property value");
     }
 
-    // Find the position of all tokens where the scanner requires parse-tree information.
-    // At these offsets, a call to `scanner.reScanX` is required.
-    type RescanEvent = () => void;
-    let reScanEvents: RescanEvent[] = [];
-    let reScanEventPos: number[] = [];
-    let scanner = ts.createScanner(ts.ScriptTarget.ES2015, false, 1, code);
-    let reScanSlashToken = scanner.reScanSlashToken.bind(scanner);
-    let reScanTemplateToken = scanner.reScanTemplateToken.bind(scanner);
-    let reScanGreaterToken = scanner.reScanGreaterToken.bind(scanner);
-    if (!ast.parseDiagnostics || ast.parseDiagnostics.length === 0) {
-        forEachNode(ast, node => {
-            if (ts.isRegularExpressionLiteral(node)) {
-                reScanEventPos.push(node.getStart(ast, false));
-                reScanEvents.push(reScanSlashToken);
-            }
-            if (ts.isTemplateMiddle(node) || ts.isTemplateTail(node)) {
-                reScanEventPos.push(node.getStart(ast, false));
-                reScanEvents.push(reScanTemplateToken);
-            }
-            if (ts.isBinaryExpression(node)) {
-                let operator = node.operatorToken;
-                switch (operator.kind) {
-                    case ts.SyntaxKind.GreaterThanEqualsToken:
-                    case ts.SyntaxKind.GreaterThanGreaterThanEqualsToken:
-                    case ts.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken:
-                    case ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken:
-                    case ts.SyntaxKind.GreaterThanGreaterThanToken:
-                        reScanEventPos.push(operator.getStart(ast, false));
-                        reScanEvents.push(reScanGreaterToken);
-                        break;
-                }
-            }
-        });
+    function projectNode(node: ts.Node): JsonObject {
+        const result: JsonObject = {
+            kind: node.kind,
+            flags: node.flags,
+            $pos: augmentPos(node.pos),
+            $end: node.end,
+        };
+        const properties = node as ts.Node & { [property: string]: unknown };
+        for (const property of astPropertiesByKind[node.kind]) {
+            const value = properties[property];
+            if (value != null) result[property] = projectValue(value);
+        }
+
+        // Native nodes share boolean getters even on kinds where they are not meaningful.
+        if (ts.isExportAssignment(node)) result.isExportEquals = node.isExportEquals;
+        if (ts.isExportDeclaration(node) || ts.isImportEqualsDeclaration(node)
+            || ts.isImportSpecifier(node) || ts.isExportSpecifier(node)) {
+            result.isTypeOnly = node.isTypeOnly;
+        }
+        if (ts.isImportTypeNode(node)) result.isTypeOf = node.isTypeOf;
+
+        return result;
     }
 
-    reScanEventPos.push(Infinity);
+    const result = projectNode(ast);
+    result.$lineStarts = Array.from(ast.getLineStarts());
+    result.$tokens = extractTokens(ast, parseDiagnostics.length === 0);
+    result.parseDiagnostics = parseDiagnostics.map(diagnostic => ({
+        messageText: diagnostic.text,
+        $pos: diagnostic.pos,
+    }));
+    return result;
+}
 
-    // add tokens and comments to the AST
-    ast.$tokens = [];
-    let rescanEventIndex = 0;
-    let nextRescanPosition = reScanEventPos[0];
-    let tk;
+function extractTokens(ast: ts.SourceFile, rescan: boolean): JsonObject[] {
+    const scanner = ts.createScanner(false, ts.LanguageVariant.JSX, ast.text);
+    const rescans = new Map<number, () => ts.SyntaxKind>();
+    if (rescan) visit(ast);
+
+    function visit(node: ts.Node): void {
+        node.forEachChild(visit);
+        if (ts.isRegularExpressionLiteral(node)) {
+            rescans.set(node.getStart(ast), () => scanner.reScanSlashToken());
+        } else if (ts.isTemplateMiddle(node) || ts.isTemplateTail(node)) {
+            const template = node.parent.parent;
+            const tagged = ts.isTemplateExpression(template) && ts.isTaggedTemplateExpression(template.parent);
+            rescans.set(node.getStart(ast), () => scanner.reScanTemplateToken(tagged));
+        } else if (ts.isBinaryExpression(node)) {
+            const operator = node.operatorToken;
+            switch (operator.kind) {
+                case ts.SyntaxKind.GreaterThanEqualsToken:
+                case ts.SyntaxKind.GreaterThanGreaterThanEqualsToken:
+                case ts.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken:
+                case ts.SyntaxKind.GreaterThanGreaterThanGreaterThanToken:
+                case ts.SyntaxKind.GreaterThanGreaterThanToken:
+                    rescans.set(operator.getStart(ast), () => scanner.reScanGreaterToken());
+                    break;
+            }
+        }
+    }
+
+    const tokens: JsonObject[] = [];
+    let kind: ts.SyntaxKind;
     do {
-        tk = scanner.scan();
-        if (scanner.getTokenPos() === nextRescanPosition) {
-            let callback = reScanEvents[rescanEventIndex];
-            callback();
-            ++rescanEventIndex;
-            nextRescanPosition = reScanEventPos[rescanEventIndex];
-        }
-        ast.$tokens.push({
-            kind: tk,
-            tokenPos: augmentPos(scanner.getTokenPos()),
+        kind = scanner.scan();
+        const callback = rescans.get(scanner.getTokenStart());
+        // Keep the pre-rescan kind, as in the original Java-facing token protocol.
+        if (callback != null) callback();
+        tokens.push({
+            kind,
+            tokenPos: scanner.getTokenStart(),
             text: scanner.getTokenText(),
         });
-    } while (tk !== ts.SyntaxKind.EndOfFileToken);
-
-    if (ast.parseDiagnostics) {
-        ast.parseDiagnostics.forEach(d => {
-            delete d.file;
-            d.$pos = augmentPos(d.start);
-        });
-    }
-
-    visitAstNode(ast);
-    function visitAstNode(node: AugmentedNode) {
-        ts.forEachChild(node, visitAstNode);
-
-        // fill in line/column info
-        if ("pos" in node) {
-            node.$pos = augmentPos(node.pos, true);
-        }
-        if ("end" in node) {
-            node.$end = augmentPos(node.end);
-        }
-
-        if (ts.isVariableDeclarationList(node as any)) {
-            if (node.flags & ts.NodeFlags.Let) {
-                node.$declarationKind = "let";
-            } else if (node.flags & ts.NodeFlags.Const) {
-                node.$declarationKind = "const";
-            } else {
-                node.$declarationKind = "var";
-            }
-        }
-    }
+    } while (kind !== ts.SyntaxKind.EndOfFile);
+    return tokens;
 }

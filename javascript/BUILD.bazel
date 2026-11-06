@@ -33,5 +33,9 @@ codeql_pack(
         "//javascript/extractor:tools-extractor",
         "//javascript/resources",
     ],
-    zips = {"//javascript/extractor/lib/typescript": "tools"},
+    arch_overrides = ["tools/typescript-parser-wrapper/node_modules/@typescript"],
+    zips = {
+        "//javascript/extractor/lib/typescript": "tools",
+        "//javascript/extractor/lib/typescript:native": "tools/typescript-parser-wrapper/node_modules/@typescript",
+    },
 )
