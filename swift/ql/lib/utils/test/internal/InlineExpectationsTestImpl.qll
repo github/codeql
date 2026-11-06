@@ -17,6 +17,9 @@ module Impl implements InlineExpectationsTestSig {
     /** Returns the contents of the given comment, _without_ the preceding comment marker (`//`). */
     string getContents() { result = comment.getText().suffix(2).trim() }
 
+    /** Swift expectation comments use line-comment syntax. */
+    predicate isLineComment() { any() }
+
     /** Gets a textual representation of this element. */
     string toString() { result = comment.toString() }
 
@@ -34,5 +37,12 @@ module Impl implements InlineExpectationsTestSig {
       result =
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
+  }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // The Swift extractor only ingests Swift sources (no XML/YAML/HTML in its dbscheme), so a
+    // constant marker is safe; revisit if Swift ever gains extraction of another file type.
+    exists(relativePath) and result = "//"
   }
 }
