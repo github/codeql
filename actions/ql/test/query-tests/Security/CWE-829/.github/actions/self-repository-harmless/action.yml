@@ -1,0 +1,7 @@
+name: Self repository harmless action
+description: Echo a fixed string
+runs:
+  using: composite
+  steps:
+    - run: echo "Hello"
+      shell: bash

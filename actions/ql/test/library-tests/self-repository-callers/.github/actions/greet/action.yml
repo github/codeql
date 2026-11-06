@@ -1,0 +1,11 @@
+name: Greet
+description: Echo a greeting
+inputs:
+  who:
+    description: Name
+    required: true
+runs:
+  using: composite
+  steps:
+    - run: echo "Hello"
+      shell: bash
