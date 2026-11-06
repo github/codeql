@@ -1,0 +1,33 @@
+| tst.rs:3:16:3:22 | //... |  lgtm | lgtm | tst.rs:3:1:3:22 | suppression range |
+| tst.rs:4:16:4:48 | //... |  lgtm[rust/redundant-operation] | lgtm[rust/redundant-operation] | tst.rs:4:1:4:48 | suppression range |
+| tst.rs:5:16:5:67 | //... |  lgtm[rust/redundant-operation, rust/unused-value] | lgtm[rust/redundant-operation, rust/unused-value] | tst.rs:5:1:5:67 | suppression range |
+| tst.rs:6:16:6:37 | //... |  lgtm[@tag:nullness] | lgtm[@tag:nullness] | tst.rs:6:1:6:37 | suppression range |
+| tst.rs:7:16:7:62 | //... |  lgtm[@tag:nullness,rust/redundant-operation] | lgtm[@tag:nullness,rust/redundant-operation] | tst.rs:7:1:7:62 | suppression range |
+| tst.rs:8:16:8:43 | //... |  lgtm[@expires:2017-06-11] | lgtm[@expires:2017-06-11] | tst.rs:8:1:8:43 | suppression range |
+| tst.rs:9:16:9:80 | //... |  lgtm[rust/redundant-operation] because I know better than lgtm | lgtm[rust/redundant-operation] | tst.rs:9:1:9:80 | suppression range |
+| tst.rs:10:16:10:33 | //... |  lgtm: blah blah | lgtm | tst.rs:10:1:10:33 | suppression range |
+| tst.rs:11:16:11:47 | //... |  lgtm blah blah #falsepositive | lgtm | tst.rs:11:1:11:47 | suppression range |
+| tst.rs:12:16:12:49 | //... | lgtm  [rust/redundant-operation] | lgtm  [rust/redundant-operation] | tst.rs:12:1:12:49 | suppression range |
+| tst.rs:13:16:13:25 | /*...*/ |  lgtm  | lgtm | tst.rs:13:1:13:25 | suppression range |
+| tst.rs:14:16:14:24 | //... |  lgtm[] | lgtm[] | tst.rs:14:1:14:24 | suppression range |
+| tst.rs:16:16:16:21 | //... | lgtm | lgtm | tst.rs:16:1:16:21 | suppression range |
+| tst.rs:17:16:17:22 | //... | \tlgtm | lgtm | tst.rs:17:1:17:22 | suppression range |
+| tst.rs:18:16:18:49 | //... |  lgtm\t[rust/redundant-operation] | lgtm\t[rust/redundant-operation] | tst.rs:18:1:18:49 | suppression range |
+| tst.rs:21:16:21:27 | //... |  foo; lgtm | lgtm | tst.rs:21:1:21:27 | suppression range |
+| tst.rs:22:16:22:53 | //... |  foo; lgtm[rust/redundant-operation] | lgtm[rust/redundant-operation] | tst.rs:22:1:22:53 | suppression range |
+| tst.rs:24:16:24:52 | //... |  foo lgtm[rust/redundant-operation] | lgtm[rust/redundant-operation] | tst.rs:24:1:24:52 | suppression range |
+| tst.rs:26:16:26:56 | //... |  foo lgtm[rust/redundant-operation] bar | lgtm[rust/redundant-operation] | tst.rs:26:1:26:56 | suppression range |
+| tst.rs:27:16:27:23 | //... |  LGTM! | LGTM | tst.rs:27:1:27:23 | suppression range |
+| tst.rs:28:16:28:48 | //... |  LGTM[rust/redundant-operation] | LGTM[rust/redundant-operation] | tst.rs:28:1:28:48 | suppression range |
+| tst.rs:29:16:29:76 | //... |  lgtm[rust/redundant-operation] and lgtm[rust/unused-value] | lgtm[rust/redundant-operation] | tst.rs:29:1:29:76 | suppression range |
+| tst.rs:29:16:29:76 | //... |  lgtm[rust/redundant-operation] and lgtm[rust/unused-value] | lgtm[rust/unused-value] | tst.rs:29:1:29:76 | suppression range |
+| tst.rs:30:16:30:54 | //... |  lgtm[rust/redundant-operation]; lgtm | lgtm | tst.rs:30:1:30:54 | suppression range |
+| tst.rs:30:16:30:54 | //... |  lgtm[rust/redundant-operation]; lgtm | lgtm[rust/redundant-operation] | tst.rs:30:1:30:54 | suppression range |
+| tst.rs:31:16:31:27 | /*...*/ |  lgtm[]  | lgtm[] | tst.rs:31:1:31:27 | suppression range |
+| tst.rs:32:16:32:51 | /*...*/ |  lgtm[rust/redundant-operation]  | lgtm[rust/redundant-operation] | tst.rs:32:1:32:51 | suppression range |
+| tst.rs:38:16:38:65 | /*...*/ |  lgtm[@tag:nullness,rust/redundant-operation]  | lgtm[@tag:nullness,rust/redundant-operation] | tst.rs:38:1:38:65 | suppression range |
+| tst.rs:39:16:39:40 | /*...*/ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tst.rs:39:1:39:40 | suppression range |
+| tst.rs:40:5:40:39 | //... |  codeql[rust/redundant-operation] | lgtm[rust/redundant-operation] | tst.rs:41:0:41:0 | suppression range |
+| tst.rs:42:5:42:39 | //... |  CODEQL[rust/redundant-operation] | lgtm[rust/redundant-operation] | tst.rs:43:0:43:0 | suppression range |
+| tst.rs:44:5:44:76 | //... |  codeql[rust/redundant-operation] -- because I know better than codeql | lgtm[rust/redundant-operation] | tst.rs:45:0:45:0 | suppression range |
+| tst.rs:46:5:46:42 | /*...*/ |  codeql[rust/redundant-operation]  | lgtm[rust/redundant-operation] | tst.rs:47:0:47:0 | suppression range |
