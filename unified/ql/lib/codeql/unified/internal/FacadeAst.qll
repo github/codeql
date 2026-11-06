@@ -242,21 +242,6 @@ module Unified {
     /** Gets a member, looking through conditional-compilation branches. */
     Member getAMember() { result = compilationExpandedStmt(this.getADirectMember()) }
 
-    /**
-     * Gets the `i`th member in source order across all conditional-compilation alternatives,
-     * indexed from zero.
-     */
-    Member getMember(int i) {
-      result =
-        rank[i + 1](Member m |
-          m = this.getAMember()
-        |
-          m
-          order by
-            m.getLocation().getStartLine(), m.getLocation().getStartColumn(), m.getParentIndex()
-        )
-    }
-
     /** Gets the name of this declaration. */
     string getName() { result = this.getNameNode().getValue() }
 
