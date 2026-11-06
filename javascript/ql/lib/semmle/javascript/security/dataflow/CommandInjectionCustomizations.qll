@@ -5,6 +5,7 @@
  */
 
 import javascript
+private import UnsafeShellCommandConstructionCustomizations
 
 module CommandInjection {
   /**
@@ -53,6 +54,19 @@ module CommandInjection {
    */
   class SystemCommandExecutionSink extends Sink, DataFlow::ValueNode {
     SystemCommandExecutionSink() { this = any(SystemCommandExecution sys).getACommandArgument() }
+  }
+
+  /** An argument in a `child_process` argument array that is interpreted by a shell. */
+  private class ChildProcessArgumentSink extends Sink {
+    ChildProcessArgumentSink() {
+      exists(UnsafeShellCommandConstruction::ShellTrueCommandExecutionSink sink |
+        this = sink and
+        sink.getCommandExecution() =
+          API::moduleImport(["mz/child_process", "child_process"])
+              .getMember(["execFile", "execFileSync", "spawn", "spawnSync"])
+              .getMaybePromisifiedCall()
+      )
+    }
   }
 
   private class SinkFromModel extends Sink {
