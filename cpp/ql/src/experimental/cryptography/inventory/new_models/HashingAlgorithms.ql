@@ -3,7 +3,7 @@
  * @description Finds all potential usage of cryptographic hash algorithms using the supported libraries.
  * @kind problem
  * @id cpp/quantum-readiness/cbom/hash-algorithms
- * @problem.severity error
+ * @severity recommendation
  * @tags cbom
  *       cryptography
  */
