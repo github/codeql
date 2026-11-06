@@ -4,6 +4,7 @@ module;
 
 import unified // reexport in order to shadow e.g. the `TypeParameter` class
 private import unified as Unified
+private import TypeMention
 private import TypeInference
 private import codeql.unified.internal.StaticNameBinding
 
@@ -38,12 +39,24 @@ predicate associatedTypeParameterInherited(
   name = a.getName()
 }
 
+private predicate isNestedType(Member m, Identifier nested, ClassLikeDeclaration parent) {
+  exists(parent.getNameNode()) and
+  nested = m.getNameNode() and
+  m = parent.getAMemberIncludingExtensions() and
+  (
+    exists(m.(ClassLikeDeclaration).getNameNode())
+    or
+    m instanceof TypeAliasDeclaration
+  )
+}
+
 cached
 newtype TType =
   TClassLikeDeclarationType(ClassLikeDeclaration c) {
     CachedStage::ref() and
     exists(c.getNameNode())
   } or
+  TAliasType(TypeAliasDeclaration alias) or
   TClosureParameterPseudoType(Parameter p) {
     exists(FunctionExpr fe |
       p = fe.getAParameter() and
@@ -56,6 +69,7 @@ newtype TType =
   ) {
     associatedTypeParameter(c, a, inherited)
   } or
+  TParentTypeParameterType(Member m) { isNestedType(m, _, _) } or
   TUnknownType() or
   TUnknownTypeTypeParameter(int i) { i in [0 .. 20] }
 
@@ -78,7 +92,20 @@ abstract private class TypeImpl extends TType {
    * This includes both positional type parameters and synthetic type parameters,
    * such as associated types.
    */
-  TypeParameter getATypeParameter() { result = this.getPositionalTypeParameter(_) }
+  TypeParameter getATypeParameter() {
+    result = this.getPositionalTypeParameter(_)
+    or
+    exists(Member m |
+      result = TParentTypeParameterType(m) and
+      isNestedType(m, this.getNameNode(), _)
+    )
+  }
+
+  /** Gets the parent type of this nested type, if any. */
+  ClassLikeDeclarationType getParentType() {
+    result.getClassLikeDeclaration() =
+      this.getATypeParameter().(ParentTypeParameterType).getParent()
+  }
 
   /** Gets the name node of this type, if any. */
   abstract Identifier getNameNode();
@@ -117,9 +144,33 @@ class ClassLikeDeclarationType extends TypeImpl, TClassLikeDeclarationType {
     result = TAssociatedTypeParameterType(c, _, _)
   }
 
-  override string toString() { result = c.getName() }
+  override string toString() { result = c.getQualifiedName() }
 
   override Location getLocation() { result = c.getLocation() }
+}
+
+/**
+ * A type representing a type alias. For type inference, type aliases are expanded,
+ * but we need them for resolving type mentions.
+ */
+class AliasType extends TypeImpl, TAliasType {
+  TypeAliasDeclaration alias;
+
+  AliasType() { this = TAliasType(alias) }
+
+  TypeAliasDeclaration getTypeAliasDeclaration() { result = alias }
+
+  TypeMention getAlias() { result = alias.getType() }
+
+  override Identifier getNameNode() { result = alias.getNameNode() }
+
+  override TypeParameter getPositionalTypeParameter(int i) {
+    result = TTypeParameterType(alias.getTypeParameter(i))
+  }
+
+  override string toString() { result = alias.getQualifiedName() }
+
+  override Location getLocation() { result = alias.getLocation() }
 }
 
 /**
@@ -159,13 +210,16 @@ class ClosureParameterPseudoType extends PseudoType, TClosureParameterPseudoType
 
 /** A type parameter. */
 abstract class TypeParameter extends TypeImpl {
+  abstract AstNode getScope();
+
   override TypeParameter getPositionalTypeParameter(int i) { none() }
 
   abstract AstNode getDeclaringItem();
 }
 
 private class IdAstNode =
-  @unified_type_parameter or @unified_class_like_declaration or @unified_associated_type_declaration;
+  @unified_type_parameter or @unified_class_like_declaration or
+      @unified_associated_type_declaration or @unified_member;
 
 private predicate id(IdAstNode x, IdAstNode y) { x = y }
 
@@ -180,6 +234,12 @@ class TypeParameterType extends TypeParameter, TTypeParameterType {
   TypeParameterType() { this = TTypeParameterType(typeParam) }
 
   Unified::TypeParameter getTypeParameter() { result = typeParam }
+
+  override AstNode getScope() {
+    result = typeParam.getParent()
+    or
+    result.(ClassLikeDeclaration).resolve().getEnclosingClassResolved*() = typeParam.getParent()
+  }
 
   override ClassLikeDeclaration getDeclaringItem() { typeParam = result.getATypeParameter() }
 
@@ -202,6 +262,8 @@ class AssociatedTypeParameterType extends TypeParameter, TAssociatedTypeParamete
 
   Unified::AssociatedTypeDeclaration getAssociatedTypeDeclaration() { result = assocTypeDecl }
 
+  override AstNode getScope() { result.(ClassLikeDeclaration).resolve() = c }
+
   override ClassLikeDeclaration getDeclaringItem() { result = c }
 
   override Identifier getNameNode() { result = assocTypeDecl.getNameNode() }
@@ -218,12 +280,55 @@ class AssociatedTypeParameterType extends TypeParameter, TAssociatedTypeParamete
 }
 
 /**
+ * A special type parameter used to represent the parent type of a nested class.
+ *
+ * For example, for
+ *
+ * ```swift
+ * class Outer<TOuter> {
+ *   class Inner<TInner> {
+ *   }
+ * }
+ * ```
+ *
+ * the type `Outer<Int>.Inner<String>` is represented as
+ *
+ * `TypePath`              | `Type`
+ * ----------------------- | --------
+ * `""`                    | `Inner`
+ * `"TInner"`              | `String`
+ * `"Inner_Parent"`        | `Outer`
+ * `"Inner_Parent.TOuter"` | `Int`
+ *
+ * where `Inner_Parent` is one of these type parameters.
+ */
+class ParentTypeParameterType extends TypeParameter, TParentTypeParameterType {
+  private Member m;
+
+  ParentTypeParameterType() { this = TParentTypeParameterType(m) }
+
+  ClassLikeDeclaration getParent() { isNestedType(m, _, result) }
+
+  override Member getDeclaringItem() { result = m }
+
+  override AstNode getScope() { none() }
+
+  override Identifier getNameNode() { none() }
+
+  override string toString() { result = "(parent:" + m.getNameOrFallback() + ")" }
+
+  override Location getLocation() { result = m.getLocation() }
+}
+
+/**
  * A type parameter of the special `UnknownType`.
  */
 class UnknownTypeTypeParameter extends TypeParameter, TUnknownTypeTypeParameter {
   private int i;
 
   UnknownTypeTypeParameter() { this = TUnknownTypeTypeParameter(i) }
+
+  override AstNode getScope() { none() }
 
   override AstNode getDeclaringItem() { none() }
 

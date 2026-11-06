@@ -2140,12 +2140,23 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /** An AST node. */
       class AstNode {
+        /** Gets the parent of this AST node, if any. */
+        AstNode getParent();
+
         /** Gets a textual representation of this AST node. */
         string toString();
 
         /** Gets the location of this AST node. */
         Location getLocation();
       }
+
+      /**
+       * Gets the scope of type parameter `tp`.
+       *
+       * Only used in a consistency check to ensure that type parameters do not
+       * escape their scope.
+       */
+      AstNode getTypeParameterScope(TypeParameter tp);
 
       /** An expression. */
       class Expr extends AstNode;
@@ -3746,6 +3757,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           or
           Input3::inferTypeForDefaults(n, path) = t and
           not inferType(n, path) = t
+        }
+
+        query predicate typeParameterEscapesScope(AstNode n, TypePath path, TypeParameter tp) {
+          tp = inferType(n, path) and
+          not n.getParent*() = getTypeParameterScope(tp)
         }
       }
 
