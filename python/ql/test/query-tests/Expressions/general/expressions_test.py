@@ -279,3 +279,12 @@ def useofapply():
     def apply(f):
       pass
     apply(foo)([1])
+
+# NoEqClass is hashable (no __eq__ => inherits __hash__ from object).
+class NoEqClass:
+    def __init__(self, x):
+        self.x = x
+
+def hash_no_eq():
+    obj = NoEqClass(1)
+    return hash(obj)  # OK: no __eq__, so __hash__ is inherited from object
