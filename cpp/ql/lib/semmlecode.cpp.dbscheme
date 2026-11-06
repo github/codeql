@@ -310,6 +310,7 @@ pch_creations(
 
 fileannotations(
     int id: @file ref,
+    int compilation: @compilation ref,
     int kind: int ref,
     string name: string ref,
     string value: string ref
