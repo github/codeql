@@ -78,7 +78,6 @@ private int delegatedCommandIndex(Expr ex) {
 }
 
 private predicate isNonDelegatingCommand(Expr ex) {
-  exists(commandName(ex)) and
   not isShell(ex) and
   not exists(delegatedCommandIndex(ex))
 }

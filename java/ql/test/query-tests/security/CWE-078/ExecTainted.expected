@@ -1,34 +1,34 @@
 #select
-| Test.java:8:44:8:69 | ... + ... | Test.java:261:27:261:39 | args : String[] | Test.java:8:25:8:70 | new ..[] { .. } | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:11:29:11:74 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:11:29:11:74 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:19:29:19:31 | cmd | Test.java:261:27:261:39 | args : String[] | Test.java:19:29:19:31 | cmd | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:25:29:25:32 | cmd1 | Test.java:261:27:261:39 | args : String[] | Test.java:25:29:25:32 | cmd1 | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:30:44:30:64 | ... + ... | Test.java:261:27:261:39 | args : String[] | Test.java:30:25:30:65 | new ..[] { .. } | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:68:24:68:56 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:68:24:68:56 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:69:24:69:57 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:69:24:69:57 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:70:24:70:58 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:70:24:70:58 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:71:24:71:73 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:71:24:71:73 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:72:24:72:57 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:72:24:72:57 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:73:24:73:58 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:73:24:73:58 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:74:24:74:59 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:74:24:74:59 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:75:24:75:66 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:75:24:75:66 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:76:24:76:66 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:76:24:76:66 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:77:24:77:73 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:77:24:77:73 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:94:24:94:36 | delegatedList | Test.java:261:27:261:39 | args : String[] | Test.java:94:24:94:36 | delegatedList | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:102:24:102:40 | branchingPosition | Test.java:261:27:261:39 | args : String[] | Test.java:102:24:102:40 | branchingPosition | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:112:24:112:40 | branchingLauncher | Test.java:261:27:261:39 | args : String[] | Test.java:112:24:112:40 | branchingLauncher | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:150:24:150:37 | delegatedArray | Test.java:261:27:261:39 | args : String[] | Test.java:150:24:150:37 | delegatedArray | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:158:24:158:56 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:158:24:158:56 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:170:24:170:30 | command | Test.java:261:27:261:39 | args : String[] | Test.java:170:24:170:30 | command | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:175:24:175:35 | copiedInline | Test.java:261:27:261:39 | args : String[] | Test.java:175:24:175:35 | copiedInline | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:180:24:180:35 | copiedStored | Test.java:261:27:261:39 | args : String[] | Test.java:180:24:180:35 | copiedStored | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:200:24:200:71 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:200:24:200:71 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:215:24:215:30 | command | Test.java:261:27:261:39 | args : String[] | Test.java:215:24:215:30 | command | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:222:24:222:30 | command | Test.java:261:27:261:39 | args : String[] | Test.java:222:24:222:30 | command | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:227:24:227:29 | copied | Test.java:261:27:261:39 | args : String[] | Test.java:227:24:227:29 | copied | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:238:24:238:56 | new String[] | Test.java:261:27:261:39 | args : String[] | Test.java:238:24:238:56 | new String[] | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:244:24:244:30 | command | Test.java:261:27:261:39 | args : String[] | Test.java:244:24:244:30 | command | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
-| Test.java:250:24:250:27 | list | Test.java:261:27:261:39 | args : String[] | Test.java:250:24:250:27 | list | This command line depends on a $@. | Test.java:261:27:261:39 | args | user-provided value |
+| Test.java:8:44:8:69 | ... + ... | Test.java:273:27:273:39 | args : String[] | Test.java:8:25:8:70 | new ..[] { .. } | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:11:29:11:74 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:11:29:11:74 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:19:29:19:31 | cmd | Test.java:273:27:273:39 | args : String[] | Test.java:19:29:19:31 | cmd | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:25:29:25:32 | cmd1 | Test.java:273:27:273:39 | args : String[] | Test.java:25:29:25:32 | cmd1 | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:30:44:30:64 | ... + ... | Test.java:273:27:273:39 | args : String[] | Test.java:30:25:30:65 | new ..[] { .. } | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:68:24:68:56 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:68:24:68:56 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:69:24:69:57 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:69:24:69:57 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:70:24:70:58 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:70:24:70:58 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:71:24:71:73 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:71:24:71:73 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:72:24:72:57 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:72:24:72:57 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:73:24:73:58 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:73:24:73:58 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:74:24:74:59 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:74:24:74:59 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:75:24:75:66 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:75:24:75:66 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:76:24:76:66 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:76:24:76:66 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:77:24:77:73 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:77:24:77:73 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:94:24:94:36 | delegatedList | Test.java:273:27:273:39 | args : String[] | Test.java:94:24:94:36 | delegatedList | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:102:24:102:40 | branchingPosition | Test.java:273:27:273:39 | args : String[] | Test.java:102:24:102:40 | branchingPosition | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:112:24:112:40 | branchingLauncher | Test.java:273:27:273:39 | args : String[] | Test.java:112:24:112:40 | branchingLauncher | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:150:24:150:37 | delegatedArray | Test.java:273:27:273:39 | args : String[] | Test.java:150:24:150:37 | delegatedArray | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:158:24:158:56 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:158:24:158:56 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:170:24:170:30 | command | Test.java:273:27:273:39 | args : String[] | Test.java:170:24:170:30 | command | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:175:24:175:35 | copiedInline | Test.java:273:27:273:39 | args : String[] | Test.java:175:24:175:35 | copiedInline | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:180:24:180:35 | copiedStored | Test.java:273:27:273:39 | args : String[] | Test.java:180:24:180:35 | copiedStored | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:200:24:200:71 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:200:24:200:71 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:215:24:215:30 | command | Test.java:273:27:273:39 | args : String[] | Test.java:215:24:215:30 | command | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:222:24:222:30 | command | Test.java:273:27:273:39 | args : String[] | Test.java:222:24:222:30 | command | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:227:24:227:29 | copied | Test.java:273:27:273:39 | args : String[] | Test.java:227:24:227:29 | copied | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:238:24:238:56 | new String[] | Test.java:273:27:273:39 | args : String[] | Test.java:238:24:238:56 | new String[] | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:244:24:244:30 | command | Test.java:273:27:273:39 | args : String[] | Test.java:244:24:244:30 | command | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
+| Test.java:250:24:250:27 | list | Test.java:273:27:273:39 | args : String[] | Test.java:250:24:250:27 | list | This command line depends on a $@. | Test.java:273:27:273:39 | args | user-provided value |
 edges
 | Test.java:7:35:7:44 | arg : String | Test.java:8:44:8:69 | ... + ... : String | provenance |  |
 | Test.java:7:35:7:44 | arg : String | Test.java:11:61:11:73 | ... + ... : String | provenance |  |
@@ -126,26 +126,26 @@ edges
 | Test.java:243:18:243:20 | arg : String | Test.java:243:5:243:11 | command [post update] : String[] [[]] : String | provenance |  |
 | Test.java:249:5:249:8 | list [post update] : ArrayList [<element>] : String | Test.java:250:24:250:27 | list | provenance | Sink:MaD:1 |
 | Test.java:249:14:249:16 | arg : String | Test.java:249:5:249:8 | list [post update] : ArrayList [<element>] : String | provenance | MaD:6 |
-| Test.java:261:27:261:39 | args : String[] | Test.java:264:20:264:22 | arg : String | provenance |  |
-| Test.java:261:27:261:39 | args : String[] | Test.java:265:23:265:25 | arg : String | provenance |  |
-| Test.java:261:27:261:39 | args : String[] | Test.java:271:34:271:36 | arg : String | provenance |  |
-| Test.java:261:27:261:39 | args : String[] | Test.java:274:36:274:38 | arg : String | provenance |  |
-| Test.java:261:27:261:39 | args : String[] | Test.java:278:37:278:39 | arg : String | provenance |  |
-| Test.java:261:27:261:39 | args : String[] | Test.java:280:31:280:33 | arg : String | provenance |  |
-| Test.java:261:27:261:39 | args : String[] | Test.java:283:31:283:33 | arg : String | provenance |  |
-| Test.java:261:27:261:39 | args : String[] | Test.java:286:43:286:45 | arg : String | provenance |  |
-| Test.java:261:27:261:39 | args : String[] | Test.java:287:54:287:56 | arg : String | provenance |  |
-| Test.java:261:27:261:39 | args : String[] | Test.java:288:26:288:28 | arg : String | provenance |  |
-| Test.java:264:20:264:22 | arg : String | Test.java:7:35:7:44 | arg : String | provenance |  |
-| Test.java:265:23:265:25 | arg : String | Test.java:29:38:29:47 | arg : String | provenance |  |
-| Test.java:271:34:271:36 | arg : String | Test.java:67:49:67:58 | arg : String | provenance |  |
-| Test.java:274:36:274:38 | arg : String | Test.java:89:51:89:60 | arg : String | provenance |  |
-| Test.java:278:37:278:39 | arg : String | Test.java:145:52:145:61 | arg : String | provenance |  |
-| Test.java:280:31:280:33 | arg : String | Test.java:167:46:167:55 | arg : String | provenance |  |
-| Test.java:283:31:283:33 | arg : String | Test.java:199:46:199:55 | arg : String | provenance |  |
-| Test.java:286:43:286:45 | arg : String | Test.java:211:58:211:67 | arg : String | provenance |  |
-| Test.java:287:54:287:56 | arg : String | Test.java:218:69:218:78 | arg : String | provenance |  |
-| Test.java:288:26:288:28 | arg : String | Test.java:230:41:230:50 | arg : String | provenance |  |
+| Test.java:273:27:273:39 | args : String[] | Test.java:276:20:276:22 | arg : String | provenance |  |
+| Test.java:273:27:273:39 | args : String[] | Test.java:277:23:277:25 | arg : String | provenance |  |
+| Test.java:273:27:273:39 | args : String[] | Test.java:283:34:283:36 | arg : String | provenance |  |
+| Test.java:273:27:273:39 | args : String[] | Test.java:286:36:286:38 | arg : String | provenance |  |
+| Test.java:273:27:273:39 | args : String[] | Test.java:290:37:290:39 | arg : String | provenance |  |
+| Test.java:273:27:273:39 | args : String[] | Test.java:292:31:292:33 | arg : String | provenance |  |
+| Test.java:273:27:273:39 | args : String[] | Test.java:295:31:295:33 | arg : String | provenance |  |
+| Test.java:273:27:273:39 | args : String[] | Test.java:298:43:298:45 | arg : String | provenance |  |
+| Test.java:273:27:273:39 | args : String[] | Test.java:299:54:299:56 | arg : String | provenance |  |
+| Test.java:273:27:273:39 | args : String[] | Test.java:300:26:300:28 | arg : String | provenance |  |
+| Test.java:276:20:276:22 | arg : String | Test.java:7:35:7:44 | arg : String | provenance |  |
+| Test.java:277:23:277:25 | arg : String | Test.java:29:38:29:47 | arg : String | provenance |  |
+| Test.java:283:34:283:36 | arg : String | Test.java:67:49:67:58 | arg : String | provenance |  |
+| Test.java:286:36:286:38 | arg : String | Test.java:89:51:89:60 | arg : String | provenance |  |
+| Test.java:290:37:290:39 | arg : String | Test.java:145:52:145:61 | arg : String | provenance |  |
+| Test.java:292:31:292:33 | arg : String | Test.java:167:46:167:55 | arg : String | provenance |  |
+| Test.java:295:31:295:33 | arg : String | Test.java:199:46:199:55 | arg : String | provenance |  |
+| Test.java:298:43:298:45 | arg : String | Test.java:211:58:211:67 | arg : String | provenance |  |
+| Test.java:299:54:299:56 | arg : String | Test.java:218:69:218:78 | arg : String | provenance |  |
+| Test.java:300:26:300:28 | arg : String | Test.java:230:41:230:50 | arg : String | provenance |  |
 models
 | 1 | Sink: java.lang; ProcessBuilder; false; ProcessBuilder; (List); ; Argument[0]; command-injection; ai-manual |
 | 2 | Sink: java.lang; ProcessBuilder; false; ProcessBuilder; (String[]); ; Argument[0]; command-injection; ai-manual |
@@ -260,15 +260,15 @@ nodes
 | Test.java:249:5:249:8 | list [post update] : ArrayList [<element>] : String | semmle.label | list [post update] : ArrayList [<element>] : String |
 | Test.java:249:14:249:16 | arg : String | semmle.label | arg : String |
 | Test.java:250:24:250:27 | list | semmle.label | list |
-| Test.java:261:27:261:39 | args : String[] | semmle.label | args : String[] |
-| Test.java:264:20:264:22 | arg : String | semmle.label | arg : String |
-| Test.java:265:23:265:25 | arg : String | semmle.label | arg : String |
-| Test.java:271:34:271:36 | arg : String | semmle.label | arg : String |
-| Test.java:274:36:274:38 | arg : String | semmle.label | arg : String |
-| Test.java:278:37:278:39 | arg : String | semmle.label | arg : String |
-| Test.java:280:31:280:33 | arg : String | semmle.label | arg : String |
-| Test.java:283:31:283:33 | arg : String | semmle.label | arg : String |
-| Test.java:286:43:286:45 | arg : String | semmle.label | arg : String |
-| Test.java:287:54:287:56 | arg : String | semmle.label | arg : String |
-| Test.java:288:26:288:28 | arg : String | semmle.label | arg : String |
+| Test.java:273:27:273:39 | args : String[] | semmle.label | args : String[] |
+| Test.java:276:20:276:22 | arg : String | semmle.label | arg : String |
+| Test.java:277:23:277:25 | arg : String | semmle.label | arg : String |
+| Test.java:283:34:283:36 | arg : String | semmle.label | arg : String |
+| Test.java:286:36:286:38 | arg : String | semmle.label | arg : String |
+| Test.java:290:37:290:39 | arg : String | semmle.label | arg : String |
+| Test.java:292:31:292:33 | arg : String | semmle.label | arg : String |
+| Test.java:295:31:295:33 | arg : String | semmle.label | arg : String |
+| Test.java:298:43:298:45 | arg : String | semmle.label | arg : String |
+| Test.java:299:54:299:56 | arg : String | semmle.label | arg : String |
+| Test.java:300:26:300:28 | arg : String | semmle.label | arg : String |
 subpaths

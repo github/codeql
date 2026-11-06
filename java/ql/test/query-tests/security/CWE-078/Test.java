@@ -250,6 +250,18 @@ class Test {
     new ProcessBuilder(list).start(); // $ Alert[java/command-line-injection]
   }
 
+  private static final String TOOL = "/bin/cp";
+
+  private static String getTool() {
+    return "/bin/cp";
+  }
+
+  public static void nonShellCommandExpressions(String arg) throws java.io.IOException {
+    new ProcessBuilder(new String[]{getTool(), arg}).start(); // GOOD
+    new ProcessBuilder(new String[]{TOOL, arg}).start(); // GOOD
+    new ProcessBuilder(new String[]{"/bin/" + "cp", arg}).start(); // GOOD
+  }
+
   public static void relativeCommand() throws java.io.IOException {
       ProcessBuilder pb = new ProcessBuilder("ls"); // $ Alert[java/relative-path-command]
       pb.start();
@@ -286,6 +298,7 @@ class Test {
       changedDelegatedCommandThroughAlias(arg);
       changedDelegatedCommandThroughDerivedContainer(arg);
       launcherMayBeShell(arg, args.length > 2);
+      nonShellCommandExpressions(arg);
       relativeCommand();
   }
 }
