@@ -128,6 +128,15 @@ private module PyMongo {
     override predicate vulnerableToStrings() { none() }
   }
 
+  /** A call that reads documents from a MongoDB collection. */
+  private class MongoCollectionRead extends ThreatModelSource::Range {
+    MongoCollectionRead() { this instanceof MongoCollectionCall }
+
+    override string getThreatModel() { result = "database" }
+
+    override string getSourceType() { result = "MongoDB collection read" }
+  }
+
   /**
    * See https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.aggregate
    */

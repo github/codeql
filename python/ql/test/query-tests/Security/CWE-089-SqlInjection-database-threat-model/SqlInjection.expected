@@ -1,0 +1,64 @@
+edges
+| pymongo_reads.py:7:5:7:10 | ControlFlowNode for record | pymongo_reads.py:9:20:9:78 | ControlFlowNode for BinaryExpr | provenance |  |
+| pymongo_reads.py:7:14:7:48 | ControlFlowNode for Attribute() | pymongo_reads.py:7:5:7:10 | ControlFlowNode for record | provenance |  |
+| pymongo_reads.py:16:9:16:14 | ControlFlowNode for record | pymongo_reads.py:17:24:17:82 | ControlFlowNode for BinaryExpr | provenance |  |
+| pymongo_reads.py:16:19:16:37 | ControlFlowNode for Attribute() | pymongo_reads.py:16:9:16:14 | ControlFlowNode for record | provenance |  |
+| pymongo_reads.py:25:9:25:14 | ControlFlowNode for record | pymongo_reads.py:26:22:26:35 | ControlFlowNode for Subscript | provenance |  |
+| pymongo_reads.py:25:19:25:80 | ControlFlowNode for Attribute() | pymongo_reads.py:25:9:25:14 | ControlFlowNode for record | provenance |  |
+| pymongo_reads.py:26:9:26:13 | [post] ControlFlowNode for users [List element] | pymongo_reads.py:27:29:27:33 | ControlFlowNode for users [List element] | provenance |  |
+| pymongo_reads.py:26:22:26:35 | ControlFlowNode for Subscript | pymongo_reads.py:26:9:26:13 | [post] ControlFlowNode for users [List element] | provenance | list.append |
+| pymongo_reads.py:27:5:27:13 | ControlFlowNode for in_clause | pymongo_reads.py:28:5:28:7 | ControlFlowNode for sql | provenance |  |
+| pymongo_reads.py:27:17:27:34 | ControlFlowNode for Attribute() | pymongo_reads.py:27:5:27:13 | ControlFlowNode for in_clause | provenance |  |
+| pymongo_reads.py:27:29:27:33 | ControlFlowNode for users [List element] | pymongo_reads.py:27:17:27:34 | ControlFlowNode for Attribute() | provenance | str.join |
+| pymongo_reads.py:28:5:28:7 | ControlFlowNode for sql | pymongo_reads.py:30:20:30:22 | ControlFlowNode for sql | provenance |  |
+| pymongo_reads.py:35:5:35:10 | ControlFlowNode for record | pymongo_reads.py:36:41:36:66 | ControlFlowNode for BinaryExpr | provenance |  |
+| pymongo_reads.py:35:14:35:59 | ControlFlowNode for Attribute() | pymongo_reads.py:35:5:35:10 | ControlFlowNode for record | provenance |  |
+| pymongo_reads.py:40:5:40:10 | ControlFlowNode for record | pymongo_reads.py:41:41:41:66 | ControlFlowNode for BinaryExpr | provenance |  |
+| pymongo_reads.py:40:14:40:79 | ControlFlowNode for Attribute() | pymongo_reads.py:40:5:40:10 | ControlFlowNode for record | provenance |  |
+| pymongo_reads.py:45:5:45:10 | ControlFlowNode for record | pymongo_reads.py:46:41:46:66 | ControlFlowNode for BinaryExpr | provenance |  |
+| pymongo_reads.py:45:14:45:88 | ControlFlowNode for Attribute() | pymongo_reads.py:45:5:45:10 | ControlFlowNode for record | provenance |  |
+| pymongo_reads.py:51:5:51:10 | ControlFlowNode for record | pymongo_reads.py:52:41:52:66 | ControlFlowNode for BinaryExpr | provenance |  |
+| pymongo_reads.py:51:14:51:36 | ControlFlowNode for Attribute() | pymongo_reads.py:51:5:51:10 | ControlFlowNode for record | provenance |  |
+| pymongo_reads.py:56:5:56:10 | ControlFlowNode for record | pymongo_reads.py:57:41:57:66 | ControlFlowNode for BinaryExpr | provenance |  |
+| pymongo_reads.py:56:14:56:51 | ControlFlowNode for Attribute() | pymongo_reads.py:56:5:56:10 | ControlFlowNode for record | provenance |  |
+nodes
+| pymongo_reads.py:7:5:7:10 | ControlFlowNode for record | semmle.label | ControlFlowNode for record |
+| pymongo_reads.py:7:14:7:48 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_reads.py:9:20:9:78 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| pymongo_reads.py:16:9:16:14 | ControlFlowNode for record | semmle.label | ControlFlowNode for record |
+| pymongo_reads.py:16:19:16:37 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_reads.py:17:24:17:82 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| pymongo_reads.py:25:9:25:14 | ControlFlowNode for record | semmle.label | ControlFlowNode for record |
+| pymongo_reads.py:25:19:25:80 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_reads.py:26:9:26:13 | [post] ControlFlowNode for users [List element] | semmle.label | [post] ControlFlowNode for users [List element] |
+| pymongo_reads.py:26:22:26:35 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| pymongo_reads.py:27:5:27:13 | ControlFlowNode for in_clause | semmle.label | ControlFlowNode for in_clause |
+| pymongo_reads.py:27:17:27:34 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_reads.py:27:29:27:33 | ControlFlowNode for users [List element] | semmle.label | ControlFlowNode for users [List element] |
+| pymongo_reads.py:28:5:28:7 | ControlFlowNode for sql | semmle.label | ControlFlowNode for sql |
+| pymongo_reads.py:30:20:30:22 | ControlFlowNode for sql | semmle.label | ControlFlowNode for sql |
+| pymongo_reads.py:35:5:35:10 | ControlFlowNode for record | semmle.label | ControlFlowNode for record |
+| pymongo_reads.py:35:14:35:59 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_reads.py:36:41:36:66 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| pymongo_reads.py:40:5:40:10 | ControlFlowNode for record | semmle.label | ControlFlowNode for record |
+| pymongo_reads.py:40:14:40:79 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_reads.py:41:41:41:66 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| pymongo_reads.py:45:5:45:10 | ControlFlowNode for record | semmle.label | ControlFlowNode for record |
+| pymongo_reads.py:45:14:45:88 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_reads.py:46:41:46:66 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| pymongo_reads.py:51:5:51:10 | ControlFlowNode for record | semmle.label | ControlFlowNode for record |
+| pymongo_reads.py:51:14:51:36 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_reads.py:52:41:52:66 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| pymongo_reads.py:56:5:56:10 | ControlFlowNode for record | semmle.label | ControlFlowNode for record |
+| pymongo_reads.py:56:14:56:51 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| pymongo_reads.py:57:41:57:66 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths
+#select
+| pymongo_reads.py:9:20:9:78 | ControlFlowNode for BinaryExpr | pymongo_reads.py:7:14:7:48 | ControlFlowNode for Attribute() | pymongo_reads.py:9:20:9:78 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | pymongo_reads.py:7:14:7:48 | ControlFlowNode for Attribute() | user-provided value |
+| pymongo_reads.py:17:24:17:82 | ControlFlowNode for BinaryExpr | pymongo_reads.py:16:19:16:37 | ControlFlowNode for Attribute() | pymongo_reads.py:17:24:17:82 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | pymongo_reads.py:16:19:16:37 | ControlFlowNode for Attribute() | user-provided value |
+| pymongo_reads.py:30:20:30:22 | ControlFlowNode for sql | pymongo_reads.py:25:19:25:80 | ControlFlowNode for Attribute() | pymongo_reads.py:30:20:30:22 | ControlFlowNode for sql | This SQL query depends on a $@. | pymongo_reads.py:25:19:25:80 | ControlFlowNode for Attribute() | user-provided value |
+| pymongo_reads.py:36:41:36:66 | ControlFlowNode for BinaryExpr | pymongo_reads.py:35:14:35:59 | ControlFlowNode for Attribute() | pymongo_reads.py:36:41:36:66 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | pymongo_reads.py:35:14:35:59 | ControlFlowNode for Attribute() | user-provided value |
+| pymongo_reads.py:41:41:41:66 | ControlFlowNode for BinaryExpr | pymongo_reads.py:40:14:40:79 | ControlFlowNode for Attribute() | pymongo_reads.py:41:41:41:66 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | pymongo_reads.py:40:14:40:79 | ControlFlowNode for Attribute() | user-provided value |
+| pymongo_reads.py:46:41:46:66 | ControlFlowNode for BinaryExpr | pymongo_reads.py:45:14:45:88 | ControlFlowNode for Attribute() | pymongo_reads.py:46:41:46:66 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | pymongo_reads.py:45:14:45:88 | ControlFlowNode for Attribute() | user-provided value |
+| pymongo_reads.py:52:41:52:66 | ControlFlowNode for BinaryExpr | pymongo_reads.py:51:14:51:36 | ControlFlowNode for Attribute() | pymongo_reads.py:52:41:52:66 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | pymongo_reads.py:51:14:51:36 | ControlFlowNode for Attribute() | user-provided value |
+| pymongo_reads.py:57:41:57:66 | ControlFlowNode for BinaryExpr | pymongo_reads.py:56:14:56:51 | ControlFlowNode for Attribute() | pymongo_reads.py:57:41:57:66 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | pymongo_reads.py:56:14:56:51 | ControlFlowNode for Attribute() | user-provided value |
