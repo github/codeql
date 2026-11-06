@@ -432,6 +432,8 @@ class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunc
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
     i = -1 and buffer = false
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -469,6 +471,8 @@ private class IteratorPointerDereferenceNonMemberOperatorModel extends IteratorP
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
     i = 0 and buffer = false
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isParameterDeref(0) }
 }
 
 /**
