@@ -276,53 +276,53 @@ dominates
 | test.rs:205:13:205:13 | After x [true] | test.rs:205:13:205:13 | After x [true] |
 | test.rs:213:5:224:5 | Entry | test.rs:213:5:224:5 | Entry |
 | test.rs:213:5:224:5 | Entry | test.rs:214:9:223:9 | After if ... {...} else {...} |
+| test.rs:213:5:224:5 | Entry | test.rs:214:13:219:9 | After loop { ... } [false] |
+| test.rs:213:5:224:5 | Entry | test.rs:214:13:219:9 | After loop { ... } [true] |
 | test.rs:213:5:224:5 | Entry | test.rs:214:18:219:9 | { ... } |
 | test.rs:213:5:224:5 | Entry | test.rs:215:16:215:20 | After ... > ... [false] |
 | test.rs:213:5:224:5 | Entry | test.rs:215:16:215:20 | After ... > ... [true] |
-| test.rs:213:5:224:5 | Entry | test.rs:216:23:216:28 | After ... > ... [false] |
-| test.rs:213:5:224:5 | Entry | test.rs:216:23:216:28 | After ... > ... [true] |
 | test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:214:9:223:9 | After if ... {...} else {...} |
+| test.rs:214:13:219:9 | After loop { ... } [false] | test.rs:214:13:219:9 | After loop { ... } [false] |
+| test.rs:214:13:219:9 | After loop { ... } [true] | test.rs:214:13:219:9 | After loop { ... } [true] |
 | test.rs:214:18:219:9 | { ... } | test.rs:214:9:223:9 | After if ... {...} else {...} |
+| test.rs:214:18:219:9 | { ... } | test.rs:214:13:219:9 | After loop { ... } [false] |
+| test.rs:214:18:219:9 | { ... } | test.rs:214:13:219:9 | After loop { ... } [true] |
 | test.rs:214:18:219:9 | { ... } | test.rs:214:18:219:9 | { ... } |
 | test.rs:214:18:219:9 | { ... } | test.rs:215:16:215:20 | After ... > ... [false] |
 | test.rs:214:18:219:9 | { ... } | test.rs:215:16:215:20 | After ... > ... [true] |
-| test.rs:214:18:219:9 | { ... } | test.rs:216:23:216:28 | After ... > ... [false] |
-| test.rs:214:18:219:9 | { ... } | test.rs:216:23:216:28 | After ... > ... [true] |
 | test.rs:215:16:215:20 | After ... > ... [false] | test.rs:215:16:215:20 | After ... > ... [false] |
 | test.rs:215:16:215:20 | After ... > ... [true] | test.rs:214:9:223:9 | After if ... {...} else {...} |
+| test.rs:215:16:215:20 | After ... > ... [true] | test.rs:214:13:219:9 | After loop { ... } [false] |
+| test.rs:215:16:215:20 | After ... > ... [true] | test.rs:214:13:219:9 | After loop { ... } [true] |
 | test.rs:215:16:215:20 | After ... > ... [true] | test.rs:215:16:215:20 | After ... > ... [true] |
-| test.rs:215:16:215:20 | After ... > ... [true] | test.rs:216:23:216:28 | After ... > ... [false] |
-| test.rs:215:16:215:20 | After ... > ... [true] | test.rs:216:23:216:28 | After ... > ... [true] |
-| test.rs:216:23:216:28 | After ... > ... [false] | test.rs:216:23:216:28 | After ... > ... [false] |
-| test.rs:216:23:216:28 | After ... > ... [true] | test.rs:216:23:216:28 | After ... > ... [true] |
 | test.rs:226:5:237:5 | Entry | test.rs:226:5:237:5 | Entry |
 | test.rs:226:5:237:5 | Entry | test.rs:227:9:236:9 | After if ... {...} else {...} |
+| test.rs:226:5:237:5 | Entry | test.rs:227:13:232:9 | After 'label: loop { ... } [false] |
+| test.rs:226:5:237:5 | Entry | test.rs:227:13:232:9 | After 'label: loop { ... } [true] |
 | test.rs:226:5:237:5 | Entry | test.rs:227:26:232:9 | { ... } |
 | test.rs:226:5:237:5 | Entry | test.rs:228:16:228:20 | After ... > ... [false] |
 | test.rs:226:5:237:5 | Entry | test.rs:228:16:228:20 | After ... > ... [true] |
-| test.rs:226:5:237:5 | Entry | test.rs:229:30:229:35 | After ... > ... [false] |
-| test.rs:226:5:237:5 | Entry | test.rs:229:30:229:35 | After ... > ... [true] |
 | test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:227:9:236:9 | After if ... {...} else {...} |
+| test.rs:227:13:232:9 | After 'label: loop { ... } [false] | test.rs:227:13:232:9 | After 'label: loop { ... } [false] |
+| test.rs:227:13:232:9 | After 'label: loop { ... } [true] | test.rs:227:13:232:9 | After 'label: loop { ... } [true] |
 | test.rs:227:26:232:9 | { ... } | test.rs:227:9:236:9 | After if ... {...} else {...} |
+| test.rs:227:26:232:9 | { ... } | test.rs:227:13:232:9 | After 'label: loop { ... } [false] |
+| test.rs:227:26:232:9 | { ... } | test.rs:227:13:232:9 | After 'label: loop { ... } [true] |
 | test.rs:227:26:232:9 | { ... } | test.rs:227:26:232:9 | { ... } |
 | test.rs:227:26:232:9 | { ... } | test.rs:228:16:228:20 | After ... > ... [false] |
 | test.rs:227:26:232:9 | { ... } | test.rs:228:16:228:20 | After ... > ... [true] |
-| test.rs:227:26:232:9 | { ... } | test.rs:229:30:229:35 | After ... > ... [false] |
-| test.rs:227:26:232:9 | { ... } | test.rs:229:30:229:35 | After ... > ... [true] |
 | test.rs:228:16:228:20 | After ... > ... [false] | test.rs:228:16:228:20 | After ... > ... [false] |
 | test.rs:228:16:228:20 | After ... > ... [true] | test.rs:227:9:236:9 | After if ... {...} else {...} |
+| test.rs:228:16:228:20 | After ... > ... [true] | test.rs:227:13:232:9 | After 'label: loop { ... } [false] |
+| test.rs:228:16:228:20 | After ... > ... [true] | test.rs:227:13:232:9 | After 'label: loop { ... } [true] |
 | test.rs:228:16:228:20 | After ... > ... [true] | test.rs:228:16:228:20 | After ... > ... [true] |
-| test.rs:228:16:228:20 | After ... > ... [true] | test.rs:229:30:229:35 | After ... > ... [false] |
-| test.rs:228:16:228:20 | After ... > ... [true] | test.rs:229:30:229:35 | After ... > ... [true] |
-| test.rs:229:30:229:35 | After ... > ... [false] | test.rs:229:30:229:35 | After ... > ... [false] |
-| test.rs:229:30:229:35 | After ... > ... [true] | test.rs:229:30:229:35 | After ... > ... [true] |
 | test.rs:239:5:247:5 | Entry | test.rs:239:5:247:5 | Entry |
 | test.rs:239:5:247:5 | Entry | test.rs:240:9:246:9 | After if ... {...} else {...} |
-| test.rs:239:5:247:5 | Entry | test.rs:241:26:241:30 | After ... > ... [false] |
-| test.rs:239:5:247:5 | Entry | test.rs:241:26:241:30 | After ... > ... [true] |
+| test.rs:239:5:247:5 | Entry | test.rs:240:13:242:9 | After 'block: { ... } [false] |
+| test.rs:239:5:247:5 | Entry | test.rs:240:13:242:9 | After 'block: { ... } [true] |
 | test.rs:240:9:246:9 | After if ... {...} else {...} | test.rs:240:9:246:9 | After if ... {...} else {...} |
-| test.rs:241:26:241:30 | After ... > ... [false] | test.rs:241:26:241:30 | After ... > ... [false] |
-| test.rs:241:26:241:30 | After ... > ... [true] | test.rs:241:26:241:30 | After ... > ... [true] |
+| test.rs:240:13:242:9 | After 'block: { ... } [false] | test.rs:240:13:242:9 | After 'block: { ... } [false] |
+| test.rs:240:13:242:9 | After 'block: { ... } [true] | test.rs:240:13:242:9 | After 'block: { ... } [true] |
 | test.rs:252:5:255:5 | Entry | test.rs:252:5:255:5 | Entry |
 | test.rs:252:5:255:5 | Entry | test.rs:253:17:253:17 | After a [false] |
 | test.rs:252:5:255:5 | Entry | test.rs:253:17:253:17 | After a [true] |
@@ -719,11 +719,18 @@ dominates
 | test.rs:502:31:504:9 | Entry | test.rs:502:31:504:9 | Entry |
 | test.rs:505:20:505:27 | Entry | test.rs:505:20:505:27 | Entry |
 | test.rs:511:22:516:9 | Entry | test.rs:511:22:516:9 | Entry |
+| test.rs:511:22:516:9 | Entry | test.rs:511:28:516:9 | { ... } |
 | test.rs:511:28:516:9 | Entry | test.rs:511:28:516:9 | Entry |
 | test.rs:511:28:516:9 | Entry | test.rs:511:28:516:9 | Normal Exit |
+| test.rs:511:28:516:9 | Entry | test.rs:511:28:516:9 | { ... } |
+| test.rs:511:28:516:9 | Entry | test.rs:511:34:516:9 | After StmtList |
 | test.rs:511:28:516:9 | Entry | test.rs:512:16:512:16 | After b [false] |
 | test.rs:511:28:516:9 | Entry | test.rs:512:16:512:16 | After b [true] |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:511:28:516:9 | Normal Exit |
+| test.rs:511:28:516:9 | { ... } | test.rs:511:28:516:9 | { ... } |
+| test.rs:511:34:516:9 | After StmtList | test.rs:511:34:516:9 | After StmtList |
+| test.rs:512:16:512:16 | After b [false] | test.rs:511:28:516:9 | { ... } |
+| test.rs:512:16:512:16 | After b [false] | test.rs:511:34:516:9 | After StmtList |
 | test.rs:512:16:512:16 | After b [false] | test.rs:512:16:512:16 | After b [false] |
 | test.rs:512:16:512:16 | After b [true] | test.rs:512:16:512:16 | After b [true] |
 | test.rs:523:5:525:5 | Entry | test.rs:523:5:525:5 | Entry |
@@ -992,11 +999,13 @@ postDominance
 | test.rs:213:5:224:5 | Entry | test.rs:213:5:224:5 | Entry |
 | test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:213:5:224:5 | Entry |
 | test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:214:9:223:9 | After if ... {...} else {...} |
+| test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:214:13:219:9 | After loop { ... } [false] |
+| test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:214:13:219:9 | After loop { ... } [true] |
 | test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:214:18:219:9 | { ... } |
 | test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:215:16:215:20 | After ... > ... [false] |
 | test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:215:16:215:20 | After ... > ... [true] |
-| test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:216:23:216:28 | After ... > ... [false] |
-| test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:216:23:216:28 | After ... > ... [true] |
+| test.rs:214:13:219:9 | After loop { ... } [false] | test.rs:214:13:219:9 | After loop { ... } [false] |
+| test.rs:214:13:219:9 | After loop { ... } [true] | test.rs:214:13:219:9 | After loop { ... } [true] |
 | test.rs:214:18:219:9 | { ... } | test.rs:213:5:224:5 | Entry |
 | test.rs:214:18:219:9 | { ... } | test.rs:214:18:219:9 | { ... } |
 | test.rs:214:18:219:9 | { ... } | test.rs:215:16:215:20 | After ... > ... [false] |
@@ -1005,16 +1014,16 @@ postDominance
 | test.rs:215:16:215:20 | After ... > ... [true] | test.rs:214:18:219:9 | { ... } |
 | test.rs:215:16:215:20 | After ... > ... [true] | test.rs:215:16:215:20 | After ... > ... [false] |
 | test.rs:215:16:215:20 | After ... > ... [true] | test.rs:215:16:215:20 | After ... > ... [true] |
-| test.rs:216:23:216:28 | After ... > ... [false] | test.rs:216:23:216:28 | After ... > ... [false] |
-| test.rs:216:23:216:28 | After ... > ... [true] | test.rs:216:23:216:28 | After ... > ... [true] |
 | test.rs:226:5:237:5 | Entry | test.rs:226:5:237:5 | Entry |
 | test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:226:5:237:5 | Entry |
 | test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:227:9:236:9 | After if ... {...} else {...} |
+| test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:227:13:232:9 | After 'label: loop { ... } [false] |
+| test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:227:13:232:9 | After 'label: loop { ... } [true] |
 | test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:227:26:232:9 | { ... } |
 | test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:228:16:228:20 | After ... > ... [false] |
 | test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:228:16:228:20 | After ... > ... [true] |
-| test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:229:30:229:35 | After ... > ... [false] |
-| test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:229:30:229:35 | After ... > ... [true] |
+| test.rs:227:13:232:9 | After 'label: loop { ... } [false] | test.rs:227:13:232:9 | After 'label: loop { ... } [false] |
+| test.rs:227:13:232:9 | After 'label: loop { ... } [true] | test.rs:227:13:232:9 | After 'label: loop { ... } [true] |
 | test.rs:227:26:232:9 | { ... } | test.rs:226:5:237:5 | Entry |
 | test.rs:227:26:232:9 | { ... } | test.rs:227:26:232:9 | { ... } |
 | test.rs:227:26:232:9 | { ... } | test.rs:228:16:228:20 | After ... > ... [false] |
@@ -1023,15 +1032,13 @@ postDominance
 | test.rs:228:16:228:20 | After ... > ... [true] | test.rs:227:26:232:9 | { ... } |
 | test.rs:228:16:228:20 | After ... > ... [true] | test.rs:228:16:228:20 | After ... > ... [false] |
 | test.rs:228:16:228:20 | After ... > ... [true] | test.rs:228:16:228:20 | After ... > ... [true] |
-| test.rs:229:30:229:35 | After ... > ... [false] | test.rs:229:30:229:35 | After ... > ... [false] |
-| test.rs:229:30:229:35 | After ... > ... [true] | test.rs:229:30:229:35 | After ... > ... [true] |
 | test.rs:239:5:247:5 | Entry | test.rs:239:5:247:5 | Entry |
 | test.rs:240:9:246:9 | After if ... {...} else {...} | test.rs:239:5:247:5 | Entry |
 | test.rs:240:9:246:9 | After if ... {...} else {...} | test.rs:240:9:246:9 | After if ... {...} else {...} |
-| test.rs:240:9:246:9 | After if ... {...} else {...} | test.rs:241:26:241:30 | After ... > ... [false] |
-| test.rs:240:9:246:9 | After if ... {...} else {...} | test.rs:241:26:241:30 | After ... > ... [true] |
-| test.rs:241:26:241:30 | After ... > ... [false] | test.rs:241:26:241:30 | After ... > ... [false] |
-| test.rs:241:26:241:30 | After ... > ... [true] | test.rs:241:26:241:30 | After ... > ... [true] |
+| test.rs:240:9:246:9 | After if ... {...} else {...} | test.rs:240:13:242:9 | After 'block: { ... } [false] |
+| test.rs:240:9:246:9 | After if ... {...} else {...} | test.rs:240:13:242:9 | After 'block: { ... } [true] |
+| test.rs:240:13:242:9 | After 'block: { ... } [false] | test.rs:240:13:242:9 | After 'block: { ... } [false] |
+| test.rs:240:13:242:9 | After 'block: { ... } [true] | test.rs:240:13:242:9 | After 'block: { ... } [true] |
 | test.rs:252:5:255:5 | Entry | test.rs:252:5:255:5 | Entry |
 | test.rs:253:17:253:17 | After a [false] | test.rs:253:17:253:17 | After a [false] |
 | test.rs:253:17:253:17 | After a [true] | test.rs:253:17:253:17 | After a [true] |
@@ -1404,8 +1411,17 @@ postDominance
 | test.rs:511:28:516:9 | Entry | test.rs:511:28:516:9 | Entry |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:511:28:516:9 | Entry |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:511:28:516:9 | Normal Exit |
+| test.rs:511:28:516:9 | Normal Exit | test.rs:511:34:516:9 | After StmtList |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:512:16:512:16 | After b [false] |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:512:16:512:16 | After b [true] |
+| test.rs:511:28:516:9 | { ... } | test.rs:511:22:516:9 | Entry |
+| test.rs:511:28:516:9 | { ... } | test.rs:511:28:516:9 | Entry |
+| test.rs:511:28:516:9 | { ... } | test.rs:511:28:516:9 | { ... } |
+| test.rs:511:28:516:9 | { ... } | test.rs:512:16:512:16 | After b [false] |
+| test.rs:511:34:516:9 | After StmtList | test.rs:511:28:516:9 | Entry |
+| test.rs:511:34:516:9 | After StmtList | test.rs:511:34:516:9 | After StmtList |
+| test.rs:511:34:516:9 | After StmtList | test.rs:512:16:512:16 | After b [false] |
+| test.rs:512:16:512:16 | After b [false] | test.rs:511:28:516:9 | Entry |
 | test.rs:512:16:512:16 | After b [false] | test.rs:512:16:512:16 | After b [false] |
 | test.rs:512:16:512:16 | After b [true] | test.rs:512:16:512:16 | After b [true] |
 | test.rs:523:5:525:5 | Entry | test.rs:523:5:525:5 | Entry |
@@ -1537,20 +1553,20 @@ immediateDominator
 | test.rs:205:13:205:13 | After x [false] | test.rs:201:5:211:5 | Entry |
 | test.rs:205:13:205:13 | After x [true] | test.rs:201:5:211:5 | Entry |
 | test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:215:16:215:20 | After ... > ... [true] |
+| test.rs:214:13:219:9 | After loop { ... } [false] | test.rs:215:16:215:20 | After ... > ... [true] |
+| test.rs:214:13:219:9 | After loop { ... } [true] | test.rs:215:16:215:20 | After ... > ... [true] |
 | test.rs:214:18:219:9 | { ... } | test.rs:213:5:224:5 | Entry |
 | test.rs:215:16:215:20 | After ... > ... [false] | test.rs:214:18:219:9 | { ... } |
 | test.rs:215:16:215:20 | After ... > ... [true] | test.rs:214:18:219:9 | { ... } |
-| test.rs:216:23:216:28 | After ... > ... [false] | test.rs:215:16:215:20 | After ... > ... [true] |
-| test.rs:216:23:216:28 | After ... > ... [true] | test.rs:215:16:215:20 | After ... > ... [true] |
 | test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:228:16:228:20 | After ... > ... [true] |
+| test.rs:227:13:232:9 | After 'label: loop { ... } [false] | test.rs:228:16:228:20 | After ... > ... [true] |
+| test.rs:227:13:232:9 | After 'label: loop { ... } [true] | test.rs:228:16:228:20 | After ... > ... [true] |
 | test.rs:227:26:232:9 | { ... } | test.rs:226:5:237:5 | Entry |
 | test.rs:228:16:228:20 | After ... > ... [false] | test.rs:227:26:232:9 | { ... } |
 | test.rs:228:16:228:20 | After ... > ... [true] | test.rs:227:26:232:9 | { ... } |
-| test.rs:229:30:229:35 | After ... > ... [false] | test.rs:228:16:228:20 | After ... > ... [true] |
-| test.rs:229:30:229:35 | After ... > ... [true] | test.rs:228:16:228:20 | After ... > ... [true] |
 | test.rs:240:9:246:9 | After if ... {...} else {...} | test.rs:239:5:247:5 | Entry |
-| test.rs:241:26:241:30 | After ... > ... [false] | test.rs:239:5:247:5 | Entry |
-| test.rs:241:26:241:30 | After ... > ... [true] | test.rs:239:5:247:5 | Entry |
+| test.rs:240:13:242:9 | After 'block: { ... } [false] | test.rs:239:5:247:5 | Entry |
+| test.rs:240:13:242:9 | After 'block: { ... } [true] | test.rs:239:5:247:5 | Entry |
 | test.rs:253:17:253:17 | After a [false] | test.rs:252:5:255:5 | Entry |
 | test.rs:253:17:253:17 | After a [true] | test.rs:252:5:255:5 | Entry |
 | test.rs:253:17:253:22 | After ... && ... [false] | test.rs:252:5:255:5 | Entry |
@@ -1699,6 +1715,9 @@ immediateDominator
 | test.rs:478:13:478:27 | [pattern-start] TupleVariant(...) | test.rs:477:13:477:34 | After StructVariant {...} [no-match] |
 | test.rs:486:14:488:9 | { ... } | test.rs:485:5:490:5 | Entry |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:511:28:516:9 | Entry |
+| test.rs:511:28:516:9 | { ... } | test.rs:511:22:516:9 | Entry |
+| test.rs:511:28:516:9 | { ... } | test.rs:512:16:512:16 | After b [false] |
+| test.rs:511:34:516:9 | After StmtList | test.rs:512:16:512:16 | After b [false] |
 | test.rs:512:16:512:16 | After b [false] | test.rs:511:28:516:9 | Entry |
 | test.rs:512:16:512:16 | After b [true] | test.rs:511:28:516:9 | Entry |
 | test.rs:533:21:533:48 | After ... > ... [false] | test.rs:529:5:537:5 | Entry |
@@ -1799,21 +1818,15 @@ controls
 | test.rs:201:5:211:5 | Entry | test.rs:205:13:205:13 | After x [false] | false |
 | test.rs:201:5:211:5 | Entry | test.rs:205:13:205:13 | After x [true] | true |
 | test.rs:214:18:219:9 | { ... } | test.rs:214:9:223:9 | After if ... {...} else {...} | true |
+| test.rs:214:18:219:9 | { ... } | test.rs:214:13:219:9 | After loop { ... } [false] | true |
+| test.rs:214:18:219:9 | { ... } | test.rs:214:13:219:9 | After loop { ... } [true] | true |
 | test.rs:214:18:219:9 | { ... } | test.rs:215:16:215:20 | After ... > ... [false] | false |
 | test.rs:214:18:219:9 | { ... } | test.rs:215:16:215:20 | After ... > ... [true] | true |
-| test.rs:214:18:219:9 | { ... } | test.rs:216:23:216:28 | After ... > ... [false] | true |
-| test.rs:214:18:219:9 | { ... } | test.rs:216:23:216:28 | After ... > ... [true] | true |
-| test.rs:215:16:215:20 | After ... > ... [true] | test.rs:216:23:216:28 | After ... > ... [false] | false |
-| test.rs:215:16:215:20 | After ... > ... [true] | test.rs:216:23:216:28 | After ... > ... [true] | true |
 | test.rs:227:26:232:9 | { ... } | test.rs:227:9:236:9 | After if ... {...} else {...} | true |
+| test.rs:227:26:232:9 | { ... } | test.rs:227:13:232:9 | After 'label: loop { ... } [false] | true |
+| test.rs:227:26:232:9 | { ... } | test.rs:227:13:232:9 | After 'label: loop { ... } [true] | true |
 | test.rs:227:26:232:9 | { ... } | test.rs:228:16:228:20 | After ... > ... [false] | false |
 | test.rs:227:26:232:9 | { ... } | test.rs:228:16:228:20 | After ... > ... [true] | true |
-| test.rs:227:26:232:9 | { ... } | test.rs:229:30:229:35 | After ... > ... [false] | true |
-| test.rs:227:26:232:9 | { ... } | test.rs:229:30:229:35 | After ... > ... [true] | true |
-| test.rs:228:16:228:20 | After ... > ... [true] | test.rs:229:30:229:35 | After ... > ... [false] | false |
-| test.rs:228:16:228:20 | After ... > ... [true] | test.rs:229:30:229:35 | After ... > ... [true] | true |
-| test.rs:239:5:247:5 | Entry | test.rs:241:26:241:30 | After ... > ... [false] | false |
-| test.rs:239:5:247:5 | Entry | test.rs:241:26:241:30 | After ... > ... [true] | true |
 | test.rs:252:5:255:5 | Entry | test.rs:253:17:253:17 | After a [false] | false |
 | test.rs:252:5:255:5 | Entry | test.rs:253:17:253:17 | After a [true] | true |
 | test.rs:252:5:255:5 | Entry | test.rs:253:22:253:22 | After b [false] | true |
@@ -1976,6 +1989,8 @@ controls
 | test.rs:475:5:481:5 | Entry | test.rs:478:13:478:27 | [pattern-start] TupleVariant(...) | no-match |
 | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] | no-match |
 | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:478:13:478:27 | [pattern-start] TupleVariant(...) | match |
+| test.rs:511:28:516:9 | Entry | test.rs:511:28:516:9 | { ... } | false |
+| test.rs:511:28:516:9 | Entry | test.rs:511:34:516:9 | After StmtList | false |
 | test.rs:511:28:516:9 | Entry | test.rs:512:16:512:16 | After b [false] | false |
 | test.rs:511:28:516:9 | Entry | test.rs:512:16:512:16 | After b [true] | true |
 | test.rs:529:5:537:5 | Entry | test.rs:533:21:533:48 | After ... > ... [false] | false |
@@ -2057,14 +2072,8 @@ successor
 | test.rs:201:5:211:5 | Entry | test.rs:205:13:205:13 | After x [true] | true |
 | test.rs:214:18:219:9 | { ... } | test.rs:215:16:215:20 | After ... > ... [false] | false |
 | test.rs:214:18:219:9 | { ... } | test.rs:215:16:215:20 | After ... > ... [true] | true |
-| test.rs:215:16:215:20 | After ... > ... [true] | test.rs:216:23:216:28 | After ... > ... [false] | false |
-| test.rs:215:16:215:20 | After ... > ... [true] | test.rs:216:23:216:28 | After ... > ... [true] | true |
 | test.rs:227:26:232:9 | { ... } | test.rs:228:16:228:20 | After ... > ... [false] | false |
 | test.rs:227:26:232:9 | { ... } | test.rs:228:16:228:20 | After ... > ... [true] | true |
-| test.rs:228:16:228:20 | After ... > ... [true] | test.rs:229:30:229:35 | After ... > ... [false] | false |
-| test.rs:228:16:228:20 | After ... > ... [true] | test.rs:229:30:229:35 | After ... > ... [true] | true |
-| test.rs:239:5:247:5 | Entry | test.rs:241:26:241:30 | After ... > ... [false] | false |
-| test.rs:239:5:247:5 | Entry | test.rs:241:26:241:30 | After ... > ... [true] | true |
 | test.rs:252:5:255:5 | Entry | test.rs:253:17:253:17 | After a [false] | false |
 | test.rs:252:5:255:5 | Entry | test.rs:253:17:253:17 | After a [true] | true |
 | test.rs:253:17:253:17 | After a [false] | test.rs:253:17:253:22 | After ... && ... [false] | false |
@@ -2278,16 +2287,16 @@ joinBlockPredecessor
 | test.rs:191:9:198:9 | After if ... {...} else {...} | test.rs:193:13:193:17 | After ... > ... [true] | 1 |
 | test.rs:203:9:210:9 | After if ... {...} else {...} | test.rs:205:13:205:13 | After x [false] | 0 |
 | test.rs:203:9:210:9 | After if ... {...} else {...} | test.rs:205:13:205:13 | After x [true] | 1 |
-| test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:216:23:216:28 | After ... > ... [false] | 0 |
-| test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:216:23:216:28 | After ... > ... [true] | 1 |
+| test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:214:13:219:9 | After loop { ... } [false] | 0 |
+| test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:214:13:219:9 | After loop { ... } [true] | 1 |
 | test.rs:214:18:219:9 | { ... } | test.rs:213:5:224:5 | Entry | 1 |
 | test.rs:214:18:219:9 | { ... } | test.rs:215:16:215:20 | After ... > ... [false] | 0 |
-| test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:229:30:229:35 | After ... > ... [false] | 0 |
-| test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:229:30:229:35 | After ... > ... [true] | 1 |
+| test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:227:13:232:9 | After 'label: loop { ... } [false] | 0 |
+| test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:227:13:232:9 | After 'label: loop { ... } [true] | 1 |
 | test.rs:227:26:232:9 | { ... } | test.rs:226:5:237:5 | Entry | 1 |
 | test.rs:227:26:232:9 | { ... } | test.rs:228:16:228:20 | After ... > ... [false] | 0 |
-| test.rs:240:9:246:9 | After if ... {...} else {...} | test.rs:241:26:241:30 | After ... > ... [false] | 0 |
-| test.rs:240:9:246:9 | After if ... {...} else {...} | test.rs:241:26:241:30 | After ... > ... [true] | 1 |
+| test.rs:240:9:246:9 | After if ... {...} else {...} | test.rs:240:13:242:9 | After 'block: { ... } [false] | 0 |
+| test.rs:240:9:246:9 | After if ... {...} else {...} | test.rs:240:13:242:9 | After 'block: { ... } [true] | 1 |
 | test.rs:253:17:253:22 | After ... && ... [false] | test.rs:253:17:253:17 | After a [false] | 0 |
 | test.rs:253:17:253:22 | After ... && ... [false] | test.rs:253:22:253:22 | After b [false] | 1 |
 | test.rs:253:17:253:27 | After ... && ... | test.rs:253:17:253:22 | After ... && ... [false] | 1 |
@@ -2390,8 +2399,10 @@ joinBlockPredecessor
 | test.rs:476:9:480:9 | After match e { ... } | test.rs:478:13:478:27 | [pattern-start] TupleVariant(...) | 1 |
 | test.rs:486:14:488:9 | { ... } | test.rs:485:5:490:5 | Entry | 1 |
 | test.rs:486:14:488:9 | { ... } | test.rs:486:14:488:9 | { ... } | 0 |
-| test.rs:511:28:516:9 | Normal Exit | test.rs:512:16:512:16 | After b [false] | 0 |
-| test.rs:511:28:516:9 | Normal Exit | test.rs:512:16:512:16 | After b [true] | 1 |
+| test.rs:511:28:516:9 | Normal Exit | test.rs:511:34:516:9 | After StmtList | 1 |
+| test.rs:511:28:516:9 | Normal Exit | test.rs:512:16:512:16 | After b [true] | 0 |
+| test.rs:511:28:516:9 | { ... } | test.rs:511:22:516:9 | Entry | 1 |
+| test.rs:511:28:516:9 | { ... } | test.rs:512:16:512:16 | After b [false] | 0 |
 | test.rs:533:21:533:48 | After if ... {...} | test.rs:533:21:533:48 | After ... > ... [false] | 0 |
 | test.rs:533:21:533:48 | After if ... {...} | test.rs:533:21:533:48 | After ... > ... [true] | 1 |
 | test.rs:569:18:580:5 | After 'block: { ... } | test.rs:571:12:571:30 | After condition_not_met(...) [true] | 0 |
