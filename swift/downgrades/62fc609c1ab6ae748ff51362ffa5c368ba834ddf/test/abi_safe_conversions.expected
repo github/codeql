@@ -1,0 +1,12 @@
+--- old/abi_safe_conversion_exprs
++++ <deleted>
+-| 3 |
+
+--- old/implicit_conversion_exprs
++++ new/implicit_conversion_exprs
+-| 3 | 1 |
+
+--- old/unspecified_elements
++++ new/unspecified_elements
++| 3 |  | Removed ABISafeConversionExpr during the database downgrade |
+
