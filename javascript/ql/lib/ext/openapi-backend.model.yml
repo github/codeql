@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      # OpenAPIBackend instances: `new OpenAPIBackend(...)` and `await api.init()`
+      - ["openapi-backend.OpenAPIBackend", "openapi-backend", "Member[OpenAPIBackend,default].Instance"]
+      - ["openapi-backend.OpenAPIBackend", "openapi-backend.OpenAPIBackend", "Member[init].ReturnValue.Awaited"]
+      # Handler functions registered in the constructor
+      - ["openapi-backend.Handler", "openapi-backend", "Member[OpenAPIBackend,default].Argument[0].Member[handlers,securityHandlers].AnyMember"]
+      - ["openapi-backend.Handler", "openapi-backend", "Member[OpenAPIBackend,default].Argument[0].Member[validate]"]
+      # Handler functions registered after construction
+      - ["openapi-backend.Handler", "openapi-backend.OpenAPIBackend", "Member[register,registerHandler,registerSecurityHandler].Argument[1]"]
+      - ["openapi-backend.Handler", "openapi-backend.OpenAPIBackend", "Member[register].Argument[0].AnyMember"]
+      # The handler context, including TypeScript-annotated `(c: Context) => ...`
+      - ["openapi-backend.Context", "openapi-backend.Handler", "Parameter[0]"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      - ["openapi-backend.Context", "Member[request]", "remote"]
