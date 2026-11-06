@@ -105,30 +105,61 @@ subprocess.run(["executable", "arg0"])  # $ getCommand="executable"
 ########################################
 # actively using known shell as the executable
 
-subprocess.Popen(["/bin/sh", "-c", "vuln"])  # $ getCommand="/bin/sh" MISSING: getCommand="vuln"
-subprocess.Popen(["/bin/bash", "-c", "vuln"])  # $ getCommand="/bin/bash" MISSING: getCommand="vuln"
-subprocess.Popen(["/bin/dash", "-c", "vuln"])  # $ getCommand="/bin/dash" MISSING: getCommand="vuln"
-subprocess.Popen(["/bin/zsh", "-c", "vuln"])  # $ getCommand="/bin/zsh" MISSING: getCommand="vuln"
+subprocess.Popen(["/bin/sh", "-c", "vuln"])  # $ getCommand="/bin/sh" getCommand="vuln"
+subprocess.Popen(["/bin/bash", "-c", "vuln"])  # $ getCommand="/bin/bash" getCommand="vuln"
+subprocess.Popen(["/bin/dash", "-c", "vuln"])  # $ getCommand="/bin/dash" getCommand="vuln"
+subprocess.Popen(["/bin/zsh", "-c", "vuln"])  # $ getCommand="/bin/zsh" getCommand="vuln"
 
-subprocess.Popen(["sh", "-c", "vuln"])  # $ getCommand="sh" MISSING: getCommand="vuln"
-subprocess.Popen(["bash", "-c", "vuln"])  # $ getCommand="bash" MISSING: getCommand="vuln"
-subprocess.Popen(["dash", "-c", "vuln"])  # $ getCommand="dash" MISSING: getCommand="vuln"
-subprocess.Popen(["zsh", "-c", "vuln"])  # $ getCommand="zsh" MISSING: getCommand="vuln"
+subprocess.Popen(["sh", "-c", "vuln"])  # $ getCommand="sh" getCommand="vuln"
+subprocess.Popen(["bash", "-c", "vuln"])  # $ getCommand="bash" getCommand="vuln"
+subprocess.Popen(["dash", "-c", "vuln"])  # $ getCommand="dash" getCommand="vuln"
+subprocess.Popen(["zsh", "-c", "vuln"])  # $ getCommand="zsh" getCommand="vuln"
+subprocess.run(("/usr/local/bin/sh", "-c", "vuln"))  # $ getCommand="/usr/local/bin/sh" getCommand="vuln"
+subprocess.run(args=["sh", "-c", "vuln"])  # $ getCommand="sh" getCommand="vuln"
+subprocess.Popen(["sh", "-c", "vuln", "not-command"])  # $ getCommand="sh" getCommand="vuln"
 
 # Check that we don't consider ANY argument a command injection sink
 subprocess.Popen(["sh", "/bin/python"])  # $ getCommand="sh"
+subprocess.Popen(["sh", "--command", "not-vuln"])  # $ getCommand="sh"
+subprocess.Popen(["sh", "-C", "not-vuln"])  # $ getCommand="sh"
+subprocess.Popen(["not-a-shell", "-c", "not-vuln"])  # $ getCommand="not-a-shell"
+subprocess.Popen(["sh", "-c"])  # $ getCommand="sh"
+subprocess.Popen(["sh", "-c", "not-vuln"], shell=True)  # $ getCommand="sh"
+subprocess.getoutput(["sh", "-c", "not-vuln"])  # $ getCommand="sh"
+subprocess.getstatusoutput(("sh", "-c", "not-vuln"))  # $ getCommand="sh"
 
 subprocess.Popen(["cmd.exe", "/c", "vuln"])  # $ getCommand="cmd.exe" MISSING: getCommand="vuln"
 subprocess.Popen(["cmd.exe", "/C", "vuln"])  # $ getCommand="cmd.exe" MISSING: getCommand="vuln"
 subprocess.Popen(["cmd", "/c", "vuln"])  # $ getCommand="cmd" MISSING: getCommand="vuln"
 subprocess.Popen(["cmd", "/C", "vuln"])  # $ getCommand="cmd" MISSING: getCommand="vuln"
 
-subprocess.Popen(["<progname>", "-c", "vuln"], executable="/bin/bash")  # $ getCommand="/bin/bash" MISSING: getCommand="vuln"
+subprocess.Popen(["<progname>", "-c", "vuln"], executable="/bin/bash")  # $ getCommand="/bin/bash" getCommand="vuln"
+subprocess.Popen(["sh", "-c", "not-vuln"], executable="/bin/echo")  # $ getCommand="/bin/echo"
+subprocess.Popen(["sh", "-c", "vuln"], executable=None)  # $ getCommand="sh" getCommand="vuln"
 
 if UNKNOWN:
-    os.execl("/bin/sh", "<progname>", "-c", "vuln")  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh" MISSING: getCommand="vuln"
+    os.execl("/bin/sh", "<progname>", "-c", "vuln")  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh" getCommand="vuln"
+    os.execle("/bin/sh", "<progname>", "-c", "vuln", env)  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh" getCommand="vuln"
+    os.execlp("sh", "<progname>", "-c", "vuln")  # $ getCommand="sh" getAPathArgument="sh" getCommand="vuln"
+    os.execlpe("sh", "<progname>", "-c", "vuln", env)  # $ getCommand="sh" getAPathArgument="sh" getCommand="vuln"
+    os.execv("/bin/sh", ("<progname>", "-c", "vuln"))  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh" getCommand="vuln"
+    os.execvp("sh", ["<progname>", "-c", "vuln"])  # $ getCommand="sh" getAPathArgument="sh" getCommand="vuln"
 
-os.spawnl(os.P_WAIT, "/bin/sh", "<progname>", "-c", "vuln")  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh" MISSING: getCommand="vuln"
+    os.execl("/bin/sh", "<progname>", "--command", "not-vuln")  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh"
+    os.execle("/bin/sh", "<progname>", "-c", env)  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh"
+    os.execlpe("sh", "<progname>", "-c", env)  # $ getCommand="sh" getAPathArgument="sh"
+    os.execv("not-a-shell", ["<progname>", "-c", "not-vuln"])  # $ getCommand="not-a-shell" getAPathArgument="not-a-shell"
+
+os.spawnl(os.P_WAIT, "/bin/sh", "<progname>", "-c", "vuln")  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh" getCommand="vuln"
+os.spawnle(os.P_WAIT, "/bin/sh", "<progname>", "-c", "vuln", env)  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh" getCommand="vuln"
+os.spawnle(os.P_WAIT, "/bin/sh", "<progname>", "-c", env)  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh"
+os.spawnlpe(os.P_WAIT, "sh", "<progname>", "-c", "vuln", env)  # $ getCommand="sh" getAPathArgument="sh" getCommand="vuln"
+os.spawnlpe(os.P_WAIT, "sh", "<progname>", "-c", env)  # $ getCommand="sh" getAPathArgument="sh"
+os.spawnv(os.P_WAIT, "/bin/sh", ["<progname>", "-c", "vuln"])  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh" getCommand="vuln"
+os.spawnv(mode=os.P_WAIT, file="/bin/sh", args=["<progname>", "-c", "vuln"])  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh" getCommand="vuln"
+os.posix_spawn("/bin/sh", ["<progname>", "-c", "vuln"], env)  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh" getCommand="vuln"
+os.posix_spawn(path="/bin/sh", argv=["<progname>", "-c", "vuln"], env=env)  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh" getCommand="vuln"
+os.posix_spawnp("sh", ["<progname>", "-c", "vuln"], env)  # $ getCommand="sh" getAPathArgument="sh" getCommand="vuln"
 
 
 ########################################
@@ -136,6 +167,10 @@ os.spawnl(os.P_WAIT, "/bin/sh", "<progname>", "-c", "vuln")  # $ getCommand="/bi
 
 args = ["/bin/sh", "-c", "vuln"]
 subprocess.Popen(args)  # $ getCommand=args
+
+exec_args = ["<progname>", "-c", "vuln"]  # $ MISSING: getCommand="vuln"
+if UNKNOWN:
+    os.execv("/bin/sh", exec_args)  # $ getCommand="/bin/sh" getAPathArgument="/bin/sh"
 
 args = "<progname>"
 use_shell = False
