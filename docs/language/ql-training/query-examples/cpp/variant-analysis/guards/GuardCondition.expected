@@ -1,0 +1,2 @@
+| test.c:6:9:6:14 | access to array |
+| test.c:8:7:8:12 | access to array |
