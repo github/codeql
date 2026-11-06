@@ -18,5 +18,5 @@ func testPropertiesWithoutStubs(
     myProcess.arguments = [string]  // $ isSink=command-injection
 
     let localProcess = Process()
-    localProcess.arguments = [string]  // $ MISSING: isSink=command-injection
+    localProcess.arguments = [string]  // $ isSink=command-injection
 }

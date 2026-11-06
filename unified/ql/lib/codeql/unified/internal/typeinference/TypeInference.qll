@@ -812,6 +812,9 @@ module Input3 implements InputSig3 {
       or
       needsContextualTyping(n, path) and
       result instanceof UnknownType
+      or
+      path.isEmpty() and
+      n = result.(ModelType).getTypeSelector().getAConstructorCall()
     }
 
     predicate allowContextualInference(TypeMention tm, TypePath path) {

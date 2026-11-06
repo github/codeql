@@ -309,6 +309,13 @@ class TypeSelector extends string {
     subtype = true and
     result.asClass() = this.getASubtypeDeclaration()
   }
+
+  /**
+   * Gets a call to the constructor of this type.
+   *
+   * Used as a seed for type inference for when the constructor itself is not in the database.
+   */
+  CallExpr getAConstructorCall() { constructorCallSelector(result, this, _) }
 }
 
 private predicate isAccessPath(string path) {
