@@ -77,11 +77,11 @@ private predicate methodCallSelector(CallExpr call, string name, string argLabel
 }
 
 pragma[nomagic]
-private predicate constructorCallSelector(CallExpr call, string name, string argLabels) {
+private predicate constructorCallSelector(CallExpr call, TypeSelector type, string argLabels) {
   (
     if call.getCallee().(MemberAccessExpr).getMemberName() = "init"
-    then name = getQualifiedNameFromExpr(call.getCallee().(MemberAccessExpr).getBase())
-    else name = getQualifiedNameFromExpr(call.getCallee())
+    then type.getAStaticRef() = call.getCallee().(MemberAccessExpr).getBase()
+    else type.getAStaticRef() = call.getCallee()
   ) and
   argLabels = getArgLabelsFromCall(call)
 }
