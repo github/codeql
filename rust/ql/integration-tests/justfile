@@ -1,0 +1,8 @@
+import "../../../lib.just"
+
+# Integration tests are slow and need an internal checkout, so they only run when
+# asked for by name.
+explicit_verbs := ['test']
+
+[no-cd]
+test *ARGS=".": (_if_not_on_ci_just ['generate']) (_integration_test ARGS)

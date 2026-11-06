@@ -5,9 +5,10 @@ on:
     paths:
       - "misc/bazel/**"
       - "misc/codegen/**"
+      - "misc/just/**"
       - "misc/scripts/models-as-data/*.py"
       - "*.bazel*"
-      - .github/workflows/codegen.yml
+      - .github/workflows/python-tooling.yml
       - .pre-commit-config.yaml
     branches:
       - main
@@ -33,3 +34,7 @@ jobs:
         shell: bash
         run: |
           bazel test //misc/codegen/...
+      - name: Run just tooling tests
+        shell: bash
+        run: |
+          bazel test //misc/just/...
