@@ -43,7 +43,7 @@ predicate isInSyntacticTypeContext(Expr expr) {
 }
 
 private predicate isInTypeContext0(Expr expr) {
-  exists(NameBinding::getTypeFromRef(expr))
+  NameBinding::isTypeRef(expr)
   or
   isInTypeContext0(expr.getEnclosingExpr())
 }

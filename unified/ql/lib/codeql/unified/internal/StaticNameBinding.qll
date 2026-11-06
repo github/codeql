@@ -870,6 +870,13 @@ Identifier getTypeFromRef(AstNode access) {
   )
 }
 
+/** Holds if `access` is a reference to a type. */
+predicate isTypeRef(AstNode access) {
+  exists(getTypeFromRef(access))
+  or
+  trackTypeSelector(_) = getNodeFromRef(access)
+}
+
 /**
  * Gets the name of the implicit receiver parameter in scope at `callable` (possibly declared by an outer callable).
  *
