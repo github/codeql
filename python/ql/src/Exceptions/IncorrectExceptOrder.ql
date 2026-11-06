@@ -15,74 +15,7 @@
 
 import python
 import semmle.python.dataflow.new.internal.DataFlowDispatch
-import semmle.python.ApiGraphs
-import semmle.python.frameworks.data.internal.ApiGraphModels
-
-predicate builtinException(string name) {
-  typeModel("builtins.BaseException~Subclass", "builtins." + name, "")
-}
-
-predicate builtinExceptionSubclass(string base, string sub) {
-  typeModel("builtins." + base + "~Subclass", "builtins." + sub, "")
-}
-
-newtype TExceptType =
-  TClass(Class c) or
-  TBuiltin(string name) { builtinException(name) }
-
-class ExceptType extends TExceptType {
-  Class asClass() { this = TClass(result) }
-
-  string asBuiltinName() { this = TBuiltin(result) }
-
-  predicate isBuiltin() { this = TBuiltin(_) }
-
-  string getName() {
-    result = this.asClass().getName()
-    or
-    result = this.asBuiltinName()
-  }
-
-  string toString() { result = this.getName() }
-
-  DataFlow::Node getAUse() {
-    result = classTracker(this.asClass())
-    or
-    API::builtin(this.asBuiltinName()).asSource().flowsTo(result)
-  }
-
-  ExceptType getADirectSuperclass() {
-    result.asClass() = getADirectSuperclass(this.asClass())
-    or
-    result.isBuiltin() and
-    result.getAUse().asExpr() = this.asClass().getABase()
-    or
-    builtinExceptionSubclass(result.asBuiltinName(), this.asBuiltinName()) and
-    this != result
-  }
-
-  /**
-   * Holds if this element is at the specified location.
-   * The location spans column `startColumn` of line `startLine` to
-   * column `endColumn` of line `endLine` in file `filepath`.
-   * For more information, see
-   * [Providing locations in CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  predicate hasLocationInfo(
-    string filePath, int startLine, int startColumn, int endLine, int endColumn
-  ) {
-    this.asClass()
-        .getLocation()
-        .hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
-    or
-    this.isBuiltin() and
-    filePath = "" and
-    startLine = 0 and
-    startColumn = 0 and
-    endLine = 0 and
-    endColumn = 0
-  }
-}
+private import ExceptionTypes
 
 predicate incorrectExceptOrder(ExceptStmt ex1, ExceptType cls1, ExceptStmt ex2, ExceptType cls2) {
   exists(int i, int j, Try t |
