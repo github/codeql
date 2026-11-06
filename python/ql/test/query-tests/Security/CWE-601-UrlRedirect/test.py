@@ -996,3 +996,35 @@ def guarded_mutated_host_list():
     ):
         return redirect(untrusted, code=302) # $ Alert
     return redirect("/", code=302)
+
+
+def redirect_with_parser(parse):
+    untrusted = request.args.get('target', '').replace("\\", "/").strip()
+    parts = parse(untrusted)
+    if (
+        untrusted.isprintable()
+        and not untrusted.startswith("///")
+        and not parts.scheme
+        and not parts.netloc
+    ):
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)
+
+
+@app.route('/mixed_parser_argument')
+def mixed_parser_argument():
+    return redirect_with_parser(urlsplit if request.args.get('use-parser') else ignores_target)
+
+
+def choose_parser():
+    return urlsplit if request.args.get('use-parser') else parses_request_target
+
+
+@app.route('/mixed_parser_return')
+def mixed_parser_return():
+    untrusted = request.args.get('target', '').replace("\\", "/")
+    parse = choose_parser()
+    allowed_host = parse("https://example.com").hostname
+    if urlsplit(untrusted).netloc == allowed_host:
+        return redirect(untrusted, code=302) # $ Alert
+    return redirect("/", code=302)

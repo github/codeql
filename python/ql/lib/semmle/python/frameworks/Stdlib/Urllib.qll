@@ -90,6 +90,9 @@ private module Urllib {
             .getMember(["urlparse", "urlsplit"])
             .getACall() and
       forex(DataFlow::LocalSourceNode source | source = result.getFunction().getALocalSource() |
+        // API reachability does not exclude other values passed to a parameter or returned by a call.
+        not source instanceof DataFlow::ParameterNode and
+        not source instanceof DataFlow::CallCfgNode and
         source =
           API::moduleImport("urllib")
               .getMember("parse")
