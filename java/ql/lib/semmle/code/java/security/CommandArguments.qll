@@ -136,6 +136,7 @@ private class CommandArguments extends TCommandArguments {
   predicate hasSafeDelegatedArgument(int index) {
     exists(this.getArgument(index)) and
     forex(Expr launcher | launcher = this.getArgument(0) |
+      not isShell(launcher) and
       forex(int commandIndex | commandIndex = delegatedCommandIndex(launcher) |
         (
           index < commandIndex

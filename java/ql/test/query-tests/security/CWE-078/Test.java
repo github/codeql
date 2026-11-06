@@ -227,6 +227,29 @@ class Test {
     new ProcessBuilder(copied).start(); // $ Alert[java/command-line-injection]
   }
 
+  public static void launcherMayBeShell(String arg, boolean condition)
+      throws java.io.IOException {
+    String launcher;
+    if (condition) {
+      launcher = "/usr/bin/env";
+    } else {
+      launcher = "/bin/sh";
+    }
+    new ProcessBuilder(new String[]{launcher, "-c", arg}).start(); // $ Alert[java/command-line-injection]
+
+    String[] command = new String[3];
+    command[0] = launcher;
+    command[1] = "-c";
+    command[2] = arg;
+    new ProcessBuilder(command).start(); // $ Alert[java/command-line-injection]
+
+    List<String> list = new ArrayList<String>();
+    list.add(launcher);
+    list.add("-c");
+    list.add(arg);
+    new ProcessBuilder(list).start(); // $ Alert[java/command-line-injection]
+  }
+
   public static void relativeCommand() throws java.io.IOException {
       ProcessBuilder pb = new ProcessBuilder("ls"); // $ Alert[java/relative-path-command]
       pb.start();
@@ -262,6 +285,7 @@ class Test {
       unsupportedSudoOption(arg);
       changedDelegatedCommandThroughAlias(arg);
       changedDelegatedCommandThroughDerivedContainer(arg);
+      launcherMayBeShell(arg, args.length > 2);
       relativeCommand();
   }
 }
