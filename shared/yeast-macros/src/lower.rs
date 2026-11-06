@@ -641,9 +641,9 @@ fn rust_block(block: &syn::Block) -> TokenStream {
 fn isolated_interpolation(uses_ctx: bool, body: TokenStream) -> TokenStream {
     if uses_ctx {
         quote! {{
-            let __saved_user_ctx = (*ctx).clone();
+            let __saved_user_ctx = (*ctx.user_ctx).clone();
             let __result = { #body };
-            *ctx = __saved_user_ctx;
+            *ctx.user_ctx = __saved_user_ctx;
             __result
         }}
     } else {

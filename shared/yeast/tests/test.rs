@@ -1044,6 +1044,33 @@ fn test_interpolation_preserves_user_context_assignment() {
     );
 }
 
+#[test]
+fn test_interpolation_accepts_borrowed_build_ctx() {
+    fn build_identifier(
+        ctx: &mut yeast::build::BuildCtx<'_, InterpolationContext>,
+    ) -> yeast::OutputId {
+        yeast::tree!((identifier #{
+            ctx.counter += 1;
+            ctx.counter
+        }))
+    }
+
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+    let mut user_ctx = InterpolationContext::default();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+
+    let node = build_identifier(&mut ctx);
+    assert_eq!(ctx.counter, 0);
+    assert_dump_eq(
+        &dump_ast(ctx.output, node, input),
+        r#"
+        identifier "1"
+    "#,
+    );
+}
+
 #[derive(Clone, Default)]
 struct BorrowedInterpolationContext {
     locations: Vec<yeast::OutputId>,
