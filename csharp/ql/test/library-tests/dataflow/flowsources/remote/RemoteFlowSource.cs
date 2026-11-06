@@ -90,8 +90,50 @@ namespace AspRemoteFlowSource
     }
 
 
+    public class BaseData
+    {
+        public string BaseProp { get; set; }
+    }
+
+    public class DerivedData : BaseData { }
+
+    public class PlainData
+    {
+        private string backing;
+        private List<string> items = new List<string>();
+
+        public string Backed
+        {
+            get { if (backing == null) backing = ""; return backing; }
+            set { backing = value ?? throw new ArgumentNullException(); }
+        }
+
+        public List<string> ItemsOnlyGet => items;
+        public string BackedOnlyGet => backing;
+        public List<string> ItemsCopy => new List<string>(items);
+        public string Computed
+        {
+            get { return backing + "x"; }
+            set { backing = value; }
+        }
+        public const string Constant = "x";
+        public short Number { get; set; }
+    }
+
+    public class FlowProps
+    {
+        private string f;
+        public string Discard { get { return ""; } set { } } // Not considered tainted. Ignores the value.
+        public string Coalesce { get { return f ?? ""; } set { f = value; } } // Considered tainted.
+        public string Cast { get { return f; } set { f = (string)(object)value; } } // Considered tainted.
+        public string Ignore { get { return f; } set { f = "x"; } } // Not considered tainted. Setter ignores the value.
+    }
+
     public class MyService
     {
+        [WebMethod]
+        public void MyMethod3(PlainData plain, DerivedData derived, FlowProps fp) { }
+
         [WebMethod]
         public void MyMethod(MyData data)
         {
