@@ -1,27 +1,18 @@
 edges
-| test.rs:5:5:11:5 | Entry | test.rs:5:24:5:30 | Before ...: bool |  |
+| test.rs:5:5:11:5 | Entry | test.rs:5:24:5:24 | Before a |  |
 | test.rs:5:5:11:5 | Normal Exit | test.rs:5:5:11:5 | Exit |  |
-| test.rs:5:24:5:24 | After a [match] | test.rs:5:24:5:30 | ...: bool |  |
+| test.rs:5:24:5:24 | After a [match] | test.rs:5:33:5:33 | Before b |  |
 | test.rs:5:24:5:24 | Before a | test.rs:5:24:5:24 | a |  |
 | test.rs:5:24:5:24 | a | test.rs:5:24:5:24 | After a [match] | match |
 | test.rs:5:24:5:24 | a | test.rs:5:24:5:24 | a |  |
-| test.rs:5:24:5:30 | ...: bool | test.rs:5:24:5:30 | After ...: bool |  |
-| test.rs:5:24:5:30 | After ...: bool | test.rs:5:33:5:47 | Before ...: Option::<...> |  |
-| test.rs:5:24:5:30 | Before ...: bool | test.rs:5:24:5:24 | Before a |  |
-| test.rs:5:33:5:33 | After b [match] | test.rs:5:33:5:47 | ...: Option::<...> |  |
+| test.rs:5:33:5:33 | After b [match] | test.rs:5:50:5:50 | Before c |  |
 | test.rs:5:33:5:33 | Before b | test.rs:5:33:5:33 | b |  |
 | test.rs:5:33:5:33 | b | test.rs:5:33:5:33 | After b [match] | match |
 | test.rs:5:33:5:33 | b | test.rs:5:33:5:33 | b |  |
-| test.rs:5:33:5:47 | ...: Option::<...> | test.rs:5:33:5:47 | After ...: Option::<...> |  |
-| test.rs:5:33:5:47 | After ...: Option::<...> | test.rs:5:50:5:56 | Before ...: bool |  |
-| test.rs:5:33:5:47 | Before ...: Option::<...> | test.rs:5:33:5:33 | Before b |  |
-| test.rs:5:50:5:50 | After c [match] | test.rs:5:50:5:56 | ...: bool |  |
+| test.rs:5:50:5:50 | After c [match] | test.rs:5:67:11:5 | { ... } |  |
 | test.rs:5:50:5:50 | Before c | test.rs:5:50:5:50 | c |  |
 | test.rs:5:50:5:50 | c | test.rs:5:50:5:50 | After c [match] | match |
 | test.rs:5:50:5:50 | c | test.rs:5:50:5:50 | c |  |
-| test.rs:5:50:5:56 | ...: bool | test.rs:5:50:5:56 | After ...: bool |  |
-| test.rs:5:50:5:56 | After ...: bool | test.rs:5:67:11:5 | { ... } |  |
-| test.rs:5:50:5:56 | Before ...: bool | test.rs:5:50:5:50 | Before c |  |
 | test.rs:5:67:11:5 | After { ... } | test.rs:5:5:11:5 | Normal Exit |  |
 | test.rs:5:67:11:5 | { ... } | test.rs:6:9:10:9 | if ... {...} else {...} |  |
 | test.rs:6:9:10:9 | After if ... {...} else {...} | test.rs:5:67:11:5 | After { ... } |  |
@@ -52,29 +43,20 @@ edges
 | test.rs:8:16:10:9 | After { ... } | test.rs:6:9:10:9 | After if ... {...} else {...} |  |
 | test.rs:8:16:10:9 | { ... } | test.rs:9:13:9:17 | false |  |
 | test.rs:9:13:9:17 | false | test.rs:8:16:10:9 | After { ... } |  |
-| test.rs:13:5:21:5 | Entry | test.rs:13:25:13:31 | Before ...: bool |  |
+| test.rs:13:5:21:5 | Entry | test.rs:13:25:13:25 | Before a |  |
 | test.rs:13:5:21:5 | Normal Exit | test.rs:13:5:21:5 | Exit |  |
-| test.rs:13:25:13:25 | After a [match] | test.rs:13:25:13:31 | ...: bool |  |
+| test.rs:13:25:13:25 | After a [match] | test.rs:13:34:13:34 | Before b |  |
 | test.rs:13:25:13:25 | Before a | test.rs:13:25:13:25 | a |  |
 | test.rs:13:25:13:25 | a | test.rs:13:25:13:25 | After a [match] | match |
 | test.rs:13:25:13:25 | a | test.rs:13:25:13:25 | a |  |
-| test.rs:13:25:13:31 | ...: bool | test.rs:13:25:13:31 | After ...: bool |  |
-| test.rs:13:25:13:31 | After ...: bool | test.rs:13:34:13:39 | Before ...: i64 |  |
-| test.rs:13:25:13:31 | Before ...: bool | test.rs:13:25:13:25 | Before a |  |
-| test.rs:13:34:13:34 | After b [match] | test.rs:13:34:13:39 | ...: i64 |  |
+| test.rs:13:34:13:34 | After b [match] | test.rs:13:42:13:42 | Before c |  |
 | test.rs:13:34:13:34 | Before b | test.rs:13:34:13:34 | b |  |
 | test.rs:13:34:13:34 | b | test.rs:13:34:13:34 | After b [match] | match |
 | test.rs:13:34:13:34 | b | test.rs:13:34:13:34 | b |  |
-| test.rs:13:34:13:39 | ...: i64 | test.rs:13:34:13:39 | After ...: i64 |  |
-| test.rs:13:34:13:39 | After ...: i64 | test.rs:13:42:13:48 | Before ...: bool |  |
-| test.rs:13:34:13:39 | Before ...: i64 | test.rs:13:34:13:34 | Before b |  |
-| test.rs:13:42:13:42 | After c [match] | test.rs:13:42:13:48 | ...: bool |  |
+| test.rs:13:42:13:42 | After c [match] | test.rs:13:59:21:5 | { ... } |  |
 | test.rs:13:42:13:42 | Before c | test.rs:13:42:13:42 | c |  |
 | test.rs:13:42:13:42 | c | test.rs:13:42:13:42 | After c [match] | match |
 | test.rs:13:42:13:42 | c | test.rs:13:42:13:42 | c |  |
-| test.rs:13:42:13:48 | ...: bool | test.rs:13:42:13:48 | After ...: bool |  |
-| test.rs:13:42:13:48 | After ...: bool | test.rs:13:59:21:5 | { ... } |  |
-| test.rs:13:42:13:48 | Before ...: bool | test.rs:13:42:13:42 | Before c |  |
 | test.rs:13:59:21:5 | After { ... } | test.rs:13:5:21:5 | Normal Exit |  |
 | test.rs:13:59:21:5 | { ... } | test.rs:14:9:20:9 | if ... {...} else {...} |  |
 | test.rs:14:9:20:9 | After if ... {...} else {...} | test.rs:13:59:21:5 | After { ... } |  |
