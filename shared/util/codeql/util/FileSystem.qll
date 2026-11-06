@@ -23,6 +23,13 @@ signature module InputSig {
      * Typically `containerparent(result, this)`.
      */
     ContainerBase getParentContainer();
+
+    /**
+     * Gets a textual representation of this container.
+     *
+     * Typically `result = this.getAbsolutePath()`.
+     */
+    string toString();
   }
 
   /**
@@ -206,7 +213,7 @@ module Make<InputSig Input> {
      *
      * This is the absolute path of the container.
      */
-    string toString() { result = this.getAbsolutePath() }
+    string toString() { result = super.toString() }
   }
 
   /** A folder. */
