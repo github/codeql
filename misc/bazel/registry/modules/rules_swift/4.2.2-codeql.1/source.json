@@ -1,0 +1,10 @@
+{
+    "integrity": "sha256-0qlu7XFoSHcFHojdLCp3LtvbdU3kiM7gZt1yzOJAz8Y=",
+    "url": "https://github.com/bazelbuild/rules_swift/releases/download/4.2.2/rules_swift.4.2.2.tar.gz",
+    "patches": {
+        "external_static_runtime.patch": "sha256-kFxCR0aeygkmsSWQur8JpStRepc9sqI+WENUd61wEOo=",
+        "module_dot_bazel_version.patch": "sha256-9hq60gxavLu+lHxu15eHjUgWXjIRvkbStMWTC5PiZ7k=",
+        "register_downloaded_macos_toolchain.patch": "sha256-JWvdIt3rWsbS5zZQ1lZJv08uEaTa1OJPs5t/lMGi6fc="
+    },
+    "patch_strip": 1
+}
