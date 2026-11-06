@@ -6,6 +6,7 @@
 
 private import javascript
 private import semmle.javascript.dataflow.internal.AccessPaths
+private import semmle.javascript.dataflow.internal.DataFlowNode
 private import semmle.javascript.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.javascript.dataflow.internal.sharedlib.Ssa as Ssa2
 
@@ -387,6 +388,19 @@ module MakeStateBarrierGuard<
     exists(Expr use |
       barrierGuardBlocksAccessPathUse(use, state) and
       nd = DataFlow::valueNode(use)
+    )
+    or
+    exists(
+      BarrierGuard guard, SsaPhiNode phi, SsaVariable input, BasicBlock bb, ConditionGuardNode cond,
+      boolean outcome
+    |
+      nd = TSsaPhiInputNode(phi, bb) and
+      input = phi.getInputFromBlock(bb) and
+      barrierGuardIsRelevant(guard) and
+      guard.getEnclosingExpr() = cond.getTest() and
+      cond.dominates(bb) and
+      outcome = cond.getOutcome() and
+      barrierGuardBlocksExpr(guard, outcome, input.getAUse(), state)
     )
     or
     ssa2BlocksNode(nd, state)

@@ -34,6 +34,8 @@ private module Cached {
     TValueNode(AST::ValueNode nd) or
     /** An SSA node from the legacy SSA library */
     TSsaDefNode(SsaDefinition d) or
+    /** An input edge to a phi node from the legacy SSA library */
+    TSsaPhiInputNode(SsaPhiNode phi, BasicBlock input) { exists(phi.getInputFromBlock(input)) } or
     /** Use of a variable or 'this', with flow from a post-update node (from an earlier use) */
     TSsaUseNode(ControlFlowNode use) { use = any(Ssa2::SsaConfig::SourceVariable v).getAUse() } or
     /** A synthesized variable read (new SSA library). Definitions are represented by TSsaDefNode. */
@@ -130,8 +132,8 @@ private module Cached {
 import Cached
 
 private class TEarlyStageNode =
-  TValueNode or TSsaDefNode or TCapturedVariableNode or TPropNode or TRestPatternNode or
-      TElementPatternNode or TElementNode or TReflectiveCallNode or TThisNode or
+  TValueNode or TSsaDefNode or TSsaPhiInputNode or TCapturedVariableNode or TPropNode or
+      TRestPatternNode or TElementPatternNode or TElementNode or TReflectiveCallNode or TThisNode or
       TFunctionSelfReferenceNode or TDestructuredModuleImportNode or THtmlAttributeNode or
       TFunctionReturnNode or TExceptionalFunctionReturnNode or TExceptionalInvocationReturnNode or
       TGlobalAccessPathRoot or TTemplatePlaceholderTag or TReflectiveParametersNode or
