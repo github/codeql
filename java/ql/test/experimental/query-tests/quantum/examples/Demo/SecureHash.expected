@@ -1,0 +1,16 @@
+| CryptoClassificationTest.java:32:51:32:89 | HashAlgorithm | Secure hash algorithm: SHA2 (256-bit digest). |
+| CryptoClassificationTest.java:37:50:37:64 | HashAlgorithm | Secure hash algorithm: SHA2 (256-bit digest). |
+| CryptoClassificationTest.java:43:52:43:68 | HashAlgorithm | Secure hash algorithm: SHA2 (256-bit digest). |
+| CryptoClassificationTest.java:71:17:71:25 | HashAlgorithm | Secure hash algorithm: SHA2 (256-bit digest). |
+| CryptoClassificationTest.java:71:36:71:59 | HashAlgorithm | Secure hash algorithm: SHA2 (256-bit digest). |
+| CryptoClassificationTest.java:88:49:88:63 | HashAlgorithm | Secure hash algorithm: SHA2 (256-bit digest). |
+| CryptoClassificationTest.java:91:49:91:63 | HashAlgorithm | Secure hash algorithm: SHA2 (384-bit digest). |
+| CryptoClassificationTest.java:94:49:94:63 | HashAlgorithm | Secure hash algorithm: SHA2 (512-bit digest). |
+| CryptoClassificationTest.java:105:49:105:70 | HashAlgorithm | Secure hash algorithm: SHA2 (256-bit digest). |
+| CryptoClassificationTest.java:108:49:108:70 | HashAlgorithm | Secure hash algorithm: SHA2 (384-bit digest). |
+| CryptoClassificationTest.java:111:49:111:70 | HashAlgorithm | Secure hash algorithm: SHA2 (512-bit digest). |
+| CryptoClassificationTest.java:335:58:335:66 | HashAlgorithm | Secure hash algorithm: SHA2 (256-bit digest). |
+| CryptoClassificationTest.java:339:58:339:66 | HashAlgorithm | Secure hash algorithm: SHA2 (384-bit digest). |
+| CryptoClassificationTest.java:343:58:343:66 | HashAlgorithm | Secure hash algorithm: SHA2 (512-bit digest). |
+| CryptoClassificationTest.java:347:60:347:69 | HashAlgorithm | Secure hash algorithm: SHA3 (256-bit digest). |
+| CryptoClassificationTest.java:351:60:351:69 | HashAlgorithm | Secure hash algorithm: SHA3 (512-bit digest). |
