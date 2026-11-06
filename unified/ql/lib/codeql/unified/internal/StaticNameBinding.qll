@@ -692,6 +692,24 @@ private ClassLikeDeclaration tryResolveExtensionTarget(ClassLikeDeclaration cls)
   result = cls
 }
 
+private predicate unqualifiedMemberAccessLocalScopingCand(
+  PotentialLocalNameAccess access, boolean instanceAccess, NameBinding target,
+  ClassLikeDeclaration accessingClass
+) {
+  not access instanceof NameBinding and
+  exists(LocalName local |
+    target.getLocalName() = local and
+    access.getLocalName() = local and
+    target.getDeclaration() = accessingClass.getAMember()
+  |
+    instanceAccess = true and
+    isInstanceMember(target.getDeclaration())
+    or
+    instanceAccess = false and
+    isStaticMember(target.getDeclaration())
+  )
+}
+
 /**
  * Holds if `access` may resolve to `target` through the enclosing `accessingClass`.
  *
@@ -702,35 +720,24 @@ private predicate unqualifiedMemberAccessCand(
   PotentialLocalNameAccess access, boolean instanceAccess, NameBinding target,
   ClassLikeDeclaration accessingClass
 ) {
+  // Resolved by local scoping
+  unqualifiedMemberAccessLocalScopingCand(access, instanceAccess, target, accessingClass)
+  or
+  // Resolved in an uncertain scope
   not access instanceof NameBinding and
-  (
-    // Resolved by local scoping
-    exists(LocalName local |
-      target.getLocalName() = local and
-      access.getLocalName() = local and
-      target.getDeclaration() = accessingClass.getAMember()
-    |
-      instanceAccess = true and
-      isInstanceMember(target.getDeclaration())
-      or
-      instanceAccess = false and
-      isStaticMember(target.getDeclaration())
-    )
+  not unqualifiedMemberAccessLocalScopingCand(access, instanceAccess, target, _) and
+  exists(NamespaceNode namespace, string name |
+    name = access.getName() and
+    accessingClass =
+      tryResolveExtensionTarget(LocalNameBindingOutput::getAnUncertainScope(access, name))
+  |
+    instanceAccess = true and
+    namespace.isInstanceMemberNamespace(accessingClass) and
+    namespace.getMember(name).isIdentifier(target)
     or
-    // Resolved in an uncertain scope
-    exists(NamespaceNode namespace, string name |
-      name = access.getName() and
-      accessingClass =
-        tryResolveExtensionTarget(LocalNameBindingOutput::getAnUncertainScope(access, name))
-    |
-      instanceAccess = true and
-      namespace.isInstanceMemberNamespace(accessingClass) and
-      namespace.getMember(name).isIdentifier(target)
-      or
-      instanceAccess = false and
-      namespace.isStaticMemberNamespace(accessingClass) and
-      namespace.getMember(name).isIdentifier(target)
-    )
+    instanceAccess = false and
+    namespace.isStaticMemberNamespace(accessingClass) and
+    namespace.getMember(name).isIdentifier(target)
   )
 }
 
