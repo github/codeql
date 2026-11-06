@@ -18,3 +18,4 @@ extensions:
       - ["", "TestType", true, "swap(_:_:)", "", "", "Argument[1]", "Argument[0]", "value", "manual"]
       - ["", "TestType", true, "getField()", "", "", "Argument[self].Member[field]", "ReturnValue", "value", "manual"]
       - ["", "TestType", true, "setField(_:)", "", "", "Argument[0]", "Argument[self].Member[field]", "value", "manual"]
+      - ["", "TestType", true, "readField(_:)", "", "", "Argument[0].Member[field]", "ReturnValue", "value", "manual"]

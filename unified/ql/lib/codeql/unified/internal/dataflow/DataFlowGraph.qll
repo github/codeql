@@ -92,11 +92,11 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
   or
   exists(UnqualifiedMemberAccess access | access.isInstanceAccess() |
     node1.isLocalVariableRead(access, access.getImplicitQualifierVariable()) and
-    step.readName(access.getMemberName()) and
+    step.read(ContentSet::member(access)) and
     node2.isResultValue(access)
     or
     (node1.isIncomingValue(access) or node1.isPostUpdate(access)) and
-    step.storeName(access.getMemberName()) and
+    step.store(ContentSet::member(access)) and
     node2.isLocalVariablePostUpdate(access, access.getImplicitQualifierVariable())
     or
     // Pass the receiver along to the getter/setter invoked by this expression
@@ -129,11 +129,11 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
   or
   exists(MemberAccessExpr expr |
     node1.isResultValue(expr.getBase()) and
-    step.readName(expr.getMemberName()) and
+    step.read(ContentSet::member(expr)) and
     node2.isResultValue(expr)
     or
     (node1.isIncomingValue(expr) or node1.isPostUpdate(expr)) and
-    step.storeName(expr.getMemberName()) and
+    step.store(ContentSet::member(expr)) and
     node2.isPostUpdate(expr.getBase())
     or
     // Pass the receiver along to the getter/setter invoked by this expression
