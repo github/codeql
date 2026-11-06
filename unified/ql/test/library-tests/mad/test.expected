@@ -14,6 +14,8 @@ isSink
 | test.swift:94:5:94:21 | ... .arguments | command-injection |
 | test.swift:95:5:95:21 | [post] ... .arguments | command-injection |
 | test.swift:96:5:96:23 | ... .arguments | command-injection |
+| test.swift:111:5:111:20 | ... .encryptionKey | encryption-key |
+| test.swift:114:5:114:20 | ... .encryptionKey | encryption-key |
 | test.swift:123:37:123:49 | encodedOffset | string-length |
 | test.swift:124:42:124:54 | encodedOffset | string-length |
 | test.swift:128:24:128:36 | encryptionKey | encryption-key |

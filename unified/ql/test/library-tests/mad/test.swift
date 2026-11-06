@@ -108,10 +108,10 @@ class Realm {
 
 func testNestedTypeProperty(configuration: Realm.Configuration, key: String) {
     var c1 = Realm.Configuration()
-    c1.encryptionKey = key  // $ MISSING: isSink=encryption-key // nested types are not yet resolved by type inference
+    c1.encryptionKey = key  // $ isSink=encryption-key // nested types are not yet resolved by type inference
 
     var c2 = configuration
-    c2.encryptionKey = key  // $ MISSING: isSink=encryption-key // nested types are not yet resolved by type inference
+    c2.encryptionKey = key  // $ isSink=encryption-key // nested types are not yet resolved by type inference
 }
 
 func testQualifiedConstructors(
