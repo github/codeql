@@ -10,7 +10,7 @@ abstract class TypeAbstraction extends AstNode {
 }
 
 /**
- * A class-like declaration. Unlike `ClassLikeDeclarationType`, this includes
+ * A class-like declaration. Unlike `ClassLikeType`, this includes
  * declarations that do not define a new type, such as `extension`s in Swift.
  */
 private class ClassLikeDeclarationTypeAbstraction extends TypeAbstraction instanceof Unified::ClassLikeDeclaration

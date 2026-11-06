@@ -9,15 +9,15 @@ private import TypeInference
 private import TypeInferencePlugin as Plugin
 private import codeql.unified.internal.Builtins
 
-private class StructType extends ClassLikeDeclarationType {
-  StructType() { c.getAModifier().getValue() = "struct" }
+private class StructType extends ClassLikeType {
+  StructType() { this.getClassLikeDeclaration().getAModifier().getValue() = "struct" }
 }
 
-private class EnumType extends ClassLikeDeclarationType {
-  EnumType() { c.getAModifier().getValue() = "enum" }
+private class EnumType extends ClassLikeType {
+  EnumType() { this.getClassLikeDeclaration().getAModifier().getValue() = "enum" }
 }
 
-private class BuiltinType extends ClassLikeDeclarationType {
+private class BuiltinType extends ClassLikeType {
   BuiltinType() { this.getClassLikeDeclaration() instanceof BuiltinClassLikeDeclaration }
 }
 

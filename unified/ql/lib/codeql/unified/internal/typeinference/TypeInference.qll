@@ -591,12 +591,7 @@ module Input3 implements InputSig3 {
     Callable getTargetViaStaticNameBinding() {
       // object creation (including enum constructors): `String(42)`, `Optional.Some(42)`
       exists(ClassLikeDeclaration cls |
-        cls =
-          this.getCallee()
-              .(TypeMention)
-              .getType()
-              .(ClassLikeDeclarationType)
-              .getClassLikeDeclaration() and
+        cls = this.getCallee().(TypeMention).getType().(ClassLikeType).getClassLikeDeclaration() and
         result.isInstanceMemberOf(cls, _) and
         result.asCallable() instanceof ConstructorDeclaration
       )
@@ -845,7 +840,7 @@ module Input3 implements InputSig3 {
     private predicate needsContextualTyping(Invocation i, TypePath path) {
       exists(
         Callable constructor, Argument receiver, TypePath enumPrefixPath,
-        ClassLikeDeclarationType receiverType, TypePath path0
+        ClassLikeType receiverType, TypePath path0
       |
         constructionReceiver(i, constructor, receiver, enumPrefixPath) and
         receiverType = inferType(receiver) and
@@ -856,8 +851,7 @@ module Input3 implements InputSig3 {
         or
         // inherited constructor
         exists(
-          ClassLikeDeclarationType declType, TypeAbstraction abs, TypeMention constraint,
-          TypeParameter tp
+          ClassLikeType declType, TypeAbstraction abs, TypeMention constraint, TypeParameter tp
         |
           declType = constructor.getDeclaringType().getType() and
           BaseTypes::rootTypesSatisfaction(receiverType, declType, abs, _, constraint) and
@@ -901,7 +895,7 @@ module Input3 implements InputSig3 {
       result instanceof UnknownType
       or
       path.isEmpty() and
-      n = result.(ModelType).getTypeSelector().getAConstructorCall()
+      n = result.(ClassLikeType).getTypeSelector().getAConstructorCall()
     }
 
     predicate allowContextualInference(TypeMention tm, TypePath path) {
@@ -938,7 +932,7 @@ module Input3 implements InputSig3 {
     path.isEmpty()
     or
     exists(ClassLikeDeclaration c |
-      c = n.(SuperExpr).getEnclosingClass().resolve() and
+      c = n.(SuperExpr).getEnclosingClass().getClassLikeElement().asClassLikeDeclaration() and
       result = c.getBaseType(0).getType().(TypeMention).getTypeAt(path)
     )
     or

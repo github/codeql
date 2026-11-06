@@ -155,9 +155,9 @@ private predicate callableSelector(
 ) {
   name = callable.getName() and
   argLabels = getArgLabelsFromCallable(callable) and
-  exists(ClassLikeDeclaration cls, TypeSelector baseType |
-    callable = cls.getAMemberIncludingExtensions() and
-    isSubclassOfType(cls, baseType)
+  exists(ClassLikeElement cls, TypeSelector baseType |
+    callable = cls.getAMember() and
+    isSubclassOfType(cls.asClassLikeDeclaration(), baseType)
   |
     // Static members are members of the meta type
     if NameBindingPlugin::isStaticMember(callable)
@@ -447,6 +447,13 @@ class TypeSelector extends string {
     result.getQualifiedName() = this and not exists(result.getExtensionTarget())
   }
 
+  /** Gets the class-like element corresponding to this type. */
+  ClassLikeElement getClassLikeElement() {
+    result.asTypeSelector() = this
+    or
+    result.asClassLikeDeclaration() = this.getDeclaration()
+  }
+
   /** Gets the declaration of a proper subtype of this type (not the type itself). */
   ClassLikeDeclaration getASubtypeDeclaration() {
     result.getABaseClass*().getABaseType().getType() = this.getAStaticRef()
@@ -455,11 +462,7 @@ class TypeSelector extends string {
   /** Gets a `Type` corresponding to instances of this type. */
   T::Type getAnInstanceType(boolean subtype) {
     subtype = false and
-    (
-      result.(Types::ModelType).getTypeSelector() = this
-      or
-      result.asClass() = this.getDeclaration()
-    )
+    result.(Types::ClassLikeType).getClassLikeElement() = this.getClassLikeElement()
     or
     subtype = true and
     result.asClass() = this.getASubtypeDeclaration()

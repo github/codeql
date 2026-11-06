@@ -56,7 +56,7 @@ abstract private class TypeMentionImpl extends AstNode {
   ) {
     this.aliasRefHasEnclosingType(prefix, ptp, path, t)
     or
-    exists(ClassLikeDeclarationType sub, TypeMention base |
+    exists(ClassLikeType sub, TypeMention base |
       this.aliasRefHasEnclosingTypeInclBases(prefix, ptp, TypePath::nil(), sub) and
       base = sub.getClassLikeDeclaration().getABaseType().getType()
     |
@@ -121,7 +121,7 @@ abstract private class TypeMentionImpl extends AstNode {
    * Gets the class-like declaration mentioned by this type mention, if any.
    */
   ClassLikeDeclaration getClassLikeDeclaration() {
-    result = this.getExpandedType().(ClassLikeDeclarationType).getClassLikeDeclaration()
+    result = this.getExpandedType().(ClassLikeType).getClassLikeDeclaration()
   }
 
   /**
@@ -254,7 +254,7 @@ class ExprTypeMention extends TypeMentionImpl, Expr {
     not this = any(GenericTypeExpr g).getBase() and
     not this instanceof FunctionExpr and
     not this instanceof TupleExpr and
-    exists(ClassLikeDeclarationType t |
+    exists(ClassLikeType t |
       t = this.getUnexpandedType() and
       result = t.getATypeParameter() and
       path = TypePath::singleton(result) and
@@ -281,7 +281,7 @@ class ExprTypeMention extends TypeMentionImpl, Expr {
     or
     result.(Plugin::TupleType).getArity() = this.(TupleExpr).getNumberOfElements()
     or
-    result.(ModelType).getTypeSelector().getAStaticRef() = this
+    result.(ClassLikeType).getTypeSelector().getAStaticRef() = this
   }
 
   override Type getUnexpandedType() {

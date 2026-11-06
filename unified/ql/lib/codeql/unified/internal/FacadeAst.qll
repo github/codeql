@@ -236,7 +236,12 @@ module Unified {
   }
 
   private ClassLikeDeclaration getParentClass(Member m) {
-    result.getAMemberIncludingExtensions() = m
+    exists(ClassLikeDeclaration cls | cls.getAMember() = m |
+      not exists(cls.getExtensionTarget()) and
+      result = cls
+      or
+      result = NameBinding::getExtendedDeclaration(cls)
+    )
   }
 
   private ClassLikeDeclaration getEnclosingClass(Member m) { result.getAMember() = m }
@@ -259,6 +264,12 @@ module Unified {
     }
 
     /**
+     * Gets the class-like element declared by this declaration, or extended by it if
+     * this is an extension.
+     */
+    U::ClassLikeElement getClassLikeElement() { this = result.getADeclaration() }
+
+    /**
      * Gets the target of this extension class, or this class itself if it is not an extension.
      */
     pragma[nomagic]
@@ -266,20 +277,7 @@ module Unified {
       not exists(this.getExtensionTarget()) and
       result = this
       or
-      exists(NameBinding::NamespaceNode ns |
-        ns.isStaticMemberNamespace(result) and
-        ns.getAnExtension().isStaticMemberNamespace(this)
-      )
-    }
-
-    /**
-     * Gets a member of this class, including members from extensions.
-     */
-    Member getAMemberIncludingExtensions() {
-      exists(ClassLikeDeclaration cls |
-        this = cls.resolve() and
-        result = cls.getAMember()
-      )
+      result = NameBinding::getExtendedDeclaration(this)
     }
 
     override string toString() {

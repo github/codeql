@@ -709,15 +709,30 @@ private module FolderHeuristic {
   }
 }
 
-private ClassLikeDeclaration resolveExtensionTarget(ClassLikeDeclaration cls) {
-  trackNameBinding(result.getNameNode()) = getNodeFromRef(cls.getExtensionTarget())
+/**
+ * Gets the non-extension class-like declaration extended by the extension `ext`.
+ *
+ * Consider using `ClassLikeElement` instead of this predicate.
+ */
+cached
+ClassLikeDeclaration getExtendedDeclaration(ClassLikeDeclaration ext) {
+  CachedStage::ref() and
+  not exists(result.getExtensionTarget()) and
+  exists(NamespaceNode ns |
+    ns.isStaticMemberNamespace(result) and
+    ns.getAnExtension().isStaticMemberNamespace(ext)
+  )
 }
 
-private ClassLikeDeclaration tryResolveExtensionTarget(ClassLikeDeclaration cls) {
-  result = resolveExtensionTarget(cls)
+/**
+ * Gets the class in whose namespace unqualified member accesses in `scope` should be resolved:
+ * the extended declaration if `scope` is a resolvable extension, otherwise `scope` itself.
+ */
+private ClassLikeDeclaration getMemberLookupClass(ClassLikeDeclaration scope) {
+  result = getExtendedDeclaration(scope)
   or
-  not exists(resolveExtensionTarget(cls)) and
-  result = cls
+  not exists(getExtendedDeclaration(scope)) and
+  result = scope
 }
 
 /**
@@ -749,7 +764,7 @@ private predicate unqualifiedMemberAccessCand(
     exists(NamespaceNode namespace, string name |
       name = access.getName() and
       accessingClass =
-        tryResolveExtensionTarget(LocalNameBindingOutput::getAnUncertainScope(access, name))
+        getMemberLookupClass(LocalNameBindingOutput::getAnUncertainScope(access, name))
     |
       instanceAccess = true and
       namespace.isInstanceMemberNamespace(accessingClass) and
@@ -940,5 +955,7 @@ private module CachedStage {
     (exists(any(UnqualifiedMemberAccess u).getImplicitQualifierVariable()) implies any())
     or
     (exists(getStaticBindingTargetFromIdentifier(_)) implies any())
+    or
+    (exists(getExtendedDeclaration(_)) implies any())
   }
 }
