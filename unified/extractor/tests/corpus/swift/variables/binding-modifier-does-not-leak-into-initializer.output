@@ -77,7 +77,8 @@ top_level source="⟨body⟩"
                   body:
                     block source="⟨stmt⟩"
                       stmt: int_literal "1" source="1"
-                switch_case source="default: ⟨body⟩"
+                switch_case source="⟨pattern⟩: ⟨body⟩"
+                  pattern: ignore_pattern "default" source="default"
                   body:
                     block source="⟨stmt⟩"
                       stmt: int_literal "2" source="2"

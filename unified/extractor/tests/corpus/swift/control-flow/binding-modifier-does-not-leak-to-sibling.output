@@ -105,7 +105,8 @@ top_level source="⟨body⟩"
                       argument:
                         argument source="⟨value⟩"
                           value: string_literal "\"matched\"" source="\"matched\""
-            switch_case source="default:\n  ⟨body⟩"
+            switch_case source="⟨pattern⟩:\n  ⟨body⟩"
+              pattern: ignore_pattern "default" source="default"
               body:
                 block source="⟨stmt⟩"
                   stmt: break_expr "break" source="break"

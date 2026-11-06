@@ -387,10 +387,10 @@ named:
 
   # A single `case ...:` (or `default:`) entry in a switch.
   # An entry with multiple `case p1, p2:` patterns uses an `or_pattern`.
-  # A `default:` entry has no pattern.
+  # A `default:` entry uses an `ignore_pattern`.
   switch_case:
     modifier*: modifier
-    pattern?: expr
+    pattern: expr
     body: block
 
   # Evaluate 'expr' and match its result against 'pattern', and return true if it matches.

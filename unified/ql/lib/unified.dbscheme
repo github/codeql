@@ -809,14 +809,10 @@ unified_switch_case_modifier(
   unique int modifier: @unified_token_modifier ref
 );
 
-unified_switch_case_pattern(
-  unique int unified_switch_case: @unified_switch_case ref,
-  unique int pattern: @unified_expr ref
-);
-
 unified_switch_case_def(
   unique int id: @unified_switch_case,
-  int body: @unified_block ref
+  int body: @unified_block ref,
+  int pattern: @unified_expr ref
 );
 
 #keyset[unified_switch_expr, index]
