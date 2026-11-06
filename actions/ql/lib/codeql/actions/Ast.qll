@@ -104,6 +104,9 @@ class Workflow extends AstNode instanceof WorkflowImpl {
 
   Permissions getPermissions() { result = super.getPermissions() }
 
+  /** Gets the explicitly declared cache mode for this workflow, if any. */
+  string getCacheMode() { result = super.getCacheMode() }
+
   Strategy getStrategy() { result = super.getStrategy() }
 
   On getOn() { result = super.getOn() }
@@ -199,6 +202,9 @@ abstract class Job extends AstNode instanceof JobImpl {
   Environment getEnvironment() { result = super.getEnvironment() }
 
   Permissions getPermissions() { result = super.getPermissions() }
+
+  /** Gets the explicitly declared cache mode for this job, if any. */
+  string getCacheMode() { result = super.getCacheMode() }
 
   Strategy getStrategy() { result = super.getStrategy() }
 

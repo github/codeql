@@ -2,6 +2,8 @@ on:
   issue_comment:
     types: [created]
 
+cache-mode: write-only
+
 jobs:
   pr-comment:
     runs-on: ubuntu-latest
@@ -12,9 +14,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ steps.comment-branch.outputs.head_sha }}
-      - run: ./checkedout/poison
+      - run: ./checkedout/poison # Cache alert: untrusted code inherits write-only cache access.
 
   pr-comment2:
+    cache-mode: read
     runs-on: ubuntu-latest
     permissions: read-all
     steps:
@@ -23,9 +26,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ steps.comment-branch.outputs.head_sha }}
-      - uses: ./.github/actions/node-npm-setup
+      - uses: ./.github/actions/node-npm-setup # No cache alert: job read mode prevents saves.
 
   pr-comment3:
+    cache-mode: none
     runs-on: ubuntu-latest
     permissions: read-all
     steps:
@@ -34,4 +38,8 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ steps.comment-branch.outputs.head_sha }}
-      - run: node .github/actions-scripts/what-docs-early-access-branch.js
+      - run: node .github/actions-scripts/what-docs-early-access-branch.js # No cache alert: job none mode disables cache access.
+
+  cache-modes:
+    permissions: {}
+    uses: ./.github/workflows/cache_mode_reusable.yml # No cache alert: callee write exceeds the write-only limit.
