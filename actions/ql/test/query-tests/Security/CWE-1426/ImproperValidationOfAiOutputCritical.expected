@@ -1,0 +1,12 @@
+edges
+nodes
+| .github/workflows/vulnerable1.yml:22:12:22:43 | steps.ai.outputs.response | semmle.label | steps.ai.outputs.response |
+| .github/workflows/vulnerable2.yml:26:13:26:45 | steps.ai1.outputs.response | semmle.label | steps.ai1.outputs.response |
+| .github/workflows/vulnerable3.yml:23:12:23:47 | steps.claude.outputs.response | semmle.label | steps.claude.outputs.response |
+| .github/workflows/vulnerable4.yml:22:18:22:53 | steps.gemini.outputs.response | semmle.label | steps.gemini.outputs.response |
+subpaths
+#select
+| .github/workflows/vulnerable1.yml:22:12:22:43 | steps.ai.outputs.response | .github/workflows/vulnerable1.yml:22:12:22:43 | steps.ai.outputs.response | .github/workflows/vulnerable1.yml:22:12:22:43 | steps.ai.outputs.response | AI-generated output flows unsanitized to $@, which may allow chained injection ($@). | .github/workflows/vulnerable1.yml:22:12:22:43 | steps.ai.outputs.response | ${{ steps.ai.outputs.response }} | .github/workflows/vulnerable1.yml:3:3:3:8 | issues | issues |
+| .github/workflows/vulnerable2.yml:26:13:26:45 | steps.ai1.outputs.response | .github/workflows/vulnerable2.yml:26:13:26:45 | steps.ai1.outputs.response | .github/workflows/vulnerable2.yml:26:13:26:45 | steps.ai1.outputs.response | AI-generated output flows unsanitized to $@, which may allow chained injection ($@). | .github/workflows/vulnerable2.yml:26:13:26:45 | steps.ai1.outputs.response | ${{ steps.ai1.outputs.response }} | .github/workflows/vulnerable2.yml:3:3:3:8 | issues | issues |
+| .github/workflows/vulnerable3.yml:23:12:23:47 | steps.claude.outputs.response | .github/workflows/vulnerable3.yml:23:12:23:47 | steps.claude.outputs.response | .github/workflows/vulnerable3.yml:23:12:23:47 | steps.claude.outputs.response | AI-generated output flows unsanitized to $@, which may allow chained injection ($@). | .github/workflows/vulnerable3.yml:23:12:23:47 | steps.claude.outputs.response | ${{ steps.claude.outputs.response }} | .github/workflows/vulnerable3.yml:3:3:3:8 | issues | issues |
+| .github/workflows/vulnerable4.yml:22:18:22:53 | steps.gemini.outputs.response | .github/workflows/vulnerable4.yml:22:18:22:53 | steps.gemini.outputs.response | .github/workflows/vulnerable4.yml:22:18:22:53 | steps.gemini.outputs.response | AI-generated output flows unsanitized to $@, which may allow chained injection ($@). | .github/workflows/vulnerable4.yml:22:18:22:53 | steps.gemini.outputs.response | ${{ steps.gemini.outputs.response }} | .github/workflows/vulnerable4.yml:3:3:3:21 | pull_request_review | pull_request_review |

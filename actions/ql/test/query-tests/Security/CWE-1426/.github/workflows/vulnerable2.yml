@@ -1,0 +1,26 @@
+name: AI Output Chain
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  ai-task:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      models: read
+    steps:
+      - name: First AI inference
+        id: ai1
+        uses: actions/ai-inference@v1
+        with:
+          prompt: |
+            Summarize: ${{ github.event.issue.body }}
+
+      - name: Second AI inference using first AI output
+        id: ai2
+        uses: actions/ai-inference@v1
+        with:
+          prompt: |
+            Improve this summary:
+            ${{ steps.ai1.outputs.response }}
