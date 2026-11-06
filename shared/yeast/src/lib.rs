@@ -20,6 +20,13 @@ pub use yeast_macros::{query, rule, rules, tree, trees};
 use captures::{Captures, TranslatedCaptures};
 use query::QueryNode;
 
+#[derive(Debug)]
+struct TranslationFailure(String);
+
+pub(crate) fn translation_failure(message: impl Into<String>) -> ! {
+    std::panic::resume_unwind(Box::new(TranslationFailure(message.into())))
+}
+
 impl From<tree_sitter::Point> for Point {
     fn from(p: tree_sitter::Point) -> Self {
         Point {
@@ -1166,7 +1173,7 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
     ) -> TranslatedCaptures {
         captures.translate_except(skip, |id| {
             if id == self.matched_root {
-                panic!("cannot eagerly translate a capture of the matched rule root")
+                translation_failure("cannot eagerly translate a capture of the matched rule root")
             } else {
                 self.translate(ast, output, user_ctx, id)
             }
@@ -1327,10 +1334,10 @@ fn apply_rules_inner<C: Clone>(
     rewrite_depth: usize,
 ) -> Vec<OutputId> {
     if rewrite_depth > MAX_REWRITE_DEPTH {
-        panic!(
+        translation_failure(format!(
             "Desugaring exceeded maximum rewrite depth ({MAX_REWRITE_DEPTH}). \
              This likely indicates a non-terminating rule cycle."
-        );
+        ));
     }
 
     let node_kind = ast.get_node(id).map(|n| n.kind_name()).unwrap_or("");
@@ -1359,7 +1366,7 @@ fn apply_rules_inner<C: Clone>(
         return result;
     }
 
-    panic!("no rule matched node of kind '{node_kind}'")
+    translation_failure(format!("no rule matched node of kind '{node_kind}'"))
 }
 
 /// A named bundle of exhaustive rules for the one-shot translation pass.
@@ -1617,37 +1624,39 @@ impl<'a, C: Clone> Runner<'a, C> {
     }
 
     fn run_once(&self, ast: Ast, user_ctx: &mut C) -> Result<OutputAst, String> {
-        std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+        match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
             self.run_once_inner(ast, user_ctx)
-        }))
-        .map(Ok)
-        .unwrap_or_else(|payload| {
-            let message = if let Some(message) = payload.downcast_ref::<&str>() {
-                (*message).to_owned()
-            } else if let Some(message) = payload.downcast_ref::<String>() {
-                message.clone()
-            } else {
-                "unknown panic payload".to_owned()
-            };
-            Err(format!("YEAST translation panicked: {message}"))
-        })
+        })) {
+            Ok(output) => Ok(output),
+            Err(payload) => match payload.downcast::<TranslationFailure>() {
+                Ok(failure) => Err(failure.0),
+                Err(payload) => {
+                    let message = if let Some(message) = payload.downcast_ref::<&str>() {
+                        (*message).to_owned()
+                    } else if let Some(message) = payload.downcast_ref::<String>() {
+                        message.clone()
+                    } else {
+                        "unknown panic payload".to_owned()
+                    };
+                    Err(format!("YEAST translation panicked: {message}"))
+                }
+            },
+        }
     }
 
     fn run_once_inner(&self, ast: Ast, user_ctx: &mut C) -> OutputAst {
-        assert_eq!(
-            self.phases.len(),
-            1,
-            "YEAST requires exactly one translation phase"
-        );
+        if self.phases.len() != 1 {
+            translation_failure("YEAST requires exactly one translation phase");
+        }
         let phase = &self.phases[0];
         let mut output = OutputAst::with_schema(self.schema.clone());
         let res = apply_rules(&phase.rules, &ast, &mut output, user_ctx, ast.get_root());
-        assert_eq!(
-            res.len(),
-            1,
-            "expected exactly one result node, got {}",
-            res.len()
-        );
+        if res.len() != 1 {
+            translation_failure(format!(
+                "expected exactly one result node, got {}",
+                res.len()
+            ));
+        }
         output.set_root(res[0]);
         output.set_source(ast.into_source());
         output

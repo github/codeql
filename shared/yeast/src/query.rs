@@ -79,16 +79,16 @@ impl QueryNode {
             }
             QueryNode::Node { kind, children } => {
                 let node = ast.get_node(node).unwrap();
-                let target_kind = ast
-                    .id_for_node_kind(kind)
-                    .unwrap_or_else(|| panic!("Node kind {kind} not found in language"));
+                let target_kind = ast.id_for_node_kind(kind).unwrap_or_else(|| {
+                    crate::translation_failure(format!("Node kind {kind} not found in language"))
+                });
                 if node.kind != target_kind {
                     return false;
                 }
                 for (field, field_children) in children {
-                    let field_id = ast
-                        .field_id_for_name(field)
-                        .unwrap_or_else(|| panic!("Field {field} not found in language"));
+                    let field_id = ast.field_id_for_name(field).unwrap_or_else(|| {
+                        crate::translation_failure(format!("Field {field} not found in language"))
+                    });
                     let empty = Vec::new();
                     let mut child_iter =
                         node.fields.get(&field_id).unwrap_or(&empty).iter().cloned();
@@ -100,9 +100,11 @@ impl QueryNode {
             }
             QueryNode::UnnamedNode { kind } => {
                 let node = ast.get_node(node).unwrap();
-                let target_kind = ast
-                    .id_for_unnamed_node_kind(kind)
-                    .unwrap_or_else(|| panic!("unnamed Node kind {kind} not found in language"));
+                let target_kind = ast.id_for_unnamed_node_kind(kind).unwrap_or_else(|| {
+                    crate::translation_failure(format!(
+                        "unnamed Node kind {kind} not found in language"
+                    ))
+                });
                 node.kind == target_kind
             }
             QueryNode::Capture {

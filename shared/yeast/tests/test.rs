@@ -1385,10 +1385,7 @@ fn test_translation_phase_errors_when_no_rule_matches() {
     let err = runner
         .run("x = 1")
         .expect_err("expected translation to error on unmatched node");
-    assert!(
-        err.contains("no rule matched") && err.contains("integer"),
-        "error should describe the unmatched node kind, got: {err}"
-    );
+    assert_eq!(err, "no rule matched node of kind 'integer'");
 }
 
 #[test]
