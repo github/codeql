@@ -70,6 +70,7 @@ class ConditionalConstructor {
     #endif
 }
 
+// A struct with conditional fields
 struct ConditionalFields {
     #if DEBUG
         var first: Int
@@ -77,4 +78,41 @@ struct ConditionalFields {
         var second: String
     #endif
     var third: Bool
+}
+
+// A struct with conditional fields with a different number of fields in
+// different compilation branches
+struct UnequalConditionalFields {
+    #if DEBUG
+        var alpha: Int
+    #else
+        var alpha: String
+        var beta: String
+        var gamma: String
+    #endif
+    var omega: Bool
+}
+
+struct NestedConditionalFields {
+    var before: Int
+    #if DEBUG
+        #if FEATURE
+            var selected: String
+        #else
+            var selected: Double
+        #endif
+        var afterNested: Bool
+    #elseif RELEASE
+        var ignoredElseIf: Float
+    #else
+        var ignoredElse: Double
+    #endif
+    var after: Bool
+}
+
+struct OptionalConditionalFields {
+    #if FEATURE
+        var first: Int
+    #endif
+    var last: Bool
 }
