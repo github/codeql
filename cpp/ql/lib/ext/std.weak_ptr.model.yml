@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["std", "weak_ptr", True, "weak_ptr", "(const weak_ptr &)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["std", "weak_ptr", True, "weak_ptr", "(weak_ptr &&)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["std", "weak_ptr<T>", True, "weak_ptr<Y>", "(const shared_ptr &)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["std", "weak_ptr", True, "operator=", "(const weak_ptr &)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["std", "weak_ptr", True, "operator=", "(const weak_ptr &)", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
+      - ["std", "weak_ptr", True, "operator=", "(weak_ptr &&)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["std", "weak_ptr", True, "operator=", "(weak_ptr &&)", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
+      - ["std", "weak_ptr", True, "operator=", "(const shared_ptr &)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["std", "weak_ptr", True, "operator=", "(const shared_ptr &)", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
+      - ["std", "weak_ptr", True, "lock", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["std", "weak_ptr", True, "swap", "", "", "Argument[-1]", "Argument[*0]", "value", "manual"]
+      - ["std", "weak_ptr", True, "swap", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["std", "", False, "swap", "(weak_ptr &,weak_ptr &)", "", "Argument[*0]", "Argument[*1]", "value", "manual"]
+      - ["std", "", False, "swap", "(weak_ptr &,weak_ptr &)", "", "Argument[*1]", "Argument[*0]", "value", "manual"]
