@@ -9,12 +9,12 @@ func testPropertiesWithoutStubs(
     process: Process,
     myProcess: MyProcess
 ) {
-    _ = textField.text  // $ MISSING: isSource=local
+    _ = textField.text  // $ isSource=local
 
-    configuration.tlsMinimumSupportedProtocolVersion = 0  // $ MISSING: isSink=tls-protocol-version
+    configuration.tlsMinimumSupportedProtocolVersion = 0  // $ isSink=tls-protocol-version
 
-    process.launchPath = string  // $ MISSING: isSink=command-injection
-    process.arguments = [string]  // $ MISSING: isSink=command-injection
+    process.launchPath = string  // $ isSink=command-injection
+    process.arguments = [string]  // $ isSink=command-injection
     myProcess.arguments = [string]  // $ isSink=command-injection
 
     let localProcess = Process()

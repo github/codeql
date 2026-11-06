@@ -5,6 +5,7 @@
 private import unified
 private import codeql.dataflow.internal.AccessPathSyntax
 private import codeql.unified.internal.typeinference.TypeInference as T
+private import codeql.unified.internal.typeinference.Type as Types
 private import codeql.unified.internal.StaticNameBinding as N
 
 extensible predicate legacySourceModel(
@@ -132,14 +133,14 @@ private predicate isRawPropertyName(string name) {
 
 /**
  * Holds if `access` may be an access to the property `name`, and its base has the inferred
- * type `cls`.
+ * type `baseType`.
  */
 pragma[nomagic]
-private predicate propertyAccessSelector(MemberAccess access, ClassLikeDeclaration cls, string name) {
+private predicate propertyAccessSelector(MemberAccess access, T::Type baseType, string name) {
   name = access.getMemberName() and
   name = any(Selector s).getPropertyName() and
   not access = any(CallExpr call).getCallee() and
-  cls = T::inferBaseType(access).asClass()
+  baseType = T::inferBaseType(access)
 }
 
 private newtype TSelector =
@@ -233,13 +234,9 @@ class Selector extends TSelector {
    * by the inferred type of its base.
    */
   predicate matchesPropertyAccess(MemberAccess access) {
-    exists(ClassLikeDeclaration cls, string type, boolean subtypes, string name |
+    exists(TypeSelector type, boolean subtypes, string name |
       this = MkPropertySelector(type, subtypes, name) and
-      propertyAccessSelector(access, cls, name)
-    |
-      cls.getQualifiedName() = type
-      or
-      isSubclassOfType(cls, type) and subtypes = true
+      propertyAccessSelector(access, type.getAnInstanceType([false, subtypes]), name)
     )
   }
 
@@ -294,6 +291,24 @@ class TypeSelector extends string {
 
   /** Gets the declaration of this type, if any. */
   ClassLikeDeclaration getDeclaration() { result.getQualifiedName() = this }
+
+  /** Gets the declaration of a proper subtype of this type (not the type itself). */
+  ClassLikeDeclaration getASubtypeDeclaration() {
+    result.getABaseClass*().getABaseType().getType() = this.getAStaticRef()
+  }
+
+  /** Gets a `Type` corresponding to instances of this type. */
+  T::Type getAnInstanceType(boolean subtype) {
+    subtype = false and
+    (
+      result.(Types::ModelType).getTypeSelector() = this
+      or
+      result.asClass() = this.getDeclaration()
+    )
+    or
+    subtype = true and
+    result.asClass() = this.getASubtypeDeclaration()
+  }
 }
 
 private predicate isAccessPath(string path) {
