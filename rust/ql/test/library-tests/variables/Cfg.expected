@@ -1,13 +1,10 @@
 edges
-| main.rs:5:1:8:1 | Entry | main.rs:5:14:5:20 | Before ...: ... |  |
+| main.rs:5:1:8:1 | Entry | main.rs:5:14:5:14 | Before s |  |
 | main.rs:5:1:8:1 | Normal Exit | main.rs:5:1:8:1 | Exit |  |
-| main.rs:5:14:5:14 | After s [match] | main.rs:5:14:5:20 | ...: ... |  |
+| main.rs:5:14:5:14 | After s [match] | main.rs:6:1:8:1 | { ... } |  |
 | main.rs:5:14:5:14 | Before s | main.rs:5:14:5:14 | s |  |
 | main.rs:5:14:5:14 | s | main.rs:5:14:5:14 | After s [match] | match |
 | main.rs:5:14:5:14 | s | main.rs:5:14:5:14 | s |  |
-| main.rs:5:14:5:20 | ...: ... | main.rs:5:14:5:20 | After ...: ... |  |
-| main.rs:5:14:5:20 | After ...: ... | main.rs:6:1:8:1 | { ... } |  |
-| main.rs:5:14:5:20 | Before ...: ... | main.rs:5:14:5:14 | Before s |  |
 | main.rs:6:1:8:1 | After { ... } | main.rs:5:1:8:1 | Normal Exit |  |
 | main.rs:6:1:8:1 | { ... } | main.rs:7:5:7:22 | ExprStmt |  |
 | main.rs:7:5:7:12 | ...::_print | main.rs:7:14:7:20 | Before MacroExpr |  |
@@ -39,15 +36,12 @@ edges
 | main.rs:7:14:7:20 | { ... } | main.rs:7:14:7:20 | ExprStmt |  |
 | main.rs:7:14:7:20 | { ... } | main.rs:7:14:7:20 | { ... } |  |
 | main.rs:7:20:7:20 | s | main.rs:7:14:7:20 | FormatArgsExpr |  |
-| main.rs:10:1:13:1 | Entry | main.rs:10:14:10:19 | Before ...: i64 |  |
+| main.rs:10:1:13:1 | Entry | main.rs:10:14:10:14 | Before i |  |
 | main.rs:10:1:13:1 | Normal Exit | main.rs:10:1:13:1 | Exit |  |
-| main.rs:10:14:10:14 | After i [match] | main.rs:10:14:10:19 | ...: i64 |  |
+| main.rs:10:14:10:14 | After i [match] | main.rs:11:1:13:1 | { ... } |  |
 | main.rs:10:14:10:14 | Before i | main.rs:10:14:10:14 | i |  |
 | main.rs:10:14:10:14 | i | main.rs:10:14:10:14 | After i [match] | match |
 | main.rs:10:14:10:14 | i | main.rs:10:14:10:14 | i |  |
-| main.rs:10:14:10:19 | ...: i64 | main.rs:10:14:10:19 | After ...: i64 |  |
-| main.rs:10:14:10:19 | After ...: i64 | main.rs:11:1:13:1 | { ... } |  |
-| main.rs:10:14:10:19 | Before ...: i64 | main.rs:10:14:10:14 | Before i |  |
 | main.rs:11:1:13:1 | After { ... } | main.rs:10:1:13:1 | Normal Exit |  |
 | main.rs:11:1:13:1 | { ... } | main.rs:12:5:12:22 | ExprStmt |  |
 | main.rs:12:5:12:12 | ...::_print | main.rs:12:14:12:20 | Before MacroExpr |  |
@@ -79,15 +73,12 @@ edges
 | main.rs:12:14:12:20 | { ... } | main.rs:12:14:12:20 | ExprStmt |  |
 | main.rs:12:14:12:20 | { ... } | main.rs:12:14:12:20 | { ... } |  |
 | main.rs:12:20:12:20 | i | main.rs:12:14:12:20 | FormatArgsExpr |  |
-| main.rs:15:1:17:1 | Entry | main.rs:15:18:15:24 | Before ...: ... |  |
+| main.rs:15:1:17:1 | Entry | main.rs:15:18:15:18 | Before i |  |
 | main.rs:15:1:17:1 | Normal Exit | main.rs:15:1:17:1 | Exit |  |
-| main.rs:15:18:15:18 | After i [match] | main.rs:15:18:15:24 | ...: ... |  |
+| main.rs:15:18:15:18 | After i [match] | main.rs:15:27:17:1 | { ... } |  |
 | main.rs:15:18:15:18 | Before i | main.rs:15:18:15:18 | i |  |
 | main.rs:15:18:15:18 | i | main.rs:15:18:15:18 | After i [match] | match |
 | main.rs:15:18:15:18 | i | main.rs:15:18:15:18 | i |  |
-| main.rs:15:18:15:24 | ...: ... | main.rs:15:18:15:24 | After ...: ... |  |
-| main.rs:15:18:15:24 | After ...: ... | main.rs:15:27:17:1 | { ... } |  |
-| main.rs:15:18:15:24 | Before ...: ... | main.rs:15:18:15:18 | Before i |  |
 | main.rs:15:27:17:1 | After { ... } | main.rs:15:1:17:1 | Normal Exit |  |
 | main.rs:15:27:17:1 | { ... } | main.rs:16:5:16:17 | Before print_i64(...) |  |
 | main.rs:16:5:16:13 | print_i64 | main.rs:16:15:16:16 | Before * ... |  |
@@ -1866,21 +1857,15 @@ edges
 | main.rs:415:9:415:9 | After _ [match] | main.rs:415:14:415:15 | { ... } |  |
 | main.rs:415:9:415:9 | _ | main.rs:415:9:415:9 | After _ [match] | match |
 | main.rs:415:14:415:15 | { ... } | main.rs:409:5:416:5 | After match x { ... } |  |
-| main.rs:419:1:429:1 | Entry | main.rs:420:5:420:12 | Before ...: ... |  |
+| main.rs:419:1:429:1 | Entry | main.rs:420:5:420:6 | Before a8 |  |
 | main.rs:419:1:429:1 | Normal Exit | main.rs:419:1:429:1 | Exit |  |
-| main.rs:420:5:420:6 | After a8 [match] | main.rs:420:5:420:12 | ...: ... |  |
+| main.rs:420:5:420:6 | After a8 [match] | main.rs:421:5:424:5 | TuplePat |  |
 | main.rs:420:5:420:6 | Before a8 | main.rs:420:5:420:6 | a8 |  |
 | main.rs:420:5:420:6 | a8 | main.rs:420:5:420:6 | After a8 [match] | match |
 | main.rs:420:5:420:6 | a8 | main.rs:420:5:420:6 | a8 |  |
-| main.rs:420:5:420:12 | ...: ... | main.rs:420:5:420:12 | After ...: ... |  |
-| main.rs:420:5:420:12 | After ...: ... | main.rs:421:5:424:19 | Before ...: ... |  |
-| main.rs:420:5:420:12 | Before ...: ... | main.rs:420:5:420:6 | Before a8 |  |
-| main.rs:421:5:424:5 | After TuplePat [match] | main.rs:421:5:424:19 | ...: ... |  |
+| main.rs:421:5:424:5 | After TuplePat [match] | main.rs:425:9:429:1 | { ... } |  |
 | main.rs:421:5:424:5 | TuplePat | main.rs:421:5:424:5 | [pattern-start] TuplePat | match |
 | main.rs:421:5:424:5 | [pattern-start] TuplePat | main.rs:422:9:422:10 | Before b3 |  |
-| main.rs:421:5:424:19 | ...: ... | main.rs:421:5:424:19 | After ...: ... |  |
-| main.rs:421:5:424:19 | After ...: ... | main.rs:425:9:429:1 | { ... } |  |
-| main.rs:421:5:424:19 | Before ...: ... | main.rs:421:5:424:5 | TuplePat |  |
 | main.rs:422:9:422:10 | After b3 [match] | main.rs:423:9:423:10 | Before c1 |  |
 | main.rs:422:9:422:10 | Before b3 | main.rs:422:9:422:10 | b3 |  |
 | main.rs:422:9:422:10 | b3 | main.rs:422:9:422:10 | After b3 [match] | match |
@@ -1912,18 +1897,15 @@ edges
 | main.rs:428:5:428:18 | After ExprStmt | main.rs:425:9:429:1 | After { ... } |  |
 | main.rs:428:5:428:18 | ExprStmt | main.rs:428:5:428:17 | Before print_str(...) |  |
 | main.rs:428:15:428:16 | c1 | main.rs:428:5:428:17 | print_str(...) |  |
-| main.rs:431:1:434:1 | Entry | main.rs:431:19:431:64 | Before ...: Either |  |
+| main.rs:431:1:434:1 | Entry | main.rs:431:20:431:55 | ... \| ... |  |
 | main.rs:431:1:434:1 | Normal Exit | main.rs:431:1:434:1 | Exit |  |
-| main.rs:431:19:431:64 | ...: Either | main.rs:431:19:431:64 | After ...: Either |  |
-| main.rs:431:19:431:64 | After ...: Either | main.rs:432:9:434:1 | { ... } |  |
-| main.rs:431:19:431:64 | Before ...: Either | main.rs:431:20:431:55 | ... \| ... |  |
 | main.rs:431:20:431:35 | ...::Left(...) | main.rs:431:20:431:35 | After ...::Left(...) [no-match] | no-match |
 | main.rs:431:20:431:35 | ...::Left(...) | main.rs:431:20:431:35 | [pattern-start] ...::Left(...) | match |
 | main.rs:431:20:431:35 | After ...::Left(...) [match] | main.rs:431:20:431:55 | After ... \| ... [match] | match |
 | main.rs:431:20:431:35 | After ...::Left(...) [no-match] | main.rs:431:39:431:55 | ...::Right(...) |  |
 | main.rs:431:20:431:35 | [pattern-start] ...::Left(...) | main.rs:431:33:431:34 | Before a9 |  |
 | main.rs:431:20:431:55 | ... \| ... | main.rs:431:20:431:35 | ...::Left(...) |  |
-| main.rs:431:20:431:55 | After ... \| ... [match] | main.rs:431:19:431:64 | ...: Either |  |
+| main.rs:431:20:431:55 | After ... \| ... [match] | main.rs:432:9:434:1 | { ... } |  |
 | main.rs:431:33:431:34 | After a9 [match] | main.rs:431:20:431:35 | After ...::Left(...) [match] | match |
 | main.rs:431:33:431:34 | Before a9 | main.rs:431:33:431:34 | a9 |  |
 | main.rs:431:33:431:34 | a9 | main.rs:431:33:431:34 | After a9 [match] | match |
@@ -2090,16 +2072,13 @@ edges
 | main.rs:474:9:474:23 | Before example_closure | main.rs:474:9:474:23 | example_closure |  |
 | main.rs:474:9:474:23 | example_closure | main.rs:474:9:474:23 | After example_closure [match] | match |
 | main.rs:474:9:474:23 | example_closure | main.rs:474:9:474:23 | example_closure |  |
-| main.rs:475:9:476:9 | Entry | main.rs:475:10:475:15 | Before ...: i64 |  |
+| main.rs:475:9:476:9 | Entry | main.rs:475:10:475:10 | Before x |  |
 | main.rs:475:9:476:9 | Normal Exit | main.rs:475:9:476:9 | Exit |  |
 | main.rs:475:9:476:9 | \|...\| x | main.rs:474:9:474:23 | Before example_closure |  |
-| main.rs:475:10:475:10 | After x [match] | main.rs:475:10:475:15 | ...: i64 |  |
+| main.rs:475:10:475:10 | After x [match] | main.rs:476:9:476:9 | x |  |
 | main.rs:475:10:475:10 | Before x | main.rs:475:10:475:10 | x |  |
 | main.rs:475:10:475:10 | x | main.rs:475:10:475:10 | After x [match] | match |
 | main.rs:475:10:475:10 | x | main.rs:475:10:475:10 | x |  |
-| main.rs:475:10:475:15 | ...: i64 | main.rs:475:10:475:15 | After ...: i64 |  |
-| main.rs:475:10:475:15 | After ...: i64 | main.rs:476:9:476:9 | x |  |
-| main.rs:475:10:475:15 | Before ...: i64 | main.rs:475:10:475:10 | Before x |  |
 | main.rs:476:9:476:9 | x | main.rs:475:9:476:9 | Normal Exit |  |
 | main.rs:477:5:478:27 | After let ... = ... | main.rs:479:5:479:18 | ExprStmt |  |
 | main.rs:477:5:478:27 | let ... = ... | main.rs:478:9:478:26 | Before example_closure(...) |  |
@@ -2131,16 +2110,13 @@ edges
 | main.rs:482:9:482:26 | Before immutable_variable | main.rs:482:9:482:26 | immutable_variable |  |
 | main.rs:482:9:482:26 | immutable_variable | main.rs:482:9:482:26 | After immutable_variable [match] | match |
 | main.rs:482:9:482:26 | immutable_variable | main.rs:482:9:482:26 | immutable_variable |  |
-| main.rs:483:5:484:9 | Entry | main.rs:483:6:483:11 | Before ...: i64 |  |
+| main.rs:483:5:484:9 | Entry | main.rs:483:6:483:6 | Before x |  |
 | main.rs:483:5:484:9 | Normal Exit | main.rs:483:5:484:9 | Exit |  |
 | main.rs:483:5:484:9 | \|...\| x | main.rs:482:9:482:26 | Before immutable_variable |  |
-| main.rs:483:6:483:6 | After x [match] | main.rs:483:6:483:11 | ...: i64 |  |
+| main.rs:483:6:483:6 | After x [match] | main.rs:484:9:484:9 | x |  |
 | main.rs:483:6:483:6 | Before x | main.rs:483:6:483:6 | x |  |
 | main.rs:483:6:483:6 | x | main.rs:483:6:483:6 | After x [match] | match |
 | main.rs:483:6:483:6 | x | main.rs:483:6:483:6 | x |  |
-| main.rs:483:6:483:11 | ...: i64 | main.rs:483:6:483:11 | After ...: i64 |  |
-| main.rs:483:6:483:11 | After ...: i64 | main.rs:484:9:484:9 | x |  |
-| main.rs:483:6:483:11 | Before ...: i64 | main.rs:483:6:483:6 | Before x |  |
 | main.rs:484:9:484:9 | x | main.rs:483:5:484:9 | Normal Exit |  |
 | main.rs:485:5:486:30 | After let ... = ... | main.rs:487:5:487:18 | ExprStmt |  |
 | main.rs:485:5:486:30 | let ... = ... | main.rs:486:9:486:29 | Before immutable_variable(...) |  |
@@ -2170,16 +2146,13 @@ edges
 | main.rs:492:9:492:9 | Before f | main.rs:492:9:492:9 | f |  |
 | main.rs:492:9:492:9 | f | main.rs:492:9:492:9 | After f [match] | match |
 | main.rs:492:9:492:9 | f | main.rs:492:9:492:9 | f |  |
-| main.rs:493:9:494:9 | Entry | main.rs:493:10:493:15 | Before ...: i64 |  |
+| main.rs:493:9:494:9 | Entry | main.rs:493:10:493:10 | Before x |  |
 | main.rs:493:9:494:9 | Normal Exit | main.rs:493:9:494:9 | Exit |  |
 | main.rs:493:9:494:9 | \|...\| x | main.rs:492:9:492:9 | Before f |  |
-| main.rs:493:10:493:10 | After x [match] | main.rs:493:10:493:15 | ...: i64 |  |
+| main.rs:493:10:493:10 | After x [match] | main.rs:494:9:494:9 | x |  |
 | main.rs:493:10:493:10 | Before x | main.rs:493:10:493:10 | x |  |
 | main.rs:493:10:493:10 | x | main.rs:493:10:493:10 | After x [match] | match |
 | main.rs:493:10:493:10 | x | main.rs:493:10:493:10 | x |  |
-| main.rs:493:10:493:15 | ...: i64 | main.rs:493:10:493:15 | After ...: i64 |  |
-| main.rs:493:10:493:15 | After ...: i64 | main.rs:494:9:494:9 | x |  |
-| main.rs:493:10:493:15 | Before ...: i64 | main.rs:493:10:493:10 | Before x |  |
 | main.rs:494:9:494:9 | x | main.rs:493:9:494:9 | Normal Exit |  |
 | main.rs:495:5:495:13 | print_i64 | main.rs:495:15:495:18 | Before f(...) |  |
 | main.rs:495:5:495:19 | After print_i64(...) | main.rs:495:5:495:20 | After ExprStmt |  |
@@ -2192,16 +2165,13 @@ edges
 | main.rs:495:15:495:18 | Before f(...) | main.rs:495:15:495:15 | f |  |
 | main.rs:495:15:495:18 | f(...) | main.rs:495:15:495:18 | After f(...) |  |
 | main.rs:495:17:495:17 | 1 | main.rs:495:15:495:18 | f(...) |  |
-| main.rs:497:5:500:5 | Entry | main.rs:497:10:497:15 | Before ...: i64 |  |
+| main.rs:497:5:500:5 | Entry | main.rs:497:10:497:10 | Before x |  |
 | main.rs:497:5:500:5 | Normal Exit | main.rs:497:5:500:5 | Exit |  |
 | main.rs:497:5:500:5 | fn f | main.rs:502:5:502:20 | ExprStmt |  |
-| main.rs:497:10:497:10 | After x [match] | main.rs:497:10:497:15 | ...: i64 |  |
+| main.rs:497:10:497:10 | After x [match] | main.rs:498:5:500:5 | { ... } |  |
 | main.rs:497:10:497:10 | Before x | main.rs:497:10:497:10 | x |  |
 | main.rs:497:10:497:10 | x | main.rs:497:10:497:10 | After x [match] | match |
 | main.rs:497:10:497:10 | x | main.rs:497:10:497:10 | x |  |
-| main.rs:497:10:497:15 | ...: i64 | main.rs:497:10:497:15 | After ...: i64 |  |
-| main.rs:497:10:497:15 | After ...: i64 | main.rs:498:5:500:5 | { ... } |  |
-| main.rs:497:10:497:15 | Before ...: i64 | main.rs:497:10:497:10 | Before x |  |
 | main.rs:498:5:500:5 | After { ... } | main.rs:497:5:500:5 | Normal Exit |  |
 | main.rs:498:5:500:5 | { ... } | main.rs:499:9:499:13 | Before ... + ... |  |
 | main.rs:499:9:499:9 | x | main.rs:499:13:499:13 | 1 |  |
@@ -2233,16 +2203,13 @@ edges
 | main.rs:505:19:505:22 | Before f(...) | main.rs:505:19:505:19 | f |  |
 | main.rs:505:19:505:22 | f(...) | main.rs:505:19:505:22 | After f(...) |  |
 | main.rs:505:21:505:21 | 3 | main.rs:505:19:505:22 | f(...) |  |
-| main.rs:506:9:509:9 | Entry | main.rs:506:14:506:19 | Before ...: i64 |  |
+| main.rs:506:9:509:9 | Entry | main.rs:506:14:506:14 | Before x |  |
 | main.rs:506:9:509:9 | Normal Exit | main.rs:506:9:509:9 | Exit |  |
 | main.rs:506:9:509:9 | fn f | main.rs:511:9:513:9 | ExprStmt |  |
-| main.rs:506:14:506:14 | After x [match] | main.rs:506:14:506:19 | ...: i64 |  |
+| main.rs:506:14:506:14 | After x [match] | main.rs:507:9:509:9 | { ... } |  |
 | main.rs:506:14:506:14 | Before x | main.rs:506:14:506:14 | x |  |
 | main.rs:506:14:506:14 | x | main.rs:506:14:506:14 | After x [match] | match |
 | main.rs:506:14:506:14 | x | main.rs:506:14:506:14 | x |  |
-| main.rs:506:14:506:19 | ...: i64 | main.rs:506:14:506:19 | After ...: i64 |  |
-| main.rs:506:14:506:19 | After ...: i64 | main.rs:507:9:509:9 | { ... } |  |
-| main.rs:506:14:506:19 | Before ...: i64 | main.rs:506:14:506:14 | Before x |  |
 | main.rs:507:9:509:9 | After { ... } | main.rs:506:9:509:9 | Normal Exit |  |
 | main.rs:507:9:509:9 | { ... } | main.rs:508:13:508:17 | Before ... * ... |  |
 | main.rs:508:13:508:13 | 2 | main.rs:508:17:508:17 | x |  |
@@ -2271,16 +2238,13 @@ edges
 | main.rs:515:13:515:13 | Before f | main.rs:515:13:515:13 | f |  |
 | main.rs:515:13:515:13 | f | main.rs:515:13:515:13 | After f [match] | match |
 | main.rs:515:13:515:13 | f | main.rs:515:13:515:13 | f |  |
-| main.rs:516:13:517:13 | Entry | main.rs:516:14:516:19 | Before ...: i64 |  |
+| main.rs:516:13:517:13 | Entry | main.rs:516:14:516:14 | Before x |  |
 | main.rs:516:13:517:13 | Normal Exit | main.rs:516:13:517:13 | Exit |  |
 | main.rs:516:13:517:13 | \|...\| x | main.rs:515:13:515:13 | Before f |  |
-| main.rs:516:14:516:14 | After x [match] | main.rs:516:14:516:19 | ...: i64 |  |
+| main.rs:516:14:516:14 | After x [match] | main.rs:517:13:517:13 | x |  |
 | main.rs:516:14:516:14 | Before x | main.rs:516:14:516:14 | x |  |
 | main.rs:516:14:516:14 | x | main.rs:516:14:516:14 | After x [match] | match |
 | main.rs:516:14:516:14 | x | main.rs:516:14:516:14 | x |  |
-| main.rs:516:14:516:19 | ...: i64 | main.rs:516:14:516:19 | After ...: i64 |  |
-| main.rs:516:14:516:19 | After ...: i64 | main.rs:517:13:517:13 | x |  |
-| main.rs:516:14:516:19 | Before ...: i64 | main.rs:516:14:516:14 | Before x |  |
 | main.rs:517:13:517:13 | x | main.rs:516:13:517:13 | Normal Exit |  |
 | main.rs:518:9:518:17 | print_i64 | main.rs:518:19:518:22 | Before f(...) |  |
 | main.rs:518:9:518:23 | After print_i64(...) | main.rs:518:9:518:24 | After ExprStmt |  |
@@ -2411,15 +2375,12 @@ edges
 | main.rs:544:5:544:17 | After ExprStmt | main.rs:539:13:545:1 | After { ... } |  |
 | main.rs:544:5:544:17 | ExprStmt | main.rs:544:5:544:16 | Before print_i64(...) |  |
 | main.rs:544:15:544:15 | i | main.rs:544:5:544:16 | print_i64(...) |  |
-| main.rs:547:1:552:1 | Entry | main.rs:547:17:547:27 | Before ...: ... |  |
+| main.rs:547:1:552:1 | Entry | main.rs:547:17:547:17 | Before x |  |
 | main.rs:547:1:552:1 | Normal Exit | main.rs:547:1:552:1 | Exit |  |
-| main.rs:547:17:547:17 | After x [match] | main.rs:547:17:547:27 | ...: ... |  |
+| main.rs:547:17:547:17 | After x [match] | main.rs:547:42:552:1 | { ... } |  |
 | main.rs:547:17:547:17 | Before x | main.rs:547:17:547:17 | x |  |
 | main.rs:547:17:547:17 | x | main.rs:547:17:547:17 | After x [match] | match |
 | main.rs:547:17:547:17 | x | main.rs:547:17:547:17 | x |  |
-| main.rs:547:17:547:27 | ...: ... | main.rs:547:17:547:27 | After ...: ... |  |
-| main.rs:547:17:547:27 | After ...: ... | main.rs:547:42:552:1 | { ... } |  |
-| main.rs:547:17:547:27 | Before ...: ... | main.rs:547:17:547:17 | Before x |  |
 | main.rs:547:42:552:1 | { ... } | main.rs:548:5:550:11 | ExprStmt |  |
 | main.rs:548:5:548:6 | * ... | main.rs:548:5:548:6 | After * ... |  |
 | main.rs:548:5:548:6 | After * ... | main.rs:549:9:550:10 | Before ... + ... |  |
@@ -2445,22 +2406,16 @@ edges
 | main.rs:551:5:551:12 | return x | main.rs:547:1:552:1 | Normal Exit | return |
 | main.rs:551:5:551:13 | ExprStmt | main.rs:551:5:551:12 | Before return x |  |
 | main.rs:551:12:551:12 | x | main.rs:551:5:551:12 | return x |  |
-| main.rs:554:1:560:1 | Entry | main.rs:554:22:554:35 | Before ...: ... |  |
+| main.rs:554:1:560:1 | Entry | main.rs:554:22:554:22 | Before x |  |
 | main.rs:554:1:560:1 | Normal Exit | main.rs:554:1:560:1 | Exit |  |
-| main.rs:554:22:554:22 | After x [match] | main.rs:554:22:554:35 | ...: ... |  |
+| main.rs:554:22:554:22 | After x [match] | main.rs:554:38:554:38 | Before y |  |
 | main.rs:554:22:554:22 | Before x | main.rs:554:22:554:22 | x |  |
 | main.rs:554:22:554:22 | x | main.rs:554:22:554:22 | After x [match] | match |
 | main.rs:554:22:554:22 | x | main.rs:554:22:554:22 | x |  |
-| main.rs:554:22:554:35 | ...: ... | main.rs:554:22:554:35 | After ...: ... |  |
-| main.rs:554:22:554:35 | After ...: ... | main.rs:554:38:554:56 | Before ...: ... |  |
-| main.rs:554:22:554:35 | Before ...: ... | main.rs:554:22:554:22 | Before x |  |
-| main.rs:554:38:554:38 | After y [match] | main.rs:554:38:554:56 | ...: ... |  |
+| main.rs:554:38:554:38 | After y [match] | main.rs:554:59:560:1 | { ... } |  |
 | main.rs:554:38:554:38 | Before y | main.rs:554:38:554:38 | y |  |
 | main.rs:554:38:554:38 | y | main.rs:554:38:554:38 | After y [match] | match |
 | main.rs:554:38:554:38 | y | main.rs:554:38:554:38 | y |  |
-| main.rs:554:38:554:56 | ...: ... | main.rs:554:38:554:56 | After ...: ... |  |
-| main.rs:554:38:554:56 | After ...: ... | main.rs:554:59:560:1 | { ... } |  |
-| main.rs:554:38:554:56 | Before ...: ... | main.rs:554:38:554:38 | Before y |  |
 | main.rs:554:59:560:1 | After { ... } | main.rs:554:1:560:1 | Normal Exit |  |
 | main.rs:554:59:560:1 | { ... } | main.rs:555:5:557:11 | ExprStmt |  |
 | main.rs:555:5:555:6 | * ... | main.rs:555:5:555:6 | After * ... |  |
@@ -2826,15 +2781,12 @@ edges
 | main.rs:639:5:639:17 | After ExprStmt | main.rs:632:32:640:1 | After { ... } |  |
 | main.rs:639:5:639:17 | ExprStmt | main.rs:639:5:639:16 | Before print_i64(...) |  |
 | main.rs:639:15:639:15 | i | main.rs:639:5:639:16 | print_i64(...) |  |
-| main.rs:642:1:658:1 | Entry | main.rs:642:8:642:14 | Before ...: bool |  |
+| main.rs:642:1:658:1 | Entry | main.rs:642:8:642:8 | Before b |  |
 | main.rs:642:1:658:1 | Normal Exit | main.rs:642:1:658:1 | Exit |  |
-| main.rs:642:8:642:8 | After b [match] | main.rs:642:8:642:14 | ...: bool |  |
+| main.rs:642:8:642:8 | After b [match] | main.rs:642:17:658:1 | { ... } |  |
 | main.rs:642:8:642:8 | Before b | main.rs:642:8:642:8 | b |  |
 | main.rs:642:8:642:8 | b | main.rs:642:8:642:8 | After b [match] | match |
 | main.rs:642:8:642:8 | b | main.rs:642:8:642:8 | b |  |
-| main.rs:642:8:642:14 | ...: bool | main.rs:642:8:642:14 | After ...: bool |  |
-| main.rs:642:8:642:14 | After ...: bool | main.rs:642:17:658:1 | { ... } |  |
-| main.rs:642:8:642:14 | Before ...: bool | main.rs:642:8:642:8 | Before b |  |
 | main.rs:642:17:658:1 | After { ... } | main.rs:642:1:658:1 | Normal Exit |  |
 | main.rs:642:17:658:1 | { ... } | main.rs:643:5:643:18 | let ... = 1 |  |
 | main.rs:643:5:643:18 | After let ... = 1 | main.rs:644:5:644:17 | ExprStmt |  |
@@ -2933,22 +2885,16 @@ edges
 | main.rs:657:5:657:17 | After ExprStmt | main.rs:642:17:658:1 | After { ... } |  |
 | main.rs:657:5:657:17 | ExprStmt | main.rs:657:5:657:16 | Before print_i64(...) |  |
 | main.rs:657:15:657:15 | x | main.rs:657:5:657:16 | print_i64(...) |  |
-| main.rs:660:1:677:1 | Entry | main.rs:660:13:660:20 | Before ...: bool |  |
+| main.rs:660:1:677:1 | Entry | main.rs:660:13:660:14 | Before b1 |  |
 | main.rs:660:1:677:1 | Normal Exit | main.rs:660:1:677:1 | Exit |  |
-| main.rs:660:13:660:14 | After b1 [match] | main.rs:660:13:660:20 | ...: bool |  |
+| main.rs:660:13:660:14 | After b1 [match] | main.rs:660:23:660:24 | Before b2 |  |
 | main.rs:660:13:660:14 | Before b1 | main.rs:660:13:660:14 | b1 |  |
 | main.rs:660:13:660:14 | b1 | main.rs:660:13:660:14 | After b1 [match] | match |
 | main.rs:660:13:660:14 | b1 | main.rs:660:13:660:14 | b1 |  |
-| main.rs:660:13:660:20 | ...: bool | main.rs:660:13:660:20 | After ...: bool |  |
-| main.rs:660:13:660:20 | After ...: bool | main.rs:660:23:660:30 | Before ...: bool |  |
-| main.rs:660:13:660:20 | Before ...: bool | main.rs:660:13:660:14 | Before b1 |  |
-| main.rs:660:23:660:24 | After b2 [match] | main.rs:660:23:660:30 | ...: bool |  |
+| main.rs:660:23:660:24 | After b2 [match] | main.rs:660:33:677:1 | { ... } |  |
 | main.rs:660:23:660:24 | Before b2 | main.rs:660:23:660:24 | b2 |  |
 | main.rs:660:23:660:24 | b2 | main.rs:660:23:660:24 | After b2 [match] | match |
 | main.rs:660:23:660:24 | b2 | main.rs:660:23:660:24 | b2 |  |
-| main.rs:660:23:660:30 | ...: bool | main.rs:660:23:660:30 | After ...: bool |  |
-| main.rs:660:23:660:30 | After ...: bool | main.rs:660:33:677:1 | { ... } |  |
-| main.rs:660:23:660:30 | Before ...: bool | main.rs:660:23:660:24 | Before b2 |  |
 | main.rs:660:33:677:1 | After { ... } | main.rs:660:1:677:1 | Normal Exit |  |
 | main.rs:660:33:677:1 | { ... } | main.rs:661:5:661:14 | let ... = 1 |  |
 | main.rs:661:5:661:14 | After let ... = 1 | main.rs:662:5:668:6 | let _ = ... |  |
@@ -3051,13 +2997,10 @@ edges
 | main.rs:693:13:693:17 | Before mut f | main.rs:693:17:693:17 | f |  |
 | main.rs:693:13:693:17 | mut f | main.rs:693:13:693:17 | After mut f [match] | match |
 | main.rs:693:17:693:17 | f | main.rs:693:13:693:17 | mut f |  |
-| main.rs:693:21:696:9 | Entry | main.rs:693:22:693:22 | Before ... |  |
+| main.rs:693:21:696:9 | Entry | main.rs:693:22:693:22 | Before n |  |
 | main.rs:693:21:696:9 | Normal Exit | main.rs:693:21:696:9 | Exit |  |
 | main.rs:693:21:696:9 | \|...\| ... | main.rs:693:13:693:17 | Before mut f |  |
-| main.rs:693:22:693:22 | ... | main.rs:693:22:693:22 | After ... |  |
-| main.rs:693:22:693:22 | After ... | main.rs:693:25:696:9 | { ... } |  |
-| main.rs:693:22:693:22 | After n [match] | main.rs:693:22:693:22 | ... |  |
-| main.rs:693:22:693:22 | Before ... | main.rs:693:22:693:22 | Before n |  |
+| main.rs:693:22:693:22 | After n [match] | main.rs:693:25:696:9 | { ... } |  |
 | main.rs:693:22:693:22 | Before n | main.rs:693:22:693:22 | n |  |
 | main.rs:693:22:693:22 | n | main.rs:693:22:693:22 | After n [match] | match |
 | main.rs:693:22:693:22 | n | main.rs:693:22:693:22 | n |  |
@@ -3429,16 +3372,13 @@ edges
 | main.rs:782:9:782:15 | Before mut cap | main.rs:782:13:782:15 | cap |  |
 | main.rs:782:9:782:15 | mut cap | main.rs:782:9:782:15 | After mut cap [match] | match |
 | main.rs:782:13:782:15 | cap | main.rs:782:9:782:15 | mut cap |  |
-| main.rs:782:19:787:5 | Entry | main.rs:782:20:782:26 | Before ...: bool |  |
+| main.rs:782:19:787:5 | Entry | main.rs:782:20:782:20 | Before b |  |
 | main.rs:782:19:787:5 | Normal Exit | main.rs:782:19:787:5 | Exit |  |
 | main.rs:782:19:787:5 | \|...\| ... | main.rs:782:9:782:15 | Before mut cap |  |
-| main.rs:782:20:782:20 | After b [match] | main.rs:782:20:782:26 | ...: bool |  |
+| main.rs:782:20:782:20 | After b [match] | main.rs:782:29:787:5 | { ... } |  |
 | main.rs:782:20:782:20 | Before b | main.rs:782:20:782:20 | b |  |
 | main.rs:782:20:782:20 | b | main.rs:782:20:782:20 | After b [match] | match |
 | main.rs:782:20:782:20 | b | main.rs:782:20:782:20 | b |  |
-| main.rs:782:20:782:26 | ...: bool | main.rs:782:20:782:26 | After ...: bool |  |
-| main.rs:782:20:782:26 | After ...: bool | main.rs:782:29:787:5 | { ... } |  |
-| main.rs:782:20:782:26 | Before ...: bool | main.rs:782:20:782:20 | Before b |  |
 | main.rs:782:29:787:5 | After { ... } | main.rs:782:19:787:5 | Normal Exit |  |
 | main.rs:782:29:787:5 | { ... } | main.rs:783:9:786:10 | let _ = ... |  |
 | main.rs:783:9:786:10 | After let _ = ... | main.rs:782:29:787:5 | After { ... } |  |
