@@ -92,6 +92,7 @@ abstract class StackVariableReachability extends string {
     )
   }
 
+  pragma[nomagic]
   private predicate bbSuccessorEntryReaches(
     BasicBlock bb, SemanticStackVariable v, ControlFlowNode node,
     boolean skipsFirstLoopAlwaysTrueUponEntry
@@ -103,8 +104,9 @@ abstract class StackVariableReachability extends string {
       this.bbEntryReachesLocally(succ, v, node) and
       succSkipsFirstLoopAlwaysTrueUponEntry = false
       or
-      not this.isBarrier(succ.getNode(_), v) and
-      this.bbSuccessorEntryReaches(succ, v, node, succSkipsFirstLoopAlwaysTrueUponEntry)
+      not this.isBarrier(succ.getNode(_), pragma[only_bind_into](v)) and
+      this.bbSuccessorEntryReaches(succ, pragma[only_bind_into](v), node,
+        succSkipsFirstLoopAlwaysTrueUponEntry)
     )
   }
 
