@@ -108,10 +108,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨direct_member⟩\n  var v: Int {\n    ⟨direct_member⟩\n    ⟨direct_member⟩\n  }\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n  var v: Int {\n    ⟨member⟩\n    ⟨member⟩\n  }\n}"
           modifier: modifier "class" source="class"
           name_node: identifier "Box" source="Box"
-          direct_member:
+          member:
             variable_declaration source="⟨modifier⟩ ⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
               modifier:
                 modifier "var" source="var"

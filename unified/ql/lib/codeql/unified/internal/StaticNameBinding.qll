@@ -147,8 +147,8 @@ private predicate isPrivateToLocalScope(AstNode binding) {
   exists(Stmt member |
     bindingContext(binding, _, member) and
     (
-      member = any(ClassLikeDeclaration cls).getAMember() or
-      member = any(TopLevel t).getBody().getASemanticStmt()
+      member = any(ClassLikeDeclaration cls).getAMemberIncludingConditionalCompilation() or
+      member = any(TopLevel t).getBody().getAStmtIncludingConditionalCompilation()
     ) and
     (binding instanceof NameBinding or binding instanceof BulkImportingPattern) and
     any(NameBindingPlugin p).isPrivateToLocalScope(member, binding)
@@ -195,7 +195,7 @@ predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
 
 predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
   exists(ClassLikeDeclaration cls, Member member, NameBinding nameDecl |
-    member = cls.getAMember() and
+    member = cls.getAMemberIncludingConditionalCompilation() and
     not isPrivateToLocalScope(nameDecl) and
     nameDecl.getDeclaration() = member and
     node1.isIdentifier(nameDecl) and
@@ -209,7 +209,7 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
   )
   or
   exists(TopLevel top, Stmt stmt, NameBinding nameDecl |
-    stmt = top.getBody().getASemanticStmt() and
+    stmt = top.getBody().getAStmtIncludingConditionalCompilation() and
     not isPrivateToLocalScope(nameDecl) and
     nameDecl.getDeclaration() = stmt and
     node1.isIdentifier(nameDecl) and
@@ -265,7 +265,7 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
     or
     // Bulk re-exporting declarations
     exists(TopLevel top |
-      declaration = top.getBody().getASemanticStmt() and
+      declaration = top.getBody().getAStmtIncludingConditionalCompilation() and
       not isPrivateToLocalScope(p) and
       node2 = getModuleNodeFromFile(top.getFile())
     )
@@ -597,7 +597,7 @@ private module FolderHeuristic {
   private predicate topLevelNameDef(File file, string name, NameBindingNode node) {
     exists(TopLevel top, Stmt stmt, NameBinding nameDecl |
       top.getFile() = file and
-      stmt = top.getBody().getASemanticStmt() and
+      stmt = top.getBody().getAStmtIncludingConditionalCompilation() and
       not isPrivateToLocalScope(nameDecl) and
       nameDecl.getDeclaration() = stmt and
       name = nameDecl.getName() and
@@ -708,7 +708,7 @@ private predicate unqualifiedMemberAccessCand(
     exists(LocalName local |
       target.getLocalName() = local and
       access.getLocalName() = local and
-      target.getDeclaration() = accessingClass.getAMember()
+      target.getDeclaration() = accessingClass.getAMemberIncludingConditionalCompilation()
     |
       instanceAccess = true and
       isInstanceMember(target.getDeclaration())

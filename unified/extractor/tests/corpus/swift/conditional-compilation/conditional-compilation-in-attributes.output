@@ -44,8 +44,8 @@ sourceFile
               leftBrace: {
               rightBrace: }
               statements:
-          name: identifier "f"
           modifiers:
+          name: identifier "f"
           signature:
             functionSignature
               parameterClause:

@@ -87,8 +87,8 @@ sourceFile
                                       leftBrace: {
                                       rightBrace: }
                                       statements:
-                                  name: identifier "f"
                                   modifiers:
+                                  name: identifier "f"
                                   signature:
                                     functionSignature
                                       parameterClause:
@@ -140,6 +140,7 @@ sourceFile
       item:
         protocolDecl
           attributes:
+          modifiers:
           name: identifier "P"
           memberBlock:
             memberBlock
@@ -156,15 +157,14 @@ sourceFile
                               decl:
                                 associatedTypeDecl
                                   attributes:
-                                  name: identifier "T"
                                   modifiers:
+                                  name: identifier "T"
                                   associatedtypeKeyword: associatedtype
                           condition:
                             declReferenceExpr
                               baseName: identifier "DEBUG"
                           poundKeyword: #if
                       poundEndif: #endif
-          modifiers:
           protocolKeyword: protocol
     codeBlockItem
       item:
@@ -256,8 +256,8 @@ sourceFile
                                 booleanLiteralExpr
                                   literal: true
                           ifKeyword: if
-          name: identifier "use"
           modifiers:
+          name: identifier "use"
           signature:
             functionSignature
               parameterClause:
@@ -309,10 +309,10 @@ top_level source="⟨body⟩"
                               pattern: identifier "third" source="third"
                               value: int_literal "3" source="3"
           else: block "#else" source="#else"
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    ⟨direct_member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    ⟨member⟩\n}"
           modifier: modifier "protocol" source="protocol"
           name_node: identifier "P" source="P"
-          direct_member:
+          member:
             if_expr source="#if ⟨condition⟩\n        ⟨then⟩\n    #endif"
               modifier: modifier "conditional_compilation" source=""
               condition: identifier "DEBUG" source="DEBUG"

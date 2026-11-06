@@ -22,8 +22,8 @@ private predicate structHasParameterForField(
 ) {
   exists(ClassLikeDeclaration struct |
     struct.hasModifier("struct") and
-    cd = struct.getAMember() and
-    decl = assumeThenCompilationBranches(struct.getADirectMember()) and
+    cd = struct.getAMemberIncludingConditionalCompilation() and
+    decl = assumeThenCompilationBranches(struct.getAMember()) and
     not decl.hasModifier("static") and
     name = decl.getPattern().(Identifier).getValue()
   |

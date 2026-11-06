@@ -550,7 +550,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     modifier: [(modifier "chained_declaration") if { ctx.is_chained }]
                     modifier: (modifier "enum_case")
                     name_node: (identifier #{name})
-                    direct_member: {constructor}))
+                    member: {constructor}))
             }
         ),
         rule!(
@@ -1401,8 +1401,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     type_constraint: {parameter_constraints}
                     type_constraint: {declaration_constraints}
                     base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
-                    direct_member: {members}
-                    direct_member: {implicit_initializer}))
+                    member: {members}
+                    member: {implicit_initializer}))
             }
         ),
         // Enum class declaration: same as a regular class but with an enum body.
@@ -1426,7 +1426,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 type_constraint: {parameter_constraints}
                 type_constraint: {declaration_constraints}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
-                direct_member: {members})
+                member: {members})
         ),
         // A `struct` declaration, including an implicit parameter-less `init`
         // when no explicit initializer is present.
@@ -1452,8 +1452,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     type_constraint: {parameter_constraints}
                     type_constraint: {declaration_constraints}
                     base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
-                    direct_member: {members}
-                    direct_member: {implicit_initializer}))
+                    member: {members}
+                    member: {implicit_initializer}))
             }
         ),
         // Protocol declaration
@@ -1474,7 +1474,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 type_parameter: {params}
                 type_constraint: {declaration_constraints}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
-                direct_member: {members})
+                member: {members})
         ),
         // An `extension Foo.Bar { … }` is likewise a `class_like_declaration`.
         rule!(
@@ -1490,7 +1490,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 modifier: {mods}
                 extension_target: {extendedType}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
-                direct_member: {members})
+                member: {members})
         ),
         // A member of a type declaration unwraps to the contained declaration.
         rule!((memberBlockItem decl: _* @d) => member* { d }),

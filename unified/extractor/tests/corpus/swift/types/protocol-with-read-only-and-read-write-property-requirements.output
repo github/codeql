@@ -110,10 +110,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  var foo: Int { ⟨direct_member⟩ }\n  var bar: String { ⟨direct_member⟩ ⟨direct_member⟩ }\n  var count: Int { ⟨direct_member⟩ }\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  var foo: Int { ⟨member⟩ }\n  var bar: String { ⟨member⟩ ⟨member⟩ }\n  var count: Int { ⟨member⟩ }\n}"
           modifier: modifier "protocol" source="protocol"
           name_node: identifier "P" source="P"
-          direct_member:
+          member:
             accessor_declaration source="⟨accessor_kind⟩"
               modifier: modifier "var" source="var" (external)
               name_node: identifier "foo" source="foo" (external)

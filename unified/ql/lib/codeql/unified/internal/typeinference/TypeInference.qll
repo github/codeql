@@ -263,7 +263,7 @@ module Input3 implements InputSig3 {
   private class VariableDeclarationField extends FieldImpl, AstVariableDeclaration {
     ClassLikeDeclaration cls;
 
-    VariableDeclarationField() { decl = cls.getAMember() }
+    VariableDeclarationField() { decl = cls.getAMemberIncludingConditionalCompilation() }
 
     override AstNode getAstNode() { result = this.getDecl() }
 
@@ -425,7 +425,7 @@ module Input3 implements InputSig3 {
       or
       not c instanceof EnumConstructor and
       exists(ClassLikeDeclaration cls |
-        c = cls.getAMember() and
+        c = cls.getAMemberIncludingConditionalCompilation() and
         result = getClassLikeDeclarationTypeMention(cls)
       )
     }

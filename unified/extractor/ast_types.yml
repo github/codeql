@@ -505,7 +505,7 @@ named:
     type_parameter*: type_parameter
     type_constraint*: type_constraint
     base_type*: base_type
-    direct_member*: member
+    member*: member
 
   # One of the base types of a class declaration.
   #

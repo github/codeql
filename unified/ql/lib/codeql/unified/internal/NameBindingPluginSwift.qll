@@ -34,7 +34,7 @@ class NameBindingPluginSwift extends NameBindingPlugin {
   bindingset[member, binding]
   override predicate isPrivateToLocalScope(Stmt member, AstNode binding) {
     // Private top-level members
-    member = any(TopLevel top).getBody().getASemanticStmt() and
+    member = any(TopLevel top).getBody().getAStmtIncludingConditionalCompilation() and
     member.hasModifier(["private", "fileprivate"])
     or
     // Imports are always file-local, except `@_exported` import which re-export everything
@@ -103,7 +103,7 @@ class NameBindingPluginSwift extends NameBindingPlugin {
 
   override string getImplicitReceiverParameterName(Callable callable) {
     // TODO: field initializers can also reference 'self' but are not currently wrapped in a Callable
-    callable = any(ClassLikeDeclaration cls).getAMember() and
+    callable = any(ClassLikeDeclaration cls).getAMemberIncludingConditionalCompilation() and
     result = "self"
   }
 

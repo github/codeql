@@ -103,10 +103,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨direct_member⟩⟨direct_member⟩⟨direct_member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩⟨member⟩⟨member⟩\n}"
           modifier: modifier "class" source="class"
           name_node: identifier "C" source="C"
-          direct_member:
+          member:
             variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩ {\n    willSet { print(newValue) }\n    didSet { print(oldValue) }\n  }"
               modifier: modifier "var" source="var"
               pattern: identifier "x" source="x"

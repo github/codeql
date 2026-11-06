@@ -87,8 +87,8 @@ sourceFile
                             declReferenceExpr
                               baseName: identifier "x"
                           switchKeyword: switch
-          name: identifier "f"
           modifiers:
+          name: identifier "f"
           signature:
             functionSignature
               parameterClause:

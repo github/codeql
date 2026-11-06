@@ -17,6 +17,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "C"
           memberBlock:
             memberBlock
@@ -113,7 +114,6 @@ sourceFile
                                   initKeyword: init
                           poundKeyword: #else
                       poundEndif: #endif
-          modifiers:
           classKeyword: class
 
 ---
@@ -122,10 +122,10 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
       stmt:
-        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    ⟨direct_member⟩\n}"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    ⟨member⟩\n}"
           modifier: modifier "class" source="class"
           name_node: identifier "C" source="C"
-          direct_member:
+          member:
             if_expr source="#if ⟨condition⟩\n        ⟨then⟩\n    ⟨else⟩\n    #endif"
               modifier: modifier "conditional_compilation" source=""
               condition: identifier "DEBUG" source="DEBUG"

@@ -100,7 +100,9 @@ module Unified {
   /** A block statement. */
   class Block extends G::Block {
     /** Gets a statement, looking through conditional-compilation branches. */
-    Stmt getASemanticStmt() { result = compilationExpandedStmt(this.getAStmt()) }
+    Stmt getAStmtIncludingConditionalCompilation() {
+      result = compilationExpandedStmt(this.getAStmt())
+    }
 
     /** Gets the last statement in this block. */
     Stmt getLastStmt() {
@@ -226,10 +228,12 @@ module Unified {
   }
 
   private ClassLikeDeclaration getParentClass(Member m) {
-    result.getAMemberIncludingExtensions() = m
+    result.getAMemberIncludingExtensionsAndConditionalCompilation() = m
   }
 
-  private ClassLikeDeclaration getEnclosingClass(Member m) { result.getAMember() = m }
+  private ClassLikeDeclaration getEnclosingClass(Member m) {
+    result.getAMemberIncludingConditionalCompilation() = m
+  }
 
   /**
    * Similar to `Member.getQualifiedName`, but avoids a dependency on name binding, making
@@ -239,8 +243,10 @@ module Unified {
     QualifiedName<getEnclosingClass/1>::getQualifiedName/1;
 
   class ClassLikeDeclaration extends G::ClassLikeDeclaration {
-    /** Gets a member, looking through conditional-compilation branches. */
-    Member getAMember() { result = compilationExpandedStmt(this.getADirectMember()) }
+    /** Gets a member, looking through conditional-compilation branches but not extensions. */
+    Member getAMemberIncludingConditionalCompilation() {
+      result = compilationExpandedStmt(this.getAMember())
+    }
 
     /** Gets the name of this declaration. */
     string getName() { result = this.getNameNode().getValue() }
@@ -265,12 +271,12 @@ module Unified {
     }
 
     /**
-     * Gets a member of this class, including members from extensions.
+     * Gets a member of this class or its extensions, looking through conditional-compilation branches.
      */
-    Member getAMemberIncludingExtensions() {
+    Member getAMemberIncludingExtensionsAndConditionalCompilation() {
       exists(ClassLikeDeclaration cls |
         this = cls.resolve() and
-        result = cls.getAMember()
+        result = cls.getAMemberIncludingConditionalCompilation()
       )
     }
 
