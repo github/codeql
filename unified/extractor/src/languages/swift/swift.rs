@@ -171,17 +171,23 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             tree!((builtin_expr #{node}))
         }),
         rule!((simpleStringLiteralExpr) @@node => (string_literal #{node})),
-        // String literal with a single constant segment (for some reason not typed as simpleStringLiteralExpr)
         rule!(
-            (stringLiteralExpr segments: (stringSegment) segments: _* @@rest) @@node
-            where rest.is_empty()
+            (stringLiteralExpr segments: _* @@segments) @@node
             =>
-            (string_literal #{node})
-        ),
-        rule!(
-            (stringLiteralExpr segments: _* @segments)
-            =>
-            (string_interpolation_expr element: {segments})
+            expr {
+                // Escapes and line breaks can split a constant literal into several segments.
+                if segments.iter().all(|segment| {
+                    ctx.ast()
+                        .get_node(*segment)
+                        .expect("matched string segment must exist")
+                        .kind_name() == "stringSegment"
+                }) {
+                    tree!((string_literal #{node}))
+                } else {
+                    let segments = ctx.translate(segments)?;
+                    tree!((string_interpolation_expr element: {segments}))
+                }
+            }
         ),
         rule!((stringSegment content: @@content) => (string_literal #{content})),
         rule!(

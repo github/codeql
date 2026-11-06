@@ -1,0 +1,14 @@
+| test.swift:1:5:1:9 | empty |  |
+| test.swift:2:5:2:10 | simple | abc |
+| test.swift:3:5:3:11 | escaped | a\nb\rc\td\u0000e\\f"g'h |
+| test.swift:4:5:4:20 | escapedBackslash | \\n |
+| test.swift:5:5:5:11 | unicode | a\ud83d\ude00 |
+| test.swift:6:5:6:7 | raw | \\n\\"abc |
+| test.swift:7:5:7:14 | rawEscapes | \\n\na"\\ |
+| test.swift:8:5:8:16 | hashesInside | abc#def |
+| test.swift:9:5:9:13 | multiline | aa\|\nbb |
+| test.swift:13:5:13:19 | multilineIndent |   aa\nbb |
+| test.swift:17:5:17:22 | multilineEmptyLine | aa\n\nbb |
+| test.swift:22:5:22:25 | multilineContinuation | aabb |
+| test.swift:26:5:26:16 | rawMultiline | aa\\n\nbb |
+| test.swift:30:5:30:17 | interpolation |  |
