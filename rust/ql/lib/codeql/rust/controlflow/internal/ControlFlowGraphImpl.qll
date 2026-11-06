@@ -291,7 +291,12 @@ private module Ast implements AstSig<Location> {
   }
 
   class Parameter extends AstNode instanceof Rust::ParamBase {
-    AstNode getPattern() { result = this }
+    AstNode getPattern() {
+      result = this.(Rust::Param).getPat()
+      or
+      not this instanceof Rust::Param and
+      result = this
+    }
 
     Expr getDefaultValue() { none() }
   }
@@ -608,35 +613,19 @@ private module Input implements InputSig1, InputSig2 {
 
   class CallableContext = Void;
 
-  private predicate valueContext(Rust::AstNode n, ConditionKind kind) {
-    kind.isBoolean() and
-    (
-      n = any(Rust::IfExpr e).getCondition()
-      or
-      n = any(Rust::WhileExpr e).getCondition()
-      or
-      n = any(Rust::MatchGuard g).getCondition()
-      or
-      n = any(Rust::BinaryLogicalOperation e).getLhs()
-    )
+  predicate propagatesValue(Ast::AstNode child, Ast::AstNode parent) {
+    child = parent.(Rust::BlockExpr).getStmtList().getTailExpr()
     or
-    exists(Rust::Expr parent | valueContext(parent, kind) |
-      n = parent.(Rust::LogicalNotExpr).getExpr()
-      or
-      n = parent.(Rust::BinaryLogicalOperation).getRhs()
-      or
-      n = parent.(Rust::IfExpr).getABranch()
-      or
-      n = parent.(Rust::MatchExpr).getAnArm().getExpr()
-      or
-      n = parent.(Rust::BlockExpr).getStmtList().getTailExpr()
-      or
-      n = any(Rust::BreakExpr b | b.getTarget() = parent).getExpr()
-    )
+    child = parent.(Rust::MatchExpr).getAnArm().getExpr()
   }
 
   predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
-    valueContext(n, kind)
+    kind.isBoolean() and
+    (
+      n = any(Rust::WhileExpr e).getCondition()
+      or
+      n = any(Rust::MatchGuard g).getCondition()
+    )
     or
     kind.isMatching() and
     (
@@ -670,12 +659,6 @@ private module Input implements InputSig1, InputSig2 {
 
   private string breakTag() { result = "[break]" }
 
-  private string breakValueTag(boolean value) {
-    value = true and result = "[break-true]"
-    or
-    value = false and result = "[break-false]"
-  }
-
   private string tryReturnTag() { result = "[try-return]" }
 
   private string patternStartTag() { result = "[pattern-start]" }
@@ -684,21 +667,12 @@ private module Input implements InputSig1, InputSig2 {
 
   private string letElseDivergeTag() { result = "[let-else-diverge]" }
 
-  private predicate conditionalBreak(Rust::BreakExpr b) {
-    exists(b.getExpr()) and
-    valueContext(b.getTarget(), any(ConditionKind kind | kind.isBoolean()))
-  }
-
   predicate additionalNode(Ast::AstNode n, string tag, NormalSuccessor t) {
     (
       t instanceof DirectSuccessor and
       (
         n instanceof Rust::BreakExpr and
-        (
-          conditionalBreak(n) and tag = breakValueTag(_)
-          or
-          not conditionalBreak(n) and tag = breakTag()
-        )
+        tag = breakTag()
         or
         n instanceof Rust::TryExpr and tag = tryReturnTag()
         or
@@ -866,7 +840,6 @@ private module Input implements InputSig1, InputSig2 {
           n2.isAfterValue(match, t)
         )
         or
-        not valueContext(match, _) and
         n1.isAfter(arm.getExpr()) and
         n2.isAfter(match)
       )
@@ -1008,13 +981,6 @@ private module Input implements InputSig1, InputSig2 {
         not exists(break.getExpr()) and n2.isAdditional(break, breakTag())
       )
       or
-      conditionalBreak(break) and
-      exists(BooleanSuccessor t |
-        n1.isAfterValue(break.getExpr(), t) and
-        n2.isAdditional(break, breakValueTag(t.getValue()))
-      )
-      or
-      not conditionalBreak(break) and
       n1.isAfter(break.getExpr()) and
       n2.isAdditional(break, breakTag())
     )
@@ -1041,11 +1007,6 @@ private module Input implements InputSig1, InputSig2 {
       (
         n.isAdditional(break, breakTag()) and
         c.hasLabel(TTarget(break.getTarget()))
-        or
-        exists(boolean value |
-          n.isAdditional(break, breakValueTag(value)) and
-          c.hasLabel(TTargetValue(break.getTarget(), value))
-        )
       )
     )
     or
