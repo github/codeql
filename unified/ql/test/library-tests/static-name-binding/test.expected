@@ -32,5 +32,5 @@ unqualifiedMemberAccess
 | unqualified-access.swift:13:17:13:17 | C | unqualified-access.swift:11:5:14:5 | class ASub.BSub |
 | unqualified-access.swift:16:18:16:18 | B | unqualified-access.swift:7:1:20:1 | class ASub |
 | unqualified-access.swift:18:17:18:17 | C | unqualified-access.swift:16:5:19:5 | class ASub.BSub2 |
-| unqualified-access.swift:24:16:24:19 | Leaf | unqualified-access.swift:23:5:26:5 | class Node.Leaf |
-| unqualified-access.swift:24:23:24:26 | Leaf | unqualified-access.swift:23:5:26:5 | class Node.Leaf |
+| unqualified-access.swift:24:16:24:19 | Leaf | unqualified-access.swift:22:1:27:1 | class Node |
+| unqualified-access.swift:24:23:24:26 | Leaf | unqualified-access.swift:22:1:27:1 | class Node |
