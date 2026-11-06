@@ -140,9 +140,9 @@ module ControlFlow {
     /** Holds if this node sets variable or constant `v` to `rhs`. */
     predicate writes(ValueEntity v, DataFlow::Node rhs) { super.writes(v, rhs.asInstruction()) }
 
-    /** Holds if this node defines SSA variable `v` to be `rhs`. */
-    predicate definesSsaVariable(SsaVariable v, DataFlow::Node rhs) {
-      super.getLhs().asSsaVariable() = v and
+    /** Holds if this node defines SSA definition `def` to be `rhs`. */
+    predicate definesSsaDefinition(SsaDefinition def, DataFlow::Node rhs) {
+      super.getLhs().asSsaDefinition() = def and
       super.getRhs() = rhs.asInstruction()
     }
 

@@ -32,9 +32,9 @@ predicate nilTestGuard(DataFlow::Node g, Expr e, boolean outcome) {
 
 /** Gets a use of a local variable that has the value `nil`. */
 DataFlow::ExprNode getNilFromLocalVariable() {
-  exists(SsaVariable ssa, Write w |
-    w.definesSsaVariable(ssa, Builtin::nil().getARead()) and
-    result.asInstruction() = ssa.getAUse()
+  exists(SsaDefinition def, Write w |
+    w.definesSsaDefinition(def, Builtin::nil().getARead()) and
+    result.getExpr() = def.getARead()
   )
 }
 
