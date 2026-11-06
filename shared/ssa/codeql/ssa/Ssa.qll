@@ -2221,7 +2221,7 @@ module Make<
         guardChecks(g, getARead(def), val, state)
       }
 
-      private module Barrier = BarrierGuardDefWithState<State, guardChecksSsaDef/4>;
+      private module Barrier = SsaBarrierGuardWithState<State, guardChecksSsaDef/4>;
 
       predicate getABarrierNode = Barrier::getABarrierNode/1;
     }
@@ -2232,7 +2232,7 @@ module Make<
      * This is expected to be used in `isBarrier`/`isSanitizer` definitions
      * in data flow and taint tracking.
      */
-    module BarrierGuardDefWithState<
+    module SsaBarrierGuardWithState<
       StateSig State, WithState<State>::guardChecksDefSig/4 guardChecksSsaDef>
     {
       /** Gets a node that is safely guarded by the given guard check. */
