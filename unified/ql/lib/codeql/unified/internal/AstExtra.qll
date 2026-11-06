@@ -94,7 +94,7 @@ module Public {
 
   /** A `Stmt` at the top-level. */
   final class TopLevelStmt extends Stmt {
-    TopLevelStmt() { this = any(TopLevel t).getBody().getAStmt() }
+    TopLevelStmt() { this = any(TopLevel t).getBody().getAStmtIncludingConditionalCompilation() }
   }
 
   /** An identifier appearing in the context of a break/continue label, argument/parameter name, or name of a member lookup. */
@@ -139,7 +139,9 @@ module Public {
     EnumCaseClass() { this.hasModifier("enum_case") }
 
     /** Gets the constructor of this algebraic data type. */
-    EnumCaseConstructor getConstructor() { result = this.getAMember() }
+    EnumCaseConstructor getConstructor() {
+      result = this.getAMemberIncludingConditionalCompilation()
+    }
   }
 
   /**
@@ -164,9 +166,11 @@ module Public {
    * ```
    */
   final class EnumCaseConstructor extends ConstructorDeclaration {
-    EnumCaseConstructor() { this = any(EnumCaseClass cls).getAMember() }
+    EnumCaseConstructor() {
+      this = any(EnumCaseClass cls).getAMemberIncludingConditionalCompilation()
+    }
 
     /** Gets the class containing this constructor. */
-    EnumCaseClass getEnumCaseClass() { result.getAMember() = this }
+    EnumCaseClass getEnumCaseClass() { result.getAMemberIncludingConditionalCompilation() = this }
   }
 }

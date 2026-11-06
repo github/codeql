@@ -87,7 +87,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
   private predicate relocatedClassMember(Identifier className, Member member) {
     exists(ClassLikeDeclaration cls |
       className = cls.getNameNode() and
-      member = cls.getAMember()
+      member = cls.getAMemberIncludingConditionalCompilation()
     )
   }
 
@@ -128,6 +128,8 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
     override AstNode getElse() { none() }
   }
+
+  predicate isUnscopedConditional(Conditional cond) { cond.(IfExpr).isConditionalCompilation() }
 
   abstract class SiblingShadowingDecl extends AstNode {
     abstract AstNode getPattern();

@@ -22,7 +22,7 @@ private predicate isUnusedLocal(LocalName local) {
 
 private predicate ignoreDeclaration(AstNode n) {
   // ignore fields and methods etc
-  n = any(ClassLikeDeclaration cls).getAMember()
+  n = any(ClassLikeDeclaration cls).getAMemberIncludingConditionalCompilation()
   or
   // ignore top-level statements, which are often exported
   n = any(TopLevel t).getBody().getAStmt()

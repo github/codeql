@@ -186,7 +186,7 @@ module Unified {
   }
 
   /** A class representing `associated_type_declaration` nodes. */
-  class AssociatedTypeDeclaration extends @unified_associated_type_declaration, F::Member {
+  class AssociatedTypeDeclaration extends @unified_associated_type_declaration, F::Member, F::Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AssociatedTypeDeclaration" }
 
@@ -848,7 +848,7 @@ module Unified {
   }
 
   /** A class representing `if_expr` nodes. */
-  class IfExpr extends @unified_if_expr, F::Expr {
+  class IfExpr extends @unified_if_expr, F::Expr, F::Member {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "IfExpr" }
 
@@ -858,6 +858,12 @@ module Unified {
     /** Gets the node corresponding to the field `else`. */
     final F::Expr getElse() { unified_if_expr_else(this, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getModifier(int i) { unified_if_expr_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `then`. */
     final F::Expr getThen() { unified_if_expr_then(this, result) }
 
@@ -865,6 +871,7 @@ module Unified {
     final override F::AstNode getAFieldOrChild() {
       unified_if_expr_def(this, result) or
       unified_if_expr_else(this, result) or
+      unified_if_expr_modifier(this, _, result) or
       unified_if_expr_then(this, result)
     }
   }
@@ -915,7 +922,9 @@ module Unified {
   }
 
   /** A class representing `initializer_declaration` nodes. */
-  class InitializerDeclaration extends @unified_initializer_declaration, F::Callable, F::Member {
+  class InitializerDeclaration extends @unified_initializer_declaration, F::Callable, F::Member,
+    F::Stmt
+  {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InitializerDeclaration" }
 
@@ -1771,6 +1780,8 @@ module Unified {
       result = node.(IfExpr).getCondition() and i = -1 and name = "getCondition"
       or
       result = node.(IfExpr).getElse() and i = -1 and name = "getElse"
+      or
+      result = node.(IfExpr).getModifier(i) and name = "getModifier"
       or
       result = node.(IfExpr).getThen() and i = -1 and name = "getThen"
       or

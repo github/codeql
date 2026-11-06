@@ -1,0 +1,119 @@
+#if DEBUG
+let x = 1
+#elseif RELEASE
+let x = 2
+#else
+let x = 3
+#endif
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        ifConfigDecl
+          clauses:
+            ifConfigClause
+              elements:
+                codeBlockItem
+                  item:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "1"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+              condition:
+                declReferenceExpr
+                  baseName: identifier "DEBUG"
+              poundKeyword: #if
+            ifConfigClause
+              elements:
+                codeBlockItem
+                  item:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "2"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+              condition:
+                declReferenceExpr
+                  baseName: identifier "RELEASE"
+              poundKeyword: #elseif
+            ifConfigClause
+              elements:
+                codeBlockItem
+                  item:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "3"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+              poundKeyword: #else
+          poundEndif: #endif
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        if_expr source="#if ⟨condition⟩\n⟨then⟩\n⟨else⟩\n#endif"
+          modifier: modifier "conditional_compilation" source=""
+          condition: identifier "DEBUG" source="DEBUG"
+          then:
+            block source="⟨stmt⟩"
+              stmt:
+                variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                  modifier: modifier "let" source="let"
+                  pattern: identifier "x" source="x"
+                  value: int_literal "1" source="1"
+          else:
+            if_expr source="#elseif ⟨condition⟩\n⟨then⟩\n⟨else⟩"
+              modifier: modifier "conditional_compilation" source=""
+              condition: identifier "RELEASE" source="RELEASE"
+              then:
+                block source="⟨stmt⟩"
+                  stmt:
+                    variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                      modifier: modifier "let" source="let"
+                      pattern: identifier "x" source="x"
+                      value: int_literal "2" source="2"
+              else:
+                block source="#else\n⟨stmt⟩"
+                  stmt:
+                    variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                      modifier: modifier "let" source="let"
+                      pattern: identifier "x" source="x"
+                      value: int_literal "3" source="3"

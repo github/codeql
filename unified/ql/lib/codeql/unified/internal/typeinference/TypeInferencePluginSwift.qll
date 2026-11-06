@@ -84,7 +84,7 @@ private class TupleType extends BuiltinStructType {
   int getArity() { result = arity }
 
   VariableDeclaration getField(string name) {
-    result = this.getClassLikeDeclaration().getAMember() and
+    result = this.getClassLikeDeclaration().getAMemberIncludingConditionalCompilation() and
     name = result.getPattern().(Identifier).getValue().regexpCapture("\\_(.+)", 1)
   }
 }
@@ -101,7 +101,9 @@ private class Enum extends ClassLikeDeclaration {
 private class EnumConstructor extends EnumCaseConstructor {
   private Enum e;
 
-  EnumConstructor() { this = e.getAMember().(EnumCaseClass).getConstructor() }
+  EnumConstructor() {
+    this = e.getAMemberIncludingConditionalCompilation().(EnumCaseClass).getConstructor()
+  }
 
   Identifier getNameNode() { result = this.getEnumCaseClass().getNameNode() }
 
@@ -112,7 +114,7 @@ private class EnumField extends VariableDeclaration {
   private Enum e;
 
   EnumField() {
-    this = e.getAMember() and
+    this = e.getAMemberIncludingConditionalCompilation() and
     this.getAModifier().getValue() = "enum_case"
   }
 
@@ -152,7 +154,7 @@ private class SwiftTypeInferencePlugin extends Plugin::TypeInferencePlugin {
 
   pragma[nomagic]
   override FunctionDeclaration getFunctionInvoke(Type t) {
-    result = t.(FunctionType).getClassLikeDeclaration().getAMember() and
+    result = t.(FunctionType).getClassLikeDeclaration().getAMemberIncludingConditionalCompilation() and
     result.getName() = "callAsFunction"
   }
 

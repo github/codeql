@@ -15,11 +15,12 @@ private string defaultName(NameBinding decl) {
     not exists(getTupleFieldName(decl)) and name = decl.getName()
   |
     exists(ClassLikeDeclaration cls |
-      decl.getDeclaration() = cls.getAMemberIncludingExtensions() and
+      decl.getDeclaration() = cls.getAMemberIncludingExtensionsAndConditionalCompilation() and
       result = cls.getQualifiedName() + "." + name
     )
     or
-    not decl.getDeclaration() = any(ClassLikeDeclaration cls).getAMemberIncludingExtensions() and
+    not decl.getDeclaration() =
+      any(ClassLikeDeclaration cls).getAMemberIncludingExtensionsAndConditionalCompilation() and
     result = name
   )
 }

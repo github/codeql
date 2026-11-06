@@ -90,7 +90,7 @@ predicate isInstanceMember(Member member) {
     member instanceof AccessorDeclaration or
     member instanceof ConstructorDeclaration
   ) and
-  exists(ClassLikeDeclaration cls | cls.getAMember() = member |
+  exists(ClassLikeDeclaration cls | cls.getAMemberIncludingConditionalCompilation() = member |
     any(NameBindingPlugin p).isInstanceMember(cls, member)
   )
 }
@@ -102,19 +102,19 @@ predicate isInstanceMember(Member member) {
  * up as both instance members (`self.init()`) and static members (`C1.init()`).
  */
 predicate isStaticMember(Member member) {
-  exists(ClassLikeDeclaration cls | cls.getAMember() = member |
+  exists(ClassLikeDeclaration cls | cls.getAMemberIncludingConditionalCompilation() = member |
     not any(NameBindingPlugin p).isInstanceMember(cls, member) or
     member instanceof ConstructorDeclaration or
     member instanceof TypeAliasDeclaration or
     member instanceof ClassLikeDeclaration
   )
   or
-  member = any(TopLevel t).getBody().getAStmt()
+  member = any(TopLevel t).getBody().getAStmtIncludingConditionalCompilation()
 }
 
 /** Holds if `member` is an inheritable member. */
 predicate isInheritableMember(Member member) {
-  exists(ClassLikeDeclaration cls | cls.getAMember() = member |
+  exists(ClassLikeDeclaration cls | cls.getAMemberIncludingConditionalCompilation() = member |
     any(NameBindingPlugin p).isInheritableMember(cls, member)
   )
 }
