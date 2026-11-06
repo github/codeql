@@ -71,7 +71,7 @@ newtype TType =
     associatedTypeParameter(c, a, inherited)
   } or
   TParentTypeParameterType(Member m) { isNestedType(m, _, _) } or
-  TModelType(MaD::TypeSelector selector) or
+  TModelType(MaD::TypeSelector selector) { not exists(selector.getDeclaration()) } or
   TUnknownType() or
   TUnknownTypeTypeParameter(int i) { i in [0 .. 20] }
 
