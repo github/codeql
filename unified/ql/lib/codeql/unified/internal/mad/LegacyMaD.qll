@@ -284,7 +284,16 @@ class TypeSelector extends string {
   string getHead() { this = typeSelectorCons(_, result) }
 
   /** Gets a static reference to this type. */
-  AstNode getAStaticRef() { N::trackTypeSelector(this) = N::getNodeFromRef(result) }
+  AstNode getAStaticRef() {
+    N::trackTypeSelector(this) = N::getNodeFromRef(result)
+    or
+    // When the class has a declaration in the database, such as a built-in or stub class in a test case,
+    // also include references to that class.
+    N::getStaticBindingTargetFromRef(result) = this.getDeclaration().getNameNode()
+  }
+
+  /** Gets the declaration of this type, if any. */
+  ClassLikeDeclaration getDeclaration() { result.getQualifiedName() = this }
 }
 
 private predicate isAccessPath(string path) {
