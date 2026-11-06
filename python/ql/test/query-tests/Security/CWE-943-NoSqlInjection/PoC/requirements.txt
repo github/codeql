@@ -1,2 +1,2 @@
 flask
-pymongo==4.6.3
+pymongo==4.18.2
