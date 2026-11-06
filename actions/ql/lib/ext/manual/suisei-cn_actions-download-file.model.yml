@@ -4,3 +4,4 @@ extensions:
       extensible: actionsSummaryModel
     data:
       - ["suisei-cn/actions-download-file", "*", "input.filename", "output.filename", "taint", "manual"]
+      - ["suisei-cn/actions-download-file", "*", "input.url", "output.filename", "taint", "manual"]
