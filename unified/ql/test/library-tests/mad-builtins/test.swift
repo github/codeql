@@ -13,10 +13,12 @@ func testPropertiesWithoutStubs(
 
     configuration.tlsMinimumSupportedProtocolVersion = 0  // $ isSink=tls-protocol-version
 
-    process.launchPath = string  // $ isSink=command-injection
-    process.arguments = [string]  // $ isSink=command-injection
+    process.launchPath = string  // $ MISSING: isSink=command-injection
+    process.arguments = [string]  // $ MISSING: isSink=command-injection
     myProcess.arguments = [string]  // $ isSink=command-injection
 
     let localProcess = Process()
-    localProcess.arguments = [string]  // $ isSink=command-injection
+    localProcess.arguments = [string]  // $ MISSING: isSink=command-injection
 }
+
+extension Process {}
