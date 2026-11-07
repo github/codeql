@@ -290,7 +290,9 @@ class TypeSelector extends string {
   }
 
   /** Gets the declaration of this type, if any. */
-  ClassLikeDeclaration getDeclaration() { result.getQualifiedName() = this }
+  ClassLikeDeclaration getDeclaration() {
+    result.getQualifiedName() = this and not exists(result.getExtensionTarget())
+  }
 
   /** Gets the declaration of a proper subtype of this type (not the type itself). */
   ClassLikeDeclaration getASubtypeDeclaration() {
