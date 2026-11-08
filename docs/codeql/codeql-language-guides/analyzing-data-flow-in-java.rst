@@ -197,6 +197,7 @@ These predicates are defined in the configuration:
 -  ``isSink`` - defines where data may flow to.
 -  ``isBarrier`` - optional, defines where data flow is blocked.
 -  ``isAdditionalFlowStep`` - optional, adds additional flow steps.
+-  ``accessPathLimit`` - optional, sets the maximum length of access paths (see ":ref:`Access path limit <access-path-limit-java>`" below).
 
 The data flow analysis is performed using the predicate ``flow(DataFlow::Node source, DataFlow::Node sink)``:
 
@@ -205,6 +206,33 @@ The data flow analysis is performed using the predicate ``flow(DataFlow::Node so
    from DataFlow::Node source, DataFlow::Node sink
    where MyFlow::flow(source, sink)
    select source, "Data flow to $@.", sink, sink.toString()
+
+.. _access-path-limit-java:
+
+Access path limit
+~~~~~~~~~~~~~~~~~
+
+When data is stored in a field, an element of a collection, or the value of a map, the analysis tracks it with an *access path*: the sequence of contents the data must be read back through. For example, after ``b.inner.val = source`` the data is reached through ``inner`` followed by ``val``, and a value added to a list that is itself added to a list is reached through two element contents.
+
+To keep the analysis tractable, the length of access paths is limited. The default limit is 5 (``accessPathLimit()`` in the shared data flow library), and Java and Kotlin use this default. A flow that needs a longer access path is not reported, and no warning is given.
+
+A configuration can change the limit by defining ``accessPathLimit``:
+
+.. code-block:: ql
+
+   module MyFlowConfiguration implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
+       ...
+     }
+
+     predicate isSink(DataFlow::Node sink) {
+       ...
+     }
+
+     int accessPathLimit() { result = 8 }
+   }
+
+A higher limit can find more flows, but the analysis takes more time and memory.
 
 Using global taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
