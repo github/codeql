@@ -212,7 +212,7 @@ class ClosureParameterPseudoType extends PseudoType, TClosureParameterPseudoType
 abstract class TypeParameter extends TypeImpl {
   override TypeParameter getPositionalTypeParameter(int i) { none() }
 
-  abstract AstNode getDeclaringItem();
+  abstract Member getDeclaringItem();
 }
 
 private class IdAstNode =
@@ -233,7 +233,13 @@ class TypeParameterType extends TypeParameter, TTypeParameterType {
 
   Unified::TypeParameter getTypeParameter() { result = typeParam }
 
-  override ClassLikeDeclaration getDeclaringItem() { typeParam = result.getATypeParameter() }
+  override Member getDeclaringItem() {
+    typeParam = result.(ClassLikeDeclaration).getATypeParameter()
+    or
+    typeParam = result.(Unified::TypeAliasDeclaration).getATypeParameter()
+    or
+    typeParam = result.(Unified::FunctionDeclaration).getATypeParameter()
+  }
 
   override Identifier getNameNode() { result = typeParam.getNameNode() }
 
@@ -316,7 +322,7 @@ class UnknownTypeTypeParameter extends TypeParameter, TUnknownTypeTypeParameter 
 
   UnknownTypeTypeParameter() { this = TUnknownTypeTypeParameter(i) }
 
-  override AstNode getDeclaringItem() { none() }
+  override Member getDeclaringItem() { none() }
 
   override Identifier getNameNode() { none() }
 

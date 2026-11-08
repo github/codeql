@@ -95,7 +95,7 @@ class Outer<TOuter> {
     typealias Captured = Outer<TOuter>.Inner<Int>
 
     func f(x: Outer<String>.Captured) {
-        let outer = x.getOuter()  // $ target=Outer.Inner.getOuter $ MISSING: type=outer:String $ SPURIOUS: type=outer:TOuter
+        let outer = x.getOuter()  // $ target=Outer.Inner.getOuter type=outer:String
         let inner = x.getInner()  // $ target=Outer.Inner.getInner type=inner:Int
     }
 
@@ -131,12 +131,12 @@ class Outer<TOuter> {
 
 let e: Outer<Int>.E = Outer.E.empty  // $ field=Outer.E.empty type=.empty@Outer.E<(parent:E)>.Outer<TOuter>:Int
 
-func f(x: Outer<String>.Derived.X) {}  // $ MISSING: type=x:Int
+func f(x: Outer<String>.Derived.X) {}  // $ type=x:Int $ SPURIOUS: type=x:String
 
 class Foo: Outer<String> {
     func f(x: Pair, y: Outer<Bool>.Pair) {
         var a = x.0.getInner()  // $ target=Outer.Inner.getInner field=Tuple2.0 type=a:Int
-        var b = x.0.getOuter()  // $ target=Outer.Inner.getOuter field=Tuple2.0 $ MISSING: type=b:String -- this is an instance of variance sub typing
+        var b = x.0.getOuter()  // $ target=Outer.Inner.getOuter field=Tuple2.0 type=b:String
         var c = y.0.getInner()  // $ target=Outer.Inner.getInner field=Tuple2.0 type=c:Int
         var d = y.0.getOuter()  // $ target=Outer.Inner.getOuter field=Tuple2.0
     }
@@ -261,7 +261,7 @@ class Box<T> {
 
     func f(
         _ x: IntBox,
-        _ y: Box<Int>.Same,  // $ MISSING: type=y@Box<T>:Int $ SPURIOUS: type=y@Box<T>:T
+        _ y: Box<Int>.Same,  // $ type=y@Box<T>:Int
         _ z: X  // $ type=z:T
     ) {}
 }
@@ -270,9 +270,9 @@ class SubBox<S>: Box<S?> {}
 
 class SubSubBox: SubBox<Int> {}
 
-let i: SubSubBox.X  // $ MISSING: type=i@Optional<Wrapped>:Int
+let i: SubSubBox.X  // $ type=i@Optional<Wrapped>:Int
 
-let a: [SubSubBox.X]  // $ MISSING: type=a@Array<Element>.Optional<Wrapped>:Int
+let a: [SubSubBox.X]  // $ type=a@Array<Element>.Optional<Wrapped>:Int
 
 typealias Nested<A> = Outer<A>.Inner<Int>
 
@@ -317,7 +317,7 @@ class Sub: Base2<String> {
 class SubSub: Sub {
     func f(
         x1: Sub.Element,  // $ type=x1@Base2.Nested<(parent:Nested)>:Sub
-        x2: Element,  // $ type=x2@Base2.Nested<(parent:Nested)>:SubSub
+        x2: Element,  // $ type=x2@Base2.Nested<(parent:Nested)>:Sub // in principle `SubSub`, but they are not distinguishable as `Sub` does not have type parameters
         x3: Element2,  // $ type=x3@Base2.Nested<(parent:Nested)>:Sub
         x4: SubSub.Element2  // $ type=x4@Base2.Nested<(parent:Nested)>:Sub
     ) {

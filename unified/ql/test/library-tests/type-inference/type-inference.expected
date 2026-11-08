@@ -557,15 +557,15 @@ inferCertainType
 | nested_types.swift:92:17:92:18 | f2 | TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:97:12:97:12 | x |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:97:12:97:12 | x | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
-| nested_types.swift:97:12:97:12 | x | (parent:Inner).TOuter | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:97:12:97:12 | x | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:97:12:97:12 | x | TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:98:21:98:21 | x |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:98:21:98:21 | x | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
-| nested_types.swift:98:21:98:21 | x | (parent:Inner).TOuter | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:98:21:98:21 | x | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:98:21:98:21 | x | TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:99:21:99:21 | x |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:99:21:99:21 | x | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
-| nested_types.swift:99:21:99:21 | x | (parent:Inner).TOuter | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:99:21:99:21 | x | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:99:21:99:21 | x | TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:104:13:104:13 | x |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:104:13:104:13 | x | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
@@ -651,13 +651,16 @@ inferCertainType
 | nested_types.swift:132:5:132:5 | e |  | nested_types.swift:125:5:125:25 | Outer.E |
 | nested_types.swift:132:5:132:5 | e | (parent:E) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:132:5:132:5 | e | (parent:E).TOuter | {EXTERNAL LOCATION} | Int |
-| nested_types.swift:134:8:134:8 | x |  | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:134:8:134:8 | x |  | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:134:8:134:8 | x |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:137:12:137:12 | x |  | {EXTERNAL LOCATION} | Tuple2 |
 | nested_types.swift:137:12:137:12 | x | T0 | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:137:12:137:12 | x | T0.(parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:137:12:137:12 | x | T0.(parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:137:12:137:12 | x | T0.(parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:137:12:137:12 | x | T0.TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:137:12:137:12 | x | T1 | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:137:12:137:12 | x | T1.(parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:137:12:137:12 | x | T1.(parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:137:12:137:12 | x | T1.(parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:137:12:137:12 | x | T1.TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:137:21:137:21 | y |  | {EXTERNAL LOCATION} | Tuple2 |
 | nested_types.swift:137:21:137:21 | y | T0 | nested_types.swift:14:5:47:5 | Outer.Inner |
@@ -670,17 +673,21 @@ inferCertainType
 | nested_types.swift:137:21:137:21 | y | T1.TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:138:17:138:17 | x |  | {EXTERNAL LOCATION} | Tuple2 |
 | nested_types.swift:138:17:138:17 | x | T0 | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:138:17:138:17 | x | T0.(parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:138:17:138:17 | x | T0.(parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:138:17:138:17 | x | T0.(parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:138:17:138:17 | x | T0.TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:138:17:138:17 | x | T1 | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:138:17:138:17 | x | T1.(parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:138:17:138:17 | x | T1.(parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:138:17:138:17 | x | T1.(parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:138:17:138:17 | x | T1.TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:139:17:139:17 | x |  | {EXTERNAL LOCATION} | Tuple2 |
 | nested_types.swift:139:17:139:17 | x | T0 | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:139:17:139:17 | x | T0.(parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:139:17:139:17 | x | T0.(parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:139:17:139:17 | x | T0.(parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:139:17:139:17 | x | T0.TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:139:17:139:17 | x | T1 | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:139:17:139:17 | x | T1.(parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:139:17:139:17 | x | T1.(parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:139:17:139:17 | x | T1.(parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:139:17:139:17 | x | T1.TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:140:17:140:17 | y |  | {EXTERNAL LOCATION} | Tuple2 |
 | nested_types.swift:140:17:140:17 | y | T0 | nested_types.swift:14:5:47:5 | Outer.Inner |
@@ -765,11 +772,13 @@ inferCertainType
 | nested_types.swift:263:11:263:11 | x |  | nested_types.swift:255:1:267:1 | Box |
 | nested_types.swift:263:11:263:11 | x | T | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:264:11:264:11 | y |  | nested_types.swift:255:1:267:1 | Box |
-| nested_types.swift:264:11:264:11 | y | T | nested_types.swift:255:11:255:11 | T |
+| nested_types.swift:264:11:264:11 | y | T | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:265:11:265:11 | z |  | nested_types.swift:255:11:255:11 | T |
-| nested_types.swift:273:5:273:5 | i |  | nested_types.swift:255:11:255:11 | T |
+| nested_types.swift:273:5:273:5 | i |  | {EXTERNAL LOCATION} | Optional |
+| nested_types.swift:273:5:273:5 | i | Wrapped | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:275:5:275:5 | a |  | {EXTERNAL LOCATION} | Array |
-| nested_types.swift:275:5:275:5 | a | Element | nested_types.swift:255:11:255:11 | T |
+| nested_types.swift:275:5:275:5 | a | Element | {EXTERNAL LOCATION} | Optional |
+| nested_types.swift:275:5:275:5 | a | Element.Wrapped | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:279:10:279:10 | x |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:279:10:279:10 | x | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:279:10:279:10 | x | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
@@ -816,7 +825,7 @@ inferCertainType
 | nested_types.swift:319:9:319:10 | x1 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
 | nested_types.swift:319:9:319:10 | x1 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
 | nested_types.swift:320:9:320:10 | x2 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
-| nested_types.swift:320:9:320:10 | x2 | (parent:Nested) | nested_types.swift:317:1:329:1 | SubSub |
+| nested_types.swift:320:9:320:10 | x2 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
 | nested_types.swift:321:9:321:10 | x3 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
 | nested_types.swift:321:9:321:10 | x3 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
 | nested_types.swift:322:9:322:10 | x4 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
@@ -824,7 +833,7 @@ inferCertainType
 | nested_types.swift:324:17:324:18 | x1 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
 | nested_types.swift:324:17:324:18 | x1 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
 | nested_types.swift:325:17:325:18 | x2 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
-| nested_types.swift:325:17:325:18 | x2 | (parent:Nested) | nested_types.swift:317:1:329:1 | SubSub |
+| nested_types.swift:325:17:325:18 | x2 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
 | nested_types.swift:326:17:326:18 | x3 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
 | nested_types.swift:326:17:326:18 | x3 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
 | nested_types.swift:327:17:327:18 | x4 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
@@ -3028,18 +3037,18 @@ inferType
 | nested_types.swift:92:17:92:29 | ... .getOuter(...) |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:97:12:97:12 | x |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:97:12:97:12 | x | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
-| nested_types.swift:97:12:97:12 | x | (parent:Inner).TOuter | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:97:12:97:12 | x | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:97:12:97:12 | x | TInner | {EXTERNAL LOCATION} | Int |
-| nested_types.swift:98:13:98:17 | outer |  | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:98:13:98:17 | outer |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:98:21:98:21 | x |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:98:21:98:21 | x | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
-| nested_types.swift:98:21:98:21 | x | (parent:Inner).TOuter | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:98:21:98:21 | x | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:98:21:98:21 | x | TInner | {EXTERNAL LOCATION} | Int |
-| nested_types.swift:98:21:98:32 | ... .getOuter(...) |  | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:98:21:98:32 | ... .getOuter(...) |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:99:13:99:17 | inner |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:99:21:99:21 | x |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:99:21:99:21 | x | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
-| nested_types.swift:99:21:99:21 | x | (parent:Inner).TOuter | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:99:21:99:21 | x | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:99:21:99:21 | x | TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:99:21:99:32 | ... .getInner(...) |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:104:13:104:13 | x |  | nested_types.swift:14:5:47:5 | Outer.Inner |
@@ -3161,13 +3170,16 @@ inferType
 | nested_types.swift:132:23:132:35 | ... .empty |  | nested_types.swift:125:5:125:25 | Outer.E |
 | nested_types.swift:132:23:132:35 | ... .empty | (parent:E) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:132:23:132:35 | ... .empty | (parent:E).TOuter | {EXTERNAL LOCATION} | Int |
-| nested_types.swift:134:8:134:8 | x |  | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:134:8:134:8 | x |  | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:134:8:134:8 | x |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:137:12:137:12 | x |  | {EXTERNAL LOCATION} | Tuple2 |
 | nested_types.swift:137:12:137:12 | x | T0 | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:137:12:137:12 | x | T0.(parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:137:12:137:12 | x | T0.(parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:137:12:137:12 | x | T0.(parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:137:12:137:12 | x | T0.TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:137:12:137:12 | x | T1 | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:137:12:137:12 | x | T1.(parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:137:12:137:12 | x | T1.(parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:137:12:137:12 | x | T1.(parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:137:12:137:12 | x | T1.TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:137:21:137:21 | y |  | {EXTERNAL LOCATION} | Tuple2 |
 | nested_types.swift:137:21:137:21 | y | T0 | nested_types.swift:14:5:47:5 | Outer.Inner |
@@ -3181,25 +3193,33 @@ inferType
 | nested_types.swift:138:13:138:13 | a |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:138:17:138:17 | x |  | {EXTERNAL LOCATION} | Tuple2 |
 | nested_types.swift:138:17:138:17 | x | T0 | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:138:17:138:17 | x | T0.(parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:138:17:138:17 | x | T0.(parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:138:17:138:17 | x | T0.(parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:138:17:138:17 | x | T0.TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:138:17:138:17 | x | T1 | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:138:17:138:17 | x | T1.(parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:138:17:138:17 | x | T1.(parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:138:17:138:17 | x | T1.(parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:138:17:138:17 | x | T1.TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:138:17:138:19 | ... .0 |  | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:138:17:138:19 | ... .0 | (parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:138:17:138:19 | ... .0 | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:138:17:138:19 | ... .0 | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:138:17:138:19 | ... .0 | TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:138:17:138:30 | ... .getInner(...) |  | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:139:13:139:13 | b |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:139:17:139:17 | x |  | {EXTERNAL LOCATION} | Tuple2 |
 | nested_types.swift:139:17:139:17 | x | T0 | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:139:17:139:17 | x | T0.(parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:139:17:139:17 | x | T0.(parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:139:17:139:17 | x | T0.(parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:139:17:139:17 | x | T0.TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:139:17:139:17 | x | T1 | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:139:17:139:17 | x | T1.(parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:139:17:139:17 | x | T1.(parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:139:17:139:17 | x | T1.(parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:139:17:139:17 | x | T1.TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:139:17:139:19 | ... .0 |  | nested_types.swift:14:5:47:5 | Outer.Inner |
-| nested_types.swift:139:17:139:19 | ... .0 | (parent:Inner) | nested_types.swift:136:1:143:1 | Foo |
+| nested_types.swift:139:17:139:19 | ... .0 | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:139:17:139:19 | ... .0 | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:139:17:139:19 | ... .0 | TInner | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:139:17:139:30 | ... .getOuter(...) |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:140:13:140:13 | c |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:140:17:140:17 | y |  | {EXTERNAL LOCATION} | Tuple2 |
 | nested_types.swift:140:17:140:17 | y | T0 | nested_types.swift:14:5:47:5 | Outer.Inner |
@@ -3664,11 +3684,13 @@ inferType
 | nested_types.swift:263:11:263:11 | x |  | nested_types.swift:255:1:267:1 | Box |
 | nested_types.swift:263:11:263:11 | x | T | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:264:11:264:11 | y |  | nested_types.swift:255:1:267:1 | Box |
-| nested_types.swift:264:11:264:11 | y | T | nested_types.swift:255:11:255:11 | T |
+| nested_types.swift:264:11:264:11 | y | T | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:265:11:265:11 | z |  | nested_types.swift:255:11:255:11 | T |
-| nested_types.swift:273:5:273:5 | i |  | nested_types.swift:255:11:255:11 | T |
+| nested_types.swift:273:5:273:5 | i |  | {EXTERNAL LOCATION} | Optional |
+| nested_types.swift:273:5:273:5 | i | Wrapped | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:275:5:275:5 | a |  | {EXTERNAL LOCATION} | Array |
-| nested_types.swift:275:5:275:5 | a | Element | nested_types.swift:255:11:255:11 | T |
+| nested_types.swift:275:5:275:5 | a | Element | {EXTERNAL LOCATION} | Optional |
+| nested_types.swift:275:5:275:5 | a | Element.Wrapped | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:279:10:279:10 | x |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:279:10:279:10 | x | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:279:10:279:10 | x | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
@@ -3728,7 +3750,7 @@ inferType
 | nested_types.swift:319:9:319:10 | x1 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
 | nested_types.swift:319:9:319:10 | x1 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
 | nested_types.swift:320:9:320:10 | x2 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
-| nested_types.swift:320:9:320:10 | x2 | (parent:Nested) | nested_types.swift:317:1:329:1 | SubSub |
+| nested_types.swift:320:9:320:10 | x2 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
 | nested_types.swift:321:9:321:10 | x3 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
 | nested_types.swift:321:9:321:10 | x3 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
 | nested_types.swift:322:9:322:10 | x4 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
@@ -3736,7 +3758,7 @@ inferType
 | nested_types.swift:324:17:324:18 | x1 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
 | nested_types.swift:324:17:324:18 | x1 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
 | nested_types.swift:325:17:325:18 | x2 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
-| nested_types.swift:325:17:325:18 | x2 | (parent:Nested) | nested_types.swift:317:1:329:1 | SubSub |
+| nested_types.swift:325:17:325:18 | x2 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
 | nested_types.swift:326:17:326:18 | x3 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
 | nested_types.swift:326:17:326:18 | x3 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
 | nested_types.swift:327:17:327:18 | x4 |  | nested_types.swift:304:5:310:5 | Base2.Nested |

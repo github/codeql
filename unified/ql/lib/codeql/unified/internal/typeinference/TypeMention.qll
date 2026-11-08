@@ -5,62 +5,6 @@ private import TypeInferencePlugin as Plugin
 private import codeql.unified.internal.StaticNameBinding
 private import codeql.unified.internal.ExprPositions
 
-/**
- * Holds if `alias` is an alias where the type mentioned at `pathToNested` in the
- * right-hand side is the nested type `nested`, and the alias is enclosed by `encl`,
- * which is (a sub class of) the parent class of `nested`. Furthermore, the mention
- * of `nested` must be "orphaned", meaning it's parent type is not mentioned explicitly:
- *
- * ```swift
- * class Parent<TParent> {
- *   class Nested {}
- *   typealias Alias = Nested               // example
- *   typealias Alias2 = Parent<Int>.Nested  // non-example (not orphaned)
- *   class MoreNested {
- *      typealias Alias = Nested            // example
- *   }
- * }
- * typealias Alias = Parent<Int>.Nested     // non-example (not orphaned, not enclosed by `Parent`)
- * class Sub : Parent<Int> {
- *   typealias SubAlias = Nested            // example
- * }
- * ```
- *
- * The type path `pathParents` is any valid sequence of `ParentTypeParameterType`s starting
- * from the alias declaration and not escaping `encl`, while `last` is the enclosing
- * class of the last element of `pathParents` (used to build up `pathParents` recursively).
- */
-private predicate isInnerAliasWithOrphanedNestedType(
-  TypeAliasDeclaration alias, TypePath pathToNested, ClassLikeDeclaration nested,
-  ClassLikeDeclaration encl, TypePath pathParents, ClassLikeDeclaration last
-) {
-  exists(ClassLikeDeclaration parent |
-    parent = nested.getEnclosingClassResolved() and
-    nested = alias.getType().(TypeMention).getSimpleExpandedTypeAt(pathToNested).asClass() and
-    // if the alias already mentions the parent type (or a sub class thereof), then we assume it applies
-    not exists(ParentTypeParameterType ptp |
-      ptp.getParent().getABaseClass*() = parent and
-      exists(
-        alias
-            .getType()
-            .(TypeMention)
-            .getSimpleExpandedTypeAt(pathToNested.append(TypePath::singleton(ptp)))
-      )
-    ) and
-    encl.getABaseClass*() = parent and
-    alias.getEnclosingClassResolved+() = encl and
-    pathParents = TypePath::singleton(TParentTypeParameterType(alias)) and
-    last = alias.getEnclosingClassResolved()
-  )
-  or
-  exists(TypePath mid, ClassLikeDeclaration lastMid |
-    isInnerAliasWithOrphanedNestedType(alias, pathToNested, nested, encl, mid, lastMid) and
-    not lastMid = encl and
-    pathParents = mid.append(TypePath::singleton(TParentTypeParameterType(lastMid))) and
-    last = lastMid.getEnclosingClassResolved()
-  )
-}
-
 final class TypeMention = TypeMentionImpl;
 
 /** An AST node that mentions a type. */
@@ -84,91 +28,107 @@ abstract private class TypeMentionImpl extends AstNode {
   abstract Type getUnexpandedType();
 
   /**
-   * INTERNAL: Do not use; use `getType` instead.
+   * Holds if an alias is referenced at `prefix`, and the alias declaration
+   * mentions a type parameter that is not declared by the alias itself.
    *
-   * Gets the type mentioned at `path`, including expanding type aliases, but without
-   * expanding inner unqualified aliases with qualifiers provided at the use sites.
+   * In this case, the type `t` at `path` may be used to infer that type parameter,
+   * because it occurs as a type qualifier.
    */
-  Type getSimpleExpandedTypeAt(TypePath path) {
-    result = this.getUnexpandedTypeAt(path)
-    or
-    exists(AliasType alias, TypePath prefix, TypePath suffix |
-      this.getSimpleExpandedTypeAt(prefix) = alias
-    |
-      // expand alias RHS
-      result = alias.getAlias().getSimpleExpandedTypeAt(suffix) and
-      path = prefix.append(suffix) and
-      not result = alias.getATypeParameter()
+  pragma[nomagic]
+  private predicate aliasRefHasEnclosingType(
+    TypePath prefix, ParentTypeParameterType ptp, TypePath path, Type t
+  ) {
+    exists(AliasType alias, TypeParameter tp |
+      alias = this.getUnexpandedTypeAt(prefix) and
+      tp = alias.getAlias().getExpandedTypeAt(_) and
+      not tp = alias.getATypeParameter()
+    ) and
+    exists(TypePath cons | cons.isCons(ptp, path) |
+      t = this.getExpandedTypeAt(prefix.appendInverse(cons))
       or
-      // substitute for type parameters in alias RHS
-      exists(TypeParameter tp, TypePath pathToTp, TypePath mid |
-        tp = alias.getATypeParameter() and
-        tp = alias.getAlias().getSimpleExpandedTypeAt(pathToTp) and
-        result = this.getSimpleExpandedTypeAt(prefix.appendInverse(mid)) and
-        mid.isCons(tp, suffix) and
-        path = prefix.append(pathToTp).append(suffix)
+      this.aliasRefHasEnclosingType(prefix, _, cons, t)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate aliasRefHasEnclosingTypeInclBases(
+    TypePath prefix, ParentTypeParameterType ptp, TypePath path, Type t
+  ) {
+    this.aliasRefHasEnclosingType(prefix, ptp, path, t)
+    or
+    exists(ClassLikeDeclarationType sub, TypeMention base |
+      this.aliasRefHasEnclosingTypeInclBases(prefix, ptp, TypePath::nil(), sub) and
+      base = sub.getClassLikeDeclaration().getABaseType().getType()
+    |
+      t = base.getExpandedTypeAt(path) and
+      not t instanceof TypeParameter
+      or
+      exists(TypePath pathToTp, TypePath suffix, TypeParameter tp |
+        tp = base.getExpandedTypeAt(pathToTp) and
+        this.aliasRefHasEnclosingTypeInclBases(prefix, ptp,
+          TypePath::singleton(tp).appendInverse(suffix), t) and
+        path = pathToTp.append(suffix)
       )
     )
   }
 
-  Type getSimpleExpandedType() { result = this.getSimpleExpandedTypeAt(TypePath::nil()) }
-
   /**
-   * Same as `getSimpleExpandedTypeAt`, but also handles inner unqualified aliases where
-   * the qualifier is provided at the use site:
-   *
-   * ```swift
-   * class Parent<TParent> {
-   *   class Nested {}
-   *   class MoreNested {
-   *      typealias Alias = Nested
-   *   }
-   * }
-   *
-   * // this will expand to `Parent<String>.Nested`
-   * let x : Parent<String>.MoreNested.Alias = ...
-   * ```
+   * Gets the type mentioned at `path`, including expanding type aliases.
    */
   private Type getExpandedTypeAt(TypePath path) {
-    result = this.getSimpleExpandedTypeAt(path)
+    result = this.getUnexpandedTypeAt(path)
     or
-    exists(
-      AliasType alias, TypePath prefix, TypePath pathToNested, ClassLikeDeclaration nested,
-      ClassLikeDeclaration parent, TypePath pathParents, TypePath suffix
+    exists(AliasType alias, TypePath prefix, TypePath suffix |
+      this.getUnexpandedTypeAt(prefix) = alias
     |
-      this.getExpandedTypeAt(prefix) = alias and
-      isInnerAliasWithOrphanedNestedType(alias.getTypeAliasDeclaration(), pathToNested, nested,
-        parent, pathParents, _) and
-      this.getExpandedTypeAt(prefix.append(pathParents)).asClass().getABaseClass*() = parent and
-      result = this.getExpandedTypeAt(prefix.append(pathParents).appendInverse(suffix)) and
-      path =
-        prefix.append(pathToNested.append(TypePath::cons(TParentTypeParameterType(nested), suffix)))
+      // expand alias RHS
+      result = alias.getAlias().getExpandedTypeAt(suffix) and
+      path = prefix.append(suffix) and
+      (
+        not result instanceof TypeParameter
+        or
+        result.(TypeParameterType).getDeclaringItem() instanceof Unified::FunctionDeclaration
+      )
+      or
+      // substitute for type parameters in alias RHS
+      exists(TypeParameter tp, TypePath pathToTp |
+        tp = alias.getAlias().getExpandedTypeAt(pathToTp) and
+        path = prefix.append(pathToTp).append(suffix) and
+        if tp = alias.getATypeParameter()
+        then
+          // explicit alias type parameter: `typealias Foo<T> = ...`
+          exists(TypePath mid |
+            result = this.getExpandedTypeAt(prefix.appendInverse(mid)) and
+            mid.isCons(tp, suffix)
+          )
+        else
+          // type parameter belonging to an enclosing type:
+          //
+          // class Base<T> {
+          //   typealias X = T
+          // }
+          // class Sub : Base<Int>
+          // let x : Sub.X // resolves to `Int`
+          this.aliasRefHasEnclosingTypeInclBases(prefix, _,
+            TypePath::singleton(tp).appendInverse(suffix), result)
+      )
     )
   }
+
+  private Type getExpandedType() { result = this.getExpandedTypeAt(TypePath::nil()) }
 
   /**
    * Gets the class-like declaration mentioned by this type mention, if any.
    */
   ClassLikeDeclaration getClassLikeDeclaration() {
-    result = this.getSimpleExpandedType().(ClassLikeDeclarationType).getClassLikeDeclaration()
-  }
-
-  pragma[nomagic]
-  private ClassLikeDeclaration getImplicitQualifierCand(TypePath path, ParentTypeParameterType tp) {
-    exists(Type t |
-      tp = t.getATypeParameter() and
-      t = this.getExpandedTypeAt(path) and
-      not exists(this.getExpandedTypeAt(path.append(TypePath::singleton(tp)))) and
-      result = this.getEnclosingClassResolved()
-    )
-    or
-    result = this.getImplicitQualifierCand(path, tp).getEnclosingClassResolved()
+    result = this.getExpandedType().(ClassLikeDeclarationType).getClassLikeDeclaration()
   }
 
   /**
    * Gets the type mentioned at `path`.
    */
   final Type getTypeAt(TypePath path) {
+    result = this.getExpandedTypeAt(path) and
     // Filter away alias types that are expanded
     not exists(AliasType alias |
       (
@@ -181,59 +141,6 @@ abstract private class TypeMentionImpl extends AstNode {
       not result = unique( | | this.getExpandedTypeAt(path))
       or
       path.getElement(_) = alias.getATypeParameter()
-    ) and
-    (
-      result = this.getExpandedTypeAt(path)
-      or
-      // A mention of a nested type without an explicit qualifier implicitly mentions
-      // the parent type (including at the identifer that introduces the type)
-      //
-      // ```swift
-      // class Outer {
-      //     class Inner {
-      //         let y: Inner // short-hand for `Outer.Inner`
-      //     }
-      // }
-      // ```
-      exists(
-        TypePath prefix, ClassLikeDeclaration parent, ParentTypeParameterType tp, TypePath suffix,
-        ClassLikeDeclaration encl
-      |
-        encl = this.getImplicitQualifierCand(prefix, tp) and
-        parent = tp.getParent() and
-        result = encl.getNameNode().(TypeMention).getTypeAt(suffix) and
-        path = prefix.append(TypePath::cons(tp, suffix))
-      |
-        encl = parent
-        or
-        not parent = this.getImplicitQualifierCand(prefix, tp) and
-        encl.getABaseClass+() = parent
-      )
-      or
-      // A mention of a generic type without explicit type arguments and within
-      // the scope of the type, implicitly mentions all type parameters (including
-      // at the identifer that introduces the type):
-      //
-      // ```swift
-      // class Generic<T> {
-      //     let x: Generic // short-hand for `Generic<T>
-      // }
-      // ```
-      not this = any(GenericTypeExpr g).getBase() and
-      exists(TypePath prefix, ClassLikeDeclarationType t |
-        t = this.getTypeAt(prefix) and
-        forex(TypeParameter tp |
-          tp = t.getATypeParameter() and not tp instanceof ParentTypeParameterType
-        |
-          not exists(this.getExpandedTypeAt(prefix.append(TypePath::singleton(tp))))
-        ) and
-        t.getClassLikeDeclaration() = this.getEnclosingClassResolved+() and
-        result = t.getATypeParameter() and
-        path = prefix.append(TypePath::singleton(result)) and
-        not result instanceof ParentTypeParameterType
-      |
-        isInSyntacticTypeContext(this) or this = t.getNameNode()
-      )
     )
   }
 
@@ -315,6 +222,49 @@ class ExprTypeMention extends TypeMentionImpl, Expr {
       path = TypePath::cons(tp, suffix) and
       result = qualifier.getUnexpandedTypeAt(suffix)
     )
+    or
+    // A mention of a nested type with an implicit qualifier (including at the
+    // at the identifier that introduces the type)
+    exists(Type nested, ParentTypeParameterType tp, TypeMention parent, TypePath suffix |
+      nested = this.getUnexpandedType() and
+      tp = nested.getATypeParameter() and
+      path = TypePath::cons(tp, suffix) and
+      result = parent.getUnexpandedTypeAt(suffix)
+    |
+      exists(ClassLikeDeclaration accessingClass |
+        accessingClass = this.(UnqualifiedMemberAccess).getAccessingClass() and
+        if accessingClass.getEnclosingClassResolved*() = nested.asClass()
+        then parent = nested.asClass().getEnclosingClassResolved().getNameNode()
+        else parent = accessingClass.getNameNode()
+      )
+      or
+      this = nested.asClass().getNameNode() and
+      parent = nested.asClass().getEnclosingClassResolved().getNameNode()
+    )
+    or
+    // A mention of a generic type without explicit type arguments and within
+    // the scope of the type, implicitly mentions all type parameters (including
+    // at the identifer that introduces the type):
+    //
+    // ```swift
+    // class Generic<T> {
+    //     let x: Generic // short-hand for `Generic<T>
+    // }
+    // ```
+    not this = any(GenericTypeExpr g).getBase() and
+    not this instanceof FunctionExpr and
+    not this instanceof TupleExpr and
+    exists(ClassLikeDeclarationType t |
+      t = this.getUnexpandedType() and
+      result = t.getATypeParameter() and
+      path = TypePath::singleton(result) and
+      not result instanceof ParentTypeParameterType
+    |
+      isInSyntacticTypeContext(this) and
+      this.getEnclosingClassResolved+() = t.getClassLikeDeclaration()
+      or
+      this = t.getNameNode()
+    )
   }
 
   private Type getUnexpandedType0() {
@@ -366,7 +316,6 @@ private class GenericTypeExprTypeMention extends TypeMentionImpl, GenericTypeExp
   override Type getUnexpandedTypeAt(TypePath path) {
     result = base.getUnexpandedTypeAt(path)
     or
-    base = this.getBase() and
     exists(int i, TypePath prefix, TypePath suffix |
       prefix = base.(ExprTypeMention).getTypeArgumentPath(i) and
       result = this.getTypeArgumentAt(i, suffix) and
