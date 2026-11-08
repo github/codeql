@@ -123,9 +123,15 @@ class Outer<TOuter> {
     }
 
     enum E { case empty }
+
+    typealias X = TOuter
+
+    class Derived: Outer<Int> {}
 }
 
 let e: Outer<Int>.E = Outer.E.empty  // $ field=Outer.E.empty type=.empty@Outer.E<(parent:E)>.Outer<TOuter>:Int
+
+func f(x: Outer<String>.Derived.X) {}  // $ MISSING: type=x:Int
 
 class Foo: Outer<String> {
     func f(x: Pair, y: Outer<Bool>.Pair) {
@@ -232,8 +238,11 @@ var x10 = subInnerOutside.getInner()  // $ type=x10:Bool target=Outer.Inner.getI
 var y10 = subInnerOutside.getOuter()  // $ type=y10:Bool target=Outer.Inner.getOuter
 
 class Node {
-    class Leaf: Node {
-        let x: Leaf = Leaf()  // $ type=x@Node.Leaf<(parent:Leaf)>:Node target=Node.init
+    class Mid {
+        class Leaf: Node {
+            let x: Leaf = Leaf()  // $ type=x@Node.Mid.Leaf<(parent:Leaf)>:Node.Mid target=Node.init
+            let y: Mid = Mid()  // $ type=y@Node.Mid<(parent:Mid)>:Node target=Node.Mid.init
+        }
     }
 }
 
@@ -248,11 +257,22 @@ class Box<T> {
 
     typealias Same = Box
 
+    typealias X = T
+
     func f(
         _ x: IntBox,
-        _ y: Box<Int>.Same  // $ MISSING: type=y@Box<T>:Int $ SPURIOUS: type=y@Box<T>:T
+        _ y: Box<Int>.Same,  // $ MISSING: type=y@Box<T>:Int $ SPURIOUS: type=y@Box<T>:T
+        _ z: X  // $ type=z:T
     ) {}
 }
+
+class SubBox<S>: Box<S?> {}
+
+class SubSubBox: SubBox<Int> {}
+
+let i: SubSubBox.X  // $ MISSING: type=i@Optional<Wrapped>:Int
+
+let a: [SubSubBox.X]  // $ MISSING: type=a@Array<Element>.Optional<Wrapped>:Int
 
 typealias Nested<A> = Outer<A>.Inner<Int>
 
@@ -305,5 +325,45 @@ class SubSub: Sub {
         let b = x2.getX()  // $ target=Base2.Nested.getX $ MISSING: type=b:String -- this is an instance of variance sub typing
         let c = x3.getX()  // $ target=Base2.Nested.getX $ MISSING: type=c:String -- this is an instance of variance sub typing
         let d = x4.getX()  // $ target=Base2.Nested.getX $ MISSING: type=d:String -- this is an instance of variance sub typing
+    }
+}
+
+class A<Ta> {
+
+    class B<Tb> {
+        class C<Tc> {
+            var a: Ta
+            var b: Tb
+            var c: Tc
+
+            init(a: Ta, b: Tb, c: Tc) {
+                self.a = a  // $ field=A.B.C.a
+                self.b = b  // $ field=A.B.C.b
+                self.c = c  // $ field=A.B.C.c
+            }
+
+            typealias Alias = B<Character>
+
+            func getA() -> Ta {
+                return a  // $ field=A.B.C.a
+            }
+
+            func getB() -> Tb {
+                return b  // $ field=A.B.C.b
+            }
+
+            func getC() -> Tc {
+                return c  // $ field=A.B.C.c
+            }
+        }
+    }
+
+    func f(x: A<UInt>.B<Int>.C<String>.Alias.C<Bool>, y: B<String>.C<Bool>.Alias.C<String>) {
+        var a1 = x.getA()  // $ type=a1:UInt target=A.B.C.getA
+        let b1 = x.getB()  // $ type=b1:Character target=A.B.C.getB
+        var c1 = x.getC()  // $ type=c1:Bool target=A.B.C.getC
+        var a2 = y.getA()  // $ type=a2:Ta target=A.B.C.getA
+        let b2 = y.getB()  // $ type=b2:Character target=A.B.C.getB
+        var c2 = y.getC()  // $ type=c2:String target=A.B.C.getC
     }
 }

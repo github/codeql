@@ -315,3 +315,5 @@ func getPrimaryAssociatedType(_ value: some PrimaryAssociatedTypeProtocol<Int>) 
 func testPrimaryAssociatedType() {
   let value = getPrimaryAssociatedType(IntPrimaryAssociatedType())  // $ type=value:Int target=getPrimaryAssociatedType target=IntPrimaryAssociatedType.init
 }
+
+let x: Array = [1, 2]
