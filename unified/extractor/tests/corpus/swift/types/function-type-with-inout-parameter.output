@@ -79,5 +79,5 @@ top_level source="⟨body⟩"
             function_expr source="{ ⟨parameter⟩ in }"
               parameter:
                 parameter source="⟨pattern⟩"
-                  pattern: identifier "_" source="_"
+                  pattern: ignore_pattern "_" source="_"
               body: block source=""

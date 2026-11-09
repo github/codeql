@@ -111,6 +111,17 @@ fn make_or_pattern(
     }
 }
 
+fn parameter_pattern(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    name: yeast::Id,
+) -> yeast::OutputId {
+    if ctx.source_text(name) == "_" {
+        tree!((ignore_pattern #{name}))
+    } else {
+        tree!((identifier #{name}))
+    }
+}
+
 /// Translate a multi-part identifier (for example `Foo.Bar.Baz`) into a
 /// `member_access_expr` chain rooted at a `name_node` for the first
 /// part. Panics on an empty input because the grammar's `_+` quantifier
@@ -669,7 +680,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (parameter
                 external_name_node: (identifier #{first})
-                pattern: (identifier #{second})
+                pattern: {parameter_pattern(&mut ctx, second)}
                 type: {ty}
                 default: {val})
         ),
@@ -681,7 +692,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (parameter
                 external_name_node: (identifier #{first}) // duplicate the parameter name
-                pattern: (identifier #{first})
+                pattern: {parameter_pattern(&mut ctx, first)}
                 type: {ty}
                 default: {val})
         ),
@@ -867,14 +878,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (closureParameter firstName: @@name type: _? @ty)
             =>
-            (parameter pattern: (identifier #{name}) type: {ty})
+            (parameter pattern: {parameter_pattern(&mut ctx, name)} type: {ty})
         ),
         // A shorthand closure parameter (`x` in `{ x, y in … }`): a bare name
         // with no parentheses and no type.
         rule!(
             (closureShorthandParameter name: @@name)
             =>
-            (parameter pattern: (identifier #{name}))
+            (parameter pattern: {parameter_pattern(&mut ctx, name)})
         ),
         // ---- Control flow ----
         // An `if`/`else` expression. Conditions are joined via `and_chain`; the
