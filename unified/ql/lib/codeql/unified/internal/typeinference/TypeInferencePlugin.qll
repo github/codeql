@@ -28,6 +28,9 @@ class TypeInferencePlugin extends Unit {
   /** Gets the type parameter representing the element type of an array. */
   abstract TypeParameter getArrayElementTypeParameter();
 
+  /** Gets parameter variance: 1 for covariance, -1 for contravariance, or 0 for invariance. */
+  int getTypeParameterVariance(TypeParameter tp) { exists(tp) and result = 0 }
+
   /**
    * Gets the type of the given function expression.
    *
@@ -35,6 +38,9 @@ class TypeInferencePlugin extends Unit {
    */
   bindingset[fe]
   abstract Type getFunctionExprType(FunctionExpr fe);
+
+  /** Gets an intermediate constructor in the type tree of a function signature. */
+  Type getFunctionExprIntermediateType(FunctionExpr fe, TypePath path) { none() }
 
   /**
    * Gets the type path for the `i`th parameter of the given function type
@@ -125,6 +131,10 @@ TypePath getFunctionExprParameterTypePath(Type t, int arity, int i) {
 
 TypePath getFunctionExprReturnTypePath(Type t) {
   result = any(TypeInferencePlugin pl).getFunctionExprReturnTypePath(t)
+}
+
+Type getFunctionExprIntermediateType(FunctionExpr fe, TypePath path) {
+  result = any(TypeInferencePlugin pl).getFunctionExprIntermediateType(fe, path)
 }
 
 class TupleType extends Type {

@@ -46,6 +46,10 @@ private module Input1 implements InputSig1<Location> {
 
   class TypeAbstraction = TA::TypeAbstraction;
 
+  int getTypeParameterVariance(TypeParameter tp) {
+    result = any(Plugin::TypeInferencePlugin pl).getTypeParameterVariance(tp)
+  }
+
   int getTypeParameterId(TypeParameter tp) {
     CachedStage::ref() and
     tp =

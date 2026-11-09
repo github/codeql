@@ -102,6 +102,8 @@ private class NonAliasExprTypeMention extends ExprTypeMentionImpl {
     result = this.getRootType() and
     path.isEmpty()
     or
+    result = Plugin::getFunctionExprIntermediateType(this.(FunctionExpr), path)
+    or
     exists(
       ClassLikeDeclaration c, AssociatedTypeDeclaration a, ClassLikeDeclaration base,
       AssociatedTypeParameterType baseTp, string name
