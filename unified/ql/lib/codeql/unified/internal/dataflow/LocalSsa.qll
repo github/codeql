@@ -29,13 +29,8 @@ module LocalSsaInput implements InputSig<Location, BasicBlock> {
     performsVariableAccess(_, v, TRead(), bb.getNode(i))
   }
 
-  predicate variableReadWithPostUpdate(
-    BasicBlock bb1, int i1, SourceVariable v, BasicBlock bb2, int i2
-  ) {
-    exists(U::AstNode repr |
-      performsVariableAccess(repr, v, TRead(), bb1.getNode(i1)) and
-      performsVariableAccess(repr, v, TPostUpdate(), bb2.getNode(i2))
-    )
+  predicate postUpdateRead(BasicBlock bb, int i, SourceVariable v) {
+    performsVariableAccess(_, v, TPostUpdate(), bb.getNode(i))
   }
 
   predicate ssaCachedStageRevRef() { LocalSsaDataFlowOutput::ssaCachedStageRevRef2() }

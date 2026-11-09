@@ -45,21 +45,13 @@ signature module InputSig<LocationSig Location, TypSig BasicBlock> {
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain);
 
   /**
-   * Holds if the `i1`th node of basic block `bb1` reads source variable `v`
-   * and this read has an associated post-update that occurs at the `i2`th node
-   * of basic block `bb2`.
+   * Holds if the `i`th node of basic block `bb` is a post-update read of
+   * source variable `v`.
    *
    * If left empty, post-updates are considered to occur at the same control
-   * flow node as the read.
-   *
-   * If specified for only some reads, the remaining reads are assumed to not
-   * have post-updates.
+   * flow node as certain reads.
    */
-  default predicate variableReadWithPostUpdate(
-    BasicBlock bb1, int i1, SourceVariable v, BasicBlock bb2, int i2
-  ) {
-    none()
-  }
+  default predicate postUpdateRead(BasicBlock bb, int i, SourceVariable v) { none() }
 
   /**
    * Reverse references to predicates that should be cached in the cached stage
@@ -377,10 +369,6 @@ module Make<
     }
   }
 
-  private predicate postUpdate(BasicBlock bb, int i, SourceVariable v) {
-    variableReadWithPostUpdate(_, _, v, bb, i)
-  }
-
   /**
    * Liveness analysis (based on source variables) to restrict the size of the
    * SSA representation.
@@ -485,7 +473,7 @@ module Make<
   pragma[nomagic]
   private predicate inReadDominanceFrontier(BasicBlock bb, SourceVariable v) {
     exists(BasicBlock readbb | readbb.inDominanceFrontier(bb) |
-      (variableRead(readbb, _, v, true) or postUpdate(readbb, _, v)) and
+      (variableRead(readbb, _, v, true) or postUpdateRead(readbb, _, v)) and
       not variableWrite(readbb, _, v, _)
       or
       synthPhiRead(readbb, v) and
@@ -646,7 +634,7 @@ module Make<
       variableRead(bb, i, v, true) and
       k = Read()
       or
-      postUpdate(bb, i, v) and
+      postUpdateRead(bb, i, v) and
       k = Read()
       or
       variableWrite(bb, i, v, false) and
@@ -684,7 +672,7 @@ module Make<
     }
 
     private predicate justPostUpdate(BasicBlock bb, int i, SourceVariable v) {
-      postUpdate(bb, i, v) and
+      postUpdateRead(bb, i, v) and
       not variableRead(bb, i, v, true) and
       not variableWrite(bb, i, v, _)
     }
@@ -1406,15 +1394,6 @@ module Make<
     }
 
     /**
-     * Holds if the supposed read at `bb` and `i` has a post-update, but no
-     * actual certain read.
-     */
-    query predicate postUpdateWithoutRead(SourceVariable v, BasicBlock bb, int i) {
-      variableReadWithPostUpdate(bb, i, v, _, _) and
-      not variableRead(bb, i, v, true)
-    }
-
-    /**
      * Gets counts of inconsistencies of each type.
      */
     int getInconsistencyCounts(string type) {
@@ -1466,9 +1445,6 @@ module Make<
         strictcount(BasicBlock bbPhi, SourceVariable v, int inputRefs |
           phiReadWithoutTwoPriorRefs(bbPhi, v, inputRefs)
         )
-      or
-      type = "Post-update without read" and
-      result = strictcount(SourceVariable v, BasicBlock bb, int i | postUpdateWithoutRead(v, bb, i))
     }
   }
 
@@ -1600,11 +1576,10 @@ module Make<
     }
 
     pragma[nomagic]
-    private DfInput::Expr getARead(Definition def) {
+    private predicate hasRead(Definition def) {
       exists(SourceVariable v, BasicBlock bb, int i |
         ssaDefReachesRead(v, def, bb, i) and
-        variableRead(bb, i, v, true) and
-        result.hasCfgNode(bb, i)
+        variableRead(bb, i, v, true)
       )
     }
 
@@ -1623,7 +1598,7 @@ module Make<
 
     pragma[nomagic]
     private predicate phiInputHasRead(SsaPhiExt phi, BasicBlock input) {
-      exists(getARead(getAPhiInputDef(phi, input)))
+      hasRead(getAPhiInputDef(phi, input))
     }
 
     /** Holds if `bb` is the target end of a branch edge of a guard and the guard controls `bb`. */
@@ -1767,11 +1742,11 @@ module Make<
           variableRead(bb, i, v, true) and
           isPost = false
           or
-          not postUpdate(_, _, _) and
+          not postUpdateRead(_, _, _) and
           variableRead(bb, i, v, true) and
           isPost = true
           or
-          postUpdate(bb, i, v) and
+          postUpdateRead(bb, i, v) and
           isPost = true
         )
       } or
@@ -1871,19 +1846,6 @@ module Make<
     /** A post-update expression node. */
     private class ExprPostUpdateNodeImpl extends ExprNodePreOrPostImpl {
       ExprPostUpdateNodeImpl() { isPost = true }
-
-      /** Gets the pre-update expression node. */
-      ExprNode getPreUpdateNode() {
-        not postUpdate(_, _, _) and
-        result = TExprNode(e, v_, false)
-        or
-        exists(DfInput::Expr e1, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-          result = TExprNode(e1, v_, false) and
-          e1.hasCfgNode(bb1, i1) and
-          variableReadWithPostUpdate(bb1, i1, v_, bb2, i2) and
-          e.hasCfgNode(bb2, i2)
-        )
-      }
 
       override string toString() { result = e.toString() + " [postupdate]" }
     }
@@ -2062,7 +2024,7 @@ module Make<
       // Flow from definition/read via post-update node
       exists(BasicBlock bb2, int i2 |
         AdjacentSsaRefs::adjacentRefRead(bb1, i1, bb2, i2, v) and
-        postUpdate(bb2, i2, v) and
+        postUpdateRead(bb2, i2, v) and
         not any(ReadNode r).readsAt(bb2, i2, v) and
         not any(UncertainWriteDefinition def2).definesAt(v, bb2, i2) and
         flowFromRefToNode(v, bb2, i2, nodeTo)
@@ -2248,7 +2210,7 @@ module Make<
   module TestAdjacentRefs {
     private newtype TRef =
       TRefRead(BasicBlock bb, int i, SourceVariable v) { variableRead(bb, i, v, true) } or
-      TRefPostUpdate(BasicBlock bb, int i, SourceVariable v) { postUpdate(bb, i, v) } or
+      TRefPostUpdate(BasicBlock bb, int i, SourceVariable v) { postUpdateRead(bb, i, v) } or
       TRefDef(Definition def) or
       TRefPhiRead(BasicBlock bb, SourceVariable v) { synthPhiRead(bb, v) }
 
