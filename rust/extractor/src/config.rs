@@ -17,18 +17,15 @@ use ra_ap_paths::{AbsPath, AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{
     CargoConfig, CargoFeatures, CfgOverrides, RustLibSource, Sysroot, TargetDirectoryConfig,
 };
-use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
-use std::fmt::Debug;
 use std::ops::Not;
 use std::path::{Path, PathBuf};
 
 use crate::toolchain::select_toolchain;
 
-#[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy, clap::ValueEnum)]
+#[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy)]
 #[serde(rename_all = "lowercase")]
-#[clap(rename_all = "lowercase")]
 pub enum Compression {
     None,
     Gzip,
@@ -46,7 +43,24 @@ impl From<Compression> for trap::Compression {
     }
 }
 
-#[extractor_cli_config]
+#[derive(Parser, Serialize)]
+#[command(about, long_about = None)]
+struct CliConfig {
+    #[arg(long)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    file_list: Option<PathBuf>,
+
+    #[arg(long)]
+    #[serde(skip_serializing_if = "<&bool>::not")]
+    qltest: bool,
+
+    #[arg(long)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    logging_verbosity: Option<String>,
+}
+
+#[derive(Debug, Default, Deserialize)]
+#[serde(default)]
 pub struct Config {
     pub scratch_dir: PathBuf,
     pub trap_dir: PathBuf,
@@ -54,9 +68,13 @@ pub struct Config {
     pub diagnostic_dir: PathBuf,
     pub cargo_target_dir: Option<PathBuf>,
     pub cargo_target: Option<String>,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_vec")]
     pub cargo_features: Vec<String>,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_vec")]
     pub cargo_cfg_overrides: Vec<String>,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_map")]
     pub cargo_extra_env: FxHashMap<String, Option<String>>,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_vec")]
     pub cargo_extra_args: Vec<String>,
     pub cargo_all_targets: bool,
     pub logging_flamegraph: Option<PathBuf>,
@@ -65,13 +83,16 @@ pub struct Config {
     pub file_list: Option<PathBuf>,
     pub qltest: bool,
     pub qltest_cargo_check: bool,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_vec")]
     pub qltest_dependencies: Vec<String>,
     pub qltest_use_nightly: bool,
     pub qltest_edition: Option<String>,
     pub sysroot: Option<PathBuf>,
     pub sysroot_src: Option<PathBuf>,
     pub rustc_src: Option<PathBuf>,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_vec")]
     pub build_script_command: Vec<String>,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_vec")]
     pub extra_includes: Vec<PathBuf>,
     pub proc_macro_server: Option<PathBuf>,
     pub extract_dependencies_as_source: bool,

@@ -13,9 +13,7 @@ codeql_rust_binary(
     ],
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
-    ) + [
-        "//rust/extractor/macros",
-    ],
+    ),
     visibility = ["//rust:__subpackages__"],
     deps = all_crate_deps(
         normal = True,
