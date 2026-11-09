@@ -976,12 +976,12 @@ module Flow<
     n = TSynthSsa(result)
     or
     exists(BasicBlock bb, int i |
-      result.(SsaFlow::ExprNode).readsAt(bb, i, cc) and
+      result.(SsaFlow::ReadNode).readsAt(bb, i, cc) and
       ssaReadAt(n, cc, false, bb, i)
     )
     or
     exists(BasicBlock bb, int i |
-      result.(SsaFlow::ExprPostUpdateNode).readsAt(bb, i, cc) and
+      result.(SsaFlow::PostUpdateReadNode).readsAt(bb, i, cc) and
       ssaReadAt(n, cc, true, bb, i)
     )
     or

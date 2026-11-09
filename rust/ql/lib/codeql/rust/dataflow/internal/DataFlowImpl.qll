@@ -123,9 +123,9 @@ module SsaFlow {
   SsaFlow::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(SsaFlow::ExprNode).getControlFlowNode() = n.asExpr().getACfgNode()
+    result.(SsaFlow::ReadNode).getControlFlowNode() = n.asExpr().getACfgNode()
     or
-    result.(SsaFlow::ExprPostUpdateNode).getControlFlowNode() =
+    result.(SsaFlow::PostUpdateReadNode).getControlFlowNode() =
       n.(PostUpdateNode).getPreUpdateNode().asExpr().getACfgNode()
   }
 

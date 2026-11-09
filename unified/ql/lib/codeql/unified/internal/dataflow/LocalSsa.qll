@@ -62,13 +62,13 @@ Stage2Node getNodeFromLocalSsaNode(Ssa::Node n) {
   result = TLocalSsaNode(n)
   or
   exists(ControlFlowNode cfgnode, LocalVariable v, AstNode repr |
-    n.(Ssa::ExprNode).readsAt(cfgnode, v) and
+    n.(Ssa::ReadNode).readsAt(cfgnode, v) and
     performsVariableAccess(repr, v, TRead(), cfgnode) and
     result.(BuilderNode).isLocalVariableRead(repr, v)
   )
   or
   exists(ControlFlowNode cfgnode, LocalVariable v, AstNode repr |
-    n.(Ssa::ExprPostUpdateNode).readsAt(cfgnode, v) and
+    n.(Ssa::PostUpdateReadNode).readsAt(cfgnode, v) and
     performsVariableAccess(repr, v, TPostUpdate(), cfgnode) and
     result.(BuilderNode).isLocalVariablePostUpdate(repr, v)
   )

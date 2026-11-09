@@ -1725,7 +1725,7 @@ module Make<
     cached
     private newtype TNode =
       TWriteDefSource(WriteDefinition def) { DfInput::ssaDefHasSource(def) } or
-      TExprNode(ControlFlowNode n, SourceVariable v, boolean isPost) {
+      TReadNode(ControlFlowNode n, SourceVariable v, boolean isPost) {
         exists(BasicBlock bb, int i | bb.getNode(i) = n |
           variableRead(bb, i, v, true) and
           isPost = false
@@ -1784,12 +1784,12 @@ module Make<
     final class WriteDefSourceNode = WriteDefSourceNodeImpl;
 
     /** A (post-update) expression node. */
-    abstract private class ExprNodePreOrPostImpl extends NodeImpl, TExprNode {
+    abstract private class ReadNodePreOrPostImpl extends NodeImpl, TReadNode {
       ControlFlowNode n_;
       boolean isPost;
       SourceVariable v_;
 
-      ExprNodePreOrPostImpl() { this = TExprNode(n_, v_, isPost) }
+      ReadNodePreOrPostImpl() { this = TReadNode(n_, v_, isPost) }
 
       /** Gets the control flow node of this read or post-update. */
       ControlFlowNode getControlFlowNode() { result = n_ }
@@ -1808,28 +1808,23 @@ module Make<
       SourceVariable getSourceVariable() { result = v_ }
     }
 
-    final class ExprNodePreOrPost = ExprNodePreOrPostImpl;
-
-    /** An expression node. */
-    private class ExprNodeImpl extends ExprNodePreOrPostImpl {
-      ExprNodeImpl() { isPost = false }
+    /** A node corresponding to a `(bb,i,v)` tuple from `variableRead(bb,i,v,true)` */
+    private class ReadNodeImpl extends ReadNodePreOrPostImpl {
+      ReadNodeImpl() { isPost = false }
 
       override string toString() { result = n_.toString() }
     }
 
-    final class ExprNode = ExprNodeImpl;
+    final class ReadNode = ReadNodeImpl;
 
-    /** A post-update expression node. */
-    private class ExprPostUpdateNodeImpl extends ExprNodePreOrPostImpl {
-      ExprPostUpdateNodeImpl() { isPost = true }
+    /** A post-update read node. */
+    private class PostUpdateReadNodeImpl extends ReadNodePreOrPostImpl {
+      PostUpdateReadNodeImpl() { isPost = true }
 
       override string toString() { result = n_.toString() + " [postupdate]" }
     }
 
-    final class ExprPostUpdateNode = ExprPostUpdateNodeImpl;
-
-    /** A node corresponding to a `(bb,i,v)` tuple from `variableRead(bb,i,v,true)` */
-    class ReadNode = ExprNode;
+    final class PostUpdateReadNode = PostUpdateReadNodeImpl;
 
     /** A synthesized SSA data flow node. */
     abstract private class SsaNodeImpl extends NodeImpl {
@@ -1967,7 +1962,7 @@ module Make<
         isUseStep = false
       )
       or
-      nodeFrom.(ExprNodePreOrPostImpl).readsAt(bb, i, v) and
+      nodeFrom.(ReadNodePreOrPostImpl).readsAt(bb, i, v) and
       not variableWrite(bb, i, v, true) and
       isUseStep = true
     }
@@ -2143,7 +2138,7 @@ module Make<
           exists(SourceVariable v, int i |
             ssaDefReachesRead(v, def, bb, i) and
             DfInput::guardControlsBlock(g, bb, val) and
-            result.(ExprNode).readsAt(bb, i, v)
+            result.(ReadNode).readsAt(bb, i, v)
           )
           or
           // guard controls input block to a phi node

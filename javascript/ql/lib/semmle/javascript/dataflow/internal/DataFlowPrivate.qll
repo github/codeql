@@ -1230,12 +1230,12 @@ private predicate samePhi(SsaPhiNode legacyPhi, Ssa2::PhiNode newPhi) {
 
 cached
 Node getNodeFromSsa2(Ssa2::Node node) {
-  result = TSsaUseNode(node.(Ssa2::ExprNode).getControlFlowNode())
+  result = TSsaUseNode(node.(Ssa2::ReadNode).getControlFlowNode())
   or
-  result = TExprPostUpdateNode(node.(Ssa2::ExprPostUpdateNode).getControlFlowNode())
+  result = TExprPostUpdateNode(node.(Ssa2::PostUpdateReadNode).getControlFlowNode())
   or
   exists(ImplicitThisUse use |
-    node.(Ssa2::ExprPostUpdateNode).getControlFlowNode() = use and
+    node.(Ssa2::PostUpdateReadNode).getControlFlowNode() = use and
     result = TImplicitThisUse(use, true)
   )
   or

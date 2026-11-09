@@ -123,9 +123,9 @@ module SsaFlow {
   Impl::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(Impl::ExprNode).getControlFlowNode() = n.asExpr()
+    result.(Impl::ReadNode).getControlFlowNode() = n.asExpr()
     or
-    result.(Impl::ExprPostUpdateNode).getControlFlowNode() =
+    result.(Impl::PostUpdateReadNode).getControlFlowNode() =
       n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
     exists(SsaImpl::ParameterExt p |

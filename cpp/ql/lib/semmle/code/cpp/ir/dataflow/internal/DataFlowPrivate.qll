@@ -2269,7 +2269,7 @@ module IteratorFlow {
     result = n.(SsaIteratorNode).getIteratorFlowNode()
     or
     exists(Ssa::UseImpl use, IRBlock bb, int i |
-      result.(DataFlowIntegrationImpl::ExprNode).readsAt(bb, i, v) and
+      result.(DataFlowIntegrationImpl::ReadNode).readsAt(bb, i, v) and
       use.hasIndexInBlock(bb, i, v) and
       use.getNode() = n
     )

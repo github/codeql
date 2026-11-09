@@ -494,9 +494,9 @@ module SsaFlow {
   Impl::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(Impl::ExprNode).getControlFlowNode() = n.(ExprNode).getControlFlowNode()
+    result.(Impl::ReadNode).getControlFlowNode() = n.(ExprNode).getControlFlowNode()
     or
-    result.(Impl::ExprPostUpdateNode).getControlFlowNode() =
+    result.(Impl::PostUpdateReadNode).getControlFlowNode() =
       n.(PostUpdateNode).getPreUpdateNode().(ExprNode).getControlFlowNode()
     or
     result.(Impl::WriteDefSourceNode).getDefinition() = n.(ExplicitParameterNode).getSsaDefinition()
