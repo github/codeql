@@ -1,0 +1,27 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["Microsoft.AspNet.OData", "Delta<TStructuralType>", true, "GetInstance", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"],
+        ["Microsoft.AspNet.OData", "Delta<TStructuralType>", true, "Patch", "(TStructuralType)", "", "Argument[this]", "Argument[0]", "taint", "manual"],
+        ["Microsoft.AspNet.OData", "Delta<TStructuralType>", true, "Put", "(TStructuralType)", "", "Argument[this]", "Argument[0]", "taint", "manual"],
+        ["Microsoft.AspNet.OData", "Delta<TStructuralType>", true, "CopyChangedValues", "(TStructuralType)", "", "Argument[this]", "Argument[0]", "taint", "manual"],
+        ["Microsoft.AspNet.OData", "Delta<TStructuralType>", true, "CopyUnchangedValues", "(TStructuralType)", "", "Argument[this]", "Argument[0]", "taint", "manual"],
+        ["Microsoft.AspNetCore.OData.Deltas", "Delta<T>", true, "GetInstance", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"],
+        ["Microsoft.AspNetCore.OData.Deltas", "Delta<T>", true, "Patch", "(T)", "", "Argument[this]", "Argument[0]", "taint", "manual"],
+        ["Microsoft.AspNetCore.OData.Deltas", "Delta<T>", true, "Put", "(T)", "", "Argument[this]", "Argument[0]", "taint", "manual"],
+        ["Microsoft.AspNetCore.OData.Deltas", "Delta<T>", true, "CopyChangedValues", "(T)", "", "Argument[this]", "Argument[0]", "taint", "manual"],
+        ["Microsoft.AspNetCore.OData.Deltas", "Delta<T>", true, "CopyUnchangedValues", "(T)", "", "Argument[this]", "Argument[0]", "taint", "manual"],
+        ["System.Web.Http.OData", "Delta<TEntityType>", true, "GetEntity", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"],
+        ["System.Web.Http.OData", "Delta<TEntityType>", true, "Patch", "(TEntityType)", "", "Argument[this]", "Argument[0]", "taint", "manual"],
+        ["System.Web.Http.OData", "Delta<TEntityType>", true, "Put", "(TEntityType)", "", "Argument[this]", "Argument[0]", "taint", "manual"],
+        ["System.Web.Http.OData", "Delta<TEntityType>", true, "CopyChangedValues", "(TEntityType)", "", "Argument[this]", "Argument[0]", "taint", "manual"],
+        ["System.Web.Http.OData", "Delta<TEntityType>", true, "CopyUnchangedValues", "(TEntityType)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}
