@@ -5,6 +5,7 @@
         "github:bazelbuild/rules_swift"
     ],
     "versions": [
+        "4.2.2-codeql.1",
         "4.0.0-rc5-codeql.3"
     ],
     "yanked_versions": {}
