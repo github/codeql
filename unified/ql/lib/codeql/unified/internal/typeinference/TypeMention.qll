@@ -24,7 +24,11 @@ abstract private class TypeMentionImpl extends AstNode {
 final class ExprTypeMention = ExprTypeMentionImpl;
 
 abstract private class ExprTypeMentionImpl extends TypeMentionImpl, Expr {
-  ExprTypeMentionImpl() { isInTypeContext(this) and not this instanceof GenericTypeExpr }
+  ExprTypeMentionImpl() {
+    isInTypeContext(this) and
+    not this instanceof GenericTypeExpr and
+    not this instanceof ModifiedTypeExpr
+  }
 
   pragma[nomagic]
   abstract TypePath getTypeArgumentPath(int i);
@@ -189,6 +193,14 @@ private class ClassLikeDeclarationTypeMention extends TypeMentionImpl, Identifie
     result = this.getRootType().getATypeParameter() and
     path = TypePath::singleton(result)
   }
+}
+
+private class ModifiedTypeExprMention extends TypeMentionImpl instanceof ModifiedTypeExpr {
+  private TypeMention base;
+
+  ModifiedTypeExprMention() { base = ModifiedTypeExpr.super.getType() }
+
+  override Type getTypeAt(TypePath path) { result = base.getTypeAt(path) }
 }
 
 TypeMention getClassLikeDeclarationTypeMention(ClassLikeDeclaration c) {

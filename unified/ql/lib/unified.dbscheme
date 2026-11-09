@@ -155,9 +155,9 @@ unified_accessor_declaration_parameter(
   unique int parameter: @unified_parameter ref
 );
 
-unified_accessor_declaration_type(
+unified_accessor_declaration_return_type(
   unique int unified_accessor_declaration: @unified_accessor_declaration ref,
-  unique int type__: @unified_expr ref
+  unique int return_type: @unified_expr ref
 );
 
 unified_accessor_declaration_def(

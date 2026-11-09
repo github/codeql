@@ -271,6 +271,30 @@ fn test_collections(harmless: String) {
     password_queue.make_contiguous();
 }
 
+fn get_password_or_error() -> Result<String, std::io::Error> {
+    Ok("123456".to_string())
+}
+
+#[derive(Debug)]
+struct Outcome {
+    count: usize,
+}
+
+fn count_entries() -> Result<Outcome, std::io::Error> {
+    let _p = get_password_or_error()?;
+    Ok(Outcome { count: 1 })
+}
+
+fn test_try_operator() -> Result<(), std::io::Error> {
+    let value = get_password_or_error()?; // $ Source[rust/cleartext-logging]=try
+    info!("message = {}", value); // $ Alert[rust/cleartext-logging]=try
+
+    let outcome = count_entries()?;
+    info!("message = {:?}", outcome); // (the outcome does not contain the password)
+
+    Ok(())
+}
+
 fn main() {
     simple_logger::SimpleLogger::new().init().unwrap();
 
@@ -281,4 +305,5 @@ fn main() {
     );
     test_std("123456".to_string(), 0, None);
     test_collections("harmless".to_string());
+    _ = test_try_operator();
 }

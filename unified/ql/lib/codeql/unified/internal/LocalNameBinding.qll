@@ -409,6 +409,7 @@ module Public {
       |
         decl instanceof VariableDeclaration or
         decl instanceof FunctionDeclaration or // treat functions as values
+        decl instanceof AccessorDeclaration or
         decl instanceof Parameter or
         decl instanceof ForEachStmt or
         decl instanceof PatternGuardExpr or
@@ -446,6 +447,25 @@ module Public {
     }
   }
 
+  private AccessorDeclaration getAnAccessor(LocalVariable v) {
+    v.getABinding() = result.getNameNode() and
+    (result instanceof GetterDeclaration or result instanceof SetterDeclaration)
+  }
+
+  /** A local variable defined by a getter/setter pair, which does not store a value on its own. */
+  final class ComputedLocalVariable extends LocalVariable {
+    ComputedLocalVariable() { exists(getAnAccessor(this)) }
+
+    /** Gets the getter or setter for this computed variable. */
+    AccessorDeclaration getAnAccessor() { result = getAnAccessor(this) }
+
+    /** Gets the getter for this computed variable. */
+    GetterDeclaration getGetterDeclaration() { result = getAnAccessor(this) }
+
+    /** Gets the setter for this computed variable. */
+    SetterDeclaration getSetterDeclaration() { result = getAnAccessor(this) }
+  }
+
   /** An access to a locally-declared name. */
   class LocalNameAccess extends PotentialLocalNameAccess {
     LocalNameAccess() { not this instanceof UnqualifiedMemberAccess }
@@ -460,6 +480,8 @@ module Public {
   }
 }
 
+final class PotentialLocalNameAccess = PotentialLocalNameAccessImpl;
+
 /**
  * A name node that is possibly a reference to a local name, but could also refer to a member
  * visible through imports or inheritance.
@@ -473,15 +495,25 @@ module Public {
  * }
  * ```
  */
-class PotentialLocalNameAccess extends IdentifierExpr {
+abstract private class PotentialLocalNameAccessImpl extends AstNode {
   /** Gets the representative for the local name being accessed. */
   LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
 
   /** Gets the name being accessed. */
-  string getName() { result = this.getValue() }
+  abstract string getName();
 
   /** Holds if this is one of the binding sites for a name, such as the `x` in `let x = 123`. */
   predicate isBindingSite() { this instanceof NameBinding }
+}
+
+private class IdentifierPotentialLocalNameAccess extends PotentialLocalNameAccessImpl,
+  IdentifierExpr
+{
+  override string getName() { result = this.getValue() }
+}
+
+private class SuperPotentialLocalNameAccess extends PotentialLocalNameAccessImpl, SuperExpr {
+  override string getName() { result = any(NameBindingPlugin p).getSuperLocalName(this) }
 }
 
 /** Gets the implicitly-declared variable through which the given callable refers to its receiver. */

@@ -20,6 +20,7 @@ use ra_ap_syntax::{
 use ra_ap_syntax_bridge::{
     DocCommentDesugarMode, syntax_node_to_token_tree, token_tree_to_syntax_node,
 };
+use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
 impl Emission<ast::Item> for Translator<'_> {
@@ -132,6 +133,7 @@ pub struct Translator<'db> {
     pub semantics: Option<&'db Semantics<'db, RootDatabase>>,
     source_kind: SourceKind,
     pub(crate) macro_context_depth: usize,
+    parenthesized_expr_attrs: HashMap<SyntaxNode, Vec<Label<generated::AnyAttr>>>,
     diagnostic_count: usize,
     /// When emitting a reconstructed built-in derive expansion, holds the span map of the
     /// synthesized syntax tree. Those nodes are not registered in the semantics cache, so
@@ -162,6 +164,7 @@ impl<'db> Translator<'db> {
             semantics: semantic_info.map(|i| i.semantics),
             source_kind,
             macro_context_depth: 0,
+            parenthesized_expr_attrs: HashMap::new(),
             diagnostic_count: 0,
             builtin_derive_span_map: None,
         }
@@ -521,6 +524,55 @@ impl<'db> Translator<'db> {
                 cfg_options.check(&cfg_expr) == Some(false)
             })
         })
+    }
+
+    pub(crate) fn emit_parenthesized_expr(
+        &mut self,
+        node: &ast::ParenExpr,
+    ) -> Option<Label<generated::Expr>> {
+        if self.should_be_excluded(node) {
+            return None;
+        }
+
+        let mut attrs = self.take_parenthesized_expr_attrs(node.syntax());
+        attrs.extend(
+            node.attrs_with_doc()
+                .filter_map(|attr| self.emit_any_attr(&attr)),
+        );
+        let result = node.expr().and_then(|expr| {
+            let syntax = expr.syntax().clone();
+            self.parenthesized_expr_attrs
+                .entry(syntax.clone())
+                .or_default()
+                .extend(attrs);
+            let result = self.emit_expr(&expr);
+            self.parenthesized_expr_attrs.remove(&syntax);
+            result
+        });
+        if let Some(label) = result {
+            self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        }
+        result
+    }
+
+    pub(crate) fn emit_parenthesized_pat(
+        &mut self,
+        node: &ast::ParenPat,
+    ) -> Option<Label<generated::Pat>> {
+        let result = node.pat().and_then(|pat| self.emit_pat(&pat));
+        if let Some(label) = result {
+            self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        }
+        result
+    }
+
+    pub(crate) fn take_parenthesized_expr_attrs(
+        &mut self,
+        node: &SyntaxNode,
+    ) -> Vec<Label<generated::AnyAttr>> {
+        self.parenthesized_expr_attrs
+            .remove(node)
+            .unwrap_or_default()
     }
 
     pub(crate) fn should_skip_bodies(&self) -> bool {

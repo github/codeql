@@ -14,28 +14,49 @@ local_path_override(
 
 # see https://registry.bazel.build/ for a list of available packages
 
-bazel_dep(name = "platforms", version = "1.0.0")
-bazel_dep(name = "rules_cc", version = "0.2.20")
-bazel_dep(name = "rules_go", version = "0.60.0")
-bazel_dep(name = "rules_java", version = "9.6.1")
+bazel_dep(name = "platforms", version = "1.1.0")
+bazel_dep(name = "rules_cc", version = "0.2.27")
+bazel_dep(name = "rules_go", version = "0.65.0")
+bazel_dep(name = "rules_java", version = "9.9.0")
 bazel_dep(name = "rules_pkg", version = "1.2.0")
-bazel_dep(name = "rules_nodejs", version = "6.7.5")
-bazel_dep(name = "rules_python", version = "1.9.0")
-bazel_dep(name = "rules_shell", version = "0.7.1")
-bazel_dep(name = "bazel_skylib", version = "1.9.0")
-bazel_dep(name = "abseil-cpp", version = "20260107.1", repo_name = "absl")
-bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.1", repo_name = "json")
-bazel_dep(name = "fmt", version = "12.1.0-codeql.1")
-bazel_dep(name = "rules_kotlin", version = "2.2.2-codeql.1")
-bazel_dep(name = "gazelle", version = "0.50.0")
-bazel_dep(name = "rules_dotnet", version = "0.21.5-codeql.1")
-bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
-bazel_dep(name = "rules_rust", version = "0.74.0")
-bazel_dep(name = "rules_swift", version = "4.0.0-rc5-codeql.2")
-bazel_dep(name = "swift-syntax", version = "603.0.2")
-bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
+bazel_dep(name = "rules_nodejs", version = "6.7.7")
+bazel_dep(name = "rules_python", version = "2.4.6")
+bazel_dep(name = "rules_shell", version = "0.8.0")
+bazel_dep(name = "bazel_skylib", version = "1.9.2")
+bazel_dep(name = "abseil-cpp", version = "20260817.0", repo_name = "absl")
+bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.2", repo_name = "json")
+bazel_dep(name = "fmt", version = "12.2.0.bcr.1-codeql.1")
+bazel_dep(name = "rules_kotlin", version = "2.4.21-codeql.1")
+bazel_dep(name = "gazelle", version = "0.54.0")
+bazel_dep(name = "rules_dotnet", version = "0.22.2-codeql.1")
+bazel_dep(name = "googletest", version = "1.18.0.bcr.1")
+bazel_dep(name = "rules_rust", version = "0.75.0")
+bazel_dep(name = "rules_swift", version = "4.2.2-codeql.1")
+bazel_dep(name = "swift-syntax", version = "604.0.0")
+bazel_dep(name = "zstd", version = "1.5.7.bcr.3")
 
-bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
+bazel_dep(name = "buildifier_prebuilt", version = "10.1.0", dev_dependency = True)
+
+# Pin the compiler to support the Kotlin 1.8 and 1.9 language versions required by older extractors.
+kotlin = use_extension("@rules_kotlin//src/main/starlark/core/repositories:bzlmod_setup.bzl", "rules_kotlin_extensions")
+kotlin.kotlinc_version(
+    sha256 = "a623871f1cd9c938946948b70ef9170879f0758043885bbd30c32f024e511714",
+    version = "2.2.21",
+)
+use_repo(
+    kotlin,
+    "btapi_impl",
+    "com_github_google_ksp",
+    "com_github_jetbrains_kotlin",
+    "com_github_jetbrains_kotlin_git",
+    "com_github_pinterest_ktlint",
+    "jarjar",
+    "kotlin_build_tools_api",
+    "kotlinx_coroutines_core_jvm",
+    "kotlinx_serialization_core_jvm",
+    "kotlinx_serialization_json",
+    "kotlinx_serialization_json_jvm",
+)
 
 # Keep edition and version approximately in sync with internal repo.
 # the versions there are canonical, the versions here are used for CI in github/codeql, as well as for the vendoring of dependencies.
@@ -99,6 +120,30 @@ use_repo(
     "vendor_py__tree-sitter-graph-0.12.0",
 )
 
+# deps for C/C++ build mode none extractor
+# keep in sync by running `misc/bazel/3rdparty/update_cpp_bmn_deps.sh`
+cpp_bmn_deps = use_extension("//misc/bazel/3rdparty:cpp_bmn_deps_extension.bzl", "b")
+use_repo(
+    cpp_bmn_deps,
+    "vendor_cpp_bmn",
+    "vendor_cpp_bmn__all_asserts-2.3.3",
+    "vendor_cpp_bmn__anyhow-1.0.98",
+    "vendor_cpp_bmn__cached-0.54.0",
+    "vendor_cpp_bmn__chrono-0.4.41",
+    "vendor_cpp_bmn__itertools-0.14.0",
+    "vendor_cpp_bmn__num_cpus-1.17.0",
+    "vendor_cpp_bmn__os_str_bytes-7.1.1",
+    "vendor_cpp_bmn__rayon-1.11.0",
+    "vendor_cpp_bmn__regex-1.11.1",
+    "vendor_cpp_bmn__serde-1.0.229",
+    "vendor_cpp_bmn__serde_json-1.0.140",
+    "vendor_cpp_bmn__serde_with-1.14.0",
+    "vendor_cpp_bmn__tempfile-3.20.0",
+    "vendor_cpp_bmn__walkdir-2.5.0",
+    "vendor_cpp_bmn__which-8.0.0",
+    "vendor_cpp_bmn__zip-9.0.5",
+)
+
 # deps for ruby+rust
 # keep in sync by running `misc/bazel/3rdparty/update_cargo_deps.sh`
 tree_sitter_extractors_deps = use_extension("//misc/bazel/3rdparty:tree_sitter_extractors_extension.bzl", "r")
@@ -106,7 +151,6 @@ use_repo(
     tree_sitter_extractors_deps,
     "vendor_ts",
     "vendor_ts__anyhow-1.0.104",
-    "vendor_ts__argfile-1.0.0",
     "vendor_ts__chalk-ir-0.104.0",
     "vendor_ts__chrono-0.4.45",
     "vendor_ts__clap-4.6.7",
@@ -186,7 +230,7 @@ http_archive(
 )
 
 dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
-dotnet.toolchain(dotnet_version = "10.0.100")
+dotnet.toolchain(dotnet_version = "10.0.201")
 use_repo(dotnet, "dotnet_toolchains")
 
 register_toolchains("@dotnet_toolchains//:all")

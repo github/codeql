@@ -2220,11 +2220,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       /** A simple assignment expression, for example `x = y`. */
       class AssignExpr extends Assignment;
 
-      /** A parenthesized expression. */
-      class ParenExpr extends Expr {
-        Expr getExpr();
-      }
-
       /**
        * A variable, or an entity that behaves like a variable with respect to
        * type inference, for example a local variable, `const` item, or `static`
@@ -2774,8 +2769,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
               n1 = decl.getInitializer() and
               n2 = decl.getPattern()
             )
-            or
-            n1 = n2.(ParenExpr).getExpr()
           )
         }
 
@@ -3682,6 +3675,16 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       Type inferType(AstNode n) { result = inferType(n, TypePath::nil()) }
+
+      /** Gets the unique non-pseudo type inferred at `path` for `n`, if any. */
+      Type inferTypeUnique(AstNode n, TypePath path) {
+        result = unique(Type t | t = inferType(n, path) and not t instanceof PseudoType | t)
+      }
+
+      /**
+       * Gets the unique non-pseudo type inferred at the root for `n`, if any.
+       */
+      Type inferTypeUnique(AstNode n) { result = inferTypeUnique(n, TypePath::nil()) }
 
       /**
        * The cached stage of this module.

@@ -534,7 +534,7 @@ named:
     name_node: identifier
     accessor_kind: accessor_kind
     parameter*: parameter
-    type?: expr
+    return_type?: expr
     body?: block
 
   # "get", "set", or a language-specific kind like "didSet"

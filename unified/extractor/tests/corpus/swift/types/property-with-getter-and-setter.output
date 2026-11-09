@@ -15,6 +15,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Box"
           memberBlock:
             memberBlock
@@ -75,6 +76,7 @@ sourceFile
                                                 declReferenceExpr
                                                   baseName: identifier "_v"
                                               returnKeyword: return
+                                  modifiers:
                                 accessorDecl
                                   accessorSpecifier: set
                                   attributes:
@@ -95,9 +97,9 @@ sourceFile
                                               rightOperand:
                                                 declReferenceExpr
                                                   baseName: identifier "newValue"
+                                  modifiers:
                               leftBrace: {
                               rightBrace: }
-          modifiers:
           classKeyword: class
 
 ---
@@ -120,19 +122,23 @@ top_level source="⟨body⟩"
               modifier: modifier "var" source="var" (external)
               name_node: identifier "v" source="v" (external)
               accessor_kind: accessor_kind "get" source="get"
-              type: identifier "Int" source="Int" (external)
+              return_type: identifier "Int" source="Int" (external)
               body:
                 block source="{ ⟨stmt⟩ }"
                   stmt:
                     return_expr source="return ⟨value⟩"
                       value: identifier "_v" source="_v"
-            accessor_declaration source="⟨accessor_kind⟩ ⟨body⟩"
+            accessor_declaration source="⟨accessor_kind⟩⟨parameter⟩ ⟨body⟩"
               modifier:
                 modifier "var" source="var" (external)
                 modifier "chained_declaration" source=""
               name_node: identifier "v" source="v" (external)
               accessor_kind: accessor_kind "set" source="set"
-              type: identifier "Int" source="Int" (external)
+              parameter:
+                parameter source="⟨pattern⟩"
+                  modifier: modifier "generated" source=""
+                  type: identifier "Int" source="Int" (external)
+                  pattern: identifier "newValue" source="set"
               body:
                 block source="{ ⟨stmt⟩ }"
                   stmt:

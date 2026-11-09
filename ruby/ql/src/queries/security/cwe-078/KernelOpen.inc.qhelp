@@ -39,7 +39,7 @@ user-supplied file path.
 
 <li>
 OWASP:
-<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+<a href="https://community.owasp.org/attacks/Command_Injection">Command Injection</a>.
 <a href="https://cheatsheetseries.owasp.org/cheatsheets/Ruby_on_Rails_Cheat_Sheet.html#command-injection">Ruby on Rails Cheat Sheet: Command Injection</a>.
 </li>
 

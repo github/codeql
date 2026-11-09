@@ -1,4 +1,4 @@
-use yeast::Ast;
+use yeast::OutputAst as Ast;
 
 #[path = "../src/languages/mod.rs"]
 mod languages;

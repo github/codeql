@@ -1,3 +1,7 @@
+## 0.7.1
+
+No user-facing changes.
+
 ## 0.7.0
 
 ### Breaking Changes

@@ -105,7 +105,7 @@ void test_range_based_for()
 		output(v1);
 	}
 
-	for (int v2 : myContainer) // $ Alert // BAD: v2 is not used
+	for (int v2 : myContainer) // GOOD: iterator dereference may have side effects
 	{
 	}
 }
@@ -175,4 +175,21 @@ void test_switch_initializer()
 	default:
 		// ...
 	}
+}
+
+void test_maybe_unused()
+{
+	[[maybe_unused]] int unused; // GOOD: explicitly marked as maybe_unused
+}
+
+int globalVar;
+
+int initialize()
+{
+	return ++globalVar;
+}
+
+void test_initializer_side_effect()
+{
+	int initialized = initialize(); // GOOD (initializer has a side effect)
 }

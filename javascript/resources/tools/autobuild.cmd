@@ -3,7 +3,7 @@ SETLOCAL EnableDelayedExpansion
 
 set jvm_args=-Xss16m
 
-rem If CODEQL_RAM is set, use half for Java and half for TS.
+rem If CODEQL_RAM is set, use half for Java and half for Node.js.
 if NOT [%CODEQL_RAM%] == [] (
     set /a "half_ram=CODEQL_RAM/2"
     set LGTM_TYPESCRIPT_RAM=!half_ram!

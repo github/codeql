@@ -121,6 +121,8 @@ private module BaseSsaImpl {
         certain = true
       )
     }
+
+    predicate ssaCachedStageRevRef() { BaseSsa::ssaCachedStageRevRef1() }
   }
 
   module SsaImpl = SsaImplCommon::Make<Location, Cfg, SsaImplInput>;

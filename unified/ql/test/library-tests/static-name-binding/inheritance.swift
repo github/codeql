@@ -71,6 +71,21 @@ class O: N {  // $ access=N
     }
 }
 
+class Base {
+    func f(x: Int) {}  // $ access=Int
+}
+
+class Outer: Base {  // $ access=Base
+    func f() {}
+
+    class Inner: Outer {  // $ access=Outer
+        func test() {
+            f()  // $ access=Base.f access=Outer.f
+            f(x: 42)  // $ access=Base.f access=Outer.f
+        }
+    }
+}
+
 // Members of base classes can be accessed through derived classes
 func t1() {
     let x1: D = D()  // $ access=D

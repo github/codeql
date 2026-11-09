@@ -1,3 +1,5 @@
+use std::collections::BTreeSet;
+
 use proc_macro2::{Ident, Literal};
 
 /// A complete rewrite rule such as `(input) where guard => (output)`.
@@ -100,6 +102,15 @@ pub(crate) enum Template {
     Node(Node),
     /// An embedded Rust block such as `{args}`.
     Splice(syn::Block),
+    /// Ordered alternatives such as `[(identifier #{name}) (missing)]`.
+    Choice(Vec<Alternative>),
+}
+
+pub(crate) struct Alternative {
+    /// Template to construct when the guard and dependencies succeed.
+    pub(crate) template: Template,
+    /// Optional postfix guard such as `if { name.is_some() }`.
+    pub(crate) guard: Option<syn::Block>,
 }
 
 pub(crate) struct Node {
@@ -117,23 +128,139 @@ pub(crate) enum Content {
     Static(Literal),
     /// Computed leaf content such as `#{name}` in `(identifier #{name})`.
     Computed(syn::Block),
+    /// Value inherited from the node matched by the enclosing rule.
+    Inherited,
 }
 
 pub(crate) enum Field {
     /// A named field such as `argument: {args}` or
-    /// `label: (identifier #{name})?`.
+    /// `label: (identifier #{name})`.
     Named {
         /// The field name before `:`, such as `argument`.
         name: Ident,
         /// The node or Rust splice after `:`, such as `(identifier "x")` or
         /// `{args}`.
         value: Template,
-        /// Whether the field value has a trailing `?`.
-        optional: bool,
     },
     /// Source-location metadata such as `location: {source}`.
     Location {
         /// A Rust block yielding the node or nodes whose locations should be combined.
         block: syn::Block,
     },
+    /// Explicitly omit source-location metadata: `location: none`.
+    LocationNone,
+}
+
+impl Rule {
+    pub(crate) fn resolve_bare_leaf_content(
+        &mut self,
+        leaf_kinds: &BTreeSet<String>,
+    ) -> syn::Result<()> {
+        let Replacement::Templates(templates) = &mut self.replacement else {
+            return Ok(());
+        };
+        for template in templates {
+            template.resolve_bare_leaf_content(leaf_kinds, true)?;
+        }
+        Ok(())
+    }
+}
+
+impl Template {
+    fn resolve_bare_leaf_content(
+        &mut self,
+        leaf_kinds: &BTreeSet<String>,
+        is_rule_result: bool,
+    ) -> syn::Result<()> {
+        let Template::Node(node) = self else {
+            return Ok(());
+        };
+
+        for field in &mut node.fields {
+            if let Field::Named { value, .. } = field {
+                value.resolve_bare_leaf_content(leaf_kinds, false)?;
+            }
+        }
+
+        if node.content.is_none()
+            && node.fields.is_empty()
+            && leaf_kinds.contains(node.kind.to_string().as_str())
+        {
+            if !is_rule_result {
+                return Err(syn::Error::new_spanned(
+                    &node.kind,
+                    format!(
+                        "bare leaf `{}` must be a top-level rule result or have explicit content",
+                        node.kind
+                    ),
+                ));
+            }
+            node.content = Some(Content::Inherited);
+        }
+
+        Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use quote::quote;
+
+    fn output_leaf_kinds() -> BTreeSet<String> {
+        yeast_schema::node_types_yaml::leaf_kinds_from_yaml(
+            r#"
+named:
+  assignment:
+    left: identifier
+  identifier:
+"#,
+        )
+        .unwrap()
+    }
+
+    #[test]
+    fn marks_top_level_bare_leaves_as_inherited() {
+        let mut rule = crate::rule_parse::parse_rule(quote!((source) => (identifier))).unwrap();
+        rule.resolve_bare_leaf_content(&output_leaf_kinds())
+            .unwrap();
+
+        let Replacement::Templates(templates) = rule.replacement else {
+            panic!("expected template replacement");
+        };
+        let [Template::Node(node)] = templates.as_slice() else {
+            panic!("expected one output node");
+        };
+        assert!(matches!(node.content, Some(Content::Inherited)));
+    }
+
+    #[test]
+    fn rejects_nested_bare_leaves() {
+        let mut rule =
+            crate::rule_parse::parse_rule(quote!((source) => (assignment left: (identifier))))
+                .unwrap();
+        let error = rule
+            .resolve_bare_leaf_content(&output_leaf_kinds())
+            .unwrap_err();
+
+        assert_eq!(
+            error.to_string(),
+            "bare leaf `identifier` must be a top-level rule result or have explicit content"
+        );
+    }
+
+    #[test]
+    fn leaves_fieldless_structural_nodes_unchanged() {
+        let mut rule = crate::rule_parse::parse_rule(quote!((source) => (assignment))).unwrap();
+        rule.resolve_bare_leaf_content(&output_leaf_kinds())
+            .unwrap();
+
+        let Replacement::Templates(templates) = rule.replacement else {
+            panic!("expected template replacement");
+        };
+        let [Template::Node(node)] = templates.as_slice() else {
+            panic!("expected one output node");
+        };
+        assert!(node.content.is_none());
+    }
 }

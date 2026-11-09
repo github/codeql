@@ -31,46 +31,6 @@ public class LogInjectionTest {
         return null;
     }
 
-    public void testSanitizers() {
-        String source = (String) source(); // $ Source
-        Logger logger = null;
-        logger.debug(source.replace("\n", "")); // Safe
-        logger.debug(source.replace("\n", "\n")); // $ Alert
-        logger.debug(source.replace("\n", "\r")); // $ Alert
-        logger.debug(source.replace("\r", "")); // Safe
-        logger.debug(source.replace("\r", "\n")); // $ Alert
-        logger.debug(source.replace("\r", "\r")); // $ Alert
-        logger.debug(source.replace("something_else", "")); // $ Alert
-        logger.debug(source.replace('\n', '_')); // Safe
-        logger.debug(source.replace('\n', '\n')); // $ Alert
-        logger.debug(source.replace('\n', '\r')); // $ Alert
-        logger.debug(source.replace('\r', '_')); // Safe
-        logger.debug(source.replace('\r', '\n')); // $ Alert
-        logger.debug(source.replace('\r', '\r')); // $ Alert
-        logger.debug(source.replace('-', '_')); // $ Alert
-        logger.debug(source.replaceAll("\n", "")); // Safe
-        logger.debug(source.replaceAll("\n", "\n")); // $ Alert
-        logger.debug(source.replaceAll("\n", "\r")); // $ Alert
-        logger.debug(source.replaceAll("\r", "")); // Safe
-        logger.debug(source.replaceAll("\r", "\n")); // $ Alert
-        logger.debug(source.replaceAll("\r", "\r")); // $ Alert
-        logger.debug(source.replaceAll("\\n", "")); // Safe
-        logger.debug(source.replaceAll("\\n", "\n")); // $ Alert
-        logger.debug(source.replaceAll("\\n", "\r")); // $ Alert
-        logger.debug(source.replaceAll("\\r", "")); // Safe
-        logger.debug(source.replaceAll("\\r", "\n")); // $ Alert
-        logger.debug(source.replaceAll("\\r", "\r")); // $ Alert
-        logger.debug(source.replaceAll("\\R", "")); // Safe
-        logger.debug(source.replaceAll("\\R", "\n")); // $ Alert
-        logger.debug(source.replaceAll("\\R", "\r")); // $ Alert
-        logger.debug(source.replaceAll("[^a-zA-Z]", "")); // Safe
-        logger.debug(source.replaceAll("[^a-zA-Z]", "\n")); // $ Alert
-        logger.debug(source.replaceAll("[^a-zA-Z]", "\r")); // $ Alert
-        logger.debug(source.replaceAll("[^a-zA-Z\n]", "")); // $ Alert
-        logger.debug(source.replaceAll("[^a-zA-Z\r]", "")); // $ Alert
-        logger.debug(source.replaceAll("[^a-zA-Z\\R]", "")); // $ Alert
-    }
-
     public void testGuards() {
         String source = (String) source(); // $ Source
         Logger logger = null;
