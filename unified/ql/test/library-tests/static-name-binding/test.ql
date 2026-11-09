@@ -19,3 +19,9 @@ module StaticDeclAccess implements TestSig {
 }
 
 import MakeTest<StaticDeclAccess>
+
+query predicate unqualifiedMemberAccess(
+  UnqualifiedMemberAccess uma, NameBinding target, ClassLikeDeclaration accessingClass
+) {
+  unqualifiedMemberAccess(uma, _, target, accessingClass)
+}
