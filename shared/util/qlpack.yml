@@ -5,4 +5,5 @@ library: true
 dependencies: null
 dataExtensions:
   - ext/*.yml
+  - ext/*.json
 warnOnImplicitThis: true
