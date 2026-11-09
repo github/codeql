@@ -42,4 +42,16 @@ sourceFile
 top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
-      stmt: unsupported_node "actor Counter {\n  var value = 0\n}" source="actor Counter {\n  var value = 0\n}"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  ⟨member⟩\n}"
+          modifier: modifier "actor" source="actor"
+          name_node: identifier "Counter" source="Counter"
+          member:
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+              modifier: modifier "var" source="var"
+              pattern: identifier "value" source="value"
+              value: int_literal "0" source="0"
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""
