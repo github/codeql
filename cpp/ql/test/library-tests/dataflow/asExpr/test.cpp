@@ -55,3 +55,35 @@ void test_postfix_crement(int *p, int q) { // $ asParameter=p asParameter=q para
   int *p2 = (int*)(p++); // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
   int q2 = (int)(q++); // $ asExpr="... ++" asExpr="q(... ++)"
 }
+
+struct Foo {
+  void f();
+};
+
+struct Derived : Foo {};
+
+void test_qualifiers(
+  Foo x, // $ asParameter=x parameterNode=x
+  Foo &r, // $ asParameter=r(*r) parameterNode=r
+  Foo *p, // $ asParameter=p parameterNode=p
+  Foo *&rp, // $ asParameter=rp(*rp) parameterNode=rp
+  Derived d, // $ asParameter=d parameterNode=d
+  Derived &rd) { // $ asParameter=rd(*rd) parameterNode=rd
+  x.f(); // $ asExpr=x asIndirectExpr=x
+  r.f(); // $ asExpr=r asIndirectExpr=r numberOfNodes="r: 2"
+  p->f(); // $ asExpr=p asIndirectExpr=p
+  (*p).f(); // $ asExpr="* ..." asIndirectExpr="* ..." asExpr="p(* ...)" asIndirectExpr="p(* ...)"
+  rp->f(); // $ asExpr=rp asIndirectExpr=rp numberOfIndirectNodes="rp: 2" numberOfNodes="rp: 2"
+  (*rp).f(); // $ asExpr="* ..." asIndirectExpr="* ..." asExpr="rp(* ...)" asIndirectExpr="rp(* ...)" asIndirectExpr=rp numberOfIndirectNodes="rp: 2"
+  d.f(); // $ asExpr=d asIndirectExpr=d
+  rd.f(); // $ asExpr=rd asIndirectExpr=rd numberOfNodes="rd: 2"
+}
+
+void test_inner_glvalue_qualifiers(
+  Foo x, // $ asParameter=x parameterNode=x
+  Foo &r) { // $ asParameter=r(*r) parameterNode=r
+  Foo arr[2];
+  (*&x).f(); // $ asExpr="* ..." asIndirectExpr="* ..." asExpr="& ...(* ...)" asIndirectExpr="& ...(* ...)" asExpr="x(* ...)" asIndirectExpr="x(* ...)"
+  (*&r).f(); // $ asExpr="* ..." asIndirectExpr="* ..." asExpr="& ...(* ...)" asIndirectExpr="& ...(* ...)" asExpr="r(* ...)" asIndirectExpr="r(* ...)" numberOfNodes="r: 2"
+  (*arr).f(); // $ asExpr="* ..." asIndirectExpr="* ..." asExpr="arr(* ...)" asIndirectExpr="arr(* ...)"
+}
