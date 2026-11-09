@@ -22,5 +22,5 @@ After changing Cargo dependencies, regenerate the checked-in Bazel dependency
 definitions with:
 
 ```sh
-misc/bazel/3rdparty/update_cpp_bmn_deps.sh
+misc/bazel/3rdparty/update_tree_sitter_extractors_deps.sh
 ```
