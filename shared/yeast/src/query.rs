@@ -67,15 +67,10 @@ impl QueryNode {
     pub fn do_match(&self, ast: &Ast, node: Id, matches: &mut Captures) -> bool {
         match self {
             QueryNode::Any { match_unnamed } => {
-                if *match_unnamed {
-                    true
-                } else {
-                    // `(_)` only matches named nodes, matching tree-sitter
-                    // semantics. Bare `_` (with `match_unnamed = true`)
-                    // matches any node.
-                    let n = ast.get_node(node).unwrap();
-                    n.is_named()
-                }
+                // `(_)` only matches named nodes, matching tree-sitter
+                // semantics. Bare `_` (with `match_unnamed = true`)
+                // matches any node.
+                *match_unnamed || ast.get_node(node).unwrap().is_named()
             }
             QueryNode::Node { kind, children } => {
                 let node = ast.get_node(node).unwrap();
@@ -122,17 +117,12 @@ impl QueryNode {
 }
 
 fn match_children<'a>(
-    child_matchers: impl Iterator<Item = &'a QueryListElem>,
+    mut child_matchers: impl Iterator<Item = &'a QueryListElem>,
     ast: &Ast,
     remaining_children: &mut (impl Iterator<Item = Id> + Clone),
     matches: &mut Captures,
 ) -> bool {
-    for child in child_matchers {
-        if !child.do_match(ast, remaining_children, matches) {
-            return false;
-        }
-    }
-    true
+    child_matchers.all(|child| child.do_match(ast, remaining_children, matches))
 }
 
 impl QueryListElem {
@@ -172,12 +162,7 @@ impl QueryListElem {
                         break;
                     }
                 }
-                if *rep == Rep::OneOrMore && iters == 0 {
-                    // We didn't match any children but we were supposed to
-                    false
-                } else {
-                    true
-                }
+                *rep != Rep::OneOrMore || iters > 0
             }
             QueryListElem::SingleNode(sub_query) => {
                 // Forward-scan semantics: advance through the iterator until

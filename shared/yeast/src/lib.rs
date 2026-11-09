@@ -20,9 +20,13 @@ pub use yeast_macros::{query, rule, rules, tree, trees};
 use captures::{Captures, TranslatedCaptures};
 use query::QueryNode;
 
+/// Private payload for translation failures that should become file-level
+/// errors without invoking Rust's panic hook. [`Runner::run_once`] catches this
+/// payload; unexpected panics keep their normal hook output.
 #[derive(Debug)]
 struct TranslationFailure(String);
 
+/// Unwind a deliberate translation failure without printing it as a panic.
 pub(crate) fn translation_failure(message: impl Into<String>) -> ! {
     std::panic::resume_unwind(Box::new(TranslationFailure(message.into())))
 }
