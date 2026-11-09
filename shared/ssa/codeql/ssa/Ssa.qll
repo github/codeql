@@ -1834,6 +1834,10 @@ module Make<
       /** Holds if this represents the access to `var` performed at `expr`. */
       predicate isExprAndVariable(DfInput::Expr expr, SourceVariable var) { expr = e and var = v_ }
 
+      /** Holds if this node reads `v` at `bb,i` */
+      pragma[nomagic]
+      predicate readsAt(BasicBlock bb, int i, SourceVariable v) { e.hasCfgNode(bb, i) and v = v_ }
+
       override Location getLocation() {
         exists(BasicBlock bb, int i |
           e.hasCfgNode(bb, i) and
@@ -1886,14 +1890,8 @@ module Make<
       node = TExprNode(e, v, isPost)
     }
 
-    private class ReadNodeImpl extends ExprNodeImpl {
-      /** Holds if this node reads `v` at `bb,i` */
-      pragma[nomagic]
-      predicate readsAt(BasicBlock bb, int i, SourceVariable v) { e.hasCfgNode(bb, i) and v = v_ }
-    }
-
     /** A node corresponding to a `(bb,i,v)` tuple from `variableRead(bb,i,v,true)` */
-    final class ReadNode = ReadNodeImpl;
+    class ReadNode = ExprNode;
 
     /** A synthesized SSA data flow node. */
     abstract private class SsaNodeImpl extends NodeImpl {
