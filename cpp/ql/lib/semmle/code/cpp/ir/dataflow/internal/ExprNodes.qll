@@ -244,6 +244,16 @@ private module Cached {
     )
   }
 
+  /**
+   * Gets a `glvalue` expression whose unconverted result is the same as the
+   * unconverted result of `e`.
+   */
+  pragma[inline]
+  private Expr getAGLValueCategoryExpr(Expr e) {
+    result.isGLValueCategory() and
+    result.getUnconverted() = e.getUnconverted()
+  }
+
   /** Holds if `node` should be an `IndirectOperand` that maps `node.asExpr()` to `e`. */
   private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, int n) {
     exists(ArgumentOperand operand | isIndirectOperandOfArgument(node, operand, e, n) |
@@ -262,13 +272,13 @@ private module Cached {
       // The qualifier is associated with both `*x` and the lvalue-to-rvalue
       // conversion of `x`. Only `*x` is a glvalue and should map to the
       // indirect qualifier node; the converted `x` is a pointer prvalue and
-      // should map to the direct qualifier node. Restricting `e` to only be
-      // expressions for which `e.isGLValueCategory()` holds ensures that `*x`
-      // is the result of calling `asExpr()` while `asIndirectExpr()` gives
-      // `x`.
+      // should map to the direct qualifier node. So we require that the fully
+      // converted qualifier (i.e., the expression with `n = 0`) is a glvalue,
+      // and then map every expression in the conversion chain with the same
+      // unconverted expression to the indirect node.
       operand.isGLValue() and
       operand instanceof ThisArgumentOperand and
-      e.isGLValueCategory()
+      isIndirectOperandOfArgument(node, operand, getAGLValueCategoryExpr(e), 0)
       or
       // When an argument (qualifier or positional) is a prvalue and the
       // parameter (qualifier or positional) is a (const) reference, IR

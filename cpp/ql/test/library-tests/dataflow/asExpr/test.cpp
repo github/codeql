@@ -70,13 +70,13 @@ void test_qualifiers(
   Derived d, // $ asParameter=d parameterNode=d
   Derived &rd) { // $ asParameter=rd(*rd) parameterNode=rd
   x.f(); // $ asExpr=x asIndirectExpr=x
-  r.f(); // $ asExpr=r asIndirectExpr=r numberOfNodes="r: 2"
+  r.f(); // $ asExpr=r asIndirectExpr=r
   p->f(); // $ asExpr=p asIndirectExpr=p
   (*p).f(); // $ asExpr="* ..." asIndirectExpr="* ..." asExpr="p(* ...)" asIndirectExpr="p(* ...)"
   rp->f(); // $ asExpr=rp asIndirectExpr=rp numberOfIndirectNodes="rp: 2" numberOfNodes="rp: 2"
   (*rp).f(); // $ asExpr="* ..." asIndirectExpr="* ..." asExpr="rp(* ...)" asIndirectExpr="rp(* ...)" asIndirectExpr=rp numberOfIndirectNodes="rp: 2"
   d.f(); // $ asExpr=d asIndirectExpr=d
-  rd.f(); // $ asExpr=rd asIndirectExpr=rd numberOfNodes="rd: 2"
+  rd.f(); // $ asExpr=rd asIndirectExpr=rd
 }
 
 void test_inner_glvalue_qualifiers(
@@ -84,6 +84,6 @@ void test_inner_glvalue_qualifiers(
   Foo &r) { // $ asParameter=r(*r) parameterNode=r
   Foo arr[2];
   (*&x).f(); // $ asExpr="* ..." asIndirectExpr="* ..." asExpr="& ...(* ...)" asIndirectExpr="& ...(* ...)" asExpr="x(* ...)" asIndirectExpr="x(* ...)"
-  (*&r).f(); // $ asExpr="* ..." asIndirectExpr="* ..." asExpr="& ...(* ...)" asIndirectExpr="& ...(* ...)" asExpr="r(* ...)" asIndirectExpr="r(* ...)" numberOfNodes="r: 2"
+  (*&r).f(); // $ asExpr="* ..." asIndirectExpr="* ..." asExpr="& ...(* ...)" asIndirectExpr="& ...(* ...)" asExpr="r(* ...)" asIndirectExpr="r(* ...)"
   (*arr).f(); // $ asExpr="* ..." asIndirectExpr="* ..." asExpr="arr(* ...)" asIndirectExpr="arr(* ...)"
 }
