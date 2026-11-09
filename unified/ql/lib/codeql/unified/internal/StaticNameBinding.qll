@@ -874,6 +874,7 @@ Identifier getTypeFromRef(AstNode access) {
 predicate isTypeRef(AstNode access) {
   exists(getTypeFromRef(access))
   or
+  not exists(getStaticBindingTargetFromRef(access)) and
   trackTypeSelector(_) = getNodeFromRef(access)
 }
 
