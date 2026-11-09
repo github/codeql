@@ -1,0 +1,22 @@
+// THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+// Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/java-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["org.apache.poi.common.usermodel.fonts", "FontHeader", true, "getFamilyName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["org.apache.poi.common.usermodel.fonts", "FontHeader", true, "getFullName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["org.apache.poi.common.usermodel.fonts", "FontHeader", true, "getStyleName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["org.apache.poi.common.usermodel.fonts", "FontHeader", true, "getVersionName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["org.apache.poi.common.usermodel.fonts", "FontHeader", true, "init", "(LittleEndianInput)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"],
+        ["org.apache.poi.common.usermodel.fonts", "FontHeader", true, "init", "(byte[],int,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"],
+        ["org.apache.poi.common.usermodel.fonts", "FontInfo", true, "getPanose", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["org.apache.poi.common.usermodel.fonts", "FontInfo", true, "getTypeface", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      ]
+    }
+  ]
+}
