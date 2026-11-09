@@ -5,7 +5,7 @@ codebase.
 
 From within the root of the `codeql` repo (having first run the `create-extractor-pack.sh` script):
 ```
-    ./ql/target/release/buramu > deprecated.blame
+    ./target/release/buramu > deprecated.blame
 ```
 
 ## Output

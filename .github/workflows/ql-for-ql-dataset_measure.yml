@@ -35,8 +35,8 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            ql/target
-          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-qltest-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
+            target
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-qltest-cargo-${{ hashFiles('Cargo.lock') }}
       - name: Build Extractor
         run: cd ql; env "PATH=$PATH:`dirname ${CODEQL}`" ./scripts/create-extractor-pack.sh
         env:
