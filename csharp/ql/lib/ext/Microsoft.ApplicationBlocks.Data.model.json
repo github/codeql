@@ -1,0 +1,40 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteDataset", "(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteDataset", "(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteDataset", "(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteDataset", "(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteDataset", "(System.String,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteDataset", "(System.String,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteNonQuery", "(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteNonQuery", "(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteNonQuery", "(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteNonQuery", "(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteNonQuery", "(System.String,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteNonQuery", "(System.String,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteReader", "(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteReader", "(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteReader", "(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteReader", "(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteReader", "(System.String,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteReader", "(System.String,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteScalar", "(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteScalar", "(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteScalar", "(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteScalar", "(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteScalar", "(System.String,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteScalar", "(System.String,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteXmlReader", "(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteXmlReader", "(System.Data.SqlClient.SqlConnection,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteXmlReader", "(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String)", "", "Argument[2]", "sql-injection", "manual"],
+        ["Microsoft.ApplicationBlocks.Data", "SqlHelper", false, "ExecuteXmlReader", "(System.Data.SqlClient.SqlTransaction,System.Data.CommandType,System.String,System.Data.SqlClient.SqlParameter[])", "", "Argument[2]", "sql-injection", "manual"]
+      ]
+    }
+  ]
+}
