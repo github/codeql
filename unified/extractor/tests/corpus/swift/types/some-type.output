@@ -81,9 +81,21 @@ top_level source="⟨body⟩"
           parameter:
             parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
               external_name_node: identifier "_" source="_"
-              type: unsupported_node "some Collection<Int>" source="some Collection<Int>"
+              type:
+                modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+                  modifier: modifier "some" source="some"
+                  type:
+                    generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                      base: identifier "Collection" source="Collection"
+                      type_argument: identifier "Int" source="Int"
               pattern: identifier "input" source="input"
-          return_type: unsupported_node "some Collection<Int>" source="some Collection<Int>"
+          return_type:
+            modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+              modifier: modifier "some" source="some"
+              type:
+                generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                  base: identifier "Collection" source="Collection"
+                  type_argument: identifier "Int" source="Int"
           body:
             block source="{\n    ⟨stmt⟩\n}"
               stmt: identifier "input" source="input"

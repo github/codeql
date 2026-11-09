@@ -1198,6 +1198,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 modifier: {late}
                 type: {base})
         ),
+        rule!(
+            (someOrAnyType someOrAnySpecifier: @@spec constraint: @constraint)
+            =>
+            (modified_type_expr
+                modifier: (modifier #{spec})
+                type: {constraint})
+        ),
         // Preserve the `super` keyword as a dedicated expression, normally used
         // as the base of a member access (`super.foo`).
         rule!((superExpr) => (super_expr)),
@@ -1525,7 +1532,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((postfixIfConfigExpr) => (unsupported_node "")),
         rule!((poundSourceLocation) => (unsupported_node "")),
         rule!((precedenceGroupDecl) => (unsupported_node "")),
-        rule!((someOrAnyType) => (unsupported_node "")),
         rule!((subscriptDecl) => (unsupported_node "")),
         rule!((suppressedType) => (unsupported_node "")),
         rule!((typeExpr) => (unsupported_node "")),
