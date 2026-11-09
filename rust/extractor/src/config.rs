@@ -17,18 +17,15 @@ use ra_ap_paths::{AbsPath, AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{
     CargoConfig, CargoFeatures, CfgOverrides, RustLibSource, Sysroot, TargetDirectoryConfig,
 };
-use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
-use std::fmt::Debug;
 use std::ops::Not;
 use std::path::{Path, PathBuf};
 
 use crate::toolchain::select_toolchain;
 
-#[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy, clap::ValueEnum)]
+#[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy)]
 #[serde(rename_all = "lowercase")]
-#[clap(rename_all = "lowercase")]
 pub enum Compression {
     None,
     Gzip,
@@ -46,7 +43,24 @@ impl From<Compression> for trap::Compression {
     }
 }
 
-#[extractor_cli_config]
+#[derive(Parser, Serialize)]
+#[command(about, long_about = None)]
+struct CliConfig {
+    #[arg(long)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    file_list: Option<PathBuf>,
+
+    #[arg(long)]
+    #[serde(skip_serializing_if = "<&bool>::not")]
+    qltest: bool,
+
+    #[arg(long)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    logging_verbosity: Option<String>,
+}
+
+#[derive(Debug, Default, Deserialize)]
+#[serde(default)]
 pub struct Config {
     pub scratch_dir: PathBuf,
     pub trap_dir: PathBuf,
@@ -54,9 +68,13 @@ pub struct Config {
     pub diagnostic_dir: PathBuf,
     pub cargo_target_dir: Option<PathBuf>,
     pub cargo_target: Option<String>,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_vec")]
     pub cargo_features: Vec<String>,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_vec")]
     pub cargo_cfg_overrides: Vec<String>,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_map")]
     pub cargo_extra_env: FxHashMap<String, Option<String>>,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_vec")]
     pub cargo_extra_args: Vec<String>,
     pub cargo_all_targets: bool,
     pub logging_flamegraph: Option<PathBuf>,
@@ -65,13 +83,16 @@ pub struct Config {
     pub file_list: Option<PathBuf>,
     pub qltest: bool,
     pub qltest_cargo_check: bool,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_vec")]
     pub qltest_dependencies: Vec<String>,
     pub qltest_use_nightly: bool,
     pub qltest_edition: Option<String>,
     pub sysroot: Option<PathBuf>,
     pub sysroot_src: Option<PathBuf>,
     pub rustc_src: Option<PathBuf>,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_vec")]
     pub build_script_command: Vec<String>,
+    #[serde(deserialize_with = "deserialize::deserialize_newline_or_comma_separated_vec")]
     pub extra_includes: Vec<PathBuf>,
     pub proc_macro_server: Option<PathBuf>,
     pub extract_dependencies_as_source: bool,
@@ -285,4 +306,104 @@ fn join_path_buf(lhs: &AbsPath, rhs: &Path) -> AbsPathBuf {
         panic!("non utf8 input: {}", rhs.display())
     };
     lhs.join(path)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn rejects_configuration_only_cli_options() {
+        for flag in [
+            "--cargo-target",
+            "--trap-compression",
+            "--force-library-mode",
+        ] {
+            let err = CliConfig::try_parse_from(["extractor", flag])
+                .err()
+                .unwrap();
+            assert_eq!(err.kind(), clap::error::ErrorKind::UnknownArgument);
+        }
+    }
+
+    #[test]
+    fn absent_cli_options_preserve_configuration() {
+        let config: Config = Figment::new()
+            .merge(Yaml::string(
+                r#"
+file_list: files.txt
+qltest: true
+logging_verbosity: debug
+"#,
+            ))
+            .merge(Serialized::defaults(
+                CliConfig::try_parse_from(["extractor"]).unwrap(),
+            ))
+            .extract()
+            .unwrap();
+
+        assert_eq!(config.file_list, Some(PathBuf::from("files.txt")));
+        assert!(config.qltest);
+        assert_eq!(config.logging_verbosity.as_deref(), Some("debug"));
+        assert_eq!(config.trap_compression, Compression::Zstd);
+        assert!(config.cargo_features.is_empty());
+        assert!(config.cargo_extra_env.is_empty());
+    }
+
+    #[test]
+    fn explicit_cli_options_override_configuration() {
+        let config: Config = Figment::new()
+            .merge(Yaml::string(
+                r#"
+file_list: original.txt
+qltest: false
+logging_verbosity: off
+"#,
+            ))
+            .merge(Serialized::defaults(
+                CliConfig::try_parse_from([
+                    "extractor",
+                    "--file-list",
+                    "selected.txt",
+                    "--qltest",
+                    "--logging-verbosity=progress+",
+                ])
+                .unwrap(),
+            ))
+            .extract()
+            .unwrap();
+
+        assert_eq!(config.file_list, Some(PathBuf::from("selected.txt")));
+        assert!(config.qltest);
+        assert_eq!(config.logging_verbosity.as_deref(), Some("progress+"));
+    }
+
+    #[test]
+    fn preserves_custom_configuration_deserializers() {
+        let config: Config = Figment::new()
+            .merge(Yaml::string(
+                r#"
+cargo_features: default,extra
+cargo_cfg_overrides: "foo\n-bar"
+cargo_extra_env: SET=value,UNSET
+cargo_extra_args: ["--offline"]
+qltest_dependencies: ["serde"]
+build_script_command: cargo,check
+extra_includes: ["generated"]
+trap_compression: none
+"#,
+            ))
+            .extract()
+            .unwrap();
+
+        assert_eq!(config.cargo_features, ["default", "extra"]);
+        assert_eq!(config.cargo_cfg_overrides, ["foo", "-bar"]);
+        assert_eq!(config.cargo_extra_env["SET"].as_deref(), Some("value"));
+        assert_eq!(config.cargo_extra_env["UNSET"], None);
+        assert_eq!(config.cargo_extra_args, ["--offline"]);
+        assert_eq!(config.qltest_dependencies, ["serde"]);
+        assert_eq!(config.build_script_command, ["cargo", "check"]);
+        assert_eq!(config.extra_includes, [PathBuf::from("generated")]);
+        assert_eq!(config.trap_compression, Compression::None);
+    }
 }

@@ -11,7 +11,6 @@ members = [
     "unified/extractor",
     "unified/swift-syntax-rs",
     "rust/extractor",
-    "rust/extractor/macros",
     "rust/ast-generator",
     "rust/autobuild",
 ]
