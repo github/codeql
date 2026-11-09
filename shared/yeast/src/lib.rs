@@ -20,6 +20,17 @@ pub use yeast_macros::{query, rule, rules, tree, trees};
 use captures::{Captures, TranslatedCaptures};
 use query::QueryNode;
 
+/// Private payload for translation failures that should become file-level
+/// errors without invoking Rust's panic hook. [`Runner::run_once`] catches this
+/// payload; unexpected panics keep their normal hook output.
+#[derive(Debug)]
+struct TranslationFailure(String);
+
+/// Unwind a deliberate translation failure without printing it as a panic.
+pub(crate) fn translation_failure(message: impl Into<String>) -> ! {
+    std::panic::resume_unwind(Box::new(TranslationFailure(message.into())))
+}
+
 impl From<tree_sitter::Point> for Point {
     fn from(p: tree_sitter::Point) -> Self {
         Point {
@@ -1145,7 +1156,7 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
         output: &mut OutputAst,
         user_ctx: &mut C,
         id: Id,
-    ) -> Result<Vec<OutputId>, String> {
+    ) -> Vec<OutputId> {
         apply_rules_inner(
             self.index,
             ast,
@@ -1163,10 +1174,10 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
         output: &mut OutputAst,
         user_ctx: &mut C,
         skip: &[&str],
-    ) -> Result<TranslatedCaptures, String> {
-        captures.try_translate_except(skip, |id| {
+    ) -> TranslatedCaptures {
+        captures.translate_except(skip, |id| {
             if id == self.matched_root {
-                Err("cannot eagerly translate a capture of the matched rule root".to_string())
+                translation_failure("cannot eagerly translate a capture of the matched rule root")
             } else {
                 self.translate(ast, output, user_ctx, id)
             }
@@ -1178,7 +1189,7 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
 ///
 /// Takes the immutable input AST, mutable output AST, raw captured variables,
 /// source range of the matched node, mutable user context, and a
-/// [`TranslatorHandle`]. Returns output IDs or an error.
+/// [`TranslatorHandle`]. Returns output IDs.
 ///
 /// Transforms receive raw input captures. Macro-generated transforms eagerly
 /// translate `@` captures and translate raw ids when they are returned or
@@ -1191,7 +1202,7 @@ pub type Transform<C = ()> = Box<
             Option<Range>,
             &mut C,
             TranslatorHandle<'_, C>,
-        ) -> Result<Vec<OutputId>, String>
+        ) -> Vec<OutputId>
         + Send
         + Sync,
 >;
@@ -1200,7 +1211,7 @@ pub type Transform<C = ()> = Box<
 /// runs. Returning `false` makes the rule behave as if its query did not
 /// match, so the driver continues to the next rule. Guards have read-only
 /// access to the shared user context.
-pub type Guard<C = ()> = Box<dyn Fn(&Ast, &Captures, &C) -> Result<bool, String> + Send + Sync>;
+pub type Guard<C = ()> = Box<dyn Fn(&Ast, &Captures, &C) -> bool + Send + Sync>;
 
 pub struct Rule<C = ()> {
     query: QueryNode,
@@ -1238,21 +1249,21 @@ impl<C> Rule<C> {
     /// Attempt to match this rule's query against `node`, returning the raw
     /// captures on success. Does not evaluate the guard or invoke the
     /// transform.
-    fn match_query(&self, ast: &Ast, node: Id) -> Result<Option<Captures>, String> {
+    fn match_query(&self, ast: &Ast, node: Id) -> Option<Captures> {
         let mut captures = Captures::new();
-        if !self.query.do_match(ast, node, &mut captures)? {
-            return Ok(None);
+        if !self.query.do_match(ast, node, &mut captures) {
+            return None;
         }
-        Ok(Some(captures))
+        Some(captures)
     }
 
     /// Evaluate this rule's guard against a successful query match. An
     /// unguarded rule always succeeds.
-    fn guard_matches(&self, ast: &Ast, captures: &Captures, user_ctx: &C) -> Result<bool, String> {
+    fn guard_matches(&self, ast: &Ast, captures: &Captures, user_ctx: &C) -> bool {
         if let Some(guard) = &self.guard {
             guard(ast, captures, user_ctx)
         } else {
-            Ok(true)
+            true
         }
     }
 
@@ -1266,7 +1277,7 @@ impl<C> Rule<C> {
         node: Id,
         user_ctx: &mut C,
         translator: TranslatorHandle<'_, C>,
-    ) -> Result<Vec<OutputId>, String> {
+    ) -> Vec<OutputId> {
         let source_range = ast.source_range_ignoring_fields(node, &self.ignored_location_fields);
         (self.transform)(ast, output, captures, source_range, user_ctx, translator)
     }
@@ -1306,14 +1317,14 @@ impl<'a, C> RuleIndex<'a, C> {
 
 /// Apply the first matching rule to each visited node. Recursion proceeds
 /// only through captured nodes (not through the input node's children
-/// directly), and an error is returned if no rule matches a visited node.
+/// directly), and panics if no rule matches a visited node.
 fn apply_rules<C: Clone>(
     rules: &[Rule<C>],
     ast: &Ast,
     output: &mut OutputAst,
     user_ctx: &mut C,
     id: Id,
-) -> Result<Vec<OutputId>, String> {
+) -> Vec<OutputId> {
     let index = RuleIndex::new(rules);
     apply_rules_inner(&index, ast, output, user_ctx, id, 0)
 }
@@ -1325,9 +1336,9 @@ fn apply_rules_inner<C: Clone>(
     user_ctx: &mut C,
     id: Id,
     rewrite_depth: usize,
-) -> Result<Vec<OutputId>, String> {
+) -> Vec<OutputId> {
     if rewrite_depth > MAX_REWRITE_DEPTH {
-        return Err(format!(
+        translation_failure(format!(
             "Desugaring exceeded maximum rewrite depth ({MAX_REWRITE_DEPTH}). \
              This likely indicates a non-terminating rule cycle."
         ));
@@ -1336,11 +1347,11 @@ fn apply_rules_inner<C: Clone>(
     let node_kind = ast.get_node(id).map(|n| n.kind_name()).unwrap_or("");
 
     for rule in index.rules_for_kind(node_kind) {
-        let Some(captures) = rule.match_query(ast, id)? else {
+        let Some(captures) = rule.match_query(ast, id) else {
             continue;
         };
 
-        if !rule.guard_matches(ast, &captures, user_ctx)? {
+        if !rule.guard_matches(ast, &captures, user_ctx) {
             continue;
         }
 
@@ -1355,11 +1366,11 @@ fn apply_rules_inner<C: Clone>(
             rewrite_depth,
             matched_root: id,
         };
-        let result = rule.run_transform(ast, output, captures, id, &mut local, translator)?;
-        return Ok(result);
+        let result = rule.run_transform(ast, output, captures, id, &mut local, translator);
+        return result;
     }
 
-    Err(format!("no rule matched node of kind '{node_kind}'"))
+    translation_failure(format!("no rule matched node of kind '{node_kind}'"))
 }
 
 /// A named bundle of exhaustive rules for the one-shot translation pass.
@@ -1617,23 +1628,42 @@ impl<'a, C: Clone> Runner<'a, C> {
     }
 
     fn run_once(&self, ast: Ast, user_ctx: &mut C) -> Result<OutputAst, String> {
+        match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            self.run_once_inner(ast, user_ctx)
+        })) {
+            Ok(output) => Ok(output),
+            Err(payload) => match payload.downcast::<TranslationFailure>() {
+                Ok(failure) => Err(failure.0),
+                Err(payload) => {
+                    let message = if let Some(message) = payload.downcast_ref::<&str>() {
+                        (*message).to_owned()
+                    } else if let Some(message) = payload.downcast_ref::<String>() {
+                        message.clone()
+                    } else {
+                        "unknown panic payload".to_owned()
+                    };
+                    Err(format!("YEAST translation panicked: {message}"))
+                }
+            },
+        }
+    }
+
+    fn run_once_inner(&self, ast: Ast, user_ctx: &mut C) -> OutputAst {
         if self.phases.len() != 1 {
-            return Err("YEAST requires exactly one translation phase".to_string());
+            translation_failure("YEAST requires exactly one translation phase");
         }
         let phase = &self.phases[0];
         let mut output = OutputAst::with_schema(self.schema.clone());
-        let res = apply_rules(&phase.rules, &ast, &mut output, user_ctx, ast.get_root())
-            .map_err(|e| format!("Phase `{}`: {e}", phase.name))?;
+        let res = apply_rules(&phase.rules, &ast, &mut output, user_ctx, ast.get_root());
         if res.len() != 1 {
-            return Err(format!(
-                "Phase `{}`: expected exactly one result node, got {}",
-                phase.name,
+            translation_failure(format!(
+                "expected exactly one result node, got {}",
                 res.len()
             ));
         }
         output.set_root(res[0]);
         output.set_source(ast.into_source());
-        Ok(output)
+        output
     }
 }
 
