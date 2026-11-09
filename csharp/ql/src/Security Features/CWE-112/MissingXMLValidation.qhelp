@@ -30,6 +30,10 @@ user.</li>
 schema location for validation, allowing a malicious user to bypass the known schema validation.
 </li>
 </ul>
+<p>
+These properties can be configured with an object initializer or with property assignments.
+Disabling DTD processing or external entity resolution does not replace schema validation.
+</p>
 
 </recommendation>
 

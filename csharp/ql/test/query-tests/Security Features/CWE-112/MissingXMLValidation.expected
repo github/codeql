@@ -1,34 +1,129 @@
 #select
-| MissingXMLValidation.cs:16:26:16:58 | object creation of type StringReader | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:16:26:16:58 | object creation of type StringReader | This XML processing depends on a $@ without validation because there is no 'XmlReaderSettings' instance specifying schema validation. | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString | user-provided value |
-| MissingXMLValidation.cs:21:26:21:58 | object creation of type StringReader | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:21:26:21:58 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance does not specify the 'ValidationType' as 'Schema'. | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString | user-provided value |
-| MissingXMLValidation.cs:27:26:27:58 | object creation of type StringReader | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:27:26:27:58 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance does not specify the 'ValidationType' as 'Schema'. | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString | user-provided value |
-| MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance specifies 'ProcessInlineSchema'. | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString | user-provided value |
-| MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance specifies 'ProcessSchemaLocation'. | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:17:26:17:58 | object creation of type StringReader | MissingXMLValidation.cs:13:34:13:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:17:26:17:58 | object creation of type StringReader | This XML processing depends on a $@ without validation because there is no 'XmlReaderSettings' instance specifying schema validation. | MissingXMLValidation.cs:13:34:13:56 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:22:26:22:58 | object creation of type StringReader | MissingXMLValidation.cs:13:34:13:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:22:26:22:58 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance is not known to enforce schema validation. | MissingXMLValidation.cs:13:34:13:56 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:28:26:28:58 | object creation of type StringReader | MissingXMLValidation.cs:13:34:13:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:28:26:28:58 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance is not known to enforce schema validation. | MissingXMLValidation.cs:13:34:13:56 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:46:26:46:58 | object creation of type StringReader | MissingXMLValidation.cs:13:34:13:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:46:26:46:58 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance specifies 'ProcessInlineSchema'. | MissingXMLValidation.cs:13:34:13:56 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:46:26:46:58 | object creation of type StringReader | MissingXMLValidation.cs:13:34:13:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:46:26:46:58 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance specifies 'ProcessSchemaLocation'. | MissingXMLValidation.cs:13:34:13:56 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:72:26:72:46 | object creation of type StringReader | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:72:26:72:46 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance specifies 'ProcessInlineSchema'. | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:79:26:79:46 | object creation of type StringReader | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:79:26:79:46 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance specifies 'ProcessSchemaLocation'. | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:86:26:86:46 | object creation of type StringReader | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:86:26:86:46 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance is not known to enforce schema validation. | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:93:26:93:46 | object creation of type StringReader | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:93:26:93:46 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance is not known to enforce schema validation. | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:100:26:100:46 | object creation of type StringReader | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:100:26:100:46 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance is not known to enforce schema validation. | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:108:26:108:46 | object creation of type StringReader | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:108:26:108:46 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance is not known to enforce schema validation. | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:116:26:116:46 | object creation of type StringReader | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:116:26:116:46 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance is not known to enforce schema validation. | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:124:26:124:46 | object creation of type StringReader | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:124:26:124:46 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance is not known to enforce schema validation. | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:132:26:132:46 | object creation of type StringReader | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:132:26:132:46 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance is not known to enforce schema validation. | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:136:26:136:46 | object creation of type StringReader | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:136:26:136:46 | object creation of type StringReader | This XML processing depends on a $@ without validation because the 'XmlReaderSettings' instance is not known to enforce schema validation. | MissingXMLValidation.cs:59:22:59:44 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:167:26:167:31 | access to local variable stream | MissingXMLValidation.cs:160:61:160:83 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:167:26:167:31 | access to local variable stream | This XML processing depends on a $@ without validation because there is no 'XmlReaderSettings' instance specifying schema validation. | MissingXMLValidation.cs:160:61:160:83 | access to property QueryString | user-provided value |
+| MissingXMLValidation.cs:170:26:170:37 | access to field Null | MissingXMLValidation.cs:169:64:169:86 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:170:26:170:37 | access to field Null | This XML processing depends on a $@ without validation because there is no 'XmlReaderSettings' instance specifying schema validation. | MissingXMLValidation.cs:169:64:169:86 | access to property QueryString | user-provided value |
 edges
-| MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:16:43:16:57 | access to local variable userProvidedXml : String | provenance |  |
-| MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:21:43:21:57 | access to local variable userProvidedXml : String | provenance |  |
-| MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:27:43:27:57 | access to local variable userProvidedXml : String | provenance |  |
-| MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:45:43:45:57 | access to local variable userProvidedXml : String | provenance |  |
-| MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | provenance |  |
-| MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:12:34:12:75 | access to indexer : String | provenance | MaD:1 |
-| MissingXMLValidation.cs:12:34:12:75 | access to indexer : String | MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | provenance |  |
-| MissingXMLValidation.cs:16:43:16:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:16:26:16:58 | object creation of type StringReader | provenance | MaD:2 |
-| MissingXMLValidation.cs:21:43:21:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:21:26:21:58 | object creation of type StringReader | provenance | MaD:2 |
-| MissingXMLValidation.cs:27:43:27:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:27:26:27:58 | object creation of type StringReader | provenance | MaD:2 |
-| MissingXMLValidation.cs:45:43:45:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | provenance | MaD:2 |
+| MissingXMLValidation.cs:13:16:13:30 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:17:43:17:57 | access to local variable userProvidedXml : String | provenance |  |
+| MissingXMLValidation.cs:13:16:13:30 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:22:43:22:57 | access to local variable userProvidedXml : String | provenance |  |
+| MissingXMLValidation.cs:13:16:13:30 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:28:43:28:57 | access to local variable userProvidedXml : String | provenance |  |
+| MissingXMLValidation.cs:13:16:13:30 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:46:43:46:57 | access to local variable userProvidedXml : String | provenance |  |
+| MissingXMLValidation.cs:13:34:13:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:13:16:13:30 | access to local variable userProvidedXml : String | provenance |  |
+| MissingXMLValidation.cs:13:34:13:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:13:34:13:75 | access to indexer : String | provenance | MaD:1 |
+| MissingXMLValidation.cs:13:34:13:75 | access to indexer : String | MissingXMLValidation.cs:13:16:13:30 | access to local variable userProvidedXml : String | provenance |  |
+| MissingXMLValidation.cs:17:43:17:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:17:26:17:58 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:22:43:22:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:22:26:22:58 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:28:43:28:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:28:26:28:58 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:46:43:46:57 | access to local variable userProvidedXml : String | MissingXMLValidation.cs:46:26:46:58 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:59:16:59:18 | access to local variable xml : String | MissingXMLValidation.cs:72:43:72:45 | access to local variable xml : String | provenance |  |
+| MissingXMLValidation.cs:59:16:59:18 | access to local variable xml : String | MissingXMLValidation.cs:79:43:79:45 | access to local variable xml : String | provenance |  |
+| MissingXMLValidation.cs:59:16:59:18 | access to local variable xml : String | MissingXMLValidation.cs:86:43:86:45 | access to local variable xml : String | provenance |  |
+| MissingXMLValidation.cs:59:16:59:18 | access to local variable xml : String | MissingXMLValidation.cs:93:43:93:45 | access to local variable xml : String | provenance |  |
+| MissingXMLValidation.cs:59:16:59:18 | access to local variable xml : String | MissingXMLValidation.cs:100:43:100:45 | access to local variable xml : String | provenance |  |
+| MissingXMLValidation.cs:59:16:59:18 | access to local variable xml : String | MissingXMLValidation.cs:108:43:108:45 | access to local variable xml : String | provenance |  |
+| MissingXMLValidation.cs:59:16:59:18 | access to local variable xml : String | MissingXMLValidation.cs:116:43:116:45 | access to local variable xml : String | provenance |  |
+| MissingXMLValidation.cs:59:16:59:18 | access to local variable xml : String | MissingXMLValidation.cs:124:43:124:45 | access to local variable xml : String | provenance |  |
+| MissingXMLValidation.cs:59:16:59:18 | access to local variable xml : String | MissingXMLValidation.cs:132:43:132:45 | access to local variable xml : String | provenance |  |
+| MissingXMLValidation.cs:59:16:59:18 | access to local variable xml : String | MissingXMLValidation.cs:136:43:136:45 | access to local variable xml : String | provenance |  |
+| MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:59:16:59:18 | access to local variable xml : String | provenance |  |
+| MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:59:22:59:51 | access to indexer : String | provenance | MaD:1 |
+| MissingXMLValidation.cs:59:22:59:51 | access to indexer : String | MissingXMLValidation.cs:59:16:59:18 | access to local variable xml : String | provenance |  |
+| MissingXMLValidation.cs:72:43:72:45 | access to local variable xml : String | MissingXMLValidation.cs:72:26:72:46 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:79:43:79:45 | access to local variable xml : String | MissingXMLValidation.cs:79:26:79:46 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:86:43:86:45 | access to local variable xml : String | MissingXMLValidation.cs:86:26:86:46 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:93:43:93:45 | access to local variable xml : String | MissingXMLValidation.cs:93:26:93:46 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:100:43:100:45 | access to local variable xml : String | MissingXMLValidation.cs:100:26:100:46 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:108:43:108:45 | access to local variable xml : String | MissingXMLValidation.cs:108:26:108:46 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:116:43:116:45 | access to local variable xml : String | MissingXMLValidation.cs:116:26:116:46 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:124:43:124:45 | access to local variable xml : String | MissingXMLValidation.cs:124:26:124:46 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:132:43:132:45 | access to local variable xml : String | MissingXMLValidation.cs:132:26:132:46 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:136:43:136:45 | access to local variable xml : String | MissingXMLValidation.cs:136:26:136:46 | object creation of type StringReader | provenance | MaD:4 |
+| MissingXMLValidation.cs:160:13:160:17 | access to local variable input : MemoryStream | MissingXMLValidation.cs:165:9:165:13 | access to local variable input : MemoryStream | provenance |  |
+| MissingXMLValidation.cs:160:21:160:92 | object creation of type MemoryStream : MemoryStream | MissingXMLValidation.cs:160:13:160:17 | access to local variable input : MemoryStream | provenance |  |
+| MissingXMLValidation.cs:160:38:160:91 | call to method GetBytes : Byte[] | MissingXMLValidation.cs:160:21:160:92 | object creation of type MemoryStream : MemoryStream | provenance | MaD:2 |
+| MissingXMLValidation.cs:160:61:160:83 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:160:61:160:90 | access to indexer : String | provenance |  |
+| MissingXMLValidation.cs:160:61:160:83 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:160:61:160:90 | access to indexer : String | provenance | MaD:1 |
+| MissingXMLValidation.cs:160:61:160:90 | access to indexer : String | MissingXMLValidation.cs:160:38:160:91 | call to method GetBytes : Byte[] | provenance | MaD:5 |
+| MissingXMLValidation.cs:165:9:165:13 | access to local variable input : MemoryStream | MissingXMLValidation.cs:165:22:165:27 | [post] access to local variable stream : MemoryStream | provenance | MaD:3 |
+| MissingXMLValidation.cs:165:22:165:27 | [post] access to local variable stream : MemoryStream | MissingXMLValidation.cs:166:9:166:14 | access to local variable stream : MemoryStream | provenance |  |
+| MissingXMLValidation.cs:166:9:166:14 | access to local variable stream : MemoryStream | MissingXMLValidation.cs:167:26:167:31 | access to local variable stream | provenance |  |
+| MissingXMLValidation.cs:169:9:169:20 | access to field Null : MemoryStream | MissingXMLValidation.cs:170:26:170:37 | access to field Null | provenance |  |
+| MissingXMLValidation.cs:169:24:169:100 | object creation of type MemoryStream : MemoryStream | MissingXMLValidation.cs:169:9:169:20 | access to field Null : MemoryStream | provenance |  |
+| MissingXMLValidation.cs:169:41:169:99 | call to method GetBytes : Byte[] | MissingXMLValidation.cs:169:24:169:100 | object creation of type MemoryStream : MemoryStream | provenance | MaD:2 |
+| MissingXMLValidation.cs:169:64:169:86 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:169:64:169:98 | access to indexer : String | provenance |  |
+| MissingXMLValidation.cs:169:64:169:86 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:169:64:169:98 | access to indexer : String | provenance | MaD:1 |
+| MissingXMLValidation.cs:169:64:169:98 | access to indexer : String | MissingXMLValidation.cs:169:41:169:99 | call to method GetBytes : Byte[] | provenance | MaD:5 |
 models
 | 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
-| 2 | Summary: System.IO; StringReader; false; StringReader; (System.String); ; Argument[0]; Argument[this]; taint; manual |
+| 2 | Summary: System.IO; MemoryStream; false; MemoryStream; (System.Byte[]); ; Argument[0].Element; Argument[this]; taint; manual |
+| 3 | Summary: System.IO; Stream; false; CopyTo; (System.IO.Stream); ; Argument[this]; Argument[0]; taint; manual |
+| 4 | Summary: System.IO; StringReader; false; StringReader; (System.String); ; Argument[0]; Argument[this]; taint; manual |
+| 5 | Summary: System.Text; Encoding; true; GetBytes; (System.String); ; Argument[0]; ReturnValue; taint; manual |
 nodes
-| MissingXMLValidation.cs:12:16:12:30 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
-| MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| MissingXMLValidation.cs:12:34:12:75 | access to indexer : String | semmle.label | access to indexer : String |
-| MissingXMLValidation.cs:16:26:16:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
-| MissingXMLValidation.cs:16:43:16:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
-| MissingXMLValidation.cs:21:26:21:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
-| MissingXMLValidation.cs:21:43:21:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
-| MissingXMLValidation.cs:27:26:27:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
-| MissingXMLValidation.cs:27:43:27:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
-| MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
-| MissingXMLValidation.cs:45:43:45:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:13:16:13:30 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:13:34:13:56 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| MissingXMLValidation.cs:13:34:13:75 | access to indexer : String | semmle.label | access to indexer : String |
+| MissingXMLValidation.cs:17:26:17:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:17:43:17:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:22:26:22:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:22:43:22:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:28:26:28:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:28:43:28:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:46:26:46:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:46:43:46:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
+| MissingXMLValidation.cs:59:16:59:18 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| MissingXMLValidation.cs:59:22:59:51 | access to indexer : String | semmle.label | access to indexer : String |
+| MissingXMLValidation.cs:72:26:72:46 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:72:43:72:45 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| MissingXMLValidation.cs:79:26:79:46 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:79:43:79:45 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| MissingXMLValidation.cs:86:26:86:46 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:86:43:86:45 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| MissingXMLValidation.cs:93:26:93:46 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:93:43:93:45 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| MissingXMLValidation.cs:100:26:100:46 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:100:43:100:45 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| MissingXMLValidation.cs:108:26:108:46 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:108:43:108:45 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| MissingXMLValidation.cs:116:26:116:46 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:116:43:116:45 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| MissingXMLValidation.cs:124:26:124:46 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:124:43:124:45 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| MissingXMLValidation.cs:132:26:132:46 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:132:43:132:45 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| MissingXMLValidation.cs:136:26:136:46 | object creation of type StringReader | semmle.label | object creation of type StringReader |
+| MissingXMLValidation.cs:136:43:136:45 | access to local variable xml : String | semmle.label | access to local variable xml : String |
+| MissingXMLValidation.cs:160:13:160:17 | access to local variable input : MemoryStream | semmle.label | access to local variable input : MemoryStream |
+| MissingXMLValidation.cs:160:21:160:92 | object creation of type MemoryStream : MemoryStream | semmle.label | object creation of type MemoryStream : MemoryStream |
+| MissingXMLValidation.cs:160:38:160:91 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
+| MissingXMLValidation.cs:160:61:160:83 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| MissingXMLValidation.cs:160:61:160:90 | access to indexer : String | semmle.label | access to indexer : String |
+| MissingXMLValidation.cs:165:9:165:13 | access to local variable input : MemoryStream | semmle.label | access to local variable input : MemoryStream |
+| MissingXMLValidation.cs:165:22:165:27 | [post] access to local variable stream : MemoryStream | semmle.label | [post] access to local variable stream : MemoryStream |
+| MissingXMLValidation.cs:166:9:166:14 | access to local variable stream : MemoryStream | semmle.label | access to local variable stream : MemoryStream |
+| MissingXMLValidation.cs:167:26:167:31 | access to local variable stream | semmle.label | access to local variable stream |
+| MissingXMLValidation.cs:169:9:169:20 | access to field Null : MemoryStream | semmle.label | access to field Null : MemoryStream |
+| MissingXMLValidation.cs:169:24:169:100 | object creation of type MemoryStream : MemoryStream | semmle.label | object creation of type MemoryStream : MemoryStream |
+| MissingXMLValidation.cs:169:41:169:99 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
+| MissingXMLValidation.cs:169:64:169:86 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| MissingXMLValidation.cs:169:64:169:98 | access to indexer : String | semmle.label | access to indexer : String |
+| MissingXMLValidation.cs:170:26:170:37 | access to field Null | semmle.label | access to field Null |
 subpaths
+testFailures
+| MissingXMLValidation.cs:59:22:59:44 | access to property QueryString : NameValueCollection | Unexpected result: Source |
+| MissingXMLValidation.cs:160:61:160:83 | access to property QueryString : NameValueCollection | Unexpected result: Source |
+| MissingXMLValidation.cs:169:64:169:86 | access to property QueryString : NameValueCollection | Unexpected result: Source |

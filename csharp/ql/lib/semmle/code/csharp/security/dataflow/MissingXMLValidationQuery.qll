@@ -7,6 +7,7 @@ import csharp
 private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.Xml
+private import semmle.code.csharp.frameworks.system.IO
 private import semmle.code.csharp.security.Sanitizers
 
 /**
@@ -61,6 +62,51 @@ deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource
  */
 class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
+private predicate hasUnknownSettingsUse(XmlReaderSettingsCreation creation) {
+  exists(Expr use, Call call |
+    DataFlow::localExprFlow(creation, use) and
+    (
+      use = call.getAnArgument() and
+      not use = call.(XmlReaderCreateCall).getArgumentForName("settings")
+      or
+      use = call.(MethodCall).getQualifier()
+    )
+  )
+  or
+  exists(LocalVariable variable, VariableAccess use |
+    DataFlow::localExprFlow(creation, variable.getAnAccess()) and
+    use = variable.getAnAccess() and
+    use.getEnclosingCallable() != creation.getEnclosingCallable()
+  )
+  or
+  exists(AssignExpr assignment |
+    DataFlow::localExprFlow(creation, assignment.getRightOperand()) and
+    not assignment.getLeftOperand().(VariableAccess).getTarget() instanceof LocalVariable
+  )
+}
+
+private predicate specifiesSchemaValidation(
+  XmlReaderSettingsCreation creation, XmlReaderCreateCall createCall
+) {
+  creation.getValidationType().hasName("Schema") and
+  not exists(Expr value |
+    value = creation.getAValidationTypeValue() and
+    not value = any(SystemXmlValidationType schema | schema.hasName("Schema")).getAnAccess()
+  ) and
+  (
+    not exists(creation.getInitializer())
+    or
+    creation.getEnclosingCallable() = createCall.getEnclosingCallable() and
+    DataFlow::localExprFlow(creation, createCall.getSettings()) and
+    not hasUnknownSettingsUse(creation) and
+    not exists(Expr value |
+      value = creation.getAValidationFlagValue() and
+      not value instanceof BitwiseOrOperation and
+      not value = any(SystemXmlSchemaXmlSchemaValidationFlags flag).getAnAccess()
+    )
+  )
+}
+
 /**
  * The input argument to a call to `XmlReader.Create` where the input will not be validated against
  * a schema.
@@ -85,11 +131,11 @@ class XmlReaderCreateCallSink extends Sink {
     //       internally); or
     //     - The ProcessSchemaLocation option is set (this allows the document to reference a
     //       schema by location that this document will validate against).
-    result = "the 'XmlReaderSettings' instance does not specify the 'ValidationType' as 'Schema'." and
+    result = "the 'XmlReaderSettings' instance is not known to enforce schema validation." and
     exists(XmlReaderSettingsCreation settingsCreation |
       settingsCreation = createCall.getSettings().getASettingsCreation()
     |
-      not settingsCreation.getValidationType().hasName("Schema")
+      not specifiesSchemaValidation(settingsCreation, createCall)
     )
     or
     exists(string badValidationFlag |
@@ -109,3 +155,13 @@ class XmlReaderCreateCallSink extends Sink {
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 
 private class GuidSanitizer extends Sanitizer, GuidSanitizedExpr { }
+
+private class NullStreamSanitizer extends Sanitizer {
+  NullStreamSanitizer() {
+    exists(FieldAccess access |
+      this.getExpr() = access and
+      access.getTarget().getDeclaringType() instanceof SystemIOStreamClass and
+      access.getTarget().hasName("Null")
+    )
+  }
+}

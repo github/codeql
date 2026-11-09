@@ -141,23 +141,43 @@ class XmlReaderSettingsCreation extends ObjectCreation {
 
   /** Gets a value set on the `ValidationType` property, if any. */
   SystemXmlValidationType getValidationType() {
-    result.getAnAccess() =
+    result.getAnAccess() = this.getAValidationTypeValue()
+  }
+
+  /** Gets an expression assigned to the `ValidationType` property in this local context. */
+  Expr getAValidationTypeValue() {
+    result =
       this.getPropertyValue(any(SystemXmlXmlReaderSettingsClass s).getValidationTypeProperty())
   }
 
   /** Gets a flag set on the `ValidationFlags` property, if any. */
   SystemXmlSchemaXmlSchemaValidationFlags getAValidationFlag() {
-    result.getAnAccess() =
+    result.getAnAccess() = this.getAValidationFlagValue()
+  }
+
+  /** Gets an expression assigned to the `ValidationFlags` property in this local context. */
+  Expr getAValidationFlagValue() {
+    result =
       this.getPropertyValue(any(SystemXmlXmlReaderSettingsClass s).getValidationFlagsProperty())
   }
 
   /** Gets a value set for the given property in this local context. */
   private Expr getPropertyValue(Property p) {
     p = settings.getAProperty() and
-    exists(PropertyCall set, Expr arg |
-      set.getTarget() = p.getSetter() and
-      DataFlow::localExprFlow(this, set.getQualifier()) and
-      arg = set.getAnArgument() and
+    exists(Expr arg |
+      (
+        exists(PropertyCall set |
+          set.getTarget() = p.getSetter() and
+          DataFlow::localExprFlow(this, set.getQualifier()) and
+          arg = set.getAnArgument()
+        )
+        or
+        exists(MemberInitializer initializer |
+          initializer = this.getInitializer().(ObjectInitializer).getAMemberInitializer() and
+          initializer.getInitializedMember() = p and
+          arg = initializer.getRightOperand()
+        )
+      ) and
       result = getBitwiseOrOperand*(arg)
     )
   }
