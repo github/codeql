@@ -17,6 +17,7 @@
 """
 
 load("@bazel_skylib//lib:selects.bzl", "selects")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@rules_rust//crate_universe:defs.bzl", "crates_vendor_remote_repository")
@@ -313,6 +314,10 @@ def aliases(
 ###############################################################################
 
 _CRATE_EDITIONS = {
+    "cpp/extractor/bmn": "2024",
+    "ql/buramu": "2021",
+    "ql/buramu/tree-sitter-blame": "2021",
+    "ql/extractor": "2021",
     "ruby/extractor": "2024",
     "rust/ast-generator": "2024",
     "rust/autobuild": "2024",
@@ -323,10 +328,58 @@ _CRATE_EDITIONS = {
     "shared/yeast-macros": "2021",
     "shared/yeast-schema": "2021",
     "unified/extractor": "2024",
+    "unified/extractor-unsupported-os": "2024",
     "unified/swift-syntax-rs": "2024",
 }
 
 _NORMAL_DEPENDENCIES = {
+    "cpp/extractor/bmn": {
+        _COMMON_CONDITION: {
+            "all_asserts": Label("@vendor_ts//all_asserts-2.3.4"),
+            "anyhow": Label("@vendor_ts//anyhow-1.0.104"),
+            "cached": Label("@vendor_ts//cached-0.54.0"),
+            "chrono": Label("@vendor_ts//chrono-0.4.45"),
+            "itertools": Label("@vendor_ts//itertools-0.14.0"),
+            "num_cpus": Label("@vendor_ts//num_cpus-1.17.0"),
+            "os_str_bytes": Label("@vendor_ts//os_str_bytes-7.2.1"),
+            "rayon": Label("@vendor_ts//rayon-1.12.0"),
+            "regex": Label("@vendor_ts//regex-1.13.1"),
+            "serde": Label("@vendor_ts//serde-1.0.229"),
+            "serde_json": Label("@vendor_ts//serde_json-1.0.154"),
+            "serde_with": Label("@vendor_ts//serde_with-1.14.0"),
+            "tempfile": Label("@vendor_ts//tempfile-3.27.0"),
+            "walkdir": Label("@vendor_ts//walkdir-2.5.0"),
+            "which": Label("@vendor_ts//which-8.0.6"),
+            "zip": Label("@vendor_ts//zip-9.0.5"),
+        },
+    },
+    "ql/buramu": {
+        _COMMON_CONDITION: {
+            "chrono": Label("@vendor_ts//chrono-0.4.45"),
+            "lazy_static": Label("@vendor_ts//lazy_static-1.5.1"),
+            "rayon": Label("@vendor_ts//rayon-1.12.0"),
+            "regex": Label("@vendor_ts//regex-1.13.1"),
+        },
+    },
+    "ql/buramu/tree-sitter-blame": {
+        _COMMON_CONDITION: {
+            "tree-sitter": Label("@vendor_ts//tree-sitter-0.26.9"),
+            "tree-sitter-language": Label("@vendor_ts//tree-sitter-language-0.1.7"),
+        },
+    },
+    "ql/extractor": {
+        _COMMON_CONDITION: {
+            "clap": Label("@vendor_ts//clap-4.6.7"),
+            "rayon": Label("@vendor_ts//rayon-1.12.0"),
+            "regex": Label("@vendor_ts//regex-1.13.1"),
+            "tracing": Label("@vendor_ts//tracing-0.1.44"),
+            "tracing-subscriber": Label("@vendor_ts//tracing-subscriber-0.3.23"),
+            "tree-sitter": Label("@vendor_ts//tree-sitter-0.26.9"),
+            "tree-sitter-json": Label("@vendor_ts//tree-sitter-json-0.23.0"),
+            "tree-sitter-ql": Label("@vendor_ts//tree-sitter-ql-0.23.1"),
+            "tree-sitter-ql-dbscheme": Label("@vendor_ts//tree-sitter-ql-dbscheme-0.23.0"),
+        },
+    },
     "ruby/extractor": {
         _COMMON_CONDITION: {
             "clap": Label("@vendor_ts//clap-4.6.7"),
@@ -458,11 +511,29 @@ _NORMAL_DEPENDENCIES = {
             "tracing-subscriber": Label("@vendor_ts//tracing-subscriber-0.3.23"),
         },
     },
+    "unified/extractor-unsupported-os": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
 
 _NORMAL_ALIASES = {
+    "cpp/extractor/bmn": {
+        _COMMON_CONDITION: {
+        },
+    },
+    "ql/buramu": {
+        _COMMON_CONDITION: {
+        },
+    },
+    "ql/buramu/tree-sitter-blame": {
+        _COMMON_CONDITION: {
+        },
+    },
+    "ql/extractor": {
+        _COMMON_CONDITION: {
+        },
+    },
     "ruby/extractor": {
         _COMMON_CONDITION: {
         },
@@ -502,11 +573,21 @@ _NORMAL_ALIASES = {
         _COMMON_CONDITION: {
         },
     },
+    "unified/extractor-unsupported-os": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
 
 _NORMAL_DEV_DEPENDENCIES = {
+    "cpp/extractor/bmn": {
+    },
+    "ql/buramu": {
+    },
+    "ql/buramu/tree-sitter-blame": {
+    },
+    "ql/extractor": {
+    },
     "ruby/extractor": {
     },
     "rust/ast-generator": {
@@ -532,11 +613,21 @@ _NORMAL_DEV_DEPENDENCIES = {
     },
     "unified/extractor": {
     },
+    "unified/extractor-unsupported-os": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
 
 _NORMAL_DEV_ALIASES = {
+    "cpp/extractor/bmn": {
+    },
+    "ql/buramu": {
+    },
+    "ql/buramu/tree-sitter-blame": {
+    },
+    "ql/extractor": {
+    },
     "ruby/extractor": {
     },
     "rust/ast-generator": {
@@ -558,12 +649,22 @@ _NORMAL_DEV_ALIASES = {
     "shared/yeast-schema": {
     },
     "unified/extractor": {
+    },
+    "unified/extractor-unsupported-os": {
     },
     "unified/swift-syntax-rs": {
     },
 }
 
 _PROC_MACRO_DEPENDENCIES = {
+    "cpp/extractor/bmn": {
+    },
+    "ql/buramu": {
+    },
+    "ql/buramu/tree-sitter-blame": {
+    },
+    "ql/extractor": {
+    },
     "ruby/extractor": {
     },
     "rust/ast-generator": {
@@ -583,12 +684,22 @@ _PROC_MACRO_DEPENDENCIES = {
     "shared/yeast-schema": {
     },
     "unified/extractor": {
+    },
+    "unified/extractor-unsupported-os": {
     },
     "unified/swift-syntax-rs": {
     },
 }
 
 _PROC_MACRO_ALIASES = {
+    "cpp/extractor/bmn": {
+    },
+    "ql/buramu": {
+    },
+    "ql/buramu/tree-sitter-blame": {
+    },
+    "ql/extractor": {
+    },
     "ruby/extractor": {
     },
     "rust/ast-generator": {
@@ -608,12 +719,22 @@ _PROC_MACRO_ALIASES = {
     "shared/yeast-schema": {
     },
     "unified/extractor": {
+    },
+    "unified/extractor-unsupported-os": {
     },
     "unified/swift-syntax-rs": {
     },
 }
 
 _PROC_MACRO_DEV_DEPENDENCIES = {
+    "cpp/extractor/bmn": {
+    },
+    "ql/buramu": {
+    },
+    "ql/buramu/tree-sitter-blame": {
+    },
+    "ql/extractor": {
+    },
     "ruby/extractor": {
     },
     "rust/ast-generator": {
@@ -634,11 +755,21 @@ _PROC_MACRO_DEV_DEPENDENCIES = {
     },
     "unified/extractor": {
     },
+    "unified/extractor-unsupported-os": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
 
 _PROC_MACRO_DEV_ALIASES = {
+    "cpp/extractor/bmn": {
+    },
+    "ql/buramu": {
+    },
+    "ql/buramu/tree-sitter-blame": {
+    },
+    "ql/extractor": {
+    },
     "ruby/extractor": {
     },
     "rust/ast-generator": {
@@ -661,11 +792,24 @@ _PROC_MACRO_DEV_ALIASES = {
     },
     "unified/extractor": {
     },
+    "unified/extractor-unsupported-os": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
 
 _BUILD_DEPENDENCIES = {
+    "cpp/extractor/bmn": {
+    },
+    "ql/buramu": {
+    },
+    "ql/buramu/tree-sitter-blame": {
+        _COMMON_CONDITION: {
+            "cc": Label("@vendor_ts//cc-1.4.6"),
+        },
+    },
+    "ql/extractor": {
+    },
     "ruby/extractor": {
     },
     "rust/ast-generator": {
@@ -685,12 +829,24 @@ _BUILD_DEPENDENCIES = {
     "shared/yeast-schema": {
     },
     "unified/extractor": {
+    },
+    "unified/extractor-unsupported-os": {
     },
     "unified/swift-syntax-rs": {
     },
 }
 
 _BUILD_ALIASES = {
+    "cpp/extractor/bmn": {
+    },
+    "ql/buramu": {
+    },
+    "ql/buramu/tree-sitter-blame": {
+        _COMMON_CONDITION: {
+        },
+    },
+    "ql/extractor": {
+    },
     "ruby/extractor": {
     },
     "rust/ast-generator": {
@@ -710,12 +866,22 @@ _BUILD_ALIASES = {
     "shared/yeast-schema": {
     },
     "unified/extractor": {
+    },
+    "unified/extractor-unsupported-os": {
     },
     "unified/swift-syntax-rs": {
     },
 }
 
 _BUILD_PROC_MACRO_DEPENDENCIES = {
+    "cpp/extractor/bmn": {
+    },
+    "ql/buramu": {
+    },
+    "ql/buramu/tree-sitter-blame": {
+    },
+    "ql/extractor": {
+    },
     "ruby/extractor": {
     },
     "rust/ast-generator": {
@@ -735,12 +901,22 @@ _BUILD_PROC_MACRO_DEPENDENCIES = {
     "shared/yeast-schema": {
     },
     "unified/extractor": {
+    },
+    "unified/extractor-unsupported-os": {
     },
     "unified/swift-syntax-rs": {
     },
 }
 
 _BUILD_PROC_MACRO_ALIASES = {
+    "cpp/extractor/bmn": {
+    },
+    "ql/buramu": {
+    },
+    "ql/buramu/tree-sitter-blame": {
+    },
+    "ql/extractor": {
+    },
     "ruby/extractor": {
     },
     "rust/ast-generator": {
@@ -760,6 +936,8 @@ _BUILD_PROC_MACRO_ALIASES = {
     "shared/yeast-schema": {
     },
     "unified/extractor": {
+    },
+    "unified/extractor-unsupported-os": {
     },
     "unified/swift-syntax-rs": {
     },
@@ -784,7 +962,10 @@ _CONDITIONS = {
     "armv7-linux-androideabi": ["@rules_rust//rust/platform:armv7-linux-androideabi"],
     "armv7-unknown-linux-gnueabi": ["@rules_rust//rust/platform:armv7-unknown-linux-gnueabi"],
     "cfg(all(any(target_arch = \"x86_64\", target_arch = \"arm64ec\"), target_env = \"msvc\", not(windows_raw_dylib)))": ["@rules_rust//rust/platform:x86_64-pc-windows-msvc"],
+    "cfg(all(any(target_os = \"linux\", target_os = \"android\"), any(rustix_use_libc, miri, not(all(target_os = \"linux\", any(target_endian = \"little\", any(target_arch = \"s390x\", target_arch = \"powerpc\")), any(target_arch = \"arm\", all(target_arch = \"aarch64\", target_pointer_width = \"64\"), target_arch = \"riscv64\", all(rustix_use_experimental_asm, target_arch = \"powerpc\"), all(rustix_use_experimental_asm, target_arch = \"powerpc64\"), all(rustix_use_experimental_asm, target_arch = \"s390x\"), all(rustix_use_experimental_asm, target_arch = \"mips\"), all(rustix_use_experimental_asm, target_arch = \"mips32r6\"), all(rustix_use_experimental_asm, target_arch = \"mips64\"), all(rustix_use_experimental_asm, target_arch = \"mips64r6\"), target_arch = \"x86\", all(target_arch = \"x86_64\", target_pointer_width = \"64\")))))))": ["@rules_rust//rust/platform:aarch64-linux-android", "@rules_rust//rust/platform:armv7-linux-androideabi", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu", "@rules_rust//rust/platform:mips-unknown-linux-gnu", "@rules_rust//rust/platform:powerpc-unknown-linux-gnu", "@rules_rust//rust/platform:s390x-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-linux-android"],
     "cfg(all(any(target_os = \"linux\", target_os = \"android\"), not(any(all(target_os = \"linux\", target_env = \"\"), getrandom_backend = \"custom\", getrandom_backend = \"linux_raw\", getrandom_backend = \"rdrand\", getrandom_backend = \"rndr\"))))": ["@rules_rust//rust/platform:aarch64-linux-android", "@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu", "@rules_rust//rust/platform:arm-unknown-linux-gnueabi", "@rules_rust//rust/platform:arm-unknown-linux-musleabi", "@rules_rust//rust/platform:armv7-linux-androideabi", "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu", "@rules_rust//rust/platform:mips-unknown-linux-gnu", "@rules_rust//rust/platform:powerpc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu", "@rules_rust//rust/platform:s390x-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-linux-android", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu"],
+    "cfg(all(not(rustix_use_libc), not(miri), target_os = \"linux\", any(target_endian = \"little\", any(target_arch = \"s390x\", target_arch = \"powerpc\")), any(target_arch = \"arm\", all(target_arch = \"aarch64\", target_pointer_width = \"64\"), target_arch = \"riscv64\", all(rustix_use_experimental_asm, target_arch = \"powerpc\"), all(rustix_use_experimental_asm, target_arch = \"powerpc64\"), all(rustix_use_experimental_asm, target_arch = \"s390x\"), all(rustix_use_experimental_asm, target_arch = \"mips\"), all(rustix_use_experimental_asm, target_arch = \"mips32r6\"), all(rustix_use_experimental_asm, target_arch = \"mips64\"), all(rustix_use_experimental_asm, target_arch = \"mips64r6\"), target_arch = \"x86\", all(target_arch = \"x86_64\", target_pointer_width = \"64\"))))": ["@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu", "@rules_rust//rust/platform:arm-unknown-linux-gnueabi", "@rules_rust//rust/platform:arm-unknown-linux-musleabi", "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu"],
+    "cfg(all(not(windows), any(rustix_use_libc, miri, not(all(target_os = \"linux\", any(target_endian = \"little\", any(target_arch = \"s390x\", target_arch = \"powerpc\")), any(target_arch = \"arm\", all(target_arch = \"aarch64\", target_pointer_width = \"64\"), target_arch = \"riscv64\", all(rustix_use_experimental_asm, target_arch = \"powerpc\"), all(rustix_use_experimental_asm, target_arch = \"powerpc64\"), all(rustix_use_experimental_asm, target_arch = \"s390x\"), all(rustix_use_experimental_asm, target_arch = \"mips\"), all(rustix_use_experimental_asm, target_arch = \"mips32r6\"), all(rustix_use_experimental_asm, target_arch = \"mips64\"), all(rustix_use_experimental_asm, target_arch = \"mips64r6\"), target_arch = \"x86\", all(target_arch = \"x86_64\", target_pointer_width = \"64\")))))))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:aarch64-apple-ios", "@rules_rust//rust/platform:aarch64-apple-ios-macabi", "@rules_rust//rust/platform:aarch64-apple-ios-sim", "@rules_rust//rust/platform:aarch64-linux-android", "@rules_rust//rust/platform:aarch64-unknown-fuchsia", "@rules_rust//rust/platform:aarch64-unknown-none", "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710", "@rules_rust//rust/platform:aarch64-unknown-uefi", "@rules_rust//rust/platform:armv7-linux-androideabi", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu", "@rules_rust//rust/platform:mips-unknown-linux-gnu", "@rules_rust//rust/platform:powerpc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv32imac-unknown-none-elf", "@rules_rust//rust/platform:riscv32imc-unknown-none-elf", "@rules_rust//rust/platform:riscv64gc-unknown-fuchsia", "@rules_rust//rust/platform:riscv64gc-unknown-none-elf", "@rules_rust//rust/platform:s390x-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-netbsd", "@rules_rust//rust/platform:sparc64-unknown-openbsd", "@rules_rust//rust/platform:thumbv6m-none-eabi", "@rules_rust//rust/platform:thumbv7em-none-eabi", "@rules_rust//rust/platform:thumbv7em-none-eabihf", "@rules_rust//rust/platform:thumbv7m-none-eabi", "@rules_rust//rust/platform:thumbv8m.main-none-eabi", "@rules_rust//rust/platform:thumbv8m.main-none-eabihf", "@rules_rust//rust/platform:wasm32-unknown-emscripten", "@rules_rust//rust/platform:wasm32-unknown-unknown", "@rules_rust//rust/platform:wasm32-wasip1", "@rules_rust//rust/platform:wasm32-wasip1-threads", "@rules_rust//rust/platform:wasm32-wasip2", "@rules_rust//rust/platform:x86_64-apple-darwin", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-apple-ios-macabi", "@rules_rust//rust/platform:x86_64-linux-android", "@rules_rust//rust/platform:x86_64-unknown-freebsd", "@rules_rust//rust/platform:x86_64-unknown-fuchsia", "@rules_rust//rust/platform:x86_64-unknown-none", "@rules_rust//rust/platform:x86_64-unknown-uefi"],
     "cfg(all(target_arch = \"aarch64\", target_env = \"msvc\", not(windows_raw_dylib)))": ["@rules_rust//rust/platform:aarch64-pc-windows-msvc"],
     "cfg(all(target_arch = \"aarch64\", target_os = \"android\"))": ["@rules_rust//rust/platform:aarch64-linux-android"],
     "cfg(all(target_arch = \"aarch64\", target_os = \"linux\"))": ["@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu"],
@@ -794,20 +975,26 @@ _CONDITIONS = {
     "cfg(all(target_arch = \"x86\", target_env = \"gnu\", not(target_abi = \"llvm\"), not(windows_raw_dylib)))": ["@rules_rust//rust/platform:i686-unknown-linux-gnu"],
     "cfg(all(target_arch = \"x86\", target_env = \"msvc\", not(windows_raw_dylib)))": ["@rules_rust//rust/platform:i686-pc-windows-msvc"],
     "cfg(all(target_arch = \"x86_64\", target_env = \"gnu\", not(target_abi = \"llvm\"), not(windows_raw_dylib)))": ["@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu"],
+    "cfg(all(target_family = \"wasm\", target_os = \"unknown\"))": ["@rules_rust//rust/platform:wasm32-unknown-unknown"],
     "cfg(all(target_os = \"linux\", not(target_env = \"ohos\"), any(target_arch = \"x86\", target_arch = \"x86_64\", target_arch = \"aarch64\")))": ["@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu"],
     "cfg(all(target_os = \"linux\", target_env = \"gnu\"))": ["@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu", "@rules_rust//rust/platform:arm-unknown-linux-gnueabi", "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu", "@rules_rust//rust/platform:mips-unknown-linux-gnu", "@rules_rust//rust/platform:powerpc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu", "@rules_rust//rust/platform:s390x-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu"],
     "cfg(all(target_os = \"uefi\", getrandom_backend = \"efi_rng\"))": [],
     "cfg(any())": [],
+    "cfg(any(target_arch = \"aarch64\", target_arch = \"x86\", target_arch = \"x86_64\"))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:aarch64-apple-ios", "@rules_rust//rust/platform:aarch64-apple-ios-macabi", "@rules_rust//rust/platform:aarch64-apple-ios-sim", "@rules_rust//rust/platform:aarch64-linux-android", "@rules_rust//rust/platform:aarch64-pc-windows-msvc", "@rules_rust//rust/platform:aarch64-unknown-fuchsia", "@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu", "@rules_rust//rust/platform:aarch64-unknown-none", "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710", "@rules_rust//rust/platform:aarch64-unknown-uefi", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-pc-windows-msvc", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-apple-darwin", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-apple-ios-macabi", "@rules_rust//rust/platform:x86_64-linux-android", "@rules_rust//rust/platform:x86_64-pc-windows-msvc", "@rules_rust//rust/platform:x86_64-unknown-freebsd", "@rules_rust//rust/platform:x86_64-unknown-fuchsia", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu", "@rules_rust//rust/platform:x86_64-unknown-none", "@rules_rust//rust/platform:x86_64-unknown-uefi"],
+    "cfg(any(target_arch = \"aarch64\", target_arch = \"x86_64\", target_arch = \"x86\"))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:aarch64-apple-ios", "@rules_rust//rust/platform:aarch64-apple-ios-macabi", "@rules_rust//rust/platform:aarch64-apple-ios-sim", "@rules_rust//rust/platform:aarch64-linux-android", "@rules_rust//rust/platform:aarch64-pc-windows-msvc", "@rules_rust//rust/platform:aarch64-unknown-fuchsia", "@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu", "@rules_rust//rust/platform:aarch64-unknown-none", "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710", "@rules_rust//rust/platform:aarch64-unknown-uefi", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-pc-windows-msvc", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-apple-darwin", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-apple-ios-macabi", "@rules_rust//rust/platform:x86_64-linux-android", "@rules_rust//rust/platform:x86_64-pc-windows-msvc", "@rules_rust//rust/platform:x86_64-unknown-freebsd", "@rules_rust//rust/platform:x86_64-unknown-fuchsia", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu", "@rules_rust//rust/platform:x86_64-unknown-none", "@rules_rust//rust/platform:x86_64-unknown-uefi"],
     "cfg(any(target_arch = \"x86_64\", target_arch = \"x86\"))": ["@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-pc-windows-msvc", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-apple-darwin", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-apple-ios-macabi", "@rules_rust//rust/platform:x86_64-linux-android", "@rules_rust//rust/platform:x86_64-pc-windows-msvc", "@rules_rust//rust/platform:x86_64-unknown-freebsd", "@rules_rust//rust/platform:x86_64-unknown-fuchsia", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu", "@rules_rust//rust/platform:x86_64-unknown-none", "@rules_rust//rust/platform:x86_64-unknown-uefi"],
     "cfg(any(target_os = \"dragonfly\", target_os = \"freebsd\", target_os = \"hurd\", target_os = \"illumos\", target_os = \"cygwin\", all(target_os = \"horizon\", target_arch = \"arm\")))": ["@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:x86_64-unknown-freebsd"],
     "cfg(any(target_os = \"freebsd\", target_os = \"openbsd\", target_os = \"netbsd\", target_os = \"dragonflybsd\", target_os = \"ios\"))": ["@rules_rust//rust/platform:aarch64-apple-ios", "@rules_rust//rust/platform:aarch64-apple-ios-macabi", "@rules_rust//rust/platform:aarch64-apple-ios-sim", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:sparc64-unknown-netbsd", "@rules_rust//rust/platform:sparc64-unknown-openbsd", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-apple-ios-macabi", "@rules_rust//rust/platform:x86_64-unknown-freebsd"],
     "cfg(any(target_os = \"haiku\", target_os = \"redox\", target_os = \"nto\", target_os = \"aix\"))": ["@rules_rust//rust/platform:aarch64-unknown-nto-qnx710"],
     "cfg(any(target_os = \"ios\", target_os = \"visionos\", target_os = \"watchos\", target_os = \"tvos\"))": ["@rules_rust//rust/platform:aarch64-apple-ios", "@rules_rust//rust/platform:aarch64-apple-ios-macabi", "@rules_rust//rust/platform:aarch64-apple-ios-sim", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-apple-ios-macabi"],
     "cfg(any(target_os = \"linux\", target_os = \"android\"))": ["@rules_rust//rust/platform:aarch64-linux-android", "@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu", "@rules_rust//rust/platform:arm-unknown-linux-gnueabi", "@rules_rust//rust/platform:arm-unknown-linux-musleabi", "@rules_rust//rust/platform:armv7-linux-androideabi", "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu", "@rules_rust//rust/platform:mips-unknown-linux-gnu", "@rules_rust//rust/platform:powerpc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu", "@rules_rust//rust/platform:s390x-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-linux-android", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu"],
+    "cfg(any(target_os = \"macos\", target_os = \"freebsd\", target_os = \"openbsd\", target_os = \"netbsd\", target_os = \"dragonfly\"))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:sparc64-unknown-netbsd", "@rules_rust//rust/platform:sparc64-unknown-openbsd", "@rules_rust//rust/platform:x86_64-apple-darwin", "@rules_rust//rust/platform:x86_64-unknown-freebsd"],
     "cfg(any(target_os = \"macos\", target_os = \"ios\", target_os = \"freebsd\"))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:aarch64-apple-ios", "@rules_rust//rust/platform:aarch64-apple-ios-macabi", "@rules_rust//rust/platform:aarch64-apple-ios-sim", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:x86_64-apple-darwin", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-apple-ios-macabi", "@rules_rust//rust/platform:x86_64-unknown-freebsd"],
     "cfg(any(target_os = \"macos\", target_os = \"openbsd\", target_os = \"vita\", target_os = \"emscripten\"))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:sparc64-unknown-openbsd", "@rules_rust//rust/platform:wasm32-unknown-emscripten", "@rules_rust//rust/platform:x86_64-apple-darwin"],
     "cfg(any(target_pointer_width = \"8\", target_pointer_width = \"16\", target_pointer_width = \"32\"))": ["@rules_rust//rust/platform:arm-unknown-linux-gnueabi", "@rules_rust//rust/platform:arm-unknown-linux-musleabi", "@rules_rust//rust/platform:armv7-linux-androideabi", "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-pc-windows-msvc", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:mips-unknown-linux-gnu", "@rules_rust//rust/platform:powerpc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv32imac-unknown-none-elf", "@rules_rust//rust/platform:riscv32imc-unknown-none-elf", "@rules_rust//rust/platform:thumbv6m-none-eabi", "@rules_rust//rust/platform:thumbv7em-none-eabi", "@rules_rust//rust/platform:thumbv7em-none-eabihf", "@rules_rust//rust/platform:thumbv7m-none-eabi", "@rules_rust//rust/platform:thumbv8m.main-none-eabi", "@rules_rust//rust/platform:thumbv8m.main-none-eabihf", "@rules_rust//rust/platform:wasm32-unknown-emscripten", "@rules_rust//rust/platform:wasm32-unknown-unknown", "@rules_rust//rust/platform:wasm32-wasip1", "@rules_rust//rust/platform:wasm32-wasip1-threads", "@rules_rust//rust/platform:wasm32-wasip2"],
     "cfg(any(unix, target_os = \"hermit\", target_os = \"wasi\"))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:aarch64-apple-ios", "@rules_rust//rust/platform:aarch64-apple-ios-macabi", "@rules_rust//rust/platform:aarch64-apple-ios-sim", "@rules_rust//rust/platform:aarch64-linux-android", "@rules_rust//rust/platform:aarch64-unknown-fuchsia", "@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu", "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710", "@rules_rust//rust/platform:arm-unknown-linux-gnueabi", "@rules_rust//rust/platform:arm-unknown-linux-musleabi", "@rules_rust//rust/platform:armv7-linux-androideabi", "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu", "@rules_rust//rust/platform:mips-unknown-linux-gnu", "@rules_rust//rust/platform:powerpc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv64gc-unknown-fuchsia", "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu", "@rules_rust//rust/platform:s390x-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-netbsd", "@rules_rust//rust/platform:sparc64-unknown-openbsd", "@rules_rust//rust/platform:wasm32-unknown-emscripten", "@rules_rust//rust/platform:wasm32-wasip1", "@rules_rust//rust/platform:wasm32-wasip1-threads", "@rules_rust//rust/platform:wasm32-wasip2", "@rules_rust//rust/platform:x86_64-apple-darwin", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-apple-ios-macabi", "@rules_rust//rust/platform:x86_64-linux-android", "@rules_rust//rust/platform:x86_64-unknown-freebsd", "@rules_rust//rust/platform:x86_64-unknown-fuchsia", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu"],
+    "cfg(any(unix, target_os = \"wasi\"))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:aarch64-apple-ios", "@rules_rust//rust/platform:aarch64-apple-ios-macabi", "@rules_rust//rust/platform:aarch64-apple-ios-sim", "@rules_rust//rust/platform:aarch64-linux-android", "@rules_rust//rust/platform:aarch64-unknown-fuchsia", "@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu", "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710", "@rules_rust//rust/platform:arm-unknown-linux-gnueabi", "@rules_rust//rust/platform:arm-unknown-linux-musleabi", "@rules_rust//rust/platform:armv7-linux-androideabi", "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu", "@rules_rust//rust/platform:mips-unknown-linux-gnu", "@rules_rust//rust/platform:powerpc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv64gc-unknown-fuchsia", "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu", "@rules_rust//rust/platform:s390x-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-netbsd", "@rules_rust//rust/platform:sparc64-unknown-openbsd", "@rules_rust//rust/platform:wasm32-unknown-emscripten", "@rules_rust//rust/platform:wasm32-wasip1", "@rules_rust//rust/platform:wasm32-wasip1-threads", "@rules_rust//rust/platform:wasm32-wasip2", "@rules_rust//rust/platform:x86_64-apple-darwin", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-apple-ios-macabi", "@rules_rust//rust/platform:x86_64-linux-android", "@rules_rust//rust/platform:x86_64-unknown-freebsd", "@rules_rust//rust/platform:x86_64-unknown-fuchsia", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu"],
+    "cfg(not(all(target_arch = \"arm\", target_os = \"none\")))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:aarch64-apple-ios", "@rules_rust//rust/platform:aarch64-apple-ios-macabi", "@rules_rust//rust/platform:aarch64-apple-ios-sim", "@rules_rust//rust/platform:aarch64-linux-android", "@rules_rust//rust/platform:aarch64-pc-windows-msvc", "@rules_rust//rust/platform:aarch64-unknown-fuchsia", "@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu", "@rules_rust//rust/platform:aarch64-unknown-none", "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710", "@rules_rust//rust/platform:aarch64-unknown-uefi", "@rules_rust//rust/platform:arm-unknown-linux-gnueabi", "@rules_rust//rust/platform:arm-unknown-linux-musleabi", "@rules_rust//rust/platform:armv7-linux-androideabi", "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-pc-windows-msvc", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu", "@rules_rust//rust/platform:mips-unknown-linux-gnu", "@rules_rust//rust/platform:powerpc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv32imac-unknown-none-elf", "@rules_rust//rust/platform:riscv32imc-unknown-none-elf", "@rules_rust//rust/platform:riscv64gc-unknown-fuchsia", "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv64gc-unknown-none-elf", "@rules_rust//rust/platform:s390x-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-netbsd", "@rules_rust//rust/platform:sparc64-unknown-openbsd", "@rules_rust//rust/platform:wasm32-unknown-emscripten", "@rules_rust//rust/platform:wasm32-unknown-unknown", "@rules_rust//rust/platform:wasm32-wasip1", "@rules_rust//rust/platform:wasm32-wasip1-threads", "@rules_rust//rust/platform:wasm32-wasip2", "@rules_rust//rust/platform:x86_64-apple-darwin", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-apple-ios-macabi", "@rules_rust//rust/platform:x86_64-linux-android", "@rules_rust//rust/platform:x86_64-pc-windows-msvc", "@rules_rust//rust/platform:x86_64-unknown-freebsd", "@rules_rust//rust/platform:x86_64-unknown-fuchsia", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu", "@rules_rust//rust/platform:x86_64-unknown-none", "@rules_rust//rust/platform:x86_64-unknown-uefi"],
     "cfg(not(target_has_atomic = \"ptr\"))": ["@rules_rust//rust/platform:riscv32imc-unknown-none-elf", "@rules_rust//rust/platform:thumbv6m-none-eabi"],
     "cfg(not(windows))": ["@rules_rust//rust/platform:aarch64-apple-darwin", "@rules_rust//rust/platform:aarch64-apple-ios", "@rules_rust//rust/platform:aarch64-apple-ios-macabi", "@rules_rust//rust/platform:aarch64-apple-ios-sim", "@rules_rust//rust/platform:aarch64-linux-android", "@rules_rust//rust/platform:aarch64-unknown-fuchsia", "@rules_rust//rust/platform:aarch64-unknown-linux-gnu", "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu", "@rules_rust//rust/platform:aarch64-unknown-none", "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710", "@rules_rust//rust/platform:aarch64-unknown-uefi", "@rules_rust//rust/platform:arm-unknown-linux-gnueabi", "@rules_rust//rust/platform:arm-unknown-linux-musleabi", "@rules_rust//rust/platform:armv7-linux-androideabi", "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi", "@rules_rust//rust/platform:i686-apple-darwin", "@rules_rust//rust/platform:i686-linux-android", "@rules_rust//rust/platform:i686-unknown-freebsd", "@rules_rust//rust/platform:i686-unknown-linux-gnu", "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu", "@rules_rust//rust/platform:mips-unknown-linux-gnu", "@rules_rust//rust/platform:powerpc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv32imac-unknown-none-elf", "@rules_rust//rust/platform:riscv32imc-unknown-none-elf", "@rules_rust//rust/platform:riscv64gc-unknown-fuchsia", "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu", "@rules_rust//rust/platform:riscv64gc-unknown-none-elf", "@rules_rust//rust/platform:s390x-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-linux-gnu", "@rules_rust//rust/platform:sparc64-unknown-netbsd", "@rules_rust//rust/platform:sparc64-unknown-openbsd", "@rules_rust//rust/platform:thumbv6m-none-eabi", "@rules_rust//rust/platform:thumbv7em-none-eabi", "@rules_rust//rust/platform:thumbv7em-none-eabihf", "@rules_rust//rust/platform:thumbv7m-none-eabi", "@rules_rust//rust/platform:thumbv8m.main-none-eabi", "@rules_rust//rust/platform:thumbv8m.main-none-eabihf", "@rules_rust//rust/platform:wasm32-unknown-emscripten", "@rules_rust//rust/platform:wasm32-unknown-unknown", "@rules_rust//rust/platform:wasm32-wasip1", "@rules_rust//rust/platform:wasm32-wasip1-threads", "@rules_rust//rust/platform:wasm32-wasip2", "@rules_rust//rust/platform:x86_64-apple-darwin", "@rules_rust//rust/platform:x86_64-apple-ios", "@rules_rust//rust/platform:x86_64-apple-ios-macabi", "@rules_rust//rust/platform:x86_64-linux-android", "@rules_rust//rust/platform:x86_64-unknown-freebsd", "@rules_rust//rust/platform:x86_64-unknown-fuchsia", "@rules_rust//rust/platform:x86_64-unknown-linux-gnu", "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu", "@rules_rust//rust/platform:x86_64-unknown-none", "@rules_rust//rust/platform:x86_64-unknown-uefi"],
     "cfg(target_family = \"wasm\")": ["@rules_rust//rust/platform:wasm32-unknown-emscripten", "@rules_rust//rust/platform:wasm32-unknown-unknown", "@rules_rust//rust/platform:wasm32-wasip1", "@rules_rust//rust/platform:wasm32-wasip1-threads", "@rules_rust//rust/platform:wasm32-wasip2"],
@@ -895,12 +1082,42 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__aes-0.9.4",
+        sha256 = "fc0fc36d7440d015b45468ba08a21e80e056ebbd014c611c6298bb7503e04bd1",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/aes/0.9.4/download"],
+        strip_prefix = "aes-0.9.4",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.aes-0.9.4.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__ahash-0.8.12",
+        sha256 = "5a15f179cd60c4584b8a8c596927aadc462e27f2ca70c04e0071964a73ba7a75",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/ahash/0.8.12/download"],
+        strip_prefix = "ahash-0.8.12",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ahash-0.8.12.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__aho-corasick-1.1.5",
         sha256 = "c982642fa9e8606056828ee9a8505737230110bb1099153c79efe865c59d12ba",
         type = "tar.gz",
         urls = ["https://static.crates.io/crates/aho-corasick/1.1.5/download"],
         strip_prefix = "aho-corasick-1.1.5",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.aho-corasick-1.1.5.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__all_asserts-2.3.4",
+        sha256 = "62ec8a4dbfbd8acfe181f030be8174b00d3d7dc3447f7dc53ead6cc96e89fe52",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/all_asserts/2.3.4/download"],
+        strip_prefix = "all_asserts-2.3.4",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.all_asserts-2.3.4.bazel"),
     )
 
     maybe(
@@ -1045,6 +1262,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__block-buffer-0.12.1",
+        sha256 = "d2f6c7dbe95a6ed67ad9f18e57daf93a2f034c524b99fd2b76d18fdfeb6660aa",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/block-buffer/0.12.1/download"],
+        strip_prefix = "block-buffer-0.12.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.block-buffer-0.12.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__borsh-1.8.1",
         sha256 = "553c5d846a6ba5150c65e3b1b8ec073bcf1abc20f9b7220de384a4443ea4e20a",
         type = "tar.gz",
@@ -1111,6 +1338,46 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/bytes/1.12.1/download"],
         strip_prefix = "bytes-1.12.1",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bytes-1.12.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__bzip2-0.6.1",
+        sha256 = "f3a53fac24f34a81bc9954b5d6cfce0c21e18ec6959f44f56e8e90e4bb7c346c",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/bzip2/0.6.1/download"],
+        strip_prefix = "bzip2-0.6.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bzip2-0.6.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__cached-0.54.0",
+        sha256 = "9718806c4a2fe9e8a56fd736f97b340dd10ed1be8ed733ed50449f351dc33cae",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/cached/0.54.0/download"],
+        strip_prefix = "cached-0.54.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cached-0.54.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__cached_proc_macro-0.23.0",
+        sha256 = "2f42a145ed2d10dce2191e1dcf30cfccfea9026660e143662ba5eec4017d5daa",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/cached_proc_macro/0.23.0/download"],
+        strip_prefix = "cached_proc_macro-0.23.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cached_proc_macro-0.23.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__cached_proc_macro_types-0.1.1",
+        sha256 = "ade8366b8bd5ba243f0a58f036cc0ca8a2f069cff1a2351ef1cac6b083e16fc0",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/cached_proc_macro_types/0.1.1/download"],
+        strip_prefix = "cached_proc_macro_types-0.1.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cached_proc_macro_types-0.1.1.bazel"),
     )
 
     maybe(
@@ -1215,6 +1482,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__cipher-0.5.2",
+        sha256 = "e8cf2a2c93cd704877c0858356ed03480ff301ee950b43f1cbe4573b088bfa6c",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/cipher/0.5.2/download"],
+        strip_prefix = "cipher-0.5.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cipher-0.5.2.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__clap-4.6.7",
         sha256 = "aa8876b300ab35ba921adea3dfd70157a46249b33f95c9084ae5709785478946",
         type = "tar.gz",
@@ -1255,6 +1532,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__cmov-0.5.4",
+        sha256 = "0c9ea0ac24bc397ab3c98583a3c9ba74fa56b09a4449bbe172b9b1ddb016027a",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/cmov/0.5.4/download"],
+        strip_prefix = "cmov-0.5.4",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cmov-0.5.4.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__cobs-0.3.0",
         sha256 = "0fa961b519f0b462e3a3b4a34b64d119eeaca1d59af726fe450bbba07a9fc0a1",
         type = "tar.gz",
@@ -1271,6 +1558,26 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/colorchoice/1.0.5/download"],
         strip_prefix = "colorchoice-1.0.5",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.colorchoice-1.0.5.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__const-oid-0.10.2",
+        sha256 = "a6ef517f0926dd24a1582492c791b6a4818a4d94e789a334894aa15b0d12f55c",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/const-oid/0.10.2/download"],
+        strip_prefix = "const-oid-0.10.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.const-oid-0.10.2.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__constant_time_eq-0.6.1",
+        sha256 = "9eb6feb175df65d0a3ccd3e73484e940d0ac664e8034f0519fd49a93db3071d9",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/constant_time_eq/0.6.1/download"],
+        strip_prefix = "constant_time_eq-0.6.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.constant_time_eq-0.6.1.bazel"),
     )
 
     maybe(
@@ -1305,6 +1612,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__cpubits-0.1.1",
+        sha256 = "15b85f9c39137c3a891689859392b1bd49812121d0d61c9caf00d46ed5ce06ae",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/cpubits/0.1.1/download"],
+        strip_prefix = "cpubits-0.1.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cpubits-0.1.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__cpufeatures-0.3.1",
         sha256 = "5ca28b0ae3115b884660db4118d803791fd6756b6e88f39c0f3f7859060d7566",
         type = "tar.gz",
@@ -1315,12 +1632,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__crc32fast-1.5.0",
-        sha256 = "9481c1c90cbf2ac953f07c8d4a58aa3945c425b7185c9154d67a65e4230da511",
+        name = "vendor_ts__crc32fast-1.5.4",
+        sha256 = "5f97d3416d5337d15c4b0d78c8c91df922ca143f57ec20e2d1c188333047ef04",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/crc32fast/1.5.0/download"],
-        strip_prefix = "crc32fast-1.5.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.crc32fast-1.5.0.bazel"),
+        urls = ["https://static.crates.io/crates/crc32fast/1.5.4/download"],
+        strip_prefix = "crc32fast-1.5.4",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.crc32fast-1.5.4.bazel"),
     )
 
     maybe(
@@ -1375,6 +1692,46 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__crypto-common-0.2.2",
+        sha256 = "ce6e4c961d6cd6c9a86db418387425e8bdeaf05b3c8bc1411e6dca4c252f1453",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/crypto-common/0.2.2/download"],
+        strip_prefix = "crypto-common-0.2.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.crypto-common-0.2.2.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__ctutils-0.4.8",
+        sha256 = "261af4dc7a06ea8a527a8717d8cbba3417530d6ea14e1edb3de6b67806be474f",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/ctutils/0.4.8/download"],
+        strip_prefix = "ctutils-0.4.8",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ctutils-0.4.8.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__darling-0.13.4",
+        sha256 = "a01d95850c592940db9b8194bc39f4bc0e89dee5c4265e4b1807c34a9aba453c",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/darling/0.13.4/download"],
+        strip_prefix = "darling-0.13.4",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.darling-0.13.4.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__darling-0.20.11",
+        sha256 = "fc7f46116c46ff9ab3eb1597a45688b6715c6e628b5c133e288e709a29bcb4ee",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/darling/0.20.11/download"],
+        strip_prefix = "darling-0.20.11",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.darling-0.20.11.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__darling-0.24.1",
         sha256 = "ed17f5901b6630b993ca003def43f2f8ef4014fc13b047b57aad617ff32bc2ec",
         type = "tar.gz",
@@ -1385,12 +1742,52 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__darling_core-0.13.4",
+        sha256 = "859d65a907b6852c9361e3185c862aae7fafd2887876799fa55f5f99dc40d610",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/darling_core/0.13.4/download"],
+        strip_prefix = "darling_core-0.13.4",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.darling_core-0.13.4.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__darling_core-0.20.11",
+        sha256 = "0d00b9596d185e565c2207a0b01f8bd1a135483d02d9b7b0a54b11da8d53412e",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/darling_core/0.20.11/download"],
+        strip_prefix = "darling_core-0.20.11",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.darling_core-0.20.11.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__darling_core-0.24.1",
         sha256 = "6837e2cf7485aaae18f86181d2f0e9a7ed297a025e220aeabf63fdebd3a2ddff",
         type = "tar.gz",
         urls = ["https://static.crates.io/crates/darling_core/0.24.1/download"],
         strip_prefix = "darling_core-0.24.1",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.darling_core-0.24.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__darling_macro-0.13.4",
+        sha256 = "9c972679f83bdf9c42bd905396b6c3588a843a17f0f16dfcfa3e2c5d57441835",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/darling_macro/0.13.4/download"],
+        strip_prefix = "darling_macro-0.13.4",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.darling_macro-0.13.4.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__darling_macro-0.20.11",
+        sha256 = "fc34b93ccb385b40dc71c6fceac4b2ad23662c7eeb248cf10d529b7e055b6ead",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/darling_macro/0.20.11/download"],
+        strip_prefix = "darling_macro-0.20.11",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.darling_macro-0.20.11.bazel"),
     )
 
     maybe(
@@ -1411,6 +1808,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/dashmap/6.2.1/download"],
         strip_prefix = "dashmap-6.2.1",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.dashmap-6.2.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__deflate64-0.1.12",
+        sha256 = "ac6b926516df9c60bfa16e107b21086399f8285a44ca9711344b9e553c5146e2",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/deflate64/0.1.12/download"],
+        strip_prefix = "deflate64-0.1.12",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.deflate64-0.1.12.bazel"),
     )
 
     maybe(
@@ -1461,6 +1868,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/derive-where/1.6.1/download"],
         strip_prefix = "derive-where-1.6.1",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.derive-where-1.6.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__digest-0.11.3",
+        sha256 = "f1dd6dbb5841937940781866fa1281a1ff7bd3bf827091440879f9994983d5c2",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/digest/0.11.3/download"],
+        strip_prefix = "digest-0.11.3",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.digest-0.11.3.bazel"),
     )
 
     maybe(
@@ -1625,6 +2042,26 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__errno-0.3.14",
+        sha256 = "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/errno/0.3.14/download"],
+        strip_prefix = "errno-0.3.14",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.errno-0.3.14.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__fastrand-2.5.0",
+        sha256 = "da7c62ceae207dd37ea5b845da6a0696c799f85e97da1ab5b7910be3c1c80223",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/fastrand/2.5.0/download"],
+        strip_prefix = "fastrand-2.5.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.fastrand-2.5.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__figment-0.10.19",
         sha256 = "8cb01cd46b0cf372153850f4c6c272d9cbea2da513e07538405148f95bd789f3",
         type = "tar.gz",
@@ -1661,6 +2098,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/flate2/1.1.9/download"],
         strip_prefix = "flate2-1.1.9",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.flate2-1.1.9.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__fnv-1.0.7",
+        sha256 = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/fnv/1.0.7/download"],
+        strip_prefix = "fnv-1.0.7",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.fnv-1.0.7.bazel"),
     )
 
     maybe(
@@ -1845,6 +2292,26 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__hmac-0.13.0",
+        sha256 = "6303bc9732ae41b04cb554b844a762b4115a61bfaa81e3e83050991eeb56863f",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/hmac/0.13.0/download"],
+        strip_prefix = "hmac-0.13.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.hmac-0.13.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__hybrid-array-0.4.15",
+        sha256 = "27f864f10dfb56725ce5ce5472bc52252c8f93a4ab86327122cebf62c5f59a17",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/hybrid-array/0.4.15/download"],
+        strip_prefix = "hybrid-array-0.4.15",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.hybrid-array-0.4.15.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__iana-time-zone-0.1.65",
         sha256 = "e31bc9ad994ba00e440a8aa5c9ef0ec67d5cb5e5cb0cc7f8b744a35b389cc470",
         type = "tar.gz",
@@ -1925,6 +2392,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__inout-0.2.6",
+        sha256 = "3a580c13f0ffc335ef42dd3f6b1a41b726051c5e1656d9a3aa6fddb3c5dfbbf9",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/inout/0.2.6/download"],
+        strip_prefix = "inout-0.2.6",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.inout-0.2.6.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__intrusive-collections-0.10.3",
         sha256 = "4275b20e6057cd7733fd8df8a5a31701e4fe44497dad0f3fa0e1c4fb971506be",
         type = "tar.gz",
@@ -1951,6 +2428,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/is_terminal_polyfill/1.70.2/download"],
         strip_prefix = "is_terminal_polyfill-1.70.2",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.is_terminal_polyfill-1.70.2.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__itertools-0.14.0",
+        sha256 = "2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/itertools/0.14.0/download"],
+        strip_prefix = "itertools-0.14.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.itertools-0.14.0.bazel"),
     )
 
     maybe(
@@ -2095,6 +2582,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__libbz2-rs-sys-0.2.6",
+        sha256 = "32f454fd6831a29c0e827ed075bca2a15be201bd57f4168f0fd1041124eab17e",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/libbz2-rs-sys/0.2.6/download"],
+        strip_prefix = "libbz2-rs-sys-0.2.6",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.libbz2-rs-sys-0.2.6.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__libc-0.2.189",
         sha256 = "3eaf3ede3fee6db1a4c2ee091bf8a8b4dccdc6d17f656fb07896ee72867612f2",
         type = "tar.gz",
@@ -2111,6 +2608,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/line-index/0.1.2/download"],
         strip_prefix = "line-index-0.1.2",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.line-index-0.1.2.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__linux-raw-sys-0.12.1",
+        sha256 = "32a66949e030da00e8c7d4434b251670a91556f4144941d37452769c25d58a53",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/linux-raw-sys/0.12.1/download"],
+        strip_prefix = "linux-raw-sys-0.12.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.linux-raw-sys-0.12.1.bazel"),
     )
 
     maybe(
@@ -2141,6 +2648,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/log/0.4.34/download"],
         strip_prefix = "log-0.4.34",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.log-0.4.34.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__lzma-rust2-0.22.0",
+        sha256 = "7277c9742229dc25243236d578b6471a798c554512c6f6a04365ec2e87c2a3bb",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/lzma-rust2/0.22.0/download"],
+        strip_prefix = "lzma-rust2-0.22.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.lzma-rust2-0.22.0.bazel"),
     )
 
     maybe(
@@ -2211,6 +2728,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/mustache/0.9.0/download"],
         strip_prefix = "mustache-0.9.0",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.mustache-0.9.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__nix-0.31.3",
+        sha256 = "cf20d2fde8ff38632c426f1165ed7436270b44f199fc55284c38276f9db47c3d",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/nix/0.31.3/download"],
+        strip_prefix = "nix-0.31.3",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.nix-0.31.3.bazel"),
     )
 
     maybe(
@@ -2325,6 +2852,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__os_str_bytes-7.2.1",
+        sha256 = "73b489f051c9d2f4299ddf8d55e33c65c86a7b76f49359af15f79ebe541d1595",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/os_str_bytes/7.2.1/download"],
+        strip_prefix = "os_str_bytes-7.2.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.os_str_bytes-7.2.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__parking_lot-0.12.5",
         sha256 = "93857453250e3077bd71ff98b6a65ea6621a19bb0f559a85248955ac12c45a1a",
         type = "tar.gz",
@@ -2341,6 +2878,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/parking_lot_core/0.9.12/download"],
         strip_prefix = "parking_lot_core-0.9.12",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.parking_lot_core-0.9.12.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__pbkdf2-0.13.0",
+        sha256 = "112d82ceb8c5bf524d9af484d4e4970c9fd5a0cc15ba14ad93dccd28873b0629",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/pbkdf2/0.13.0/download"],
+        strip_prefix = "pbkdf2-0.13.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.pbkdf2-0.13.0.bazel"),
     )
 
     maybe(
@@ -2451,6 +2998,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/powerfmt/0.2.0/download"],
         strip_prefix = "powerfmt-0.2.0",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.powerfmt-0.2.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__ppmd-rust-1.5.2",
+        sha256 = "cd4acc8d264ea385db64ccfdcdfd5909ee9eda0975666723d59f3bfec80b3611",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/ppmd-rust/1.5.2/download"],
+        strip_prefix = "ppmd-rust-1.5.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.ppmd-rust-1.5.2.bazel"),
     )
 
     maybe(
@@ -3035,6 +3592,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__rustix-1.1.6",
+        sha256 = "e5e76742e5294153d4dde1207dbec5bdd81eef6fabdc0d2118babadabfd858aa",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/rustix/1.1.6/download"],
+        strip_prefix = "rustix-1.1.6",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.rustix-1.1.6.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__rustversion-1.0.23",
         sha256 = "cf54715a573b99ac80df0bc206da022bcd442c974952c7b9720069370852e21f",
         type = "tar.gz",
@@ -3185,12 +3752,32 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__serde_with-1.14.0",
+        sha256 = "678b5a069e50bf00ecd22d0cd8ddf7c236f68581b03db652061ed5eb13a312ff",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/serde_with/1.14.0/download"],
+        strip_prefix = "serde_with-1.14.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_with-1.14.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__serde_with-3.24.0",
         sha256 = "df9adc193c780ef8f159aee8b61e2d5801aaa555e6eb0947fe45530ec506296f",
         type = "tar.gz",
         urls = ["https://static.crates.io/crates/serde_with/3.24.0/download"],
         strip_prefix = "serde_with-3.24.0",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_with-3.24.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__serde_with_macros-1.5.2",
+        sha256 = "e182d6ec6f05393cc0e5ed1bf81ad6db3a8feedf8ee515ecdd369809bcce8082",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/serde_with_macros/1.5.2/download"],
+        strip_prefix = "serde_with_macros-1.5.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_with_macros-1.5.2.bazel"),
     )
 
     maybe(
@@ -3215,6 +3802,26 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__sha1-0.11.0",
+        sha256 = "aacc4cc499359472b4abe1bf11d0b12e688af9a805fa5e3016f9a386dc2d0214",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/sha1/0.11.0/download"],
+        strip_prefix = "sha1-0.11.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.sha1-0.11.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__sha2-0.11.1",
+        sha256 = "47d7069beb7d6ac7b9acd1039986e73443f24234f41074da099d6f994ac9ad19",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/sha2/0.11.1/download"],
+        strip_prefix = "sha2-0.11.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.sha2-0.11.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__sharded-slab-0.1.7",
         sha256 = "f40ca3c46823713e0d4209592e8d6e826aa57e928f09752619fc696c499637f6",
         type = "tar.gz",
@@ -3235,12 +3842,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__simd-adler32-0.3.9",
-        sha256 = "703d5c7ef118737c72f1af64ad2f6f8c5e1921f818cdcb97b8fe6fc69bf66214",
+        name = "vendor_ts__simd-adler32-0.3.10",
+        sha256 = "3a219298ac11a56ea9a6d2120044824d6f01aeb034955e7af7bc16858527deea",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/simd-adler32/0.3.9/download"],
-        strip_prefix = "simd-adler32-0.3.9",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.simd-adler32-0.3.9.bazel"),
+        urls = ["https://static.crates.io/crates/simd-adler32/0.3.10/download"],
+        strip_prefix = "simd-adler32-0.3.10",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.simd-adler32-0.3.10.bazel"),
     )
 
     maybe(
@@ -3295,12 +3902,32 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__strsim-0.10.0",
+        sha256 = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/strsim/0.10.0/download"],
+        strip_prefix = "strsim-0.10.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.strsim-0.10.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__strsim-0.11.1",
         sha256 = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f",
         type = "tar.gz",
         urls = ["https://static.crates.io/crates/strsim/0.11.1/download"],
         strip_prefix = "strsim-0.11.1",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.strsim-0.11.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__syn-1.0.109",
+        sha256 = "72b64191b275b66ffe2469e8af2c1cfe3bafa67b529ead792a6d0160888b4237",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/syn/1.0.109/download"],
+        strip_prefix = "syn-1.0.109",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.syn-1.0.109.bazel"),
     )
 
     maybe(
@@ -3335,6 +3962,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__tempfile-3.27.0",
+        sha256 = "32497e9a4c7b38532efcdebeef879707aa9f794296a4f0244f6f69e9bc8574bd",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/tempfile/3.27.0/download"],
+        strip_prefix = "tempfile-3.27.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tempfile-3.27.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__text-size-1.1.1",
         sha256 = "f18aa187839b2bdb1ad2fa35ead8c4c2976b64e4363c386d45ac0f7ee85c9233",
         type = "tar.gz",
@@ -3355,12 +3992,32 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__thiserror-1.0.69",
+        sha256 = "b6aaf5339b578ea85b50e080feb250a3e8ae8cfcdff9a461c9ec2904bc923f52",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/thiserror/1.0.69/download"],
+        strip_prefix = "thiserror-1.0.69",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thiserror-1.0.69.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__thiserror-2.0.20",
         sha256 = "ec86235f5fcc2a73650310756d2ac5b138a5780bbbdfae3eeccec992c435ba4f",
         type = "tar.gz",
         urls = ["https://static.crates.io/crates/thiserror/2.0.20/download"],
         strip_prefix = "thiserror-2.0.20",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thiserror-2.0.20.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__thiserror-impl-1.0.69",
+        sha256 = "4fee6c4efc90059e10f81e6d42c60a18f76588c3d74cb83a0b242a2b6c7504c1",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/thiserror-impl/1.0.69/download"],
+        strip_prefix = "thiserror-impl-1.0.69",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thiserror-impl-1.0.69.bazel"),
     )
 
     maybe(
@@ -3554,6 +4211,15 @@ def crate_repositories():
     )
 
     maybe(
+        git_repository,
+        name = "vendor_ts__tree-sitter-json-0.23.0",
+        commit = "8bfdb43f47ad805bb1ce093203cfcbaa8ed2c571",
+        init_submodules = True,
+        remote = "https://github.com/tree-sitter/tree-sitter-json.git",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tree-sitter-json-0.23.0.bazel"),
+    )
+
+    maybe(
         http_archive,
         name = "vendor_ts__tree-sitter-json-0.24.8",
         sha256 = "4d727acca406c0020cffc6cf35516764f36c8e3dc4408e5ebe2cb35a947ec471",
@@ -3594,6 +4260,15 @@ def crate_repositories():
     )
 
     maybe(
+        git_repository,
+        name = "vendor_ts__tree-sitter-ql-dbscheme-0.23.0",
+        commit = "1980b4b6998a1138d326f863e6168f0f2c0c544d",
+        init_submodules = True,
+        remote = "https://github.com/tree-sitter/tree-sitter-ql-dbscheme.git",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tree-sitter-ql-dbscheme-0.23.0.bazel"),
+    )
+
+    maybe(
         http_archive,
         name = "vendor_ts__tree-sitter-ruby-0.23.1",
         sha256 = "be0484ea4ef6bb9c575b4fdabde7e31340a8d2dbc7d52b321ac83da703249f95",
@@ -3625,12 +4300,32 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__typed-path-0.12.3",
+        sha256 = "8e28f89b80c87b8fb0cf04ab448d5dd0dd0ade2f8891bae878de66a75a28600e",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/typed-path/0.12.3/download"],
+        strip_prefix = "typed-path-0.12.3",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.typed-path-0.12.3.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__typeid-1.0.3",
         sha256 = "bc7d623258602320d5c55d1bc22793b57daff0ec7efc270ea7d55ce1d5f5471c",
         type = "tar.gz",
         urls = ["https://static.crates.io/crates/typeid/1.0.3/download"],
         strip_prefix = "typeid-1.0.3",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.typeid-1.0.3.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__typenum-1.20.1",
+        sha256 = "b6f5e870be6c3b371b77fe0ee0bafb859fa4964b4404c27de1d380043c4dda20",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/typenum/1.20.1/download"],
+        strip_prefix = "typenum-1.20.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.typenum-1.20.1.bazel"),
     )
 
     maybe(
@@ -3771,6 +4466,26 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/wasm-bindgen-shared/0.2.126/download"],
         strip_prefix = "wasm-bindgen-shared-0.2.126",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.wasm-bindgen-shared-0.2.126.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__web-time-1.1.0",
+        sha256 = "5a6580f308b1fad9207618087a65c04e7a10bc77e02c8e84e9b00dd4b12fa0bb",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/web-time/1.1.0/download"],
+        strip_prefix = "web-time-1.1.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.web-time-1.1.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__which-8.0.6",
+        sha256 = "bae2f2b2b816647a1cab1acc91f5bd20812d53cb344382635ec2181940c8034f",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/which/8.0.6/download"],
+        strip_prefix = "which-8.0.6",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.which-8.0.6.bazel"),
     )
 
     maybe(
@@ -3985,12 +4700,72 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__zerocopy-0.8.63",
+        sha256 = "e5fe1f8f1b06191a00962174c61aa5005e0bb391a6d80d07e24d115c01a92ed8",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/zerocopy/0.8.63/download"],
+        strip_prefix = "zerocopy-0.8.63",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.zerocopy-0.8.63.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__zerocopy-derive-0.8.63",
+        sha256 = "863ad3ac83293fb4d740aedbfdc9240dd8d1a50c1099acd76ce80ce7c7230c7f",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/zerocopy-derive/0.8.63/download"],
+        strip_prefix = "zerocopy-derive-0.8.63",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.zerocopy-derive-0.8.63.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__zeroize-1.9.1",
+        sha256 = "e13084392c5e4bc371903e2935a5eaeed24905a7511356b883835e18a78f6879",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/zeroize/1.9.1/download"],
+        strip_prefix = "zeroize-1.9.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.zeroize-1.9.1.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__zip-9.0.5",
+        sha256 = "6e04976da629d3b04204ba8105b396a193af8ad2583b2c79bfb3ab8af580a11e",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/zip/9.0.5/download"],
+        strip_prefix = "zip-9.0.5",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.zip-9.0.5.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__zlib-rs-0.6.8",
+        sha256 = "b268e58e7c693d7c271f93ffc4ba3b380412554231c85bf61ca7af91042a4112",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/zlib-rs/0.6.8/download"],
+        strip_prefix = "zlib-rs-0.6.8",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.zlib-rs-0.6.8.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__zmij-1.0.23",
         sha256 = "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b",
         type = "tar.gz",
         urls = ["https://static.crates.io/crates/zmij/1.0.23/download"],
         strip_prefix = "zmij-1.0.23",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.zmij-1.0.23.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__zopfli-0.8.4",
+        sha256 = "aaf7fc5d30c28483d93805c4a5e12b05bbb52407fa67c5f8bd552374cd01fb11",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/zopfli/0.8.4/download"],
+        strip_prefix = "zopfli-0.8.4",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.zopfli-0.8.4.bazel"),
     )
 
     maybe(
@@ -4025,7 +4800,10 @@ def crate_repositories():
 
     return [
         struct(repo = "vendor_ts", is_dev_dep = False),
+        struct(repo = "vendor_ts__all_asserts-2.3.4", is_dev_dep = False),
         struct(repo = "vendor_ts__anyhow-1.0.104", is_dev_dep = False),
+        struct(repo = "vendor_ts__cached-0.54.0", is_dev_dep = False),
+        struct(repo = "vendor_ts__cc-1.4.6", is_dev_dep = False),
         struct(repo = "vendor_ts__chalk-ir-0.104.0", is_dev_dep = False),
         struct(repo = "vendor_ts__chrono-0.4.45", is_dev_dep = False),
         struct(repo = "vendor_ts__clap-4.6.7", is_dev_dep = False),
@@ -4036,11 +4814,13 @@ def crate_repositories():
         struct(repo = "vendor_ts__flate2-1.1.9", is_dev_dep = False),
         struct(repo = "vendor_ts__glob-0.3.4", is_dev_dep = False),
         struct(repo = "vendor_ts__globset-0.4.18", is_dev_dep = False),
+        struct(repo = "vendor_ts__itertools-0.14.0", is_dev_dep = False),
         struct(repo = "vendor_ts__itertools-0.15.0", is_dev_dep = False),
         struct(repo = "vendor_ts__lazy_static-1.5.1", is_dev_dep = False),
         struct(repo = "vendor_ts__mustache-0.9.0", is_dev_dep = False),
         struct(repo = "vendor_ts__num-traits-0.2.19", is_dev_dep = False),
         struct(repo = "vendor_ts__num_cpus-1.17.0", is_dev_dep = False),
+        struct(repo = "vendor_ts__os_str_bytes-7.2.1", is_dev_dep = False),
         struct(repo = "vendor_ts__proc-macro2-1.0.107", is_dev_dep = False),
         struct(repo = "vendor_ts__quote-1.0.47", is_dev_dep = False),
         struct(repo = "vendor_ts__ra_ap_base_db-0.0.358", is_dev_dep = False),
@@ -4065,21 +4845,29 @@ def crate_repositories():
         struct(repo = "vendor_ts__regex-1.13.1", is_dev_dep = False),
         struct(repo = "vendor_ts__serde-1.0.229", is_dev_dep = False),
         struct(repo = "vendor_ts__serde_json-1.0.154", is_dev_dep = False),
+        struct(repo = "vendor_ts__serde_with-1.14.0", is_dev_dep = False),
         struct(repo = "vendor_ts__serde_with-3.24.0", is_dev_dep = False),
         struct(repo = "vendor_ts__serde_yaml-0.9.34-deprecated", is_dev_dep = False),
         struct(repo = "vendor_ts__syn-3.0.9", is_dev_dep = False),
+        struct(repo = "vendor_ts__tempfile-3.27.0", is_dev_dep = False),
         struct(repo = "vendor_ts__toml-1.1.8-spec-1.1.0", is_dev_dep = False),
         struct(repo = "vendor_ts__tracing-0.1.44", is_dev_dep = False),
         struct(repo = "vendor_ts__tracing-flame-0.2.0", is_dev_dep = False),
         struct(repo = "vendor_ts__tracing-subscriber-0.3.23", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-0.26.9", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-embedded-template-0.25.0", is_dev_dep = False),
+        struct(repo = "vendor_ts__tree-sitter-json-0.23.0", is_dev_dep = False),
+        struct(repo = "vendor_ts__tree-sitter-language-0.1.7", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-python-0.25.0", is_dev_dep = False),
+        struct(repo = "vendor_ts__tree-sitter-ql-0.23.1", is_dev_dep = False),
+        struct(repo = "vendor_ts__tree-sitter-ql-dbscheme-0.23.0", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-ruby-0.23.1", is_dev_dep = False),
         struct(repo = "vendor_ts__triomphe-0.1.17", is_dev_dep = False),
         struct(repo = "vendor_ts__ungrammar-1.16.1", is_dev_dep = False),
+        struct(repo = "vendor_ts__walkdir-2.5.0", is_dev_dep = False),
+        struct(repo = "vendor_ts__which-8.0.6", is_dev_dep = False),
+        struct(repo = "vendor_ts__zip-9.0.5", is_dev_dep = False),
         struct(repo = "vendor_ts__zstd-0.14.2", is_dev_dep = False),
         struct(repo = "vendor_ts__rand-0.10.3", is_dev_dep = True),
         struct(repo = "vendor_ts__tree-sitter-json-0.24.8", is_dev_dep = True),
-        struct(repo = "vendor_ts__tree-sitter-ql-0.23.1", is_dev_dep = True),
     ]

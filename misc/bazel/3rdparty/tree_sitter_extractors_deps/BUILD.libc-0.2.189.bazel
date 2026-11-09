@@ -41,7 +41,30 @@ rust_library(
     crate_features = [
         "default",
         "std",
-    ],
+    ] + select({
+        "@rules_rust//rust/platform:aarch64-apple-darwin": [
+            "extra_traits",  # aarch64-apple-darwin
+        ],
+        "@rules_rust//rust/platform:i686-apple-darwin": [
+            "extra_traits",  # i686-apple-darwin
+        ],
+        "@rules_rust//rust/platform:i686-unknown-freebsd": [
+            "extra_traits",  # i686-unknown-freebsd
+        ],
+        "@rules_rust//rust/platform:sparc64-unknown-netbsd": [
+            "extra_traits",  # sparc64-unknown-netbsd
+        ],
+        "@rules_rust//rust/platform:sparc64-unknown-openbsd": [
+            "extra_traits",  # sparc64-unknown-openbsd
+        ],
+        "@rules_rust//rust/platform:x86_64-apple-darwin": [
+            "extra_traits",  # x86_64-apple-darwin
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
+            "extra_traits",  # x86_64-unknown-freebsd
+        ],
+        "//conditions:default": [],
+    }),
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_env_files = [
@@ -146,7 +169,30 @@ cargo_build_script(
     crate_features = [
         "default",
         "std",
-    ],
+    ] + select({
+        "@rules_rust//rust/platform:aarch64-apple-darwin": [
+            "extra_traits",  # aarch64-apple-darwin
+        ],
+        "@rules_rust//rust/platform:i686-apple-darwin": [
+            "extra_traits",  # i686-apple-darwin
+        ],
+        "@rules_rust//rust/platform:i686-unknown-freebsd": [
+            "extra_traits",  # i686-unknown-freebsd
+        ],
+        "@rules_rust//rust/platform:sparc64-unknown-netbsd": [
+            "extra_traits",  # sparc64-unknown-netbsd
+        ],
+        "@rules_rust//rust/platform:sparc64-unknown-openbsd": [
+            "extra_traits",  # sparc64-unknown-openbsd
+        ],
+        "@rules_rust//rust/platform:x86_64-apple-darwin": [
+            "extra_traits",  # x86_64-apple-darwin
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
+            "extra_traits",  # x86_64-unknown-freebsd
+        ],
+        "//conditions:default": [],
+    }),
     crate_name = "build_script_build",
     crate_root = "build.rs",
     data = glob(

@@ -40,7 +40,24 @@ rust_library(
         "formatting",
         "local-offset",
         "std",
-    ],
+    ] + select({
+        "@rules_rust//rust/platform:wasm32-unknown-emscripten": [
+            "wasm-bindgen",  # wasm32-unknown-emscripten
+        ],
+        "@rules_rust//rust/platform:wasm32-unknown-unknown": [
+            "wasm-bindgen",  # wasm32-unknown-unknown
+        ],
+        "@rules_rust//rust/platform:wasm32-wasip1": [
+            "wasm-bindgen",  # wasm32-wasip1
+        ],
+        "@rules_rust//rust/platform:wasm32-wasip1-threads": [
+            "wasm-bindgen",  # wasm32-wasip1-threads
+        ],
+        "@rules_rust//rust/platform:wasm32-wasip2": [
+            "wasm-bindgen",  # wasm32-wasip2
+        ],
+        "//conditions:default": [],
+    }),
     crate_root = "src/lib.rs",
     edition = "2024",
     rustc_env_files = [
@@ -228,6 +245,9 @@ rust_library(
         "@rules_rust//rust/platform:wasm32-unknown-emscripten": [
             "@vendor_ts__libc-0.2.189//:libc",  # wasm32-unknown-emscripten
             "@vendor_ts__num_threads-0.1.7//:num_threads",  # wasm32-unknown-emscripten
+        ],
+        "@rules_rust//rust/platform:wasm32-unknown-unknown": [
+            "@vendor_ts__js-sys-0.3.103//:js_sys",  # wasm32-unknown-unknown
         ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
             "@vendor_ts__libc-0.2.189//:libc",  # x86_64-apple-darwin

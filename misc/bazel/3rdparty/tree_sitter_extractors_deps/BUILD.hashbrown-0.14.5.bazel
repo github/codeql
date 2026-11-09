@@ -35,6 +35,9 @@ rust_library(
         ],
     ),
     crate_features = [
+        "ahash",
+        "allocator-api2",
+        "default",
         "inline-more",
         "raw",
     ],
@@ -112,4 +115,8 @@ rust_library(
         "//conditions:default": ["@platforms//:incompatible"],
     }),
     version = "0.14.5",
+    deps = [
+        "@vendor_ts__ahash-0.8.12//:ahash",
+        "@vendor_ts__allocator-api2-0.2.21//:allocator_api2",
+    ],
 )

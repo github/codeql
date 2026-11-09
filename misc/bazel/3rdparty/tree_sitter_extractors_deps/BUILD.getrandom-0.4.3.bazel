@@ -41,7 +41,24 @@ rust_library(
     crate_features = [
         "std",
         "sys_rng",
-    ],
+    ] + select({
+        "@rules_rust//rust/platform:wasm32-unknown-emscripten": [
+            "wasm_js",  # wasm32-unknown-emscripten
+        ],
+        "@rules_rust//rust/platform:wasm32-unknown-unknown": [
+            "wasm_js",  # wasm32-unknown-unknown
+        ],
+        "@rules_rust//rust/platform:wasm32-wasip1": [
+            "wasm_js",  # wasm32-wasip1
+        ],
+        "@rules_rust//rust/platform:wasm32-wasip1-threads": [
+            "wasm_js",  # wasm32-wasip1-threads
+        ],
+        "@rules_rust//rust/platform:wasm32-wasip2": [
+            "wasm_js",  # wasm32-wasip2
+        ],
+        "//conditions:default": [],
+    }),
     crate_root = "src/lib.rs",
     edition = "2024",
     rustc_env_files = [
@@ -196,6 +213,9 @@ rust_library(
         "@rules_rust//rust/platform:wasm32-unknown-emscripten": [
             "@vendor_ts__libc-0.2.189//:libc",  # cfg(any(target_os = "macos", target_os = "openbsd", target_os = "vita", target_os = "emscripten"))
         ],
+        "@rules_rust//rust/platform:wasm32-unknown-unknown": [
+            "@vendor_ts__wasm-bindgen-0.2.126//:wasm_bindgen",  # wasm32-unknown-unknown
+        ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
             "@vendor_ts__libc-0.2.189//:libc",  # cfg(any(target_os = "macos", target_os = "openbsd", target_os = "vita", target_os = "emscripten"))
         ],
@@ -246,7 +266,24 @@ cargo_build_script(
     crate_features = [
         "std",
         "sys_rng",
-    ],
+    ] + select({
+        "@rules_rust//rust/platform:wasm32-unknown-emscripten": [
+            "wasm_js",  # wasm32-unknown-emscripten
+        ],
+        "@rules_rust//rust/platform:wasm32-unknown-unknown": [
+            "wasm_js",  # wasm32-unknown-unknown
+        ],
+        "@rules_rust//rust/platform:wasm32-wasip1": [
+            "wasm_js",  # wasm32-wasip1
+        ],
+        "@rules_rust//rust/platform:wasm32-wasip1-threads": [
+            "wasm_js",  # wasm32-wasip1-threads
+        ],
+        "@rules_rust//rust/platform:wasm32-wasip2": [
+            "wasm_js",  # wasm32-wasip2
+        ],
+        "//conditions:default": [],
+    }),
     crate_name = "build_script_build",
     crate_root = "build.rs",
     data = glob(
