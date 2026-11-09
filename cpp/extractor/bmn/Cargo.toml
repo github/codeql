@@ -24,7 +24,7 @@ os_str_bytes = "7.1.1"
 rayon = "1.11.0"
 all_asserts = "2.3.3"
 itertools = "0.14.0"
-zip = "6.0.0"
+zip = "9.0.5"
 
 [lints.clippy]
 pedantic = "warn"

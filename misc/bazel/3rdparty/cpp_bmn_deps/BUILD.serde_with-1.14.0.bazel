@@ -117,6 +117,6 @@ rust_library(
     }),
     version = "1.14.0",
     deps = [
-        "@vendor_cpp_bmn__serde-1.0.219//:serde",
+        "@vendor_cpp_bmn__serde-1.0.229//:serde",
     ],
 )

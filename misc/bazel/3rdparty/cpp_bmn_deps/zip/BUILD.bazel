@@ -10,6 +10,6 @@ package(default_visibility = ["//visibility:public"])
 
 alias(
     name = "zip",
-    actual = "@vendor_cpp_bmn__zip-6.0.0//:zip",
+    actual = "@vendor_cpp_bmn__zip-9.0.5//:zip",
     tags = ["manual"],
 )

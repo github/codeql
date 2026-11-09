@@ -121,7 +121,7 @@ rust_library(
         "@vendor_cpp_bmn__itoa-1.0.15//:itoa",
         "@vendor_cpp_bmn__memchr-2.7.5//:memchr",
         "@vendor_cpp_bmn__ryu-1.0.20//:ryu",
-        "@vendor_cpp_bmn__serde-1.0.219//:serde",
+        "@vendor_cpp_bmn__serde-1.0.229//:serde",
     ],
 )
 
