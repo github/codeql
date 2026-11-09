@@ -1154,17 +1154,6 @@ private module SsaImpl = Ssa::Make<Location, IRCfg, SsaInput>;
 private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
 
-  class Expr extends Instruction {
-    Expr() {
-      exists(IRBlock bb, int i |
-        variableRead(bb, i, _, true) and
-        this = bb.getInstruction(i)
-      )
-    }
-
-    predicate hasCfgNode(IRCfg::BasicBlock bb, int i) { bb.getInstruction(i) = this }
-  }
-
   predicate ssaDefHasSource(SsaImpl::WriteDefinition def) { none() }
 
   predicate allowFlowIntoUncertainDef(SsaImpl::UncertainWriteDefinition def) { any() }

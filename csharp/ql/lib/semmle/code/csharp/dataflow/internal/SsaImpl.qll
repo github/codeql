@@ -1012,10 +1012,6 @@ deprecated Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
 
-  class Expr extends ControlFlowNode {
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
-  }
-
   predicate ssaDefHasSource(Impl::WriteDefinition def) {
     // exclude flow directly from RHS to SSA definition, as we instead want to
     // go from RHS to matching assignable definition, and from there to SSA definition

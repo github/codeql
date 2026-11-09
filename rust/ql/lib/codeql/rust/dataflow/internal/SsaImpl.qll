@@ -328,15 +328,9 @@ private module Cached {
 import Cached
 private import codeql.rust.dataflow.Ssa
 
-private class ExprAlias = Expr;
-
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.rust.dataflow.internal.DataFlowImpl as DataFlowImpl
   private import codeql.util.Boolean
-
-  class Expr extends ExprAlias {
-    predicate hasCfgNode(BasicBlock bb, int i) { this.getACfgNode() = bb.getNode(i) }
-  }
 
   predicate ssaDefHasSource(WriteDefinition def) { none() } // handled in `DataFlowImpl.qll` instead
 

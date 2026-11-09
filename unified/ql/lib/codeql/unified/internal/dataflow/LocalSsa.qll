@@ -41,10 +41,6 @@ module LocalSsaOutput = Make<Location, Cfg, LocalSsaInput>;
 private import LocalSsaOutput
 
 module LocalSsaDataFlowInput implements DataFlowIntegrationInputSig {
-  class Expr extends ControlFlowNode {
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
-  }
-
   class GuardValue = Void;
 
   class Guard extends Void {

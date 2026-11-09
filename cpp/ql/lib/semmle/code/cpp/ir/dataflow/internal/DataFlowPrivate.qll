@@ -2182,17 +2182,6 @@ module IteratorFlow {
   private module DataFlowIntegrationInput implements IteratorSsa::DataFlowIntegrationInputSig {
     private import codeql.util.Void
 
-    class Expr extends Instruction {
-      Expr() {
-        exists(IRBlock bb, int i |
-          SsaInput::variableRead(bb, i, _, true) and
-          this = bb.getInstruction(i)
-        )
-      }
-
-      predicate hasCfgNode(IRCfg::BasicBlock bb, int i) { bb.getInstruction(i) = this }
-    }
-
     predicate ssaDefHasSource(IteratorSsa::WriteDefinition def) { none() }
 
     predicate allowFlowIntoUncertainDef(IteratorSsa::UncertainWriteDefinition def) { any() }

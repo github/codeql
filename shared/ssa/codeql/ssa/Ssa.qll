@@ -1451,18 +1451,6 @@ module Make<
   /** Provides the input to `DataFlowIntegration`. */
   signature module DataFlowIntegrationInputSig {
     /**
-     * An expression with a value. That is, we expect these expressions to be
-     * represented in the data flow graph.
-     */
-    class Expr {
-      /** Gets a textual representation of this expression. */
-      string toString();
-
-      /** Holds if the `i`th node of basic block `bb` evaluates this expression. */
-      predicate hasCfgNode(BasicBlock bb, int i);
-    }
-
-    /**
      * Holds if `def` has some form of input flow. For example, the right-hand
      * side of an assignment or a parameter of an SSA entry definition.
      *
@@ -1737,8 +1725,8 @@ module Make<
     cached
     private newtype TNode =
       TWriteDefSource(WriteDefinition def) { DfInput::ssaDefHasSource(def) } or
-      TExprNode(DfInput::Expr e, SourceVariable v, boolean isPost) {
-        exists(BasicBlock bb, int i | e.hasCfgNode(bb, i) |
+      TExprNode(ControlFlowNode n, SourceVariable v, boolean isPost) {
+        exists(BasicBlock bb, int i | bb.getNode(i) = n |
           variableRead(bb, i, v, true) and
           isPost = false
           or
@@ -1797,36 +1785,24 @@ module Make<
 
     /** A (post-update) expression node. */
     abstract private class ExprNodePreOrPostImpl extends NodeImpl, TExprNode {
-      DfInput::Expr e;
+      ControlFlowNode n_;
       boolean isPost;
       SourceVariable v_;
 
-      ExprNodePreOrPostImpl() { this = TExprNode(e, v_, isPost) }
+      ExprNodePreOrPostImpl() { this = TExprNode(n_, v_, isPost) }
 
       /** Gets the control flow node of this read or post-update. */
-      ControlFlowNode getControlFlowNode() {
-        exists(BasicBlock bb, int i |
-          e.hasCfgNode(bb, i) and
-          result = bb.getNode(i)
-        )
-      }
+      ControlFlowNode getControlFlowNode() { result = n_ }
 
       /** Holds if this node reads `v` at `n`. */
       pragma[nomagic]
-      predicate readsAt(ControlFlowNode n, SourceVariable v) {
-        n = this.getControlFlowNode() and v = v_
-      }
+      predicate readsAt(ControlFlowNode n, SourceVariable v) { n = n_ and v = v_ }
 
       /** Holds if this node reads `v` at `bb,i`. */
       pragma[nomagic]
-      predicate readsAt(BasicBlock bb, int i, SourceVariable v) { e.hasCfgNode(bb, i) and v = v_ }
+      predicate readsAt(BasicBlock bb, int i, SourceVariable v) { bb.getNode(i) = n_ and v = v_ }
 
-      override Location getLocation() {
-        exists(BasicBlock bb, int i |
-          e.hasCfgNode(bb, i) and
-          result = bb.getNode(i).getLocation()
-        )
-      }
+      override Location getLocation() { result = n_.getLocation() }
 
       /** Gets the variable accessed at this expression. */
       SourceVariable getSourceVariable() { result = v_ }
@@ -1838,7 +1814,7 @@ module Make<
     private class ExprNodeImpl extends ExprNodePreOrPostImpl {
       ExprNodeImpl() { isPost = false }
 
-      override string toString() { result = e.toString() }
+      override string toString() { result = n_.toString() }
     }
 
     final class ExprNode = ExprNodeImpl;
@@ -1847,18 +1823,10 @@ module Make<
     private class ExprPostUpdateNodeImpl extends ExprNodePreOrPostImpl {
       ExprPostUpdateNodeImpl() { isPost = true }
 
-      override string toString() { result = e.toString() + " [postupdate]" }
+      override string toString() { result = n_.toString() + " [postupdate]" }
     }
 
     final class ExprPostUpdateNode = ExprPostUpdateNodeImpl;
-
-    pragma[nomagic]
-    private predicate exprReadAt(
-      DfInput::Expr e, BasicBlock bb, int i, SourceVariable v, boolean isPost, TExprNode node
-    ) {
-      e.hasCfgNode(bb, i) and
-      node = TExprNode(e, v, isPost)
-    }
 
     /** A node corresponding to a `(bb,i,v)` tuple from `variableRead(bb,i,v,true)` */
     class ReadNode = ExprNode;
@@ -1999,7 +1967,7 @@ module Make<
         isUseStep = false
       )
       or
-      exprReadAt(_, bb, i, v, _, nodeFrom) and
+      nodeFrom.(ExprNodePreOrPostImpl).readsAt(bb, i, v) and
       not variableWrite(bb, i, v, true) and
       isUseStep = true
     }

@@ -434,10 +434,6 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   private import codeql.ruby.controlflow.internal.Guards as Guards
   private import codeql.util.Boolean
 
-  class Expr extends Cfg::CfgNodes::ExprCfgNode {
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
-  }
-
   predicate ssaDefHasSource(WriteDefinition def) {
     any(ParameterExt p).isInitializedBy(def) or def.(Ssa::WriteDefinition).assigns(_)
   }

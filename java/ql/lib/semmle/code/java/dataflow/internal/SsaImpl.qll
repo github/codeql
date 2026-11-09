@@ -636,16 +636,6 @@ private class TrackedSsaDef extends Definition {
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import java as J
 
-  class Expr instanceof J::Expr {
-    string toString() { result = super.toString() }
-
-    Location getLocation() { result = super.getLocation() }
-
-    predicate hasCfgNode(BasicBlock bb, int i) {
-      super.getControlFlowNode() = bb.(J::BasicBlock).getNode(i)
-    }
-  }
-
   predicate ssaDefHasSource(WriteDefinition def) { def instanceof SsaExplicitWrite }
 
   predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {

@@ -56,12 +56,6 @@ js::ControlFlowNode getARead(Definition def) {
 module SsaDataflowInput implements DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
 
-  class Expr extends js::ControlFlowNode {
-    Expr() { this = any(SsaConfig::SourceVariable v).getAUse() }
-
-    predicate hasCfgNode(js::Cfg::BasicBlock bb, int i) { this = bb.getNode(i) }
-  }
-
   predicate ssaDefHasSource(WriteDefinition def) {
     // This library only handles use-use flow after a post-update, there are no definitions, only uses.
     none()

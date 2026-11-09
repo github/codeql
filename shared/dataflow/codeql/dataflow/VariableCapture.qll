@@ -748,12 +748,6 @@ module Flow<
   private module DataFlowIntegrationInput implements CaptureSsa::DataFlowIntegrationInputSig {
     private import codeql.util.Void
 
-    class Expr instanceof Cfg::ControlFlowNode {
-      string toString() { result = super.toString() }
-
-      predicate hasCfgNode(Cfg::BasicBlock bb, int i) { bb.getNode(i) = this }
-    }
-
     class GuardValue = Void;
 
     class Guard extends Void {
