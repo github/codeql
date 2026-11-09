@@ -39,7 +39,7 @@ void test_aggregate_literal() {
   const int ys[] = {[0] = 4, [1] = 5, [0] = 6}; // $ asExpr=4 asExpr=5 asExpr=6 asExpr={...}
 }
 
-void test_postfix_crement(int *p, int q) {
+void test_postfix_crement(int *p, int q) { // $ asParameter=p asParameter=q parameterNode=p parameterNode=q
   p++; // $ asExpr="... ++" asIndirectExpr="... ++" asExpr=p asIndirectExpr=p
   q++; // $ asExpr="... ++" asExpr=q
   (p++); // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
