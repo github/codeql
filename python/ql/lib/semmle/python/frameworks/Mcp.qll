@@ -146,54 +146,82 @@ module Mcp {
   /** Gets a reference to the `Context` class or to a subclass of it; the SDKs inject both. */
   private API::Node contextClassOrSubclass() { result = contextClass().getASubclass*() }
 
-  /** Holds if `def` binds a module-level name to the `Context` class or to a subclass of it. */
-  private predicate bindsContext(Name def) {
+  /** Gets a reference to the `typing` (or `typing_extensions`) module. */
+  private API::Node typingModule() { result = API::moduleImport(["typing", "typing_extensions"]) }
+
+  /**
+   * Gets a reference to a value that string annotations may name: the `Context` class or a subclass
+   * of it (`what = "Context"`), the `typing` module (`what = "typing"`), or one of its members
+   * `Annotated`, `Optional` and `Union` (`what` is the name of the member).
+   */
+  private API::Node annotationValue(string what) {
+    what = "Context" and result = contextClassOrSubclass()
+    or
+    what = "typing" and result = typingModule()
+    or
+    what = ["Annotated", "Optional", "Union"] and result = typingModule().getMember(what)
+  }
+
+  /** Holds if `def` binds a module-level name to the value `what` (see `annotationValue`). */
+  private predicate binds(Name def, string what) {
     def.getScope() instanceof Module and
     (
       // `class ProjectContext(Context): ...`
-      def = contextClassOrSubclass().getAValueReachableFromSource().asExpr()
+      def = annotationValue(what).getAValueReachableFromSource().asExpr()
       or
-      // `from fastmcp import Context as Ctx`
+      // `from fastmcp import Context as Ctx`, `from typing import Optional as O`, `import typing`
       exists(Alias alias | alias.getAsname() = def |
-        alias.getValue() = contextClassOrSubclass().getAValueReachableFromSource().asExpr()
+        alias.getValue() = annotationValue(what).getAValueReachableFromSource().asExpr()
       )
     )
   }
 
   /**
-   * Gets a name that refers to the `Context` class or to a subclass of it in the module `m`. The SDKs
+   * Gets a name that refers to the value `what` (see `annotationValue`) in the module `m`. The SDKs
    * resolve string annotations through the globals of the module, so a name that `m` also binds to
    * something else is left out.
    */
-  private string contextName(Module m) {
-    exists(Name def | bindsContext(def) and def.getScope() = m and result = def.getId()) and
+  private string boundName(Module m, string what) {
+    exists(Name def | binds(def, what) and def.getScope() = m and result = def.getId()) and
     not exists(Name other |
       other.getScope() = m and
       other.isDefinition() and
       other.getId() = result and
-      not bindsContext(other)
+      not binds(other, what)
+    )
+  }
+
+  /**
+   * Gets a regular expression for the `typing` member `member` in a string annotation of the module
+   * `m`: a name bound to the member, such as `Optional` or `O`, or the member of a name bound to the
+   * module, such as `typing.Optional`.
+   */
+  private string typingPattern(Module m, string member) {
+    member = ["Annotated", "Optional", "Union"] and
+    (
+      result = boundName(m, member)
+      or
+      result = boundName(m, "typing") + "\\." + member
     )
   }
 
   /** Holds if `s` subscripts the `typing` (or `typing_extensions`) member `name`. */
   private predicate subscriptsTyping(Subscript s, string name) {
-    s.getObject() =
-      API::moduleImport(["typing", "typing_extensions"])
-          .getMember(name)
-          .getAValueReachableFromSource()
-          .asExpr()
+    s.getObject() = typingModule().getMember(name).getAValueReachableFromSource().asExpr()
   }
 
   /**
    * Holds if the string annotation `s` refers to the `Context` class in a type position, as in
    * `"Context"`, `"Context[...]"`, `"Context | None"`, `"Optional[Context]"`,
-   * `"Union[Context, None]"` or `"Annotated[Context, ...]"`. Strings of any other form, among them
-   * those with `Context` only in metadata or in `Literal` values, do not count.
+   * `"Union[Context, None]"` or `"Annotated[Context, ...]"`, where each name must resolve through
+   * the imports of the module. Strings of any other form, among them those with `Context` only in
+   * metadata or in `Literal` values, do not count.
    */
   private predicate isContextString(StringLiteral s) {
-    exists(string context, string other |
+    exists(Module m, string context, string other |
+      m = s.getEnclosingModule() and
       // the class, possibly with type arguments
-      context = contextName(s.getEnclosingModule()) + "(\\[.*\\])?" and
+      context = boundName(m, "Context") + "(\\[.*\\])?" and
       // a simple type in a union, such as `None`, `str` or `typing.Any`
       other = "[\\w.]+(\\[[^\\]]*\\])?"
     |
@@ -201,13 +229,16 @@ module Mcp {
           .regexpMatch("\\s*(" + other + "\\s*\\|\\s*)*" + context + "(\\s*\\|\\s*" + other +
               ")*\\s*")
       or
-      s.getText().regexpMatch("\\s*([\\w]+\\.)*Optional\\[\\s*" + context + "\\s*\\]\\s*")
+      s.getText()
+          .regexpMatch("\\s*" + typingPattern(m, "Optional") + "\\[\\s*" + context + "\\s*\\]\\s*")
       or
       s.getText()
-          .regexpMatch("\\s*([\\w]+\\.)*Union\\[\\s*(" + other + "\\s*,\\s*)*" + context +
-              "(\\s*,\\s*" + other + ")*\\s*\\]\\s*")
+          .regexpMatch("\\s*" + typingPattern(m, "Union") + "\\[\\s*(" + other + "\\s*,\\s*)*" +
+              context + "(\\s*,\\s*" + other + ")*\\s*\\]\\s*")
       or
-      s.getText().regexpMatch("\\s*([\\w]+\\.)*Annotated\\[\\s*" + context + "\\s*,.*\\]\\s*")
+      s.getText()
+          .regexpMatch("\\s*" + typingPattern(m, "Annotated") + "\\[\\s*" + context +
+              "\\s*,.*\\]\\s*")
     )
   }
 

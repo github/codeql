@@ -1,4 +1,5 @@
-from typing import Annotated as A, Literal as L, Optional
+import typing
+from typing import Annotated, Annotated as A, Literal, Literal as L, Optional, Optional as O, Union as U
 
 from fastmcp import Context as SDKContext, FastMCP
 from pydantic import BaseModel
@@ -42,6 +43,27 @@ def with_annotated_sdk_context(command, ctx: "Annotated[SDKContext, 'injected']"
 
 @app.tool()
 def with_aliased_annotated_sdk_context(command, ctx: A[SDKContext, "injected"]): # $ threatModelSource[ai]=command
+    return command
+
+
+# Quoted wrappers resolve through the imports of the module, like the class itself.
+@app.tool()
+def with_quoted_aliased_annotated(command, ctx: "A[SDKContext, 'injected']"): # $ threatModelSource[ai]=command
+    return command
+
+
+@app.tool()
+def with_quoted_aliased_optional(command, ctx: "O[SDKContext]" = None): # $ threatModelSource[ai]=command
+    return command
+
+
+@app.tool()
+def with_quoted_aliased_union(command, ctx: "U[SDKContext, None]" = None): # $ threatModelSource[ai]=command
+    return command
+
+
+@app.tool()
+def with_quoted_qualified_optional(command, ctx: "typing.Optional[SDKContext]" = None): # $ threatModelSource[ai]=command
     return command
 
 
