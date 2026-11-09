@@ -1828,13 +1828,21 @@ module Make<
 
       ExprNodePreOrPostImpl() { this = TExprNode(e, v_, isPost) }
 
-      /** Gets the underlying expression. */
-      DfInput::Expr getExpr() { result = e }
+      /** Gets the control flow node of this read or post-update. */
+      ControlFlowNode getControlFlowNode() {
+        exists(BasicBlock bb, int i |
+          e.hasCfgNode(bb, i) and
+          result = bb.getNode(i)
+        )
+      }
 
-      /** Holds if this represents the access to `var` performed at `expr`. */
-      predicate isExprAndVariable(DfInput::Expr expr, SourceVariable var) { expr = e and var = v_ }
+      /** Holds if this node reads `v` at `n`. */
+      pragma[nomagic]
+      predicate readsAt(ControlFlowNode n, SourceVariable v) {
+        n = this.getControlFlowNode() and v = v_
+      }
 
-      /** Holds if this node reads `v` at `bb,i` */
+      /** Holds if this node reads `v` at `bb,i`. */
       pragma[nomagic]
       predicate readsAt(BasicBlock bb, int i, SourceVariable v) { e.hasCfgNode(bb, i) and v = v_ }
 
@@ -2115,6 +2123,13 @@ module Make<
       )
     }
 
+    private predicate readsDef(ReadNode node, Definition def) {
+      exists(SourceVariable v, BasicBlock bb, int i |
+        ssaDefReachesRead(v, def, bb, i) and
+        node.readsAt(bb, i, v)
+      )
+    }
+
     /** Holds if the value of `nodeTo` is given by `nodeFrom`. */
     predicate localMustFlowStep(SourceVariable v, Node nodeFrom, Node nodeTo) {
       exists(Definition def |
@@ -2123,13 +2138,13 @@ module Make<
         v = def.getSourceVariable() and
         if DfInput::includeWriteDefsInFlowStep()
         then nodeTo.(SsaDefinitionNode).getDefinition() = def
-        else nodeTo.(ExprNode).isExprAndVariable(getARead(def), v)
+        else readsDef(nodeTo, def)
       )
       or
       // Flow from SSA definition to read
       exists(DefinitionExt def |
         nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
-        nodeTo.(ExprNode).isExprAndVariable(getARead(def), v) and
+        readsDef(nodeTo, def) and
         v = def.getSourceVariable()
       )
     }
@@ -2195,11 +2210,10 @@ module Make<
           guardChecks(g, def, val, state)
         |
           // guard controls a read
-          exists(DfInput::Expr e |
-            e = getARead(def) and
-            e.hasCfgNode(bb, _) and
+          exists(SourceVariable v, int i |
+            ssaDefReachesRead(v, def, bb, i) and
             DfInput::guardControlsBlock(g, bb, val) and
-            result.(ExprNode).isExprAndVariable(e, def.getSourceVariable())
+            result.(ExprNode).readsAt(bb, i, v)
           )
           or
           // guard controls input block to a phi node
