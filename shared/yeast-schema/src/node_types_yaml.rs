@@ -479,7 +479,7 @@ pub fn leaf_kinds_from_yaml(yaml_input: &str) -> Result<BTreeSet<String>, String
         .filter_map(|(name, fields)| {
             fields
                 .as_ref()
-                .map_or(true, BTreeMap::is_empty)
+                .is_none_or(BTreeMap::is_empty)
                 .then_some(name)
         })
         .collect())
