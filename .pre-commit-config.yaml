@@ -90,5 +90,5 @@ repos:
         name: Run fmt and clippy on C/C++ BMN Rust code
         files: ^cpp/extractor/bmn/(.*rs|Cargo.toml)$
         language: system
-        entry: cpp/extractor/bmn/lint --check
+        entry: bash -c 'cargo fmt -p bmn --check && cargo clippy -p bmn --all-targets --no-deps -- -D warnings'
         pass_filenames: false

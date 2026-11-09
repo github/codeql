@@ -7,7 +7,7 @@ a build.
 Run the Rust checks with:
 
 ```sh
-./lint --check
+cargo clippy --all-targets -- -D warnings
 cargo test
 ```
 
