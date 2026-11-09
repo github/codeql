@@ -1887,13 +1887,9 @@ module Make<
     }
 
     private class ReadNodeImpl extends ExprNodeImpl {
-      ReadNodeImpl() { exprReadAt(e, _, _, _, false, this) }
-
       /** Holds if this node reads `v` at `bb,i` */
       pragma[nomagic]
-      predicate readsAt(BasicBlock bb, int i, SourceVariable v) {
-        exprReadAt(e, bb, i, v, false, this)
-      }
+      predicate readsAt(BasicBlock bb, int i, SourceVariable v) { e.hasCfgNode(bb, i) and v = v_ }
     }
 
     /** A node corresponding to a `(bb,i,v)` tuple from `variableRead(bb,i,v,true)` */
