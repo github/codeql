@@ -64,11 +64,11 @@ struct Derived : Foo {};
 
 void test_qualifiers(
   Foo x, // $ asParameter=x parameterNode=x
-  Foo &r, // $ asParameter=r(*r) parameterNode=r
+  Foo &r, // $ asParameter=r(*r) parameterNode=r(*r)
   Foo *p, // $ asParameter=p parameterNode=p
-  Foo *&rp, // $ asParameter=rp(*rp) parameterNode=rp
+  Foo *&rp, // $ asParameter=rp(*rp) parameterNode=rp(*rp)
   Derived d, // $ asParameter=d parameterNode=d
-  Derived &rd) { // $ asParameter=rd(*rd) parameterNode=rd
+  Derived &rd) { // $ asParameter=rd(*rd) parameterNode=rd(*rd)
   x.f(); // $ asExpr=x asIndirectExpr=x
   r.f(); // $ asExpr=r asIndirectExpr=r
   p->f(); // $ asExpr=p asIndirectExpr=p
@@ -81,7 +81,7 @@ void test_qualifiers(
 
 void test_inner_glvalue_qualifiers(
   Foo x, // $ asParameter=x parameterNode=x
-  Foo &r) { // $ asParameter=r(*r) parameterNode=r
+  Foo &r) { // $ asParameter=r(*r) parameterNode=r(*r)
   Foo arr[2];
   (*&x).f(); // $ asExpr="* ..." asIndirectExpr="* ..." asExpr="& ...(* ...)" asIndirectExpr="& ...(* ...)" asExpr="x(* ...)" asIndirectExpr="x(* ...)"
   (*&r).f(); // $ asExpr="* ..." asIndirectExpr="* ..." asExpr="& ...(* ...)" asIndirectExpr="& ...(* ...)" asExpr="r(* ...)" asIndirectExpr="r(* ...)"
