@@ -719,18 +719,11 @@ dominates
 | test.rs:502:31:504:9 | Entry | test.rs:502:31:504:9 | Entry |
 | test.rs:505:20:505:27 | Entry | test.rs:505:20:505:27 | Entry |
 | test.rs:511:22:516:9 | Entry | test.rs:511:22:516:9 | Entry |
-| test.rs:511:22:516:9 | Entry | test.rs:511:28:516:9 | { ... } |
 | test.rs:511:28:516:9 | Entry | test.rs:511:28:516:9 | Entry |
 | test.rs:511:28:516:9 | Entry | test.rs:511:28:516:9 | Normal Exit |
-| test.rs:511:28:516:9 | Entry | test.rs:511:28:516:9 | { ... } |
-| test.rs:511:28:516:9 | Entry | test.rs:511:34:516:9 | After StmtList |
 | test.rs:511:28:516:9 | Entry | test.rs:512:16:512:16 | After b [false] |
 | test.rs:511:28:516:9 | Entry | test.rs:512:16:512:16 | After b [true] |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:511:28:516:9 | Normal Exit |
-| test.rs:511:28:516:9 | { ... } | test.rs:511:28:516:9 | { ... } |
-| test.rs:511:34:516:9 | After StmtList | test.rs:511:34:516:9 | After StmtList |
-| test.rs:512:16:512:16 | After b [false] | test.rs:511:28:516:9 | { ... } |
-| test.rs:512:16:512:16 | After b [false] | test.rs:511:34:516:9 | After StmtList |
 | test.rs:512:16:512:16 | After b [false] | test.rs:512:16:512:16 | After b [false] |
 | test.rs:512:16:512:16 | After b [true] | test.rs:512:16:512:16 | After b [true] |
 | test.rs:523:5:525:5 | Entry | test.rs:523:5:525:5 | Entry |
@@ -1411,17 +1404,8 @@ postDominance
 | test.rs:511:28:516:9 | Entry | test.rs:511:28:516:9 | Entry |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:511:28:516:9 | Entry |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:511:28:516:9 | Normal Exit |
-| test.rs:511:28:516:9 | Normal Exit | test.rs:511:34:516:9 | After StmtList |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:512:16:512:16 | After b [false] |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:512:16:512:16 | After b [true] |
-| test.rs:511:28:516:9 | { ... } | test.rs:511:22:516:9 | Entry |
-| test.rs:511:28:516:9 | { ... } | test.rs:511:28:516:9 | Entry |
-| test.rs:511:28:516:9 | { ... } | test.rs:511:28:516:9 | { ... } |
-| test.rs:511:28:516:9 | { ... } | test.rs:512:16:512:16 | After b [false] |
-| test.rs:511:34:516:9 | After StmtList | test.rs:511:28:516:9 | Entry |
-| test.rs:511:34:516:9 | After StmtList | test.rs:511:34:516:9 | After StmtList |
-| test.rs:511:34:516:9 | After StmtList | test.rs:512:16:512:16 | After b [false] |
-| test.rs:512:16:512:16 | After b [false] | test.rs:511:28:516:9 | Entry |
 | test.rs:512:16:512:16 | After b [false] | test.rs:512:16:512:16 | After b [false] |
 | test.rs:512:16:512:16 | After b [true] | test.rs:512:16:512:16 | After b [true] |
 | test.rs:523:5:525:5 | Entry | test.rs:523:5:525:5 | Entry |
@@ -1715,9 +1699,6 @@ immediateDominator
 | test.rs:478:13:478:27 | [pattern-start] TupleVariant(...) | test.rs:477:13:477:34 | After StructVariant {...} [no-match] |
 | test.rs:486:14:488:9 | { ... } | test.rs:485:5:490:5 | Entry |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:511:28:516:9 | Entry |
-| test.rs:511:28:516:9 | { ... } | test.rs:511:22:516:9 | Entry |
-| test.rs:511:28:516:9 | { ... } | test.rs:512:16:512:16 | After b [false] |
-| test.rs:511:34:516:9 | After StmtList | test.rs:512:16:512:16 | After b [false] |
 | test.rs:512:16:512:16 | After b [false] | test.rs:511:28:516:9 | Entry |
 | test.rs:512:16:512:16 | After b [true] | test.rs:511:28:516:9 | Entry |
 | test.rs:533:21:533:48 | After ... > ... [false] | test.rs:529:5:537:5 | Entry |
@@ -1989,8 +1970,6 @@ controls
 | test.rs:475:5:481:5 | Entry | test.rs:478:13:478:27 | [pattern-start] TupleVariant(...) | no-match |
 | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] | no-match |
 | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:478:13:478:27 | [pattern-start] TupleVariant(...) | match |
-| test.rs:511:28:516:9 | Entry | test.rs:511:28:516:9 | { ... } | false |
-| test.rs:511:28:516:9 | Entry | test.rs:511:34:516:9 | After StmtList | false |
 | test.rs:511:28:516:9 | Entry | test.rs:512:16:512:16 | After b [false] | false |
 | test.rs:511:28:516:9 | Entry | test.rs:512:16:512:16 | After b [true] | true |
 | test.rs:529:5:537:5 | Entry | test.rs:533:21:533:48 | After ... > ... [false] | false |
@@ -2399,10 +2378,8 @@ joinBlockPredecessor
 | test.rs:476:9:480:9 | After match e { ... } | test.rs:478:13:478:27 | [pattern-start] TupleVariant(...) | 1 |
 | test.rs:486:14:488:9 | { ... } | test.rs:485:5:490:5 | Entry | 1 |
 | test.rs:486:14:488:9 | { ... } | test.rs:486:14:488:9 | { ... } | 0 |
-| test.rs:511:28:516:9 | Normal Exit | test.rs:511:34:516:9 | After StmtList | 1 |
-| test.rs:511:28:516:9 | Normal Exit | test.rs:512:16:512:16 | After b [true] | 0 |
-| test.rs:511:28:516:9 | { ... } | test.rs:511:22:516:9 | Entry | 1 |
-| test.rs:511:28:516:9 | { ... } | test.rs:512:16:512:16 | After b [false] | 0 |
+| test.rs:511:28:516:9 | Normal Exit | test.rs:512:16:512:16 | After b [false] | 0 |
+| test.rs:511:28:516:9 | Normal Exit | test.rs:512:16:512:16 | After b [true] | 1 |
 | test.rs:533:21:533:48 | After if ... {...} | test.rs:533:21:533:48 | After ... > ... [false] | 0 |
 | test.rs:533:21:533:48 | After if ... {...} | test.rs:533:21:533:48 | After ... > ... [true] | 1 |
 | test.rs:569:18:580:5 | After 'block: { ... } | test.rs:571:12:571:30 | After condition_not_met(...) [true] | 0 |
