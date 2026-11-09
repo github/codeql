@@ -2267,7 +2267,6 @@ edges
 | test.rs:513:24:513:40 | Before async_block(...) | test.rs:513:24:513:34 | async_block |  |
 | test.rs:513:24:513:40 | async_block(...) | test.rs:513:24:513:40 | After async_block(...) |  |
 | test.rs:513:36:513:39 | true | test.rs:513:24:513:40 | async_block(...) |  |
-| test.rs:515:13:515:15 | foo | test.rs:511:28:516:9 | { ... } |  |
 | test.rs:515:13:515:15 | foo | test.rs:511:34:516:9 | After StmtList |  |
 | test.rs:523:5:525:5 | Entry | test.rs:523:22:523:22 | Before n |  |
 | test.rs:523:5:525:5 | Normal Exit | test.rs:523:5:525:5 | Exit |  |

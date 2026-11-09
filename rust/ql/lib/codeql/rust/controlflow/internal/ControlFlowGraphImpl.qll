@@ -614,8 +614,6 @@ private module Input implements InputSig1, InputSig2 {
   class CallableContext = Void;
 
   predicate propagatesValue(Ast::AstNode child, Ast::AstNode parent) {
-    child = parent.(Rust::BlockExpr).getStmtList().getTailExpr()
-    or
     child = parent.(Rust::MatchExpr).getAnArm().getExpr()
   }
 
