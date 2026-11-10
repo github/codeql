@@ -29,10 +29,6 @@ predicate isInsecureTlsVersion(int val, string name, string fieldName) {
     or
     // tls.VersionTLS11
     val = 770 and name = "VersionTLS11"
-    or
-    // Zero indicates the lowest available version setting for MinVersion,
-    // or the highest available version setting for MaxVersion.
-    val = 0 and name = "" and fieldName = "MinVersion"
   )
 }
 
@@ -47,7 +43,7 @@ int getASecureTlsVersion() {
  * Returns integers that may represent a TLS version.
  *
  * Integer values corresponding to versions are defined at https://golang.org/pkg/crypto/tls/#pkg-constants
- * Zero means the default version; at the time of writing, TLS 1.0.
+ * Zero selects the default version for the relevant field and is not tracked.
  */
 int getATlsVersion() { result = getASecureTlsVersion() or isInsecureTlsVersion(result, _, _) }
 
@@ -141,10 +137,6 @@ predicate isInsecureTlsVersionFlow(
       secureTlsVersionFlowsToField(secureAccessPath, fld)
     )
   |
-    version = 0 and
-    message = "Using lowest TLS version for " + fld + "."
-    or
-    version != 0 and
     exists(string name | isInsecureTlsVersion(version, name, _) |
       message = "Using insecure TLS version " + name + " for " + fld + "."
     )
