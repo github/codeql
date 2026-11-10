@@ -8,6 +8,7 @@ private import unified as U
 private import AstPlugin
 private import codeql.files.FileSystem
 private import codeql.unified.internal.NameBinding as NameBinding
+private import codeql.unified.internal.SwiftStringLiterals as SwiftStringLiterals
 
 module Unified {
   private import Ast::Unified as G
@@ -109,15 +110,11 @@ module Unified {
   class Expr extends G::Expr {
     /** Gets the string value of this expression, if it is a known string constant. */
     string getStringValue() {
-      // TODO: we'll want to cook the string literals extractor-side, but for now
-      // just strip the quotes here and ignore escape sequences.
-      exists(string text | text = this.(StringLiteral).getValue() |
-        result = text.regexpCapture("\"(.*)\"", 1)
-        or
-        // Constant-segments of string interpolations are represented as string literals, but their raw text does not have quotes
-        not exists(text.regexpCapture("\"(.*)\"", 1)) and
-        result = text
-      )
+      result = SwiftStringLiterals::getStringValue(this.(StringLiteral))
+      or
+      // Interpolation segments have no delimiters; their raw text is not a complete literal.
+      this.getParent() instanceof StringInterpolationExpr and
+      result = this.(StringLiteral).getValue()
     }
 
     /** Gets the immediately-enclosing expression, skipping over intermediate sub-nodes like `Argument`, and without crossing a function boundary. */

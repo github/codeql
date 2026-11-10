@@ -1,0 +1,148 @@
+let escaped = "a\nb\rc"
+let raw = #"\n"#
+let multiline = """
+    aa|
+    bb
+    """
+let interpolated = "a\(raw)b"
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    stringLiteralExpr
+                      closingQuote: "
+                      openingQuote: "
+                      segments:
+                        stringSegment
+                          content: stringSegment "a\\n"
+                        stringSegment
+                          content: stringSegment "b\\r"
+                        stringSegment
+                          content: stringSegment "c"
+              pattern:
+                identifierPattern
+                  identifier: identifier "escaped"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    stringLiteralExpr
+                      closingPounds: rawStringPoundDelimiter "#"
+                      openingPounds: rawStringPoundDelimiter "#"
+                      closingQuote: "
+                      openingQuote: "
+                      segments:
+                        stringSegment
+                          content: stringSegment "\\n"
+              pattern:
+                identifierPattern
+                  identifier: identifier "raw"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    stringLiteralExpr
+                      closingQuote: """
+                      openingQuote: """
+                      segments:
+                        stringSegment
+                          content: stringSegment "aa|\n"
+                        stringSegment
+                          content: stringSegment "bb"
+              pattern:
+                identifierPattern
+                  identifier: identifier "multiline"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    stringLiteralExpr
+                      closingQuote: "
+                      openingQuote: "
+                      segments:
+                        stringSegment
+                          content: stringSegment "a"
+                        expressionSegment
+                          leftParen: (
+                          rightParen: )
+                          backslash: \
+                          expressions:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "raw"
+                        stringSegment
+                          content: stringSegment "b"
+              pattern:
+                identifierPattern
+                  identifier: identifier "interpolated"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩\n⟨stmt⟩\n⟨stmt⟩\n⟨stmt⟩"
+      stmt:
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "escaped" source="escaped"
+          value: string_literal "\"a\\nb\\rc\"" source="\"a\\nb\\rc\""
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "raw" source="raw"
+          value: string_literal "#\"\\n\"#" source="#\"\\n\"#"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "multiline" source="multiline"
+          value: string_literal "\"\"\"\n    aa|\n    bb\n    \"\"\"" source="\"\"\"\n    aa|\n    bb\n    \"\"\""
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "interpolated" source="interpolated"
+          value:
+            string_interpolation_expr source="\"⟨element⟩⟨element⟩⟨element⟩\""
+              element:
+                string_literal "a" source="a"
+                call_expr source="\\(⟨argument⟩)"
+                  callee: builtin_expr "interpolation" source=""
+                  argument:
+                    argument source="⟨value⟩"
+                      value: identifier "raw" source="raw"
+                string_literal "b" source="b"
