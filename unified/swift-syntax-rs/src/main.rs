@@ -31,12 +31,11 @@ fn main() -> ExitCode {
 
 fn read_source() -> std::io::Result<String> {
     let mut args = std::env::args().skip(1);
-    match args.next() {
-        Some(path) => std::fs::read_to_string(path),
-        None => {
-            let mut buf = String::new();
-            std::io::stdin().read_to_string(&mut buf)?;
-            Ok(buf)
-        }
+    if let Some(path) = args.next() {
+        std::fs::read_to_string(path)
+    } else {
+        let mut buf = String::new();
+        std::io::stdin().read_to_string(&mut buf)?;
+        Ok(buf)
     }
 }
