@@ -299,11 +299,11 @@ fn test_try_operator() -> Result<(), std::io::Error> {
 fn test_in_test_function() {
     let password = String::from("123456");
 
-    println!("message = {}", password); // $ SPURIOUS: Alert[rust/cleartext-logging]
-    assert!(password.is_empty(), "message = {}", password); // $ SPURIOUS: Alert[rust/cleartext-logging]
-    assert_eq!(password, "", "message = {}", password); // $ SPURIOUS: Alert[rust/cleartext-logging]
+    println!("message = {}", password);
+    assert!(password.is_empty(), "message = {}", password);
+    assert_eq!(password, "", "message = {}", password);
 
-    let check = || assert!(password.is_empty(), "message = {}", password); // $ SPURIOUS: Alert[rust/cleartext-logging]
+    let check = || assert!(password.is_empty(), "message = {}", password);
     check();
 }
 
@@ -311,7 +311,7 @@ fn test_in_test_function() {
 async fn test_in_async_test_function() {
     let password = String::from("123456");
 
-    assert!(password.is_empty(), "message = {}", password); // $ SPURIOUS: Alert[rust/cleartext-logging]
+    assert!(password.is_empty(), "message = {}", password);
 }
 
 fn main() {
