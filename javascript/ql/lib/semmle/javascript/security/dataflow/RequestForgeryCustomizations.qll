@@ -79,14 +79,14 @@ module RequestForgery {
   predicate isAdditionalRequestForgeryStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::NewNode url | url = DataFlow::globalVarRef("URL").getAnInstantiation() |
       succ = url and
-      pred = url.getArgument(0)
+      pred = url.getArgument([0, 1])
     )
     or
     exists(DataFlow::NewNode url |
       url = API::moduleImport("url").getMember("URL").getAnInstantiation()
     |
       succ = url and
-      pred = url.getArgument(0)
+      pred = url.getArgument([0, 1])
     )
     or
     exists(HtmlSanitizerCall call |

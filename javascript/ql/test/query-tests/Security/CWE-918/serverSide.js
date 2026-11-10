@@ -147,5 +147,18 @@ var server2 = http.createServer(function (req, res) {
     axios.get(escapedUrl); // $ Alert[js/request-forgery]
 });
 
+var server3 = http.createServer(function (req, res) {
+    const base = req.query.base; // $ Source[js/request-forgery]
+    const target = new URL('/path', base);
+    axios.get(target.href); // $ Alert[js/request-forgery]
+});
+
+var server4 = http.createServer(function (req, res) {
+    const { URL } = require('url');
+    const base = req.query.base; // $ Source[js/request-forgery]
+    const target = new URL('/path', base);
+    axios.get(target.href); // $ Alert[js/request-forgery]
+});
+
 const custom = require('testlib').getServerSource(); // $ Source[js/request-forgery]
 request(custom); // $ Alert[js/request-forgery]
