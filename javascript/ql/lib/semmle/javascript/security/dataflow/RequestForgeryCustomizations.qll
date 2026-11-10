@@ -73,20 +73,45 @@ module RequestForgery {
     override string getKind() { result = kind }
   }
 
+  /** Gets a call to the `URL` constructor, either the global or the one from `url`. */
+  private DataFlow::NewNode urlConstructorCall() {
+    result = DataFlow::globalVarRef("URL").getAnInstantiation()
+    or
+    result = API::moduleImport("url").getMember("URL").getAnInstantiation()
+  }
+
+  /**
+   * Holds if `nd` is an absolute URL, that is, a string with a URL scheme such as
+   * `https://example.com`, or a `URL` object, which is always absolute.
+   */
+  private predicate isAbsoluteUrl(DataFlow::Node nd) {
+    nd.getStringValue().regexpMatch("(?i)[a-z][a-z0-9+.-]*:.*")
+    or
+    nd.getALocalSource() = urlConstructorCall()
+  }
+
   /**
    * Holds if there is a taint step from `pred` to `succ` for request forgery.
    */
   predicate isAdditionalRequestForgeryStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::NewNode url | url = DataFlow::globalVarRef("URL").getAnInstantiation() |
       succ = url and
-      pred = url.getArgument([0, 1])
+      (
+        pred = url.getArgument(0)
+        or
+        pred = url.getArgument(1) and not isAbsoluteUrl(url.getArgument(0))
+      )
     )
     or
     exists(DataFlow::NewNode url |
       url = API::moduleImport("url").getMember("URL").getAnInstantiation()
     |
       succ = url and
-      pred = url.getArgument([0, 1])
+      (
+        pred = url.getArgument(0)
+        or
+        pred = url.getArgument(1) and not isAbsoluteUrl(url.getArgument(0))
+      )
     )
     or
     exists(HtmlSanitizerCall call |
