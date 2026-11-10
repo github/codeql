@@ -1,0 +1,43 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["syscall", "", false, "Exec", "", "", "Argument[0]", "command-injection", "manual"],
+        ["syscall", "", false, "ForkExec", "", "", "Argument[0]", "command-injection", "manual"],
+        ["syscall", "", false, "StartProcess", "", "", "Argument[0]", "command-injection", "manual"],
+        ["syscall", "", false, "CreateProcess", "", "", "Argument[0]", "command-injection", "manual"],
+        ["syscall", "", false, "CreateProcessAsUser", "", "", "Argument[1]", "command-injection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["syscall", "", false, "BytePtrFromString", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["syscall", "", false, "ByteSliceFromString", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["syscall", "", false, "StringBytePtr", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["syscall", "", false, "StringByteSlice", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["syscall", "", false, "StringSlicePtr", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["syscall", "Conn", true, "SyscallConn", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["syscall", "RawConn", true, "Read", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["syscall", "RawConn", true, "Write", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["syscall", "", false, "Environ", "", "", "ReturnValue", "environment", "manual"],
+        ["syscall", "", false, "Getenv", "", "", "ReturnValue[0]", "environment", "manual"]
+      ]
+    }
+  ]
+}

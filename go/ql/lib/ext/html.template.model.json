@@ -1,0 +1,18 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["html/template", "", false, "HTMLEscape", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["html/template", "", false, "HTMLEscapeString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["html/template", "", false, "JSEscape", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["html/template", "", false, "JSEscapeString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["html/template", "Template", true, "Execute", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["html/template", "Template", true, "ExecuteTemplate", "", "", "Argument[2]", "Argument[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}

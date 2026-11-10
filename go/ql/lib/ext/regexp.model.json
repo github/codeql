@@ -1,0 +1,50 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["regexp", "", false, "Compile", "", "", "Argument[0]", "regex-use[c]", "manual"],
+        ["regexp", "", false, "CompilePOSIX", "", "", "Argument[0]", "regex-use[c]", "manual"],
+        ["regexp", "", false, "MustCompile", "", "", "Argument[0]", "regex-use[c]", "manual"],
+        ["regexp", "", false, "MustCompilePOSIX", "", "", "Argument[0]", "regex-use[c]", "manual"],
+        ["regexp", "", false, "Match", "", "", "Argument[0]", "regex-use[1]", "manual"],
+        ["regexp", "", false, "MatchReader", "", "", "Argument[0]", "regex-use[1]", "manual"],
+        ["regexp", "", false, "MatchString", "", "", "Argument[0]", "regex-use[1]", "manual"],
+        ["regexp", "Regexp", true, "Match", "", "", "Argument[receiver]", "regex-use[0]", "manual"],
+        ["regexp", "Regexp", true, "MatchReader", "", "", "Argument[receiver]", "regex-use[0]", "manual"],
+        ["regexp", "Regexp", true, "MatchString", "", "", "Argument[receiver]", "regex-use[0]", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["regexp", "", false, "QuoteMeta", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "Expand", "", "", "Argument[1..2]", "Argument[0]", "taint", "manual"],
+        ["regexp", "Regexp", true, "Expand", "", "", "Argument[1..2]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "ExpandString", "", "", "Argument[1..2]", "Argument[0]", "taint", "manual"],
+        ["regexp", "Regexp", true, "ExpandString", "", "", "Argument[1..2]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "Find", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "FindAll", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "FindAllString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "FindAllStringSubmatch", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "FindAllSubmatch", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "FindString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "FindStringSubmatch", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "FindSubmatch", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "ReplaceAll", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "ReplaceAllFunc", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "ReplaceAllLiteral", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "ReplaceAllLiteralString", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "ReplaceAllString", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "ReplaceAllStringFunc", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["regexp", "Regexp", true, "Split", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

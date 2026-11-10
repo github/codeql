@@ -1,0 +1,16 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["github.com/joho/godotenv", "", false, "Parse", "", "", "ReturnValue", "environment", "manual"],
+        ["github.com/joho/godotenv", "", false, "Read", "", "", "ReturnValue", "environment", "manual"],
+        ["github.com/joho/godotenv", "", false, "Unmarshal", "", "", "ReturnValue", "environment", "manual"],
+        ["github.com/joho/godotenv", "", false, "UnmarshalBytes", "", "", "ReturnValue", "environment", "manual"]
+      ]
+    }
+  ]
+}
