@@ -11,6 +11,7 @@ private import rust
 private import SsaImpl as SsaImpl
 private import codeql.rust.controlflow.internal.Scope as Scope
 private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
+private import codeql.rust.elements.internal.VariableImpl::Impl as VariableImpl
 private import codeql.rust.internal.PathResolution
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.dataflow.Ssa
@@ -154,8 +155,7 @@ private Expr getALastEvalNode(Expr e) {
     ) or
   result = e.(MatchExpr).getAnArm().getExpr() or
   result = e.(MacroExpr).getMacroCall().getMacroCallExpansion() or
-  result.(BreakExpr).getTarget() = e or
-  result = e.(ParenExpr).getExpr()
+  result.(BreakExpr).getTarget() = e
 }
 
 /**
@@ -229,8 +229,6 @@ module LocalFlow {
       nodeFrom.asExpr() = match.getScrutinee() and
       nodeTo.asPat() = match.getAnArm().getPat()
     )
-    or
-    nodeFrom.asExpr() = nodeTo.asExpr().(ParenExpr).getExpr()
   }
 
   pragma[nomagic]
@@ -484,15 +482,7 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
     node instanceof ImplicitBorrowNode or
     node instanceof DerefOutNode or
     node instanceof IndexOutNode or
-    node.asExpr() instanceof ParenExpr or
     nodeIsHidden(node.(PostUpdateNode).getPreUpdateNode())
-  }
-
-  private Expr stripParens(Expr e) {
-    not e instanceof ParenExpr and
-    result = e
-    or
-    result = stripParens(e.(ParenExpr).getExpr())
   }
 
   predicate neverSkipInPathGraph(Node node) {
@@ -500,10 +490,10 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
     or
     node.(Node::Node).asPat() = any(LetExpr e).getPat()
     or
-    node.(Node::Node).asExpr() = stripParens(any(AssignmentExpr a).getLhs())
+    node.(Node::Node).asExpr() = any(AssignmentExpr a).getLhs()
     or
     exists(MatchExpr match |
-      node.asExpr() = stripParens(match.getScrutinee()) or
+      node.asExpr() = match.getScrutinee() or
       node.asPat() = match.getAnArm().getPat()
     )
   }
@@ -1070,7 +1060,7 @@ module VariableCapture {
     final class CapturedParameter extends CapturedVariable {
       ParamBase p;
 
-      CapturedParameter() { p = this.getParameter() }
+      CapturedParameter() { this.isParameter(p) }
 
       SourceParameterNode getParameterNode() { result.getParameter() = p }
     }
@@ -1080,33 +1070,22 @@ module VariableCapture {
     }
 
     class VariableWrite extends Expr {
-      Expr source;
       CapturedVariable v;
 
       VariableWrite() {
-        exists(AssignmentExpr assign, Variable::VariableWriteAccess write |
-          this = assign and
-          v = write.getVariable() and
-          assign.getLhs() = write and
-          assign.getRhs() = source
-        )
+        this = v.getName()
         or
-        this =
-          any(LetStmt ls |
-            v.getPat() = ls.getPat() and
-            ls.getInitializer() = source
-          )
+        v = this.(Variable::VariableWriteAccess).getVariable()
+      }
+
+      override predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) {
+        not this instanceof VariableWriteAccess and
+        super.hasCfgNode(bb, i)
         or
-        this =
-          any(LetExpr le |
-            v.getPat() = le.getPat() and
-            le.getScrutinee() = source
-          )
+        this.(VariableWriteAccess).getAssignmentExpr() = bb.getNode(i).getAstNode()
       }
 
       CapturedVariable getVariable() { result = v }
-
-      Expr getSource() { result = source }
     }
 
     class VariableRead extends Expr {
@@ -1145,7 +1124,7 @@ module VariableCapture {
     or
     result.(Flow::ExprNode).getExpr() = n.asExpr()
     or
-    result.(Flow::VariableWriteSourceNode).getVariableWrite().getSource() = n.asExpr()
+    result.(Flow::VariableWriteSourceNode).getVariableWrite() = n.getAstNode()
     or
     result.(Flow::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or

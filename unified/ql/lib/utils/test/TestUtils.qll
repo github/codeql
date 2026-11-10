@@ -4,15 +4,6 @@ private import codeql.unified.internal.NameBinding
 private import codeql.unified.internal.typeinference.TypeInference as TypeInference
 private import codeql.unified.internal.typeinference.TypeInferencePlugin
 
-private string deriveClassName(ClassLikeDeclaration cls) {
-  not exists(cls.getEnclosingClass()) and
-  result = cls.getName()
-  or
-  result = getStaticBindingTargetFromRef(cls.getExtensionTarget()).getValue()
-  or
-  result = deriveClassName(cls.getEnclosingClass()) + "." + cls.getName()
-}
-
 private string getTupleFieldName(NameBinding decl) {
   decl = any(TupleType tt).getField(result).getPattern()
 }
@@ -24,11 +15,11 @@ private string defaultName(NameBinding decl) {
     not exists(getTupleFieldName(decl)) and name = decl.getName()
   |
     exists(ClassLikeDeclaration cls |
-      decl.getDeclaration() = cls.getAMember() and
-      result = deriveClassName(cls) + "." + name
+      decl.getDeclaration() = cls.getAMemberIncludingExtensions() and
+      result = cls.getQualifiedName() + "." + name
     )
     or
-    not decl.getDeclaration() = any(ClassLikeDeclaration cls).getAMember() and
+    not decl.getDeclaration() = any(ClassLikeDeclaration cls).getAMemberIncludingExtensions() and
     result = name
   )
 }
@@ -47,25 +38,6 @@ predicate nameBinding(NameBinding v, string alias) {
   )
 }
 
-private string defaultCallableName(Callable c) {
-  exists(TypeInference::Input3::Callable callable | callable.asCallable() = c |
-    not c instanceof EnumConstructor and
-    exists(ClassLikeDeclaration cls |
-      c = cls.getAMember() and
-      result = deriveClassName(cls) + "." + callable.getName()
-    )
-    or
-    not c = any(ClassLikeDeclaration cls).getAMember() and
-    result = callable.getName()
-    or
-    exists(ClassLikeDeclaration enum, EnumConstructor ctor |
-      ctor = c and
-      enum = ctor.getEnum() and
-      result = deriveClassName(enum) + "." + ctor.getEnclosingClass().getName()
-    )
-  )
-}
-
 private predicate callableAt(Callable c, string filepath, int line) {
   c.getLocation().hasLocationInfo(filepath, line, _, _, _)
 }
@@ -76,6 +48,11 @@ predicate callableName(Callable c, string alias) {
     keyValueCommentAt(filepath, line, "name", alias)
     or
     not keyValueCommentAt(filepath, line, "name", _) and
-    alias = defaultCallableName(c)
+    (
+      not c instanceof EnumCaseConstructor and
+      alias = c.(Member).getQualifiedName()
+      or
+      alias = c.(EnumCaseConstructor).getEnumCaseClass().getQualifiedName()
+    )
   )
 }

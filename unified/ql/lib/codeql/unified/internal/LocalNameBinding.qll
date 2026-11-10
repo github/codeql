@@ -1,6 +1,8 @@
 /**
  * Provides classes for reasoning about lexically scoped names and references to these.
  */
+overlay[local?]
+module;
 
 private import unified
 private import unified as U
@@ -70,34 +72,9 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
   }
 
   private AstNode getChild1(AstNode n, int index) {
-    result = n.(Block).getStmt(index) and
-    not n instanceof BlockWithGuardStmts
-    or
     result = n.(BlockWithGuardStmts).getTranslatedChild(index)
     or
     result = n.(LogicalAndRoot).getNthLeaf(index)
-    or
-    exists(PatternGuardExpr guard | n = guard |
-      index = 0 and result = guard.getPattern()
-      or
-      index = 1 and result = guard.getValue()
-    )
-    or
-    exists(IfExpr expr | n = expr |
-      index = 0 and result = expr.getCondition()
-      or
-      index = 1 and result = expr.getThen()
-      or
-      index = 2 and result = expr.getElse()
-    )
-    or
-    exists(VariableDeclaration decl | n = decl |
-      index = 0 and result = decl.getPattern()
-      or
-      index = 1 and result = decl.getType()
-      or
-      index = 2 and result = decl.getValue()
-    )
     or
     index = 0 and
     relocatedClassMember(n, result)
@@ -121,7 +98,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     not n instanceof LogicalAndExpr and // also ignore intermediate nodes within a 'logical and' tree
     not n instanceof GuardIfStmt and
     not relocatedClassMember(_, result) and
-    index = 0 and
+    index = result.getParentIndex() and
     result = n.getAFieldOrChild()
   }
 
@@ -174,11 +151,6 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   private class LocalVariableDeclarationSiblingShadowingDecl extends SiblingShadowingDecl instanceof LocalVariableDeclaration
   {
-    LocalVariableDeclarationSiblingShadowingDecl() {
-      // Capture-declarations act as local variables, but are not sibling-shadowing
-      not this = any(FunctionExpr e).getACaptureDeclaration()
-    }
-
     override Expr getPattern() { result = LocalVariableDeclaration.super.getPattern() }
 
     override AstNode getRhs() { result = LocalVariableDeclaration.super.getValue() }
@@ -437,6 +409,7 @@ module Public {
       |
         decl instanceof VariableDeclaration or
         decl instanceof FunctionDeclaration or // treat functions as values
+        decl instanceof AccessorDeclaration or
         decl instanceof Parameter or
         decl instanceof ForEachStmt or
         decl instanceof PatternGuardExpr or
@@ -474,6 +447,25 @@ module Public {
     }
   }
 
+  private AccessorDeclaration getAnAccessor(LocalVariable v) {
+    v.getABinding() = result.getNameNode() and
+    (result instanceof GetterDeclaration or result instanceof SetterDeclaration)
+  }
+
+  /** A local variable defined by a getter/setter pair, which does not store a value on its own. */
+  final class ComputedLocalVariable extends LocalVariable {
+    ComputedLocalVariable() { exists(getAnAccessor(this)) }
+
+    /** Gets the getter or setter for this computed variable. */
+    AccessorDeclaration getAnAccessor() { result = getAnAccessor(this) }
+
+    /** Gets the getter for this computed variable. */
+    GetterDeclaration getGetterDeclaration() { result = getAnAccessor(this) }
+
+    /** Gets the setter for this computed variable. */
+    SetterDeclaration getSetterDeclaration() { result = getAnAccessor(this) }
+  }
+
   /** An access to a locally-declared name. */
   class LocalNameAccess extends PotentialLocalNameAccess {
     LocalNameAccess() { not this instanceof UnqualifiedMemberAccess }
@@ -488,6 +480,8 @@ module Public {
   }
 }
 
+final class PotentialLocalNameAccess = PotentialLocalNameAccessImpl;
+
 /**
  * A name node that is possibly a reference to a local name, but could also refer to a member
  * visible through imports or inheritance.
@@ -501,15 +495,25 @@ module Public {
  * }
  * ```
  */
-class PotentialLocalNameAccess extends IdentifierExpr {
+abstract private class PotentialLocalNameAccessImpl extends AstNode {
   /** Gets the representative for the local name being accessed. */
   LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
 
   /** Gets the name being accessed. */
-  string getName() { result = this.getValue() }
+  abstract string getName();
 
   /** Holds if this is one of the binding sites for a name, such as the `x` in `let x = 123`. */
   predicate isBindingSite() { this instanceof NameBinding }
+}
+
+private class IdentifierPotentialLocalNameAccess extends PotentialLocalNameAccessImpl,
+  IdentifierExpr
+{
+  override string getName() { result = this.getValue() }
+}
+
+private class SuperPotentialLocalNameAccess extends PotentialLocalNameAccessImpl, SuperExpr {
+  override string getName() { result = any(NameBindingPlugin p).getSuperLocalName(this) }
 }
 
 /** Gets the implicitly-declared variable through which the given callable refers to its receiver. */

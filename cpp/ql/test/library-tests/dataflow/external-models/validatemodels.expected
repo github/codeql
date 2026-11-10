@@ -3369,6 +3369,7 @@
 | Dubious signature "(const ML_KEM_KEY *,const ML_KEM_KEY *)" in summary model. |
 | Dubious signature "(const ML_KEM_KEY *,int)" in summary model. |
 | Dubious signature "(const ML_KEM_KEY *,unsigned char **)" in summary model. |
+| Dubious signature "(const MessageProperties &,Allocator *)" in summary model. |
 | Dubious signature "(const NAMING_AUTHORITY *)" in summary model. |
 | Dubious signature "(const NAMING_AUTHORITY *,unsigned char **)" in summary model. |
 | Dubious signature "(const NETSCAPE_CERT_SEQUENCE *,unsigned char **)" in summary model. |
@@ -5594,18 +5595,27 @@
 | Dubious signature "(z_streamp,unsigned int)" in summary model. |
 | Unrecognized input specification "Argument[***0]" in summary model. |
 | Unrecognized input specification "Argument[***1]" in summary model. |
+| Unrecognized input specification "Argument[***2]" in summary model. |
 | Unrecognized input specification "Argument[***3]" in summary model. |
 | Unrecognized input specification "Argument[***4]" in summary model. |
+| Unrecognized input specification "Argument[***5]" in summary model. |
 | Unrecognized input specification "Argument[****0]" in summary model. |
 | Unrecognized input specification "Argument[****1]" in summary model. |
+| Unrecognized input specification "Argument[****2]" in summary model. |
 | Unrecognized input specification "Argument[****3]" in summary model. |
 | Unrecognized input specification "Argument[****4]" in summary model. |
+| Unrecognized input specification "Argument[****5]" in summary model. |
 | Unrecognized input specification "Argument[*****0]" in summary model. |
 | Unrecognized input specification "Argument[*****1]" in summary model. |
+| Unrecognized input specification "Argument[*****2]" in summary model. |
+| Unrecognized input specification "Argument[*****3]" in summary model. |
+| Unrecognized input specification "Argument[*****4]" in summary model. |
+| Unrecognized input specification "Argument[*****5]" in summary model. |
 | Unrecognized input specification "Field[****hEvent]" in summary model. |
 | Unrecognized input specification "Field[***hEvent]" in summary model. |
 | Unrecognized output specification "Argument[***0]" in summary model. |
 | Unrecognized output specification "Argument[***1]" in summary model. |
+| Unrecognized output specification "Argument[***2]" in summary model. |
 | Unrecognized output specification "Argument[****0]" in summary model. |
 | Unrecognized output specification "Argument[****1]" in summary model. |
 | Unrecognized output specification "Argument[*****0]" in summary model. |
@@ -5613,7 +5623,15 @@
 | Unrecognized output specification "Field[****hEvent]" in summary model. |
 | Unrecognized output specification "Field[***hEvent]" in summary model. |
 | Unrecognized output specification "Parameter[***0]" in summary model. |
+| Unrecognized output specification "Parameter[***1]" in summary model. |
+| Unrecognized output specification "Parameter[***2]" in summary model. |
+| Unrecognized output specification "Parameter[***3]" in summary model. |
+| Unrecognized output specification "Parameter[***4]" in summary model. |
 | Unrecognized output specification "Parameter[****0]" in summary model. |
+| Unrecognized output specification "Parameter[****1]" in summary model. |
+| Unrecognized output specification "Parameter[****2]" in summary model. |
+| Unrecognized output specification "Parameter[****3]" in summary model. |
+| Unrecognized output specification "Parameter[****4]" in summary model. |
 | Unrecognized output specification "ReturnValue[*****]" in summary model. |
 | Unrecognized output specification "ReturnValue[****]" in summary model. |
 | Unrecognized output specification "ReturnValue[***]" in summary model. |

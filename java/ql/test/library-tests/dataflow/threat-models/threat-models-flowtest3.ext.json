@@ -1,0 +1,24 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/threat-models",
+        "extensible": "threatModelConfiguration"
+      },
+      "data": [
+        ["local", true, 0]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/java-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["testlib", "TestSources", false, "executeQuery", "(String)", "", "ReturnValue", "database", "manual"],
+        ["testlib", "TestSources", false, "readEnv", "(String)", "", "ReturnValue", "environment", "manual"],
+        ["testlib", "TestSources", false, "getCustom", "(String)", "", "ReturnValue", "custom", "manual"]
+      ]
+    }
+  ]
+}

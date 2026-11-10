@@ -18,6 +18,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "C"
           memberBlock:
             memberBlock
@@ -72,7 +73,6 @@ sourceFile
                               baseName: identifier "DEBUG"
                           poundKeyword: #if
                       poundEndif: #endif
-          modifiers:
           classKeyword: class
 
 ---

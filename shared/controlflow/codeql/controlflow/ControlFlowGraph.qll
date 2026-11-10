@@ -161,6 +161,9 @@ signature module AstSig<LocationSig Location> {
     Expr getCollection();
   }
 
+  /** Gets the loop guard of the given `loop`, if any. */
+  default AstNode getLoopGuard(ForEachStmt loop) { none() }
+
   /**
    * A `break` statement.
    *
@@ -535,14 +538,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     /** Holds if catch clause `catch` catches all exceptions. */
     default predicate catchAll(CatchClause catch) { not exists(catch.getPattern()) }
 
+    /** Holds if `switch` is exhaustive, so one of its cases must match. */
+    default predicate isExhaustive(Switch switch) { none() }
+
     /**
      * Holds if case `c` matches all possible values, for example, if it is a
-     * `default` case or a match-all pattern like `Object o` or if it is the
-     * final case in a switch that is known to be exhaustive.
+     * match-all pattern like `Object o`.
      *
      * A match-all case can still ultimately fail to match if it has a guard.
+     *
+     * Default cases are handled automatically. The final case in an exhaustive
+     * switch should not be handled here but through `isExhaustive`.
      */
-    default predicate matchAll(Case c) { c instanceof DefaultCase }
+    default predicate matchAll(Case c) { none() }
   }
 
   /**
@@ -656,6 +664,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         any(DoStmt dostmt).getCondition() = n or
         any(UntilStmt untilstmt).getCondition() = n or
         any(ForStmt forstmt).getCondition() = n or
+        getLoopGuard(_) = n or
         any(ConditionalExpr condexpr).getCondition() = n or
         any(CatchClause catch).getCondition() = n or
         any(Case case).getGuard() = n
@@ -843,11 +852,27 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       result = DenseRank2<ParameterCtxDenseRankInput>::denseRank(c, ctx.asSome(), rnk)
     }
 
+    private predicate matchAll(Case c) {
+      c instanceof DefaultCase
+      or
+      Input1::matchAll(c)
+      or
+      exists(Switch switch, int last |
+        Input1::isExhaustive(switch) and
+        // Default cases are always considered last in control flow order, so
+        // exhaustiveness does not apply to the last case if a default case
+        // exists.
+        not switch.getCase(_) instanceof DefaultCase and
+        switch.getCase(last) = c and
+        not exists(switch.getCase(last + 1))
+      )
+    }
+
     private predicate constantCondition(AstNode n, ConditionalSuccessor t) {
       n.(BooleanLiteral).getValue() = t.(BooleanSuccessor).getValue()
       or
       exists(Case c, int i |
-        Input1::matchAll(c) and
+        matchAll(c) and
         c.getPattern(i) = n and
         not exists(c.getPattern(i + 1)) and
         t.(MatchingSuccessor).getValue() = true
@@ -1250,28 +1275,28 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         or
         n.isIn(ast) and
         always = true and
-        (
+        exists(SuccessorType st |
           ast instanceof ReturnStmt and
-          c.getSuccessorType() instanceof ReturnSuccessor
+          st instanceof ReturnSuccessor
           or
           ast instanceof Throw and
-          c.getSuccessorType() instanceof ExceptionSuccessor
+          st instanceof ExceptionSuccessor
           or
           ast instanceof BreakStmt and
-          c.getSuccessorType() instanceof BreakSuccessor
+          st instanceof BreakSuccessor
           or
           ast instanceof ContinueStmt and
-          c.getSuccessorType() instanceof ContinueSuccessor
+          st instanceof ContinueSuccessor
           or
           ast instanceof GotoStmt and
-          c.getSuccessorType() instanceof GotoSuccessor
-        ) and
-        (
-          not Input1::hasLabel(ast, _) and not c.hasLabel(_)
+          st instanceof GotoSuccessor
+        |
+          not Input1::hasLabel(ast, _) and
+          c = TSimpleAbruptCompletion(st)
           or
           exists(Input1::Label l |
             Input1::hasLabel(ast, l) and
-            c.hasLabel(l)
+            c = TLabeledAbruptCompletion(st, l)
           )
         )
         or
@@ -1315,20 +1340,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n.(ExceptionalExitNodeImpl).getEnclosingCallable() = callable
         )
         or
-        exists(LoopStmt loop | ast = pragma[only_bind_into](loop).getBody() |
+        exists(LoopStmt loop, SuccessorType st | ast = pragma[only_bind_into](loop).getBody() |
           (
-            c.getSuccessorType() instanceof BreakSuccessor and
+            st instanceof BreakSuccessor and
             n.isAfter(loop)
             or
-            c.getSuccessorType() instanceof ContinueSuccessor and
+            st instanceof ContinueSuccessor and
             n.isAdditional(loop, loopHeaderTag())
           ) and
           (
-            not c.hasLabel(_)
+            c = TSimpleAbruptCompletion(st)
             or
-            exists(Input1::Label l |
-              c.hasLabel(l) and
-              (Input1::hasLabel(loop, l) or hasEnclosingLabel(loop, l))
+            exists(Input1::Label l | c = TLabeledAbruptCompletion(st, l) |
+              Input1::hasLabel(loop, l) or hasEnclosingLabel(loop, l)
             )
           )
         )
@@ -1701,7 +1725,18 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isBefore(foreachstmt.getVariable())
           or
           n1.isAfter(foreachstmt.getVariable()) and
+          (
+            n2.isBefore(getLoopGuard(foreachstmt))
+            or
+            not exists(getLoopGuard(foreachstmt)) and
+            n2.isBefore(foreachstmt.getBody())
+          )
+          or
+          n1.isAfterTrue(getLoopGuard(foreachstmt)) and
           n2.isBefore(foreachstmt.getBody())
+          or
+          n1.isAfterFalse(getLoopGuard(foreachstmt)) and
+          n2.isAdditional(foreachstmt, loopHeaderTag())
           or
           n1.isAfter(foreachstmt.getBody()) and
           n2.isAdditional(foreachstmt, loopHeaderTag())

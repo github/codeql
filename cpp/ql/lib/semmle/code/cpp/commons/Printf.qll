@@ -1193,7 +1193,7 @@ class FormatLiteral extends Literal instanceof StringLiteral {
           // Subtract one in the exponent because one bit is for the sign.
           // Add 1 to account for the possible sign in the output.
           typeBasedBound =
-            1 + lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8 - 1)) and
+            1 + lengthInBase10(2.pow(this.getIntegralDisplayType(n).getBitWidth() - 1)) and
           // The second case uses range analysis to deduce a length that's shorter than the length
           // of the number -2^31.
           exists(Expr arg, float lower, float upper |
@@ -1227,7 +1227,7 @@ class FormatLiteral extends Literal instanceof StringLiteral {
         // e.g. 2^32 - 1 = "4294967295"
         exists(float typeBasedBound, float valueBasedBound |
           // The first case handles length sub-specifiers
-          typeBasedBound = lengthInBase10(2.pow(this.getIntegralDisplayType(n).getSize() * 8) - 1) and
+          typeBasedBound = lengthInBase10(2.pow(this.getIntegralDisplayType(n).getBitWidth()) - 1) and
           // The second case uses range analysis to deduce a length that's shorter than
           // the length of the number 2^31 - 1.
           exists(Expr arg, float lower, float upper |
@@ -1239,7 +1239,7 @@ class FormatLiteral extends Literal instanceof StringLiteral {
               lengthInBase10(max(float cand |
                   // If lower can be negative we use `(unsigned)-1` as the candidate value.
                   lower < 0 and
-                  cand = 2.pow(any(IntType t | t.isUnsigned()).getSize() * 8)
+                  cand = 2.pow(any(IntType t | t.isUnsigned()).getBitWidth())
                   or
                   cand = upper
                 )) and
@@ -1275,7 +1275,7 @@ class FormatLiteral extends Literal instanceof StringLiteral {
               lengthInBase16(max(float cand |
                   // If lower can be negative we use `(unsigned)-1` as the candidate value.
                   lower < 0 and
-                  cand = 2.pow(any(IntType t | t.isUnsigned()).getSize() * 8)
+                  cand = 2.pow(any(IntType t | t.isUnsigned()).getBitWidth())
                   or
                   cand = upper
                 )) and
@@ -1304,12 +1304,12 @@ class FormatLiteral extends Literal instanceof StringLiteral {
         exists(int sizeBits, int baseLen |
           sizeBits =
             min(int bits |
-              bits = this.getIntegralDisplayType(n).getSize() * 8
+              bits = this.getIntegralDisplayType(n).getBitWidth()
               or
               exists(IntegralType t |
                 t = this.getUse().getConversionArgument(n).getType().getUnderlyingType()
               |
-                t.isUnsigned() and bits = t.getSize() * 8
+                t.isUnsigned() and bits = t.getBitWidth()
               )
             ) and
           baseLen = (sizeBits / 3.0).ceil() and

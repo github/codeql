@@ -80,6 +80,7 @@ rust_library(
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv32imac-unknown-none-elf": [],
         "@rules_rust//rust/platform:riscv32imc-unknown-none-elf": [],
+        "@rules_rust//rust/platform:riscv64gc-unknown-fuchsia": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-none-elf": [],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [],
@@ -112,7 +113,7 @@ rust_library(
     }),
     version = "0.2.0",
     deps = [
-        "@vendor_ts__lazy_static-1.5.0//:lazy_static",
+        "@vendor_ts__lazy_static-1.5.1//:lazy_static",
         "@vendor_ts__tracing-0.1.44//:tracing",
         "@vendor_ts__tracing-subscriber-0.3.23//:tracing_subscriber",
     ],

@@ -27,6 +27,7 @@ def _kotlin_dep_impl(repository_ctx):
         "kotlin-stdlib.jar",
         "kotlin-reflect.jar",
         "kotlin-script-runtime.jar",
+        "kotlinx-coroutines-core-jvm.jar",
         "trove4j.jar",
     ):
         repository_ctx.symlink("empty.zip", jar)

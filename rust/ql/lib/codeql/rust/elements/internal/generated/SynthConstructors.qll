@@ -36,6 +36,8 @@ import codeql.rust.elements.internal.CfgAtomConstructor
 import codeql.rust.elements.internal.CfgAttrMetaConstructor
 import codeql.rust.elements.internal.CfgCompositeConstructor
 import codeql.rust.elements.internal.CfgMetaConstructor
+import codeql.rust.elements.internal.CfgPredExprConstructor
+import codeql.rust.elements.internal.CfgPredPatConstructor
 import codeql.rust.elements.internal.ClosureExprConstructor
 import codeql.rust.elements.internal.CommentConstructor
 import codeql.rust.elements.internal.ConstConstructor
@@ -110,8 +112,6 @@ import codeql.rust.elements.internal.OffsetOfExprConstructor
 import codeql.rust.elements.internal.OrPatConstructor
 import codeql.rust.elements.internal.ParamConstructor
 import codeql.rust.elements.internal.ParamListConstructor
-import codeql.rust.elements.internal.ParenExprConstructor
-import codeql.rust.elements.internal.ParenPatConstructor
 import codeql.rust.elements.internal.ParenTypeReprConstructor
 import codeql.rust.elements.internal.ParenthesizedArgListConstructor
 import codeql.rust.elements.internal.PathConstructor

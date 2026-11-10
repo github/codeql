@@ -451,6 +451,7 @@ class _:
     ```
     """
 
+    attrs: qltest.skip
     path: drop
 
 
@@ -548,6 +549,41 @@ class _:
     ```rust
     list[42];
     list[42] = 1;
+    ```
+    """
+
+
+@annotate(CfgPredExpr, cfg=True)
+class _:
+    """
+    A configuration predicate expression resulting from expansion of a `cfg!` macro call.
+    It has type `bool` and evaluates to whether the configuration predicate holds.
+
+    Rust-analyzer expands `cfg!(...)` in expression position to its internal `builtin#cfg(...)`
+    syntax, as illustrated below:
+    ```rust
+    builtin#cfg(unix);
+    builtin#cfg(target_os = "windows");
+    builtin#cfg(any(unix, target_os = "windows"));
+    ```
+    """
+
+
+@annotate(CfgPredPat, cfg=True)
+class _:
+    """
+    A configuration predicate pattern resulting from expansion of a `cfg!` macro call.
+    It matches `true` when the configuration predicate holds and `false` otherwise.
+
+    Rust-analyzer expands `cfg!(...)` in pattern position to its internal `builtin#cfg(...)`
+    syntax, as illustrated below:
+    ```rust
+    match true {
+        builtin#cfg(unix) => (),
+        builtin#cfg(target_os = "windows") => (),
+        builtin#cfg(any(unix, target_os = "windows")) => (),
+        _ => (),
+    };
     ```
     """
 
@@ -1643,31 +1679,6 @@ class _:
     type_repr: drop
 
 
-@annotate(ParenExpr)
-class _:
-    """
-    A parenthesized expression.
-
-    For example:
-    ```rust
-    (x + y)
-    ```
-    """
-
-
-@annotate(ParenPat)
-class _:
-    """
-    A parenthesized pattern.
-
-    For example:
-    ```rust
-    let (x) = 1;
-    //  ^^^
-    ```
-    """
-
-
 @annotate(ParenTypeRepr)
 class _:
     """
@@ -2424,6 +2435,8 @@ class _:
     let y = vec![1, 2, 3];
     ```
     """
+
+    attrs: qltest.skip
 
 
 @annotate(MacroPat, cfg=True)

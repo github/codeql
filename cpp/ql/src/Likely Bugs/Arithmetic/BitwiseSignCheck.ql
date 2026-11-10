@@ -5,7 +5,8 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/bitwise-sign-check
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  */
 

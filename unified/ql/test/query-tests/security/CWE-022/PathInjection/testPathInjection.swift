@@ -368,11 +368,11 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     let _ = fm.replaceItemAt(remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [])  // $ Alert
     let _ = fm.replaceItemAt(safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [])  // $ Alert
     fm.replaceItem(
-        at: remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [], // $ SPURIOUS: Alert
-        resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert
+        at: remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [], // $ Alert
+        resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert // reported on a different line
     fm.replaceItem(
-        at: safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [], // $ SPURIOUS: Alert
-        resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert
+        at: safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [], // $ Alert
+        resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>())  // $ MISSING: Alert // reported on a different line
     fm.copyItem(at: remoteUrl, to: safeUrl)  // $ Alert
     fm.copyItem(at: safeUrl, to: remoteUrl)  // $ Alert
     fm.copyItem(atPath: remoteString, toPath: "")  // $ Alert
@@ -427,12 +427,12 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
         _ in
     }
     let _ = ArchiveByteStream.fileStream(
-        path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append,
-        permissions: .ownerRead)  // $ MISSING: Alert
+        path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append, // $ Alert
+        permissions: .ownerRead)  // $ MISSING: Alert // reported on a different line
     ArchiveByteStream.withFileStream(
-        path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append,
+        path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append, // $ Alert
         permissions: .ownerRead
-    ) { _ in }  // $ MISSING: Alert
+    ) { _ in }  // $ MISSING: Alert // reported on a different line
     let _ = Bundle(url: remoteUrl)  // $ Alert
     let _ = Bundle(path: remoteString)  // $ Alert
 
@@ -474,14 +474,14 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
 
     var db: OpaquePointer?
     let localData = Data(0)
-    let remoteData = Data(contentsOf: URL(string: "http://example.com/")!, options: [])  // $ MISSING: Source
+    let remoteData = Data(contentsOf: URL(string: "http://example.com/")!, options: [])  // $ Source
     localData.copyBytes(to: buffer1, count: localData.count)
     remoteData.copyBytes(to: buffer2, count: remoteData.count)
 
     _ = sqlite3_open("myFile.sqlite3", &db)  // GOOD
     _ = sqlite3_open(remoteString, &db)  // $ Alert
     _ = sqlite3_open16(buffer1, &db)  // GOOD
-    _ = sqlite3_open16(buffer2, &db)  // $ MISSING: Alert
+    _ = sqlite3_open16(buffer2, &db)  // $ Alert
     _ = sqlite3_open_v2("myFile.sqlite3", &db, 0, nil)  // GOOD
     _ = sqlite3_open_v2(remoteString, &db, 0, nil)  // $ Alert
 
@@ -523,10 +523,10 @@ func testPathInjection2(
     var u1 = URL(filePath: "")
     _ = NSData(contentsOf: u1)
     _ = NSData(contentsOf: u1.appendingPathComponent(""))
-    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString))  // $ MISSING: Alert
-    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString).appendingPathComponent(""))  // $ MISSING: Alert
+    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString))  // $ Alert
+    _ = NSData(contentsOf: u1.appendingPathComponent(remoteString).appendingPathComponent(""))  // $ Alert
     u1.appendPathComponent(remoteString)
-    _ = NSData(contentsOf: u1)  // $ MISSING: Alert
+    _ = NSData(contentsOf: u1)  // $ Alert
 
     let u2 = URL(filePath: remoteString)  // $ Alert
     _ = NSData(contentsOf: u2)  // $ MISSING: Alert
@@ -534,11 +534,11 @@ func testPathInjection2(
     let u3 = NSURL(string: "")!
     Data("").write(to: u3.filePathURL!, options: [])
     Data("").write(to: u3.appendingPathComponent("")!, options: [])
-    Data("").write(to: u3.appendingPathComponent(remoteString)!, options: [])  // $ MISSING: Alert
+    Data("").write(to: u3.appendingPathComponent(remoteString)!, options: [])  // $ Alert
 
     let u4 = NSURL(string: remoteString)!
     Data("").write(to: u4.filePathURL!, options: [])  // $ MISSING: Alert
-    Data("").write(to: u4.appendingPathComponent("")!, options: [])  // $ MISSING: Alert
+    Data("").write(to: u4.appendingPathComponent("")!, options: [])  // $ Alert
 
     _ = NSData(contentsOfFile: remoteString)!  // $ Alert
     _ = NSData(contentsOfMappedFile: remoteString)!  // $ Alert

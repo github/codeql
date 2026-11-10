@@ -3295,6 +3295,77 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A configuration predicate expression resulting from expansion of a `cfg!` macro call.
+   * It has type `bool` and evaluates to whether the configuration predicate holds.
+   *
+   * Rust-analyzer expands `cfg!(...)` in expression position to its internal `builtin#cfg(...)`
+   * syntax, as illustrated below:
+   * ```rust
+   * builtin#cfg(unix);
+   * builtin#cfg(target_os = "windows");
+   * builtin#cfg(any(unix, target_os = "windows"));
+   * ```
+   */
+  class CfgPredExpr extends @cfg_pred_expr, Expr {
+    override string toString() { result = "CfgPredExpr" }
+
+    /**
+     * Gets the cfg predicate of this cfg pred expression, if it exists.
+     */
+    CfgPredicate getCfgPredicate() { cfg_pred_expr_cfg_predicates(this, result) }
+  }
+
+  private Element getImmediateChildOfCfgPredExpr(CfgPredExpr e, int index) {
+    exists(int n, int nCfgPredicate |
+      n = 0 and
+      nCfgPredicate = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getCfgPredicate()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A configuration predicate pattern resulting from expansion of a `cfg!` macro call.
+   * It matches `true` when the configuration predicate holds and `false` otherwise.
+   *
+   * Rust-analyzer expands `cfg!(...)` in pattern position to its internal `builtin#cfg(...)`
+   * syntax, as illustrated below:
+   * ```rust
+   * match true {
+   *     builtin#cfg(unix) => (),
+   *     builtin#cfg(target_os = "windows") => (),
+   *     builtin#cfg(any(unix, target_os = "windows")) => (),
+   *     _ => (),
+   * };
+   * ```
+   */
+  class CfgPredPat extends @cfg_pred_pat, Pat {
+    override string toString() { result = "CfgPredPat" }
+
+    /**
+     * Gets the cfg predicate of this cfg pred pattern, if it exists.
+     */
+    CfgPredicate getCfgPredicate() { cfg_pred_pat_cfg_predicates(this, result) }
+  }
+
+  private Element getImmediateChildOfCfgPredPat(CfgPredPat e, int index) {
+    exists(int n, int nCfgPredicate |
+      n = 0 and
+      nCfgPredicate = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getCfgPredicate()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A closure expression. For example:
    * ```rust
    * |x| x + 1;
@@ -4526,19 +4597,32 @@ module Raw {
     override string toString() { result = "MacroExpr" }
 
     /**
+     * Gets the `index`th attr of this macro expression (0-based).
+     */
+    AnyAttr getAttr(int index) { macro_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this macro expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | macro_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the macro call of this macro expression, if it exists.
      */
     MacroCall getMacroCall() { macro_expr_macro_calls(this, result) }
   }
 
   private Element getImmediateChildOfMacroExpr(MacroExpr e, int index) {
-    exists(int n, int nMacroCall |
+    exists(int n, int nAttr, int nMacroCall |
       n = 0 and
-      nMacroCall = n + 1 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nMacroCall = nAttr + 1 and
       (
         none()
         or
-        index = n and result = e.getMacroCall()
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getMacroCall()
       )
     )
   }
@@ -4918,80 +5002,6 @@ module Raw {
         index = nAttr and result = e.getTypeRepr()
         or
         index = nTypeRepr and result = e.getPat()
-      )
-    )
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A parenthesized expression.
-   *
-   * For example:
-   * ```rust
-   * (x + y)
-   * ```
-   */
-  class ParenExpr extends @paren_expr, Expr {
-    override string toString() { result = "ParenExpr" }
-
-    /**
-     * Gets the `index`th attr of this paren expression (0-based).
-     */
-    AnyAttr getAttr(int index) { paren_expr_attrs(this, index, result) }
-
-    /**
-     * Gets the number of attrs of this paren expression.
-     */
-    int getNumberOfAttrs() { result = count(int i | paren_expr_attrs(this, i, _)) }
-
-    /**
-     * Gets the expression of this paren expression, if it exists.
-     */
-    Expr getExpr() { paren_expr_exprs(this, result) }
-  }
-
-  private Element getImmediateChildOfParenExpr(ParenExpr e, int index) {
-    exists(int n, int nAttr, int nExpr |
-      n = 0 and
-      nAttr = n + e.getNumberOfAttrs() and
-      nExpr = nAttr + 1 and
-      (
-        none()
-        or
-        result = e.getAttr(index - n)
-        or
-        index = nAttr and result = e.getExpr()
-      )
-    )
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A parenthesized pattern.
-   *
-   * For example:
-   * ```rust
-   * let (x) = 1;
-   * //  ^^^
-   * ```
-   */
-  class ParenPat extends @paren_pat, Pat {
-    override string toString() { result = "ParenPat" }
-
-    /**
-     * Gets the pattern of this paren pattern, if it exists.
-     */
-    Pat getPat() { paren_pat_pats(this, result) }
-  }
-
-  private Element getImmediateChildOfParenPat(ParenPat e, int index) {
-    exists(int n, int nPat |
-      n = 0 and
-      nPat = n + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getPat()
       )
     )
   }
@@ -5709,6 +5719,16 @@ module Raw {
     override string toString() { result = "StructExpr" }
 
     /**
+     * Gets the `index`th attr of this struct expression (0-based).
+     */
+    AnyAttr getAttr(int index) { struct_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this struct expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | struct_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the struct expression field list of this struct expression, if it exists.
      */
     StructExprFieldList getStructExprFieldList() {
@@ -5717,16 +5737,19 @@ module Raw {
   }
 
   private Element getImmediateChildOfStructExpr(StructExpr e, int index) {
-    exists(int n, int nPath, int nStructExprFieldList |
+    exists(int n, int nPath, int nAttr, int nStructExprFieldList |
       n = 0 and
       nPath = n + 1 and
-      nStructExprFieldList = nPath + 1 and
+      nAttr = nPath + e.getNumberOfAttrs() and
+      nStructExprFieldList = nAttr + 1 and
       (
         none()
         or
         index = n and result = e.getPath()
         or
-        index = nPath and result = e.getStructExprFieldList()
+        result = e.getAttr(index - nPath)
+        or
+        index = nAttr and result = e.getStructExprFieldList()
       )
     )
   }
@@ -8245,6 +8268,10 @@ module Raw {
     or
     result = getImmediateChildOfCfgMeta(e, index)
     or
+    result = getImmediateChildOfCfgPredExpr(e, index)
+    or
+    result = getImmediateChildOfCfgPredPat(e, index)
+    or
     result = getImmediateChildOfClosureExpr(e, index)
     or
     result = getImmediateChildOfComment(e, index)
@@ -8322,10 +8349,6 @@ module Raw {
     result = getImmediateChildOfOrPat(e, index)
     or
     result = getImmediateChildOfParam(e, index)
-    or
-    result = getImmediateChildOfParenExpr(e, index)
-    or
-    result = getImmediateChildOfParenPat(e, index)
     or
     result = getImmediateChildOfParenTypeRepr(e, index)
     or

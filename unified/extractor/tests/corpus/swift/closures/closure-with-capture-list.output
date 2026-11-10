@@ -70,9 +70,10 @@ top_level source="⟨body⟩"
           value:
             function_expr source="{ [⟨capture_declaration⟩] in ⟨body⟩ }"
               capture_declaration:
-                variable_declaration source="⟨modifier⟩ ⟨pattern⟩"
+                variable_declaration source="⟨modifier⟩ ⟨pattern⟩⟨value⟩"
                   modifier: modifier "weak" source="weak"
                   pattern: identifier "self" source="self"
+                  value: identifier "self" source="self"
               body:
                 block source="⟨stmt⟩"
                   stmt:

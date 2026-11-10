@@ -344,12 +344,12 @@ private int convertIntToType(int val, IntegralType t) {
   then if val = 0 then result = 0 else result = 1
   else
     if t.isUnsigned()
-    then val >= 0 and val.bitShiftRight(t.getSize() * 8) = 0 and result = val
+    then val >= 0 and val.bitShiftRight(t.getBitWidth()) = 0 and result = val
     else
-      if val >= 0 and val.bitShiftRight(t.getSize() * 8 - 1) = 0
+      if val >= 0 and val.bitShiftRight(t.getBitWidth() - 1) = 0
       then result = val
       else (
-        (-(val + 1)).bitShiftRight(t.getSize() * 8 - 1) = 0 and result = val
+        (-(val + 1)).bitShiftRight(t.getBitWidth() - 1) = 0 and result = val
       )
 }
 

@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id cpp/declaration-hides-variable
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
  */
 

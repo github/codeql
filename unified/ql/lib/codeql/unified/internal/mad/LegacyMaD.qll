@@ -118,7 +118,7 @@ private predicate callableSelector(
   name = callable.getName() and
   argLabels = getArgLabelsFromCallable(callable) and
   exists(ClassLikeDeclaration cls |
-    callable = cls.getAMember() and
+    callable = cls.getAMemberIncludingExtensions() and
     isSubclassOfType(cls, type)
   )
 }
@@ -139,7 +139,7 @@ private newtype TSelector =
 /**
  * A tuple from a model that identifies call sites.
  */
-private class Selector extends TSelector {
+class Selector extends TSelector {
   string getTypeString() { this = MkSelector(result, _, _, _, _) }
 
   boolean getSubtypesFlag() { this = MkSelector(_, result, _, _, _) }
@@ -224,7 +224,8 @@ private DataFlow::Node getSinkFromCall(CallExpr call, AccessPathToken token) {
     arg.getName() + ":" = token.getAnArgument()
   )
   or
-  token = "Argument[self]" and
+  token.getName() = "Argument" and
+  token.getAnArgument() = "self" and
   result.isReceiverArgument(call)
 }
 
@@ -245,7 +246,7 @@ private DataFlow::Node getSourceFromCall(CallExpr call, AccessPathToken token) {
 bindingset[callable, token]
 private DataFlow::Node getSinkFromCallable(Callable callable, AccessPathToken token) {
   token = "ReturnValue" and
-  result.asExpr() = any(ReturnExpr r | r.getEnclosingCallable() = callable).getValue() // TODO: expose canonical return node in data flow
+  result.isReturnNode(callable)
 }
 
 /**
@@ -263,7 +264,8 @@ private DataFlow::Node getSourceFromCallable(Callable callable, AccessPathToken 
     param.getExternalName() + ":" = token.getAnArgument()
   )
   or
-  token = "Parameter[self]" and
+  token.getName() = "Parameter" and
+  token.getAnArgument() = "self" and
   result.isReceiverParameter(callable)
 }
 
@@ -286,6 +288,18 @@ private predicate normalizedSinkModel(
     string type, boolean subtypes, string rawName, string name, string argLabels, string argTypes
   |
     legacySinkModel(_, type, subtypes, rawName, argTypes, _, output, kind, provenance) and
+    parsedRawMethodName(rawName, name, argLabels) and
+    selector = MkSelector(type, subtypes, name, argLabels, argTypes)
+  )
+}
+
+predicate normalizedSummaryModel(
+  Selector selector, string input, string output, string kind, string provenance
+) {
+  exists(
+    string type, boolean subtypes, string rawName, string name, string argLabels, string argTypes
+  |
+    legacySummaryModel(_, type, subtypes, rawName, argTypes, _, input, output, kind, provenance) and
     parsedRawMethodName(rawName, name, argLabels) and
     selector = MkSelector(type, subtypes, name, argLabels, argTypes)
   )
@@ -346,6 +360,10 @@ private module Debug {
       normalizedSourceModel(selector, ap, _, _)
       or
       normalizedSinkModel(selector, ap, _, _)
+      or
+      normalizedSummaryModel(selector, ap, _, _, _)
+      or
+      normalizedSummaryModel(selector, _, ap, _, _)
     ) and
     ap.getName() = ["Argument", "Parameter"] and
     (

@@ -4,6 +4,7 @@
 overlay[local?]
 module;
 
+private import unified as U
 private import AstPlugin
 private import codeql.files.FileSystem
 private import codeql.unified.internal.NameBinding as NameBinding
@@ -37,7 +38,9 @@ module Unified {
       )
     }
 
-    /** Gets the nearest enclosing class declaration, if any. */
+    /**
+     * Gets the nearest syntactically enclosing class declaration, if any.
+     */
     ClassLikeDeclaration getEnclosingClass() {
       exists(AstNode parent | parent = this.getParent() |
         result = parent
@@ -52,6 +55,12 @@ module Unified {
         // Capture declarations are evaluated as part of the outer context, and
         // considered to be captured by the function expression.
         this = func.getACaptureDeclaration() and
+        result = func.getParent()
+      )
+      or
+      exists(FunctionDeclaration func |
+        // The name of a function declaration is a variable belonging to the enclosing callable.
+        this = func.getNameNode() and
         result = func.getParent()
       )
     }
@@ -153,6 +162,79 @@ module Unified {
     string getLabelName() { result = this.getLabelNameNode().getValue() }
   }
 
+  class Member extends G::Member {
+    /** Gets the unqualified name of this member or a fallback name such as `(anonymous function)` if it has no explicit name. */
+    string getNameOrFallback() {
+      result = this.getNameNode().getValue()
+      or
+      not exists(this.getNameNode()) and
+      (
+        this instanceof ConstructorDeclaration and
+        result = "(constructor)"
+        or
+        this instanceof DestructorDeclaration and
+        result = "(destructor)"
+        or
+        this instanceof FunctionDeclaration and
+        result = "(anonymous function)"
+        or
+        this instanceof VariableDeclaration and
+        result = "(pattern assignment)" // this case is only reachable when the target is a destructuring pattern
+        or
+        this instanceof InitializerDeclaration and
+        result = "(initializer block)"
+        or
+        exists(ClassLikeDeclaration cls | this = cls |
+          result = NameBinding::getIdentifierFromRef(cls.getExtensionTarget()).getValue()
+          or
+          not exists(cls.getExtensionTarget()) and
+          result = "(anonymous class)"
+        )
+        or
+        this instanceof TypeAliasDeclaration and
+        result = "(anonymous type alias)"
+        or
+        this instanceof AssociatedTypeDeclaration and
+        result = "(anonymous associated type)"
+        or
+        this instanceof UnsupportedNode and
+        result = "(unsupported node)"
+        or
+        this instanceof UnhandledNode and
+        result = "(unhandled node)"
+      )
+    }
+
+    /**
+     * Gets the name of this member qualified by the short names of each immediately-enclosing class.
+     */
+    string getQualifiedName() { result = QualifiedName<getParentClass/1>::getQualifiedName(this) }
+  }
+
+  private signature ClassLikeDeclaration getDeclaringClassSig(Member m);
+
+  private module QualifiedName<getDeclaringClassSig/1 getDeclaringClass> {
+    string getQualifiedName(Member m) {
+      result = getQualifiedName(getDeclaringClass(m)) + "." + m.getNameOrFallback()
+      or
+      not exists(getDeclaringClass(m)) and
+      result = m.getNameOrFallback()
+    }
+  }
+
+  private ClassLikeDeclaration getParentClass(Member m) {
+    result.getAMemberIncludingExtensions() = m
+  }
+
+  private ClassLikeDeclaration getEnclosingClass(Member m) { result.getAMember() = m }
+
+  /**
+   * Similar to `Member.getQualifiedName`, but avoids a dependency on name binding, making
+   * it suitable for use in `toString` predicates.
+   */
+  private predicate getQualifiedNameForToString =
+    QualifiedName<getEnclosingClass/1>::getQualifiedName/1;
+
   class ClassLikeDeclaration extends G::ClassLikeDeclaration {
     /** Gets the name of this declaration. */
     string getName() { result = this.getNameNode().getValue() }
@@ -163,8 +245,33 @@ module Unified {
         NameBinding::getStaticBindingTargetFromRef(this.getABaseType().getType())
     }
 
+    /**
+     * Gets the target of this extension class, or this class itself if it is not an extension.
+     */
+    ClassLikeDeclaration resolve() {
+      not exists(this.getExtensionTarget()) and
+      result = this
+      or
+      exists(NameBinding::NamespaceNode ns |
+        ns.isStaticMemberNamespace(result) and
+        ns.getAnExtension().isStaticMemberNamespace(this)
+      )
+    }
+
+    /**
+     * Gets a member of this class, including members from extensions.
+     */
+    Member getAMemberIncludingExtensions() {
+      exists(ClassLikeDeclaration cls |
+        this = cls.resolve() and
+        result = cls.getAMember()
+      )
+    }
+
     override string toString() {
-      result = concat(getClassLikeDeclarationKeyword(this) + " ") + concat(this.getName())
+      result =
+        concat(getClassLikeDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
     }
   }
 
@@ -173,7 +280,9 @@ module Unified {
     string getName() { result = this.getNameNode().getValue() }
 
     override string toString() {
-      result = concat(getConstructorDeclarationKeyword(this) + " ") + concat(this.getName())
+      result =
+        concat(getConstructorDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
     }
   }
 
@@ -187,7 +296,9 @@ module Unified {
     string getName() { result = this.getNameNode().getValue() }
 
     override string toString() {
-      result = concat(getFunctionDeclarationKeyword(this) + " ") + concat(this.getName())
+      result =
+        concat(getFunctionDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
     }
   }
 
@@ -199,7 +310,9 @@ module Unified {
     string getName() { result = this.getNameNode().getValue() }
 
     override string toString() {
-      result = concat(getVariableDeclarationKeyword(this) + " ") + concat(this.getName())
+      result =
+        concat(getVariableDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
     }
   }
 
@@ -323,5 +436,41 @@ module Unified {
   class ArrayLiteral extends G::ArrayLiteral {
     /** Gets the number of elements in this array literal. */
     int getNumberOfElements() { result = count(this.getAnElement()) }
+  }
+
+  /**
+   * A declaration of a getter associated with a variable or field.
+   *
+   * For example, in Swift:
+   * ```swift
+   * var x: String {
+   *   get { "42" } // getter declaration
+   * }
+   * var x: String { "42" } // getter declaration
+   * ```
+   */
+  final class GetterDeclaration extends AccessorDeclaration {
+    GetterDeclaration() { this.getAccessorKind().getValue() = "get" }
+  }
+
+  /**
+   * A declaration of a setter associated with a variable or field.
+   *
+   * For example, in Swift:
+   * ```swift
+   * var x: String {
+   *   get { "42" }
+   *   set { print(newValue) } // setter declaration
+   * }
+   * ```
+   */
+  final class SetterDeclaration extends AccessorDeclaration {
+    SetterDeclaration() { this.getAccessorKind().getValue() = "set" }
+  }
+
+  /** An `if` statement or conditional expression. */
+  class IfExpr extends G::IfExpr {
+    /** Gets then `then` or `else` branch. */
+    Expr getABranch() { result = [this.getThen(), this.getElse()] }
   }
 }

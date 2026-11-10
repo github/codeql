@@ -5,7 +5,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
-import semmle.python.dataflow.new.RemoteFlowSources
+import semmle.python.Concepts
 import experimental.semmle.python.Concepts
 
 string getFullHostRegex() { result = "(?i)ldap://.+" }
@@ -90,7 +90,7 @@ class LdapStringVar extends BinaryExpr {
  */
 private module LdapInsecureAuthConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource or
+    source instanceof ActiveThreatModelSource or
     source.asExpr() instanceof LdapFullHost or
     source.asExpr() instanceof LdapBothStrings or
     source.asExpr() instanceof LdapBothVar or

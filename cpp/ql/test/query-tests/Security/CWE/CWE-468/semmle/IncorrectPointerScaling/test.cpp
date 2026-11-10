@@ -146,3 +146,25 @@ int test18(int i) {
   // BAD: the pointer arithmetic uses type char*, so the offset is not scaled by sizeof(int).
   return *(int *)(charPointer + i); // $ Alert[cpp/incorrect-pointer-scaling-char]
 }
+
+namespace std {
+enum class byte : unsigned char {};
+}
+
+std::byte* test19(
+  std::byte *x
+) {
+  int *p = (int*)x;
+  // GOOD: like char*, std::byte* is a generic pointer type,
+  // so assume that it is really an int*.
+  return (std::byte *)(p + 1);
+}
+
+std::byte* test20(
+  std::byte *x
+) {
+  int *p = reinterpret_cast<int*>(x);
+  // GOOD: like char*, std::byte* is a generic pointer type,
+  // so assume that it is really an int*.
+  return reinterpret_cast<std::byte*>(p + 1);
+}

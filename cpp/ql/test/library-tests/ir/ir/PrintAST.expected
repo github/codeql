@@ -4367,18 +4367,6 @@ destructors_for_temps.cpp:
 #  109|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #  109|                   Type = [IntPointerType] int *
 #  109|                   ValueCategory = prvalue
-#  109|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithArrayAndDestructor
-#  109|                 Type = [VoidType] void
-#  109|                 ValueCategory = prvalue
-#  109|               getQualifier(): [ReuseExpr] reuse of temporary object
-#  109|                   Type = [Struct] ClassWithArrayAndDestructor
-#  109|                   ValueCategory = xvalue
-#  109|             getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithArrayAndDestructor
-#  109|                 Type = [VoidType] void
-#  109|                 ValueCategory = prvalue
-#  109|               getQualifier(): [ReuseExpr] reuse of temporary object
-#  109|                   Type = [Struct] ClassWithArrayAndDestructor
-#  109|                   ValueCategory = xvalue
 #  109|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
 #  109|               Type = [LValueReferenceType] const int &
 #  109|               ValueCategory = prvalue
@@ -4387,6 +4375,18 @@ destructors_for_temps.cpp:
 #  109|                 Type = [SpecifiedType] const int
 #  109|                 ValueCategory = lvalue
 #  110|     getStmt(1): [ReturnStmt] return ...
+#  111|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithArrayAndDestructor
+#  111|           Type = [VoidType] void
+#  111|           ValueCategory = prvalue
+#  111|         getQualifier(): [ReuseExpr] reuse of temporary object
+#  111|             Type = [Struct] ClassWithArrayAndDestructor
+#  111|             ValueCategory = xvalue
+#  111|       getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithArrayAndDestructor
+#  111|           Type = [VoidType] void
+#  111|           ValueCategory = prvalue
+#  111|         getQualifier(): [ReuseExpr] reuse of temporary object
+#  111|             Type = [Struct] ClassWithArrayAndDestructor
+#  111|             ValueCategory = xvalue
 generic.c:
 #    1| [TopLevelFunction] void c11_generic_test_with_load(unsigned int, int)
 #    1|   <params>: 
@@ -15082,6 +15082,9 @@ ir.cpp:
 # 1476|               getQualifier(): [FunctionCall] call to returnValue
 # 1476|                   Type = [Struct] UnusualFields
 # 1476|                   ValueCategory = prvalue
+#-----|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|                   Type = [Struct] UnusualFields
+#-----|                   ValueCategory = prvalue(load)
 # 1476|             getArrayOffset(): [Literal] 3
 # 1476|                 Type = [IntType] int
 # 1476|                 Value = [Literal] 3

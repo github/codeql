@@ -9,13 +9,13 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Foo"
           memberBlock:
             memberBlock
               leftBrace: {
               rightBrace: }
               members:
-          modifiers:
           classKeyword: class
 
 ---

@@ -23,7 +23,7 @@ where
   not (
     e1.isConstant() and
     0 <= e1.getValue().toInt() and
-    e1.getValue().toInt() <= ((it2.getSize() * 8 - 1) * 2.log()).exp()
+    e1.getValue().toInt() <= ((it2.getBitWidth() - 1) * 2.log()).exp()
   ) and
   not e1.isConstant()
 select e1,

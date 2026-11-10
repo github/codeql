@@ -35,14 +35,21 @@ module Ast implements AstSig<Location> {
     not e.fromSource()
   }
 
+  private AstNode adjustedGetChild(AstNode n, int index) { deferScope(n, index, result) }
+
   AstNode getChild(AstNode n, int index) {
     result.getParent() = n and
     result.getParentIndex() = index and
     not n instanceof Callable and
     not skipControlFlow(n) and
-    not skipControlFlow(result)
+    not skipControlFlow(result) and
+    not adjustedGetChild(_, _) = result
+    or
+    adjustedGetChild(n, index) = result
     or
     n.(FunctionExpr).getCaptureDeclaration(index) = result
+    or
+    n.(FunctionDeclaration).getNameNode() = result and index = 0
   }
 
   Callable getEnclosingCallable(AstNode node) { result = node.getEnclosingCallable() }
@@ -56,7 +63,11 @@ module Ast implements AstSig<Location> {
   class Parameter extends U::Parameter {
     Expr getDefaultValue() { result = super.getDefault() }
 
-    AstNode getPattern() { result = super.getPattern() }
+    AstNode getPattern() {
+      result = super.getPattern()
+      or
+      not exists(super.getPattern()) and result = this
+    }
   }
 
   Parameter callableGetParameter(Callable c, int index) {
@@ -70,7 +81,56 @@ module Ast implements AstSig<Location> {
 
   class Expr = U::Expr;
 
-  class BlockStmt = U::Block;
+  /**
+   * Holds if `s` is the `n`th statement in the constructed `try` block of
+   * `defer`.
+   *
+   * For example, the following `defer` statements
+   * ```
+   * {
+   *   s1
+   *   defer { s5 }
+   *   s2
+   *   defer { s4 }
+   *   s3
+   * }
+   * ```
+   * are transformed into these `try`-`finally` blocks:
+   * ```
+   * {
+   *   s1
+   *   try {
+   *     s2
+   *     try {
+   *       s3
+   *     } finally {
+   *       s4
+   *     }
+   *   } finally {
+   *     s5
+   *   }
+   * }
+   * ```
+   */
+  private predicate deferScope(U::DeferStmt defer, int n, Stmt s) {
+    exists(U::Block block, int deferIdx | block.getStmt(deferIdx) = defer |
+      block.getStmt(deferIdx + 1) = s and n = 0
+      or
+      exists(Stmt mid |
+        deferScope(defer, n - 1, mid) and
+        not mid instanceof U::DeferStmt and
+        block.getStmt(deferIdx + 1 + n) = s
+      )
+    )
+  }
+
+  class BlockStmt extends Stmt instanceof U::Block {
+    Stmt getStmt(int n) { result = super.getStmt(n) and not deferScope(_, _, result) }
+
+    Stmt getLastStmt() {
+      exists(int i | result = this.getStmt(i) and not exists(this.getStmt(i + 1)))
+    }
+  }
 
   class ExprStmt extends Stmt {
     ExprStmt() { none() }
@@ -121,12 +181,12 @@ module Ast implements AstSig<Location> {
   class ForEachStmt extends LoopStmt instanceof U::ForEachStmt {
     override Stmt getBody() { result = U::ForEachStmt.super.getBody() }
 
-    // TODO support foreach guard
-    //
     Expr getVariable() { result = super.getPattern() }
 
     Expr getCollection() { result = super.getIterable() }
   }
+
+  AstNode getLoopGuard(ForEachStmt foreachstmt) { result = foreachstmt.(U::ForEachStmt).getGuard() }
 
   class BreakStmt = U::BreakExpr;
 
@@ -146,12 +206,18 @@ module Ast implements AstSig<Location> {
     Expr getExpr() { result = super.getValue() }
   }
 
-  class TryStmt extends U::TryExpr {
-    AstNode getBody(int index) { index = 0 and result = super.getBody() }
+  class TryStmt extends Stmt {
+    TryStmt() { this instanceof U::TryExpr or this instanceof U::DeferStmt }
 
-    CatchClause getCatch(int index) { result = super.getCatchClause(index) }
+    AstNode getBody(int index) {
+      index = 0 and result = this.(U::TryExpr).getBody()
+      or
+      deferScope(this, index, result)
+    }
 
-    Stmt getFinally() { none() }
+    CatchClause getCatch(int index) { result = this.(U::TryExpr).getCatchClause(index) }
+
+    Stmt getFinally() { result = this.(U::DeferStmt).getBody() }
   }
 
   class CatchClause extends U::CatchClause {
@@ -258,6 +324,9 @@ private module Input implements InputSig1, InputSig2 {
   }
 
   class CallableContext = Void;
+
+  // Swift switches are exhaustive.
+  predicate isExhaustive(Ast::Switch switch) { any() }
 
   predicate beginAbruptCompletion(
     AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always

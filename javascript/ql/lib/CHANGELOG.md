@@ -1,3 +1,18 @@
+## 3.0.0
+
+### Breaking Changes
+
+* The `SEMMLE_TYPESCRIPT_HOME` environment variable is no longer supported. The JavaScript/TypeScript extractor now ignores the environment variable and always uses its bundled TypeScript compiler.
+
+### Minor Analysis Improvements
+
+* Added taint steps for `String.prototype.trimStart`, `trimEnd`, and `normalize`.
+* Fixed the flow summary for `Array.prototype.flatMap`. The `thisArg` argument now flows to the callback's `this` instead of its index parameter.
+
+## 2.10.4
+
+No user-facing changes.
+
 ## 2.10.3
 
 ### Minor Analysis Improvements
@@ -663,7 +678,7 @@ No user-facing changes.
 
 ### New Features
 
-* Improved support for [Restify](http://restify.com/) framework, leading to more results when scanning applications developed with this framework.
+* Improved support for [Restify](https://restify.com/) framework, leading to more results when scanning applications developed with this framework.
 * Added support for the [Spife](https://github.com/npm/spife) framework.
 
 ### Minor Analysis Improvements

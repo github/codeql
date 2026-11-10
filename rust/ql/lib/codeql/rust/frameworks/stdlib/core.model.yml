@@ -111,6 +111,7 @@ extensions:
       # This model is not precise, but helps in cases where a `Pin` is implicitly dereferenced.
       - ["<core::pin::Pin>::new", "Argument[0].Reference", "ReturnValue", "value", "manual"]
       - ["<core::pin::Pin>::new_unchecked", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"]
+      - ["core::pin::pin_new_unchecked_in_helper", "Argument[0].Reference.Field[core::pin::PinMacroHelper::value]", "ReturnValue.Field[core::pin::Pin::pointer].Reference", "value", "manual"]
       - ["<core::pin::Pin>::into_inner", "Argument[0].Field[core::pin::Pin::pointer]", "ReturnValue", "value", "manual"]
       - ["<core::pin::Pin>::into_inner_unchecked", "Argument[0].Field[core::pin::Pin::pointer]", "ReturnValue", "value", "manual"]
       - ["<core::pin::Pin>::set", "Argument[0]", "Argument[self].Reference.Field[core::pin::Pin::pointer]", "value", "manual"]

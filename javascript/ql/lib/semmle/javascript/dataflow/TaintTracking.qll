@@ -455,10 +455,10 @@ module TaintTracking {
             name =
               [
                 "anchor", "big", "blink", "bold", "concat", "fixed", "fontcolor", "fontsize",
-                "italics", "link", "padEnd", "padStart", "repeat", "replace", "replaceAll", "slice",
-                "small", "strike", "sub", "substr", "substring", "sup", "toLocaleLowerCase",
-                "toLocaleUpperCase", "toLowerCase", "toUpperCase", "trim", "trimLeft", "trimRight",
-                "toWellFormed"
+                "italics", "link", "normalize", "padEnd", "padStart", "repeat", "replace",
+                "replaceAll", "slice", "small", "strike", "sub", "substr", "substring", "sup",
+                "toLocaleLowerCase", "toLocaleUpperCase", "toLowerCase", "toUpperCase", "trim",
+                "trimEnd", "trimLeft", "trimRight", "trimStart", "toWellFormed"
               ]
             or
             // sorted, interesting, properties of Object.prototype

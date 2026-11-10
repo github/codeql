@@ -181,7 +181,7 @@ top_level source="⟨body⟩"
                     function_expr source="{ ⟨parameter⟩, ⟨parameter⟩ in\n\t⟨body⟩\n}"
                       parameter:
                         parameter source="⟨pattern⟩"
-                          pattern: identifier "_" source="_"
+                          pattern: ignore_pattern "_" source="_"
                         parameter source="⟨pattern⟩"
                           pattern: identifier "count" source="count"
                       body:
