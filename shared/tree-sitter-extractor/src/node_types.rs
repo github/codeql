@@ -110,7 +110,7 @@ pub fn read_node_types_str(prefix: &str, node_types_json: &str) -> std::io::Resu
 
 fn convert_type(node_type: &NodeType) -> TypeName {
     TypeName {
-        kind: node_type.kind.to_string(),
+        kind: node_type.kind.clone(),
         named: node_type.named,
     }
 }
@@ -152,7 +152,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                 add_field(
                     prefix,
                     &type_name,
-                    Some(field_name.to_string()),
+                    Some(field_name.clone()),
                     field_info,
                     &mut fields,
                     &token_kinds,
@@ -198,7 +198,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                 add_field(
                     prefix,
                     &type_name,
-                    Some(field_name.to_string()),
+                    Some(field_name.clone()),
                     field_info,
                     &mut fields,
                     &token_kinds,
@@ -293,7 +293,7 @@ fn add_field(
         for (counter, t) in converted_types.into_iter().enumerate() {
             let dbscheme_variant_name =
                 escape_name(&format!("{}_{}_{}", prefix, parent_flattened_name, t.kind));
-            field_token_ints.insert(t.kind.to_owned(), (counter, dbscheme_variant_name));
+            field_token_ints.insert(t.kind, (counter, dbscheme_variant_name));
         }
         FieldTypeInfo::ReservedWordInt(field_token_ints)
     } else if field_info.types.len() == 1 {
@@ -327,7 +327,7 @@ fn add_field(
     };
     fields.push(Field {
         parent: TypeName {
-            kind: parent_type_name.kind.to_string(),
+            kind: parent_type_name.kind.clone(),
             named: parent_type_name.named,
         },
         type_info,

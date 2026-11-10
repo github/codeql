@@ -22,6 +22,15 @@ index 0aad1e2..68f679f 100644
  use self::ast_src::{AstEnumSrc, AstNodeSrc, AstSrc, Cardinality, Field, KindsSrc};
  
  pub(crate) fn generate(check: bool) {
+@@ -317,7 +321,7 @@ fn generate_nodes(grammar: &AstSrc) -> String {
+             let trait_name = format_ident!("{}", trait_name);
+             let kinds: Vec<_> = nodes
+                 .iter()
+-                .map(|name| format_ident!("{}", to_upper_snake_case(&name.name.to_string())))
++                .map(|name| format_ident!("{}", to_upper_snake_case(&name.name)))
+                 .collect();
+             let nodes = nodes.iter().map(|node| format_ident!("{}", node.name));
+             (
 @@ -775,7 +779,7 @@ fn pluralize(s: &str) -> String {
  }
  

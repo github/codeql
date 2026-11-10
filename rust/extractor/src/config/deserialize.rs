@@ -62,7 +62,7 @@ impl<'de, S: BuildHasher + Default> Visitor<'de> for MapVisitor<S> {
         while let Some(el) = seq.next_element::<String>()? {
             match el.split_once('=') {
                 None => {
-                    ret.insert(el.to_owned(), None);
+                    ret.insert(el, None);
                 }
                 Some((key, value)) => {
                     ret.insert(key.to_owned(), Some(value.to_owned()));

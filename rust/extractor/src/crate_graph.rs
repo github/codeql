@@ -76,7 +76,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
                     .display_name
                     .as_ref()
                     .map(|x| x.canonical_name().to_string()),
-                version: krate_extra.version.to_owned(),
+                version: krate_extra.version.clone(),
                 cfg_options: krate_id
                     .cfg_options(db)
                     .into_iter()

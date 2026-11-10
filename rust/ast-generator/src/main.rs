@@ -191,7 +191,7 @@ fn should_predicate_be_extracted(name: &str) -> bool {
 }
 
 fn project_root() -> PathBuf {
-    let dir = env::var("CARGO_MANIFEST_DIR").unwrap().to_owned();
+    let dir = env::var("CARGO_MANIFEST_DIR").unwrap();
     PathBuf::from(dir).parent().unwrap().to_owned()
 }
 
@@ -413,7 +413,7 @@ fn enum_to_extractor_info(node: &AstEnumSrc) -> ExtractorEnumInfo {
                 EnumVariantInfo {
                     name,
                     snake_case_name,
-                    variant_ast_name: v.to_string(),
+                    variant_ast_name: v.clone(),
                     emission,
                 }
             })
@@ -519,7 +519,7 @@ fn main() -> anyhow::Result<()> {
     for node in &grammar.enums {
         for variant in &node.variants {
             let set = super_types.entry(variant.to_owned()).or_default();
-            set.insert(node.name.to_owned());
+            set.insert(node.name.clone());
         }
     }
     // sort things while ensuring super clases are defined before they are used

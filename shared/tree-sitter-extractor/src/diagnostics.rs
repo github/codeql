@@ -95,7 +95,7 @@ impl LogWriter {
             source: Source {
                 id: format!("{}/{}", self.extractor, id),
                 name: name.to_owned(),
-                extractor_name: Some(self.extractor.to_owned()),
+                extractor_name: Some(self.extractor.clone()),
             },
             markdown_message: String::new(),
             plaintext_message: String::new(),
@@ -189,7 +189,7 @@ impl DiagnosticLoggers {
             };
         }
         THREAD_NUM.with(|n| LogWriter {
-            extractor: self.extractor.to_owned(),
+            extractor: self.extractor.clone(),
             inner: None,
             path: self
                 .root
@@ -235,7 +235,7 @@ impl DiagnosticMessage {
                 start_line: Some(line),
                 ..
             }) => format!("{}:{}: {}", path, line, self.plaintext_message),
-            _ => self.plaintext_message.to_owned(),
+            _ => self.plaintext_message.clone(),
         }
     }
 

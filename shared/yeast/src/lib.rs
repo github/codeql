@@ -1083,7 +1083,7 @@ impl<Id: TreeId> Node<Id> {
         match &self.content {
             NodeContent::Range(_range) => None,
             NodeContent::String(s) => Some(s.to_string()),
-            NodeContent::DynamicString(s) => Some(s.to_string()),
+            NodeContent::DynamicString(s) => Some(s.clone()),
         }
     }
 

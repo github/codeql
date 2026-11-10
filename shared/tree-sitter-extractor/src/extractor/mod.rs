@@ -623,7 +623,7 @@ impl<'a> Visitor<'a> {
                 trap::Arg::Label(id),
                 trap::Arg::Int(severity_code),
                 trap::Arg::String("parse_error".to_string()),
-                trap::Arg::String(mesg.plaintext_message.to_owned()),
+                trap::Arg::String(mesg.plaintext_message.clone()),
                 trap::Arg::String(full_error_message),
                 trap::Arg::Label(loc),
             ],
