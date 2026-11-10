@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.owasp.webgoat.lessons.idor", "IDORDiffAttributes", False, "completed", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.idor", "IDOREditOtherProfiile", False, "completed", "(String,UserProfile)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.idor", "IDOREditOtherProfiile", False, "completed", "(String,UserProfile)", "", "Parameter[1]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.idor", "IDORLogin", False, "completed", "(String,String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.idor", "IDORLogin", False, "completed", "(String,String)", "", "Parameter[1]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.idor", "IDORViewOtherProfile", False, "completed", "(String,HttpServletResponse)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.idor", "IDORViewOwnProfileAltUrl", False, "completed", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]

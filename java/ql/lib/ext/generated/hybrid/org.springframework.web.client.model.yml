@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.springframework.web.client", "RestTemplate", True, "exchange", "(String,HttpMethod,HttpEntity,Class,Object[])", "", "Argument[0]", "ai-candidate-cwe-918", "ai-generated"]
+      - ["org.springframework.web.client", "RestTemplate", True, "exchange", "(String,HttpMethod,HttpEntity,Class,Object[])", "", "Argument[4]", "ai-candidate-cwe-918", "ai-generated"]
+      - ["org.springframework.web.client", "RestTemplate", True, "postForEntity", "(String,Object,Class,Object[])", "", "Argument[0]", "ai-candidate-cwe-918", "ai-generated"]
+      - ["org.springframework.web.client", "RestTemplate", True, "postForEntity", "(String,Object,Class,Object[])", "", "Argument[3]", "ai-candidate-cwe-918", "ai-generated"]

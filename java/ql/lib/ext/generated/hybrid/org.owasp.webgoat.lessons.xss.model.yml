@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingLesson1", False, "completed", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingLesson3", False, "completed", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingLesson4", False, "completed", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingLesson5a", False, "completed", "(Integer,Integer,Integer,Integer,String,String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingLesson5a", False, "completed", "(Integer,Integer,Integer,Integer,String,String)", "", "Parameter[1]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingLesson5a", False, "completed", "(Integer,Integer,Integer,Integer,String,String)", "", "Parameter[2]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingLesson5a", False, "completed", "(Integer,Integer,Integer,Integer,String,String)", "", "Parameter[3]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingLesson5a", False, "completed", "(Integer,Integer,Integer,Integer,String,String)", "", "Parameter[4]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingLesson5a", False, "completed", "(Integer,Integer,Integer,Integer,String,String)", "", "Parameter[5]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingLesson6a", False, "completed", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingQuiz", False, "completed", "(String[],String[],String[],String[],String[])", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingQuiz", False, "completed", "(String[],String[],String[],String[],String[])", "", "Parameter[1]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingQuiz", False, "completed", "(String[],String[],String[],String[],String[])", "", "Parameter[2]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingQuiz", False, "completed", "(String[],String[],String[],String[],String[])", "", "Parameter[3]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "CrossSiteScriptingQuiz", False, "completed", "(String[],String[],String[],String[],String[])", "", "Parameter[4]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "DOMCrossSiteScripting", False, "completed", "(Integer,Integer,HttpServletRequest)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "DOMCrossSiteScripting", False, "completed", "(Integer,Integer,HttpServletRequest)", "", "Parameter[1]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "DOMCrossSiteScripting", False, "completed", "(Integer,Integer,HttpServletRequest)", "", "Parameter[2]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.xss", "DOMCrossSiteScriptingVerifier", False, "completed", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]

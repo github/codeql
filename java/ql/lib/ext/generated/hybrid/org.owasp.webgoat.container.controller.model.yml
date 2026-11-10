@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.owasp.webgoat.container.controller", "StartLesson", False, "lessonPage", "(HttpServletRequest)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.container.controller", "Welcome", False, "welcome", "(HttpServletRequest)", "", "Parameter[0]", "ai-candidate", "ai-generated"]

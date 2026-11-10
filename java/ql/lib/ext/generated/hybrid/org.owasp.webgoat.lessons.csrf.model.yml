@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.owasp.webgoat.lessons.csrf", "CSRFConfirmFlag1", False, "completed", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.csrf", "CSRFFeedback", False, "completed", "(HttpServletRequest,String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.csrf", "CSRFFeedback", False, "completed", "(HttpServletRequest,String)", "", "Parameter[1]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.csrf", "CSRFFeedback", False, "flag", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.csrf", "CSRFGetFlag", False, "invoke", "(HttpServletRequest)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.csrf", "CSRFLogin", False, "completed", "(HttpServletRequest)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.csrf", "ForgedReviews", False, "createNewReview", "(String,Integer,String,HttpServletRequest)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.csrf", "ForgedReviews", False, "createNewReview", "(String,Integer,String,HttpServletRequest)", "", "Parameter[1]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.csrf", "ForgedReviews", False, "createNewReview", "(String,Integer,String,HttpServletRequest)", "", "Parameter[2]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.csrf", "ForgedReviews", False, "createNewReview", "(String,Integer,String,HttpServletRequest)", "", "Parameter[3]", "ai-candidate", "ai-generated"]

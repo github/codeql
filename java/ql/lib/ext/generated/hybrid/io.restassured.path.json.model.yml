@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.restassured.path.json", "JsonPath", True, "get", "(String)", "", "Argument[0]", "ai-candidate-cwe-94", "ai-generated"]
+      - ["io.restassured.path.json", "JsonPath", True, "getList", "(String)", "", "Argument[0]", "ai-candidate-cwe-94", "ai-generated"]
+      - ["io.restassured.path.json", "JsonPath", True, "getObject", "(String,Class)", "", "Argument[0]", "ai-candidate-cwe-94", "ai-generated"]
+      - ["io.restassured.path.json", "JsonPath", True, "getString", "(String)", "", "Argument[0]", "ai-candidate-cwe-94", "ai-generated"]

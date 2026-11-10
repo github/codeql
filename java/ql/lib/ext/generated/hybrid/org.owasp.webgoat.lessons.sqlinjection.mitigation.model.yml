@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.owasp.webgoat.lessons.sqlinjection.mitigation", "Servers", False, "sort", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.sqlinjection.mitigation", "SqlInjectionLesson10a", False, "completed", "(String,String,String,String,String,String,String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.sqlinjection.mitigation", "SqlInjectionLesson10a", False, "completed", "(String,String,String,String,String,String,String)", "", "Parameter[1]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.sqlinjection.mitigation", "SqlInjectionLesson10a", False, "completed", "(String,String,String,String,String,String,String)", "", "Parameter[2]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.sqlinjection.mitigation", "SqlInjectionLesson10a", False, "completed", "(String,String,String,String,String,String,String)", "", "Parameter[3]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.sqlinjection.mitigation", "SqlInjectionLesson10a", False, "completed", "(String,String,String,String,String,String,String)", "", "Parameter[4]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.sqlinjection.mitigation", "SqlInjectionLesson10a", False, "completed", "(String,String,String,String,String,String,String)", "", "Parameter[5]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.sqlinjection.mitigation", "SqlInjectionLesson10a", False, "completed", "(String,String,String,String,String,String,String)", "", "Parameter[6]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.sqlinjection.mitigation", "SqlInjectionLesson10b", False, "completed", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.sqlinjection.mitigation", "SqlInjectionLesson13", False, "completed", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.sqlinjection.mitigation", "SqlOnlyInputValidation", False, "attack", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.sqlinjection.mitigation", "SqlOnlyInputValidationOnKeywords", False, "attack", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]

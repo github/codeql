@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.owasp.webgoat.lessons.pathtraversal", "ProfileUpload", False, "uploadFileHandler", "(MultipartFile,String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.pathtraversal", "ProfileUpload", False, "uploadFileHandler", "(MultipartFile,String)", "", "Parameter[1]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.pathtraversal", "ProfileUploadFix", False, "uploadFileHandler", "(MultipartFile,String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.pathtraversal", "ProfileUploadFix", False, "uploadFileHandler", "(MultipartFile,String)", "", "Parameter[1]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.pathtraversal", "ProfileUploadRemoveUserInput", False, "uploadFileHandler", "(MultipartFile)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.pathtraversal", "ProfileUploadRetrieval", False, "execute", "(String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.pathtraversal", "ProfileUploadRetrieval", False, "getProfilePicture", "(HttpServletRequest)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.pathtraversal", "ProfileZipSlip", False, "uploadFileHandler", "(MultipartFile)", "", "Parameter[0]", "ai-candidate", "ai-generated"]

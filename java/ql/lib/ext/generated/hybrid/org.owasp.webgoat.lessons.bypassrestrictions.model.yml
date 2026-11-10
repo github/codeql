@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.owasp.webgoat.lessons.bypassrestrictions", "BypassRestrictionsFieldRestrictions", False, "completed", "(String,String,String,String,String)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.bypassrestrictions", "BypassRestrictionsFieldRestrictions", False, "completed", "(String,String,String,String,String)", "", "Parameter[1]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.bypassrestrictions", "BypassRestrictionsFieldRestrictions", False, "completed", "(String,String,String,String,String)", "", "Parameter[2]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.bypassrestrictions", "BypassRestrictionsFieldRestrictions", False, "completed", "(String,String,String,String,String)", "", "Parameter[3]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.bypassrestrictions", "BypassRestrictionsFieldRestrictions", False, "completed", "(String,String,String,String,String)", "", "Parameter[4]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.bypassrestrictions", "BypassRestrictionsFrontendValidation", False, "completed", "(String,String,String,String,String,String,String,Integer)", "", "Parameter[0]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.bypassrestrictions", "BypassRestrictionsFrontendValidation", False, "completed", "(String,String,String,String,String,String,String,Integer)", "", "Parameter[1]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.bypassrestrictions", "BypassRestrictionsFrontendValidation", False, "completed", "(String,String,String,String,String,String,String,Integer)", "", "Parameter[2]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.bypassrestrictions", "BypassRestrictionsFrontendValidation", False, "completed", "(String,String,String,String,String,String,String,Integer)", "", "Parameter[3]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.bypassrestrictions", "BypassRestrictionsFrontendValidation", False, "completed", "(String,String,String,String,String,String,String,Integer)", "", "Parameter[4]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.bypassrestrictions", "BypassRestrictionsFrontendValidation", False, "completed", "(String,String,String,String,String,String,String,Integer)", "", "Parameter[5]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.bypassrestrictions", "BypassRestrictionsFrontendValidation", False, "completed", "(String,String,String,String,String,String,String,Integer)", "", "Parameter[6]", "ai-candidate", "ai-generated"]
+      - ["org.owasp.webgoat.lessons.bypassrestrictions", "BypassRestrictionsFrontendValidation", False, "completed", "(String,String,String,String,String,String,String,Integer)", "", "Parameter[7]", "ai-candidate", "ai-generated"]
