@@ -1,0 +1,36 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["github.com/nonexistent/test", "", false, "FunctionWithParameter", "", "", "Argument[0]", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "FunctionWithSliceParameter", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "FunctionWithVarArgsParameter", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "FunctionWithVarArgsOutParameter", "", "", "Argument[0]", "Argument[1].ArrayElement", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "FunctionWithSliceOfStructsParameter", "", "", "Argument[0].ArrayElement.Field[github.com/nonexistent/test.A.Field]", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "FunctionWithVarArgsOfStructsParameter", "", "", "Argument[0].ArrayElement.Field[github.com/nonexistent/test.A.Field]", "ReturnValue", "value", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["github.com/nonexistent/test", "", false, "VariadicSource", "", "", "Argument[0]", "qltest", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/nonexistent/test", "", false, "VariadicSink", "", "", "Argument[0]", "qltest", "manual"]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["github.com/nonexistent/test", "", false, "SourceVariable", "", "", "", "qltest", "manual"],
+        ["github.com/nonexistent/test", "A", false, "Src1", "", "", "ReturnValue", "qltest", "manual"],
+        ["github.com/nonexistent/test", "A", false, "Src2", "", "", "ReturnValue", "qltest", "manual"],
+        ["github.com/nonexistent/test", "A", true, "Src2", "", "", "ReturnValue", "qltest-w-subtypes", "manual"],
+        ["github.com/nonexistent/test", "A", false, "SrcArg", "", "", "Argument[0]", "qltest-arg", "manual"],
+        ["github.com/nonexistent/test", "A", false, "Src3", "", "", "ReturnValue[0]", "qltest", "manual"],
+        ["github.com/nonexistent/test", "A", true, "Src3", "", "", "ReturnValue[1]", "qltest-w-subtypes", "manual"],
+        ["semmle.go.Packages", "", true, "srcParam", "", "", "Parameter[0]", "qltest", "manual"]
+      ]
+    }
+  ]
+}
