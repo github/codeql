@@ -1,0 +1,17 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/java-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["reactor.core.publisher", "Mono", true, "justOrEmpty", "", "", "Argument[0]", "Argument[this]", "taint", "manual"],
+        ["reactor.core.publisher", "Mono", true, "just", "", "", "Argument[0]", "Argument[this]", "taint", "manual"],
+        ["reactor.core.publisher", "Mono", true, "flatMap", "", "", "Argument[this].Element", "Argument[0].Parameter[0]", "taint", "manual"],
+        ["reactor.core.publisher", "Mono", true, "map", "", "", "Argument[this].Element", "Argument[0].Parameter[0]", "taint", "manual"],
+        ["reactor.core.publisher", "Mono", true, "mapNotNull", "", "", "Argument[this].Element", "Argument[0].Parameter[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}
