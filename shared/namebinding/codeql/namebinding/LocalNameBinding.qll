@@ -288,7 +288,7 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
    * #endif
    * print(x) // prints 2 or 3
    * ```
-   * the initial declaration of `x` is certain to not be shadowed after the
+   * the initial declaration of `x` is certain to be shadowed after the
    * conditional.
    *
    * If the conditional instead had no else branch or had one of the branches
@@ -304,6 +304,7 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
     )
   }
 
+  pragma[inline]
   private predicate branchPreservesIncoming(AstNode branch) {
     unscopedConditionalPreservesIncoming(branch)
     or
@@ -318,7 +319,8 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
   }
 
   /**
-   * Holds if `node` might not introduce any shadowing declaration.
+   * Holds if `child` is a ranked child and might not introduce any shadowing
+   * declaration.
    *
    * For example, the following satisfies the predicate since the declaration
    * might be removed at compile time.
@@ -328,12 +330,15 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
    * #endif
    *  ```
    */
-  private predicate preservesIncoming(AstNode node) {
-    // A shadowing declaration always introduces a shadowing declaration.
-    not node instanceof SiblingShadowingDecl and
-    not isUnscopedConditional(node)
-    or
-    unscopedConditionalPreservesIncoming(node)
+  private predicate preservesIncoming(AstNode child) {
+    child = getRankedChild(_, _) and
+    (
+      // A shadowing declaration always introduces a shadowing declaration.
+      not child instanceof SiblingShadowingDecl and
+      not isUnscopedConditional(child)
+      or
+      unscopedConditionalPreservesIncoming(child)
+    )
   }
 
   /** Summarizes the first `i` ranked children without entering ordinary nested scopes. */
