@@ -266,8 +266,8 @@
     "java/ql/lib/semmle/code/java/security/internal/EncryptionKeySizes.qll"
   ],
   "Python model summaries test extension": [
-    "python/ql/test/library-tests/dataflow/model-summaries/InlineTaintTest.ext.yml",
-    "python/ql/test/library-tests/dataflow/model-summaries/NormalDataflowTest.ext.yml"
+    "python/ql/test/library-tests/dataflow/model-summaries/InlineTaintTest.ext.json",
+    "python/ql/test/library-tests/dataflow/model-summaries/NormalDataflowTest.ext.json"
   ],
   "XML discard predicates": [
     "javascript/ql/lib/semmle/javascript/internal/OverlayXml.qll",
