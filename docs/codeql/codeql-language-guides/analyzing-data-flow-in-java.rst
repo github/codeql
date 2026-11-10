@@ -232,6 +232,8 @@ A configuration can change the limit by defining ``accessPathLimit``:
      int accessPathLimit() { result = 8 }
    }
 
+For Java and Kotlin, a configured limit takes effect up to 10, twice the default. A larger value behaves like 10, and no warning is given.
+
 A higher limit can find more flows, but the analysis takes more time and memory.
 
 Using global taint tracking
