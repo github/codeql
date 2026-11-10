@@ -48,6 +48,17 @@ namespace Testing
         public short Number { get; set; } // Considered tainted. `short.MaxValue` is not.
     }
 
+    public class FieldBase
+    {
+        protected string shared;
+    }
+
+    public class InheritedField : FieldBase
+    {
+        public string Prop { get { return shared; } set { shared = value; } } // Considered tainted. Backing field is declared on a base type.
+        public string[] NamesOnlyGet { get; } = new[] { "fixed" }; // Not considered tainted. Binding cannot modify a get-only array.
+    }
+
     public class FlowProps
     {
         private string f;
@@ -59,7 +70,7 @@ namespace Testing
 
     public class TestController : Controller
     {
-        public object MyAction(PlainDataModel plain, DerivedModel derived, FlowProps fp)
+        public object MyAction(PlainDataModel plain, DerivedModel derived, FlowProps fp, InheritedField inh)
         {
             throw null;
         }

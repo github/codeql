@@ -117,6 +117,15 @@ class AspNetServiceRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow::Pa
   override string getSourceType() { result = "ASP.NET web service input" }
 }
 
+/** Gets `e`, or the expression it wraps in value-preserving casts / null-coalescing. */
+private Expr getAValuePreservingSource(Expr e) {
+  result = e
+  or
+  result = getAValuePreservingSource(e.(CastExpr).getExpr())
+  or
+  result = getAValuePreservingSource(e.(NullCoalescingExpr).getLeftOperand())
+}
+
 /**
  * Holds if `p` is auto-implemented, or its getter returns an expression reading a field
  * and its setter (if any) assigns an expression using `value` to that field.
@@ -127,10 +136,10 @@ private predicate isPlainDataProperty(Property p) {
   or
   p.isAutoImplementedReadOnly()
   or
-  exists(Field f | f.getDeclaringType() = p.getDeclaringType() |
+  exists(Field f | p.getDeclaringType().getABaseType*() = f.getDeclaringType() |
     exists(FieldRead fr, Expr ret |
       fr.getTarget() = f and
-      fr.getParent*() = ret and
+      fr = getAValuePreservingSource(ret) and
       (
         ret = any(ReturnStmt r | r.getEnclosingCallable() = p.getGetter()).getExpr()
         or
@@ -144,7 +153,7 @@ private predicate isPlainDataProperty(Property p) {
         ae.getLValue().(FieldWrite).getTarget() = f and
         ae.getEnclosingCallable() = p.getSetter() and
         v.getTarget().hasName("value") and
-        v.getParent*() = ae.getRValue()
+        v = getAValuePreservingSource(ae.getRValue())
       )
     )
   )
@@ -164,7 +173,7 @@ class CandidateMemberToTaint extends Member {
         any(Property p |
           isPlainDataProperty(p) and
           p.getGetter().isPublic() and
-          (p.getSetter().isPublic() or p.getType() instanceof CollectionType)
+          (p.getSetter().isPublic() or (p.getType() instanceof CollectionType and not p.getType() instanceof ArrayType))
         )
       or
       this = any(Field f | f.isPublic())
