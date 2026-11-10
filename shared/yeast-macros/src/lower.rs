@@ -651,6 +651,11 @@ fn isolated_interpolation(uses_ctx: bool, body: TokenStream) -> TokenStream {
     }
 }
 
+/// Returns whether `block` directly mentions `ctx`.
+///
+/// This lexical check cannot see context access hidden behind a helper or
+/// macro. Such an interpolation can opt into isolation by explicitly
+/// mentioning `ctx`, for example with `let _ = &ctx;`.
 fn block_uses_ctx(block: &syn::Block) -> bool {
     fn uses_ctx(tokens: TokenStream) -> bool {
         tokens.into_iter().any(|token| match token {

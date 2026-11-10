@@ -945,7 +945,7 @@ fn test_choice_fallback_can_reuse_consumed_splice() {
 
 #[derive(Clone, Default)]
 struct InterpolationContext {
-    counter: usize,
+    counter: u64,
 }
 
 #[test]
