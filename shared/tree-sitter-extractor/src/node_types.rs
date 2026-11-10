@@ -138,7 +138,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
         let flattened_name = &node_type_name(&node.kind, node.named);
         let dbscheme_name = escape_name(flattened_name);
         let ql_class_name = dbscheme_name_to_class_name(&dbscheme_name);
-        let dbscheme_name = format!("{}_{}", prefix, dbscheme_name);
+        let dbscheme_name = format!("{prefix}_{dbscheme_name}");
         let subtypes = &node.subtypes;
         if !subtypes.is_empty() {
             // It's a tree-sitter supertype node, for which we create a union
@@ -187,8 +187,8 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                 kind: node.kind.clone(),
                 named: node.named,
             };
-            let table_name = escape_name(&(format!("{}_def", flattened_name)));
-            let table_name = format!("{}_{}", prefix, table_name);
+            let table_name = escape_name(&(format!("{flattened_name}_def")));
+            let table_name = format!("{prefix}_{table_name}");
 
             let mut fields = Vec::new();
 
@@ -234,13 +234,13 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
             counter += 1;
             let unprefixed_name = node_type_name(&type_name.kind, true);
             Entry {
-                dbscheme_name: escape_name(&format!("{}_token_{}", prefix, unprefixed_name)),
+                dbscheme_name: escape_name(&format!("{prefix}_token_{unprefixed_name}")),
                 ql_class_name: dbscheme_name_to_class_name(&escape_name(&unprefixed_name)),
                 kind: EntryKind::Token { kind_id: counter },
             }
         } else {
             Entry {
-                dbscheme_name: format!("{}_reserved_word", prefix),
+                dbscheme_name: format!("{prefix}_reserved_word"),
                 ql_class_name: "ReservedWord".to_owned(),
                 kind: EntryKind::Token { kind_id: 0 },
             }

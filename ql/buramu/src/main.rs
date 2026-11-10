@@ -53,7 +53,7 @@ fn get_blame_dates_for_filedeprecation(file: &str, linenos: &[String]) -> LastMo
     let mut command = Command::new("git");
     command.arg("blame");
     for lineno in linenos {
-        command.arg("-L").arg(format!("{},{}", lineno, lineno));
+        command.arg("-L").arg(format!("{lineno},{lineno}"));
     }
     command.arg(file);
     let output = command.output().expect("failed to execute process");
@@ -97,7 +97,7 @@ fn main() {
         .par_iter()
         .map(|(file, linenos)| (file, get_blame_dates_for_filedeprecation(file, linenos)));
     deprecations.for_each(|(file, linenos_and_dates)| {
-        println!("file: {}", file);
+        println!("file: {file}");
         for (date, linenos) in &linenos_and_dates {
             println!("  last_modified: {} {}", date, linenos.join(" "));
         }
