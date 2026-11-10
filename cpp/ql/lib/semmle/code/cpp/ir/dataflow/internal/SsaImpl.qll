@@ -1256,7 +1256,7 @@ module BarrierGuardWithIntParam<ParamSig P, IntWithParam<P>::guardChecksNodeSig/
 
   Node getABarrierNode(int indirectionIndex, P p) {
     fromDfNode(result) =
-      DataFlowIntegrationImpl::BarrierGuardDefWithState<ParamIntPair<P>::MkPair, guardChecksWithWrappers/4>::getABarrierNode(ParamIntPair<P>::MkPair(p,
+      DataFlowIntegrationImpl::SsaBarrierGuardWithState<ParamIntPair<P>::MkPair, guardChecksWithWrappers/4>::getABarrierNode(ParamIntPair<P>::MkPair(p,
           indirectionIndex))
   }
 }

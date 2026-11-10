@@ -44,6 +44,15 @@ module SsaConfig implements InputSig<js::Location, js::Cfg::BasicBlock> {
 
 import Make<js::Location, js::Cfg, SsaConfig>
 
+pragma[nomagic]
+js::ControlFlowNode getARead(Definition def) {
+  exists(SsaConfig::SourceVariable v, js::Cfg::BasicBlock bb, int i |
+    ssaDefReachesRead(v, def, bb, i) and
+    SsaConfig::variableRead(bb, i, v, true) and
+    bb.getNode(i) = result
+  )
+}
+
 module SsaDataflowInput implements DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
 

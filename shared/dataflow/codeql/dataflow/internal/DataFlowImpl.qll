@@ -566,7 +566,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private int getAnApLengthLowerBound(Ap ap) {
-          accessPathLimit() != 0 and // `accessPathLimit() = 0` is already checked in `useFieldFlow`
+          Config::accessPathLimit() != 0 and // `accessPathLimit() = 0` is already checked in `useFieldFlow`
           result = ap.length()
           or
           not exists(ap.length()) and
@@ -574,7 +574,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             fwdFlowConsCand(_, ap, _, _, tail) and
             ap != tail and // no need to report a longer length
             result = 1 + getAnApLengthLowerBound(tail) and
-            result <= accessPathLimit()
+            result <= Config::accessPathLimit()
           )
         }
 
@@ -612,7 +612,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             fwdFlowStore(_, _, ap0, _, c, t, stored, node, cc, summaryCtx) and
             ap = apCons(c, ap0) and
             apa = getApprox(ap) and
-            getAnApLengthLowerBound(ap0) < accessPathLimit()
+            getAnApLengthLowerBound(ap0) < Config::accessPathLimit()
           )
           or
           // read
@@ -1340,7 +1340,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private int getAnApLengthLowerBoundRev(Ap ap) {
-          accessPathLimit() != 0 and // `accessPathLimit() = 0` is already checked in `useFieldFlow`
+          Config::accessPathLimit() != 0 and // `accessPathLimit() = 0` is already checked in `useFieldFlow`
           result = ap.length()
           or
           not exists(ap.length()) and
@@ -1348,7 +1348,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             revFlowConsCand(ap, _, tail) and
             ap != tail and // no need to report a longer length
             result = 1 + getAnApLengthLowerBoundRev(tail) and
-            result <= accessPathLimit()
+            result <= Config::accessPathLimit()
           )
         }
 
@@ -1389,7 +1389,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           exists(Nd mid, Ap ap0 |
             revFlow(mid, returnCtx, returnAp, ap0) and
             readStepFwd(node, ap, _, mid, ap0) and
-            getAnApLengthLowerBoundRev(ap0) < accessPathLimit()
+            getAnApLengthLowerBoundRev(ap0) < Config::accessPathLimit()
           )
           or
           // flow into a callable

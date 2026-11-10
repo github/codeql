@@ -2146,13 +2146,10 @@ module Make<
     }
 
     /**
-     * Holds if the guard `g` validates the expression `e` upon evaluating to `val`.
-     *
-     * The expression `e` is expected to be a syntactic part of the guard `g`.
-     * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
-     * the argument `x`.
+     * Holds if the guard `g` validates the SSA definition `def` upon
+     * evaluating to `val`.
      */
-    signature predicate guardChecksSig(DfInput::Guard g, DfInput::Expr e, DfInput::GuardValue val);
+    signature predicate guardChecksSig(DfInput::Guard g, Definition def, DfInput::GuardValue val);
 
     pragma[nomagic]
     private Definition getAPhiInputDef(SsaInputNodeImpl n) {
@@ -2167,40 +2164,28 @@ module Make<
 
     private module WithState<StateSig State> {
       /**
-       * Holds if the guard `g` validates the expression `e` upon evaluating to `val`, blocking
-       * flow in the given `state`.
-       *
-       * The expression `e` is expected to be a syntactic part of the guard `g`.
-       * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
-       * the argument `x`.
-       */
-      signature predicate guardChecksSig(
-        DfInput::Guard g, DfInput::Expr e, DfInput::GuardValue val, State state
-      );
-
-      /**
        * Holds if the guard `g` validates the SSA definition `def` upon
        * evaluating to `val`, blocking flow in the given `state`.
        */
-      signature predicate guardChecksDefSig(
+      signature predicate guardChecksSig(
         DfInput::Guard g, Definition def, DfInput::GuardValue val, State state
       );
     }
 
     /**
-     * Provides a set of barrier nodes for a guard that validates an expression.
+     * Provides a set of barrier nodes for a guard that validates an SSA definition.
      *
      * This is expected to be used in `isBarrier`/`isSanitizer` definitions
      * in data flow and taint tracking.
      */
-    module BarrierGuard<guardChecksSig/3 guardChecks> {
+    module SsaBarrierGuard<guardChecksSig/3 guardChecks> {
       private predicate guardChecksWithState(
-        DfInput::Guard g, DfInput::Expr e, DfInput::GuardValue val, Unit state
+        DfInput::Guard g, Definition def, DfInput::GuardValue val, Unit state
       ) {
-        guardChecks(g, e, val) and exists(state)
+        guardChecks(g, def, val) and exists(state)
       }
 
-      private module StatefulBarrier = BarrierGuardWithState<Unit, guardChecksWithState/4>;
+      private module StatefulBarrier = SsaBarrierGuardWithState<Unit, guardChecksWithState/4>;
 
       /** Gets a node that is safely guarded by the given guard check. */
       pragma[nomagic]
@@ -2208,38 +2193,17 @@ module Make<
     }
 
     /**
-     * Provides a set of barrier nodes for a guard that validates an expression.
+     * Provides a set of barrier nodes for a guard that validates an SSA definition.
      *
      * This is expected to be used in `isBarrier`/`isSanitizer` definitions
      * in data flow and taint tracking.
      */
-    module BarrierGuardWithState<StateSig State, WithState<State>::guardChecksSig/4 guardChecks> {
-      pragma[nomagic]
-      private predicate guardChecksSsaDef(
-        DfInput::Guard g, Definition def, DfInput::GuardValue val, State state
-      ) {
-        guardChecks(g, getARead(def), val, state)
-      }
-
-      private module Barrier = BarrierGuardDefWithState<State, guardChecksSsaDef/4>;
-
-      predicate getABarrierNode = Barrier::getABarrierNode/1;
-    }
-
-    /**
-     * Provides a set of barrier nodes for a guard that validates an expression.
-     *
-     * This is expected to be used in `isBarrier`/`isSanitizer` definitions
-     * in data flow and taint tracking.
-     */
-    module BarrierGuardDefWithState<
-      StateSig State, WithState<State>::guardChecksDefSig/4 guardChecksSsaDef>
-    {
+    module SsaBarrierGuardWithState<StateSig State, WithState<State>::guardChecksSig/4 guardChecks> {
       /** Gets a node that is safely guarded by the given guard check. */
       pragma[nomagic]
       Node getABarrierNode(State state) {
         exists(DfInput::Guard g, DfInput::GuardValue val, Definition def, BasicBlock bb |
-          guardChecksSsaDef(g, def, val, state)
+          guardChecks(g, def, val, state)
         |
           // guard controls a read
           exists(DfInput::Expr e |
