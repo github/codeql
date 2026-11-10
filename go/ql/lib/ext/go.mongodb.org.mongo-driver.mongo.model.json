@@ -1,0 +1,58 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["go.mongodb.org/mongo-driver/mongo", "Client", true, "Watch", "", "", "ReturnValue[0]", "database", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "Aggregate", "", "", "ReturnValue[0]", "database", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "Distinct", "", "", "ReturnValue[0]", "database", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "Find", "", "", "ReturnValue[0]", "database", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "FindOne", "", "", "ReturnValue", "database", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "FindOneAndDelete", "", "", "ReturnValue", "database", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "FindOneAndReplace", "", "", "ReturnValue", "database", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "FindOneAndUpdate", "", "", "ReturnValue", "database", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "Watch", "", "", "ReturnValue[0]", "database", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Database", true, "Aggregate", "", "", "ReturnValue[0]", "database", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Database", true, "Watch", "", "", "ReturnValue[0]", "database", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "Aggregate", "", "", "Argument[1]", "nosql-injection", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "CountDocuments", "", "", "Argument[1]", "nosql-injection", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "DeleteMany", "", "", "Argument[1]", "nosql-injection", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "DeleteOne", "", "", "Argument[1]", "nosql-injection", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "Distinct", "", "", "Argument[2]", "nosql-injection", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "Find", "", "", "Argument[1]", "nosql-injection", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "FindOne", "", "", "Argument[1]", "nosql-injection", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "FindOneAndDelete", "", "", "Argument[1]", "nosql-injection", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "FindOneAndReplace", "", "", "Argument[1]", "nosql-injection", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "FindOneAndUpdate", "", "", "Argument[1]", "nosql-injection", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "ReplaceOne", "", "", "Argument[1]", "nosql-injection", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "UpdateMany", "", "", "Argument[1]", "nosql-injection", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "UpdateOne", "", "", "Argument[1]", "nosql-injection", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Collection", true, "Watch", "", "", "Argument[1]", "nosql-injection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["go.mongodb.org/mongo-driver/mongo", "ChangeStream", true, "Decode", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Cursor", true, "All", "", "", "Argument[receiver]", "Argument[1]", "taint", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "Cursor", true, "Decode", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "SingleResult", true, "Decode", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["go.mongodb.org/mongo-driver/mongo", "SingleResult", true, "Raw", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}

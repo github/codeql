@@ -1,0 +1,64 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["go.uber.org/zap", "Logger", true, "DPanic", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "Logger", true, "Debug", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "Logger", true, "Error", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "Logger", true, "Fatal", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "Logger", true, "Info", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "Logger", true, "Named", "", "", "Argument[0]", "log-injection", "manual"],
+        ["go.uber.org/zap", "Logger", true, "Panic", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "Logger", true, "Warn", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "Logger", true, "With", "", "", "Argument[0]", "log-injection", "manual"],
+        ["go.uber.org/zap", "Logger", true, "WithOptions", "", "", "Argument[0]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "DPanic", "", "", "Argument[0]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "DPanicf", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "DPanicw", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Debug", "", "", "Argument[0]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Debugf", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Debugw", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Error", "", "", "Argument[0]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Errorf", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Errorw", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Fatal", "", "", "Argument[0]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Fatalf", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Fatalw", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Info", "", "", "Argument[0]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Infof", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Infow", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Named", "", "", "Argument[0]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Panic", "", "", "Argument[0]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Panicf", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Panicw", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Warn", "", "", "Argument[0]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Warnf", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "Warnw", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["go.uber.org/zap", "SugaredLogger", true, "With", "", "", "Argument[0]", "log-injection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["go.uber.org/zap", "", false, "Any", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["go.uber.org/zap", "", false, "Binary", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["go.uber.org/zap", "", false, "ByteString", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["go.uber.org/zap", "", false, "ByteStrings", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["go.uber.org/zap", "", false, "Error", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["go.uber.org/zap", "", false, "Errors", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["go.uber.org/zap", "", false, "NamedError", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["go.uber.org/zap", "", false, "Reflect", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["go.uber.org/zap", "", false, "String", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["go.uber.org/zap", "", false, "Stringp", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["go.uber.org/zap", "", false, "Strings", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

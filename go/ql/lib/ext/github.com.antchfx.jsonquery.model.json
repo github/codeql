@@ -1,0 +1,16 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/antchfx/jsonquery", "", false, "Find", "", "", "Argument[1]", "xpath-injection", "manual"],
+        ["github.com/antchfx/jsonquery", "", false, "FindOne", "", "", "Argument[1]", "xpath-injection", "manual"],
+        ["github.com/antchfx/jsonquery", "", false, "Query", "", "", "Argument[1]", "xpath-injection", "manual"],
+        ["github.com/antchfx/jsonquery", "", false, "QueryAll", "", "", "Argument[1]", "xpath-injection", "manual"]
+      ]
+    }
+  ]
+}

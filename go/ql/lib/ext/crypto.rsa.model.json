@@ -1,0 +1,14 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["crypto/rsa", "", false, "DecryptOAEP", "", "", "Argument[3]", "ReturnValue[0]", "taint", "manual"],
+        ["crypto/rsa", "", false, "DecryptPKCS1v15", "", "", "Argument[2]", "ReturnValue[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}
