@@ -1783,7 +1783,7 @@ module Make<
 
     final class WriteDefSourceNode = WriteDefSourceNodeImpl;
 
-    /** A (post-update) expression node. */
+    /** A read node or post-update read node. */
     abstract private class ReadNodePreOrPostImpl extends NodeImpl, TReadNode {
       ControlFlowNode n_;
       boolean isPost;
@@ -1804,7 +1804,7 @@ module Make<
 
       override Location getLocation() { result = n_.getLocation() }
 
-      /** Gets the variable accessed at this expression. */
+      /** Gets the variable accessed at this read. */
       SourceVariable getSourceVariable() { result = v_ }
     }
 
