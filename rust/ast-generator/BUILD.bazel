@@ -1,7 +1,7 @@
 load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//misc/bazel:rust.bzl", "codeql_rust_binary")
-load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "all_crate_deps", "crate_deps")
+load("//misc/bazel/3rdparty/rust_workspace_deps:defs.bzl", "aliases", "all_crate_deps", "crate_deps")
 
 (ra_ap_syntax_label,) = crate_deps(
     ["ra_ap_syntax"],
@@ -9,7 +9,7 @@ load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "a
 )
 
 # `rust.ungram` is exported by the `ra_ap_syntax` crate, but only its default target is reachable
-# through the aggregated `@vendor_ts` repo (the per-crate package there is just an alias). The file
+# through the aggregated `@vendor_rs` repo (the per-crate package there is just an alias). The file
 # itself lives in the crate's own vendored repo, named `<vendor repo>__<crate package>`. Derive that
 # repo from the crate label so this stays version-independent.
 _vendor_repo, _, _crate_package = str(ra_ap_syntax_label).partition(":")[0].partition("//")

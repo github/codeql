@@ -1,6 +1,6 @@
 """Module extensions for using vendored crates with bzlmod"""
 
-load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", _crate_repositories = "crate_repositories")
+load("//misc/bazel/3rdparty/rust_workspace_deps:defs.bzl", _crate_repositories = "crate_repositories")
 
 def _crate_repositories_impl(module_ctx):
     direct_deps = _crate_repositories()
