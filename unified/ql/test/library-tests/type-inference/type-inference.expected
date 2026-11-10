@@ -351,6 +351,8 @@ inferCertainType
 | generics.swift:253:10:253:10 | c |  | generics.swift:252:14:252:27 | T |
 | generics.swift:287:65:287:69 | value |  | generics.swift:287:33:287:60 | T |
 | generics.swift:288:10:288:14 | value |  | generics.swift:287:33:287:60 | T |
+| generics.swift:311:33:311:37 | value |  | generics.swift:297:1:301:1 | PrimaryAssociatedTypeProtocol |
+| generics.swift:312:10:312:14 | value |  | generics.swift:297:1:301:1 | PrimaryAssociatedTypeProtocol |
 | key_paths.swift:4:7:4:7 | x |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:5:7:5:7 | y |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:7:8:7:8 | x |  | {EXTERNAL LOCATION} | Double |
@@ -2041,6 +2043,8 @@ inferType
 | generics.swift:292:42:292:63 | StringAssociatedType(...) |  | generics.swift:275:1:285:1 | StringAssociatedType |
 | generics.swift:306:25:308:3 | Block |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:307:12:307:13 | 42 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:311:33:311:37 | value |  | generics.swift:297:1:301:1 | PrimaryAssociatedTypeProtocol |
+| generics.swift:312:10:312:14 | value |  | generics.swift:297:1:301:1 | PrimaryAssociatedTypeProtocol |
 | generics.swift:316:7:316:11 | value |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:316:15:316:66 | getPrimaryAssociatedType(...) |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:316:40:316:63 | IntPrimaryAssociatedType |  | generics.swift:303:1:309:1 | IntPrimaryAssociatedType |

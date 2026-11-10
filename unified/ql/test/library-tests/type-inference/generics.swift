@@ -309,7 +309,7 @@ struct IntPrimaryAssociatedType: PrimaryAssociatedTypeProtocol {
 }
 
 func getPrimaryAssociatedType(_ value: some PrimaryAssociatedTypeProtocol<Int>) -> Int {
-  return value.element()  // $ MISSING: target=PrimaryAssociatedTypeProtocol.element
+  return value.element()  // $ target=PrimaryAssociatedTypeProtocol.element
 }
 
 func testPrimaryAssociatedType() {
