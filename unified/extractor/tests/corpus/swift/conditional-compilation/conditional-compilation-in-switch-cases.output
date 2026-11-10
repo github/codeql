@@ -123,10 +123,19 @@ top_level source="⟨body⟩"
           body:
             block source="{\n    ⟨stmt⟩\n}"
               stmt:
-                switch_expr source="switch ⟨value⟩ {\n    ⟨case⟩\n    ⟨case⟩\n    }"
+                switch_expr source="switch ⟨value⟩ {\n    #if DEBUG\n        ⟨case⟩\n        ⟨case⟩\n    #endif\n    ⟨case⟩\n    }"
                   value: identifier "x" source="x"
                   case:
-                    unsupported_node "#if DEBUG\n        case 0: break\n        case 1: break\n    #endif" source="#if DEBUG\n        case 0: break\n        case 1: break\n    #endif" <-- ERROR: The field switch_expr.case should contain switch_case, but got unsupported_node
+                    switch_case source="case ⟨pattern⟩: ⟨body⟩"
+                      pattern: int_literal "0" source="0"
+                      body:
+                        block source="⟨stmt⟩"
+                          stmt: break_expr "break" source="break"
+                    switch_case source="case ⟨pattern⟩: ⟨body⟩"
+                      pattern: int_literal "1" source="1"
+                      body:
+                        block source="⟨stmt⟩"
+                          stmt: break_expr "break" source="break"
                     switch_case source="default: ⟨body⟩"
                       body:
                         block source="⟨stmt⟩"

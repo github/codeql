@@ -2,7 +2,7 @@ import unified
 import codeql.unified.internal.ParameterEx
 
 query predicate generatedConstructor(ConstructorDeclaration c) {
-  c = any(ClassLikeDeclaration cls | cls.fromSource()).getAMemberIncludingConditionalCompilation() and
+  c = any(ClassLikeDeclaration cls | cls.fromSource()).getAMember() and
   c.hasModifier("generated")
 }
 

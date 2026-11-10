@@ -123,7 +123,7 @@ private class NonAliasExprTypeMention extends ExprTypeMentionImpl {
       //   typealias BaseTp = String
       // }
       exists(TypeAliasDeclaration alias, TypePath suffix |
-        alias = c.getAMemberIncludingConditionalCompilation() and
+        alias = c.getAMember() and
         alias.getName() = name and
         path = TypePath::cons(baseTp, suffix) and
         result = alias.getType().(TypeMention).getTypeAt(suffix)

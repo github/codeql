@@ -38,6 +38,9 @@ struct SwiftContext {
     /// True while translating a pattern. Optional chaining in this context is
     /// represented as an `Optional.some` call rather than being unwrapped.
     in_pattern: bool,
+    /// True when a conditional compilation block should be translated into an
+    /// if expression.
+    conditional_compilation_as_expr: bool,
     /// When iterating over the clauses of a conditional compilation block, this
     /// holds the tail of the clauses that have already been translated.
     conditional_compilation_tail: Option<yeast::OutputId>,
@@ -67,29 +70,11 @@ fn implicit_parameterless_initializer(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
     members: &[yeast::OutputId],
 ) -> Option<yeast::OutputId> {
-    // Search for an initializer while recursing into nodes for conditional
-    // compilation blocks.
-    fn find_initializer(ast: &yeast::OutputAst, id: yeast::OutputId) -> Option<yeast::OutputId> {
-        let node = ast.get_node(id)?;
-        match node.kind_name() {
-            "constructor_declaration" => Some(id),
-            name => {
-                let fields: &[&str] = match name {
-                    "if_expr" => &["then", "else"], // look into conditional compilation
-                    "block" => &["stmt"],           // look into blocks in branches
-                    _ => &[],
-                };
-                fields.iter().find_map(|field| {
-                    node.field_children(ast.field_id_for_name(field)?)
-                        .iter()
-                        .find_map(|child| find_initializer(ast, *child))
-                })
-            }
-        }
-    }
-    let has_explicit_initializer = members
-        .iter()
-        .any(|member| find_initializer(ctx.output, *member).is_some());
+    let has_explicit_initializer = members.iter().any(|member| {
+        ctx.output
+            .get_node(*member)
+            .is_some_and(|node| node.kind_name() == "constructor_declaration")
+    });
     (!has_explicit_initializer).then(|| {
         tree!((constructor_declaration
             modifier: (modifier "generated")
@@ -174,6 +159,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // but a single wrapped `variableDecl` can translate to *several*
         // declarations (`let x = 1, y = 2`), so the wrapped node is captured with
         // `_*` and the result annotated `stmt*` to splice all of them.
+        rule!(
+            (codeBlockItem item: (ifConfigDecl) @@item)
+            =>
+            stmt* {
+                ctx.conditional_compilation_as_expr = true;
+                ctx.translate(item)?
+            }
+        ),
         rule!((codeBlockItem item: _* @item) => stmt* { item }),
         // ---- Literals ----
         // swift-syntax does not distinguish the lexical integer/string forms
@@ -897,18 +890,21 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (parameter pattern: (identifier #{name}))
         ),
-        // ---- Conditioal compilation blocks ----
+        // ---- Conditional compilation blocks ----
         // Conditional compilation blocks (`#if … #elseif … #else … #endif`) are
         // represented with a `ifConfigDecl` node for the entire block and an
-        // `ifConfigClause` for each branch. We translate them into nested
-        // `if_expr` nodes.
+        // `ifConfigClause` for each branch.
 
-        // When a conditional compilation block contains a switch case it
-        // appears within a `switch` -- we do not support this yet.
+        // When a conditional compilation block is not in a context where it
+        // should be translated into an if expression we simply extract the
+        // first branch (for now).
         rule!(
-            (ifConfigDecl clauses: (ifConfigClause elements: (switchCase)))
+            (ifConfigDecl
+                clauses: (ifConfigClause elements: _* @items)
+                clauses: _* @@rest)
+            where !ctx.conditional_compilation_as_expr
             =>
-            (unsupported_node)
+            _* { items }
         ),
         // A conditional compilation block is translated into `if_expr` nodes
         // with branches occurring nested within the else branch.
@@ -916,6 +912,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (ifConfigDecl clauses: _* @@clauses) @@declaration
             =>
             expr {
+                // Revert `conditional_compilation_as_expr` before processing
+                // clauses. Note that if a clause contains a nested conditional
+                // compilation block, then that block will be wrapped in another
+                // `codeBlockItem` which will flip this back to `true`.
+                ctx.conditional_compilation_as_expr = false;
                 ctx.conditional_compilation_tail = None;
                 for clause in clauses.into_iter().rev() {
                     ctx.conditional_compilation_tail = ctx.translate(clause)?.into_iter().next();

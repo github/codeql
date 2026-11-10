@@ -26,7 +26,6 @@ implicitReceiverParameter
 | constructors.swift:54:9:56:9 | self | constructors.swift:54:9:56:9 | AccessorDeclaration |
 | constructors.swift:57:9:59:9 | self | constructors.swift:57:9:59:9 | AccessorDeclaration |
 | constructors.swift:67:9:67:25 | self | constructors.swift:67:9:67:25 | ConditionalConstructor.init |
-| constructors.swift:69:9:69:28 | self | constructors.swift:69:9:69:28 | ConditionalConstructor.init |
 | constructors.swift:74:1:74:0 | self | constructors.swift:74:1:74:0 | ConditionalFields.init |
 | constructors.swift:85:1:85:0 | self | constructors.swift:85:1:85:0 | UnequalConditionalFields.init |
 | constructors.swift:96:1:96:0 | self | constructors.swift:96:1:96:0 | NestedConditionalFields.init |

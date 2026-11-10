@@ -4,26 +4,18 @@ module;
 private import unified
 private import AstPlugin
 
-private Stmt assumeThenCompilationBranches(Stmt stmt) {
-  // For now we simply assume that the `then` branch is always taken for
-  // conditional compilation blocks. This means that a parameter index results
-  // in a unique parameter type.
-  if stmt.(IfExpr).isConditionalCompilation()
-  then result = assumeThenCompilationBranches(stmt.(IfExpr).getThen().(Block).getAStmt())
-  else result = stmt
-}
-
 /**
  * Holds if a constructor declaration `cd` of a struct has a parameter for the
- * field `decl` with name `name` and default value `hasDefault`.
+ * field `decl` at member index `i`, with name `name`. `hasDefault` indicates
+ * whether the parameter has a default value.
  */
 private predicate structHasParameterForField(
-  ConstructorDeclaration cd, VariableDeclaration decl, string name, boolean hasDefault
+  ConstructorDeclaration cd, VariableDeclaration decl, int i, string name, boolean hasDefault
 ) {
   exists(ClassLikeDeclaration struct |
     struct.hasModifier("struct") and
-    cd = struct.getAMemberIncludingConditionalCompilation() and
-    decl = assumeThenCompilationBranches(struct.getAMember()) and
+    cd = struct.getAMember() and
+    decl = struct.getMember(i) and
     not decl.hasModifier("static") and
     name = decl.getPattern().(Identifier).getValue()
   |
@@ -70,25 +62,15 @@ private class AstPluginSwift extends AstPlugin {
   override predicate defaultConstructorParameter(
     ConstructorDeclaration cd, int i, string name, boolean hasDefault
   ) {
-    name =
-      rank[i](VariableDeclaration decl, string s |
-        structHasParameterForField(cd, decl, s, _)
-      |
-        // Due to conditional compilation blocks, we cannot simply order
-        // parameters by their parent index. Instead we order by their location.
-        s
-        order by
-          decl.getLocation().getStartLine(), decl.getLocation().getStartColumn(),
-          decl.getParentIndex()
-      ) and
-    structHasParameterForField(cd, _, name, hasDefault)
+    name = rank[i](int j, string s | structHasParameterForField(cd, _, j, s, _) | s order by j) and
+    structHasParameterForField(cd, _, _, name, hasDefault)
   }
 
   bindingset[cd]
   override predicate defaultConstructorParameterType(ConstructorDeclaration cd, int i, AstNode type) {
     exists(VariableDeclaration decl, string name |
       this.defaultConstructorParameter(cd, i, name, _) and
-      structHasParameterForField(cd, decl, name, _) and
+      structHasParameterForField(cd, decl, _, name, _) and
       type = decl.getType()
     )
   }

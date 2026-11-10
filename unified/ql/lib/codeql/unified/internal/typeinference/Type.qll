@@ -17,12 +17,12 @@ private import codeql.unified.internal.StaticNameBinding
 private predicate associatedTypeParameter(
   ClassLikeDeclaration c, AssociatedTypeDeclaration a, boolean inherited
 ) {
-  a = c.getAMemberIncludingConditionalCompilation() and
+  a = c.getAMember() and
   inherited = false
   or
   exists(string name |
     associatedTypeParameterInherited(c, a, _, _, name) and
-    not c.getAMemberIncludingConditionalCompilation().(TypeAliasDeclaration).getName() = name and
+    not c.getAMember().(TypeAliasDeclaration).getName() = name and
     inherited = true
   )
 }

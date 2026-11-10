@@ -186,7 +186,7 @@ module Unified {
   }
 
   /** A class representing `associated_type_declaration` nodes. */
-  class AssociatedTypeDeclaration extends @unified_associated_type_declaration, F::Member, F::Stmt {
+  class AssociatedTypeDeclaration extends @unified_associated_type_declaration, F::Member {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AssociatedTypeDeclaration" }
 
@@ -848,7 +848,7 @@ module Unified {
   }
 
   /** A class representing `if_expr` nodes. */
-  class IfExpr extends @unified_if_expr, F::Expr, F::Member {
+  class IfExpr extends @unified_if_expr, F::Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "IfExpr" }
 
@@ -922,9 +922,7 @@ module Unified {
   }
 
   /** A class representing `initializer_declaration` nodes. */
-  class InitializerDeclaration extends @unified_initializer_declaration, F::Callable, F::Member,
-    F::Stmt
-  {
+  class InitializerDeclaration extends @unified_initializer_declaration, F::Callable, F::Member {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InitializerDeclaration" }
 

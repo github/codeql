@@ -668,7 +668,7 @@ unified_map_literal_def(
   unique int id: @unified_map_literal
 );
 
-@unified_member = @unified_accessor_declaration | @unified_associated_type_declaration | @unified_class_like_declaration | @unified_constructor_declaration | @unified_destructor_declaration | @unified_function_declaration | @unified_if_expr | @unified_initializer_declaration | @unified_token_unhandled_node | @unified_token_unsupported_node | @unified_type_alias_declaration | @unified_variable_declaration
+@unified_member = @unified_accessor_declaration | @unified_associated_type_declaration | @unified_class_like_declaration | @unified_constructor_declaration | @unified_destructor_declaration | @unified_function_declaration | @unified_initializer_declaration | @unified_token_unhandled_node | @unified_token_unsupported_node | @unified_type_alias_declaration | @unified_variable_declaration
 
 unified_member_access_expr_def(
   unique int id: @unified_member_access_expr,
@@ -789,7 +789,7 @@ unified_return_expr_def(
   unique int id: @unified_return_expr
 );
 
-@unified_stmt = @unified_accessor_declaration | @unified_associated_type_declaration | @unified_class_like_declaration | @unified_constructor_declaration | @unified_defer_stmt | @unified_destructor_declaration | @unified_do_while_stmt | @unified_expr | @unified_for_each_stmt | @unified_function_declaration | @unified_guard_if_stmt | @unified_import_declaration | @unified_initializer_declaration | @unified_labeled_stmt | @unified_operator_syntax_declaration | @unified_type_alias_declaration | @unified_variable_declaration | @unified_while_stmt
+@unified_stmt = @unified_accessor_declaration | @unified_class_like_declaration | @unified_constructor_declaration | @unified_defer_stmt | @unified_destructor_declaration | @unified_do_while_stmt | @unified_expr | @unified_for_each_stmt | @unified_function_declaration | @unified_guard_if_stmt | @unified_import_declaration | @unified_labeled_stmt | @unified_operator_syntax_declaration | @unified_type_alias_declaration | @unified_variable_declaration | @unified_while_stmt
 
 #keyset[unified_string_interpolation_expr, index]
 unified_string_interpolation_expr_element(

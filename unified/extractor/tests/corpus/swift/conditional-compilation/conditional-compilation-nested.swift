@@ -16,13 +16,14 @@ protocol P {
     #endif
 }
 
-func use() {
+func nested_in_statement_context() {
     #if DEBUG
-        let value = 1
+        #if EXTRA
+            let value = 0
+        #else
+            let value = 1
+        #endif
     #else
         let value = 2
     #endif
-    if true {
-        let nested = 3
-    }
 }

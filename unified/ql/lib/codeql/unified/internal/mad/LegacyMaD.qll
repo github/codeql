@@ -118,7 +118,7 @@ private predicate callableSelector(
   name = callable.getName() and
   argLabels = getArgLabelsFromCallable(callable) and
   exists(ClassLikeDeclaration cls |
-    callable = cls.getAMemberIncludingExtensionsAndConditionalCompilation() and
+    callable = cls.getAMemberIncludingExtensions() and
     isSubclassOfType(cls, type)
   )
 }

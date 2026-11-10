@@ -68,8 +68,6 @@ supertypes:
     - do_while_stmt
     - defer_stmt
     - labeled_stmt
-    - associated_type_declaration
-    - initializer_declaration
   callable:
     subtypes:
       - top_level
@@ -95,7 +93,6 @@ supertypes:
       - class_like_declaration
       - type_alias_declaration
       - associated_type_declaration
-      - if_expr # For conditional compilation
       - unsupported_node
       - unhandled_node
     fields:

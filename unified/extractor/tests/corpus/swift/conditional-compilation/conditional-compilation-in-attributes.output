@@ -98,19 +98,14 @@ sourceFile
 
 top_level source="⟨body⟩"
   body:
-    block source="⟨stmt⟩\n\n⟨stmt⟩"
+    block source="⟨stmt⟩\n\n#if DEBUG\n    ⟨stmt⟩"
       stmt:
         function_declaration source="#if DEBUG\n    @available(*, deprecated)\n#endif\nfunc ⟨name_node⟩() ⟨body⟩"
           name_node: identifier "f" source="f"
           body: block "{}" source="{}"
-        variable_declaration source="⟨modifier⟩\n⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+        variable_declaration source="⟨modifier⟩\n#endif\n⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier:
             modifier "let" source="let"
-            if_expr source="#if ⟨condition⟩\n    ⟨then⟩\n#endif" <-- ERROR: The field variable_declaration.modifier should contain modifier, but got if_expr
-              modifier: modifier "conditional_compilation" source=""
-              condition: identifier "DEBUG" source="DEBUG"
-              then:
-                block source="⟨stmt⟩"
-                  stmt: modifier "@available(*, deprecated)" source="@available(*, deprecated)" <-- ERROR: The field block.stmt should contain stmt, but got modifier
+            modifier "@available(*, deprecated)" source="@available(*, deprecated)"
           pattern: identifier "x" source="x"
           value: int_literal "1" source="1"

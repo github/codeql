@@ -99,11 +99,6 @@ module Unified {
 
   /** A block statement. */
   class Block extends G::Block {
-    /** Gets a statement, looking through conditional-compilation branches. */
-    Stmt getAStmtIncludingConditionalCompilation() {
-      result = compilationExpandedStmt(this.getAStmt())
-    }
-
     /** Gets the last statement in this block. */
     Stmt getLastStmt() {
       exists(int i | result = this.getStmt(i) and not exists(this.getStmt(i + 1)))
@@ -228,12 +223,10 @@ module Unified {
   }
 
   private ClassLikeDeclaration getParentClass(Member m) {
-    result.getAMemberIncludingExtensionsAndConditionalCompilation() = m
+    result.getAMemberIncludingExtensions() = m
   }
 
-  private ClassLikeDeclaration getEnclosingClass(Member m) {
-    result.getAMemberIncludingConditionalCompilation() = m
-  }
+  private ClassLikeDeclaration getEnclosingClass(Member m) { result.getAMember() = m }
 
   /**
    * Similar to `Member.getQualifiedName`, but avoids a dependency on name binding, making
@@ -243,11 +236,6 @@ module Unified {
     QualifiedName<getEnclosingClass/1>::getQualifiedName/1;
 
   class ClassLikeDeclaration extends G::ClassLikeDeclaration {
-    /** Gets a member, looking through conditional-compilation branches but not extensions. */
-    Member getAMemberIncludingConditionalCompilation() {
-      result = compilationExpandedStmt(this.getAMember())
-    }
-
     /** Gets the name of this declaration. */
     string getName() { result = this.getNameNode().getValue() }
 
@@ -271,12 +259,12 @@ module Unified {
     }
 
     /**
-     * Gets a member of this class or its extensions, looking through conditional-compilation branches.
+     * Gets a member of this class, including members from extensions.
      */
-    Member getAMemberIncludingExtensionsAndConditionalCompilation() {
+    Member getAMemberIncludingExtensions() {
       exists(ClassLikeDeclaration cls |
         this = cls.resolve() and
-        result = cls.getAMemberIncludingConditionalCompilation()
+        result = cls.getAMember()
       )
     }
 
@@ -487,19 +475,5 @@ module Unified {
 
     /** Gets then `then` or `else` branch. */
     Expr getABranch() { result = [this.getThen(), this.getElse()] }
-  }
-
-  private Stmt compilationExpandedStmt(Stmt stmt) {
-    not stmt.(IfExpr).isConditionalCompilation() and
-    result = stmt
-    or
-    stmt =
-      any(IfExpr conditional |
-        conditional.isConditionalCompilation() and
-        result =
-          compilationExpandedStmt([
-              conditional.getABranch().(Block).getAStmt(), conditional.getABranch().(IfExpr)
-            ])
-      )
   }
 }
