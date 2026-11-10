@@ -17,8 +17,7 @@ struct CorpusCase {
 
 fn update_mode_enabled() -> bool {
     std::env::var("UNIFIED_UPDATE_CORPUS")
-        .map(|v| matches!(v.to_ascii_lowercase().as_str(), "1" | "true" | "yes" | "on"))
-        .unwrap_or(false)
+        .is_ok_and(|v| matches!(v.to_ascii_lowercase().as_str(), "1" | "true" | "yes" | "on"))
 }
 
 /// Parse a corpus `.output` file. The file holds a single test case made of

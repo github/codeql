@@ -258,8 +258,7 @@ fn main() -> anyhow::Result<()> {
     let (flame_layer, _flush_guard) = if let Some(path) = &config.logging_flamegraph {
         tracing_flame::FlameLayer::with_file(path)
             .ok()
-            .map(|(a, b)| (Some(a), Some(b)))
-            .unwrap_or((None, None))
+            .map_or((None, None), |(a, b)| (Some(a), Some(b)))
     } else {
         (None, None)
     };

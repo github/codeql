@@ -135,17 +135,17 @@ pub fn default_subscriber_with_level(
         .with_filter(
             tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(
                 |_| -> tracing_subscriber::EnvFilter {
-                    let verbosity = verbosity
-                        .as_ref()
-                        .map(|v| match v.to_lowercase().as_str() {
-                            "off" | "errors" => "error",
-                            "warnings" => "warn",
-                            "info" | "progress" => "info",
-                            "debug" | "progress+" => "debug",
-                            "trace" | "progress++" | "progress+++" => "trace",
-                            _ => "warn",
-                        })
-                        .unwrap_or_else(|| "warn");
+                    let verbosity =
+                        verbosity
+                            .as_ref()
+                            .map_or("warn", |v| match v.to_lowercase().as_str() {
+                                "off" | "errors" => "error",
+                                "warnings" => "warn",
+                                "info" | "progress" => "info",
+                                "debug" | "progress+" => "debug",
+                                "trace" | "progress++" | "progress+++" => "trace",
+                                _ => "warn",
+                            });
                     tracing_subscriber::EnvFilter::new(format!(
                         "{language}_extractor={verbosity},codeql_extractor={verbosity}"
                     ))

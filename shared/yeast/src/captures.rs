@@ -92,7 +92,7 @@ impl Captures {
                 .ok_or_else(|| format!("No variable named {fst}"))?
                 .len();
             // TODO: better error on missing capture
-            if id_iter.any(|id| self.captures.get(id).map(Vec::len).unwrap_or(0) != repeats) {
+            if id_iter.any(|id| self.captures.get(id).map_or(0, Vec::len) != repeats) {
                 return Err("Repeated captures must have the same number of matches".to_string());
             }
             Ok((0..repeats).map(move |iter| {

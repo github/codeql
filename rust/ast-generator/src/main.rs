@@ -229,10 +229,10 @@ struct Schema {
 }
 
 fn get_bases(name: &str, super_types: &BTreeMap<String, BTreeSet<String>>) -> Vec<String> {
-    super_types
-        .get(name)
-        .map(|tys| tys.iter().map(|t| class_name(t)).collect())
-        .unwrap_or_else(|| vec!["AstNode".to_string()])
+    super_types.get(name).map_or_else(
+        || vec!["AstNode".to_string()],
+        |tys| tys.iter().map(|t| class_name(t)).collect(),
+    )
 }
 
 fn enum_src_to_schema_class(

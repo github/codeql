@@ -1090,10 +1090,7 @@ impl<Id: TreeId> Node<Id> {
     /// Read the child ids stored under a given field, or an empty slice if
     /// no such field is present on this node.
     pub fn field_children(&self, field_id: FieldId) -> &[Id] {
-        self.fields
-            .get(&field_id)
-            .map(|v| v.as_slice())
-            .unwrap_or(&[])
+        self.fields.get(&field_id).map_or(&[][..], Vec::as_slice)
     }
 }
 
@@ -1344,7 +1341,7 @@ fn apply_rules_inner<C: Clone>(
         ));
     }
 
-    let node_kind = ast.get_node(id).map(|n| n.kind_name()).unwrap_or("");
+    let node_kind = ast.get_node(id).map_or("", |n| n.kind_name());
 
     for rule in index.rules_for_kind(node_kind) {
         let Some(captures) = rule.match_query(ast, id) else {
