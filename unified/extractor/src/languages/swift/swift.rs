@@ -396,7 +396,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                             value: {val})
                     ));
                 }
-                for acc in accessors.into_iter() {
+                for acc in accessors {
                     ctx.is_chained = !result.is_empty();
                     result.extend(ctx.translate(acc));
                 }
