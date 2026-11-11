@@ -575,7 +575,7 @@ impl<Id: TreeId> std::fmt::Debug for Ast<Id> {
         f.debug_struct("Ast")
             .field("root", &self.root)
             .field("nodes", &self.nodes.len())
-            .finish()
+            .finish_non_exhaustive()
     }
 }
 
