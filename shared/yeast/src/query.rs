@@ -16,6 +16,9 @@ pub enum QueryNode {
     UnnamedNode {
         kind: &'static str,
     },
+    Choice {
+        alternatives: Vec<QueryNode>,
+    },
     Capture {
         capture: &'static str,
         node: Box<QueryNode>,
@@ -23,13 +26,32 @@ pub enum QueryNode {
 }
 
 impl QueryNode {
-    /// Returns the root node kind this query matches, if it's specific.
-    /// Returns None for wildcards (Any) and captures wrapping wildcards.
+    /// Returns the root node kind this query matches when it has exactly one.
+    /// Choices whose alternatives share a root kind return that kind; wildcards
+    /// and choices spanning multiple root kinds return `None`.
     pub fn root_kind(&self) -> Option<&'static str> {
+        let kinds = self.root_kinds()?;
+        (kinds.len() == 1).then_some(kinds[0])
+    }
+
+    /// Returns all root node kinds this query can match when they are known.
+    /// Returns `None` for wildcards and choices containing a wildcard.
+    pub(crate) fn root_kinds(&self) -> Option<Vec<&'static str>> {
         match self {
-            QueryNode::Node { kind, .. } => Some(kind),
-            QueryNode::UnnamedNode { kind } => Some(kind),
-            QueryNode::Capture { node, .. } => node.root_kind(),
+            QueryNode::Node { kind, .. } => Some(vec![kind]),
+            QueryNode::UnnamedNode { kind } => Some(vec![kind]),
+            QueryNode::Choice { alternatives } => {
+                let mut kinds = Vec::new();
+                for alternative in alternatives {
+                    for kind in alternative.root_kinds()? {
+                        if !kinds.contains(&kind) {
+                            kinds.push(kind);
+                        }
+                    }
+                }
+                Some(kinds)
+            }
+            QueryNode::Capture { node, .. } => node.root_kinds(),
             QueryNode::Any { .. } => None,
         }
     }
@@ -40,6 +62,9 @@ pub enum QueryListElem {
     Repeated {
         children: Vec<QueryListElem>,
         rep: Rep,
+    },
+    Choice {
+        alternatives: Vec<Vec<QueryListElem>>,
     },
     SingleNode(QueryNode),
 }
@@ -60,6 +85,9 @@ impl QueryNode {
             QueryNode::Any { match_unnamed } => !match_unnamed,
             QueryNode::Node { .. } => true,
             QueryNode::UnnamedNode { .. } => false,
+            QueryNode::Choice { alternatives } => {
+                alternatives.iter().all(QueryNode::matches_named_only)
+            }
             QueryNode::Capture { node, .. } => node.matches_named_only(),
         }
     }
@@ -102,6 +130,14 @@ impl QueryNode {
                 });
                 node.kind == target_kind
             }
+            QueryNode::Choice { alternatives } => {
+                if let Some(captures) = match_choice(alternatives, ast, node)? {
+                    matches.merge(&captures);
+                    Ok(true)
+                } else {
+                    Ok(false)
+                }
+            }
             QueryNode::Capture {
                 capture,
                 node: sub_query,
@@ -114,6 +150,20 @@ impl QueryNode {
             }
         }
     }
+}
+
+fn match_choice(
+    alternatives: &[QueryNode],
+    ast: &Ast,
+    node: Id,
+) -> Result<Option<Captures>, String> {
+    for alternative in alternatives {
+        let mut captures = Captures::new();
+        if alternative.do_match(ast, node, &mut captures)? {
+            return Ok(Some(captures));
+        }
+    }
+    Ok(None)
 }
 
 fn match_children<'a>(
@@ -163,6 +213,24 @@ impl QueryListElem {
                     }
                 }
                 *rep != Rep::OneOrMore || iters > 0
+            }
+            QueryListElem::Choice { alternatives } => {
+                let start = remaining_children.clone();
+                for alternative in alternatives {
+                    let mut candidate_children = start.clone();
+                    let mut candidate_captures = Captures::new();
+                    if match_children(
+                        alternative.iter(),
+                        ast,
+                        &mut candidate_children,
+                        &mut candidate_captures,
+                    )? {
+                        *remaining_children = candidate_children;
+                        matches.merge(&candidate_captures);
+                        return Ok(true);
+                    }
+                }
+                Ok(false)
             }
             QueryListElem::SingleNode(sub_query) => {
                 // Forward-scan semantics: advance through the iterator until

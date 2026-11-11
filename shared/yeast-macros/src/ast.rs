@@ -78,6 +78,8 @@ pub(crate) enum Pattern {
         pattern: Box<Pattern>,
         cardinality: Cardinality,
     },
+    /// A choice that tries its alternatives from left to right.
+    Choice { alternatives: Vec<Pattern> },
     /// An ordered sequence of patterns within a field.
     Sequence(Vec<Pattern>),
     /// A repeated or optional pattern.
@@ -92,6 +94,9 @@ impl Pattern {
         match self {
             Pattern::Any { .. } | Pattern::Node { .. } | Pattern::Unnamed(_) => true,
             Pattern::Capture { cardinality, .. } => *cardinality == Cardinality::SINGLE,
+            Pattern::Choice { alternatives } => {
+                alternatives.iter().all(Pattern::matches_single_node)
+            }
             Pattern::Sequence(_) | Pattern::Repeated { .. } => false,
         }
     }

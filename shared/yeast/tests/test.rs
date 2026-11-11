@@ -416,6 +416,96 @@ fn test_query_no_match() {
 }
 
 #[test]
+fn test_query_choice_checks_presence() {
+    for input in ["x = 1", "x = y"] {
+        let ast = parse_input(input);
+        let mut cursor = AstCursor::new(&ast);
+        cursor.goto_first_child();
+        let assignment_id = cursor.node_id();
+
+        let query = yeast::query!(
+            (assignment
+                right: [
+                    (integer)
+                    (identifier)
+                ]
+            )
+        );
+        let mut captures = yeast::captures::Captures::new();
+        assert!(
+            query.do_match(&ast, assignment_id, &mut captures).unwrap(),
+            "query choice should match {input}"
+        );
+    }
+}
+
+#[test]
+fn test_repeated_query_choice_accumulates_present_captures() {
+    let ast = parse_input("[x, 1, y]");
+
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child();
+    let array_id = cursor.node_id();
+
+    let query = yeast::query!(
+        (array
+            [
+                (identifier) @names
+                (integer)
+            ]*
+        )
+    );
+    let mut captures = yeast::captures::Captures::new();
+    assert!(query.do_match(&ast, array_id, &mut captures).unwrap());
+    assert_eq!(captures.get_all("names").len(), 2);
+}
+
+#[test]
+fn test_query_choice_accepts_quantified_alternative() {
+    let ast = parse_input("[x, y]");
+
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child();
+    let array_id = cursor.node_id();
+
+    let query = yeast::query!(
+        (array
+            [
+                (identifier)+ @names
+                (integer)
+            ]
+        )
+    );
+    let mut captures = yeast::captures::Captures::new();
+    assert!(query.do_match(&ast, array_id, &mut captures).unwrap());
+    assert_eq!(captures.get_all("names").len(), 2);
+}
+
+#[test]
+fn test_query_sequence_can_start_with_choice() {
+    let ast = parse_input("[x, 1]");
+
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child();
+    let array_id = cursor.node_id();
+
+    let query = yeast::query!(
+        (array
+            (
+                [
+                    (identifier) @value
+                    (integer) @value
+                ]
+                ","
+            )
+        )
+    );
+    let mut captures = yeast::captures::Captures::new();
+    assert!(query.do_match(&ast, array_id, &mut captures).unwrap());
+    assert_eq!(captures.get_all("value").len(), 1);
+}
+
+#[test]
 fn test_query_skips_extras_in_positional_match() {
     // Regression test: positional wildcards `(_)` must not bind to
     // tree-sitter `extras` (e.g. comments) during forward-scan; extras
@@ -1686,6 +1776,137 @@ fn test_raw_capture_marker_explicit_translate() {
               receiver: integer "INT"
     "#,
     );
+}
+
+#[test]
+fn test_query_choice_makes_branch_specific_captures_optional() {
+    fn rules() -> Vec<Rule> {
+        vec![
+            yeast::rule!(
+                (program (_)* @stmts)
+                =>
+                (program stmt: {stmts})
+            ),
+            yeast::rule!(
+                (assignment
+                    left: (_) @left
+                    right: [
+                        (integer) @number
+                        (identifier) @@name
+                    ])
+                =>
+                assignment {
+                    let right = match (number, name) {
+                        (Some(number), None) => number,
+                        (None, Some(name)) => {
+                            let spelling = ctx.source_text(name);
+                            tree!((identifier #{spelling}))
+                        }
+                        _ => return Err("exactly one alternative should match".to_string()),
+                    };
+                    tree!((assignment left: {left} right: {right}))
+                }
+            ),
+            yeast::rule!((identifier) => (identifier "ID")),
+            yeast::rule!((integer) => (integer "INT")),
+        ]
+    }
+
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let phases = vec![Phase::new("translate", rules())];
+    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+
+    for (input, expected_right) in [("x = 1", "integer \"INT\""), ("x = y", "identifier \"y\"")] {
+        let ast = runner.run(input).unwrap();
+        let dump = dump_ast(&ast, ast.get_root(), input);
+        assert!(
+            dump.contains(expected_right),
+            "unexpected dump for {input}: {dump}"
+        );
+    }
+}
+
+#[test]
+fn test_query_choice_keeps_shared_capture_required() {
+    fn rules() -> Vec<Rule> {
+        vec![
+            yeast::rule!(
+                (program (_)* @stmts)
+                =>
+                (program stmt: {stmts})
+            ),
+            yeast::rule!(
+                (assignment
+                    left: (_) @left
+                    right: [
+                        (integer) @value
+                        (identifier) @value
+                    ])
+                =>
+                assignment {
+                        let value: yeast::OutputId = value;
+                    tree!((assignment left: {left} right: {value}))
+                }
+            ),
+            yeast::rule!((identifier) => (identifier "ID")),
+            yeast::rule!((integer) => (integer "INT")),
+        ]
+    }
+
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let phases = vec![Phase::new("translate", rules())];
+    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+
+    for input in ["x = 1", "x = y"] {
+        runner.run(input).unwrap();
+    }
+}
+
+#[test]
+fn test_query_choice_promotes_mixed_multiplicity_to_repeated() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let rules: Vec<Rule> = vec![
+        yeast::rule!(
+            (program (_)* @stmts)
+            =>
+            (program stmt: {stmts})
+        ),
+        yeast::rule!(
+            (assignment
+                left: [
+                    (identifier) @values
+                    (left_assignment_list (identifier)* @values)
+                ]
+                right: (_) @right)
+            =>
+            assignment {
+                let values: Vec<yeast::OutputId> = values;
+                tree!((assignment
+                    left: (left_assignment_list item: {values})
+                    right: {right}))
+            }
+        ),
+        yeast::rule!((identifier) => (identifier "ID")),
+        yeast::rule!((integer) => (integer "INT")),
+    ];
+    let phases = vec![Phase::new("translate", rules)];
+    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+
+    for (input, expected_count) in [("x = 1", 1), ("x, y = 1", 2)] {
+        let ast = runner.run(input).unwrap();
+        let dump = dump_ast(&ast, ast.get_root(), input);
+        assert_eq!(
+            dump.matches("identifier \"ID\"").count(),
+            expected_count,
+            "unexpected dump for {input}: {dump}"
+        );
+    }
 }
 
 // ---- Cursor tests ----

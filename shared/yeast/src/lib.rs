@@ -1298,8 +1298,12 @@ impl<'a, C> RuleIndex<'a, C> {
         let mut by_kind: BTreeMap<&'static str, Vec<&'a Rule<C>>> = BTreeMap::new();
         let mut wildcard = Vec::new();
         for rule in rules {
-            match rule.query.root_kind() {
-                Some(kind) => by_kind.entry(kind).or_default().push(rule),
+            match rule.query.root_kinds() {
+                Some(kinds) => {
+                    for kind in kinds {
+                        by_kind.entry(kind).or_default().push(rule);
+                    }
+                }
                 None => wildcard.push(rule),
             }
         }
