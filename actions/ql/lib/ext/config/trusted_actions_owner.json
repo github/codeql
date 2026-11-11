@@ -1,0 +1,15 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/actions-all",
+        "extensible": "trustedActionsOwnerDataModel"
+      },
+      "data": [
+        ["actions"],
+        ["github"],
+        ["advanced-security"]
+      ]
+    }
+  ]
+}

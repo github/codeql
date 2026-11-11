@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/actions-all
-      extensible: actionsSinkModel
-    data:
-     - ["immich-app/immich/.github/workflows/build-mobile.yml", "*", "input.ref", "code-injection", "generated"]
