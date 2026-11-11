@@ -38,7 +38,7 @@ class SsaUseNode extends DataFlow::Node, TSsaUseNode {
   override Location getLocation() { result = expr.getLocation() }
 }
 
-/** One incoming edge of an SSA phi, represented as a node so guards can block it. */
+/** An incoming edge of an SSA phi, represented as a node so guards can block it. */
 class SsaPhiInputNode extends DataFlow::Node, TSsaPhiInputNode {
   private SsaPhiNode phi;
   private BasicBlock predecessor;

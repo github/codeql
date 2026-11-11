@@ -404,9 +404,9 @@ module MakeStateBarrierGuard<
       nd = DataFlow::valueNode(use)
     )
     or
-    exists(BarrierGuard guard, DataFlowPrivate::SsaPhiInputNode input |
+    exists(DataFlowPrivate::SsaPhiInputNode input |
       nd = input and
-      barrierGuardBlocksPhiInput(guard, input.getPhi(), input.getInputBlock(), state)
+      barrierGuardBlocksPhiInput(_, input.getPhi(), input.getInputBlock(), state)
     )
     or
     ssa2BlocksNode(nd, state)
