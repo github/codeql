@@ -9,17 +9,12 @@ private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 private import codeql.rust.security.Barriers as Barriers
-private import codeql.rust.elements.internal.ElementImpl::Impl as ElementImpl
 
 /**
  * Provides default sources, sinks and barriers for detecting log injection
  * vulnerabilities, as well as extension points for adding your own.
  */
 module LogInjection {
-  private predicate macroExpansionParent(AstNode child, MacroCall parent) {
-    parent = ElementImpl::MacroExpansion::getImmediatelyEnclosingMacroInvocation(child)
-  }
-
   /**
    * A data flow source for log injection vulnerabilities.
    */
@@ -62,7 +57,7 @@ module LogInjection {
         m.getLocation().getFile() = c.getASourceFile().getFile() and
         // `this` is within the expansion of a call to `tracing::valueset_all`
         valueSet.getMacroCall().resolveMacro() = m and
-        macroExpansionParent+(this.asExpr(), valueSet.getMacroCall()) and
+        this.asExpr().getParentNode+() = valueSet.getMacroCall() and
         // limit the consumer to relevant calls
         (
           not exists(consumer.getResolvedTarget()) and
