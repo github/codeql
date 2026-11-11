@@ -97,8 +97,12 @@ impl Ord for DependencySource<'_> {
     fn cmp(&self, other: &Self) -> Ordering {
         // Compare by cfg options first, then by manifest parent directory
         // (arbitrary but deterministic).
-        cmp_option_by(&self.cfg_options, &other.cfg_options, compare_cfg_options)
-            .then_with(|| manifest_parent(self.manifest).cmp(manifest_parent(other.manifest)))
+        cmp_option_by(
+            self.cfg_options.as_ref(),
+            other.cfg_options.as_ref(),
+            compare_cfg_options,
+        )
+        .then_with(|| manifest_parent(self.manifest).cmp(manifest_parent(other.manifest)))
     }
 }
 

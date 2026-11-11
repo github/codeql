@@ -70,7 +70,7 @@ pub struct Field {
     pub storage: Storage,
 }
 
-fn name_for_field_or_child(name: &Option<String>) -> String {
+fn name_for_field_or_child(name: Option<&String>) -> String {
     match name {
         Some(name) => name.clone(),
         None => "child".to_owned(),
@@ -259,7 +259,7 @@ fn add_field(
     token_kinds: &Set<TypeName>,
 ) {
     let parent_flattened_name = node_type_name(&parent_type_name.kind, parent_type_name.named);
-    let column_name = escape_name(&name_for_field_or_child(&field_name));
+    let column_name = escape_name(&name_for_field_or_child(field_name.as_ref()));
     let storage = if !field_info.multiple && field_info.required {
         // This field must appear exactly once, so we add it as
         // a column to the main table for the node type.
@@ -271,7 +271,7 @@ fn add_field(
             "{}_{}_{}",
             prefix,
             parent_flattened_name,
-            name_for_field_or_child(&field_name)
+            name_for_field_or_child(field_name.as_ref())
         ));
         Storage::Table {
             has_index,
@@ -306,14 +306,14 @@ fn add_field(
                 "{}_{}_{}_type",
                 prefix,
                 parent_flattened_name,
-                name_for_field_or_child(&field_name)
+                name_for_field_or_child(field_name.as_ref())
             ),
             ql_class: "AstNode".to_owned(),
         }
     };
     let getter_name = format!(
         "get{}",
-        dbscheme_name_to_class_name(&escape_name(&name_for_field_or_child(&field_name)))
+        dbscheme_name_to_class_name(&escape_name(&name_for_field_or_child(field_name.as_ref())))
     );
     let getter_suffix = getter_name.strip_prefix("get").unwrap_or(&getter_name);
     let article = match getter_suffix.chars().next().map(|c| c.to_ascii_lowercase()) {
