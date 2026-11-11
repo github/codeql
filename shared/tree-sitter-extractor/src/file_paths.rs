@@ -114,7 +114,7 @@ fn normalize_path(path: &Path) -> String {
                     if path_components.peek().is_none() {
                         // The path points at a root directory, so we need to add a
                         // trailing slash, e.g. `C:/` instead of `C:`.
-                        components.push("".to_string());
+                        components.push(String::new());
                     }
                 }
                 std::path::Component::CurDir => {}

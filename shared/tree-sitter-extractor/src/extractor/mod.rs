@@ -184,7 +184,7 @@ fn populate_empty_file(writer: &mut trap::Writer) -> trap::Label {
             "files",
             vec![
                 trap::Arg::Label(file_label),
-                trap::Arg::String("".to_string()),
+                trap::Arg::String(String::new()),
             ],
         );
     }
