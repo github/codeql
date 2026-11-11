@@ -86,6 +86,39 @@ public class Test {
         });
     }
 
+    void testFlatMapResult() {
+        Mono.just("safe").flatMap(value -> Mono.just(taint())).map(value -> {
+            sink(value); // $ hasValueFlow
+            return value;
+        });
+        Mono.just(taint()).flatMap(value -> Mono.just("safe")).map(value -> {
+            sink(value); // no taint flow
+            return value;
+        });
+    }
+
+    void testMapResult() {
+        Mono.just("safe").map(value -> taint()).map(value -> {
+            sink(value); // $ hasValueFlow
+            return value;
+        });
+        Mono.just(taint()).map(value -> "safe").map(value -> {
+            sink(value); // no taint flow
+            return value;
+        });
+    }
+
+    void testMapNotNullResult() {
+        Mono.just("safe").mapNotNull(value -> taint()).map(value -> {
+            sink(value); // $ hasValueFlow
+            return value;
+        });
+        Mono.just(taint()).mapNotNull(value -> "safe").map(value -> {
+            sink(value); // no taint flow
+            return value;
+        });
+    }
+
     void testNestedValues() {
         Mono.just(Optional.of(taint())).flatMap(value -> {
             sink(value.get()); // $ hasValueFlow
