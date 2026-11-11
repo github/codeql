@@ -17,3 +17,7 @@ query predicate nonUniqueCertainType(AstNode n, TypePath path) {
   Consistency::nonUniqueCertainType(n, path) and
   n.fromSource()
 }
+
+query predicate hasAliasType(AstNode n, TypePath path, AliasType alias) {
+  alias = inferType(n, path)
+}
