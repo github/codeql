@@ -39,7 +39,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
             krate
                 .dependencies
                 .iter()
-                .flat_map(|d| crate_id_map.get(&d.crate_id))
+                .filter_map(|d| crate_id_map.get(&d.crate_id))
                 .sorted()
                 .for_each(|x| x.hash(&mut hasher));
             let hash = hasher.finish();
@@ -61,7 +61,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
             let crate_dependencies: Vec<generated::NamedCrate> = krate
                 .dependencies
                 .iter()
-                .flat_map(|x| crate_id_map.get(&x.crate_id).map(|y| (&x.name, y)))
+                .filter_map(|x| crate_id_map.get(&x.crate_id).map(|y| (&x.name, y)))
                 .map(|(name, (module, hash))| generated::NamedCrate {
                     id: trap::TrapId::Star,
                     name: name.to_string(),
