@@ -1046,7 +1046,7 @@ impl<Id: TreeId> Node<Id> {
         self.is_error
     }
 
-    fn fake_point(&self) -> Point {
+    fn fake_point() -> Point {
         Point { row: 0, column: 0 }
     }
 
@@ -1059,12 +1059,12 @@ impl<Id: TreeId> Node<Id> {
 
     pub fn start_position(&self) -> Point {
         self.source_range()
-            .map_or_else(|| self.fake_point(), |range| range.start_point)
+            .map_or_else(Self::fake_point, |range| range.start_point)
     }
 
     pub fn end_position(&self) -> Point {
         self.source_range()
-            .map_or_else(|| self.fake_point(), |range| range.end_point)
+            .map_or_else(Self::fake_point, |range| range.end_point)
     }
 
     pub fn start_byte(&self) -> usize {
