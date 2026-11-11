@@ -81,7 +81,7 @@ impl Writer {
 
     pub fn add_tuple(&mut self, table_name: &str, args: Vec<Arg>) {
         self.trap_output
-            .push(Entry::GenericTuple(table_name.to_owned(), args))
+            .push(Entry::GenericTuple(table_name.to_owned(), args));
     }
 
     pub fn comment(&mut self, text: String) {

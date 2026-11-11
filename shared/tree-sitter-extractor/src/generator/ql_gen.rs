@@ -1094,7 +1094,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     }
                     main_class.predicates.extend(get_preds);
                     if let Some(get_child_expr) = get_child_expr {
-                        get_child_exprs.push(get_child_expr)
+                        get_child_exprs.push(get_child_expr);
                     }
                 }
 

@@ -242,7 +242,7 @@ impl<'db> Translator<'db> {
         {
             let token_range = clipped_range + parent_range2.start() - parent_range.start();
             if let Some((start, end)) = self.location(token_range) {
-                self.trap.emit_location(self.label, label, start, end)
+                self.trap.emit_location(self.label, label, start, end);
             }
         }
     }
@@ -596,14 +596,14 @@ impl<'db> Translator<'db> {
                 .and_then(ast::Type::cast)
                 .and_then(|t| self.emit_type(&t))
             {
-                generated::PathSegment::emit_type_repr(label, t, &mut self.trap.writer)
+                generated::PathSegment::emit_type_repr(label, t, &mut self.trap.writer);
             }
             if let Some(t) = type_refs
                 .next()
                 .and_then(ast::PathType::cast)
                 .and_then(|t| self.emit_path_type(&t))
             {
-                generated::PathSegment::emit_trait_type_repr(label, t, &mut self.trap.writer)
+                generated::PathSegment::emit_trait_type_repr(label, t, &mut self.trap.writer);
             }
             // moreover as we're skipping emission of TypeAnchor, we need to attach its comments to
             // this path segment

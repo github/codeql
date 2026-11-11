@@ -197,7 +197,7 @@ fn to_lower_snake_case(s: &str) -> String {
     let mut prev = false;
     for c in s.chars() {
         if c.is_ascii_uppercase() && prev {
-            buf.push('_')
+            buf.push('_');
         }
         prev = true;
 

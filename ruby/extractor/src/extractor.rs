@@ -383,9 +383,9 @@ fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<'_, str>> {
     {
         index += 2;
         while index < content.len() && content[index] as char != '\n' {
-            index += 1
+            index += 1;
         }
-        index += 1
+        index += 1;
     }
     index = skip_space(content, index);
 
@@ -400,7 +400,7 @@ fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<'_, str>> {
         if content[index] as char == CODING[word_index]
             || content[index] as char == CODING[word_index + 1]
         {
-            word_index += 2
+            word_index += 2;
         } else {
             word_index = 0;
         }

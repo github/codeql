@@ -891,7 +891,7 @@ impl<'a> Visitor<'a> {
                         }
                         let mut args = vec![trap::Arg::Label(parent_id)];
                         if *has_index {
-                            args.push(trap::Arg::Int(index))
+                            args.push(trap::Arg::Int(index));
                         }
                         args.push(child_value.clone());
                         self.trap_writer.add_tuple(table_name, args);

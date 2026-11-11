@@ -63,6 +63,22 @@ index 0aad1e2..68f679f 100644
              }
          })
          .collect::<Vec<_>>();
+@@ -731,6 +741,6 @@ fn to_upper_snake_case(s: &str) -> String {
+     let mut prev = false;
+     for c in s.chars() {
+         if c.is_ascii_uppercase() && prev {
+-            buf.push('_')
++            buf.push('_');
+         }
+         prev = true;
+@@ -745,6 +755,6 @@ fn to_lower_snake_case(s: &str) -> String {
+     let mut prev = false;
+     for c in s.chars() {
+         if c.is_ascii_uppercase() && prev {
+-            buf.push('_')
++            buf.push('_');
+         }
+         prev = true;
 @@ -775,7 +785,7 @@ fn pluralize(s: &str) -> String {
  }
  
@@ -122,6 +138,15 @@ index 0aad1e2..68f679f 100644
 +            res.nodes.push(AstNodeSrc { doc: Vec::new(), name, traits: Vec::new(), fields });
          }
      }
+@@ -979,7 +986,7 @@ fn lower_rule(
+         }
+         Rule::Seq(rules) | Rule::Alt(rules) => {
+             for rule in rules {
+-                lower_rule(acc, grammar, label, rule)
++                lower_rule(acc, grammar, label, rule);
+             }
+         }
+         Rule::Opt(rule) => lower_rule(acc, grammar, label, rule),
 diff --git a/xtask/src/codegen/grammar/ast_src.rs b/xtask/src/codegen/grammar/ast_src.rs
 index 1ae139f..d4d791e 100644
 --- a/xtask/src/codegen/grammar/ast_src.rs

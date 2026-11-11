@@ -134,7 +134,7 @@ impl LogWriter {
                         e
                     );
                     self.path = None;
-                    self.inner = None
+                    self.inner = None;
                 }
                 Ok(file) => self.inner = Some(std::io::BufWriter::new(file)),
             }

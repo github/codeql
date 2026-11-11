@@ -133,7 +133,7 @@ pub fn path_from_string(path: &str) -> PathBuf {
     let mut path = PathBuf::from(path);
     // make path absolute
     if path.is_relative() {
-        path = std::env::current_dir().unwrap().join(path)
+        path = std::env::current_dir().unwrap().join(path);
     };
     let mut components = path.components();
 
@@ -192,7 +192,7 @@ pub fn path_for(
         match component {
             std::path::Component::Prefix(prefix) => match prefix.kind() {
                 std::path::Prefix::Disk(letter) | std::path::Prefix::VerbatimDisk(letter) => {
-                    result.push(format!("{}_", letter as char))
+                    result.push(format!("{}_", letter as char));
                 }
                 std::path::Prefix::Verbatim(x) | std::path::Prefix::DeviceNS(x) => {
                     result.push(x);

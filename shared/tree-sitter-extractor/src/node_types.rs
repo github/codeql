@@ -424,7 +424,7 @@ fn escape_name(name: &str) -> String {
             '@' => result.push_str("at"),
             _ if c.is_uppercase() => {
                 result.push('_');
-                result.push_str(&c.to_lowercase().to_string())
+                result.push_str(&c.to_lowercase().to_string());
             }
             _ => result.push(c),
         }
@@ -446,7 +446,7 @@ pub fn to_snake_case(word: &str) -> String {
     for c in word.chars() {
         if c.is_uppercase() {
             if !prev_upper {
-                result.push('_')
+                result.push('_');
             }
             prev_upper = true;
             result.push(c.to_ascii_lowercase());

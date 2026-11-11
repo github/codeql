@@ -101,7 +101,7 @@ impl<'a> Extractor<'a> {
                 "Failed to write trap file for: {}: {}",
                 file.display(),
                 err.to_string()
-            )
+            );
         });
         self.steps
             .push(ExtractionStep::extract(before_extract, source_kind, file));

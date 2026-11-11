@@ -96,7 +96,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
                     "Failed to write trap file for crate: {}: {}",
                     root_module_file.display(),
                     err.to_string()
-                )
+                );
             });
         }
     }
