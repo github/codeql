@@ -113,127 +113,127 @@ rust_library(
     version = "0.3.13",
     deps = select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios-macabi": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios-sim": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-linux-android": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
             "@vendor_cpp_bmn__windows-sys-0.60.2//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:aarch64-unknown-fuchsia": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:arm-unknown-linux-musleabi": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:armv7-linux-androideabi": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:i686-apple-darwin": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:i686-linux-android": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
             "@vendor_cpp_bmn__windows-sys-0.60.2//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:i686-unknown-freebsd": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:loongarch64-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:mips-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:riscv64gc-unknown-fuchsia": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:sparc64-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:sparc64-unknown-netbsd": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:sparc64-unknown-openbsd": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:wasm32-unknown-emscripten": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:wasm32-wasip1": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(target_os = "wasi")
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(target_os = "wasi")
         ],
         "@rules_rust//rust/platform:wasm32-wasip1-threads": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(target_os = "wasi")
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(target_os = "wasi")
         ],
         "@rules_rust//rust/platform:wasm32-wasip2": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(target_os = "wasi")
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(target_os = "wasi")
         ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-apple-ios": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-apple-ios-macabi": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-linux-android": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
             "@vendor_cpp_bmn__windows-sys-0.60.2//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-unknown-fuchsia": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu": [
-            "@vendor_cpp_bmn__libc-0.2.174//:libc",  # cfg(unix)
+            "@vendor_cpp_bmn__libc-0.2.191//:libc",  # cfg(unix)
         ],
         "//conditions:default": [],
     }),

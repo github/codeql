@@ -123,9 +123,10 @@ module SsaFlow {
   SsaFlow::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(SsaFlow::ExprNode).getExpr() = n.asExpr()
+    result.(SsaFlow::ReadNode).getControlFlowNode() = n.asExpr().getACfgNode()
     or
-    result.(SsaFlow::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
+    result.(SsaFlow::PostUpdateReadNode).getControlFlowNode() =
+      n.(PostUpdateNode).getPreUpdateNode().asExpr().getACfgNode()
   }
 
   predicate localFlowStep(

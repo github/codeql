@@ -31,7 +31,7 @@ bazel_dep(name = "gazelle", version = "0.54.0")
 bazel_dep(name = "rules_dotnet", version = "0.22.2-codeql.1")
 bazel_dep(name = "googletest", version = "1.18.0.bcr.1")
 bazel_dep(name = "rules_rust", version = "0.75.0")
-bazel_dep(name = "rules_swift", version = "4.0.0-rc5-codeql.3")
+bazel_dep(name = "rules_swift", version = "4.2.2-codeql.1")
 bazel_dep(name = "swift-syntax", version = "604.0.0")
 bazel_dep(name = "zstd", version = "1.5.7.bcr.3")
 
@@ -135,13 +135,13 @@ use_repo(
     "vendor_cpp_bmn__os_str_bytes-7.1.1",
     "vendor_cpp_bmn__rayon-1.11.0",
     "vendor_cpp_bmn__regex-1.11.1",
-    "vendor_cpp_bmn__serde-1.0.219",
+    "vendor_cpp_bmn__serde-1.0.229",
     "vendor_cpp_bmn__serde_json-1.0.140",
     "vendor_cpp_bmn__serde_with-1.14.0",
     "vendor_cpp_bmn__tempfile-3.20.0",
     "vendor_cpp_bmn__walkdir-2.5.0",
     "vendor_cpp_bmn__which-8.0.0",
-    "vendor_cpp_bmn__zip-6.0.0",
+    "vendor_cpp_bmn__zip-9.0.5",
 )
 
 # deps for ruby+rust

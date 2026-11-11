@@ -538,7 +538,7 @@ private module Cached {
 
       private Node getABarrierNodeImpl() {
         result =
-          DataFlowIntegrationImpl::BarrierGuardDefWithState<Unit, guardChecksWithWrappers/4>::getABarrierNode(_)
+          DataFlowIntegrationImpl::SsaBarrierGuardWithState<Unit, guardChecksWithWrappers/4>::getABarrierNode(_)
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/0;
@@ -568,7 +568,7 @@ private module Cached {
 
       private Node getABarrierNodeImpl(P param) {
         result =
-          DataFlowIntegrationImpl::BarrierGuardDefWithState<P, guardChecksWithWrappers/4>::getABarrierNode(param)
+          DataFlowIntegrationImpl::SsaBarrierGuardWithState<P, guardChecksWithWrappers/4>::getABarrierNode(param)
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/1;
@@ -635,16 +635,6 @@ private class TrackedSsaDef extends Definition {
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import java as J
-
-  class Expr instanceof J::Expr {
-    string toString() { result = super.toString() }
-
-    Location getLocation() { result = super.getLocation() }
-
-    predicate hasCfgNode(BasicBlock bb, int i) {
-      super.getControlFlowNode() = bb.(J::BasicBlock).getNode(i)
-    }
-  }
 
   predicate ssaDefHasSource(WriteDefinition def) { def instanceof SsaExplicitWrite }
 

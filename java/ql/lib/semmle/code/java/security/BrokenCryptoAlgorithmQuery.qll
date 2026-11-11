@@ -17,7 +17,7 @@ class BrokenAlgoLiteral extends ShortStringLiteral {
   BrokenAlgoLiteral() {
     this.getValue().regexpMatch(getInsecureAlgorithmRegex()) and
     // Exclude RSA/ECB/.* ciphers.
-    not this.getValue().regexpMatch("RSA/ECB.*") and
+    not this.getValue().regexpMatch("(?i)RSA/ECB.*") and
     // Exclude German and French sentences.
     not this.getValue().regexpMatch(".*\\p{IsLowercase} des \\p{IsLetter}.*")
   }

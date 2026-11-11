@@ -1,0 +1,75 @@
+let values: any Collection<Int> = [1, 2]
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    arrayExpr
+                      elements:
+                        arrayElement
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "1"
+                          trailingComma: ,
+                        arrayElement
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "2"
+                      leftSquare: [
+                      rightSquare: ]
+              pattern:
+                identifierPattern
+                  identifier: identifier "values"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    someOrAnyType
+                      constraint:
+                        identifierType
+                          name: identifier "Collection"
+                          genericArgumentClause:
+                            genericArgumentClause
+                              arguments:
+                                genericArgument
+                                  argument:
+                                    identifierType
+                                      name: identifier "Int"
+                              leftAngle: <
+                              rightAngle: >
+                      someOrAnySpecifier: any
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "values" source="values"
+          type:
+            modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+              modifier: modifier "any" source="any"
+              type:
+                generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                  base: identifier "Collection" source="Collection"
+                  type_argument: identifier "Int" source="Int"
+          value:
+            array_literal source="[⟨element⟩, ⟨element⟩]"
+              element:
+                int_literal "1" source="1"
+                int_literal "2" source="2"

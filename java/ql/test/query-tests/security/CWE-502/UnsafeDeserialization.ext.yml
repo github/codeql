@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/java-all
-      extensible: sourceModel
-    data:
-      - ["unsafedeserialization", "A", False, "getTaintedObjectInput", "()", "", "ReturnValue", "remote", "manual"]
-      - ["unsafedeserialization", "A", False, "getTaintedMyObjectInput", "()", "", "ReturnValue", "remote", "manual"]
