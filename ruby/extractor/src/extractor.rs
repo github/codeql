@@ -1,12 +1,12 @@
 use clap::Args;
 use codeql_extractor::file_paths::PathTransformer;
-use lazy_static::lazy_static;
 use rayon::prelude::*;
 use std::borrow::Cow;
 use std::collections::HashSet;
 use std::fs;
 use std::io::BufRead;
 use std::path::{Path, PathBuf};
+use std::sync::LazyLock;
 use tree_sitter::{Language, Parser, Range};
 
 use codeql_extractor::{diagnostics, extractor, file_paths, node_types, trap};
@@ -246,9 +246,8 @@ pub fn run(options: Options) -> std::io::Result<()> {
     res
 }
 
-lazy_static! {
-    static ref CP_NUMBER: regex::Regex = regex::Regex::new("cp([0-9]+)").unwrap();
-}
+static CP_NUMBER: LazyLock<regex::Regex> =
+    LazyLock::new(|| regex::Regex::new("cp([0-9]+)").unwrap());
 
 /// Returns the `encoding::Encoding` corresponding to the given encoding name, if one exists.
 fn encoding_from_name(encoding_name: &str) -> Option<&(dyn encoding::Encoding + Send + Sync)> {
