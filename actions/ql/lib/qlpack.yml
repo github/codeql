@@ -14,3 +14,6 @@ dataExtensions:
   - ext/manual/*.model.yml
   - ext/generated/**/*.model.yml
   - ext/config/*.yml
+  - ext/manual/*.model.json
+  - ext/generated/**/*.model.json
+  - ext/config/*.json
