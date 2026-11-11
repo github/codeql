@@ -356,7 +356,6 @@ _NORMAL_DEPENDENCIES = {
     "ql/buramu": {
         _COMMON_CONDITION: {
             "chrono": Label("@vendor_rs//chrono-0.4.45"),
-            "lazy_static": Label("@vendor_rs//lazy_static-1.5.1"),
             "rayon": Label("@vendor_rs//rayon-1.12.0"),
             "regex": Label("@vendor_rs//regex-1.13.1"),
         },
@@ -384,7 +383,6 @@ _NORMAL_DEPENDENCIES = {
         _COMMON_CONDITION: {
             "clap": Label("@vendor_rs//clap-4.6.7"),
             "encoding": Label("@vendor_rs//encoding-0.2.33"),
-            "lazy_static": Label("@vendor_rs//lazy_static-1.5.1"),
             "rayon": Label("@vendor_rs//rayon-1.12.0"),
             "regex": Label("@vendor_rs//regex-1.13.1"),
             "serde_json": Label("@vendor_rs//serde_json-1.0.154"),
@@ -461,7 +459,6 @@ _NORMAL_DEPENDENCIES = {
             "encoding": Label("@vendor_rs//encoding-0.2.33"),
             "flate2": Label("@vendor_rs//flate2-1.1.9"),
             "globset": Label("@vendor_rs//globset-0.4.18"),
-            "lazy_static": Label("@vendor_rs//lazy_static-1.5.1"),
             "num_cpus": Label("@vendor_rs//num_cpus-1.17.0"),
             "rayon": Label("@vendor_rs//rayon-1.12.0"),
             "regex": Label("@vendor_rs//regex-1.13.1"),
@@ -502,7 +499,6 @@ _NORMAL_DEPENDENCIES = {
         _COMMON_CONDITION: {
             "clap": Label("@vendor_rs//clap-4.6.7"),
             "encoding": Label("@vendor_rs//encoding-0.2.33"),
-            "lazy_static": Label("@vendor_rs//lazy_static-1.5.1"),
             "rayon": Label("@vendor_rs//rayon-1.12.0"),
             "regex": Label("@vendor_rs//regex-1.13.1"),
             "serde": Label("@vendor_rs//serde-1.0.229"),
@@ -4816,7 +4812,6 @@ def crate_repositories():
         struct(repo = "vendor_rs__globset-0.4.18", is_dev_dep = False),
         struct(repo = "vendor_rs__itertools-0.14.0", is_dev_dep = False),
         struct(repo = "vendor_rs__itertools-0.15.0", is_dev_dep = False),
-        struct(repo = "vendor_rs__lazy_static-1.5.1", is_dev_dep = False),
         struct(repo = "vendor_rs__mustache-0.9.0", is_dev_dep = False),
         struct(repo = "vendor_rs__num-traits-0.2.19", is_dev_dep = False),
         struct(repo = "vendor_rs__num_cpus-1.17.0", is_dev_dep = False),
