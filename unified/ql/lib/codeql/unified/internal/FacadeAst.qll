@@ -475,6 +475,40 @@ module Unified {
     SetterDeclaration() { this.getAccessorKind().getValue() = "set" }
   }
 
+  /**
+   * A function declaration marked with a `get` modifier, representing a getter that is invoked
+   * via call syntax when the call appears in a position where its value is read.
+   *
+   * It is typically paired with a `SetterMethodDeclaration` of the same name. For example, in Swift
+   * the getter of a subscript declaration:
+   * ```swift
+   * subscript(i: Int) -> String {
+   *   get { "42" } // getter method declaration
+   *   set { print(newValue) }
+   * }
+   * ```
+   */
+  final class GetterMethodDeclaration extends FunctionDeclaration {
+    GetterMethodDeclaration() { this.hasModifier("get") }
+  }
+
+  /**
+   * A function declaration marked with a `set` modifier, representing a setter that is invoked
+   * via call syntax when the call appears in an assignment target or is otherwise updated in place.
+   *
+   * The new value is passed as an additional trailing positional parameter. For example, in Swift
+   * the setter of a subscript declaration:
+   * ```swift
+   * subscript(i: Int) -> String {
+   *   get { "42" }
+   *   set { print(newValue) } // setter method declaration, with parameters `i` and `newValue`
+   * }
+   * ```
+   */
+  final class SetterMethodDeclaration extends FunctionDeclaration {
+    SetterMethodDeclaration() { this.hasModifier("set") }
+  }
+
   /** An `if` statement or conditional expression. */
   class IfExpr extends G::IfExpr {
     /** Gets then `then` or `else` branch. */

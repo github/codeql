@@ -335,6 +335,14 @@ named:
     type: expr
 
   # A top-level function declaration.
+  #
+  # A function marked with a `get` or `set` modifier is a getter or setter
+  # invoked via call syntax, such as a Swift subscript accessor. A call to it
+  # in a read position invokes the getter, while a call in an assignment target
+  # or otherwise updated in place invokes the setter. The setter takes the new
+  # value as an extra trailing positional parameter. A getter/setter pair is
+  # emitted as two adjacent declarations, the second one tagged with a
+  # `chained_declaration` modifier.
   function_declaration:
     modifier*: modifier
     name_node: identifier

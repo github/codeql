@@ -131,4 +131,12 @@ private predicate isInWriteBackPosition(Expr expr, boolean direct) {
     expr = member.getBase() and
     direct = false
   )
+  or
+  // A call in write-back position, such as `x.p[i]` in `x.p[i] = y`, is a call to a setter,
+  // which mutates its receiver. Propagate to the callee so the receiver `x.p` is also written back.
+  exists(CallExpr call |
+    isInWriteBackPosition(call, _) and
+    expr = call.getCallee() and
+    direct = false
+  )
 }

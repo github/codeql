@@ -116,6 +116,7 @@ private predicate callableSelector(
   FunctionDeclaration callable, string type, string name, string argLabels
 ) {
   name = callable.getName() and
+  not callable instanceof SetterMethodDeclaration and // models refer to the getter, e.g. of a subscript
   argLabels = getArgLabelsFromCallable(callable) and
   exists(ClassLikeDeclaration cls |
     callable = cls.getAMemberIncludingExtensions() and

@@ -1,0 +1,95 @@
+struct S {
+    subscript(i: Int) -> Int {
+        i * 2
+    }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        structDecl
+          attributes:
+          modifiers:
+          name: identifier "S"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    subscriptDecl
+                      attributes:
+                      modifiers:
+                      parameterClause:
+                        functionParameterClause
+                          leftParen: (
+                          rightParen: )
+                          parameters:
+                            functionParameter
+                              colon: :
+                              attributes:
+                              modifiers:
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                              firstName: identifier "i"
+                      returnClause:
+                        returnClause
+                          arrow: ->
+                          type:
+                            identifierType
+                              name: identifier "Int"
+                      accessorBlock:
+                        accessorBlock
+                          accessors:
+                            codeBlockItem
+                              item:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator "*"
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "i"
+                                  rightOperand:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "2"
+                          leftBrace: {
+                          rightBrace: }
+                      subscriptKeyword: subscript
+          structKeyword: struct
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    ⟨member⟩\n}"
+          modifier: modifier "struct" source="struct"
+          name_node: identifier "S" source="S"
+          member:
+            function_declaration source="⟨name_node⟩(⟨parameter⟩) -> ⟨return_type⟩ ⟨body⟩"
+              modifier: modifier "get" source=""
+              name_node: identifier "subscript" source="subscript"
+              parameter:
+                parameter source="⟨pattern⟩: ⟨type⟩"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "i" source="i"
+              return_type: identifier "Int" source="Int"
+              body:
+                block source="{\n        ⟨stmt⟩\n    }"
+                  stmt:
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "i" source="i"
+                      operator: infix_operator "*" source="*"
+                      right: int_literal "2" source="2"
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""
