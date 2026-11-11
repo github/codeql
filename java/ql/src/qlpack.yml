@@ -11,5 +11,5 @@ dependencies:
   codeql/suite-helpers: ${workspace}
   codeql/util: ${workspace}
 dataExtensions:
-  - Telemetry/ExtractorInformation.yml
+  - Telemetry/ExtractorInformation.json
 warnOnImplicitThis: true

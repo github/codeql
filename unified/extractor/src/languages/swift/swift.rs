@@ -111,6 +111,17 @@ fn make_or_pattern(
     }
 }
 
+fn parameter_pattern(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    name: yeast::Id,
+) -> yeast::OutputId {
+    if ctx.source_text(name) == "_" {
+        tree!((ignore_pattern #{name}))
+    } else {
+        tree!((identifier #{name}))
+    }
+}
+
 /// Translate a multi-part identifier (for example `Foo.Bar.Baz`) into a
 /// `member_access_expr` chain rooted at a `name_node` for the first
 /// part. Panics on an empty input because the grammar's `_+` quantifier
@@ -375,7 +386,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     let val = ctx.scoped(|ctx| {
                         ctx.reset();
                         ctx.translate(val)
-                    })?;
+                    });
                     result.push(tree!(
                         (variable_declaration
                             modifier: {ctx.outer_modifiers.clone()}
@@ -386,7 +397,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 }
                 for acc in accessors.into_iter() {
                     ctx.is_chained = !result.is_empty();
-                    result.extend(ctx.translate(acc)?);
+                    result.extend(ctx.translate(acc));
                 }
                 result
             }
@@ -421,7 +432,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let modifiers = ctx.outer_modifiers.clone();
                 let name = ctx
                     .property_name_node
-                    .ok_or("accessor outside property context")?;
+                    .expect("accessor outside property context");
                 let return_ty = if spec_text == "get" {
                     ctx.property_type
                 } else {
@@ -431,7 +442,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     Some(block) => ctx.scoped(|ctx| {
                         ctx.reset();
                         ctx.translate(block)
-                    })?.into_iter().next(),
+                    }).into_iter().next(),
                     None => None,
                 };
                 tree!((accessor_declaration
@@ -496,7 +507,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let mut result = Vec::new();
                 for (i, b) in bindings.into_iter().enumerate() {
                     ctx.is_chained = i > 0;
-                    result.extend(ctx.translate(b)?);
+                    result.extend(ctx.translate(b));
                 }
                 result
             }
@@ -569,7 +580,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let mut result = Vec::new();
                 for (i, case) in cases.into_iter().enumerate() {
                     ctx.is_chained = i > 0;
-                    result.extend(ctx.translate(case)?);
+                    result.extend(ctx.translate(case));
                 }
                 result
             }
@@ -669,7 +680,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (parameter
                 external_name_node: (identifier #{first})
-                pattern: (identifier #{second})
+                pattern: {parameter_pattern(&mut ctx, second)}
                 type: {ty}
                 default: {val})
         ),
@@ -681,7 +692,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (parameter
                 external_name_node: (identifier #{first}) // duplicate the parameter name
-                pattern: (identifier #{first})
+                pattern: {parameter_pattern(&mut ctx, first)}
                 type: {ty}
                 default: {val})
         ),
@@ -741,7 +752,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let callee = ctx.scoped(|ctx| {
                     ctx.in_pattern = false;
                     ctx.translate(rawCallee)
-                })?;
+                });
                 tree!((call_expr
                     callee: {callee}
                     argument: {args}
@@ -867,14 +878,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (closureParameter firstName: @@name type: _? @ty)
             =>
-            (parameter pattern: (identifier #{name}) type: {ty})
+            (parameter pattern: {parameter_pattern(&mut ctx, name)} type: {ty})
         ),
         // A shorthand closure parameter (`x` in `{ x, y in … }`): a bare name
         // with no parentheses and no type.
         rule!(
             (closureShorthandParameter name: @@name)
             =>
-            (parameter pattern: (identifier #{name}))
+            (parameter pattern: {parameter_pattern(&mut ctx, name)})
         ),
         // ---- Control flow ----
         // An `if`/`else` expression. Conditions are joined via `and_chain`; the
@@ -1063,7 +1074,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // ---- Optionals and errors ----
         // Optional chaining — unwrap the marker
         rule!((optionalChainingExpr expression: @@inner) => expr {
-            let inner = ctx.translate(inner)?.into_iter().next().ok_or("optional chaining expression has no child")?;
+            let inner = ctx
+                .translate(inner)
+                .into_iter()
+                .next()
+                .expect("optional chaining expression has no child");
             if ctx.in_pattern {
                 tree!((call_expr
                     callee: (member_access_expr
@@ -1160,7 +1175,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 path: (importPathComponent name: @@parts)*) @@decl
             =>
             import_declaration {
-                let last = *parts.last().ok_or("import has no path")?;
+                let last = *parts.last().expect("import has no path");
                 tree!((import_declaration
                     modifier: [(modifier #{kind})]
                     modifier: {attrs}
