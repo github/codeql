@@ -351,15 +351,15 @@ predicate bindingContext = LocalNameBindingInput::bindingContext/3;
 
 module LocalNameBindingOutput = LocalNameBinding<Location, LocalNameBindingInput>;
 
-private LocalNameBindingOutput::Local resolveId(Identifier id) {
+private LocalNameBindingOutput::Local resolveId(AstNode n) {
   // For names in binding position, always resolve to the scope set by the bindingContext predicate
   exists(AstNode scope |
-    bindingContext(id, scope, _) and
-    result.hasNameAndScope(id.getValue(), scope)
+    bindingContext(n, scope, _) and
+    result.hasNameAndScope(n.(Identifier).getValue(), scope)
   )
   or
-  not bindingContext(id, _, _) and
-  result = id.(LocalNameBindingOutput::LocalAccess).getLocal()
+  not bindingContext(n, _, _) and
+  result = n.(LocalNameBindingOutput::LocalAccess).getLocal()
 }
 
 module Public {
