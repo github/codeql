@@ -261,18 +261,23 @@ private module Cached {
       // instruction (which is of type `glvalue<Foo>`) is the qualifier.
       // So the `DataFlow::Node` we want to represent `x` is the indirection of
       // the qualifier (which will then have type `Foo`).
-      // Since the node -> expression mapping is one-to-many we additionally need to
-      // check that the specific expression we map to is also a glvalue. For example,
-      // in `(*x).f()` the qualifier generates IR like:
+      // The node -> expression mapping is one-to-many, and the instruction -> node
+      // mapping is many-to-one. So a node may contain both glvalue and non-glvalue
+      // producing instructions, and a node may map to both glvalue and non-glvalue
+      // expressions. So we both need to check that the operand is a glvalue and
+      // that one of the expressions mapped to by this node is a glvalue.
+      // For example, in `(*x).f()` the qualifier generates IR like:
       // ```
       // r1(glval<Foo *>) = VariableAddress[x] :
       // r2(Foo *)        = Load[x]            : &:r1
       // r3(glval<Foo>)   = CopyValue          : r2
       // ```
-      // The qualifier is associated with both `*x` and the lvalue-to-rvalue
-      // conversion of `x`. Only `*x` is a glvalue and should map to the
-      // indirect qualifier node; the converted `x` is a pointer prvalue and
-      // should map to the direct qualifier node. So we require that the fully
+      // A single dataflow node represents all three instructions. The `r2`
+      // instruction represents the expression `x`, and the `r3` instruction
+      // represents `*x`. Only `*x` is a glvalue and should map to the indirect
+      // qualifier node, whereas `x` is a pointer prvalue and should map to the
+      // direct qualifier node. This means that `n.asIndirect() = x` holds, and
+      // `n.asExpr() = *x` holds. To accomplish this, we require that the fully
       // converted qualifier (i.e., the expression with `n = 0`) is a glvalue,
       // and then map every expression in the conversion chain with the same
       // unconverted expression to the indirect node.
