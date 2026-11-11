@@ -91,6 +91,13 @@ var server = http.createServer(function(req, res) {
   } else {
     Buffer.alloc(n); // $ Alert - NO length check
   }
+
+  // Exercise the upper-bound barrier on a genuine remote-input source.
+  let clamped = parseInt(url.parse(req.url, true).query.n);
+  if (clamped > 1024) {
+    clamped = 1024;
+  }
+  Buffer.alloc(clamped); // OK - bounded allocation size
 });
 
 function browser() {
@@ -102,12 +109,4 @@ function browser() {
     window.onmessage = (e) => {
         setTimeout(() => {}, e.data); // OK - source is client side
     }
-}
-
-function clampedAllocation(req) {
-  let n = parseInt(req.query.n);
-  if (n > 1024) {
-    n = 1024;
-  }
-  Buffer.alloc(n); // OK - n is at most 1024 (or an invalid allocation size)
 }

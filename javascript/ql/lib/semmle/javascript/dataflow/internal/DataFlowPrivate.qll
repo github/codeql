@@ -53,7 +53,7 @@ class SsaPhiInputNode extends DataFlow::Node, TSsaPhiInputNode {
   override string toString() { result = "[ssa-phi-input] " + phi.toString() }
 
   cached
-  override StmtContainer getContainer() { result = phi.getSourceVariable().getDeclaringContainer() }
+  override StmtContainer getContainer() { result = phi.getBasicBlock().getContainer() }
 
   cached
   override Location getLocation() { result = predecessor.getLocation() }
