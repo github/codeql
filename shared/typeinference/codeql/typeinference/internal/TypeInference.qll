@@ -963,6 +963,31 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       pragma[nomagic]
+      private predicate conditionSatisfiesAmbigousConstraintTypeAt0(
+        Term term, Constraint constraint, TypeAbstraction abs, TypeMention sub, TypePath path,
+        Type t
+      ) {
+        exists(TypeMention constraintMention |
+          satisfiesConstraintTypeMention0(term, constraint, constraintMention, abs, sub, _, _, true) and
+          conditionSatisfiesConstraintTypeAtForDisambiguation(abs, sub, constraintMention, path, t)
+        )
+      }
+
+      pragma[nomagic]
+      private predicate conditionSatisfiesAmbigousConstraintTypeAt(
+        Term term, Constraint constraint, TypeAbstraction abs, TypeMention sub, TypePath path,
+        Type t
+      ) {
+        conditionSatisfiesAmbigousConstraintTypeAt0(term, constraint, abs, sub, path, t) and
+        (
+          t = constraint.getTypeAt(path)
+          or
+          // The constraint may contain a type parameter, which we can match to the right type
+          constraintTypeMatchForDisambiguation(term, constraint, path, t)
+        )
+      }
+
+      pragma[nomagic]
       private predicate satisfiesConstraint0(
         Term term, Constraint constraint, TypeAbstraction abs, TypeMention sub, TypePath path,
         Type t
@@ -981,10 +1006,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
               conditionSatisfiesConstraintTypeAtForDisambiguation(abs, sub, constraintMention,
                 path1, t1)
             |
-              t1 = constraint.getTypeAt(path1)
-              or
-              // The constraint may contain a type parameter, which we can match to the right type
-              constraintTypeMatchForDisambiguation(term, constraint, path1, t1)
+              conditionSatisfiesAmbigousConstraintTypeAt(term, constraint, abs, sub, path1, t1)
             )
           else any()
         )
