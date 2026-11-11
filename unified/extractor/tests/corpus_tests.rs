@@ -114,6 +114,7 @@ fn corpus_dir() -> std::path::PathBuf {
 }
 
 #[test]
+#[allow(clippy::too_many_lines)]
 fn test_corpus() {
     let update_mode = update_mode_enabled();
     let all_languages = languages::all_language_specs();

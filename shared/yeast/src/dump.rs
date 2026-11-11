@@ -199,7 +199,7 @@ fn expected_for_field<'a>(
         .map(|v| v.as_slice())
 }
 
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments, clippy::too_many_lines)]
 fn dump_node<Id: TreeId>(
     ast: &Ast<Id>,
     id: Id,

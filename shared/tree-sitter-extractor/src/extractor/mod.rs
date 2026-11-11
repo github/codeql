@@ -684,6 +684,7 @@ impl<'a> Visitor<'a> {
         true
     }
 
+    #[allow(clippy::too_many_lines)]
     fn leave_node<N: AstNode>(&mut self, field_name: Option<&'static str>, node: &N) {
         if node.is_error() || node.is_missing() {
             return;

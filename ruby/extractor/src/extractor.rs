@@ -26,6 +26,7 @@ pub struct Options {
     file_list: String,
 }
 
+#[allow(clippy::too_many_lines)]
 pub fn run(options: &Options) -> std::io::Result<()> {
     extractor::set_tracing_level("ruby");
     tracing::info!("Extraction started");

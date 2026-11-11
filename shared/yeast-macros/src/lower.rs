@@ -445,6 +445,7 @@ impl Alternative {
 }
 
 impl Node {
+    #[allow(clippy::too_many_lines)]
     fn lower(&self, context: LoweringContext<'_>) -> TokenStream {
         let ctx = Ident::new("ctx", Span::call_site());
         let kind_str = self.kind.to_string();

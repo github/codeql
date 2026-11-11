@@ -119,6 +119,7 @@ fn convert_types(node_types: &[NodeType]) -> Set<TypeName> {
     node_types.iter().map(convert_type).collect()
 }
 
+#[allow(clippy::too_many_lines)]
 pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
     let mut entries = NodeTypeMap::new();
     let mut token_kinds = Set::new();

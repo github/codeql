@@ -239,6 +239,7 @@ fn cwd() -> anyhow::Result<AbsPathBuf> {
     Ok(abs_path)
 }
 
+#[allow(clippy::too_many_lines)]
 fn main() -> anyhow::Result<()> {
     let start = Instant::now();
     let config = config::Config::extract().context("failed to load configuration")?;

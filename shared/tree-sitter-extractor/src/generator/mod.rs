@@ -14,6 +14,7 @@ pub mod ql;
 pub mod ql_gen;
 
 /// Generate a dbscheme and QL library for the given languages.
+#[allow(clippy::too_many_lines)]
 pub fn generate(
     languages: Vec<language::Language>,
     dbscheme_path: PathBuf,

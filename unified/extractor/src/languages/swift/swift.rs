@@ -141,6 +141,7 @@ fn member_chain(
     )
 }
 
+#[allow(clippy::too_many_lines)]
 fn translation_rules() -> Vec<Rule<SwiftContext>> {
     yeast::rules! {
         input: "swift_node_types.yml",

@@ -4,6 +4,7 @@ use crate::{generator::ql, node_types};
 
 /// Creates the hard-coded `AstNode` class that acts as a supertype of all
 /// classes we generate.
+#[allow(clippy::too_many_lines)]
 pub fn create_ast_node_class<'a>(
     ast_node: &'a str,
     node_location_table: &'a str,
@@ -622,6 +623,7 @@ fn create_get_field_expr_for_table_storage<'a>(
 /// `parent_name` - the name of the parent node
 /// `field` - the field whose getters we are creating
 /// `field_type` - the db name of the field's type (possibly being a union we created)
+#[allow(clippy::too_many_lines)]
 fn create_field_getters<'a>(
     main_table_name: &'a str,
     main_table_arity: usize,
@@ -967,6 +969,7 @@ fn is_predicate_inherited(
 }
 
 /// Converts the given node types into CodeQL classes wrapping the dbscheme.
+#[allow(clippy::too_many_lines)]
 pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     let mut classes = Vec::new();
     let mut token_kinds = BTreeSet::new();
