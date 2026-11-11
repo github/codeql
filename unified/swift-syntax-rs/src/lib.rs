@@ -146,6 +146,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::unicode_not_nfc)]
     fn serializes_json_strings_and_keys_deterministically() {
         let source = "/* quote \" slash / backslash \\ tab \t newline\n emoji 😀 combining e\u{301} control \u{1} */\nlet x = 1";
         let json = parse_to_json(source).expect("parsing should succeed");
