@@ -240,7 +240,7 @@ impl DiagnosticMessage {
     }
 
     fn text(&mut self, text: &str) -> &mut Self {
-        self.plaintext_message = text.to_owned();
+        text.clone_into(&mut self.plaintext_message);
         self
     }
 
@@ -285,7 +285,7 @@ impl DiagnosticMessage {
     }
 
     pub fn markdown(&mut self, text: &str) -> &mut Self {
-        self.markdown_message = text.to_owned();
+        text.clone_into(&mut self.markdown_message);
         self
     }
     pub fn severity(&mut self, severity: Severity) -> &mut Self {

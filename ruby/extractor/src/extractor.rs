@@ -159,7 +159,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                                 match encoding
                                     .decode(&source, encoding::types::DecoderTrap::Replace)
                                 {
-                                    Ok(str) => source = str.as_bytes().to_owned(),
+                                    Ok(str) => str.as_bytes().clone_into(&mut source),
                                     Err(msg) => {
                                         needs_conversion = false;
                                         diagnostics_writer.write(
