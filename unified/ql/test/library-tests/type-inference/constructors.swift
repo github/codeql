@@ -87,3 +87,7 @@ enum E1 {
 enum E2<A, B> { case a(A) }
 
 let e2: E2<_, String> = E2.a(1)  // $ target=E2.a type=.a(...)@E2<B>:String
+
+enum E3<T> { case value(payload: T) }
+
+let e2 = E3.value(payload: 1)  // $ target=E3.value type=e2@E3<T>:Int
