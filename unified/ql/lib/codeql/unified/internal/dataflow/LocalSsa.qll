@@ -29,13 +29,8 @@ module LocalSsaInput implements InputSig<Location, BasicBlock> {
     performsVariableAccess(_, v, TRead(), bb.getNode(i))
   }
 
-  predicate variableReadWithPostUpdate(
-    BasicBlock bb1, int i1, SourceVariable v, BasicBlock bb2, int i2
-  ) {
-    exists(U::AstNode repr |
-      performsVariableAccess(repr, v, TRead(), bb1.getNode(i1)) and
-      performsVariableAccess(repr, v, TPostUpdate(), bb2.getNode(i2))
-    )
+  predicate postUpdateRead(BasicBlock bb, int i, SourceVariable v) {
+    performsVariableAccess(_, v, TPostUpdate(), bb.getNode(i))
   }
 
   predicate ssaCachedStageRevRef() { LocalSsaDataFlowOutput::ssaCachedStageRevRef2() }
@@ -46,10 +41,6 @@ module LocalSsaOutput = Make<Location, Cfg, LocalSsaInput>;
 private import LocalSsaOutput
 
 module LocalSsaDataFlowInput implements DataFlowIntegrationInputSig {
-  class Expr extends ControlFlowNode {
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
-  }
-
   class GuardValue = Void;
 
   class Guard extends Void {
@@ -71,13 +62,13 @@ Stage2Node getNodeFromLocalSsaNode(Ssa::Node n) {
   result = TLocalSsaNode(n)
   or
   exists(ControlFlowNode cfgnode, LocalVariable v, AstNode repr |
-    n.(Ssa::ExprNode).isExprAndVariable(cfgnode, v) and
+    n.(Ssa::ReadNode).readsAt(cfgnode, v) and
     performsVariableAccess(repr, v, TRead(), cfgnode) and
     result.(BuilderNode).isLocalVariableRead(repr, v)
   )
   or
   exists(ControlFlowNode cfgnode, LocalVariable v, AstNode repr |
-    n.(Ssa::ExprPostUpdateNode).isExprAndVariable(cfgnode, v) and
+    n.(Ssa::PostUpdateReadNode).readsAt(cfgnode, v) and
     performsVariableAccess(repr, v, TPostUpdate(), cfgnode) and
     result.(BuilderNode).isLocalVariablePostUpdate(repr, v)
   )
