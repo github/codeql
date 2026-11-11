@@ -31,6 +31,15 @@ pub struct Range {
     pub end_point: Point,
 }
 
+impl IntoIterator for Range {
+    type Item = Range;
+    type IntoIter = std::iter::Once<Range>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        std::iter::once(self)
+    }
+}
+
 impl Range {
     /// Return the smallest range containing both ranges.
     pub fn union(self, other: Self) -> Self {

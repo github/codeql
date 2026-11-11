@@ -545,7 +545,11 @@ impl Node {
                         quote! {
                             let __value = ::std::iter::IntoIterator::into_iter(#block)
                                 .collect::<Vec<_>>();
-                            #ctx.extend_location_ranges(__value, &mut __location_ranges);
+                            __location_ranges.extend(
+                                __value
+                                    .into_iter()
+                                    .filter_map(|__source| #ctx.location_source_range(__source)),
+                            );
                         },
                     ));
                 }
