@@ -1,9 +1,0 @@
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-# Generated from https://github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
-extensions:
-  - addsTo:
-      pack: codeql/java-all
-      extensible: sinkModel
-    data:
-      - ["org.springframework.core.io", "ClassPathResource", True, "ClassPathResource", "(String)", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
-      - ["org.springframework.core.io", "ResourceLoader", True, "getResource", "(String)", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
