@@ -478,7 +478,7 @@ struct ExtraNode {
 }
 
 impl AstNode for ExtraNode {
-    fn kind(&self) -> &str {
+    fn kind(&self) -> &'static str {
         "extra"
     }
     fn is_named(&self) -> bool {
