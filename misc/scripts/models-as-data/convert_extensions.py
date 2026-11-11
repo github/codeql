@@ -19,8 +19,8 @@ class Converter:
         )
         self.extDir = os.path.join(self.codeQlRoot, f"{self.language}/ql/lib/ext/")
         self.dirname = "modelconverter"
-        # N.B. change this to .model.json to change the output format:
-        self.modelFileExtension = ".model.yml"
+        # N.B. change this to .model.yml to change the output format:
+        self.modelFileExtension = ".model.json"
         self.workDir = tempfile.mkdtemp()
 
     def runQuery(self, query):

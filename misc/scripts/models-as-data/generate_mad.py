@@ -33,7 +33,7 @@ class Generator:
     threads = 0
     folder = ""
     single_file = None
-    extension_format = "yaml"
+    extension_format = "json"
 
     def __init__(self, language=None):
         self.language = language
@@ -123,7 +123,7 @@ class Generator:
         p.add_argument(
             "--extension-format",
             choices=["json", "yaml"],
-            default="yaml",
+            default="json",
             help="Format for the generated data extension files (default %(default)s)",
         )
         generator = p.parse_args(namespace=Generator())
