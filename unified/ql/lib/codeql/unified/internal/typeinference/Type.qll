@@ -239,6 +239,8 @@ class TypeParameterType extends TypeParameter, TTypeParameterType {
     typeParam = result.(Unified::TypeAliasDeclaration).getATypeParameter()
     or
     typeParam = result.(Unified::FunctionDeclaration).getATypeParameter()
+    or
+    typeParam = result.(Unified::AccessorDeclaration).getATypeParameter()
   }
 
   override Identifier getNameNode() { result = typeParam.getNameNode() }
