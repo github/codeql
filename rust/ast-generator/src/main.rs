@@ -276,7 +276,7 @@ fn node_src_to_schema_class(
 fn fix_blank_lines(s: &str) -> String {
     // mustache is not very good at avoiding blank lines
     // adopting the workaround from https://github.com/groue/GRMustache/issues/46#issuecomment-19498046
-    s.split("\n")
+    s.split('\n')
         .filter(|line| !line.trim().is_empty())
         .map(|line| if line == "¶" { "" } else { line })
         .join("\n")

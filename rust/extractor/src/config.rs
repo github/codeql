@@ -246,7 +246,7 @@ impl Config {
 }
 
 fn to_cfg_override(spec: &str) -> CfgAtom {
-    if let Some((key, value)) = spec.split_once("=") {
+    if let Some((key, value)) = spec.split_once('=') {
         CfgAtom::KeyValue {
             key: Symbol::intern(key),
             value: Symbol::intern(value),
