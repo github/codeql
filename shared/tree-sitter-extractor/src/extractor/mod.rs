@@ -39,7 +39,7 @@ trait AstNode {
     }
 }
 
-impl<'a> AstNode for Node<'a> {
+impl AstNode for Node<'_> {
     fn kind(&self) -> &str {
         Node::kind(self)
     }

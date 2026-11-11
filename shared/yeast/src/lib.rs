@@ -1144,7 +1144,7 @@ impl<C> TranslatorHandle<'_, C> {
     }
 }
 
-impl<'a, C: Clone> TranslatorHandle<'a, C> {
+impl<C: Clone> TranslatorHandle<'_, C> {
     /// Recursively apply the current phase's rules to `id` and return the
     /// resulting node ids.
     pub fn translate(
@@ -1570,7 +1570,7 @@ impl<'a, C> Runner<'a, C> {
     }
 }
 
-impl<'a, C: Clone> Runner<'a, C> {
+impl<C: Clone> Runner<'_, C> {
     /// Parse `tree` against `source` and run the configured translation, threading
     /// `user_ctx` through every rule transform. The caller owns the
     /// initial context state.
@@ -1664,7 +1664,7 @@ impl<'a, C: Clone> Runner<'a, C> {
     }
 }
 
-impl<'a, C: Clone + Default> Runner<'a, C> {
+impl<C: Clone + Default> Runner<'_, C> {
     /// Parse `tree` against `source` and run the configured translation, using
     /// the default context (`C::default()`) as the initial context state.
     pub fn run_from_tree(
