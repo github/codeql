@@ -413,13 +413,16 @@ edges
 | subscripts.swift:130:5:130:8 | ... .subscript(...) | subscripts.swift:127:24:127:31 | newValue | provenance |  |
 | subscripts.swift:130:12:130:26 | source(...) | subscripts.swift:130:5:130:8 | ... .subscript(...) | provenance |  |
 | subscripts.swift:135:21:135:35 | source(...) | subscripts.swift:135:10:135:36 | ... .subscript(...) | provenance |  |
-| subscripts.swift:146:24:146:31 | newValue [field] | subscripts.swift:146:24:146:37 | ... .field | provenance |  |
-| subscripts.swift:149:19:149:19 | s [Return] [field] | subscripts.swift:151:12:151:16 | [post] & ... [field] | provenance |  |
-| subscripts.swift:149:33:149:33 | [post] s [field] | subscripts.swift:149:19:149:19 | s [Return] [field] | provenance |  |
-| subscripts.swift:149:33:149:39 | ... .field | subscripts.swift:149:33:149:33 | [post] s [field] | provenance |  |
-| subscripts.swift:149:43:149:57 | source(...) | subscripts.swift:149:33:149:39 | ... .field | provenance |  |
-| subscripts.swift:151:12:151:16 | [post] & ... [field] | subscripts.swift:151:13:151:16 | [post] ... .subscript(...) [field] | provenance |  |
-| subscripts.swift:151:13:151:16 | [post] ... .subscript(...) [field] | subscripts.swift:146:24:146:31 | newValue [field] | provenance |  |
+| subscripts.swift:137:5:137:22 | ... .subscript(...) | subscripts.swift:138:10:138:10 | t [field] | provenance |  |
+| subscripts.swift:137:26:137:40 | source(...) | subscripts.swift:137:5:137:22 | ... .subscript(...) | provenance |  |
+| subscripts.swift:138:10:138:10 | t [field] | subscripts.swift:138:10:138:21 | ... .getField(...) | provenance |  |
+| subscripts.swift:148:24:148:31 | newValue [field] | subscripts.swift:148:24:148:37 | ... .field | provenance |  |
+| subscripts.swift:151:19:151:19 | s [Return] [field] | subscripts.swift:153:12:153:16 | [post] & ... [field] | provenance |  |
+| subscripts.swift:151:33:151:33 | [post] s [field] | subscripts.swift:151:19:151:19 | s [Return] [field] | provenance |  |
+| subscripts.swift:151:33:151:39 | ... .field | subscripts.swift:151:33:151:33 | [post] s [field] | provenance |  |
+| subscripts.swift:151:43:151:57 | source(...) | subscripts.swift:151:33:151:39 | ... .field | provenance |  |
+| subscripts.swift:153:12:153:16 | [post] & ... [field] | subscripts.swift:153:13:153:16 | [post] ... .subscript(...) [field] | provenance |  |
+| subscripts.swift:153:13:153:16 | [post] ... .subscript(...) [field] | subscripts.swift:148:24:148:31 | newValue [field] | provenance |  |
 | test.swift:17:10:17:23 | source(...) | test.swift:17:10:17:32 | ... + ... | provenance |  |
 | test.swift:18:19:18:32 | source(...) | test.swift:18:10:18:32 | ... + ... | provenance |  |
 | test.swift:20:13:20:26 | source(...) | test.swift:20:10:20:33 | StringInterpolationExpr | provenance |  |
@@ -1104,14 +1107,18 @@ nodes
 | subscripts.swift:131:10:131:13 | ... .subscript(...) | semmle.label | ... .subscript(...) |
 | subscripts.swift:135:10:135:36 | ... .subscript(...) | semmle.label | ... .subscript(...) |
 | subscripts.swift:135:21:135:35 | source(...) | semmle.label | source(...) |
-| subscripts.swift:146:24:146:31 | newValue [field] | semmle.label | newValue [field] |
-| subscripts.swift:146:24:146:37 | ... .field | semmle.label | ... .field |
-| subscripts.swift:149:19:149:19 | s [Return] [field] | semmle.label | s [Return] [field] |
-| subscripts.swift:149:33:149:33 | [post] s [field] | semmle.label | [post] s [field] |
-| subscripts.swift:149:33:149:39 | ... .field | semmle.label | ... .field |
-| subscripts.swift:149:43:149:57 | source(...) | semmle.label | source(...) |
-| subscripts.swift:151:12:151:16 | [post] & ... [field] | semmle.label | [post] & ... [field] |
-| subscripts.swift:151:13:151:16 | [post] ... .subscript(...) [field] | semmle.label | [post] ... .subscript(...) [field] |
+| subscripts.swift:137:5:137:22 | ... .subscript(...) | semmle.label | ... .subscript(...) |
+| subscripts.swift:137:26:137:40 | source(...) | semmle.label | source(...) |
+| subscripts.swift:138:10:138:10 | t [field] | semmle.label | t [field] |
+| subscripts.swift:138:10:138:21 | ... .getField(...) | semmle.label | ... .getField(...) |
+| subscripts.swift:148:24:148:31 | newValue [field] | semmle.label | newValue [field] |
+| subscripts.swift:148:24:148:37 | ... .field | semmle.label | ... .field |
+| subscripts.swift:151:19:151:19 | s [Return] [field] | semmle.label | s [Return] [field] |
+| subscripts.swift:151:33:151:33 | [post] s [field] | semmle.label | [post] s [field] |
+| subscripts.swift:151:33:151:39 | ... .field | semmle.label | ... .field |
+| subscripts.swift:151:43:151:57 | source(...) | semmle.label | source(...) |
+| subscripts.swift:153:12:153:16 | [post] & ... [field] | semmle.label | [post] & ... [field] |
+| subscripts.swift:153:13:153:16 | [post] ... .subscript(...) [field] | semmle.label | [post] ... .subscript(...) [field] |
 | test.swift:9:10:9:21 | source(...) | semmle.label | source(...) |
 | test.swift:17:10:17:23 | source(...) | semmle.label | source(...) |
 | test.swift:17:10:17:32 | ... + ... | semmle.label | ... + ... |
@@ -1492,7 +1499,8 @@ testFailures
 | subscripts.swift:127:24:127:31 | newValue | subscripts.swift:130:12:130:26 | source(...) | subscripts.swift:127:24:127:31 | newValue | $@ | subscripts.swift:130:12:130:26 | source(...) | source(...) |
 | subscripts.swift:131:10:131:13 | ... .subscript(...) | subscripts.swift:126:19:126:33 | source(...) | subscripts.swift:131:10:131:13 | ... .subscript(...) | $@ | subscripts.swift:126:19:126:33 | source(...) | source(...) |
 | subscripts.swift:135:10:135:36 | ... .subscript(...) | subscripts.swift:135:21:135:35 | source(...) | subscripts.swift:135:10:135:36 | ... .subscript(...) | $@ | subscripts.swift:135:21:135:35 | source(...) | source(...) |
-| subscripts.swift:146:24:146:37 | ... .field | subscripts.swift:149:43:149:57 | source(...) | subscripts.swift:146:24:146:37 | ... .field | $@ | subscripts.swift:149:43:149:57 | source(...) | source(...) |
+| subscripts.swift:138:10:138:21 | ... .getField(...) | subscripts.swift:137:26:137:40 | source(...) | subscripts.swift:138:10:138:21 | ... .getField(...) | $@ | subscripts.swift:137:26:137:40 | source(...) | source(...) |
+| subscripts.swift:148:24:148:37 | ... .field | subscripts.swift:151:43:151:57 | source(...) | subscripts.swift:148:24:148:37 | ... .field | $@ | subscripts.swift:151:43:151:57 | source(...) | source(...) |
 | test.swift:9:10:9:21 | source(...) | test.swift:9:10:9:21 | source(...) | test.swift:9:10:9:21 | source(...) | $@ | test.swift:9:10:9:21 | source(...) | source(...) |
 | test.swift:17:10:17:32 | ... + ... | test.swift:17:10:17:23 | source(...) | test.swift:17:10:17:32 | ... + ... | $@ | test.swift:17:10:17:23 | source(...) | source(...) |
 | test.swift:18:10:18:32 | ... + ... | test.swift:18:19:18:32 | source(...) | test.swift:18:10:18:32 | ... + ... | $@ | test.swift:18:19:18:32 | source(...) | source(...) |

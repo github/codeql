@@ -167,8 +167,6 @@ fn member_chain(
 
 /// The accessor-specific parts of a subscript getter or setter.
 struct SubscriptAccessor {
-    /// The `get`/`set` modifier marking the kind of accessor.
-    kind: yeast::OutputId,
     /// Modifiers written on the accessor itself, such as `nonmutating`.
     modifiers: Vec<yeast::OutputId>,
     /// For a setter, the explicit name of its new-value parameter (`set(v)`),
@@ -178,8 +176,8 @@ struct SubscriptAccessor {
     body: Option<yeast::Id>,
 }
 
-/// Emit a `function_declaration` named `subscript` for one accessor of a
-/// subscript. The shared parts of the subscript (modifiers, generic and value
+/// Emit a `function_declaration` for one accessor of a subscript: the getter
+/// is named `subscript` and the setter `subscript=`. The shared parts of the subscript (modifiers, generic and value
 /// parameters and the element type) are translated afresh for each accessor,
 /// so a getter/setter pair each get their own copy. A setter takes the new
 /// value as an extra trailing positional parameter and has no return type.
@@ -206,10 +204,9 @@ fn subscript_method(
             let implicit_param_name = param_name.is_none().then_some("newValue");
             tree!((function_declaration
                 modifier: {mods}
-                modifier: {accessor.kind}
                 modifier: {accessor.modifiers}
                 modifier: [(modifier "chained_declaration") if { is_chained }]
-                name_node: (identifier #{kw})
+                name_node: (identifier "subscript=" location: {kw})
                 type_parameter: {type_params}
                 parameter: {params}
                 parameter: [
@@ -227,7 +224,6 @@ fn subscript_method(
         }
         None => tree!((function_declaration
             modifier: {mods}
-            modifier: {accessor.kind}
             modifier: {accessor.modifiers}
             modifier: [(modifier "chained_declaration") if { is_chained }]
             name_node: (identifier #{kw})
@@ -504,9 +500,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             }
         ),
         // ---- Subscripts ----
-        // A subscript declaration becomes one `function_declaration` named
-        // `subscript` per accessor, tagged with a `get`/`set` modifier. A
-        // subscript with an explicit accessor block publishes its shared parts
+        // A subscript declaration becomes a `function_declaration` named
+        // `subscript` for its getter and, if it has a setter, one named
+        // `subscript=` for the setter. A subscript with an explicit accessor block publishes its shared parts
         // in `ctx` and lets the `accessorDecl` rule below emit one method per
         // accessor; each one after the first is tagged `chained_declaration`.
         rule!(
@@ -545,10 +541,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 accessorBlock: _? @@body)
             =>
             function_declaration {
-                let kind = match body {
-                    Some(body) => ctx.literal_at_start_of("modifier", "get", body),
-                    None => ctx.literal_at_start_of("modifier", "get", kw),
-                };
                 let sub = SubscriptContext {
                     keyword: kw,
                     modifiers: mods,
@@ -558,7 +550,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 };
                 ctx.is_chained = false;
                 subscript_method(&mut ctx, sub, SubscriptAccessor {
-                    kind,
                     modifiers: Vec::new(),
                     setter: None,
                     body,
@@ -580,9 +571,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let spec_text = ctx.source_text(spec);
                 if spec_text == "get" || spec_text == "set" {
                     let setter = (spec_text == "set").then_some((param_name, spec));
-                    let kind = tree!((modifier #{spec}));
                     subscript_method(&mut ctx, sub, SubscriptAccessor {
-                        kind,
                         modifiers: acc_mods,
                         setter,
                         body,

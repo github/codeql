@@ -75,7 +75,6 @@ top_level source="⟨body⟩"
           name_node: identifier "S" source="S"
           member:
             function_declaration source="⟨name_node⟩(⟨parameter⟩) -> ⟨return_type⟩ ⟨body⟩"
-              modifier: modifier "get" source=""
               name_node: identifier "subscript" source="subscript"
               parameter:
                 parameter source="⟨pattern⟩: ⟨type⟩"

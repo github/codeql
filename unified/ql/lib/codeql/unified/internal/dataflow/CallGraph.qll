@@ -5,14 +5,13 @@ private import codeql.unified.internal.NameBinding as N
 private import codeql.unified.internal.ExprPositions
 
 DataFlowCallable viableCallable(DataFlowCall c) {
-  result.asSourceCallable() = T::resolveCallTarget(c.asExplicitCall()) and
-  not result.asSourceCallable() instanceof SetterMethodDeclaration
+  result.asSourceCallable() = T::resolveCallTarget(c.asExplicitCall())
   or
   result.asSourceCallable() = T::resolveAccessorAccess(c.asGetterCall()).(GetterDeclaration)
   or
   result.asSourceCallable() = T::resolveAccessorAccess(c.asSetterCall()).(SetterDeclaration)
   or
-  result.asSourceCallable() = T::resolveCallTarget(c.asSetterCall()).(SetterMethodDeclaration)
+  result.asSourceCallable() = T::resolveSetterCallTarget(c.asSetterCall())
   or
-  result.asSummarizedCallable().matchesCall(c.asExplicitCall())
+  result.asSummarizedCallable().matchesCall(c)
 }

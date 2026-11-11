@@ -236,8 +236,7 @@ top_level source="⟨body⟩"
                 generic_type_expr source="[⟨type_argument⟩]"
                   base: identifier "Array" source=""
                   type_argument: identifier "Int" source="Int"
-            function_declaration source="⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) -> ⟨return_type⟩ {\n        ⟨modifier⟩ ⟨body⟩"
-              modifier: modifier "get" source="get"
+            function_declaration source="⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) -> ⟨return_type⟩ {\n        get ⟨body⟩"
               name_node: identifier "subscript" source="subscript"
               parameter:
                 parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
@@ -260,12 +259,11 @@ top_level source="⟨body⟩"
                       argument:
                         argument source="⟨value⟩"
                           value: identifier "index" source="index"
-            function_declaration source="⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) -> Int {\n        get { data[index] }\n        ⟨modifier⟩ ⟨modifier⟩(⟨parameter⟩) ⟨body⟩"
+            function_declaration source="⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) -> Int {\n        get { data[index] }\n        ⟨modifier⟩ set(⟨parameter⟩) ⟨body⟩"
               modifier:
-                modifier "set" source="set"
                 modifier "nonmutating" source="nonmutating"
                 modifier "chained_declaration" source=""
-              name_node: identifier "subscript" source="subscript"
+              name_node: identifier "subscript=" source="subscript"
               parameter:
                 parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
                   external_name_node: identifier "at" source="at"
@@ -286,11 +284,9 @@ top_level source="⟨body⟩"
                       argument:
                         argument source="⟨value⟩"
                           value: identifier "v" source="v"
-            function_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩>(⟨parameter⟩) -> T {\n        ⟨modifier⟩⟨parameter⟩ ⟨body⟩"
-              modifier:
-                modifier "static" source="static"
-                modifier "set" source="set"
-              name_node: identifier "subscript" source="subscript"
+            function_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩>(⟨parameter⟩) -> T {\n        ⟨parameter⟩ ⟨body⟩"
+              modifier: modifier "static" source="static"
+              name_node: identifier "subscript=" source="subscript"
               type_parameter:
                 type_parameter source="⟨name_node⟩"
                   name_node: identifier "T" source="T"
@@ -310,10 +306,9 @@ top_level source="⟨body⟩"
                       argument:
                         argument source="⟨value⟩"
                           value: identifier "newValue" source="newValue"
-            function_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩>(⟨parameter⟩) -> ⟨return_type⟩ {\n        set { print(newValue) }\n        ⟨modifier⟩ ⟨body⟩"
+            function_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩>(⟨parameter⟩) -> ⟨return_type⟩ {\n        set { print(newValue) }\n        get ⟨body⟩"
               modifier:
                 modifier "static" source="static"
-                modifier "get" source="get"
                 modifier "chained_declaration" source=""
               name_node: identifier "subscript" source="subscript"
               type_parameter:

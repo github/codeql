@@ -131,6 +131,8 @@ module Input3 implements InputSig3 {
     (exists(resolveAccessorAccess(_)) implies any())
     or
     (exists(resolveCallTarget(_)) implies any())
+    or
+    (exists(resolveSetterCallTarget(_)) implies any())
   }
 
   predicate inferTypeForDefaults = M3::inferType/2;
@@ -927,6 +929,28 @@ cached
 Callable resolveCallTarget(CallExpr ce) {
   CachedStage::ref() and
   result = ce.(Input3::Invocation).getTargetImpl(_).asCallable()
+}
+
+/**
+ * Gets the setter invoked when the given call expression appears as an assignment target,
+ * or is otherwise updated in place.
+ *
+ * For a call `x.foo(...)` this is the member `foo=` of the receiver type, such as
+ * the `subscript=` setter for a Swift subscript call `x[i]`.
+ */
+cached
+SetterMethodDeclaration resolveSetterCallTarget(CallExpr ce) {
+  CachedStage::ref() and
+  exists(MemberAccessExpr callee, ClassLikeDeclaration cls, NamespaceNode ns |
+    callee = ce.getCallee() and
+    ns.getMember(callee.getMemberName() + "=").isIdentifier(result.getNameNode())
+  |
+    cls = inferType(callee.getBase()).asClass() and
+    ns.isInstanceMemberNamespace(cls)
+    or
+    cls = callee.getBase().(TypeMention).getType().asClass() and
+    ns.isStaticMemberNamespace(cls)
+  )
 }
 
 private predicate typeTestAstNodeRepr(AstNode n, string repr) {
