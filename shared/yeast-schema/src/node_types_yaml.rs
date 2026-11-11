@@ -829,13 +829,13 @@ unnamed:
     #[test]
     fn test_leaf_kinds_from_yaml() {
         let leaf_kinds = leaf_kinds_from_yaml(
-            r#"
+            r"
 named:
   identifier:
   empty_fields: {}
   call:
     callee: identifier
-"#,
+",
         )
         .unwrap();
 
@@ -846,14 +846,14 @@ named:
 
     #[test]
     fn test_explicit_unnamed_disambiguation() {
-        let yaml = r#"
+        let yaml = r"
 named:
   foo:
     field: [{unnamed: bar}]
 
 unnamed:
   - bar
-"#;
+";
 
         let json_str = convert(yaml).unwrap();
         let result: Vec<serde_json::Value> = serde_json::from_str(&json_str).unwrap();
@@ -863,14 +863,14 @@ unnamed:
 
     #[test]
     fn test_field_suffixes() {
-        let yaml = r#"
+        let yaml = r"
 named:
   test_node:
     required_single: foo
     optional_single?: foo
     required_multiple+: foo
     optional_multiple*: foo
-"#;
+";
 
         let json_str = convert(yaml).unwrap();
         let result: Vec<serde_json::Value> = serde_json::from_str(&json_str).unwrap();
@@ -892,7 +892,7 @@ named:
 
     #[test]
     fn test_supertype_fields() {
-        let yaml = r#"
+        let yaml = r"
 supertypes:
   callable:
     subtypes:
@@ -907,7 +907,7 @@ named:
   closure:
   parameter:
   block:
-"#;
+";
 
         let json = convert(yaml).unwrap();
         let result: Vec<serde_json::Value> = serde_json::from_str(&json).unwrap();
@@ -1007,7 +1007,7 @@ unnamed:
 
     #[test]
     fn test_supertype_fields_round_trip() {
-        let yaml = r#"
+        let yaml = r"
 supertypes:
   callable:
     subtypes: [function, closure]
@@ -1020,7 +1020,7 @@ named:
   closure:
   parameter:
   block:
-"#;
+";
 
         let json = convert(yaml).unwrap();
         let yaml_output = convert_from_json(&json).unwrap();

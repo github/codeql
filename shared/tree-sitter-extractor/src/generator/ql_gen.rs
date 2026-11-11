@@ -1218,7 +1218,7 @@ mod tests {
 
     #[test]
     fn indexes_predicate_signatures_exposed_by_classes() {
-        let yaml = r#"
+        let yaml = r"
 supertypes:
   callable:
     subtypes: [function_like]
@@ -1237,7 +1237,7 @@ named:
   parameter:
   block:
   identifier:
-"#;
+";
         let json = yeast::node_types_yaml::convert(yaml).unwrap();
         let nodes = node_types::read_node_types_str("test", &json).unwrap();
         let signatures = compute_exposed_predicate_signatures(&nodes);
@@ -1268,7 +1268,7 @@ named:
 
     #[test]
     fn generates_supertype_getters_and_concrete_overrides() {
-        let yaml = r#"
+        let yaml = r"
 supertypes:
   callable:
     subtypes: [function]
@@ -1281,7 +1281,7 @@ named:
     body?: block
   parameter:
   block:
-"#;
+";
         let json = yeast::node_types_yaml::convert(yaml).unwrap();
         let nodes = node_types::read_node_types_str("test", &json).unwrap();
         let generated = convert_nodes(&nodes)

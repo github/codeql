@@ -494,7 +494,7 @@ fn to_snake_case_test() {
 
 #[test]
 fn supertype_fields_are_preserved() {
-    let yaml = r#"
+    let yaml = r"
 supertypes:
   callable:
     subtypes: [function]
@@ -505,7 +505,7 @@ named:
   function:
   parameter:
   block:
-"#;
+";
     let json = yeast::node_types_yaml::convert(yaml).unwrap();
     let nodes = read_node_types_str("test", &json).unwrap();
     let callable = nodes

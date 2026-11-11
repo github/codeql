@@ -131,7 +131,7 @@ mod tests {
     fn parses_source_with_interior_nul() {
         let json = parse_to_json("let x =\0 1").expect("parsing interior NUL should succeed");
         assert!(
-            json.contains(r#"\u0000"#),
+            json.contains(r"\u0000"),
             "interior NUL should be preserved in the JSON tree: {json}"
         );
     }
