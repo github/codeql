@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import android.net.Uri;
 import com.google.common.base.CharMatcher;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class Test {
@@ -621,6 +622,17 @@ public class Test {
             File f2 = new File(f1, normalized);
             sink(f2); // Safe
             sink(source); // $ hasTaintFlow
+            sink(normalized); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            String normalized = FilenameUtils.normalize(source);
+            String normalizedWithSeparator = FilenameUtils.normalize(source, true);
+            File f1 = new File("safe/file.txt");
+            File f2 = new File(f1, normalized);
+            File f3 = new File(f1, normalizedWithSeparator);
+            sink(f2); // Safe
+            sink(f3); // Safe
             sink(normalized); // $ hasTaintFlow
         }
     }
