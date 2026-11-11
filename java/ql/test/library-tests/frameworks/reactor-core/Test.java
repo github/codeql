@@ -11,30 +11,51 @@ public class Test {
 
     void testJust() {
         Mono<String> unsafe = Mono.just(taint());
-        sink(unsafe); // $ hasTaintFlow
+        unsafe.map(value -> {
+            sink(value); // $ hasValueFlow
+            return value;
+        });
         Mono<String> safe = Mono.just("safe");
-        sink(safe); // no taint flow
+        safe.map(value -> {
+            sink(value); // no taint flow
+            return value;
+        });
     }
 
     void testJustOrEmpty() {
         Mono<String> unsafe = Mono.justOrEmpty(taint());
-        sink(unsafe); // $ hasTaintFlow
+        unsafe.map(value -> {
+            sink(value); // $ hasValueFlow
+            return value;
+        });
         Mono<String> safe = Mono.justOrEmpty("safe");
-        sink(safe); // no taint flow
+        safe.map(value -> {
+            sink(value); // no taint flow
+            return value;
+        });
     }
 
     void testJustOrEmptyOptional() {
         Mono<String> unsafe = Mono.justOrEmpty(Optional.of(taint()));
-        sink(unsafe); // $ hasTaintFlow
+        unsafe.map(value -> {
+            sink(value); // $ hasValueFlow
+            return value;
+        });
         Mono<String> safe = Mono.justOrEmpty(Optional.of("safe"));
-        sink(safe); // no taint flow
+        safe.map(value -> {
+            sink(value); // no taint flow
+            return value;
+        });
         Mono<String> empty = Mono.justOrEmpty(Optional.<String>empty());
-        sink(empty); // no taint flow
+        empty.map(value -> {
+            sink(value); // no taint flow
+            return value;
+        });
     }
 
     void testFlatMap() {
         Mono.just(taint()).flatMap(value -> {
-            sink(value); // $ hasTaintFlow
+            sink(value); // $ hasValueFlow
             return Mono.just("safe");
         });
         Mono.just("safe").flatMap(value -> {
@@ -45,7 +66,7 @@ public class Test {
 
     void testMap() {
         Mono.just(taint()).map(value -> {
-            sink(value); // $ hasTaintFlow
+            sink(value); // $ hasValueFlow
             return "safe";
         });
         Mono.just("safe").map(value -> {
@@ -56,11 +77,26 @@ public class Test {
 
     void testMapNotNull() {
         Mono.just(taint()).mapNotNull(value -> {
-            sink(value); // $ hasTaintFlow
+            sink(value); // $ hasValueFlow
             return "safe";
         });
         Mono.just("safe").mapNotNull(value -> {
             sink(value); // no taint flow
+            return "safe";
+        });
+    }
+
+    void testNestedValues() {
+        Mono.just(Optional.of(taint())).flatMap(value -> {
+            sink(value.get()); // $ hasValueFlow
+            return Mono.just("safe");
+        });
+        Mono.just(Optional.of(taint())).map(value -> {
+            sink(value.get()); // $ hasValueFlow
+            return "safe";
+        });
+        Mono.just(Optional.of(taint())).mapNotNull(value -> {
+            sink(value.get()); // $ hasValueFlow
             return "safe";
         });
     }
