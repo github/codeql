@@ -24,8 +24,13 @@ private newtype TDataFlowCall =
     (
       T::resolveAccessorAccess(expr) instanceof SetterDeclaration
       or
-      T::resolveCallTarget(expr) instanceof SetterMethodDeclaration
+      exists(T::resolveSetterCallTarget(expr))
     )
+    or
+    // Assigning to a method call can only invoke a setter. Include such calls even if the setter
+    // can't be resolved, so library models can target them.
+    isInAssignmentContext(expr, _) and
+    expr.(CallExpr).getCallee() instanceof MemberAccessExpr
   } or
   TSummaryCall(SummarizedCallable callable, SummaryNode callee) {
     FlowSummaryOutput::summaryCallbackRange(callable, callee)

@@ -476,28 +476,12 @@ module Unified {
   }
 
   /**
-   * A function declaration marked with a `get` modifier, representing a getter that is invoked
-   * via call syntax when the call appears in a position where its value is read.
+   * A function declaration whose name is an identifier followed by `=`, representing a setter that
+   * is invoked via call syntax when a call appears as an assignment target or is otherwise updated
+   * in place. A call to `foo` in such a position invokes the setter `foo=`.
    *
-   * It is typically paired with a `SetterMethodDeclaration` of the same name. For example, in Swift
-   * the getter of a subscript declaration:
-   * ```swift
-   * subscript(i: Int) -> String {
-   *   get { "42" } // getter method declaration
-   *   set { print(newValue) }
-   * }
-   * ```
-   */
-  final class GetterMethodDeclaration extends FunctionDeclaration {
-    GetterMethodDeclaration() { this.hasModifier("get") }
-  }
-
-  /**
-   * A function declaration marked with a `set` modifier, representing a setter that is invoked
-   * via call syntax when the call appears in an assignment target or is otherwise updated in place.
-   *
-   * The new value is passed as an additional trailing positional parameter. For example, in Swift
-   * the setter of a subscript declaration:
+   * The new value is passed as an additional trailing positional parameter. For example, the
+   * setter of a Swift subscript declaration is named `subscript=`:
    * ```swift
    * subscript(i: Int) -> String {
    *   get { "42" }
@@ -506,7 +490,7 @@ module Unified {
    * ```
    */
   final class SetterMethodDeclaration extends FunctionDeclaration {
-    SetterMethodDeclaration() { this.hasModifier("set") }
+    SetterMethodDeclaration() { this.getName().regexpMatch("[\\p{L}_][\\p{L}\\p{N}_]*=") }
   }
 
   /** An `if` statement or conditional expression. */

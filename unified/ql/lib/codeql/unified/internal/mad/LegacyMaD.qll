@@ -4,6 +4,8 @@
 
 private import unified
 private import codeql.dataflow.internal.AccessPathSyntax
+private import codeql.unified.internal.dataflow.DataFlowCall
+private import codeql.unified.internal.dataflow.DataFlowNode
 
 extensible predicate legacySourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
@@ -75,6 +77,17 @@ private predicate methodCallSelector(CallExpr call, string name, string argLabel
   argLabels = getArgLabelsFromCall(call)
 }
 
+/**
+ * Holds if `call` invokes a setter named `name`, such as `subscript=` for `x[i] = y`.
+ *
+ * The new value is passed as an extra positional argument after the explicit ones.
+ */
+pragma[nomagic]
+private predicate setterCallSelector(CallExpr call, string name, string argLabels) {
+  name = call.getCallee().(MemberAccessExpr).getMemberName() + "=" and
+  argLabels = "_:" + getArgLabelsFromCall(call)
+}
+
 pragma[nomagic]
 private predicate constructorCallSelector(CallExpr call, string name, string argLabels) {
   (
@@ -116,7 +129,6 @@ private predicate callableSelector(
   FunctionDeclaration callable, string type, string name, string argLabels
 ) {
   name = callable.getName() and
-  not callable instanceof SetterMethodDeclaration and // models refer to the getter, e.g. of a subscript
   argLabels = getArgLabelsFromCallable(callable) and
   exists(ClassLikeDeclaration cls |
     callable = cls.getAMemberIncludingExtensions() and
@@ -174,13 +186,16 @@ class Selector extends TSelector {
     this = MkSelector(name, _, "init", argLabels, _)
   }
 
-  predicate matchesCall(CallExpr call) {
+  predicate matchesCall(DataFlowCall call) {
     exists(string name, string argLabels |
       this.matchesMethodCallSelector(name, argLabels) and
-      methodCallSelector(call, name, argLabels)
+      methodCallSelector(call.asExplicitCall(), name, argLabels)
+      or
+      this.matchesMethodCallSelector(name, argLabels) and
+      setterCallSelector(call.asSetterCall(), name, argLabels)
       or
       this.matchesConstructorCallSelector(name, argLabels) and
-      constructorCallSelector(call, name, argLabels)
+      constructorCallSelector(call.asExplicitCall(), name, argLabels)
     )
   }
 
@@ -214,10 +229,10 @@ private import AccessPathOutput
  * Gets the input to `call` specified by `token`. Only singleton access paths are supported.
  */
 bindingset[call, token]
-private DataFlow::Node getSinkFromCall(CallExpr call, AccessPathToken token) {
+private DataFlow::Node getSinkFromCall(DataFlowCall call, AccessPathToken token) {
   token.getName() = "Argument" and
   exists(Argument arg |
-    arg = call.getAnArgument() and
+    arg = call.getCallExpr().getAnArgument() and
     result.asExpr() = arg.getValue()
   |
     arg.getPositionalIndex() = parseIntUnbounded(token.getAnArgument())
@@ -225,18 +240,24 @@ private DataFlow::Node getSinkFromCall(CallExpr call, AccessPathToken token) {
     arg.getName() + ":" = token.getAnArgument()
   )
   or
+  // The new value passed to a setter comes after the positional arguments
+  token.getName() = "Argument" and
+  result.(BuilderNode).isSetterValueArgument(call) and
+  parseIntUnbounded(token.getAnArgument()) =
+    count(Argument arg | arg = call.getCallExpr().getAnArgument() and arg.isPositional())
+  or
   token.getName() = "Argument" and
   token.getAnArgument() = "self" and
-  result.isReceiverArgument(call)
+  result.(BuilderNode).isReceiverArgumentEx(call)
 }
 
 /**
  * Gets the output from `call` specified by `token`. Only singleton access paths are supported.
  */
 bindingset[call, token]
-private DataFlow::Node getSourceFromCall(CallExpr call, AccessPathToken token) {
+private DataFlow::Node getSourceFromCall(DataFlowCall call, AccessPathToken token) {
   token = "ReturnValue" and
-  result.asExpr() = call
+  result.asExpr() = call.asExplicitCall()
   or
   result = getSinkFromCall(call, token).getPostUpdateNode()
 }
@@ -313,7 +334,7 @@ DataFlow::Node getASource(string kind, string provenance) {
   exists(Selector selector, AccessPath output |
     normalizedSourceModel(selector, output, kind, provenance)
   |
-    exists(CallExpr call |
+    exists(DataFlowCall call |
       selector.matchesCall(call) and
       result = getSourceFromCall(call, output)
     )
@@ -332,7 +353,7 @@ DataFlow::Node getASink(string kind, string provenance) {
   exists(Selector selector, AccessPath input |
     normalizedSinkModel(selector, input, kind, provenance)
   |
-    exists(CallExpr call |
+    exists(DataFlowCall call |
       selector.matchesCall(call) and
       result = getSinkFromCall(call, input)
     )

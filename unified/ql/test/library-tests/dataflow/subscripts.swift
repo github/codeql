@@ -134,6 +134,8 @@ func s10() {
 func s11(t: TestType) {
     sink(t[testKey: source("s11.1")])  // $ hasValueFlow=s11.1
     t[testKey: source("s11.2")] = "safe"
+    t[testKey: "safe"] = source("s11.3")
+    sink(t.getField())  // $ hasValueFlow=s11.3
 }
 
 func s12() {
