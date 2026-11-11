@@ -31,8 +31,7 @@ fn class_name(type_name: &str) -> String {
 fn property_name(type_name: &str, field_name: &str) -> String {
     let name = match (type_name, field_name) {
         ("CallExpr", "expr") => "function",
-        ("LetExpr", "expr") => "scrutinee",
-        ("MatchExpr", "expr") => "scrutinee",
+        ("LetExpr" | "MatchExpr", "expr") => "scrutinee",
         ("Variant", "expr") => "discriminant",
         ("FieldExpr", "expr") => "container",
         (_, "name_ref") => "identifier",
@@ -128,8 +127,7 @@ fn get_additional_fields(node_name: &str) -> Vec<FieldInfo> {
             FieldInfo::optional("self_ty", "Type"),
         ],
         "ForExpr" => vec![FieldInfo::optional("iterable", "Expr")],
-        "WhileExpr" => vec![FieldInfo::optional("condition", "Expr")],
-        "MatchGuard" => vec![FieldInfo::optional("condition", "Expr")],
+        "WhileExpr" | "MatchGuard" => vec![FieldInfo::optional("condition", "Expr")],
         "MacroDef" => vec![
             FieldInfo::body("args", "TokenTree"),
             FieldInfo::body("body", "TokenTree"),
@@ -139,8 +137,7 @@ fn get_additional_fields(node_name: &str) -> Vec<FieldInfo> {
         "FormatArgsExpr" => vec![FieldInfo::list("args", "FormatArgsArg")],
         "ArgList" => vec![FieldInfo::list("args", "Expr")],
         "Fn" => vec![FieldInfo::body("body", "BlockExpr")],
-        "Const" => vec![FieldInfo::body("body", "Expr")],
-        "Static" => vec![FieldInfo::body("body", "Expr")],
+        "Const" | "Static" => vec![FieldInfo::body("body", "Expr")],
         "Param" => vec![FieldInfo::body("pat", "Pat")],
         "ClosureExpr" => vec![FieldInfo::optional("body", "Expr")],
         "ArrayExpr" => vec![FieldInfo::predicate("is_semicolon")],

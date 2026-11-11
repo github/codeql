@@ -117,8 +117,7 @@ fn normalize_path(path: &Path) -> String {
                         components.push(String::new());
                     }
                 }
-                std::path::Component::CurDir => {}
-                std::path::Component::ParentDir => {}
+                std::path::Component::CurDir | std::path::Component::ParentDir => {}
             }
         }
         components.join("/")
@@ -205,14 +204,11 @@ pub fn path_for(
                     result.push(share);
                 }
             },
-            std::path::Component::RootDir => {
+            std::path::Component::RootDir | std::path::Component::CurDir => {
                 // skip
             }
             std::path::Component::Normal(_) => {
                 result.push(component);
-            }
-            std::path::Component::CurDir => {
-                // skip
             }
             std::path::Component::ParentDir => {
                 result.pop();
