@@ -1356,6 +1356,35 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     member: {implicit_initializer}))
             }
         ),
+        // Actors are syntactically like classes, but they begin with the
+        // `actor` keyword. We extract them just like classes, but with the
+        // `actor` keyword as a modifier.
+        rule!(
+            (actorDecl
+                actorKeyword: @@kind
+                modifiers: _* @mods
+                name: @@name
+                genericParameterClause: (genericParameterClause
+                    parameters: _* @params
+                    genericWhereClause: (genericWhereClause requirements: _* @parameter_constraints)?)?
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                genericWhereClause: (genericWhereClause requirements: _* @declaration_constraints)?
+                memberBlock: (memberBlock members: _* @members))
+            =>
+            class_like_declaration {
+                let implicit_initializer = implicit_parameterless_initializer(&mut ctx, &members);
+                tree!((class_like_declaration
+                    modifier: (modifier #{kind})
+                    modifier: {mods}
+                    name_node: (identifier #{name})
+                    type_parameter: {params}
+                    type_constraint: {parameter_constraints}
+                    type_constraint: {declaration_constraints}
+                    base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
+                    member: {members}
+                    member: {implicit_initializer}))
+            }
+        ),
         // Enum class declaration: same as a regular class but with an enum body.
         rule!(
             (enumDecl
@@ -1517,7 +1546,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // these roots is discarded with its parent and needs no separate rule.
         // Explicit empty content preserves their existing representation
         // instead of inheriting the matched source text.
-        rule!((actorDecl) => (unsupported_node "")),
         rule!((borrowExpr) => (unsupported_node "")),
         rule!((classRestrictionType) => (unsupported_node "")),
         rule!((compositionType) => (unsupported_node "")),
