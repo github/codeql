@@ -128,6 +128,14 @@ module Unified {
       unified_accessor_declaration_return_type(this, result)
     }
 
+    /** Gets the node corresponding to the field `type_parameter`. */
+    final F::TypeParameter getTypeParameter(int i) {
+      unified_accessor_declaration_type_parameter(this, i, result)
+    }
+
+    /** Gets the node corresponding to the field `type_parameter`. */
+    final F::TypeParameter getATypeParameter() { result = this.getTypeParameter(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       unified_accessor_declaration_def(this, result, _) or
@@ -135,7 +143,8 @@ module Unified {
       unified_accessor_declaration_modifier(this, _, result) or
       unified_accessor_declaration_def(this, _, result) or
       unified_accessor_declaration_parameter(this, _, result) or
-      unified_accessor_declaration_return_type(this, result)
+      unified_accessor_declaration_return_type(this, result) or
+      unified_accessor_declaration_type_parameter(this, _, result)
     }
   }
 
@@ -1634,6 +1643,8 @@ module Unified {
       result = node.(AccessorDeclaration).getParameter(i) and name = "getParameter"
       or
       result = node.(AccessorDeclaration).getReturnType() and i = -1 and name = "getReturnType"
+      or
+      result = node.(AccessorDeclaration).getTypeParameter(i) and name = "getTypeParameter"
       or
       result = node.(Argument).getModifier(i) and name = "getModifier"
       or

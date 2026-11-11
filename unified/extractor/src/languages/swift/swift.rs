@@ -176,8 +176,9 @@ struct SubscriptAccessor {
     body: Option<yeast::Id>,
 }
 
-/// Emit a `function_declaration` for one accessor of a subscript: the getter
-/// is named `subscript` and the setter `subscript=`. The shared parts of the subscript (modifiers, generic and value
+/// Emit the declaration for one accessor of a subscript: the getter is a
+/// `function_declaration` named `subscript`, and the setter an
+/// `accessor_declaration` of kind `setter_method`. The shared parts of the subscript (modifiers, generic and value
 /// parameters and the element type) are translated afresh for each accessor,
 /// so a getter/setter pair each get their own copy. A setter takes the new
 /// value as an extra trailing positional parameter and has no return type.
@@ -202,11 +203,12 @@ fn subscript_method(
     match accessor.setter {
         Some((param_name, spec)) => {
             let implicit_param_name = param_name.is_none().then_some("newValue");
-            tree!((function_declaration
+            tree!((accessor_declaration
                 modifier: {mods}
                 modifier: {accessor.modifiers}
                 modifier: [(modifier "chained_declaration") if { is_chained }]
-                name_node: (identifier "subscript=" location: {kw})
+                name_node: (identifier #{kw})
+                accessor_kind: (accessor_kind "setter_method" location: {spec})
                 type_parameter: {type_params}
                 parameter: {params}
                 parameter: [
@@ -501,8 +503,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // ---- Subscripts ----
         // A subscript declaration becomes a `function_declaration` named
-        // `subscript` for its getter and, if it has a setter, one named
-        // `subscript=` for the setter. A subscript with an explicit accessor block publishes its shared parts
+        // `subscript` for its getter and, if it has a setter, an
+        // `accessor_declaration` of kind `setter_method` named `subscript`.
+        // A subscript with an explicit accessor block publishes its shared parts
         // in `ctx` and lets the `accessorDecl` rule below emit one method per
         // accessor; each one after the first is tagged `chained_declaration`.
         rule!(

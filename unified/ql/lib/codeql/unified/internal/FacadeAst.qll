@@ -476,12 +476,12 @@ module Unified {
   }
 
   /**
-   * A function declaration whose name is an identifier followed by `=`, representing a setter that
-   * is invoked via call syntax when a call appears as an assignment target or is otherwise updated
-   * in place. A call to `foo` in such a position invokes the setter `foo=`.
+   * An accessor declaration of kind `setter_method`, representing a setter that is invoked via call
+   * syntax when a call appears as an assignment target or is otherwise updated in place. Such a call
+   * to `foo` invokes the `setter_method` accessor named `foo`, rather than the ordinary method `foo`.
    *
    * The new value is passed as an additional trailing positional parameter. For example, the
-   * setter of a Swift subscript declaration is named `subscript=`:
+   * setter of a Swift subscript declaration:
    * ```swift
    * subscript(i: Int) -> String {
    *   get { "42" }
@@ -489,8 +489,8 @@ module Unified {
    * }
    * ```
    */
-  final class SetterMethodDeclaration extends FunctionDeclaration {
-    SetterMethodDeclaration() { this.getName().regexpMatch("[\\p{L}_][\\p{L}\\p{N}_]*=") }
+  final class SetterMethodDeclaration extends AccessorDeclaration {
+    SetterMethodDeclaration() { this.getAccessorKind().getValue() = "setter_method" }
   }
 
   /** An `if` statement or conditional expression. */

@@ -78,7 +78,8 @@ private predicate methodCallSelector(CallExpr call, string name, string argLabel
 }
 
 /**
- * Holds if `call` invokes a setter named `name`, such as `subscript=` for `x[i] = y`.
+ * Holds if `call` invokes a setter that models refer to as `name`. By convention, the setter
+ * invoked by a call to `foo` is named `foo=` in models, such as `subscript=` for `x[i] = y`.
  *
  * The new value is passed as an extra positional argument after the explicit ones.
  */
