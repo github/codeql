@@ -166,7 +166,7 @@ pub fn path_from_string(path: &str) -> PathBuf {
     // remove `.` and `..` components
     for component in components {
         match component {
-            std::path::Component::CurDir => continue,
+            std::path::Component::CurDir => {}
             std::path::Component::ParentDir => {
                 result.pop();
             }
