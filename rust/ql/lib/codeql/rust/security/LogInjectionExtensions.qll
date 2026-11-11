@@ -9,12 +9,17 @@ private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 private import codeql.rust.security.Barriers as Barriers
+private import codeql.rust.elements.internal.ElementImpl::Impl as ElementImpl
 
 /**
  * Provides default sources, sinks and barriers for detecting log injection
  * vulnerabilities, as well as extension points for adding your own.
  */
 module LogInjection {
+  private predicate macroExpansionParent(AstNode child, MacroCall parent) {
+    parent = ElementImpl::MacroExpansion::getImmediatelyEnclosingMacroInvocation(child)
+  }
+
   /**
    * A data flow source for log injection vulnerabilities.
    */
@@ -46,21 +51,28 @@ module LogInjection {
 
   /**
    * A sink for the logging macros of the `tracing` crate, such as
-   * `tracing::info!`. The underlying function calls are difficult to
-   * identify reliably, so we treat any expression inside the expansion
-   * of such a macro call as a sink.
+   * `tracing::info!`.
    */
   class TracingMacroSink extends Sink {
     TracingMacroSink() {
-      exists(Crate c, MacroRules m, MacroCall mc |
-        // `c` is a tracing macro of interest
+      exists(Crate c, MacroRules m, MacroExpr valueSet, Call consumer |
+        // `m` is `tracing::valueset_all`
         c.getName() = "tracing" and
         m.getName().getText() = "valueset_all" and
         m.getLocation().getFile() = c.getASourceFile().getFile() and
-        // candidate sinks are expressions inside the expansion of a call to `c`
-        mc.resolveMacro() = m and
-        this.asExpr().getParentNode*() = mc.getMacroCallExpansion() and
-        // limit sinks to places that may have to do with producing a log message
+        // `this` is within the expansion of a call to `tracing::valueset_all`
+        valueSet.getMacroCall().resolveMacro() = m and
+        macroExpansionParent+(this.asExpr(), valueSet.getMacroCall()) and
+        // limit the consumer to relevant calls
+        (
+          not exists(consumer.getResolvedTarget()) and
+          consumer.getPositionalArgument(0) = valueSet
+          or
+          consumer.getResolvedTarget().getCanonicalPath() =
+            ["<tracing::span::Span>::new", "<tracing::span::Span>::child_of"] and
+          valueSet.getParentNode*() = consumer.getAnArgument()
+        ) and
+        // limit sinks to places that may have to do with producing the log message
         (
           this.asExpr().getParentNode() instanceof FormatArgsArg
           or
