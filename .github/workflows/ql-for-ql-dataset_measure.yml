@@ -30,7 +30,7 @@ jobs:
         uses: github/codeql-action/setup-codeql@main
       - uses: ./.github/actions/os-version
         id: os_version
-      - uses: actions/cache@v3
+      - uses: actions/cache@v6
         with:
           path: |
             ~/.cargo/registry
