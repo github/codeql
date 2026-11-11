@@ -19,4 +19,5 @@ dependencies:
   codeql/namebinding: ${workspace}
 dataExtensions:
   - /**/*.model.yml
+  - /**/*.model.json
 warnOnImplicitThis: true
