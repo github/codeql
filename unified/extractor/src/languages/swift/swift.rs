@@ -513,7 +513,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (enumCaseParameter firstName: _? @@name type: @ty)
             =>
-            (parameter pattern: [(identifier #{name})] type: {ty})
+            (parameter
+                external_name_node: [(identifier #{name})]
+                pattern: [(identifier #{name})]
+                type: {ty})
         ),
         // An enum element with associated values (`case circle(radius: Double)`)
         // becomes a nested `class_like_declaration` whose constructor carries the

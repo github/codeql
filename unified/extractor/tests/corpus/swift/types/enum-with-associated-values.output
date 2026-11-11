@@ -79,7 +79,8 @@ top_level source="⟨body⟩"
               member:
                 constructor_declaration source="circle(⟨parameter⟩)"
                   parameter:
-                    parameter source="⟨pattern⟩: ⟨type⟩"
+                    parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+                      external_name_node: identifier "radius" source="radius"
                       type: identifier "Double" source="Double"
                       pattern: identifier "radius" source="radius"
                   body: block source=""
@@ -89,7 +90,8 @@ top_level source="⟨body⟩"
               member:
                 constructor_declaration source="square(⟨parameter⟩)"
                   parameter:
-                    parameter source="⟨pattern⟩: ⟨type⟩"
+                    parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+                      external_name_node: identifier "side" source="side"
                       type: identifier "Double" source="Double"
                       pattern: identifier "side" source="side"
                   body: block source=""
