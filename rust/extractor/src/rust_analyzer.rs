@@ -273,6 +273,8 @@ fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option
 pub fn find_project_manifests(
     files: &[PathBuf],
 ) -> anyhow::Result<Vec<ra_ap_project_model::ProjectManifest>> {
+    const LOG_LIMIT: usize = 10;
+
     let current = std::env::current_dir()?;
     let abs_files: Vec<_> = files
         .iter()
@@ -286,7 +288,6 @@ pub fn find_project_manifests(
         ret.insert(workspace);
     }
     let iter = || ret.iter().map(|m| format!("  {m}"));
-    const LOG_LIMIT: usize = 10;
     if ret.len() <= LOG_LIMIT {
         info!("found manifests:\n{}", iter().join("\n"));
     } else {
@@ -304,6 +305,8 @@ pub fn find_project_manifests(
 }
 
 fn from_utf8_lossy(v: &[u8]) -> (Cow<'_, str>, Option<SyntaxError>) {
+    const REPLACEMENT: &str = "\u{FFFD}";
+
     let mut iter = v.utf8_chunks();
     let (first_valid, first_invalid) = if let Some(chunk) = iter.next() {
         let valid = chunk.valid();
@@ -317,7 +320,6 @@ fn from_utf8_lossy(v: &[u8]) -> (Cow<'_, str>, Option<SyntaxError>) {
         return (Cow::Borrowed(""), None);
     };
 
-    const REPLACEMENT: &str = "\u{FFFD}";
     let error_start = first_valid.len() as u32;
     let error_end = error_start + first_invalid.len() as u32;
     let error_range = TextRange::new(TextSize::new(error_start), TextSize::new(error_end));

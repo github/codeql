@@ -164,6 +164,48 @@ fn resolve_type_ref(
 
 /// Convert YAML string to node-types JSON string.
 pub fn convert(yaml_input: &str) -> Result<String, String> {
+    fn add_fields_to_json_entry(
+        entry: &mut serde_json::Value,
+        fields: Option<&BTreeMap<String, TypeRefOrList>>,
+        named_types: &BTreeSet<String>,
+        unnamed_types: &BTreeSet<String>,
+    ) {
+        let mut json_fields = serde_json::Map::new();
+        let mut json_children = None;
+
+        for (raw_field_name, type_refs) in fields.into_iter().flatten() {
+            let spec = parse_field_name(raw_field_name);
+            let types: Vec<_> = type_refs
+                .clone()
+                .into_vec()
+                .iter()
+                .map(|t| resolve_type_ref(t, named_types, unnamed_types))
+                .collect();
+            let field_info = json!({
+                "multiple": spec.multiple,
+                "required": spec.required,
+                "types": types,
+            });
+
+            if let Some(name) = spec.name {
+                json_fields.insert(name, field_info);
+            } else {
+                json_children = Some(field_info);
+            }
+        }
+
+        entry
+            .as_object_mut()
+            .unwrap()
+            .insert("fields".to_string(), json_fields.into());
+        if let Some(children) = json_children {
+            entry
+                .as_object_mut()
+                .unwrap()
+                .insert("children".to_string(), children);
+        }
+    }
+
     let yaml: YamlNodeTypes =
         serde_yaml::from_str(yaml_input).map_err(|e| format!("Failed to parse YAML: {e}"))?;
 
@@ -226,48 +268,6 @@ pub fn convert(yaml_input: &str) -> Result<String, String> {
         add_fields_to_json_entry(&mut entry, Some(fields_map), &named_types, &unnamed_types);
 
         output.push(entry);
-    }
-
-    fn add_fields_to_json_entry(
-        entry: &mut serde_json::Value,
-        fields: Option<&BTreeMap<String, TypeRefOrList>>,
-        named_types: &BTreeSet<String>,
-        unnamed_types: &BTreeSet<String>,
-    ) {
-        let mut json_fields = serde_json::Map::new();
-        let mut json_children = None;
-
-        for (raw_field_name, type_refs) in fields.into_iter().flatten() {
-            let spec = parse_field_name(raw_field_name);
-            let types: Vec<_> = type_refs
-                .clone()
-                .into_vec()
-                .iter()
-                .map(|t| resolve_type_ref(t, named_types, unnamed_types))
-                .collect();
-            let field_info = json!({
-                "multiple": spec.multiple,
-                "required": spec.required,
-                "types": types,
-            });
-
-            if let Some(name) = spec.name {
-                json_fields.insert(name, field_info);
-            } else {
-                json_children = Some(field_info);
-            }
-        }
-
-        entry
-            .as_object_mut()
-            .unwrap()
-            .insert("fields".to_string(), json_fields.into());
-        if let Some(children) = json_children {
-            entry
-                .as_object_mut()
-                .unwrap()
-                .insert("children".to_string(), children);
-        }
     }
 
     // 3. Unnamed tokens
