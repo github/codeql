@@ -1,9 +1,8 @@
 load("@rules_rust//rust:defs.bzl", "rust_test")
 load("//misc/bazel:rust.bzl", "codeql_rust_binary")
-load("//misc/bazel/3rdparty/cpp_bmn_deps:defs.bzl", "all_crate_deps")
+load("//misc/bazel/3rdparty/rust_workspace_deps:defs.bzl", "all_crate_deps")
 
 exports_files([
-    "Cargo.lock",
     "Cargo.toml",
 ])
 

@@ -4,9 +4,12 @@ on:
   pull_request:
     paths: &bmn_paths
       - "cpp/extractor/bmn/**"
-      - "misc/bazel/3rdparty/cpp_bmn_deps/**"
-      - "misc/bazel/3rdparty/cpp_bmn_deps_extension.bzl"
-      - "misc/bazel/3rdparty/update_cpp_bmn_deps.sh"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "rust-toolchain.toml"
+      - "misc/bazel/3rdparty/rust_workspace_deps/**"
+      - "misc/bazel/3rdparty/rust_workspace_deps_extension.bzl"
+      - "misc/bazel/3rdparty/update_rust_workspace_deps.sh"
       - "misc/bazel/3rdparty/BUILD.bazel"
       - "misc/bazel/rust.bzl"
       - "MODULE.bazel"
@@ -33,7 +36,7 @@ jobs:
       - name: Check
         run: cargo check
       - name: Clippy
-        run: cargo clippy -- -D warnings
+        run: cargo clippy --all-targets --no-deps -- -D warnings
       - name: Test
         run: cargo test
 
