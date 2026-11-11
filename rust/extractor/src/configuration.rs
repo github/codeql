@@ -215,7 +215,7 @@ impl<'a> DependencyFiles<'a> {
 mod tests {
     use super::*;
     use ra_ap_base_db::{
-        CrateGraphBuilder, CrateOrigin, CrateWorkspaceData, FileChange, FileSet, SourceRoot,
+        CrateGraphBuilder, CrateOrigin, CrateWorkspaceData, Env, FileChange, FileSet, SourceRoot,
     };
     use ra_ap_intern::Symbol;
     use ra_ap_span::Edition;
@@ -251,7 +251,7 @@ mod tests {
                 None,
                 cfg(features),
                 None,
-                Default::default(),
+                Env::default(),
                 CrateOrigin::Library {
                     repo: None,
                     name: Symbol::intern(name),

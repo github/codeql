@@ -317,7 +317,7 @@ impl DiagnosticMessage {
         self
     }
     pub fn file(&mut self, path: &str) -> &mut Self {
-        let loc = self.location.get_or_insert(Default::default());
+        let loc = self.location.get_or_insert(Location::default());
         loc.file = Some(path.to_owned());
         self
     }
@@ -329,7 +329,7 @@ impl DiagnosticMessage {
         end_line: usize,
         end_column: usize,
     ) -> &mut Self {
-        let loc = self.location.get_or_insert(Default::default());
+        let loc = self.location.get_or_insert(Location::default());
         loc.file = Some(path.to_owned());
         loc.start_line = Some(start_line);
         loc.start_column = Some(start_column);

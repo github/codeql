@@ -396,7 +396,11 @@ fn main() -> anyhow::Result<()> {
         let entry = entry.context("failed to read builtins directory")?;
         let path = entry.path();
         if path.extension().is_some_and(|ext| ext == "rs") {
-            extractor.extract_without_semantics(&path, SourceKind::Library, Default::default());
+            extractor.extract_without_semantics(
+                &path,
+                SourceKind::Library,
+                RustAnalyzerNoSemantics::default(),
+            );
         }
     }
 
