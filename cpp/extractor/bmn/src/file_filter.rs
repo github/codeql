@@ -97,7 +97,8 @@ fn relativize_path(path: PathBuf) -> Result<PathBuf> {
                 Ok(PathBuf::from_iter(sliced))
             }
             _ => Err(anyhow!(
-                "Path cannot start with .. or the drive prefix: {path:?}"
+                "Path cannot start with .. or the drive prefix: {}",
+                path.display()
             )),
         }
     }

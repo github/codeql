@@ -45,7 +45,7 @@ fn run_command(command: &mut Command) -> anyhow::Result<()> {
             } else {
                 OsString::from("Failed to read output")
             };
-            Err(anyhow!("\"{command_name}\" failed: {error:?}"))
+            Err(anyhow!("\"{command_name}\" failed: {}", error.display()))
         }
         Err(e) => Err(anyhow!("Error waiting for process \"{command_name}\": {e}")),
     }

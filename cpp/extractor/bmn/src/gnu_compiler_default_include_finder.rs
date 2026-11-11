@@ -95,7 +95,8 @@ fn execute_command_with_args_get_stderr(cmd: &OsStr, args: &[&str]) -> Result<Ve
     match Command::new(cmd).args(args).stdin(Stdio::piped()).output() {
         Ok(output) if output.status.success() => Ok(output.stderr),
         _ => Err(anyhow!(
-            "Error invoking the compiler {cmd:?} to get the default include folders."
+            "Error invoking the compiler {} to get the default include folders.",
+            cmd.display()
         )),
     }
 }
@@ -597,7 +598,7 @@ End of search list."#;
         assert_true!(output.is_err());
         assert_eq!(
             output.unwrap_err().to_string(),
-            format!("Error invoking the compiler {cmd:?} to get the default include folders.")
+            "Error invoking the compiler command-not-existing to get the default include folders."
         );
     }
 
@@ -608,7 +609,7 @@ End of search list."#;
         assert_true!(result.is_err());
         assert_eq!(
             result.unwrap_err().to_string(),
-            format!("Error invoking the compiler {cmd:?} to get the default include folders.")
+            "Error invoking the compiler command-not-existing to get the default include folders."
         );
     }
 }
