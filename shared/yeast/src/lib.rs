@@ -1439,6 +1439,7 @@ impl<C> DesugaringConfig<C> {
     /// Add a translation phase with the given name and exhaustive rules.
     ///
     /// Runners currently reject configurations containing more than one phase.
+    #[must_use]
     pub fn add_phase(mut self, name: impl Into<String>, mut rules: Vec<Rule<C>>) -> Self {
         for rule in &mut rules {
             rule.set_ignored_location_fields(&self.ignored_location_fields);
@@ -1449,6 +1450,7 @@ impl<C> DesugaringConfig<C> {
 
     /// Ignore boundary syntax stored under any of these input field names when
     /// calculating matched locations for rule results.
+    #[must_use]
     pub fn with_ignored_location_fields(
         mut self,
         fields: impl IntoIterator<Item = &'static str>,
@@ -1462,6 +1464,7 @@ impl<C> DesugaringConfig<C> {
         self
     }
 
+    #[must_use]
     pub fn with_output_node_types_yaml(mut self, yaml: &'static str) -> Self {
         self.output_node_types_yaml = Some(yaml);
         self
