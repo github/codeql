@@ -245,32 +245,32 @@
 | 288 | cfg.swift:288:1:319:1 | func testSubscriptExpr | 'func testSubscriptExpr -V testSubscriptExpr' |
 | 288 | cfg.swift:288:55:319:1 | Block | 'Block' |
 | 289 | cfg.swift:289:3:289:44 | var a | 'var a -V a -> 0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -^ ArrayLiteral' |
-| 290 | cfg.swift:290:3:290:3 | a | 'a -> Argument -V 0 -^ a(...) -> 0 -^ ... = ...' |
-| 291 | cfg.swift:291:3:291:3 | a | 'a -> Argument -V 1 -^ a(...) -> 1 -^ ... += ...' |
-| 292 | cfg.swift:292:3:292:3 | a | 'a -> Argument -V 2 -^ a(...) -> 1 -^ ... -= ...' |
-| 293 | cfg.swift:293:3:293:3 | a | 'a -> Argument -V 3 -^ a(...) -> 1 -^ ... *= ...' |
-| 294 | cfg.swift:294:3:294:3 | a | 'a -> Argument -V 4 -^ a(...) -> 1 -^ ... /= ...' |
-| 295 | cfg.swift:295:3:295:3 | a | 'a -> Argument -V 5 -^ a(...) -> 1 -^ ... %= ...' |
-| 296 | cfg.swift:296:3:296:3 | a | 'a -> Argument -V 6 -^ a(...) -> 1 -^ ... &= ...' |
-| 297 | cfg.swift:297:3:297:3 | a | 'a -> Argument -V 7 -^ a(...) -> 1 -^ ... \|= ...' |
-| 298 | cfg.swift:298:3:298:3 | a | 'a -> Argument -V 8 -^ a(...) -> 1 -^ ... ^= ...' |
-| 299 | cfg.swift:299:3:299:3 | a | 'a -> Argument -V 9 -^ a(...) -> 1 -^ ... <<= ...' |
-| 300 | cfg.swift:300:3:300:3 | a | 'a -> Argument -V 10 -^ a(...) -> 1 -^ ... >>= ...' |
-| 302 | cfg.swift:302:3:302:49 | var tupleWithA | 'var tupleWithA -V tupleWithA -> Argument -V a -> Argument -V 0 -^ a(...) -> Argument -V a -> Argument -V 1 -^ a(...) -> Argument -V a -> Argument -V 2 -^ a(...) -> Argument -V a -> Argument -V 3 -^ a(...) -> Argument -V a -> Argument -V 4 -^ a(...) -^ TupleExpr' |
+| 290 | cfg.swift:290:3:290:3 | a | 'a -^ ... .subscript -> Argument -V 0 -^ ... .subscript(...) -> 0 -^ ... = ...' |
+| 291 | cfg.swift:291:3:291:3 | a | 'a -^ ... .subscript -> Argument -V 1 -^ ... .subscript(...) -> 1 -^ ... += ...' |
+| 292 | cfg.swift:292:3:292:3 | a | 'a -^ ... .subscript -> Argument -V 2 -^ ... .subscript(...) -> 1 -^ ... -= ...' |
+| 293 | cfg.swift:293:3:293:3 | a | 'a -^ ... .subscript -> Argument -V 3 -^ ... .subscript(...) -> 1 -^ ... *= ...' |
+| 294 | cfg.swift:294:3:294:3 | a | 'a -^ ... .subscript -> Argument -V 4 -^ ... .subscript(...) -> 1 -^ ... /= ...' |
+| 295 | cfg.swift:295:3:295:3 | a | 'a -^ ... .subscript -> Argument -V 5 -^ ... .subscript(...) -> 1 -^ ... %= ...' |
+| 296 | cfg.swift:296:3:296:3 | a | 'a -^ ... .subscript -> Argument -V 6 -^ ... .subscript(...) -> 1 -^ ... &= ...' |
+| 297 | cfg.swift:297:3:297:3 | a | 'a -^ ... .subscript -> Argument -V 7 -^ ... .subscript(...) -> 1 -^ ... \|= ...' |
+| 298 | cfg.swift:298:3:298:3 | a | 'a -^ ... .subscript -> Argument -V 8 -^ ... .subscript(...) -> 1 -^ ... ^= ...' |
+| 299 | cfg.swift:299:3:299:3 | a | 'a -^ ... .subscript -> Argument -V 9 -^ ... .subscript(...) -> 1 -^ ... <<= ...' |
+| 300 | cfg.swift:300:3:300:3 | a | 'a -^ ... .subscript -> Argument -V 10 -^ ... .subscript(...) -> 1 -^ ... >>= ...' |
+| 302 | cfg.swift:302:3:302:49 | var tupleWithA | 'var tupleWithA -V tupleWithA -> Argument -V a -^ ... .subscript -> Argument -V 0 -^ ... .subscript(...) -> Argument -V a -^ ... .subscript -> Argument -V 1 -^ ... .subscript(...) -> Argument -V a -^ ... .subscript -> Argument -V 2 -^ ... .subscript(...) -> Argument -V a -^ ... .subscript -> Argument -V 3 -^ ... .subscript(...) -> Argument -V a -^ ... .subscript -> Argument -V 4 -^ ... .subscript(...) -^ TupleExpr' |
 | 304 | cfg.swift:304:3:304:48 | var b | 'var b -V b -> 0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11 -^ ArrayLiteral' |
-| 305 | cfg.swift:305:3:305:3 | b | 'b -> Argument -V 0 -^ b(...) -> a -> Argument -V 10 -^ a(...) -^ ... = ...' |
-| 306 | cfg.swift:306:3:306:3 | b | 'b -> Argument -V 1 -^ b(...) -> b -> Argument -V 0 -^ b(...) -> 1 -^ ... + ... -^ ... = ...' |
-| 307 | cfg.swift:307:3:307:3 | b | 'b -> Argument -V 2 -^ b(...) -> b -> Argument -V 1 -^ b(...) -> 1 -^ ... - ... -^ ... = ...' |
-| 308 | cfg.swift:308:3:308:3 | b | 'b -> Argument -V 3 -^ b(...) -> b -> Argument -V 2 -^ b(...) -> 1 -^ ... * ... -^ ... = ...' |
-| 309 | cfg.swift:309:3:309:3 | b | 'b -> Argument -V 4 -^ b(...) -> b -> Argument -V 3 -^ b(...) -> 1 -^ ... / ... -^ ... = ...' |
-| 310 | cfg.swift:310:3:310:3 | b | 'b -> Argument -V 5 -^ b(...) -> b -> Argument -V 4 -^ b(...) -> 1 -^ ... % ... -^ ... = ...' |
-| 311 | cfg.swift:311:3:311:3 | b | 'b -> Argument -V 6 -^ b(...) -> b -> Argument -V 5 -^ b(...) -> 1 -^ ... & ... -^ ... = ...' |
-| 312 | cfg.swift:312:3:312:3 | b | 'b -> Argument -V 7 -^ b(...) -> b -> Argument -V 6 -^ b(...) -> 1 -^ ... \| ... -^ ... = ...' |
-| 313 | cfg.swift:313:3:313:3 | b | 'b -> Argument -V 8 -^ b(...) -> b -> Argument -V 7 -^ b(...) -> 1 -^ ... ^ ... -^ ... = ...' |
-| 314 | cfg.swift:314:3:314:3 | b | 'b -> Argument -V 9 -^ b(...) -> b -> Argument -V 8 -^ b(...) -> 1 -^ ... << ... -^ ... = ...' |
-| 315 | cfg.swift:315:3:315:3 | b | 'b -> Argument -V 10 -^ b(...) -> b -> Argument -V 9 -^ b(...) -> 1 -^ ... >> ... -^ ... = ...' |
+| 305 | cfg.swift:305:3:305:3 | b | 'b -^ ... .subscript -> Argument -V 0 -^ ... .subscript(...) -> a -^ ... .subscript -> Argument -V 10 -^ ... .subscript(...) -^ ... = ...' |
+| 306 | cfg.swift:306:3:306:3 | b | 'b -^ ... .subscript -> Argument -V 1 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 0 -^ ... .subscript(...) -> 1 -^ ... + ... -^ ... = ...' |
+| 307 | cfg.swift:307:3:307:3 | b | 'b -^ ... .subscript -> Argument -V 2 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 1 -^ ... .subscript(...) -> 1 -^ ... - ... -^ ... = ...' |
+| 308 | cfg.swift:308:3:308:3 | b | 'b -^ ... .subscript -> Argument -V 3 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 2 -^ ... .subscript(...) -> 1 -^ ... * ... -^ ... = ...' |
+| 309 | cfg.swift:309:3:309:3 | b | 'b -^ ... .subscript -> Argument -V 4 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 3 -^ ... .subscript(...) -> 1 -^ ... / ... -^ ... = ...' |
+| 310 | cfg.swift:310:3:310:3 | b | 'b -^ ... .subscript -> Argument -V 5 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 4 -^ ... .subscript(...) -> 1 -^ ... % ... -^ ... = ...' |
+| 311 | cfg.swift:311:3:311:3 | b | 'b -^ ... .subscript -> Argument -V 6 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 5 -^ ... .subscript(...) -> 1 -^ ... & ... -^ ... = ...' |
+| 312 | cfg.swift:312:3:312:3 | b | 'b -^ ... .subscript -> Argument -V 7 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 6 -^ ... .subscript(...) -> 1 -^ ... \| ... -^ ... = ...' |
+| 313 | cfg.swift:313:3:313:3 | b | 'b -^ ... .subscript -> Argument -V 8 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 7 -^ ... .subscript(...) -> 1 -^ ... ^ ... -^ ... = ...' |
+| 314 | cfg.swift:314:3:314:3 | b | 'b -^ ... .subscript -> Argument -V 9 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 8 -^ ... .subscript(...) -> 1 -^ ... << ... -^ ... = ...' |
+| 315 | cfg.swift:315:3:315:3 | b | 'b -^ ... .subscript -> Argument -V 10 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 9 -^ ... .subscript(...) -> 1 -^ ... >> ... -^ ... = ...' |
 | 317 | cfg.swift:317:3:317:39 | let (pattern assignment) | 'let (pattern assignment) -V Argument -V a1 -> Argument -V a2 -> Argument -V a3 -> Argument -V a4 -> Argument -V a5 -^ TupleExpr -> tupleWithA' |
-| 318 | cfg.swift:318:11:318:19 | Argument | 'Argument -V a1 -> b -> Argument -V 0 -^ b(...) -^ ... + ... -> Argument -V a2 -> b -> Argument -V 1 -^ b(...) -^ ... + ... -> Argument -V a3 -> b -> Argument -V 2 -^ b(...) -^ ... + ... -> Argument -V a4 -> b -> Argument -V 3 -^ b(...) -^ ... + ... -> Argument -V a5 -> b -> Argument -V 4 -^ b(...) -^ ... + ... -^ TupleExpr -^ ReturnExpr' |
+| 318 | cfg.swift:318:11:318:19 | Argument | 'Argument -V a1 -> b -^ ... .subscript -> Argument -V 0 -^ ... .subscript(...) -^ ... + ... -> Argument -V a2 -> b -^ ... .subscript -> Argument -V 1 -^ ... .subscript(...) -^ ... + ... -> Argument -V a3 -> b -^ ... .subscript -> Argument -V 2 -^ ... .subscript(...) -^ ... + ... -> Argument -V a4 -> b -^ ... .subscript -> Argument -V 3 -^ ... .subscript(...) -^ ... + ... -> Argument -V a5 -> b -^ ... .subscript -> Argument -V 4 -^ ... .subscript(...) -^ ... + ... -^ TupleExpr -^ ReturnExpr' |
 | 321 | cfg.swift:321:1:326:1 | func loop1 | 'func loop1 -V loop1' |
 | 321 | cfg.swift:321:12:321:12 | x | 'x -> Block' |
 | 322 | cfg.swift:322:3:325:3 | WhileStmt | 'WhileStmt' |
@@ -396,10 +396,10 @@
 | 467 | cfg.swift:467:3:467:31 | var kpGet_bs_0_x | 'var kpGet_bs_0_x -V kpGet_bs_0_x -> ' |
 | 468 | cfg.swift:468:3:468:37 | var kpGet_mayB_force_x | 'var kpGet_mayB_force_x -V kpGet_mayB_force_x -> ' |
 | 469 | cfg.swift:469:3:469:31 | var kpGet_mayB_x | 'var kpGet_mayB_x -V kpGet_mayB_x -> ' |
-| 471 | cfg.swift:471:3:471:45 | var apply_kpGet_b_x | 'var apply_kpGet_b_x -V apply_kpGet_b_x -> a -> Argument -V kpGet_b_x -^ a(...)' |
-| 472 | cfg.swift:472:3:472:51 | var apply_kpGet_bs_0_x | 'var apply_kpGet_bs_0_x -V apply_kpGet_bs_0_x -> a -> Argument -V kpGet_bs_0_x -^ a(...)' |
-| 473 | cfg.swift:473:3:473:63 | var apply_kpGet_mayB_force_x | 'var apply_kpGet_mayB_force_x -V apply_kpGet_mayB_force_x -> a -> Argument -V kpGet_mayB_force_x -^ a(...)' |
-| 474 | cfg.swift:474:3:474:51 | var apply_kpGet_mayB_x | 'var apply_kpGet_mayB_x -V apply_kpGet_mayB_x -> a -> Argument -V kpGet_mayB_x -^ a(...)' |
+| 471 | cfg.swift:471:3:471:45 | var apply_kpGet_b_x | 'var apply_kpGet_b_x -V apply_kpGet_b_x -> a -^ ... .subscript -> Argument -V kpGet_b_x -^ ... .subscript(...)' |
+| 472 | cfg.swift:472:3:472:51 | var apply_kpGet_bs_0_x | 'var apply_kpGet_bs_0_x -V apply_kpGet_bs_0_x -> a -^ ... .subscript -> Argument -V kpGet_bs_0_x -^ ... .subscript(...)' |
+| 473 | cfg.swift:473:3:473:63 | var apply_kpGet_mayB_force_x | 'var apply_kpGet_mayB_force_x -V apply_kpGet_mayB_force_x -> a -^ ... .subscript -> Argument -V kpGet_mayB_force_x -^ ... .subscript(...)' |
+| 474 | cfg.swift:474:3:474:51 | var apply_kpGet_mayB_x | 'var apply_kpGet_mayB_x -V apply_kpGet_mayB_x -> a -^ ... .subscript -> Argument -V kpGet_mayB_x -^ ... .subscript(...)' |
 | 477 | cfg.swift:477:1:504:1 | func testIfConfig | 'func testIfConfig -V testIfConfig' |
 | 477 | cfg.swift:477:21:504:1 | Block | 'Block' |
 | 478 | cfg.swift:478:1:484:6 | IfExpr | 'IfExpr -V FOO' |

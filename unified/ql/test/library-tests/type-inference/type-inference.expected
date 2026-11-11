@@ -2732,7 +2732,7 @@ inferType
 | key_paths.swift:131:20:131:22 | 1.0 |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:131:28:131:30 | 2.0 |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:133:3:133:3 | p |  | key_paths.swift:3:1:15:1 | Point |
-| key_paths.swift:133:3:133:17 | p(...) |  | {EXTERNAL LOCATION} | Double |
+| key_paths.swift:133:3:133:17 | ... .subscript(...) |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:133:3:133:24 | ... = ... |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:133:21:133:24 | 10.0 |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:134:14:134:14 | p |  | key_paths.swift:3:1:15:1 | Point |

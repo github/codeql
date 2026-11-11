@@ -1,0 +1,333 @@
+struct S {
+    var data: [Int]
+    subscript(at index: Int, _ other: Int) -> Int {
+        get { data[index] }
+        nonmutating set(v) { print(v) }
+    }
+    static subscript<T>(key: T) -> T {
+        set { print(newValue) }
+        get { key }
+    }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        structDecl
+          attributes:
+          modifiers:
+          name: identifier "S"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "data"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                arrayType
+                                  leftSquare: [
+                                  rightSquare: ]
+                                  element:
+                                    identifierType
+                                      name: identifier "Int"
+                memberBlockItem
+                  decl:
+                    subscriptDecl
+                      attributes:
+                      modifiers:
+                      parameterClause:
+                        functionParameterClause
+                          leftParen: (
+                          rightParen: )
+                          parameters:
+                            functionParameter
+                              colon: :
+                              attributes:
+                              modifiers:
+                              trailingComma: ,
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                              firstName: identifier "at"
+                              secondName: identifier "index"
+                            functionParameter
+                              colon: :
+                              attributes:
+                              modifiers:
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                              firstName: _
+                              secondName: identifier "other"
+                      returnClause:
+                        returnClause
+                          arrow: ->
+                          type:
+                            identifierType
+                              name: identifier "Int"
+                      accessorBlock:
+                        accessorBlock
+                          accessors:
+                            accessorDecl
+                              accessorSpecifier: get
+                              attributes:
+                              body:
+                                codeBlock
+                                  leftBrace: {
+                                  rightBrace: }
+                                  statements:
+                                    codeBlockItem
+                                      item:
+                                        subscriptCallExpr
+                                          leftSquare: [
+                                          rightSquare: ]
+                                          arguments:
+                                            labeledExpr
+                                              expression:
+                                                declReferenceExpr
+                                                  baseName: identifier "index"
+                                          additionalTrailingClosures:
+                                          calledExpression:
+                                            declReferenceExpr
+                                              baseName: identifier "data"
+                              modifiers:
+                            accessorDecl
+                              accessorSpecifier: set
+                              attributes:
+                              body:
+                                codeBlock
+                                  leftBrace: {
+                                  rightBrace: }
+                                  statements:
+                                    codeBlockItem
+                                      item:
+                                        functionCallExpr
+                                          leftParen: (
+                                          rightParen: )
+                                          arguments:
+                                            labeledExpr
+                                              expression:
+                                                declReferenceExpr
+                                                  baseName: identifier "v"
+                                          additionalTrailingClosures:
+                                          calledExpression:
+                                            declReferenceExpr
+                                              baseName: identifier "print"
+                              modifiers:
+                                declModifier
+                                  name: nonmutating
+                              parameters:
+                                accessorParameters
+                                  leftParen: (
+                                  rightParen: )
+                                  name: identifier "v"
+                          leftBrace: {
+                          rightBrace: }
+                      subscriptKeyword: subscript
+                memberBlockItem
+                  decl:
+                    subscriptDecl
+                      attributes:
+                      modifiers:
+                        declModifier
+                          name: static
+                      genericParameterClause:
+                        genericParameterClause
+                          parameters:
+                            genericParameter
+                              attributes:
+                              name: identifier "T"
+                          leftAngle: <
+                          rightAngle: >
+                      parameterClause:
+                        functionParameterClause
+                          leftParen: (
+                          rightParen: )
+                          parameters:
+                            functionParameter
+                              colon: :
+                              attributes:
+                              modifiers:
+                              type:
+                                identifierType
+                                  name: identifier "T"
+                              firstName: identifier "key"
+                      returnClause:
+                        returnClause
+                          arrow: ->
+                          type:
+                            identifierType
+                              name: identifier "T"
+                      accessorBlock:
+                        accessorBlock
+                          accessors:
+                            accessorDecl
+                              accessorSpecifier: set
+                              attributes:
+                              body:
+                                codeBlock
+                                  leftBrace: {
+                                  rightBrace: }
+                                  statements:
+                                    codeBlockItem
+                                      item:
+                                        functionCallExpr
+                                          leftParen: (
+                                          rightParen: )
+                                          arguments:
+                                            labeledExpr
+                                              expression:
+                                                declReferenceExpr
+                                                  baseName: identifier "newValue"
+                                          additionalTrailingClosures:
+                                          calledExpression:
+                                            declReferenceExpr
+                                              baseName: identifier "print"
+                              modifiers:
+                            accessorDecl
+                              accessorSpecifier: get
+                              attributes:
+                              body:
+                                codeBlock
+                                  leftBrace: {
+                                  rightBrace: }
+                                  statements:
+                                    codeBlockItem
+                                      item:
+                                        declReferenceExpr
+                                          baseName: identifier "key"
+                              modifiers:
+                          leftBrace: {
+                          rightBrace: }
+                      subscriptKeyword: subscript
+          structKeyword: struct
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    ⟨member⟩\n    ⟨member⟩⟨member⟩\n    }\n    ⟨member⟩⟨member⟩\n    }\n}"
+          modifier: modifier "struct" source="struct"
+          name_node: identifier "S" source="S"
+          member:
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩"
+              modifier: modifier "var" source="var"
+              pattern: identifier "data" source="data"
+              type:
+                generic_type_expr source="[⟨type_argument⟩]"
+                  base: identifier "Array" source=""
+                  type_argument: identifier "Int" source="Int"
+            function_declaration source="⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) -> ⟨return_type⟩ {\n        ⟨modifier⟩ ⟨body⟩"
+              modifier: modifier "get" source="get"
+              name_node: identifier "subscript" source="subscript"
+              parameter:
+                parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+                  external_name_node: identifier "at" source="at"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "index" source="index"
+                parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+                  external_name_node: identifier "_" source="_"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "other" source="other"
+              return_type: identifier "Int" source="Int"
+              body:
+                block source="{ ⟨stmt⟩ }"
+                  stmt:
+                    call_expr source="⟨callee⟩⟨argument⟩]"
+                      callee:
+                        member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                          base: identifier "data" source="data"
+                          member_name_node: identifier "subscript" source="["
+                      argument:
+                        argument source="⟨value⟩"
+                          value: identifier "index" source="index"
+            function_declaration source="⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) -> Int {\n        get { data[index] }\n        ⟨modifier⟩ ⟨modifier⟩(⟨parameter⟩) ⟨body⟩"
+              modifier:
+                modifier "set" source="set"
+                modifier "nonmutating" source="nonmutating"
+                modifier "chained_declaration" source=""
+              name_node: identifier "subscript" source="subscript"
+              parameter:
+                parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+                  external_name_node: identifier "at" source="at"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "index" source="index"
+                parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+                  external_name_node: identifier "_" source="_"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "other" source="other"
+                parameter source="⟨pattern⟩"
+                  type: identifier "Int" source="Int" (external)
+                  pattern: identifier "v" source="v"
+              body:
+                block source="{ ⟨stmt⟩ }"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: identifier "v" source="v"
+            function_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩>(⟨parameter⟩) -> T {\n        ⟨modifier⟩⟨parameter⟩ ⟨body⟩"
+              modifier:
+                modifier "static" source="static"
+                modifier "set" source="set"
+              name_node: identifier "subscript" source="subscript"
+              type_parameter:
+                type_parameter source="⟨name_node⟩"
+                  name_node: identifier "T" source="T"
+              parameter:
+                parameter source="⟨pattern⟩: ⟨type⟩"
+                  type: identifier "T" source="T"
+                  pattern: identifier "key" source="key"
+                parameter source="⟨pattern⟩"
+                  modifier: modifier "generated" source=""
+                  type: identifier "T" source="T" (external)
+                  pattern: identifier "newValue" source="set"
+              body:
+                block source="{ ⟨stmt⟩ }"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: identifier "newValue" source="newValue"
+            function_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩>(⟨parameter⟩) -> ⟨return_type⟩ {\n        set { print(newValue) }\n        ⟨modifier⟩ ⟨body⟩"
+              modifier:
+                modifier "static" source="static"
+                modifier "get" source="get"
+                modifier "chained_declaration" source=""
+              name_node: identifier "subscript" source="subscript"
+              type_parameter:
+                type_parameter source="⟨name_node⟩"
+                  name_node: identifier "T" source="T"
+              parameter:
+                parameter source="⟨pattern⟩: ⟨type⟩"
+                  type: identifier "T" source="T"
+                  pattern: identifier "key" source="key"
+              return_type: identifier "T" source="T"
+              body:
+                block source="{ ⟨stmt⟩ }"
+                  stmt: identifier "key" source="key"
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""

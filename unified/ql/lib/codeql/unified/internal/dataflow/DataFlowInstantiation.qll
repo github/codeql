@@ -98,7 +98,7 @@ module DataFlowInput implements InputSig<Location> {
   private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition pos) {
     exists(Argument arg |
       n.asExpr() = arg.getValue() and
-      call.asExplicitCall().getAnArgument() = arg
+      call.getCallExpr().getAnArgument() = arg
     |
       pos.asPositional() = arg.getPositionalIndex()
       or
@@ -108,7 +108,11 @@ module DataFlowInput implements InputSig<Location> {
     n.(BuilderNode).isImplicitArgument(call, pos, false)
     or
     n.(BuilderNode).isSetterValueArgument(call) and
-    pos.asPositional() = 0
+    // The new value is passed after the positional arguments, if any
+    pos.asPositional() =
+      count(Argument arg |
+        arg = call.asSetterCall().(CallExpr).getAnArgument() and arg.isPositional()
+      )
     or
     exists(FlowSummaryOutput::SummaryNode callee |
       FlowSummaryOutput::summaryArgumentNode(callee, getSummaryNode(n), pos) and

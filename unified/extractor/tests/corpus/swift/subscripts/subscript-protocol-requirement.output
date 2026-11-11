@@ -1,0 +1,93 @@
+protocol P {
+    subscript(i: Int) -> String { get set }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        protocolDecl
+          attributes:
+          modifiers:
+          name: identifier "P"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    subscriptDecl
+                      attributes:
+                      modifiers:
+                      parameterClause:
+                        functionParameterClause
+                          leftParen: (
+                          rightParen: )
+                          parameters:
+                            functionParameter
+                              colon: :
+                              attributes:
+                              modifiers:
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                              firstName: identifier "i"
+                      returnClause:
+                        returnClause
+                          arrow: ->
+                          type:
+                            identifierType
+                              name: identifier "String"
+                      accessorBlock:
+                        accessorBlock
+                          accessors:
+                            accessorDecl
+                              accessorSpecifier: get
+                              attributes:
+                              modifiers:
+                            accessorDecl
+                              accessorSpecifier: set
+                              attributes:
+                              modifiers:
+                          leftBrace: {
+                          rightBrace: }
+                      subscriptKeyword: subscript
+          protocolKeyword: protocol
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    ⟨member⟩⟨member⟩ }\n}"
+          modifier: modifier "protocol" source="protocol"
+          name_node: identifier "P" source="P"
+          member:
+            function_declaration source="⟨name_node⟩(⟨parameter⟩) -> ⟨return_type⟩ { ⟨modifier⟩"
+              modifier: modifier "get" source="get"
+              name_node: identifier "subscript" source="subscript"
+              parameter:
+                parameter source="⟨pattern⟩: ⟨type⟩"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "i" source="i"
+              return_type: identifier "String" source="String"
+              body: block source=""
+            function_declaration source="⟨name_node⟩(⟨parameter⟩) -> String { get ⟨modifier⟩⟨parameter⟩"
+              modifier:
+                modifier "set" source="set"
+                modifier "chained_declaration" source=""
+              name_node: identifier "subscript" source="subscript"
+              parameter:
+                parameter source="⟨pattern⟩: ⟨type⟩"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "i" source="i"
+                parameter source="⟨pattern⟩"
+                  modifier: modifier "generated" source=""
+                  type: identifier "String" source="String" (external)
+                  pattern: identifier "newValue" source="set"
+              body: block source=""
