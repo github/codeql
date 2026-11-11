@@ -1,5 +1,5 @@
 use codeql_extractor::extractor::desugaring;
-use yeast::{ConcreteDesugarer, DesugaringConfig, Rule, tree};
+use yeast::{tree, ConcreteDesugarer, DesugaringConfig, Rule};
 
 /// User context propagated from outer rules down to the inner rules that
 /// emit the corresponding output declarations, so that each emitted node
@@ -51,10 +51,9 @@ impl SwiftContext {
     /// Called before recursively translating a body / initializer
     /// slot. Most rules mutate `ctx` in place — the framework invokes
     /// each rule with a private clone of the user context, so
-    /// mutations are discarded on rule exit anyway. Rules that need
-    /// the outer context intact *after* the reset-and-translate (see
-    /// e.g. the `property_binding` willSet/didSet rule) wrap the
-    /// mutation in `ctx.scoped(...)` instead.
+    /// mutations are discarded on rule exit anyway. Output-template
+    /// interpolations additionally restore the context after evaluation,
+    /// preventing mutations from leaking into sibling fields.
     fn reset(&mut self) {
         *self = SwiftContext::default();
     }
@@ -382,17 +381,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let mut result = Vec::new();
                 if let Some(val) = val {
                     // Stored property with observers: the initializer is not part
-                    // of the binding, so translate it in a reset scope.
-                    let val = ctx.scoped(|ctx| {
-                        ctx.reset();
-                        ctx.translate(val)
-                    });
+                    // of the binding, so translate it in a reset interpolation.
                     result.push(tree!(
                         (variable_declaration
                             modifier: {ctx.outer_modifiers.clone()}
                             pattern: (identifier #{name})
                             type: {ty}
-                            value: {val})
+                            value: {ctx.reset(); val})
                     ));
                 }
                 for acc in accessors.into_iter() {
@@ -747,19 +742,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 trailingClosure: _? @trailing
                 additionalTrailingClosures: _* @additional)
             =>
-            expr {
-                // Always translate the callee in non-pattern context.
-                let callee = ctx.scoped(|ctx| {
-                    ctx.in_pattern = false;
-                    ctx.translate(rawCallee)
-                });
-                tree!((call_expr
-                    callee: {callee}
-                    argument: {args}
-                    argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
-                    argument: {additional}
-                ))
-            }
+            (call_expr
+                callee: {ctx.in_pattern = false; rawCallee}
+                argument: {args}
+                argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
+                argument: {additional})
         ),
         // A call or enum-case pattern argument.
         rule!(

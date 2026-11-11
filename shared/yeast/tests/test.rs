@@ -943,6 +943,153 @@ fn test_choice_fallback_can_reuse_consumed_splice() {
     );
 }
 
+#[derive(Clone, Default)]
+struct InterpolationContext {
+    counter: u64,
+}
+
+#[test]
+fn test_output_template_interpolations_clone_user_context() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+    let mut user_ctx = InterpolationContext::default();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let source = yeast::tree!((identifier "source"));
+
+    let nodes = yeast::trees!(
+        (call
+            location: {
+                ctx.counter += 1;
+                source
+            }
+            method: {
+                ctx.counter += 1;
+                let value = ctx.counter.to_string();
+                ctx.literal("identifier", &value)
+            }
+            receiver: (identifier #{
+                ctx.counter += 1;
+                ctx.counter
+            })
+        )
+        {
+            ctx.counter += 1;
+            let value = ctx.counter.to_string();
+            [ctx.literal("identifier", &value)]
+        }
+    );
+
+    assert_eq!(ctx.counter, 0);
+    assert_eq!(nodes.len(), 2);
+    assert_dump_eq(
+        &dump_ast(ctx.output, nodes[0], input),
+        r#"
+        call
+          method: identifier "1"
+          receiver: identifier "1"
+    "#,
+    );
+    assert_dump_eq(
+        &dump_ast(ctx.output, nodes[1], input),
+        r#"
+        identifier "1"
+    "#,
+    );
+}
+
+#[test]
+fn test_interpolation_preserves_build_ctx_method_borrowing() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+    let mut user_ctx = InterpolationContext::default();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let source = yeast::tree!((identifier "source"));
+
+    let node = yeast::tree!((call
+        method: {
+            ctx.literal("identifier", &ctx.source_text(source))
+        }
+    ));
+
+    assert_dump_eq(
+        &dump_ast(ctx.output, node, input),
+        r#"
+        call
+          method: identifier "source"
+    "#,
+    );
+}
+
+#[test]
+fn test_interpolation_preserves_user_context_assignment() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+    let mut user_ctx = InterpolationContext::default();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+
+    let node = yeast::tree!((identifier #{
+        *ctx = InterpolationContext { counter: 1 };
+        ctx.counter
+    }));
+
+    assert_eq!(ctx.counter, 0);
+    assert_dump_eq(
+        &dump_ast(ctx.output, node, input),
+        r#"
+        identifier "1"
+    "#,
+    );
+}
+
+#[test]
+fn test_interpolation_accepts_borrowed_build_ctx() {
+    fn build_identifier(
+        ctx: &mut yeast::build::BuildCtx<'_, InterpolationContext>,
+    ) -> yeast::OutputId {
+        yeast::tree!((identifier #{
+            ctx.counter += 1;
+            ctx.counter
+        }))
+    }
+
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+    let mut user_ctx = InterpolationContext::default();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+
+    let node = build_identifier(&mut ctx);
+    assert_eq!(ctx.counter, 0);
+    assert_dump_eq(
+        &dump_ast(ctx.output, node, input),
+        r#"
+        identifier "1"
+    "#,
+    );
+}
+
+#[derive(Clone, Default)]
+struct BorrowedInterpolationContext {
+    locations: Vec<yeast::OutputId>,
+}
+
+#[test]
+fn test_interpolation_accepts_value_borrowed_from_context() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+    let mut user_ctx = BorrowedInterpolationContext::default();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let location = yeast::tree!((identifier "location"));
+    ctx.locations.push(location);
+    let locations = ctx.locations.iter();
+
+    yeast::tree!((call location: {locations}));
+}
+
 #[test]
 fn test_root_choice_returns_an_optional_node() {
     let input = "x = 1";
