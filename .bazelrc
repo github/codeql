@@ -5,6 +5,9 @@ common --lockfile_mode=off
 # Build release binaries by default, can be overwritten to in local.bazelrc and set to `fastbuild` or `dbg`
 build --compilation_mode opt
 
+# Preserve CodeQL's placeholder during rules_pkg variable substitution.
+build --define=CODEQL_PLATFORM={CODEQL_PLATFORM}
+
 # when building from this repository in isolation, the internal repository will not be found at ..
 # where `MODULE.bazel` looks for it. The following will get us past the module loading phase, so
 # that we can build things that do not rely on that
