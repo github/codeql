@@ -78,4 +78,7 @@ top_level source="⟨body⟩"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "borrowed" source="borrowed"
-          value: unsupported_node "borrow original" source="borrow original"
+          value:
+            unary_expr source="⟨operator⟩ ⟨operand⟩"
+              operand: identifier "original" source="original"
+              operator: prefix_operator "borrow" source="borrow"
