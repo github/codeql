@@ -218,11 +218,10 @@ pub struct Program(Vec<Entry>);
 
 impl fmt::Display for Program {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let mut text = String::new();
         for trap_entry in &self.0 {
-            text.push_str(&format!("{trap_entry}\n"));
+            writeln!(f, "{trap_entry}")?;
         }
-        write!(f, "{text}")
+        Ok(())
     }
 }
 
