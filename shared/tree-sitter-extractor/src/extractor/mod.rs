@@ -756,7 +756,7 @@ impl<'a> Visitor<'a> {
                     self.trap_writer.add_tuple(table_name, all_args);
                 }
             }
-            _ => {
+            EntryKind::Union { .. } => {
                 self.record_parse_error(
                     loc_label,
                     self.diagnostics_writer

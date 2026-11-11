@@ -89,7 +89,8 @@ index 0aad1e2..68f679f 100644
      }
      fn token_kind(&self) -> Option<proc_macro2::TokenStream> {
 @@ -787,7 +797,7 @@ impl Field {
-             _ => None,
+-            _ => None,
++            Field::Node { .. } => None,
          }
      }
 -    fn method_name(&self) -> String {
