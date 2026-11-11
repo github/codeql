@@ -1,0 +1,17 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["container/ring", "Ring", true, "Link", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["container/ring", "Ring", true, "Move", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["container/ring", "Ring", true, "Next", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["container/ring", "Ring", true, "Prev", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["container/ring", "Ring", true, "Unlink", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["github.com/gobuffalo/envy", "", false, "Environ", "", "", "ReturnValue", "environment", "manual"],
+        ["github.com/gobuffalo/envy", "", false, "Get", "", "", "ReturnValue", "environment", "manual"],
+        ["github.com/gobuffalo/envy", "", false, "GoBin", "", "", "ReturnValue", "environment", "manual"],
+        ["github.com/gobuffalo/envy", "", false, "GoPath", "", "", "ReturnValue", "environment", "manual"],
+        ["github.com/gobuffalo/envy", "", false, "GoPaths", "", "", "ReturnValue", "environment", "manual"],
+        ["github.com/gobuffalo/envy", "", false, "Map", "", "", "ReturnValue", "environment", "manual"],
+        ["github.com/gobuffalo/envy", "", false, "MustGet", "", "", "ReturnValue[0]", "environment", "manual"]
+      ]
+    }
+  ]
+}

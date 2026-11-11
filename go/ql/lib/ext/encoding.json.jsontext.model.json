@@ -1,0 +1,43 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["encoding/json/jsontext", "", false, "AppendFloat", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "", false, "AppendFormat", "", "", "Argument[0..1]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/json/jsontext", "", false, "AppendQuote", "", "", "Argument[0..1]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/json/jsontext", "", false, "AppendUnquote", "", "", "Argument[0..1]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/json/jsontext", "", false, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "", false, "Float", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "", false, "Float32", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "", false, "Int", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "", false, "String", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "", false, "Uint", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "Decoder", true, "ReadToken", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/json/jsontext", "Decoder", true, "ReadValue", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/json/jsontext", "Decoder", true, "Reset", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["encoding/json/jsontext", "Decoder", true, "UnreadBuffer", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "Encoder", true, "Reset", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["encoding/json/jsontext", "Encoder", true, "WriteToken", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["encoding/json/jsontext", "Encoder", true, "WriteValue", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["encoding/json/jsontext", "Pointer", true, "AppendToken", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "Pointer", true, "AppendToken", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "Pointer", true, "LastToken", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "Pointer", true, "Parent", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "Token", true, "Clone", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "Token", true, "Float", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/json/jsontext", "Token", true, "Float32", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/json/jsontext", "Token", true, "Int", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/json/jsontext", "Token", true, "String", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "Token", true, "Uint", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/json/jsontext", "Value", true, "Clone", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "Value", true, "MarshalJSON", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/json/jsontext", "Value", true, "String", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["encoding/json/jsontext", "Value", true, "UnmarshalJSON", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      ]
+    }
+  ]
+}

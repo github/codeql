@@ -1,0 +1,13 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/lestrrat-go/jwx", "", false, "New", "", "", "Argument[0]", "credentials-key", "manual"]
+      ]
+    }
+  ]
+}
