@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://www.github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.sql", "Connection", False, "prepareStatement", "(String)", "", "Argument[0]", "ai-candidate-cwe-89", "ai-generated"]
+      - ["java.sql", "Connection", False, "prepareStatement", "(String,int,int)", "", "Argument[0]", "ai-candidate-cwe-89", "ai-generated"]
+      - ["java.sql", "Statement", False, "execute", "(String)", "", "Argument[0]", "ai-candidate-cwe-89", "ai-generated"]
+      - ["java.sql", "Statement", False, "executeQuery", "(String)", "", "Argument[0]", "ai-candidate-cwe-89", "ai-generated"]
+      - ["java.sql", "Statement", False, "executeUpdate", "(String)", "", "Argument[0]", "ai-candidate-cwe-89", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["java.sql", "PreparedStatement", False, "executeQuery", "()", "", "ReturnValue", "ai-candidate", "ai-generated"]
+      - ["java.sql", "ResultSet", False, "getString", "(String)", "", "ReturnValue", "ai-candidate", "ai-generated"]
+      - ["java.sql", "ResultSet", False, "getString", "(int)", "", "ReturnValue", "ai-candidate", "ai-generated"]
+      - ["java.sql", "ResultSetMetaData", False, "getColumnName", "(int)", "", "ReturnValue", "ai-candidate", "ai-generated"]
+      - ["java.sql", "Statement", False, "executeQuery", "(String)", "", "ReturnValue", "ai-candidate", "ai-generated"]
