@@ -46,5 +46,7 @@ build --tool_java_language_version=17
 build --tool_java_runtime_version=remotejdk_17
 build --java_runtime_version=remotejdk_17
 build --@rules_python//python/config_settings:python_version=3.12
+# Disable legacy Python initializer generation, including in external build tools.
+build --incompatible_default_to_explicit_init_py
 
 try-import %workspace%/local.bazelrc
