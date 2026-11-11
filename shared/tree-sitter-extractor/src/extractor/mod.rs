@@ -528,9 +528,9 @@ struct Visitor<'a> {
     file_label: trap::Label,
     /// The source code as a UTF-8 byte array
     source: &'a [u8],
-    /// A diagnostics::LogWriter to write diagnostic messages
+    /// A `diagnostics::LogWriter` to write diagnostic messages
     diagnostics_writer: &'a mut diagnostics::LogWriter,
-    /// A trap::Writer to accumulate trap entries
+    /// A `trap::Writer` to accumulate trap entries
     trap_writer: &'a mut trap::Writer,
     /// Language-specific name of the AST location table
     ast_node_location_table_name: String,
@@ -547,7 +547,7 @@ struct Visitor<'a> {
     /// All children append their data to the list. When the visitor leaves a
     /// node the list containing the child data is popped from the stack and
     /// matched against the dbscheme for the node. If the expectations are met
-    /// the corresponding row definitions are added to the trap_output.
+    /// the corresponding row definitions are added to the `trap_output`.
     stack: Vec<(trap::Label, usize, Vec<ChildNode>)>,
 }
 

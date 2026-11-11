@@ -55,7 +55,7 @@ impl Writer {
     ///  Note: You probably want to make sure that the key strings that you use are disjoint
     ///  for disjoint column types; the standard way of doing this is to prefix (or append)
     ///  the column type name to the ID. Thus, you might identify methods in Java by the
-    ///  full ID "methods_com.method.package.DeclaringClass.method(argumentList)".
+    ///  full ID `methods_com.method.package.DeclaringClass.method(argumentList)`.
     pub fn global_id(&mut self, key: &str) -> (Label, bool) {
         if let Some(label) = self.global_keys.get(key) {
             return (*label, false);
@@ -123,7 +123,7 @@ pub enum Entry {
     FreshId(Label),
     /// Maps the label to a key, e.g. `#7=@"foo"`.
     MapLabelToKey(Label, String),
-    /// foo_bar(arg*)
+    /// `foo_bar(arg*)`
     GenericTuple(String, Vec<Arg>),
     Comment(String),
 }

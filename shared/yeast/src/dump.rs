@@ -124,7 +124,7 @@ const EMPTY_NODE_TYPES: &[crate::schema::NodeType] = &[];
 /// - `schema`: The AST schema to validate against.
 /// - `node`: The node being checked.
 /// - `expected`: The set of allowed types for this node, or `None` if type-checking is disabled.
-/// - `parent_field`: Optional tuple of (parent_kind, field_name) for context in error messages.
+/// - `parent_field`: Optional tuple of `(parent_kind, field_name)` for context in error messages.
 ///
 /// # Returns
 /// `Some(error_message)` if the node violates the schema (e.g., wrong kind, missing field declaration).

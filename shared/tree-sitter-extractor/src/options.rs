@@ -1,7 +1,7 @@
 use num_cpus;
 
 /// Gets the number of threads the extractor should use.
-/// This is controlled by the CODEQL_THREADS environment variable.
+/// This is controlled by the `CODEQL_THREADS` environment variable.
 pub fn num_threads() -> Result<usize, String> {
     let threads_str = std::env::var("CODEQL_THREADS").unwrap_or_else(|_| "-1".into());
     let num_cpus = num_cpus::get();

@@ -128,7 +128,7 @@ fn parse_field_name(raw: &str) -> FieldSpec {
     }
 }
 
-/// Resolve a TypeRef to a (type, named) pair, given the sets of known named
+/// Resolve a `TypeRef` to a `(type, named)` pair, given the sets of known named
 /// and unnamed types.
 fn resolve_type_ref_pair(
     type_ref: &TypeRef,
@@ -151,7 +151,7 @@ fn resolve_type_ref_pair(
     }
 }
 
-/// Resolve a TypeRef to a {type, named} JSON record, given the sets of known named
+/// Resolve a `TypeRef` to a `{type, named}` JSON record, given the sets of known named
 /// and unnamed types.
 fn resolve_type_ref(
     type_ref: &TypeRef,

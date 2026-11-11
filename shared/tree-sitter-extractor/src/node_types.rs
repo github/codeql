@@ -5,7 +5,7 @@ use std::path::Path;
 use std::collections::BTreeSet as Set;
 use std::fs;
 
-/// A lookup table from TypeName to Entry.
+/// A lookup table from `TypeName` to `Entry`.
 pub type NodeTypeMap = BTreeMap<TypeName, Entry>;
 
 #[derive(Debug)]
@@ -60,7 +60,7 @@ pub struct Field {
     pub parent: TypeName,
     pub type_info: FieldTypeInfo,
     /// The name of the field or None for the anonymous 'children'
-    /// entry from node_types.json
+    /// entry from `node_types.json`
     pub name: Option<String>,
     /// The name of the predicate to get this field.
     pub getter_name: String,
@@ -457,8 +457,8 @@ pub fn to_snake_case(word: &str) -> String {
     }
     result
 }
-/// Given a valid dbscheme name (i.e. in snake case), produces the equivalent QL
-/// name (i.e. in CamelCase). For example, "foo_bar_baz" becomes "FooBarBaz".
+/// Given a valid dbscheme name (i.e. in `snake case`), produces the equivalent QL
+/// name (i.e. in `CamelCase`). For example, `foo_bar_baz` becomes `FooBarBaz`.
 fn dbscheme_name_to_class_name(dbscheme_name: &str) -> String {
     fn to_title_case(word: &str) -> String {
         let mut first = true;
