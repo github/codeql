@@ -32,5 +32,4 @@ exclude = [
 
 [workspace.lints.clippy]
 all = { level = "warn", priority = -1 }
-explicit_iter_loop = "warn"
-manual_let_else = "warn"
+pedantic = { level = "warn", priority = -1 }
