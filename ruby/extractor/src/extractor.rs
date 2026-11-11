@@ -26,7 +26,7 @@ pub struct Options {
     file_list: String,
 }
 
-pub fn run(options: Options) -> std::io::Result<()> {
+pub fn run(options: &Options) -> std::io::Result<()> {
     extractor::set_tracing_level("ruby");
     tracing::info!("Extraction started");
     let diagnostics = diagnostics::DiagnosticLoggers::new("ruby");
@@ -222,7 +222,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
             } else {
                 std::fs::copy(&path, &src_archive_file)?;
             }
-            write_trap(&trap_dir, path, &trap_writer, trap_compression, path_transformer.as_ref())
+            write_trap(&trap_dir, &path, &trap_writer, trap_compression, path_transformer.as_ref())
         })
         .expect("failed to extract files");
 
@@ -231,7 +231,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
     extractor::populate_empty_location(&mut trap_writer);
     let res = write_trap(
         &trap_dir,
-        path,
+        &path,
         &trap_writer,
         trap_compression,
         path_transformer.as_ref(),
@@ -263,14 +263,14 @@ fn encoding_from_name(encoding_name: &str) -> Option<&(dyn encoding::Encoding + 
 
 fn write_trap(
     trap_dir: &Path,
-    path: PathBuf,
+    path: &Path,
     trap_writer: &trap::Writer,
     trap_compression: trap::Compression,
     path_transformer: Option<&PathTransformer>,
 ) -> std::io::Result<()> {
     let trap_file = file_paths::path_for(
         trap_dir,
-        &path,
+        path,
         trap_compression.extension(),
         path_transformer,
     );

@@ -93,10 +93,7 @@ fn with_passthrough_rules<C: Clone + 'static>(mut rules: Vec<Rule<C>>) -> Vec<Ru
 /// return its dump. The appended pass-through rules make the small input
 /// subset used by these tests exhaustive.
 fn run_and_dump(input: &str, rules: Vec<Rule>) -> String {
-    run_phased_and_dump(
-        input,
-        vec![Phase::new("test", with_passthrough_rules(rules))],
-    )
+    run_phased_and_dump(input, &[Phase::new("test", with_passthrough_rules(rules))])
 }
 
 /// Helper: translate Ruby source with custom rules and return the transformed AST.
@@ -125,11 +122,11 @@ fn synthetic_integer_ast(content: &str) -> Ast {
 }
 
 /// Helper: translate Ruby source with multiple rule phases and return its dump.
-fn run_phased_and_dump(input: &str, phases: Vec<Phase>) -> String {
+fn run_phased_and_dump(input: &str, phases: &[Phase]) -> String {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
-    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+    let runner: Runner = Runner::with_schema(lang, &schema, phases);
     let ast = runner.run(input).unwrap();
     dump_ast(&ast, ast.get_root(), input)
 }

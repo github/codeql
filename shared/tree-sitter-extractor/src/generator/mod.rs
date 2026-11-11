@@ -97,7 +97,7 @@ pub fn generate(
         }
         writeln!(&mut dbscheme_writer, "/*- {} dbscheme -*/", language.name)?;
         dbscheme::write(&mut dbscheme_writer, &dbscheme_entries)?;
-        let token_case = create_token_case(&token_name, token_kinds);
+        let token_case = create_token_case(&token_name, &token_kinds);
         let mut dbscheme_tail = vec![
             dbscheme::Entry::Table(create_tokeninfo(&tokeninfo_name, &token_name)),
             dbscheme::Entry::Case(token_case),
@@ -592,7 +592,7 @@ fn create_tokeninfo<'a>(name: &'a str, type_name: &'a str) -> dbscheme::Table<'a
     }
 }
 
-fn create_token_case<'a>(name: &'a str, token_kinds: Map<&'a str, usize>) -> dbscheme::Case<'a> {
+fn create_token_case<'a>(name: &'a str, token_kinds: &Map<&'a str, usize>) -> dbscheme::Case<'a> {
     let branches: Vec<(usize, &str)> = token_kinds
         .iter()
         .map(|(&name, kind_id)| (*kind_id, name))

@@ -581,9 +581,9 @@ impl<Id: TreeId> std::fmt::Debug for Ast<Id> {
 
 impl Ast {
     /// Construct an AST from a TS tree
-    pub fn from_tree(language: tree_sitter::Language, tree: &tree_sitter::Tree) -> Self {
-        let schema = schema::from_language(&language);
-        Self::from_tree_with_schema(schema, tree, &language)
+    pub fn from_tree(language: &tree_sitter::Language, tree: &tree_sitter::Tree) -> Self {
+        let schema = schema::from_language(language);
+        Self::from_tree_with_schema(schema, tree, language)
     }
 
     pub fn from_tree_with_schema(

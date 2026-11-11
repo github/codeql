@@ -285,7 +285,7 @@ fn fix_blank_lines(s: &str) -> String {
 
 fn write_schema(
     grammar: &AstSrc,
-    super_types: BTreeMap<String, BTreeSet<String>>,
+    super_types: &BTreeMap<String, BTreeSet<String>>,
     mustache_ctx: &mustache::Context,
 ) -> mustache::Result<String> {
     let mut schema = Schema::default();
@@ -293,13 +293,13 @@ fn write_schema(
         grammar
             .enums
             .iter()
-            .map(|node| enum_src_to_schema_class(node, &super_types)),
+            .map(|node| enum_src_to_schema_class(node, super_types)),
     );
     schema.classes.extend(
         grammar
             .nodes
             .iter()
-            .map(|node| node_src_to_schema_class(node, &super_types)),
+            .map(|node| node_src_to_schema_class(node, super_types)),
     );
     let template = mustache_ctx.compile_path("schema")?;
     let res = template.render_to_string(&schema)?;
@@ -530,7 +530,7 @@ fn main() -> anyhow::Result<()> {
         template_path: root.join("ast-generator").join("templates"),
         template_extension: "mustache".to_string(),
     };
-    let schema = write_schema(&grammar, super_types, &mustache_ctx)?;
+    let schema = write_schema(&grammar, &super_types, &mustache_ctx)?;
     let schema_path = root.join("schema/ast.py");
     codegen::ensure_file_contents(
         crate::flags::CodegenType::Grammar,
