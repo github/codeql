@@ -174,7 +174,7 @@ pub enum Arg {
     String(String),
 }
 
-const MAX_STRLEN: usize = 1048576;
+const MAX_STRLEN: usize = 1_048_576;
 
 impl fmt::Display for Arg {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -276,7 +276,7 @@ fn limit_string(string: &str, max_size: usize) -> &str {
     // encoded data any byte that matches the bit pattern 10XXXXXX is not a start byte.
     // Therefore we decrement the index as long as there are bytes matching this pattern.
     // This ensures we cut the string at the border between one character and another.
-    while index > 0 && (p[index] & 0b11000000) == 0b10000000 {
+    while index > 0 && (p[index] & 0b1100_0000) == 0b1000_0000 {
         index -= 1;
     }
     &string[0..index]
