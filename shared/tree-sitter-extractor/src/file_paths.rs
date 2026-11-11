@@ -134,7 +134,7 @@ pub fn path_from_string(path: &str) -> PathBuf {
     // make path absolute
     if path.is_relative() {
         path = std::env::current_dir().unwrap().join(path);
-    };
+    }
     let mut components = path.components();
 
     // make Windows paths verbatim (with `\\?\` prefixes) which allow for extended-length paths.

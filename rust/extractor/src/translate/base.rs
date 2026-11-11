@@ -227,7 +227,7 @@ impl<'db> Translator<'db> {
                 UNKNOWN_LOCATION,
             ),
             Some((start, end)) => self.trap.emit_location(self.label, label, start, end),
-        };
+        }
     }
     pub fn emit_location_token(
         &mut self,
@@ -390,7 +390,7 @@ impl<'db> Translator<'db> {
                             .text_range()
                             .start();
                     self.emit_parse_error(node, &SyntaxError::new(error.message, location));
-                };
+                }
             }
             for err in value.value.iter() {
                 self.emit_parse_error(node, err);

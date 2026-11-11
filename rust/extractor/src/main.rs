@@ -165,7 +165,7 @@ impl<'a> Extractor<'a> {
                 ));
             }
             _ => {}
-        };
+        }
         self.steps.push(ExtractionStep::load_source(before, file));
         Ok(())
     }
@@ -325,7 +325,7 @@ fn main() -> anyhow::Result<()> {
                 match extractor.load_source(file, &semantics, &vfs) {
                     Ok(()) => extractor.extract_with_semantics(file, &semantics, &vfs, source_mode),
                     Err(e) => extractor.extract_without_semantics(file, source_mode, e),
-                };
+                }
             }
             // Fast path when there is no ambiguity in dependency extraction.
             if dependency_extraction_ambiguity {

@@ -676,7 +676,7 @@ impl<'a> Visitor<'a> {
                 true,
             );
             return false;
-        };
+        }
 
         let id = self.trap_writer.fresh_id();
 
@@ -722,7 +722,7 @@ impl<'a> Visitor<'a> {
                             trap::Arg::Int(parent_index),
                         ],
                     );
-                };
+                }
                 self.trap_writer.add_tuple(
                     &self.tokeninfo_table_name,
                     vec![
@@ -750,7 +750,7 @@ impl<'a> Visitor<'a> {
                                 trap::Arg::Int(parent_index),
                             ],
                         );
-                    };
+                    }
                     let mut all_args = vec![trap::Arg::Label(id)];
                     all_args.extend(args);
                     self.trap_writer.add_tuple(table_name, all_args);
@@ -793,7 +793,7 @@ impl<'a> Visitor<'a> {
                         named: node.is_named(),
                     },
                 });
-            };
+            }
         }
     }
 
