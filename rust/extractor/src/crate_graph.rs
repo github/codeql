@@ -33,7 +33,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
             krate_id
                 .cfg_options(db)
                 .into_iter()
-                .sorted_by(cmp_flag)
+                .sorted_by(|&a, &b| cmp_flag(a, b))
                 .for_each(|x| format!("{x}").hash(&mut hasher));
 
             krate
@@ -102,7 +102,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
     }
 }
 
-fn cmp_flag(a: &&CfgAtom, b: &&CfgAtom) -> Ordering {
+fn cmp_flag(a: &CfgAtom, b: &CfgAtom) -> Ordering {
     match (a, b) {
         (CfgAtom::Flag(a), CfgAtom::Flag(b)) => a.as_str().cmp(b.as_str()),
         (CfgAtom::Flag(a), CfgAtom::KeyValue { key: b, value: _ }) => {
