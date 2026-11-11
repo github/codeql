@@ -141,13 +141,12 @@ fn test_corpus() {
             // The canonical test case lives in the `.swift` file and is the
             // source of truth. An `.output` file without a `.swift` sibling is
             // an orphan: there is nothing to drive it from.
-            if !swift_path.exists() {
-                panic!(
-                    "Found {} with no corresponding test case; add {} or remove the output file",
-                    output_path.display(),
-                    swift_path.display()
-                );
-            }
+            assert!(
+                swift_path.exists(),
+                "Found {} with no corresponding test case; add {} or remove the output file",
+                output_path.display(),
+                swift_path.display()
+            );
 
             let swift_input = fs::read_to_string(&swift_path)
                 .unwrap_or_else(|e| panic!("Failed to read {}: {e}", swift_path.display()))

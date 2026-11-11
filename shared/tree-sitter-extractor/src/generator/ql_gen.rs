@@ -1038,9 +1038,11 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                 name: main_table_name,
                 fields,
             } => {
-                if fields.is_empty() {
-                    panic!("Encountered node '{}' with no fields", type_name.kind);
-                }
+                assert!(
+                    !fields.is_empty(),
+                    "Encountered node '{}' with no fields",
+                    type_name.kind
+                );
 
                 // Count how many columns there will be in the main table. There
                 // will be one for the id, plus one for each field that's stored
