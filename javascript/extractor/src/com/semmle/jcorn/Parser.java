@@ -2598,7 +2598,10 @@ public class Parser {
   }
 
   boolean isAwaitUsing() {
-    return isAsyncKeyword("await", "using");
+    if (!isAsyncKeyword("await", "using")) return false;
+    Matcher m = Whitespace.skipWhiteSpace.matcher(this.input);
+    m.find(this.pos);
+    return isUsingDecl(m.end() + "using".length());
   }
 
   // check 'pre [no LineTerminator here] keyword'
@@ -2625,11 +2628,15 @@ public class Parser {
         || this.options.ecmaVersion() < 8
         || !this.value.equals("using")) return false;
 
+    return isUsingDecl(this.pos);
+  }
+
+  boolean isUsingDecl(int pos) {
     Matcher m = Whitespace.skipWhiteSpace.matcher(this.input);
-    m.find(this.pos);
+    m.find(pos);
     int next = m.end();
     return this.input.length() > next &&
-        !Whitespace.lineBreakG.matcher(inputSubstring(this.pos, next)).matches()
+        !Whitespace.lineBreakG.matcher(inputSubstring(pos, next)).matches()
         && Identifiers.isIdentifierChar(this.input.codePointAt(next), false);
   }
 
@@ -2809,7 +2816,7 @@ public class Parser {
     if (this.isAwaitUsing() && this.inAsync) {
       this.next(); // just skip the await and treat it as a `using` statement
     }
-    if (this.type == TokenType._var || this.type == TokenType._const || isLet || (this.type == TokenType.name && this.value.equals("using"))) {
+    if (this.type == TokenType._var || this.type == TokenType._const || isLet || this.isUsingDecl()) {
       Position initStartLoc = this.startLoc;
       String kind = isLet ? "let" : String.valueOf(this.value);
       this.next();
