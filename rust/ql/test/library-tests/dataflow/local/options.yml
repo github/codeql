@@ -1,1 +1,2 @@
 qltest_use_nightly: true
+qltest_edition: "2024"

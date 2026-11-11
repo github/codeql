@@ -47,4 +47,11 @@ Number.parseFloat = function(num) {};
  */
 function TransformStream(transformer, writableStrategy, readableStrategy) {}
 
+/**
+ * @constructor
+ * @param {string} type
+ * @param {StorageEventInit=} opt_eventInitDict
+ */
+function StorageEvent(type, opt_eventInitDict) {}
+
 /** @externs */

@@ -9,7 +9,6 @@ import semmle.python.Concepts
 import semmle.python.dataflow.new.internal.DataFlowPublic
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.internal.TaintTrackingPrivate
-import semmle.python.dataflow.new.RemoteFlowSources
 import UnicodeBypassValidationCustomizations::UnicodeBypassValidation
 
 abstract private class ValidationState extends string {
@@ -37,7 +36,7 @@ private module UnicodeBypassValidationConfig implements DataFlow::StateConfigSig
   class FlowState = ValidationState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
-    source instanceof RemoteFlowSource and state instanceof PreValidation
+    source instanceof ActiveThreatModelSource and state instanceof PreValidation
   }
 
   predicate isAdditionalFlowStep(

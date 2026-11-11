@@ -3280,6 +3280,57 @@ destructors_for_temps.cpp:
 #  102|     v102_9(void)                         = AliasedUse                               : ~m103_26
 #  102|     v102_10(void)                        = ExitFunction                             : 
 
+#  108| void temp_test13(bool)
+#  108|   Block 0
+#  108|     v108_1(void)         = EnterFunction          : 
+#  108|     m108_2(unknown)      = AliasedDefinition      : 
+#  108|     m108_3(unknown)      = InitializeNonLocal     : 
+#  108|     m108_4(unknown)      = Chi                    : total:m108_2, partial:m108_3
+#  108|     r108_5(glval<bool>)  = VariableAddress[b]     : 
+#  108|     m108_6(bool)         = InitializeParameter[b] : &:r108_5
+#  109|     r109_1(glval<int &>) = VariableAddress[t]     : 
+#  109|     r109_2(glval<bool>)  = VariableAddress[b]     : 
+#  109|     r109_3(bool)         = Load[b]                : &:r109_2, m108_6
+#  109|     v109_4(void)         = ConditionalBranch      : r109_3
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#  109|   Block 1
+#  109|     m109_5(glval<int>)     = Phi                          : from 2:m109_19, from 3:m109_28
+#  109|     r109_6(glval<unknown>) = VariableAddress[#temp109:18] : 
+#  109|     r109_7(glval<int>)     = Load[#temp109:18]            : &:r109_6, m109_5
+#  109|     r109_8(glval<int>)     = Convert                      : r109_7
+#  109|     r109_9(int &)          = CopyValue                    : r109_8
+#  109|     m109_10(int &)         = Store[t]                     : &:r109_1, r109_9
+#  110|     v110_1(void)           = NoOp                         : 
+#  108|     v108_7(void)           = ReturnVoid                   : 
+#  108|     v108_8(void)           = AliasedUse                   : m108_3
+#  108|     v108_9(void)           = ExitFunction                 : 
+
+#  109|   Block 2
+#  109|     r109_11(glval<ClassWithArrayAndDestructor>) = VariableAddress[#temp109:22] : 
+#  109|     r109_12(ClassWithArrayAndDestructor)        = Constant[0]                  : 
+#  109|     m109_13(ClassWithArrayAndDestructor)        = Store[#temp109:22]           : &:r109_11, r109_12
+#  109|     r109_14(glval<int[2]>)                      = FieldAddress[a]              : r109_11
+#  109|     r109_15(int *)                              = Convert                      : r109_14
+#  109|     r109_16(int)                                = Constant[0]                  : 
+#  109|     r109_17(glval<int>)                         = PointerAdd[4]                : r109_15, r109_16
+#  109|     r109_18(glval<unknown>)                     = VariableAddress[#temp109:18] : 
+#  109|     m109_19(glval<int>)                         = Store[#temp109:18]           : &:r109_18, r109_17
+#-----|   Goto -> Block 1
+
+#  109|   Block 3
+#  109|     r109_20(glval<ClassWithArrayAndDestructor>) = VariableAddress[#temp109:59] : 
+#  109|     r109_21(ClassWithArrayAndDestructor)        = Constant[0]                  : 
+#  109|     m109_22(ClassWithArrayAndDestructor)        = Store[#temp109:59]           : &:r109_20, r109_21
+#  109|     r109_23(glval<int[2]>)                      = FieldAddress[a]              : r109_20
+#  109|     r109_24(int *)                              = Convert                      : r109_23
+#  109|     r109_25(int)                                = Constant[1]                  : 
+#  109|     r109_26(glval<int>)                         = PointerAdd[4]                : r109_24, r109_25
+#  109|     r109_27(glval<unknown>)                     = VariableAddress[#temp109:18] : 
+#  109|     m109_28(glval<int>)                         = Store[#temp109:18]           : &:r109_27, r109_26
+#-----|   Goto -> Block 1
+
 generic.c:
 #    1| void c11_generic_test_with_load(unsigned int, int)
 #    1|   Block 0
@@ -12128,19 +12179,19 @@ ir.cpp:
 # 1474|     r1474_10(int)                 = Load[?]                       : &:r1474_9, ~m1474_5
 # 1474|     m1474_11(int)                 = Store[x]                      : &:r1474_1, r1474_10
 # 1476|     r1476_1(glval<float &>)       = VariableAddress[rf]           : 
+#-----|     r0_1(glval<UnusualFields>)    = VariableAddress[#temp0:0]     : 
 # 1476|     r1476_2(glval<unknown>)       = FunctionAddress[returnValue]  : 
 # 1476|     r1476_3(UnusualFields)        = Call[returnValue]             : func:r1476_2
 # 1476|     m1476_4(unknown)              = ^CallSideEffect               : ~m1474_5
 # 1476|     m1476_5(unknown)              = Chi                           : total:m1474_5, partial:m1476_4
-# 1476|     r1476_6(glval<UnusualFields>) = VariableAddress[#temp1476:23] : 
-# 1476|     m1476_7(UnusualFields)        = Store[#temp1476:23]           : &:r1476_6, r1476_3
-# 1476|     r1476_8(glval<float[10]>)     = FieldAddress[a]               : r1476_6
-# 1476|     r1476_9(float *)              = Convert                       : r1476_8
-# 1476|     r1476_10(int)                 = Constant[3]                   : 
-# 1476|     r1476_11(glval<float>)        = PointerAdd[4]                 : r1476_9, r1476_10
-# 1476|     r1476_12(glval<float>)        = Convert                       : r1476_11
-# 1476|     r1476_13(float &)             = CopyValue                     : r1476_12
-# 1476|     m1476_14(float &)             = Store[rf]                     : &:r1476_1, r1476_13
+# 1476|     m1476_6(UnusualFields)        = Store[#temp0:0]               : &:r0_1, r1476_3
+# 1476|     r1476_7(glval<float[10]>)     = FieldAddress[a]               : r0_1
+# 1476|     r1476_8(float *)              = Convert                       : r1476_7
+# 1476|     r1476_9(int)                  = Constant[3]                   : 
+# 1476|     r1476_10(glval<float>)        = PointerAdd[4]                 : r1476_8, r1476_9
+# 1476|     r1476_11(glval<float>)        = Convert                       : r1476_10
+# 1476|     r1476_12(float &)             = CopyValue                     : r1476_11
+# 1476|     m1476_13(float &)             = Store[rf]                     : &:r1476_1, r1476_12
 # 1477|     r1477_1(glval<float>)         = VariableAddress[f]            : 
 # 1477|     r1477_2(glval<unknown>)       = FunctionAddress[returnValue]  : 
 # 1477|     r1477_3(UnusualFields)        = Call[returnValue]             : func:r1477_2
@@ -21771,6 +21822,26 @@ ir.cpp:
 # 2919|     v2919_12(void)          = ReturnVoid                               : 
 # 2919|     v2919_13(void)          = AliasedUse                               : ~m2919_11
 # 2919|     v2919_14(void)          = ExitFunction                             : 
+
+# 2927| void test()
+# 2927|   Block 0
+# 2927|     v2927_1(void)                  = EnterFunction                : 
+# 2927|     m2927_2(unknown)               = AliasedDefinition            : 
+# 2927|     m2927_3(unknown)               = InitializeNonLocal           : 
+# 2927|     m2927_4(unknown)               = Chi                          : total:m2927_2, partial:m2927_3
+# 2928|     r2928_1(glval<unknown>)        = FunctionAddress[get_wrapper] : 
+# 2928|     r2928_2(PointerWrapper)        = Call[get_wrapper]            : func:r2928_1
+# 2928|     m2928_3(unknown)               = ^CallSideEffect              : ~m2927_4
+# 2928|     m2928_4(unknown)               = Chi                          : total:m2927_4, partial:m2928_3
+# 2928|     r2928_5(glval<PointerWrapper>) = VariableAddress[#temp2928:3] : 
+# 2928|     m2928_6(PointerWrapper)        = Store[#temp2928:3]           : &:r2928_5, r2928_2
+# 2928|     r2928_7(glval<Point>)          = FieldAddress[point]          : r2928_5
+# 2928|     r2928_8(glval<int>)            = FieldAddress[x]              : r2928_7
+# 2928|     r2928_9(int)                   = Load[?]                      : &:r2928_8, ~m2928_6
+# 2929|     v2929_1(void)                  = NoOp                         : 
+# 2927|     v2927_5(void)                  = ReturnVoid                   : 
+# 2927|     v2927_6(void)                  = AliasedUse                   : ~m2928_4
+# 2927|     v2927_7(void)                  = ExitFunction                 : 
 
 ir23.cpp:
 #    1| bool consteval_1()

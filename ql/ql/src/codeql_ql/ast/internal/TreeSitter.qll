@@ -807,7 +807,7 @@ module QL {
     final F::SignatureExpr getAnImplements() { result = this.getImplements(_) }
 
     /** Gets the node corresponding to the field `name`. */
-    final F::ModuleName getName() { ql_module_def(this, result) }
+    final F::ModuleName getName() { ql_module_name(this, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
     final F::ModuleParam getParameter(int i) { ql_module_parameter(this, i, result) }
@@ -824,7 +824,7 @@ module QL {
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       ql_module_implements(this, _, result) or
-      ql_module_def(this, result) or
+      ql_module_name(this, result) or
       ql_module_parameter(this, _, result) or
       ql_module_child(this, _, result)
     }

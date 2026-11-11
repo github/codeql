@@ -124,7 +124,7 @@ module Impl {
   class Element extends Generated::Element {
     Element() { MacroExpansion::isRelevantElement(this) }
 
-    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+    override string toStringImpl() { none() }
 
     /**
      * INTERNAL: Do not use.

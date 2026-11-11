@@ -1,3 +1,19 @@
+## 0.1.46
+
+No user-facing changes.
+
+## 0.1.45
+
+No user-facing changes.
+
+## 0.1.44
+
+No user-facing changes.
+
+## 0.1.43
+
+No user-facing changes.
+
 ## 0.1.42
 
 ### New Queries

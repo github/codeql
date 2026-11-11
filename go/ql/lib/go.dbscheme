@@ -162,6 +162,8 @@ doc_comments(unique int node: @documentable ref, int comment: @comment_group ref
 #keyset[parent, idx]
 exprs(unique int id: @expr, int kind: int ref, int parent: @exprparent ref, int idx: int ref);
 
+isParenthesized(unique int id: @expr ref, int parentheses: int ref);
+
 literals(unique int expr: @expr ref, string value: string ref, string raw: string ref);
 
 constvalues(unique int expr: @expr ref, string value: string ref, string exact: string ref);
@@ -336,7 +338,8 @@ case @expr.kind of
 | 51 = @andnotexpr
 | 52 = @sendchantypeexpr
 | 53 = @recvchantypeexpr
-| 54 = @sendrcvchantypeexpr;
+| 54 = @sendrcvchantypeexpr
+| 55 = @rangeelementexpr;
 
 @basiclit = @intlit | @floatlit | @imaglit | @charlit | @stringlit;
 
@@ -560,4 +563,3 @@ case @error.kind of
 | 1 = @listerror
 | 2 = @parseerror
 | 3 = @typeerror;
-

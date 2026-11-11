@@ -297,11 +297,20 @@ abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
 
   abstract TranslatedElement getChildInternal(int id);
 
+  DestructorCall getImplicitDestructorCall(int index) {
+    result =
+      rank[index + 1](DestructorCall dc, int i |
+        dc = stmt.getImplicitDestructorCall(i) and not isConditionalTemporaryDestructorCall(dc)
+      |
+        dc order by i
+      )
+  }
+
   final override TranslatedElement getChild(int id) {
     result = this.getChildInternal(id)
     or
     exists(int destructorIndex |
-      result.(TranslatedExpr).getExpr() = stmt.getImplicitDestructorCall(destructorIndex) and
+      result.(TranslatedExpr).getExpr() = this.getImplicitDestructorCall(destructorIndex) and
       id = this.getFirstDestructorCallIndex() + destructorIndex
     )
   }
@@ -313,7 +322,7 @@ abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
   }
 
   final override predicate hasAnImplicitDestructorCall() {
-    exists(stmt.getAnImplicitDestructorCall())
+    exists(this.getImplicitDestructorCall(_))
   }
 
   final override string toString() { result = stmt.toString() }
@@ -1227,7 +1236,7 @@ class TranslatedWhileStmt extends TranslatedLoop {
     id = 1 and result = this.getBody()
     or
     exists(int n |
-      result.getAst() = stmt.getImplicitDestructorCall(n) and
+      result.getAst() = this.getImplicitDestructorCall(n) and
       id = 2 + n
     )
   }
@@ -1289,7 +1298,7 @@ class TranslatedForStmt extends TranslatedLoop {
     id = 3 and result = this.getBody()
     or
     exists(int n |
-      result.getAst() = stmt.getImplicitDestructorCall(n) and
+      result.getAst() = this.getImplicitDestructorCall(n) and
       id = 4 + n
     )
   }
@@ -1492,13 +1501,13 @@ class TranslatedJumpStmt extends TranslatedStmt {
   }
 
   private TranslatedCall getTranslatedImplicitDestructorCall(int id) {
-    result.getExpr() = stmt.getImplicitDestructorCall(id)
+    result.getExpr() = this.getImplicitDestructorCall(id)
   }
 
   override TranslatedElement getLastChild() {
     result =
       this.getTranslatedImplicitDestructorCall(max(int id |
-          exists(stmt.getImplicitDestructorCall(id))
+          exists(this.getImplicitDestructorCall(id))
         ))
   }
 

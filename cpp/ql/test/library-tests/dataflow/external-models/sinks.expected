@@ -1,5 +1,5 @@
-| asio_streams.cpp:93:29:93:39 | recv_buffer | remote-sink |
-| asio_streams.cpp:103:29:103:39 | send_buffer | remote-sink |
+| asio_streams.cpp:115:29:115:39 | recv_buffer | remote-sink |
+| asio_streams.cpp:125:29:125:39 | send_buffer | remote-sink |
 | test.cpp:12:10:12:10 | 0 | test-sink |
 | test.cpp:14:10:14:10 | x | test-sink |
 | test.cpp:18:10:18:10 | y | test-sink |
@@ -43,3 +43,18 @@
 | test.cpp:331:10:331:19 | * ... | test-sink |
 | test.cpp:333:15:333:20 | source | test-sink |
 | test.cpp:334:10:334:16 | * ... | test-sink |
+| test.cpp:366:15:366:15 | s | test-sink |
+| test.cpp:367:15:367:16 | ul | test-sink |
+| test.cpp:375:15:375:15 | s | test-sink |
+| test.cpp:376:15:376:16 | ul | test-sink |
+| test.cpp:400:13:400:13 | x | test-sink |
+| test.cpp:408:13:408:13 | x | test-sink |
+| test.cpp:417:13:417:13 | x | test-sink |
+| test.cpp:423:18:423:20 | call to get | test-sink |
+| test.cpp:427:11:427:24 | * ... | test-sink |
+| test.cpp:441:13:441:13 | x | test-sink |
+| test.cpp:455:21:455:21 | x | test-sink |
+| test.cpp:460:21:460:21 | x | test-sink |
+| test.cpp:465:21:465:21 | x | test-sink |
+| test.cpp:473:15:473:17 | call to get | test-sink |
+| test.cpp:478:13:478:20 | * ... | test-sink |

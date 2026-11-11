@@ -214,6 +214,90 @@ edges
 | Tuples.cs:133:24:133:29 | (..., ...) : ValueTuple<Int32,Object> [field Item2] : Object | Tuples.cs:133:9:133:20 | (..., ...) : ValueTuple<Int32,Object> [field Item2] : Object | provenance |  |
 | Tuples.cs:133:28:133:28 | access to local variable o : Object | Tuples.cs:133:24:133:29 | (..., ...) : ValueTuple<Int32,Object> [field Item2] : Object | provenance |  |
 | Tuples.cs:133:28:133:28 | access to local variable o : Object | Tuples.cs:133:24:133:29 | (..., ...) : ValueTuple<Int32,Object> [field Item2] : Object | provenance |  |
+| Tuples.cs:139:13:139:14 | access to local variable o1 : String | Tuples.cs:141:18:141:19 | access to local variable o1 : String | provenance |  |
+| Tuples.cs:139:13:139:14 | access to local variable o1 : String | Tuples.cs:141:18:141:19 | access to local variable o1 : String | provenance |  |
+| Tuples.cs:139:18:139:35 | call to method Source<String> : String | Tuples.cs:139:13:139:14 | access to local variable o1 : String | provenance |  |
+| Tuples.cs:139:18:139:35 | call to method Source<String> : String | Tuples.cs:139:13:139:14 | access to local variable o1 : String | provenance |  |
+| Tuples.cs:140:13:140:14 | access to local variable o2 : String | Tuples.cs:141:26:141:27 | access to local variable o2 : String | provenance |  |
+| Tuples.cs:140:13:140:14 | access to local variable o2 : String | Tuples.cs:141:26:141:27 | access to local variable o2 : String | provenance |  |
+| Tuples.cs:140:18:140:35 | call to method Source<String> : String | Tuples.cs:140:13:140:14 | access to local variable o2 : String | provenance |  |
+| Tuples.cs:140:18:140:35 | call to method Source<String> : String | Tuples.cs:140:13:140:14 | access to local variable o2 : String | provenance |  |
+| Tuples.cs:141:13:141:13 | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:144:18:144:46 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:141:13:141:13 | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:144:18:144:46 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:141:13:141:13 | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:144:18:144:46 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:141:13:141:13 | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:144:18:144:46 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:141:17:141:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:141:13:141:13 | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:141:17:141:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:141:13:141:13 | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:141:17:141:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:141:13:141:13 | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:141:17:141:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:141:13:141:13 | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:141:18:141:19 | access to local variable o1 : String | Tuples.cs:141:17:141:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:141:18:141:19 | access to local variable o1 : String | Tuples.cs:141:17:141:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:141:22:141:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | Tuples.cs:141:17:141:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:141:22:141:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | Tuples.cs:141:17:141:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:141:26:141:27 | access to local variable o2 : String | Tuples.cs:141:22:141:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
+| Tuples.cs:141:26:141:27 | access to local variable o2 : String | Tuples.cs:141:22:141:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
+| Tuples.cs:144:18:144:46 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:145:22:145:23 | access to local variable a1 | provenance |  |
+| Tuples.cs:144:18:144:46 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:145:22:145:23 | access to local variable a1 | provenance |  |
+| Tuples.cs:144:18:144:46 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:144:27:144:42 | { ... } : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
+| Tuples.cs:144:18:144:46 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:144:27:144:42 | { ... } : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
+| Tuples.cs:144:27:144:42 | { ... } : ValueTuple<Int32,String> [field Item2] : String | Tuples.cs:146:22:146:23 | access to local variable c1 | provenance |  |
+| Tuples.cs:144:27:144:42 | { ... } : ValueTuple<Int32,String> [field Item2] : String | Tuples.cs:146:22:146:23 | access to local variable c1 | provenance |  |
+| Tuples.cs:151:13:151:14 | access to local variable o3 : String | Tuples.cs:153:18:153:19 | access to local variable o3 : String | provenance |  |
+| Tuples.cs:151:13:151:14 | access to local variable o3 : String | Tuples.cs:153:18:153:19 | access to local variable o3 : String | provenance |  |
+| Tuples.cs:151:18:151:35 | call to method Source<String> : String | Tuples.cs:151:13:151:14 | access to local variable o3 : String | provenance |  |
+| Tuples.cs:151:18:151:35 | call to method Source<String> : String | Tuples.cs:151:13:151:14 | access to local variable o3 : String | provenance |  |
+| Tuples.cs:152:13:152:14 | access to local variable o4 : String | Tuples.cs:153:26:153:27 | access to local variable o4 : String | provenance |  |
+| Tuples.cs:152:13:152:14 | access to local variable o4 : String | Tuples.cs:153:26:153:27 | access to local variable o4 : String | provenance |  |
+| Tuples.cs:152:18:152:35 | call to method Source<String> : String | Tuples.cs:152:13:152:14 | access to local variable o4 : String | provenance |  |
+| Tuples.cs:152:18:152:35 | call to method Source<String> : String | Tuples.cs:152:13:152:14 | access to local variable o4 : String | provenance |  |
+| Tuples.cs:153:13:153:13 | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:154:18:154:42 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:153:13:153:13 | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:154:18:154:42 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:153:13:153:13 | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:154:18:154:42 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:153:13:153:13 | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:154:18:154:42 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:153:17:153:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:153:13:153:13 | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:153:17:153:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:153:13:153:13 | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:153:17:153:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:153:13:153:13 | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:153:17:153:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:153:13:153:13 | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:153:18:153:19 | access to local variable o3 : String | Tuples.cs:153:17:153:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:153:18:153:19 | access to local variable o3 : String | Tuples.cs:153:17:153:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:153:22:153:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | Tuples.cs:153:17:153:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:153:22:153:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | Tuples.cs:153:17:153:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:153:26:153:27 | access to local variable o4 : String | Tuples.cs:153:22:153:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
+| Tuples.cs:153:26:153:27 | access to local variable o4 : String | Tuples.cs:153:22:153:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
+| Tuples.cs:154:18:154:42 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:156:18:156:19 | access to local variable a2 | provenance |  |
+| Tuples.cs:154:18:154:42 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:156:18:156:19 | access to local variable a2 | provenance |  |
+| Tuples.cs:154:18:154:42 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:154:27:154:38 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
+| Tuples.cs:154:18:154:42 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:154:27:154:38 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
+| Tuples.cs:154:27:154:38 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | Tuples.cs:157:18:157:19 | access to local variable c2 | provenance |  |
+| Tuples.cs:154:27:154:38 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | Tuples.cs:157:18:157:19 | access to local variable c2 | provenance |  |
+| Tuples.cs:161:13:161:14 | access to local variable o5 : String | Tuples.cs:163:18:163:19 | access to local variable o5 : String | provenance |  |
+| Tuples.cs:161:13:161:14 | access to local variable o5 : String | Tuples.cs:163:18:163:19 | access to local variable o5 : String | provenance |  |
+| Tuples.cs:161:18:161:35 | call to method Source<String> : String | Tuples.cs:161:13:161:14 | access to local variable o5 : String | provenance |  |
+| Tuples.cs:161:18:161:35 | call to method Source<String> : String | Tuples.cs:161:13:161:14 | access to local variable o5 : String | provenance |  |
+| Tuples.cs:162:13:162:14 | access to local variable o6 : String | Tuples.cs:163:26:163:27 | access to local variable o6 : String | provenance |  |
+| Tuples.cs:162:13:162:14 | access to local variable o6 : String | Tuples.cs:163:26:163:27 | access to local variable o6 : String | provenance |  |
+| Tuples.cs:162:18:162:35 | call to method Source<String> : String | Tuples.cs:162:13:162:14 | access to local variable o6 : String | provenance |  |
+| Tuples.cs:162:18:162:35 | call to method Source<String> : String | Tuples.cs:162:13:162:14 | access to local variable o6 : String | provenance |  |
+| Tuples.cs:163:13:163:13 | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:164:18:164:47 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:163:13:163:13 | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:164:18:164:47 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:163:13:163:13 | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:164:18:164:47 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:163:13:163:13 | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:164:18:164:47 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:163:17:163:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:163:13:163:13 | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:163:17:163:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:163:13:163:13 | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:163:17:163:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:163:13:163:13 | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:163:17:163:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:163:13:163:13 | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:163:18:163:19 | access to local variable o5 : String | Tuples.cs:163:17:163:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:163:18:163:19 | access to local variable o5 : String | Tuples.cs:163:17:163:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | provenance |  |
+| Tuples.cs:163:22:163:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | Tuples.cs:163:17:163:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:163:22:163:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | Tuples.cs:163:17:163:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | provenance |  |
+| Tuples.cs:163:26:163:27 | access to local variable o6 : String | Tuples.cs:163:22:163:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
+| Tuples.cs:163:26:163:27 | access to local variable o6 : String | Tuples.cs:163:22:163:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
+| Tuples.cs:164:18:164:47 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:166:18:166:19 | access to local variable a3 | provenance |  |
+| Tuples.cs:164:18:164:47 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:166:18:166:19 | access to local variable a3 | provenance |  |
+| Tuples.cs:164:18:164:47 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:167:18:167:18 | access to local variable t : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
+| Tuples.cs:164:18:164:47 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:167:18:167:18 | access to local variable t : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
+| Tuples.cs:167:18:167:18 | access to local variable t : ValueTuple<Int32,String> [field Item2] : String | Tuples.cs:167:18:167:24 | access to field Item2 | provenance |  |
+| Tuples.cs:167:18:167:18 | access to local variable t : ValueTuple<Int32,String> [field Item2] : String | Tuples.cs:167:18:167:24 | access to field Item2 | provenance |  |
 nodes
 | Tuples.cs:7:13:7:14 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
 | Tuples.cs:7:13:7:14 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
@@ -439,6 +523,102 @@ nodes
 | Tuples.cs:133:28:133:28 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | Tuples.cs:134:14:134:15 | access to local variable y4 | semmle.label | access to local variable y4 |
 | Tuples.cs:134:14:134:15 | access to local variable y4 | semmle.label | access to local variable y4 |
+| Tuples.cs:139:13:139:14 | access to local variable o1 : String | semmle.label | access to local variable o1 : String |
+| Tuples.cs:139:13:139:14 | access to local variable o1 : String | semmle.label | access to local variable o1 : String |
+| Tuples.cs:139:18:139:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| Tuples.cs:139:18:139:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| Tuples.cs:140:13:140:14 | access to local variable o2 : String | semmle.label | access to local variable o2 : String |
+| Tuples.cs:140:13:140:14 | access to local variable o2 : String | semmle.label | access to local variable o2 : String |
+| Tuples.cs:140:18:140:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| Tuples.cs:140:18:140:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| Tuples.cs:141:13:141:13 | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:141:13:141:13 | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:141:13:141:13 | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:141:13:141:13 | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | access to local variable x : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:141:17:141:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:141:17:141:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:141:17:141:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:141:17:141:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:141:18:141:19 | access to local variable o1 : String | semmle.label | access to local variable o1 : String |
+| Tuples.cs:141:18:141:19 | access to local variable o1 : String | semmle.label | access to local variable o1 : String |
+| Tuples.cs:141:22:141:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | semmle.label | (..., ...) : ValueTuple<Int32,String> [field Item2] : String |
+| Tuples.cs:141:22:141:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | semmle.label | (..., ...) : ValueTuple<Int32,String> [field Item2] : String |
+| Tuples.cs:141:26:141:27 | access to local variable o2 : String | semmle.label | access to local variable o2 : String |
+| Tuples.cs:141:26:141:27 | access to local variable o2 : String | semmle.label | access to local variable o2 : String |
+| Tuples.cs:144:18:144:46 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:144:18:144:46 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:144:18:144:46 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:144:18:144:46 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:144:27:144:42 | { ... } : ValueTuple<Int32,String> [field Item2] : String | semmle.label | { ... } : ValueTuple<Int32,String> [field Item2] : String |
+| Tuples.cs:144:27:144:42 | { ... } : ValueTuple<Int32,String> [field Item2] : String | semmle.label | { ... } : ValueTuple<Int32,String> [field Item2] : String |
+| Tuples.cs:145:22:145:23 | access to local variable a1 | semmle.label | access to local variable a1 |
+| Tuples.cs:145:22:145:23 | access to local variable a1 | semmle.label | access to local variable a1 |
+| Tuples.cs:146:22:146:23 | access to local variable c1 | semmle.label | access to local variable c1 |
+| Tuples.cs:146:22:146:23 | access to local variable c1 | semmle.label | access to local variable c1 |
+| Tuples.cs:151:13:151:14 | access to local variable o3 : String | semmle.label | access to local variable o3 : String |
+| Tuples.cs:151:13:151:14 | access to local variable o3 : String | semmle.label | access to local variable o3 : String |
+| Tuples.cs:151:18:151:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| Tuples.cs:151:18:151:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| Tuples.cs:152:13:152:14 | access to local variable o4 : String | semmle.label | access to local variable o4 : String |
+| Tuples.cs:152:13:152:14 | access to local variable o4 : String | semmle.label | access to local variable o4 : String |
+| Tuples.cs:152:18:152:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| Tuples.cs:152:18:152:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| Tuples.cs:153:13:153:13 | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:153:13:153:13 | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:153:13:153:13 | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:153:13:153:13 | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | access to local variable y : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:153:17:153:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:153:17:153:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:153:17:153:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:153:17:153:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:153:18:153:19 | access to local variable o3 : String | semmle.label | access to local variable o3 : String |
+| Tuples.cs:153:18:153:19 | access to local variable o3 : String | semmle.label | access to local variable o3 : String |
+| Tuples.cs:153:22:153:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | semmle.label | (..., ...) : ValueTuple<Int32,String> [field Item2] : String |
+| Tuples.cs:153:22:153:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | semmle.label | (..., ...) : ValueTuple<Int32,String> [field Item2] : String |
+| Tuples.cs:153:26:153:27 | access to local variable o4 : String | semmle.label | access to local variable o4 : String |
+| Tuples.cs:153:26:153:27 | access to local variable o4 : String | semmle.label | access to local variable o4 : String |
+| Tuples.cs:154:18:154:42 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:154:18:154:42 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:154:18:154:42 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:154:18:154:42 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:154:27:154:38 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | semmle.label | (..., ...) : ValueTuple<Int32,String> [field Item2] : String |
+| Tuples.cs:154:27:154:38 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | semmle.label | (..., ...) : ValueTuple<Int32,String> [field Item2] : String |
+| Tuples.cs:156:18:156:19 | access to local variable a2 | semmle.label | access to local variable a2 |
+| Tuples.cs:156:18:156:19 | access to local variable a2 | semmle.label | access to local variable a2 |
+| Tuples.cs:157:18:157:19 | access to local variable c2 | semmle.label | access to local variable c2 |
+| Tuples.cs:157:18:157:19 | access to local variable c2 | semmle.label | access to local variable c2 |
+| Tuples.cs:161:13:161:14 | access to local variable o5 : String | semmle.label | access to local variable o5 : String |
+| Tuples.cs:161:13:161:14 | access to local variable o5 : String | semmle.label | access to local variable o5 : String |
+| Tuples.cs:161:18:161:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| Tuples.cs:161:18:161:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| Tuples.cs:162:13:162:14 | access to local variable o6 : String | semmle.label | access to local variable o6 : String |
+| Tuples.cs:162:13:162:14 | access to local variable o6 : String | semmle.label | access to local variable o6 : String |
+| Tuples.cs:162:18:162:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| Tuples.cs:162:18:162:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| Tuples.cs:163:13:163:13 | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:163:13:163:13 | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:163:13:163:13 | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:163:13:163:13 | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | access to local variable z : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:163:17:163:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:163:17:163:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:163:17:163:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:163:17:163:32 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:163:18:163:19 | access to local variable o5 : String | semmle.label | access to local variable o5 : String |
+| Tuples.cs:163:18:163:19 | access to local variable o5 : String | semmle.label | access to local variable o5 : String |
+| Tuples.cs:163:22:163:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | semmle.label | (..., ...) : ValueTuple<Int32,String> [field Item2] : String |
+| Tuples.cs:163:22:163:28 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | semmle.label | (..., ...) : ValueTuple<Int32,String> [field Item2] : String |
+| Tuples.cs:163:26:163:27 | access to local variable o6 : String | semmle.label | access to local variable o6 : String |
+| Tuples.cs:163:26:163:27 | access to local variable o6 : String | semmle.label | access to local variable o6 : String |
+| Tuples.cs:164:18:164:47 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:164:18:164:47 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | semmle.label | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String |
+| Tuples.cs:164:18:164:47 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:164:18:164:47 | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | semmle.label | { ... } : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String |
+| Tuples.cs:166:18:166:19 | access to local variable a3 | semmle.label | access to local variable a3 |
+| Tuples.cs:166:18:166:19 | access to local variable a3 | semmle.label | access to local variable a3 |
+| Tuples.cs:167:18:167:18 | access to local variable t : ValueTuple<Int32,String> [field Item2] : String | semmle.label | access to local variable t : ValueTuple<Int32,String> [field Item2] : String |
+| Tuples.cs:167:18:167:18 | access to local variable t : ValueTuple<Int32,String> [field Item2] : String | semmle.label | access to local variable t : ValueTuple<Int32,String> [field Item2] : String |
+| Tuples.cs:167:18:167:24 | access to field Item2 | semmle.label | access to field Item2 |
+| Tuples.cs:167:18:167:24 | access to field Item2 | semmle.label | access to field Item2 |
 subpaths
 | Tuples.cs:100:24:100:24 | access to local variable o : String | Tuples.cs:95:22:95:22 | i : String | Tuples.cs:95:12:95:13 | this [Return] : R1 [property i] : String | Tuples.cs:100:17:100:28 | object creation of type R1 : R1 [property i] : String |
 | Tuples.cs:100:24:100:24 | access to local variable o : String | Tuples.cs:95:22:95:22 | i : String | Tuples.cs:95:12:95:13 | this [Return] : R1 [property i] : String | Tuples.cs:100:17:100:28 | object creation of type R1 : R1 [property i] : String |
@@ -490,3 +670,15 @@ testFailures
 | Tuples.cs:130:14:130:15 | access to local variable y3 | Tuples.cs:118:17:118:33 | call to method Source<Object> : Object | Tuples.cs:130:14:130:15 | access to local variable y3 | $@ | Tuples.cs:118:17:118:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Tuples.cs:134:14:134:15 | access to local variable y4 | Tuples.cs:118:17:118:33 | call to method Source<Object> : Object | Tuples.cs:134:14:134:15 | access to local variable y4 | $@ | Tuples.cs:118:17:118:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Tuples.cs:134:14:134:15 | access to local variable y4 | Tuples.cs:118:17:118:33 | call to method Source<Object> : Object | Tuples.cs:134:14:134:15 | access to local variable y4 | $@ | Tuples.cs:118:17:118:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Tuples.cs:145:22:145:23 | access to local variable a1 | Tuples.cs:139:18:139:35 | call to method Source<String> : String | Tuples.cs:145:22:145:23 | access to local variable a1 | $@ | Tuples.cs:139:18:139:35 | call to method Source<String> : String | call to method Source<String> : String |
+| Tuples.cs:145:22:145:23 | access to local variable a1 | Tuples.cs:139:18:139:35 | call to method Source<String> : String | Tuples.cs:145:22:145:23 | access to local variable a1 | $@ | Tuples.cs:139:18:139:35 | call to method Source<String> : String | call to method Source<String> : String |
+| Tuples.cs:146:22:146:23 | access to local variable c1 | Tuples.cs:140:18:140:35 | call to method Source<String> : String | Tuples.cs:146:22:146:23 | access to local variable c1 | $@ | Tuples.cs:140:18:140:35 | call to method Source<String> : String | call to method Source<String> : String |
+| Tuples.cs:146:22:146:23 | access to local variable c1 | Tuples.cs:140:18:140:35 | call to method Source<String> : String | Tuples.cs:146:22:146:23 | access to local variable c1 | $@ | Tuples.cs:140:18:140:35 | call to method Source<String> : String | call to method Source<String> : String |
+| Tuples.cs:156:18:156:19 | access to local variable a2 | Tuples.cs:151:18:151:35 | call to method Source<String> : String | Tuples.cs:156:18:156:19 | access to local variable a2 | $@ | Tuples.cs:151:18:151:35 | call to method Source<String> : String | call to method Source<String> : String |
+| Tuples.cs:156:18:156:19 | access to local variable a2 | Tuples.cs:151:18:151:35 | call to method Source<String> : String | Tuples.cs:156:18:156:19 | access to local variable a2 | $@ | Tuples.cs:151:18:151:35 | call to method Source<String> : String | call to method Source<String> : String |
+| Tuples.cs:157:18:157:19 | access to local variable c2 | Tuples.cs:152:18:152:35 | call to method Source<String> : String | Tuples.cs:157:18:157:19 | access to local variable c2 | $@ | Tuples.cs:152:18:152:35 | call to method Source<String> : String | call to method Source<String> : String |
+| Tuples.cs:157:18:157:19 | access to local variable c2 | Tuples.cs:152:18:152:35 | call to method Source<String> : String | Tuples.cs:157:18:157:19 | access to local variable c2 | $@ | Tuples.cs:152:18:152:35 | call to method Source<String> : String | call to method Source<String> : String |
+| Tuples.cs:166:18:166:19 | access to local variable a3 | Tuples.cs:161:18:161:35 | call to method Source<String> : String | Tuples.cs:166:18:166:19 | access to local variable a3 | $@ | Tuples.cs:161:18:161:35 | call to method Source<String> : String | call to method Source<String> : String |
+| Tuples.cs:166:18:166:19 | access to local variable a3 | Tuples.cs:161:18:161:35 | call to method Source<String> : String | Tuples.cs:166:18:166:19 | access to local variable a3 | $@ | Tuples.cs:161:18:161:35 | call to method Source<String> : String | call to method Source<String> : String |
+| Tuples.cs:167:18:167:24 | access to field Item2 | Tuples.cs:162:18:162:35 | call to method Source<String> : String | Tuples.cs:167:18:167:24 | access to field Item2 | $@ | Tuples.cs:162:18:162:35 | call to method Source<String> : String | call to method Source<String> : String |
+| Tuples.cs:167:18:167:24 | access to field Item2 | Tuples.cs:162:18:162:35 | call to method Source<String> : String | Tuples.cs:167:18:167:24 | access to field Item2 | $@ | Tuples.cs:162:18:162:35 | call to method Source<String> : String | call to method Source<String> : String |

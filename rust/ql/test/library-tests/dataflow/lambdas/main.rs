@@ -23,8 +23,19 @@ fn closure_flow_in() {
     f(true, a);
 }
 
+fn closure_flow_in2() {
+    let (mut x, y) = (source(1), 0);
+    (x) = x;
+    (|| sink(x))(); // $ hasValueFlow=1
+}
+
+fn closure_flow_in3() {
+    let (ref x,) = (source(1),);
+    (|| sink(*x))(); // $ hasValueFlow=1
+}
+
 fn closure_flow_through() {
-    let f = |cond, data| if cond { data } else { 0 };
+    let f = |cond, ((data))| if cond { data } else { 0 };
     let a = source(43);
     let b = f(true, a);
     sink(b); // $ hasValueFlow=43
@@ -113,9 +124,70 @@ fn test_external_call() {
     may_invoke_callback4(|x| sink(a)); // $ hasValueFlow=81
 }
 
+mod async_blocks {
+    use super::{sink, source};
+
+    async fn async_block_flow_out() {
+        let future = async { source(206) };
+        sink(future.await); // $ hasValueFlow=206
+    }
+
+    async fn async_block_flow_in() {
+        let data = source(207);
+        async {
+            sink(data); // $ hasValueFlow=207
+        }
+        .await;
+    }
+
+    async fn async_block_flow_through() {
+        let data = source(208);
+        let future = async { data };
+        sink(future.await); // $ hasValueFlow=208
+    }
+
+    async fn async_block_captured_variable() {
+        let mut captured = 1;
+        sink(captured);
+        async {
+            captured = source(209);
+        }
+        .await;
+        sink(captured); // $ hasValueFlow=209
+    }
+
+    async fn boxed_async_block_captured_variable() {
+        let mut captured = 1;
+        sink(captured);
+        Box::pin(async {
+            captured = source(210);
+        })
+        .await;
+        sink(captured); // $ MISSING: hasValueFlow=210
+    }
+
+    async fn test_async_blocks() {
+        async_block_flow_out().await;
+        async_block_flow_in().await;
+        async_block_flow_through().await;
+        async_block_captured_variable().await;
+        boxed_async_block_captured_variable().await;
+    }
+
+    pub fn main() {
+        futures::executor::block_on(test_async_blocks());
+    }
+}
+
+fn closure_flow_out_try() {
+    let f = || (Some(Some(source(93))))?;
+    sink(f().unwrap()); // $ hasValueFlow=93
+}
+
 fn main() {
     closure_flow_out();
     closure_flow_in();
+    closure_flow_in2();
     closure_flow_through();
     closure_captured_variable();
     function_flow_in();
@@ -123,4 +195,5 @@ fn main() {
     function_flows_through();
     test_apply();
     test_apply_wrap();
+    async_blocks::main();
 }

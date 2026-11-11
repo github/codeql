@@ -20,5 +20,7 @@ module Generated {
    */
   class Unimplemented extends Synth::TUnimplemented, UnextractedImpl::Unextracted {
     override string getAPrimaryQlClass() { result = "Unimplemented" }
+
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
   }
 }

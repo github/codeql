@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/actions-all
-      extensible: actionsSinkModel
-    data:
-     - ["kserve/kserve", "*", "input.directory", "code-injection", "generated"]
-     - ["kserve/kserve", "*", "input.deployment-mode", "code-injection", "generated"]
-     - ["kserve/kserve", "*", "input.network-layer", "code-injection", "generated"]

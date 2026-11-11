@@ -396,9 +396,7 @@ private int maxColumnWidth() {
 }
 
 private string getPaddingString(int n) {
-  n = 0 and result = ""
-  or
-  n > 0 and n <= maxColumnWidth() and result = getPaddingString(n - 1) + " "
+  n = [0 .. maxColumnWidth()] and result = concat(int i | i in [1 .. n] | " ")
 }
 
 /**

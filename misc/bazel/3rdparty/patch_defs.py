@@ -12,11 +12,11 @@ import pathlib
 #
 # Problem number 2:
 # Semver versions can contain `+` for build metadata (e.g., `0.9.11+spec-1.1.0`).
-# Bazel repo names use `-` instead of `+`, so `vendor_ts__toml-0.9.11+spec-1.1.0`
-# becomes `vendor_ts__toml-0.9.11-spec-1.1.0`. The generated labels reference the
+# Bazel repo names use `-` instead of `+`, so `vendor_rs__toml-0.9.11+spec-1.1.0`
+# becomes `vendor_rs__toml-0.9.11-spec-1.1.0`. The generated labels reference the
 # `+` version which doesn't exist, causing:
-#     ERROR: no such package '@@[unknown repo 'vendor_ts__toml-0.9.11+spec-1.1.0'
-#     requested from @@ (did you mean 'vendor_ts__toml-0.9.11-spec-1.1.0'?)]//
+#     ERROR: no such package '@@[unknown repo 'vendor_rs__toml-0.9.11+spec-1.1.0'
+#     requested from @@ (did you mean 'vendor_rs__toml-0.9.11-spec-1.1.0'?)]//
 
 label_re = re.compile(r'"@(vendor.*)//:([^+]+)-([\d.]+(?:\+.*)?)"')
 

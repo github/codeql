@@ -6,6 +6,7 @@
 | lib/src/lib.rs:0:0:0:0 | Extract(lib/src/lib.rs) |
 | lib/src/lib.rs:0:0:0:0 | Parse(lib/src/lib.rs) |
 | other/Cargo.toml:0:0:0:0 | LoadManifest(other/Cargo.toml) |
+| other/Cargo.toml:0:0:0:0 | LoadManifest(other/Cargo.toml) |
 | other/src/lib.rs:0:0:0:0 | Extract(other/src/lib.rs) |
 | other/src/lib.rs:0:0:0:0 | LoadSource(other/src/lib.rs) |
 | other/src/lib.rs:0:0:0:0 | Parse(other/src/lib.rs) |

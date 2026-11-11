@@ -1,0 +1,11 @@
+[package]
+name = "rust-version"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.999.0"
+
+[dependencies]
+macros = { path = "macros" }
+
+[workspace]
+members = ["macros"]

@@ -24,7 +24,7 @@ fn test_get_filename_and_lineno() {
 
 fn get_files_with_deprecations() -> FileDeprecations {
     let output = Command::new("git")
-        .args(&[
+        .args([
             "grep",
             "-n",
             "-E",
@@ -38,10 +38,7 @@ fn get_files_with_deprecations() -> FileDeprecations {
     let mut file_deprecations: FileDeprecations = HashMap::new();
     for line in output.stdout.lines() {
         let (file, lineno) = get_filename_and_lineno(&line.unwrap());
-        file_deprecations
-            .entry(file)
-            .or_insert_with(Vec::new)
-            .push(lineno);
+        file_deprecations.entry(file).or_default().push(lineno);
     }
     file_deprecations
 }
@@ -101,7 +98,7 @@ fn main() {
         .map(|(file, linenos)| (file, get_blame_dates_for_filedeprecation(file, linenos)));
     deprecations.for_each(|(file, linenos_and_dates)| {
         println!("file: {}", file);
-        for (date, linenos) in linenos_and_dates.iter() {
+        for (date, linenos) in &linenos_and_dates {
             println!("  last_modified: {} {}", date, linenos.join(" "));
         }
     });

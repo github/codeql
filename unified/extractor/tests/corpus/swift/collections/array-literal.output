@@ -41,18 +41,16 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "xs"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "xs" source="xs"
           value:
-            array_literal
+            array_literal source="[⟨element⟩, ⟨element⟩, ⟨element⟩]"
               element:
-                int_literal "1"
-                int_literal "2"
-                int_literal "3"
+                int_literal "1" source="1"
+                int_literal "2" source="2"
+                int_literal "3" source="3"

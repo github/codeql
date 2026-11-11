@@ -35,7 +35,7 @@ class RelevantDefinition extends AssignableDefinition {
         not lvde.getName() = "_"
       )
     or
-    this instanceof AssignableDefinitions::PatternDefinition
+    this instanceof AssignableDefinitions::TopLevelPatternDefinition
     or
     this instanceof AssignableDefinitions::AssignOperationDefinition
   }

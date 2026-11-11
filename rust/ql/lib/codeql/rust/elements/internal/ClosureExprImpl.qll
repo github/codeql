@@ -28,7 +28,9 @@ module Impl {
    * ```
    */
   class ClosureExpr extends Generated::ClosureExpr {
-    override string toStringImpl() { result = "|...| " + this.getBody().toAbbreviatedString() }
+    override string toStringImpl() {
+      result = "|...| " + concat(this.getBody().toAbbreviatedString())
+    }
 
     override Expr getBody() { result = this.getClosureBody() }
   }

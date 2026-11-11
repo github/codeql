@@ -1,23 +1,6 @@
+#include "bsl.h"
 
 // --- stub library headers ---
-
-namespace bsl {
-	typedef unsigned long size_t;
-	template <class T> class allocator {};
-	template<class charT> struct char_traits {};
-	template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
-	class basic_string {
-	public:
-		basic_string(const charT* s, const Allocator& a = Allocator());
-		const charT* data() const;
-		size_t size() const;
-	};
-	typedef basic_string<char> string;
-	template <class T> class shared_ptr {
-	public:
-		T *get() const;
-	};
-}
 
 namespace BloombergLP {
 namespace bdlbb {

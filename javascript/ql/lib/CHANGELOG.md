@@ -1,3 +1,34 @@
+## 3.0.0
+
+### Breaking Changes
+
+* The `SEMMLE_TYPESCRIPT_HOME` environment variable is no longer supported. The JavaScript/TypeScript extractor now ignores the environment variable and always uses its bundled TypeScript compiler.
+
+### Minor Analysis Improvements
+
+* Added taint steps for `String.prototype.trimStart`, `trimEnd`, and `normalize`.
+* Fixed the flow summary for `Array.prototype.flatMap`. The `thisArg` argument now flows to the callback's `this` instead of its index parameter.
+
+## 2.10.4
+
+No user-facing changes.
+
+## 2.10.3
+
+### Minor Analysis Improvements
+
+* The Workflow SDK directives `"use workflow"` and `"use step"` are now recognized as known directives, so the `js/unknown-directive` query no longer flags them.
+
+### Bug Fixes
+
+* Improved Hapi route handler and request input tracking through custom route registration helpers and higher-order function wrappers.
+
+## 2.10.2
+
+### Minor Analysis Improvements
+
+* Fastify servers reached through a chainable configuration method, such as `fastify().withTypeProvider<T>()` or `fastify().setValidatorCompiler(...)`, are now recognized as the same server instance. Routes registered on such an instance are now attributed to their server, which may add results for queries such as `js/missing-rate-limiting` where routes were previously not recognized at all, and remove false positives where a globally registered plugin guards them.
+
 ## 2.10.1
 
 No user-facing changes.
@@ -647,7 +678,7 @@ No user-facing changes.
 
 ### New Features
 
-* Improved support for [Restify](http://restify.com/) framework, leading to more results when scanning applications developed with this framework.
+* Improved support for [Restify](https://restify.com/) framework, leading to more results when scanning applications developed with this framework.
 * Added support for the [Spife](https://github.com/npm/spife) framework.
 
 ### Minor Analysis Improvements

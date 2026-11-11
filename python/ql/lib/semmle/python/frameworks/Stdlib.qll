@@ -1761,6 +1761,59 @@ module StdlibPrivate {
   }
 
   // ---------------------------------------------------------------------------
+  // binascii
+  // ---------------------------------------------------------------------------
+  /** A call to a supported encoding function in the `binascii` module. */
+  private class BinasciiEncodeCall extends Encoding::Range, DataFlow::CallCfgNode {
+    string codec;
+
+    BinasciiEncodeCall() {
+      codec in ["base32", "base85", "ascii85"] and
+      this = API::moduleImport("binascii").getMember("b2a_" + codec).getACall()
+    }
+
+    override DataFlow::Node getAnInput() {
+      result = this.getArg(0)
+      or
+      codec in ["base32", "base85"] and
+      result = this.getArgByName("alphabet")
+    }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() {
+      result in ["Base32", "Base85", "Ascii85"] and
+      result.toLowerCase() = codec
+    }
+  }
+
+  /** A call to a supported decoding function in the `binascii` module. */
+  private class BinasciiDecodeCall extends Decoding::Range, DataFlow::CallCfgNode {
+    string codec;
+
+    BinasciiDecodeCall() {
+      codec in ["base32", "base85", "ascii85"] and
+      this = API::moduleImport("binascii").getMember("a2b_" + codec).getACall()
+    }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getAnInput() {
+      result = this.getArg(0)
+      or
+      codec in ["base32", "base85"] and
+      result = this.getArgByName("alphabet")
+    }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() {
+      result in ["Base32", "Base85", "Ascii85"] and
+      result.toLowerCase() = codec
+    }
+  }
+
+  // ---------------------------------------------------------------------------
   // json
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `json` module. */
@@ -2035,6 +2088,34 @@ module StdlibPrivate {
       override DataFlow::Node getNameArg() { result = this.getArg(0) }
 
       override DataFlow::Node getValueArg() { result = this.getArg(1) }
+
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { any() }
+    }
+
+    /** Additional response headers supplied by construction or instance assignment. */
+    private class ExtraHeadersWrite extends Http::Server::ResponseHeaderBulkWrite::Range {
+      DataFlow::Node headers;
+
+      ExtraHeadersWrite() {
+        exists(API::Node cls |
+          cls =
+            API::moduleImport("http")
+                .getMember("server")
+                .getMember("SimpleHTTPRequestHandler")
+                .getASubclass*()
+        |
+          this = cls.getACall() and
+          headers = this.(DataFlow::CallCfgNode).getArgByName("extra_response_headers")
+          or
+          this.(DataFlow::AttrWrite)
+              .writes([cls.getAnInstance(), cls.getAMember().getSelfParameter()]
+                    .getAValueReachableFromSource(), "extra_response_headers", headers)
+        )
+      }
+
+      override DataFlow::Node getBulkArg() { result = headers }
 
       override predicate nameAllowsNewline() { any() }
 
@@ -3105,12 +3186,15 @@ module StdlibPrivate {
    */
   private class RegexExecutionMethod extends string {
     RegexExecutionMethod() {
-      this in ["match", "fullmatch", "search", "split", "findall", "finditer", "sub", "subn"]
+      this in [
+          "match", "prefixmatch", "fullmatch", "search", "split", "findall", "finditer", "sub",
+          "subn"
+        ]
     }
 
     /** Gets the index of the argument representing the string to be searched by a regex. */
     int getStringArgIndex() {
-      this in ["match", "fullmatch", "search", "split", "findall", "finditer"] and
+      this in ["match", "prefixmatch", "fullmatch", "search", "split", "findall", "finditer"] and
       result = 1
       or
       this in ["sub", "subn"] and
@@ -3244,7 +3328,7 @@ module StdlibPrivate {
           this = "compiled re.Match"
         )
       |
-        result = re.getMember(["match", "search", "fullmatch"]).getACall()
+        result = re.getMember(["match", "prefixmatch", "search", "fullmatch"]).getACall()
       )
     }
 
@@ -4219,6 +4303,21 @@ module StdlibPrivate {
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
+    }
+  }
+
+  /** A flow summary for `frozendict`. */
+  class FrozendictSummary extends SummarizedCallable::Range {
+    FrozendictSummary() { this = "builtins.frozendict" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("frozendict").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("frozendict").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      any(DictSummary s).propagatesFlow(input, output, preservesValue)
     }
   }
 

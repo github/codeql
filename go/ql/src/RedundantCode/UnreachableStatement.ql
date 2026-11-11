@@ -14,11 +14,45 @@
 
 import go
 
-ControlFlow::Node nonGuardPredecessor(ControlFlow::Node nd) {
-  exists(ControlFlow::Node pred | pred = nd.getAPredecessor() |
-    if pred instanceof ControlFlow::ConditionGuardNode
-    then result = nonGuardPredecessor(pred)
-    else result = pred
+/**
+ * Holds if `s` is reachable, that is, the control-flow graph contains a node for it.
+ *
+ * The shared control-flow library does not create control-flow nodes for dead code, so an
+ * unreachable statement has no first control-flow node.
+ */
+predicate isReachable(Stmt s) { exists(s.getFirstControlFlowNode()) }
+
+/** Gets the statement immediately preceding `s` in a statement list, if any. */
+Stmt getPreviousStmt(Stmt s) {
+  exists(BlockStmt b, int i | s = b.getStmt(i) and result = b.getStmt(i - 1))
+  or
+  exists(CaseClause c, int i | s = c.getStmt(i) and result = c.getStmt(i - 1))
+  or
+  exists(CommClause c, int i | s = c.getStmt(i) and result = c.getStmt(i - 1))
+}
+
+/**
+ * Holds if `s` is unreachable but the code that would precede it in the control-flow graph is
+ * reachable, so that `s` is the first unreachable statement in a run of dead code.
+ */
+predicate firstUnreachableStmt(Stmt s) {
+  not isReachable(s) and
+  (
+    // a statement whose preceding statement in the same list is reachable
+    isReachable(getPreviousStmt(s))
+    or
+    // the post statement of a `for` loop whose body is entered
+    exists(ForStmt f | s = f.getPost() and isReachable(f.getBody().getAStmt()))
+  )
+}
+
+/** Holds if `s` is in a run of unreachable statements following a constant condition. */
+predicate isInUnreachableRunAfterConstantCondition(Stmt s) {
+  not isReachable(s) and
+  (
+    exists(getPreviousStmt(s).(IfStmt).getCondition().getBoolValue())
+    or
+    isInUnreachableRunAfterConstantCondition(getPreviousStmt(s))
   )
 }
 
@@ -53,6 +87,8 @@ predicate isAllowedReturnValue(Expr retval) {
  * Matches if `s` is an allowed unreachable statement.
  */
 predicate allowlist(Stmt s) {
+  s instanceof EmptyStmt
+  or
   // `panic("unreachable")` and similar
   exists(CallExpr ce | ce = s.(ExprStmt).getExpr() or ce = s.(ReturnStmt).getExpr() |
     ce.getTarget().mustPanic() or ce.getCalleeName().toLowerCase() = "error"
@@ -62,19 +98,28 @@ predicate allowlist(Stmt s) {
   exists(ReturnStmt ret | ret = s |
     forall(Expr retval | retval = ret.getAnExpr() | isAllowedReturnValue(retval))
   )
-  or
-  // statements in an `if false { ... }` and similar
-  exists(IfStmt is, ControlFlow::ConditionGuardNode iffalse, Expr cond, boolean b |
-    iffalse.getCondition() = is.getCond() and
-    iffalse = s.getFirstControlFlowNode().getAPredecessor() and
-    cond.getBoolValue() = b and
-    iffalse.ensures(DataFlow::exprNode(cond), b.booleanNot())
+}
+
+Stmt firstNonAllowlisted(Stmt s) {
+  not isReachable(s) and
+  (
+    not allowlist(s) and result = s
+    or
+    allowlist(s) and
+    exists(Stmt next | getPreviousStmt(next) = s | result = firstNonAllowlisted(next))
   )
 }
 
-from Stmt s, ControlFlow::Node fst
+/** Holds if `s` is the first non-allowlisted statement in a run of unreachable statements. */
+predicate firstNonAllowlistedUnreachableStmt(Stmt s) {
+  exists(Stmt unreachable |
+    firstUnreachableStmt(unreachable) and
+    s = firstNonAllowlisted(unreachable)
+  )
+}
+
+from Stmt s
 where
-  fst = s.getFirstControlFlowNode() and
-  not exists(nonGuardPredecessor(fst)) and
-  not allowlist(s)
+  firstNonAllowlistedUnreachableStmt(s) and
+  not isInUnreachableRunAfterConstantCondition(s)
 select s, "This statement is unreachable."

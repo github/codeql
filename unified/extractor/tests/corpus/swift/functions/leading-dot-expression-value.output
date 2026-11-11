@@ -28,16 +28,14 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "x"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "x" source="x"
           value:
-            member_access_expr
-              base: inferred_type_expr "."
-              member: identifier "foo"
+            member_access_expr source="⟨base⟩⟨member_name_node⟩"
+              base: inferred_type_expr "." source="."
+              member_name_node: identifier "foo" source="foo"

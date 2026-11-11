@@ -1,3 +1,40 @@
+## 12.4.0
+
+### New Features
+
+* Added support for the `__builtin_lt_synthesizes_from_spaceship`, `__builtin_gt_synthesizes_from_spaceship`, `__builtin_le_synthesizes_from_spaceship`, `__builtin_ge_synthesizes_from_spaceship`, `__builtin_is_implicit_lifetime`, `__builtin_is_structural`, and `__builtin_is_virtual_base_of` builtin operations.
+* Added a new predicate `getBitWidth` to the `Type` class, which yields the bit-width of the type.
+
+## 12.3.0
+
+### New Features
+
+* Added support for C23 bit-precise integers (`_BitInt(N)`).
+
+### Minor Analysis Improvements
+
+* Added flow summaries for the BlazingMQ `BloombergLP::bmqa::Message` and `MessageProperties` classes and their iterators.
+
+## 12.2.0
+
+### New Features
+
+* Added a C++ regular-expression parser for the ECMAScript grammar used by `std::regex`.
+
+### Minor Analysis Improvements
+
+* Added SQL-injection sink models for the Comdb2 C API functions `cdb2_run_statement` and `cdb2_run_statement_typed`.
+* Added flow summaries for the BDE codecs `BloombergLP::balber::BerDecoder`/`BerEncoder`, `BloombergLP::baljsn::Decoder`/`Encoder` and `BloombergLP::balxml::Decoder`/`Encoder`.
+* Added taint flow summaries for the BDE `bslx` byte-stream deserializers `BloombergLP::bslx::ByteInStream`, `BloombergLP::bslx::GenericInStream`, and `BloombergLP::bslx::InStreamFunctions::bdexStreamIn`.
+
+## 12.1.1
+
+### Minor Analysis Improvements
+
+* Added taint flow models for the `boost::asio::ip::basic_resolver::resolve` function.
+* Added flow summaries for the BDE `BloombergLP::bdlbb::Blob` segmented byte buffer.
+* Added flow summaries for the Protocol Buffers `google::protobuf::MessageLite` C++ API.
+
 ## 12.1.0
 
 ### New Features

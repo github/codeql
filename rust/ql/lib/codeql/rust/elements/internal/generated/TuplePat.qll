@@ -26,6 +26,8 @@ module Generated {
   class TuplePat extends Synth::TTuplePat, PatImpl::Pat {
     override string getAPrimaryQlClass() { result = "TuplePat" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th field of this tuple pattern (0-based).
      */

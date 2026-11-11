@@ -231,6 +231,12 @@ module Ast implements AstSig<Py::Location> {
     override Callable getEnclosingCallable() { result.asScope() = this.asStmt().getScope() }
   }
 
+  class LabeledStmt extends Stmt {
+    LabeledStmt() { none() }
+
+    Stmt getStmt() { none() }
+  }
+
   /** An expression. */
   class Expr extends AstNodeImpl, TExpr {
     // For `TPyExpr` instances, delegate to the wrapped Python expression.
@@ -993,9 +999,8 @@ module Ast implements AstSig<Py::Location> {
     }
   }
 
-  /** A wildcard case (`case _:`). */
   class DefaultCase extends Case {
-    DefaultCase() { this.isWildcard() }
+    DefaultCase() { none() }
   }
 
   /** A conditional expression (`x if cond else y`). */
@@ -1753,6 +1758,11 @@ private module Input implements InputSig1, InputSig2 {
       n1.isAfter(assertStmt.getMsg()) and
       n2.isAdditional(assertStmt, assertThrowTag())
     )
+  }
+
+  predicate matchAll(Ast::Case c) {
+    // A wildcard case (`case _:`) will match all values.
+    c.isWildcard()
   }
 }
 

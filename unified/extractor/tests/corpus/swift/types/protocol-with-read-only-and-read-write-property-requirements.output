@@ -1,6 +1,7 @@
 protocol P {
   var foo: Int { get }
   var bar: String { get set }
+  var count: Int { get }
 }
 
 ---
@@ -12,6 +13,7 @@ sourceFile
       item:
         protocolDecl
           attributes:
+          modifiers:
           name: identifier "P"
           memberBlock:
             memberBlock
@@ -41,6 +43,7 @@ sourceFile
                                 accessorDecl
                                   accessorSpecifier: get
                                   attributes:
+                                  modifiers:
                               leftBrace: {
                               rightBrace: }
                 memberBlockItem
@@ -66,40 +69,74 @@ sourceFile
                                 accessorDecl
                                   accessorSpecifier: get
                                   attributes:
+                                  modifiers:
                                 accessorDecl
                                   accessorSpecifier: set
                                   attributes:
+                                  modifiers:
                               leftBrace: {
                               rightBrace: }
-          modifiers:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "count"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                accessorDecl
+                                  accessorSpecifier: get
+                                  attributes:
+                                  modifiers:
+                              leftBrace: {
+                              rightBrace: }
           protocolKeyword: protocol
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        class_like_declaration
-          modifier: modifier "protocol"
-          name: identifier "P"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n  var foo: Int { ⟨member⟩ }\n  var bar: String { ⟨member⟩ ⟨member⟩ }\n  var count: Int { ⟨member⟩ }\n}"
+          modifier: modifier "protocol" source="protocol"
+          name_node: identifier "P" source="P"
           member:
-            accessor_declaration
-              name: identifier "foo"
-              accessor_kind: accessor_kind "get"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-            accessor_declaration
-              name: identifier "bar"
-              accessor_kind: accessor_kind "get"
-              type:
-                named_type_expr
-                  name: identifier "String"
-            accessor_declaration
-              modifier: modifier "chained_declaration"
-              name: identifier "bar"
-              accessor_kind: accessor_kind "set"
-              type:
-                named_type_expr
-                  name: identifier "String"
+            accessor_declaration source="⟨accessor_kind⟩"
+              modifier: modifier "var" source="var" (external)
+              name_node: identifier "foo" source="foo" (external)
+              accessor_kind: accessor_kind "get" source="get"
+              return_type: identifier "Int" source="Int" (external)
+            accessor_declaration source="⟨accessor_kind⟩"
+              modifier: modifier "var" source="var" (external)
+              name_node: identifier "bar" source="bar" (external)
+              accessor_kind: accessor_kind "get" source="get"
+              return_type: identifier "String" source="String" (external)
+            accessor_declaration source="⟨accessor_kind⟩⟨parameter⟩"
+              modifier:
+                modifier "var" source="var" (external)
+                modifier "chained_declaration" source=""
+              name_node: identifier "bar" source="bar" (external)
+              accessor_kind: accessor_kind "set" source="set"
+              parameter:
+                parameter source="⟨pattern⟩"
+                  modifier: modifier "generated" source=""
+                  type: identifier "String" source="String" (external)
+                  pattern: identifier "newValue" source="set"
+            accessor_declaration source="⟨accessor_kind⟩"
+              modifier: modifier "var" source="var" (external)
+              name_node: identifier "count" source="count" (external)
+              accessor_kind: accessor_kind "get" source="get"
+              return_type: identifier "Int" source="Int" (external)

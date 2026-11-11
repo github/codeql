@@ -4,7 +4,7 @@
  */
 
 private import internal.AttrImpl
-import codeql.rust.elements.AstNode
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.Meta
 
 /**

@@ -22,6 +22,8 @@ module Generated {
   class CfgAttrMeta extends Synth::TCfgAttrMeta, MetaImpl::Meta {
     override string getAPrimaryQlClass() { result = "CfgAttrMeta" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the cfg predicate of this cfg attr meta, if it exists.
      */

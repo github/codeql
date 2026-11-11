@@ -35,6 +35,8 @@ module Generated {
   class MacroItems extends Synth::TMacroItems, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "MacroItems" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th item of this macro items (0-based).
      */

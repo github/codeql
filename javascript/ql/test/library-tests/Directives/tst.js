@@ -27,6 +27,8 @@ function f() {
   'use cache';
   'use cache: remote';
   'use cache: private';
+  'use workflow';
+  'use step';
   ;
   'use strict'; // but this isn't a directive
 }

@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/actions-all
-      extensible: actionsSinkModel
-    data:
-     - ["zcash/zcash", "*", "input.destination", "code-injection", "generated"]
-     - ["zcash/zcash", "*", "input.remove-first-if-exists", "code-injection", "generated"]

@@ -4,7 +4,7 @@
  */
 
 private import internal.ConstParamImpl
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.ConstArg
 import codeql.rust.elements.GenericParam
 import codeql.rust.elements.Name

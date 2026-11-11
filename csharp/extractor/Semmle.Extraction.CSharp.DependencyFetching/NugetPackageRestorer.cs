@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             IFileProvider fileProvider,
             FileContent fileContent,
             IDotNet dotnet,
-            IDependabotProxy? dependabotProxy,
+            IRegistryProxy? registryProxy,
             IDiagnosticsWriter diagnosticsWriter,
             ILogger logger,
             ICompilationInfoContainer compilationInfoContainer)
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             PackageDirectory = new DependencyDirectory("packages", "package", logger);
             legacyPackageDirectory = new DependencyDirectory("legacypackages", "legacy package", logger);
             missingPackageDirectory = new DependencyDirectory("missingpackages", "missing package", logger);
-            feedManager = new FeedManager(logger, dotnet, dependabotProxy, fileProvider);
+            feedManager = new FeedManager(logger, dotnet, registryProxy, fileProvider);
         }
 
         public string? TryRestore(string package)
@@ -148,10 +148,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     .Where(path => IsPathInSubfolder(path, legacyPackageDirectory.DirInfo.FullName, "tools"))
                     .ToList();
 
-                if (nugetPackageDllPaths.Count > 0)
-                {
-                    logger.LogInfo($"Restored {nugetPackageDllPaths.Count} NuGet DLLs.");
-                }
+
+                logger.LogInfo($"Restored {nugetPackageDllPaths.Count} NuGet DLLs from packages.config files using the NuGet CLI.");
+
                 if (excludedPaths.Count > 0)
                 {
                     logger.LogInfo($"Excluding {excludedPaths.Count} NuGet DLLs.");
@@ -163,6 +162,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
 
                 nugetPackageDllPaths.ExceptWith(excludedPaths);
+
+                logger.LogInfo($"Using {nugetPackageDllPaths.Count} DLLs as dependency candidates from NuGet packages restored via the NuGet CLI based on packages.config files.");
+                foreach (var path in nugetPackageDllPaths)
+                {
+                    logger.LogDebug($"Using NuGet DLL as dependency candidate: {path}");
+                }
+
                 assemblyLookupLocations.UnionWith(nugetPackageDllPaths.Select(p => new AssemblyLookupLocation(p)));
             }
             catch (Exception exc)
@@ -460,7 +466,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return true;
             }
 
-            if (!feedManager.CheckNugetFeedResponsiveness && res.HasNugetPackageSourceError && nugetSources.Count > 0)
+            if (!feedManager.CheckNugetFeedResponsiveness && !feedManager.HasPrivateRegistryFeeds && res.HasNugetPackageSourceError && nugetSources.Count > 0)
             {
                 logger.LogDebug($"Trying to restore '{package}' without explicitly providing NuGet sources.");
                 // Restore could not be completed because the listed source is unavailable. Try without an explicit restore source argument.

@@ -19,7 +19,7 @@ else
   CODEQL_BINARY="gh codeql"
 fi
 
-cargo build --release
+cargo build --release -p codeql-extractor-ql -p buramu
 cargo run --release --bin codeql-extractor-ql -- generate --dbscheme ql/src/ql.dbscheme --library ql/src/codeql_ql/ast/internal/TreeSitter.qll
 $CODEQL_BINARY query format -i ql/src/codeql_ql/ast/internal/TreeSitter.qll
 
@@ -27,4 +27,4 @@ rm -rf extractor-pack
 mkdir -p extractor-pack
 cp -r codeql-extractor.yml tools ql/src/ql.dbscheme ql/src/ql.dbscheme.stats extractor-pack/
 mkdir -p extractor-pack/tools/${platform}
-cp target/release/codeql-extractor-ql extractor-pack/tools/${platform}/extractor
+cp ../target/release/codeql-extractor-ql extractor-pack/tools/${platform}/extractor

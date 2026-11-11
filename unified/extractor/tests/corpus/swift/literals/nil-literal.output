@@ -12,7 +12,7 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
-      stmt: builtin_expr "nil"
+    block source="⟨stmt⟩"
+      stmt: builtin_expr "nil" source="nil"

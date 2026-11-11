@@ -21,6 +21,8 @@ module Generated {
   class UnsafeMeta extends Synth::TUnsafeMeta, MetaImpl::Meta {
     override string getAPrimaryQlClass() { result = "UnsafeMeta" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Holds if this unsafe meta is unsafe.
      */

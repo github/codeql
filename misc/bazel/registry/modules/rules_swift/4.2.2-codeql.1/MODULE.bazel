@@ -1,0 +1,495 @@
+"""rules_swift MODULE.bazel file"""
+
+module(
+    name = "rules_swift",
+    version = "4.2.2-codeql.1",
+    bazel_compatibility = [">=8.0.0"],
+    compatibility_level = 3,
+)
+
+bazel_dep(name = "abseil-cpp", version = "20250814.1")
+bazel_dep(name = "apple_support", version = "2.9.1")
+bazel_dep(name = "bazel_linux_packages", version = "0.4.1")
+bazel_dep(name = "bazel_features", version = "1.51.0")
+bazel_dep(name = "bazel_skylib", version = "1.7.1")
+bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.1")
+bazel_dep(name = "platforms", version = "0.0.11")
+bazel_dep(name = "protobuf", version = "34.0.bcr.1")
+bazel_dep(name = "rules_cc", version = "0.2.14")
+bazel_dep(name = "rules_shell", version = "0.3.0")
+bazel_dep(name = "swift_argument_parser", version = "1.7.0")
+
+# Regenerate lockfiles with:
+# bazel run //tools/sysroots:lock
+apt = use_extension("@bazel_linux_packages//apt:extensions.bzl", "apt")
+apt.index_integrity(
+    integrities = {
+        "https://snapshot.ubuntu.com/ubuntu/20261001T000000Z/dists/jammy/main/binary-amd64/Packages.xz": "sha256-N8tX8VVMv6ccWinun/7hipqMF4K7BWjgh0t/9M6PnBE=",
+        "https://snapshot.ubuntu.com/ubuntu/20261001T000000Z/dists/jammy/main/binary-arm64/Packages.xz": "sha256-uA0fCXGY9KLYD4TbAlImPZAgUaaVBArLwIXwMwSLybs=",
+        "https://snapshot.ubuntu.com/ubuntu/20261001T000000Z/dists/noble/main/binary-amd64/Packages.xz": "sha256-KmoZnhAxpcJ5yzRmRtWUmT81scA91KgqqgMjmA3ZJFE=",
+        "https://snapshot.ubuntu.com/ubuntu/20261001T000000Z/dists/noble/main/binary-arm64/Packages.xz": "sha256-ShkB5hJPsKER9d/8j1wUR09Eni7Ppx8urwspkX7bU/k=",
+        "https://snapshot.ubuntu.com/ubuntu/20261001T000000Z/dists/resolute/main/binary-amd64/Packages.xz": "sha256-7ZrEHLJj767MWgagdC3FZXDi+1/5TE8uSy+9zd1zzyQ=",
+        "https://snapshot.ubuntu.com/ubuntu/20261001T000000Z/dists/resolute/main/binary-arm64/Packages.xz": "sha256-U3cVgX2e13zJGfUSPtuRpI2a6Xq/BViKjxggjMcifgg=",
+    },
+)
+
+[
+    apt.ubuntu(
+        name = "swift_ubuntu{}_{}_sysroot".format(version, arch),
+        architectures = [arch],
+        glob_excludes = ["usr/share/man/**"],
+        lockfile = "//swift/internal/extensions:ubuntu{}_{}_sysroot.lock.json".format(version, arch),
+        # Supplies the /lib symlink required by libc's linker scripts on 24.04+.
+        packages = (["base-files"] if version != "22.04" else []) + [
+            "libc6-dev",
+            "libcurl4-openssl-dev",
+            "libstdc++-{}-dev".format(gcc),
+            "libxml2-dev",
+            "linux-libc-dev",
+            "zlib1g-dev",
+        ],
+        suites = [suite],
+        uri = "https://snapshot.ubuntu.com/ubuntu/20261001T000000Z",
+    )
+    for version, suite, gcc in [
+        ("22.04", "jammy", "11"),
+        ("24.04", "noble", "13"),
+        ("26.04", "resolute", "15"),
+    ]
+    for arch in [
+        "amd64",
+        "arm64",
+    ]
+]
+
+use_repo(
+    apt,
+    "swift_ubuntu22.04_amd64_sysroot",
+    "swift_ubuntu22.04_arm64_sysroot",
+    "swift_ubuntu24.04_amd64_sysroot",
+    "swift_ubuntu24.04_arm64_sysroot",
+    "swift_ubuntu26.04_amd64_sysroot",
+    "swift_ubuntu26.04_arm64_sysroot",
+)
+
+swift_autoconfiguration = use_repo_rule("//swift/internal:swift_autoconfiguration.bzl", "swift_autoconfiguration")
+
+swift_autoconfiguration(name = "rules_swift_local_config")
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "com_github_apple_swift_protobuf",
+    build_file = "//third_party:com_github_apple_swift_protobuf/BUILD.overlay",
+    sha256 = "3fb50bd4d293337f202d917b6ada22f9548a0a0aed9d9a4d791e6fbd8a246ebb",
+    strip_prefix = "swift-protobuf-1.20.2/",
+    urls = ["https://github.com/apple/swift-protobuf/archive/1.20.2.tar.gz"],  # pinned to grpc-swift version
+)
+
+http_archive(
+    name = "com_github_grpc_grpc_swift",
+    build_file = "//third_party:com_github_grpc_grpc_swift/BUILD.overlay",
+    sha256 = "58b60431d0064969f9679411264b82e40a217ae6bd34e17096d92cc4e47556a5",
+    strip_prefix = "grpc-swift-1.16.0/",
+    urls = ["https://github.com/grpc/grpc-swift/archive/1.16.0.tar.gz"],  # latest at time of writing
+)
+
+http_archive(
+    name = "com_github_apple_swift_docc_symbolkit",
+    build_file = "//third_party:com_github_apple_swift_docc_symbolkit/BUILD.overlay",
+    sha256 = "de1d4b6940468ddb53b89df7aa1a81323b9712775b0e33e8254fa0f6f7469a97",
+    strip_prefix = "swift-docc-symbolkit-swift-5.10-RELEASE",
+    urls = ["https://github.com/apple/swift-docc-symbolkit/archive/refs/tags/swift-5.10-RELEASE.tar.gz"],
+)
+
+http_archive(
+    name = "com_github_apple_swift_nio",
+    build_file = "//third_party:com_github_apple_swift_nio/BUILD.overlay",
+    sha256 = "9ec79852fd03d2e933ece3299ea6c8b8de6960625f7246fd65958409d1420215",
+    strip_prefix = "swift-nio-2.51.0/",
+    urls = ["https://github.com/apple/swift-nio/archive/2.51.0.tar.gz"],  # pinned to grpc swift version + version needed to fix linux build
+)
+
+http_archive(
+    name = "com_github_apple_swift_nio_http2",
+    build_file = "//third_party:com_github_apple_swift_nio_http2/BUILD.overlay",
+    sha256 = "f0edfc9d6a7be1d587e5b403f2d04264bdfae59aac1d74f7d974a9022c6d2b25",
+    strip_prefix = "swift-nio-http2-1.26.0/",
+    urls = ["https://github.com/apple/swift-nio-http2/archive/1.26.0.tar.gz"],  # pinned to grpc-swift version
+)
+
+http_archive(
+    name = "com_github_apple_swift_nio_transport_services",
+    build_file = "//third_party:com_github_apple_swift_nio_transport_services/BUILD.overlay",
+    sha256 = "f3498dafa633751a52b9b7f741f7ac30c42bcbeb3b9edca6d447e0da8e693262",
+    strip_prefix = "swift-nio-transport-services-1.15.0/",
+    urls = ["https://github.com/apple/swift-nio-transport-services/archive/1.15.0.tar.gz"],  # pinned to grpc-swift version
+)
+
+http_archive(
+    name = "com_github_apple_swift_nio_extras",
+    build_file = "//third_party:com_github_apple_swift_nio_extras/BUILD.overlay",
+    sha256 = "4684b52951d9d9937bb3e8ccd6b5daedd777021ef2519ea2f18c4c922843b52b",
+    strip_prefix = "swift-nio-extras-1.4.0/",
+    urls = ["https://github.com/apple/swift-nio-extras/archive/1.4.0.tar.gz"],  # pinned to grpc-swift version
+)
+
+http_archive(
+    name = "com_github_apple_swift_log",
+    build_file = "//third_party:com_github_apple_swift_log/BUILD.overlay",
+    sha256 = "5eaed6614cfaad882b8a0b5cb5d2177b533056b469ba431ad3f375193d370b70",
+    strip_prefix = "swift-log-1.6.3/",
+    urls = ["https://github.com/apple/swift-log/archive/1.6.3.tar.gz"],  # pinned to version with linux build fix: https://github.com/apple/swift-log/pull/354
+)
+
+http_archive(
+    name = "com_github_apple_swift_nio_ssl",
+    build_file = "//third_party:com_github_apple_swift_nio_ssl/BUILD.overlay",
+    sha256 = "792882c884b2b89de0e9189557ea928bc019be2d9a89d63831876a746cbe9ce3",
+    strip_prefix = "swift-nio-ssl-2.26.0/",
+    urls = ["https://github.com/apple/swift-nio-ssl/archive/2.26.0.tar.gz"],  # pinned to version with linux build fix: https://github.com/apple/swift-nio-ssl/pull/448
+)
+
+http_archive(
+    name = "com_github_apple_swift_collections",
+    build_file = "//third_party:com_github_apple_swift_collections/BUILD.overlay",
+    sha256 = "d9e4c8a91c60fb9c92a04caccbb10ded42f4cb47b26a212bc6b39cc390a4b096",
+    strip_prefix = "swift-collections-1.0.4/",
+    urls = ["https://github.com/apple/swift-collections/archive/1.0.4.tar.gz"],  # pinned to swift-nio @ grpc-swift version
+)
+
+http_archive(
+    name = "com_github_apple_swift_atomics",
+    build_file = "//third_party:com_github_apple_swift_atomics/BUILD.overlay",
+    sha256 = "1bee7f469f7e8dc49f11cfa4da07182fbc79eab000ec2c17bfdce468c5d276fb",
+    strip_prefix = "swift-atomics-1.1.0/",
+    urls = ["https://github.com/apple/swift-atomics/archive/1.1.0.tar.gz"],  # pinned to swift-nio @ grpc-swift version
+)
+
+http_archive(
+    name = "com_github_apple_swift_mmio",
+    build_file = "//third_party:com_github_apple_swift_mmio/BUILD.overlay",
+    patch_args = ["-p1"],
+    patches = [
+        "//third_party:com_github_apple_swift_mmio/0001-style-parser-remove-trailing-comma-in-OneOfParser-in.patch",
+    ],
+    sha256 = "51334b771beadc30767c90cd24e2acab9604d62ad0bc64a3c0665e3d6f19d82c",
+    strip_prefix = "swift-mmio-0.1.1",
+    urls = ["https://github.com/apple/swift-mmio/archive/refs/tags/0.1.1.tar.gz"],  # requires for the embedded toolchain example
+)
+
+# When using the "global index store" feature we rely on `index-import` to allow
+# using a global index.
+# TODO: we must depend on two versions of index-import to support backwards
+# compatibility between Xcode 16.3+ and older versions, we can remove the older
+# version once we drop support for Xcode 16.x.
+http_archive(
+    name = "rules_swift_index_import_5_8",
+    build_file = "//third_party:rules_swift_index_import/BUILD.overlay",
+    canonical_id = "index-import-5.8",
+    sha256 = "28c1ffa39d99e74ed70623899b207b41f79214c498c603915aef55972a851a15",
+    urls = ["https://github.com/MobileNativeFoundation/index-import/releases/download/5.8.0.1/index-import.tar.gz"],
+)
+
+http_archive(
+    name = "rules_swift_index_import_6_4",
+    build_file = "//third_party:rules_swift_index_import/BUILD.overlay",
+    canonical_id = "index-import-6.4",
+    sha256 = "8d0ecfb7abd2c47a3b253f8f20ad76b4932f7f99c8f314951823d7b63a61d78d",
+    urls = ["https://github.com/MobileNativeFoundation/index-import/releases/download/6.4.0/index-import.tar.gz"],
+)
+
+system_sdk = use_extension("//swift:extensions.bzl", "system_sdk")
+system_sdk.configure_sdks(
+    # NOTE: This doesn't apply to downstream repos
+    exclude_modules = {
+        "AppleTVOS": [
+            "CoreAudio_Private",  # TODO: Remove once CI >= Xcode 26.4
+            "MobileGestaltPrivate",
+            "_AppIntents_HealthKit",  # Imports HealthKit, which is unavailable on tvOS.
+            "_Contacts_AppIntents",  # Imports Contacts, which is unavailable on tvOS.
+        ],
+        "AppleTVSimulator": [
+            "CoreAudio_Private",  # TODO: Remove once CI >= Xcode 26.4
+            "MobileGestaltPrivate",
+            "_AppIntents_HealthKit",  # Imports HealthKit, which is unavailable on tvOS.
+            "_Contacts_AppIntents",  # Imports Contacts, which is unavailable on tvOS.
+        ],
+        "MacOSX": [
+            "MobileGestaltPrivate",
+        ],
+        "WatchOS": [
+            "BrowserEngineKit",
+            "CoreAudio_Private",  # TODO: Remove once CI >= Xcode 26.4
+            "MobileGestaltPrivate",
+        ],
+        "WatchSimulator": [
+            "BrowserEngineKit",
+            "CoreAudio_Private",  # TODO: Remove once CI >= Xcode 26.4
+            "MobileGestaltPrivate",
+        ],
+        "XROS": [
+            "AccessoryTransportExtension",
+            "CoreAudio_Private",  # TODO: Remove once CI >= Xcode 26.4
+            "MobileGestaltPrivate",
+        ],
+        "XRSimulator": [
+            "AccessoryTransportExtension",
+            "CoreAudio_Private",  # TODO: Remove once CI >= Xcode 26.4
+            "MobileGestaltPrivate",
+        ],
+        "iPhoneOS": [
+            "AssetsLibrary",  #  TODO: Remove once CI >= Xcode 26.4
+            "CoreAudio_Private",  # TODO: Remove once CI >= Xcode 26.4
+            "MobileGestaltPrivate",
+        ],
+        "iPhoneSimulator": [
+            "AssetsLibrary",  #  TODO: Remove once CI >= Xcode 26.4
+            "CoreAudio_Private",
+            "MobileGestaltPrivate",
+        ],
+    },
+    include_all = True,
+)
+use_repo(system_sdk, "system_sdk")
+
+swift = use_extension("//swift:extensions.bzl", "swift", dev_dependency = True)
+swift.toolchain(
+    name = "swift_toolchain",
+    swift_version = "6.4.0",
+)
+use_repo(
+    swift,
+    "swift_toolchain",
+    "swift_toolchain_ubuntu22.04",
+    "swift_toolchain_ubuntu22.04-aarch64",
+    "swift_toolchain_xcode",
+)
+
+register_toolchains(
+    # We're using ubuntu22.04 here because that's what's used in the current rules_swift buildkite CI.
+    # In a perfect world, we would be able to have bazel automatically use the toolchain that just works.
+    # Unfortunately, we are not in this world yet. This would require either one of these two things to happen:
+    # * either have a constraint to select on the current distribution, which would allow us to register all
+    #   the toolchains and have bazel automatically select the right one. But there is no such constraint today.
+    # * or have a swift universal Linux toolchain. Which is not the case today.
+    # Anyway, for now we will need to update this every time we update the CI environment. Contributors might also
+    # have to update this list if they're testing on a different Linux distribution.
+    "@swift_toolchain//:cc_toolchain_embedded_ubuntu22.04",
+    "@swift_toolchain//:cc_toolchain_exec_ubuntu22.04",
+    "@swift_toolchain//:cc_toolchain_embedded_ubuntu22.04-aarch64",
+    "@swift_toolchain//:cc_toolchain_embedded_xcode",
+    "@swift_toolchain//:swift_toolchain_embedded_ubuntu22.04",
+    "@swift_toolchain//:swift_toolchain_exec_ubuntu22.04",
+    "@swift_toolchain//:swift_toolchain_embedded_ubuntu22.04-aarch64",
+    "@swift_toolchain//:swift_toolchain_embedded_xcode",
+    dev_dependency = True,
+)
+
+register_toolchains("//swift/toolchains:all")
+
+# Dev dependencies
+bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.5.0", dev_dependency = True)
+bazel_dep(name = "gazelle", version = "0.46.0", dev_dependency = True)
+bazel_dep(name = "platforms_contrib", version = "0.2.3", dev_dependency = True)
+bazel_dep(name = "rules_go", version = "0.59.0", dev_dependency = True)  # TODO: Remove when transitives update past this version
+bazel_dep(name = "rules_multirun", version = "0.14.0", dev_dependency = True)
+bazel_dep(name = "rules_python", version = "2.2.0", dev_dependency = True)
+bazel_dep(name = "stardoc", version = "0.8.0", dev_dependency = True)
+bazel_dep(name = "swift-syntax", version = "604.0.0", dev_dependency = True)
+bazel_dep(name = "rules_swift_layering_check_external_test", version = "0.0.0", dev_dependency = True)
+local_path_override(
+    module_name = "rules_swift_layering_check_external_test",
+    path = "third_party/rules_swift_layering_check_external_test",
+)
+
+# TODO: Use a release once platforms_contrib includes host libc detection.
+archive_override(
+    module_name = "platforms_contrib",
+    integrity = "sha256-kj0hka+hWv1khEjLUeB2NQF8b50v7MmihsJy5QUQHvc=",
+    strip_prefix = "platforms_contrib-94eb2db76709c1fb597b33969a48cfef3d76a259",
+    urls = ["https://github.com/bazel-contrib/platforms_contrib/archive/94eb2db76709c1fb597b33969a48cfef3d76a259.tar.gz"],
+)
+
+# TODO: In stardoc 0.7.1+, the `load` statements added to the docs are relative to the `alias` targets which is incorrect.
+# To keep the docs without confusing load statements we patch a partial revert of: https://github.com/bazelbuild/stardoc/pull/216
+# https://github.com/bazelbuild/stardoc/issues/297
+single_version_override(
+    module_name = "stardoc",
+    patch_strip = 1,
+    patches = ["//third_party/patches:stardoc-revert-load-statements-in-docs.patch"],
+)
+
+# Android dev dependencies
+bazel_dep(name = "hermetic_android_toolchains", version = "0.4.0", dev_dependency = True)
+bazel_dep(name = "rules_android", version = "0.8.0", dev_dependency = True)
+bazel_dep(name = "rules_android_ndk", version = "0.1.5", dev_dependency = True)
+bazel_dep(name = "rules_java", version = "9.3.0", dev_dependency = True)
+bazel_dep(name = "rules_jvm_external", version = "7.1", dev_dependency = True)
+bazel_dep(name = "rules_kotlin", version = "2.2.2", dev_dependency = True)
+
+# TODO: Remove once a release includes https://github.com/bazel-contrib/rules_jvm_external/pull/1620.
+archive_override(
+    module_name = "rules_jvm_external",
+    integrity = "sha256-xLO0uCpzSupyXT3DmAKQNvLEKIg2OzTl0yyIkSwjDC0=",
+    strip_prefix = "rules_jvm_external-e98a2bcebf3038243243941f458fefe940e980fb",
+    urls = ["https://github.com/bazel-contrib/rules_jvm_external/archive/e98a2bcebf3038243243941f458fefe940e980fb.tar.gz"],
+)
+
+swift.android_sdk()
+
+rules_java_toolchains = use_extension(
+    "@rules_java//java:extensions.bzl",
+    "toolchains",
+    dev_dependency = True,
+)
+use_repo(rules_java_toolchains, "remote_java_tools")
+
+# rules_android's own Maven dependencies, pinned to a checked-in lock file:
+#   REPIN=1 bazel run @rules_android_maven//:pin
+# https://github.com/bazelbuild/rules_android/issues/485
+maven = use_extension(
+    "@rules_jvm_external//:extensions.bzl",
+    "maven",
+    dev_dependency = True,
+)
+maven.install(
+    name = "rules_android_maven",
+    aar_import_bzl_label = "@rules_android//rules:rules.bzl",
+    artifacts = [],
+    known_contributing_modules = ["rules_android"],
+    lock_file = "//examples/cross_compilation/android_app:rules_android_maven_install.json",
+    repositories = [
+        "https://maven.google.com",
+        "https://repo1.maven.org/maven2",
+    ],
+    use_starlark_android_rules = True,
+)
+use_repo(maven, "rules_android_maven")
+
+android = use_extension(
+    "@hermetic_android_toolchains//:extensions.bzl",
+    "android",
+    dev_dependency = True,
+)
+android.sdk(
+    build_tools_version = "35.0.0",
+    version = "35",
+)
+android.ndk(
+    api_level = 28,
+    version = "r30",
+)
+use_repo(android, "androidndk", "androidsdk")
+
+# Make @rules_android's @androidsdk labels resolve to the hermetic SDK.
+rules_android_sdk = use_extension("@rules_android//rules/android_sdk_repository:rule.bzl", "android_sdk_repository_extension", dev_dependency = True)
+
+override_repo(rules_android_sdk, "androidsdk")
+
+# Make @rules_android_ndk's @androidndk labels resolve to the hermetic SDK.
+rules_android_ndk = use_extension("@rules_android_ndk//:extension.bzl", "android_ndk_repository_extension", dev_dependency = True)
+
+override_repo(rules_android_ndk, "androidndk")
+
+register_toolchains(
+    "@androidndk//:all",
+    "@androidsdk//:all",
+    dev_dependency = True,
+)
+
+http_archive(
+    name = "android_emulator",
+    build_file_content = """\
+package(default_visibility = ["//visibility:public"])
+
+exports_files(["emulator/emulator"])
+
+filegroup(name = "all", srcs = glob(["emulator/**"]))
+""",
+    dev_dependency = True,
+    sha256 = "25378c67fd5bd03178e3a478b866496da8545e969df3a7a26ce9167772ffc026",
+    url = "https://dl.google.com/android/repository/emulator-darwin_aarch64-15565763.zip",
+)
+
+http_archive(
+    name = "android_system_image",
+    build_file_content = """\
+package(default_visibility = ["//visibility:public"])
+
+exports_files(["system.img"])
+
+filegroup(name = "all", srcs = glob(["**"]))
+""",
+    dev_dependency = True,
+    sha256 = "1447958a4c6747c44390ac5f5f4c894be6d1dfce93868a0385a95c5f0ae4c339",
+    strip_prefix = "arm64-v8a",
+    url = "https://dl.google.com/android/repository/sys-img/android/arm64-v8a-34_r04.zip",
+)
+
+register_toolchains(
+    "@swift_toolchain//:swift_toolchain_android_aarch64_ubuntu22.04",
+    "@swift_toolchain//:swift_toolchain_android_aarch64_ubuntu22.04-aarch64",
+    "@swift_toolchain//:swift_toolchain_android_aarch64_xcode",
+    "@swift_toolchain//:swift_toolchain_android_x86_64_ubuntu22.04",
+    "@swift_toolchain//:swift_toolchain_android_x86_64_ubuntu22.04-aarch64",
+    "@swift_toolchain//:swift_toolchain_android_x86_64_xcode",
+    dev_dependency = True,
+)
+
+# WASM dev dependencies
+swift.wasm_sdk()
+
+register_toolchains(
+    # We register only the host platforms used by CI rather than
+    # `@swift_toolchain//:all`; see the note in the root MODULE.bazel.
+    "@swift_toolchain//:cc_toolchain_wasm32_ubuntu22.04",
+    "@swift_toolchain//:cc_toolchain_wasm32_ubuntu22.04-aarch64",
+    "@swift_toolchain//:cc_toolchain_wasm32_xcode",
+    "@swift_toolchain//:swift_toolchain_wasm32_ubuntu22.04",
+    "@swift_toolchain//:swift_toolchain_wasm32_ubuntu22.04-aarch64",
+    "@swift_toolchain//:swift_toolchain_wasm32_xcode",
+    dev_dependency = True,
+)
+
+_WASMTIME_BUILD = """\
+package(default_visibility = ["//visibility:public"])
+
+exports_files(["wasmtime"])
+"""
+
+http_archive(
+    name = "wasmtime_darwin_aarch64",
+    build_file_content = _WASMTIME_BUILD,
+    dev_dependency = True,
+    sha256 = "acee50be70dbe90b0ab2ac7db1321fc44715153a1b1cc58291c97b6d7cffc558",
+    strip_prefix = "wasmtime-v46.0.1-aarch64-macos",
+    url = "https://github.com/bytecodealliance/wasmtime/releases/download/v46.0.1/wasmtime-v46.0.1-aarch64-macos.tar.xz",
+)
+
+http_archive(
+    name = "wasmtime_darwin_x86_64",
+    build_file_content = _WASMTIME_BUILD,
+    dev_dependency = True,
+    sha256 = "0513db67e7089c7e5f743a01427782bc4def83854222f4bc9b1d75f0b925240b",
+    strip_prefix = "wasmtime-v46.0.1-x86_64-macos",
+    url = "https://github.com/bytecodealliance/wasmtime/releases/download/v46.0.1/wasmtime-v46.0.1-x86_64-macos.tar.xz",
+)
+
+http_archive(
+    name = "wasmtime_linux_aarch64",
+    build_file_content = _WASMTIME_BUILD,
+    dev_dependency = True,
+    sha256 = "071c4def2a08f0ebc95c52dfd4f2886eb697ba495804217cf76e13b09d70a1be",
+    strip_prefix = "wasmtime-v46.0.1-aarch64-linux",
+    url = "https://github.com/bytecodealliance/wasmtime/releases/download/v46.0.1/wasmtime-v46.0.1-aarch64-linux.tar.xz",
+)
+
+http_archive(
+    name = "wasmtime_linux_x86_64",
+    build_file_content = _WASMTIME_BUILD,
+    dev_dependency = True,
+    sha256 = "9ae0b17ea298bcc52277a8208d6ab7fae8e1a89579672f9d82f9d86c116edb62",
+    strip_prefix = "wasmtime-v46.0.1-x86_64-linux",
+    url = "https://github.com/bytecodealliance/wasmtime/releases/download/v46.0.1/wasmtime-v46.0.1-x86_64-linux.tar.xz",
+)

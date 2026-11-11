@@ -22,6 +22,8 @@ module Impl {
    * ```
    */
   class ParenTypeRepr extends Generated::ParenTypeRepr {
-    override string toStringImpl() { result = "(" + this.getTypeRepr().toAbbreviatedString() + ")" }
+    override string toStringImpl() {
+      result = "(" + concat(this.getTypeRepr().toAbbreviatedString()) + ")"
+    }
   }
 }

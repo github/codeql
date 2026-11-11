@@ -4,8 +4,12 @@ import TestUtils
 
 query predicate instances(TupleField x) { toBeTested(x) and not x.isUnknown() }
 
-query predicate getAttr(TupleField x, int index, Attr getAttr) {
+query predicate getAttr(TupleField x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getMutRestriction(TupleField x, MutRestriction getMutRestriction) {
+  toBeTested(x) and not x.isUnknown() and getMutRestriction = x.getMutRestriction()
 }
 
 query predicate getTypeRepr(TupleField x, TypeRepr getTypeRepr) {

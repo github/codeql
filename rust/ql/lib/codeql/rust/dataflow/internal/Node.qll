@@ -435,6 +435,20 @@ final class ClosureArgumentNode extends ArgumentNode, ExprNode {
   }
 }
 
+/**
+ * A data flow node that represents the run-time representation of an async
+ * block passed into its body when awaited.
+ */
+final class AsyncBlockArgumentNode extends ArgumentNode, ExprNode {
+  private AwaitExpr await;
+
+  AsyncBlockArgumentNode() { this.asExpr() = await.getExpr() }
+
+  override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
+    call.asAwaitExpr() = await and pos.isClosureSelf()
+  }
+}
+
 /** An SSA node. */
 class SsaNode extends Node, TSsaNode {
   SsaImpl::DataFlowIntegration::SsaNode node;
@@ -458,8 +472,17 @@ abstract class ReturnNode extends Node {
   abstract ReturnKind getKind();
 }
 
+/** Holds if the value of `n` is returned from its enclosing callable. */
+predicate isReturnedValue(AstNode n) {
+  exists(SuccessorType t | n.getACfgNode().getASuccessor(t) instanceof AnnotatedExitCfgNode |
+    // The early return of `x?` returns the `Err` or `None` held by `x`, which is
+    // a different value from the one `x?` evaluates to
+    not (n instanceof TryExpr and t instanceof ReturnSuccessor)
+  )
+}
+
 final class ExprReturnNode extends ExprNode, ReturnNode {
-  ExprReturnNode() { n.getACfgNode().getASuccessor() instanceof AnnotatedExitCfgNode }
+  ExprReturnNode() { isReturnedValue(n) }
 
   override ReturnKind getKind() { result = TNormalReturnKind() }
 }
@@ -485,11 +508,16 @@ final private class ExprOutNode extends ExprNode, OutNode {
       not call instanceof DerefExpr and // Handled by `DerefOutNode`
       not call instanceof IndexExpr // Handled by `IndexOutNode`
     )
+    or
+    this.asExpr() instanceof AwaitExpr
   }
 
   /** Gets the underlying call node that includes this out node. */
   override DataFlowCall getCall(ReturnKind kind) {
     result.asCall() = n and
+    kind = TNormalReturnKind()
+    or
+    result.asAwaitExpr() = n and
     kind = TNormalReturnKind()
   }
 }

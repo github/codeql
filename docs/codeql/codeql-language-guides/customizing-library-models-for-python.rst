@@ -7,18 +7,42 @@ Customizing Library Models for Python
 
 Python analysis can be customized by adding library models in data extension files.
 
-A data extension for Python is a YAML file of the form:
+A data extension for Python can be written using either JSON or YAML. JSON is the preferred format, for performance reasons, and takes the following form:
+
+.. code-block:: json
+
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "<name of extensible predicate>"
+         },
+         "data": [
+           ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."],
+           ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
+           // ...
+         ]
+       }
+     ]
+   }
+
+Files in the JSON format must use the ``.json`` file extension. Single-line (``//``) and multi-line (``/* ... */``) comments are supported as a non-standard JSON extension.
+
+A YAML file has the following form:
 
 .. code-block:: yaml
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: <name of extensible predicate>
-      data:
-        - <tuple1>
-        - <tuple2>
-        - ...
+   extensions:
+     - addsTo:
+         pack: codeql/python-all
+         extensible: <name of extensible predicate>
+       data:
+         - ["<value for row 1, column 1>", "<value for row 1, column 2>", "..."]
+         - ["<value for row 2, column 1>", "<value for row 2, column 2>", "..."]
+         - ...
+
+Each data extension file may contain one or more top-level extensions.
 
 The CodeQL library for Python exposes the following extensible predicates:
 
@@ -44,14 +68,21 @@ In this example, we'll show how to add the following argument, passed to ``sudo`
 Note that this sink is already recognized by the CodeQL Python analysis, but for this example, you could add a tuple to the
 ``sinkModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: sinkModel
-      data:
-        - ["fabric", "Member[operations].Member[sudo].Argument[0]", "command-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["fabric", "Member[operations].Member[sudo].Argument[0]", "command-injection"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"fabric"``, identifies a set of values from which to begin the search for the sink.
   The string ``"fabric"`` means we start at the places where the codebase imports the package ``fabric``.
@@ -77,14 +108,21 @@ Often sinks are found as arguments to methods rather than functions. In this exa
 Note that this sink is already recognized by the CodeQL Python analysis, but for this example, you could add a tuple to the
 ``sinkModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: sinkModel
-      data:
-        - ["invoke", "Member[Context].Instance.Member[run].Argument[0]", "command-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["invoke", "Member[Context].Instance.Member[run].Argument[0]", "command-injection"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"invoke"``, begins the search at places where the codebase imports the package ``invoke``.
 - The second column is an access path that is evaluated from left to right, starting at the values that were identified by the first column.
@@ -100,14 +138,21 @@ Note that the ``Instance`` component is used to select instances of a class, inc
 Since methods on instances are common targets, we have a more compact syntax for selecting them. The first column, the type, is allowed to contain a dotted path ending in a class name.
 This will begin the search at instances of that class. Using this syntax, the previous example could be written as:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: sinkModel
-      data:
-        - ["invoke.Context", "Member[run].Argument[0]", "command-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["invoke.Context", "Member[run].Argument[0]", "command-injection"]
+         ]
+       }
+     ]
+   }
 
 Continued example: Multiple ways to obtain a type
 -------------------------------------------------
@@ -124,14 +169,21 @@ Comparing to the previous Python snippet, the ``Context`` class is now found as 
 We could add a data extension similar to the previous one, but with the type ``invoke.context.Context``.
 However, we can also use the ``typeModel(type1, type2, path)`` extensible predicate to describe how to reach ``invoke.Context`` from ``invoke.context.Context``:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: typeModel
-      data:
-        - ["invoke.Context", "invoke.context.Context", ""]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "typeModel"
+         },
+         "data": [
+           ["invoke.Context", "invoke.context.Context", ""]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"invoke.Context"``, is the name of the type to reach.
 - The second column, ``"invoke.context.Context"``, is the name of the type from which to evaluate the path.
@@ -162,18 +214,21 @@ This filename is what we want to mark as a taint source. An example use looks as
 Note that this source is already recognized by the CodeQL Python analysis, but for this example, you could add a tuple to the
 ``sourceModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: sourceModel
-      data:
-        - [
-            "django.db.models.FileField!",
-            "Call.Argument[0,upload_to:].Parameter[1]",
-            "remote",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["django.db.models.FileField!", "Call.Argument[0,upload_to:].Parameter[1]", "remote"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"django.db.models.FileField!"``, is a dotted path to the ``FileField`` class from the ``django.db.models`` package.
   The ``!`` at the end of the type name indicates that we are looking for the class itself rather than instances of this class.
@@ -201,20 +256,21 @@ In this example, we'll show how to add flow through calls to ``re.compile``.
 Note that this flow is already recognized by the CodeQL Python analysis, but for this example, you could add a tuple to the
 ``summaryModel(type, path, input, output, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: summaryModel
-      data:
-        - [
-            "re",
-            "Member[compile]",
-            "Argument[0,pattern:]",
-            "ReturnValue.Attribute[pattern]",
-            "value",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["re", "Member[compile]", "Argument[0,pattern:]", "ReturnValue.Attribute[pattern]", "value"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"re"``, begins the search for relevant calls at places where the ``re`` package is imported.
 - The second column, ``"Member[compile]"``, is a path leading to the function calls we wish to model.
@@ -236,20 +292,21 @@ In this example, we'll show how to add flow through calls to the built-in functi
 Note that this flow is already recognized by the CodeQL Python analysis, but for this example, you could add a tuple to the
 ``summaryModel(type, path, input, output, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: summaryModel
-      data:
-        - [
-            "builtins",
-            "Member[sorted]",
-            "Argument[0]",
-            "ReturnValue",
-            "taint",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["builtins", "Member[sorted]", "Argument[0]", "ReturnValue", "taint"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"builtins"``, begins the search for relevant calls among references to the built-in names.
   In Python, many built-in functions are available. Technically, most of these are part of the ``builtins`` package, but they can be accessed without an explicit import. When we write ``builtins`` in the first column, we will find both the implicit and explicit references to the built-in functions.
@@ -261,20 +318,21 @@ Note that this flow is already recognized by the CodeQL Python analysis, but for
 
 We might also provide a summary stating that the elements of the input list are preserved in the output list:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: summaryModel
-      data:
-        - [
-            "builtins",
-            "Member[sorted]",
-            "Argument[0].ListElement",
-            "ReturnValue.ListElement",
-            "value",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["builtins", "Member[sorted]", "Argument[0].ListElement", "ReturnValue.ListElement", "value"]
+         ]
+       }
+     ]
+   }
 
 The tracking of list elements is imprecise in that the analysis does not know where in the list the tracked value is found.
 So this summary simply states that if the value is found somewhere in the input list, it will also be found somewhere in the output list, unchanged.
@@ -291,14 +349,21 @@ In this example, we'll show how to add the return value of ``html.escape`` as a 
 
 We need to add a tuple to the ``barrierModel(type, path, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: barrierModel
-      data:
-        - ["html", "Member[escape].ReturnValue", "html-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "barrierModel"
+         },
+         "data": [
+           ["html", "Member[escape].ReturnValue", "html-injection"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"html"``, begins the search at places where the ``html`` module is imported.
 - The second column, ``Member[escape].ReturnValue``, selects the return value of the ``escape`` function from the ``html`` module.
@@ -318,19 +383,21 @@ Consider the function ``url_has_allowed_host_and_scheme`` from the ``django.util
 
 We need to add a tuple to the ``barrierGuardModel(type, path, acceptingValue, kind)`` extensible predicate by updating a data extension file.
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: barrierGuardModel
-      data:
-        - [
-            "django",
-            "Member[utils].Member[http].Member[url_has_allowed_host_and_scheme].Argument[0,url:]",
-            "true",
-            "url-redirection",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "barrierGuardModel"
+         },
+         "data": [
+           ["django", "Member[utils].Member[http].Member[url_has_allowed_host_and_scheme].Argument[0,url:]", "true", "url-redirection"]
+         ]
+       }
+     ]
+   }
 
 - The first column, ``"django"``, begins the search at places where the ``django`` package is imported.
 - The second column, ``Member[utils].Member[http].Member[url_has_allowed_host_and_scheme].Argument[0,url:]``, selects the first argument (or the keyword argument ``url``) of the ``url_has_allowed_host_and_scheme`` function in the ``django.utils.http`` module. This is the value being validated.
@@ -356,14 +423,21 @@ Adds a new taint source. Most taint-tracking queries will use the new source.
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: sourceModel
-      data:
-        - ["flask", "Member[request]", "remote"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "sourceModel"
+         },
+         "data": [
+           ["flask", "Member[request]", "remote"]
+         ]
+       }
+     ]
+   }
 
 sinkModel(type, path, kind)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -376,14 +450,21 @@ Adds a new taint sink. Sinks are query-specific and will typically affect one or
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: sinkModel
-      data:
-        - ["builtins", "Member[exec].Argument[0]", "code-injection"]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "sinkModel"
+         },
+         "data": [
+           ["builtins", "Member[exec].Argument[0]", "code-injection"]
+         ]
+       }
+     ]
+   }
 
 summaryModel(type, path, input, output, kind)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -398,20 +479,21 @@ Adds flow through a function call.
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-    - addsTo:
-        pack: codeql/python-all
-        extensible: summaryModel
-      data:
-        - [
-            "builtins",
-            "Member[reversed]",
-            "Argument[0]",
-            "ReturnValue",
-            "taint",
-          ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "summaryModel"
+         },
+         "data": [
+           ["builtins", "Member[reversed]", "Argument[0]", "ReturnValue", "taint"]
+         ]
+       }
+     ]
+   }
 
 typeModel(type1, type2, path)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -426,18 +508,21 @@ In the context of instances, this describes how to obtain an instance of ``type1
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: json
 
-  extensions:
-  - addsTo:
-      pack: codeql/python-all
-      extensible: typeModel
-    data:
-      - [
-          "flask.Response",
-          "flask",
-          "Member[jsonify].ReturnValue",
-        ]
+   {
+     "extensions": [
+       {
+         "addsTo": {
+           "pack": "codeql/python-all",
+           "extensible": "typeModel"
+         },
+         "data": [
+           ["flask.Response", "flask", "Member[jsonify].ReturnValue"]
+         ]
+       }
+     ]
+   }
 
 Types
 -----

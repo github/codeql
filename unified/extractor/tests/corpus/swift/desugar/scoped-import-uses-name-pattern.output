@@ -21,18 +21,14 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        import_declaration
-          modifier: modifier "struct"
+        import_declaration source="import ⟨modifier⟩ ⟨imported_expr⟩⟨pattern⟩"
+          modifier: modifier "struct" source="struct"
           imported_expr:
-            member_access_expr
-              base:
-                name_expr
-                  identifier: identifier "Foundation"
-              member: identifier "Date"
-          pattern:
-            name_pattern
-              identifier: identifier "Date"
+            member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+              base: identifier "Foundation" source="Foundation"
+              member_name_node: identifier "Date" source="Date"
+          pattern: identifier "Date" source="Date"

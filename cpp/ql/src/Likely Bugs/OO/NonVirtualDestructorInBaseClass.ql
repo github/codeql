@@ -5,8 +5,9 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/virtual-destructor
- * @tags reliability
- *       readability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       language-features
  */
 

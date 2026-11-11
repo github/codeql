@@ -42,22 +42,16 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
+    block source="⟨stmt⟩"
       stmt:
-        variable_declaration
-          modifier: modifier "let"
-          pattern:
-            name_pattern
-              identifier: identifier "numbers"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "numbers" source="numbers"
           value:
-            call_expr
+            call_expr source="⟨callee⟩()"
               callee:
-                generic_type_expr
-                  base:
-                    named_type_expr
-                      name: identifier "Array"
-                  type_argument:
-                    named_type_expr
-                      name: identifier "Int"
+                generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                  base: identifier "Array" source="Array"
+                  type_argument: identifier "Int" source="Int"

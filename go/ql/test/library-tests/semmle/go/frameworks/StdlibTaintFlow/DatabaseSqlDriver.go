@@ -45,6 +45,13 @@ func TaintStepTest_DatabaseSqlDriverValuerValue_B0I0O0(sourceCQL interface{}) in
 	return intoValue982
 }
 
+func TaintStepTest_DatabaseSqlDriverRowsColumnScannerScanColumn(sourceCQL interface{}) interface{} {
+	fromRows := sourceCQL.(driver.RowsColumnScanner)
+	var destination interface{}
+	fromRows.ScanColumn(driver.ScanContext{}, 0, &destination)
+	return destination
+}
+
 func RunAllTaints_DatabaseSqlDriver() {
 	{
 		source := newSource(0)
@@ -75,5 +82,10 @@ func RunAllTaints_DatabaseSqlDriver() {
 		source := newSource(5)
 		out := TaintStepTest_DatabaseSqlDriverValuerValue_B0I0O0(source)
 		sink(5, out)
+	}
+	{
+		source := newSource(6)
+		out := TaintStepTest_DatabaseSqlDriverRowsColumnScannerScanColumn(source)
+		sink(6, out)
 	}
 }

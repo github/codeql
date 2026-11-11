@@ -47,7 +47,7 @@ pub struct Schema {
     /// Per-node-kind declared field order (named fields only), as written in
     /// the source node-types YAML. Field ids are not a stable ordering key
     /// across front-ends, so this preserves the authored order for
-    /// presentation (see the AST dump).
+    /// presentation (see the AST dump) and tree traversal during extraction.
     field_order: BTreeMap<String, Vec<FieldId>>,
 }
 
@@ -193,6 +193,17 @@ impl Schema {
         for name in other.field_ids.keys() {
             self.register_field(name);
         }
+        for (kind, order) in &other.field_order {
+            let order = order
+                .iter()
+                .filter_map(|&field_id| {
+                    other
+                        .field_name_for_id(field_id)
+                        .map(|name| self.register_field(name))
+                })
+                .collect();
+            self.set_field_order(kind, order);
+        }
     }
 
     /// Track a name for a kind ID without registering it as named or
@@ -266,13 +277,8 @@ impl Schema {
             .insert((parent_kind.to_string(), field_id), node_types);
     }
 
-    pub fn field_types(
-        &self,
-        parent_kind: &str,
-        field_id: FieldId,
-    ) -> Option<&Vec<NodeType>> {
-        self.field_types
-            .get(&(parent_kind.to_string(), field_id))
+    pub fn field_types(&self, parent_kind: &str, field_id: FieldId) -> Option<&Vec<NodeType>> {
+        self.field_types.get(&(parent_kind.to_string(), field_id))
     }
 
     /// Record the declared (named) field order for a node kind, as authored in

@@ -1,24 +1,9 @@
 
 // --- stub library headers ---
 
-namespace std {
-	typedef unsigned long size_t;
-	#define SIZE_MAX 0xFFFFFFFF
+#include "../taint-tests/stl.h"
 
-	template <class T> class allocator {
-	};
-
-	template<class charT> struct char_traits {
-	};
-
-	template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
-	class basic_string {
-	public:
-		basic_string(const charT* s, const Allocator& a = Allocator());
-	};
-
-	typedef basic_string<char> string;
-};
+#define SIZE_MAX 0xFFFFFFFF
 
 namespace boost {
 	namespace system {
@@ -29,14 +14,50 @@ namespace boost {
 	};
 	
 	namespace asio {
-		template<typename Protocol/*, typename Executor*/>
-		class basic_stream_socket /*: public basic_socket<Protocol, Executor>*/ {
-		};
+		class any_io_executor { };
+
+		class socket_base { };
+
+		template <typename Protocol, typename Executor>
+		class basic_socket : public socket_base { };
+
+		template<typename Protocol, typename Executor = any_io_executor>
+		class basic_stream_socket : public basic_socket<Protocol, Executor> { };
 
 		namespace ip {
+			class resolver_base {
+			public:
+				enum flags { passive = 1 };
+			};
+
+			template<typename InternetProtocol, typename Executor = any_io_executor>
+			class basic_resolver {
+			public:
+				class results_type {
+				};
+
+				results_type resolve(const std::string &host, const std::string &service);
+				results_type resolve(const std::string &host, const std::string &service, boost::system::error_code &ec);
+				results_type resolve(const std::string &host, const std::string &service, resolver_base::flags resolve_flags);
+				results_type resolve(const std::string &host, const std::string &service, resolver_base::flags resolve_flags, boost::system::error_code &ec);
+				results_type resolve(std::string_view host, std::string_view service);
+				results_type resolve(std::string_view host, std::string_view service, boost::system::error_code &ec);
+				results_type resolve(std::string_view host, std::string_view service, resolver_base::flags resolve_flags);
+				results_type resolve(std::string_view host, std::string_view service, resolver_base::flags resolve_flags, boost::system::error_code &ec);
+				results_type resolve(const InternetProtocol &protocol, const std::string &host, const std::string &service);
+				results_type resolve(const InternetProtocol &protocol, const std::string &host, const std::string &service, boost::system::error_code &ec);
+				results_type resolve(const InternetProtocol &protocol, const std::string &host, const std::string &service, resolver_base::flags resolve_flags);
+				results_type resolve(const InternetProtocol &protocol, const std::string &host, const std::string &service, resolver_base::flags resolve_flags, boost::system::error_code &ec);
+				results_type resolve(const InternetProtocol &protocol, std::string_view host, std::string_view service);
+				results_type resolve(const InternetProtocol &protocol, std::string_view host, std::string_view service, boost::system::error_code &ec);
+				results_type resolve(const InternetProtocol &protocol, std::string_view host, std::string_view service, resolver_base::flags resolve_flags);
+				results_type resolve(const InternetProtocol &protocol, std::string_view host, std::string_view service, resolver_base::flags resolve_flags, boost::system::error_code &ec);
+			};
+
 			class tcp {
 			public:
 				typedef basic_stream_socket<tcp> socket;
+				typedef basic_resolver<tcp> resolver;
 			};
 		};
 
@@ -76,6 +97,7 @@ void sink(char *);
 void sink(std::string);
 void sink(boost::asio::streambuf);
 void sink(boost::asio::mutable_buffer);
+void sink(boost::asio::ip::tcp::resolver::results_type);
 
 char *getenv(const char *name);
 int send(int, const void*, int, int);
@@ -104,4 +126,66 @@ void test(boost::asio::ip::tcp::socket &socket) {
 	if (error) {
 		// ...
 	}
+}
+
+void test_resolve_host() {
+	boost::asio::ip::tcp::resolver resolver;
+	boost::asio::ip::tcp protocol;
+	boost::asio::ip::resolver_base::flags flags = boost::asio::ip::resolver_base::passive;
+	boost::system::error_code error;
+	std::string host(source());
+	std::string service("");
+	std::string_view host_view(source());
+	std::string_view service_view("");
+
+	sink(resolver.resolve(host, service)); // $ ir
+	sink(resolver.resolve(host, service, error)); // $ ir
+	sink(resolver.resolve(host, service, flags)); // $ ir
+	sink(resolver.resolve(host, service, flags, error)); // $ ir
+
+	sink(resolver.resolve(host_view, service_view)); // $ MISSING: ir
+	sink(resolver.resolve(host_view, service_view, error)); // $ MISSING: ir
+	sink(resolver.resolve(host_view, service_view, flags)); // $ MISSING: ir
+	sink(resolver.resolve(host_view, service_view, flags, error)); // $ MISSING: ir
+
+	sink(resolver.resolve(protocol, host, service)); // $ ir
+	sink(resolver.resolve(protocol, host, service, error)); // $ ir
+	sink(resolver.resolve(protocol, host, service, flags)); // $ ir
+	sink(resolver.resolve(protocol, host, service, flags, error)); // $ ir
+
+	sink(resolver.resolve(protocol, host_view, service_view)); // $ MISSING: ir
+	sink(resolver.resolve(protocol, host_view, service_view, error)); // $ MISSING: ir
+	sink(resolver.resolve(protocol, host_view, service_view, flags)); // $ MISSING: ir
+	sink(resolver.resolve(protocol, host_view, service_view, flags, error)); // $ MISSING: ir
+}
+
+void test_resolve_service() {
+	boost::asio::ip::tcp::resolver resolver;
+	boost::asio::ip::tcp protocol;
+	boost::asio::ip::resolver_base::flags flags = boost::asio::ip::resolver_base::passive;
+	boost::system::error_code error;
+	std::string host("");
+	std::string service(source());
+	std::string_view host_view("");
+	std::string_view service_view(source());
+
+	sink(resolver.resolve(host, service)); // $ ir
+	sink(resolver.resolve(host, service, error)); // $ ir
+	sink(resolver.resolve(host, service, flags)); // $ ir
+	sink(resolver.resolve(host, service, flags, error)); // $ ir
+
+	sink(resolver.resolve(host_view, service_view)); // $ MISSING: ir
+	sink(resolver.resolve(host_view, service_view, error)); // $ MISSING: ir
+	sink(resolver.resolve(host_view, service_view, flags)); // $ MISSING: ir
+	sink(resolver.resolve(host_view, service_view, flags, error)); // $ MISSING: ir
+
+	sink(resolver.resolve(protocol, host, service)); // $ ir
+	sink(resolver.resolve(protocol, host, service, error)); // $ ir
+	sink(resolver.resolve(protocol, host, service, flags)); // $ ir
+	sink(resolver.resolve(protocol, host, service, flags, error)); // $ ir
+
+	sink(resolver.resolve(protocol, host_view, service_view)); // $ MISSING: ir
+	sink(resolver.resolve(protocol, host_view, service_view, error)); // $ MISSING: ir
+	sink(resolver.resolve(protocol, host_view, service_view, flags)); // $ MISSING: ir
+	sink(resolver.resolve(protocol, host_view, service_view, flags, error)); // $ MISSING: ir
 }

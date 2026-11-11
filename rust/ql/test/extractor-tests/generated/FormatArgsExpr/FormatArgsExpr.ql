@@ -8,7 +8,7 @@ query predicate getArg(FormatArgsExpr x, int index, FormatArgsArg getArg) {
   toBeTested(x) and not x.isUnknown() and getArg = x.getArg(index)
 }
 
-query predicate getAttr(FormatArgsExpr x, int index, Attr getAttr) {
+query predicate getAttr(FormatArgsExpr x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

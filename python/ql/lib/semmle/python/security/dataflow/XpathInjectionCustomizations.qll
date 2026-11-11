@@ -34,10 +34,9 @@ module XpathInjection {
    */
   deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
 
-  /**
-   * An active threat-model source, considered as a flow source.
-   */
-  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
+  /** An active threat-model source, considered as a flow source. */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+  }
 
   /**
    * A construction of an XPath expression, considered as a sink.

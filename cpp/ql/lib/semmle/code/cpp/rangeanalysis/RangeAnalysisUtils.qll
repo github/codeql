@@ -406,7 +406,7 @@ predicate cmpWithLinearBound(
  */
 private predicate typeBounds0(ArithmeticType t, float lb, float ub) {
   exists(IntegralType integralType, float limit |
-    integralType = t and limit = 2.pow(8 * integralType.getSize())
+    integralType = t and limit = 2.pow(integralType.getBitWidth())
   |
     if integralType instanceof BoolType
     then lb = 0 and ub = 1
@@ -438,7 +438,7 @@ private IntegralType getUnderlyingTypeForEnum(Enum e) {
   not e.hasExplicitUnderlyingType() and
   result.isSigned() and
   exists(IntType intType |
-    if max(e.getAnEnumConstant().getValue().toFloat()) >= 2.pow(8 * intType.getSize() - 1)
+    if max(e.getAnEnumConstant().getValue().toFloat()) >= 2.pow(intType.getBitWidth() - 1)
     then result instanceof LongType
     else result = intType
   )

@@ -11,6 +11,7 @@ private import rust
 private import SsaImpl as SsaImpl
 private import codeql.rust.controlflow.internal.Scope as Scope
 private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
+private import codeql.rust.elements.internal.VariableImpl::Impl as VariableImpl
 private import codeql.rust.internal.PathResolution
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.dataflow.Ssa
@@ -62,6 +63,9 @@ final class DataFlowCall extends TDataFlowCall {
   /** Gets the underlying call, if any. */
   Call asCall() { this = TCall(result) }
 
+  /** Gets the underlying await expression, if any. */
+  AwaitExpr asAwaitExpr() { this = TAwaitExpr(result) }
+
   predicate isImplicitDerefCall(Expr e, DerefChain derefChain, int i, Function target) {
     this = TImplicitDerefCall(e, derefChain, i, target)
   }
@@ -73,7 +77,8 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   DataFlowCallable getEnclosingCallable() {
-    result.asCfgScope() = this.asCall().getEnclosingCfgScope()
+    result.asCfgScope() =
+      [this.asCall().getEnclosingCfgScope(), this.asAwaitExpr().getEnclosingCfgScope()]
     or
     result.asCfgScope() = any(Expr e | this.isImplicitDerefCall(e, _, _, _)).getEnclosingCfgScope()
     or
@@ -81,7 +86,7 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   string toString() {
-    result = this.asCall().toString()
+    result = [this.asCall().toString(), this.asAwaitExpr().toString()]
     or
     exists(Expr e, DerefChain derefChain, int i |
       this.isImplicitDerefCall(e, derefChain, i, _) and
@@ -97,7 +102,7 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   Location getLocation() {
-    result = this.asCall().getLocation()
+    result = [this.asCall().getLocation(), this.asAwaitExpr().getLocation()]
     or
     result = any(Expr e | this.isImplicitDerefCall(e, _, _, _)).getLocation()
   }
@@ -118,9 +123,10 @@ module SsaFlow {
   SsaFlow::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(SsaFlow::ExprNode).getExpr() = n.asExpr()
+    result.(SsaFlow::ReadNode).getControlFlowNode() = n.asExpr().getACfgNode()
     or
-    result.(SsaFlow::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
+    result.(SsaFlow::PostUpdateReadNode).getControlFlowNode() =
+      n.(PostUpdateNode).getPreUpdateNode().asExpr().getACfgNode()
   }
 
   predicate localFlowStep(
@@ -150,8 +156,7 @@ private Expr getALastEvalNode(Expr e) {
     ) or
   result = e.(MatchExpr).getAnArm().getExpr() or
   result = e.(MacroExpr).getMacroCall().getMacroCallExpansion() or
-  result.(BreakExpr).getTarget() = e or
-  result = e.(ParenExpr).getExpr()
+  result.(BreakExpr).getTarget() = e
 }
 
 /**
@@ -225,8 +230,6 @@ module LocalFlow {
       nodeFrom.asExpr() = match.getScrutinee() and
       nodeTo.asPat() = match.getAnArm().getPat()
     )
-    or
-    nodeFrom.asExpr() = nodeTo.asExpr().(ParenExpr).getExpr()
   }
 
   pragma[nomagic]
@@ -480,15 +483,7 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
     node instanceof ImplicitBorrowNode or
     node instanceof DerefOutNode or
     node instanceof IndexOutNode or
-    node.asExpr() instanceof ParenExpr or
     nodeIsHidden(node.(PostUpdateNode).getPreUpdateNode())
-  }
-
-  private Expr stripParens(Expr e) {
-    not e instanceof ParenExpr and
-    result = e
-    or
-    result = stripParens(e.(ParenExpr).getExpr())
   }
 
   predicate neverSkipInPathGraph(Node node) {
@@ -496,10 +491,10 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
     or
     node.(Node::Node).asPat() = any(LetExpr e).getPat()
     or
-    node.(Node::Node).asExpr() = stripParens(any(AssignmentExpr a).getLhs())
+    node.(Node::Node).asExpr() = any(AssignmentExpr a).getLhs()
     or
     exists(MatchExpr match |
-      node.asExpr() = stripParens(match.getScrutinee()) or
+      node.asExpr() = match.getScrutinee() or
       node.asPat() = match.getAnArm().getPat()
     )
   }
@@ -1004,7 +999,11 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
    */
   predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
     (
-      receiver.asExpr() = call.asCall().(CallExprImpl::DynamicCallExpr).getFunction()
+      receiver.asExpr() =
+        [
+          call.asCall().(CallExprImpl::DynamicCallExpr).getFunction(),
+          call.asAwaitExpr().getExpr()
+        ]
       or
       call.isSummaryCall(_, receiver.(FlowSummaryNode).getSummaryNode())
     ) and
@@ -1062,7 +1061,7 @@ module VariableCapture {
     final class CapturedParameter extends CapturedVariable {
       ParamBase p;
 
-      CapturedParameter() { p = this.getParameter() }
+      CapturedParameter() { this.isParameter(p) }
 
       SourceParameterNode getParameterNode() { result.getParameter() = p }
     }
@@ -1072,33 +1071,22 @@ module VariableCapture {
     }
 
     class VariableWrite extends Expr {
-      Expr source;
       CapturedVariable v;
 
       VariableWrite() {
-        exists(AssignmentExpr assign, Variable::VariableWriteAccess write |
-          this = assign and
-          v = write.getVariable() and
-          assign.getLhs() = write and
-          assign.getRhs() = source
-        )
+        this = v.getName()
         or
-        this =
-          any(LetStmt ls |
-            v.getPat() = ls.getPat() and
-            ls.getInitializer() = source
-          )
+        v = this.(Variable::VariableWriteAccess).getVariable()
+      }
+
+      override predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) {
+        not this instanceof VariableWriteAccess and
+        super.hasCfgNode(bb, i)
         or
-        this =
-          any(LetExpr le |
-            v.getPat() = le.getPat() and
-            le.getScrutinee() = source
-          )
+        this.(VariableWriteAccess).getAssignmentExpr() = bb.getNode(i).getAstNode()
       }
 
       CapturedVariable getVariable() { result = v }
-
-      Expr getSource() { result = source }
     }
 
     class VariableRead extends Expr {
@@ -1137,7 +1125,7 @@ module VariableCapture {
     or
     result.(Flow::ExprNode).getExpr() = n.asExpr()
     or
-    result.(Flow::VariableWriteSourceNode).getVariableWrite().getSource() = n.asExpr()
+    result.(Flow::VariableWriteSourceNode).getVariableWrite() = n.getAstNode()
     or
     result.(Flow::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
@@ -1176,6 +1164,7 @@ private module Cached {
       Stages::DataFlowStage::ref() and
       call.hasEnclosingCfgScope()
     } or
+    TAwaitExpr(AwaitExpr await) { await.hasEnclosingCfgScope() } or
     TImplicitDerefCall(Expr e, DerefChain derefChain, int i, Function target) {
       TypeInference::implicitDerefChainBorrow(e, derefChain, _) and
       target = derefChain.getElement(i).getDerefFunction() and

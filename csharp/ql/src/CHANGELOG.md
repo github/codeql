@@ -1,3 +1,34 @@
+## 1.11.0
+
+### Query Metadata Changes
+
+* The `external/cwe/cwe-730` tag has been removed from `cs/redos` and `cs/regex-injection`, because MITRE has marked CWE-730 as prohibited for vulnerability mapping. The queries retain their other CWE tags.
+
+## 1.10.2
+
+### Minor Analysis Improvements
+
+* The `cs/simplifiable-boolean-expression` query now produces fewer false-positive results when type information is incomplete.
+
+## 1.10.1
+
+### Minor Analysis Improvements
+
+* The `cs/web/missing-x-frame-options` query now recognizes clickjacking protection configured
+  through ASP.NET Core response headers and enforced Content Security Policy `frame-ancestors`
+  directives.
+
+## 1.10.0
+
+### New Queries
+
+* Added a new query, `cs/linq/missed-firstordefault`, that detects `foreach` loops that can be expressed more clearly using LINQ's `FirstOrDefault` method.
+
+### Minor Analysis Improvements
+
+* The `cs/linq/missed-*` queries no longer suggest rewrites that would capture `in`, `out`, or `ref` parameters in a lambda, fixing false-positive results for transformations that would not compile.
+* The `cs/web/missing-token-validation` query now recognizes an ASP.NET Core `AutoValidateAntiforgeryTokenAttribute` registered as a global MVC filter through `AddControllersWithViews` (and friends), avoiding false-positive results for covered actions.
+
 ## 1.9.3
 
 ### Minor Analysis Improvements

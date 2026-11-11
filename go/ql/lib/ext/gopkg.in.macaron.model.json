@@ -1,0 +1,42 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["gopkg.in/macaron", "Context", true, "Redirect", "", "", "Argument[0]", "url-redirection[receiver]", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["gopkg.in/macaron", "Context", true, "AllParams", "", "", "ReturnValue", "remote", "manual"],
+        ["gopkg.in/macaron", "Context", true, "GetCookie", "", "", "ReturnValue", "remote", "manual"],
+        ["gopkg.in/macaron", "Context", true, "GetSecureCookie", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["gopkg.in/macaron", "Context", true, "GetSuperSecureCookie", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["gopkg.in/macaron", "Context", true, "GetFile", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["gopkg.in/macaron", "Context", true, "Params", "", "", "ReturnValue", "remote", "manual"],
+        ["gopkg.in/macaron", "Context", true, "ParamsEscape", "", "", "ReturnValue", "remote", "manual"],
+        ["gopkg.in/macaron", "Context", true, "Query", "", "", "ReturnValue", "remote", "manual"],
+        ["gopkg.in/macaron", "Context", true, "QueryEscape", "", "", "ReturnValue", "remote", "manual"],
+        ["gopkg.in/macaron", "Context", true, "QueryStrings", "", "", "ReturnValue", "remote", "manual"],
+        ["gopkg.in/macaron", "RequestBody", true, "Bytes", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["gopkg.in/macaron", "RequestBody", true, "String", "", "", "ReturnValue[0]", "remote", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["gopkg.in/macaron", "RequestBody", true, "String", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}

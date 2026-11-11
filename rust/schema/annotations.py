@@ -2,6 +2,9 @@ from misc.codegen.lib.schemadefs import *
 from .ast import *
 
 
+@ql.to_string_impl_from_primary_class(
+    False
+)  # Disable since we have a final manual `toStringImpl` for this class
 class LabelableExpr(Expr):
     """
     The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).
@@ -25,7 +28,7 @@ class _:
     """
 
     derive_macro_expansions: list[MacroItems] | child | rust.detach
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
     visibility: optional["Visibility"] | child
@@ -448,6 +451,7 @@ class _:
     ```
     """
 
+    attrs: qltest.skip
     path: drop
 
 
@@ -549,6 +553,41 @@ class _:
     """
 
 
+@annotate(CfgPredExpr, cfg=True)
+class _:
+    """
+    A configuration predicate expression resulting from expansion of a `cfg!` macro call.
+    It has type `bool` and evaluates to whether the configuration predicate holds.
+
+    Rust-analyzer expands `cfg!(...)` in expression position to its internal `builtin#cfg(...)`
+    syntax, as illustrated below:
+    ```rust
+    builtin#cfg(unix);
+    builtin#cfg(target_os = "windows");
+    builtin#cfg(any(unix, target_os = "windows"));
+    ```
+    """
+
+
+@annotate(CfgPredPat, cfg=True)
+class _:
+    """
+    A configuration predicate pattern resulting from expansion of a `cfg!` macro call.
+    It matches `true` when the configuration predicate holds and `false` otherwise.
+
+    Rust-analyzer expands `cfg!(...)` in pattern position to its internal `builtin#cfg(...)`
+    syntax, as illustrated below:
+    ```rust
+    match true {
+        builtin#cfg(unix) => (),
+        builtin#cfg(target_os = "windows") => (),
+        builtin#cfg(any(unix, target_os = "windows")) => (),
+        _ => (),
+    };
+    ```
+    """
+
+
 @annotate(ClosureExpr)
 class _:
     """
@@ -597,7 +636,7 @@ class ArrayExpr(Expr):
     """
 
     exprs: list[Expr] | child
-    attrs: list[Attr] | child
+    attrs: list[AnyAttr] | child
 
 
 @synth.from_class(ArrayExprInternal)
@@ -1055,6 +1094,21 @@ class _:
     """
 
 
+@annotate(DerefPat, cfg=True)
+class _:
+    """
+    A deref pattern, matching the value behind a smart pointer. This is an experimental
+    Rust feature that cannot be written directly in stable Rust; the example below uses
+    rust-analyzer's canonical `builtin#deref` syntax for such patterns:
+    ```rust
+    match x {
+        builtin#deref(y) => y,
+        _ => 0,
+    };
+    ```
+    """
+
+
 @annotate(DynTraitTypeRepr)
 class _:
     """
@@ -1280,6 +1334,13 @@ class _:
     """
 
 
+@annotate(ImplRestriction)
+class _:
+    """
+    An implementation restriction, limiting where a trait can be implemented. For example the `impl(crate)` restriction (an unstable feature).
+    """
+
+
 @annotate(ImplTraitTypeRepr)
 class _:
     """
@@ -1289,6 +1350,16 @@ class _:
     ```rust
     fn foo() -> impl Iterator<Item = i32> { 0..10 }
     //          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(IncludeBytesExpr, cfg=True)
+class _:
+    """
+    An expression produced by the built-in `include_bytes!` macro, embedding the contents of a file as a byte array. For example:
+    ```rust
+    let data = include_bytes!("data.bin");
     ```
     """
 
@@ -1507,6 +1578,13 @@ class _:
     """
 
 
+@annotate(MutRestriction)
+class _:
+    """
+    A mutability restriction, limiting where a field can be mutated. For example the `mut(crate)` restriction (an unstable feature).
+    """
+
+
 @annotate(Name, cfg=True)
 class _:
     """
@@ -1546,13 +1624,39 @@ class _:
     """
 
 
+@annotate(DocComment)
+class _:
+    """
+    A documentation comment.
+
+    For example:
+    ```rust
+    /// Documents `documented`.
+    fn documented() {}
+    ```
+    """
+
+
 class ParamBase(AstNode):
     """
     A normal parameter, `Param`, or a self parameter `SelfParam`.
     """
 
-    attrs: list["Attr"] | child
+    attrs: list["AnyAttr"] | child
     type_repr: optional["TypeRepr"] | child
+
+
+@annotate(NotNull, cfg=True)
+class _:
+    """
+    The `!null` pattern used in a pattern type to denote a non-null value. Pattern types
+    are an experimental, mostly compiler-internal feature (used in the standard library for
+    types such as `NonZero` and `NonNull`) and cannot be written directly in stable Rust;
+    the example below uses rust-analyzer's canonical `builtin#pattern_type` syntax:
+    ```rust
+    type NonNull = builtin#pattern_type(*const () is !null);
+    ```
+    """
 
 
 @annotate(ParamBase, cfg=True)
@@ -1573,31 +1677,6 @@ class _:
 
     attrs: drop
     type_repr: drop
-
-
-@annotate(ParenExpr)
-class _:
-    """
-    A parenthesized expression.
-
-    For example:
-    ```rust
-    (x + y)
-    ```
-    """
-
-
-@annotate(ParenPat)
-class _:
-    """
-    A parenthesized pattern.
-
-    For example:
-    ```rust
-    let (x) = 1;
-    //  ^^^
-    ```
-    """
 
 
 @annotate(ParenTypeRepr)
@@ -1638,6 +1717,18 @@ class _:
     ```rust
     type X = std::collections::HashMap<i32, i32>;
     type Y = X::Item;
+    ```
+    """
+
+
+@annotate(PatternTypeRepr)
+class _:
+    """
+    A pattern type, constraining a type to values matching a pattern. Pattern types are an
+    experimental, mostly compiler-internal feature and cannot be written directly in stable
+    Rust; the example below uses rust-analyzer's canonical `builtin#pattern_type` syntax:
+    ```rust
+    type NonZero = builtin#pattern_type(u32 is 1..);
     ```
     """
 
@@ -2150,6 +2241,17 @@ class _:
     """
 
 
+@annotate(VisibilityInner)
+class _:
+    """
+    The parenthesized inner part of a visibility modifier or restriction, such as the `(in path)` in `pub(in path)`, or the `(crate)` in `pub(crate)`. For example the `(in foo::bar)` in:
+    ```rust
+    pub(in foo::bar) struct S;
+    //  ^^^^^^^^^^^^
+    ```
+    """
+
+
 @annotate(WhereClause)
 class _:
     """
@@ -2333,6 +2435,8 @@ class _:
     let y = vec![1, 2, 3];
     ```
     """
+
+    attrs: qltest.skip
 
 
 @annotate(MacroPat, cfg=True)

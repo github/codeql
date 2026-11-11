@@ -3,16 +3,16 @@ package main
 import "fmt"
 
 func callRecover3() {
-	// This will have no effect because panics do not propagate down the stack,
-	// only back up the stack
+	// This has no effect because recover is only effective when called directly
+	// by a deferred function while its caller is panicking.
 	if recover() != nil { // $ Alert
 		fmt.Printf("recovered")
 	}
 }
 
 func fun3() {
-	panic("3")
 	callRecover3()
+	panic("3")
 }
 
 func callRecover4() {

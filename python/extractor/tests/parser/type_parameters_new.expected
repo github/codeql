@@ -1,0 +1,88 @@
+Module: [1, 0] - [12, 0]
+  body: [
+    TypeAlias: [1, 0] - [3, 5]
+      name:
+        Name: [1, 5] - [1, 10]
+          variable: Variable('Alias', None)
+          ctx: Store
+      type_parameters: [
+        TypeVar: [2, 4] - [2, 5]
+          name:
+            Name: [2, 4] - [2, 5]
+              variable: Variable('T', None)
+              ctx: Store
+          bound: None
+          default: None
+      ]
+      value:
+        Name: [3, 4] - [3, 5]
+          variable: Variable('T', None)
+          ctx: Load
+    Assign: [5, 0] - [7, 4]
+      targets: [
+        Name: [5, 4] - [5, 12]
+          variable: Variable('function', None)
+          ctx: Store
+      ]
+      value:
+        FunctionExpr: [5, 0] - [7, 4]
+          name: 'function'
+          args:
+            arguments
+              defaults: []
+              kw_defaults: []
+              annotations: []
+              varargannotation: None
+              kwargannotation: None
+              kw_annotations: []
+          returns: None
+          inner_scope:
+            Function: [5, 0] - [7, 4]
+              name: 'function'
+              type_parameters: [
+                TypeVar: [6, 4] - [6, 5]
+                  name:
+                    Name: [6, 4] - [6, 5]
+                      variable: Variable('T', None)
+                      ctx: Store
+                  bound: None
+                  default: None
+              ]
+              args: []
+              vararg: None
+              kwonlyargs: []
+              kwarg: None
+              body: [
+                Expr: [7, 5] - [7, 8]
+                  value:
+                    Ellipsis: [7, 5] - [7, 8]
+              ]
+    Assign: [9, 0] - [11, 2]
+      targets: [
+        Name: [9, 6] - [9, 11]
+          variable: Variable('Class', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [9, 0] - [11, 2]
+          name: 'Class'
+          type_parameters: [
+            TypeVar: [10, 4] - [10, 5]
+              name:
+                Name: [10, 4] - [10, 5]
+                  variable: Variable('T', None)
+                  ctx: Store
+              bound: None
+              default: None
+          ]
+          bases: []
+          keywords: []
+          inner_scope:
+            Class: [9, 0] - [11, 2]
+              name: 'Class'
+              body: [
+                Expr: [11, 3] - [11, 6]
+                  value:
+                    Ellipsis: [11, 3] - [11, 6]
+              ]
+  ]

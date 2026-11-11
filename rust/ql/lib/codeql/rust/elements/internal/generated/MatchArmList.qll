@@ -6,8 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.rust.elements.Attr
 import codeql.rust.elements.MatchArm
 
 /**
@@ -33,6 +33,8 @@ module Generated {
   class MatchArmList extends Synth::TMatchArmList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "MatchArmList" }
 
+    override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
     /**
      * Gets the `index`th arm of this match arm list (0-based).
      */
@@ -56,9 +58,9 @@ module Generated {
     /**
      * Gets the `index`th attr of this match arm list (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertMatchArmListToRaw(this)
+        Synth::convertAnyAttrFromRaw(Synth::convertMatchArmListToRaw(this)
               .(Raw::MatchArmList)
               .getAttr(index))
     }
@@ -66,7 +68,7 @@ module Generated {
     /**
      * Gets any of the attrs of this match arm list.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this match arm list.

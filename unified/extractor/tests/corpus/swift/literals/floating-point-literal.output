@@ -12,7 +12,7 @@ sourceFile
 
 ---
 
-top_level
+top_level source="⟨body⟩"
   body:
-    block
-      stmt: float_literal "3.14"
+    block source="⟨stmt⟩"
+      stmt: float_literal "3.14" source="3.14"

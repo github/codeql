@@ -22,7 +22,7 @@ module Impl {
    * ```
    */
   class TypeBoundList extends Generated::TypeBoundList {
-    override string toStringImpl() { result = this.toAbbreviatedString() }
+    override string toStringImpl() { result = concat(this.toAbbreviatedString()) }
 
     private string toAbbreviatedStringPart(int index) {
       result = this.getBound(index).toAbbreviatedString()

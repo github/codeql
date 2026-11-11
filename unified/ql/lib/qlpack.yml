@@ -6,8 +6,15 @@ extractor: unified
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/concepts: ${workspace}
   codeql/controlflow: ${workspace}
+  codeql/ssa: ${workspace}
+  codeql/dataflow: ${workspace}
   codeql/namebinding: ${workspace}
+  codeql/typeinference: ${workspace}
   codeql/util: ${workspace}
+dataExtensions:
+  - ext/*.model.yml
+  - ext/*.model.json
 warnOnImplicitThis: true
 compileForOverlayEval: true

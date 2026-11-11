@@ -1,4 +1,5 @@
 import go
+private import semmle.go.controlflow.Guards
 
 Expr getAUse(SsaDefinition def) {
   result = def.getVariable().getAUse().(IR::EvalInstruction).getExpr()
@@ -31,12 +32,6 @@ float getAnUpperBound(Expr expr) {
   if expr.isConst()
   then result = expr.getNumericValue()
   else (
-    //if an expression with parenthesis, strip the parenthesis first
-    exists(ParenExpr paren |
-      paren = expr and
-      result = getAnUpperBound(paren.stripParens())
-    )
-    or
     //if this expression is an identifier
     exists(SsaVariable v, Ident identifier |
       identifier = expr and
@@ -46,12 +41,12 @@ float getAnUpperBound(Expr expr) {
         if
           //if a condition expression exists before and one of the operand happens to be the identifier, we use this condition expression to narrow down the range.
           exists(
-            ControlFlow::ConditionGuardNode n, DataFlow::Node lesser, DataFlow::Node greater,
+            Guard n, boolean branch, DataFlow::Node lesser, DataFlow::Node greater,
             ReachableBasicBlock bb
           |
-            n.ensuresLeq(lesser, greater, _) and
+            guardEnsuresLeq(n, branch, lesser, greater, _) and
             IR::evalExprInstruction(lesser.asExpr()) = v.getAUse() and
-            n.dominates(bb) and
+            n.controls(bb, branch) and
             bb.getANode() = IR::evalExprInstruction(identifier) and
             not exists(Expr e |
               e = v.getAUse().(IR::EvalInstruction).getExpr() and
@@ -60,12 +55,12 @@ float getAnUpperBound(Expr expr) {
           )
         then
           exists(
-            ControlFlow::ConditionGuardNode n, ReachableBasicBlock bb, DataFlow::Node lesser,
+            Guard n, boolean branch, ReachableBasicBlock bb, DataFlow::Node lesser,
             DataFlow::Node greater, int bias
           |
-            n.dominates(bb) and
+            n.controls(bb, branch) and
             bb.getANode() = IR::evalExprInstruction(identifier) and
-            n.ensuresLeq(lesser, greater, bias) and
+            guardEnsuresLeq(n, branch, lesser, greater, bias) and
             v.getAUse() = IR::evalExprInstruction(lesser.asExpr()) and
             not exists(Expr e |
               e = v.getAUse().(IR::EvalInstruction).getExpr() and
@@ -188,11 +183,6 @@ float getALowerBound(Expr expr) {
     result = expr.getIntValue() or
     result = expr.getExactValue().toFloat()
   else (
-    exists(ParenExpr paren |
-      paren = expr and
-      result = getALowerBound(paren.stripParens())
-    )
-    or
     //if this expression is an identifer
     exists(SsaVariable v, Ident identifier |
       identifier = expr and
@@ -202,12 +192,12 @@ float getALowerBound(Expr expr) {
         //if exists a condition expression before this identifier
         if
           exists(
-            ControlFlow::ConditionGuardNode n, DataFlow::Node greater, DataFlow::Node lesser,
+            Guard n, boolean branch, DataFlow::Node greater, DataFlow::Node lesser,
             ReachableBasicBlock bb
           |
-            n.ensuresLeq(lesser, greater, _) and
+            guardEnsuresLeq(n, branch, lesser, greater, _) and
             IR::evalExprInstruction(greater.asExpr()) = v.getAUse() and
-            n.dominates(bb) and
+            n.controls(bb, branch) and
             bb.getANode() = IR::evalExprInstruction(identifier) and
             not exists(Expr e |
               e = v.getAUse().(IR::EvalInstruction).getExpr() and
@@ -216,12 +206,12 @@ float getALowerBound(Expr expr) {
           )
         then
           exists(
-            ControlFlow::ConditionGuardNode n, ReachableBasicBlock bb, DataFlow::Node lesser,
+            Guard n, boolean branch, ReachableBasicBlock bb, DataFlow::Node lesser,
             DataFlow::Node greater, int bias, float lbs
           |
-            n.dominates(bb) and
+            n.controls(bb, branch) and
             bb.getANode() = IR::evalExprInstruction(identifier) and
-            n.ensuresLeq(lesser, greater, bias) and
+            guardEnsuresLeq(n, branch, lesser, greater, bias) and
             v.getAUse() = IR::evalExprInstruction(greater.asExpr()) and
             not exists(Expr e |
               e = v.getAUse().(IR::EvalInstruction).getExpr() and
@@ -389,12 +379,13 @@ float getAnSsaUpperBound(SsaDefinition def) {
         )
       else
         //SSA definition corresponding to an `IncDecStmt`
-        if explicitDef.getInstruction() instanceof IR::IncDecInstruction
+        if
+          explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() instanceof
+            IncDecStmt
         then
-          exists(IncDecStmt incOrDec, IR::IncDecInstruction instr, float exprLB |
-            instr = explicitDef.getInstruction() and
+          exists(IncDecStmt incOrDec, float exprLB |
+            explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() = incOrDec and
             exprLB = getAnUpperBound(incOrDec.getOperand()) and
-            instr.getRhs().(IR::EvalIncDecRhsInstruction).getStmt() = incOrDec and
             (
               //IncStmt(x++)
               exists(IncStmt inc |
@@ -475,12 +466,13 @@ float getAnSsaLowerBound(SsaDefinition def) {
         )
       else
         //IncDecStmt
-        if explicitDef.getInstruction() instanceof IR::IncDecInstruction
+        if
+          explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() instanceof
+            IncDecStmt
         then
-          exists(IncDecStmt incOrDec, IR::IncDecInstruction instr, float exprLB |
-            instr = explicitDef.getInstruction() and
+          exists(IncDecStmt incOrDec, float exprLB |
+            explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() = incOrDec and
             exprLB = getALowerBound(incOrDec.getOperand()) and
-            instr.getRhs().(IR::EvalIncDecRhsInstruction).getStmt() = incOrDec and
             (
               //IncStmt(x++)
               exists(IncStmt inc |
@@ -550,9 +542,7 @@ predicate ssaDependsOnSsa(SsaDefinition nextDef, SsaDefinition prevDef) {
     nextDef
         .(SsaExplicitDefinition)
         .getInstruction()
-        .(IR::IncDecInstruction)
-        .getRhs()
-        .(IR::EvalIncDecRhsInstruction)
+        .(IR::EvalCompoundAssignRhsInstruction)
         .getStmt() = incDec and
     ssaDependsOnExpr(prevDef, incDec.getOperand())
   )
@@ -571,12 +561,6 @@ predicate ssaDependsOnExpr(SsaDefinition def, Expr expr) {
   if expr.isConst()
   then none()
   else (
-    //if an expression with parenthesis, strip the parenthesis
-    exists(ParenExpr paren |
-      paren = expr and
-      ssaDependsOnExpr(def, paren.stripParens())
-    )
-    or
     exists(Ident ident |
       ident = expr and
       getAUse(def) = ident

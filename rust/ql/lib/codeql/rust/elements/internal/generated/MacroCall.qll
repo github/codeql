@@ -6,9 +6,9 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.internal.AssocItemImpl::Impl as AssocItemImpl
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.Attr
 import codeql.rust.elements.internal.ExternItemImpl::Impl as ExternItemImpl
 import codeql.rust.elements.Path
 import codeql.rust.elements.TokenTree
@@ -34,15 +34,17 @@ module Generated {
     /**
      * Gets the `index`th attr of this macro call (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertMacroCallToRaw(this).(Raw::MacroCall).getAttr(index))
+        Synth::convertAnyAttrFromRaw(Synth::convertMacroCallToRaw(this)
+              .(Raw::MacroCall)
+              .getAttr(index))
     }
 
     /**
      * Gets any of the attrs of this macro call.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this macro call.
