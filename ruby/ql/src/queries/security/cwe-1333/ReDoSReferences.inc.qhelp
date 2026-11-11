@@ -2,7 +2,7 @@
 <qhelp>
   <references>
     <li> OWASP:
-      <a href="https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS">Regular expression Denial of Service - ReDoS</a>.
+      <a href="https://community.owasp.org/attacks/Regular_expression_Denial_of_Service_-_ReDoS">Regular expression Denial of Service - ReDoS</a>.
     </li>
     <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/ReDoS">ReDoS</a>.</li>
     <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Time_complexity">Time complexity</a>.</li>

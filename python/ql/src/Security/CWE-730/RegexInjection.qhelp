@@ -37,7 +37,7 @@ special meaning in regular expressions.
 </example>
 
 <references>
-<li>OWASP: <a href="https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS">Regular expression Denial of Service - ReDoS</a>.</li>
+<li>OWASP: <a href="https://community.owasp.org/attacks/Regular_expression_Denial_of_Service_-_ReDoS">Regular expression Denial of Service - ReDoS</a>.</li>
 <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/ReDoS">ReDoS</a>.</li>
 <li>Python docs: <a href="https://docs.python.org/3/library/re.html">re</a>.</li>
 <li>SonarSource: <a href="https://rules.sonarsource.com/python/type/Vulnerability/RSPEC-2631">RSPEC-2631</a>.</li>
