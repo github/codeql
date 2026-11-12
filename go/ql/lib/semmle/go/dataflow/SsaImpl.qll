@@ -123,11 +123,44 @@ private module Internal {
         any(IR::Instruction def | def.writes(v, _)).getRoot() = f
       )
     }
+
+    cached
+    predicate ssaCachedStageRevRef() { Ssa::ssaCachedStageRevRef1() }
   }
 }
 
 import Internal
 import SsaImplCommon::Make<Location, CfgImpl::Cfg, SsaInput> as Impl
+
+private module PublicSsaInput implements Impl::SsaInputSig {
+  private import go as G
+
+  class Expr = G::Expr;
+
+  class Parameter = G::Parameter;
+
+  class VariableWrite extends IR::WriteInstruction {
+    Expr asExpr() { none() }
+
+    Expr getValue() { result = this.getRhs().(IR::EvalInstruction).getExpr() }
+
+    predicate isParameterInit(Parameter p) { this = IR::initParamInstruction(p) }
+  }
+
+  predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, SsaSourceVariable v) {
+    w = bb.getNode(i) and
+    defAt(bb, i, v)
+  }
+
+  predicate explicitRead(Expr e, SsaSourceVariable v) { IR::evalExprInstruction(e).reads(v) }
+}
+
+module Ssa = Impl::MakeSsa<PublicSsaInput>;
+
+/** Gets the control-flow root containing `def`. */
+ControlFlow::Root getSsaDefinitionRoot(Ssa::SsaDefinition def) {
+  result = def.getBasicBlock().getScope()
+}
 
 final class Definition = Impl::Definition;
 
