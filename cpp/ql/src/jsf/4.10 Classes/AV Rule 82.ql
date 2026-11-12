@@ -36,12 +36,42 @@ predicate pointerThis(Expr e) {
   pointerThis(e.(AssignExpr).getLValue())
 }
 
+/**
+ * Holds if the function containing `p` returns a reference to `p` on every
+ * reachable return. Require a visible, non-virtual definition and matching
+ * reference base types to exclude copies and user-defined conversions.
+ */
+private predicate returnsReferenceParameter(Parameter p) {
+  exists(Function f |
+    f = p.getFunction() and
+    exists(f.getBlock()) and
+    not f.isVirtual() and
+    f.getType().getUnspecifiedType().(ReferenceType).getBaseType().getUnspecifiedType() =
+      p.getType().getUnspecifiedType().(ReferenceType).getBaseType().getUnspecifiedType() and
+    exists(ReturnStmt s | s.getEnclosingFunction() = f and reachable(s)) and
+    forall(ReturnStmt s | s.getEnclosingFunction() = f and reachable(s) |
+      s.getExpr().getUnconverted().(VariableAccess).getTarget() = p
+    )
+  )
+}
+
 predicate dereferenceThis(Expr e) {
   pointerThis(e.(PointerDereferenceExpr).getChild(0))
   or
   // `f(...)`
   // (includes `*this = ...`, where `=` is overloaded so a `FunctionCall`)
   exists(FunctionCall fc | fc = e and callOnThis(fc) | returnsDereferenceThis(fc.getTarget()))
+  or
+  // `helper(*this, ...)`, where every return directly returns the corresponding parameter.
+  exists(FunctionCall fc, Parameter p, Expr arg |
+    fc = e and
+    fc.getTarget() = p.getFunction() and
+    returnsReferenceParameter(p) and
+    arg = fc.getArgument(p.getIndex()) and
+    arg.getUnconverted().getType().getUnspecifiedType() =
+      p.getType().getUnspecifiedType().(ReferenceType).getBaseType().getUnspecifiedType() and
+    dereferenceThis(arg)
+  )
   or
   // `*this = ...` (where `=` is not overloaded, so an `AssignExpr`)
   dereferenceThis(e.(AssignExpr).getLValue())
