@@ -1,8 +1,8 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use crate::{
-    Ast, ContextNodeId, FieldId, Id, IntoFieldIds, IntoLocationRanges, KindId, NodeContent,
-    OutputAst, OutputId, Range, TranslatorHandle,
+    Ast, ContextNodeId, FieldId, Id, IntoFieldIds, KindId, LocationSource, NodeContent, OutputAst,
+    OutputId, Range, TranslatorHandle,
 };
 
 /// Context for building new AST nodes during a transformation.
@@ -200,8 +200,8 @@ impl<'a, C> BuildCtx<'a, C> {
     }
 
     #[doc(hidden)]
-    pub fn extend_location_ranges<V: IntoLocationRanges<C>>(&self, value: V, out: &mut Vec<Range>) {
-        value.extend_ranges(self, out);
+    pub fn location_source_range<S: LocationSource>(&self, source: S) -> Option<Range> {
+        source.location_range(self)
     }
 
     /// Return an empty range between two non-overlapping nodes.

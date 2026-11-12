@@ -1091,6 +1091,23 @@ fn test_interpolation_accepts_value_borrowed_from_context() {
 }
 
 #[test]
+fn test_location_interpolation_materializes_context_iterator() {
+    let input = "x = 1";
+    let input_ast = parse_input(input);
+    let mut ast = empty_output_ast(input);
+    let mut user_ctx = BorrowedInterpolationContext::default();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let location =
+        yeast::tree!((identifier "location" location: {input_ast.get_root()}));
+    ctx.locations.push(location);
+
+    let call = yeast::tree!((call location: {ctx.locations.drain(..)}));
+
+    assert_eq!(ctx.locations, vec![location]);
+    assert_eq!(ctx.output.get_node(call).unwrap().byte_range(), 0..5);
+}
+
+#[test]
 fn test_root_choice_returns_an_optional_node() {
     let input = "x = 1";
     let input_ast = parse_input(input);
@@ -2266,6 +2283,50 @@ fn test_location_field_is_available_on_literal_nodes() {
         .expect("identifier exists");
 
     assert_eq!(identifier.byte_range(), 4..5);
+}
+
+#[test]
+fn test_location_field_accepts_ranges() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        (identifier "synthetic"
+            location: {ctx.source_range(right).unwrap().empty_at_end()})
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let identifier = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "identifier")
+        .expect("identifier exists");
+
+    assert_eq!(identifier.byte_range(), 5..5);
+}
+
+#[test]
+fn test_location_field_accepts_optional_ranges() {
+    let rule: Rule = rule!(
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        =>
+        (identifier "synthetic"
+            location: {ctx.source_range(right).map(|range| range.empty_at_end())})
+    );
+
+    let ast = run_and_ast("x = 1", vec![rule]);
+    let identifier = ast
+        .reachable_node_ids()
+        .into_iter()
+        .filter_map(|id| ast.get_node(id))
+        .find(|node| node.kind_name() == "identifier")
+        .expect("identifier exists");
+
+    assert_eq!(identifier.byte_range(), 5..5);
 }
 
 #[test]

@@ -236,18 +236,26 @@ impl<T: ContextNodeId> ContextNodeId for &T {
     }
 }
 
-/// Values accepted by `location: { ... }` template entries.
-pub trait IntoLocationRanges<C> {
-    fn extend_ranges(self, ctx: &build::BuildCtx<'_, C>, out: &mut Vec<Range>);
+#[doc(hidden)]
+pub trait LocationSource: Copy {
+    fn location_range<C>(self, ctx: &build::BuildCtx<'_, C>) -> Option<Range>;
 }
 
-impl<C, I, T> IntoLocationRanges<C> for I
-where
-    I: IntoIterator<Item = T>,
-    T: ContextNodeId,
-{
-    fn extend_ranges(self, ctx: &build::BuildCtx<'_, C>, out: &mut Vec<Range>) {
-        out.extend(self.into_iter().filter_map(|id| id.source_range(ctx)));
+impl<T: ContextNodeId> LocationSource for T {
+    fn location_range<C>(self, ctx: &build::BuildCtx<'_, C>) -> Option<Range> {
+        ContextNodeId::source_range(self, ctx)
+    }
+}
+
+impl LocationSource for Range {
+    fn location_range<C>(self, _ctx: &build::BuildCtx<'_, C>) -> Option<Range> {
+        Some(self)
+    }
+}
+
+impl LocationSource for &Range {
+    fn location_range<C>(self, _ctx: &build::BuildCtx<'_, C>) -> Option<Range> {
+        Some(*self)
     }
 }
 
