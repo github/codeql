@@ -1,0 +1,122 @@
+models
+| 1 | Summary: java.util; Optional; false; get; ; ; Argument[this].Element; ReturnValue; value; manual |
+| 2 | Summary: java.util; Optional; false; of; ; ; Argument[0]; ReturnValue.Element; value; manual |
+| 3 | Summary: reactor.core.publisher; Mono; true; flatMap; ; ; Argument[0].ReturnValue.Element; ReturnValue.Element; value; manual |
+| 4 | Summary: reactor.core.publisher; Mono; true; flatMap; ; ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
+| 5 | Summary: reactor.core.publisher; Mono; true; just; ; ; Argument[0]; ReturnValue.Element; value; manual |
+| 6 | Summary: reactor.core.publisher; Mono; true; justOrEmpty; (Object); ; Argument[0]; ReturnValue.Element; value; manual |
+| 7 | Summary: reactor.core.publisher; Mono; true; justOrEmpty; (Optional); ; Argument[0].Element; ReturnValue.Element; value; manual |
+| 8 | Summary: reactor.core.publisher; Mono; true; map; ; ; Argument[0].ReturnValue; ReturnValue.Element; value; manual |
+| 9 | Summary: reactor.core.publisher; Mono; true; map; ; ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
+| 10 | Summary: reactor.core.publisher; Mono; true; mapNotNull; ; ; Argument[0].ReturnValue; ReturnValue.Element; value; manual |
+| 11 | Summary: reactor.core.publisher; Mono; true; mapNotNull; ; ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
+edges
+| Test.java:13:31:13:48 | just(...) : Mono [<element>] : String | Test.java:14:9:14:14 | unsafe : Mono [<element>] : String | provenance |  |
+| Test.java:13:41:13:47 | taint(...) : String | Test.java:13:31:13:48 | just(...) : Mono [<element>] : String | provenance | MaD:5 |
+| Test.java:14:9:14:14 | unsafe : Mono [<element>] : String | Test.java:14:20:14:24 | value : String | provenance | MaD:9 |
+| Test.java:14:20:14:24 | value : String | Test.java:15:18:15:22 | value | provenance |  |
+| Test.java:26:31:26:55 | justOrEmpty(...) : Mono [<element>] : String | Test.java:27:9:27:14 | unsafe : Mono [<element>] : String | provenance |  |
+| Test.java:26:48:26:54 | taint(...) : String | Test.java:26:31:26:55 | justOrEmpty(...) : Mono [<element>] : String | provenance | MaD:6 |
+| Test.java:27:9:27:14 | unsafe : Mono [<element>] : String | Test.java:27:20:27:24 | value : String | provenance | MaD:9 |
+| Test.java:27:20:27:24 | value : String | Test.java:28:18:28:22 | value | provenance |  |
+| Test.java:39:31:39:68 | justOrEmpty(...) : Mono [<element>] : String | Test.java:40:9:40:14 | unsafe : Mono [<element>] : String | provenance |  |
+| Test.java:39:48:39:67 | of(...) : Optional [<element>] : String | Test.java:39:31:39:68 | justOrEmpty(...) : Mono [<element>] : String | provenance | MaD:7 |
+| Test.java:39:60:39:66 | taint(...) : String | Test.java:39:48:39:67 | of(...) : Optional [<element>] : String | provenance | MaD:2 |
+| Test.java:40:9:40:14 | unsafe : Mono [<element>] : String | Test.java:40:20:40:24 | value : String | provenance | MaD:9 |
+| Test.java:40:20:40:24 | value : String | Test.java:41:18:41:22 | value | provenance |  |
+| Test.java:57:9:57:26 | just(...) : Mono [<element>] : String | Test.java:57:36:57:40 | value : String | provenance | MaD:4 |
+| Test.java:57:19:57:25 | taint(...) : String | Test.java:57:9:57:26 | just(...) : Mono [<element>] : String | provenance | MaD:5 |
+| Test.java:57:36:57:40 | value : String | Test.java:58:18:58:22 | value | provenance |  |
+| Test.java:68:9:68:26 | just(...) : Mono [<element>] : String | Test.java:68:32:68:36 | value : String | provenance | MaD:9 |
+| Test.java:68:19:68:25 | taint(...) : String | Test.java:68:9:68:26 | just(...) : Mono [<element>] : String | provenance | MaD:5 |
+| Test.java:68:32:68:36 | value : String | Test.java:69:18:69:22 | value | provenance |  |
+| Test.java:79:9:79:26 | just(...) : Mono [<element>] : String | Test.java:79:39:79:43 | value : String | provenance | MaD:11 |
+| Test.java:79:19:79:25 | taint(...) : String | Test.java:79:9:79:26 | just(...) : Mono [<element>] : String | provenance | MaD:5 |
+| Test.java:79:39:79:43 | value : String | Test.java:80:18:80:22 | value | provenance |  |
+| Test.java:90:9:90:62 | flatMap(...) : Mono [<element>] : String | Test.java:90:68:90:72 | value : String | provenance | MaD:9 |
+| Test.java:90:44:90:61 | just(...) : Mono [<element>] : String | Test.java:90:9:90:62 | flatMap(...) : Mono [<element>] : String | provenance | MaD:3 |
+| Test.java:90:54:90:60 | taint(...) : String | Test.java:90:44:90:61 | just(...) : Mono [<element>] : String | provenance | MaD:5 |
+| Test.java:90:68:90:72 | value : String | Test.java:91:18:91:22 | value | provenance |  |
+| Test.java:101:9:101:47 | map(...) : Mono [<element>] : String | Test.java:101:53:101:57 | value : String | provenance | MaD:9 |
+| Test.java:101:40:101:46 | taint(...) : String | Test.java:101:9:101:47 | map(...) : Mono [<element>] : String | provenance | MaD:8 |
+| Test.java:101:53:101:57 | value : String | Test.java:102:18:102:22 | value | provenance |  |
+| Test.java:112:9:112:54 | mapNotNull(...) : Mono [<element>] : String | Test.java:112:60:112:64 | value : String | provenance | MaD:9 |
+| Test.java:112:47:112:53 | taint(...) : String | Test.java:112:9:112:54 | mapNotNull(...) : Mono [<element>] : String | provenance | MaD:10 |
+| Test.java:112:60:112:64 | value : String | Test.java:113:18:113:22 | value | provenance |  |
+| Test.java:123:9:123:39 | just(...) : Mono [<element>, <element>] : String | Test.java:123:49:123:53 | value : Optional [<element>] : String | provenance | MaD:4 |
+| Test.java:123:19:123:38 | of(...) : Optional [<element>] : String | Test.java:123:9:123:39 | just(...) : Mono [<element>, <element>] : String | provenance | MaD:5 |
+| Test.java:123:31:123:37 | taint(...) : String | Test.java:123:19:123:38 | of(...) : Optional [<element>] : String | provenance | MaD:2 |
+| Test.java:123:49:123:53 | value : Optional [<element>] : String | Test.java:124:18:124:22 | value : Optional [<element>] : String | provenance |  |
+| Test.java:124:18:124:22 | value : Optional [<element>] : String | Test.java:124:18:124:28 | get(...) | provenance | MaD:1 |
+| Test.java:127:9:127:39 | just(...) : Mono [<element>, <element>] : String | Test.java:127:45:127:49 | value : Optional [<element>] : String | provenance | MaD:9 |
+| Test.java:127:19:127:38 | of(...) : Optional [<element>] : String | Test.java:127:9:127:39 | just(...) : Mono [<element>, <element>] : String | provenance | MaD:5 |
+| Test.java:127:31:127:37 | taint(...) : String | Test.java:127:19:127:38 | of(...) : Optional [<element>] : String | provenance | MaD:2 |
+| Test.java:127:45:127:49 | value : Optional [<element>] : String | Test.java:128:18:128:22 | value : Optional [<element>] : String | provenance |  |
+| Test.java:128:18:128:22 | value : Optional [<element>] : String | Test.java:128:18:128:28 | get(...) | provenance | MaD:1 |
+| Test.java:131:9:131:39 | just(...) : Mono [<element>, <element>] : String | Test.java:131:52:131:56 | value : Optional [<element>] : String | provenance | MaD:11 |
+| Test.java:131:19:131:38 | of(...) : Optional [<element>] : String | Test.java:131:9:131:39 | just(...) : Mono [<element>, <element>] : String | provenance | MaD:5 |
+| Test.java:131:31:131:37 | taint(...) : String | Test.java:131:19:131:38 | of(...) : Optional [<element>] : String | provenance | MaD:2 |
+| Test.java:131:52:131:56 | value : Optional [<element>] : String | Test.java:132:18:132:22 | value : Optional [<element>] : String | provenance |  |
+| Test.java:132:18:132:22 | value : Optional [<element>] : String | Test.java:132:18:132:28 | get(...) | provenance | MaD:1 |
+nodes
+| Test.java:13:31:13:48 | just(...) : Mono [<element>] : String | semmle.label | just(...) : Mono [<element>] : String |
+| Test.java:13:41:13:47 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:14:9:14:14 | unsafe : Mono [<element>] : String | semmle.label | unsafe : Mono [<element>] : String |
+| Test.java:14:20:14:24 | value : String | semmle.label | value : String |
+| Test.java:15:18:15:22 | value | semmle.label | value |
+| Test.java:26:31:26:55 | justOrEmpty(...) : Mono [<element>] : String | semmle.label | justOrEmpty(...) : Mono [<element>] : String |
+| Test.java:26:48:26:54 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:27:9:27:14 | unsafe : Mono [<element>] : String | semmle.label | unsafe : Mono [<element>] : String |
+| Test.java:27:20:27:24 | value : String | semmle.label | value : String |
+| Test.java:28:18:28:22 | value | semmle.label | value |
+| Test.java:39:31:39:68 | justOrEmpty(...) : Mono [<element>] : String | semmle.label | justOrEmpty(...) : Mono [<element>] : String |
+| Test.java:39:48:39:67 | of(...) : Optional [<element>] : String | semmle.label | of(...) : Optional [<element>] : String |
+| Test.java:39:60:39:66 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:40:9:40:14 | unsafe : Mono [<element>] : String | semmle.label | unsafe : Mono [<element>] : String |
+| Test.java:40:20:40:24 | value : String | semmle.label | value : String |
+| Test.java:41:18:41:22 | value | semmle.label | value |
+| Test.java:57:9:57:26 | just(...) : Mono [<element>] : String | semmle.label | just(...) : Mono [<element>] : String |
+| Test.java:57:19:57:25 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:57:36:57:40 | value : String | semmle.label | value : String |
+| Test.java:58:18:58:22 | value | semmle.label | value |
+| Test.java:68:9:68:26 | just(...) : Mono [<element>] : String | semmle.label | just(...) : Mono [<element>] : String |
+| Test.java:68:19:68:25 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:68:32:68:36 | value : String | semmle.label | value : String |
+| Test.java:69:18:69:22 | value | semmle.label | value |
+| Test.java:79:9:79:26 | just(...) : Mono [<element>] : String | semmle.label | just(...) : Mono [<element>] : String |
+| Test.java:79:19:79:25 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:79:39:79:43 | value : String | semmle.label | value : String |
+| Test.java:80:18:80:22 | value | semmle.label | value |
+| Test.java:90:9:90:62 | flatMap(...) : Mono [<element>] : String | semmle.label | flatMap(...) : Mono [<element>] : String |
+| Test.java:90:44:90:61 | just(...) : Mono [<element>] : String | semmle.label | just(...) : Mono [<element>] : String |
+| Test.java:90:54:90:60 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:90:68:90:72 | value : String | semmle.label | value : String |
+| Test.java:91:18:91:22 | value | semmle.label | value |
+| Test.java:101:9:101:47 | map(...) : Mono [<element>] : String | semmle.label | map(...) : Mono [<element>] : String |
+| Test.java:101:40:101:46 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:101:53:101:57 | value : String | semmle.label | value : String |
+| Test.java:102:18:102:22 | value | semmle.label | value |
+| Test.java:112:9:112:54 | mapNotNull(...) : Mono [<element>] : String | semmle.label | mapNotNull(...) : Mono [<element>] : String |
+| Test.java:112:47:112:53 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:112:60:112:64 | value : String | semmle.label | value : String |
+| Test.java:113:18:113:22 | value | semmle.label | value |
+| Test.java:123:9:123:39 | just(...) : Mono [<element>, <element>] : String | semmle.label | just(...) : Mono [<element>, <element>] : String |
+| Test.java:123:19:123:38 | of(...) : Optional [<element>] : String | semmle.label | of(...) : Optional [<element>] : String |
+| Test.java:123:31:123:37 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:123:49:123:53 | value : Optional [<element>] : String | semmle.label | value : Optional [<element>] : String |
+| Test.java:124:18:124:22 | value : Optional [<element>] : String | semmle.label | value : Optional [<element>] : String |
+| Test.java:124:18:124:28 | get(...) | semmle.label | get(...) |
+| Test.java:127:9:127:39 | just(...) : Mono [<element>, <element>] : String | semmle.label | just(...) : Mono [<element>, <element>] : String |
+| Test.java:127:19:127:38 | of(...) : Optional [<element>] : String | semmle.label | of(...) : Optional [<element>] : String |
+| Test.java:127:31:127:37 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:127:45:127:49 | value : Optional [<element>] : String | semmle.label | value : Optional [<element>] : String |
+| Test.java:128:18:128:22 | value : Optional [<element>] : String | semmle.label | value : Optional [<element>] : String |
+| Test.java:128:18:128:28 | get(...) | semmle.label | get(...) |
+| Test.java:131:9:131:39 | just(...) : Mono [<element>, <element>] : String | semmle.label | just(...) : Mono [<element>, <element>] : String |
+| Test.java:131:19:131:38 | of(...) : Optional [<element>] : String | semmle.label | of(...) : Optional [<element>] : String |
+| Test.java:131:31:131:37 | taint(...) : String | semmle.label | taint(...) : String |
+| Test.java:131:52:131:56 | value : Optional [<element>] : String | semmle.label | value : Optional [<element>] : String |
+| Test.java:132:18:132:22 | value : Optional [<element>] : String | semmle.label | value : Optional [<element>] : String |
+| Test.java:132:18:132:28 | get(...) | semmle.label | get(...) |
+subpaths
+testFailures
