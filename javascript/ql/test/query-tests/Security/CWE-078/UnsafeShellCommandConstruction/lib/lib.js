@@ -515,10 +515,10 @@ module.exports.sanitizer4 = function (name) { // $ Source
 		cp.exec("rm -rf " + name);
 	}
 
-	if (isNaN(parseInt(name))) {
+	if (isNaN(parseInt(name))) { // <- only checks a numeric prefix
 		cp.exec("rm -rf " + name); // $ Alert
 	} else {
-		cp.exec("rm -rf " + name);
+		cp.exec("rm -rf " + name); // $ Alert
 	}
 
 	if (isNaN(+name)) {
@@ -527,10 +527,10 @@ module.exports.sanitizer4 = function (name) { // $ Source
 		cp.exec("rm -rf " + name);
 	}
 
-	if (isNaN(parseInt(name, 10))) {
+	if (isNaN(parseInt(name, 10))) { // <- only checks a numeric prefix
 		cp.exec("rm -rf " + name); // $ Alert
 	} else {
-		cp.exec("rm -rf " + name);
+		cp.exec("rm -rf " + name); // $ Alert
 	}
 
 	if (isNaN(name - 0)) {
@@ -746,3 +746,16 @@ module.exports.shellOptionsOnly = function (options) {
     cp.execFile("echo", options, () => {});
     cp.execFileSync("echo", options);
 };
+
+module.exports.sanitizerParseFloat = function (name) { // $ Source
+	if (isNaN(parseFloat(name))) { // <- only checks a numeric prefix
+		cp.exec("rm -rf " + name); // $ Alert
+	} else {
+		cp.exec("rm -rf " + name); // $ Alert
+	}
+
+	const parsed = parseInt(name, 10);
+	if (!isNaN(parsed)) {
+		cp.exec("rm -rf " + parsed);
+	}
+}
