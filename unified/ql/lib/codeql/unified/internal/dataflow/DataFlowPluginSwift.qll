@@ -68,6 +68,21 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       node1.isResultValue(call.getArgument(0).getValue()) and
       step.value() and
       node2.isResultValue(call)
+      or
+      // Simple flow in and out of subscript operators
+      call.getCallee().(MemberAccess).getMemberName() = "subscript" and
+      (
+        node1.isReceiverArgument(call) and
+        step.readArrayElement() and
+        node2.isResultValue(call)
+        or
+        exists(DataFlowCall setter |
+          setter.asSetterCall() = call and
+          node1.isSetterValueArgument(setter) and
+          step.storeArrayElement() and
+          node2.isReceiverPostUpdateEx(setter)
+        )
+      )
     )
     or
     exists(UnaryExpr expr |
