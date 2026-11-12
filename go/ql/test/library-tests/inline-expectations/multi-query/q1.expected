@@ -1,0 +1,13 @@
+hit
+| code.go:3:6:3:17 | sharedTarget |
+| code.go:5:6:5:20 | qualifiedTarget |
+| code.go:15:6:15:18 | foreignTarget |
+| code.go:21:6:21:28 | suppressedSiblingTarget |
+| code.go:23:6:23:23 | namedMissingTarget |
+| code.go:27:6:27:15 | noteTarget |
+mark
+| code.go:7:6:7:17 | valuedTarget | q1 |
+one
+| code.go:9:6:9:13 | q1Target |
+spurious
+| code.go:19:6:19:19 | spuriousTarget |
