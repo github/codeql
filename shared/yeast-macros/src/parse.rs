@@ -13,12 +13,6 @@ pub fn parse_query_top(input: TokenStream) -> Result<TokenStream> {
     })
 }
 
-pub fn parse_tree_top(input: TokenStream) -> Result<TokenStream> {
-    let template = crate::template_parse::parse_template(input)?;
-    let template = template.lower_root();
-    Ok(quote!({ #template }))
-}
-
 pub fn parse_tree_with_schema_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
     let output_path = parse_named_string_arg(&mut tokens, "output")?;
@@ -35,11 +29,6 @@ pub fn parse_tree_with_schema_top(input: TokenStream) -> Result<TokenStream> {
         const _: &::core::primitive::str = ::core::include_str!(#output_lit);
         #template
     }))
-}
-
-pub fn parse_trees_top(input: TokenStream) -> Result<TokenStream> {
-    let templates = crate::template_parse::parse_templates(input)?;
-    Ok(crate::ast::Template::lower_list(&templates))
 }
 
 pub fn parse_trees_with_schema_top(input: TokenStream) -> Result<TokenStream> {

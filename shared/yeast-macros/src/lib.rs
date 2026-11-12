@@ -104,44 +104,11 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// top-level choice passed to `tree!` returns `Option<OutputId>`; ordinary
 /// templates continue to return `OutputId`.
 ///
-/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
-///
-/// ```text
-/// tree!((kind ...))
-/// ```
-#[proc_macro]
-pub fn tree(input: TokenStream) -> TokenStream {
-    let input2: TokenStream2 = input.into();
-    match parse::parse_tree_top(input2) {
-        Ok(output) => output.into(),
-        Err(err) => err.to_compile_error().into(),
-    }
-}
-
 #[doc(hidden)]
 #[proc_macro]
 pub fn tree_with_schema(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
     match parse::parse_tree_with_schema_top(input2) {
-        Ok(output) => output.into(),
-        Err(err) => err.to_compile_error().into(),
-    }
-}
-
-/// Build a list of AST nodes from a template, returning `Vec<OutputId>`.
-///
-/// Like `tree!` but returns `Vec<OutputId>` and supports multiple top-level
-/// elements. All syntax from `tree!` is available.
-///
-/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
-///
-/// ```text
-/// trees!((node1 ...) (node2 ...))
-/// ```
-#[proc_macro]
-pub fn trees(input: TokenStream) -> TokenStream {
-    let input2: TokenStream2 = input.into();
-    match parse::parse_trees_top(input2) {
         Ok(output) => output.into(),
         Err(err) => err.to_compile_error().into(),
     }
