@@ -61,6 +61,6 @@ struct C {
 };
 
 void test_constructor_calls() {
-  C c; // $ asExpr="call to C" numberOfNodes="call to C: 2"
-  C *p = new C; // $ asExpr="call to C" asExpr=new asIndirectExpr=new numberOfNodes="call to C: 2"
+  C c; // $ asExpr="call to C"
+  C *p = new C; // $ asExpr="call to C" asExpr=new asIndirectExpr=new
 }
