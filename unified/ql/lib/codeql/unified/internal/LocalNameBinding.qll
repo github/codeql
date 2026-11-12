@@ -129,6 +129,8 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     override AstNode getElse() { none() }
   }
 
+  predicate isUnscopedConditional(Conditional cond) { cond.(IfExpr).isConditionalCompilation() }
+
   abstract class SiblingShadowingDecl extends AstNode {
     abstract AstNode getPattern();
 

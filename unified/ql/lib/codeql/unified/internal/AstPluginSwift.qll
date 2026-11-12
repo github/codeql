@@ -4,6 +4,11 @@ module;
 private import unified
 private import AstPlugin
 
+/**
+ * Holds if a constructor declaration `cd` of a struct has a parameter for the
+ * field `decl` at member index `i`, with name `name`. `hasDefault` indicates
+ * whether the parameter has a default value.
+ */
 private predicate structHasParameterForField(
   ConstructorDeclaration cd, VariableDeclaration decl, int i, string name, boolean hasDefault
 ) {

@@ -477,6 +477,9 @@ module Unified {
 
   /** An `if` statement or conditional expression. */
   class IfExpr extends G::IfExpr {
+    /** Holds if this expression represents conditional compilation. */
+    predicate isConditionalCompilation() { this.hasModifier("conditional_compilation") }
+
     /** Gets then `then` or `else` branch. */
     Expr getABranch() { result = [this.getThen(), this.getElse()] }
   }

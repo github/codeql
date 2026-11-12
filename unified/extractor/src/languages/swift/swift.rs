@@ -38,6 +38,12 @@ struct SwiftContext {
     /// True while translating a pattern. Optional chaining in this context is
     /// represented as an `Optional.some` call rather than being unwrapped.
     in_pattern: bool,
+    /// True when a conditional compilation block should be translated into an
+    /// if expression.
+    conditional_compilation_as_expr: bool,
+    /// When iterating over the clauses of a conditional compilation block, this
+    /// holds the tail of the clauses that have already been translated.
+    conditional_compilation_tail: Option<yeast::OutputId>,
 }
 
 impl SwiftContext {
@@ -163,6 +169,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // but a single wrapped `variableDecl` can translate to *several*
         // declarations (`let x = 1, y = 2`), so the wrapped node is captured with
         // `_*` and the result annotated `stmt*` to splice all of them.
+        rule!(
+            (codeBlockItem item: (ifConfigDecl) @@item)
+            =>
+            stmt* {
+                ctx.conditional_compilation_as_expr = true;
+                ctx.translate(item)
+            }
+        ),
         rule!((codeBlockItem item: _* @item) => stmt* { item }),
         // ---- Literals ----
         // swift-syntax does not distinguish the lexical integer/string forms
@@ -877,6 +891,61 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (parameter pattern: {parameter_pattern(&mut ctx, name)})
         ),
+        // ---- Conditional compilation blocks ----
+        // Conditional compilation blocks (`#if … #elseif … #else … #endif`) are
+        // represented with a `ifConfigDecl` node for the entire block and an
+        // `ifConfigClause` for each branch.
+
+        // When a conditional compilation block is not in a context where it
+        // should be translated into an if expression we simply extract the
+        // first branch (for now).
+        rule!(
+            (ifConfigDecl
+                clauses: (ifConfigClause elements: _* @items)
+                clauses: _* @@rest)
+            where !ctx.conditional_compilation_as_expr
+            =>
+            _* { items }
+        ),
+        // A conditional compilation block is translated into `if_expr` nodes
+        // with branches occurring nested within the else branch.
+        rule!(
+            (ifConfigDecl clauses: _* @@clauses) @@declaration
+            =>
+            expr {
+                // Revert `conditional_compilation_as_expr` before processing
+                // clauses. Note that if a clause contains a nested conditional
+                // compilation block, then that block will be wrapped in another
+                // `codeBlockItem` which will flip this back to `true`.
+                ctx.conditional_compilation_as_expr = false;
+                ctx.conditional_compilation_tail = None;
+                for clause in clauses.into_iter().rev() {
+                    ctx.conditional_compilation_tail = ctx.translate(clause).into_iter().next();
+                }
+                let result = ctx.conditional_compilation_tail.expect("conditional compilation has no clauses");
+                ctx.set_node_source_range(result, ctx.source_range(declaration))
+            }
+        ),
+        // A single clause is mapped to an if expression with the tail of
+        // already processed clauses (stored in `conditional_compilation_tail`)
+        // inserted into the else branch.
+        rule!(
+            (ifConfigClause condition: @condition elements: _* @items)
+            =>
+            (if_expr
+                // Mark this `if_expr` as coming from conditional compilation.
+                modifier: (modifier "conditional_compilation")
+                condition: {condition}
+                then: (block stmt: {items})
+                else: {ctx.conditional_compilation_tail})
+        ),
+        // A conditional compilation clause without a condition (a final `#else`
+        // block).
+        rule!(
+            (ifConfigClause elements: _* @items)
+            =>
+            (block stmt: {items})
+        ),
         // ---- Control flow ----
         // An `if`/`else` expression. Conditions are joined via `and_chain`; the
         // then-body and optional else-body (another block, or an `ifExpr` for an
@@ -1550,7 +1619,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((copyExpr) => (unsupported_node "")),
         rule!((discardStmt) => (unsupported_node "")),
         rule!((fallThroughStmt) => (unsupported_node "")),
-        rule!((ifConfigDecl) => (unsupported_node "")),
         rule!((implicitlyUnwrappedOptionalType) => (unsupported_node "")),
         rule!((inlineArrayType) => (unsupported_node "")),
         rule!((keyPathExpr) => (unsupported_node "")),

@@ -580,6 +580,13 @@ unified_if_expr_else(
   unique int else: @unified_expr ref
 );
 
+#keyset[unified_if_expr, index]
+unified_if_expr_modifier(
+  int unified_if_expr: @unified_if_expr ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
 unified_if_expr_then(
   unique int unified_if_expr: @unified_if_expr ref,
   unique int then: @unified_expr ref
