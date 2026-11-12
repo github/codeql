@@ -7,6 +7,13 @@ use yeast::*;
 
 const OUTPUT_SCHEMA_YAML: &str = include_str!("node-types.yml");
 
+yeast::tree_schema! {
+    test_tree,
+    "tests/node-types.yml",
+}
+
+use test_tree::{tree, trees};
+
 /// Helper: parse Ruby source with no rules, return dump.
 fn parse_and_dump(input: &str) -> String {
     let ast = parse_input(input);
@@ -769,9 +776,9 @@ fn test_tree_builder() {
     // Swap left and right
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let left = yeast::tree!((identifier "x"));
-    let right = yeast::tree!((integer "1"));
-    let new_id = yeast::tree!(
+    let left = tree!((identifier "x"));
+    let right = tree!((integer "1"));
+    let new_id = tree!(
         (program
             child: (assignment
                 left: {right}
@@ -792,6 +799,32 @@ fn test_tree_builder() {
     );
 }
 
+#[test]
+fn test_tree_schema_namespace() {
+    assert_eq!(test_tree::SCHEMA, OUTPUT_SCHEMA_YAML);
+
+    let input_ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut output, &mut user_ctx);
+    let assignment = tree!((assignment
+        left: (identifier "x")
+        right: (integer "1")));
+    assert_eq!(
+        ctx.output.get_node(assignment).unwrap().kind_name(),
+        "assignment"
+    );
+
+    let nodes = trees!((identifier "x") (integer "1"));
+    assert_eq!(nodes.len(), 2);
+
+    let bare_leaf = tree!((identifier));
+    assert_eq!(
+        ctx.output.get_node(bare_leaf).unwrap().kind_name(),
+        "identifier"
+    );
+}
+
 /// Builds `(assignment left: … right: [(integer #{value})])`, where a `None`
 /// `value` leaves `right` unset rather than producing an `integer` with no
 /// content.
@@ -802,8 +835,8 @@ fn build_choice_right(
 ) -> (yeast::OutputId, yeast::OutputId) {
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(input_ast, ast, &mut user_ctx);
-    let left = yeast::tree!((identifier "x"));
-    let root = yeast::tree!(
+    let left = tree!((identifier "x"));
+    let root = tree!(
         (assignment
             left: {left}
             right: [(integer #{value})]
@@ -859,7 +892,7 @@ fn test_choice_uses_first_constructible_alternative() {
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
     let absent: Option<yeast::Id> = None;
-    let root = yeast::tree!(
+    let root = tree!(
         (assignment
             left: [
                 (identifier #{absent})
@@ -886,7 +919,7 @@ fn test_choice_guard_skips_an_alternative() {
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
     let use_first = false;
-    let root = yeast::tree!(
+    let root = tree!(
         (assignment
             left: [
                 (identifier "first") if { use_first }
@@ -913,11 +946,11 @@ fn test_choice_fallback_can_reuse_consumed_splice() {
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
     let items = vec![
-        yeast::tree!((identifier "x")),
-        yeast::tree!((identifier "y")),
+        tree!((identifier "x")),
+        tree!((identifier "y")),
     ];
     let use_first = false;
-    let root = yeast::tree!(
+    let root = tree!(
         (assignment
             left: [
                 (left_assignment_list
@@ -955,9 +988,9 @@ fn test_output_template_interpolations_clone_user_context() {
     let mut ast = empty_output_ast(input);
     let mut user_ctx = InterpolationContext::default();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let source = yeast::tree!((identifier "source"));
+    let source = tree!((identifier "source"));
 
-    let nodes = yeast::trees!(
+    let nodes = trees!(
         (call
             location: {
                 ctx.counter += 1;
@@ -1005,9 +1038,9 @@ fn test_interpolation_preserves_build_ctx_method_borrowing() {
     let mut ast = empty_output_ast(input);
     let mut user_ctx = InterpolationContext::default();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let source = yeast::tree!((identifier "source"));
+    let source = tree!((identifier "source"));
 
-    let node = yeast::tree!((call
+    let node = tree!((call
         method: {
             ctx.literal("identifier", &ctx.source_text(source))
         }
@@ -1030,7 +1063,7 @@ fn test_interpolation_preserves_user_context_assignment() {
     let mut user_ctx = InterpolationContext::default();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
 
-    let node = yeast::tree!((identifier #{
+    let node = tree!((identifier #{
         *ctx = InterpolationContext { counter: 1 };
         ctx.counter
     }));
@@ -1049,7 +1082,7 @@ fn test_interpolation_accepts_borrowed_build_ctx() {
     fn build_identifier(
         ctx: &mut yeast::build::BuildCtx<'_, InterpolationContext>,
     ) -> yeast::OutputId {
-        yeast::tree!((identifier #{
+        tree!((identifier #{
             ctx.counter += 1;
             ctx.counter
         }))
@@ -1083,11 +1116,11 @@ fn test_interpolation_accepts_value_borrowed_from_context() {
     let mut ast = empty_output_ast(input);
     let mut user_ctx = BorrowedInterpolationContext::default();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let location = yeast::tree!((identifier "location"));
+    let location = tree!((identifier "location"));
     ctx.locations.push(location);
     let locations = ctx.locations.iter();
 
-    yeast::tree!((call location: {locations}));
+    tree!((call location: {locations}));
 }
 
 #[test]
@@ -1098,10 +1131,10 @@ fn test_location_interpolation_materializes_context_iterator() {
     let mut user_ctx = BorrowedInterpolationContext::default();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
     let location =
-        yeast::tree!((identifier "location" location: {input_ast.get_root()}));
+        tree!((identifier "location" location: {input_ast.get_root()}));
     ctx.locations.push(location);
 
-    let call = yeast::tree!((call location: {ctx.locations.drain(..)}));
+    let call = tree!((call location: {ctx.locations.drain(..)}));
 
     assert_eq!(ctx.locations, vec![location]);
     assert_eq!(ctx.output.get_node(call).unwrap().byte_range(), 0..5);
@@ -1117,11 +1150,11 @@ fn test_root_choice_returns_an_optional_node() {
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
     let absent: Option<yeast::Id> = None;
-    let missing = yeast::tree!([(identifier #{absent})]);
+    let missing = tree!([(identifier #{absent})]);
     assert_eq!(missing, None);
     assert_eq!(ctx.output.nodes().len(), node_count);
 
-    let root = yeast::tree!([
+    let root = tree!([
         (identifier #{absent})
         (identifier "fallback")
     ])
@@ -1134,7 +1167,7 @@ fn test_root_choice_returns_an_optional_node() {
     );
 
     let source = ctx.ast().get_root();
-    let located = yeast::tree!([
+    let located = tree!([
         (identifier #{absent})
         (identifier "located fallback" location: {source})
     ])
@@ -1155,7 +1188,7 @@ fn test_choice_preflights_dependencies_before_constructing() {
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
     let absent: Option<yeast::Id> = None;
-    let root = yeast::tree!(
+    let root = tree!(
         (assignment
             left: [
                 (left_assignment_list
@@ -1188,8 +1221,8 @@ fn test_choice_propagates_through_nested_nodes() {
     // The absent value sits two levels below the choice, so the whole
     // `left_assignment_list` subtree is abandoned along with it.
     let absent: Option<yeast::Id> = None;
-    let right = yeast::tree!((integer "1"));
-    let root = yeast::tree!(
+    let right = tree!((integer "1"));
+    let root = tree!(
         (assignment
             left: [(left_assignment_list child: (identifier #{absent}))]
             right: {right}
@@ -1216,7 +1249,7 @@ fn test_innermost_choice_catches_first() {
 
     // The inner choice catches, so only `child` is dropped; `left` survives.
     let absent: Option<yeast::Id> = None;
-    let root = yeast::tree!(
+    let root = tree!(
         (assignment
             left: [
                 (left_assignment_list child: [(identifier #{absent})])
@@ -1252,7 +1285,7 @@ fn ruby_rules() -> Vec<Rule> {
             right: {right}
         )
         {left.iter().enumerate().map(|(i, &lhs)|
-            yeast::tree!(
+            tree!(
                 (assignment
                     left: {lhs}
                     right: (element_reference
