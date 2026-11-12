@@ -275,12 +275,12 @@ private module Input2 implements Impl::Private::InputSig2 {
     exists(DataFlowCall call |
       exists(ArgumentPosition pos |
         sc = Impl::Private::SummaryComponent::argument(pos) and
-        pos.getArgument(call.asCallInstruction().getUnconvertedResultExpression()) = e
-      |
-        pos.getIndirectionIndex() = 0 and
-        result.(PostUpdateNode).getPreUpdateNode().asExpr() = e
-        or
-        result.(PostUpdateNode).getPreUpdateNode().asIndirectExpr(pos.getIndirectionIndex()) = e
+        pos.getArgument(call.asCallInstruction().getUnconvertedResultExpression()) = e and
+        result
+            .(PostUpdateNode)
+            .getPreUpdateNode()
+            .(ArgumentNode)
+            .sourceArgumentOf(call.asCallInstruction(), pos)
       )
       or
       exists(ReturnKind rk |
