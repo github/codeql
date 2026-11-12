@@ -1138,10 +1138,15 @@ module IR {
     /** Gets the name of the variable or field being written to, if any. */
     string getName() { none() }
 
-    /** Gets the SSA variable being written to, if any. */
-    SsaVariable asSsaVariable() {
-      this.getWrite() = result.getDefinition().(SsaExplicitDefinition).getInstruction()
-    }
+    /** Gets the SSA definition being written to, if any. */
+    SsaDefinition asSsaDefinition() { this.getWrite() = result.(SsaExplicitWrite).getDefinition() }
+
+    /**
+     * DEPRECATED: Use `asSsaDefinition` instead.
+     *
+     * Gets the SSA variable being written to, if any.
+     */
+    deprecated SsaVariable asSsaVariable() { result = this.asSsaDefinition() }
 
     /** Holds if `e` is the variable or field being written to. */
     predicate refersTo(ValueEntity e) { none() }
