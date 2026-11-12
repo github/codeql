@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# /// script
+# dependencies = ["json5"]
+# ///
+
 """Concerns were raised about performance on Windows with having 2.5 k files for modeling, and it was recommended we join them all together when shipping.
 
 This script does the opposite, so it's easier to work with locally.
