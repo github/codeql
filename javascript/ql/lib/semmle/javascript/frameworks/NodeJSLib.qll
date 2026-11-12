@@ -805,6 +805,7 @@ module NodeJSLib {
     override predicate isSync() { methodName.matches("%Sync") }
 
     /** Holds if `node` is known to be an options object rather than an argument array or callback. */
+    pragma[inline]
     private predicate isOptionsObject(DataFlow::Node node) {
       not node.getALocalSource() instanceof DataFlow::ArrayCreationNode and
       (
