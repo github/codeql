@@ -267,13 +267,14 @@ top_level source="⟨body⟩"
                           value: identifier "value" source="value"
             switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
-                call_expr source="⟨callee⟩ ⟨argument⟩"
+                call_expr source="⟨callee⟩⟨argument⟩"
                   callee:
                     member_access_expr source="⟨base⟩?.⟨member_name_node⟩"
                       base: identifier "values" source="values"
                       member_name_node: identifier "map" source="map"
                   argument:
-                    argument source="⟨value⟩"
+                    argument source="values?.map ⟨value⟩"
+                      modifier: modifier "trailing_closure" source=""
                       value:
                         function_expr source="{ ⟨body⟩ }"
                           body:

@@ -129,29 +129,32 @@ top_level source="⟨body⟩"
                   left: identifier "value" source="value"
                   operator: infix_operator "==" source="=="
                   right: int_literal "42" source="42"
-        macro_call_expr source="#⟨macro_name_node⟩<⟨type_argument⟩>(⟨argument⟩) ⟨argument⟩ ⟨argument⟩"
+        macro_call_expr source="⟨argument⟩⟨macro_name_node⟩⟨type_argument⟩⟨argument⟩ ⟨argument⟩"
           macro_name_node: identifier "custom" source="custom"
           type_argument: identifier "Int" source="Int"
           argument:
             argument source="⟨value⟩"
               value: identifier "value" source="value"
-            argument source="⟨value⟩"
+            argument source="#custom<Int>(value) ⟨value⟩"
+              modifier: modifier "trailing_closure" source=""
               value:
                 function_expr source="{\n  ⟨body⟩\n}"
                   body:
                     block source="⟨stmt⟩"
                       stmt: identifier "value" source="value"
             argument source="⟨name_node⟩: ⟨value⟩"
+              modifier: modifier "trailing_closure" source=""
               name_node: identifier "completion" source="completion"
               value:
                 function_expr source="{\n  ⟨body⟩\n}"
                   body:
                     block source="⟨stmt⟩"
                       stmt: identifier "value" source="value"
-        macro_call_expr source="#⟨macro_name_node⟩ ⟨argument⟩"
+        macro_call_expr source="⟨argument⟩⟨macro_name_node⟩"
           macro_name_node: identifier "Preview" source="Preview"
           argument:
-            argument source="⟨value⟩"
+            argument source="#Preview ⟨value⟩"
+              modifier: modifier "trailing_closure" source=""
               value:
                 function_expr source="{\n  ⟨body⟩\n}"
                   body:

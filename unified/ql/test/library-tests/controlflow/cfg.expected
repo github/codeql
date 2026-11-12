@@ -191,4 +191,5 @@ noCfg
 nonSimple
 | cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
 | cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern' |
+| cfg.swift:536:13:536:13 | Block | 'Block -V Task -^ ... .detached -^ Argument -V FunctionExpr -^ ... .detached(...)' |
 | cfg.swift:627:5:627:5 | SwitchCase | 'SwitchCase -V flag -? . -^ ... .error1 -^ ConditionalPattern' |

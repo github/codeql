@@ -1,5 +1,5 @@
 use codeql_extractor::extractor::desugaring;
-use yeast::{tree, ConcreteDesugarer, DesugaringConfig, Rule};
+use yeast::{ConcreteDesugarer, DesugaringConfig, Rule, tree};
 
 /// User context propagated from outer rules down to the inner rules that
 /// emit the corresponding output declarations, so that each emitted node
@@ -729,7 +729,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 tree!((call_expr
                     callee: {callee}
                     argument: {args}
-                    argument: (argument value: {tc})
+                    argument: (argument value: {tc} modifier: (modifier "trailing_closure"))
                     argument: {additional}))
             }
         ),
@@ -762,7 +762,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (call_expr
                 callee: {ctx.in_pattern = false; rawCallee}
                 argument: {args}
-                argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
+                argument: {trailing.map(|trailing| tree!((argument value: {trailing} modifier: (modifier "trailing_closure"))))}
                 argument: {additional})
         ),
         // A call or enum-case pattern argument.
@@ -776,7 +776,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (multipleTrailingClosureElement label: @@label closure: @closure)
             =>
-            (argument name_node: (identifier #{label}) value: {closure})
+            (argument name_node: (identifier #{label}) value: {closure} modifier: (modifier "trailing_closure"))
         ),
         rule!(
             (macroExpansionExpr
@@ -790,7 +790,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             macro_name_node: (identifier #{name})
             type_argument: {type_args}
             argument: {args}
-            argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
+            argument: {trailing.map(|trailing| tree!((argument value: {trailing} modifier: (modifier "trailing_closure"))))}
             argument: {additional})
         ),
         // Member access (`list.append`). The `declName` is itself a
@@ -1127,7 +1127,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (call_expr
                 callee: {callee}
                 argument: {args}
-                argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
+                argument: {trailing.map(|trailing| tree!((argument value: {trailing} modifier: (modifier "trailing_closure"))))}
                 argument: {additional})
         ),
         // ---- Optionals and errors ----

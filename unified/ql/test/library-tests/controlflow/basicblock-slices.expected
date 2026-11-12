@@ -444,7 +444,7 @@
 | 533 | cfg.swift:533:28:547:1 | Block | 'Block' |
 | 534 | cfg.swift:534:5:542:6 | var stream | 'var stream -V stream -> AsyncStream -> Argument -V Int -^ ... .self -> Argument -V . -^ ... .bufferingNewest -> Argument -V 5 -^ ... .bufferingNewest(...) -> Argument -V FunctionExpr -^ AsyncStream(...)' |
 | 535 | cfg.swift:535:9:535:20 | continuation | 'continuation' |
-| 536 | cfg.swift:536:13:541:13 | Block | 'Block -V Task -^ ... .detached -> Argument -V FunctionExpr -^ ... .detached(...)' |
+| 536 | cfg.swift:536:13:541:13 | Block | 'Block -V Task -^ ... .detached -^ Argument -V FunctionExpr -^ ... .detached(...)' |
 | 537 | cfg.swift:537:17:540:37 | Block | 'Block -V ForEachStmt -V 1 -> 100 -^ ... ... ...' |
 | 537 | cfg.swift:537:21:537:21 | i | 'i -> Block' |
 | 538 | cfg.swift:538:21:538:32 | continuation | 'continuation -^ ... .yield -> Argument -V i -^ ... .yield(...)' |

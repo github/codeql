@@ -104,12 +104,13 @@ top_level source="⟨body⟩"
           argument:
             argument source="⟨value⟩"
               value: int_literal "0" source="0"
-        call_expr source="⟨callee⟩[⟨argument⟩] ⟨argument⟩ ⟨argument⟩ ⟨argument⟩"
+        call_expr source="⟨callee⟩⟨argument⟩⟨argument⟩ ⟨argument⟩ ⟨argument⟩"
           callee: identifier "handlers" source="handlers"
           argument:
             argument source="⟨value⟩"
               value: int_literal "0" source="0"
-            argument source="⟨value⟩"
+            argument source="handlers[0] ⟨value⟩"
+              modifier: modifier "trailing_closure" source=""
               value:
                 function_expr source="{\n  ⟨body⟩\n}"
                   body:
@@ -118,6 +119,7 @@ top_level source="⟨body⟩"
                         call_expr source="⟨callee⟩()"
                           callee: identifier "first" source="first"
             argument source="⟨name_node⟩: ⟨value⟩"
+              modifier: modifier "trailing_closure" source=""
               name_node: identifier "completion" source="completion"
               value:
                 function_expr source="{\n  ⟨body⟩\n}"
@@ -127,6 +129,7 @@ top_level source="⟨body⟩"
                         call_expr source="⟨callee⟩()"
                           callee: identifier "second" source="second"
             argument source="⟨name_node⟩: ⟨value⟩"
+              modifier: modifier "trailing_closure" source=""
               name_node: identifier "failure" source="failure"
               value:
                 function_expr source="{\n  ⟨body⟩\n}"

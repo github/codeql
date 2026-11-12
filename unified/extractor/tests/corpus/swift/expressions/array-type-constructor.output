@@ -164,7 +164,7 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "initialized" source="initialized"
           value:
-            call_expr source="⟨callee⟩(⟨argument⟩) ⟨argument⟩ ⟨argument⟩"
+            call_expr source="⟨callee⟩⟨argument⟩⟨argument⟩ ⟨argument⟩"
               callee:
                 generic_type_expr source="[⟨type_argument⟩]"
                   base: identifier "Array" source=""
@@ -176,7 +176,8 @@ top_level source="⟨body⟩"
                 argument source="⟨name_node⟩: ⟨value⟩"
                   name_node: identifier "unsafeUninitializedCapacity" source="unsafeUninitializedCapacity"
                   value: int_literal "1" source="1"
-                argument source="⟨value⟩"
+                argument source="[Result<Void>](unsafeUninitializedCapacity: 1) ⟨value⟩"
+                  modifier: modifier "trailing_closure" source=""
                   value:
                     function_expr source="{ ⟨parameter⟩, ⟨parameter⟩ in\n\t⟨body⟩\n}"
                       parameter:
@@ -192,6 +193,7 @@ top_level source="⟨body⟩"
                               operator: infix_operator "=" source="="
                               right: int_literal "0" source="0"
                 argument source="⟨name_node⟩: ⟨value⟩"
+                  modifier: modifier "trailing_closure" source=""
                   name_node: identifier "completion" source="completion"
                   value:
                     function_expr source="{\n\t⟨body⟩\n}"

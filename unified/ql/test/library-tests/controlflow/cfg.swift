@@ -533,7 +533,7 @@ func testAvailable() -> Int { // $ noCfg
 func testAsyncFor () async {
     var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), {
         continuation in
-            Task.detached {
+            Task.detached {  // $ nonSimple='Block -V Task -^ ... .detached -^ Argument -V FunctionExpr -^ ... .detached(...)'
                 for i in 1...100 { // $ bbStep='... ... ... : empty -> continuation(+3)' bbStep='... ... ... : non-empty -> i(+0)'
                     continuation.yield(i) // $ bbStep='... .yield(...) : successor -> continuation(+2)' bbStep='... .yield(...) : successor -> i(-1)'
                 }
