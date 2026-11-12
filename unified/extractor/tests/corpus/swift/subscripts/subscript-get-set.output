@@ -259,12 +259,11 @@ top_level source="⟨body⟩"
                       argument:
                         argument source="⟨value⟩"
                           value: identifier "index" source="index"
-            accessor_declaration source="⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) -> Int {\n        get { data[index] }\n        ⟨modifier⟩ ⟨accessor_kind⟩(⟨parameter⟩) ⟨body⟩"
+            function_declaration source="⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) -> Int {\n        get { data[index] }\n        ⟨modifier⟩ set(⟨parameter⟩) ⟨body⟩"
               modifier:
                 modifier "nonmutating" source="nonmutating"
                 modifier "chained_declaration" source=""
-              name_node: identifier "subscript" source="subscript"
-              accessor_kind: accessor_kind "setter_method" source="set"
+              name_node: identifier "subscript=" source="subscript"
               parameter:
                 parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
                   external_name_node: identifier "at" source="at"
@@ -285,10 +284,9 @@ top_level source="⟨body⟩"
                       argument:
                         argument source="⟨value⟩"
                           value: identifier "v" source="v"
-            accessor_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩>(⟨parameter⟩) -> T {\n        ⟨accessor_kind⟩⟨parameter⟩ ⟨body⟩"
+            function_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩>(⟨parameter⟩) -> T {\n        ⟨parameter⟩ ⟨body⟩"
               modifier: modifier "static" source="static"
-              name_node: identifier "subscript" source="subscript"
-              accessor_kind: accessor_kind "setter_method" source="set"
+              name_node: identifier "subscript=" source="subscript"
               type_parameter:
                 type_parameter source="⟨name_node⟩"
                   name_node: identifier "T" source="T"

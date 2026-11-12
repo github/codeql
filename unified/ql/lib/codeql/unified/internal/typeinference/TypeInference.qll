@@ -284,10 +284,7 @@ module Input3 implements InputSig3 {
   private class AccessorField extends FieldImpl, Callable {
     private AccessorDeclaration accessor;
 
-    AccessorField() {
-      accessor = this.getCallable() and
-      not accessor instanceof SetterMethodDeclaration // invoked via call syntax, not a field
-    }
+    AccessorField() { accessor = this.getCallable() }
 
     override TypeMention getType() { result = accessor.getReturnType() }
 
@@ -460,8 +457,6 @@ module Input3 implements InputSig3 {
 
     TypeParameter getTypeParameter(int i) {
       result = TTypeParameterType(c.(FunctionDeclaration).getTypeParameter(i))
-      or
-      result = TTypeParameterType(c.(AccessorDeclaration).getTypeParameter(i))
     }
 
     TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp) {
@@ -940,15 +935,15 @@ Callable resolveCallTarget(CallExpr ce) {
  * Gets the setter invoked when the given call expression appears as an assignment target,
  * or is otherwise updated in place.
  *
- * For a call `x.foo(...)` this is the `setter_method` accessor named `foo` of the receiver type,
- * such as the setter of a subscript for a Swift subscript call `x[i]`.
+ * For a call `x.foo(...)` this is the member `foo=` of the receiver type, such as
+ * the `subscript=` setter for a Swift subscript call `x[i]`.
  */
 cached
 SetterMethodDeclaration resolveSetterCallTarget(CallExpr ce) {
   CachedStage::ref() and
   exists(MemberAccessExpr callee, ClassLikeDeclaration cls, NamespaceNode ns |
     callee = ce.getCallee() and
-    ns.getMember(callee.getMemberName()).isIdentifier(result.getNameNode())
+    ns.getMember(callee.getMemberName() + "=").isIdentifier(result.getNameNode())
   |
     cls = inferType(callee.getBase()).asClass() and
     ns.isInstanceMemberNamespace(cls)
