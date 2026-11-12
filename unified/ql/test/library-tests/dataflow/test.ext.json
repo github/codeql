@@ -21,7 +21,9 @@
         ["", "TestType", true, "swap(_:_:)", "", "", "Argument[0]", "Argument[1]", "value", "manual"],
         ["", "TestType", true, "swap(_:_:)", "", "", "Argument[1]", "Argument[0]", "value", "manual"],
         ["", "TestType", true, "getField()", "", "", "Argument[self].Member[field]", "ReturnValue", "value", "manual"],
-        ["", "TestType", true, "setField(_:)", "", "", "Argument[0]", "Argument[self].Member[field]", "value", "manual"]
+        ["", "TestType", true, "setField(_:)", "", "", "Argument[0]", "Argument[self].Member[field]", "value", "manual"],
+        ["", "TestType", true, "subscript(testKey:)", "", "", "Argument[testKey:]", "ReturnValue", "value", "manual"],
+        ["", "TestType", true, "subscript=(_:testKey:)", "", "", "Argument[0]", "Argument[self].Member[field]", "value", "manual"]
       ]
     }
   ]

@@ -6,7 +6,8 @@ private import codeql.unified.internal.typeinference.TypeInference as T
 
 private newtype TDataFlowCall =
   TExplicitCall(CallExpr call) {
-    not isInBindingContext(call, _) // ignore constructor patterns
+    not isInBindingContext(call, _) and // ignore constructor patterns
+    not isInAssignmentContext(call, any(AssignExpr a)) // only invokes a setter
   } or
   TGetterCall(Expr expr) {
     hasResultValue(expr) and
@@ -20,7 +21,16 @@ private newtype TDataFlowCall =
       hasPostUpdateAfterCallOrAssign(expr, _) and
       mayWriteBackViaSetterCall(expr)
     ) and
-    T::resolveAccessorAccess(expr) instanceof SetterDeclaration
+    (
+      T::resolveAccessorAccess(expr) instanceof SetterDeclaration
+      or
+      exists(T::resolveSetterCallTarget(expr))
+    )
+    or
+    // Assigning to a method call can only invoke a setter. Include such calls even if the setter
+    // can't be resolved, so library models can target them.
+    isInAssignmentContext(expr, _) and
+    expr.(CallExpr).getCallee() instanceof MemberAccessExpr
   } or
   TSummaryCall(SummarizedCallable callable, SummaryNode callee) {
     FlowSummaryOutput::summaryCallbackRange(callable, callee)
@@ -39,8 +49,24 @@ class DataFlowCall extends TDataFlowCall {
   /** Gets the member/variable access for which this represents the call to a getter. */
   Expr asGetterCall() { this = TGetterCall(result) }
 
-  /** Gets the member/variable access for which this represents the call to a setter. */
+  /**
+   * Gets the member/variable access or call expression for which this represents the call to a setter.
+   *
+   * A call expression invokes a setter when it is the target of an assignment or is otherwise updated in place,
+   * such as `x[i]` in `x[i] = y` or `x[i].f = y` in Swift.
+   */
   Expr asSetterCall() { this = TSetterCall(result) }
+
+  /**
+   * Gets the call expression that syntactically represents this call, if any.
+   *
+   * This is either an explicit call or a call expression that invokes a setter.
+   */
+  CallExpr getCallExpr() {
+    result = this.asExplicitCall()
+    or
+    result = this.asSetterCall()
+  }
 
   /** Holds if this is a synthesized call to `callee` in `callable`. */
   predicate isSummaryCall(SummarizedCallable callable, SummaryNode callee) {

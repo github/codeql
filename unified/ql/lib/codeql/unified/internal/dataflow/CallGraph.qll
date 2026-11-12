@@ -11,5 +11,7 @@ DataFlowCallable viableCallable(DataFlowCall c) {
   or
   result.asSourceCallable() = T::resolveAccessorAccess(c.asSetterCall()).(SetterDeclaration)
   or
-  result.asSummarizedCallable().matchesCall(c.asExplicitCall())
+  result.asSourceCallable() = T::resolveSetterCallTarget(c.asSetterCall())
+  or
+  result.asSummarizedCallable().matchesCall(c)
 }
