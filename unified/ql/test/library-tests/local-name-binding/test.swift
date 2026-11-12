@@ -405,3 +405,9 @@ func t41() {
     }
     foo()  // $ access=foo1
 }
+
+// Parameter shadowed by a local function
+func t42(foo: Int) {  // $ SPURIOUS: access=foo1 access=foo2 // name=foo1
+    func foo() {}  // $ SPURIOUS: access=foo1 access=foo2 // name=foo2
+    foo()  // $ access=foo2 SPURIOUS: access=foo1
+}
