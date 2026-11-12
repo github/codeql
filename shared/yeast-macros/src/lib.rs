@@ -157,6 +157,26 @@ pub fn trees_with_schema(input: TokenStream) -> TokenStream {
     }
 }
 
+/// Declare an output-schema namespace with importable `tree!` and `trees!`
+/// wrappers and the schema contents.
+///
+/// ```ignore
+/// yeast::tree_schema! {
+///     swift_tree,
+///     "ast_types.yml",
+/// }
+///
+/// use swift_tree::{tree, trees, SCHEMA};
+/// ```
+#[proc_macro]
+pub fn tree_schema(input: TokenStream) -> TokenStream {
+    let input2: TokenStream2 = input.into();
+    match parse::parse_tree_schema_top(input2) {
+        Ok(output) => output.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
+}
+
 /// Define a desugaring rule with query and transform in one declaration.
 ///
 /// ```text

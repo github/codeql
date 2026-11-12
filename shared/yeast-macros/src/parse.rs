@@ -60,6 +60,51 @@ pub fn parse_trees_with_schema_top(input: TokenStream) -> Result<TokenStream> {
     }))
 }
 
+pub fn parse_tree_schema_top(input: TokenStream) -> Result<TokenStream> {
+    let mut tokens = input.into_iter().peekable();
+    let module = expect_ident(&mut tokens, "expected schema module name")?;
+    expect_punct(&mut tokens, ',', "expected `,` after schema module name")?;
+    let output_path = parse_string_arg(&mut tokens, "schema")?;
+    if tokens.peek().is_some() {
+        expect_punct(&mut tokens, ',', "expected trailing `,`")?;
+    }
+    if let Some(token) = tokens.next() {
+        return Err(syn::Error::new_spanned(
+            token,
+            "unexpected token after tree schema declaration",
+        ));
+    }
+
+    let output_abs = resolve_manifest_path(&output_path, "tree_schema")?;
+    let output_lit = proc_macro2::Literal::string(&output_abs.to_string_lossy());
+    Ok(quote! {
+        pub(crate) mod #module {
+            #[allow(dead_code)]
+            pub const SCHEMA: &str = ::core::include_str!(#output_lit);
+
+            macro_rules! tree {
+                ($($tokens:tt)*) => {
+                    yeast::__tree_with_schema! {
+                        output: #output_lit,
+                        $($tokens)*
+                    }
+                };
+            }
+            pub(crate) use tree;
+
+            macro_rules! trees {
+                ($($tokens:tt)*) => {
+                    yeast::__trees_with_schema! {
+                        output: #output_lit,
+                        $($tokens)*
+                    }
+                };
+            }
+            pub(crate) use trees;
+        }
+    })
+}
+
 pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
     Ok(crate::rule_parse::parse_rule(input)?.lower())
 }
@@ -149,6 +194,21 @@ struct NamedString {
     literal_span: Span,
 }
 
+fn resolve_manifest_path(path: &NamedString, macro_name: &str) -> Result<std::path::PathBuf> {
+    let manifest_dir = std::env::var("CARGO_MANIFEST_DIR").map_err(|_| {
+        syn::Error::new(
+            Span::call_site(),
+            format!("{macro_name}!: CARGO_MANIFEST_DIR is not set; cannot resolve schema path"),
+        )
+    })?;
+    let path = std::path::PathBuf::from(&path.value);
+    Ok(if path.is_absolute() {
+        path
+    } else {
+        std::path::PathBuf::from(manifest_dir).join(path)
+    })
+}
+
 fn first_leaf_span(stream: TokenStream) -> Option<Span> {
     stream.into_iter().find_map(|token| match token {
         TokenTree::Group(group) => first_leaf_span(group.stream()),
@@ -172,11 +232,18 @@ fn parse_named_string_arg(
         ':',
         &format!("expected `:` after `{expected_name}`"),
     )?;
+    parse_string_arg(tokens, expected_name)
+}
+
+fn parse_string_arg(
+    tokens: &mut std::iter::Peekable<proc_macro2::token_stream::IntoIter>,
+    description: &str,
+) -> Result<NamedString> {
     let literal = expect_literal(tokens)?;
     let value = string_literal_value(&literal).ok_or_else(|| {
         syn::Error::new(
             literal.span(),
-            format!("`{expected_name}` must be a string literal path"),
+            format!("`{description}` must be a string literal path"),
         )
     })?;
     Ok(NamedString {
