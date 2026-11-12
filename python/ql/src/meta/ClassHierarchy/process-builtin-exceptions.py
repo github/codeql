@@ -1,17 +1,12 @@
-from shared_subclass_functions import wrap_in_template
+from shared_subclass_functions import write_data_extension
 import sys
-import yaml
 from pathlib import Path
 
 py_version = sys.version.split()[0]
 VERSION = f"process-builtin-exceptions 0.0.1; Python {py_version}"
 
-builtins_model_path = Path(__file__).parent.parent.parent.parent / "lib/semmle/python/frameworks/builtins.model.yml"
+builtins_model_path = Path(__file__).parent.parent.parent.parent / "lib/semmle/python/frameworks/builtins.model.json"
 
-def write_data(data, path: Path):
-    f = path.open("w+")
-    f.write(f"# {VERSION}\n")
-    yaml.dump(data, indent=2, stream=f, Dumper=yaml.CDumper)
 
 builtin_names = dir(__builtins__)
 builtin_dict = {x: getattr(__builtins__,x) for x in builtin_names}
@@ -28,4 +23,4 @@ for sub in builtin_exceptions:
             row = [f"builtins.{basename}~Subclass", f"builtins.{subname}", ""]
             data.append(row)
             
-write_data(wrap_in_template(data), builtins_model_path)
+write_data_extension(data, VERSION, builtins_model_path)
