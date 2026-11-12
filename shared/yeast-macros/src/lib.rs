@@ -124,8 +124,9 @@ pub fn trees_with_schema(input: TokenStream) -> TokenStream {
     }
 }
 
-/// Declare an output-schema namespace with importable `tree!` and `trees!`
-/// wrappers and the schema contents.
+/// Declare an output-schema namespace with importable `tree!`, `trees!`,
+/// `tree_with_context!`, and `trees_with_context!` wrappers and the schema
+/// contents.
 ///
 /// ```ignore
 /// yeast::tree_schema! {
@@ -133,7 +134,9 @@ pub fn trees_with_schema(input: TokenStream) -> TokenStream {
 ///     "ast_types.yml",
 /// }
 ///
-/// use swift_tree::{tree, trees, SCHEMA};
+/// use swift_tree::{
+///     tree, tree_with_context, trees, trees_with_context, SCHEMA,
+/// };
 /// ```
 #[proc_macro]
 pub fn tree_schema(input: TokenStream) -> TokenStream {

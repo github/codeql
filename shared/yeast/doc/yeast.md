@@ -192,11 +192,28 @@ yeast::tree_schema! {
     "ast_types.yml",
 }
 
-use swift_tree::{tree, trees, SCHEMA as OUTPUT_SCHEMA};
+use swift_tree::{
+    tree, tree_with_context, trees, trees_with_context, SCHEMA as OUTPUT_SCHEMA,
+};
 ```
 
 The generated namespace exposes the schema contents as `SCHEMA` for runtime
 configuration.
+
+The default builders infer the hygiene of the ambient `ctx` binding from the
+template tokens. A macro that forwards any of those tokens must use
+`tree_with_context!` or `trees_with_context!` to pass its local context
+explicitly. Otherwise the generated code may fail to resolve `ctx`, or silently
+use an unrelated `ctx` from the scope where the forwarded tokens originated:
+
+```rust
+macro_rules! build_kind {
+    ($kind:ident, $context:expr) => {{
+        let mut ctx = $context;
+        tree_with_context!(ctx, ($kind "generated"))
+    }};
+}
+```
 
 The macros use a `BuildCtx` binding named `ctx` from the surrounding scope.
 `rule!` provides this binding automatically; standalone uses must create it:

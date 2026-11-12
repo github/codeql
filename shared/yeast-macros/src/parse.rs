@@ -17,11 +17,14 @@ pub fn parse_tree_with_schema_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
     let output_path = parse_named_string_arg(&mut tokens, "output")?;
     expect_punct(&mut tokens, ',', "expected `,` after output schema path")?;
+    let explicit_ctx = parse_context_arg(&mut tokens)?;
     let template_tokens: TokenStream = tokens.collect();
-    let ctx = Ident::new(
-        "ctx",
-        first_leaf_span(template_tokens.clone()).unwrap_or_else(Span::call_site),
-    );
+    let ctx = explicit_ctx.unwrap_or_else(|| {
+        Ident::new(
+            "ctx",
+            first_leaf_span(template_tokens.clone()).unwrap_or_else(Span::call_site),
+        )
+    });
     let template = crate::template_parse::parse_template(template_tokens)?;
     let template = template.lower_root(&ctx);
     let output_lit = proc_macro2::Literal::string(&output_path.value);
@@ -35,11 +38,14 @@ pub fn parse_trees_with_schema_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
     let output_path = parse_named_string_arg(&mut tokens, "output")?;
     expect_punct(&mut tokens, ',', "expected `,` after output schema path")?;
+    let explicit_ctx = parse_context_arg(&mut tokens)?;
     let template_tokens: TokenStream = tokens.collect();
-    let ctx = Ident::new(
-        "ctx",
-        first_leaf_span(template_tokens.clone()).unwrap_or_else(Span::call_site),
-    );
+    let ctx = explicit_ctx.unwrap_or_else(|| {
+        Ident::new(
+            "ctx",
+            first_leaf_span(template_tokens.clone()).unwrap_or_else(Span::call_site),
+        )
+    });
     let templates = crate::template_parse::parse_templates(template_tokens)?;
     let templates = crate::ast::Template::lower_list(&templates, &ctx);
     let output_lit = proc_macro2::Literal::string(&output_path.value);
@@ -81,6 +87,17 @@ pub fn parse_tree_schema_top(input: TokenStream) -> Result<TokenStream> {
             }
             pub(crate) use tree;
 
+            macro_rules! tree_with_context {
+                ($ctx:ident, $($tokens:tt)*) => {
+                    yeast::__tree_with_schema! {
+                        output: #output_lit,
+                        context: $ctx,
+                        $($tokens)*
+                    }
+                };
+            }
+            pub(crate) use tree_with_context;
+
             macro_rules! trees {
                 ($($tokens:tt)*) => {
                     yeast::__trees_with_schema! {
@@ -90,6 +107,17 @@ pub fn parse_tree_schema_top(input: TokenStream) -> Result<TokenStream> {
                 };
             }
             pub(crate) use trees;
+
+            macro_rules! trees_with_context {
+                ($ctx:ident, $($tokens:tt)*) => {
+                    yeast::__trees_with_schema! {
+                        output: #output_lit,
+                        context: $ctx,
+                        $($tokens)*
+                    }
+                };
+            }
+            pub(crate) use trees_with_context;
         }
     })
 }
@@ -203,6 +231,20 @@ fn first_leaf_span(stream: TokenStream) -> Option<Span> {
         TokenTree::Group(group) => first_leaf_span(group.stream()),
         token => Some(token.span()),
     })
+}
+
+fn parse_context_arg(tokens: &mut Tokens) -> Result<Option<Ident>> {
+    let Some(TokenTree::Ident(name)) = tokens.peek() else {
+        return Ok(None);
+    };
+    if name != "context" {
+        return Ok(None);
+    }
+    tokens.next();
+    expect_punct(tokens, ':', "expected `:` after `context`")?;
+    let ctx = expect_ident(tokens, "expected context identifier")?;
+    expect_punct(tokens, ',', "expected `,` after context identifier")?;
+    Ok(Some(ctx))
 }
 
 fn parse_named_string_arg(

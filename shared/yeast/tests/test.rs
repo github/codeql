@@ -12,7 +12,28 @@ yeast::tree_schema! {
     "tests/node-types.yml",
 }
 
-use test_tree::{tree, trees};
+use test_tree::{tree, tree_with_context, trees, trees_with_context};
+
+macro_rules! build_tree_with_kind {
+    ($kind:ident, $context:expr) => {{
+        let mut ctx = $context;
+        tree_with_context!(ctx, ($kind "x"))
+    }};
+}
+
+macro_rules! build_trees_with_kind {
+    ($kind:ident, $context:expr) => {{
+        let mut ctx = $context;
+        trees_with_context!(ctx, ($kind "x"))
+    }};
+}
+
+macro_rules! build_tree_from_template {
+    ($template:tt, $context:expr) => {{
+        let mut ctx = $context;
+        tree_with_context!(ctx, $template)
+    }};
+}
 
 /// Helper: parse Ruby source with no rules, return dump.
 fn parse_and_dump(input: &str) -> String {
@@ -823,6 +844,36 @@ fn test_tree_schema_namespace() {
         ctx.output.get_node(bare_leaf).unwrap().kind_name(),
         "identifier"
     );
+}
+
+#[test]
+fn test_explicit_context_builders_support_forwarded_templates() {
+    let input_ast = parse_input("x = 1");
+
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let node = build_tree_with_kind!(
+        identifier,
+        yeast::build::BuildCtx::new(&input_ast, &mut output, &mut user_ctx)
+    );
+    assert_eq!(output.get_node(node).unwrap().kind_name(), "identifier");
+
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let nodes = build_trees_with_kind!(
+        identifier,
+        yeast::build::BuildCtx::new(&input_ast, &mut output, &mut user_ctx)
+    );
+    assert_eq!(nodes.len(), 1);
+    assert_eq!(output.get_node(nodes[0]).unwrap().kind_name(), "identifier");
+
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let node = build_tree_from_template!(
+        (identifier "x"),
+        yeast::build::BuildCtx::new(&input_ast, &mut output, &mut user_ctx)
+    );
+    assert_eq!(output.get_node(node).unwrap().kind_name(), "identifier");
 }
 
 /// Builds `(assignment left: … right: [(integer #{value})])`, where a `None`
