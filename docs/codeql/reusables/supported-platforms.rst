@@ -6,7 +6,9 @@
    Operating system,Supported versions,Supported CPU architectures
    Linux,"Ubuntu 22.04
 
-   Ubuntu 24.04","x86-64, arm64 [1]_"
+   Ubuntu 24.04
+   
+   Ubuntu 26.04","x86-64, arm64 [1]_"
    Windows,"Windows 10 / Windows Server 2019
 
    Windows 11 / Windows Server 2022/2025","x86-64"
