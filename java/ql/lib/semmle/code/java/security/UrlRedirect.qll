@@ -93,7 +93,7 @@ private Expr getAViewNameValue(Expr value) {
   result = value.getUnderlyingExpr() and
   not result instanceof ConditionalExpr and
   (
-    not exists(SsaDefinition def | localViewDefinition(value, def))
+    not localViewDefinition(value, _)
     or
     exists(SsaDefinition def |
       localViewDefinition(value, def) and
