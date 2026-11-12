@@ -559,9 +559,7 @@ impl<'db> Translator<'db> {
             let kind = expanded.kind();
             let previous_include_context = if expand_to == ra_ap_hir_expand::ExpandTo::Items {
                 self.included_file_context_for(mcall, &expanded.value)
-                    .map(|context| {
-                        std::mem::replace(&mut self.included_file_context, Some(context))
-                    })
+                    .map(|context| self.included_file_context.replace(context))
             } else {
                 None
             };
