@@ -96,7 +96,7 @@ module TarSlip {
               .getMember("extractall")
               .getACall() and
         hasUnsafeFilter(call) and
-        not exists(call.getParameter(2, "members")) and
+        not exists(call.getParameter(1, "members")) and
         this = call.(DataFlow::MethodCallNode).getObject()
       )
     }
@@ -107,10 +107,10 @@ module TarSlip {
    */
   class ExtractSink extends Sink {
     ExtractSink() {
-      exists(DataFlow::CallCfgNode call |
+      exists(API::CallNode call |
         call =
           API::moduleImport("tarfile").getMember("open").getReturn().getMember("extract").getACall() and
-        this = call.getArg(0) and
+        this = call.getParameter(0, "member").asSink() and
         hasUnsafeFilter(call)
       )
     }
@@ -119,14 +119,14 @@ module TarSlip {
   /** The `members` argument `extractall` is considered a sink. */
   class ExtractMembersSink extends Sink {
     ExtractMembersSink() {
-      exists(DataFlow::CallCfgNode call |
+      exists(API::CallNode call |
         call =
           API::moduleImport("tarfile")
               .getMember("open")
               .getReturn()
               .getMember("extractall")
               .getACall() and
-        this in [call.getArg(0), call.getArgByName("members")] and
+        this = call.getParameter(1, "members").asSink() and
         hasUnsafeFilter(call)
       )
     }
