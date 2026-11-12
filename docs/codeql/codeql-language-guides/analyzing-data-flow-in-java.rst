@@ -212,9 +212,9 @@ The data flow analysis is performed using the predicate ``flow(DataFlow::Node so
 Access path limit
 ~~~~~~~~~~~~~~~~~
 
-When data is stored in a field, an element of a collection, or the value of a map, the analysis tracks it with an *access path*: the sequence of contents the data must be read back through. For example, after ``b.inner.val = source`` the data is reached through ``inner`` followed by ``val``, and a value added to a list that is itself added to a list is reached through two element contents.
+The analysis can track data stored in a field, a collection element, or a map value. It records an *access path*: the sequence of fields, elements, or map values through which the data is reached. For example, after ``b.inner.val = source``, the data in ``b`` has the access path ``inner``, ``val``, of length 2. A value stored in a list inside another list also has an access path of length 2.
 
-To keep the analysis tractable, the length of access paths is limited. The default limit is 5 (``accessPathLimit()`` in the shared data flow library), and Java and Kotlin use this default. A flow that needs a longer access path is not reported, and no warning is given.
+To keep the analysis manageable, access paths have a maximum length. The default is 5, set by ``accessPathLimit()`` in the shared data flow library. Java and Kotlin use this default. A flow that needs a longer access path is not reported, and no warning is given.
 
 A configuration can change the limit by defining ``accessPathLimit``:
 
@@ -232,7 +232,7 @@ A configuration can change the limit by defining ``accessPathLimit``:
      int accessPathLimit() { result = 8 }
    }
 
-For Java and Kotlin, a configured limit takes effect up to 10, twice the default. A larger value behaves like 10, and no warning is given.
+For Java and Kotlin, you can increase the limit from the default of 5 to a maximum of 10. If you set a value above 10, the analysis uses 10 without warning.
 
 A higher limit can find more flows, but the analysis takes more time and memory.
 
