@@ -3,7 +3,9 @@ private import semmle.go.dataflow.SsaImpl as SsaInternals
 import utils.test.InlineExpectationsTest
 
 module ReadKindsTest implements TestSig {
-  string getARelevantTag() { result = ["explicit", "implicit", "flow", "access-path"] }
+  string getARelevantTag() {
+    result = ["explicit", "implicit", "flow", "access-path", "implicit-return", "implicit-phi"]
+  }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(SsaSourceVariable variable |
@@ -38,6 +40,21 @@ module ReadKindsTest implements TestSig {
             read = path.getAUse()
           )
         ).toString()
+    )
+    or
+    exists(SsaDefinition def, DataFlow::ReadNode read |
+      read.readsSsaDefinition(def) and
+      read.asInstruction() instanceof IR::ReadResultInstruction and
+      element = def.toString() and
+      value = ""
+    |
+      def instanceof SsaPhiDefinition and
+      location = def.getSourceVariable().getLocation() and
+      tag = "implicit-phi"
+      or
+      not def instanceof SsaPhiDefinition and
+      location = def.getLocation() and
+      tag = "implicit-return"
     )
   }
 }

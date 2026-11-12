@@ -583,12 +583,13 @@ Note that the program variable ``x`` has been mapped onto three distinct SSA var
 ``x2``, and ``x3``. In this case there is not much benefit to such a representation, but in general
 SSA form has well-known advantages for data-flow analysis for which we refer to the literature.
 
-If you do need to work with raw SSA variables, they are represented by the class ``SsaVariable``.
-Class ``SsaDefinition`` represents definitions of SSA variables, which have a one-to-one
-correspondence with ``SsaVariable``\ s. Member predicates ``getDefinition()`` and ``getVariable()``
-exist to map from one to the other. You can use member predicate ``getAUse()`` of ``SsaVariable`` to
-look for uses of an SSA variable. To access the program variable underlying an SSA variable, use
-member predicate ``getSourceVariable()``.
+If you do need to work with SSA directly, use class ``SsaDefinition`` to represent an SSA value by
+its definition. Member predicate ``getARead()`` returns expression reads of that value. To include
+implicit reads, such as reads of named result variables at function exit, use
+``DataFlow::ReadNode.readsSsaDefinition()`` to associate data-flow read nodes with their reaching
+definitions. To access the underlying program variable, use member predicate ``getSourceVariable()``.
+
+The older ``SsaVariable`` class and its ``getAUse()`` member are deprecated.
 
 Global value numbering
 ~~~~~~~~~~~~~~~~~~~~~~
