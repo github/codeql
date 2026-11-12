@@ -9,10 +9,13 @@ private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.go.dataflow.ExternalFlow
 
+private module SsaFlow = SsaImpl::DataFlowIntegration;
+
 cached
 private newtype TNode =
   MkInstructionNode(IR::Instruction insn) or
   MkSsaNode(SsaDefinition ssa) or
+  MkSsaSynthReadNode(SsaFlow::SsaSynthReadNode ssa) or
   MkGlobalFunctionNode(Function f) or
   MkImplicitVarargsSlice(IR::EvalInstruction ins) {
     // We only use CallExprs with an EvalInstruction to guarantee reachability.
@@ -25,6 +28,55 @@ private newtype TNode =
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
   private import DataFlowDispatch
+
+  /** A synthetic SSA read at a control-flow merge. */
+  class SsaSynthReadNode extends Node, MkSsaSynthReadNode {
+    private SsaFlow::SsaSynthReadNode ssa;
+
+    SsaSynthReadNode() { this = MkSsaSynthReadNode(ssa) }
+
+    SsaFlow::SsaSynthReadNode getSsaNode() { result = ssa }
+
+    override ControlFlow::Root getRoot() { result = ssa.getBasicBlock().getScope() }
+
+    override BasicBlock getBasicBlock() { result = ssa.getBasicBlock() }
+
+    override Type getType() { result = ssa.getSourceVariable().getType() }
+
+    override string getNodeKind() { result = "SSA synthetic read" }
+
+    override string toString() { result = ssa.toString() }
+
+    override Location getLocation() { result = ssa.getLocation() }
+  }
+
+  /** Gets the Go data-flow node corresponding to `n`. */
+  Node getNodeFromSsaNode(SsaFlow::Node n) {
+    result.(SsaNode).getDefinition() = n.(SsaFlow::SsaDefinitionNode).getDefinition()
+    or
+    result.(SsaSynthReadNode).getSsaNode() = n
+    or
+    exists(IR::Instruction insn, SsaSourceVariable v |
+      n.(SsaFlow::ReadNode).readsAt(insn, v) and
+      insn.reads(v) and
+      result.asInstruction() = insn
+    )
+    or
+    exists(IR::Instruction insn, SsaSourceVariable v |
+      n.(SsaFlow::PostUpdateReadNode).readsAt(insn, v) and
+      insn.reads(v) and
+      result.(PostUpdateNode).getPreUpdateNode().asInstruction() = insn
+    )
+    or
+    exists(IR::Instruction rhs |
+      rhs =
+        n.(SsaFlow::WriteDefSourceNode).getDefinition().(SsaExplicitWrite).getDefinition().getRhs()
+    |
+      result.asInstruction() = rhs
+      or
+      result.(PostUpdateNode).getPreUpdateNode().asInstruction() = rhs
+    )
+  }
 
   /** Gets the callable in which this node occurs. */
   DataFlowCallable nodeGetEnclosingCallable(Node n) {

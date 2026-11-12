@@ -125,7 +125,9 @@ private module Internal {
     }
 
     cached
-    predicate ssaCachedStageRevRef() { Ssa::ssaCachedStageRevRef1() }
+    predicate ssaCachedStageRevRef() {
+      Ssa::ssaCachedStageRevRef1() and DataFlowIntegrationImpl::ssaCachedStageRevRef2()
+    }
   }
 }
 
@@ -156,6 +158,41 @@ private module PublicSsaInput implements Impl::SsaInputSig {
 }
 
 module Ssa = Impl::MakeSsa<PublicSsaInput>;
+
+private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
+  private import codeql.util.Void
+
+  predicate ssaDefHasSource(Impl::WriteDefinition def) { def instanceof Ssa::SsaExplicitWrite }
+
+  predicate allowFlowIntoUncertainDef(Impl::UncertainWriteDefinition def) { any() }
+
+  // Keep Go's field-sensitive barrier guards rather than adding definition-level barriers.
+  class GuardValue = Void;
+
+  class Guard extends Void {
+    string toString() { none() }
+
+    predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue val) { none() }
+
+    predicate valueControlsBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue val) { none() }
+  }
+
+  predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue val) { none() }
+
+  predicate supportBarrierGuardsOnPhiEdges() { none() }
+}
+
+private module DataFlowIntegrationImpl = Impl::DataFlowIntegration<DataFlowIntegrationInput>;
+
+cached
+module DataFlowIntegration {
+  import DataFlowIntegrationImpl
+
+  cached
+  predicate localFlowStep(SsaSourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+    DataFlowIntegrationImpl::localFlowStep(v, nodeFrom, nodeTo, isUseStep)
+  }
+}
 
 /** Gets the control-flow root containing `def`. */
 ControlFlow::Root getSsaDefinitionRoot(Ssa::SsaDefinition def) {

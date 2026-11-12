@@ -70,32 +70,10 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
     else nodeTo.asInstruction() = evalAssert
   )
   or
-  // Instruction -> SSA defn
-  exists(IR::Instruction pred, SsaExplicitWrite succ |
-    succ.getDefinition().getRhs() = pred and
-    (
-      nodeFrom = instructionNode(pred) or
-      nodeFrom.(PostUpdateNode).getPreUpdateNode() = instructionNode(pred)
-    ) and
-    nodeTo = ssaNode(succ)
-  )
-  or
-  // SSA defn -> first SSA use
-  exists(SsaDefinition pred, IR::Instruction succ | SsaImpl::firstUse(pred, succ) |
-    (pred instanceof SsaExplicitWrite or pred instanceof SsaUncertainWrite) and
-    nodeFrom = ssaNode(pred) and
-    nodeTo = instructionNode(succ)
-  )
-  or
-  // SSA use -> successive SSA use
-  // Note this case includes Phi node traversal
-  exists(IR::Instruction pred, IR::Instruction succ | succ = getAnAdjacentUse(pred) |
-    (
-      nodeFrom = instructionNode(pred) or
-      nodeFrom.(PostUpdateNode).getPreUpdateNode() = instructionNode(pred)
-    ) and
-    nodeTo = instructionNode(succ) and
-    nodeTo != nodeFrom
+  exists(SsaImpl::DataFlowIntegration::Node pred, SsaImpl::DataFlowIntegration::Node succ |
+    SsaImpl::DataFlowIntegration::localFlowStep(_, pred, succ, _) and
+    nodeFrom = getNodeFromSsaNode(pred) and
+    nodeTo = getNodeFromSsaNode(succ)
   )
 }
 
