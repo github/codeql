@@ -11,6 +11,9 @@
 | overwrites.c:163:9:163:9 | i | overwrites.c:158:30:158:31 | scanf output argument | overwrites.c:163:9:163:9 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | overwrites.c:158:18:158:22 | call to scanf | call to scanf |
 | overwrites.c:172:9:172:9 | j | overwrites.c:168:28:168:29 | scanf output argument | overwrites.c:172:9:172:9 | j | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 2. | overwrites.c:168:9:168:13 | call to scanf | call to scanf |
 | overwrites.c:178:23:178:23 | i | overwrites.c:177:21:177:22 | scanf output argument | overwrites.c:178:23:178:23 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | overwrites.c:177:9:177:13 | call to scanf | call to scanf |
+| overwrites.c:191:9:191:14 | second | overwrites.c:186:44:186:50 | sscanf output argument | overwrites.c:191:9:191:14 | second | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 2. | overwrites.c:186:9:186:14 | call to sscanf | call to sscanf |
+| overwrites.c:207:9:207:13 | first | overwrites.c:206:32:206:37 | sscanf output argument | overwrites.c:207:9:207:13 | first | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | overwrites.c:206:5:206:10 | call to sscanf | call to sscanf |
+| overwrites.c:208:9:208:14 | second | overwrites.c:206:40:206:46 | sscanf output argument | overwrites.c:208:9:208:14 | second | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 2. | overwrites.c:206:5:206:10 | call to sscanf | call to sscanf |
 | overwrites.cpp:10:9:10:13 | value | overwrites.cpp:7:21:7:26 | scanf output argument | overwrites.cpp:10:9:10:13 | value | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | overwrites.cpp:7:9:7:13 | call to scanf | call to scanf |
 | overwrites.cpp:19:9:19:13 | value | overwrites.cpp:16:21:16:26 | scanf output argument | overwrites.cpp:19:9:19:13 | value | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | overwrites.cpp:16:9:16:13 | call to scanf | call to scanf |
 | overwrites.cpp:38:9:38:14 | output | overwrites.cpp:35:21:35:27 | scanf output argument | overwrites.cpp:38:9:38:14 | output | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | overwrites.cpp:35:9:35:13 | call to scanf | call to scanf |
@@ -47,6 +50,9 @@ edges
 | overwrites.c:158:30:158:31 | scanf output argument | overwrites.c:163:9:163:9 | i | provenance |  |
 | overwrites.c:168:28:168:29 | scanf output argument | overwrites.c:172:9:172:9 | j | provenance |  |
 | overwrites.c:177:21:177:22 | scanf output argument | overwrites.c:178:23:178:23 | i | provenance |  |
+| overwrites.c:186:44:186:50 | sscanf output argument | overwrites.c:191:9:191:14 | second | provenance |  |
+| overwrites.c:206:32:206:37 | sscanf output argument | overwrites.c:207:9:207:13 | first | provenance |  |
+| overwrites.c:206:40:206:46 | sscanf output argument | overwrites.c:208:9:208:14 | second | provenance |  |
 | overwrites.cpp:7:21:7:26 | scanf output argument | overwrites.cpp:10:9:10:13 | value | provenance |  |
 | overwrites.cpp:16:21:16:26 | scanf output argument | overwrites.cpp:19:9:19:13 | value | provenance |  |
 | overwrites.cpp:35:21:35:27 | scanf output argument | overwrites.cpp:38:9:38:14 | output | provenance |  |
@@ -105,6 +111,12 @@ nodes
 | overwrites.c:172:9:172:9 | j | semmle.label | j |
 | overwrites.c:177:21:177:22 | scanf output argument | semmle.label | scanf output argument |
 | overwrites.c:178:23:178:23 | i | semmle.label | i |
+| overwrites.c:186:44:186:50 | sscanf output argument | semmle.label | sscanf output argument |
+| overwrites.c:191:9:191:14 | second | semmle.label | second |
+| overwrites.c:206:32:206:37 | sscanf output argument | semmle.label | sscanf output argument |
+| overwrites.c:206:40:206:46 | sscanf output argument | semmle.label | sscanf output argument |
+| overwrites.c:207:9:207:13 | first | semmle.label | first |
+| overwrites.c:208:9:208:14 | second | semmle.label | second |
 | overwrites.cpp:7:21:7:26 | scanf output argument | semmle.label | scanf output argument |
 | overwrites.cpp:10:9:10:13 | value | semmle.label | value |
 | overwrites.cpp:16:21:16:26 | scanf output argument | semmle.label | scanf output argument |

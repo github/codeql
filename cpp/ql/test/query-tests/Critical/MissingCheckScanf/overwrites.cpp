@@ -47,3 +47,21 @@ void typedef_reference_output_with_safe_overwrite() {
     }
     use(output); // $ SPURIOUS: Alert[cpp/missing-check-scanf]
 }
+
+void parenthesized_reference_read_on_failure() {
+    int value;
+    int &alias = (value);
+    if (scanf("%d", &value) != 1) {
+        value = alias + 1; // $ MISSING: Alert[cpp/missing-check-scanf]
+    }
+    use(value); // $ MISSING: Alert[cpp/missing-check-scanf]
+}
+
+void conditional_reference_read_on_failure(bool choose_value) {
+    int value, other = 0;
+    int &alias = choose_value ? value : other;
+    if (scanf("%d", &value) != 1) {
+        value = alias + 1; // $ MISSING: Alert[cpp/missing-check-scanf]
+    }
+    use(value); // $ MISSING: Alert[cpp/missing-check-scanf]
+}

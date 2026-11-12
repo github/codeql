@@ -163,8 +163,8 @@ private predicate isUnaliasedScanfOutput(Expr output) {
     forall(VariableAccess access |
       access.getTarget() = variable and access.isUsedAsLValue() and not access.isModified()
     |
-      exists(ScanfFunctionCall call, int index |
-        call.getOutputArgument(index).getUnconverted() = access.getParent()
+      exists(ScanfFunctionCall call |
+        call.getOutputArgument(_).getUnconverted() = access.getParent()
       )
     )
   )

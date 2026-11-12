@@ -179,3 +179,52 @@ void conditional_read_in_overwrite(void) {
     }
     use(i); // GOOD: the unsafe read was reported above
 }
+
+// Positional arguments are not currently mapped to conversion order.
+void positional_partial_fallback(const char *input) {
+    int first, second;
+    if (sscanf(input, "%2$d %1$d", &first, &second) != 1) { // $ Source[cpp/missing-check-scanf]
+        first = 0;
+        second = 0;
+    }
+    use(first); // $ MISSING: Alert[cpp/missing-check-scanf] // BAD: one conversion writes second, not first
+    use(second); // $ SPURIOUS: Alert[cpp/missing-check-scanf] // GOOD: initialized by either branch
+}
+
+void positional_complete_fallback(const char *input) {
+    int first, second;
+    if (sscanf(input, "%2$d %1$d", &first, &second) != 2) {
+        first = 0;
+        second = 0;
+    }
+    use(first); // GOOD
+    use(second); // GOOD
+}
+
+void positional_unchecked(const char *input) {
+    int first, second;
+    sscanf(input, "%2$d %1$d", &first, &second); // $ Source[cpp/missing-check-scanf]
+    use(first); // $ Alert[cpp/missing-check-scanf]
+    use(second); // $ Alert[cpp/missing-check-scanf]
+}
+
+// The assignment count does not prove that a trailing %n was reached.
+void count_after_literal(const char *input) {
+    int value, count;
+    if (sscanf(input, "%d:%n", &value, &count) != 1) {
+        value = 0;
+        count = 0;
+    }
+    use(value); // GOOD
+    use(count); // $ MISSING: Alert[cpp/missing-check-scanf] // BAD: the colon can fail to match
+}
+
+void count_after_suppressed_conversion(const char *input) {
+    int value, count;
+    if (sscanf(input, "%d %*d%n", &value, &count) != 1) {
+        value = 0;
+        count = 0;
+    }
+    use(value); // GOOD
+    use(count); // $ MISSING: Alert[cpp/missing-check-scanf] // BAD: the suppressed conversion can fail
+}
