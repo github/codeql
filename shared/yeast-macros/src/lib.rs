@@ -118,6 +118,16 @@ pub fn tree(input: TokenStream) -> TokenStream {
     }
 }
 
+#[doc(hidden)]
+#[proc_macro]
+pub fn tree_with_schema(input: TokenStream) -> TokenStream {
+    let input2: TokenStream2 = input.into();
+    match parse::parse_tree_with_schema_top(input2) {
+        Ok(output) => output.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
+}
+
 /// Build a list of AST nodes from a template, returning `Vec<OutputId>`.
 ///
 /// Like `tree!` but returns `Vec<OutputId>` and supports multiple top-level
@@ -132,6 +142,16 @@ pub fn tree(input: TokenStream) -> TokenStream {
 pub fn trees(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
     match parse::parse_trees_top(input2) {
+        Ok(output) => output.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
+}
+
+#[doc(hidden)]
+#[proc_macro]
+pub fn trees_with_schema(input: TokenStream) -> TokenStream {
+    let input2: TokenStream2 = input.into();
+    match parse::parse_trees_with_schema_top(input2) {
         Ok(output) => output.into(),
         Err(err) => err.to_compile_error().into(),
     }

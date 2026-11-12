@@ -1,4 +1,4 @@
-use proc_macro2::{Span, TokenStream, TokenTree};
+use proc_macro2::{Ident, Span, TokenStream, TokenTree};
 use quote::quote;
 
 type Result<T> = std::result::Result<T, syn::Error>;
@@ -19,9 +19,45 @@ pub fn parse_tree_top(input: TokenStream) -> Result<TokenStream> {
     Ok(quote!({ #template }))
 }
 
+pub fn parse_tree_with_schema_top(input: TokenStream) -> Result<TokenStream> {
+    let mut tokens = input.into_iter().peekable();
+    let output_path = parse_named_string_arg(&mut tokens, "output")?;
+    expect_punct(&mut tokens, ',', "expected `,` after output schema path")?;
+    let template_tokens: TokenStream = tokens.collect();
+    let ctx = Ident::new(
+        "ctx",
+        first_leaf_span(template_tokens.clone()).unwrap_or_else(Span::call_site),
+    );
+    let template = crate::template_parse::parse_template(template_tokens)?;
+    let template = template.lower_root(&ctx);
+    let output_lit = proc_macro2::Literal::string(&output_path.value);
+    Ok(quote!({
+        const _: &::core::primitive::str = ::core::include_str!(#output_lit);
+        #template
+    }))
+}
+
 pub fn parse_trees_top(input: TokenStream) -> Result<TokenStream> {
     let templates = crate::template_parse::parse_templates(input)?;
     Ok(crate::ast::Template::lower_list(&templates))
+}
+
+pub fn parse_trees_with_schema_top(input: TokenStream) -> Result<TokenStream> {
+    let mut tokens = input.into_iter().peekable();
+    let output_path = parse_named_string_arg(&mut tokens, "output")?;
+    expect_punct(&mut tokens, ',', "expected `,` after output schema path")?;
+    let template_tokens: TokenStream = tokens.collect();
+    let ctx = Ident::new(
+        "ctx",
+        first_leaf_span(template_tokens.clone()).unwrap_or_else(Span::call_site),
+    );
+    let templates = crate::template_parse::parse_templates(template_tokens)?;
+    let templates = crate::ast::Template::lower_list(&templates, &ctx);
+    let output_lit = proc_macro2::Literal::string(&output_path.value);
+    Ok(quote!({
+        const _: &::core::primitive::str = ::core::include_str!(#output_lit);
+        #templates
+    }))
 }
 
 pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
@@ -111,6 +147,13 @@ pub fn parse_rules_top(input: TokenStream) -> Result<TokenStream> {
 struct NamedString {
     value: String,
     literal_span: Span,
+}
+
+fn first_leaf_span(stream: TokenStream) -> Option<Span> {
+    stream.into_iter().find_map(|token| match token {
+        TokenTree::Group(group) => first_leaf_span(group.stream()),
+        token => Some(token.span()),
+    })
 }
 
 fn parse_named_string_arg(

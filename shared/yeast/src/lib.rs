@@ -15,6 +15,10 @@ pub mod schema;
 mod visitor;
 
 pub use range::{Point, Range};
+#[doc(hidden)]
+pub use yeast_macros::tree_with_schema as __tree_with_schema;
+#[doc(hidden)]
+pub use yeast_macros::trees_with_schema as __trees_with_schema;
 pub use yeast_macros::{query, rule, rules, tree, trees};
 
 use captures::{Captures, TranslatedCaptures};
