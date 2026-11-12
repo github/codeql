@@ -76,6 +76,10 @@ private module SsaInput implements Impl::SsaInputSig {
       w.isParameterInit(p)
     )
   }
+
+  predicate explicitRead(Expr e, SsaImplInput::SourceVariable v) {
+    v.getAnAccess().(AssignableRead) = e
+  }
 }
 
 module Ssa_ = Impl::MakeSsa<SsaInput>;
