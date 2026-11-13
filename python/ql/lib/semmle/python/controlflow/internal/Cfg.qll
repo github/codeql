@@ -122,16 +122,16 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
    * which holds on the destination of compound and unary assignments
    * even though the destination is also a write.
    */
-  predicate isLoad() { py_expr_contexts(_, 3, this.asPyExpr()) }
+  predicate isLoad() { this.asPyExpr().isLoadContext() }
 
   /** Holds if this flow node is a store (including those in augmented assignments). */
-  predicate isStore() { py_expr_contexts(_, 5, this.asPyExpr()) or augstore(_, this) }
+  predicate isStore() { this.asPyExpr().isStoreContext() or augstore(_, this) }
 
   /** Holds if this flow node is a delete. */
-  predicate isDelete() { py_expr_contexts(_, 2, this.asPyExpr()) }
+  predicate isDelete() { this.asPyExpr().isDeleteContext() }
 
   /** Holds if this flow node is a parameter. */
-  predicate isParameter() { py_expr_contexts(_, 4, this.asPyExpr()) }
+  predicate isParameter() { this.asPyExpr().isParameterContext() }
 
   /** Holds if this flow node is a store in an augmented assignment. */
   predicate isAugStore() { augstore(_, this) }
@@ -379,9 +379,7 @@ class NameNode extends ControlFlowNode {
     this.isLoad() and
     exists(Py::Name u | u = this.getNode() and u.uses(v))
     or
-    exists(Py::PlaceHolder u |
-      u = this.getNode() and u.getVariable() = v and u.getCtx() instanceof Py::Load
-    )
+    exists(Py::PlaceHolder u | u = this.getNode() and u.getVariable() = v and u.isLoadContext())
   }
 
   /** Gets the identifier of this name node. */
