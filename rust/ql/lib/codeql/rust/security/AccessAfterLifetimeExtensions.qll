@@ -57,7 +57,8 @@ module AccessAfterLifetime {
     // parameter
     exists(Callable c |
       var.getParameter().getEnclosingCallable() = c and
-      scope.getParentNode() = c
+      scope.getParentNode() = c and
+      not var.getParameter() instanceof SelfParam
     )
   }
 
