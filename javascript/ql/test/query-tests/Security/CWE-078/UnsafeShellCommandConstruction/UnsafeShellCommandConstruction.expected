@@ -60,6 +60,7 @@
 | lib/lib.js:340:10:340:26 | "rm -rf " + id(n) | lib/lib.js:339:39:339:39 | n | lib/lib.js:340:22:340:26 | id(n) | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:339:39:339:39 | n | library input | lib/lib.js:340:2:340:27 | cp.exec ...  id(n)) | shell command |
 | lib/lib.js:351:10:351:27 | "rm -rf " + unsafe | lib/lib.js:349:29:349:34 | unsafe | lib/lib.js:351:22:351:27 | unsafe | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:349:29:349:34 | unsafe | library input | lib/lib.js:351:2:351:28 | cp.exec ... unsafe) | shell command |
 | lib/lib.js:406:10:406:25 | "rm -rf " + name | lib/lib.js:405:39:405:42 | name | lib/lib.js:406:22:406:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:405:39:405:42 | name | library input | lib/lib.js:406:2:406:26 | cp.exec ... + name) | shell command |
+| lib/lib.js:409:10:409:30 | "rm -rf ... nitized | lib/lib.js:405:39:405:42 | name | lib/lib.js:409:22:409:30 | sanitized | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:405:39:405:42 | name | library input | lib/lib.js:409:2:409:31 | cp.exec ... itized) | shell command |
 | lib/lib.js:415:10:415:25 | "rm -rf " + name | lib/lib.js:414:40:414:43 | name | lib/lib.js:415:22:415:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:415:2:415:26 | cp.exec ... + name) | shell command |
 | lib/lib.js:417:20:417:32 | ["-rf", name] | lib/lib.js:414:40:414:43 | name | lib/lib.js:417:20:417:32 | ["-rf", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:417:2:417:66 | cp.exec ...  => {}) | shell command |
 | lib/lib.js:418:17:418:29 | ["-rf", name] | lib/lib.js:414:40:414:43 | name | lib/lib.js:418:17:418:29 | ["-rf", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:418:2:418:45 | cp.spaw ...  true}) | shell command |
@@ -210,7 +211,19 @@ edges
 | lib/lib.js:340:25:340:25 | n | lib/lib.js:329:13:329:13 | x | provenance |  |
 | lib/lib.js:340:25:340:25 | n | lib/lib.js:340:22:340:26 | id(n) | provenance |  |
 | lib/lib.js:349:29:349:34 | unsafe | lib/lib.js:351:22:351:27 | unsafe | provenance |  |
+| lib/lib.js:373:30:373:32 | str | lib/lib.js:374:12:374:14 | str | provenance |  |
+| lib/lib.js:374:8:374:8 | s | lib/lib.js:399:22:399:22 | s | provenance |  |
+| lib/lib.js:374:12:374:14 | str | lib/lib.js:374:8:374:8 | s | provenance |  |
+| lib/lib.js:399:4:399:9 | result | lib/lib.js:399:13:399:18 | result | provenance |  |
+| lib/lib.js:399:4:399:9 | result | lib/lib.js:402:9:402:14 | result | provenance |  |
+| lib/lib.js:399:13:399:18 | result | lib/lib.js:399:4:399:9 | result | provenance |  |
+| lib/lib.js:399:22:399:22 | s | lib/lib.js:399:4:399:9 | result | provenance |  |
 | lib/lib.js:405:39:405:42 | name | lib/lib.js:406:22:406:25 | name | provenance |  |
+| lib/lib.js:405:39:405:42 | name | lib/lib.js:408:38:408:41 | name | provenance |  |
+| lib/lib.js:408:6:408:14 | sanitized | lib/lib.js:409:22:409:30 | sanitized | provenance |  |
+| lib/lib.js:408:18:408:42 | yetAnoh ... r(name) | lib/lib.js:408:6:408:14 | sanitized | provenance |  |
+| lib/lib.js:408:38:408:41 | name | lib/lib.js:373:30:373:32 | str | provenance |  |
+| lib/lib.js:408:38:408:41 | name | lib/lib.js:408:18:408:42 | yetAnoh ... r(name) | provenance |  |
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:415:22:415:25 | name | provenance |  |
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:417:28:417:31 | name | provenance |  |
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:418:25:418:28 | name | provenance |  |
@@ -511,8 +524,19 @@ nodes
 | lib/lib.js:340:25:340:25 | n | semmle.label | n |
 | lib/lib.js:349:29:349:34 | unsafe | semmle.label | unsafe |
 | lib/lib.js:351:22:351:27 | unsafe | semmle.label | unsafe |
+| lib/lib.js:373:30:373:32 | str | semmle.label | str |
+| lib/lib.js:374:8:374:8 | s | semmle.label | s |
+| lib/lib.js:374:12:374:14 | str | semmle.label | str |
+| lib/lib.js:399:4:399:9 | result | semmle.label | result |
+| lib/lib.js:399:13:399:18 | result | semmle.label | result |
+| lib/lib.js:399:22:399:22 | s | semmle.label | s |
+| lib/lib.js:402:9:402:14 | result | semmle.label | result |
 | lib/lib.js:405:39:405:42 | name | semmle.label | name |
 | lib/lib.js:406:22:406:25 | name | semmle.label | name |
+| lib/lib.js:408:6:408:14 | sanitized | semmle.label | sanitized |
+| lib/lib.js:408:18:408:42 | yetAnoh ... r(name) | semmle.label | yetAnoh ... r(name) |
+| lib/lib.js:408:38:408:41 | name | semmle.label | name |
+| lib/lib.js:409:22:409:30 | sanitized | semmle.label | sanitized |
 | lib/lib.js:414:40:414:43 | name | semmle.label | name |
 | lib/lib.js:415:22:415:25 | name | semmle.label | name |
 | lib/lib.js:417:20:417:32 | ["-rf", name] | semmle.label | ["-rf", name] |
@@ -680,4 +704,5 @@ nodes
 subpaths
 | lib/lib.js:251:27:251:30 | name | lib/lib.js:239:28:239:28 | s | lib/lib.js:245:9:245:9 | s | lib/lib.js:251:16:251:31 | cleanInput(name) |
 | lib/lib.js:340:25:340:25 | n | lib/lib.js:329:13:329:13 | x | lib/lib.js:330:9:330:9 | x | lib/lib.js:340:22:340:26 | id(n) |
+| lib/lib.js:408:38:408:41 | name | lib/lib.js:373:30:373:32 | str | lib/lib.js:402:9:402:14 | result | lib/lib.js:408:18:408:42 | yetAnoh ... r(name) |
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:431:23:431:26 | last | lib/lib.js:437:9:437:11 | arr [ArrayElement] | lib/lib.js:428:14:428:58 | build(" ...  + '-') |
