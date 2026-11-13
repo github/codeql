@@ -45,6 +45,41 @@ module LogInjection {
   }
 
   /**
+   * A sink for the logging macros of the `tracing` crate, such as
+   * `tracing::info!`.
+   */
+  class TracingMacroSink extends Sink {
+    TracingMacroSink() {
+      exists(Crate c, MacroRules m, MacroExpr valueSet, Call consumer |
+        // `m` is `tracing::valueset_all`
+        c.getName() = "tracing" and
+        m.getName().getText() = "valueset_all" and
+        m.getLocation().getFile() = c.getASourceFile().getFile() and
+        // `this` is within the expansion of a call to `tracing::valueset_all`
+        valueSet.getMacroCall().resolveMacro() = m and
+        this.asExpr().getParentNode+() = valueSet.getMacroCall() and
+        // limit the consumer to relevant calls
+        (
+          not exists(consumer.getResolvedTarget()) and
+          consumer.getPositionalArgument(0) = valueSet
+          or
+          consumer.getResolvedTarget().getCanonicalPath() =
+            ["<tracing::span::Span>::new", "<tracing::span::Span>::child_of"] and
+          valueSet.getParentNode*() = consumer.getAnArgument()
+        ) and
+        // limit sinks to places that may have to do with producing the log message
+        (
+          this.asExpr().getParentNode() instanceof FormatArgsArg
+          or
+          this.asExpr().getParentNode() instanceof FormatArgsExpr
+          or
+          exists(ArgList al | al.getAnArg() = this.asExpr().getParentNode())
+        )
+      )
+    }
+  }
+
+  /**
    * A barrier for log-injection from model data.
    */
   private class ModelsAsDataBarrier extends Barrier {

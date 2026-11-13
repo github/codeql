@@ -107,6 +107,7 @@ mod additional_tests {
 
     pub fn test_macro_variations() {
         let user_data = std::env::args().nth(1).unwrap_or_default(); // $ Source=commandargs
+        let harmless = "";
 
         // BAD: Different log macro variations
         info!("Info: {}", user_data); // $ Alert[rust/log-injection]=commandargs
@@ -117,6 +118,17 @@ mod additional_tests {
 
         // BAD: Complex format strings
         info!("User {} did action {} at time {}", user_data, "login", "now"); // $ Alert[rust/log-injection]=commandargs
+
+        // BAD: tracing macros
+        tracing::info!("Info: {}", user_data); // $ Alert[rust/log-injection]=commandargs
+        tracing::warn!("Warning: {user_data}"); // $ Alert[rust/log-injection]=commandargs
+        tracing::error!("Error: {} {}", 1, user_data); // $ Alert[rust/log-injection]=commandargs
+        tracing::debug!("Debug: {harmless} {user_data}"); // $ Alert[rust/log-injection]=commandargs
+        tracing::trace!("Trace: {}", user_data.clone()); // $ Alert[rust/log-injection]=commandargs
+        tracing::event!(tracing::Level::INFO, user = "alice", data = user_data); // $ Alert[rust/log-injection]=commandargs
+        tracing::event!(tracing::Level::INFO, user = "alice", data = user_data.clone()); // $ Alert[rust/log-injection]=commandargs
+        tracing::span!(tracing::Level::INFO, "span", user = user_data); // $ Alert[rust/log-injection]=commandargs
+        tracing::error_span!("span", user = user_data); // $ Alert[rust/log-injection]=commandargs
 
         // GOOD: non-sinks
         let _ : Vec<u8> = From::from(user_data.clone());

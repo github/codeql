@@ -3,6 +3,7 @@ qltest_dependencies:
     - log = { version = "0.4.25", features = ["kv"] }
     - simple_logger = { version = "5.0.0" }
     - log_err = { version = "1.1.1" }
+    - tracing = { version = "0.1.44" }
     - sqlx = { version = "0.8.6", features = ["mysql", "sqlite", "postgres", "runtime-async-std", "tls-native-tls"] }
     - futures = { version = "0.3" }
     - aes = { version = "0.8.4" }
