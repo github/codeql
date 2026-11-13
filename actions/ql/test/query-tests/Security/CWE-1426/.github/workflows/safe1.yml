@@ -1,0 +1,19 @@
+name: Safe AI Output Usage
+on:
+  push:
+    branches: [main]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: AI inference
+        id: ai
+        uses: actions/ai-inference@v1
+        with:
+          prompt: |
+            Analyze this repository.
+
+      - name: Display result only
+        run: |
+          echo "AI said something"

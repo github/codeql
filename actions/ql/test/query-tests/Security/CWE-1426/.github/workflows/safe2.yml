@@ -1,0 +1,28 @@
+name: Safe AI Output to Comment Only
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  respond:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: AI analysis
+        id: ai
+        uses: actions/ai-inference@v1
+        with:
+          prompt: |
+            Summarize this issue.
+
+      - name: Post comment with AI response
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: 'AI Summary posted'
+            })

@@ -1,0 +1,23 @@
+name: Claude Output to Shell
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - name: Claude analysis
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          prompt: |
+            Suggest a shell command to fix this issue:
+            ${{ github.event.issue.title }}
+
+      - name: Execute AI suggestion
+        run: |
+          ${{ steps.claude.outputs.response }}
