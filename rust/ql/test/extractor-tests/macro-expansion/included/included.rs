@@ -30,3 +30,9 @@ macro_rules! definition_location {
 fn definition_origin() {
     definition_location!();
 }
+
+macro_rules! shadowed {
+    () => { struct IncludedShadowed; };
+}
+
+shadowed!();

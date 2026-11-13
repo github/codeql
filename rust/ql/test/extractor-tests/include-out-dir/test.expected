@@ -11,3 +11,6 @@ macroReference
 | root_function |
 exportedMacro
 | generated_export | 1 |
+includedInitializerScope
+| INCLUDED_CONST | main.rs |
+| INCLUDED_STATIC | main.rs |

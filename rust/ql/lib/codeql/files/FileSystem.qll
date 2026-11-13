@@ -6,6 +6,8 @@ private import codeql.rust.elements.SourceFile
 private import codeql.rust.elements.AstNode
 private import codeql.rust.elements.Comment
 private import codeql.rust.elements.DocComment
+private import codeql.rust.elements.MacroCall
+private import codeql.rust.elements.MacroItems
 private import codeql.rust.Diagnostics
 private import codeql.rust.elements.internal.ExtractorStep
 
@@ -90,9 +92,7 @@ class ExtractedFile extends File {
 
   private Diagnostic getNoSemanticsDiagnostic() {
     result.getTag() = "semantics" and
-    result.getLocation().getFile() = this and
-    // A standalone parse may lack semantics even though an include expansion has them.
-    not exists(ExtractorStep s | s.getAction() = "LoadSource" and s.getFile() = this)
+    result.getLocation().getFile() = this
   }
 
   /**
@@ -101,14 +101,35 @@ class ExtractedFile extends File {
    * * expand any macros
    * * skip any blocks that are conditionally compiled out
    */
-  predicate hasSemantics() { not exists(this.getNoSemanticsDiagnostic()) }
+  predicate hasSemantics() {
+    not exists(this.getNoSemanticsDiagnostic())
+    or
+    exists(ExtractorStep s | s.getAction() = "LoadSource" and s.getFile() = this)
+  }
+
+  /** Holds if this file's standalone parse has semantic information. */
+  predicate hasStandaloneSemantics() { not exists(this.getNoSemanticsDiagnostic()) }
+
+  /** Holds if `node` belongs to this file's active include expansion. */
+  predicate isInActiveIncludeExpansion(AstNode node) {
+    node.getFile() = this and
+    exists(MacroItems included, MacroCall call |
+      included = node.getParentNode*() and
+      included = call.getMacroCallExpansion() and
+      included.getFile() = node.getFile() and
+      included.getFile() != call.getFile()
+    )
+  }
 
   /**
    * Holds if we know this file was skipped by conditional compilation.
    * This is not the same as `not this.hasSemantics()`, as a file
    * might not have semantics because of some error.
    */
-  predicate isSkippedByCompilation() { this.getNoSemanticsDiagnostic().getSeverityText() = "Info" }
+  predicate isSkippedByCompilation() {
+    this.getNoSemanticsDiagnostic().getSeverityText() = "Info" and
+    not exists(ExtractorStep s | s.getAction() = "LoadSource" and s.getFile() = this)
+  }
 }
 
 /**

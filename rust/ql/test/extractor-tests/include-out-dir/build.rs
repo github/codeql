@@ -15,6 +15,9 @@ pub fn generated_alias() -> i32 {
     generated_self::root_function()
 }
 
+pub const INCLUDED_CONST: i32 = crate::root_const();
+pub static INCLUDED_STATIC: i32 = crate::root_const();
+
 pub mod inline {
     #[macro_export]
     macro_rules! generated_export {

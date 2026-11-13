@@ -1,6 +1,7 @@
 import rust
 import codeql.rust.internal.PathResolution
 import codeql.rust.controlflow.ControlFlowGraph
+import codeql.rust.elements.SourceFile
 
 query predicate generatedFunction(boolean fromSource, int cfgNodes, string canonicalPath) {
   exists(Function f |
@@ -33,5 +34,20 @@ query predicate exportedMacro(string name, int definitions) {
     c.getName() = "main" and
     name = "generated_export" and
     definitions = count(MacroRules m | m = c.getASuccessor(name))
+  )
+}
+
+query predicate includedInitializerScope(string name, string scopeFile) {
+  exists(CallExpr call, AstNode initializer |
+    initializer = call.getParentNode*() and
+    (initializer instanceof Const or initializer instanceof Static) and
+    (
+      name = initializer.(Const).getName().getText()
+      or
+      name = initializer.(Static).getName().getText()
+    ) and
+    name = ["INCLUDED_CONST", "INCLUDED_STATIC"] and
+    call.getResolvedTarget().(Function).getName().getText() = "root_const" and
+    scopeFile = call.getEnclosingCfgScope().(SourceFile).getFile().getRelativePath()
   )
 }
