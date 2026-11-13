@@ -1,0 +1,90 @@
+edges
+| DelayedUnsafeDeserialization.java:10:9:10:14 | holder [post update] [buffer] : byte[] | DelayedUnsafeDeserialization.java:11:9:11:14 | holder [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:10:21:10:43 | getInputStream(...) : InputStream | DelayedUnsafeDeserialization.java:10:9:10:14 | holder [post update] [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:10:21:10:43 | getInputStream(...) : InputStream | DelayedUnsafeDeserialization.java:27:22:27:38 | input : InputStream |
+| DelayedUnsafeDeserialization.java:11:9:11:14 | holder [buffer] : byte[] | DelayedUnsafeDeserialization.java:35:19:35:27 | parameter this [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:17:9:17:31 | getInputStream(...) : InputStream | DelayedUnsafeDeserialization.java:17:38:17:42 | input [post update] : byte[] |
+| DelayedUnsafeDeserialization.java:17:38:17:42 | input [post update] : byte[] | DelayedUnsafeDeserialization.java:18:21:18:25 | input : byte[] |
+| DelayedUnsafeDeserialization.java:18:9:18:14 | holder [post update] [buffer] : byte[] | DelayedUnsafeDeserialization.java:19:9:19:14 | holder [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:18:21:18:25 | input : byte[] | DelayedUnsafeDeserialization.java:18:9:18:14 | holder [post update] [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:18:21:18:25 | input : byte[] | DelayedUnsafeDeserialization.java:31:22:31:33 | input : byte[] |
+| DelayedUnsafeDeserialization.java:19:9:19:14 | holder [buffer] : byte[] | DelayedUnsafeDeserialization.java:35:19:35:27 | parameter this [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:27:22:27:38 | input : InputStream | DelayedUnsafeDeserialization.java:28:9:28:13 | input : InputStream |
+| DelayedUnsafeDeserialization.java:28:9:28:13 | input : InputStream | DelayedUnsafeDeserialization.java:28:20:28:25 | buffer [post update] : byte[] |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] | DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] | DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] | DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] | DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] | DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] | DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | buffer [post update] : byte[] | DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | buffer [post update] : byte[] | DelayedUnsafeDeserialization.java:28:20:28:25 | this <.field> [post update] [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | buffer [post update] : byte[] | DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | this <.field> [post update] [buffer] : byte[] | DelayedUnsafeDeserialization.java:28:31:28:36 | this <.field> [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] | DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] | DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] | DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] | DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] | DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] | DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:31:28:36 | this <.field> [buffer] : byte[] | DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:31:22:31:33 | input : byte[] | DelayedUnsafeDeserialization.java:32:18:32:22 | input : byte[] |
+| DelayedUnsafeDeserialization.java:32:18:32:22 | input : byte[] | DelayedUnsafeDeserialization.java:32:9:32:14 | this <.field> [post update] [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:35:19:35:27 | parameter this [buffer] : byte[] | DelayedUnsafeDeserialization.java:36:62:36:67 | this <.field> [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:36:37:36:68 | new ByteArrayInputStream(...) : ByteArrayInputStream | DelayedUnsafeDeserialization.java:37:55:37:58 | bais : ByteArrayInputStream |
+| DelayedUnsafeDeserialization.java:36:37:36:68 | new ByteArrayInputStream(...) : ByteArrayInputStream | DelayedUnsafeDeserialization.java:37:55:37:58 | bais : ByteArrayInputStream |
+| DelayedUnsafeDeserialization.java:36:37:36:68 | new ByteArrayInputStream(...) : ByteArrayInputStream | DelayedUnsafeDeserialization.java:38:16:38:18 | ois |
+| DelayedUnsafeDeserialization.java:36:37:36:68 | new ByteArrayInputStream(...) : ByteArrayInputStream | DelayedUnsafeDeserialization.java:38:16:38:18 | ois |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] | DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] | DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] | DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] | DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] | DelayedUnsafeDeserialization.java:36:37:36:68 | new ByteArrayInputStream(...) : ByteArrayInputStream |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] | DelayedUnsafeDeserialization.java:36:37:36:68 | new ByteArrayInputStream(...) : ByteArrayInputStream |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] | DelayedUnsafeDeserialization.java:37:55:37:58 | bais : ByteArrayInputStream |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] | DelayedUnsafeDeserialization.java:37:55:37:58 | bais : ByteArrayInputStream |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] | DelayedUnsafeDeserialization.java:38:16:38:18 | ois |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] | DelayedUnsafeDeserialization.java:38:16:38:18 | ois |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | this <.field> [buffer] : byte[] | DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:37:33:37:59 | new ObjectInputStream(...) : ObjectInputStream | DelayedUnsafeDeserialization.java:38:16:38:18 | ois |
+| DelayedUnsafeDeserialization.java:37:33:37:59 | new ObjectInputStream(...) : ObjectInputStream | DelayedUnsafeDeserialization.java:38:16:38:18 | ois |
+| DelayedUnsafeDeserialization.java:37:55:37:58 | bais : ByteArrayInputStream | DelayedUnsafeDeserialization.java:37:33:37:59 | new ObjectInputStream(...) : ObjectInputStream |
+| DelayedUnsafeDeserialization.java:37:55:37:58 | bais : ByteArrayInputStream | DelayedUnsafeDeserialization.java:37:33:37:59 | new ObjectInputStream(...) : ObjectInputStream |
+nodes
+| DelayedUnsafeDeserialization.java:10:9:10:14 | holder [post update] [buffer] : byte[] | semmle.label | holder [post update] [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:10:21:10:43 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| DelayedUnsafeDeserialization.java:11:9:11:14 | holder [buffer] : byte[] | semmle.label | holder [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:17:9:17:31 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| DelayedUnsafeDeserialization.java:17:38:17:42 | input [post update] : byte[] | semmle.label | input [post update] : byte[] |
+| DelayedUnsafeDeserialization.java:18:9:18:14 | holder [post update] [buffer] : byte[] | semmle.label | holder [post update] [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:18:21:18:25 | input : byte[] | semmle.label | input : byte[] |
+| DelayedUnsafeDeserialization.java:19:9:19:14 | holder [buffer] : byte[] | semmle.label | holder [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:27:22:27:38 | input : InputStream | semmle.label | input : InputStream |
+| DelayedUnsafeDeserialization.java:28:9:28:13 | input : InputStream | semmle.label | input : InputStream |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] | semmle.label | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | buffer : byte[] | semmle.label | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | buffer [post update] : byte[] | semmle.label | buffer [post update] : byte[] |
+| DelayedUnsafeDeserialization.java:28:20:28:25 | this <.field> [post update] [buffer] : byte[] | semmle.label | this <.field> [post update] [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] | semmle.label | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:31:28:36 | buffer : byte[] | semmle.label | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:28:31:28:36 | this <.field> [buffer] : byte[] | semmle.label | this <.field> [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:31:22:31:33 | input : byte[] | semmle.label | input : byte[] |
+| DelayedUnsafeDeserialization.java:32:9:32:14 | this <.field> [post update] [buffer] : byte[] | semmle.label | this <.field> [post update] [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:32:18:32:22 | input : byte[] | semmle.label | input : byte[] |
+| DelayedUnsafeDeserialization.java:35:19:35:27 | parameter this [buffer] : byte[] | semmle.label | parameter this [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:36:37:36:68 | new ByteArrayInputStream(...) : ByteArrayInputStream | semmle.label | new ByteArrayInputStream(...) : ByteArrayInputStream |
+| DelayedUnsafeDeserialization.java:36:37:36:68 | new ByteArrayInputStream(...) : ByteArrayInputStream | semmle.label | new ByteArrayInputStream(...) : ByteArrayInputStream |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] | semmle.label | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | buffer : byte[] | semmle.label | buffer : byte[] |
+| DelayedUnsafeDeserialization.java:36:62:36:67 | this <.field> [buffer] : byte[] | semmle.label | this <.field> [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:37:33:37:59 | new ObjectInputStream(...) : ObjectInputStream | semmle.label | new ObjectInputStream(...) : ObjectInputStream |
+| DelayedUnsafeDeserialization.java:37:33:37:59 | new ObjectInputStream(...) : ObjectInputStream | semmle.label | new ObjectInputStream(...) : ObjectInputStream |
+| DelayedUnsafeDeserialization.java:37:55:37:58 | bais : ByteArrayInputStream | semmle.label | bais : ByteArrayInputStream |
+| DelayedUnsafeDeserialization.java:37:55:37:58 | bais : ByteArrayInputStream | semmle.label | bais : ByteArrayInputStream |
+| DelayedUnsafeDeserialization.java:38:16:38:18 | ois | semmle.label | ois |
+subpaths
+| DelayedUnsafeDeserialization.java:10:21:10:43 | getInputStream(...) : InputStream | DelayedUnsafeDeserialization.java:27:22:27:38 | input : InputStream | DelayedUnsafeDeserialization.java:28:20:28:25 | this <.field> [post update] [buffer] : byte[] | DelayedUnsafeDeserialization.java:10:9:10:14 | holder [post update] [buffer] : byte[] |
+| DelayedUnsafeDeserialization.java:18:21:18:25 | input : byte[] | DelayedUnsafeDeserialization.java:31:22:31:33 | input : byte[] | DelayedUnsafeDeserialization.java:32:9:32:14 | this <.field> [post update] [buffer] : byte[] | DelayedUnsafeDeserialization.java:18:9:18:14 | holder [post update] [buffer] : byte[] |
+#select
+| DelayedUnsafeDeserialization.java:38:16:38:31 | readObject(...) | DelayedUnsafeDeserialization.java:10:21:10:43 | getInputStream(...) : InputStream | DelayedUnsafeDeserialization.java:38:16:38:18 | ois | Delayed unsafe deserialization of $@. | DelayedUnsafeDeserialization.java:10:21:10:43 | getInputStream(...) | user input |
+| DelayedUnsafeDeserialization.java:38:16:38:31 | readObject(...) | DelayedUnsafeDeserialization.java:17:9:17:31 | getInputStream(...) : InputStream | DelayedUnsafeDeserialization.java:38:16:38:18 | ois | Delayed unsafe deserialization of $@. | DelayedUnsafeDeserialization.java:17:9:17:31 | getInputStream(...) | user input |
