@@ -1,0 +1,14 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["System.Security.Policy", "ApplicationTrustCollection", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"],
+        ["System.Security.Policy", "Evidence", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      ]
+    }
+  ]
+}

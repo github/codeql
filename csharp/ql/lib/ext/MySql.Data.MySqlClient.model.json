@@ -1,0 +1,60 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDataRow", "(System.String,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDataRowAsync", "(System.String,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDataRowAsync", "(System.String,System.String,System.Threading.CancellationToken,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDataset", "(MySql.Data.MySqlClient.MySqlConnection,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDataset", "(MySql.Data.MySqlClient.MySqlConnection,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDataset", "(System.String,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDataset", "(System.String,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDatasetAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDatasetAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDatasetAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String,System.Threading.CancellationToken)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDatasetAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String,System.Threading.CancellationToken,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDatasetAsync", "(System.String,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDatasetAsync", "(System.String,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDatasetAsync", "(System.String,System.String,System.Threading.CancellationToken)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteDatasetAsync", "(System.String,System.String,System.Threading.CancellationToken,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteNonQuery", "(MySql.Data.MySqlClient.MySqlConnection,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteNonQuery", "(System.String,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteNonQueryAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteNonQueryAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String,System.Threading.CancellationToken,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteNonQueryAsync", "(System.String,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteNonQueryAsync", "(System.String,System.String,System.Threading.CancellationToken,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteReader", "(MySql.Data.MySqlClient.MySqlConnection,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteReader", "(MySql.Data.MySqlClient.MySqlConnection,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteReader", "(System.String,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteReader", "(System.String,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteReaderAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteReaderAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteReaderAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String,System.Threading.CancellationToken)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteReaderAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String,System.Threading.CancellationToken,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteReaderAsync", "(System.String,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteReaderAsync", "(System.String,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteReaderAsync", "(System.String,System.String,System.Threading.CancellationToken)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteReaderAsync", "(System.String,System.String,System.Threading.CancellationToken,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteScalar", "(MySql.Data.MySqlClient.MySqlConnection,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteScalar", "(MySql.Data.MySqlClient.MySqlConnection,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteScalar", "(System.String,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteScalar", "(System.String,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteScalarAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteScalarAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteScalarAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String,System.Threading.CancellationToken)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteScalarAsync", "(MySql.Data.MySqlClient.MySqlConnection,System.String,System.Threading.CancellationToken,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteScalarAsync", "(System.String,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteScalarAsync", "(System.String,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteScalarAsync", "(System.String,System.String,System.Threading.CancellationToken)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "ExecuteScalarAsync", "(System.String,System.String,System.Threading.CancellationToken,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "UpdateDataset", "(System.String,System.String,System.Data.DataSet,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "UpdateDatasetAsync", "(System.String,System.String,System.Data.DataSet,System.String)", "", "Argument[1]", "sql-injection", "manual"],
+        ["MySql.Data.MySqlClient", "MySqlHelper", false, "UpdateDatasetAsync", "(System.String,System.String,System.Data.DataSet,System.String,System.Threading.CancellationToken)", "", "Argument[1]", "sql-injection", "manual"]
+      ]
+    }
+  ]
+}
