@@ -5,9 +5,6 @@ description: Conventions for editing Bazel files in the github/codeql repository
 
 # Bazel in the codeql repository
 
-A bzlmod module named `ql`, repo name `@codeql` ([`MODULE.bazel`](../../../MODULE.bazel)). It builds standalone, and is
-also consumed by an internal module; standalone builds replace that module with a stub.
-
 ## Traps
 
 Things that will waste your time or produce a wrong edit here. Read this section even if you skip the rest.
