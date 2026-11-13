@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://www.github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.slf4j", "Logger", False, "debug", "(String)", "", "Argument[0]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "debug", "(String,Object)", "", "Argument[0]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "debug", "(String,Object)", "", "Argument[1]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "error", "(String)", "", "Argument[0]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "error", "(String,Object)", "", "Argument[0]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "error", "(String,Object)", "", "Argument[1]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "error", "(String,Object,Object)", "", "Argument[0]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "error", "(String,Object,Object)", "", "Argument[1]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "error", "(String,Object,Object)", "", "Argument[2]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "error", "(String,Throwable)", "", "Argument[0]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "error", "(String,Throwable)", "", "Argument[1]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "info", "(String)", "", "Argument[0]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "info", "(String,Object)", "", "Argument[0]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "info", "(String,Object)", "", "Argument[1]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "info", "(String,Object,Object)", "", "Argument[0]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "info", "(String,Object,Object)", "", "Argument[1]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "info", "(String,Object,Object)", "", "Argument[2]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "trace", "(String,Object)", "", "Argument[0]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "trace", "(String,Object)", "", "Argument[1]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "warn", "(String)", "", "Argument[0]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "warn", "(String,Object)", "", "Argument[0]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["org.slf4j", "Logger", False, "warn", "(String,Object)", "", "Argument[1]", "ai-candidate-cwe-117", "ai-generated"]

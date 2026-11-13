@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://www.github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.asciidoctor.extension", "BaseProcessor", False, "createPhraseNode", "(ContentNode,String,String)", "", "Argument[2]", "ai-candidate-cwe-79", "ai-generated"]
+      - ["org.asciidoctor.extension", "BaseProcessor", False, "createPhraseNode", "(ContentNode,String,String,Map,Map)", "", "Argument[2]", "ai-candidate-cwe-79", "ai-generated"]
+      - ["org.asciidoctor.extension", "BaseProcessor", False, "createPhraseNode", "(ContentNode,String,String,Map,Map)", "", "Argument[3]", "ai-candidate-cwe-79", "ai-generated"]
