@@ -14,7 +14,7 @@
 import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.ControlChecks
 
-from LocalJob job, LabelCheck check, MutableRefCheckoutStep checkout, Event event
+from LocalJob job, LabelCheck check, PRHeadCheckoutStep checkout, Event event
 where
   job.isPrivileged() and
   job.getAStep() = checkout and
@@ -25,6 +25,8 @@ where
     event.getAnActivityType() = "synchronize"
     or
     not exists(job.getATriggerEvent())
+    or
+    checkout instanceof MutableRefCheckoutStep
   )
 select checkout, "The checked-out code can be modified after the authorization check $@.", check,
   check.toString()
