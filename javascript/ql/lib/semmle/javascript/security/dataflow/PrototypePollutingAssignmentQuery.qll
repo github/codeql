@@ -312,12 +312,25 @@ private class TypeofCheck extends BarrierGuard, DataFlow::ValueNode {
   }
 }
 
-/** A guard that checks whether `x` is a number. */
+/**
+ * A guard that checks whether `x` is a number, or starts with a numeric prefix
+ * that rules out `"__proto__"`.
+ */
 class NumberGuard extends BarrierGuard instanceof DataFlow::CallNode {
   Expr x;
   boolean polarity;
 
-  NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
+  NumberGuard() {
+    TaintTracking::isNumberGuard(this, x, polarity)
+    or
+    this = DataFlow::globalVarRef("isNaN").getACall() and
+    polarity = false and
+    exists(DataFlow::CallNode parse |
+      parse = DataFlow::globalVarRef(["parseInt", "parseFloat"]).getACall() and
+      parse = super.getArgument(0) and
+      x = parse.getArgument(0).asExpr()
+    )
+  }
 
   override predicate blocksExpr(boolean outcome, Expr e) { e = x and outcome = polarity }
 }
