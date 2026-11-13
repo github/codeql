@@ -21,13 +21,7 @@ private class RelevantFile extends File {
 }
 
 private predicate isNotInactiveStandaloneCopy(AstNode node) {
-  not exists(ExtractedFile file |
-    file = node.getFile() and
-    exists(AstNode included |
-      file.isInActiveIncludeExpansion(included)
-    ) and
-    not file.isInActiveIncludeExpansion(node)
-  )
+  node.getFile().(ExtractedFile).isNotInactiveStandaloneCopy(node)
 }
 
 module CallTargetStats implements StatsSig {

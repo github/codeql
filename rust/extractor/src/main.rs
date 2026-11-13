@@ -46,6 +46,58 @@ struct Extractor<'a> {
     extracted_source_files: HashSet<PathBuf>,
 }
 
+fn is_non_rust_include_target(file: &Path) -> bool {
+    file.extension()
+        .is_none_or(|ext| !ext.eq_ignore_ascii_case("rs"))
+}
+
+fn is_excluded_source_directory(source_files: &HashSet<PathBuf>, file: &Path) -> bool {
+    let mut directory = file.parent();
+    while let Some(path) = directory {
+        let mut has_selected_source = false;
+        let mut has_unselected_source = false;
+        match fs::read_dir(path) {
+            Ok(entries) => {
+                for entry in entries.flatten() {
+                    let source = entry.path();
+                    if source.extension().is_some_and(|ext| ext == "rs") {
+                        let source = dunce::canonicalize(&source).unwrap_or(source);
+                        if source_files.contains(&source) {
+                            has_selected_source = true;
+                        } else {
+                            has_unselected_source = true;
+                        }
+                    }
+                }
+            }
+            Err(error) => warn!(
+                "unable to inspect source directory {} for excluded files: {error}",
+                path.display()
+            ),
+        }
+        if has_unselected_source && !has_selected_source {
+            return true;
+        }
+        if has_selected_source {
+            return false;
+        }
+        directory = path.parent();
+    }
+    false
+}
+
+fn should_extract_included_file(
+    source_files: &HashSet<PathBuf>,
+    generated_source_root: &Path,
+    file: &Path,
+    source_kind: SourceKind,
+) -> bool {
+    source_kind == SourceKind::Library
+        || source_files.contains(file)
+        || file.starts_with(generated_source_root)
+        || (is_non_rust_include_target(file) && !is_excluded_source_directory(source_files, file))
+}
+
 impl<'a> Extractor<'a> {
     pub fn new(
         archiver: &'a Archiver,
@@ -68,11 +120,12 @@ impl<'a> Extractor<'a> {
     }
 
     fn should_extract_included_file(&self, file: &Path, source_kind: SourceKind) -> bool {
-        source_kind == SourceKind::Library
-            || self.is_selected_source(file)
-            || file
-                .extension()
-                .is_some_and(|ext| !ext.eq_ignore_ascii_case("rs"))
+        should_extract_included_file(
+            &self.source_files,
+            &self.generated_source_root,
+            file,
+            source_kind,
+        )
     }
 
     fn extract(
@@ -476,4 +529,52 @@ fn main() -> anyhow::Result<()> {
     }
 
     extractor.emit_extraction_diagnostics(start, &config)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    #[test]
+    fn included_non_rust_files_respect_source_selection() {
+        let unique = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let root = env::temp_dir().join(format!(
+            "codeql-rust-included-files-{}-{unique}",
+            std::process::id()
+        ));
+        let selected_source = root.join("main.rs");
+        let extensionless_target = root.join("included/items");
+        let ignored_source = root.join("ignored/a_source.rs");
+        let ignored_target = root.join("ignored/items.inc");
+        for path in [
+            &selected_source,
+            &extensionless_target,
+            &ignored_source,
+            &ignored_target,
+        ] {
+            fs::create_dir_all(path.parent().unwrap()).unwrap();
+            fs::write(path, "").unwrap();
+        }
+        let source_files = HashSet::from([dunce::canonicalize(&selected_source).unwrap()]);
+        let generated_source_root = root.join("target");
+
+        assert!(should_extract_included_file(
+            &source_files,
+            &generated_source_root,
+            &extensionless_target,
+            SourceKind::Source
+        ));
+        assert!(!should_extract_included_file(
+            &source_files,
+            &generated_source_root,
+            &ignored_target,
+            SourceKind::Source
+        ));
+
+        fs::remove_dir_all(root).unwrap();
+    }
 }

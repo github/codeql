@@ -133,55 +133,51 @@ private ItemNode getAChildSuccessor0(ItemNode item, string name, SuccessorKind k
 
 pragma[nomagic]
 private NamedItemNode getANamedNonModuleChildSuccessor(
-  ItemNode item, string name, Namespace ns, int outerLine, int outerColumn, int innerLine,
-  int innerColumn, int sourceLine, int sourceColumn, int endline, int endcolumn
+  ItemNode item, string name, Namespace ns, string positionKey
 ) {
-  result.getLocation().hasLocationInfo(_, sourceLine, sourceColumn, endline, endcolumn) and
   result = getAChildSuccessor0(item, name, _) and
   ns = result.getNamespace() and
   not result instanceof ModuleItemNode and
-  getOutermostIncludePositionNode(result).getLocation().hasLocationInfo(_, outerLine, outerColumn, _, _) and
-  getImmediateIncludePositionNode(result).getLocation().hasLocationInfo(_, innerLine, innerColumn, _, _)
+  getEffectivePositionKey(result, positionKey)
 }
 
-private AstNode getOutermostIncludePositionNode(AstNode node) {
-  result = node and
-  not exists(MacroItems included |
-    included = node.getParentNode*() and
-    exists(MacroCall call |
-      included = call.getMacroCallExpansion() and
-      included.getFile() = node.getFile() and
-      included.getFile() != call.getFile()
-    )
+bindingset[component]
+private string padLocationComponent(int component) {
+  exists(string value |
+    value = component.toString() and
+    result = ("0000000000" + value).substring(value.length(), value.length() + 10)
   )
-  or
-  exists(MacroItems included, MacroCall call |
+}
+
+bindingset[node]
+private string getLocationKey(AstNode node) {
+  exists(int startLine, int startColumn, int endLine, int endColumn |
+    node.getLocation().hasLocationInfo(_, startLine, startColumn, endLine, endColumn) and
+    result =
+      padLocationComponent(startLine) + padLocationComponent(startColumn) +
+      padLocationComponent(endLine) + padLocationComponent(endColumn)
+  )
+}
+
+cached
+private predicate getEffectivePositionKey(AstNode node, string key) {
+  exists(MacroItems included, MacroCall call, string parentKey |
     included = node.getParentNode*() and
     included = call.getMacroCallExpansion() and
     included.getFile() = node.getFile() and
     included.getFile() != call.getFile() and
-    result = getOutermostIncludePositionNode(call)
-  )
-}
-
-private AstNode getImmediateIncludePositionNode(AstNode node) {
-  result = node and
-  not exists(MacroItems included |
-    included = node.getParentNode*() and
-    exists(MacroCall call |
-      included = call.getMacroCallExpansion() and
-      included.getFile() = node.getFile() and
-      included.getFile() != call.getFile()
-    )
+    getEffectivePositionKey(call, parentKey) and
+    key = parentKey + "/" + getLocationKey(node)
   )
   or
-  exists(MacroItems included, MacroCall call |
+  not exists(MacroItems included, MacroCall call |
     included = node.getParentNode*() and
     included = call.getMacroCallExpansion() and
     included.getFile() = node.getFile() and
-    included.getFile() != call.getFile() and
-    result = call
+    included.getFile() != call.getFile()
   )
+  and
+  key = getLocationKey(node)
 }
 
 pragma[nomagic]
@@ -197,14 +193,11 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
     or
     exists(Namespace ns |
       result =
-        max(NamedItemNode i, int outerLine, int outerColumn, int innerLine, int innerColumn,
-          int sourceLine, int sourceColumn, int endline, int endcolumn |
+        max(NamedItemNode i, string positionKey |
           i =
-            getANamedNonModuleChildSuccessor(item, name, ns, outerLine, outerColumn, innerLine,
-              innerColumn, sourceLine, sourceColumn, endline, endcolumn)
+            getANamedNonModuleChildSuccessor(item, name, ns, positionKey)
         |
-          i order by outerLine, outerColumn, innerLine, innerColumn, sourceLine, sourceColumn,
-            endline, endcolumn
+          i order by positionKey
         )
     )
   )

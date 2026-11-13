@@ -95,6 +95,9 @@ class ExtractedFile extends File {
     result.getLocation().getFile() = this
   }
 
+  /** Holds if the standalone extraction reported that semantic information was unavailable. */
+  predicate hasNoStandaloneSemanticsDiagnostic() { exists(this.getNoSemanticsDiagnostic()) }
+
   /**
    * Holds if we have semantical information about this file, which means
    * we should be able to
@@ -115,6 +118,16 @@ class ExtractedFile extends File {
       included = call.getMacroCallExpansion() and
       included.getFile() = node.getFile() and
       included.getFile() != call.getFile()
+    )
+  }
+
+  /** Holds if `node` is not an inactive standalone copy of an include expansion. */
+  predicate isNotInactiveStandaloneCopy(AstNode node) {
+    node.getFile() = this and
+    not (
+      this.hasNoStandaloneSemanticsDiagnostic() and
+      this.isInActiveIncludeExpansion(_) and
+      not this.isInActiveIncludeExpansion(node)
     )
   }
 

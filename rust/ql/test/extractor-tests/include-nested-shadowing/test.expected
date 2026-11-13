@@ -1,1 +1,2 @@
-| included/b.rs |
+| included/middle.rs | 5 | included/inner.rs | 1 | true |
+| included/outer.rs | 7 | included/inner.rs | 1 | true |
