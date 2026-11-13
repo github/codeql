@@ -4,6 +4,7 @@ private import semmle.code.cpp.ir.ValueNumbering
 
 private newtype TBound =
   TBoundZero() or
+  pragma[no_dynamic_join_order]
   TBoundValueNumber(ValueNumber vn) {
     exists(Instruction i |
       vn.getAnInstruction() = i and
