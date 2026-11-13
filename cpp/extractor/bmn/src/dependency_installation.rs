@@ -86,7 +86,7 @@ fn install_package(package_name: &str) -> anyhow::Result<()> {
 }
 
 /// Struct to manage package installation state
-struct PackageInstaller {}
+struct PackageInstaller;
 
 impl PackageInstaller {
     /// Create a new `PackageInstaller` and perform an initial `apt-get update`
@@ -95,7 +95,7 @@ impl PackageInstaller {
             bail!("'sudo apt-get' not available.");
         }
         apt_update()?;
-        Ok(Self {})
+        Ok(Self)
     }
 
     /// Ensure the given package is installed
