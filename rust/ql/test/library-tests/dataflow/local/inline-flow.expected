@@ -76,7 +76,7 @@ edges
 | main.rs:148:13:148:18 | TupleExpr [tuple.0, tuple.1] | main.rs:148:9:148:9 | b [tuple.0, tuple.1] | provenance |  |
 | main.rs:148:14:148:14 | a [tuple.1] | main.rs:148:13:148:18 | TupleExpr [tuple.0, tuple.1] | provenance |  |
 | main.rs:150:10:150:10 | b [tuple.0, tuple.1] | main.rs:150:10:150:12 | b.0 [tuple.1] | provenance |  |
-| main.rs:150:10:150:12 | b.0 [tuple.1] | main.rs:150:10:150:15 | ... .1 | provenance |  |
+| main.rs:150:10:150:12 | b.0 [tuple.1] | main.rs:150:10:150:14 | ... .1 | provenance |  |
 | main.rs:163:9:163:9 | p [Point.x] | main.rs:164:10:164:10 | p [Point.x] | provenance |  |
 | main.rs:163:13:163:40 | Point {...} [Point.x] | main.rs:163:9:163:9 | p [Point.x] | provenance |  |
 | main.rs:163:24:163:32 | source(...) | main.rs:163:13:163:40 | Point {...} [Point.x] | provenance |  |
@@ -281,7 +281,7 @@ edges
 | main.rs:517:9:517:10 | vs [element] | main.rs:523:14:523:15 | vs [element] | provenance |  |
 | main.rs:517:9:517:10 | vs [element] | main.rs:526:15:526:16 | vs [element] | provenance |  |
 | main.rs:517:9:517:10 | vs [element] | main.rs:530:26:530:27 | vs [element] | provenance |  |
-| main.rs:517:9:517:10 | vs [element] | main.rs:535:5:535:6 | vs [element] | provenance |  |
+| main.rs:517:9:517:10 | vs [element] | main.rs:537:5:537:6 | vs [element] | provenance |  |
 | main.rs:517:14:517:34 | [...] [element] | main.rs:517:9:517:10 | vs [element] | provenance |  |
 | main.rs:517:15:517:24 | source(...) | main.rs:517:14:517:34 | [...] [element] | provenance |  |
 | main.rs:519:10:519:11 | vs [element] | main.rs:519:10:519:14 | vs[0] | provenance | MaD:14 |
@@ -306,55 +306,58 @@ edges
 | main.rs:531:9:531:10 | &... [&ref] | main.rs:531:10:531:10 | v | provenance |  |
 | main.rs:531:10:531:10 | v | main.rs:532:14:532:14 | v | provenance |  |
 | main.rs:531:15:531:17 | vs2 [element, &ref] | main.rs:531:9:531:10 | &... [&ref] | provenance |  |
-| main.rs:535:5:535:6 | vs [element] | main.rs:535:5:535:13 | vs.iter() [element, &ref] | provenance | MaD:2 |
-| main.rs:535:5:535:13 | vs.iter() [element, &ref] | main.rs:535:20:535:20 | ... [&ref] | provenance | MaD:11 |
-| main.rs:535:20:535:20 | ... [&ref] | main.rs:535:29:535:29 | x [&ref] | provenance |  |
-| main.rs:535:29:535:29 | x [&ref] | main.rs:535:28:535:29 | * ... | provenance | MaD:1 |
-| main.rs:542:9:542:18 | mut vs_mut [element] | main.rs:544:10:544:15 | vs_mut [element] | provenance |  |
-| main.rs:542:9:542:18 | mut vs_mut [element] | main.rs:545:11:545:16 | vs_mut [element] | provenance |  |
-| main.rs:542:9:542:18 | mut vs_mut [element] | main.rs:546:11:546:16 | vs_mut [element] | provenance |  |
-| main.rs:542:9:542:18 | mut vs_mut [element] | main.rs:548:19:548:24 | vs_mut [element] | provenance |  |
-| main.rs:542:22:542:42 | [...] [element] | main.rs:542:9:542:18 | mut vs_mut [element] | provenance |  |
-| main.rs:542:23:542:32 | source(...) | main.rs:542:22:542:42 | [...] [element] | provenance |  |
-| main.rs:544:10:544:15 | vs_mut [element] | main.rs:544:10:544:18 | vs_mut[0] | provenance | MaD:14 |
-| main.rs:545:11:545:16 | vs_mut [element] | main.rs:545:11:545:23 | vs_mut.iter() [element, &ref] | provenance | MaD:2 |
-| main.rs:545:11:545:23 | vs_mut.iter() [element, &ref] | main.rs:545:11:545:30 | ... .next() [Some, &ref] | provenance | MaD:12 |
-| main.rs:545:11:545:30 | ... .next() [Some, &ref] | main.rs:545:11:545:39 | ... .unwrap() [&ref] | provenance | MaD:15 |
-| main.rs:545:11:545:39 | ... .unwrap() [&ref] | main.rs:545:10:545:39 | * ... | provenance | MaD:1 |
-| main.rs:546:11:546:16 | vs_mut [element] | main.rs:546:11:546:23 | vs_mut.iter() [element, &ref] | provenance | MaD:2 |
-| main.rs:546:11:546:23 | vs_mut.iter() [element, &ref] | main.rs:546:11:546:30 | ... .nth(...) [Some, &ref] | provenance | MaD:13 |
-| main.rs:546:11:546:30 | ... .nth(...) [Some, &ref] | main.rs:546:11:546:39 | ... .unwrap() [&ref] | provenance | MaD:15 |
-| main.rs:546:11:546:39 | ... .unwrap() [&ref] | main.rs:546:10:546:39 | * ... | provenance | MaD:1 |
-| main.rs:548:9:548:14 | &mut ... [&ref] | main.rs:548:14:548:14 | v | provenance |  |
-| main.rs:548:14:548:14 | v | main.rs:549:14:549:14 | v | provenance |  |
-| main.rs:548:19:548:24 | vs_mut [element] | main.rs:548:19:548:35 | vs_mut.iter_mut() [element, &ref] | provenance | MaD:2 |
-| main.rs:548:19:548:35 | vs_mut.iter_mut() [element, &ref] | main.rs:548:9:548:14 | &mut ... [&ref] | provenance |  |
-| main.rs:554:9:554:9 | a | main.rs:559:10:559:10 | a | provenance |  |
-| main.rs:554:13:554:22 | source(...) | main.rs:554:9:554:9 | a | provenance |  |
-| main.rs:555:9:555:9 | b | main.rs:560:15:560:15 | b | provenance |  |
-| main.rs:555:13:555:22 | source(...) | main.rs:555:9:555:9 | b | provenance |  |
-| main.rs:556:9:556:9 | c | main.rs:557:18:557:18 | c | provenance |  |
-| main.rs:556:13:556:22 | source(...) | main.rs:556:9:556:9 | c | provenance |  |
-| main.rs:557:9:557:13 | c_ref [&ref] | main.rs:561:14:561:18 | c_ref | provenance |  |
-| main.rs:557:9:557:13 | c_ref [&ref] | main.rs:562:11:562:15 | c_ref [&ref] | provenance |  |
-| main.rs:557:17:557:18 | &c [&ref] | main.rs:557:9:557:13 | c_ref [&ref] | provenance |  |
-| main.rs:557:18:557:18 | c | main.rs:557:17:557:18 | &c [&ref] | provenance |  |
-| main.rs:560:15:560:15 | b | main.rs:560:14:560:15 | &b | provenance |  |
-| main.rs:562:11:562:15 | c_ref [&ref] | main.rs:562:10:562:15 | * ... | provenance | MaD:1 |
-| main.rs:566:9:566:9 | a | main.rs:568:10:568:17 | a as i64 | provenance |  |
-| main.rs:566:9:566:9 | a | main.rs:569:10:569:10 | a | provenance |  |
-| main.rs:566:9:566:9 | a | main.rs:570:20:570:20 | a | provenance |  |
-| main.rs:566:18:566:27 | source(...) | main.rs:566:9:566:9 | a | provenance |  |
-| main.rs:569:10:569:10 | a | main.rs:569:10:569:17 | a.into() | provenance | MaD:7 |
-| main.rs:569:10:569:10 | a | main.rs:569:10:569:17 | a.into() | provenance | MaD:8 |
-| main.rs:570:20:570:20 | a | main.rs:570:10:570:21 | ...::from(...) | provenance | ReflexiveFrom |
-| main.rs:572:9:572:9 | b | main.rs:574:10:574:17 | b as i64 | provenance |  |
-| main.rs:572:9:572:9 | b | main.rs:575:10:575:10 | b | provenance |  |
-| main.rs:572:9:572:9 | b | main.rs:576:20:576:20 | b | provenance |  |
-| main.rs:572:18:572:27 | source(...) | main.rs:572:9:572:9 | b | provenance |  |
-| main.rs:575:10:575:10 | b | main.rs:575:10:575:17 | b.into() | provenance | MaD:7 |
-| main.rs:575:10:575:10 | b | main.rs:575:10:575:17 | b.into() | provenance | MaD:8 |
-| main.rs:576:20:576:20 | b | main.rs:576:10:576:21 | ...::from(...) | provenance | MaD:9 |
+| main.rs:535:9:535:16 | captured | main.rs:538:24:541:5 | \|...\| ... : ... => .. [captured captured] | provenance |  |
+| main.rs:535:20:535:29 | source(...) | main.rs:535:9:535:16 | captured | provenance |  |
+| main.rs:537:5:537:6 | vs [element] | main.rs:537:5:537:13 | vs.iter() [element, &ref] | provenance | MaD:2 |
+| main.rs:537:5:537:13 | vs.iter() [element, &ref] | main.rs:537:20:537:20 | ... [&ref] | provenance | MaD:11 |
+| main.rs:537:20:537:20 | ... [&ref] | main.rs:537:29:537:29 | x [&ref] | provenance |  |
+| main.rs:537:29:537:29 | x [&ref] | main.rs:537:28:537:29 | * ... | provenance | MaD:1 |
+| main.rs:538:24:541:5 | \|...\| ... : ... => .. [captured captured] | main.rs:540:14:540:21 | captured | provenance | heuristic-callback |
+| main.rs:547:9:547:18 | mut vs_mut [element] | main.rs:549:10:549:15 | vs_mut [element] | provenance |  |
+| main.rs:547:9:547:18 | mut vs_mut [element] | main.rs:550:11:550:16 | vs_mut [element] | provenance |  |
+| main.rs:547:9:547:18 | mut vs_mut [element] | main.rs:551:11:551:16 | vs_mut [element] | provenance |  |
+| main.rs:547:9:547:18 | mut vs_mut [element] | main.rs:553:19:553:24 | vs_mut [element] | provenance |  |
+| main.rs:547:22:547:42 | [...] [element] | main.rs:547:9:547:18 | mut vs_mut [element] | provenance |  |
+| main.rs:547:23:547:32 | source(...) | main.rs:547:22:547:42 | [...] [element] | provenance |  |
+| main.rs:549:10:549:15 | vs_mut [element] | main.rs:549:10:549:18 | vs_mut[0] | provenance | MaD:14 |
+| main.rs:550:11:550:16 | vs_mut [element] | main.rs:550:11:550:23 | vs_mut.iter() [element, &ref] | provenance | MaD:2 |
+| main.rs:550:11:550:23 | vs_mut.iter() [element, &ref] | main.rs:550:11:550:30 | ... .next() [Some, &ref] | provenance | MaD:12 |
+| main.rs:550:11:550:30 | ... .next() [Some, &ref] | main.rs:550:11:550:39 | ... .unwrap() [&ref] | provenance | MaD:15 |
+| main.rs:550:11:550:39 | ... .unwrap() [&ref] | main.rs:550:10:550:39 | * ... | provenance | MaD:1 |
+| main.rs:551:11:551:16 | vs_mut [element] | main.rs:551:11:551:23 | vs_mut.iter() [element, &ref] | provenance | MaD:2 |
+| main.rs:551:11:551:23 | vs_mut.iter() [element, &ref] | main.rs:551:11:551:30 | ... .nth(...) [Some, &ref] | provenance | MaD:13 |
+| main.rs:551:11:551:30 | ... .nth(...) [Some, &ref] | main.rs:551:11:551:39 | ... .unwrap() [&ref] | provenance | MaD:15 |
+| main.rs:551:11:551:39 | ... .unwrap() [&ref] | main.rs:551:10:551:39 | * ... | provenance | MaD:1 |
+| main.rs:553:9:553:14 | &mut ... [&ref] | main.rs:553:14:553:14 | v | provenance |  |
+| main.rs:553:14:553:14 | v | main.rs:554:14:554:14 | v | provenance |  |
+| main.rs:553:19:553:24 | vs_mut [element] | main.rs:553:19:553:35 | vs_mut.iter_mut() [element, &ref] | provenance | MaD:2 |
+| main.rs:553:19:553:35 | vs_mut.iter_mut() [element, &ref] | main.rs:553:9:553:14 | &mut ... [&ref] | provenance |  |
+| main.rs:559:9:559:9 | a | main.rs:564:10:564:10 | a | provenance |  |
+| main.rs:559:13:559:22 | source(...) | main.rs:559:9:559:9 | a | provenance |  |
+| main.rs:560:9:560:9 | b | main.rs:565:15:565:15 | b | provenance |  |
+| main.rs:560:13:560:22 | source(...) | main.rs:560:9:560:9 | b | provenance |  |
+| main.rs:561:9:561:9 | c | main.rs:562:18:562:18 | c | provenance |  |
+| main.rs:561:13:561:22 | source(...) | main.rs:561:9:561:9 | c | provenance |  |
+| main.rs:562:9:562:13 | c_ref [&ref] | main.rs:566:14:566:18 | c_ref | provenance |  |
+| main.rs:562:9:562:13 | c_ref [&ref] | main.rs:567:11:567:15 | c_ref [&ref] | provenance |  |
+| main.rs:562:17:562:18 | &c [&ref] | main.rs:562:9:562:13 | c_ref [&ref] | provenance |  |
+| main.rs:562:18:562:18 | c | main.rs:562:17:562:18 | &c [&ref] | provenance |  |
+| main.rs:565:15:565:15 | b | main.rs:565:14:565:15 | &b | provenance |  |
+| main.rs:567:11:567:15 | c_ref [&ref] | main.rs:567:10:567:15 | * ... | provenance | MaD:1 |
+| main.rs:571:9:571:9 | a | main.rs:573:10:573:17 | a as i64 | provenance |  |
+| main.rs:571:9:571:9 | a | main.rs:574:10:574:10 | a | provenance |  |
+| main.rs:571:9:571:9 | a | main.rs:575:20:575:20 | a | provenance |  |
+| main.rs:571:18:571:27 | source(...) | main.rs:571:9:571:9 | a | provenance |  |
+| main.rs:574:10:574:10 | a | main.rs:574:10:574:17 | a.into() | provenance | MaD:7 |
+| main.rs:574:10:574:10 | a | main.rs:574:10:574:17 | a.into() | provenance | MaD:8 |
+| main.rs:575:20:575:20 | a | main.rs:575:10:575:21 | ...::from(...) | provenance | ReflexiveFrom |
+| main.rs:577:9:577:9 | b | main.rs:579:10:579:17 | b as i64 | provenance |  |
+| main.rs:577:9:577:9 | b | main.rs:580:10:580:10 | b | provenance |  |
+| main.rs:577:9:577:9 | b | main.rs:581:20:581:20 | b | provenance |  |
+| main.rs:577:18:577:27 | source(...) | main.rs:577:9:577:9 | b | provenance |  |
+| main.rs:580:10:580:10 | b | main.rs:580:10:580:17 | b.into() | provenance | MaD:7 |
+| main.rs:580:10:580:10 | b | main.rs:580:10:580:17 | b.into() | provenance | MaD:8 |
+| main.rs:581:20:581:20 | b | main.rs:581:10:581:21 | ...::from(...) | provenance | MaD:9 |
 nodes
 | main.rs:19:10:19:18 | source(...) | semmle.label | source(...) |
 | main.rs:23:9:23:9 | s | semmle.label | s |
@@ -422,7 +425,7 @@ nodes
 | main.rs:148:14:148:14 | a [tuple.1] | semmle.label | a [tuple.1] |
 | main.rs:150:10:150:10 | b [tuple.0, tuple.1] | semmle.label | b [tuple.0, tuple.1] |
 | main.rs:150:10:150:12 | b.0 [tuple.1] | semmle.label | b.0 [tuple.1] |
-| main.rs:150:10:150:15 | ... .1 | semmle.label | ... .1 |
+| main.rs:150:10:150:14 | ... .1 | semmle.label | ... .1 |
 | main.rs:163:9:163:9 | p [Point.x] | semmle.label | p [Point.x] |
 | main.rs:163:13:163:40 | Point {...} [Point.x] | semmle.label | Point {...} [Point.x] |
 | main.rs:163:24:163:32 | source(...) | semmle.label | source(...) |
@@ -683,60 +686,64 @@ nodes
 | main.rs:531:10:531:10 | v | semmle.label | v |
 | main.rs:531:15:531:17 | vs2 [element, &ref] | semmle.label | vs2 [element, &ref] |
 | main.rs:532:14:532:14 | v | semmle.label | v |
-| main.rs:535:5:535:6 | vs [element] | semmle.label | vs [element] |
-| main.rs:535:5:535:13 | vs.iter() [element, &ref] | semmle.label | vs.iter() [element, &ref] |
-| main.rs:535:20:535:20 | ... [&ref] | semmle.label | ... [&ref] |
-| main.rs:535:28:535:29 | * ... | semmle.label | * ... |
-| main.rs:535:29:535:29 | x [&ref] | semmle.label | x [&ref] |
-| main.rs:542:9:542:18 | mut vs_mut [element] | semmle.label | mut vs_mut [element] |
-| main.rs:542:22:542:42 | [...] [element] | semmle.label | [...] [element] |
-| main.rs:542:23:542:32 | source(...) | semmle.label | source(...) |
-| main.rs:544:10:544:15 | vs_mut [element] | semmle.label | vs_mut [element] |
-| main.rs:544:10:544:18 | vs_mut[0] | semmle.label | vs_mut[0] |
-| main.rs:545:10:545:39 | * ... | semmle.label | * ... |
-| main.rs:545:11:545:16 | vs_mut [element] | semmle.label | vs_mut [element] |
-| main.rs:545:11:545:23 | vs_mut.iter() [element, &ref] | semmle.label | vs_mut.iter() [element, &ref] |
-| main.rs:545:11:545:30 | ... .next() [Some, &ref] | semmle.label | ... .next() [Some, &ref] |
-| main.rs:545:11:545:39 | ... .unwrap() [&ref] | semmle.label | ... .unwrap() [&ref] |
-| main.rs:546:10:546:39 | * ... | semmle.label | * ... |
-| main.rs:546:11:546:16 | vs_mut [element] | semmle.label | vs_mut [element] |
-| main.rs:546:11:546:23 | vs_mut.iter() [element, &ref] | semmle.label | vs_mut.iter() [element, &ref] |
-| main.rs:546:11:546:30 | ... .nth(...) [Some, &ref] | semmle.label | ... .nth(...) [Some, &ref] |
-| main.rs:546:11:546:39 | ... .unwrap() [&ref] | semmle.label | ... .unwrap() [&ref] |
-| main.rs:548:9:548:14 | &mut ... [&ref] | semmle.label | &mut ... [&ref] |
-| main.rs:548:14:548:14 | v | semmle.label | v |
-| main.rs:548:19:548:24 | vs_mut [element] | semmle.label | vs_mut [element] |
-| main.rs:548:19:548:35 | vs_mut.iter_mut() [element, &ref] | semmle.label | vs_mut.iter_mut() [element, &ref] |
-| main.rs:549:14:549:14 | v | semmle.label | v |
-| main.rs:554:9:554:9 | a | semmle.label | a |
-| main.rs:554:13:554:22 | source(...) | semmle.label | source(...) |
-| main.rs:555:9:555:9 | b | semmle.label | b |
-| main.rs:555:13:555:22 | source(...) | semmle.label | source(...) |
-| main.rs:556:9:556:9 | c | semmle.label | c |
-| main.rs:556:13:556:22 | source(...) | semmle.label | source(...) |
-| main.rs:557:9:557:13 | c_ref [&ref] | semmle.label | c_ref [&ref] |
-| main.rs:557:17:557:18 | &c [&ref] | semmle.label | &c [&ref] |
-| main.rs:557:18:557:18 | c | semmle.label | c |
-| main.rs:559:10:559:10 | a | semmle.label | a |
-| main.rs:560:14:560:15 | &b | semmle.label | &b |
-| main.rs:560:15:560:15 | b | semmle.label | b |
-| main.rs:561:14:561:18 | c_ref | semmle.label | c_ref |
-| main.rs:562:10:562:15 | * ... | semmle.label | * ... |
-| main.rs:562:11:562:15 | c_ref [&ref] | semmle.label | c_ref [&ref] |
-| main.rs:566:9:566:9 | a | semmle.label | a |
-| main.rs:566:18:566:27 | source(...) | semmle.label | source(...) |
-| main.rs:568:10:568:17 | a as i64 | semmle.label | a as i64 |
-| main.rs:569:10:569:10 | a | semmle.label | a |
-| main.rs:569:10:569:17 | a.into() | semmle.label | a.into() |
-| main.rs:570:10:570:21 | ...::from(...) | semmle.label | ...::from(...) |
-| main.rs:570:20:570:20 | a | semmle.label | a |
-| main.rs:572:9:572:9 | b | semmle.label | b |
-| main.rs:572:18:572:27 | source(...) | semmle.label | source(...) |
-| main.rs:574:10:574:17 | b as i64 | semmle.label | b as i64 |
-| main.rs:575:10:575:10 | b | semmle.label | b |
-| main.rs:575:10:575:17 | b.into() | semmle.label | b.into() |
-| main.rs:576:10:576:21 | ...::from(...) | semmle.label | ...::from(...) |
-| main.rs:576:20:576:20 | b | semmle.label | b |
+| main.rs:535:9:535:16 | captured | semmle.label | captured |
+| main.rs:535:20:535:29 | source(...) | semmle.label | source(...) |
+| main.rs:537:5:537:6 | vs [element] | semmle.label | vs [element] |
+| main.rs:537:5:537:13 | vs.iter() [element, &ref] | semmle.label | vs.iter() [element, &ref] |
+| main.rs:537:20:537:20 | ... [&ref] | semmle.label | ... [&ref] |
+| main.rs:537:28:537:29 | * ... | semmle.label | * ... |
+| main.rs:537:29:537:29 | x [&ref] | semmle.label | x [&ref] |
+| main.rs:538:24:541:5 | \|...\| ... : ... => .. [captured captured] | semmle.label | \|...\| ... : ... => .. [captured captured] |
+| main.rs:540:14:540:21 | captured | semmle.label | captured |
+| main.rs:547:9:547:18 | mut vs_mut [element] | semmle.label | mut vs_mut [element] |
+| main.rs:547:22:547:42 | [...] [element] | semmle.label | [...] [element] |
+| main.rs:547:23:547:32 | source(...) | semmle.label | source(...) |
+| main.rs:549:10:549:15 | vs_mut [element] | semmle.label | vs_mut [element] |
+| main.rs:549:10:549:18 | vs_mut[0] | semmle.label | vs_mut[0] |
+| main.rs:550:10:550:39 | * ... | semmle.label | * ... |
+| main.rs:550:11:550:16 | vs_mut [element] | semmle.label | vs_mut [element] |
+| main.rs:550:11:550:23 | vs_mut.iter() [element, &ref] | semmle.label | vs_mut.iter() [element, &ref] |
+| main.rs:550:11:550:30 | ... .next() [Some, &ref] | semmle.label | ... .next() [Some, &ref] |
+| main.rs:550:11:550:39 | ... .unwrap() [&ref] | semmle.label | ... .unwrap() [&ref] |
+| main.rs:551:10:551:39 | * ... | semmle.label | * ... |
+| main.rs:551:11:551:16 | vs_mut [element] | semmle.label | vs_mut [element] |
+| main.rs:551:11:551:23 | vs_mut.iter() [element, &ref] | semmle.label | vs_mut.iter() [element, &ref] |
+| main.rs:551:11:551:30 | ... .nth(...) [Some, &ref] | semmle.label | ... .nth(...) [Some, &ref] |
+| main.rs:551:11:551:39 | ... .unwrap() [&ref] | semmle.label | ... .unwrap() [&ref] |
+| main.rs:553:9:553:14 | &mut ... [&ref] | semmle.label | &mut ... [&ref] |
+| main.rs:553:14:553:14 | v | semmle.label | v |
+| main.rs:553:19:553:24 | vs_mut [element] | semmle.label | vs_mut [element] |
+| main.rs:553:19:553:35 | vs_mut.iter_mut() [element, &ref] | semmle.label | vs_mut.iter_mut() [element, &ref] |
+| main.rs:554:14:554:14 | v | semmle.label | v |
+| main.rs:559:9:559:9 | a | semmle.label | a |
+| main.rs:559:13:559:22 | source(...) | semmle.label | source(...) |
+| main.rs:560:9:560:9 | b | semmle.label | b |
+| main.rs:560:13:560:22 | source(...) | semmle.label | source(...) |
+| main.rs:561:9:561:9 | c | semmle.label | c |
+| main.rs:561:13:561:22 | source(...) | semmle.label | source(...) |
+| main.rs:562:9:562:13 | c_ref [&ref] | semmle.label | c_ref [&ref] |
+| main.rs:562:17:562:18 | &c [&ref] | semmle.label | &c [&ref] |
+| main.rs:562:18:562:18 | c | semmle.label | c |
+| main.rs:564:10:564:10 | a | semmle.label | a |
+| main.rs:565:14:565:15 | &b | semmle.label | &b |
+| main.rs:565:15:565:15 | b | semmle.label | b |
+| main.rs:566:14:566:18 | c_ref | semmle.label | c_ref |
+| main.rs:567:10:567:15 | * ... | semmle.label | * ... |
+| main.rs:567:11:567:15 | c_ref [&ref] | semmle.label | c_ref [&ref] |
+| main.rs:571:9:571:9 | a | semmle.label | a |
+| main.rs:571:18:571:27 | source(...) | semmle.label | source(...) |
+| main.rs:573:10:573:17 | a as i64 | semmle.label | a as i64 |
+| main.rs:574:10:574:10 | a | semmle.label | a |
+| main.rs:574:10:574:17 | a.into() | semmle.label | a.into() |
+| main.rs:575:10:575:21 | ...::from(...) | semmle.label | ...::from(...) |
+| main.rs:575:20:575:20 | a | semmle.label | a |
+| main.rs:577:9:577:9 | b | semmle.label | b |
+| main.rs:577:18:577:27 | source(...) | semmle.label | source(...) |
+| main.rs:579:10:579:17 | b as i64 | semmle.label | b as i64 |
+| main.rs:580:10:580:10 | b | semmle.label | b |
+| main.rs:580:10:580:17 | b.into() | semmle.label | b.into() |
+| main.rs:581:10:581:21 | ...::from(...) | semmle.label | ...::from(...) |
+| main.rs:581:20:581:20 | b | semmle.label | b |
 subpaths
 testFailures
 #select
@@ -757,7 +764,7 @@ testFailures
 | main.rs:132:10:132:11 | a1 | main.rs:129:17:129:26 | source(...) | main.rs:132:10:132:11 | a1 | $@ | main.rs:129:17:129:26 | source(...) | source(...) |
 | main.rs:139:10:139:12 | a.1 | main.rs:137:21:137:30 | source(...) | main.rs:139:10:139:12 | a.1 | $@ | main.rs:137:21:137:30 | source(...) | source(...) |
 | main.rs:142:10:142:12 | a.0 | main.rs:140:11:140:20 | source(...) | main.rs:142:10:142:12 | a.0 | $@ | main.rs:140:11:140:20 | source(...) | source(...) |
-| main.rs:150:10:150:15 | ... .1 | main.rs:147:17:147:26 | source(...) | main.rs:150:10:150:15 | ... .1 | $@ | main.rs:147:17:147:26 | source(...) | source(...) |
+| main.rs:150:10:150:14 | ... .1 | main.rs:147:17:147:26 | source(...) | main.rs:150:10:150:14 | ... .1 | $@ | main.rs:147:17:147:26 | source(...) | source(...) |
 | main.rs:164:10:164:12 | p.x | main.rs:163:24:163:32 | source(...) | main.rs:164:10:164:12 | p.x | $@ | main.rs:163:24:163:32 | source(...) | source(...) |
 | main.rs:172:10:172:12 | p.y | main.rs:171:11:171:20 | source(...) | main.rs:172:10:172:12 | p.y | $@ | main.rs:171:11:171:20 | source(...) | source(...) |
 | main.rs:181:10:181:10 | a | main.rs:177:12:177:21 | source(...) | main.rs:181:10:181:10 | a | $@ | main.rs:177:12:177:21 | source(...) | source(...) |
@@ -807,18 +814,19 @@ testFailures
 | main.rs:524:14:524:14 | v | main.rs:517:15:517:24 | source(...) | main.rs:524:14:524:14 | v | $@ | main.rs:517:15:517:24 | source(...) | source(...) |
 | main.rs:527:14:527:14 | v | main.rs:517:15:517:24 | source(...) | main.rs:527:14:527:14 | v | $@ | main.rs:517:15:517:24 | source(...) | source(...) |
 | main.rs:532:14:532:14 | v | main.rs:517:15:517:24 | source(...) | main.rs:532:14:532:14 | v | $@ | main.rs:517:15:517:24 | source(...) | source(...) |
-| main.rs:535:28:535:29 | * ... | main.rs:517:15:517:24 | source(...) | main.rs:535:28:535:29 | * ... | $@ | main.rs:517:15:517:24 | source(...) | source(...) |
-| main.rs:544:10:544:18 | vs_mut[0] | main.rs:542:23:542:32 | source(...) | main.rs:544:10:544:18 | vs_mut[0] | $@ | main.rs:542:23:542:32 | source(...) | source(...) |
-| main.rs:545:10:545:39 | * ... | main.rs:542:23:542:32 | source(...) | main.rs:545:10:545:39 | * ... | $@ | main.rs:542:23:542:32 | source(...) | source(...) |
-| main.rs:546:10:546:39 | * ... | main.rs:542:23:542:32 | source(...) | main.rs:546:10:546:39 | * ... | $@ | main.rs:542:23:542:32 | source(...) | source(...) |
-| main.rs:549:14:549:14 | v | main.rs:542:23:542:32 | source(...) | main.rs:549:14:549:14 | v | $@ | main.rs:542:23:542:32 | source(...) | source(...) |
-| main.rs:559:10:559:10 | a | main.rs:554:13:554:22 | source(...) | main.rs:559:10:559:10 | a | $@ | main.rs:554:13:554:22 | source(...) | source(...) |
-| main.rs:560:14:560:15 | &b | main.rs:555:13:555:22 | source(...) | main.rs:560:14:560:15 | &b | $@ | main.rs:555:13:555:22 | source(...) | source(...) |
-| main.rs:561:14:561:18 | c_ref | main.rs:556:13:556:22 | source(...) | main.rs:561:14:561:18 | c_ref | $@ | main.rs:556:13:556:22 | source(...) | source(...) |
-| main.rs:562:10:562:15 | * ... | main.rs:556:13:556:22 | source(...) | main.rs:562:10:562:15 | * ... | $@ | main.rs:556:13:556:22 | source(...) | source(...) |
-| main.rs:568:10:568:17 | a as i64 | main.rs:566:18:566:27 | source(...) | main.rs:568:10:568:17 | a as i64 | $@ | main.rs:566:18:566:27 | source(...) | source(...) |
-| main.rs:569:10:569:17 | a.into() | main.rs:566:18:566:27 | source(...) | main.rs:569:10:569:17 | a.into() | $@ | main.rs:566:18:566:27 | source(...) | source(...) |
-| main.rs:570:10:570:21 | ...::from(...) | main.rs:566:18:566:27 | source(...) | main.rs:570:10:570:21 | ...::from(...) | $@ | main.rs:566:18:566:27 | source(...) | source(...) |
-| main.rs:574:10:574:17 | b as i64 | main.rs:572:18:572:27 | source(...) | main.rs:574:10:574:17 | b as i64 | $@ | main.rs:572:18:572:27 | source(...) | source(...) |
-| main.rs:575:10:575:17 | b.into() | main.rs:572:18:572:27 | source(...) | main.rs:575:10:575:17 | b.into() | $@ | main.rs:572:18:572:27 | source(...) | source(...) |
-| main.rs:576:10:576:21 | ...::from(...) | main.rs:572:18:572:27 | source(...) | main.rs:576:10:576:21 | ...::from(...) | $@ | main.rs:572:18:572:27 | source(...) | source(...) |
+| main.rs:537:28:537:29 | * ... | main.rs:517:15:517:24 | source(...) | main.rs:537:28:537:29 | * ... | $@ | main.rs:517:15:517:24 | source(...) | source(...) |
+| main.rs:540:14:540:21 | captured | main.rs:535:20:535:29 | source(...) | main.rs:540:14:540:21 | captured | $@ | main.rs:535:20:535:29 | source(...) | source(...) |
+| main.rs:549:10:549:18 | vs_mut[0] | main.rs:547:23:547:32 | source(...) | main.rs:549:10:549:18 | vs_mut[0] | $@ | main.rs:547:23:547:32 | source(...) | source(...) |
+| main.rs:550:10:550:39 | * ... | main.rs:547:23:547:32 | source(...) | main.rs:550:10:550:39 | * ... | $@ | main.rs:547:23:547:32 | source(...) | source(...) |
+| main.rs:551:10:551:39 | * ... | main.rs:547:23:547:32 | source(...) | main.rs:551:10:551:39 | * ... | $@ | main.rs:547:23:547:32 | source(...) | source(...) |
+| main.rs:554:14:554:14 | v | main.rs:547:23:547:32 | source(...) | main.rs:554:14:554:14 | v | $@ | main.rs:547:23:547:32 | source(...) | source(...) |
+| main.rs:564:10:564:10 | a | main.rs:559:13:559:22 | source(...) | main.rs:564:10:564:10 | a | $@ | main.rs:559:13:559:22 | source(...) | source(...) |
+| main.rs:565:14:565:15 | &b | main.rs:560:13:560:22 | source(...) | main.rs:565:14:565:15 | &b | $@ | main.rs:560:13:560:22 | source(...) | source(...) |
+| main.rs:566:14:566:18 | c_ref | main.rs:561:13:561:22 | source(...) | main.rs:566:14:566:18 | c_ref | $@ | main.rs:561:13:561:22 | source(...) | source(...) |
+| main.rs:567:10:567:15 | * ... | main.rs:561:13:561:22 | source(...) | main.rs:567:10:567:15 | * ... | $@ | main.rs:561:13:561:22 | source(...) | source(...) |
+| main.rs:573:10:573:17 | a as i64 | main.rs:571:18:571:27 | source(...) | main.rs:573:10:573:17 | a as i64 | $@ | main.rs:571:18:571:27 | source(...) | source(...) |
+| main.rs:574:10:574:17 | a.into() | main.rs:571:18:571:27 | source(...) | main.rs:574:10:574:17 | a.into() | $@ | main.rs:571:18:571:27 | source(...) | source(...) |
+| main.rs:575:10:575:21 | ...::from(...) | main.rs:571:18:571:27 | source(...) | main.rs:575:10:575:21 | ...::from(...) | $@ | main.rs:571:18:571:27 | source(...) | source(...) |
+| main.rs:579:10:579:17 | b as i64 | main.rs:577:18:577:27 | source(...) | main.rs:579:10:579:17 | b as i64 | $@ | main.rs:577:18:577:27 | source(...) | source(...) |
+| main.rs:580:10:580:17 | b.into() | main.rs:577:18:577:27 | source(...) | main.rs:580:10:580:17 | b.into() | $@ | main.rs:577:18:577:27 | source(...) | source(...) |
+| main.rs:581:10:581:21 | ...::from(...) | main.rs:577:18:577:27 | source(...) | main.rs:581:10:581:21 | ...::from(...) | $@ | main.rs:577:18:577:27 | source(...) | source(...) |

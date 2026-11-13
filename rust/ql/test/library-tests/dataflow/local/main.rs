@@ -146,8 +146,8 @@ fn tuple_mutation() {
 fn tuple_nested() {
     let a = (3, source(59));
     let b = (a, 3);
-    sink(b.0 .0);
-    sink(b.0 .1); // $ hasValueFlow=59
+    sink(b.0.0);
+    sink(b.0.1); // $ hasValueFlow=59
     sink(b.1);
 }
 
@@ -532,8 +532,13 @@ fn iterators() {
         sink(v); // $ hasValueFlow=91
     }
 
+    let captured = source(92);
+
     vs.iter().map(|x| sink(*x)); // $ hasValueFlow=91
-    vs.iter().for_each(|x| sink(*x)); // $ MISSING: hasValueFlow=91
+    vs.iter().for_each(|x| {
+        sink(*x); // $ MISSING: hasValueFlow=91
+        sink(captured) // $ hasValueFlow=92
+    });
 
     for v in vs.into_iter() {
         sink(v); // $ MISSING: hasValueFlow=91
