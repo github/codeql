@@ -38,6 +38,6 @@
 
 - To run all CodeQL tests, run `codeql test run --search-path extractor-pack ql/test`
 
-- Do not edit `.expected` files manually. To update the expected output, pass `--learn` to the `codeql test run` command.
+- To update the expected output, pass `--learn` to the `codeql test run` command.
 
 - To run a specific test, pass the specific directory to the `codeql test run` command instead of `ql/test`.
