@@ -426,7 +426,13 @@ Node getArgument(CallNode c, int i) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof FlowSummaryNode
+  or
+  n instanceof SsaSynthReadNode
+  or
+  n.(SsaNode).getDefinition() instanceof SsaImpl::PhiNode
+}
 
 class LambdaCallKind = Unit;
 
