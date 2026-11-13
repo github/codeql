@@ -1,0 +1,41 @@
+name: Move first responder issues back to inbox
+
+on:
+  issue_comment:
+    types: [created]
+env:
+  PROJECT_ID: PVT_kwDNJr_OAFvZxw
+  STATUS_FIELD_ID: PVTSSF_lADNJr_OAFvZx84Dq1CE
+  INBOX_STATUS_ID: 8e29517d
+
+# requires secrets.CODEQL_FIRST_RESPONDER_BOARD_TOKEN to have `repo`, `read:org` and `projects` scopes
+
+jobs:
+  inbox:
+    if: ${{ !github.event.issue.pull_request && github.event.issue.state == 'open' && github.event.comment.user.login != 'github-actions' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump environment
+        run: env | sort
+        shell: bash
+      - name: Dump GitHub context
+        run: echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        shell: bash
+      - name: Get project item id
+        uses: monry/actions-get-project-item-id@f43df35cd6ab6da4e2cf3b2806342767d440d157
+        continue-on-error: true
+        id: get-id
+        with:
+          github-token: ${{ secrets.CODEQL_FIRST_RESPONDER_BOARD_TOKEN }}
+          project-id: ${{ env.PROJECT_ID }}
+          issue-id: ${{ github.event.issue.node_id }}
+      - name: Move to inbox
+        if: steps.get-id.outputs.project-item-id
+        shell: bash
+        run: |
+          gh project item-edit --project-id $PROJECT_ID --id $ITEM_ID --field-id $STATUS_FIELD_ID --single-select-option-id $INBOX_STATUS_ID
+        env:
+          GITHUB_TOKEN: ${{ secrets.CODEQL_FIRST_RESPONDER_BOARD_TOKEN }}
+          ITEM_ID: ${{ steps.get-id.outputs.project-item-id }}
