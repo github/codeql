@@ -155,7 +155,7 @@ private string getLocationKey(AstNode node) {
     node.getLocation().hasLocationInfo(_, startLine, startColumn, endLine, endColumn) and
     result =
       padLocationComponent(startLine) + padLocationComponent(startColumn) +
-      padLocationComponent(endLine) + padLocationComponent(endColumn)
+        padLocationComponent(endLine) + padLocationComponent(endColumn)
   )
 }
 
@@ -175,8 +175,7 @@ private predicate getEffectivePositionKey(AstNode node, string key) {
     included = call.getMacroCallExpansion() and
     included.getFile() = node.getFile() and
     included.getFile() != call.getFile()
-  )
-  and
+  ) and
   key = getLocationKey(node)
 }
 
@@ -194,8 +193,7 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
     exists(Namespace ns |
       result =
         max(NamedItemNode i, string positionKey |
-          i =
-            getANamedNonModuleChildSuccessor(item, name, ns, positionKey)
+          i = getANamedNonModuleChildSuccessor(item, name, ns, positionKey)
         |
           i order by positionKey
         )
