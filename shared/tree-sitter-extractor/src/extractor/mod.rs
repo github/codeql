@@ -875,7 +875,7 @@ impl<'a> Visitor<'a> {
                 Storage::Table {
                     name: table_name,
                     has_index,
-                    column_name: _,
+                    ..
                 } => {
                     for (index, child_value) in child_values.iter().enumerate() {
                         if !*has_index && index > 0 {

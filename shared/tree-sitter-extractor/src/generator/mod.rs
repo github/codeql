@@ -265,7 +265,7 @@ fn make_field_type<'a>(
         node_types::FieldTypeInfo::Multiple {
             types,
             dbscheme_union,
-            ql_class: _,
+            ..
         } => {
             // This field can have one of several types. Create an ad-hoc QL union
             // type to represent them.

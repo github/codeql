@@ -105,10 +105,10 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
 fn cmp_flag(a: &CfgAtom, b: &CfgAtom) -> Ordering {
     match (a, b) {
         (CfgAtom::Flag(a), CfgAtom::Flag(b)) => a.as_str().cmp(b.as_str()),
-        (CfgAtom::Flag(a), CfgAtom::KeyValue { key: b, value: _ }) => {
+        (CfgAtom::Flag(a), CfgAtom::KeyValue { key: b, .. }) => {
             a.as_str().cmp(b.as_str()).then(Ordering::Less)
         }
-        (CfgAtom::KeyValue { key: a, value: _ }, CfgAtom::Flag(b)) => {
+        (CfgAtom::KeyValue { key: a, .. }, CfgAtom::Flag(b)) => {
             a.as_str().cmp(b.as_str()).then(Ordering::Greater)
         }
         (CfgAtom::KeyValue { key: a, value: av }, CfgAtom::KeyValue { key: b, value: bv }) => a

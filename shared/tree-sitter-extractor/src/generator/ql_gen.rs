@@ -648,7 +648,7 @@ fn create_field_getters<'a>(
     // use in `getAFieldOrChild` (where we use a "don't care" expression to
     // match any index).
     let (get_value, get_value_any_index) = match &field.storage {
-        node_types::Storage::Column { name: _ } => {
+        node_types::Storage::Column { .. } => {
             let column_index = *main_table_column_index;
             *main_table_column_index += 1;
             (
@@ -669,7 +669,7 @@ fn create_field_getters<'a>(
         node_types::Storage::Table {
             name: field_table_name,
             has_index,
-            column_name: _,
+            ..
         } => (
             create_get_field_expr_for_table_storage(
                 get_value_result_var_name,
@@ -768,11 +768,7 @@ fn field_getter_return_type<'a>(
         node_types::FieldTypeInfo::Single(t) => {
             Some(ql::Type::Facade(&nodes.get(t).unwrap().ql_class_name))
         }
-        node_types::FieldTypeInfo::Multiple {
-            types: _,
-            dbscheme_union: _,
-            ql_class,
-        } => Some(ql::Type::Facade(ql_class)),
+        node_types::FieldTypeInfo::Multiple { ql_class, .. } => Some(ql::Type::Facade(ql_class)),
         node_types::FieldTypeInfo::ReservedWordInt(_) => Some(ql::Type::String),
     }
 }
@@ -985,7 +981,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
 
     for (type_name, node) in nodes {
         match &node.kind {
-            node_types::EntryKind::Token { kind_id: _ } => {
+            node_types::EntryKind::Token { .. } => {
                 if type_name.named {
                     let get_a_primary_ql_class =
                         create_get_a_primary_ql_class(&node.ql_class_name, true);
@@ -1129,7 +1125,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
 pub fn create_print_ast_module(nodes: &node_types::NodeTypeMap) -> ql::TopLevel<'_> {
     let mut disjuncts: Vec<ql::Expression> = Vec::new();
     for node in nodes.values() {
-        if let node_types::EntryKind::Table { name: _, fields } = &node.kind {
+        if let node_types::EntryKind::Table { fields, .. } = &node.kind {
             for field in fields {
                 // `ReservedWordInt` fields have string-valued getters, so they
                 // are not children and are excluded (just as they are from
