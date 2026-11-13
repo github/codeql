@@ -163,24 +163,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 logger.LogInfo($"Restoring file \"{packagesConfig}\"...");
 
-                List<string> sourcesArgument = [];
-                var feedsToUse = feedManager.FeedsToUse(packagesConfig).ToList();
-                var defaultFeeds = feedManager.CheckNugetFeedResponsiveness
-                    ? feedManager.ReachableDefaultFeeds
-                    : feedManager.DefaultFeeds;
-                var useDefaultFeeds = feedsToUse.Count == 0 && defaultFeeds.Count > 0;
-
-                // Explicitly construct the sources to be used for the restore command when checking feed
-                // responsiveness, using private registries, or falling back to default feeds.
-                if (feedManager.CheckNugetFeedResponsiveness || feedManager.HasPrivateRegistryFeeds || useDefaultFeeds)
-                {
-                    if (useDefaultFeeds)
-                    {
-                        feedsToUse.AddRange(defaultFeeds);
-                    }
-                    var restoreFeeds = feedManager.RestoreFeeds(feedsToUse);
-                    sourcesArgument = restoreFeeds.SelectMany<string, string>(feed => ["-Source", feed]).ToList();
-                }
+                var sourcesArgument = feedManager.MakeNugetExeRestoreFeeds(packagesConfig)
+                    .SelectMany<string, string>(feed => ["-Source", feed]).ToList();
 
                 /* Use nuget.exe to install a package.
                  * Note that there is a clutch of NuGet assemblies which could be used to
