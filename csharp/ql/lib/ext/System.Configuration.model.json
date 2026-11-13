@@ -1,0 +1,33 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["System.Configuration", "CommaDelimitedStringCollection", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"],
+        ["System.Configuration", "ConfigurationLockCollection", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"],
+        ["System.Configuration", "ConfigurationPropertyCollection", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"],
+        ["System.Configuration", "ConfigurationSectionCollection", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"],
+        ["System.Configuration", "ConfigurationSectionGroupCollection", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"],
+        ["System.Configuration", "ConnectionStringSettingsCollection", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"],
+        ["System.Configuration", "KeyValueConfigurationCollection", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"],
+        ["System.Configuration", "NameValueConfigurationCollection", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"],
+        ["System.Configuration", "ProviderSettingsCollection", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"],
+        ["System.Configuration", "SettingElementCollection", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"],
+        ["System.Configuration", "SettingsPropertyCollection", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"],
+        ["System.Configuration", "SettingsPropertyValueCollection", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "neutralModel"
+      },
+      "data": [
+        ["System.Configuration", "ApplicationSettingsBase", "GetPreviousVersion", "(System.String)", "source", "manual"]
+      ]
+    }
+  ]
+}

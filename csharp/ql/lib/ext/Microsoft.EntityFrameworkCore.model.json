@@ -1,0 +1,38 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", false, "ExecuteSqlRaw", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1]", "sql-injection", "manual"],
+        ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", false, "ExecuteSqlRaw", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", false, "ExecuteSqlRawAsync", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>,System.Threading.CancellationToken)", "", "Argument[1]", "sql-injection", "manual"],
+        ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", false, "ExecuteSqlRawAsync", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[])", "", "Argument[1]", "sql-injection", "manual"],
+        ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", false, "ExecuteSqlRawAsync", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Threading.CancellationToken)", "", "Argument[1]", "sql-injection", "manual"],
+        ["Microsoft.EntityFrameworkCore", "RelationalQueryableExtensions", false, "FromSqlRaw<TEntity>", "(Microsoft.EntityFrameworkCore.DbSet<TEntity>,System.String,System.Object[])", "", "Argument[1]", "sql-injection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", false, "Add", "(TEntity)", "", "Argument[0]", "Argument[this].Element", "value", "manual"],
+        ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", false, "AddAsync", "(TEntity,System.Threading.CancellationToken)", "", "Argument[0]", "Argument[this].Element", "value", "manual"],
+        ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", false, "AddRange", "(System.Collections.Generic.IEnumerable<TEntity>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"],
+        ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", false, "AddRange", "(TEntity[])", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"],
+        ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", false, "AddRangeAsync", "(System.Collections.Generic.IEnumerable<TEntity>,System.Threading.CancellationToken)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"],
+        ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", false, "AddRangeAsync", "(TEntity[])", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"],
+        ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", false, "Attach", "(TEntity)", "", "Argument[0]", "Argument[this].Element", "value", "manual"],
+        ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", false, "AttachRange", "(System.Collections.Generic.IEnumerable<TEntity>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"],
+        ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", false, "AttachRange", "(TEntity[])", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"],
+        ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", false, "Update", "(TEntity)", "", "Argument[0]", "Argument[this].Element", "value", "manual"],
+        ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", false, "UpdateRange", "(System.Collections.Generic.IEnumerable<TEntity>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"],
+        ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", false, "UpdateRange", "(TEntity[])", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
+      ]
+    }
+  ]
+}

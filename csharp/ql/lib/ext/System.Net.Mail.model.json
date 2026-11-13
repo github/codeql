@@ -1,0 +1,13 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["System.Net.Mail", "MailAddressCollection", false, "Add", "(System.String)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      ]
+    }
+  ]
+}

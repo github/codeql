@@ -18,5 +18,7 @@ dependencies:
 dataExtensions:
   - ext/*.model.yml
   - ext/generated/**/*.model.yml
+  - ext/*.model.json
+  - ext/generated/**/*.model.json
 warnOnImplicitThis: true
 compileForOverlayEval: true

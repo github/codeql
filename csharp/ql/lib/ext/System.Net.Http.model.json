@@ -1,0 +1,29 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["System.Net.Http", "StringContent", false, "StringContent", "", "", "Argument[0]", "js-injection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["System.Net.Http", "HttpRequestMessage", false, "HttpRequestMessage", "(System.Net.Http.HttpMethod,System.String)", "", "Argument[0]", "Argument[this]", "taint", "manual"],
+        ["System.Net.Http", "HttpRequestMessage", false, "HttpRequestMessage", "(System.Net.Http.HttpMethod,System.String)", "", "Argument[1]", "Argument[this]", "taint", "manual"],
+        ["System.Net.Http", "HttpRequestMessage", false, "HttpRequestMessage", "(System.Net.Http.HttpMethod,System.Uri)", "", "Argument[0]", "Argument[this]", "taint", "manual"],
+        ["System.Net.Http", "HttpRequestMessage", false, "HttpRequestMessage", "(System.Net.Http.HttpMethod,System.Uri)", "", "Argument[1]", "Argument[this]", "taint", "manual"],
+        ["System.Net.Http", "HttpRequestOptions", false, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair`2.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "value", "manual"],
+        ["System.Net.Http", "HttpRequestOptions", false, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair`2.Value]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "value", "manual"],
+        ["System.Net.Http", "MultipartContent", false, "Add", "(System.Net.Http.HttpContent)", "", "Argument[0]", "Argument[this].Element", "value", "manual"],
+        ["System.Net.Http", "MultipartFormDataContent", false, "Add", "(System.Net.Http.HttpContent)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      ]
+    }
+  ]
+}
