@@ -20,3 +20,40 @@ query predicate unexpanded_macro_calls(MacroCall c) {
 }
 
 query predicate warnings(ExtractionWarning w) { any() }
+
+query predicate includedArgumentLocation(AstNode node, int line) {
+  exists(CallExpr call |
+    call.isInMacroExpansion() and
+    call.getFunction().(PathExpr).getPath().getText() = "dangerous_call" and
+    call = node.getParentNode*() and
+    line = node.getLocation().getStartLine()
+  )
+}
+
+query predicate includedMacroShadowing(string definitionFile) {
+  exists(MacroCall call |
+    call.getPath().getText() = "shadowed" and
+    call.getFile().getRelativePath().matches("%included/included.rs") and
+    definitionFile = call.resolveMacro().getFile().getRelativePath()
+  )
+}
+
+query predicate includedStandaloneMacroCount(int macros) {
+  macros =
+    count(MacroCall call |
+      call.getFile().getRelativePath().matches("%included/included.rs") and
+      not call.getFile().(ExtractedFile).isInActiveIncludeExpansion(call)
+    )
+}
+
+query predicate includedMacroExpansionMembership(string name, boolean active) {
+  exists(MacroCall call |
+    call.getFile().getRelativePath().matches("%included/included.rs") and
+    name = call.getPath().getText() and
+    (
+      if call.getFile().(ExtractedFile).isInActiveIncludeExpansion(call)
+      then active = true
+      else active = false
+    )
+  )
+}

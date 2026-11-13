@@ -1,0 +1,5 @@
+| tree/generated.rs:1:1:1:26 | macro expansion failed for 'unknown_included_macro' |
+| tree/generated.rs:2:1:2:13 | expected SEMICOLON |
+| tree/generated.rs:2:1:2:13 | expected expression |
+| tree/generated.rs:2:1:2:13 | expected pattern |
+| tree/generated.rs:3:1:3:35 | included failure |

@@ -41,18 +41,99 @@ struct Extractor<'a> {
     archiver: &'a Archiver,
     traps: &'a trap::TrapFileProvider,
     steps: Vec<ExtractionStep>,
+    source_files: HashSet<PathBuf>,
+    generated_source_root: PathBuf,
+    extracted_source_files: HashSet<PathBuf>,
+}
+
+fn is_non_rust_include_target(file: &Path) -> bool {
+    file.extension()
+        .is_none_or(|ext| !ext.eq_ignore_ascii_case("rs"))
+}
+
+fn is_excluded_source_directory(source_files: &HashSet<PathBuf>, file: &Path) -> bool {
+    let mut directory = file.parent();
+    while let Some(path) = directory {
+        let mut has_selected_source = false;
+        let mut has_unselected_source = false;
+        match fs::read_dir(path) {
+            Ok(entries) => {
+                for entry in entries.flatten() {
+                    let source = entry.path();
+                    if source.extension().is_some_and(|ext| ext == "rs") {
+                        let source = dunce::canonicalize(&source).unwrap_or(source);
+                        if source_files.contains(&source) {
+                            has_selected_source = true;
+                        } else {
+                            has_unselected_source = true;
+                        }
+                    }
+                }
+            }
+            Err(error) => warn!(
+                "unable to inspect source directory {} for excluded files: {error}",
+                path.display()
+            ),
+        }
+        if has_unselected_source && !has_selected_source {
+            return true;
+        }
+        if has_selected_source {
+            return false;
+        }
+        directory = path.parent();
+    }
+    false
+}
+
+fn should_extract_included_file(
+    source_files: &HashSet<PathBuf>,
+    generated_source_root: &Path,
+    file: &Path,
+    source_kind: SourceKind,
+) -> bool {
+    source_kind == SourceKind::Library
+        || source_files.contains(file)
+        || file.starts_with(generated_source_root)
+        || (is_non_rust_include_target(file) && !is_excluded_source_directory(source_files, file))
 }
 
 impl<'a> Extractor<'a> {
-    pub fn new(archiver: &'a Archiver, traps: &'a trap::TrapFileProvider) -> Self {
+    pub fn new(
+        archiver: &'a Archiver,
+        traps: &'a trap::TrapFileProvider,
+        source_files: HashSet<PathBuf>,
+        generated_source_root: PathBuf,
+    ) -> Self {
         Self {
             archiver,
             traps,
             steps: Vec::new(),
+            source_files,
+            generated_source_root,
+            extracted_source_files: HashSet::new(),
         }
     }
 
-    fn extract(&mut self, rust_analyzer: &RustAnalyzer, file: &Path, source_kind: SourceKind) {
+    fn is_selected_source(&self, file: &Path) -> bool {
+        self.source_files.contains(file) || file.starts_with(&self.generated_source_root)
+    }
+
+    fn should_extract_included_file(&self, file: &Path, source_kind: SourceKind) -> bool {
+        should_extract_included_file(
+            &self.source_files,
+            &self.generated_source_root,
+            file,
+            source_kind,
+        )
+    }
+
+    fn extract(
+        &mut self,
+        rust_analyzer: &RustAnalyzer,
+        file: &Path,
+        source_kind: SourceKind,
+    ) -> Vec<PathBuf> {
         self.archiver.archive(file);
         let before_parse = Instant::now();
         let ParseResult {
@@ -96,6 +177,17 @@ impl<'a> Extractor<'a> {
         }
         translator.emit_source_file(&ast);
         translator.emit_truncated_diagnostics_message();
+        translator.included_file_steps.retain(|step| {
+            step.file.as_ref().is_none_or(|file| {
+                if self.should_extract_included_file(file, source_kind) {
+                    self.archiver.archive(file);
+                    true
+                } else {
+                    false
+                }
+            })
+        });
+        self.steps.append(&mut translator.included_file_steps);
         translator.trap.commit().unwrap_or_else(|err| {
             error!(
                 "Failed to write trap file for: {}: {}",
@@ -105,6 +197,7 @@ impl<'a> Extractor<'a> {
         });
         self.steps
             .push(ExtractionStep::extract(before_extract, source_kind, file));
+        translator.module_files
     }
 
     pub fn extract_with_semantics<'db>(
@@ -113,8 +206,27 @@ impl<'a> Extractor<'a> {
         semantics: &'db Semantics<'db, RootDatabase>,
         vfs: &'db Vfs,
         source_kind: SourceKind,
+        selected_source: bool,
     ) {
-        self.extract(&RustAnalyzer::new(vfs, semantics), file, source_kind);
+        let mut pending = vec![file.to_path_buf()];
+        let mut visited = HashSet::new();
+        while let Some(file) = pending.pop() {
+            if !visited.insert(file.clone())
+                || selected_source && !self.is_selected_source(&file)
+                || !selected_source && self.extracted_source_files.contains(&file)
+            {
+                continue;
+            }
+            if selected_source {
+                self.extracted_source_files.insert(file.clone());
+            }
+            let modules = self.extract(&RustAnalyzer::new(vfs, semantics), &file, source_kind);
+            if selected_source {
+                pending.extend(modules.into_iter().filter(|module| {
+                    self.is_selected_source(module) && !self.source_files.contains(module)
+                }));
+            }
+        }
     }
 
     pub fn extract_without_semantics(
@@ -274,11 +386,6 @@ fn main() -> anyhow::Result<()> {
     info!("{config:#?}\n");
     info!("number of inputs: {}", inputs.len());
 
-    let traps = trap::TrapFileProvider::new(&config).context("failed to set up trap files")?;
-    let archiver = archive::Archiver {
-        root: config.source_archive_dir.clone(),
-    };
-    let mut extractor = Extractor::new(&archiver, &traps);
     let files = inputs
         .iter()
         .map(|file| {
@@ -289,6 +396,20 @@ fn main() -> anyhow::Result<()> {
             dunce::canonicalize(&file).unwrap_or(file)
         })
         .collect::<Vec<_>>();
+    let source_files = HashSet::from_iter(files.iter().cloned());
+    let generated_source_root = std::path::absolute(config.cargo_target_dir())?;
+    let generated_source_root =
+        dunce::canonicalize(&generated_source_root).unwrap_or(generated_source_root);
+    let traps = trap::TrapFileProvider::new(&config).context("failed to set up trap files")?;
+    let archiver = archive::Archiver {
+        root: config.source_archive_dir.clone(),
+    };
+    let mut extractor = Extractor::new(
+        &archiver,
+        &traps,
+        source_files.clone(),
+        generated_source_root,
+    );
     let manifests = extractor.find_manifests(&files)?;
     let workspaces = extractor.group_files(&manifests, &files);
     let cwd = cwd()?;
@@ -304,7 +425,6 @@ fn main() -> anyhow::Result<()> {
     } else {
         SourceKind::Source
     };
-    let source_files = HashSet::from_iter(files.iter().cloned());
 
     let mut dependencies = DependencyFiles::default();
 
@@ -324,14 +444,16 @@ fn main() -> anyhow::Result<()> {
             let semantics = Semantics::new(&db);
             for file in files {
                 match extractor.load_source(file, &semantics, &vfs) {
-                    Ok(()) => extractor.extract_with_semantics(file, &semantics, &vfs, source_mode),
+                    Ok(()) => {
+                        extractor.extract_with_semantics(file, &semantics, &vfs, source_mode, true)
+                    }
                     Err(e) => extractor.extract_without_semantics(file, source_mode, e),
                 };
             }
             // Fast path when there is no ambiguity in dependency extraction.
             if dependency_extraction_ambiguity {
                 for (_, file) in dependency_files(&db, &vfs, &source_files) {
-                    extractor.extract_with_semantics(file, &semantics, &vfs, library_mode);
+                    extractor.extract_with_semantics(file, &semantics, &vfs, library_mode, false);
                 }
             } else {
                 dependencies.add_manifest(manifest, &semantics, &vfs, &source_files);
@@ -372,7 +494,13 @@ fn main() -> anyhow::Result<()> {
                             .and_then(|id| semantics.file_to_module_def(id))
                             .is_some()
                     {
-                        extractor.extract_with_semantics(&file, &semantics, &vfs, library_mode);
+                        extractor.extract_with_semantics(
+                            &file,
+                            &semantics,
+                            &vfs,
+                            library_mode,
+                            false,
+                        );
                         dependencies.extracted(&file);
                     }
                 }
@@ -401,4 +529,52 @@ fn main() -> anyhow::Result<()> {
     }
 
     extractor.emit_extraction_diagnostics(start, &config)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    #[test]
+    fn included_non_rust_files_respect_source_selection() {
+        let unique = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let root = env::temp_dir().join(format!(
+            "codeql-rust-included-files-{}-{unique}",
+            std::process::id()
+        ));
+        let selected_source = root.join("main.rs");
+        let extensionless_target = root.join("included/items");
+        let ignored_source = root.join("ignored/a_source.rs");
+        let ignored_target = root.join("ignored/items.inc");
+        for path in [
+            &selected_source,
+            &extensionless_target,
+            &ignored_source,
+            &ignored_target,
+        ] {
+            fs::create_dir_all(path.parent().unwrap()).unwrap();
+            fs::write(path, "").unwrap();
+        }
+        let source_files = HashSet::from([dunce::canonicalize(&selected_source).unwrap()]);
+        let generated_source_root = root.join("target");
+
+        assert!(should_extract_included_file(
+            &source_files,
+            &generated_source_root,
+            &extensionless_target,
+            SourceKind::Source
+        ));
+        assert!(!should_extract_included_file(
+            &source_files,
+            &generated_source_root,
+            &ignored_target,
+            SourceKind::Source
+        ));
+
+        fs::remove_dir_all(root).unwrap();
+    }
 }

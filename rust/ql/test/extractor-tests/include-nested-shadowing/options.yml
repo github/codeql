@@ -1,0 +1,2 @@
+# The duplicate macros intentionally make this fixture invalid Rust.
+qltest_cargo_check: false

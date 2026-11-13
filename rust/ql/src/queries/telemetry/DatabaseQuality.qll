@@ -20,6 +20,10 @@ private class RelevantFile extends File {
   }
 }
 
+private predicate isNotInactiveStandaloneCopy(AstNode node) {
+  node.getFile().(ExtractedFile).isNotInactiveStandaloneCopy(node)
+}
+
 module CallTargetStats implements StatsSig {
   /**
    * A call-like expression that is relevant for call target statistics.
@@ -30,6 +34,7 @@ module CallTargetStats implements StatsSig {
   private class RelevantInvocationExpr extends InvocationExpr {
     RelevantInvocationExpr() {
       this.getFile() instanceof RelevantFile and
+      isNotInactiveStandaloneCopy(this) and
       not this instanceof CallExprImpl::DynamicCallExpr and
       not this = any(Operation o | not o.isOverloaded(_, _, _)) and
       not this = any(DerefExpr de | TypeInference::inferType(de.getExpr()) instanceof PtrType)
@@ -49,11 +54,18 @@ module CallTargetStats implements StatsSig {
 
 module MacroCallTargetStats implements StatsSig {
   int getNumberOfOk() {
-    result = count(MacroCall c | c.getFile() instanceof RelevantFile and c.hasMacroCallExpansion())
+    result =
+      count(MacroCall c |
+        c.getFile() instanceof RelevantFile and
+        isNotInactiveStandaloneCopy(c) and
+        c.hasMacroCallExpansion()
+      )
   }
 
   additional predicate isNotOkCall(MacroCall c) {
-    c.getFile() instanceof RelevantFile and not c.hasMacroCallExpansion()
+    c.getFile() instanceof RelevantFile and
+    isNotInactiveStandaloneCopy(c) and
+    not c.hasMacroCallExpansion()
   }
 
   int getNumberOfNotOk() { result = count(MacroCall c | isNotOkCall(c)) }
@@ -70,6 +82,7 @@ module ExprTypeStats implements StatsSig {
     result =
       count(Expr e |
         e.getFile() instanceof RelevantFile and
+        isNotInactiveStandaloneCopy(e) and
         e.fromSource() and
         hasGoodType(e)
       )
@@ -79,6 +92,7 @@ module ExprTypeStats implements StatsSig {
     result =
       count(Expr e |
         e.getFile() instanceof RelevantFile and
+        isNotInactiveStandaloneCopy(e) and
         e.fromSource() and
         not hasGoodType(e)
       )

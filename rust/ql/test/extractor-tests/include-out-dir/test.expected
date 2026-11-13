@@ -1,0 +1,16 @@
+generatedFunction
+| true | 3 | main::child::child_function |
+| true | 3 | main::child::grandchild::grandchild_function |
+| true | 3 | main::generated_function |
+rootReference
+| child_function | grandchild_function |
+| generated_alias | root_function |
+| generated_function | root_function |
+| grandchild_function | root_function |
+macroReference
+| root_function |
+exportedMacro
+| generated_export | 1 |
+includedInitializerScope
+| INCLUDED_CONST | main.rs |
+| INCLUDED_STATIC | main.rs |

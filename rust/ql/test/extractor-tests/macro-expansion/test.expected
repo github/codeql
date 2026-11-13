@@ -15,12 +15,17 @@ attribute_macros
 | macro_expansion.rs:31:5:34:5 | fn  | 1 | macro_expansion.rs:32:5:34:5 | fn bzz_1 |
 | macro_expansion.rs:31:5:34:5 | fn  | 2 | macro_expansion.rs:32:5:34:5 | fn bzz_2 |
 derive_macros
-| macro_expansion.rs:83:1:86:1 | struct MyDerive | 0 | 0 | macro_expansion.rs:83:1:86:1 | impl ...::Debug for MyDerive::<...> { ... } |
-| macro_expansion.rs:88:1:92:1 | enum MyDeriveEnum | 0 | 0 | macro_expansion.rs:88:1:92:1 | impl ...::PartialEq for MyDeriveEnum::<...> { ... } |
-| macro_expansion.rs:88:1:92:1 | enum MyDeriveEnum | 1 | 0 | macro_expansion.rs:88:1:92:1 | impl ...::Eq for MyDeriveEnum::<...> { ... } |
-| macro_expansion.rs:98:1:102:1 | union MyDeriveUnion | 0 | 0 | macro_expansion.rs:99:7:99:19 | const CONST_MyDeriveUnion |
-| macro_expansion.rs:98:1:102:1 | union MyDeriveUnion | 0 | 1 | macro_expansion.rs:99:7:99:19 | impl MyTrait for MyDeriveUnion { ... } |
+| included/included.rs:5:1:8:1 | struct IncludedDerived | 0 | 0 | included/included.rs:5:1:7:9 | impl ...::Debug for IncludedDerived::<...> { ... } |
+| macro_expansion.rs:87:1:90:1 | struct MyDerive | 0 | 0 | macro_expansion.rs:87:1:90:1 | impl ...::Debug for MyDerive::<...> { ... } |
+| macro_expansion.rs:92:1:96:1 | enum MyDeriveEnum | 0 | 0 | macro_expansion.rs:92:1:96:1 | impl ...::PartialEq for MyDeriveEnum::<...> { ... } |
+| macro_expansion.rs:92:1:96:1 | enum MyDeriveEnum | 1 | 0 | macro_expansion.rs:92:1:96:1 | impl ...::Eq for MyDeriveEnum::<...> { ... } |
+| macro_expansion.rs:102:1:106:1 | union MyDeriveUnion | 0 | 0 | macro_expansion.rs:103:7:103:19 | const CONST_MyDeriveUnion |
+| macro_expansion.rs:102:1:106:1 | union MyDeriveUnion | 0 | 1 | macro_expansion.rs:103:7:103:19 | impl MyTrait for MyDeriveUnion { ... } |
 macro_calls
+| included/included.rs:2:9:2:39 | concat!... | included/included.rs:2:17:2:38 | "Hello world!" |
+| included/included.rs:17:5:19:6 | identity!... | included/included.rs:17:15:19:5 | { ... } |
+| included/included.rs:31:5:31:26 | definition_location!... | included/included.rs:31:5:31:26 | { ... } |
+| included/included.rs:38:1:38:12 | shadowed!... | included/included.rs:38:1:38:12 | MacroItems |
 | macro_expansion.rs:5:9:5:35 | concat!... | macro_expansion.rs:5:17:5:34 | "Hello world!" |
 | macro_expansion.rs:5:9:5:35 | concat!... | macro_expansion.rs:5:17:5:34 | "Hello world!" |
 | macro_expansion.rs:31:7:31:15 | ...::format_args_nl!... | macro_expansion.rs:31:7:31:15 | FormatArgsExpr |
@@ -37,16 +42,44 @@ macro_calls
 | macro_expansion.rs:55:9:58:5 | my_macro!... | macro_expansion.rs:56:9:57:13 | MacroExpr |
 | macro_expansion.rs:56:9:57:13 | ...::format_args!... | macro_expansion.rs:56:9:57:13 | FormatArgsExpr |
 | macro_expansion.rs:56:9:57:13 | format!... | macro_expansion.rs:56:9:57:13 | ...::must_use(...) |
-| macro_expansion.rs:61:1:61:33 | concat!... | macro_expansion.rs:61:1:61:33 | "Hello world!" |
-| macro_expansion.rs:61:1:61:33 | include!... | macro_expansion.rs:61:1:61:33 | MacroItems |
-| macro_expansion.rs:70:16:70:24 | my_int!... | macro_expansion.rs:70:16:70:22 | i32 |
-| macro_expansion.rs:71:12:71:20 | my_int!... | macro_expansion.rs:71:12:71:18 | i32 |
-| macro_expansion.rs:72:10:72:18 | my_int!... | macro_expansion.rs:72:10:72:16 | i32 |
-| macro_expansion.rs:76:14:76:22 | my_int!... | macro_expansion.rs:76:14:76:20 | i32 |
-| macro_expansion.rs:79:12:79:20 | my_int!... | macro_expansion.rs:79:12:79:18 | i32 |
+| macro_expansion.rs:65:1:65:33 | include!... | included/included.rs:1:1:38:12 | MacroItems |
+| macro_expansion.rs:74:16:74:24 | my_int!... | macro_expansion.rs:74:16:74:22 | i32 |
+| macro_expansion.rs:75:12:75:20 | my_int!... | macro_expansion.rs:75:12:75:18 | i32 |
+| macro_expansion.rs:76:10:76:18 | my_int!... | macro_expansion.rs:76:10:76:16 | i32 |
+| macro_expansion.rs:80:14:80:22 | my_int!... | macro_expansion.rs:80:14:80:20 | i32 |
+| macro_expansion.rs:83:12:83:20 | my_int!... | macro_expansion.rs:83:12:83:18 | i32 |
 unexpanded_macro_calls
 | included/included.rs:2:9:2:39 | concat!... |
+| included/included.rs:17:5:19:6 | identity!... |
+| included/included.rs:31:5:31:26 | definition_location!... |
+| included/included.rs:38:1:38:12 | shadowed!... |
 | macro_expansion.rs:56:9:56:31 | concat!... |
-| macro_expansion.rs:63:9:63:32 | include_str!... |
+| macro_expansion.rs:67:9:67:32 | include_str!... |
 warnings
 | macro_expansion.rs:56:9:56:31 | macro expansion failed for 'concat' |
+includedArgumentLocation
+| included/included.rs:18:9:18:22 | dangerous_call | 18 |
+| included/included.rs:18:9:18:22 | dangerous_call | 18 |
+| included/included.rs:18:9:18:22 | dangerous_call | 18 |
+| included/included.rs:18:9:18:22 | dangerous_call | 18 |
+| included/included.rs:18:9:18:24 | dangerous_call(...) | 18 |
+| included/included.rs:18:23:18:24 | ArgList | 18 |
+| included/included.rs:31:5:31:26 | ArgList | 31 |
+| included/included.rs:31:5:31:26 | dangerous_call | 31 |
+| included/included.rs:31:5:31:26 | dangerous_call | 31 |
+| included/included.rs:31:5:31:26 | dangerous_call | 31 |
+| included/included.rs:31:5:31:26 | dangerous_call | 31 |
+| included/included.rs:31:5:31:26 | dangerous_call(...) | 31 |
+includedMacroShadowing
+| included/included.rs |
+includedStandaloneMacroCount
+| 4 |
+includedMacroExpansionMembership
+| concat | false |
+| concat | true |
+| definition_location | false |
+| definition_location | true |
+| identity | false |
+| identity | true |
+| shadowed | false |
+| shadowed | true |

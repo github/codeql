@@ -133,13 +133,50 @@ private ItemNode getAChildSuccessor0(ItemNode item, string name, SuccessorKind k
 
 pragma[nomagic]
 private NamedItemNode getANamedNonModuleChildSuccessor(
-  ItemNode item, string name, Namespace ns, int startline, int startcolumn, int endline,
-  int endcolumn
+  ItemNode item, string name, Namespace ns, string positionKey
 ) {
-  result.getLocation().hasLocationInfo(_, startline, startcolumn, endline, endcolumn) and
   result = getAChildSuccessor0(item, name, _) and
   ns = result.getNamespace() and
-  not result instanceof ModuleItemNode
+  not result instanceof ModuleItemNode and
+  getEffectivePositionKey(result, positionKey)
+}
+
+bindingset[component]
+private string padLocationComponent(int component) {
+  exists(string value |
+    value = component.toString() and
+    result = ("0000000000" + value).substring(value.length(), value.length() + 10)
+  )
+}
+
+bindingset[node]
+private string getLocationKey(AstNode node) {
+  exists(int startLine, int startColumn, int endLine, int endColumn |
+    node.getLocation().hasLocationInfo(_, startLine, startColumn, endLine, endColumn) and
+    result =
+      padLocationComponent(startLine) + padLocationComponent(startColumn) +
+        padLocationComponent(endLine) + padLocationComponent(endColumn)
+  )
+}
+
+cached
+private predicate getEffectivePositionKey(AstNode node, string key) {
+  exists(MacroItems included, MacroCall call, string parentKey |
+    included = node.getParentNode*() and
+    included = call.getMacroCallExpansion() and
+    included.getFile() = node.getFile() and
+    included.getFile() != call.getFile() and
+    getEffectivePositionKey(call, parentKey) and
+    key = parentKey + "/" + getLocationKey(node)
+  )
+  or
+  not exists(MacroItems included, MacroCall call |
+    included = node.getParentNode*() and
+    included = call.getMacroCallExpansion() and
+    included.getFile() = node.getFile() and
+    included.getFile() != call.getFile()
+  ) and
+  key = getLocationKey(node)
 }
 
 pragma[nomagic]
@@ -155,12 +192,10 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
     or
     exists(Namespace ns |
       result =
-        max(NamedItemNode i, int startline, int startcolumn, int endline, int endcolumn |
-          i =
-            getANamedNonModuleChildSuccessor(item, name, ns, startline, startcolumn, endline,
-              endcolumn)
+        max(NamedItemNode i, string positionKey |
+          i = getANamedNonModuleChildSuccessor(item, name, ns, positionKey)
         |
-          i order by startline, startcolumn, endline, endcolumn
+          i order by positionKey
         )
     )
   )
@@ -551,23 +586,25 @@ class CrateItemNode extends NamedItemNode instanceof Crate {
   SourceFileItemNode getSourceFile() { result = super.getSourceFile() }
 
   /**
-   * Gets a source file that belongs to this crate.
-   *
-   * This is calculated as those source files that can be reached from the entry
-   * file of this crate using zero or more `mod` imports, without going through
-   * the entry point of some other crate.
+   * Holds if `item` belongs to this crate's active item scope, following macro
+   * expansions and `mod` imports but not importing another crate's entry point.
    */
   pragma[nomagic]
-  SourceFileItemNode getASourceFile() {
-    result = super.getSourceFile()
+  predicate containsItem(ItemNode item) {
+    item = super.getSourceFile()
     or
-    exists(SourceFileItemNode mid, Module mod |
-      mid = this.getASourceFile() and
-      mod.getFile() = mid.getFile() and
-      fileImport(mod, result) and
-      not result = any(Crate other).getSourceFile()
+    this.containsItem(item.getImmediateParent())
+    or
+    exists(Module mod |
+      this.containsItem(mod) and
+      fileImport(mod, item.(SourceFileItemNode)) and
+      not item = any(Crate other).getSourceFile()
     )
   }
+
+  /** Gets a source file in this crate's active item scope. */
+  pragma[nomagic]
+  SourceFileItemNode getASourceFile() { this.containsItem(result) }
 
   pragma[nomagic]
   predicate isLatestVersion(string name) {
@@ -889,7 +926,7 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
     this.resolveSelfTy().hasCanonicalPathPrefix(c)
     or
     this.isBlanketImplementation() and
-    c.getASourceFile().getFile() = this.getFile()
+    c.(CrateItemNode).containsItem(this)
   }
 
   /**
@@ -1404,6 +1441,16 @@ private Meta getPathAttrMeta(Module m) {
   result.getMetaPath().getText() = "path"
 }
 
+/** Holds if `node` belongs to an included file's active expansion. */
+private predicate isInIncludeExpansion(AstNode node) {
+  exists(MacroItems included, MacroCall call |
+    included = node.getParentNode*() and
+    included = call.getMacroCallExpansion() and
+    included.getFile() = node.getFile() and
+    included.getFile() != call.getFile()
+  )
+}
+
 /**
  * Holds if `m` is a `mod name;` module declaration, where the corresponding
  * module file needs to be looked up in `lookup` or one of its descandants.
@@ -1423,10 +1470,13 @@ private predicate modImport0(Module m, string name, Folder lookup) {
       m.getFile() = any(CrateItemNode c).getSourceFile().getFile()
       or
       m.getFile().getBaseName() = "mod.rs"
+      or
+      isInIncludeExpansion(m)
     )
     or
     // child import
-    lookup = parent.getFolder(fileName)
+    lookup = parent.getFolder(fileName) and
+    not isInIncludeExpansion(m)
   )
 }
 
@@ -1435,6 +1485,8 @@ private predicate modImport0(Module m, string name, Folder lookup) {
  * nested module, and `pred -> succ` is a module edge leading to `m`.
  */
 private predicate modImportNested(ModuleItemNode m, ModuleItemNode pred, ModuleItemNode succ) {
+  // An include expansion starts a new file-relative lookup, even inside an inline module.
+  pred.getFile() = m.getFile() and
   pred.getAnItemInScope() = succ and
   (
     modImport0(m, _, _) and
@@ -1863,11 +1915,11 @@ private module DollarCrateResolution {
       expansion)
 
   pragma[nomagic]
-  private predicate isInDollarCrateMacroExpansionFromFile(File macroDefFile, PathExt p) {
+  private predicate isInDollarCrateMacroExpansionFromItem(ItemNode macroDef, PathExt p) {
     exists(Path macroDefPath, AstNode expansion |
       isDollarCrateSupportedMacroExpansion(macroDefPath, expansion) and
       isInDollarCrateMacroExpansion(p, expansion) and
-      macroDefFile = resolvePathCand(macroDefPath).getFile()
+      macroDef = resolvePathCand(macroDefPath)
     )
   }
 
@@ -1879,7 +1931,10 @@ private module DollarCrateResolution {
    */
   pragma[nomagic]
   predicate resolveDollarCrate(PathExt p, CrateItemNode crate) {
-    isInDollarCrateMacroExpansionFromFile(crate.getASourceFile().getFile(), p)
+    exists(ItemNode macroDef |
+      isInDollarCrateMacroExpansionFromItem(macroDef, p) and
+      crate.containsItem(macroDef)
+    )
   }
 }
 
@@ -2017,7 +2072,7 @@ private predicate pathUsesNamespace(PathExt p, Namespace n) {
  */
 pragma[nomagic]
 private predicate macroExportEdge(CrateItemNode crate, string name, MacroItemNode macro) {
-  crate.getASourceFile().getFile() = macro.getFile() and
+  crate.containsItem(macro) and
   macro.hasAttr("macro_export") and
   name = macro.getName()
 }
@@ -2280,14 +2335,14 @@ private predicate externCrateEdge(
   name = ec.getName() and
   (if ec.isPublic() then kind.isBoth() else kind.isInternal()) and
   exists(SourceFile f, string s |
-    ec.getFile() = f.getFile() and
+    f = ec.getImmediateParent*() and
     s = ec.(ExternCrate).getIdentifier().getText()
   |
     crateDependencyEdge(f, s, crate)
     or
     // `extern crate` is used to import the current crate
     s = "self" and
-    ec.getFile() = crate.getASourceFile().getFile()
+    crate.containsItem(ec)
   )
 }
 

@@ -68,6 +68,7 @@ impl From<RustAnalyzerNoSemantics> for RustAnalyzer<'static> {
 pub struct FileSemanticInformation<'a> {
     pub file_id: EditionedFileId,
     pub semantics: &'a Semantics<'a, RootDatabase>,
+    pub vfs: &'a Vfs,
 }
 
 pub struct ParseResult<'a> {
@@ -99,8 +100,15 @@ impl<'a> RustAnalyzer<'a> {
     fn get_file_data(
         &self,
         path: &Path,
-    ) -> Result<(&'a Semantics<'a, RootDatabase>, EditionedFileId, FileText), RustAnalyzerNoSemantics>
-    {
+    ) -> Result<
+        (
+            &'a Semantics<'a, RootDatabase>,
+            &'a Vfs,
+            EditionedFileId,
+            FileText,
+        ),
+        RustAnalyzerNoSemantics,
+    > {
         match self {
             RustAnalyzer::WithoutSemantics { severity, reason } => Err(RustAnalyzerNoSemantics {
                 severity: *severity,
@@ -118,14 +126,14 @@ impl<'a> RustAnalyzer<'a> {
                 let editioned_file_id = semantics.attach_first_edition_opt(file_id).ok_or(
                     RustAnalyzerNoSemantics::warning("failed to determine rust edition"),
                 )?;
-                Ok((*semantics, editioned_file_id, input))
+                Ok((*semantics, *vfs, editioned_file_id, input))
             }
         }
     }
 
     pub fn parse(&self, path: &Path) -> ParseResult<'a> {
         match self.get_file_data(path) {
-            Ok((semantics, file_id, input)) => {
+            Ok((semantics, vfs, file_id, input)) => {
                 let source_file = semantics.parse(file_id);
                 let errors = file_id
                     .parse_errors(semantics.db)
@@ -137,7 +145,11 @@ impl<'a> RustAnalyzer<'a> {
                     ast: source_file,
                     text: input.text(semantics.db).clone(),
                     errors,
-                    semantics_info: Ok(FileSemanticInformation { file_id, semantics }),
+                    semantics_info: Ok(FileSemanticInformation {
+                        file_id,
+                        semantics,
+                        vfs,
+                    }),
                 }
             }
             Err(reason) => {
