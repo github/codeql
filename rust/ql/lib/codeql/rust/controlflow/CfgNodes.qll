@@ -5,15 +5,24 @@
 
 private import rust
 private import ControlFlowGraph
-private import internal.ControlFlowGraphImpl as CfgImpl
 private import internal.CfgNodes
 import Nodes
 
-class AstCfgNode = CfgImpl::AstCfgNode;
+/**
+ * A CFG node that uniquely represents an AST node.
+ */
+class AstCfgNode extends CfgNode {
+  AstCfgNode() { this.injects(_) }
 
-class ExitCfgNode = CfgImpl::ExitNode;
+  /** Gets the represented AST node. */
+  AstNode getAstNode() { this.injects(result) }
+}
 
-class AnnotatedExitCfgNode = CfgImpl::AnnotatedExitNode;
+/** A CFG node representing the final exit from a callable. */
+class ExitCfgNode extends CfgNode instanceof ControlFlow::ExitNode { }
+
+/** A CFG node representing a normal or exceptional exit from a callable. */
+class AnnotatedExitCfgNode extends CfgNode instanceof ControlFlow::AnnotatedExitNode { }
 
 /** A variable access. */
 final class VariableAccessCfgNode extends PathExprBaseCfgNode {

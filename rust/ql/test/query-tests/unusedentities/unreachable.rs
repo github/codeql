@@ -168,13 +168,13 @@ pub fn unreachable_bail() -> Result<i32, String> {
 
     if cond() {
         do_something();
-        bail_1!(); // $ SPURIOUS: Alert[rust/dead-code]
-        do_something(); // $ MISSING: Alert[rust/dead-code]
+        bail_1!();
+        do_something(); // $ Alert[rust/dead-code]
     }
 
     if cond() {
         do_something();
-        bail_2!("message"); // $ SPURIOUS: Alert[rust/dead-code]
+        bail_2!("message");
     }
     do_something();
 

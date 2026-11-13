@@ -66,7 +66,6 @@ module Stages {
    */
   cached
   module CfgStage {
-    private import codeql.rust.controlflow.internal.Splitting
     private import codeql.rust.controlflow.internal.ControlFlowGraphImpl
     private import codeql.rust.controlflow.CfgNodes
 
@@ -85,8 +84,6 @@ module Stages {
     cached
     predicate backref() {
       1 = 1
-      or
-      exists(TConditionalCompletionSplitKind())
       or
       exists(AstCfgNode n)
       or
