@@ -972,16 +972,8 @@ fn is_predicate_inherited(
 #[allow(clippy::too_many_lines)]
 pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     let mut classes = Vec::new();
-    let mut token_kinds = BTreeSet::new();
     let direct_supertypes = compute_direct_supertypes(nodes);
     let exposed_predicate_signatures = compute_exposed_predicate_signatures(nodes);
-    for (type_name, node) in nodes {
-        if let node_types::EntryKind::Token { .. } = &node.kind
-            && type_name.named
-        {
-            token_kinds.insert(&type_name.kind);
-        }
-    }
 
     for (type_name, node) in nodes {
         match &node.kind {

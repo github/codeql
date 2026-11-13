@@ -60,6 +60,7 @@ similar_names = "allow"
 # Additional lints from the `restriction` and `nursery` group
 as_pointer_underscore = "warn"
 clone_on_ref_ptr = "warn"
+collection_is_never_read = "warn"
 deref_by_slicing = "warn"
 disallowed_script_idents = "warn"
 empty_drop = "warn"
