@@ -15,7 +15,7 @@ import (
 
 type Greeter struct{}
 
-func (g *Greeter) Hello(ctx context.Context, req *pb.Request, rsp *pb.Response) error { // $ serverRequest="SSA def(req)" Source
+func (g *Greeter) Hello(ctx context.Context, req *pb.Request, rsp *pb.Response) error { // $ serverRequest="SSA param(req)" Source
 	// var access
 	name := req.Name
 	fmt.Println("Name :: %s", name) // $ Alert

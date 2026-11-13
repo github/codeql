@@ -108,7 +108,7 @@ DataFlowCallable viableCallable(DataFlowCall ma) {
 }
 
 private int parameterPosition() {
-  result = [-1 .. any(DataFlowCallable c).getType().getNumParameter()]
+  result = [-2 .. any(DataFlowCallable c).getType().getNumParameter()]
 }
 
 /** A parameter position represented by an integer. */

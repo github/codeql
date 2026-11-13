@@ -19,8 +19,12 @@
 | test.go:26:2:26:12 | selection of cptr | test.go:26:2:26:12 | selection of cptr [postupdate] |
 | test.go:28:7:28:10 | struct literal | test.go:28:7:28:10 | struct literal [postupdate] |
 | test.go:29:2:29:2 | c | test.go:29:2:29:2 | c [postupdate] |
+| test.go:29:2:29:4 | selection of m | test.go:29:2:29:4 | selection of m [postupdate] |
 | test.go:29:6:29:6 | a | test.go:29:6:29:6 | a [postupdate] |
 | test.go:30:2:30:2 | c | test.go:30:2:30:2 | c [postupdate] |
+| test.go:30:2:30:5 | selection of mp | test.go:30:2:30:5 | selection of mp [postupdate] |
 | test.go:30:7:30:7 | a | test.go:30:7:30:7 | a [postupdate] |
+| test.go:35:2:35:2 | f | test.go:35:2:35:2 | f [postupdate] |
 | test.go:35:4:35:4 | a | test.go:35:4:35:4 | a [postupdate] |
+| test.go:36:2:36:3 | fp | test.go:36:2:36:3 | fp [postupdate] |
 | test.go:36:5:36:5 | a | test.go:36:5:36:5 | a [postupdate] |
