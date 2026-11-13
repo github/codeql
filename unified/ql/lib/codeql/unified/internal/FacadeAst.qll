@@ -142,7 +142,7 @@ module Unified {
 
   class Argument extends G::Argument {
     /** Gets the name of this argument. */
-    string getName() { result = this.getNameNode().getValue() }
+    string getName() { result = this.getNameNode().getValue() and result != "_" }
 
     /** Holds if this is a positional argument. */
     predicate isPositional() { not exists(this.getName()) }

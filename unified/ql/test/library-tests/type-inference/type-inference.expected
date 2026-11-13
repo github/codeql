@@ -66,6 +66,28 @@ inferCertainType
 | basics.swift:30:5:30:9 | value |  | basics.swift:27:15:27:15 | T |
 | basics.swift:30:13:30:13 | v |  | basics.swift:27:15:27:15 | T |
 | basics.swift:34:12:34:16 | value |  | basics.swift:27:15:27:15 | T |
+| basics.swift:67:21:67:22 | a1 |  | basics.swift:67:11:67:12 | T1 |
+| basics.swift:67:31:67:32 | a2 |  | basics.swift:67:15:67:16 | T2 |
+| basics.swift:68:11:68:12 | Argument |  | basics.swift:67:15:67:16 | T2 |
+| basics.swift:68:11:68:12 | a2 |  | basics.swift:67:15:67:16 | T2 |
+| basics.swift:68:15:68:16 | Argument |  | basics.swift:67:11:67:12 | T1 |
+| basics.swift:68:15:68:16 | a1 |  | basics.swift:67:11:67:12 | T1 |
+| basics.swift:73:10:73:14 | first |  | {EXTERNAL LOCATION} | Function |
+| basics.swift:73:10:73:14 | first | Args | {EXTERNAL LOCATION} | Tuple1 |
+| basics.swift:73:10:73:14 | first | Args.T0 | {EXTERNAL LOCATION} | Int |
+| basics.swift:73:10:73:14 | first | Return | {EXTERNAL LOCATION} | Tuple0 |
+| basics.swift:73:34:73:39 | second |  | {EXTERNAL LOCATION} | Function |
+| basics.swift:73:34:73:39 | second | Args | {EXTERNAL LOCATION} | Tuple1 |
+| basics.swift:73:34:73:39 | second | Args.T0 | {EXTERNAL LOCATION} | String |
+| basics.swift:73:34:73:39 | second | Return | {EXTERNAL LOCATION} | Tuple0 |
+| basics.swift:75:3:76:1 | Argument |  | {EXTERNAL LOCATION} | Function |
+| basics.swift:75:3:76:1 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| basics.swift:75:3:76:1 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| basics.swift:75:3:76:1 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| basics.swift:76:3:77:1 | Argument |  | {EXTERNAL LOCATION} | Function |
+| basics.swift:76:3:77:1 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| basics.swift:76:6:77:1 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| basics.swift:76:6:77:1 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | classes.swift:4:22:4:22 | x |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:5:12:5:12 | x |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:5:16:5:16 | x |  | {EXTERNAL LOCATION} | Int |
@@ -90,6 +112,7 @@ inferCertainType
 | classes.swift:46:12:46:15 | data |  | {EXTERNAL LOCATION} | Array |
 | classes.swift:46:12:46:15 | data | Element | {EXTERNAL LOCATION} | Array |
 | classes.swift:46:12:46:15 | data | Element.Element | {EXTERNAL LOCATION} | Int |
+| classes.swift:51:18:51:39 | Argument |  | {EXTERNAL LOCATION} | Array |
 | classes.swift:51:24:51:39 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | classes.swift:51:25:51:30 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | classes.swift:51:33:51:38 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
@@ -145,10 +168,15 @@ inferCertainType
 | closures.swift:14:5:14:12 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:14:5:14:12 | callback | Args.T0 | closures.swift:13:30:13:31 | T1 |
 | closures.swift:14:5:14:12 | callback | Return | {EXTERNAL LOCATION} | Tuple0 |
+| closures.swift:14:14:14:16 | Argument |  | closures.swift:13:30:13:31 | T1 |
 | closures.swift:14:14:14:16 | arg |  | closures.swift:13:30:13:31 | T1 |
 | closures.swift:15:12:15:14 | arg |  | closures.swift:13:30:13:31 | T1 |
+| closures.swift:19:38:21:5 | Argument |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:19:38:21:5 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:19:38:21:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:19:38:21:5 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:25:9:27:9 | Argument |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:25:9:27:9 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:25:9:27:9 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:25:9:27:9 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:32:9:32:9 | f |  | {EXTERNAL LOCATION} | Function |
@@ -176,12 +204,16 @@ inferCertainType
 | closures.swift:42:19:42:19 | f | Return | {EXTERNAL LOCATION} | Int |
 | closures.swift:45:24:45:28 | value |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:47:9:47:12 | self |  | closures.swift:31:1:50:1 | ClosureField |
+| closures.swift:47:16:47:20 | Argument |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:47:16:47:20 | value |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:48:16:48:19 | self |  | closures.swift:31:1:50:1 | ClosureField |
+| closures.swift:48:24:48:28 | Argument |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:48:24:48:28 | value |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:53:9:53:15 | numbers |  | {EXTERNAL LOCATION} | Array |
 | closures.swift:53:19:53:27 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | closures.swift:55:19:55:25 | numbers |  | {EXTERNAL LOCATION} | Array |
+| closures.swift:55:31:57:5 | Argument |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:55:31:57:5 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:55:31:57:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:55:31:57:5 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:60:22:60:29 | callback |  | {EXTERNAL LOCATION} | Function |
@@ -193,9 +225,24 @@ inferCertainType
 | closures.swift:61:5:61:12 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:61:5:61:12 | callback | Args.T0 | closures.swift:60:12:60:13 | T1 |
 | closures.swift:61:5:61:12 | callback | Return | closures.swift:60:16:60:17 | T2 |
+| closures.swift:61:14:61:16 | Argument |  | closures.swift:60:12:60:13 | T1 |
 | closures.swift:61:14:61:16 | arg |  | closures.swift:60:12:60:13 | T1 |
+| closures.swift:66:9:68:9 | Argument |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:66:9:68:9 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:66:9:68:9 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:66:9:68:9 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:74:5:74:5 | f |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:74:5:74:5 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:74:5:74:5 | f | Args.T0 | closures.swift:72:1:72:15 | Box |
+| closures.swift:74:5:74:5 | f | Args.T0.T | {EXTERNAL LOCATION} | Int |
+| closures.swift:74:5:74:5 | f | Return | {EXTERNAL LOCATION} | Tuple0 |
+| closures.swift:74:29:75:1 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:74:29:75:1 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:77:1:77:1 | f |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:77:1:77:1 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:77:1:77:1 | f | Args.T0 | closures.swift:72:1:72:15 | Box |
+| closures.swift:77:1:77:1 | f | Args.T0.T | {EXTERNAL LOCATION} | Int |
+| closures.swift:77:1:77:1 | f | Return | {EXTERNAL LOCATION} | Tuple0 |
 | constructors.swift:2:12:2:12 | x |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:5:9:5:12 | self |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:24:12:24:12 | x |  | {EXTERNAL LOCATION} | Int |
@@ -206,6 +253,7 @@ inferCertainType
 | constructors.swift:43:22:43:22 | x |  | constructors.swift:38:10:38:11 | T1 |
 | constructors.swift:54:22:54:22 | x |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:55:9:55:12 | self |  | constructors.swift:53:1:57:1 | C8 |
+| constructors.swift:55:19:55:22 | Argument |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:55:22:55:22 | x |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:61:5:61:7 | c91 |  | constructors.swift:59:1:59:19 | C9 |
 | constructors.swift:61:5:61:7 | c91 | T9 | {EXTERNAL LOCATION} | Int |
@@ -218,12 +266,17 @@ inferCertainType
 | constructors.swift:71:9:71:10 | f3 | Args.T0 | constructors.swift:68:11:68:11 | T |
 | constructors.swift:71:9:71:10 | f3 | Return | constructors.swift:68:11:68:11 | T |
 | constructors.swift:71:24:71:29 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:76:19:76:32 | Argument |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:76:19:76:32 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
 | constructors.swift:76:23:76:32 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | constructors.swift:76:23:76:32 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| constructors.swift:77:11:77:24 | Argument |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:77:11:77:24 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
 | constructors.swift:77:15:77:24 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | constructors.swift:77:15:77:24 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | constructors.swift:89:5:89:6 | e2 |  | constructors.swift:87:1:87:27 | E2 |
 | constructors.swift:89:5:89:6 | e2 | B | {EXTERNAL LOCATION} | String |
+| constructors.swift:91:25:91:31 | payload |  | constructors.swift:91:9:91:9 | T |
 | fields.swift:2:7:2:20 | inheritedField |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:6:7:6:17 | storedField |  | {EXTERNAL LOCATION} | String |
 | fields.swift:7:7:7:18 | genericField |  | fields.swift:5:22:5:22 | T |
@@ -241,7 +294,9 @@ inferCertainType
 | generics.swift:4:10:4:10 | x |  | generics.swift:3:15:3:15 | T |
 | generics.swift:7:23:7:23 | a |  | generics.swift:7:15:7:15 | A |
 | generics.swift:7:31:7:31 | b |  | generics.swift:7:18:7:18 | B |
+| generics.swift:8:11:8:11 | Argument |  | generics.swift:7:15:7:15 | A |
 | generics.swift:8:11:8:11 | a |  | generics.swift:7:15:7:15 | A |
+| generics.swift:8:14:8:14 | Argument |  | generics.swift:7:18:7:18 | B |
 | generics.swift:8:14:8:14 | b |  | generics.swift:7:18:7:18 | B |
 | generics.swift:20:7:20:11 | first |  | generics.swift:19:13:19:13 | A |
 | generics.swift:21:7:21:12 | second |  | generics.swift:19:16:19:16 | B |
@@ -272,9 +327,14 @@ inferCertainType
 | generics.swift:70:16:70:24 | transform | Args | {EXTERNAL LOCATION} | Tuple1 |
 | generics.swift:70:16:70:24 | transform | Args.T0 | generics.swift:69:21:69:21 | T |
 | generics.swift:70:16:70:24 | transform | Return | generics.swift:69:24:69:24 | U |
+| generics.swift:70:26:70:30 | Argument |  | generics.swift:69:21:69:21 | T |
 | generics.swift:70:26:70:30 | value |  | generics.swift:69:21:69:21 | T |
+| generics.swift:75:34:75:47 | Argument |  | {EXTERNAL LOCATION} | Function |
+| generics.swift:75:34:75:47 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
 | generics.swift:75:34:75:47 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | generics.swift:75:34:75:47 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| generics.swift:78:5:80:5 | Argument |  | {EXTERNAL LOCATION} | Function |
+| generics.swift:78:5:80:5 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
 | generics.swift:78:5:80:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | generics.swift:78:5:80:5 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | generics.swift:94:7:94:11 | inner |  | generics.swift:93:15:93:27 | T |
@@ -302,11 +362,15 @@ inferCertainType
 | generics.swift:150:12:150:17 | value2 |  | generics.swift:136:16:136:17 | T2 |
 | generics.swift:155:10:155:11 | v1 |  | generics.swift:154:15:154:16 | T1 |
 | generics.swift:155:20:155:21 | v2 |  | generics.swift:154:19:154:20 | T2 |
+| generics.swift:156:16:156:17 | Argument |  | generics.swift:154:19:154:20 | T2 |
 | generics.swift:156:16:156:17 | v2 |  | generics.swift:154:19:154:20 | T2 |
+| generics.swift:156:20:156:21 | Argument |  | generics.swift:154:15:154:16 | T1 |
 | generics.swift:156:20:156:21 | v1 |  | generics.swift:154:15:154:16 | T1 |
 | generics.swift:159:22:159:23 | v1 |  | generics.swift:154:15:154:16 | T1 |
 | generics.swift:165:10:165:10 | v |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:165:10:165:10 | v | Element | generics.swift:164:22:164:22 | D |
+| generics.swift:166:16:166:16 | Argument |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:166:16:166:16 | Argument | Element | generics.swift:164:22:164:22 | D |
 | generics.swift:166:16:166:16 | v |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:166:16:166:16 | v | Element | generics.swift:164:22:164:22 | D |
 | generics.swift:174:38:174:43 | value1 |  | generics.swift:174:10:174:11 | T1 |
@@ -338,8 +402,11 @@ inferCertainType
 | generics.swift:194:45:194:48 | base | T1 | generics.swift:194:11:194:11 | A |
 | generics.swift:194:45:194:48 | base | T2 | {EXTERNAL LOCATION} | Optional |
 | generics.swift:194:45:194:48 | base | T2.Wrapped | generics.swift:194:14:194:14 | B |
+| generics.swift:201:27:201:35 | Argument |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:201:27:201:35 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:205:22:205:24 | Argument |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:205:22:205:24 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:207:15:207:17 | Argument |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:207:15:207:17 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:228:12:228:15 | self |  | generics.swift:220:1:224:1 | MyProtocol2 |
 | generics.swift:228:12:228:15 | self | MyType | generics.swift:221:3:221:23 | MyType |
@@ -411,12 +478,17 @@ inferCertainType
 | key_paths.swift:98:39:98:45 | keyPath | unknown type parameter 1 | key_paths.swift:98:22:98:22 | V |
 | key_paths.swift:99:10:99:14 | items |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:99:10:99:14 | items | Element | key_paths.swift:98:19:98:19 | T |
+| key_paths.swift:99:20:99:43 | Argument |  | {EXTERNAL LOCATION} | Function |
 | key_paths.swift:99:20:99:43 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| key_paths.swift:99:25:99:40 | Argument | unknown type parameter 0 | key_paths.swift:98:19:98:19 | T |
+| key_paths.swift:99:25:99:40 | Argument | unknown type parameter 1 | key_paths.swift:98:22:98:22 | V |
 | key_paths.swift:99:34:99:40 | keyPath | unknown type parameter 0 | key_paths.swift:98:19:98:19 | T |
 | key_paths.swift:99:34:99:40 | keyPath | unknown type parameter 1 | key_paths.swift:98:22:98:22 | V |
 | key_paths.swift:105:7:105:15 | employees |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:105:19:105:26 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| key_paths.swift:106:28:106:36 | Argument |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:106:28:106:36 | employees |  | {EXTERNAL LOCATION} | Array |
+| key_paths.swift:108:31:108:39 | Argument |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:108:31:108:39 | employees |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:115:7:115:10 | item |  | key_paths.swift:114:19:114:19 | T |
 | key_paths.swift:117:8:117:11 | item |  | key_paths.swift:114:19:114:19 | T |
@@ -436,6 +508,7 @@ inferCertainType
 | key_paths.swift:175:23:175:28 | radius |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:176:5:176:8 | self |  | key_paths.swift:172:1:179:1 | Circle2 |
 | key_paths.swift:176:19:176:24 | radius |  | {EXTERNAL LOCATION} | Double |
+| key_paths.swift:177:16:177:27 | Argument |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:177:23:177:27 | color |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:204:7:204:9 | arr |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:204:13:204:24 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
@@ -461,6 +534,7 @@ inferCertainType
 | nested_types.swift:20:13:20:16 | self | (parent:Inner).TOuter | nested_types.swift:13:13:13:18 | TOuter |
 | nested_types.swift:20:13:20:16 | self | TInner | nested_types.swift:14:17:14:22 | TInner |
 | nested_types.swift:20:31:20:40 | outerValue |  | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:21:24:21:44 | Argument |  | nested_types.swift:14:17:14:22 | TInner |
 | nested_types.swift:21:35:21:44 | innerValue |  | nested_types.swift:14:17:14:22 | TInner |
 | nested_types.swift:24:26:24:35 | innerValue |  | nested_types.swift:14:17:14:22 | TInner |
 | nested_types.swift:29:20:29:23 | self |  | nested_types.swift:14:5:47:5 | Outer.Inner |
@@ -488,6 +562,7 @@ inferCertainType
 | nested_types.swift:45:20:45:23 | self | (parent:Inner).TOuter | nested_types.swift:13:13:13:18 | TOuter |
 | nested_types.swift:45:20:45:23 | self | TInner | nested_types.swift:14:17:14:22 | TInner |
 | nested_types.swift:51:29:51:38 | outerValue |  | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:52:37:52:58 | Argument |  | nested_types.swift:13:13:13:18 | TOuter |
 | nested_types.swift:52:49:52:58 | outerValue |  | nested_types.swift:13:13:13:18 | TOuter |
 | nested_types.swift:59:14:59:14 | x |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:59:14:59:14 | x | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
@@ -753,6 +828,7 @@ inferCertainType
 | nested_types.swift:217:19:217:19 | x | (parent:Inner) | nested_types.swift:215:1:220:1 | SubOuter |
 | nested_types.swift:217:19:217:19 | x | (parent:Inner).TSubOuter | nested_types.swift:215:16:215:24 | TSubOuter |
 | nested_types.swift:217:19:217:19 | x | TInner | {EXTERNAL LOCATION} | String |
+| nested_types.swift:222:42:222:57 | Argument |  | {EXTERNAL LOCATION} | Array |
 | nested_types.swift:222:54:222:57 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | nested_types.swift:230:5:230:13 | subInner2 |  | nested_types.swift:49:5:49:50 | Outer.SubInner |
 | nested_types.swift:230:5:230:13 | subInner2 | (parent:SubInner) | nested_types.swift:13:1:130:1 | Outer |
@@ -989,9 +1065,11 @@ inferCertainType
 | overload_resolution.swift:367:17:367:20 | size |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:370:20:370:23 | name |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:371:5:371:8 | self |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:371:15:371:24 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:371:21:371:24 | name |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:374:20:374:23 | size |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:375:5:375:8 | self |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:375:32:375:41 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:375:38:375:41 | size |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:388:16:388:16 | f |  | {EXTERNAL LOCATION} | Function |
 | overload_resolution.swift:388:16:388:16 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
@@ -1019,10 +1097,15 @@ inferCertainType
 | overload_resolution.swift:397:12:397:12 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:397:12:397:12 | f | Args.T1 | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:397:12:397:12 | f | Return | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:403:20:403:33 | Argument |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:403:20:403:33 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
 | overload_resolution.swift:403:20:403:33 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | overload_resolution.swift:403:20:403:33 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:404:20:404:35 | Argument |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:404:20:404:35 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
 | overload_resolution.swift:404:20:404:35 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | overload_resolution.swift:404:20:404:35 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:405:20:405:36 | Argument |  | {EXTERNAL LOCATION} | Function |
 | overload_resolution.swift:405:20:405:36 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | overload_resolution.swift:411:7:411:10 | data |  | {EXTERNAL LOCATION} | Array |
 | overload_resolution.swift:411:7:411:10 | data | Element | {EXTERNAL LOCATION} | Int |
@@ -1033,11 +1116,13 @@ inferCertainType
 | overload_resolution.swift:414:14:414:18 | index |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:415:12:415:15 | data |  | {EXTERNAL LOCATION} | Array |
 | overload_resolution.swift:415:12:415:15 | data | Element | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:415:17:415:21 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:415:17:415:21 | index |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:418:14:418:16 | key |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:419:12:419:15 | dict |  | {EXTERNAL LOCATION} | Dictionary |
 | overload_resolution.swift:419:12:419:15 | dict | Key | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:419:12:419:15 | dict | Value | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:419:17:419:19 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:419:17:419:19 | key |  | {EXTERNAL LOCATION} | String |
 | pattern_matching.swift:1:26:1:29 | pair |  | {EXTERNAL LOCATION} | Tuple2 |
 | pattern_matching.swift:1:26:1:29 | pair | T0 | {EXTERNAL LOCATION} | Int |
@@ -1081,6 +1166,7 @@ inferCertainType
 | protocols.swift:58:12:58:16 | items | Element | {EXTERNAL LOCATION} | Int |
 | protocols.swift:62:12:62:16 | items |  | {EXTERNAL LOCATION} | Array |
 | protocols.swift:62:12:62:16 | items | Element | {EXTERNAL LOCATION} | Int |
+| protocols.swift:67:25:67:40 | Argument |  | {EXTERNAL LOCATION} | Array |
 | protocols.swift:67:32:67:40 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | protocols.swift:83:7:83:10 | name |  | {EXTERNAL LOCATION} | String |
 | protocols.swift:84:7:84:14 | entityId |  | {EXTERNAL LOCATION} | Int |
@@ -1194,15 +1280,19 @@ inferCertainType
 | type_constraints.swift:121:10:121:18 | container |  | type_constraints.swift:120:19:120:37 | C |
 | type_constraints.swift:124:45:124:53 | container |  | type_constraints.swift:124:19:124:37 | C |
 | type_constraints.swift:125:10:125:18 | container |  | type_constraints.swift:124:19:124:37 | C |
+| type_constraints.swift:129:21:129:35 | Argument |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:129:28:129:35 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:130:24:130:45 | Argument |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:130:31:130:45 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:138:7:138:11 | speed |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:140:8:140:12 | speed |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:141:5:141:8 | self |  | type_constraints.swift:137:1:147:1 | Vehicle |
 | type_constraints.swift:141:18:141:22 | speed |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:150:17:150:21 | speed |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:151:16:151:27 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:151:23:151:27 | speed |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:164:17:164:21 | speed |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:165:16:165:27 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:165:23:165:27 | speed |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:177:36:177:36 | v |  | type_constraints.swift:177:22:177:31 | T |
 | type_constraints.swift:178:10:178:10 | v |  | type_constraints.swift:177:22:177:31 | T |
@@ -1218,7 +1308,9 @@ inferCertainType
 | type_constraints.swift:204:19:204:24 | values | Element | type_constraints.swift:200:20:200:20 | T |
 | type_constraints.swift:208:12:208:17 | values |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:208:12:208:17 | values | Element | type_constraints.swift:200:20:200:20 | T |
+| type_constraints.swift:220:28:222:5 | Argument |  | {EXTERNAL LOCATION} | Function |
 | type_constraints.swift:220:35:222:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| type_constraints.swift:227:28:227:44 | Argument |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:227:36:227:44 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:236:33:236:37 | items |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:236:33:236:37 | items | Element | type_constraints.swift:236:18:236:28 | T |
@@ -1228,7 +1320,9 @@ inferCertainType
 | type_constraints.swift:237:23:237:27 | items | Element | type_constraints.swift:236:18:236:28 | T |
 | type_constraints.swift:240:44:240:44 | a |  | type_constraints.swift:240:14:240:25 | A |
 | type_constraints.swift:240:52:240:52 | b |  | type_constraints.swift:240:28:240:39 | B |
+| type_constraints.swift:247:24:247:32 | Argument |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:247:24:247:32 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:248:24:248:38 | Argument |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:248:24:248:38 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:254:29:254:33 | value |  | type_constraints.swift:254:12:254:24 | T |
 | type_constraints.swift:254:43:254:47 | lower |  | type_constraints.swift:254:12:254:24 | T |
@@ -1260,6 +1354,12 @@ inferCertainType
 | variance.swift:11:11:11:53 | FunctionExpr | Return.Tb | {EXTERNAL LOCATION} | String |
 | variance.swift:11:14:11:14 | a |  | variance.swift:3:1:3:14 | A |
 | variance.swift:11:14:11:14 | a | Ta | {EXTERNAL LOCATION} | Int |
+| variance.swift:13:13:13:18 | Argument |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:13:13:13:18 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:13:13:13:18 | Argument | Args.T0 | variance.swift:3:1:3:14 | A |
+| variance.swift:13:13:13:18 | Argument | Args.T0.Ta | {EXTERNAL LOCATION} | Int |
+| variance.swift:13:13:13:18 | Argument | Return | variance.swift:5:1:5:21 | B |
+| variance.swift:13:13:13:18 | Argument | Return.Tb | {EXTERNAL LOCATION} | String |
 | variance.swift:13:16:13:18 | lam |  | {EXTERNAL LOCATION} | Function |
 | variance.swift:13:16:13:18 | lam | Args | {EXTERNAL LOCATION} | Tuple1 |
 | variance.swift:13:16:13:18 | lam | Args.T0 | variance.swift:3:1:3:14 | A |
@@ -1385,6 +1485,7 @@ inferType
 | accessors.swift:120:19:120:34 | GenericAccessors | T | {EXTERNAL LOCATION} | String |
 | accessors.swift:120:19:120:50 | GenericAccessors(...) |  | accessors.swift:79:1:101:1 | GenericAccessors |
 | accessors.swift:120:19:120:50 | GenericAccessors(...) | T | {EXTERNAL LOCATION} | String |
+| accessors.swift:120:36:120:49 | Argument |  | {EXTERNAL LOCATION} | String |
 | accessors.swift:120:43:120:49 | "value" |  | {EXTERNAL LOCATION} | String |
 | accessors.swift:121:7:121:11 | value |  | {EXTERNAL LOCATION} | String |
 | accessors.swift:121:15:121:23 | container |  | accessors.swift:79:1:101:1 | GenericAccessors |
@@ -1395,6 +1496,7 @@ inferType
 | accessors.swift:123:7:123:15 | inherited |  | accessors.swift:103:1:111:1 | InheritedAccessors |
 | accessors.swift:123:19:123:36 | InheritedAccessors |  | accessors.swift:103:1:111:1 | InheritedAccessors |
 | accessors.swift:123:19:123:47 | InheritedAccessors(...) |  | accessors.swift:103:1:111:1 | InheritedAccessors |
+| accessors.swift:123:38:123:46 | Argument |  | {EXTERNAL LOCATION} | Int |
 | accessors.swift:123:45:123:46 | 42 |  | {EXTERNAL LOCATION} | Int |
 | accessors.swift:124:7:124:20 | inheritedValue |  | {EXTERNAL LOCATION} | Int |
 | accessors.swift:124:24:124:32 | inherited |  | accessors.swift:103:1:111:1 | InheritedAccessors |
@@ -1478,6 +1580,7 @@ inferType
 | basics.swift:17:10:19:3 | Block |  | basics.swift:5:1:14:1 | C |
 | basics.swift:18:5:18:9 | super |  | basics.swift:5:1:14:1 | C |
 | basics.swift:18:5:18:20 | ... .init(...) |  | basics.swift:5:1:14:1 | C |
+| basics.swift:18:16:18:19 | Argument |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:18:19:18:19 | 0 |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:21:30:24:3 | Block |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:22:9:22:9 | x |  | {EXTERNAL LOCATION} | Int |
@@ -1497,6 +1600,7 @@ inferType
 | basics.swift:40:5:40:9 | super | T | {EXTERNAL LOCATION} | Int |
 | basics.swift:40:5:40:20 | ... .init(...) |  | basics.swift:27:1:36:1 | Generic |
 | basics.swift:40:5:40:20 | ... .init(...) | T | {EXTERNAL LOCATION} | Int |
+| basics.swift:40:16:40:19 | Argument |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:40:19:40:19 | 0 |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:45:7:45:7 | g |  | basics.swift:27:1:36:1 | Generic |
 | basics.swift:45:7:45:7 | g | T | {EXTERNAL LOCATION} | Int |
@@ -1504,6 +1608,7 @@ inferType
 | basics.swift:45:11:45:17 | Generic | T | {EXTERNAL LOCATION} | Int |
 | basics.swift:45:11:45:24 | Generic(...) |  | basics.swift:27:1:36:1 | Generic |
 | basics.swift:45:11:45:24 | Generic(...) | T | {EXTERNAL LOCATION} | Int |
+| basics.swift:45:19:45:23 | Argument |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:45:22:45:23 | 42 |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:46:7:46:7 | x |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:46:11:46:11 | g |  | basics.swift:27:1:36:1 | Generic |
@@ -1522,10 +1627,55 @@ inferType
 | basics.swift:61:7:61:9 | obj |  | basics.swift:5:1:14:1 | C |
 | basics.swift:61:13:61:13 | C |  | basics.swift:5:1:14:1 | C |
 | basics.swift:61:13:61:20 | C(...) |  | basics.swift:5:1:14:1 | C |
+| basics.swift:61:15:61:19 | Argument |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:61:18:61:19 | 10 |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:62:7:62:7 | d |  | {EXTERNAL LOCATION} | Int |
 | basics.swift:62:11:62:13 | obj |  | basics.swift:5:1:14:1 | C |
 | basics.swift:62:11:62:23 | ... .doubled(...) |  | {EXTERNAL LOCATION} | Int |
+| basics.swift:67:21:67:22 | a1 |  | basics.swift:67:11:67:12 | T1 |
+| basics.swift:67:31:67:32 | a2 |  | basics.swift:67:15:67:16 | T2 |
+| basics.swift:67:51:69:1 | Block |  | {EXTERNAL LOCATION} | Tuple2 |
+| basics.swift:67:51:69:1 | Block | T0 | basics.swift:67:15:67:16 | T2 |
+| basics.swift:67:51:69:1 | Block | T1 | basics.swift:67:11:67:12 | T1 |
+| basics.swift:68:10:68:17 | TupleExpr |  | {EXTERNAL LOCATION} | Tuple2 |
+| basics.swift:68:10:68:17 | TupleExpr | T0 | basics.swift:67:15:67:16 | T2 |
+| basics.swift:68:10:68:17 | TupleExpr | T1 | basics.swift:67:11:67:12 | T1 |
+| basics.swift:68:11:68:12 | Argument |  | basics.swift:67:15:67:16 | T2 |
+| basics.swift:68:11:68:12 | a2 |  | basics.swift:67:15:67:16 | T2 |
+| basics.swift:68:15:68:16 | Argument |  | basics.swift:67:11:67:12 | T1 |
+| basics.swift:68:15:68:16 | a1 |  | basics.swift:67:11:67:12 | T1 |
+| basics.swift:71:5:71:8 | pair |  | {EXTERNAL LOCATION} | Tuple2 |
+| basics.swift:71:5:71:8 | pair | T0 | {EXTERNAL LOCATION} | Bool |
+| basics.swift:71:5:71:8 | pair | T1 | {EXTERNAL LOCATION} | Int |
+| basics.swift:71:12:71:30 | swap(...) |  | {EXTERNAL LOCATION} | Tuple2 |
+| basics.swift:71:12:71:30 | swap(...) | T0 | {EXTERNAL LOCATION} | Bool |
+| basics.swift:71:12:71:30 | swap(...) | T1 | {EXTERNAL LOCATION} | Int |
+| basics.swift:71:17:71:20 | Argument |  | {EXTERNAL LOCATION} | Int |
+| basics.swift:71:20:71:20 | 1 |  | {EXTERNAL LOCATION} | Int |
+| basics.swift:71:23:71:29 | Argument |  | {EXTERNAL LOCATION} | Bool |
+| basics.swift:71:26:71:29 | true |  | {EXTERNAL LOCATION} | Bool |
+| basics.swift:73:10:73:14 | first |  | {EXTERNAL LOCATION} | Function |
+| basics.swift:73:10:73:14 | first | Args | {EXTERNAL LOCATION} | Tuple1 |
+| basics.swift:73:10:73:14 | first | Args.T0 | {EXTERNAL LOCATION} | Int |
+| basics.swift:73:10:73:14 | first | Return | {EXTERNAL LOCATION} | Tuple0 |
+| basics.swift:73:34:73:39 | second |  | {EXTERNAL LOCATION} | Function |
+| basics.swift:73:34:73:39 | second | Args | {EXTERNAL LOCATION} | Tuple1 |
+| basics.swift:73:34:73:39 | second | Args.T0 | {EXTERNAL LOCATION} | String |
+| basics.swift:73:34:73:39 | second | Return | {EXTERNAL LOCATION} | Tuple0 |
+| basics.swift:75:3:76:1 | Argument |  | {EXTERNAL LOCATION} | Function |
+| basics.swift:75:3:76:1 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| basics.swift:75:3:76:1 | Argument | Args.T0 | {EXTERNAL LOCATION} | Int |
+| basics.swift:75:3:76:1 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| basics.swift:75:3:76:1 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| basics.swift:75:3:76:1 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
+| basics.swift:75:5:75:5 | x |  | {EXTERNAL LOCATION} | Int |
+| basics.swift:76:3:77:1 | Argument |  | {EXTERNAL LOCATION} | Function |
+| basics.swift:76:3:77:1 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| basics.swift:76:3:77:1 | Argument | Args.T0 | {EXTERNAL LOCATION} | Int |
+| basics.swift:76:6:77:1 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| basics.swift:76:6:77:1 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| basics.swift:76:6:77:1 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
+| basics.swift:76:8:76:8 | y |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:4:22:4:22 | x |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:4:37:6:3 | Block |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:5:12:5:12 | x |  | {EXTERNAL LOCATION} | Int |
@@ -1540,9 +1690,11 @@ inferType
 | classes.swift:9:20:9:20 | x |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:14:7:14:7 | s |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:14:11:14:32 | ... .square(...) |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:14:28:14:31 | Argument |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:14:31:14:31 | 4 |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:15:7:15:8 | cu |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:15:12:15:31 | ... .cube(...) |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:15:27:15:30 | Argument |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:15:30:15:30 | 3 |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:21:18:21:18 | x |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:21:33:23:3 | Block |  | {EXTERNAL LOCATION} | Int |
@@ -1561,12 +1713,14 @@ inferType
 | classes.swift:32:12:32:24 | ... .process(...) |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:32:12:32:24 | ... .process(...) |  | {EXTERNAL LOCATION} | String |
 | classes.swift:32:22:32:23 | 42 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:32:22:32:23 | Argument |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:33:7:33:8 | r2 |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:33:7:33:8 | r2 |  | {EXTERNAL LOCATION} | String |
 | classes.swift:33:12:33:12 | o |  | classes.swift:20:1:28:1 | Overloaded |
 | classes.swift:33:12:33:29 | ... .process(...) |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:33:12:33:29 | ... .process(...) |  | {EXTERNAL LOCATION} | String |
 | classes.swift:33:22:33:28 | "hello" |  | {EXTERNAL LOCATION} | String |
+| classes.swift:33:22:33:28 | Argument |  | {EXTERNAL LOCATION} | String |
 | classes.swift:39:7:39:10 | data |  | {EXTERNAL LOCATION} | Array |
 | classes.swift:39:7:39:10 | data | Element | {EXTERNAL LOCATION} | Array |
 | classes.swift:39:7:39:10 | data | Element.Element | {EXTERNAL LOCATION} | Int |
@@ -1592,6 +1746,9 @@ inferType
 | classes.swift:51:7:51:7 | m |  | classes.swift:38:1:48:1 | Matrix |
 | classes.swift:51:11:51:16 | Matrix |  | classes.swift:38:1:48:1 | Matrix |
 | classes.swift:51:11:51:40 | Matrix(...) |  | classes.swift:38:1:48:1 | Matrix |
+| classes.swift:51:18:51:39 | Argument |  | {EXTERNAL LOCATION} | Array |
+| classes.swift:51:18:51:39 | Argument | Element | {EXTERNAL LOCATION} | Array |
+| classes.swift:51:18:51:39 | Argument | Element.Element | {EXTERNAL LOCATION} | Int |
 | classes.swift:51:24:51:39 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | classes.swift:51:24:51:39 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Array |
 | classes.swift:51:24:51:39 | ArrayLiteral | Element.Element | {EXTERNAL LOCATION} | Int |
@@ -1624,6 +1781,7 @@ inferType
 | classes.swift:72:15:72:25 | ... .Inner | (parent:Inner) | classes.swift:57:1:69:1 | Outer |
 | classes.swift:72:15:72:36 | ... .Inner(...) |  | classes.swift:58:3:68:3 | Outer.Inner |
 | classes.swift:72:15:72:36 | ... .Inner(...) | (parent:Inner) | classes.swift:57:1:69:1 | Outer |
+| classes.swift:72:27:72:35 | Argument |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:72:34:72:35 | 99 |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:73:7:73:7 | v |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:73:11:73:15 | inner |  | classes.swift:58:3:68:3 | Outer.Inner |
@@ -1654,7 +1812,9 @@ inferType
 | classes.swift:98:16:98:31 | ... .add(...) |  | classes.swift:78:1:94:1 | Builder |
 | classes.swift:98:16:98:39 | ... .build(...) |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:98:22:98:23 | 10 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:98:22:98:23 | Argument |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:98:30:98:30 | 5 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:98:30:98:30 | Argument |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:104:14:104:20 | retries |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:104:29:104:29 | 3 |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:104:32:104:38 | timeout |  | {EXTERNAL LOCATION} | Double |
@@ -1670,11 +1830,14 @@ inferType
 | classes.swift:112:7:112:8 | r2 |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:112:12:112:14 | cfg |  | classes.swift:103:1:107:1 | Config |
 | classes.swift:112:12:112:32 | ... .setup(...) |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:112:22:112:31 | Argument |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:112:31:112:31 | 5 |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:113:7:113:8 | r3 |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:113:12:113:14 | cfg |  | classes.swift:103:1:107:1 | Config |
 | classes.swift:113:12:113:47 | ... .setup(...) |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:113:22:113:31 | Argument |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:113:31:113:31 | 2 |  | {EXTERNAL LOCATION} | Int |
+| classes.swift:113:34:113:46 | Argument |  | {EXTERNAL LOCATION} | Double |
 | classes.swift:113:43:113:46 | 60.0 |  | {EXTERNAL LOCATION} | Double |
 | classes.swift:119:7:119:13 | celsius |  | {EXTERNAL LOCATION} | Double |
 | classes.swift:121:8:121:14 | celsius |  | {EXTERNAL LOCATION} | Double |
@@ -1696,6 +1859,7 @@ inferType
 | classes.swift:135:7:135:7 | t |  | classes.swift:118:1:132:1 | Temperature |
 | classes.swift:135:11:135:21 | Temperature |  | classes.swift:118:1:132:1 | Temperature |
 | classes.swift:135:11:135:37 | Temperature(...) |  | classes.swift:118:1:132:1 | Temperature |
+| classes.swift:135:23:135:36 | Argument |  | {EXTERNAL LOCATION} | Double |
 | classes.swift:135:32:135:36 | 100.0 |  | {EXTERNAL LOCATION} | Double |
 | classes.swift:136:7:136:7 | c |  | {EXTERNAL LOCATION} | Double |
 | classes.swift:136:11:136:11 | t |  | classes.swift:118:1:132:1 | Temperature |
@@ -1747,6 +1911,7 @@ inferType
 | classes.swift:198:7:198:9 | val |  | {EXTERNAL LOCATION} | Int |
 | classes.swift:198:13:198:15 | ctr |  | classes.swift:183:1:193:1 | Counter |
 | classes.swift:198:13:198:26 | ... .getCount(...) |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:1:1:77:8 | Block |  | {EXTERNAL LOCATION} | Tuple0 |
 | closures.swift:1:32:7:1 | Block |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:2:9:2:14 | addOne |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:2:9:2:14 | addOne | Args | {EXTERNAL LOCATION} | Tuple1 |
@@ -1768,6 +1933,7 @@ inferType
 | closures.swift:5:18:5:23 | addOne | Return | {EXTERNAL LOCATION} | Int |
 | closures.swift:5:18:5:27 | addOne(...) |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:5:25:5:26 | 41 |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:5:25:5:26 | Argument |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:6:5:6:5 | _ |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:6:5:6:14 | ... = ... |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:6:9:6:14 | result |  | {EXTERNAL LOCATION} | Int |
@@ -1782,6 +1948,7 @@ inferType
 | closures.swift:10:5:10:12 | callback | Return | {EXTERNAL LOCATION} | String |
 | closures.swift:10:5:10:16 | callback(...) |  | {EXTERNAL LOCATION} | String |
 | closures.swift:10:14:10:15 | 42 |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:10:14:10:15 | Argument |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:13:36:13:43 | callback |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:13:36:13:43 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:13:36:13:43 | callback | Args.T0 | closures.swift:13:30:13:31 | T1 |
@@ -1793,11 +1960,16 @@ inferType
 | closures.swift:14:5:14:12 | callback | Args.T0 | closures.swift:13:30:13:31 | T1 |
 | closures.swift:14:5:14:12 | callback | Return | {EXTERNAL LOCATION} | Tuple0 |
 | closures.swift:14:5:14:17 | callback(...) |  | {EXTERNAL LOCATION} | Tuple0 |
+| closures.swift:14:14:14:16 | Argument |  | closures.swift:13:30:13:31 | T1 |
 | closures.swift:14:14:14:16 | arg |  | closures.swift:13:30:13:31 | T1 |
 | closures.swift:15:12:15:14 | arg |  | closures.swift:13:30:13:31 | T1 |
 | closures.swift:18:32:29:1 | Block |  | {EXTERNAL LOCATION} | Bool |
 | closures.swift:19:9:19:14 | result |  | {EXTERNAL LOCATION} | String |
 | closures.swift:19:18:21:5 | callWithIntCallback(...) |  | {EXTERNAL LOCATION} | String |
+| closures.swift:19:38:21:5 | Argument |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:19:38:21:5 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:19:38:21:5 | Argument | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:19:38:21:5 | Argument | Return | {EXTERNAL LOCATION} | String |
 | closures.swift:19:38:21:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:19:38:21:5 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:19:38:21:5 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
@@ -1806,16 +1978,21 @@ inferType
 | closures.swift:20:9:20:14 | String |  | {EXTERNAL LOCATION} | String |
 | closures.swift:20:9:20:21 | Block |  | {EXTERNAL LOCATION} | String |
 | closures.swift:20:9:20:21 | String(...) |  | {EXTERNAL LOCATION} | String |
+| closures.swift:20:16:20:20 | Argument |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:20:16:20:20 | value |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:22:5:22:5 | _ |  | {EXTERNAL LOCATION} | String |
 | closures.swift:22:5:22:14 | ... = ... |  | {EXTERNAL LOCATION} | String |
 | closures.swift:22:9:22:14 | result |  | {EXTERNAL LOCATION} | String |
 | closures.swift:24:9:24:21 | genericResult |  | {EXTERNAL LOCATION} | Bool |
 | closures.swift:24:25:27:17 | callWithGenericCallback(...) |  | {EXTERNAL LOCATION} | Bool |
+| closures.swift:25:9:27:9 | Argument |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:25:9:27:9 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:25:9:27:9 | Argument | Args.T0 | {EXTERNAL LOCATION} | Bool |
 | closures.swift:25:9:27:9 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:25:9:27:9 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:25:9:27:9 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Bool |
 | closures.swift:25:11:25:15 | value |  | {EXTERNAL LOCATION} | Bool |
+| closures.swift:27:12:27:16 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | closures.swift:27:12:27:16 | false |  | {EXTERNAL LOCATION} | Bool |
 | closures.swift:28:5:28:5 | _ |  | {EXTERNAL LOCATION} | Bool |
 | closures.swift:28:5:28:21 | ... = ... |  | {EXTERNAL LOCATION} | Bool |
@@ -1873,6 +2050,7 @@ inferType
 | closures.swift:47:9:47:14 | ... .f | Args.T0 | {EXTERNAL LOCATION} | Int |
 | closures.swift:47:9:47:14 | ... .f | Return | {EXTERNAL LOCATION} | Int |
 | closures.swift:47:9:47:21 | ... .f(...) |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:47:16:47:20 | Argument |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:47:16:47:20 | value |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:48:16:48:19 | self |  | closures.swift:31:1:50:1 | ClosureField |
 | closures.swift:48:16:48:22 | ... .f2 |  | {EXTERNAL LOCATION} | Function |
@@ -1880,6 +2058,7 @@ inferType
 | closures.swift:48:16:48:22 | ... .f2 | Args.T0 | {EXTERNAL LOCATION} | Int |
 | closures.swift:48:16:48:22 | ... .f2 | Return | {EXTERNAL LOCATION} | Int |
 | closures.swift:48:16:48:29 | ... .f2(...) |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:48:24:48:28 | Argument |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:48:24:48:28 | value |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:53:9:53:15 | numbers |  | {EXTERNAL LOCATION} | Array |
 | closures.swift:53:9:53:15 | numbers | Element | {EXTERNAL LOCATION} | Int |
@@ -1894,6 +2073,10 @@ inferType
 | closures.swift:55:19:55:25 | numbers | Element | {EXTERNAL LOCATION} | Int |
 | closures.swift:55:19:57:5 | ... .map(...) |  | {EXTERNAL LOCATION} | Array |
 | closures.swift:55:19:57:5 | ... .map(...) | Element | {EXTERNAL LOCATION} | String |
+| closures.swift:55:31:57:5 | Argument |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:55:31:57:5 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:55:31:57:5 | Argument | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:55:31:57:5 | Argument | Return | {EXTERNAL LOCATION} | String |
 | closures.swift:55:31:57:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:55:31:57:5 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:55:31:57:5 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
@@ -1902,6 +2085,7 @@ inferType
 | closures.swift:56:9:56:14 | String |  | {EXTERNAL LOCATION} | String |
 | closures.swift:56:9:56:17 | Block |  | {EXTERNAL LOCATION} | String |
 | closures.swift:56:9:56:17 | String(...) |  | {EXTERNAL LOCATION} | String |
+| closures.swift:56:16:56:16 | Argument |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:56:16:56:16 | x |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:60:22:60:29 | callback |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:60:22:60:29 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
@@ -1914,10 +2098,15 @@ inferType
 | closures.swift:61:5:61:12 | callback | Args.T0 | closures.swift:60:12:60:13 | T1 |
 | closures.swift:61:5:61:12 | callback | Return | closures.swift:60:16:60:17 | T2 |
 | closures.swift:61:5:61:17 | callback(...) |  | closures.swift:60:16:60:17 | T2 |
+| closures.swift:61:14:61:16 | Argument |  | closures.swift:60:12:60:13 | T1 |
 | closures.swift:61:14:61:16 | arg |  | closures.swift:60:12:60:13 | T1 |
 | closures.swift:64:18:70:1 | Block |  | {EXTERNAL LOCATION} | String |
 | closures.swift:65:9:65:14 | result |  | {EXTERNAL LOCATION} | String |
 | closures.swift:65:18:68:14 | apply(...) |  | {EXTERNAL LOCATION} | String |
+| closures.swift:66:9:68:9 | Argument |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:66:9:68:9 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:66:9:68:9 | Argument | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:66:9:68:9 | Argument | Return | {EXTERNAL LOCATION} | String |
 | closures.swift:66:9:68:9 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:66:9:68:9 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | closures.swift:66:9:68:9 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
@@ -1926,16 +2115,42 @@ inferType
 | closures.swift:67:13:67:18 | String |  | {EXTERNAL LOCATION} | String |
 | closures.swift:67:13:67:25 | Block |  | {EXTERNAL LOCATION} | String |
 | closures.swift:67:13:67:25 | String(...) |  | {EXTERNAL LOCATION} | String |
+| closures.swift:67:20:67:24 | Argument |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:67:20:67:24 | value |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:68:12:68:13 | 42 |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:68:12:68:13 | Argument |  | {EXTERNAL LOCATION} | Int |
 | closures.swift:69:5:69:5 | _ |  | {EXTERNAL LOCATION} | String |
 | closures.swift:69:5:69:14 | ... = ... |  | {EXTERNAL LOCATION} | String |
 | closures.swift:69:9:69:14 | result |  | {EXTERNAL LOCATION} | String |
+| closures.swift:74:5:74:5 | f |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:74:5:74:5 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:74:5:74:5 | f | Args.T0 | closures.swift:72:1:72:15 | Box |
+| closures.swift:74:5:74:5 | f | Args.T0.T | {EXTERNAL LOCATION} | Int |
+| closures.swift:74:5:74:5 | f | Return | {EXTERNAL LOCATION} | Tuple0 |
+| closures.swift:74:29:75:1 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:74:29:75:1 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:74:29:75:1 | FunctionExpr | Args.T0 | closures.swift:72:1:72:15 | Box |
+| closures.swift:74:29:75:1 | FunctionExpr | Args.T0.T | {EXTERNAL LOCATION} | Int |
+| closures.swift:74:31:74:33 | box |  | closures.swift:72:1:72:15 | Box |
+| closures.swift:74:31:74:33 | box | T | {EXTERNAL LOCATION} | Int |
+| closures.swift:77:1:77:1 | f |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:77:1:77:1 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
+| closures.swift:77:1:77:1 | f | Args.T0 | closures.swift:72:1:72:15 | Box |
+| closures.swift:77:1:77:1 | f | Args.T0.T | {EXTERNAL LOCATION} | Int |
+| closures.swift:77:1:77:1 | f | Return | {EXTERNAL LOCATION} | Tuple0 |
+| closures.swift:77:1:77:8 | f(...) |  | {EXTERNAL LOCATION} | Tuple0 |
+| closures.swift:77:3:77:5 | Box |  | closures.swift:72:1:72:15 | Box |
+| closures.swift:77:3:77:5 | Box | T | {EXTERNAL LOCATION} | Int |
+| closures.swift:77:3:77:7 | Argument |  | closures.swift:72:1:72:15 | Box |
+| closures.swift:77:3:77:7 | Argument | T | {EXTERNAL LOCATION} | Int |
+| closures.swift:77:3:77:7 | Box(...) |  | closures.swift:72:1:72:15 | Box |
+| closures.swift:77:3:77:7 | Box(...) | T | {EXTERNAL LOCATION} | Int |
 | constructors.swift:2:12:2:12 | x |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:4:24:6:5 | Block |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:5:9:5:12 | self |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:5:9:5:20 | ... .init(...) |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:5:19:5:19 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:5:19:5:19 | Argument |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:9:5:9:7 | c11 |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:9:11:9:12 | C1 |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:9:11:9:14 | C1(...) |  | constructors.swift:1:1:7:1 | C1 |
@@ -1959,6 +2174,7 @@ inferType
 | constructors.swift:29:9:29:12 | self |  | constructors.swift:23:1:31:1 | C4 |
 | constructors.swift:29:9:29:20 | ... .init(...) |  | constructors.swift:23:1:31:1 | C4 |
 | constructors.swift:29:19:29:19 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:29:19:29:19 | Argument |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:35:5:35:7 | c51 |  | constructors.swift:33:1:33:15 | C5 |
 | constructors.swift:35:11:35:12 | C5 |  | constructors.swift:33:1:33:15 | C5 |
 | constructors.swift:35:11:35:14 | C5(...) |  | constructors.swift:33:1:33:15 | C5 |
@@ -1966,11 +2182,13 @@ inferType
 | constructors.swift:36:11:36:12 | C5 |  | constructors.swift:33:1:33:15 | C5 |
 | constructors.swift:36:11:36:15 | C5(...) |  | constructors.swift:33:1:33:15 | C5 |
 | constructors.swift:36:14:36:14 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:36:14:36:14 | Argument |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:39:10:39:10 | x |  | constructors.swift:38:10:38:11 | T1 |
 | constructors.swift:39:17:39:17 | y |  | constructors.swift:38:14:38:15 | T2 |
 | constructors.swift:41:18:41:18 | s |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:43:22:43:22 | x |  | constructors.swift:38:10:38:11 | T1 |
 | constructors.swift:44:20:44:60 | "Convenience initializer not implemented" |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:44:20:44:60 | Argument |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:50:5:50:7 | c71 |  | constructors.swift:48:1:48:31 | C7 |
 | constructors.swift:50:5:50:7 | c71 | T3 | {EXTERNAL LOCATION} | Bool |
 | constructors.swift:50:5:50:7 | c71 | T4 | {EXTERNAL LOCATION} | String |
@@ -1980,7 +2198,9 @@ inferType
 | constructors.swift:50:11:50:34 | C7(...) |  | constructors.swift:48:1:48:31 | C7 |
 | constructors.swift:50:11:50:34 | C7(...) | T3 | {EXTERNAL LOCATION} | Bool |
 | constructors.swift:50:11:50:34 | C7(...) | T4 | {EXTERNAL LOCATION} | String |
+| constructors.swift:50:14:50:24 | Argument |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:50:17:50:24 | "string" |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:50:27:50:33 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | constructors.swift:50:30:50:33 | true |  | {EXTERNAL LOCATION} | Bool |
 | constructors.swift:51:5:51:7 | c72 |  | constructors.swift:48:1:48:31 | C7 |
 | constructors.swift:51:5:51:7 | c72 | T3 | {EXTERNAL LOCATION} | Bool |
@@ -1991,12 +2211,15 @@ inferType
 | constructors.swift:51:11:51:27 | ...(...) |  | constructors.swift:48:1:48:31 | C7 |
 | constructors.swift:51:11:51:27 | ...(...) | T3 | {EXTERNAL LOCATION} | Bool |
 | constructors.swift:51:11:51:27 | ...(...) | T4 | {EXTERNAL LOCATION} | Int |
+| constructors.swift:51:23:51:26 | Argument |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:51:26:51:26 | 0 |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:54:22:54:22 | x |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:54:33:56:5 | Block |  | constructors.swift:53:1:57:1 | C8 |
 | constructors.swift:55:9:55:12 | self |  | constructors.swift:53:1:57:1 | C8 |
 | constructors.swift:55:9:55:29 | ... .init(...) |  | constructors.swift:53:1:57:1 | C8 |
+| constructors.swift:55:19:55:22 | Argument |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:55:22:55:22 | x |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:55:25:55:28 | Argument |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:55:28:55:28 | 0 |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:61:5:61:7 | c91 |  | constructors.swift:59:1:59:19 | C9 |
 | constructors.swift:61:5:61:7 | c91 | T9 | {EXTERNAL LOCATION} | Int |
@@ -2004,6 +2227,7 @@ inferType
 | constructors.swift:61:20:61:21 | C9 | T9 | {EXTERNAL LOCATION} | Int |
 | constructors.swift:61:20:61:28 | C9(...) |  | constructors.swift:59:1:59:19 | C9 |
 | constructors.swift:61:20:61:28 | C9(...) | T9 | {EXTERNAL LOCATION} | Int |
+| constructors.swift:61:23:61:27 | Argument |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:61:26:61:27 | "" |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:62:5:62:7 | c92 |  | constructors.swift:59:1:59:19 | C9 |
 | constructors.swift:62:5:62:7 | c92 | T9 | {EXTERNAL LOCATION} | Int |
@@ -2011,6 +2235,7 @@ inferType
 | constructors.swift:62:11:62:17 | GenericTypeExpr | T9 | {EXTERNAL LOCATION} | Int |
 | constructors.swift:62:11:62:24 | ...(...) |  | constructors.swift:59:1:59:19 | C9 |
 | constructors.swift:62:11:62:24 | ...(...) | T9 | {EXTERNAL LOCATION} | Int |
+| constructors.swift:62:19:62:23 | Argument |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:62:22:62:23 | "" |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:66:5:66:7 | c10 |  | constructors.swift:64:1:64:42 | C10 |
 | constructors.swift:66:5:66:7 | c10 | T10a | {EXTERNAL LOCATION} | String |
@@ -2019,6 +2244,7 @@ inferType
 | constructors.swift:66:24:66:26 | C10 | T10a | {EXTERNAL LOCATION} | String |
 | constructors.swift:66:24:66:33 | C10(...) |  | constructors.swift:64:1:64:42 | C10 |
 | constructors.swift:66:24:66:33 | C10(...) | T10a | {EXTERNAL LOCATION} | String |
+| constructors.swift:66:28:66:32 | Argument |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:66:31:66:32 | "" |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:69:9:69:10 | f1 |  | constructors.swift:68:11:68:11 | T |
 | constructors.swift:70:9:70:10 | f2 |  | {EXTERNAL LOCATION} | String |
@@ -2034,6 +2260,7 @@ inferType
 | constructors.swift:74:11:74:12 | S1 | T | {EXTERNAL LOCATION} | Int |
 | constructors.swift:74:11:74:19 | S1(...) |  | constructors.swift:68:1:72:1 | S1 |
 | constructors.swift:74:11:74:19 | S1(...) | T | {EXTERNAL LOCATION} | Int |
+| constructors.swift:74:14:74:18 | Argument |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:74:18:74:18 | 0 |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:75:5:75:7 | s12 |  | constructors.swift:68:1:72:1 | S1 |
 | constructors.swift:75:5:75:7 | s12 | T | {EXTERNAL LOCATION} | Bool |
@@ -2041,14 +2268,22 @@ inferType
 | constructors.swift:75:11:75:12 | S1 | T | {EXTERNAL LOCATION} | Bool |
 | constructors.swift:75:11:75:30 | S1(...) |  | constructors.swift:68:1:72:1 | S1 |
 | constructors.swift:75:11:75:30 | S1(...) | T | {EXTERNAL LOCATION} | Bool |
+| constructors.swift:75:14:75:21 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | constructors.swift:75:18:75:21 | true |  | {EXTERNAL LOCATION} | Bool |
+| constructors.swift:75:24:75:29 | Argument |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:75:28:75:29 | "" |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:76:1:76:2 | S1 |  | constructors.swift:68:1:72:1 | S1 |
 | constructors.swift:76:1:76:2 | S1 | T | {EXTERNAL LOCATION} | Int |
 | constructors.swift:76:1:76:33 | S1(...) |  | constructors.swift:68:1:72:1 | S1 |
 | constructors.swift:76:1:76:33 | S1(...) | T | {EXTERNAL LOCATION} | Int |
+| constructors.swift:76:4:76:8 | Argument |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:76:8:76:8 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:76:11:76:16 | Argument |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:76:15:76:16 | "" |  | {EXTERNAL LOCATION} | String |
+| constructors.swift:76:19:76:32 | Argument |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:76:19:76:32 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| constructors.swift:76:19:76:32 | Argument | Args.T0 | {EXTERNAL LOCATION} | Int |
+| constructors.swift:76:19:76:32 | Argument | Return | {EXTERNAL LOCATION} | Int |
 | constructors.swift:76:23:76:32 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | constructors.swift:76:23:76:32 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | constructors.swift:76:23:76:32 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
@@ -2060,14 +2295,25 @@ inferType
 | constructors.swift:77:1:77:2 | S1 | T | {EXTERNAL LOCATION} | Int |
 | constructors.swift:77:1:77:25 | S1(...) |  | constructors.swift:68:1:72:1 | S1 |
 | constructors.swift:77:1:77:25 | S1(...) | T | {EXTERNAL LOCATION} | Int |
+| constructors.swift:77:4:77:8 | Argument |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:77:8:77:8 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:77:11:77:24 | Argument |  | {EXTERNAL LOCATION} | Function |
+| constructors.swift:77:11:77:24 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| constructors.swift:77:11:77:24 | Argument | Args.T0 | {EXTERNAL LOCATION} | Int |
+| constructors.swift:77:11:77:24 | Argument | Return | {EXTERNAL LOCATION} | Int |
 | constructors.swift:77:15:77:24 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | constructors.swift:77:15:77:24 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| constructors.swift:77:15:77:24 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
+| constructors.swift:77:15:77:24 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
+| constructors.swift:77:17:77:17 | x |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:77:22:77:22 | Block |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:77:22:77:22 | x |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:83:13:83:14 | e1 |  | constructors.swift:79:1:85:1 | E1 |
 | constructors.swift:83:18:83:18 | a |  | constructors.swift:80:10:80:15 | E1.a |
 | constructors.swift:83:18:83:18 | a | (parent:a) | constructors.swift:79:1:85:1 | E1 |
 | constructors.swift:83:18:83:21 | a(...) |  | constructors.swift:79:1:85:1 | E1 |
 | constructors.swift:83:20:83:20 | 0 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:83:20:83:20 | Argument |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:89:5:89:6 | e2 |  | constructors.swift:87:1:87:27 | E2 |
 | constructors.swift:89:5:89:6 | e2 | A | {EXTERNAL LOCATION} | Int |
 | constructors.swift:89:5:89:6 | e2 | B | {EXTERNAL LOCATION} | String |
@@ -2079,6 +2325,17 @@ inferType
 | constructors.swift:89:25:89:31 | ... .a(...) | A | {EXTERNAL LOCATION} | Int |
 | constructors.swift:89:25:89:31 | ... .a(...) | B | {EXTERNAL LOCATION} | String |
 | constructors.swift:89:30:89:30 | 1 |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:89:30:89:30 | Argument |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:91:25:91:31 | payload |  | constructors.swift:91:9:91:9 | T |
+| constructors.swift:93:5:93:6 | e2 |  | constructors.swift:91:1:91:37 | E3 |
+| constructors.swift:93:5:93:6 | e2 | T | {EXTERNAL LOCATION} | Int |
+| constructors.swift:93:10:93:17 | ... .value |  | constructors.swift:91:19:91:35 | E3.value |
+| constructors.swift:93:10:93:17 | ... .value | (parent:value) | constructors.swift:91:1:91:37 | E3 |
+| constructors.swift:93:10:93:17 | ... .value | (parent:value).T | {EXTERNAL LOCATION} | Int |
+| constructors.swift:93:10:93:29 | ... .value(...) |  | constructors.swift:91:1:91:37 | E3 |
+| constructors.swift:93:10:93:29 | ... .value(...) | T | {EXTERNAL LOCATION} | Int |
+| constructors.swift:93:19:93:28 | Argument |  | {EXTERNAL LOCATION} | Int |
+| constructors.swift:93:28:93:28 | 1 |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:2:7:2:20 | inheritedField |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:2:29:2:29 | 0 |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:6:7:6:17 | storedField |  | {EXTERNAL LOCATION} | String |
@@ -2107,6 +2364,7 @@ inferType
 | fields.swift:35:19:35:32 | FieldContainer | T | {EXTERNAL LOCATION} | Int |
 | fields.swift:35:19:35:50 | FieldContainer(...) |  | fields.swift:5:1:20:1 | FieldContainer |
 | fields.swift:35:19:35:50 | FieldContainer(...) | T | {EXTERNAL LOCATION} | Int |
+| fields.swift:35:34:35:49 | Argument |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:35:48:35:49 | 42 |  | {EXTERNAL LOCATION} | Int |
 | fields.swift:36:7:36:12 | stored |  | {EXTERNAL LOCATION} | String |
 | fields.swift:36:16:36:24 | container |  | fields.swift:5:1:20:1 | FieldContainer |
@@ -2125,8 +2383,10 @@ inferType
 | fields.swift:41:7:41:11 | outer |  | fields.swift:30:1:32:1 | OuterField |
 | fields.swift:41:15:41:24 | OuterField |  | fields.swift:30:1:32:1 | OuterField |
 | fields.swift:41:15:41:57 | OuterField(...) |  | fields.swift:30:1:32:1 | OuterField |
+| fields.swift:41:26:41:56 | Argument |  | fields.swift:26:1:28:1 | NestedField |
 | fields.swift:41:34:41:44 | NestedField |  | fields.swift:26:1:28:1 | NestedField |
 | fields.swift:41:34:41:56 | NestedField(...) |  | fields.swift:26:1:28:1 | NestedField |
+| fields.swift:41:46:41:55 | Argument |  | {EXTERNAL LOCATION} | Double |
 | fields.swift:41:53:41:55 | 1.0 |  | {EXTERNAL LOCATION} | Double |
 | fields.swift:42:7:42:17 | nestedValue |  | {EXTERNAL LOCATION} | Double |
 | fields.swift:42:21:42:25 | outer |  | fields.swift:30:1:32:1 | OuterField |
@@ -2143,14 +2403,18 @@ inferType
 | generics.swift:8:10:8:15 | TupleExpr |  | {EXTERNAL LOCATION} | Tuple2 |
 | generics.swift:8:10:8:15 | TupleExpr | T0 | generics.swift:7:15:7:15 | A |
 | generics.swift:8:10:8:15 | TupleExpr | T1 | generics.swift:7:18:7:18 | B |
+| generics.swift:8:11:8:11 | Argument |  | generics.swift:7:15:7:15 | A |
 | generics.swift:8:11:8:11 | a |  | generics.swift:7:15:7:15 | A |
+| generics.swift:8:14:8:14 | Argument |  | generics.swift:7:18:7:18 | B |
 | generics.swift:8:14:8:14 | b |  | generics.swift:7:18:7:18 | B |
 | generics.swift:12:7:12:7 | i |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:12:11:12:22 | identity(...) |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:12:20:12:21 | 42 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:12:20:12:21 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:13:7:13:7 | s |  | {EXTERNAL LOCATION} | String |
 | generics.swift:13:11:13:27 | identity(...) |  | {EXTERNAL LOCATION} | String |
 | generics.swift:13:20:13:26 | "hello" |  | {EXTERNAL LOCATION} | String |
+| generics.swift:13:20:13:26 | Argument |  | {EXTERNAL LOCATION} | String |
 | generics.swift:14:7:14:7 | p |  | {EXTERNAL LOCATION} | Tuple2 |
 | generics.swift:14:7:14:7 | p | T0 | {EXTERNAL LOCATION} | Int |
 | generics.swift:14:7:14:7 | p | T1 | {EXTERNAL LOCATION} | String |
@@ -2158,7 +2422,9 @@ inferType
 | generics.swift:14:11:14:28 | makePair(...) | T0 | {EXTERNAL LOCATION} | Int |
 | generics.swift:14:11:14:28 | makePair(...) | T1 | {EXTERNAL LOCATION} | String |
 | generics.swift:14:20:14:20 | 1 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:14:20:14:20 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:14:23:14:27 | "two" |  | {EXTERNAL LOCATION} | String |
+| generics.swift:14:23:14:27 | Argument |  | {EXTERNAL LOCATION} | String |
 | generics.swift:20:7:20:11 | first |  | generics.swift:19:13:19:13 | A |
 | generics.swift:21:7:21:12 | second |  | generics.swift:19:16:19:16 | B |
 | generics.swift:23:8:23:12 | first |  | generics.swift:19:13:19:13 | A |
@@ -2189,7 +2455,9 @@ inferType
 | generics.swift:38:11:38:37 | Pair(...) |  | generics.swift:19:1:35:1 | Pair |
 | generics.swift:38:11:38:37 | Pair(...) | A | {EXTERNAL LOCATION} | Int |
 | generics.swift:38:11:38:37 | Pair(...) | B | {EXTERNAL LOCATION} | String |
+| generics.swift:38:16:38:23 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:38:23:38:23 | 1 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:38:26:38:36 | Argument |  | {EXTERNAL LOCATION} | String |
 | generics.swift:38:34:38:36 | "x" |  | {EXTERNAL LOCATION} | String |
 | generics.swift:39:7:39:7 | f |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:39:11:39:11 | p |  | generics.swift:19:1:35:1 | Pair |
@@ -2215,6 +2483,7 @@ inferType
 | generics.swift:60:11:60:28 | ... .success(...) |  | generics.swift:45:1:57:1 | Result |
 | generics.swift:60:11:60:28 | ... .success(...) | T | {EXTERNAL LOCATION} | Int |
 | generics.swift:60:26:60:27 | 42 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:60:26:60:27 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:61:7:61:7 | v |  | {EXTERNAL LOCATION} | Optional |
 | generics.swift:61:7:61:7 | v | Wrapped | {EXTERNAL LOCATION} | Int |
 | generics.swift:61:11:61:11 | r |  | generics.swift:45:1:57:1 | Result |
@@ -2224,6 +2493,7 @@ inferType
 | generics.swift:63:7:63:8 | r2 |  | generics.swift:45:1:57:1 | Result |
 | generics.swift:63:7:63:8 | r2 | T | {EXTERNAL LOCATION} | Int |
 | generics.swift:63:34:63:35 | 42 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:63:34:63:35 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:64:7:64:8 | v2 |  | {EXTERNAL LOCATION} | Optional |
 | generics.swift:64:7:64:8 | v2 | Wrapped | {EXTERNAL LOCATION} | Int |
 | generics.swift:64:12:64:13 | r2 |  | generics.swift:45:1:57:1 | Result |
@@ -2242,11 +2512,17 @@ inferType
 | generics.swift:70:16:70:24 | transform | Args.T0 | generics.swift:69:21:69:21 | T |
 | generics.swift:70:16:70:24 | transform | Return | generics.swift:69:24:69:24 | U |
 | generics.swift:70:16:70:31 | transform(...) |  | generics.swift:69:24:69:24 | U |
+| generics.swift:70:26:70:30 | Argument |  | generics.swift:69:21:69:21 | T |
 | generics.swift:70:26:70:30 | value |  | generics.swift:69:21:69:21 | T |
 | generics.swift:71:10:71:15 | result |  | generics.swift:69:24:69:24 | U |
 | generics.swift:75:7:75:12 | result |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:75:16:75:48 | applyTransform(...) |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:75:31:75:31 | 5 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:75:31:75:31 | Argument |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:75:34:75:47 | Argument |  | {EXTERNAL LOCATION} | Function |
+| generics.swift:75:34:75:47 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| generics.swift:75:34:75:47 | Argument | Args.T0 | {EXTERNAL LOCATION} | Int |
+| generics.swift:75:34:75:47 | Argument | Return | {EXTERNAL LOCATION} | Int |
 | generics.swift:75:34:75:47 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | generics.swift:75:34:75:47 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | generics.swift:75:34:75:47 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
@@ -2259,6 +2535,11 @@ inferType
 | generics.swift:76:7:76:13 | strings |  | {EXTERNAL LOCATION} | String |
 | generics.swift:76:17:80:6 | applyTransform(...) |  | {EXTERNAL LOCATION} | String |
 | generics.swift:77:5:77:6 | 10 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:77:5:77:6 | Argument |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:78:5:80:5 | Argument |  | {EXTERNAL LOCATION} | Function |
+| generics.swift:78:5:80:5 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| generics.swift:78:5:80:5 | Argument | Args.T0 | {EXTERNAL LOCATION} | Int |
+| generics.swift:78:5:80:5 | Argument | Return | {EXTERNAL LOCATION} | String |
 | generics.swift:78:5:80:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | generics.swift:78:5:80:5 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | generics.swift:78:5:80:5 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
@@ -2267,6 +2548,7 @@ inferType
 | generics.swift:79:12:79:17 | String |  | {EXTERNAL LOCATION} | String |
 | generics.swift:79:12:79:20 | Block |  | {EXTERNAL LOCATION} | String |
 | generics.swift:79:12:79:20 | String(...) |  | {EXTERNAL LOCATION} | String |
+| generics.swift:79:19:79:19 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:79:19:79:19 | x |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:94:7:94:11 | inner |  | generics.swift:93:15:93:27 | T |
 | generics.swift:96:10:96:14 | inner |  | generics.swift:93:15:93:27 | T |
@@ -2293,6 +2575,7 @@ inferType
 | generics.swift:128:11:128:21 | Wrapper(...) |  | generics.swift:93:1:113:1 | Wrapper |
 | generics.swift:128:11:128:21 | Wrapper(...) | T | {EXTERNAL LOCATION} | Int |
 | generics.swift:128:19:128:20 | 42 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:128:19:128:20 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:129:7:129:7 | v |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:129:11:129:11 | w |  | generics.swift:93:1:113:1 | Wrapper |
 | generics.swift:129:11:129:11 | w | T | {EXTERNAL LOCATION} | Int |
@@ -2335,7 +2618,9 @@ inferType
 | generics.swift:156:5:156:22 | ... .init(...) |  | generics.swift:136:1:152:1 | Base |
 | generics.swift:156:5:156:22 | ... .init(...) | T1 | generics.swift:154:19:154:20 | T2 |
 | generics.swift:156:5:156:22 | ... .init(...) | T2 | generics.swift:154:15:154:16 | T1 |
+| generics.swift:156:16:156:17 | Argument |  | generics.swift:154:19:154:20 | T2 |
 | generics.swift:156:16:156:17 | v2 |  | generics.swift:154:19:154:20 | T2 |
+| generics.swift:156:20:156:21 | Argument |  | generics.swift:154:15:154:16 | T1 |
 | generics.swift:156:20:156:21 | v1 |  | generics.swift:154:15:154:16 | T1 |
 | generics.swift:159:22:159:23 | v1 |  | generics.swift:154:15:154:16 | T1 |
 | generics.swift:165:10:165:10 | v |  | {EXTERNAL LOCATION} | Array |
@@ -2352,8 +2637,11 @@ inferType
 | generics.swift:166:5:166:23 | ... .init(...) | T1 | {EXTERNAL LOCATION} | Array |
 | generics.swift:166:5:166:23 | ... .init(...) | T1.Element | generics.swift:164:22:164:22 | D |
 | generics.swift:166:5:166:23 | ... .init(...) | T2 | {EXTERNAL LOCATION} | Bool |
+| generics.swift:166:16:166:16 | Argument |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:166:16:166:16 | Argument | Element | generics.swift:164:22:164:22 | D |
 | generics.swift:166:16:166:16 | v |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:166:16:166:16 | v | Element | generics.swift:164:22:164:22 | D |
+| generics.swift:166:19:166:22 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:166:19:166:22 | true |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:174:38:174:43 | value1 |  | generics.swift:174:10:174:11 | T1 |
 | generics.swift:174:52:174:57 | value2 |  | generics.swift:174:14:174:15 | T2 |
@@ -2397,7 +2685,9 @@ inferType
 | generics.swift:197:11:197:25 | Derived(...) | T1 | {EXTERNAL LOCATION} | Int |
 | generics.swift:197:11:197:25 | Derived(...) | T2 | {EXTERNAL LOCATION} | String |
 | generics.swift:197:19:197:19 | 1 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:197:19:197:19 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:197:22:197:24 | "x" |  | {EXTERNAL LOCATION} | String |
+| generics.swift:197:22:197:24 | Argument |  | {EXTERNAL LOCATION} | String |
 | generics.swift:198:7:198:8 | v1 |  | {EXTERNAL LOCATION} | String |
 | generics.swift:198:12:198:12 | d |  | generics.swift:154:1:162:1 | Derived |
 | generics.swift:198:12:198:12 | d | T1 | {EXTERNAL LOCATION} | Int |
@@ -2414,6 +2704,8 @@ inferType
 | generics.swift:201:12:201:25 | DerivedDerived | D | {EXTERNAL LOCATION} | String |
 | generics.swift:201:12:201:36 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:201:12:201:36 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | String |
+| generics.swift:201:27:201:35 | Argument |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:201:27:201:35 | Argument | Element | {EXTERNAL LOCATION} | String |
 | generics.swift:201:27:201:35 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:201:27:201:35 | ArrayLiteral | Element | {EXTERNAL LOCATION} | String |
 | generics.swift:201:28:201:34 | "hello" |  | {EXTERNAL LOCATION} | String |
@@ -2431,44 +2723,70 @@ inferType
 | generics.swift:205:7:205:7 | x | D | {EXTERNAL LOCATION} | Int |
 | generics.swift:205:11:205:45 | foo(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:205:11:205:45 | foo(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:205:15:205:19 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:205:15:205:19 | false |  | {EXTERNAL LOCATION} | Bool |
+| generics.swift:205:22:205:24 | Argument |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:205:22:205:24 | Argument | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:205:22:205:24 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:205:22:205:24 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:205:23:205:23 | 2 |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:205:27:205:40 | DerivedDerived |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:205:27:205:40 | DerivedDerived | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:205:27:205:44 | Argument |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:205:27:205:44 | Argument | D | {EXTERNAL LOCATION} | Int |
 | generics.swift:205:27:205:44 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:205:27:205:44 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:205:42:205:43 | Argument |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:205:42:205:43 | Argument | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:205:42:205:43 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:205:42:205:43 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
+| generics.swift:207:8:207:12 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:207:8:207:12 | false |  | {EXTERNAL LOCATION} | Bool |
+| generics.swift:207:15:207:17 | Argument |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:207:15:207:17 | Argument | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:207:15:207:17 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:207:15:207:17 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:207:16:207:16 | 2 |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:207:20:207:33 | DerivedDerived |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:207:20:207:33 | DerivedDerived | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:207:20:207:37 | Argument |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:207:20:207:37 | Argument | D | {EXTERNAL LOCATION} | Int |
 | generics.swift:207:20:207:37 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:207:20:207:37 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:207:35:207:36 | Argument |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:207:35:207:36 | Argument | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:207:35:207:36 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:207:35:207:36 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:209:7:209:7 | y |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:209:7:209:7 | y | D | {EXTERNAL LOCATION} | Int |
 | generics.swift:209:11:209:43 | bar(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:209:11:209:43 | bar(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:209:15:209:19 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:209:15:209:19 | false |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:209:22:209:22 | 2 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:209:22:209:22 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:209:25:209:38 | DerivedDerived |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:209:25:209:38 | DerivedDerived | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:209:25:209:42 | Argument |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:209:25:209:42 | Argument | D | {EXTERNAL LOCATION} | Int |
 | generics.swift:209:25:209:42 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:209:25:209:42 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:209:40:209:41 | Argument |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:209:40:209:41 | Argument | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:209:40:209:41 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:209:40:209:41 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
+| generics.swift:211:8:211:12 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:211:8:211:12 | false |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:211:15:211:15 | 2 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:211:15:211:15 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:211:18:211:31 | DerivedDerived |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:211:18:211:31 | DerivedDerived | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:211:18:211:35 | Argument |  | generics.swift:164:1:172:1 | DerivedDerived |
+| generics.swift:211:18:211:35 | Argument | D | {EXTERNAL LOCATION} | Int |
 | generics.swift:211:18:211:35 | DerivedDerived(...) |  | generics.swift:164:1:172:1 | DerivedDerived |
 | generics.swift:211:18:211:35 | DerivedDerived(...) | D | {EXTERNAL LOCATION} | Int |
+| generics.swift:211:33:211:34 | Argument |  | {EXTERNAL LOCATION} | Array |
+| generics.swift:211:33:211:34 | Argument | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:211:33:211:34 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:211:33:211:34 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | generics.swift:213:7:213:7 | w |  | generics.swift:154:1:162:1 | Derived |
@@ -2479,30 +2797,46 @@ inferType
 | generics.swift:213:11:213:47 | baz(...) | T1 | {EXTERNAL LOCATION} | Optional |
 | generics.swift:213:11:213:47 | baz(...) | T1.Wrapped | {EXTERNAL LOCATION} | Int |
 | generics.swift:213:11:213:47 | baz(...) | T2 | {EXTERNAL LOCATION} | Bool |
+| generics.swift:213:15:213:19 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:213:15:213:19 | false |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:213:22:213:22 | 2 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:213:22:213:22 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:213:25:213:31 | Derived |  | generics.swift:154:1:162:1 | Derived |
 | generics.swift:213:25:213:31 | Derived | T1 | {EXTERNAL LOCATION} | Optional |
 | generics.swift:213:25:213:31 | Derived | T1.Wrapped | {EXTERNAL LOCATION} | Int |
 | generics.swift:213:25:213:31 | Derived | T2 | {EXTERNAL LOCATION} | Bool |
+| generics.swift:213:25:213:46 | Argument |  | generics.swift:154:1:162:1 | Derived |
+| generics.swift:213:25:213:46 | Argument | T1 | {EXTERNAL LOCATION} | Optional |
+| generics.swift:213:25:213:46 | Argument | T1.Wrapped | {EXTERNAL LOCATION} | Int |
+| generics.swift:213:25:213:46 | Argument | T2 | {EXTERNAL LOCATION} | Bool |
 | generics.swift:213:25:213:46 | Derived(...) |  | generics.swift:154:1:162:1 | Derived |
 | generics.swift:213:25:213:46 | Derived(...) | T1 | {EXTERNAL LOCATION} | Optional |
 | generics.swift:213:25:213:46 | Derived(...) | T1.Wrapped | {EXTERNAL LOCATION} | Int |
 | generics.swift:213:25:213:46 | Derived(...) | T2 | {EXTERNAL LOCATION} | Bool |
 | generics.swift:213:33:213:45 | ... .none |  | {EXTERNAL LOCATION} | Optional |
 | generics.swift:213:33:213:45 | ... .none | Wrapped | {EXTERNAL LOCATION} | Int |
+| generics.swift:213:33:213:45 | Argument |  | {EXTERNAL LOCATION} | Optional |
+| generics.swift:213:33:213:45 | Argument | Wrapped | {EXTERNAL LOCATION} | Int |
+| generics.swift:215:8:215:12 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:215:8:215:12 | false |  | {EXTERNAL LOCATION} | Bool |
 | generics.swift:215:15:215:15 | 2 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:215:15:215:15 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:215:18:215:24 | Derived |  | generics.swift:154:1:162:1 | Derived |
 | generics.swift:215:18:215:24 | Derived | T1 | {EXTERNAL LOCATION} | Optional |
 | generics.swift:215:18:215:24 | Derived | T1.Wrapped | {EXTERNAL LOCATION} | Int |
 | generics.swift:215:18:215:24 | Derived | T2 | {EXTERNAL LOCATION} | Bool |
+| generics.swift:215:18:215:39 | Argument |  | generics.swift:154:1:162:1 | Derived |
+| generics.swift:215:18:215:39 | Argument | T1 | {EXTERNAL LOCATION} | Optional |
+| generics.swift:215:18:215:39 | Argument | T1.Wrapped | {EXTERNAL LOCATION} | Int |
+| generics.swift:215:18:215:39 | Argument | T2 | {EXTERNAL LOCATION} | Bool |
 | generics.swift:215:18:215:39 | Derived(...) |  | generics.swift:154:1:162:1 | Derived |
 | generics.swift:215:18:215:39 | Derived(...) | T1 | {EXTERNAL LOCATION} | Optional |
 | generics.swift:215:18:215:39 | Derived(...) | T1.Wrapped | {EXTERNAL LOCATION} | Int |
 | generics.swift:215:18:215:39 | Derived(...) | T2 | {EXTERNAL LOCATION} | Bool |
 | generics.swift:215:26:215:38 | ... .none |  | {EXTERNAL LOCATION} | Optional |
 | generics.swift:215:26:215:38 | ... .none | Wrapped | {EXTERNAL LOCATION} | Int |
+| generics.swift:215:26:215:38 | Argument |  | {EXTERNAL LOCATION} | Optional |
+| generics.swift:215:26:215:38 | Argument | Wrapped | {EXTERNAL LOCATION} | Int |
 | generics.swift:227:22:229:3 | Block |  | generics.swift:220:1:224:1 | MyProtocol2 |
 | generics.swift:227:22:229:3 | Block | MyType | generics.swift:221:3:221:23 | MyType |
 | generics.swift:228:12:228:15 | self |  | generics.swift:220:1:224:1 | MyProtocol2 |
@@ -2528,10 +2862,13 @@ inferType
 | generics.swift:257:11:257:21 | MyClass(...) |  | generics.swift:232:1:238:1 | MyClass |
 | generics.swift:257:11:257:21 | MyClass(...) | T | {EXTERNAL LOCATION} | Int |
 | generics.swift:257:19:257:20 | 42 |  | {EXTERNAL LOCATION} | Int |
+| generics.swift:257:19:257:20 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:258:11:258:11 | c |  | generics.swift:232:1:238:1 | MyClass |
 | generics.swift:258:11:258:11 | c | T | {EXTERNAL LOCATION} | Int |
 | generics.swift:259:11:259:11 | c |  | generics.swift:232:1:238:1 | MyClass |
 | generics.swift:259:11:259:11 | c | T | {EXTERNAL LOCATION} | Int |
+| generics.swift:260:20:260:20 | Argument |  | generics.swift:232:1:238:1 | MyClass |
+| generics.swift:260:20:260:20 | Argument | T | {EXTERNAL LOCATION} | Int |
 | generics.swift:260:20:260:20 | c |  | generics.swift:232:1:238:1 | MyClass |
 | generics.swift:260:20:260:20 | c | T | {EXTERNAL LOCATION} | Int |
 | generics.swift:278:30:280:3 | Block |  | {EXTERNAL LOCATION} | String |
@@ -2541,6 +2878,7 @@ inferType
 | generics.swift:287:65:287:69 | value |  | generics.swift:287:33:287:60 | T |
 | generics.swift:288:10:288:14 | value |  | generics.swift:287:33:287:60 | T |
 | generics.swift:292:42:292:61 | StringAssociatedType |  | generics.swift:275:1:285:1 | StringAssociatedType |
+| generics.swift:292:42:292:63 | Argument |  | generics.swift:275:1:285:1 | StringAssociatedType |
 | generics.swift:292:42:292:63 | StringAssociatedType(...) |  | generics.swift:275:1:285:1 | StringAssociatedType |
 | generics.swift:306:25:308:3 | Block |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:307:12:307:13 | 42 |  | {EXTERNAL LOCATION} | Int |
@@ -2549,6 +2887,7 @@ inferType
 | generics.swift:316:7:316:11 | value |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:316:15:316:66 | getPrimaryAssociatedType(...) |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:316:40:316:63 | IntPrimaryAssociatedType |  | generics.swift:303:1:309:1 | IntPrimaryAssociatedType |
+| generics.swift:316:40:316:65 | Argument |  | generics.swift:303:1:309:1 | IntPrimaryAssociatedType |
 | generics.swift:316:40:316:65 | IntPrimaryAssociatedType(...) |  | generics.swift:303:1:309:1 | IntPrimaryAssociatedType |
 | generics.swift:319:5:319:5 | x |  | {EXTERNAL LOCATION} | Array |
 | generics.swift:319:5:319:5 | x | Element | {EXTERNAL LOCATION} | Int |
@@ -2592,24 +2931,32 @@ inferType
 | key_paths.swift:31:7:31:7 | p |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:31:11:31:15 | Point |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:31:11:31:31 | Point(...) |  | key_paths.swift:3:1:15:1 | Point |
+| key_paths.swift:31:17:31:22 | Argument |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:31:20:31:22 | 3.0 |  | {EXTERNAL LOCATION} | Double |
+| key_paths.swift:31:25:31:30 | Argument |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:31:28:31:30 | 4.0 |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:32:14:32:14 | p |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:33:14:33:14 | p |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:42:7:42:7 | s |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:42:11:42:15 | Point |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:42:11:42:31 | Point(...) |  | key_paths.swift:3:1:15:1 | Point |
+| key_paths.swift:42:17:42:22 | Argument |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:42:20:42:22 | 0.0 |  | {EXTERNAL LOCATION} | Double |
+| key_paths.swift:42:25:42:30 | Argument |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:42:28:42:30 | 0.0 |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:43:7:43:7 | e |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:43:11:43:15 | Point |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:43:11:43:31 | Point(...) |  | key_paths.swift:3:1:15:1 | Point |
+| key_paths.swift:43:17:43:22 | Argument |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:43:20:43:22 | 1.0 |  | {EXTERNAL LOCATION} | Double |
+| key_paths.swift:43:25:43:30 | Argument |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:43:28:43:30 | 1.0 |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:44:7:44:10 | line |  | key_paths.swift:17:1:25:1 | Line |
 | key_paths.swift:44:14:44:17 | Line |  | key_paths.swift:17:1:25:1 | Line |
 | key_paths.swift:44:14:44:35 | Line(...) |  | key_paths.swift:17:1:25:1 | Line |
+| key_paths.swift:44:19:44:26 | Argument |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:44:26:44:26 | s |  | key_paths.swift:3:1:15:1 | Point |
+| key_paths.swift:44:29:44:34 | Argument |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:44:34:44:34 | e |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:45:16:45:19 | line |  | key_paths.swift:17:1:25:1 | Line |
 | key_paths.swift:46:14:46:17 | line |  | key_paths.swift:17:1:25:1 | Line |
@@ -2649,12 +2996,16 @@ inferType
 | key_paths.swift:80:7:80:10 | addr |  | key_paths.swift:68:1:76:1 | Address |
 | key_paths.swift:80:14:80:20 | Address |  | key_paths.swift:68:1:76:1 | Address |
 | key_paths.swift:80:14:80:47 | Address(...) |  | key_paths.swift:68:1:76:1 | Address |
+| key_paths.swift:80:22:80:32 | Argument |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:80:28:80:32 | "NYC" |  | {EXTERNAL LOCATION} | String |
+| key_paths.swift:80:35:80:46 | Argument |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:80:40:80:46 | "10001" |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:81:7:81:12 | person |  | key_paths.swift:58:1:66:1 | Person |
 | key_paths.swift:81:16:81:21 | Person |  | key_paths.swift:58:1:66:1 | Person |
 | key_paths.swift:81:16:81:51 | Person(...) |  | key_paths.swift:58:1:66:1 | Person |
+| key_paths.swift:81:23:81:35 | Argument |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:81:29:81:35 | "Alice" |  | {EXTERNAL LOCATION} | String |
+| key_paths.swift:81:38:81:50 | Argument |  | key_paths.swift:68:1:76:1 | Address |
 | key_paths.swift:81:47:81:50 | addr |  | key_paths.swift:68:1:76:1 | Address |
 | key_paths.swift:83:14:83:19 | person |  | key_paths.swift:58:1:66:1 | Person |
 | key_paths.swift:89:7:89:10 | name |  | {EXTERNAL LOCATION} | String |
@@ -2678,18 +3029,25 @@ inferType
 | key_paths.swift:99:10:99:14 | items |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:99:10:99:14 | items | Element | key_paths.swift:98:19:98:19 | T |
 | key_paths.swift:99:10:99:43 | ... .map(...) |  | {EXTERNAL LOCATION} | Array |
+| key_paths.swift:99:20:99:43 | Argument |  | {EXTERNAL LOCATION} | Function |
 | key_paths.swift:99:20:99:43 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| key_paths.swift:99:25:99:40 | Argument | unknown type parameter 0 | key_paths.swift:98:19:98:19 | T |
+| key_paths.swift:99:25:99:40 | Argument | unknown type parameter 1 | key_paths.swift:98:22:98:22 | V |
 | key_paths.swift:99:34:99:40 | keyPath | unknown type parameter 0 | key_paths.swift:98:19:98:19 | T |
 | key_paths.swift:99:34:99:40 | keyPath | unknown type parameter 1 | key_paths.swift:98:22:98:22 | V |
 | key_paths.swift:103:7:103:8 | e1 |  | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:103:12:103:19 | Employee |  | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:103:12:103:47 | Employee(...) |  | key_paths.swift:88:1:96:1 | Employee |
+| key_paths.swift:103:21:103:33 | Argument |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:103:27:103:33 | "Alice" |  | {EXTERNAL LOCATION} | String |
+| key_paths.swift:103:36:103:46 | Argument |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:103:44:103:46 | 100 |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:104:7:104:8 | e2 |  | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:104:12:104:19 | Employee |  | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:104:12:104:45 | Employee(...) |  | key_paths.swift:88:1:96:1 | Employee |
+| key_paths.swift:104:21:104:31 | Argument |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:104:27:104:31 | "Bob" |  | {EXTERNAL LOCATION} | String |
+| key_paths.swift:104:34:104:44 | Argument |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:104:42:104:44 | 200 |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:105:7:105:15 | employees |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:105:7:105:15 | employees | Element | key_paths.swift:88:1:96:1 | Employee |
@@ -2699,16 +3057,22 @@ inferType
 | key_paths.swift:105:24:105:25 | e2 |  | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:106:7:106:11 | names |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:106:15:106:54 | extractField(...) |  | {EXTERNAL LOCATION} | Array |
+| key_paths.swift:106:28:106:36 | Argument |  | {EXTERNAL LOCATION} | Array |
+| key_paths.swift:106:28:106:36 | Argument | Element | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:106:28:106:36 | employees |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:106:28:106:36 | employees | Element | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:107:14:107:18 | names |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:107:20:107:20 | 0 |  | {EXTERNAL LOCATION} | Int |
+| key_paths.swift:107:20:107:20 | Argument |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:108:7:108:14 | salaries |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:108:18:108:59 | extractField(...) |  | {EXTERNAL LOCATION} | Array |
+| key_paths.swift:108:31:108:39 | Argument |  | {EXTERNAL LOCATION} | Array |
+| key_paths.swift:108:31:108:39 | Argument | Element | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:108:31:108:39 | employees |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:108:31:108:39 | employees | Element | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:109:16:109:23 | salaries |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:109:25:109:25 | 0 |  | {EXTERNAL LOCATION} | Int |
+| key_paths.swift:109:25:109:25 | Argument |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:115:7:115:10 | item |  | key_paths.swift:114:19:114:19 | T |
 | key_paths.swift:117:8:117:11 | item |  | key_paths.swift:114:19:114:19 | T |
 | key_paths.swift:117:17:119:3 | Block |  | key_paths.swift:114:19:114:19 | T |
@@ -2723,13 +3087,16 @@ inferType
 | key_paths.swift:124:11:124:21 | KPContainer | T | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:124:11:124:31 | KPContainer(...) |  | key_paths.swift:114:1:120:1 | KPContainer |
 | key_paths.swift:124:11:124:31 | KPContainer(...) | T | {EXTERNAL LOCATION} | Int |
+| key_paths.swift:124:23:124:30 | Argument |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:124:29:124:30 | 42 |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:125:11:125:11 | c |  | key_paths.swift:114:1:120:1 | KPContainer |
 | key_paths.swift:125:11:125:11 | c | T | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:131:7:131:7 | p |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:131:11:131:15 | Point |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:131:11:131:31 | Point(...) |  | key_paths.swift:3:1:15:1 | Point |
+| key_paths.swift:131:17:131:22 | Argument |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:131:20:131:22 | 1.0 |  | {EXTERNAL LOCATION} | Double |
+| key_paths.swift:131:25:131:30 | Argument |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:131:28:131:30 | 2.0 |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:133:3:133:3 | p |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:133:3:133:17 | p(...) |  | {EXTERNAL LOCATION} | Double |
@@ -2739,28 +3106,38 @@ inferType
 | key_paths.swift:144:7:144:7 | s |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:144:11:144:15 | Point |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:144:11:144:31 | Point(...) |  | key_paths.swift:3:1:15:1 | Point |
+| key_paths.swift:144:17:144:22 | Argument |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:144:20:144:22 | 5.0 |  | {EXTERNAL LOCATION} | Double |
+| key_paths.swift:144:25:144:30 | Argument |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:144:28:144:30 | 6.0 |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:145:7:145:7 | e |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:145:11:145:15 | Point |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:145:11:145:31 | Point(...) |  | key_paths.swift:3:1:15:1 | Point |
+| key_paths.swift:145:17:145:22 | Argument |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:145:20:145:22 | 7.0 |  | {EXTERNAL LOCATION} | Double |
+| key_paths.swift:145:25:145:30 | Argument |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:145:28:145:30 | 8.0 |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:146:7:146:10 | line |  | key_paths.swift:17:1:25:1 | Line |
 | key_paths.swift:146:14:146:17 | Line |  | key_paths.swift:17:1:25:1 | Line |
 | key_paths.swift:146:14:146:35 | Line(...) |  | key_paths.swift:17:1:25:1 | Line |
+| key_paths.swift:146:19:146:26 | Argument |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:146:26:146:26 | s |  | key_paths.swift:3:1:15:1 | Point |
+| key_paths.swift:146:29:146:34 | Argument |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:146:34:146:34 | e |  | key_paths.swift:3:1:15:1 | Point |
 | key_paths.swift:147:13:147:16 | line |  | key_paths.swift:17:1:25:1 | Line |
 | key_paths.swift:153:7:153:8 | e1 |  | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:153:12:153:19 | Employee |  | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:153:12:153:47 | Employee(...) |  | key_paths.swift:88:1:96:1 | Employee |
+| key_paths.swift:153:21:153:33 | Argument |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:153:27:153:33 | "Alice" |  | {EXTERNAL LOCATION} | String |
+| key_paths.swift:153:36:153:46 | Argument |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:153:44:153:46 | 100 |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:154:7:154:8 | e2 |  | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:154:12:154:19 | Employee |  | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:154:12:154:45 | Employee(...) |  | key_paths.swift:88:1:96:1 | Employee |
+| key_paths.swift:154:21:154:31 | Argument |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:154:27:154:31 | "Bob" |  | {EXTERNAL LOCATION} | String |
+| key_paths.swift:154:34:154:44 | Argument |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:154:42:154:44 | 200 |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:155:7:155:15 | employees |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:155:7:155:15 | employees | Element | key_paths.swift:88:1:96:1 | Employee |
@@ -2774,12 +3151,14 @@ inferType
 | key_paths.swift:156:15:156:35 | ... .map(...) |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:157:14:157:18 | names |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:157:20:157:20 | 0 |  | {EXTERNAL LOCATION} | Int |
+| key_paths.swift:157:20:157:20 | Argument |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:158:7:158:14 | salaries |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:158:18:158:26 | employees |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:158:18:158:26 | employees | Element | key_paths.swift:88:1:96:1 | Employee |
 | key_paths.swift:158:18:158:40 | ... .map(...) |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:159:16:159:23 | salaries |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:159:25:159:25 | 0 |  | {EXTERNAL LOCATION} | Int |
+| key_paths.swift:159:25:159:25 | Argument |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:165:7:165:11 | color |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:167:8:167:12 | color |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:167:23:169:3 | Block |  | {EXTERNAL LOCATION} | String |
@@ -2797,11 +3176,14 @@ inferType
 | key_paths.swift:176:19:176:24 | radius |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:177:5:177:9 | super |  | key_paths.swift:164:1:170:1 | Shape2 |
 | key_paths.swift:177:5:177:28 | ... .init(...) |  | key_paths.swift:164:1:170:1 | Shape2 |
+| key_paths.swift:177:16:177:27 | Argument |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:177:23:177:27 | color |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:185:7:185:7 | c |  | key_paths.swift:172:1:179:1 | Circle2 |
 | key_paths.swift:185:11:185:17 | Circle2 |  | key_paths.swift:172:1:179:1 | Circle2 |
 | key_paths.swift:185:11:185:44 | Circle2(...) |  | key_paths.swift:172:1:179:1 | Circle2 |
+| key_paths.swift:185:19:185:30 | Argument |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:185:26:185:30 | "red" |  | {EXTERNAL LOCATION} | String |
+| key_paths.swift:185:33:185:43 | Argument |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:185:41:185:43 | 5.0 |  | {EXTERNAL LOCATION} | Double |
 | key_paths.swift:186:13:186:13 | c |  | key_paths.swift:172:1:179:1 | Circle2 |
 | key_paths.swift:187:13:187:13 | c |  | key_paths.swift:172:1:179:1 | Circle2 |
@@ -2812,7 +3194,9 @@ inferType
 | key_paths.swift:195:15:195:27 | TupleExpr | T0 | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:195:15:195:27 | TupleExpr | T1 | {EXTERNAL LOCATION} | String |
 | key_paths.swift:195:16:195:17 | 42 |  | {EXTERNAL LOCATION} | Int |
+| key_paths.swift:195:16:195:17 | Argument |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:195:20:195:26 | "hello" |  | {EXTERNAL LOCATION} | String |
+| key_paths.swift:195:20:195:26 | Argument |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:196:15:196:19 | tuple |  | {EXTERNAL LOCATION} | Tuple2 |
 | key_paths.swift:196:15:196:19 | tuple | T0 | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:196:15:196:19 | tuple | T1 | {EXTERNAL LOCATION} | String |
@@ -2883,9 +3267,11 @@ inferType
 | nested_types.swift:21:13:21:17 | super | TBase | nested_types.swift:14:17:14:22 | TInner |
 | nested_types.swift:21:13:21:45 | ... .init(...) |  | nested_types.swift:1:1:11:1 | Base |
 | nested_types.swift:21:13:21:45 | ... .init(...) | TBase | nested_types.swift:14:17:14:22 | TInner |
+| nested_types.swift:21:24:21:44 | Argument |  | nested_types.swift:14:17:14:22 | TInner |
 | nested_types.swift:21:35:21:44 | innerValue |  | nested_types.swift:14:17:14:22 | TInner |
 | nested_types.swift:24:26:24:35 | innerValue |  | nested_types.swift:14:17:14:22 | TInner |
 | nested_types.swift:25:24:25:64 | "Convenience initializer not implemented" |  | {EXTERNAL LOCATION} | String |
+| nested_types.swift:25:24:25:64 | Argument |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:28:35:30:9 | Block |  | nested_types.swift:14:17:14:22 | TInner |
 | nested_types.swift:29:20:29:23 | self |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:29:20:29:23 | self | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
@@ -2910,11 +3296,13 @@ inferType
 | nested_types.swift:37:20:37:96 | ... .Inner(...) | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:37:20:37:96 | ... .Inner(...) | (parent:Inner).TOuter | nested_types.swift:14:17:14:22 | TInner |
 | nested_types.swift:37:20:37:96 | ... .Inner(...) | TInner | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:37:40:37:66 | Argument |  | nested_types.swift:13:13:13:18 | TOuter |
 | nested_types.swift:37:52:37:55 | self |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:37:52:37:55 | self | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:37:52:37:55 | self | (parent:Inner).TOuter | nested_types.swift:13:13:13:18 | TOuter |
 | nested_types.swift:37:52:37:55 | self | TInner | nested_types.swift:14:17:14:22 | TInner |
 | nested_types.swift:37:52:37:66 | ... .outerValue |  | nested_types.swift:13:13:13:18 | TOuter |
+| nested_types.swift:37:69:37:95 | Argument |  | nested_types.swift:14:17:14:22 | TInner |
 | nested_types.swift:37:81:37:84 | self |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:37:81:37:84 | self | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:37:81:37:84 | self | (parent:Inner).TOuter | nested_types.swift:13:13:13:18 | TOuter |
@@ -2949,7 +3337,9 @@ inferType
 | nested_types.swift:52:16:52:59 | Inner(...) | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:52:16:52:59 | Inner(...) | (parent:Inner).TOuter | nested_types.swift:13:13:13:18 | TOuter |
 | nested_types.swift:52:16:52:59 | Inner(...) | TInner | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:52:22:52:34 | Argument |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:52:34:52:34 | 0 |  | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:52:37:52:58 | Argument |  | nested_types.swift:13:13:13:18 | TOuter |
 | nested_types.swift:52:49:52:58 | outerValue |  | nested_types.swift:13:13:13:18 | TOuter |
 | nested_types.swift:59:14:59:14 | x |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:59:14:59:14 | x | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
@@ -3286,7 +3676,9 @@ inferType
 | nested_types.swift:153:14:153:56 | ... .Inner(...) | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:153:14:153:56 | ... .Inner(...) | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:153:14:153:56 | ... .Inner(...) | TInner | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:153:26:153:39 | Argument |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:153:38:153:39 | 42 |  | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:153:42:153:55 | Argument |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:153:54:153:55 | "" |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:154:5:154:7 | x1a |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:154:11:154:16 | inner1 |  | nested_types.swift:14:5:47:5 | Outer.Inner |
@@ -3296,6 +3688,10 @@ inferType
 | nested_types.swift:154:11:154:27 | ... .getInner(...) |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:155:5:155:7 | x1b |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:155:11:155:30 | extractInner(...) |  | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:155:24:155:29 | Argument |  | nested_types.swift:14:5:47:5 | Outer.Inner |
+| nested_types.swift:155:24:155:29 | Argument | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:155:24:155:29 | Argument | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
+| nested_types.swift:155:24:155:29 | Argument | TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:155:24:155:29 | inner1 |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:155:24:155:29 | inner1 | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:155:24:155:29 | inner1 | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
@@ -3308,6 +3704,10 @@ inferType
 | nested_types.swift:156:11:156:27 | ... .getOuter(...) |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:157:5:157:7 | y1b |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:157:11:157:30 | extractOuter(...) |  | {EXTERNAL LOCATION} | String |
+| nested_types.swift:157:24:157:29 | Argument |  | nested_types.swift:14:5:47:5 | Outer.Inner |
+| nested_types.swift:157:24:157:29 | Argument | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:157:24:157:29 | Argument | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
+| nested_types.swift:157:24:157:29 | Argument | TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:157:24:157:29 | inner1 |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:157:24:157:29 | inner1 | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:157:24:157:29 | inner1 | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
@@ -3330,6 +3730,7 @@ inferType
 | nested_types.swift:160:14:160:48 | ... .Inner(...) | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:160:14:160:48 | ... .Inner(...) | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:160:14:160:48 | ... .Inner(...) | TInner | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:160:34:160:47 | Argument |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:160:46:160:47 | 42 |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:161:5:161:7 | x2a |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:161:11:161:16 | inner2 |  | nested_types.swift:14:5:47:5 | Outer.Inner |
@@ -3339,6 +3740,10 @@ inferType
 | nested_types.swift:161:11:161:27 | ... .getInner(...) |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:162:5:162:7 | x2b |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:162:11:162:30 | extractInner(...) |  | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:162:24:162:29 | Argument |  | nested_types.swift:14:5:47:5 | Outer.Inner |
+| nested_types.swift:162:24:162:29 | Argument | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:162:24:162:29 | Argument | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
+| nested_types.swift:162:24:162:29 | Argument | TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:162:24:162:29 | inner2 |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:162:24:162:29 | inner2 | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:162:24:162:29 | inner2 | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
@@ -3351,6 +3756,10 @@ inferType
 | nested_types.swift:163:11:163:27 | ... .getOuter(...) |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:164:5:164:7 | y2b |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:164:11:164:30 | extractOuter(...) |  | {EXTERNAL LOCATION} | String |
+| nested_types.swift:164:24:164:29 | Argument |  | nested_types.swift:14:5:47:5 | Outer.Inner |
+| nested_types.swift:164:24:164:29 | Argument | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:164:24:164:29 | Argument | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
+| nested_types.swift:164:24:164:29 | Argument | TInner | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:164:24:164:29 | inner2 |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:164:24:164:29 | inner2 | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:164:24:164:29 | inner2 | (parent:Inner).TOuter | {EXTERNAL LOCATION} | String |
@@ -3459,6 +3868,7 @@ inferType
 | nested_types.swift:182:14:182:49 | ... .createInner(...) | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:182:14:182:49 | ... .createInner(...) | (parent:Inner).TOuter | {EXTERNAL LOCATION} | Bool |
 | nested_types.swift:182:14:182:49 | ... .createInner(...) | TInner | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:182:32:182:48 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | nested_types.swift:182:44:182:48 | false |  | {EXTERNAL LOCATION} | Bool |
 | nested_types.swift:183:5:183:6 | x6 |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:183:10:183:15 | inner6 |  | nested_types.swift:14:5:47:5 | Outer.Inner |
@@ -3490,7 +3900,9 @@ inferType
 | nested_types.swift:187:14:187:63 | ... .InnerAlias(...) | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:187:14:187:63 | ... .InnerAlias(...) | (parent:Inner).TOuter | {EXTERNAL LOCATION} | Bool |
 | nested_types.swift:187:14:187:63 | ... .InnerAlias(...) | TInner | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:187:31:187:43 | Argument |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:187:43:187:43 | 0 |  | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:187:46:187:62 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | nested_types.swift:187:58:187:62 | false |  | {EXTERNAL LOCATION} | Bool |
 | nested_types.swift:188:5:188:7 | x11 |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:188:11:188:16 | inner7 |  | nested_types.swift:14:5:47:5 | Outer.Inner |
@@ -3533,7 +3945,9 @@ inferType
 | nested_types.swift:211:17:211:51 | ... .InnerMost(...) |  | nested_types.swift:192:5:208:5 | Outer.Inner.InnerMost |
 | nested_types.swift:211:17:211:51 | ... .InnerMost(...) | (parent:InnerMost) | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:211:17:211:51 | ... .InnerMost(...) | (parent:InnerMost).(parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
+| nested_types.swift:211:39:211:43 | Argument |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:211:42:211:43 | "" |  | {EXTERNAL LOCATION} | String |
+| nested_types.swift:211:46:211:50 | Argument |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:211:49:211:50 | 42 |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:212:10:212:18 | innerMost |  | nested_types.swift:192:5:208:5 | Outer.Inner.InnerMost |
 | nested_types.swift:212:10:212:18 | innerMost | (parent:InnerMost) | nested_types.swift:14:5:47:5 | Outer.Inner |
@@ -3559,6 +3973,8 @@ inferType
 | nested_types.swift:222:16:222:58 | ... .createInner(...) | (parent:Inner).TOuter | {EXTERNAL LOCATION} | Array |
 | nested_types.swift:222:16:222:58 | ... .createInner(...) | (parent:Inner).TOuter.Element | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:222:16:222:58 | ... .createInner(...) | TInner | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:222:42:222:57 | Argument |  | {EXTERNAL LOCATION} | Array |
+| nested_types.swift:222:42:222:57 | Argument | Element | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:222:54:222:57 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | nested_types.swift:222:54:222:57 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:222:55:222:56 | 42 |  | {EXTERNAL LOCATION} | Int |
@@ -3590,7 +4006,9 @@ inferType
 | nested_types.swift:226:16:226:62 | ... .SubInner(...) | (parent:SubInner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:226:16:226:62 | ... .SubInner(...) | (parent:SubInner).TOuter | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:226:16:226:62 | ... .SubInner(...) | TSubInner | {EXTERNAL LOCATION} | Bool |
+| nested_types.swift:226:31:226:46 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | nested_types.swift:226:43:226:46 | true |  | {EXTERNAL LOCATION} | Bool |
+| nested_types.swift:226:49:226:61 | Argument |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:226:61:226:61 | 0 |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:227:5:227:6 | x9 |  | {EXTERNAL LOCATION} | Bool |
 | nested_types.swift:227:10:227:17 | subInner |  | nested_types.swift:49:5:49:50 | Outer.SubInner |
@@ -3616,6 +4034,7 @@ inferType
 | nested_types.swift:230:46:230:74 | ... .SubInner(...) | (parent:SubInner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:230:46:230:74 | ... .SubInner(...) | (parent:SubInner).TOuter | {EXTERNAL LOCATION} | String |
 | nested_types.swift:230:46:230:74 | ... .SubInner(...) | TSubInner | {EXTERNAL LOCATION} | Int |
+| nested_types.swift:230:61:230:73 | Argument |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:230:73:230:73 | 1 |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:231:5:231:7 | x12 |  | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:231:11:231:19 | subInner2 |  | nested_types.swift:49:5:49:50 | Outer.SubInner |
@@ -3635,7 +4054,9 @@ inferType
 | nested_types.swift:236:23:236:37 | SubInnerOutside | TSubInner | {EXTERNAL LOCATION} | Bool |
 | nested_types.swift:236:23:236:74 | SubInnerOutside(...) |  | nested_types.swift:234:1:234:70 | SubInnerOutside |
 | nested_types.swift:236:23:236:74 | SubInnerOutside(...) | TSubInner | {EXTERNAL LOCATION} | Bool |
+| nested_types.swift:236:39:236:54 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | nested_types.swift:236:51:236:54 | true |  | {EXTERNAL LOCATION} | Bool |
+| nested_types.swift:236:57:236:73 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | nested_types.swift:236:69:236:73 | false |  | {EXTERNAL LOCATION} | Bool |
 | nested_types.swift:237:5:237:7 | x10 |  | {EXTERNAL LOCATION} | Bool |
 | nested_types.swift:237:11:237:25 | subInnerOutside |  | nested_types.swift:234:1:234:70 | SubInnerOutside |
@@ -3672,6 +4093,7 @@ inferType
 | nested_types.swift:251:14:251:41 | ... .Fixed(...) | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:251:14:251:41 | ... .Fixed(...) | (parent:Inner).TOuter | {EXTERNAL LOCATION} | Int |
 | nested_types.swift:251:14:251:41 | ... .Fixed(...) | TInner | {EXTERNAL LOCATION} | String |
+| nested_types.swift:251:27:251:40 | Argument |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:251:39:251:40 | "" |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:252:5:252:7 | x13 |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:252:11:252:16 | holder |  | nested_types.swift:14:5:47:5 | Outer.Inner |
@@ -3886,17 +4308,21 @@ inferType
 | overload_resolution.swift:23:12:23:12 | o |  | overload_resolution.swift:3:1:19:1 | OverloadByType |
 | overload_resolution.swift:23:12:23:23 | ... .handle(...) |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:23:21:23:22 | 42 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:23:21:23:22 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:24:7:24:8 | r2 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:24:12:24:12 | o |  | overload_resolution.swift:3:1:19:1 | OverloadByType |
 | overload_resolution.swift:24:12:24:25 | ... .handle(...) |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:24:21:24:24 | 3.14 |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:24:21:24:24 | Argument |  | {EXTERNAL LOCATION} | Double |
 | overload_resolution.swift:25:7:25:8 | r3 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:25:12:25:12 | o |  | overload_resolution.swift:3:1:19:1 | OverloadByType |
 | overload_resolution.swift:25:12:25:25 | ... .handle(...) |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:25:21:25:24 | "hi" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:25:21:25:24 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:26:7:26:8 | r4 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:26:12:26:12 | o |  | overload_resolution.swift:3:1:19:1 | OverloadByType |
 | overload_resolution.swift:26:12:26:25 | ... .handle(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:26:21:26:24 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | overload_resolution.swift:26:21:26:24 | true |  | {EXTERNAL LOCATION} | Bool |
 | overload_resolution.swift:32:18:32:22 | width |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:32:40:34:3 | Block |  | {EXTERNAL LOCATION} | String |
@@ -3917,19 +4343,24 @@ inferType
 | overload_resolution.swift:51:7:51:8 | r1 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:51:12:51:12 | o |  | overload_resolution.swift:31:1:47:1 | OverloadByLabel |
 | overload_resolution.swift:51:12:51:33 | ... .configure(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:51:24:51:32 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:51:31:51:32 | 10 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:52:7:52:8 | r2 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:52:12:52:12 | o |  | overload_resolution.swift:31:1:47:1 | OverloadByLabel |
 | overload_resolution.swift:52:12:52:34 | ... .configure(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:52:24:52:33 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:52:32:52:33 | 20 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:53:7:53:8 | r3 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:53:12:53:12 | o |  | overload_resolution.swift:31:1:47:1 | OverloadByLabel |
 | overload_resolution.swift:53:12:53:45 | ... .configure(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:53:24:53:32 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:53:31:53:32 | 10 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:53:35:53:44 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:53:43:53:44 | 20 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:54:7:54:8 | r4 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:54:12:54:12 | o |  | overload_resolution.swift:31:1:47:1 | OverloadByLabel |
 | overload_resolution.swift:54:12:54:32 | ... .configure(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:54:24:54:31 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:54:30:54:31 | 30 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:60:25:62:3 | Block |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:61:12:61:12 | 0 |  | {EXTERNAL LOCATION} | Int |
@@ -3961,17 +4392,23 @@ inferType
 | overload_resolution.swift:80:12:80:12 | o |  | overload_resolution.swift:59:1:75:1 | OverloadByArity |
 | overload_resolution.swift:80:12:80:23 | ... .compute(...) |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:80:22:80:22 | 1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:80:22:80:22 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:81:7:81:8 | r2 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:81:12:81:12 | o |  | overload_resolution.swift:59:1:75:1 | OverloadByArity |
 | overload_resolution.swift:81:12:81:26 | ... .compute(...) |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:81:22:81:22 | 1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:81:22:81:22 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:81:25:81:25 | 2 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:81:25:81:25 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:82:7:82:8 | r3 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:82:12:82:12 | o |  | overload_resolution.swift:59:1:75:1 | OverloadByArity |
 | overload_resolution.swift:82:12:82:29 | ... .compute(...) |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:82:22:82:22 | 1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:82:22:82:22 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:82:25:82:25 | 2 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:82:25:82:25 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:82:28:82:28 | 3 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:82:28:82:28 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:88:24:90:3 | Block |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:89:12:89:12 | 0 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:92:27:94:3 | Block |  | {EXTERNAL LOCATION} | String |
@@ -4009,13 +4446,16 @@ inferType
 | overload_resolution.swift:122:12:122:12 | o |  | overload_resolution.swift:110:1:118:1 | OverloadGenericVsConcrete |
 | overload_resolution.swift:122:12:122:24 | ... .process(...) |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:122:22:122:23 | 42 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:122:22:122:23 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:123:7:123:8 | r2 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:123:12:123:12 | o |  | overload_resolution.swift:110:1:118:1 | OverloadGenericVsConcrete |
 | overload_resolution.swift:123:12:123:29 | ... .process(...) |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:123:22:123:28 | "hello" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:123:22:123:28 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:124:7:124:8 | r3 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:124:12:124:12 | o |  | overload_resolution.swift:110:1:118:1 | OverloadGenericVsConcrete |
 | overload_resolution.swift:124:12:124:26 | ... .process(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:124:22:124:25 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | overload_resolution.swift:124:22:124:25 | true |  | {EXTERNAL LOCATION} | Bool |
 | overload_resolution.swift:129:21:129:21 | x |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:129:39:131:1 | Block |  | {EXTERNAL LOCATION} | String |
@@ -4029,12 +4469,15 @@ inferType
 | overload_resolution.swift:142:7:142:8 | r1 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:142:12:142:27 | freeOverload(...) |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:142:25:142:26 | 42 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:142:25:142:26 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:143:7:143:8 | r2 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:143:12:143:29 | freeOverload(...) |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:143:25:143:28 | "hi" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:143:25:143:28 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:144:7:144:8 | r3 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:144:12:144:28 | freeOverload(...) |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:144:25:144:27 | 1.5 |  | {EXTERNAL LOCATION} | Double |
+| overload_resolution.swift:144:25:144:27 | Argument |  | {EXTERNAL LOCATION} | Double |
 | overload_resolution.swift:150:7:150:11 | value |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:152:10:154:3 | Block |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:153:5:153:9 | value |  | {EXTERNAL LOCATION} | String |
@@ -4064,15 +4507,19 @@ inferType
 | overload_resolution.swift:175:7:175:8 | m2 |  | overload_resolution.swift:149:1:171:1 | MultiInit |
 | overload_resolution.swift:175:12:175:20 | MultiInit |  | overload_resolution.swift:149:1:171:1 | MultiInit |
 | overload_resolution.swift:175:12:175:28 | MultiInit(...) |  | overload_resolution.swift:149:1:171:1 | MultiInit |
+| overload_resolution.swift:175:22:175:27 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:175:27:175:27 | 5 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:176:7:176:8 | m3 |  | overload_resolution.swift:149:1:171:1 | MultiInit |
 | overload_resolution.swift:176:12:176:20 | MultiInit |  | overload_resolution.swift:149:1:171:1 | MultiInit |
 | overload_resolution.swift:176:12:176:30 | MultiInit(...) |  | overload_resolution.swift:149:1:171:1 | MultiInit |
+| overload_resolution.swift:176:22:176:29 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:176:27:176:29 | "x" |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:177:7:177:8 | m4 |  | overload_resolution.swift:149:1:171:1 | MultiInit |
 | overload_resolution.swift:177:12:177:20 | MultiInit |  | overload_resolution.swift:149:1:171:1 | MultiInit |
 | overload_resolution.swift:177:12:177:32 | MultiInit(...) |  | overload_resolution.swift:149:1:171:1 | MultiInit |
+| overload_resolution.swift:177:22:177:25 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:177:25:177:25 | 1 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:177:28:177:31 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:177:31:177:31 | 2 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:178:7:178:7 | v |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:178:11:178:12 | m1 |  | overload_resolution.swift:149:1:171:1 | MultiInit |
@@ -4168,15 +4615,19 @@ inferType
 | overload_resolution.swift:300:7:300:8 | r1 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:300:12:300:12 | o |  | overload_resolution.swift:284:1:296:1 | LabelVariants |
 | overload_resolution.swift:300:12:300:26 | ... .send(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:300:19:300:25 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:300:23:300:25 | "x" |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:301:7:301:8 | r2 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:301:12:301:12 | o |  | overload_resolution.swift:284:1:296:1 | LabelVariants |
 | overload_resolution.swift:301:12:301:28 | ... .send(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:301:19:301:27 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:301:25:301:27 | "y" |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:302:7:302:8 | r3 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:302:12:302:12 | o |  | overload_resolution.swift:284:1:296:1 | LabelVariants |
 | overload_resolution.swift:302:12:302:37 | ... .send(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:302:19:302:25 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:302:23:302:25 | "x" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:302:28:302:36 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:302:34:302:36 | "y" |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:312:29:312:40 | Block |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:312:38:312:38 | 0 |  | {EXTERNAL LOCATION} | Int |
@@ -4191,9 +4642,11 @@ inferType
 | overload_resolution.swift:328:7:328:8 | r1 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:328:12:328:28 | constrainedId(...) |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:328:26:328:27 | 42 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:328:26:328:27 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:329:7:329:8 | r2 |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:329:12:329:33 | constrainedId(...) |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:329:26:329:32 | "hello" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:329:26:329:32 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:335:7:335:10 | item |  | overload_resolution.swift:334:11:334:11 | T |
 | overload_resolution.swift:337:10:337:13 | item |  | overload_resolution.swift:334:11:334:11 | T |
 | overload_resolution.swift:337:19:339:3 | Block |  | overload_resolution.swift:334:11:334:11 | T |
@@ -4216,6 +4669,7 @@ inferType
 | overload_resolution.swift:351:16:351:22 | Box(...) |  | overload_resolution.swift:334:1:348:1 | Box |
 | overload_resolution.swift:351:16:351:22 | Box(...) | T | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:351:20:351:21 | 10 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:351:20:351:21 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:352:7:352:12 | strBox |  | overload_resolution.swift:334:1:348:1 | Box |
 | overload_resolution.swift:352:7:352:12 | strBox | T | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:352:16:352:18 | Box |  | overload_resolution.swift:334:1:348:1 | Box |
@@ -4223,6 +4677,7 @@ inferType
 | overload_resolution.swift:352:16:352:24 | Box(...) |  | overload_resolution.swift:334:1:348:1 | Box |
 | overload_resolution.swift:352:16:352:24 | Box(...) | T | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:352:20:352:23 | "hi" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:352:20:352:23 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:353:7:353:8 | v1 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:353:12:353:17 | intBox |  | overload_resolution.swift:334:1:348:1 | Box |
 | overload_resolution.swift:353:12:353:17 | intBox | T | {EXTERNAL LOCATION} | Int |
@@ -4234,9 +4689,11 @@ inferType
 | overload_resolution.swift:355:3:355:8 | intBox |  | overload_resolution.swift:334:1:348:1 | Box |
 | overload_resolution.swift:355:3:355:8 | intBox | T | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:355:18:355:19 | 20 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:355:18:355:19 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:356:3:356:8 | strBox |  | overload_resolution.swift:334:1:348:1 | Box |
 | overload_resolution.swift:356:3:356:8 | strBox | T | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:356:18:356:22 | "bye" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:356:18:356:22 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:362:7:362:10 | name |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:363:7:363:10 | size |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:365:8:365:11 | name |  | {EXTERNAL LOCATION} | String |
@@ -4254,26 +4711,34 @@ inferType
 | overload_resolution.swift:370:34:372:3 | Block |  | overload_resolution.swift:361:1:377:1 | Widget |
 | overload_resolution.swift:371:5:371:8 | self |  | overload_resolution.swift:361:1:377:1 | Widget |
 | overload_resolution.swift:371:5:371:34 | ... .init(...) |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:371:15:371:24 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:371:21:371:24 | name |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:371:27:371:33 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:371:33:371:33 | 1 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:374:20:374:23 | size |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:374:31:376:3 | Block |  | overload_resolution.swift:361:1:377:1 | Widget |
 | overload_resolution.swift:375:5:375:8 | self |  | overload_resolution.swift:361:1:377:1 | Widget |
 | overload_resolution.swift:375:5:375:42 | ... .init(...) |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:375:15:375:29 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:375:21:375:29 | "default" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:375:32:375:41 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:375:38:375:41 | size |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:380:7:380:8 | w1 |  | overload_resolution.swift:361:1:377:1 | Widget |
 | overload_resolution.swift:380:12:380:17 | Widget |  | overload_resolution.swift:361:1:377:1 | Widget |
 | overload_resolution.swift:380:12:380:37 | Widget(...) |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:380:19:380:27 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:380:25:380:27 | "a" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:380:30:380:36 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:380:36:380:36 | 5 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:381:7:381:8 | w2 |  | overload_resolution.swift:361:1:377:1 | Widget |
 | overload_resolution.swift:381:12:381:17 | Widget |  | overload_resolution.swift:361:1:377:1 | Widget |
 | overload_resolution.swift:381:12:381:28 | Widget(...) |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:381:19:381:27 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:381:25:381:27 | "b" |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:382:7:382:8 | w3 |  | overload_resolution.swift:361:1:377:1 | Widget |
 | overload_resolution.swift:382:12:382:17 | Widget |  | overload_resolution.swift:361:1:377:1 | Widget |
 | overload_resolution.swift:382:12:382:27 | Widget(...) |  | overload_resolution.swift:361:1:377:1 | Widget |
+| overload_resolution.swift:382:19:382:26 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:382:25:382:26 | 10 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:388:16:388:16 | f |  | {EXTERNAL LOCATION} | Function |
 | overload_resolution.swift:388:16:388:16 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
@@ -4286,6 +4751,7 @@ inferType
 | overload_resolution.swift:389:12:389:12 | f | Return | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:389:12:389:15 | f(...) |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:389:14:389:14 | 0 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:389:14:389:14 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:392:16:392:16 | f |  | {EXTERNAL LOCATION} | Function |
 | overload_resolution.swift:392:16:392:16 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
 | overload_resolution.swift:392:16:392:16 | f | Args.T0 | {EXTERNAL LOCATION} | String |
@@ -4297,6 +4763,7 @@ inferType
 | overload_resolution.swift:393:12:393:12 | f | Return | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:393:12:393:16 | f(...) |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:393:14:393:15 | "" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:393:14:393:15 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:396:16:396:16 | f |  | {EXTERNAL LOCATION} | Function |
 | overload_resolution.swift:396:16:396:16 | f | Args | {EXTERNAL LOCATION} | Tuple2 |
 | overload_resolution.swift:396:16:396:16 | f | Args.T0 | {EXTERNAL LOCATION} | Int |
@@ -4310,7 +4777,9 @@ inferType
 | overload_resolution.swift:397:12:397:12 | f | Return | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:397:12:397:18 | f(...) |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:397:14:397:14 | 0 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:397:14:397:14 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:397:17:397:17 | 0 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:397:17:397:17 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:402:7:402:7 | p |  | overload_resolution.swift:387:1:399:1 | Processor |
 | overload_resolution.swift:402:11:402:19 | Processor |  | overload_resolution.swift:387:1:399:1 | Processor |
 | overload_resolution.swift:402:11:402:21 | Processor(...) |  | overload_resolution.swift:387:1:399:1 | Processor |
@@ -4319,6 +4788,11 @@ inferType
 | overload_resolution.swift:403:12:403:12 | p |  | overload_resolution.swift:387:1:399:1 | Processor |
 | overload_resolution.swift:403:12:403:34 | ... .apply(...) |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:403:12:403:34 | ... .apply(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:403:20:403:33 | Argument |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:403:20:403:33 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:403:20:403:33 | Argument | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:403:20:403:33 | Argument | Args.T0 | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:403:20:403:33 | Argument | Return | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:403:20:403:33 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | overload_resolution.swift:403:20:403:33 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | overload_resolution.swift:403:20:403:33 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
@@ -4336,6 +4810,11 @@ inferType
 | overload_resolution.swift:404:12:404:12 | p |  | overload_resolution.swift:387:1:399:1 | Processor |
 | overload_resolution.swift:404:12:404:36 | ... .apply(...) |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:404:12:404:36 | ... .apply(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:404:20:404:35 | Argument |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:404:20:404:35 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| overload_resolution.swift:404:20:404:35 | Argument | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:404:20:404:35 | Argument | Args.T0 | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:404:20:404:35 | Argument | Return | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:404:20:404:35 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | overload_resolution.swift:404:20:404:35 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
 | overload_resolution.swift:404:20:404:35 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
@@ -4353,6 +4832,11 @@ inferType
 | overload_resolution.swift:405:12:405:12 | p |  | overload_resolution.swift:387:1:399:1 | Processor |
 | overload_resolution.swift:405:12:405:37 | ... .apply(...) |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:405:12:405:37 | ... .apply(...) |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:405:20:405:36 | Argument |  | {EXTERNAL LOCATION} | Function |
+| overload_resolution.swift:405:20:405:36 | Argument | Args | {EXTERNAL LOCATION} | Tuple2 |
+| overload_resolution.swift:405:20:405:36 | Argument | Args.T0 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:405:20:405:36 | Argument | Args.T1 | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:405:20:405:36 | Argument | Return | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:405:20:405:36 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | overload_resolution.swift:405:20:405:36 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple2 |
 | overload_resolution.swift:405:20:405:36 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
@@ -4379,11 +4863,13 @@ inferType
 | overload_resolution.swift:414:14:414:18 | index |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:415:12:415:15 | data |  | {EXTERNAL LOCATION} | Array |
 | overload_resolution.swift:415:12:415:15 | data | Element | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:415:17:415:21 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:415:17:415:21 | index |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:418:14:418:16 | key |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:419:12:419:15 | dict |  | {EXTERNAL LOCATION} | Dictionary |
 | overload_resolution.swift:419:12:419:15 | dict | Key | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:419:12:419:15 | dict | Value | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:419:17:419:19 | Argument |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:419:17:419:19 | key |  | {EXTERNAL LOCATION} | String |
 | overload_resolution.swift:419:25:419:25 | 0 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:424:7:424:8 | ms |  | overload_resolution.swift:410:1:421:1 | MultiSubscript |
@@ -4393,10 +4879,12 @@ inferType
 | overload_resolution.swift:425:12:425:13 | ms |  | overload_resolution.swift:410:1:421:1 | MultiSubscript |
 | overload_resolution.swift:425:12:425:20 | ... .get(...) |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:425:19:425:19 | 0 |  | {EXTERNAL LOCATION} | Int |
+| overload_resolution.swift:425:19:425:19 | Argument |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:426:7:426:8 | r2 |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:426:12:426:13 | ms |  | overload_resolution.swift:410:1:421:1 | MultiSubscript |
 | overload_resolution.swift:426:12:426:22 | ... .get(...) |  | {EXTERNAL LOCATION} | Int |
 | overload_resolution.swift:426:19:426:21 | "a" |  | {EXTERNAL LOCATION} | String |
+| overload_resolution.swift:426:19:426:21 | Argument |  | {EXTERNAL LOCATION} | String |
 | pattern_matching.swift:1:26:1:29 | pair |  | {EXTERNAL LOCATION} | Tuple2 |
 | pattern_matching.swift:1:26:1:29 | pair | T0 | {EXTERNAL LOCATION} | Int |
 | pattern_matching.swift:1:26:1:29 | pair | T1 | {EXTERNAL LOCATION} | String |
@@ -4430,6 +4918,7 @@ inferType
 | pattern_matching.swift:30:11:30:32 | ... .value(...) |  | pattern_matching.swift:7:1:11:1 | PatternMatch |
 | pattern_matching.swift:30:11:30:32 | ... .value(...) | T | {EXTERNAL LOCATION} | Int |
 | pattern_matching.swift:30:30:30:31 | 42 |  | {EXTERNAL LOCATION} | Int |
+| pattern_matching.swift:30:30:30:31 | Argument |  | {EXTERNAL LOCATION} | Int |
 | pattern_matching.swift:31:7:31:7 | y |  | pattern_matching.swift:7:1:11:1 | PatternMatch |
 | pattern_matching.swift:31:7:31:7 | y | T | {EXTERNAL LOCATION} | String |
 | pattern_matching.swift:31:11:31:38 | ... .novalue |  | pattern_matching.swift:7:1:11:1 | PatternMatch |
@@ -4473,6 +4962,7 @@ inferType
 | protocols.swift:34:7:34:7 | c |  | protocols.swift:7:1:17:1 | Circle |
 | protocols.swift:34:11:34:16 | Circle |  | protocols.swift:7:1:17:1 | Circle |
 | protocols.swift:34:11:34:29 | Circle(...) |  | protocols.swift:7:1:17:1 | Circle |
+| protocols.swift:34:18:34:28 | Argument |  | {EXTERNAL LOCATION} | Double |
 | protocols.swift:34:26:34:28 | 5.0 |  | {EXTERNAL LOCATION} | Double |
 | protocols.swift:35:7:35:8 | a1 |  | {EXTERNAL LOCATION} | Double |
 | protocols.swift:35:12:35:12 | c |  | protocols.swift:7:1:17:1 | Circle |
@@ -4480,7 +4970,9 @@ inferType
 | protocols.swift:37:7:37:7 | r |  | protocols.swift:19:1:31:1 | Rectangle |
 | protocols.swift:37:11:37:19 | Rectangle |  | protocols.swift:19:1:31:1 | Rectangle |
 | protocols.swift:37:11:37:44 | Rectangle(...) |  | protocols.swift:19:1:31:1 | Rectangle |
+| protocols.swift:37:21:37:30 | Argument |  | {EXTERNAL LOCATION} | Double |
 | protocols.swift:37:28:37:30 | 3.0 |  | {EXTERNAL LOCATION} | Double |
+| protocols.swift:37:33:37:43 | Argument |  | {EXTERNAL LOCATION} | Double |
 | protocols.swift:37:41:37:43 | 4.0 |  | {EXTERNAL LOCATION} | Double |
 | protocols.swift:38:7:38:8 | a2 |  | {EXTERNAL LOCATION} | Double |
 | protocols.swift:38:12:38:12 | r |  | protocols.swift:19:1:31:1 | Rectangle |
@@ -4501,11 +4993,14 @@ inferType
 | protocols.swift:58:12:58:16 | items |  | {EXTERNAL LOCATION} | Array |
 | protocols.swift:58:12:58:16 | items | Element | {EXTERNAL LOCATION} | Int |
 | protocols.swift:58:18:58:18 | 0 |  | {EXTERNAL LOCATION} | Int |
+| protocols.swift:58:18:58:18 | Argument |  | {EXTERNAL LOCATION} | Int |
 | protocols.swift:62:12:62:16 | items |  | {EXTERNAL LOCATION} | Array |
 | protocols.swift:62:12:62:16 | items | Element | {EXTERNAL LOCATION} | Int |
 | protocols.swift:67:7:67:8 | ic |  | protocols.swift:49:1:64:1 | IntContainer |
 | protocols.swift:67:12:67:23 | IntContainer |  | protocols.swift:49:1:64:1 | IntContainer |
 | protocols.swift:67:12:67:41 | IntContainer(...) |  | protocols.swift:49:1:64:1 | IntContainer |
+| protocols.swift:67:25:67:40 | Argument |  | {EXTERNAL LOCATION} | Array |
+| protocols.swift:67:25:67:40 | Argument | Element | {EXTERNAL LOCATION} | Int |
 | protocols.swift:67:32:67:40 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | protocols.swift:67:32:67:40 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | protocols.swift:67:33:67:33 | 1 |  | {EXTERNAL LOCATION} | Int |
@@ -4537,7 +5032,9 @@ inferType
 | protocols.swift:101:7:101:7 | e |  | protocols.swift:82:1:98:1 | Entity |
 | protocols.swift:101:11:101:16 | Entity |  | protocols.swift:82:1:98:1 | Entity |
 | protocols.swift:101:11:101:44 | Entity(...) |  | protocols.swift:82:1:98:1 | Entity |
+| protocols.swift:101:18:101:29 | Argument |  | {EXTERNAL LOCATION} | String |
 | protocols.swift:101:24:101:29 | "test" |  | {EXTERNAL LOCATION} | String |
+| protocols.swift:101:32:101:43 | Argument |  | {EXTERNAL LOCATION} | Int |
 | protocols.swift:101:42:101:43 | 42 |  | {EXTERNAL LOCATION} | Int |
 | protocols.swift:102:7:102:7 | d |  | {EXTERNAL LOCATION} | String |
 | protocols.swift:102:11:102:11 | e |  | protocols.swift:82:1:98:1 | Entity |
@@ -4554,7 +5051,10 @@ inferType
 | tuples.swift:1:13:1:30 | TupleExpr | T1 | {EXTERNAL LOCATION} | String |
 | tuples.swift:1:13:1:30 | TupleExpr | T2 | {EXTERNAL LOCATION} | Bool |
 | tuples.swift:1:14:1:14 | 1 |  | {EXTERNAL LOCATION} | Int |
+| tuples.swift:1:14:1:14 | Argument |  | {EXTERNAL LOCATION} | Int |
 | tuples.swift:1:17:1:23 | "hello" |  | {EXTERNAL LOCATION} | String |
+| tuples.swift:1:17:1:23 | Argument |  | {EXTERNAL LOCATION} | String |
+| tuples.swift:1:26:1:29 | Argument |  | {EXTERNAL LOCATION} | Bool |
 | tuples.swift:1:26:1:29 | true |  | {EXTERNAL LOCATION} | Bool |
 | tuples.swift:3:5:3:5 | a |  | {EXTERNAL LOCATION} | Int |
 | tuples.swift:3:9:3:13 | tuple |  | {EXTERNAL LOCATION} | Tuple3 |
@@ -4650,19 +5150,27 @@ inferType
 | type_constraints.swift:12:7:12:8 | m1 |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:12:12:12:22 | minOf(...) |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:12:18:12:18 | 3 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:12:18:12:18 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:12:21:12:21 | 7 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:12:21:12:21 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:13:7:13:8 | m2 |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:13:12:13:26 | minOf(...) |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:13:18:13:20 | "a" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:13:18:13:20 | Argument |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:13:23:13:25 | "z" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:13:23:13:25 | Argument |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:14:7:14:8 | m3 |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:14:12:14:22 | maxOf(...) |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:14:18:14:18 | 3 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:14:18:14:18 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:14:21:14:21 | 7 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:14:21:14:21 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:15:7:15:8 | m4 |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:15:12:15:26 | maxOf(...) |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:15:18:15:20 | "a" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:15:18:15:20 | Argument |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:15:23:15:25 | "z" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:15:23:15:25 | Argument |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:29:7:29:9 | tag |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:30:7:30:14 | priority |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:32:8:32:10 | tag |  | {EXTERNAL LOCATION} | String |
@@ -4691,14 +5199,19 @@ inferType
 | type_constraints.swift:56:7:56:10 | item |  | type_constraints.swift:28:1:44:1 | TaggedItem |
 | type_constraints.swift:56:14:56:23 | TaggedItem |  | type_constraints.swift:28:1:44:1 | TaggedItem |
 | type_constraints.swift:56:14:56:46 | TaggedItem(...) |  | type_constraints.swift:28:1:44:1 | TaggedItem |
+| type_constraints.swift:56:25:56:32 | Argument |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:56:30:56:32 | "x" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:56:35:56:45 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:56:45:56:45 | 1 |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:57:7:57:7 | s |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:57:11:57:27 | showAndSort(...) |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:57:23:57:26 | Argument |  | type_constraints.swift:28:1:44:1 | TaggedItem |
 | type_constraints.swift:57:23:57:26 | item |  | type_constraints.swift:28:1:44:1 | TaggedItem |
 | type_constraints.swift:58:7:58:8 | eq |  | {EXTERNAL LOCATION} | Bool |
 | type_constraints.swift:58:12:58:41 | showSortAndCompare(...) |  | {EXTERNAL LOCATION} | Bool |
+| type_constraints.swift:58:31:58:34 | Argument |  | type_constraints.swift:28:1:44:1 | TaggedItem |
 | type_constraints.swift:58:31:58:34 | item |  | type_constraints.swift:28:1:44:1 | TaggedItem |
+| type_constraints.swift:58:37:58:40 | Argument |  | type_constraints.swift:28:1:44:1 | TaggedItem |
 | type_constraints.swift:58:37:58:40 | item |  | type_constraints.swift:28:1:44:1 | TaggedItem |
 | type_constraints.swift:64:7:64:11 | first |  | type_constraints.swift:63:18:63:30 | T |
 | type_constraints.swift:65:7:65:12 | second |  | type_constraints.swift:63:33:63:45 | U |
@@ -4736,19 +5249,23 @@ inferType
 | type_constraints.swift:82:12:82:44 | SortedPair(...) |  | type_constraints.swift:63:1:79:1 | SortedPair |
 | type_constraints.swift:82:12:82:44 | SortedPair(...) | T | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:82:12:82:44 | SortedPair(...) | U | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:82:23:82:30 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:82:30:82:30 | 3 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:82:33:82:43 | Argument |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:82:41:82:43 | "b" |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:83:7:83:8 | r1 |  | {EXTERNAL LOCATION} | Bool |
 | type_constraints.swift:83:12:83:13 | sp |  | type_constraints.swift:63:1:79:1 | SortedPair |
 | type_constraints.swift:83:12:83:13 | sp | T | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:83:12:83:13 | sp | U | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:83:12:83:37 | ... .isFirstSmaller(...) |  | {EXTERNAL LOCATION} | Bool |
+| type_constraints.swift:83:30:83:36 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:83:36:83:36 | 5 |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:84:7:84:8 | r2 |  | {EXTERNAL LOCATION} | Bool |
 | type_constraints.swift:84:12:84:13 | sp |  | type_constraints.swift:63:1:79:1 | SortedPair |
 | type_constraints.swift:84:12:84:13 | sp | T | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:84:12:84:13 | sp | U | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:84:12:84:40 | ... .isSecondSmaller(...) |  | {EXTERNAL LOCATION} | Bool |
+| type_constraints.swift:84:31:84:39 | Argument |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:84:37:84:39 | "z" |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:96:7:96:11 | items |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:96:7:96:11 | items | Element | {EXTERNAL LOCATION} | Int |
@@ -4766,6 +5283,7 @@ inferType
 | type_constraints.swift:103:12:103:16 | items |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:103:12:103:16 | items | Element | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:103:18:103:18 | 0 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:103:18:103:18 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:109:7:109:11 | items |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:109:7:109:11 | items | Element | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:111:8:111:12 | items |  | {EXTERNAL LOCATION} | Array |
@@ -4782,6 +5300,7 @@ inferType
 | type_constraints.swift:116:12:116:16 | items |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:116:12:116:16 | items | Element | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:116:18:116:18 | 0 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:116:18:116:18 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:120:45:120:53 | container |  | type_constraints.swift:120:19:120:37 | C |
 | type_constraints.swift:121:10:121:18 | container |  | type_constraints.swift:120:19:120:37 | C |
 | type_constraints.swift:124:45:124:53 | container |  | type_constraints.swift:124:19:124:37 | C |
@@ -4789,6 +5308,8 @@ inferType
 | type_constraints.swift:129:7:129:8 | ia |  | type_constraints.swift:94:1:105:1 | IntArray |
 | type_constraints.swift:129:12:129:19 | IntArray |  | type_constraints.swift:94:1:105:1 | IntArray |
 | type_constraints.swift:129:12:129:36 | IntArray(...) |  | type_constraints.swift:94:1:105:1 | IntArray |
+| type_constraints.swift:129:21:129:35 | Argument |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:129:21:129:35 | Argument | Element | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:129:28:129:35 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:129:28:129:35 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:129:29:129:30 | 10 |  | {EXTERNAL LOCATION} | Int |
@@ -4796,11 +5317,15 @@ inferType
 | type_constraints.swift:130:7:130:8 | sa |  | type_constraints.swift:107:1:118:1 | StringArray |
 | type_constraints.swift:130:12:130:22 | StringArray |  | type_constraints.swift:107:1:118:1 | StringArray |
 | type_constraints.swift:130:12:130:46 | StringArray(...) |  | type_constraints.swift:107:1:118:1 | StringArray |
+| type_constraints.swift:130:24:130:45 | Argument |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:130:24:130:45 | Argument | Element | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:130:31:130:45 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:130:31:130:45 | ArrayLiteral | Element | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:130:32:130:35 | "hi" |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:130:38:130:44 | "there" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:131:25:131:32 | Argument |  | type_constraints.swift:94:1:105:1 | IntArray |
 | type_constraints.swift:131:31:131:32 | ia |  | type_constraints.swift:94:1:105:1 | IntArray |
+| type_constraints.swift:132:25:132:32 | Argument |  | type_constraints.swift:107:1:118:1 | StringArray |
 | type_constraints.swift:132:31:132:32 | sa |  | type_constraints.swift:107:1:118:1 | StringArray |
 | type_constraints.swift:138:7:138:11 | speed |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:140:8:140:12 | speed |  | {EXTERNAL LOCATION} | Int |
@@ -4815,6 +5340,7 @@ inferType
 | type_constraints.swift:150:29:152:3 | Block |  | type_constraints.swift:137:1:147:1 | Vehicle |
 | type_constraints.swift:151:5:151:9 | super |  | type_constraints.swift:137:1:147:1 | Vehicle |
 | type_constraints.swift:151:5:151:28 | ... .init(...) |  | type_constraints.swift:137:1:147:1 | Vehicle |
+| type_constraints.swift:151:16:151:27 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:151:23:151:27 | speed |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:154:38:156:3 | Block |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:155:12:155:16 | "car" |  | {EXTERNAL LOCATION} | String |
@@ -4824,6 +5350,7 @@ inferType
 | type_constraints.swift:164:29:166:3 | Block |  | type_constraints.swift:137:1:147:1 | Vehicle |
 | type_constraints.swift:165:5:165:9 | super |  | type_constraints.swift:137:1:147:1 | Vehicle |
 | type_constraints.swift:165:5:165:28 | ... .init(...) |  | type_constraints.swift:137:1:147:1 | Vehicle |
+| type_constraints.swift:165:16:165:27 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:165:23:165:27 | speed |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:168:38:170:3 | Block |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:169:12:169:18 | "truck" |  | {EXTERNAL LOCATION} | String |
@@ -4834,16 +5361,20 @@ inferType
 | type_constraints.swift:182:7:182:9 | car |  | type_constraints.swift:149:1:161:1 | Car |
 | type_constraints.swift:182:13:182:15 | Car |  | type_constraints.swift:149:1:161:1 | Car |
 | type_constraints.swift:182:13:182:27 | Car(...) |  | type_constraints.swift:149:1:161:1 | Car |
+| type_constraints.swift:182:17:182:26 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:182:24:182:26 | 100 |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:183:7:183:11 | truck |  | type_constraints.swift:163:1:175:1 | Truck |
 | type_constraints.swift:183:15:183:19 | Truck |  | type_constraints.swift:163:1:175:1 | Truck |
 | type_constraints.swift:183:15:183:30 | Truck(...) |  | type_constraints.swift:163:1:175:1 | Truck |
+| type_constraints.swift:183:21:183:29 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:183:28:183:29 | 60 |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:184:7:184:8 | d1 |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:184:12:184:31 | describeVehicle(...) |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:184:28:184:30 | Argument |  | type_constraints.swift:149:1:161:1 | Car |
 | type_constraints.swift:184:28:184:30 | car |  | type_constraints.swift:149:1:161:1 | Car |
 | type_constraints.swift:185:7:185:8 | d2 |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:185:12:185:33 | describeVehicle(...) |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:185:28:185:32 | Argument |  | type_constraints.swift:163:1:175:1 | Truck |
 | type_constraints.swift:185:28:185:32 | truck |  | type_constraints.swift:163:1:175:1 | Truck |
 | type_constraints.swift:186:7:186:7 | h |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:186:11:186:13 | car |  | type_constraints.swift:149:1:161:1 | Car |
@@ -4872,11 +5403,14 @@ inferType
 | type_constraints.swift:214:12:214:17 | values |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:214:12:214:17 | values | Element | type_constraints.swift:200:20:200:20 | T |
 | type_constraints.swift:214:19:214:19 | 0 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:214:19:214:19 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:214:24:214:29 | values |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:214:24:214:29 | values | Element | type_constraints.swift:200:20:200:20 | T |
 | type_constraints.swift:214:31:214:31 | 1 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:214:31:214:31 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:220:12:220:17 | values |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:220:12:220:17 | values | Element | type_constraints.swift:200:20:200:20 | T |
+| type_constraints.swift:220:28:222:5 | Argument |  | {EXTERNAL LOCATION} | Function |
 | type_constraints.swift:220:35:222:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | type_constraints.swift:227:7:227:12 | intAcc |  | type_constraints.swift:200:1:210:1 | Accumulator |
 | type_constraints.swift:227:7:227:12 | intAcc | T | {EXTERNAL LOCATION} | Int |
@@ -4884,6 +5418,8 @@ inferType
 | type_constraints.swift:227:16:227:26 | Accumulator | T | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:227:16:227:45 | Accumulator(...) |  | type_constraints.swift:200:1:210:1 | Accumulator |
 | type_constraints.swift:227:16:227:45 | Accumulator(...) | T | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:227:28:227:44 | Argument |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:227:28:227:44 | Argument | Element | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:227:36:227:44 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:227:36:227:44 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:227:37:227:37 | 1 |  | {EXTERNAL LOCATION} | Int |
@@ -4900,14 +5436,17 @@ inferType
 | type_constraints.swift:230:13:230:18 | intAcc | T | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:230:13:230:30 | ... .contains(...) |  | {EXTERNAL LOCATION} | Bool |
 | type_constraints.swift:230:29:230:29 | 2 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:230:29:230:29 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:236:33:236:37 | items |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:236:33:236:37 | items | Element | type_constraints.swift:236:18:236:28 | T |
 | type_constraints.swift:237:12:237:16 | items |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:237:12:237:16 | items | Element | type_constraints.swift:236:18:236:28 | T |
 | type_constraints.swift:237:18:237:18 | 0 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:237:18:237:18 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:237:23:237:27 | items |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:237:23:237:27 | items | Element | type_constraints.swift:236:18:236:28 | T |
 | type_constraints.swift:237:29:237:29 | 1 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:237:29:237:29 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:240:44:240:44 | a |  | type_constraints.swift:240:14:240:25 | A |
 | type_constraints.swift:240:52:240:52 | b |  | type_constraints.swift:240:28:240:39 | B |
 | type_constraints.swift:240:66:242:3 | Block |  | {EXTERNAL LOCATION} | Bool |
@@ -4918,6 +5457,8 @@ inferType
 | type_constraints.swift:247:7:247:8 | r1 |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:247:12:247:12 | t |  | type_constraints.swift:235:1:243:1 | Transformer |
 | type_constraints.swift:247:12:247:33 | ... .transform(...) |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:247:24:247:32 | Argument |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:247:24:247:32 | Argument | Element | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:247:24:247:32 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:247:24:247:32 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:247:25:247:25 | 3 |  | {EXTERNAL LOCATION} | Int |
@@ -4926,6 +5467,8 @@ inferType
 | type_constraints.swift:248:7:248:8 | r2 |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:248:12:248:12 | t |  | type_constraints.swift:235:1:243:1 | Transformer |
 | type_constraints.swift:248:12:248:39 | ... .transform(...) |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:248:24:248:38 | Argument |  | {EXTERNAL LOCATION} | Array |
+| type_constraints.swift:248:24:248:38 | Argument | Element | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:248:24:248:38 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | type_constraints.swift:248:24:248:38 | ArrayLiteral | Element | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:248:25:248:27 | "c" |  | {EXTERNAL LOCATION} | String |
@@ -4935,7 +5478,9 @@ inferType
 | type_constraints.swift:249:12:249:12 | t |  | type_constraints.swift:235:1:243:1 | Transformer |
 | type_constraints.swift:249:12:249:26 | ... .merge(...) |  | {EXTERNAL LOCATION} | Bool |
 | type_constraints.swift:249:20:249:20 | 1 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:249:20:249:20 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:249:23:249:25 | "x" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:249:23:249:25 | Argument |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:254:29:254:33 | value |  | type_constraints.swift:254:12:254:24 | T |
 | type_constraints.swift:254:43:254:47 | lower |  | type_constraints.swift:254:12:254:24 | T |
 | type_constraints.swift:254:57:254:61 | upper |  | type_constraints.swift:254:12:254:24 | T |
@@ -4952,17 +5497,26 @@ inferType
 | type_constraints.swift:261:7:261:8 | r1 |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:261:12:261:36 | clamp(...) |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:261:18:261:18 | 5 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:261:18:261:18 | Argument |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:261:21:261:26 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:261:26:261:26 | 0 |  | {EXTERNAL LOCATION} | Int |
+| type_constraints.swift:261:29:261:35 | Argument |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:261:34:261:35 | 10 |  | {EXTERNAL LOCATION} | Int |
 | type_constraints.swift:262:7:262:8 | r2 |  | {EXTERNAL LOCATION} | Double |
 | type_constraints.swift:262:12:262:41 | clamp(...) |  | {EXTERNAL LOCATION} | Double |
 | type_constraints.swift:262:18:262:20 | 3.5 |  | {EXTERNAL LOCATION} | Double |
+| type_constraints.swift:262:18:262:20 | Argument |  | {EXTERNAL LOCATION} | Double |
+| type_constraints.swift:262:23:262:30 | Argument |  | {EXTERNAL LOCATION} | Double |
 | type_constraints.swift:262:28:262:30 | 1.0 |  | {EXTERNAL LOCATION} | Double |
+| type_constraints.swift:262:33:262:40 | Argument |  | {EXTERNAL LOCATION} | Double |
 | type_constraints.swift:262:38:262:40 | 2.0 |  | {EXTERNAL LOCATION} | Double |
 | type_constraints.swift:263:7:263:8 | r3 |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:263:12:263:41 | clamp(...) |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:263:18:263:20 | "m" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:263:18:263:20 | Argument |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:263:23:263:30 | Argument |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:263:28:263:30 | "a" |  | {EXTERNAL LOCATION} | String |
+| type_constraints.swift:263:33:263:40 | Argument |  | {EXTERNAL LOCATION} | String |
 | type_constraints.swift:263:38:263:40 | "z" |  | {EXTERNAL LOCATION} | String |
 | variance.swift:7:18:7:18 | f |  | {EXTERNAL LOCATION} | Function |
 | variance.swift:7:18:7:18 | f | Args | {EXTERNAL LOCATION} | Tuple1 |
@@ -4992,6 +5546,12 @@ inferType
 | variance.swift:11:41:11:51 | Block | Tb | {EXTERNAL LOCATION} | String |
 | variance.swift:13:5:13:5 | x |  | {EXTERNAL LOCATION} | Tuple2 |
 | variance.swift:13:9:13:19 | foo(...) |  | {EXTERNAL LOCATION} | Tuple2 |
+| variance.swift:13:13:13:18 | Argument |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:13:13:13:18 | Argument | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:13:13:13:18 | Argument | Args.T0 | variance.swift:3:1:3:14 | A |
+| variance.swift:13:13:13:18 | Argument | Args.T0.Ta | {EXTERNAL LOCATION} | Int |
+| variance.swift:13:13:13:18 | Argument | Return | variance.swift:5:1:5:21 | B |
+| variance.swift:13:13:13:18 | Argument | Return.Tb | {EXTERNAL LOCATION} | String |
 | variance.swift:13:16:13:18 | lam |  | {EXTERNAL LOCATION} | Function |
 | variance.swift:13:16:13:18 | lam | Args | {EXTERNAL LOCATION} | Tuple1 |
 | variance.swift:13:16:13:18 | lam | Args.T0 | variance.swift:3:1:3:14 | A |

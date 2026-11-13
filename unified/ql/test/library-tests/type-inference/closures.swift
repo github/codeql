@@ -68,3 +68,10 @@ func testApply() {
         }, 42)  // $ target=apply
     _ = result  // $ type=result:String
 }
+
+class Box<T> {}
+
+let f: (Box<Int>) -> Void = { box in
+}
+
+f(Box())  // $ target=Function.callAsFunction target=Box.init type=Box(...)@Box<T>:Int
