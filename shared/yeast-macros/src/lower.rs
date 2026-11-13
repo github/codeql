@@ -7,9 +7,10 @@ use crate::ast::{
     Alternative, Cardinality, Content, Field, Node, Pattern, Replacement, Rule, Template,
 };
 
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
 struct LoweringContext<'a> {
     choice_alternative_scope: Option<ChoiceAlternativeScope<'a>>,
+    ctx: &'a Ident,
 }
 
 #[derive(Clone, Copy)]
@@ -69,12 +70,12 @@ impl Rule {
             quote! { yeast::OutputId },
             &translated_captures_ident,
         );
-        let replacement = self.replacement.lower();
+        let ctx = Ident::new("ctx", Span::call_site());
+        let replacement = self.replacement.lower(&ctx);
         let guard = self
             .guard
             .clone()
             .unwrap_or_else(|| syn::parse_quote!(true));
-        let ctx = Ident::new("ctx", Span::call_site());
 
         quote! {
             {
@@ -105,16 +106,16 @@ impl Rule {
 }
 
 impl Replacement {
-    fn lower(&self) -> TokenStream {
+    fn lower(&self, ctx: &Ident) -> TokenStream {
         match self {
-            Replacement::Templates(templates) => Template::lower_list(templates),
+            Replacement::Templates(templates) => Template::lower_list(templates, ctx),
             Replacement::Rust { body, .. } => {
                 let body = rust_block(body);
                 quote! {
                     let __value = ::std::iter::IntoIterator::into_iter(#body)
                         .collect::<Vec<_>>();
                     let mut __ids: Vec<yeast::OutputId> = Vec::new();
-                    ctx.extend_field_ids(__value, &mut __ids);
+                    #ctx.extend_field_ids(__value, &mut __ids);
                     __ids
                 }
             }
@@ -307,15 +308,23 @@ fn capture_bindings<'a>(
 }
 
 impl Template {
-    pub(crate) fn lower_root(&self) -> TokenStream {
+    pub(crate) fn lower_root(&self, ctx: &Ident) -> TokenStream {
+        let context = LoweringContext {
+            choice_alternative_scope: None,
+            ctx,
+        };
         match self {
-            Template::Choice(alternatives) => Self::lower_choice(alternatives),
-            _ => self.lower_single(LoweringContext::default()),
+            Template::Choice(alternatives) => Self::lower_choice(alternatives, context),
+            _ => self.lower_single(context),
         }
     }
 
-    pub(crate) fn lower_list(templates: &[Self]) -> TokenStream {
-        let context = LoweringContext::default();
+    pub(crate) fn lower_list(templates: &[Self], ctx: &Ident) -> TokenStream {
+        let context = LoweringContext {
+            choice_alternative_scope: None,
+            ctx,
+        };
+        let ctx = context.ctx;
         let items = templates
             .iter()
             .map(|template| match template {
@@ -328,15 +337,16 @@ impl Template {
                     let block = rust_block(block);
                     isolated_interpolation(
                         uses_ctx,
+                        ctx,
                         quote! {
                             let __value = ::std::iter::IntoIterator::into_iter(#block)
                                 .collect::<Vec<_>>();
-                            ctx.extend_field_ids(__value, &mut __nodes);
+                            #ctx.extend_field_ids(__value, &mut __nodes);
                         },
                     )
                 }
                 Template::Choice(alternatives) => {
-                    let pick = Self::lower_choice(alternatives);
+                    let pick = Self::lower_choice(alternatives, context);
                     quote! {
                         if let ::std::option::Option::Some(__id) = #pick {
                             __nodes.push(__id);
@@ -356,6 +366,7 @@ impl Template {
     }
 
     fn lower_single(&self, context: LoweringContext<'_>) -> TokenStream {
+        let ctx = context.ctx;
         match self {
             Template::Node(node) => node.lower(context),
             Template::Splice(block) => {
@@ -363,6 +374,7 @@ impl Template {
                 let block = rust_block(block);
                 isolated_interpolation(
                     uses_ctx,
+                    ctx,
                     quote! {
                         ::std::convert::Into::<yeast::OutputId>::into(#block)
                     },
@@ -374,22 +386,27 @@ impl Template {
         }
     }
 
-    fn lower_choice(alternatives: &[Alternative]) -> TokenStream {
+    fn lower_choice(alternatives: &[Alternative], context: LoweringContext<'_>) -> TokenStream {
         let pick = alternatives.iter().rev().fold(
             quote! { ::std::option::Option::None },
-            |fallback, alternative| alternative.lower_candidate(fallback),
+            |fallback, alternative| alternative.lower_candidate(fallback, context),
         );
         quote! {{ #pick }}
     }
 }
 
 impl Alternative {
-    fn lower_candidate(&self, fallback: TokenStream) -> TokenStream {
+    fn lower_candidate(
+        &self,
+        fallback: TokenStream,
+        parent_context: LoweringContext<'_>,
+    ) -> TokenStream {
         let interpolations = RefCell::new(Vec::new());
         let context = LoweringContext {
             choice_alternative_scope: Some(ChoiceAlternativeScope {
                 interpolations: &interpolations,
             }),
+            ctx: parent_context.ctx,
         };
         let value = self.template.lower_single(context);
         let interpolations = interpolations.into_inner();
@@ -456,7 +473,7 @@ impl Alternative {
 
 impl Node {
     fn lower(&self, context: LoweringContext<'_>) -> TokenStream {
-        let ctx = Ident::new("ctx", Span::call_site());
+        let ctx = context.ctx;
         let kind_str = self.kind.to_string();
 
         let node_init = if let Some(content) = &self.content {
@@ -470,6 +487,7 @@ impl Node {
                         let source_range = fresh_prepared_ident("source_range");
                         let expression = isolated_interpolation(
                             uses_ctx,
+                            ctx,
                             quote! {
                                 let __expr = #block;
                                 yeast::MaybeYeastValue::maybe_yeast_value(&__expr).map(
@@ -506,6 +524,7 @@ impl Node {
                     } else {
                         isolated_interpolation(
                             uses_ctx,
+                            ctx,
                             quote! {
                                 let __expr = #block;
                                 let __value =
@@ -542,6 +561,7 @@ impl Node {
                     let block = rust_block(block);
                     stmts.push(isolated_interpolation(
                         uses_ctx,
+                        ctx,
                         quote! {
                             let __value = ::std::iter::IntoIterator::into_iter(#block)
                                 .collect::<Vec<_>>();
@@ -570,6 +590,7 @@ impl Node {
                             let block = rust_block(block);
                             let interpolation = isolated_interpolation(
                                 uses_ctx,
+                                ctx,
                                 quote! {
                                     let __value = ::std::iter::IntoIterator::into_iter(#block)
                                         .collect::<Vec<_>>();
@@ -587,7 +608,7 @@ impl Node {
                             });
                         }
                         Template::Choice(alternatives) => {
-                            let pick = Template::lower_choice(alternatives);
+                            let pick = Template::lower_choice(alternatives, context);
                             stmts.push(quote! {
                                 let #temp: ::std::option::Option<yeast::OutputId> = #pick;
                             });
@@ -642,12 +663,12 @@ fn rust_block(block: &syn::Block) -> TokenStream {
     quote!({ #(#statements)* })
 }
 
-fn isolated_interpolation(uses_ctx: bool, body: TokenStream) -> TokenStream {
+fn isolated_interpolation(uses_ctx: bool, ctx: &Ident, body: TokenStream) -> TokenStream {
     if uses_ctx {
         quote! {{
-            let __saved_user_ctx = (*ctx.user_ctx).clone();
+            let __saved_user_ctx = (*#ctx.user_ctx).clone();
             let __result = { #body };
-            *ctx.user_ctx = __saved_user_ctx;
+            *#ctx.user_ctx = __saved_user_ctx;
             __result
         }}
     } else {

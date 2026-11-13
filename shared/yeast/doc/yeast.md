@@ -184,6 +184,37 @@ Templates construct new AST nodes using the `tree!` and `trees!` macros.
 All children in a template must be in named fields — output AST nodes are
 always fully fielded.
 
+Declare the output schema and import its builders:
+
+```rust
+yeast::tree_schema! {
+    swift_tree,
+    "ast_types.yml",
+}
+
+use swift_tree::{
+    tree, tree_with_context, trees, trees_with_context, SCHEMA as OUTPUT_SCHEMA,
+};
+```
+
+The generated namespace exposes the schema contents as `SCHEMA` for runtime
+configuration.
+
+The default builders infer the hygiene of the ambient `ctx` binding from the
+template tokens. A macro that forwards any of those tokens must use
+`tree_with_context!` or `trees_with_context!` to pass its local context
+explicitly. Otherwise the generated code may fail to resolve `ctx`, or silently
+use an unrelated `ctx` from the scope where the forwarded tokens originated:
+
+```rust
+macro_rules! build_kind {
+    ($kind:ident, $context:expr) => {{
+        let mut ctx = $context;
+        tree_with_context!(ctx, ($kind "generated"))
+    }};
+}
+```
+
 The macros use a `BuildCtx` binding named `ctx` from the surrounding scope.
 `rule!` provides this binding automatically; standalone uses must create it:
 
@@ -198,7 +229,7 @@ yeast::rule!(
 // Standalone — create a binding named ctx
 let mut user_ctx = ();
 let mut ctx = BuildCtx::new(ast, &captures, &mut user_ctx);
-let id = yeast::tree!(
+let id = tree!(
     (assignment
         left: {ctx.capture("lhs")}
         right: {ctx.capture("rhs")}
@@ -211,7 +242,7 @@ let id = yeast::tree!(
 `tree!(...)` returns a single node `Id`:
 
 ```rust
-yeast::tree!(
+tree!(
     (assignment
         left: {ctx.capture("lhs")}
         right: {ctx.capture("rhs")}
@@ -224,7 +255,7 @@ yeast::tree!(
 `trees!(...)` returns `Vec<Id>`:
 
 ```rust
-yeast::trees!(
+trees!(
     (assignment left: {tmp} right: {right})
     {body}
 )
@@ -420,7 +451,7 @@ options uniformly:
     right: {rhs}               // a captured value (inside rule!)
 )
 
-yeast::trees!(
+trees!(
     (assignment left: {tmp} right: {right})
     {extra_nodes}              // splices a Vec<Id>
 )

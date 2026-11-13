@@ -1,5 +1,12 @@
 use codeql_extractor::extractor::desugaring;
-use yeast::{tree, ConcreteDesugarer, DesugaringConfig, Rule};
+use yeast::{ConcreteDesugarer, DesugaringConfig, Rule};
+
+yeast::tree_schema! {
+    swift_tree,
+    "ast_types.yml",
+}
+
+use swift_tree::tree;
 
 /// User context propagated from outer rules down to the inner rules that
 /// emit the corresponding output declarations, so that each emitted node
