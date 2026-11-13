@@ -290,6 +290,7 @@ pub fn location_label(writer: &mut trap::Writer, location: trap::Location) -> tr
 }
 
 /// Extracts the source file at `path`, which is assumed to be canonicalized.
+///
 /// When `desugarer` is `Some`, the parsed tree is first transformed
 /// through the supplied yeast desugarer before TRAP extraction. Building
 /// the desugarer (which parses YAML and constructs the schema) is the
@@ -356,8 +357,10 @@ pub struct ParsedTree {
 }
 
 /// A piece of side-channel `extra` content (a comment or unexpected text)
-/// recovered by a parser. `kind` is a language-defined id written verbatim into
-/// the `<lang>_trivia_tokeninfo` table (the tree-sitter parser uses the
+/// recovered by a parser.
+///
+/// `kind` is a language-defined id written verbatim into the
+/// `<lang>_trivia_tokeninfo` table (the tree-sitter parser uses the
 /// grammar's node kind id here; a custom parser supplies its own stable
 /// enumeration).
 pub struct ExtraToken {
@@ -366,8 +369,9 @@ pub struct ExtraToken {
     pub text: String,
 }
 
-/// Build a parser closure that parses `source` with a tree-sitter `language`,
-/// producing a [`ParsedTree`]: a `yeast::Ast` (via [`yeast::Ast::from_tree`])
+/// Build a parser closure that produces a [`ParsedTree`] using a tree-sitter language.
+///
+/// Parses `source` with `language`, producing a `yeast::Ast` (via [`yeast::Ast::from_tree`])
 /// plus the `extra` nodes (comments and similar) recovered as side-channel
 /// tokens. This lets a tree-sitter language plug into the same
 /// `ParsedTree`-producing interface as a custom parser.
@@ -413,8 +417,9 @@ fn collect_extras(node: Node<'_>, source: &[u8], out: &mut Vec<ExtraToken>) {
     }
 }
 
-/// Extract a file from a [`ParsedTree`]-producing parser that desugars. The
-/// parser yields a `yeast::Ast` plus side-channel `extra` tokens; the AST is
+/// Extract a file from a [`ParsedTree`]-producing parser that desugars.
+///
+/// The parser yields a `yeast::Ast` plus side-channel `extra` tokens; the AST is
 /// rewritten through `desugarer` ([`yeast::Desugarer::run_from_ast`]) before
 /// TRAP extraction, and the `extra` tokens (comments and similar, which the
 /// desugared AST does not carry) are emitted from the side channel. Both

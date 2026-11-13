@@ -9,7 +9,9 @@ pub use yeast_schema::node_types_yaml::{
 };
 
 /// Build a Schema from a YAML string, layered on top of a tree-sitter
-/// `Language`. The Schema inherits all field/kind names from the language
+/// `Language`.
+///
+/// The Schema inherits all field/kind names from the language
 /// (preserving the language's IDs), plus any additional ones defined in
 /// the YAML.
 pub fn schema_from_yaml_with_language(

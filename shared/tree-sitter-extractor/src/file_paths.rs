@@ -4,8 +4,10 @@ use std::{
 };
 
 /// Given an absolute path, returns a relative path if it's under `source_root`,
-/// otherwise the absolute path as-is. This is used for diagnostic locations, which
-/// should use relative paths per the CodeQL diagnostic message format spec.
+/// otherwise the absolute path as-is.
+///
+/// This is used for diagnostic locations, which should use relative paths per
+/// the CodeQL diagnostic message format spec.
 /// Absolute path fallback is handled downstream by the CLI's SARIF generator.
 pub fn relativize_for_diagnostic(path: &Path, source_root: Option<&Path>) -> String {
     source_root
@@ -14,9 +16,10 @@ pub fn relativize_for_diagnostic(path: &Path, source_root: Option<&Path>) -> Str
         .map_or_else(|| path.display().to_string(), |s| s.replace('\\', "/"))
 }
 
-/// This represents the minimum supported path transformation that is needed to support extracting
-/// overlay databases. Specifically, it represents a transformer where one path prefix is replaced
-/// with a different prefix.
+/// A path-prefix replacement for extracting overlay databases.
+///
+/// This is the minimum supported path transformation: one path prefix is
+/// replaced with a different prefix.
 pub struct PathTransformer {
     pub original: String,
     pub replacement: String,

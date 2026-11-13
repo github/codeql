@@ -51,8 +51,9 @@ impl From<tree_sitter::Range> for Range {
     }
 }
 
-/// Node id: an index into the output [`OutputAst`] arena. A newtype around `usize`
-/// rather than a bare alias so that it can carry its own
+/// Node id: an index into the output [`OutputAst`] arena.
+///
+/// A newtype around `usize` rather than a bare alias so that it can carry its own
 /// [`YeastDisplay`] / [`YeastSourceRange`] / [`IntoFieldIds`] impls
 /// without colliding with the impls for plain integers.
 ///
@@ -337,8 +338,9 @@ impl<T: YeastSourceRange + ?Sized> YeastSourceRange for &T {
     }
 }
 
-/// Normalizes a `#{expr}` interpolation to an optional value, so that a
-/// template choice — `field: [(kind #{expr})]` — can tell "there is a value
+/// Normalizes a `#{expr}` interpolation to an optional value.
+///
+/// A template choice — `field: [(kind #{expr})]` — can tell "there is a value
 /// to interpolate" apart from "there is none, so try the next alternative".
 ///
 /// Implemented for every [`YeastDisplay`] type, which always yields a value,
@@ -1205,7 +1207,9 @@ pub type Transform<C = ()> = Box<
 >;
 
 /// Predicate evaluated after a rule's query matches and before its transform
-/// runs. Returning `false` makes the rule behave as if its query did not
+/// runs.
+///
+/// Returning `false` makes the rule behave as if its query did not
 /// match, so the driver continues to the next rule. Guards have read-only
 /// access to the shared user context.
 pub type Guard<C = ()> = Box<dyn Fn(&Ast, &Captures, &C) -> bool + Send + Sync>;
@@ -1722,8 +1726,10 @@ pub trait Desugarer: Send + Sync {
 }
 
 /// A concrete [`Desugarer`] backed by a [`DesugaringConfig<C>`] for a
-/// specific user context type `C`. Stores the language and a pre-built
-/// schema so that per-call cost is bounded to constructing a transient
+/// specific user context type `C`.
+///
+/// Stores the language and a pre-built schema so that per-call cost is bounded
+/// to constructing a transient
 /// [`Runner`] and cloning the schema (no YAML re-parsing).
 pub struct ConcreteDesugarer<C: Default + Clone + Send + Sync + 'static> {
     /// The input tree-sitter language, or `None` for a custom (non-tree-sitter)

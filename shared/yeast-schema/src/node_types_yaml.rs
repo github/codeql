@@ -282,6 +282,7 @@ pub fn convert(yaml_input: &str) -> Result<String, String> {
 }
 
 /// Apply YAML node-type definitions to a mutable Schema.
+///
 /// Registers all types, fields, and allowed types from the YAML into the
 /// schema. Public so callers can layer YAML node-types onto a Schema that
 /// already has fields/kinds preregistered from another source (e.g. a

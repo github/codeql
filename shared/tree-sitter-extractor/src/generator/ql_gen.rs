@@ -206,8 +206,10 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
     }
 }
 
-/// Creates the `TriviaToken` class. Trivia tokens (e.g. comments) are
-/// `extra` nodes preserved from the original parse tree even when the tree has
+/// Creates the `TriviaToken` class.
+///
+/// Trivia tokens (e.g. comments) are `extra` nodes preserved from the original
+/// parse tree even when the tree has
 /// been rewritten by a desugaring pass. They are not part of the regular
 /// `Token` hierarchy because they do not appear in the (possibly desugared)
 /// output schema.
@@ -511,9 +513,11 @@ pub fn create_discardable_location_predicate() -> ql::Predicate<'static> {
     }
 }
 
-/// Creates a discard predicate for `@location_default` entities. This is necessary because the
-/// tree-sitter extractors use `*` IDs for locations, which means that locations don't get shared
-/// between the base and overlay databases.
+/// Creates a discard predicate for `@location_default` entities.
+///
+/// This is necessary because the tree-sitter extractors use `*` IDs for
+/// locations, which means that locations don't get shared between the base
+/// and overlay databases.
 pub fn create_discard_location_predicate() -> ql::Predicate<'static> {
     ql::Predicate {
         name: "discardLocation",
@@ -1117,10 +1121,11 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     classes
 }
 
-/// Creates a `PrintAst` module containing a `getChild` predicate that maps each
-/// AST node to its children together with the name of the member predicate that
-/// produced them (and, for indexed fields, the index). This mirrors the
-/// information exposed by `getAFieldOrChild`, but keeps the member predicate
+/// Creates a `PrintAst` module with a `getChild` predicate for labelled AST edges.
+///
+/// The predicate maps each AST node to its children together with the name of the
+/// member predicate that produced them (and, for indexed fields, the index).
+/// This mirrors the information exposed by `getAFieldOrChild`, but keeps the member predicate
 /// name and index so that an AST printer can render labelled edges.
 pub fn create_print_ast_module(nodes: &node_types::NodeTypeMap) -> ql::TopLevel<'_> {
     let mut disjuncts: Vec<ql::Expression> = Vec::new();
