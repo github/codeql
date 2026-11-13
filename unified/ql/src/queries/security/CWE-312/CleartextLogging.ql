@@ -49,4 +49,5 @@ import CleartextLoggingFlow::PathGraph
 
 from CleartextLoggingFlow::PathNode source, CleartextLoggingFlow::PathNode sink
 where CleartextLoggingFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Logging of $@", source.getNode(), "sensitive data"
+select sink.getNode(), source, sink, "This operation writes $@ to a log file.", source,
+  source.getNode().toString()
