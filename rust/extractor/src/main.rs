@@ -67,6 +67,14 @@ impl<'a> Extractor<'a> {
         self.source_files.contains(file) || file.starts_with(&self.generated_source_root)
     }
 
+    fn should_extract_included_file(&self, file: &Path, source_kind: SourceKind) -> bool {
+        source_kind == SourceKind::Library
+            || self.is_selected_source(file)
+            || file
+                .extension()
+                .is_some_and(|ext| !ext.eq_ignore_ascii_case("rs"))
+    }
+
     fn extract(
         &mut self,
         rust_analyzer: &RustAnalyzer,
@@ -116,13 +124,16 @@ impl<'a> Extractor<'a> {
         }
         translator.emit_source_file(&ast);
         translator.emit_truncated_diagnostics_message();
-        for step in &translator.included_file_steps {
-            if let Some(file) = &step.file
-                && (source_kind == SourceKind::Library || self.is_selected_source(file))
-            {
-                self.archiver.archive(file);
-            }
-        }
+        translator.included_file_steps.retain(|step| {
+            step.file.as_ref().is_none_or(|file| {
+                if self.should_extract_included_file(file, source_kind) {
+                    self.archiver.archive(file);
+                    true
+                } else {
+                    false
+                }
+            })
+        });
         self.steps.append(&mut translator.included_file_steps);
         translator.trap.commit().unwrap_or_else(|err| {
             error!(
@@ -158,11 +169,9 @@ impl<'a> Extractor<'a> {
             }
             let modules = self.extract(&RustAnalyzer::new(vfs, semantics), &file, source_kind);
             if selected_source {
-                pending.extend(
-                    modules
-                        .into_iter()
-                        .filter(|module| self.is_selected_source(module)),
-                );
+                pending.extend(modules.into_iter().filter(|module| {
+                    self.is_selected_source(module) && !self.source_files.contains(module)
+                }));
             }
         }
     }

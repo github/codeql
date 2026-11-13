@@ -107,9 +107,6 @@ class ExtractedFile extends File {
     exists(ExtractorStep s | s.getAction() = "LoadSource" and s.getFile() = this)
   }
 
-  /** Holds if this file's standalone parse has semantic information. */
-  predicate hasStandaloneSemantics() { not exists(this.getNoSemanticsDiagnostic()) }
-
   /** Holds if `node` belongs to this file's active include expansion. */
   predicate isInActiveIncludeExpansion(AstNode node) {
     node.getFile() = this and
