@@ -20,8 +20,8 @@ cc_library(
     ],
 )
 
-cc_library(
-    name = "swift-llvm-support",
+filegroup(
+    name = "swift-llvm-support-shared",
     srcs = glob(
         [
             "*.so",
@@ -29,6 +29,12 @@ cc_library(
         ],
         allow_empty = True,  # Either *.so or *.dylib will be empty
     ),
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "swift-llvm-support",
+    srcs = [":swift-llvm-support-shared"],
     linkopts = [
         "-lm",
         "-lz",

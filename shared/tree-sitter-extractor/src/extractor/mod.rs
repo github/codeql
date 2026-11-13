@@ -930,7 +930,7 @@ impl<'a> Visitor<'a> {
         if types.contains(tp) {
             return true;
         }
-        for other in types.iter() {
+        for other in types {
             if let EntryKind::Union { members, .. } = &self.schema.get(other).unwrap().kind
                 && self.type_matches_set(tp, members)
             {

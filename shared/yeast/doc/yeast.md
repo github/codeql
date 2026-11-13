@@ -297,6 +297,14 @@ leaf nodes:
 (identifier "synthetic" location: {source_node})
 ```
 
+The block may also yield a `Range` or `Option<Range>` directly, allowing an
+exact or computed source range:
+
+```rust
+(identifier "synthetic"
+    location: {ctx.source_range(source_node).map(|range| range.empty_at_end())})
+```
+
 The override applies only to the node carrying the `location` field; nested
 nodes still derive their locations normally.
 

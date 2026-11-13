@@ -1,8 +1,16 @@
 #select
 | Test.java:19:20:19:50 | getInstance(...) | Test.java:19:45:19:49 | "DES" | Test.java:19:45:19:49 | "DES" | Cryptographic algorithm $@ is insecure. It has a short key length of 56 bits, making it vulnerable to brute-force attacks. Consider using AES instead. | Test.java:19:45:19:49 | "DES" | DES |
 | Test.java:42:14:42:38 | getInstance(...) | Test.java:42:33:42:37 | "RC2" | Test.java:42:33:42:37 | "RC2" | Cryptographic algorithm $@ is insecure. It is vulnerable to related-key attacks. Consider using AES instead. | Test.java:42:33:42:37 | "RC2" | RC2 |
+| Test.java:46:14:46:55 | getInstance(...) | Test.java:46:33:46:54 | "AES/CBC/PKCS5Padding" | Test.java:46:33:46:54 | "AES/CBC/PKCS5Padding" | Cryptographic algorithm $@ is insecure. CBC mode with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks. Consider using GCM instead. | Test.java:46:33:46:54 | "AES/CBC/PKCS5Padding" | AES/CBC/PKCS5Padding |
+| Test.java:47:14:47:55 | getInstance(...) | Test.java:47:33:47:54 | "AES/CBC/PKCS5PADDING" | Test.java:47:33:47:54 | "AES/CBC/PKCS5PADDING" | Cryptographic algorithm $@ is insecure. CBC mode with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks. Consider using GCM instead. | Test.java:47:33:47:54 | "AES/CBC/PKCS5PADDING" | AES/CBC/PKCS5PADDING |
+| Test.java:48:14:48:55 | getInstance(...) | Test.java:48:33:48:54 | "aes/cbc/pkcs5padding" | Test.java:48:33:48:54 | "aes/cbc/pkcs5padding" | Cryptographic algorithm $@ is insecure. CBC mode with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks. Consider using GCM instead. | Test.java:48:33:48:54 | "aes/cbc/pkcs5padding" | aes/cbc/pkcs5padding |
+| Test.java:49:14:49:55 | getInstance(...) | Test.java:49:33:49:54 | "AES/cbc/Pkcs5Padding" | Test.java:49:33:49:54 | "AES/cbc/Pkcs5Padding" | Cryptographic algorithm $@ is insecure. CBC mode with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks. Consider using GCM instead. | Test.java:49:33:49:54 | "AES/cbc/Pkcs5Padding" | AES/cbc/Pkcs5Padding |
 edges
 nodes
 | Test.java:19:45:19:49 | "DES" | semmle.label | "DES" |
 | Test.java:42:33:42:37 | "RC2" | semmle.label | "RC2" |
+| Test.java:46:33:46:54 | "AES/CBC/PKCS5Padding" | semmle.label | "AES/CBC/PKCS5Padding" |
+| Test.java:47:33:47:54 | "AES/CBC/PKCS5PADDING" | semmle.label | "AES/CBC/PKCS5PADDING" |
+| Test.java:48:33:48:54 | "aes/cbc/pkcs5padding" | semmle.label | "aes/cbc/pkcs5padding" |
+| Test.java:49:33:49:54 | "AES/cbc/Pkcs5Padding" | semmle.label | "AES/cbc/Pkcs5Padding" |
 subpaths

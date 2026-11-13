@@ -1,0 +1,34 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/java-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["p", "Sinks", false, "sink", "(Object)", "", "Argument[0]", "test-sink", "manual"],
+        ["p", "Sinks", false, "sink2", "(Object)", "", "Argument[0]", "test-sink2", "manual"],
+        ["p", "Sinks", false, "manualSinkAlreadyDefined", "(Object)", "", "Argument[0]", "test-sink", "manual"],
+        ["p", "Sinks", false, "saveAndGet", "(Object)", "", "Argument[0]", "test-sink", "df-generated"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/java-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["p", "Sinks", false, "saveAndGet", "(Object)", "", "ReturnValue", "test-source", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/java-all",
+        "extensible": "neutralModel"
+      },
+      "data": [
+        ["p", "Sinks", "hasManualSinkNeutral", "(Object)", "sink", "manual"]
+      ]
+    }
+  ]
+}

@@ -76,6 +76,10 @@ private module SsaInput implements Impl::SsaInputSig {
       w.isParameterInit(p)
     )
   }
+
+  predicate explicitRead(Expr e, SsaImplInput::SourceVariable v) {
+    v.getAnAccess().(AssignableRead) = e
+  }
 }
 
 module Ssa_ = Impl::MakeSsa<SsaInput>;
@@ -932,7 +936,7 @@ private module Cached {
 
       private Node getABarrierNodeImpl() {
         result =
-          DataFlowIntegrationImpl::BarrierGuardDefWithState<Unit, guardChecksWithWrappers/4>::getABarrierNode(_)
+          DataFlowIntegrationImpl::SsaBarrierGuardWithState<Unit, guardChecksWithWrappers/4>::getABarrierNode(_)
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/0;
@@ -962,7 +966,7 @@ private module Cached {
 
       private Node getABarrierNodeImpl(P param) {
         result =
-          DataFlowIntegrationImpl::BarrierGuardDefWithState<P, guardChecksWithWrappers/4>::getABarrierNode(param)
+          DataFlowIntegrationImpl::SsaBarrierGuardWithState<P, guardChecksWithWrappers/4>::getABarrierNode(param)
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/1;
@@ -1011,10 +1015,6 @@ deprecated Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
-
-  class Expr extends ControlFlowNode {
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
-  }
 
   predicate ssaDefHasSource(Impl::WriteDefinition def) {
     // exclude flow directly from RHS to SSA definition, as we instead want to

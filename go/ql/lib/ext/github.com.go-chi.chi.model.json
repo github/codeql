@@ -1,0 +1,15 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["github.com/go-chi/chi", "", false, "URLParam", "", "", "ReturnValue", "remote", "manual"],
+        ["github.com/go-chi/chi", "", false, "URLParamFromCtx", "", "", "ReturnValue", "remote", "manual"],
+        ["github.com/go-chi/chi", "Context", true, "URLParam", "", "", "ReturnValue", "remote", "manual"]
+      ]
+    }
+  ]
+}

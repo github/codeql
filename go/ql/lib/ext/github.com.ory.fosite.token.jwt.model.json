@@ -1,0 +1,14 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/ory/fosite/token/jwt", "Token", true, "SignedString", "", "", "Argument[0]", "credentials-key", "manual"],
+        ["github.com/ory/fosite/token/jwt", "SigningMethod", true, "Sign", "", "", "Argument[1]", "credentials-key", "manual"]
+      ]
+    }
+  ]
+}

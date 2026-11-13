@@ -11,4 +11,4 @@ extractor: actions
 tests: .
 warnOnImplicitThis: true
 dataExtensions:
-  - output-clobbering.model.yml
+  - output-clobbering.model.json

@@ -520,9 +520,8 @@ mod tests {
     #[test]
     fn rejects_invalid_line_starts() {
         let json = r#"{"$lineStarts":[1],"$pos":0,"$end":0,"kind":"sourceFile"}"#;
-        let error = match json_to_ast(json) {
-            Ok(_) => panic!("invalid line starts should fail"),
-            Err(error) => error,
+        let Err(error) = json_to_ast(json) else {
+            panic!("invalid line starts should fail");
         };
         assert!(error.contains("must start with offset 0"), "{error}");
     }

@@ -1,5 +1,5 @@
-use proc_macro2::{Ident, Span, TokenStream};
-use quote::quote;
+use proc_macro2::{Ident, Span, TokenStream, TokenTree};
+use quote::{quote, ToTokens};
 use std::cell::RefCell;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
@@ -85,18 +85,18 @@ impl Rule {
                         #(#guard_bindings)*
                         let ast = __ast;
                         let #ctx = __user_ctx;
-                        Ok(#guard)
+                        let __guard: bool = #guard;
+                        __guard
                     }),
                     Box::new(|__ast: &yeast::Ast, __output: &mut yeast::OutputAst, __captures: yeast::captures::Captures, __source_range: Option<yeast::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
                         let __skip: &[&str] = &[#(#raw_capture_names),*];
                         let __translated_captures =
-                            __translator.translate_captures(&__captures, __ast, __output, __user_ctx, __skip)?;
+                            __translator.translate_captures(&__captures, __ast, __output, __user_ctx, __skip);
                         #(#raw_bindings)*
                         #(#translated_bindings)*
                         let mut #ctx = yeast::build::BuildCtx::with_translator(__ast, __output, __source_range, __user_ctx, __translator);
                         let __result: Vec<yeast::OutputId> = { #replacement };
-                        let __result = #ctx.finish_rule(__result)?;
-                        Ok(__result)
+                        #ctx.finish_rule(__result)
                     }),
                 )
             }
@@ -324,12 +324,16 @@ impl Template {
                     quote! { __nodes.push(#node); }
                 }
                 Template::Splice(block) => {
+                    let uses_ctx = block_uses_ctx(block);
                     let block = rust_block(block);
-                    quote! {
-                        let __value = ::std::iter::IntoIterator::into_iter(#block)
-                            .collect::<Vec<_>>();
-                        ctx.extend_field_ids(__value, &mut __nodes);
-                    }
+                    isolated_interpolation(
+                        uses_ctx,
+                        quote! {
+                            let __value = ::std::iter::IntoIterator::into_iter(#block)
+                                .collect::<Vec<_>>();
+                            ctx.extend_field_ids(__value, &mut __nodes);
+                        },
+                    )
                 }
                 Template::Choice(alternatives) => {
                     let pick = Self::lower_choice(alternatives);
@@ -355,8 +359,14 @@ impl Template {
         match self {
             Template::Node(node) => node.lower(context),
             Template::Splice(block) => {
+                let uses_ctx = block_uses_ctx(block);
                 let block = rust_block(block);
-                quote! { ::std::convert::Into::<yeast::OutputId>::into(#block) }
+                isolated_interpolation(
+                    uses_ctx,
+                    quote! {
+                        ::std::convert::Into::<yeast::OutputId>::into(#block)
+                    },
+                )
             }
             Template::Choice(_) => {
                 unreachable!("choices are lowered through Template::lower_choice")
@@ -453,35 +463,38 @@ impl Node {
             let node = match content {
                 Content::Static(lit) => quote! { #ctx.literal(#kind_str, #lit) },
                 Content::Computed(block) => {
+                    let uses_ctx = block_uses_ctx(block);
                     let block = rust_block(block);
                     if let Some(scope) = context.choice_alternative_scope {
                         let value = fresh_prepared_ident("value");
                         let source_range = fresh_prepared_ident("source_range");
+                        let expression = isolated_interpolation(
+                            uses_ctx,
+                            quote! {
+                                let __expr = #block;
+                                yeast::MaybeYeastValue::maybe_yeast_value(&__expr).map(
+                                    |__value_ref| {
+                                        (
+                                            yeast::YeastDisplay::yeast_to_string(
+                                                __value_ref,
+                                                &#ctx,
+                                            ),
+                                            yeast::YeastSourceRange::yeast_source_range(
+                                                __value_ref,
+                                                &#ctx,
+                                            ),
+                                        )
+                                    },
+                                )
+                            },
+                        );
                         scope
                             .interpolations
                             .borrow_mut()
                             .push(GuardingInterpolation {
                                 value: value.clone(),
                                 source_range: source_range.clone(),
-                                expression: quote! {
-                                    {
-                                        let __expr = #block;
-                                        yeast::MaybeYeastValue::maybe_yeast_value(&__expr).map(
-                                            |__value_ref| {
-                                                (
-                                                    yeast::YeastDisplay::yeast_to_string(
-                                                        __value_ref,
-                                                        &#ctx,
-                                                    ),
-                                                    yeast::YeastSourceRange::yeast_source_range(
-                                                        __value_ref,
-                                                        &#ctx,
-                                                    ),
-                                                )
-                                            },
-                                        )
-                                    }
-                                },
+                                expression,
                             });
                         quote! {
                             #ctx.literal_with_source_range(
@@ -491,8 +504,9 @@ impl Node {
                             )
                         }
                     } else {
-                        quote! {
-                            {
+                        isolated_interpolation(
+                            uses_ctx,
+                            quote! {
                                 let __expr = #block;
                                 let __value =
                                     yeast::YeastDisplay::yeast_to_string(&__expr, &#ctx);
@@ -503,8 +517,8 @@ impl Node {
                                     &__value,
                                     __source_range,
                                 )
-                            }
-                        }
+                            },
+                        )
                     }
                 }
                 Content::Inherited => quote! { #ctx.inherited_literal(#kind_str) },
@@ -524,12 +538,20 @@ impl Node {
         for (field_counter, field) in self.fields.iter().enumerate() {
             match field {
                 Field::Location { block } => {
+                    let uses_ctx = block_uses_ctx(block);
                     let block = rust_block(block);
-                    stmts.push(quote! {
-                        let __value = ::std::iter::IntoIterator::into_iter(#block)
-                            .collect::<Vec<_>>();
-                        #ctx.extend_location_ranges(__value, &mut __location_ranges);
-                    });
+                    stmts.push(isolated_interpolation(
+                        uses_ctx,
+                        quote! {
+                            let __value = ::std::iter::IntoIterator::into_iter(#block)
+                                .collect::<Vec<_>>();
+                            __location_ranges.extend(
+                                __value
+                                    .into_iter()
+                                    .filter_map(|__source| #ctx.location_source_range(__source)),
+                            );
+                        },
+                    ));
                 }
                 Field::LocationNone => {}
                 Field::Named { name, value } => {
@@ -544,12 +566,19 @@ impl Node {
                     );
                     match value {
                         Template::Splice(block) => {
+                            let uses_ctx = block_uses_ctx(block);
                             let block = rust_block(block);
+                            let interpolation = isolated_interpolation(
+                                uses_ctx,
+                                quote! {
+                                    let __value = ::std::iter::IntoIterator::into_iter(#block)
+                                        .collect::<Vec<_>>();
+                                    #ctx.extend_field_ids(__value, &mut #temp);
+                                },
+                            );
                             stmts.push(quote! {
                                 let mut #temp: Vec<yeast::OutputId> = Vec::new();
-                                let __value = ::std::iter::IntoIterator::into_iter(#block)
-                                    .collect::<Vec<_>>();
-                                #ctx.extend_field_ids(__value, &mut #temp);
+                                #interpolation
                             });
                             field_args.push(quote! {
                                 if !#temp.is_empty() {
@@ -611,4 +640,34 @@ impl Node {
 fn rust_block(block: &syn::Block) -> TokenStream {
     let statements = &block.stmts;
     quote!({ #(#statements)* })
+}
+
+fn isolated_interpolation(uses_ctx: bool, body: TokenStream) -> TokenStream {
+    if uses_ctx {
+        quote! {{
+            let __saved_user_ctx = (*ctx.user_ctx).clone();
+            let __result = { #body };
+            *ctx.user_ctx = __saved_user_ctx;
+            __result
+        }}
+    } else {
+        quote! {{ #body }}
+    }
+}
+
+/// Returns whether `block` directly mentions `ctx`.
+///
+/// This lexical check cannot see context access hidden behind a helper or
+/// macro. Such an interpolation can opt into isolation by explicitly
+/// mentioning `ctx`, for example with `let _ = &ctx;`.
+fn block_uses_ctx(block: &syn::Block) -> bool {
+    fn uses_ctx(tokens: TokenStream) -> bool {
+        tokens.into_iter().any(|token| match token {
+            TokenTree::Ident(ident) => ident == "ctx",
+            TokenTree::Group(group) => uses_ctx(group.stream()),
+            TokenTree::Punct(_) | TokenTree::Literal(_) => false,
+        })
+    }
+
+    uses_ctx(block.to_token_stream())
 }

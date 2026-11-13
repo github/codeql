@@ -37,13 +37,12 @@ predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2,
 }
 
 private predicate guardChecksFalsy(
-  Ssa2::SsaDataflowInput::Guard g, Ssa2::SsaDataflowInput::Expr e, Boolean outcome
+  Ssa2::SsaDataflowInput::Guard g, Ssa2::Definition def, Boolean outcome
 ) {
   exists(ConditionGuardNode guard |
     guard.getTest() = g and
     guard.getOutcome() = outcome and
-    e = g and
-    e instanceof VarAccess and
+    g = Ssa2::getARead(def) and
     outcome = false
   )
 }
@@ -68,7 +67,7 @@ private predicate guardChecksFalsy(
  * ```
  */
 private predicate varAccessBarrier(DataFlow::Node node) {
-  getNodeFromSsa2(Ssa2::BarrierGuard<guardChecksFalsy/3>::getABarrierNode()) = node
+  getNodeFromSsa2(Ssa2::SsaBarrierGuard<guardChecksFalsy/3>::getABarrierNode()) = node
 }
 
 /**

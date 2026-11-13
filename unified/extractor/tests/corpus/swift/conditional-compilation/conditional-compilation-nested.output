@@ -1,0 +1,351 @@
+#if DEBUG
+    let first = 1
+    let second = 2
+    #if EXTRA
+        func f() {}
+    #elseif OTHER
+    #else
+        let third = 3
+    #endif
+#else
+#endif
+
+protocol P {
+    #if DEBUG
+        associatedtype T
+    #endif
+}
+
+func nested_in_statement_context() {
+    #if DEBUG
+        #if EXTRA
+            let value = 0
+        #else
+            let value = 1
+        #endif
+    #else
+        let value = 2
+    #endif
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        ifConfigDecl
+          clauses:
+            ifConfigClause
+              elements:
+                codeBlockItem
+                  item:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "1"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "first"
+                codeBlockItem
+                  item:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "2"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "second"
+                codeBlockItem
+                  item:
+                    ifConfigDecl
+                      clauses:
+                        ifConfigClause
+                          elements:
+                            codeBlockItem
+                              item:
+                                functionDecl
+                                  attributes:
+                                  body:
+                                    codeBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      statements:
+                                  modifiers:
+                                  name: identifier "f"
+                                  signature:
+                                    functionSignature
+                                      parameterClause:
+                                        functionParameterClause
+                                          leftParen: (
+                                          rightParen: )
+                                          parameters:
+                                  funcKeyword: func
+                          condition:
+                            declReferenceExpr
+                              baseName: identifier "EXTRA"
+                          poundKeyword: #if
+                        ifConfigClause
+                          elements:
+                          condition:
+                            declReferenceExpr
+                              baseName: identifier "OTHER"
+                          poundKeyword: #elseif
+                        ifConfigClause
+                          elements:
+                            codeBlockItem
+                              item:
+                                variableDecl
+                                  attributes:
+                                  modifiers:
+                                  bindingSpecifier: let
+                                  bindings:
+                                    patternBinding
+                                      initializer:
+                                        initializerClause
+                                          equal: =
+                                          value:
+                                            integerLiteralExpr
+                                              literal: integerLiteral "3"
+                                      pattern:
+                                        identifierPattern
+                                          identifier: identifier "third"
+                          poundKeyword: #else
+                      poundEndif: #endif
+              condition:
+                declReferenceExpr
+                  baseName: identifier "DEBUG"
+              poundKeyword: #if
+            ifConfigClause
+              elements:
+              poundKeyword: #else
+          poundEndif: #endif
+    codeBlockItem
+      item:
+        protocolDecl
+          attributes:
+          modifiers:
+          name: identifier "P"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    ifConfigDecl
+                      clauses:
+                        ifConfigClause
+                          elements:
+                            memberBlockItem
+                              decl:
+                                associatedTypeDecl
+                                  attributes:
+                                  modifiers:
+                                  name: identifier "T"
+                                  associatedtypeKeyword: associatedtype
+                          condition:
+                            declReferenceExpr
+                              baseName: identifier "DEBUG"
+                          poundKeyword: #if
+                      poundEndif: #endif
+          protocolKeyword: protocol
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    ifConfigDecl
+                      clauses:
+                        ifConfigClause
+                          elements:
+                            codeBlockItem
+                              item:
+                                ifConfigDecl
+                                  clauses:
+                                    ifConfigClause
+                                      elements:
+                                        codeBlockItem
+                                          item:
+                                            variableDecl
+                                              attributes:
+                                              modifiers:
+                                              bindingSpecifier: let
+                                              bindings:
+                                                patternBinding
+                                                  initializer:
+                                                    initializerClause
+                                                      equal: =
+                                                      value:
+                                                        integerLiteralExpr
+                                                          literal: integerLiteral "0"
+                                                  pattern:
+                                                    identifierPattern
+                                                      identifier: identifier "value"
+                                      condition:
+                                        declReferenceExpr
+                                          baseName: identifier "EXTRA"
+                                      poundKeyword: #if
+                                    ifConfigClause
+                                      elements:
+                                        codeBlockItem
+                                          item:
+                                            variableDecl
+                                              attributes:
+                                              modifiers:
+                                              bindingSpecifier: let
+                                              bindings:
+                                                patternBinding
+                                                  initializer:
+                                                    initializerClause
+                                                      equal: =
+                                                      value:
+                                                        integerLiteralExpr
+                                                          literal: integerLiteral "1"
+                                                  pattern:
+                                                    identifierPattern
+                                                      identifier: identifier "value"
+                                      poundKeyword: #else
+                                  poundEndif: #endif
+                          condition:
+                            declReferenceExpr
+                              baseName: identifier "DEBUG"
+                          poundKeyword: #if
+                        ifConfigClause
+                          elements:
+                            codeBlockItem
+                              item:
+                                variableDecl
+                                  attributes:
+                                  modifiers:
+                                  bindingSpecifier: let
+                                  bindings:
+                                    patternBinding
+                                      initializer:
+                                        initializerClause
+                                          equal: =
+                                          value:
+                                            integerLiteralExpr
+                                              literal: integerLiteral "2"
+                                      pattern:
+                                        identifierPattern
+                                          identifier: identifier "value"
+                          poundKeyword: #else
+                      poundEndif: #endif
+          modifiers:
+          name: identifier "nested_in_statement_context"
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+          funcKeyword: func
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩\n\n⟨stmt⟩\n\n⟨stmt⟩"
+      stmt:
+        if_expr source="#if ⟨condition⟩\n    ⟨then⟩\n⟨else⟩\n#endif"
+          modifier: modifier "conditional_compilation" source=""
+          condition: identifier "DEBUG" source="DEBUG"
+          then:
+            block source="⟨stmt⟩\n    ⟨stmt⟩\n    ⟨stmt⟩"
+              stmt:
+                variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                  modifier: modifier "let" source="let"
+                  pattern: identifier "first" source="first"
+                  value: int_literal "1" source="1"
+                variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                  modifier: modifier "let" source="let"
+                  pattern: identifier "second" source="second"
+                  value: int_literal "2" source="2"
+                if_expr source="#if ⟨condition⟩\n        ⟨then⟩\n    ⟨else⟩\n    #endif"
+                  modifier: modifier "conditional_compilation" source=""
+                  condition: identifier "EXTRA" source="EXTRA"
+                  then:
+                    block source="⟨stmt⟩"
+                      stmt:
+                        function_declaration source="func ⟨name_node⟩() ⟨body⟩"
+                          name_node: identifier "f" source="f"
+                          body: block "{}" source="{}"
+                  else:
+                    if_expr source="#elseif ⟨condition⟩\n    ⟨else⟩"
+                      modifier: modifier "conditional_compilation" source=""
+                      condition: identifier "OTHER" source="OTHER"
+                      then: block source=""
+                      else:
+                        block source="#else\n        ⟨stmt⟩"
+                          stmt:
+                            variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                              modifier: modifier "let" source="let"
+                              pattern: identifier "third" source="third"
+                              value: int_literal "3" source="3"
+          else: block "#else" source="#else"
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    #if DEBUG\n        ⟨member⟩\n    #endif\n}"
+          modifier: modifier "protocol" source="protocol"
+          name_node: identifier "P" source="P"
+          member:
+            associated_type_declaration source="associatedtype ⟨name_node⟩"
+              name_node: identifier "T" source="T"
+        function_declaration source="func ⟨name_node⟩() ⟨body⟩"
+          name_node: identifier "nested_in_statement_context" source="nested_in_statement_context"
+          body:
+            block source="{\n    ⟨stmt⟩\n}"
+              stmt:
+                if_expr source="#if ⟨condition⟩\n        ⟨then⟩\n    ⟨else⟩\n    #endif"
+                  modifier: modifier "conditional_compilation" source=""
+                  condition: identifier "DEBUG" source="DEBUG"
+                  then:
+                    block source="⟨stmt⟩"
+                      stmt:
+                        if_expr source="#if ⟨condition⟩\n            ⟨then⟩\n        ⟨else⟩\n        #endif"
+                          modifier: modifier "conditional_compilation" source=""
+                          condition: identifier "EXTRA" source="EXTRA"
+                          then:
+                            block source="⟨stmt⟩"
+                              stmt:
+                                variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                                  modifier: modifier "let" source="let"
+                                  pattern: identifier "value" source="value"
+                                  value: int_literal "0" source="0"
+                          else:
+                            block source="#else\n            ⟨stmt⟩"
+                              stmt:
+                                variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                                  modifier: modifier "let" source="let"
+                                  pattern: identifier "value" source="value"
+                                  value: int_literal "1" source="1"
+                  else:
+                    block source="#else\n        ⟨stmt⟩"
+                      stmt:
+                        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+                          modifier: modifier "let" source="let"
+                          pattern: identifier "value" source="value"
+                          value: int_literal "2" source="2"

@@ -1,0 +1,73 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "packageGrouping"
+      },
+      "data": [
+        ["gorqlite", "github.com/kanikanema/gorqlite"],
+        ["gorqlite", "github.com/rqlite/gorqlite"],
+        ["gorqlite", "github.com/raindog308/gorqlite"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["group:gorqlite", "Connection", true, "Query", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryOne", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryOneContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryOneParameterized", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryOneParameterizedContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryParameterized", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryParameterizedContext", "", "", "ReturnValue[0]", "database", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["group:gorqlite", "Connection", true, "Query", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryContext", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryOne", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryOneContext", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryOneParameterized", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryOneParameterizedContext", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryParameterized", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueryParameterizedContext", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "Queue", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueueContext", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueueOne", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueueOneContext", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueueOneParameterized", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueueOneParameterizedContext", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueueParameterized", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "QueueParameterizedContext", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "Write", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "WriteContext", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "WriteOne", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "WriteOneContext", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "WriteOneParameterized", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "WriteOneParameterizedContext", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "WriteParameterized", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorqlite", "Connection", true, "WriteParameterizedContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["group:gorqlite", "QueryResult", true, "Map", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["group:gorqlite", "QueryResult", true, "Slice", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}

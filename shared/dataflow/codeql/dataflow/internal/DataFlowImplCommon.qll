@@ -1794,15 +1794,22 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       TReturnCtxNoFlowThrough() or
       TReturnCtxMaybeFlowThrough(ReturnPosition pos)
 
+    /**
+     * Gets the upper bound for the access path length limit that is supported
+     * in data flow Configurations. This is set to be at least twice the
+     * language default access path limit.
+     */
+    private int accessPathLimitConfigCap() { result = 10.maximum(2 * accessPathLimit()) }
+
     cached
     newtype TAccessPathFront =
       TFrontNil() or
-      TFrontHead(Content c, int length) { length in [1 .. accessPathLimit()] }
+      TFrontHead(Content c, int length) { length in [1 .. accessPathLimitConfigCap()] }
 
     cached
     newtype TApproxAccessPathFront =
       TApproxFrontNil() or
-      TApproxFrontHead(ContentApprox c, int length) { length in [1 .. accessPathLimit()] }
+      TApproxFrontHead(ContentApprox c, int length) { length in [1 .. accessPathLimitConfigCap()] }
 
     cached
     newtype TAccessPathFrontOption =

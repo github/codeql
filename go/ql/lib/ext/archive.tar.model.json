@@ -1,0 +1,17 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["archive/tar", "", false, "FileInfoHeader", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["archive/tar", "", false, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["archive/tar", "Header", true, "FileInfo", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["archive/tar", "Reader", true, "Next", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["archive/tar", "Writer", true, "WriteHeader", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      ]
+    }
+  ]
+}

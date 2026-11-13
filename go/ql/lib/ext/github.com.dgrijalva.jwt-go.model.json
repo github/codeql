@@ -1,0 +1,32 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/dgrijalva/jwt-go", "SigningMethod", true, "Sign", "", "", "Argument[1]", "credentials-key", "manual"],
+        ["github.com/dgrijalva/jwt-go", "Token", true, "SignedString", "", "", "Argument[0]", "credentials-key", "manual"],
+        ["github.com/dgrijalva/jwt-go", "Parser", true, "ParseUnverified", "", "", "Argument[0]", "jwt", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["github.com/dgrijalva/jwt-go", "", false, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/dgrijalva/jwt-go", "Parser", true, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/dgrijalva/jwt-go", "", false, "ParseWithClaims", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/dgrijalva/jwt-go", "Parser", true, "ParseWithClaims", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/dgrijalva/jwt-go", "", false, "ParseECPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/dgrijalva/jwt-go", "", false, "ParseECPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/dgrijalva/jwt-go", "", false, "ParseRSAPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/dgrijalva/jwt-go", "", false, "ParseRSAPrivateKeyFromPEMWithPassword", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/dgrijalva/jwt-go", "", false, "ParseRSAPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}

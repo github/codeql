@@ -157,8 +157,20 @@ class MyClass2(object):
         print(self.foo) # $ tracked MISSING: tracked=foo
 
 instance = MyClass2()
-print(instance.foo) # $ MISSING: tracked=foo tracked
+print(instance.foo) # $ tracked MISSING: tracked=foo
 instance.print_foo() # $ MISSING: tracked=foo
+
+
+# attribute set in method, but the instance flows across a call/return before the read.
+# `instanceFieldStep` identifies the instance using only local flow from the constructor
+# call, so a value stored on `self.foo` is not seen once the instance has crossed a
+# function boundary.
+
+def make_my_class2():
+    return MyClass2()
+
+returned_instance = make_my_class2()
+print(returned_instance.foo) # $ MISSING: tracked
 
 
 # attribute set from outside of class
@@ -195,7 +207,7 @@ class Sub1(Base1):
 
 sub1 = Sub1()
 sub1.read_foo()
-print(sub1.foo) # $ MISSING: tracked=foo tracked
+print(sub1.foo) # $ tracked MISSING: tracked=foo
 
 
 # attribute written in a subclass method, read in an inherited base class method
@@ -210,7 +222,7 @@ class Sub2(Base2):
 
 sub2 = Sub2()
 sub2.read_bar()
-print(sub2.bar) # $ MISSING: tracked=bar tracked
+print(sub2.bar) # $ tracked MISSING: tracked=bar
 
 
 # attribute written in a base class method, read on an instance of the subclass
@@ -223,4 +235,4 @@ class Sub3(Base3):
     pass
 
 sub3 = Sub3()
-print(sub3.baz) # $ MISSING: tracked=baz tracked
+print(sub3.baz) # $ tracked MISSING: tracked=baz

@@ -491,17 +491,14 @@ impl<'db> Translator<'db> {
     pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
         self.semantics.is_some_and(|sema| {
             item.attrs().any(|attr| {
-                let meta = match attr.meta() {
-                    Some(meta) => meta,
-                    None => return false,
+                let Some(meta) = attr.meta() else {
+                    return false;
                 };
-                let cfg_meta = match ast::CfgMeta::cast(meta.syntax().clone()) {
-                    Some(cfg_meta) => cfg_meta,
-                    None => return false,
+                let Some(cfg_meta) = ast::CfgMeta::cast(meta.syntax().clone()) else {
+                    return false;
                 };
-                let cfg_predicate = match cfg_meta.cfg_predicate() {
-                    Some(pred) => pred,
-                    None => return false,
+                let Some(cfg_predicate) = cfg_meta.cfg_predicate() else {
+                    return false;
                 };
                 let cfg_expr = ra_ap_cfg::CfgExpr::parse_from_ast(cfg_predicate);
                 // Resolve the crate the item belongs to so its `cfg` options can be checked.

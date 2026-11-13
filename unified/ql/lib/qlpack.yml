@@ -15,5 +15,6 @@ dependencies:
   codeql/util: ${workspace}
 dataExtensions:
   - ext/*.model.yml
+  - ext/*.model.json
 warnOnImplicitThis: true
 compileForOverlayEval: true

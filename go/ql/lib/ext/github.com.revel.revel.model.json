@@ -1,0 +1,81 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "packageGrouping"
+      },
+      "data": [
+        ["revel", "github.com/revel/revel"],
+        ["revel", "github.com/robfig/revel"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["group:revel", "Controller", true, "Redirect", "", "", "Argument[0]", "url-redirection", "manual"] // It is currently assumed that a tainted `value` in `Redirect(url, value)`, which calls `Sprintf(url, value)` internally, cannot lead to an open redirect vulnerability.
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["group:revel", "Controller", true, "Params", "", "", "", "remote", "manual"],
+        ["group:revel", "Request", true, "Header", "", "", "", "remote", "manual"],
+        ["group:revel", "Request", true, "ContentType", "", "", "", "remote", "manual"],
+        ["group:revel", "Request", true, "AcceptLanguages", "", "", "", "remote", "manual"],
+        ["group:revel", "Request", true, "Locale", "", "", "", "remote", "manual"],
+        ["group:revel", "Request", true, "URL", "", "", "", "remote", "manual"],
+        ["group:revel", "Request", true, "Form", "", "", "", "remote", "manual"],
+        ["group:revel", "Request", true, "MultipartForm", "", "", "", "remote", "manual"],
+        ["group:revel", "RouteMatch", true, "Params", "", "", "", "remote", "manual"],
+        ["group:revel", "Request", true, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:revel", "Request", true, "FormValue", "", "", "ReturnValue", "remote", "manual"],
+        ["group:revel", "Request", true, "GetBody", "", "", "ReturnValue", "remote", "manual"],
+        ["group:revel", "Request", true, "GetForm", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:revel", "Request", true, "GetHttpHeader", "", "", "ReturnValue", "remote", "manual"],
+        ["group:revel", "Request", true, "GetMultipartForm", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:revel", "Request", true, "GetQuery", "", "", "ReturnValue", "remote", "manual"],
+        ["group:revel", "Request", true, "GetRequestURI", "", "", "ReturnValue", "remote", "manual"],
+        ["group:revel", "Request", true, "MultipartReader", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:revel", "Request", true, "PostFormValue", "", "", "ReturnValue", "remote", "manual"],
+        ["group:revel", "Request", true, "Referer", "", "", "ReturnValue", "remote", "manual"],
+        ["group:revel", "Request", true, "UserAgent", "", "", "ReturnValue", "remote", "manual"],
+        ["group:revel", "ServerWebSocket", true, "MessageReceive", "", "", "Argument[0]", "remote", "manual"],
+        ["group:revel", "ServerWebSocket", true, "MessageReceiveJSON", "", "", "Argument[0]", "remote", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["group:revel", "Controller", true, "RenderFileName", "", "", "Argument[0]", "path-injection", "manual"] // we model this as a path-injection sink rather than extending HTTP::ResponseBody as this will usually mean exposing a user-controlled file rather than the actual contents being user-controlled.
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["group:revel", "Params", true, "Bind", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:revel", "Params", true, "BindJSON", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:revel", "RevelHeader", true, "Add", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"],
+        ["group:revel", "RevelHeader", true, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:revel", "RevelHeader", true, "GetAll", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:revel", "RevelHeader", true, "Set", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"],
+        ["group:revel", "RevelHeader", true, "SetCookie", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["group:revel", "ServerCookie", true, "GetValue", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:revel", "ServerMultipartForm", true, "GetFiles", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:revel", "ServerMultipartForm", true, "GetValues", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

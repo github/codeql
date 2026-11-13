@@ -402,11 +402,23 @@
 | 474 | cfg.swift:474:3:474:51 | var apply_kpGet_mayB_x | 'var apply_kpGet_mayB_x -V apply_kpGet_mayB_x -> a -> Argument -V kpGet_mayB_x -^ a(...)' |
 | 477 | cfg.swift:477:1:504:1 | func testIfConfig | 'func testIfConfig -V testIfConfig' |
 | 477 | cfg.swift:477:21:504:1 | Block | 'Block' |
-| 478 | cfg.swift:478:1:484:6 |  | '' |
+| 478 | cfg.swift:478:1:484:6 | IfExpr | 'IfExpr -V FOO' |
+| 479 | cfg.swift:479:3:480:3 | Block | 'Block -V 1' |
+| 480 | cfg.swift:480:3:480:3 | 2 | '2' |
+| 481 | cfg.swift:481:1:483:3 | Block | 'Block' |
+| 482 | cfg.swift:482:3:482:3 | 3 | '3' |
+| 483 | cfg.swift:483:3:483:3 | 4 | '4' |
 | 486 | cfg.swift:486:3:486:3 | 5 | '5' |
-| 488 | cfg.swift:488:1:491:6 |  | '' |
+| 488 | cfg.swift:488:1:491:6 | IfExpr | 'IfExpr -V BAR' |
+| 489 | cfg.swift:489:3:490:3 | Block | 'Block -V 6' |
+| 490 | cfg.swift:490:3:490:3 | 7 | '7' |
 | 493 | cfg.swift:493:3:493:3 | 8 | '8' |
-| 495 | cfg.swift:495:1:501:6 |  | '' |
+| 495 | cfg.swift:495:1:501:6 | IfExpr | 'IfExpr -V FOO' |
+| 496 | cfg.swift:496:3:497:4 | Block | 'Block -V 9' |
+| 497 | cfg.swift:497:3:497:4 | 10 | '10' |
+| 498 | cfg.swift:498:1:500:4 | IfExpr | 'IfExpr -V true' |
+| 499 | cfg.swift:499:3:500:4 | Block | 'Block -V 11' |
+| 500 | cfg.swift:500:3:500:4 | 12 | '12' |
 | 503 | cfg.swift:503:3:503:4 | 13 | '13' |
 | 506 | cfg.swift:506:1:531:1 | func testAvailable | 'func testAvailable -V testAvailable' |
 | 506 | cfg.swift:506:29:531:1 | Block | 'Block' |

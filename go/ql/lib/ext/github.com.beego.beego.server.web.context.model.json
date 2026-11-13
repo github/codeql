@@ -1,0 +1,59 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "packageGrouping"
+      },
+      "data": [
+        ["beego-context", "github.com/astaxie/beego/context"],
+        ["beego-context", "github.com/beego/beego/context"],
+        ["beego-context", "github.com/beego/beego/server/web/context"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        // path-injection
+        ["group:beego-context", "BeegoOutput", true, "Download", "", "", "Argument[0]", "path-injection", "manual"],
+        // url-redirection
+        ["group:beego-context", "Context", true, "Redirect", "", "", "Argument[1]", "url-redirection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["group:beego-context", "", false, "WriteBody", "", "", "Argument[2]", "Argument[1]", "taint", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["group:beego-context", "BeegoInput", true, "Bind", "", "", "Argument[0]", "remote", "manual"],
+        ["group:beego-context", "BeegoInput", true, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego-context", "BeegoInput", true, "Data", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego-context", "BeegoInput", true, "GetData", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego-context", "BeegoInput", true, "Header", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego-context", "BeegoInput", true, "Param", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego-context", "BeegoInput", true, "Params", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego-context", "BeegoInput", true, "Query", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego-context", "BeegoInput", true, "Refer", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego-context", "BeegoInput", true, "Referer", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego-context", "BeegoInput", true, "RequestBody", "", "", "", "remote", "manual"],
+        ["group:beego-context", "BeegoInput", true, "URI", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego-context", "BeegoInput", true, "URL", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego-context", "BeegoInput", true, "UserAgent", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego-context", "Context", true, "GetCookie", "", "", "ReturnValue", "remote", "manual"]
+      ]
+    }
+  ]
+}
