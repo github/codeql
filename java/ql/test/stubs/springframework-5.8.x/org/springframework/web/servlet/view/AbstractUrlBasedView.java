@@ -3,7 +3,7 @@ package org.springframework.web.servlet.view;
 import java.util.Locale;
 import org.springframework.lang.Nullable;
 
-public abstract class AbstractUrlBasedView {
+public abstract class AbstractUrlBasedView extends AbstractView {
     @Nullable
     private String url;
 
