@@ -364,6 +364,22 @@ edges
 | implicit-self.swift:85:9:85:14 | [incoming] ... .x | implicit-self.swift:85:9:85:12 | [post] self [x] | provenance |  |
 | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:85:9:85:14 | [incoming] ... .x | provenance |  |
 | implicit-self.swift:87:14:87:17 | self [x] | implicit-self.swift:87:14:87:19 | ... .x | provenance |  |
+| modified-expressions.swift:2:9:2:16 | original | modified-expressions.swift:3:27:3:34 | original | provenance |  |
+| modified-expressions.swift:2:20:2:35 | source(...) | modified-expressions.swift:2:9:2:16 | original | provenance |  |
+| modified-expressions.swift:3:9:3:16 | borrowed | modified-expressions.swift:4:10:4:17 | borrowed | provenance |  |
+| modified-expressions.swift:3:27:3:34 | original | modified-expressions.swift:3:9:3:16 | borrowed | provenance |  |
+| modified-expressions.swift:8:9:8:16 | original | modified-expressions.swift:9:28:9:35 | original | provenance |  |
+| modified-expressions.swift:8:20:8:36 | source(...) | modified-expressions.swift:8:9:8:16 | original | provenance |  |
+| modified-expressions.swift:9:9:9:16 | consumed | modified-expressions.swift:10:10:10:17 | consumed | provenance |  |
+| modified-expressions.swift:9:28:9:35 | original | modified-expressions.swift:9:9:9:16 | consumed | provenance |  |
+| modified-expressions.swift:14:9:14:16 | original | modified-expressions.swift:15:23:15:30 | original | provenance |  |
+| modified-expressions.swift:14:20:14:33 | source(...) | modified-expressions.swift:14:9:14:16 | original | provenance |  |
+| modified-expressions.swift:15:9:15:14 | copied | modified-expressions.swift:16:10:16:15 | copied | provenance |  |
+| modified-expressions.swift:15:23:15:30 | original | modified-expressions.swift:15:9:15:14 | copied | provenance |  |
+| modified-expressions.swift:20:9:20:16 | original | modified-expressions.swift:21:28:21:35 | original | provenance |  |
+| modified-expressions.swift:20:20:20:35 | source(...) | modified-expressions.swift:20:9:20:16 | original | provenance |  |
+| modified-expressions.swift:21:9:21:17 | unchecked | modified-expressions.swift:22:10:22:18 | unchecked | provenance |  |
+| modified-expressions.swift:21:28:21:35 | original | modified-expressions.swift:21:9:21:17 | unchecked | provenance |  |
 | short-return.swift:7:33:7:46 | source(...) | short-return.swift:8:10:8:19 | getValue(...) | provenance |  |
 | test.swift:17:10:17:23 | source(...) | test.swift:17:10:17:32 | ... + ... | provenance |  |
 | test.swift:18:19:18:32 | source(...) | test.swift:18:10:18:32 | ... + ... | provenance |  |
@@ -985,6 +1001,26 @@ nodes
 | implicit-self.swift:86:14:86:14 | x | semmle.label | x |
 | implicit-self.swift:87:14:87:17 | self [x] | semmle.label | self [x] |
 | implicit-self.swift:87:14:87:19 | ... .x | semmle.label | ... .x |
+| modified-expressions.swift:2:9:2:16 | original | semmle.label | original |
+| modified-expressions.swift:2:20:2:35 | source(...) | semmle.label | source(...) |
+| modified-expressions.swift:3:9:3:16 | borrowed | semmle.label | borrowed |
+| modified-expressions.swift:3:27:3:34 | original | semmle.label | original |
+| modified-expressions.swift:4:10:4:17 | borrowed | semmle.label | borrowed |
+| modified-expressions.swift:8:9:8:16 | original | semmle.label | original |
+| modified-expressions.swift:8:20:8:36 | source(...) | semmle.label | source(...) |
+| modified-expressions.swift:9:9:9:16 | consumed | semmle.label | consumed |
+| modified-expressions.swift:9:28:9:35 | original | semmle.label | original |
+| modified-expressions.swift:10:10:10:17 | consumed | semmle.label | consumed |
+| modified-expressions.swift:14:9:14:16 | original | semmle.label | original |
+| modified-expressions.swift:14:20:14:33 | source(...) | semmle.label | source(...) |
+| modified-expressions.swift:15:9:15:14 | copied | semmle.label | copied |
+| modified-expressions.swift:15:23:15:30 | original | semmle.label | original |
+| modified-expressions.swift:16:10:16:15 | copied | semmle.label | copied |
+| modified-expressions.swift:20:9:20:16 | original | semmle.label | original |
+| modified-expressions.swift:20:20:20:35 | source(...) | semmle.label | source(...) |
+| modified-expressions.swift:21:9:21:17 | unchecked | semmle.label | unchecked |
+| modified-expressions.swift:21:28:21:35 | original | semmle.label | original |
+| modified-expressions.swift:22:10:22:18 | unchecked | semmle.label | unchecked |
 | short-return.swift:7:33:7:46 | source(...) | semmle.label | source(...) |
 | short-return.swift:8:10:8:19 | getValue(...) | semmle.label | getValue(...) |
 | test.swift:9:10:9:21 | source(...) | semmle.label | source(...) |
@@ -1342,6 +1378,10 @@ testFailures
 | implicit-self.swift:80:14:80:19 | ... .x | implicit-self.swift:78:24:78:38 | source(...) | implicit-self.swift:80:14:80:19 | ... .x | $@ | implicit-self.swift:78:24:78:38 | source(...) | source(...) |
 | implicit-self.swift:86:14:86:14 | x | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:86:14:86:14 | x | $@ | implicit-self.swift:85:29:85:43 | source(...) | source(...) |
 | implicit-self.swift:87:14:87:19 | ... .x | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:87:14:87:19 | ... .x | $@ | implicit-self.swift:85:29:85:43 | source(...) | source(...) |
+| modified-expressions.swift:4:10:4:17 | borrowed | modified-expressions.swift:2:20:2:35 | source(...) | modified-expressions.swift:4:10:4:17 | borrowed | $@ | modified-expressions.swift:2:20:2:35 | source(...) | source(...) |
+| modified-expressions.swift:10:10:10:17 | consumed | modified-expressions.swift:8:20:8:36 | source(...) | modified-expressions.swift:10:10:10:17 | consumed | $@ | modified-expressions.swift:8:20:8:36 | source(...) | source(...) |
+| modified-expressions.swift:16:10:16:15 | copied | modified-expressions.swift:14:20:14:33 | source(...) | modified-expressions.swift:16:10:16:15 | copied | $@ | modified-expressions.swift:14:20:14:33 | source(...) | source(...) |
+| modified-expressions.swift:22:10:22:18 | unchecked | modified-expressions.swift:20:20:20:35 | source(...) | modified-expressions.swift:22:10:22:18 | unchecked | $@ | modified-expressions.swift:20:20:20:35 | source(...) | source(...) |
 | short-return.swift:8:10:8:19 | getValue(...) | short-return.swift:7:33:7:46 | source(...) | short-return.swift:8:10:8:19 | getValue(...) | $@ | short-return.swift:7:33:7:46 | source(...) | source(...) |
 | test.swift:9:10:9:21 | source(...) | test.swift:9:10:9:21 | source(...) | test.swift:9:10:9:21 | source(...) | $@ | test.swift:9:10:9:21 | source(...) | source(...) |
 | test.swift:17:10:17:32 | ... + ... | test.swift:17:10:17:23 | source(...) | test.swift:17:10:17:32 | ... + ... | $@ | test.swift:17:10:17:23 | source(...) | source(...) |
