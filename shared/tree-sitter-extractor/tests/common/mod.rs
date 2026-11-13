@@ -9,7 +9,7 @@ use flate2::read::GzDecoder;
 pub struct SourceArchive {
     pub root_dir: PathBuf,
     pub file_list: PathBuf,
-    pub archive_dir: PathBuf,
+    pub source_archive_dir: PathBuf,
     pub trap_dir: PathBuf,
 }
 
@@ -21,11 +21,11 @@ pub fn create_source_dir(files: Vec<(&'static str, &'static str)>) -> SourceArch
         .expect("failed to canonicalize root directory");
 
     let trap_dir = create_dir(&root_dir, "trap");
-    let archive_dir = create_dir(&root_dir, "src");
+    let source_archive_dir = create_dir(&root_dir, "src");
 
     let mut file_paths = vec![];
     for (filename, contents) in files {
-        let path = archive_dir.join(filename);
+        let path = source_archive_dir.join(filename);
         let mut file = File::create(&path).unwrap();
         file.write_all(contents.as_bytes()).unwrap();
         file_paths.push(path);
@@ -45,7 +45,7 @@ pub fn create_source_dir(files: Vec<(&'static str, &'static str)>) -> SourceArch
     SourceArchive {
         root_dir,
         file_list,
-        archive_dir,
+        source_archive_dir,
         trap_dir,
     }
 }

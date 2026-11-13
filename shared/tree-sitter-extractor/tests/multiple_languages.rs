@@ -25,7 +25,7 @@ fn multiple_language_extractor() {
     let SourceArchive {
         root_dir,
         file_list,
-        archive_dir,
+        source_archive_dir,
         trap_dir,
     } = create_source_dir(vec![
         ("foo.qll", "predicate p(int a) { a = 1 }"),
@@ -37,7 +37,7 @@ fn multiple_language_extractor() {
         prefix: "ql".to_string(),
         languages: vec![lang_ql, lang_json],
         trap_dir,
-        source_archive_dir: archive_dir,
+        source_archive_dir,
         file_lists: vec![file_list],
         trap_compression: Ok(trap::Compression::Gzip),
     };
