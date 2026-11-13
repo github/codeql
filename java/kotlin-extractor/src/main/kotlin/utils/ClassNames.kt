@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
 import org.jetbrains.kotlin.load.kotlin.KotlinJvmBinarySourceElement
 import org.jetbrains.kotlin.load.kotlin.VirtualFileKotlinClass
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedContainerSource
 
 // Adapted from Kotlin's interpreter/Utils.kt function 'internalName'
 // Translates class names into their JLS section 13.1 binary name,
@@ -176,15 +177,238 @@ fun getIrDeclarationBinaryPath(d: IrDeclaration): String? {
         // This is in a file class.
         val fqName = getFileClassFqName(d)
         if (fqName != null) {
+            if (d is IrMemberWithContainerSource) {
+                val containerBinaryPath = getContainerSourceBinaryPath(d.containerSource)
+                if (containerBinaryPath != null) {
+                    return normalizeExternalFileClassBinaryPath(containerBinaryPath, fqName)
+                }
+            }
             return getUnknownBinaryLocation(fqName.asString())
         }
     }
     return null
 }
 
+/**
+ * Attempts to get the binary file path from a container source (typically a
+ * [JvmPackagePartSource]). Returns null if the path is unavailable.
+ */
+fun getContainerSourceBinaryPath(containerSource: org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedContainerSource?): String? {
+    if (containerSource !is JvmPackagePartSource) return null
+    val binaryClass = containerSource.knownJvmBinaryClass ?: return null
+    return when (binaryClass) {
+        is VirtualFileKotlinClass -> {
+            val vf = binaryClass.file
+            val path = vf.path
+            if (vf.fileSystem.protocol == StandardFileSystems.JRT_PROTOCOL)
+                "/${path.split("!/", limit = 2)[1]}"
+            else path
+        }
+        else -> binaryClass.location.takeIf { it.isNotEmpty() }
+    }
+}
+
 private fun getUnknownBinaryLocation(s: String): String {
     return "/!unknown-binary-location/${s.replace(".", "/")}.class"
 }
 
+fun normalizeExternalFileClassBinaryPath(path: String, fqName: FqName): String {
+    if (path.contains(".kotlinc_installed")) {
+        return getUnknownBinaryLocation(fqName.asString())
+    }
+    val normalizedPath = path.replace('\\', '/')
+    val classInternalPath = "${fqName.asString().replace(".", "/")}.class"
+    val classSuffix = "/$classInternalPath"
+    if (normalizedPath.endsWith(classSuffix)) {
+        val classpathRoot = normalizedPath.removeSuffix(classSuffix).substringAfterLast('/')
+        if (classpathRoot.isNotEmpty()) {
+            return "$classpathRoot/$classInternalPath"
+        }
+    }
+    return path
+}
+
+fun shouldUseConcreteExternalFileClassLocation(path: String): Boolean {
+    val normalizedPath = path.replace('\\', '/')
+    return normalizedPath.contains("/") &&
+        !normalizedPath.startsWith("/!unknown-binary-location/")
+}
+
 fun getJavaEquivalentClassId(c: IrClass) =
     c.fqNameWhenAvailable?.toUnsafe()?.let { JavaToKotlinClassMap.mapKotlinToJava(it) }
+
+/**
+ * Checks whether a specific parameter of a Java binary method (identified by [methodName] and
+ * [paramIndex]) is a reference type (as opposed to a Java primitive). This is used to detect
+ * cases where K2 FIR has enhanced a reference type parameter (e.g. `@NotNull Integer`) to a
+ * Kotlin primitive (e.g. `kotlin.Int`), so that callable labels can use the original reference
+ * type and remain compatible with the Java extractor's callable IDs.
+ *
+ * Under K1, binary Java classes use [JavaSourceElement] and we can check [BinaryJavaClass.methods]
+ * directly. Under K2, they use [VirtualFileBasedSourceElement] and we fall back to reading the
+ * class bytes with ASM.
+ *
+ * Returns `null` if the information cannot be determined.
+ */
+fun javaBinaryMethodParamIsClassifierType(
+    parentClass: IrClass,
+    methodName: String,
+    nParams: Int,
+    isConstructor: Boolean,
+    paramIndex: Int
+): Boolean? {
+    // K1 path: binary Java class has JavaSourceElement with a BinaryJavaClass.
+    val k1ParamKinds =
+        ((parentClass.source as? JavaSourceElement)?.javaElement as? BinaryJavaClass)?.let {
+            binaryJavaClass ->
+            if (isConstructor)
+                binaryJavaClass.constructors
+                    .asSequence()
+                    .filter { it.valueParameters.size == nParams }
+                    .mapNotNull { it.valueParameters.getOrNull(paramIndex)?.type }
+                    .map { it is org.jetbrains.kotlin.load.java.structure.JavaClassifierType }
+                    .toSet()
+            else
+                binaryJavaClass.methods
+                    .asSequence()
+                    .filter { it.name.asString() == methodName && it.valueParameters.size == nParams }
+                    .mapNotNull { it.valueParameters.getOrNull(paramIndex)?.type }
+                    .map { it is org.jetbrains.kotlin.load.java.structure.JavaClassifierType }
+                    .toSet()
+        }
+    if (k1ParamKinds != null && k1ParamKinds.isNotEmpty()) {
+        return k1ParamKinds.singleOrNull()
+    }
+
+    // K2 path: binary Java class has VirtualFileBasedSourceElement
+    val k2Source = parentClass.source as? VirtualFileBasedSourceElement ?: return null
+    val vf = k2Source.virtualFile
+    if (!vf.name.endsWith(".class")) return null
+
+    return try {
+        val bytes = vf.contentsToByteArray()
+        val expectedMethodName = if (isConstructor) "<init>" else methodName
+        val descriptorKinds = mutableSetOf<Boolean>()
+        val reader = org.jetbrains.org.objectweb.asm.ClassReader(bytes)
+        reader.accept(
+            object : org.jetbrains.org.objectweb.asm.ClassVisitor(
+                org.jetbrains.org.objectweb.asm.Opcodes.ASM9
+            ) {
+                override fun visitMethod(
+                    access: Int,
+                    name: String,
+                    descriptor: String,
+                    signature: String?,
+                    exceptions: Array<String>?
+                ): org.jetbrains.org.objectweb.asm.MethodVisitor? {
+                    if (name != expectedMethodName) return null
+                    val paramDescriptors = parseAsmMethodDescriptorParams(descriptor)
+                    if (paramDescriptors.size != nParams) return null
+                    val paramDesc = paramDescriptors.getOrNull(paramIndex) ?: return null
+                    // Reference types start with 'L' or '['; Java primitives are single chars
+                    descriptorKinds.add(paramDesc.startsWith("L") || paramDesc.startsWith("["))
+                    return null
+                }
+            },
+            org.jetbrains.org.objectweb.asm.ClassReader.SKIP_CODE or
+                org.jetbrains.org.objectweb.asm.ClassReader.SKIP_DEBUG or
+                org.jetbrains.org.objectweb.asm.ClassReader.SKIP_FRAMES
+        )
+        descriptorKinds.singleOrNull()
+    } catch (e: Exception) {
+        null
+    }
+}
+
+/**
+ * Checks whether the return type of a Java binary method (identified by [methodName] and
+ * [nParams]) is a reference type (as opposed to a Java primitive).
+ *
+ * Returns `null` if the information cannot be determined.
+ */
+fun javaBinaryMethodReturnIsClassifierType(
+    parentClass: IrClass,
+    methodName: String,
+    nParams: Int,
+    isConstructor: Boolean
+): Boolean? {
+    if (isConstructor) return false
+
+    // K1 path: binary Java class has JavaSourceElement with a BinaryJavaClass.
+    val k1ReturnKinds =
+        ((parentClass.source as? JavaSourceElement)?.javaElement as? BinaryJavaClass)?.methods
+            ?.asSequence()
+            ?.filter { it.name.asString() == methodName && it.valueParameters.size == nParams }
+            ?.map { it.returnType is org.jetbrains.kotlin.load.java.structure.JavaClassifierType }
+            ?.toSet()
+    if (k1ReturnKinds != null && k1ReturnKinds.isNotEmpty()) {
+        return k1ReturnKinds.singleOrNull()
+    }
+
+    // K2 path: binary Java class has VirtualFileBasedSourceElement
+    val k2Source = parentClass.source as? VirtualFileBasedSourceElement ?: return null
+    val vf = k2Source.virtualFile
+    if (!vf.name.endsWith(".class")) return null
+
+    return try {
+        val bytes = vf.contentsToByteArray()
+        val returnKinds = mutableSetOf<Boolean>()
+        val reader = org.jetbrains.org.objectweb.asm.ClassReader(bytes)
+        reader.accept(
+            object : org.jetbrains.org.objectweb.asm.ClassVisitor(
+                org.jetbrains.org.objectweb.asm.Opcodes.ASM9
+            ) {
+                override fun visitMethod(
+                    access: Int,
+                    name: String,
+                    descriptor: String,
+                    signature: String?,
+                    exceptions: Array<String>?
+                ): org.jetbrains.org.objectweb.asm.MethodVisitor? {
+                    if (name != methodName) return null
+                    if (parseAsmMethodDescriptorParams(descriptor).size != nParams) return null
+                    val returnDescriptor = descriptor.substring(descriptor.lastIndexOf(')') + 1)
+                    returnKinds.add(
+                        returnDescriptor.startsWith("L") || returnDescriptor.startsWith("[")
+                    )
+                    return null
+                }
+            },
+            org.jetbrains.org.objectweb.asm.ClassReader.SKIP_CODE or
+                org.jetbrains.org.objectweb.asm.ClassReader.SKIP_DEBUG or
+                org.jetbrains.org.objectweb.asm.ClassReader.SKIP_FRAMES
+        )
+        returnKinds.singleOrNull()
+    } catch (e: Exception) {
+        null
+    }
+}
+
+private fun parseAsmMethodDescriptorParams(descriptor: String): List<String> {
+    val params = mutableListOf<String>()
+    var i = descriptor.indexOf('(') + 1
+    val end = descriptor.lastIndexOf(')')
+    while (i < end) {
+        when (val c = descriptor[i]) {
+            'L' -> {
+                val semi = descriptor.indexOf(';', i)
+                params.add(descriptor.substring(i, semi + 1))
+                i = semi + 1
+            }
+            '[' -> {
+                var j = i + 1
+                while (j < end && descriptor[j] == '[') j++
+                if (descriptor[j] == 'L') {
+                    val semi = descriptor.indexOf(';', j)
+                    params.add(descriptor.substring(i, semi + 1))
+                    i = semi + 1
+                } else {
+                    params.add(descriptor.substring(i, j + 1))
+                    i = j + 1
+                }
+            }
+            else -> { params.add(c.toString()); i++ }
+        }
+    }
+    return params
+}
