@@ -295,6 +295,25 @@ fn test_try_operator() -> Result<(), std::io::Error> {
     Ok(())
 }
 
+#[test]
+fn test_in_test_function() {
+    let password = String::from("123456");
+
+    println!("message = {}", password);
+    assert!(password.is_empty(), "message = {}", password);
+    assert_eq!(password, "", "message = {}", password);
+
+    let check = || assert!(password.is_empty(), "message = {}", password);
+    check();
+}
+
+#[tokio::test]
+async fn test_in_async_test_function() {
+    let password = String::from("123456");
+
+    assert!(password.is_empty(), "message = {}", password);
+}
+
 fn main() {
     simple_logger::SimpleLogger::new().init().unwrap();
 
