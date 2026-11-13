@@ -228,6 +228,8 @@ func test1(password: String, passwordHash : String, passphrase: String, pass_phr
 class MyClass {
 	var harmless = "abc"
 	var password = "123"
+
+	func getPassword() -> String { return "" }
 }
 
 func getPassword() -> String { return "" }
@@ -246,11 +248,14 @@ func test3(x: String) {
 	let z = MyClass()
 	NSLog(z.harmless) // safe
 	NSLog(z.password) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(z.getPassword()) // $ MISSING: Alert[unified/swift/cleartext-logging]
 }
 
 struct MyOuter {
 	struct MyInner {
 		var value: String
+
+		func getValue() -> String { return "" }
 	}
 
 	var password: MyInner
@@ -262,6 +267,9 @@ func test3(mo : MyOuter) {
 
 	NSLog(mo.password.value) // $ MISSING: Alert[unified/swift/cleartext-logging]
 	NSLog(mo.harmless.value) // safe
+
+	NSLog(mo.password.getValue()) // $ MISSING: Alert[unified/swift/cleartext-logging]
+	NSLog(mo.harmless.getValue()) // safe
 }
 
 func test4(harmless: String, password: String) {
@@ -393,4 +401,36 @@ func test7(authKey: String, authKey2: Int, authKey3: Float, password: String, se
     rlogger.setPassword(password: password) // GOOD: not logging
     rlogger.login(password: password) // $ SPURIOUS: Alert[unified/swift/cleartext-logging] GOOD: not logging
     rlogger.logout(secret: secret) // $ SPURIOUS: Alert[unified/swift/cleartext-logging] GOOD: not logging
+}
+
+let globalMessage = "example"
+let globalPassword = "example"
+
+func testGlobals(a: Password, b: Info) {
+    print(globalMessage) // safe
+    print(globalPassword) // $ Alert[unified/swift/cleartext-logging]
+}
+
+enum Password {
+    case value(String)
+}
+
+enum Info {
+    case password(String)
+    case message(String)
+}
+
+func testEnums(p: Password, i: Info) {
+    // print the value from the Password enum
+    if case .value(let contents) = p {
+        print(contents) // $ MISSING: Alert[unified/swift/cleartext-logging]
+    }
+
+    // print the values from the Info enum
+    switch i {
+    case .password(let contents):
+        print(contents) // $ MISSING: Alert[unified/swift/cleartext-logging]
+    case .message(let contents):
+        print(contents) // safe
+    }
 }
