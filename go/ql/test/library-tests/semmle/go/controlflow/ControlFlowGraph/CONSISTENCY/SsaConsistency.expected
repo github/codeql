@@ -1,0 +1,10 @@
+readWithoutDef
+| stmts2.go:18:7:18:7 | x | stmts2.go:18:2:19:10 | comm clause | 4 |
+| stmts2.go:20:10:20:10 | y | stmts2.go:20:2:24:10 | comm clause | 5 |
+uselessPhiNode
+| epilogues.go:89:3:91:3 | SSA phi(result) | 1 |
+readWithoutPriorRef
+| stmts2.go:18:7:18:7 | x | stmts2.go:18:2:19:10 | comm clause | 4 |
+| stmts2.go:20:10:20:10 | y | stmts2.go:20:2:24:10 | comm clause | 5 |
+phiWithoutTwoPriorRefs
+| epilogues.go:89:3:91:3 | SSA phi(result) | epilogues.go:89:3:91:3 | After if statement | epilogues.go:87:30:87:35 | result | 1 |

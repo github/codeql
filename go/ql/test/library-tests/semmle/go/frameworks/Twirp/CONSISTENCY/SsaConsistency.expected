@@ -1,0 +1,54 @@
+uselessPhiNode
+| rpc/notes/service.twirp.go:446:1:527:1 | SSA phi(handler) | 1 |
+| rpc/notes/service.twirp.go:446:1:527:1 | SSA phi(handler) | 1 |
+| rpc/notes/service.twirp.go:446:1:527:1 | SSA phi(reqContent) | 1 |
+| rpc/notes/service.twirp.go:446:1:527:1 | SSA phi(reqContent) | 1 |
+| rpc/notes/service.twirp.go:494:9:494:48 | SSA phi(err) | 1 |
+| rpc/notes/service.twirp.go:494:9:494:48 | SSA phi(respContent) | 1 |
+| rpc/notes/service.twirp.go:529:1:606:1 | SSA phi(handler) | 1 |
+| rpc/notes/service.twirp.go:529:1:606:1 | SSA phi(handler) | 1 |
+| rpc/notes/service.twirp.go:529:1:606:1 | SSA phi(reqContent) | 1 |
+| rpc/notes/service.twirp.go:529:1:606:1 | SSA phi(reqContent) | 1 |
+| rpc/notes/service.twirp.go:575:9:575:48 | SSA phi(err) | 1 |
+| rpc/notes/service.twirp.go:575:9:575:48 | SSA phi(respContent) | 1 |
+| rpc/notes/service.twirp.go:626:1:707:1 | SSA phi(handler) | 1 |
+| rpc/notes/service.twirp.go:626:1:707:1 | SSA phi(handler) | 1 |
+| rpc/notes/service.twirp.go:626:1:707:1 | SSA phi(reqContent) | 1 |
+| rpc/notes/service.twirp.go:626:1:707:1 | SSA phi(reqContent) | 1 |
+| rpc/notes/service.twirp.go:674:9:674:48 | SSA phi(err) | 1 |
+| rpc/notes/service.twirp.go:674:9:674:48 | SSA phi(respContent) | 1 |
+| rpc/notes/service.twirp.go:709:1:786:1 | SSA phi(handler) | 1 |
+| rpc/notes/service.twirp.go:709:1:786:1 | SSA phi(handler) | 1 |
+| rpc/notes/service.twirp.go:709:1:786:1 | SSA phi(reqContent) | 1 |
+| rpc/notes/service.twirp.go:709:1:786:1 | SSA phi(reqContent) | 1 |
+| rpc/notes/service.twirp.go:755:9:755:48 | SSA phi(err) | 1 |
+| rpc/notes/service.twirp.go:755:9:755:48 | SSA phi(respContent) | 1 |
+| rpc/notes/service.twirp.go:1203:1:1249:1 | SSA phi(resp) | 1 |
+| rpc/notes/service.twirp.go:1203:156:1249:1 | SSA phi(resp) | 1 |
+| rpc/notes/service.twirp.go:1252:1:1305:1 | SSA phi(resp) | 1 |
+| rpc/notes/service.twirp.go:1252:152:1305:1 | SSA phi(resp) | 1 |
+phiWithoutTwoPriorRefs
+| rpc/notes/service.twirp.go:446:1:527:1 | SSA phi(handler) | rpc/notes/service.twirp.go:446:1:527:1 | Exceptional Exit | rpc/notes/service.twirp.go:468:2:468:8 | handler | 1 |
+| rpc/notes/service.twirp.go:446:1:527:1 | SSA phi(handler) | rpc/notes/service.twirp.go:446:1:527:1 | Normal Exit | rpc/notes/service.twirp.go:468:2:468:8 | handler | 1 |
+| rpc/notes/service.twirp.go:446:1:527:1 | SSA phi(reqContent) | rpc/notes/service.twirp.go:446:1:527:1 | Exceptional Exit | rpc/notes/service.twirp.go:461:2:461:11 | reqContent | 1 |
+| rpc/notes/service.twirp.go:446:1:527:1 | SSA phi(reqContent) | rpc/notes/service.twirp.go:446:1:527:1 | Normal Exit | rpc/notes/service.twirp.go:461:2:461:11 | reqContent | 1 |
+| rpc/notes/service.twirp.go:494:9:494:48 | SSA phi(err) | rpc/notes/service.twirp.go:494:9:494:48 | defer-invoke call to ensurePanicResponses | rpc/notes/service.twirp.go:447:6:447:8 | err | 1 |
+| rpc/notes/service.twirp.go:494:9:494:48 | SSA phi(respContent) | rpc/notes/service.twirp.go:494:9:494:48 | defer-invoke call to ensurePanicResponses | rpc/notes/service.twirp.go:492:6:492:16 | respContent | 1 |
+| rpc/notes/service.twirp.go:529:1:606:1 | SSA phi(handler) | rpc/notes/service.twirp.go:529:1:606:1 | Exceptional Exit | rpc/notes/service.twirp.go:549:2:549:8 | handler | 1 |
+| rpc/notes/service.twirp.go:529:1:606:1 | SSA phi(handler) | rpc/notes/service.twirp.go:529:1:606:1 | Normal Exit | rpc/notes/service.twirp.go:549:2:549:8 | handler | 1 |
+| rpc/notes/service.twirp.go:529:1:606:1 | SSA phi(reqContent) | rpc/notes/service.twirp.go:529:1:606:1 | Exceptional Exit | rpc/notes/service.twirp.go:543:2:543:11 | reqContent | 1 |
+| rpc/notes/service.twirp.go:529:1:606:1 | SSA phi(reqContent) | rpc/notes/service.twirp.go:529:1:606:1 | Normal Exit | rpc/notes/service.twirp.go:543:2:543:11 | reqContent | 1 |
+| rpc/notes/service.twirp.go:575:9:575:48 | SSA phi(err) | rpc/notes/service.twirp.go:575:9:575:48 | defer-invoke call to ensurePanicResponses | rpc/notes/service.twirp.go:530:6:530:8 | err | 1 |
+| rpc/notes/service.twirp.go:575:9:575:48 | SSA phi(respContent) | rpc/notes/service.twirp.go:575:9:575:48 | defer-invoke call to ensurePanicResponses | rpc/notes/service.twirp.go:573:6:573:16 | respContent | 1 |
+| rpc/notes/service.twirp.go:626:1:707:1 | SSA phi(handler) | rpc/notes/service.twirp.go:626:1:707:1 | Exceptional Exit | rpc/notes/service.twirp.go:648:2:648:8 | handler | 1 |
+| rpc/notes/service.twirp.go:626:1:707:1 | SSA phi(handler) | rpc/notes/service.twirp.go:626:1:707:1 | Normal Exit | rpc/notes/service.twirp.go:648:2:648:8 | handler | 1 |
+| rpc/notes/service.twirp.go:626:1:707:1 | SSA phi(reqContent) | rpc/notes/service.twirp.go:626:1:707:1 | Exceptional Exit | rpc/notes/service.twirp.go:641:2:641:11 | reqContent | 1 |
+| rpc/notes/service.twirp.go:626:1:707:1 | SSA phi(reqContent) | rpc/notes/service.twirp.go:626:1:707:1 | Normal Exit | rpc/notes/service.twirp.go:641:2:641:11 | reqContent | 1 |
+| rpc/notes/service.twirp.go:674:9:674:48 | SSA phi(err) | rpc/notes/service.twirp.go:674:9:674:48 | defer-invoke call to ensurePanicResponses | rpc/notes/service.twirp.go:627:6:627:8 | err | 1 |
+| rpc/notes/service.twirp.go:674:9:674:48 | SSA phi(respContent) | rpc/notes/service.twirp.go:674:9:674:48 | defer-invoke call to ensurePanicResponses | rpc/notes/service.twirp.go:672:6:672:16 | respContent | 1 |
+| rpc/notes/service.twirp.go:709:1:786:1 | SSA phi(handler) | rpc/notes/service.twirp.go:709:1:786:1 | Exceptional Exit | rpc/notes/service.twirp.go:729:2:729:8 | handler | 1 |
+| rpc/notes/service.twirp.go:709:1:786:1 | SSA phi(handler) | rpc/notes/service.twirp.go:709:1:786:1 | Normal Exit | rpc/notes/service.twirp.go:729:2:729:8 | handler | 1 |
+| rpc/notes/service.twirp.go:709:1:786:1 | SSA phi(reqContent) | rpc/notes/service.twirp.go:709:1:786:1 | Exceptional Exit | rpc/notes/service.twirp.go:723:2:723:11 | reqContent | 1 |
+| rpc/notes/service.twirp.go:709:1:786:1 | SSA phi(reqContent) | rpc/notes/service.twirp.go:709:1:786:1 | Normal Exit | rpc/notes/service.twirp.go:723:2:723:11 | reqContent | 1 |
+| rpc/notes/service.twirp.go:755:9:755:48 | SSA phi(err) | rpc/notes/service.twirp.go:755:9:755:48 | defer-invoke call to ensurePanicResponses | rpc/notes/service.twirp.go:710:6:710:8 | err | 1 |
+| rpc/notes/service.twirp.go:755:9:755:48 | SSA phi(respContent) | rpc/notes/service.twirp.go:755:9:755:48 | defer-invoke call to ensurePanicResponses | rpc/notes/service.twirp.go:753:6:753:16 | respContent | 1 |

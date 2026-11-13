@@ -1,0 +1,4 @@
+uselessPhiNode
+| CorsMisconfiguration.go:13:1:229:1 | SSA phi(allowedOrigins) | 1 |
+phiWithoutTwoPriorRefs
+| CorsMisconfiguration.go:13:1:229:1 | SSA phi(allowedOrigins) | CorsMisconfiguration.go:13:1:229:1 | Exceptional Exit | CorsMisconfiguration.go:94:3:94:16 | allowedOrigins | 1 |

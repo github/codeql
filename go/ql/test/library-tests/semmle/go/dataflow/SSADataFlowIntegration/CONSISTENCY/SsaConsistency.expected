@@ -1,0 +1,8 @@
+uselessPhiNode
+| main.go:57:9:59:2 | SSA phi(value) | 1 |
+| main.go:64:1:71:1 | SSA phi(value) | 1 |
+| main.go:76:3:78:3 | SSA phi(value) | 1 |
+phiWithoutTwoPriorRefs
+| main.go:57:9:59:2 | SSA phi(value) | main.go:57:9:59:2 | Exit | main.go:56:2:56:6 | value | 1 |
+| main.go:64:1:71:1 | SSA phi(value) | main.go:64:1:71:1 | Exceptional Exit | main.go:65:2:65:6 | value | 1 |
+| main.go:76:3:78:3 | SSA phi(value) | main.go:76:3:78:3 | After if statement | main.go:74:2:74:6 | value | 1 |
