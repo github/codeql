@@ -31,18 +31,34 @@ private Type getConcreteType(DataFlow::Node nd) {
 }
 
 /**
- * Holds if all concrete (that is, non-interface) types of `nd` concrete types can be determined by
- * local reasoning.
+ * Holds if local flow into `nd` may originate from a value whose concrete type is unknown.
+ * Values with concrete static types stop propagation.
+ */
+private predicate hasUnknownSource(DataFlow::Node nd) {
+  nd = getInterfaceCallReceiverSource(_) and
+  not exists(getConcreteType(nd)) and
+  (
+    not basicLocalFlowStep(_, nd)
+    or
+    // Uncertain writes may also receive values through non-local capture flow.
+    nd.(DataFlow::SsaNode).getDefinition() instanceof SsaUncertainWrite
+    or
+    exists(DataFlow::Node pred | basicLocalFlowStep(pred, nd) and hasUnknownSource(pred))
+  )
+}
+
+/**
+ * Holds if all concrete (that is, non-interface) types of `nd` can be determined by local reasoning.
+ * Checking for unknown origins rather than recursively proving every predecessor handles SSA cycles.
  *
  * `nd` is restricted to nodes that flow into the receiver value of an interface call, since that is
  * all we are ultimately interested in.
  */
 private predicate isConcreteValue(DataFlow::Node nd) {
   nd = getInterfaceCallReceiverSource(_) and
-  (
-    exists(getConcreteType(nd))
-    or
-    forex(DataFlow::Node pred | basicLocalFlowStep(pred, nd) | isConcreteValue(pred))
+  not hasUnknownSource(nd) and
+  exists(DataFlow::Node source |
+    exists(getConcreteType(source)) and basicLocalFlowStep*(source, nd)
   )
 }
 
