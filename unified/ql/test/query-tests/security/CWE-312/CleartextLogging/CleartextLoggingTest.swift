@@ -242,8 +242,8 @@ func test3(x: String) {
 	doSomething(password: x); // $ MISSING: Source[unified/swift/cleartext-logging]
 	NSLog(x) // $ MISSING: Alert[unified/swift/cleartext-logging]
 
-	let y = getPassword(); // $ Source[unified/swift/cleartext-logging]
-	NSLog(y) // $ Alert[unified/swift/cleartext-logging]
+	let y = getPassword(); // $ Alert[unified/swift/cleartext-logging]
+	NSLog(y) // $ Sink[unified/swift/cleartext-logging]
 
 	let z = MyClass()
 	NSLog(z.harmless) // safe
@@ -312,19 +312,19 @@ func test4(harmless: String, password: String) {
 	myString8.write(harmless)
 	print(myString8)
 
-	myString9.write(password) // $ Source[unified/swift/cleartext-logging]
-	print(myString9) // $ Alert[unified/swift/cleartext-logging]
+	myString9.write(password) // $ Alert[unified/swift/cleartext-logging]
+	print(myString9) // $ Sink[unified/swift/cleartext-logging]
 
 	myString10.write(harmless)
-	myString10.write(password) // $ Source[unified/swift/cleartext-logging]
+	myString10.write(password) // $ Alert[unified/swift/cleartext-logging]
 	myString10.write(harmless)
-	print(myString10) // $ Alert[unified/swift/cleartext-logging]
+	print(myString10) // $ Sink[unified/swift/cleartext-logging]
 
 	harmless.write(to: &myString11)
 	print(myString11)
 
-	password.write(to: &myString12) // $ Source[unified/swift/cleartext-logging]
-	print(myString12) // $ Alert[unified/swift/cleartext-logging]
+	password.write(to: &myString12) // $ Alert[unified/swift/cleartext-logging]
+	print(myString12) // $ Sink[unified/swift/cleartext-logging]
 
 	print(password, to: &myString13) // $ SPURIOUS: Alert[unified/swift/cleartext-logging] safe - only printed to another string
 	debugPrint(password, to: &myString13) // safe - only printed to another string
@@ -382,16 +382,16 @@ func test7(authKey: String, authKey2: Int, authKey3: Float, password: String, se
     doLogin(login: authKey) // GOOD: not logging
 
     let logger = LogFile()
-    let msg = "authKey: " + authKey // $ Source[unified/swift/cleartext-logging]
-    logger.log(msg) // $ Alert[unified/swift/cleartext-logging]
-    logger.trace(msg) // $ MISSING: Alert[unified/swift/cleartext-logging]
-    logger.debug(msg) // $ MISSING: Alert[unified/swift/cleartext-logging]
-    logger.info(NSString(string: msg)) // $ MISSING: Alert[unified/swift/cleartext-logging]
-    logger.notice(msg) // $ MISSING: Alert[unified/swift/cleartext-logging]
-    logger.warning(msg) // $ Alert[unified/swift/cleartext-logging]
-    logger.error(msg) // $ Alert[unified/swift/cleartext-logging]
-    logger.critical(msg) // $ MISSING: Alert[unified/swift/cleartext-logging]
-    logger.fatal(msg) // $ MISSING: Alert[unified/swift/cleartext-logging]
+    let msg = "authKey: " + authKey // $ Alert[unified/swift/cleartext-logging]
+    logger.log(msg) // $ Sink[unified/swift/cleartext-logging]
+    logger.trace(msg) // $ MISSING: Sink[unified/swift/cleartext-logging]
+    logger.debug(msg) // $ MISSING: Sink[unified/swift/cleartext-logging]
+    logger.info(NSString(string: msg)) // $ MISSING: Sink[unified/swift/cleartext-logging]
+    logger.notice(msg) // $ MISSING: Sink[unified/swift/cleartext-logging]
+    logger.warning(msg) // $ Sink[unified/swift/cleartext-logging]
+    logger.error(msg) // $ Sink[unified/swift/cleartext-logging]
+    logger.critical(msg) // $ MISSING: Sink[unified/swift/cleartext-logging]
+    logger.fatal(msg) // $ MISSING: Sink[unified/swift/cleartext-logging]
 
     let logic = Logic()
     logic.addInt(authKey2) // GOOD: not logging
