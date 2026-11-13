@@ -1,0 +1,2 @@
+query: TypeInferenceConsistency.ql
+postprocess: utils/test/ExternalLocationPostProcessing.ql
