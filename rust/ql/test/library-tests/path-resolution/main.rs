@@ -1198,9 +1198,18 @@ fn main() {
     computed_include::child::form(); // $ item=included_form
     shadowed_include::from_shadow(); // $ item=from_shadow
     crate::included_export!(); // $ item=included_export
+    macro_child::from_macro(); // $ item=included_macro_child
+    non_mod_child::from_non_mod(); // $ item=included_non_mod_child
+}
+
+macro_rules! declare_included_child {
+    () => {
+        pub mod macro_child;
+    };
 }
 
 include!("included/tree/mod.rs");
+include!("included/non_mod/generated.rs");
 
 mod qualified_include {
     std::include!("included/forms/mod.rs"); // $ item=include

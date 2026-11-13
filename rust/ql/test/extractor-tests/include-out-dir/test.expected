@@ -1,0 +1,9 @@
+generatedFunction
+| true | 3 | main::generated_function |
+rootReference
+| generated_alias | root_function |
+| generated_function | root_function |
+macroReference
+| root_function |
+exportedMacro
+| generated_export | 1 |
