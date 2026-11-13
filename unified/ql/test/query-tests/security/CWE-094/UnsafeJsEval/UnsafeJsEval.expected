@@ -1,0 +1,61 @@
+#select
+| UnsafeJsEval.swift:266:22:266:107 | WKUserScript(...) | UnsafeJsEval.swift:204:12:204:66 | String(...) | UnsafeJsEval.swift:266:22:266:107 | WKUserScript(...) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:266:22:266:107 | WKUserScript(...) | UnsafeJsEval.swift:205:12:205:35 | String(...) | UnsafeJsEval.swift:266:22:266:107 | WKUserScript(...) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:266:22:266:107 | WKUserScript(...) | UnsafeJsEval.swift:208:30:208:53 | String(...) | UnsafeJsEval.swift:266:22:266:107 | WKUserScript(...) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:269:22:269:124 | WKUserScript(...) | UnsafeJsEval.swift:204:12:204:66 | String(...) | UnsafeJsEval.swift:269:22:269:124 | WKUserScript(...) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:269:22:269:124 | WKUserScript(...) | UnsafeJsEval.swift:205:12:205:35 | String(...) | UnsafeJsEval.swift:269:22:269:124 | WKUserScript(...) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:269:22:269:124 | WKUserScript(...) | UnsafeJsEval.swift:208:30:208:53 | String(...) | UnsafeJsEval.swift:269:22:269:124 | WKUserScript(...) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:277:26:277:31 | string | UnsafeJsEval.swift:204:12:204:66 | String(...) | UnsafeJsEval.swift:277:26:277:31 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:277:26:277:31 | string | UnsafeJsEval.swift:205:12:205:35 | String(...) | UnsafeJsEval.swift:277:26:277:31 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:277:26:277:31 | string | UnsafeJsEval.swift:208:30:208:53 | String(...) | UnsafeJsEval.swift:277:26:277:31 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:280:26:280:31 | string | UnsafeJsEval.swift:204:12:204:66 | String(...) | UnsafeJsEval.swift:280:26:280:31 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:280:26:280:31 | string | UnsafeJsEval.swift:205:12:205:35 | String(...) | UnsafeJsEval.swift:280:26:280:31 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:280:26:280:31 | string | UnsafeJsEval.swift:208:30:208:53 | String(...) | UnsafeJsEval.swift:280:26:280:31 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:320:44:320:76 | ... + ... | UnsafeJsEval.swift:318:24:318:87 | String(...) | UnsafeJsEval.swift:320:44:320:76 | ... + ... | Evaluation of uncontrolled JavaScript from a remote source. |
+edges
+| UnsafeJsEval.swift:204:7:204:66 | try! ... | UnsafeJsEval.swift:265:13:265:18 | string | provenance |  |
+| UnsafeJsEval.swift:204:7:204:66 | try! ... | UnsafeJsEval.swift:268:13:268:18 | string | provenance |  |
+| UnsafeJsEval.swift:204:7:204:66 | try! ... | UnsafeJsEval.swift:276:13:276:18 | string | provenance |  |
+| UnsafeJsEval.swift:204:7:204:66 | try! ... | UnsafeJsEval.swift:279:13:279:18 | string | provenance |  |
+| UnsafeJsEval.swift:204:12:204:66 | String(...) | UnsafeJsEval.swift:204:7:204:66 | try! ... | provenance |  |
+| UnsafeJsEval.swift:205:7:205:35 | try! ... | UnsafeJsEval.swift:265:13:265:18 | string | provenance |  |
+| UnsafeJsEval.swift:205:7:205:35 | try! ... | UnsafeJsEval.swift:268:13:268:18 | string | provenance |  |
+| UnsafeJsEval.swift:205:7:205:35 | try! ... | UnsafeJsEval.swift:276:13:276:18 | string | provenance |  |
+| UnsafeJsEval.swift:205:7:205:35 | try! ... | UnsafeJsEval.swift:279:13:279:18 | string | provenance |  |
+| UnsafeJsEval.swift:205:12:205:35 | String(...) | UnsafeJsEval.swift:205:7:205:35 | try! ... | provenance |  |
+| UnsafeJsEval.swift:208:7:208:60 | ... + ... | UnsafeJsEval.swift:265:13:265:18 | string | provenance |  |
+| UnsafeJsEval.swift:208:7:208:60 | ... + ... | UnsafeJsEval.swift:268:13:268:18 | string | provenance |  |
+| UnsafeJsEval.swift:208:7:208:60 | ... + ... | UnsafeJsEval.swift:276:13:276:18 | string | provenance |  |
+| UnsafeJsEval.swift:208:7:208:60 | ... + ... | UnsafeJsEval.swift:279:13:279:18 | string | provenance |  |
+| UnsafeJsEval.swift:208:30:208:53 | String(...) | UnsafeJsEval.swift:208:7:208:60 | ... + ... | provenance |  |
+| UnsafeJsEval.swift:265:13:265:18 | string | UnsafeJsEval.swift:266:43:266:48 | string | provenance |  |
+| UnsafeJsEval.swift:266:43:266:48 | string | UnsafeJsEval.swift:266:22:266:107 | WKUserScript(...) | provenance |  |
+| UnsafeJsEval.swift:268:13:268:18 | string | UnsafeJsEval.swift:269:43:269:48 | string | provenance |  |
+| UnsafeJsEval.swift:269:43:269:48 | string | UnsafeJsEval.swift:269:22:269:124 | WKUserScript(...) | provenance |  |
+| UnsafeJsEval.swift:276:13:276:18 | string | UnsafeJsEval.swift:277:26:277:31 | string | provenance |  |
+| UnsafeJsEval.swift:279:13:279:18 | string | UnsafeJsEval.swift:280:26:280:31 | string | provenance |  |
+| UnsafeJsEval.swift:318:7:318:16 | remoteData | UnsafeJsEval.swift:320:61:320:70 | remoteData | provenance |  |
+| UnsafeJsEval.swift:318:24:318:87 | String(...) | UnsafeJsEval.swift:318:7:318:16 | remoteData | provenance |  |
+| UnsafeJsEval.swift:320:61:320:70 | remoteData | UnsafeJsEval.swift:320:44:320:76 | ... + ... | provenance |  |
+nodes
+| UnsafeJsEval.swift:204:7:204:66 | try! ... | semmle.label | try! ... |
+| UnsafeJsEval.swift:204:12:204:66 | String(...) | semmle.label | String(...) |
+| UnsafeJsEval.swift:205:7:205:35 | try! ... | semmle.label | try! ... |
+| UnsafeJsEval.swift:205:12:205:35 | String(...) | semmle.label | String(...) |
+| UnsafeJsEval.swift:208:7:208:60 | ... + ... | semmle.label | ... + ... |
+| UnsafeJsEval.swift:208:30:208:53 | String(...) | semmle.label | String(...) |
+| UnsafeJsEval.swift:265:13:265:18 | string | semmle.label | string |
+| UnsafeJsEval.swift:266:22:266:107 | WKUserScript(...) | semmle.label | WKUserScript(...) |
+| UnsafeJsEval.swift:266:43:266:48 | string | semmle.label | string |
+| UnsafeJsEval.swift:268:13:268:18 | string | semmle.label | string |
+| UnsafeJsEval.swift:269:22:269:124 | WKUserScript(...) | semmle.label | WKUserScript(...) |
+| UnsafeJsEval.swift:269:43:269:48 | string | semmle.label | string |
+| UnsafeJsEval.swift:276:13:276:18 | string | semmle.label | string |
+| UnsafeJsEval.swift:277:26:277:31 | string | semmle.label | string |
+| UnsafeJsEval.swift:279:13:279:18 | string | semmle.label | string |
+| UnsafeJsEval.swift:280:26:280:31 | string | semmle.label | string |
+| UnsafeJsEval.swift:318:7:318:16 | remoteData | semmle.label | remoteData |
+| UnsafeJsEval.swift:318:24:318:87 | String(...) | semmle.label | String(...) |
+| UnsafeJsEval.swift:320:44:320:76 | ... + ... | semmle.label | ... + ... |
+| UnsafeJsEval.swift:320:61:320:70 | remoteData | semmle.label | remoteData |
+subpaths
