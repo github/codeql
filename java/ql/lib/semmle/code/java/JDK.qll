@@ -135,6 +135,14 @@ class StringPartialMatchMethod extends Method {
   }
 }
 
+/** The type `String[]`. */
+class ArrayOfStringType extends Array {
+  ArrayOfStringType() {
+    this.getDimension() = 1 and
+    this.getElementType() instanceof TypeString
+  }
+}
+
 /** The class `java.lang.StringBuffer`. */
 class TypeStringBuffer extends Class {
   TypeStringBuffer() { this.hasQualifiedName("java.lang", "StringBuffer") }
@@ -475,11 +483,7 @@ class MainMethod extends Method {
     this.getReturnType().hasName("void") and
     this.hasName("main") and
     this.getNumberOfParameters() = 1 and
-    exists(Array a |
-      a = this.getAParameter().getType() and
-      a.getDimension() = 1 and
-      a.getElementType() instanceof TypeString
-    )
+    this.getAParameter().getType() instanceof ArrayOfStringType
   }
 }
 
