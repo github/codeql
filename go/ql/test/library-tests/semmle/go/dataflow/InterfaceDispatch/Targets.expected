@@ -1,0 +1,10 @@
+| capturedOverwrite | main.go:20:7:20:15 | call to Greet | main.go:3:6:3:12 | Greeter |
+| capturedOverwrite | main.go:20:7:20:15 | call to Greet | main.go:7:6:7:16 | SafeGreeter |
+| capturedOverwrite | main.go:20:7:20:15 | call to Greet | main.go:8:6:8:19 | TaintedGreeter |
+| overwriteLoop | main.go:38:7:38:15 | call to Greet | main.go:7:6:7:16 | SafeGreeter |
+| overwriteLoop | main.go:38:7:38:15 | call to Greet | main.go:8:6:8:19 | TaintedGreeter |
+| readOnlyLoop | main.go:27:8:27:16 | call to Greet | main.go:7:6:7:16 | SafeGreeter |
+| readOnlyLoop | main.go:30:7:30:15 | call to Greet | main.go:7:6:7:16 | SafeGreeter |
+| unknownReceiver | main.go:45:7:45:15 | call to Greet | main.go:3:6:3:12 | Greeter |
+| unknownReceiver | main.go:45:7:45:15 | call to Greet | main.go:7:6:7:16 | SafeGreeter |
+| unknownReceiver | main.go:45:7:45:15 | call to Greet | main.go:8:6:8:19 | TaintedGreeter |

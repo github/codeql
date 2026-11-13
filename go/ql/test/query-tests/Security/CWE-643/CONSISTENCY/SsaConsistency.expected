@@ -1,0 +1,4 @@
+uselessPhiNode
+| XPathInjection.go:11:1:28:1 | SSA phi(username) | 1 |
+phiWithoutTwoPriorRefs
+| XPathInjection.go:11:1:28:1 | SSA phi(username) | XPathInjection.go:11:1:28:1 | Exceptional Exit | XPathInjection.go:13:2:13:9 | username | 1 |

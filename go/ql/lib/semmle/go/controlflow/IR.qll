@@ -245,7 +245,10 @@ module IR {
     /** Gets the expression underlying this instruction. */
     Expr getExpr() { result = e }
 
-    override predicate reads(ValueEntity v) { e = v.getAReference() }
+    override predicate reads(ValueEntity v) {
+      e = v.getAReference() and
+      e.(ReferenceExpr).isRvalue()
+    }
 
     override Type getResultType() { result = e.getType() }
 
