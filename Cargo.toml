@@ -57,6 +57,7 @@ struct_excessive_bools = "allow"
 # False positives for things like "matches" and "matched"
 similar_names = "allow"
 match_same_arms = "allow"
+struct_field_names = "allow"
 
 # Additional lints from the `restriction` and `nursery` group
 as_pointer_underscore = "warn"
