@@ -303,8 +303,8 @@ fn find_posix(
     let (command_path, command_version) = get_compiler_version(kind, name)?;
     let (commandpp_path, commandpp_version) = get_compiler_version(kind, namepp)?;
 
-    let mimic_c_flags = vec![OsString::from("--mimic"), command_path.clone()];
-    let mimic_cpp_flags = vec![OsString::from("--mimic"), commandpp_path.clone()];
+    let mimic_c_flags = vec![OsString::from("--mimic"), command_path];
+    let mimic_cpp_flags = vec![OsString::from("--mimic"), commandpp_path];
 
     let default_compiler_include_checker = CompilerDefaultIncludes::from(telemetry, name, namepp);
 

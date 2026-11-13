@@ -332,11 +332,11 @@ impl FileFilter {
         if include_filter_count == 0 {
             // No include, everything not excluded should be accepted, so add an include all filter
             // at the beginning to include everything else
-            index_filters.insert(0, FilterRule::Include(wildcard.clone()));
+            index_filters.insert(0, FilterRule::Include(wildcard));
         } else {
             // If only include filters are specified, add an exclude all filter at the beginning to
             // exclude everything else
-            index_filters.insert(0, FilterRule::Exclude(wildcard.clone()));
+            index_filters.insert(0, FilterRule::Exclude(wildcard));
         }
 
         Ok(FileFilter {

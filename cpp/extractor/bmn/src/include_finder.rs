@@ -654,7 +654,7 @@ mod tests {
 
             assert_eq!(
                 result.include_directories,
-                vec![path.clone(), path.clone().join("dir2")]
+                vec![path.clone(), path.join("dir2")]
             );
             assert!(!result.unresolvable.is_empty());
             assert_eq!(
@@ -677,7 +677,7 @@ mod tests {
 
             let result = find_includes(&tree, &empty_tree(), &no_default_includes, &includes);
 
-            assert_eq!(result.include_directories, vec![path.clone()]);
+            assert_eq!(result.include_directories, vec![path]);
             assert_eq!(
                 result.unresolvable,
                 vec![

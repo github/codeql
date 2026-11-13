@@ -65,7 +65,7 @@ mod tests {
             IncludeDirective::system("missing_system.hpp", &file_name),
         ];
 
-        let actual = get_includes(file_name.clone());
+        let actual = get_includes(file_name);
 
         assert_eq!(actual, expected);
     }
