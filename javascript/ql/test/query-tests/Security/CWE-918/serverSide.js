@@ -147,5 +147,42 @@ var server2 = http.createServer(function (req, res) {
     axios.get(escapedUrl); // $ Alert[js/request-forgery]
 });
 
+var server3 = http.createServer(function (req, res) {
+    const base = req.query.base; // $ Source[js/request-forgery]
+    const target = new URL('/path', base);
+    axios.get(target.href); // $ Alert[js/request-forgery]
+});
+
+var server4 = http.createServer(function (req, res) {
+    const { URL } = require('url');
+    const base = req.query.base; // $ Source[js/request-forgery]
+    const target = new URL('/path', base);
+    axios.get(target.href); // $ Alert[js/request-forgery]
+});
+
+var server5 = http.createServer(function (req, res) {
+    const target = new URL('https://fixed.example/path', req.query.base);
+    axios.get(target.href);
+});
+
+var server6 = http.createServer(function (req, res) {
+    const abs = new URL('https://fixed.example/path');
+    const target = new URL(abs, req.query.base);
+    axios.get(target.href);
+});
+
+var server7 = http.createServer(function (req, res) {
+    const { URL } = require('url');
+    const abs = new URL('https://fixed.example/path');
+    const target = new URL(abs, req.query.base);
+    axios.get(target.href);
+});
+
+var server8 = http.createServer(function (req, res) {
+    const abs = new URL(req.query.url); // $ Source[js/request-forgery]
+    const target = new URL(abs, 'https://fixed.example');
+    axios.get(target.href); // $ Alert[js/request-forgery]
+});
+
 const custom = require('testlib').getServerSource(); // $ Source[js/request-forgery]
 request(custom); // $ Alert[js/request-forgery]
