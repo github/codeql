@@ -184,10 +184,17 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
 private module DataFlowIntegrationImpl = Impl::DataFlowIntegration<DataFlowIntegrationInput>;
 
+/** Provides shared SSA nodes and local flow steps for Go data-flow analysis. */
 cached
 module DataFlowIntegration {
   import DataFlowIntegrationImpl
 
+  /**
+   * Holds if the value of `v` flows from `nodeFrom` to `nodeTo` in one local SSA step.
+   *
+   * `isUseStep` is `true` when `nodeFrom` is a (post-update) read node and
+   * `nodeTo` is a read node or phi (read) node.
+   */
   cached
   predicate localFlowStep(SsaSourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
     DataFlowIntegrationImpl::localFlowStep(v, nodeFrom, nodeTo, isUseStep)
