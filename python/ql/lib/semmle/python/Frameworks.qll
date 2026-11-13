@@ -12,6 +12,7 @@ private import semmle.python.frameworks.Aiomysql
 private import semmle.python.frameworks.Aiopg
 private import semmle.python.frameworks.Aiosqlite
 private import semmle.python.frameworks.Airspeed
+private import semmle.python.frameworks.Anthropic
 private import semmle.python.frameworks.Anyio
 private import semmle.python.frameworks.Asyncpg
 private import semmle.python.frameworks.Baize
@@ -34,6 +35,7 @@ private import semmle.python.frameworks.Flask
 private import semmle.python.frameworks.FlaskAdmin
 private import semmle.python.frameworks.FlaskSqlAlchemy
 private import semmle.python.frameworks.Genshi
+private import semmle.python.frameworks.GoogleGenAI
 private import semmle.python.frameworks.Gradio
 private import semmle.python.frameworks.Hdbcli
 private import semmle.python.frameworks.Httpx
@@ -55,6 +57,8 @@ private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Mysql
 private import semmle.python.frameworks.MySQLdb
 private import semmle.python.frameworks.Numpy
+private import semmle.python.frameworks.OpenAI
+private import semmle.python.frameworks.OpenRouter
 private import semmle.python.frameworks.Opml
 private import semmle.python.frameworks.Oracledb
 private import semmle.python.frameworks.Pandas

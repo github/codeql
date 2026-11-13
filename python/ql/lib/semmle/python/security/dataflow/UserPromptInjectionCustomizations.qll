@@ -1,36 +1,33 @@
 /**
  * Provides default sources, sinks and sanitizers for detecting
- * "prompt injection"
+ * "user prompt injection"
  * vulnerabilities, as well as extension points for adding your own.
  */
 
 import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
-private import experimental.semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
-private import semmle.python.frameworks.data.ModelsAsData
-private import experimental.semmle.python.frameworks.OpenAI
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
- * "prompt injection"
+ * "user prompt injection"
  * vulnerabilities, as well as extension points for adding your own.
  */
-module PromptInjection {
+module UserPromptInjection {
   /**
-   * A data flow source for "prompt injection" vulnerabilities.
+   * A data flow source for "user prompt injection" vulnerabilities.
    */
   abstract class Source extends DataFlow::Node { }
 
   /**
-   * A data flow sink for "prompt injection" vulnerabilities.
+   * A data flow sink for "user prompt injection" vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A sanitizer for "prompt injection" vulnerabilities.
+   * A sanitizer for "user prompt injection" vulnerabilities.
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
@@ -42,19 +39,7 @@ module PromptInjection {
    * A prompt to an AI model, considered as a flow sink.
    */
   class AIPromptAsSink extends Sink {
-    AIPromptAsSink() { this = any(AIPrompt p).getAPrompt() }
-  }
-
-  private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("prompt-injection").asSink() }
-  }
-
-  private class PromptContentSink extends Sink {
-    PromptContentSink() {
-      this = OpenAI::getContentNode().asSink()
-      or
-      this = AgentSdk::getContentNode().asSink()
-    }
+    AIPromptAsSink() { this = any(AIPrompt p | p.isUserPrompt()).getAPrompt() }
   }
 
   /**
