@@ -1,11 +1,11 @@
 var express = require('express');
 var app = express();
 
-app.get('/:path', function(req, res) {
+app.get('/:path', function(req, res) { // $ Alert
   let path = req.params.path;
   if (isValidPath(path))
     res.sendFile(path);
-}); // $ Alert
+});
 
 function f1(req, res) {
   let path = req.params.path;

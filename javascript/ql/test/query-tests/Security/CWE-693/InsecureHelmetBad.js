@@ -3,10 +3,10 @@ const helmet = require("helmet");
 
 const app = express();
 
-app.use(helmet({
+app.use(helmet({ // $ Alert
     contentSecurityPolicy: false, // $ RelatedLocation - switch off default CSP
     frameguard: false // $ RelatedLocation - switch off default frameguard
-})); // $ Alert
+}));
 
 app.get("/", (req, res) => {
   res.send("Hello, world!");

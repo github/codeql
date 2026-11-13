@@ -316,9 +316,9 @@
     var privateKey = "myHardCodedPrivateKey"; // $ Alert
     jose.jwtVerify(token, new TextEncoder().encode(privateKey)) // $ Sink
 
-    const spki = `-----BEGIN PUBLIC KEY-----
+    const spki = `-----BEGIN PUBLIC KEY----- // $ Alert
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwhYOFK2Ocbbpb/zVypi9...
-    -----END PUBLIC KEY-----` // $ Alert
+    -----END PUBLIC KEY-----`
     let publicKey = await jose.importSPKI(spki, 'RS256')
     jose.jwtVerify(token, publicKey) // $ Sink
 

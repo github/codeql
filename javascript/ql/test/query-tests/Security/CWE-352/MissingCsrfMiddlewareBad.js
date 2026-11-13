@@ -7,9 +7,9 @@ var app = express();
 app.use(cookieParser()); // $ Alert
 app.use(passport.authorize({ session: true }));
 
-app.post('/changeEmail', function (req, res) {
+app.post('/changeEmail', function (req, res) { // $ RelatedLocation
     let newEmail = req.cookies["newEmail"];
-}); // $ RelatedLocation
+});
 
 (function () {
     var app = express();
@@ -22,9 +22,9 @@ app.post('/changeEmail', function (req, res) {
             fn(req, res, next).catch((e) => console.log("Caught " + e));
         };
 
-    app.post('/changeEmail', errorCatch(async function (req, res) {
+    app.post('/changeEmail', errorCatch(async function (req, res) { // $ RelatedLocation
         let newEmail = req.cookies["newEmail"];
-    })); // $ RelatedLocation
+    }));
 })
 
 (function () {
@@ -38,11 +38,11 @@ app.post('/changeEmail', function (req, res) {
             fn.call(this, req, res, next).catch((e) => console.log("Caught " + e));
         };
 
-    app.post('/changeEmail', errorCatch(async function (req, res) {
+    app.post('/changeEmail', errorCatch(async function (req, res) { // $ RelatedLocation
         let newEmail = req.cookies["newEmail"];
-    })); // $ RelatedLocation
+    }));
 
-    app.post('/doLoginStuff', errorCatch(async function (req, res) {
+    app.post('/doLoginStuff', errorCatch(async function (req, res) { // $ RelatedLocation
         req.session.user = loginStuff(req);
-    })); // $ RelatedLocation
+    }));
 })

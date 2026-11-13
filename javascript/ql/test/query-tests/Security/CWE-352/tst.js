@@ -5,9 +5,9 @@ const csrf = require('csurf')
 const app = express()
 app.use(cookieParser()) // $ Alert
 
-app.post('/unsafe', (req, res) => {
+app.post('/unsafe', (req, res) => { // $ RelatedLocation
   req.cookies.x;
-}); // $ RelatedLocation
+});
 
 function middlewares() {
   return express.Router()

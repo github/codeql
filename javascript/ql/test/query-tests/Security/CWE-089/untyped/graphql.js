@@ -6,7 +6,7 @@ const kit = new Octokit();
 
 app.get('/post/:id', function(req, res) {
     const id = req.params.id; // $ Source
-    const response = kit.graphql(`
+    const response = kit.graphql(` // $ Alert
       query {
         repository(owner: "github", name: "${id}") {
           object(expression: "master:foo") {
@@ -16,7 +16,7 @@ app.get('/post/:id', function(req, res) {
           }
         }
       }
-    `); // $ Alert
+    `);
 });
 
 import { graphql, withCustomRequest } from "@octokit/graphql";
@@ -79,13 +79,13 @@ app.get('/thing/:id', async function(req, res) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      query: `{
+      query: `{ // $ Alert
         thing {
           name
           url
           ${id}
         }
-      }` // $ Alert
+      }`
     })
   })
 

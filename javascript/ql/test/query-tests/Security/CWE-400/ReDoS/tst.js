@@ -316,21 +316,21 @@ var bad93 = /(?<=^v?|\sv?)(a|aa)*$/; // $ Alert[js/redos]
 var bad94 = /(a|aa)*$/; // $ Alert[js/redos]
 
 var bad95 = new RegExp(
-    "(a" +
+    "(a" + // $ Alert[js/redos]
     "|" +
     "aa)*" +
-    "b$" // $ Alert[js/redos]
+    "b$"
 );
 
 var bad96 = new RegExp("(" +
     "(c|cc)*|" + // $ Alert[js/redos]
     "(d|dd)*|" + // $ Alert[js/redos]
-    "(e|ee)*" +
-")f$"); // $ Alert[js/redos]
+    "(e|ee)*" + // $ Alert[js/redos]
+")f$");
 
 var bad97 = new RegExp(
-    "(g|gg" +
-    ")*h$"); // $ Alert[js/redos]
+    "(g|gg" + // $ Alert[js/redos]
+    ")*h$");
 
 var bad98 = /^(?:\*\/\*|[a-zA-Z0-9][a-zA-Z0-9!\#\$&\-\^_\.\+]{0,126}\/(?:\*|[a-zA-Z0-9][a-zA-Z0-9!\#\$&\-\^_\.\+]{0,126})(?:\s* *; *[a-zA-Z0-9][a-zA-Z0-9!\#\$&\-\^_\.\+]{0,126}(?:="?[a-zA-Z0-9][a-zA-Z0-9!\#\$&\-\^_\.\+]{0,126}"?)?\s*)*)$/; // $ Alert[js/redos]
 

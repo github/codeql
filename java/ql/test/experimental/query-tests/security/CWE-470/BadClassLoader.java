@@ -12,8 +12,8 @@ public class BadClassLoader extends Application {
         for (PackageInfo p : getPackageManager().getInstalledPackages(0)) {
             try {
                 if (p.packageName.startsWith("some.package.")) {
-                    Context appContext = createPackageContext(p.packageName, // $
-                            CONTEXT_INCLUDE_CODE | CONTEXT_IGNORE_SECURITY); // $ Source[java/android/unsafe-reflection]
+                    Context appContext = createPackageContext(p.packageName, // $ Source[java/android/unsafe-reflection]
+                            CONTEXT_INCLUDE_CODE | CONTEXT_IGNORE_SECURITY);
                     ClassLoader classLoader = appContext.getClassLoader();
                     Object result = classLoader.loadClass("some.package.SomeClass") // $ Alert[java/android/unsafe-reflection]
                             .getMethod("someMethod")

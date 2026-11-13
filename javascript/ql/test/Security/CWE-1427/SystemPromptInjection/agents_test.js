@@ -29,9 +29,9 @@ app.get("/agents", async (req, res) => {
   // SHOULD ALERT (async lambda)
   const agent3 = new Agent({
     name: "AsyncDynamic",
-    instructions: async (runContext) => {
+    instructions: async (runContext) => { // $ Alert[js/system-prompt-injection]
       return "Talk like a " + persona;
-    }, // $ Alert[js/system-prompt-injection]
+    },
   });
 
   // === Agent constructor: handoffDescription ===

@@ -1,7 +1,7 @@
 function badEncode(s) {
-  return s.replace(/"/g, "&quot;")
+  return s.replace(/"/g, "&quot;") // $ Alert
           .replace(/'/g, "&apos;")
-          .replace(/&/g, "&amp;"); // $ Alert
+          .replace(/&/g, "&amp;");
 }
 
 function goodEncode(s) {
@@ -65,9 +65,9 @@ function badEncode(s) {
   var indirect1 = /"/g;
   var indirect2 = /'/g;
   var indirect3 = /&/g;
-  return s.replace(indirect1, "&quot;")
+  return s.replace(indirect1, "&quot;") // $ Alert
           .replace(indirect2, "&apos;")
-          .replace(indirect3, "&amp;"); // $ Alert
+          .replace(indirect3, "&amp;");
 }
 
 function badEncodeWithReplacer(s) {
@@ -96,9 +96,9 @@ function encodeDecodeEncode(s) {
 }
 
 function badEncode(s) {
-  return s.replace(new RegExp("\"", "g"), "&quot;")
+  return s.replace(new RegExp("\"", "g"), "&quot;") // $ Alert
           .replace(new RegExp("\'", "g"), "&apos;")
-          .replace(new RegExp("&", "g"), "&amp;"); // $ Alert
+          .replace(new RegExp("&", "g"), "&amp;");
 }
 
 function goodEncode(s) {
