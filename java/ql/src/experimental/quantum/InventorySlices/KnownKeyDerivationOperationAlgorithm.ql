@@ -2,7 +2,8 @@
  * @name Operations using known key derivation algorithms (slice)
  * @description Outputs operations where the algorithm used is a known key derivation algorithm.
  * @id java/quantum/slices/operation-with-known-kdf-algorithm
- * @kind table
+ * @kind problem
+ * @severity recommendation
  * @tags quantum
  *       experimental
  */
