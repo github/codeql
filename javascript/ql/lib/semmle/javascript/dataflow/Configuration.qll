@@ -68,6 +68,7 @@ deprecated module;
 private import javascript
 private import internal.FlowSteps
 private import internal.AccessPaths
+private import internal.DataFlowNode
 private import semmle.javascript.Unit
 private import semmle.javascript.internal.CachedStages
 private import AdditionalFlowSteps
@@ -526,7 +527,7 @@ deprecated private predicate barrierGuardBlocksEdge(
   |
     bb = getADominatedBasicBlock(guard, cond) and
     pred = DataFlow::ssaDefinitionNode(input) and
-    succ = DataFlow::ssaDefinitionNode(phi) and
+    succ = TSsaPhiInputNode(phi, bb) and
     input = phi.getInputFromBlock(bb) and
     outcome = cond.getOutcome() and
     barrierGuardBlocksExpr(guard, outcome, input.getAUse(), label)
