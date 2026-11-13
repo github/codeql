@@ -1268,6 +1268,198 @@ inferCertainType
 | variance.swift:13:16:13:18 | lam | Return.Tb | {EXTERNAL LOCATION} | String |
 | variance.swift:18:7:18:7 | x |  | variance.swift:3:1:3:14 | A |
 | variance.swift:18:7:18:7 | x | Ta | {EXTERNAL LOCATION} | Int |
+| variance.swift:21:22:21:26 | value |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:21:22:21:26 | value | Element | variance.swift:21:17:21:17 | T |
+| variance.swift:22:5:22:20 | boundLowerActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:22:24:22:26 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:23:24:23:39 | boundLowerActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:25:22:25:29 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:25:22:25:29 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:25:22:25:29 | callback | Args.T0 | variance.swift:25:17:25:17 | T |
+| variance.swift:25:22:25:29 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:5:26:20 | boundUpperActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:26:5:26:20 | boundUpperActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:26:5:26:20 | boundUpperActual | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:5:26:20 | boundUpperActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:24:26:55 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:26:24:26:55 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:26:24:26:55 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:24:26:55 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:27:26:31 | value |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:49:26:53 | Block |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:49:26:53 | value |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:27:24:27:39 | boundUpperActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:27:24:27:39 | boundUpperActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:27:24:27:39 | boundUpperActual | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:27:24:27:39 | boundUpperActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:29:23:29:30 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:29:23:29:30 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:29:23:29:30 | callback | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:29:23:29:30 | callback | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:29:23:29:30 | callback | Args.T0.Args.T0 | variance.swift:29:18:29:18 | T |
+| variance.swift:29:23:29:30 | callback | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:29:23:29:30 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:5:30:21 | boundDoubleActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:30:5:30:21 | boundDoubleActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:30:5:30:21 | boundDoubleActual | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:30:5:30:21 | boundDoubleActual | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:30:5:30:21 | boundDoubleActual | Args.T0.Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:5:30:21 | boundDoubleActual | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:5:30:21 | boundDoubleActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:25:30:74 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:30:25:30:74 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:30:25:30:74 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:30:25:30:74 | FunctionExpr | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:30:25:30:74 | FunctionExpr | Args.T0.Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:25:30:74 | FunctionExpr | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:25:30:74 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:28:30:35 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:30:28:30:35 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:30:28:30:35 | callback | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:28:30:35 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:62:30:69 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:30:62:30:69 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:30:62:30:69 | callback | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:62:30:69 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:31:26:31:42 | boundDoubleActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:31:26:31:42 | boundDoubleActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:31:26:31:42 | boundDoubleActual | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:31:26:31:42 | boundDoubleActual | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:31:26:31:42 | boundDoubleActual | Args.T0.Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:31:26:31:42 | boundDoubleActual | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:31:26:31:42 | boundDoubleActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:33:26:33:30 | value |  | variance.swift:3:1:3:14 | A |
+| variance.swift:33:26:33:30 | value | Ta | variance.swift:33:21:33:21 | T |
+| variance.swift:37:23:37:27 | value |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:37:23:37:27 | value | Element | variance.swift:3:1:3:14 | A |
+| variance.swift:37:23:37:27 | value | Element.Ta | variance.swift:37:18:37:18 | T |
+| variance.swift:38:5:38:21 | boundNestedActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:38:25:38:34 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:39:26:39:42 | boundNestedActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:43:31:43:35 | value |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:43:31:43:35 | value | Element | variance.swift:5:1:5:21 | B |
+| variance.swift:43:31:43:35 | value | Element.Tb | variance.swift:43:26:43:26 | T |
+| variance.swift:44:5:44:29 | boundWrongDirectionActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:44:33:44:42 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:45:42:45:66 | boundWrongDirectionActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:47:36:47:40 | value |  | variance.swift:3:1:3:14 | A |
+| variance.swift:47:36:47:40 | value | Ta | variance.swift:3:1:3:14 | A |
+| variance.swift:47:36:47:40 | value | Ta.Ta | variance.swift:47:31:47:31 | T |
+| variance.swift:51:24:51:28 | first |  | variance.swift:51:19:51:19 | T |
+| variance.swift:51:36:51:41 | values |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:51:36:51:41 | values | Element | variance.swift:3:1:3:14 | A |
+| variance.swift:51:36:51:41 | values | Element.Ta | variance.swift:51:19:51:19 | T |
+| variance.swift:52:17:52:21 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:54:29:54:33 | first |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:54:29:54:33 | first | Element | variance.swift:54:24:54:24 | T |
+| variance.swift:54:43:54:48 | second |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:54:43:54:48 | second | Element | variance.swift:54:24:54:24 | T |
+| variance.swift:55:38:55:40 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:55:43:55:47 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:58:22:58:29 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:58:22:58:29 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:58:22:58:29 | callback | Args.T0 | variance.swift:58:17:58:17 | T |
+| variance.swift:58:22:58:29 | callback | Return | variance.swift:58:17:58:17 | T |
+| variance.swift:59:5:59:20 | boundMixedActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:59:5:59:20 | boundMixedActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:59:5:59:20 | boundMixedActual | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:59:5:59:20 | boundMixedActual | Return | {EXTERNAL LOCATION} | String |
+| variance.swift:59:24:59:56 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:59:24:59:56 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:59:24:59:56 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:59:24:59:56 | FunctionExpr | Return | {EXTERNAL LOCATION} | String |
+| variance.swift:59:27:59:31 | value |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:60:24:60:39 | boundMixedActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:60:24:60:39 | boundMixedActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:60:24:60:39 | boundMixedActual | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:60:24:60:39 | boundMixedActual | Return | {EXTERNAL LOCATION} | String |
+| variance.swift:65:22:65:26 | value |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:65:22:65:26 | value | Element | variance.swift:3:1:3:14 | A |
+| variance.swift:65:22:65:26 | value | Element.Ta | {EXTERNAL LOCATION} | Array |
+| variance.swift:65:22:65:26 | value | Element.Ta.Element | variance.swift:65:17:65:17 | T |
+| variance.swift:66:5:66:20 | boundShiftActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:66:24:66:37 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:67:26:67:41 | boundShiftActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:69:26:69:30 | first |  | variance.swift:69:21:69:21 | T |
+| variance.swift:69:38:69:43 | values |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:69:38:69:43 | values | Element | variance.swift:3:1:3:14 | A |
+| variance.swift:69:38:69:43 | values | Element.Ta | {EXTERNAL LOCATION} | Array |
+| variance.swift:69:38:69:43 | values | Element.Ta.Element | variance.swift:69:21:69:21 | T |
+| variance.swift:70:19:70:27 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:72:30:72:37 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:72:30:72:37 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:72:30:72:37 | callback | Args.T0 | variance.swift:3:1:3:14 | A |
+| variance.swift:72:30:72:37 | callback | Args.T0.Ta | variance.swift:72:25:72:25 | T |
+| variance.swift:72:30:72:37 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:73:5:73:28 | boundContraReverseActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:73:5:73:28 | boundContraReverseActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:73:5:73:28 | boundContraReverseActual | Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:73:5:73:28 | boundContraReverseActual | Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:73:5:73:28 | boundContraReverseActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:73:32:73:62 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:73:32:73:62 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:73:32:73:62 | FunctionExpr | Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:73:32:73:62 | FunctionExpr | Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:73:32:73:62 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:73:35:73:39 | value |  | variance.swift:5:1:5:21 | B |
+| variance.swift:73:35:73:39 | value | Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:74:40:74:63 | boundContraReverseActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:74:40:74:63 | boundContraReverseActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:74:40:74:63 | boundContraReverseActual | Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:74:40:74:63 | boundContraReverseActual | Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:74:40:74:63 | boundContraReverseActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:76:29:76:36 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:76:29:76:36 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:76:29:76:36 | callback | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:76:29:76:36 | callback | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:76:29:76:36 | callback | Args.T0.Args.T0 | variance.swift:3:1:3:14 | A |
+| variance.swift:76:29:76:36 | callback | Args.T0.Args.T0.Ta | variance.swift:76:24:76:24 | T |
+| variance.swift:76:29:76:36 | callback | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:76:29:76:36 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Args.T0.Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Args.T0.Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:31:77:73 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:77:31:77:73 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:77:31:77:73 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:77:31:77:73 | FunctionExpr | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:77:31:77:73 | FunctionExpr | Args.T0.Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:77:31:77:73 | FunctionExpr | Args.T0.Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:31:77:73 | FunctionExpr | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:31:77:73 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:34:77:41 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:77:34:77:41 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:77:34:77:41 | callback | Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:77:34:77:41 | callback | Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:34:77:41 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Args.T0.Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Args.T0.Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:80:34:80:38 | value |  | variance.swift:3:1:3:14 | A |
+| variance.swift:80:34:80:38 | value | Ta | {EXTERNAL LOCATION} | Function |
+| variance.swift:80:34:80:38 | value | Ta.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:80:34:80:38 | value | Ta.Args.T0 | variance.swift:3:1:3:14 | A |
+| variance.swift:80:34:80:38 | value | Ta.Args.T0.Ta | variance.swift:80:29:80:29 | T |
+| variance.swift:80:34:80:38 | value | Ta.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:84:25:84:29 | value |  | {EXTERNAL LOCATION} | Optional |
+| variance.swift:84:25:84:29 | value | Wrapped | variance.swift:3:1:3:14 | A |
+| variance.swift:84:25:84:29 | value | Wrapped.Ta | variance.swift:84:20:84:20 | T |
+| variance.swift:85:5:85:23 | boundOptionalActual |  | {EXTERNAL LOCATION} | Optional |
+| variance.swift:85:5:85:23 | boundOptionalActual | Wrapped | variance.swift:5:1:5:21 | B |
+| variance.swift:85:5:85:23 | boundOptionalActual | Wrapped.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:86:30:86:48 | boundOptionalActual |  | {EXTERNAL LOCATION} | Optional |
+| variance.swift:86:30:86:48 | boundOptionalActual | Wrapped | variance.swift:5:1:5:21 | B |
+| variance.swift:86:30:86:48 | boundOptionalActual | Wrapped.Tb | {EXTERNAL LOCATION} | Int |
 inferType
 | accessors.swift:4:7:4:12 | stored |  | {EXTERNAL LOCATION} | Int |
 | accessors.swift:4:21:4:21 | 0 |  | {EXTERNAL LOCATION} | Int |
@@ -1422,11 +1614,13 @@ inferType
 | accessors.swift:143:34:143:36 | Block |  | {EXTERNAL LOCATION} | String |
 | accessors.swift:146:9:146:14 | result |  | {EXTERNAL LOCATION} | String |
 | accessors.swift:146:18:146:25 | callback |  | {EXTERNAL LOCATION} | Function |
+| accessors.swift:146:18:146:25 | callback | Args | {EXTERNAL LOCATION} | Tuple0 |
 | accessors.swift:146:18:146:25 | callback | Return | {EXTERNAL LOCATION} | String |
 | accessors.swift:146:18:146:27 | callback(...) |  | {EXTERNAL LOCATION} | String |
 | accessors.swift:147:9:147:15 | result2 |  | {EXTERNAL LOCATION} | String |
 | accessors.swift:147:19:147:22 | self |  | accessors.swift:142:1:149:1 | C |
 | accessors.swift:147:19:147:31 | ... .callback |  | {EXTERNAL LOCATION} | Function |
+| accessors.swift:147:19:147:31 | ... .callback | Args | {EXTERNAL LOCATION} | Tuple0 |
 | accessors.swift:147:19:147:31 | ... .callback | Return | {EXTERNAL LOCATION} | String |
 | accessors.swift:147:19:147:33 | ... .callback(...) |  | {EXTERNAL LOCATION} | String |
 | accessors.swift:154:14:154:19 | stored |  | {EXTERNAL LOCATION} | Int |
@@ -4991,7 +5185,11 @@ inferType
 | variance.swift:11:41:11:51 | Block |  | variance.swift:5:1:5:21 | B |
 | variance.swift:11:41:11:51 | Block | Tb | {EXTERNAL LOCATION} | String |
 | variance.swift:13:5:13:5 | x |  | {EXTERNAL LOCATION} | Tuple2 |
+| variance.swift:13:5:13:5 | x | T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:13:5:13:5 | x | T1 | {EXTERNAL LOCATION} | String |
 | variance.swift:13:9:13:19 | foo(...) |  | {EXTERNAL LOCATION} | Tuple2 |
+| variance.swift:13:9:13:19 | foo(...) | T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:13:9:13:19 | foo(...) | T1 | {EXTERNAL LOCATION} | String |
 | variance.swift:13:16:13:18 | lam |  | {EXTERNAL LOCATION} | Function |
 | variance.swift:13:16:13:18 | lam | Args | {EXTERNAL LOCATION} | Tuple1 |
 | variance.swift:13:16:13:18 | lam | Args.T0 | variance.swift:3:1:3:14 | A |
@@ -5007,4 +5205,339 @@ inferType
 | variance.swift:18:7:18:7 | x |  | variance.swift:3:1:3:14 | A |
 | variance.swift:18:7:18:7 | x | Ta | {EXTERNAL LOCATION} | Int |
 | variance.swift:18:19:18:23 | bar(...) |  | variance.swift:5:1:5:21 | B |
+| variance.swift:18:19:18:23 | bar(...) | Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:21:22:21:26 | value |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:21:22:21:26 | value | Element | variance.swift:21:17:21:17 | T |
+| variance.swift:22:5:22:20 | boundLowerActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:22:5:22:20 | boundLowerActual | Element | {EXTERNAL LOCATION} | Int |
+| variance.swift:22:24:22:26 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:22:24:22:26 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
+| variance.swift:22:25:22:25 | 1 |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:23:5:23:9 | lower |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:23:13:23:40 | boundLower(...) |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:23:24:23:39 | boundLowerActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:23:24:23:39 | boundLowerActual | Element | {EXTERNAL LOCATION} | Int |
+| variance.swift:25:22:25:29 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:25:22:25:29 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:25:22:25:29 | callback | Args.T0 | variance.swift:25:17:25:17 | T |
+| variance.swift:25:22:25:29 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:5:26:20 | boundUpperActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:26:5:26:20 | boundUpperActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:26:5:26:20 | boundUpperActual | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:5:26:20 | boundUpperActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:24:26:55 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:26:24:26:55 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:26:24:26:55 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:24:26:55 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:27:26:31 | value |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:49:26:53 | Block |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:26:49:26:53 | value |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:27:5:27:9 | upper |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:27:13:27:40 | boundUpper(...) |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:27:24:27:39 | boundUpperActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:27:24:27:39 | boundUpperActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:27:24:27:39 | boundUpperActual | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:27:24:27:39 | boundUpperActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:29:23:29:30 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:29:23:29:30 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:29:23:29:30 | callback | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:29:23:29:30 | callback | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:29:23:29:30 | callback | Args.T0.Args.T0 | variance.swift:29:18:29:18 | T |
+| variance.swift:29:23:29:30 | callback | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:29:23:29:30 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:5:30:21 | boundDoubleActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:30:5:30:21 | boundDoubleActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:30:5:30:21 | boundDoubleActual | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:30:5:30:21 | boundDoubleActual | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:30:5:30:21 | boundDoubleActual | Args.T0.Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:5:30:21 | boundDoubleActual | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:5:30:21 | boundDoubleActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:25:30:74 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:30:25:30:74 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:30:25:30:74 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:30:25:30:74 | FunctionExpr | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:30:25:30:74 | FunctionExpr | Args.T0.Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:25:30:74 | FunctionExpr | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:25:30:74 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:28:30:35 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:30:28:30:35 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:30:28:30:35 | callback | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:28:30:35 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:62:30:69 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:30:62:30:69 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:30:62:30:69 | callback | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:62:30:69 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:62:30:72 | Block |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:62:30:72 | callback(...) |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:30:71:30:71 | 1 |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:31:5:31:10 | double |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:31:14:31:43 | boundDouble(...) |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:31:26:31:42 | boundDoubleActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:31:26:31:42 | boundDoubleActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:31:26:31:42 | boundDoubleActual | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:31:26:31:42 | boundDoubleActual | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:31:26:31:42 | boundDoubleActual | Args.T0.Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:31:26:31:42 | boundDoubleActual | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:31:26:31:42 | boundDoubleActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:33:26:33:30 | value |  | variance.swift:3:1:3:14 | A |
+| variance.swift:33:26:33:30 | value | Ta | variance.swift:33:21:33:21 | T |
+| variance.swift:34:5:34:24 | boundInvariantActual |  | variance.swift:3:1:3:14 | A |
+| variance.swift:34:5:34:24 | boundInvariantActual | Ta | {EXTERNAL LOCATION} | Int |
+| variance.swift:34:28:34:33 | GenericTypeExpr |  | variance.swift:3:1:3:14 | A |
+| variance.swift:34:28:34:33 | GenericTypeExpr | Ta | {EXTERNAL LOCATION} | Int |
+| variance.swift:34:28:34:35 | ...(...) |  | variance.swift:3:1:3:14 | A |
+| variance.swift:34:28:34:35 | ...(...) | Ta | {EXTERNAL LOCATION} | Int |
+| variance.swift:35:5:35:13 | invariant |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:35:17:35:52 | boundInvariant(...) |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:35:32:35:51 | boundInvariantActual |  | variance.swift:3:1:3:14 | A |
+| variance.swift:35:32:35:51 | boundInvariantActual | Ta | {EXTERNAL LOCATION} | Int |
+| variance.swift:37:23:37:27 | value |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:37:23:37:27 | value | Element | variance.swift:3:1:3:14 | A |
+| variance.swift:37:23:37:27 | value | Element.Ta | variance.swift:37:18:37:18 | T |
+| variance.swift:38:5:38:21 | boundNestedActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:38:5:38:21 | boundNestedActual | Element | variance.swift:5:1:5:21 | B |
+| variance.swift:38:5:38:21 | boundNestedActual | Element.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:38:25:38:34 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:38:25:38:34 | ArrayLiteral | Element | variance.swift:5:1:5:21 | B |
+| variance.swift:38:25:38:34 | ArrayLiteral | Element.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:38:26:38:31 | GenericTypeExpr |  | variance.swift:5:1:5:21 | B |
+| variance.swift:38:26:38:31 | GenericTypeExpr | Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:38:26:38:33 | ...(...) |  | variance.swift:5:1:5:21 | B |
+| variance.swift:38:26:38:33 | ...(...) | Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:39:5:39:10 | nested |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:39:14:39:43 | boundNested(...) |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:39:26:39:42 | boundNestedActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:39:26:39:42 | boundNestedActual | Element | variance.swift:5:1:5:21 | B |
+| variance.swift:39:26:39:42 | boundNestedActual | Element.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:43:31:43:35 | value |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:43:31:43:35 | value | Element | variance.swift:5:1:5:21 | B |
+| variance.swift:43:31:43:35 | value | Element.Tb | variance.swift:43:26:43:26 | T |
+| variance.swift:44:5:44:29 | boundWrongDirectionActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:44:5:44:29 | boundWrongDirectionActual | Element | variance.swift:3:1:3:14 | A |
+| variance.swift:44:5:44:29 | boundWrongDirectionActual | Element.Ta | {EXTERNAL LOCATION} | Int |
+| variance.swift:44:33:44:42 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:44:33:44:42 | ArrayLiteral | Element | variance.swift:3:1:3:14 | A |
+| variance.swift:44:33:44:42 | ArrayLiteral | Element.Ta | {EXTERNAL LOCATION} | Int |
+| variance.swift:44:34:44:39 | GenericTypeExpr |  | variance.swift:3:1:3:14 | A |
+| variance.swift:44:34:44:39 | GenericTypeExpr | Ta | {EXTERNAL LOCATION} | Int |
+| variance.swift:44:34:44:41 | ...(...) |  | variance.swift:3:1:3:14 | A |
+| variance.swift:44:34:44:41 | ...(...) | Ta | {EXTERNAL LOCATION} | Int |
+| variance.swift:45:42:45:66 | boundWrongDirectionActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:45:42:45:66 | boundWrongDirectionActual | Element | variance.swift:3:1:3:14 | A |
+| variance.swift:45:42:45:66 | boundWrongDirectionActual | Element.Ta | {EXTERNAL LOCATION} | Int |
+| variance.swift:47:36:47:40 | value |  | variance.swift:3:1:3:14 | A |
+| variance.swift:47:36:47:40 | value | Ta | variance.swift:3:1:3:14 | A |
+| variance.swift:47:36:47:40 | value | Ta.Ta | variance.swift:47:31:47:31 | T |
+| variance.swift:48:5:48:34 | boundInvariantConversionActual |  | variance.swift:3:1:3:14 | A |
+| variance.swift:48:5:48:34 | boundInvariantConversionActual | Ta | variance.swift:5:1:5:21 | B |
+| variance.swift:48:5:48:34 | boundInvariantConversionActual | Ta.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:48:38:48:46 | GenericTypeExpr |  | variance.swift:3:1:3:14 | A |
+| variance.swift:48:38:48:46 | GenericTypeExpr | Ta | variance.swift:5:1:5:21 | B |
+| variance.swift:48:38:48:46 | GenericTypeExpr | Ta.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:48:38:48:48 | ...(...) |  | variance.swift:3:1:3:14 | A |
+| variance.swift:48:38:48:48 | ...(...) | Ta | variance.swift:5:1:5:21 | B |
+| variance.swift:48:38:48:48 | ...(...) | Ta.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:49:52:49:81 | boundInvariantConversionActual |  | variance.swift:3:1:3:14 | A |
+| variance.swift:49:52:49:81 | boundInvariantConversionActual | Ta | variance.swift:5:1:5:21 | B |
+| variance.swift:49:52:49:81 | boundInvariantConversionActual | Ta.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:51:24:51:28 | first |  | variance.swift:51:19:51:19 | T |
+| variance.swift:51:36:51:41 | values |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:51:36:51:41 | values | Element | variance.swift:3:1:3:14 | A |
+| variance.swift:51:36:51:41 | values | Element.Ta | variance.swift:51:19:51:19 | T |
+| variance.swift:52:14:52:14 | 1 |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:52:17:52:21 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:52:17:52:21 | ArrayLiteral | Element | variance.swift:5:1:5:21 | B |
+| variance.swift:52:17:52:21 | ArrayLiteral | Element.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:52:18:52:18 | B |  | variance.swift:5:1:5:21 | B |
+| variance.swift:52:18:52:18 | B | Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:52:18:52:20 | B(...) |  | variance.swift:5:1:5:21 | B |
+| variance.swift:52:18:52:20 | B(...) | Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:54:29:54:33 | first |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:54:29:54:33 | first | Element | variance.swift:54:24:54:24 | T |
+| variance.swift:54:43:54:48 | second |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:54:43:54:48 | second | Element | variance.swift:54:24:54:24 | T |
+| variance.swift:55:5:55:16 | alternatives |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:55:5:55:16 | alternatives |  | {EXTERNAL LOCATION} | String |
+| variance.swift:55:20:55:48 | boundAlternatives(...) |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:55:20:55:48 | boundAlternatives(...) |  | {EXTERNAL LOCATION} | String |
+| variance.swift:55:38:55:40 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:55:38:55:40 | ArrayLiteral | Element | {EXTERNAL LOCATION} | Int |
+| variance.swift:55:39:55:39 | 1 |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:55:43:55:47 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:55:43:55:47 | ArrayLiteral | Element | {EXTERNAL LOCATION} | String |
+| variance.swift:55:44:55:46 | "x" |  | {EXTERNAL LOCATION} | String |
+| variance.swift:58:22:58:29 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:58:22:58:29 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:58:22:58:29 | callback | Args.T0 | variance.swift:58:17:58:17 | T |
+| variance.swift:58:22:58:29 | callback | Return | variance.swift:58:17:58:17 | T |
+| variance.swift:59:5:59:20 | boundMixedActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:59:5:59:20 | boundMixedActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:59:5:59:20 | boundMixedActual | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:59:5:59:20 | boundMixedActual | Return | {EXTERNAL LOCATION} | String |
+| variance.swift:59:24:59:56 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:59:24:59:56 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:59:24:59:56 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:59:24:59:56 | FunctionExpr | Return | {EXTERNAL LOCATION} | String |
+| variance.swift:59:27:59:31 | value |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:59:52:59:54 | "x" |  | {EXTERNAL LOCATION} | String |
+| variance.swift:59:52:59:54 | Block |  | {EXTERNAL LOCATION} | String |
+| variance.swift:60:5:60:9 | mixed |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:60:5:60:9 | mixed |  | {EXTERNAL LOCATION} | String |
+| variance.swift:60:13:60:40 | boundMixed(...) |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:60:13:60:40 | boundMixed(...) |  | {EXTERNAL LOCATION} | String |
+| variance.swift:60:24:60:39 | boundMixedActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:60:24:60:39 | boundMixedActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:60:24:60:39 | boundMixedActual | Args.T0 | {EXTERNAL LOCATION} | Int |
+| variance.swift:60:24:60:39 | boundMixedActual | Return | {EXTERNAL LOCATION} | String |
+| variance.swift:63:19:63:34 | Block |  | variance.swift:3:1:3:14 | A |
+| variance.swift:63:19:63:34 | Block | Ta | {EXTERNAL LOCATION} | Array |
+| variance.swift:63:19:63:34 | Block | Ta.Element | variance.swift:62:13:62:13 | C |
+| variance.swift:63:21:63:25 | super |  | variance.swift:3:1:3:14 | A |
+| variance.swift:63:21:63:25 | super | Ta | {EXTERNAL LOCATION} | Array |
+| variance.swift:63:21:63:25 | super | Ta.Element | variance.swift:62:13:62:13 | C |
+| variance.swift:63:21:63:32 | ... .init(...) |  | variance.swift:3:1:3:14 | A |
+| variance.swift:63:21:63:32 | ... .init(...) | Ta | {EXTERNAL LOCATION} | Array |
+| variance.swift:63:21:63:32 | ... .init(...) | Ta.Element | variance.swift:62:13:62:13 | C |
+| variance.swift:65:22:65:26 | value |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:65:22:65:26 | value | Element | variance.swift:3:1:3:14 | A |
+| variance.swift:65:22:65:26 | value | Element.Ta | {EXTERNAL LOCATION} | Array |
+| variance.swift:65:22:65:26 | value | Element.Ta.Element | variance.swift:65:17:65:17 | T |
+| variance.swift:66:5:66:20 | boundShiftActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:66:5:66:20 | boundShiftActual | Element | variance.swift:62:1:64:1 | Shift |
+| variance.swift:66:5:66:20 | boundShiftActual | Element.C | {EXTERNAL LOCATION} | Int |
+| variance.swift:66:24:66:37 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:66:24:66:37 | ArrayLiteral | Element | variance.swift:62:1:64:1 | Shift |
+| variance.swift:66:24:66:37 | ArrayLiteral | Element.C | {EXTERNAL LOCATION} | Int |
+| variance.swift:66:25:66:34 | GenericTypeExpr |  | variance.swift:62:1:64:1 | Shift |
+| variance.swift:66:25:66:34 | GenericTypeExpr | C | {EXTERNAL LOCATION} | Int |
+| variance.swift:66:25:66:36 | ...(...) |  | variance.swift:62:1:64:1 | Shift |
+| variance.swift:66:25:66:36 | ...(...) | C | {EXTERNAL LOCATION} | Int |
+| variance.swift:67:5:67:11 | shifted |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:67:15:67:42 | boundShift(...) |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:67:26:67:41 | boundShiftActual |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:67:26:67:41 | boundShiftActual | Element | variance.swift:62:1:64:1 | Shift |
+| variance.swift:67:26:67:41 | boundShiftActual | Element.C | {EXTERNAL LOCATION} | Int |
+| variance.swift:69:26:69:30 | first |  | variance.swift:69:21:69:21 | T |
+| variance.swift:69:38:69:43 | values |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:69:38:69:43 | values | Element | variance.swift:3:1:3:14 | A |
+| variance.swift:69:38:69:43 | values | Element.Ta | {EXTERNAL LOCATION} | Array |
+| variance.swift:69:38:69:43 | values | Element.Ta.Element | variance.swift:69:21:69:21 | T |
+| variance.swift:70:16:70:16 | 1 |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:70:19:70:27 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
+| variance.swift:70:19:70:27 | ArrayLiteral | Element | variance.swift:62:1:64:1 | Shift |
+| variance.swift:70:19:70:27 | ArrayLiteral | Element.C | {EXTERNAL LOCATION} | Int |
+| variance.swift:70:20:70:24 | Shift |  | variance.swift:62:1:64:1 | Shift |
+| variance.swift:70:20:70:24 | Shift | C | {EXTERNAL LOCATION} | Int |
+| variance.swift:70:20:70:26 | Shift(...) |  | variance.swift:62:1:64:1 | Shift |
+| variance.swift:70:20:70:26 | Shift(...) | C | {EXTERNAL LOCATION} | Int |
+| variance.swift:72:30:72:37 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:72:30:72:37 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:72:30:72:37 | callback | Args.T0 | variance.swift:3:1:3:14 | A |
+| variance.swift:72:30:72:37 | callback | Args.T0.Ta | variance.swift:72:25:72:25 | T |
+| variance.swift:72:30:72:37 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:73:5:73:28 | boundContraReverseActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:73:5:73:28 | boundContraReverseActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:73:5:73:28 | boundContraReverseActual | Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:73:5:73:28 | boundContraReverseActual | Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:73:5:73:28 | boundContraReverseActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:73:32:73:62 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:73:32:73:62 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:73:32:73:62 | FunctionExpr | Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:73:32:73:62 | FunctionExpr | Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:73:32:73:62 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:73:35:73:39 | value |  | variance.swift:5:1:5:21 | B |
+| variance.swift:73:35:73:39 | value | Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:73:60:73:60 | 1 |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:73:60:73:60 | Block |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:74:40:74:63 | boundContraReverseActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:74:40:74:63 | boundContraReverseActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:74:40:74:63 | boundContraReverseActual | Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:74:40:74:63 | boundContraReverseActual | Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:74:40:74:63 | boundContraReverseActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:76:29:76:36 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:76:29:76:36 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:76:29:76:36 | callback | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:76:29:76:36 | callback | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:76:29:76:36 | callback | Args.T0.Args.T0 | variance.swift:3:1:3:14 | A |
+| variance.swift:76:29:76:36 | callback | Args.T0.Args.T0.Ta | variance.swift:76:24:76:24 | T |
+| variance.swift:76:29:76:36 | callback | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:76:29:76:36 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Args.T0.Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Args.T0.Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:5:77:27 | boundDoubleNestedActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:31:77:73 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:77:31:77:73 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:77:31:77:73 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:77:31:77:73 | FunctionExpr | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:77:31:77:73 | FunctionExpr | Args.T0.Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:77:31:77:73 | FunctionExpr | Args.T0.Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:31:77:73 | FunctionExpr | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:31:77:73 | FunctionExpr | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:34:77:41 | callback |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:77:34:77:41 | callback | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:77:34:77:41 | callback | Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:77:34:77:41 | callback | Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:34:77:41 | callback | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:71:77:71 | 1 |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:77:71:77:71 | Block |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:78:5:78:16 | doubleNested |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:78:20:78:61 | boundDoubleNested(...) |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual |  | {EXTERNAL LOCATION} | Function |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Args.T0 | {EXTERNAL LOCATION} | Function |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Args.T0.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Args.T0.Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Args.T0.Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Args.T0.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:78:38:78:60 | boundDoubleNestedActual | Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:80:34:80:38 | value |  | variance.swift:3:1:3:14 | A |
+| variance.swift:80:34:80:38 | value | Ta | {EXTERNAL LOCATION} | Function |
+| variance.swift:80:34:80:38 | value | Ta.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:80:34:80:38 | value | Ta.Args.T0 | variance.swift:3:1:3:14 | A |
+| variance.swift:80:34:80:38 | value | Ta.Args.T0.Ta | variance.swift:80:29:80:29 | T |
+| variance.swift:80:34:80:38 | value | Ta.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:81:5:81:32 | boundInvariantFunctionActual |  | variance.swift:3:1:3:14 | A |
+| variance.swift:81:5:81:32 | boundInvariantFunctionActual | Ta | {EXTERNAL LOCATION} | Function |
+| variance.swift:81:5:81:32 | boundInvariantFunctionActual | Ta.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:81:5:81:32 | boundInvariantFunctionActual | Ta.Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:81:5:81:32 | boundInvariantFunctionActual | Ta.Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:81:5:81:32 | boundInvariantFunctionActual | Ta.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:81:36:81:53 | GenericTypeExpr |  | variance.swift:3:1:3:14 | A |
+| variance.swift:81:36:81:53 | GenericTypeExpr | Ta | {EXTERNAL LOCATION} | Function |
+| variance.swift:81:36:81:53 | GenericTypeExpr | Ta.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:81:36:81:53 | GenericTypeExpr | Ta.Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:81:36:81:53 | GenericTypeExpr | Ta.Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:81:36:81:53 | GenericTypeExpr | Ta.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:81:36:81:55 | ...(...) |  | variance.swift:3:1:3:14 | A |
+| variance.swift:81:36:81:55 | ...(...) | Ta | {EXTERNAL LOCATION} | Function |
+| variance.swift:81:36:81:55 | ...(...) | Ta.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:81:36:81:55 | ...(...) | Ta.Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:81:36:81:55 | ...(...) | Ta.Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:81:36:81:55 | ...(...) | Ta.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:82:48:82:75 | boundInvariantFunctionActual |  | variance.swift:3:1:3:14 | A |
+| variance.swift:82:48:82:75 | boundInvariantFunctionActual | Ta | {EXTERNAL LOCATION} | Function |
+| variance.swift:82:48:82:75 | boundInvariantFunctionActual | Ta.Args | {EXTERNAL LOCATION} | Tuple1 |
+| variance.swift:82:48:82:75 | boundInvariantFunctionActual | Ta.Args.T0 | variance.swift:5:1:5:21 | B |
+| variance.swift:82:48:82:75 | boundInvariantFunctionActual | Ta.Args.T0.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:82:48:82:75 | boundInvariantFunctionActual | Ta.Return | {EXTERNAL LOCATION} | Int |
+| variance.swift:84:25:84:29 | value |  | {EXTERNAL LOCATION} | Optional |
+| variance.swift:84:25:84:29 | value | Wrapped | variance.swift:3:1:3:14 | A |
+| variance.swift:84:25:84:29 | value | Wrapped.Ta | variance.swift:84:20:84:20 | T |
+| variance.swift:85:5:85:23 | boundOptionalActual |  | {EXTERNAL LOCATION} | Optional |
+| variance.swift:85:5:85:23 | boundOptionalActual | Wrapped | variance.swift:5:1:5:21 | B |
+| variance.swift:85:5:85:23 | boundOptionalActual | Wrapped.Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:85:36:85:41 | GenericTypeExpr |  | variance.swift:5:1:5:21 | B |
+| variance.swift:85:36:85:41 | GenericTypeExpr | Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:85:36:85:43 | ...(...) |  | variance.swift:5:1:5:21 | B |
+| variance.swift:85:36:85:43 | ...(...) | Tb | {EXTERNAL LOCATION} | Int |
+| variance.swift:86:5:86:12 | optional |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:86:16:86:49 | boundOptional(...) |  | {EXTERNAL LOCATION} | Int |
+| variance.swift:86:30:86:48 | boundOptionalActual |  | {EXTERNAL LOCATION} | Optional |
+| variance.swift:86:30:86:48 | boundOptionalActual | Wrapped | variance.swift:5:1:5:21 | B |
+| variance.swift:86:30:86:48 | boundOptionalActual | Wrapped.Tb | {EXTERNAL LOCATION} | Int |
 testFailures
