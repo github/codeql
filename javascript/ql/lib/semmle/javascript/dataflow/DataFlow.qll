@@ -1803,6 +1803,7 @@ module DataFlow {
    * Holds if there is a step from `pred` to `succ` through a field accessed through `this` in a class.
    */
   overlay[global]
+  pragma[no_dynamic_join_order]
   predicate localFieldStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ClassNode cls, string prop |
       pred = AccessPath::getAnAssignmentTo(cls.getADirectSuperClass*().getAReceiverNode(), prop) or
