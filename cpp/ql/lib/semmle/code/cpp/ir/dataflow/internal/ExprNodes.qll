@@ -244,9 +244,47 @@ private module Cached {
     )
   }
 
+  /**
+   * Gets a `glvalue` expression whose unconverted result is the same as the
+   * unconverted result of `e`.
+   */
+  pragma[inline]
+  private Expr getAGLValueCategoryExpr(Expr e) {
+    result.isGLValueCategory() and
+    result.getUnconverted() = e.getUnconverted()
+  }
+
   /** Holds if `node` should be an `IndirectOperand` that maps `node.asExpr()` to `e`. */
   private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, int n) {
-    exists(ArgumentOperand operand |
+    exists(ArgumentOperand operand | isIndirectOperandOfArgument(node, operand, e, n) |
+      // If `x` has type `Foo` in a call such `x.f()` the `VariableAddress`
+      // instruction (which is of type `glvalue<Foo>`) is the qualifier.
+      // So the `DataFlow::Node` we want to represent `x` is the indirection of
+      // the qualifier (which will then have type `Foo`).
+      // The node -> expression mapping is one-to-many, and the instruction -> node
+      // mapping is many-to-one. So a node may contain both glvalue and non-glvalue
+      // producing instructions, and a node may map to both glvalue and non-glvalue
+      // expressions. So we both need to check that the operand is a glvalue and
+      // that one of the expressions mapped to by this node is a glvalue.
+      // For example, in `(*x).f()` the qualifier generates IR like:
+      // ```
+      // r1(glval<Foo *>) = VariableAddress[x] :
+      // r2(Foo *)        = Load[x]            : &:r1
+      // r3(glval<Foo>)   = CopyValue          : r2
+      // ```
+      // A single dataflow node represents all three instructions. The `r2`
+      // instruction represents the expression `x`, and the `r3` instruction
+      // represents `*x`. Only `*x` is a glvalue and should map to the indirect
+      // qualifier node, whereas `x` is a pointer prvalue and should map to the
+      // direct qualifier node. This means that `n.asIndirect() = x` holds, and
+      // `n.asExpr() = *x` holds. To accomplish this, we require that the fully
+      // converted qualifier (i.e., the expression with `n = 0`) is a glvalue,
+      // and then map every expression in the conversion chain with the same
+      // unconverted expression to the indirect node.
+      operand.isGLValue() and
+      operand instanceof ThisArgumentOperand and
+      isIndirectOperandOfArgument(node, operand, getAGLValueCategoryExpr(e), 0)
+      or
       // When an argument (qualifier or positional) is a prvalue and the
       // parameter (qualifier or positional) is a (const) reference, IR
       // construction introduces a temporary `IRVariable`. The `VariableAddress`
@@ -254,7 +292,6 @@ private module Cached {
       // result. However, the instruction actually represents the _address_ of
       // the argument. So to fix this mismatch, we have the indirection of the
       // `VariableAddressInstruction` map to the expression.
-      isIndirectOperandOfArgument(node, operand, e, n) and
       irTempOperandConversionFlows(operand)
     )
   }
