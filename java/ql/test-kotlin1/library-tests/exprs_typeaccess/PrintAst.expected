@@ -80,8 +80,8 @@ A.kt:
 #    0|       3: [Method] valueOf
 #    0|         3: [TypeAccess] Enu
 #-----|         4: (Parameters)
-#    0|           0: [Parameter] value
-#    0|             0: [TypeAccess] String
+#   23|           0: [Parameter] value
+#   23|             0: [TypeAccess] String
 #    0|       4: [Method] values
 #    0|         3: [TypeAccess] Enu[]
 #    0|           0: [TypeAccess] Enu
