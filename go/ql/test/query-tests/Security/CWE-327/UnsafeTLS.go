@@ -18,7 +18,7 @@ func oldVersionFunc() bool {
 func minMaxTlsVersion() {
 	{
 		config := &tls.Config{}
-		config.MinVersion = 0 // $ Alert[go/insecure-tls] // BAD
+		config.MinVersion = 0 // GOOD (uses the default minimum version)
 	}
 	{
 		config := &tls.Config{}
@@ -27,7 +27,7 @@ func minMaxTlsVersion() {
 	///
 	{
 		config := &tls.Config{
-			MinVersion: 0, // $ Alert[go/insecure-tls] // BAD
+			MinVersion: 0, // GOOD (uses the default minimum version)
 		}
 		_ = config
 	}
@@ -108,19 +108,19 @@ func minMaxTlsVersion() {
 	oldVersionFlag := len(os.Args) > 3
 	if unknown {
 		config := &tls.Config{
-			MinVersion: 0, // $ Alert[go/insecure-tls] // BAD
+			MinVersion: tls.VersionTLS10, // $ Alert[go/insecure-tls] // BAD
 		}
 		_ = config
 	}
 	if insecureFlag {
 		config := &tls.Config{
-			MinVersion: 0, // OK (guarded by a flag suggesting deliberate insecurity)
+			MinVersion: tls.VersionTLS10, // OK (guarded by a flag suggesting deliberate insecurity)
 		}
 		_ = config
 	}
 	if oldVersionFlag {
 		config := &tls.Config{
-			MinVersion: 0, // OK (guarded by a flag suggesting deliberate legacy support)
+			MinVersion: tls.VersionTLS10, // OK (guarded by a flag suggesting deliberate legacy support)
 		}
 		_ = config
 	}
@@ -160,27 +160,27 @@ func minMaxTlsVersion() {
 	///
 	{
 		insecureConfig := &tls.Config{
-			MinVersion: 0, // OK (var name suggests deliberate insecurity)
+			MinVersion: tls.VersionTLS10, // OK (var name suggests deliberate insecurity)
 		}
 		_ = insecureConfig
 	}
 	///
 	{
 		legacyConfig := &tls.Config{
-			MinVersion: 0, // OK (var name suggests deliberate legacy support)
+			MinVersion: tls.VersionTLS10, // OK (var name suggests deliberate legacy support)
 		}
 		_ = legacyConfig
 	}
 	///
 	{
 		var insecureConfig tls.Config
-		insecureConfig.MinVersion = 0 // OK (var name suggests deliberate insecurity)
+		insecureConfig.MinVersion = tls.VersionTLS10 // OK (var name suggests deliberate insecurity)
 		_ = insecureConfig
 	}
 	///
 	{
 		var legacyConfig tls.Config
-		legacyConfig.MinVersion = 0 // OK (var name suggests deliberate legacy support)
+		legacyConfig.MinVersion = tls.VersionTLS10 // OK (var name suggests deliberate legacy support)
 		_ = legacyConfig
 	}
 	///
@@ -188,17 +188,17 @@ func minMaxTlsVersion() {
 		switch unknown {
 		case oldVersionFlag:
 			config := &tls.Config{
-				MinVersion: 0, // OK (switch-case name suggests legacy support)
+				MinVersion: tls.VersionTLS10, // OK (switch-case name suggests legacy support)
 			}
 			_ = config
 		case insecureFlag:
 			config := &tls.Config{
-				MinVersion: 0, // OK (switch-case name suggests insecurity)
+				MinVersion: tls.VersionTLS10, // OK (switch-case name suggests insecurity)
 			}
 			_ = config
 		default:
 			config := &tls.Config{
-				MinVersion: 0, // $ Alert[go/insecure-tls] // BAD
+				MinVersion: tls.VersionTLS10, // $ Alert[go/insecure-tls] // BAD
 			}
 			_ = config
 		}
@@ -206,17 +206,17 @@ func minMaxTlsVersion() {
 		switch os.Args[0] {
 		case "oldVersionFlag":
 			config := &tls.Config{
-				MinVersion: 0, // OK (switch-case name suggests legacy support)
+				MinVersion: tls.VersionTLS10, // OK (switch-case name suggests legacy support)
 			}
 			_ = config
 		case "insecureFlag":
 			config := &tls.Config{
-				MinVersion: 0, // OK (switch-case name suggests insecurity)
+				MinVersion: tls.VersionTLS10, // OK (switch-case name suggests insecurity)
 			}
 			_ = config
 		default:
 			config := &tls.Config{
-				MinVersion: 0, // $ Alert[go/insecure-tls] // BAD
+				MinVersion: tls.VersionTLS10, // $ Alert[go/insecure-tls] // BAD
 			}
 			_ = config
 		}
@@ -224,7 +224,7 @@ func minMaxTlsVersion() {
 	///
 	if insecureFunc() {
 		config := &tls.Config{
-			MinVersion: 0, // OK (guarded by function call suggesting deliberate insecurity)
+			MinVersion: tls.VersionTLS10, // OK (guarded by function call suggesting deliberate insecurity)
 		}
 		_ = config
 	}
@@ -233,21 +233,21 @@ func minMaxTlsVersion() {
 	isInsecurePtr := &isInsecure
 	if *isInsecurePtr {
 		config := &tls.Config{
-			MinVersion: 0, // OK (guarded by pointer deref suggesting deliberate insecurity)
+			MinVersion: tls.VersionTLS10, // OK (guarded by pointer deref suggesting deliberate insecurity)
 		}
 		_ = config
 	}
 	///
 	if os.Getenv("DISABLE_TLS_VERIFICATION") == "true" {
 		config := &tls.Config{
-			MinVersion: 0, // OK (guarded by environment variable)
+			MinVersion: tls.VersionTLS10, // OK (guarded by environment variable)
 		}
 		_ = config
 	}
 	///
 	if isInsecure == true {
 		config := &tls.Config{
-			MinVersion: 0, // OK (guarded by comparison)
+			MinVersion: tls.VersionTLS10, // OK (guarded by comparison)
 		}
 		_ = config
 	}
@@ -459,5 +459,142 @@ func cipherSuites() {
 			}
 			_ = config
 		}
+	}
+}
+
+func defaultTlsVersion() {
+	{
+		config := &tls.Config{} // GOOD (omitted versions use the defaults)
+		_ = config
+	}
+	{
+		var config tls.Config // GOOD (zero-valued versions use the defaults)
+		_ = config
+	}
+	{
+		version := uint16(0)
+		config := &tls.Config{
+			MinVersion: version, // GOOD (uses the default minimum version)
+			MaxVersion: version, // GOOD (uses the default maximum version)
+		}
+		_ = config
+	}
+	{
+		var version uint16
+		if len(os.Args) > 1 {
+			version = 0
+		} else {
+			version = tls.VersionTLS10 // $ Source[go/insecure-tls] // BAD
+		}
+		config := &tls.Config{
+			MinVersion: version, // $ Alert[go/insecure-tls]
+		}
+		_ = config
+	}
+	{
+		config := &tls.Config{}
+		if len(os.Args) > 1 {
+			config.MinVersion = 0
+		} else {
+			config.MinVersion = tls.VersionTLS10 // $ Alert[go/insecure-tls] // BAD
+		}
+		_ = config
+	}
+	{
+		var version uint16
+		if len(os.Args) > 1 {
+			version = tls.VersionTLS10 // $ Source[go/insecure-tls] // BAD
+		}
+		config := &tls.Config{
+			MinVersion: version, // $ Alert[go/insecure-tls]
+		}
+		_ = config
+	}
+	{
+		var version uint16
+		switch os.Args[0] {
+		case "ssl3":
+			version = tls.VersionSSL30 // $ Source[go/insecure-tls] // BAD
+		case "tls10":
+			version = tls.VersionTLS10 // $ Source[go/insecure-tls] // BAD
+		}
+		config := &tls.Config{
+			MinVersion: version, // $ Alert[go/insecure-tls]
+		}
+		_ = config
+	}
+	{
+		config := &tls.Config{MinVersion: 0}
+		config.MinVersion = tls.VersionTLS10 // $ Alert[go/insecure-tls] // BAD
+	}
+	{
+		config := &tls.Config{}
+		config.MinVersion = 0
+		config.MinVersion = tls.VersionTLS10 // $ Alert[go/insecure-tls] // BAD
+	}
+	{
+		var version uint16
+		if len(os.Args) > 1 {
+			version = 0
+		} else {
+			version = tls.VersionTLS10 // $ Source[go/insecure-tls] // BAD
+		}
+		config := &tls.Config{
+			MaxVersion: version, // $ Alert[go/insecure-tls]
+		}
+		_ = config
+	}
+	{
+		config := &tls.Config{}
+		if len(os.Args) > 1 {
+			config.MaxVersion = 0
+		} else {
+			config.MaxVersion = tls.VersionTLS10 // $ Alert[go/insecure-tls] // BAD
+		}
+		_ = config
+	}
+	{
+		var version uint16
+		if len(os.Args) > 1 {
+			version = tls.VersionTLS10 // $ Source[go/insecure-tls] // BAD
+		}
+		config := &tls.Config{
+			MaxVersion: version, // $ Alert[go/insecure-tls]
+		}
+		_ = config
+	}
+	{
+		var version uint16
+		switch os.Args[0] {
+		case "ssl3":
+			version = tls.VersionSSL30 // $ Source[go/insecure-tls] // BAD
+		case "tls10":
+			version = tls.VersionTLS10 // $ Source[go/insecure-tls] // BAD
+		}
+		config := &tls.Config{
+			MaxVersion: version, // $ Alert[go/insecure-tls]
+		}
+		_ = config
+	}
+	{
+		config := &tls.Config{MaxVersion: 0}
+		config.MaxVersion = tls.VersionTLS10 // $ Alert[go/insecure-tls] // BAD
+	}
+	{
+		config := &tls.Config{}
+		config.MaxVersion = 0
+		config.MaxVersion = tls.VersionTLS10 // $ Alert[go/insecure-tls] // BAD
+	}
+	{
+		var version uint16
+		if len(os.Args) > 1 {
+			version = tls.VersionTLS13
+		} else {
+			version = tls.VersionTLS10 // OK (flows together with a modern version, suggesting configurable security)
+		}
+		config := &tls.Config{
+			MaxVersion: version,
+		}
+		_ = config
 	}
 }
