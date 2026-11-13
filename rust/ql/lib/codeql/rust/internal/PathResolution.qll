@@ -133,13 +133,34 @@ private ItemNode getAChildSuccessor0(ItemNode item, string name, SuccessorKind k
 
 pragma[nomagic]
 private NamedItemNode getANamedNonModuleChildSuccessor(
-  ItemNode item, string name, Namespace ns, int startline, int startcolumn, int endline,
-  int endcolumn
+  ItemNode item, string name, Namespace ns, int orderLine, int orderColumn, int sourceLine,
+  int sourceColumn, int endline, int endcolumn
 ) {
-  result.getLocation().hasLocationInfo(_, startline, startcolumn, endline, endcolumn) and
+  result.getLocation().hasLocationInfo(_, sourceLine, sourceColumn, endline, endcolumn) and
   result = getAChildSuccessor0(item, name, _) and
   ns = result.getNamespace() and
-  not result instanceof ModuleItemNode
+  not result instanceof ModuleItemNode and
+  getEffectivePositionNode(result).getLocation().hasLocationInfo(_, orderLine, orderColumn, _, _)
+}
+
+private AstNode getEffectivePositionNode(AstNode node) {
+  result = node and
+  not exists(MacroItems included |
+    included = node.getParentNode*() and
+    exists(MacroCall call |
+      included = call.getMacroCallExpansion() and
+      included.getFile() = node.getFile() and
+      included.getFile() != call.getFile()
+    )
+  )
+  or
+  exists(MacroItems included, MacroCall call |
+    included = node.getParentNode*() and
+    included = call.getMacroCallExpansion() and
+    included.getFile() = node.getFile() and
+    included.getFile() != call.getFile() and
+    result = getEffectivePositionNode(call)
+  )
 }
 
 pragma[nomagic]
@@ -155,12 +176,13 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
     or
     exists(Namespace ns |
       result =
-        max(NamedItemNode i, int startline, int startcolumn, int endline, int endcolumn |
+        max(NamedItemNode i, int orderLine, int orderColumn, int sourceLine, int sourceColumn,
+          int endline, int endcolumn |
           i =
-            getANamedNonModuleChildSuccessor(item, name, ns, startline, startcolumn, endline,
-              endcolumn)
+            getANamedNonModuleChildSuccessor(item, name, ns, orderLine, orderColumn, sourceLine,
+              sourceColumn, endline, endcolumn)
         |
-          i order by startline, startcolumn, endline, endcolumn
+          i order by orderLine, orderColumn, sourceLine, sourceColumn, endline, endcolumn
         )
     )
   )

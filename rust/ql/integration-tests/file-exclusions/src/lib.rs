@@ -1,5 +1,7 @@
 mod maybe_ignore;
 
+include!("maybe_ignore/a_source.rs");
+
 pub fn add(left: u64, right: u64) -> u64 {
     left + right
 }

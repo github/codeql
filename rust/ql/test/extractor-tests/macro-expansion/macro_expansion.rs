@@ -58,6 +58,10 @@ fn test() {
     );
 }
 
+macro_rules! shadowed {
+    () => { struct RootShadowed; };
+}
+
 include!("included/included.rs");
 
 #[doc = include_str!("some.txt")]  // this doesn't expand since 0.0.274

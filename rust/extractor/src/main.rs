@@ -14,7 +14,7 @@ use ra_ap_paths::{AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{CargoConfig, ProjectManifest};
 use ra_ap_vfs::Vfs;
 use rust_analyzer::{ParseResult, RustAnalyzer};
-use std::collections::{BTreeMap, HashMap, HashSet};
+use std::collections::{BTreeMap, HashSet};
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 use std::path::{Path, PathBuf};
@@ -41,17 +41,30 @@ struct Extractor<'a> {
     archiver: &'a Archiver,
     traps: &'a trap::TrapFileProvider,
     steps: Vec<ExtractionStep>,
-    extracted_with_semantics: HashMap<PathBuf, SourceKind>,
+    source_files: HashSet<PathBuf>,
+    generated_source_root: PathBuf,
+    extracted_source_files: HashSet<PathBuf>,
 }
 
 impl<'a> Extractor<'a> {
-    pub fn new(archiver: &'a Archiver, traps: &'a trap::TrapFileProvider) -> Self {
+    pub fn new(
+        archiver: &'a Archiver,
+        traps: &'a trap::TrapFileProvider,
+        source_files: HashSet<PathBuf>,
+        generated_source_root: PathBuf,
+    ) -> Self {
         Self {
             archiver,
             traps,
             steps: Vec::new(),
-            extracted_with_semantics: HashMap::new(),
+            source_files,
+            generated_source_root,
+            extracted_source_files: HashSet::new(),
         }
+    }
+
+    fn is_selected_source(&self, file: &Path) -> bool {
+        self.source_files.contains(file) || file.starts_with(&self.generated_source_root)
     }
 
     fn extract(
@@ -104,7 +117,9 @@ impl<'a> Extractor<'a> {
         translator.emit_source_file(&ast);
         translator.emit_truncated_diagnostics_message();
         for step in &translator.included_file_steps {
-            if let Some(file) = &step.file {
+            if let Some(file) = &step.file
+                && (source_kind == SourceKind::Library || self.is_selected_source(file))
+            {
                 self.archiver.archive(file);
             }
         }
@@ -127,19 +142,28 @@ impl<'a> Extractor<'a> {
         semantics: &'db Semantics<'db, RootDatabase>,
         vfs: &'db Vfs,
         source_kind: SourceKind,
+        selected_source: bool,
     ) {
         let mut pending = vec![file.to_path_buf()];
+        let mut visited = HashSet::new();
         while let Some(file) = pending.pop() {
-            if self
-                .extracted_with_semantics
-                .get(&file)
-                .is_some_and(|kind| *kind == SourceKind::Source || *kind == source_kind)
+            if !visited.insert(file.clone())
+                || selected_source && !self.is_selected_source(&file)
+                || !selected_source && self.extracted_source_files.contains(&file)
             {
                 continue;
             }
-            self.extracted_with_semantics
-                .insert(file.clone(), source_kind);
-            pending.extend(self.extract(&RustAnalyzer::new(vfs, semantics), &file, source_kind));
+            if selected_source {
+                self.extracted_source_files.insert(file.clone());
+            }
+            let modules = self.extract(&RustAnalyzer::new(vfs, semantics), &file, source_kind);
+            if selected_source {
+                pending.extend(
+                    modules
+                        .into_iter()
+                        .filter(|module| self.is_selected_source(module)),
+                );
+            }
         }
     }
 
@@ -159,9 +183,6 @@ impl<'a> Extractor<'a> {
         load_config: &LoadCargoConfig,
     ) -> Option<(RootDatabase, Vfs)> {
         let before = Instant::now();
-        // Dependency workspaces must not overwrite generated modules extracted as source.
-        self.extracted_with_semantics
-            .retain(|_, kind| *kind == SourceKind::Source);
         let ret = RustAnalyzer::load_workspace(project, config, load_config);
         self.steps
             .push(ExtractionStep::load_manifest(before, project));
@@ -303,11 +324,6 @@ fn main() -> anyhow::Result<()> {
     info!("{config:#?}\n");
     info!("number of inputs: {}", inputs.len());
 
-    let traps = trap::TrapFileProvider::new(&config).context("failed to set up trap files")?;
-    let archiver = archive::Archiver {
-        root: config.source_archive_dir.clone(),
-    };
-    let mut extractor = Extractor::new(&archiver, &traps);
     let files = inputs
         .iter()
         .map(|file| {
@@ -318,6 +334,20 @@ fn main() -> anyhow::Result<()> {
             dunce::canonicalize(&file).unwrap_or(file)
         })
         .collect::<Vec<_>>();
+    let source_files = HashSet::from_iter(files.iter().cloned());
+    let generated_source_root = std::path::absolute(config.cargo_target_dir())?;
+    let generated_source_root =
+        dunce::canonicalize(&generated_source_root).unwrap_or(generated_source_root);
+    let traps = trap::TrapFileProvider::new(&config).context("failed to set up trap files")?;
+    let archiver = archive::Archiver {
+        root: config.source_archive_dir.clone(),
+    };
+    let mut extractor = Extractor::new(
+        &archiver,
+        &traps,
+        source_files.clone(),
+        generated_source_root,
+    );
     let manifests = extractor.find_manifests(&files)?;
     let workspaces = extractor.group_files(&manifests, &files);
     let cwd = cwd()?;
@@ -333,7 +363,6 @@ fn main() -> anyhow::Result<()> {
     } else {
         SourceKind::Source
     };
-    let source_files = HashSet::from_iter(files.iter().cloned());
 
     let mut dependencies = DependencyFiles::default();
 
@@ -353,14 +382,16 @@ fn main() -> anyhow::Result<()> {
             let semantics = Semantics::new(&db);
             for file in files {
                 match extractor.load_source(file, &semantics, &vfs) {
-                    Ok(()) => extractor.extract_with_semantics(file, &semantics, &vfs, source_mode),
+                    Ok(()) => {
+                        extractor.extract_with_semantics(file, &semantics, &vfs, source_mode, true)
+                    }
                     Err(e) => extractor.extract_without_semantics(file, source_mode, e),
                 };
             }
             // Fast path when there is no ambiguity in dependency extraction.
             if dependency_extraction_ambiguity {
                 for (_, file) in dependency_files(&db, &vfs, &source_files) {
-                    extractor.extract_with_semantics(file, &semantics, &vfs, library_mode);
+                    extractor.extract_with_semantics(file, &semantics, &vfs, library_mode, false);
                 }
             } else {
                 dependencies.add_manifest(manifest, &semantics, &vfs, &source_files);
@@ -401,7 +432,13 @@ fn main() -> anyhow::Result<()> {
                             .and_then(|id| semantics.file_to_module_def(id))
                             .is_some()
                     {
-                        extractor.extract_with_semantics(&file, &semantics, &vfs, library_mode);
+                        extractor.extract_with_semantics(
+                            &file,
+                            &semantics,
+                            &vfs,
+                            library_mode,
+                            false,
+                        );
                         dependencies.extracted(&file);
                     }
                 }

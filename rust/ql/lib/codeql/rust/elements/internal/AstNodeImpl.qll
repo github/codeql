@@ -70,7 +70,12 @@ module Impl {
         result = p.getEnclosingCfgScope()
       )
       or
-      this.isConstOrStatic(result.(SourceFile).getFile())
+      exists(SourceFile source |
+        this.isConstOrStatic(_) and
+        source = this.getParentNode*()
+      |
+        result = source
+      )
     }
 
     /** Holds if this node is inside a CFG scope. */
