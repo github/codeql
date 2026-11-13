@@ -1191,6 +1191,38 @@ fn main() {
     impl_with_attribute_macro::test(); // $ item=impl_with_attribute_macro::test
     patterns::test(); // $ item=patterns::test
     included_module::hidden(); // $ item=I23009
+    nested_module::nested(); // $ item=included_nested
+    qualified_include::child::form(); // $ item=included_form
+    braced_include::child::form(); // $ item=included_form
+    bracket_include::child::form(); // $ item=included_form
+    computed_include::child::form(); // $ item=included_form
+    shadowed_include::from_shadow(); // $ item=from_shadow
+    crate::included_export!(); // $ item=included_export
 }
 
 include!("included/tree/mod.rs");
+
+mod qualified_include {
+    std::include!("included/forms/mod.rs"); // $ item=include
+}
+
+mod braced_include {
+    include! { /* comment */ "included/forms/mod.rs", }
+}
+
+mod bracket_include {
+    include!["included/forms/mod.rs"];
+}
+
+mod computed_include {
+    include!(concat!("included/", "forms/mod.rs"));
+}
+
+mod shadowed_include {
+    macro_rules! include {
+        ($path:literal) => {
+            pub fn from_shadow() {}
+        };
+    }
+    include!("included/tree/mod.rs");
+}
