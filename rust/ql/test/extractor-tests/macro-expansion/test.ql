@@ -20,3 +20,12 @@ query predicate unexpanded_macro_calls(MacroCall c) {
 }
 
 query predicate warnings(ExtractionWarning w) { any() }
+
+query predicate includedArgumentLocation(AstNode node, int line) {
+  exists(CallExpr call |
+    call.isInMacroExpansion() and
+    call.getFunction().(PathExpr).getPath().getText() = "dangerous_call" and
+    call = node.getParentNode*() and
+    line = node.getLocation().getStartLine()
+  )
+}

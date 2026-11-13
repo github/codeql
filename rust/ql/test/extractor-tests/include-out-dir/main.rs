@@ -6,5 +6,6 @@ fn root_function() -> i32 {
 
 fn main() {
     generated_function();
+    child::child_function();
     crate::generated_export!();
 }

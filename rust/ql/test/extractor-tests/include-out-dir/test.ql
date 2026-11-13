@@ -4,7 +4,7 @@ import codeql.rust.controlflow.ControlFlowGraph
 
 query predicate generatedFunction(boolean fromSource, int cfgNodes, string canonicalPath) {
   exists(Function f |
-    f.getName().getText() = "generated_function" and
+    f.getName().getText() = ["generated_function", "child_function", "grandchild_function"] and
     (if f.fromSource() then fromSource = true else fromSource = false) and
     cfgNodes = count(CfgNode n | n.getAstNode().getEnclosingCallable() = f) and
     canonicalPath = f.getCanonicalPath()
@@ -14,7 +14,7 @@ query predicate generatedFunction(boolean fromSource, int cfgNodes, string canon
 query predicate rootReference(string source, string target) {
   exists(CallExpr call |
     source = call.getEnclosingCallable().(Function).getName().getText() and
-    source = ["generated_function", "generated_alias"] and
+    source = ["generated_function", "generated_alias", "child_function", "grandchild_function"] and
     target = call.getResolvedTarget().(Function).getName().getText()
   )
 }

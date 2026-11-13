@@ -5,6 +5,8 @@ fn main() {
         r#"
 extern crate self as generated_self;
 
+pub mod child;
+
 pub fn generated_function() -> i32 {
     crate::root_function()
 }
@@ -20,6 +22,23 @@ pub mod inline {
     }
 }
 "#,
+    )
+    .unwrap();
+    std::fs::write(
+        out.join("child.rs"),
+        r#"
+pub mod grandchild;
+
+pub fn child_function() -> i32 {
+    grandchild::grandchild_function()
+}
+"#,
+    )
+    .unwrap();
+    std::fs::create_dir_all(out.join("child")).unwrap();
+    std::fs::write(
+        out.join("child/grandchild.rs"),
+        "pub fn grandchild_function() -> i32 { crate::root_function() }\n",
     )
     .unwrap();
 }

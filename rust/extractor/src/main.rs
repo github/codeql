@@ -14,7 +14,7 @@ use ra_ap_paths::{AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{CargoConfig, ProjectManifest};
 use ra_ap_vfs::Vfs;
 use rust_analyzer::{ParseResult, RustAnalyzer};
-use std::collections::{BTreeMap, HashSet};
+use std::collections::{BTreeMap, HashMap, HashSet};
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 use std::path::{Path, PathBuf};
@@ -41,6 +41,7 @@ struct Extractor<'a> {
     archiver: &'a Archiver,
     traps: &'a trap::TrapFileProvider,
     steps: Vec<ExtractionStep>,
+    extracted_with_semantics: HashMap<PathBuf, SourceKind>,
 }
 
 impl<'a> Extractor<'a> {
@@ -49,10 +50,16 @@ impl<'a> Extractor<'a> {
             archiver,
             traps,
             steps: Vec::new(),
+            extracted_with_semantics: HashMap::new(),
         }
     }
 
-    fn extract(&mut self, rust_analyzer: &RustAnalyzer, file: &Path, source_kind: SourceKind) {
+    fn extract(
+        &mut self,
+        rust_analyzer: &RustAnalyzer,
+        file: &Path,
+        source_kind: SourceKind,
+    ) -> Vec<PathBuf> {
         self.archiver.archive(file);
         let before_parse = Instant::now();
         let ParseResult {
@@ -111,6 +118,7 @@ impl<'a> Extractor<'a> {
         });
         self.steps
             .push(ExtractionStep::extract(before_extract, source_kind, file));
+        translator.module_files
     }
 
     pub fn extract_with_semantics<'db>(
@@ -120,7 +128,19 @@ impl<'a> Extractor<'a> {
         vfs: &'db Vfs,
         source_kind: SourceKind,
     ) {
-        self.extract(&RustAnalyzer::new(vfs, semantics), file, source_kind);
+        let mut pending = vec![file.to_path_buf()];
+        while let Some(file) = pending.pop() {
+            if self
+                .extracted_with_semantics
+                .get(&file)
+                .is_some_and(|kind| *kind == SourceKind::Source || *kind == source_kind)
+            {
+                continue;
+            }
+            self.extracted_with_semantics
+                .insert(file.clone(), source_kind);
+            pending.extend(self.extract(&RustAnalyzer::new(vfs, semantics), &file, source_kind));
+        }
     }
 
     pub fn extract_without_semantics(
@@ -139,6 +159,9 @@ impl<'a> Extractor<'a> {
         load_config: &LoadCargoConfig,
     ) -> Option<(RootDatabase, Vfs)> {
         let before = Instant::now();
+        // Dependency workspaces must not overwrite generated modules extracted as source.
+        self.extracted_with_semantics
+            .retain(|_, kind| *kind == SourceKind::Source);
         let ret = RustAnalyzer::load_workspace(project, config, load_config);
         self.steps
             .push(ExtractionStep::load_manifest(before, project));

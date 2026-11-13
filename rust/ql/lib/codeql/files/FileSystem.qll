@@ -89,7 +89,10 @@ class ExtractedFile extends File {
   ExtractedFile() { this.fromSource() }
 
   private Diagnostic getNoSemanticsDiagnostic() {
-    result.getTag() = "semantics" and result.getLocation().getFile() = this
+    result.getTag() = "semantics" and
+    result.getLocation().getFile() = this and
+    // A standalone parse may lack semantics even though an include expansion has them.
+    not exists(ExtractorStep s | s.getAction() = "LoadSource" and s.getFile() = this)
   }
 
   /**
