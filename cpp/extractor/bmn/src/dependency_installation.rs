@@ -99,7 +99,11 @@ impl PackageInstaller {
     }
 
     /// Ensure the given package is installed
-    #[allow(clippy::unused_self)]
+    #[allow(
+        clippy::unused_self,
+        clippy::needless_pass_by_ref_mut,
+        reason = "Package installation mutates system state, so require exclusive access."
+    )]
     fn install_package(&mut self, package_name: &str) -> anyhow::Result<()> {
         install_package(package_name)
     }

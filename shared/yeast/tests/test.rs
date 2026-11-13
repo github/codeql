@@ -1209,8 +1209,8 @@ fn test_rule_guard_reads_raw_capture_and_user_context() {
             with_passthrough_rules(guarded_integer_rules()),
         )];
         let runner = Runner::with_schema(lang, &schema, &phases);
-        let mut user_ctx = GuardTestContext { enabled };
-        let ast = runner.run_with_ctx(input, &mut user_ctx).unwrap();
+        let user_ctx = GuardTestContext { enabled };
+        let ast = runner.run_with_ctx(input, &user_ctx).unwrap();
         dump_ast(&ast, ast.get_root(), input)
     }
 
@@ -1473,10 +1473,10 @@ fn test_transform_context_propagates_to_nested_guard_without_mutating_caller() {
     ];
     let phases = vec![Phase::new("translate", rules)];
     let runner = Runner::with_schema(lang, &schema, &phases);
-    let mut user_ctx = GuardTestContext { enabled: false };
+    let user_ctx = GuardTestContext { enabled: false };
 
     let input = "1";
-    let ast = runner.run_with_ctx(input, &mut user_ctx).unwrap();
+    let ast = runner.run_with_ctx(input, &user_ctx).unwrap();
     assert!(!user_ctx.enabled);
     let dump = dump_ast(&ast, ast.get_root(), input);
     assert_dump_eq(

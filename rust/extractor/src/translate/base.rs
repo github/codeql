@@ -189,7 +189,7 @@ impl<'db> Translator<'db> {
         Some((start, end))
     }
 
-    pub fn text_range_for_node(&mut self, node: &impl ast::AstNode) -> Option<TextRange> {
+    pub fn text_range_for_node(&self, node: &impl ast::AstNode) -> Option<TextRange> {
         if let Some(span_map) = self.builtin_derive_span_map.as_ref() {
             // Nodes synthesized by a reconstructed built-in derive expansion are not in the
             // semantics cache; resolve their original source range through the expansion span map.
@@ -208,7 +208,7 @@ impl<'db> Translator<'db> {
         }
     }
 
-    fn location_for_node(&mut self, node: &impl ast::AstNode) -> Option<(LineCol, LineCol)> {
+    fn location_for_node(&self, node: &impl ast::AstNode) -> Option<(LineCol, LineCol)> {
         self.text_range_for_node(node)
             .and_then(|r| self.location(r))
     }

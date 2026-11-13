@@ -1153,7 +1153,7 @@ impl<C: Clone> TranslatorHandle<'_, C> {
         &self,
         ast: &Ast,
         output: &mut OutputAst,
-        user_ctx: &mut C,
+        user_ctx: &C,
         id: Id,
     ) -> Vec<OutputId> {
         apply_rules_inner(
@@ -1171,7 +1171,7 @@ impl<C: Clone> TranslatorHandle<'_, C> {
         captures: &Captures,
         ast: &Ast,
         output: &mut OutputAst,
-        user_ctx: &mut C,
+        user_ctx: &C,
         skip: &[&str],
     ) -> TranslatedCaptures {
         captures.translate_except(skip, |id| {
@@ -1323,7 +1323,7 @@ fn apply_rules<C: Clone>(
     rules: &[Rule<C>],
     ast: &Ast,
     output: &mut OutputAst,
-    user_ctx: &mut C,
+    user_ctx: &C,
     id: Id,
 ) -> Vec<OutputId> {
     let index = RuleIndex::new(rules);
@@ -1334,7 +1334,7 @@ fn apply_rules_inner<C: Clone>(
     index: &RuleIndex<C>,
     ast: &Ast,
     output: &mut OutputAst,
-    user_ctx: &mut C,
+    user_ctx: &C,
     id: Id,
     rewrite_depth: usize,
 ) -> Vec<OutputId> {
@@ -1585,7 +1585,7 @@ impl<C: Clone> Runner<'_, C> {
         &self,
         tree: &tree_sitter::Tree,
         source: &[u8],
-        user_ctx: &mut C,
+        user_ctx: &C,
     ) -> Result<OutputAst, String> {
         let language = self
             .language
@@ -1606,7 +1606,7 @@ impl<C: Clone> Runner<'_, C> {
 
     /// Parse `input` and run the configured translation, threading `user_ctx` through
     /// every rule transform. The caller owns the initial context state.
-    pub fn run_with_ctx(&self, input: &str, user_ctx: &mut C) -> Result<OutputAst, String> {
+    pub fn run_with_ctx(&self, input: &str, user_ctx: &C) -> Result<OutputAst, String> {
         let language = self
             .language
             .as_ref()
@@ -1631,7 +1631,7 @@ impl<C: Clone> Runner<'_, C> {
         self.run_once(raw, user_ctx)
     }
 
-    fn run_once(&self, ast: Ast, user_ctx: &mut C) -> Result<OutputAst, String> {
+    fn run_once(&self, ast: Ast, user_ctx: &C) -> Result<OutputAst, String> {
         match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
             self.run_once_inner(ast, user_ctx)
         })) {
@@ -1652,7 +1652,7 @@ impl<C: Clone> Runner<'_, C> {
         }
     }
 
-    fn run_once_inner(&self, ast: Ast, user_ctx: &mut C) -> OutputAst {
+    fn run_once_inner(&self, ast: Ast, user_ctx: &C) -> OutputAst {
         if self.phases.len() != 1 {
             translation_failure("YEAST requires exactly one translation phase");
         }
@@ -1679,21 +1679,21 @@ impl<C: Clone + Default> Runner<'_, C> {
         tree: &tree_sitter::Tree,
         source: &[u8],
     ) -> Result<OutputAst, String> {
-        let mut user_ctx = C::default();
-        self.run_from_tree_with_ctx(tree, source, &mut user_ctx)
+        let user_ctx = C::default();
+        self.run_from_tree_with_ctx(tree, source, &user_ctx)
     }
 
     /// Parse `input` and run the configured translation, using the default
     /// context (`C::default()`) as the initial context state.
     pub fn run(&self, input: &str) -> Result<OutputAst, String> {
-        let mut user_ctx = C::default();
-        self.run_with_ctx(input, &mut user_ctx)
+        let user_ctx = C::default();
+        self.run_with_ctx(input, &user_ctx)
     }
 
     /// Run the configured translation over an already-built input AST.
     pub fn run_from_ast(&self, ast: Ast) -> Result<OutputAst, String> {
-        let mut user_ctx = C::default();
-        self.run_once(ast, &mut user_ctx)
+        let user_ctx = C::default();
+        self.run_once(ast, &user_ctx)
     }
 }
 
