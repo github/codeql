@@ -1,7 +1,8 @@
 /**
- * @name Buffer not sufficient for string
- * @description A buffer allocated using 'malloc' may not have enough space for a string that is being copied into it. The operation can cause a buffer overrun. Make sure that the buffer contains enough room for the string (including the zero terminator).
+ * @name Buffer overflow from insufficient space or incorrect size calculation
+ * @description A buffer allocated using 'malloc' may not have enough space for a string being copied into it, or wide character functions may receive incorrect size parameters causing buffer overrun. Make sure that buffers contain enough room for strings (including zero terminator) and that size parameters are correctly calculated.
  * @kind problem
+ * @precision medium
  * @id cpp/overflow-calculated
  * @problem.severity warning
  * @security-severity 9.8
@@ -40,6 +41,38 @@ predicate spaceProblem(FunctionCall append, string msg) {
   )
 }
 
+predicate wideCharSizeofProblem(FunctionCall call, string msg) {
+  exists(Variable buffer, SizeofExprOperator sizeofOp |
+    // Function call is to wcsftime
+    call.getTarget().hasGlobalOrStdName("wcsftime") and
+    // Second argument (count parameter) is a sizeof operation
+    call.getArgument(1) = sizeofOp and
+    // The sizeof is applied to a buffer variable
+    sizeofOp.getExprOperand() = buffer.getAnAccess() and
+    (
+      // Case 1: Array of wchar_t - sizeof gives bytes instead of element count
+      exists(ArrayType arrayType |
+        arrayType = buffer.getType() and
+        arrayType.getBaseType().hasName("wchar_t") and
+        msg =
+          "Using sizeof(" + buffer.getName() +
+            ") passes byte count instead of wchar_t element count to wcsftime. " + "Use sizeof(" +
+            buffer.getName() + ")/sizeof(wchar_t) or array length instead."
+      )
+      or
+      // Case 2: Pointer to wchar_t - sizeof gives pointer size, which is completely wrong
+      exists(PointerType ptrType |
+        ptrType = buffer.getType() and
+        ptrType.getBaseType().hasName("wchar_t") and
+        msg =
+          "Using sizeof(" + buffer.getName() +
+            ") passes pointer size instead of buffer size to wcsftime. " +
+            "Pass the actual element count or use a length variable instead."
+      )
+    )
+  )
+}
+
 from Expr problem, string msg
-where spaceProblem(problem, msg)
+where spaceProblem(problem, msg) or wideCharSizeofProblem(problem, msg)
 select problem, msg
