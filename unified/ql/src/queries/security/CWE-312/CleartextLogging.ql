@@ -25,7 +25,10 @@ private string getNameFromExpr(Expr e) {
   result = e.(MemberAccessExpr).getMemberName()
 }
 
-module DummyConfig implements DataFlow::ConfigSig {
+/**
+ * A taint-tracking configuration for cleartext logging vulnerabilities.
+ */
+module CleartextLoggingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     exists(string name |
       name = getNameFromExpr(node.asExpr()) and
@@ -43,10 +46,10 @@ module DummyConfig implements DataFlow::ConfigSig {
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
-module DummyFlow = TaintTracking::Global<DummyConfig>;
+module CleartextLoggingFlow = TaintTracking::Global<CleartextLoggingConfig>;
 
-import DummyFlow::PathGraph
+import CleartextLoggingFlow::PathGraph
 
-from DummyFlow::PathNode source, DummyFlow::PathNode sink
-where DummyFlow::flowPath(source, sink)
+from CleartextLoggingFlow::PathNode source, CleartextLoggingFlow::PathNode sink
+where CleartextLoggingFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Logging of $@", source.getNode(), "sensitive data"
