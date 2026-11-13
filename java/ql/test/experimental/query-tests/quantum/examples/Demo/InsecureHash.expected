@@ -1,0 +1,1 @@
+| CryptoClassificationTest.java:284:56:284:62 | HashAlgorithm | Insecure hash algorithm: SHA1. |

@@ -1,0 +1,10 @@
+| CryptoClassificationTest.java:50:58:50:66 | EllipticCurve | Elliptic curve: Ed25519 (CURVE25519 family, 255-bit). |
+| CryptoClassificationTest.java:56:56:56:62 | EllipticCurve | Elliptic curve: Ed448 (CURVE448 family, 448-bit). |
+| CryptoClassificationTest.java:181:50:181:60 | EllipticCurve | Elliptic curve: secp256r1 (SEC family, 256-bit). |
+| CryptoClassificationTest.java:185:50:185:60 | EllipticCurve | Elliptic curve: secp384r1 (SEC family, 384-bit). |
+| CryptoClassificationTest.java:189:50:189:60 | EllipticCurve | Elliptic curve: secp521r1 (SEC family, 521-bit). |
+| CryptoClassificationTest.java:193:50:193:60 | EllipticCurve | Elliptic curve: secp256k1 (SEC family, 256-bit). |
+| CryptoClassificationTest.java:197:67:197:74 | EllipticCurve | Elliptic curve: X25519 (CURVE25519 family, 255-bit). |
+| CryptoClassificationTest.java:200:65:200:70 | EllipticCurve | Elliptic curve: X448 (CURVE448 family, 448-bit). |
+| CryptoClassificationTest.java:204:68:204:76 | EllipticCurve | Elliptic curve: Ed25519 (CURVE25519 family, 255-bit). |
+| CryptoClassificationTest.java:207:66:207:72 | EllipticCurve | Elliptic curve: Ed448 (CURVE448 family, 448-bit). |
