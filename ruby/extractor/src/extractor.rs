@@ -372,8 +372,6 @@ fn get_overlay_changed_files() -> Option<HashSet<PathBuf>> {
 }
 
 fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<'_, str>> {
-    const CODING: [char; 12] = ['C', 'c', 'O', 'o', 'D', 'd', 'I', 'i', 'N', 'n', 'G', 'g'];
-
     let mut index = 0;
     // skip UTF-8 BOM marker if there is one
     if content.len() >= 3 && content[0] == 0xef && content[1] == 0xbb && content[2] == 0xbf {
@@ -396,6 +394,9 @@ fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<'_, str>> {
         return None;
     }
     index += 1;
+
+    #[allow(clippy::items_after_statements)]
+    const CODING: [char; 12] = ['C', 'c', 'O', 'o', 'D', 'd', 'I', 'i', 'N', 'n', 'G', 'g'];
 
     let mut word_index = 0;
     while index < content.len() && word_index < CODING.len() && content[index] as char != '\n' {

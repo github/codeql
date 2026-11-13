@@ -552,7 +552,7 @@ struct Visitor<'a> {
     /// All children append their data to the list. When the visitor leaves a
     /// node the list containing the child data is popped from the stack and
     /// matched against the dbscheme for the node. If the expectations are met
-    /// the corresponding row definitions are added to the `trap_output`.
+    /// the corresponding row definitions are added to the trap output.
     stack: Vec<(trap::Label, usize, Vec<ChildNode>)>,
 }
 

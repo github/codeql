@@ -456,7 +456,7 @@ pub fn to_snake_case(word: &str) -> String {
     }
     result
 }
-/// Given a valid dbscheme name (i.e. in `snake case`), produces the equivalent QL
+/// Given a valid dbscheme name (i.e. in `snake_case`), produces the equivalent QL
 /// name (i.e. in `CamelCase`). For example, `foo_bar_baz` becomes `FooBarBaz`.
 fn dbscheme_name_to_class_name(dbscheme_name: &str) -> String {
     fn to_title_case(word: &str) -> String {
