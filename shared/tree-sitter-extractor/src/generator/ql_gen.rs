@@ -642,9 +642,8 @@ fn create_field_getters<'a>(
     // be bound to?
     let get_value_result_var_name = match &field.type_info {
         node_types::FieldTypeInfo::ReservedWordInt(_) => "value",
-        node_types::FieldTypeInfo::Single(_) | node_types::FieldTypeInfo::Multiple { .. } => {
-            "result"
-        }
+        node_types::FieldTypeInfo::Single(_) => "result",
+        node_types::FieldTypeInfo::Multiple { .. } => "result",
     };
 
     // Two expressions for getting the value. One that's suitable use in the

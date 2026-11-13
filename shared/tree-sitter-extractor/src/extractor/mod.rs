@@ -140,10 +140,10 @@ pub fn default_subscriber_with_level(
                             .as_ref()
                             .map_or("warn", |v| match v.to_lowercase().as_str() {
                                 "off" | "errors" => "error",
+                                "warnings" => "warn",
                                 "info" | "progress" => "info",
                                 "debug" | "progress+" => "debug",
                                 "trace" | "progress++" | "progress+++" => "trace",
-                                // "warnings" or any other string
                                 _ => "warn",
                             });
                     tracing_subscriber::EnvFilter::new(format!(

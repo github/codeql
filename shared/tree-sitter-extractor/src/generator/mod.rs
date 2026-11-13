@@ -295,8 +295,8 @@ fn make_field_type<'a>(
             let case = dbscheme::Entry::Case(dbscheme::Case {
                 name: parent_name,
                 column: match &field.storage {
-                    node_types::Storage::Column { name }
-                    | node_types::Storage::Table { name, .. } => name,
+                    node_types::Storage::Column { name } => name,
+                    node_types::Storage::Table { name, .. } => name,
                 },
                 branches,
             });

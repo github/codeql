@@ -27,7 +27,8 @@ impl QueryNode {
     /// Returns None for wildcards (Any) and captures wrapping wildcards.
     pub fn root_kind(&self) -> Option<&'static str> {
         match self {
-            QueryNode::Node { kind, .. } | QueryNode::UnnamedNode { kind } => Some(kind),
+            QueryNode::Node { kind, .. } => Some(kind),
+            QueryNode::UnnamedNode { kind } => Some(kind),
             QueryNode::Capture { node, .. } => node.root_kind(),
             QueryNode::Any { .. } => None,
         }
