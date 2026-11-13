@@ -13,3 +13,5 @@ bazel run //rust/ast-generator:inject-sources
 which will create the missing sources. Be aware that bazel will still use the source taken
 directly from `rust-analyzer`, not the one in your working copy. Those should not need to be
 update often though.
+
+To retain changes to injected sources in Bazel builds, update `rust/ast-generator/patches/rust-analyzer.patch`.

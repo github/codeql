@@ -1,9 +1,5 @@
 # Agent instructions
 
-This is a CodeQL extractor that maps a language's parse tree onto a shared AST
-using the `yeast` desugaring engine. Swift, the only language so far, is parsed
-by Apple's swift-syntax rather than by tree-sitter.
-
 ## Building
 - To build the extractor, run `scripts/create-extractor-pack.sh`
 
@@ -42,6 +38,6 @@ by Apple's swift-syntax rather than by tree-sitter.
 
 - To run all CodeQL tests, run `codeql test run --search-path extractor-pack ql/test`
 
-- Do not edit `.expected` files manually. To update the expected output, pass `--learn` to the `codeql test run` command.
+- To update the expected output, pass `--learn` to the `codeql test run` command.
 
 - To run a specific test, pass the specific directory to the `codeql test run` command instead of `ql/test`.
