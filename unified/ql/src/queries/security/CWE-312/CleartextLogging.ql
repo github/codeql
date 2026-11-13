@@ -17,7 +17,7 @@
 // FIXME: This is a deliberately dumb and noisy version of the query used to exercise data flow early on.
 //
 import unified
-import codeql.concepts.internal.SensitiveDataHeuristics
+import codeql.unified.security.SensitiveData
 
 private string getNameFromExpr(Expr e) {
   result = e.(IdentifierExpr).getValue()
@@ -30,10 +30,7 @@ private string getNameFromExpr(Expr e) {
  */
 module CleartextLoggingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
-    exists(string name |
-      name = getNameFromExpr(node.asExpr()) and
-      HeuristicNames::nameIndicatesSensitiveData(name)
-    )
+    node instanceof SensitiveData
   }
 
   predicate isSink(DataFlow::Node node) {
