@@ -23,8 +23,19 @@ fn closure_flow_in() {
     f(true, a);
 }
 
+fn closure_flow_in2() {
+    let (mut x, y) = (source(1), 0);
+    (x) = x;
+    (|| sink(x))(); // $ hasValueFlow=1
+}
+
+fn closure_flow_in3() {
+    let (ref x,) = (source(1),);
+    (|| sink(*x))(); // $ hasValueFlow=1
+}
+
 fn closure_flow_through() {
-    let f = |cond, data| if cond { data } else { 0 };
+    let f = |cond, ((data))| if cond { data } else { 0 };
     let a = source(43);
     let b = f(true, a);
     sink(b); // $ hasValueFlow=43
@@ -168,9 +179,15 @@ mod async_blocks {
     }
 }
 
+fn closure_flow_out_try() {
+    let f = || (Some(Some(source(93))))?;
+    sink(f().unwrap()); // $ hasValueFlow=93
+}
+
 fn main() {
     closure_flow_out();
     closure_flow_in();
+    closure_flow_in2();
     closure_flow_through();
     closure_captured_variable();
     function_flow_in();

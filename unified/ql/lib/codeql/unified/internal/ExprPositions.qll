@@ -3,9 +3,10 @@ private import NameBinding as NameBinding
 private import ExprPositionsPlugin
 
 /**
- * Holds if `expr` appears in a context where it must refer to a type.
+ * Holds if `expr` appears in a context where it must refer to a type,
+ * based entirely on the syntactic context of the expression.
  */
-predicate isInTypeContext(Expr expr) {
+predicate isInSyntacticTypeContext(Expr expr) {
   expr = any(TypeCastExpr n).getType()
   or
   expr = any(TypeTestExpr n).getType()
@@ -16,7 +17,7 @@ predicate isInTypeContext(Expr expr) {
   or
   expr = any(FunctionExpr n).getReturnType()
   or
-  expr = any(AccessorDeclaration n).getType()
+  expr = any(AccessorDeclaration n).getReturnType()
   or
   expr = any(Parameter n).getType()
   or
@@ -36,11 +37,24 @@ predicate isInTypeContext(Expr expr) {
   or
   expr.getParent() instanceof TypeConstraint
   or
+  any(ExprPositionsPlugin p).isInSyntacticTypeContext(expr)
+  or
+  isInSyntacticTypeContext(expr.getEnclosingExpr())
+}
+
+private predicate isInTypeContext0(Expr expr) {
   exists(NameBinding::getTypeFromRef(expr))
   or
-  any(ExprPositionsPlugin p).isInTypeContext(expr)
+  isInTypeContext0(expr.getEnclosingExpr())
+}
+
+/**
+ * Holds if `expr` appears in a context where it must refer to a type.
+ */
+predicate isInTypeContext(Expr expr) {
+  isInSyntacticTypeContext(expr)
   or
-  isInTypeContext(expr.getEnclosingExpr())
+  isInTypeContext0(expr)
 }
 
 /** Holds if `e` appears in a name-binding position inside `declaration` */
@@ -78,4 +92,14 @@ predicate hasResultValue(Expr e) {
   not isInBindingContext(e, _) and
   not isInAssignmentContext(e, any(AssignExpr n)) and // non-compound assignment target
   not e instanceof IdentifierLabel
+}
+
+/** Holds if `e` is returned from `callable` either because it is an operand of `return` or is implicitly returned due to language-specific semantics. */
+predicate isReturnedExpr(Callable callable, Expr e) {
+  exists(ReturnExpr ret |
+    callable = ret.getEnclosingCallable() and
+    e = ret.getValue()
+  )
+  or
+  any(ExprPositionsPlugin p).isReturnedExpr(callable, e)
 }

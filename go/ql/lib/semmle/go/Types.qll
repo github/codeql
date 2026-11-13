@@ -517,17 +517,23 @@ class StructType extends @structtype, CompositeType {
           .getOwnField(name, isEmbedded)
   }
 
+  // Materialize the embedded fields and their types before joining them with methods.
+  pragma[nomagic]
+  private Type getEmbeddedFieldType(Field embeddedParent, int depth) {
+    this.hasFieldCand(_, embeddedParent, depth, true) and
+    result = embeddedParent.getType()
+  }
+
   /**
    * Gets a method of `embeddedParent`, which is then embedded into this struct type.
    */
   Method getMethodOfEmbedded(Field embeddedParent, string name, int depth) {
-    // embeddedParent is a field of 'this' at depth 'depth - 1'
-    this.hasFieldCand(_, embeddedParent, depth - 1, true) and
     result.getName() = name and
-    (
-      result.getReceiverBaseType() = lookThroughPointerType(embeddedParent.getType())
+    // embeddedParent is a field of 'this' at depth 'depth - 1'
+    exists(Type embeddedType | embeddedType = this.getEmbeddedFieldType(embeddedParent, depth - 1) |
+      result.getReceiverBaseType() = lookThroughPointerType(embeddedType)
       or
-      methodhosts(result, embeddedParent.getType())
+      methodhosts(result, embeddedType)
     )
   }
 

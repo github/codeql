@@ -22,7 +22,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
     // its `cfg` flags and dependencies hashes. Iterate in topological order to ensure hashes of dependencies
     // are present in the map.
     let mut crate_id_map = HashMap::<Crate, (PathBuf, u64)>::new();
-    for krate_id in crate_graph.as_ref().iter() {
+    for krate_id in crate_graph.as_ref() {
         let krate = krate_id.data(db);
         let root_module_file: &VfsPath = vfs.file_path(krate.root_file_id);
         if let Some(root_module_file) = root_module_file
@@ -47,7 +47,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
         }
     }
     // Extract each crate
-    for krate_id in crate_graph.as_ref().iter() {
+    for krate_id in crate_graph.as_ref() {
         if let Some((root_module_file, hash)) = crate_id_map.get(krate_id) {
             let path = root_module_file.join(format!("{hash:0>16x}"));
             let mut trap = trap_provider.create("crates", path.as_path());

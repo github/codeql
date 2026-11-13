@@ -4,7 +4,7 @@ set -eu
 
 jvm_args=-Xss16m
 
-# If CODEQL_RAM is set, use half for Java and half for TS.
+# If CODEQL_RAM is set, use half for Java and half for Node.js.
 if [ -n "${CODEQL_RAM:-}" ] ; then
     half_ram="$(( CODEQL_RAM / 2 ))"
     LGTM_TYPESCRIPT_RAM="$half_ram"

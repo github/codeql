@@ -15,8 +15,8 @@ sourceFile
               leftBrace: {
               rightBrace: }
               statements:
-          name: identifier "doWork"
           modifiers:
+          name: identifier "doWork"
           signature:
             functionSignature
               parameterClause:

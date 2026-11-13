@@ -37,8 +37,8 @@ sourceFile
                             declReferenceExpr
                               baseName: identifier "d"
                       returnKeyword: return
-          name: identifier "choose"
           modifiers:
+          name: identifier "choose"
           signature:
             functionSignature
               parameterClause:

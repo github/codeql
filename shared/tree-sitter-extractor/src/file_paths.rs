@@ -50,9 +50,8 @@ pub fn normalize_and_transform_path(path: &Path, transformer: Option<&PathTransf
  * syntax supported by this extractor, the function returns an error.
  */
 pub fn load_path_transformer() -> std::io::Result<Option<PathTransformer>> {
-    let path = match std::env::var("CODEQL_PATH_TRANSFORMER") {
-        Ok(p) => p,
-        Err(_) => return Ok(None),
+    let Ok(path) = std::env::var("CODEQL_PATH_TRANSFORMER") else {
+        return Ok(None);
     };
     let file_content = fs::read_to_string(path)?;
     let lines = file_content

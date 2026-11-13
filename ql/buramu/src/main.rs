@@ -98,7 +98,7 @@ fn main() {
         .map(|(file, linenos)| (file, get_blame_dates_for_filedeprecation(file, linenos)));
     deprecations.for_each(|(file, linenos_and_dates)| {
         println!("file: {}", file);
-        for (date, linenos) in linenos_and_dates.iter() {
+        for (date, linenos) in &linenos_and_dates {
             println!("  last_modified: {} {}", date, linenos.join(" "));
         }
     });

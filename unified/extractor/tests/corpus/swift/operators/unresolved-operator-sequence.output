@@ -30,8 +30,8 @@ sourceFile
                           operator: binaryOperator ".&"
                         declReferenceExpr
                           baseName: identifier "b"
-          name: identifier "combine"
           modifiers:
+          name: identifier "combine"
           signature:
             functionSignature
               parameterClause:

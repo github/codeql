@@ -44,8 +44,8 @@ sourceFile
                                 declReferenceExpr
                                   baseName: identifier "values"
                       returnKeyword: return
-          name: identifier "sum"
           modifiers:
+          name: identifier "sum"
           signature:
             functionSignature
               parameterClause:

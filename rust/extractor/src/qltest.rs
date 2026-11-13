@@ -4,7 +4,7 @@ use glob::glob;
 use itertools::Itertools;
 use std::ffi::OsStr;
 use std::fs;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use tracing::info;
 
 const DEFAULT_EDITION: &str = "2021";
@@ -80,13 +80,12 @@ fn dump_nightly_toolchain() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn set_sources(config: &mut Config) -> anyhow::Result<()> {
+fn get_sources() -> anyhow::Result<Vec<PathBuf>> {
     let path_iterator = glob("**/*.rs").context("globbing test sources")?;
-    config.inputs = path_iterator
+    path_iterator
         .filter(|f| f.is_err() || !f.as_ref().unwrap().starts_with("target"))
         .collect::<Result<Vec<_>, _>>()
-        .context("fetching test sources")?;
-    Ok(())
+        .context("fetching test sources")
 }
 
 fn cargo_check(config: &Config) -> anyhow::Result<()> {
@@ -105,9 +104,9 @@ fn cargo_check(config: &Config) -> anyhow::Result<()> {
     }
 }
 
-pub(crate) fn prepare(config: &mut Config) -> anyhow::Result<()> {
+pub(crate) fn prepare(config: &Config) -> anyhow::Result<Vec<PathBuf>> {
     dump_lib()?;
-    set_sources(config)?;
+    let inputs = get_sources()?;
     let edition = config.qltest_edition.as_deref().unwrap_or(DEFAULT_EDITION);
     dump_cargo_manifest(&config.qltest_dependencies, edition)?;
     if config.qltest_use_nightly {
@@ -116,5 +115,5 @@ pub(crate) fn prepare(config: &mut Config) -> anyhow::Result<()> {
     if config.qltest_cargo_check {
         cargo_check(config)?;
     }
-    Ok(())
+    Ok(inputs)
 }

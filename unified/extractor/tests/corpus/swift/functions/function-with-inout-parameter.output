@@ -28,8 +28,8 @@ sourceFile
                       rightOperand:
                         integerLiteralExpr
                           literal: integerLiteral "1"
-          name: identifier "increment"
           modifiers:
+          name: identifier "increment"
           signature:
             functionSignature
               parameterClause:

@@ -4,6 +4,7 @@
  */
 
 private import internal.StructExprImpl
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.PathAstNode
 import codeql.rust.elements.StructExprFieldList

@@ -475,29 +475,29 @@ func test(a : A) {
 }
 
 func testIfConfig() {
-#if FOO
+#if FOO // $ bbStep='FOO : false -> Block(+3)' bbStep='FOO : true -> Block(+1)'
   1
-  2
+  2 // $ bbStep='2 : successor -> 5(+6)'
 #else
   3
-  4
+  4 // $ bbStep='4 : successor -> 5(+3)'
 #endif
 
   5
 
-#if BAR
+#if BAR // $ bbStep='BAR : false -> 8(+5)' bbStep='BAR : true -> Block(+1)'
   6
-  7
+  7 // $ bbStep='7 : successor -> 8(+3)'
 #endif
 
   8
 
-#if FOO
+#if FOO // $ bbStep='FOO : false -> IfExpr(+3)' bbStep='FOO : true -> Block(+1)'
   9
-  10
+  10 // $ bbStep='10 : successor -> 13(+6)'
 #elseif true
   11
-  12
+  12 // $ bbStep='12 : successor -> 13(+3)'
 #endif
 
   13
@@ -610,4 +610,26 @@ func valueGenericsFn<let N: Int>(_ value: ValueGenericsStruct<N>) {
     var x = N;
     print(x);
     _ = value;
+}
+
+func exhaustiveBoolSwitch(_ value: Bool) -> Int {
+  switch value {
+    case true: // $ bbStep='true : match -> Block(+1)' bbStep='true : no-match -> SwitchCase(+2)'
+      return 1
+    case false:
+      return 0
+  }
+  return -1 // $ noCfg
+}
+
+func exhaustiveEnumSwitch(_ value: MyError, _ flag: Bool) -> Int {
+  switch value {
+    case .error1 where flag: // $ bbStep='ConditionalPattern : match -> Block(+1)' bbStep='ConditionalPattern : no-match -> SwitchCase(+2)' nonSimple='SwitchCase -V flag -? . -^ ... .error1 -^ ConditionalPattern'
+      return 1
+    case .error1: // $ bbStep='... .error1 : match -> Block(+1)' bbStep='... .error1 : no-match -> SwitchCase(+2)'
+      return 2
+    case .error2, .error3:
+      return 3
+  }
+  return -1 // $ noCfg
 }

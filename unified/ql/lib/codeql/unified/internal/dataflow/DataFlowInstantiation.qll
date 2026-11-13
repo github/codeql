@@ -23,8 +23,7 @@ module DataFlowInput implements InputSig<Location> {
   // Parameter, argument, return, and out nodes and their positions/kinds
   //
   private predicate isReturnNode(Node n, ReturnKind kind) {
-    // TODO: Handle short-hand returns such as `func foo() -> Int { 5 }`
-    n.asExpr() = any(ReturnExpr r).getValue() and kind.isStandardReturnValue()
+    n.isReturnNode(_) and kind.isStandardReturnValue()
     or
     FlowSummaryOutput::summaryReturnNode(getSummaryNode(n), kind)
   }
@@ -41,6 +40,12 @@ module DataFlowInput implements InputSig<Location> {
     exists(FlowSummaryOutput::SummaryNode callee |
       FlowSummaryOutput::summaryOutNode(callee, getSummaryNode(n), kind) and
       call.isSummaryCall(_, callee)
+    )
+    or
+    exists(Expr access |
+      call.asGetterCall() = access and
+      n.isResultValue(access) and
+      kind.isStandardReturnValue()
     )
   }
 
@@ -101,6 +106,9 @@ module DataFlowInput implements InputSig<Location> {
     )
     or
     n.(BuilderNode).isImplicitArgument(call, pos, false)
+    or
+    n.(BuilderNode).isSetterValueArgument(call) and
+    pos.asPositional() = 0
     or
     exists(FlowSummaryOutput::SummaryNode callee |
       FlowSummaryOutput::summaryArgumentNode(callee, getSummaryNode(n), pos) and
@@ -227,6 +235,7 @@ module DataFlowInput implements InputSig<Location> {
   //
   additional predicate nodeIsVisible(Node node) {
     exists(Expr e |
+      e.fromSource() and
       node = TValueNode(e) and
       not e instanceof ExprPattern
     )
@@ -240,7 +249,8 @@ module DataFlowInput implements InputSig<Location> {
 
   predicate neverSkipInPathGraph(Node n) {
     n.isIncomingValue(_) or // Never skip assignment target
-    n.asExpr() instanceof LocalVariableAccess // Never skip a variable reference
+    n.asExpr() instanceof LocalVariableAccess or // Never skip a variable reference
+    n.asExpr() = any(ReturnExpr e).getValue()
   }
 
   class DataFlowExpr = Expr;
@@ -260,6 +270,8 @@ module DataFlowInput implements InputSig<Location> {
   predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() } // TODO
 
   predicate allowParameterReturnInSelf(ParameterNode p) {
+    p.isReceiverParameter(_)
+    or
     captureSsaAllowParameterReturnInSelf(p)
     or
     exists(DataFlowCallable c, ParameterPosition pos |

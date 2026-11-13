@@ -1,0 +1,15 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["encoding/hex", "", false, "Decode", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["encoding/hex", "", false, "DecodeString", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/hex", "", false, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

@@ -135,7 +135,7 @@ private module Input implements InputSig1, InputSig2 {
 
   predicate catchAll(Ast::CatchClause catch) { catch instanceof GeneralCatchClause }
 
-  predicate matchAll(Ast::Case c) { c instanceof DefaultCase or c.(SwitchCaseExpr).matchesAll() }
+  predicate matchAll(Ast::Case c) { c.(SwitchCaseExpr).matchesAll() }
 
   private newtype TLabel =
     TLblGoto(string label) { any(GotoLabelStmt goto).getLabel() = label } or

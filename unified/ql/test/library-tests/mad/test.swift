@@ -118,3 +118,23 @@ class Connection {
 func testConnectionLocation(string: String) {
     Connection.Location.uri(string, parameters: "")  // $ isSink=path-injection
 }
+
+class ShorthandTest {
+    func sourceParams(_ x: String) {}
+
+    func sinkArgs(_ x: String) {}
+}
+
+class ShorthandTestSub: ShorthandTest {
+    override func sourceParams(
+        _ x: String  // $ isSource=shorthand-source
+    ) {
+        _ = self
+    }  // $ isSource=shorthand-source
+}
+
+func testShorthandTokens(obj: ShorthandTest, string: String) {
+    obj.sinkArgs(
+        string  // $ isSink=shorthand-sink
+    )  // $ isSink=shorthand-sink
+}

@@ -62,7 +62,7 @@ pub struct Config {
     pub logging_flamegraph: Option<PathBuf>,
     pub logging_verbosity: Option<String>,
     pub trap_compression: Compression,
-    pub inputs: Vec<PathBuf>,
+    pub file_list: Option<PathBuf>,
     pub qltest: bool,
     pub qltest_cargo_check: bool,
     pub qltest_dependencies: Vec<String>,
@@ -95,9 +95,7 @@ impl Config {
     }
 
     pub fn extract() -> anyhow::Result<Config> {
-        let args = argfile::expand_args(argfile::parse_fromfile, argfile::PREFIX)
-            .context("expanding parameter files")?;
-        let cli_args = CliConfig::parse_from(args);
+        let cli_args = CliConfig::parse();
         let mut figment = Figment::new()
             .merge(Env::raw().filter_map(|f| {
                 if f.eq("CODEQL_VERBOSITY") {

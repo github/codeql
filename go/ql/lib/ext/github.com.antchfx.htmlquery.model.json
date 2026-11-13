@@ -1,0 +1,16 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/antchfx/htmlquery", "", false, "Find", "", "", "Argument[1]", "xpath-injection", "manual"],
+        ["github.com/antchfx/htmlquery", "", false, "FindOne", "", "", "Argument[1]", "xpath-injection", "manual"],
+        ["github.com/antchfx/htmlquery", "", false, "Query", "", "", "Argument[1]", "xpath-injection", "manual"],
+        ["github.com/antchfx/htmlquery", "", false, "QueryAll", "", "", "Argument[1]", "xpath-injection", "manual"]
+      ]
+    }
+  ]
+}

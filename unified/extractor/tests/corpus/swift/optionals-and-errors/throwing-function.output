@@ -27,8 +27,8 @@ sourceFile
                             stringSegment
                               content: stringSegment
                       returnKeyword: return
-          name: identifier "read"
           modifiers:
+          name: identifier "read"
           signature:
             functionSignature
               effectSpecifiers:

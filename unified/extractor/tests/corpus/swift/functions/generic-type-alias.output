@@ -9,6 +9,7 @@ sourceFile
       item:
         typeAliasDecl
           attributes:
+          modifiers:
           name: identifier "Box"
           genericParameterClause:
             genericParameterClause
@@ -26,7 +27,6 @@ sourceFile
                   name: identifier "U"
               leftAngle: <
               rightAngle: >
-          modifiers:
           initializer:
             typeInitializerClause
               equal: =

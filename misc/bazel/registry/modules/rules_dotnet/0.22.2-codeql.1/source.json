@@ -1,0 +1,11 @@
+{
+    "integrity": "sha256-zjXa0Y2zHNaDI7Vo3AnGicxtdewW66FRDM0Si7XxJk4=",
+    "strip_prefix": "rules_dotnet-0.22.2",
+    "docs_url": "https://github.com/bazel-contrib/rules_dotnet/releases/download/v0.22.2/rules_dotnet-v0.22.2.docs.tar.gz",
+    "url": "https://github.com/bazel-contrib/rules_dotnet/releases/download/v0.22.2/rules_dotnet-v0.22.2.tar.gz",
+    "patches": {
+        "module_dot_bazel_version.patch": "sha256-jS0bNBAwNeJOylIjBXVvQApWA4+pWAxWuD2FBbaBHX4=",
+        "revert_additional_files_in_nuget_archive.patch": "sha256-DgXRtEr+vmKXPJnWNDEmDw7VqFCpGh6zrHyVBclQ+/Q="
+    },
+    "patch_strip": 1
+}

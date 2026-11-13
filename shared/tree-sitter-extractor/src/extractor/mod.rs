@@ -66,7 +66,7 @@ impl<'a> AstNode for Node<'a> {
     }
 }
 
-impl AstNode for yeast::Node {
+impl<I: yeast::TreeId> AstNode for yeast::Node<I> {
     fn kind(&self) -> &str {
         yeast::Node::kind_name(self)
     }
@@ -930,7 +930,7 @@ impl<'a> Visitor<'a> {
         if types.contains(tp) {
             return true;
         }
-        for other in types.iter() {
+        for other in types {
             if let EntryKind::Union { members, .. } = &self.schema.get(other).unwrap().kind
                 && self.type_matches_set(tp, members)
             {
@@ -1043,7 +1043,7 @@ fn traverse(tree: &Tree, visitor: &mut Visitor) {
     }
 }
 
-fn traverse_yeast(tree: &yeast::Ast, visitor: &mut Visitor) {
+fn traverse_yeast(tree: &yeast::OutputAst, visitor: &mut Visitor) {
     let mut cursor = tree.walk();
     visitor.enter_node(cursor.node());
     let mut recurse = true;

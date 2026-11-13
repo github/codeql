@@ -31,8 +31,8 @@ sourceFile
                             declReferenceExpr
                               baseName: identifier "b"
                       returnKeyword: return
-          name: identifier "add"
           modifiers:
+          name: identifier "add"
           signature:
             functionSignature
               parameterClause:

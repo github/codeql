@@ -20,11 +20,7 @@ query predicate inferType(AstNode n, TypePath path, Type t) {
 }
 
 module ResolveTest implements TestSig {
-  string getARelevantTag() {
-    result = "target"
-    or
-    result = "field"
-  }
+  string getARelevantTag() { result = ["target", "field", "accessor"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Callable c, CallExpr ce |
@@ -41,6 +37,14 @@ module ResolveTest implements TestSig {
       element = access.toString() and
       nameBinding(field.getPattern(), value) and
       tag = "field"
+    )
+    or
+    exists(AccessorDeclaration accessor, Expr access |
+      accessor = resolveAccessorAccess(access) and
+      location = access.getLocation() and
+      element = access.toString() and
+      callableName(accessor, value) and
+      tag = "accessor"
     )
   }
 }

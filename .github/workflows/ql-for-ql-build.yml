@@ -36,8 +36,8 @@ jobs:
         with:
           path: |
             ql/extractor-pack/
-            ql/target/release/buramu
-          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-extractor-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('shared/tree-sitter-extractor') }}-${{ hashFiles('ql/**/*.rs') }}
+            target/release/buramu
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-extractor-${{ hashFiles('Cargo.toml', 'Cargo.lock') }}-${{ hashFiles('shared/tree-sitter-extractor') }}-${{ hashFiles('ql/**/*.rs') }}
       - name: Cache cargo
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         uses: actions/cache@v3
@@ -45,8 +45,8 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            ql/target
-          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-rust-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
+            target
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-rust-cargo-${{ hashFiles('Cargo.lock') }}
       - name: Release build
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cd ql; ./scripts/create-extractor-pack.sh
@@ -59,7 +59,7 @@ jobs:
           key: run-ql-for-ql
       - name: Make database and analyze
         run: |
-          ./ql/target/release/buramu | tee deprecated.blame # Add a blame file for the extractor to parse.
+          ./target/release/buramu | tee deprecated.blame # Add a blame file for the extractor to parse.
           ${CODEQL} database create --threads=0 -l=ql ${DB} --search-path "${{ github.workspace }}"
           ${CODEQL} database analyze -j0 --format=sarif-latest --output=ql-for-ql.sarif ${DB} ql/ql/src/codeql-suites/ql-code-scanning.qls  --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
         env:

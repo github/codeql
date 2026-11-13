@@ -20,9 +20,7 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
         .iter()
         .map(|f| {
             let ty_tip = get_type_tip(&f.ty);
-            if f.ident.as_ref().is_some_and(|i| i != "inputs")
-                && ty_tip.is_some_and(|i| i == "Vec")
-            {
+            if ty_tip.is_some_and(|i| i == "Vec") {
                 quote! {
                     #[serde(deserialize_with="deserialize::deserialize_newline_or_comma_separated_vec")]
                     #f
@@ -62,10 +60,6 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
                     #[serde(skip_serializing_if="u8::is_zero")]
                     #id: u8
                 }
-            } else if id == &format_ident!("inputs") {
-                quote! {
-                    #f
-                }
             } else if type_tip.is_some_and(|i| i == "Vec" || i == "FxHashMap" || i == "HashMap") {
                 quote! {
                     #[arg(long)]
@@ -84,14 +78,8 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
         .iter()
         .map(|f| {
             let id = f.ident.as_ref().unwrap();
-            if id == &format_ident!("inputs") {
-                quote! {
-                    .field("number of inputs", &self.#id.len())
-                }
-            } else {
-                quote! {
-                    .field(stringify!(#id), &self.#id)
-                }
+            quote! {
+                .field(stringify!(#id), &self.#id)
             }
         })
         .collect::<Vec<_>>();

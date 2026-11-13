@@ -191,8 +191,10 @@ edges
 | main.rs:204:14:204:14 | ... | main.rs:205:14:205:14 | n | provenance |  |
 | main.rs:208:11:208:11 | s | main.rs:204:14:204:14 | ... | provenance | MaD:28 |
 | main.rs:208:11:208:11 | s | main.rs:204:14:204:14 | ... | provenance | MaD:28 |
-| main.rs:212:13:212:22 | source(...) | main.rs:214:23:214:23 | f [captured s] | provenance |  |
-| main.rs:212:13:212:22 | source(...) | main.rs:214:23:214:23 | f [captured s] | provenance |  |
+| main.rs:212:9:212:9 | s | main.rs:214:23:214:23 | f [captured s] | provenance |  |
+| main.rs:212:9:212:9 | s | main.rs:214:23:214:23 | f [captured s] | provenance |  |
+| main.rs:212:13:212:22 | source(...) | main.rs:212:9:212:9 | s | provenance |  |
+| main.rs:212:13:212:22 | source(...) | main.rs:212:9:212:9 | s | provenance |  |
 | main.rs:213:40:213:40 | s | main.rs:213:17:213:42 | if ... {...} else {...} | provenance |  |
 | main.rs:213:40:213:40 | s | main.rs:213:17:213:42 | if ... {...} else {...} | provenance |  |
 | main.rs:214:9:214:9 | t | main.rs:215:10:215:10 | t | provenance |  |
@@ -596,6 +598,8 @@ nodes
 | main.rs:205:14:205:14 | n | semmle.label | n |
 | main.rs:208:11:208:11 | s | semmle.label | s |
 | main.rs:208:11:208:11 | s | semmle.label | s |
+| main.rs:212:9:212:9 | s | semmle.label | s |
+| main.rs:212:9:212:9 | s | semmle.label | s |
 | main.rs:212:13:212:22 | source(...) | semmle.label | source(...) |
 | main.rs:212:13:212:22 | source(...) | semmle.label | source(...) |
 | main.rs:213:17:213:42 | if ... {...} else {...} | semmle.label | if ... {...} else {...} |

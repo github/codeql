@@ -7,6 +7,7 @@
 | reflection.js:6:15:6:15 | 1 | Superfluous argument passed to $@. | reflection.js:1:1:1:23 | functio ... eturn;} | function f0 |
 | reflection.js:7:15:7:18 | 1 | Superfluous arguments passed to $@. | reflection.js:1:1:1:23 | functio ... eturn;} | function f0 |
 | reflection.js:12:18:12:18 | 2 | Superfluous argument passed to $@. | reflection.js:2:1:2:24 | functio ... eturn;} | function f1 |
+| storageEvent.js:14:33:14:39 | "extra" | Superfluous argument passed to $@. | externs.js:55:1:55:49 | functio ... ict) {} | function StorageEvent |
 | thisparameter.ts:4:11:4:12 | 45 | Superfluous argument passed to $@. | thisparameter.ts:1:1:1:45 | functio ... eturn;} | function foo |
 | transformstream.ts:15:33:15:34 | {} | Superfluous argument passed to $@. | externs.js:48:1:48:76 | functio ... egy) {} | function TransformStream |
 | tst.js:10:3:10:5 | g() | Superfluous argument passed to $@. | tst.js:1:1:4:1 | functio ... x+19;\\n} | function f |

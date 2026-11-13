@@ -83,7 +83,7 @@ private class SpringRedirectPrefix extends CompileTimeConstantExpr {
 
 /** Relates a local read to its reaching SSA definitions. */
 private predicate localViewDefinition(Expr value, SsaDefinition def) {
-  value.getUnderlyingExpr().(VarRead).getVariable() instanceof LocalVariableDecl and
+  value.getUnderlyingExpr().(VarRead).getVariable() instanceof LocalScopeVariable and
   def.getARead() = value.getUnderlyingExpr()
 }
 
@@ -91,13 +91,14 @@ private predicate localViewDefinition(Expr value, SsaDefinition def) {
 pragma[nomagic]
 private Expr getAViewNameValue(Expr value) {
   result = value.getUnderlyingExpr() and
-  not result instanceof ConditionalExpr and
+  not result instanceof ChooseExpr and
   (
     not localViewDefinition(value, _)
     or
-    exists(SsaDefinition def |
+    exists(SsaDefinition def, SsaDefinition ultimate |
       localViewDefinition(value, def) and
-      not exists(def.getAnUltimateDefinition().(SsaExplicitWrite).getValue())
+      ultimate = def.getAnUltimateDefinition() and
+      not exists(ultimate.(SsaExplicitWrite).getValue())
     )
   )
   or
@@ -106,7 +107,7 @@ private Expr getAViewNameValue(Expr value) {
     result = getAViewNameValue(def.getAnUltimateDefinition().(SsaExplicitWrite).getValue())
   )
   or
-  result = getAViewNameValue(value.getUnderlyingExpr().(ConditionalExpr).getABranchExpr())
+  result = getAViewNameValue(value.getUnderlyingExpr().(ChooseExpr).getAResultExpr())
 }
 
 /** Gets a possible leading expression, following only left-hand concatenation. */
@@ -229,9 +230,8 @@ private class SpringRedirectViewSetUrlSink extends UrlRedirectSink {
           .getMethod()
           .getSourceDeclaration()
           .hasQualifiedName("org.springframework.web.servlet.view", "AbstractUrlBasedView", "setUrl") and
-      setUrl
-          .getQualifier()
-          .getType()
+      DataFlow::exprNode(setUrl.getQualifier())
+          .getTypeBound()
           .(RefType)
           .getASupertype*()
           .hasQualifiedName("org.springframework.web.servlet.view", "RedirectView") and

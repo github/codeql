@@ -1,0 +1,37 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["net/url", "", false, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/url", "", false, "ParseQuery", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/url", "", false, "ParseRequestURI", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/url", "", false, "PathEscape", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["net/url", "", false, "PathUnescape", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/url", "", false, "QueryEscape", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["net/url", "", false, "QueryUnescape", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/url", "", false, "User", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["net/url", "", false, "UserPassword", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["net/url", "URL", true, "Clone", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["net/url", "URL", true, "EscapedPath", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["net/url", "URL", true, "Hostname", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["net/url", "URL", true, "MarshalBinary", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["net/url", "URL", true, "Parse", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["net/url", "URL", true, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/url", "URL", true, "Port", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["net/url", "URL", true, "Query", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["net/url", "URL", true, "RequestURI", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["net/url", "URL", true, "ResolveReference", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["net/url", "URL", true, "ResolveReference", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["net/url", "Userinfo", true, "Password", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["net/url", "Userinfo", true, "Username", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["net/url", "Values", true, "Clone", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["net/url", "Values", true, "Encode", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["net/url", "Values", true, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

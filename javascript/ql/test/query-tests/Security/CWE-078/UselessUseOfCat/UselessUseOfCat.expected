@@ -34,6 +34,12 @@ readFile
 | uselesscat.js:162:1:162:56 | execmod ... (out)}) | fs.readFile("foo/bar", (err, out) => {...}) |
 | uselesscat.js:163:1:163:42 | execmod ... utf8'}) | fs.readFile("foo/bar") |
 | uselesscat.js:164:1:164:76 | execmod ... (out)}) | fs.readFile("foo/bar", {encoding: 'utf8'}, (err, out) => {...}) |
+| uselesscat.js:168:5:168:23 | exec("cat foo", cb) | fs.readFile("foo") |
+| uselesscat.js:169:5:169:32 | execFil ... "], cb) | fs.readFile("foo") |
+| uselesscat.js:170:5:170:45 | exec("c ...  }, cb) | fs.readFile("foo", { encoding: "utf8" }) |
+| uselesscat.js:171:5:171:54 | execFil ...  }, cb) | fs.readFile("foo", { encoding: "utf8" }) |
+| uselesscat.js:174:1:174:37 | exec("c ... tf8" }) | fs.readFile("foo", { encoding: "utf8" }) |
+| uselesscat.js:175:1:175:46 | execFil ... tf8" }) | fs.readFile("foo", { encoding: "utf8" }) |
 syncCommand
 | uselesscat.js:16:1:16:29 | execSyn ... uinfo') |
 | uselesscat.js:18:1:18:26 | execSyn ... path}`) |
@@ -84,3 +90,9 @@ options
 | uselesscat.js:156:1:156:35 | cspawn( ... tf8' }) | uselesscat.js:156:15:156:34 | { encoding: 'utf8' } |
 | uselesscat.js:159:16:159:68 | cspawn. ... tf8' }) | uselesscat.js:159:48:159:67 | { encoding: 'utf8' } |
 | uselesscat.js:164:1:164:76 | execmod ... (out)}) | uselesscat.js:164:24:164:41 | {encoding: 'utf8'} |
+| uselesscat.js:170:5:170:45 | exec("c ...  }, cb) | uselesscat.js:170:21:170:40 | { encoding: "utf8" } |
+| uselesscat.js:171:5:171:54 | execFil ...  }, cb) | uselesscat.js:171:30:171:49 | { encoding: "utf8" } |
+| uselesscat.js:174:1:174:37 | exec("c ... tf8" }) | uselesscat.js:174:17:174:36 | { encoding: "utf8" } |
+| uselesscat.js:175:1:175:46 | execFil ... tf8" }) | uselesscat.js:175:26:175:45 | { encoding: "utf8" } |
+| uselesscat.js:176:1:176:32 | exec("c ... tmp" }) | uselesscat.js:176:17:176:31 | { cwd: "/tmp" } |
+| uselesscat.js:177:1:177:41 | execFil ... tmp" }) | uselesscat.js:177:26:177:40 | { cwd: "/tmp" } |

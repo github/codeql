@@ -13,6 +13,7 @@ sourceFile
       item:
         structDecl
           attributes:
+          modifiers:
           name: identifier "Resource"
           inheritanceClause:
             inheritanceClause
@@ -46,10 +47,10 @@ sourceFile
                                     declReferenceExpr
                                       baseName: self
                                   discardKeyword: discard
-                      name: identifier "close"
                       modifiers:
                         declModifier
                           name: consuming
+                      name: identifier "close"
                       signature:
                         functionSignature
                           parameterClause:
@@ -58,7 +59,6 @@ sourceFile
                               rightParen: )
                               parameters:
                       funcKeyword: func
-          modifiers:
           structKeyword: struct
 
 ---

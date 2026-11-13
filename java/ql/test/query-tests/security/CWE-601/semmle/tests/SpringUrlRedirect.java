@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.AbstractUrlBasedView;
 import org.springframework.web.servlet.view.RedirectView;
 
 class BaseController {
@@ -29,6 +30,9 @@ class LabeledRedirectView extends RedirectView {
 
     void setUrl(Object label) {
     }
+}
+
+class OrdinaryUrlView extends AbstractUrlBasedView {
 }
 
 @Controller
@@ -280,25 +284,25 @@ class SpringRedirectRegressions extends BaseController {
     // As with other redirect sinks, later property writes do not suppress an alert.
     @GetMapping("/overwritten-constructor-url")
     public RedirectView overwrittenConstructorUrl(HttpServletRequest request) {
-        String next = request.getParameter("next"); // $ Source
-        RedirectView view = new RedirectView(next); // $ Alert
+        String next = request.getParameter("next"); // $ SPURIOUS: Source
+        RedirectView view = new RedirectView(next); // $ SPURIOUS: Alert
         view.setUrl("/safe");
         return view;
     }
 
     @GetMapping("/overwritten-setter-url")
     public RedirectView overwrittenSetterUrl(HttpServletRequest request) {
-        String next = request.getParameter("next"); // $ Source
+        String next = request.getParameter("next"); // $ SPURIOUS: Source
         RedirectView view = new RedirectView();
-        view.setUrl(next); // $ Alert
+        view.setUrl(next); // $ SPURIOUS: Alert
         view.setUrl("/safe");
         return view;
     }
 
     @GetMapping("/overwritten-model-and-view-name")
     public ModelAndView overwrittenModelAndViewName(HttpServletRequest request) {
-        String next = request.getParameter("next"); // $ Source
-        ModelAndView view = new ModelAndView("redirect:" + next); // $ Alert
+        String next = request.getParameter("next"); // $ SPURIOUS: Source
+        ModelAndView view = new ModelAndView("redirect:" + next); // $ SPURIOUS: Alert
         view.setViewName("home");
         return view;
     }
@@ -388,8 +392,8 @@ class SpringViewPropertyRegressions extends SpringRedirectRegressions {
 
     @GetMapping("/alias-url-overwrite")
     public RedirectView aliasUrlOverwrite(HttpServletRequest request) {
-        String next = request.getParameter("next"); // $ Source
-        RedirectView view = new RedirectView(next); // $ Alert
+        String next = request.getParameter("next"); // $ SPURIOUS: Source
+        RedirectView view = new RedirectView(next); // $ SPURIOUS: Alert
         RedirectView alias = view;
         alias.setUrl("/safe");
         return view;
@@ -773,6 +777,149 @@ class SpringWrappedRedirectRegressions {
     @GetMapping("/safe-different-wrapped-view")
     public ModelAndView differentWrappedView(HttpServletRequest request) {
         RedirectView view = new RedirectView();
+        view.setUrl(request.getParameter("next"));
+        return new ModelAndView(new RedirectView("/account"));
+    }
+}
+
+@Controller
+class SpringAssignedParameterRegressions {
+    @GetMapping("/assigned-parameter-name")
+    public String assignedParameterName(HttpServletRequest request, String name) {
+        String next = request.getParameter("next"); // $ Source
+        name = "redirect:" + next; // $ Alert
+        return name;
+    }
+
+    @GetMapping("/branch-assigned-parameter-name")
+    public ModelAndView branchAssignedParameterName(
+            HttpServletRequest request, String name, boolean useRedirect) {
+        String next = request.getParameter("next"); // $ Source
+        if (useRedirect) {
+            name = "redirect:" + next; // $ Alert
+        } else {
+            name = "home";
+        }
+        return new ModelAndView(name);
+    }
+
+    @GetMapping("/safe-reassigned-parameter-name")
+    public String reassignedParameterName(HttpServletRequest request, String name) {
+        name = "redirect:" + request.getParameter("next");
+        name = "home";
+        return name;
+    }
+
+    protected String partiallyAssignedParameter(String name, String path, boolean useRedirect) {
+        if (useRedirect) {
+            name = "redirect:" + path;
+        }
+        return name;
+    }
+
+    @GetMapping("/safe-partially-assigned-helper-parameter")
+    public String partiallyAssignedHelperParameter(HttpServletRequest request, boolean useRedirect) {
+        return partiallyAssignedParameter("home:" + request.getParameter("next"), "/account", useRedirect);
+    }
+
+    @GetMapping("/safe-branch-assigned-parameter-name")
+    public String safeBranchAssignedParameterName(
+            HttpServletRequest request, String name, boolean useRedirect) {
+        String next = request.getParameter("next");
+        if (useRedirect) {
+            name = "redirect:/account?tab=" + next;
+        } else {
+            name = "home:" + next;
+        }
+        return name;
+    }
+}
+
+@Controller
+class SpringSwitchRedirectRegressions {
+    @GetMapping("/switch-view-name")
+    public String switchViewName(HttpServletRequest request, int choice) {
+        String next = request.getParameter("next"); // $ Source
+        return switch (choice) {
+            case 0 -> "redirect:" + next; // $ Alert
+            case 1 -> "redirect:/account?tab=" + next;
+            default -> "home:" + next;
+        };
+    }
+
+    protected String switchRedirect(String path, int choice) {
+        return switch (choice) {
+            case 0 -> {
+                yield "redirect:" + path + "?from=switch";
+            }
+            default -> "redirect:/account";
+        };
+    }
+
+    @GetMapping("/switch-helper-model-and-view")
+    public ModelAndView switchHelperModelAndView(HttpServletRequest request, int choice) {
+        String next = request.getParameter("next"); // $ Source
+        return new ModelAndView(switchRedirect(next, choice)); // $ Alert
+    }
+
+    protected String ordinarySwitchView(String path, int choice) {
+        return switch (choice) {
+            case 0 -> "redirect:/account";
+            default -> "home:" + path;
+        };
+    }
+
+    @GetMapping("/safe-ordinary-switch-helper")
+    public String ordinarySwitchHelper(HttpServletRequest request, int choice) {
+        return ordinarySwitchView(request.getParameter("next"), choice);
+    }
+
+    @GetMapping("/safe-fixed-path-switch")
+    public String fixedPathSwitch(HttpServletRequest request, int choice) {
+        return switch (choice) {
+            case 0 -> "redirect:/account?tab=" + request.getParameter("tab");
+            default -> "redirect:/account";
+        };
+    }
+}
+
+@Controller
+class SpringInferredViewTypeRegressions {
+    @GetMapping("/supertype-configured-redirect-view")
+    public AbstractUrlBasedView supertypeConfiguredRedirectView(HttpServletRequest request) {
+        String next = request.getParameter("next"); // $ Source
+        AbstractUrlBasedView view = new RedirectView();
+        view.setUrl(next); // $ Alert
+        return view;
+    }
+
+    @GetMapping("/supertype-alias-configured-redirect-view")
+    public AbstractUrlBasedView supertypeAliasConfiguredRedirectView(HttpServletRequest request) {
+        String next = request.getParameter("next"); // $ Source
+        AbstractUrlBasedView view = new RedirectView();
+        AbstractUrlBasedView alias = view;
+        alias.setUrl(next); // $ Alert
+        return alias;
+    }
+
+    @GetMapping("/supertype-wrapped-configured-redirect-view")
+    public ModelAndView supertypeWrappedConfiguredRedirectView(HttpServletRequest request) {
+        String next = request.getParameter("next"); // $ Source
+        AbstractUrlBasedView view = new RedirectView();
+        view.setUrl(next); // $ Alert
+        return new ModelAndView(view);
+    }
+
+    @GetMapping("/safe-supertype-ordinary-view")
+    public AbstractUrlBasedView supertypeOrdinaryView(HttpServletRequest request) {
+        AbstractUrlBasedView view = new OrdinaryUrlView();
+        view.setUrl(request.getParameter("next"));
+        return view;
+    }
+
+    @GetMapping("/safe-supertype-different-returned-view")
+    public ModelAndView supertypeDifferentReturnedView(HttpServletRequest request) {
+        AbstractUrlBasedView view = new RedirectView();
         view.setUrl(request.getParameter("next"));
         return new ModelAndView(new RedirectView("/account"));
     }

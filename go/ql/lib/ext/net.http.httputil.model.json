@@ -1,0 +1,22 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["net/http/httputil", "", false, "DumpRequest", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/http/httputil", "", false, "DumpRequestOut", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/http/httputil", "", false, "DumpResponse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/http/httputil", "", false, "NewChunkedReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["net/http/httputil", "", false, "NewClientConn", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["net/http/httputil", "", false, "NewProxyClientConn", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["net/http/httputil", "BufferPool", true, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["net/http/httputil", "BufferPool", true, "Put", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["net/http/httputil", "ClientConn", true, "Hijack", "", "", "Argument[receiver]", "ReturnValue[0..1]", "taint", "manual"],
+        ["net/http/httputil", "ServerConn", true, "Hijack", "", "", "Argument[receiver]", "ReturnValue[0..1]", "taint", "manual"]
+      ]
+    }
+  ]
+}

@@ -47,10 +47,10 @@ jobs:
           git checkout HEAD^1
           git log -1 --format='%H'
         working-directory: base
-      - name: Set up Python 3.8
+      - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: "3.12"
       - name: Download CodeQL CLI
         uses: ./merge/.github/actions/fetch-codeql
       - name: Generate CSV files on merge commit of the PR

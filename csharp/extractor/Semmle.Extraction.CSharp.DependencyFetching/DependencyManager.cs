@@ -295,7 +295,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             string? runtimeLocation = null;
 
-            if (fileContent.IsNewProjectStructureUsed)
+            if (fileContent.IsSdkProjectStructureUsed)
             {
                 runtimeLocation = Runtime.NetCoreRuntime;
             }

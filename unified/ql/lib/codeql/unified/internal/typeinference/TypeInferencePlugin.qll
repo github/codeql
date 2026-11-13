@@ -81,14 +81,6 @@ class TypeInferencePlugin extends Unit {
   /** Holds if `field` is a field of the tuple type `tuple` with the given `name`. */
   abstract predicate tupleField(Type tuple, string name, VariableDeclaration field);
 
-  /** Holds if `case` is an enum case constructor of `enum` with identifier `i`. */
-  abstract predicate isEnumConstructor(
-    ClassLikeDeclaration enum, ConstructorDeclaration case, Identifier i
-  );
-
-  /** Holds if `field` is an enum field of `enum`. */
-  abstract predicate isEnumField(ClassLikeDeclaration enum, VariableDeclaration field);
-
   /** Gets the inferred type for the given AST node and type path. */
   Type inferType(AstNode n, TypePath path) { none() }
 }
@@ -137,25 +129,6 @@ class TupleType extends Type {
   VariableDeclaration getField(string name) {
     any(TypeInferencePlugin p).tupleField(this, name, result)
   }
-}
-
-class EnumConstructor extends ConstructorDeclaration {
-  private ClassLikeDeclaration enum;
-  private Identifier id;
-
-  EnumConstructor() { any(TypeInferencePlugin p).isEnumConstructor(enum, this, id) }
-
-  ClassLikeDeclaration getEnum() { result = enum }
-
-  Identifier getNameNode() { result = id }
-}
-
-class EnumField extends VariableDeclaration {
-  private ClassLikeDeclaration enum;
-
-  EnumField() { any(TypeInferencePlugin p).isEnumField(enum, this) }
-
-  ClassLikeDeclaration getEnum() { result = enum }
 }
 
 Type inferType(AstNode n, TypePath path) { result = any(TypeInferencePlugin p).inferType(n, path) }

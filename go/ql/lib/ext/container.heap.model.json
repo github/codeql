@@ -1,0 +1,17 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["container/heap", "", false, "Pop", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["container/heap", "", false, "Push", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["container/heap", "", false, "Remove", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["container/heap", "Interface", true, "Pop", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["container/heap", "Interface", true, "Push", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      ]
+    }
+  ]
+}

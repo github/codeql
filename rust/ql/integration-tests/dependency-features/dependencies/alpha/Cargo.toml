@@ -1,0 +1,8 @@
+[package]
+name = "alpha"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+a = []
+b = []

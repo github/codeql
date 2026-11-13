@@ -58,7 +58,7 @@ not interpreted as flags, or verify that the argument does not start with <code>
 </example>
 <references>
 <li>
-OWASP: <a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+OWASP: <a href="https://community.owasp.org/attacks/Command_Injection">Command Injection</a>.
 </li>
 </references>
 </qhelp>

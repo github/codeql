@@ -381,8 +381,8 @@ pub fn test_ptr_to_struct(mode: i32) {
 	{
 		let mut my_pair = MyPair { a: 1, b: 2};
 		p1 = std::ptr::addr_of_mut!(my_pair); // $ Source[rust/access-after-lifetime-ended]=my_pair
-		p2 = std::ptr::addr_of!(my_pair.a); // $ MISSING: Source[rust/access-after-lifetime-ended]=my_pair_a
-		p3 = std::ptr::addr_of_mut!(my_pair.b); // $ MISSING: Source[rust/access-after-lifetime-ended]=my_pair_b
+		p2 = std::ptr::addr_of!(my_pair.a); // $ Source[rust/access-after-lifetime-ended]=my_pair_a
+		p3 = std::ptr::addr_of_mut!(my_pair.b); // $ Source[rust/access-after-lifetime-ended]=my_pair_b
 
 		unsafe {
 			let v1 = (*p1).a; // GOOD
@@ -418,15 +418,15 @@ pub fn test_ptr_to_struct(mode: i32) {
 			},
 			221 => {
 				// more reads
-				let v7 = *p2; // $ MISSING: Alert
-				let v8 = *p3; // $ MISSING: Alert
+				let v7 = *p2; // $ Alert[rust/access-after-lifetime-ended]=my_pair_a
+				let v8 = *p3; // $ Alert[rust/access-after-lifetime-ended]=my_pair_b
 				println!("	v7 = {v7} (!)"); // dropped in practice
 				println!("	v8 = {v8} (!)"); // dropped in practice
 			},
 			222 => {
 				// writes
 				(*p1).a = 6; // $ Alert[rust/access-after-lifetime-ended]=my_pair
-				*p3 = 7; // $ MISSING: Alert
+				*p3 = 7; // $ Alert[rust/access-after-lifetime-ended]=my_pair_b
 			},
 			223 => {
 				// another write

@@ -14,6 +14,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Point"
           memberBlock:
             memberBlock
@@ -81,7 +82,6 @@ sourceFile
                                       name: identifier "Int"
                                   firstName: identifier "x"
                       initKeyword: init
-          modifiers:
           classKeyword: class
 
 ---

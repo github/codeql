@@ -59,8 +59,18 @@ fn validate_unique_capture_names(
 pub(crate) fn parse_rule(input: TokenStream) -> Result<Rule> {
     let (pattern_and_guard, replacement) = split_arrow(input)?;
     let (pattern, guard) = split_guard(pattern_and_guard)?;
+    let pattern = parse_pattern(pattern)?;
+    if let Pattern::Capture {
+        name, raw: false, ..
+    } = &pattern
+    {
+        return Err(syn::Error::new_spanned(
+            name,
+            "a capture of the rule root must use `@@`; the matched root cannot be eagerly translated",
+        ));
+    }
     Ok(Rule {
-        pattern: parse_pattern(pattern)?,
+        pattern,
         guard,
         replacement: parse_replacement(replacement)?,
     })
@@ -548,7 +558,7 @@ mod tests {
     #[test]
     fn parses_template_replacement() {
         let rule = parse_rule(quote! {
-            (identifier) @name
+            (identifier) @@name
             =>
             (identifier #{name})
         })
@@ -556,6 +566,22 @@ mod tests {
 
         assert!(rule.guard.is_none());
         assert!(matches!(rule.replacement, Replacement::Templates(_)));
+    }
+
+    #[test]
+    fn rejects_eager_capture_of_rule_root() {
+        let result = parse_rule(quote! {
+            (identifier) @name
+            =>
+            (identifier #{name})
+        });
+        let Err(error) = result else {
+            panic!("expected eager rule-root capture to be rejected");
+        };
+        assert_eq!(
+            error.to_string(),
+            "a capture of the rule root must use `@@`; the matched root cannot be eagerly translated"
+        );
     }
 
     #[test]

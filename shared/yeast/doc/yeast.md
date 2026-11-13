@@ -297,8 +297,27 @@ leaf nodes:
 (identifier "synthetic" location: {source_node})
 ```
 
+The block may also yield a `Range` or `Option<Range>` directly, allowing an
+exact or computed source range:
+
+```rust
+(identifier "synthetic"
+    location: {ctx.source_range(source_node).map(|range| range.empty_at_end())})
+```
+
 The override applies only to the node carrying the `location` field; nested
 nodes still derive their locations normally.
+
+As an exception to the Rust-block requirement above, use `location: none` for a
+synthetic node that intentionally has no source location. The field-combination
+rules above apply only to block-valued fields: `location: none` cannot be
+combined with any other `location` field on the same node. A locationless node
+does not contribute to its parent's derived range, and a returned rule result
+marked this way does not inherit the matched input range:
+
+```rust
+(metadata_node location: none)
+```
 
 For input fields whose leading or trailing syntax should never belong to rule
 results, configure them once with
@@ -331,47 +350,56 @@ accessor_declaration source="⟨accessor_kind⟩"
 Node and child ranges are still validated against the source text and UTF-8
 boundaries.
 
-### Optional fields (`?`)
+### Template choices (`[]`)
 
-A `?` on a field's value makes that field fallible. If a `#{expr}` anywhere
-beneath it interpolates an absent value — an `Option` that is `None` — the
-subtree is abandoned and the field is left unset:
-
-```rust
-rule!((breakStmt label: _? @@lbl) => (break_expr label: (identifier #{lbl})?))
-```
-
-Here an optional capture is being wrapped in a leaf, which without `?` needs
-an `Option::map` to build the leaf only in the `Some` case:
+Brackets contain one or more ordered template alternatives. For each
+alternative, Yeast evaluates its optional `if {guard}` and preflights every
+`#{expr}` beneath it. If the guard is false or an interpolation produces
+`None`, that alternative is skipped without constructing any of its template
+nodes. The first alternative that can be constructed is emitted:
 
 ```rust
-// Equivalent, but the intent is buried in the closure:
-(break_expr label: {lbl.map(|l| tree!((identifier #{l})))})
+rule!((breakStmt label: _? @@lbl) => (break_expr label: [(identifier #{lbl})]))
 ```
 
-The marker mirrors the query language, where a quantifier likewise follows the
-value it applies to (`label: _? @@lbl`). Note that the schema puts it on the
-other side of the colon — `external_name?: identifier` — because it is
-*declaring* a field's cardinality rather than supplying a value for it.
+Here an optional capture is being wrapped in a leaf. A multi-way choice can
+provide a fallback, and alternatives can have explicit guards:
 
-Absence propagates outwards through as many levels as necessary, and a nested
-`?` catches first, so an inner absent value need not discard the outer node:
+```rust
+(import_declaration
+    pattern: [
+        (identifier #{last}) if { kind.is_some() }
+        (bulk_importing_pattern)
+    ])
+```
+
+A choice may contain any nonzero number of alternatives. A single-alternative
+choice expresses an optional tree. Nested choices handle their own
+dependencies, so an inner absent value need not discard the outer node:
 
 ```rust
 // If `name` is absent, `pattern` is left unset — but `type` is still set.
-(parameter pattern: (name_pattern identifier: (identifier #{name}))? type: {ty})
+(parameter
+    pattern: [
+        (name_pattern identifier: [(identifier #{name})])
+    ]
+    type: {ty})
 ```
 
 Only `#{expr}` propagates absence, because it supplies a node's *content*: with
 no value there is no leaf to build. A `{expr}` splice supplies *children*, where
-yielding nothing already leaves the field unset (see below), so `?` is rejected
-on one. Repetition has no marker at all, in templates or elsewhere: how many
-children a `{expr}` contributes is a property of the expression rather than of
-the syntax.
+yielding nothing already leaves the field unset (see below). How many children
+a `{expr}` contributes is a property of the expression rather than of the
+template syntax.
 
-Outside a `?`, interpolating an `Option` with `#{expr}` remains a compile error.
-That is deliberate: it keeps the choice between "leave the field unset" and
-"unwrap it" explicit at every interpolation.
+Outside a choice, interpolating an `Option` with `#{expr}` remains a compile
+error. That is deliberate: it keeps the choice between rejecting an
+alternative and unwrapping the value explicit at every interpolation.
+
+Choice dependencies are evaluated before construction begins. A rejected
+alternative therefore leaves no partially constructed template nodes in the
+AST. Guards and dependencies are evaluated once, in source order. A nested
+choice is a separate dependency boundary.
 
 ### Embedded Rust expressions
 
@@ -399,9 +427,10 @@ yeast::trees!(
 ```
 
 Because an `Option<Id>` splices as zero or one id, `field: {opt}` already
-leaves the field unset when `opt` is `None`. Use [`?`](#optional-fields-)
-instead when the optional value has to be *wrapped* in a node first, so that
-there is nothing to wrap when it is absent.
+leaves the field unset when `opt` is `None`. Use a
+[single-alternative template choice](#template-choices-) instead when the
+optional value has to be *wrapped* in a node first, so that there is nothing
+to wrap when it is absent.
 
 The contents of `{…}` are treated as a Rust block, so multi-statement
 expressions (with `let` bindings) work too:
@@ -513,22 +542,17 @@ rule, while a capture marked `@@` would remain raw in the transform as well.
 In this example `label` and `rest` are empty whenever the guard succeeds, so
 there is nothing to translate for those captures.
 
-Guards receive the mutable user context as `ctx` and the raw AST as `ast`.
-The framework clones the user context before evaluating each guard. If the
-guard succeeds, its context mutations are visible to the rule transform and
-recursive translation; if it fails, the clone is discarded before the next
-rule is tried:
+Guards receive the user context as read-only `ctx` and the raw AST as `ast`.
+The transform receives a private clone of the context after the guard succeeds:
 
 ```rust
 rule!(
     (tupleExpr elements: _* @elements)
-    where {
-        ctx.in_pattern = true;
-        elements
+    where ctx.in_pattern
+        && elements
             .first()
             .and_then(|element| ast.get_node(*element))
             .is_some()
-    }
     =>
     (tuple_pattern element: {elements})
 )

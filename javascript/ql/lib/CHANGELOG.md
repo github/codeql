@@ -1,3 +1,14 @@
+## 3.0.0
+
+### Breaking Changes
+
+* The `SEMMLE_TYPESCRIPT_HOME` environment variable is no longer supported. The JavaScript/TypeScript extractor now ignores the environment variable and always uses its bundled TypeScript compiler.
+
+### Minor Analysis Improvements
+
+* Added taint steps for `String.prototype.trimStart`, `trimEnd`, and `normalize`.
+* Fixed the flow summary for `Array.prototype.flatMap`. The `thisArg` argument now flows to the callback's `this` instead of its index parameter.
+
 ## 2.10.4
 
 No user-facing changes.

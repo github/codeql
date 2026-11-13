@@ -11,6 +11,7 @@ sourceFile
       item:
         structDecl
           attributes:
+          modifiers:
           name: identifier "Size"
           memberBlock:
             memberBlock
@@ -54,7 +55,6 @@ sourceFile
                                   firstName: identifier "height"
                                   secondName: identifier "h"
                       initKeyword: init
-          modifiers:
           structKeyword: struct
 
 ---

@@ -1,3 +1,9 @@
+## 1.7.0
+
+### Query Metadata Changes
+
+* The `external/cwe/cwe-730` tag has been removed from `rb/redos`, `rb/polynomial-redos` and `rb/regexp-injection`, because MITRE has marked CWE-730 as prohibited for vulnerability mapping. The queries retain their other CWE tags.
+
 ## 1.6.13
 
 No user-facing changes.

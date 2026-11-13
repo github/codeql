@@ -1,0 +1,28 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["golang.org/x/net/html", "", false, "EscapeString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["golang.org/x/net/html", "", false, "NewTokenizer", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["golang.org/x/net/html", "", false, "NewTokenizerFragment", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["golang.org/x/net/html", "", false, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["golang.org/x/net/html", "", false, "ParseFragment", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["golang.org/x/net/html", "", false, "ParseFragmentWithOptions", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["golang.org/x/net/html", "", false, "ParseWithOptions", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["golang.org/x/net/html", "", false, "Render", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["golang.org/x/net/html", "", false, "UnescapeString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["golang.org/x/net/html", "Node", true, "AppendChild", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["golang.org/x/net/html", "Node", true, "InsertBefore", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["golang.org/x/net/html", "Tokenizer", true, "Buffered", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["golang.org/x/net/html", "Tokenizer", true, "Raw", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["golang.org/x/net/html", "Tokenizer", true, "TagAttr", "", "", "Argument[receiver]", "ReturnValue[1]", "taint", "manual"],
+        ["golang.org/x/net/html", "Tokenizer", true, "Text", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["golang.org/x/net/html", "Tokenizer", true, "Token", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

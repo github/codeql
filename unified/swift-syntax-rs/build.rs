@@ -90,7 +90,13 @@ fn swift_runtime_dir() -> Option<PathBuf> {
     let close = value_start.find('"')?;
     let resource_path = &value_start[..close];
 
-    Some(PathBuf::from(resource_path).join(if cfg!(target_os = "macos") { "macosx" } else { "linux" }))
+    Some(
+        PathBuf::from(resource_path).join(if cfg!(target_os = "macos") {
+            "macosx"
+        } else {
+            "linux"
+        }),
+    )
 }
 
 /// Some environments (notably GitHub Codespaces) inject

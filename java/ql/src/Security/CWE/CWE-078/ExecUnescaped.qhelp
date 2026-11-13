@@ -34,7 +34,7 @@ an argument.</p>
 
 <li>
 OWASP:
-<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+<a href="https://community.owasp.org/attacks/Command_Injection">Command Injection</a>.
 </li>
 <li>SEI CERT Oracle Coding Standard for Java:
   <a href="https://wiki.sei.cmu.edu/confluence/display/java/IDS07-J.+Sanitize+untrusted+data+passed+to+the+Runtime.exec()+method">IDS07-J. Sanitize untrusted data passed to the Runtime.exec() method</a>.</li>

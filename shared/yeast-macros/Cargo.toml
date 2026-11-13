@@ -6,7 +6,11 @@ edition = "2021"
 [lib]
 proc-macro = true
 
+[lints]
+workspace = true
+
 [dependencies]
 proc-macro2 = "1.0"
 quote = "1.0"
 syn = { version = "3.0", features = ["full"] }
+yeast-schema = { path = "../yeast-schema" }

@@ -18,7 +18,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IFileProvider fileProvider;
         private readonly FileContent fileContent;
         private readonly IDotNet dotnet;
-        private readonly IRegistryProxy? registryProxy;
         private readonly IDiagnosticsWriter diagnosticsWriter;
         private readonly DependencyDirectory legacyPackageDirectory;
         private readonly DependencyDirectory missingPackageDirectory;
@@ -41,7 +40,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.fileProvider = fileProvider;
             this.fileContent = fileContent;
             this.dotnet = dotnet;
-            this.registryProxy = registryProxy;
             this.diagnosticsWriter = diagnosticsWriter;
             this.logger = logger;
             this.compilationInfoContainer = compilationInfoContainer;
@@ -135,7 +133,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             try
             {
-                var packagesConfigRestore = PackagesConfigRestoreFactory.Create(fileProvider, legacyPackageDirectory, logger, feedManager, registryProxy);
+                var packagesConfigRestore = PackagesConfigRestoreFactory.Create(fileProvider, legacyPackageDirectory, logger, feedManager);
                 var count = packagesConfigRestore.InstallPackages();
                 if (packagesConfigRestore.PackageCount > 0)
                 {
@@ -150,10 +148,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     .Where(path => IsPathInSubfolder(path, legacyPackageDirectory.DirInfo.FullName, "tools"))
                     .ToList();
 
-                if (nugetPackageDllPaths.Count > 0)
-                {
-                    logger.LogInfo($"Restored {nugetPackageDllPaths.Count} NuGet DLLs.");
-                }
+
+                logger.LogInfo($"Restored {nugetPackageDllPaths.Count} NuGet DLLs from packages.config files using the NuGet CLI.");
+
                 if (excludedPaths.Count > 0)
                 {
                     logger.LogInfo($"Excluding {excludedPaths.Count} NuGet DLLs.");
@@ -165,6 +162,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
 
                 nugetPackageDllPaths.ExceptWith(excludedPaths);
+
+                logger.LogInfo($"Using {nugetPackageDllPaths.Count} DLLs as dependency candidates from NuGet packages restored via the NuGet CLI based on packages.config files.");
+                foreach (var path in nugetPackageDllPaths)
+                {
+                    logger.LogDebug($"Using NuGet DLL as dependency candidate: {path}");
+                }
+
                 assemblyLookupLocations.UnionWith(nugetPackageDllPaths.Select(p => new AssemblyLookupLocation(p)));
             }
             catch (Exception exc)

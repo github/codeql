@@ -41,6 +41,13 @@ class Test {
 				// BAD: RC2 is a weak algorithm
 				cipher = Cipher.getInstance("RC2"); // $ Alert[java/weak-cryptographic-algorithm]
 			}
+			{
+				// BAD: AES/CBC/PKCS5Padding is vulnerable to padding oracle attacks, regardless of case
+				cipher = Cipher.getInstance("AES/CBC/PKCS5Padding"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("aes/cbc/pkcs5padding"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("AES/cbc/Pkcs5Padding"); // $ Alert[java/weak-cryptographic-algorithm]
+			}
 			// GOOD: ECIES is a strong algorithm
 			cipher = Cipher.getInstance("ECIES");
 			cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);

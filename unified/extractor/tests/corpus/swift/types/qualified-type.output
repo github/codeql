@@ -27,6 +27,7 @@ sourceFile
       item:
         structDecl
           attributes:
+          modifiers:
           name: identifier "Outer"
           memberBlock:
             memberBlock
@@ -37,6 +38,7 @@ sourceFile
                   decl:
                     structDecl
                       attributes:
+                      modifiers:
                       name: identifier "Inner"
                       memberBlock:
                         memberBlock
@@ -47,20 +49,20 @@ sourceFile
                               decl:
                                 structDecl
                                   attributes:
+                                  modifiers:
                                   name: identifier "Deep"
                                   memberBlock:
                                     memberBlock
                                       leftBrace: {
                                       rightBrace: }
                                       members:
-                                  modifiers:
                                   structKeyword: struct
-                      modifiers:
                       structKeyword: struct
                 memberBlockItem
                   decl:
                     structDecl
                       attributes:
+                      modifiers:
                       name: identifier "Generic"
                       genericParameterClause:
                         genericParameterClause
@@ -79,6 +81,7 @@ sourceFile
                               decl:
                                 structDecl
                                   attributes:
+                                  modifiers:
                                   name: identifier "Deep"
                                   genericParameterClause:
                                     genericParameterClause
@@ -97,23 +100,20 @@ sourceFile
                                       leftBrace: {
                                       rightBrace: }
                                       members:
-                                  modifiers:
                                   structKeyword: struct
                             memberBlockItem
                               decl:
                                 structDecl
                                   attributes:
+                                  modifiers:
                                   name: identifier "Plain"
                                   memberBlock:
                                     memberBlock
                                       leftBrace: {
                                       rightBrace: }
                                       members:
-                                  modifiers:
                                   structKeyword: struct
-                      modifiers:
                       structKeyword: struct
-          modifiers:
           structKeyword: struct
     codeBlockItem
       item:
@@ -170,6 +170,7 @@ sourceFile
               leftBrace: {
               rightBrace: }
               statements:
+          modifiers:
           name: identifier "qualifiedTypes"
           genericParameterClause:
             genericParameterClause
@@ -183,7 +184,6 @@ sourceFile
                   name: identifier "ErrorComponentType"
               leftAngle: <
               rightAngle: >
-          modifiers:
           signature:
             functionSignature
               parameterClause:

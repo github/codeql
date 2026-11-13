@@ -56,6 +56,8 @@ module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
     namespaceSelfExitRead(bb, i, v) and
     certain = false
   }
+
+  predicate ssaCachedStageRevRef() { DataFlowIntegrationImpl::ssaCachedStageRevRef2() }
 }
 
 import SsaImplCommon::Make<Location, Cfg::Cfg, SsaInput> as Impl
@@ -279,11 +281,6 @@ private module Cached {
 
   private import codeql.ruby.dataflow.SSA
 
-  cached
-  Definition phiHasInputFromBlock(PhiNode phi, Cfg::BasicBlock bb) {
-    Impl::phiHasInputFromBlock(phi, result, bb)
-  }
-
   /**
    * Holds if the value defined at SSA definition `def` can reach a read at `read`,
    * without passing through any other non-pseudo read.
@@ -311,11 +308,6 @@ private module Cached {
   }
 
   cached
-  Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
-    Impl::uncertainWriteDefinitionInput(def, result)
-  }
-
-  cached
   module DataFlowIntegration {
     import DataFlowIntegrationImpl
 
@@ -337,14 +329,14 @@ private module Cached {
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
       private predicate guardChecksAdjTypes(
-        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e,
+        DataFlowIntegrationInput::Guard g, Definition def,
         DataFlowIntegrationInput::GuardValue branch
       ) {
-        guardChecks(g, e, branch)
+        guardChecks(g, Cached::getARead(def), branch)
       }
 
       private Node getABarrierNodeImpl() {
-        result = DataFlowIntegrationImpl::BarrierGuard<guardChecksAdjTypes/3>::getABarrierNode()
+        result = DataFlowIntegrationImpl::SsaBarrierGuard<guardChecksAdjTypes/3>::getABarrierNode()
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/0;
@@ -363,15 +355,15 @@ private module Cached {
     cached // nothing is actually cached
     module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
       private predicate guardChecksAdjTypes(
-        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e,
+        DataFlowIntegrationInput::Guard g, Definition def,
         DataFlowIntegrationInput::GuardValue branch, P param
       ) {
-        guardChecks(g, e, branch, param)
+        guardChecks(g, Cached::getARead(def), branch, param)
       }
 
       private Node getABarrierNodeImpl(P param) {
         result =
-          DataFlowIntegrationImpl::BarrierGuardWithState<P, guardChecksAdjTypes/4>::getABarrierNode(param)
+          DataFlowIntegrationImpl::SsaBarrierGuardWithState<P, guardChecksAdjTypes/4>::getABarrierNode(param)
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/1;
@@ -441,12 +433,6 @@ class ParameterExt extends TParameterExt {
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.ruby.controlflow.internal.Guards as Guards
   private import codeql.util.Boolean
-
-  class Expr extends Cfg::CfgNodes::ExprCfgNode {
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
-  }
-
-  Expr getARead(Definition def) { result = Cached::getARead(def) }
 
   predicate ssaDefHasSource(WriteDefinition def) {
     any(ParameterExt p).isInitializedBy(def) or def.(Ssa::WriteDefinition).assigns(_)

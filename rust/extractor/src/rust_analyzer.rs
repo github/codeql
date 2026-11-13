@@ -217,6 +217,12 @@ fn workspace_members_match(workspace_dir: &AbsPath, members: &[String], target: 
     })
 }
 
+/// Finds an enclosing Cargo workspace that includes `manifest`. That is, its
+/// `members` patterns include the manifest's directory and its `exclude`
+/// patterns do not.
+///
+/// Returns `None` if the manifest itself defines a workspace, is not a Cargo
+/// manifest, cannot be loaded, or has no matching workspace.
 fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option<ProjectManifest> {
     let ProjectManifest::CargoToml(cargo) = manifest else {
         return None;
@@ -224,12 +230,13 @@ fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option
     let parsed_cargo = reader.read(cargo).ok()?;
     if parsed_cargo.workspace.is_some() {
         debug!("{cargo} is a workspace");
-        return Some(manifest.clone());
+        return None;
     }
     let Some(parent_dir) = cargo.parent().parent() else {
         warn!("no parent dir for {cargo}");
         return None;
     };
+    // Search upward from `parent_dir` for manifest files.
     let discovered = ProjectManifest::discover(parent_dir)
         .map_err(|e| {
             error!(
@@ -240,25 +247,22 @@ fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option
         })
         .ok()?;
     discovered
-        .iter()
-        .find_map(|it| match it {
-            ProjectManifest::CargoToml(other)
-                if cargo.starts_with(other.parent())
-                    && reader.read(other).is_ok_and(|it| {
-                        it.workspace.as_ref().is_some_and(|w| {
-                            workspace_members_match(other.parent(), &w.members, cargo.parent())
-                                && !workspace_members_match(
-                                    other.parent(),
-                                    &w.exclude,
-                                    cargo.parent(),
-                                )
-                        })
-                    }) =>
+        .into_iter()
+        .find(|it| {
+            if let ProjectManifest::CargoToml(other) = it
+                && cargo.starts_with(other.parent())
+                && reader.read(other).is_ok_and(|it| {
+                    it.workspace.as_ref().is_some_and(|w| {
+                        workspace_members_match(other.parent(), &w.members, cargo.parent())
+                            && !workspace_members_match(other.parent(), &w.exclude, cargo.parent())
+                    })
+                })
             {
                 debug!("found workspace {other} containing {cargo}");
-                Some(it.clone())
+                true
+            } else {
+                false
             }
-            _ => None,
         })
         .or_else(|| {
             debug!("no workspace found for {cargo}");

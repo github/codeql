@@ -76,6 +76,8 @@ fn should_enum_be_skipped(name: &str) -> bool {
 fn should_node_be_skipped(name: &str) -> bool {
     name == "TypeAnchor" // we flatten TypeAnchor into PathSegment in the extractor
     || name == "MacroStmts" // we workaround a getter bug in the extractor
+    || name == "ParenExpr" // parenthesized expressions are extracted as their inner expression
+    || name == "ParenPat" // parenthesized patterns are extracted as their inner pattern
 }
 
 fn should_node_be_skipped_in_extractor(name: &str) -> bool {
@@ -133,6 +135,7 @@ fn get_additional_fields(node_name: &str) -> Vec<FieldInfo> {
             FieldInfo::body("body", "TokenTree"),
         ],
         "MacroCall" => vec![FieldInfo::body("token_tree", "TokenTree")],
+        "MacroExpr" | "RecordExpr" => vec![FieldInfo::list("attrs", "AnyAttr")],
         "FormatArgsExpr" => vec![FieldInfo::list("args", "FormatArgsArg")],
         "ArgList" => vec![FieldInfo::list("args", "Expr")],
         "Fn" => vec![FieldInfo::body("body", "BlockExpr")],
@@ -349,6 +352,7 @@ struct EnumVariantInfo {
     name: String,
     snake_case_name: String,
     variant_ast_name: String,
+    emission: String,
 }
 
 #[derive(Serialize)]
@@ -365,6 +369,8 @@ struct ExtractorNodeFieldInfo {
     name: String,
     method: String,
     snake_case_ty: String,
+    attributes: bool,
+    parenthesized_attrs: bool,
     string: bool,
     predicate: bool,
     optional: bool,
@@ -399,10 +405,16 @@ fn enum_to_extractor_info(node: &AstEnumSrc) -> ExtractorEnumInfo {
             .map(|v| {
                 let name = class_name(v);
                 let snake_case_name = to_lower_snake_case(v);
+                let emission = match v.as_str() {
+                    "ParenExpr" => "self.emit_parenthesized_expr(inner)".to_owned(),
+                    "ParenPat" => "self.emit_parenthesized_pat(inner)".to_owned(),
+                    _ => format!("self.emit_{snake_case_name}(inner).map(Into::into)"),
+                };
                 EnumVariantInfo {
                     name,
                     snake_case_name,
                     variant_ast_name: v.to_string(),
+                    emission,
                 }
             })
             .collect(),
@@ -412,6 +424,7 @@ fn enum_to_extractor_info(node: &AstEnumSrc) -> ExtractorEnumInfo {
 
 fn field_info_to_extractor_info(name: &str, field: &FieldInfo) -> ExtractorNodeFieldInfo {
     let name = property_name(name, &field.name);
+    let attributes = name == "attrs";
     match &field.ty {
         FieldType::String => ExtractorNodeFieldInfo {
             name,
@@ -440,6 +453,7 @@ fn field_info_to_extractor_info(name: &str, field: &FieldInfo) -> ExtractorNodeF
         },
         FieldType::List(ty) => ExtractorNodeFieldInfo {
             name,
+            attributes,
             method: if ty == "AnyAttr" {
                 "attrs_with_doc".to_owned()
             } else {
@@ -453,12 +467,19 @@ fn field_info_to_extractor_info(name: &str, field: &FieldInfo) -> ExtractorNodeF
 }
 fn node_to_extractor_info(node: &AstNodeSrc) -> ExtractorNodeInfo {
     let fields = get_fields(node);
-    let has_attrs = fields.iter().any(|f| f.name == "attrs");
+    let parenthesized_attrs = matches!(node.name.as_str(), "MacroExpr" | "RecordExpr");
     let name = class_name(&node.name);
-    let fields = fields
+    let fields: Vec<_> = fields
         .iter()
         .map(|f| field_info_to_extractor_info(&name, f))
+        .map(|mut f| {
+            f.parenthesized_attrs = parenthesized_attrs && f.name == "attrs";
+            f
+        })
         .collect();
+    let has_attrs = fields
+        .iter()
+        .any(|f| f.name == "attrs" && !f.parenthesized_attrs);
     ExtractorNodeInfo {
         name,
         snake_case_name: to_lower_snake_case(&node.name),

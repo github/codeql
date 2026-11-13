@@ -1,0 +1,28 @@
+rules_kotlin 2.4 propagates the Kotlin warning mode to javac, so the extractor's
+Kotlin warn = "error" setting also makes Java warnings fatal. This breaks the
+Java 8 target with JDK 25's obsolete source/target option warnings. Keep Kotlin
+warnings-as-errors for Kotlin compilation without changing javac warning behavior.
+--- a/kotlin/internal/jvm/compile.bzl
++++ b/kotlin/internal/jvm/compile.bzl
+@@ -1162,21 +1162,6 @@
+             for flag in javac_options_to_flags(plugin[JavacOptions])
+         ])
+ 
+-        # Compile the Java half with the same warning mode as the kotlin part, unless the javac
+-        # options (or a plugin's) already set one: a single `warn` value governs the whole target.
+-        # A per-diagnostic level in `x_warning_level` limits the derivation, because javac has no
+-        # equivalent of `-Xwarning-level`. A diagnostic kept at `warning` or `disabled` under
+-        # `warn = "error"` must not turn every javac warning into an error, and a diagnostic raised
+-        # to `warning` or `error` under `warn = "off"` must not silence every javac warning.
+-        if "-nowarn" not in javac_opts and "-Werror" not in javac_opts:
+-            kotlinc_warn = getattr(kotlinc_options, "warn", None) if kotlinc_options else None
+-            warning_levels = (getattr(kotlinc_options, "x_warning_level", None) if kotlinc_options else None) or {}
+-            levels = warning_levels.values()
+-            if kotlinc_warn == "off" and "error" not in levels and "warning" not in levels:
+-                javac_opts.append("-nowarn")
+-            elif kotlinc_warn == "error" and "warning" not in levels and "disabled" not in levels:
+-                javac_opts.append("-Werror")
+-
+         java_info = java_common.compile(
+             ctx,
+             source_files = srcs.java,

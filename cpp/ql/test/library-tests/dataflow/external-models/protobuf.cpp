@@ -1,19 +1,7 @@
 
 // --- stub library headers ---
 
-#include "std_string.h"
-
-namespace std {
-	class istream {
-	public:
-		istream();
-	};
-
-	class ostream {
-	public:
-		ostream();
-	};
-}
+#include "../taint-tests/stl.h"
 
 namespace absl {
 	class string_view {

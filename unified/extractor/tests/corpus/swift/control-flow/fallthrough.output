@@ -60,8 +60,8 @@ sourceFile
                             declReferenceExpr
                               baseName: identifier "x"
                           switchKeyword: switch
-          name: identifier "classify"
           modifiers:
+          name: identifier "classify"
           signature:
             functionSignature
               parameterClause:
