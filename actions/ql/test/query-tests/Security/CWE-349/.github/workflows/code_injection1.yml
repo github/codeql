@@ -2,11 +2,31 @@ on:
   issue_comment:
     types: [created]
 
+cache-mode: read
+
 jobs:
   pr-comment:
     permissions: read-all
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - run: | # No cache alert: inherits workflow read mode.
           echo ${{ github.event.comment.body }}
+
+  write:
+    cache-mode: write
+    permissions: read-all
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.comment.body }}" # Cache alert: explicit write enables saves after comment injection.
+
+  write-only:
+    cache-mode: write-only
+    permissions: read-all
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.comment.body }}" # Cache alert: write-only overrides the low-trust read default.
+
+  cache-modes:
+    permissions: {}
+    uses: ./.github/workflows/cache_mode_reusable.yml # No cache alert: callee write exceeds the caller's read limit.
 

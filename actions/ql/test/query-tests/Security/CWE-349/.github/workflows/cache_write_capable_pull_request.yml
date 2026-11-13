@@ -1,0 +1,64 @@
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  default:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.pull_request.title }}" # No cache alert: PR trigger defaults to read-only.
+
+  read:
+    if: github.event.pull_request.merged == true
+    cache-mode: read
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.pull_request.title }}" # No cache alert: read mode prevents saves.
+
+  none:
+    if: github.event.pull_request.merged == true
+    cache-mode: none
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.pull_request.title }}" # No cache alert: cache access is disabled.
+
+  write:
+    if: github.event.pull_request.merged == true
+    cache-mode: write
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.pull_request.title }}" # Cache alert: title injection can poison the merged PR's base-branch cache.
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/cache/save@v4 # Cache alert: saves untrusted PR files in the default-branch scope.
+        with:
+          path: .
+          key: merged-pr-write
+      - run: npm install # Cache alert: executes untrusted PR code with cache-write access.
+
+  write-only:
+    if: github.event.pull_request.merged == true
+    cache-mode: write-only
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.pull_request.title }}" # Cache alert: write-only still allows saves after title injection.
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/cache/save@v4 # Cache alert: write-only permits saving untrusted PR files.
+        with:
+          path: .
+          key: merged-pr-write-only
+      - run: npm install # Cache alert: untrusted PR code can save caches without restore access.
+
+  reusable:
+    if: github.event.pull_request.merged == true
+    cache-mode: write
+    uses: ./.github/workflows/cache_mode_nested.yml # No cache alert: callee only probes access with harmless steps.

@@ -494,6 +494,9 @@ class WorkflowImpl extends AstNodeImpl, TWorkflowNode {
   /** Gets the permissions granted to this workflow. */
   PermissionsImpl getPermissions() { result.getNode() = n.lookup("permissions") }
 
+  /** Gets the explicitly declared cache mode for this workflow, if any. */
+  string getCacheMode() { result = n.lookup("cache-mode").(YamlString).getValue() }
+
   /** Gets the trigger event that starts this workflow. */
   override EventImpl getATriggerEvent() { this.getOn().getAnEvent() = result }
 
@@ -922,6 +925,9 @@ class JobImpl extends AstNodeImpl, TJobNode {
 
   /** Gets the permissions for this job. */
   PermissionsImpl getPermissions() { result.getNode() = n.lookup("permissions") }
+
+  /** Gets the explicitly declared cache mode for this job, if any. */
+  string getCacheMode() { result = n.lookup("cache-mode").(YamlString).getValue() }
 
   /** Gets the strategy for this job. */
   StrategyImpl getStrategy() { result.getNode() = n.lookup("strategy") }

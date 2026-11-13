@@ -2,6 +2,8 @@ on:
   issue_comment:
     types: [created]
 
+cache-mode: write
+
 jobs:
   pr-comment:
     permissions: read-all
@@ -15,9 +17,13 @@ jobs:
         with:
           ref: ${{ steps.comment-branch.outputs.head_sha }}
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2 # Cache alert: workflow write mode allows saving untrusted PR files.
         with:
           path: ./poison
           key: poison_key
       - run: |
           cat poison
+
+  cache-modes:
+    permissions: {}
+    uses: ./.github/workflows/cache_mode_reusable.yml # No cache alert: harmless access probes, despite write permission.
