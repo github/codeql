@@ -55,3 +55,12 @@ void test_postfix_crement(int *p, int q) {
   int *p2 = (int*)(p++); // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
   int q2 = (int)(q++); // $ asExpr="... ++" asExpr="q(... ++)"
 }
+
+struct C {
+  C();
+};
+
+void test_constructor_calls() {
+  C c; // $ asExpr="call to C"
+  C *p = new C; // $ asExpr="call to C" asExpr=new asIndirectExpr=new
+}
