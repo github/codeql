@@ -194,7 +194,7 @@ impl TomlReader {
 
     fn read(&mut self, manifest: &ManifestPath) -> anyhow::Result<Rc<CargoManifestSlice>> {
         if let Some(table) = self.cache.get(manifest) {
-            return Ok(table.clone());
+            return Ok(Rc::clone(table));
         }
         let content = fs::read_to_string(manifest).map_err(|e| {
             error!("failed to read {} ({e})", manifest.as_str());
@@ -204,7 +204,7 @@ impl TomlReader {
             error!("failed to parse {} ({e})", manifest.as_str());
             e
         })?);
-        self.cache.insert(manifest.clone(), table.clone());
+        self.cache.insert(manifest.clone(), Rc::clone(&table));
         Ok(table)
     }
 }
