@@ -371,6 +371,23 @@ fn get_overlay_changed_files() -> Option<HashSet<PathBuf>> {
     )
 }
 
+fn find_coding_word(content: &[u8], mut index: usize) -> Option<usize> {
+    const CODING: [char; 12] = ['C', 'c', 'O', 'o', 'D', 'd', 'I', 'i', 'N', 'n', 'G', 'g'];
+
+    let mut word_index = 0;
+    while index < content.len() && word_index < CODING.len() && content[index] as char != '\n' {
+        if content[index] as char == CODING[word_index]
+            || content[index] as char == CODING[word_index + 1]
+        {
+            word_index += 2;
+        } else {
+            word_index = 0;
+        }
+        index += 1;
+    }
+    (word_index >= CODING.len()).then_some(index)
+}
+
 fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<'_, str>> {
     let mut index = 0;
     // skip UTF-8 BOM marker if there is one
@@ -395,23 +412,7 @@ fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<'_, str>> {
     }
     index += 1;
 
-    #[allow(clippy::items_after_statements)]
-    const CODING: [char; 12] = ['C', 'c', 'O', 'o', 'D', 'd', 'I', 'i', 'N', 'n', 'G', 'g'];
-
-    let mut word_index = 0;
-    while index < content.len() && word_index < CODING.len() && content[index] as char != '\n' {
-        if content[index] as char == CODING[word_index]
-            || content[index] as char == CODING[word_index + 1]
-        {
-            word_index += 2;
-        } else {
-            word_index = 0;
-        }
-        index += 1;
-    }
-    if word_index < CODING.len() {
-        return None;
-    }
+    index = find_coding_word(content, index)?;
     index = skip_space(content, index);
 
     if index < content.len() && content[index] as char != ':' && content[index] as char != '=' {
