@@ -108,6 +108,7 @@ predicate negatedOperators(string op, string negated) {
 }
 
 /** Holds if replacing `expr` with `operatorName` could call an enclosing operator. */
+pragma[no_dynamic_join_order]
 private predicate couldCallEnclosingOperator(LogicalNotExpr expr, string operatorName) {
   exists(BinaryOperation binary, Operator enclosingOperator |
     binary = expr.getOperand() and
