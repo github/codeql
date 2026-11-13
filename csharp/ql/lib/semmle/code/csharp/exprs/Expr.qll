@@ -54,7 +54,7 @@ class Expr extends ControlFlowElement, @expr {
   final AnnotatedType getAnnotatedType() { result.appliesTo(this) }
 
   /** Gets the value of this expression, if any */
-  string getValue() { expr_value(this, result) }
+  string getValue() { expr_value(this.stripImplicit(), result) }
 
   /** Gets the integer value of this expression, if any. */
   cached
