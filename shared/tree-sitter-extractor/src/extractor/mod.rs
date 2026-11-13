@@ -900,7 +900,7 @@ impl<'a> Visitor<'a> {
                 }
             }
         }
-        if is_valid { Some(args) } else { None }
+        is_valid.then_some(args)
     }
 
     fn type_matches(&self, tp: &TypeName, type_info: &node_types::FieldTypeInfo) -> bool {

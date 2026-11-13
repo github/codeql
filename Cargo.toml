@@ -56,3 +56,6 @@ cast_sign_loss = "allow"
 struct_excessive_bools = "allow"
 # False positives for things like "matches" and "matched"
 similar_names = "allow"
+
+# Additional lints from the `restriction` and `nursery` group
+if_then_some_else_none = "warn"

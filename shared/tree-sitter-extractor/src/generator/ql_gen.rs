@@ -674,12 +674,12 @@ fn create_field_getters<'a>(
             create_get_field_expr_for_table_storage(
                 get_value_result_var_name,
                 field_table_name,
-                if *has_index { Some("i") } else { None },
+                has_index.then_some("i"),
             ),
             create_get_field_expr_for_table_storage(
                 get_value_result_var_name,
                 field_table_name,
-                if *has_index { Some("_") } else { None },
+                has_index.then_some("_"),
             ),
         ),
     };

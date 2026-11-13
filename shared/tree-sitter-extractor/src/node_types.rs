@@ -321,11 +321,9 @@ fn add_field(
         Some('a' | 'e' | 'i' | 'o' | 'u') => "An",
         _ => "A",
     };
-    let any_getter_name = if field_info.multiple {
-        Some(format!("get{article}{getter_suffix}"))
-    } else {
-        None
-    };
+    let any_getter_name = field_info
+        .multiple
+        .then(|| format!("get{article}{getter_suffix}"));
     fields.push(Field {
         parent: TypeName {
             kind: parent_type_name.kind.clone(),

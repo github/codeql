@@ -202,11 +202,7 @@ impl<'db> Translator<'db> {
         if let Some(semantics) = self.semantics.as_ref() {
             let file_range = semantics.original_range(node.syntax());
             let file_id = self.file_id?;
-            if file_id == file_range.file_id {
-                Some(file_range.range)
-            } else {
-                None
-            }
+            (file_id == file_range.file_id).then_some(file_range.range)
         } else {
             Some(node.syntax().text_range())
         }

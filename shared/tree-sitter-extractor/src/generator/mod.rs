@@ -346,11 +346,7 @@ fn add_field_for_table_storage<'a>(
         },
         // In addition to the field being unique, the combination of
         // parent+index is unique, so add a keyset for them.
-        keysets: if has_index {
-            Some(vec![parent_name, "index"])
-        } else {
-            None
-        },
+        keysets: has_index.then(|| vec![parent_name, "index"]),
     };
     (field_table, field_type_entry)
 }

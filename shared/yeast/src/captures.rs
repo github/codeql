@@ -47,7 +47,7 @@ impl Captures {
     pub fn get_opt(&self, key: &str) -> Option<Id> {
         self.captures
             .get(key)
-            .and_then(|ids| if ids.len() == 1 { Some(ids[0]) } else { None })
+            .and_then(|ids| (ids.len() == 1).then(|| ids[0]))
     }
 
     pub fn insert(&mut self, key: &'static str, id: Id) {
@@ -144,7 +144,7 @@ impl TranslatedCaptures {
     pub fn get_opt(&self, key: &str) -> Option<OutputId> {
         self.captures
             .get(key)
-            .and_then(|ids| if ids.len() == 1 { Some(ids[0]) } else { None })
+            .and_then(|ids| (ids.len() == 1).then(|| ids[0]))
     }
 
     fn insert(&mut self, key: &'static str, id: OutputId) {
