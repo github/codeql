@@ -20,10 +20,14 @@ private class RelevantFile extends File {
   }
 }
 
-private predicate hasActiveSemantics(AstNode node) {
-  node.getFile().(ExtractedFile).hasStandaloneSemantics()
-  or
-  node.getFile().(ExtractedFile).isInActiveIncludeExpansion(node)
+private predicate isNotInactiveStandaloneCopy(AstNode node) {
+  not exists(ExtractedFile file |
+    file = node.getFile() and
+    exists(AstNode included |
+      file.isInActiveIncludeExpansion(included)
+    ) and
+    not file.isInActiveIncludeExpansion(node)
+  )
 }
 
 module CallTargetStats implements StatsSig {
@@ -36,7 +40,7 @@ module CallTargetStats implements StatsSig {
   private class RelevantInvocationExpr extends InvocationExpr {
     RelevantInvocationExpr() {
       this.getFile() instanceof RelevantFile and
-      hasActiveSemantics(this) and
+      isNotInactiveStandaloneCopy(this) and
       not this instanceof CallExprImpl::DynamicCallExpr and
       not this = any(Operation o | not o.isOverloaded(_, _, _)) and
       not this = any(DerefExpr de | TypeInference::inferType(de.getExpr()) instanceof PtrType)
@@ -59,14 +63,14 @@ module MacroCallTargetStats implements StatsSig {
     result =
       count(MacroCall c |
         c.getFile() instanceof RelevantFile and
-        hasActiveSemantics(c) and
+        isNotInactiveStandaloneCopy(c) and
         c.hasMacroCallExpansion()
       )
   }
 
   additional predicate isNotOkCall(MacroCall c) {
     c.getFile() instanceof RelevantFile and
-    hasActiveSemantics(c) and
+    isNotInactiveStandaloneCopy(c) and
     not c.hasMacroCallExpansion()
   }
 
@@ -84,7 +88,7 @@ module ExprTypeStats implements StatsSig {
     result =
       count(Expr e |
         e.getFile() instanceof RelevantFile and
-        hasActiveSemantics(e) and
+        isNotInactiveStandaloneCopy(e) and
         e.fromSource() and
         hasGoodType(e)
       )
@@ -94,7 +98,7 @@ module ExprTypeStats implements StatsSig {
     result =
       count(Expr e |
         e.getFile() instanceof RelevantFile and
-        hasActiveSemantics(e) and
+        isNotInactiveStandaloneCopy(e) and
         e.fromSource() and
         not hasGoodType(e)
       )
