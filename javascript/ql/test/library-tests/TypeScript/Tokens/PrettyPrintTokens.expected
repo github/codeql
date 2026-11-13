@@ -6,6 +6,14 @@
 | greaterThanTS.ts:8 | console . log ( x >= 1 ) ;  |
 | greaterThanTS.ts:9 | console . log ( x >= 1 ) ;  |
 | greaterThanTS.ts:10 | console . log ( x >= 1 ) ;  |
+| jsx.tsx:1 | render ( < div > &#10003; </ div > ) ;  |
+| jsx.tsx:2 | render ( < Trans > See~# { tag } ~posts </ Trans > ) ;  |
+| jsx.tsx:3 | render ( < div > //~not~a~comment~/*~neither~is~this~*/ </ div > ) ;  |
+| jsx.tsx:4 | render ( < div > { tag } </ div > ) ;  |
+| jsx.tsx:5 | render ( < > < span > # </ span > < span > { /a#/ . test ( tag ) ? `#${ tag }` : tag >= 1 } </ span > </ > ) ;  |
+| jsx.tsx:6 | render ( < div title = "trailing~\\" > # </ div > ) ;  |
+| jsx.tsx:7 | render ( < name-with-dashes data-value = "#" > { tag } </ name-with-dashes > ) ;  |
+| jsx.tsx:8 | render ( < div > line~one\n~~#~line~two\n  |
 | mixed.ts:2 | console . log ( x >= 1 ) ;  |
 | mixed.ts:3 | console . log ( `${ /r/g >= 1 }` ) ;  |
 | mixed.ts:4 | console . log ( /r/g ) ;  |

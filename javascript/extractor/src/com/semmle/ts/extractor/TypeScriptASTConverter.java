@@ -275,6 +275,8 @@ public class TypeScriptASTConverter {
         case "TemplateMiddle":
         case "TemplateTail":
         case "NoSubstitutionTemplateLiteral":
+        case "JsxText":
+        case "JsxTextAllWhiteSpaces":
           tokens.add(new Token(loc, Token.Type.STRING));
           break;
         case "Identifier":

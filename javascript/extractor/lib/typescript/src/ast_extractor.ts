@@ -129,11 +129,11 @@ export function extractAst(ast: ts.SourceFile, diagnostics: readonly Diagnostic[
     }
 
     function projectValue(value: unknown): JsonValue {
-        if (Array.isArray(value)) return Array.from(value, projectValue);
-        if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+        if (Array.isArray(value)) {
+            return Array.from(value, projectValue);
+        } else if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
             return value;
-        }
-        if (value != null && typeof value === "object" && "forEachChild" in value) {
+        } else if (value != null && typeof value === "object" && "forEachChild" in value) {
             return projectNode(value as ts.Node);
         }
         throw new Error("Unexpected TypeScript AST property value");
@@ -176,10 +176,39 @@ export function extractAst(ast: ts.SourceFile, diagnostics: readonly Diagnostic[
 function extractTokens(ast: ts.SourceFile, rescan: boolean): JsonObject[] {
     const scanner = ts.createScanner(false, ts.LanguageVariant.JSX, ast.text);
     const rescans = new Map<number, () => ts.SyntaxKind>();
-    if (rescan) visit(ast);
+    const jsxScans = new Map<number, () => ts.SyntaxKind>();
+    visit(ast);
+
+    function addJsxNameScans(node: ts.Node): void {
+        if (ts.isIdentifier(node)) {
+            jsxScans.set(node.getStart(ast), () => {
+                scanner.scan();
+                return scanner.scanJsxIdentifier();
+            });
+        } else {
+            node.forEachChild(addJsxNameScans);
+        }
+    }
 
     function visit(node: ts.Node): void {
         node.forEachChild(visit);
+        if (ts.isJsxText(node)) {
+            // JSX whitespace and comment-like text are part of the token, not trivia.
+            jsxScans.set(node.pos, () => scanner.scanJsxToken());
+        } else if (ts.isJsxAttribute(node)) {
+            addJsxNameScans(node.name);
+            if (node.initializer && ts.isStringLiteral(node.initializer)) {
+                const start = node.initializer.getStart(ast);
+                jsxScans.set(start, () => {
+                    scanner.resetTokenState(start);
+                    return scanner.scanJsxAttributeValue();
+                });
+            }
+        } else if (ts.isJsxOpeningElement(node) || ts.isJsxClosingElement(node)
+            || ts.isJsxSelfClosingElement(node)) {
+            addJsxNameScans(node.tagName);
+        }
+        if (!rescan) return;
         if (ts.isRegularExpressionLiteral(node)) {
             rescans.set(node.getStart(ast), () => scanner.reScanSlashToken());
         } else if (ts.isTemplateMiddle(node) || ts.isTemplateTail(node)) {
@@ -203,10 +232,23 @@ function extractTokens(ast: ts.SourceFile, rescan: boolean): JsonObject[] {
     const tokens: JsonObject[] = [];
     let kind: ts.SyntaxKind;
     do {
-        kind = scanner.scan();
+        const start = scanner.getTokenEnd();
+        kind = jsxScans.get(start)?.() ?? scanner.scan();
         const callback = rescans.get(scanner.getTokenStart());
         // Keep the pre-rescan kind, as in the original Java-facing token protocol.
         if (callback != null) callback();
+        // The native API scanner can repeatedly return a zero-width private
+        // identifier for a bare '#'. See the test `bareHash.ts` for an example.
+        // This is expected behavior as per:
+        // https://github.com/microsoft/TypeScript/issues/64490. Using
+        // `reScanHashToken` ensures that the scanner advances past the `#`.
+        if (kind === ts.SyntaxKind.PrivateIdentifier
+            && scanner.getTokenEnd() === scanner.getTokenStart()) {
+            scanner.reScanHashToken();
+        }
+        if (kind !== ts.SyntaxKind.EndOfFile && scanner.getTokenEnd() <= start) {
+            throw new Error("TypeScript scanner did not advance at offset " + start);
+        }
         tokens.push({
             kind,
             tokenPos: scanner.getTokenStart(),
