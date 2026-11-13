@@ -365,7 +365,7 @@ impl fmt::Display for FormalParameter<'_> {
 /// Generates a QL library by writing the given `elements` to the `file`.
 pub fn write(file: &mut dyn std::io::Write, elements: &[TopLevel]) -> std::io::Result<()> {
     for element in elements {
-        write!(file, "{}\n\n", element)?;
+        write!(file, "{element}\n\n")?;
     }
     Ok(())
 }

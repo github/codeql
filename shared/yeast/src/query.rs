@@ -86,7 +86,7 @@ impl QueryNode {
                     });
                     let empty = Vec::new();
                     let mut child_iter =
-                        node.fields.get(&field_id).unwrap_or(&empty).iter().cloned();
+                        node.fields.get(&field_id).unwrap_or(&empty).iter().copied();
                     if !match_children(field_children.iter(), ast, &mut child_iter, matches) {
                         return false;
                     }

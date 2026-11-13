@@ -224,9 +224,9 @@ mod tests {
         assert_ne!(file1, file3);
 
         let mut set = HashSet::new();
-        set.insert(file1.clone());
-        set.insert(file2.clone());
-        set.insert(file3.clone());
+        set.insert(file1);
+        set.insert(file2);
+        set.insert(file3);
         assert_eq!(set.len(), 2);
     }
 

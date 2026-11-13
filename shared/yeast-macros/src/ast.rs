@@ -209,12 +209,12 @@ mod tests {
 
     fn output_leaf_kinds() -> BTreeSet<String> {
         yeast_schema::node_types_yaml::leaf_kinds_from_yaml(
-            r#"
+            r"
 named:
   assignment:
     left: identifier
   identifier:
-"#,
+",
         )
         .unwrap()
     }

@@ -124,7 +124,7 @@ const EMPTY_NODE_TYPES: &[crate::schema::NodeType] = &[];
 /// - `schema`: The AST schema to validate against.
 /// - `node`: The node being checked.
 /// - `expected`: The set of allowed types for this node, or `None` if type-checking is disabled.
-/// - `parent_field`: Optional tuple of (parent_kind, field_name) for context in error messages.
+/// - `parent_field`: Optional tuple of `(parent_kind, field_name)` for context in error messages.
 ///
 /// # Returns
 /// `Some(error_message)` if the node violates the schema (e.g., wrong kind, missing field declaration).
@@ -199,7 +199,7 @@ fn expected_for_field<'a>(
         .map(|v| v.as_slice())
 }
 
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments, clippy::too_many_lines)]
 fn dump_node<Id: TreeId>(
     ast: &Ast<Id>,
     id: Id,
@@ -571,7 +571,7 @@ fn node_content<Id: TreeId>(node: &Node<Id>, source: &str) -> String {
         _ => {
             let range = node.byte_range();
             if range.start < source.len() && range.end <= source.len() {
-                source[range.start..range.end].to_string()
+                source[range].to_string()
             } else {
                 String::new()
             }
@@ -582,7 +582,7 @@ fn node_content<Id: TreeId>(node: &Node<Id>, source: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{NodeContent, OutputAst, Point, Range};
+    use crate::{OutputAst, Point, Range};
     use std::collections::BTreeMap;
 
     fn range(start: usize, end: usize) -> Range {

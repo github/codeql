@@ -55,7 +55,7 @@ impl Writer {
     ///  Note: You probably want to make sure that the key strings that you use are disjoint
     ///  for disjoint column types; the standard way of doing this is to prefix (or append)
     ///  the column type name to the ID. Thus, you might identify methods in Java by the
-    ///  full ID "methods_com.method.package.DeclaringClass.method(argumentList)".
+    ///  full ID `methods_com.method.package.DeclaringClass.method(argumentList)`.
     pub fn global_id(&mut self, key: &str) -> (Label, bool) {
         if let Some(label) = self.global_keys.get(key) {
             return (*label, false);
@@ -81,7 +81,7 @@ impl Writer {
 
     pub fn add_tuple(&mut self, table_name: &str, args: Vec<Arg>) {
         self.trap_output
-            .push(Entry::GenericTuple(table_name.to_owned(), args))
+            .push(Entry::GenericTuple(table_name.to_owned(), args));
     }
 
     pub fn comment(&mut self, text: String) {
@@ -123,7 +123,7 @@ pub enum Entry {
     FreshId(Label),
     /// Maps the label to a key, e.g. `#7=@"foo"`.
     MapLabelToKey(Label, String),
-    /// foo_bar(arg*)
+    /// `foo_bar(arg*)`
     GenericTuple(String, Vec<Arg>),
     Comment(String),
 }
@@ -174,7 +174,7 @@ pub enum Arg {
     String(String),
 }
 
-const MAX_STRLEN: usize = 1048576;
+const MAX_STRLEN: usize = 1_048_576;
 
 impl fmt::Display for Arg {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -218,11 +218,10 @@ pub struct Program(Vec<Entry>);
 
 impl fmt::Display for Program {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let mut text = String::new();
         for trap_entry in &self.0 {
-            text.push_str(&format!("{trap_entry}\n"));
+            writeln!(f, "{trap_entry}")?;
         }
-        write!(f, "{text}")
+        Ok(())
     }
 }
 
@@ -277,7 +276,7 @@ fn limit_string(string: &str, max_size: usize) -> &str {
     // encoded data any byte that matches the bit pattern 10XXXXXX is not a start byte.
     // Therefore we decrement the index as long as there are bytes matching this pattern.
     // This ensures we cut the string at the border between one character and another.
-    while index > 0 && (p[index] & 0b11000000) == 0b10000000 {
+    while index > 0 && (p[index] & 0b1100_0000) == 0b1000_0000 {
         index -= 1;
     }
     &string[0..index]
@@ -298,7 +297,7 @@ impl Compression {
         match std::env::var(var_name) {
             Ok(method) => match Compression::from_string(&method) {
                 Some(c) => Ok(c),
-                None => Err(format!("Unknown compression method '{}'", method)),
+                None => Err(format!("Unknown compression method '{method}'")),
             },
             // Default compression method if the env var isn't set:
             Err(_) => Ok(Compression::Gzip),

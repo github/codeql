@@ -383,9 +383,7 @@ mod tests {
     use super::*;
     use crate::project_definitions::Language;
     use all_asserts::{assert_false, assert_true};
-    use std::ffi::OsString;
     use std::path::PathBuf;
-    use std::time::Duration;
 
     fn make_command(
         args: &[&str],
@@ -407,7 +405,6 @@ mod tests {
 
     #[allow(clippy::unnecessary_wraps)]
     fn fake_status(exit_code: i32) -> io::Result<ExitStatus> {
-        use std::process::ExitStatus;
         #[cfg(unix)]
         {
             use std::os::unix::process::ExitStatusExt;

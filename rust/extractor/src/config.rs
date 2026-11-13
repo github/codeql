@@ -97,13 +97,10 @@ impl Config {
     pub fn extract() -> anyhow::Result<Config> {
         let cli_args = CliConfig::parse();
         let mut figment = Figment::new()
-            .merge(Env::raw().filter_map(|f| {
-                if f.eq("CODEQL_VERBOSITY") {
-                    Some("LOGGING_VERBOSITY".into())
-                } else {
-                    None
-                }
-            }))
+            .merge(
+                Env::raw()
+                    .filter_map(|f| f.eq("CODEQL_VERBOSITY").then(|| "LOGGING_VERBOSITY".into())),
+            )
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_OPTION_"))
             .merge(Serialized::defaults(cli_args));
@@ -246,7 +243,7 @@ impl Config {
 }
 
 fn to_cfg_override(spec: &str) -> CfgAtom {
-    if let Some((key, value)) = spec.split_once("=") {
+    if let Some((key, value)) = spec.split_once('=') {
         CfgAtom::KeyValue {
             key: Symbol::intern(key),
             value: Symbol::intern(value),

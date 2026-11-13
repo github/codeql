@@ -47,7 +47,7 @@ impl Captures {
     pub fn get_opt(&self, key: &str) -> Option<Id> {
         self.captures
             .get(key)
-            .and_then(|ids| if ids.len() == 1 { Some(ids[0]) } else { None })
+            .and_then(|ids| (ids.len() == 1).then(|| ids[0]))
     }
 
     pub fn insert(&mut self, key: &'static str, id: Id) {
@@ -92,11 +92,11 @@ impl Captures {
                 .ok_or_else(|| format!("No variable named {fst}"))?
                 .len();
             // TODO: better error on missing capture
-            if id_iter.any(|id| self.captures.get(id).map(Vec::len).unwrap_or(0) != repeats) {
+            if id_iter.any(|id| self.captures.get(id).map_or(0, Vec::len) != repeats) {
                 return Err("Repeated captures must have the same number of matches".to_string());
             }
             Ok((0..repeats).map(move |iter| {
-                let mut new_vars: Captures = Captures::new();
+                let mut new_vars = Captures::new();
                 for id in children {
                     let child_capture = self.captures.get(id).unwrap()[iter];
                     new_vars.captures.insert(id, vec![child_capture]);
@@ -144,7 +144,7 @@ impl TranslatedCaptures {
     pub fn get_opt(&self, key: &str) -> Option<OutputId> {
         self.captures
             .get(key)
-            .and_then(|ids| if ids.len() == 1 { Some(ids[0]) } else { None })
+            .and_then(|ids| (ids.len() == 1).then(|| ids[0]))
     }
 
     fn insert(&mut self, key: &'static str, id: OutputId) {

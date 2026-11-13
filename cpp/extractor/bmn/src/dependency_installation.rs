@@ -45,7 +45,7 @@ fn run_command(command: &mut Command) -> anyhow::Result<()> {
             } else {
                 OsString::from("Failed to read output")
             };
-            Err(anyhow!("\"{command_name}\" failed: {error:?}"))
+            Err(anyhow!("\"{command_name}\" failed: {}", error.display()))
         }
         Err(e) => Err(anyhow!("Error waiting for process \"{command_name}\": {e}")),
     }
@@ -86,7 +86,7 @@ fn install_package(package_name: &str) -> anyhow::Result<()> {
 }
 
 /// Struct to manage package installation state
-struct PackageInstaller {}
+struct PackageInstaller;
 
 impl PackageInstaller {
     /// Create a new `PackageInstaller` and perform an initial `apt-get update`
@@ -95,11 +95,15 @@ impl PackageInstaller {
             bail!("'sudo apt-get' not available.");
         }
         apt_update()?;
-        Ok(Self {})
+        Ok(Self)
     }
 
     /// Ensure the given package is installed
-    #[allow(clippy::unused_self)]
+    #[allow(
+        clippy::unused_self,
+        clippy::needless_pass_by_ref_mut,
+        reason = "Package installation mutates system state, so require exclusive access."
+    )]
     fn install_package(&mut self, package_name: &str) -> anyhow::Result<()> {
         install_package(package_name)
     }

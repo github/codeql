@@ -1,12 +1,12 @@
 use clap::Args;
 use codeql_extractor::file_paths::PathTransformer;
-use lazy_static::lazy_static;
 use rayon::prelude::*;
 use std::borrow::Cow;
 use std::collections::HashSet;
 use std::fs;
 use std::io::BufRead;
 use std::path::{Path, PathBuf};
+use std::sync::LazyLock;
 use tree_sitter::{Language, Parser, Range};
 
 use codeql_extractor::{diagnostics, extractor, file_paths, node_types, trap};
@@ -26,7 +26,8 @@ pub struct Options {
     file_list: String,
 }
 
-pub fn run(options: Options) -> std::io::Result<()> {
+#[allow(clippy::too_many_lines)]
+pub fn run(options: &Options) -> std::io::Result<()> {
     extractor::set_tracing_level("ruby");
     tracing::info!("Extraction started");
     let diagnostics = diagnostics::DiagnosticLoggers::new("ruby");
@@ -159,7 +160,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                                 match encoding
                                     .decode(&source, encoding::types::DecoderTrap::Replace)
                                 {
-                                    Ok(str) => source = str.as_bytes().to_owned(),
+                                    Ok(str) => str.as_bytes().clone_into(&mut source),
                                     Err(msg) => {
                                         needs_conversion = false;
                                         diagnostics_writer.write(
@@ -222,7 +223,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
             } else {
                 std::fs::copy(&path, &src_archive_file)?;
             }
-            write_trap(&trap_dir, path, &trap_writer, trap_compression, path_transformer.as_ref())
+            write_trap(&trap_dir, &path, &trap_writer, trap_compression, path_transformer.as_ref())
         })
         .expect("failed to extract files");
 
@@ -231,7 +232,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
     extractor::populate_empty_location(&mut trap_writer);
     let res = write_trap(
         &trap_dir,
-        path,
+        &path,
         &trap_writer,
         trap_compression,
         path_transformer.as_ref(),
@@ -246,9 +247,8 @@ pub fn run(options: Options) -> std::io::Result<()> {
     res
 }
 
-lazy_static! {
-    static ref CP_NUMBER: regex::Regex = regex::Regex::new("cp([0-9]+)").unwrap();
-}
+static CP_NUMBER: LazyLock<regex::Regex> =
+    LazyLock::new(|| regex::Regex::new("cp([0-9]+)").unwrap());
 
 /// Returns the `encoding::Encoding` corresponding to the given encoding name, if one exists.
 fn encoding_from_name(encoding_name: &str) -> Option<&(dyn encoding::Encoding + Send + Sync)> {
@@ -264,14 +264,14 @@ fn encoding_from_name(encoding_name: &str) -> Option<&(dyn encoding::Encoding + 
 
 fn write_trap(
     trap_dir: &Path,
-    path: PathBuf,
+    path: &Path,
     trap_writer: &trap::Writer,
     trap_compression: trap::Compression,
     path_transformer: Option<&PathTransformer>,
 ) -> std::io::Result<()> {
     let trap_file = file_paths::path_for(
         trap_dir,
-        &path,
+        path,
         trap_compression.extension(),
         path_transformer,
     );
@@ -371,6 +371,23 @@ fn get_overlay_changed_files() -> Option<HashSet<PathBuf>> {
     )
 }
 
+fn find_coding_word(content: &[u8], mut index: usize) -> Option<usize> {
+    const CODING: [char; 12] = ['C', 'c', 'O', 'o', 'D', 'd', 'I', 'i', 'N', 'n', 'G', 'g'];
+
+    let mut word_index = 0;
+    while index < content.len() && word_index < CODING.len() && content[index] as char != '\n' {
+        if content[index] as char == CODING[word_index]
+            || content[index] as char == CODING[word_index + 1]
+        {
+            word_index += 2;
+        } else {
+            word_index = 0;
+        }
+        index += 1;
+    }
+    (word_index >= CODING.len()).then_some(index)
+}
+
 fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<'_, str>> {
     let mut index = 0;
     // skip UTF-8 BOM marker if there is one
@@ -384,9 +401,9 @@ fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<'_, str>> {
     {
         index += 2;
         while index < content.len() && content[index] as char != '\n' {
-            index += 1
+            index += 1;
         }
-        index += 1
+        index += 1;
     }
     index = skip_space(content, index);
 
@@ -395,21 +412,7 @@ fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<'_, str>> {
     }
     index += 1;
 
-    const CODING: [char; 12] = ['C', 'c', 'O', 'o', 'D', 'd', 'I', 'i', 'N', 'n', 'G', 'g'];
-    let mut word_index = 0;
-    while index < content.len() && word_index < CODING.len() && content[index] as char != '\n' {
-        if content[index] as char == CODING[word_index]
-            || content[index] as char == CODING[word_index + 1]
-        {
-            word_index += 2
-        } else {
-            word_index = 0;
-        }
-        index += 1;
-    }
-    if word_index < CODING.len() {
-        return None;
-    }
+    index = find_coding_word(content, index)?;
     index = skip_space(content, index);
 
     if index < content.len() && content[index] as char != ':' && content[index] as char != '=' {

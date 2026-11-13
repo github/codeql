@@ -38,11 +38,11 @@ fn parse_one(tokens: &mut Tokens) -> Result<Template> {
         }
         Some(TokenTree::Group(group)) if group.delimiter() == Delimiter::Parenthesis => {
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
-            Ok(Template::Node(parse_node(group)?))
+            Ok(Template::Node(parse_node(&group)?))
         }
         Some(TokenTree::Group(group)) if group.delimiter() == Delimiter::Bracket => {
             let group = expect_group(tokens, Delimiter::Bracket)?;
-            Ok(Template::Choice(parse_alternatives(group)?))
+            Ok(Template::Choice(parse_alternatives(&group)?))
         }
         Some(token) => Err(syn::Error::new_spanned(
             token.clone(),
@@ -55,7 +55,7 @@ fn parse_one(tokens: &mut Tokens) -> Result<Template> {
     }
 }
 
-fn parse_node(group: proc_macro2::Group) -> Result<Node> {
+fn parse_node(group: &proc_macro2::Group) -> Result<Node> {
     let mut tokens = group.stream().into_iter().peekable();
     let kind = expect_ident(&mut tokens, "expected node kind")?;
     let content = if peek_is_literal(&mut tokens) {
@@ -147,7 +147,7 @@ fn parse_node(group: proc_macro2::Group) -> Result<Node> {
     })
 }
 
-fn parse_alternatives(group: proc_macro2::Group) -> Result<Vec<Alternative>> {
+fn parse_alternatives(group: &proc_macro2::Group) -> Result<Vec<Alternative>> {
     let mut tokens = group.stream().into_iter().peekable();
     let mut alternatives = Vec::new();
     while tokens.peek().is_some() {
@@ -191,7 +191,7 @@ fn parse_list(tokens: &mut Tokens) -> Result<Vec<Template>> {
             if group.stream().is_empty() {
                 continue;
             }
-            templates.push(Template::Node(parse_node(group)?));
+            templates.push(Template::Node(parse_node(&group)?));
             continue;
         }
 
@@ -204,7 +204,7 @@ fn parse_list(tokens: &mut Tokens) -> Result<Vec<Template>> {
         }
 
         if peek_is_group(tokens, Delimiter::Bracket) {
-            templates.push(Template::Choice(parse_alternatives(expect_group(
+            templates.push(Template::Choice(parse_alternatives(&expect_group(
                 tokens,
                 Delimiter::Bracket,
             )?)?));

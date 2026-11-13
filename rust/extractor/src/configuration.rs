@@ -97,8 +97,12 @@ impl Ord for DependencySource<'_> {
     fn cmp(&self, other: &Self) -> Ordering {
         // Compare by cfg options first, then by manifest parent directory
         // (arbitrary but deterministic).
-        cmp_option_by(&self.cfg_options, &other.cfg_options, compare_cfg_options)
-            .then_with(|| manifest_parent(self.manifest).cmp(manifest_parent(other.manifest)))
+        cmp_option_by(
+            self.cfg_options.as_ref(),
+            other.cfg_options.as_ref(),
+            compare_cfg_options,
+        )
+        .then_with(|| manifest_parent(self.manifest).cmp(manifest_parent(other.manifest)))
     }
 }
 
@@ -211,7 +215,7 @@ impl<'a> DependencyFiles<'a> {
 mod tests {
     use super::*;
     use ra_ap_base_db::{
-        CrateGraphBuilder, CrateOrigin, CrateWorkspaceData, FileChange, FileSet, SourceRoot,
+        CrateGraphBuilder, CrateOrigin, CrateWorkspaceData, Env, FileChange, FileSet, SourceRoot,
     };
     use ra_ap_intern::Symbol;
     use ra_ap_span::Edition;
@@ -247,7 +251,7 @@ mod tests {
                 None,
                 cfg(features),
                 None,
-                Default::default(),
+                Env::default(),
                 CrateOrigin::Library {
                     repo: None,
                     name: Symbol::intern(name),

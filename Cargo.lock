@@ -249,7 +249,6 @@ name = "buramu"
 version = "0.1.0"
 dependencies = [
  "chrono",
- "lazy_static",
  "rayon",
  "regex",
 ]
@@ -492,7 +491,6 @@ dependencies = [
  "encoding",
  "flate2",
  "globset",
- "lazy_static",
  "num_cpus",
  "rand",
  "rayon",
@@ -532,7 +530,6 @@ dependencies = [
  "clap",
  "codeql-extractor",
  "encoding",
- "lazy_static",
  "rayon",
  "regex",
  "serde_json",
@@ -550,7 +547,6 @@ dependencies = [
  "clap",
  "codeql-extractor",
  "encoding",
- "lazy_static",
  "rayon",
  "regex",
  "serde",

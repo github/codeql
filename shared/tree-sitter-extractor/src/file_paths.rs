@@ -4,20 +4,22 @@ use std::{
 };
 
 /// Given an absolute path, returns a relative path if it's under `source_root`,
-/// otherwise the absolute path as-is. This is used for diagnostic locations, which
-/// should use relative paths per the CodeQL diagnostic message format spec.
+/// otherwise the absolute path as-is.
+///
+/// This is used for diagnostic locations, which should use relative paths per
+/// the CodeQL diagnostic message format spec.
 /// Absolute path fallback is handled downstream by the CLI's SARIF generator.
 pub fn relativize_for_diagnostic(path: &Path, source_root: Option<&Path>) -> String {
     source_root
         .and_then(|root| path.strip_prefix(root).ok())
         .and_then(|rel| rel.to_str())
-        .map(|s| s.replace('\\', "/"))
-        .unwrap_or_else(|| path.display().to_string())
+        .map_or_else(|| path.display().to_string(), |s| s.replace('\\', "/"))
 }
 
-/// This represents the minimum supported path transformation that is needed to support extracting
-/// overlay databases. Specifically, it represents a transformer where one path prefix is replaced
-/// with a different prefix.
+/// A path-prefix replacement for extracting overlay databases.
+///
+/// This is the minimum supported path transformation: one path prefix is
+/// replaced with a different prefix.
 pub struct PathTransformer {
     pub original: String,
     pub replacement: String,
@@ -65,10 +67,10 @@ pub fn load_path_transformer() -> std::io::Result<Option<PathTransformer>> {
     }
     let replacement = lines[0]
         .strip_prefix('#')
-        .ok_or(unsupported_transformer_error())?;
+        .ok_or_else(unsupported_transformer_error)?;
     let original = lines[1]
         .strip_suffix("//")
-        .ok_or(unsupported_transformer_error())?;
+        .ok_or_else(unsupported_transformer_error)?;
 
     Ok(Some(PathTransformer {
         original: original.to_owned(),
@@ -115,7 +117,7 @@ fn normalize_path(path: &Path) -> String {
                     if path_components.peek().is_none() {
                         // The path points at a root directory, so we need to add a
                         // trailing slash, e.g. `C:/` instead of `C:`.
-                        components.push("".to_string());
+                        components.push(String::new());
                     }
                 }
                 std::path::Component::CurDir => {}
@@ -135,8 +137,8 @@ pub fn path_from_string(path: &str) -> PathBuf {
     let mut path = PathBuf::from(path);
     // make path absolute
     if path.is_relative() {
-        path = std::env::current_dir().unwrap().join(path)
-    };
+        path = std::env::current_dir().unwrap().join(path);
+    }
     let mut components = path.components();
 
     // make Windows paths verbatim (with `\\?\` prefixes) which allow for extended-length paths.
@@ -167,7 +169,7 @@ pub fn path_from_string(path: &str) -> PathBuf {
     // remove `.` and `..` components
     for component in components {
         match component {
-            std::path::Component::CurDir => continue,
+            std::path::Component::CurDir => {}
             std::path::Component::ParentDir => {
                 result.pop();
             }
@@ -194,7 +196,7 @@ pub fn path_for(
         match component {
             std::path::Component::Prefix(prefix) => match prefix.kind() {
                 std::path::Prefix::Disk(letter) | std::path::Prefix::VerbatimDisk(letter) => {
-                    result.push(format!("{}_", letter as char))
+                    result.push(format!("{}_", letter as char));
                 }
                 std::path::Prefix::Verbatim(x) | std::path::Prefix::DeviceNS(x) => {
                     result.push(x);

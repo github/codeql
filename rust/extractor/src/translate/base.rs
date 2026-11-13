@@ -189,7 +189,7 @@ impl<'db> Translator<'db> {
         Some((start, end))
     }
 
-    pub fn text_range_for_node(&mut self, node: &impl ast::AstNode) -> Option<TextRange> {
+    pub fn text_range_for_node(&self, node: &impl ast::AstNode) -> Option<TextRange> {
         if let Some(span_map) = self.builtin_derive_span_map.as_ref() {
             // Nodes synthesized by a reconstructed built-in derive expansion are not in the
             // semantics cache; resolve their original source range through the expansion span map.
@@ -202,17 +202,13 @@ impl<'db> Translator<'db> {
         if let Some(semantics) = self.semantics.as_ref() {
             let file_range = semantics.original_range(node.syntax());
             let file_id = self.file_id?;
-            if file_id == file_range.file_id {
-                Some(file_range.range)
-            } else {
-                None
-            }
+            (file_id == file_range.file_id).then_some(file_range.range)
         } else {
             Some(node.syntax().text_range())
         }
     }
 
-    fn location_for_node(&mut self, node: &impl ast::AstNode) -> Option<(LineCol, LineCol)> {
+    fn location_for_node(&self, node: &impl ast::AstNode) -> Option<(LineCol, LineCol)> {
         self.text_range_for_node(node)
             .and_then(|r| self.location(r))
     }
@@ -227,7 +223,7 @@ impl<'db> Translator<'db> {
                 UNKNOWN_LOCATION,
             ),
             Some((start, end)) => self.trap.emit_location(self.label, label, start, end),
-        };
+        }
     }
     pub fn emit_location_token(
         &mut self,
@@ -242,7 +238,7 @@ impl<'db> Translator<'db> {
         {
             let token_range = clipped_range + parent_range2.start() - parent_range.start();
             if let Some((start, end)) = self.location(token_range) {
-                self.trap.emit_location(self.label, label, start, end)
+                self.trap.emit_location(self.label, label, start, end);
             }
         }
     }
@@ -390,7 +386,7 @@ impl<'db> Translator<'db> {
                             .text_range()
                             .start();
                     self.emit_parse_error(node, &SyntaxError::new(error.message, location));
-                };
+                }
             }
             for err in value.value.iter() {
                 self.emit_parse_error(node, err);
@@ -596,14 +592,14 @@ impl<'db> Translator<'db> {
                 .and_then(ast::Type::cast)
                 .and_then(|t| self.emit_type(&t))
             {
-                generated::PathSegment::emit_type_repr(label, t, &mut self.trap.writer)
+                generated::PathSegment::emit_type_repr(label, t, &mut self.trap.writer);
             }
             if let Some(t) = type_refs
                 .next()
                 .and_then(ast::PathType::cast)
                 .and_then(|t| self.emit_path_type(&t))
             {
-                generated::PathSegment::emit_trait_type_repr(label, t, &mut self.trap.writer)
+                generated::PathSegment::emit_trait_type_repr(label, t, &mut self.trap.writer);
             }
             // moreover as we're skipping emission of TypeAnchor, we need to attach its comments to
             // this path segment

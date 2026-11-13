@@ -191,7 +191,7 @@ fn should_predicate_be_extracted(name: &str) -> bool {
 }
 
 fn project_root() -> PathBuf {
-    let dir = env::var("CARGO_MANIFEST_DIR").unwrap().to_owned();
+    let dir = env::var("CARGO_MANIFEST_DIR").unwrap();
     PathBuf::from(dir).parent().unwrap().to_owned()
 }
 
@@ -200,7 +200,7 @@ fn to_lower_snake_case(s: &str) -> String {
     let mut prev = false;
     for c in s.chars() {
         if c.is_ascii_uppercase() && prev {
-            buf.push('_')
+            buf.push('_');
         }
         prev = true;
 
@@ -229,10 +229,10 @@ struct Schema {
 }
 
 fn get_bases(name: &str, super_types: &BTreeMap<String, BTreeSet<String>>) -> Vec<String> {
-    super_types
-        .get(name)
-        .map(|tys| tys.iter().map(|t| class_name(t)).collect())
-        .unwrap_or_else(|| vec!["AstNode".to_string()])
+    super_types.get(name).map_or_else(
+        || vec!["AstNode".to_string()],
+        |tys| tys.iter().map(|t| class_name(t)).collect(),
+    )
 }
 
 fn enum_src_to_schema_class(
@@ -279,7 +279,7 @@ fn node_src_to_schema_class(
 fn fix_blank_lines(s: &str) -> String {
     // mustache is not very good at avoiding blank lines
     // adopting the workaround from https://github.com/groue/GRMustache/issues/46#issuecomment-19498046
-    s.split("\n")
+    s.split('\n')
         .filter(|line| !line.trim().is_empty())
         .map(|line| if line == "¶" { "" } else { line })
         .join("\n")
@@ -288,7 +288,7 @@ fn fix_blank_lines(s: &str) -> String {
 
 fn write_schema(
     grammar: &AstSrc,
-    super_types: BTreeMap<String, BTreeSet<String>>,
+    super_types: &BTreeMap<String, BTreeSet<String>>,
     mustache_ctx: &mustache::Context,
 ) -> mustache::Result<String> {
     let mut schema = Schema::default();
@@ -296,13 +296,13 @@ fn write_schema(
         grammar
             .enums
             .iter()
-            .map(|node| enum_src_to_schema_class(node, &super_types)),
+            .map(|node| enum_src_to_schema_class(node, super_types)),
     );
     schema.classes.extend(
         grammar
             .nodes
             .iter()
-            .map(|node| node_src_to_schema_class(node, &super_types)),
+            .map(|node| node_src_to_schema_class(node, super_types)),
     );
     let template = mustache_ctx.compile_path("schema")?;
     let res = template.render_to_string(&schema)?;
@@ -413,7 +413,7 @@ fn enum_to_extractor_info(node: &AstEnumSrc) -> ExtractorEnumInfo {
                 EnumVariantInfo {
                     name,
                     snake_case_name,
-                    variant_ast_name: v.to_string(),
+                    variant_ast_name: v.clone(),
                     emission,
                 }
             })
@@ -519,7 +519,7 @@ fn main() -> anyhow::Result<()> {
     for node in &grammar.enums {
         for variant in &node.variants {
             let set = super_types.entry(variant.to_owned()).or_default();
-            set.insert(node.name.to_owned());
+            set.insert(node.name.clone());
         }
     }
     // sort things while ensuring super clases are defined before they are used
@@ -533,7 +533,7 @@ fn main() -> anyhow::Result<()> {
         template_path: root.join("ast-generator").join("templates"),
         template_extension: "mustache".to_string(),
     };
-    let schema = write_schema(&grammar, super_types, &mustache_ctx)?;
+    let schema = write_schema(&grammar, &super_types, &mustache_ctx)?;
     let schema_path = root.join("schema/ast.py");
     codegen::ensure_file_contents(
         crate::flags::CodegenType::Grammar,

@@ -95,7 +95,7 @@ impl LogWriter {
             source: Source {
                 id: format!("{}/{}", self.extractor, id),
                 name: name.to_owned(),
-                extractor_name: Some(self.extractor.to_owned()),
+                extractor_name: Some(self.extractor.clone()),
             },
             markdown_message: String::new(),
             plaintext_message: String::new(),
@@ -134,7 +134,7 @@ impl LogWriter {
                         e
                     );
                     self.path = None;
-                    self.inner = None
+                    self.inner = None;
                 }
                 Ok(file) => self.inner = Some(std::io::BufWriter::new(file)),
             }
@@ -189,7 +189,7 @@ impl DiagnosticLoggers {
             };
         }
         THREAD_NUM.with(|n| LogWriter {
-            extractor: self.extractor.to_owned(),
+            extractor: self.extractor.clone(),
             inner: None,
             path: self
                 .root
@@ -235,12 +235,12 @@ impl DiagnosticMessage {
                 start_line: Some(line),
                 ..
             }) => format!("{}:{}: {}", path, line, self.plaintext_message),
-            _ => self.plaintext_message.to_owned(),
+            _ => self.plaintext_message.clone(),
         }
     }
 
     fn text(&mut self, text: &str) -> &mut Self {
-        self.plaintext_message = text.to_owned();
+        text.clone_into(&mut self.plaintext_message);
         self
     }
 
@@ -285,7 +285,7 @@ impl DiagnosticMessage {
     }
 
     pub fn markdown(&mut self, text: &str) -> &mut Self {
-        self.markdown_message = text.to_owned();
+        text.clone_into(&mut self.markdown_message);
         self
     }
     pub fn severity(&mut self, severity: Severity) -> &mut Self {
@@ -317,7 +317,7 @@ impl DiagnosticMessage {
         self
     }
     pub fn file(&mut self, path: &str) -> &mut Self {
-        let loc = self.location.get_or_insert(Default::default());
+        let loc = self.location.get_or_insert_default();
         loc.file = Some(path.to_owned());
         self
     }
@@ -329,7 +329,7 @@ impl DiagnosticMessage {
         end_line: usize,
         end_column: usize,
     ) -> &mut Self {
-        let loc = self.location.get_or_insert(Default::default());
+        let loc = self.location.get_or_insert_default();
         loc.file = Some(path.to_owned());
         loc.start_line = Some(start_line);
         loc.start_column = Some(start_column);

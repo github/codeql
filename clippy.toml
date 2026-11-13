@@ -1,0 +1,2 @@
+# Names that do not need to be backtick quoted within documentation comments.
+doc-valid-idents = ["CodeQL", ".."]

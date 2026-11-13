@@ -6,7 +6,6 @@ use std::io::Write;
 use std::path::PathBuf;
 
 use crate::node_types;
-use yeast;
 
 pub mod dbscheme;
 pub mod language;
@@ -14,6 +13,7 @@ pub mod ql;
 pub mod ql_gen;
 
 /// Generate a dbscheme and QL library for the given languages.
+#[allow(clippy::too_many_lines)]
 pub fn generate(
     languages: Vec<language::Language>,
     dbscheme_path: PathBuf,
@@ -65,14 +65,14 @@ pub fn generate(
 
     for language in languages {
         let prefix = node_types::to_snake_case(&language.name);
-        let ast_node_name = format!("{}_ast_node", prefix);
-        let node_location_table_name = format!("{}_ast_node_location", prefix);
-        let node_parent_table_name = format!("{}_ast_node_parent", prefix);
-        let token_name = format!("{}_token", prefix);
-        let tokeninfo_name = format!("{}_tokeninfo", prefix);
-        let trivia_token_name = format!("{}_trivia_token", prefix);
-        let trivia_tokeninfo_name = format!("{}_trivia_tokeninfo", prefix);
-        let reserved_word_name = format!("{}_reserved_word", prefix);
+        let ast_node_name = format!("{prefix}_ast_node");
+        let node_location_table_name = format!("{prefix}_ast_node_location");
+        let node_parent_table_name = format!("{prefix}_ast_node_parent");
+        let token_name = format!("{prefix}_token");
+        let tokeninfo_name = format!("{prefix}_tokeninfo");
+        let trivia_token_name = format!("{prefix}_trivia_token");
+        let trivia_tokeninfo_name = format!("{prefix}_trivia_tokeninfo");
+        let reserved_word_name = format!("{prefix}_reserved_word");
         // When a desugaring is configured, comments and other `extra` nodes are
         // preserved from the original parse tree as `TriviaToken`s.
         let has_trivia_tokens = language.desugar.is_some();
@@ -97,7 +97,7 @@ pub fn generate(
         }
         writeln!(&mut dbscheme_writer, "/*- {} dbscheme -*/", language.name)?;
         dbscheme::write(&mut dbscheme_writer, &dbscheme_entries)?;
-        let token_case = create_token_case(&token_name, token_kinds);
+        let token_case = create_token_case(&token_name, &token_kinds);
         let mut dbscheme_tail = vec![
             dbscheme::Entry::Table(create_tokeninfo(&tokeninfo_name, &token_name)),
             dbscheme::Entry::Case(token_case),
@@ -265,7 +265,7 @@ fn make_field_type<'a>(
         node_types::FieldTypeInfo::Multiple {
             types,
             dbscheme_union,
-            ql_class: _,
+            ..
         } => {
             // This field can have one of several types. Create an ad-hoc QL union
             // type to represent them.
@@ -346,11 +346,7 @@ fn add_field_for_table_storage<'a>(
         },
         // In addition to the field being unique, the combination of
         // parent+index is unique, so add a keyset for them.
-        keysets: if has_index {
-            Some(vec![parent_name, "index"])
-        } else {
-            None
-        },
+        keysets: has_index.then(|| vec![parent_name, "index"]),
     };
     (field_table, field_type_entry)
 }
@@ -592,7 +588,7 @@ fn create_tokeninfo<'a>(name: &'a str, type_name: &'a str) -> dbscheme::Table<'a
     }
 }
 
-fn create_token_case<'a>(name: &'a str, token_kinds: Map<&'a str, usize>) -> dbscheme::Case<'a> {
+fn create_token_case<'a>(name: &'a str, token_kinds: &Map<&'a str, usize>) -> dbscheme::Case<'a> {
     let branches: Vec<(usize, &str)> = token_kinds
         .iter()
         .map(|(&name, kind_id)| (*kind_id, name))

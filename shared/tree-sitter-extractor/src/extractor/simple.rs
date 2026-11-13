@@ -6,7 +6,9 @@ use crate::extractor::driver::{self, LanguageExtractor};
 use crate::node_types::{self, NodeTypeMap};
 
 /// A tree-sitter language extracted directly from its parse tree, with no
-/// desugaring. Comments and other `extra` nodes are emitted inline as tokens.
+/// desugaring.
+///
+/// Comments and other `extra` nodes are emitted inline as tokens.
 /// Languages that rewrite their syntax tree use
 /// [`crate::extractor::desugaring`] instead.
 pub struct LanguageSpec {

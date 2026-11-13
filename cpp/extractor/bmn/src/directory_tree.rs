@@ -171,8 +171,6 @@ mod tests {
     mod from_path {
         use super::*;
         use crate::test_utils::get_resource;
-        use std::collections::HashSet;
-        use std::ffi::OsString;
 
         fn check_files(tree: &DirectoryTree, file_name: &str, expected: &[PathBuf]) {
             let files = tree
