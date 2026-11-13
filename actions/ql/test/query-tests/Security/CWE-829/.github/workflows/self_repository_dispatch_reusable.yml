@@ -1,0 +1,25 @@
+name: Self repository dispatch reusable workflow
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    outputs:
+      digest: ${{ steps.resolve.outputs.digest }}
+    steps:
+      - id: resolve
+        run: bash "${RUNNER_TEMP}/resolve.sh"
+  use:
+    needs: resolve
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.resolve.outputs.digest }}
+          persist-credentials: false
+      - run: echo done

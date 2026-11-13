@@ -1,0 +1,15 @@
+callees
+| .github/workflows/caller-dollar-ref.yml:6:5:7:2 | Job: call-reusable | $/.github/workflows/reusable.yml |
+| .github/workflows/caller-dollar-ref.yml:10:9:12:21 | Uses Step | $/.github/actions/greet |
+| .github/workflows/caller-dollar.yml:7:5:8:2 | Job: call-reusable | $/.github/workflows/reusable.yml |
+| .github/workflows/caller-dollar.yml:11:9:13:21 | Uses Step | $/.github/actions/greet |
+| .github/workflows/caller-dot.yml:5:5:6:2 | Job: call-reusable | .github/workflows/reusable.yml |
+| .github/workflows/caller-dot.yml:9:9:11:21 | Uses Step | ./.github/actions/greet |
+reusableWorkflowCallers
+| .github/workflows/reusable.yml:1:1:7:24 | on: workflow_call | .github/workflows/caller-dollar-ref.yml:6:5:7:2 | Job: call-reusable | push |
+| .github/workflows/reusable.yml:1:1:7:24 | on: workflow_call | .github/workflows/caller-dollar.yml:7:5:8:2 | Job: call-reusable | schedule |
+| .github/workflows/reusable.yml:1:1:7:24 | on: workflow_call | .github/workflows/caller-dot.yml:5:5:6:2 | Job: call-reusable | workflow_dispatch |
+compositeActionCallers
+| .github/actions/greet/action.yml:1:1:11:18 | name: Greet | .github/workflows/caller-dollar-ref.yml:10:9:12:21 | Uses Step | push |
+| .github/actions/greet/action.yml:1:1:11:18 | name: Greet | .github/workflows/caller-dollar.yml:11:9:13:21 | Uses Step | schedule |
+| .github/actions/greet/action.yml:1:1:11:18 | name: Greet | .github/workflows/caller-dot.yml:9:9:11:21 | Uses Step | workflow_dispatch |

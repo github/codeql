@@ -1336,6 +1336,13 @@ class EnvImpl extends AstNodeImpl, TEnvNode {
 abstract class UsesImpl extends AstNodeImpl {
   abstract string getCallee();
 
+  /** Gets the name of the callable referenced by this `uses` value, without any `$/` prefix. */
+  string getCallableName() {
+    if this.getCallee().matches("$/%")
+    then result = this.getCallee().suffix(2)
+    else result = this.getCallee()
+  }
+
   abstract ScalarValueImpl getCalleeNode();
 
   abstract string getVersion();
@@ -1394,6 +1401,9 @@ private string repoUsesParser() { result = "([^/]+)/([^/]+)/([^@]+)@(.+)" }
 
 private string pathUsesParser() { result = "\\./(.+)" }
 
+/** Gets a regular expression that parses a `$/path` reference, ignoring any `@ref` suffix. */
+private string selfRepositoryUsesParser() { result = "(\\$/[^@]+)(@.*)?" }
+
 class ExternalJobImpl extends JobImpl, UsesImpl {
   YamlScalar u;
 
@@ -1403,10 +1413,13 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
     if u.getValue().matches("./%")
     then result = u.getValue().regexpCapture(pathUsesParser(), 1)
     else
-      result =
-        u.getValue().regexpCapture(repoUsesParser(), 1) + "/" +
-          u.getValue().regexpCapture(repoUsesParser(), 2) + "/" +
-          u.getValue().regexpCapture(repoUsesParser(), 3)
+      if u.getValue().matches("$/%")
+      then result = u.getValue().regexpCapture(selfRepositoryUsesParser(), 1)
+      else
+        result =
+          u.getValue().regexpCapture(repoUsesParser(), 1) + "/" +
+            u.getValue().regexpCapture(repoUsesParser(), 2) + "/" +
+            u.getValue().regexpCapture(repoUsesParser(), 3)
   }
 
   override ScalarValueImpl getCalleeNode() { result.getNode() = u }
