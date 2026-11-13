@@ -114,3 +114,15 @@ tar.extractall(members=tar, filter=extraction_filter) # $ Alert # unsafe
 
 tar = tarfile.open(unsafe_filename_tar)
 tar.extractall(members=safemembers(tar), filter=extraction_filter) # safe -- we assume `safemembers` makes up for the unsafe filter
+
+# Keyword `member` argument to `extract`
+tar = tarfile.open(unsafe_filename_tar) # $ Source
+for entry in tar:
+    tar.extract(member=entry, path="/tmp/unpack/") # $ Alert
+
+# Positional `members` argument to `extractall`
+tar = tarfile.open(unsafe_filename_tar) # $ Source
+tar.extractall("/tmp/unpack/", tar) # $ Alert
+
+tar = tarfile.open(unsafe_filename_tar)
+tar.extractall("/tmp/unpack/", safemembers(tar)) # safe
