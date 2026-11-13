@@ -242,13 +242,13 @@ func test3(x: String) {
 	doSomething(password: x); // $ MISSING: Source[unified/swift/cleartext-logging]
 	NSLog(x) // $ MISSING: Alert[unified/swift/cleartext-logging]
 
-	let y = getPassword(); // $ MISSING: Source[unified/swift/cleartext-logging]
-	NSLog(y) // $ MISSING: Alert[unified/swift/cleartext-logging]
+	let y = getPassword(); // $ Source[unified/swift/cleartext-logging]
+	NSLog(y) // $ Alert[unified/swift/cleartext-logging]
 
 	let z = MyClass()
 	NSLog(z.harmless) // safe
 	NSLog(z.password) // $ Alert[unified/swift/cleartext-logging]
-	NSLog(z.getPassword()) // $ MISSING: Alert[unified/swift/cleartext-logging]
+	NSLog(z.getPassword()) // $ Alert[unified/swift/cleartext-logging]
 }
 
 struct MyOuter {

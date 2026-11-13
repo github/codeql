@@ -50,3 +50,20 @@ private class SensitiveDataMemberAccess extends SensitiveData {
 
   override SensitiveDataClassification getClassification() { result = classification }
 }
+
+/**
+ * A function call that might produce sensitive data.
+ */
+private class SensitiveDataCall extends SensitiveData {
+  SensitiveDataClassification classification;
+
+  SensitiveDataCall() {
+    exists(CallExpr call, string name |
+      call = this.asExpr() and
+      name = TypeInference::resolveCallTarget(call).(Member).getNameNode().getValue() and
+      HeuristicNames::nameIndicatesSensitiveData(name, classification)
+    )
+  }
+
+  override SensitiveDataClassification getClassification() { result = classification }
+}
