@@ -963,6 +963,31 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       pragma[nomagic]
+      private predicate conditionSatisfiesAmbigousConstraintTypeAt0(
+        Term term, Constraint constraint, TypeAbstraction abs, TypeMention sub, TypePath path,
+        Type t
+      ) {
+        exists(TypeMention constraintMention |
+          satisfiesConstraintTypeMention0(term, constraint, constraintMention, abs, sub, _, _, true) and
+          conditionSatisfiesConstraintTypeAtForDisambiguation(abs, sub, constraintMention, path, t)
+        )
+      }
+
+      pragma[nomagic]
+      private predicate conditionSatisfiesAmbigousConstraintTypeAt(
+        Term term, Constraint constraint, TypeAbstraction abs, TypeMention sub, TypePath path,
+        Type t
+      ) {
+        conditionSatisfiesAmbigousConstraintTypeAt0(term, constraint, abs, sub, path, t) and
+        (
+          t = constraint.getTypeAt(path)
+          or
+          // The constraint may contain a type parameter, which we can match to the right type
+          constraintTypeMatchForDisambiguation(term, constraint, path, t)
+        )
+      }
+
+      pragma[nomagic]
       private predicate satisfiesConstraint0(
         Term term, Constraint constraint, TypeAbstraction abs, TypeMention sub, TypePath path,
         Type t
@@ -981,10 +1006,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
               conditionSatisfiesConstraintTypeAtForDisambiguation(abs, sub, constraintMention,
                 path1, t1)
             |
-              t1 = constraint.getTypeAt(path1)
-              or
-              // The constraint may contain a type parameter, which we can match to the right type
-              constraintTypeMatchForDisambiguation(term, constraint, path1, t1)
+              conditionSatisfiesAmbigousConstraintTypeAt(term, constraint, abs, sub, path1, t1)
             )
           else any()
         )
@@ -1357,112 +1379,241 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
-      private module AccessBaseType {
+      private module ConstraintMatching {
         /**
-         * Holds if the type of `target` at `apos` and `pathToTp` is type parameter `tp`,
-         * and an argument with root type `argRootType` may be able to be matched against
-         * `tp` via the `conditionSatisfiesConstraint` hierarchy.
+         * Holds if the type of `target` at `dpos` contains a type parameter, and an
+         * access with a corresponding root type `argRootType` may be able to match
+         * against it.
          */
         pragma[nomagic]
         private predicate argRootTypeSatisfiesTargetTypeCand(
-          Type argRootType, Declaration target, AccessPosition apos, TypeParameter tp,
-          TypePath pathToTp
+          Type argRootType, Declaration target, DeclarationPosition dpos
         ) {
           exists(
-            DeclarationPosition dpos, TypeMention condition, TypeMention constraint,
-            Type constraintRootType
+            TypeParameter tp, TypePath pathToTp, TypeMention condition, Type constraintRootType
           |
-            accessDeclarationPositionMatch(apos, dpos) and
             tp = target.getDeclaredType(dpos, pathToTp) and
-            conditionSatisfiesConstraintTypeAt(_, condition, constraint, TypePath::nil(),
-              constraintRootType) and
             constraintRootType.getATypeParameter() = pathToTp.getHead() and
+            conditionSatisfiesConstraintTypeAt(_, condition, _, TypePath::nil(), constraintRootType) and
             argRootType = condition.getTypeAt(TypePath::nil())
           )
         }
 
-        private newtype TRelevantTarget =
-          MkRelevantTarget(Declaration target, AccessPosition apos) {
-            argRootTypeSatisfiesTargetTypeCand(_, target, apos, _, _)
+        private newtype TConstraintPosition =
+          TDeclarationConstraintPosition(DeclarationPosition dpos) {
+            argRootTypeSatisfiesTargetTypeCand(_, _, dpos)
+          } or
+          TConstrainedTypeParameterConstraintPosition(
+            TypeParameter constrainedTp, TypeMention constraint
+          ) {
+            typeParameterHasConstraint(_, constrainedTp, constraint)
           }
 
-        private class RelevantTarget extends MkRelevantTarget {
-          Declaration target;
-          AccessPosition apos;
+        /**
+         * A position of a constraint inside a declaration.
+         *
+         * This is either a direct `DeclarationPosition` (for example the position of
+         * a parameter, in which case the constraint is the type of that parameter) or
+         * a constrained type parameter.
+         */
+        abstract class ConstraintPosition extends TConstraintPosition {
+          abstract predicate relevantFor(Access a, AccessEnvironment e, Declaration target);
 
-          RelevantTarget() { this = MkRelevantTarget(target, apos) }
+          bindingset[target]
+          abstract Type getConstraintTypeAt(Declaration target, TypePath path);
 
-          Type getTypeAt(TypePath path) {
-            exists(DeclarationPosition dpos |
+          bindingset[a, e]
+          abstract Type getInferredType(Access a, AccessEnvironment e, TypePath path);
+
+          /** Gets the path that leads from `pos` in `target` to the type being constrained at this position. */
+          bindingset[target]
+          abstract TypePath getPathToConstrained(Declaration target, DeclarationPosition pos);
+
+          abstract string toString();
+        }
+
+        private class DeclarationConstraintPosition extends ConstraintPosition,
+          TDeclarationConstraintPosition
+        {
+          DeclarationPosition dpos;
+
+          DeclarationConstraintPosition() { this = TDeclarationConstraintPosition(dpos) }
+
+          pragma[nomagic]
+          private predicate accessTargetsWithArgRootType(
+            Access a, AccessEnvironment e, Declaration target, Type t
+          ) {
+            exists(AccessPosition apos |
               accessDeclarationPositionMatch(apos, dpos) and
-              result = target.getDeclaredType(dpos, path)
+              target = a.getTarget(e) and
+              t = a.getInferredType(e, apos, TypePath::nil())
             )
           }
 
-          string toString() { result = target.toString() + ", " + apos.toString() }
-
-          Location getLocation() { result = target.getLocation() }
-        }
-
-        pragma[nomagic]
-        private predicate accessTargetsWithArgRootType(
-          Access a, AccessEnvironment e, Declaration target, AccessPosition apos, Type t
-        ) {
-          target = a.getTarget(e) and
-          t = a.getInferredType(e, apos, TypePath::nil())
-        }
-
-        private predicate relevantAccessTarget(
-          Access a, AccessPosition apos, AccessEnvironment e, Declaration target
-        ) {
-          exists(Type t |
-            accessTargetsWithArgRootType(a, e, target, apos, t) and
-            argRootTypeSatisfiesTargetTypeCand(t, target, apos, _, _)
-          )
-        }
-
-        private newtype TRelevantAccess =
-          MkRelevantAccess(Access a, AccessPosition apos, AccessEnvironment e) {
-            relevantAccessTarget(a, apos, e, _)
+          override predicate relevantFor(Access a, AccessEnvironment e, Declaration target) {
+            exists(Type t |
+              this.accessTargetsWithArgRootType(a, e, target, t) and
+              argRootTypeSatisfiesTargetTypeCand(t, target, dpos)
+            )
           }
 
-        private class RelevantAccess extends MkRelevantAccess {
-          Access a;
-          AccessPosition apos;
-          AccessEnvironment e;
+          bindingset[target]
+          override Type getConstraintTypeAt(Declaration target, TypePath path) {
+            result = target.getDeclaredType(dpos, path)
+          }
 
-          RelevantAccess() { this = MkRelevantAccess(a, apos, e) }
+          bindingset[a, e]
+          override Type getInferredType(Access a, AccessEnvironment e, TypePath path) {
+            exists(AccessPosition apos |
+              accessDeclarationPositionMatch(apos, dpos) and
+              result = a.getInferredType(e, apos, path)
+            )
+          }
 
-          RelevantTarget getTarget() {
-            exists(Declaration target |
-              relevantAccessTarget(a, apos, e, target) and
-              result = MkRelevantTarget(target, apos)
+          bindingset[target]
+          override TypePath getPathToConstrained(Declaration target, DeclarationPosition pos) {
+            exists(target) and
+            pos = dpos and
+            result = TypePath::nil()
+          }
+
+          override string toString() { result = dpos.toString() }
+        }
+
+        private class ConstrainedTypeParameterConstraintPosition extends ConstraintPosition,
+          TConstrainedTypeParameterConstraintPosition
+        {
+          TypeParameter constrainedTp;
+          TypeMention constraint;
+
+          ConstrainedTypeParameterConstraintPosition() {
+            this = TConstrainedTypeParameterConstraintPosition(constrainedTp, constraint)
+          }
+
+          override predicate relevantFor(Access a, AccessEnvironment e, Declaration target) {
+            typeParameterHasConstraint(target, constrainedTp, constraint) and
+            target = a.getTarget(e)
+          }
+
+          bindingset[target]
+          override Type getConstraintTypeAt(Declaration target, TypePath path) {
+            typeParameterHasConstraint(target, constrainedTp, constraint) and
+            result = constraint.getTypeAt(path)
+          }
+
+          bindingset[a, e]
+          override Type getInferredType(Access a, AccessEnvironment e, TypePath path) {
+            typeMatch(a, e, _, path, result, constrainedTp)
+          }
+
+          bindingset[target]
+          override TypePath getPathToConstrained(Declaration target, DeclarationPosition pos) {
+            constrainedTp = target.getDeclaredType(pos, result)
+          }
+
+          override string toString() { result = constrainedTp.toString() }
+        }
+
+        private newtype TRelevantConstraint =
+          MkRelevantConstraint(Declaration target, ConstraintPosition pos) {
+            pos.relevantFor(_, _, target)
+          }
+
+        class RelevantConstraint extends MkRelevantConstraint {
+          Declaration target;
+          ConstraintPosition pos;
+
+          RelevantConstraint() { this = MkRelevantConstraint(target, pos) }
+
+          pragma[nomagic]
+          predicate isRelevantFor(Access a, ConstraintPosition pos_, AccessEnvironment e) {
+            pos.relevantFor(a, e, target) and
+            pos = pos_
+          }
+
+          Type getTypeAt(TypePath path) { result = pos.getConstraintTypeAt(target, path) }
+
+          pragma[nomagic]
+          TypePath getPathToConstrained(ConstraintPosition pos_, AccessPosition apos) {
+            exists(DeclarationPosition dpos |
+              accessDeclarationPositionMatch(apos, dpos) and
+              result = pos.getPathToConstrained(target, dpos) and
+              pos = pos_
             )
           }
 
           pragma[nomagic]
-          Type getTypeAt(TypePath path) { result = a.getInferredType(e, apos, path) }
+          predicate hasTypeParameterAt(
+            Declaration target_, ConstraintPosition pos_, TypePath path, TypeParameter tp
+          ) {
+            tp = pos.getConstraintTypeAt(target, path) and
+            not pos = TConstrainedTypeParameterConstraintPosition(tp, _) and
+            pos = pos_ and
+            target = target_
+          }
 
-          string toString() { result = a.toString() + ", " + apos.toString() }
+          pragma[nomagic]
+          Type typeParameterMatch(Access a, AccessEnvironment e, TypePath pathToTp, TypePath suffix) {
+            exists(TypeParameter tp |
+              this.hasTypeParameterAt(target, pos, pathToTp, tp) and
+              typeMatch(a, e, target, suffix, result, tp)
+            )
+          }
+
+          string toString() { result = target + ", " + pos }
+
+          Location getLocation() { result = target.getLocation() }
+        }
+
+        private newtype TRelevantAccess =
+          MkRelevantAccess(Access a, ConstraintPosition pos, AccessEnvironment e) {
+            pos.relevantFor(a, e, _)
+          }
+
+        private class RelevantAccess extends MkRelevantAccess {
+          Access a;
+          ConstraintPosition pos;
+          AccessEnvironment e;
+
+          RelevantAccess() { this = MkRelevantAccess(a, pos, e) }
+
+          RelevantConstraint getConstraint() { result.isRelevantFor(a, pos, e) }
+
+          pragma[nomagic]
+          Type getTypeAt(TypePath path) { result = pos.getInferredType(a, e, path) }
+
+          string toString() { result = a + ", " + pos }
 
           Location getLocation() { result = a.getLocation() }
         }
 
-        private module SatisfiesParameterConstraintInput implements
-          SatisfiesConstraintInputSig<RelevantAccess, RelevantTarget>
+        private module SatisfiesRelevantConstraintInput implements
+          SatisfiesConstraintWithTypeMatchingInputSig<RelevantAccess, RelevantConstraint>
         {
-          predicate relevantConstraint(RelevantAccess at, RelevantTarget constraint) {
-            constraint = at.getTarget()
+          predicate relevantConstraint(RelevantAccess at, RelevantConstraint constraint) {
+            constraint = at.getConstraint()
+          }
+
+          class TypeMatchingContext = Access;
+
+          TypeMatchingContext getTypeMatchingContext(RelevantAccess at) {
+            at = MkRelevantAccess(result, _, _)
+          }
+
+          pragma[nomagic]
+          predicate typeMatch(TypeMatchingContext ctx, TypeParameter tp, TypePath path, Type t) {
+            typeMatch(ctx, _, _, path, t, tp)
           }
         }
 
-        private module SatisfiesParameterConstraint =
-          SatisfiesConstraint<RelevantAccess, RelevantTarget, SatisfiesParameterConstraintInput>;
+        private module SatisfiesRelevantConstraint =
+          SatisfiesConstraintWithTypeMatching<RelevantAccess, RelevantConstraint,
+            SatisfiesRelevantConstraintInput>;
 
         /**
          * Holds if the (transitive) base type `t` at `path` of `a` in environment `e`
-         * for some `AccessPosition` matches the type parameter `tp`, which is used in
-         * the declared types of `target`.
+         * for some argument or type argument position matches the type parameter
+         * `tp` in a declared type or type parameter constraint of `target`.
          *
          * For example, in
          *
@@ -1495,177 +1646,25 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         predicate baseTypeMatch(
           Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
         ) {
-          exists(AccessPosition apos, TypePath pathToTp |
-            argRootTypeSatisfiesTargetTypeCand(_, target, pragma[only_bind_into](apos), tp, pathToTp) and
-            SatisfiesParameterConstraint::satisfiesConstraint(MkRelevantAccess(a,
-                pragma[only_bind_into](apos), e),
-              MkRelevantTarget(target, pragma[only_bind_into](apos)), pathToTp.appendInverse(path),
-              t) and
+          exists(RelevantConstraint constraint, ConstraintPosition pos, TypePath pathToTp |
+            constraint.hasTypeParameterAt(target, pragma[only_bind_into](pos), pathToTp, tp) and
+            SatisfiesRelevantConstraint::satisfiesConstraint(MkRelevantAccess(a,
+                pragma[only_bind_into](pos), e), constraint, pathToTp.appendInverse(path), t) and
             hasNotTypeArgument(a, target, tp)
           )
         }
-
-        predicate baseTypeMatchAtTypeParameter(
-          Access a, AccessEnvironment e, AccessPosition apos, Declaration target, TypeParameter tp,
-          TypePath prefix, TypePath requiredPrefix
-        ) {
-          exists(
-            TypePath pathToTypeParamInConstraint, TypePath pathToTp, TypePath pathToTypeParamInSub
-          |
-            argRootTypeSatisfiesTargetTypeCand(_, target, pragma[only_bind_into](apos), tp, pathToTp) and
-            SatisfiesParameterConstraint::satisfiesConstraintAtTypeParameter(MkRelevantAccess(a,
-                pragma[only_bind_into](apos), e),
-              MkRelevantTarget(target, pragma[only_bind_into](apos)), pathToTypeParamInConstraint,
-              pathToTypeParamInSub) and
-            hasNotTypeArgument(a, target, tp)
-          |
-            /*
-             * Example:
-             *
-             * ```swift
-             * class Base<B> {
-             *   init(_ value: B) {}
-             * }
-             *
-             * class Derived<D>: Base<[D]> {
-             *   init(_ value: D) { super.init([value]) }
-             * }
-             *
-             * func foo<T>(_ value: T, _ base: Base<T>) { }
-             *
-             * foo([2], Derived(<unknown>))
-             * ```
-             *
-             * - tp = T (bound by `foo`)
-             * - prefix = pathToTypeParamInSub = "D"
-             * - requiredPrefix = "Element"
-             * - pathToTypeParamInConstraint = "B.Element"
-             * - pathToTp = "B"
-             */
-
-            pathToTypeParamInConstraint = pathToTp.appendInverse(requiredPrefix) and
-            prefix = pathToTypeParamInSub
-            or
-            /*
-             * Example:
-             *
-             * ```swift
-             * class Base<B> {
-             *   init(_ value: B) {}
-             * }
-             *
-             * class Derived<D>: Base<D> {
-             *   override init(_ value: D) { super.init(value) }
-             * }
-             *
-             * func foo<T>(_ value: T, _ base: Base<T?>) {}
-             *
-             * foo(2, Derived(Optional.none))
-             * ```
-             *
-             * - tp = T (bound by `foo`)
-             * - prefix = "D.Wrapped"
-             * - pathToTypeParamInSub = "D"
-             * - requiredPrefix = ""
-             * - pathToTypeParamInConstraint = "B"
-             * - pathToTp = "B.Wrapped"
-             */
-
-            exists(TypePath path0 |
-              pathToTp = pathToTypeParamInConstraint.appendInverse(path0) and
-              prefix = pathToTypeParamInSub.append(path0) and
-              requiredPrefix = TypePath::nil()
-            )
-          )
-        }
-      }
-
-      private module AccessConstraint {
-        private predicate relevantAccessConstraint(
-          Access a, AccessEnvironment e, Declaration target, TypeParameter constrainedTp,
-          TypeMention constraint
-        ) {
-          target = a.getTarget(e) and
-          typeParameterHasConstraint(target, constrainedTp, constraint)
-        }
-
-        private newtype TRelevantAccess =
-          MkRelevantAccess(Access a, AccessEnvironment e, TypeParameter constrainedTp) {
-            relevantAccessConstraint(a, e, _, constrainedTp, _)
-          }
-
-        private class RelevantAccess extends MkRelevantAccess {
-          Access a;
-          AccessEnvironment e;
-          TypeParameter constrainedTp;
-
-          RelevantAccess() { this = MkRelevantAccess(a, e, constrainedTp) }
-
-          pragma[nomagic]
-          Type getTypeAt(TypePath path) { typeMatch(a, e, _, path, result, constrainedTp) }
-
-          /** Gets the constraint that this relevant access should satisfy. */
-          TypeMention getConstraint(Declaration target) {
-            relevantAccessConstraint(a, e, target, constrainedTp, result)
-          }
-
-          string toString() {
-            result = a.toString() + ", " + e.toString() + ", " + constrainedTp.toString()
-          }
-
-          Location getLocation() { result = a.getLocation() }
-        }
-
-        private module SatisfiesTypeParameterConstraintInput implements
-          SatisfiesConstraintWithTypeMatchingInputSig<RelevantAccess, TypeMention>
-        {
-          predicate relevantConstraint(RelevantAccess at, TypeMention constraint) {
-            constraint = at.getConstraint(_)
-          }
-
-          class TypeMatchingContext = Access;
-
-          TypeMatchingContext getTypeMatchingContext(RelevantAccess at) {
-            at = MkRelevantAccess(result, _, _)
-          }
-
-          pragma[nomagic]
-          predicate typeMatch(TypeMatchingContext ctx, TypeParameter tp, TypePath path, Type t) {
-            typeMatch(ctx, _, _, path, t, tp)
-          }
-        }
-
-        private module SatisfiesTypeParameterConstraint =
-          SatisfiesConstraintWithTypeMatching<RelevantAccess, TypeMention,
-            SatisfiesTypeParameterConstraintInput>;
 
         pragma[nomagic]
         predicate argSatisfiesConstraintAtTypeParameter(
-          Access a, AccessEnvironment e, Declaration target, AccessPosition apos, TypePath prefix,
-          TypeMention constraint, TypePath pathToTypeParamInConstraint,
+          Access a, AccessEnvironment e, AccessPosition apos, TypePath prefix,
+          RelevantConstraint constraint, TypePath pathToTypeParamInConstraint,
           TypePath pathToTypeParamInSub
         ) {
-          exists(RelevantAccess ra, TypeParameter constrainedTp |
-            ra = MkRelevantAccess(a, e, constrainedTp) and
-            relevantAccessConstraint(a, e, target, constrainedTp, constraint) and
-            SatisfiesTypeParameterConstraint::satisfiesConstraintAtTypeParameter(ra, constraint,
-              pathToTypeParamInConstraint, pathToTypeParamInSub) and
-            exists(DeclarationPosition dpos |
-              accessDeclarationPositionMatch(apos, dpos) and
-              constrainedTp = target.getDeclaredType(dpos, prefix)
-            )
-          )
-        }
-
-        pragma[nomagic]
-        predicate satisfiesConstraint(
-          Access a, AccessEnvironment e, Declaration target, TypeParameter constrainedTp,
-          TypeMention constraint, TypePath path, Type t
-        ) {
-          exists(RelevantAccess ra |
-            ra = MkRelevantAccess(a, e, constrainedTp) and
-            relevantAccessConstraint(a, e, target, constrainedTp, constraint) and
-            SatisfiesTypeParameterConstraint::satisfiesConstraint(ra, constraint, path, t)
+          exists(ConstraintPosition pos |
+            prefix = constraint.getPathToConstrained(pragma[only_bind_into](pos), apos) and
+            SatisfiesRelevantConstraint::satisfiesConstraintAtTypeParameter(MkRelevantAccess(a,
+                pragma[only_bind_into](pos), e), constraint, pathToTypeParamInConstraint,
+              pathToTypeParamInSub)
           )
         }
       }
@@ -1686,6 +1685,17 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       /**
        * Holds if the type parameter `constrainedTp` applies to `target` and the
        * constraint `constraint` applies to `constrainedTp`.
+       *
+       * For example, in
+       *
+       * ```csharp
+       * interface IFoo<A> { }
+       * T1 M<T1, T2>(T2 item) where T2 : IFoo<T1> { }
+       * ```
+       *
+       * with the method declaration being the target, we have the following
+       * - `constrainedTp = T2`,
+       * - `constraint = IFoo<T1>`.
        */
       pragma[nomagic]
       private predicate typeParameterHasConstraint(
@@ -1698,46 +1708,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           // a declaration may reference type parameters that are not declared on it,
           // for example type parameters from the enclosing type
           constrainedTp = target.getDeclaredType(_, _)
-        )
-      }
-
-      /**
-       * Holds if the type parameter `constrainedTp` applies to `target`, the
-       * constraint `constraint` applies to `constrainedTp`, and type parameter
-       * `tp` occurs at `pathToTp` in `constraint`.
-       *
-       * For example, in
-       *
-       * ```csharp
-       * interface IFoo<A> { }
-       * T1 M<T1, T2>(T2 item) where T2 : IFoo<T1> { }
-       * ```
-       *
-       * with the method declaration being the target, we have the following
-       * - `constrainedTp = T2`,
-       * - `constraint = IFoo`,
-       * - `tp = T1`, and
-       * - `pathToTp = "A"`.
-       */
-      pragma[nomagic]
-      private predicate typeParameterConstraintHasTypeParameter(
-        Declaration target, TypeParameter constrainedTp, TypeMention constraint, TypePath pathToTp,
-        TypeParameter tp
-      ) {
-        typeParameterHasConstraint(target, constrainedTp, constraint) and
-        tp = constraint.getTypeAt(pathToTp) and
-        constrainedTp != tp
-      }
-
-      pragma[nomagic]
-      private predicate typeConstraintBaseTypeMatch(
-        Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
-      ) {
-        hasNotTypeArgument(a, target, tp) and
-        exists(TypeMention constraint, TypeParameter constrainedTp, TypePath pathToTp |
-          typeParameterConstraintHasTypeParameter(target, constrainedTp, constraint, pathToTp, tp) and
-          AccessConstraint::satisfiesConstraint(a, e, target, constrainedTp, constraint,
-            pathToTp.appendInverse(path), t)
         )
       }
 
@@ -1756,11 +1726,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         // We can infer the type of `tp` from one of the access positions
         directTypeMatch(a, e, target, path, t, tp)
         or
-        // We can infer the type of `tp` by going up the type hierarchy
-        AccessBaseType::baseTypeMatch(a, e, target, path, t, tp)
-        or
-        // We can infer the type of `tp` by a type constraint
-        typeConstraintBaseTypeMatch(a, e, target, path, t, tp)
+        // We can infer the type of `tp` via the type hierarchy or a type constraint
+        ConstraintMatching::baseTypeMatch(a, e, target, path, t, tp)
       }
 
       /**
@@ -1820,61 +1787,44 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
         or
         exists(
-          Declaration target, TypePath prefix, TypePath requiredPrefix, TypePath suffix,
-          TypeParameter tp
-        |
-          AccessBaseType::baseTypeMatchAtTypeParameter(a, e, apos, target, tp, prefix,
-            requiredPrefix) and
-          typeMatch(a, e, target, requiredPrefix.appendInverse(suffix), result, tp) and
-          path = prefix.append(suffix)
-        )
-        or
-        exists(
-          Declaration target, TypePath prefix, TypeMention constraint,
+          TypePath prefix, TypePath suffix, ConstraintMatching::RelevantConstraint constraint,
           TypePath pathToTypeParamInConstraint, TypePath pathToTypeParamInSub
         |
-          AccessConstraint::argSatisfiesConstraintAtTypeParameter(a, e, target, apos, prefix,
-            constraint, pathToTypeParamInConstraint, pathToTypeParamInSub)
+          ConstraintMatching::argSatisfiesConstraintAtTypeParameter(a, e, apos, prefix, constraint,
+            pathToTypeParamInConstraint, pathToTypeParamInSub)
         |
-          exists(TypePath suffix |
-            /*
-             * Example:
-             *
-             * ```rust
-             * struct MyThing<A> { ... }
-             *
-             * trait MyTrait<B> { ... }
-             *
-             * impl<T> MyTrait<T> for MyThing<T> { ... }
-             *
-             * fn foo<T: MyTrait<i32>>(x: T) { ... }
-             *
-             * let x = MyThing(Default::default());
-             * foo(x);
-             * ```
-             *
-             * At `term` = `foo(x)`, we have
-             * - `constraint = MyTrait<i32>`,
-             * - `pathToTypeParamInConstraint` = `"B"`,
-             * - `pathToTypeParamInSub` = `"A"`,
-             * - `prefix` = `suffix` = `""`, and
-             * - `result` = `i32`.
-             *
-             * That is, it allows us to infer that the type of `x` is `MyThing<i32>`.
-             */
+          /*
+           * Example:
+           *
+           * ```rust
+           * struct MyThing<A> { ... }
+           *
+           * trait MyTrait<B> { ... }
+           *
+           * impl<T> MyTrait<T> for MyThing<T> { ... }
+           *
+           * fn foo<T: MyTrait<i32>>(x: T) { ... }
+           *
+           * let x = MyThing(Default::default());
+           * foo(x);
+           * ```
+           *
+           * At `term` = `foo(x)`, we have
+           * - `constraint = MyTrait<i32>`,
+           * - `pathToTypeParamInConstraint` = `"B"`,
+           * - `pathToTypeParamInSub` = `"A"`,
+           * - `prefix` = `suffix` = `""`, and
+           * - `result` = `i32`.
+           *
+           * That is, it allows us to infer that the type of `x` is `MyThing<i32>`.
+           */
 
-            result = constraint.getTypeAt(pathToTypeParamInConstraint.appendInverse(suffix)) and
-            not result instanceof TypeParameter and
-            path = prefix.append(pathToTypeParamInSub.append(suffix))
-          )
+          result = constraint.getTypeAt(pathToTypeParamInConstraint.appendInverse(suffix)) and
+          not result instanceof TypeParameter and
+          path = prefix.append(pathToTypeParamInSub.append(suffix))
           or
-          exists(TypeParameter tp, TypePath suffix, TypePath mid, TypePath pathToTp |
-            exists(TypeParameter constrainedTp, DeclarationPosition dpos |
-              typeParameterConstraintHasTypeParameter(target, constrainedTp, constraint, pathToTp,
-                tp) and
-              accessDeclarationPositionMatch(apos, dpos) and
-              constrainedTp = target.getDeclaredType(dpos, _)
-            )
+          exists(TypePath mid, TypePath pathToTp |
+            result = constraint.typeParameterMatch(a, e, pathToTp, suffix)
           |
             /*
              * Example:
@@ -1909,7 +1859,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
              * That is, it allows us to infer that the type of `y` is `MyThing<S<i32>>`.
              */
 
-            typeMatch(a, e, target, suffix, result, tp) and
             pathToTp = pathToTypeParamInConstraint.appendInverse(mid) and
             path = prefix.append(pathToTypeParamInSub.append(mid).append(suffix))
             or
@@ -1946,9 +1895,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
              * That is, it allows us to infer that the type of `y` is `MyThing<S<i32>>`.
              */
 
-            pathToTypeParamInConstraint = pathToTp.appendInverse(mid) and
-            typeMatch(a, e, target, mid.appendInverse(suffix), result, tp) and
-            path = prefix.append(pathToTypeParamInSub.append(suffix))
+            exists(TypePath midSuffix |
+              suffix = mid.appendInverse(midSuffix) and
+              pathToTypeParamInConstraint = pathToTp.appendInverse(mid) and
+              path = prefix.append(pathToTypeParamInSub.append(midSuffix))
+            )
           )
         )
       }
