@@ -1012,6 +1012,27 @@ module RangeStage<
   }
 
   /**
+   * Holds if `inp <= delta` where `inp` is the input to `phi` along the edge
+   * with rank `rix`.
+   *
+   * Equivalent to `boundedPhiInp(phi, rix, any(SemZeroBound zb), delta, true, _, _, _)`.
+   */
+  private predicate zeroUpperBoundedPhiInp1(Sem::SsaPhiNode phi, int rix, D::Delta delta) {
+    boundedPhiInp1(phi, any(SemZeroBound zb), true, rix, delta)
+  }
+
+  /**
+   * Holds if `inp <= b + delta` for some input, `inp`, to `phi` and `b >= 0`.
+   */
+  private predicate upperBoundedPhiCand(
+    Sem::SsaPhiNode phi, SemSsaBound b, D::Delta delta, boolean fromBackEdge, D::Delta origdelta,
+    SemReason reason
+  ) {
+    boundedPhiCand(phi, true, b, delta, fromBackEdge, origdelta, reason) and
+    typeBound(Sem::getSsaType(b.getVariable()), any(float f | f >= 0), _)
+  }
+
+  /**
    * Holds if the candidate bound `b + delta` for `phi` is valid for the phi input
    * along the edge with rank `rix`.
    */
@@ -1030,6 +1051,12 @@ module RangeStage<
       )
       or
       selfBoundedPhiInp(phi, rix, upper)
+    )
+    or
+    upperBoundedPhiCand(phi, b, delta, fromBackEdge, origdelta, reason) and
+    exists(D::Delta d1 | zeroUpperBoundedPhiInp1(phi, rix, d1) |
+      upper = true and
+      D::toFloat(d1) <= D::toFloat(delta)
     )
   }
 
