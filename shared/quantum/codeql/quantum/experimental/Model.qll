@@ -457,6 +457,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    */
   abstract class RandomNumberGenerationInstance extends OutputArtifactInstance {
     abstract string getGeneratorName();
+
+    /**
+     * Holds if this generator is cryptographically secure, i.e., suitable for
+     * generating security-sensitive values such as keys, IVs, nonces, and salts.
+     *
+     * Defaults to holding for no generator (i.e., "not known to be secure"), so that
+     * a generator is only treated as secure when a model explicitly classifies it as
+     * such. Models of insecure generators (e.g. libc `rand`) leave this as-is.
+     */
+    predicate isCryptographicallySecure() { none() }
   }
 
   /**
