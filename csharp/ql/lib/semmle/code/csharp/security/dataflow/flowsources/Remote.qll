@@ -117,22 +117,78 @@ class AspNetServiceRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow::Pa
   override string getSourceType() { result = "ASP.NET web service input" }
 }
 
-/** A public, non-static, auto-implemented property or field, candidate for taint-tracking. */
+/** Gets `e`, or the expression it wraps in value-preserving casts / null-coalescing. */
+private Expr getAValuePreservingSource(Expr e) {
+  result = e
+  or
+  result = getAValuePreservingSource(e.(CastExpr).getExpr())
+  or
+  result = getAValuePreservingSource(e.(NullCoalescingExpr).getLeftOperand())
+}
+
+/**
+ * Holds if `p` is auto-implemented, or its getter returns an expression reading a field
+ * and its setter (if any) assigns an expression using `value` to that field.
+ * Properties that compute a value do not qualify.
+ */
+private predicate isPlainDataProperty(Property p) {
+  p.isAutoImplemented()
+  or
+  p.isAutoImplementedReadOnly()
+  or
+  exists(Field f | p.getDeclaringType().getABaseType*() = f.getDeclaringType() |
+    exists(FieldRead fr, Expr ret |
+      fr.getTarget() = f and
+      fr = getAValuePreservingSource(ret) and
+      (
+        ret = any(ReturnStmt r | r.getEnclosingCallable() = p.getGetter()).getExpr()
+        or
+        ret = p.getGetter().getExpressionBody()
+      )
+    ) and
+    (
+      not exists(p.getSetter())
+      or
+      exists(AssignExpr ae, ParameterAccess v |
+        ae.getLValue().(FieldWrite).getTarget() = f and
+        ae.getEnclosingCallable() = p.getSetter() and
+        v.getTarget().hasName("value") and
+        v = getAValuePreservingSource(ae.getRValue())
+      )
+    )
+  )
+}
+
+/**
+ * A public, non-static field, or a public plain-data property that is either settable or
+ * of collection type. Binders such as `XmlSerializer` populate a get-only collection in place.
+ */
 class CandidateMemberToTaint extends Member {
   CandidateMemberToTaint() {
     this.isPublic() and
     not this.isStatic() and
+    not this.(Field).isConst() and
     (
       this =
         any(Property p |
-          p.isAutoImplemented() and
+          isPlainDataProperty(p) and
           p.getGetter().isPublic() and
-          p.getSetter().isPublic()
+          (p.getSetter().isPublic() or (p.getType() instanceof CollectionType and not p.getType() instanceof ArrayType))
         )
       or
       this = any(Field f | f.isPublic())
     )
   }
+}
+
+/**
+ * Holds if `m` is declared on `t0`, on a base type of `t0`, or on (a base type of)
+ * the element type of `t0` when `t0` is a collection.
+ */
+private predicate isMemberOfBoundType(Member m, Type t0) {
+  exists(Type t | t = t0 or t = t0.(CollectionType).getElementType() |
+    m.getDeclaringType() = t.(ValueOrRefType).getABaseType*()
+  )
 }
 
 /**
@@ -146,8 +202,8 @@ private class AspNetRemoteFlowSourceMember extends TaintTracking::TaintedMember,
   CandidateMemberToTaint
 {
   AspNetRemoteFlowSourceMember() {
-    exists(Type t, Type t0 | t = this.getDeclaringType() |
-      (t = t0 or t = t0.(CollectionType).getElementType()) and
+    exists(Type t0 |
+      isMemberOfBoundType(this, t0) and
       (
         t0 = any(AspNetRemoteFlowSourceMember m).getType()
         or
@@ -267,8 +323,8 @@ private class AspNetCoreRemoteFlowSourceMember extends TaintTracking::TaintedMem
   CandidateMemberToTaint
 {
   AspNetCoreRemoteFlowSourceMember() {
-    exists(Type t, Type t0 | t = this.getDeclaringType() |
-      (t = t0 or t = t0.(CollectionType).getElementType()) and
+    exists(Type t0 |
+      isMemberOfBoundType(this, t0) and
       (
         t0 = any(AspNetCoreRemoteFlowSourceMember m).getType()
         or

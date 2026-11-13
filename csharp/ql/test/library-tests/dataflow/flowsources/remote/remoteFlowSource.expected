@@ -9,6 +9,12 @@ remoteFlowSourceMembers
 | RemoteFlowSource.cs:83:35:83:42 | Elements |
 | RemoteFlowSource.cs:84:38:84:41 | List |
 | RemoteFlowSource.cs:89:23:89:26 | Prop |
+| RemoteFlowSource.cs:95:23:95:30 | BaseProp |
+| RemoteFlowSource.cs:105:23:105:28 | Backed |
+| RemoteFlowSource.cs:111:29:111:40 | ItemsOnlyGet |
+| RemoteFlowSource.cs:120:22:120:27 | Number |
+| RemoteFlowSource.cs:127:23:127:30 | Coalesce |
+| RemoteFlowSource.cs:128:23:128:26 | Cast |
 remoteFlowSources
 | Controller.cs:11:43:11:52 | sampleData | ASP.NET MVC action method parameter |
 | Controller.cs:11:62:11:66 | taint | ASP.NET MVC action method parameter |
@@ -22,5 +28,8 @@ remoteFlowSources
 | RemoteFlowSource.cs:45:17:45:23 | access to parameter request | ASP.NET query string |
 | RemoteFlowSource.cs:45:17:45:42 | access to property RawUrl | ASP.NET unvalidated request data |
 | RemoteFlowSource.cs:52:55:52:61 | [post] access to local variable segment | external |
-| RemoteFlowSource.cs:96:37:96:40 | data | ASP.NET web service input |
-| RemoteFlowSource.cs:105:47:105:50 | data | ASP.NET web service input |
+| RemoteFlowSource.cs:135:41:135:45 | plain | ASP.NET web service input |
+| RemoteFlowSource.cs:135:60:135:66 | derived | ASP.NET web service input |
+| RemoteFlowSource.cs:135:79:135:80 | fp | ASP.NET web service input |
+| RemoteFlowSource.cs:138:37:138:40 | data | ASP.NET web service input |
+| RemoteFlowSource.cs:147:47:147:50 | data | ASP.NET web service input |
