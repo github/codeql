@@ -29,9 +29,7 @@ private string getNameFromExpr(Expr e) {
  * A taint-tracking configuration for cleartext logging vulnerabilities.
  */
 module CleartextLoggingConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) {
-    node instanceof SensitiveData
-  }
+  predicate isSource(DataFlow::Node node) { node instanceof SensitiveData }
 
   predicate isSink(DataFlow::Node node) {
     exists(CallExpr call |
@@ -49,5 +47,6 @@ import CleartextLoggingFlow::PathGraph
 
 from CleartextLoggingFlow::PathNode source, CleartextLoggingFlow::PathNode sink
 where CleartextLoggingFlow::flowPath(source, sink)
-select source.getNode(), source, sink, "This operation writes $@ to a log file.", source,
-  source.getNode().toString()
+select source.getNode(), source, sink,
+  "This sensitive information is to $@ to a log file.", sink,
+  "written"
