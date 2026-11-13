@@ -292,6 +292,9 @@ private class PathNormalizeSanitizer extends MethodCall {
       or
       t instanceof TypeFile and
       this.getMethod().hasName(["getCanonicalPath", "getCanonicalFile"])
+      or
+      t.hasQualifiedName("org.apache.commons.io", "FilenameUtils") and
+      this.getMethod().hasName("normalize")
     )
   }
 }
