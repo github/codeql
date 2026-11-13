@@ -67,7 +67,7 @@ private ControlFlow::Node nodeWithPossibleSideEffect() {
   // If the lhs of an assignment is not analyzable by SSA, then
   // we need to treat the assignment as having a possible side-effect.
   result instanceof Write and
-  not exists(SsaExplicitDefinition ssa | result = ssa.getInstruction())
+  not exists(SsaExplicitWrite ssa | result = ssa.getDefinition())
 }
 
 private predicate isPureFn(Function f) {
@@ -527,8 +527,8 @@ private predicate mkDeref(DataFlow::PointerDereferenceNode deref, GVN p, Control
   p = globalValueNumber(deref.getOperand())
 }
 
-private predicate ssaInit(SsaExplicitDefinition ssa, DataFlow::Node rhs) {
-  ssa.getRhs() = rhs.asInstruction()
+private predicate ssaInit(SsaExplicitWrite ssa, DataFlow::Node rhs) {
+  ssa.getDefinition().getRhs() = rhs.asInstruction()
 }
 
 /** Gets the global value number of data-flow node `nd`. */
