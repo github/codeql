@@ -282,7 +282,7 @@ fn main() -> anyhow::Result<()> {
     let files = inputs
         .iter()
         .map(|file| {
-            let file = std::path::absolute(file).unwrap_or(file.clone());
+            let file = std::path::absolute(file).unwrap_or_else(|_| file.clone());
             // On Windows, rust analyzer expects non-`//?/` prefixed paths (see [1]), which is what
             // `std::fs::canonicalize` returns. So we use `dunce::canonicalize` instead.
             // [1]: https://github.com/rust-lang/rust-analyzer/issues/18894#issuecomment-2580014730

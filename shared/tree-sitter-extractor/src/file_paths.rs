@@ -67,10 +67,10 @@ pub fn load_path_transformer() -> std::io::Result<Option<PathTransformer>> {
     }
     let replacement = lines[0]
         .strip_prefix('#')
-        .ok_or(unsupported_transformer_error())?;
+        .ok_or_else(unsupported_transformer_error)?;
     let original = lines[1]
         .strip_suffix("//")
-        .ok_or(unsupported_transformer_error())?;
+        .ok_or_else(unsupported_transformer_error)?;
 
     Ok(Some(PathTransformer {
         original: original.to_owned(),

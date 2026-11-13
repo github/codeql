@@ -107,17 +107,18 @@ impl<'a> RustAnalyzer<'a> {
                 reason,
             }),
             RustAnalyzer::WithSemantics { vfs, semantics } => {
-                let file_id = path_to_file_id(path, vfs).ok_or(
-                    RustAnalyzerNoSemantics::warning("file not found in project"),
-                )?;
-                let input = std::panic::catch_unwind(|| semantics.db.file_text(file_id)).or(
-                    Err(RustAnalyzerNoSemantics::warning(
-                        "no text available for the file in the project",
-                    )),
-                )?;
-                let editioned_file_id = semantics.attach_first_edition_opt(file_id).ok_or(
-                    RustAnalyzerNoSemantics::warning("failed to determine rust edition"),
-                )?;
+                let file_id = path_to_file_id(path, vfs)
+                    .ok_or_else(|| RustAnalyzerNoSemantics::warning("file not found in project"))?;
+                let input =
+                    std::panic::catch_unwind(|| semantics.db.file_text(file_id)).map_err(|_| {
+                        RustAnalyzerNoSemantics::warning(
+                            "no text available for the file in the project",
+                        )
+                    })?;
+                let editioned_file_id =
+                    semantics.attach_first_edition_opt(file_id).ok_or_else(|| {
+                        RustAnalyzerNoSemantics::warning("failed to determine rust edition")
+                    })?;
                 Ok((*semantics, editioned_file_id, input))
             }
         }

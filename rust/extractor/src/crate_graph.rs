@@ -27,7 +27,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
         let root_module_file = vfs.file_path(krate.root_file_id);
         if let Some(root_module_file) = root_module_file
             .as_path()
-            .map(|p| std::fs::canonicalize(p).unwrap_or(p.into()))
+            .map(|p| std::fs::canonicalize(p).unwrap_or_else(|_| p.into()))
         {
             let mut hasher = std::hash::DefaultHasher::new();
             krate_id

@@ -518,11 +518,13 @@ fn get_compiler_override(
             &clang_c_compiler,
             &clang_cpp_compiler,
         )
-        .ok_or(anyhow!(
-            "Could not find clang compilers: {}, {}",
-            clang_c_compiler.display(),
-            clang_cpp_compiler.display()
-        ))
+        .ok_or_else(|| {
+            anyhow!(
+                "Could not find clang compilers: {}, {}",
+                clang_c_compiler.display(),
+                clang_cpp_compiler.display()
+            )
+        })
     } else if override_instruction == "gnu" {
         // These can be just a command name, e.g. "gcc-18", or a full path, e.g.
         // "/usr/bin/gcc-18"
@@ -530,20 +532,20 @@ fn get_compiler_override(
             environment::get_required_os(environment::CODEQL_EXTRACTOR_CPP_BMN_COMPILER_GNU_C)?;
         let gnu_cpp_compiler =
             environment::get_required_os(environment::CODEQL_EXTRACTOR_CPP_BMN_COMPILER_GNU_CPP)?;
-        find_posix(telemetry, Compiler::Gnu, &gnu_c_compiler, &gnu_cpp_compiler).ok_or(anyhow!(
-            "Could not find gnu compilers: {}, {}",
-            gnu_c_compiler.display(),
-            gnu_cpp_compiler.display()
-        ))
+        find_posix(telemetry, Compiler::Gnu, &gnu_c_compiler, &gnu_cpp_compiler).ok_or_else(|| {
+            anyhow!(
+                "Could not find gnu compilers: {}, {}",
+                gnu_c_compiler.display(),
+                gnu_cpp_compiler.display()
+            )
+        })
     } else if override_instruction == "msvc" {
         // These can be just a command name, e.g. "cl", or a full path, e.g.
         // "c:\msvc\cl.exe"
         let msvc_compiler =
             environment::get_required_os(environment::CODEQL_EXTRACTOR_CPP_BMN_COMPILER_MSVC)?;
-        use_cl(&msvc_compiler).ok_or(anyhow!(
-            "Could not find msvc compiler: {}",
-            msvc_compiler.display()
-        ))
+        use_cl(&msvc_compiler)
+            .ok_or_else(|| anyhow!("Could not find msvc compiler: {}", msvc_compiler.display()))
     } else {
         Err(anyhow!(
             "Unsupported compiler override instruction: {}",
