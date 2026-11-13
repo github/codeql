@@ -951,7 +951,7 @@ impl<'a> Visitor<'a> {
 fn sliced_source_arg<N: AstNode>(source: &[u8], n: &N) -> trap::Arg {
     trap::Arg::String(n.opt_string_content().unwrap_or_else(|| {
         let range = n.byte_range();
-        String::from_utf8_lossy(&source[range.start..range.end]).into_owned()
+        String::from_utf8_lossy(&source[range]).into_owned()
     }))
 }
 
