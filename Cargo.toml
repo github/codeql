@@ -59,6 +59,7 @@ similar_names = "allow"
 
 # Additional lints from the `restriction` and `nursery` group
 clone_on_ref_ptr = "warn"
+empty_enum_variants_with_brackets = "warn"
 empty_structs_with_brackets = "warn"
 if_then_some_else_none = "warn"
 redundant_type_annotations = "warn"
