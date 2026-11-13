@@ -141,6 +141,21 @@ included/included.rs:
 #    2|                     getIdentifier(): [NameRef] concat
 #    2|                 getTokenTree(): [TokenTree] TokenTree
 #    1|     getName(): [Name] included
+#    5|   getItem(1): [Struct] struct IncludedDerived
+#    5|     getAttr(0): [Attr] Attr
+#    5|       getMeta(): [TokenTreeMeta] TokenTreeMeta
+#    5|         getPath(): [Path] derive
+#    5|           getSegment(): [PathSegment] derive
+#    5|             getIdentifier(): [NameRef] derive
+#    5|         getTokenTree(): [TokenTree] TokenTree
+#    6|     getName(): [Name] IncludedDerived
+#    6|     getFieldList(): [StructFieldList] StructFieldList
+#    7|       getField(0): [StructField] value: usize
+#    7|         getName(): [Name] value
+#    7|         getTypeRepr(): [PathTypeRepr] usize
+#    7|           getPath(): [Path] usize
+#    7|             getSegment(): [PathSegment] usize
+#    7|               getIdentifier(): [NameRef] usize
 #    2| [Comment] //...
 lib.rs:
 #    1| [SourceFile] SourceFile
@@ -617,17 +632,120 @@ included/included.rs:
 #    1|         getParamList(): [ParamList] ParamList
 #    1|         getFunctionBody(): [BlockExpr] { ... }
 #    1|           getStmtList(): [StmtList] StmtList
-#    1|             getStatement(0): [ExprStmt] ExprStmt
-#    1|               getExpr(): [AssignmentExpr] ... = ...
-#    1|                 getLhs(): [UnderscoreExpr] _
-#    1|                 getRhs(): [MacroExpr] MacroExpr
-#    1|                   getMacroCall(): [MacroCall] concat!...
-#    1|                     getPath(): [Path] concat
-#    1|                       getSegment(): [PathSegment] concat
-#    1|                         getIdentifier(): [NameRef] concat
+#    2|             getStatement(0): [ExprStmt] ExprStmt
+#    2|               getExpr(): [AssignmentExpr] ... = ...
+#    2|                 getLhs(): [UnderscoreExpr] _
+#    2|                 getRhs(): [MacroExpr] MacroExpr
+#    2|                   getMacroCall(): [MacroCall] concat!...
+#    2|                     getPath(): [Path] concat
+#    2|                       getSegment(): [PathSegment] concat
+#    2|                         getIdentifier(): [NameRef] concat
 #    2|                     getTokenTree(): [TokenTree] TokenTree
 #    2|                     getMacroCallExpansion(): [StringLiteralExpr] "Hello world!"
 #    1|         getName(): [Name] included
+#    5|       getItem(1): [Struct] struct IncludedDerived
+#    5|         getDeriveMacroExpansion(0): [MacroItems] MacroItems
+#    5|           getItem(0): [Impl] impl ...::Debug for IncludedDerived::<...> { ... }
+#    5|             getAssocItemList(): [AssocItemList] AssocItemList
+#    5|               getAssocItem(0): [Function] fn fmt
+#    5|                 getParamList(): [ParamList] ParamList
+#    5|                   getParam(0): [Param] ...: ...
+#    5|                     getTypeRepr(): [RefTypeRepr] RefTypeRepr
+#    5|                       getTypeRepr(): [PathTypeRepr] ...::Formatter
+#    5|                         getPath(): [Path] ...::Formatter
+#    5|                           getQualifier(): [Path] ...::fmt
+#    5|                             getQualifier(): [Path] $crate
+#    5|                               getSegment(): [PathSegment] $crate
+#    5|                                 getIdentifier(): [NameRef] $crate
+#    5|                             getSegment(): [PathSegment] fmt
+#    5|                               getIdentifier(): [NameRef] fmt
+#    5|                           getSegment(): [PathSegment] Formatter
+#    5|                             getIdentifier(): [NameRef] Formatter
+#    5|                     getPat(): [IdentPat] f
+#    5|                       getName(): [Name] f
+#    5|                   getSelfParam(): [SelfParam] SelfParam
+#    5|                     getName(): [Name] self
+#    5|                 getFunctionBody(): [BlockExpr] { ... }
+#    5|                   getStmtList(): [StmtList] StmtList
+#    5|                     getTailExpr(): [MatchExpr] match self { ... }
+#    5|                       getScrutinee(): [VariableAccess] self
+#    5|                         getPath(): [Path] self
+#    5|                           getSegment(): [PathSegment] self
+#    5|                             getIdentifier(): [NameRef] self
+#    5|                       getMatchArmList(): [MatchArmList] MatchArmList
+#    5|                         getArm(0): [MatchArm] ... => ...
+#    5|                           getExpr(): [MethodCallExpr] ... .finish()
+#    5|                             getArgList(): [ArgList] ArgList
+#    5|                             getIdentifier(): [NameRef] finish
+#    5|                             getReceiver(): [MethodCallExpr] ... .field(...)
+#    5|                               getArgList(): [ArgList] ArgList
+#    5|                                 getArg(0): [StringLiteralExpr] "value"
+#    5|                                 getArg(1): [RefExpr] &value
+#    7|                                   getExpr(): [VariableAccess] value
+#    7|                                     getPath(): [Path] value
+#    7|                                       getSegment(): [PathSegment] value
+#    7|                                         getIdentifier(): [NameRef] value
+#    5|                               getIdentifier(): [NameRef] field
+#    5|                               getReceiver(): [MethodCallExpr] f.debug_struct(...)
+#    5|                                 getArgList(): [ArgList] ArgList
+#    5|                                   getArg(0): [StringLiteralExpr] "IncludedDerived"
+#    5|                                 getIdentifier(): [NameRef] debug_struct
+#    5|                                 getReceiver(): [VariableAccess] f
+#    5|                                   getPath(): [Path] f
+#    5|                                     getSegment(): [PathSegment] f
+#    5|                                       getIdentifier(): [NameRef] f
+#    5|                           getPat(): [StructPat] IncludedDerived {...}
+#    6|                             getPath(): [Path] IncludedDerived
+#    6|                               getSegment(): [PathSegment] IncludedDerived
+#    6|                                 getIdentifier(): [NameRef] IncludedDerived
+#    5|                             getStructPatFieldList(): [StructPatFieldList] StructPatFieldList
+#    5|                               getField(0): [StructPatField] value: ...
+#    7|                                 getIdentifier(): [NameRef] value
+#    7|                                 getPat(): [IdentPat] value
+#    7|                                   getName(): [Name] value
+#    5|                 getName(): [Name] fmt
+#    5|                 getRetType(): [RetTypeRepr] RetTypeRepr
+#    5|                   getTypeRepr(): [PathTypeRepr] ...::Result
+#    5|                     getPath(): [Path] ...::Result
+#    5|                       getQualifier(): [Path] ...::fmt
+#    5|                         getQualifier(): [Path] $crate
+#    5|                           getSegment(): [PathSegment] $crate
+#    5|                             getIdentifier(): [NameRef] $crate
+#    5|                         getSegment(): [PathSegment] fmt
+#    5|                           getIdentifier(): [NameRef] fmt
+#    5|                       getSegment(): [PathSegment] Result
+#    5|                         getIdentifier(): [NameRef] Result
+#    5|             getGenericParamList(): [GenericParamList] <...>
+#    5|             getSelfTy(): [PathTypeRepr] IncludedDerived::<...>
+#    5|               getPath(): [Path] IncludedDerived::<...>
+#    5|                 getSegment(): [PathSegment] IncludedDerived::<...>
+#    5|                   getGenericArgList(): [GenericArgList] <...>
+#    6|                   getIdentifier(): [NameRef] IncludedDerived
+#    5|             getTraitTy(): [PathTypeRepr] ...::Debug
+#    5|               getPath(): [Path] ...::Debug
+#    5|                 getQualifier(): [Path] ...::fmt
+#    5|                   getQualifier(): [Path] $crate
+#    5|                     getSegment(): [PathSegment] $crate
+#    5|                       getIdentifier(): [NameRef] $crate
+#    5|                   getSegment(): [PathSegment] fmt
+#    5|                     getIdentifier(): [NameRef] fmt
+#    5|                 getSegment(): [PathSegment] Debug
+#    5|                   getIdentifier(): [NameRef] Debug
+#    5|             getWhereClause(): [WhereClause] WhereClause
+#    5|         getAttr(0): [Attr] Attr
+#    5|           getMeta(): [TokenTreeMeta] TokenTreeMeta
+#    5|             getPath(): [Path] derive
+#    5|               getSegment(): [PathSegment] derive
+#    5|                 getIdentifier(): [NameRef] derive
+#    5|             getTokenTree(): [TokenTree] TokenTree
+#    6|         getName(): [Name] IncludedDerived
+#    6|         getFieldList(): [StructFieldList] StructFieldList
+#    7|           getField(0): [StructField] value: usize
+#    7|             getName(): [Name] value
+#    7|             getTypeRepr(): [PathTypeRepr] usize
+#    7|               getPath(): [Path] usize
+#    7|                 getSegment(): [PathSegment] usize
+#    7|                   getIdentifier(): [NameRef] usize
 macro_expansion.rs:
 #   63|   getItem(12): [Function] fn documented
 #   64|     getParamList(): [ParamList] ParamList

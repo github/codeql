@@ -15,13 +15,14 @@ attribute_macros
 | macro_expansion.rs:31:5:34:5 | fn  | 1 | macro_expansion.rs:32:5:34:5 | fn bzz_1 |
 | macro_expansion.rs:31:5:34:5 | fn  | 2 | macro_expansion.rs:32:5:34:5 | fn bzz_2 |
 derive_macros
+| included/included.rs:5:1:8:1 | struct IncludedDerived | 0 | 0 | included/included.rs:5:1:7:9 | impl ...::Debug for IncludedDerived::<...> { ... } |
 | macro_expansion.rs:83:1:86:1 | struct MyDerive | 0 | 0 | macro_expansion.rs:83:1:86:1 | impl ...::Debug for MyDerive::<...> { ... } |
 | macro_expansion.rs:88:1:92:1 | enum MyDeriveEnum | 0 | 0 | macro_expansion.rs:88:1:92:1 | impl ...::PartialEq for MyDeriveEnum::<...> { ... } |
 | macro_expansion.rs:88:1:92:1 | enum MyDeriveEnum | 1 | 0 | macro_expansion.rs:88:1:92:1 | impl ...::Eq for MyDeriveEnum::<...> { ... } |
 | macro_expansion.rs:98:1:102:1 | union MyDeriveUnion | 0 | 0 | macro_expansion.rs:99:7:99:19 | const CONST_MyDeriveUnion |
 | macro_expansion.rs:98:1:102:1 | union MyDeriveUnion | 0 | 1 | macro_expansion.rs:99:7:99:19 | impl MyTrait for MyDeriveUnion { ... } |
 macro_calls
-| included/included.rs:1:16:2:28 | concat!... | included/included.rs:2:17:2:38 | "Hello world!" |
+| included/included.rs:2:9:2:39 | concat!... | included/included.rs:2:17:2:38 | "Hello world!" |
 | macro_expansion.rs:5:9:5:35 | concat!... | macro_expansion.rs:5:17:5:34 | "Hello world!" |
 | macro_expansion.rs:5:9:5:35 | concat!... | macro_expansion.rs:5:17:5:34 | "Hello world!" |
 | macro_expansion.rs:31:7:31:15 | ...::format_args_nl!... | macro_expansion.rs:31:7:31:15 | FormatArgsExpr |
@@ -38,7 +39,7 @@ macro_calls
 | macro_expansion.rs:55:9:58:5 | my_macro!... | macro_expansion.rs:56:9:57:13 | MacroExpr |
 | macro_expansion.rs:56:9:57:13 | ...::format_args!... | macro_expansion.rs:56:9:57:13 | FormatArgsExpr |
 | macro_expansion.rs:56:9:57:13 | format!... | macro_expansion.rs:56:9:57:13 | ...::must_use(...) |
-| macro_expansion.rs:61:1:61:33 | include!... | included/included.rs:1:1:2:30 | MacroItems |
+| macro_expansion.rs:61:1:61:33 | include!... | included/included.rs:1:1:8:1 | MacroItems |
 | macro_expansion.rs:70:16:70:24 | my_int!... | macro_expansion.rs:70:16:70:22 | i32 |
 | macro_expansion.rs:71:12:71:20 | my_int!... | macro_expansion.rs:71:12:71:18 | i32 |
 | macro_expansion.rs:72:10:72:18 | my_int!... | macro_expansion.rs:72:10:72:16 | i32 |

@@ -554,17 +554,27 @@ class CrateItemNode extends NamedItemNode instanceof Crate {
    * Gets a source file that belongs to this crate.
    *
    * This is calculated as those source files that can be reached from the entry
-   * file of this crate using zero or more `mod` imports, without going through
-   * the entry point of some other crate.
+   * file of this crate using zero or more `mod` imports or macro expansions
+   * (such as `include!`), without going through the entry point of some other crate.
    */
   pragma[nomagic]
   SourceFileItemNode getASourceFile() {
     result = super.getSourceFile()
     or
-    exists(SourceFileItemNode mid, Module mod |
+    exists(SourceFileItemNode mid |
       mid = this.getASourceFile() and
-      mod.getFile() = mid.getFile() and
-      fileImport(mod, result) and
+      (
+        exists(Module mod |
+          mod.getFile() = mid.getFile() and
+          fileImport(mod, result)
+        )
+        or
+        exists(MacroCall mc, Item expanded |
+          mc.getFile() = mid.getFile() and
+          expanded = mc.getMacroCallExpansion().(MacroItems).getAnItem() and
+          expanded.getFile() = result.getFile()
+        )
+      ) and
       not result = any(Crate other).getSourceFile()
     )
   }
@@ -1435,6 +1445,8 @@ private predicate modImport0(Module m, string name, Folder lookup) {
  * nested module, and `pred -> succ` is a module edge leading to `m`.
  */
 private predicate modImportNested(ModuleItemNode m, ModuleItemNode pred, ModuleItemNode succ) {
+  // An include expansion starts a new file-relative lookup, even inside an inline module.
+  pred.getFile() = m.getFile() and
   pred.getAnItemInScope() = succ and
   (
     modImport0(m, _, _) and
