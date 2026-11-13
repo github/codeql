@@ -265,10 +265,10 @@ struct MyOuter {
 func test3(mo : MyOuter) {
 	// struct members...
 
-	NSLog(mo.password.value) // $ MISSING: Alert[unified/swift/cleartext-logging]
+	NSLog(mo.password.value) // $ Alert[unified/swift/cleartext-logging]
 	NSLog(mo.harmless.value) // safe
 
-	NSLog(mo.password.getValue()) // $ MISSING: Alert[unified/swift/cleartext-logging]
+	NSLog(mo.password.getValue()) // $ Alert[unified/swift/cleartext-logging]
 	NSLog(mo.harmless.getValue()) // safe
 }
 

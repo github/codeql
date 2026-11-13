@@ -36,14 +36,22 @@ private class SensitiveDataIdentifier extends SensitiveData {
   override SensitiveDataClassification getClassification() { result = classification }
 }
 
+private Expr memberAccessParent(MemberAccessExpr e) { result = e.getParent() }
+
 /**
- * A member access that might contain sensitive data.
+ * A member access that might contain sensitive data. This includes a member itself and
+ * components of a receiver chain, for example:
+ * ```
+ * object.password
+ * password.value
+ * password.getValue()
+ * ```
  */
 private class SensitiveDataMemberAccess extends SensitiveData {
   SensitiveDataClassification classification;
 
   SensitiveDataMemberAccess() {
-    exists(MemberAccessExpr e | e = this.asExpr() |
+    exists(MemberAccessExpr e | memberAccessParent*(e) = this.asExpr() |
       HeuristicNames::nameIndicatesSensitiveData(e.getMemberName(), classification)
     )
   }

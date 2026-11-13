@@ -19,6 +19,8 @@
 | CleartextLoggingTest.swift:246:8:246:8 | y | CleartextLoggingTest.swift:245:10:245:22 | getPassword(...) | CleartextLoggingTest.swift:246:8:246:8 | y | This operation writes $@ to a log file. | CleartextLoggingTest.swift:245:10:245:22 | getPassword(...) | getPassword(...) |
 | CleartextLoggingTest.swift:250:8:250:17 | ... .password | CleartextLoggingTest.swift:250:8:250:17 | ... .password | CleartextLoggingTest.swift:250:8:250:17 | ... .password | This operation writes $@ to a log file. | CleartextLoggingTest.swift:250:8:250:17 | ... .password | ... .password |
 | CleartextLoggingTest.swift:251:8:251:22 | ... .getPassword(...) | CleartextLoggingTest.swift:251:8:251:22 | ... .getPassword(...) | CleartextLoggingTest.swift:251:8:251:22 | ... .getPassword(...) | This operation writes $@ to a log file. | CleartextLoggingTest.swift:251:8:251:22 | ... .getPassword(...) | ... .getPassword(...) |
+| CleartextLoggingTest.swift:268:8:268:24 | ... .value | CleartextLoggingTest.swift:268:8:268:24 | ... .value | CleartextLoggingTest.swift:268:8:268:24 | ... .value | This operation writes $@ to a log file. | CleartextLoggingTest.swift:268:8:268:24 | ... .value | ... .value |
+| CleartextLoggingTest.swift:271:8:271:29 | ... .getValue(...) | CleartextLoggingTest.swift:271:8:271:29 | ... .getValue(...) | CleartextLoggingTest.swift:271:8:271:29 | ... .getValue(...) | This operation writes $@ to a log file. | CleartextLoggingTest.swift:271:8:271:29 | ... .getValue(...) | ... .getValue(...) |
 | CleartextLoggingTest.swift:294:8:294:15 | password | CleartextLoggingTest.swift:294:8:294:15 | password | CleartextLoggingTest.swift:294:8:294:15 | password | This operation writes $@ to a log file. | CleartextLoggingTest.swift:294:8:294:15 | password | password |
 | CleartextLoggingTest.swift:297:8:297:25 | ... + ... | CleartextLoggingTest.swift:297:18:297:25 | password | CleartextLoggingTest.swift:297:8:297:25 | ... + ... | This operation writes $@ to a log file. | CleartextLoggingTest.swift:297:18:297:25 | password | password |
 | CleartextLoggingTest.swift:316:8:316:16 | myString9 | CleartextLoggingTest.swift:315:18:315:25 | password | CleartextLoggingTest.swift:316:8:316:16 | myString9 | This operation writes $@ to a log file. | CleartextLoggingTest.swift:315:18:315:25 | password | password |
@@ -92,6 +94,8 @@ nodes
 | CleartextLoggingTest.swift:246:8:246:8 | y | semmle.label | y |
 | CleartextLoggingTest.swift:250:8:250:17 | ... .password | semmle.label | ... .password |
 | CleartextLoggingTest.swift:251:8:251:22 | ... .getPassword(...) | semmle.label | ... .getPassword(...) |
+| CleartextLoggingTest.swift:268:8:268:24 | ... .value | semmle.label | ... .value |
+| CleartextLoggingTest.swift:271:8:271:29 | ... .getValue(...) | semmle.label | ... .getValue(...) |
 | CleartextLoggingTest.swift:294:8:294:15 | password | semmle.label | password |
 | CleartextLoggingTest.swift:297:8:297:25 | ... + ... | semmle.label | ... + ... |
 | CleartextLoggingTest.swift:297:18:297:25 | password | semmle.label | password |
