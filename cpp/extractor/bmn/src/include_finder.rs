@@ -291,7 +291,6 @@ mod tests {
     use crate::include_scanner;
     use crate::test_utils::{create_populate_tmp_dir, get_resource};
     use all_asserts::assert_true;
-    use std::path::Path;
 
     fn create_tree(files: &[&str]) -> DirectoryTree {
         DirectoryTree::from_files(files.iter().map(PathBuf::from).collect::<Vec<_>>())

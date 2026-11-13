@@ -582,7 +582,7 @@ fn node_content<Id: TreeId>(node: &Node<Id>, source: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{NodeContent, OutputAst, Point, Range};
+    use crate::{OutputAst, Point, Range};
     use std::collections::BTreeMap;
 
     fn range(start: usize, end: usize) -> Range {

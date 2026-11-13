@@ -460,7 +460,6 @@ impl FileFilter {
 mod tests {
     use super::*;
     use all_asserts::{assert_false, assert_true};
-    use std::path::PathBuf;
 
     // Using the current directory as root for tests to avoid issues with absolute paths on Windows
     fn get_cwd() -> PathBuf {

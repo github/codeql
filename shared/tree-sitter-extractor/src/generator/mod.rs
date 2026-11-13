@@ -6,7 +6,6 @@ use std::io::Write;
 use std::path::PathBuf;
 
 use crate::node_types;
-use yeast;
 
 pub mod dbscheme;
 pub mod language;

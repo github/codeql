@@ -255,7 +255,6 @@ fn extract_content_from_zip(archive_zip_name: &Path) -> anyhow::Result<String> {
 mod tests {
     use super::*;
     use all_asserts::assert_true;
-    use std::fs::File;
     use std::io::Write;
     use tempfile::tempdir;
 

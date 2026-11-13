@@ -30,6 +30,9 @@ exclude = [
     "rust/ql/integration-tests",
 ]
 
+[workspace.lints.rust]
+redundant_imports = "warn"
+
 [workspace.lints.clippy]
 all = { level = "warn", priority = -1 }
 pedantic = { level = "warn", priority = -1 }

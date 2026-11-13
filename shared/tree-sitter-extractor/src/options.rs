@@ -1,5 +1,3 @@
-use num_cpus;
-
 /// Gets the number of threads the extractor should use.
 /// This is controlled by the `CODEQL_THREADS` environment variable.
 pub fn num_threads() -> Result<usize, String> {
