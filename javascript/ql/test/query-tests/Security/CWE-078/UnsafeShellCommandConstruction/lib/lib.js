@@ -406,7 +406,7 @@ module.exports.sanitizer3 = function (name) { // $ Source
 	cp.exec("rm -rf " + name); // $ Alert
 
 	var sanitized = yetAnohterSanitizer(name);
-	cp.exec("rm -rf " + sanitized);
+	cp.exec("rm -rf " + sanitized); // $ Alert
 }
 
 const cp = require("child_process");
@@ -759,3 +759,21 @@ module.exports.sanitizerParseFloat = function (name) { // $ Source
 		cp.exec("rm -rf " + parsed);
 	}
 }
+
+function sanitizeCharLoop(str) {
+	if (typeof str !== 'string') return '';
+	let result = '';
+	for (let i = 0; i < str.length; i++) {
+		if (!(str[i] === '&' || str[i] === '`' || str[i] === '$' || str[i] === '|' ||
+			str[i] === '>' || str[i] === '<' || str[i] === '#' || str[i] === ';' ||
+			str[i] === '(' || str[i] === ')' || str[i] === '[' || str[i] === ']' || str[i] === '\n')) {
+			result = result + str[i];
+		}
+	}
+	return result;
+}
+
+module.exports.sanitizedCharStringChecks = function (name) {
+	cp.exec("rm -rf " + sanitizeCharLoop(name));
+}
+
