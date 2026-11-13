@@ -1,5 +1,6 @@
 /**
  * @kind test-postprocess
+ * @tags inline-expectation-test
  */
 
 private import java

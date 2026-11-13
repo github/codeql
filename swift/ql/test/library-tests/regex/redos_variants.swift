@@ -99,7 +99,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     // attack string: "##".repeat(100) + "\na"
     // Adapted from CodeMirror (https://github.com/codemirror/codemirror),
     // which is licensed under the MIT license; see file licenses/CodeMirror-LICENSE.
-    _ = try Regex(#"^([\s\[\{\(]|#.*)*$"#).firstMatch(in: tainted) // $ redos-vulnerable regex=^([\s\[\{\(]|#.*)*$
+    _ = try Regex(#"^([\s\[\{\(]|#.*)*$"#).firstMatch(in: tainted) // $ redos-vulnerable regex=^([\s\[\{\(]|#.*)*$ # hash is part of the value
 
     // BAD
     // attack string: "a" + "[]".repeat(100) + ".b\n"
