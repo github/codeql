@@ -1,0 +1,16 @@
+name: Bot Actor Check Does Not Prevent Injection
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  triage:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: AI triage for bot issues only
+        uses: warpdotdev/oz-agent-action@v1
+        with:
+          prompt: |
+            Analyze this dependency update:
+            ${{ github.event.issue.title }}
