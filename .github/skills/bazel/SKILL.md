@@ -23,7 +23,7 @@ Things that will waste your time or produce a wrong edit here. Read this section
 
 ## Conventions
 
-* **Copy a neighboring target rather than inventing a shape.** Packaging is not uniform: some packages use the
+* Packaging is not uniform: some packages use the
   `codeql_*` wrappers, others still use `pkg_files` directly. Copy the closest *working* neighbor, and prefer the
   wrapper for new code.
 * **Pin anything fetched over the network** with `sha256` or `integrity`. Bazel only *warns* on an unpinned download, so
