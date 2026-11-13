@@ -96,7 +96,7 @@ impl Captures {
                 return Err("Repeated captures must have the same number of matches".to_string());
             }
             Ok((0..repeats).map(move |iter| {
-                let mut new_vars: Captures = Captures::new();
+                let mut new_vars = Captures::new();
                 for id in children {
                     let child_capture = self.captures.get(id).unwrap()[iter];
                     new_vars.captures.insert(id, vec![child_capture]);

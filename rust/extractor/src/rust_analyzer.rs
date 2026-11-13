@@ -84,7 +84,7 @@ impl<'a> RustAnalyzer<'a> {
         load_config: &LoadCargoConfig,
     ) -> Option<(RootDatabase, Vfs)> {
         let progress = |t| trace!("progress: {t}");
-        let manifest: &ManifestPath = project.manifest_path();
+        let manifest = project.manifest_path();
         match load_workspace_at(manifest.as_ref(), config, load_config, &progress) {
             Ok((db, vfs, _macro_server)) => Some((db, vfs)),
             Err(err) => {

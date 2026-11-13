@@ -4,7 +4,7 @@ use itertools::Itertools;
 use ra_ap_base_db::Crate;
 use ra_ap_cfg::CfgAtom;
 use ra_ap_ide_db::RootDatabase;
-use ra_ap_vfs::{Vfs, VfsPath};
+use ra_ap_vfs::Vfs;
 
 use std::hash::Hash;
 use std::hash::Hasher;
@@ -24,7 +24,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
     let mut crate_id_map = HashMap::<Crate, (PathBuf, u64)>::new();
     for krate_id in crate_graph.as_ref() {
         let krate = krate_id.data(db);
-        let root_module_file: &VfsPath = vfs.file_path(krate.root_file_id);
+        let root_module_file = vfs.file_path(krate.root_file_id);
         if let Some(root_module_file) = root_module_file
             .as_path()
             .map(|p| std::fs::canonicalize(p).unwrap_or(p.into()))
