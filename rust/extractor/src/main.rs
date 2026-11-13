@@ -96,6 +96,12 @@ impl<'a> Extractor<'a> {
         }
         translator.emit_source_file(&ast);
         translator.emit_truncated_diagnostics_message();
+        for step in &translator.included_file_steps {
+            if let Some(file) = &step.file {
+                self.archiver.archive(file);
+            }
+        }
+        self.steps.append(&mut translator.included_file_steps);
         translator.trap.commit().unwrap_or_else(|err| {
             error!(
                 "Failed to write trap file for: {}: {}",

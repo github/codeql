@@ -1,4 +1,5 @@
 use super::mappings::Emission;
+use crate::diagnostics::ExtractionStep;
 use crate::generated::{self};
 use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
@@ -13,7 +14,6 @@ use ra_ap_hir_expand::{
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::{SyntaxKind, TopEntryPoint};
-use ra_ap_span::TextSize;
 use ra_ap_syntax::ast::HasAttrs;
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
@@ -25,6 +25,7 @@ use ra_ap_syntax_bridge::{
 use ra_ap_vfs::Vfs;
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
+use std::time::Instant;
 
 impl Emission<ast::Item> for Translator<'_> {
     fn pre_emit(&mut self, node: &ast::Item) -> Option<Label<generated::Item>> {
@@ -138,6 +139,7 @@ pub struct Translator<'db> {
     source_kind: SourceKind,
     included_files: HashMap<EditionedFileId, FileLocation>,
     included_file_context: Option<EditionedFileId>,
+    pub(crate) included_file_steps: Vec<ExtractionStep>,
     pub(crate) macro_context_depth: usize,
     parenthesized_expr_attrs: HashMap<SyntaxNode, Vec<Label<generated::AnyAttr>>>,
     diagnostic_count: usize,
@@ -148,6 +150,7 @@ pub struct Translator<'db> {
 }
 
 struct FileLocation {
+    path: PathBuf,
     label: Label<generated::File>,
     line_index: LineIndex,
 }
@@ -177,6 +180,7 @@ impl<'db> Translator<'db> {
             source_kind,
             included_files: HashMap::new(),
             included_file_context: None,
+            included_file_steps: Vec::new(),
             macro_context_depth: 0,
             parenthesized_expr_attrs: HashMap::new(),
             diagnostic_count: 0,
@@ -209,20 +213,10 @@ impl<'db> Translator<'db> {
         if self.included_file_context.is_some()
             && !range.is_empty()
             && let Some(semantics) = self.semantics
-            && let Some(macro_file) = semantics.hir_file_for(node).macro_file()
-            && let Some(end) = range.end().checked_sub(1.into())
+            && let Some((file_id, range)) =
+                self.included_file_range(semantics.hir_file_for(node), range)
         {
-            // Include expansions reformat tokens and give them non-root syntax contexts.
-            // Resolve boundary spans (which may have different anchors) to source offsets.
-            let span_map = macro_file.expansion_span_map(semantics.db);
-            let (start, _) = span_for_offset(semantics.db, span_map, range.start());
-            let (end, _) = span_for_offset(semantics.db, span_map, end);
-            if start.file_id == end.file_id
-                && (self.included_files.contains_key(&start.file_id)
-                    || Some(start.file_id) == self.file_id)
-            {
-                return Some((Some(start.file_id), start.range.cover(end.range)));
-            }
+            return Some((Some(file_id), range));
         }
         if let Some(semantics) = self.semantics.as_ref() {
             let file_range = InFile::new(semantics.hir_file_for(node), range)
@@ -233,9 +227,28 @@ impl<'db> Translator<'db> {
         }
     }
 
-    pub fn text_range_for_node(&mut self, node: &impl ast::AstNode) -> Option<TextRange> {
-        let (file_id, range) = self.file_range_for_node(node)?;
-        (self.semantics.is_none() || self.file_id == file_id).then_some(range)
+    fn included_file_range(
+        &self,
+        file_id: HirFileId,
+        range: TextRange,
+    ) -> Option<(EditionedFileId, TextRange)> {
+        let semantics = self.semantics?;
+        let macro_file = file_id.macro_file()?;
+        let call = macro_file.loc(semantics.db);
+        if !call.def.is_include() {
+            // Ordinary macros retain invocation-site locations, not definition-site spans.
+            let invocation = call.to_node(semantics.db);
+            return self.included_file_range(invocation.file_id, invocation.value.text_range());
+        }
+        // Include expansions reformat tokens and give them non-root syntax contexts.
+        // Resolve boundary spans (which may have different anchors) to source offsets.
+        let span_map = macro_file.expansion_span_map(semantics.db);
+        let (start, _) = span_for_offset(semantics.db, span_map, range.start());
+        let (end, _) = span_for_offset(semantics.db, span_map, range.end().checked_sub(1.into())?);
+        (start.file_id == end.file_id
+            && (self.included_files.contains_key(&start.file_id)
+                || Some(start.file_id) == self.file_id))
+            .then(|| (start.file_id, start.range.cover(end.range)))
     }
 
     fn location_in_file(
@@ -254,11 +267,6 @@ impl<'db> Translator<'db> {
         let file = self.included_files.get(&file_id)?;
         let (start, end) = Self::location_in_index(&file.line_index, range)?;
         Some((file.label, start, end))
-    }
-
-    fn location_for_node(&mut self, node: &impl ast::AstNode) -> Option<(LineCol, LineCol)> {
-        self.text_range_for_node(node)
-            .and_then(|r| self.location(r))
     }
 
     fn location_in_index(line_index: &LineIndex, range: TextRange) -> Option<(LineCol, LineCol)> {
@@ -300,6 +308,7 @@ impl<'db> Translator<'db> {
             entry.insert(FileLocation {
                 label: self.trap.emit_file(&path),
                 line_index: LineIndex::new(text.text(semantics.db).as_ref()),
+                path,
             });
         }
         Some(file_id)
@@ -355,6 +364,23 @@ impl<'db> Translator<'db> {
         full_message: String,
         location: (LineCol, LineCol),
     ) {
+        self.emit_diagnostic_at(
+            severity,
+            tag,
+            message,
+            full_message,
+            (self.label, location.0, location.1),
+        );
+    }
+
+    fn emit_diagnostic_at(
+        &mut self,
+        severity: DiagnosticSeverity,
+        tag: String,
+        message: String,
+        full_message: String,
+        location: (Label<generated::File>, LineCol, LineCol),
+    ) {
         let severity = if self.source_kind == SourceKind::Library {
             match severity {
                 DiagnosticSeverity::Error => DiagnosticSeverity::Info,
@@ -381,7 +407,7 @@ impl<'db> Translator<'db> {
                 format!(
                     "Too many diagnostic messages, {count} diagnostic messages were suppressed"
                 ),
-                UNKNOWN_LOCATION,
+                (self.label, UNKNOWN_LOCATION.0, UNKNOWN_LOCATION.1),
             );
         }
     }
@@ -391,20 +417,30 @@ impl<'db> Translator<'db> {
         tag: String,
         message: String,
         full_message: String,
-        location: (LineCol, LineCol),
+        location: (Label<generated::File>, LineCol, LineCol),
     ) {
-        let (start, end) = location;
+        let (file, start, end) = location;
+        let path = if file.as_untyped() == self.label.as_untyped() {
+            &self.path
+        } else {
+            &self
+                .included_files
+                .values()
+                .find(|f| f.label.as_untyped() == file.as_untyped())
+                .expect("diagnostic file must have cached location data")
+                .path
+        };
         dispatch_to_tracing!(
             severity,
             "{}:{}:{}: {}",
-            self.path.display(),
+            path.display(),
             start.line + 1,
             start.col + 1,
             &full_message,
         );
 
         if severity > DiagnosticSeverity::Debug {
-            let location = self.trap.emit_location_label(self.label, start, end);
+            let location = self.trap.emit_location_label(file, start, end);
             self.trap
                 .emit_diagnostic(severity, tag, message, full_message, location);
         }
@@ -418,35 +454,32 @@ impl<'db> Translator<'db> {
         message: String,
         full_message: String,
     ) {
-        let location = self.location_for_node(node);
-        self.emit_diagnostic(
+        let location = self
+            .file_range_for_node(node)
+            .and_then(|(file, range)| self.location_in_file(file, range));
+        self.emit_diagnostic_at(
             severity,
             tag,
             message,
             full_message,
-            location.unwrap_or(UNKNOWN_LOCATION),
+            location.unwrap_or((self.label, UNKNOWN_LOCATION.0, UNKNOWN_LOCATION.1)),
         );
     }
 
     pub fn emit_parse_error(&mut self, owner: &impl ast::AstNode, err: &SyntaxError) {
         let owner_range: TextRange = owner.syntax().text_range();
-        let err_range = err.range();
-        if let Some(owner_range2) = self.text_range_for_node(owner) {
-            let location = if let Some(clipped_range) = err_range.intersect(owner_range) {
-                let err_range = clipped_range + owner_range2.start() - owner_range.start();
-                self.location(err_range)
-            } else {
-                self.location(owner_range2)
-            };
-            let message = err.to_string();
-            self.emit_diagnostic(
-                DiagnosticSeverity::Warning,
-                "parse_error".to_owned(),
-                message.clone(),
-                message,
-                location.unwrap_or(UNKNOWN_LOCATION),
-            );
-        }
+        let range = err.range().intersect(owner_range).unwrap_or(owner_range);
+        let location = self
+            .file_range_for_syntax_range(owner.syntax(), range)
+            .and_then(|(file, range)| self.location_in_file(file, range));
+        let message = err.to_string();
+        self.emit_diagnostic_at(
+            DiagnosticSeverity::Warning,
+            "parse_error".to_owned(),
+            message.clone(),
+            message,
+            location.unwrap_or((self.label, UNKNOWN_LOCATION.0, UNKNOWN_LOCATION.1)),
+        );
     }
     pub fn emit_tokens(
         &mut self,
@@ -491,6 +524,14 @@ impl<'db> Translator<'db> {
                             .text_range()
                             .start();
                     self.emit_parse_error(node, &SyntaxError::new(error.message, location));
+                } else if self.included_file_context.is_some() {
+                    self.emit_diagnostic_for_node(
+                        node,
+                        DiagnosticSeverity::Warning,
+                        "parse_error".to_owned(),
+                        error.message.clone(),
+                        error.message,
+                    );
                 };
             }
             for err in value.value.iter() {
@@ -545,6 +586,7 @@ impl<'db> Translator<'db> {
         {
             let expand_to = ra_ap_hir_expand::ExpandTo::from_call_site(mcall);
             let kind = expanded.kind();
+            let before_expand = Instant::now();
             let previous_include_context = if expand_to == ra_ap_hir_expand::ExpandTo::Items {
                 self.included_file_context_for(&expanded.value)
                     .map(|context| self.included_file_context.replace(context))
@@ -559,22 +601,33 @@ impl<'db> Translator<'db> {
                     &mut self.trap.writer,
                 );
             } else {
-                let range = self.text_range_for_node(mcall);
                 self.emit_parse_error(mcall, &SyntaxError::new(
                     format!(
                         "macro expansion failed: the macro '{}' expands to {:?} but a {:?} was expected",
                         mcall.path().map(|p| p.to_string()).unwrap_or_default(),
                         kind, expand_to
                     ),
-                    range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
+                    mcall.syntax().text_range(),
                 ));
             }
             if let Some(previous_context) = previous_include_context {
+                let file_id = self
+                    .included_file_context
+                    .expect("include context must be set");
+                let path = if Some(file_id) == self.file_id {
+                    &self.path
+                } else {
+                    &self.included_files[&file_id].path
+                };
+                self.included_file_steps.push(ExtractionStep::extract(
+                    before_expand,
+                    self.source_kind,
+                    path,
+                ));
                 self.included_file_context = previous_context;
             }
         } else if self.semantics.is_some() {
             // let's not spam warnings if we don't have semantics, we already emitted one
-            let range = self.text_range_for_node(mcall);
             self.emit_parse_error(
                 mcall,
                 &SyntaxError::new(
@@ -582,7 +635,7 @@ impl<'db> Translator<'db> {
                         "macro expansion failed for '{}'",
                         mcall.path().map(|p| p.to_string()).unwrap_or_default()
                     ),
-                    range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
+                    mcall.syntax().text_range(),
                 ),
             );
         }
