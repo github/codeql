@@ -22,7 +22,9 @@ derive_macros
 | macro_expansion.rs:98:1:102:1 | union MyDeriveUnion | 0 | 0 | macro_expansion.rs:99:7:99:19 | const CONST_MyDeriveUnion |
 | macro_expansion.rs:98:1:102:1 | union MyDeriveUnion | 0 | 1 | macro_expansion.rs:99:7:99:19 | impl MyTrait for MyDeriveUnion { ... } |
 macro_calls
-| included/included.rs:2:9:2:39 | concat!... | included/included.rs:2:9:2:39 | "Hello world!" |
+| included/included.rs:2:9:2:39 | concat!... | included/included.rs:2:17:2:38 | "Hello world!" |
+| included/included.rs:17:5:19:6 | identity!... | included/included.rs:17:15:19:5 | { ... } |
+| included/included.rs:31:5:31:26 | definition_location!... | included/included.rs:31:5:31:26 | { ... } |
 | macro_expansion.rs:5:9:5:35 | concat!... | macro_expansion.rs:5:17:5:34 | "Hello world!" |
 | macro_expansion.rs:5:9:5:35 | concat!... | macro_expansion.rs:5:17:5:34 | "Hello world!" |
 | macro_expansion.rs:31:7:31:15 | ...::format_args_nl!... | macro_expansion.rs:31:7:31:15 | FormatArgsExpr |
@@ -39,7 +41,7 @@ macro_calls
 | macro_expansion.rs:55:9:58:5 | my_macro!... | macro_expansion.rs:56:9:57:13 | MacroExpr |
 | macro_expansion.rs:56:9:57:13 | ...::format_args!... | macro_expansion.rs:56:9:57:13 | FormatArgsExpr |
 | macro_expansion.rs:56:9:57:13 | format!... | macro_expansion.rs:56:9:57:13 | ...::must_use(...) |
-| macro_expansion.rs:61:1:61:33 | include!... | included/included.rs:1:1:8:1 | MacroItems |
+| macro_expansion.rs:61:1:61:33 | include!... | included/included.rs:1:1:32:1 | MacroItems |
 | macro_expansion.rs:70:16:70:24 | my_int!... | macro_expansion.rs:70:16:70:22 | i32 |
 | macro_expansion.rs:71:12:71:20 | my_int!... | macro_expansion.rs:71:12:71:18 | i32 |
 | macro_expansion.rs:72:10:72:18 | my_int!... | macro_expansion.rs:72:10:72:16 | i32 |
@@ -47,7 +49,22 @@ macro_calls
 | macro_expansion.rs:79:12:79:20 | my_int!... | macro_expansion.rs:79:12:79:18 | i32 |
 unexpanded_macro_calls
 | included/included.rs:2:9:2:39 | concat!... |
+| included/included.rs:17:5:19:6 | identity!... |
+| included/included.rs:31:5:31:26 | definition_location!... |
 | macro_expansion.rs:56:9:56:31 | concat!... |
 | macro_expansion.rs:63:9:63:32 | include_str!... |
 warnings
 | macro_expansion.rs:56:9:56:31 | macro expansion failed for 'concat' |
+includedArgumentLocation
+| included/included.rs:18:9:18:22 | dangerous_call | 18 |
+| included/included.rs:18:9:18:22 | dangerous_call | 18 |
+| included/included.rs:18:9:18:22 | dangerous_call | 18 |
+| included/included.rs:18:9:18:22 | dangerous_call | 18 |
+| included/included.rs:18:9:18:24 | dangerous_call(...) | 18 |
+| included/included.rs:18:23:18:24 | ArgList | 18 |
+| included/included.rs:31:5:31:26 | ArgList | 31 |
+| included/included.rs:31:5:31:26 | dangerous_call | 31 |
+| included/included.rs:31:5:31:26 | dangerous_call | 31 |
+| included/included.rs:31:5:31:26 | dangerous_call | 31 |
+| included/included.rs:31:5:31:26 | dangerous_call | 31 |
+| included/included.rs:31:5:31:26 | dangerous_call(...) | 31 |

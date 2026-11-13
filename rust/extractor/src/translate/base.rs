@@ -140,6 +140,7 @@ pub struct Translator<'db> {
     included_files: HashMap<EditionedFileId, FileLocation>,
     included_file_context: Option<EditionedFileId>,
     pub(crate) included_file_steps: Vec<ExtractionStep>,
+    pub(crate) module_files: Vec<PathBuf>,
     pub(crate) macro_context_depth: usize,
     parenthesized_expr_attrs: HashMap<SyntaxNode, Vec<Label<generated::AnyAttr>>>,
     diagnostic_count: usize,
@@ -181,6 +182,7 @@ impl<'db> Translator<'db> {
             included_files: HashMap::new(),
             included_file_context: None,
             included_file_steps: Vec::new(),
+            module_files: Vec::new(),
             macro_context_depth: 0,
             parenthesized_expr_attrs: HashMap::new(),
             diagnostic_count: 0,
@@ -235,16 +237,25 @@ impl<'db> Translator<'db> {
         let semantics = self.semantics?;
         let macro_file = file_id.macro_file()?;
         let call = macro_file.loc(semantics.db);
-        if !call.def.is_include() {
-            // Ordinary macros retain invocation-site locations, not definition-site spans.
-            let invocation = call.to_node(semantics.db);
-            return self.included_file_range(invocation.file_id, invocation.value.text_range());
-        }
-        // Include expansions reformat tokens and give them non-root syntax contexts.
-        // Resolve boundary spans (which may have different anchors) to source offsets.
         let span_map = macro_file.expansion_span_map(semantics.db);
         let (start, _) = span_for_offset(semantics.db, span_map, range.start());
         let (end, _) = span_for_offset(semantics.db, span_map, range.end().checked_sub(1.into())?);
+        if !call.def.is_include() {
+            let invocation = call.to_node(semantics.db);
+            let (invocation_file, invocation_range) =
+                self.included_file_range(invocation.file_id, invocation.value.text_range())?;
+            // Preserve copied arguments, but attribute definition-origin tokens to the call.
+            if start.file_id == invocation_file
+                && end.file_id == invocation_file
+                && invocation_range.contains_range(start.range)
+                && invocation_range.contains_range(end.range)
+            {
+                return Some((invocation_file, start.range.cover(end.range)));
+            }
+            return Some((invocation_file, invocation_range));
+        }
+        // Include expansions reformat tokens and give them non-root syntax contexts.
+        // Resolve boundary spans (which may have different anchors) to source offsets.
         (start.file_id == end.file_id
             && (self.included_files.contains_key(&start.file_id)
                 || Some(start.file_id) == self.file_id))
@@ -624,6 +635,8 @@ impl<'db> Translator<'db> {
                     self.source_kind,
                     path,
                 ));
+                self.included_file_steps
+                    .push(ExtractionStep::load_source(before_expand, path));
                 self.included_file_context = previous_context;
             }
         } else if self.semantics.is_some() {
@@ -915,6 +928,18 @@ impl<'db> Translator<'db> {
     }
 
     pub(crate) fn item_post_emit(&mut self, node: &ast::Item, label: Label<generated::Item>) {
+        if self.macro_context_depth == 0
+            && let ast::Item::Module(node) = node
+            && node.semicolon_token().is_some()
+            && let Some(semantics) = self.semantics
+            && let Some(module) = semantics.to_def(node)
+            && let Some(file_id) = module.as_source_file_id(semantics.db)
+            && let Some(path) = self
+                .vfs
+                .and_then(|vfs| vfs.file_path(file_id.file_id(semantics.db)).as_path())
+        {
+            self.module_files.push(path.to_path_buf().into());
+        }
         if !self.is_attribute_macro_target(node) {
             return;
         }

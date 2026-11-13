@@ -156,6 +156,41 @@ included/included.rs:
 #    7|           getPath(): [Path] usize
 #    7|             getSegment(): [PathSegment] usize
 #    7|               getIdentifier(): [NameRef] usize
+#   10|   getItem(2): [MacroRules] MacroRules
+#   10|     getName(): [Name] identity
+#   10|     getTokenTree(): [TokenTree] TokenTree
+#   16|   getItem(3): [Function] fn argument_location
+#   16|     getParamList(): [ParamList] ParamList
+#   16|     getFunctionBody(): [BlockExpr] { ... }
+#   16|       getStmtList(): [StmtList] StmtList
+#   17|         getStatement(0): [ExprStmt] ExprStmt
+#   17|           getExpr(): [MacroExpr] MacroExpr
+#   17|             getMacroCall(): [MacroCall] identity!...
+#   17|               getPath(): [Path] identity
+#   17|                 getSegment(): [PathSegment] identity
+#   17|                   getIdentifier(): [NameRef] identity
+#   17|               getTokenTree(): [TokenTree] TokenTree
+#   16|     getName(): [Name] argument_location
+#   22|   getItem(4): [Function] fn dangerous_call
+#   22|     getParamList(): [ParamList] ParamList
+#   22|     getFunctionBody(): [BlockExpr] { ... }
+#   22|       getStmtList(): [StmtList] StmtList
+#   22|     getName(): [Name] dangerous_call
+#   24|   getItem(5): [MacroRules] MacroRules
+#   24|     getName(): [Name] definition_location
+#   24|     getTokenTree(): [TokenTree] TokenTree
+#   30|   getItem(6): [Function] fn definition_origin
+#   30|     getParamList(): [ParamList] ParamList
+#   30|     getFunctionBody(): [BlockExpr] { ... }
+#   30|       getStmtList(): [StmtList] StmtList
+#   31|         getStatement(0): [ExprStmt] ExprStmt
+#   31|           getExpr(): [MacroExpr] MacroExpr
+#   31|             getMacroCall(): [MacroCall] definition_location!...
+#   31|               getPath(): [Path] definition_location
+#   31|                 getSegment(): [PathSegment] definition_location
+#   31|                   getIdentifier(): [NameRef] definition_location
+#   31|               getTokenTree(): [TokenTree] TokenTree
+#   30|     getName(): [Name] definition_origin
 #    2| [Comment] //...
 lib.rs:
 #    1| [SourceFile] SourceFile
@@ -746,6 +781,60 @@ included/included.rs:
 #    7|               getPath(): [Path] usize
 #    7|                 getSegment(): [PathSegment] usize
 #    7|                   getIdentifier(): [NameRef] usize
+#   10|       getItem(2): [MacroRules] MacroRules
+#   10|         getName(): [Name] identity
+#   10|         getTokenTree(): [TokenTree] TokenTree
+#   16|       getItem(3): [Function] fn argument_location
+#   16|         getParamList(): [ParamList] ParamList
+#   16|         getFunctionBody(): [BlockExpr] { ... }
+#   16|           getStmtList(): [StmtList] StmtList
+#   17|             getStatement(0): [ExprStmt] ExprStmt
+#   17|               getExpr(): [MacroExpr] MacroExpr
+#   17|                 getMacroCall(): [MacroCall] identity!...
+#   17|                   getPath(): [Path] identity
+#   17|                     getSegment(): [PathSegment] identity
+#   17|                       getIdentifier(): [NameRef] identity
+#   17|                   getTokenTree(): [TokenTree] TokenTree
+#   17|                   getMacroCallExpansion(): [BlockExpr] { ... }
+#   17|                     getStmtList(): [StmtList] StmtList
+#   17|                       getTailExpr(): [BlockExpr] { ... }
+#   17|                         getStmtList(): [StmtList] StmtList
+#   18|                           getStatement(0): [ExprStmt] ExprStmt
+#   18|                             getExpr(): [CallExpr] dangerous_call(...)
+#   18|                               getArgList(): [ArgList] ArgList
+#   18|                               getFunction(): [PathExpr] dangerous_call
+#   18|                                 getPath(): [Path] dangerous_call
+#   18|                                   getSegment(): [PathSegment] dangerous_call
+#   18|                                     getIdentifier(): [NameRef] dangerous_call
+#   16|         getName(): [Name] argument_location
+#   22|       getItem(4): [Function] fn dangerous_call
+#   22|         getParamList(): [ParamList] ParamList
+#   22|         getFunctionBody(): [BlockExpr] { ... }
+#   22|           getStmtList(): [StmtList] StmtList
+#   22|         getName(): [Name] dangerous_call
+#   24|       getItem(5): [MacroRules] MacroRules
+#   24|         getName(): [Name] definition_location
+#   24|         getTokenTree(): [TokenTree] TokenTree
+#   30|       getItem(6): [Function] fn definition_origin
+#   30|         getParamList(): [ParamList] ParamList
+#   30|         getFunctionBody(): [BlockExpr] { ... }
+#   30|           getStmtList(): [StmtList] StmtList
+#   31|             getStatement(0): [ExprStmt] ExprStmt
+#   31|               getExpr(): [MacroExpr] MacroExpr
+#   31|                 getMacroCall(): [MacroCall] definition_location!...
+#   31|                   getPath(): [Path] definition_location
+#   31|                     getSegment(): [PathSegment] definition_location
+#   31|                       getIdentifier(): [NameRef] definition_location
+#   31|                   getTokenTree(): [TokenTree] TokenTree
+#   31|                   getMacroCallExpansion(): [BlockExpr] { ... }
+#   31|                     getStmtList(): [StmtList] StmtList
+#   31|                       getTailExpr(): [CallExpr] dangerous_call(...)
+#   31|                         getArgList(): [ArgList] ArgList
+#   31|                         getFunction(): [PathExpr] dangerous_call
+#   31|                           getPath(): [Path] dangerous_call
+#   31|                             getSegment(): [PathSegment] dangerous_call
+#   31|                               getIdentifier(): [NameRef] dangerous_call
+#   30|         getName(): [Name] definition_origin
 macro_expansion.rs:
 #   63|   getItem(12): [Function] fn documented
 #   64|     getParamList(): [ParamList] ParamList
