@@ -55,7 +55,7 @@ module Beego {
     SsaWithFields v;
 
     BeegoOutputInstance() {
-      this = v.getBaseVariable().getSourceVariable() and
+      this = v.getBaseDefinition().getSourceVariable() and
       v.getType().(PointerType).getBaseType().hasQualifiedName(contextPackagePath(), "BeegoOutput")
     }
 

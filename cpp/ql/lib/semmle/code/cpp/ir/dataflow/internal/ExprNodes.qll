@@ -263,7 +263,9 @@ private module Cached {
     exists(CallInstruction call |
       call.getStaticCallTarget() instanceof Constructor and
       e = getConvertedResultExpression(call, n) and
-      call.getThisArgumentOperand() = node.getAddressOperand()
+      call.getThisArgumentOperand() = node.getAddressOperand() and
+      // Indirection index 0 is the `this` pointer, and 1 is the constructed object
+      node.getIndirectionIndex() = 1
     )
   }
 

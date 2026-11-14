@@ -423,7 +423,7 @@ module.exports.shellOption = function (name) { // $ Source
 
 	spawn("rm", ["first", name], SPAWN_OPT); // $ Alert
 	var arr = [];
-	arr.push(name); // $ Alert
+	arr.push(name);
 	spawn("rm", arr, SPAWN_OPT); // $ Alert
 	spawn("rm", build("node", (name ? name + ':' : '') + '-'), SPAWN_OPT); // $ Alert
 }
@@ -433,7 +433,7 @@ function build(first, last) {
 	if (something() === 'gm')
 		arr.push('convert');
 	first && arr.push(first);
-	last && arr.push(last); // $ Alert
+	last && arr.push(last);
 	return arr;
 };
 
@@ -515,10 +515,10 @@ module.exports.sanitizer4 = function (name) { // $ Source
 		cp.exec("rm -rf " + name);
 	}
 
-	if (isNaN(parseInt(name))) {
+	if (isNaN(parseInt(name))) { // <- only checks a numeric prefix
 		cp.exec("rm -rf " + name); // $ Alert
 	} else {
-		cp.exec("rm -rf " + name);
+		cp.exec("rm -rf " + name); // $ Alert
 	}
 
 	if (isNaN(+name)) {
@@ -527,10 +527,10 @@ module.exports.sanitizer4 = function (name) { // $ Source
 		cp.exec("rm -rf " + name);
 	}
 
-	if (isNaN(parseInt(name, 10))) {
+	if (isNaN(parseInt(name, 10))) { // <- only checks a numeric prefix
 		cp.exec("rm -rf " + name); // $ Alert
 	} else {
-		cp.exec("rm -rf " + name);
+		cp.exec("rm -rf " + name); // $ Alert
 	}
 
 	if (isNaN(name - 0)) {
@@ -552,7 +552,7 @@ module.exports.shellThing = function (name) { // $ Source
         cp.spawn(cmd, args, spawnOpts); // $ Alert
     }
 
-    indirectShell("rm", ["-rf", name], {shell: true}); // $ Alert
+    indirectShell("rm", ["-rf", name], {shell: true});
 }
 
 module.exports.badSanitizer = function (name) { // $ Source
@@ -638,4 +638,124 @@ module.exports.sanitizer = function (name) { // $ Source
 
 	var sanitized = "'" + name.replace(new RegExp("\'", unknownFlags()), "'\\''") + "'"
 	cp.exec("rm -rf " + sanitized); // OK - Most likely should be okay and not flagged to reduce false positives.
+}
+
+module.exports.shellArgumentArrays = function (name) { // $ Source
+
+    cp.spawn("echo", ["hello", name], { shell: true }); // $ Alert
+    cp.spawn("echo", ["hello", name], { shell: "/bin/sh" }); // $ Alert
+    cp.spawnSync("echo", ["hello", name], { shell: true }); // $ Alert
+    cp.spawnSync("echo", ["hello", name], { shell: "/bin/sh" }); // $ Alert
+    cp.execFile("echo", ["hello", name], { shell: true }); // $ Alert
+    cp.execFile("echo", ["hello", name], { shell: "/bin/sh" }); // $ Alert
+    cp.execFile("echo", ["hello", name], { shell: true }, () => {}); // $ Alert
+    cp.execFile("echo", ["hello", name], { shell: "/bin/sh" }, () => {}); // $ Alert
+    cp.execFileSync("echo", ["hello", name], { shell: true }); // $ Alert
+    cp.execFileSync("echo", ["hello", name], { shell: "/bin/sh" }); // $ Alert
+    util.promisify(cp.execFile)("echo", ["hello", name], { shell: true }); // $ Alert
+    util.promisify(cp.execFile)("echo", ["hello", name], { shell: "/bin/sh" }); // $ Alert
+
+    const shell = "/bin/sh";
+    const options = { shell };
+    const args = ["hello", name];
+    cp.spawn("echo", args, options); // $ Alert
+    cp.execFile("echo", args, options); // $ Alert
+
+
+    const arrayWithProperty = [name];
+    arrayWithProperty.shell = false;
+    cp.spawn("echo", arrayWithProperty, { shell: true }); // $ Alert
+
+    const pushed = [];
+    pushed.push(name);
+    cp.spawn("echo", pushed, { shell: true }); // $ Alert
+    const shifted = [];
+    shifted.unshift(name);
+    cp.execFile("echo", shifted, { shell: "/bin/sh" }); // $ Alert
+
+    cp.spawn("echo", [name]);
+    cp.spawn("echo", [name], { shell: false });
+    cp.spawn("echo", [name], { shell: "" });
+    cp.spawnSync("echo", [name]);
+    cp.spawnSync("echo", [name], { shell: false });
+    cp.spawnSync("echo", [name], { shell: "" });
+    cp.execFile("echo", [name]);
+    cp.execFile("echo", [name], { shell: false });
+    cp.execFile("echo", [name], { shell: "" });
+    cp.execFileSync("echo", [name]);
+    cp.execFileSync("echo", [name], { shell: false });
+    cp.execFileSync("echo", [name], { shell: "" });
+    cp.spawn("echo", ["hello"], { shell: true });
+    cp.execFile("echo", ["hello"], { shell: "/bin/sh" });
+
+    const laterPush = [];
+    cp.spawn("echo", laterPush, { shell: true });
+    laterPush.push(name);
+    const laterUnshift = [];
+    cp.execFile("echo", laterUnshift, { shell: "/bin/sh" });
+    laterUnshift.unshift(name);
+
+    const disabled = { shell: "/bin/sh" };
+    disabled.shell = false;
+    cp.spawn("echo", [name], disabled);
+    const empty = { shell: true };
+    empty.shell = "";
+    cp.execFile("echo", [name], empty);
+    const enabled = { shell: false };
+    enabled.shell = "/bin/sh";
+    cp.spawn("echo", [name], enabled); // $ Alert
+    const alias = enabled;
+    alias.shell = false;
+    cp.execFile("echo", [name], enabled);
+    const changedAfterCall = { shell: false };
+    cp.spawn("echo", [name], changedAfterCall);
+    changedAfterCall.shell = true;
+
+    const conditional = { shell: "/bin/sh" };
+    if (process.env.DISABLE_SHELL) conditional.shell = false;
+    cp.spawn("echo", [name], conditional); // $ Alert
+
+
+    const disabledOnBothBranches = { shell: true };
+    if (process.env.DISABLE_SHELL) disabledOnBothBranches.shell = false;
+    else disabledOnBothBranches.shell = "";
+    cp.spawn("echo", [name], disabledOnBothBranches);
+
+    const disabledAfterCall = { shell: true };
+    cp.spawn("echo", [name], disabledAfterCall); // $ Alert
+    disabledAfterCall.shell = false;
+
+    function runWithArgs(args) {
+        cp.spawn("echo", args, { shell: true }); // $ Alert
+        cp.execFile("echo", args, { shell: "/bin/sh" }); // $ Alert
+    }
+    runWithArgs([name]);
+
+    function runWithOptions(options) {
+        if (process.env.DISABLE_SHELL) options.shell = false;
+        cp.spawn("echo", [name], options); // $ Alert
+    }
+    runWithOptions({ shell: true });
+};
+
+module.exports.shellOptionsOnly = function (options) {
+    options.shell = true;
+    cp.spawn("echo", options);
+    cp.spawnSync("echo", options);
+    cp.execFile("echo", options);
+    cp.execFile("echo", options, () => {});
+    cp.execFileSync("echo", options);
+};
+
+module.exports.sanitizerParseFloat = function (name) { // $ Source
+	if (isNaN(parseFloat(name))) { // <- only checks a numeric prefix
+		cp.exec("rm -rf " + name); // $ Alert
+	} else {
+		cp.exec("rm -rf " + name); // $ Alert
+	}
+
+	const parsed = parseInt(name, 10);
+	if (!isNaN(parsed)) {
+		cp.exec("rm -rf " + parsed);
+	}
 }

@@ -75,7 +75,7 @@ predicate checksValue(IR::Instruction instruction, DataFlow::SsaNode value) {
 
 // Now that we have use-use flow, phi nodes aren't directly involved in the flow graph. TODO: change this?
 DataFlow::SsaNode phiDefinedFrom(DataFlow::SsaNode node) {
-  result.getDefinition().(SsaPseudoDefinition).getAnInput() = node.getDefinition().getVariable()
+  result.getDefinition().(SsaPhiDefinition).getAnInput() = node.getDefinition()
 }
 
 DataFlow::SsaNode definedFrom(DataFlow::SsaNode node) {

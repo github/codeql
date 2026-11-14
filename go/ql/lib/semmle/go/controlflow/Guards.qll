@@ -320,9 +320,9 @@ private module GuardsInput implements
   }
 
   private predicate extractedCallResult(Expr use, G::CallExpr call, int resultIndex) {
-    exists(GoSsa::SsaDefinition def, IR::ExtractTupleElementInstruction extract |
-      use = def.getVariable().getAUse().(IR::EvalInstruction).getExpr() and
-      def.(GoSsa::SsaExplicitDefinition).getInstruction() = extract and
+    exists(GoSsa::Ssa::SsaDefinition def, IR::ExtractTupleElementInstruction extract |
+      use = def.getARead() and
+      def.(GoSsa::Ssa::SsaExplicitWrite).getDefinition() = extract and
       extract.extractsElement(IR::evalExprInstruction(call), resultIndex)
     )
   }
@@ -398,46 +398,20 @@ private module GuardsInput implements
 private module GuardsImpl = SharedGuards::Make<Location, CfgImpl::Cfg, GuardsInput>;
 
 private module LogicInput implements GuardsImpl::LogicInputSig {
-  final private class FinalSsaDefinition = GoSsa::SsaDefinition;
-
-  class SsaDefinition extends FinalSsaDefinition {
-    GuardsInput::Expr getARead() {
-      result = super.getVariable().getAUse().(IR::EvalInstruction).getExpr()
-    }
-  }
-
-  class SsaExplicitWrite extends SsaDefinition instanceof GoSsa::SsaExplicitDefinition {
-    GuardsInput::Expr getValue() { result = super.getRhs().(IR::EvalInstruction).getExpr() }
-  }
-
-  class SsaPhiDefinition extends SsaDefinition instanceof GoSsa::SsaPhiNode {
-    /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
-    predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
-      SsaImpl::phiHasInputFromBlock(this, inp, bb)
-    }
-  }
-
-  class SsaParameterInit extends SsaDefinition {
-    SsaParameterInit() {
-      this.(GoSsa::SsaExplicitDefinition).getInstruction() instanceof IR::InitParameterInstruction
-    }
-
-    GuardsInput::Parameter getParameter() {
-      this.(GoSsa::SsaExplicitDefinition).getInstruction() = IR::initParamInstruction(result)
-    }
-  }
+  import GoSsa::Ssa
 
   predicate implicitReturnDefinition(GuardsInput::NonOverridableMethod method, SsaDefinition def) {
-    exists(IR::ReadResultInstruction read |
+    exists(IR::ReadResultInstruction read, BasicBlock bb, int i |
       method.getResultIndex() >= 0 and
       read.reads(method.getFunction().getResult(method.getResultIndex())) and
-      def.getVariable().getAUse() = read
+      read = bb.getNode(i) and
+      SsaImpl::ssaDefReachesRead(def.getSourceVariable(), def, bb, i)
     )
   }
 
   predicate additionalSsaDefinitionValue(SsaDefinition def, GuardValue value) {
     exists(IR::EvalImplicitInitInstruction init |
-      def.(GoSsa::SsaExplicitDefinition).getInstruction() = init and
+      def.(SsaExplicitWrite).getDefinition() = init and
       value.asBooleanValue() = init.getBoolValue()
     )
   }

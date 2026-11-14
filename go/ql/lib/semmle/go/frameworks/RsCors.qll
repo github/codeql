@@ -68,7 +68,7 @@ module RsCors {
     override RsOptions getConfig() {
       exists(RsOptions gc |
         (
-          gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
+          gc.getV().getBaseDefinition().(SsaExplicitWrite).getDefinition().getRhs() =
             base.asInstruction() or
           gc.getV().getAUse() = base
         ) and
@@ -96,7 +96,7 @@ module RsCors {
     override RsOptions getConfig() {
       exists(RsOptions gc |
         (
-          gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
+          gc.getV().getBaseDefinition().(SsaExplicitWrite).getDefinition().getRhs() =
             base.asInstruction() or
           gc.getV().getAUse() = base
         ) and
@@ -127,7 +127,7 @@ module RsCors {
     override RsOptions getConfig() {
       exists(RsOptions gc |
         (
-          gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
+          gc.getV().getBaseDefinition().(SsaExplicitWrite).getDefinition().getRhs() =
             base.asInstruction() or
           gc.getV().getAUse() = base
         ) and
@@ -141,7 +141,7 @@ module RsCors {
     SsaWithFields v;
 
     RsOptions() {
-      this = v.getBaseVariable().getSourceVariable() and
+      this = v.getBaseDefinition().getSourceVariable() and
       v.getType().hasQualifiedName(packagePath(), "Options")
     }
 

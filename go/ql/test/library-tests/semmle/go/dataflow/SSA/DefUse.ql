@@ -1,4 +1,5 @@
 import go
 
-from SsaVariable ssa
-select ssa.getAUse(), ssa.getDefinition(), ssa.getSourceVariable()
+from SsaDefinition ssa, DataFlow::ReadNode read
+where read.readsSsaDefinition(ssa)
+select read.asInstruction(), ssa, ssa.getSourceVariable()

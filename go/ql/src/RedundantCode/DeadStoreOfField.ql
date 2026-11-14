@@ -22,7 +22,7 @@ predicate escapes(DataFlow::Node nd) {
   // a global variable, a field or an array element), then it escapes
   exists(Write w |
     nd = w.getRhs() and
-    not w.definesSsaVariable(_, _)
+    not w.definesSsaDefinition(_, _)
   )
   or
   // if `nd` is used as an index into an array or similar, then it escapes

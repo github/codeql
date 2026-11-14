@@ -11,7 +11,7 @@ import (
 )
 
 // CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) { // $ resolverParameter="SSA def(input)"
+func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) { // $ resolverParameter="SSA param(input)"
 	panic(fmt.Errorf("not implemented: CreateTodo - createTodo %v", input))
 }
 
