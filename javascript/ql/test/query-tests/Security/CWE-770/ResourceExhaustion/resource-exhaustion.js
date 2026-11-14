@@ -98,6 +98,17 @@ var server = http.createServer(function(req, res) {
     clamped = 1024;
   }
   Buffer.alloc(clamped); // OK - bounded allocation size
+
+  // The value is declared in the HTTP handler, but the guarded phi is in
+  // the nested function. The split edges must retain that function's container.
+  let capturedSize = parseInt(url.parse(req.url, true).query.capturedSize);
+  function allocateWithCapturedGuard() {
+    if (capturedSize > 1024) {
+      capturedSize = 1024;
+    }
+    Buffer.alloc(capturedSize); // OK - bounded allocation in a nested function
+  }
+  allocateWithCapturedGuard();
 });
 
 function browser() {
