@@ -123,9 +123,10 @@ module SsaFlow {
   SsaFlow::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(SsaFlow::ExprNode).getExpr() = n.asExpr()
+    result.(SsaFlow::ReadNode).getControlFlowNode() = n.asExpr().getACfgNode()
     or
-    result.(SsaFlow::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
+    result.(SsaFlow::PostUpdateReadNode).getControlFlowNode() =
+      n.(PostUpdateNode).getPreUpdateNode().asExpr().getACfgNode()
   }
 
   predicate localFlowStep(
@@ -155,8 +156,7 @@ private Expr getALastEvalNode(Expr e) {
     ) or
   result = e.(MatchExpr).getAnArm().getExpr() or
   result = e.(MacroExpr).getMacroCall().getMacroCallExpansion() or
-  result.(BreakExpr).getTarget() = e or
-  result = e.(ParenExpr).getExpr()
+  result.(BreakExpr).getTarget() = e
 }
 
 /**
@@ -230,17 +230,6 @@ module LocalFlow {
       nodeFrom.asExpr() = match.getScrutinee() and
       nodeTo.asPat() = match.getAnArm().getPat()
     )
-    or
-    exists(ParenExpr pe, Expr e |
-      e = pe.getExpr() and
-      if VariableImpl::assignmentOperationDescendant(_, pe)
-      then nodeTo.asExpr() = e and nodeFrom.asExpr() = pe
-      else (
-        nodeFrom.asExpr() = e and nodeTo.asExpr() = pe
-      )
-    )
-    or
-    nodeTo.asPat() = nodeFrom.asPat().(ParenPat).getPat()
   }
 
   pragma[nomagic]
@@ -494,15 +483,7 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
     node instanceof ImplicitBorrowNode or
     node instanceof DerefOutNode or
     node instanceof IndexOutNode or
-    node.asExpr() instanceof ParenExpr or
     nodeIsHidden(node.(PostUpdateNode).getPreUpdateNode())
-  }
-
-  private Expr stripParens(Expr e) {
-    not e instanceof ParenExpr and
-    result = e
-    or
-    result = stripParens(e.(ParenExpr).getExpr())
   }
 
   predicate neverSkipInPathGraph(Node node) {
@@ -510,10 +491,10 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
     or
     node.(Node::Node).asPat() = any(LetExpr e).getPat()
     or
-    node.(Node::Node).asExpr() = stripParens(any(AssignmentExpr a).getLhs())
+    node.(Node::Node).asExpr() = any(AssignmentExpr a).getLhs()
     or
     exists(MatchExpr match |
-      node.asExpr() = stripParens(match.getScrutinee()) or
+      node.asExpr() = match.getScrutinee() or
       node.asPat() = match.getAnArm().getPat()
     )
   }
@@ -1086,11 +1067,7 @@ module VariableCapture {
     }
 
     class Expr extends AstNode {
-      predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) {
-        this = bb.getNode(i).getAstNode()
-        or
-        this.(ParenExpr).getExpr().(Expr).hasCfgNode(bb, i)
-      }
+      predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) { this = bb.getNode(i).getAstNode() }
     }
 
     class VariableWrite extends Expr {

@@ -451,6 +451,7 @@ class _:
     ```
     """
 
+    attrs: qltest.skip
     path: drop
 
 
@@ -1678,31 +1679,6 @@ class _:
     type_repr: drop
 
 
-@annotate(ParenExpr)
-class _:
-    """
-    A parenthesized expression.
-
-    For example:
-    ```rust
-    (x + y)
-    ```
-    """
-
-
-@annotate(ParenPat)
-class _:
-    """
-    A parenthesized pattern.
-
-    For example:
-    ```rust
-    let (x) = 1;
-    //  ^^^
-    ```
-    """
-
-
 @annotate(ParenTypeRepr)
 class _:
     """
@@ -2459,6 +2435,8 @@ class _:
     let y = vec![1, 2, 3];
     ```
     """
+
+    attrs: qltest.skip
 
 
 @annotate(MacroPat, cfg=True)

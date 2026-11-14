@@ -2220,11 +2220,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       /** A simple assignment expression, for example `x = y`. */
       class AssignExpr extends Assignment;
 
-      /** A parenthesized expression. */
-      class ParenExpr extends Expr {
-        Expr getExpr();
-      }
-
       /**
        * A variable, or an entity that behaves like a variable with respect to
        * type inference, for example a local variable, `const` item, or `static`
@@ -2774,8 +2769,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
               n1 = decl.getInitializer() and
               n2 = decl.getPattern()
             )
-            or
-            n1 = n2.(ParenExpr).getExpr()
           )
         }
 

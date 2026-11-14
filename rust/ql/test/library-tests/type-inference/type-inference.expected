@@ -318,7 +318,6 @@ inferCertainType
 | blanket_impl.rs:47:18:47:25 | "{x1:?}\\n" | TRef | {EXTERNAL LOCATION} | str |
 | blanket_impl.rs:47:18:47:25 | { ... } |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:47:18:47:25 | { ... } |  | {EXTERNAL LOCATION} | () |
-| blanket_impl.rs:48:18:48:22 | (...) |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:48:19:48:21 | &S1 |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:49:9:49:26 | MacroExpr |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:49:18:49:25 | "{x2:?}\\n" |  | {EXTERNAL LOCATION} | & |
@@ -330,7 +329,6 @@ inferCertainType
 | blanket_impl.rs:51:18:51:25 | "{x3:?}\\n" | TRef | {EXTERNAL LOCATION} | str |
 | blanket_impl.rs:51:18:51:25 | { ... } |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:51:18:51:25 | { ... } |  | {EXTERNAL LOCATION} | () |
-| blanket_impl.rs:52:18:52:22 | (...) |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:52:19:52:21 | &S1 |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:53:9:53:26 | MacroExpr |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:53:18:53:25 | "{x4:?}\\n" |  | {EXTERNAL LOCATION} | & |
@@ -348,7 +346,6 @@ inferCertainType
 | blanket_impl.rs:57:18:57:25 | "{x6:?}\\n" | TRef | {EXTERNAL LOCATION} | str |
 | blanket_impl.rs:57:18:57:25 | { ... } |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:57:18:57:25 | { ... } |  | {EXTERNAL LOCATION} | () |
-| blanket_impl.rs:58:18:58:22 | (...) |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:58:19:58:21 | &S2 |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:59:9:59:26 | MacroExpr |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:59:18:59:25 | "{x7:?}\\n" |  | {EXTERNAL LOCATION} | & |
@@ -452,16 +449,11 @@ inferCertainType
 | blanket_impl.rs:252:15:252:18 | SelfParam | TRef | blanket_impl.rs:250:10:250:10 | T |
 | blanket_impl.rs:252:21:252:22 | { ... } |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:255:33:263:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| blanket_impl.rs:257:18:257:22 | (...) |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:257:19:257:21 | &S1 |  | {EXTERNAL LOCATION} | & |
-| blanket_impl.rs:258:18:258:23 | (...) |  | {EXTERNAL LOCATION} | & |
-| blanket_impl.rs:258:18:258:23 | (...) | TRef | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:258:19:258:22 | &... |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:258:19:258:22 | &... | TRef | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:258:20:258:22 | &S1 |  | {EXTERNAL LOCATION} | & |
-| blanket_impl.rs:260:18:260:22 | (...) |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:260:19:260:21 | &S1 |  | {EXTERNAL LOCATION} | & |
-| blanket_impl.rs:262:18:262:22 | (...) |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:262:19:262:21 | &S2 |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:272:21:272:25 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:272:21:272:25 | SelfParam | TRef | blanket_impl.rs:271:5:274:5 | Self [trait Executor] |
@@ -927,9 +919,6 @@ inferCertainType
 | closure.rs:254:13:254:13 | c | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
 | closure.rs:254:17:254:21 | \|...\| x |  | {EXTERNAL LOCATION} | dyn Fn |
 | closure.rs:254:17:254:21 | \|...\| x | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:255:9:255:12 | (...) |  | {EXTERNAL LOCATION} | & |
-| closure.rs:255:9:255:12 | (...) | TRef | {EXTERNAL LOCATION} | dyn Fn |
-| closure.rs:255:9:255:12 | (...) | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
 | closure.rs:255:10:255:11 | &c |  | {EXTERNAL LOCATION} | & |
 | closure.rs:255:10:255:11 | &c | TRef | {EXTERNAL LOCATION} | dyn Fn |
 | closure.rs:255:10:255:11 | &c | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
@@ -1085,9 +1074,7 @@ inferCertainType
 | dereference.rs:188:22:188:24 | arg |  | {EXTERNAL LOCATION} | &mut |
 | dereference.rs:188:22:188:24 | arg | TRefMut | dereference.rs:159:5:159:13 | S |
 | dereference.rs:193:19:200:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| dereference.rs:194:17:194:20 | (...) |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:194:18:194:19 | &S |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:196:17:196:24 | (...) |  | {EXTERNAL LOCATION} | &mut |
 | dereference.rs:196:18:196:23 | &mut S |  | {EXTERNAL LOCATION} | &mut |
 | dereference.rs:198:23:198:24 | &S |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:199:23:199:28 | &mut S |  | {EXTERNAL LOCATION} | &mut |
@@ -2664,7 +2651,6 @@ inferCertainType
 | main.rs:1494:25:1494:29 | false |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1498:17:1500:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:1499:17:1499:17 | z |  | {EXTERNAL LOCATION} | () |
-| main.rs:1499:21:1499:27 | (...) |  | {EXTERNAL LOCATION} | () |
 | main.rs:1499:22:1499:26 | ... = ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1500:16:1502:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:1501:13:1501:17 | ... = ... |  | {EXTERNAL LOCATION} | () |
@@ -4948,9 +4934,7 @@ inferCertainType
 | pattern_matching.rs:787:25:787:31 | 3.14f64 |  | {EXTERNAL LOCATION} | f64 |
 | pattern_matching.rs:787:34:787:37 | true |  | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:788:41:788:45 | tuple |  | {EXTERNAL LOCATION} | (T_3) |
-| pattern_matching.rs:794:23:794:42 | (...) |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:794:23:794:42 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:794:45:794:64 | (...) |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:794:45:794:64 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:795:5:799:5 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:795:9:795:22 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
@@ -5498,8 +5482,6 @@ inferType
 | associated_types.rs:485:24:485:28 | SelfParam | TRef | associated_types.rs:469:5:469:24 | MyType |
 | associated_types.rs:485:24:485:28 | SelfParam | TRef.T | associated_types.rs:483:10:483:16 | T |
 | associated_types.rs:485:47:487:9 | { ... } |  | associated_types.rs:483:10:483:16 | T |
-| associated_types.rs:486:13:486:19 | (...) |  | associated_types.rs:469:5:469:24 | MyType |
-| associated_types.rs:486:13:486:19 | (...) | T | associated_types.rs:483:10:483:16 | T |
 | associated_types.rs:486:13:486:21 | ... .0 |  | associated_types.rs:483:10:483:16 | T |
 | associated_types.rs:486:14:486:18 | * ... |  | associated_types.rs:469:5:469:24 | MyType |
 | associated_types.rs:486:14:486:18 | * ... | T | associated_types.rs:483:10:483:16 | T |
@@ -5595,8 +5577,6 @@ inferType
 | associated_types.rs:550:31:550:31 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:550:61:558:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | associated_types.rs:552:13:552:15 | _a1 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:552:19:552:22 | (...) |  | associated_types.rs:19:1:27:1 | dyn GetSet |
-| associated_types.rs:552:19:552:22 | (...) | dyn(Output) | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:552:19:552:28 | ... .get() |  | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:552:20:552:21 | * ... |  | associated_types.rs:19:1:27:1 | dyn GetSet |
 | associated_types.rs:552:20:552:21 | * ... | dyn(Output) | {EXTERNAL LOCATION} | i32 |
@@ -5619,9 +5599,6 @@ inferType
 | associated_types.rs:560:36:560:36 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:560:92:566:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | associated_types.rs:561:13:561:15 | _a1 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:561:19:561:22 | (...) |  | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:561:19:561:22 | (...) | dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:561:19:561:22 | (...) | dyn(Output) | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:561:19:561:28 | ... .get() |  | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:561:20:561:21 | * ... |  | associated_types.rs:33:1:38:1 | dyn AnotherGet |
 | associated_types.rs:561:20:561:21 | * ... | dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
@@ -5643,9 +5620,6 @@ inferType
 | associated_types.rs:563:23:563:23 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:563:23:563:23 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:564:13:564:15 | _b1 |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:564:19:564:22 | (...) |  | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:564:19:564:22 | (...) | dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:564:19:564:22 | (...) | dyn(Output) | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:564:19:564:36 | ... .get_another() |  | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:564:20:564:21 | * ... |  | associated_types.rs:33:1:38:1 | dyn AnotherGet |
 | associated_types.rs:564:20:564:21 | * ... | dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
@@ -5704,8 +5678,6 @@ inferType
 | blanket_impl.rs:47:18:47:25 | { ... } |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:47:20:47:21 | x1 |  | blanket_impl.rs:6:5:7:14 | S1 |
 | blanket_impl.rs:48:13:48:14 | x2 |  | blanket_impl.rs:6:5:7:14 | S1 |
-| blanket_impl.rs:48:18:48:22 | (...) |  | {EXTERNAL LOCATION} | & |
-| blanket_impl.rs:48:18:48:22 | (...) | TRef | blanket_impl.rs:6:5:7:14 | S1 |
 | blanket_impl.rs:48:18:48:31 | ... .clone1() |  | blanket_impl.rs:6:5:7:14 | S1 |
 | blanket_impl.rs:48:19:48:21 | &S1 |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:48:19:48:21 | &S1 | TRef | blanket_impl.rs:6:5:7:14 | S1 |
@@ -5728,8 +5700,6 @@ inferType
 | blanket_impl.rs:51:18:51:25 | { ... } |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:51:20:51:21 | x3 |  | blanket_impl.rs:6:5:7:14 | S1 |
 | blanket_impl.rs:52:13:52:14 | x4 |  | blanket_impl.rs:6:5:7:14 | S1 |
-| blanket_impl.rs:52:18:52:22 | (...) |  | {EXTERNAL LOCATION} | & |
-| blanket_impl.rs:52:18:52:22 | (...) | TRef | blanket_impl.rs:6:5:7:14 | S1 |
 | blanket_impl.rs:52:18:52:34 | ... .duplicate() |  | blanket_impl.rs:6:5:7:14 | S1 |
 | blanket_impl.rs:52:19:52:21 | &S1 |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:52:19:52:21 | &S1 | TRef | blanket_impl.rs:6:5:7:14 | S1 |
@@ -5764,8 +5734,6 @@ inferType
 | blanket_impl.rs:57:18:57:25 | { ... } |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:57:20:57:21 | x6 |  | blanket_impl.rs:6:5:7:14 | S1 |
 | blanket_impl.rs:58:13:58:14 | x7 |  | blanket_impl.rs:6:5:7:14 | S1 |
-| blanket_impl.rs:58:18:58:22 | (...) |  | {EXTERNAL LOCATION} | & |
-| blanket_impl.rs:58:18:58:22 | (...) | TRef | blanket_impl.rs:9:5:10:14 | S2 |
 | blanket_impl.rs:58:18:58:34 | ... .duplicate() |  | blanket_impl.rs:6:5:7:14 | S1 |
 | blanket_impl.rs:58:19:58:21 | &S2 |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:58:19:58:21 | &S2 | TRef | blanket_impl.rs:9:5:10:14 | S2 |
@@ -5939,16 +5907,11 @@ inferType
 | blanket_impl.rs:256:18:256:19 | S1 |  | blanket_impl.rs:188:5:189:14 | S1 |
 | blanket_impl.rs:256:18:256:24 | S1.m1() |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:257:13:257:14 | x2 |  | {EXTERNAL LOCATION} | () |
-| blanket_impl.rs:257:18:257:22 | (...) |  | {EXTERNAL LOCATION} | & |
-| blanket_impl.rs:257:18:257:22 | (...) | TRef | blanket_impl.rs:188:5:189:14 | S1 |
 | blanket_impl.rs:257:18:257:27 | ... .m2() |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:257:19:257:21 | &S1 |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:257:19:257:21 | &S1 | TRef | blanket_impl.rs:188:5:189:14 | S1 |
 | blanket_impl.rs:257:20:257:21 | S1 |  | blanket_impl.rs:188:5:189:14 | S1 |
 | blanket_impl.rs:258:13:258:14 | x3 |  | {EXTERNAL LOCATION} | () |
-| blanket_impl.rs:258:18:258:23 | (...) |  | {EXTERNAL LOCATION} | & |
-| blanket_impl.rs:258:18:258:23 | (...) | TRef | {EXTERNAL LOCATION} | & |
-| blanket_impl.rs:258:18:258:23 | (...) | TRef.TRef | blanket_impl.rs:188:5:189:14 | S1 |
 | blanket_impl.rs:258:18:258:28 | ... .m2() |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:258:19:258:22 | &... |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:258:19:258:22 | &... | TRef | {EXTERNAL LOCATION} | & |
@@ -5960,8 +5923,6 @@ inferType
 | blanket_impl.rs:259:18:259:19 | S1 |  | blanket_impl.rs:188:5:189:14 | S1 |
 | blanket_impl.rs:259:18:259:24 | S1.m4() |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:260:13:260:14 | x5 |  | {EXTERNAL LOCATION} | () |
-| blanket_impl.rs:260:18:260:22 | (...) |  | {EXTERNAL LOCATION} | & |
-| blanket_impl.rs:260:18:260:22 | (...) | TRef | blanket_impl.rs:188:5:189:14 | S1 |
 | blanket_impl.rs:260:18:260:27 | ... .m4() |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:260:19:260:21 | &S1 |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:260:19:260:21 | &S1 | TRef | blanket_impl.rs:188:5:189:14 | S1 |
@@ -5970,8 +5931,6 @@ inferType
 | blanket_impl.rs:261:18:261:19 | S2 |  | blanket_impl.rs:191:5:192:14 | S2 |
 | blanket_impl.rs:261:18:261:24 | S2.m4() |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:262:13:262:14 | x7 |  | {EXTERNAL LOCATION} | () |
-| blanket_impl.rs:262:18:262:22 | (...) |  | {EXTERNAL LOCATION} | & |
-| blanket_impl.rs:262:18:262:22 | (...) | TRef | blanket_impl.rs:191:5:192:14 | S2 |
 | blanket_impl.rs:262:18:262:27 | ... .m4() |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:262:19:262:21 | &S2 |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:262:19:262:21 | &S2 | TRef | blanket_impl.rs:191:5:192:14 | S2 |
@@ -6810,11 +6769,6 @@ inferType
 | closure.rs:254:17:254:21 | \|...\| x | dyn(Output) | {EXTERNAL LOCATION} | i32 |
 | closure.rs:254:18:254:18 | x |  | {EXTERNAL LOCATION} | i32 |
 | closure.rs:254:21:254:21 | x |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:255:9:255:12 | (...) |  | {EXTERNAL LOCATION} | & |
-| closure.rs:255:9:255:12 | (...) | TRef | {EXTERNAL LOCATION} | dyn Fn |
-| closure.rs:255:9:255:12 | (...) | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:255:9:255:12 | (...) | TRef.dyn(Args).T0 | {EXTERNAL LOCATION} | i32 |
-| closure.rs:255:9:255:12 | (...) | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
 | closure.rs:255:9:255:15 | ...(...) |  | {EXTERNAL LOCATION} | i32 |
 | closure.rs:255:10:255:11 | &c |  | {EXTERNAL LOCATION} | & |
 | closure.rs:255:10:255:11 | &c | TRef | {EXTERNAL LOCATION} | dyn Fn |
@@ -6889,7 +6843,6 @@ inferType
 | dereference.rs:56:14:56:42 | MyIntPointer {...} |  | dereference.rs:5:1:7:1 | MyIntPointer |
 | dereference.rs:56:36:56:40 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:57:9:57:11 | _b3 |  | {EXTERNAL LOCATION} | bool |
-| dereference.rs:57:15:57:19 | (...) |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:57:15:57:33 | ... .is_positive() |  | {EXTERNAL LOCATION} | bool |
 | dereference.rs:57:16:57:18 | * ... |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:57:17:57:18 | a3 |  | dereference.rs:5:1:7:1 | MyIntPointer |
@@ -6920,7 +6873,6 @@ inferType
 | dereference.rs:70:14:70:44 | MySmartPointer {...} | T | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:70:38:70:42 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:71:9:71:11 | _d3 |  | {EXTERNAL LOCATION} | bool |
-| dereference.rs:71:15:71:19 | (...) |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:71:15:71:33 | ... .is_positive() |  | {EXTERNAL LOCATION} | bool |
 | dereference.rs:71:16:71:18 | * ... |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:71:17:71:18 | c3 |  | dereference.rs:18:1:20:1 | MySmartPointer |
@@ -6952,7 +6904,6 @@ inferType
 | dereference.rs:84:14:84:19 | &34i64 | TRef | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:84:15:84:19 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:85:9:85:11 | _f3 |  | {EXTERNAL LOCATION} | bool |
-| dereference.rs:85:15:85:19 | (...) |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:85:15:85:33 | ... .is_positive() |  | {EXTERNAL LOCATION} | bool |
 | dereference.rs:85:16:85:18 | * ... |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:85:17:85:18 | e3 |  | {EXTERNAL LOCATION} | & |
@@ -6992,7 +6943,6 @@ inferType
 | dereference.rs:98:24:98:38 | ...::new(...) | T | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:98:33:98:37 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:99:9:99:11 | _h3 |  | {EXTERNAL LOCATION} | bool |
-| dereference.rs:99:15:99:19 | (...) |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:99:15:99:33 | ... .is_positive() |  | {EXTERNAL LOCATION} | bool |
 | dereference.rs:99:16:99:18 | * ... |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:99:17:99:18 | g3 |  | {EXTERNAL LOCATION} | Box |
@@ -7138,8 +7088,6 @@ inferType
 | dereference.rs:189:13:189:14 | 42 |  | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:193:19:200:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | dereference.rs:194:13:194:13 | x |  | dereference.rs:159:5:159:13 | S |
-| dereference.rs:194:17:194:20 | (...) |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:194:17:194:20 | (...) | TRef | dereference.rs:159:5:159:13 | S |
 | dereference.rs:194:17:194:26 | ... .foo() |  | dereference.rs:159:5:159:13 | S |
 | dereference.rs:194:18:194:19 | &S |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:194:18:194:19 | &S | TRef | dereference.rs:159:5:159:13 | S |
@@ -7148,8 +7096,6 @@ inferType
 | dereference.rs:195:17:195:17 | S |  | dereference.rs:159:5:159:13 | S |
 | dereference.rs:195:17:195:23 | S.foo() |  | dereference.rs:159:5:159:13 | S |
 | dereference.rs:196:13:196:13 | z |  | {EXTERNAL LOCATION} | i64 |
-| dereference.rs:196:17:196:24 | (...) |  | {EXTERNAL LOCATION} | &mut |
-| dereference.rs:196:17:196:24 | (...) | TRefMut | dereference.rs:159:5:159:13 | S |
 | dereference.rs:196:17:196:30 | ... .foo() |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:196:18:196:23 | &mut S |  | {EXTERNAL LOCATION} | &mut |
 | dereference.rs:196:18:196:23 | &mut S | TRefMut | dereference.rs:159:5:159:13 | S |
@@ -7265,7 +7211,6 @@ inferType
 | dyn_type.rs:64:25:64:27 | obj | TRef | dyn_type.rs:5:1:8:1 | dyn MyTrait1 |
 | dyn_type.rs:64:45:66:1 | { ... } |  | {EXTERNAL LOCATION} | () |
 | dyn_type.rs:65:9:65:15 | _result |  | {EXTERNAL LOCATION} | String |
-| dyn_type.rs:65:19:65:24 | (...) |  | dyn_type.rs:5:1:8:1 | dyn MyTrait1 |
 | dyn_type.rs:65:19:65:28 | ... .m() |  | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:65:20:65:23 | * ... |  | dyn_type.rs:5:1:8:1 | dyn MyTrait1 |
 | dyn_type.rs:65:21:65:23 | obj |  | {EXTERNAL LOCATION} | & |
@@ -7275,8 +7220,6 @@ inferType
 | dyn_type.rs:68:27:68:29 | obj | TRef.dyn(A) | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:68:57:71:1 | { ... } |  | {EXTERNAL LOCATION} | () |
 | dyn_type.rs:69:9:69:16 | _result1 |  | {EXTERNAL LOCATION} | String |
-| dyn_type.rs:69:20:69:25 | (...) |  | dyn_type.rs:10:1:13:1 | dyn GenericGet |
-| dyn_type.rs:69:20:69:25 | (...) | dyn(A) | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:69:20:69:31 | ... .get() |  | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:69:21:69:24 | * ... |  | dyn_type.rs:10:1:13:1 | dyn GenericGet |
 | dyn_type.rs:69:21:69:24 | * ... | dyn(A) | {EXTERNAL LOCATION} | String |
@@ -7299,8 +7242,6 @@ inferType
 | dyn_type.rs:74:15:74:33 | get_box_trait(...) | T.dyn(A) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:74:29:74:32 | true |  | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:75:9:75:15 | _result |  | {EXTERNAL LOCATION} | bool |
-| dyn_type.rs:75:19:75:24 | (...) |  | dyn_type.rs:10:1:13:1 | dyn GenericGet |
-| dyn_type.rs:75:19:75:24 | (...) | dyn(A) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:75:19:75:30 | ... .get() |  | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:75:20:75:23 | * ... |  | dyn_type.rs:10:1:13:1 | dyn GenericGet |
 | dyn_type.rs:75:20:75:23 | * ... | dyn(A) | {EXTERNAL LOCATION} | bool |
@@ -7342,9 +7283,6 @@ inferType
 | dyn_type.rs:87:9:90:5 | TuplePat | T1 | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:88:9:88:11 | _gp |  | {EXTERNAL LOCATION} | i64 |
 | dyn_type.rs:89:9:89:11 | _ap |  | {EXTERNAL LOCATION} | bool |
-| dyn_type.rs:90:9:90:14 | (...) |  | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
-| dyn_type.rs:90:9:90:14 | (...) | dyn(AP) | {EXTERNAL LOCATION} | bool |
-| dyn_type.rs:90:9:90:14 | (...) | dyn(GP) | {EXTERNAL LOCATION} | i64 |
 | dyn_type.rs:90:9:90:20 | ... .get() |  | {EXTERNAL LOCATION} | (T_2) |
 | dyn_type.rs:90:9:90:20 | ... .get() | T0 | {EXTERNAL LOCATION} | i64 |
 | dyn_type.rs:90:9:90:20 | ... .get() | T1 | {EXTERNAL LOCATION} | bool |
@@ -9426,11 +9364,8 @@ inferType
 | main.rs:1170:29:1170:33 | SelfParam | TRef | {EXTERNAL LOCATION} | & |
 | main.rs:1170:29:1170:33 | SelfParam | TRef.TRef | main.rs:1143:5:1146:5 | MyInt |
 | main.rs:1170:43:1172:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1171:13:1171:22 | (...) |  | main.rs:1143:5:1146:5 | MyInt |
 | main.rs:1171:13:1171:24 | ... .a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1171:14:1171:21 | * ... |  | main.rs:1143:5:1146:5 | MyInt |
-| main.rs:1171:15:1171:21 | (...) |  | {EXTERNAL LOCATION} | & |
-| main.rs:1171:15:1171:21 | (...) | TRef | main.rs:1143:5:1146:5 | MyInt |
 | main.rs:1171:16:1171:20 | * ... |  | {EXTERNAL LOCATION} | & |
 | main.rs:1171:16:1171:20 | * ... | TRef | main.rs:1143:5:1146:5 | MyInt |
 | main.rs:1171:17:1171:20 | self |  | {EXTERNAL LOCATION} | & |
@@ -9439,7 +9374,6 @@ inferType
 | main.rs:1175:33:1175:36 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | main.rs:1175:33:1175:36 | SelfParam | TRef | main.rs:1143:5:1146:5 | MyInt |
 | main.rs:1175:46:1177:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1176:13:1176:19 | (...) |  | main.rs:1143:5:1146:5 | MyInt |
 | main.rs:1176:13:1176:21 | ... .a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1176:14:1176:18 | * ... |  | main.rs:1143:5:1146:5 | MyInt |
 | main.rs:1176:15:1176:18 | self |  | {EXTERNAL LOCATION} | & |
@@ -9590,8 +9524,6 @@ inferType
 | main.rs:1207:18:1207:35 | ...::_print(...) |  | {EXTERNAL LOCATION} | () |
 | main.rs:1207:18:1207:35 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:1207:18:1207:35 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1207:26:1207:30 | (...) |  | main.rs:1137:5:1138:19 | S |
-| main.rs:1207:26:1207:30 | (...) | T | main.rs:1140:5:1141:14 | S2 |
 | main.rs:1207:26:1207:35 | ... .m1() |  | main.rs:1140:5:1141:14 | S2 |
 | main.rs:1207:27:1207:29 | * ... |  | main.rs:1137:5:1138:19 | S |
 | main.rs:1207:27:1207:29 | * ... | T | main.rs:1140:5:1141:14 | S2 |
@@ -10275,7 +10207,6 @@ inferType
 | main.rs:1498:12:1498:15 | cond |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1498:17:1500:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:1499:17:1499:17 | z |  | {EXTERNAL LOCATION} | () |
-| main.rs:1499:21:1499:27 | (...) |  | {EXTERNAL LOCATION} | () |
 | main.rs:1499:22:1499:22 | a |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1499:22:1499:26 | ... = ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1499:26:1499:26 | 1 |  | {EXTERNAL LOCATION} | i32 |
@@ -10644,7 +10575,6 @@ inferType
 | main.rs:1726:31:1726:35 | other | TRef | main.rs:1510:5:1515:5 | Vec2 |
 | main.rs:1726:75:1728:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
 | main.rs:1726:75:1728:9 | { ... } | T | {EXTERNAL LOCATION} | Ordering |
-| main.rs:1727:13:1727:29 | (...) |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1727:13:1727:63 | ... .partial_cmp(...) |  | {EXTERNAL LOCATION} | Option |
 | main.rs:1727:13:1727:63 | ... .partial_cmp(...) | T | {EXTERNAL LOCATION} | Ordering |
 | main.rs:1727:14:1727:17 | self |  | {EXTERNAL LOCATION} | & |
@@ -10656,7 +10586,6 @@ inferType
 | main.rs:1727:23:1727:28 | self.y |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1727:43:1727:62 | &... |  | {EXTERNAL LOCATION} | & |
 | main.rs:1727:43:1727:62 | &... | TRef | {EXTERNAL LOCATION} | i64 |
-| main.rs:1727:44:1727:62 | (...) |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1727:45:1727:49 | other |  | {EXTERNAL LOCATION} | & |
 | main.rs:1727:45:1727:49 | other | TRef | main.rs:1510:5:1515:5 | Vec2 |
 | main.rs:1727:45:1727:51 | other.x |  | {EXTERNAL LOCATION} | i64 |
@@ -10752,32 +10681,26 @@ inferType
 | main.rs:1748:13:1748:13 | b |  | main.rs:1747:18:1747:23 | T |
 | main.rs:1751:16:1882:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:1755:13:1755:18 | i64_eq |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1755:22:1755:35 | (...) |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1755:23:1755:26 | 1i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1755:23:1755:34 | ... == ... |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1755:31:1755:34 | 2i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1756:13:1756:18 | i64_ne |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1756:22:1756:35 | (...) |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1756:23:1756:26 | 3i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1756:23:1756:34 | ... != ... |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1756:31:1756:34 | 4i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1757:13:1757:18 | i64_lt |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1757:22:1757:34 | (...) |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1757:23:1757:26 | 5i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1757:23:1757:33 | ... < ... |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1757:30:1757:33 | 6i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1758:13:1758:18 | i64_le |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1758:22:1758:35 | (...) |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1758:23:1758:26 | 7i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1758:23:1758:34 | ... <= ... |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1758:31:1758:34 | 8i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1759:13:1759:18 | i64_gt |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1759:22:1759:35 | (...) |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1759:23:1759:26 | 9i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1759:23:1759:34 | ... > ... |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1759:30:1759:34 | 10i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1760:13:1760:18 | i64_ge |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1760:22:1760:37 | (...) |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1760:23:1760:27 | 11i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1760:23:1760:36 | ... >= ... |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1760:32:1760:36 | 12i64 |  | {EXTERNAL LOCATION} | i64 |
@@ -11326,7 +11249,6 @@ inferType
 | main.rs:2130:54:2132:9 | { ... } | T | main.rs:2126:10:2126:17 | T::Output[MyAdd] |
 | main.rs:2131:13:2131:39 | S(...) |  | main.rs:2124:5:2124:19 | S |
 | main.rs:2131:13:2131:39 | S(...) | T | main.rs:2126:10:2126:17 | T::Output[MyAdd] |
-| main.rs:2131:15:2131:22 | (...) |  | main.rs:2126:10:2126:17 | T |
 | main.rs:2131:15:2131:38 | ... .my_add(...) |  | main.rs:2126:10:2126:17 | T::Output[MyAdd] |
 | main.rs:2131:16:2131:19 | self |  | main.rs:2124:5:2124:19 | S |
 | main.rs:2131:16:2131:19 | self | T | main.rs:2126:10:2126:17 | T |
@@ -11341,7 +11263,6 @@ inferType
 | main.rs:2139:51:2141:9 | { ... } | T | main.rs:2135:10:2135:17 | T::Output[MyAdd] |
 | main.rs:2140:13:2140:37 | S(...) |  | main.rs:2124:5:2124:19 | S |
 | main.rs:2140:13:2140:37 | S(...) | T | main.rs:2135:10:2135:17 | T::Output[MyAdd] |
-| main.rs:2140:15:2140:22 | (...) |  | main.rs:2135:10:2135:17 | T |
 | main.rs:2140:15:2140:36 | ... .my_add(...) |  | main.rs:2135:10:2135:17 | T::Output[MyAdd] |
 | main.rs:2140:16:2140:19 | self |  | main.rs:2124:5:2124:19 | S |
 | main.rs:2140:16:2140:19 | self | T | main.rs:2135:10:2135:17 | T |
@@ -11355,7 +11276,6 @@ inferType
 | main.rs:2151:55:2153:9 | { ... } | T | main.rs:2144:14:2144:14 | T::Output[MyAdd] |
 | main.rs:2152:13:2152:37 | S(...) |  | main.rs:2124:5:2124:19 | S |
 | main.rs:2152:13:2152:37 | S(...) | T | main.rs:2144:14:2144:14 | T::Output[MyAdd] |
-| main.rs:2152:15:2152:22 | (...) |  | main.rs:2144:14:2144:14 | T |
 | main.rs:2152:15:2152:36 | ... .my_add(...) |  | main.rs:2144:14:2144:14 | T::Output[MyAdd] |
 | main.rs:2152:16:2152:19 | self |  | main.rs:2124:5:2124:19 | S |
 | main.rs:2152:16:2152:19 | self | T | main.rs:2144:14:2144:14 | T |
@@ -11861,17 +11781,11 @@ inferType
 | main.rs:2359:23:2359:50 | MacroExpr | T | {EXTERNAL LOCATION} | Vec |
 | main.rs:2359:23:2359:50 | MacroExpr | T.A | {EXTERNAL LOCATION} | Global |
 | main.rs:2359:23:2359:50 | MacroExpr | T.T | {EXTERNAL LOCATION} | i32 |
-| main.rs:2359:28:2359:37 | (...) |  | {EXTERNAL LOCATION} | Vec |
-| main.rs:2359:28:2359:37 | (...) | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2359:28:2359:37 | (...) | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2359:28:2359:37 | MacroExpr |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2359:28:2359:37 | MacroExpr | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2359:28:2359:37 | MacroExpr | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2359:33:2359:33 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2359:36:2359:36 | 2 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2359:40:2359:49 | (...) |  | {EXTERNAL LOCATION} | Vec |
-| main.rs:2359:40:2359:49 | (...) | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2359:40:2359:49 | (...) | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2359:40:2359:49 | MacroExpr |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2359:40:2359:49 | MacroExpr | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2359:40:2359:49 | MacroExpr | T | {EXTERNAL LOCATION} | i32 |
@@ -14666,7 +14580,6 @@ inferType
 | pattern_matching.rs:501:17:501:21 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:504:5:509:5 | match value { ... } |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:504:11:504:15 | value |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:505:9:505:11 | (...) |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:505:10:505:10 | x |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:505:16:508:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:506:17:506:27 | paren_bound |  | {EXTERNAL LOCATION} | i32 |
@@ -14694,7 +14607,6 @@ inferType
 | pattern_matching.rs:514:9:514:16 | TuplePat | T0 | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:514:9:514:16 | TuplePat | T1 | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:514:10:514:10 | x |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:514:13:514:15 | (...) |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:514:14:514:14 | y |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:514:21:518:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:515:17:515:23 | paren_x |  | {EXTERNAL LOCATION} | i32 |
@@ -15353,11 +15265,9 @@ inferType
 | pattern_matching.rs:794:18:794:65 | MacroExpr |  | {EXTERNAL LOCATION} | Vec |
 | pattern_matching.rs:794:18:794:65 | MacroExpr | A | {EXTERNAL LOCATION} | Global |
 | pattern_matching.rs:794:18:794:65 | MacroExpr | T | pattern_matching.rs:135:1:140:1 | Point |
-| pattern_matching.rs:794:23:794:42 | (...) |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:794:23:794:42 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:794:34:794:34 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:794:40:794:40 | 2 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:794:45:794:64 | (...) |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:794:45:794:64 | Point {...} |  | pattern_matching.rs:135:1:140:1 | Point |
 | pattern_matching.rs:794:56:794:56 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:794:62:794:62 | 4 |  | {EXTERNAL LOCATION} | i32 |

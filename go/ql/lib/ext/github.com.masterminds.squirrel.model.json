@@ -1,0 +1,94 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "packageGrouping"
+      },
+      "data": [
+        ["squirrel", "github.com/Masterminds/squirrel"],
+        ["squirrel", "gopkg.in/Masterminds/squirrel"],
+        ["squirrel", "github.com/lann/squirrel"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["group:squirrel", "", true, "QueryContextWith", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "", true, "QueryRowContextWith", "", "", "ReturnValue", "database", "manual"],
+        ["group:squirrel", "", true, "QueryRowWith", "", "", "ReturnValue", "database", "manual"],
+        ["group:squirrel", "", true, "QueryWith", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "DeleteBuilder", true, "Query", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "DeleteBuilder", true, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "DeleteBuilder", true, "QueryRowContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "InsertBuilder", true, "Query", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "InsertBuilder", true, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "InsertBuilder", true, "QueryRow", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "InsertBuilder", true, "QueryRowContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "QueryRower", true, "QueryRow", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "QueryRowerContext", true, "QueryRowContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "Queryer", true, "Query", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "QueryerContext", true, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "SelectBuilder", true, "Query", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "SelectBuilder", true, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "SelectBuilder", true, "QueryRow", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "SelectBuilder", true, "QueryRowContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "StdSql", true, "Query", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "StdSql", true, "QueryRow", "", "", "ReturnValue", "database", "manual"],
+        ["group:squirrel", "StdSqlCtx", true, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "StdSqlCtx", true, "QueryRowContext", "", "", "ReturnValue", "database", "manual"],
+        ["group:squirrel", "UpdateBuilder", true, "Query", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "UpdateBuilder", true, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "UpdateBuilder", true, "QueryRow", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:squirrel", "UpdateBuilder", true, "QueryRowContext", "", "", "ReturnValue[0]", "database", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["group:squirrel", "", false, "Delete", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "", false, "Expr", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "", false, "Insert", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "", false, "Select", "", "", "Argument[0]", "sql-injection", "manual"], // TODO: when sources can have access paths, use .ArrayElement
+        ["group:squirrel", "", false, "Update", "", "", "Argument[0]", "sql-injection", "manual"], // TODO: when sources can have access paths, use .ArrayElement
+        ["group:squirrel", "DeleteBuilder", true, "From", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "DeleteBuilder", true, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"], // TODO: when sources can have access paths, use .ArrayElement
+        ["group:squirrel", "DeleteBuilder", true, "Prefix", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "DeleteBuilder", true, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"],
+        // DeleteBuilder.Where has to be modeled in QL to avoid FPs when a non-string argument is used
+        ["group:squirrel", "InsertBuilder", true, "Columns", "", "", "Argument[0]", "sql-injection", "manual"], // TODO: when sources can have access paths, use .ArrayElement
+        ["group:squirrel", "InsertBuilder", true, "Into", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "InsertBuilder", true, "Options", "", "", "Argument[0]", "sql-injection", "manual"], // TODO: when sources can have access paths, use .ArrayElement
+        ["group:squirrel", "InsertBuilder", true, "Prefix", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "InsertBuilder", true, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "SelectBuilder", true, "CrossJoin", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "SelectBuilder", true, "Column", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "SelectBuilder", true, "Columns", "", "", "Argument[0]", "sql-injection", "manual"], // TODO: when sources can have access paths, use .ArrayElement
+        ["group:squirrel", "SelectBuilder", true, "From", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "SelectBuilder", true, "GroupBy", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "SelectBuilder", true, "InnerJoin", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "SelectBuilder", true, "LeftJoin", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "SelectBuilder", true, "Options", "", "", "Argument[0]", "sql-injection", "manual"], // TODO: when sources can have access paths, use .ArrayElement
+        ["group:squirrel", "SelectBuilder", true, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"], // TODO: when sources can have access paths, use .ArrayElement
+        ["group:squirrel", "SelectBuilder", true, "Prefix", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "SelectBuilder", true, "RightJoin", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "SelectBuilder", true, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"],
+        // SelectBuilder.Where has to be modeled in QL to avoid FPs when a non-string argument is used
+        ["group:squirrel", "UpdateBuilder", true, "From", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "UpdateBuilder", true, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"], // TODO: when sources can have access paths, use .ArrayElement
+        ["group:squirrel", "UpdateBuilder", true, "Prefix", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "UpdateBuilder", true, "Set", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "UpdateBuilder", true, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:squirrel", "UpdateBuilder", true, "Table", "", "", "Argument[0]", "sql-injection", "manual"]
+      ]
+    }
+  ]
+}
+// UpdateBuilder.Where has to be modeled in QL to avoid FPs when a non-string argument is used
+// There are summary models for Row.Scan, RowScanner.Scan, {Insert,Delete,Select,Update}Builder.Scan and {Insert,Delete,Select,Update}Builder.ScanContext modeled in QL

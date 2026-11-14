@@ -4,6 +4,7 @@
  */
 
 private import internal.MacroExprImpl
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.MacroCall
 

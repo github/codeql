@@ -1,0 +1,16 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["github.com/json-iterator/go", "", false, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"],
+        ["github.com/json-iterator/go", "", false, "UnmarshalFromString", "", "", "Argument[0]", "Argument[1]", "taint", "manual"],
+        ["github.com/json-iterator/go", "API", true, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"],
+        ["github.com/json-iterator/go", "API", true, "UnmarshalFromString", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      ]
+    }
+  ]
+}

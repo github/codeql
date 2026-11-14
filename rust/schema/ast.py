@@ -431,6 +431,7 @@ class MacroDef(Item, ):
     visibility: optional["Visibility"] | child
 
 class MacroExpr(Expr, ):
+    attrs: list["AnyAttr"] | child
     macro_call: optional["MacroCall"] | child
 
 class MacroItems(AstNode, ):
@@ -512,13 +513,6 @@ class ParamList(AstNode, ):
     params: list["Param"] | child
     self_param: optional["SelfParam"] | child
 
-class ParenExpr(Expr, ):
-    attrs: list["AnyAttr"] | child
-    expr: optional["Expr"] | child
-
-class ParenPat(Pat, ):
-    pat: optional["Pat"] | child
-
 class ParenTypeRepr(TypeRepr, ):
     type_repr: optional["TypeRepr"] | child
 
@@ -575,6 +569,7 @@ class RangePat(Pat, ):
     start: optional["Pat"] | child
 
 class StructExpr(Expr, ):
+    attrs: list["AnyAttr"] | child
     path: optional["Path"] | child
     struct_expr_field_list: optional["StructExprFieldList"] | child
 

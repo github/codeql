@@ -38,32 +38,27 @@ module SsaConfig implements InputSig<js::Location, js::Cfg::BasicBlock> {
     certain = true and
     bb.getNode(i).(ThisUse).getBindingContainer() = v.asThisContainer()
   }
+
+  predicate ssaCachedStageRevRef() { DataFlowIntegrationImpl::ssaCachedStageRevRef2() }
 }
 
 import Make<js::Location, js::Cfg, SsaConfig>
 
+pragma[nomagic]
+js::ControlFlowNode getARead(Definition def) {
+  exists(SsaConfig::SourceVariable v, js::Cfg::BasicBlock bb, int i |
+    ssaDefReachesRead(v, def, bb, i) and
+    SsaConfig::variableRead(bb, i, v, true) and
+    bb.getNode(i) = result
+  )
+}
+
 module SsaDataflowInput implements DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
-
-  class Expr extends js::ControlFlowNode {
-    Expr() { this = any(SsaConfig::SourceVariable v).getAUse() }
-
-    predicate hasCfgNode(js::Cfg::BasicBlock bb, int i) { this = bb.getNode(i) }
-  }
 
   predicate ssaDefHasSource(WriteDefinition def) {
     // This library only handles use-use flow after a post-update, there are no definitions, only uses.
     none()
-  }
-
-  cached
-  Expr getARead(Definition def) {
-    // Copied from implementation so we can cache it here
-    exists(SsaConfig::SourceVariable v, js::BasicBlock bb, int i |
-      ssaDefReachesRead(v, def, bb, i) and
-      SsaConfig::variableRead(bb, i, v, true) and
-      result.hasCfgNode(bb, i)
-    )
   }
 
   class GuardValue = Boolean;
@@ -107,4 +102,6 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
   }
 }
 
-import DataFlowIntegration<SsaDataflowInput>
+private module DataFlowIntegrationImpl = DataFlowIntegration<SsaDataflowInput>;
+
+import DataFlowIntegrationImpl

@@ -1,0 +1,13 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/actions-all",
+        "extensible": "actionsSinkModel"
+      },
+      "data": [
+        ["cloudflare/workers-sdk", "*", "input.package-manager", "code-injection", "generated"]
+      ]
+    }
+  ]
+}

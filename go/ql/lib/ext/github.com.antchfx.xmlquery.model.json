@@ -1,0 +1,20 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/antchfx/xmlquery", "", false, "Find", "", "", "Argument[1]", "xpath-injection", "manual"],
+        ["github.com/antchfx/xmlquery", "", false, "FindOne", "", "", "Argument[1]", "xpath-injection", "manual"],
+        ["github.com/antchfx/xmlquery", "", false, "FindEach", "", "", "Argument[1]", "xpath-injection", "manual"],
+        ["github.com/antchfx/xmlquery", "", false, "FindEachWithBreak", "", "", "Argument[1]", "xpath-injection", "manual"],
+        ["github.com/antchfx/xmlquery", "", false, "Query", "", "", "Argument[1]", "xpath-injection", "manual"],
+        ["github.com/antchfx/xmlquery", "", false, "QueryAll", "", "", "Argument[1]", "xpath-injection", "manual"],
+        ["github.com/antchfx/xmlquery", "Node", true, "SelectElement", "", "", "Argument[0]", "xpath-injection", "manual"],
+        ["github.com/antchfx/xmlquery", "Node", true, "SelectElements", "", "", "Argument[0]", "xpath-injection", "manual"]
+      ]
+    }
+  ]
+}

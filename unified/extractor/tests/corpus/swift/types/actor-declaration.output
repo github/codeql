@@ -1,5 +1,9 @@
-actor Counter {
-  var value = 0
+public actor Store<T: Sendable>: Sendable where T: Equatable {
+  let value: T
+
+  init(value: T) {
+    self.value = value
+  }
 }
 
 ---
@@ -12,8 +16,44 @@ sourceFile
         actorDecl
           attributes:
           modifiers:
-          name: identifier "Counter"
+            declModifier
+              name: public
+          name: identifier "Store"
           actorKeyword: actor
+          genericParameterClause:
+            genericParameterClause
+              parameters:
+                genericParameter
+                  colon: :
+                  attributes:
+                  name: identifier "T"
+                  inheritedType:
+                    identifierType
+                      name: identifier "Sendable"
+              leftAngle: <
+              rightAngle: >
+          genericWhereClause:
+            genericWhereClause
+              requirements:
+                genericRequirement
+                  requirement:
+                    conformanceRequirement
+                      colon: :
+                      leftType:
+                        identifierType
+                          name: identifier "T"
+                      rightType:
+                        identifierType
+                          name: identifier "Equatable"
+              whereKeyword: where
+          inheritanceClause:
+            inheritanceClause
+              colon: :
+              inheritedTypes:
+                inheritedType
+                  type:
+                    identifierType
+                      name: identifier "Sendable"
           memberBlock:
             memberBlock
               leftBrace: {
@@ -24,22 +64,104 @@ sourceFile
                     variableDecl
                       attributes:
                       modifiers:
-                      bindingSpecifier: var
+                      bindingSpecifier: let
                       bindings:
                         patternBinding
-                          initializer:
-                            initializerClause
-                              equal: =
-                              value:
-                                integerLiteralExpr
-                                  literal: integerLiteral "0"
                           pattern:
                             identifierPattern
                               identifier: identifier "value"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "T"
+                memberBlockItem
+                  decl:
+                    initializerDecl
+                      attributes:
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
+                            codeBlockItem
+                              item:
+                                infixOperatorExpr
+                                  operator:
+                                    assignmentExpr
+                                      equal: =
+                                  leftOperand:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "value"
+                                      base:
+                                        declReferenceExpr
+                                          baseName: self
+                                  rightOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "value"
+                      modifiers:
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                                functionParameter
+                                  colon: :
+                                  attributes:
+                                  modifiers:
+                                  type:
+                                    identifierType
+                                      name: identifier "T"
+                                  firstName: identifier "value"
+                      initKeyword: init
 
 ---
 
 top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
-      stmt: unsupported_node "actor Counter {\n  var value = 0\n}" source="actor Counter {\n  var value = 0\n}"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩>: ⟨base_type⟩ where ⟨type_constraint⟩ {\n  ⟨member⟩\n\n  ⟨member⟩\n}"
+          modifier:
+            modifier "actor" source="actor"
+            modifier "public" source="public"
+          name_node: identifier "Store" source="Store"
+          type_parameter:
+            type_parameter source="⟨name_node⟩: ⟨bound⟩"
+              name_node: identifier "T" source="T"
+              bound: identifier "Sendable" source="Sendable"
+          type_constraint:
+            bound_type_constraint source="⟨type⟩: ⟨bound⟩"
+              type: identifier "T" source="T"
+              bound: identifier "Equatable" source="Equatable"
+          base_type:
+            base_type source="⟨type⟩"
+              type: identifier "Sendable" source="Sendable"
+          member:
+            variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩"
+              modifier: modifier "let" source="let"
+              pattern: identifier "value" source="value"
+              type: identifier "T" source="T"
+            constructor_declaration source="⟨name_node⟩(⟨parameter⟩) ⟨body⟩"
+              name_node: identifier "init" source="init"
+              parameter:
+                parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+                  external_name_node: identifier "value" source="value"
+                  type: identifier "T" source="T"
+                  pattern: identifier "value" source="value"
+              body:
+                block source="{\n    ⟨stmt⟩\n  }"
+                  stmt:
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left:
+                        member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                          base: identifier "self" source="self"
+                          member_name_node: identifier "value" source="value"
+                      operator: infix_operator "=" source="="
+                      right: identifier "value" source="value"

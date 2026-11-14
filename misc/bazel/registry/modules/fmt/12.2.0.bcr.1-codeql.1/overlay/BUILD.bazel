@@ -1,0 +1,59 @@
+load("@package_metadata//licenses/rules:license.bzl", package_metadata_license = "license")
+load("@package_metadata//purl:purl.bzl", "purl")
+load("@package_metadata//rules:package_metadata.bzl", "package_metadata")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_license//rules:license.bzl", "license")
+
+package(
+    default_package_metadata = [
+        ":license",
+        ":package_metadata",
+    ],
+)
+
+exports_files([
+    "LICENSE",
+])
+
+license(
+    name = "license",
+    license_kinds = ["@rules_license//licenses/spdx:MIT"],
+    license_text = "LICENSE",
+)
+
+package_metadata_license(
+    name = "package_metadata_license",
+    kind = "@package_metadata//licenses/spdx:MIT",
+    text = "LICENSE",
+    visibility = ["//visibility:public"],
+)
+
+package_metadata(
+    name = "package_metadata",
+    attributes = [":package_metadata_license"],
+    purl = purl.bazel(
+        module_name(),
+        module_version(),
+    ),
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "fmt",
+    srcs = [
+        #"src/fmt.cc", # No C++ module support, yet in Bazel (https://github.com/bazelbuild/bazel/pull/19940)
+        "src/format.cc",
+        "src/os.cc",
+    ],
+    hdrs = glob([
+        "include/fmt/*.h",
+    ]),
+    # CodeQL change: disable UTF8 support, it's causing issues on Windows
+    defines = select({
+        "@rules_cc//cc/compiler:msvc-cl": ["FMT_UNICODE=0"],
+        "//conditions:default": [],
+    }),
+    includes = ["include"],
+    strip_include_prefix = "include",  # workaround: only needed on some macOS systems (see https://github.com/bazelbuild/bazel-central-registry/issues/1537)
+    visibility = ["//visibility:public"],
+)

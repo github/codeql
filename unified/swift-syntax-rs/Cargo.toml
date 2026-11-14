@@ -6,6 +6,9 @@ authors = ["GitHub"]
 edition = "2024"
 links = "SwiftSyntaxFFI"
 
+[lints]
+workspace = true
+
 [lib]
 name = "swift_syntax_rs"
 path = "src/lib.rs"

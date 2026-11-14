@@ -95,8 +95,6 @@
 /OrPat/gen_or_pat.rs linguist-generated
 /Param/gen_param.rs linguist-generated
 /ParamList/gen_param_list.rs linguist-generated
-/ParenExpr/gen_paren_expr.rs linguist-generated
-/ParenPat/gen_paren_pat.rs linguist-generated
 /ParenTypeRepr/gen_paren_type_repr.rs linguist-generated
 /ParenthesizedArgList/gen_parenthesized_arg_list.rs linguist-generated
 /Path/gen_path.rs linguist-generated

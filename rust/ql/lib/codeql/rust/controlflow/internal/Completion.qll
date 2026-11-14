@@ -84,8 +84,6 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
     e = any(BinaryLogicalOperation blo).getLhs()
     or
     exists(Expr parent | this.isValidForSpecific0(parent) |
-      e = parent.(ParenExpr).getExpr()
-      or
       e = parent.(LogicalNotExpr).getExpr()
       or
       e = parent.(BinaryLogicalOperation).getRhs()

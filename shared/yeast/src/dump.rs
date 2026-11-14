@@ -199,6 +199,7 @@ fn expected_for_field<'a>(
         .map(|v| v.as_slice())
 }
 
+#[allow(clippy::too_many_arguments)]
 fn dump_node<Id: TreeId>(
     ast: &Ast<Id>,
     id: Id,
@@ -209,9 +210,8 @@ fn dump_node<Id: TreeId>(
     external_to_parent: bool,
     out: &mut String,
 ) {
-    let node = match ast.get_node(id) {
-        Some(n) => n,
-        None => return,
+    let Some(node) = ast.get_node(id) else {
+        return;
     };
 
     let prefix = "  ".repeat(indent);
@@ -421,9 +421,8 @@ fn dump_node_inline<Id: TreeId>(
     external_to_parent: bool,
     out: &mut String,
 ) {
-    let node = match ast.get_node(id) {
-        Some(n) => n,
-        None => return,
+    let Some(node) = ast.get_node(id) else {
+        return;
     };
 
     write!(out, "{}", node.kind_name()).unwrap();

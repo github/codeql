@@ -436,7 +436,6 @@ callable_attrs(
 | @match_expr
 | @method_call_expr
 | @offset_of_expr
-| @paren_expr
 | @path_expr_base
 | @prefix_expr
 | @range_expr
@@ -740,7 +739,6 @@ parenthesized_arg_list_type_args(
 | @macro_pat
 | @not_null
 | @or_pat
-| @paren_pat
 | @path_pat
 | @range_pat
 | @ref_pat
@@ -2236,6 +2234,13 @@ macro_exprs(
   unique int id: @macro_expr
 );
 
+#keyset[id, index]
+macro_expr_attrs(
+  int id: @macro_expr ref,
+  int index: int ref,
+  int attr: @any_attr ref
+);
+
 #keyset[id]
 macro_expr_macro_calls(
   int id: @macro_expr ref,
@@ -2380,33 +2385,6 @@ params(
 #keyset[id]
 param_pats(
   int id: @param ref,
-  int pat: @pat ref
-);
-
-paren_exprs(
-  unique int id: @paren_expr
-);
-
-#keyset[id, index]
-paren_expr_attrs(
-  int id: @paren_expr ref,
-  int index: int ref,
-  int attr: @any_attr ref
-);
-
-#keyset[id]
-paren_expr_exprs(
-  int id: @paren_expr ref,
-  int expr: @expr ref
-);
-
-paren_pats(
-  unique int id: @paren_pat
-);
-
-#keyset[id]
-paren_pat_pats(
-  int id: @paren_pat ref,
   int pat: @pat ref
 );
 
@@ -2703,6 +2681,13 @@ slice_type_repr_type_reprs(
 
 struct_exprs(
   unique int id: @struct_expr
+);
+
+#keyset[id, index]
+struct_expr_attrs(
+  int id: @struct_expr ref,
+  int index: int ref,
+  int attr: @any_attr ref
 );
 
 #keyset[id]

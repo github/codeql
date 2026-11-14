@@ -1,0 +1,13 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/gogf/gf-jwt", "GfJWTMiddleware", true, "Key", "", "", "", "credentials-key", "manual"]
+      ]
+    }
+  ]
+}

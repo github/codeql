@@ -1,0 +1,49 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["reflect", "", false, "AppendSlice", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["reflect", "", false, "Copy", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["reflect", "", false, "Indirect", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["reflect", "", false, "ValueOf", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["reflect", "MapIter", true, "Key", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "MapIter", true, "Value", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "StructTag", true, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "StructTag", true, "Lookup", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["reflect", "Value", true, "Addr", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "Bytes", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "Convert", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "Elem", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "Field", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "FieldByIndex", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "FieldByName", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "FieldByNameFunc", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "Index", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "Interface", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "InterfaceData", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "MapIndex", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "MapKeys", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "MapRange", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "Method", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "MethodByName", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "Pointer", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "Recv", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["reflect", "Value", true, "Send", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["reflect", "Value", true, "Set", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["reflect", "Value", true, "SetBytes", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["reflect", "Value", true, "SetMapIndex", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"],
+        ["reflect", "Value", true, "SetPointer", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["reflect", "Value", true, "SetString", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["reflect", "Value", true, "Slice", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "Slice3", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["reflect", "Value", true, "TryRecv", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["reflect", "Value", true, "TrySend", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["reflect", "Value", true, "UnsafeAddr", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

@@ -623,6 +623,8 @@ class None extends NameConstant {
 class Await extends Await_ {
   /* syntax: await Expr */
   override Expr getASubExpression() { result = this.getValue() }
+
+  override predicate hasSideEffects() { any() }
 }
 
 /** A formatted string literal expression, such as `f'hello {world!s}'` */

@@ -513,23 +513,18 @@ private module Input implements InputSig1, InputSig2 {
     )
   }
 
+  /** Holds if this switch must be exhaustive. */
+  predicate isExhaustive(Ast::Switch switch) {
+    // Switch expressions and enhanced switch blocks (those that use pattern
+    // cases or match null) must be exhaustive.
+    // See https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.11.2
+    switch instanceof SwitchExpr or
+    exists(switch.(SwitchStmt).getAPatternCase()) or
+    switch.(SwitchStmt).hasNullCase()
+  }
+
   /** Holds if this case matches all possible values. */
   predicate matchAll(Ast::Case c) {
-    c instanceof DefaultCase
-    or
-    // Switch expressions and enhanced switch blocks (those that use pattern
-    // cases or match null) must be exhaustive, so the last case matches all
-    // remaining values.
-    // See https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.11.2
-    exists(Ast::Switch switch, int last |
-      switch instanceof SwitchExpr or
-      exists(switch.(SwitchStmt).getAPatternCase()) or
-      switch.(SwitchStmt).hasNullCase()
-    |
-      switch.getCase(last) = c and
-      not exists(switch.getCase(last + 1))
-    )
-    or
     c.(J::PatternCase).getAPattern().getType() instanceof TypeObject
   }
 

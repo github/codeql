@@ -160,7 +160,7 @@ public class TypeScriptParser {
   /** Metadata requested immediately after starting the TypeScript parser. */
   private TypeScriptParserMetadata metadata;
 
-  /** Sets the amount of RAM to allocate to the TypeScript compiler.s */
+  /** Sets the amount of RAM for the Node.js process's V8 old-space limit.  */
   public void setTypescriptRam(int megabytes) {
     this.typescriptRam = megabytes;
   }

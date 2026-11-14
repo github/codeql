@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.internal.PathAstNodeImpl::Impl as PathAstNodeImpl
 import codeql.rust.elements.StructExprFieldList
@@ -28,6 +29,26 @@ module Generated {
    */
   class StructExpr extends Synth::TStructExpr, ExprImpl::Expr, PathAstNodeImpl::PathAstNode {
     override string getAPrimaryQlClass() { result = "StructExpr" }
+
+    /**
+     * Gets the `index`th attr of this struct expression (0-based).
+     */
+    AnyAttr getAttr(int index) {
+      result =
+        Synth::convertAnyAttrFromRaw(Synth::convertStructExprToRaw(this)
+              .(Raw::StructExpr)
+              .getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this struct expression.
+     */
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this struct expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
      * Gets the struct expression field list of this struct expression, if it exists.

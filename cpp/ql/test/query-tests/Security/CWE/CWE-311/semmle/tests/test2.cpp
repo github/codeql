@@ -164,8 +164,8 @@ std::string copy_characters(std::string s)
 
 void test_character_iteration(FILE* log, const StringCredentials& credentials)
 {
-	std::string by_value = copy_characters(credentials.password); // $ MISSING: Source[cpp/cleartext-storage-file]
-	fprintf(log, "%s", by_value.c_str()); // $ MISSING: Alert[cpp/cleartext-storage-file]
+	std::string by_value = copy_characters(credentials.password); // $ Source[cpp/cleartext-storage-file]
+	fprintf(log, "%s", by_value.c_str()); // $ Alert[cpp/cleartext-storage-file]
 }
 
 void test_reference(FILE* log, std::string s) {
