@@ -17,23 +17,42 @@ import cpp
  * Applies to all assignment operators, not just the copy assignment operator.
  */
 
-predicate callOnThis(FunctionCall fc) {
-  // `this->f(...)`
-  fc.getQualifier() instanceof ThisExpr
-  or
-  // `(*this).f(...)`
-  fc.getQualifier().(PointerDereferenceExpr).getChild(0) instanceof ThisExpr
+/** Holds if `e` has an explicit cast anywhere in its conversion chain. */
+private predicate hasExplicitCast(Expr e) {
+  exists(Cast c | c = e.getUnconverted().getConversion*() and not c.isImplicit())
 }
 
-predicate pointerThis(Expr e) {
-  e instanceof ThisExpr
-  or
-  // `f(...)`
-  // (includes `this = ...`, where `=` is overloaded so a `FunctionCall`)
-  exists(FunctionCall fc | fc = e and callOnThis(fc) | returnsPointerThis(fc.getTarget()))
-  or
-  // `this = ...` (where `=` is not overloaded, so an `AssignExpr`)
-  pointerThis(e.(AssignExpr).getLValue())
+predicate callOnThis(FunctionCall fc, boolean allowCasts) {
+  allowCasts = [true, false] and
+  (allowCasts = true or not hasExplicitCast(fc.getQualifier())) and
+  (
+    // `this->f(...)`
+    fc.getQualifier() instanceof ThisExpr
+    or
+    // `(*this).f(...)`
+    fc.getQualifier().(PointerDereferenceExpr).getChild(0) instanceof ThisExpr and
+    (
+      allowCasts = true or
+      not hasExplicitCast(fc.getQualifier().(PointerDereferenceExpr).getChild(0))
+    )
+  )
+}
+
+predicate pointerThis(Expr e, boolean allowCasts) {
+  allowCasts = [true, false] and
+  (allowCasts = true or not hasExplicitCast(e)) and
+  (
+    e instanceof ThisExpr
+    or
+    // `f(...)`
+    // (includes `this = ...`, where `=` is overloaded so a `FunctionCall`)
+    exists(FunctionCall fc | fc = e and callOnThis(fc, allowCasts) |
+      returnsPointerThis(fc.getTarget(), allowCasts)
+    )
+    or
+    // `this = ...` (where `=` is not overloaded, so an `AssignExpr`)
+    pointerThis(e.(AssignExpr).getLValue(), allowCasts)
+  )
 }
 
 /**
@@ -50,51 +69,62 @@ private predicate returnsReferenceParameter(Parameter p) {
       p.getType().getUnspecifiedType().(ReferenceType).getBaseType().getUnspecifiedType() and
     exists(ReturnStmt s | s.getEnclosingFunction() = f and reachable(s)) and
     forall(ReturnStmt s | s.getEnclosingFunction() = f and reachable(s) |
-      s.getExpr().getUnconverted().(VariableAccess).getTarget() = p
+      s.getExpr().getUnconverted().(VariableAccess).getTarget() = p and
+      not hasExplicitCast(s.getExpr())
     )
   )
 }
 
-predicate dereferenceThis(Expr e) {
-  pointerThis(e.(PointerDereferenceExpr).getChild(0))
-  or
-  // `f(...)`
-  // (includes `*this = ...`, where `=` is overloaded so a `FunctionCall`)
-  exists(FunctionCall fc | fc = e and callOnThis(fc) | returnsDereferenceThis(fc.getTarget()))
-  or
-  // `helper(*this, ...)`, where every return directly returns the corresponding parameter.
-  exists(FunctionCall fc, Parameter p, Expr arg |
-    fc = e and
-    fc.getTarget() = p.getFunction() and
-    returnsReferenceParameter(p) and
-    arg = fc.getArgument(p.getIndex()) and
-    arg.getUnconverted().getType().getUnspecifiedType() =
-      p.getType().getUnspecifiedType().(ReferenceType).getBaseType().getUnspecifiedType() and
-    dereferenceThis(arg)
+// Preserve the existing treatment of casts outside helper arguments. Within a
+// helper argument, check conversions at every step that supplies the result.
+predicate dereferenceThis(Expr e, boolean allowCasts) {
+  allowCasts = [true, false] and
+  (allowCasts = true or not hasExplicitCast(e)) and
+  (
+    pointerThis(e.(PointerDereferenceExpr).getChild(0), allowCasts)
+    or
+    // `f(...)`
+    // (includes `*this = ...`, where `=` is overloaded so a `FunctionCall`)
+    exists(FunctionCall fc | fc = e and callOnThis(fc, allowCasts) |
+      returnsDereferenceThis(fc.getTarget(), allowCasts)
+    )
+    or
+    // `helper(*this, ...)`, where every return directly returns the corresponding parameter.
+    exists(FunctionCall fc, Parameter p, Expr arg |
+      fc = e and
+      not hasExplicitCast(fc) and
+      fc.getTarget() = p.getFunction() and
+      returnsReferenceParameter(p) and
+      arg = fc.getArgument(p.getIndex()) and
+      arg.getUnconverted().getType().getUnspecifiedType() =
+        p.getType().getUnspecifiedType().(ReferenceType).getBaseType().getUnspecifiedType() and
+      dereferenceThis(arg, false)
+    )
+    or
+    // `*this = ...` (where `=` is not overloaded, so an `AssignExpr`)
+    dereferenceThis(e.(AssignExpr).getLValue(), allowCasts)
+    or
+    // `e ? ... : ... `
+    exists(ConditionalExpr cond |
+      cond = e and
+      dereferenceThis(cond.getThen(), allowCasts) and
+      dereferenceThis(cond.getElse(), allowCasts)
+    )
+    or
+    // `..., ... `
+    dereferenceThis(e.(CommaExpr).getRightOperand(), allowCasts)
   )
-  or
-  // `*this = ...` (where `=` is not overloaded, so an `AssignExpr`)
-  dereferenceThis(e.(AssignExpr).getLValue())
-  or
-  // `e ? ... : ... `
-  exists(ConditionalExpr cond |
-    cond = e and
-    dereferenceThis(cond.getThen()) and
-    dereferenceThis(cond.getElse())
-  )
-  or
-  // `..., ... `
-  dereferenceThis(e.(CommaExpr).getRightOperand())
 }
 
 /**
  * Holds if all `return` statements in `f` return `this`, possibly indirectly.
  * This includes functions whose body is not in the database.
  */
-predicate returnsPointerThis(Function f) {
+predicate returnsPointerThis(Function f, boolean allowCasts) {
+  allowCasts = [true, false] and
   forall(ReturnStmt s | s.getEnclosingFunction() = f and reachable(s) |
     // `return this`
-    pointerThis(s.getExpr())
+    pointerThis(s.getExpr(), allowCasts)
   )
 }
 
@@ -103,10 +133,11 @@ predicate returnsPointerThis(Function f) {
  * possibly indirectly. This includes functions whose body is not in the
  * database.
  */
-predicate returnsDereferenceThis(Function f) {
+predicate returnsDereferenceThis(Function f, boolean allowCasts) {
+  allowCasts = [true, false] and
   forall(ReturnStmt s | s.getEnclosingFunction() = f and reachable(s) |
     // `return *this`
-    dereferenceThis(s.getExpr())
+    dereferenceThis(s.getExpr(), allowCasts)
   )
 }
 
@@ -124,7 +155,7 @@ predicate assignOperatorWithWrongType(Operator op, string msg) {
 
 predicate assignOperatorWithWrongResult(Operator op, string msg) {
   op.hasName("operator=") and
-  not returnsDereferenceThis(op) and
+  not returnsDereferenceThis(op, true) and
   exists(op.getBlock()) and
   not op.getType() instanceof VoidType and
   not assignOperatorWithWrongType(op, _) and

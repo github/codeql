@@ -2,6 +2,15 @@
 | AV Rule 82.cpp:24:8:24:16 | operator= | Assignment operator in class Bad2 should have return type Bad2&. Otherwise a copy is created at each call. |
 | AV Rule 82.cpp:63:29:63:29 | operator= | Assignment operator in class TemplateReturnAssignment<int> does not return a reference to *this. |
 | AV Rule 82.cpp:199:52:199:52 | operator= | Assignment operator in class TemplatedAssignmentBad should have return type TemplatedAssignmentBad&. Otherwise a copy is created at each call. |
+| casts.cpp:21:24:21:32 | operator= | Assignment operator in class BadHelperReturnCast does not return a reference to *this. |
+| casts.cpp:27:30:27:38 | operator= | Assignment operator in class BadHelperReturnCStyleCast does not return a reference to *this. |
+| casts.cpp:33:26:33:34 | operator= | Assignment operator in class BadHelperArgumentCast does not return a reference to *this. |
+| casts.cpp:40:25:40:33 | operator= | Assignment operator in class BadHelperPointerCast does not return a reference to *this. |
+| casts.cpp:47:29:47:37 | operator= | Assignment operator in class BadHelperConditionalCast does not return a reference to *this. |
+| casts.cpp:54:23:54:31 | operator= | Assignment operator in class BadHelperCommaCast does not return a reference to *this. |
+| casts.cpp:65:30:65:38 | operator= | Assignment operator in class BadHelperMemberReturnCast does not return a reference to *this. |
+| casts.cpp:72:27:72:35 | operator= | Assignment operator in class BadHelperQualifierCast does not return a reference to *this. |
+| casts.cpp:102:24:102:32 | operator= | Assignment operator in class BadHelperResultCast does not return a reference to *this. |
 | helpers.cpp:92:13:92:21 | operator= | Assignment operator in class BadOther does not return a reference to *this. |
 | helpers.cpp:103:16:103:24 | operator= | Assignment operator in class BadBranches does not return a reference to *this. |
 | helpers.cpp:113:19:113:27 | operator= | Assignment operator in class BadConditional does not return a reference to *this. |
