@@ -705,6 +705,42 @@ class FormatLiteral extends Literal instanceof StringLiteral {
   string getConversionChar(int n) { this.parseConvSpec(n, _, _, _, _, _, _, result) }
 
   /**
+   * Gets a suggested replacement for the `n`th conversion specifier for an
+   * argument of type `type`, after default argument promotions.
+   *
+   * This only handles plain decimal integer conversions (`d`, `i`, and `u`,
+   * optionally with `l` or `ll`) and the signed and unsigned variants of `int`,
+   * `long`, and `long long`. There is no result for other types or conversions,
+   * or for conversions with flags, width, precision, or positional parameters.
+   * The result includes `%` and preserves `i` for signed integer arguments.
+   *
+   * This does not check whether the existing specifier matches `type`.
+   */
+  string getSuggestedIntegerConversionSpecifier(int n, Type type) {
+    exists(IntegralType t, string length, string conversion, string originalConversion |
+      this.parseConvSpec(n, _, "", "", "", "", ["", "l", "ll"], originalConversion) and
+      originalConversion = ["d", "i", "u"] and
+      t = type.getUnspecifiedType() and
+      (
+        t instanceof IntType and length = ""
+        or
+        t instanceof LongType and length = "l"
+        or
+        t instanceof LongLongType and length = "ll"
+      ) and
+      (
+        if t.isUnsigned()
+        then conversion = "u"
+        else
+          if originalConversion = "i"
+          then conversion = "i"
+          else conversion = "d"
+      ) and
+      result = "%" + length + conversion
+    )
+  }
+
+  /**
    * Gets the size of pointers in the target this formatting function is
    * compiled for.
    */

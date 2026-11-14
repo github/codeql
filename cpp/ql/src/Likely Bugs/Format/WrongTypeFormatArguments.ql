@@ -152,40 +152,16 @@ predicate trivialConversion(ExpectedType expected, Type actual) {
  */
 int sizeof_IntType() { exists(IntType it | result = it.getSize()) }
 
-/**
- * Gets a suggested specifier for a simple decimal integer conversion.
- * Use the promoted argument type, and do not suggest changing width or precision arguments.
- * Decorated, positional, and non-decimal conversions are deliberately left unchanged.
- */
-private string suggestedIntegerSpecifier(FormattingFunctionCall ffc, int n, Expr arg, Type actual) {
-  exists(FormatLiteral format, IntegralType t, string length, string conversion |
-    format = ffc.getFormat() and
-    ffc.getConversionArgument(n) = arg and
-    format.getConvSpec(n).regexpMatch("%(l|ll)?[diu]") and
-    t = actual.getUnspecifiedType() and
-    (
-      t instanceof IntType and length = ""
-      or
-      t instanceof LongType and length = "l"
-      or
-      t instanceof LongLongType and length = "ll"
-    ) and
-    (
-      if t.isUnsigned()
-      then conversion = "u"
-      else
-        if format.getConversionChar(n) = "i"
-        then conversion = "i"
-        else conversion = "d"
-    ) and
-    result = "%" + length + conversion
-  )
-}
-
 bindingset[ffc, n, arg, actual]
 private string integerFormatSuggestion(FormattingFunctionCall ffc, int n, Expr arg, Type actual) {
-  if exists(suggestedIntegerSpecifier(ffc, n, arg, actual))
-  then result = " Consider using '" + suggestedIntegerSpecifier(ffc, n, arg, actual) + "' instead."
+  if
+    ffc.getConversionArgument(n) = arg and
+    exists(ffc.getFormat().(FormatLiteral).getSuggestedIntegerConversionSpecifier(n, actual))
+  then
+    result =
+      " Consider using '" +
+        ffc.getFormat().(FormatLiteral).getSuggestedIntegerConversionSpecifier(n, actual) +
+        "' instead."
   else result = ""
 }
 
