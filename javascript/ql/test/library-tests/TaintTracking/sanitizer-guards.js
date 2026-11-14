@@ -61,7 +61,7 @@ function phi() {
   } else {
     x = null;
   }
-  sink(x); // OK [INCONSISTENCY] - dataflow2 cannot block the phi edge
+  sink(x); // OK
 }
 
 function phi2() {
@@ -73,6 +73,62 @@ function phi2() {
     x = null;
   }
   sink(x); // NOT OK
+}
+
+function fallbackAssignment() {
+  let x = source();
+
+  if (!isSafe(x)) {
+    x = "safe";
+  }
+  sink(x); // OK
+}
+
+function fallbackAssignmentElse() {
+  let x = source();
+
+  if (isSafe(x)) {
+    // The checked value is safe.
+  } else {
+    x = "safe";
+  }
+  sink(x); // OK
+}
+
+function fallbackUnsafe() {
+  let x = source();
+
+  if (!isSafe(x)) {
+    x = source();
+  }
+  sink(x); // NOT OK: the fallback is tainted.
+}
+
+function fallbackWrongPolarity() {
+  let x = source();
+  if (isSafe(x)) {
+    x = "safe";
+  }
+  sink(x); // NOT OK - the fall-through edge is unchecked
+}
+
+function fallbackGuardOnOtherVariable() {
+  let x = source();
+  let y = source();
+  if (!isSafe(y)) {
+    x = "safe";
+  }
+  sink(x); // NOT OK - the guard checks y, not x
+}
+
+function fallbackLoopInsideGuard() {
+  let x = source();
+  if (isSafe(x)) {
+    while (cond()) {
+      x = "safe";
+    }
+    sink(x); // OK
+  }
 }
 
 function falsy() {

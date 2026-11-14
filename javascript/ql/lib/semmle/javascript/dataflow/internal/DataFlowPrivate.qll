@@ -38,6 +38,27 @@ class SsaUseNode extends DataFlow::Node, TSsaUseNode {
   override Location getLocation() { result = expr.getLocation() }
 }
 
+/** An incoming edge of an SSA phi, represented as a node so guards can block it. */
+class SsaPhiInputNode extends DataFlow::Node, TSsaPhiInputNode {
+  private SsaPhiNode phi;
+  private BasicBlock predecessor;
+
+  SsaPhiInputNode() { this = TSsaPhiInputNode(phi, predecessor) }
+
+  SsaPhiNode getPhi() { result = phi }
+
+  BasicBlock getInputBlock() { result = predecessor }
+
+  cached
+  override string toString() { result = "[ssa-phi-input] " + phi.toString() }
+
+  cached
+  override StmtContainer getContainer() { result = phi.getBasicBlock().getContainer() }
+
+  cached
+  override Location getLocation() { result = predecessor.getLocation() }
+}
+
 class SsaSynthReadNode extends DataFlow::Node, TSsaSynthReadNode {
   private Ssa2::SsaSynthReadNode read;
 
