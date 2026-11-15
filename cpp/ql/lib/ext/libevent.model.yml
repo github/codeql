@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sourceModel
+    # Request contents received by server callbacks, not locally created requests.
+    data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
+      - ["", "", False, "evhttp_set_cb", "", "", "Argument[2].Parameter[*0]", "remote", "manual"]
+      - ["", "", False, "evhttp_set_gencb", "", "", "Argument[1].Parameter[*0]", "remote", "manual"]
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    # Opaque request/buffer contents are represented at one indirection.
+    # Buffer operations propagate existing taint; they are not remote sources.
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "", False, "evhttp_request_get_uri", "", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "", False, "evhttp_request_get_input_buffer", "", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "", False, "evbuffer_pullup", "", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "", False, "evbuffer_remove", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "", False, "evbuffer_add", "", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
