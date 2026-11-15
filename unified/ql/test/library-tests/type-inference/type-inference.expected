@@ -2847,6 +2847,54 @@ inferType
 | lub.swift:14:15:14:15 | 3 |  | {EXTERNAL LOCATION} | Int |
 | lub.swift:14:19:14:19 | b |  | lub.swift:5:1:7:1 | B |
 | lub.swift:14:23:14:23 | c |  | lub.swift:9:1:9:13 | C |
+| modified-expressions.swift:2:7:2:11 | value |  | {EXTERNAL LOCATION} | Int |
+| modified-expressions.swift:2:15:2:16 | 42 |  | {EXTERNAL LOCATION} | Int |
+| modified-expressions.swift:3:25:3:29 | value |  | {EXTERNAL LOCATION} | Int |
+| modified-expressions.swift:4:7:4:14 | original |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:4:7:4:14 | original | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:4:18:4:24 | Generic |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:4:18:4:24 | Generic | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:4:18:4:37 | Generic(...) |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:4:18:4:37 | Generic(...) | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:4:29:4:36 | "borrow" |  | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:5:24:5:31 | original |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:5:24:5:31 | original | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:10:7:10:11 | value |  | {EXTERNAL LOCATION} | Int |
+| modified-expressions.swift:10:15:10:16 | 42 |  | {EXTERNAL LOCATION} | Int |
+| modified-expressions.swift:11:26:11:30 | value |  | {EXTERNAL LOCATION} | Int |
+| modified-expressions.swift:12:7:12:14 | original |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:12:7:12:14 | original | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:12:18:12:24 | Generic |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:12:18:12:24 | Generic | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:12:18:12:38 | Generic(...) |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:12:18:12:38 | Generic(...) | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:12:29:12:37 | "consume" |  | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:13:25:13:32 | original |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:13:25:13:32 | original | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:18:7:18:11 | value |  | {EXTERNAL LOCATION} | Int |
+| modified-expressions.swift:18:15:18:16 | 42 |  | {EXTERNAL LOCATION} | Int |
+| modified-expressions.swift:19:21:19:25 | value |  | {EXTERNAL LOCATION} | Int |
+| modified-expressions.swift:20:7:20:14 | original |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:20:7:20:14 | original | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:20:18:20:24 | Generic |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:20:18:20:24 | Generic | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:20:18:20:35 | Generic(...) |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:20:18:20:35 | Generic(...) | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:20:29:20:34 | "copy" |  | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:21:22:21:29 | original |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:21:22:21:29 | original | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:26:7:26:11 | value |  | {EXTERNAL LOCATION} | Int |
+| modified-expressions.swift:26:15:26:16 | 42 |  | {EXTERNAL LOCATION} | Int |
+| modified-expressions.swift:27:26:27:30 | value |  | {EXTERNAL LOCATION} | Int |
+| modified-expressions.swift:28:7:28:14 | original |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:28:7:28:14 | original | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:28:18:28:24 | Generic |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:28:18:28:24 | Generic | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:28:18:28:37 | Generic(...) |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:28:18:28:37 | Generic(...) | T | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:28:29:28:36 | "unsafe" |  | {EXTERNAL LOCATION} | String |
+| modified-expressions.swift:29:24:29:31 | original |  | basics.swift:27:1:36:1 | Generic |
+| modified-expressions.swift:29:24:29:31 | original | T | {EXTERNAL LOCATION} | String |
 | nested_types.swift:2:9:2:17 | baseValue |  | nested_types.swift:1:12:1:16 | TBase |
 | nested_types.swift:4:10:4:18 | baseValue |  | nested_types.swift:1:12:1:16 | TBase |
 | nested_types.swift:4:28:6:5 | Block |  | nested_types.swift:1:12:1:16 | TBase |
