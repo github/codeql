@@ -4,7 +4,7 @@ use itertools::Itertools;
 use ra_ap_base_db::Crate;
 use ra_ap_cfg::CfgAtom;
 use ra_ap_ide_db::RootDatabase;
-use ra_ap_vfs::{Vfs, VfsPath};
+use ra_ap_vfs::Vfs;
 
 use std::hash::Hash;
 use std::hash::Hasher;
@@ -24,22 +24,22 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
     let mut crate_id_map = HashMap::<Crate, (PathBuf, u64)>::new();
     for krate_id in crate_graph.as_ref() {
         let krate = krate_id.data(db);
-        let root_module_file: &VfsPath = vfs.file_path(krate.root_file_id);
+        let root_module_file = vfs.file_path(krate.root_file_id);
         if let Some(root_module_file) = root_module_file
             .as_path()
-            .map(|p| std::fs::canonicalize(p).unwrap_or(p.into()))
+            .map(|p| std::fs::canonicalize(p).unwrap_or_else(|_| p.into()))
         {
             let mut hasher = std::hash::DefaultHasher::new();
             krate_id
                 .cfg_options(db)
                 .into_iter()
-                .sorted_by(cmp_flag)
+                .sorted_by(|&a, &b| cmp_flag(a, b))
                 .for_each(|x| format!("{x}").hash(&mut hasher));
 
             krate
                 .dependencies
                 .iter()
-                .flat_map(|d| crate_id_map.get(&d.crate_id))
+                .filter_map(|d| crate_id_map.get(&d.crate_id))
                 .sorted()
                 .for_each(|x| x.hash(&mut hasher));
             let hash = hasher.finish();
@@ -61,7 +61,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
             let crate_dependencies: Vec<generated::NamedCrate> = krate
                 .dependencies
                 .iter()
-                .flat_map(|x| crate_id_map.get(&x.crate_id).map(|y| (&x.name, y)))
+                .filter_map(|x| crate_id_map.get(&x.crate_id).map(|y| (&x.name, y)))
                 .map(|(name, (module, hash))| generated::NamedCrate {
                     id: trap::TrapId::Star,
                     name: name.to_string(),
@@ -76,7 +76,7 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
                     .display_name
                     .as_ref()
                     .map(|x| x.canonical_name().to_string()),
-                version: krate_extra.version.to_owned(),
+                version: krate_extra.version.clone(),
                 cfg_options: krate_id
                     .cfg_options(db)
                     .into_iter()
@@ -96,19 +96,19 @@ pub fn extract_crate_graph(trap_provider: &trap::TrapFileProvider, db: &RootData
                     "Failed to write trap file for crate: {}: {}",
                     root_module_file.display(),
                     err.to_string()
-                )
+                );
             });
         }
     }
 }
 
-fn cmp_flag(a: &&CfgAtom, b: &&CfgAtom) -> Ordering {
+fn cmp_flag(a: &CfgAtom, b: &CfgAtom) -> Ordering {
     match (a, b) {
         (CfgAtom::Flag(a), CfgAtom::Flag(b)) => a.as_str().cmp(b.as_str()),
-        (CfgAtom::Flag(a), CfgAtom::KeyValue { key: b, value: _ }) => {
+        (CfgAtom::Flag(a), CfgAtom::KeyValue { key: b, .. }) => {
             a.as_str().cmp(b.as_str()).then(Ordering::Less)
         }
-        (CfgAtom::KeyValue { key: a, value: _ }, CfgAtom::Flag(b)) => {
+        (CfgAtom::KeyValue { key: a, .. }, CfgAtom::Flag(b)) => {
             a.as_str().cmp(b.as_str()).then(Ordering::Greater)
         }
         (CfgAtom::KeyValue { key: a, value: av }, CfgAtom::KeyValue { key: b, value: bv }) => a

@@ -39,7 +39,7 @@ trait AstNode {
     }
 }
 
-impl<'a> AstNode for Node<'a> {
+impl AstNode for Node<'_> {
     fn kind(&self) -> &str {
         Node::kind(self)
     }
@@ -135,17 +135,17 @@ pub fn default_subscriber_with_level(
         .with_filter(
             tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(
                 |_| -> tracing_subscriber::EnvFilter {
-                    let verbosity = verbosity
-                        .as_ref()
-                        .map(|v| match v.to_lowercase().as_str() {
-                            "off" | "errors" => "error",
-                            "warnings" => "warn",
-                            "info" | "progress" => "info",
-                            "debug" | "progress+" => "debug",
-                            "trace" | "progress++" | "progress+++" => "trace",
-                            _ => "warn",
-                        })
-                        .unwrap_or_else(|| "warn");
+                    let verbosity =
+                        verbosity
+                            .as_ref()
+                            .map_or("warn", |v| match v.to_lowercase().as_str() {
+                                "off" | "errors" => "error",
+                                "warnings" => "warn",
+                                "info" | "progress" => "info",
+                                "debug" | "progress+" => "debug",
+                                "trace" | "progress++" | "progress+++" => "trace",
+                                _ => "warn",
+                            });
                     tracing_subscriber::EnvFilter::new(format!(
                         "{language}_extractor={verbosity},codeql_extractor={verbosity}"
                     ))
@@ -184,7 +184,7 @@ fn populate_empty_file(writer: &mut trap::Writer) -> trap::Label {
             "files",
             vec![
                 trap::Arg::Label(file_label),
-                trap::Arg::String("".to_string()),
+                trap::Arg::String(String::new()),
             ],
         );
     }
@@ -290,6 +290,7 @@ pub fn location_label(writer: &mut trap::Writer, location: trap::Location) -> tr
 }
 
 /// Extracts the source file at `path`, which is assumed to be canonicalized.
+///
 /// When `desugarer` is `Some`, the parsed tree is first transformed
 /// through the supplied yeast desugarer before TRAP extraction. Building
 /// the desugarer (which parses YAML and constructs the schema) is the
@@ -356,8 +357,10 @@ pub struct ParsedTree {
 }
 
 /// A piece of side-channel `extra` content (a comment or unexpected text)
-/// recovered by a parser. `kind` is a language-defined id written verbatim into
-/// the `<lang>_trivia_tokeninfo` table (the tree-sitter parser uses the
+/// recovered by a parser.
+///
+/// `kind` is a language-defined id written verbatim into the
+/// `<lang>_trivia_tokeninfo` table (the tree-sitter parser uses the
 /// grammar's node kind id here; a custom parser supplies its own stable
 /// enumeration).
 pub struct ExtraToken {
@@ -366,8 +369,9 @@ pub struct ExtraToken {
     pub text: String,
 }
 
-/// Build a parser closure that parses `source` with a tree-sitter `language`,
-/// producing a [`ParsedTree`]: a `yeast::Ast` (via [`yeast::Ast::from_tree`])
+/// Build a parser closure that produces a [`ParsedTree`] using a tree-sitter language.
+///
+/// Parses `source` with `language`, producing a `yeast::Ast` (via [`yeast::Ast::from_tree`])
 /// plus the `extra` nodes (comments and similar) recovered as side-channel
 /// tokens. This lets a tree-sitter language plug into the same
 /// `ParsedTree`-producing interface as a custom parser.
@@ -413,8 +417,9 @@ fn collect_extras(node: Node<'_>, source: &[u8], out: &mut Vec<ExtraToken>) {
     }
 }
 
-/// Extract a file from a [`ParsedTree`]-producing parser that desugars. The
-/// parser yields a `yeast::Ast` plus side-channel `extra` tokens; the AST is
+/// Extract a file from a [`ParsedTree`]-producing parser that desugars.
+///
+/// The parser yields a `yeast::Ast` plus side-channel `extra` tokens; the AST is
 /// rewritten through `desugarer` ([`yeast::Desugarer::run_from_ast`]) before
 /// TRAP extraction, and the `extra` tokens (comments and similar, which the
 /// desugared AST does not carry) are emitted from the side channel. Both
@@ -478,7 +483,7 @@ struct ExtraNode {
 }
 
 impl AstNode for ExtraNode {
-    fn kind(&self) -> &str {
+    fn kind(&self) -> &'static str {
         "extra"
     }
     fn is_named(&self) -> bool {
@@ -528,9 +533,9 @@ struct Visitor<'a> {
     file_label: trap::Label,
     /// The source code as a UTF-8 byte array
     source: &'a [u8],
-    /// A diagnostics::LogWriter to write diagnostic messages
+    /// A `diagnostics::LogWriter` to write diagnostic messages
     diagnostics_writer: &'a mut diagnostics::LogWriter,
-    /// A trap::Writer to accumulate trap entries
+    /// A `trap::Writer` to accumulate trap entries
     trap_writer: &'a mut trap::Writer,
     /// Language-specific name of the AST location table
     ast_node_location_table_name: String,
@@ -547,7 +552,7 @@ struct Visitor<'a> {
     /// All children append their data to the list. When the visitor leaves a
     /// node the list containing the child data is popped from the stack and
     /// matched against the dbscheme for the node. If the expectations are met
-    /// the corresponding row definitions are added to the trap_output.
+    /// the corresponding row definitions are added to the trap output.
     stack: Vec<(trap::Label, usize, Vec<ChildNode>)>,
 }
 
@@ -623,7 +628,7 @@ impl<'a> Visitor<'a> {
                 trap::Arg::Label(id),
                 trap::Arg::Int(severity_code),
                 trap::Arg::String("parse_error".to_string()),
-                trap::Arg::String(mesg.plaintext_message.to_owned()),
+                trap::Arg::String(mesg.plaintext_message.clone()),
                 trap::Arg::String(full_error_message),
                 trap::Arg::Label(loc),
             ],
@@ -676,7 +681,7 @@ impl<'a> Visitor<'a> {
                 true,
             );
             return false;
-        };
+        }
 
         let id = self.trap_writer.fresh_id();
 
@@ -684,6 +689,7 @@ impl<'a> Visitor<'a> {
         true
     }
 
+    #[allow(clippy::too_many_lines)]
     fn leave_node<N: AstNode>(&mut self, field_name: Option<&'static str>, node: &N) {
         if node.is_error() || node.is_missing() {
             return;
@@ -722,7 +728,7 @@ impl<'a> Visitor<'a> {
                             trap::Arg::Int(parent_index),
                         ],
                     );
-                };
+                }
                 self.trap_writer.add_tuple(
                     &self.tokeninfo_table_name,
                     vec![
@@ -750,13 +756,13 @@ impl<'a> Visitor<'a> {
                                 trap::Arg::Int(parent_index),
                             ],
                         );
-                    };
+                    }
                     let mut all_args = vec![trap::Arg::Label(id)];
                     all_args.extend(args);
                     self.trap_writer.add_tuple(table_name, all_args);
                 }
             }
-            _ => {
+            EntryKind::Union { .. } => {
                 self.record_parse_error(
                     loc_label,
                     self.diagnostics_writer
@@ -793,7 +799,7 @@ impl<'a> Visitor<'a> {
                         named: node.is_named(),
                     },
                 });
-            };
+            }
         }
     }
 
@@ -874,7 +880,7 @@ impl<'a> Visitor<'a> {
                 Storage::Table {
                     name: table_name,
                     has_index,
-                    column_name: _,
+                    ..
                 } => {
                     for (index, child_value) in child_values.iter().enumerate() {
                         if !*has_index && index > 0 {
@@ -891,7 +897,7 @@ impl<'a> Visitor<'a> {
                         }
                         let mut args = vec![trap::Arg::Label(parent_id)];
                         if *has_index {
-                            args.push(trap::Arg::Int(index))
+                            args.push(trap::Arg::Int(index));
                         }
                         args.push(child_value.clone());
                         self.trap_writer.add_tuple(table_name, args);
@@ -899,7 +905,7 @@ impl<'a> Visitor<'a> {
                 }
             }
         }
-        if is_valid { Some(args) } else { None }
+        is_valid.then_some(args)
     }
 
     fn type_matches(&self, tp: &TypeName, type_info: &node_types::FieldTypeInfo) -> bool {
@@ -945,7 +951,7 @@ impl<'a> Visitor<'a> {
 fn sliced_source_arg<N: AstNode>(source: &[u8], n: &N) -> trap::Arg {
     trap::Arg::String(n.opt_string_content().unwrap_or_else(|| {
         let range = n.byte_range();
-        String::from_utf8_lossy(&source[range.start..range.end]).into_owned()
+        String::from_utf8_lossy(&source[range]).into_owned()
     }))
 }
 

@@ -93,10 +93,7 @@ fn with_passthrough_rules<C: Clone + 'static>(mut rules: Vec<Rule<C>>) -> Vec<Ru
 /// return its dump. The appended pass-through rules make the small input
 /// subset used by these tests exhaustive.
 fn run_and_dump(input: &str, rules: Vec<Rule>) -> String {
-    run_phased_and_dump(
-        input,
-        vec![Phase::new("test", with_passthrough_rules(rules))],
-    )
+    run_phased_and_dump(input, &[Phase::new("test", with_passthrough_rules(rules))])
 }
 
 /// Helper: translate Ruby source with custom rules and return the transformed AST.
@@ -125,11 +122,11 @@ fn synthetic_integer_ast(content: &str) -> Ast {
 }
 
 /// Helper: translate Ruby source with multiple rule phases and return its dump.
-fn run_phased_and_dump(input: &str, phases: Vec<Phase>) -> String {
+fn run_phased_and_dump(input: &str, phases: &[Phase]) -> String {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
-    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+    let runner: Runner = Runner::with_schema(lang, &schema, phases);
     let ast = runner.run(input).unwrap();
     dump_ast(&ast, ast.get_root(), input)
 }
@@ -248,7 +245,7 @@ fn test_parse_for_loop() {
 
 #[test]
 fn test_dump_highlights_type_errors_inline() {
-    let schema_yaml = r#"
+    let schema_yaml = r"
 named:
     program:
         $children*: assignment
@@ -256,7 +253,7 @@ named:
         left: identifier
         right: identifier
     identifier:
-"#;
+";
 
     let dump = parse_and_dump_typed("x = 1", schema_yaml);
     assert!(dump.contains("integer \"1\" <-- ERROR:"));
@@ -264,7 +261,7 @@ named:
 
 #[test]
 fn test_dump_reports_preserved_unknown_kind_after_transformation() {
-    let schema_yaml = r#"
+    let schema_yaml = r"
 named:
     program:
         $children*: assignment
@@ -272,7 +269,7 @@ named:
         left: identifier
         right: identifier
     identifier:
-"#;
+";
 
     // This rewrite runs and preserves the RHS node kind via capture.
     // With schema above, preserving `integer` should be reported inline.
@@ -292,14 +289,14 @@ named:
 
 #[test]
 fn test_dump_reports_undeclared_field_on_node() {
-    let schema_yaml = r#"
+    let schema_yaml = r"
 named:
     program:
         $children*: assignment
     assignment:
         left: identifier
     identifier:
-"#;
+";
 
     let dump = parse_and_dump_typed_with_language("x = y", schema_yaml);
     assert!(dump.contains("right: identifier \"y\" <-- ERROR:"));
@@ -308,7 +305,7 @@ named:
 
 #[test]
 fn test_dump_reports_disallowed_kind_in_field_type() {
-    let schema_yaml = r#"
+    let schema_yaml = r"
 named:
     program:
         $children*: assignment
@@ -317,7 +314,7 @@ named:
         right: identifier
     identifier:
     integer:
-"#;
+";
 
     let dump = parse_and_dump_typed_with_language("x = 1", schema_yaml);
     assert!(dump.contains("right: integer \"1\" <-- ERROR:"));
@@ -351,12 +348,12 @@ fn test_query_match() {
 fn test_run_from_ast_desugars_hand_built_tree() {
     // Output schema for the desugared tree. Its kind/field names must become
     // resolvable in the hand-built AST's schema for the rule to build them.
-    let schema_yaml = r#"
+    let schema_yaml = r"
 named:
     assignment:
         left: leaf
     leaf:
-"#;
+";
 
     // A rule over an *input* kind (`wrapper`) that is not in the output schema,
     // rewriting to an output `assignment` node.
@@ -1226,10 +1223,10 @@ fn test_innermost_choice_catches_first() {
 
     assert_dump_eq(
         &dump_ast(ctx.output, root, input),
-        r#"
+        r"
         assignment
           left: left_assignment_list
-    "#,
+    ",
     );
 }
 
@@ -1376,8 +1373,8 @@ fn test_rule_guard_reads_raw_capture_and_user_context() {
             with_passthrough_rules(guarded_integer_rules()),
         )];
         let runner = Runner::with_schema(lang, &schema, &phases);
-        let mut user_ctx = GuardTestContext { enabled };
-        let ast = runner.run_with_ctx(input, &mut user_ctx).unwrap();
+        let user_ctx = GuardTestContext { enabled };
+        let ast = runner.run_with_ctx(input, &user_ctx).unwrap();
         dump_ast(&ast, ast.get_root(), input)
     }
 
@@ -1640,10 +1637,10 @@ fn test_transform_context_propagates_to_nested_guard_without_mutating_caller() {
     ];
     let phases = vec![Phase::new("translate", rules)];
     let runner = Runner::with_schema(lang, &schema, &phases);
-    let mut user_ctx = GuardTestContext { enabled: false };
+    let user_ctx = GuardTestContext { enabled: false };
 
     let input = "1";
-    let ast = runner.run_with_ctx(input, &mut user_ctx).unwrap();
+    let ast = runner.run_with_ctx(input, &user_ctx).unwrap();
     assert!(!user_ctx.enabled);
     let dump = dump_ast(&ast, ast.get_root(), input);
     assert_dump_eq(

@@ -146,6 +146,7 @@ fn member_chain(
     )
 }
 
+#[allow(clippy::too_many_lines)]
 fn translation_rules() -> Vec<Rule<SwiftContext>> {
     yeast::rules! {
         input: "swift_node_types.yml",
@@ -404,7 +405,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                             value: {ctx.reset(); val})
                     ));
                 }
-                for acc in accessors.into_iter() {
+                for acc in accessors {
                     ctx.is_chained = !result.is_empty();
                     result.extend(ctx.translate(acc));
                 }

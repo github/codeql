@@ -1,7 +1,7 @@
 use crate::environment;
 use std::sync::LazyLock;
 
-#[derive(PartialEq, PartialOrd)]
+#[derive(PartialEq, Eq, PartialOrd)]
 pub enum Verbosity {
     Silent,
     Error,

@@ -58,15 +58,15 @@ impl Rule {
         let captures_ident = Ident::new("__captures", Span::call_site());
         let translated_captures_ident = Ident::new("__translated_captures", Span::call_site());
         let guard_bindings =
-            capture_bindings(captures.iter(), quote! { yeast::Id }, &captures_ident);
+            capture_bindings(captures.iter(), &quote! { yeast::Id }, &captures_ident);
         let raw_bindings = capture_bindings(
             raw_captures.into_iter(),
-            quote! { yeast::Id },
+            &quote! { yeast::Id },
             &captures_ident,
         );
         let translated_bindings = capture_bindings(
             translated_captures.into_iter(),
-            quote! { yeast::OutputId },
+            &quote! { yeast::OutputId },
             &translated_captures_ident,
         );
         let replacement = self.replacement.lower();
@@ -278,7 +278,7 @@ fn combine_cardinality(parent: Cardinality, child: Cardinality) -> Cardinality {
 
 fn capture_bindings<'a>(
     captures: impl Iterator<Item = &'a CaptureBinding>,
-    id_type: TokenStream,
+    id_type: &TokenStream,
     captures_ident: &Ident,
 ) -> Vec<TokenStream> {
     captures
@@ -377,14 +377,14 @@ impl Template {
     fn lower_choice(alternatives: &[Alternative]) -> TokenStream {
         let pick = alternatives.iter().rev().fold(
             quote! { ::std::option::Option::None },
-            |fallback, alternative| alternative.lower_candidate(fallback),
+            |fallback, alternative| alternative.lower_candidate(&fallback),
         );
         quote! {{ #pick }}
     }
 }
 
 impl Alternative {
-    fn lower_candidate(&self, fallback: TokenStream) -> TokenStream {
+    fn lower_candidate(&self, fallback: &TokenStream) -> TokenStream {
         let interpolations = RefCell::new(Vec::new());
         let context = LoweringContext {
             choice_alternative_scope: Some(ChoiceAlternativeScope {
@@ -455,6 +455,7 @@ impl Alternative {
 }
 
 impl Node {
+    #[allow(clippy::too_many_lines)]
     fn lower(&self, context: LoweringContext<'_>) -> TokenStream {
         let ctx = Ident::new("ctx", Span::call_site());
         let kind_str = self.kind.to_string();

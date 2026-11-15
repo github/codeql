@@ -51,8 +51,9 @@ impl From<tree_sitter::Range> for Range {
     }
 }
 
-/// Node id: an index into the output [`OutputAst`] arena. A newtype around `usize`
-/// rather than a bare alias so that it can carry its own
+/// Node id: an index into the output [`OutputAst`] arena.
+///
+/// A newtype around `usize` rather than a bare alias so that it can carry its own
 /// [`YeastDisplay`] / [`YeastSourceRange`] / [`IntoFieldIds`] impls
 /// without colliding with the impls for plain integers.
 ///
@@ -345,8 +346,9 @@ impl<T: YeastSourceRange + ?Sized> YeastSourceRange for &T {
     }
 }
 
-/// Normalizes a `#{expr}` interpolation to an optional value, so that a
-/// template choice — `field: [(kind #{expr})]` — can tell "there is a value
+/// Normalizes a `#{expr}` interpolation to an optional value.
+///
+/// A template choice — `field: [(kind #{expr})]` — can tell "there is a value
 /// to interpolate" apart from "there is none, so try the next alternative".
 ///
 /// Implemented for every [`YeastDisplay`] type, which always yields a value,
@@ -583,15 +585,15 @@ impl<Id: TreeId> std::fmt::Debug for Ast<Id> {
         f.debug_struct("Ast")
             .field("root", &self.root)
             .field("nodes", &self.nodes.len())
-            .finish()
+            .finish_non_exhaustive()
     }
 }
 
 impl Ast {
     /// Construct an AST from a TS tree
-    pub fn from_tree(language: tree_sitter::Language, tree: &tree_sitter::Tree) -> Self {
-        let schema = schema::from_language(&language);
-        Self::from_tree_with_schema(schema, tree, &language)
+    pub fn from_tree(language: &tree_sitter::Language, tree: &tree_sitter::Tree) -> Self {
+        let schema = schema::from_language(language);
+        Self::from_tree_with_schema(schema, tree, language)
     }
 
     pub fn from_tree_with_schema(
@@ -1054,7 +1056,7 @@ impl<Id: TreeId> Node<Id> {
         self.is_error
     }
 
-    fn fake_point(&self) -> Point {
+    fn fake_point() -> Point {
         Point { row: 0, column: 0 }
     }
 
@@ -1067,12 +1069,12 @@ impl<Id: TreeId> Node<Id> {
 
     pub fn start_position(&self) -> Point {
         self.source_range()
-            .map_or_else(|| self.fake_point(), |range| range.start_point)
+            .map_or_else(Self::fake_point, |range| range.start_point)
     }
 
     pub fn end_position(&self) -> Point {
         self.source_range()
-            .map_or_else(|| self.fake_point(), |range| range.end_point)
+            .map_or_else(Self::fake_point, |range| range.end_point)
     }
 
     pub fn start_byte(&self) -> usize {
@@ -1091,17 +1093,14 @@ impl<Id: TreeId> Node<Id> {
         match &self.content {
             NodeContent::Range(_range) => None,
             NodeContent::String(s) => Some(s.to_string()),
-            NodeContent::DynamicString(s) => Some(s.to_string()),
+            NodeContent::DynamicString(s) => Some(s.clone()),
         }
     }
 
     /// Read the child ids stored under a given field, or an empty slice if
     /// no such field is present on this node.
     pub fn field_children(&self, field_id: FieldId) -> &[Id] {
-        self.fields
-            .get(&field_id)
-            .map(|v| v.as_slice())
-            .unwrap_or(&[])
+        self.fields.get(&field_id).map_or(&[][..], Vec::as_slice)
     }
 }
 
@@ -1155,14 +1154,14 @@ impl<C> TranslatorHandle<'_, C> {
     }
 }
 
-impl<'a, C: Clone> TranslatorHandle<'a, C> {
+impl<C: Clone> TranslatorHandle<'_, C> {
     /// Recursively apply the current phase's rules to `id` and return the
     /// resulting node ids.
     pub fn translate(
         &self,
         ast: &Ast,
         output: &mut OutputAst,
-        user_ctx: &mut C,
+        user_ctx: &C,
         id: Id,
     ) -> Vec<OutputId> {
         apply_rules_inner(
@@ -1180,7 +1179,7 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
         captures: &Captures,
         ast: &Ast,
         output: &mut OutputAst,
-        user_ctx: &mut C,
+        user_ctx: &C,
         skip: &[&str],
     ) -> TranslatedCaptures {
         captures.translate_except(skip, |id| {
@@ -1216,7 +1215,9 @@ pub type Transform<C = ()> = Box<
 >;
 
 /// Predicate evaluated after a rule's query matches and before its transform
-/// runs. Returning `false` makes the rule behave as if its query did not
+/// runs.
+///
+/// Returning `false` makes the rule behave as if its query did not
 /// match, so the driver continues to the next rule. Guards have read-only
 /// access to the shared user context.
 pub type Guard<C = ()> = Box<dyn Fn(&Ast, &Captures, &C) -> bool + Send + Sync>;
@@ -1330,7 +1331,7 @@ fn apply_rules<C: Clone>(
     rules: &[Rule<C>],
     ast: &Ast,
     output: &mut OutputAst,
-    user_ctx: &mut C,
+    user_ctx: &C,
     id: Id,
 ) -> Vec<OutputId> {
     let index = RuleIndex::new(rules);
@@ -1341,7 +1342,7 @@ fn apply_rules_inner<C: Clone>(
     index: &RuleIndex<C>,
     ast: &Ast,
     output: &mut OutputAst,
-    user_ctx: &mut C,
+    user_ctx: &C,
     id: Id,
     rewrite_depth: usize,
 ) -> Vec<OutputId> {
@@ -1352,7 +1353,7 @@ fn apply_rules_inner<C: Clone>(
         ));
     }
 
-    let node_kind = ast.get_node(id).map(|n| n.kind_name()).unwrap_or("");
+    let node_kind = ast.get_node(id).map_or("", |n| n.kind_name());
 
     for rule in index.rules_for_kind(node_kind) {
         let Some(captures) = rule.match_query(ast, id) else {
@@ -1450,6 +1451,7 @@ impl<C> DesugaringConfig<C> {
     /// Add a translation phase with the given name and exhaustive rules.
     ///
     /// Runners currently reject configurations containing more than one phase.
+    #[must_use]
     pub fn add_phase(mut self, name: impl Into<String>, mut rules: Vec<Rule<C>>) -> Self {
         for rule in &mut rules {
             rule.set_ignored_location_fields(&self.ignored_location_fields);
@@ -1460,6 +1462,7 @@ impl<C> DesugaringConfig<C> {
 
     /// Ignore boundary syntax stored under any of these input field names when
     /// calculating matched locations for rule results.
+    #[must_use]
     pub fn with_ignored_location_fields(
         mut self,
         fields: impl IntoIterator<Item = &'static str>,
@@ -1473,6 +1476,7 @@ impl<C> DesugaringConfig<C> {
         self
     }
 
+    #[must_use]
     pub fn with_output_node_types_yaml(mut self, yaml: &'static str) -> Self {
         self.output_node_types_yaml = Some(yaml);
         self
@@ -1581,7 +1585,7 @@ impl<'a, C> Runner<'a, C> {
     }
 }
 
-impl<'a, C: Clone> Runner<'a, C> {
+impl<C: Clone> Runner<'_, C> {
     /// Parse `tree` against `source` and run the configured translation, threading
     /// `user_ctx` through every rule transform. The caller owns the
     /// initial context state.
@@ -1589,7 +1593,7 @@ impl<'a, C: Clone> Runner<'a, C> {
         &self,
         tree: &tree_sitter::Tree,
         source: &[u8],
-        user_ctx: &mut C,
+        user_ctx: &C,
     ) -> Result<OutputAst, String> {
         let language = self
             .language
@@ -1610,7 +1614,7 @@ impl<'a, C: Clone> Runner<'a, C> {
 
     /// Parse `input` and run the configured translation, threading `user_ctx` through
     /// every rule transform. The caller owns the initial context state.
-    pub fn run_with_ctx(&self, input: &str, user_ctx: &mut C) -> Result<OutputAst, String> {
+    pub fn run_with_ctx(&self, input: &str, user_ctx: &C) -> Result<OutputAst, String> {
         let language = self
             .language
             .as_ref()
@@ -1635,7 +1639,7 @@ impl<'a, C: Clone> Runner<'a, C> {
         self.run_once(raw, user_ctx)
     }
 
-    fn run_once(&self, ast: Ast, user_ctx: &mut C) -> Result<OutputAst, String> {
+    fn run_once(&self, ast: Ast, user_ctx: &C) -> Result<OutputAst, String> {
         match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
             self.run_once_inner(ast, user_ctx)
         })) {
@@ -1656,7 +1660,7 @@ impl<'a, C: Clone> Runner<'a, C> {
         }
     }
 
-    fn run_once_inner(&self, ast: Ast, user_ctx: &mut C) -> OutputAst {
+    fn run_once_inner(&self, ast: Ast, user_ctx: &C) -> OutputAst {
         if self.phases.len() != 1 {
             translation_failure("YEAST requires exactly one translation phase");
         }
@@ -1675,7 +1679,7 @@ impl<'a, C: Clone> Runner<'a, C> {
     }
 }
 
-impl<'a, C: Clone + Default> Runner<'a, C> {
+impl<C: Clone + Default> Runner<'_, C> {
     /// Parse `tree` against `source` and run the configured translation, using
     /// the default context (`C::default()`) as the initial context state.
     pub fn run_from_tree(
@@ -1683,21 +1687,21 @@ impl<'a, C: Clone + Default> Runner<'a, C> {
         tree: &tree_sitter::Tree,
         source: &[u8],
     ) -> Result<OutputAst, String> {
-        let mut user_ctx = C::default();
-        self.run_from_tree_with_ctx(tree, source, &mut user_ctx)
+        let user_ctx = C::default();
+        self.run_from_tree_with_ctx(tree, source, &user_ctx)
     }
 
     /// Parse `input` and run the configured translation, using the default
     /// context (`C::default()`) as the initial context state.
     pub fn run(&self, input: &str) -> Result<OutputAst, String> {
-        let mut user_ctx = C::default();
-        self.run_with_ctx(input, &mut user_ctx)
+        let user_ctx = C::default();
+        self.run_with_ctx(input, &user_ctx)
     }
 
     /// Run the configured translation over an already-built input AST.
     pub fn run_from_ast(&self, ast: Ast) -> Result<OutputAst, String> {
-        let mut user_ctx = C::default();
-        self.run_once(ast, &mut user_ctx)
+        let user_ctx = C::default();
+        self.run_once(ast, &user_ctx)
     }
 }
 
@@ -1730,8 +1734,10 @@ pub trait Desugarer: Send + Sync {
 }
 
 /// A concrete [`Desugarer`] backed by a [`DesugaringConfig<C>`] for a
-/// specific user context type `C`. Stores the language and a pre-built
-/// schema so that per-call cost is bounded to constructing a transient
+/// specific user context type `C`.
+///
+/// Stores the language and a pre-built schema so that per-call cost is bounded
+/// to constructing a transient
 /// [`Runner`] and cloning the schema (no YAML re-parsing).
 pub struct ConcreteDesugarer<C: Default + Clone + Send + Sync + 'static> {
     /// The input tree-sitter language, or `None` for a custom (non-tree-sitter)

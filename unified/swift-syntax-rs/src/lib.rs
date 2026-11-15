@@ -131,7 +131,7 @@ mod tests {
     fn parses_source_with_interior_nul() {
         let json = parse_to_json("let x =\0 1").expect("parsing interior NUL should succeed");
         assert!(
-            json.contains(r#"\u0000"#),
+            json.contains(r"\u0000"),
             "interior NUL should be preserved in the JSON tree: {json}"
         );
     }
@@ -146,6 +146,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::unicode_not_nfc)]
     fn serializes_json_strings_and_keys_deterministically() {
         let source = "/* quote \" slash / backslash \\ tab \t newline\n emoji 😀 combining e\u{301} control \u{1} */\nlet x = 1";
         let json = parse_to_json(source).expect("parsing should succeed");

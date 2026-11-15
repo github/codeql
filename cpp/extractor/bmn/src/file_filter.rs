@@ -97,7 +97,8 @@ fn relativize_path(path: PathBuf) -> Result<PathBuf> {
                 Ok(PathBuf::from_iter(sliced))
             }
             _ => Err(anyhow!(
-                "Path cannot start with .. or the drive prefix: {path:?}"
+                "Path cannot start with .. or the drive prefix: {}",
+                path.display()
             )),
         }
     }
@@ -331,11 +332,11 @@ impl FileFilter {
         if include_filter_count == 0 {
             // No include, everything not excluded should be accepted, so add an include all filter
             // at the beginning to include everything else
-            index_filters.insert(0, FilterRule::Include(wildcard.clone()));
+            index_filters.insert(0, FilterRule::Include(wildcard));
         } else {
             // If only include filters are specified, add an exclude all filter at the beginning to
             // exclude everything else
-            index_filters.insert(0, FilterRule::Exclude(wildcard.clone()));
+            index_filters.insert(0, FilterRule::Exclude(wildcard));
         }
 
         Ok(FileFilter {
@@ -459,7 +460,6 @@ impl FileFilter {
 mod tests {
     use super::*;
     use all_asserts::{assert_false, assert_true};
-    use std::path::PathBuf;
 
     // Using the current directory as root for tests to avoid issues with absolute paths on Windows
     fn get_cwd() -> PathBuf {
