@@ -1,0 +1,14 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/unified-all",
+        "extensible": "legacySinkModel"
+      },
+      "data": [
+        // namespace, type, subtypes, name, signature, ext, output, kind, provenance
+        ["", "NSPredicate", true, "init(format:)", "", "", "Argument[format:]", "predicate-injection", "manual"]
+      ]
+    }
+  ]
+}
