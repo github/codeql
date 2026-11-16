@@ -42,6 +42,6 @@ func testConstructedFormats() {
 
     NSPredicate(format: "SELF LIKE \(remoteString)") // $ Alert
     NSPredicate(format: "SELF LIKE " + remoteString) // $ Alert
-    NSPredicate(format: "SELF LIKE %@", remoteString) // Safe: bind the value, not the format
+    NSPredicate(format: "SELF LIKE %@", remoteString) // Safe
     NSPredicate(format: "SELF LIKE %@", argumentArray: [remoteString]) // Safe
 }

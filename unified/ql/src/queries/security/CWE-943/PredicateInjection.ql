@@ -29,9 +29,6 @@ module PredicateInjectionConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-/**
- * Detect taint flow of predicate injection vulnerabilities.
- */
 module PredicateInjectionFlow = TaintTracking::Global<PredicateInjectionConfig>;
 
 import PredicateInjectionFlow::PathGraph
