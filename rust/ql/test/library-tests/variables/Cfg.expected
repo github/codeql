@@ -2342,15 +2342,17 @@ edges
 | main.rs:523:25:523:30 | "cake" | main.rs:523:33:523:40 | "coffee" |  |
 | main.rs:523:33:523:40 | "coffee" | main.rs:523:14:523:41 | [...] |  |
 | main.rs:525:5:528:5 | After for ... in ... { ... } | main.rs:522:19:529:1 | After { ... } |  |
+| main.rs:525:5:528:5 | [LoopHeader] for ... in ... { ... } | main.rs:525:5:528:5 | After for ... in ... { ... } |  |
 | main.rs:525:5:528:5 | [LoopHeader] for ... in ... { ... } | main.rs:525:9:525:12 | Before text |  |
 | main.rs:525:5:528:5 | for ... in ... { ... } | main.rs:526:12:526:12 | v |  |
 | main.rs:525:9:525:12 | After text [match] | main.rs:526:14:528:5 | { ... } |  |
-| main.rs:525:9:525:12 | After text [no-match] | main.rs:525:5:528:5 | After for ... in ... { ... } |  |
 | main.rs:525:9:525:12 | Before text | main.rs:525:9:525:12 | text |  |
 | main.rs:525:9:525:12 | text | main.rs:525:9:525:12 | After text [match] | match |
-| main.rs:525:9:525:12 | text | main.rs:525:9:525:12 | After text [no-match] | no-match |
 | main.rs:525:9:525:12 | text | main.rs:525:9:525:12 | text |  |
-| main.rs:526:12:526:12 | v | main.rs:525:9:525:12 | Before text |  |
+| main.rs:526:12:526:12 | After v [empty] | main.rs:525:5:528:5 | After for ... in ... { ... } |  |
+| main.rs:526:12:526:12 | After v [non-empty] | main.rs:525:9:525:12 | Before text |  |
+| main.rs:526:12:526:12 | v | main.rs:526:12:526:12 | After v [empty] | empty |
+| main.rs:526:12:526:12 | v | main.rs:526:12:526:12 | After v [non-empty] | non-empty |
 | main.rs:526:14:528:5 | After { ... } | main.rs:525:5:528:5 | [LoopHeader] for ... in ... { ... } |  |
 | main.rs:526:14:528:5 | { ... } | main.rs:527:9:527:24 | ExprStmt |  |
 | main.rs:527:9:527:17 | print_str | main.rs:527:19:527:22 | text |  |
