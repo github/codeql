@@ -500,7 +500,7 @@ edges
 | main.rs:112:1:119:1 | Normal Exit | main.rs:112:1:119:1 | Exit |  |
 | main.rs:112:19:119:1 | After { ... } | main.rs:112:1:119:1 | Normal Exit |  |
 | main.rs:112:19:119:1 | { ... } | main.rs:113:5:113:41 | let ... = ... |  |
-| main.rs:113:5:113:41 | After let ... = ... | main.rs:115:5:118:5 | Before while ... { ... } |  |
+| main.rs:113:5:113:41 | After let ... = ... | main.rs:115:5:118:5 | while ... { ... } |  |
 | main.rs:113:5:113:41 | let ... = ... | main.rs:113:13:113:40 | Before Some(...) |  |
 | main.rs:113:9:113:9 | After s [match] | main.rs:113:5:113:41 | After let ... = ... |  |
 | main.rs:113:9:113:9 | Before s | main.rs:113:9:113:9 | s |  |
@@ -516,8 +516,8 @@ edges
 | main.rs:113:18:113:39 | Before ...::from(...) | main.rs:113:18:113:29 | ...::from |  |
 | main.rs:113:31:113:38 | "Hello!" | main.rs:113:18:113:39 | ...::from(...) |  |
 | main.rs:115:5:118:5 | After while ... { ... } | main.rs:112:19:119:1 | After { ... } |  |
-| main.rs:115:5:118:5 | Before while ... { ... } | main.rs:115:5:118:5 | [LoopHeader] while ... { ... } |  |
 | main.rs:115:5:118:5 | [LoopHeader] while ... { ... } | main.rs:115:11:116:11 | let ... = s |  |
+| main.rs:115:5:118:5 | while ... { ... } | main.rs:115:5:118:5 | [LoopHeader] while ... { ... } |  |
 | main.rs:115:11:116:11 | After let ... = s [false] | main.rs:115:5:118:5 | After while ... { ... } |  |
 | main.rs:115:11:116:11 | After let ... = s [true] | main.rs:116:13:118:5 | { ... } |  |
 | main.rs:115:11:116:11 | let ... = s | main.rs:116:11:116:11 | s |  |
@@ -1071,7 +1071,6 @@ edges
 | main.rs:245:22:245:23 | Before a3 | main.rs:245:22:245:23 | a3 |  |
 | main.rs:245:22:245:23 | a3 | main.rs:245:22:245:23 | After a3 [match] | match |
 | main.rs:245:22:245:23 | a3 | main.rs:245:22:245:23 | a3 |  |
-| main.rs:245:28:245:44 | ...::Right(...) | main.rs:245:28:245:44 | After ...::Right(...) [no-match] | no-match |
 | main.rs:245:28:245:44 | ...::Right(...) | main.rs:245:28:245:44 | [pattern-start] ...::Right(...) | match |
 | main.rs:245:28:245:44 | After ...::Right(...) [match] | main.rs:245:9:245:44 | After ... \| ... [match] | match |
 | main.rs:245:28:245:44 | [pattern-start] ...::Right(...) | main.rs:245:42:245:43 | Before a3 |  |
@@ -1126,7 +1125,6 @@ edges
 | main.rs:259:54:259:55 | Before a4 | main.rs:259:54:259:55 | a4 |  |
 | main.rs:259:54:259:55 | a4 | main.rs:259:54:259:55 | After a4 [match] | match |
 | main.rs:259:54:259:55 | a4 | main.rs:259:54:259:55 | a4 |  |
-| main.rs:259:60:259:81 | ...::Third(...) | main.rs:259:60:259:81 | After ...::Third(...) [no-match] | no-match |
 | main.rs:259:60:259:81 | ...::Third(...) | main.rs:259:60:259:81 | [pattern-start] ...::Third(...) | match |
 | main.rs:259:60:259:81 | After ...::Third(...) [match] | main.rs:259:9:259:81 | After ... \| ... \| ... [match] | match |
 | main.rs:259:60:259:81 | [pattern-start] ...::Third(...) | main.rs:259:79:259:80 | Before a4 |  |
@@ -1169,7 +1167,6 @@ edges
 | main.rs:263:55:263:56 | Before a5 | main.rs:263:55:263:56 | a5 |  |
 | main.rs:263:55:263:56 | a5 | main.rs:263:55:263:56 | After a5 [match] | match |
 | main.rs:263:55:263:56 | a5 | main.rs:263:55:263:56 | a5 |  |
-| main.rs:263:62:263:83 | ...::Third(...) | main.rs:263:62:263:83 | After ...::Third(...) [no-match] | no-match |
 | main.rs:263:62:263:83 | ...::Third(...) | main.rs:263:62:263:83 | [pattern-start] ...::Third(...) | match |
 | main.rs:263:62:263:83 | After ...::Third(...) [match] | main.rs:263:9:263:83 | After ... \| ... [match] | match |
 | main.rs:263:62:263:83 | [pattern-start] ...::Third(...) | main.rs:263:81:263:82 | Before a5 |  |
@@ -1209,10 +1206,8 @@ edges
 | main.rs:267:55:267:56 | Before a6 | main.rs:267:55:267:56 | a6 |  |
 | main.rs:267:55:267:56 | a6 | main.rs:267:55:267:56 | After a6 [match] | match |
 | main.rs:267:55:267:56 | a6 | main.rs:267:55:267:56 | a6 |  |
-| main.rs:267:61:267:82 | ...::Third(...) | main.rs:267:61:267:82 | After ...::Third(...) [no-match] | no-match |
 | main.rs:267:61:267:82 | ...::Third(...) | main.rs:267:61:267:82 | [pattern-start] ...::Third(...) | match |
 | main.rs:267:61:267:82 | After ...::Third(...) [match] | main.rs:267:35:267:82 | After ... \| ... [match] | match |
-| main.rs:267:61:267:82 | After ...::Third(...) [no-match] | main.rs:267:35:267:82 | After ... \| ... [no-match] | no-match |
 | main.rs:267:61:267:82 | [pattern-start] ...::Third(...) | main.rs:267:80:267:81 | Before a6 |  |
 | main.rs:267:80:267:81 | After a6 [match] | main.rs:267:61:267:82 | After ...::Third(...) [match] | match |
 | main.rs:267:80:267:81 | Before a6 | main.rs:267:80:267:81 | a6 |  |
@@ -1422,7 +1417,6 @@ edges
 | main.rs:309:79:309:81 | Before a13 | main.rs:309:79:309:81 | a13 |  |
 | main.rs:309:79:309:81 | a13 | main.rs:309:79:309:81 | After a13 [match] | match |
 | main.rs:309:79:309:81 | a13 | main.rs:309:79:309:81 | a13 |  |
-| main.rs:309:87:309:109 | ...::Fourth(...) | main.rs:309:87:309:109 | After ...::Fourth(...) [no-match] | no-match |
 | main.rs:309:87:309:109 | ...::Fourth(...) | main.rs:309:87:309:109 | [pattern-start] ...::Fourth(...) | match |
 | main.rs:309:87:309:109 | After ...::Fourth(...) [match] | main.rs:309:9:309:109 | After ... \| ... \| ... [match] | match |
 | main.rs:309:87:309:109 | [pattern-start] ...::Fourth(...) | main.rs:309:106:309:108 | Before a13 |  |
@@ -1608,9 +1602,9 @@ edges
 | main.rs:351:18:351:19 | 42 | main.rs:351:13:351:20 | Some(...) |  |
 | main.rs:352:5:362:5 | After ExprStmt | main.rs:364:5:364:26 | ExprStmt |  |
 | main.rs:352:5:362:5 | After while ... { ... } | main.rs:352:5:362:5 | After ExprStmt |  |
-| main.rs:352:5:362:5 | Before while ... { ... } | main.rs:352:5:362:5 | [LoopHeader] while ... { ... } |  |
-| main.rs:352:5:362:5 | ExprStmt | main.rs:352:5:362:5 | Before while ... { ... } |  |
+| main.rs:352:5:362:5 | ExprStmt | main.rs:352:5:362:5 | while ... { ... } |  |
 | main.rs:352:5:362:5 | [LoopHeader] while ... { ... } | main.rs:352:11:358:9 | ... && ... |  |
+| main.rs:352:5:362:5 | while ... { ... } | main.rs:352:5:362:5 | [LoopHeader] while ... { ... } |  |
 | main.rs:352:11:353:7 | After let ... = x [false] | main.rs:352:11:356:13 | After ... && ... [false] | false |
 | main.rs:352:11:353:7 | After let ... = x [true] | main.rs:355:5:356:13 | let ... = ... |  |
 | main.rs:352:11:353:7 | let ... = x | main.rs:353:7:353:7 | x |  |
@@ -2326,7 +2320,7 @@ edges
 | main.rs:522:1:529:1 | Normal Exit | main.rs:522:1:529:1 | Exit |  |
 | main.rs:522:19:529:1 | After { ... } | main.rs:522:1:529:1 | Normal Exit |  |
 | main.rs:522:19:529:1 | { ... } | main.rs:523:5:523:42 | let ... = ... |  |
-| main.rs:523:5:523:42 | After let ... = ... | main.rs:525:5:528:5 | Before for ... in ... { ... } |  |
+| main.rs:523:5:523:42 | After let ... = ... | main.rs:525:5:528:5 | for ... in ... { ... } |  |
 | main.rs:523:5:523:42 | let ... = ... | main.rs:523:13:523:41 | Before &... |  |
 | main.rs:523:9:523:9 | After v [match] | main.rs:523:5:523:42 | After let ... = ... |  |
 | main.rs:523:9:523:9 | Before v | main.rs:523:9:523:9 | v |  |
@@ -2342,9 +2336,9 @@ edges
 | main.rs:523:25:523:30 | "cake" | main.rs:523:33:523:40 | "coffee" |  |
 | main.rs:523:33:523:40 | "coffee" | main.rs:523:14:523:41 | [...] |  |
 | main.rs:525:5:528:5 | After for ... in ... { ... } | main.rs:522:19:529:1 | After { ... } |  |
-| main.rs:525:5:528:5 | Before for ... in ... { ... } | main.rs:526:12:526:12 | v |  |
 | main.rs:525:5:528:5 | [LoopHeader] for ... in ... { ... } | main.rs:525:5:528:5 | After for ... in ... { ... } |  |
 | main.rs:525:5:528:5 | [LoopHeader] for ... in ... { ... } | main.rs:525:9:525:12 | Before text |  |
+| main.rs:525:5:528:5 | for ... in ... { ... } | main.rs:526:12:526:12 | v |  |
 | main.rs:525:9:525:12 | After text [match] | main.rs:526:14:528:5 | { ... } |  |
 | main.rs:525:9:525:12 | Before text | main.rs:525:9:525:12 | text |  |
 | main.rs:525:9:525:12 | text | main.rs:525:9:525:12 | After text [match] | match |
