@@ -100,6 +100,42 @@ pub fn parse_query_match_with_schema_top(input: TokenStream) -> Result<TokenStre
     parse_query_match(tokens.collect(), None)
 }
 
+pub fn parse_query_match_schema_top(input: TokenStream) -> Result<TokenStream> {
+    let mut tokens = input.into_iter().peekable();
+    let module = expect_ident(&mut tokens, "expected schema module name")?;
+    expect_punct(&mut tokens, ',', "expected `,` after schema module name")?;
+    let schema = parse_string_arg(&mut tokens, "schema")?;
+    if tokens.peek().is_some() {
+        expect_punct(&mut tokens, ',', "expected trailing `,`")?;
+    }
+    if let Some(token) = tokens.next() {
+        return Err(syn::Error::new_spanned(
+            token,
+            "unexpected token after schema declaration",
+        ));
+    }
+
+    let schema_abs = resolve_manifest_path(&schema, "query_match_schema")?;
+    let schema_lit = proc_macro2::Literal::string(&schema_abs.to_string_lossy());
+
+    Ok(quote! {
+        pub(crate) mod #module {
+            #[allow(dead_code)]
+            pub const SCHEMA: &str = ::core::include_str!(#schema_lit);
+
+            macro_rules! query_match {
+                ($($tokens:tt)*) => {
+                    yeast::__query_match_with_schema! {
+                        #schema_lit,
+                        $($tokens)*
+                    }
+                };
+            }
+            pub(crate) use query_match;
+        }
+    })
+}
+
 pub fn parse_tree_with_schema_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
     let output_path = parse_named_string_arg(&mut tokens, "output")?;

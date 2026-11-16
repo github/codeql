@@ -35,6 +35,16 @@ macro_rules! build_tree_from_template {
     }};
 }
 
+yeast::query_match_schema! {
+    test_input,
+    "tests/input-types.yml",
+}
+
+yeast::query_match_schema! {
+    test_output,
+    "tests/node-types.yml",
+}
+
 /// Helper: parse Ruby source with no rules, return dump.
 fn parse_and_dump(input: &str) -> String {
     let ast = parse_input(input);
@@ -841,6 +851,12 @@ fn test_tree_schema_namespace() {
         ctx.output.get_node(bare_leaf).unwrap().kind_name(),
         "identifier"
     );
+}
+
+#[test]
+fn test_query_match_schema_namespace() {
+    assert_eq!(test_input::SCHEMA, include_str!("input-types.yml"));
+    assert_eq!(test_output::SCHEMA, OUTPUT_SCHEMA_YAML);
 }
 
 #[test]
