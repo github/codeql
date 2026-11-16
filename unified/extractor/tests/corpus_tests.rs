@@ -190,7 +190,7 @@ fn test_corpus() {
                     ));
                 }
                 // Ensure the AST passes below operate on the source of truth.
-                let case_input = swift_input.clone();
+                let case_input = swift_input;
 
                 match dump_raw_parse(&lang, &case_input) {
                     Err(e) => {

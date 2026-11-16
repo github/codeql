@@ -1184,10 +1184,9 @@ impl<C: Clone> TranslatorHandle<'_, C> {
     ) -> TranslatedCaptures {
         captures.translate_except(skip, |id| {
             if id == self.matched_root {
-                translation_failure("cannot eagerly translate a capture of the matched rule root")
-            } else {
-                self.translate(ast, output, user_ctx, id)
+                translation_failure("cannot eagerly translate a capture of the matched rule root");
             }
+            self.translate(ast, output, user_ctx, id)
         })
     }
 }

@@ -340,13 +340,13 @@ fn skip_space(content: &[u8], index: usize) -> usize {
 }
 
 /**
-* If the relevant environment variable has been set by the CLI, indicating that we are extracting
-* an overlay, this function reads the JSON file at the path given by its value, and returns a set
-* of canonicalized paths of source files that have changed and should therefore be extracted.
-*
-* If the environment variable is not set (i.e. we're not extracting an overlay), or if the file
-* cannot be read, this function returns `None`. In that case, all files should be extracted.
-*/
+ * If the relevant environment variable has been set by the CLI, indicating that we are extracting
+ * an overlay, this function reads the JSON file at the path given by its value, and returns a set
+ * of canonicalized paths of source files that have changed and should therefore be extracted.
+ *
+ * If the environment variable is not set (i.e. we're not extracting an overlay), or if the file
+ * cannot be read, this function returns `None`. In that case, all files should be extracted.
+ */
 fn get_overlay_changed_files() -> Option<HashSet<PathBuf>> {
     let path = std::env::var("CODEQL_EXTRACTOR_RUBY_OVERLAY_CHANGES").ok()?;
     let file_content = fs::read_to_string(path).ok()?;

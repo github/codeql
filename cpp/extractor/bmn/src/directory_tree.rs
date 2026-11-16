@@ -87,13 +87,12 @@ impl DirectoryTree {
     /// suffix `sub/foo.h` results in `/a` and `/b`.
     pub fn directories_with_path(&self, file_suffix: &Path) -> HashSet<PathBuf> {
         self.files_with_same_name(file_suffix)
-            .map(|files_with_name| {
+            .map_or_default(|files_with_name| {
                 files_with_name
                     .iter()
                     .filter_map(|p| strip_suffix(p, file_suffix))
                     .collect()
             })
-            .unwrap_or_default()
     }
 
     /// Returns an iterator over all files in the directory tree.
