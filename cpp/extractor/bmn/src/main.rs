@@ -52,8 +52,8 @@ fn get_extractor_executable() -> Result<PathBuf> {
     let extractor = PathBuf::from_iter([&root_dir, "tools", &platform, &binary_name]);
     if !extractor.exists() {
         Err(anyhow::anyhow!(
-            "Extractor executable not found at: {:?}",
-            extractor
+            "Extractor executable not found at: {}",
+            extractor.display()
         ))
     } else {
         Ok(extractor)

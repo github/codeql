@@ -212,18 +212,6 @@ alias(
 )
 
 alias(
-    name = "lazy_static-1.5.1",
-    actual = "@vendor_rs__lazy_static-1.5.1//:lazy_static",
-    tags = ["manual"],
-)
-
-alias(
-    name = "lazy_static",
-    actual = "@vendor_rs__lazy_static-1.5.1//:lazy_static",
-    tags = ["manual"],
-)
-
-alias(
     name = "mustache-0.9.0",
     actual = "@vendor_rs__mustache-0.9.0//:mustache",
     tags = ["manual"],

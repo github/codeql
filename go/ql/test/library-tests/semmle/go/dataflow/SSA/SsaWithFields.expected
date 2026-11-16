@@ -4,14 +4,14 @@
 | main.go:17:3:17:9 | (SSA def(y)) | y |
 | main.go:20:2:22:2 | (SSA phi(x)) | x |
 | main.go:21:3:21:7 | (SSA def(x)) | x |
-| main.go:26:10:26:10 | (SSA def(x)) | x |
+| main.go:26:10:26:10 | (SSA param(x)) | x |
 | main.go:27:2:27:13 | (SSA def(a)) | a |
 | main.go:27:2:27:13 | (SSA def(b)) | b |
 | main.go:28:2:30:2 | (SSA phi(a)) | a |
 | main.go:28:2:30:2 | (SSA phi(b)) | b |
 | main.go:29:3:29:13 | (SSA def(a)) | a |
 | main.go:29:3:29:13 | (SSA def(b)) | b |
-| main.go:34:11:34:11 | (SSA def(x)) | x |
+| main.go:34:11:34:11 | (SSA param(x)) | x |
 | main.go:39:2:39:8 | (SSA def(x)) | x |
 | main.go:40:2:40:10 | (SSA def(ptr)) | ptr |
 | main.go:48:2:48:12 | (SSA def(result)) | result |
@@ -32,21 +32,21 @@
 | main.go:82:36:86:1 | (SSA def(b)) | b |
 | main.go:83:2:83:8 | (SSA def(x)) | x |
 | main.go:84:2:84:15 | (SSA def(a)) | a |
-| main.go:95:22:95:28 | (SSA def(wrapper)) | wrapper |
-| main.go:95:22:95:28 | (SSA def(wrapper)).s | wrapper.s |
+| main.go:95:22:95:28 | (SSA param(wrapper)) | wrapper |
+| main.go:95:22:95:28 | (SSA param(wrapper)).s | wrapper.s |
 | main.go:96:2:96:7 | (SSA def(x)) | x |
-| main.go:97:2:99:3 | (SSA def(x)) | x |
+| main.go:97:2:99:3 | (SSA implicit def(x)) | x |
 | main.go:98:3:98:7 | (SSA def(x)) | x |
-| main.go:103:20:103:26 | (SSA def(wrapper)) | wrapper |
-| main.go:103:20:103:26 | (SSA def(wrapper)).s | wrapper.s |
+| main.go:103:20:103:26 | (SSA param(wrapper)) | wrapper |
+| main.go:103:20:103:26 | (SSA param(wrapper)).s | wrapper.s |
 | main.go:104:2:104:7 | (SSA def(x)) | x |
-| main.go:105:16:108:2 | (SSA def(x)) | x |
+| main.go:105:16:108:2 | (SSA implicit def(x)) | x |
 | main.go:106:3:106:8 | (SSA def(y)) | y |
-| main.go:112:29:112:35 | (SSA def(wrapper)) | wrapper |
-| main.go:112:29:112:35 | (SSA def(wrapper)).s | wrapper.s |
+| main.go:112:29:112:35 | (SSA param(wrapper)) | wrapper |
+| main.go:112:29:112:35 | (SSA param(wrapper)).s | wrapper.s |
 | main.go:113:2:113:7 | (SSA def(x)) | x |
-| main.go:114:2:117:3 | (SSA def(x)) | x |
-| main.go:114:16:117:2 | (SSA def(x)) | x |
+| main.go:114:2:117:3 | (SSA implicit def(x)) | x |
+| main.go:114:16:117:2 | (SSA implicit def(x)) | x |
 | main.go:115:3:115:12 | (SSA def(y)) | y |
 | main.go:116:3:116:7 | (SSA def(x)) | x |
 | main.go:129:2:133:2 | (SSA phi(p)) | p |

@@ -45,6 +45,7 @@ pub(crate) trait LanguageExtractor: Sync {
 /// Sets up the thread pool, builds a combined glob set, and for each input file
 /// dispatches to the matching language's [`LanguageExtractor::extract_file`],
 /// writing the resulting TRAP and a source-archive copy.
+#[allow(clippy::too_many_lines)]
 pub(crate) fn run_extractor<L: LanguageExtractor>(
     prefix: &str,
     languages: &[L],
@@ -103,7 +104,7 @@ pub(crate) fn run_extractor<L: LanguageExtractor>(
         .iter()
         .map(|file_list| {
             File::open(file_list)
-                .unwrap_or_else(|_| panic!("Unable to open file list at {file_list:?}"))
+                .unwrap_or_else(|_| panic!("Unable to open file list at {}", file_list.display()))
         })
         .collect();
 

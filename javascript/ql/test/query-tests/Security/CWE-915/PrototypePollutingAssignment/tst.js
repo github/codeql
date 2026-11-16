@@ -130,3 +130,20 @@ app.get('/foo', (req, res) => {
     obj[req.query.x.replace(new RegExp('_', ''), '')].x = 'foo'; // $ Alert
     obj[req.query.x.replace(new RegExp('_', unknownFlags()), '')].x = 'foo';
 });
+
+app.get('/number-guard', (req, res) => {
+    let key = String(req.query.key); // $ Source
+    let obj = {};
+
+    if (isNaN(parseInt(key))) {
+        obj[key].x = 'foo'; // $ Alert
+    } else {
+        obj[key].x = 'foo';
+    }
+
+    if (isNaN(parseFloat(key))) {
+        obj[key].x = 'foo'; // $ Alert
+    } else {
+        obj[key].x = 'foo';
+    }
+});

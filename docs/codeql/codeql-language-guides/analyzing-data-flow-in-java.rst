@@ -197,6 +197,7 @@ These predicates are defined in the configuration:
 -  ``isSink`` - defines where data may flow to.
 -  ``isBarrier`` - optional, defines where data flow is blocked.
 -  ``isAdditionalFlowStep`` - optional, adds additional flow steps.
+-  ``accessPathLimit`` - optional, sets the maximum length of access paths (see ":ref:`Access path limit <access-path-limit-java>`" below).
 
 The data flow analysis is performed using the predicate ``flow(DataFlow::Node source, DataFlow::Node sink)``:
 
@@ -205,6 +206,35 @@ The data flow analysis is performed using the predicate ``flow(DataFlow::Node so
    from DataFlow::Node source, DataFlow::Node sink
    where MyFlow::flow(source, sink)
    select source, "Data flow to $@.", sink, sink.toString()
+
+.. _access-path-limit-java:
+
+Access path limit
+~~~~~~~~~~~~~~~~~
+
+The analysis can track data stored in a field, a collection element, or a map value. It records an *access path*: the sequence of fields, elements, or map values through which the data is reached. For example, after ``b.inner.val = source``, the data in ``b`` has the access path ``inner``, ``val``, of length 2. A value stored in a list inside another list also has an access path of length 2.
+
+To keep the analysis manageable, access paths have a maximum length. The default is 5, set by ``accessPathLimit()`` in the shared data flow library. Java and Kotlin use this default. A flow that needs a longer access path is not reported, and no warning is given.
+
+A configuration can change the limit by defining ``accessPathLimit``:
+
+.. code-block:: ql
+
+   module MyFlowConfiguration implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
+       ...
+     }
+
+     predicate isSink(DataFlow::Node sink) {
+       ...
+     }
+
+     int accessPathLimit() { result = 8 }
+   }
+
+For Java and Kotlin, you can increase the limit from the default of 5 to a maximum of 10. If you set a value above 10, the analysis uses 10 without warning.
+
+A higher limit can find more flows, but the analysis takes more time and memory.
 
 Using global taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -42,6 +42,7 @@ impl IntoIterator for Range {
 
 impl Range {
     /// Return the smallest range containing both ranges.
+    #[must_use]
     pub fn union(self, other: Self) -> Self {
         let (start_byte, start_point) = if self.start_byte <= other.start_byte {
             (self.start_byte, self.start_point)
@@ -62,6 +63,7 @@ impl Range {
     }
 
     /// Return an empty range anchored at this range's start.
+    #[must_use]
     pub fn empty_at_start(self) -> Self {
         Self {
             end_byte: self.start_byte,
@@ -71,6 +73,7 @@ impl Range {
     }
 
     /// Return an empty range anchored at this range's end.
+    #[must_use]
     pub fn empty_at_end(self) -> Self {
         Self {
             start_byte: self.end_byte,

@@ -153,6 +153,7 @@ fn member_chain(
     )
 }
 
+#[allow(clippy::too_many_lines)]
 fn translation_rules() -> Vec<Rule<SwiftContext>> {
     yeast::rules! {
         input: "swift_node_types.yml",
@@ -411,7 +412,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                             value: {ctx.reset(); val})
                     ));
                 }
-                for acc in accessors.into_iter() {
+                for acc in accessors {
                     ctx.is_chained = !result.is_empty();
                     result.extend(ctx.translate(acc));
                 }
@@ -1219,6 +1220,18 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((awaitExpr awaitKeyword: @@keyword expression: @val) => (unary_expr
             operator: (prefix_operator "await" location: {keyword})
             operand: {val})),
+        rule!((borrowExpr borrowKeyword: @@keyword expression: @val) => (unary_expr
+            operator: (prefix_operator #{keyword})
+            operand: {val})),
+        rule!((consumeExpr consumeKeyword: @@keyword expression: @val) => (unary_expr
+            operator: (prefix_operator #{keyword})
+            operand: {val})),
+        rule!((copyExpr copyKeyword: @@keyword expression: @val) => (unary_expr
+            operator: (prefix_operator #{keyword})
+            operand: {val})),
+        rule!((unsafeExpr unsafeKeyword: @@keyword expression: @val) => (unary_expr
+            operator: (prefix_operator #{keyword})
+            operand: {val})),
         // Force-unwrap (`x!`) → postfix unary_expr, via swift-syntax's dedicated
         // `forceUnwrapExpr` node.
         rule!((forceUnwrapExpr expression: @e exclamationMark: @@mark) => (unary_expr
@@ -1619,11 +1632,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // these roots is discarded with its parent and needs no separate rule.
         // Explicit empty content preserves their existing representation
         // instead of inheriting the matched source text.
-        rule!((borrowExpr) => (unsupported_node "")),
         rule!((classRestrictionType) => (unsupported_node "")),
         rule!((compositionType) => (unsupported_node "")),
-        rule!((consumeExpr) => (unsupported_node "")),
-        rule!((copyExpr) => (unsupported_node "")),
         rule!((discardStmt) => (unsupported_node "")),
         rule!((fallThroughStmt) => (unsupported_node "")),
         rule!((implicitlyUnwrappedOptionalType) => (unsupported_node "")),
@@ -1643,7 +1653,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((subscriptDecl) => (unsupported_node "")),
         rule!((suppressedType) => (unsupported_node "")),
         rule!((typeExpr) => (unsupported_node "")),
-        rule!((unsafeExpr) => (unsupported_node "")),
         rule!((yieldStmt) => (unsupported_node "")),
         // Anything reaching this final generic handler has neither a
         // dedicated rule nor an explicit unsupported entry.

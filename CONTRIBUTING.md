@@ -10,6 +10,14 @@ Note that the CodeQL for Visual Studio Code documentation has been migrated to h
 
 Any nontrivial user-visible change to a query pack or library pack should have a change note. For details on how to add a change note for your change, see [this guide](docs/change-notes.md).
 
+## Commit message conventions
+
+Follow these requirements when writing commit messages:
+
+- Use `<Area>: <action>`, for example `Python: Fix captured variable liveness`. Areas include `C++`, `JS`, `Rust`, `Shared`, etc. Omit the prefix when it adds little context.
+- Use a short, imperative summary: "Add", "Fix", "Remove", "Update", or "Simplify", followed by the specific change.
+- Use area prefixes rather than Conventional Commits prefixes such as `feat:` and `fix:`.
+
 ## Submitting a new experimental query
 
 If you have an idea for a query that you would like to share with other CodeQL users, please open a pull request to add it to this repository. New queries start out in a `<language>/ql/src/experimental` directory, to which they can be merged when they meet the following requirements.

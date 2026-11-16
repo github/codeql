@@ -142,7 +142,6 @@ use_repo(
     "vendor_rs__globset-0.4.18",
     "vendor_rs__itertools-0.14.0",
     "vendor_rs__itertools-0.15.0",
-    "vendor_rs__lazy_static-1.5.1",
     "vendor_rs__mustache-0.9.0",
     "vendor_rs__num-traits-0.2.19",
     "vendor_rs__num_cpus-1.17.0",
@@ -348,7 +347,7 @@ use_repo(
 )
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.27.3")
+go_sdk.download(version = "1.27.4")
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 go_deps.from_file(go_mod = "//go/extractor:go.mod")
