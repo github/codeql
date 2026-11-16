@@ -45,6 +45,8 @@ yeast::query_match_schema! {
     "tests/node-types.yml",
 }
 
+use test_input::query_match as schema_query_match;
+
 /// Helper: parse Ruby source with no rules, return dump.
 fn parse_and_dump(input: &str) -> String {
     let ast = parse_input(input);
@@ -380,6 +382,149 @@ fn test_query_match() {
     assert!(matched);
     assert!(captures.get_var("left").is_ok());
     assert!(captures.get_var("right").is_ok());
+}
+
+#[test]
+fn test_query_match_binds_raw_captures() {
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut user_ctx);
+
+    let assignment = schema_query_match!(
+        ast.get_root(),
+        (program child: (assignment) @assignment)
+        => {
+            assignment
+        }
+    );
+
+    let (left, right) = schema_query_match!(
+        assignment,
+        (assignment
+            left: (_) @left
+            right: (_) @@right)
+        => {
+            (left, right)
+        }
+    );
+    assert_eq!(ast.get_node(left).unwrap().kind_name(), "identifier");
+    assert_eq!(ast.get_node(right).unwrap().kind_name(), "integer");
+
+    let call = schema_query_match!(
+        ast.get_root(),
+        (program child: (call)? @call)
+        => {
+            call
+        }
+    );
+    assert!(call.is_none());
+
+    let children = schema_query_match!(
+        ast.get_root(),
+        (program child: (_)* @children)
+        => {
+            children
+        }
+    );
+    assert_eq!(children, vec![assignment]);
+}
+
+#[test]
+#[deny(unused_braces)]
+fn test_query_match_tries_arms_in_order() {
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut user_ctx);
+    let assignment = schema_query_match!(
+        ast.get_root(),
+        (program child: (assignment) @assignment) => {
+            assignment
+        },
+    );
+
+    let mut attempted_call = false;
+    let mut second_assignment_ran = false;
+    let left = schema_query_match!(
+        assignment,
+        (call) => {
+            attempted_call = true;
+            assignment
+        },
+        (assignment left: (_) @left) => {
+            left
+        },
+        (assignment) => {
+            second_assignment_ran = true;
+            assignment
+        },
+    );
+    assert!(!attempted_call);
+    assert!(!second_assignment_ran);
+    assert_eq!(ast.get_node(left).unwrap().kind_name(), "identifier");
+
+    let mut unmatched_body_ran = false;
+    let result = schema_query_match!(
+        assignment,
+        (call) => {
+            unmatched_body_ran = true;
+            Some(())
+        },
+        _ => {
+            None
+        },
+    );
+    assert!(result.is_none());
+    assert!(!unmatched_body_ran);
+}
+
+#[test]
+fn test_query_match_guards() {
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut enabled = true;
+    let ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut enabled);
+
+    let children = schema_query_match!(
+        ast.get_root(),
+        (program child: (_)* @children)
+        where children
+            .into_iter()
+            .all(|child| ast.get_node(child).unwrap().is_named())
+        => {
+            children
+        },
+    );
+    let assignment = children[0];
+
+    let mut guarded_body_ran = false;
+    let right = schema_query_match!(
+        assignment,
+        (assignment left: (_) @left)
+        where false
+        => {
+            guarded_body_ran = true;
+            left
+        },
+        (assignment right: (_) @right)
+        where ast.get_node(right).is_some()
+        => {
+            right
+        },
+    );
+    assert!(!guarded_body_ran);
+
+    let left = schema_query_match!(
+        assignment,
+        (assignment left: (_) @left)
+        where *ctx
+        => {
+            left
+        },
+    );
+    assert_eq!(ast.get_node(left).unwrap().kind_name(), "identifier");
+    assert_eq!(ast.get_node(right).unwrap().kind_name(), "integer");
 }
 
 #[test]
