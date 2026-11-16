@@ -528,6 +528,82 @@ fn test_query_match_guards() {
 }
 
 #[test]
+fn test_query_match_allows_return_from_body() {
+    #[allow(clippy::needless_return)]
+    fn matched_left(ast: &Ast, assignment: Id) -> Id {
+        let mut output = empty_output_ast("x = 1");
+        let mut user_ctx = ();
+        let ctx = yeast::build::BuildCtx::new(ast, &mut output, &mut user_ctx);
+        schema_query_match!(
+            assignment,
+            (assignment left: (_) @left)
+            => {
+                return left;
+            }
+        );
+    }
+
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut user_ctx);
+    let assignment = schema_query_match!(
+        ast.get_root(),
+        (program child: (assignment) @assignment) => {
+            assignment
+        },
+    );
+    assert_eq!(
+        ast.get_node(matched_left(&ast, assignment))
+            .unwrap()
+            .kind_name(),
+        "identifier"
+    );
+}
+
+#[test]
+#[allow(clippy::needless_continue)]
+fn test_query_match_allows_continue_from_body() {
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut user_ctx);
+    let assignment = schema_query_match!(
+        ast.get_root(),
+        (program child: (assignment) @assignment) => {
+            assignment
+        },
+    );
+
+    let mut continued = false;
+    for node in [assignment] {
+        schema_query_match!(
+            node,
+            (assignment)
+            => {
+                continued = true;
+                continue;
+            }
+        );
+    }
+    assert!(continued);
+}
+
+#[test]
+#[should_panic(expected = "no query arm matched node of kind `program`")]
+fn test_query_match_panics_when_no_arm_matches() {
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut user_ctx);
+
+    schema_query_match!(
+        ast.get_root(),
+        (call) => {}
+    );
+}
+
+#[test]
 fn test_run_from_ast_desugars_hand_built_tree() {
     // Output schema for the desugared tree. Its kind/field names must become
     // resolvable in the hand-built AST's schema for the rule to build them.
