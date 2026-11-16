@@ -1,1 +1,3 @@
-| MissedAllOpportunity.cs:11:9:18:9 | foreach (... ... in ...) ... | This foreach loop looks as if it might be testing whether every sequence element satisfies a predicate - consider using '.All(...)'. |
+| MissedAllOpportunity.cs:13:9:20:9 | foreach (... ... in ...) ... | This foreach loop looks as if it might be testing whether every sequence element satisfies a predicate - consider using '.All(...)'. |
+| MissedAllOpportunity.cs:59:9:65:9 | foreach (... ... in ...) ... | This foreach loop looks as if it might be testing whether every sequence element satisfies a predicate - consider using '.All(...)'. |
+| MissedAllOpportunity.cs:73:9:75:29 | foreach (... ... in ...) ... | This foreach loop looks as if it might be testing whether every sequence element satisfies a predicate - consider using '.All(...)'. |
