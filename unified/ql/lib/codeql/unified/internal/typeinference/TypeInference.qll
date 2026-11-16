@@ -334,12 +334,17 @@ module Input3 implements InputSig3 {
     }
   }
 
-  private Type getImplicitReceiverType(UnqualifiedMemberAccess uma, TypePath path) {
-    exists(Parameter p, Unified::Callable c |
-      p.getParameterEx().isImplicitReceiverParameter(c) and
-      c = uma.getImplicitQualifierVariable().getDeclaringCallable() and
-      result = p.getType().getTypeAt(path)
+  additional Type inferTypeFromVariable(LocalVariable v, TypePath path) {
+    result = inferType(v.getABinding(), path)
+    or
+    exists(Parameter param |
+      implicitParameterDecl(param, v) and
+      result = param.getType().getTypeAt(path)
     )
+  }
+
+  private Type getImplicitReceiverType(UnqualifiedMemberAccess uma, TypePath path) {
+    result = inferTypeFromVariable(uma.getImplicitQualifierVariable(), path)
   }
 
   private class UnqualifiedMemberAccessFieldAccess extends FieldAccess, UnqualifiedMemberAccess {
@@ -807,6 +812,9 @@ module Input3 implements InputSig3 {
       or
       needsContextualTyping(n, path) and
       result instanceof UnknownType
+      or
+      path.isEmpty() and
+      n = result.(ModelType).getTypeSelector().getAConstructorCall()
     }
 
     predicate allowContextualInference(TypeMention tm, TypePath path) {
@@ -885,6 +893,17 @@ predicate inferTypeUnique = M3::inferTypeUnique/1;
 predicate inferTypeUnique = M3::inferTypeUnique/2;
 
 predicate inferTypeCertain = M3::inferTypeCertain/2;
+
+Type inferVariableType(LocalVariable variable) {
+  result = Input3::inferTypeFromVariable(variable, _)
+}
+
+/** Gets the type of the given base of `access`. */
+Type inferBaseType(MemberAccess access) {
+  result = inferType(access.(MemberAccessExpr).getBase())
+  or
+  result = inferVariableType(access.(UnqualifiedMemberAccess).getImplicitQualifierVariable())
+}
 
 module Consistency = M3::Consistency;
 

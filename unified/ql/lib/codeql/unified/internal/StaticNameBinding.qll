@@ -7,6 +7,7 @@ module;
 private import unified
 private import codeql.unified.internal.LocalNameBinding
 private import codeql.unified.internal.NameBindingPlugin
+private import codeql.unified.internal.mad.LegacyMaD as MaD
 
 cached
 private newtype TNameBindingNode =
@@ -21,7 +22,8 @@ private newtype TNameBindingNode =
   } or
   TModuleScope(ModuleScopeRepr repr) or
   TFolderScope(Folder folder) or
-  TModuleRoot()
+  TModuleRoot() or
+  TTypeSelector(MaD::TypeSelector type)
 
 /**
  * A node in a graph, in which name-binding rules are represented as edges between nodes.
@@ -60,6 +62,8 @@ class NameBindingNode extends TNameBindingNode {
 
   /** Holds if this represents the root namespace in which all named modules are members. */
   predicate isModuleRoot() { this = TModuleRoot() }
+
+  predicate isTypeSelector(MaD::TypeSelector type) { this = TTypeSelector(type) }
 
   /**
    * Gets an AST node wrapped by this name-binding node, if such a node exists.
@@ -104,6 +108,10 @@ class NameBindingNode extends TNameBindingNode {
     exists(Folder folder | this.isFolderScope(folder) and result = "FolderScope(" + folder + ")")
     or
     this.isModuleRoot() and result = "ModuleRoot"
+    or
+    exists(MaD::TypeSelector type |
+      this.isTypeSelector(type) and result = "TypeSelector(" + type + ")"
+    )
   }
 
   Location getLocation() {
@@ -224,6 +232,11 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
   )
   or
   FolderHeuristic::storeStep(node1, name, node2)
+  or
+  exists(MaD::TypeSelector type |
+    node1.isTypeSelector(type.append(name)) and
+    node2.isTypeSelector(type)
+  )
 }
 
 predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
@@ -289,6 +302,11 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
     node1.isIdentifier(cls.getNameNode()) and
     node2.isLocalName(self) and
     self.hasNameAndScope(any(NameBindingPlugin p).getStaticSelfName(cls), cls)
+  )
+  or
+  exists(TopLevel top |
+    node1.isTypeSelector("") and
+    node2.isLocalNamespace(top.getBody())
   )
 }
 
@@ -529,6 +547,8 @@ private module TrackNameBindingInput implements TrackInputSig {
       node.isIdentifier(decl) and
       not isTrivialNameAlias(decl)
     )
+    or
+    node.isTypeSelector(_)
   }
 }
 
@@ -538,6 +558,14 @@ private module TrackNameBinding = Track<TrackNameBindingInput>;
 private NameBindingNode trackNameBinding(NameBinding decl) {
   exists(NameBindingNode start |
     start.isIdentifier(decl) and
+    result = TrackNameBinding::track(start)
+  )
+}
+
+/** Gets a name-binding node that may refer to the given type from a model. */
+NameBindingNode trackTypeSelector(MaD::TypeSelector type) {
+  exists(NameBindingNode start |
+    start.isTypeSelector(type) and
     result = TrackNameBinding::track(start)
   )
 }
@@ -840,6 +868,14 @@ Identifier getTypeFromRef(AstNode access) {
     or
     result = any(AssociatedTypeDeclaration t).getNameNode()
   )
+}
+
+/** Holds if `access` is a reference to a type. */
+predicate isTypeRef(AstNode access) {
+  exists(getTypeFromRef(access))
+  or
+  not exists(getStaticBindingTargetFromRef(access)) and
+  trackTypeSelector(_) = getNodeFromRef(access)
 }
 
 /**

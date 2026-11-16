@@ -117,13 +117,13 @@ func testCommandInjectionMore(mySafeString: String) {
 	try! task2.run()
 
 	let task3 = Process()
-	task3.executableURL = URL(string: userControlledString)! // $ MISSING: Alert
+	task3.executableURL = URL(string: userControlledString)! // $ Alert
 	task3.arguments = ["abc", userControlledString] // $ MISSING: Alert
 	try! task3.run()
 
 	let task4 = Process()
-	task4.executableURL = URL(fileURLWithPath: userControlledString) // $ MISSING: Alert
-	task4.executableURL = URL(string: userControlledString)! // $ MISSING: Alert
+	task4.executableURL = URL(fileURLWithPath: userControlledString) // $ Alert
+	task4.executableURL = URL(string: userControlledString)! // $ Alert
 	task4.arguments = ["abc", "def" + userControlledString] // $ MISSING: Alert
 	try! task4.run()
 
@@ -133,8 +133,8 @@ func testCommandInjectionMore(mySafeString: String) {
 	try! task5?.run()
 
 	let task6 = MyProcess()
-	task6.executableURL = URL(fileURLWithPath: userControlledString) // $ MISSING: Alert
-	task6.executableURL = URL(string: userControlledString)! // $ MISSING: Alert
+	task6.executableURL = URL(fileURLWithPath: userControlledString) // $ Alert
+	task6.executableURL = URL(string: userControlledString)! // $ Alert
 	task6.arguments = [userControlledString] // $ MISSING: Alert
 	task6.setArguments([userControlledString]) // BAD (expected inside setArguments; currently missing)
 	task6.harmlessField = userControlledString // GOOD
@@ -143,7 +143,7 @@ func testCommandInjectionMore(mySafeString: String) {
 	let task7 = Process()
 	task7.executableURL = URL(fileURLWithPath: mySafeString) // GOOD
 	task7.arguments = ["abc", "def"]
-	task7.arguments?.append(userControlledString) // $ MISSING: Alert // Originally missing
+	task7.arguments?.append(userControlledString) // $ Alert // Originally missing
 	try! task7.run()
 
 	_ = Process.launchedProcess(launchPath: mySafeString, arguments: ["abc", mySafeString]) // GOOD
