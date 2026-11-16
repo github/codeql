@@ -6,4 +6,5 @@ extensions:
       - ["", "NSPredicate", true, "init(argumentArray:format:)", "", "", "Argument[format:]", "predicate-injection", "manual"]
       - ["", "NSPredicate", true, "init(arguments:format:)", "", "", "Argument[format:]", "predicate-injection", "manual"]
       - ["", "NSPredicate", true, "init(_:format:)", "", "", "Argument[format:]", "predicate-injection", "manual"]
+      - ["", "NSPredicate", true, "init(format:)", "", "", "Argument[format:]", "predicate-injection", "manual"]
       - ["", "NSPredicate", true, "init(fromMetadataQueryString:)", "", "", "Argument[fromMetadataQueryString:]", "predicate-injection", "manual"]
