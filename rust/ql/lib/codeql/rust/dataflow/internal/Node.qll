@@ -495,6 +495,25 @@ final class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
   override ReturnKind getKind() { result = rk }
 }
 
+/**
+ * A node that represents an `Err` value returned early in a `?` expression.
+ */
+class TryEarlyReturnNode extends ReturnNode, TTryEarlyReturnNode {
+  private TryExpr try;
+
+  TryEarlyReturnNode() { this = TTryEarlyReturnNode(try) }
+
+  TryExpr getTryExpr() { result = try }
+
+  final override ReturnKind getKind() { result = TNormalReturnKind() }
+
+  final override CfgScope getCfgScope() { result = try.getEnclosingCfgScope() }
+
+  final override Location getLocation() { result = try.getLocation() }
+
+  final override string toString() { result = try.toString() + " (early return)" }
+}
+
 /** A data flow node that represents the output of a call. */
 abstract class OutNode extends Node {
   /** Gets the underlying call for this node. */
@@ -737,6 +756,7 @@ class StaticNode extends AstNodeNode, TStaticNode {
 cached
 newtype TNode =
   TExprNode(Expr e) { e.hasEnclosingCfgScope() and Stages::DataFlowStage::ref() } or
+  TTryEarlyReturnNode(TryExpr te) or
   TSourceParameterNode(ParamBase p) { p.hasEnclosingCfgScope() } or
   TPatNode(Pat p) { p.hasEnclosingCfgScope() } or
   TNameNode(Name n) { n = any(Variable v).getName() and n.hasEnclosingCfgScope() } or

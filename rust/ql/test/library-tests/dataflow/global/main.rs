@@ -476,6 +476,6 @@ mod try_operator {
     fn test_try_operator() {
         sink(unwrapped_value_not_returned().unwrap());
         sink(unwrapped_value_returned().unwrap()); // $ hasValueFlow=51
-        sink(err_returned().unwrap_err()); // $ MISSING: hasValueFlow=52
+        sink(err_returned().unwrap_err()); // $ hasValueFlow=52
     }
 }
