@@ -18,21 +18,20 @@ struct Cli {
 fn main() {
     let args = Cli::parse();
 
-    let input = match &args.input {
-        Some(path) => std::fs::read_to_string(path).unwrap_or_else(|e| {
+    let input = if let Some(path) = &args.input {
+        std::fs::read_to_string(path).unwrap_or_else(|e| {
             eprintln!("Error reading {path}: {e}");
             std::process::exit(1);
-        }),
-        None => {
-            let mut buf = String::new();
-            std::io::stdin()
-                .read_to_string(&mut buf)
-                .unwrap_or_else(|e| {
-                    eprintln!("Error reading stdin: {e}");
-                    std::process::exit(1);
-                });
-            buf
-        }
+        })
+    } else {
+        let mut buf = String::new();
+        std::io::stdin()
+            .read_to_string(&mut buf)
+            .unwrap_or_else(|e| {
+                eprintln!("Error reading stdin: {e}");
+                std::process::exit(1);
+            });
+        buf
     };
 
     let result = if args.from_json {

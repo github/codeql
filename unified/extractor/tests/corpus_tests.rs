@@ -17,8 +17,7 @@ struct CorpusCase {
 
 fn update_mode_enabled() -> bool {
     std::env::var("UNIFIED_UPDATE_CORPUS")
-        .map(|v| matches!(v.to_ascii_lowercase().as_str(), "1" | "true" | "yes" | "on"))
-        .unwrap_or(false)
+        .is_ok_and(|v| matches!(v.to_ascii_lowercase().as_str(), "1" | "true" | "yes" | "on"))
 }
 
 /// Parse a corpus `.output` file. The file holds a single test case made of
@@ -115,6 +114,7 @@ fn corpus_dir() -> std::path::PathBuf {
 }
 
 #[test]
+#[allow(clippy::too_many_lines)]
 fn test_corpus() {
     let update_mode = update_mode_enabled();
     let all_languages = languages::all_language_specs();
@@ -142,13 +142,12 @@ fn test_corpus() {
             // The canonical test case lives in the `.swift` file and is the
             // source of truth. An `.output` file without a `.swift` sibling is
             // an orphan: there is nothing to drive it from.
-            if !swift_path.exists() {
-                panic!(
-                    "Found {} with no corresponding test case; add {} or remove the output file",
-                    output_path.display(),
-                    swift_path.display()
-                );
-            }
+            assert!(
+                swift_path.exists(),
+                "Found {} with no corresponding test case; add {} or remove the output file",
+                output_path.display(),
+                swift_path.display()
+            );
 
             let swift_input = fs::read_to_string(&swift_path)
                 .unwrap_or_else(|e| panic!("Failed to read {}: {e}", swift_path.display()))

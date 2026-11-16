@@ -1043,6 +1043,10 @@ module Make<
 
     class Parameter;
 
+    /**
+     * An explicit variable write. That is, a write for which there is an AST
+     * node representing it, for example an assignment expression or a parameter.
+     */
     class VariableWrite {
       /** Gets the expression representing this write, if any. */
       Expr asExpr();
@@ -1068,7 +1072,16 @@ module Make<
       Location getLocation();
     }
 
+    /**
+     * Holds if `w` is an explicit write of `v` at the given location in the CFG.
+     */
     predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, SourceVariable v);
+
+    /**
+     * Holds if `e` reads the value of `v`. These are the reads that are
+     * included in the `SsaDefinition.getARead()` member predicate.
+     */
+    predicate explicitRead(Expr e, SourceVariable v);
   }
 
   /**
@@ -1084,21 +1097,27 @@ module Make<
     private import SsaInput
     private import Cached
 
+    private predicate explicitRead(Expr e, BasicBlock bb, int i, SourceVariable v) {
+      explicitRead(e, v) and
+      e.getControlFlowNode() = bb.getNode(i)
+    }
+
     cached
     private module Cached {
       cached
-      predicate ssaDefReachesCertainRead(Definition def, Expr e) {
+      predicate ssaDefReachesExplicitRead(Definition def, Expr e) {
         exists(SourceVariable v, BasicBlock bb, int i |
           ssaDefReachesRead(v, def, bb, i) and
-          variableRead(bb, i, v, true) and
-          e.getControlFlowNode() = bb.getNode(i)
+          explicitRead(e, bb, i, v)
         )
       }
 
       cached
-      predicate ssaDefReachesUncertainRead(SourceVariable v, Definition def, BasicBlock bb, int i) {
-        ssaDefReachesRead(v, def, bb, i) and
-        variableRead(bb, i, v, false)
+      predicate ssaDefReachesImplicitRead(Definition def, BasicBlock bb, int i) {
+        exists(SourceVariable v |
+          ssaDefReachesRead(v, def, bb, i) and
+          not explicitRead(_, bb, i, v)
+        )
       }
 
       cached
@@ -1118,7 +1137,7 @@ module Make<
       predicate revRef() { any() }
     }
 
-    additional predicate ssaDefReachesUncertainRead = Cached::ssaDefReachesUncertainRead/4;
+    additional predicate ssaDefReachesImplicitRead = Cached::ssaDefReachesImplicitRead/3;
 
     additional predicate ssaCachedStageRevRef1 = Cached::revRef/0;
 
@@ -1140,7 +1159,7 @@ module Make<
       }
 
       /** Gets a read of this SSA definition. */
-      Expr getARead() { ssaDefReachesCertainRead(this, result) }
+      Expr getARead() { ssaDefReachesExplicitRead(this, result) }
 
       /**
        * Holds if this SSA definition is live at the end of basic block `bb`.

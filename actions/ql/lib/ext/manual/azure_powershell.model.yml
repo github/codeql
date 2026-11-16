@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/actions-all
-      extensible: actionsSinkModel
-    data:
-      - ["azure/powershell", "*", "input.inlineScript", "code-injection", "manual"]
-      - ["azure/powershell", "*", "input.azPSVersion", "command-injection", "manual"]

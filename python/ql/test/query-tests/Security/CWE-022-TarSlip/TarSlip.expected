@@ -8,6 +8,8 @@
 | tarslip.py:96:17:96:21 | ControlFlowNode for entry | tarslip.py:94:7:94:39 | ControlFlowNode for Attribute() | tarslip.py:96:17:96:21 | ControlFlowNode for entry | This file extraction depends on a $@. | tarslip.py:94:7:94:39 | ControlFlowNode for Attribute() | potentially untrusted source |
 | tarslip.py:110:1:110:3 | ControlFlowNode for tar | tarslip.py:109:7:109:39 | ControlFlowNode for Attribute() | tarslip.py:110:1:110:3 | ControlFlowNode for tar | This file extraction depends on a $@. | tarslip.py:109:7:109:39 | ControlFlowNode for Attribute() | potentially untrusted source |
 | tarslip.py:113:24:113:26 | ControlFlowNode for tar | tarslip.py:112:7:112:39 | ControlFlowNode for Attribute() | tarslip.py:113:24:113:26 | ControlFlowNode for tar | This file extraction depends on a $@. | tarslip.py:112:7:112:39 | ControlFlowNode for Attribute() | potentially untrusted source |
+| tarslip.py:121:24:121:28 | ControlFlowNode for entry | tarslip.py:119:7:119:39 | ControlFlowNode for Attribute() | tarslip.py:121:24:121:28 | ControlFlowNode for entry | This file extraction depends on a $@. | tarslip.py:119:7:119:39 | ControlFlowNode for Attribute() | potentially untrusted source |
+| tarslip.py:125:32:125:34 | ControlFlowNode for tar | tarslip.py:124:7:124:39 | ControlFlowNode for Attribute() | tarslip.py:125:32:125:34 | ControlFlowNode for tar | This file extraction depends on a $@. | tarslip.py:124:7:124:39 | ControlFlowNode for Attribute() | potentially untrusted source |
 edges
 | tarslip.py:14:1:14:3 | ControlFlowNode for tar | tarslip.py:15:1:15:3 | ControlFlowNode for tar | provenance |  |
 | tarslip.py:14:7:14:39 | ControlFlowNode for Attribute() | tarslip.py:14:1:14:3 | ControlFlowNode for tar | provenance |  |
@@ -31,6 +33,11 @@ edges
 | tarslip.py:109:7:109:39 | ControlFlowNode for Attribute() | tarslip.py:109:1:109:3 | ControlFlowNode for tar | provenance |  |
 | tarslip.py:112:1:112:3 | ControlFlowNode for tar | tarslip.py:113:24:113:26 | ControlFlowNode for tar | provenance |  |
 | tarslip.py:112:7:112:39 | ControlFlowNode for Attribute() | tarslip.py:112:1:112:3 | ControlFlowNode for tar | provenance |  |
+| tarslip.py:119:1:119:3 | ControlFlowNode for tar | tarslip.py:120:5:120:9 | ControlFlowNode for entry | provenance |  |
+| tarslip.py:119:7:119:39 | ControlFlowNode for Attribute() | tarslip.py:119:1:119:3 | ControlFlowNode for tar | provenance |  |
+| tarslip.py:120:5:120:9 | ControlFlowNode for entry | tarslip.py:121:24:121:28 | ControlFlowNode for entry | provenance |  |
+| tarslip.py:124:1:124:3 | ControlFlowNode for tar | tarslip.py:125:32:125:34 | ControlFlowNode for tar | provenance |  |
+| tarslip.py:124:7:124:39 | ControlFlowNode for Attribute() | tarslip.py:124:1:124:3 | ControlFlowNode for tar | provenance |  |
 nodes
 | tarslip.py:14:1:14:3 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
 | tarslip.py:14:7:14:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
@@ -63,4 +70,11 @@ nodes
 | tarslip.py:112:1:112:3 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
 | tarslip.py:112:7:112:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | tarslip.py:113:24:113:26 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
+| tarslip.py:119:1:119:3 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
+| tarslip.py:119:7:119:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| tarslip.py:120:5:120:9 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
+| tarslip.py:121:24:121:28 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
+| tarslip.py:124:1:124:3 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
+| tarslip.py:124:7:124:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| tarslip.py:125:32:125:34 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
 subpaths

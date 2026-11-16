@@ -30,7 +30,57 @@ exclude = [
     "rust/ql/integration-tests",
 ]
 
+[workspace.lints.rust]
+redundant_imports = "warn"
+
 [workspace.lints.clippy]
 all = { level = "warn", priority = -1 }
-explicit_iter_loop = "warn"
-manual_let_else = "warn"
+pedantic = { level = "warn", priority = -1 }
+
+# Allowlist of pedantic rules that we've observed to be of questionable value
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
+implicit_hasher = "allow"
+if_not_else = "allow"
+# This lint has a lot of results in generated code.
+unnecessary_wraps = "allow"
+# Spelling out the full method name can often be tedious.
+# E.g., `|v| v.as_slice()` vs `vec::Vec::as_slice`
+redundant_closure_for_method_calls = "allow"
+# The next three are only false positives and questionable results
+cast_possible_truncation = "allow"
+cast_possible_wrap = "allow"
+cast_sign_loss = "allow"
+# False positives
+struct_excessive_bools = "allow"
+# False positives for things like "matches" and "matched"
+similar_names = "allow"
+match_same_arms = "allow"
+struct_field_names = "allow"
+
+# Additional lints from the `restriction` and `nursery` group
+as_pointer_underscore = "warn"
+clone_on_ref_ptr = "warn"
+collection_is_never_read = "warn"
+deref_by_slicing = "warn"
+derive_partial_eq_without_eq = "warn"
+disallowed_script_idents = "warn"
+empty_drop = "warn"
+empty_enum_variants_with_brackets = "warn"
+empty_structs_with_brackets = "warn"
+fn_to_numeric_cast_any = "warn"
+if_then_some_else_none = "warn"
+needless_pass_by_ref_mut = "warn"
+or_fun_call = "warn"
+redundant_clone = "warn"
+redundant_type_annotations = "warn"
+renamed_function_params = "warn"
+semicolon_inside_block = "warn"
+undocumented_unsafe_blocks = "warn"
+unnecessary_safety_comment = "warn"
+unnecessary_safety_doc = "warn"
+unnecessary_struct_initialization = "warn"
+unneeded_field_pattern = "warn"
+unused_result_ok = "warn"
+too_long_first_doc_paragraph = "warn"

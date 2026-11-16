@@ -1,0 +1,21 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/java-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["reactor.core.publisher", "Mono", true, "justOrEmpty", "(Object)", "", "Argument[0]", "ReturnValue.Element", "value", "manual"],
+        ["reactor.core.publisher", "Mono", true, "justOrEmpty", "(Optional)", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"],
+        ["reactor.core.publisher", "Mono", true, "just", "", "", "Argument[0]", "ReturnValue.Element", "value", "manual"],
+        ["reactor.core.publisher", "Mono", true, "flatMap", "", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"],
+        ["reactor.core.publisher", "Mono", true, "flatMap", "", "", "Argument[0].ReturnValue.Element", "ReturnValue.Element", "value", "manual"],
+        ["reactor.core.publisher", "Mono", true, "map", "", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"],
+        ["reactor.core.publisher", "Mono", true, "map", "", "", "Argument[0].ReturnValue", "ReturnValue.Element", "value", "manual"],
+        ["reactor.core.publisher", "Mono", true, "mapNotNull", "", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"],
+        ["reactor.core.publisher", "Mono", true, "mapNotNull", "", "", "Argument[0].ReturnValue", "ReturnValue.Element", "value", "manual"]
+      ]
+    }
+  ]
+}

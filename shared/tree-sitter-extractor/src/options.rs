@@ -1,12 +1,10 @@
-use num_cpus;
-
 /// Gets the number of threads the extractor should use.
-/// This is controlled by the CODEQL_THREADS environment variable.
+/// This is controlled by the `CODEQL_THREADS` environment variable.
 pub fn num_threads() -> Result<usize, String> {
     let threads_str = std::env::var("CODEQL_THREADS").unwrap_or_else(|_| "-1".into());
     let num_cpus = num_cpus::get();
     parse_codeql_threads(&threads_str, num_cpus)
-        .ok_or_else(|| format!("Unable to parse CODEQL_THREADS value '{}'", threads_str))
+        .ok_or_else(|| format!("Unable to parse CODEQL_THREADS value '{threads_str}'"))
 }
 
 /// Parses the given string to determine the number of threads the extractor

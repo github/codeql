@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/actions-all
-      extensible: actionsSinkModel
-    data:
-     - ["oracle/graal", "*", "input.components", "code-injection", "generated"]
-     - ["oracle/graal", "*", "input.native-images", "code-injection", "generated"]

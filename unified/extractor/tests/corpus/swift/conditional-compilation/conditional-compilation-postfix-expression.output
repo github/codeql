@@ -1,0 +1,89 @@
+let result = value
+    #if DEBUG
+        .foo(1)
+    #else
+        .bar("hi")
+    #endif
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    postfixIfConfigExpr
+                      base:
+                        declReferenceExpr
+                          baseName: identifier "value"
+                      config:
+                        ifConfigDecl
+                          clauses:
+                            ifConfigClause
+                              elements:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                    labeledExpr
+                                      expression:
+                                        integerLiteralExpr
+                                          literal: integerLiteral "1"
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "foo"
+                              condition:
+                                declReferenceExpr
+                                  baseName: identifier "DEBUG"
+                              poundKeyword: #if
+                            ifConfigClause
+                              elements:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                    labeledExpr
+                                      expression:
+                                        stringLiteralExpr
+                                          closingQuote: "
+                                          openingQuote: "
+                                          segments:
+                                            stringSegment
+                                              content: stringSegment "hi"
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "bar"
+                              poundKeyword: #else
+                          poundEndif: #endif
+              pattern:
+                identifierPattern
+                  identifier: identifier "result"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "result" source="result"
+          value: unsupported_node "value\n    #if DEBUG\n        .foo(1)\n    #else\n        .bar(\"hi\")\n    #endif" source="value\n    #if DEBUG\n        .foo(1)\n    #else\n        .bar(\"hi\")\n    #endif"

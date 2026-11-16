@@ -858,6 +858,12 @@ module Unified {
     /** Gets the node corresponding to the field `else`. */
     final F::Expr getElse() { unified_if_expr_else(this, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getModifier(int i) { unified_if_expr_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `then`. */
     final F::Expr getThen() { unified_if_expr_then(this, result) }
 
@@ -865,6 +871,7 @@ module Unified {
     final override F::AstNode getAFieldOrChild() {
       unified_if_expr_def(this, result) or
       unified_if_expr_else(this, result) or
+      unified_if_expr_modifier(this, _, result) or
       unified_if_expr_then(this, result)
     }
   }
@@ -1771,6 +1778,8 @@ module Unified {
       result = node.(IfExpr).getCondition() and i = -1 and name = "getCondition"
       or
       result = node.(IfExpr).getElse() and i = -1 and name = "getElse"
+      or
+      result = node.(IfExpr).getModifier(i) and name = "getModifier"
       or
       result = node.(IfExpr).getThen() and i = -1 and name = "getThen"
       or

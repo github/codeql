@@ -9,7 +9,6 @@ edition = "2021"
 workspace = true
 
 [dependencies]
-lazy_static = "1.4.0"
 chrono = "0.4.37"
 rayon = "1.9.0"
 regex = "1.10.4"

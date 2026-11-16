@@ -11,7 +11,7 @@ private module Macaron {
     SsaWithFields v;
 
     Context() {
-      this = v.getBaseVariable().getSourceVariable() and
+      this = v.getBaseDefinition().getSourceVariable() and
       exists(Method m | m.hasQualifiedName("gopkg.in/macaron.v1", "Context", "Redirect") |
         v.getType().getMethod("Redirect") = m
       )

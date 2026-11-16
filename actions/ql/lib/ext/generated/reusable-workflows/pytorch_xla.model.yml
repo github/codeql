@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/actions-all
-      extensible: actionsSinkModel
-    data:
-     - ["pytorch/xla/.github/workflows/_test.yml", "*", "input.test-script", "code-injection", "generated"]

@@ -16,7 +16,7 @@ fn main() -> std::io::Result<()> {
     let cli = Cli::parse();
 
     match cli {
-        Cli::Extract(options) => extractor::run(options),
+        Cli::Extract(options) => extractor::run(&options),
         Cli::Generate(options) => generator::run(options),
         Cli::Autobuild(options) => autobuilder::run(options),
     }

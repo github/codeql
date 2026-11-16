@@ -38,7 +38,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
         .expect("failed to read CODEQL_EXTRACTOR_UNIFIED_ROOT environment variable");
     let builtins_dir = fs::read_dir(builtins_path).expect("failed to read builtins directory");
     let mut builtins_list = PathBuf::new();
-    builtins_list.push(scratch_dir.clone());
+    builtins_list.push(scratch_dir);
     builtins_list.push("builtins");
     builtins_list.set_extension("list");
 

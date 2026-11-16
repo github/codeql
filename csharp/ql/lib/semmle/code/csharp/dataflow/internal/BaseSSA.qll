@@ -149,5 +149,9 @@ private module BaseSsaImpl {
       i = -1 and
       w.isParameterInit(v)
     }
+
+    predicate explicitRead(Expr e, SsaImplInput::SourceVariable v) {
+      e.(AssignableRead).getTarget() = v
+    }
   }
 }
