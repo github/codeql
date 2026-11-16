@@ -25,67 +25,51 @@ private module Ast implements AstSig<Location> {
   class AstNode = Rust::AstNode;
 
   private Rust::AstNode runtimeChild(Rust::AstNode parent, int index) {
-    parent instanceof Rust::Param and
     index = 0 and
     result = parent.(Rust::Param).getPat()
     or
-    parent instanceof Rust::SelfParam and
     index = 0 and
     result = parent.(Rust::SelfParam).getName()
     or
-    parent instanceof Rust::ExprStmt and
     index = 0 and
     result = parent.(Rust::ExprStmt).getExpr()
     or
-    parent instanceof Rust::LetStmt and
-    (
-      index = 0 and result = parent.(Rust::LetStmt).getInitializer()
-      or
-      index = 1 and result = parent.(Rust::LetStmt).getPat()
-      or
-      index = 2 and result = parent.(Rust::LetStmt).getLetElse().getBlockExpr()
-    )
+    index = 0 and result = parent.(Rust::LetStmt).getInitializer()
+    or
+    index = 1 and result = parent.(Rust::LetStmt).getPat()
+    or
+    index = 2 and result = parent.(Rust::LetStmt).getLetElse().getBlockExpr()
     or
     parent instanceof Rust::MacroCall and
     not parent.getParentNode() instanceof Rust::MacroPat and
     index = 0 and
     result = parent.(Rust::MacroCall).getMacroCallExpansion()
     or
-    parent instanceof Rust::BlockExpr and
     not parent.(Rust::BlockExpr).isAsync() and
     result = parent.(Rust::BlockExpr).getStmtList().getStmtOrExpr(index) and
     not result instanceof Rust::Const and
     not result instanceof Rust::Static
     or
-    parent instanceof Rust::StmtList and
     parent.getParentNode() instanceof Rust::AsyncBlockExpr and
     result = parent.(Rust::StmtList).getStmtOrExpr(index) and
     not result instanceof Rust::Const and
     not result instanceof Rust::Static
     or
-    parent instanceof Rust::ArrayExpr and
     result = parent.(Rust::ArrayExpr).getExpr(index)
     or
-    parent instanceof Rust::AwaitExpr and
     index = 0 and
     result = parent.(Rust::AwaitExpr).getExpr()
     or
-    parent instanceof Rust::BecomeExpr and
     index = 0 and
     result = parent.(Rust::BecomeExpr).getExpr()
     or
-    parent instanceof Rust::BreakExpr and
     index = 0 and
     result = parent.(Rust::BreakExpr).getExpr()
     or
-    parent instanceof Rust::CallExpr and
-    (
-      index = 0 and result = parent.(Rust::CallExpr).getFunction()
-      or
-      result = parent.(Rust::CallExpr).getSyntacticPositionalArgument(index - 1)
-    )
+    index = 0 and result = parent.(Rust::CallExpr).getFunction()
     or
-    parent instanceof Rust::InvocationExpr and
+    result = parent.(Rust::CallExpr).getSyntacticPositionalArgument(index - 1)
+    or
     not parent instanceof Rust::CallExpr and
     (
       index = 0 and result = parent.(Rust::InvocationExpr).getSyntacticReceiver()
@@ -93,171 +77,122 @@ private module Ast implements AstSig<Location> {
       result = parent.(Rust::InvocationExpr).getSyntacticPositionalArgument(index - 1)
     )
     or
-    parent instanceof Rust::CastExpr and
     index = 0 and
     result = parent.(Rust::CastExpr).getExpr()
     or
-    parent instanceof Rust::FieldExpr and
     index = 0 and
     result = parent.(Rust::FieldExpr).getContainer()
     or
-    parent instanceof Rust::IfExpr and
-    (
-      index = 0 and result = parent.(Rust::IfExpr).getCondition()
-      or
-      index = 1 and result = parent.(Rust::IfExpr).getThen()
-      or
-      index = 2 and result = parent.(Rust::IfExpr).getElse()
-    )
+    index = 0 and result = parent.(Rust::IfExpr).getCondition()
     or
-    parent instanceof Rust::FormatArgsExpr and
-    (
-      index = -1 and result = parent.(Rust::FormatArgsExpr).getTemplate()
-      or
-      result = parent.(Rust::FormatArgsExpr).getArg(index).getExpr()
-      or
-      result =
-        any(Rust::FormatTemplateVariableAccess v, Rust::Format f, int i, int kind |
-          f = parent.(Rust::FormatArgsExpr).getFormat(i) and
-          (
-            v.getArgument() = f.getArgumentRef() and kind = 0
-            or
-            v.getArgument() = f.getWidthArgument() and kind = 1
-            or
-            v.getArgument() = f.getPrecisionArgument() and kind = 2
-          ) and
-          index = parent.(Rust::FormatArgsExpr).getNumberOfArgs() + i * 3 + kind
-        |
-          v
-        )
-    )
+    index = 1 and result = parent.(Rust::IfExpr).getThen()
     or
-    parent instanceof Rust::LetExpr and
-    (
-      index = 0 and result = parent.(Rust::LetExpr).getScrutinee()
-      or
-      index = 1 and result = parent.(Rust::LetExpr).getPat()
-    )
+    index = 2 and result = parent.(Rust::IfExpr).getElse()
     or
-    parent instanceof Rust::LoopExpr and
+    index = -1 and result = parent.(Rust::FormatArgsExpr).getTemplate()
+    or
+    result = parent.(Rust::FormatArgsExpr).getArg(index).getExpr()
+    or
+    result =
+      any(Rust::FormatTemplateVariableAccess v, Rust::Format f, int i, int kind |
+        f = parent.(Rust::FormatArgsExpr).getFormat(i) and
+        (
+          v.getArgument() = f.getArgumentRef() and kind = 0
+          or
+          v.getArgument() = f.getWidthArgument() and kind = 1
+          or
+          v.getArgument() = f.getPrecisionArgument() and kind = 2
+        ) and
+        index = parent.(Rust::FormatArgsExpr).getNumberOfArgs() + i * 3 + kind
+      |
+        v
+      )
+    or
+    index = 0 and result = parent.(Rust::LetExpr).getScrutinee()
+    or
+    index = 1 and result = parent.(Rust::LetExpr).getPat()
+    or
     index = 0 and
     result = parent.(Rust::LoopExpr).getLoopBody()
     or
-    parent instanceof Rust::WhileExpr and
-    (
-      index = 0 and result = parent.(Rust::WhileExpr).getCondition()
-      or
-      index = 1 and result = parent.(Rust::WhileExpr).getLoopBody()
-    )
+    index = 0 and result = parent.(Rust::WhileExpr).getCondition()
     or
-    parent instanceof Rust::ForExpr and
-    (
-      index = 0 and result = parent.(Rust::ForExpr).getIterable()
-      or
-      index = 1 and result = parent.(Rust::ForExpr).getPat()
-      or
-      index = 2 and result = parent.(Rust::ForExpr).getLoopBody()
-    )
+    index = 1 and result = parent.(Rust::WhileExpr).getLoopBody()
     or
-    parent instanceof Rust::MacroExpr and
+    index = 0 and result = parent.(Rust::ForExpr).getIterable()
+    or
+    index = 1 and result = parent.(Rust::ForExpr).getPat()
+    or
+    index = 2 and result = parent.(Rust::ForExpr).getLoopBody()
+    or
     index = 0 and
     result = parent.(Rust::MacroExpr).getMacroCall()
     or
-    parent instanceof Rust::MatchExpr and
-    (
-      index = 0 and result = parent.(Rust::MatchExpr).getScrutinee()
+    index = 0 and result = parent.(Rust::MatchExpr).getScrutinee()
+    or
+    exists(int i |
+      index = 3 * i + 1 and result = parent.(Rust::MatchExpr).getArm(i).getPat()
       or
-      exists(int i |
-        index = 3 * i + 1 and result = parent.(Rust::MatchExpr).getArm(i).getPat()
-        or
-        index = 3 * i + 2 and
-        result = parent.(Rust::MatchExpr).getArm(i).getGuard().getCondition()
-        or
-        index = 3 * i + 3 and result = parent.(Rust::MatchExpr).getArm(i).getExpr()
-      )
+      index = 3 * i + 2 and
+      result = parent.(Rust::MatchExpr).getArm(i).getGuard().getCondition()
+      or
+      index = 3 * i + 3 and result = parent.(Rust::MatchExpr).getArm(i).getExpr()
     )
     or
-    parent instanceof Rust::RangeExpr and
-    (
-      index = 0 and result = parent.(Rust::RangeExpr).getStart()
-      or
-      index = 1 and result = parent.(Rust::RangeExpr).getEnd()
-    )
+    index = 0 and result = parent.(Rust::RangeExpr).getStart()
     or
-    parent instanceof Rust::StructExpr and
+    index = 1 and result = parent.(Rust::RangeExpr).getEnd()
+    or
     result = parent.(Rust::StructExpr).getStructExprFieldList().getField(index).getExpr()
     or
-    parent instanceof Rust::ReturnExpr and
     index = 0 and
     result = parent.(Rust::ReturnExpr).getExpr()
     or
-    parent instanceof Rust::TryExpr and
     index = 0 and
     result = parent.(Rust::TryExpr).getExpr()
     or
-    parent instanceof Rust::TupleExpr and
     result = parent.(Rust::TupleExpr).getField(index)
     or
-    parent instanceof Rust::YieldExpr and
     index = 0 and
     result = parent.(Rust::YieldExpr).getExpr()
     or
-    parent instanceof Rust::YeetExpr and
     index = 0 and
     result = parent.(Rust::YeetExpr).getExpr()
     or
-    parent instanceof Rust::IdentPat and
-    (
-      index = 0 and result = parent.(Rust::IdentPat).getPat()
-      or
-      index = 1 and result = parent.(Rust::IdentPat).getName()
-    )
+    index = 0 and result = parent.(Rust::IdentPat).getPat()
     or
-    parent instanceof Rust::BoxPat and
+    index = 1 and result = parent.(Rust::IdentPat).getName()
+    or
     index = 0 and
     result = parent.(Rust::BoxPat).getPat()
     or
-    parent instanceof Rust::DerefPat and
     index = 0 and
     result = parent.(Rust::DerefPat).getPat()
     or
-    parent instanceof Rust::LiteralPat and
     index = 0 and
     result = parent.(Rust::LiteralPat).getLiteral()
     or
-    parent instanceof Rust::MacroPat and
     index = 0 and
     result = parent.(Rust::MacroPat).getMacroCall().getMacroCallExpansion()
     or
-    parent instanceof Rust::OrPat and
     result = parent.(Rust::OrPat).getPat(index)
     or
-    parent instanceof Rust::RangePat and
-    (
-      index = 0 and result = parent.(Rust::RangePat).getStart()
-      or
-      index = 1 and result = parent.(Rust::RangePat).getEnd()
-    )
+    index = 0 and result = parent.(Rust::RangePat).getStart()
     or
-    parent instanceof Rust::StructPat and
-    (
-      result = parent.(Rust::StructPat).getStructPatFieldList().getField(index).getPat()
-      or
-      index = parent.(Rust::StructPat).getStructPatFieldList().getNumberOfFields() and
-      result = parent.(Rust::StructPat).getStructPatFieldList().getRestPat()
-    )
+    index = 1 and result = parent.(Rust::RangePat).getEnd()
     or
-    parent instanceof Rust::RefPat and
+    result = parent.(Rust::StructPat).getStructPatFieldList().getField(index).getPat()
+    or
+    index = parent.(Rust::StructPat).getStructPatFieldList().getNumberOfFields() and
+    result = parent.(Rust::StructPat).getStructPatFieldList().getRestPat()
+    or
     index = 0 and
     result = parent.(Rust::RefPat).getPat()
     or
-    parent instanceof Rust::SlicePat and
     result = parent.(Rust::SlicePat).getPat(index)
     or
-    parent instanceof Rust::TuplePat and
     result = parent.(Rust::TuplePat).getField(index)
     or
-    parent instanceof Rust::TupleStructPat and
     result = parent.(Rust::TupleStructPat).getField(index)
   }
 
@@ -369,11 +304,11 @@ private module Ast implements AstSig<Location> {
   }
 
   class LoopStmt extends Stmt instanceof Rust::LoopingExpr {
-    Stmt getBody() { result = this.(Rust::LoopingExpr).getLoopBody() }
+    Stmt getBody() { result = super.getLoopBody() }
   }
 
   class WhileStmt extends LoopStmt instanceof Rust::WhileExpr {
-    Expr getCondition() { result = this.(Rust::WhileExpr).getCondition() }
+    Expr getCondition() { result = super.getCondition() }
   }
 
   class DoStmt extends LoopStmt {
@@ -519,9 +454,9 @@ private module Ast implements AstSig<Location> {
 
   class BooleanLiteral extends Expr instanceof Rust::BooleanLiteralExpr {
     boolean getValue() {
-      this.(Rust::BooleanLiteralExpr).getTextValue() = "true" and result = true
+      super.getTextValue() = "true" and result = true
       or
-      this.(Rust::BooleanLiteralExpr).getTextValue() = "false" and result = false
+      super.getTextValue() = "false" and result = false
     }
   }
 
@@ -614,13 +549,6 @@ private module Input implements InputSig1, InputSig2 {
   predicate isExhaustive(Ast::Switch switch) { any() }
 
   predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
-    kind.isBoolean() and
-    (
-      n = any(Rust::WhileExpr e).getCondition()
-      or
-      n = any(Rust::MatchGuard g).getCondition()
-    )
-    or
     kind.isMatching() and
     (
       n instanceof Rust::Pat
@@ -630,11 +558,7 @@ private module Input implements InputSig1, InputSig2 {
   }
 
   predicate preOrderExpr(Ast::Expr e) {
-    e instanceof Rust::MatchExpr
-    or
     e instanceof Rust::LetExpr
-    or
-    e instanceof Rust::LoopingExpr
     or
     e instanceof Rust::BreakExpr
     or
@@ -645,11 +569,7 @@ private module Input implements InputSig1, InputSig2 {
     not e instanceof Rust::LiteralPat
   }
 
-  predicate postOrInOrder(Ast::AstNode n) {
-    n instanceof Rust::ParamBase
-    or
-    n instanceof Rust::MacroCall
-  }
+  predicate postOrInOrder(Ast::AstNode n) { n instanceof Rust::MacroCall }
 
   private string breakTag() { result = "[break]" }
 
@@ -687,47 +607,33 @@ private module Input implements InputSig1, InputSig2 {
   }
 
   private Rust::Pat getPatternChild(Rust::Pat parent, int index) {
-    parent instanceof Rust::BoxPat and
     index = 0 and
     result = parent.(Rust::BoxPat).getPat()
     or
-    parent instanceof Rust::DerefPat and
     index = 0 and
     result = parent.(Rust::DerefPat).getPat()
     or
-    parent instanceof Rust::MacroPat and
     index = 0 and
     result = parent.(Rust::MacroPat).getMacroCall().getMacroCallExpansion()
     or
-    parent instanceof Rust::OrPat and
     result = parent.(Rust::OrPat).getPat(index)
     or
-    parent instanceof Rust::RangePat and
-    (
-      index = 0 and result = parent.(Rust::RangePat).getStart()
-      or
-      index = 1 and result = parent.(Rust::RangePat).getEnd()
-    )
+    index = 0 and result = parent.(Rust::RangePat).getStart()
     or
-    parent instanceof Rust::StructPat and
-    (
-      result = parent.(Rust::StructPat).getStructPatFieldList().getField(index).getPat()
-      or
-      index = parent.(Rust::StructPat).getStructPatFieldList().getNumberOfFields() and
-      result = parent.(Rust::StructPat).getStructPatFieldList().getRestPat()
-    )
+    index = 1 and result = parent.(Rust::RangePat).getEnd()
     or
-    parent instanceof Rust::RefPat and
+    result = parent.(Rust::StructPat).getStructPatFieldList().getField(index).getPat()
+    or
+    index = parent.(Rust::StructPat).getStructPatFieldList().getNumberOfFields() and
+    result = parent.(Rust::StructPat).getStructPatFieldList().getRestPat()
+    or
     index = 0 and
     result = parent.(Rust::RefPat).getPat()
     or
-    parent instanceof Rust::SlicePat and
     result = parent.(Rust::SlicePat).getPat(index)
     or
-    parent instanceof Rust::TuplePat and
     result = parent.(Rust::TuplePat).getField(index)
     or
-    parent instanceof Rust::TupleStructPat and
     result = parent.(Rust::TupleStructPat).getField(index)
   }
 
