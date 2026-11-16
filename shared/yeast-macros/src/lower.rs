@@ -338,7 +338,7 @@ impl Template {
                     isolated_interpolation(
                         uses_ctx,
                         ctx,
-                        quote! {
+                        &quote! {
                             let __value = ::std::iter::IntoIterator::into_iter(#block)
                                 .collect::<Vec<_>>();
                             #ctx.extend_field_ids(__value, &mut __nodes);
@@ -375,7 +375,7 @@ impl Template {
                 isolated_interpolation(
                     uses_ctx,
                     ctx,
-                    quote! {
+                    &quote! {
                         ::std::convert::Into::<yeast::OutputId>::into(#block)
                     },
                 )
@@ -489,7 +489,7 @@ impl Node {
                         let expression = isolated_interpolation(
                             uses_ctx,
                             ctx,
-                            quote! {
+                            &quote! {
                                 let __expr = #block;
                                 yeast::MaybeYeastValue::maybe_yeast_value(&__expr).map(
                                     |__value_ref| {
@@ -526,7 +526,7 @@ impl Node {
                         isolated_interpolation(
                             uses_ctx,
                             ctx,
-                            quote! {
+                            &quote! {
                                 let __expr = #block;
                                 let __value =
                                     yeast::YeastDisplay::yeast_to_string(&__expr, &#ctx);
@@ -563,7 +563,7 @@ impl Node {
                     stmts.push(isolated_interpolation(
                         uses_ctx,
                         ctx,
-                        quote! {
+                        &quote! {
                             let __value = ::std::iter::IntoIterator::into_iter(#block)
                                 .collect::<Vec<_>>();
                             __location_ranges.extend(
@@ -592,7 +592,7 @@ impl Node {
                             let interpolation = isolated_interpolation(
                                 uses_ctx,
                                 ctx,
-                                quote! {
+                                &quote! {
                                     let __value = ::std::iter::IntoIterator::into_iter(#block)
                                         .collect::<Vec<_>>();
                                     #ctx.extend_field_ids(__value, &mut #temp);
@@ -664,7 +664,7 @@ fn rust_block(block: &syn::Block) -> TokenStream {
     quote!({ #(#statements)* })
 }
 
-fn isolated_interpolation(uses_ctx: bool, ctx: &Ident, body: TokenStream) -> TokenStream {
+fn isolated_interpolation(uses_ctx: bool, ctx: &Ident, body: &TokenStream) -> TokenStream {
     if uses_ctx {
         quote! {{
             let __saved_user_ctx = (*#ctx.user_ctx).clone();
