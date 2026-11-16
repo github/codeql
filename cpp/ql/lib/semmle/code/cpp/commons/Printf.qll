@@ -717,25 +717,13 @@ class FormatLiteral extends Literal instanceof StringLiteral {
    * This does not check whether the existing specifier matches `type`.
    */
   string getSuggestedIntegerConversionSpecifier(int n, Type type) {
-    exists(IntegralType t, string length, string conversion, string originalConversion |
+    exists(string length, string conversion, string originalConversion |
       this.parseConvSpec(n, _, "", "", "", "", ["", "l", "ll"], originalConversion) and
       originalConversion = ["d", "i", "u"] and
-      t = type.getUnspecifiedType() and
-      (
-        t instanceof IntType and length = ""
-        or
-        t instanceof LongType and length = "l"
-        or
-        t instanceof LongLongType and length = "ll"
-      ) and
-      (
-        if t.isUnsigned()
-        then conversion = "u"
-        else
-          if originalConversion = "i"
-          then conversion = "i"
-          else conversion = "d"
-      ) and
+      length = ["", "l", "ll"] and
+      (if originalConversion = "i" then conversion = ["i", "u"] else conversion = ["d", "u"]) and
+      this.getIntegerConversionType(length, conversion) =
+        type.getUnspecifiedType().(IntegralType).getCanonicalArithmeticType() and
       result = "%" + length + conversion
     )
   }
@@ -795,38 +783,36 @@ class FormatLiteral extends Literal instanceof StringLiteral {
    * Gets the family of integral types required by the nth conversion
    * specifier's length flag.
    */
-  Type getIntegralConversion(int n) {
-    exists(string len |
-      len = this.getLength(n) and
-      (
-        len = "hh" and result instanceof IntType
-        or
-        len = "h" and result instanceof IntType
-        or
-        len = "l" and result = this.getLongType()
-        or
-        len = ["ll", "L", "q"] and
-        result instanceof LongLongType
-        or
-        len = "j" and result = this.getIntmax_t()
-        or
-        len = ["z", "Z"] and
-        (result = this.getSize_t() or result = this.getSsize_t())
-        or
-        len = "t" and result = this.getPtrdiff_t()
-        or
-        len = "I" and
-        (result = this.getSize_t() or result = this.getPtrdiff_t())
-        or
-        len = "I32" and
-        exists(MicrosoftInt32Type t | t.getUnsigned() = result.(IntegralType).getUnsigned())
-        or
-        len = "I64" and
-        exists(MicrosoftInt64Type t | t.getUnsigned() = result.(IntegralType).getUnsigned())
-        or
-        len = "" and result instanceof IntType
-      )
-    )
+  Type getIntegralConversion(int n) { result = this.getIntegralTypeForLength(this.getLength(n)) }
+
+  /** Gets the integer type family associated with a length flag. */
+  private Type getIntegralTypeForLength(string len) {
+    len = "hh" and result instanceof IntType
+    or
+    len = "h" and result instanceof IntType
+    or
+    len = "l" and result = this.getLongType()
+    or
+    len = ["ll", "L", "q"] and
+    result instanceof LongLongType
+    or
+    len = "j" and result = this.getIntmax_t()
+    or
+    len = ["z", "Z"] and
+    (result = this.getSize_t() or result = this.getSsize_t())
+    or
+    len = "t" and result = this.getPtrdiff_t()
+    or
+    len = "I" and
+    (result = this.getSize_t() or result = this.getPtrdiff_t())
+    or
+    len = "I32" and
+    exists(MicrosoftInt32Type t | t.getUnsigned() = result.(IntegralType).getUnsigned())
+    or
+    len = "I64" and
+    exists(MicrosoftInt64Type t | t.getUnsigned() = result.(IntegralType).getUnsigned())
+    or
+    len = "" and result instanceof IntType
   }
 
   /**
@@ -834,36 +820,12 @@ class FormatLiteral extends Literal instanceof StringLiteral {
    * conversion specifier's length flag.
    */
   Type getIntegralDisplayType(int n) {
-    exists(string len |
-      len = this.getLength(n) and
-      (
-        len = "hh" and result instanceof CharType
-        or
-        len = "h" and result instanceof ShortType
-        or
-        len = "l" and result = this.getLongType()
-        or
-        len = ["ll", "L", "q"] and
-        result instanceof LongLongType
-        or
-        len = "j" and result = this.getIntmax_t()
-        or
-        len = ["z", "Z"] and
-        (result = this.getSize_t() or result = this.getSsize_t())
-        or
-        len = "t" and result = this.getPtrdiff_t()
-        or
-        len = "I" and
-        (result = this.getSize_t() or result = this.getPtrdiff_t())
-        or
-        len = "I32" and
-        exists(MicrosoftInt32Type t | t.getUnsigned() = result.(IntegralType).getUnsigned())
-        or
-        len = "I64" and
-        exists(MicrosoftInt64Type t | t.getUnsigned() = result.(IntegralType).getUnsigned())
-        or
-        len = "" and result instanceof IntType
-      )
+    exists(string len | len = this.getLength(n) |
+      len = "hh" and result instanceof CharType
+      or
+      len = "h" and result instanceof ShortType
+      or
+      not len = ["hh", "h"] and result = this.getIntegralTypeForLength(len)
     )
   }
 
@@ -905,9 +867,8 @@ class FormatLiteral extends Literal instanceof StringLiteral {
    * Gets the argument type required by the nth conversion specifier.
    */
   Type getConversionType(int n) {
-    result = this.getConversionType1(n) or
+    result = this.getIntegerConversionType(this.getLength(n), this.getConversionChar(n)) or
     result = this.getConversionType1b(n) or
-    result = this.getConversionType2(n) or
     result = this.getConversionType3(n) or
     result = this.getConversionType4(n) or
     result = this.getConversionType6(n) or
@@ -917,12 +878,19 @@ class FormatLiteral extends Literal instanceof StringLiteral {
     result = this.getConversionType10(n)
   }
 
-  private Type getConversionType1(int n) {
-    exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv = ["d", "i"] and
-      result = this.getIntegralConversion(n) and
+  /**
+   * Gets the integer argument type for a length flag and conversion character.
+   * Shared by conversion type inference and replacement specifier suggestions.
+   */
+  private Type getIntegerConversionType(string len, string conv) {
+    result = this.getIntegralTypeForLength(len) and
+    (
+      conv = ["d", "i"] and
       not result.getUnderlyingType().(IntegralType).isExplicitlySigned() and
       not result.getUnderlyingType().(IntegralType).isExplicitlyUnsigned()
+      or
+      conv = ["o", "u", "x", "X"] and
+      result.getUnderlyingType().(IntegralType).isUnsigned()
     )
   }
 
@@ -954,14 +922,6 @@ class FormatLiteral extends Literal instanceof StringLiteral {
         (len != "l" and len != "w" and len != "h") and
         result = this.getNonDefaultCharType()
       )
-    )
-  }
-
-  private Type getConversionType2(int n) {
-    exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv = ["o", "u", "x", "X"] and
-      result = this.getIntegralConversion(n) and
-      result.getUnderlyingType().(IntegralType).isUnsigned()
     )
   }
 

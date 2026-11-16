@@ -1,0 +1,108 @@
+| ../cases.h:16:10:16:13 | %d | 0 | int, signed int, unsigned int | int, signed int, unsigned int | int |  |
+| ../cases.h:17:10:17:13 | %i | 0 | int, signed int, unsigned int | int, signed int, unsigned int | int |  |
+| ../cases.h:18:10:18:13 | %u | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:19:10:19:13 | %o | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:20:10:20:13 | %x | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:21:10:21:13 | %X | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:22:10:22:13 | %n | 0 | int, signed int, unsigned int | int, signed int, unsigned int |  |  |
+| ../cases.h:23:10:23:15 | %hhd | 0 | int, signed int, unsigned int | char, signed char, unsigned char | int | char * |
+| ../cases.h:24:10:24:15 | %hhi | 0 | int, signed int, unsigned int | char, signed char, unsigned char | int | char * |
+| ../cases.h:25:10:25:15 | %hhu | 0 | int, signed int, unsigned int | char, signed char, unsigned char | unsigned int | char * |
+| ../cases.h:26:10:26:15 | %hho | 0 | int, signed int, unsigned int | char, signed char, unsigned char | unsigned int | char * |
+| ../cases.h:27:10:27:15 | %hhx | 0 | int, signed int, unsigned int | char, signed char, unsigned char | unsigned int | char * |
+| ../cases.h:28:10:28:15 | %hhX | 0 | int, signed int, unsigned int | char, signed char, unsigned char | unsigned int | char * |
+| ../cases.h:29:10:29:15 | %hhn | 0 | int, signed int, unsigned int | char, signed char, unsigned char | char * | char * |
+| ../cases.h:30:10:30:14 | %hd | 0 | int, signed int, unsigned int | short, signed short, unsigned short | int |  |
+| ../cases.h:31:10:31:14 | %hi | 0 | int, signed int, unsigned int | short, signed short, unsigned short | int |  |
+| ../cases.h:32:10:32:14 | %hu | 0 | int, signed int, unsigned int | short, signed short, unsigned short | unsigned int |  |
+| ../cases.h:33:10:33:14 | %ho | 0 | int, signed int, unsigned int | short, signed short, unsigned short | unsigned int |  |
+| ../cases.h:34:10:34:14 | %hx | 0 | int, signed int, unsigned int | short, signed short, unsigned short | unsigned int |  |
+| ../cases.h:35:10:35:14 | %hX | 0 | int, signed int, unsigned int | short, signed short, unsigned short | unsigned int |  |
+| ../cases.h:36:10:36:14 | %hn | 0 | int, signed int, unsigned int | short, signed short, unsigned short |  |  |
+| ../cases.h:37:10:37:14 | %ld | 0 | long, signed long, unsigned long | long, signed long, unsigned long | long |  |
+| ../cases.h:38:10:38:14 | %li | 0 | long, signed long, unsigned long | long, signed long, unsigned long | long |  |
+| ../cases.h:39:10:39:14 | %lu | 0 | long, signed long, unsigned long | long, signed long, unsigned long | unsigned long |  |
+| ../cases.h:40:10:40:14 | %lo | 0 | long, signed long, unsigned long | long, signed long, unsigned long | unsigned long |  |
+| ../cases.h:41:10:41:14 | %lx | 0 | long, signed long, unsigned long | long, signed long, unsigned long | unsigned long |  |
+| ../cases.h:42:10:42:14 | %lX | 0 | long, signed long, unsigned long | long, signed long, unsigned long | unsigned long |  |
+| ../cases.h:43:10:43:14 | %ln | 0 | long, signed long, unsigned long | long, signed long, unsigned long |  |  |
+| ../cases.h:44:10:44:15 | %lld | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | long long |  |
+| ../cases.h:45:10:45:15 | %lli | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | long long |  |
+| ../cases.h:46:10:46:15 | %llu | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | unsigned long long |  |
+| ../cases.h:47:10:47:15 | %llo | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | unsigned long long |  |
+| ../cases.h:48:10:48:15 | %llx | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | unsigned long long |  |
+| ../cases.h:49:10:49:15 | %llX | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | unsigned long long |  |
+| ../cases.h:50:10:50:15 | %lln | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long |  |  |
+| ../cases.h:51:10:51:14 | %Ld | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | long long |  |
+| ../cases.h:52:10:52:14 | %Li | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | long long |  |
+| ../cases.h:53:10:53:14 | %Lu | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | unsigned long long |  |
+| ../cases.h:54:10:54:14 | %Lo | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | unsigned long long |  |
+| ../cases.h:55:10:55:14 | %Lx | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | unsigned long long |  |
+| ../cases.h:56:10:56:14 | %LX | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | unsigned long long |  |
+| ../cases.h:57:10:57:14 | %Ln | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long |  |  |
+| ../cases.h:58:10:58:14 | %qd | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | long long |  |
+| ../cases.h:59:10:59:14 | %qi | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | long long |  |
+| ../cases.h:60:10:60:14 | %qu | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | unsigned long long |  |
+| ../cases.h:61:10:61:14 | %qo | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | unsigned long long |  |
+| ../cases.h:62:10:62:14 | %qx | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | unsigned long long |  |
+| ../cases.h:63:10:63:14 | %qX | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | unsigned long long |  |
+| ../cases.h:64:10:64:14 | %qn | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long |  |  |
+| ../cases.h:65:10:65:14 | %jd | 0 | intmax_t | intmax_t | intmax_t |  |
+| ../cases.h:66:10:66:14 | %ji | 0 | intmax_t | intmax_t | intmax_t |  |
+| ../cases.h:67:10:67:14 | %ju | 0 | intmax_t | intmax_t |  |  |
+| ../cases.h:68:10:68:14 | %jo | 0 | intmax_t | intmax_t |  |  |
+| ../cases.h:69:10:69:14 | %jx | 0 | intmax_t | intmax_t |  |  |
+| ../cases.h:70:10:70:14 | %jX | 0 | intmax_t | intmax_t |  |  |
+| ../cases.h:71:10:71:14 | %jn | 0 | intmax_t | intmax_t |  |  |
+| ../cases.h:72:10:72:14 | %zd | 0 | size_t, ssize_t | size_t, ssize_t | ssize_t |  |
+| ../cases.h:73:10:73:14 | %zi | 0 | size_t, ssize_t | size_t, ssize_t | ssize_t |  |
+| ../cases.h:74:10:74:14 | %zu | 0 | size_t, ssize_t | size_t, ssize_t | size_t |  |
+| ../cases.h:75:10:75:14 | %zo | 0 | size_t, ssize_t | size_t, ssize_t | size_t |  |
+| ../cases.h:76:10:76:14 | %zx | 0 | size_t, ssize_t | size_t, ssize_t | size_t |  |
+| ../cases.h:77:10:77:14 | %zX | 0 | size_t, ssize_t | size_t, ssize_t | size_t |  |
+| ../cases.h:78:10:78:14 | %zn | 0 | size_t, ssize_t | size_t, ssize_t |  |  |
+| ../cases.h:79:10:79:14 | %Zd | 0 | size_t, ssize_t | size_t, ssize_t | ssize_t |  |
+| ../cases.h:80:10:80:14 | %Zi | 0 | size_t, ssize_t | size_t, ssize_t | ssize_t |  |
+| ../cases.h:81:10:81:14 | %Zu | 0 | size_t, ssize_t | size_t, ssize_t | size_t |  |
+| ../cases.h:82:10:82:14 | %Zo | 0 | size_t, ssize_t | size_t, ssize_t | size_t |  |
+| ../cases.h:83:10:83:14 | %Zx | 0 | size_t, ssize_t | size_t, ssize_t | size_t |  |
+| ../cases.h:84:10:84:14 | %ZX | 0 | size_t, ssize_t | size_t, ssize_t | size_t |  |
+| ../cases.h:85:10:85:14 | %Zn | 0 | size_t, ssize_t | size_t, ssize_t |  |  |
+| ../cases.h:86:10:86:14 | %td | 0 | ptrdiff_t | ptrdiff_t | ptrdiff_t |  |
+| ../cases.h:87:10:87:14 | %ti | 0 | ptrdiff_t | ptrdiff_t | ptrdiff_t |  |
+| ../cases.h:88:10:88:14 | %tu | 0 | ptrdiff_t | ptrdiff_t |  |  |
+| ../cases.h:89:10:89:14 | %to | 0 | ptrdiff_t | ptrdiff_t |  |  |
+| ../cases.h:90:10:90:14 | %tx | 0 | ptrdiff_t | ptrdiff_t |  |  |
+| ../cases.h:91:10:91:14 | %tX | 0 | ptrdiff_t | ptrdiff_t |  |  |
+| ../cases.h:92:10:92:14 | %tn | 0 | ptrdiff_t | ptrdiff_t |  |  |
+| ../cases.h:93:10:93:14 | %Id | 0 | int, signed int, unsigned int | int, signed int, unsigned int | int |  |
+| ../cases.h:94:10:94:14 | %Ii | 0 | int, signed int, unsigned int | int, signed int, unsigned int | int |  |
+| ../cases.h:95:10:95:14 | %Iu | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:96:10:96:14 | %Io | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:97:10:97:14 | %Ix | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:98:10:98:14 | %IX | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:99:10:99:14 | %In | 0 | int, signed int, unsigned int | int, signed int, unsigned int |  |  |
+| ../cases.h:100:10:100:16 | %I32d | 0 | int, signed int, unsigned int | int, signed int, unsigned int | int |  |
+| ../cases.h:101:10:101:16 | %I32i | 0 | int, signed int, unsigned int | int, signed int, unsigned int | int |  |
+| ../cases.h:102:10:102:16 | %I32u | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:103:10:103:16 | %I32o | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:104:10:104:16 | %I32x | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:105:10:105:16 | %I32X | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:106:10:106:16 | %I32n | 0 | int, signed int, unsigned int | int, signed int, unsigned int |  |  |
+| ../cases.h:107:10:107:16 | %I64d | 0 | int, signed int, unsigned int | int, signed int, unsigned int | int |  |
+| ../cases.h:108:10:108:16 | %I64i | 0 | int, signed int, unsigned int | int, signed int, unsigned int | int |  |
+| ../cases.h:109:10:109:16 | %I64u | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:110:10:110:16 | %I64o | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:111:10:111:16 | %I64x | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:112:10:112:16 | %I64X | 0 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:113:10:113:16 | %I64n | 0 | int, signed int, unsigned int | int, signed int, unsigned int |  |  |
+| ../cases.h:114:10:114:38 | %08lld %.3lu %*d %.*u %1$li | 0 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | long long |  |
+| ../cases.h:114:10:114:38 | %08lld %.3lu %*d %.*u %1$li | 1 | long, signed long, unsigned long | long, signed long, unsigned long | unsigned long |  |
+| ../cases.h:114:10:114:38 | %08lld %.3lu %*d %.*u %1$li | 2 | int, signed int, unsigned int | int, signed int, unsigned int | int |  |
+| ../cases.h:114:10:114:38 | %08lld %.3lu %*d %.*u %1$li | 3 | int, signed int, unsigned int | int, signed int, unsigned int | unsigned int |  |
+| ../cases.h:114:10:114:38 | %08lld %.3lu %*d %.*u %1$li | 4 | long, signed long, unsigned long | long, signed long, unsigned long | long |  |
+| ../cases.h:115:10:115:26 | %f %Lf %s %p %c | 0 | int, signed int, unsigned int | int, signed int, unsigned int | double |  |
+| ../cases.h:115:10:115:26 | %f %Lf %s %p %c | 1 | long long, signed long long, unsigned long long | long long, signed long long, unsigned long long | long double |  |
+| ../cases.h:115:10:115:26 | %f %Lf %s %p %c | 2 | int, signed int, unsigned int | int, signed int, unsigned int | char * |  |
+| ../cases.h:115:10:115:26 | %f %Lf %s %p %c | 3 | int, signed int, unsigned int | int, signed int, unsigned int | void * |  |
+| ../cases.h:115:10:115:26 | %f %Lf %s %p %c | 4 | int, signed int, unsigned int | int, signed int, unsigned int | char |  |
