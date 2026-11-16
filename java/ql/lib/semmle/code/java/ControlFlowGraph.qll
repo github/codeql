@@ -241,6 +241,28 @@ private module Ast implements AstSig<Location> {
     boolean getValue() { result = this.getBooleanValue() }
   }
 
+  class Pattern extends AstNode {
+    Pattern() { none() }
+
+    Pattern getPattern(int index) { none() }
+  }
+
+  class LiteralPattern extends Pattern {
+    LiteralPattern() { none() }
+
+    AstNode getLiteral() { none() }
+  }
+
+  class BindingPattern extends Pattern {
+    BindingPattern() { none() }
+
+    AstNode getVariable() { none() }
+  }
+
+  class OrPattern extends Pattern {
+    OrPattern() { none() }
+  }
+
   final private class FinalInstanceOfExpr = J::InstanceOfExpr;
 
   class PatternMatchExpr extends FinalInstanceOfExpr {

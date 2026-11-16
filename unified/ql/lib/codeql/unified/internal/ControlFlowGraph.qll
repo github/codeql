@@ -293,6 +293,28 @@ module Ast implements AstSig<Location> {
     boolean getValue() { result.toString() = super.getValue() }
   }
 
+  class Pattern extends AstNode {
+    Pattern() { none() }
+
+    Pattern getPattern(int index) { none() }
+  }
+
+  class LiteralPattern extends Pattern {
+    LiteralPattern() { none() }
+
+    AstNode getLiteral() { none() }
+  }
+
+  class BindingPattern extends Pattern {
+    BindingPattern() { none() }
+
+    AstNode getVariable() { none() }
+  }
+
+  class OrPattern extends Pattern {
+    OrPattern() { none() }
+  }
+
   class PatternMatchExpr extends U::PatternGuardExpr {
     Expr getExpr() { result = super.getValue() }
 

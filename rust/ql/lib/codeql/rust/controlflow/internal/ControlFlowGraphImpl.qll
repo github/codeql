@@ -460,6 +460,52 @@ private module Ast implements AstSig<Location> {
     }
   }
 
+  class Pattern extends AstNode instanceof Rust::Pat {
+    Pattern getPattern(int index) {
+      index = 0 and
+      result = this.(Rust::IdentPat).getPat()
+      or
+      index = 0 and
+      result = this.(Rust::BoxPat).getPat()
+      or
+      index = 0 and
+      result = this.(Rust::DerefPat).getPat()
+      or
+      index = 0 and
+      result = this.(Rust::MacroPat).getMacroCall().getMacroCallExpansion()
+      or
+      result = this.(Rust::OrPat).getPat(index)
+      or
+      index = 0 and result = this.(Rust::RangePat).getStart()
+      or
+      index = 1 and result = this.(Rust::RangePat).getEnd()
+      or
+      result = this.(Rust::StructPat).getStructPatFieldList().getField(index).getPat()
+      or
+      index = this.(Rust::StructPat).getStructPatFieldList().getNumberOfFields() and
+      result = this.(Rust::StructPat).getStructPatFieldList().getRestPat()
+      or
+      index = 0 and
+      result = this.(Rust::RefPat).getPat()
+      or
+      result = this.(Rust::SlicePat).getPat(index)
+      or
+      result = this.(Rust::TuplePat).getField(index)
+      or
+      result = this.(Rust::TupleStructPat).getField(index)
+    }
+  }
+
+  class LiteralPattern extends Pattern instanceof Rust::LiteralPat {
+    AstNode getLiteral() { result = super.getLiteral() }
+  }
+
+  class BindingPattern extends Pattern instanceof Rust::IdentPat {
+    AstNode getVariable() { result = super.getName() }
+  }
+
+  class OrPattern extends Pattern instanceof Rust::OrPat { }
+
   class PatternMatchExpr extends Expr {
     PatternMatchExpr() { none() }
 
@@ -501,20 +547,6 @@ private predicate guaranteedMatchPosition(Rust::Pat pat) {
   pat = any(Rust::ForExpr for).getPat()
   or
   pat = any(Rust::Param p).getPat()
-  or
-  pat = any(Rust::MatchExpr me).getLastArm().getPat()
-  or
-  exists(Rust::Pat parent | guaranteedMatchPosition(parent) |
-    parent = pat.getParentPat() and not parent instanceof Rust::OrPat
-    or
-    parent.(Rust::OrPat).getLastPat() = pat
-    or
-    parent.(Rust::MacroPat).getMacroCall().getMacroCallExpansion() = pat
-  )
-}
-
-private predicate guaranteedMatch(Rust::Pat pat) {
-  cannotCauseMatchFailure(pat) or guaranteedMatchPosition(pat)
 }
 
 private module Input implements InputSig1, InputSig2 {
@@ -536,18 +568,13 @@ private module Input implements InputSig1, InputSig2 {
 
   predicate isExhaustive(Ast::Switch switch) { any() }
 
+  predicate patternCannotFail(Ast::Pattern pattern) { cannotCauseMatchFailure(pattern) }
+
+  predicate patternAlwaysMatches(Ast::Pattern pattern) { guaranteedMatchPosition(pattern) }
+
   predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
     kind.isMatching() and
-    (
-      n instanceof Rust::Pat
-      or
-      n = any(Rust::TryExpr e).getExpr()
-    )
-  }
-
-  predicate constantCondition(Ast::AstNode n, ConditionalSuccessor t) {
-    guaranteedMatchPosition(n) and
-    t.(MatchingSuccessor).getValue() = true
+    n = any(Rust::TryExpr e).getExpr()
   }
 
   predicate preOrderExpr(Ast::Expr e) {
@@ -556,76 +583,22 @@ private module Input implements InputSig1, InputSig2 {
     e instanceof Rust::LetExpr
     or
     e instanceof Rust::TryExpr
-    or
-    e instanceof Rust::Pat and
-    not e instanceof Rust::IdentPat and
-    not e instanceof Rust::LiteralPat
   }
 
   predicate postOrInOrder(Ast::AstNode n) { n instanceof Rust::MacroCall }
 
   private string tryReturnTag() { result = "[try-return]" }
 
-  private string patternStartTag() { result = "[pattern-start]" }
-
   private string letElseDivergeTag() { result = "[let-else-diverge]" }
 
   predicate additionalNode(Ast::AstNode n, string tag, NormalSuccessor t) {
+    t instanceof DirectSuccessor and
     (
-      t instanceof DirectSuccessor and
-      (
-        n instanceof Rust::TryExpr and tag = tryReturnTag()
-        or
-        n = any(Rust::LetStmt let).getLetElse().getBlockExpr() and
-        tag = letElseDivergeTag()
-      )
+      n instanceof Rust::TryExpr and tag = tryReturnTag()
       or
-      n instanceof Rust::Pat and
-      not n instanceof Rust::OrPat and
-      exists(getPatternChild(n, _)) and
-      tag = patternStartTag() and
-      t.(MatchingSuccessor).getValue() = true
+      n = any(Rust::LetStmt let).getLetElse().getBlockExpr() and
+      tag = letElseDivergeTag()
     )
-  }
-
-  private Rust::Pat getPatternChild(Rust::Pat parent, int index) {
-    index = 0 and
-    result = parent.(Rust::BoxPat).getPat()
-    or
-    index = 0 and
-    result = parent.(Rust::DerefPat).getPat()
-    or
-    index = 0 and
-    result = parent.(Rust::MacroPat).getMacroCall().getMacroCallExpansion()
-    or
-    result = parent.(Rust::OrPat).getPat(index)
-    or
-    index = 0 and result = parent.(Rust::RangePat).getStart()
-    or
-    index = 1 and result = parent.(Rust::RangePat).getEnd()
-    or
-    result = parent.(Rust::StructPat).getStructPatFieldList().getField(index).getPat()
-    or
-    index = parent.(Rust::StructPat).getStructPatFieldList().getNumberOfFields() and
-    result = parent.(Rust::StructPat).getStructPatFieldList().getRestPat()
-    or
-    index = 0 and
-    result = parent.(Rust::RefPat).getPat()
-    or
-    result = parent.(Rust::SlicePat).getPat(index)
-    or
-    result = parent.(Rust::TuplePat).getField(index)
-    or
-    result = parent.(Rust::TupleStructPat).getField(index)
-  }
-
-  private Rust::Pat getRankedPatternChild(Rust::Pat parent, int childRank) {
-    result =
-      rank[childRank](Rust::Pat child, int index |
-        child = getPatternChild(parent, index)
-      |
-        child order by index
-      )
   }
 
   private predicate isAfterMatch(PreControlFlowNode n, Rust::AstNode ast, boolean value) {
@@ -673,100 +646,6 @@ private module Input implements InputSig1, InputSig2 {
       or
       n1.isAfter(match.getScrutinee()) and
       n2.isIn(match)
-    )
-  }
-
-  private predicate genericPatternStep(Rust::Pat pat, PreControlFlowNode n1, PreControlFlowNode n2) {
-    not pat instanceof Rust::IdentPat and
-    not pat instanceof Rust::LiteralPat and
-    not pat instanceof Rust::OrPat and
-    (
-      n1.isBefore(pat) and
-      (
-        exists(getRankedPatternChild(pat, _)) and
-        n2.isAdditional(pat, patternStartTag())
-        or
-        not exists(getRankedPatternChild(pat, _)) and isAfterMatch(n2, pat, true)
-        or
-        not guaranteedMatch(pat) and isAfterMatch(n2, pat, false)
-      )
-      or
-      n1.isAdditional(pat, patternStartTag()) and
-      n2.isBefore(getRankedPatternChild(pat, 1))
-      or
-      exists(int i, Rust::Pat child | child = getRankedPatternChild(pat, i) |
-        isAfterMatch(n1, child, true) and
-        (
-          n2.isBefore(getRankedPatternChild(pat, i + 1))
-          or
-          not exists(getRankedPatternChild(pat, i + 1)) and
-          isAfterMatch(n2, pat, true)
-        )
-        or
-        isAfterMatch(n1, child, false) and isAfterMatch(n2, pat, false)
-      )
-    )
-  }
-
-  private predicate literalPatternStep(
-    Rust::LiteralPat pat, PreControlFlowNode n1, PreControlFlowNode n2
-  ) {
-    n1.isBefore(pat) and n2.isBefore(pat.getLiteral())
-    or
-    n1.isAfter(pat.getLiteral()) and n2.isIn(pat)
-    or
-    n1.isIn(pat) and isAfterMatch(n2, pat, true)
-    or
-    n1.isIn(pat) and not guaranteedMatch(pat) and isAfterMatch(n2, pat, false)
-  }
-
-  private predicate identPatternStep(
-    Rust::IdentPat pat, PreControlFlowNode n1, PreControlFlowNode n2
-  ) {
-    n1.isBefore(pat) and
-    (
-      n2.isBefore(pat.getPat())
-      or
-      not pat.hasPat() and n2.isBefore(pat.getName())
-    )
-    or
-    isAfterMatch(n1, pat.getPat(), true) and n2.isBefore(pat.getName())
-    or
-    isAfterMatch(n1, pat.getPat(), false) and isAfterMatch(n2, pat, false)
-    or
-    n1.isAfter(pat.getName()) and n2.isIn(pat)
-    or
-    n1.isIn(pat) and isAfterMatch(n2, pat, true)
-    or
-    n1.isIn(pat) and not guaranteedMatch(pat) and isAfterMatch(n2, pat, false)
-  }
-
-  private predicate orPatternStep(Rust::OrPat pat, PreControlFlowNode n1, PreControlFlowNode n2) {
-    n1.isBefore(pat) and n2.isBefore(getRankedPatternChild(pat, 1))
-    or
-    exists(int i, Rust::Pat child | child = getRankedPatternChild(pat, i) |
-      isAfterMatch(n1, child, true) and isAfterMatch(n2, pat, true)
-      or
-      isAfterMatch(n1, child, false) and
-      (
-        n2.isBefore(getRankedPatternChild(pat, i + 1))
-        or
-        not exists(getRankedPatternChild(pat, i + 1)) and
-        not guaranteedMatch(pat) and
-        isAfterMatch(n2, pat, false)
-      )
-    )
-  }
-
-  private predicate patternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-    exists(Rust::Pat pat |
-      genericPatternStep(pat, n1, n2)
-      or
-      literalPatternStep(pat, n1, n2)
-      or
-      identPatternStep(pat, n1, n2)
-      or
-      orPatternStep(pat, n1, n2)
     )
   }
 
@@ -824,8 +703,6 @@ private module Input implements InputSig1, InputSig2 {
     letExprStep(n1, n2)
     or
     emptyMatchStep(n1, n2)
-    or
-    patternStep(n1, n2)
     or
     loopStep(n1, n2)
     or
