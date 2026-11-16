@@ -11,6 +11,12 @@ impl QueryTarget for crate::Id {
     }
 }
 
+impl QueryTarget for crate::OutputId {
+    fn query_ast<'a, C>(self, ctx: &'a BuildCtx<'_, C>) -> &'a Ast<Self> {
+        &*ctx.output
+    }
+}
+
 #[derive(Debug, Clone)]
 pub enum QueryNode {
     /// A wildcard. With `match_unnamed = false` (the default for `(_)`),

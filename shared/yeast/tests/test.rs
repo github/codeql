@@ -46,6 +46,7 @@ yeast::query_match_schema! {
 }
 
 use test_input::query_match as schema_query_match;
+use test_output::query_match as schema_output_query_match;
 
 /// Helper: parse Ruby source with no rules, return dump.
 fn parse_and_dump(input: &str) -> String {
@@ -601,6 +602,33 @@ fn test_query_match_panics_when_no_arm_matches() {
         ast.get_root(),
         (call) => {}
     );
+}
+
+#[test]
+fn test_query_match_binds_output_captures_and_releases_borrow() {
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut user_ctx);
+    let assignment = tree!((assignment
+        left: (identifier "x")
+        right: (integer "1")));
+
+    let (left, right, call) = schema_output_query_match!(
+        assignment,
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        where ast.get_node(left).unwrap().kind_name() == "identifier"
+        => {
+            let call = tree!((call method: {left}));
+            (left, right, call)
+        },
+    );
+
+    assert_eq!(ctx.output.get_node(left).unwrap().kind_name(), "identifier");
+    assert_eq!(ctx.output.get_node(right).unwrap().kind_name(), "integer");
+    assert_eq!(ctx.output.get_node(call).unwrap().kind_name(), "call");
 }
 
 #[test]
