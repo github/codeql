@@ -1,0 +1,9 @@
+typeParameterEscapesScope
+| sqlx.rs:43:61:43:80 | await ... | T.DB | {EXTERNAL LOCATION} | DB |
+| sqlx.rs:43:61:43:81 | TryExpr | DB | {EXTERNAL LOCATION} | DB |
+| sqlx.rs:169:9:169:16 | mut conn | DB | {EXTERNAL LOCATION} | DB |
+| sqlx.rs:169:13:169:16 | conn | DB | {EXTERNAL LOCATION} | DB |
+| sqlx.rs:169:20:169:39 | await ... | T.DB | {EXTERNAL LOCATION} | DB |
+| sqlx.rs:169:20:169:40 | TryExpr | DB | {EXTERNAL LOCATION} | DB |
+| sqlx.rs:179:13:179:16 | conn | DB | {EXTERNAL LOCATION} | DB |
+| sqlx.rs:181:17:181:20 | conn | DB | {EXTERNAL LOCATION} | DB |

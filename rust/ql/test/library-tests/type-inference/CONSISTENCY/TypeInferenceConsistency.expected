@@ -1,0 +1,6 @@
+typeParameterEscapesScope
+| main.rs:2240:9:2240:31 | ... .my_add(...) | T.T | main.rs:2126:10:2126:17 | T::Output[MyAdd] |
+| main.rs:2240:9:2240:31 | ... .my_add(...) | T.T | main.rs:2135:10:2135:17 | T::Output[MyAdd] |
+| main.rs:2240:9:2240:31 | ... .my_add(...) | T.T | main.rs:2144:14:2144:14 | T::Output[MyAdd] |
+| main.rs:2296:13:2296:13 | s |  | {EXTERNAL LOCATION} | I::Item[Iterator] |
+| main.rs:2296:13:2296:13 | s |  | {EXTERNAL LOCATION} | I::Item[Iterator] |
