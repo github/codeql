@@ -6,9 +6,12 @@ includedSemantics
 | included/tree/disabled_child.rs | false | true |
 | included/tree/mod.rs | true | false |
 mod
-| included/forms/mod.rs:1:1:1:14 | mod child |
-| included/forms/mod.rs:1:1:1:14 | mod child |
-| included/forms/mod.rs:1:1:1:14 | mod child |
+| included/braced/mod.rs:1:1:1:14 | mod child |
+| included/braced/mod.rs:1:1:1:14 | mod child |
+| included/bracket/mod.rs:1:1:1:14 | mod child |
+| included/bracket/mod.rs:1:1:1:14 | mod child |
+| included/computed/mod.rs:1:1:1:14 | mod child |
+| included/computed/mod.rs:1:1:1:14 | mod child |
 | included/forms/mod.rs:1:1:1:14 | mod child |
 | included/forms/mod.rs:1:1:1:14 | mod child |
 | included/non_mod/generated.rs:1:1:1:22 | mod non_mod_child |
@@ -81,6 +84,12 @@ mod
 | my/nested.rs:1:1:17:1 | mod nested1 |
 | my/nested.rs:2:5:11:5 | mod nested2 |
 resolvePath
+| included/braced/child.rs:2:5:2:9 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
+| included/braced/child.rs:2:5:2:12 | ...::h | main.rs:57:1:76:1 | fn h |
+| included/bracket/child.rs:2:5:2:9 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
+| included/bracket/child.rs:2:5:2:12 | ...::h | main.rs:57:1:76:1 | fn h |
+| included/computed/child.rs:2:5:2:9 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
+| included/computed/child.rs:2:5:2:12 | ...::h | main.rs:57:1:76:1 | fn h |
 | included/forms/child.rs:2:5:2:9 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
 | included/forms/child.rs:2:5:2:12 | ...::h | main.rs:57:1:76:1 | fn h |
 | included/tree/mod.rs:3:1:3:7 | include | {EXTERNAL LOCATION} | MacroRules |
@@ -739,14 +748,14 @@ resolvePath
 | main.rs:1195:5:1195:28 | ...::child | included/forms/mod.rs:1:1:1:14 | mod child |
 | main.rs:1195:5:1195:34 | ...::form | included/forms/child.rs:1:1:3:1 | fn form |
 | main.rs:1196:5:1196:18 | braced_include | main.rs:1218:1:1220:1 | mod braced_include |
-| main.rs:1196:5:1196:25 | ...::child | included/forms/mod.rs:1:1:1:14 | mod child |
-| main.rs:1196:5:1196:31 | ...::form | included/forms/child.rs:1:1:3:1 | fn form |
+| main.rs:1196:5:1196:25 | ...::child | included/braced/mod.rs:1:1:1:14 | mod child |
+| main.rs:1196:5:1196:31 | ...::form | included/braced/child.rs:1:1:3:1 | fn form |
 | main.rs:1197:5:1197:19 | bracket_include | main.rs:1222:1:1224:1 | mod bracket_include |
-| main.rs:1197:5:1197:26 | ...::child | included/forms/mod.rs:1:1:1:14 | mod child |
-| main.rs:1197:5:1197:32 | ...::form | included/forms/child.rs:1:1:3:1 | fn form |
+| main.rs:1197:5:1197:26 | ...::child | included/bracket/mod.rs:1:1:1:14 | mod child |
+| main.rs:1197:5:1197:32 | ...::form | included/bracket/child.rs:1:1:3:1 | fn form |
 | main.rs:1198:5:1198:20 | computed_include | main.rs:1226:1:1228:1 | mod computed_include |
-| main.rs:1198:5:1198:27 | ...::child | included/forms/mod.rs:1:1:1:14 | mod child |
-| main.rs:1198:5:1198:33 | ...::form | included/forms/child.rs:1:1:3:1 | fn form |
+| main.rs:1198:5:1198:27 | ...::child | included/computed/mod.rs:1:1:1:14 | mod child |
+| main.rs:1198:5:1198:33 | ...::form | included/computed/child.rs:1:1:3:1 | fn form |
 | main.rs:1199:5:1199:20 | shadowed_include | main.rs:1230:1:1237:1 | mod shadowed_include |
 | main.rs:1199:5:1199:33 | ...::from_shadow | main.rs:1236:5:1236:12 | fn from_shadow |
 | main.rs:1200:5:1200:9 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |

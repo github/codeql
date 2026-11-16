@@ -1193,9 +1193,9 @@ fn main() {
     included_module::hidden(); // $ item=I23009
     nested_module::nested(); // $ item=included_nested
     qualified_include::child::form(); // $ item=included_form
-    braced_include::child::form(); // $ item=included_form
-    bracket_include::child::form(); // $ item=included_form
-    computed_include::child::form(); // $ item=included_form
+    braced_include::child::form(); // $ item=included_braced_form
+    bracket_include::child::form(); // $ item=included_bracket_form
+    computed_include::child::form(); // $ item=included_computed_form
     shadowed_include::from_shadow(); // $ item=from_shadow
     crate::included_export!(); // $ item=included_export
     macro_child::from_macro(); // $ item=included_macro_child
@@ -1216,15 +1216,15 @@ mod qualified_include {
 }
 
 mod braced_include {
-    include! { /* comment */ "included/forms/mod.rs", }
+    include! { /* comment */ "included/braced/mod.rs", }
 }
 
 mod bracket_include {
-    include!["included/forms/mod.rs"];
+    include!["included/bracket/mod.rs"];
 }
 
 mod computed_include {
-    include!(concat!("included/", "forms/mod.rs"));
+    include!(concat!("included/", "computed/mod.rs"));
 }
 
 mod shadowed_include {
