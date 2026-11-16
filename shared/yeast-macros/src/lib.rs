@@ -60,6 +60,16 @@ pub fn query_match_with_schema(input: TokenStream) -> TokenStream {
     }
 }
 
+#[doc(hidden)]
+#[proc_macro]
+pub fn query_match_with_schema_and_context(input: TokenStream) -> TokenStream {
+    let input2: TokenStream2 = input.into();
+    match parse::parse_query_match_with_schema_and_context_top(input2) {
+        Ok(output) => output.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
+}
+
 /// Declare a matcher namespace for one AST schema.
 #[proc_macro]
 pub fn query_match_schema(input: TokenStream) -> TokenStream {

@@ -100,6 +100,15 @@ pub fn parse_query_match_with_schema_top(input: TokenStream) -> Result<TokenStre
     parse_query_match(tokens.collect(), None)
 }
 
+pub fn parse_query_match_with_schema_and_context_top(input: TokenStream) -> Result<TokenStream> {
+    let mut tokens = input.into_iter().peekable();
+    let _schema = parse_string_arg(&mut tokens, "schema")?;
+    expect_punct(&mut tokens, ',', "expected `,` after schema path")?;
+    let ctx = expect_ident(&mut tokens, "expected context identifier")?;
+    expect_punct(&mut tokens, ',', "expected `,` after context identifier")?;
+    parse_query_match(tokens.collect(), Some(ctx))
+}
+
 pub fn parse_query_match_schema_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
     let module = expect_ident(&mut tokens, "expected schema module name")?;
@@ -132,6 +141,17 @@ pub fn parse_query_match_schema_top(input: TokenStream) -> Result<TokenStream> {
                 };
             }
             pub(crate) use query_match;
+
+            macro_rules! query_match_with_context {
+                ($ctx:ident, $($tokens:tt)*) => {
+                    yeast::__query_match_with_schema_and_context! {
+                        #schema_lit,
+                        $ctx,
+                        $($tokens)*
+                    }
+                };
+            }
+            pub(crate) use query_match_with_context;
         }
     })
 }

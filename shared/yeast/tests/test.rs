@@ -46,7 +46,37 @@ yeast::query_match_schema! {
 }
 
 use test_input::query_match as schema_query_match;
+use test_input::query_match_with_context as schema_query_match_with_context;
 use test_output::query_match as schema_output_query_match;
+
+macro_rules! match_forwarded_input_node {
+    ($node:ident, $context:expr) => {{
+        let builder = $context;
+        schema_query_match_with_context!(
+            builder,
+            $node,
+            (program child: (assignment) @assignment)
+            where *ctx && ast.get_node(assignment).is_some()
+            => {
+                assignment
+            },
+        )
+    }};
+}
+
+macro_rules! match_forwarded_block {
+    ($node:ident, $context:expr, $body:block) => {{
+        let ctx = $context;
+        schema_query_match_with_context!(ctx, $node, (program) => $body)
+    }};
+}
+
+macro_rules! match_forwarded_block_expr {
+    ($node:ident, $context:expr, $body:expr) => {{
+        let ctx = $context;
+        schema_query_match_with_context!(ctx, $node, (program) => $body)
+    }};
+}
 
 /// Helper: parse Ruby source with no rules, return dump.
 fn parse_and_dump(input: &str) -> String {
@@ -629,6 +659,93 @@ fn test_query_match_binds_output_captures_and_releases_borrow() {
     assert_eq!(ctx.output.get_node(left).unwrap().kind_name(), "identifier");
     assert_eq!(ctx.output.get_node(right).unwrap().kind_name(), "integer");
     assert_eq!(ctx.output.get_node(call).unwrap().kind_name(), "call");
+}
+
+#[test]
+fn test_explicit_context_uses_selected_user_context() {
+    let input_ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut enabled = true;
+    let root = input_ast.get_root();
+    let ctx = &false;
+
+    let assignment = match_forwarded_input_node!(
+        root,
+        yeast::build::BuildCtx::new(&input_ast, &mut output, &mut enabled)
+    );
+
+    assert_eq!(
+        input_ast.get_node(assignment).unwrap().kind_name(),
+        "assignment"
+    );
+    assert!(!*ctx);
+}
+
+#[test]
+fn test_explicit_context_accepts_ast_identifier() {
+    let input_ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut enabled = true;
+    let root = input_ast.get_root();
+    let ast = yeast::build::BuildCtx::new(&input_ast, &mut output, &mut enabled);
+
+    let assignment = schema_query_match_with_context!(
+        ast,
+        root,
+        (program child: (assignment) @assignment)
+        where *ctx && ast.get_node(assignment).is_some()
+        => {
+            assignment
+        },
+    );
+
+    assert_eq!(
+        input_ast.get_node(assignment).unwrap().kind_name(),
+        "assignment"
+    );
+}
+
+#[test]
+fn test_explicit_context_accepts_ctx_identifier() {
+    let input_ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut enabled = true;
+    let root = input_ast.get_root();
+    let ctx = yeast::build::BuildCtx::new(&input_ast, &mut output, &mut enabled);
+
+    assert!(schema_query_match_with_context!(
+        ctx,
+        root,
+        (program)
+        where *ctx
+        => {
+            true
+        },
+    ));
+}
+
+#[test]
+fn test_explicit_context_accepts_forwarded_bodies() {
+    let input_ast = parse_input("x = 1");
+
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let root = input_ast.get_root();
+    let value = match_forwarded_block!(
+        root,
+        yeast::build::BuildCtx::new(&input_ast, &mut output, &mut user_ctx),
+        { 41 }
+    );
+    assert_eq!(value, 41);
+
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let value = match_forwarded_block_expr!(
+        root,
+        yeast::build::BuildCtx::new(&input_ast, &mut output, &mut user_ctx),
+        { 42 }
+    );
+    assert_eq!(value, 42);
 }
 
 #[test]
