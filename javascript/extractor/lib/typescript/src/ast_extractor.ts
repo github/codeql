@@ -119,6 +119,17 @@ for (const kind of Object.values(SyntaxKind)) {
 const skipWhiteSpace = /(?:\s|\/\/.*|\/\*[^]*?\*\/)*/g;
 
 export function extractAst(ast: ts.SourceFile, diagnostics: readonly Diagnostic[]): JsonObject {
+    // The native API can strip a leading BOM without adjusting node offsets.
+    // This appears to be a bug: https://github.com/microsoft/TypeScript/issues/63850.
+    // Restore the BOM before computing positions, line starts, and tokens.
+    // Remove this workaround when/if the upstream issue is fixed.
+    if (ast.end === ast.text.length + 1) {
+        // `text` is a getter without a setter. Shadow it with an own property
+        // so `getStart()`, `getLineStarts()`, and token scanning all see the
+        // restored BOM and use source text that agrees with the unchanged node
+        // offsets.
+        Object.defineProperty(ast, "text", { value: "\uFEFF" + ast.text });
+    }
     const code = ast.text;
     // The native parser still builds assertion ASTs, but now diagnoses this formerly accepted syntax.
     const parseDiagnostics = diagnostics.filter(diagnostic => diagnostic.code !== 2880);
