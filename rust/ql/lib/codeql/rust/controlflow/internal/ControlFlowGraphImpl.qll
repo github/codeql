@@ -377,8 +377,12 @@ private module Ast implements AstSig<Location> {
     Stmt getBody() { none() }
   }
 
+  additional class DivergingMatchExpr extends Rust::MatchExpr {
+    DivergingMatchExpr() { not exists(super.getAnArm()) }
+  }
+
   class Switch extends AstNode instanceof Rust::MatchExpr {
-    Switch() { exists(super.getAnArm()) }
+    Switch() { not this instanceof DivergingMatchExpr }
 
     Expr getExpr() { result = super.getScrutinee() }
 
@@ -498,6 +502,8 @@ private predicate guaranteedMatchPosition(Rust::Pat pat) {
   or
   pat = any(Rust::Param p).getPat()
   or
+  pat = any(Rust::MatchExpr me).getLastArm().getPat()
+  or
   exists(Rust::Pat parent | guaranteedMatchPosition(parent) |
     parent = pat.getParentPat() and not parent instanceof Rust::OrPat
     or
@@ -539,7 +545,14 @@ private module Input implements InputSig1, InputSig2 {
     )
   }
 
+  predicate constantCondition(Ast::AstNode n, ConditionalSuccessor t) {
+    guaranteedMatchPosition(n) and
+    t.(MatchingSuccessor).getValue() = true
+  }
+
   predicate preOrderExpr(Ast::Expr e) {
+    e instanceof Rust::LoopingExpr
+    or
     e instanceof Rust::LetExpr
     or
     e instanceof Rust::TryExpr
@@ -555,8 +568,6 @@ private module Input implements InputSig1, InputSig2 {
 
   private string patternStartTag() { result = "[pattern-start]" }
 
-  private string emptyMatchTag() { result = "[empty-match]" }
-
   private string letElseDivergeTag() { result = "[let-else-diverge]" }
 
   predicate additionalNode(Ast::AstNode n, string tag, NormalSuccessor t) {
@@ -564,10 +575,6 @@ private module Input implements InputSig1, InputSig2 {
       t instanceof DirectSuccessor and
       (
         n instanceof Rust::TryExpr and tag = tryReturnTag()
-        or
-        n instanceof Rust::MatchExpr and
-        not exists(n.(Rust::MatchExpr).getAnArm()) and
-        tag = emptyMatchTag()
         or
         n = any(Rust::LetStmt let).getLetElse().getBlockExpr() and
         tag = letElseDivergeTag()
@@ -661,14 +668,11 @@ private module Input implements InputSig1, InputSig2 {
   }
 
   private predicate emptyMatchStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-    exists(Rust::MatchExpr match |
-      not exists(match.getAnArm()) and
-      (
-        n1.isBefore(match) and n2.isBefore(match.getScrutinee())
-        or
-        n1.isAfter(match.getScrutinee()) and
-        n2.isAdditional(match, emptyMatchTag())
-      )
+    exists(Ast::DivergingMatchExpr match |
+      n1.isBefore(match) and n2.isBefore(match.getScrutinee())
+      or
+      n1.isAfter(match.getScrutinee()) and
+      n2.isIn(match)
     )
   }
 
@@ -799,8 +803,8 @@ private module Input implements InputSig1, InputSig2 {
     c.asSimpleAbruptCompletion() instanceof ReturnSuccessor and
     always = true
     or
-    ast instanceof Rust::MatchExpr and
-    n.isAdditional(ast, emptyMatchTag()) and
+    ast instanceof Ast::DivergingMatchExpr and
+    n.isIn(ast) and
     c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
     always = true
     or
