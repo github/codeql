@@ -174,6 +174,10 @@ private predicate linqAllReturnCandidate(Stmt s, Expr e) {
       e = is.getCondition() and
       not exists(is.getElse()) and
       not e.getAChildExpr*() instanceof AwaitExpr and
+      not exists(LocalScopeVariable v |
+        v.getAnAccess() = e.getAChildExpr*() and
+        (v.isRef() or v.getType().isRefLikeType())
+      ) and
       exists(ReturnStmt ret |
         ret = is.getThen().stripSingletonBlocks() and
         ret.getExpr().stripImplicit().(BoolLiteral).toString() = "false"

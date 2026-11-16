@@ -141,4 +141,53 @@ class MissedAllOpportunity
         }
         return true;
     }
+
+    public bool ReturnFalseWithRefLocal(List<int> lst, int[] limits)
+    {
+        ref int limit = ref limits[0];
+        foreach (int i in lst)
+        {
+            if (i > limit)
+                return false;
+        }
+        return true;
+    }
+
+    public bool ReturnFalseWithReadonlyRefLocal(List<int> lst, int[] limits)
+    {
+        ref readonly int limit = ref limits[0];
+        foreach (int i in lst)
+        {
+            if (i > limit)
+                return false;
+        }
+        return true;
+    }
+
+    public bool ReturnFalseWithRefLikeLocal(List<int> lst)
+    {
+        var limits = new RefLikeLimits<int>();
+        foreach (int i in lst)
+        {
+            if (i > limits[0])
+                return false;
+        }
+        return true;
+    }
+
+    public bool ReturnFalseWithRefLikeParameter(List<int> lst, RefLikeLimits<int> limits)
+    {
+        foreach (int i in lst)
+        {
+            if (i > limits[0])
+                return false;
+        }
+        return true;
+    }
+
+    // Framework stubs omit the ref modifier on Span<T> and ReadOnlySpan<T>.
+    public ref struct RefLikeLimits<T>
+    {
+        public T this[int index] => throw null;
+    }
 }
