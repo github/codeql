@@ -635,17 +635,11 @@ module Input3 implements InputSig3 {
   }
 
   predicate stepLanguageSpecific(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+    Plugin::stepLanguageSpecific(n1, prefix1, n2, prefix2)
+    or
     n1 = n2.(Block).getLastStmt() and
     prefix1.isEmpty() and
     prefix2.isEmpty()
-    or
-    n2 =
-      any(UnaryExpr expr |
-        n1 = expr.getOperand() and
-        expr.getOperator().(PrefixOperator).getValue() = ["borrow", "consume", "copy", "unsafe"] and
-        prefix1.isEmpty() and
-        prefix2.isEmpty()
-      )
     or
     hasResultValue(n2) and
     n1 = n2.(ArrayLiteral).getAnElement() and
