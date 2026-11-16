@@ -481,6 +481,14 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     default predicate inConditionalContext(AstNode n, ConditionKind kind) { none() }
 
     /**
+     * Holds if `n` is in a conditional context, but has a constant value.
+     *
+     * This predicate is only relevant for AST constructs that are not already
+     * handled by this library.
+     */
+    default predicate constantCondition(AstNode n, ConditionalSuccessor t) { none() }
+
+    /**
      * Holds if `e` is executed in pre-order. This is typical for expressions
      * that are pure control-flow constructions without calculation or side
      * effects, such as `ConditionalExpr` and `Switch` expressions.
@@ -967,6 +975,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     private predicate constantCondition(AstNode n, ConditionalSuccessor t) {
+      Input1::constantCondition(n, t)
+      or
       n.(BooleanLiteral).getValue() = t.(BooleanSuccessor).getValue()
       or
       exists(Case c, int i |
