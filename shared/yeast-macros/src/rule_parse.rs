@@ -375,7 +375,7 @@ fn split_arrow(input: TokenStream) -> Result<(TokenStream, TokenStream)> {
     }
 }
 
-fn split_guard(input: TokenStream) -> Result<(TokenStream, Option<syn::Expr>)> {
+pub(crate) fn split_guard(input: TokenStream) -> Result<(TokenStream, Option<syn::Expr>)> {
     let tokens = input.into_iter().collect::<Vec<_>>();
     let guard_index = tokens
         .iter()
