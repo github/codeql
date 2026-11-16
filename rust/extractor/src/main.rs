@@ -91,8 +91,10 @@ fn should_extract_included_file(
     generated_source_root: &Path,
     file: &Path,
     source_kind: SourceKind,
+    selected_project_source: bool,
 ) -> bool {
     source_kind == SourceKind::Library
+        || !selected_project_source
         || source_files.contains(file)
         || file.starts_with(generated_source_root)
         || (is_non_rust_include_target(file) && !is_excluded_source_directory(source_files, file))
@@ -119,12 +121,18 @@ impl<'a> Extractor<'a> {
         self.source_files.contains(file) || file.starts_with(&self.generated_source_root)
     }
 
-    fn should_extract_included_file(&self, file: &Path, source_kind: SourceKind) -> bool {
+    fn should_extract_included_file(
+        &self,
+        file: &Path,
+        source_kind: SourceKind,
+        selected_project_source: bool,
+    ) -> bool {
         should_extract_included_file(
             &self.source_files,
             &self.generated_source_root,
             file,
             source_kind,
+            selected_project_source,
         )
     }
 
@@ -133,6 +141,7 @@ impl<'a> Extractor<'a> {
         rust_analyzer: &RustAnalyzer,
         file: &Path,
         source_kind: SourceKind,
+        selected_project_source: bool,
     ) -> Vec<PathBuf> {
         self.archiver.archive(file);
         let before_parse = Instant::now();
@@ -179,7 +188,7 @@ impl<'a> Extractor<'a> {
         translator.emit_truncated_diagnostics_message();
         translator.included_file_steps.retain(|step| {
             step.file.as_ref().is_none_or(|file| {
-                if self.should_extract_included_file(file, source_kind) {
+                if self.should_extract_included_file(file, source_kind, selected_project_source) {
                     self.archiver.archive(file);
                     true
                 } else {
@@ -220,7 +229,12 @@ impl<'a> Extractor<'a> {
             if selected_source {
                 self.extracted_source_files.insert(file.clone());
             }
-            let modules = self.extract(&RustAnalyzer::new(vfs, semantics), &file, source_kind);
+            let modules = self.extract(
+                &RustAnalyzer::new(vfs, semantics),
+                &file,
+                source_kind,
+                selected_source,
+            );
             if selected_source {
                 pending.extend(modules.into_iter().filter(|module| {
                     self.is_selected_source(module) && !self.source_files.contains(module)
@@ -233,9 +247,15 @@ impl<'a> Extractor<'a> {
         &mut self,
         file: &Path,
         source_kind: SourceKind,
+        selected_project_source: bool,
         err: RustAnalyzerNoSemantics,
     ) {
-        self.extract(&RustAnalyzer::from(err), file, source_kind);
+        self.extract(
+            &RustAnalyzer::from(err),
+            file,
+            source_kind,
+            selected_project_source,
+        );
     }
 
     pub fn load_manifest(
@@ -333,6 +353,7 @@ impl<'a> Extractor<'a> {
             self.extract_without_semantics(
                 file,
                 SourceKind::Source,
+                true,
                 RustAnalyzerNoSemantics::warning("no manifest found"),
             );
         }
@@ -447,8 +468,8 @@ fn main() -> anyhow::Result<()> {
                     Ok(()) => {
                         extractor.extract_with_semantics(file, &semantics, &vfs, source_mode, true)
                     }
-                    Err(e) => extractor.extract_without_semantics(file, source_mode, e),
-                }
+                    Err(e) => extractor.extract_without_semantics(file, source_mode, true, e),
+                };
             }
             // Fast path when there is no ambiguity in dependency extraction.
             if dependency_extraction_ambiguity {
@@ -463,6 +484,7 @@ fn main() -> anyhow::Result<()> {
                 extractor.extract_without_semantics(
                     file,
                     SourceKind::Source,
+                    true,
                     RustAnalyzerNoSemantics::warning("unable to load manifest"),
                 );
             }
@@ -509,6 +531,7 @@ fn main() -> anyhow::Result<()> {
                     extractor.extract_without_semantics(
                         &file,
                         library_mode,
+                        false,
                         RustAnalyzerNoSemantics::warning("unable to reload manifest"),
                     );
                     dependencies.extracted(&file);
@@ -527,7 +550,8 @@ fn main() -> anyhow::Result<()> {
             extractor.extract_without_semantics(
                 &path,
                 SourceKind::Library,
-                RustAnalyzerNoSemantics::default(),
+                false,
+                Default::default(),
             );
         }
     }
@@ -570,13 +594,23 @@ mod tests {
             &source_files,
             &generated_source_root,
             &extensionless_target,
-            SourceKind::Source
+            SourceKind::Source,
+            true,
         ));
         assert!(!should_extract_included_file(
             &source_files,
             &generated_source_root,
             &ignored_target,
-            SourceKind::Source
+            SourceKind::Source,
+            true,
+        ));
+
+        assert!(should_extract_included_file(
+            &source_files,
+            &generated_source_root,
+            &ignored_target,
+            SourceKind::Source,
+            false,
         ));
 
         fs::remove_dir_all(root).unwrap();

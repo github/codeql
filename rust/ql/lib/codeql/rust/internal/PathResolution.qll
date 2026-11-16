@@ -138,7 +138,7 @@ private NamedItemNode getANamedNonModuleChildSuccessor(
   result = getAChildSuccessor0(item, name, _) and
   ns = result.getNamespace() and
   not result instanceof ModuleItemNode and
-  getEffectivePositionKey(result, positionKey)
+  effectivePositionKey(result, positionKey)
 }
 
 bindingset[component]
@@ -160,23 +160,26 @@ private string getLocationKey(AstNode node) {
 }
 
 cached
-private predicate getEffectivePositionKey(AstNode node, string key) {
-  exists(MacroItems included, MacroCall call, string parentKey |
-    included = node.getParentNode*() and
-    included = call.getMacroCallExpansion() and
-    included.getFile() = node.getFile() and
-    included.getFile() != call.getFile() and
-    getEffectivePositionKey(call, parentKey) and
-    key = parentKey + "/" + getLocationKey(node)
+private predicate effectivePositionKey(AstNode node, string key) {
+  (node instanceof NamedItemNode or node instanceof MacroCall) and
+  (
+    exists(MacroItems included, MacroCall call, string parentKey |
+      included = node.getParentNode*() and
+      included = call.getMacroCallExpansion() and
+      included.getFile() = node.getFile() and
+      included.getFile() != call.getFile() and
+      effectivePositionKey(call, parentKey) and
+      key = parentKey + "/" + getLocationKey(node)
+    )
+    or
+    not exists(MacroItems included, MacroCall call |
+      included = node.getParentNode*() and
+      included = call.getMacroCallExpansion() and
+      included.getFile() = node.getFile() and
+      included.getFile() != call.getFile()
+    ) and
+    key = getLocationKey(node)
   )
-  or
-  not exists(MacroItems included, MacroCall call |
-    included = node.getParentNode*() and
-    included = call.getMacroCallExpansion() and
-    included.getFile() = node.getFile() and
-    included.getFile() != call.getFile()
-  ) and
-  key = getLocationKey(node)
 }
 
 pragma[nomagic]
