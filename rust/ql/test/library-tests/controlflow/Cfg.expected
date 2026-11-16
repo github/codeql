@@ -180,9 +180,9 @@ edges
 | test.rs:33:16:33:21 | Before ... == ... | test.rs:33:16:33:16 | i |  |
 | test.rs:33:21:33:21 | 1 | test.rs:33:16:33:21 | ... == ... |  |
 | test.rs:33:23:35:13 | { ... } | test.rs:34:17:34:22 | ExprStmt |  |
-| test.rs:34:17:34:21 | [break] break | test.rs:28:9:40:9 | After loop { ... } | break |
-| test.rs:34:17:34:21 | break | test.rs:34:17:34:21 | [break] break |  |
-| test.rs:34:17:34:22 | ExprStmt | test.rs:34:17:34:21 | break |  |
+| test.rs:34:17:34:21 | Before break | test.rs:34:17:34:21 | break |  |
+| test.rs:34:17:34:21 | break | test.rs:28:9:40:9 | After loop { ... } | break |
+| test.rs:34:17:34:22 | ExprStmt | test.rs:34:17:34:21 | Before break |  |
 | test.rs:36:13:38:13 | After ExprStmt | test.rs:39:13:39:21 | Before ... = ... |  |
 | test.rs:36:13:38:13 | After if ... {...} | test.rs:36:13:38:13 | After ExprStmt |  |
 | test.rs:36:13:38:13 | ExprStmt | test.rs:36:13:38:13 | if ... {...} |  |
@@ -242,9 +242,9 @@ edges
 | test.rs:47:20:47:20 | b | test.rs:47:20:47:20 | After b [false] | false |
 | test.rs:47:20:47:20 | b | test.rs:47:20:47:20 | After b [true] | true |
 | test.rs:47:22:49:17 | { ... } | test.rs:48:21:48:26 | ExprStmt |  |
-| test.rs:48:21:48:25 | [break] break | test.rs:46:13:53:13 | After 'inner: loop { ... } | break |
-| test.rs:48:21:48:25 | break | test.rs:48:21:48:25 | [break] break |  |
-| test.rs:48:21:48:26 | ExprStmt | test.rs:48:21:48:25 | break |  |
+| test.rs:48:21:48:25 | Before break | test.rs:48:21:48:25 | break |  |
+| test.rs:48:21:48:25 | break | test.rs:46:13:53:13 | After 'inner: loop { ... } | break |
+| test.rs:48:21:48:26 | ExprStmt | test.rs:48:21:48:25 | Before break |  |
 | test.rs:49:24:51:17 | After if b {...} | test.rs:47:17:51:17 | After if b {...} else {...} |  |
 | test.rs:49:24:51:17 | if b {...} | test.rs:49:27:49:27 | b |  |
 | test.rs:49:27:49:27 | After b [false] | test.rs:49:24:51:17 | After if b {...} |  |
@@ -252,12 +252,12 @@ edges
 | test.rs:49:27:49:27 | b | test.rs:49:27:49:27 | After b [false] | false |
 | test.rs:49:27:49:27 | b | test.rs:49:27:49:27 | After b [true] | true |
 | test.rs:49:29:51:17 | { ... } | test.rs:50:21:50:33 | ExprStmt |  |
-| test.rs:50:21:50:32 | [break] break 'outer | test.rs:45:9:54:9 | After 'outer: loop { ... } | break |
-| test.rs:50:21:50:32 | break 'outer | test.rs:50:21:50:32 | [break] break 'outer |  |
-| test.rs:50:21:50:33 | ExprStmt | test.rs:50:21:50:32 | break 'outer |  |
-| test.rs:52:17:52:28 | [break] break 'inner | test.rs:46:13:53:13 | After 'inner: loop { ... } | break |
-| test.rs:52:17:52:28 | break 'inner | test.rs:52:17:52:28 | [break] break 'inner |  |
-| test.rs:52:17:52:29 | ExprStmt | test.rs:52:17:52:28 | break 'inner |  |
+| test.rs:50:21:50:32 | Before break 'outer | test.rs:50:21:50:32 | break 'outer |  |
+| test.rs:50:21:50:32 | break 'outer | test.rs:45:9:54:9 | After 'outer: loop { ... } | break |
+| test.rs:50:21:50:33 | ExprStmt | test.rs:50:21:50:32 | Before break 'outer |  |
+| test.rs:52:17:52:28 | Before break 'inner | test.rs:52:17:52:28 | break 'inner |  |
+| test.rs:52:17:52:28 | break 'inner | test.rs:46:13:53:13 | After 'inner: loop { ... } | break |
+| test.rs:52:17:52:29 | ExprStmt | test.rs:52:17:52:28 | Before break 'inner |  |
 | test.rs:55:9:55:12 | true | test.rs:44:48:56:5 | After { ... } |  |
 | test.rs:58:5:70:5 | Entry | test.rs:58:34:58:34 | Before b |  |
 | test.rs:58:34:58:34 | After b [match] | test.rs:58:48:70:5 | { ... } |  |
@@ -377,9 +377,9 @@ edges
 | test.rs:90:17:90:21 | Before ... > ... | test.rs:90:17:90:17 | i |  |
 | test.rs:90:21:90:21 | 0 | test.rs:90:17:90:21 | ... > ... |  |
 | test.rs:90:24:92:13 | { ... } | test.rs:91:17:91:22 | ExprStmt |  |
-| test.rs:91:17:91:21 | [break] break | test.rs:88:9:94:9 | After while b { ... } | break |
-| test.rs:91:17:91:21 | break | test.rs:91:17:91:21 | [break] break |  |
-| test.rs:91:17:91:22 | ExprStmt | test.rs:91:17:91:21 | break |  |
+| test.rs:91:17:91:21 | Before break | test.rs:91:17:91:21 | break |  |
+| test.rs:91:17:91:21 | break | test.rs:88:9:94:9 | After while b { ... } | break |
+| test.rs:91:17:91:22 | ExprStmt | test.rs:91:17:91:21 | Before break |  |
 | test.rs:93:13:93:13 | b | test.rs:93:17:93:21 | false |  |
 | test.rs:93:13:93:21 | ... = ... | test.rs:93:13:93:21 | After ... = ... |  |
 | test.rs:93:13:93:21 | After ... = ... | test.rs:93:13:93:22 | After ExprStmt |  |
@@ -433,9 +433,9 @@ edges
 | test.rs:100:17:100:22 | Before ... == ... | test.rs:100:17:100:17 | x |  |
 | test.rs:100:22:100:22 | 5 | test.rs:100:17:100:22 | ... == ... |  |
 | test.rs:100:25:102:13 | { ... } | test.rs:101:17:101:22 | ExprStmt |  |
-| test.rs:101:17:101:21 | [break] break | test.rs:99:9:103:9 | After while ... { ... } | break |
-| test.rs:101:17:101:21 | break | test.rs:101:17:101:21 | [break] break |  |
-| test.rs:101:17:101:22 | ExprStmt | test.rs:101:17:101:21 | break |  |
+| test.rs:101:17:101:21 | Before break | test.rs:101:17:101:21 | break |  |
+| test.rs:101:17:101:21 | break | test.rs:99:9:103:9 | After while ... { ... } | break |
+| test.rs:101:17:101:22 | ExprStmt | test.rs:101:17:101:21 | Before break |  |
 | test.rs:106:5:113:5 | Entry | test.rs:106:17:106:17 | Before j |  |
 | test.rs:106:5:113:5 | Normal Exit | test.rs:106:5:113:5 | Exit |  |
 | test.rs:106:17:106:17 | After j [match] | test.rs:106:25:113:5 | { ... } |  |
@@ -473,9 +473,9 @@ edges
 | test.rs:108:17:108:22 | Before ... == ... | test.rs:108:17:108:17 | i |  |
 | test.rs:108:22:108:22 | j | test.rs:108:17:108:22 | ... == ... |  |
 | test.rs:108:25:110:13 | { ... } | test.rs:109:17:109:22 | ExprStmt |  |
-| test.rs:109:17:109:21 | [break] break | test.rs:107:9:112:9 | After for ... in ... { ... } | break |
-| test.rs:109:17:109:21 | break | test.rs:109:17:109:21 | [break] break |  |
-| test.rs:109:17:109:22 | ExprStmt | test.rs:109:17:109:21 | break |  |
+| test.rs:109:17:109:21 | Before break | test.rs:109:17:109:21 | break |  |
+| test.rs:109:17:109:21 | break | test.rs:107:9:112:9 | After for ... in ... { ... } | break |
+| test.rs:109:17:109:22 | ExprStmt | test.rs:109:17:109:21 | Before break |  |
 | test.rs:111:13:111:13 | 1 | test.rs:111:13:111:14 | After ExprStmt |  |
 | test.rs:111:13:111:14 | After ExprStmt | test.rs:107:24:112:9 | After { ... } |  |
 | test.rs:111:13:111:14 | ExprStmt | test.rs:111:13:111:13 | 1 |  |
@@ -484,8 +484,8 @@ edges
 | test.rs:115:35:119:5 | { ... } | test.rs:116:9:118:9 | Before loop { ... } |  |
 | test.rs:116:9:118:9 | Before loop { ... } | test.rs:116:14:118:9 | { ... } |  |
 | test.rs:116:14:118:9 | { ... } | test.rs:117:13:117:27 | ExprStmt |  |
-| test.rs:117:13:117:26 | break ... | test.rs:117:19:117:26 | Before return 1 |  |
-| test.rs:117:13:117:27 | ExprStmt | test.rs:117:13:117:26 | break ... |  |
+| test.rs:117:13:117:26 | Before break ... | test.rs:117:19:117:26 | Before return 1 |  |
+| test.rs:117:13:117:27 | ExprStmt | test.rs:117:13:117:26 | Before break ... |  |
 | test.rs:117:19:117:26 | Before return 1 | test.rs:117:26:117:26 | 1 |  |
 | test.rs:117:19:117:26 | return 1 | test.rs:115:5:119:5 | Normal Exit | return |
 | test.rs:117:26:117:26 | 1 | test.rs:117:19:117:26 | return 1 |  |
@@ -944,13 +944,13 @@ edges
 | test.rs:215:16:215:20 | Before ... > ... | test.rs:215:16:215:16 | a |  |
 | test.rs:215:20:215:20 | 0 | test.rs:215:16:215:20 | ... > ... |  |
 | test.rs:215:22:217:13 | { ... } | test.rs:216:17:216:29 | ExprStmt |  |
-| test.rs:216:17:216:28 | [break] break ... | test.rs:214:13:219:9 | After loop { ... } [false] | break |
-| test.rs:216:17:216:28 | [break] break ... | test.rs:214:13:219:9 | After loop { ... } [true] | break |
-| test.rs:216:17:216:28 | break ... | test.rs:216:23:216:28 | Before ... > ... |  |
-| test.rs:216:17:216:29 | ExprStmt | test.rs:216:17:216:28 | break ... |  |
+| test.rs:216:17:216:28 | Before break ... | test.rs:216:23:216:28 | Before ... > ... |  |
+| test.rs:216:17:216:28 | break ... | test.rs:214:13:219:9 | After loop { ... } [false] | break |
+| test.rs:216:17:216:28 | break ... | test.rs:214:13:219:9 | After loop { ... } [true] | break |
+| test.rs:216:17:216:29 | ExprStmt | test.rs:216:17:216:28 | Before break ... |  |
 | test.rs:216:23:216:23 | a | test.rs:216:27:216:28 | 10 |  |
 | test.rs:216:23:216:28 | ... > ... | test.rs:216:23:216:28 | After ... > ... |  |
-| test.rs:216:23:216:28 | After ... > ... | test.rs:216:17:216:28 | [break] break ... |  |
+| test.rs:216:23:216:28 | After ... > ... | test.rs:216:17:216:28 | break ... |  |
 | test.rs:216:23:216:28 | Before ... > ... | test.rs:216:23:216:23 | a |  |
 | test.rs:216:27:216:28 | 10 | test.rs:216:23:216:28 | ... > ... |  |
 | test.rs:218:13:218:13 | a | test.rs:218:17:218:18 | 10 |  |
@@ -994,13 +994,13 @@ edges
 | test.rs:228:16:228:20 | Before ... > ... | test.rs:228:16:228:16 | a |  |
 | test.rs:228:20:228:20 | 0 | test.rs:228:16:228:20 | ... > ... |  |
 | test.rs:228:22:230:13 | { ... } | test.rs:229:17:229:36 | ExprStmt |  |
-| test.rs:229:17:229:35 | [break] break 'label ... | test.rs:227:13:232:9 | After 'label: loop { ... } [false] | break |
-| test.rs:229:17:229:35 | [break] break 'label ... | test.rs:227:13:232:9 | After 'label: loop { ... } [true] | break |
-| test.rs:229:17:229:35 | break 'label ... | test.rs:229:30:229:35 | Before ... > ... |  |
-| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | break 'label ... |  |
+| test.rs:229:17:229:35 | Before break 'label ... | test.rs:229:30:229:35 | Before ... > ... |  |
+| test.rs:229:17:229:35 | break 'label ... | test.rs:227:13:232:9 | After 'label: loop { ... } [false] | break |
+| test.rs:229:17:229:35 | break 'label ... | test.rs:227:13:232:9 | After 'label: loop { ... } [true] | break |
+| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | Before break 'label ... |  |
 | test.rs:229:30:229:30 | a | test.rs:229:34:229:35 | 10 |  |
 | test.rs:229:30:229:35 | ... > ... | test.rs:229:30:229:35 | After ... > ... |  |
-| test.rs:229:30:229:35 | After ... > ... | test.rs:229:17:229:35 | [break] break 'label ... |  |
+| test.rs:229:30:229:35 | After ... > ... | test.rs:229:17:229:35 | break 'label ... |  |
 | test.rs:229:30:229:35 | Before ... > ... | test.rs:229:30:229:30 | a |  |
 | test.rs:229:34:229:35 | 10 | test.rs:229:30:229:35 | ... > ... |  |
 | test.rs:231:13:231:13 | a | test.rs:231:17:231:18 | 10 |  |
@@ -1029,13 +1029,13 @@ edges
 | test.rs:240:13:242:9 | 'block: { ... } | test.rs:241:13:241:31 | ExprStmt |  |
 | test.rs:240:13:242:9 | After 'block: { ... } [false] | test.rs:244:16:246:9 | { ... } |  |
 | test.rs:240:13:242:9 | After 'block: { ... } [true] | test.rs:242:12:244:9 | { ... } |  |
-| test.rs:241:13:241:30 | [break] break 'block ... | test.rs:240:13:242:9 | After 'block: { ... } [false] | break |
-| test.rs:241:13:241:30 | [break] break 'block ... | test.rs:240:13:242:9 | After 'block: { ... } [true] | break |
-| test.rs:241:13:241:30 | break 'block ... | test.rs:241:26:241:30 | Before ... > ... |  |
-| test.rs:241:13:241:31 | ExprStmt | test.rs:241:13:241:30 | break 'block ... |  |
+| test.rs:241:13:241:30 | Before break 'block ... | test.rs:241:26:241:30 | Before ... > ... |  |
+| test.rs:241:13:241:30 | break 'block ... | test.rs:240:13:242:9 | After 'block: { ... } [false] | break |
+| test.rs:241:13:241:30 | break 'block ... | test.rs:240:13:242:9 | After 'block: { ... } [true] | break |
+| test.rs:241:13:241:31 | ExprStmt | test.rs:241:13:241:30 | Before break 'block ... |  |
 | test.rs:241:26:241:26 | a | test.rs:241:30:241:30 | 0 |  |
 | test.rs:241:26:241:30 | ... > ... | test.rs:241:26:241:30 | After ... > ... |  |
-| test.rs:241:26:241:30 | After ... > ... | test.rs:241:13:241:30 | [break] break 'block ... |  |
+| test.rs:241:26:241:30 | After ... > ... | test.rs:241:13:241:30 | break 'block ... |  |
 | test.rs:241:26:241:30 | Before ... > ... | test.rs:241:26:241:26 | a |  |
 | test.rs:241:30:241:30 | 0 | test.rs:241:26:241:30 | ... > ... |  |
 | test.rs:242:12:244:9 | After { ... } | test.rs:240:9:246:9 | After if ... {...} else {...} |  |
@@ -2511,10 +2511,10 @@ edges
 | test.rs:571:12:571:30 | condition_not_met(...) | test.rs:571:12:571:30 | After condition_not_met(...) [false] | false |
 | test.rs:571:12:571:30 | condition_not_met(...) | test.rs:571:12:571:30 | After condition_not_met(...) [true] | true |
 | test.rs:571:32:573:9 | { ... } | test.rs:572:13:572:27 | ExprStmt |  |
-| test.rs:572:13:572:26 | [break] break 'block 1 | test.rs:569:18:580:5 | After 'block: { ... } | break |
-| test.rs:572:13:572:26 | break 'block 1 | test.rs:572:26:572:26 | 1 |  |
-| test.rs:572:13:572:27 | ExprStmt | test.rs:572:13:572:26 | break 'block 1 |  |
-| test.rs:572:26:572:26 | 1 | test.rs:572:13:572:26 | [break] break 'block 1 |  |
+| test.rs:572:13:572:26 | Before break 'block 1 | test.rs:572:26:572:26 | 1 |  |
+| test.rs:572:13:572:26 | break 'block 1 | test.rs:569:18:580:5 | After 'block: { ... } | break |
+| test.rs:572:13:572:27 | ExprStmt | test.rs:572:13:572:26 | Before break 'block 1 |  |
+| test.rs:572:26:572:26 | 1 | test.rs:572:13:572:26 | break 'block 1 |  |
 | test.rs:574:9:574:21 | do_next_thing | test.rs:574:9:574:23 | do_next_thing(...) |  |
 | test.rs:574:9:574:23 | After do_next_thing(...) | test.rs:574:9:574:24 | After ExprStmt |  |
 | test.rs:574:9:574:23 | Before do_next_thing(...) | test.rs:574:9:574:21 | do_next_thing |  |
@@ -2532,10 +2532,10 @@ edges
 | test.rs:575:12:575:30 | condition_not_met(...) | test.rs:575:12:575:30 | After condition_not_met(...) [false] | false |
 | test.rs:575:12:575:30 | condition_not_met(...) | test.rs:575:12:575:30 | After condition_not_met(...) [true] | true |
 | test.rs:575:32:577:9 | { ... } | test.rs:576:13:576:27 | ExprStmt |  |
-| test.rs:576:13:576:26 | [break] break 'block 2 | test.rs:569:18:580:5 | After 'block: { ... } | break |
-| test.rs:576:13:576:26 | break 'block 2 | test.rs:576:26:576:26 | 2 |  |
-| test.rs:576:13:576:27 | ExprStmt | test.rs:576:13:576:26 | break 'block 2 |  |
-| test.rs:576:26:576:26 | 2 | test.rs:576:13:576:26 | [break] break 'block 2 |  |
+| test.rs:576:13:576:26 | Before break 'block 2 | test.rs:576:26:576:26 | 2 |  |
+| test.rs:576:13:576:26 | break 'block 2 | test.rs:569:18:580:5 | After 'block: { ... } | break |
+| test.rs:576:13:576:27 | ExprStmt | test.rs:576:13:576:26 | Before break 'block 2 |  |
+| test.rs:576:26:576:26 | 2 | test.rs:576:13:576:26 | break 'block 2 |  |
 | test.rs:578:9:578:21 | do_last_thing | test.rs:578:9:578:23 | do_last_thing(...) |  |
 | test.rs:578:9:578:23 | After do_last_thing(...) | test.rs:578:9:578:24 | After ExprStmt |  |
 | test.rs:578:9:578:23 | Before do_last_thing(...) | test.rs:578:9:578:21 | do_last_thing |  |
@@ -2576,10 +2576,10 @@ edges
 | test.rs:587:18:587:18 | y | test.rs:587:18:587:18 | y |  |
 | test.rs:587:23:587:23 | x | test.rs:587:13:587:19 | Some(...) |  |
 | test.rs:587:30:589:9 | { ... } | test.rs:588:13:588:27 | ExprStmt |  |
-| test.rs:588:13:588:26 | [break] break 'block 1 | test.rs:585:18:591:5 | After 'block: { ... } | break |
-| test.rs:588:13:588:26 | break 'block 1 | test.rs:588:26:588:26 | 1 |  |
-| test.rs:588:13:588:27 | ExprStmt | test.rs:588:13:588:26 | break 'block 1 |  |
-| test.rs:588:26:588:26 | 1 | test.rs:588:13:588:26 | [break] break 'block 1 |  |
+| test.rs:588:13:588:26 | Before break 'block 1 | test.rs:588:26:588:26 | 1 |  |
+| test.rs:588:13:588:26 | break 'block 1 | test.rs:585:18:591:5 | After 'block: { ... } | break |
+| test.rs:588:13:588:27 | ExprStmt | test.rs:588:13:588:26 | Before break 'block 1 |  |
+| test.rs:588:26:588:26 | 1 | test.rs:588:13:588:26 | break 'block 1 |  |
 | test.rs:590:9:590:9 | 0 | test.rs:585:18:591:5 | After 'block: { ... } |  |
 | test.rs:594:1:600:1 | Entry | test.rs:594:28:600:1 | { ... } |  |
 | test.rs:594:1:600:1 | Normal Exit | test.rs:594:1:600:1 | Exit |  |

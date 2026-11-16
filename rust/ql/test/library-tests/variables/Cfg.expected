@@ -500,7 +500,7 @@ edges
 | main.rs:112:1:119:1 | Normal Exit | main.rs:112:1:119:1 | Exit |  |
 | main.rs:112:19:119:1 | After { ... } | main.rs:112:1:119:1 | Normal Exit |  |
 | main.rs:112:19:119:1 | { ... } | main.rs:113:5:113:41 | let ... = ... |  |
-| main.rs:113:5:113:41 | After let ... = ... | main.rs:115:5:118:5 | while ... { ... } |  |
+| main.rs:113:5:113:41 | After let ... = ... | main.rs:115:5:118:5 | Before while ... { ... } |  |
 | main.rs:113:5:113:41 | let ... = ... | main.rs:113:13:113:40 | Before Some(...) |  |
 | main.rs:113:9:113:9 | After s [match] | main.rs:113:5:113:41 | After let ... = ... |  |
 | main.rs:113:9:113:9 | Before s | main.rs:113:9:113:9 | s |  |
@@ -516,8 +516,8 @@ edges
 | main.rs:113:18:113:39 | Before ...::from(...) | main.rs:113:18:113:29 | ...::from |  |
 | main.rs:113:31:113:38 | "Hello!" | main.rs:113:18:113:39 | ...::from(...) |  |
 | main.rs:115:5:118:5 | After while ... { ... } | main.rs:112:19:119:1 | After { ... } |  |
+| main.rs:115:5:118:5 | Before while ... { ... } | main.rs:115:5:118:5 | [LoopHeader] while ... { ... } |  |
 | main.rs:115:5:118:5 | [LoopHeader] while ... { ... } | main.rs:115:11:116:11 | let ... = s |  |
-| main.rs:115:5:118:5 | while ... { ... } | main.rs:115:5:118:5 | [LoopHeader] while ... { ... } |  |
 | main.rs:115:11:116:11 | After let ... = s [false] | main.rs:115:5:118:5 | After while ... { ... } |  |
 | main.rs:115:11:116:11 | After let ... = s [true] | main.rs:116:13:118:5 | { ... } |  |
 | main.rs:115:11:116:11 | let ... = s | main.rs:116:11:116:11 | s |  |
@@ -1608,9 +1608,9 @@ edges
 | main.rs:351:18:351:19 | 42 | main.rs:351:13:351:20 | Some(...) |  |
 | main.rs:352:5:362:5 | After ExprStmt | main.rs:364:5:364:26 | ExprStmt |  |
 | main.rs:352:5:362:5 | After while ... { ... } | main.rs:352:5:362:5 | After ExprStmt |  |
-| main.rs:352:5:362:5 | ExprStmt | main.rs:352:5:362:5 | while ... { ... } |  |
+| main.rs:352:5:362:5 | Before while ... { ... } | main.rs:352:5:362:5 | [LoopHeader] while ... { ... } |  |
+| main.rs:352:5:362:5 | ExprStmt | main.rs:352:5:362:5 | Before while ... { ... } |  |
 | main.rs:352:5:362:5 | [LoopHeader] while ... { ... } | main.rs:352:11:358:9 | ... && ... |  |
-| main.rs:352:5:362:5 | while ... { ... } | main.rs:352:5:362:5 | [LoopHeader] while ... { ... } |  |
 | main.rs:352:11:353:7 | After let ... = x [false] | main.rs:352:11:356:13 | After ... && ... [false] | false |
 | main.rs:352:11:353:7 | After let ... = x [true] | main.rs:355:5:356:13 | let ... = ... |  |
 | main.rs:352:11:353:7 | let ... = x | main.rs:353:7:353:7 | x |  |
@@ -1662,9 +1662,9 @@ edges
 | main.rs:360:9:360:21 | After ExprStmt | main.rs:361:9:361:14 | ExprStmt |  |
 | main.rs:360:9:360:21 | ExprStmt | main.rs:360:9:360:20 | Before print_i64(...) |  |
 | main.rs:360:19:360:19 | x | main.rs:360:9:360:20 | print_i64(...) |  |
-| main.rs:361:9:361:13 | [break] break | main.rs:352:5:362:5 | After while ... { ... } | break |
-| main.rs:361:9:361:13 | break | main.rs:361:9:361:13 | [break] break |  |
-| main.rs:361:9:361:14 | ExprStmt | main.rs:361:9:361:13 | break |  |
+| main.rs:361:9:361:13 | Before break | main.rs:361:9:361:13 | break |  |
+| main.rs:361:9:361:13 | break | main.rs:352:5:362:5 | After while ... { ... } | break |
+| main.rs:361:9:361:14 | ExprStmt | main.rs:361:9:361:13 | Before break |  |
 | main.rs:364:5:364:13 | print_i64 | main.rs:364:15:364:24 | Before x.unwrap() |  |
 | main.rs:364:5:364:25 | After print_i64(...) | main.rs:364:5:364:26 | After ExprStmt |  |
 | main.rs:364:5:364:25 | Before print_i64(...) | main.rs:364:5:364:13 | print_i64 |  |
@@ -2326,7 +2326,7 @@ edges
 | main.rs:522:1:529:1 | Normal Exit | main.rs:522:1:529:1 | Exit |  |
 | main.rs:522:19:529:1 | After { ... } | main.rs:522:1:529:1 | Normal Exit |  |
 | main.rs:522:19:529:1 | { ... } | main.rs:523:5:523:42 | let ... = ... |  |
-| main.rs:523:5:523:42 | After let ... = ... | main.rs:525:5:528:5 | for ... in ... { ... } |  |
+| main.rs:523:5:523:42 | After let ... = ... | main.rs:525:5:528:5 | Before for ... in ... { ... } |  |
 | main.rs:523:5:523:42 | let ... = ... | main.rs:523:13:523:41 | Before &... |  |
 | main.rs:523:9:523:9 | After v [match] | main.rs:523:5:523:42 | After let ... = ... |  |
 | main.rs:523:9:523:9 | Before v | main.rs:523:9:523:9 | v |  |
@@ -2342,9 +2342,9 @@ edges
 | main.rs:523:25:523:30 | "cake" | main.rs:523:33:523:40 | "coffee" |  |
 | main.rs:523:33:523:40 | "coffee" | main.rs:523:14:523:41 | [...] |  |
 | main.rs:525:5:528:5 | After for ... in ... { ... } | main.rs:522:19:529:1 | After { ... } |  |
+| main.rs:525:5:528:5 | Before for ... in ... { ... } | main.rs:526:12:526:12 | v |  |
 | main.rs:525:5:528:5 | [LoopHeader] for ... in ... { ... } | main.rs:525:5:528:5 | After for ... in ... { ... } |  |
 | main.rs:525:5:528:5 | [LoopHeader] for ... in ... { ... } | main.rs:525:9:525:12 | Before text |  |
-| main.rs:525:5:528:5 | for ... in ... { ... } | main.rs:526:12:526:12 | v |  |
 | main.rs:525:9:525:12 | After text [match] | main.rs:526:14:528:5 | { ... } |  |
 | main.rs:525:9:525:12 | Before text | main.rs:525:9:525:12 | text |  |
 | main.rs:525:9:525:12 | text | main.rs:525:9:525:12 | After text [match] | match |
@@ -3027,12 +3027,11 @@ edges
 | main.rs:675:9:675:21 | After ExprStmt | main.rs:674:12:676:5 | After { ... } |  |
 | main.rs:675:9:675:21 | ExprStmt | main.rs:675:9:675:20 | Before print_i64(...) |  |
 | main.rs:675:19:675:19 | x | main.rs:675:9:675:20 | print_i64(...) |  |
-| main.rs:684:5:686:5 | Entry | main.rs:684:15:684:23 | Before SelfParam |  |
+| main.rs:684:5:686:5 | Entry | main.rs:684:15:684:23 | SelfParam |  |
 | main.rs:684:5:686:5 | Normal Exit | main.rs:684:5:686:5 | Exit |  |
 | main.rs:684:15:684:23 | After SelfParam | main.rs:684:33:686:5 | { ... } |  |
-| main.rs:684:15:684:23 | Before SelfParam | main.rs:684:20:684:23 | self |  |
-| main.rs:684:15:684:23 | SelfParam | main.rs:684:15:684:23 | After SelfParam |  |
-| main.rs:684:20:684:23 | self | main.rs:684:15:684:23 | SelfParam |  |
+| main.rs:684:15:684:23 | SelfParam | main.rs:684:20:684:23 | self |  |
+| main.rs:684:20:684:23 | self | main.rs:684:15:684:23 | After SelfParam |  |
 | main.rs:684:33:686:5 | { ... } | main.rs:685:9:685:24 | ExprStmt |  |
 | main.rs:685:9:685:23 | Before return ... | main.rs:685:16:685:23 | Before self.val |  |
 | main.rs:685:9:685:23 | return ... | main.rs:684:5:686:5 | Normal Exit | return |
@@ -3041,21 +3040,19 @@ edges
 | main.rs:685:16:685:23 | After self.val | main.rs:685:9:685:23 | return ... |  |
 | main.rs:685:16:685:23 | Before self.val | main.rs:685:16:685:19 | self |  |
 | main.rs:685:16:685:23 | self.val | main.rs:685:16:685:23 | After self.val |  |
-| main.rs:688:5:690:5 | Entry | main.rs:688:11:688:14 | Before SelfParam |  |
+| main.rs:688:5:690:5 | Entry | main.rs:688:11:688:14 | SelfParam |  |
 | main.rs:688:5:690:5 | Normal Exit | main.rs:688:5:690:5 | Exit |  |
 | main.rs:688:11:688:14 | After SelfParam | main.rs:688:25:690:5 | { ... } |  |
-| main.rs:688:11:688:14 | Before SelfParam | main.rs:688:11:688:14 | self |  |
-| main.rs:688:11:688:14 | SelfParam | main.rs:688:11:688:14 | After SelfParam |  |
-| main.rs:688:11:688:14 | self | main.rs:688:11:688:14 | SelfParam |  |
+| main.rs:688:11:688:14 | SelfParam | main.rs:688:11:688:14 | self |  |
+| main.rs:688:11:688:14 | self | main.rs:688:11:688:14 | After SelfParam |  |
 | main.rs:688:25:690:5 | After { ... } | main.rs:688:5:690:5 | Normal Exit |  |
 | main.rs:688:25:690:5 | { ... } | main.rs:689:9:689:12 | self |  |
 | main.rs:689:9:689:12 | self | main.rs:688:25:690:5 | After { ... } |  |
-| main.rs:692:5:699:5 | Entry | main.rs:692:18:692:26 | Before SelfParam |  |
+| main.rs:692:5:699:5 | Entry | main.rs:692:18:692:26 | SelfParam |  |
 | main.rs:692:5:699:5 | Normal Exit | main.rs:692:5:699:5 | Exit |  |
 | main.rs:692:18:692:26 | After SelfParam | main.rs:692:29:699:5 | { ... } |  |
-| main.rs:692:18:692:26 | Before SelfParam | main.rs:692:23:692:26 | self |  |
-| main.rs:692:18:692:26 | SelfParam | main.rs:692:18:692:26 | After SelfParam |  |
-| main.rs:692:23:692:26 | self | main.rs:692:18:692:26 | SelfParam |  |
+| main.rs:692:18:692:26 | SelfParam | main.rs:692:23:692:26 | self |  |
+| main.rs:692:23:692:26 | self | main.rs:692:18:692:26 | After SelfParam |  |
 | main.rs:692:29:699:5 | After { ... } | main.rs:692:5:699:5 | Normal Exit |  |
 | main.rs:692:29:699:5 | { ... } | main.rs:693:9:696:10 | let ... = ... |  |
 | main.rs:693:9:696:10 | After let ... = ... | main.rs:697:9:697:13 | ExprStmt |  |
@@ -3278,12 +3275,11 @@ edges
 | main.rs:726:19:726:20 | After &z | main.rs:726:5:726:21 | print_i64_ref(...) |  |
 | main.rs:726:19:726:20 | Before &z | main.rs:726:20:726:20 | z |  |
 | main.rs:726:20:726:20 | z | main.rs:726:19:726:20 | &z |  |
-| main.rs:734:5:736:5 | Entry | main.rs:734:12:734:20 | Before SelfParam |  |
+| main.rs:734:5:736:5 | Entry | main.rs:734:12:734:20 | SelfParam |  |
 | main.rs:734:5:736:5 | Normal Exit | main.rs:734:5:736:5 | Exit |  |
 | main.rs:734:12:734:20 | After SelfParam | main.rs:734:23:736:5 | { ... } |  |
-| main.rs:734:12:734:20 | Before SelfParam | main.rs:734:17:734:20 | self |  |
-| main.rs:734:12:734:20 | SelfParam | main.rs:734:12:734:20 | After SelfParam |  |
-| main.rs:734:17:734:20 | self | main.rs:734:12:734:20 | SelfParam |  |
+| main.rs:734:12:734:20 | SelfParam | main.rs:734:17:734:20 | self |  |
+| main.rs:734:17:734:20 | self | main.rs:734:12:734:20 | After SelfParam |  |
 | main.rs:734:23:736:5 | After { ... } | main.rs:734:5:736:5 | Normal Exit |  |
 | main.rs:734:23:736:5 | { ... } | main.rs:735:9:735:36 | ExprStmt |  |
 | main.rs:735:9:735:13 | * ... | main.rs:735:9:735:13 | After * ... |  |
