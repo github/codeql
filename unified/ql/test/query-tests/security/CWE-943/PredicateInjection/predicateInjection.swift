@@ -36,3 +36,12 @@ func test() {
     NSPredicate(fromMetadataQueryString: remoteString) // $ Alert
     NSPredicate(fromMetadataQueryString: safeString) // Safe
 }
+
+func testConstructedFormats() {
+    let remoteString = String(contentsOf: URL(string: "https://example.com/")!) // $ Source
+
+    NSPredicate(format: "SELF LIKE \(remoteString)") // $ Alert
+    NSPredicate(format: "SELF LIKE " + remoteString) // $ Alert
+    NSPredicate(format: "SELF LIKE %@", remoteString) // Safe: bind the value, not the format
+    NSPredicate(format: "SELF LIKE %@", argumentArray: [remoteString]) // Safe
+}
