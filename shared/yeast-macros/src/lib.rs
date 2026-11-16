@@ -71,6 +71,22 @@ pub fn query_match_with_schema_and_context(input: TokenStream) -> TokenStream {
 }
 
 /// Declare a matcher namespace for one AST schema.
+///
+/// ```ignore
+/// yeast::query_match_schema! {
+///     swift_input,
+///     "swift_node_types.yml",
+/// }
+///
+/// use swift_input::{query_match, query_match_with_context};
+///
+/// yeast::query_match_schema! {
+///     swift_output,
+///     "ast_types.yml",
+/// }
+///
+/// use swift_output::query_match as output_query_match;
+/// ```
 #[proc_macro]
 pub fn query_match_schema(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
