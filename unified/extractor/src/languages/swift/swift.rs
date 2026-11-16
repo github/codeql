@@ -8,6 +8,13 @@ yeast::tree_schema! {
 
 use swift_tree::tree;
 
+yeast::query_match_schema! {
+    swift_output_query,
+    "ast_types.yml",
+}
+
+use swift_output_query::query_match as output_query_match;
+
 /// User context propagated from outer rules down to the inner rules that
 /// emit the corresponding output declarations, so that each emitted node
 /// is born with the outer information (name, type, modifiers, etc.)
@@ -76,10 +83,12 @@ fn implicit_parameterless_initializer(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
     members: &[yeast::OutputId],
 ) -> Option<yeast::OutputId> {
-    let has_explicit_initializer = members.iter().any(|member| {
-        ctx.output
-            .get_node(*member)
-            .is_some_and(|node| node.kind_name() == "constructor_declaration")
+    let has_explicit_initializer = members.iter().copied().any(|member| {
+        output_query_match!(
+            member,
+            (constructor_declaration) => { true },
+            _ => { false },
+        )
     });
     (!has_explicit_initializer).then(|| {
         tree!((constructor_declaration
