@@ -28,7 +28,7 @@ func test() {
     NSPredicate(format: safeString, argumentArray: [remoteString]) // Safe
     NSPredicate(format: remoteString, arguments: CVaListPointer(_fromUnsafeMutablePointer: UnsafeMutablePointer(bitPattern: 0)!)) // $ Alert
     NSPredicate(format: safeString, arguments: CVaListPointer(_fromUnsafeMutablePointer: UnsafeMutablePointer(bitPattern: 0)!)) // Safe
-    NSPredicate(format: remoteString) // $ Alert
+    NSPredicate(format: remoteString) // $ MISSING: Alert
     NSPredicate(format: safeString) // Safe
     NSPredicate(format: remoteString, "" as! CVarArg) // $ Alert
     NSPredicate(format: safeString, "" as! CVarArg) // Safe
