@@ -50,6 +50,16 @@ pub fn query(input: TokenStream) -> TokenStream {
     }
 }
 
+#[doc(hidden)]
+#[proc_macro]
+pub fn query_match_with_schema(input: TokenStream) -> TokenStream {
+    let input2: TokenStream2 = input.into();
+    match parse::parse_query_match_with_schema_top(input2) {
+        Ok(output) => output.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
+}
+
 /// Build a single AST node from a template, returning its `OutputId`.
 ///
 /// A top-level choice returns `Option<OutputId>`.

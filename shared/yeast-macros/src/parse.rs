@@ -52,9 +52,9 @@ impl QueryMatchArm {
             }
         }
 
-        let body = tokens.next().ok_or_else(|| {
-            syn::Error::new(Span::call_site(), "expected block after `=>`")
-        })?;
+        let body = tokens
+            .next()
+            .ok_or_else(|| syn::Error::new(Span::call_site(), "expected block after `=>`"))?;
         let body = syn::parse2(TokenStream::from(body))?;
 
         match tokens.next() {
@@ -87,6 +87,17 @@ pub fn parse_query_top(input: TokenStream) -> Result<TokenStream> {
             __pattern
         }
     })
+}
+
+fn parse_query_match(input: TokenStream, explicit_ctx: Option<Ident>) -> Result<TokenStream> {
+    Ok(syn::parse2::<QueryMatch>(input)?.lower(explicit_ctx))
+}
+
+pub fn parse_query_match_with_schema_top(input: TokenStream) -> Result<TokenStream> {
+    let mut tokens = input.into_iter().peekable();
+    let _schema = parse_string_arg(&mut tokens, "schema")?;
+    expect_punct(&mut tokens, ',', "expected `,` after schema path")?;
+    parse_query_match(tokens.collect(), None)
 }
 
 pub fn parse_tree_with_schema_top(input: TokenStream) -> Result<TokenStream> {

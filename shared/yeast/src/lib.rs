@@ -16,6 +16,8 @@ mod visitor;
 
 pub use range::{Point, Range};
 #[doc(hidden)]
+pub use yeast_macros::query_match_with_schema as __query_match_with_schema;
+#[doc(hidden)]
 pub use yeast_macros::tree_with_schema as __tree_with_schema;
 #[doc(hidden)]
 pub use yeast_macros::trees_with_schema as __trees_with_schema;
