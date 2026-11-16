@@ -1,3 +1,13 @@
+config_setting(
+    name = "use_cfs",
+    define_values = {"CODEQL_USE_CFS": "true"},
+)
+
+_NPM_INSTALL = select({
+    ":use_cfs": "gh cfs -- npm install",
+    "//conditions:default": "$$NPM install",
+})
+
 # Builds a zip file of the compiled typscript-parser-wrapper and its dependencies.
 genrule(
     name = "typescript",
@@ -25,11 +35,20 @@ genrule(
         "rm -rf $(RULEDIR)/inputs",
         "cp -L -R $$(dirname $(execpath package.json)) $(RULEDIR)/inputs",
         "cd $(RULEDIR)/inputs",
-        "$$NPM install",
+    ]) + "\n" + select({
+        ":use_cfs": "\n".join([
+            # gh cfs requires an executable named npm; retain the bundled npm version.
+            "mkdir -p $$TEMP/bin",
+            "ln -s $$NPM $$TEMP/bin/npm",
+            "export PATH=$$TEMP/bin:$$PATH",
+            "",
+        ]),
+        "//conditions:default": "",
+    }) + _NPM_INSTALL + "\n" + "\n".join([
         "$$NPM run build",
         "rm -rf node_modules",
         # Install again with only runtime deps
-        "$$NPM install --prod",
+    ]) + "\n" + _NPM_INSTALL + " --prod\n" + "\n".join([
         "mv node_modules build/",
         "mkdir -p typescript-parser-wrapper",
         "mv build/* typescript-parser-wrapper",
