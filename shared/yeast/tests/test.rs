@@ -993,10 +993,7 @@ fn test_choice_fallback_can_reuse_consumed_splice() {
 
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let items = vec![
-        tree!((identifier "x")),
-        tree!((identifier "y")),
-    ];
+    let items = vec![tree!((identifier "x")), tree!((identifier "y"))];
     let use_first = false;
     let root = tree!(
         (assignment
@@ -1178,8 +1175,7 @@ fn test_location_interpolation_materializes_context_iterator() {
     let mut ast = empty_output_ast(input);
     let mut user_ctx = BorrowedInterpolationContext::default();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let location =
-        tree!((identifier "location" location: {input_ast.get_root()}));
+    let location = tree!((identifier "location" location: {input_ast.get_root()}));
     ctx.locations.push(location);
 
     let call = tree!((call location: {ctx.locations.drain(..)}));
