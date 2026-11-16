@@ -448,24 +448,25 @@ private module Ast implements AstSig<Location> {
     Stmt getBody() { none() }
   }
 
-  class Switch extends AstNode {
-    Switch() { none() }
+  class Switch extends AstNode instanceof Rust::MatchExpr {
+    Switch() { exists(this.(Rust::MatchExpr).getAnArm()) }
 
-    Expr getExpr() { none() }
+    Expr getExpr() { result = this.(Rust::MatchExpr).getScrutinee() }
 
-    Case getCase(int index) { none() }
+    Case getCase(int index) { result = this.(Rust::MatchExpr).getArm(index) }
 
     Stmt getStmt(int index) { none() }
   }
 
-  class Case extends AstNode {
-    Case() { none() }
+  class Case extends AstNode instanceof Rust::MatchArm {
+    AstNode getPattern(int index) {
+      result = this.(Rust::MatchArm).getPat() and
+      index = 0
+    }
 
-    AstNode getPattern(int index) { none() }
+    Expr getGuard() { result = this.(Rust::MatchArm).getGuard().getCondition() }
 
-    Expr getGuard() { none() }
-
-    AstNode getBody() { none() }
+    AstNode getBody() { result = this.(Rust::MatchArm).getExpr() }
   }
 
   class DefaultCase extends Case {
@@ -564,8 +565,6 @@ private predicate cannotCauseMatchFailure(Rust::Pat pat) {
 private predicate guaranteedMatchPosition(Rust::Pat pat) {
   pat = any(Rust::LetStmt let | not let.hasLetElse()).getPat()
   or
-  pat = any(Rust::MatchExpr match).getLastArm().getPat()
-  or
   pat = any(Rust::Param p).getPat()
   or
   exists(Rust::Pat parent | guaranteedMatchPosition(parent) |
@@ -616,6 +615,8 @@ private module Input implements InputSig1, InputSig2 {
   predicate propagatesValue(Ast::AstNode child, Ast::AstNode parent) {
     child = parent.(Rust::MatchExpr).getAnArm().getExpr()
   }
+
+  predicate isExhaustive(Ast::Switch switch) { any() }
 
   predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
     kind.isBoolean() and
@@ -799,47 +800,14 @@ private module Input implements InputSig1, InputSig2 {
     )
   }
 
-  private predicate matchArmStart(Rust::MatchExpr match, int index, PreControlFlowNode n) {
-    n.isBefore(match.getArm(index).getPat())
-  }
-
-  private predicate matchArmBodyStart(Rust::MatchArm arm, PreControlFlowNode n) {
-    n.isBefore(arm.getGuard().getCondition())
-    or
-    not arm.hasGuard() and n.isBefore(arm.getExpr())
-  }
-
-  private predicate matchStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+  private predicate emptyMatchStep(PreControlFlowNode n1, PreControlFlowNode n2) {
     exists(Rust::MatchExpr match |
-      n1.isBefore(match) and n2.isBefore(match.getScrutinee())
-      or
-      n1.isAfter(match.getScrutinee()) and
+      not exists(match.getAnArm()) and
       (
-        matchArmStart(match, 0, n2)
+        n1.isBefore(match) and n2.isBefore(match.getScrutinee())
         or
-        not exists(match.getAnArm()) and n2.isAdditional(match, emptyMatchTag())
-      )
-      or
-      exists(int i, Rust::MatchArm arm | arm = match.getArm(i) |
-        isAfterMatch(n1, arm.getPat(), true) and matchArmBodyStart(arm, n2)
-        or
-        (
-          isAfterMatch(n1, arm.getPat(), false)
-          or
-          n1.isAfterFalse(arm.getGuard().getCondition())
-        ) and
-        matchArmStart(match, i + 1, n2)
-        or
-        n1.isAfterTrue(arm.getGuard().getCondition()) and
-        n2.isBefore(arm.getExpr())
-        or
-        exists(ConditionalSuccessor t |
-          n1.isAfterValue(arm.getExpr(), t) and
-          n2.isAfterValue(match, t)
-        )
-        or
-        n1.isAfter(arm.getExpr()) and
-        n2.isAfter(match)
+        n1.isAfter(match.getScrutinee()) and
+        n2.isAdditional(match, emptyMatchTag())
       )
     )
   }
@@ -1049,7 +1017,7 @@ private module Input implements InputSig1, InputSig2 {
     or
     letExprStep(n1, n2)
     or
-    matchStep(n1, n2)
+    emptyMatchStep(n1, n2)
     or
     patternStep(n1, n2)
     or
