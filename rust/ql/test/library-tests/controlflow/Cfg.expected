@@ -25,8 +25,7 @@ edges
 | cfg.rs:6:11:6:15 | value | cfg.rs:7:9:7:27 | ... => true |  |
 | cfg.rs:7:9:7:18 | After MacroPat [match] | cfg.rs:7:9:7:27 | After ... => true [match] | match |
 | cfg.rs:7:9:7:18 | After MacroPat [no-match] | cfg.rs:7:9:7:27 | After ... => true [no-match] | no-match |
-| cfg.rs:7:9:7:18 | MacroPat | cfg.rs:7:9:7:18 | [pattern-start] MacroPat | match |
-| cfg.rs:7:9:7:18 | [pattern-start] MacroPat | cfg.rs:7:13:7:18 | CfgPredPat |  |
+| cfg.rs:7:9:7:18 | MacroPat | cfg.rs:7:13:7:18 | CfgPredPat |  |
 | cfg.rs:7:9:7:27 | ... => true | cfg.rs:7:9:7:18 | MacroPat |  |
 | cfg.rs:7:9:7:27 | After ... => true [match] | cfg.rs:7:23:7:26 | true |  |
 | cfg.rs:7:9:7:27 | After ... => true [no-match] | cfg.rs:8:9:8:19 | _ => false |  |
@@ -411,8 +410,7 @@ edges
 | test.rs:99:19:99:25 | After Some(...) [match] | test.rs:99:15:99:39 | After let ... = ... [true] | true |
 | test.rs:99:19:99:25 | After Some(...) [no-match] | test.rs:99:15:99:39 | After let ... = ... [false] | false |
 | test.rs:99:19:99:25 | Some(...) | test.rs:99:19:99:25 | After Some(...) [no-match] | no-match |
-| test.rs:99:19:99:25 | Some(...) | test.rs:99:19:99:25 | [pattern-start] Some(...) | match |
-| test.rs:99:19:99:25 | [pattern-start] Some(...) | test.rs:99:24:99:24 | Before x |  |
+| test.rs:99:19:99:25 | Some(...) | test.rs:99:24:99:24 | Before x |  |
 | test.rs:99:24:99:24 | After x [match] | test.rs:99:19:99:25 | After Some(...) [match] | match |
 | test.rs:99:24:99:24 | Before x | test.rs:99:24:99:24 | x |  |
 | test.rs:99:24:99:24 | x | test.rs:99:24:99:24 | After x [match] | match |
@@ -600,8 +598,7 @@ edges
 | test.rs:146:16:146:22 | After Some(...) [match] | test.rs:146:12:146:26 | After let ... = a [true] | true |
 | test.rs:146:16:146:22 | After Some(...) [no-match] | test.rs:146:12:146:26 | After let ... = a [false] | false |
 | test.rs:146:16:146:22 | Some(...) | test.rs:146:16:146:22 | After Some(...) [no-match] | no-match |
-| test.rs:146:16:146:22 | Some(...) | test.rs:146:16:146:22 | [pattern-start] Some(...) | match |
-| test.rs:146:16:146:22 | [pattern-start] Some(...) | test.rs:146:21:146:21 | Before n |  |
+| test.rs:146:16:146:22 | Some(...) | test.rs:146:21:146:21 | Before n |  |
 | test.rs:146:21:146:21 | After n [match] | test.rs:146:16:146:22 | After Some(...) [match] | match |
 | test.rs:146:21:146:21 | Before n | test.rs:146:21:146:21 | n |  |
 | test.rs:146:21:146:21 | n | test.rs:146:21:146:21 | After n [match] | match |
@@ -631,8 +628,7 @@ edges
 | test.rs:154:16:154:22 | After Some(...) [match] | test.rs:154:12:154:26 | After let ... = a [true] | true |
 | test.rs:154:16:154:22 | After Some(...) [no-match] | test.rs:154:12:154:26 | After let ... = a [false] | false |
 | test.rs:154:16:154:22 | Some(...) | test.rs:154:16:154:22 | After Some(...) [no-match] | no-match |
-| test.rs:154:16:154:22 | Some(...) | test.rs:154:16:154:22 | [pattern-start] Some(...) | match |
-| test.rs:154:16:154:22 | [pattern-start] Some(...) | test.rs:154:21:154:21 | Before n |  |
+| test.rs:154:16:154:22 | Some(...) | test.rs:154:21:154:21 | Before n |  |
 | test.rs:154:21:154:21 | After n [match] | test.rs:154:16:154:22 | After Some(...) [match] | match |
 | test.rs:154:21:154:21 | Before n | test.rs:154:21:154:21 | n |  |
 | test.rs:154:21:154:21 | n | test.rs:154:21:154:21 | After n [match] | match |
@@ -1407,10 +1403,9 @@ edges
 | test.rs:327:9:331:9 | match maybe_digit { ... } | test.rs:327:15:327:25 | maybe_digit |  |
 | test.rs:327:15:327:25 | maybe_digit | test.rs:328:13:328:47 | ... if ... => ... |  |
 | test.rs:328:13:328:27 | ...::Some(...) | test.rs:328:13:328:27 | After ...::Some(...) [no-match] | no-match |
-| test.rs:328:13:328:27 | ...::Some(...) | test.rs:328:13:328:27 | [pattern-start] ...::Some(...) | match |
+| test.rs:328:13:328:27 | ...::Some(...) | test.rs:328:26:328:26 | Before x |  |
 | test.rs:328:13:328:27 | After ...::Some(...) [match] | test.rs:328:13:328:47 | After ... if ... => ... [match] | match |
 | test.rs:328:13:328:27 | After ...::Some(...) [no-match] | test.rs:328:13:328:47 | After ... if ... => ... [no-match] | no-match |
-| test.rs:328:13:328:27 | [pattern-start] ...::Some(...) | test.rs:328:26:328:26 | Before x |  |
 | test.rs:328:13:328:47 | ... if ... => ... | test.rs:328:13:328:27 | ...::Some(...) |  |
 | test.rs:328:13:328:47 | After ... if ... => ... [match] | test.rs:328:32:328:37 | Before ... < ... |  |
 | test.rs:328:13:328:47 | After ... if ... => ... [no-match] | test.rs:329:13:329:33 | ... => x |  |
@@ -1431,10 +1426,9 @@ edges
 | test.rs:328:42:328:46 | Before ... + ... | test.rs:328:42:328:42 | x |  |
 | test.rs:328:46:328:46 | 5 | test.rs:328:42:328:46 | ... + ... |  |
 | test.rs:329:13:329:27 | ...::Some(...) | test.rs:329:13:329:27 | After ...::Some(...) [no-match] | no-match |
-| test.rs:329:13:329:27 | ...::Some(...) | test.rs:329:13:329:27 | [pattern-start] ...::Some(...) | match |
+| test.rs:329:13:329:27 | ...::Some(...) | test.rs:329:26:329:26 | Before x |  |
 | test.rs:329:13:329:27 | After ...::Some(...) [match] | test.rs:329:13:329:33 | After ... => x [match] | match |
 | test.rs:329:13:329:27 | After ...::Some(...) [no-match] | test.rs:329:13:329:33 | After ... => x [no-match] | no-match |
-| test.rs:329:13:329:27 | [pattern-start] ...::Some(...) | test.rs:329:26:329:26 | Before x |  |
 | test.rs:329:13:329:33 | ... => x | test.rs:329:13:329:27 | ...::Some(...) |  |
 | test.rs:329:13:329:33 | After ... => x [match] | test.rs:329:32:329:32 | x |  |
 | test.rs:329:13:329:33 | After ... => x [no-match] | test.rs:330:13:330:30 | ...::None => 5 |  |
@@ -1480,10 +1474,9 @@ edges
 | test.rs:337:16:339:9 | { ... } | test.rs:338:13:338:23 | maybe_digit |  |
 | test.rs:338:13:338:23 | maybe_digit | test.rs:337:16:339:9 | After { ... } |  |
 | test.rs:340:13:340:27 | ...::Some(...) | test.rs:340:13:340:27 | After ...::Some(...) [no-match] | no-match |
-| test.rs:340:13:340:27 | ...::Some(...) | test.rs:340:13:340:27 | [pattern-start] ...::Some(...) | match |
+| test.rs:340:13:340:27 | ...::Some(...) | test.rs:340:26:340:26 | Before x |  |
 | test.rs:340:13:340:27 | After ...::Some(...) [match] | test.rs:340:13:340:37 | After ... => ... [match] | match |
 | test.rs:340:13:340:27 | After ...::Some(...) [no-match] | test.rs:340:13:340:37 | After ... => ... [no-match] | no-match |
-| test.rs:340:13:340:27 | [pattern-start] ...::Some(...) | test.rs:340:26:340:26 | Before x |  |
 | test.rs:340:13:340:37 | ... => ... | test.rs:340:13:340:27 | ...::Some(...) |  |
 | test.rs:340:13:340:37 | After ... => ... [match] | test.rs:340:32:340:36 | Before ... + ... |  |
 | test.rs:340:13:340:37 | After ... => ... [no-match] | test.rs:341:13:341:30 | ...::None => 5 |  |
@@ -1522,8 +1515,7 @@ edges
 | test.rs:347:13:347:19 | After Some(...) [match] | test.rs:347:13:347:25 | After ... => a [match] | match |
 | test.rs:347:13:347:19 | After Some(...) [no-match] | test.rs:347:13:347:25 | After ... => a [no-match] | no-match |
 | test.rs:347:13:347:19 | Some(...) | test.rs:347:13:347:19 | After Some(...) [no-match] | no-match |
-| test.rs:347:13:347:19 | Some(...) | test.rs:347:13:347:19 | [pattern-start] Some(...) | match |
-| test.rs:347:13:347:19 | [pattern-start] Some(...) | test.rs:347:18:347:18 | Before a |  |
+| test.rs:347:13:347:19 | Some(...) | test.rs:347:18:347:18 | Before a |  |
 | test.rs:347:13:347:25 | ... => a | test.rs:347:13:347:19 | Some(...) |  |
 | test.rs:347:13:347:25 | After ... => a [match] | test.rs:347:24:347:24 | a |  |
 | test.rs:347:13:347:25 | After ... => a [no-match] | test.rs:348:13:348:23 | _ => false |  |
@@ -1560,8 +1552,7 @@ edges
 | test.rs:354:13:354:21 | After Ok(...) [match] | test.rs:354:13:354:31 | After ... => value [match] | match |
 | test.rs:354:13:354:21 | After Ok(...) [no-match] | test.rs:354:13:354:31 | After ... => value [no-match] | no-match |
 | test.rs:354:13:354:21 | Ok(...) | test.rs:354:13:354:21 | After Ok(...) [no-match] | no-match |
-| test.rs:354:13:354:21 | Ok(...) | test.rs:354:13:354:21 | [pattern-start] Ok(...) | match |
-| test.rs:354:13:354:21 | [pattern-start] Ok(...) | test.rs:354:16:354:20 | Before value |  |
+| test.rs:354:13:354:21 | Ok(...) | test.rs:354:16:354:20 | Before value |  |
 | test.rs:354:13:354:31 | ... => value | test.rs:354:13:354:21 | Ok(...) |  |
 | test.rs:354:13:354:31 | After ... => value [match] | test.rs:354:26:354:30 | value |  |
 | test.rs:354:13:354:31 | After ... => value [no-match] | test.rs:355:13:355:41 | ... => ... |  |
@@ -1571,8 +1562,7 @@ edges
 | test.rs:354:16:354:20 | value | test.rs:354:16:354:20 | value |  |
 | test.rs:354:26:354:30 | value | test.rs:353:9:356:9 | After match r { ... } |  |
 | test.rs:355:13:355:22 | After Err(...) [match] | test.rs:355:13:355:41 | After ... => ... [match] | match |
-| test.rs:355:13:355:22 | Err(...) | test.rs:355:13:355:22 | [pattern-start] Err(...) | match |
-| test.rs:355:13:355:22 | [pattern-start] Err(...) | test.rs:355:17:355:21 | Before never |  |
+| test.rs:355:13:355:22 | Err(...) | test.rs:355:17:355:21 | Before never |  |
 | test.rs:355:13:355:41 | ... => ... | test.rs:355:13:355:22 | Err(...) |  |
 | test.rs:355:13:355:41 | After ... => ... [match] | test.rs:355:27:355:40 | Before match never { ... } |  |
 | test.rs:355:17:355:21 | After never [match] | test.rs:355:13:355:22 | After Err(...) [match] | match |
@@ -1596,8 +1586,7 @@ edges
 | test.rs:363:13:363:19 | After Some(...) [match] | test.rs:363:9:363:57 | After let ... = a else {...} |  |
 | test.rs:363:13:363:19 | After Some(...) [no-match] | test.rs:363:30:363:56 | { ... } |  |
 | test.rs:363:13:363:19 | Some(...) | test.rs:363:13:363:19 | After Some(...) [no-match] | no-match |
-| test.rs:363:13:363:19 | Some(...) | test.rs:363:13:363:19 | [pattern-start] Some(...) | match |
-| test.rs:363:13:363:19 | [pattern-start] Some(...) | test.rs:363:18:363:18 | Before n |  |
+| test.rs:363:13:363:19 | Some(...) | test.rs:363:18:363:18 | Before n |  |
 | test.rs:363:18:363:18 | After n [match] | test.rs:363:13:363:19 | After Some(...) [match] | match |
 | test.rs:363:18:363:18 | Before n | test.rs:363:18:363:18 | n |  |
 | test.rs:363:18:363:18 | n | test.rs:363:18:363:18 | After n [match] | match |
@@ -1661,8 +1650,7 @@ edges
 | test.rs:369:13:369:21 | After Some(...) [match] | test.rs:369:13:369:29 | After ... => ret [match] | match |
 | test.rs:369:13:369:21 | After Some(...) [no-match] | test.rs:369:13:369:29 | After ... => ret [no-match] | no-match |
 | test.rs:369:13:369:21 | Some(...) | test.rs:369:13:369:21 | After Some(...) [no-match] | no-match |
-| test.rs:369:13:369:21 | Some(...) | test.rs:369:13:369:21 | [pattern-start] Some(...) | match |
-| test.rs:369:13:369:21 | [pattern-start] Some(...) | test.rs:369:18:369:20 | Before ret |  |
+| test.rs:369:13:369:21 | Some(...) | test.rs:369:18:369:20 | Before ret |  |
 | test.rs:369:13:369:29 | ... => ret | test.rs:369:13:369:21 | Some(...) |  |
 | test.rs:369:13:369:29 | After ... => ret [match] | test.rs:369:26:369:28 | ret |  |
 | test.rs:369:13:369:29 | After ... => ret [no-match] | test.rs:370:13:370:33 | ... => ... |  |
@@ -1708,8 +1696,7 @@ edges
 | test.rs:388:9:390:9 | match st { ... } | test.rs:388:15:388:16 | st |  |
 | test.rs:388:15:388:16 | st | test.rs:389:13:389:33 | ... => 1 |  |
 | test.rs:389:13:389:27 | After MyStruct {...} [match] | test.rs:389:13:389:33 | After ... => 1 [match] | match |
-| test.rs:389:13:389:27 | MyStruct {...} | test.rs:389:13:389:27 | [pattern-start] MyStruct {...} | match |
-| test.rs:389:13:389:27 | [pattern-start] MyStruct {...} | test.rs:389:24:389:25 | .. |  |
+| test.rs:389:13:389:27 | MyStruct {...} | test.rs:389:24:389:25 | .. |  |
 | test.rs:389:13:389:33 | ... => 1 | test.rs:389:13:389:27 | MyStruct {...} |  |
 | test.rs:389:13:389:33 | After ... => 1 [match] | test.rs:389:32:389:32 | 1 |  |
 | test.rs:389:24:389:25 | .. | test.rs:389:24:389:25 | After .. [match] | match |
@@ -1729,8 +1716,7 @@ edges
 | test.rs:395:13:395:29 | After MyStruct {...} [match] | test.rs:395:13:395:35 | After ... => 0 [match] | match |
 | test.rs:395:13:395:29 | After MyStruct {...} [no-match] | test.rs:395:13:395:35 | After ... => 0 [no-match] | no-match |
 | test.rs:395:13:395:29 | MyStruct {...} | test.rs:395:13:395:29 | After MyStruct {...} [no-match] | no-match |
-| test.rs:395:13:395:29 | MyStruct {...} | test.rs:395:13:395:29 | [pattern-start] MyStruct {...} | match |
-| test.rs:395:13:395:29 | [pattern-start] MyStruct {...} | test.rs:395:27:395:27 | Before 1 |  |
+| test.rs:395:13:395:29 | MyStruct {...} | test.rs:395:27:395:27 | Before 1 |  |
 | test.rs:395:13:395:35 | ... => 0 | test.rs:395:13:395:29 | MyStruct {...} |  |
 | test.rs:395:13:395:35 | After ... => 0 [match] | test.rs:395:34:395:34 | 0 |  |
 | test.rs:395:13:395:35 | After ... => 0 [no-match] | test.rs:396:13:396:32 | ... => 3 |  |
@@ -1742,8 +1728,7 @@ edges
 | test.rs:395:27:395:27 | Before 1 | test.rs:395:27:395:27 | 1 |  |
 | test.rs:395:34:395:34 | 0 | test.rs:394:9:397:9 | After match st { ... } |  |
 | test.rs:396:13:396:26 | After MyStruct {...} [match] | test.rs:396:13:396:32 | After ... => 3 [match] | match |
-| test.rs:396:13:396:26 | MyStruct {...} | test.rs:396:13:396:26 | [pattern-start] MyStruct {...} | match |
-| test.rs:396:13:396:26 | [pattern-start] MyStruct {...} | test.rs:396:24:396:24 | Before x |  |
+| test.rs:396:13:396:26 | MyStruct {...} | test.rs:396:24:396:24 | Before x |  |
 | test.rs:396:13:396:32 | ... => 3 | test.rs:396:13:396:26 | MyStruct {...} |  |
 | test.rs:396:13:396:32 | After ... => 3 [match] | test.rs:396:31:396:31 | 3 |  |
 | test.rs:396:24:396:24 | After x [match] | test.rs:396:13:396:26 | After MyStruct {...} [match] | match |
@@ -1760,8 +1745,7 @@ edges
 | test.rs:401:15:401:16 | 42 | test.rs:402:13:402:21 | ... => 1 |  |
 | test.rs:402:13:402:15 | After RangePat [match] | test.rs:402:13:402:21 | After ... => 1 [match] | match |
 | test.rs:402:13:402:15 | After RangePat [no-match] | test.rs:402:13:402:21 | After ... => 1 [no-match] | no-match |
-| test.rs:402:13:402:15 | RangePat | test.rs:402:13:402:15 | [pattern-start] RangePat | match |
-| test.rs:402:13:402:15 | [pattern-start] RangePat | test.rs:402:15:402:15 | Before 0 |  |
+| test.rs:402:13:402:15 | RangePat | test.rs:402:15:402:15 | Before 0 |  |
 | test.rs:402:13:402:21 | ... => 1 | test.rs:402:13:402:15 | RangePat |  |
 | test.rs:402:13:402:21 | After ... => 1 [match] | test.rs:402:20:402:20 | 1 |  |
 | test.rs:402:13:402:21 | After ... => 1 [no-match] | test.rs:403:13:403:22 | ... => 2 |  |
@@ -1780,8 +1764,7 @@ edges
 | test.rs:403:13:403:13 | Before 1 | test.rs:403:13:403:13 | 1 |  |
 | test.rs:403:13:403:16 | After RangePat [match] | test.rs:403:13:403:22 | After ... => 2 [match] | match |
 | test.rs:403:13:403:16 | After RangePat [no-match] | test.rs:403:13:403:22 | After ... => 2 [no-match] | no-match |
-| test.rs:403:13:403:16 | RangePat | test.rs:403:13:403:16 | [pattern-start] RangePat | match |
-| test.rs:403:13:403:16 | [pattern-start] RangePat | test.rs:403:13:403:13 | Before 1 |  |
+| test.rs:403:13:403:16 | RangePat | test.rs:403:13:403:13 | Before 1 |  |
 | test.rs:403:13:403:22 | ... => 2 | test.rs:403:13:403:16 | RangePat |  |
 | test.rs:403:13:403:22 | After ... => 2 [match] | test.rs:403:21:403:21 | 2 |  |
 | test.rs:403:13:403:22 | After ... => 2 [no-match] | test.rs:404:13:404:21 | ... => 3 |  |
@@ -1800,8 +1783,7 @@ edges
 | test.rs:404:13:404:13 | Before 5 | test.rs:404:13:404:13 | 5 |  |
 | test.rs:404:13:404:15 | After RangePat [match] | test.rs:404:13:404:21 | After ... => 3 [match] | match |
 | test.rs:404:13:404:15 | After RangePat [no-match] | test.rs:404:13:404:21 | After ... => 3 [no-match] | no-match |
-| test.rs:404:13:404:15 | RangePat | test.rs:404:13:404:15 | [pattern-start] RangePat | match |
-| test.rs:404:13:404:15 | [pattern-start] RangePat | test.rs:404:13:404:13 | Before 5 |  |
+| test.rs:404:13:404:15 | RangePat | test.rs:404:13:404:13 | Before 5 |  |
 | test.rs:404:13:404:21 | ... => 3 | test.rs:404:13:404:15 | RangePat |  |
 | test.rs:404:13:404:21 | After ... => 3 [match] | test.rs:404:20:404:20 | 3 |  |
 | test.rs:404:13:404:21 | After ... => 3 [no-match] | test.rs:405:13:405:19 | _ => 4 |  |
@@ -1834,8 +1816,7 @@ edges
 | test.rs:411:17:411:17 | Before 1 | test.rs:411:17:411:17 | 1 |  |
 | test.rs:411:17:411:21 | After RangePat [match] | test.rs:411:13:411:13 | n |  |
 | test.rs:411:17:411:21 | After RangePat [no-match] | test.rs:411:13:411:21 | After n @ ... [no-match] | no-match |
-| test.rs:411:17:411:21 | RangePat | test.rs:411:17:411:21 | [pattern-start] RangePat | match |
-| test.rs:411:17:411:21 | [pattern-start] RangePat | test.rs:411:17:411:17 | Before 1 |  |
+| test.rs:411:17:411:21 | RangePat | test.rs:411:17:411:17 | Before 1 |  |
 | test.rs:411:20:411:21 | 10 | test.rs:411:20:411:21 | 10 |  |
 | test.rs:411:20:411:21 | 10 | test.rs:411:20:411:21 | After 10 [match] | match |
 | test.rs:411:20:411:21 | 10 | test.rs:411:20:411:21 | After 10 [no-match] | no-match |
@@ -1884,8 +1865,7 @@ edges
 | test.rs:419:25:419:25 | Before 1 | test.rs:419:25:419:25 | 1 |  |
 | test.rs:419:25:419:29 | After RangePat [match] | test.rs:419:21:419:21 | n |  |
 | test.rs:419:25:419:29 | After RangePat [no-match] | test.rs:419:13:419:29 | After ref mut n @ ... [no-match] | no-match |
-| test.rs:419:25:419:29 | RangePat | test.rs:419:25:419:29 | [pattern-start] RangePat | match |
-| test.rs:419:25:419:29 | [pattern-start] RangePat | test.rs:419:25:419:25 | Before 1 |  |
+| test.rs:419:25:419:29 | RangePat | test.rs:419:25:419:25 | Before 1 |  |
 | test.rs:419:28:419:29 | 10 | test.rs:419:28:419:29 | 10 |  |
 | test.rs:419:28:419:29 | 10 | test.rs:419:28:419:29 | After 10 [match] | match |
 | test.rs:419:28:419:29 | 10 | test.rs:419:28:419:29 | After 10 [no-match] | no-match |
@@ -1936,8 +1916,7 @@ edges
 | test.rs:426:19:426:19 | b | test.rs:426:15:426:20 | TupleExpr |  |
 | test.rs:427:13:427:18 | After TuplePat [match] | test.rs:427:13:427:24 | After ... => 2 [match] | match |
 | test.rs:427:13:427:18 | After TuplePat [no-match] | test.rs:427:13:427:24 | After ... => 2 [no-match] | no-match |
-| test.rs:427:13:427:18 | TuplePat | test.rs:427:13:427:18 | [pattern-start] TuplePat | match |
-| test.rs:427:13:427:18 | [pattern-start] TuplePat | test.rs:427:14:427:14 | Before 1 |  |
+| test.rs:427:13:427:18 | TuplePat | test.rs:427:14:427:14 | Before 1 |  |
 | test.rs:427:13:427:24 | ... => 2 | test.rs:427:13:427:18 | TuplePat |  |
 | test.rs:427:13:427:24 | After ... => 2 [match] | test.rs:427:23:427:23 | 2 |  |
 | test.rs:427:13:427:24 | After ... => 2 [no-match] | test.rs:428:13:428:25 | ... => 3 |  |
@@ -1952,8 +1931,7 @@ edges
 | test.rs:427:23:427:23 | 2 | test.rs:426:9:430:9 | After match ... { ... } |  |
 | test.rs:428:13:428:19 | After TuplePat [match] | test.rs:428:13:428:25 | After ... => 3 [match] | match |
 | test.rs:428:13:428:19 | After TuplePat [no-match] | test.rs:428:13:428:25 | After ... => 3 [no-match] | no-match |
-| test.rs:428:13:428:19 | TuplePat | test.rs:428:13:428:19 | [pattern-start] TuplePat | match |
-| test.rs:428:13:428:19 | [pattern-start] TuplePat | test.rs:428:14:428:15 | .. |  |
+| test.rs:428:13:428:19 | TuplePat | test.rs:428:14:428:15 | .. |  |
 | test.rs:428:13:428:25 | ... => 3 | test.rs:428:13:428:19 | TuplePat |  |
 | test.rs:428:13:428:25 | After ... => 3 [match] | test.rs:428:24:428:24 | 3 |  |
 | test.rs:428:13:428:25 | After ... => 3 [no-match] | test.rs:429:13:429:22 | ... => 4 |  |
@@ -1967,8 +1945,7 @@ edges
 | test.rs:428:18:428:18 | Before 2 | test.rs:428:18:428:18 | 2 |  |
 | test.rs:428:24:428:24 | 3 | test.rs:426:9:430:9 | After match ... { ... } |  |
 | test.rs:429:13:429:16 | After TuplePat [match] | test.rs:429:13:429:22 | After ... => 4 [match] | match |
-| test.rs:429:13:429:16 | TuplePat | test.rs:429:13:429:16 | [pattern-start] TuplePat | match |
-| test.rs:429:13:429:16 | [pattern-start] TuplePat | test.rs:429:14:429:15 | .. |  |
+| test.rs:429:13:429:16 | TuplePat | test.rs:429:14:429:15 | .. |  |
 | test.rs:429:13:429:22 | ... => 4 | test.rs:429:13:429:16 | TuplePat |  |
 | test.rs:429:13:429:22 | After ... => 4 [match] | test.rs:429:21:429:21 | 4 |  |
 | test.rs:429:14:429:15 | .. | test.rs:429:14:429:15 | After .. [match] | match |
@@ -2039,8 +2016,7 @@ edges
 | test.rs:443:13:443:22 | After Some(...) [match] | test.rs:443:13:443:36 | After ... \| ... [match] | match |
 | test.rs:443:13:443:22 | After Some(...) [no-match] | test.rs:443:26:443:36 | Some(...) |  |
 | test.rs:443:13:443:22 | Some(...) | test.rs:443:13:443:22 | After Some(...) [no-match] | no-match |
-| test.rs:443:13:443:22 | Some(...) | test.rs:443:13:443:22 | [pattern-start] Some(...) | match |
-| test.rs:443:13:443:22 | [pattern-start] Some(...) | test.rs:443:18:443:21 | Before true |  |
+| test.rs:443:13:443:22 | Some(...) | test.rs:443:18:443:21 | Before true |  |
 | test.rs:443:13:443:36 | ... \| ... | test.rs:443:13:443:22 | Some(...) |  |
 | test.rs:443:13:443:36 | After ... \| ... [match] | test.rs:443:13:443:42 | After ... => 4 [match] | match |
 | test.rs:443:13:443:42 | ... => 4 | test.rs:443:13:443:36 | ... \| ... |  |
@@ -2052,8 +2028,7 @@ edges
 | test.rs:443:18:443:21 | true | test.rs:443:18:443:21 | After true [no-match] | no-match |
 | test.rs:443:18:443:21 | true | test.rs:443:18:443:21 | true |  |
 | test.rs:443:26:443:36 | After Some(...) [match] | test.rs:443:13:443:36 | After ... \| ... [match] | match |
-| test.rs:443:26:443:36 | Some(...) | test.rs:443:26:443:36 | [pattern-start] Some(...) | match |
-| test.rs:443:26:443:36 | [pattern-start] Some(...) | test.rs:443:31:443:35 | Before false |  |
+| test.rs:443:26:443:36 | Some(...) | test.rs:443:31:443:35 | Before false |  |
 | test.rs:443:31:443:35 | After false [match] | test.rs:443:26:443:36 | After Some(...) [match] | match |
 | test.rs:443:31:443:35 | Before false | test.rs:443:31:443:35 | false |  |
 | test.rs:443:31:443:35 | false | test.rs:443:31:443:35 | After false [match] | match |
@@ -2087,8 +2062,7 @@ edges
 | test.rs:455:13:455:23 | Before 2 | test.rs:455:13:455:23 | 2 |  |
 | test.rs:455:13:455:25 | After MacroPat [match] | test.rs:455:13:455:31 | After ... => 3 [match] | match |
 | test.rs:455:13:455:25 | After MacroPat [no-match] | test.rs:455:13:455:31 | After ... => 3 [no-match] | no-match |
-| test.rs:455:13:455:25 | MacroPat | test.rs:455:13:455:25 | [pattern-start] MacroPat | match |
-| test.rs:455:13:455:25 | [pattern-start] MacroPat | test.rs:455:13:455:23 | 1 \| 2 |  |
+| test.rs:455:13:455:25 | MacroPat | test.rs:455:13:455:23 | 1 \| 2 |  |
 | test.rs:455:13:455:31 | ... => 3 | test.rs:455:13:455:25 | MacroPat |  |
 | test.rs:455:13:455:31 | After ... => 3 [match] | test.rs:455:30:455:30 | 3 |  |
 | test.rs:455:13:455:31 | After ... => 3 [no-match] | test.rs:456:13:456:19 | _ => 4 |  |
@@ -2109,17 +2083,15 @@ edges
 | test.rs:461:9:464:9 | After match pair { ... } | test.rs:460:73:465:5 | After { ... } |  |
 | test.rs:461:9:464:9 | match pair { ... } | test.rs:461:15:461:18 | pair |  |
 | test.rs:461:15:461:18 | pair | test.rs:462:13:462:41 | ... => n |  |
-| test.rs:462:13:462:35 | &... | test.rs:462:13:462:35 | [pattern-start] &... | match |
+| test.rs:462:13:462:35 | &... | test.rs:462:14:462:35 | TuplePat |  |
 | test.rs:462:13:462:35 | After &... [match] | test.rs:462:13:462:41 | After ... => n [match] | match |
 | test.rs:462:13:462:35 | After &... [no-match] | test.rs:462:13:462:41 | After ... => n [no-match] | no-match |
-| test.rs:462:13:462:35 | [pattern-start] &... | test.rs:462:14:462:35 | TuplePat |  |
 | test.rs:462:13:462:41 | ... => n | test.rs:462:13:462:35 | &... |  |
 | test.rs:462:13:462:41 | After ... => n [match] | test.rs:462:40:462:40 | n |  |
 | test.rs:462:13:462:41 | After ... => n [no-match] | test.rs:463:13:463:19 | _ => 0 |  |
 | test.rs:462:14:462:35 | After TuplePat [match] | test.rs:462:13:462:35 | After &... [match] | match |
 | test.rs:462:14:462:35 | After TuplePat [no-match] | test.rs:462:13:462:35 | After &... [no-match] | no-match |
-| test.rs:462:14:462:35 | TuplePat | test.rs:462:14:462:35 | [pattern-start] TuplePat | match |
-| test.rs:462:14:462:35 | [pattern-start] TuplePat | test.rs:462:15:462:15 | Before n |  |
+| test.rs:462:14:462:35 | TuplePat | test.rs:462:15:462:15 | Before n |  |
 | test.rs:462:15:462:15 | After n [match] | test.rs:462:18:462:34 | MyStruct {...} |  |
 | test.rs:462:15:462:15 | Before n | test.rs:462:15:462:15 | n |  |
 | test.rs:462:15:462:15 | n | test.rs:462:15:462:15 | After n [match] | match |
@@ -2127,8 +2099,7 @@ edges
 | test.rs:462:18:462:34 | After MyStruct {...} [match] | test.rs:462:14:462:35 | After TuplePat [match] | match |
 | test.rs:462:18:462:34 | After MyStruct {...} [no-match] | test.rs:462:14:462:35 | After TuplePat [no-match] | no-match |
 | test.rs:462:18:462:34 | MyStruct {...} | test.rs:462:18:462:34 | After MyStruct {...} [no-match] | no-match |
-| test.rs:462:18:462:34 | MyStruct {...} | test.rs:462:18:462:34 | [pattern-start] MyStruct {...} | match |
-| test.rs:462:18:462:34 | [pattern-start] MyStruct {...} | test.rs:462:32:462:32 | _ |  |
+| test.rs:462:18:462:34 | MyStruct {...} | test.rs:462:32:462:32 | _ |  |
 | test.rs:462:32:462:32 | After _ [match] | test.rs:462:18:462:34 | After MyStruct {...} [match] | match |
 | test.rs:462:32:462:32 | _ | test.rs:462:32:462:32 | After _ [match] | match |
 | test.rs:462:40:462:40 | n | test.rs:461:9:464:9 | After match pair { ... } |  |
@@ -2151,8 +2122,7 @@ edges
 | test.rs:477:13:477:34 | After StructVariant {...} [match] | test.rs:477:13:477:40 | After ... => 0 [match] | match |
 | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:477:13:477:40 | After ... => 0 [no-match] | no-match |
 | test.rs:477:13:477:34 | StructVariant {...} | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | no-match |
-| test.rs:477:13:477:34 | StructVariant {...} | test.rs:477:13:477:34 | [pattern-start] StructVariant {...} | match |
-| test.rs:477:13:477:34 | [pattern-start] StructVariant {...} | test.rs:477:32:477:32 | _ |  |
+| test.rs:477:13:477:34 | StructVariant {...} | test.rs:477:32:477:32 | _ |  |
 | test.rs:477:13:477:40 | ... => 0 | test.rs:477:13:477:34 | StructVariant {...} |  |
 | test.rs:477:13:477:40 | After ... => 0 [match] | test.rs:477:39:477:39 | 0 |  |
 | test.rs:477:13:477:40 | After ... => 0 [no-match] | test.rs:478:13:478:33 | ... => 1 |  |
@@ -2162,8 +2132,7 @@ edges
 | test.rs:478:13:478:27 | After TupleVariant(...) [match] | test.rs:478:13:478:33 | After ... => 1 [match] | match |
 | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] | test.rs:478:13:478:33 | After ... => 1 [no-match] | no-match |
 | test.rs:478:13:478:27 | TupleVariant(...) | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] | no-match |
-| test.rs:478:13:478:27 | TupleVariant(...) | test.rs:478:13:478:27 | [pattern-start] TupleVariant(...) | match |
-| test.rs:478:13:478:27 | [pattern-start] TupleVariant(...) | test.rs:478:26:478:26 | _ |  |
+| test.rs:478:13:478:27 | TupleVariant(...) | test.rs:478:26:478:26 | _ |  |
 | test.rs:478:13:478:33 | ... => 1 | test.rs:478:13:478:27 | TupleVariant(...) |  |
 | test.rs:478:13:478:33 | After ... => 1 [match] | test.rs:478:32:478:32 | 1 |  |
 | test.rs:478:13:478:33 | After ... => 1 [no-match] | test.rs:479:13:479:29 | ... => 2 |  |
@@ -2565,8 +2534,7 @@ edges
 | test.rs:587:13:587:19 | After Some(...) [match] | test.rs:587:9:589:10 | After let ... = x else {...} |  |
 | test.rs:587:13:587:19 | After Some(...) [no-match] | test.rs:587:30:589:9 | { ... } |  |
 | test.rs:587:13:587:19 | Some(...) | test.rs:587:13:587:19 | After Some(...) [no-match] | no-match |
-| test.rs:587:13:587:19 | Some(...) | test.rs:587:13:587:19 | [pattern-start] Some(...) | match |
-| test.rs:587:13:587:19 | [pattern-start] Some(...) | test.rs:587:18:587:18 | Before y |  |
+| test.rs:587:13:587:19 | Some(...) | test.rs:587:18:587:18 | Before y |  |
 | test.rs:587:18:587:18 | After y [match] | test.rs:587:13:587:19 | After Some(...) [match] | match |
 | test.rs:587:18:587:18 | Before y | test.rs:587:18:587:18 | y |  |
 | test.rs:587:18:587:18 | y | test.rs:587:18:587:18 | After y [match] | match |
