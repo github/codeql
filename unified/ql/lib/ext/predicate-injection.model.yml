@@ -3,8 +3,4 @@ extensions:
       pack: codeql/unified-all
       extensible: legacySinkModel
     data: # namespace, type, subtypes, name, signature, ext, input, kind, provenance
-      - ["", "NSPredicate", true, "init(argumentArray:format:)", "", "", "Argument[format:]", "predicate-injection", "manual"]
-      - ["", "NSPredicate", true, "init(arguments:format:)", "", "", "Argument[format:]", "predicate-injection", "manual"]
-      - ["", "NSPredicate", true, "init(_:format:)", "", "", "Argument[format:]", "predicate-injection", "manual"]
       - ["", "NSPredicate", true, "init(format:)", "", "", "Argument[format:]", "predicate-injection", "manual"]
-      - ["", "NSPredicate", true, "init(fromMetadataQueryString:)", "", "", "Argument[fromMetadataQueryString:]", "predicate-injection", "manual"]
