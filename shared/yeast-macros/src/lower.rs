@@ -285,20 +285,23 @@ fn capture_bindings<'a>(
     captures
         .map(|capture| {
             let name_string = capture.name.to_string();
-            let name = Ident::new(&name_string, Span::call_site());
+            let name = &capture.name;
             match (capture.cardinality.multiple, capture.cardinality.required) {
                 (true, _) => {
                     quote! {
+                        #[allow(unused_variables)]
                         let #name: Vec<#id_type> = #captures_ident.get_all(#name_string);
                     }
                 }
                 (false, false) => {
                     quote! {
+                        #[allow(unused_variables)]
                         let #name: Option<#id_type> = #captures_ident.get_opt(#name_string);
                     }
                 }
                 (false, true) => {
                     quote! {
+                        #[allow(unused_variables)]
                         let #name: #id_type = #captures_ident.get_var(#name_string).unwrap();
                     }
                 }
