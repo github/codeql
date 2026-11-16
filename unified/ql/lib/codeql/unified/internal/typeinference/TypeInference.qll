@@ -639,6 +639,14 @@ module Input3 implements InputSig3 {
     prefix1.isEmpty() and
     prefix2.isEmpty()
     or
+    n2 =
+      any(UnaryExpr expr |
+        n1 = expr.getOperand() and
+        expr.getOperator().(PrefixOperator).getValue() = ["borrow", "consume", "copy", "unsafe"] and
+        prefix1.isEmpty() and
+        prefix2.isEmpty()
+      )
+    or
     hasResultValue(n2) and
     n1 = n2.(ArrayLiteral).getAnElement() and
     prefix1.isEmpty() and

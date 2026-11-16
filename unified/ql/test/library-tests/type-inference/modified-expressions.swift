@@ -1,31 +1,31 @@
 func testBorrowTypeInference() {
   let value = 42
-  let borrowed = borrow value  // $ MISSING: type=borrowed:Int
+  let borrowed = borrow value  // $ type=borrowed:Int
   let original = Generic(v: "borrow")  // $ target=Generic.init
-  let generic = borrow original  // $ MISSING: type=generic@Generic<T>:String
-  let result = generic.getValue()  // $ MISSING: type=result:String target=Generic.getValue
+  let generic = borrow original  // $ type=generic@Generic<T>:String
+  let result = generic.getValue()  // $ type=result:String target=Generic.getValue
 }
 
 func testConsumeTypeInference() {
   let value = 42
-  let consumed = consume value  // $ MISSING: type=consumed:Int
+  let consumed = consume value  // $ type=consumed:Int
   let original = Generic(v: "consume")  // $ target=Generic.init
-  let generic = consume original  // $ MISSING: type=generic@Generic<T>:String
-  let result = generic.getValue()  // $ MISSING: type=result:String target=Generic.getValue
+  let generic = consume original  // $ type=generic@Generic<T>:String
+  let result = generic.getValue()  // $ type=result:String target=Generic.getValue
 }
 
 func testCopyTypeInference() {
   let value = 42
-  let copied = copy value  // $ MISSING: type=copied:Int
+  let copied = copy value  // $ type=copied:Int
   let original = Generic(v: "copy")  // $ target=Generic.init
-  let generic = copy original  // $ MISSING: type=generic@Generic<T>:String
-  let result = generic.getValue()  // $ MISSING: type=result:String target=Generic.getValue
+  let generic = copy original  // $ type=generic@Generic<T>:String
+  let result = generic.getValue()  // $ type=result:String target=Generic.getValue
 }
 
 func testUnsafeTypeInference() {
   let value = 42
-  let unchecked = unsafe value  // $ MISSING: type=unchecked:Int
+  let unchecked = unsafe value  // $ type=unchecked:Int
   let original = Generic(v: "unsafe")  // $ target=Generic.init
-  let generic = unsafe original  // $ MISSING: type=generic@Generic<T>:String
-  let result = generic.getValue()  // $ MISSING: type=result:String target=Generic.getValue
+  let generic = unsafe original  // $ type=generic@Generic<T>:String
+  let result = generic.getValue()  // $ type=result:String target=Generic.getValue
 }
