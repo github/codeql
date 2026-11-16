@@ -1,4 +1,15 @@
-use crate::{captures::Captures, Ast, TreeId};
+use crate::{build::BuildCtx, captures::Captures, Ast, TreeId};
+
+#[doc(hidden)]
+pub trait QueryTarget: TreeId {
+    fn query_ast<'a, C>(self, ctx: &'a BuildCtx<'_, C>) -> &'a Ast<Self>;
+}
+
+impl QueryTarget for crate::Id {
+    fn query_ast<'a, C>(self, ctx: &'a BuildCtx<'_, C>) -> &'a Ast<Self> {
+        ctx.ast()
+    }
+}
 
 #[derive(Debug, Clone)]
 pub enum QueryNode {
