@@ -253,10 +253,8 @@ private module Ast implements AstSig<Location> {
     }
   }
 
-  class LabeledStmt extends Stmt {
-    LabeledStmt() { none() }
-
-    Stmt getStmt() { none() }
+  class LabeledStmt extends Stmt instanceof Rust::LabelableExpr {
+    Stmt getStmt() { result = this }
   }
 
   class Expr extends AstNode {
@@ -339,9 +337,7 @@ private module Ast implements AstSig<Location> {
     Expr getCollection() { result = super.getIterable() }
   }
 
-  class BreakStmt extends Stmt {
-    BreakStmt() { none() }
-  }
+  class BreakStmt extends Stmt instanceof Rust::BreakExpr { }
 
   class ContinueStmt extends Stmt instanceof Rust::ContinueExpr { }
 
@@ -520,28 +516,14 @@ private module Input implements InputSig1, InputSig2 {
 
   predicate cfgCachedStageRef() { CfgCachedStage::ref() }
 
-  private newtype TLabel =
-    TTarget(Rust::Expr target) or
-    TTargetValue(Rust::Expr target, boolean value) { value = true or value = false }
-
-  class Label extends TLabel {
-    string toString() {
-      exists(Rust::Expr target |
-        this = TTarget(target) and
-        result = target.toString()
-      )
-      or
-      exists(Rust::Expr target, boolean value |
-        this = TTargetValue(target, value) and
-        result = target.toString() + " [" + value.toString() + "]"
-      )
-    }
-  }
+  class Label = string;
 
   predicate hasLabel(Ast::AstNode n, Label l) {
-    l = TTarget(n.(Rust::ContinueExpr).getTarget())
+    l = n.(Rust::BreakExpr).getLifetime().getText()
     or
-    l = TTarget(n.(Rust::LoopingExpr))
+    l = n.(Rust::ContinueExpr).getLifetime().getText()
+    or
+    l = n.(Rust::LabelableExpr).getLabel().getLifetime().getText()
   }
 
   class CallableContext = Void;
@@ -560,8 +542,6 @@ private module Input implements InputSig1, InputSig2 {
   predicate preOrderExpr(Ast::Expr e) {
     e instanceof Rust::LetExpr
     or
-    e instanceof Rust::BreakExpr
-    or
     e instanceof Rust::TryExpr
     or
     e instanceof Rust::Pat and
@@ -570,8 +550,6 @@ private module Input implements InputSig1, InputSig2 {
   }
 
   predicate postOrInOrder(Ast::AstNode n) { n instanceof Rust::MacroCall }
-
-  private string breakTag() { result = "[break]" }
 
   private string tryReturnTag() { result = "[try-return]" }
 
@@ -585,9 +563,6 @@ private module Input implements InputSig1, InputSig2 {
     (
       t instanceof DirectSuccessor and
       (
-        n instanceof Rust::BreakExpr and
-        tag = breakTag()
-        or
         n instanceof Rust::TryExpr and tag = tryReturnTag()
         or
         n instanceof Rust::MatchExpr and
@@ -805,20 +780,6 @@ private module Input implements InputSig1, InputSig2 {
     )
   }
 
-  private predicate breakStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-    exists(Rust::BreakExpr break |
-      n1.isBefore(break) and
-      (
-        n2.isBefore(break.getExpr())
-        or
-        not exists(break.getExpr()) and n2.isAdditional(break, breakTag())
-      )
-      or
-      n1.isAfter(break.getExpr()) and
-      n2.isAdditional(break, breakTag())
-    )
-  }
-
   private predicate tryStep(PreControlFlowNode n1, PreControlFlowNode n2) {
     exists(Rust::TryExpr try |
       n1.isBefore(try) and n2.isBefore(try.getExpr())
@@ -833,16 +794,6 @@ private module Input implements InputSig1, InputSig2 {
   predicate beginAbruptCompletion(
     Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
   ) {
-    exists(Rust::BreakExpr break |
-      ast = break and
-      c.getSuccessorType() instanceof BreakSuccessor and
-      always = true and
-      (
-        n.isAdditional(break, breakTag()) and
-        c.hasLabel(TTarget(break.getTarget()))
-      )
-    )
-    or
     ast instanceof Rust::TryExpr and
     n.isAdditional(ast, tryReturnTag()) and
     c.asSimpleAbruptCompletion() instanceof ReturnSuccessor and
@@ -859,22 +810,8 @@ private module Input implements InputSig1, InputSig2 {
     always = true
   }
 
-  private predicate targetChild(Rust::Expr target, Ast::AstNode child) {
-    child = Ast::getChild(target, _)
-  }
-
   predicate endAbruptCompletion(Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
-    exists(Rust::Expr target |
-      targetChild(target, ast) and
-      c.getSuccessorType() instanceof BreakSuccessor
-    |
-      c.hasLabel(TTarget(target)) and n.isAfter(target)
-      or
-      exists(boolean value |
-        c.hasLabel(TTargetValue(target, value)) and
-        n.isAfterValue(target, any(BooleanSuccessor t | t.getValue() = value))
-      )
-    )
+    none()
   }
 
   predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
@@ -887,8 +824,6 @@ private module Input implements InputSig1, InputSig2 {
     patternStep(n1, n2)
     or
     loopStep(n1, n2)
-    or
-    breakStep(n1, n2)
     or
     tryStep(n1, n2)
   }
