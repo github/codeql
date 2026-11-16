@@ -9,7 +9,7 @@ be able to change the overall meaning of the predicate.
 </overview>
 <recommendation>
 <p>
-When building a predicate from untrusted data, keep the format string constant and pass untrusted values separately as arguments to format placeholders, or supply values for substitution variables before evaluation. Do not interpolate, append, or concatenate untrusted data into the predicate's format string.
+When building a predicate from untrusted data, you should either pass it to the appropriate <code>arguments</code> parameter during initialization, or as an array of substitution variables before evaluation. You should not append or concatenate it to the body of the predicate.
 </p>
 </recommendation>
 <example>
@@ -18,7 +18,7 @@ In the following insecure example, <code>NSPredicate</code> is built directly fr
 </p>
 <sample src="PredicateInjectionBad.swift" />
 <p>
-A better way to do this is to pass the untrusted value as a separate argument to the constant format string's <code>%@</code> placeholder. This prevents attackers from altering the meaning of the predicate, even if they control the externally obtained data, as seen in the following secure example:
+A better way to do this is to use the <code>arguments</code> parameter of <code>NSPredicate</code>'s initializer. This prevents attackers from altering the meaning of the predicate, even if they control the externally obtained data, as seen in the following secure example:
 </p>
 <sample src="PredicateInjectionGood.swift" />
 </example>
