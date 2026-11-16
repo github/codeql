@@ -466,10 +466,10 @@ fn main() -> anyhow::Result<()> {
             for file in files {
                 match extractor.load_source(file, &semantics, &vfs) {
                     Ok(()) => {
-                        extractor.extract_with_semantics(file, &semantics, &vfs, source_mode, true)
+                        extractor.extract_with_semantics(file, &semantics, &vfs, source_mode, true);
                     }
                     Err(e) => extractor.extract_without_semantics(file, source_mode, true, e),
-                };
+                }
             }
             // Fast path when there is no ambiguity in dependency extraction.
             if dependency_extraction_ambiguity {
@@ -551,7 +551,7 @@ fn main() -> anyhow::Result<()> {
                 &path,
                 SourceKind::Library,
                 false,
-                Default::default(),
+                RustAnalyzerNoSemantics::default(),
             );
         }
     }

@@ -263,7 +263,7 @@ impl<'db> Translator<'db> {
     }
 
     fn location_in_file(
-        &mut self,
+        &self,
         file_id: Option<EditionedFileId>,
         range: TextRange,
     ) -> Option<(Label<generated::File>, LineCol, LineCol)> {
@@ -303,10 +303,20 @@ impl<'db> Translator<'db> {
     fn included_file_context_for(&mut self, expanded: &SyntaxNode) -> Option<EditionedFileId> {
         let semantics = self.semantics.as_ref()?;
         let macro_file = semantics.hir_file_for(expanded).macro_file()?;
+        let include = macro_file.loc(semantics.db);
+        if self
+            .file_id
+            .and_then(|file_id| {
+                semantics
+                    .file_to_module_defs(file_id.file_id(semantics.db))
+                    .next()
+            })
+            .is_some_and(|module| module.krate(semantics.db) != include.krate.into())
+        {
+            return None;
+        }
         // rust-analyzer resolves the built-in, its argument, and nested include paths.
-        let file_id = macro_file
-            .loc(semantics.db)
-            .include_file_id(semantics.db, macro_file)?;
+        let file_id = include.include_file_id(semantics.db, macro_file)?;
         if Some(file_id) != self.file_id
             && let std::collections::hash_map::Entry::Vacant(entry) =
                 self.included_files.entry(file_id)
