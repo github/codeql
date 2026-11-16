@@ -1157,7 +1157,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 expression: @e)
             =>
             expr {
-                let op = format!("try{}", m.map(|m| ctx.source_text(m)).unwrap_or_default());
+                let op = format!("try{}", m.map_or_default(|m| ctx.source_text(m)));
                 let operator = tree!((prefix_operator #{op}
                     location: {keyword}
                     location: {m}));
@@ -1198,7 +1198,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((catchClause body: @body) => (catch_clause body: {body})),
         // As expression (type cast) — as?, as!
         rule!((asExpr expression: @val asKeyword: @@keyword questionOrExclamationMark: _? @@mark type: @ty) => type_cast_expr {
-            let op = format!("as{}", mark.map(|m| ctx.source_text(m)).unwrap_or_default());
+            let op = format!("as{}", mark.map_or_default(|m| ctx.source_text(m)));
             let operator = tree!((infix_operator #{op}
                 location: {keyword}
                 location: {mark}));

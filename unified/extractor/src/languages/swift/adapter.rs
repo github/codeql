@@ -193,14 +193,12 @@ fn classify(node: &Value) -> Result<KindInfo, String> {
 /// Iterate over a node object's structural (field, value) pairs in a stable
 /// order, skipping metadata keys.
 fn field_entries(node: &Value) -> Vec<(&str, &Value)> {
-    node.as_object()
-        .map(|map| {
-            map.iter()
-                .filter(|(k, _)| !is_metadata_key(k))
-                .map(|(k, v)| (k.as_str(), v))
-                .collect()
-        })
-        .unwrap_or_default()
+    node.as_object().map_or_default(|map| {
+        map.iter()
+            .filter(|(k, _)| !is_metadata_key(k))
+            .map(|(k, v)| (k.as_str(), v))
+            .collect()
+    })
 }
 
 /// The child node objects held by a field value.

@@ -376,28 +376,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "chalk-derive"
-version = "0.104.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9ea9b1e80910f66ae87c772247591432032ef3f6a67367ff17f8343db05beafa"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.119",
- "synstructure",
-]
-
-[[package]]
-name = "chalk-ir"
-version = "0.104.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7047a516de16226cd17344d41a319d0ea1064bf9e60bd612ab341ab4a34bbfa8"
-dependencies = [
- "bitflags 2.13.2",
- "chalk-derive",
-]
-
-[[package]]
 name = "chrono"
 version = "0.4.45"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -488,7 +466,6 @@ name = "codeql-extractor"
 version = "0.2.0"
 dependencies = [
  "chrono",
- "encoding",
  "flate2",
  "globset",
  "num_cpus",
@@ -546,7 +523,6 @@ version = "0.1.0"
 dependencies = [
  "clap",
  "codeql-extractor",
- "encoding",
  "rayon",
  "regex",
  "serde",
@@ -566,7 +542,6 @@ name = "codeql-rust"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "chalk-ir",
  "chrono",
  "clap",
  "codeql-extractor",

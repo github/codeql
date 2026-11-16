@@ -656,7 +656,6 @@ mod tests {
                 result.include_directories,
                 vec![path.clone(), path.join("dir2")]
             );
-            assert!(!result.unresolvable.is_empty());
             assert_eq!(
                 result.unresolvable,
                 vec![
@@ -817,7 +816,7 @@ mod tests {
 
             // This is empty since `foo.h` is in `system_files` and hence satisfied by
             // `compiler_defaults`.
-            assert!(result.include_directories.is_empty());
+            assert_eq!(result.include_directories, Vec::<PathBuf>::new());
         }
 
         #[test]

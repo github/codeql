@@ -139,8 +139,8 @@ impl LogWriter {
                 Ok(file) => self.inner = Some(std::io::BufWriter::new(file)),
             }
         }
-        if let Some(mut writer) = self.inner.as_mut() {
-            serde_json::to_writer(&mut writer, mesg)
+        if let Some(writer) = self.inner.as_mut() {
+            serde_json::to_writer(&mut *writer, mesg)
                 .unwrap_or_else(|e| tracing::debug!("Failed to write log entry: {}", e));
             writer
                 .write_all(b"\n")
