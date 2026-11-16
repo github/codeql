@@ -235,14 +235,14 @@ edges
 | main.rs:433:32:433:43 | STATIC_VALUE | main.rs:433:17:433:28 | static_value | provenance |  |
 | main.rs:436:13:436:24 | STATIC_VALUE | main.rs:427:5:427:46 | static STATIC_VALUE | provenance |  |
 | main.rs:436:28:436:37 | source(...) | main.rs:436:13:436:24 | STATIC_VALUE | provenance |  |
-| main.rs:466:55:469:5 | { ... } [Ok] | main.rs:473:14:473:39 | unwrapped_value_returned(...) [Ok] | provenance |  |
+| main.rs:466:55:469:5 | { ... } [Ok] | main.rs:478:14:478:39 | unwrapped_value_returned(...) [Ok] | provenance |  |
 | main.rs:467:13:467:13 | a [Ok, Ok] | main.rs:468:9:468:9 | a [Ok, Ok] | provenance |  |
 | main.rs:467:48:467:65 | Ok(...) [Ok, Ok] | main.rs:467:13:467:13 | a [Ok, Ok] | provenance |  |
 | main.rs:467:51:467:64 | Ok(...) [Ok] | main.rs:467:48:467:65 | Ok(...) [Ok, Ok] | provenance |  |
 | main.rs:467:54:467:63 | source(...) | main.rs:467:51:467:64 | Ok(...) [Ok] | provenance |  |
 | main.rs:468:9:468:9 | a [Ok, Ok] | main.rs:468:9:468:10 | TryExpr [Ok] | provenance |  |
 | main.rs:468:9:468:10 | TryExpr [Ok] | main.rs:466:55:469:5 | { ... } [Ok] | provenance |  |
-| main.rs:473:14:473:39 | unwrapped_value_returned(...) [Ok] | main.rs:473:14:473:48 | ... .unwrap() | provenance | MaD:3 |
+| main.rs:478:14:478:39 | unwrapped_value_returned(...) [Ok] | main.rs:478:14:478:48 | ... .unwrap() | provenance | MaD:3 |
 nodes
 | main.rs:12:28:14:1 | { ... } | semmle.label | { ... } |
 | main.rs:13:5:13:13 | source(...) | semmle.label | source(...) |
@@ -506,8 +506,8 @@ nodes
 | main.rs:467:54:467:63 | source(...) | semmle.label | source(...) |
 | main.rs:468:9:468:9 | a [Ok, Ok] | semmle.label | a [Ok, Ok] |
 | main.rs:468:9:468:10 | TryExpr [Ok] | semmle.label | TryExpr [Ok] |
-| main.rs:473:14:473:39 | unwrapped_value_returned(...) [Ok] | semmle.label | unwrapped_value_returned(...) [Ok] |
-| main.rs:473:14:473:48 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:478:14:478:39 | unwrapped_value_returned(...) [Ok] | semmle.label | unwrapped_value_returned(...) [Ok] |
+| main.rs:478:14:478:48 | ... .unwrap() | semmle.label | ... .unwrap() |
 subpaths
 | main.rs:38:16:38:24 | source(...) | main.rs:26:28:26:33 | ...: i64 | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | main.rs:38:5:38:5 | [post] a [MyStruct] |
 | main.rs:39:10:39:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:30:31:32:5 | { ... } | main.rs:39:10:39:21 | a.get_data() |
@@ -575,4 +575,4 @@ testFailures
 | main.rs:434:18:434:29 | static_value | main.rs:436:28:436:37 | source(...) | main.rs:434:18:434:29 | static_value | $@ | main.rs:436:28:436:37 | source(...) | source(...) |
 | main.rs:437:18:437:29 | STATIC_VALUE | main.rs:427:36:427:45 | source(...) | main.rs:437:18:437:29 | STATIC_VALUE | $@ | main.rs:427:36:427:45 | source(...) | source(...) |
 | main.rs:437:18:437:29 | STATIC_VALUE | main.rs:436:28:436:37 | source(...) | main.rs:437:18:437:29 | STATIC_VALUE | $@ | main.rs:436:28:436:37 | source(...) | source(...) |
-| main.rs:473:14:473:48 | ... .unwrap() | main.rs:467:54:467:63 | source(...) | main.rs:473:14:473:48 | ... .unwrap() | $@ | main.rs:467:54:467:63 | source(...) | source(...) |
+| main.rs:478:14:478:48 | ... .unwrap() | main.rs:467:54:467:63 | source(...) | main.rs:478:14:478:48 | ... .unwrap() | $@ | main.rs:467:54:467:63 | source(...) | source(...) |
