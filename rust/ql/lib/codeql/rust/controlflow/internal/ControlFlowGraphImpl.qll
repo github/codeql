@@ -398,12 +398,10 @@ private module Ast implements AstSig<Location> {
     AstNode getUpdate(int index) { none() }
   }
 
-  class ForEachStmt extends LoopStmt {
-    ForEachStmt() { none() }
+  class ForEachStmt extends LoopStmt instanceof Rust::ForExpr {
+    Expr getVariable() { result = super.getPat() }
 
-    Expr getVariable() { none() }
-
-    Expr getCollection() { none() }
+    Expr getCollection() { result = super.getIterable() }
   }
 
   class BreakStmt extends Stmt {
@@ -460,7 +458,7 @@ private module Ast implements AstSig<Location> {
 
   class Case extends AstNode instanceof Rust::MatchArm {
     AstNode getPattern(int index) {
-      result = this.(Rust::MatchArm).getPat() and
+      result = super.getPat() and
       index = 0
     }
 
@@ -565,6 +563,8 @@ private predicate cannotCauseMatchFailure(Rust::Pat pat) {
 private predicate guaranteedMatchPosition(Rust::Pat pat) {
   pat = any(Rust::LetStmt let | not let.hasLetElse()).getPat()
   or
+  pat = any(Rust::ForExpr for).getPat()
+  or
   pat = any(Rust::Param p).getPat()
   or
   exists(Rust::Pat parent | guaranteedMatchPosition(parent) |
@@ -577,8 +577,7 @@ private predicate guaranteedMatchPosition(Rust::Pat pat) {
 }
 
 private predicate guaranteedMatch(Rust::Pat pat) {
-  (cannotCauseMatchFailure(pat) or guaranteedMatchPosition(pat)) and
-  not pat = any(Rust::ForExpr for).getPat()
+  cannotCauseMatchFailure(pat) or guaranteedMatchPosition(pat)
 }
 
 private module Input implements InputSig1, InputSig2 {
@@ -897,24 +896,6 @@ private module Input implements InputSig1, InputSig2 {
       or
       n1.isAdditional(loop, loopHeaderTag()) and
       n2.isBefore(loop.getLoopBody())
-    )
-    or
-    exists(Rust::ForExpr for |
-      n1.isBefore(for) and n2.isBefore(for.getIterable())
-      or
-      n1.isAfter(for.getIterable()) and
-      n2.isBefore(for.getPat())
-      or
-      isAfterMatch(n1, for.getPat(), true) and
-      n2.isBefore(for.getLoopBody())
-      or
-      isAfterMatch(n1, for.getPat(), false) and n2.isAfter(for)
-      or
-      n1.isAfter(for.getLoopBody()) and
-      n2.isAdditional(for, loopHeaderTag())
-      or
-      n1.isAdditional(for, loopHeaderTag()) and
-      n2.isBefore(for.getPat())
     )
   }
 

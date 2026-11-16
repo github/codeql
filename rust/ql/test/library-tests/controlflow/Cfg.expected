@@ -445,17 +445,18 @@ edges
 | test.rs:106:25:113:5 | After { ... } | test.rs:106:5:113:5 | Normal Exit |  |
 | test.rs:106:25:113:5 | { ... } | test.rs:107:9:112:9 | for ... in ... { ... } |  |
 | test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:106:25:113:5 | After { ... } |  |
+| test.rs:107:9:112:9 | [LoopHeader] for ... in ... { ... } | test.rs:107:9:112:9 | After for ... in ... { ... } |  |
 | test.rs:107:9:112:9 | [LoopHeader] for ... in ... { ... } | test.rs:107:13:107:13 | Before i |  |
 | test.rs:107:9:112:9 | for ... in ... { ... } | test.rs:107:18:107:22 | Before 0..10 |  |
 | test.rs:107:13:107:13 | After i [match] | test.rs:107:24:112:9 | { ... } |  |
-| test.rs:107:13:107:13 | After i [no-match] | test.rs:107:9:112:9 | After for ... in ... { ... } |  |
 | test.rs:107:13:107:13 | Before i | test.rs:107:13:107:13 | i |  |
 | test.rs:107:13:107:13 | i | test.rs:107:13:107:13 | After i [match] | match |
-| test.rs:107:13:107:13 | i | test.rs:107:13:107:13 | After i [no-match] | no-match |
 | test.rs:107:13:107:13 | i | test.rs:107:13:107:13 | i |  |
 | test.rs:107:18:107:18 | 0 | test.rs:107:21:107:22 | 10 |  |
-| test.rs:107:18:107:22 | 0..10 | test.rs:107:18:107:22 | After 0..10 |  |
-| test.rs:107:18:107:22 | After 0..10 | test.rs:107:13:107:13 | Before i |  |
+| test.rs:107:18:107:22 | 0..10 | test.rs:107:18:107:22 | After 0..10 [empty] | empty |
+| test.rs:107:18:107:22 | 0..10 | test.rs:107:18:107:22 | After 0..10 [non-empty] | non-empty |
+| test.rs:107:18:107:22 | After 0..10 [empty] | test.rs:107:9:112:9 | After for ... in ... { ... } |  |
+| test.rs:107:18:107:22 | After 0..10 [non-empty] | test.rs:107:13:107:13 | Before i |  |
 | test.rs:107:18:107:22 | Before 0..10 | test.rs:107:18:107:18 | 0 |  |
 | test.rs:107:21:107:22 | 10 | test.rs:107:18:107:22 | 0..10 |  |
 | test.rs:107:24:112:9 | After { ... } | test.rs:107:9:112:9 | [LoopHeader] for ... in ... { ... } |  |

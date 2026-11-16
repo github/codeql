@@ -161,22 +161,20 @@ dominates
 | test.rs:100:17:100:22 | After ... == ... [true] | test.rs:100:17:100:22 | After ... == ... [true] |
 | test.rs:106:5:113:5 | Entry | test.rs:106:5:113:5 | Entry |
 | test.rs:106:5:113:5 | Entry | test.rs:107:9:112:9 | After for ... in ... { ... } |
-| test.rs:106:5:113:5 | Entry | test.rs:107:13:107:13 | After i [match] |
-| test.rs:106:5:113:5 | Entry | test.rs:107:13:107:13 | After i [no-match] |
 | test.rs:106:5:113:5 | Entry | test.rs:107:13:107:13 | Before i |
+| test.rs:106:5:113:5 | Entry | test.rs:107:18:107:22 | After 0..10 [empty] |
+| test.rs:106:5:113:5 | Entry | test.rs:107:18:107:22 | After 0..10 [non-empty] |
 | test.rs:106:5:113:5 | Entry | test.rs:108:17:108:22 | After ... == ... [false] |
 | test.rs:106:5:113:5 | Entry | test.rs:108:17:108:22 | After ... == ... [true] |
 | test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:107:9:112:9 | After for ... in ... { ... } |
-| test.rs:107:13:107:13 | After i [match] | test.rs:107:13:107:13 | After i [match] |
-| test.rs:107:13:107:13 | After i [match] | test.rs:108:17:108:22 | After ... == ... [false] |
-| test.rs:107:13:107:13 | After i [match] | test.rs:108:17:108:22 | After ... == ... [true] |
-| test.rs:107:13:107:13 | After i [no-match] | test.rs:107:13:107:13 | After i [no-match] |
-| test.rs:107:13:107:13 | Before i | test.rs:107:9:112:9 | After for ... in ... { ... } |
-| test.rs:107:13:107:13 | Before i | test.rs:107:13:107:13 | After i [match] |
-| test.rs:107:13:107:13 | Before i | test.rs:107:13:107:13 | After i [no-match] |
 | test.rs:107:13:107:13 | Before i | test.rs:107:13:107:13 | Before i |
 | test.rs:107:13:107:13 | Before i | test.rs:108:17:108:22 | After ... == ... [false] |
 | test.rs:107:13:107:13 | Before i | test.rs:108:17:108:22 | After ... == ... [true] |
+| test.rs:107:18:107:22 | After 0..10 [empty] | test.rs:107:18:107:22 | After 0..10 [empty] |
+| test.rs:107:18:107:22 | After 0..10 [non-empty] | test.rs:107:13:107:13 | Before i |
+| test.rs:107:18:107:22 | After 0..10 [non-empty] | test.rs:107:18:107:22 | After 0..10 [non-empty] |
+| test.rs:107:18:107:22 | After 0..10 [non-empty] | test.rs:108:17:108:22 | After ... == ... [false] |
+| test.rs:107:18:107:22 | After 0..10 [non-empty] | test.rs:108:17:108:22 | After ... == ... [true] |
 | test.rs:108:17:108:22 | After ... == ... [false] | test.rs:108:17:108:22 | After ... == ... [false] |
 | test.rs:108:17:108:22 | After ... == ... [true] | test.rs:108:17:108:22 | After ... == ... [true] |
 | test.rs:115:5:119:5 | Entry | test.rs:115:5:119:5 | Entry |
@@ -900,16 +898,15 @@ postDominance
 | test.rs:106:5:113:5 | Entry | test.rs:106:5:113:5 | Entry |
 | test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:106:5:113:5 | Entry |
 | test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:107:9:112:9 | After for ... in ... { ... } |
-| test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:107:13:107:13 | After i [match] |
-| test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:107:13:107:13 | After i [no-match] |
 | test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:107:13:107:13 | Before i |
+| test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:107:18:107:22 | After 0..10 [empty] |
+| test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:107:18:107:22 | After 0..10 [non-empty] |
 | test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:108:17:108:22 | After ... == ... [false] |
 | test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:108:17:108:22 | After ... == ... [true] |
-| test.rs:107:13:107:13 | After i [match] | test.rs:107:13:107:13 | After i [match] |
-| test.rs:107:13:107:13 | After i [no-match] | test.rs:107:13:107:13 | After i [no-match] |
-| test.rs:107:13:107:13 | Before i | test.rs:106:5:113:5 | Entry |
 | test.rs:107:13:107:13 | Before i | test.rs:107:13:107:13 | Before i |
-| test.rs:107:13:107:13 | Before i | test.rs:108:17:108:22 | After ... == ... [false] |
+| test.rs:107:13:107:13 | Before i | test.rs:107:18:107:22 | After 0..10 [non-empty] |
+| test.rs:107:18:107:22 | After 0..10 [empty] | test.rs:107:18:107:22 | After 0..10 [empty] |
+| test.rs:107:18:107:22 | After 0..10 [non-empty] | test.rs:107:18:107:22 | After 0..10 [non-empty] |
 | test.rs:108:17:108:22 | After ... == ... [false] | test.rs:108:17:108:22 | After ... == ... [false] |
 | test.rs:108:17:108:22 | After ... == ... [true] | test.rs:108:17:108:22 | After ... == ... [true] |
 | test.rs:115:5:119:5 | Entry | test.rs:115:5:119:5 | Entry |
@@ -1523,12 +1520,12 @@ immediateDominator
 | test.rs:99:19:99:25 | [pattern-start] Some(...) | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } |
 | test.rs:100:17:100:22 | After ... == ... [false] | test.rs:99:19:99:25 | [pattern-start] Some(...) |
 | test.rs:100:17:100:22 | After ... == ... [true] | test.rs:99:19:99:25 | [pattern-start] Some(...) |
-| test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:107:13:107:13 | Before i |
-| test.rs:107:13:107:13 | After i [match] | test.rs:107:13:107:13 | Before i |
-| test.rs:107:13:107:13 | After i [no-match] | test.rs:107:13:107:13 | Before i |
-| test.rs:107:13:107:13 | Before i | test.rs:106:5:113:5 | Entry |
-| test.rs:108:17:108:22 | After ... == ... [false] | test.rs:107:13:107:13 | After i [match] |
-| test.rs:108:17:108:22 | After ... == ... [true] | test.rs:107:13:107:13 | After i [match] |
+| test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:106:5:113:5 | Entry |
+| test.rs:107:13:107:13 | Before i | test.rs:107:18:107:22 | After 0..10 [non-empty] |
+| test.rs:107:18:107:22 | After 0..10 [empty] | test.rs:106:5:113:5 | Entry |
+| test.rs:107:18:107:22 | After 0..10 [non-empty] | test.rs:106:5:113:5 | Entry |
+| test.rs:108:17:108:22 | After ... == ... [false] | test.rs:107:13:107:13 | Before i |
+| test.rs:108:17:108:22 | After ... == ... [true] | test.rs:107:13:107:13 | Before i |
 | test.rs:130:9:134:9 | After if ... {...} else {...} | test.rs:129:5:135:5 | Entry |
 | test.rs:130:12:130:17 | After ... <= ... [false] | test.rs:129:5:135:5 | Entry |
 | test.rs:130:12:130:17 | After ... <= ... [true] | test.rs:129:5:135:5 | Entry |
@@ -1796,12 +1793,13 @@ controls
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:100:17:100:22 | After ... == ... [true] | match |
 | test.rs:99:19:99:25 | [pattern-start] Some(...) | test.rs:100:17:100:22 | After ... == ... [false] | false |
 | test.rs:99:19:99:25 | [pattern-start] Some(...) | test.rs:100:17:100:22 | After ... == ... [true] | true |
-| test.rs:107:13:107:13 | After i [match] | test.rs:108:17:108:22 | After ... == ... [false] | false |
-| test.rs:107:13:107:13 | After i [match] | test.rs:108:17:108:22 | After ... == ... [true] | true |
-| test.rs:107:13:107:13 | Before i | test.rs:107:13:107:13 | After i [match] | match |
-| test.rs:107:13:107:13 | Before i | test.rs:107:13:107:13 | After i [no-match] | no-match |
-| test.rs:107:13:107:13 | Before i | test.rs:108:17:108:22 | After ... == ... [false] | match |
-| test.rs:107:13:107:13 | Before i | test.rs:108:17:108:22 | After ... == ... [true] | match |
+| test.rs:106:5:113:5 | Entry | test.rs:107:13:107:13 | Before i | non-empty |
+| test.rs:106:5:113:5 | Entry | test.rs:107:18:107:22 | After 0..10 [empty] | empty |
+| test.rs:106:5:113:5 | Entry | test.rs:107:18:107:22 | After 0..10 [non-empty] | non-empty |
+| test.rs:106:5:113:5 | Entry | test.rs:108:17:108:22 | After ... == ... [false] | non-empty |
+| test.rs:106:5:113:5 | Entry | test.rs:108:17:108:22 | After ... == ... [true] | non-empty |
+| test.rs:107:13:107:13 | Before i | test.rs:108:17:108:22 | After ... == ... [false] | false |
+| test.rs:107:13:107:13 | Before i | test.rs:108:17:108:22 | After ... == ... [true] | true |
 | test.rs:129:5:135:5 | Entry | test.rs:130:12:130:17 | After ... <= ... [false] | false |
 | test.rs:129:5:135:5 | Entry | test.rs:130:12:130:17 | After ... <= ... [true] | true |
 | test.rs:137:5:143:5 | Entry | test.rs:139:12:139:12 | After b [false] | false |
@@ -2057,10 +2055,10 @@ successor
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:99:19:99:25 | [pattern-start] Some(...) | match |
 | test.rs:99:19:99:25 | [pattern-start] Some(...) | test.rs:100:17:100:22 | After ... == ... [false] | false |
 | test.rs:99:19:99:25 | [pattern-start] Some(...) | test.rs:100:17:100:22 | After ... == ... [true] | true |
-| test.rs:107:13:107:13 | After i [match] | test.rs:108:17:108:22 | After ... == ... [false] | false |
-| test.rs:107:13:107:13 | After i [match] | test.rs:108:17:108:22 | After ... == ... [true] | true |
-| test.rs:107:13:107:13 | Before i | test.rs:107:13:107:13 | After i [match] | match |
-| test.rs:107:13:107:13 | Before i | test.rs:107:13:107:13 | After i [no-match] | no-match |
+| test.rs:106:5:113:5 | Entry | test.rs:107:18:107:22 | After 0..10 [empty] | empty |
+| test.rs:106:5:113:5 | Entry | test.rs:107:18:107:22 | After 0..10 [non-empty] | non-empty |
+| test.rs:107:13:107:13 | Before i | test.rs:108:17:108:22 | After ... == ... [false] | false |
+| test.rs:107:13:107:13 | Before i | test.rs:108:17:108:22 | After ... == ... [true] | true |
 | test.rs:129:5:135:5 | Entry | test.rs:130:12:130:17 | After ... <= ... [false] | false |
 | test.rs:129:5:135:5 | Entry | test.rs:130:12:130:17 | After ... <= ... [true] | true |
 | test.rs:137:5:143:5 | Entry | test.rs:139:12:139:12 | After b [false] | false |
@@ -2283,10 +2281,11 @@ joinBlockPredecessor
 | test.rs:99:9:103:9 | After while ... { ... } | test.rs:100:17:100:22 | After ... == ... [true] | 1 |
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:97:5:104:5 | Entry | 1 |
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:100:17:100:22 | After ... == ... [false] | 0 |
-| test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:107:13:107:13 | After i [no-match] | 1 |
-| test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:108:17:108:22 | After ... == ... [true] | 0 |
-| test.rs:107:13:107:13 | Before i | test.rs:106:5:113:5 | Entry | 1 |
-| test.rs:107:13:107:13 | Before i | test.rs:108:17:108:22 | After ... == ... [false] | 0 |
+| test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:107:18:107:22 | After 0..10 [empty] | 0 |
+| test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:108:17:108:22 | After ... == ... [false] | 1 |
+| test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:108:17:108:22 | After ... == ... [true] | 2 |
+| test.rs:107:13:107:13 | Before i | test.rs:107:18:107:22 | After 0..10 [non-empty] | 0 |
+| test.rs:107:13:107:13 | Before i | test.rs:108:17:108:22 | After ... == ... [false] | 1 |
 | test.rs:130:9:134:9 | After if ... {...} else {...} | test.rs:130:12:130:17 | After ... <= ... [false] | 0 |
 | test.rs:130:9:134:9 | After if ... {...} else {...} | test.rs:130:12:130:17 | After ... <= ... [true] | 1 |
 | test.rs:139:9:141:9 | After if b {...} | test.rs:139:12:139:12 | After b [false] | 0 |
