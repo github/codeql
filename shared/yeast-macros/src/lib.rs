@@ -104,34 +104,44 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// top-level choice passed to `tree!` returns `Option<OutputId>`; ordinary
 /// templates continue to return `OutputId`.
 ///
-/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
-///
-/// ```text
-/// tree!((kind ...))
-/// ```
+#[doc(hidden)]
 #[proc_macro]
-pub fn tree(input: TokenStream) -> TokenStream {
+pub fn tree_with_schema(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
-    match parse::parse_tree_top(input2) {
+    match parse::parse_tree_with_schema_top(input2) {
         Ok(output) => output.into(),
         Err(err) => err.to_compile_error().into(),
     }
 }
 
-/// Build a list of AST nodes from a template, returning `Vec<OutputId>`.
+#[doc(hidden)]
+#[proc_macro]
+pub fn trees_with_schema(input: TokenStream) -> TokenStream {
+    let input2: TokenStream2 = input.into();
+    match parse::parse_trees_with_schema_top(input2) {
+        Ok(output) => output.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
+}
+
+/// Declare an output-schema namespace with importable `tree!`, `trees!`,
+/// `tree_with_context!`, and `trees_with_context!` wrappers and the schema
+/// contents.
 ///
-/// Like `tree!` but returns `Vec<OutputId>` and supports multiple top-level
-/// elements. All syntax from `tree!` is available.
+/// ```ignore
+/// yeast::tree_schema! {
+///     swift_tree,
+///     "ast_types.yml",
+/// }
 ///
-/// Uses the `BuildCtx` binding named `ctx` from the surrounding scope:
-///
-/// ```text
-/// trees!((node1 ...) (node2 ...))
+/// use swift_tree::{
+///     tree, tree_with_context, trees, trees_with_context, SCHEMA,
+/// };
 /// ```
 #[proc_macro]
-pub fn trees(input: TokenStream) -> TokenStream {
+pub fn tree_schema(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
-    match parse::parse_trees_top(input2) {
+    match parse::parse_tree_schema_top(input2) {
         Ok(output) => output.into(),
         Err(err) => err.to_compile_error().into(),
     }
