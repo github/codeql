@@ -135,7 +135,6 @@ use_repo(
     "vendor_rs__anyhow-1.0.104",
     "vendor_rs__cached-0.54.0",
     "vendor_rs__cc-1.4.6",
-    "vendor_rs__chalk-ir-0.104.0",
     "vendor_rs__chrono-0.4.45",
     "vendor_rs__clap-4.6.7",
     "vendor_rs__dunce-1.0.5",
