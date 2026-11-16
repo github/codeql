@@ -417,7 +417,7 @@ private module Ast implements AstSig<Location> {
   }
 
   class ReturnStmt extends Stmt instanceof Rust::ReturnExpr {
-    Expr getExpr() { result = this.(Rust::ReturnExpr).getExpr() }
+    Expr getExpr() { result = super.getExpr() }
   }
 
   class Throw extends AstNode {
@@ -449,11 +449,11 @@ private module Ast implements AstSig<Location> {
   }
 
   class Switch extends AstNode instanceof Rust::MatchExpr {
-    Switch() { exists(this.(Rust::MatchExpr).getAnArm()) }
+    Switch() { exists(super.getAnArm()) }
 
-    Expr getExpr() { result = this.(Rust::MatchExpr).getScrutinee() }
+    Expr getExpr() { result = super.getScrutinee() }
 
-    Case getCase(int index) { result = this.(Rust::MatchExpr).getArm(index) }
+    Case getCase(int index) { result = super.getArm(index) }
 
     Stmt getStmt(int index) { none() }
   }
@@ -464,9 +464,9 @@ private module Ast implements AstSig<Location> {
       index = 0
     }
 
-    Expr getGuard() { result = this.(Rust::MatchArm).getGuard().getCondition() }
+    Expr getGuard() { result = super.getGuard().getCondition() }
 
-    AstNode getBody() { result = this.(Rust::MatchArm).getExpr() }
+    AstNode getBody() { result = super.getExpr() }
   }
 
   class DefaultCase extends Case {
@@ -745,22 +745,6 @@ private module Input implements InputSig1, InputSig2 {
     n.isAfterValue(ast, any(MatchingSuccessor t | t.getValue() = value))
   }
 
-  private predicate parameterStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-    exists(Rust::ParamBase p, Ast::AstNode child | child = Ast::getChild(p, _) |
-      n1.isBefore(p) and n2.isBefore(child)
-      or
-      p instanceof Rust::Param and
-      isAfterMatch(n1, child, true) and
-      n2.isIn(p)
-      or
-      p instanceof Rust::SelfParam and
-      n1.isAfter(child) and
-      n2.isIn(p)
-      or
-      n1.isIn(p) and n2.isAfter(p)
-    )
-  }
-
   private predicate letStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
     exists(Rust::LetStmt let |
       n1.isBefore(let) and
@@ -1007,8 +991,6 @@ private module Input implements InputSig1, InputSig2 {
   }
 
   predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
-    parameterStep(n1, n2)
-    or
     letStmtStep(n1, n2)
     or
     letExprStep(n1, n2)
