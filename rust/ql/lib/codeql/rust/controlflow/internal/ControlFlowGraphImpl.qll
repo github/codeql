@@ -309,9 +309,7 @@ private module Ast implements AstSig<Location> {
     Expr getCondition() { result = super.getCondition() }
   }
 
-  class DoStmt extends LoopStmt {
-    DoStmt() { none() }
-
+  class DoStmt extends LoopStmt instanceof Rust::LoopExpr {
     Expr getCondition() { none() }
   }
 
@@ -649,20 +647,6 @@ private module Input implements InputSig1, InputSig2 {
     )
   }
 
-  private string loopHeaderTag() { result = "[LoopHeader]" }
-
-  private predicate loopStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-    exists(Rust::LoopExpr loop |
-      n1.isBefore(loop) and n2.isBefore(loop.getLoopBody())
-      or
-      n1.isAfter(loop.getLoopBody()) and
-      n2.isAdditional(loop, loopHeaderTag())
-      or
-      n1.isAdditional(loop, loopHeaderTag()) and
-      n2.isBefore(loop.getLoopBody())
-    )
-  }
-
   private predicate tryStep(PreControlFlowNode n1, PreControlFlowNode n2) {
     exists(Rust::TryExpr try |
       n1.isBefore(try) and n2.isBefore(try.getExpr())
@@ -703,8 +687,6 @@ private module Input implements InputSig1, InputSig2 {
     letExprStep(n1, n2)
     or
     emptyMatchStep(n1, n2)
-    or
-    loopStep(n1, n2)
     or
     tryStep(n1, n2)
   }
