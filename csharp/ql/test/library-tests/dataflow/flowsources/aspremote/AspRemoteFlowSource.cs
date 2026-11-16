@@ -66,6 +66,21 @@ namespace Testing
         public string Coalesce { get { return f ?? ""; } set { f = value; } } // Considered tainted.
         public string Cast { get { return f; } set { f = (string)(object)value; } } // Considered tainted.
         public string Ignore { get { return f; } set { f = "x"; } } // Not considered tainted. Setter ignores the value.
+        private object o;
+        public string AsCast { get { return o as string; } set { o = value; } } // Considered tainted.
+        private List<string> lazy;
+        public List<string> LazyItems => lazy ??= new List<string>(); // Considered tainted. Lazily initialized get-only collection.
+        private string ow;
+        public string Overwrite { get { ow = "safe"; return ow; } set { ow = value; } } // Not considered tainted. Getter overwrites the field.
+        private string other;
+        public string OtherReceiver { get { return this.other; } set { new FlowProps().other = value; } } // Not considered tainted. Setter writes to another instance.
+    }
+
+    public class GenericModel<T>
+    {
+        private List<T> items = new List<T>();
+        public List<T> ItemsCopy => new List<T>(items); // Not considered tainted as the getter computes a value.
+        public List<T> ItemsPlain => items; // Considered tainted. Get-only collection.
     }
 
     public class TestController : Controller

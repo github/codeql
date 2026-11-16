@@ -121,39 +121,59 @@ class AspNetServiceRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow::Pa
 private Expr getAValuePreservingSource(Expr e) {
   result = e
   or
-  result = getAValuePreservingSource(e.(CastExpr).getExpr())
+  result = getAValuePreservingSource(e.(Cast).getExpr())
   or
-  result = getAValuePreservingSource(e.(NullCoalescingExpr).getLeftOperand())
+  result = getAValuePreservingSource(e.(NullCoalescingOperation).getLeftOperand())
+}
+
+/** Holds if `fa` accesses a field on the current instance. */
+private predicate isOwnFieldAccess(FieldAccess fa) {
+  fa.getQualifier() instanceof ThisAccess or fa.getQualifier() instanceof BaseAccess
 }
 
 /**
  * Holds if `p` is auto-implemented, or its getter returns an expression reading a field
  * and its setter (if any) assigns an expression using `value` to that field.
  * Properties that compute a value do not qualify.
+ * Accessor bodies are only extracted for the unbound declaration, so shape checks use it.
  */
 private predicate isPlainDataProperty(Property p) {
-  p.isAutoImplemented()
-  or
-  p.isAutoImplementedReadOnly()
-  or
-  exists(Field f | p.getDeclaringType().getABaseType*() = f.getDeclaringType() |
-    exists(FieldRead fr, Expr ret |
-      fr.getTarget() = f and
-      fr = getAValuePreservingSource(ret) and
+  exists(Property u | u = p.getUnboundDeclaration() |
+    u.isAutoImplemented()
+    or
+    u.isAutoImplementedReadOnly()
+    or
+    exists(Field f |
+      u.getDeclaringType().getABaseType*().getUnboundDeclaration() =
+        f.getDeclaringType().getUnboundDeclaration()
+    |
+      exists(FieldRead fr, Expr ret |
+        fr.getTarget().getUnboundDeclaration() = f.getUnboundDeclaration() and
+        isOwnFieldAccess(fr) and
+        fr = getAValuePreservingSource(ret) and
+        (
+          ret = any(ReturnStmt r | r.getEnclosingCallable() = u.getGetter()).getExpr()
+          or
+          ret = u.getGetter().getExpressionBody()
+        )
+      ) and
+      // The getter must not unconditionally overwrite the field before returning it.
+      not exists(AssignExpr ow |
+        ow.getLeftOperand().(FieldWrite).getTarget().getUnboundDeclaration() = f.getUnboundDeclaration() and
+        isOwnFieldAccess(ow.getLeftOperand()) and
+        ow.getParent().(ExprStmt).getParent() = u.getGetter().getBody()
+      ) and
       (
-        ret = any(ReturnStmt r | r.getEnclosingCallable() = p.getGetter()).getExpr()
+        not exists(u.getSetter())
         or
-        ret = p.getGetter().getExpressionBody()
-      )
-    ) and
-    (
-      not exists(p.getSetter())
-      or
-      exists(AssignExpr ae, ParameterAccess v |
-        ae.getLValue().(FieldWrite).getTarget() = f and
-        ae.getEnclosingCallable() = p.getSetter() and
-        v.getTarget().hasName("value") and
-        v = getAValuePreservingSource(ae.getRValue())
+        exists(AssignExpr ae, ParameterAccess v |
+          ae.getLeftOperand().(FieldWrite).getTarget().getUnboundDeclaration() =
+            f.getUnboundDeclaration() and
+          isOwnFieldAccess(ae.getLeftOperand()) and
+          ae.getEnclosingCallable() = u.getSetter() and
+          v.getTarget().hasName("value") and
+          v = getAValuePreservingSource(ae.getRightOperand())
+        )
       )
     )
   )
