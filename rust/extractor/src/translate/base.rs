@@ -645,8 +645,11 @@ impl<'db> Translator<'db> {
                     self.source_kind,
                     path,
                 ));
-                self.included_file_steps
-                    .push(ExtractionStep::load_source(before_expand, path));
+                if self.source_kind == SourceKind::Source {
+                    // Library includes are reported as ExtractLibrary, not as source loads.
+                    self.included_file_steps
+                        .push(ExtractionStep::load_source(before_expand, path));
+                }
                 self.included_file_context = previous_context;
             }
         } else if self.semantics.is_some() {
