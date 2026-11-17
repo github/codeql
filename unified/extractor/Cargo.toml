@@ -9,7 +9,7 @@ edition = "2024"
 workspace = true
 
 [features]
-default = ["swift-syntax"]
+default = ["rust-parser"]
 swift-syntax = ["dep:swift-syntax-rs"]
 rust-parser = ["dep:swift-parser"]
 

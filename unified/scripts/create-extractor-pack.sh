@@ -10,7 +10,7 @@ else
 fi
 cd "$(dirname "$0")/.."
 
-(cd extractor && cargo build --release)
+(cd extractor && cargo build --release "$@")
 
 # we are in a cargo workspace rooted at the git checkout
 BIN_DIR=../target/release

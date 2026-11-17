@@ -6,23 +6,23 @@ load("//unified:platforms.bzl", "UNIFIED_SUPPORTED_PLATFORMS")
 exports_files(["Cargo.toml"])
 
 config_setting(
-    name = "rust_parser",
-    define_values = {"unified_rust_parser": "true"},
+    name = "swift_syntax",
+    define_values = {"unified_rust_parser": "false"},
 )
 
 _PARSER_FEATURES = select({
-    ":rust_parser": ["rust-parser"],
-    "//conditions:default": ["swift-syntax"],
+    ":swift_syntax": ["swift-syntax"],
+    "//conditions:default": ["rust-parser"],
 })
 
 _PARSER_DEPS = select({
-    ":rust_parser": ["//unified/swift-parser"],
-    "//conditions:default": ["//unified/swift-syntax-rs:swift_syntax_rs"],
+    ":swift_syntax": ["//unified/swift-syntax-rs:swift_syntax_rs"],
+    "//conditions:default": ["//unified/swift-parser"],
 })
 
 _PARSER_DATA = select({
-    ":rust_parser": [],
-    "//conditions:default": ["//unified/swift-syntax-rs:swift_runtime"],
+    ":swift_syntax": ["//unified/swift-syntax-rs:swift_runtime"],
+    "//conditions:default": [],
 })
 
 codeql_rust_binary(

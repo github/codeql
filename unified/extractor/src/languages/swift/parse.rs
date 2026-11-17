@@ -1,5 +1,6 @@
-//! Swift front-end parser, using swift-syntax by default or the native Rust
-//! parser when the `rust-parser` feature is enabled.
+//! Swift front-end parser, using the native Rust parser by default.
+//! Select swift-syntax with `--no-default-features --features swift-syntax`;
+//! `rust-parser` takes precedence when both features are enabled.
 
 use codeql_extractor::extractor::ParsedTree;
 
