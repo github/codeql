@@ -9,8 +9,7 @@
 | 4 | fallthrough.swift:4:13:7:5 | Block | 'Block' |
 | 5 | cfg.swift:5:1:5:37 | func returnZero | 'func returnZero -V returnZero' |
 | 5 | cfg.swift:5:26:5:37 | Block | 'Block -V 0 -^ ReturnExpr' |
-| 5 | fallthrough.swift:5:7:5:17 |  | '' |
-| 6 | fallthrough.swift:6:7:6:11 | print | 'print -> Argument -V "unreachable" -^ print(...)' |
+| 5 | fallthrough.swift:5:7:5:17 | fallthrough | 'fallthrough' |
 | 7 | cfg.swift:7:1:7:10 | returnZero | 'returnZero -^ returnZero(...)' |
 | 8 | cfg.swift:8:1:8:6 | Double | 'Double -> Argument -V topLevelDecl -^ Double(...)' |
 | 8 | fallthrough.swift:8:5:8:9 | print | 'print -> Argument -V "stay in first case" -^ print(...)' |
@@ -21,12 +20,12 @@
 | 11 | fallthrough.swift:11:5:12:15 | Block | 'Block -V print -> Argument -V "second case" -^ print(...)' |
 | 12 | cfg.swift:12:10:12:31 | MyError.error3 | 'MyError.error3 -V error3 -^ MyError.error3.(constructor)' |
 | 12 | cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
-| 12 | fallthrough.swift:12:5:12:15 |  | '' |
+| 12 | fallthrough.swift:12:5:12:15 | fallthrough | 'fallthrough' |
 | 13 | fallthrough.swift:13:3:15:15 | SwitchCase | 'SwitchCase -V 2' |
 | 14 | fallthrough.swift:14:5:15:15 | Block | 'Block -V print -> Argument -V "third case" -^ print(...)' |
 | 15 | cfg.swift:15:1:17:1 | func isZero | 'func isZero -V isZero' |
 | 15 | cfg.swift:15:13:15:13 | x | 'x -> Block' |
-| 15 | fallthrough.swift:15:5:15:15 |  | '' |
+| 15 | fallthrough.swift:15:5:15:15 | fallthrough | 'fallthrough' |
 | 16 | cfg.swift:16:10:16:10 | x | 'x -> 0 -^ ... == ... -^ ReturnExpr' |
 | 16 | fallthrough.swift:16:3:17:25 | SwitchCase | 'SwitchCase' |
 | 17 | fallthrough.swift:17:5:17:25 | Block | 'Block -V print -> Argument -V "default case" -^ print(...)' |
@@ -45,7 +44,7 @@
 | 24 | fallthrough.swift:24:3:32:15 | SwitchCase | 'SwitchCase -V 0' |
 | 25 | fallthrough.swift:25:5:32:15 | Block | 'Block -V SwitchExpr -V y' |
 | 26 | fallthrough.swift:26:5:27:17 | SwitchCase | 'SwitchCase -V 0' |
-| 27 | fallthrough.swift:27:7:27:17 | Block | 'Block -V ' |
+| 27 | fallthrough.swift:27:7:27:17 | Block | 'Block -V fallthrough' |
 | 28 | cfg.swift:28:1:45:1 | func tryCatch | 'func tryCatch -V tryCatch' |
 | 28 | cfg.swift:28:15:28:15 | x | 'x -> Block' |
 | 28 | fallthrough.swift:28:5:29:28 | SwitchCase | 'SwitchCase' |
@@ -56,7 +55,7 @@
 | 31 | cfg.swift:31:5:31:9 | print | 'print -> Argument -V "Did not throw." -^ print(...)' |
 | 31 | fallthrough.swift:31:5:31:9 | print | 'print -> Argument -V "after inner switch" -^ print(...)' |
 | 32 | cfg.swift:32:10:32:19 | mightThrow | 'mightThrow -> Argument -V 0 -^ mightThrow(...) -^ try! ...' |
-| 32 | fallthrough.swift:32:5:32:15 |  | '' |
+| 32 | fallthrough.swift:32:5:32:15 | fallthrough | 'fallthrough' |
 | 33 | cfg.swift:33:5:33:9 | print | 'print -> Argument -V "Still did not throw." -^ print(...)' |
 | 33 | fallthrough.swift:33:3:34:26 | SwitchCase | 'SwitchCase' |
 | 34 | fallthrough.swift:34:5:34:26 | Block | 'Block -V print -> Argument -V "outer default" -^ print(...)' |
@@ -88,7 +87,7 @@
 | 47 | fallthrough.swift:47:9:47:13 | print | 'print -> Argument -V "inner defer" -^ print(...)' |
 | 48 | cfg.swift:48:10:50:3 | FunctionExpr | 'FunctionExpr -^ ReturnExpr' |
 | 49 | cfg.swift:49:5:49:17 | Block | 'Block -V s -> "" -^ ... + ... -^ ReturnExpr' |
-| 49 | fallthrough.swift:49:7:49:17 |  | '' |
+| 49 | fallthrough.swift:49:7:49:17 | fallthrough | 'fallthrough' |
 | 51 | fallthrough.swift:51:3:52:22 | SwitchCase | 'SwitchCase -V flag -? 1 -^ ConditionalPattern' |
 | 52 | fallthrough.swift:52:5:52:22 | Block | 'Block -V print -> Argument -V "next case" -^ print(...)' |
 | 53 | cfg.swift:53:1:58:1 | func createClosure2 | 'func createClosure2 -V createClosure2' |
@@ -181,7 +180,7 @@
 | 154 | cfg.swift:154:7:154:17 | Block | 'Block -V true -^ ReturnExpr' |
 | 155 | cfg.swift:155:5:157:17 | SwitchCase | 'SwitchCase -V 42' |
 | 156 | cfg.swift:156:7:157:17 | Block | 'Block -V print -> Argument -V "42!" -^ print(...)' |
-| 157 | cfg.swift:157:7:157:17 |  | '' |
+| 157 | cfg.swift:157:7:157:17 | fallthrough | 'fallthrough' |
 | 158 | cfg.swift:158:5:159:34 | SwitchCase | 'SwitchCase' |
 | 159 | cfg.swift:159:7:159:34 | Block | 'Block -V IfExpr -V x -> 10 -^ ... > ...' |
 | 159 | cfg.swift:159:19:159:34 | Block | 'Block -V false -^ ReturnExpr' |
