@@ -10,7 +10,6 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
@@ -26,11 +25,9 @@ sourceFile
                           expression:
                             declReferenceExpr
                               baseName: identifier "name"
-                      additionalTrailingClosures:
                       calledExpression:
                         declReferenceExpr
                           baseName: identifier "print"
-          modifiers:
           name: identifier "greet"
           signature:
             functionSignature
@@ -41,8 +38,6 @@ sourceFile
                   parameters:
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       type:
                         identifierType
                           name: identifier "String"

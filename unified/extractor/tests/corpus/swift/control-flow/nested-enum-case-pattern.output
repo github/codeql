@@ -50,7 +50,6 @@ sourceFile
                                                       pattern:
                                                         identifierPattern
                                                           identifier: identifier "value"
-                                              additionalTrailingClosures:
                                               calledExpression:
                                                 memberAccessExpr
                                                   period: .
@@ -64,7 +63,6 @@ sourceFile
                                               pattern:
                                                 identifierPattern
                                                   identifier: identifier "timestamp"
-                                      additionalTrailingClosures:
                                       calledExpression:
                                         memberAccessExpr
                                           period: .
@@ -88,7 +86,6 @@ sourceFile
                               expression:
                                 declReferenceExpr
                                   baseName: identifier "timestamp"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
@@ -115,7 +112,6 @@ sourceFile
                                                 identifierPattern
                                                   identifier: identifier "value"
                                               bindingSpecifier: let
-                                  additionalTrailingClosures:
                                   calledExpression:
                                     memberAccessExpr
                                       period: .
@@ -136,7 +132,6 @@ sourceFile
                               expression:
                                 declReferenceExpr
                                   baseName: identifier "value"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
@@ -151,8 +146,6 @@ sourceFile
                             expressionPattern
                               expression:
                                 functionCallExpr
-                                  arguments:
-                                  additionalTrailingClosures:
                                   calledExpression:
                                     memberAccessExpr
                                       period: .

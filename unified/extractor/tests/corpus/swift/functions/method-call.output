@@ -15,7 +15,6 @@ sourceFile
               expression:
                 integerLiteralExpr
                   literal: integerLiteral "1"
-          additionalTrailingClosures:
           calledExpression:
             memberAccessExpr
               period: .

@@ -8,14 +8,11 @@ sourceFile
     codeBlockItem
       item:
         classDecl
-          attributes:
-          modifiers:
           name: identifier "Foo"
           memberBlock:
             memberBlock
               leftBrace: {
               rightBrace: }
-              members:
           classKeyword: class
 
 ---

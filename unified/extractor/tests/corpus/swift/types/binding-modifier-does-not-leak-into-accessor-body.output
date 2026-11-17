@@ -17,8 +17,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: var
           bindings:
             patternBinding
@@ -36,7 +34,6 @@ sourceFile
                   accessors:
                     accessorDecl
                       accessorSpecifier: get
-                      attributes:
                       body:
                         codeBlock
                           leftBrace: {
@@ -87,7 +84,6 @@ sourceFile
                                         declReferenceExpr
                                           baseName: identifier "y"
                                       switchKeyword: switch
-                      modifiers:
                   leftBrace: {
                   rightBrace: }
 

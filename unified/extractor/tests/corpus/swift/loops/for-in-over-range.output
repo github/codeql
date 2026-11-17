@@ -25,7 +25,6 @@ sourceFile
                           expression:
                             declReferenceExpr
                               baseName: identifier "i"
-                      additionalTrailingClosures:
                       calledExpression:
                         declReferenceExpr
                           baseName: identifier "print"

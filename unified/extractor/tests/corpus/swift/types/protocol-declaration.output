@@ -11,8 +11,6 @@ sourceFile
     codeBlockItem
       item:
         protocolDecl
-          attributes:
-          modifiers:
           name: identifier "Drawable"
           memberBlock:
             memberBlock
@@ -22,8 +20,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     functionDecl
-                      attributes:
-                      modifiers:
                       name: identifier "draw"
                       signature:
                         functionSignature
@@ -31,12 +27,10 @@ sourceFile
                             functionParameterClause
                               leftParen: (
                               rightParen: )
-                              parameters:
                       funcKeyword: func
                 memberBlockItem
                   decl:
                     functionDecl
-                      attributes:
                       modifiers:
                         declModifier
                           name: static
@@ -47,7 +41,6 @@ sourceFile
                             functionParameterClause
                               leftParen: (
                               rightParen: )
-                              parameters:
                       funcKeyword: func
           protocolKeyword: protocol
 

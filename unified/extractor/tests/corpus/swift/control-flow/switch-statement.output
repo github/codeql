@@ -47,7 +47,6 @@ sourceFile
                                   segments:
                                     stringSegment
                                       content: stringSegment "one"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
@@ -85,7 +84,6 @@ sourceFile
                                   segments:
                                     stringSegment
                                       content: stringSegment "two or three"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
@@ -109,7 +107,6 @@ sourceFile
                                   segments:
                                     stringSegment
                                       content: stringSegment "other"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"

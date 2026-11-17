@@ -8,8 +8,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -18,7 +16,6 @@ sourceFile
                   equal: =
                   value:
                     arrayExpr
-                      elements:
                       leftSquare: [
                       rightSquare: ]
               pattern:

@@ -10,8 +10,6 @@ sourceFile
     codeBlockItem
       item:
         structDecl
-          attributes:
-          modifiers:
           name: identifier "Size"
           memberBlock:
             memberBlock
@@ -21,13 +19,10 @@ sourceFile
                 memberBlockItem
                   decl:
                     initializerDecl
-                      attributes:
                       body:
                         codeBlock
                           leftBrace: {
                           rightBrace: }
-                          statements:
-                      modifiers:
                       signature:
                         functionSignature
                           parameterClause:
@@ -37,8 +32,6 @@ sourceFile
                               parameters:
                                 functionParameter
                                   colon: :
-                                  attributes:
-                                  modifiers:
                                   trailingComma: ,
                                   type:
                                     identifierType
@@ -47,8 +40,6 @@ sourceFile
                                   secondName: identifier "w"
                                 functionParameter
                                   colon: :
-                                  attributes:
-                                  modifiers:
                                   type:
                                     identifierType
                                       name: identifier "Int"

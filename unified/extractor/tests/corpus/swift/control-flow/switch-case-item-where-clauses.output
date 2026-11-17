@@ -62,7 +62,6 @@ sourceFile
                                   segments:
                                     stringSegment
                                       content: stringSegment "positive"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
@@ -115,7 +114,6 @@ sourceFile
                                   segments:
                                     stringSegment
                                       content: stringSegment "non-positive"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
@@ -139,7 +137,6 @@ sourceFile
                                   segments:
                                     stringSegment
                                       content: stringSegment "other"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"

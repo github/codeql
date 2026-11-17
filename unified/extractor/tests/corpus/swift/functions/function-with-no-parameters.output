@@ -10,7 +10,6 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
@@ -30,11 +29,9 @@ sourceFile
                               segments:
                                 stringSegment
                                   content: stringSegment "hello"
-                      additionalTrailingClosures:
                       calledExpression:
                         declReferenceExpr
                           baseName: identifier "print"
-          modifiers:
           name: identifier "greet"
           signature:
             functionSignature
@@ -42,7 +39,6 @@ sourceFile
                 functionParameterClause
                   leftParen: (
                   rightParen: )
-                  parameters:
           funcKeyword: func
 
 ---

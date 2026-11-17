@@ -549,10 +549,7 @@ dependencies = [
  "encoding",
  "rayon",
  "regex",
- "serde",
- "serde_json",
  "swift-parser",
- "swift-syntax-rs",
  "tracing",
  "tracing-subscriber",
  "yeast",
@@ -3061,10 +3058,6 @@ dependencies = [
  "tracing",
  "yeast",
 ]
-
-[[package]]
-name = "swift-syntax-rs"
-version = "0.1.0"
 
 [[package]]
 name = "syn"

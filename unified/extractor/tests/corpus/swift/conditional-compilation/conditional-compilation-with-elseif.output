@@ -20,8 +20,6 @@ sourceFile
                 codeBlockItem
                   item:
                     variableDecl
-                      attributes:
-                      modifiers:
                       bindingSpecifier: let
                       bindings:
                         patternBinding
@@ -43,8 +41,6 @@ sourceFile
                 codeBlockItem
                   item:
                     variableDecl
-                      attributes:
-                      modifiers:
                       bindingSpecifier: let
                       bindings:
                         patternBinding
@@ -66,8 +62,6 @@ sourceFile
                 codeBlockItem
                   item:
                     variableDecl
-                      attributes:
-                      modifiers:
                       bindingSpecifier: let
                       bindings:
                         patternBinding

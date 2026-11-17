@@ -8,8 +8,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -20,7 +18,6 @@ sourceFile
                     closureExpr
                       leftBrace: {
                       rightBrace: }
-                      statements:
               pattern:
                 identifierPattern
                   identifier: identifier "handler"
@@ -39,15 +36,12 @@ sourceFile
                         functionType
                           leftParen: (
                           rightParen: )
-                          parameters:
                           returnClause:
                             returnClause
                               arrow: ->
                               type:
                                 identifierType
                                   name: identifier "Void"
-                      lateSpecifiers:
-                      specifiers:
 
 ---
 

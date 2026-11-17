@@ -28,14 +28,12 @@ sourceFile
               expression:
                 integerLiteralExpr
                   literal: integerLiteral "2"
-          additionalTrailingClosures:
           calledExpression:
             declReferenceExpr
               baseName: identifier "foo"
     codeBlockItem
       item:
         functionCallExpr
-          arguments:
           additionalTrailingClosures:
             multipleTrailingClosureElement
               colon: :
@@ -50,8 +48,6 @@ sourceFile
                         functionCallExpr
                           leftParen: (
                           rightParen: )
-                          arguments:
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "second"
@@ -68,8 +64,6 @@ sourceFile
                         functionCallExpr
                           leftParen: (
                           rightParen: )
-                          arguments:
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "third"
@@ -86,8 +80,6 @@ sourceFile
                     functionCallExpr
                       leftParen: (
                       rightParen: )
-                      arguments:
-                      additionalTrailingClosures:
                       calledExpression:
                         declReferenceExpr
                           baseName: identifier "first"

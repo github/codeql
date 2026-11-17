@@ -8,8 +8,6 @@ sourceFile
     codeBlockItem
       item:
         classDecl
-          attributes:
-          modifiers:
           name: identifier "Button"
           inheritanceClause:
             inheritanceClause
@@ -28,7 +26,6 @@ sourceFile
             memberBlock
               leftBrace: {
               rightBrace: }
-              members:
           classKeyword: class
 
 ---

@@ -18,13 +18,10 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
               rightBrace: }
-              statements:
-          modifiers:
           name: identifier "ignore"
           signature:
             functionSignature
@@ -35,8 +32,6 @@ sourceFile
                   parameters:
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       trailingComma: ,
                       type:
                         identifierType
@@ -44,8 +39,6 @@ sourceFile
                       firstName: _
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       type:
                         identifierType
                           name: identifier "String"
@@ -54,13 +47,10 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
               rightBrace: }
-              statements:
-          modifiers:
           name: identifier "ignore"
           signature:
             functionSignature
@@ -71,8 +61,6 @@ sourceFile
                   parameters:
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       trailingComma: ,
                       type:
                         identifierType
@@ -81,8 +69,6 @@ sourceFile
                       secondName: _
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       type:
                         identifierType
                           name: identifier "String"
@@ -92,8 +78,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -106,7 +90,6 @@ sourceFile
                       rightBrace: }
                       signature:
                         closureSignature
-                          attributes:
                           inKeyword: in
                           parameterClause:
                             closureShorthandParameter
@@ -114,7 +97,6 @@ sourceFile
                               trailingComma: ,
                             closureShorthandParameter
                               name: _
-                      statements:
               pattern:
                 identifierPattern
                   identifier: identifier "ignoreClosure"
@@ -144,8 +126,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -158,7 +138,6 @@ sourceFile
                       rightBrace: }
                       signature:
                         closureSignature
-                          attributes:
                           inKeyword: in
                           parameterClause:
                             closureParameterClause
@@ -167,8 +146,6 @@ sourceFile
                               parameters:
                                 closureParameter
                                   colon: :
-                                  attributes:
-                                  modifiers:
                                   trailingComma: ,
                                   type:
                                     identifierType
@@ -176,13 +153,10 @@ sourceFile
                                   firstName: _
                                 closureParameter
                                   colon: :
-                                  attributes:
-                                  modifiers:
                                   type:
                                     identifierType
                                       name: identifier "String"
                                   firstName: _
-                      statements:
               pattern:
                 identifierPattern
                   identifier: identifier "ignoreTypedClosure"

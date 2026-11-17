@@ -8,8 +8,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -22,7 +20,6 @@ sourceFile
                       rightBrace: }
                       signature:
                         closureSignature
-                          attributes:
                           capture:
                             closureCaptureClause
                               leftSquare: [
@@ -40,8 +37,6 @@ sourceFile
                             functionCallExpr
                               leftParen: (
                               rightParen: )
-                              arguments:
-                              additionalTrailingClosures:
                               calledExpression:
                                 memberAccessExpr
                                   period: .

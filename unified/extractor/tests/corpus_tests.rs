@@ -28,7 +28,7 @@ fn update_mode_enabled() -> bool {
 ///
 /// ---
 ///
-/// <raw swift-syntax AST (the yeast tree the adapter builds, pre-desugaring)>
+/// <raw parser AST (the yeast tree before desugaring)>
 ///
 /// ---
 ///
@@ -68,9 +68,7 @@ fn run_desugaring(lang: &desugaring::LanguageSpec, input: &str) -> Result<Ast, S
         .map_err(|e| format!("Desugaring failed: {e}"))
 }
 
-/// Produce the raw (pre-desugar) parse tree dump for `input` — the `yeast::Ast`
-/// the language's parser builds, before any desugaring rules. Useful for seeing
-/// what the mapping rules operate on.
+/// Produce the raw (pre-desugar) parse tree dump for `input`.
 fn dump_raw_parse(lang: &desugaring::LanguageSpec, input: &str) -> Result<String, String> {
     let parsed = (lang.parser)(input.as_bytes())?;
     Ok(dump_ast(&parsed.ast, parsed.ast.get_root(), input))
@@ -117,10 +115,6 @@ fn corpus_dir() -> std::path::PathBuf {
 #[allow(clippy::too_many_lines)]
 fn test_corpus() {
     let update_mode = update_mode_enabled();
-    assert!(
-        !update_mode || !cfg!(feature = "rust-parser"),
-        "Corpus snapshots include swift-syntax's raw tree; regenerate with scripts/update-corpus.sh"
-    );
     let all_languages = languages::all_language_specs();
     let corpus_dir = corpus_dir();
 
@@ -196,28 +190,24 @@ fn test_corpus() {
                 // Ensure the AST passes below operate on the source of truth.
                 let case_input = swift_input.clone();
 
-                // Raw snapshots include swift-syntax-specific details such as
-                // empty collections. Both backends must match the mapped AST.
-                if !cfg!(feature = "rust-parser") {
-                    match dump_raw_parse(&lang, &case_input) {
-                        Err(e) => {
+                match dump_raw_parse(&lang, &case_input) {
+                    Err(e) => {
+                        failures.push(format!(
+                            "Raw parse failed in {}: {}",
+                            output_path.display(),
+                            e
+                        ));
+                    }
+                    Ok(actual_raw) => {
+                        if update_mode {
+                            case.raw = actual_raw.trim().to_string();
+                        } else if output_path.exists() && case.raw.trim() != actual_raw.trim() {
                             failures.push(format!(
-                                "Raw parse failed in {}: {}",
+                                "Raw parse mismatch in {}:\nEXPECTED:\n\n{}\n\nACTUAL:\n\n{}",
                                 output_path.display(),
-                                e
+                                case.raw.trim(),
+                                actual_raw.trim()
                             ));
-                        }
-                        Ok(actual_raw) => {
-                            if update_mode {
-                                case.raw = actual_raw.trim().to_string();
-                            } else if output_path.exists() && case.raw.trim() != actual_raw.trim() {
-                                failures.push(format!(
-                                    "Raw parse mismatch in {}:\nEXPECTED:\n\n{}\n\nACTUAL:\n\n{}",
-                                    output_path.display(),
-                                    case.raw.trim(),
-                                    actual_raw.trim()
-                                ));
-                            }
                         }
                     }
                 }

@@ -8,8 +8,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -22,12 +20,10 @@ sourceFile
                       rightBrace: }
                       signature:
                         closureSignature
-                          attributes:
                           inKeyword: in
                           parameterClause:
                             closureShorthandParameter
                               name: _
-                      statements:
               pattern:
                 identifierPattern
                   identifier: identifier "f"
@@ -42,11 +38,9 @@ sourceFile
                         tupleTypeElement
                           type:
                             attributedType
-                              attributes:
                               baseType:
                                 identifierType
                                   name: identifier "Int"
-                              lateSpecifiers:
                               specifiers:
                                 simpleTypeSpecifier
                                   specifier: inout

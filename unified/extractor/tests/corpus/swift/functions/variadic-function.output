@@ -10,7 +10,6 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
@@ -33,7 +32,6 @@ sourceFile
                               expression:
                                 declReferenceExpr
                                   baseName: binaryOperator "+"
-                          additionalTrailingClosures:
                           calledExpression:
                             memberAccessExpr
                               period: .
@@ -44,7 +42,6 @@ sourceFile
                                 declReferenceExpr
                                   baseName: identifier "values"
                       returnKeyword: return
-          modifiers:
           name: identifier "sum"
           signature:
             functionSignature
@@ -55,8 +52,6 @@ sourceFile
                   parameters:
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       type:
                         identifierType
                           name: identifier "Int"

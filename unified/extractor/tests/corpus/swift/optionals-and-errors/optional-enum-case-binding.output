@@ -27,7 +27,6 @@ sourceFile
                               expression:
                                 declReferenceExpr
                                   baseName: identifier "value"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
@@ -59,7 +58,6 @@ sourceFile
                                                 identifierPattern
                                                   identifier: identifier "value"
                                               bindingSpecifier: let
-                                  additionalTrailingClosures:
                                   calledExpression:
                                     memberAccessExpr
                                       period: .

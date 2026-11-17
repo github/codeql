@@ -12,8 +12,6 @@ sourceFile
     codeBlockItem
       item:
         structDecl
-          attributes:
-          modifiers:
           name: identifier "Resource"
           inheritanceClause:
             inheritanceClause
@@ -34,7 +32,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     functionDecl
-                      attributes:
                       body:
                         codeBlock
                           leftBrace: {
@@ -57,7 +54,6 @@ sourceFile
                             functionParameterClause
                               leftParen: (
                               rightParen: )
-                              parameters:
                       funcKeyword: func
           structKeyword: struct
 

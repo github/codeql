@@ -1,4 +1,4 @@
-# GENERATED from swift-syntax by unified/swift-syntax-rs/schemagen.
+# GENERATED from swift-syntax by unified/swift-parser/oracle/schemagen.
 # Do not edit; run unified/scripts/regenerate-node-types.sh instead.
 supertypes:
   decl:

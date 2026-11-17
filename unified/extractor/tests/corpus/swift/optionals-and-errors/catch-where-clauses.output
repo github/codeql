@@ -26,8 +26,6 @@ sourceFile
                         functionCallExpr
                           leftParen: (
                           rightParen: )
-                          arguments:
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "foo"
@@ -53,7 +51,6 @@ sourceFile
                                   segments:
                                     stringSegment
                                       content: stringSegment "retry"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
@@ -77,7 +74,6 @@ sourceFile
                               expression:
                                 declReferenceExpr
                                   baseName: identifier "e"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "isNetworkError"
@@ -100,7 +96,6 @@ sourceFile
                               expression:
                                 declReferenceExpr
                                   baseName: identifier "f"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "isTimeout"
@@ -126,11 +121,9 @@ sourceFile
                                   segments:
                                     stringSegment
                                       content: stringSegment "fallback"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
-              catchItems:
               catchKeyword: catch
           doKeyword: do
 

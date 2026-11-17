@@ -1,7 +1,7 @@
 import Foundation
 import SyntaxSupport
 
-// Named-leaf ("varying") token kinds, mirroring the extractor adapter's
+// Named-leaf ("varying") token kinds, mirroring the test runner adapter's
 // VARYING_TOKEN_KINDS. Fixed tokens are anonymous (keyed by text) and are not
 // matched by any rule, so they are not emitted here.
 let varyingTokens = Token.allCases.compactMap { token -> String? in
@@ -54,7 +54,7 @@ for node in SYNTAX_NODES {
 }
 
 var output = ""
-output += "# GENERATED from swift-syntax by unified/swift-syntax-rs/schemagen.\n"
+output += "# GENERATED from swift-syntax by unified/swift-parser/oracle/schemagen.\n"
 output += "# Do not edit; run unified/scripts/regenerate-node-types.sh instead.\n"
 let emitSupertypes = ProcessInfo.processInfo.environment["EMIT_SUPERTYPES"] != "0"
 if emitSupertypes {

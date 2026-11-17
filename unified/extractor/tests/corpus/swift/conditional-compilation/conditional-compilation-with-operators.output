@@ -16,8 +16,6 @@ sourceFile
                 codeBlockItem
                   item:
                     variableDecl
-                      attributes:
-                      modifiers:
                       bindingSpecifier: let
                       bindings:
                         patternBinding
@@ -67,7 +65,6 @@ sourceFile
                                 floatLiteralExpr
                                   literal: floatLiteral "6.0"
                               operator: prefixOperator "<"
-                      additionalTrailingClosures:
                       calledExpression:
                         declReferenceExpr
                           baseName: identifier "swift"

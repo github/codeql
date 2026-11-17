@@ -9,13 +9,10 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
               rightBrace: }
-              statements:
-          modifiers:
           name: identifier "doWork"
           signature:
             functionSignature
@@ -23,7 +20,6 @@ sourceFile
                 functionParameterClause
                   leftParen: (
                   rightParen: )
-                  parameters:
           funcKeyword: func
     codeBlockItem
       item:
@@ -32,8 +28,6 @@ sourceFile
             functionCallExpr
               leftParen: (
               rightParen: )
-              arguments:
-              additionalTrailingClosures:
               calledExpression:
                 declReferenceExpr
                   baseName: identifier "doWork"

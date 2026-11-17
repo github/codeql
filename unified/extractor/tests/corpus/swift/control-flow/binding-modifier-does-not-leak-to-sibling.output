@@ -14,8 +14,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -63,7 +61,6 @@ sourceFile
                                   segments:
                                     stringSegment
                                       content: stringSegment "matched"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"

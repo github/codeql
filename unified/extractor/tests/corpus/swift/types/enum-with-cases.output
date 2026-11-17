@@ -13,8 +13,6 @@ sourceFile
     codeBlockItem
       item:
         enumDecl
-          attributes:
-          modifiers:
           name: identifier "Direction"
           memberBlock:
             memberBlock
@@ -24,8 +22,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     enumCaseDecl
-                      attributes:
-                      modifiers:
                       elements:
                         enumCaseElement
                           name: identifier "north"
@@ -33,8 +29,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     enumCaseDecl
-                      attributes:
-                      modifiers:
                       elements:
                         enumCaseElement
                           name: identifier "south"
@@ -42,8 +36,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     enumCaseDecl
-                      attributes:
-                      modifiers:
                       elements:
                         enumCaseElement
                           name: identifier "east"
@@ -51,8 +43,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     enumCaseDecl
-                      attributes:
-                      modifiers:
                       elements:
                         enumCaseElement
                           name: identifier "west"

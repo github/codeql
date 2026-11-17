@@ -1,34 +1,32 @@
 #!/bin/bash
 # Regenerate `extractor/swift_node_types.yml`, the schema describing the shape
-# of the trees produced by `swift_syntax_rs::parse_to_json`, from swift-syntax
-# itself.
+# of the trees produced by the Swift oracle, from swift-syntax itself.
 #
 # Run this after changing the pinned swift-syntax version, and review the diff:
 # a new or renamed node kind generally means the mapping in
 # `extractor/src/languages/swift/swift.rs` needs attention too.
 #
-# This needs a local Swift toolchain (see `swift-syntax-rs/.swift-version` for
+# This needs a local Swift toolchain (see `swift-parser/oracle/.swift-version` for
 # the pinned version). The schema it derives from lives in `SyntaxSupport`, a
-# target of swift-syntax's separate `CodeGeneration` package: it is not a
-# product of swift-syntax, and Bazel's swift-syntax module does not export its
-# sources, so there is no way to depend on it directly.
+# target of swift-syntax's separate `CodeGeneration` package, so its sources
+# are staged locally below.
 set -euo pipefail
 IFS=$'\n\t'
 
 root=$(cd "$(dirname "$0")/.." && pwd)
-swift_syntax_rs_dir="$root/swift-syntax-rs"
-schemagen_dir="$swift_syntax_rs_dir/schemagen"
+oracle_dir="$root/swift-parser/oracle"
+schemagen_dir="$oracle_dir/schemagen"
 output="$root/extractor/swift_node_types.yml"
 
 if ! command -v swift >/dev/null 2>&1; then
-    echo "error: Swift is required; install the version pinned in $swift_syntax_rs_dir/.swift-version." >&2
+    echo "error: Swift is required; install the version pinned in $oracle_dir/.swift-version." >&2
     exit 1
 fi
 
 # Codespaces sets `safe.bareRepository=explicit` through environment-based Git
 # configuration, which prevents SwiftPM from using its cached bare dependency
 # repositories. Relax only that injected setting, and only for Swift
-# subprocesses, as `swift-syntax-rs/build.rs` does for local Cargo builds.
+# subprocesses.
 run_swift() {
     if [[ ${GIT_CONFIG_KEY_0:-} == "safe.bareRepository" ]]; then
         GIT_CONFIG_VALUE_0=all swift "$@"

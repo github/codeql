@@ -10,7 +10,6 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
@@ -23,13 +22,11 @@ sourceFile
                         declReferenceExpr
                           baseName: identifier "x"
                       returnKeyword: return
-          modifiers:
           name: identifier "identity"
           genericParameterClause:
             genericParameterClause
               parameters:
                 genericParameter
-                  attributes:
                   name: identifier "T"
               leftAngle: <
               rightAngle: >
@@ -42,8 +39,6 @@ sourceFile
                   parameters:
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       type:
                         identifierType
                           name: identifier "T"

@@ -10,8 +10,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -31,7 +29,6 @@ sourceFile
                               segments:
                                 stringSegment
                                   content: stringSegment "key"
-                      additionalTrailingClosures:
                       calledExpression:
                         declReferenceExpr
                           baseName: identifier "d"

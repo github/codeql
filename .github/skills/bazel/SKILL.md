@@ -49,9 +49,8 @@ Bazel's own macro / rule / repository-rule distinction applies as usual. What is
 
 Prefer inline rules in `BUILD.bazel`. A `.bzl` file earns its `load()` only when the shape repeats across packages or a
 value must be computed: [`rust.bzl`](../../../misc/bazel/rust.bzl) is worth it because every Rust binary that ships in a
-pack must get the same universal-binary wrapper and symbols test, and forgetting either is a release bug. A local
-debugging aid opts out and declares a plain `rust_binary`; see `swift-syntax-parse` in
-[`unified/swift-syntax-rs/BUILD.bazel`](../../../unified/swift-syntax-rs/BUILD.bazel). The `_gen_binaries` list in
+pack must get the same universal-binary wrapper and symbols test, and forgetting either is a release bug. The
+`_gen_binaries` list in
 [`go/BUILD.bazel`](../../../go/BUILD.bazel) does not earn a `.bzl`, because it is shared within a single file, where a
 local variable does the job.
 

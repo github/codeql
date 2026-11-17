@@ -11,8 +11,6 @@ sourceFile
     codeBlockItem
       item:
         classDecl
-          attributes:
-          modifiers:
           name: identifier "Point"
           memberBlock:
             memberBlock
@@ -22,8 +20,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     variableDecl
-                      attributes:
-                      modifiers:
                       bindingSpecifier: var
                       bindings:
                         patternBinding
@@ -39,8 +35,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     variableDecl
-                      attributes:
-                      modifiers:
                       bindingSpecifier: var
                       bindings:
                         patternBinding

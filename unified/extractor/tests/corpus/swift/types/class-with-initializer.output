@@ -13,8 +13,6 @@ sourceFile
     codeBlockItem
       item:
         classDecl
-          attributes:
-          modifiers:
           name: identifier "Point"
           memberBlock:
             memberBlock
@@ -24,8 +22,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     variableDecl
-                      attributes:
-                      modifiers:
                       bindingSpecifier: var
                       bindings:
                         patternBinding
@@ -41,7 +37,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     initializerDecl
-                      attributes:
                       body:
                         codeBlock
                           leftBrace: {
@@ -65,7 +60,6 @@ sourceFile
                                   rightOperand:
                                     declReferenceExpr
                                       baseName: identifier "x"
-                      modifiers:
                       signature:
                         functionSignature
                           parameterClause:
@@ -75,8 +69,6 @@ sourceFile
                               parameters:
                                 functionParameter
                                   colon: :
-                                  attributes:
-                                  modifiers:
                                   type:
                                     identifierType
                                       name: identifier "Int"

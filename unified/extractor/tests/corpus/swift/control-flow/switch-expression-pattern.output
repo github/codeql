@@ -84,8 +84,6 @@ sourceFile
                                 functionCallExpr
                                   leftParen: (
                                   rightParen: )
-                                  arguments:
-                                  additionalTrailingClosures:
                                   calledExpression:
                                     declReferenceExpr
                                       baseName: identifier "makeValue"
@@ -103,8 +101,6 @@ sourceFile
                                     functionCallExpr
                                       leftParen: (
                                       rightParen: )
-                                      arguments:
-                                      additionalTrailingClosures:
                                       calledExpression:
                                         declReferenceExpr
                                           baseName: identifier "makeValue"
@@ -242,7 +238,6 @@ sourceFile
                               expression:
                                 declReferenceExpr
                                   baseName: identifier "value"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "consume"
@@ -279,7 +274,6 @@ sourceFile
                               expression:
                                 declReferenceExpr
                                   baseName: identifier "fallback"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "consume"

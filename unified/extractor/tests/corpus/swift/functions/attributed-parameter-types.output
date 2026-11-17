@@ -15,23 +15,18 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
               rightBrace: }
-              statements:
-          modifiers:
           name: identifier "f"
           genericParameterClause:
             genericParameterClause
               parameters:
                 genericParameter
-                  attributes:
                   name: identifier "D"
                   trailingComma: ,
                 genericParameter
-                  attributes:
                   name: identifier "T"
               leftAngle: <
               rightAngle: >
@@ -44,72 +39,54 @@ sourceFile
                   parameters:
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       trailingComma: ,
                       type:
                         attributedType
-                          attributes:
                           baseType:
                             identifierType
                               name: identifier "D"
-                          lateSpecifiers:
                           specifiers:
                             simpleTypeSpecifier
                               specifier: inout
                       firstName: identifier "a"
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       trailingComma: ,
                       type:
                         attributedType
-                          attributes:
                           baseType:
                             identifierType
                               name: identifier "T"
-                          lateSpecifiers:
                           specifiers:
                             simpleTypeSpecifier
                               specifier: sending
                       firstName: identifier "b"
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       trailingComma: ,
                       type:
                         attributedType
-                          attributes:
                           baseType:
                             identifierType
                               name: identifier "T"
-                          lateSpecifiers:
                           specifiers:
                             simpleTypeSpecifier
                               specifier: borrowing
                       firstName: identifier "c"
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       trailingComma: ,
                       type:
                         attributedType
-                          attributes:
                           baseType:
                             identifierType
                               name: identifier "T"
-                          lateSpecifiers:
                           specifiers:
                             simpleTypeSpecifier
                               specifier: consuming
                       firstName: identifier "d"
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       trailingComma: ,
                       type:
                         attributedType
@@ -134,13 +111,9 @@ sourceFile
                                   type:
                                     identifierType
                                       name: identifier "Void"
-                          lateSpecifiers:
-                          specifiers:
                       firstName: identifier "e"
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       type:
                         attributedType
                           attributes:
@@ -158,15 +131,12 @@ sourceFile
                             functionType
                               leftParen: (
                               rightParen: )
-                              parameters:
                               returnClause:
                                 returnClause
                                   arrow: ->
                                   type:
                                     identifierType
                                       name: identifier "D"
-                          lateSpecifiers:
-                          specifiers:
                       firstName: identifier "g"
           funcKeyword: func
 

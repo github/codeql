@@ -10,7 +10,6 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
@@ -37,7 +36,6 @@ sourceFile
                             declReferenceExpr
                               baseName: identifier "d"
                       returnKeyword: return
-          modifiers:
           name: identifier "choose"
           signature:
             functionSignature
@@ -48,8 +46,6 @@ sourceFile
                   parameters:
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       trailingComma: ,
                       type:
                         identifierType
@@ -58,8 +54,6 @@ sourceFile
                       secondName: identifier "c"
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       trailingComma: ,
                       type:
                         identifierType
@@ -68,8 +62,6 @@ sourceFile
                       secondName: identifier "a"
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       trailingComma: ,
                       type:
                         identifierType
@@ -78,8 +70,6 @@ sourceFile
                       secondName: identifier "b"
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       type:
                         identifierType
                           name: identifier "Int"

@@ -13,8 +13,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -25,8 +23,6 @@ sourceFile
                     functionCallExpr
                       leftParen: (
                       rightParen: )
-                      arguments:
-                      additionalTrailingClosures:
                       calledExpression:
                         arrayExpr
                           elements:
@@ -53,8 +49,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -86,8 +80,6 @@ sourceFile
                                     functionCallExpr
                                       leftParen: (
                                       rightParen: )
-                                      arguments:
-                                      additionalTrailingClosures:
                                       calledExpression:
                                         declReferenceExpr
                                           baseName: identifier "done"
@@ -117,7 +109,6 @@ sourceFile
                           rightBrace: }
                           signature:
                             closureSignature
-                              attributes:
                               inKeyword: in
                               parameterClause:
                                 closureShorthandParameter

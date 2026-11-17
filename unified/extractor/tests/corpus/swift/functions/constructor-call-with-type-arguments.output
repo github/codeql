@@ -10,26 +10,20 @@ sourceFile
     codeBlockItem
       item:
         classDecl
-          attributes:
-          modifiers:
           name: identifier "Foo"
           memberBlock:
             memberBlock
               leftBrace: {
               rightBrace: }
-              members:
           classKeyword: class
     codeBlockItem
       item:
         classDecl
-          attributes:
-          modifiers:
           name: identifier "C"
           genericParameterClause:
             genericParameterClause
               parameters:
                 genericParameter
-                  attributes:
                   name: identifier "T"
               leftAngle: <
               rightAngle: >
@@ -37,13 +31,10 @@ sourceFile
             memberBlock
               leftBrace: {
               rightBrace: }
-              members:
           classKeyword: class
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -54,8 +45,6 @@ sourceFile
                     functionCallExpr
                       leftParen: (
                       rightParen: )
-                      arguments:
-                      additionalTrailingClosures:
                       calledExpression:
                         genericSpecializationExpr
                           expression:

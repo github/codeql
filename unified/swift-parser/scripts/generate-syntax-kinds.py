@@ -11,7 +11,7 @@ nodes = re.findall(r"^  (\w+):", schema, re.M)
 fields = sorted(set(re.findall(r"^    (\w+)[?*]?:", schema, re.M)))
 varying = set(nodes[nodes.index("_token") + 1:]) | {"stringSegment"}
 nodes = nodes[:nodes.index("_token")]
-keywords_file = root.parent / "swift-syntax-rs/swift/.build/checkouts/swift-syntax/Sources/SwiftSyntax/generated/Keyword.swift"
+keywords_file = root / "oracle/.build/checkouts/swift-syntax/Sources/SwiftSyntax/generated/Keyword.swift"
 keywords = re.findall(r"^  case `?(\w+)`?\s*$", keywords_file.read_text(), re.M)
 punctuation = {
     "Ampersand": "&", "Arrow": "->", "AtSign": "@", "Backslash": "\\", "Backtick": "`",

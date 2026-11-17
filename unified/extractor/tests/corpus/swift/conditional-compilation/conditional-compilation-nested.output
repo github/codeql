@@ -42,8 +42,6 @@ sourceFile
                 codeBlockItem
                   item:
                     variableDecl
-                      attributes:
-                      modifiers:
                       bindingSpecifier: let
                       bindings:
                         patternBinding
@@ -59,8 +57,6 @@ sourceFile
                 codeBlockItem
                   item:
                     variableDecl
-                      attributes:
-                      modifiers:
                       bindingSpecifier: let
                       bindings:
                         patternBinding
@@ -82,13 +78,10 @@ sourceFile
                             codeBlockItem
                               item:
                                 functionDecl
-                                  attributes:
                                   body:
                                     codeBlock
                                       leftBrace: {
                                       rightBrace: }
-                                      statements:
-                                  modifiers:
                                   name: identifier "f"
                                   signature:
                                     functionSignature
@@ -96,14 +89,12 @@ sourceFile
                                         functionParameterClause
                                           leftParen: (
                                           rightParen: )
-                                          parameters:
                                   funcKeyword: func
                           condition:
                             declReferenceExpr
                               baseName: identifier "EXTRA"
                           poundKeyword: #if
                         ifConfigClause
-                          elements:
                           condition:
                             declReferenceExpr
                               baseName: identifier "OTHER"
@@ -113,8 +104,6 @@ sourceFile
                             codeBlockItem
                               item:
                                 variableDecl
-                                  attributes:
-                                  modifiers:
                                   bindingSpecifier: let
                                   bindings:
                                     patternBinding
@@ -134,14 +123,11 @@ sourceFile
                   baseName: identifier "DEBUG"
               poundKeyword: #if
             ifConfigClause
-              elements:
               poundKeyword: #else
           poundEndif: #endif
     codeBlockItem
       item:
         protocolDecl
-          attributes:
-          modifiers:
           name: identifier "P"
           memberBlock:
             memberBlock
@@ -157,8 +143,6 @@ sourceFile
                             memberBlockItem
                               decl:
                                 associatedTypeDecl
-                                  attributes:
-                                  modifiers:
                                   name: identifier "T"
                                   associatedtypeKeyword: associatedtype
                           condition:
@@ -170,7 +154,6 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
@@ -191,8 +174,6 @@ sourceFile
                                         codeBlockItem
                                           item:
                                             variableDecl
-                                              attributes:
-                                              modifiers:
                                               bindingSpecifier: let
                                               bindings:
                                                 patternBinding
@@ -214,8 +195,6 @@ sourceFile
                                         codeBlockItem
                                           item:
                                             variableDecl
-                                              attributes:
-                                              modifiers:
                                               bindingSpecifier: let
                                               bindings:
                                                 patternBinding
@@ -239,8 +218,6 @@ sourceFile
                             codeBlockItem
                               item:
                                 variableDecl
-                                  attributes:
-                                  modifiers:
                                   bindingSpecifier: let
                                   bindings:
                                     patternBinding
@@ -255,7 +232,6 @@ sourceFile
                                           identifier: identifier "value"
                           poundKeyword: #else
                       poundEndif: #endif
-          modifiers:
           name: identifier "nested_in_statement_context"
           signature:
             functionSignature
@@ -263,7 +239,6 @@ sourceFile
                 functionParameterClause
                   leftParen: (
                   rightParen: )
-                  parameters:
           funcKeyword: func
 
 ---

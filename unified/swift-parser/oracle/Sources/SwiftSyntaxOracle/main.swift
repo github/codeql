@@ -1,3 +1,4 @@
+import Foundation
 import SwiftOperators
 import SwiftParser
 
@@ -217,21 +218,6 @@ private final class PerSequenceFolder: SyntaxRewriter {
     }
 }
 
-/// Write directly to stderr without Foundation, whose output APIs would pull ICU into static builds.
-private func writeToStandardError(_ message: String) {
-    message.withCString { start in
-        var pointer = UnsafeRawPointer(start)
-        let end = pointer.advanced(by: strlen(start))
-        while pointer != end {
-            let written = write(STDERR_FILENO, pointer, end - pointer)
-            if written <= 0 {
-                return
-            }
-            pointer = pointer.advanced(by: written)
-        }
-    }
-}
-
 private struct JSONEncodingError: Error, CustomStringConvertible {
     let type: Any.Type
 
@@ -306,51 +292,57 @@ private func appendJSON(_ value: Any, to output: inout [UInt8]) throws {
     }
 }
 
-/// Parse the given UTF-8 Swift source buffer and return a heap-allocated,
-/// NUL-terminated JSON representation of the syntax tree.
-///
-/// The returned pointer is owned by the caller and MUST be released with
-/// `ssr_string_free`. Returns `nil` on failure.
-@_cdecl("ssr_parse_json")
-public func ssr_parse_json(
-    _ source: UnsafePointer<UInt8>?,
-    _ sourceLength: Int
-) -> UnsafeMutablePointer<CChar>? {
-    guard sourceLength >= 0, source != nil || sourceLength == 0 else { return nil }
-    let sourceBytes = UnsafeBufferPointer(start: source, count: sourceLength)
-    let code = String(decoding: sourceBytes, as: UTF8.self)
-    let tree = Parser.parse(source: code)
+private func parse(_ source: String) throws -> String {
+    let tree = Parser.parse(source: source)
     // Fold operator sequences before serializing. Source positions are
     // preserved by folding (the same tokens, in the same places), so a
     // converter built from the original tree maps the folded tree correctly.
     let folded = foldOperators(in: tree)
     let converter = SourceLocationConverter(fileName: "<input>", tree: tree)
-    let serialized: Any
-    do {
-        serialized = try serialize(folded)
-    } catch {
-        writeToStandardError("SwiftSyntaxFFI: JSON serialization failed: \(error)\n")
-        return nil
-    }
+    let serialized = try serialize(folded)
     guard var json = serialized as? [String: Any] else {
-        return nil
+        throw JSONEncodingError(type: type(of: serialized))
     }
     json["$lineStarts"] = lineStarts(converter)
     json["$hasError"] = tree.hasError
 
     var bytes: [UInt8] = []
-    do {
-        try appendJSON(json, to: &bytes)
-    } catch {
-        writeToStandardError("SwiftSyntaxFFI: JSON serialization failed: \(error)\n")
-        return nil
-    }
-    let string = String(decoding: bytes, as: UTF8.self)
-    return strdup(string)
+    try appendJSON(json, to: &bytes)
+    return String(decoding: bytes, as: UTF8.self)
 }
 
-/// Free a string previously returned by this library.
-@_cdecl("ssr_string_free")
-public func ssr_string_free(_ ptr: UnsafeMutablePointer<CChar>?) {
-    free(ptr)
+private enum InputError: Error, CustomStringConvertible {
+    case usage
+    case invalidUTF8
+
+    var description: String {
+        switch self {
+        case .usage: "usage: swift-syntax-parse [FILE]"
+        case .invalidUTF8: "source is not valid UTF-8"
+        }
+    }
+}
+
+private func readSource() throws -> String {
+    let arguments = CommandLine.arguments.dropFirst()
+    guard arguments.count <= 1 else { throw InputError.usage }
+    let data: Data
+    if let path = arguments.first {
+        data = try Data(contentsOf: URL(fileURLWithPath: path))
+    } else {
+        data = FileHandle.standardInput.readDataToEndOfFile()
+    }
+    // Validate without letting Foundation's UTF-8 initializer strip a leading BOM.
+    let source = String(decoding: data, as: UTF8.self)
+    guard source.utf8.elementsEqual(data) else {
+        throw InputError.invalidUTF8
+    }
+    return source
+}
+
+do {
+    print(try parse(readSource()))
+} catch {
+    FileHandle.standardError.write(Data("swift-syntax-parse: \(error)\n".utf8))
+    exit(1)
 }

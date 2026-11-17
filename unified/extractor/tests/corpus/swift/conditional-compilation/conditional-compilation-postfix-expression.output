@@ -13,8 +13,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -39,7 +37,6 @@ sourceFile
                                       expression:
                                         integerLiteralExpr
                                           literal: integerLiteral "1"
-                                  additionalTrailingClosures:
                                   calledExpression:
                                     memberAccessExpr
                                       period: .
@@ -64,7 +61,6 @@ sourceFile
                                           segments:
                                             stringSegment
                                               content: stringSegment "hi"
-                                  additionalTrailingClosures:
                                   calledExpression:
                                     memberAccessExpr
                                       period: .

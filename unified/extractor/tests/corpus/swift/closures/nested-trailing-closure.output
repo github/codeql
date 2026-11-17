@@ -14,8 +14,6 @@ sourceFile
             labeledExpr
               expression:
                 functionCallExpr
-                  arguments:
-                  additionalTrailingClosures:
                   calledExpression:
                     memberAccessExpr
                       period: .
@@ -42,7 +40,6 @@ sourceFile
                               rightOperand:
                                 integerLiteralExpr
                                   literal: integerLiteral "2"
-          additionalTrailingClosures:
           calledExpression:
             declReferenceExpr
               baseName: identifier "print"

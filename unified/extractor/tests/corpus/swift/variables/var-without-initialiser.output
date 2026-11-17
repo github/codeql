@@ -8,8 +8,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: var
           bindings:
             patternBinding

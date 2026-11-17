@@ -41,7 +41,6 @@ sourceFile
                                                 identifierPattern
                                                   identifier: identifier "r"
                                               bindingSpecifier: let
-                                  additionalTrailingClosures:
                                   calledExpression:
                                     memberAccessExpr
                                       period: .
@@ -59,7 +58,6 @@ sourceFile
                               expression:
                                 declReferenceExpr
                                   baseName: identifier "r"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
@@ -86,7 +84,6 @@ sourceFile
                                                 identifierPattern
                                                   identifier: identifier "s"
                                               bindingSpecifier: let
-                                  additionalTrailingClosures:
                                   calledExpression:
                                     memberAccessExpr
                                       period: .
@@ -104,7 +101,6 @@ sourceFile
                               expression:
                                 declReferenceExpr
                                   baseName: identifier "s"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"

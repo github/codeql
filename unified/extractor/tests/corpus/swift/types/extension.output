@@ -10,8 +10,6 @@ sourceFile
     codeBlockItem
       item:
         extensionDecl
-          attributes:
-          modifiers:
           memberBlock:
             memberBlock
               leftBrace: {
@@ -20,7 +18,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     functionDecl
-                      attributes:
                       body:
                         codeBlock
                           leftBrace: {
@@ -41,7 +38,6 @@ sourceFile
                                         declReferenceExpr
                                           baseName: self
                                   returnKeyword: return
-                      modifiers:
                       name: identifier "squared"
                       signature:
                         functionSignature
@@ -49,7 +45,6 @@ sourceFile
                             functionParameterClause
                               leftParen: (
                               rightParen: )
-                              parameters:
                           returnClause:
                             returnClause
                               arrow: ->

@@ -8,8 +8,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -20,8 +18,6 @@ sourceFile
                     functionCallExpr
                       leftParen: (
                       rightParen: )
-                      arguments:
-                      additionalTrailingClosures:
                       calledExpression:
                         genericSpecializationExpr
                           expression:

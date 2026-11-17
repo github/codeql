@@ -10,8 +10,6 @@ sourceFile
     codeBlockItem
       item:
         structDecl
-          attributes:
-          modifiers:
           name: identifier "FileHandle"
           inheritanceClause:
             inheritanceClause
@@ -32,8 +30,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     variableDecl
-                      attributes:
-                      modifiers:
                       bindingSpecifier: let
                       bindings:
                         patternBinding

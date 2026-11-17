@@ -10,7 +10,6 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
@@ -20,7 +19,6 @@ sourceFile
                   item:
                     declReferenceExpr
                       baseName: identifier "input"
-          modifiers:
           name: identifier "values"
           signature:
             functionSignature
@@ -31,8 +29,6 @@ sourceFile
                   parameters:
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       type:
                         someOrAnyType
                           constraint:

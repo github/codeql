@@ -10,7 +10,6 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
@@ -28,7 +27,6 @@ sourceFile
                       rightOperand:
                         integerLiteralExpr
                           literal: integerLiteral "1"
-          modifiers:
           name: identifier "increment"
           signature:
             functionSignature
@@ -39,15 +37,11 @@ sourceFile
                   parameters:
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       type:
                         attributedType
-                          attributes:
                           baseType:
                             identifierType
                               name: identifier "Int"
-                          lateSpecifiers:
                           specifiers:
                             simpleTypeSpecifier
                               specifier: inout

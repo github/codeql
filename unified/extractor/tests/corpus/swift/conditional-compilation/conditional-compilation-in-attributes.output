@@ -43,8 +43,6 @@ sourceFile
             codeBlock
               leftBrace: {
               rightBrace: }
-              statements:
-          modifiers:
           name: identifier "f"
           signature:
             functionSignature
@@ -52,7 +50,6 @@ sourceFile
                 functionParameterClause
                   leftParen: (
                   rightParen: )
-                  parameters:
           funcKeyword: func
     codeBlockItem
       item:
@@ -80,7 +77,6 @@ sourceFile
                       baseName: identifier "DEBUG"
                   poundKeyword: #if
               poundEndif: #endif
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding

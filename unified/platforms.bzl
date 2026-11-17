@@ -1,7 +1,6 @@
 """Shared platform constraint for the unified extractor."""
 
-# swift-syntax requires a Swift toolchain, which is only available
-# through rules_swift.
+# Extractor packs currently support Linux and macOS.
 UNIFIED_SUPPORTED_PLATFORMS = select({
     "@platforms//os:linux": [],
     "@platforms//os:macos": [],

@@ -11,7 +11,6 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
@@ -39,7 +38,6 @@ sourceFile
                                           segments:
                                             stringSegment
                                               content: stringSegment "cleanup"
-                                  additionalTrailingClosures:
                                   calledExpression:
                                     declReferenceExpr
                                       baseName: identifier "print"
@@ -58,11 +56,9 @@ sourceFile
                               segments:
                                 stringSegment
                                   content: stringSegment "work"
-                      additionalTrailingClosures:
                       calledExpression:
                         declReferenceExpr
                           baseName: identifier "print"
-          modifiers:
           name: identifier "withCleanup"
           signature:
             functionSignature
@@ -70,7 +66,6 @@ sourceFile
                 functionParameterClause
                   leftParen: (
                   rightParen: )
-                  parameters:
           funcKeyword: func
 
 ---

@@ -14,8 +14,6 @@ sourceFile
     codeBlockItem
       item:
         classDecl
-          attributes:
-          modifiers:
           name: identifier "Box"
           memberBlock:
             memberBlock
@@ -25,7 +23,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     variableDecl
-                      attributes:
                       modifiers:
                         declModifier
                           name: private
@@ -44,8 +41,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     variableDecl
-                      attributes:
-                      modifiers:
                       bindingSpecifier: var
                       bindings:
                         patternBinding
@@ -63,7 +58,6 @@ sourceFile
                               accessors:
                                 accessorDecl
                                   accessorSpecifier: get
-                                  attributes:
                                   body:
                                     codeBlock
                                       leftBrace: {
@@ -76,10 +70,8 @@ sourceFile
                                                 declReferenceExpr
                                                   baseName: identifier "_v"
                                               returnKeyword: return
-                                  modifiers:
                                 accessorDecl
                                   accessorSpecifier: set
-                                  attributes:
                                   body:
                                     codeBlock
                                       leftBrace: {
@@ -97,7 +89,6 @@ sourceFile
                                               rightOperand:
                                                 declReferenceExpr
                                                   baseName: identifier "newValue"
-                                  modifiers:
                               leftBrace: {
                               rightBrace: }
           classKeyword: class

@@ -8,8 +8,6 @@ sourceFile
     codeBlockItem
       item:
         importDecl
-          attributes:
-          modifiers:
           importKeyword: import
           importKindSpecifier: struct
           path:

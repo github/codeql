@@ -1,9 +1,4 @@
-//! Converts the swift-syntax JSON syntax tree into a [`yeast::Ast`], the
-//! in-memory format the CodeQL desugaring rules operate on.
-//!
-//! The JSON tree is produced by the `swift-syntax-rs` crate's Swift FFI shim
-//! (`parse_to_json`). This module needs no Swift toolchain, so the extractor
-//! consumes swift-syntax output out-of-process.
+//! Converts the Swift oracle's JSON into a [`yeast::Ast`] for differential tests.
 //!
 //! The mapping mirrors tree-sitter's node model, which is what yeast (and the
 //! extractor's rewrite rules) expect:
@@ -17,8 +12,7 @@
 //! * Collection nodes are already elided to JSON arrays upstream, so a
 //!   list-valued field maps directly to that field holding several children.
 //!
-//! Note: this preserves swift-syntax's own kind/field names; the rewrite rules
-//! in [`super::swift`] match those names directly.
+//! This preserves swift-syntax's own kind/field names.
 
 use std::collections::BTreeMap;
 
@@ -313,14 +307,14 @@ fn trivia_kind_id(kind: &str) -> usize {
 }
 
 /// The authoritative swift-syntax input node-types schema, generated from
-/// swift-syntax by `swift-syntax-rs/schemagen` (run
+/// swift-syntax by `oracle/schemagen` (run
 /// `unified/scripts/regenerate-node-types.sh` to refresh it).
 /// [`json_to_ast`] seeds every parse with the schema built from this,
 /// pre-registering every input kind and field so rule matching never references
 /// a name absent from a given file's tree.
-const SWIFT_NODE_TYPES: &str = include_str!("../../../swift_node_types.yml");
+const SWIFT_NODE_TYPES: &str = include_str!("../swift_node_types.yml");
 
-/// Convert a swift-syntax JSON tree (as produced by [`crate::parse_to_json`])
+/// Convert a swift-syntax JSON tree produced by the Swift oracle
 /// into a [`yeast::Ast`] plus the comment/`unexpectedText` trivia harvested
 /// from it. Both are produced in a single traversal. The AST is seeded with the
 /// authoritative swift-syntax schema ([`SWIFT_NODE_TYPES`]); the adapter only

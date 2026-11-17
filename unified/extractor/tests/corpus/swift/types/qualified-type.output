@@ -26,8 +26,6 @@ sourceFile
     codeBlockItem
       item:
         structDecl
-          attributes:
-          modifiers:
           name: identifier "Outer"
           memberBlock:
             memberBlock
@@ -37,8 +35,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     structDecl
-                      attributes:
-                      modifiers:
                       name: identifier "Inner"
                       memberBlock:
                         memberBlock
@@ -48,27 +44,21 @@ sourceFile
                             memberBlockItem
                               decl:
                                 structDecl
-                                  attributes:
-                                  modifiers:
                                   name: identifier "Deep"
                                   memberBlock:
                                     memberBlock
                                       leftBrace: {
                                       rightBrace: }
-                                      members:
                                   structKeyword: struct
                       structKeyword: struct
                 memberBlockItem
                   decl:
                     structDecl
-                      attributes:
-                      modifiers:
                       name: identifier "Generic"
                       genericParameterClause:
                         genericParameterClause
                           parameters:
                             genericParameter
-                              attributes:
                               name: identifier "T"
                           leftAngle: <
                           rightAngle: >
@@ -80,18 +70,14 @@ sourceFile
                             memberBlockItem
                               decl:
                                 structDecl
-                                  attributes:
-                                  modifiers:
                                   name: identifier "Deep"
                                   genericParameterClause:
                                     genericParameterClause
                                       parameters:
                                         genericParameter
-                                          attributes:
                                           name: identifier "U"
                                           trailingComma: ,
                                         genericParameter
-                                          attributes:
                                           name: identifier "V"
                                       leftAngle: <
                                       rightAngle: >
@@ -99,27 +85,21 @@ sourceFile
                                     memberBlock
                                       leftBrace: {
                                       rightBrace: }
-                                      members:
                                   structKeyword: struct
                             memberBlockItem
                               decl:
                                 structDecl
-                                  attributes:
-                                  modifiers:
                                   name: identifier "Plain"
                                   memberBlock:
                                     memberBlock
                                       leftBrace: {
                                       rightBrace: }
-                                      members:
                                   structKeyword: struct
                       structKeyword: struct
           structKeyword: struct
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -139,8 +119,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -164,23 +142,18 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
               rightBrace: }
-              statements:
-          modifiers:
           name: identifier "qualifiedTypes"
           genericParameterClause:
             genericParameterClause
               parameters:
                 genericParameter
-                  attributes:
                   name: identifier "Metadata"
                   trailingComma: ,
                 genericParameter
-                  attributes:
                   name: identifier "ErrorComponentType"
               leftAngle: <
               rightAngle: >
@@ -193,8 +166,6 @@ sourceFile
                   parameters:
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       trailingComma: ,
                       type:
                         memberType
@@ -216,8 +187,6 @@ sourceFile
                       secondName: identifier "value"
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       trailingComma: ,
                       type:
                         memberType
@@ -261,8 +230,6 @@ sourceFile
                       secondName: identifier "nested"
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       type:
                         memberType
                           name: identifier "Plain"

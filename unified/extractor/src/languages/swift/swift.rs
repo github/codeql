@@ -1,5 +1,5 @@
 use codeql_extractor::extractor::desugaring;
-use yeast::{tree, ConcreteDesugarer, DesugaringConfig, Rule};
+use yeast::{ConcreteDesugarer, DesugaringConfig, Rule, tree};
 
 /// User context propagated from outer rules down to the inner rules that
 /// emit the corresponding output declarations, so that each emitted node
@@ -154,7 +154,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         [
         // ---- Top-level ----
         // These rules translate the swift-syntax AST (camelCase kind names),
-        // produced by the sibling `adapter` module from swift-syntax JSON.
+        // produced directly by the native parser.
         // Known kinds without dedicated rules become `unsupported_node`;
         // genuinely unknown kinds become `unhandled_node`.
         //
@@ -257,7 +257,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // ---- Operators ----
         // The parser front-end folds operator chains into nested
-        // `infixOperatorExpr`s by precedence (see swift-syntax-rs), so
+        // `infixOperatorExpr`s by precedence, so
         // `1 + 2 * 3` arrives here already structured.
         //
         // A `binaryOperatorExpr` wraps the operator token; unwrap it to the

@@ -11,8 +11,6 @@ sourceFile
     codeBlockItem
       item:
         enumDecl
-          attributes:
-          modifiers:
           name: identifier "Shape"
           memberBlock:
             memberBlock
@@ -22,8 +20,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     enumCaseDecl
-                      attributes:
-                      modifiers:
                       elements:
                         enumCaseElement
                           name: identifier "circle"
@@ -34,7 +30,6 @@ sourceFile
                               parameters:
                                 enumCaseParameter
                                   colon: :
-                                  modifiers:
                                   type:
                                     identifierType
                                       name: identifier "Double"
@@ -43,8 +38,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     enumCaseDecl
-                      attributes:
-                      modifiers:
                       elements:
                         enumCaseElement
                           name: identifier "square"
@@ -55,7 +48,6 @@ sourceFile
                               parameters:
                                 enumCaseParameter
                                   colon: :
-                                  modifiers:
                                   type:
                                     identifierType
                                       name: identifier "Double"

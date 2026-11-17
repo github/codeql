@@ -78,7 +78,6 @@ safe-outputs:
       - "shared/yeast-schema/Cargo.toml"
       - "ruby/extractor/Cargo.toml"
       - "unified/extractor/Cargo.toml"
-      - "unified/swift-syntax-rs/Cargo.toml"
       - "unified/extractor-unsupported-os/Cargo.toml"
       - "cpp/extractor/bmn/**"
       - "ql/extractor/**"

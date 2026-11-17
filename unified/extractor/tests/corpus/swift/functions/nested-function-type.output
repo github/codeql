@@ -10,8 +10,6 @@ sourceFile
     codeBlockItem
       item:
         typeAliasDecl
-          attributes:
-          modifiers:
           name: identifier "NestedFunction"
           initializer:
             typeInitializerClause
@@ -47,8 +45,6 @@ sourceFile
     codeBlockItem
       item:
         typeAliasDecl
-          attributes:
-          modifiers:
           name: identifier "MixedParametersAndTuples"
           initializer:
             typeInitializerClause

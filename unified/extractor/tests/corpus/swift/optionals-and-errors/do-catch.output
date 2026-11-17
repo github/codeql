@@ -24,8 +24,6 @@ sourceFile
                         functionCallExpr
                           leftParen: (
                           rightParen: )
-                          arguments:
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "foo"
@@ -47,11 +45,9 @@ sourceFile
                               expression:
                                 declReferenceExpr
                                   baseName: identifier "error"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
-              catchItems:
               catchKeyword: catch
           doKeyword: do
 

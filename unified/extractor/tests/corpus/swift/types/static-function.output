@@ -10,8 +10,6 @@ sourceFile
     codeBlockItem
       item:
         classDecl
-          attributes:
-          modifiers:
           name: identifier "Factory"
           memberBlock:
             memberBlock
@@ -21,12 +19,10 @@ sourceFile
                 memberBlockItem
                   decl:
                     functionDecl
-                      attributes:
                       body:
                         codeBlock
                           leftBrace: {
                           rightBrace: }
-                          statements:
                       modifiers:
                         declModifier
                           name: static
@@ -37,7 +33,6 @@ sourceFile
                             functionParameterClause
                               leftParen: (
                               rightParen: )
-                              parameters:
                       funcKeyword: func
           classKeyword: class
 

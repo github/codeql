@@ -10,7 +10,6 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
@@ -27,7 +26,6 @@ sourceFile
                             stringSegment
                               content: stringSegment
                       returnKeyword: return
-          modifiers:
           name: identifier "read"
           signature:
             functionSignature
@@ -40,7 +38,6 @@ sourceFile
                 functionParameterClause
                   leftParen: (
                   rightParen: )
-                  parameters:
               returnClause:
                 returnClause
                   arrow: ->

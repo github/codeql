@@ -8,8 +8,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -22,7 +20,6 @@ sourceFile
                       rightBrace: }
                       signature:
                         closureSignature
-                          attributes:
                           inKeyword: in
                           parameterClause:
                             closureParameterClause
@@ -31,8 +28,6 @@ sourceFile
                               parameters:
                                 closureParameter
                                   colon: :
-                                  attributes:
-                                  modifiers:
                                   type:
                                     identifierType
                                       name: identifier "Int"

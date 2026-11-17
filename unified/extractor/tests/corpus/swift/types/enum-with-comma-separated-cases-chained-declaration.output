@@ -10,8 +10,6 @@ sourceFile
     codeBlockItem
       item:
         enumDecl
-          attributes:
-          modifiers:
           name: identifier "Suit"
           memberBlock:
             memberBlock
@@ -21,8 +19,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     enumCaseDecl
-                      attributes:
-                      modifiers:
                       elements:
                         enumCaseElement
                           name: identifier "clubs"

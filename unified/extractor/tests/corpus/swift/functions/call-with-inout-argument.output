@@ -10,8 +10,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: var
           bindings:
             patternBinding
@@ -27,8 +25,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: var
           bindings:
             patternBinding
@@ -62,7 +58,6 @@ sourceFile
                     declReferenceExpr
                       baseName: identifier "b"
                   ampersand: &
-          additionalTrailingClosures:
           calledExpression:
             declReferenceExpr
               baseName: identifier "swap"

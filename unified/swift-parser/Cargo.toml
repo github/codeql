@@ -32,7 +32,6 @@ workspace = true
 [features]
 bench = ["dep:clap"]
 test-runner = [
-    "rust-parser",
     "dep:clap",
     "dep:codeql-extractor",
     "dep:serde",
@@ -41,8 +40,6 @@ test-runner = [
     "dep:tracing",
     "dep:yeast",
 ]
-# Select the native frontend in the extractor modules reused by the runner.
-rust-parser = []
 
 # When updating these dependencies, run `rust/update_cargo_deps.sh`
 [dependencies]

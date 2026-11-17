@@ -14,7 +14,6 @@ sourceFile
     codeBlockItem
       item:
         actorDecl
-          attributes:
           modifiers:
             declModifier
               name: public
@@ -25,7 +24,6 @@ sourceFile
               parameters:
                 genericParameter
                   colon: :
-                  attributes:
                   name: identifier "T"
                   inheritedType:
                     identifierType
@@ -62,8 +60,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     variableDecl
-                      attributes:
-                      modifiers:
                       bindingSpecifier: let
                       bindings:
                         patternBinding
@@ -79,7 +75,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     initializerDecl
-                      attributes:
                       body:
                         codeBlock
                           leftBrace: {
@@ -103,7 +98,6 @@ sourceFile
                                   rightOperand:
                                     declReferenceExpr
                                       baseName: identifier "value"
-                      modifiers:
                       signature:
                         functionSignature
                           parameterClause:
@@ -113,8 +107,6 @@ sourceFile
                               parameters:
                                 functionParameter
                                   colon: :
-                                  attributes:
-                                  modifiers:
                                   type:
                                     identifierType
                                       name: identifier "T"

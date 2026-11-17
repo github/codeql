@@ -13,7 +13,7 @@ use serde_json::Value;
 mod snapshot;
 
 #[derive(Parser)]
-#[command(about = "Compare the native Swift parser with the extractor's swift-syntax frontend")]
+#[command(about = "Compare the native Swift parser with the SwiftSyntax oracle")]
 pub(crate) struct Options {
     /// Fixture name relative to test-fixtures, with or without .swift. Repeatable.
     #[arg(long, value_name = "NAME")]
@@ -144,31 +144,23 @@ impl Oracle {
 
     fn build(&self) -> Result<PathBuf, String> {
         eprintln!("Building swift-syntax-parse for reference JSON...");
-        let output = Command::new("cargo")
-            .current_dir(&self.workspace)
-            .args([
-                "build",
-                "-p",
-                "swift-syntax-rs",
-                "--bin",
-                "swift-syntax-parse",
-                "--message-format=json",
-            ])
-            .stderr(std::process::Stdio::inherit())
-            .output()
+        let package = self.workspace.join("unified/swift-parser/oracle");
+        let mut command = Command::new("swift");
+        command
+            .current_dir(&package)
+            .args(["build", "-c", "release", "--product", "swift-syntax-parse"])
+            .stdout(std::process::Stdio::inherit())
+            .stderr(std::process::Stdio::inherit());
+        if std::env::var("GIT_CONFIG_KEY_0").as_deref() == Ok("safe.bareRepository") {
+            command.env("GIT_CONFIG_VALUE_0", "all");
+        }
+        let status = command
+            .status()
             .map_err(|error| format!("could not build swift-syntax-parse: {error}"))?;
-        if !output.status.success() {
+        if !status.success() {
             return Err("building swift-syntax-parse failed; check the Swift toolchain or use --swift-syntax-parser".into());
         }
-        String::from_utf8_lossy(&output.stdout)
-            .lines()
-            .filter_map(|line| serde_json::from_str::<Value>(line).ok())
-            .find_map(|message| {
-                (message["target"]["name"] == "swift-syntax-parse")
-                    .then(|| message["executable"].as_str().map(PathBuf::from))
-                    .flatten()
-            })
-            .ok_or_else(|| "cargo did not report the swift-syntax-parse executable".into())
+        Ok(package.join(".build/release/swift-syntax-parse"))
     }
 }
 

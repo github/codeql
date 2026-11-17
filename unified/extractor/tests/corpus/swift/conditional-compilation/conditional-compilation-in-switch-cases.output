@@ -16,7 +16,6 @@ sourceFile
     codeBlockItem
       item:
         functionDecl
-          attributes:
           body:
             codeBlock
               leftBrace: {
@@ -87,7 +86,6 @@ sourceFile
                             declReferenceExpr
                               baseName: identifier "x"
                           switchKeyword: switch
-          modifiers:
           name: identifier "f"
           signature:
             functionSignature
@@ -98,8 +96,6 @@ sourceFile
                   parameters:
                     functionParameter
                       colon: :
-                      attributes:
-                      modifiers:
                       type:
                         identifierType
                           name: identifier "Int"

@@ -2,19 +2,16 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftSyntaxFFI",
+    name: "SwiftSyntaxOracle",
     platforms: [
         // swift-syntax 604 requires macOS 10.15; declare it explicitly
         // rather than relying on the swift-tools-version default (10.13).
         .macOS(.v10_15),
     ],
     products: [
-        // Dynamic library so the produced .so records its dependency on the
-        // Swift runtime libraries, keeping the Rust link step simple.
-        .library(
-            name: "SwiftSyntaxFFI",
-            type: .dynamic,
-            targets: ["SwiftSyntaxFFI"]
+        .executable(
+            name: "swift-syntax-parse",
+            targets: ["SwiftSyntaxOracle"]
         )
     ],
     dependencies: [
@@ -24,8 +21,8 @@ let package = Package(
         )
     ],
     targets: [
-        .target(
-            name: "SwiftSyntaxFFI",
+        .executableTarget(
+            name: "SwiftSyntaxOracle",
             dependencies: [
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftParser", package: "swift-syntax"),

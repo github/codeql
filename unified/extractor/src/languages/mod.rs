@@ -3,16 +3,7 @@ use codeql_extractor::extractor::desugaring;
 #[path = "swift/swift.rs"]
 mod swift;
 
-/// swift-syntax JSON -> `yeast::Ast` adapter for the Swift front-end.
-#[cfg(any(not(feature = "rust-parser"), test))]
-#[path = "swift/adapter.rs"]
-pub mod swift_adapter;
-
-#[cfg(feature = "rust-parser")]
-#[path = "swift/rust_parser.rs"]
-mod swift_rust_parser;
-
-/// Swift front-end parser selected by the extractor's Cargo features.
+/// Native Swift front-end parser.
 #[path = "swift/parse.rs"]
 pub mod swift_parse;
 

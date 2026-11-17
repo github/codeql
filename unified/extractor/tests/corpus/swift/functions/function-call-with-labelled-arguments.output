@@ -21,7 +21,6 @@ sourceFile
                   segments:
                     stringSegment
                       content: stringSegment "Bob"
-          additionalTrailingClosures:
           calledExpression:
             declReferenceExpr
               baseName: identifier "greet"

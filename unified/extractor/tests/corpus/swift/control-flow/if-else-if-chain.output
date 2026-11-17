@@ -31,7 +31,6 @@ sourceFile
                               expression:
                                 integerLiteralExpr
                                   literal: integerLiteral "1"
-                          additionalTrailingClosures:
                           calledExpression:
                             declReferenceExpr
                               baseName: identifier "print"
@@ -66,7 +65,6 @@ sourceFile
                                   expression:
                                     integerLiteralExpr
                                       literal: integerLiteral "2"
-                              additionalTrailingClosures:
                               calledExpression:
                                 declReferenceExpr
                                   baseName: identifier "print"
@@ -99,7 +97,6 @@ sourceFile
                                   expression:
                                     integerLiteralExpr
                                       literal: integerLiteral "3"
-                              additionalTrailingClosures:
                               calledExpression:
                                 declReferenceExpr
                                   baseName: identifier "print"

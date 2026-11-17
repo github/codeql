@@ -11,8 +11,6 @@ sourceFile
     codeBlockItem
       item:
         variableDecl
-          attributes:
-          modifiers:
           bindingSpecifier: let
           bindings:
             patternBinding
@@ -28,7 +26,6 @@ sourceFile
                           expression:
                             integerLiteralExpr
                               literal: integerLiteral "0"
-                      additionalTrailingClosures:
                       calledExpression:
                         declReferenceExpr
                           baseName: identifier "xs"

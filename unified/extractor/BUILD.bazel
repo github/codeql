@@ -5,26 +5,6 @@ load("//unified:platforms.bzl", "UNIFIED_SUPPORTED_PLATFORMS")
 
 exports_files(["Cargo.toml"])
 
-config_setting(
-    name = "swift_syntax",
-    define_values = {"unified_rust_parser": "false"},
-)
-
-_PARSER_FEATURES = select({
-    ":swift_syntax": ["swift-syntax"],
-    "//conditions:default": ["rust-parser"],
-})
-
-_PARSER_DEPS = select({
-    ":swift_syntax": ["//unified/swift-syntax-rs:swift_syntax_rs"],
-    "//conditions:default": ["//unified/swift-parser"],
-})
-
-_PARSER_DATA = select({
-    ":swift_syntax": ["//unified/swift-syntax-rs:swift_runtime"],
-    "//conditions:default": [],
-})
-
 codeql_rust_binary(
     name = "extractor",
     srcs = glob(["src/**/*.rs"]),
@@ -33,8 +13,6 @@ codeql_rust_binary(
         "ast_types.yml",
         "swift_node_types.yml",
     ],
-    crate_features = _PARSER_FEATURES,
-    data = _PARSER_DATA,
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),
@@ -45,24 +23,17 @@ codeql_rust_binary(
     ) + [
         "//shared/tree-sitter-extractor",
         "//shared/yeast",
-    ] + _PARSER_DEPS,
+        "//unified/swift-parser",
+    ],
 )
 
 _TESTS = {
     "corpus_tests": {
         "data": glob(["tests/corpus/**"]),
-        "compile_data": [],
         "size": "medium",
     },
     "location_tests": {
         "data": [],
-        "compile_data": [],
-        "size": "small",
-    },
-    # `include_str!`s a checked-in `parse_to_json` dump.
-    "swift_syntax_pipeline": {
-        "data": [],
-        "compile_data": glob(["tests/fixtures/**"]),
         "size": "small",
     },
 }
@@ -76,10 +47,9 @@ _TESTS = {
         compile_data = [
             "ast_types.yml",
             "swift_node_types.yml",
-        ] + spec["compile_data"],
-        crate_features = _PARSER_FEATURES,
+        ],
         crate_root = "tests/%s.rs" % test_name,
-        data = spec["data"] + _PARSER_DATA,
+        data = spec["data"],
         edition = "2024",
         proc_macro_deps = all_crate_deps(
             proc_macro = True,
@@ -91,7 +61,8 @@ _TESTS = {
         ) + [
             "//shared/tree-sitter-extractor",
             "//shared/yeast",
-        ] + _PARSER_DEPS,
+            "//unified/swift-parser",
+        ],
     )
     for test_name, spec in _TESTS.items()
 ]

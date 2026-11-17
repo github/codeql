@@ -16,8 +16,6 @@ sourceFile
     codeBlockItem
       item:
         classDecl
-          attributes:
-          modifiers:
           name: identifier "C"
           memberBlock:
             memberBlock
@@ -33,13 +31,10 @@ sourceFile
                             memberBlockItem
                               decl:
                                 initializerDecl
-                                  attributes:
                                   body:
                                     codeBlock
                                       leftBrace: {
                                       rightBrace: }
-                                      statements:
-                                  modifiers:
                                   signature:
                                     functionSignature
                                       parameterClause:
@@ -49,8 +44,6 @@ sourceFile
                                           parameters:
                                             functionParameter
                                               colon: :
-                                              attributes:
-                                              modifiers:
                                               type:
                                                 identifierType
                                                   name: identifier "Int"
@@ -65,13 +58,10 @@ sourceFile
                             memberBlockItem
                               decl:
                                 initializerDecl
-                                  attributes:
                                   body:
                                     codeBlock
                                       leftBrace: {
                                       rightBrace: }
-                                      statements:
-                                  modifiers:
                                   signature:
                                     functionSignature
                                       parameterClause:
@@ -81,8 +71,6 @@ sourceFile
                                           parameters:
                                             functionParameter
                                               colon: :
-                                              attributes:
-                                              modifiers:
                                               type:
                                                 identifierType
                                                   name: identifier "String"
@@ -97,20 +85,16 @@ sourceFile
                             memberBlockItem
                               decl:
                                 initializerDecl
-                                  attributes:
                                   body:
                                     codeBlock
                                       leftBrace: {
                                       rightBrace: }
-                                      statements:
-                                  modifiers:
                                   signature:
                                     functionSignature
                                       parameterClause:
                                         functionParameterClause
                                           leftParen: (
                                           rightParen: )
-                                          parameters:
                                   initKeyword: init
                           poundKeyword: #else
                       poundEndif: #endif

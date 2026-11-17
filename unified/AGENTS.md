@@ -2,44 +2,29 @@
 
 This is a CodeQL extractor that maps a language's parse tree onto a shared AST
 using the `yeast` desugaring engine. Swift, the only language so far, is parsed
-by Apple's swift-syntax rather than by tree-sitter.
+by the native Rust `swift-parser` crate.
 
 ## Building
 - To build the extractor, run `scripts/create-extractor-pack.sh`
 
 ## Swift Parser
-- Swift source is parsed by the `swift-syntax-rs` crate, which wraps Apple's
-  swift-syntax. The extractor calls `swift_syntax_rs::parse_to_json` in-process
-  to obtain the parse tree as JSON; the extractor does not invoke a separate
-  parser binary, and there is no grammar in this repository to edit.
-
-- `extractor/src/languages/swift/adapter.rs` converts that JSON into a yeast AST.
+- The `swift-parser` crate exposes a generic `SyntaxSink` API.
+  `extractor/src/languages/swift/parse.rs` builds a `yeast::Ast` directly from
+  parser callbacks, without JSON or an intermediate syntax tree. The grammar
+  lives in `swift-parser/src/parser`.
+- Build with `cargo build -p codeql-extractor-unified` from the repository root.
+  Cargo and Bazel always use the native parser; neither needs a Swift toolchain.
+- Fixtures and corpus projects compare the native syntax tree and trivia with
+  Apple's SwiftSyntax. The optional oracle is a pure Swift executable under
+  `swift-parser/oracle`, built lazily by the test runner when reference JSON
+  must be generated or checked. Its JSON adapter lives only in
+  `swift-parser/test-runner/reference_adapter.rs`.
 
 - The raw parse tree's shape is described by `extractor/swift_node_types.yml`,
-  which is generated from swift-syntax by `swift-syntax-rs/schemagen`. Do not
+  which is generated from swift-syntax by `swift-parser/oracle/schemagen`. Do not
   edit it by hand; regenerate it with `scripts/regenerate-node-types.sh` after
   changing the pinned swift-syntax version, then review the diff alongside the
   mapping in `extractor/src/languages/swift/swift.rs`.
-
-## Rust Parser
-- The experimental `swift-parser` crate exposes a generic `SyntaxSink` API.
-  `extractor/src/languages/swift/rust_parser.rs` implements it by building a
-  `yeast::Ast` directly, without JSON or an intermediate syntax tree.
-- The default feature, `rust-parser`, selects the native Rust parser without
-  building the Swift dependency. Run `cargo build -p codeql-extractor-unified`
-  from the repository root. To select the SwiftSyntax fallback, use
-  `--no-default-features --features swift-syntax`. If both features are enabled,
-  `rust-parser` takes precedence.
-- Under Bazel, extractor, test, and pack targets use Rust by default;
-  `--define=unified_rust_parser=true` explicitly keeps that selection without
-  building the Swift FFI dependency. Use `--define=unified_rust_parser=false`
-  to select the SwiftSyntax fallback.
-- The Rust grammar is under development; common syntax is implemented directly
-  in `swift-parser/src/parser`. Test fixtures and corpus projects compare its
-  syntax tree and desugared AST to swift-syntax (see `swift-parser/README.md`).
-  The sink integration can also be tested with
-  `cargo test -p codeql-extractor-unified --no-default-features
-  --features rust-parser --bin codeql-extractor-unified`.
 
 ## AST Mapping
 - The target AST shape is described by `extractor/ast_types.yml`.
@@ -47,8 +32,7 @@ by Apple's swift-syntax rather than by tree-sitter.
 - The mapping from the parse tree to the target AST is found in `extractor/src/languages/swift/swift.rs`
 
 - To run tests for the parser and mapping, run `cargo test` in the `extractor`
-  directory. Since the parser is linked in-process, this needs a working Swift
-  toolchain (so `swift-syntax-rs` can build). The tests can also be run under
+  directory. These tests do not require Swift. The tests can also be run under
   Bazel via `bazel test //unified/extractor:all_tests`.
 
 - Extractor test cases are located at `extractor/tests/corpus/swift/*/*.swift`.

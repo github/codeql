@@ -19,8 +19,6 @@ sourceFile
     codeBlockItem
       item:
         classDecl
-          attributes:
-          modifiers:
           name: identifier "Base"
           memberBlock:
             memberBlock
@@ -30,8 +28,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     variableDecl
-                      attributes:
-                      modifiers:
                       bindingSpecifier: var
                       bindings:
                         patternBinding
@@ -47,13 +43,10 @@ sourceFile
                 memberBlockItem
                   decl:
                     functionDecl
-                      attributes:
                       body:
                         codeBlock
                           leftBrace: {
                           rightBrace: }
-                          statements:
-                      modifiers:
                       name: identifier "update"
                       signature:
                         functionSignature
@@ -61,14 +54,11 @@ sourceFile
                             functionParameterClause
                               leftParen: (
                               rightParen: )
-                              parameters:
                       funcKeyword: func
           classKeyword: class
     codeBlockItem
       item:
         classDecl
-          attributes:
-          modifiers:
           name: identifier "Derived"
           inheritanceClause:
             inheritanceClause
@@ -86,7 +76,6 @@ sourceFile
                 memberBlockItem
                   decl:
                     functionDecl
-                      attributes:
                       body:
                         codeBlock
                           leftBrace: {
@@ -115,8 +104,6 @@ sourceFile
                                 functionCallExpr
                                   leftParen: (
                                   rightParen: )
-                                  arguments:
-                                  additionalTrailingClosures:
                                   calledExpression:
                                     memberAccessExpr
                                       period: .
@@ -136,7 +123,6 @@ sourceFile
                             functionParameterClause
                               leftParen: (
                               rightParen: )
-                              parameters:
                       funcKeyword: func
           classKeyword: class
 
