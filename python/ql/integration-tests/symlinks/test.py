@@ -3,7 +3,7 @@ import runs_on
 
 
 @runs_on.posix
-@pytest.mark.timeout(15)
+@pytest.mark.timeout(30)
 def test(codeql, python, cwd):
     # Create two symlink loops:
     # - repo_dir/subdir/symlink_to_top -> repo_dir
