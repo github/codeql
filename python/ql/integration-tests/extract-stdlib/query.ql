@@ -8,7 +8,12 @@ predicate named_entity(string name, string kind) {
   or
   exists(Module m | m.getName() = name) and kind = "module"
   or
-  exists(File f | f.getShortName() = name + ".py") and kind = "file"
+  exists(File f |
+    f.getShortName() = name + ".py"
+    or
+    exists(Module m | m.getName() = name | f = m.getInitModule().getFile())
+  ) and
+  kind = "file"
 }
 
 from string name, string kind
