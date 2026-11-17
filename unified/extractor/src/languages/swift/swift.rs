@@ -1636,7 +1636,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((classRestrictionType) => (unsupported_node "")),
         rule!((compositionType) => (unsupported_node "")),
         rule!((discardStmt) => (unsupported_node "")),
-        rule!((fallThroughStmt) => (unsupported_node "")),
         rule!((implicitlyUnwrappedOptionalType) => (unsupported_node "")),
         rule!((inlineArrayType) => (unsupported_node "")),
         rule!((keyPathExpr) => (unsupported_node "")),
