@@ -845,6 +845,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
     private string patternMatchTrueTag() { result = "[MatchTrue]" }
 
+    private string outerPatternMatchTag() { result = "[OuterPatternMatch]" }
+
     /**
      * Holds if an additional node tagged with `tag` should be created for
      * `n`. Edges targeting such nodes are labeled with `t` and therefore `t`
@@ -867,6 +869,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       n instanceof PatternMatchExpr and
       tag = patternMatchTrueTag() and
       t.(BooleanSuccessor).getValue() = true
+      or
+      n instanceof Pattern and
+      not n instanceof LiteralPattern and
+      not n instanceof BindingPattern and
+      tag = outerPatternMatchTag() and
+      t.(MatchingSuccessor).getValue() = true
     }
 
     /**
@@ -1639,14 +1647,18 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         (
           n1.isBefore(pattern) and
           (
-            exists(getRankedPattern(pattern, _)) and
+            n2.isAdditional(pattern, outerPatternMatchTag())
+            or
+            not patternCannotFail(pattern) and
+            isAfterMatch(n2, pattern, false)
+          )
+          or
+          n1.isAdditional(pattern, outerPatternMatchTag()) and
+          (
             n2.isBefore(getRankedPattern(pattern, 1))
             or
             not exists(getRankedPattern(pattern, _)) and
             isAfterMatch(n2, pattern, true)
-            or
-            not patternCannotFail(pattern) and
-            isAfterMatch(n2, pattern, false)
           )
           or
           exists(int i, Pattern nested | nested = getRankedPattern(pattern, i) |
@@ -2763,6 +2775,22 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             not exists(Callable c |
               successor.getAstNode() = getBodyEntry(c, _) and
               strictcount(getBodyEntry(c, _)) > 1
+            ) and
+            // allow for abrupt successors that reach a conditional context. Example:
+            //
+            // ```
+            // if (loop {
+            //     break a > 10; // reaches both `After loop [false]` and `After loop [true]`
+            // })
+            // ```
+            not forall(ControlFlowNode successor0, SuccessorType t0 |
+              successor0 = node.getASuccessor(t0)
+            |
+              t0 instanceof AbruptSuccessor and
+              exists(AstNode n |
+                successor0.isAfterValue(n, _) and
+                successor.isAfterValue(n, _)
+              )
             )
           }
 

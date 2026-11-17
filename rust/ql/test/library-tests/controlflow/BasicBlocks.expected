@@ -2,11 +2,11 @@ dominates
 | cfg.rs:1:1:3:1 | Entry | cfg.rs:1:1:3:1 | Entry |
 | cfg.rs:5:1:10:1 | Entry | cfg.rs:5:1:10:1 | Entry |
 | cfg.rs:5:1:10:1 | Entry | cfg.rs:6:5:9:5 | After match value { ... } |
-| cfg.rs:5:1:10:1 | Entry | cfg.rs:7:13:7:18 | After CfgPredPat [match] |
 | cfg.rs:5:1:10:1 | Entry | cfg.rs:7:13:7:18 | After CfgPredPat [no-match] |
+| cfg.rs:5:1:10:1 | Entry | cfg.rs:7:13:7:18 | [OuterPatternMatch] CfgPredPat |
 | cfg.rs:6:5:9:5 | After match value { ... } | cfg.rs:6:5:9:5 | After match value { ... } |
-| cfg.rs:7:13:7:18 | After CfgPredPat [match] | cfg.rs:7:13:7:18 | After CfgPredPat [match] |
 | cfg.rs:7:13:7:18 | After CfgPredPat [no-match] | cfg.rs:7:13:7:18 | After CfgPredPat [no-match] |
+| cfg.rs:7:13:7:18 | [OuterPatternMatch] CfgPredPat | cfg.rs:7:13:7:18 | [OuterPatternMatch] CfgPredPat |
 | test.rs:5:5:8:5 | Entry | test.rs:5:5:8:5 | Entry |
 | test.rs:10:5:13:5 | Entry | test.rs:10:5:13:5 | Entry |
 | test.rs:18:5:24:5 | Entry | test.rs:18:5:24:5 | Entry |
@@ -143,20 +143,20 @@ dominates
 | test.rs:97:5:104:5 | Entry | test.rs:99:9:103:9 | After while ... { ... } |
 | test.rs:97:5:104:5 | Entry | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } |
 | test.rs:97:5:104:5 | Entry | test.rs:99:19:99:25 | After Some(...) [no-match] |
-| test.rs:97:5:104:5 | Entry | test.rs:99:24:99:24 | Before x |
+| test.rs:97:5:104:5 | Entry | test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) |
 | test.rs:97:5:104:5 | Entry | test.rs:100:17:100:22 | After ... == ... [false] |
 | test.rs:97:5:104:5 | Entry | test.rs:100:17:100:22 | After ... == ... [true] |
 | test.rs:99:9:103:9 | After while ... { ... } | test.rs:99:9:103:9 | After while ... { ... } |
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:99:9:103:9 | After while ... { ... } |
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } |
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:99:19:99:25 | After Some(...) [no-match] |
-| test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:99:24:99:24 | Before x |
+| test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) |
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:100:17:100:22 | After ... == ... [false] |
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:100:17:100:22 | After ... == ... [true] |
 | test.rs:99:19:99:25 | After Some(...) [no-match] | test.rs:99:19:99:25 | After Some(...) [no-match] |
-| test.rs:99:24:99:24 | Before x | test.rs:99:24:99:24 | Before x |
-| test.rs:99:24:99:24 | Before x | test.rs:100:17:100:22 | After ... == ... [false] |
-| test.rs:99:24:99:24 | Before x | test.rs:100:17:100:22 | After ... == ... [true] |
+| test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) | test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) |
+| test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) | test.rs:100:17:100:22 | After ... == ... [false] |
+| test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) | test.rs:100:17:100:22 | After ... == ... [true] |
 | test.rs:100:17:100:22 | After ... == ... [false] | test.rs:100:17:100:22 | After ... == ... [false] |
 | test.rs:100:17:100:22 | After ... == ... [true] | test.rs:100:17:100:22 | After ... == ... [true] |
 | test.rs:106:5:113:5 | Entry | test.rs:106:5:113:5 | Entry |
@@ -197,17 +197,17 @@ dominates
 | test.rs:145:5:151:5 | Entry | test.rs:145:5:151:5 | Entry |
 | test.rs:145:5:151:5 | Entry | test.rs:146:9:150:9 | After if ... {...} else {...} |
 | test.rs:145:5:151:5 | Entry | test.rs:146:16:146:22 | After Some(...) [no-match] |
-| test.rs:145:5:151:5 | Entry | test.rs:146:21:146:21 | Before n |
+| test.rs:145:5:151:5 | Entry | test.rs:146:16:146:22 | [OuterPatternMatch] Some(...) |
 | test.rs:146:9:150:9 | After if ... {...} else {...} | test.rs:146:9:150:9 | After if ... {...} else {...} |
 | test.rs:146:16:146:22 | After Some(...) [no-match] | test.rs:146:16:146:22 | After Some(...) [no-match] |
-| test.rs:146:21:146:21 | Before n | test.rs:146:21:146:21 | Before n |
+| test.rs:146:16:146:22 | [OuterPatternMatch] Some(...) | test.rs:146:16:146:22 | [OuterPatternMatch] Some(...) |
 | test.rs:153:5:158:5 | Entry | test.rs:153:5:158:5 | Entry |
 | test.rs:153:5:158:5 | Entry | test.rs:153:5:158:5 | Normal Exit |
 | test.rs:153:5:158:5 | Entry | test.rs:154:16:154:22 | After Some(...) [no-match] |
-| test.rs:153:5:158:5 | Entry | test.rs:154:21:154:21 | Before n |
+| test.rs:153:5:158:5 | Entry | test.rs:154:16:154:22 | [OuterPatternMatch] Some(...) |
 | test.rs:153:5:158:5 | Normal Exit | test.rs:153:5:158:5 | Normal Exit |
 | test.rs:154:16:154:22 | After Some(...) [no-match] | test.rs:154:16:154:22 | After Some(...) [no-match] |
-| test.rs:154:21:154:21 | Before n | test.rs:154:21:154:21 | Before n |
+| test.rs:154:16:154:22 | [OuterPatternMatch] Some(...) | test.rs:154:16:154:22 | [OuterPatternMatch] Some(...) |
 | test.rs:160:5:166:5 | Entry | test.rs:160:5:166:5 | Entry |
 | test.rs:160:5:166:5 | Entry | test.rs:161:9:165:9 | After if ... {...} else {...} |
 | test.rs:160:5:166:5 | Entry | test.rs:161:13:161:48 | After if ... {...} else {...} [false] |
@@ -464,93 +464,93 @@ dominates
 | test.rs:326:5:332:5 | Entry | test.rs:326:5:332:5 | Entry |
 | test.rs:326:5:332:5 | Entry | test.rs:327:9:331:9 | After match maybe_digit { ... } |
 | test.rs:326:5:332:5 | Entry | test.rs:328:13:328:27 | After ...::Some(...) [no-match] |
-| test.rs:326:5:332:5 | Entry | test.rs:328:26:328:26 | Before x |
+| test.rs:326:5:332:5 | Entry | test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:326:5:332:5 | Entry | test.rs:328:32:328:37 | After ... < ... [false] |
 | test.rs:326:5:332:5 | Entry | test.rs:328:32:328:37 | After ... < ... [true] |
 | test.rs:326:5:332:5 | Entry | test.rs:329:13:329:27 | After ...::Some(...) [no-match] |
+| test.rs:326:5:332:5 | Entry | test.rs:329:13:329:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:326:5:332:5 | Entry | test.rs:329:13:329:33 | ... => x |
-| test.rs:326:5:332:5 | Entry | test.rs:329:26:329:26 | Before x |
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:327:9:331:9 | After match maybe_digit { ... } |
 | test.rs:328:13:328:27 | After ...::Some(...) [no-match] | test.rs:328:13:328:27 | After ...::Some(...) [no-match] |
-| test.rs:328:26:328:26 | Before x | test.rs:328:26:328:26 | Before x |
-| test.rs:328:26:328:26 | Before x | test.rs:328:32:328:37 | After ... < ... [false] |
-| test.rs:328:26:328:26 | Before x | test.rs:328:32:328:37 | After ... < ... [true] |
+| test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) |
+| test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | test.rs:328:32:328:37 | After ... < ... [false] |
+| test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | test.rs:328:32:328:37 | After ... < ... [true] |
 | test.rs:328:32:328:37 | After ... < ... [false] | test.rs:328:32:328:37 | After ... < ... [false] |
 | test.rs:328:32:328:37 | After ... < ... [true] | test.rs:328:32:328:37 | After ... < ... [true] |
 | test.rs:329:13:329:27 | After ...::Some(...) [no-match] | test.rs:329:13:329:27 | After ...::Some(...) [no-match] |
+| test.rs:329:13:329:27 | [OuterPatternMatch] ...::Some(...) | test.rs:329:13:329:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:329:13:329:33 | ... => x | test.rs:329:13:329:27 | After ...::Some(...) [no-match] |
+| test.rs:329:13:329:33 | ... => x | test.rs:329:13:329:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:329:13:329:33 | ... => x | test.rs:329:13:329:33 | ... => x |
-| test.rs:329:13:329:33 | ... => x | test.rs:329:26:329:26 | Before x |
-| test.rs:329:26:329:26 | Before x | test.rs:329:26:329:26 | Before x |
 | test.rs:334:5:343:5 | Entry | test.rs:334:5:343:5 | Entry |
 | test.rs:334:5:343:5 | Entry | test.rs:334:5:343:5 | Normal Exit |
 | test.rs:334:5:343:5 | Entry | test.rs:335:9:342:9 | After match ... { ... } |
 | test.rs:334:5:343:5 | Entry | test.rs:335:19:335:40 | After ... == ... [false] |
 | test.rs:334:5:343:5 | Entry | test.rs:335:19:335:40 | After ... == ... [true] |
 | test.rs:334:5:343:5 | Entry | test.rs:340:13:340:27 | After ...::Some(...) [no-match] |
-| test.rs:334:5:343:5 | Entry | test.rs:340:26:340:26 | Before x |
+| test.rs:334:5:343:5 | Entry | test.rs:340:13:340:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:334:5:343:5 | Normal Exit | test.rs:334:5:343:5 | Normal Exit |
 | test.rs:335:9:342:9 | After match ... { ... } | test.rs:335:9:342:9 | After match ... { ... } |
 | test.rs:335:19:335:40 | After ... == ... [false] | test.rs:335:9:342:9 | After match ... { ... } |
 | test.rs:335:19:335:40 | After ... == ... [false] | test.rs:335:19:335:40 | After ... == ... [false] |
 | test.rs:335:19:335:40 | After ... == ... [false] | test.rs:340:13:340:27 | After ...::Some(...) [no-match] |
-| test.rs:335:19:335:40 | After ... == ... [false] | test.rs:340:26:340:26 | Before x |
+| test.rs:335:19:335:40 | After ... == ... [false] | test.rs:340:13:340:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:335:19:335:40 | After ... == ... [true] | test.rs:335:19:335:40 | After ... == ... [true] |
 | test.rs:340:13:340:27 | After ...::Some(...) [no-match] | test.rs:340:13:340:27 | After ...::Some(...) [no-match] |
-| test.rs:340:26:340:26 | Before x | test.rs:340:26:340:26 | Before x |
+| test.rs:340:13:340:27 | [OuterPatternMatch] ...::Some(...) | test.rs:340:13:340:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:345:5:350:5 | Entry | test.rs:345:5:350:5 | Entry |
 | test.rs:345:5:350:5 | Entry | test.rs:346:9:349:18 | After ... && ... |
 | test.rs:345:5:350:5 | Entry | test.rs:346:10:349:9 | After match r { ... } [false] |
 | test.rs:345:5:350:5 | Entry | test.rs:346:10:349:9 | After match r { ... } [true] |
 | test.rs:345:5:350:5 | Entry | test.rs:347:13:347:19 | After Some(...) [no-match] |
-| test.rs:345:5:350:5 | Entry | test.rs:347:18:347:18 | Before a |
+| test.rs:345:5:350:5 | Entry | test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) |
 | test.rs:345:5:350:5 | Entry | test.rs:347:24:347:24 | After a [false] |
 | test.rs:345:5:350:5 | Entry | test.rs:347:24:347:24 | After a [true] |
 | test.rs:346:9:349:18 | After ... && ... | test.rs:346:9:349:18 | After ... && ... |
 | test.rs:346:10:349:9 | After match r { ... } [false] | test.rs:346:10:349:9 | After match r { ... } [false] |
 | test.rs:346:10:349:9 | After match r { ... } [true] | test.rs:346:10:349:9 | After match r { ... } [true] |
 | test.rs:347:13:347:19 | After Some(...) [no-match] | test.rs:347:13:347:19 | After Some(...) [no-match] |
-| test.rs:347:18:347:18 | Before a | test.rs:347:18:347:18 | Before a |
-| test.rs:347:18:347:18 | Before a | test.rs:347:24:347:24 | After a [false] |
-| test.rs:347:18:347:18 | Before a | test.rs:347:24:347:24 | After a [true] |
+| test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) | test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) |
+| test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) | test.rs:347:24:347:24 | After a [false] |
+| test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) | test.rs:347:24:347:24 | After a [true] |
 | test.rs:347:24:347:24 | After a [false] | test.rs:347:24:347:24 | After a [false] |
 | test.rs:347:24:347:24 | After a [true] | test.rs:347:24:347:24 | After a [true] |
 | test.rs:352:5:357:5 | Entry | test.rs:352:5:357:5 | Entry |
 | test.rs:352:5:357:5 | Entry | test.rs:352:5:357:5 | Exit |
 | test.rs:352:5:357:5 | Entry | test.rs:354:13:354:21 | After Ok(...) [no-match] |
-| test.rs:352:5:357:5 | Entry | test.rs:354:16:354:20 | Before value |
+| test.rs:352:5:357:5 | Entry | test.rs:354:13:354:21 | [OuterPatternMatch] Ok(...) |
 | test.rs:352:5:357:5 | Exit | test.rs:352:5:357:5 | Exit |
 | test.rs:354:13:354:21 | After Ok(...) [no-match] | test.rs:354:13:354:21 | After Ok(...) [no-match] |
-| test.rs:354:16:354:20 | Before value | test.rs:354:16:354:20 | Before value |
+| test.rs:354:13:354:21 | [OuterPatternMatch] Ok(...) | test.rs:354:13:354:21 | [OuterPatternMatch] Ok(...) |
 | test.rs:362:5:365:5 | Entry | test.rs:362:5:365:5 | Entry |
 | test.rs:362:5:365:5 | Entry | test.rs:362:5:365:5 | Exit |
 | test.rs:362:5:365:5 | Entry | test.rs:363:13:363:19 | After Some(...) [no-match] |
-| test.rs:362:5:365:5 | Entry | test.rs:363:18:363:18 | Before n |
+| test.rs:362:5:365:5 | Entry | test.rs:363:13:363:19 | [OuterPatternMatch] Some(...) |
 | test.rs:362:5:365:5 | Exit | test.rs:362:5:365:5 | Exit |
 | test.rs:363:13:363:19 | After Some(...) [no-match] | test.rs:363:13:363:19 | After Some(...) [no-match] |
-| test.rs:363:18:363:18 | Before n | test.rs:363:18:363:18 | Before n |
+| test.rs:363:13:363:19 | [OuterPatternMatch] Some(...) | test.rs:363:13:363:19 | [OuterPatternMatch] Some(...) |
 | test.rs:367:5:373:5 | Entry | test.rs:367:5:373:5 | Entry |
 | test.rs:367:5:373:5 | Entry | test.rs:367:5:373:5 | Normal Exit |
 | test.rs:367:5:373:5 | Entry | test.rs:369:13:369:21 | After Some(...) [no-match] |
-| test.rs:367:5:373:5 | Entry | test.rs:369:18:369:20 | Before ret |
+| test.rs:367:5:373:5 | Entry | test.rs:369:13:369:21 | [OuterPatternMatch] Some(...) |
 | test.rs:367:5:373:5 | Normal Exit | test.rs:367:5:373:5 | Normal Exit |
 | test.rs:369:13:369:21 | After Some(...) [no-match] | test.rs:369:13:369:21 | After Some(...) [no-match] |
-| test.rs:369:18:369:20 | Before ret | test.rs:369:18:369:20 | Before ret |
+| test.rs:369:13:369:21 | [OuterPatternMatch] Some(...) | test.rs:369:13:369:21 | [OuterPatternMatch] Some(...) |
 | test.rs:378:5:381:5 | Entry | test.rs:378:5:381:5 | Entry |
 | test.rs:387:5:391:5 | Entry | test.rs:387:5:391:5 | Entry |
 | test.rs:393:5:398:5 | Entry | test.rs:393:5:398:5 | Entry |
 | test.rs:393:5:398:5 | Entry | test.rs:394:9:397:9 | After match st { ... } |
 | test.rs:393:5:398:5 | Entry | test.rs:395:13:395:29 | After MyStruct {...} [no-match] |
+| test.rs:393:5:398:5 | Entry | test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} |
 | test.rs:393:5:398:5 | Entry | test.rs:395:27:395:27 | After 1 [match] |
 | test.rs:393:5:398:5 | Entry | test.rs:395:27:395:27 | After 1 [no-match] |
-| test.rs:393:5:398:5 | Entry | test.rs:395:27:395:27 | Before 1 |
 | test.rs:394:9:397:9 | After match st { ... } | test.rs:394:9:397:9 | After match st { ... } |
 | test.rs:395:13:395:29 | After MyStruct {...} [no-match] | test.rs:395:13:395:29 | After MyStruct {...} [no-match] |
+| test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} | test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} |
+| test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} | test.rs:395:27:395:27 | After 1 [match] |
+| test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} | test.rs:395:27:395:27 | After 1 [no-match] |
 | test.rs:395:27:395:27 | After 1 [match] | test.rs:395:27:395:27 | After 1 [match] |
 | test.rs:395:27:395:27 | After 1 [no-match] | test.rs:395:27:395:27 | After 1 [no-match] |
-| test.rs:395:27:395:27 | Before 1 | test.rs:395:27:395:27 | After 1 [match] |
-| test.rs:395:27:395:27 | Before 1 | test.rs:395:27:395:27 | After 1 [no-match] |
-| test.rs:395:27:395:27 | Before 1 | test.rs:395:27:395:27 | Before 1 |
 | test.rs:400:5:407:5 | Entry | test.rs:400:5:407:5 | Entry |
 | test.rs:400:5:407:5 | Entry | test.rs:401:9:406:9 | After match 42 { ... } |
 | test.rs:400:5:407:5 | Entry | test.rs:402:15:402:15 | After 0 [match] |
@@ -654,25 +654,25 @@ dominates
 | test.rs:440:5:445:5 | Entry | test.rs:442:13:442:16 | After None [match] |
 | test.rs:440:5:445:5 | Entry | test.rs:442:13:442:16 | After None [no-match] |
 | test.rs:440:5:445:5 | Entry | test.rs:443:13:443:22 | After Some(...) [no-match] |
+| test.rs:440:5:445:5 | Entry | test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) |
 | test.rs:440:5:445:5 | Entry | test.rs:443:13:443:36 | After ... \| ... [match] |
 | test.rs:440:5:445:5 | Entry | test.rs:443:18:443:21 | After true [match] |
 | test.rs:440:5:445:5 | Entry | test.rs:443:18:443:21 | After true [no-match] |
-| test.rs:440:5:445:5 | Entry | test.rs:443:18:443:21 | Before true |
 | test.rs:441:9:444:9 | After match a { ... } | test.rs:441:9:444:9 | After match a { ... } |
 | test.rs:442:13:442:16 | After None [match] | test.rs:442:13:442:16 | After None [match] |
 | test.rs:442:13:442:16 | After None [no-match] | test.rs:442:13:442:16 | After None [no-match] |
 | test.rs:442:13:442:16 | After None [no-match] | test.rs:443:13:443:22 | After Some(...) [no-match] |
+| test.rs:442:13:442:16 | After None [no-match] | test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) |
 | test.rs:442:13:442:16 | After None [no-match] | test.rs:443:13:443:36 | After ... \| ... [match] |
 | test.rs:442:13:442:16 | After None [no-match] | test.rs:443:18:443:21 | After true [match] |
 | test.rs:442:13:442:16 | After None [no-match] | test.rs:443:18:443:21 | After true [no-match] |
-| test.rs:442:13:442:16 | After None [no-match] | test.rs:443:18:443:21 | Before true |
 | test.rs:443:13:443:22 | After Some(...) [no-match] | test.rs:443:13:443:22 | After Some(...) [no-match] |
+| test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) | test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) |
+| test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) | test.rs:443:18:443:21 | After true [match] |
+| test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) | test.rs:443:18:443:21 | After true [no-match] |
 | test.rs:443:13:443:36 | After ... \| ... [match] | test.rs:443:13:443:36 | After ... \| ... [match] |
 | test.rs:443:18:443:21 | After true [match] | test.rs:443:18:443:21 | After true [match] |
 | test.rs:443:18:443:21 | After true [no-match] | test.rs:443:18:443:21 | After true [no-match] |
-| test.rs:443:18:443:21 | Before true | test.rs:443:18:443:21 | After true [match] |
-| test.rs:443:18:443:21 | Before true | test.rs:443:18:443:21 | After true [no-match] |
-| test.rs:443:18:443:21 | Before true | test.rs:443:18:443:21 | Before true |
 | test.rs:453:5:458:5 | Entry | test.rs:453:5:458:5 | Entry |
 | test.rs:453:5:458:5 | Entry | test.rs:454:9:457:9 | After match a { ... } |
 | test.rs:453:5:458:5 | Entry | test.rs:455:13:455:23 | After 1 [match] |
@@ -691,23 +691,23 @@ dominates
 | test.rs:460:5:465:5 | Entry | test.rs:460:5:465:5 | Entry |
 | test.rs:460:5:465:5 | Entry | test.rs:461:9:464:9 | After match pair { ... } |
 | test.rs:460:5:465:5 | Entry | test.rs:462:18:462:34 | After MyStruct {...} [no-match] |
-| test.rs:460:5:465:5 | Entry | test.rs:462:32:462:32 | _ |
+| test.rs:460:5:465:5 | Entry | test.rs:462:18:462:34 | [OuterPatternMatch] MyStruct {...} |
 | test.rs:461:9:464:9 | After match pair { ... } | test.rs:461:9:464:9 | After match pair { ... } |
 | test.rs:462:18:462:34 | After MyStruct {...} [no-match] | test.rs:462:18:462:34 | After MyStruct {...} [no-match] |
-| test.rs:462:32:462:32 | _ | test.rs:462:32:462:32 | _ |
+| test.rs:462:18:462:34 | [OuterPatternMatch] MyStruct {...} | test.rs:462:18:462:34 | [OuterPatternMatch] MyStruct {...} |
 | test.rs:475:5:481:5 | Entry | test.rs:475:5:481:5 | Entry |
 | test.rs:475:5:481:5 | Entry | test.rs:476:9:480:9 | After match e { ... } |
 | test.rs:475:5:481:5 | Entry | test.rs:477:13:477:34 | After StructVariant {...} [no-match] |
-| test.rs:475:5:481:5 | Entry | test.rs:477:32:477:32 | _ |
+| test.rs:475:5:481:5 | Entry | test.rs:477:13:477:34 | [OuterPatternMatch] StructVariant {...} |
 | test.rs:475:5:481:5 | Entry | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] |
-| test.rs:475:5:481:5 | Entry | test.rs:478:26:478:26 | _ |
+| test.rs:475:5:481:5 | Entry | test.rs:478:13:478:27 | [OuterPatternMatch] TupleVariant(...) |
 | test.rs:476:9:480:9 | After match e { ... } | test.rs:476:9:480:9 | After match e { ... } |
 | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:477:13:477:34 | After StructVariant {...} [no-match] |
 | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] |
-| test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:478:26:478:26 | _ |
-| test.rs:477:32:477:32 | _ | test.rs:477:32:477:32 | _ |
+| test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:478:13:478:27 | [OuterPatternMatch] TupleVariant(...) |
+| test.rs:477:13:477:34 | [OuterPatternMatch] StructVariant {...} | test.rs:477:13:477:34 | [OuterPatternMatch] StructVariant {...} |
 | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] |
-| test.rs:478:26:478:26 | _ | test.rs:478:26:478:26 | _ |
+| test.rs:478:13:478:27 | [OuterPatternMatch] TupleVariant(...) | test.rs:478:13:478:27 | [OuterPatternMatch] TupleVariant(...) |
 | test.rs:485:5:490:5 | Entry | test.rs:485:5:490:5 | Entry |
 | test.rs:485:5:490:5 | Entry | test.rs:486:14:488:9 | { ... } |
 | test.rs:486:14:488:9 | { ... } | test.rs:486:14:488:9 | { ... } |
@@ -754,10 +754,10 @@ dominates
 | test.rs:584:1:592:1 | Entry | test.rs:584:1:592:1 | Entry |
 | test.rs:584:1:592:1 | Entry | test.rs:585:18:591:5 | After 'block: { ... } |
 | test.rs:584:1:592:1 | Entry | test.rs:587:13:587:19 | After Some(...) [no-match] |
-| test.rs:584:1:592:1 | Entry | test.rs:587:18:587:18 | Before y |
+| test.rs:584:1:592:1 | Entry | test.rs:587:13:587:19 | [OuterPatternMatch] Some(...) |
 | test.rs:585:18:591:5 | After 'block: { ... } | test.rs:585:18:591:5 | After 'block: { ... } |
 | test.rs:587:13:587:19 | After Some(...) [no-match] | test.rs:587:13:587:19 | After Some(...) [no-match] |
-| test.rs:587:18:587:18 | Before y | test.rs:587:18:587:18 | Before y |
+| test.rs:587:13:587:19 | [OuterPatternMatch] Some(...) | test.rs:587:13:587:19 | [OuterPatternMatch] Some(...) |
 | test.rs:594:1:600:1 | Entry | test.rs:594:1:600:1 | Entry |
 | test.rs:596:5:598:5 | Entry | test.rs:596:5:598:5 | Entry |
 | test.rs:611:5:613:5 | Entry | test.rs:611:5:613:5 | Entry |
@@ -768,10 +768,10 @@ postDominance
 | cfg.rs:5:1:10:1 | Entry | cfg.rs:5:1:10:1 | Entry |
 | cfg.rs:6:5:9:5 | After match value { ... } | cfg.rs:5:1:10:1 | Entry |
 | cfg.rs:6:5:9:5 | After match value { ... } | cfg.rs:6:5:9:5 | After match value { ... } |
-| cfg.rs:6:5:9:5 | After match value { ... } | cfg.rs:7:13:7:18 | After CfgPredPat [match] |
 | cfg.rs:6:5:9:5 | After match value { ... } | cfg.rs:7:13:7:18 | After CfgPredPat [no-match] |
-| cfg.rs:7:13:7:18 | After CfgPredPat [match] | cfg.rs:7:13:7:18 | After CfgPredPat [match] |
+| cfg.rs:6:5:9:5 | After match value { ... } | cfg.rs:7:13:7:18 | [OuterPatternMatch] CfgPredPat |
 | cfg.rs:7:13:7:18 | After CfgPredPat [no-match] | cfg.rs:7:13:7:18 | After CfgPredPat [no-match] |
+| cfg.rs:7:13:7:18 | [OuterPatternMatch] CfgPredPat | cfg.rs:7:13:7:18 | [OuterPatternMatch] CfgPredPat |
 | test.rs:5:5:8:5 | Entry | test.rs:5:5:8:5 | Entry |
 | test.rs:10:5:13:5 | Entry | test.rs:10:5:13:5 | Entry |
 | test.rs:18:5:24:5 | Entry | test.rs:18:5:24:5 | Entry |
@@ -867,14 +867,14 @@ postDominance
 | test.rs:99:9:103:9 | After while ... { ... } | test.rs:99:9:103:9 | After while ... { ... } |
 | test.rs:99:9:103:9 | After while ... { ... } | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } |
 | test.rs:99:9:103:9 | After while ... { ... } | test.rs:99:19:99:25 | After Some(...) [no-match] |
-| test.rs:99:9:103:9 | After while ... { ... } | test.rs:99:24:99:24 | Before x |
+| test.rs:99:9:103:9 | After while ... { ... } | test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) |
 | test.rs:99:9:103:9 | After while ... { ... } | test.rs:100:17:100:22 | After ... == ... [false] |
 | test.rs:99:9:103:9 | After while ... { ... } | test.rs:100:17:100:22 | After ... == ... [true] |
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:97:5:104:5 | Entry |
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } |
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:100:17:100:22 | After ... == ... [false] |
 | test.rs:99:19:99:25 | After Some(...) [no-match] | test.rs:99:19:99:25 | After Some(...) [no-match] |
-| test.rs:99:24:99:24 | Before x | test.rs:99:24:99:24 | Before x |
+| test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) | test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) |
 | test.rs:100:17:100:22 | After ... == ... [false] | test.rs:100:17:100:22 | After ... == ... [false] |
 | test.rs:100:17:100:22 | After ... == ... [true] | test.rs:100:17:100:22 | After ... == ... [true] |
 | test.rs:106:5:113:5 | Entry | test.rs:106:5:113:5 | Entry |
@@ -912,16 +912,16 @@ postDominance
 | test.rs:146:9:150:9 | After if ... {...} else {...} | test.rs:145:5:151:5 | Entry |
 | test.rs:146:9:150:9 | After if ... {...} else {...} | test.rs:146:9:150:9 | After if ... {...} else {...} |
 | test.rs:146:9:150:9 | After if ... {...} else {...} | test.rs:146:16:146:22 | After Some(...) [no-match] |
-| test.rs:146:9:150:9 | After if ... {...} else {...} | test.rs:146:21:146:21 | Before n |
+| test.rs:146:9:150:9 | After if ... {...} else {...} | test.rs:146:16:146:22 | [OuterPatternMatch] Some(...) |
 | test.rs:146:16:146:22 | After Some(...) [no-match] | test.rs:146:16:146:22 | After Some(...) [no-match] |
-| test.rs:146:21:146:21 | Before n | test.rs:146:21:146:21 | Before n |
+| test.rs:146:16:146:22 | [OuterPatternMatch] Some(...) | test.rs:146:16:146:22 | [OuterPatternMatch] Some(...) |
 | test.rs:153:5:158:5 | Entry | test.rs:153:5:158:5 | Entry |
 | test.rs:153:5:158:5 | Normal Exit | test.rs:153:5:158:5 | Entry |
 | test.rs:153:5:158:5 | Normal Exit | test.rs:153:5:158:5 | Normal Exit |
 | test.rs:153:5:158:5 | Normal Exit | test.rs:154:16:154:22 | After Some(...) [no-match] |
-| test.rs:153:5:158:5 | Normal Exit | test.rs:154:21:154:21 | Before n |
+| test.rs:153:5:158:5 | Normal Exit | test.rs:154:16:154:22 | [OuterPatternMatch] Some(...) |
 | test.rs:154:16:154:22 | After Some(...) [no-match] | test.rs:154:16:154:22 | After Some(...) [no-match] |
-| test.rs:154:21:154:21 | Before n | test.rs:154:21:154:21 | Before n |
+| test.rs:154:16:154:22 | [OuterPatternMatch] Some(...) | test.rs:154:16:154:22 | [OuterPatternMatch] Some(...) |
 | test.rs:160:5:166:5 | Entry | test.rs:160:5:166:5 | Entry |
 | test.rs:161:9:165:9 | After if ... {...} else {...} | test.rs:160:5:166:5 | Entry |
 | test.rs:161:9:165:9 | After if ... {...} else {...} | test.rs:161:9:165:9 | After if ... {...} else {...} |
@@ -1173,21 +1173,21 @@ postDominance
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:326:5:332:5 | Entry |
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:327:9:331:9 | After match maybe_digit { ... } |
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:328:13:328:27 | After ...::Some(...) [no-match] |
-| test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:328:26:328:26 | Before x |
+| test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:328:32:328:37 | After ... < ... [false] |
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:328:32:328:37 | After ... < ... [true] |
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:329:13:329:27 | After ...::Some(...) [no-match] |
+| test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:329:13:329:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:329:13:329:33 | ... => x |
-| test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:329:26:329:26 | Before x |
 | test.rs:328:13:328:27 | After ...::Some(...) [no-match] | test.rs:328:13:328:27 | After ...::Some(...) [no-match] |
-| test.rs:328:26:328:26 | Before x | test.rs:328:26:328:26 | Before x |
+| test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:328:32:328:37 | After ... < ... [false] | test.rs:328:32:328:37 | After ... < ... [false] |
 | test.rs:328:32:328:37 | After ... < ... [true] | test.rs:328:32:328:37 | After ... < ... [true] |
 | test.rs:329:13:329:27 | After ...::Some(...) [no-match] | test.rs:329:13:329:27 | After ...::Some(...) [no-match] |
+| test.rs:329:13:329:27 | [OuterPatternMatch] ...::Some(...) | test.rs:329:13:329:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:329:13:329:33 | ... => x | test.rs:328:13:328:27 | After ...::Some(...) [no-match] |
 | test.rs:329:13:329:33 | ... => x | test.rs:328:32:328:37 | After ... < ... [false] |
 | test.rs:329:13:329:33 | ... => x | test.rs:329:13:329:33 | ... => x |
-| test.rs:329:26:329:26 | Before x | test.rs:329:26:329:26 | Before x |
 | test.rs:334:5:343:5 | Entry | test.rs:334:5:343:5 | Entry |
 | test.rs:334:5:343:5 | Normal Exit | test.rs:334:5:343:5 | Entry |
 | test.rs:334:5:343:5 | Normal Exit | test.rs:334:5:343:5 | Normal Exit |
@@ -1195,61 +1195,61 @@ postDominance
 | test.rs:334:5:343:5 | Normal Exit | test.rs:335:19:335:40 | After ... == ... [false] |
 | test.rs:334:5:343:5 | Normal Exit | test.rs:335:19:335:40 | After ... == ... [true] |
 | test.rs:334:5:343:5 | Normal Exit | test.rs:340:13:340:27 | After ...::Some(...) [no-match] |
-| test.rs:334:5:343:5 | Normal Exit | test.rs:340:26:340:26 | Before x |
+| test.rs:334:5:343:5 | Normal Exit | test.rs:340:13:340:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:335:9:342:9 | After match ... { ... } | test.rs:335:9:342:9 | After match ... { ... } |
 | test.rs:335:9:342:9 | After match ... { ... } | test.rs:335:19:335:40 | After ... == ... [false] |
 | test.rs:335:9:342:9 | After match ... { ... } | test.rs:340:13:340:27 | After ...::Some(...) [no-match] |
-| test.rs:335:9:342:9 | After match ... { ... } | test.rs:340:26:340:26 | Before x |
+| test.rs:335:9:342:9 | After match ... { ... } | test.rs:340:13:340:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:335:19:335:40 | After ... == ... [false] | test.rs:335:19:335:40 | After ... == ... [false] |
 | test.rs:335:19:335:40 | After ... == ... [true] | test.rs:335:19:335:40 | After ... == ... [true] |
 | test.rs:340:13:340:27 | After ...::Some(...) [no-match] | test.rs:340:13:340:27 | After ...::Some(...) [no-match] |
-| test.rs:340:26:340:26 | Before x | test.rs:340:26:340:26 | Before x |
+| test.rs:340:13:340:27 | [OuterPatternMatch] ...::Some(...) | test.rs:340:13:340:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:345:5:350:5 | Entry | test.rs:345:5:350:5 | Entry |
 | test.rs:346:9:349:18 | After ... && ... | test.rs:345:5:350:5 | Entry |
 | test.rs:346:9:349:18 | After ... && ... | test.rs:346:9:349:18 | After ... && ... |
 | test.rs:346:9:349:18 | After ... && ... | test.rs:346:10:349:9 | After match r { ... } [false] |
 | test.rs:346:9:349:18 | After ... && ... | test.rs:346:10:349:9 | After match r { ... } [true] |
 | test.rs:346:9:349:18 | After ... && ... | test.rs:347:13:347:19 | After Some(...) [no-match] |
-| test.rs:346:9:349:18 | After ... && ... | test.rs:347:18:347:18 | Before a |
+| test.rs:346:9:349:18 | After ... && ... | test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) |
 | test.rs:346:9:349:18 | After ... && ... | test.rs:347:24:347:24 | After a [false] |
 | test.rs:346:9:349:18 | After ... && ... | test.rs:347:24:347:24 | After a [true] |
 | test.rs:346:10:349:9 | After match r { ... } [false] | test.rs:346:10:349:9 | After match r { ... } [false] |
 | test.rs:346:10:349:9 | After match r { ... } [true] | test.rs:346:10:349:9 | After match r { ... } [true] |
 | test.rs:347:13:347:19 | After Some(...) [no-match] | test.rs:347:13:347:19 | After Some(...) [no-match] |
-| test.rs:347:18:347:18 | Before a | test.rs:347:18:347:18 | Before a |
+| test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) | test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) |
 | test.rs:347:24:347:24 | After a [false] | test.rs:347:24:347:24 | After a [false] |
 | test.rs:347:24:347:24 | After a [true] | test.rs:347:24:347:24 | After a [true] |
 | test.rs:352:5:357:5 | Entry | test.rs:352:5:357:5 | Entry |
 | test.rs:352:5:357:5 | Exit | test.rs:352:5:357:5 | Exit |
 | test.rs:354:13:354:21 | After Ok(...) [no-match] | test.rs:354:13:354:21 | After Ok(...) [no-match] |
-| test.rs:354:16:354:20 | Before value | test.rs:352:5:357:5 | Entry |
-| test.rs:354:16:354:20 | Before value | test.rs:354:16:354:20 | Before value |
+| test.rs:354:13:354:21 | [OuterPatternMatch] Ok(...) | test.rs:352:5:357:5 | Entry |
+| test.rs:354:13:354:21 | [OuterPatternMatch] Ok(...) | test.rs:354:13:354:21 | [OuterPatternMatch] Ok(...) |
 | test.rs:362:5:365:5 | Entry | test.rs:362:5:365:5 | Entry |
 | test.rs:362:5:365:5 | Exit | test.rs:362:5:365:5 | Exit |
 | test.rs:363:13:363:19 | After Some(...) [no-match] | test.rs:363:13:363:19 | After Some(...) [no-match] |
-| test.rs:363:18:363:18 | Before n | test.rs:362:5:365:5 | Entry |
-| test.rs:363:18:363:18 | Before n | test.rs:363:18:363:18 | Before n |
+| test.rs:363:13:363:19 | [OuterPatternMatch] Some(...) | test.rs:362:5:365:5 | Entry |
+| test.rs:363:13:363:19 | [OuterPatternMatch] Some(...) | test.rs:363:13:363:19 | [OuterPatternMatch] Some(...) |
 | test.rs:367:5:373:5 | Entry | test.rs:367:5:373:5 | Entry |
 | test.rs:367:5:373:5 | Normal Exit | test.rs:367:5:373:5 | Entry |
 | test.rs:367:5:373:5 | Normal Exit | test.rs:367:5:373:5 | Normal Exit |
 | test.rs:367:5:373:5 | Normal Exit | test.rs:369:13:369:21 | After Some(...) [no-match] |
-| test.rs:367:5:373:5 | Normal Exit | test.rs:369:18:369:20 | Before ret |
+| test.rs:367:5:373:5 | Normal Exit | test.rs:369:13:369:21 | [OuterPatternMatch] Some(...) |
 | test.rs:369:13:369:21 | After Some(...) [no-match] | test.rs:369:13:369:21 | After Some(...) [no-match] |
-| test.rs:369:18:369:20 | Before ret | test.rs:369:18:369:20 | Before ret |
+| test.rs:369:13:369:21 | [OuterPatternMatch] Some(...) | test.rs:369:13:369:21 | [OuterPatternMatch] Some(...) |
 | test.rs:378:5:381:5 | Entry | test.rs:378:5:381:5 | Entry |
 | test.rs:387:5:391:5 | Entry | test.rs:387:5:391:5 | Entry |
 | test.rs:393:5:398:5 | Entry | test.rs:393:5:398:5 | Entry |
 | test.rs:394:9:397:9 | After match st { ... } | test.rs:393:5:398:5 | Entry |
 | test.rs:394:9:397:9 | After match st { ... } | test.rs:394:9:397:9 | After match st { ... } |
 | test.rs:394:9:397:9 | After match st { ... } | test.rs:395:13:395:29 | After MyStruct {...} [no-match] |
+| test.rs:394:9:397:9 | After match st { ... } | test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} |
 | test.rs:394:9:397:9 | After match st { ... } | test.rs:395:27:395:27 | After 1 [match] |
 | test.rs:394:9:397:9 | After match st { ... } | test.rs:395:27:395:27 | After 1 [no-match] |
-| test.rs:394:9:397:9 | After match st { ... } | test.rs:395:27:395:27 | Before 1 |
 | test.rs:395:13:395:29 | After MyStruct {...} [no-match] | test.rs:395:13:395:29 | After MyStruct {...} [no-match] |
 | test.rs:395:13:395:29 | After MyStruct {...} [no-match] | test.rs:395:27:395:27 | After 1 [no-match] |
+| test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} | test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} |
 | test.rs:395:27:395:27 | After 1 [match] | test.rs:395:27:395:27 | After 1 [match] |
 | test.rs:395:27:395:27 | After 1 [no-match] | test.rs:395:27:395:27 | After 1 [no-match] |
-| test.rs:395:27:395:27 | Before 1 | test.rs:395:27:395:27 | Before 1 |
 | test.rs:400:5:407:5 | Entry | test.rs:400:5:407:5 | Entry |
 | test.rs:401:9:406:9 | After match 42 { ... } | test.rs:400:5:407:5 | Entry |
 | test.rs:401:9:406:9 | After match 42 { ... } | test.rs:401:9:406:9 | After match 42 { ... } |
@@ -1340,23 +1340,23 @@ postDominance
 | test.rs:441:9:444:9 | After match a { ... } | test.rs:442:13:442:16 | After None [match] |
 | test.rs:441:9:444:9 | After match a { ... } | test.rs:442:13:442:16 | After None [no-match] |
 | test.rs:441:9:444:9 | After match a { ... } | test.rs:443:13:443:22 | After Some(...) [no-match] |
+| test.rs:441:9:444:9 | After match a { ... } | test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) |
 | test.rs:441:9:444:9 | After match a { ... } | test.rs:443:13:443:36 | After ... \| ... [match] |
 | test.rs:441:9:444:9 | After match a { ... } | test.rs:443:18:443:21 | After true [match] |
 | test.rs:441:9:444:9 | After match a { ... } | test.rs:443:18:443:21 | After true [no-match] |
-| test.rs:441:9:444:9 | After match a { ... } | test.rs:443:18:443:21 | Before true |
 | test.rs:442:13:442:16 | After None [match] | test.rs:442:13:442:16 | After None [match] |
 | test.rs:442:13:442:16 | After None [no-match] | test.rs:442:13:442:16 | After None [no-match] |
 | test.rs:443:13:443:22 | After Some(...) [no-match] | test.rs:443:13:443:22 | After Some(...) [no-match] |
 | test.rs:443:13:443:22 | After Some(...) [no-match] | test.rs:443:18:443:21 | After true [no-match] |
+| test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) | test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) |
 | test.rs:443:13:443:36 | After ... \| ... [match] | test.rs:442:13:442:16 | After None [no-match] |
 | test.rs:443:13:443:36 | After ... \| ... [match] | test.rs:443:13:443:22 | After Some(...) [no-match] |
+| test.rs:443:13:443:36 | After ... \| ... [match] | test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) |
 | test.rs:443:13:443:36 | After ... \| ... [match] | test.rs:443:13:443:36 | After ... \| ... [match] |
 | test.rs:443:13:443:36 | After ... \| ... [match] | test.rs:443:18:443:21 | After true [match] |
 | test.rs:443:13:443:36 | After ... \| ... [match] | test.rs:443:18:443:21 | After true [no-match] |
-| test.rs:443:13:443:36 | After ... \| ... [match] | test.rs:443:18:443:21 | Before true |
 | test.rs:443:18:443:21 | After true [match] | test.rs:443:18:443:21 | After true [match] |
 | test.rs:443:18:443:21 | After true [no-match] | test.rs:443:18:443:21 | After true [no-match] |
-| test.rs:443:18:443:21 | Before true | test.rs:443:18:443:21 | Before true |
 | test.rs:453:5:458:5 | Entry | test.rs:453:5:458:5 | Entry |
 | test.rs:454:9:457:9 | After match a { ... } | test.rs:453:5:458:5 | Entry |
 | test.rs:454:9:457:9 | After match a { ... } | test.rs:454:9:457:9 | After match a { ... } |
@@ -1376,20 +1376,20 @@ postDominance
 | test.rs:461:9:464:9 | After match pair { ... } | test.rs:460:5:465:5 | Entry |
 | test.rs:461:9:464:9 | After match pair { ... } | test.rs:461:9:464:9 | After match pair { ... } |
 | test.rs:461:9:464:9 | After match pair { ... } | test.rs:462:18:462:34 | After MyStruct {...} [no-match] |
-| test.rs:461:9:464:9 | After match pair { ... } | test.rs:462:32:462:32 | _ |
+| test.rs:461:9:464:9 | After match pair { ... } | test.rs:462:18:462:34 | [OuterPatternMatch] MyStruct {...} |
 | test.rs:462:18:462:34 | After MyStruct {...} [no-match] | test.rs:462:18:462:34 | After MyStruct {...} [no-match] |
-| test.rs:462:32:462:32 | _ | test.rs:462:32:462:32 | _ |
+| test.rs:462:18:462:34 | [OuterPatternMatch] MyStruct {...} | test.rs:462:18:462:34 | [OuterPatternMatch] MyStruct {...} |
 | test.rs:475:5:481:5 | Entry | test.rs:475:5:481:5 | Entry |
 | test.rs:476:9:480:9 | After match e { ... } | test.rs:475:5:481:5 | Entry |
 | test.rs:476:9:480:9 | After match e { ... } | test.rs:476:9:480:9 | After match e { ... } |
 | test.rs:476:9:480:9 | After match e { ... } | test.rs:477:13:477:34 | After StructVariant {...} [no-match] |
-| test.rs:476:9:480:9 | After match e { ... } | test.rs:477:32:477:32 | _ |
+| test.rs:476:9:480:9 | After match e { ... } | test.rs:477:13:477:34 | [OuterPatternMatch] StructVariant {...} |
 | test.rs:476:9:480:9 | After match e { ... } | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] |
-| test.rs:476:9:480:9 | After match e { ... } | test.rs:478:26:478:26 | _ |
+| test.rs:476:9:480:9 | After match e { ... } | test.rs:478:13:478:27 | [OuterPatternMatch] TupleVariant(...) |
 | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:477:13:477:34 | After StructVariant {...} [no-match] |
-| test.rs:477:32:477:32 | _ | test.rs:477:32:477:32 | _ |
+| test.rs:477:13:477:34 | [OuterPatternMatch] StructVariant {...} | test.rs:477:13:477:34 | [OuterPatternMatch] StructVariant {...} |
 | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] |
-| test.rs:478:26:478:26 | _ | test.rs:478:26:478:26 | _ |
+| test.rs:478:13:478:27 | [OuterPatternMatch] TupleVariant(...) | test.rs:478:13:478:27 | [OuterPatternMatch] TupleVariant(...) |
 | test.rs:485:5:490:5 | Entry | test.rs:485:5:490:5 | Entry |
 | test.rs:486:14:488:9 | { ... } | test.rs:486:14:488:9 | { ... } |
 | test.rs:494:5:496:5 | Entry | test.rs:494:5:496:5 | Entry |
@@ -1434,9 +1434,9 @@ postDominance
 | test.rs:585:18:591:5 | After 'block: { ... } | test.rs:584:1:592:1 | Entry |
 | test.rs:585:18:591:5 | After 'block: { ... } | test.rs:585:18:591:5 | After 'block: { ... } |
 | test.rs:585:18:591:5 | After 'block: { ... } | test.rs:587:13:587:19 | After Some(...) [no-match] |
-| test.rs:585:18:591:5 | After 'block: { ... } | test.rs:587:18:587:18 | Before y |
+| test.rs:585:18:591:5 | After 'block: { ... } | test.rs:587:13:587:19 | [OuterPatternMatch] Some(...) |
 | test.rs:587:13:587:19 | After Some(...) [no-match] | test.rs:587:13:587:19 | After Some(...) [no-match] |
-| test.rs:587:18:587:18 | Before y | test.rs:587:18:587:18 | Before y |
+| test.rs:587:13:587:19 | [OuterPatternMatch] Some(...) | test.rs:587:13:587:19 | [OuterPatternMatch] Some(...) |
 | test.rs:594:1:600:1 | Entry | test.rs:594:1:600:1 | Entry |
 | test.rs:596:5:598:5 | Entry | test.rs:596:5:598:5 | Entry |
 | test.rs:611:5:613:5 | Entry | test.rs:611:5:613:5 | Entry |
@@ -1444,8 +1444,8 @@ postDominance
 | test.rs:619:5:621:5 | Entry | test.rs:619:5:621:5 | Entry |
 immediateDominator
 | cfg.rs:6:5:9:5 | After match value { ... } | cfg.rs:5:1:10:1 | Entry |
-| cfg.rs:7:13:7:18 | After CfgPredPat [match] | cfg.rs:5:1:10:1 | Entry |
 | cfg.rs:7:13:7:18 | After CfgPredPat [no-match] | cfg.rs:5:1:10:1 | Entry |
+| cfg.rs:7:13:7:18 | [OuterPatternMatch] CfgPredPat | cfg.rs:5:1:10:1 | Entry |
 | test.rs:19:9:23:9 | After if ... {...} else {...} | test.rs:18:5:24:5 | Entry |
 | test.rs:19:12:19:21 | After ... == ... [false] | test.rs:18:5:24:5 | Entry |
 | test.rs:19:12:19:21 | After ... == ... [true] | test.rs:18:5:24:5 | Entry |
@@ -1486,9 +1486,9 @@ immediateDominator
 | test.rs:99:9:103:9 | After while ... { ... } | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } |
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:97:5:104:5 | Entry |
 | test.rs:99:19:99:25 | After Some(...) [no-match] | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } |
-| test.rs:99:24:99:24 | Before x | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } |
-| test.rs:100:17:100:22 | After ... == ... [false] | test.rs:99:24:99:24 | Before x |
-| test.rs:100:17:100:22 | After ... == ... [true] | test.rs:99:24:99:24 | Before x |
+| test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } |
+| test.rs:100:17:100:22 | After ... == ... [false] | test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) |
+| test.rs:100:17:100:22 | After ... == ... [true] | test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) |
 | test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:106:5:113:5 | Entry |
 | test.rs:107:13:107:13 | Before i | test.rs:107:18:107:22 | After 0..10 [non-empty] |
 | test.rs:107:18:107:22 | After 0..10 [empty] | test.rs:106:5:113:5 | Entry |
@@ -1503,10 +1503,10 @@ immediateDominator
 | test.rs:139:12:139:12 | After b [true] | test.rs:137:5:143:5 | Entry |
 | test.rs:146:9:150:9 | After if ... {...} else {...} | test.rs:145:5:151:5 | Entry |
 | test.rs:146:16:146:22 | After Some(...) [no-match] | test.rs:145:5:151:5 | Entry |
-| test.rs:146:21:146:21 | Before n | test.rs:145:5:151:5 | Entry |
+| test.rs:146:16:146:22 | [OuterPatternMatch] Some(...) | test.rs:145:5:151:5 | Entry |
 | test.rs:153:5:158:5 | Normal Exit | test.rs:153:5:158:5 | Entry |
 | test.rs:154:16:154:22 | After Some(...) [no-match] | test.rs:153:5:158:5 | Entry |
-| test.rs:154:21:154:21 | Before n | test.rs:153:5:158:5 | Entry |
+| test.rs:154:16:154:22 | [OuterPatternMatch] Some(...) | test.rs:153:5:158:5 | Entry |
 | test.rs:161:9:165:9 | After if ... {...} else {...} | test.rs:160:5:166:5 | Entry |
 | test.rs:161:13:161:48 | After if ... {...} else {...} [false] | test.rs:160:5:166:5 | Entry |
 | test.rs:161:13:161:48 | After if ... {...} else {...} [true] | test.rs:160:5:166:5 | Entry |
@@ -1604,39 +1604,39 @@ immediateDominator
 | test.rs:317:13:317:16 | After true [no-match] | test.rs:316:15:316:15 | After b [match] |
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:326:5:332:5 | Entry |
 | test.rs:328:13:328:27 | After ...::Some(...) [no-match] | test.rs:326:5:332:5 | Entry |
-| test.rs:328:26:328:26 | Before x | test.rs:326:5:332:5 | Entry |
-| test.rs:328:32:328:37 | After ... < ... [false] | test.rs:328:26:328:26 | Before x |
-| test.rs:328:32:328:37 | After ... < ... [true] | test.rs:328:26:328:26 | Before x |
+| test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | test.rs:326:5:332:5 | Entry |
+| test.rs:328:32:328:37 | After ... < ... [false] | test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) |
+| test.rs:328:32:328:37 | After ... < ... [true] | test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) |
 | test.rs:329:13:329:27 | After ...::Some(...) [no-match] | test.rs:329:13:329:33 | ... => x |
+| test.rs:329:13:329:27 | [OuterPatternMatch] ...::Some(...) | test.rs:329:13:329:33 | ... => x |
 | test.rs:329:13:329:33 | ... => x | test.rs:326:5:332:5 | Entry |
-| test.rs:329:26:329:26 | Before x | test.rs:329:13:329:33 | ... => x |
 | test.rs:334:5:343:5 | Normal Exit | test.rs:334:5:343:5 | Entry |
 | test.rs:335:9:342:9 | After match ... { ... } | test.rs:335:19:335:40 | After ... == ... [false] |
 | test.rs:335:19:335:40 | After ... == ... [false] | test.rs:334:5:343:5 | Entry |
 | test.rs:335:19:335:40 | After ... == ... [true] | test.rs:334:5:343:5 | Entry |
 | test.rs:340:13:340:27 | After ...::Some(...) [no-match] | test.rs:335:19:335:40 | After ... == ... [false] |
-| test.rs:340:26:340:26 | Before x | test.rs:335:19:335:40 | After ... == ... [false] |
+| test.rs:340:13:340:27 | [OuterPatternMatch] ...::Some(...) | test.rs:335:19:335:40 | After ... == ... [false] |
 | test.rs:346:9:349:18 | After ... && ... | test.rs:345:5:350:5 | Entry |
 | test.rs:346:10:349:9 | After match r { ... } [false] | test.rs:345:5:350:5 | Entry |
 | test.rs:346:10:349:9 | After match r { ... } [true] | test.rs:345:5:350:5 | Entry |
 | test.rs:347:13:347:19 | After Some(...) [no-match] | test.rs:345:5:350:5 | Entry |
-| test.rs:347:18:347:18 | Before a | test.rs:345:5:350:5 | Entry |
-| test.rs:347:24:347:24 | After a [false] | test.rs:347:18:347:18 | Before a |
-| test.rs:347:24:347:24 | After a [true] | test.rs:347:18:347:18 | Before a |
+| test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) | test.rs:345:5:350:5 | Entry |
+| test.rs:347:24:347:24 | After a [false] | test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) |
+| test.rs:347:24:347:24 | After a [true] | test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) |
 | test.rs:352:5:357:5 | Exit | test.rs:352:5:357:5 | Entry |
 | test.rs:354:13:354:21 | After Ok(...) [no-match] | test.rs:352:5:357:5 | Entry |
-| test.rs:354:16:354:20 | Before value | test.rs:352:5:357:5 | Entry |
+| test.rs:354:13:354:21 | [OuterPatternMatch] Ok(...) | test.rs:352:5:357:5 | Entry |
 | test.rs:362:5:365:5 | Exit | test.rs:362:5:365:5 | Entry |
 | test.rs:363:13:363:19 | After Some(...) [no-match] | test.rs:362:5:365:5 | Entry |
-| test.rs:363:18:363:18 | Before n | test.rs:362:5:365:5 | Entry |
+| test.rs:363:13:363:19 | [OuterPatternMatch] Some(...) | test.rs:362:5:365:5 | Entry |
 | test.rs:367:5:373:5 | Normal Exit | test.rs:367:5:373:5 | Entry |
 | test.rs:369:13:369:21 | After Some(...) [no-match] | test.rs:367:5:373:5 | Entry |
-| test.rs:369:18:369:20 | Before ret | test.rs:367:5:373:5 | Entry |
+| test.rs:369:13:369:21 | [OuterPatternMatch] Some(...) | test.rs:367:5:373:5 | Entry |
 | test.rs:394:9:397:9 | After match st { ... } | test.rs:393:5:398:5 | Entry |
 | test.rs:395:13:395:29 | After MyStruct {...} [no-match] | test.rs:393:5:398:5 | Entry |
-| test.rs:395:27:395:27 | After 1 [match] | test.rs:395:27:395:27 | Before 1 |
-| test.rs:395:27:395:27 | After 1 [no-match] | test.rs:395:27:395:27 | Before 1 |
-| test.rs:395:27:395:27 | Before 1 | test.rs:393:5:398:5 | Entry |
+| test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} | test.rs:393:5:398:5 | Entry |
+| test.rs:395:27:395:27 | After 1 [match] | test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} |
+| test.rs:395:27:395:27 | After 1 [no-match] | test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} |
 | test.rs:401:9:406:9 | After match 42 { ... } | test.rs:400:5:407:5 | Entry |
 | test.rs:402:15:402:15 | After 0 [match] | test.rs:400:5:407:5 | Entry |
 | test.rs:402:15:402:15 | After 0 [no-match] | test.rs:400:5:407:5 | Entry |
@@ -1676,10 +1676,10 @@ immediateDominator
 | test.rs:442:13:442:16 | After None [match] | test.rs:440:5:445:5 | Entry |
 | test.rs:442:13:442:16 | After None [no-match] | test.rs:440:5:445:5 | Entry |
 | test.rs:443:13:443:22 | After Some(...) [no-match] | test.rs:442:13:442:16 | After None [no-match] |
+| test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) | test.rs:442:13:442:16 | After None [no-match] |
 | test.rs:443:13:443:36 | After ... \| ... [match] | test.rs:442:13:442:16 | After None [no-match] |
-| test.rs:443:18:443:21 | After true [match] | test.rs:443:18:443:21 | Before true |
-| test.rs:443:18:443:21 | After true [no-match] | test.rs:443:18:443:21 | Before true |
-| test.rs:443:18:443:21 | Before true | test.rs:442:13:442:16 | After None [no-match] |
+| test.rs:443:18:443:21 | After true [match] | test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) |
+| test.rs:443:18:443:21 | After true [no-match] | test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) |
 | test.rs:454:9:457:9 | After match a { ... } | test.rs:453:5:458:5 | Entry |
 | test.rs:455:13:455:23 | After 1 [match] | test.rs:453:5:458:5 | Entry |
 | test.rs:455:13:455:23 | After 1 [no-match] | test.rs:453:5:458:5 | Entry |
@@ -1688,12 +1688,12 @@ immediateDominator
 | test.rs:455:13:455:23 | After 2 [no-match] | test.rs:455:13:455:23 | After 1 [no-match] |
 | test.rs:461:9:464:9 | After match pair { ... } | test.rs:460:5:465:5 | Entry |
 | test.rs:462:18:462:34 | After MyStruct {...} [no-match] | test.rs:460:5:465:5 | Entry |
-| test.rs:462:32:462:32 | _ | test.rs:460:5:465:5 | Entry |
+| test.rs:462:18:462:34 | [OuterPatternMatch] MyStruct {...} | test.rs:460:5:465:5 | Entry |
 | test.rs:476:9:480:9 | After match e { ... } | test.rs:475:5:481:5 | Entry |
 | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:475:5:481:5 | Entry |
-| test.rs:477:32:477:32 | _ | test.rs:475:5:481:5 | Entry |
+| test.rs:477:13:477:34 | [OuterPatternMatch] StructVariant {...} | test.rs:475:5:481:5 | Entry |
 | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] | test.rs:477:13:477:34 | After StructVariant {...} [no-match] |
-| test.rs:478:26:478:26 | _ | test.rs:477:13:477:34 | After StructVariant {...} [no-match] |
+| test.rs:478:13:478:27 | [OuterPatternMatch] TupleVariant(...) | test.rs:477:13:477:34 | After StructVariant {...} [no-match] |
 | test.rs:486:14:488:9 | { ... } | test.rs:485:5:490:5 | Entry |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:511:28:516:9 | Entry |
 | test.rs:512:16:512:16 | After b [false] | test.rs:511:28:516:9 | Entry |
@@ -1708,10 +1708,10 @@ immediateDominator
 | test.rs:575:12:575:30 | After condition_not_met(...) [true] | test.rs:571:12:571:30 | After condition_not_met(...) [false] |
 | test.rs:585:18:591:5 | After 'block: { ... } | test.rs:584:1:592:1 | Entry |
 | test.rs:587:13:587:19 | After Some(...) [no-match] | test.rs:584:1:592:1 | Entry |
-| test.rs:587:18:587:18 | Before y | test.rs:584:1:592:1 | Entry |
+| test.rs:587:13:587:19 | [OuterPatternMatch] Some(...) | test.rs:584:1:592:1 | Entry |
 controls
-| cfg.rs:5:1:10:1 | Entry | cfg.rs:7:13:7:18 | After CfgPredPat [match] | match |
 | cfg.rs:5:1:10:1 | Entry | cfg.rs:7:13:7:18 | After CfgPredPat [no-match] | no-match |
+| cfg.rs:5:1:10:1 | Entry | cfg.rs:7:13:7:18 | [OuterPatternMatch] CfgPredPat | match |
 | test.rs:18:5:24:5 | Entry | test.rs:19:12:19:21 | After ... == ... [false] | false |
 | test.rs:18:5:24:5 | Entry | test.rs:19:12:19:21 | After ... == ... [true] | true |
 | test.rs:28:14:40:9 | { ... } | test.rs:28:9:40:9 | [LoopHeader] loop { ... } | false |
@@ -1753,11 +1753,11 @@ controls
 | test.rs:88:15:88:15 | After b [true] | test.rs:90:17:90:21 | After ... > ... [false] | false |
 | test.rs:88:15:88:15 | After b [true] | test.rs:90:17:90:21 | After ... > ... [true] | true |
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:99:19:99:25 | After Some(...) [no-match] | no-match |
-| test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:99:24:99:24 | Before x | successor |
-| test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:100:17:100:22 | After ... == ... [false] | successor |
-| test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:100:17:100:22 | After ... == ... [true] | successor |
-| test.rs:99:24:99:24 | Before x | test.rs:100:17:100:22 | After ... == ... [false] | false |
-| test.rs:99:24:99:24 | Before x | test.rs:100:17:100:22 | After ... == ... [true] | true |
+| test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) | match |
+| test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:100:17:100:22 | After ... == ... [false] | match |
+| test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:100:17:100:22 | After ... == ... [true] | match |
+| test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) | test.rs:100:17:100:22 | After ... == ... [false] | false |
+| test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) | test.rs:100:17:100:22 | After ... == ... [true] | true |
 | test.rs:106:5:113:5 | Entry | test.rs:107:13:107:13 | Before i | non-empty |
 | test.rs:106:5:113:5 | Entry | test.rs:107:18:107:22 | After 0..10 [empty] | empty |
 | test.rs:106:5:113:5 | Entry | test.rs:107:18:107:22 | After 0..10 [non-empty] | non-empty |
@@ -1770,9 +1770,9 @@ controls
 | test.rs:137:5:143:5 | Entry | test.rs:139:12:139:12 | After b [false] | false |
 | test.rs:137:5:143:5 | Entry | test.rs:139:12:139:12 | After b [true] | true |
 | test.rs:145:5:151:5 | Entry | test.rs:146:16:146:22 | After Some(...) [no-match] | no-match |
-| test.rs:145:5:151:5 | Entry | test.rs:146:21:146:21 | Before n | successor |
+| test.rs:145:5:151:5 | Entry | test.rs:146:16:146:22 | [OuterPatternMatch] Some(...) | match |
 | test.rs:153:5:158:5 | Entry | test.rs:154:16:154:22 | After Some(...) [no-match] | no-match |
-| test.rs:153:5:158:5 | Entry | test.rs:154:21:154:21 | Before n | successor |
+| test.rs:153:5:158:5 | Entry | test.rs:154:16:154:22 | [OuterPatternMatch] Some(...) | match |
 | test.rs:160:5:166:5 | Entry | test.rs:161:16:161:20 | After ... < ... [false] | false |
 | test.rs:160:5:166:5 | Entry | test.rs:161:16:161:20 | After ... < ... [true] | true |
 | test.rs:160:5:166:5 | Entry | test.rs:161:24:161:30 | After ... < ... [false] | true |
@@ -1864,37 +1864,37 @@ controls
 | test.rs:316:15:316:15 | After b [match] | test.rs:317:13:317:16 | After true [match] | match |
 | test.rs:316:15:316:15 | After b [match] | test.rs:317:13:317:16 | After true [no-match] | no-match |
 | test.rs:326:5:332:5 | Entry | test.rs:328:13:328:27 | After ...::Some(...) [no-match] | no-match |
-| test.rs:326:5:332:5 | Entry | test.rs:328:26:328:26 | Before x | successor |
-| test.rs:326:5:332:5 | Entry | test.rs:328:32:328:37 | After ... < ... [false] | successor |
-| test.rs:326:5:332:5 | Entry | test.rs:328:32:328:37 | After ... < ... [true] | successor |
-| test.rs:328:26:328:26 | Before x | test.rs:328:32:328:37 | After ... < ... [false] | false |
-| test.rs:328:26:328:26 | Before x | test.rs:328:32:328:37 | After ... < ... [true] | true |
+| test.rs:326:5:332:5 | Entry | test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | match |
+| test.rs:326:5:332:5 | Entry | test.rs:328:32:328:37 | After ... < ... [false] | match |
+| test.rs:326:5:332:5 | Entry | test.rs:328:32:328:37 | After ... < ... [true] | match |
+| test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | test.rs:328:32:328:37 | After ... < ... [false] | false |
+| test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | test.rs:328:32:328:37 | After ... < ... [true] | true |
 | test.rs:329:13:329:33 | ... => x | test.rs:329:13:329:27 | After ...::Some(...) [no-match] | no-match |
-| test.rs:329:13:329:33 | ... => x | test.rs:329:26:329:26 | Before x | successor |
+| test.rs:329:13:329:33 | ... => x | test.rs:329:13:329:27 | [OuterPatternMatch] ...::Some(...) | match |
 | test.rs:334:5:343:5 | Entry | test.rs:335:9:342:9 | After match ... { ... } | false |
 | test.rs:334:5:343:5 | Entry | test.rs:335:19:335:40 | After ... == ... [false] | false |
 | test.rs:334:5:343:5 | Entry | test.rs:335:19:335:40 | After ... == ... [true] | true |
 | test.rs:334:5:343:5 | Entry | test.rs:340:13:340:27 | After ...::Some(...) [no-match] | false |
-| test.rs:334:5:343:5 | Entry | test.rs:340:26:340:26 | Before x | false |
+| test.rs:334:5:343:5 | Entry | test.rs:340:13:340:27 | [OuterPatternMatch] ...::Some(...) | false |
 | test.rs:335:19:335:40 | After ... == ... [false] | test.rs:340:13:340:27 | After ...::Some(...) [no-match] | no-match |
-| test.rs:335:19:335:40 | After ... == ... [false] | test.rs:340:26:340:26 | Before x | successor |
+| test.rs:335:19:335:40 | After ... == ... [false] | test.rs:340:13:340:27 | [OuterPatternMatch] ...::Some(...) | match |
 | test.rs:345:5:350:5 | Entry | test.rs:347:13:347:19 | After Some(...) [no-match] | no-match |
-| test.rs:345:5:350:5 | Entry | test.rs:347:18:347:18 | Before a | successor |
-| test.rs:345:5:350:5 | Entry | test.rs:347:24:347:24 | After a [false] | successor |
-| test.rs:345:5:350:5 | Entry | test.rs:347:24:347:24 | After a [true] | successor |
-| test.rs:347:18:347:18 | Before a | test.rs:347:24:347:24 | After a [false] | false |
-| test.rs:347:18:347:18 | Before a | test.rs:347:24:347:24 | After a [true] | true |
+| test.rs:345:5:350:5 | Entry | test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) | match |
+| test.rs:345:5:350:5 | Entry | test.rs:347:24:347:24 | After a [false] | match |
+| test.rs:345:5:350:5 | Entry | test.rs:347:24:347:24 | After a [true] | match |
+| test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) | test.rs:347:24:347:24 | After a [false] | false |
+| test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) | test.rs:347:24:347:24 | After a [true] | true |
 | test.rs:352:5:357:5 | Entry | test.rs:354:13:354:21 | After Ok(...) [no-match] | no-match |
-| test.rs:352:5:357:5 | Entry | test.rs:354:16:354:20 | Before value | successor |
+| test.rs:352:5:357:5 | Entry | test.rs:354:13:354:21 | [OuterPatternMatch] Ok(...) | match |
 | test.rs:362:5:365:5 | Entry | test.rs:363:13:363:19 | After Some(...) [no-match] | no-match |
-| test.rs:362:5:365:5 | Entry | test.rs:363:18:363:18 | Before n | successor |
+| test.rs:362:5:365:5 | Entry | test.rs:363:13:363:19 | [OuterPatternMatch] Some(...) | match |
 | test.rs:367:5:373:5 | Entry | test.rs:369:13:369:21 | After Some(...) [no-match] | no-match |
-| test.rs:367:5:373:5 | Entry | test.rs:369:18:369:20 | Before ret | successor |
-| test.rs:393:5:398:5 | Entry | test.rs:395:27:395:27 | After 1 [match] | successor |
-| test.rs:393:5:398:5 | Entry | test.rs:395:27:395:27 | After 1 [no-match] | successor |
-| test.rs:393:5:398:5 | Entry | test.rs:395:27:395:27 | Before 1 | successor |
-| test.rs:395:27:395:27 | Before 1 | test.rs:395:27:395:27 | After 1 [match] | match |
-| test.rs:395:27:395:27 | Before 1 | test.rs:395:27:395:27 | After 1 [no-match] | no-match |
+| test.rs:367:5:373:5 | Entry | test.rs:369:13:369:21 | [OuterPatternMatch] Some(...) | match |
+| test.rs:393:5:398:5 | Entry | test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} | match |
+| test.rs:393:5:398:5 | Entry | test.rs:395:27:395:27 | After 1 [match] | match |
+| test.rs:393:5:398:5 | Entry | test.rs:395:27:395:27 | After 1 [no-match] | match |
+| test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} | test.rs:395:27:395:27 | After 1 [match] | match |
+| test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} | test.rs:395:27:395:27 | After 1 [no-match] | no-match |
 | test.rs:400:5:407:5 | Entry | test.rs:402:15:402:15 | After 0 [match] | match |
 | test.rs:400:5:407:5 | Entry | test.rs:402:15:402:15 | After 0 [no-match] | no-match |
 | test.rs:400:5:407:5 | Entry | test.rs:403:13:403:13 | After 1 [match] | no-match |
@@ -1945,15 +1945,15 @@ controls
 | test.rs:440:5:445:5 | Entry | test.rs:442:13:442:16 | After None [match] | match |
 | test.rs:440:5:445:5 | Entry | test.rs:442:13:442:16 | After None [no-match] | no-match |
 | test.rs:440:5:445:5 | Entry | test.rs:443:13:443:22 | After Some(...) [no-match] | no-match |
+| test.rs:440:5:445:5 | Entry | test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) | no-match |
 | test.rs:440:5:445:5 | Entry | test.rs:443:13:443:36 | After ... \| ... [match] | no-match |
 | test.rs:440:5:445:5 | Entry | test.rs:443:18:443:21 | After true [match] | no-match |
 | test.rs:440:5:445:5 | Entry | test.rs:443:18:443:21 | After true [no-match] | no-match |
-| test.rs:440:5:445:5 | Entry | test.rs:443:18:443:21 | Before true | no-match |
-| test.rs:442:13:442:16 | After None [no-match] | test.rs:443:18:443:21 | After true [match] | successor |
-| test.rs:442:13:442:16 | After None [no-match] | test.rs:443:18:443:21 | After true [no-match] | successor |
-| test.rs:442:13:442:16 | After None [no-match] | test.rs:443:18:443:21 | Before true | successor |
-| test.rs:443:18:443:21 | Before true | test.rs:443:18:443:21 | After true [match] | match |
-| test.rs:443:18:443:21 | Before true | test.rs:443:18:443:21 | After true [no-match] | no-match |
+| test.rs:442:13:442:16 | After None [no-match] | test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) | match |
+| test.rs:442:13:442:16 | After None [no-match] | test.rs:443:18:443:21 | After true [match] | match |
+| test.rs:442:13:442:16 | After None [no-match] | test.rs:443:18:443:21 | After true [no-match] | match |
+| test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) | test.rs:443:18:443:21 | After true [match] | match |
+| test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) | test.rs:443:18:443:21 | After true [no-match] | no-match |
 | test.rs:453:5:458:5 | Entry | test.rs:455:13:455:23 | After 1 [match] | match |
 | test.rs:453:5:458:5 | Entry | test.rs:455:13:455:23 | After 1 [no-match] | no-match |
 | test.rs:453:5:458:5 | Entry | test.rs:455:13:455:23 | After 2 [match] | no-match |
@@ -1961,13 +1961,13 @@ controls
 | test.rs:455:13:455:23 | After 1 [no-match] | test.rs:455:13:455:23 | After 2 [match] | match |
 | test.rs:455:13:455:23 | After 1 [no-match] | test.rs:455:13:455:23 | After 2 [no-match] | no-match |
 | test.rs:460:5:465:5 | Entry | test.rs:462:18:462:34 | After MyStruct {...} [no-match] | no-match |
-| test.rs:460:5:465:5 | Entry | test.rs:462:32:462:32 | _ | successor |
+| test.rs:460:5:465:5 | Entry | test.rs:462:18:462:34 | [OuterPatternMatch] MyStruct {...} | match |
 | test.rs:475:5:481:5 | Entry | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | no-match |
-| test.rs:475:5:481:5 | Entry | test.rs:477:32:477:32 | _ | successor |
+| test.rs:475:5:481:5 | Entry | test.rs:477:13:477:34 | [OuterPatternMatch] StructVariant {...} | match |
 | test.rs:475:5:481:5 | Entry | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] | no-match |
-| test.rs:475:5:481:5 | Entry | test.rs:478:26:478:26 | _ | no-match |
+| test.rs:475:5:481:5 | Entry | test.rs:478:13:478:27 | [OuterPatternMatch] TupleVariant(...) | no-match |
 | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] | no-match |
-| test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:478:26:478:26 | _ | successor |
+| test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:478:13:478:27 | [OuterPatternMatch] TupleVariant(...) | match |
 | test.rs:511:28:516:9 | Entry | test.rs:512:16:512:16 | After b [false] | false |
 | test.rs:511:28:516:9 | Entry | test.rs:512:16:512:16 | After b [true] | true |
 | test.rs:529:5:537:5 | Entry | test.rs:533:21:533:48 | After ... > ... [false] | false |
@@ -1979,10 +1979,10 @@ controls
 | test.rs:571:12:571:30 | After condition_not_met(...) [false] | test.rs:575:12:575:30 | After condition_not_met(...) [false] | false |
 | test.rs:571:12:571:30 | After condition_not_met(...) [false] | test.rs:575:12:575:30 | After condition_not_met(...) [true] | true |
 | test.rs:584:1:592:1 | Entry | test.rs:587:13:587:19 | After Some(...) [no-match] | no-match |
-| test.rs:584:1:592:1 | Entry | test.rs:587:18:587:18 | Before y | successor |
+| test.rs:584:1:592:1 | Entry | test.rs:587:13:587:19 | [OuterPatternMatch] Some(...) | match |
 successor
-| cfg.rs:5:1:10:1 | Entry | cfg.rs:7:13:7:18 | After CfgPredPat [match] | match |
 | cfg.rs:5:1:10:1 | Entry | cfg.rs:7:13:7:18 | After CfgPredPat [no-match] | no-match |
+| cfg.rs:5:1:10:1 | Entry | cfg.rs:7:13:7:18 | [OuterPatternMatch] CfgPredPat | match |
 | test.rs:18:5:24:5 | Entry | test.rs:19:12:19:21 | After ... == ... [false] | false |
 | test.rs:18:5:24:5 | Entry | test.rs:19:12:19:21 | After ... == ... [true] | true |
 | test.rs:28:14:40:9 | { ... } | test.rs:30:16:30:24 | After ... > ... [false] | false |
@@ -2008,9 +2008,9 @@ successor
 | test.rs:88:15:88:15 | After b [true] | test.rs:90:17:90:21 | After ... > ... [false] | false |
 | test.rs:88:15:88:15 | After b [true] | test.rs:90:17:90:21 | After ... > ... [true] | true |
 | test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:99:19:99:25 | After Some(...) [no-match] | no-match |
-| test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:99:24:99:24 | Before x | successor |
-| test.rs:99:24:99:24 | Before x | test.rs:100:17:100:22 | After ... == ... [false] | false |
-| test.rs:99:24:99:24 | Before x | test.rs:100:17:100:22 | After ... == ... [true] | true |
+| test.rs:99:9:103:9 | [LoopHeader] while ... { ... } | test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) | match |
+| test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) | test.rs:100:17:100:22 | After ... == ... [false] | false |
+| test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) | test.rs:100:17:100:22 | After ... == ... [true] | true |
 | test.rs:106:5:113:5 | Entry | test.rs:107:18:107:22 | After 0..10 [empty] | empty |
 | test.rs:106:5:113:5 | Entry | test.rs:107:18:107:22 | After 0..10 [non-empty] | non-empty |
 | test.rs:107:13:107:13 | Before i | test.rs:108:17:108:22 | After ... == ... [false] | false |
@@ -2020,9 +2020,9 @@ successor
 | test.rs:137:5:143:5 | Entry | test.rs:139:12:139:12 | After b [false] | false |
 | test.rs:137:5:143:5 | Entry | test.rs:139:12:139:12 | After b [true] | true |
 | test.rs:145:5:151:5 | Entry | test.rs:146:16:146:22 | After Some(...) [no-match] | no-match |
-| test.rs:145:5:151:5 | Entry | test.rs:146:21:146:21 | Before n | successor |
+| test.rs:145:5:151:5 | Entry | test.rs:146:16:146:22 | [OuterPatternMatch] Some(...) | match |
 | test.rs:153:5:158:5 | Entry | test.rs:154:16:154:22 | After Some(...) [no-match] | no-match |
-| test.rs:153:5:158:5 | Entry | test.rs:154:21:154:21 | Before n | successor |
+| test.rs:153:5:158:5 | Entry | test.rs:154:16:154:22 | [OuterPatternMatch] Some(...) | match |
 | test.rs:160:5:166:5 | Entry | test.rs:161:16:161:20 | After ... < ... [false] | false |
 | test.rs:160:5:166:5 | Entry | test.rs:161:16:161:20 | After ... < ... [true] | true |
 | test.rs:161:16:161:20 | After ... < ... [false] | test.rs:161:41:161:46 | After ... > ... [false] | false |
@@ -2102,36 +2102,36 @@ successor
 | test.rs:316:15:316:15 | After b [match] | test.rs:317:13:317:16 | After true [match] | match |
 | test.rs:316:15:316:15 | After b [match] | test.rs:317:13:317:16 | After true [no-match] | no-match |
 | test.rs:326:5:332:5 | Entry | test.rs:328:13:328:27 | After ...::Some(...) [no-match] | no-match |
-| test.rs:326:5:332:5 | Entry | test.rs:328:26:328:26 | Before x | successor |
-| test.rs:328:26:328:26 | Before x | test.rs:328:32:328:37 | After ... < ... [false] | false |
-| test.rs:328:26:328:26 | Before x | test.rs:328:32:328:37 | After ... < ... [true] | true |
+| test.rs:326:5:332:5 | Entry | test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | match |
+| test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | test.rs:328:32:328:37 | After ... < ... [false] | false |
+| test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | test.rs:328:32:328:37 | After ... < ... [true] | true |
 | test.rs:329:13:329:33 | ... => x | test.rs:329:13:329:27 | After ...::Some(...) [no-match] | no-match |
-| test.rs:329:13:329:33 | ... => x | test.rs:329:26:329:26 | Before x | successor |
+| test.rs:329:13:329:33 | ... => x | test.rs:329:13:329:27 | [OuterPatternMatch] ...::Some(...) | match |
 | test.rs:334:5:343:5 | Entry | test.rs:335:19:335:40 | After ... == ... [false] | false |
 | test.rs:334:5:343:5 | Entry | test.rs:335:19:335:40 | After ... == ... [true] | true |
 | test.rs:335:19:335:40 | After ... == ... [false] | test.rs:340:13:340:27 | After ...::Some(...) [no-match] | no-match |
-| test.rs:335:19:335:40 | After ... == ... [false] | test.rs:340:26:340:26 | Before x | successor |
+| test.rs:335:19:335:40 | After ... == ... [false] | test.rs:340:13:340:27 | [OuterPatternMatch] ...::Some(...) | match |
 | test.rs:345:5:350:5 | Entry | test.rs:347:13:347:19 | After Some(...) [no-match] | no-match |
-| test.rs:345:5:350:5 | Entry | test.rs:347:18:347:18 | Before a | successor |
+| test.rs:345:5:350:5 | Entry | test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) | match |
 | test.rs:347:13:347:19 | After Some(...) [no-match] | test.rs:346:10:349:9 | After match r { ... } [false] | false |
 | test.rs:347:13:347:19 | After Some(...) [no-match] | test.rs:346:10:349:9 | After match r { ... } [true] | true |
-| test.rs:347:18:347:18 | Before a | test.rs:347:24:347:24 | After a [false] | false |
-| test.rs:347:18:347:18 | Before a | test.rs:347:24:347:24 | After a [true] | true |
+| test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) | test.rs:347:24:347:24 | After a [false] | false |
+| test.rs:347:13:347:19 | [OuterPatternMatch] Some(...) | test.rs:347:24:347:24 | After a [true] | true |
 | test.rs:347:24:347:24 | After a [false] | test.rs:346:10:349:9 | After match r { ... } [false] | false |
 | test.rs:347:24:347:24 | After a [false] | test.rs:346:10:349:9 | After match r { ... } [true] | true |
 | test.rs:347:24:347:24 | After a [true] | test.rs:346:10:349:9 | After match r { ... } [false] | false |
 | test.rs:347:24:347:24 | After a [true] | test.rs:346:10:349:9 | After match r { ... } [true] | true |
 | test.rs:352:5:357:5 | Entry | test.rs:354:13:354:21 | After Ok(...) [no-match] | no-match |
-| test.rs:352:5:357:5 | Entry | test.rs:354:16:354:20 | Before value | successor |
+| test.rs:352:5:357:5 | Entry | test.rs:354:13:354:21 | [OuterPatternMatch] Ok(...) | match |
 | test.rs:362:5:365:5 | Entry | test.rs:363:13:363:19 | After Some(...) [no-match] | no-match |
-| test.rs:362:5:365:5 | Entry | test.rs:363:18:363:18 | Before n | successor |
+| test.rs:362:5:365:5 | Entry | test.rs:363:13:363:19 | [OuterPatternMatch] Some(...) | match |
 | test.rs:367:5:373:5 | Entry | test.rs:369:13:369:21 | After Some(...) [no-match] | no-match |
-| test.rs:367:5:373:5 | Entry | test.rs:369:18:369:20 | Before ret | successor |
+| test.rs:367:5:373:5 | Entry | test.rs:369:13:369:21 | [OuterPatternMatch] Some(...) | match |
 | test.rs:393:5:398:5 | Entry | test.rs:395:13:395:29 | After MyStruct {...} [no-match] | no-match |
-| test.rs:393:5:398:5 | Entry | test.rs:395:27:395:27 | Before 1 | successor |
+| test.rs:393:5:398:5 | Entry | test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} | match |
+| test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} | test.rs:395:27:395:27 | After 1 [match] | match |
+| test.rs:395:13:395:29 | [OuterPatternMatch] MyStruct {...} | test.rs:395:27:395:27 | After 1 [no-match] | no-match |
 | test.rs:395:27:395:27 | After 1 [no-match] | test.rs:395:13:395:29 | After MyStruct {...} [no-match] | no-match |
-| test.rs:395:27:395:27 | Before 1 | test.rs:395:27:395:27 | After 1 [match] | match |
-| test.rs:395:27:395:27 | Before 1 | test.rs:395:27:395:27 | After 1 [no-match] | no-match |
 | test.rs:400:5:407:5 | Entry | test.rs:402:15:402:15 | After 0 [match] | match |
 | test.rs:400:5:407:5 | Entry | test.rs:402:15:402:15 | After 0 [no-match] | no-match |
 | test.rs:402:15:402:15 | After 0 [no-match] | test.rs:403:13:403:13 | After 1 [match] | match |
@@ -2170,12 +2170,12 @@ successor
 | test.rs:440:5:445:5 | Entry | test.rs:442:13:442:16 | After None [match] | match |
 | test.rs:440:5:445:5 | Entry | test.rs:442:13:442:16 | After None [no-match] | no-match |
 | test.rs:442:13:442:16 | After None [no-match] | test.rs:443:13:443:22 | After Some(...) [no-match] | no-match |
-| test.rs:442:13:442:16 | After None [no-match] | test.rs:443:18:443:21 | Before true | successor |
+| test.rs:442:13:442:16 | After None [no-match] | test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) | match |
 | test.rs:443:13:443:22 | After Some(...) [no-match] | test.rs:443:13:443:36 | After ... \| ... [match] | match |
+| test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) | test.rs:443:18:443:21 | After true [match] | match |
+| test.rs:443:13:443:22 | [OuterPatternMatch] Some(...) | test.rs:443:18:443:21 | After true [no-match] | no-match |
 | test.rs:443:18:443:21 | After true [match] | test.rs:443:13:443:36 | After ... \| ... [match] | match |
 | test.rs:443:18:443:21 | After true [no-match] | test.rs:443:13:443:22 | After Some(...) [no-match] | no-match |
-| test.rs:443:18:443:21 | Before true | test.rs:443:18:443:21 | After true [match] | match |
-| test.rs:443:18:443:21 | Before true | test.rs:443:18:443:21 | After true [no-match] | no-match |
 | test.rs:453:5:458:5 | Entry | test.rs:455:13:455:23 | After 1 [match] | match |
 | test.rs:453:5:458:5 | Entry | test.rs:455:13:455:23 | After 1 [no-match] | no-match |
 | test.rs:455:13:455:23 | After 1 [match] | test.rs:455:13:455:23 | After 1 \| 2 [match] | match |
@@ -2183,11 +2183,11 @@ successor
 | test.rs:455:13:455:23 | After 1 [no-match] | test.rs:455:13:455:23 | After 2 [no-match] | no-match |
 | test.rs:455:13:455:23 | After 2 [match] | test.rs:455:13:455:23 | After 1 \| 2 [match] | match |
 | test.rs:460:5:465:5 | Entry | test.rs:462:18:462:34 | After MyStruct {...} [no-match] | no-match |
-| test.rs:460:5:465:5 | Entry | test.rs:462:32:462:32 | _ | successor |
+| test.rs:460:5:465:5 | Entry | test.rs:462:18:462:34 | [OuterPatternMatch] MyStruct {...} | match |
 | test.rs:475:5:481:5 | Entry | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | no-match |
-| test.rs:475:5:481:5 | Entry | test.rs:477:32:477:32 | _ | successor |
+| test.rs:475:5:481:5 | Entry | test.rs:477:13:477:34 | [OuterPatternMatch] StructVariant {...} | match |
 | test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] | no-match |
-| test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:478:26:478:26 | _ | successor |
+| test.rs:477:13:477:34 | After StructVariant {...} [no-match] | test.rs:478:13:478:27 | [OuterPatternMatch] TupleVariant(...) | match |
 | test.rs:511:28:516:9 | Entry | test.rs:512:16:512:16 | After b [false] | false |
 | test.rs:511:28:516:9 | Entry | test.rs:512:16:512:16 | After b [true] | true |
 | test.rs:529:5:537:5 | Entry | test.rs:533:21:533:48 | After ... > ... [false] | false |
@@ -2197,10 +2197,10 @@ successor
 | test.rs:571:12:571:30 | After condition_not_met(...) [false] | test.rs:575:12:575:30 | After condition_not_met(...) [false] | false |
 | test.rs:571:12:571:30 | After condition_not_met(...) [false] | test.rs:575:12:575:30 | After condition_not_met(...) [true] | true |
 | test.rs:584:1:592:1 | Entry | test.rs:587:13:587:19 | After Some(...) [no-match] | no-match |
-| test.rs:584:1:592:1 | Entry | test.rs:587:18:587:18 | Before y | successor |
+| test.rs:584:1:592:1 | Entry | test.rs:587:13:587:19 | [OuterPatternMatch] Some(...) | match |
 joinBlockPredecessor
-| cfg.rs:6:5:9:5 | After match value { ... } | cfg.rs:7:13:7:18 | After CfgPredPat [match] | 1 |
-| cfg.rs:6:5:9:5 | After match value { ... } | cfg.rs:7:13:7:18 | After CfgPredPat [no-match] | 0 |
+| cfg.rs:6:5:9:5 | After match value { ... } | cfg.rs:7:13:7:18 | After CfgPredPat [no-match] | 1 |
+| cfg.rs:6:5:9:5 | After match value { ... } | cfg.rs:7:13:7:18 | [OuterPatternMatch] CfgPredPat | 0 |
 | test.rs:19:9:23:9 | After if ... {...} else {...} | test.rs:19:12:19:21 | After ... == ... [false] | 0 |
 | test.rs:19:9:23:9 | After if ... {...} else {...} | test.rs:19:12:19:21 | After ... == ... [true] | 1 |
 | test.rs:26:5:42:5 | Normal Exit | test.rs:30:16:30:24 | After ... > ... [true] | 0 |
@@ -2242,9 +2242,9 @@ joinBlockPredecessor
 | test.rs:139:9:141:9 | After if b {...} | test.rs:139:12:139:12 | After b [false] | 0 |
 | test.rs:139:9:141:9 | After if b {...} | test.rs:139:12:139:12 | After b [true] | 1 |
 | test.rs:146:9:150:9 | After if ... {...} else {...} | test.rs:146:16:146:22 | After Some(...) [no-match] | 1 |
-| test.rs:146:9:150:9 | After if ... {...} else {...} | test.rs:146:21:146:21 | Before n | 0 |
+| test.rs:146:9:150:9 | After if ... {...} else {...} | test.rs:146:16:146:22 | [OuterPatternMatch] Some(...) | 0 |
 | test.rs:153:5:158:5 | Normal Exit | test.rs:154:16:154:22 | After Some(...) [no-match] | 1 |
-| test.rs:153:5:158:5 | Normal Exit | test.rs:154:21:154:21 | Before n | 0 |
+| test.rs:153:5:158:5 | Normal Exit | test.rs:154:16:154:22 | [OuterPatternMatch] Some(...) | 0 |
 | test.rs:161:9:165:9 | After if ... {...} else {...} | test.rs:161:13:161:48 | After if ... {...} else {...} [false] | 0 |
 | test.rs:161:9:165:9 | After if ... {...} else {...} | test.rs:161:13:161:48 | After if ... {...} else {...} [true] | 1 |
 | test.rs:161:13:161:48 | After if ... {...} else {...} [false] | test.rs:161:24:161:30 | After ... < ... [false] | 1 |
@@ -2313,13 +2313,13 @@ joinBlockPredecessor
 | test.rs:316:9:319:9 | After match ... { ... } | test.rs:317:13:317:16 | After true [no-match] | 0 |
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:328:32:328:37 | After ... < ... [true] | 0 |
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:329:13:329:27 | After ...::Some(...) [no-match] | 2 |
-| test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:329:26:329:26 | Before x | 1 |
+| test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:329:13:329:27 | [OuterPatternMatch] ...::Some(...) | 1 |
 | test.rs:329:13:329:33 | ... => x | test.rs:328:13:328:27 | After ...::Some(...) [no-match] | 1 |
 | test.rs:329:13:329:33 | ... => x | test.rs:328:32:328:37 | After ... < ... [false] | 0 |
 | test.rs:334:5:343:5 | Normal Exit | test.rs:335:9:342:9 | After match ... { ... } | 1 |
 | test.rs:334:5:343:5 | Normal Exit | test.rs:335:19:335:40 | After ... == ... [true] | 0 |
 | test.rs:335:9:342:9 | After match ... { ... } | test.rs:340:13:340:27 | After ...::Some(...) [no-match] | 1 |
-| test.rs:335:9:342:9 | After match ... { ... } | test.rs:340:26:340:26 | Before x | 0 |
+| test.rs:335:9:342:9 | After match ... { ... } | test.rs:340:13:340:27 | [OuterPatternMatch] ...::Some(...) | 0 |
 | test.rs:346:9:349:18 | After ... && ... | test.rs:346:10:349:9 | After match r { ... } [false] | 0 |
 | test.rs:346:9:349:18 | After ... && ... | test.rs:346:10:349:9 | After match r { ... } [true] | 1 |
 | test.rs:346:10:349:9 | After match r { ... } [false] | test.rs:347:13:347:19 | After Some(...) [no-match] | 2 |
@@ -2329,11 +2329,11 @@ joinBlockPredecessor
 | test.rs:346:10:349:9 | After match r { ... } [true] | test.rs:347:24:347:24 | After a [false] | 0 |
 | test.rs:346:10:349:9 | After match r { ... } [true] | test.rs:347:24:347:24 | After a [true] | 1 |
 | test.rs:352:5:357:5 | Exit | test.rs:354:13:354:21 | After Ok(...) [no-match] | 1 |
-| test.rs:352:5:357:5 | Exit | test.rs:354:16:354:20 | Before value | 0 |
+| test.rs:352:5:357:5 | Exit | test.rs:354:13:354:21 | [OuterPatternMatch] Ok(...) | 0 |
 | test.rs:362:5:365:5 | Exit | test.rs:363:13:363:19 | After Some(...) [no-match] | 1 |
-| test.rs:362:5:365:5 | Exit | test.rs:363:18:363:18 | Before n | 0 |
+| test.rs:362:5:365:5 | Exit | test.rs:363:13:363:19 | [OuterPatternMatch] Some(...) | 0 |
 | test.rs:367:5:373:5 | Normal Exit | test.rs:369:13:369:21 | After Some(...) [no-match] | 1 |
-| test.rs:367:5:373:5 | Normal Exit | test.rs:369:18:369:20 | Before ret | 0 |
+| test.rs:367:5:373:5 | Normal Exit | test.rs:369:13:369:21 | [OuterPatternMatch] Some(...) | 0 |
 | test.rs:394:9:397:9 | After match st { ... } | test.rs:395:13:395:29 | After MyStruct {...} [no-match] | 1 |
 | test.rs:394:9:397:9 | After match st { ... } | test.rs:395:27:395:27 | After 1 [match] | 0 |
 | test.rs:395:13:395:29 | After MyStruct {...} [no-match] | test.rs:393:5:398:5 | Entry | 1 |
@@ -2371,10 +2371,10 @@ joinBlockPredecessor
 | test.rs:455:13:455:23 | After 1 \| 2 [match] | test.rs:455:13:455:23 | After 1 [match] | 0 |
 | test.rs:455:13:455:23 | After 1 \| 2 [match] | test.rs:455:13:455:23 | After 2 [match] | 1 |
 | test.rs:461:9:464:9 | After match pair { ... } | test.rs:462:18:462:34 | After MyStruct {...} [no-match] | 1 |
-| test.rs:461:9:464:9 | After match pair { ... } | test.rs:462:32:462:32 | _ | 0 |
-| test.rs:476:9:480:9 | After match e { ... } | test.rs:477:32:477:32 | _ | 0 |
+| test.rs:461:9:464:9 | After match pair { ... } | test.rs:462:18:462:34 | [OuterPatternMatch] MyStruct {...} | 0 |
+| test.rs:476:9:480:9 | After match e { ... } | test.rs:477:13:477:34 | [OuterPatternMatch] StructVariant {...} | 0 |
 | test.rs:476:9:480:9 | After match e { ... } | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] | 2 |
-| test.rs:476:9:480:9 | After match e { ... } | test.rs:478:26:478:26 | _ | 1 |
+| test.rs:476:9:480:9 | After match e { ... } | test.rs:478:13:478:27 | [OuterPatternMatch] TupleVariant(...) | 1 |
 | test.rs:486:14:488:9 | { ... } | test.rs:485:5:490:5 | Entry | 1 |
 | test.rs:486:14:488:9 | { ... } | test.rs:486:14:488:9 | { ... } | 0 |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:512:16:512:16 | After b [false] | 0 |
@@ -2385,4 +2385,4 @@ joinBlockPredecessor
 | test.rs:569:18:580:5 | After 'block: { ... } | test.rs:575:12:575:30 | After condition_not_met(...) [false] | 1 |
 | test.rs:569:18:580:5 | After 'block: { ... } | test.rs:575:12:575:30 | After condition_not_met(...) [true] | 2 |
 | test.rs:585:18:591:5 | After 'block: { ... } | test.rs:587:13:587:19 | After Some(...) [no-match] | 1 |
-| test.rs:585:18:591:5 | After 'block: { ... } | test.rs:587:18:587:18 | Before y | 0 |
+| test.rs:585:18:591:5 | After 'block: { ... } | test.rs:587:13:587:19 | [OuterPatternMatch] Some(...) | 0 |
