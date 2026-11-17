@@ -1,3 +1,9 @@
+## 7.1.2
+
+### Minor Analysis Improvements
+
+* The sensitive data heuristics treat names built on `trusted_schema`, such as SQLite's `set_trusted_schema` setting, as non-sensitive. This removes false positive results from queries that use the sensitive data library (for example `rb/clear-text-logging-sensitive-data`).
+
 ## 7.1.1
 
 No user-facing changes.
