@@ -365,7 +365,9 @@ localStep
 | main.rs:301:9:301:10 | [SSA] i1 | main.rs:302:10:302:11 | i1 |
 | main.rs:301:9:301:10 | i1 | main.rs:301:9:301:10 | [SSA] i1 |
 | main.rs:301:9:301:10 | i1 | main.rs:301:9:301:10 | i1 |
+| main.rs:301:14:301:15 | s1 | main.rs:301:14:301:16 | TryExpr (early return) |
 | main.rs:301:14:301:16 | TryExpr | main.rs:301:9:301:10 | i1 |
+| main.rs:303:10:303:11 | s2 | main.rs:303:10:303:12 | TryExpr (early return) |
 | main.rs:304:5:304:11 | Some(...) | main.rs:298:41:305:1 | { ... } |
 | main.rs:308:9:308:10 | [SSA] r1 | main.rs:309:28:309:29 | r1 |
 | main.rs:308:9:308:10 | r1 | main.rs:308:9:308:10 | [SSA] r1 |
@@ -410,14 +412,17 @@ localStep
 | main.rs:325:9:325:10 | [SSA] i1 | main.rs:327:10:327:11 | i1 |
 | main.rs:325:9:325:10 | i1 | main.rs:325:9:325:10 | [SSA] i1 |
 | main.rs:325:9:325:10 | i1 | main.rs:325:9:325:10 | i1 |
+| main.rs:325:14:325:15 | s1 | main.rs:325:14:325:16 | TryExpr (early return) |
 | main.rs:325:14:325:16 | TryExpr | main.rs:325:9:325:10 | i1 |
 | main.rs:326:9:326:10 | [SSA] i2 | main.rs:328:10:328:11 | i2 |
 | main.rs:326:9:326:10 | i2 | main.rs:326:9:326:10 | [SSA] i2 |
 | main.rs:326:9:326:10 | i2 | main.rs:326:9:326:10 | i2 |
+| main.rs:326:14:326:15 | s2 | main.rs:326:14:326:16 | TryExpr (early return) |
 | main.rs:326:14:326:16 | TryExpr | main.rs:326:9:326:10 | i2 |
 | main.rs:329:9:329:10 | [SSA] i3 | main.rs:330:10:330:11 | i3 |
 | main.rs:329:9:329:10 | i3 | main.rs:329:9:329:10 | [SSA] i3 |
 | main.rs:329:9:329:10 | i3 | main.rs:329:9:329:10 | i3 |
+| main.rs:329:14:329:15 | s3 | main.rs:329:14:329:16 | TryExpr (early return) |
 | main.rs:329:14:329:16 | TryExpr | main.rs:329:9:329:10 | i3 |
 | main.rs:331:5:331:9 | Ok(...) | main.rs:321:46:332:1 | { ... } |
 | main.rs:335:9:335:10 | [SSA] s1 | main.rs:336:10:336:11 | s1 |

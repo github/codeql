@@ -468,8 +468,14 @@ mod try_operator {
         a?
     }
 
+    fn err_returned() -> Result<bool, i64> {
+        let err = Err(source(52))?;
+        Ok(true)
+    }
+
     fn test_try_operator() {
         sink(unwrapped_value_not_returned().unwrap());
         sink(unwrapped_value_returned().unwrap()); // $ hasValueFlow=51
+        sink(err_returned().unwrap_err()); // $ hasValueFlow=52
     }
 }
