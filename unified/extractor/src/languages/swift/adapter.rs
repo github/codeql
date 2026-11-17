@@ -66,6 +66,7 @@ fn is_metadata_key(key: &str) -> bool {
             | "$pos"
             | "$end"
             | "$lineStarts"
+            | "$hasError"
             | "tokenKind"
             | "text"
             | "leadingTrivia"
@@ -323,6 +324,10 @@ const SWIFT_NODE_TYPES: &str = include_str!("../../../swift_node_types.yml");
 /// authoritative swift-syntax schema ([`SWIFT_NODE_TYPES`]); the adapter only
 /// ever consumes swift-syntax input, so the schema is not a parameter.
 pub fn json_to_ast(json: &str) -> Result<AdaptedTree, String> {
+    // Schema registration uses Box::leak for names. Cache it to avoid reparsing
+    // the YAML and leaking another set of names for every file in corpus runs.
+    static SCHEMA: std::sync::OnceLock<Result<yeast::schema::Schema, String>> =
+        std::sync::OnceLock::new();
     let mut deserializer = serde_json::Deserializer::from_str(json);
     deserializer.disable_recursion_limit();
     let root = Value::deserialize(&mut deserializer).map_err(|e| format!("invalid JSON: {e}"))?;
@@ -331,7 +336,11 @@ pub fn json_to_ast(json: &str) -> Result<AdaptedTree, String> {
         .map_err(|e| format!("invalid JSON: {e}"))?;
     let locations = LocationTable::from_root(&root)?;
 
-    let mut ast = Ast::with_schema(yeast::node_types_yaml::schema_from_yaml(SWIFT_NODE_TYPES)?);
+    let schema = SCHEMA
+        .get_or_init(|| yeast::node_types_yaml::schema_from_yaml(SWIFT_NODE_TYPES))
+        .as_ref()
+        .map_err(Clone::clone)?;
+    let mut ast = Ast::with_schema(schema.clone());
     let mut extras = Vec::new();
     let root_id = build(&root, &locations, &mut ast, &mut extras)?;
     ast.set_root(root_id);

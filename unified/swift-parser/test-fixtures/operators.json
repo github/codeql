@@ -1,0 +1,461 @@
+{
+  "$end": 121,
+  "$lineStarts": [
+    0,
+    38,
+    39,
+    66,
+    93,
+    121
+  ],
+  "$pos": 0,
+  "endOfFileToken": {
+    "$end": 121,
+    "$pos": 121,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": [
+    {
+      "$end": 37,
+      "$pos": 0,
+      "item": {
+        "$end": 37,
+        "$pos": 0,
+        "fixitySpecifier": {
+          "$end": 5,
+          "$pos": 0,
+          "kind": "token",
+          "text": "infix",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.infix)"
+        },
+        "kind": "operatorDecl",
+        "name": {
+          "$end": 17,
+          "$pos": 15,
+          "kind": "token",
+          "text": "|>",
+          "tokenKind": "binaryOperator(\"|>\")"
+        },
+        "operatorKeyword": {
+          "$end": 14,
+          "$pos": 6,
+          "kind": "token",
+          "text": "operator",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.operator)"
+        },
+        "operatorPrecedenceAndTypes": {
+          "$end": 37,
+          "$pos": 17,
+          "colon": {
+            "$end": 18,
+            "$pos": 17,
+            "kind": "token",
+            "text": ":",
+            "tokenKind": "colon"
+          },
+          "designatedTypes": [],
+          "kind": "operatorPrecedenceAndTypes",
+          "precedenceGroup": {
+            "$end": 37,
+            "$pos": 19,
+            "kind": "token",
+            "text": "AdditionPrecedence",
+            "tokenKind": "identifier(\"AdditionPrecedence\")"
+          }
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 65,
+      "$pos": 39,
+      "item": {
+        "$end": 65,
+        "$pos": 39,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 42,
+          "$pos": 39,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 65,
+            "$pos": 43,
+            "initializer": {
+              "$end": 65,
+              "$pos": 54,
+              "equal": {
+                "$end": 55,
+                "$pos": 54,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 65,
+                "$pos": 56,
+                "kind": "infixOperatorExpr",
+                "leftOperand": {
+                  "$end": 57,
+                  "$pos": 56,
+                  "kind": "integerLiteralExpr",
+                  "literal": {
+                    "$end": 57,
+                    "$pos": 56,
+                    "kind": "token",
+                    "text": "1",
+                    "tokenKind": "integerLiteral(\"1\")"
+                  }
+                },
+                "operator": {
+                  "$end": 59,
+                  "$pos": 58,
+                  "kind": "binaryOperatorExpr",
+                  "operator": {
+                    "$end": 59,
+                    "$pos": 58,
+                    "kind": "token",
+                    "text": "+",
+                    "tokenKind": "binaryOperator(\"+\")"
+                  }
+                },
+                "rightOperand": {
+                  "$end": 65,
+                  "$pos": 60,
+                  "kind": "infixOperatorExpr",
+                  "leftOperand": {
+                    "$end": 61,
+                    "$pos": 60,
+                    "kind": "integerLiteralExpr",
+                    "literal": {
+                      "$end": 61,
+                      "$pos": 60,
+                      "kind": "token",
+                      "text": "2",
+                      "tokenKind": "integerLiteral(\"2\")"
+                    }
+                  },
+                  "operator": {
+                    "$end": 63,
+                    "$pos": 62,
+                    "kind": "binaryOperatorExpr",
+                    "operator": {
+                      "$end": 63,
+                      "$pos": 62,
+                      "kind": "token",
+                      "text": "*",
+                      "tokenKind": "binaryOperator(\"*\")"
+                    }
+                  },
+                  "rightOperand": {
+                    "$end": 65,
+                    "$pos": 64,
+                    "kind": "integerLiteralExpr",
+                    "literal": {
+                      "$end": 65,
+                      "$pos": 64,
+                      "kind": "token",
+                      "text": "3",
+                      "tokenKind": "integerLiteral(\"3\")"
+                    }
+                  }
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 53,
+              "$pos": 43,
+              "identifier": {
+                "$end": 53,
+                "$pos": 43,
+                "kind": "token",
+                "text": "arithmetic",
+                "tokenKind": "identifier(\"arithmetic\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 92,
+      "$pos": 66,
+      "item": {
+        "$end": 92,
+        "$pos": 66,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 69,
+          "$pos": 66,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 92,
+            "$pos": 70,
+            "initializer": {
+              "$end": 92,
+              "$pos": 79,
+              "equal": {
+                "$end": 80,
+                "$pos": 79,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 92,
+                "$pos": 81,
+                "kind": "infixOperatorExpr",
+                "leftOperand": {
+                  "$end": 87,
+                  "$pos": 81,
+                  "kind": "infixOperatorExpr",
+                  "leftOperand": {
+                    "$end": 82,
+                    "$pos": 81,
+                    "baseName": {
+                      "$end": 82,
+                      "$pos": 81,
+                      "kind": "token",
+                      "text": "a",
+                      "tokenKind": "identifier(\"a\")"
+                    },
+                    "kind": "declReferenceExpr"
+                  },
+                  "operator": {
+                    "$end": 85,
+                    "$pos": 83,
+                    "kind": "binaryOperatorExpr",
+                    "operator": {
+                      "$end": 85,
+                      "$pos": 83,
+                      "kind": "token",
+                      "text": "|>",
+                      "tokenKind": "binaryOperator(\"|>\")"
+                    }
+                  },
+                  "rightOperand": {
+                    "$end": 87,
+                    "$pos": 86,
+                    "baseName": {
+                      "$end": 87,
+                      "$pos": 86,
+                      "kind": "token",
+                      "text": "b",
+                      "tokenKind": "identifier(\"b\")"
+                    },
+                    "kind": "declReferenceExpr"
+                  }
+                },
+                "operator": {
+                  "$end": 90,
+                  "$pos": 88,
+                  "kind": "binaryOperatorExpr",
+                  "operator": {
+                    "$end": 90,
+                    "$pos": 88,
+                    "kind": "token",
+                    "text": "|>",
+                    "tokenKind": "binaryOperator(\"|>\")"
+                  }
+                },
+                "rightOperand": {
+                  "$end": 92,
+                  "$pos": 91,
+                  "baseName": {
+                    "$end": 92,
+                    "$pos": 91,
+                    "kind": "token",
+                    "text": "c",
+                    "tokenKind": "identifier(\"c\")"
+                  },
+                  "kind": "declReferenceExpr"
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 78,
+              "$pos": 70,
+              "identifier": {
+                "$end": 78,
+                "$pos": 70,
+                "kind": "token",
+                "text": "declared",
+                "tokenKind": "identifier(\"declared\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 120,
+      "$pos": 93,
+      "item": {
+        "$end": 120,
+        "$pos": 93,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 96,
+          "$pos": 93,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 120,
+            "$pos": 97,
+            "initializer": {
+              "$end": 120,
+              "$pos": 105,
+              "equal": {
+                "$end": 106,
+                "$pos": 105,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 120,
+                "$pos": 107,
+                "elements": [
+                  {
+                    "$end": 108,
+                    "$pos": 107,
+                    "baseName": {
+                      "$end": 108,
+                      "$pos": 107,
+                      "kind": "token",
+                      "text": "a",
+                      "tokenKind": "identifier(\"a\")"
+                    },
+                    "kind": "declReferenceExpr"
+                  },
+                  {
+                    "$end": 112,
+                    "$pos": 109,
+                    "kind": "binaryOperatorExpr",
+                    "operator": {
+                      "$end": 112,
+                      "$pos": 109,
+                      "kind": "token",
+                      "text": "<+>",
+                      "tokenKind": "binaryOperator(\"<+>\")"
+                    }
+                  },
+                  {
+                    "$end": 120,
+                    "$pos": 113,
+                    "elements": [
+                      {
+                        "$end": 119,
+                        "$pos": 114,
+                        "expression": {
+                          "$end": 119,
+                          "$pos": 114,
+                          "kind": "infixOperatorExpr",
+                          "leftOperand": {
+                            "$end": 115,
+                            "$pos": 114,
+                            "baseName": {
+                              "$end": 115,
+                              "$pos": 114,
+                              "kind": "token",
+                              "text": "b",
+                              "tokenKind": "identifier(\"b\")"
+                            },
+                            "kind": "declReferenceExpr"
+                          },
+                          "operator": {
+                            "$end": 117,
+                            "$pos": 116,
+                            "kind": "binaryOperatorExpr",
+                            "operator": {
+                              "$end": 117,
+                              "$pos": 116,
+                              "kind": "token",
+                              "text": "+",
+                              "tokenKind": "binaryOperator(\"+\")"
+                            }
+                          },
+                          "rightOperand": {
+                            "$end": 119,
+                            "$pos": 118,
+                            "baseName": {
+                              "$end": 119,
+                              "$pos": 118,
+                              "kind": "token",
+                              "text": "c",
+                              "tokenKind": "identifier(\"c\")"
+                            },
+                            "kind": "declReferenceExpr"
+                          }
+                        },
+                        "kind": "labeledExpr"
+                      }
+                    ],
+                    "kind": "tupleExpr",
+                    "leftParen": {
+                      "$end": 114,
+                      "$pos": 113,
+                      "kind": "token",
+                      "text": "(",
+                      "tokenKind": "leftParen"
+                    },
+                    "rightParen": {
+                      "$end": 120,
+                      "$pos": 119,
+                      "kind": "token",
+                      "text": ")",
+                      "tokenKind": "rightParen"
+                    }
+                  }
+                ],
+                "kind": "sequenceExpr"
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 104,
+              "$pos": 97,
+              "identifier": {
+                "$end": 104,
+                "$pos": 97,
+                "kind": "token",
+                "text": "unknown",
+                "tokenKind": "identifier(\"unknown\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    }
+  ]
+}

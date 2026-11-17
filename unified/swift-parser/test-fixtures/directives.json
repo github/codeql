@@ -1,0 +1,978 @@
+{
+  "$end": 270,
+  "$hasError": false,
+  "$lineStarts": [
+    0,
+    10,
+    29,
+    47,
+    66,
+    72,
+    93,
+    100,
+    101,
+    138,
+    154,
+    192,
+    206,
+    243,
+    262,
+    268,
+    270
+  ],
+  "$pos": 0,
+  "endOfFileToken": {
+    "$end": 270,
+    "$pos": 270,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": [
+    {
+      "$end": 99,
+      "$pos": 0,
+      "item": {
+        "$end": 99,
+        "$pos": 0,
+        "clauses": [
+          {
+            "$end": 28,
+            "$pos": 0,
+            "condition": {
+              "$end": 9,
+              "$pos": 4,
+              "baseName": {
+                "$end": 9,
+                "$pos": 4,
+                "kind": "token",
+                "text": "DEBUG",
+                "tokenKind": "identifier(\"DEBUG\")"
+              },
+              "kind": "declReferenceExpr"
+            },
+            "elements": [
+              {
+                "$end": 28,
+                "$pos": 10,
+                "item": {
+                  "$end": 28,
+                  "$pos": 10,
+                  "attributes": [],
+                  "bindingSpecifier": {
+                    "$end": 13,
+                    "$pos": 10,
+                    "kind": "token",
+                    "text": "let",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+                  },
+                  "bindings": [
+                    {
+                      "$end": 28,
+                      "$pos": 14,
+                      "initializer": {
+                        "$end": 28,
+                        "$pos": 19,
+                        "equal": {
+                          "$end": 20,
+                          "$pos": 19,
+                          "kind": "token",
+                          "text": "=",
+                          "tokenKind": "equal"
+                        },
+                        "kind": "initializerClause",
+                        "value": {
+                          "$end": 28,
+                          "$pos": 21,
+                          "closingQuote": {
+                            "$end": 28,
+                            "$pos": 27,
+                            "kind": "token",
+                            "text": "\"",
+                            "tokenKind": "stringQuote"
+                          },
+                          "kind": "stringLiteralExpr",
+                          "openingQuote": {
+                            "$end": 22,
+                            "$pos": 21,
+                            "kind": "token",
+                            "text": "\"",
+                            "tokenKind": "stringQuote"
+                          },
+                          "segments": [
+                            {
+                              "$end": 27,
+                              "$pos": 22,
+                              "content": {
+                                "$end": 27,
+                                "$pos": 22,
+                                "kind": "token",
+                                "text": "debug",
+                                "tokenKind": "stringSegment(\"debug\")"
+                              },
+                              "kind": "stringSegment"
+                            }
+                          ]
+                        }
+                      },
+                      "kind": "patternBinding",
+                      "pattern": {
+                        "$end": 18,
+                        "$pos": 14,
+                        "identifier": {
+                          "$end": 18,
+                          "$pos": 14,
+                          "kind": "token",
+                          "text": "mode",
+                          "tokenKind": "identifier(\"mode\")"
+                        },
+                        "kind": "identifierPattern"
+                      }
+                    }
+                  ],
+                  "kind": "variableDecl",
+                  "modifiers": []
+                },
+                "kind": "codeBlockItem"
+              }
+            ],
+            "kind": "ifConfigClause",
+            "poundKeyword": {
+              "$end": 3,
+              "$pos": 0,
+              "kind": "token",
+              "text": "#if",
+              "tokenKind": "poundIf"
+            }
+          },
+          {
+            "$end": 65,
+            "$pos": 29,
+            "condition": {
+              "$end": 46,
+              "$pos": 37,
+              "additionalTrailingClosures": [],
+              "arguments": [
+                {
+                  "$end": 45,
+                  "$pos": 40,
+                  "expression": {
+                    "$end": 45,
+                    "$pos": 40,
+                    "baseName": {
+                      "$end": 45,
+                      "$pos": 40,
+                      "kind": "token",
+                      "text": "Linux",
+                      "tokenKind": "identifier(\"Linux\")"
+                    },
+                    "kind": "declReferenceExpr"
+                  },
+                  "kind": "labeledExpr"
+                }
+              ],
+              "calledExpression": {
+                "$end": 39,
+                "$pos": 37,
+                "baseName": {
+                  "$end": 39,
+                  "$pos": 37,
+                  "kind": "token",
+                  "text": "os",
+                  "tokenKind": "identifier(\"os\")"
+                },
+                "kind": "declReferenceExpr"
+              },
+              "kind": "functionCallExpr",
+              "leftParen": {
+                "$end": 40,
+                "$pos": 39,
+                "kind": "token",
+                "text": "(",
+                "tokenKind": "leftParen"
+              },
+              "rightParen": {
+                "$end": 46,
+                "$pos": 45,
+                "kind": "token",
+                "text": ")",
+                "tokenKind": "rightParen"
+              }
+            },
+            "elements": [
+              {
+                "$end": 65,
+                "$pos": 47,
+                "item": {
+                  "$end": 65,
+                  "$pos": 47,
+                  "attributes": [],
+                  "bindingSpecifier": {
+                    "$end": 50,
+                    "$pos": 47,
+                    "kind": "token",
+                    "text": "let",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+                  },
+                  "bindings": [
+                    {
+                      "$end": 65,
+                      "$pos": 51,
+                      "initializer": {
+                        "$end": 65,
+                        "$pos": 56,
+                        "equal": {
+                          "$end": 57,
+                          "$pos": 56,
+                          "kind": "token",
+                          "text": "=",
+                          "tokenKind": "equal"
+                        },
+                        "kind": "initializerClause",
+                        "value": {
+                          "$end": 65,
+                          "$pos": 58,
+                          "closingQuote": {
+                            "$end": 65,
+                            "$pos": 64,
+                            "kind": "token",
+                            "text": "\"",
+                            "tokenKind": "stringQuote"
+                          },
+                          "kind": "stringLiteralExpr",
+                          "openingQuote": {
+                            "$end": 59,
+                            "$pos": 58,
+                            "kind": "token",
+                            "text": "\"",
+                            "tokenKind": "stringQuote"
+                          },
+                          "segments": [
+                            {
+                              "$end": 64,
+                              "$pos": 59,
+                              "content": {
+                                "$end": 64,
+                                "$pos": 59,
+                                "kind": "token",
+                                "text": "linux",
+                                "tokenKind": "stringSegment(\"linux\")"
+                              },
+                              "kind": "stringSegment"
+                            }
+                          ]
+                        }
+                      },
+                      "kind": "patternBinding",
+                      "pattern": {
+                        "$end": 55,
+                        "$pos": 51,
+                        "identifier": {
+                          "$end": 55,
+                          "$pos": 51,
+                          "kind": "token",
+                          "text": "mode",
+                          "tokenKind": "identifier(\"mode\")"
+                        },
+                        "kind": "identifierPattern"
+                      }
+                    }
+                  ],
+                  "kind": "variableDecl",
+                  "modifiers": []
+                },
+                "kind": "codeBlockItem"
+              }
+            ],
+            "kind": "ifConfigClause",
+            "poundKeyword": {
+              "$end": 36,
+              "$pos": 29,
+              "kind": "token",
+              "text": "#elseif",
+              "tokenKind": "poundElseif"
+            }
+          },
+          {
+            "$end": 92,
+            "$pos": 66,
+            "elements": [
+              {
+                "$end": 92,
+                "$pos": 72,
+                "item": {
+                  "$end": 92,
+                  "$pos": 72,
+                  "attributes": [],
+                  "bindingSpecifier": {
+                    "$end": 75,
+                    "$pos": 72,
+                    "kind": "token",
+                    "text": "let",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+                  },
+                  "bindings": [
+                    {
+                      "$end": 92,
+                      "$pos": 76,
+                      "initializer": {
+                        "$end": 92,
+                        "$pos": 81,
+                        "equal": {
+                          "$end": 82,
+                          "$pos": 81,
+                          "kind": "token",
+                          "text": "=",
+                          "tokenKind": "equal"
+                        },
+                        "kind": "initializerClause",
+                        "value": {
+                          "$end": 92,
+                          "$pos": 83,
+                          "closingQuote": {
+                            "$end": 92,
+                            "$pos": 91,
+                            "kind": "token",
+                            "text": "\"",
+                            "tokenKind": "stringQuote"
+                          },
+                          "kind": "stringLiteralExpr",
+                          "openingQuote": {
+                            "$end": 84,
+                            "$pos": 83,
+                            "kind": "token",
+                            "text": "\"",
+                            "tokenKind": "stringQuote"
+                          },
+                          "segments": [
+                            {
+                              "$end": 91,
+                              "$pos": 84,
+                              "content": {
+                                "$end": 91,
+                                "$pos": 84,
+                                "kind": "token",
+                                "text": "release",
+                                "tokenKind": "stringSegment(\"release\")"
+                              },
+                              "kind": "stringSegment"
+                            }
+                          ]
+                        }
+                      },
+                      "kind": "patternBinding",
+                      "pattern": {
+                        "$end": 80,
+                        "$pos": 76,
+                        "identifier": {
+                          "$end": 80,
+                          "$pos": 76,
+                          "kind": "token",
+                          "text": "mode",
+                          "tokenKind": "identifier(\"mode\")"
+                        },
+                        "kind": "identifierPattern"
+                      }
+                    }
+                  ],
+                  "kind": "variableDecl",
+                  "modifiers": []
+                },
+                "kind": "codeBlockItem"
+              }
+            ],
+            "kind": "ifConfigClause",
+            "poundKeyword": {
+              "$end": 71,
+              "$pos": 66,
+              "kind": "token",
+              "text": "#else",
+              "tokenKind": "poundElse"
+            }
+          }
+        ],
+        "kind": "ifConfigDecl",
+        "poundEndif": {
+          "$end": 99,
+          "$pos": 93,
+          "kind": "token",
+          "text": "#endif",
+          "tokenKind": "poundEndif"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 269,
+      "$pos": 101,
+      "item": {
+        "$end": 269,
+        "$pos": 101,
+        "attributes": [
+          {
+            "$end": 137,
+            "$pos": 101,
+            "arguments": [
+              {
+                "$end": 121,
+                "$pos": 112,
+                "argument": {
+                  "$end": 120,
+                  "$pos": 112,
+                  "kind": "platformVersion",
+                  "platform": {
+                    "$end": 115,
+                    "$pos": 112,
+                    "kind": "token",
+                    "text": "iOS",
+                    "tokenKind": "identifier(\"iOS\")"
+                  },
+                  "version": {
+                    "$end": 120,
+                    "$pos": 116,
+                    "components": [
+                      {
+                        "$end": 120,
+                        "$pos": 118,
+                        "kind": "versionComponent",
+                        "number": {
+                          "$end": 120,
+                          "$pos": 119,
+                          "kind": "token",
+                          "text": "0",
+                          "tokenKind": "integerLiteral(\"0\")"
+                        },
+                        "period": {
+                          "$end": 119,
+                          "$pos": 118,
+                          "kind": "token",
+                          "text": ".",
+                          "tokenKind": "period"
+                        }
+                      }
+                    ],
+                    "kind": "versionTuple",
+                    "major": {
+                      "$end": 118,
+                      "$pos": 116,
+                      "kind": "token",
+                      "text": "11",
+                      "tokenKind": "integerLiteral(\"11\")"
+                    }
+                  }
+                },
+                "kind": "availabilityArgument",
+                "trailingComma": {
+                  "$end": 121,
+                  "$pos": 120,
+                  "kind": "token",
+                  "text": ",",
+                  "tokenKind": "comma"
+                }
+              },
+              {
+                "$end": 134,
+                "$pos": 122,
+                "argument": {
+                  "$end": 133,
+                  "$pos": 122,
+                  "kind": "platformVersion",
+                  "platform": {
+                    "$end": 127,
+                    "$pos": 122,
+                    "kind": "token",
+                    "text": "macOS",
+                    "tokenKind": "identifier(\"macOS\")"
+                  },
+                  "version": {
+                    "$end": 133,
+                    "$pos": 128,
+                    "components": [
+                      {
+                        "$end": 133,
+                        "$pos": 130,
+                        "kind": "versionComponent",
+                        "number": {
+                          "$end": 133,
+                          "$pos": 131,
+                          "kind": "token",
+                          "text": "13",
+                          "tokenKind": "integerLiteral(\"13\")"
+                        },
+                        "period": {
+                          "$end": 131,
+                          "$pos": 130,
+                          "kind": "token",
+                          "text": ".",
+                          "tokenKind": "period"
+                        }
+                      }
+                    ],
+                    "kind": "versionTuple",
+                    "major": {
+                      "$end": 130,
+                      "$pos": 128,
+                      "kind": "token",
+                      "text": "10",
+                      "tokenKind": "integerLiteral(\"10\")"
+                    }
+                  }
+                },
+                "kind": "availabilityArgument",
+                "trailingComma": {
+                  "$end": 134,
+                  "$pos": 133,
+                  "kind": "token",
+                  "text": ",",
+                  "tokenKind": "comma"
+                }
+              },
+              {
+                "$end": 136,
+                "$pos": 135,
+                "argument": {
+                  "$end": 136,
+                  "$pos": 135,
+                  "kind": "token",
+                  "text": "*",
+                  "tokenKind": "binaryOperator(\"*\")"
+                },
+                "kind": "availabilityArgument"
+              }
+            ],
+            "atSign": {
+              "$end": 102,
+              "$pos": 101,
+              "kind": "token",
+              "text": "@",
+              "tokenKind": "atSign"
+            },
+            "attributeName": {
+              "$end": 111,
+              "$pos": 102,
+              "kind": "identifierType",
+              "name": {
+                "$end": 111,
+                "$pos": 102,
+                "kind": "token",
+                "text": "available",
+                "tokenKind": "identifier(\"available\")"
+              }
+            },
+            "kind": "attribute",
+            "leftParen": {
+              "$end": 112,
+              "$pos": 111,
+              "kind": "token",
+              "text": "(",
+              "tokenKind": "leftParen"
+            },
+            "rightParen": {
+              "$end": 137,
+              "$pos": 136,
+              "kind": "token",
+              "text": ")",
+              "tokenKind": "rightParen"
+            }
+          }
+        ],
+        "body": {
+          "$end": 269,
+          "$pos": 152,
+          "kind": "codeBlock",
+          "leftBrace": {
+            "$end": 153,
+            "$pos": 152,
+            "kind": "token",
+            "text": "{",
+            "tokenKind": "leftBrace"
+          },
+          "rightBrace": {
+            "$end": 269,
+            "$pos": 268,
+            "kind": "token",
+            "text": "}",
+            "tokenKind": "rightBrace"
+          },
+          "statements": [
+            {
+              "$end": 267,
+              "$pos": 158,
+              "item": {
+                "$end": 267,
+                "$pos": 158,
+                "expression": {
+                  "$end": 267,
+                  "$pos": 158,
+                  "body": {
+                    "$end": 211,
+                    "$pos": 190,
+                    "kind": "codeBlock",
+                    "leftBrace": {
+                      "$end": 191,
+                      "$pos": 190,
+                      "kind": "token",
+                      "text": "{",
+                      "tokenKind": "leftBrace"
+                    },
+                    "rightBrace": {
+                      "$end": 211,
+                      "$pos": 210,
+                      "kind": "token",
+                      "text": "}",
+                      "tokenKind": "rightBrace"
+                    },
+                    "statements": [
+                      {
+                        "$end": 205,
+                        "$pos": 200,
+                        "item": {
+                          "$end": 205,
+                          "$pos": 200,
+                          "additionalTrailingClosures": [],
+                          "arguments": [],
+                          "calledExpression": {
+                            "$end": 203,
+                            "$pos": 200,
+                            "baseName": {
+                              "$end": 203,
+                              "$pos": 200,
+                              "kind": "token",
+                              "text": "run",
+                              "tokenKind": "identifier(\"run\")"
+                            },
+                            "kind": "declReferenceExpr"
+                          },
+                          "kind": "functionCallExpr",
+                          "leftParen": {
+                            "$end": 204,
+                            "$pos": 203,
+                            "kind": "token",
+                            "text": "(",
+                            "tokenKind": "leftParen"
+                          },
+                          "rightParen": {
+                            "$end": 205,
+                            "$pos": 204,
+                            "kind": "token",
+                            "text": ")",
+                            "tokenKind": "rightParen"
+                          }
+                        },
+                        "kind": "codeBlockItem"
+                      }
+                    ]
+                  },
+                  "conditions": [
+                    {
+                      "$end": 183,
+                      "$pos": 161,
+                      "condition": {
+                        "$end": 182,
+                        "$pos": 161,
+                        "availabilityArguments": [
+                          {
+                            "$end": 179,
+                            "$pos": 172,
+                            "argument": {
+                              "$end": 178,
+                              "$pos": 172,
+                              "kind": "platformVersion",
+                              "platform": {
+                                "$end": 175,
+                                "$pos": 172,
+                                "kind": "token",
+                                "text": "iOS",
+                                "tokenKind": "identifier(\"iOS\")"
+                              },
+                              "version": {
+                                "$end": 178,
+                                "$pos": 176,
+                                "components": [],
+                                "kind": "versionTuple",
+                                "major": {
+                                  "$end": 178,
+                                  "$pos": 176,
+                                  "kind": "token",
+                                  "text": "14",
+                                  "tokenKind": "integerLiteral(\"14\")"
+                                }
+                              }
+                            },
+                            "kind": "availabilityArgument",
+                            "trailingComma": {
+                              "$end": 179,
+                              "$pos": 178,
+                              "kind": "token",
+                              "text": ",",
+                              "tokenKind": "comma"
+                            }
+                          },
+                          {
+                            "$end": 181,
+                            "$pos": 180,
+                            "argument": {
+                              "$end": 181,
+                              "$pos": 180,
+                              "kind": "token",
+                              "text": "*",
+                              "tokenKind": "binaryOperator(\"*\")"
+                            },
+                            "kind": "availabilityArgument"
+                          }
+                        ],
+                        "availabilityKeyword": {
+                          "$end": 171,
+                          "$pos": 161,
+                          "kind": "token",
+                          "text": "#available",
+                          "tokenKind": "poundAvailable"
+                        },
+                        "kind": "availabilityCondition",
+                        "leftParen": {
+                          "$end": 172,
+                          "$pos": 171,
+                          "kind": "token",
+                          "text": "(",
+                          "tokenKind": "leftParen"
+                        },
+                        "rightParen": {
+                          "$end": 182,
+                          "$pos": 181,
+                          "kind": "token",
+                          "text": ")",
+                          "tokenKind": "rightParen"
+                        }
+                      },
+                      "kind": "conditionElement",
+                      "trailingComma": {
+                        "$end": 183,
+                        "$pos": 182,
+                        "kind": "token",
+                        "text": ",",
+                        "tokenKind": "comma"
+                      }
+                    },
+                    {
+                      "$end": 189,
+                      "$pos": 184,
+                      "condition": {
+                        "$end": 189,
+                        "$pos": 184,
+                        "baseName": {
+                          "$end": 189,
+                          "$pos": 184,
+                          "kind": "token",
+                          "text": "ready",
+                          "tokenKind": "identifier(\"ready\")"
+                        },
+                        "kind": "declReferenceExpr"
+                      },
+                      "kind": "conditionElement"
+                    }
+                  ],
+                  "elseBody": {
+                    "$end": 267,
+                    "$pos": 217,
+                    "body": {
+                      "$end": 267,
+                      "$pos": 241,
+                      "kind": "codeBlock",
+                      "leftBrace": {
+                        "$end": 242,
+                        "$pos": 241,
+                        "kind": "token",
+                        "text": "{",
+                        "tokenKind": "leftBrace"
+                      },
+                      "rightBrace": {
+                        "$end": 267,
+                        "$pos": 266,
+                        "kind": "token",
+                        "text": "}",
+                        "tokenKind": "rightBrace"
+                      },
+                      "statements": [
+                        {
+                          "$end": 261,
+                          "$pos": 251,
+                          "item": {
+                            "$end": 261,
+                            "$pos": 251,
+                            "additionalTrailingClosures": [],
+                            "arguments": [],
+                            "calledExpression": {
+                              "$end": 259,
+                              "$pos": 251,
+                              "baseName": {
+                                "$end": 259,
+                                "$pos": 251,
+                                "kind": "token",
+                                "text": "fallback",
+                                "tokenKind": "identifier(\"fallback\")"
+                              },
+                              "kind": "declReferenceExpr"
+                            },
+                            "kind": "functionCallExpr",
+                            "leftParen": {
+                              "$end": 260,
+                              "$pos": 259,
+                              "kind": "token",
+                              "text": "(",
+                              "tokenKind": "leftParen"
+                            },
+                            "rightParen": {
+                              "$end": 261,
+                              "$pos": 260,
+                              "kind": "token",
+                              "text": ")",
+                              "tokenKind": "rightParen"
+                            }
+                          },
+                          "kind": "codeBlockItem"
+                        }
+                      ]
+                    },
+                    "conditions": [
+                      {
+                        "$end": 240,
+                        "$pos": 220,
+                        "condition": {
+                          "$end": 240,
+                          "$pos": 220,
+                          "availabilityArguments": [
+                            {
+                              "$end": 239,
+                              "$pos": 233,
+                              "argument": {
+                                "$end": 239,
+                                "$pos": 233,
+                                "kind": "platformVersion",
+                                "platform": {
+                                  "$end": 236,
+                                  "$pos": 233,
+                                  "kind": "token",
+                                  "text": "iOS",
+                                  "tokenKind": "identifier(\"iOS\")"
+                                },
+                                "version": {
+                                  "$end": 239,
+                                  "$pos": 237,
+                                  "components": [],
+                                  "kind": "versionTuple",
+                                  "major": {
+                                    "$end": 239,
+                                    "$pos": 237,
+                                    "kind": "token",
+                                    "text": "12",
+                                    "tokenKind": "integerLiteral(\"12\")"
+                                  }
+                                }
+                              },
+                              "kind": "availabilityArgument"
+                            }
+                          ],
+                          "availabilityKeyword": {
+                            "$end": 232,
+                            "$pos": 220,
+                            "kind": "token",
+                            "text": "#unavailable",
+                            "tokenKind": "poundUnavailable"
+                          },
+                          "kind": "availabilityCondition",
+                          "leftParen": {
+                            "$end": 233,
+                            "$pos": 232,
+                            "kind": "token",
+                            "text": "(",
+                            "tokenKind": "leftParen"
+                          },
+                          "rightParen": {
+                            "$end": 240,
+                            "$pos": 239,
+                            "kind": "token",
+                            "text": ")",
+                            "tokenKind": "rightParen"
+                          }
+                        },
+                        "kind": "conditionElement"
+                      }
+                    ],
+                    "ifKeyword": {
+                      "$end": 219,
+                      "$pos": 217,
+                      "kind": "token",
+                      "text": "if",
+                      "tokenKind": "keyword(SwiftSyntax.Keyword.if)"
+                    },
+                    "kind": "ifExpr"
+                  },
+                  "elseKeyword": {
+                    "$end": 216,
+                    "$pos": 212,
+                    "kind": "token",
+                    "text": "else",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.else)"
+                  },
+                  "ifKeyword": {
+                    "$end": 160,
+                    "$pos": 158,
+                    "kind": "token",
+                    "text": "if",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.if)"
+                  },
+                  "kind": "ifExpr"
+                },
+                "kind": "expressionStmt"
+              },
+              "kind": "codeBlockItem"
+            }
+          ]
+        },
+        "funcKeyword": {
+          "$end": 142,
+          "$pos": 138,
+          "kind": "token",
+          "text": "func",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.func)"
+        },
+        "kind": "functionDecl",
+        "modifiers": [],
+        "name": {
+          "$end": 149,
+          "$pos": 143,
+          "kind": "token",
+          "text": "update",
+          "tokenKind": "identifier(\"update\")"
+        },
+        "signature": {
+          "$end": 151,
+          "$pos": 149,
+          "kind": "functionSignature",
+          "parameterClause": {
+            "$end": 151,
+            "$pos": 149,
+            "kind": "functionParameterClause",
+            "leftParen": {
+              "$end": 150,
+              "$pos": 149,
+              "kind": "token",
+              "text": "(",
+              "tokenKind": "leftParen"
+            },
+            "parameters": [],
+            "rightParen": {
+              "$end": 151,
+              "$pos": 150,
+              "kind": "token",
+              "text": ")",
+              "tokenKind": "rightParen"
+            }
+          }
+        }
+      },
+      "kind": "codeBlockItem"
+    }
+  ]
+}

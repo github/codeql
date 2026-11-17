@@ -1,0 +1,60 @@
+[package]
+name = "swift-parser"
+description = "Swift source parser for the CodeQL Unified extractor"
+version = "0.1.0"
+authors = ["GitHub"]
+edition = "2024"
+
+[lib]
+test = false
+doctest = false
+
+[[bin]]
+name = "swift-parser-test"
+path = "test-runner/main.rs"
+required-features = ["test-runner"]
+test = false
+
+[[bin]]
+name = "swift-parser-bench"
+path = "bench/main.rs"
+required-features = ["bench"]
+test = false
+
+[[test]]
+name = "fixtures"
+path = "test-runner/fixtures.rs"
+harness = false
+
+[lints]
+workspace = true
+
+[features]
+bench = ["dep:clap"]
+test-runner = [
+    "rust-parser",
+    "dep:clap",
+    "dep:codeql-extractor",
+    "dep:serde",
+    "dep:serde_json",
+    "dep:toml",
+    "dep:tracing",
+    "dep:yeast",
+]
+# Select the native frontend in the extractor modules reused by the runner.
+rust-parser = []
+
+# When updating these dependencies, run `rust/update_cargo_deps.sh`
+[dependencies]
+clap = { version = "4.6", features = ["derive"], optional = true }
+serde = { version = "1.0.229", features = ["derive"], optional = true }
+serde_json = { version = "1.0.154", features = ["unbounded_depth"], optional = true }
+toml = { version = "1.1", optional = true }
+tracing = { version = "0.1", optional = true }
+
+codeql-extractor = { path = "../../shared/tree-sitter-extractor", optional = true }
+yeast = { path = "../../shared/yeast", optional = true }
+
+[dev-dependencies]
+# Enable the runner for fixture tests without adding default library dependencies.
+swift-parser = { path = ".", features = ["test-runner"] }

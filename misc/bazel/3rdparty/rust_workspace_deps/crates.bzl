@@ -329,6 +329,7 @@ _CRATE_EDITIONS = {
     "shared/yeast-schema": "2021",
     "unified/extractor": "2024",
     "unified/extractor-unsupported-os": "2024",
+    "unified/swift-parser": "2024",
     "unified/swift-syntax-rs": "2024",
 }
 
@@ -506,6 +507,15 @@ _NORMAL_DEPENDENCIES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+        _COMMON_CONDITION: {
+            "clap": Label("@vendor_rs//clap-4.6.7"),
+            "serde": Label("@vendor_rs//serde-1.0.229"),
+            "serde_json": Label("@vendor_rs//serde_json-1.0.154"),
+            "toml": Label("@vendor_rs//toml-1.1.8+spec-1.1.0"),
+            "tracing": Label("@vendor_rs//tracing-0.1.44"),
+        },
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -568,6 +578,10 @@ _NORMAL_ALIASES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+        _COMMON_CONDITION: {
+        },
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -608,6 +622,8 @@ _NORMAL_DEV_DEPENDENCIES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -645,6 +661,8 @@ _NORMAL_DEV_ALIASES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -679,6 +697,8 @@ _PROC_MACRO_DEPENDENCIES = {
     "unified/extractor": {
     },
     "unified/extractor-unsupported-os": {
+    },
+    "unified/swift-parser": {
     },
     "unified/swift-syntax-rs": {
     },
@@ -715,6 +735,8 @@ _PROC_MACRO_ALIASES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -749,6 +771,8 @@ _PROC_MACRO_DEV_DEPENDENCIES = {
     "unified/extractor": {
     },
     "unified/extractor-unsupported-os": {
+    },
+    "unified/swift-parser": {
     },
     "unified/swift-syntax-rs": {
     },
@@ -786,6 +810,8 @@ _PROC_MACRO_DEV_ALIASES = {
     "unified/extractor": {
     },
     "unified/extractor-unsupported-os": {
+    },
+    "unified/swift-parser": {
     },
     "unified/swift-syntax-rs": {
     },
@@ -825,6 +851,8 @@ _BUILD_DEPENDENCIES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -862,6 +890,8 @@ _BUILD_ALIASES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -897,6 +927,8 @@ _BUILD_PROC_MACRO_DEPENDENCIES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -931,6 +963,8 @@ _BUILD_PROC_MACRO_ALIASES = {
     "unified/extractor": {
     },
     "unified/extractor-unsupported-os": {
+    },
+    "unified/swift-parser": {
     },
     "unified/swift-syntax-rs": {
     },

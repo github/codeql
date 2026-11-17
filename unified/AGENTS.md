@@ -21,6 +21,26 @@ by Apple's swift-syntax rather than by tree-sitter.
   changing the pinned swift-syntax version, then review the diff alongside the
   mapping in `extractor/src/languages/swift/swift.rs`.
 
+## Rust Parser
+- The experimental `swift-parser` crate exposes a generic `SyntaxSink` API.
+  `extractor/src/languages/swift/rust_parser.rs` implements it by building a
+  `yeast::Ast` directly, without JSON or an intermediate syntax tree.
+- The default feature, `rust-parser`, selects the native Rust parser without
+  building the Swift dependency. Run `cargo build -p codeql-extractor-unified`
+  from the repository root. To select the SwiftSyntax fallback, use
+  `--no-default-features --features swift-syntax`. If both features are enabled,
+  `rust-parser` takes precedence.
+- Under Bazel, extractor, test, and pack targets use Rust by default;
+  `--define=unified_rust_parser=true` explicitly keeps that selection without
+  building the Swift FFI dependency. Use `--define=unified_rust_parser=false`
+  to select the SwiftSyntax fallback.
+- The Rust grammar is under development; common syntax is implemented directly
+  in `swift-parser/src/parser`. Test fixtures and corpus projects compare its
+  syntax tree and desugared AST to swift-syntax (see `swift-parser/README.md`).
+  The sink integration can also be tested with
+  `cargo test -p codeql-extractor-unified --no-default-features
+  --features rust-parser --bin codeql-extractor-unified`.
+
 ## AST Mapping
 - The target AST shape is described by `extractor/ast_types.yml`.
 

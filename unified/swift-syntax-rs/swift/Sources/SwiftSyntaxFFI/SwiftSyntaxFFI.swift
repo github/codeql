@@ -277,6 +277,8 @@ private func appendJSON(_ value: Any, to output: inout [UInt8]) throws {
     switch value {
     case let string as String:
         appendJSONString(string, to: &output)
+    case let boolean as Bool:
+        output.append(contentsOf: (boolean ? "true" : "false").utf8)
     case let integer as Int:
         output.append(contentsOf: String(integer).utf8)
     case let array as [Any]:
@@ -334,6 +336,7 @@ public func ssr_parse_json(
         return nil
     }
     json["$lineStarts"] = lineStarts(converter)
+    json["$hasError"] = tree.hasError
 
     var bytes: [UInt8] = []
     do {

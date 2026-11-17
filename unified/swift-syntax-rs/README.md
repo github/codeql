@@ -13,7 +13,9 @@ The emitted JSON tree preserves the AST's named structure. Every node has a
 `kind` and a half-open UTF-8 byte range encoded as 0-based `$pos`/`$end`
 offsets. The root also has a `$lineStarts` array containing the UTF-8 byte
 offset of every physical source line, so line/column positions can be
-reconstructed without repeating them on every node. Beyond that:
+reconstructed without repeating them on every node. The root's `$hasError`
+boolean records whether swift-syntax found syntax errors before operator folding,
+including recovery through missing tokens omitted from the JSON. Beyond that:
 
 - **Tokens** carry `text`, `tokenKind`, and — only when non-empty —
   `leadingTrivia`/`trailingTrivia` arrays of `{ kind, text, $pos, $end }`
@@ -40,6 +42,7 @@ abbreviated here as `…`):
 {
   "$pos": 0,
   "$end": …,
+  "$hasError": false,
   "$lineStarts": [0],
   "kind": "sourceFile",
   "statements": [                       // collection node elided to an array
@@ -242,7 +245,32 @@ echo 'let x = 1' | cargo run --bin swift-syntax-parse
 
 ## Converting to a yeast AST
 
-The JSON tree is consumed by the CodeQL extractor, which converts it into a
+The unified CodeQL extractor uses the native Rust Swift parser by default,
+without requiring a Swift toolchain. This crate remains available as an explicit
+fallback and for comparisons:
+
+```sh
+# From the repository root:
+cargo build -p codeql-extractor-unified --no-default-features --features swift-syntax
+cargo test -p codeql-extractor-unified --no-default-features --features swift-syntax
+unified/scripts/create-extractor-pack.sh --no-default-features --features swift-syntax
+
+bazel build //unified/extractor --define=unified_rust_parser=false
+bazel test //unified/extractor:all_tests --define=unified_rust_parser=false
+```
+
+Cargo's default `rust-parser` feature takes precedence when both backends are
+enabled, so `--no-default-features` is required to select only `swift-syntax`.
+Bazel selects Rust when the define is omitted or explicitly set to `true`;
+`false` selects swift-syntax for extractor, test, and pack targets.
+
+The extractor's mapping corpus runs with either backend. Its raw-tree snapshots
+are specific to swift-syntax and are checked only with that backend; both
+backends check the mapped AST. `unified/scripts/update-corpus.sh` explicitly
+uses swift-syntax to regenerate those shared snapshots and requires Swift.
+
+With the swift-syntax backend selected, the JSON tree is consumed by the CodeQL
+extractor, which converts it into a
 [`yeast::Ast`](../../shared/yeast) — the in-memory format its rewrite rules
 operate on. That adapter is a pure-Rust module living in the extractor
 (`unified/extractor/src/languages/swift/adapter.rs`). The extractor links

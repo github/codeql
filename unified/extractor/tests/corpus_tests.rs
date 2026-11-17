@@ -117,6 +117,10 @@ fn corpus_dir() -> std::path::PathBuf {
 #[allow(clippy::too_many_lines)]
 fn test_corpus() {
     let update_mode = update_mode_enabled();
+    assert!(
+        !update_mode || !cfg!(feature = "rust-parser"),
+        "Corpus snapshots include swift-syntax's raw tree; regenerate with scripts/update-corpus.sh"
+    );
     let all_languages = languages::all_language_specs();
     let corpus_dir = corpus_dir();
 
@@ -192,24 +196,28 @@ fn test_corpus() {
                 // Ensure the AST passes below operate on the source of truth.
                 let case_input = swift_input;
 
-                match dump_raw_parse(&lang, &case_input) {
-                    Err(e) => {
-                        failures.push(format!(
-                            "Raw parse failed in {}: {}",
-                            output_path.display(),
-                            e
-                        ));
-                    }
-                    Ok(actual_raw) => {
-                        if update_mode {
-                            case.raw = actual_raw.trim().to_string();
-                        } else if output_path.exists() && case.raw.trim() != actual_raw.trim() {
+                // Raw snapshots include swift-syntax-specific details such as
+                // empty collections. Both backends must match the mapped AST.
+                if !cfg!(feature = "rust-parser") {
+                    match dump_raw_parse(&lang, &case_input) {
+                        Err(e) => {
                             failures.push(format!(
-                                "Raw parse mismatch in {}:\nEXPECTED:\n\n{}\n\nACTUAL:\n\n{}",
+                                "Raw parse failed in {}: {}",
                                 output_path.display(),
-                                case.raw.trim(),
-                                actual_raw.trim()
+                                e
                             ));
+                        }
+                        Ok(actual_raw) => {
+                            if update_mode {
+                                case.raw = actual_raw.trim().to_string();
+                            } else if output_path.exists() && case.raw.trim() != actual_raw.trim() {
+                                failures.push(format!(
+                                    "Raw parse mismatch in {}:\nEXPECTED:\n\n{}\n\nACTUAL:\n\n{}",
+                                    output_path.display(),
+                                    case.raw.trim(),
+                                    actual_raw.trim()
+                                ));
+                            }
                         }
                     }
                 }
