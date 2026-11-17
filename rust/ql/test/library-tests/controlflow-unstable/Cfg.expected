@@ -30,7 +30,8 @@ edges
 | test.rs:6:21:6:27 | After Some(...) [match] | test.rs:6:17:6:31 | After let ... = b [true] | true |
 | test.rs:6:21:6:27 | After Some(...) [no-match] | test.rs:6:17:6:31 | After let ... = b [false] | false |
 | test.rs:6:21:6:27 | Some(...) | test.rs:6:21:6:27 | After Some(...) [no-match] | no-match |
-| test.rs:6:21:6:27 | Some(...) | test.rs:6:26:6:26 | Before d |  |
+| test.rs:6:21:6:27 | Some(...) | test.rs:6:21:6:27 | [OuterPatternMatch] Some(...) | match |
+| test.rs:6:21:6:27 | [OuterPatternMatch] Some(...) | test.rs:6:26:6:26 | Before d |  |
 | test.rs:6:26:6:26 | After d [match] | test.rs:6:21:6:27 | After Some(...) [match] | match |
 | test.rs:6:26:6:26 | Before d | test.rs:6:26:6:26 | d |  |
 | test.rs:6:26:6:26 | d | test.rs:6:26:6:26 | After d [match] | match |

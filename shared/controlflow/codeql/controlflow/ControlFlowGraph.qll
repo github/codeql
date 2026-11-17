@@ -2788,6 +2788,22 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             not exists(Callable c |
               successor.getAstNode() = getBodyEntry(c, _) and
               strictcount(getBodyEntry(c, _)) > 1
+            ) and
+            // allow for abrupt successors that reach a conditional context. Example:
+            //
+            // ```
+            // if (loop {
+            //     break a > 10; // reaches both `After loop [false]` and `After loop [true]`
+            // })
+            // ```
+            not forall(ControlFlowNode successor0, SuccessorType t0 |
+              successor0 = node.getASuccessor(t0)
+            |
+              t0 instanceof AbruptSuccessor and
+              exists(AstNode n |
+                successor0.isAfterValue(n, _) and
+                successor.isAfterValue(n, _)
+              )
             )
           }
 
