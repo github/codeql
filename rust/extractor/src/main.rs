@@ -37,6 +37,60 @@ mod translate;
 pub mod trap;
 mod util;
 
+fn is_non_rust_include_target(file: &Path) -> bool {
+    file.extension()
+        .is_none_or(|ext| !ext.eq_ignore_ascii_case("rs"))
+}
+
+fn is_excluded_source_directory(source_files: &HashSet<PathBuf>, file: &Path) -> bool {
+    let mut directory = file.parent();
+    while let Some(path) = directory {
+        let mut has_selected_source = false;
+        let mut has_unselected_source = false;
+        match fs::read_dir(path) {
+            Ok(entries) => {
+                for entry in entries.flatten() {
+                    let source = entry.path();
+                    if source.extension().is_some_and(|ext| ext == "rs") {
+                        let source = dunce::canonicalize(&source).unwrap_or(source);
+                        if source_files.contains(&source) {
+                            has_selected_source = true;
+                        } else {
+                            has_unselected_source = true;
+                        }
+                    }
+                }
+            }
+            Err(error) => warn!(
+                "unable to inspect source directory {} for excluded files: {error}",
+                path.display()
+            ),
+        }
+        if has_unselected_source && !has_selected_source {
+            return true;
+        }
+        if has_selected_source {
+            return false;
+        }
+        directory = path.parent();
+    }
+    false
+}
+
+fn should_extract_included_file(
+    source_files: &HashSet<PathBuf>,
+    generated_source_root: &Path,
+    file: &Path,
+    source_kind: SourceKind,
+    selected_project_source: bool,
+) -> bool {
+    source_kind == SourceKind::Library
+        || !selected_project_source
+        || source_files.contains(file)
+        || file.starts_with(generated_source_root)
+        || (is_non_rust_include_target(file) && !is_excluded_source_directory(source_files, file))
+}
+
 struct Extractor<'a> {
     archiver: &'a Archiver,
     traps: &'a trap::TrapFileProvider,
@@ -67,11 +121,27 @@ impl<'a> Extractor<'a> {
         self.source_files.contains(file) || file.starts_with(&self.generated_source_root)
     }
 
+    fn should_extract_included_file(
+        &self,
+        file: &Path,
+        source_kind: SourceKind,
+        selected_project_source: bool,
+    ) -> bool {
+        should_extract_included_file(
+            &self.source_files,
+            &self.generated_source_root,
+            file,
+            source_kind,
+            selected_project_source,
+        )
+    }
+
     fn extract(
         &mut self,
         rust_analyzer: &RustAnalyzer,
         file: &Path,
         source_kind: SourceKind,
+        selected_project_source: bool,
     ) -> Vec<PathBuf> {
         self.archiver.archive(file);
         let before_parse = Instant::now();
@@ -116,13 +186,16 @@ impl<'a> Extractor<'a> {
         }
         translator.emit_source_file(&ast);
         translator.emit_truncated_diagnostics_message();
-        for file in translator
-            .included_file_steps
-            .iter()
-            .filter_map(|step| step.file.as_deref())
-        {
-            self.archiver.archive(file);
-        }
+        translator.included_file_steps.retain(|step| {
+            step.file.as_ref().is_none_or(|file| {
+                if self.should_extract_included_file(file, source_kind, selected_project_source) {
+                    self.archiver.archive(file);
+                    true
+                } else {
+                    false
+                }
+            })
+        });
         self.steps.append(&mut translator.included_file_steps);
         translator.trap.commit().unwrap_or_else(|err| {
             error!(
@@ -156,7 +229,12 @@ impl<'a> Extractor<'a> {
             if selected_source {
                 self.extracted_source_files.insert(file.clone());
             }
-            let modules = self.extract(&RustAnalyzer::new(vfs, semantics), &file, source_kind);
+            let modules = self.extract(
+                &RustAnalyzer::new(vfs, semantics),
+                &file,
+                source_kind,
+                selected_source,
+            );
             if selected_source {
                 pending.extend(modules.into_iter().filter(|module| {
                     self.is_selected_source(module) && !self.source_files.contains(module)
@@ -169,9 +247,15 @@ impl<'a> Extractor<'a> {
         &mut self,
         file: &Path,
         source_kind: SourceKind,
+        selected_project_source: bool,
         err: RustAnalyzerNoSemantics,
     ) {
-        self.extract(&RustAnalyzer::from(err), file, source_kind);
+        self.extract(
+            &RustAnalyzer::from(err),
+            file,
+            source_kind,
+            selected_project_source,
+        );
     }
 
     pub fn load_manifest(
@@ -269,6 +353,7 @@ impl<'a> Extractor<'a> {
             self.extract_without_semantics(
                 file,
                 SourceKind::Source,
+                true,
                 RustAnalyzerNoSemantics::warning("no manifest found"),
             );
         }
@@ -383,7 +468,7 @@ fn main() -> anyhow::Result<()> {
                     Ok(()) => {
                         extractor.extract_with_semantics(file, &semantics, &vfs, source_mode, true);
                     }
-                    Err(e) => extractor.extract_without_semantics(file, source_mode, e),
+                    Err(e) => extractor.extract_without_semantics(file, source_mode, true, e),
                 }
             }
             // Fast path when there is no ambiguity in dependency extraction.
@@ -399,6 +484,7 @@ fn main() -> anyhow::Result<()> {
                 extractor.extract_without_semantics(
                     file,
                     SourceKind::Source,
+                    true,
                     RustAnalyzerNoSemantics::warning("unable to load manifest"),
                 );
             }
@@ -445,6 +531,7 @@ fn main() -> anyhow::Result<()> {
                     extractor.extract_without_semantics(
                         &file,
                         library_mode,
+                        false,
                         RustAnalyzerNoSemantics::warning("unable to reload manifest"),
                     );
                     dependencies.extracted(&file);
@@ -463,10 +550,48 @@ fn main() -> anyhow::Result<()> {
             extractor.extract_without_semantics(
                 &path,
                 SourceKind::Library,
+                false,
                 RustAnalyzerNoSemantics::default(),
             );
         }
     }
 
     extractor.emit_extraction_diagnostics(start, &config)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn included_rust_files_respect_source_selection() {
+        let project_root = Path::new("/workspace");
+        let selected_source = project_root.join("src/lib.rs");
+        let included_source = project_root.join("src/included.rs");
+        let ignored_source = project_root.join("src/ignored.rs");
+        let source_files = HashSet::from([selected_source, included_source.clone()]);
+        let generated_source_root = project_root.join("target");
+
+        assert!(should_extract_included_file(
+            &source_files,
+            &generated_source_root,
+            &included_source,
+            SourceKind::Source,
+            true,
+        ));
+        assert!(!should_extract_included_file(
+            &source_files,
+            &generated_source_root,
+            &ignored_source,
+            SourceKind::Source,
+            true,
+        ));
+        assert!(should_extract_included_file(
+            &source_files,
+            &generated_source_root,
+            &ignored_source,
+            SourceKind::Library,
+            true,
+        ));
+    }
 }
