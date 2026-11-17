@@ -655,6 +655,12 @@ module Unified {
     }
   }
 
+  /** A class representing `fallthrough_stmt` tokens. */
+  class FallthroughStmt extends @unified_token_fallthrough_stmt, F::Stmt, F::Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "FallthroughStmt" }
+  }
+
   /** A class representing `fixity` tokens. */
   class Fixity extends @unified_token_fixity, F::AstNode, F::Token {
     /** Gets the name of the primary QL class for this element. */
@@ -1997,6 +2003,8 @@ module UnifiedFinal {
   final class ExprOrOperator = F::ExprOrOperator;
 
   final class ExprPattern = F::ExprPattern;
+
+  final class FallthroughStmt = F::FallthroughStmt;
 
   final class Fixity = F::Fixity;
 

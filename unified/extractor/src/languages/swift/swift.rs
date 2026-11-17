@@ -840,6 +840,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((returnStmt expression: _? @val) => (return_expr value: {val})),
         rule!((breakStmt label: _? @@lbl) => (break_expr label_name_node: [(identifier #{lbl})])),
         rule!((continueStmt label: _? @@lbl) => (continue_expr label_name_node: [(identifier #{lbl})])),
+        rule!((fallThroughStmt) => (fallthrough_stmt)),
         rule!((throwStmt expression: @val) => (throw_expr value: {val})),
         // ---- Closures ----
         // A closure (`{ (x: Int) -> Int in … }`) becomes a `function_expr`. The
