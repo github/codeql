@@ -15,6 +15,12 @@ path = "test-runner/main.rs"
 required-features = ["test-runner"]
 test = false
 
+[[bin]]
+name = "swift-parser-bench"
+path = "bench/main.rs"
+required-features = ["bench"]
+test = false
+
 [[test]]
 name = "fixtures"
 path = "test-runner/fixtures.rs"
@@ -24,6 +30,7 @@ harness = false
 workspace = true
 
 [features]
+bench = ["dep:clap"]
 test-runner = [
     "rust-parser",
     "dep:clap",
