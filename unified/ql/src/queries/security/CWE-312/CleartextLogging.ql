@@ -45,8 +45,12 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    none() // TODO: implement additional flow steps as in the original Swift query
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // if `a` is sensitive, then `a.b` is also sensitive.
+    nodeTo.asExpr().(MemberAccessExpr).getBase() = nodeFrom.asExpr()
+    or
+    // if `a` is sensitive, then `a()` is also sensitive.
+    nodeTo.asExpr().(CallExpr).getCallee() = nodeFrom.asExpr()
   }
 }
 

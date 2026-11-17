@@ -286,14 +286,14 @@ func test3(mo : MyOuter) {
 	// struct members...
 
 	NSLog(mo.password.value) // $ Alert[unified/swift/cleartext-logging]
-	NSLog(mo.passwords[0].value) // $ MISSING: Alert[unified/swift/cleartext-logging]
-	NSLog(mo.optionalPassword!.value) // $ MISSING: Alert[unified/swift/cleartext-logging]
+	NSLog(mo.passwords[0].value) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(mo.optionalPassword!.value) // $ Alert[unified/swift/cleartext-logging]
 	NSLog(mo.optionalPassword?.value!) // $ Alert[unified/swift/cleartext-logging]
 	NSLog(mo.harmless.value) // safe
 
 	NSLog(mo.password.getValue()) // $ Alert[unified/swift/cleartext-logging]
-	NSLog(mo.passwords[0].getValue()) // $ MISSING: Alert[unified/swift/cleartext-logging]
-	NSLog(mo.optionalPassword!.getValue()) // $ MISSING: Alert[unified/swift/cleartext-logging]
+	NSLog(mo.passwords[0].getValue()) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(mo.optionalPassword!.getValue()) // $ Alert[unified/swift/cleartext-logging]
 	NSLog(mo.optionalPassword?.getValue() ?? "") // $ Alert[unified/swift/cleartext-logging]
 	NSLog(mo.harmless.getValue()) // safe
 }
