@@ -1,0 +1,158 @@
+{
+  "$end": 38,
+  "$hasError": true,
+  "$lineStarts": [
+    0,
+    24,
+    38
+  ],
+  "$pos": 0,
+  "endOfFileToken": {
+    "$end": 38,
+    "$pos": 38,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": [
+    {
+      "$end": 23,
+      "$pos": 0,
+      "item": {
+        "$end": 23,
+        "$pos": 0,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 3,
+          "$pos": 0,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 23,
+            "$pos": 4,
+            "initializer": {
+              "$end": 23,
+              "$pos": 10,
+              "equal": {
+                "$end": 11,
+                "$pos": 10,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 23,
+                "$pos": 12,
+                "kind": "stringLiteralExpr",
+                "openingQuote": {
+                  "$end": 13,
+                  "$pos": 12,
+                  "kind": "token",
+                  "text": "\"",
+                  "tokenKind": "stringQuote"
+                },
+                "segments": [
+                  {
+                    "$end": 23,
+                    "$pos": 13,
+                    "content": {
+                      "$end": 23,
+                      "$pos": 13,
+                      "kind": "token",
+                      "text": "unfinished",
+                      "tokenKind": "stringSegment(\"unfinished\")"
+                    },
+                    "kind": "stringSegment"
+                  }
+                ]
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 9,
+              "$pos": 4,
+              "identifier": {
+                "$end": 9,
+                "$pos": 4,
+                "kind": "token",
+                "text": "value",
+                "tokenKind": "identifier(\"value\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 37,
+      "$pos": 24,
+      "item": {
+        "$end": 37,
+        "$pos": 24,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 27,
+          "$pos": 24,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 37,
+            "$pos": 28,
+            "initializer": {
+              "$end": 37,
+              "$pos": 33,
+              "equal": {
+                "$end": 34,
+                "$pos": 33,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 37,
+                "$pos": 35,
+                "kind": "integerLiteralExpr",
+                "literal": {
+                  "$end": 37,
+                  "$pos": 35,
+                  "kind": "token",
+                  "text": "42",
+                  "tokenKind": "integerLiteral(\"42\")"
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 32,
+              "$pos": 28,
+              "identifier": {
+                "$end": 32,
+                "$pos": 28,
+                "kind": "token",
+                "text": "next",
+                "tokenKind": "identifier(\"next\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    }
+  ]
+}

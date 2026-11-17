@@ -14,8 +14,41 @@ implementation.
 The parser implementation lives in `src/parser`. The code in this directory is
 agent generated and should be considered disposable.
 
-The parser implementation a recursive-descent parser with a classic lexer
-parser split.
+The parser implementation is a recursive-descent parser with a classic
+lexer/parser split. It has no runtime dependencies or Swift toolchain
+requirement.
+
+`src/parser/lexer.rs` scans UTF-8 byte ranges and reports comments separately.
+The grammar is split into declarations, statements, expressions, and types.
+Nodes are written bottom-up directly to `SyntaxSink`; there is no JSON or
+intermediate syntax tree. Expression folding uses temporary operand/operator
+stacks, with built-in precedences and source-declared operators. Unknown
+operators retain SwiftSyntax's unfurled `sequenceExpr` representation.
+An initial token pass registers forward operator declarations and precedence
+groups, including associativity and ordering relationships. Type-shaped
+lookahead disambiguates generic arguments and closure signatures without
+emitting speculative nodes.
+
+The current core covers common declarations, generic and function types,
+expressions, closures, control flow, attributes, and conditional compilation.
+It is not yet a complete Swift grammar: notably regex literals, multiline
+string indentation, advanced attributes/macros, and newer language features
+still need work. Unsupported syntax is recovered where possible; excessive
+nesting returns `ParseError::NestingLimit`.
+Else-if chains are parsed iteratively, so their length does not consume the
+recursive nesting budget.
+
+The checked-in sink vocabulary, `src/kinds.rs`, is generated from
+`swift_node_types.yml` and the pinned SwiftSyntax keyword definitions:
+
+```sh
+# Requires the swift-syntax checkout prepared by swift-syntax-rs.
+python3 scripts/generate-syntax-kinds.py
+```
+
+`Parser` reuses its token allocation between files. Syntax kinds distinguish
+layout nodes, named varying tokens, and anonymous fixed tokens; collection
+nodes are elided into ordered sink fields.
 
 ## Validation and testing
 
@@ -83,7 +116,7 @@ Uncovered lines are listed in the terminal. The HTML report is written to
 `target/llvm-cov/html/index.html` relative to the repository root. Additional
 arguments are forwarded to `cargo llvm-cov report`, not to the fixture runner.
 Reports are generated even when fixtures fail; either a test failure or uncovered
-code makes the command fail. The unimplemented parser currently fails this gate.
+code makes the command fail.
 
 These are source coverage checks, not branch coverage or a guarantee of
 correctness. Add fixtures for uncovered parser paths rather than unit tests.

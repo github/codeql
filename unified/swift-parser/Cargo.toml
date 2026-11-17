@@ -15,6 +15,11 @@ path = "test-runner/main.rs"
 required-features = ["test-runner"]
 test = false
 
+[[test]]
+name = "fixtures"
+path = "test-runner/fixtures.rs"
+harness = false
+
 [lints]
 workspace = true
 

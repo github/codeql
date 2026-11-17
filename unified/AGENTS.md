@@ -32,8 +32,10 @@ by Apple's swift-syntax rather than by tree-sitter.
   features to avoid building the Swift dependency.
 - Under Bazel, use `--define=unified_rust_parser=true` with the extractor or
   test targets. This configuration does not build the Swift FFI dependency.
-- The Rust grammar is not implemented yet: parsing returns an explicit
-  not-implemented error. The sink integration can be tested with
+- The Rust grammar is under development; common syntax is implemented directly
+  in `swift-parser/src/parser`. Test fixtures and corpus projects compare its
+  syntax tree and desugared AST to swift-syntax (see `swift-parser/README.md`).
+  The sink integration can also be tested with
   `cargo test -p codeql-extractor-unified --no-default-features
   --features rust-parser --bin codeql-extractor-unified`.
 

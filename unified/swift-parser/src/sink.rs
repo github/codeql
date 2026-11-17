@@ -5,53 +5,7 @@ pub struct Span {
     pub end: usize,
 }
 
-/// Syntax kinds supported by the parser interface so far.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-#[repr(u16)]
-pub enum SyntaxKind {
-    SourceFile,
-    Identifier,
-    EndOfFile,
-}
-
-impl SyntaxKind {
-    pub const ALL: &[Self] = &[Self::SourceFile, Self::Identifier, Self::EndOfFile];
-
-    pub const fn name(self) -> &'static str {
-        match self {
-            Self::SourceFile => "sourceFile",
-            Self::Identifier => "identifier",
-            Self::EndOfFile => "endOfFile",
-        }
-    }
-
-    pub const fn is_token(self) -> bool {
-        !matches!(self, Self::SourceFile)
-    }
-
-    pub const fn is_named(self) -> bool {
-        !matches!(self, Self::EndOfFile)
-    }
-}
-
-/// SwiftSyntax-compatible structural field names.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-#[repr(u16)]
-pub enum FieldKind {
-    Statements,
-    EndOfFileToken,
-}
-
-impl FieldKind {
-    pub const ALL: &[Self] = &[Self::Statements, Self::EndOfFileToken];
-
-    pub const fn name(self) -> &'static str {
-        match self {
-            Self::Statements => "statements",
-            Self::EndOfFileToken => "endOfFileToken",
-        }
-    }
-}
+pub use crate::kinds::{FieldKind, SyntaxKind};
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct NodeFlags {
