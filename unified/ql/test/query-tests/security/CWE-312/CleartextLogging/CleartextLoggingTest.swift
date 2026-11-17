@@ -228,6 +228,9 @@ func test1(password: String, passwordHash : String, passphrase: String, pass_phr
 class MyClass {
 	var harmless = "abc"
 	var password = "123"
+	var passwords[3]
+	var optionalPassword: String? = "123"
+	var credentials = ["password": "123"]
 
 	func getPassword() -> String { return "" }
 }
@@ -248,7 +251,22 @@ func test3(x: String) {
 	let z = MyClass()
 	NSLog(z.harmless) // safe
 	NSLog(z.password) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(z.passwords[0]) // $ Alert[unified/swift/cleartext-logging]
+	if let v = z.optionalPassword { // $ Alert[unified/swift/cleartext-logging]
+		NSLog(v) // $ Sink[unified/swift/cleartext-logging]
+	}
+	NSLog(z.optionalPassword!) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(z.credentials["password"]!) // $ MISSING: Alert[unified/swift/cleartext-logging]
 	NSLog(z.getPassword()) // $ Alert[unified/swift/cleartext-logging]
+
+    let o: MyClass? = MyClass()
+    NSLog(o!.password) // $ Alert[unified/swift/cleartext-logging]
+    NSLog(o!.getPassword()) // $ Alert[unified/swift/cleartext-logging]
+    NSLog(o?.password!) // $ Alert[unified/swift/cleartext-logging]
+
+    let a: MyClass[3] = [MyClass(), MyClass(), MyClass()]
+    NSLog(a[0].password) // $ Alert[unified/swift/cleartext-logging]
+    NSLog(a[0].getPassword()) // $ Alert[unified/swift/cleartext-logging]
 }
 
 struct MyOuter {
@@ -259,6 +277,8 @@ struct MyOuter {
 	}
 
 	var password: MyInner
+	var passwords: [MyInner]
+	var optionalPassword: MyInner?
 	var harmless: MyInner
 }
 
@@ -266,9 +286,15 @@ func test3(mo : MyOuter) {
 	// struct members...
 
 	NSLog(mo.password.value) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(mo.passwords[0].value) // $ MISSING: Alert[unified/swift/cleartext-logging]
+	NSLog(mo.optionalPassword!.value) // $ MISSING: Alert[unified/swift/cleartext-logging]
+	NSLog(mo.optionalPassword?.value!) // $ Alert[unified/swift/cleartext-logging]
 	NSLog(mo.harmless.value) // safe
 
 	NSLog(mo.password.getValue()) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(mo.passwords[0].getValue()) // $ MISSING: Alert[unified/swift/cleartext-logging]
+	NSLog(mo.optionalPassword!.getValue()) // $ MISSING: Alert[unified/swift/cleartext-logging]
+	NSLog(mo.optionalPassword?.getValue() ?? "") // $ Alert[unified/swift/cleartext-logging]
 	NSLog(mo.harmless.getValue()) // safe
 }
 
