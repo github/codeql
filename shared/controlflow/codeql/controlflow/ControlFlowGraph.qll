@@ -180,6 +180,14 @@ signature module AstSig<LocationSig Location> {
   class ContinueStmt extends Stmt;
 
   /**
+   * A `fallthrough` statement.
+   *
+   * Fallthrough statements complete abruptly and continue at the next switch
+   * case's body, without evaluating its pattern or guard.
+   */
+  class FallthroughStmt extends Stmt;
+
+  /**
    * A `goto` statement.
    *
    * Goto statements complete abruptly and jump to a labeled statement.
@@ -579,6 +587,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       n instanceof ContinueStmt
       or
+      n instanceof FallthroughStmt
+      or
       n instanceof GotoStmt
       or
       n instanceof Expr and
@@ -742,6 +752,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       n instanceof BreakStmt
       or
       n instanceof ContinueStmt
+      or
+      n instanceof FallthroughStmt
       or
       n instanceof GotoStmt
       or
@@ -1288,6 +1300,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           ast instanceof ContinueStmt and
           st instanceof ContinueSuccessor
           or
+          ast instanceof FallthroughStmt and
+          st instanceof FallthroughSuccessor
+          or
           ast instanceof GotoStmt and
           st instanceof GotoSuccessor
         |
@@ -1394,6 +1409,17 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             c.hasLabel(l) and
             (Input1::hasLabel(switch, l) or hasEnclosingLabel(switch, l))
           )
+        )
+        or
+        exists(Switch switch, int index, Case nextCase |
+          ast = getCaseBodyElement(switch.getCase(index), _) and
+          nextCase = switch.getCase(index + 1) and
+          c.asSimpleAbruptCompletion() instanceof FallthroughSuccessor
+        |
+          n.isBefore(getFirstCaseBodyElement(nextCase))
+          or
+          not exists(getFirstCaseBodyElement(nextCase)) and
+          n.isAfter(switch)
         )
         or
         exists(LabeledStmt target, Input1::Label l |
