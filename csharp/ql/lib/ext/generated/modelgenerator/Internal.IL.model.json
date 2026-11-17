@@ -1,0 +1,87 @@
+// THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["Internal.IL", "EcmaMethodDebugInformation", false, "EcmaMethodDebugInformation", "(Internal.TypeSystem.Ecma.EcmaMethod)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"],
+        ["Internal.IL", "EcmaMethodIL", false, "Create", "(Internal.TypeSystem.Ecma.EcmaMethod)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"],
+        ["Internal.IL", "EcmaMethodIL", false, "get_Module", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["Internal.IL", "EcmaMethodILScope", false, "Create", "(Internal.TypeSystem.Ecma.EcmaMethod)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"],
+        ["Internal.IL", "EcmaMethodILScope", false, "get_Module", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["Internal.IL", "IEcmaMethodIL", true, "get_Module", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", false, "AppendNameForNamespaceTypeWithoutAliases", "(System.Text.StringBuilder,Internal.TypeSystem.DefType)", "", "Argument[1].Property[Internal.TypeSystem.DefType.Name].Element", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", false, "AppendNameForNamespaceTypeWithoutAliases", "(System.Text.StringBuilder,Internal.TypeSystem.DefType)", "", "Argument[1].Property[Internal.TypeSystem.DefType.Namespace].Element", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", false, "AppendNameWithValueClassPrefix", "(System.Text.StringBuilder,Internal.TypeSystem.TypeDesc)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", false, "ILTypeNameFormatter", "(Internal.TypeSystem.ModuleDesc)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", true, "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.ArrayType)", "", "Argument[1].Property[Internal.TypeSystem.ArrayType.ElementType].Property[Internal.TypeSystem.GenericParameterDesc.Name]", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", true, "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.ArrayType)", "", "Argument[1].Property[Internal.TypeSystem.ParameterizedType.ParameterType].Property[Internal.TypeSystem.GenericParameterDesc.Name]", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", true, "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.ByRefType)", "", "Argument[1].Property[Internal.TypeSystem.ParameterizedType.ParameterType].Property[Internal.TypeSystem.GenericParameterDesc.Name]", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", true, "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.GenericParameterDesc)", "", "Argument[1].Property[Internal.TypeSystem.GenericParameterDesc.Name]", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", true, "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.PointerType)", "", "Argument[1].Property[Internal.TypeSystem.ParameterizedType.ParameterType].Property[Internal.TypeSystem.GenericParameterDesc.Name]", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", true, "AppendNameForInstantiatedType", "(System.Text.StringBuilder,Internal.TypeSystem.DefType)", "", "Argument[1].Property[Internal.TypeSystem.DefType.Name].Element", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", true, "AppendNameForInstantiatedType", "(System.Text.StringBuilder,Internal.TypeSystem.DefType)", "", "Argument[1].Property[Internal.TypeSystem.DefType.Namespace].Element", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", true, "AppendNameForNamespaceType", "(System.Text.StringBuilder,Internal.TypeSystem.DefType)", "", "Argument[1].Property[Internal.TypeSystem.DefType.Name].Element", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", true, "AppendNameForNamespaceType", "(System.Text.StringBuilder,Internal.TypeSystem.DefType)", "", "Argument[1].Property[Internal.TypeSystem.DefType.Namespace].Element", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", true, "AppendNameForNestedType", "(System.Text.StringBuilder,Internal.TypeSystem.DefType,Internal.TypeSystem.DefType)", "", "Argument[1].Property[Internal.TypeSystem.DefType.Name].Element", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", true, "AppendNameForNestedType", "(System.Text.StringBuilder,Internal.TypeSystem.DefType,Internal.TypeSystem.DefType)", "", "Argument[2].Property[Internal.TypeSystem.DefType.Name].Element", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", true, "AppendNameForNestedType", "(System.Text.StringBuilder,Internal.TypeSystem.DefType,Internal.TypeSystem.DefType)", "", "Argument[2].Property[Internal.TypeSystem.DefType.Namespace].Element", "Argument[0]", "taint", "dfc-generated"],
+        ["Internal.IL", "ILDisassembler", false, "AppendType", "(System.Text.StringBuilder,Internal.TypeSystem.TypeDesc,System.Boolean)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"],
+        ["Internal.IL", "ILDisassembler", false, "ILDisassembler", "(Internal.IL.MethodIL)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"],
+        ["Internal.IL", "ILLocalVariable", false, "ILLocalVariable", "(System.Int32,System.String,System.Boolean)", "", "Argument[1]", "Argument[this].Field[Internal.IL.ILLocalVariable.Name]", "value", "dfc-generated"],
+        ["Internal.IL", "ILSequencePoint", false, "ILSequencePoint", "(System.Int32,System.String,System.Int32)", "", "Argument[1]", "Argument[this].Field[Internal.IL.ILSequencePoint.Document]", "value", "dfc-generated"],
+        ["Internal.IL", "InstantiatedMethodIL", false, "GetMethodILDefinition", "()", "", "Argument[this].SyntheticField[Internal.IL.InstantiatedMethodIL._methodIL]", "ReturnValue", "value", "dfc-generated"],
+        ["Internal.IL", "InstantiatedMethodIL", false, "InstantiatedMethodIL", "(Internal.TypeSystem.MethodDesc,Internal.IL.MethodIL)", "", "Argument[1]", "Argument[this].SyntheticField[Internal.IL.InstantiatedMethodIL._methodIL]", "value", "dfc-generated"],
+        ["Internal.IL", "MethodDebugInformation", true, "GetSequencePoints", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["Internal.IL", "MethodIL", true, "GetDebugInfo", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["Internal.IL", "MethodIL", true, "GetExceptionRegions", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["Internal.IL", "MethodIL", true, "GetILBytes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["Internal.IL", "MethodIL", true, "GetLocals", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["Internal.IL", "MethodIL", true, "GetMethodILDefinition", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["Internal.IL", "MethodILScope", false, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["Internal.IL", "MethodILScope", true, "GetMethodILScopeDefinition", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["Internal.IL", "MethodILScope", true, "GetObject", "(System.Int32,Internal.TypeSystem.NotFoundBehavior)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["Internal.IL", "MethodILScope", true, "get_OwningMethod", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"],
+        ["Internal.IL", "UnsafeAccessors", false, "TryGetIL", "(Internal.TypeSystem.Ecma.EcmaMethod)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "neutralModel"
+      },
+      "data": [
+        ["Internal.IL", "EcmaMethodDebugInformation", "GetLocalVariables", "()", "summary", "df-generated"],
+        ["Internal.IL", "EcmaMethodDebugInformation", "GetParameterNames", "()", "summary", "df-generated"],
+        ["Internal.IL", "EcmaMethodDebugInformation", "get_IsStateMachineMoveNextMethod", "()", "summary", "df-generated"],
+        ["Internal.IL", "EcmaMethodIL", "get_IsInitLocals", "()", "summary", "df-generated"],
+        ["Internal.IL", "EcmaMethodIL", "get_MaxStack", "()", "summary", "df-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.SignatureMethodVariable)", "summary", "df-generated"],
+        ["Internal.IL", "ILDisassembler+ILTypeNameFormatter", "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.SignatureTypeVariable)", "summary", "df-generated"],
+        ["Internal.IL", "ILDisassembler", "AppendOffset", "(System.Text.StringBuilder,System.Int32)", "summary", "df-generated"],
+        ["Internal.IL", "ILDisassembler", "GetNextInstruction", "()", "summary", "df-generated"],
+        ["Internal.IL", "ILDisassembler", "get_CodeSize", "()", "summary", "df-generated"],
+        ["Internal.IL", "ILDisassembler", "get_HasNextInstruction", "()", "summary", "df-generated"],
+        ["Internal.IL", "ILDisassembler", "get_Offset", "()", "summary", "df-generated"],
+        ["Internal.IL", "ILExceptionRegion", "ILExceptionRegion", "(Internal.IL.ILExceptionRegionKind,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)", "summary", "df-generated"],
+        ["Internal.IL", "ILOpcodeHelper", "GetSize", "(Internal.IL.ILOpcode)", "summary", "df-generated"],
+        ["Internal.IL", "ILOpcodeHelper", "IsBranch", "(Internal.IL.ILOpcode)", "summary", "df-generated"],
+        ["Internal.IL", "ILOpcodeHelper", "IsUnconditionalBranch", "(Internal.IL.ILOpcode)", "summary", "df-generated"],
+        ["Internal.IL", "ILOpcodeHelper", "IsValid", "(Internal.IL.ILOpcode)", "summary", "df-generated"],
+        ["Internal.IL", "ILStackHelper", "CheckStackBalance", "(Internal.IL.MethodIL)", "summary", "df-generated"],
+        ["Internal.IL", "ILStackHelper", "ComputeMaxStack", "(Internal.IL.MethodIL)", "summary", "df-generated"],
+        ["Internal.IL", "ILTokenReplacer", "Replace", "(System.Byte[],System.Func<System.Int32,System.Int32>)", "summary", "df-generated"],
+        ["Internal.IL", "InstantiatedMethodIL", "get_IsInitLocals", "()", "summary", "df-generated"],
+        ["Internal.IL", "InstantiatedMethodIL", "get_MaxStack", "()", "summary", "df-generated"],
+        ["Internal.IL", "MethodDebugInformation", "GetLocalVariables", "()", "summary", "df-generated"],
+        ["Internal.IL", "MethodDebugInformation", "GetParameterNames", "()", "summary", "df-generated"],
+        ["Internal.IL", "MethodDebugInformation", "get_IsStateMachineMoveNextMethod", "()", "summary", "df-generated"],
+        ["Internal.IL", "MethodIL", "get_IsInitLocals", "()", "summary", "df-generated"],
+        ["Internal.IL", "MethodIL", "get_MaxStack", "()", "summary", "df-generated"]
+      ]
+    }
+  ]
+}

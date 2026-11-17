@@ -1,0 +1,16 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["Microsoft.Win32", "Registry", false, "GetValue", "(System.String,System.String,System.Object)", "", "ReturnValue", "windows-registry", "manual"],
+        ["Microsoft.Win32", "RegistryKey", false, "GetSubKeyNames", "()", "", "ReturnValue", "windows-registry", "manual"],
+        ["Microsoft.Win32", "RegistryKey", false, "GetValue", "", "", "ReturnValue", "windows-registry", "manual"],
+        ["Microsoft.Win32", "RegistryKey", false, "GetValueNames", "()", "", "ReturnValue", "windows-registry", "manual"]
+      ]
+    }
+  ]
+}

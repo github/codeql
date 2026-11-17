@@ -1,0 +1,48 @@
+// THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", false, "GetAccessors", "()", "", "Argument[this].SyntheticField[System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo._accessors]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", false, "LazyMemberInfo", "(System.Reflection.MemberInfo)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", false, "LazyMemberInfo", "(System.Reflection.MemberTypes,System.Reflection.MemberInfo[])", "", "Argument[1]", "Argument[this].SyntheticField[System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo._accessors]", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "CreateExportDefinition", "(System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo,System.String,System.Lazy<System.Collections.Generic.IDictionary<System.String,System.Object>>,System.ComponentModel.Composition.Primitives.ICompositionElement)", "", "Argument[3]", "ReturnValue.SyntheticField[System.ComponentModel.Composition.ReflectionModel.ReflectionMemberExportDefinition._origin]", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "CreateImportDefinition", "(System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo,System.String,System.String,System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Type>>,System.ComponentModel.Composition.Primitives.ImportCardinality,System.Boolean,System.Boolean,System.ComponentModel.Composition.CreationPolicy,System.Collections.Generic.IDictionary<System.String,System.Object>,System.Boolean,System.ComponentModel.Composition.Primitives.ICompositionElement)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "CreateImportDefinition", "(System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo,System.String,System.String,System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Type>>,System.ComponentModel.Composition.Primitives.ImportCardinality,System.Boolean,System.ComponentModel.Composition.CreationPolicy,System.Collections.Generic.IDictionary<System.String,System.Object>,System.Boolean,System.ComponentModel.Composition.Primitives.ICompositionElement)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "CreateImportDefinition", "(System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo,System.String,System.String,System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Type>>,System.ComponentModel.Composition.Primitives.ImportCardinality,System.Boolean,System.ComponentModel.Composition.CreationPolicy,System.ComponentModel.Composition.Primitives.ICompositionElement)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "CreateImportDefinition", "(System.Lazy<System.Reflection.ParameterInfo>,System.String,System.String,System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Type>>,System.ComponentModel.Composition.Primitives.ImportCardinality,System.ComponentModel.Composition.CreationPolicy,System.Collections.Generic.IDictionary<System.String,System.Object>,System.Boolean,System.ComponentModel.Composition.Primitives.ICompositionElement)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "CreateImportDefinition", "(System.Lazy<System.Reflection.ParameterInfo>,System.String,System.String,System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Type>>,System.ComponentModel.Composition.Primitives.ImportCardinality,System.ComponentModel.Composition.CreationPolicy,System.ComponentModel.Composition.Primitives.ICompositionElement)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "CreatePartDefinition", "(System.Lazy<System.Type>,System.Boolean,System.Lazy<System.Collections.Generic.IEnumerable<System.ComponentModel.Composition.Primitives.ImportDefinition>>,System.Lazy<System.Collections.Generic.IEnumerable<System.ComponentModel.Composition.Primitives.ExportDefinition>>,System.Lazy<System.Collections.Generic.IDictionary<System.String,System.Object>>,System.ComponentModel.Composition.Primitives.ICompositionElement)", "", "Argument[5]", "ReturnValue.SyntheticField[System.ComponentModel.Composition.ReflectionModel.ReflectionComposablePartDefinition._creationInfo].SyntheticField[System.ComponentModel.Composition.ReflectionModel.ReflectionPartCreationInfo._origin]", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "GetExportFactoryProductImportDefinition", "(System.ComponentModel.Composition.Primitives.ImportDefinition)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "GetExportingMember", "(System.ComponentModel.Composition.Primitives.ExportDefinition)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "GetImportingMember", "(System.ComponentModel.Composition.Primitives.ImportDefinition)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "GetImportingParameter", "(System.ComponentModel.Composition.Primitives.ImportDefinition)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "GetPartType", "(System.ComponentModel.Composition.Primitives.ComposablePartDefinition)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "TryMakeGenericPartDefinition", "(System.ComponentModel.Composition.Primitives.ComposablePartDefinition,System.Collections.Generic.IEnumerable<System.Type>,System.ComponentModel.Composition.Primitives.ComposablePartDefinition)", "", "Argument[0]", "Argument[2]", "taint", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", false, "TryMakeGenericPartDefinition", "(System.ComponentModel.Composition.Primitives.ComposablePartDefinition,System.Collections.Generic.IEnumerable<System.Type>,System.ComponentModel.Composition.Primitives.ComposablePartDefinition)", "", "Argument[1].Element", "Argument[2]", "taint", "df-generated"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "neutralModel"
+      },
+      "data": [
+        ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", "Equals", "(System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo)", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", "Equals", "(System.Object)", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", "GetHashCode", "()", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", "LazyMemberInfo", "(System.Reflection.MemberTypes,System.Func<System.Reflection.MemberInfo[]>)", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", "get_MemberType", "()", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", "op_Equality", "(System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo,System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo)", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "LazyMemberInfo", "op_Inequality", "(System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo,System.ComponentModel.Composition.ReflectionModel.LazyMemberInfo)", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", "IsDisposalRequired", "(System.ComponentModel.Composition.Primitives.ComposablePartDefinition)", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", "IsExportFactoryImportDefinition", "(System.ComponentModel.Composition.Primitives.ImportDefinition)", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.ReflectionModel", "ReflectionModelServices", "IsImportingParameter", "(System.ComponentModel.Composition.Primitives.ImportDefinition)", "summary", "df-generated"]
+      ]
+    }
+  ]
+}

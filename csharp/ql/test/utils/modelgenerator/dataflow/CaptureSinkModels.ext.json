@@ -1,0 +1,34 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["Sinks", "NewSinks", false, "Sink", "(System.Object)", "", "Argument[0]", "test-sink", "manual"],
+        ["Sinks", "NewSinks", false, "Sink2", "(System.Object)", "", "Argument[0]", "test-sink2", "manual"],
+        ["Sinks", "NewSinks", false, "ManualSinkAlreadyDefined", "(System.Object)", "", "Argument[0]", "test-sink", "manual"],
+        ["Sinks", "NewSinks", false, "SaveAndGet", "(System.Object)", "", "Argument[0]", "test-sink", "df-generated"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["Sinks", "NewSinks", false, "SaveAndGet", "(System.Object)", "", "ReturnValue", "test-source", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "neutralModel"
+      },
+      "data": [
+        ["Sinks", "NewSinks", "ManualSinkNeutral", "(System.Object)", "sink", "manual"]
+      ]
+    }
+  ]
+}
