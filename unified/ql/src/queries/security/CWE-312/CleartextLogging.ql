@@ -32,13 +32,22 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof SensitiveData }
 
   predicate isSink(DataFlow::Node node) {
+    // TODO: implement full sinks as in the original Swift query
     exists(CallExpr call |
       getNameFromExpr(call.getCallee()).regexpMatch("(?i)(ns)?(log|warn(ing)?|error|print).*") and
       node.asExpr() = call.getAnArgument().getValue()
     )
   }
 
+  predicate isBarrier(DataFlow::Node node) {
+    none() // TODO: barriers for booleans, encrypted data, and MaD defined barriers as in original Swift
+  }
+
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    none() // TODO: implement additional flow steps as in the original Swift query
+  }
 }
 
 module CleartextLoggingFlow = TaintTracking::Global<CleartextLoggingConfig>;
