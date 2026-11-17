@@ -18,5 +18,7 @@ dependencies:
 dataExtensions:
   - semmle/python/frameworks/**/*.model.yml
   - ext/*.model.yml
+  - semmle/python/frameworks/**/*.model.json
+  - ext/*.model.json
 warnOnImplicitThis: true
 compileForOverlayEval: true

@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# /// script
+# dependencies = ["json5"]
+# ///
+
 """Concerns were raised about performance on Windows with having 2.5 k files for modeling, and it was recommended we join them all together when shipping.
 
 This script does that.
@@ -27,10 +31,9 @@ for data in package_data.values():
 as_lists.sort()
 
 
-to_write = wrap_in_template(as_lists)
-write_data(to_write, joined_file)
+write_data_extension(as_lists, VERSION, joined_file)
 
 print("Joined all files into", joined_file)
 
-for f in glob.glob(f"{subclass_capture_path}/auto-*.model.yml", recursive=True):
+for f in glob.glob(f"{subclass_capture_path}/auto-*.model.json", recursive=True):
     os.unlink(f)

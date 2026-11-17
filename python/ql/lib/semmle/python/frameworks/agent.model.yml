@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/python-all
-      extensible: sinkModel
-    data:
-      - ['agents', 'Member[Agent].Argument[instructions:]', 'prompt-injection']
