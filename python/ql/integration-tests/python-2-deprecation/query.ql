@@ -13,6 +13,6 @@ predicate named_entity(string name, string kind) {
 
 from string name
 where
-  name in ["dircache", "test", "stat"] and
+  name in ["dircache", "source", "stat"] and
   named_entity(name, "file")
 select name order by name
