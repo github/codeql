@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>If user-controlled data is included in a system prompt or the description of tools for an agentic system, an attacker can manipulate the instructions
+that govern the AI model's behavior, bypassing intended restrictions and potentially causing sensitive
+data leaks or unintended operations.
+</p>
+</overview>
+
+<recommendation>
+<p>Do not include user input in system-level or developer-level prompts or tool descriptions. Use methods meant for user input or messages with a "user" role to provide user content or context to the AI model.
+
+If user input must influence the system prompt or tool description, validate it against a fixed allowlist of permitted values.</p>
+</recommendation>
+
+<example>
+<p>In the following example, a user-controlled value is inserted directly into a system-level prompt
+without validation, allowing an attacker to manipulate the AI's behavior.</p>
+<sample src="examples/prompt-injection.py" />
+<p>One way to fix this is to provide the user-controlled value in a message with the "user" role,
+rather than including it in the system prompt. The model then treats it as user content instead of
+as a trusted instruction.</p>
+<sample src="examples/prompt-injection_fixed_user_role.py" />
+<p>Alternatively, if the user input must influence the system prompt, validate it against a fixed
+allowlist of permitted values before including it in the prompt.</p>
+<sample src="examples/prompt-injection_fixed.py" />
+</example>
+
+<example>
+<p>Prompt injection is not limited to system prompts. In the following example, which uses an agentic
+framework, a user-controlled value is included in the description of a tool that is exposed to the
+model. An attacker can use this to manipulate the model's behavior in the same way.</p>
+<sample src="examples/tool-description-injection.py" />
+<p>The fix keeps the tool description as a fixed, trusted string and passes the user-controlled topic
+as part of the user input instead, so the model treats it as user content rather than as a trusted
+instruction.</p>
+<sample src="examples/tool-description-injection_fixed.py" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/">LLM01: Prompt Injection</a>.</li>
+<li>MITRE CWE: <a href="https://cwe.mitre.org/data/definitions/1427.html">CWE-1427: Improper Neutralization of Input Used for LLM Prompting</a>.</li>
+</references>
+
+</qhelp>
