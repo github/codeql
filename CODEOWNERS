@@ -53,7 +53,8 @@ MODULE.bazel @github/codeql-ci-reviewers
 **/*.bzl @github/codeql-ci-reviewers
 
 # Documentation etc
-/*.md @github/code-scanning-product
+/README.md @github/code-scanning-product
+/CODE_OF_CONDUCT.md @github/code-scanning-product
 /LICENSE @github/code-scanning-product
 
 # Workflows
