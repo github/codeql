@@ -11,9 +11,10 @@ impl<S: SyntaxSink> State<'_, S> {
     #[allow(clippy::too_many_lines)]
     pub(super) fn statement(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         if self.label(0) && !matches!(self.text(), "case" | "default") && self.nth(1) == ":" {
             if !self.enter() {
+                self.recycle(c);
                 return self.missing(K::MissingStmt);
             }
             self.take(&mut c, F::Label);
@@ -24,7 +25,10 @@ impl<S: SyntaxSink> State<'_, S> {
             return self.finish(K::LabeledStmt, start, c);
         }
         let kind = match self.text() {
-            "yield" if !self.contextual_prefix(false, true) => return self.expression(true),
+            "yield" if !self.contextual_prefix(false, true) => {
+                self.recycle(c);
+                return self.expression(true);
+            }
             "discard" if self.contextual_prefix(false, true) => {
                 self.kw(&mut c, F::DiscardKeyword);
                 let value = self.expression(true);
@@ -123,7 +127,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 Self::add(&mut c, F::Sequence, sequence);
                 if self.at("where") {
                     let start = self.start();
-                    let mut w = Vec::new();
+                    let mut w = self.children();
                     self.kw(&mut w, F::WhereKeyword);
                     let condition = self.expression(false);
                     Self::add(&mut w, F::Condition, condition);
@@ -156,19 +160,19 @@ impl<S: SyntaxSink> State<'_, S> {
                 Self::add(&mut c, F::Body, body);
                 while self.at("catch") {
                     let start = self.start();
-                    let mut catch = Vec::new();
+                    let mut catch = self.children();
                     self.kw(&mut catch, F::CatchKeyword);
                     if !self.at("{") {
                         loop {
                             let start = self.start();
-                            let mut item = Vec::new();
+                            let mut item = self.children();
                             if !self.at("where") {
                                 let pattern = self.matching_pattern();
                                 Self::add(&mut item, F::Pattern, pattern);
                             }
                             if self.at("where") {
                                 let start = self.start();
-                                let mut clause = Vec::new();
+                                let mut clause = self.children();
                                 self.kw(&mut clause, F::WhereKeyword);
                                 let condition = self.expression(false);
                                 Self::add(&mut clause, F::Condition, condition);
@@ -190,7 +194,10 @@ impl<S: SyntaxSink> State<'_, S> {
                 }
                 if defer { K::DeferStmt } else { K::DoStmt }
             }
-            _ => return self.expression(true),
+            _ => {
+                self.recycle(c);
+                return self.expression(true);
+            }
         };
         self.finish(kind, start, c)
     }
@@ -199,9 +206,9 @@ impl<S: SyntaxSink> State<'_, S> {
         loop {
             let before = self.pos;
             let start = self.start();
-            let mut el = Vec::new();
+            let mut el = self.children();
             let condition = if self.at("#available") || self.at("#unavailable") {
-                let mut available = Vec::new();
+                let mut available = self.children();
                 self.take(&mut available, F::AvailabilityKeyword);
                 self.expect("(", &mut available, F::LeftParen);
                 self.availability_specifications(&mut available, F::AvailabilityArguments);
@@ -209,7 +216,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 self.finish(K::AvailabilityCondition, start, available)
             } else if self.at("let") || self.at("var") || self.at("case") {
                 let matching = self.at("case");
-                let mut bind = Vec::new();
+                let mut bind = self.children();
                 self.kw(
                     &mut bind,
                     if matching {
@@ -231,7 +238,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 }
                 if self.at("=") {
                     let start = self.start();
-                    let mut init = Vec::new();
+                    let mut init = self.children();
                     self.take(&mut init, F::Equal);
                     let expr = self.expression(false);
                     Self::add(&mut init, F::Value, expr);
@@ -268,10 +275,14 @@ impl<S: SyntaxSink> State<'_, S> {
         let mut tail: Option<Node<S::Node>> = None;
         loop {
             let start = self.start();
-            let mut c = Vec::new();
+            let mut c = self.children();
             self.kw(&mut c, F::IfKeyword);
             self.conditions(&mut c);
             if self.exhausted {
+                self.recycle(c);
+                for (_, _, children) in arms {
+                    self.recycle(children);
+                }
                 self.depth -= 1;
                 return self.missing(K::MissingExpr);
             }
@@ -309,7 +320,7 @@ impl<S: SyntaxSink> State<'_, S> {
             return self.missing(K::MissingExpr);
         }
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.kw(&mut c, F::SwitchKeyword);
         let subject = self.expression(false);
         Self::add(&mut c, F::Subject, subject);
@@ -336,18 +347,19 @@ impl<S: SyntaxSink> State<'_, S> {
                 Self::add(c, field, node);
                 continue;
             }
-            let mut case = Vec::new();
+            let mut case = self.children();
             if self.at("@") {
                 let attr = self.attribute();
                 Self::add(&mut case, F::Attribute, attr);
             }
             if !self.at("case") && !self.at("default") {
+                self.recycle(case);
                 let node = self.recover();
                 Self::add(c, field, node);
                 continue;
             }
             let label_start = self.start();
-            let mut label = Vec::new();
+            let mut label = self.children();
             let default = self.at("default");
             self.kw(
                 &mut label,
@@ -360,12 +372,12 @@ impl<S: SyntaxSink> State<'_, S> {
             if !default {
                 loop {
                     let start = self.start();
-                    let mut item = Vec::new();
+                    let mut item = self.children();
                     let pattern = self.matching_pattern();
                     Self::add(&mut item, F::Pattern, pattern);
                     if self.at("where") {
                         let start = self.start();
-                        let mut w = Vec::new();
+                        let mut w = self.children();
                         self.kw(&mut w, F::WhereKeyword);
                         let expr = self.expression(true);
                         Self::add(&mut w, F::Condition, expr);
@@ -405,10 +417,10 @@ impl<S: SyntaxSink> State<'_, S> {
             return self.missing(K::MissingDecl);
         }
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         while !self.exhausted && matches!(self.text(), "#if" | "#elseif" | "#else") {
             let start = self.start();
-            let mut clause = Vec::new();
+            let mut clause = self.children();
             let has_condition = !self.at("#else");
             self.take(&mut clause, F::PoundKeyword);
             if has_condition {

@@ -1,7 +1,9 @@
 use super::{K, Token};
 use std::{
+    borrow::Cow,
     cmp::Ordering,
     collections::{HashMap, HashSet},
+    sync::OnceLock,
 };
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -11,6 +13,7 @@ enum Associativity {
     Right,
 }
 
+#[derive(Clone)]
 struct Group {
     associativity: Associativity,
     defined: bool,
@@ -18,6 +21,7 @@ struct Group {
     lower_than: Vec<usize>,
 }
 
+#[derive(Clone)]
 pub(super) struct OperatorTable {
     groups: Vec<Group>,
     names: HashMap<String, usize>,
@@ -25,7 +29,19 @@ pub(super) struct OperatorTable {
 }
 
 impl OperatorTable {
-    pub fn from_source(source: &str, tokens: &[Token]) -> Self {
+    pub fn from_source(source: &str, tokens: &[Token]) -> Cow<'static, Self> {
+        static STANDARD: OnceLock<OperatorTable> = OnceLock::new();
+        let standard = STANDARD.get_or_init(Self::standard);
+        // The declaration scan requires these exact keyword spellings.
+        if !source.contains("infix") && !source.contains("precedencegroup") {
+            return Cow::Borrowed(standard);
+        }
+        let mut table = standard.clone();
+        table.scan(source, tokens);
+        Cow::Owned(table)
+    }
+
+    fn standard() -> Self {
         let mut table = Self {
             groups: Vec::new(),
             names: HashMap::new(),
@@ -81,7 +97,6 @@ impl OperatorTable {
                 table.operators.insert(op.into(), id);
             }
         }
-        table.scan(source, tokens);
         table
     }
 

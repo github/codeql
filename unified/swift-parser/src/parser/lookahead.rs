@@ -131,6 +131,10 @@ pub(super) struct Lookahead<'a> {
     depth: usize,
 }
 
+#[expect(
+    clippy::inline_always,
+    reason = "Specialize literal token checks through the small cursor accessors"
+)]
 impl<'a> Lookahead<'a> {
     pub fn new(source: &'a str, tokens: &'a [Token], pos: usize) -> Self {
         Self {
@@ -174,15 +178,18 @@ impl<'a> Lookahead<'a> {
         }
     }
 
+    #[inline(always)]
     fn text(&self) -> &'a str {
         self.tokens
             .get(self.pos)
             .map_or("", |t| &self.source[t.span.start + self.offset..t.span.end])
     }
+    #[inline(always)]
     fn bump(&mut self) {
         self.pos += 1;
         self.offset = 0;
     }
+    #[inline(always)]
     fn eat(&mut self, text: &str) -> bool {
         if self.text() == text {
             self.bump();

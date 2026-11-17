@@ -61,22 +61,19 @@ impl<S: SyntaxSink> State<'_, S> {
             return self.missing(K::MissingExpr);
         }
         let first = self.unary(trailing);
+        if !self.expression_operator() {
+            let result = self.materialize(first);
+            self.depth -= 1;
+            return result;
+        }
         let start = first.start();
         let mut values = vec![first];
         let mut ops = Vec::new();
-        while !(self.exhausted || self.condition_line && self.newline())
-            && (self.binary()
-                || (matches!(self.text(), "->" | "async" | "throws" | "rethrows")
-                    && super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
-                        .arrow_operator())
-                || self.at("as")
-                || self.at("is")
-                || (self.at("?") && self.spaced_before()))
-        {
+        while self.expression_operator() {
             let text = self.text().to_owned();
             if matches!(text.as_str(), "->" | "throws" | "rethrows" | "async") {
                 let start = self.start();
-                let mut c = Vec::new();
+                let mut c = self.children();
                 if let Some(effects) = self.effects(K::TypeEffectSpecifiers) {
                     Self::add(&mut c, F::EffectSpecifiers, effects);
                 }
@@ -97,7 +94,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 } else {
                     self.missing(K::Colon)
                 };
-                let mut c = Vec::new();
+                let mut c = self.children();
                 Self::add(&mut c, F::QuestionMark, question);
                 Self::add(&mut c, F::ThenExpression, then);
                 Self::add(&mut c, F::Colon, colon);
@@ -124,7 +121,7 @@ impl<S: SyntaxSink> State<'_, S> {
             if text == "as" || text == "is" {
                 let keyword = self.word();
                 let mark = (self.at("?") || self.at("!")).then(|| self.bump());
-                let mut c = Vec::new();
+                let mut c = self.children();
                 Self::add(
                     &mut c,
                     if text == "is" {
@@ -160,7 +157,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 continue;
             }
             let start = self.start();
-            let mut c = Vec::new();
+            let mut c = self.children();
             let (kind, field) = if text == "=" {
                 (K::AssignmentExpr, F::Equal)
             } else {
@@ -180,12 +177,12 @@ impl<S: SyntaxSink> State<'_, S> {
             ops.iter()
                 .map(|(op, group)| (*group, matches!(op, Operator::Cast { .. }))),
         ) {
-            let mut c = Vec::new();
+            let mut c = self.children();
             let end = values.last().unwrap().node.span.end;
             for (i, operand) in values.into_iter().enumerate() {
                 let value = self.materialize(operand);
                 let value = if i > 0 && matches!(ops[i - 1].0, Operator::Cast { .. }) {
-                    let mut children = Vec::new();
+                    let mut children = self.children();
                     Self::add(&mut children, F::Type, value);
                     self.make(K::TypeExpr, value.span, children)
                 } else {
@@ -225,10 +222,21 @@ impl<S: SyntaxSink> State<'_, S> {
         result
     }
 
+    fn expression_operator(&self) -> bool {
+        !(self.exhausted || self.condition_line && self.newline())
+            && (self.binary()
+                || (matches!(self.text(), "->" | "async" | "throws" | "rethrows")
+                    && super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
+                        .arrow_operator())
+                || self.at("as")
+                || self.at("is")
+                || (self.at("?") && self.spaced_before()))
+    }
+
     fn fold(&mut self, stack: &mut Vec<Operand<S::Node>>, op: Operator<S::Node>) {
         let right = self.materialize(stack.pop().unwrap());
         let left = stack.pop().unwrap();
-        let mut c = Vec::new();
+        let mut c = self.children();
         let kind = match op {
             Operator::Binary(op) => {
                 Self::add(&mut c, F::LeftOperand, left.node);
@@ -284,7 +292,7 @@ impl<S: SyntaxSink> State<'_, S> {
         // SwiftOperators hoists only effects on the left operand. Keep those
         // wrappers pending until an expression becomes a right operand or ends.
         for effect in operand.effects {
-            let mut c = Vec::new();
+            let mut c = self.children();
             Self::add(&mut c, effect.field, effect.keyword);
             if let Some(mark) = effect.mark {
                 Self::add(&mut c, F::QuestionOrExclamationMark, mark);
@@ -365,7 +373,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 return operand;
             }
             let value = self.materialize(operand);
-            let mut c = Vec::new();
+            let mut c = self.children();
             Self::add(&mut c, field, keyword);
             Self::add(&mut c, F::Expression, value);
             return Operand::plain(self.finish(kind, start, c));
@@ -379,7 +387,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 return Operand::plain(self.reference());
             }
             let amp = self.at("&");
-            let mut c = Vec::new();
+            let mut c = self.children();
             let op = if amp {
                 self.bump_as(K::Ampersand)
             } else {
@@ -455,7 +463,7 @@ impl<S: SyntaxSink> State<'_, S> {
     #[allow(clippy::too_many_lines)]
     fn primary(&mut self, trailing: bool) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         if self.binding_context
             && self.binding_identifier()
             && !self.binding_pattern()
@@ -475,6 +483,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 K::FloatLiteralExpr
             }
             K::StringQuote | K::MultilineStringQuote | K::RawStringPoundDelimiter => {
+                self.recycle(c);
                 return self.string_literal();
             }
             K::RegexPoundDelimiter | K::RegexSlash => {
@@ -501,12 +510,21 @@ impl<S: SyntaxSink> State<'_, S> {
                 self.expect(")", &mut c, F::RightParen);
                 K::TupleExpr
             }
-            K::LeftSquare => return self.collection(),
-            K::Backslash => return self.key_path(),
+            K::LeftSquare => {
+                self.recycle(c);
+                return self.collection();
+            }
+            K::Backslash => {
+                self.recycle(c);
+                return self.key_path();
+            }
             K::Pound => {
                 return self.macro_expansion(K::MacroExpansionExpr, start, c, trailing);
             }
-            K::LeftBrace => return self.closure(),
+            K::LeftBrace => {
+                self.recycle(c);
+                return self.closure();
+            }
             K::Period => {
                 self.take(&mut c, F::Period);
                 let name = self.reference();
@@ -602,14 +620,24 @@ impl<S: SyntaxSink> State<'_, S> {
                     self.kw(&mut c, F::SuperKeyword);
                     K::SuperExpr
                 }
-                "if" => return self.if_expr(),
-                "switch" => return self.switch_expr(),
+                "if" => {
+                    self.recycle(c);
+                    return self.if_expr();
+                }
+                "switch" => {
+                    self.recycle(c);
+                    return self.switch_expr();
+                }
                 _ => {
+                    self.recycle(c);
                     return self
                         .declaration_reference_with_options(false, self.attribute_arguments);
                 }
             },
-            _ => return self.missing(K::MissingExpr),
+            _ => {
+                self.recycle(c);
+                return self.missing(K::MissingExpr);
+            }
         };
         self.finish(kind, start, c)
     }
@@ -628,7 +656,7 @@ impl<S: SyntaxSink> State<'_, S> {
         special_names: bool,
     ) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         let selector = self.module_selector();
         if let Some(selector) = selector {
             Self::add(&mut c, F::ModuleSelector, selector);
@@ -667,11 +695,11 @@ impl<S: SyntaxSink> State<'_, S> {
                 .is_some_and(|t| t.kind == K::RightParen)
             {
                 let start = self.start();
-                let mut names = Vec::new();
+                let mut names = self.children();
                 self.take(&mut names, F::LeftParen);
                 while !self.eof() && !self.at(")") {
                     let start = self.start();
-                    let mut name = Vec::new();
+                    let mut name = self.children();
                     self.argument_label(&mut name, F::Name);
                     self.take(&mut name, F::Colon);
                     let node = self.finish(K::DeclNameArgument, start, name);
@@ -695,7 +723,7 @@ impl<S: SyntaxSink> State<'_, S> {
             && super::lookahead::Lookahead::new(self.source, self.tokens, self.pos + 1)
                 .qualified_base()
         {
-            let mut c = Vec::new();
+            let mut c = self.children();
             Self::add(&mut c, F::BaseType, ty);
             self.take(&mut c, F::Period);
             if let Some(selector) = self.module_selector() {
@@ -708,10 +736,10 @@ impl<S: SyntaxSink> State<'_, S> {
             }
             ty = self.finish(K::MemberType, start, c);
         }
-        let mut c = Vec::new();
+        let mut c = self.children();
         Self::add(&mut c, F::Type, ty);
         let base = self.make(K::TypeExpr, ty.span, c);
-        let mut c = Vec::new();
+        let mut c = self.children();
         Self::add(&mut c, F::Base, base);
         if self.text().starts_with('.') {
             let period = self.token_prefix(1, K::Period);
@@ -732,7 +760,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 break;
             }
             let start = value.span.start;
-            let mut c = Vec::new();
+            let mut c = self.children();
             let mut parsed_trailing_closure = false;
             let kind = if self.text().starts_with('<') && self.specialization_ahead() {
                 Self::add(&mut c, F::Expression, value);
@@ -837,6 +865,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 Self::add(&mut c, F::Config, config);
                 K::PostfixIfConfigExpr
             } else {
+                self.recycle(c);
                 break;
             };
             value = self.finish(kind, start, c);
@@ -860,10 +889,10 @@ impl<S: SyntaxSink> State<'_, S> {
             return self.missing(K::MissingDecl);
         }
         let start = self.start();
-        let mut config = Vec::new();
+        let mut config = self.children();
         while !self.eof() && matches!(self.text(), "#if" | "#elseif" | "#else") {
             let start = self.start();
-            let mut clause = Vec::new();
+            let mut clause = self.children();
             let condition = !self.at("#else");
             self.take(&mut clause, F::PoundKeyword);
             if condition {
@@ -873,7 +902,7 @@ impl<S: SyntaxSink> State<'_, S> {
             if !matches!(self.text(), "#else" | "#elseif" | "#endif") {
                 let value = if self.at("#if") {
                     let start = self.start();
-                    let mut nested = Vec::new();
+                    let mut nested = self.children();
                     let config = self.postfix_config(trailing);
                     Self::add(&mut nested, F::Config, config);
                     self.finish(K::PostfixIfConfigExpr, start, nested)
@@ -897,7 +926,7 @@ impl<S: SyntaxSink> State<'_, S> {
             && self.nth(2) == "{"
         {
             let start = self.start();
-            let mut closure = Vec::new();
+            let mut closure = self.children();
             self.take(&mut closure, F::Label);
             self.take(&mut closure, F::Colon);
             let body = self.closure();
@@ -988,7 +1017,7 @@ impl<S: SyntaxSink> State<'_, S> {
     }
     fn key_path(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.take(&mut c, F::Backslash);
         if !self.text().starts_with('.') {
             let root = self.key_path_root();
@@ -996,7 +1025,7 @@ impl<S: SyntaxSink> State<'_, S> {
         }
         while !self.eof() {
             let start = self.start();
-            let mut component = Vec::new();
+            let mut component = self.children();
             let period = self.at(".")
                 || (self.text().starts_with('.')
                     && self.text().bytes().all(|c| matches!(c, b'.' | b'?' | b'!')));
@@ -1008,10 +1037,11 @@ impl<S: SyntaxSink> State<'_, S> {
                 let period = self.token_prefix(1, K::Period);
                 Self::add(&mut component, F::Period, period);
             } else if !(subscript || optional) {
+                self.recycle(component);
                 break;
             }
             let inner_start = self.start();
-            let mut inner = Vec::new();
+            let mut inner = self.children();
             let kind = if self.at("[") {
                 self.take(&mut inner, F::LeftSquare);
                 self.arguments(&mut inner, F::Arguments, "]");
@@ -1049,7 +1079,7 @@ impl<S: SyntaxSink> State<'_, S> {
         while !self.eof() && !self.at(closing) && !self.at("}") {
             let before = self.pos;
             let start = self.start();
-            let mut arg = Vec::new();
+            let mut arg = self.children();
             if self.label(0) && self.nth(1) == ":" {
                 let label = self.bump_as(self.token().kind);
                 Self::add(&mut arg, F::Label, label);
@@ -1068,12 +1098,12 @@ impl<S: SyntaxSink> State<'_, S> {
 
     fn collection(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.take(&mut c, F::LeftSquare);
         if super::lookahead::Lookahead::new(self.source, self.tokens, self.pos).inline_array_start()
         {
             let ty = self.inline_array_type(start, c);
-            let mut c = Vec::new();
+            let mut c = self.children();
             Self::add(&mut c, F::Type, ty);
             return self.finish(K::TypeExpr, start, c);
         }
@@ -1084,7 +1114,7 @@ impl<S: SyntaxSink> State<'_, S> {
         while !self.eof() && !self.at("]") {
             let before = self.pos;
             let start = self.start();
-            let mut element = Vec::new();
+            let mut element = self.children();
             let value = self.expression(true);
             if self.at(":") {
                 dict = true;
@@ -1128,7 +1158,7 @@ impl<S: SyntaxSink> State<'_, S> {
 
     pub(super) fn string_literal_as(&mut self, kind: K) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         let raw = self.at_kind(K::RawStringPoundDelimiter);
         if raw {
             self.take(&mut c, F::OpeningPounds);
@@ -1138,7 +1168,7 @@ impl<S: SyntaxSink> State<'_, S> {
         while !self.eof() && !self.at_kind(quote) {
             let before = self.pos;
             let start = self.start();
-            let mut segment = Vec::new();
+            let mut segment = self.children();
             let kind = if self.at_kind(K::StringSegmentToken) {
                 self.take(&mut segment, F::Content);
                 K::StringSegment
@@ -1155,6 +1185,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 self.expect(")", &mut segment, F::RightParen);
                 K::ExpressionSegment
             } else {
+                self.recycle(segment);
                 break;
             };
             let node = self.finish(kind, start, segment);
@@ -1177,26 +1208,26 @@ impl<S: SyntaxSink> State<'_, S> {
         let previous = self.attribute_arguments;
         self.attribute_arguments = false;
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.take(&mut c, F::LeftBrace);
         if super::lookahead::Lookahead::new(self.source, self.tokens, self.pos).closure_signature()
         {
             let start = self.start();
-            let mut sig = Vec::new();
+            let mut sig = self.children();
             while self.at("@") {
                 let attr = self.attribute();
                 Self::add(&mut sig, F::Attributes, attr);
             }
             if self.at("[") {
                 let start = self.start();
-                let mut capture = Vec::new();
+                let mut capture = self.children();
                 self.take(&mut capture, F::LeftSquare);
                 while !self.eof() && !self.at("]") {
                     let start = self.start();
-                    let mut item = Vec::new();
+                    let mut item = self.children();
                     if self.at("weak") || self.at("unowned") {
                         let start = self.start();
-                        let mut spec = Vec::new();
+                        let mut spec = self.children();
                         self.kw(&mut spec, F::Specifier);
                         if self.eat("(", &mut spec, F::LeftParen) {
                             self.kw(&mut spec, F::Detail);
@@ -1223,11 +1254,11 @@ impl<S: SyntaxSink> State<'_, S> {
             }
             if self.at("(") {
                 let start = self.start();
-                let mut params = Vec::new();
+                let mut params = self.children();
                 self.take(&mut params, F::LeftParen);
                 while !self.eof() && !self.at(")") {
                     let start = self.start();
-                    let mut p = Vec::new();
+                    let mut p = self.children();
                     while self.at("@") {
                         let attribute = self.attribute();
                         Self::add(&mut p, F::Attributes, attribute);
@@ -1263,7 +1294,7 @@ impl<S: SyntaxSink> State<'_, S> {
                     && (!self.at("async") || matches!(self.nth(1), "in" | ","))
                 {
                     let start = self.start();
-                    let mut p = Vec::new();
+                    let mut p = self.children();
                     self.take(&mut p, F::Name);
                     let comma = self.eat(",", &mut p, F::TrailingComma);
                     let node = self.finish(K::ClosureShorthandParameter, start, p);

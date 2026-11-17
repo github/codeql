@@ -50,6 +50,15 @@ impl<S: SyntaxSink> Lexer<'_, S> {
         &self.source[self.pos..]
     }
 
+    fn current_char(&self) -> Option<char> {
+        let byte = *self.source.as_bytes().get(self.pos)?;
+        Some(if byte.is_ascii() {
+            char::from(byte)
+        } else {
+            self.rest().chars().next().unwrap()
+        })
+    }
+
     fn code(&mut self, interpolation: bool) {
         if self.depth >= 128 {
             self.exhausted = true;
@@ -66,7 +75,18 @@ impl<S: SyntaxSink> Lexer<'_, S> {
         let mut parens = 0usize;
         while self.pos < self.source.len() {
             let start = self.pos;
-            let c = self.rest().chars().next().unwrap();
+            let c = self.current_char().unwrap();
+            if matches!(c, '\t'..='\r' | ' ') {
+                let bytes = self.source.as_bytes();
+                while let Some(&byte) = bytes.get(self.pos) {
+                    if !matches!(byte, b'\t'..=b'\r' | b' ') {
+                        break;
+                    }
+                    self.newline |= matches!(byte, b'\n' | b'\r');
+                    self.pos += 1;
+                }
+                continue;
+            }
             if matches!(c, '\u{a0}' | '\0' | '\u{feff}') {
                 self.pos += self
                     .rest()
@@ -83,7 +103,7 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                 );
                 continue;
             }
-            if c.is_whitespace() {
+            if !c.is_ascii() && c.is_whitespace() {
                 self.newline |= c == '\n' || c == '\r';
                 self.pos += c.len_utf8();
                 continue;
@@ -111,17 +131,19 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                 let doc = self.rest().starts_with("/**") && !self.rest().starts_with("/**/");
                 self.pos += 2;
                 let mut depth = 1;
+                let bytes = self.source.as_bytes();
                 while self.pos < self.source.len() && depth > 0 {
-                    if self.rest().starts_with("/*") {
+                    if bytes[self.pos] == b'/' && bytes.get(self.pos + 1) == Some(&b'*') {
                         depth += 1;
                         self.pos += 2;
-                    } else if self.rest().starts_with("*/") {
+                    } else if bytes[self.pos] == b'*' && bytes.get(self.pos + 1) == Some(&b'/') {
                         depth -= 1;
                         self.pos += 2;
                     } else {
-                        let c = self.rest().chars().next().unwrap();
-                        self.newline |= c == '\n' || c == '\r';
-                        self.pos += c.len_utf8();
+                        // Only ASCII delimiters matter inside comments. The scan ends
+                        // at an ASCII delimiter or EOF, preserving UTF-8 boundaries.
+                        self.newline |= matches!(bytes[self.pos], b'\n' | b'\r');
+                        self.pos += 1;
                     }
                 }
                 self.sink.trivia(
@@ -189,19 +211,26 @@ impl<S: SyntaxSink> Lexer<'_, S> {
             }
             if c == '_'
                 || c == '$'
-                || c.is_alphabetic()
-                || (c as u32 >= 0x80
-                    && (!is_operator(c)
+                || c.is_ascii_alphabetic()
+                || (!c.is_ascii()
+                    && (c.is_alphabetic()
+                        || !is_operator(c)
                         // SwiftSyntax gives identifiers priority in this overlapping range.
                         || matches!(c, '\u{3021}'..='\u{302f}')))
             {
                 self.pos += c.len_utf8();
-                while let Some(c) = self.rest().chars().next() {
-                    if !(c == '_'
-                        || c == '$'
-                        || c.is_alphanumeric()
-                        || matches!(c, '\u{3021}'..='\u{302f}')
-                        || (c as u32 >= 0x80 && !c.is_whitespace() && !is_operator(c)))
+                while let Some(&byte) = self.source.as_bytes().get(self.pos) {
+                    if byte.is_ascii_alphanumeric() || matches!(byte, b'_' | b'$') {
+                        self.pos += 1;
+                        continue;
+                    }
+                    if byte.is_ascii() {
+                        break;
+                    }
+                    let c = self.rest().chars().next().unwrap();
+                    if !c.is_alphanumeric()
+                        && !matches!(c, '\u{3021}'..='\u{302f}')
+                        && (c.is_whitespace() || is_operator(c))
                     {
                         break;
                     }
@@ -286,7 +315,7 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                         continue;
                     }
                     self.pos += c.len_utf8();
-                    while let Some(next) = self.rest().chars().next() {
+                    while let Some(next) = self.current_char() {
                         if !(is_operator_continuation(next) || c == '.' && next == '.') {
                             break;
                         }
@@ -311,7 +340,7 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                         "->" => K::Arrow,
                         "?" => K::InfixQuestionMark,
                         _ => {
-                            let right = self.rest().chars().next().is_some_and(|c| {
+                            let right = self.current_char().is_some_and(|c| {
                                 !c.is_whitespace()
                                     && !matches!(c, ')' | ']' | '}' | ',' | ':' | ';')
                                     && (c != '.' || !left)

@@ -4,7 +4,7 @@ impl<S: SyntaxSink> State<'_, S> {
     #[allow(clippy::too_many_lines)]
     pub(super) fn item(&mut self, member: bool) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         while self.at("@")
             || (self.at("#if")
                 && super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
@@ -19,11 +19,11 @@ impl<S: SyntaxSink> State<'_, S> {
         }
         while self.is_modifier() {
             let start = self.start();
-            let mut modifier = Vec::new();
+            let mut modifier = self.children();
             self.kw(&mut modifier, F::Name);
             if self.at("(") {
                 let start = self.start();
-                let mut detail = Vec::new();
+                let mut detail = self.children();
                 self.take(&mut detail, F::LeftParen);
                 self.take(&mut detail, F::Detail);
                 self.expect(")", &mut detail, F::RightParen);
@@ -37,8 +37,14 @@ impl<S: SyntaxSink> State<'_, S> {
             "#" if member || !c.is_empty() => {
                 return self.macro_expansion(K::MacroExpansionDecl, start, c, true);
             }
-            "#if" => return self.if_config(member),
-            "#sourceLocation" => return self.source_location(),
+            "#if" => {
+                self.recycle(c);
+                return self.if_config(member);
+            }
+            "#sourceLocation" => {
+                self.recycle(c);
+                return self.source_location();
+            }
             "import" => {
                 self.kw(&mut c, F::ImportKeyword);
                 let scoped = matches!(
@@ -55,7 +61,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 };
                 loop {
                     let start = self.start();
-                    let mut path = Vec::new();
+                    let mut path = self.children();
                     let name = self.bump_as(K::Identifier);
                     Self::add(&mut path, F::Name, name);
                     let more = self.eat(separator, &mut path, F::TrailingPeriod);
@@ -72,7 +78,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 loop {
                     let before = self.pos;
                     let start = self.start();
-                    let mut binding = Vec::new();
+                    let mut binding = self.children();
                     let pattern = self.pattern();
                     Self::add(&mut binding, F::Pattern, pattern);
                     if self.at(":") {
@@ -158,7 +164,7 @@ impl<S: SyntaxSink> State<'_, S> {
                         Self::add(&mut c, F::ReturnClause, node);
                     } else {
                         let start = self.start();
-                        let mut sig = Vec::new();
+                        let mut sig = self.children();
                         let parameters = self.parameters(false);
                         Self::add(&mut sig, F::ParameterClause, parameters);
                         if let Some(effects) = self.effects(K::FunctionEffectSpecifiers) {
@@ -260,7 +266,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 }
                 if self.at("=") {
                     let start = self.start();
-                    let mut init = Vec::new();
+                    let mut init = self.children();
                     self.take(&mut init, F::Equal);
                     let ty = self.type_node();
                     Self::add(&mut init, F::Value, ty);
@@ -281,7 +287,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 self.kw(&mut c, F::CaseKeyword);
                 loop {
                     let start = self.start();
-                    let mut el = Vec::new();
+                    let mut el = self.children();
                     self.take(&mut el, F::Name);
                     if self.at("(") {
                         let node = self.parameters(true);
@@ -307,7 +313,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 Self::add(&mut c, F::Name, node);
                 if self.at(":") {
                     let start = self.start();
-                    let mut precedence = Vec::new();
+                    let mut precedence = self.children();
                     self.take(&mut precedence, F::Colon);
                     self.take(&mut precedence, F::PrecedenceGroup);
                     let node = self.finish(K::OperatorPrecedenceAndTypes, start, precedence);
@@ -321,7 +327,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 self.expect("{", &mut c, F::LeftBrace);
                 while !self.exhausted && !self.eof() && !self.at("}") {
                     let start = self.start();
-                    let mut attr = Vec::new();
+                    let mut attr = self.children();
                     let kind = match self.text() {
                         "associativity" => {
                             self.kw(&mut attr, F::AssociativityLabel);
@@ -340,7 +346,7 @@ impl<S: SyntaxSink> State<'_, S> {
                             self.expect(":", &mut attr, F::Colon);
                             loop {
                                 let start = self.start();
-                                let mut name = Vec::new();
+                                let mut name = self.children();
                                 self.take(&mut name, F::Name);
                                 let comma = self.eat(",", &mut name, F::TrailingComma);
                                 let node = self.finish(K::PrecedenceGroupName, start, name);
@@ -352,6 +358,7 @@ impl<S: SyntaxSink> State<'_, S> {
                             K::PrecedenceGroupRelation
                         }
                         _ => {
+                            self.recycle(attr);
                             let node = self.recover();
                             Self::add(&mut c, F::GroupAttributes, node);
                             continue;
@@ -363,19 +370,22 @@ impl<S: SyntaxSink> State<'_, S> {
                 self.expect("}", &mut c, F::RightBrace);
                 K::PrecedenceGroupDecl
             }
-            _ => return self.statement(),
+            _ => {
+                self.recycle(c);
+                return self.statement();
+            }
         };
         self.finish(kind, start, c)
     }
 
     fn source_location(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.take(&mut c, F::PoundSourceLocation);
         self.expect("(", &mut c, F::LeftParen);
         if !self.at(")") {
             let start = self.start();
-            let mut arguments = Vec::new();
+            let mut arguments = self.children();
             self.kw(&mut arguments, F::FileLabel);
             self.expect(":", &mut arguments, F::FileColon);
             let file = self.string_literal_as(K::SimpleStringLiteralExpr);
@@ -421,11 +431,11 @@ impl<S: SyntaxSink> State<'_, S> {
 
     fn primary_associated_types(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut clause = Vec::new();
+        let mut clause = self.children();
         self.angle(true, &mut clause);
         while !self.eof() && !self.text().starts_with('>') {
             let start = self.start();
-            let mut ty = Vec::new();
+            let mut ty = self.children();
             self.take(&mut ty, F::Name);
             let comma = self.eat(",", &mut ty, F::TrailingComma);
             let node = self.finish(K::PrimaryAssociatedType, start, ty);
@@ -443,10 +453,10 @@ impl<S: SyntaxSink> State<'_, S> {
             return self.missing(K::MissingDecl);
         }
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         while !self.eof() && matches!(self.text(), "#if" | "#elseif" | "#else") {
             let start = self.start();
-            let mut clause = Vec::new();
+            let mut clause = self.children();
             let condition = !self.at("#else");
             self.take(&mut clause, F::PoundKeyword);
             if condition {
@@ -474,10 +484,10 @@ impl<S: SyntaxSink> State<'_, S> {
             return self.missing(K::MissingDecl);
         }
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         while !self.exhausted && (self.at("#if") || self.at("#elseif") || self.at("#else")) {
             let start = self.start();
-            let mut clause = Vec::new();
+            let mut clause = self.children();
             let has_condition = !self.at("#else");
             self.take(&mut clause, F::PoundKeyword);
             if has_condition {
@@ -495,7 +505,7 @@ impl<S: SyntaxSink> State<'_, S> {
 
     pub(super) fn initializer(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.take(&mut c, F::Equal);
         let value = self.expression(true);
         Self::add(&mut c, F::Value, value);
@@ -513,7 +523,7 @@ impl<S: SyntaxSink> State<'_, S> {
 
     fn pattern_inner(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         let kind = if self.binding_pattern() {
             self.kw(&mut c, F::BindingSpecifier);
             let pattern = self.pattern();
@@ -527,7 +537,7 @@ impl<S: SyntaxSink> State<'_, S> {
             while !self.eof() && !self.at(")") {
                 let before = self.pos;
                 let start = self.start();
-                let mut el = Vec::new();
+                let mut el = self.children();
                 if self.nth(1) == ":" {
                     self.take(&mut el, F::Label);
                     self.take(&mut el, F::Colon);
@@ -547,6 +557,7 @@ impl<S: SyntaxSink> State<'_, S> {
             self.take(&mut c, F::Identifier);
             K::IdentifierPattern
         } else {
+            self.recycle(c);
             return self.missing(K::MissingPattern);
         };
         self.finish(kind, start, c)
@@ -563,7 +574,7 @@ impl<S: SyntaxSink> State<'_, S> {
 
     fn matching_pattern_inner(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         if self.binding_pattern() {
             self.kw(&mut c, F::BindingSpecifier);
             let previous = self.binding_context;
@@ -583,6 +594,7 @@ impl<S: SyntaxSink> State<'_, S> {
             && !self.nth(1).starts_with(['?', '!'])
             && !self.at("_")
         {
+            self.recycle(c);
             return self.pattern();
         }
         if self.at("is") {
@@ -615,12 +627,12 @@ impl<S: SyntaxSink> State<'_, S> {
 
     fn inheritance(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.take(&mut c, F::Colon);
         loop {
             let before = self.pos;
             let start = self.start();
-            let mut ty = Vec::new();
+            let mut ty = self.children();
             let node = self.type_node();
             Self::add(&mut ty, F::Type, node);
             let comma = self.eat(",", &mut ty, F::TrailingComma);
@@ -635,12 +647,12 @@ impl<S: SyntaxSink> State<'_, S> {
 
     fn parameters(&mut self, enum_case: bool) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.expect("(", &mut c, F::LeftParen);
         while !self.eof() && !self.at(")") && !self.at("{") {
             let before = self.pos;
             let start = self.start();
-            let mut p = Vec::new();
+            let mut p = self.children();
             while !enum_case && self.at("@") {
                 let node = self.attribute();
                 Self::add(&mut p, F::Attributes, node);
@@ -697,7 +709,7 @@ impl<S: SyntaxSink> State<'_, S> {
             .parameter_modifier(closure)
         {
             let start = self.start();
-            let mut modifier = Vec::new();
+            let mut modifier = self.children();
             self.kw(&mut modifier, F::Name);
             let modifier = self.finish(K::DeclModifier, start, modifier);
             Self::add(c, F::Modifiers, modifier);
@@ -717,7 +729,7 @@ impl<S: SyntaxSink> State<'_, S> {
             return self.missing(K::MissingDecl);
         }
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.take(&mut c, F::AtSign);
         let accepts_arguments =
             super::lookahead::attribute_accepts_arguments(self.text(), type_context);
@@ -760,7 +772,7 @@ impl<S: SyntaxSink> State<'_, S> {
             } else if documentation {
                 while !self.eof() && !self.at(")") {
                     let start = self.start();
-                    let mut arg = Vec::new();
+                    let mut arg = self.children();
                     self.kw(&mut arg, F::Label);
                     self.expect(":", &mut arg, F::Colon);
                     if matches!(
@@ -784,7 +796,7 @@ impl<S: SyntaxSink> State<'_, S> {
             } else if objc {
                 while !self.eof() && !self.at(")") {
                     let start = self.start();
-                    let mut piece = Vec::new();
+                    let mut piece = self.children();
                     if !self.text().starts_with(':') {
                         self.take(&mut piece, F::Name);
                     }
@@ -815,11 +827,11 @@ impl<S: SyntaxSink> State<'_, S> {
 
     fn macro_role_argument(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut reference = Vec::new();
+        let mut reference = self.children();
         let name = self.bump_as(K::Identifier);
         Self::add(&mut reference, F::BaseName, name);
         let reference = self.finish(K::DeclReferenceExpr, start, reference);
-        let mut argument = Vec::new();
+        let mut argument = self.children();
         Self::add(&mut argument, F::Expression, reference);
         self.eat(",", &mut argument, F::TrailingComma);
         self.finish(K::LabeledExpr, start, argument)
@@ -833,7 +845,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 break;
             }
             let start = self.start();
-            let mut arg = Vec::new();
+            let mut arg = self.children();
             let availability = self.at("availability");
             let target = self.at("target");
             self.kw(
@@ -876,9 +888,10 @@ impl<S: SyntaxSink> State<'_, S> {
 
     fn structured_attribute_arguments(&mut self, kind: K) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         match kind {
             K::DifferentiableAttributeArguments | K::DerivativeAttributeArguments => {
+                self.recycle(c);
                 return self.differentiable_arguments(kind);
             }
             K::AbiAttributeArguments => {
@@ -916,7 +929,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 while !self.eof() && !self.at(")") {
                     let start = self.start();
                     let platform = self.platform_version();
-                    let mut item = Vec::new();
+                    let mut item = self.children();
                     Self::add(&mut item, F::PlatformVersion, platform);
                     let comma = self.eat(",", &mut item, F::TrailingComma);
                     let item = self.finish(K::PlatformVersionItem, start, item);
@@ -932,7 +945,7 @@ impl<S: SyntaxSink> State<'_, S> {
 
     fn differentiable_arguments(&mut self, kind: K) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         if kind == K::DerivativeAttributeArguments {
             self.kw(&mut c, F::OfLabel);
             self.expect(":", &mut c, F::Colon);
@@ -948,15 +961,15 @@ impl<S: SyntaxSink> State<'_, S> {
         }
         if self.at("wrt") {
             let wrt_start = self.start();
-            let mut wrt = Vec::new();
+            let mut wrt = self.children();
             self.kw(&mut wrt, F::WrtLabel);
             self.expect(":", &mut wrt, F::Colon);
             let start = self.start();
-            let mut arguments = Vec::new();
+            let mut arguments = self.children();
             let multiple = self.eat("(", &mut arguments, F::LeftParen);
             while !self.eof() && !self.at(")") {
                 let start = self.start();
-                let mut argument = Vec::new();
+                let mut argument = self.children();
                 self.take(&mut argument, F::Argument);
                 let comma = self.eat(",", &mut argument, F::TrailingComma);
                 let argument = self.finish(K::DifferentiabilityArgument, start, argument);
@@ -970,9 +983,8 @@ impl<S: SyntaxSink> State<'_, S> {
                 let arguments = self.finish(K::DifferentiabilityArguments, start, arguments);
                 Self::add(&mut wrt, F::Arguments, arguments);
             } else {
-                for child in arguments {
-                    wrt.push(child);
-                }
+                wrt.append(&mut arguments);
+                self.recycle(arguments);
             }
             let argument = self.finish(K::DifferentiabilityWithRespectToArgument, wrt_start, wrt);
             Self::add(&mut c, F::Arguments, argument);
@@ -999,9 +1011,9 @@ impl<S: SyntaxSink> State<'_, S> {
         while !self.eof() && !self.at(")") {
             let before = self.pos;
             let start = self.start();
-            let mut arg = Vec::new();
+            let mut arg = self.children();
             let argument = if self.nth(1) == ":" {
-                let mut labeled = Vec::new();
+                let mut labeled = self.children();
                 self.kw(&mut labeled, F::Label);
                 self.take(&mut labeled, F::Colon);
                 let value = if matches!(
@@ -1039,7 +1051,7 @@ impl<S: SyntaxSink> State<'_, S> {
 
     fn platform_version(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         let platform = self.bump_as(K::Identifier);
         Self::add(&mut c, F::Platform, platform);
         if matches!(self.token().kind, K::IntegerLiteral | K::FloatLiteral) {
@@ -1051,10 +1063,10 @@ impl<S: SyntaxSink> State<'_, S> {
 
     fn version(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
         if !matches!(self.token().kind, K::IntegerLiteral | K::FloatLiteral) {
             return self.missing(K::VersionTuple);
         }
+        let mut c = self.children();
         self.pos += 1;
         while self.at(".")
             && self
@@ -1070,7 +1082,7 @@ impl<S: SyntaxSink> State<'_, S> {
         let mut first = true;
         while offset < end {
             let component_start = offset;
-            let mut component = Vec::new();
+            let mut component = self.children();
             if !first {
                 let period = self.make(
                     K::Period,
@@ -1088,6 +1100,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 offset += 1;
             }
             if offset == number_start {
+                self.recycle(component);
                 break;
             }
             let number = self.make(
@@ -1099,6 +1112,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 Vec::new(),
             );
             if first {
+                self.recycle(component);
                 Self::add(&mut c, F::Major, number);
                 first = false;
             } else {
@@ -1119,7 +1133,7 @@ impl<S: SyntaxSink> State<'_, S> {
 
     fn accessors(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.take(&mut c, F::LeftBrace);
         if super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
             .accessor_declaration()
@@ -1130,19 +1144,20 @@ impl<S: SyntaxSink> State<'_, S> {
                     || super::lookahead::accessor_modifier(self.text()))
             {
                 let start = self.start();
-                let mut a = Vec::new();
+                let mut a = self.children();
                 while self.at("@") {
                     let node = self.attribute();
                     Self::add(&mut a, F::Attributes, node);
                 }
                 while super::lookahead::accessor_modifier(self.text()) {
                     let start = self.start();
-                    let mut m = Vec::new();
+                    let mut m = self.children();
                     self.kw(&mut m, F::Name);
                     let node = self.finish(K::DeclModifier, start, m);
                     Self::add(&mut a, F::Modifiers, node);
                 }
                 if !super::lookahead::accessor_keyword(self.text()) {
+                    self.recycle(a);
                     let node = self.recover();
                     Self::add(&mut c, F::Accessors, node);
                     break;
@@ -1150,7 +1165,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 self.kw(&mut a, F::AccessorSpecifier);
                 if self.at("(") {
                     let start = self.start();
-                    let mut p = Vec::new();
+                    let mut p = self.children();
                     self.take(&mut p, F::LeftParen);
                     self.take(&mut p, F::Name);
                     self.expect(")", &mut p, F::RightParen);

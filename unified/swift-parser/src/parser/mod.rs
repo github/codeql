@@ -1,5 +1,6 @@
 //! Recursive descent over trivia-free UTF-8 tokens. Nodes are committed directly
-//! to the sink; only operator chains keep a small, temporary handle stack.
+//! to the sink, recycling child buffers after each commit. Only operator chains
+//! keep a temporary expression stack.
 mod declarations;
 mod expressions;
 mod lexer;
@@ -7,6 +8,8 @@ mod lookahead;
 mod operators;
 mod statements;
 mod types;
+
+use std::borrow::Cow;
 
 use crate::{
     Child, Diagnostic, FieldKind as F, NodeFlags, ParseError, Span, SyntaxKind as K, SyntaxSink,
@@ -44,22 +47,24 @@ pub(crate) fn parse<S: SyntaxSink>(
         binding_context: false,
         condition_line: false,
         attribute_arguments: false,
+        child_buffers: Vec::new(),
     };
     let start = parser.start();
-    let mut children = Vec::new();
+    let mut children = parser.children();
     if parser.at_kind(K::Shebang) {
         parser.take(&mut children, F::Shebang);
     }
     parser.items(&mut children, F::Statements, false, false);
     while !parser.eof() && !parser.exhausted {
         let node = parser.recover();
-        let mut item = Vec::new();
+        let mut item = parser.children();
         State::<S>::add(&mut item, F::Item, node);
         let node = parser.make(K::CodeBlockItem, node.span, item);
         State::<S>::add(&mut children, F::Statements, node);
         parser.items(&mut children, F::Statements, false, false);
     }
     if parser.exhausted {
+        parser.recycle(children);
         return Err(ParseError::NestingLimit);
     }
     parser.take(&mut children, F::EndOfFileToken);
@@ -86,17 +91,25 @@ struct State<'a, S: SyntaxSink> {
     last_end: usize,
     depth: usize,
     exhausted: bool,
-    operators: operators::OperatorTable,
+    operators: Cow<'static, operators::OperatorTable>,
     pattern_context: bool,
     binding_context: bool,
     condition_line: bool,
     attribute_arguments: bool,
+    // Sink handle types can differ between files, so buffers belong to this parse.
+    child_buffers: Vec<Children<S::Node>>,
 }
 
+#[expect(
+    clippy::inline_always,
+    reason = "Specialize literal token checks through the small cursor accessors"
+)]
 impl<S: SyntaxSink> State<'_, S> {
+    #[inline(always)]
     fn token(&self) -> Token {
         self.tokens[self.pos.min(self.tokens.len() - 1)]
     }
+    #[inline(always)]
     fn text(&self) -> &str {
         if self.exhausted {
             return "";
@@ -104,32 +117,54 @@ impl<S: SyntaxSink> State<'_, S> {
         let s = self.token().span;
         &self.source[s.start..s.end]
     }
+    #[inline(always)]
     fn nth(&self, n: usize) -> &str {
         self.tokens
             .get(self.pos + n)
             .map_or("", |t| &self.source[t.span.start..t.span.end])
     }
+    // Keep literal token checks at their call sites so equality can use the
+    // known length and bytes instead of a generic string comparison.
+    #[inline(always)]
     fn at(&self, text: &str) -> bool {
         self.text() == text
     }
+    #[inline(always)]
     fn at_kind(&self, kind: K) -> bool {
         self.token().kind == kind
     }
+    #[inline(always)]
     fn eof(&self) -> bool {
         self.exhausted || self.at_kind(K::EndOfFile)
     }
+    #[inline(always)]
     fn start(&self) -> usize {
         self.token().span.start
     }
+    #[inline(always)]
     fn end(&self) -> usize {
         self.last_end
     }
+    #[inline(always)]
     fn newline(&self) -> bool {
         self.token().newline
     }
+    fn children(&mut self) -> Children<S::Node> {
+        self.child_buffers.pop().unwrap_or_default()
+    }
+
+    fn recycle(&mut self, mut children: Children<S::Node>) {
+        // Keep allocations for another production, but do not pool
+        // allocation-free token buffers.
+        if children.capacity() != 0 {
+            children.clear();
+            self.child_buffers.push(children);
+        }
+    }
+
     fn make(&mut self, kind: K, span: Span, children: Children<S::Node>) -> Node<S::Node> {
         let id = self.sink.node(kind, span, NodeFlags::default(), &children);
-        drop(children);
+        self.recycle(children);
         Node { id, kind, span }
     }
     fn finish(&mut self, kind: K, start: usize, children: Children<S::Node>) -> Node<S::Node> {
@@ -306,9 +341,10 @@ impl<S: SyntaxSink> State<'_, S> {
         {
             let before = self.pos;
             let start = self.start();
-            let mut item = Vec::new();
+            let mut item = self.children();
             let mut node = self.item(member);
             if self.exhausted {
+                self.recycle(item);
                 return;
             }
             if self.pos == before {
@@ -330,7 +366,7 @@ impl<S: SyntaxSink> State<'_, S> {
     }
     fn block(&mut self, member: bool) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.expect("{", &mut c, F::LeftBrace);
         if self.enter() {
             self.items(

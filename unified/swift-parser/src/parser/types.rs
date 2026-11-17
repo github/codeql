@@ -31,12 +31,12 @@ impl<S: SyntaxSink> State<'_, S> {
 
     fn type_specifier(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         let kind = if self.at("nonisolated") {
             self.kw(&mut c, F::NonisolatedKeyword);
             if self.at("(") && self.nth(1) == "nonsending" {
                 let start = self.start();
-                let mut arg = Vec::new();
+                let mut arg = self.children();
                 self.take(&mut arg, F::LeftParen);
                 self.kw(&mut arg, F::NonsendingKeyword);
                 self.expect(")", &mut arg, F::RightParen);
@@ -53,7 +53,7 @@ impl<S: SyntaxSink> State<'_, S> {
 
     pub(super) fn attribute_name(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         if let Some(selector) = self.module_selector() {
             Self::add(&mut c, F::ModuleSelector, selector);
         }
@@ -65,7 +65,7 @@ impl<S: SyntaxSink> State<'_, S> {
         }
         let mut node = self.finish(K::IdentifierType, start, c);
         while self.at(".") {
-            let mut c = Vec::new();
+            let mut c = self.children();
             Self::add(&mut c, F::BaseType, node);
             self.take(&mut c, F::Period);
             if let Some(selector) = self.module_selector() {
@@ -92,7 +92,7 @@ impl<S: SyntaxSink> State<'_, S> {
             return self.missing(K::MissingType);
         }
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         let mut node = if self.at("~") {
             self.take(&mut c, F::WithoutTilde);
             let ty = self.type_with_composition(false, members, optional_suffixes);
@@ -190,7 +190,7 @@ impl<S: SyntaxSink> State<'_, S> {
             while !self.eof() && !self.at(")") {
                 let before = self.pos;
                 let start = self.start();
-                let mut el = Vec::new();
+                let mut el = self.children();
                 if self.labels_before_colon() {
                     let name = self.bump_as(self.token().kind);
                     Self::add(&mut el, F::FirstName, name);
@@ -260,6 +260,7 @@ impl<S: SyntaxSink> State<'_, S> {
             }
             self.finish(K::IdentifierType, start, c)
         } else {
+            self.recycle(c);
             self.missing(K::MissingType)
         };
         loop {
@@ -267,7 +268,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 break;
             }
             let start = node.span.start;
-            let mut c = Vec::new();
+            let mut c = self.children();
             let kind = if self.at(".")
                 && (members
                     || (optional_suffixes == OptionalSuffix::All
@@ -326,6 +327,7 @@ impl<S: SyntaxSink> State<'_, S> {
                     K::ImplicitlyUnwrappedOptionalType
                 }
             } else {
+                self.recycle(c);
                 break;
             };
             node = self.finish(kind, start, c);
@@ -337,7 +339,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 if self.exhausted {
                     break;
                 }
-                let mut c = Vec::new();
+                let mut c = self.children();
                 Self::add(&mut c, F::Type, node);
                 let more = if self.at("&") {
                     let op = self.bump_as(K::BinaryOperator);
@@ -360,7 +362,7 @@ impl<S: SyntaxSink> State<'_, S> {
                     },
                 );
             }
-            let mut c = Vec::new();
+            let mut c = self.children();
             for el in elements {
                 Self::add(&mut c, F::Elements, el);
             }
@@ -392,7 +394,7 @@ impl<S: SyntaxSink> State<'_, S> {
             return None;
         }
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         let name = self.bump_as(K::Identifier);
         Self::add(&mut c, F::ModuleName, name);
         self.take(&mut c, F::ColonColon);
@@ -423,12 +425,12 @@ impl<S: SyntaxSink> State<'_, S> {
 
     pub(super) fn generic_arguments(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.angle(true, &mut c);
         while !self.eof() && !self.text().starts_with('>') {
             let before = self.pos;
             let start = self.start();
-            let mut arg = Vec::new();
+            let mut arg = self.children();
             let ty = self.generic_argument();
             Self::add(&mut arg, F::Argument, ty);
             let comma = self.eat(",", &mut arg, F::TrailingComma);
@@ -450,7 +452,7 @@ impl<S: SyntaxSink> State<'_, S> {
         for field in [F::Count, F::Element] {
             let start = self.start();
             let value = self.generic_argument();
-            let mut argument = Vec::new();
+            let mut argument = self.children();
             Self::add(&mut argument, F::Argument, value);
             let node = self.finish(K::GenericArgument, start, argument);
             Self::add(&mut c, field, node);
@@ -474,11 +476,11 @@ impl<S: SyntaxSink> State<'_, S> {
         let start = self.start();
         let minus = negative.then(|| self.bump_as(K::PrefixOperator));
         let literal_start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.take(&mut c, F::Literal);
         let literal = self.finish(K::IntegerLiteralExpr, literal_start, c);
         if let Some(minus) = minus {
-            let mut c = Vec::new();
+            let mut c = self.children();
             Self::add(&mut c, F::Operator, minus);
             Self::add(&mut c, F::Expression, literal);
             self.finish(K::PrefixOperatorExpr, start, c)
@@ -489,12 +491,12 @@ impl<S: SyntaxSink> State<'_, S> {
 
     pub(super) fn generic_parameters(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.angle(true, &mut c);
         while !self.eof() && !self.text().starts_with('>') {
             let before = self.pos;
             let start = self.start();
-            let mut p = Vec::new();
+            let mut p = self.children();
             if self.at("each") || self.at("let") {
                 self.kw(&mut p, F::Specifier);
             }
@@ -521,7 +523,7 @@ impl<S: SyntaxSink> State<'_, S> {
 
     pub(super) fn return_clause(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.expect("->", &mut c, F::Arrow);
         let ty = self.type_node();
         Self::add(&mut c, F::Type, ty);
@@ -533,7 +535,7 @@ impl<S: SyntaxSink> State<'_, S> {
             return None;
         }
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         if self.at("async") || self.at("reasync") {
             self.kw(&mut c, F::AsyncSpecifier);
         }
@@ -546,7 +548,7 @@ impl<S: SyntaxSink> State<'_, S> {
 
     pub(super) fn throws_clause(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.kw(&mut c, F::ThrowsSpecifier);
         if self.eat("(", &mut c, F::LeftParen) {
             let ty = self.type_node();
@@ -558,7 +560,7 @@ impl<S: SyntaxSink> State<'_, S> {
 
     pub(super) fn annotation(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.take(&mut c, F::Colon);
         let ty = self.type_node();
         Self::add(&mut c, F::Type, ty);
@@ -567,13 +569,13 @@ impl<S: SyntaxSink> State<'_, S> {
 
     pub(super) fn where_clause(&mut self) -> Node<S::Node> {
         let start = self.start();
-        let mut c = Vec::new();
+        let mut c = self.children();
         self.kw(&mut c, F::WhereKeyword);
         loop {
             let before = self.pos;
             let start = self.start();
-            let mut req = Vec::new();
-            let mut inner = Vec::new();
+            let mut req = self.children();
+            let mut inner = self.children();
             let left = self.generic_argument();
             let same = self.at("==");
             let layout = self.at(":")
