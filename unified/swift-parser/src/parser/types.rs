@@ -1,72 +1,189 @@
 use super::{Children, F, K, Node, Span, State, SyntaxSink};
 
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum OptionalSuffix {
+    None,
+    All,
+    BeforeMember,
+    BeforeComposition,
+}
+
 impl<S: SyntaxSink> State<'_, S> {
     #[allow(clippy::too_many_lines)]
     pub(super) fn type_node(&mut self) -> Node<S::Node> {
-        self.type_with_composition(true)
+        self.type_with_composition(true, true, OptionalSuffix::All)
+    }
+    pub(super) fn type_root(&mut self) -> Node<S::Node> {
+        self.type_with_composition(false, false, OptionalSuffix::None)
+    }
+    pub(super) fn key_path_root(&mut self) -> Node<S::Node> {
+        self.type_with_composition(false, false, OptionalSuffix::All)
+    }
+
+    fn at_type_specifier(&self) -> bool {
+        (super::lookahead::simple_type_specifier(self.text())
+            || (self.at("nonisolated")
+                && !(self.nth(1) == "("
+                    && self.tokens.get(self.pos + 1).is_some_and(|t| t.newline))))
+            && super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
+                .can_have_parameter_specifier()
+    }
+
+    fn type_specifier(&mut self) -> Node<S::Node> {
+        let start = self.start();
+        let mut c = Vec::new();
+        let kind = if self.at("nonisolated") {
+            self.kw(&mut c, F::NonisolatedKeyword);
+            if self.at("(") && self.nth(1) == "nonsending" {
+                let start = self.start();
+                let mut arg = Vec::new();
+                self.take(&mut arg, F::LeftParen);
+                self.kw(&mut arg, F::NonsendingKeyword);
+                self.expect(")", &mut arg, F::RightParen);
+                let arg = self.finish(K::NonisolatedSpecifierArgument, start, arg);
+                Self::add(&mut c, F::Argument, arg);
+            }
+            K::NonisolatedTypeSpecifier
+        } else {
+            self.kw(&mut c, F::Specifier);
+            K::SimpleTypeSpecifier
+        };
+        self.finish(kind, start, c)
+    }
+
+    pub(super) fn attribute_name(&mut self) -> Node<S::Node> {
+        let start = self.start();
+        let mut c = Vec::new();
+        if let Some(selector) = self.module_selector() {
+            Self::add(&mut c, F::ModuleSelector, selector);
+        }
+        let name = self.bump_as(K::Identifier);
+        Self::add(&mut c, F::Name, name);
+        if self.text().starts_with('<') {
+            let args = self.generic_arguments();
+            Self::add(&mut c, F::GenericArgumentClause, args);
+        }
+        let mut node = self.finish(K::IdentifierType, start, c);
+        while self.at(".") {
+            let mut c = Vec::new();
+            Self::add(&mut c, F::BaseType, node);
+            self.take(&mut c, F::Period);
+            if let Some(selector) = self.module_selector() {
+                Self::add(&mut c, F::ModuleSelector, selector);
+            }
+            self.take(&mut c, F::Name);
+            if self.text().starts_with('<') {
+                let args = self.generic_arguments();
+                Self::add(&mut c, F::GenericArgumentClause, args);
+            }
+            node = self.finish(K::MemberType, start, c);
+        }
+        node
     }
 
     #[allow(clippy::too_many_lines)]
-    fn type_with_composition(&mut self, composition: bool) -> Node<S::Node> {
+    fn type_with_composition(
+        &mut self,
+        composition: bool,
+        members: bool,
+        optional_suffixes: OptionalSuffix,
+    ) -> Node<S::Node> {
         if !self.enter() {
             return self.missing(K::MissingType);
         }
         let start = self.start();
         let mut c = Vec::new();
-        let mut node = if self.at("@")
-            || matches!(
-                self.text(),
-                "inout"
-                    | "borrowing"
-                    | "consuming"
-                    | "isolated"
-                    | "sending"
-                    | "__owned"
-                    | "__shared"
-            ) {
-            while self.at("@") {
-                let attr = self.attribute();
-                Self::add(&mut c, F::Attributes, attr);
+        let mut node = if self.at("~") {
+            self.take(&mut c, F::WithoutTilde);
+            let ty = self.type_with_composition(false, members, optional_suffixes);
+            Self::add(&mut c, F::Type, ty);
+            self.finish(K::SuppressedType, start, c)
+        } else if self.at("repeat") || self.at("each") {
+            let expansion = self.at("repeat");
+            self.kw(
+                &mut c,
+                if expansion {
+                    F::RepeatKeyword
+                } else {
+                    F::EachKeyword
+                },
+            );
+            let pattern = self.type_node();
+            Self::add(
+                &mut c,
+                if expansion {
+                    F::RepetitionPattern
+                } else {
+                    F::Pack
+                },
+                pattern,
+            );
+            self.finish(
+                if expansion {
+                    K::PackExpansionType
+                } else {
+                    K::PackElementType
+                },
+                start,
+                c,
+            )
+        } else if self.at("@") || self.at_type_specifier() {
+            let mut attributes = false;
+            while self.at_type_specifier() || self.at("@") {
+                if self.at("@") {
+                    attributes = true;
+                    let attr = self.type_attribute();
+                    Self::add(&mut c, F::Attributes, attr);
+                    continue;
+                }
+                let spec = self.type_specifier();
+                Self::add(
+                    &mut c,
+                    if attributes {
+                        F::LateSpecifiers
+                    } else {
+                        F::Specifiers
+                    },
+                    spec,
+                );
             }
-            while matches!(
-                self.text(),
-                "inout"
-                    | "borrowing"
-                    | "consuming"
-                    | "isolated"
-                    | "sending"
-                    | "__owned"
-                    | "__shared"
-            ) {
-                let start = self.start();
-                let mut spec = Vec::new();
-                self.kw(&mut spec, F::Specifier);
-                let spec = self.finish(K::SimpleTypeSpecifier, start, spec);
-                Self::add(&mut c, F::Specifiers, spec);
-            }
+
             let base = self.type_node();
             Self::add(&mut c, F::BaseType, base);
             self.finish(K::AttributedType, start, c)
         } else if self.at("some") || self.at("any") {
             self.kw(&mut c, F::SomeOrAnySpecifier);
-            let constraint = self.type_node();
+            let constraint =
+                self.type_with_composition(true, members, OptionalSuffix::BeforeMember);
             Self::add(&mut c, F::Constraint, constraint);
             self.finish(K::SomeOrAnyType, start, c)
         } else if self.at("[") {
             self.take(&mut c, F::LeftSquare);
-            let first = self.type_node();
-            let kind = if self.at(":") {
-                Self::add(&mut c, F::Key, first);
-                self.take(&mut c, F::Colon);
-                let value = self.type_node();
-                Self::add(&mut c, F::Value, value);
-                K::DictionaryType
+            if super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
+                .inline_array_start()
+            {
+                self.inline_array_type(start, c)
             } else {
-                Self::add(&mut c, F::Element, first);
-                K::ArrayType
-            };
-            self.expect("]", &mut c, F::RightSquare);
-            self.finish(kind, start, c)
+                let first = self.type_node();
+                let kind = if self.at(":") {
+                    Self::add(&mut c, F::Key, first);
+                    self.take(&mut c, F::Colon);
+                    let value = self.type_node();
+                    Self::add(&mut c, F::Value, value);
+                    K::DictionaryType
+                } else {
+                    Self::add(&mut c, F::Element, first);
+                    K::ArrayType
+                };
+                self.expect("]", &mut c, F::RightSquare);
+                self.finish(kind, start, c)
+            }
+        } else if self.text().starts_with('<') {
+            let parameters = self.generic_parameters();
+            Self::add(&mut c, F::GenericParameterClause, parameters);
+            let ty = self.type_node();
+            Self::add(&mut c, F::Type, ty);
+            self.finish(K::NamedOpaqueReturnType, start, c)
         } else if self.at("(") {
             self.take(&mut c, F::LeftParen);
             let mut elements = Vec::new();
@@ -75,9 +192,11 @@ impl<S: SyntaxSink> State<'_, S> {
                 let start = self.start();
                 let mut el = Vec::new();
                 if self.labels_before_colon() {
-                    self.take(&mut el, F::FirstName);
+                    let name = self.bump_as(self.token().kind);
+                    Self::add(&mut el, F::FirstName, name);
                     if !self.at(":") {
-                        self.take(&mut el, F::SecondName);
+                        let name = self.bump_as(self.token().kind);
+                        Self::add(&mut el, F::SecondName, name);
                     }
                     self.expect(":", &mut el, F::Colon);
                 }
@@ -123,12 +242,19 @@ impl<S: SyntaxSink> State<'_, S> {
             self.kw(&mut c, F::ClassKeyword);
             self.finish(K::ClassRestrictionType, start, c)
         } else if self.at_kind(K::Identifier) || self.at_kind(K::Wildcard) {
-            if matches!(self.text(), "Any" | "Self") {
+            let selector = self.module_selector();
+            if let Some(selector) = selector {
+                Self::add(&mut c, F::ModuleSelector, selector);
+            }
+            if selector.is_none() && matches!(self.text(), "Any" | "Self") {
                 self.kw(&mut c, F::Name);
+            } else if selector.is_some() {
+                let name = self.bump_as(K::Identifier);
+                Self::add(&mut c, F::Name, name);
             } else {
                 self.take(&mut c, F::Name);
             }
-            if self.at("<") {
+            if self.text().starts_with('<') {
                 let args = self.generic_arguments();
                 Self::add(&mut c, F::GenericArgumentClause, args);
             }
@@ -142,21 +268,39 @@ impl<S: SyntaxSink> State<'_, S> {
             }
             let start = node.span.start;
             let mut c = Vec::new();
-            let kind = if self.at(".") {
+            let kind = if self.at(".")
+                && (members
+                    || (optional_suffixes == OptionalSuffix::All
+                        && matches!(self.nth(1), "Type" | "Protocol")))
+            {
                 Self::add(&mut c, F::BaseType, node);
                 self.take(&mut c, F::Period);
-                if self.at("Type") || self.at("Protocol") {
+                let selector = self.module_selector();
+                if let Some(selector) = selector {
+                    Self::add(&mut c, F::ModuleSelector, selector);
+                }
+                if selector.is_none() && (self.at("Type") || self.at("Protocol")) {
                     self.kw(&mut c, F::MetatypeSpecifier);
                     K::MetatypeType
                 } else {
-                    self.take(&mut c, F::Name);
-                    if self.at("<") {
+                    if selector.is_some() {
+                        let name = self.bump_as(K::Identifier);
+                        Self::add(&mut c, F::Name, name);
+                    } else {
+                        self.take(&mut c, F::Name);
+                    }
+                    if self.text().starts_with('<') {
                         let args = self.generic_arguments();
                         Self::add(&mut c, F::GenericArgumentClause, args);
                     }
                     K::MemberType
                 }
-            } else if self.text().starts_with(['?', '!']) {
+            } else if self.optional_suffix_allowed(optional_suffixes)
+                && self.text().starts_with(['?', '!'])
+                && !self.spaced_before()
+                && !(self.at("??") && self.at_kind(K::BinaryOperator))
+                && !self.text().starts_with("!=")
+            {
                 let optional = self.text().starts_with('?');
                 Self::add(&mut c, F::WrappedType, node);
                 let token = self.token_prefix(
@@ -206,7 +350,15 @@ impl<S: SyntaxSink> State<'_, S> {
                 if !more {
                     break;
                 }
-                node = self.type_with_composition(false);
+                node = self.type_with_composition(
+                    false,
+                    members,
+                    if optional_suffixes == OptionalSuffix::BeforeMember {
+                        OptionalSuffix::BeforeComposition
+                    } else {
+                        optional_suffixes
+                    },
+                );
             }
             let mut c = Vec::new();
             for el in elements {
@@ -218,7 +370,36 @@ impl<S: SyntaxSink> State<'_, S> {
         node
     }
 
-    fn angle(&mut self, left: bool, c: &mut Children<S::Node>) {
+    fn optional_suffix_allowed(&self, suffixes: OptionalSuffix) -> bool {
+        match suffixes {
+            OptionalSuffix::None => false,
+            OptionalSuffix::All => true,
+            OptionalSuffix::BeforeMember => self.nth(1) == "." && self.text().len() == 1,
+            OptionalSuffix::BeforeComposition => {
+                let mut offset = 0;
+                while !self.nth(offset).is_empty()
+                    && self.nth(offset).chars().all(|c| matches!(c, '?' | '!'))
+                {
+                    offset += 1;
+                }
+                matches!(self.nth(offset), "." | "&")
+            }
+        }
+    }
+
+    pub(super) fn module_selector(&mut self) -> Option<Node<S::Node>> {
+        if self.nth(1) != "::" {
+            return None;
+        }
+        let start = self.start();
+        let mut c = Vec::new();
+        let name = self.bump_as(K::Identifier);
+        Self::add(&mut c, F::ModuleName, name);
+        self.take(&mut c, F::ColonColon);
+        Some(self.finish(K::ModuleSelector, start, c))
+    }
+
+    pub(super) fn angle(&mut self, left: bool, c: &mut Children<S::Node>) {
         let text = if left { "<" } else { ">" };
         if self.text().starts_with(text) {
             let token = self.token();
@@ -248,7 +429,7 @@ impl<S: SyntaxSink> State<'_, S> {
             let before = self.pos;
             let start = self.start();
             let mut arg = Vec::new();
-            let ty = self.type_node();
+            let ty = self.generic_argument();
             Self::add(&mut arg, F::Argument, ty);
             let comma = self.eat(",", &mut arg, F::TrailingComma);
             let node = self.finish(K::GenericArgument, start, arg);
@@ -261,6 +442,51 @@ impl<S: SyntaxSink> State<'_, S> {
         self.finish(K::GenericArgumentClause, start, c)
     }
 
+    pub(super) fn inline_array_type(
+        &mut self,
+        start: usize,
+        mut c: Children<S::Node>,
+    ) -> Node<S::Node> {
+        for field in [F::Count, F::Element] {
+            let start = self.start();
+            let value = self.generic_argument();
+            let mut argument = Vec::new();
+            Self::add(&mut argument, F::Argument, value);
+            let node = self.finish(K::GenericArgument, start, argument);
+            Self::add(&mut c, field, node);
+            if field == F::Count {
+                self.kw(&mut c, F::Separator);
+            }
+        }
+        self.expect("]", &mut c, F::RightSquare);
+        self.finish(K::InlineArrayType, start, c)
+    }
+
+    fn generic_argument(&mut self) -> Node<S::Node> {
+        let negative = self.at("-")
+            && self
+                .tokens
+                .get(self.pos + 1)
+                .is_some_and(|t| t.kind == K::IntegerLiteral);
+        if !self.at_kind(K::IntegerLiteral) && !negative {
+            return self.type_node();
+        }
+        let start = self.start();
+        let minus = negative.then(|| self.bump_as(K::PrefixOperator));
+        let literal_start = self.start();
+        let mut c = Vec::new();
+        self.take(&mut c, F::Literal);
+        let literal = self.finish(K::IntegerLiteralExpr, literal_start, c);
+        if let Some(minus) = minus {
+            let mut c = Vec::new();
+            Self::add(&mut c, F::Operator, minus);
+            Self::add(&mut c, F::Expression, literal);
+            self.finish(K::PrefixOperatorExpr, start, c)
+        } else {
+            literal
+        }
+    }
+
     pub(super) fn generic_parameters(&mut self) -> Node<S::Node> {
         let start = self.start();
         let mut c = Vec::new();
@@ -269,10 +495,11 @@ impl<S: SyntaxSink> State<'_, S> {
             let before = self.pos;
             let start = self.start();
             let mut p = Vec::new();
-            if self.at("each") {
+            if self.at("each") || self.at("let") {
                 self.kw(&mut p, F::Specifier);
             }
-            self.take(&mut p, F::Name);
+            let name = self.bump_as(K::Identifier);
+            Self::add(&mut p, F::Name, name);
             if self.eat(":", &mut p, F::Colon) {
                 let ty = self.type_node();
                 Self::add(&mut p, F::InheritedType, ty);
@@ -283,6 +510,10 @@ impl<S: SyntaxSink> State<'_, S> {
             if !comma || before == self.pos {
                 break;
             }
+        }
+        if self.at("where") {
+            let requirements = self.where_clause();
+            Self::add(&mut c, F::GenericWhereClause, requirements);
         }
         self.angle(false, &mut c);
         self.finish(K::GenericParameterClause, start, c)
@@ -307,18 +538,22 @@ impl<S: SyntaxSink> State<'_, S> {
             self.kw(&mut c, F::AsyncSpecifier);
         }
         if self.at("throws") || self.at("rethrows") {
-            let start = self.start();
-            let mut t = Vec::new();
-            self.kw(&mut t, F::ThrowsSpecifier);
-            if self.eat("(", &mut t, F::LeftParen) {
-                let ty = self.type_node();
-                Self::add(&mut t, F::Type, ty);
-                self.expect(")", &mut t, F::RightParen);
-            }
-            let node = self.finish(K::ThrowsClause, start, t);
+            let node = self.throws_clause();
             Self::add(&mut c, F::ThrowsClause, node);
         }
         Some(self.finish(kind, start, c))
+    }
+
+    pub(super) fn throws_clause(&mut self) -> Node<S::Node> {
+        let start = self.start();
+        let mut c = Vec::new();
+        self.kw(&mut c, F::ThrowsSpecifier);
+        if self.eat("(", &mut c, F::LeftParen) {
+            let ty = self.type_node();
+            Self::add(&mut c, F::Type, ty);
+            self.expect(")", &mut c, F::RightParen);
+        }
+        self.finish(K::ThrowsClause, start, c)
     }
 
     pub(super) fn annotation(&mut self) -> Node<S::Node> {
@@ -339,15 +574,47 @@ impl<S: SyntaxSink> State<'_, S> {
             let start = self.start();
             let mut req = Vec::new();
             let mut inner = Vec::new();
-            let left = self.type_node();
-            Self::add(&mut inner, F::LeftType, left);
+            let left = self.generic_argument();
             let same = self.at("==");
+            let layout = self.at(":")
+                && matches!(
+                    self.nth(1),
+                    "_Trivial"
+                        | "_TrivialAtMost"
+                        | "_UnknownLayout"
+                        | "_RefCountedObject"
+                        | "_NativeRefCountedObject"
+                        | "_Class"
+                        | "_NativeClass"
+                        | "_BridgeObject"
+                        | "_TrivialStride"
+                );
+            Self::add(&mut inner, if layout { F::Type } else { F::LeftType }, left);
             self.take(&mut inner, if same { F::Equal } else { F::Colon });
-            let right = self.type_node();
-            Self::add(&mut inner, F::RightType, right);
+            if layout {
+                self.kw(&mut inner, F::LayoutSpecifier);
+                if self.eat("(", &mut inner, F::LeftParen) {
+                    if self.at_kind(K::IntegerLiteral) {
+                        self.take(&mut inner, F::Size);
+                    }
+                    if self.eat(",", &mut inner, F::Comma) {
+                        self.take(&mut inner, F::Alignment);
+                    }
+                    self.expect(")", &mut inner, F::RightParen);
+                }
+            } else {
+                let right = if same {
+                    self.generic_argument()
+                } else {
+                    self.type_node()
+                };
+                Self::add(&mut inner, F::RightType, right);
+            }
             let node = self.finish(
                 if same {
                     K::SameTypeRequirement
+                } else if layout {
+                    K::LayoutRequirement
                 } else {
                     K::ConformanceRequirement
                 },

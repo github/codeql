@@ -1,0 +1,158 @@
+{
+  "$end": 40,
+  "$hasError": true,
+  "$lineStarts": [
+    0,
+    21,
+    40
+  ],
+  "$pos": 0,
+  "endOfFileToken": {
+    "$end": 40,
+    "$pos": 40,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": [
+    {
+      "$end": 20,
+      "$pos": 0,
+      "item": {
+        "$end": 20,
+        "$pos": 0,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 3,
+          "$pos": 0,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 20,
+            "$pos": 4,
+            "initializer": {
+              "$end": 20,
+              "$pos": 11,
+              "equal": {
+                "$end": 12,
+                "$pos": 11,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 20,
+                "$pos": 13,
+                "kind": "stringLiteralExpr",
+                "openingQuote": {
+                  "$end": 14,
+                  "$pos": 13,
+                  "kind": "token",
+                  "text": "\"",
+                  "tokenKind": "stringQuote"
+                },
+                "segments": [
+                  {
+                    "$end": 20,
+                    "$pos": 14,
+                    "content": {
+                      "$end": 20,
+                      "$pos": 14,
+                      "kind": "token",
+                      "text": "\\u{bad",
+                      "tokenKind": "stringSegment(\"\\\\u{bad\")"
+                    },
+                    "kind": "stringSegment"
+                  }
+                ]
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 10,
+              "$pos": 4,
+              "identifier": {
+                "$end": 10,
+                "$pos": 4,
+                "kind": "token",
+                "text": "broken",
+                "tokenKind": "identifier(\"broken\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 39,
+      "$pos": 21,
+      "item": {
+        "$end": 39,
+        "$pos": 21,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 24,
+          "$pos": 21,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 39,
+            "$pos": 25,
+            "initializer": {
+              "$end": 39,
+              "$pos": 35,
+              "equal": {
+                "$end": 36,
+                "$pos": 35,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 39,
+                "$pos": 37,
+                "kind": "integerLiteralExpr",
+                "literal": {
+                  "$end": 39,
+                  "$pos": 37,
+                  "kind": "token",
+                  "text": "42",
+                  "tokenKind": "integerLiteral(\"42\")"
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 34,
+              "$pos": 25,
+              "identifier": {
+                "$end": 34,
+                "$pos": 25,
+                "kind": "token",
+                "text": "recovered",
+                "tokenKind": "identifier(\"recovered\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    }
+  ]
+}

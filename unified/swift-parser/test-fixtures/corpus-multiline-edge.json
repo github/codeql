@@ -1,0 +1,612 @@
+{
+  "$end": 201,
+  "$hasError": false,
+  "$lineStarts": [
+    0,
+    16,
+    24,
+    47,
+    60,
+    68,
+    87,
+    109,
+    117,
+    139,
+    154,
+    164,
+    182,
+    194,
+    201
+  ],
+  "$pos": 0,
+  "endOfFileToken": {
+    "$end": 201,
+    "$pos": 201,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": [
+    {
+      "$end": 23,
+      "$pos": 0,
+      "item": {
+        "$end": 23,
+        "$pos": 0,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 3,
+          "$pos": 0,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 23,
+            "$pos": 4,
+            "initializer": {
+              "$end": 23,
+              "$pos": 10,
+              "equal": {
+                "$end": 11,
+                "$pos": 10,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 23,
+                "$pos": 12,
+                "closingQuote": {
+                  "$end": 23,
+                  "$pos": 20,
+                  "kind": "token",
+                  "text": "\"\"\"",
+                  "tokenKind": "multilineStringQuote"
+                },
+                "kind": "stringLiteralExpr",
+                "openingQuote": {
+                  "$end": 15,
+                  "$pos": 12,
+                  "kind": "token",
+                  "text": "\"\"\"",
+                  "tokenKind": "multilineStringQuote"
+                },
+                "segments": []
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 9,
+              "$pos": 4,
+              "identifier": {
+                "$end": 9,
+                "$pos": 4,
+                "kind": "token",
+                "text": "empty",
+                "tokenKind": "identifier(\"empty\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 67,
+      "$pos": 24,
+      "item": {
+        "$end": 67,
+        "$pos": 24,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 27,
+          "$pos": 24,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 67,
+            "$pos": 28,
+            "initializer": {
+              "$end": 67,
+              "$pos": 41,
+              "equal": {
+                "$end": 42,
+                "$pos": 41,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 67,
+                "$pos": 43,
+                "closingQuote": {
+                  "$end": 67,
+                  "$pos": 64,
+                  "kind": "token",
+                  "text": "\"\"\"",
+                  "tokenKind": "multilineStringQuote"
+                },
+                "kind": "stringLiteralExpr",
+                "openingQuote": {
+                  "$end": 46,
+                  "$pos": 43,
+                  "kind": "token",
+                  "text": "\"\"\"",
+                  "tokenKind": "multilineStringQuote"
+                },
+                "segments": [
+                  {
+                    "$end": 51,
+                    "$pos": 51,
+                    "content": {
+                      "$end": 51,
+                      "$pos": 51,
+                      "kind": "token",
+                      "text": "",
+                      "tokenKind": "stringSegment(\"\")"
+                    },
+                    "kind": "stringSegment"
+                  },
+                  {
+                    "$end": 59,
+                    "$pos": 51,
+                    "backslash": {
+                      "$end": 52,
+                      "$pos": 51,
+                      "kind": "token",
+                      "text": "\\",
+                      "tokenKind": "backslash"
+                    },
+                    "expressions": [
+                      {
+                        "$end": 58,
+                        "$pos": 53,
+                        "expression": {
+                          "$end": 58,
+                          "$pos": 53,
+                          "baseName": {
+                            "$end": 58,
+                            "$pos": 53,
+                            "kind": "token",
+                            "text": "value",
+                            "tokenKind": "identifier(\"value\")"
+                          },
+                          "kind": "declReferenceExpr"
+                        },
+                        "kind": "labeledExpr"
+                      }
+                    ],
+                    "kind": "expressionSegment",
+                    "leftParen": {
+                      "$end": 53,
+                      "$pos": 52,
+                      "kind": "token",
+                      "text": "(",
+                      "tokenKind": "leftParen"
+                    },
+                    "rightParen": {
+                      "$end": 59,
+                      "$pos": 58,
+                      "kind": "token",
+                      "text": ")",
+                      "tokenKind": "rightParen"
+                    }
+                  },
+                  {
+                    "$end": 59,
+                    "$pos": 59,
+                    "content": {
+                      "$end": 59,
+                      "$pos": 59,
+                      "kind": "token",
+                      "text": "",
+                      "tokenKind": "stringSegment(\"\")"
+                    },
+                    "kind": "stringSegment"
+                  }
+                ]
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 40,
+              "$pos": 28,
+              "identifier": {
+                "$end": 40,
+                "$pos": 28,
+                "kind": "token",
+                "text": "interpolated",
+                "tokenKind": "identifier(\"interpolated\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 116,
+      "$pos": 68,
+      "item": {
+        "$end": 116,
+        "$pos": 68,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 71,
+          "$pos": 68,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 116,
+            "$pos": 72,
+            "initializer": {
+              "$end": 116,
+              "$pos": 81,
+              "equal": {
+                "$end": 82,
+                "$pos": 81,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 116,
+                "$pos": 83,
+                "closingQuote": {
+                  "$end": 116,
+                  "$pos": 113,
+                  "kind": "token",
+                  "text": "\"\"\"",
+                  "tokenKind": "multilineStringQuote"
+                },
+                "kind": "stringLiteralExpr",
+                "openingQuote": {
+                  "$end": 86,
+                  "$pos": 83,
+                  "kind": "token",
+                  "text": "\"\"\"",
+                  "tokenKind": "multilineStringQuote"
+                },
+                "segments": [
+                  {
+                    "$end": 91,
+                    "$pos": 91,
+                    "content": {
+                      "$end": 91,
+                      "$pos": 91,
+                      "kind": "token",
+                      "text": "",
+                      "tokenKind": "stringSegment(\"\")"
+                    },
+                    "kind": "stringSegment"
+                  },
+                  {
+                    "$end": 99,
+                    "$pos": 91,
+                    "backslash": {
+                      "$end": 92,
+                      "$pos": 91,
+                      "kind": "token",
+                      "text": "\\",
+                      "tokenKind": "backslash"
+                    },
+                    "expressions": [
+                      {
+                        "$end": 98,
+                        "$pos": 93,
+                        "expression": {
+                          "$end": 98,
+                          "$pos": 93,
+                          "baseName": {
+                            "$end": 98,
+                            "$pos": 93,
+                            "kind": "token",
+                            "text": "first",
+                            "tokenKind": "identifier(\"first\")"
+                          },
+                          "kind": "declReferenceExpr"
+                        },
+                        "kind": "labeledExpr"
+                      }
+                    ],
+                    "kind": "expressionSegment",
+                    "leftParen": {
+                      "$end": 93,
+                      "$pos": 92,
+                      "kind": "token",
+                      "text": "(",
+                      "tokenKind": "leftParen"
+                    },
+                    "rightParen": {
+                      "$end": 99,
+                      "$pos": 98,
+                      "kind": "token",
+                      "text": ")",
+                      "tokenKind": "rightParen"
+                    }
+                  },
+                  {
+                    "$end": 99,
+                    "$pos": 99,
+                    "content": {
+                      "$end": 99,
+                      "$pos": 99,
+                      "kind": "token",
+                      "text": "",
+                      "tokenKind": "stringSegment(\"\")"
+                    },
+                    "kind": "stringSegment"
+                  },
+                  {
+                    "$end": 108,
+                    "$pos": 99,
+                    "backslash": {
+                      "$end": 100,
+                      "$pos": 99,
+                      "kind": "token",
+                      "text": "\\",
+                      "tokenKind": "backslash"
+                    },
+                    "expressions": [
+                      {
+                        "$end": 107,
+                        "$pos": 101,
+                        "expression": {
+                          "$end": 107,
+                          "$pos": 101,
+                          "baseName": {
+                            "$end": 107,
+                            "$pos": 101,
+                            "kind": "token",
+                            "text": "second",
+                            "tokenKind": "identifier(\"second\")"
+                          },
+                          "kind": "declReferenceExpr"
+                        },
+                        "kind": "labeledExpr"
+                      }
+                    ],
+                    "kind": "expressionSegment",
+                    "leftParen": {
+                      "$end": 101,
+                      "$pos": 100,
+                      "kind": "token",
+                      "text": "(",
+                      "tokenKind": "leftParen"
+                    },
+                    "rightParen": {
+                      "$end": 108,
+                      "$pos": 107,
+                      "kind": "token",
+                      "text": ")",
+                      "tokenKind": "rightParen"
+                    }
+                  },
+                  {
+                    "$end": 108,
+                    "$pos": 108,
+                    "content": {
+                      "$end": 108,
+                      "$pos": 108,
+                      "kind": "token",
+                      "text": "",
+                      "tokenKind": "stringSegment(\"\")"
+                    },
+                    "kind": "stringSegment"
+                  }
+                ]
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 80,
+              "$pos": 72,
+              "identifier": {
+                "$end": 80,
+                "$pos": 72,
+                "kind": "token",
+                "text": "adjacent",
+                "tokenKind": "identifier(\"adjacent\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 163,
+      "$pos": 117,
+      "item": {
+        "$end": 163,
+        "$pos": 117,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 120,
+          "$pos": 117,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 163,
+            "$pos": 121,
+            "initializer": {
+              "$end": 163,
+              "$pos": 133,
+              "equal": {
+                "$end": 134,
+                "$pos": 133,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 163,
+                "$pos": 135,
+                "closingQuote": {
+                  "$end": 163,
+                  "$pos": 160,
+                  "kind": "token",
+                  "text": "\"\"\"",
+                  "tokenKind": "multilineStringQuote"
+                },
+                "kind": "stringLiteralExpr",
+                "openingQuote": {
+                  "$end": 138,
+                  "$pos": 135,
+                  "kind": "token",
+                  "text": "\"\"\"",
+                  "tokenKind": "multilineStringQuote"
+                },
+                "segments": [
+                  {
+                    "$end": 153,
+                    "$pos": 145,
+                    "content": {
+                      "$end": 153,
+                      "$pos": 145,
+                      "kind": "token",
+                      "text": " content",
+                      "tokenKind": "stringSegment(\" content\")"
+                    },
+                    "kind": "stringSegment"
+                  }
+                ]
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 132,
+              "$pos": 121,
+              "identifier": {
+                "$end": 132,
+                "$pos": 121,
+                "kind": "token",
+                "text": "indentation",
+                "tokenKind": "identifier(\"indentation\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 200,
+      "$pos": 164,
+      "item": {
+        "$end": 200,
+        "$pos": 164,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 167,
+          "$pos": 164,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 200,
+            "$pos": 168,
+            "initializer": {
+              "$end": 200,
+              "$pos": 177,
+              "equal": {
+                "$end": 178,
+                "$pos": 177,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 200,
+                "$pos": 179,
+                "closingPounds": {
+                  "$end": 200,
+                  "$pos": 199,
+                  "kind": "token",
+                  "text": "#",
+                  "tokenKind": "regexPoundDelimiter(\"#\")"
+                },
+                "closingSlash": {
+                  "$end": 199,
+                  "$pos": 198,
+                  "kind": "token",
+                  "text": "/",
+                  "tokenKind": "regexSlash"
+                },
+                "kind": "regexLiteralExpr",
+                "openingPounds": {
+                  "$end": 180,
+                  "$pos": 179,
+                  "kind": "token",
+                  "text": "#",
+                  "tokenKind": "regexPoundDelimiter(\"#\")"
+                },
+                "openingSlash": {
+                  "$end": 181,
+                  "$pos": 180,
+                  "kind": "token",
+                  "text": "/",
+                  "tokenKind": "regexSlash"
+                },
+                "regex": {
+                  "$end": 198,
+                  "$pos": 181,
+                  "kind": "token",
+                  "text": "\n    a [b] c\n    ",
+                  "tokenKind": "regexLiteralPattern(\"\\n    a [b] c\\n    \")"
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 176,
+              "$pos": 168,
+              "identifier": {
+                "$end": 176,
+                "$pos": 168,
+                "kind": "token",
+                "text": "rawRegex",
+                "tokenKind": "identifier(\"rawRegex\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    }
+  ]
+}

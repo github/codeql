@@ -67,6 +67,22 @@ impl<S: SyntaxSink> Lexer<'_, S> {
         while self.pos < self.source.len() {
             let start = self.pos;
             let c = self.rest().chars().next().unwrap();
+            if matches!(c, '\u{a0}' | '\0' | '\u{feff}') {
+                self.pos += self
+                    .rest()
+                    .chars()
+                    .take_while(|c| matches!(c, '\u{a0}' | '\0' | '\u{feff}'))
+                    .map(char::len_utf8)
+                    .sum::<usize>();
+                self.sink.trivia(
+                    TriviaKind::UnexpectedText,
+                    Span {
+                        start,
+                        end: self.pos,
+                    },
+                );
+                continue;
+            }
             if c.is_whitespace() {
                 self.newline |= c == '\n' || c == '\r';
                 self.pos += c.len_utf8();
@@ -92,7 +108,7 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                 continue;
             }
             if self.rest().starts_with("/*") {
-                let doc = self.rest().starts_with("/**");
+                let doc = self.rest().starts_with("/**") && !self.rest().starts_with("/**/");
                 self.pos += 2;
                 let mut depth = 1;
                 while self.pos < self.source.len() && depth > 0 {
@@ -125,6 +141,9 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                 self.string();
                 continue;
             }
+            if (c == '/' || c == '#') && self.regex(None) {
+                continue;
+            }
             if c == '#' {
                 let length = self
                     .rest()
@@ -140,6 +159,7 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                     "#endif" => Some(K::PoundEndif),
                     "#available" => Some(K::PoundAvailable),
                     "#unavailable" => Some(K::PoundUnavailable),
+                    "#sourceLocation" => Some(K::PoundSourceLocationToken),
                     _ => None,
                 };
                 if let Some(kind) = kind {
@@ -168,7 +188,11 @@ impl<S: SyntaxSink> Lexer<'_, S> {
             if c == '_' || c == '$' || c.is_alphabetic() || (c as u32 >= 0x80 && !is_operator(c)) {
                 self.pos += c.len_utf8();
                 while let Some(c) = self.rest().chars().next() {
-                    if !(c == '_' || c.is_alphanumeric() || (c as u32 >= 0x80 && !is_operator(c))) {
+                    if !(c == '_'
+                        || c == '$'
+                        || c.is_alphanumeric()
+                        || (c as u32 >= 0x80 && !c.is_whitespace() && !is_operator(c)))
+                    {
                         break;
                     }
                     self.pos += c.len_utf8();
@@ -206,6 +230,10 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                 '}' => K::RightBrace,
                 '[' => K::LeftSquare,
                 ']' => K::RightSquare,
+                ':' if self.rest().starts_with("::") => {
+                    self.pos += 1;
+                    K::ColonColon
+                }
                 ':' => K::Colon,
                 ',' => K::Comma,
                 ';' => K::Semicolon,
@@ -221,6 +249,30 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                     K::Period
                 }
                 _ if is_operator(c) || c == '.' => {
+                    let left = self.tokens.last().is_some_and(|t| {
+                        t.span.end == start
+                            && !matches!(
+                                t.kind,
+                                K::LeftParen
+                                    | K::LeftSquare
+                                    | K::LeftBrace
+                                    | K::Comma
+                                    | K::Colon
+                                    | K::Semicolon
+                            )
+                    });
+                    if left && matches!(c, '?' | '!') {
+                        self.pos += 1;
+                        self.push(
+                            if c == '?' {
+                                K::InfixQuestionMark
+                            } else {
+                                K::ExclamationMark
+                            },
+                            start,
+                        );
+                        continue;
+                    }
                     self.pos += c.len_utf8();
                     while let Some(next) = self.rest().chars().next() {
                         if !(is_operator(next) || c == '.' && next == '.') {
@@ -231,13 +283,36 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                         }
                         self.pos += next.len_utf8();
                     }
+                    if let Some(slash) = self.source[start..self.pos].find('/')
+                        && slash > 0
+                    {
+                        let end = self.pos;
+                        self.pos = start + slash;
+                        if self.regex(Some((start, end))) {
+                            continue;
+                        }
+                        self.pos = end;
+                    }
                     let text = &self.source[start..self.pos];
                     let kind = match text {
                         "=" => K::Equal,
                         "->" => K::Arrow,
-                        "!" => K::ExclamationMark,
                         "?" => K::InfixQuestionMark,
-                        _ => K::BinaryOperator,
+                        _ => {
+                            let right = self.rest().chars().next().is_some_and(|c| {
+                                !c.is_whitespace()
+                                    && !matches!(c, ')' | ']' | '}' | ',' | ':' | ';')
+                                    && (c != '.' || !left)
+                            }) && !self.rest().starts_with("//")
+                                && !self.rest().starts_with("/*");
+                            if left && !right {
+                                K::PostfixOperator
+                            } else if !left && right {
+                                K::PrefixOperator
+                            } else {
+                                K::BinaryOperator
+                            }
+                        }
                     };
                     self.push(kind, start);
                     continue;
@@ -247,6 +322,176 @@ impl<S: SyntaxSink> Lexer<'_, S> {
             self.pos += c.len_utf8();
             self.push(kind, start);
         }
+    }
+
+    #[allow(clippy::too_many_lines)]
+    fn regex(&mut self, operator: Option<(usize, usize)>) -> bool {
+        let start = self.pos;
+        let operator_start = operator.map_or(start, |(start, _)| start);
+        let mut operator_prefix = None;
+        let pounds = self.rest().bytes().take_while(|c| *c == b'#').count();
+        let slash = start + pounds;
+        if self.source.as_bytes().get(slash) != Some(&b'/') {
+            return false;
+        }
+        let mut must_be_regex = pounds > 0;
+        if pounds == 0 {
+            if self.tokens.last().is_some_and(|t| {
+                matches!(&self.source[t.span.start..t.span.end], "func" | "operator")
+            }) {
+                return false;
+            }
+            if self.tokens.last().is_some_and(|t| {
+                t.span.end == operator_start
+                    && !matches!(
+                        t.kind,
+                        K::LeftParen
+                            | K::LeftSquare
+                            | K::LeftBrace
+                            | K::Comma
+                            | K::Colon
+                            | K::Semicolon
+                    )
+            }) {
+                return false;
+            }
+            let operator_end = operator.map_or_else(
+                || {
+                    slash
+                        + self.source[slash..]
+                            .chars()
+                            .take_while(|c| is_operator(*c))
+                            .map(char::len_utf8)
+                            .sum::<usize>()
+                },
+                |(_, end)| end,
+            );
+            let right_bound = self.source[operator_end..].chars().next().is_some_and(|c| {
+                !c.is_whitespace() && !matches!(c, '\0' | ')' | ']' | '}' | ',' | ':' | ';')
+            });
+            if operator.is_some() {
+                operator_prefix = Some(if right_bound {
+                    K::PrefixOperator
+                } else {
+                    K::BinaryOperator
+                });
+            }
+            let prefix = self.tokens.last().is_none_or(|t| {
+                matches!(
+                    t.kind,
+                    K::Equal
+                        | K::LeftParen
+                        | K::LeftSquare
+                        | K::LeftBrace
+                        | K::Comma
+                        | K::Colon
+                        | K::Semicolon
+                        | K::BinaryOperator
+                        | K::PrefixOperator
+                        | K::InfixQuestionMark
+                ) || matches!(
+                    &self.source[t.span.start..t.span.end],
+                    "return"
+                        | "throw"
+                        | "case"
+                        | "in"
+                        | "if"
+                        | "while"
+                        | "guard"
+                        | "switch"
+                        | "where"
+                        | "yield"
+                        | "await"
+                        | "try"
+                        | "else"
+                )
+            });
+            let after_try = self.tokens.len() >= 2
+                && matches!(
+                    self.tokens[self.tokens.len() - 1].kind,
+                    K::InfixQuestionMark | K::ExclamationMark
+                )
+                && {
+                    let token = self.tokens[self.tokens.len() - 2];
+                    &self.source[token.span.start..token.span.end] == "try"
+                };
+            if (!right_bound && !prefix && !after_try)
+                || self.source[slash + 1..]
+                    .chars()
+                    .next()
+                    .is_none_or(char::is_whitespace)
+            {
+                return false;
+            }
+            must_be_regex = !right_bound
+                && (after_try
+                    || self.tokens.last().is_none_or(|t| {
+                        !matches!(
+                            t.kind,
+                            K::LeftParen | K::LeftSquare | K::Comma | K::Colon | K::ColonColon
+                        )
+                    }));
+        }
+        let closing = format!("/{}", "#".repeat(pounds));
+        let mut end = slash + 1;
+        let mut group_depth = 0usize;
+        let mut character_class_depth = 0usize;
+        let mut last_unescaped_space = None;
+        while end < self.source.len() {
+            let rest = &self.source[end..];
+            if rest.starts_with(&closing) {
+                if pounds == 0 && !must_be_regex && last_unescaped_space == Some(end - 1) {
+                    return false;
+                }
+                break;
+            }
+            let ch = rest.chars().next().unwrap();
+            if pounds == 0 && matches!(ch, '\n' | '\r') {
+                return false;
+            }
+            match ch {
+                '(' if character_class_depth == 0 => group_depth += 1,
+                ')' if character_class_depth == 0 => {
+                    if group_depth == 0 && !must_be_regex {
+                        return false;
+                    }
+                    group_depth = group_depth.saturating_sub(1);
+                }
+                '[' => character_class_depth += 1,
+                ']' => character_class_depth = character_class_depth.saturating_sub(1),
+                ' ' | '\t' => last_unescaped_space = Some(end),
+                _ => {}
+            }
+            end += ch.len_utf8();
+            if ch == '\\'
+                && let Some(ch) = self.source[end..].chars().next()
+            {
+                end += ch.len_utf8();
+            }
+        }
+        if end == self.source.len() {
+            return false;
+        }
+        if let Some(kind) = operator_prefix {
+            self.pos = slash;
+            self.push(kind, operator_start);
+        }
+        if pounds > 0 {
+            self.pos = slash;
+            self.push(K::RegexPoundDelimiter, start);
+        }
+        self.pos = slash + 1;
+        self.push(K::RegexSlash, slash);
+        self.pos = end;
+        self.push(K::RegexLiteralPattern, slash + 1);
+        self.pos += 1;
+        self.push(K::RegexSlash, end);
+        if pounds > 0 {
+            let start = self.pos;
+            self.pos += pounds;
+            self.push(K::RegexPoundDelimiter, start);
+        }
+        true
     }
 
     fn digits(&mut self, hex: bool) {
@@ -314,6 +559,7 @@ impl<S: SyntaxSink> Lexer<'_, S> {
         );
     }
 
+    #[allow(clippy::too_many_lines)]
     fn string(&mut self) {
         let start = self.pos;
         while self.rest().starts_with('#') {
@@ -324,7 +570,13 @@ impl<S: SyntaxSink> Lexer<'_, S> {
             self.push(K::RawStringPoundDelimiter, start);
         }
         let quote = self.pos;
-        let multiline = self.rest().starts_with("\"\"\"");
+        let multiline = self.rest().starts_with("\"\"\"")
+            && (pounds == 0 || {
+                let after_quotes = &self.rest()[3..];
+                let line = after_quotes.split(['\n', '\r']).next().unwrap_or("");
+                let closing = format!("\"{}", "#".repeat(pounds));
+                !line.starts_with(&"#".repeat(pounds)) && !line.contains(&closing)
+            });
         self.pos += if multiline { 3 } else { 1 };
         let kind = if multiline {
             K::MultilineStringQuote
@@ -338,6 +590,13 @@ impl<S: SyntaxSink> Lexer<'_, S> {
             "#".repeat(pounds)
         );
         let interpolation = format!("\\{}(", "#".repeat(pounds));
+        let escape = format!("\\{}", "#".repeat(pounds));
+        let mut segments = Vec::new();
+        if multiline && self.rest().starts_with("\r\n") {
+            self.pos += 2;
+        } else if multiline && self.rest().starts_with(['\n', '\r']) {
+            self.pos += 1;
+        }
         let mut segment = self.pos;
         while self.pos < self.source.len() {
             if !multiline && self.rest().starts_with(['\n', '\r']) {
@@ -345,7 +604,36 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                 return;
             }
             if self.rest().starts_with(&closing) {
-                self.push(K::StringSegmentToken, segment);
+                let line = self.source[..self.pos]
+                    .rfind(['\n', '\r'])
+                    .map_or(0, |p| p + 1);
+                let indentation = &self.source[line..self.pos];
+                if multiline && indentation.bytes().all(|c| matches!(c, b' ' | b'\t')) {
+                    if segment != line {
+                        self.string_segment(segment, &mut segments);
+                    }
+                    if let Some(last) = segments.last().copied() {
+                        let span = &mut self.tokens[last].span;
+                        if self.source[..span.end].ends_with("\r\n") {
+                            span.end -= 2;
+                        } else if self.source[..span.end].ends_with(['\n', '\r']) {
+                            span.end -= 1;
+                        }
+                    }
+                    for index in &segments {
+                        let span = &mut self.tokens[*index].span;
+                        if span.start == 0 || self.source[..span.start].ends_with(['\n', '\r']) {
+                            let matching = self.source.as_bytes()[span.start..span.end]
+                                .iter()
+                                .zip(indentation.bytes())
+                                .take_while(|(a, b)| **a == *b)
+                                .count();
+                            span.start += matching;
+                        }
+                    }
+                } else {
+                    self.string_segment(segment, &mut segments);
+                }
                 let quote = self.pos;
                 self.pos += if multiline { 3 } else { 1 };
                 self.push(kind, quote);
@@ -357,7 +645,7 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                 return;
             }
             if self.rest().starts_with(&interpolation) {
-                self.push(K::StringSegmentToken, segment);
+                self.string_segment(segment, &mut segments);
                 let slash = self.pos;
                 self.pos += 1;
                 self.push(K::Backslash, slash);
@@ -371,20 +659,65 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                 self.push(K::LeftParen, paren);
                 self.code(true);
                 segment = self.pos;
-            } else if self.rest().starts_with('\\') && pounds == 0 {
-                self.pos += 1;
+            } else if self.rest().starts_with(&escape) {
+                let escaped_newline = multiline
+                    && self.rest()[escape.len()..]
+                        .trim_start_matches([' ', '\t'])
+                        .starts_with(['\n', '\r']);
+                if escaped_newline {
+                    self.string_segment(segment, &mut segments);
+                    self.pos += escape.len();
+                    while self.rest().starts_with([' ', '\t']) {
+                        self.pos += 1;
+                    }
+                    self.pos += if self.rest().starts_with("\r\n") {
+                        2
+                    } else {
+                        1
+                    };
+                    segment = self.pos;
+                    continue;
+                }
+                self.pos += escape.len();
                 if let Some(c) = self.rest().chars().next() {
                     self.pos += c.len_utf8();
-                    if c == 'n' || c == 'r' {
-                        self.push(K::StringSegmentToken, segment);
+                    let mut linebreak = c == 'n' || c == 'r';
+                    if c == 'u' && self.rest().starts_with('{') {
+                        let end = 1 + self.rest()[1..]
+                            .bytes()
+                            .take_while(u8::is_ascii_hexdigit)
+                            .count();
+                        if self.rest().as_bytes().get(end) == Some(&b'}') {
+                            linebreak = matches!(
+                                u32::from_str_radix(&self.rest()[1..end], 16),
+                                Ok(10 | 13)
+                            );
+                            self.pos += end + 1;
+                        }
+                    }
+                    if linebreak {
+                        self.string_segment(segment, &mut segments);
                         segment = self.pos;
                     }
                 }
+            } else if multiline && self.rest().starts_with(['\n', '\r']) {
+                if self.rest().starts_with("\r\n") {
+                    self.pos += 2;
+                } else {
+                    self.pos += 1;
+                }
+                self.string_segment(segment, &mut segments);
+                segment = self.pos;
             } else {
                 self.pos += self.rest().chars().next().unwrap().len_utf8();
             }
         }
         self.push(K::StringSegmentToken, segment);
+    }
+
+    fn string_segment(&mut self, start: usize, segments: &mut Vec<usize>) {
+        segments.push(self.tokens.len());
+        self.push(K::StringSegmentToken, start);
     }
 }
 

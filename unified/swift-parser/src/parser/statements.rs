@@ -1,11 +1,36 @@
 use super::{Children, F, K, Node, State, SyntaxSink};
 
 impl<S: SyntaxSink> State<'_, S> {
+    pub(super) fn directive_condition(&mut self) -> Node<S::Node> {
+        let previous = self.condition_line;
+        self.condition_line = true;
+        let condition = self.expression(false);
+        self.condition_line = previous;
+        condition
+    }
     #[allow(clippy::too_many_lines)]
     pub(super) fn statement(&mut self) -> Node<S::Node> {
         let start = self.start();
         let mut c = Vec::new();
+        if self.label(0) && !matches!(self.text(), "case" | "default") && self.nth(1) == ":" {
+            if !self.enter() {
+                return self.missing(K::MissingStmt);
+            }
+            self.take(&mut c, F::Label);
+            self.take(&mut c, F::Colon);
+            let statement = self.statement();
+            Self::add(&mut c, F::Statement, statement);
+            self.depth -= 1;
+            return self.finish(K::LabeledStmt, start, c);
+        }
         let kind = match self.text() {
+            "yield" if !self.contextual_prefix(false, true) => return self.expression(true),
+            "discard" if self.contextual_prefix(false, true) => {
+                self.kw(&mut c, F::DiscardKeyword);
+                let value = self.expression(true);
+                Self::add(&mut c, F::Expression, value);
+                K::DiscardStmt
+            }
             "return" | "throw" | "yield" => {
                 let (kind, field) = match self.text() {
                     "throw" => (K::ThrowStmt, F::ThrowKeyword),
@@ -74,6 +99,9 @@ impl<S: SyntaxSink> State<'_, S> {
                 if self.at("await") {
                     self.kw(&mut c, F::AwaitKeyword);
                 }
+                if self.at("unsafe") && !matches!(self.nth(1), "in" | ":") {
+                    self.kw(&mut c, F::UnsafeKeyword);
+                }
                 let matching = self.at("case");
                 if matching {
                     self.kw(&mut c, F::CaseKeyword);
@@ -106,7 +134,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 Self::add(&mut c, F::Body, body);
                 K::ForStmt
             }
-            "repeat" => {
+            "repeat" if self.nth(1) == "{" => {
                 self.kw(&mut c, F::RepeatKeyword);
                 let body = self.block(false);
                 Self::add(&mut c, F::Body, body);
@@ -120,6 +148,10 @@ impl<S: SyntaxSink> State<'_, S> {
             "defer" | "do" => {
                 let defer = self.at("defer");
                 self.kw(&mut c, if defer { F::DeferKeyword } else { F::DoKeyword });
+                if !defer && self.at("throws") {
+                    let throws = self.throws_clause();
+                    Self::add(&mut c, F::ThrowsClause, throws);
+                }
                 let body = self.block(false);
                 Self::add(&mut c, F::Body, body);
                 while self.at("catch") {
@@ -130,8 +162,19 @@ impl<S: SyntaxSink> State<'_, S> {
                         loop {
                             let start = self.start();
                             let mut item = Vec::new();
-                            let pattern = self.matching_pattern();
-                            Self::add(&mut item, F::Pattern, pattern);
+                            if !self.at("where") {
+                                let pattern = self.matching_pattern();
+                                Self::add(&mut item, F::Pattern, pattern);
+                            }
+                            if self.at("where") {
+                                let start = self.start();
+                                let mut clause = Vec::new();
+                                self.kw(&mut clause, F::WhereKeyword);
+                                let condition = self.expression(false);
+                                Self::add(&mut clause, F::Condition, condition);
+                                let node = self.finish(K::WhereClause, start, clause);
+                                Self::add(&mut item, F::WhereClause, node);
+                            }
                             let comma = self.eat(",", &mut item, F::TrailingComma);
                             let node = self.finish(K::CatchItem, start, item);
                             Self::add(&mut catch, F::CatchItems, node);
@@ -161,7 +204,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 let mut available = Vec::new();
                 self.take(&mut available, F::AvailabilityKeyword);
                 self.expect("(", &mut available, F::LeftParen);
-                self.availability_arguments(&mut available, F::AvailabilityArguments);
+                self.availability_specifications(&mut available, F::AvailabilityArguments);
                 self.expect(")", &mut available, F::RightParen);
                 self.finish(K::AvailabilityCondition, start, available)
             } else if self.at("let") || self.at("var") || self.at("case") {
@@ -175,11 +218,12 @@ impl<S: SyntaxSink> State<'_, S> {
                         F::BindingSpecifier
                     },
                 );
-                let pattern = if matching {
-                    self.matching_pattern()
-                } else {
-                    self.pattern()
-                };
+                let previous = self.binding_context;
+                if !matching {
+                    self.binding_context = true;
+                }
+                let pattern = self.matching_pattern();
+                self.binding_context = previous;
                 Self::add(&mut bind, F::Pattern, pattern);
                 if self.at(":") {
                     let ty = self.annotation();
@@ -323,7 +367,7 @@ impl<S: SyntaxSink> State<'_, S> {
                         let start = self.start();
                         let mut w = Vec::new();
                         self.kw(&mut w, F::WhereKeyword);
-                        let expr = self.expression(false);
+                        let expr = self.expression(true);
                         Self::add(&mut w, F::Condition, expr);
                         let node = self.finish(K::WhereClause, start, w);
                         Self::add(&mut item, F::WhereClause, node);
@@ -368,7 +412,7 @@ impl<S: SyntaxSink> State<'_, S> {
             let has_condition = !self.at("#else");
             self.take(&mut clause, F::PoundKeyword);
             if has_condition {
-                let condition = self.expression(false);
+                let condition = self.directive_condition();
                 Self::add(&mut clause, F::Condition, condition);
             }
             self.switch_cases(&mut clause, F::Elements);

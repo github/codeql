@@ -1,0 +1,1193 @@
+{
+  "$end": 390,
+  "$hasError": false,
+  "$lineStarts": [
+    0,
+    32,
+    48,
+    65,
+    71,
+    98,
+    131,
+    151,
+    171,
+    177,
+    204,
+    218,
+    224,
+    226,
+    269,
+    296,
+    333,
+    390
+  ],
+  "$pos": 0,
+  "endOfFileToken": {
+    "$end": 390,
+    "$pos": 390,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": [
+    {
+      "$end": 225,
+      "$pos": 0,
+      "item": {
+        "$end": 225,
+        "$pos": 0,
+        "attributes": [],
+        "body": {
+          "$end": 225,
+          "$pos": 30,
+          "kind": "codeBlock",
+          "leftBrace": {
+            "$end": 31,
+            "$pos": 30,
+            "kind": "token",
+            "text": "{",
+            "tokenKind": "leftBrace"
+          },
+          "rightBrace": {
+            "$end": 225,
+            "$pos": 224,
+            "kind": "token",
+            "text": "}",
+            "tokenKind": "rightBrace"
+          },
+          "statements": [
+            {
+              "$end": 70,
+              "$pos": 36,
+              "item": {
+                "$end": 70,
+                "$pos": 36,
+                "expression": {
+                  "$end": 70,
+                  "$pos": 36,
+                  "body": {
+                    "$end": 70,
+                    "$pos": 46,
+                    "kind": "codeBlock",
+                    "leftBrace": {
+                      "$end": 47,
+                      "$pos": 46,
+                      "kind": "token",
+                      "text": "{",
+                      "tokenKind": "leftBrace"
+                    },
+                    "rightBrace": {
+                      "$end": 70,
+                      "$pos": 69,
+                      "kind": "token",
+                      "text": "}",
+                      "tokenKind": "rightBrace"
+                    },
+                    "statements": [
+                      {
+                        "$end": 64,
+                        "$pos": 56,
+                        "item": {
+                          "$end": 64,
+                          "$pos": 56,
+                          "additionalTrailingClosures": [],
+                          "arguments": [
+                            {
+                              "$end": 63,
+                              "$pos": 62,
+                              "expression": {
+                                "$end": 63,
+                                "$pos": 62,
+                                "kind": "integerLiteralExpr",
+                                "literal": {
+                                  "$end": 63,
+                                  "$pos": 62,
+                                  "kind": "token",
+                                  "text": "1",
+                                  "tokenKind": "integerLiteral(\"1\")"
+                                }
+                              },
+                              "kind": "labeledExpr"
+                            }
+                          ],
+                          "calledExpression": {
+                            "$end": 61,
+                            "$pos": 56,
+                            "baseName": {
+                              "$end": 61,
+                              "$pos": 56,
+                              "kind": "token",
+                              "text": "print",
+                              "tokenKind": "identifier(\"print\")"
+                            },
+                            "kind": "declReferenceExpr"
+                          },
+                          "kind": "functionCallExpr",
+                          "leftParen": {
+                            "$end": 62,
+                            "$pos": 61,
+                            "kind": "token",
+                            "text": "(",
+                            "tokenKind": "leftParen"
+                          },
+                          "rightParen": {
+                            "$end": 64,
+                            "$pos": 63,
+                            "kind": "token",
+                            "text": ")",
+                            "tokenKind": "rightParen"
+                          }
+                        },
+                        "kind": "codeBlockItem"
+                      }
+                    ]
+                  },
+                  "conditions": [
+                    {
+                      "$end": 45,
+                      "$pos": 39,
+                      "condition": {
+                        "$end": 45,
+                        "$pos": 39,
+                        "baseName": {
+                          "$end": 45,
+                          "$pos": 39,
+                          "kind": "token",
+                          "text": "unsafe",
+                          "tokenKind": "identifier(\"unsafe\")"
+                        },
+                        "kind": "declReferenceExpr"
+                      },
+                      "kind": "conditionElement"
+                    }
+                  ],
+                  "ifKeyword": {
+                    "$end": 38,
+                    "$pos": 36,
+                    "kind": "token",
+                    "text": "if",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.if)"
+                  },
+                  "kind": "ifExpr"
+                },
+                "kind": "expressionStmt"
+              },
+              "kind": "codeBlockItem"
+            },
+            {
+              "$end": 97,
+              "$pos": 75,
+              "item": {
+                "$end": 97,
+                "$pos": 75,
+                "body": {
+                  "$end": 97,
+                  "$pos": 88,
+                  "kind": "codeBlock",
+                  "leftBrace": {
+                    "$end": 89,
+                    "$pos": 88,
+                    "kind": "token",
+                    "text": "{",
+                    "tokenKind": "leftBrace"
+                  },
+                  "rightBrace": {
+                    "$end": 97,
+                    "$pos": 96,
+                    "kind": "token",
+                    "text": "}",
+                    "tokenKind": "rightBrace"
+                  },
+                  "statements": [
+                    {
+                      "$end": 95,
+                      "$pos": 90,
+                      "item": {
+                        "$end": 95,
+                        "$pos": 90,
+                        "breakKeyword": {
+                          "$end": 95,
+                          "$pos": 90,
+                          "kind": "token",
+                          "text": "break",
+                          "tokenKind": "keyword(SwiftSyntax.Keyword.break)"
+                        },
+                        "kind": "breakStmt"
+                      },
+                      "kind": "codeBlockItem"
+                    }
+                  ]
+                },
+                "conditions": [
+                  {
+                    "$end": 87,
+                    "$pos": 81,
+                    "condition": {
+                      "$end": 87,
+                      "$pos": 81,
+                      "baseName": {
+                        "$end": 87,
+                        "$pos": 81,
+                        "kind": "token",
+                        "text": "unsafe",
+                        "tokenKind": "identifier(\"unsafe\")"
+                      },
+                      "kind": "declReferenceExpr"
+                    },
+                    "kind": "conditionElement"
+                  }
+                ],
+                "kind": "whileStmt",
+                "whileKeyword": {
+                  "$end": 80,
+                  "$pos": 75,
+                  "kind": "token",
+                  "text": "while",
+                  "tokenKind": "keyword(SwiftSyntax.Keyword.while)"
+                }
+              },
+              "kind": "codeBlockItem"
+            },
+            {
+              "$end": 130,
+              "$pos": 102,
+              "item": {
+                "$end": 130,
+                "$pos": 102,
+                "body": {
+                  "$end": 130,
+                  "$pos": 120,
+                  "kind": "codeBlock",
+                  "leftBrace": {
+                    "$end": 121,
+                    "$pos": 120,
+                    "kind": "token",
+                    "text": "{",
+                    "tokenKind": "leftBrace"
+                  },
+                  "rightBrace": {
+                    "$end": 130,
+                    "$pos": 129,
+                    "kind": "token",
+                    "text": "}",
+                    "tokenKind": "rightBrace"
+                  },
+                  "statements": [
+                    {
+                      "$end": 128,
+                      "$pos": 122,
+                      "item": {
+                        "$end": 128,
+                        "$pos": 122,
+                        "kind": "returnStmt",
+                        "returnKeyword": {
+                          "$end": 128,
+                          "$pos": 122,
+                          "kind": "token",
+                          "text": "return",
+                          "tokenKind": "keyword(SwiftSyntax.Keyword.return)"
+                        }
+                      },
+                      "kind": "codeBlockItem"
+                    }
+                  ]
+                },
+                "conditions": [
+                  {
+                    "$end": 114,
+                    "$pos": 108,
+                    "condition": {
+                      "$end": 114,
+                      "$pos": 108,
+                      "baseName": {
+                        "$end": 114,
+                        "$pos": 108,
+                        "kind": "token",
+                        "text": "unsafe",
+                        "tokenKind": "identifier(\"unsafe\")"
+                      },
+                      "kind": "declReferenceExpr"
+                    },
+                    "kind": "conditionElement"
+                  }
+                ],
+                "elseKeyword": {
+                  "$end": 119,
+                  "$pos": 115,
+                  "kind": "token",
+                  "text": "else",
+                  "tokenKind": "keyword(SwiftSyntax.Keyword.else)"
+                },
+                "guardKeyword": {
+                  "$end": 107,
+                  "$pos": 102,
+                  "kind": "token",
+                  "text": "guard",
+                  "tokenKind": "keyword(SwiftSyntax.Keyword.guard)"
+                },
+                "kind": "guardStmt"
+              },
+              "kind": "codeBlockItem"
+            },
+            {
+              "$end": 176,
+              "$pos": 135,
+              "item": {
+                "$end": 176,
+                "$pos": 135,
+                "expression": {
+                  "$end": 176,
+                  "$pos": 135,
+                  "body": {
+                    "$end": 176,
+                    "$pos": 149,
+                    "kind": "codeBlock",
+                    "leftBrace": {
+                      "$end": 150,
+                      "$pos": 149,
+                      "kind": "token",
+                      "text": "{",
+                      "tokenKind": "leftBrace"
+                    },
+                    "rightBrace": {
+                      "$end": 176,
+                      "$pos": 175,
+                      "kind": "token",
+                      "text": "}",
+                      "tokenKind": "rightBrace"
+                    },
+                    "statements": [
+                      {
+                        "$end": 170,
+                        "$pos": 159,
+                        "item": {
+                          "$end": 170,
+                          "$pos": 159,
+                          "additionalTrailingClosures": [],
+                          "arguments": [
+                            {
+                              "$end": 169,
+                              "$pos": 163,
+                              "expression": {
+                                "$end": 169,
+                                "$pos": 163,
+                                "baseName": {
+                                  "$end": 169,
+                                  "$pos": 163,
+                                  "kind": "token",
+                                  "text": "unsafe",
+                                  "tokenKind": "identifier(\"unsafe\")"
+                                },
+                                "kind": "declReferenceExpr"
+                              },
+                              "kind": "labeledExpr"
+                            }
+                          ],
+                          "calledExpression": {
+                            "$end": 162,
+                            "$pos": 159,
+                            "baseName": {
+                              "$end": 162,
+                              "$pos": 159,
+                              "kind": "token",
+                              "text": "use",
+                              "tokenKind": "identifier(\"use\")"
+                            },
+                            "kind": "declReferenceExpr"
+                          },
+                          "kind": "functionCallExpr",
+                          "leftParen": {
+                            "$end": 163,
+                            "$pos": 162,
+                            "kind": "token",
+                            "text": "(",
+                            "tokenKind": "leftParen"
+                          },
+                          "rightParen": {
+                            "$end": 170,
+                            "$pos": 169,
+                            "kind": "token",
+                            "text": ")",
+                            "tokenKind": "rightParen"
+                          }
+                        },
+                        "kind": "codeBlockItem"
+                      }
+                    ]
+                  },
+                  "conditions": [
+                    {
+                      "$end": 148,
+                      "$pos": 138,
+                      "condition": {
+                        "$end": 148,
+                        "$pos": 138,
+                        "bindingSpecifier": {
+                          "$end": 141,
+                          "$pos": 138,
+                          "kind": "token",
+                          "text": "let",
+                          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+                        },
+                        "kind": "optionalBindingCondition",
+                        "pattern": {
+                          "$end": 148,
+                          "$pos": 142,
+                          "identifier": {
+                            "$end": 148,
+                            "$pos": 142,
+                            "kind": "token",
+                            "text": "unsafe",
+                            "tokenKind": "identifier(\"unsafe\")"
+                          },
+                          "kind": "identifierPattern"
+                        }
+                      },
+                      "kind": "conditionElement"
+                    }
+                  ],
+                  "ifKeyword": {
+                    "$end": 137,
+                    "$pos": 135,
+                    "kind": "token",
+                    "text": "if",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.if)"
+                  },
+                  "kind": "ifExpr"
+                },
+                "kind": "expressionStmt"
+              },
+              "kind": "codeBlockItem"
+            },
+            {
+              "$end": 223,
+              "$pos": 181,
+              "item": {
+                "$end": 223,
+                "$pos": 181,
+                "expression": {
+                  "$end": 223,
+                  "$pos": 181,
+                  "body": {
+                    "$end": 223,
+                    "$pos": 202,
+                    "kind": "codeBlock",
+                    "leftBrace": {
+                      "$end": 203,
+                      "$pos": 202,
+                      "kind": "token",
+                      "text": "{",
+                      "tokenKind": "leftBrace"
+                    },
+                    "rightBrace": {
+                      "$end": 223,
+                      "$pos": 222,
+                      "kind": "token",
+                      "text": "}",
+                      "tokenKind": "rightBrace"
+                    },
+                    "statements": [
+                      {
+                        "$end": 217,
+                        "$pos": 212,
+                        "item": {
+                          "$end": 217,
+                          "$pos": 212,
+                          "additionalTrailingClosures": [],
+                          "arguments": [],
+                          "calledExpression": {
+                            "$end": 215,
+                            "$pos": 212,
+                            "baseName": {
+                              "$end": 215,
+                              "$pos": 212,
+                              "kind": "token",
+                              "text": "use",
+                              "tokenKind": "identifier(\"use\")"
+                            },
+                            "kind": "declReferenceExpr"
+                          },
+                          "kind": "functionCallExpr",
+                          "leftParen": {
+                            "$end": 216,
+                            "$pos": 215,
+                            "kind": "token",
+                            "text": "(",
+                            "tokenKind": "leftParen"
+                          },
+                          "rightParen": {
+                            "$end": 217,
+                            "$pos": 216,
+                            "kind": "token",
+                            "text": ")",
+                            "tokenKind": "rightParen"
+                          }
+                        },
+                        "kind": "codeBlockItem"
+                      }
+                    ]
+                  },
+                  "conditions": [
+                    {
+                      "$end": 201,
+                      "$pos": 184,
+                      "condition": {
+                        "$end": 201,
+                        "$pos": 184,
+                        "expression": {
+                          "$end": 201,
+                          "$pos": 191,
+                          "additionalTrailingClosures": [],
+                          "arguments": [],
+                          "calledExpression": {
+                            "$end": 199,
+                            "$pos": 191,
+                            "kind": "closureExpr",
+                            "leftBrace": {
+                              "$end": 192,
+                              "$pos": 191,
+                              "kind": "token",
+                              "text": "{",
+                              "tokenKind": "leftBrace"
+                            },
+                            "rightBrace": {
+                              "$end": 199,
+                              "$pos": 198,
+                              "kind": "token",
+                              "text": "}",
+                              "tokenKind": "rightBrace"
+                            },
+                            "statements": [
+                              {
+                                "$end": 197,
+                                "$pos": 193,
+                                "item": {
+                                  "$end": 197,
+                                  "$pos": 193,
+                                  "kind": "booleanLiteralExpr",
+                                  "literal": {
+                                    "$end": 197,
+                                    "$pos": 193,
+                                    "kind": "token",
+                                    "text": "true",
+                                    "tokenKind": "keyword(SwiftSyntax.Keyword.true)"
+                                  }
+                                },
+                                "kind": "codeBlockItem"
+                              }
+                            ]
+                          },
+                          "kind": "functionCallExpr",
+                          "leftParen": {
+                            "$end": 200,
+                            "$pos": 199,
+                            "kind": "token",
+                            "text": "(",
+                            "tokenKind": "leftParen"
+                          },
+                          "rightParen": {
+                            "$end": 201,
+                            "$pos": 200,
+                            "kind": "token",
+                            "text": ")",
+                            "tokenKind": "rightParen"
+                          }
+                        },
+                        "kind": "unsafeExpr",
+                        "unsafeKeyword": {
+                          "$end": 190,
+                          "$pos": 184,
+                          "kind": "token",
+                          "text": "unsafe",
+                          "tokenKind": "keyword(SwiftSyntax.Keyword.unsafe)"
+                        }
+                      },
+                      "kind": "conditionElement"
+                    }
+                  ],
+                  "ifKeyword": {
+                    "$end": 183,
+                    "$pos": 181,
+                    "kind": "token",
+                    "text": "if",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.if)"
+                  },
+                  "kind": "ifExpr"
+                },
+                "kind": "expressionStmt"
+              },
+              "kind": "codeBlockItem"
+            }
+          ]
+        },
+        "funcKeyword": {
+          "$end": 4,
+          "$pos": 0,
+          "kind": "token",
+          "text": "func",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.func)"
+        },
+        "kind": "functionDecl",
+        "modifiers": [],
+        "name": {
+          "$end": 15,
+          "$pos": 5,
+          "kind": "token",
+          "text": "conditions",
+          "tokenKind": "identifier(\"conditions\")"
+        },
+        "signature": {
+          "$end": 29,
+          "$pos": 15,
+          "kind": "functionSignature",
+          "parameterClause": {
+            "$end": 29,
+            "$pos": 15,
+            "kind": "functionParameterClause",
+            "leftParen": {
+              "$end": 16,
+              "$pos": 15,
+              "kind": "token",
+              "text": "(",
+              "tokenKind": "leftParen"
+            },
+            "parameters": [
+              {
+                "$end": 28,
+                "$pos": 16,
+                "attributes": [],
+                "colon": {
+                  "$end": 23,
+                  "$pos": 22,
+                  "kind": "token",
+                  "text": ":",
+                  "tokenKind": "colon"
+                },
+                "firstName": {
+                  "$end": 22,
+                  "$pos": 16,
+                  "kind": "token",
+                  "text": "unsafe",
+                  "tokenKind": "identifier(\"unsafe\")"
+                },
+                "kind": "functionParameter",
+                "modifiers": [],
+                "type": {
+                  "$end": 28,
+                  "$pos": 24,
+                  "kind": "identifierType",
+                  "name": {
+                    "$end": 28,
+                    "$pos": 24,
+                    "kind": "token",
+                    "text": "Bool",
+                    "tokenKind": "identifier(\"Bool\")"
+                  }
+                }
+              }
+            ],
+            "rightParen": {
+              "$end": 29,
+              "$pos": 28,
+              "kind": "token",
+              "text": ")",
+              "tokenKind": "rightParen"
+            }
+          }
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 268,
+      "$pos": 226,
+      "item": {
+        "$end": 268,
+        "$pos": 226,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 229,
+          "$pos": 226,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 268,
+            "$pos": 230,
+            "initializer": {
+              "$end": 268,
+              "$pos": 249,
+              "equal": {
+                "$end": 250,
+                "$pos": 249,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 268,
+                "$pos": 251,
+                "expression": {
+                  "$end": 268,
+                  "$pos": 258,
+                  "additionalTrailingClosures": [],
+                  "arguments": [],
+                  "calledExpression": {
+                    "$end": 266,
+                    "$pos": 258,
+                    "kind": "closureExpr",
+                    "leftBrace": {
+                      "$end": 259,
+                      "$pos": 258,
+                      "kind": "token",
+                      "text": "{",
+                      "tokenKind": "leftBrace"
+                    },
+                    "rightBrace": {
+                      "$end": 266,
+                      "$pos": 265,
+                      "kind": "token",
+                      "text": "}",
+                      "tokenKind": "rightBrace"
+                    },
+                    "statements": [
+                      {
+                        "$end": 264,
+                        "$pos": 260,
+                        "item": {
+                          "$end": 264,
+                          "$pos": 260,
+                          "kind": "booleanLiteralExpr",
+                          "literal": {
+                            "$end": 264,
+                            "$pos": 260,
+                            "kind": "token",
+                            "text": "true",
+                            "tokenKind": "keyword(SwiftSyntax.Keyword.true)"
+                          }
+                        },
+                        "kind": "codeBlockItem"
+                      }
+                    ]
+                  },
+                  "kind": "functionCallExpr",
+                  "leftParen": {
+                    "$end": 267,
+                    "$pos": 266,
+                    "kind": "token",
+                    "text": "(",
+                    "tokenKind": "leftParen"
+                  },
+                  "rightParen": {
+                    "$end": 268,
+                    "$pos": 267,
+                    "kind": "token",
+                    "text": ")",
+                    "tokenKind": "rightParen"
+                  }
+                },
+                "kind": "unsafeExpr",
+                "unsafeKeyword": {
+                  "$end": 257,
+                  "$pos": 251,
+                  "kind": "token",
+                  "text": "unsafe",
+                  "tokenKind": "keyword(SwiftSyntax.Keyword.unsafe)"
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 248,
+              "$pos": 230,
+              "identifier": {
+                "$end": 248,
+                "$pos": 230,
+                "kind": "token",
+                "text": "immediatelyInvoked",
+                "tokenKind": "identifier(\"immediatelyInvoked\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 295,
+      "$pos": 269,
+      "item": {
+        "$end": 295,
+        "$pos": 269,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 272,
+          "$pos": 269,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 295,
+            "$pos": 273,
+            "initializer": {
+              "$end": 295,
+              "$pos": 281,
+              "equal": {
+                "$end": 282,
+                "$pos": 281,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 295,
+                "$pos": 283,
+                "expression": {
+                  "$end": 295,
+                  "$pos": 290,
+                  "expression": {
+                    "$end": 295,
+                    "$pos": 291,
+                    "baseName": {
+                      "$end": 295,
+                      "$pos": 291,
+                      "kind": "token",
+                      "text": "flag",
+                      "tokenKind": "identifier(\"flag\")"
+                    },
+                    "kind": "declReferenceExpr"
+                  },
+                  "kind": "prefixOperatorExpr",
+                  "operator": {
+                    "$end": 291,
+                    "$pos": 290,
+                    "kind": "token",
+                    "text": "!",
+                    "tokenKind": "prefixOperator(\"!\")"
+                  }
+                },
+                "kind": "unsafeExpr",
+                "unsafeKeyword": {
+                  "$end": 289,
+                  "$pos": 283,
+                  "kind": "token",
+                  "text": "unsafe",
+                  "tokenKind": "keyword(SwiftSyntax.Keyword.unsafe)"
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 280,
+              "$pos": 273,
+              "identifier": {
+                "$end": 280,
+                "$pos": 273,
+                "kind": "token",
+                "text": "negated",
+                "tokenKind": "identifier(\"negated\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 332,
+      "$pos": 296,
+      "item": {
+        "$end": 332,
+        "$pos": 296,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 299,
+          "$pos": 296,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 332,
+            "$pos": 300,
+            "initializer": {
+              "$end": 332,
+              "$pos": 308,
+              "equal": {
+                "$end": 309,
+                "$pos": 308,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 332,
+                "$pos": 310,
+                "expression": {
+                  "$end": 332,
+                  "$pos": 317,
+                  "expression": {
+                    "$end": 332,
+                    "$pos": 321,
+                    "additionalTrailingClosures": [],
+                    "arguments": [],
+                    "calledExpression": {
+                      "$end": 330,
+                      "$pos": 321,
+                      "baseName": {
+                        "$end": 330,
+                        "$pos": 321,
+                        "kind": "token",
+                        "text": "operation",
+                        "tokenKind": "identifier(\"operation\")"
+                      },
+                      "kind": "declReferenceExpr"
+                    },
+                    "kind": "functionCallExpr",
+                    "leftParen": {
+                      "$end": 331,
+                      "$pos": 330,
+                      "kind": "token",
+                      "text": "(",
+                      "tokenKind": "leftParen"
+                    },
+                    "rightParen": {
+                      "$end": 332,
+                      "$pos": 331,
+                      "kind": "token",
+                      "text": ")",
+                      "tokenKind": "rightParen"
+                    }
+                  },
+                  "kind": "tryExpr",
+                  "tryKeyword": {
+                    "$end": 320,
+                    "$pos": 317,
+                    "kind": "token",
+                    "text": "try",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.try)"
+                  }
+                },
+                "kind": "unsafeExpr",
+                "unsafeKeyword": {
+                  "$end": 316,
+                  "$pos": 310,
+                  "kind": "token",
+                  "text": "unsafe",
+                  "tokenKind": "keyword(SwiftSyntax.Keyword.unsafe)"
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 307,
+              "$pos": 300,
+              "identifier": {
+                "$end": 307,
+                "$pos": 300,
+                "kind": "token",
+                "text": "retried",
+                "tokenKind": "identifier(\"retried\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 389,
+      "$pos": 333,
+      "item": {
+        "$end": 389,
+        "$pos": 333,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 336,
+          "$pos": 333,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 389,
+            "$pos": 337,
+            "initializer": {
+              "$end": 389,
+              "$pos": 349,
+              "equal": {
+                "$end": 350,
+                "$pos": 349,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 389,
+                "$pos": 351,
+                "expression": {
+                  "$end": 389,
+                  "$pos": 358,
+                  "body": {
+                    "$end": 374,
+                    "$pos": 366,
+                    "kind": "codeBlock",
+                    "leftBrace": {
+                      "$end": 367,
+                      "$pos": 366,
+                      "kind": "token",
+                      "text": "{",
+                      "tokenKind": "leftBrace"
+                    },
+                    "rightBrace": {
+                      "$end": 374,
+                      "$pos": 373,
+                      "kind": "token",
+                      "text": "}",
+                      "tokenKind": "rightBrace"
+                    },
+                    "statements": [
+                      {
+                        "$end": 372,
+                        "$pos": 368,
+                        "item": {
+                          "$end": 372,
+                          "$pos": 368,
+                          "kind": "booleanLiteralExpr",
+                          "literal": {
+                            "$end": 372,
+                            "$pos": 368,
+                            "kind": "token",
+                            "text": "true",
+                            "tokenKind": "keyword(SwiftSyntax.Keyword.true)"
+                          }
+                        },
+                        "kind": "codeBlockItem"
+                      }
+                    ]
+                  },
+                  "conditions": [
+                    {
+                      "$end": 365,
+                      "$pos": 361,
+                      "condition": {
+                        "$end": 365,
+                        "$pos": 361,
+                        "baseName": {
+                          "$end": 365,
+                          "$pos": 361,
+                          "kind": "token",
+                          "text": "flag",
+                          "tokenKind": "identifier(\"flag\")"
+                        },
+                        "kind": "declReferenceExpr"
+                      },
+                      "kind": "conditionElement"
+                    }
+                  ],
+                  "elseBody": {
+                    "$end": 389,
+                    "$pos": 380,
+                    "kind": "codeBlock",
+                    "leftBrace": {
+                      "$end": 381,
+                      "$pos": 380,
+                      "kind": "token",
+                      "text": "{",
+                      "tokenKind": "leftBrace"
+                    },
+                    "rightBrace": {
+                      "$end": 389,
+                      "$pos": 388,
+                      "kind": "token",
+                      "text": "}",
+                      "tokenKind": "rightBrace"
+                    },
+                    "statements": [
+                      {
+                        "$end": 387,
+                        "$pos": 382,
+                        "item": {
+                          "$end": 387,
+                          "$pos": 382,
+                          "kind": "booleanLiteralExpr",
+                          "literal": {
+                            "$end": 387,
+                            "$pos": 382,
+                            "kind": "token",
+                            "text": "false",
+                            "tokenKind": "keyword(SwiftSyntax.Keyword.false)"
+                          }
+                        },
+                        "kind": "codeBlockItem"
+                      }
+                    ]
+                  },
+                  "elseKeyword": {
+                    "$end": 379,
+                    "$pos": 375,
+                    "kind": "token",
+                    "text": "else",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.else)"
+                  },
+                  "ifKeyword": {
+                    "$end": 360,
+                    "$pos": 358,
+                    "kind": "token",
+                    "text": "if",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.if)"
+                  },
+                  "kind": "ifExpr"
+                },
+                "kind": "unsafeExpr",
+                "unsafeKeyword": {
+                  "$end": 357,
+                  "$pos": 351,
+                  "kind": "token",
+                  "text": "unsafe",
+                  "tokenKind": "keyword(SwiftSyntax.Keyword.unsafe)"
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 348,
+              "$pos": 337,
+              "identifier": {
+                "$end": 348,
+                "$pos": 337,
+                "kind": "token",
+                "text": "conditional",
+                "tokenKind": "identifier(\"conditional\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    }
+  ]
+}

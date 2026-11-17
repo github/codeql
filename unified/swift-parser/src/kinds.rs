@@ -469,6 +469,7 @@ pub enum SyntaxKind {
     Backslash,
     Backtick,
     Colon,
+    ColonColon,
     Comma,
     Ellipsis,
     Equal,
@@ -490,12 +491,14 @@ pub enum SyntaxKind {
     MultilineStringQuote,
     Wildcard,
     EndOfFile,
+    RegexSlash,
     PoundIf,
     PoundElseif,
     PoundElse,
     PoundEndif,
     PoundAvailable,
     PoundUnavailable,
+    PoundSourceLocationToken,
 }
 impl SyntaxKind {
     pub const ALL: &[Self] = &[
@@ -965,6 +968,7 @@ impl SyntaxKind {
         Self::Backslash,
         Self::Backtick,
         Self::Colon,
+        Self::ColonColon,
         Self::Comma,
         Self::Ellipsis,
         Self::Equal,
@@ -986,12 +990,14 @@ impl SyntaxKind {
         Self::MultilineStringQuote,
         Self::Wildcard,
         Self::EndOfFile,
+        Self::RegexSlash,
         Self::PoundIf,
         Self::PoundElseif,
         Self::PoundElse,
         Self::PoundEndif,
         Self::PoundAvailable,
         Self::PoundUnavailable,
+        Self::PoundSourceLocationToken,
     ];
     pub const fn name(self) -> &'static str {
         match self {
@@ -1463,6 +1469,7 @@ impl SyntaxKind {
             Self::Backslash => "\\",
             Self::Backtick => "`",
             Self::Colon => ":",
+            Self::ColonColon => "::",
             Self::Comma => ",",
             Self::Ellipsis => "...",
             Self::Equal => "=",
@@ -1484,12 +1491,14 @@ impl SyntaxKind {
             Self::MultilineStringQuote => "\"\"\"",
             Self::Wildcard => "_",
             Self::EndOfFile => "endOfFile",
+            Self::RegexSlash => "/",
             Self::PoundIf => "#if",
             Self::PoundElseif => "#elseif",
             Self::PoundElse => "#else",
             Self::PoundEndif => "#endif",
             Self::PoundAvailable => "#available",
             Self::PoundUnavailable => "#unavailable",
+            Self::PoundSourceLocationToken => "#sourceLocation",
         }
     }
     pub const fn is_token(self) -> bool {

@@ -1,0 +1,242 @@
+{
+  "$end": 87,
+  "$hasError": true,
+  "$lineStarts": [
+    0,
+    21,
+    27,
+    28,
+    31,
+    37,
+    45,
+    69,
+    75,
+    79,
+    87
+  ],
+  "$pos": 0,
+  "endOfFileToken": {
+    "$end": 87,
+    "$pos": 87,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": [
+    {
+      "$end": 44,
+      "$pos": 0,
+      "item": {
+        "$end": 44,
+        "$pos": 0,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 3,
+          "$pos": 0,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 44,
+            "$pos": 4,
+            "initializer": {
+              "$end": 44,
+              "$pos": 15,
+              "equal": {
+                "$end": 16,
+                "$pos": 15,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 44,
+                "$pos": 17,
+                "closingQuote": {
+                  "$end": 44,
+                  "$pos": 41,
+                  "kind": "token",
+                  "text": "\"\"\"",
+                  "tokenKind": "multilineStringQuote"
+                },
+                "kind": "stringLiteralExpr",
+                "openingQuote": {
+                  "$end": 20,
+                  "$pos": 17,
+                  "kind": "token",
+                  "text": "\"\"\"",
+                  "tokenKind": "multilineStringQuote"
+                },
+                "segments": [
+                  {
+                    "$end": 27,
+                    "$pos": 25,
+                    "content": {
+                      "$end": 27,
+                      "$pos": 25,
+                      "kind": "token",
+                      "text": "x\n",
+                      "tokenKind": "stringSegment(\"x\\n\")"
+                    },
+                    "kind": "stringSegment"
+                  },
+                  {
+                    "$end": 28,
+                    "$pos": 27,
+                    "content": {
+                      "$end": 28,
+                      "$pos": 27,
+                      "kind": "token",
+                      "text": "\n",
+                      "tokenKind": "stringSegment(\"\\n\")"
+                    },
+                    "kind": "stringSegment"
+                  },
+                  {
+                    "$end": 31,
+                    "$pos": 30,
+                    "content": {
+                      "$end": 31,
+                      "$pos": 30,
+                      "kind": "token",
+                      "text": "\n",
+                      "tokenKind": "stringSegment(\"\\n\")"
+                    },
+                    "kind": "stringSegment"
+                  },
+                  {
+                    "$end": 36,
+                    "$pos": 35,
+                    "content": {
+                      "$end": 36,
+                      "$pos": 35,
+                      "kind": "token",
+                      "text": "y",
+                      "tokenKind": "stringSegment(\"y\")"
+                    },
+                    "kind": "stringSegment"
+                  }
+                ]
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 14,
+              "$pos": 4,
+              "identifier": {
+                "$end": 14,
+                "$pos": 4,
+                "kind": "token",
+                "text": "whitespace",
+                "tokenKind": "identifier(\"whitespace\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 86,
+      "$pos": 45,
+      "item": {
+        "$end": 86,
+        "$pos": 45,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 48,
+          "$pos": 45,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 86,
+            "$pos": 49,
+            "initializer": {
+              "$end": 86,
+              "$pos": 63,
+              "equal": {
+                "$end": 64,
+                "$pos": 63,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 86,
+                "$pos": 65,
+                "closingQuote": {
+                  "$end": 86,
+                  "$pos": 83,
+                  "kind": "token",
+                  "text": "\"\"\"",
+                  "tokenKind": "multilineStringQuote"
+                },
+                "kind": "stringLiteralExpr",
+                "openingQuote": {
+                  "$end": 68,
+                  "$pos": 65,
+                  "kind": "token",
+                  "text": "\"\"\"",
+                  "tokenKind": "multilineStringQuote"
+                },
+                "segments": [
+                  {
+                    "$end": 75,
+                    "$pos": 73,
+                    "content": {
+                      "$end": 75,
+                      "$pos": 73,
+                      "kind": "token",
+                      "text": "x\n",
+                      "tokenKind": "stringSegment(\"x\\n\")"
+                    },
+                    "kind": "stringSegment"
+                  },
+                  {
+                    "$end": 78,
+                    "$pos": 77,
+                    "content": {
+                      "$end": 78,
+                      "$pos": 77,
+                      "kind": "token",
+                      "text": "y",
+                      "tokenKind": "stringSegment(\"y\")"
+                    },
+                    "kind": "stringSegment"
+                  }
+                ]
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 62,
+              "$pos": 49,
+              "identifier": {
+                "$end": 62,
+                "$pos": 49,
+                "kind": "token",
+                "text": "underindented",
+                "tokenKind": "identifier(\"underindented\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    }
+  ]
+}

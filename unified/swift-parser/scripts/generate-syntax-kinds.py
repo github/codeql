@@ -15,16 +15,18 @@ keywords_file = root.parent / "swift-syntax-rs/swift/.build/checkouts/swift-synt
 keywords = re.findall(r"^  case `?(\w+)`?\s*$", keywords_file.read_text(), re.M)
 punctuation = {
     "Ampersand": "&", "Arrow": "->", "AtSign": "@", "Backslash": "\\", "Backtick": "`",
-    "Colon": ":", "Comma": ",", "Ellipsis": "...", "Equal": "=",
+    "Colon": ":", "ColonColon": "::", "Comma": ",", "Ellipsis": "...", "Equal": "=",
     "ExclamationMark": "!", "InfixQuestionMark": "?", "LeftAngle": "<",
     "LeftBrace": "{", "LeftParen": "(", "LeftSquare": "[", "Period": ".",
     "Pound": "#", "RightAngle": ">", "RightBrace": "}", "RightParen": ")",
     "RightSquare": "]", "Semicolon": ";", "SingleQuote": "'",
     "StringQuote": '"', "MultilineStringQuote": '"""', "Wildcard": "_",
     "EndOfFile": "endOfFile",
+    "RegexSlash": "/",
     "PoundIf": "#if", "PoundElseif": "#elseif", "PoundElse": "#else",
     "PoundEndif": "#endif", "PoundAvailable": "#available",
     "PoundUnavailable": "#unavailable",
+    "PoundSourceLocationToken": "#sourceLocation",
 }
 
 def variant(name):

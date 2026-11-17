@@ -1,0 +1,612 @@
+{
+  "$end": 273,
+  "$hasError": false,
+  "$lineStarts": [
+    0,
+    51,
+    70,
+    123,
+    140,
+    195,
+    221,
+    247,
+    253,
+    255,
+    273
+  ],
+  "$pos": 0,
+  "endOfFileToken": {
+    "$end": 273,
+    "$pos": 273,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": [
+    {
+      "$end": 50,
+      "$pos": 0,
+      "item": {
+        "$end": 50,
+        "$pos": 0,
+        "arguments": {
+          "$end": 49,
+          "$pos": 16,
+          "comma": {
+            "$end": 40,
+            "$pos": 39,
+            "kind": "token",
+            "text": ",",
+            "tokenKind": "comma"
+          },
+          "fileColon": {
+            "$end": 21,
+            "$pos": 20,
+            "kind": "token",
+            "text": ":",
+            "tokenKind": "colon"
+          },
+          "fileLabel": {
+            "$end": 20,
+            "$pos": 16,
+            "kind": "token",
+            "text": "file",
+            "tokenKind": "keyword(SwiftSyntax.Keyword.file)"
+          },
+          "fileName": {
+            "$end": 39,
+            "$pos": 22,
+            "closingQuote": {
+              "$end": 39,
+              "$pos": 38,
+              "kind": "token",
+              "text": "\"",
+              "tokenKind": "stringQuote"
+            },
+            "kind": "simpleStringLiteralExpr",
+            "openingQuote": {
+              "$end": 23,
+              "$pos": 22,
+              "kind": "token",
+              "text": "\"",
+              "tokenKind": "stringQuote"
+            },
+            "segments": [
+              {
+                "$end": 38,
+                "$pos": 23,
+                "content": {
+                  "$end": 38,
+                  "$pos": 23,
+                  "kind": "token",
+                  "text": "generated.swift",
+                  "tokenKind": "stringSegment(\"generated.swift\")"
+                },
+                "kind": "stringSegment"
+              }
+            ]
+          },
+          "kind": "poundSourceLocationArguments",
+          "lineColon": {
+            "$end": 46,
+            "$pos": 45,
+            "kind": "token",
+            "text": ":",
+            "tokenKind": "colon"
+          },
+          "lineLabel": {
+            "$end": 45,
+            "$pos": 41,
+            "kind": "token",
+            "text": "line",
+            "tokenKind": "keyword(SwiftSyntax.Keyword.line)"
+          },
+          "lineNumber": {
+            "$end": 49,
+            "$pos": 47,
+            "kind": "token",
+            "text": "42",
+            "tokenKind": "integerLiteral(\"42\")"
+          }
+        },
+        "kind": "poundSourceLocation",
+        "leftParen": {
+          "$end": 16,
+          "$pos": 15,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "poundSourceLocation": {
+          "$end": 15,
+          "$pos": 0,
+          "kind": "token",
+          "text": "#sourceLocation",
+          "tokenKind": "poundSourceLocation"
+        },
+        "rightParen": {
+          "$end": 50,
+          "$pos": 49,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 254,
+      "$pos": 51,
+      "item": {
+        "$end": 254,
+        "$pos": 51,
+        "attributes": [],
+        "kind": "structDecl",
+        "memberBlock": {
+          "$end": 254,
+          "$pos": 68,
+          "kind": "memberBlock",
+          "leftBrace": {
+            "$end": 69,
+            "$pos": 68,
+            "kind": "token",
+            "text": "{",
+            "tokenKind": "leftBrace"
+          },
+          "members": [
+            {
+              "$end": 122,
+              "$pos": 74,
+              "decl": {
+                "$end": 122,
+                "$pos": 74,
+                "arguments": {
+                  "$end": 121,
+                  "$pos": 90,
+                  "comma": {
+                    "$end": 111,
+                    "$pos": 110,
+                    "kind": "token",
+                    "text": ",",
+                    "tokenKind": "comma"
+                  },
+                  "fileColon": {
+                    "$end": 95,
+                    "$pos": 94,
+                    "kind": "token",
+                    "text": ":",
+                    "tokenKind": "colon"
+                  },
+                  "fileLabel": {
+                    "$end": 94,
+                    "$pos": 90,
+                    "kind": "token",
+                    "text": "file",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.file)"
+                  },
+                  "fileName": {
+                    "$end": 110,
+                    "$pos": 96,
+                    "closingQuote": {
+                      "$end": 110,
+                      "$pos": 109,
+                      "kind": "token",
+                      "text": "\"",
+                      "tokenKind": "stringQuote"
+                    },
+                    "kind": "simpleStringLiteralExpr",
+                    "openingQuote": {
+                      "$end": 97,
+                      "$pos": 96,
+                      "kind": "token",
+                      "text": "\"",
+                      "tokenKind": "stringQuote"
+                    },
+                    "segments": [
+                      {
+                        "$end": 109,
+                        "$pos": 97,
+                        "content": {
+                          "$end": 109,
+                          "$pos": 97,
+                          "kind": "token",
+                          "text": "member.swift",
+                          "tokenKind": "stringSegment(\"member.swift\")"
+                        },
+                        "kind": "stringSegment"
+                      }
+                    ]
+                  },
+                  "kind": "poundSourceLocationArguments",
+                  "lineColon": {
+                    "$end": 117,
+                    "$pos": 116,
+                    "kind": "token",
+                    "text": ":",
+                    "tokenKind": "colon"
+                  },
+                  "lineLabel": {
+                    "$end": 116,
+                    "$pos": 112,
+                    "kind": "token",
+                    "text": "line",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.line)"
+                  },
+                  "lineNumber": {
+                    "$end": 121,
+                    "$pos": 118,
+                    "kind": "token",
+                    "text": "100",
+                    "tokenKind": "integerLiteral(\"100\")"
+                  }
+                },
+                "kind": "poundSourceLocation",
+                "leftParen": {
+                  "$end": 90,
+                  "$pos": 89,
+                  "kind": "token",
+                  "text": "(",
+                  "tokenKind": "leftParen"
+                },
+                "poundSourceLocation": {
+                  "$end": 89,
+                  "$pos": 74,
+                  "kind": "token",
+                  "text": "#sourceLocation",
+                  "tokenKind": "poundSourceLocation"
+                },
+                "rightParen": {
+                  "$end": 122,
+                  "$pos": 121,
+                  "kind": "token",
+                  "text": ")",
+                  "tokenKind": "rightParen"
+                }
+              },
+              "kind": "memberBlockItem"
+            },
+            {
+              "$end": 252,
+              "$pos": 127,
+              "decl": {
+                "$end": 252,
+                "$pos": 127,
+                "attributes": [],
+                "body": {
+                  "$end": 252,
+                  "$pos": 138,
+                  "kind": "codeBlock",
+                  "leftBrace": {
+                    "$end": 139,
+                    "$pos": 138,
+                    "kind": "token",
+                    "text": "{",
+                    "tokenKind": "leftBrace"
+                  },
+                  "rightBrace": {
+                    "$end": 252,
+                    "$pos": 251,
+                    "kind": "token",
+                    "text": "}",
+                    "tokenKind": "rightBrace"
+                  },
+                  "statements": [
+                    {
+                      "$end": 194,
+                      "$pos": 148,
+                      "item": {
+                        "$end": 194,
+                        "$pos": 148,
+                        "arguments": {
+                          "$end": 193,
+                          "$pos": 164,
+                          "comma": {
+                            "$end": 183,
+                            "$pos": 182,
+                            "kind": "token",
+                            "text": ",",
+                            "tokenKind": "comma"
+                          },
+                          "fileColon": {
+                            "$end": 169,
+                            "$pos": 168,
+                            "kind": "token",
+                            "text": ":",
+                            "tokenKind": "colon"
+                          },
+                          "fileLabel": {
+                            "$end": 168,
+                            "$pos": 164,
+                            "kind": "token",
+                            "text": "file",
+                            "tokenKind": "keyword(SwiftSyntax.Keyword.file)"
+                          },
+                          "fileName": {
+                            "$end": 182,
+                            "$pos": 170,
+                            "closingQuote": {
+                              "$end": 182,
+                              "$pos": 181,
+                              "kind": "token",
+                              "text": "\"",
+                              "tokenKind": "stringQuote"
+                            },
+                            "kind": "simpleStringLiteralExpr",
+                            "openingQuote": {
+                              "$end": 171,
+                              "$pos": 170,
+                              "kind": "token",
+                              "text": "\"",
+                              "tokenKind": "stringQuote"
+                            },
+                            "segments": [
+                              {
+                                "$end": 181,
+                                "$pos": 171,
+                                "content": {
+                                  "$end": 181,
+                                  "$pos": 171,
+                                  "kind": "token",
+                                  "text": "body.swift",
+                                  "tokenKind": "stringSegment(\"body.swift\")"
+                                },
+                                "kind": "stringSegment"
+                              }
+                            ]
+                          },
+                          "kind": "poundSourceLocationArguments",
+                          "lineColon": {
+                            "$end": 189,
+                            "$pos": 188,
+                            "kind": "token",
+                            "text": ":",
+                            "tokenKind": "colon"
+                          },
+                          "lineLabel": {
+                            "$end": 188,
+                            "$pos": 184,
+                            "kind": "token",
+                            "text": "line",
+                            "tokenKind": "keyword(SwiftSyntax.Keyword.line)"
+                          },
+                          "lineNumber": {
+                            "$end": 193,
+                            "$pos": 190,
+                            "kind": "token",
+                            "text": "200",
+                            "tokenKind": "integerLiteral(\"200\")"
+                          }
+                        },
+                        "kind": "poundSourceLocation",
+                        "leftParen": {
+                          "$end": 164,
+                          "$pos": 163,
+                          "kind": "token",
+                          "text": "(",
+                          "tokenKind": "leftParen"
+                        },
+                        "poundSourceLocation": {
+                          "$end": 163,
+                          "$pos": 148,
+                          "kind": "token",
+                          "text": "#sourceLocation",
+                          "tokenKind": "poundSourceLocation"
+                        },
+                        "rightParen": {
+                          "$end": 194,
+                          "$pos": 193,
+                          "kind": "token",
+                          "text": ")",
+                          "tokenKind": "rightParen"
+                        }
+                      },
+                      "kind": "codeBlockItem"
+                    },
+                    {
+                      "$end": 220,
+                      "$pos": 203,
+                      "item": {
+                        "$end": 220,
+                        "$pos": 203,
+                        "additionalTrailingClosures": [],
+                        "arguments": [
+                          {
+                            "$end": 219,
+                            "$pos": 208,
+                            "colon": {
+                              "$end": 217,
+                              "$pos": 216,
+                              "kind": "token",
+                              "text": ":",
+                              "tokenKind": "colon"
+                            },
+                            "expression": {
+                              "$end": 219,
+                              "$pos": 218,
+                              "kind": "integerLiteralExpr",
+                              "literal": {
+                                "$end": 219,
+                                "$pos": 218,
+                                "kind": "token",
+                                "text": "1",
+                                "tokenKind": "integerLiteral(\"1\")"
+                              }
+                            },
+                            "kind": "labeledExpr",
+                            "label": {
+                              "$end": 216,
+                              "$pos": 208,
+                              "kind": "token",
+                              "text": "argument",
+                              "tokenKind": "identifier(\"argument\")"
+                            }
+                          }
+                        ],
+                        "calledExpression": {
+                          "$end": 207,
+                          "$pos": 203,
+                          "baseName": {
+                            "$end": 207,
+                            "$pos": 203,
+                            "kind": "token",
+                            "text": "test",
+                            "tokenKind": "identifier(\"test\")"
+                          },
+                          "kind": "declReferenceExpr"
+                        },
+                        "kind": "functionCallExpr",
+                        "leftParen": {
+                          "$end": 208,
+                          "$pos": 207,
+                          "kind": "token",
+                          "text": "(",
+                          "tokenKind": "leftParen"
+                        },
+                        "rightParen": {
+                          "$end": 220,
+                          "$pos": 219,
+                          "kind": "token",
+                          "text": ")",
+                          "tokenKind": "rightParen"
+                        }
+                      },
+                      "kind": "codeBlockItem"
+                    },
+                    {
+                      "$end": 246,
+                      "$pos": 229,
+                      "item": {
+                        "$end": 246,
+                        "$pos": 229,
+                        "kind": "poundSourceLocation",
+                        "leftParen": {
+                          "$end": 245,
+                          "$pos": 244,
+                          "kind": "token",
+                          "text": "(",
+                          "tokenKind": "leftParen"
+                        },
+                        "poundSourceLocation": {
+                          "$end": 244,
+                          "$pos": 229,
+                          "kind": "token",
+                          "text": "#sourceLocation",
+                          "tokenKind": "poundSourceLocation"
+                        },
+                        "rightParen": {
+                          "$end": 246,
+                          "$pos": 245,
+                          "kind": "token",
+                          "text": ")",
+                          "tokenKind": "rightParen"
+                        }
+                      },
+                      "kind": "codeBlockItem"
+                    }
+                  ]
+                },
+                "funcKeyword": {
+                  "$end": 131,
+                  "$pos": 127,
+                  "kind": "token",
+                  "text": "func",
+                  "tokenKind": "keyword(SwiftSyntax.Keyword.func)"
+                },
+                "kind": "functionDecl",
+                "modifiers": [],
+                "name": {
+                  "$end": 135,
+                  "$pos": 132,
+                  "kind": "token",
+                  "text": "run",
+                  "tokenKind": "identifier(\"run\")"
+                },
+                "signature": {
+                  "$end": 137,
+                  "$pos": 135,
+                  "kind": "functionSignature",
+                  "parameterClause": {
+                    "$end": 137,
+                    "$pos": 135,
+                    "kind": "functionParameterClause",
+                    "leftParen": {
+                      "$end": 136,
+                      "$pos": 135,
+                      "kind": "token",
+                      "text": "(",
+                      "tokenKind": "leftParen"
+                    },
+                    "parameters": [],
+                    "rightParen": {
+                      "$end": 137,
+                      "$pos": 136,
+                      "kind": "token",
+                      "text": ")",
+                      "tokenKind": "rightParen"
+                    }
+                  }
+                }
+              },
+              "kind": "memberBlockItem"
+            }
+          ],
+          "rightBrace": {
+            "$end": 254,
+            "$pos": 253,
+            "kind": "token",
+            "text": "}",
+            "tokenKind": "rightBrace"
+          }
+        },
+        "modifiers": [],
+        "name": {
+          "$end": 67,
+          "$pos": 58,
+          "kind": "token",
+          "text": "Generated",
+          "tokenKind": "identifier(\"Generated\")"
+        },
+        "structKeyword": {
+          "$end": 57,
+          "$pos": 51,
+          "kind": "token",
+          "text": "struct",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.struct)"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 272,
+      "$pos": 255,
+      "item": {
+        "$end": 272,
+        "$pos": 255,
+        "kind": "poundSourceLocation",
+        "leftParen": {
+          "$end": 271,
+          "$pos": 270,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "poundSourceLocation": {
+          "$end": 270,
+          "$pos": 255,
+          "kind": "token",
+          "text": "#sourceLocation",
+          "tokenKind": "poundSourceLocation"
+        },
+        "rightParen": {
+          "$end": 272,
+          "$pos": 271,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    }
+  ]
+}

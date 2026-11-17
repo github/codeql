@@ -1,4 +1,4 @@
-use super::Token;
+use super::{K, Token};
 use std::{
     cmp::Ordering,
     collections::{HashMap, HashSet},
@@ -110,11 +110,13 @@ impl OperatorTable {
         let mut nesting = 0usize;
         let mut conditional = 0usize;
         while pos < tokens.len() {
-            match text(pos) {
-                "#if" => conditional += 1,
-                "#endif" => conditional = conditional.saturating_sub(1),
-                "{" | "[" | "(" => nesting += 1,
-                "}" | "]" | ")" => nesting = nesting.saturating_sub(1),
+            match tokens[pos].kind {
+                K::PoundIf => conditional += 1,
+                K::PoundEndif => conditional = conditional.saturating_sub(1),
+                K::LeftBrace | K::LeftSquare | K::LeftParen => nesting += 1,
+                K::RightBrace | K::RightSquare | K::RightParen => {
+                    nesting = nesting.saturating_sub(1);
+                }
                 _ => {}
             }
             if nesting != 0 || conditional != 0 {
@@ -131,12 +133,14 @@ impl OperatorTable {
                 let id = self.group(group);
                 self.operators.entry(name.into()).or_insert(id);
                 pos += 3;
-            } else if text(pos) == "precedencegroup" && text(pos + 2) == "{" {
+            } else if text(pos) == "precedencegroup"
+                && tokens.get(pos + 2).is_some_and(|t| t.kind == K::LeftBrace)
+            {
                 let group = self.group(text(pos + 1));
                 let record = !self.groups[group].defined;
                 self.groups[group].defined = true;
                 pos += 3;
-                while pos < tokens.len() && text(pos) != "}" {
+                while pos < tokens.len() && tokens[pos].kind != K::RightBrace {
                     let label = text(pos);
                     pos += 1;
                     if text(pos) != ":" {
@@ -242,14 +246,18 @@ impl OperatorTable {
             },
         }
     }
-    pub fn can_fold(&self, groups: impl Iterator<Item = Option<usize>>) -> bool {
+    pub fn can_fold(&self, groups: impl Iterator<Item = (Option<usize>, bool)>) -> bool {
         let mut stack = Vec::new();
-        for group in groups {
+        for (group, cast) in groups {
             let Some(group) = group else {
                 return false;
             };
-            while let Some(left) = stack.last().copied() {
-                match self.fold_before(left, group) {
+            while let Some((left, left_cast)) = stack.last().copied() {
+                match if left_cast {
+                    Some(true)
+                } else {
+                    self.fold_before(left, group)
+                } {
                     Some(true) => {
                         stack.pop();
                     }
@@ -257,7 +265,7 @@ impl OperatorTable {
                     None => return false,
                 }
             }
-            stack.push(group);
+            stack.push((group, cast));
         }
         true
     }

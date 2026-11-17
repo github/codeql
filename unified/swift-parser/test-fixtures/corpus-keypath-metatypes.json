@@ -1,0 +1,542 @@
+{
+  "$end": 142,
+  "$hasError": false,
+  "$lineStarts": [
+    0,
+    28,
+    66,
+    103,
+    142
+  ],
+  "$pos": 0,
+  "endOfFileToken": {
+    "$end": 142,
+    "$pos": 142,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": [
+    {
+      "$end": 27,
+      "$pos": 0,
+      "item": {
+        "$end": 27,
+        "$pos": 0,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 3,
+          "$pos": 0,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 27,
+            "$pos": 4,
+            "initializer": {
+              "$end": 27,
+              "$pos": 13,
+              "equal": {
+                "$end": 14,
+                "$pos": 13,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 27,
+                "$pos": 15,
+                "backslash": {
+                  "$end": 16,
+                  "$pos": 15,
+                  "kind": "token",
+                  "text": "\\",
+                  "tokenKind": "backslash"
+                },
+                "components": [
+                  {
+                    "$end": 27,
+                    "$pos": 22,
+                    "component": {
+                      "$end": 27,
+                      "$pos": 23,
+                      "declName": {
+                        "$end": 27,
+                        "$pos": 23,
+                        "baseName": {
+                          "$end": 27,
+                          "$pos": 23,
+                          "kind": "token",
+                          "text": "init",
+                          "tokenKind": "keyword(SwiftSyntax.Keyword.init)"
+                        },
+                        "kind": "declReferenceExpr"
+                      },
+                      "kind": "keyPathPropertyComponent"
+                    },
+                    "kind": "keyPathComponent",
+                    "period": {
+                      "$end": 23,
+                      "$pos": 22,
+                      "kind": "token",
+                      "text": ".",
+                      "tokenKind": "period"
+                    }
+                  }
+                ],
+                "kind": "keyPathExpr",
+                "root": {
+                  "$end": 22,
+                  "$pos": 16,
+                  "baseType": {
+                    "$end": 17,
+                    "$pos": 16,
+                    "kind": "identifierType",
+                    "name": {
+                      "$end": 17,
+                      "$pos": 16,
+                      "kind": "token",
+                      "text": "S",
+                      "tokenKind": "identifier(\"S\")"
+                    }
+                  },
+                  "kind": "metatypeType",
+                  "metatypeSpecifier": {
+                    "$end": 22,
+                    "$pos": 18,
+                    "kind": "token",
+                    "text": "Type",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.Type)"
+                  },
+                  "period": {
+                    "$end": 18,
+                    "$pos": 17,
+                    "kind": "token",
+                    "text": ".",
+                    "tokenKind": "period"
+                  }
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 12,
+              "$pos": 4,
+              "identifier": {
+                "$end": 12,
+                "$pos": 4,
+                "kind": "token",
+                "text": "typeRoot",
+                "tokenKind": "identifier(\"typeRoot\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 65,
+      "$pos": 28,
+      "item": {
+        "$end": 65,
+        "$pos": 28,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 31,
+          "$pos": 28,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 65,
+            "$pos": 32,
+            "initializer": {
+              "$end": 65,
+              "$pos": 45,
+              "equal": {
+                "$end": 46,
+                "$pos": 45,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 65,
+                "$pos": 47,
+                "backslash": {
+                  "$end": 48,
+                  "$pos": 47,
+                  "kind": "token",
+                  "text": "\\",
+                  "tokenKind": "backslash"
+                },
+                "components": [
+                  {
+                    "$end": 65,
+                    "$pos": 58,
+                    "component": {
+                      "$end": 65,
+                      "$pos": 59,
+                      "declName": {
+                        "$end": 65,
+                        "$pos": 59,
+                        "baseName": {
+                          "$end": 65,
+                          "$pos": 59,
+                          "kind": "token",
+                          "text": "member",
+                          "tokenKind": "identifier(\"member\")"
+                        },
+                        "kind": "declReferenceExpr"
+                      },
+                      "kind": "keyPathPropertyComponent"
+                    },
+                    "kind": "keyPathComponent",
+                    "period": {
+                      "$end": 59,
+                      "$pos": 58,
+                      "kind": "token",
+                      "text": ".",
+                      "tokenKind": "period"
+                    }
+                  }
+                ],
+                "kind": "keyPathExpr",
+                "root": {
+                  "$end": 58,
+                  "$pos": 48,
+                  "baseType": {
+                    "$end": 49,
+                    "$pos": 48,
+                    "kind": "identifierType",
+                    "name": {
+                      "$end": 49,
+                      "$pos": 48,
+                      "kind": "token",
+                      "text": "P",
+                      "tokenKind": "identifier(\"P\")"
+                    }
+                  },
+                  "kind": "metatypeType",
+                  "metatypeSpecifier": {
+                    "$end": 58,
+                    "$pos": 50,
+                    "kind": "token",
+                    "text": "Protocol",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.Protocol)"
+                  },
+                  "period": {
+                    "$end": 50,
+                    "$pos": 49,
+                    "kind": "token",
+                    "text": ".",
+                    "tokenKind": "period"
+                  }
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 44,
+              "$pos": 32,
+              "identifier": {
+                "$end": 44,
+                "$pos": 32,
+                "kind": "token",
+                "text": "protocolRoot",
+                "tokenKind": "identifier(\"protocolRoot\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 102,
+      "$pos": 66,
+      "item": {
+        "$end": 102,
+        "$pos": 66,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 69,
+          "$pos": 66,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 102,
+            "$pos": 70,
+            "initializer": {
+              "$end": 102,
+              "$pos": 87,
+              "equal": {
+                "$end": 88,
+                "$pos": 87,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 102,
+                "$pos": 89,
+                "backslash": {
+                  "$end": 90,
+                  "$pos": 89,
+                  "kind": "token",
+                  "text": "\\",
+                  "tokenKind": "backslash"
+                },
+                "components": [
+                  {
+                    "$end": 102,
+                    "$pos": 97,
+                    "component": {
+                      "$end": 102,
+                      "$pos": 98,
+                      "declName": {
+                        "$end": 102,
+                        "$pos": 98,
+                        "baseName": {
+                          "$end": 102,
+                          "$pos": 98,
+                          "kind": "token",
+                          "text": "init",
+                          "tokenKind": "keyword(SwiftSyntax.Keyword.init)"
+                        },
+                        "kind": "declReferenceExpr"
+                      },
+                      "kind": "keyPathPropertyComponent"
+                    },
+                    "kind": "keyPathComponent",
+                    "period": {
+                      "$end": 98,
+                      "$pos": 97,
+                      "kind": "token",
+                      "text": ".",
+                      "tokenKind": "period"
+                    }
+                  }
+                ],
+                "kind": "keyPathExpr",
+                "root": {
+                  "$end": 97,
+                  "$pos": 90,
+                  "kind": "optionalType",
+                  "questionMark": {
+                    "$end": 97,
+                    "$pos": 96,
+                    "kind": "token",
+                    "text": "?",
+                    "tokenKind": "postfixQuestionMark"
+                  },
+                  "wrappedType": {
+                    "$end": 96,
+                    "$pos": 90,
+                    "baseType": {
+                      "$end": 91,
+                      "$pos": 90,
+                      "kind": "identifierType",
+                      "name": {
+                        "$end": 91,
+                        "$pos": 90,
+                        "kind": "token",
+                        "text": "S",
+                        "tokenKind": "identifier(\"S\")"
+                      }
+                    },
+                    "kind": "metatypeType",
+                    "metatypeSpecifier": {
+                      "$end": 96,
+                      "$pos": 92,
+                      "kind": "token",
+                      "text": "Type",
+                      "tokenKind": "keyword(SwiftSyntax.Keyword.Type)"
+                    },
+                    "period": {
+                      "$end": 92,
+                      "$pos": 91,
+                      "kind": "token",
+                      "text": ".",
+                      "tokenKind": "period"
+                    }
+                  }
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 86,
+              "$pos": 70,
+              "identifier": {
+                "$end": 86,
+                "$pos": 70,
+                "kind": "token",
+                "text": "optionalMetatype",
+                "tokenKind": "identifier(\"optionalMetatype\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 141,
+      "$pos": 103,
+      "item": {
+        "$end": 141,
+        "$pos": 103,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 106,
+          "$pos": 103,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 141,
+            "$pos": 107,
+            "initializer": {
+              "$end": 141,
+              "$pos": 126,
+              "equal": {
+                "$end": 127,
+                "$pos": 126,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 141,
+                "$pos": 128,
+                "backslash": {
+                  "$end": 129,
+                  "$pos": 128,
+                  "kind": "token",
+                  "text": "\\",
+                  "tokenKind": "backslash"
+                },
+                "components": [
+                  {
+                    "$end": 141,
+                    "$pos": 136,
+                    "component": {
+                      "$end": 141,
+                      "$pos": 137,
+                      "declName": {
+                        "$end": 141,
+                        "$pos": 137,
+                        "baseName": {
+                          "$end": 141,
+                          "$pos": 137,
+                          "kind": "token",
+                          "text": "init",
+                          "tokenKind": "keyword(SwiftSyntax.Keyword.init)"
+                        },
+                        "kind": "declReferenceExpr"
+                      },
+                      "kind": "keyPathPropertyComponent"
+                    },
+                    "kind": "keyPathComponent",
+                    "period": {
+                      "$end": 137,
+                      "$pos": 136,
+                      "kind": "token",
+                      "text": ".",
+                      "tokenKind": "period"
+                    }
+                  }
+                ],
+                "kind": "keyPathExpr",
+                "root": {
+                  "$end": 136,
+                  "$pos": 129,
+                  "baseType": {
+                    "$end": 131,
+                    "$pos": 129,
+                    "kind": "optionalType",
+                    "questionMark": {
+                      "$end": 131,
+                      "$pos": 130,
+                      "kind": "token",
+                      "text": "?",
+                      "tokenKind": "postfixQuestionMark"
+                    },
+                    "wrappedType": {
+                      "$end": 130,
+                      "$pos": 129,
+                      "kind": "identifierType",
+                      "name": {
+                        "$end": 130,
+                        "$pos": 129,
+                        "kind": "token",
+                        "text": "S",
+                        "tokenKind": "identifier(\"S\")"
+                      }
+                    }
+                  },
+                  "kind": "metatypeType",
+                  "metatypeSpecifier": {
+                    "$end": 136,
+                    "$pos": 132,
+                    "kind": "token",
+                    "text": "Type",
+                    "tokenKind": "keyword(SwiftSyntax.Keyword.Type)"
+                  },
+                  "period": {
+                    "$end": 132,
+                    "$pos": 131,
+                    "kind": "token",
+                    "text": ".",
+                    "tokenKind": "period"
+                  }
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 125,
+              "$pos": 107,
+              "identifier": {
+                "$end": 125,
+                "$pos": 107,
+                "kind": "token",
+                "text": "metatypeOfOptional",
+                "tokenKind": "identifier(\"metatypeOfOptional\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    }
+  ]
+}

@@ -16,6 +16,7 @@ pub(crate) use lexer::Token;
 #[derive(Clone, Copy)]
 struct Node<N: Copy> {
     id: N,
+    kind: K,
     span: Span,
 }
 
@@ -41,6 +42,8 @@ pub(crate) fn parse<S: SyntaxSink>(
         operators,
         pattern_context: false,
         binding_context: false,
+        condition_line: false,
+        attribute_arguments: false,
     };
     let start = parser.start();
     let mut children = Vec::new();
@@ -86,6 +89,8 @@ struct State<'a, S: SyntaxSink> {
     operators: operators::OperatorTable,
     pattern_context: bool,
     binding_context: bool,
+    condition_line: bool,
+    attribute_arguments: bool,
 }
 
 impl<S: SyntaxSink> State<'_, S> {
@@ -125,7 +130,7 @@ impl<S: SyntaxSink> State<'_, S> {
     fn make(&mut self, kind: K, span: Span, children: Children<S::Node>) -> Node<S::Node> {
         let id = self.sink.node(kind, span, NodeFlags::default(), &children);
         drop(children);
-        Node { id, span }
+        Node { id, kind, span }
     }
     fn finish(&mut self, kind: K, start: usize, children: Children<S::Node>) -> Node<S::Node> {
         self.make(
@@ -162,6 +167,15 @@ impl<S: SyntaxSink> State<'_, S> {
         } else {
             self.tokens[self.pos].span.start = span.end;
             self.tokens[self.pos].newline = false;
+            self.tokens[self.pos].kind = match &self.source[span.end..token.span.end] {
+                "=" => K::Equal,
+                "?" => K::InfixQuestionMark,
+                "!" => K::ExclamationMark,
+                "." => K::Period,
+                ":" => K::Colon,
+                "->" => K::Arrow,
+                _ => token.kind,
+            };
         }
         self.last_end = span.end;
         self.make(kind, span, Vec::new())
@@ -178,6 +192,16 @@ impl<S: SyntaxSink> State<'_, S> {
     }
     fn word(&mut self) -> Node<S::Node> {
         self.bump_as(K::keyword(self.text()).unwrap_or_else(|| self.token().kind))
+    }
+    fn raw_token(&mut self) -> Node<S::Node> {
+        if Self::lexical_keyword(self.text()) {
+            self.word()
+        } else {
+            self.bump()
+        }
+    }
+    fn lexical_keyword(text: &str) -> bool {
+        lexical_keyword(text)
     }
     fn take(&mut self, children: &mut Children<S::Node>, field: F) {
         let node = self.bump();
@@ -235,6 +259,7 @@ impl<S: SyntaxSink> State<'_, S> {
         };
         Node {
             id: self.sink.node(kind, span, flags, &[]),
+            kind,
             span,
         }
     }
@@ -259,6 +284,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 },
                 &children,
             ),
+            kind: K::UnexpectedCodeDecl,
             span,
         }
     }
@@ -331,6 +357,8 @@ impl<S: SyntaxSink> State<'_, S> {
             self.text(),
             "let"
                 | "var"
+                | "inout"
+                | "_borrowing"
                 | "func"
                 | "class"
                 | "struct"
@@ -348,7 +376,6 @@ impl<S: SyntaxSink> State<'_, S> {
                 | "break"
                 | "continue"
                 | "defer"
-                | "repeat"
                 | "do"
                 | "case"
                 | "default"
@@ -358,6 +385,69 @@ impl<S: SyntaxSink> State<'_, S> {
                 | "#else"
                 | "#elseif"
                 | "#endif"
-        ) || self.eof()
+                | "#sourceLocation"
+        ) || (matches!(self.text(), "yield" | "discard") && self.contextual_prefix(false, true))
+            || (self.at("repeat") && self.nth(1) == "{")
+            || (self.at("@") && self.nth(1) == "unknown")
+            || self.eof()
     }
+}
+
+fn lexical_keyword(text: &str) -> bool {
+    matches!(
+        text,
+        "Any"
+            | "as"
+            | "associatedtype"
+            | "break"
+            | "case"
+            | "catch"
+            | "class"
+            | "continue"
+            | "default"
+            | "defer"
+            | "deinit"
+            | "do"
+            | "else"
+            | "enum"
+            | "extension"
+            | "fallthrough"
+            | "false"
+            | "fileprivate"
+            | "for"
+            | "func"
+            | "guard"
+            | "if"
+            | "import"
+            | "in"
+            | "init"
+            | "inout"
+            | "internal"
+            | "is"
+            | "let"
+            | "nil"
+            | "operator"
+            | "precedencegroup"
+            | "private"
+            | "protocol"
+            | "public"
+            | "repeat"
+            | "rethrows"
+            | "return"
+            | "self"
+            | "Self"
+            | "static"
+            | "struct"
+            | "subscript"
+            | "super"
+            | "switch"
+            | "throw"
+            | "throws"
+            | "true"
+            | "try"
+            | "typealias"
+            | "var"
+            | "where"
+            | "while"
+    )
 }

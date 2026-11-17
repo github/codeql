@@ -5,8 +5,16 @@ impl<S: SyntaxSink> State<'_, S> {
     pub(super) fn item(&mut self, member: bool) -> Node<S::Node> {
         let start = self.start();
         let mut c = Vec::new();
-        while self.at("@") {
-            let attr = self.attribute();
+        while self.at("@")
+            || (self.at("#if")
+                && super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
+                    .conditional_attributes())
+        {
+            let attr = if self.at("@") {
+                self.attribute()
+            } else {
+                self.attribute_config()
+            };
             Self::add(&mut c, F::Attributes, attr);
         }
         while self.is_modifier() {
@@ -26,20 +34,31 @@ impl<S: SyntaxSink> State<'_, S> {
             Self::add(&mut c, F::Modifiers, node);
         }
         let kind = match self.text() {
+            "#" if member || !c.is_empty() => {
+                return self.macro_expansion(K::MacroExpansionDecl, start, c, true);
+            }
             "#if" => return self.if_config(member),
+            "#sourceLocation" => return self.source_location(),
             "import" => {
                 self.kw(&mut c, F::ImportKeyword);
-                if matches!(
+                let scoped = matches!(
                     self.text(),
                     "typealias" | "struct" | "class" | "enum" | "protocol" | "let" | "var" | "func"
-                ) {
+                );
+                if scoped {
                     self.kw(&mut c, F::ImportKindSpecifier);
                 }
+                let separator = if scoped && self.nth(1) == "::" {
+                    "::"
+                } else {
+                    "."
+                };
                 loop {
                     let start = self.start();
                     let mut path = Vec::new();
-                    self.take(&mut path, F::Name);
-                    let more = self.eat(".", &mut path, F::TrailingPeriod);
+                    let name = self.bump_as(K::Identifier);
+                    Self::add(&mut path, F::Name, name);
+                    let more = self.eat(separator, &mut path, F::TrailingPeriod);
                     let node = self.finish(K::ImportPathComponent, start, path);
                     Self::add(&mut c, F::Path, node);
                     if !more {
@@ -48,7 +67,7 @@ impl<S: SyntaxSink> State<'_, S> {
                 }
                 K::ImportDecl
             }
-            "let" | "var" => {
+            "let" | "var" | "inout" | "_borrowing" => {
                 self.kw(&mut c, F::BindingSpecifier);
                 loop {
                     let before = self.pos;
@@ -60,11 +79,17 @@ impl<S: SyntaxSink> State<'_, S> {
                         let ty = self.annotation();
                         Self::add(&mut binding, F::TypeAnnotation, ty);
                     }
-                    if self.at("=") {
+                    let has_initializer = self.at("=");
+                    if has_initializer {
                         let init = self.initializer();
                         Self::add(&mut binding, F::Initializer, init);
                     }
-                    if self.at("{") {
+                    if self.at("{")
+                        && (!has_initializer
+                            || !self.newline()
+                            || super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
+                                .observing_accessor_block())
+                    {
                         let accessors = self.accessors();
                         Self::add(&mut binding, F::AccessorBlock, accessors);
                     }
@@ -77,20 +102,49 @@ impl<S: SyntaxSink> State<'_, S> {
                 }
                 K::VariableDecl
             }
-            "func" | "init" | "deinit" | "subscript" => {
+            "func" | "init" | "deinit" | "subscript" | "macro"
+                if !self.at("macro") || self.label(1) =>
+            {
                 let text = self.text();
                 let (kind, field) = match text {
                     "init" => (K::InitializerDecl, F::InitKeyword),
                     "deinit" => (K::DeinitializerDecl, F::DeinitKeyword),
                     "subscript" => (K::SubscriptDecl, F::SubscriptKeyword),
+                    "macro" => (K::MacroDecl, F::MacroKeyword),
                     _ => (K::FunctionDecl, F::FuncKeyword),
                 };
                 self.kw(&mut c, field);
-                if kind == K::FunctionDecl {
-                    self.take(&mut c, F::Name);
+                if matches!(kind, K::FunctionDecl | K::MacroDecl) {
+                    if matches!(
+                        self.token().kind,
+                        K::BinaryOperator
+                            | K::PrefixOperator
+                            | K::PostfixOperator
+                            | K::ExclamationMark
+                    ) {
+                        let name = if self.text().ends_with('<')
+                            && self.text().len() > 1
+                            && (self.label(1) || self.nth(1) == "@")
+                        {
+                            self.token_prefix(self.text().len() - 1, K::BinaryOperator)
+                        } else {
+                            self.bump_as(K::BinaryOperator)
+                        };
+                        Self::add(&mut c, F::Name, name);
+                    } else {
+                        self.take(&mut c, F::Name);
+                    }
                 }
-                if kind == K::InitializerDecl && (self.at("?") || self.at("!")) {
-                    self.take(&mut c, F::OptionalMark);
+                if kind == K::InitializerDecl && self.text().starts_with(['?', '!']) {
+                    let mark = self.token_prefix(
+                        1,
+                        if self.text().starts_with('?') {
+                            K::InfixQuestionMark
+                        } else {
+                            K::ExclamationMark
+                        },
+                    );
+                    Self::add(&mut c, F::OptionalMark, mark);
                 }
                 if self.at("<") {
                     let node = self.generic_parameters();
@@ -118,6 +172,10 @@ impl<S: SyntaxSink> State<'_, S> {
                         Self::add(&mut c, F::Signature, node);
                     }
                 }
+                if kind == K::MacroDecl && self.at("=") {
+                    let node = self.initializer();
+                    Self::add(&mut c, F::Definition, node);
+                }
                 if self.at("where") {
                     let node = self.where_clause();
                     Self::add(&mut c, F::GenericWhereClause, node);
@@ -140,7 +198,9 @@ impl<S: SyntaxSink> State<'_, S> {
                 }
                 kind
             }
-            "struct" | "class" | "enum" | "protocol" | "actor" | "extension" => {
+            "struct" | "class" | "enum" | "protocol" | "actor" | "extension"
+                if !self.at("actor") || self.label(1) =>
+            {
                 let (kind, field) = match self.text() {
                     "class" => (K::ClassDecl, F::ClassKeyword),
                     "enum" => (K::EnumDecl, F::EnumKeyword),
@@ -157,8 +217,13 @@ impl<S: SyntaxSink> State<'_, S> {
                     self.take(&mut c, F::Name);
                 }
                 if self.at("<") {
-                    let node = self.generic_parameters();
-                    Self::add(&mut c, F::GenericParameterClause, node);
+                    if kind == K::ProtocolDecl {
+                        let node = self.primary_associated_types();
+                        Self::add(&mut c, F::PrimaryAssociatedTypeClause, node);
+                    } else {
+                        let node = self.generic_parameters();
+                        Self::add(&mut c, F::GenericParameterClause, node);
+                    }
                 }
                 if self.at(":") {
                     let node = self.inheritance();
@@ -303,34 +368,105 @@ impl<S: SyntaxSink> State<'_, S> {
         self.finish(kind, start, c)
     }
 
+    fn source_location(&mut self) -> Node<S::Node> {
+        let start = self.start();
+        let mut c = Vec::new();
+        self.take(&mut c, F::PoundSourceLocation);
+        self.expect("(", &mut c, F::LeftParen);
+        if !self.at(")") {
+            let start = self.start();
+            let mut arguments = Vec::new();
+            self.kw(&mut arguments, F::FileLabel);
+            self.expect(":", &mut arguments, F::FileColon);
+            let file = self.string_literal_as(K::SimpleStringLiteralExpr);
+            Self::add(&mut arguments, F::FileName, file);
+            self.expect(",", &mut arguments, F::Comma);
+            self.kw(&mut arguments, F::LineLabel);
+            self.expect(":", &mut arguments, F::LineColon);
+            self.take(&mut arguments, F::LineNumber);
+            let arguments = self.finish(K::PoundSourceLocationArguments, start, arguments);
+            Self::add(&mut c, F::Arguments, arguments);
+        }
+        self.expect(")", &mut c, F::RightParen);
+        self.finish(K::PoundSourceLocation, start, c)
+    }
+
     fn is_modifier(&self) -> bool {
-        matches!(
-            self.text(),
-            "public"
-                | "private"
-                | "fileprivate"
-                | "internal"
-                | "open"
-                | "static"
-                | "final"
-                | "override"
-                | "mutating"
-                | "nonmutating"
-                | "lazy"
-                | "weak"
-                | "unowned"
-                | "required"
-                | "convenience"
-                | "indirect"
-                | "dynamic"
-                | "optional"
-                | "nonisolated"
-                | "isolated"
-                | "distributed"
-                | "borrowing"
-                | "consuming"
-                | "package"
-        ) || (self.at("class") && matches!(self.nth(1), "func" | "var" | "subscript"))
+        if self.nth(1) == "(" {
+            let detail = match self.text() {
+                "private" | "public" | "open" | "internal" | "fileprivate" | "package" => {
+                    self.nth(2) == "set"
+                }
+                "unowned" => matches!(self.nth(2), "safe" | "unsafe"),
+                "nonisolated" => matches!(self.nth(2), "unsafe" | "nonsending"),
+                _ => false,
+            };
+            return detail
+                && self.nth(3) == ")"
+                && super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
+                    .modifier_declaration();
+        }
+        if !self.label(1) && self.nth(1) != "#" {
+            return false;
+        }
+        (self.at("async") && matches!(self.nth(1), "let" | "var"))
+            || (matches!(self.text(), "prefix" | "postfix" | "infix")
+                && super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
+                    .modifier_declaration())
+            || super::lookahead::declaration_modifier(self.text())
+            || (self.at("class")
+                && super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
+                    .class_modifier())
+    }
+
+    fn primary_associated_types(&mut self) -> Node<S::Node> {
+        let start = self.start();
+        let mut clause = Vec::new();
+        self.angle(true, &mut clause);
+        while !self.eof() && !self.text().starts_with('>') {
+            let start = self.start();
+            let mut ty = Vec::new();
+            self.take(&mut ty, F::Name);
+            let comma = self.eat(",", &mut ty, F::TrailingComma);
+            let node = self.finish(K::PrimaryAssociatedType, start, ty);
+            Self::add(&mut clause, F::PrimaryAssociatedTypes, node);
+            if !comma {
+                break;
+            }
+        }
+        self.angle(false, &mut clause);
+        self.finish(K::PrimaryAssociatedTypeClause, start, clause)
+    }
+
+    fn attribute_config(&mut self) -> Node<S::Node> {
+        if !self.enter() {
+            return self.missing(K::MissingDecl);
+        }
+        let start = self.start();
+        let mut c = Vec::new();
+        while !self.eof() && matches!(self.text(), "#if" | "#elseif" | "#else") {
+            let start = self.start();
+            let mut clause = Vec::new();
+            let condition = !self.at("#else");
+            self.take(&mut clause, F::PoundKeyword);
+            if condition {
+                let node = self.directive_condition();
+                Self::add(&mut clause, F::Condition, node);
+            }
+            while self.at("@") || self.at("#if") {
+                let attr = if self.at("@") {
+                    self.attribute()
+                } else {
+                    self.attribute_config()
+                };
+                Self::add(&mut clause, F::Elements, attr);
+            }
+            let node = self.finish(K::IfConfigClause, start, clause);
+            Self::add(&mut c, F::Clauses, node);
+        }
+        self.expect("#endif", &mut c, F::PoundEndif);
+        self.depth -= 1;
+        self.finish(K::IfConfigDecl, start, c)
     }
 
     fn if_config(&mut self, member: bool) -> Node<S::Node> {
@@ -345,7 +481,7 @@ impl<S: SyntaxSink> State<'_, S> {
             let has_condition = !self.at("#else");
             self.take(&mut clause, F::PoundKeyword);
             if has_condition {
-                let condition = self.expression(false);
+                let condition = self.directive_condition();
                 Self::add(&mut clause, F::Condition, condition);
             }
             self.items(&mut clause, F::Elements, member, false);
@@ -378,7 +514,7 @@ impl<S: SyntaxSink> State<'_, S> {
     fn pattern_inner(&mut self) -> Node<S::Node> {
         let start = self.start();
         let mut c = Vec::new();
-        let kind = if self.at("let") || self.at("var") {
+        let kind = if self.binding_pattern() {
             self.kw(&mut c, F::BindingSpecifier);
             let pattern = self.pattern();
             Self::add(&mut c, F::Pattern, pattern);
@@ -428,7 +564,7 @@ impl<S: SyntaxSink> State<'_, S> {
     fn matching_pattern_inner(&mut self) -> Node<S::Node> {
         let start = self.start();
         let mut c = Vec::new();
-        if self.at("let") || self.at("var") {
+        if self.binding_pattern() {
             self.kw(&mut c, F::BindingSpecifier);
             let previous = self.binding_context;
             self.binding_context = true;
@@ -437,10 +573,15 @@ impl<S: SyntaxSink> State<'_, S> {
             Self::add(&mut c, F::Pattern, node);
             return self.finish(K::ValueBindingPattern, start, c);
         }
+        let expression_start = matches!(self.text(), "try" | "await" | "true" | "false" | "nil")
+            || (matches!(self.text(), "consume" | "borrow" | "copy" | "unsafe")
+                && self.contextual_prefix(self.at("unsafe"), false));
         if self.binding_context
-            && ((self.label(0) && !matches!(self.nth(1), "." | "(" | "as" | "is" | "<"))
-                || self.at("(")
-                || self.at("_"))
+            && !expression_start
+            && self.binding_identifier()
+            && !matches!(self.nth(1), "." | "(" | "as" | "is" | "<")
+            && !self.nth(1).starts_with(['?', '!'])
+            && !self.at("_")
         {
             return self.pattern();
         }
@@ -456,6 +597,20 @@ impl<S: SyntaxSink> State<'_, S> {
         self.pattern_context = previous;
         Self::add(&mut c, F::Expression, expr);
         self.make(K::ExpressionPattern, expr.span, c)
+    }
+
+    pub(super) fn binding_pattern(&self) -> bool {
+        matches!(self.text(), "let" | "var" | "inout")
+            || (matches!(self.text(), "borrowing" | "_borrowing")
+                && self.label(1)
+                && !Self::lexical_keyword(self.nth(1))
+                && self.tokens.get(self.pos + 1).is_some_and(|t| !t.newline))
+    }
+
+    pub(super) fn binding_identifier(&self) -> bool {
+        self.at_kind(K::Identifier)
+            && (!Self::lexical_keyword(self.text())
+                || matches!(self.text(), "self" | "init" | "deinit" | "subscript"))
     }
 
     fn inheritance(&mut self) -> Node<S::Node> {
@@ -486,14 +641,17 @@ impl<S: SyntaxSink> State<'_, S> {
             let before = self.pos;
             let start = self.start();
             let mut p = Vec::new();
-            while self.at("@") {
+            while !enum_case && self.at("@") {
                 let node = self.attribute();
                 Self::add(&mut p, F::Attributes, node);
             }
+            self.parameter_modifiers(&mut p, false);
             if !enum_case || self.labels_before_colon() {
-                self.take(&mut p, F::FirstName);
+                let name = self.bump_as(self.token().kind);
+                Self::add(&mut p, F::FirstName, name);
                 if !self.at(":") {
-                    self.take(&mut p, F::SecondName);
+                    let name = self.bump_as(self.token().kind);
+                    Self::add(&mut p, F::SecondName, name);
                 }
                 self.expect(":", &mut p, F::Colon);
             }
@@ -534,42 +692,310 @@ impl<S: SyntaxSink> State<'_, S> {
         )
     }
 
+    pub(super) fn parameter_modifiers(&mut self, c: &mut Children<S::Node>, closure: bool) {
+        while super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
+            .parameter_modifier(closure)
+        {
+            let start = self.start();
+            let mut modifier = Vec::new();
+            self.kw(&mut modifier, F::Name);
+            let modifier = self.finish(K::DeclModifier, start, modifier);
+            Self::add(c, F::Modifiers, modifier);
+        }
+    }
+
     pub(super) fn attribute(&mut self) -> Node<S::Node> {
+        self.attribute_with_context(false)
+    }
+
+    pub(super) fn type_attribute(&mut self) -> Node<S::Node> {
+        self.attribute_with_context(true)
+    }
+
+    fn attribute_with_context(&mut self, type_context: bool) -> Node<S::Node> {
+        if !self.enter() {
+            return self.missing(K::MissingDecl);
+        }
         let start = self.start();
         let mut c = Vec::new();
         self.take(&mut c, F::AtSign);
-        let accepts_arguments = !matches!(
-            self.text(),
-            "escaping" | "autoclosure" | "Sendable" | "noescape"
-        );
+        let accepts_arguments =
+            super::lookahead::attribute_accepts_arguments(self.text(), type_context);
+        let custom_arguments =
+            super::lookahead::custom_attribute_arguments(self.text(), type_context);
         let availability = self.at("available") || self.at("_spi_available");
         let objc = self.at("objc");
-        let ty = self.type_node();
+        let documentation = self.at("_documentation");
+        let specialize = self.at("_specialize");
+        let effects = self.at("_effects");
+        let macro_role = self.at("attached") || self.at("freestanding");
+        let structured = match self.text() {
+            "_implements" => Some(K::ImplementsAttributeArguments),
+            "_dynamicReplacement" => Some(K::DynamicReplacementAttributeArguments),
+            "_backDeploy" | "backDeployed" => Some(K::BackDeployedAttributeArguments),
+            "_originallyDefinedIn" => Some(K::OriginallyDefinedInAttributeArguments),
+            "specialized" => Some(K::SpecializedAttributeArgument),
+            "abi" => Some(K::AbiAttributeArguments),
+            "differentiable" => Some(K::DifferentiableAttributeArguments),
+            "derivative" | "transpose" => Some(K::DerivativeAttributeArguments),
+            _ => None,
+        };
+        let ty = self.attribute_name();
         Self::add(&mut c, F::AttributeName, ty);
-        if accepts_arguments && self.at("(") && !self.newline() {
+        if accepts_arguments
+            && self.at("(")
+            && !self.newline()
+            && super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
+                .attribute_arguments(custom_arguments)
+        {
             self.take(&mut c, F::LeftParen);
-            if objc {
+            if effects {
+                while !self.eof() && !self.at(")") {
+                    let token = self.raw_token();
+                    Self::add(&mut c, F::Arguments, token);
+                }
+            } else if let Some(kind) = structured {
+                let node = self.structured_attribute_arguments(kind);
+                Self::add(&mut c, F::Arguments, node);
+            } else if documentation {
+                while !self.eof() && !self.at(")") {
+                    let start = self.start();
+                    let mut arg = Vec::new();
+                    self.kw(&mut arg, F::Label);
+                    self.expect(":", &mut arg, F::Colon);
+                    if matches!(
+                        self.token().kind,
+                        K::StringQuote | K::MultilineStringQuote | K::RawStringPoundDelimiter
+                    ) {
+                        let value = self.string_literal_as(K::StringLiteralExpr);
+                        Self::add(&mut arg, F::Value, value);
+                    } else {
+                        self.kw(&mut arg, F::Value);
+                    }
+                    let comma = self.eat(",", &mut arg, F::TrailingComma);
+                    let node = self.finish(K::DocumentationAttributeArgument, start, arg);
+                    Self::add(&mut c, F::Arguments, node);
+                    if !comma {
+                        break;
+                    }
+                }
+            } else if specialize {
+                self.specialize_attribute_arguments(&mut c);
+            } else if objc {
                 while !self.eof() && !self.at(")") {
                     let start = self.start();
                     let mut piece = Vec::new();
-                    if !self.at(":") {
+                    if !self.text().starts_with(':') {
                         self.take(&mut piece, F::Name);
                     }
-                    self.eat(":", &mut piece, F::Colon);
+                    if self.text().starts_with(':') {
+                        let colon = self.token_prefix(1, K::Colon);
+                        Self::add(&mut piece, F::Colon, colon);
+                    }
                     let node = self.finish(K::ObjCSelectorPiece, start, piece);
                     Self::add(&mut c, F::Arguments, node);
                 }
             } else if availability {
                 self.availability_arguments(&mut c, F::Arguments);
             } else {
+                if macro_role && !self.at(")") {
+                    let argument = self.macro_role_argument();
+                    Self::add(&mut c, F::Arguments, argument);
+                }
+                let previous = self.attribute_arguments;
+                self.attribute_arguments = macro_role;
                 self.arguments(&mut c, F::Arguments, ")");
+                self.attribute_arguments = previous;
             }
             self.expect(")", &mut c, F::RightParen);
         }
+        self.depth -= 1;
         self.finish(K::Attribute, start, c)
     }
 
+    fn macro_role_argument(&mut self) -> Node<S::Node> {
+        let start = self.start();
+        let mut reference = Vec::new();
+        let name = self.bump_as(K::Identifier);
+        Self::add(&mut reference, F::BaseName, name);
+        let reference = self.finish(K::DeclReferenceExpr, start, reference);
+        let mut argument = Vec::new();
+        Self::add(&mut argument, F::Expression, reference);
+        self.eat(",", &mut argument, F::TrailingComma);
+        self.finish(K::LabeledExpr, start, argument)
+    }
+
+    fn specialize_attribute_arguments(&mut self, c: &mut Children<S::Node>) {
+        while !self.eof() && !self.at(")") {
+            if self.at("where") {
+                let node = self.where_clause();
+                Self::add(c, F::Arguments, node);
+                break;
+            }
+            let start = self.start();
+            let mut arg = Vec::new();
+            let availability = self.at("availability");
+            let target = self.at("target");
+            self.kw(
+                &mut arg,
+                if availability {
+                    F::AvailabilityLabel
+                } else if target {
+                    F::TargetLabel
+                } else {
+                    F::Label
+                },
+            );
+            self.expect(":", &mut arg, F::Colon);
+            if availability {
+                self.availability_arguments(&mut arg, F::AvailabilityArguments);
+                self.expect(";", &mut arg, F::Semicolon);
+            } else if target {
+                let name = self.declaration_reference(true);
+                Self::add(&mut arg, F::DeclName, name);
+            } else if self.at("true") || self.at("false") {
+                self.kw(&mut arg, F::Value);
+            } else {
+                self.take(&mut arg, F::Value);
+            }
+            let comma = !availability && self.eat(",", &mut arg, F::TrailingComma);
+            let kind = if availability {
+                K::SpecializeAvailabilityArgument
+            } else if target {
+                K::SpecializeTargetFunctionArgument
+            } else {
+                K::LabeledSpecializeArgument
+            };
+            let node = self.finish(kind, start, arg);
+            Self::add(c, F::Arguments, node);
+            if !availability && !comma {
+                break;
+            }
+        }
+    }
+
+    fn structured_attribute_arguments(&mut self, kind: K) -> Node<S::Node> {
+        let start = self.start();
+        let mut c = Vec::new();
+        match kind {
+            K::DifferentiableAttributeArguments | K::DerivativeAttributeArguments => {
+                return self.differentiable_arguments(kind);
+            }
+            K::AbiAttributeArguments => {
+                let decl = self.item(false);
+                Self::add(&mut c, F::Provider, decl);
+            }
+            K::ImplementsAttributeArguments => {
+                let ty = self.type_node();
+                Self::add(&mut c, F::Type, ty);
+                self.expect(",", &mut c, F::Comma);
+                let name = self.declaration_reference(true);
+                Self::add(&mut c, F::DeclName, name);
+            }
+            K::DynamicReplacementAttributeArguments => {
+                self.kw(&mut c, F::ForLabel);
+                self.expect(":", &mut c, F::Colon);
+                let name = self.declaration_reference(true);
+                Self::add(&mut c, F::DeclName, name);
+            }
+            K::SpecializedAttributeArgument => {
+                let requirements = self.where_clause();
+                Self::add(&mut c, F::GenericWhereClause, requirements);
+            }
+            _ => {
+                if kind == K::OriginallyDefinedInAttributeArguments {
+                    self.kw(&mut c, F::ModuleLabel);
+                    self.expect(":", &mut c, F::Colon);
+                    let name = self.string_literal_as(K::StringLiteralExpr);
+                    Self::add(&mut c, F::ModuleName, name);
+                    self.expect(",", &mut c, F::Comma);
+                } else {
+                    self.kw(&mut c, F::BeforeLabel);
+                    self.expect(":", &mut c, F::Colon);
+                }
+                while !self.eof() && !self.at(")") {
+                    let start = self.start();
+                    let platform = self.platform_version();
+                    let mut item = Vec::new();
+                    Self::add(&mut item, F::PlatformVersion, platform);
+                    let comma = self.eat(",", &mut item, F::TrailingComma);
+                    let item = self.finish(K::PlatformVersionItem, start, item);
+                    Self::add(&mut c, F::Platforms, item);
+                    if !comma {
+                        break;
+                    }
+                }
+            }
+        }
+        self.finish(kind, start, c)
+    }
+
+    fn differentiable_arguments(&mut self, kind: K) -> Node<S::Node> {
+        let start = self.start();
+        let mut c = Vec::new();
+        if kind == K::DerivativeAttributeArguments {
+            self.kw(&mut c, F::OfLabel);
+            self.expect(":", &mut c, F::Colon);
+            let name = self.qualified_reference();
+            Self::add(&mut c, F::OriginalDeclName, name);
+            if self.eat(".", &mut c, F::Period) {
+                self.kw(&mut c, F::AccessorSpecifier);
+            }
+            self.eat(",", &mut c, F::Comma);
+        } else if matches!(self.text(), "reverse" | "_forward" | "_linear") {
+            self.kw(&mut c, F::KindSpecifier);
+            self.eat(",", &mut c, F::KindSpecifierComma);
+        }
+        if self.at("wrt") {
+            let wrt_start = self.start();
+            let mut wrt = Vec::new();
+            self.kw(&mut wrt, F::WrtLabel);
+            self.expect(":", &mut wrt, F::Colon);
+            let start = self.start();
+            let mut arguments = Vec::new();
+            let multiple = self.eat("(", &mut arguments, F::LeftParen);
+            while !self.eof() && !self.at(")") {
+                let start = self.start();
+                let mut argument = Vec::new();
+                self.take(&mut argument, F::Argument);
+                let comma = self.eat(",", &mut argument, F::TrailingComma);
+                let argument = self.finish(K::DifferentiabilityArgument, start, argument);
+                Self::add(&mut arguments, F::Arguments, argument);
+                if !multiple || !comma {
+                    break;
+                }
+            }
+            if multiple {
+                self.expect(")", &mut arguments, F::RightParen);
+                let arguments = self.finish(K::DifferentiabilityArguments, start, arguments);
+                Self::add(&mut wrt, F::Arguments, arguments);
+            } else {
+                for child in arguments {
+                    wrt.push(child);
+                }
+            }
+            let argument = self.finish(K::DifferentiabilityWithRespectToArgument, wrt_start, wrt);
+            Self::add(&mut c, F::Arguments, argument);
+            if kind == K::DifferentiableAttributeArguments {
+                self.eat(",", &mut c, F::ArgumentsComma);
+            }
+        }
+        if self.at("where") {
+            let requirements = self.where_clause();
+            Self::add(&mut c, F::GenericWhereClause, requirements);
+        }
+        self.finish(kind, start, c)
+    }
+
     pub(super) fn availability_arguments(&mut self, c: &mut Children<S::Node>, field: F) {
+        self.availability_list(c, field, true);
+    }
+
+    pub(super) fn availability_specifications(&mut self, c: &mut Children<S::Node>, field: F) {
+        self.availability_list(c, field, false);
+    }
+
+    fn availability_list(&mut self, c: &mut Children<S::Node>, field: F, attribute: bool) {
         while !self.eof() && !self.at(")") {
             let before = self.pos;
             let start = self.start();
@@ -578,23 +1004,26 @@ impl<S: SyntaxSink> State<'_, S> {
                 let mut labeled = Vec::new();
                 self.kw(&mut labeled, F::Label);
                 self.take(&mut labeled, F::Colon);
-                let value = if self.at_kind(K::StringQuote) {
+                let value = if matches!(
+                    self.token().kind,
+                    K::StringQuote | K::MultilineStringQuote | K::RawStringPoundDelimiter
+                ) {
                     self.string_literal_as(K::SimpleStringLiteralExpr)
                 } else {
                     self.version()
                 };
                 Self::add(&mut labeled, F::Value, value);
                 self.finish(K::AvailabilityLabeledArgument, start, labeled)
-            } else if self
-                .tokens
-                .get(self.pos + 1)
-                .is_some_and(|t| matches!(t.kind, K::IntegerLiteral | K::FloatLiteral))
+            } else if self.at_kind(K::Identifier)
+                && (!attribute
+                    || (self.nth(1) != ","
+                        && !matches!(self.text(), "deprecated" | "unavailable" | "noasync")))
             {
-                let mut platform = Vec::new();
-                self.take(&mut platform, F::Platform);
-                let version = self.version();
-                Self::add(&mut platform, F::Version, version);
-                self.finish(K::PlatformVersion, start, platform)
+                self.platform_version()
+            } else if self.at_kind(K::Identifier)
+                && !matches!(self.text(), "deprecated" | "unavailable" | "noasync")
+            {
+                self.bump_as(K::Identifier)
             } else {
                 self.word()
             };
@@ -606,6 +1035,18 @@ impl<S: SyntaxSink> State<'_, S> {
                 break;
             }
         }
+    }
+
+    fn platform_version(&mut self) -> Node<S::Node> {
+        let start = self.start();
+        let mut c = Vec::new();
+        let platform = self.bump_as(K::Identifier);
+        Self::add(&mut c, F::Platform, platform);
+        if matches!(self.token().kind, K::IntegerLiteral | K::FloatLiteral) {
+            let version = self.version();
+            Self::add(&mut c, F::Version, version);
+        }
+        self.finish(K::PlatformVersion, start, c)
     }
 
     fn version(&mut self) -> Node<S::Node> {
@@ -680,32 +1121,13 @@ impl<S: SyntaxSink> State<'_, S> {
         let start = self.start();
         let mut c = Vec::new();
         self.take(&mut c, F::LeftBrace);
-        if self.at("@")
-            || matches!(
-                self.text(),
-                "get"
-                    | "set"
-                    | "willSet"
-                    | "didSet"
-                    | "_read"
-                    | "_modify"
-                    | "mutating"
-                    | "nonmutating"
-            )
+        if super::lookahead::Lookahead::new(self.source, self.tokens, self.pos)
+            .accessor_declaration()
         {
             while !self.eof()
                 && (self.at("@")
-                    || matches!(
-                        self.text(),
-                        "get"
-                            | "set"
-                            | "willSet"
-                            | "didSet"
-                            | "_read"
-                            | "_modify"
-                            | "mutating"
-                            | "nonmutating"
-                    ))
+                    || super::lookahead::accessor_keyword(self.text())
+                    || super::lookahead::accessor_modifier(self.text()))
             {
                 let start = self.start();
                 let mut a = Vec::new();
@@ -713,17 +1135,14 @@ impl<S: SyntaxSink> State<'_, S> {
                     let node = self.attribute();
                     Self::add(&mut a, F::Attributes, node);
                 }
-                while self.at("mutating") || self.at("nonmutating") {
+                while super::lookahead::accessor_modifier(self.text()) {
                     let start = self.start();
                     let mut m = Vec::new();
                     self.kw(&mut m, F::Name);
                     let node = self.finish(K::DeclModifier, start, m);
                     Self::add(&mut a, F::Modifiers, node);
                 }
-                if !matches!(
-                    self.text(),
-                    "get" | "set" | "willSet" | "didSet" | "_read" | "_modify"
-                ) {
+                if !super::lookahead::accessor_keyword(self.text()) {
                     let node = self.recover();
                     Self::add(&mut c, F::Accessors, node);
                     break;

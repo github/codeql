@@ -1,0 +1,1060 @@
+{
+  "$end": 292,
+  "$hasError": false,
+  "$lineStarts": [
+    0,
+    33,
+    60,
+    103,
+    145,
+    182,
+    220,
+    257,
+    292
+  ],
+  "$pos": 0,
+  "endOfFileToken": {
+    "$end": 292,
+    "$pos": 292,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": [
+    {
+      "$end": 32,
+      "$pos": 0,
+      "item": {
+        "$end": 32,
+        "$pos": 0,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 3,
+          "$pos": 0,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 32,
+            "$pos": 4,
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 9,
+              "$pos": 4,
+              "identifier": {
+                "$end": 9,
+                "$pos": 4,
+                "kind": "token",
+                "text": "bytes",
+                "tokenKind": "identifier(\"bytes\")"
+              },
+              "kind": "identifierPattern"
+            },
+            "typeAnnotation": {
+              "$end": 32,
+              "$pos": 9,
+              "colon": {
+                "$end": 10,
+                "$pos": 9,
+                "kind": "token",
+                "text": ":",
+                "tokenKind": "colon"
+              },
+              "kind": "typeAnnotation",
+              "type": {
+                "$end": 32,
+                "$pos": 11,
+                "genericArgumentClause": {
+                  "$end": 32,
+                  "$pos": 22,
+                  "arguments": [
+                    {
+                      "$end": 25,
+                      "$pos": 23,
+                      "argument": {
+                        "$end": 24,
+                        "$pos": 23,
+                        "kind": "integerLiteralExpr",
+                        "literal": {
+                          "$end": 24,
+                          "$pos": 23,
+                          "kind": "token",
+                          "text": "8",
+                          "tokenKind": "integerLiteral(\"8\")"
+                        }
+                      },
+                      "kind": "genericArgument",
+                      "trailingComma": {
+                        "$end": 25,
+                        "$pos": 24,
+                        "kind": "token",
+                        "text": ",",
+                        "tokenKind": "comma"
+                      }
+                    },
+                    {
+                      "$end": 31,
+                      "$pos": 26,
+                      "argument": {
+                        "$end": 31,
+                        "$pos": 26,
+                        "kind": "identifierType",
+                        "name": {
+                          "$end": 31,
+                          "$pos": 26,
+                          "kind": "token",
+                          "text": "UInt8",
+                          "tokenKind": "identifier(\"UInt8\")"
+                        }
+                      },
+                      "kind": "genericArgument"
+                    }
+                  ],
+                  "kind": "genericArgumentClause",
+                  "leftAngle": {
+                    "$end": 23,
+                    "$pos": 22,
+                    "kind": "token",
+                    "text": "<",
+                    "tokenKind": "leftAngle"
+                  },
+                  "rightAngle": {
+                    "$end": 32,
+                    "$pos": 31,
+                    "kind": "token",
+                    "text": ">",
+                    "tokenKind": "rightAngle"
+                  }
+                },
+                "kind": "identifierType",
+                "name": {
+                  "$end": 22,
+                  "$pos": 11,
+                  "kind": "token",
+                  "text": "InlineArray",
+                  "tokenKind": "identifier(\"InlineArray\")"
+                }
+              }
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 59,
+      "$pos": 33,
+      "item": {
+        "$end": 59,
+        "$pos": 33,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 36,
+          "$pos": 33,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 59,
+            "$pos": 37,
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 45,
+              "$pos": 37,
+              "identifier": {
+                "$end": 45,
+                "$pos": 37,
+                "kind": "token",
+                "text": "negative",
+                "tokenKind": "identifier(\"negative\")"
+              },
+              "kind": "identifierPattern"
+            },
+            "typeAnnotation": {
+              "$end": 59,
+              "$pos": 45,
+              "colon": {
+                "$end": 46,
+                "$pos": 45,
+                "kind": "token",
+                "text": ":",
+                "tokenKind": "colon"
+              },
+              "kind": "typeAnnotation",
+              "type": {
+                "$end": 59,
+                "$pos": 47,
+                "genericArgumentClause": {
+                  "$end": 59,
+                  "$pos": 55,
+                  "arguments": [
+                    {
+                      "$end": 58,
+                      "$pos": 56,
+                      "argument": {
+                        "$end": 58,
+                        "$pos": 56,
+                        "expression": {
+                          "$end": 58,
+                          "$pos": 57,
+                          "kind": "integerLiteralExpr",
+                          "literal": {
+                            "$end": 58,
+                            "$pos": 57,
+                            "kind": "token",
+                            "text": "1",
+                            "tokenKind": "integerLiteral(\"1\")"
+                          }
+                        },
+                        "kind": "prefixOperatorExpr",
+                        "operator": {
+                          "$end": 57,
+                          "$pos": 56,
+                          "kind": "token",
+                          "text": "-",
+                          "tokenKind": "prefixOperator(\"-\")"
+                        }
+                      },
+                      "kind": "genericArgument"
+                    }
+                  ],
+                  "kind": "genericArgumentClause",
+                  "leftAngle": {
+                    "$end": 56,
+                    "$pos": 55,
+                    "kind": "token",
+                    "text": "<",
+                    "tokenKind": "leftAngle"
+                  },
+                  "rightAngle": {
+                    "$end": 59,
+                    "$pos": 58,
+                    "kind": "token",
+                    "text": ">",
+                    "tokenKind": "rightAngle"
+                  }
+                },
+                "kind": "identifierType",
+                "name": {
+                  "$end": 55,
+                  "$pos": 47,
+                  "kind": "token",
+                  "text": "Constant",
+                  "tokenKind": "identifier(\"Constant\")"
+                }
+              }
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 102,
+      "$pos": 60,
+      "item": {
+        "$end": 102,
+        "$pos": 60,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 63,
+          "$pos": 60,
+          "kind": "token",
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 102,
+            "$pos": 64,
+            "initializer": {
+              "$end": 102,
+              "$pos": 71,
+              "equal": {
+                "$end": 72,
+                "$pos": 71,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 102,
+                "$pos": 73,
+                "additionalTrailingClosures": [],
+                "arguments": [],
+                "calledExpression": {
+                  "$end": 100,
+                  "$pos": 73,
+                  "expression": {
+                    "$end": 79,
+                    "$pos": 73,
+                    "baseName": {
+                      "$end": 79,
+                      "$pos": 73,
+                      "kind": "token",
+                      "text": "Buffer",
+                      "tokenKind": "identifier(\"Buffer\")"
+                    },
+                    "kind": "declReferenceExpr"
+                  },
+                  "genericArgumentClause": {
+                    "$end": 100,
+                    "$pos": 79,
+                    "arguments": [
+                      {
+                        "$end": 82,
+                        "$pos": 80,
+                        "argument": {
+                          "$end": 81,
+                          "$pos": 80,
+                          "kind": "integerLiteralExpr",
+                          "literal": {
+                            "$end": 81,
+                            "$pos": 80,
+                            "kind": "token",
+                            "text": "8",
+                            "tokenKind": "integerLiteral(\"8\")"
+                          }
+                        },
+                        "kind": "genericArgument",
+                        "trailingComma": {
+                          "$end": 82,
+                          "$pos": 81,
+                          "kind": "token",
+                          "text": ",",
+                          "tokenKind": "comma"
+                        }
+                      },
+                      {
+                        "$end": 99,
+                        "$pos": 83,
+                        "argument": {
+                          "$end": 99,
+                          "$pos": 83,
+                          "genericArgumentClause": {
+                            "$end": 99,
+                            "$pos": 89,
+                            "arguments": [
+                              {
+                                "$end": 92,
+                                "$pos": 90,
+                                "argument": {
+                                  "$end": 91,
+                                  "$pos": 90,
+                                  "kind": "integerLiteralExpr",
+                                  "literal": {
+                                    "$end": 91,
+                                    "$pos": 90,
+                                    "kind": "token",
+                                    "text": "4",
+                                    "tokenKind": "integerLiteral(\"4\")"
+                                  }
+                                },
+                                "kind": "genericArgument",
+                                "trailingComma": {
+                                  "$end": 92,
+                                  "$pos": 91,
+                                  "kind": "token",
+                                  "text": ",",
+                                  "tokenKind": "comma"
+                                }
+                              },
+                              {
+                                "$end": 98,
+                                "$pos": 93,
+                                "argument": {
+                                  "$end": 98,
+                                  "$pos": 93,
+                                  "kind": "identifierType",
+                                  "name": {
+                                    "$end": 98,
+                                    "$pos": 93,
+                                    "kind": "token",
+                                    "text": "UInt8",
+                                    "tokenKind": "identifier(\"UInt8\")"
+                                  }
+                                },
+                                "kind": "genericArgument"
+                              }
+                            ],
+                            "kind": "genericArgumentClause",
+                            "leftAngle": {
+                              "$end": 90,
+                              "$pos": 89,
+                              "kind": "token",
+                              "text": "<",
+                              "tokenKind": "leftAngle"
+                            },
+                            "rightAngle": {
+                              "$end": 99,
+                              "$pos": 98,
+                              "kind": "token",
+                              "text": ">",
+                              "tokenKind": "rightAngle"
+                            }
+                          },
+                          "kind": "identifierType",
+                          "name": {
+                            "$end": 89,
+                            "$pos": 83,
+                            "kind": "token",
+                            "text": "Vector",
+                            "tokenKind": "identifier(\"Vector\")"
+                          }
+                        },
+                        "kind": "genericArgument"
+                      }
+                    ],
+                    "kind": "genericArgumentClause",
+                    "leftAngle": {
+                      "$end": 80,
+                      "$pos": 79,
+                      "kind": "token",
+                      "text": "<",
+                      "tokenKind": "leftAngle"
+                    },
+                    "rightAngle": {
+                      "$end": 100,
+                      "$pos": 99,
+                      "kind": "token",
+                      "text": ">",
+                      "tokenKind": "rightAngle"
+                    }
+                  },
+                  "kind": "genericSpecializationExpr"
+                },
+                "kind": "functionCallExpr",
+                "leftParen": {
+                  "$end": 101,
+                  "$pos": 100,
+                  "kind": "token",
+                  "text": "(",
+                  "tokenKind": "leftParen"
+                },
+                "rightParen": {
+                  "$end": 102,
+                  "$pos": 101,
+                  "kind": "token",
+                  "text": ")",
+                  "tokenKind": "rightParen"
+                }
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 70,
+              "$pos": 64,
+              "identifier": {
+                "$end": 70,
+                "$pos": 64,
+                "kind": "token",
+                "text": "nested",
+                "tokenKind": "identifier(\"nested\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 144,
+      "$pos": 103,
+      "item": {
+        "$end": 144,
+        "$pos": 103,
+        "attributes": [],
+        "genericParameterClause": {
+          "$end": 141,
+          "$pos": 116,
+          "kind": "genericParameterClause",
+          "leftAngle": {
+            "$end": 117,
+            "$pos": 116,
+            "kind": "token",
+            "text": "<",
+            "tokenKind": "leftAngle"
+          },
+          "parameters": [
+            {
+              "$end": 132,
+              "$pos": 117,
+              "attributes": [],
+              "colon": {
+                "$end": 127,
+                "$pos": 126,
+                "kind": "token",
+                "text": ":",
+                "tokenKind": "colon"
+              },
+              "inheritedType": {
+                "$end": 131,
+                "$pos": 128,
+                "kind": "identifierType",
+                "name": {
+                  "$end": 131,
+                  "$pos": 128,
+                  "kind": "token",
+                  "text": "Int",
+                  "tokenKind": "identifier(\"Int\")"
+                }
+              },
+              "kind": "genericParameter",
+              "name": {
+                "$end": 126,
+                "$pos": 121,
+                "kind": "token",
+                "text": "count",
+                "tokenKind": "identifier(\"count\")"
+              },
+              "specifier": {
+                "$end": 120,
+                "$pos": 117,
+                "kind": "token",
+                "text": "let",
+                "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+              },
+              "trailingComma": {
+                "$end": 132,
+                "$pos": 131,
+                "kind": "token",
+                "text": ",",
+                "tokenKind": "comma"
+              }
+            },
+            {
+              "$end": 140,
+              "$pos": 133,
+              "attributes": [],
+              "kind": "genericParameter",
+              "name": {
+                "$end": 140,
+                "$pos": 133,
+                "kind": "token",
+                "text": "Element",
+                "tokenKind": "identifier(\"Element\")"
+              }
+            }
+          ],
+          "rightAngle": {
+            "$end": 141,
+            "$pos": 140,
+            "kind": "token",
+            "text": ">",
+            "tokenKind": "rightAngle"
+          }
+        },
+        "kind": "structDecl",
+        "memberBlock": {
+          "$end": 144,
+          "$pos": 142,
+          "kind": "memberBlock",
+          "leftBrace": {
+            "$end": 143,
+            "$pos": 142,
+            "kind": "token",
+            "text": "{",
+            "tokenKind": "leftBrace"
+          },
+          "members": [],
+          "rightBrace": {
+            "$end": 144,
+            "$pos": 143,
+            "kind": "token",
+            "text": "}",
+            "tokenKind": "rightBrace"
+          }
+        },
+        "modifiers": [],
+        "name": {
+          "$end": 116,
+          "$pos": 110,
+          "kind": "token",
+          "text": "Vector",
+          "tokenKind": "identifier(\"Vector\")"
+        },
+        "structKeyword": {
+          "$end": 109,
+          "$pos": 103,
+          "kind": "token",
+          "text": "struct",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.struct)"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 181,
+      "$pos": 145,
+      "item": {
+        "$end": 181,
+        "$pos": 145,
+        "attributes": [],
+        "extendedType": {
+          "$end": 161,
+          "$pos": 155,
+          "kind": "identifierType",
+          "name": {
+            "$end": 161,
+            "$pos": 155,
+            "kind": "token",
+            "text": "Vector",
+            "tokenKind": "identifier(\"Vector\")"
+          }
+        },
+        "extensionKeyword": {
+          "$end": 154,
+          "$pos": 145,
+          "kind": "token",
+          "text": "extension",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.extension)"
+        },
+        "genericWhereClause": {
+          "$end": 178,
+          "$pos": 162,
+          "kind": "genericWhereClause",
+          "requirements": [
+            {
+              "$end": 178,
+              "$pos": 168,
+              "kind": "genericRequirement",
+              "requirement": {
+                "$end": 178,
+                "$pos": 168,
+                "equal": {
+                  "$end": 176,
+                  "$pos": 174,
+                  "kind": "token",
+                  "text": "==",
+                  "tokenKind": "binaryOperator(\"==\")"
+                },
+                "kind": "sameTypeRequirement",
+                "leftType": {
+                  "$end": 173,
+                  "$pos": 168,
+                  "kind": "identifierType",
+                  "name": {
+                    "$end": 173,
+                    "$pos": 168,
+                    "kind": "token",
+                    "text": "count",
+                    "tokenKind": "identifier(\"count\")"
+                  }
+                },
+                "rightType": {
+                  "$end": 178,
+                  "$pos": 177,
+                  "kind": "integerLiteralExpr",
+                  "literal": {
+                    "$end": 178,
+                    "$pos": 177,
+                    "kind": "token",
+                    "text": "2",
+                    "tokenKind": "integerLiteral(\"2\")"
+                  }
+                }
+              }
+            }
+          ],
+          "whereKeyword": {
+            "$end": 167,
+            "$pos": 162,
+            "kind": "token",
+            "text": "where",
+            "tokenKind": "keyword(SwiftSyntax.Keyword.where)"
+          }
+        },
+        "kind": "extensionDecl",
+        "memberBlock": {
+          "$end": 181,
+          "$pos": 179,
+          "kind": "memberBlock",
+          "leftBrace": {
+            "$end": 180,
+            "$pos": 179,
+            "kind": "token",
+            "text": "{",
+            "tokenKind": "leftBrace"
+          },
+          "members": [],
+          "rightBrace": {
+            "$end": 181,
+            "$pos": 180,
+            "kind": "token",
+            "text": "}",
+            "tokenKind": "rightBrace"
+          }
+        },
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 219,
+      "$pos": 182,
+      "item": {
+        "$end": 219,
+        "$pos": 182,
+        "attributes": [],
+        "extendedType": {
+          "$end": 198,
+          "$pos": 192,
+          "kind": "identifierType",
+          "name": {
+            "$end": 198,
+            "$pos": 192,
+            "kind": "token",
+            "text": "Vector",
+            "tokenKind": "identifier(\"Vector\")"
+          }
+        },
+        "extensionKeyword": {
+          "$end": 191,
+          "$pos": 182,
+          "kind": "token",
+          "text": "extension",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.extension)"
+        },
+        "genericWhereClause": {
+          "$end": 216,
+          "$pos": 199,
+          "kind": "genericWhereClause",
+          "requirements": [
+            {
+              "$end": 216,
+              "$pos": 205,
+              "kind": "genericRequirement",
+              "requirement": {
+                "$end": 216,
+                "$pos": 205,
+                "equal": {
+                  "$end": 213,
+                  "$pos": 211,
+                  "kind": "token",
+                  "text": "==",
+                  "tokenKind": "binaryOperator(\"==\")"
+                },
+                "kind": "sameTypeRequirement",
+                "leftType": {
+                  "$end": 210,
+                  "$pos": 205,
+                  "kind": "identifierType",
+                  "name": {
+                    "$end": 210,
+                    "$pos": 205,
+                    "kind": "token",
+                    "text": "count",
+                    "tokenKind": "identifier(\"count\")"
+                  }
+                },
+                "rightType": {
+                  "$end": 216,
+                  "$pos": 214,
+                  "expression": {
+                    "$end": 216,
+                    "$pos": 215,
+                    "kind": "integerLiteralExpr",
+                    "literal": {
+                      "$end": 216,
+                      "$pos": 215,
+                      "kind": "token",
+                      "text": "2",
+                      "tokenKind": "integerLiteral(\"2\")"
+                    }
+                  },
+                  "kind": "prefixOperatorExpr",
+                  "operator": {
+                    "$end": 215,
+                    "$pos": 214,
+                    "kind": "token",
+                    "text": "-",
+                    "tokenKind": "prefixOperator(\"-\")"
+                  }
+                }
+              }
+            }
+          ],
+          "whereKeyword": {
+            "$end": 204,
+            "$pos": 199,
+            "kind": "token",
+            "text": "where",
+            "tokenKind": "keyword(SwiftSyntax.Keyword.where)"
+          }
+        },
+        "kind": "extensionDecl",
+        "memberBlock": {
+          "$end": 219,
+          "$pos": 217,
+          "kind": "memberBlock",
+          "leftBrace": {
+            "$end": 218,
+            "$pos": 217,
+            "kind": "token",
+            "text": "{",
+            "tokenKind": "leftBrace"
+          },
+          "members": [],
+          "rightBrace": {
+            "$end": 219,
+            "$pos": 218,
+            "kind": "token",
+            "text": "}",
+            "tokenKind": "rightBrace"
+          }
+        },
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 256,
+      "$pos": 220,
+      "item": {
+        "$end": 256,
+        "$pos": 220,
+        "attributes": [],
+        "extendedType": {
+          "$end": 236,
+          "$pos": 230,
+          "kind": "identifierType",
+          "name": {
+            "$end": 236,
+            "$pos": 230,
+            "kind": "token",
+            "text": "Vector",
+            "tokenKind": "identifier(\"Vector\")"
+          }
+        },
+        "extensionKeyword": {
+          "$end": 229,
+          "$pos": 220,
+          "kind": "token",
+          "text": "extension",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.extension)"
+        },
+        "genericWhereClause": {
+          "$end": 253,
+          "$pos": 237,
+          "kind": "genericWhereClause",
+          "requirements": [
+            {
+              "$end": 253,
+              "$pos": 243,
+              "kind": "genericRequirement",
+              "requirement": {
+                "$end": 253,
+                "$pos": 243,
+                "equal": {
+                  "$end": 247,
+                  "$pos": 245,
+                  "kind": "token",
+                  "text": "==",
+                  "tokenKind": "binaryOperator(\"==\")"
+                },
+                "kind": "sameTypeRequirement",
+                "leftType": {
+                  "$end": 244,
+                  "$pos": 243,
+                  "kind": "integerLiteralExpr",
+                  "literal": {
+                    "$end": 244,
+                    "$pos": 243,
+                    "kind": "token",
+                    "text": "2",
+                    "tokenKind": "integerLiteral(\"2\")"
+                  }
+                },
+                "rightType": {
+                  "$end": 253,
+                  "$pos": 248,
+                  "kind": "identifierType",
+                  "name": {
+                    "$end": 253,
+                    "$pos": 248,
+                    "kind": "token",
+                    "text": "count",
+                    "tokenKind": "identifier(\"count\")"
+                  }
+                }
+              }
+            }
+          ],
+          "whereKeyword": {
+            "$end": 242,
+            "$pos": 237,
+            "kind": "token",
+            "text": "where",
+            "tokenKind": "keyword(SwiftSyntax.Keyword.where)"
+          }
+        },
+        "kind": "extensionDecl",
+        "memberBlock": {
+          "$end": 256,
+          "$pos": 254,
+          "kind": "memberBlock",
+          "leftBrace": {
+            "$end": 255,
+            "$pos": 254,
+            "kind": "token",
+            "text": "{",
+            "tokenKind": "leftBrace"
+          },
+          "members": [],
+          "rightBrace": {
+            "$end": 256,
+            "$pos": 255,
+            "kind": "token",
+            "text": "}",
+            "tokenKind": "rightBrace"
+          }
+        },
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 291,
+      "$pos": 257,
+      "item": {
+        "$end": 291,
+        "$pos": 257,
+        "attributes": [],
+        "extendedType": {
+          "$end": 273,
+          "$pos": 267,
+          "kind": "identifierType",
+          "name": {
+            "$end": 273,
+            "$pos": 267,
+            "kind": "token",
+            "text": "Vector",
+            "tokenKind": "identifier(\"Vector\")"
+          }
+        },
+        "extensionKeyword": {
+          "$end": 266,
+          "$pos": 257,
+          "kind": "token",
+          "text": "extension",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.extension)"
+        },
+        "genericWhereClause": {
+          "$end": 288,
+          "$pos": 274,
+          "kind": "genericWhereClause",
+          "requirements": [
+            {
+              "$end": 288,
+              "$pos": 280,
+              "kind": "genericRequirement",
+              "requirement": {
+                "$end": 288,
+                "$pos": 280,
+                "equal": {
+                  "$end": 285,
+                  "$pos": 283,
+                  "kind": "token",
+                  "text": "==",
+                  "tokenKind": "binaryOperator(\"==\")"
+                },
+                "kind": "sameTypeRequirement",
+                "leftType": {
+                  "$end": 282,
+                  "$pos": 280,
+                  "expression": {
+                    "$end": 282,
+                    "$pos": 281,
+                    "kind": "integerLiteralExpr",
+                    "literal": {
+                      "$end": 282,
+                      "$pos": 281,
+                      "kind": "token",
+                      "text": "2",
+                      "tokenKind": "integerLiteral(\"2\")"
+                    }
+                  },
+                  "kind": "prefixOperatorExpr",
+                  "operator": {
+                    "$end": 281,
+                    "$pos": 280,
+                    "kind": "token",
+                    "text": "-",
+                    "tokenKind": "prefixOperator(\"-\")"
+                  }
+                },
+                "rightType": {
+                  "$end": 288,
+                  "$pos": 286,
+                  "expression": {
+                    "$end": 288,
+                    "$pos": 287,
+                    "kind": "integerLiteralExpr",
+                    "literal": {
+                      "$end": 288,
+                      "$pos": 287,
+                      "kind": "token",
+                      "text": "2",
+                      "tokenKind": "integerLiteral(\"2\")"
+                    }
+                  },
+                  "kind": "prefixOperatorExpr",
+                  "operator": {
+                    "$end": 287,
+                    "$pos": 286,
+                    "kind": "token",
+                    "text": "-",
+                    "tokenKind": "prefixOperator(\"-\")"
+                  }
+                }
+              }
+            }
+          ],
+          "whereKeyword": {
+            "$end": 279,
+            "$pos": 274,
+            "kind": "token",
+            "text": "where",
+            "tokenKind": "keyword(SwiftSyntax.Keyword.where)"
+          }
+        },
+        "kind": "extensionDecl",
+        "memberBlock": {
+          "$end": 291,
+          "$pos": 289,
+          "kind": "memberBlock",
+          "leftBrace": {
+            "$end": 290,
+            "$pos": 289,
+            "kind": "token",
+            "text": "{",
+            "tokenKind": "leftBrace"
+          },
+          "members": [],
+          "rightBrace": {
+            "$end": 291,
+            "$pos": 290,
+            "kind": "token",
+            "text": "}",
+            "tokenKind": "rightBrace"
+          }
+        },
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    }
+  ]
+}
