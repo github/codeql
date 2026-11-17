@@ -18,5 +18,7 @@ dependencies:
 dataExtensions:
   - codeql/ruby/frameworks/**/model.yml
   - codeql/ruby/frameworks/**/*.model.yml
+  - codeql/ruby/frameworks/**/model.json
+  - codeql/ruby/frameworks/**/*.model.json
 warnOnImplicitThis: true
 compileForOverlayEval: true
