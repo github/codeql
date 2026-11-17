@@ -329,6 +329,7 @@ _CRATE_EDITIONS = {
     "shared/yeast-schema": "2021",
     "unified/extractor": "2024",
     "unified/extractor-unsupported-os": "2024",
+    "unified/swift-parser": "2024",
     "unified/swift-syntax-rs": "2024",
 }
 
@@ -509,6 +510,8 @@ _NORMAL_DEPENDENCIES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -571,6 +574,8 @@ _NORMAL_ALIASES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -611,6 +616,8 @@ _NORMAL_DEV_DEPENDENCIES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -648,6 +655,8 @@ _NORMAL_DEV_ALIASES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -682,6 +691,8 @@ _PROC_MACRO_DEPENDENCIES = {
     "unified/extractor": {
     },
     "unified/extractor-unsupported-os": {
+    },
+    "unified/swift-parser": {
     },
     "unified/swift-syntax-rs": {
     },
@@ -718,6 +729,8 @@ _PROC_MACRO_ALIASES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -752,6 +765,8 @@ _PROC_MACRO_DEV_DEPENDENCIES = {
     "unified/extractor": {
     },
     "unified/extractor-unsupported-os": {
+    },
+    "unified/swift-parser": {
     },
     "unified/swift-syntax-rs": {
     },
@@ -789,6 +804,8 @@ _PROC_MACRO_DEV_ALIASES = {
     "unified/extractor": {
     },
     "unified/extractor-unsupported-os": {
+    },
+    "unified/swift-parser": {
     },
     "unified/swift-syntax-rs": {
     },
@@ -828,6 +845,8 @@ _BUILD_DEPENDENCIES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -865,6 +884,8 @@ _BUILD_ALIASES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -900,6 +921,8 @@ _BUILD_PROC_MACRO_DEPENDENCIES = {
     },
     "unified/extractor-unsupported-os": {
     },
+    "unified/swift-parser": {
+    },
     "unified/swift-syntax-rs": {
     },
 }
@@ -934,6 +957,8 @@ _BUILD_PROC_MACRO_ALIASES = {
     "unified/extractor": {
     },
     "unified/extractor-unsupported-os": {
+    },
+    "unified/swift-parser": {
     },
     "unified/swift-syntax-rs": {
     },

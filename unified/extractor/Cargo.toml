@@ -8,6 +8,11 @@ edition = "2024"
 [lints]
 workspace = true
 
+[features]
+default = ["swift-syntax"]
+swift-syntax = ["dep:swift-syntax-rs"]
+rust-parser = ["dep:swift-parser"]
+
 # When updating these dependencies, run `rust/update_cargo_deps.sh`
 [dependencies]
 clap = { version = "4.6", features = ["derive"] }
@@ -21,4 +26,5 @@ serde_json = { version = "1.0.154", features = ["unbounded_depth"] }
 
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
 yeast = { path = "../../shared/yeast" }
-swift-syntax-rs = { path = "../swift-syntax-rs" }
+swift-syntax-rs = { path = "../swift-syntax-rs", optional = true }
+swift-parser = { path = "../swift-parser", optional = true }

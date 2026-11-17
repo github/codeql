@@ -5,6 +5,26 @@ load("//unified:platforms.bzl", "UNIFIED_SUPPORTED_PLATFORMS")
 
 exports_files(["Cargo.toml"])
 
+config_setting(
+    name = "rust_parser",
+    define_values = {"unified_rust_parser": "true"},
+)
+
+_PARSER_FEATURES = select({
+    ":rust_parser": ["rust-parser"],
+    "//conditions:default": ["swift-syntax"],
+})
+
+_PARSER_DEPS = select({
+    ":rust_parser": ["//unified/swift-parser"],
+    "//conditions:default": ["//unified/swift-syntax-rs:swift_syntax_rs"],
+})
+
+_PARSER_DATA = select({
+    ":rust_parser": [],
+    "//conditions:default": ["//unified/swift-syntax-rs:swift_runtime"],
+})
+
 codeql_rust_binary(
     name = "extractor",
     srcs = glob(["src/**/*.rs"]),
@@ -13,7 +33,8 @@ codeql_rust_binary(
         "ast_types.yml",
         "swift_node_types.yml",
     ],
-    data = ["//unified/swift-syntax-rs:swift_runtime"],
+    crate_features = _PARSER_FEATURES,
+    data = _PARSER_DATA,
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),
@@ -24,8 +45,7 @@ codeql_rust_binary(
     ) + [
         "//shared/tree-sitter-extractor",
         "//shared/yeast",
-        "//unified/swift-syntax-rs:swift_syntax_rs",
-    ],
+    ] + _PARSER_DEPS,
 )
 
 _TESTS = {
@@ -57,8 +77,9 @@ _TESTS = {
             "ast_types.yml",
             "swift_node_types.yml",
         ] + spec["compile_data"],
+        crate_features = _PARSER_FEATURES,
         crate_root = "tests/%s.rs" % test_name,
-        data = spec["data"] + ["//unified/swift-syntax-rs:swift_runtime"],
+        data = spec["data"] + _PARSER_DATA,
         edition = "2024",
         proc_macro_deps = all_crate_deps(
             proc_macro = True,
@@ -70,8 +91,7 @@ _TESTS = {
         ) + [
             "//shared/tree-sitter-extractor",
             "//shared/yeast",
-            "//unified/swift-syntax-rs:swift_syntax_rs",
-        ],
+        ] + _PARSER_DEPS,
     )
     for test_name, spec in _TESTS.items()
 ]

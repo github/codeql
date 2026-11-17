@@ -807,6 +807,13 @@ impl<Id: TreeId> Ast<Id> {
         Id::from_index(id)
     }
 
+    /// Set recovery flags on a node built by a custom parser.
+    pub fn set_node_flags(&mut self, id: Id, is_missing: bool, is_error: bool) {
+        let node = &mut self.nodes[id.index()];
+        node.is_missing = is_missing;
+        node.is_error = is_error;
+    }
+
     /// Extend a synthetic node's source range to include `source_range`.
     ///
     /// Parsed nodes carry their exact range in [`NodeContent::Range`] and must
