@@ -458,8 +458,14 @@ private module Ast implements AstSig<Location> {
     }
   }
 
-  class Pattern extends AstNode instanceof Rust::Pat {
-    Pattern getPattern(int index) {
+  final class Pattern = PatternImpl;
+
+  abstract private class PatternImpl extends AstNode {
+    abstract Pattern getPattern(int index);
+  }
+
+  private class PatPattern extends PatternImpl instanceof Rust::Pat {
+    override Pattern getPattern(int index) {
       index = 0 and
       result = this.(Rust::IdentPat).getPat()
       or
@@ -491,11 +497,16 @@ private module Ast implements AstSig<Location> {
       result = this.(Rust::TuplePat).getField(index)
       or
       result = this.(Rust::TupleStructPat).getField(index)
+      or
+      index = 0 and
+      result = this.(Rust::LiteralPat).getLiteral()
     }
   }
 
-  class LiteralPattern extends Pattern instanceof Rust::LiteralPat {
-    AstNode getLiteral() { result = super.getLiteral() }
+  class ExprPattern extends Expr, PatternImpl {
+    ExprPattern() { this = any(Rust::LiteralPat lp).getLiteral() }
+
+    override Pattern getPattern(int index) { none() }
   }
 
   class BindingPattern extends Pattern instanceof Rust::IdentPat {
@@ -534,6 +545,8 @@ private predicate cannotCauseMatchFailure(Rust::Pat pat) {
   pat instanceof Rust::TuplePat
   or
   pat instanceof Rust::MacroPat
+  or
+  pat instanceof Rust::LiteralPat
 }
 
 /**

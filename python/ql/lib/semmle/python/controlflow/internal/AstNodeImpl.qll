@@ -1155,29 +1155,41 @@ module Ast implements AstSig<Py::Location> {
     }
   }
 
-  /** A pattern handled by the shared CFG. */
-  class Pattern extends AstNode {
-    Pattern() { none() }
+  final class Pattern = PatternImpl;
 
-    Pattern getPattern(int index) { none() }
+  /** A pattern handled by the shared CFG. */
+  abstract private class PatternImpl extends AstNodeImpl {
+    abstract Pattern getPattern(int index);
   }
 
-  /** A literal pattern handled by the shared CFG. */
-  class LiteralPattern extends Pattern {
-    LiteralPattern() { none() }
+  private class EmptyPattern extends PatternImpl {
+    EmptyPattern() { none() }
 
-    AstNode getLiteral() { none() }
+    override Pattern getPattern(int index) { none() }
+
+    override string toString() { none() }
+
+    override Py::Location getLocation() { none() }
+
+    override Callable getEnclosingCallable() { none() }
+  }
+
+  /** An expression pattern handled by the shared CFG. */
+  class ExprPattern extends Expr, PatternImpl {
+    ExprPattern() { none() }
+
+    override Pattern getPattern(int index) { none() }
   }
 
   /** A binding pattern handled by the shared CFG. */
-  class BindingPattern extends Pattern {
+  class BindingPattern extends EmptyPattern {
     BindingPattern() { none() }
 
     AstNode getVariable() { none() }
   }
 
   /** An or-pattern handled by the shared CFG. */
-  class OrPattern extends Pattern {
+  class OrPattern extends EmptyPattern {
     OrPattern() { none() }
   }
 

@@ -448,10 +448,8 @@ private module Ast implements AstSig<Location> {
     Pattern getPattern(int index) { none() }
   }
 
-  class LiteralPattern extends Pattern {
-    LiteralPattern() { none() }
-
-    AstNode getLiteral() { none() }
+  class ExprPattern extends Expr, Pattern {
+    ExprPattern() { none() }
   }
 
   class BindingPattern extends Pattern {

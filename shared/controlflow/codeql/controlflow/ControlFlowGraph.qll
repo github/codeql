@@ -417,11 +417,8 @@ signature module AstSig<LocationSig Location> {
     Pattern getPattern(int index);
   }
 
-  /** A pattern that matches a literal value. */
-  class LiteralPattern extends Pattern {
-    /** Gets the literal matched by this pattern. */
-    AstNode getLiteral();
-  }
+  /** A pattern that matches the value calculated by an expression. */
+  class ExprPattern extends Expr, Pattern;
 
   /** A pattern that binds a variable after matching its nested pattern, if any. */
   class BindingPattern extends Pattern {
@@ -628,8 +625,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       n instanceof FallthroughStmt
       or
       n instanceof GotoStmt
-      or
-      n instanceof LiteralPattern
       or
       n instanceof BindingPattern
       or
@@ -871,7 +866,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       t.(BooleanSuccessor).getValue() = true
       or
       n instanceof Pattern and
-      not n instanceof LiteralPattern and
       not n instanceof BindingPattern and
       tag = outerPatternMatchTag() and
       t.(MatchingSuccessor).getValue() = true
@@ -1641,7 +1635,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       private predicate genericPatternStep(
         Pattern pattern, PreControlFlowNode n1, PreControlFlowNode n2
       ) {
-        not pattern instanceof LiteralPattern and
         not pattern instanceof BindingPattern and
         not pattern instanceof OrPattern and
         (
@@ -1674,20 +1667,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             isAfterMatch(n2, pattern, false)
           )
         )
-      }
-
-      private predicate literalPatternStep(
-        LiteralPattern pattern, PreControlFlowNode n1, PreControlFlowNode n2
-      ) {
-        n1.isBefore(pattern) and n2.isBefore(pattern.getLiteral())
-        or
-        n1.isAfter(pattern.getLiteral()) and n2.isIn(pattern)
-        or
-        n1.isIn(pattern) and isAfterMatch(n2, pattern, true)
-        or
-        n1.isIn(pattern) and
-        not patternCannotFail(pattern) and
-        isAfterMatch(n2, pattern, false)
       }
 
       private predicate bindingPatternStep(
@@ -1745,8 +1724,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       private predicate patternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
         exists(Pattern pattern |
           genericPatternStep(pattern, n1, n2)
-          or
-          literalPatternStep(pattern, n1, n2)
           or
           bindingPatternStep(pattern, n1, n2)
           or
