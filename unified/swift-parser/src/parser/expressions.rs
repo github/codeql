@@ -317,6 +317,8 @@ impl<S: SyntaxSink> State<'_, S> {
                 .chars()
                 .next()
                 .is_some_and(|c| !c.is_whitespace())
+            && !self.source[self.token().span.end..].starts_with("/*")
+            && !self.source[self.token().span.end..].starts_with("//")
         {
             return false;
         }

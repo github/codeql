@@ -1,0 +1,1273 @@
+{
+  "$end": 414,
+  "$hasError": false,
+  "$lineStarts": [
+    0,
+    10,
+    24,
+    36,
+    49,
+    66,
+    85,
+    107,
+    118,
+    134,
+    148,
+    157,
+    178,
+    188,
+    200,
+    216,
+    232,
+    238,
+    252,
+    259,
+    308,
+    326,
+    354,
+    381,
+    386,
+    390,
+    397,
+    403,
+    407,
+    414
+  ],
+  "$pos": 0,
+  "endOfFileToken": {
+    "$end": 414,
+    "$pos": 414,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": [
+    {
+      "$end": 9,
+      "$pos": 0,
+      "item": {
+        "$end": 9,
+        "$pos": 0,
+        "additionalTrailingClosures": [],
+        "arguments": [],
+        "kind": "macroExpansionExpr",
+        "leftParen": {
+          "$end": 8,
+          "$pos": 7,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "macroName": {
+          "$end": 7,
+          "$pos": 1,
+          "kind": "token",
+          "text": "if_foo",
+          "tokenKind": "identifier(\"if_foo\")"
+        },
+        "pound": {
+          "$end": 1,
+          "$pos": 0,
+          "kind": "token",
+          "text": "#",
+          "tokenKind": "pound"
+        },
+        "rightParen": {
+          "$end": 9,
+          "$pos": 8,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 23,
+      "$pos": 10,
+      "item": {
+        "$end": 23,
+        "$pos": 10,
+        "additionalTrailingClosures": [],
+        "arguments": [],
+        "kind": "macroExpansionExpr",
+        "leftParen": {
+          "$end": 22,
+          "$pos": 21,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "macroName": {
+          "$end": 21,
+          "$pos": 11,
+          "kind": "token",
+          "text": "elseif_foo",
+          "tokenKind": "identifier(\"elseif_foo\")"
+        },
+        "pound": {
+          "$end": 11,
+          "$pos": 10,
+          "kind": "token",
+          "text": "#",
+          "tokenKind": "pound"
+        },
+        "rightParen": {
+          "$end": 23,
+          "$pos": 22,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 35,
+      "$pos": 24,
+      "item": {
+        "$end": 35,
+        "$pos": 24,
+        "additionalTrailingClosures": [],
+        "arguments": [],
+        "kind": "macroExpansionExpr",
+        "leftParen": {
+          "$end": 34,
+          "$pos": 33,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "macroName": {
+          "$end": 33,
+          "$pos": 25,
+          "kind": "token",
+          "text": "else_foo",
+          "tokenKind": "identifier(\"else_foo\")"
+        },
+        "pound": {
+          "$end": 25,
+          "$pos": 24,
+          "kind": "token",
+          "text": "#",
+          "tokenKind": "pound"
+        },
+        "rightParen": {
+          "$end": 35,
+          "$pos": 34,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 48,
+      "$pos": 36,
+      "item": {
+        "$end": 48,
+        "$pos": 36,
+        "additionalTrailingClosures": [],
+        "arguments": [],
+        "kind": "macroExpansionExpr",
+        "leftParen": {
+          "$end": 47,
+          "$pos": 46,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "macroName": {
+          "$end": 46,
+          "$pos": 37,
+          "kind": "token",
+          "text": "endif_foo",
+          "tokenKind": "identifier(\"endif_foo\")"
+        },
+        "pound": {
+          "$end": 37,
+          "$pos": 36,
+          "kind": "token",
+          "text": "#",
+          "tokenKind": "pound"
+        },
+        "rightParen": {
+          "$end": 48,
+          "$pos": 47,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 65,
+      "$pos": 49,
+      "item": {
+        "$end": 65,
+        "$pos": 49,
+        "additionalTrailingClosures": [],
+        "arguments": [],
+        "kind": "macroExpansionExpr",
+        "leftParen": {
+          "$end": 64,
+          "$pos": 63,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "macroName": {
+          "$end": 63,
+          "$pos": 50,
+          "kind": "token",
+          "text": "available_foo",
+          "tokenKind": "identifier(\"available_foo\")"
+        },
+        "pound": {
+          "$end": 50,
+          "$pos": 49,
+          "kind": "token",
+          "text": "#",
+          "tokenKind": "pound"
+        },
+        "rightParen": {
+          "$end": 65,
+          "$pos": 64,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 84,
+      "$pos": 66,
+      "item": {
+        "$end": 84,
+        "$pos": 66,
+        "additionalTrailingClosures": [],
+        "arguments": [],
+        "kind": "macroExpansionExpr",
+        "leftParen": {
+          "$end": 83,
+          "$pos": 82,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "macroName": {
+          "$end": 82,
+          "$pos": 67,
+          "kind": "token",
+          "text": "unavailable_foo",
+          "tokenKind": "identifier(\"unavailable_foo\")"
+        },
+        "pound": {
+          "$end": 67,
+          "$pos": 66,
+          "kind": "token",
+          "text": "#",
+          "tokenKind": "pound"
+        },
+        "rightParen": {
+          "$end": 84,
+          "$pos": 83,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 106,
+      "$pos": 85,
+      "item": {
+        "$end": 106,
+        "$pos": 85,
+        "additionalTrailingClosures": [],
+        "arguments": [],
+        "kind": "macroExpansionExpr",
+        "leftParen": {
+          "$end": 105,
+          "$pos": 104,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "macroName": {
+          "$end": 104,
+          "$pos": 86,
+          "kind": "token",
+          "text": "sourceLocation_foo",
+          "tokenKind": "identifier(\"sourceLocation_foo\")"
+        },
+        "pound": {
+          "$end": 86,
+          "$pos": 85,
+          "kind": "token",
+          "text": "#",
+          "tokenKind": "pound"
+        },
+        "rightParen": {
+          "$end": 106,
+          "$pos": 105,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 117,
+      "$pos": 107,
+      "item": {
+        "$end": 117,
+        "$pos": 107,
+        "additionalTrailingClosures": [],
+        "arguments": [],
+        "kind": "macroExpansionExpr",
+        "leftParen": {
+          "$end": 116,
+          "$pos": 115,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "macroName": {
+          "$end": 115,
+          "$pos": 108,
+          "kind": "token",
+          "text": "if_Foo1",
+          "tokenKind": "identifier(\"if_Foo1\")"
+        },
+        "pound": {
+          "$end": 108,
+          "$pos": 107,
+          "kind": "token",
+          "text": "#",
+          "tokenKind": "pound"
+        },
+        "rightParen": {
+          "$end": 117,
+          "$pos": 116,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 133,
+      "$pos": 118,
+      "item": {
+        "$end": 133,
+        "$pos": 118,
+        "additionalTrailingClosures": [],
+        "arguments": [],
+        "kind": "macroExpansionExpr",
+        "leftParen": {
+          "$end": 132,
+          "$pos": 131,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "macroName": {
+          "$end": 131,
+          "$pos": 119,
+          "kind": "token",
+          "text": "available_é",
+          "tokenKind": "identifier(\"available_é\")"
+        },
+        "pound": {
+          "$end": 119,
+          "$pos": 118,
+          "kind": "token",
+          "text": "#",
+          "tokenKind": "pound"
+        },
+        "rightParen": {
+          "$end": 133,
+          "$pos": 132,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 147,
+      "$pos": 134,
+      "item": {
+        "$end": 147,
+        "$pos": 134,
+        "additionalTrailingClosures": [],
+        "arguments": [],
+        "kind": "macroExpansionExpr",
+        "leftParen": {
+          "$end": 146,
+          "$pos": 145,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "macroName": {
+          "$end": 145,
+          "$pos": 135,
+          "kind": "token",
+          "text": "endif_😀",
+          "tokenKind": "identifier(\"endif_😀\")"
+        },
+        "pound": {
+          "$end": 135,
+          "$pos": 134,
+          "kind": "token",
+          "text": "#",
+          "tokenKind": "pound"
+        },
+        "rightParen": {
+          "$end": 147,
+          "$pos": 146,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 156,
+      "$pos": 148,
+      "item": {
+        "$end": 156,
+        "$pos": 148,
+        "additionalTrailingClosures": [],
+        "arguments": [],
+        "kind": "macroExpansionExpr",
+        "leftParen": {
+          "$end": 155,
+          "$pos": 154,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "macroName": {
+          "$end": 154,
+          "$pos": 149,
+          "kind": "token",
+          "text": "ifFoo",
+          "tokenKind": "identifier(\"ifFoo\")"
+        },
+        "pound": {
+          "$end": 149,
+          "$pos": 148,
+          "kind": "token",
+          "text": "#",
+          "tokenKind": "pound"
+        },
+        "rightParen": {
+          "$end": 156,
+          "$pos": 155,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 177,
+      "$pos": 157,
+      "item": {
+        "$end": 177,
+        "$pos": 157,
+        "additionalTrailingClosures": [],
+        "arguments": [],
+        "kind": "macroExpansionExpr",
+        "leftParen": {
+          "$end": 176,
+          "$pos": 175,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "macroName": {
+          "$end": 175,
+          "$pos": 158,
+          "kind": "token",
+          "text": "sourceLocationFoo",
+          "tokenKind": "identifier(\"sourceLocationFoo\")"
+        },
+        "pound": {
+          "$end": 158,
+          "$pos": 157,
+          "kind": "token",
+          "text": "#",
+          "tokenKind": "pound"
+        },
+        "rightParen": {
+          "$end": 177,
+          "$pos": 176,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 258,
+      "$pos": 178,
+      "item": {
+        "$end": 258,
+        "$pos": 178,
+        "clauses": [
+          {
+            "$end": 199,
+            "$pos": 178,
+            "condition": {
+              "$end": 187,
+              "$pos": 182,
+              "baseName": {
+                "$end": 187,
+                "$pos": 182,
+                "kind": "token",
+                "text": "DEBUG",
+                "tokenKind": "identifier(\"DEBUG\")"
+              },
+              "kind": "declReferenceExpr"
+            },
+            "elements": [
+              {
+                "$end": 199,
+                "$pos": 188,
+                "item": {
+                  "$end": 199,
+                  "$pos": 188,
+                  "additionalTrailingClosures": [],
+                  "arguments": [],
+                  "kind": "macroExpansionExpr",
+                  "leftParen": {
+                    "$end": 198,
+                    "$pos": 197,
+                    "kind": "token",
+                    "text": "(",
+                    "tokenKind": "leftParen"
+                  },
+                  "macroName": {
+                    "$end": 197,
+                    "$pos": 189,
+                    "kind": "token",
+                    "text": "if_inner",
+                    "tokenKind": "identifier(\"if_inner\")"
+                  },
+                  "pound": {
+                    "$end": 189,
+                    "$pos": 188,
+                    "kind": "token",
+                    "text": "#",
+                    "tokenKind": "pound"
+                  },
+                  "rightParen": {
+                    "$end": 199,
+                    "$pos": 198,
+                    "kind": "token",
+                    "text": ")",
+                    "tokenKind": "rightParen"
+                  }
+                },
+                "kind": "codeBlockItem"
+              }
+            ],
+            "kind": "ifConfigClause",
+            "poundKeyword": {
+              "$end": 181,
+              "$pos": 178,
+              "kind": "token",
+              "text": "#if",
+              "tokenKind": "poundIf"
+            }
+          },
+          {
+            "$end": 231,
+            "$pos": 200,
+            "condition": {
+              "$end": 215,
+              "$pos": 208,
+              "baseName": {
+                "$end": 215,
+                "$pos": 208,
+                "kind": "token",
+                "text": "RELEASE",
+                "tokenKind": "identifier(\"RELEASE\")"
+              },
+              "kind": "declReferenceExpr"
+            },
+            "elements": [
+              {
+                "$end": 231,
+                "$pos": 216,
+                "item": {
+                  "$end": 231,
+                  "$pos": 216,
+                  "additionalTrailingClosures": [],
+                  "arguments": [],
+                  "kind": "macroExpansionExpr",
+                  "leftParen": {
+                    "$end": 230,
+                    "$pos": 229,
+                    "kind": "token",
+                    "text": "(",
+                    "tokenKind": "leftParen"
+                  },
+                  "macroName": {
+                    "$end": 229,
+                    "$pos": 217,
+                    "kind": "token",
+                    "text": "elseif_inner",
+                    "tokenKind": "identifier(\"elseif_inner\")"
+                  },
+                  "pound": {
+                    "$end": 217,
+                    "$pos": 216,
+                    "kind": "token",
+                    "text": "#",
+                    "tokenKind": "pound"
+                  },
+                  "rightParen": {
+                    "$end": 231,
+                    "$pos": 230,
+                    "kind": "token",
+                    "text": ")",
+                    "tokenKind": "rightParen"
+                  }
+                },
+                "kind": "codeBlockItem"
+              }
+            ],
+            "kind": "ifConfigClause",
+            "poundKeyword": {
+              "$end": 207,
+              "$pos": 200,
+              "kind": "token",
+              "text": "#elseif",
+              "tokenKind": "poundElseif"
+            }
+          },
+          {
+            "$end": 251,
+            "$pos": 232,
+            "elements": [
+              {
+                "$end": 251,
+                "$pos": 238,
+                "item": {
+                  "$end": 251,
+                  "$pos": 238,
+                  "additionalTrailingClosures": [],
+                  "arguments": [],
+                  "kind": "macroExpansionExpr",
+                  "leftParen": {
+                    "$end": 250,
+                    "$pos": 249,
+                    "kind": "token",
+                    "text": "(",
+                    "tokenKind": "leftParen"
+                  },
+                  "macroName": {
+                    "$end": 249,
+                    "$pos": 239,
+                    "kind": "token",
+                    "text": "else_inner",
+                    "tokenKind": "identifier(\"else_inner\")"
+                  },
+                  "pound": {
+                    "$end": 239,
+                    "$pos": 238,
+                    "kind": "token",
+                    "text": "#",
+                    "tokenKind": "pound"
+                  },
+                  "rightParen": {
+                    "$end": 251,
+                    "$pos": 250,
+                    "kind": "token",
+                    "text": ")",
+                    "tokenKind": "rightParen"
+                  }
+                },
+                "kind": "codeBlockItem"
+              }
+            ],
+            "kind": "ifConfigClause",
+            "poundKeyword": {
+              "$end": 237,
+              "$pos": 232,
+              "kind": "token",
+              "text": "#else",
+              "tokenKind": "poundElse"
+            }
+          }
+        ],
+        "kind": "ifConfigDecl",
+        "poundEndif": {
+          "$end": 258,
+          "$pos": 252,
+          "kind": "token",
+          "text": "#endif",
+          "tokenKind": "poundEndif"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 307,
+      "$pos": 259,
+      "item": {
+        "$end": 307,
+        "$pos": 259,
+        "arguments": {
+          "$end": 306,
+          "$pos": 275,
+          "comma": {
+            "$end": 298,
+            "$pos": 297,
+            "kind": "token",
+            "text": ",",
+            "tokenKind": "comma"
+          },
+          "fileColon": {
+            "$end": 280,
+            "$pos": 279,
+            "kind": "token",
+            "text": ":",
+            "tokenKind": "colon"
+          },
+          "fileLabel": {
+            "$end": 279,
+            "$pos": 275,
+            "kind": "token",
+            "text": "file",
+            "tokenKind": "keyword(SwiftSyntax.Keyword.file)"
+          },
+          "fileName": {
+            "$end": 297,
+            "$pos": 281,
+            "closingQuote": {
+              "$end": 297,
+              "$pos": 296,
+              "kind": "token",
+              "text": "\"",
+              "tokenKind": "stringQuote"
+            },
+            "kind": "simpleStringLiteralExpr",
+            "openingQuote": {
+              "$end": 282,
+              "$pos": 281,
+              "kind": "token",
+              "text": "\"",
+              "tokenKind": "stringQuote"
+            },
+            "segments": [
+              {
+                "$end": 296,
+                "$pos": 282,
+                "content": {
+                  "$end": 296,
+                  "$pos": 282,
+                  "kind": "token",
+                  "text": "boundary.swift",
+                  "tokenKind": "stringSegment(\"boundary.swift\")"
+                },
+                "kind": "stringSegment"
+              }
+            ]
+          },
+          "kind": "poundSourceLocationArguments",
+          "lineColon": {
+            "$end": 304,
+            "$pos": 303,
+            "kind": "token",
+            "text": ":",
+            "tokenKind": "colon"
+          },
+          "lineLabel": {
+            "$end": 303,
+            "$pos": 299,
+            "kind": "token",
+            "text": "line",
+            "tokenKind": "keyword(SwiftSyntax.Keyword.line)"
+          },
+          "lineNumber": {
+            "$end": 306,
+            "$pos": 305,
+            "kind": "token",
+            "text": "1",
+            "tokenKind": "integerLiteral(\"1\")"
+          }
+        },
+        "kind": "poundSourceLocation",
+        "leftParen": {
+          "$end": 275,
+          "$pos": 274,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "poundSourceLocation": {
+          "$end": 274,
+          "$pos": 259,
+          "kind": "token",
+          "text": "#sourceLocation",
+          "tokenKind": "poundSourceLocation"
+        },
+        "rightParen": {
+          "$end": 307,
+          "$pos": 306,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 325,
+      "$pos": 308,
+      "item": {
+        "$end": 325,
+        "$pos": 308,
+        "kind": "poundSourceLocation",
+        "leftParen": {
+          "$end": 324,
+          "$pos": 323,
+          "kind": "token",
+          "text": "(",
+          "tokenKind": "leftParen"
+        },
+        "poundSourceLocation": {
+          "$end": 323,
+          "$pos": 308,
+          "kind": "token",
+          "text": "#sourceLocation",
+          "tokenKind": "poundSourceLocation"
+        },
+        "rightParen": {
+          "$end": 325,
+          "$pos": 324,
+          "kind": "token",
+          "text": ")",
+          "tokenKind": "rightParen"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 353,
+      "$pos": 326,
+      "item": {
+        "$end": 353,
+        "$pos": 326,
+        "expression": {
+          "$end": 353,
+          "$pos": 326,
+          "body": {
+            "$end": 353,
+            "$pos": 351,
+            "kind": "codeBlock",
+            "leftBrace": {
+              "$end": 352,
+              "$pos": 351,
+              "kind": "token",
+              "text": "{",
+              "tokenKind": "leftBrace"
+            },
+            "rightBrace": {
+              "$end": 353,
+              "$pos": 352,
+              "kind": "token",
+              "text": "}",
+              "tokenKind": "rightBrace"
+            },
+            "statements": []
+          },
+          "conditions": [
+            {
+              "$end": 350,
+              "$pos": 329,
+              "condition": {
+                "$end": 350,
+                "$pos": 329,
+                "availabilityArguments": [
+                  {
+                    "$end": 347,
+                    "$pos": 340,
+                    "argument": {
+                      "$end": 346,
+                      "$pos": 340,
+                      "kind": "platformVersion",
+                      "platform": {
+                        "$end": 343,
+                        "$pos": 340,
+                        "kind": "token",
+                        "text": "iOS",
+                        "tokenKind": "identifier(\"iOS\")"
+                      },
+                      "version": {
+                        "$end": 346,
+                        "$pos": 344,
+                        "components": [],
+                        "kind": "versionTuple",
+                        "major": {
+                          "$end": 346,
+                          "$pos": 344,
+                          "kind": "token",
+                          "text": "14",
+                          "tokenKind": "integerLiteral(\"14\")"
+                        }
+                      }
+                    },
+                    "kind": "availabilityArgument",
+                    "trailingComma": {
+                      "$end": 347,
+                      "$pos": 346,
+                      "kind": "token",
+                      "text": ",",
+                      "tokenKind": "comma"
+                    }
+                  },
+                  {
+                    "$end": 349,
+                    "$pos": 348,
+                    "argument": {
+                      "$end": 349,
+                      "$pos": 348,
+                      "kind": "token",
+                      "text": "*",
+                      "tokenKind": "binaryOperator(\"*\")"
+                    },
+                    "kind": "availabilityArgument"
+                  }
+                ],
+                "availabilityKeyword": {
+                  "$end": 339,
+                  "$pos": 329,
+                  "kind": "token",
+                  "text": "#available",
+                  "tokenKind": "poundAvailable"
+                },
+                "kind": "availabilityCondition",
+                "leftParen": {
+                  "$end": 340,
+                  "$pos": 339,
+                  "kind": "token",
+                  "text": "(",
+                  "tokenKind": "leftParen"
+                },
+                "rightParen": {
+                  "$end": 350,
+                  "$pos": 349,
+                  "kind": "token",
+                  "text": ")",
+                  "tokenKind": "rightParen"
+                }
+              },
+              "kind": "conditionElement"
+            }
+          ],
+          "ifKeyword": {
+            "$end": 328,
+            "$pos": 326,
+            "kind": "token",
+            "text": "if",
+            "tokenKind": "keyword(SwiftSyntax.Keyword.if)"
+          },
+          "kind": "ifExpr"
+        },
+        "kind": "expressionStmt"
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 380,
+      "$pos": 354,
+      "item": {
+        "$end": 380,
+        "$pos": 354,
+        "expression": {
+          "$end": 380,
+          "$pos": 354,
+          "body": {
+            "$end": 380,
+            "$pos": 378,
+            "kind": "codeBlock",
+            "leftBrace": {
+              "$end": 379,
+              "$pos": 378,
+              "kind": "token",
+              "text": "{",
+              "tokenKind": "leftBrace"
+            },
+            "rightBrace": {
+              "$end": 380,
+              "$pos": 379,
+              "kind": "token",
+              "text": "}",
+              "tokenKind": "rightBrace"
+            },
+            "statements": []
+          },
+          "conditions": [
+            {
+              "$end": 377,
+              "$pos": 357,
+              "condition": {
+                "$end": 377,
+                "$pos": 357,
+                "availabilityArguments": [
+                  {
+                    "$end": 376,
+                    "$pos": 370,
+                    "argument": {
+                      "$end": 376,
+                      "$pos": 370,
+                      "kind": "platformVersion",
+                      "platform": {
+                        "$end": 373,
+                        "$pos": 370,
+                        "kind": "token",
+                        "text": "iOS",
+                        "tokenKind": "identifier(\"iOS\")"
+                      },
+                      "version": {
+                        "$end": 376,
+                        "$pos": 374,
+                        "components": [],
+                        "kind": "versionTuple",
+                        "major": {
+                          "$end": 376,
+                          "$pos": 374,
+                          "kind": "token",
+                          "text": "14",
+                          "tokenKind": "integerLiteral(\"14\")"
+                        }
+                      }
+                    },
+                    "kind": "availabilityArgument"
+                  }
+                ],
+                "availabilityKeyword": {
+                  "$end": 369,
+                  "$pos": 357,
+                  "kind": "token",
+                  "text": "#unavailable",
+                  "tokenKind": "poundUnavailable"
+                },
+                "kind": "availabilityCondition",
+                "leftParen": {
+                  "$end": 370,
+                  "$pos": 369,
+                  "kind": "token",
+                  "text": "(",
+                  "tokenKind": "leftParen"
+                },
+                "rightParen": {
+                  "$end": 377,
+                  "$pos": 376,
+                  "kind": "token",
+                  "text": ")",
+                  "tokenKind": "rightParen"
+                }
+              },
+              "kind": "conditionElement"
+            }
+          ],
+          "ifKeyword": {
+            "$end": 356,
+            "$pos": 354,
+            "kind": "token",
+            "text": "if",
+            "tokenKind": "keyword(SwiftSyntax.Keyword.if)"
+          },
+          "kind": "ifExpr"
+        },
+        "kind": "expressionStmt"
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 396,
+      "$pos": 381,
+      "item": {
+        "$end": 396,
+        "$pos": 381,
+        "clauses": [
+          {
+            "$end": 389,
+            "$pos": 381,
+            "condition": {
+              "$end": 385,
+              "$pos": 384,
+              "kind": "integerLiteralExpr",
+              "literal": {
+                "$end": 385,
+                "$pos": 384,
+                "kind": "token",
+                "text": "1",
+                "tokenKind": "integerLiteral(\"1\")"
+              }
+            },
+            "elements": [
+              {
+                "$end": 389,
+                "$pos": 386,
+                "item": {
+                  "$end": 389,
+                  "$pos": 386,
+                  "additionalTrailingClosures": [],
+                  "arguments": [],
+                  "calledExpression": {
+                    "$end": 387,
+                    "$pos": 386,
+                    "baseName": {
+                      "$end": 387,
+                      "$pos": 386,
+                      "kind": "token",
+                      "text": "f",
+                      "tokenKind": "identifier(\"f\")"
+                    },
+                    "kind": "declReferenceExpr"
+                  },
+                  "kind": "functionCallExpr",
+                  "leftParen": {
+                    "$end": 388,
+                    "$pos": 387,
+                    "kind": "token",
+                    "text": "(",
+                    "tokenKind": "leftParen"
+                  },
+                  "rightParen": {
+                    "$end": 389,
+                    "$pos": 388,
+                    "kind": "token",
+                    "text": ")",
+                    "tokenKind": "rightParen"
+                  }
+                },
+                "kind": "codeBlockItem"
+              }
+            ],
+            "kind": "ifConfigClause",
+            "poundKeyword": {
+              "$end": 384,
+              "$pos": 381,
+              "kind": "token",
+              "text": "#if",
+              "tokenKind": "poundIf"
+            }
+          }
+        ],
+        "kind": "ifConfigDecl",
+        "poundEndif": {
+          "$end": 396,
+          "$pos": 390,
+          "kind": "token",
+          "text": "#endif",
+          "tokenKind": "poundEndif"
+        }
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 413,
+      "$pos": 397,
+      "item": {
+        "$end": 413,
+        "$pos": 397,
+        "clauses": [
+          {
+            "$end": 406,
+            "$pos": 397,
+            "condition": {
+              "$end": 402,
+              "$pos": 400,
+              "baseName": {
+                "$end": 402,
+                "$pos": 400,
+                "kind": "token",
+                "text": "é",
+                "tokenKind": "identifier(\"é\")"
+              },
+              "kind": "declReferenceExpr"
+            },
+            "elements": [
+              {
+                "$end": 406,
+                "$pos": 403,
+                "item": {
+                  "$end": 406,
+                  "$pos": 403,
+                  "additionalTrailingClosures": [],
+                  "arguments": [],
+                  "calledExpression": {
+                    "$end": 404,
+                    "$pos": 403,
+                    "baseName": {
+                      "$end": 404,
+                      "$pos": 403,
+                      "kind": "token",
+                      "text": "f",
+                      "tokenKind": "identifier(\"f\")"
+                    },
+                    "kind": "declReferenceExpr"
+                  },
+                  "kind": "functionCallExpr",
+                  "leftParen": {
+                    "$end": 405,
+                    "$pos": 404,
+                    "kind": "token",
+                    "text": "(",
+                    "tokenKind": "leftParen"
+                  },
+                  "rightParen": {
+                    "$end": 406,
+                    "$pos": 405,
+                    "kind": "token",
+                    "text": ")",
+                    "tokenKind": "rightParen"
+                  }
+                },
+                "kind": "codeBlockItem"
+              }
+            ],
+            "kind": "ifConfigClause",
+            "poundKeyword": {
+              "$end": 400,
+              "$pos": 397,
+              "kind": "token",
+              "text": "#if",
+              "tokenKind": "poundIf"
+            }
+          }
+        ],
+        "kind": "ifConfigDecl",
+        "poundEndif": {
+          "$end": 413,
+          "$pos": 407,
+          "kind": "token",
+          "text": "#endif",
+          "tokenKind": "poundEndif"
+        }
+      },
+      "kind": "codeBlockItem"
+    }
+  ]
+}

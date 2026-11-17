@@ -149,7 +149,9 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                     .rest()
                     .bytes()
                     .skip(1)
-                    .take_while(u8::is_ascii_alphabetic)
+                    // SwiftSyntax scans ASCII identifier starts here, not continuations:
+                    // underscores extend directive names, but digits and Unicode do not.
+                    .take_while(|byte| byte.is_ascii_alphabetic() || *byte == b'_')
                     .count()
                     + 1;
                 let kind = match &self.rest()[..length] {
@@ -185,12 +187,20 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                 self.push(K::Identifier, start);
                 continue;
             }
-            if c == '_' || c == '$' || c.is_alphabetic() || (c as u32 >= 0x80 && !is_operator(c)) {
+            if c == '_'
+                || c == '$'
+                || c.is_alphabetic()
+                || (c as u32 >= 0x80
+                    && (!is_operator(c)
+                        // SwiftSyntax gives identifiers priority in this overlapping range.
+                        || matches!(c, '\u{3021}'..='\u{302f}')))
+            {
                 self.pos += c.len_utf8();
                 while let Some(c) = self.rest().chars().next() {
                     if !(c == '_'
                         || c == '$'
                         || c.is_alphanumeric()
+                        || matches!(c, '\u{3021}'..='\u{302f}')
                         || (c as u32 >= 0x80 && !c.is_whitespace() && !is_operator(c)))
                     {
                         break;
@@ -240,11 +250,13 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                 '@' => K::AtSign,
                 '\\' => K::Backslash,
                 '#' => K::Pound,
-                '.' if !self
-                    .rest()
-                    .chars()
-                    .nth(1)
-                    .is_some_and(|c| c == '.' || is_operator(c)) =>
+                '.' if self.rest().starts_with("./*")
+                    || self.rest().starts_with(".//")
+                    || !self
+                        .rest()
+                        .chars()
+                        .nth(1)
+                        .is_some_and(|c| c == '.' || is_operator_continuation(c)) =>
                 {
                     K::Period
                 }
@@ -275,7 +287,7 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                     }
                     self.pos += c.len_utf8();
                     while let Some(next) = self.rest().chars().next() {
-                        if !(is_operator(next) || c == '.' && next == '.') {
+                        if !(is_operator_continuation(next) || c == '.' && next == '.') {
                             break;
                         }
                         if self.rest().starts_with("//") || self.rest().starts_with("/*") {
@@ -360,7 +372,7 @@ impl<S: SyntaxSink> Lexer<'_, S> {
                     slash
                         + self.source[slash..]
                             .chars()
-                            .take_while(|c| is_operator(*c))
+                            .take_while(|c| is_operator_continuation(*c))
                             .map(char::len_utf8)
                             .sum::<usize>()
                 },
@@ -725,5 +737,18 @@ fn is_operator(c: char) -> bool {
     matches!(
         c,
         '/' | '=' | '-' | '+' | '!' | '*' | '%' | '<' | '>' | '&' | '|' | '^' | '?' | '~'
-    ) || matches!(c as u32, 0x00a1..=0x00a7 | 0x00a9 | 0x00ab..=0x00ac | 0x00ae | 0x00b0..=0x00b1 | 0x00b6 | 0x00bb | 0x00bf | 0x00d7 | 0x00f7 | 0x2016..=0x2017 | 0x2020..=0x2027 | 0x2030..=0x203e | 0x2041..=0x2053 | 0x2055..=0x205e | 0x2190..=0x23ff | 0x2500..=0x2775 | 0x2794..=0x2bff | 0x2e00..=0x2e7f | 0x3001..=0x3003 | 0x3008..=0x3020 | 0x3030)
+    ) || matches!(c as u32, 0x00a1..=0x00a7 | 0x00a9 | 0x00ab..=0x00ac | 0x00ae | 0x00b0..=0x00b1 | 0x00b6 | 0x00bb | 0x00bf | 0x00d7 | 0x00f7 | 0x2016..=0x2017 | 0x2020..=0x2027 | 0x2030..=0x203e | 0x2041..=0x2053 | 0x2055..=0x205e | 0x2190..=0x23ff | 0x2500..=0x2775 | 0x2794..=0x2bff | 0x2e00..=0x2e7f | 0x3001..=0x3003 | 0x3008..=0x3030)
+}
+
+fn is_operator_continuation(c: char) -> bool {
+    is_operator(c)
+        || matches!(
+            c as u32,
+            0x0300..=0x036f
+                | 0x1dc0..=0x1dff
+                | 0x20d0..=0x20ff
+                | 0xfe00..=0xfe0f
+                | 0xfe20..=0xfe2f
+                | 0xe0100..=0xe01ef
+        )
 }

@@ -1,0 +1,11 @@
+let commented = a +/* hi */b
+let prefix = ±value
+let postfix = value±
+let binary = value ± value
+let continued = value ±⃝ other
+let optional: Int? = nil
+let forced: Int! = nil
+let commentedOptional: Int?/*c*/ = nil
+let commentedForced: Int!/*c*/ = nil
+let coalesced = value/*c*/ ?? other
+let doubled = value !! other
