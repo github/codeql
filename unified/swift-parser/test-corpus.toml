@@ -1,0 +1,241 @@
+# Swift projects used to compare the our Rust parser implementation against the
+# "official" swift-syntax library.
+#
+# Includes the unified DCA Swift corpus and additional popular Swift projects.
+version = 1
+
+[[projects]]
+slug = "soto-project/soto"
+sha = "78d45179881c2e27b3b82548fdc376ccc2611c77"
+
+[[projects]]
+slug = "manaflow-ai/cmux"
+sha = "2f0592d17be179f023cb00623b7666e2989b5015"
+
+[[projects]]
+slug = "kickstarter/ios-oss"
+sha = "ab124eb679a58056a1ae78bc25ce82050f01d80f"
+
+[[projects]]
+slug = "stripe/stripe-ios"
+sha = "1a588254d9c16905ea5eb231c867ad8e4c589097"
+
+[[projects]]
+slug = "wordpress-mobile/WordPress-iOS"
+sha = "6555962942a9f73e852acc5a89adc270d1254f5e"
+
+[[projects]]
+slug = "automazeio/vibeproxy"
+sha = "e4989cfe4b8926afb434f624f6c541a55a34b6f9"
+
+[[projects]]
+slug = "signalapp/Signal-iOS"
+sha = "2087f4b6a07d9ea878c7fa211d61161755f6d948"
+
+[[projects]]
+slug = "ProtonMail/ios-mail"
+sha = "701463fe4542945c49ac5d326b0c27e91441e02f"
+
+[[projects]]
+slug = "wikimedia/wikipedia-ios"
+sha = "8691a89dfe420d68b560fc4e200c69c577850b2d"
+
+[[projects]]
+slug = "mozilla-mobile/firefox-ios"
+sha = "972ab5cae6a7c5d0febe9938ede939b6b49e9d5f"
+
+[[projects]]
+slug = "Dimillian/MovieSwiftUI"
+sha = "72eb4ae7117fbf893be533c9a277c47a7287d87e"
+
+[[projects]]
+slug = "Finb/Bark"
+sha = "4f8d72c5f620402d11003ee4298d7de60d4f8d82"
+
+[[projects]]
+slug = "SideStore/SideStore"
+sha = "4f8a70d31e661467dc0f1df1a4fc236d220a0bd2"
+
+[[projects]]
+slug = "freeotp/freeotp-ios"
+sha = "23555aede6dfd775fddecbf4142afd0b75931e76"
+
+[[projects]]
+slug = "KrauseFx/MajorKey"
+sha = "11407511645d7598a4fddc6bb240946a2f377ce8"
+
+[[projects]]
+slug = "breadwallet/breadwallet-ios"
+sha = "a81bc58dde76a6c621db50df46a5e038880fea0b"
+
+[[projects]]
+slug = "iKenndac/Tofu"
+sha = "b993d46749558d64d191a4ff9229457d1030a7cc"
+
+[[projects]]
+slug = "eleev/swiftui-2048"
+sha = "9c63bd59f7b46a5a6c71535fbcb86e50debc2862"
+
+[[projects]]
+slug = "SwissCovid/swisscovid-app-ios"
+sha = "6f52f16c5beab271abc9be06a0c980a6808a5f23"
+
+[[projects]]
+slug = "AndrewBennet/ReadingListV1"
+sha = "f983c5029cb612d667cf97f7f2ab8d6719af6031"
+
+[[projects]]
+slug = "dheerajghub/Dovve"
+sha = "832f6f460e7d061cbe8c2c344da497d1fd548f26"
+
+[[projects]]
+slug = "Thomvis/Construct"
+sha = "49f6b4e412eba157beba5eeb2a894a33a0e07f12"
+
+[[projects]]
+slug = "HelioMesquita/Swiftmazing"
+sha = "4ba29c688ef40b37499d925dea5aec4d50efb225"
+
+[[projects]]
+slug = "DanielZSY/RxCommonKit"
+sha = "d808d65509977c43cad6caeecd8fcf50f7d87a1f"
+
+[[projects]]
+slug = "oversecured/OversecuredVulnerableiOSApp"
+sha = "859d862ddd50c606b0cf12b5df2bc5ea95499dfa"
+
+[[projects]]
+slug = "OWASP/MASTG-Hacking-Playground"
+sha = "db219a1011e6735cf0c6c08ba929a27ef40e1873"
+
+[[projects]]
+slug = "prateek147/DVIA-v2"
+sha = "96466ab85569dbcd37c69b2d15d22ff666f57031"
+
+[[projects]]
+slug = "vsanthanam/JBird"
+sha = "0366ae830cd376078c8a31d58527078786764a05"
+
+[[projects]]
+slug = "maoyama/Changes"
+sha = "1e254bf5cd0ec651a240f7e54d8867e80bd19d1b"
+
+[[projects]]
+slug = "swiftlang/swift"
+sha = "e956ece1d0c7e01377092e82c74e3698d48e9d97"
+
+[[projects]]
+slug = "apple/container"
+sha = "dc276ee5f3894446f08434ab322615ede7742204"
+
+[[projects]]
+slug = "iina/iina"
+sha = "c071ff376890803feacaecbba24593ae3a2ce188"
+
+[[projects]]
+slug = "Alamofire/Alamofire"
+sha = "bda9ed57d72988a3a2ada33d824583541f86eac6"
+
+[[projects]]
+slug = "exelban/stats"
+sha = "ef3146cfccc79f4993d6f6a1520b2701106a4957"
+
+[[projects]]
+slug = "permissionlesstech/bitchat"
+sha = "9b84b361225facd8e623f25d76f889d3dc54a879"
+
+[[projects]]
+slug = "utmapp/UTM"
+sha = "100701eb8b98f6409ecb2150711d57c806c3923c"
+
+[[projects]]
+slug = "MonitorControl/MonitorControl"
+sha = "5ce1a252ad1bde8248d8e4bb69645b28ca4da3e5"
+
+[[projects]]
+slug = "rxhanson/Rectangle"
+sha = "12a9bc79f99abeb86297da3d7436b4489f920fa2"
+
+[[projects]]
+slug = "ChartsOrg/Charts"
+sha = "1bad5469f57628782110b05996d4fa00473abf06"
+
+[[projects]]
+slug = "gee1k/uPic"
+sha = "5d6b01949823223255acbec4bde94ec53a2669ed"
+
+[[projects]]
+slug = "AuroraEditor/AuroraEditor"
+sha = "309be084bc4ac85fa725aa04d4efdd63f147f328"
+
+[[projects]]
+slug = "djyde/WebShell"
+sha = "6cc7efc4e48146d9c0d3a297b1528b30feb8e779"
+
+[[projects]]
+slug = "AlphaWallet/alpha-wallet-ios"
+sha = "e4e5cc89edc459b3d266cd7124ab09b7f096b80d"
+
+[[projects]]
+slug = "Clean-Swift/CleanStore"
+sha = "e13b868bda3ad1a5987aadbff249b557c1e82d27"
+
+[[projects]]
+slug = "box/box-ios-sdk"
+sha = "da4709b718b3776404829e1c27ad1c3b0f769d63"
+
+[[projects]]
+slug = "FabrizioBrancati/BFKit-Swift"
+sha = "c60f627e604495169ca308b799ca67ccf2b92a39"
+
+[[projects]]
+slug = "JohanDegraeve/xdripswift"
+sha = "c268542e64626c564e626658fa9a6b90a059ada4"
+
+[[projects]]
+slug = "NordicSemiconductor/IOS-nRF-Mesh-Library"
+sha = "fa0967b74e669cd925e6a5bc7b442031d69a796b"
+
+[[projects]]
+slug = "Mindera/Alicerce"
+sha = "1ee2f118f132f2444c561e162834e00a26e908e1"
+
+[[projects]]
+slug = "Boilertalk/Web3.swift"
+sha = "b85187ddf230a10b04fa8574c44980f3369ddff5"
+
+[[projects]]
+slug = "frzi/swiftui-router"
+sha = "e0cb32b54bb429aa43ce30240b0036bf223a62a3"
+
+[[projects]]
+slug = "krzysztofzablocki/Sourcery"
+sha = "f9d80ddec1d42b83b776064162ce0a93a0289334"
+
+[[projects]]
+slug = "flipperdevices/Flipper-iOS-App"
+sha = "46074e4c92895ab566a3ef5c599f066b1d507063"
+
+[[projects]]
+slug = "realm/SwiftLint"
+sha = "d5156105b3c58c3ca125daef7735e6515d2fd408"
+
+[[projects]]
+slug = "swiftlang/swift-syntax"
+sha = "c4872164993225f1ad35cafb70aeae2c2917ac84"
+
+[[projects]]
+slug = "pointfreeco/swift-composable-architecture"
+sha = "bf66bd83f3165fe4f5fdb9a6c99249276505723e"
+
+[[projects]]
+slug = "vapor/vapor"
+sha = "e4a5b7050f5e9e5793be3ebdeb687eac92fd9965"
+
+[[projects]]
+slug = "apple/swift-nio"
+sha = "b440f7bae8894b5ec42e0f1842fcd77483ab3984"
+
+[[projects]]
+slug = "TelegramMessenger/Telegram-iOS"
+sha = "24638bc69bd083981b178dd1e7f921eebbf7fc46"

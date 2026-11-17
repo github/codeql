@@ -13,7 +13,9 @@ The emitted JSON tree preserves the AST's named structure. Every node has a
 `kind` and a half-open UTF-8 byte range encoded as 0-based `$pos`/`$end`
 offsets. The root also has a `$lineStarts` array containing the UTF-8 byte
 offset of every physical source line, so line/column positions can be
-reconstructed without repeating them on every node. Beyond that:
+reconstructed without repeating them on every node. The root's `$hasError`
+boolean records whether swift-syntax found syntax errors before operator folding,
+including recovery through missing tokens omitted from the JSON. Beyond that:
 
 - **Tokens** carry `text`, `tokenKind`, and — only when non-empty —
   `leadingTrivia`/`trailingTrivia` arrays of `{ kind, text, $pos, $end }`
@@ -40,6 +42,7 @@ abbreviated here as `…`):
 {
   "$pos": 0,
   "$end": …,
+  "$hasError": false,
   "$lineStarts": [0],
   "kind": "sourceFile",
   "statements": [                       // collection node elided to an array

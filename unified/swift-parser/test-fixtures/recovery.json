@@ -1,0 +1,132 @@
+{
+  "$end": 35,
+  "$lineStarts": [
+    0,
+    19,
+    35
+  ],
+  "$pos": 0,
+  "endOfFileToken": {
+    "$end": 35,
+    "$pos": 35,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": [
+    {
+      "$end": 34,
+      "$pos": 0,
+      "item": {
+        "$end": 34,
+        "$pos": 0,
+        "attributes": [],
+        "body": {
+          "$end": 34,
+          "$pos": 17,
+          "kind": "codeBlock",
+          "leftBrace": {
+            "$end": 18,
+            "$pos": 17,
+            "kind": "token",
+            "text": "{",
+            "tokenKind": "leftBrace"
+          },
+          "statements": [
+            {
+              "$end": 34,
+              "$pos": 23,
+              "item": {
+                "$end": 34,
+                "$pos": 23,
+                "attributes": [],
+                "bindingSpecifier": {
+                  "$end": 26,
+                  "$pos": 23,
+                  "kind": "token",
+                  "text": "let",
+                  "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+                },
+                "bindings": [
+                  {
+                    "$end": 34,
+                    "$pos": 27,
+                    "initializer": {
+                      "$end": 34,
+                      "$pos": 33,
+                      "equal": {
+                        "$end": 34,
+                        "$pos": 33,
+                        "kind": "token",
+                        "text": "=",
+                        "tokenKind": "equal"
+                      },
+                      "kind": "initializerClause",
+                      "value": {
+                        "$end": 34,
+                        "$pos": 34,
+                        "kind": "missingExpr"
+                      }
+                    },
+                    "kind": "patternBinding",
+                    "pattern": {
+                      "$end": 32,
+                      "$pos": 27,
+                      "identifier": {
+                        "$end": 32,
+                        "$pos": 27,
+                        "kind": "token",
+                        "text": "value",
+                        "tokenKind": "identifier(\"value\")"
+                      },
+                      "kind": "identifierPattern"
+                    }
+                  }
+                ],
+                "kind": "variableDecl",
+                "modifiers": []
+              },
+              "kind": "codeBlockItem"
+            }
+          ]
+        },
+        "funcKeyword": {
+          "$end": 4,
+          "$pos": 0,
+          "kind": "token",
+          "text": "func",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.func)"
+        },
+        "kind": "functionDecl",
+        "modifiers": [],
+        "name": {
+          "$end": 15,
+          "$pos": 5,
+          "kind": "token",
+          "text": "unfinished",
+          "tokenKind": "identifier(\"unfinished\")"
+        },
+        "signature": {
+          "$end": 16,
+          "$pos": 15,
+          "kind": "functionSignature",
+          "parameterClause": {
+            "$end": 16,
+            "$pos": 15,
+            "kind": "functionParameterClause",
+            "leftParen": {
+              "$end": 16,
+              "$pos": 15,
+              "kind": "token",
+              "text": "(",
+              "tokenKind": "leftParen"
+            },
+            "parameters": []
+          }
+        }
+      },
+      "kind": "codeBlockItem"
+    }
+  ]
+}

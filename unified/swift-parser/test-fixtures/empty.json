@@ -1,0 +1,16 @@
+{
+  "$end": 0,
+  "$lineStarts": [
+    0
+  ],
+  "$pos": 0,
+  "endOfFileToken": {
+    "$end": 0,
+    "$pos": 0,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": []
+}

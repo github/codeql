@@ -1,0 +1,267 @@
+{
+  "$end": 146,
+  "$lineStarts": [
+    0,
+    41,
+    65,
+    91,
+    114,
+    146
+  ],
+  "$pos": 65,
+  "endOfFileToken": {
+    "$end": 146,
+    "$pos": 146,
+    "kind": "token",
+    "text": "",
+    "tokenKind": "endOfFile"
+  },
+  "kind": "sourceFile",
+  "statements": [
+    {
+      "$end": 90,
+      "$pos": 65,
+      "item": {
+        "$end": 90,
+        "$pos": 65,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 68,
+          "$pos": 65,
+          "kind": "token",
+          "leadingTrivia": [
+            {
+              "$end": 40,
+              "$pos": 0,
+              "kind": "lineComment",
+              "text": "// A comment with \"quotes\" and \\slashes."
+            },
+            {
+              "$end": 64,
+              "$pos": 41,
+              "kind": "docLineComment",
+              "text": "/// A documented value."
+            }
+          ],
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 90,
+            "$pos": 69,
+            "initializer": {
+              "$end": 90,
+              "$pos": 75,
+              "equal": {
+                "$end": 76,
+                "$pos": 75,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 90,
+                "$pos": 77,
+                "closingQuote": {
+                  "$end": 90,
+                  "$pos": 89,
+                  "kind": "token",
+                  "text": "\"",
+                  "tokenKind": "stringQuote"
+                },
+                "kind": "stringLiteralExpr",
+                "openingQuote": {
+                  "$end": 78,
+                  "$pos": 77,
+                  "kind": "token",
+                  "text": "\"",
+                  "tokenKind": "stringQuote"
+                },
+                "segments": [
+                  {
+                    "$end": 89,
+                    "$pos": 78,
+                    "content": {
+                      "$end": 89,
+                      "$pos": 78,
+                      "kind": "token",
+                      "text": "Hello, 😀",
+                      "tokenKind": "stringSegment(\"Hello, 😀\")"
+                    },
+                    "kind": "stringSegment"
+                  }
+                ]
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 74,
+              "$pos": 69,
+              "identifier": {
+                "$end": 74,
+                "$pos": 69,
+                "kind": "token",
+                "text": "café",
+                "tokenKind": "identifier(\"café\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    },
+    {
+      "$end": 145,
+      "$pos": 114,
+      "item": {
+        "$end": 145,
+        "$pos": 114,
+        "attributes": [],
+        "bindingSpecifier": {
+          "$end": 117,
+          "$pos": 114,
+          "kind": "token",
+          "leadingTrivia": [
+            {
+              "$end": 113,
+              "$pos": 91,
+              "kind": "blockComment",
+              "text": "/* A block comment. */"
+            }
+          ],
+          "text": "let",
+          "tokenKind": "keyword(SwiftSyntax.Keyword.let)"
+        },
+        "bindings": [
+          {
+            "$end": 145,
+            "$pos": 118,
+            "initializer": {
+              "$end": 145,
+              "$pos": 132,
+              "equal": {
+                "$end": 133,
+                "$pos": 132,
+                "kind": "token",
+                "text": "=",
+                "tokenKind": "equal"
+              },
+              "kind": "initializerClause",
+              "value": {
+                "$end": 145,
+                "$pos": 134,
+                "closingQuote": {
+                  "$end": 145,
+                  "$pos": 144,
+                  "kind": "token",
+                  "text": "\"",
+                  "tokenKind": "stringQuote"
+                },
+                "kind": "stringLiteralExpr",
+                "openingQuote": {
+                  "$end": 135,
+                  "$pos": 134,
+                  "kind": "token",
+                  "text": "\"",
+                  "tokenKind": "stringQuote"
+                },
+                "segments": [
+                  {
+                    "$end": 135,
+                    "$pos": 135,
+                    "content": {
+                      "$end": 135,
+                      "$pos": 135,
+                      "kind": "token",
+                      "text": "",
+                      "tokenKind": "stringSegment(\"\")"
+                    },
+                    "kind": "stringSegment"
+                  },
+                  {
+                    "$end": 143,
+                    "$pos": 135,
+                    "backslash": {
+                      "$end": 136,
+                      "$pos": 135,
+                      "kind": "token",
+                      "text": "\\",
+                      "tokenKind": "backslash"
+                    },
+                    "expressions": [
+                      {
+                        "$end": 142,
+                        "$pos": 137,
+                        "expression": {
+                          "$end": 142,
+                          "$pos": 137,
+                          "baseName": {
+                            "$end": 142,
+                            "$pos": 137,
+                            "kind": "token",
+                            "text": "café",
+                            "tokenKind": "identifier(\"café\")"
+                          },
+                          "kind": "declReferenceExpr"
+                        },
+                        "kind": "labeledExpr"
+                      }
+                    ],
+                    "kind": "expressionSegment",
+                    "leftParen": {
+                      "$end": 137,
+                      "$pos": 136,
+                      "kind": "token",
+                      "text": "(",
+                      "tokenKind": "leftParen"
+                    },
+                    "rightParen": {
+                      "$end": 143,
+                      "$pos": 142,
+                      "kind": "token",
+                      "text": ")",
+                      "tokenKind": "rightParen"
+                    }
+                  },
+                  {
+                    "$end": 144,
+                    "$pos": 143,
+                    "content": {
+                      "$end": 144,
+                      "$pos": 143,
+                      "kind": "token",
+                      "text": "!",
+                      "tokenKind": "stringSegment(\"!\")"
+                    },
+                    "kind": "stringSegment"
+                  }
+                ]
+              }
+            },
+            "kind": "patternBinding",
+            "pattern": {
+              "$end": 131,
+              "$pos": 118,
+              "identifier": {
+                "$end": 131,
+                "$pos": 118,
+                "kind": "token",
+                "text": "interpolation",
+                "tokenKind": "identifier(\"interpolation\")"
+              },
+              "kind": "identifierPattern"
+            }
+          }
+        ],
+        "kind": "variableDecl",
+        "modifiers": []
+      },
+      "kind": "codeBlockItem"
+    }
+  ]
+}
