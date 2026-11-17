@@ -194,6 +194,16 @@ predicate interpretPath(string path, Function f, Provenance orig, Provenance p, 
   )
 }
 
+private predicate summaryModel(
+  Function f, string input, string output, string kind, Provenance p, boolean isExact,
+  QlBuiltins::ExtensionId madId
+) {
+  exists(string path, Provenance p_ |
+    summaryModel(path, input, output, kind, p_, madId) and
+    interpretPath(path, f, p_, p, isExact)
+  )
+}
+
 private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   string input_;
   string output_;
@@ -202,12 +212,7 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   boolean isExact_;
   QlBuiltins::ExtensionId madId;
 
-  SummarizedCallableFromModel() {
-    exists(string path, Provenance p |
-      summaryModel(path, input_, output_, kind, p, madId) and
-      interpretPath(path, this, p, p_, isExact_)
-    )
-  }
+  SummarizedCallableFromModel() { summaryModel(this, input_, output_, kind, p_, isExact_, madId) }
 
   override predicate propagatesFlow(
     string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
@@ -237,6 +242,10 @@ predicate mayInvokeCallback(Function f, int n) {
   )
 }
 
+private predicate hasGeneratedSummaryModel(Function f, boolean isExact) {
+  summaryModel(f, _, _, _, any(Provenance g | g.isGenerated()), isExact, _)
+}
+
 private class SummarizedCallableWithCallback extends SummarizedCallable::Range {
   private int pos;
 
@@ -249,8 +258,15 @@ private class SummarizedCallableWithCallback extends SummarizedCallable::Range {
     output = "Argument[" + pos + "].Parameter[closure-self]" and
     preservesValue = true and
     p = "hq-generated" and
-    isExact = true and
-    model = "heuristic-callback"
+    model = "heuristic-callback" and
+    // If a generated model already exists for this function, inherit its exactness
+    // to prevent that either model suppresses the other
+    (
+      hasGeneratedSummaryModel(this, isExact)
+      or
+      not hasGeneratedSummaryModel(this, _) and
+      isExact = true
+    )
   }
 }
 

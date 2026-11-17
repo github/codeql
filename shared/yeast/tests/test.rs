@@ -7,6 +7,34 @@ use yeast::*;
 
 const OUTPUT_SCHEMA_YAML: &str = include_str!("node-types.yml");
 
+yeast::tree_schema! {
+    test_tree,
+    "tests/node-types.yml",
+}
+
+use test_tree::{tree, tree_with_context, trees, trees_with_context};
+
+macro_rules! build_tree_with_kind {
+    ($kind:ident, $context:expr) => {{
+        let mut ctx = $context;
+        tree_with_context!(ctx, ($kind "x"))
+    }};
+}
+
+macro_rules! build_trees_with_kind {
+    ($kind:ident, $context:expr) => {{
+        let mut ctx = $context;
+        trees_with_context!(ctx, ($kind "x"))
+    }};
+}
+
+macro_rules! build_tree_from_template {
+    ($template:tt, $context:expr) => {{
+        let mut ctx = $context;
+        tree_with_context!(ctx, $template)
+    }};
+}
+
 /// Helper: parse Ruby source with no rules, return dump.
 fn parse_and_dump(input: &str) -> String {
     let ast = parse_input(input);
@@ -93,10 +121,7 @@ fn with_passthrough_rules<C: Clone + 'static>(mut rules: Vec<Rule<C>>) -> Vec<Ru
 /// return its dump. The appended pass-through rules make the small input
 /// subset used by these tests exhaustive.
 fn run_and_dump(input: &str, rules: Vec<Rule>) -> String {
-    run_phased_and_dump(
-        input,
-        vec![Phase::new("test", with_passthrough_rules(rules))],
-    )
+    run_phased_and_dump(input, &[Phase::new("test", with_passthrough_rules(rules))])
 }
 
 /// Helper: translate Ruby source with custom rules and return the transformed AST.
@@ -125,11 +150,11 @@ fn synthetic_integer_ast(content: &str) -> Ast {
 }
 
 /// Helper: translate Ruby source with multiple rule phases and return its dump.
-fn run_phased_and_dump(input: &str, phases: Vec<Phase>) -> String {
+fn run_phased_and_dump(input: &str, phases: &[Phase]) -> String {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
-    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+    let runner: Runner = Runner::with_schema(lang, &schema, phases);
     let ast = runner.run(input).unwrap();
     dump_ast(&ast, ast.get_root(), input)
 }
@@ -248,7 +273,7 @@ fn test_parse_for_loop() {
 
 #[test]
 fn test_dump_highlights_type_errors_inline() {
-    let schema_yaml = r#"
+    let schema_yaml = r"
 named:
     program:
         $children*: assignment
@@ -256,7 +281,7 @@ named:
         left: identifier
         right: identifier
     identifier:
-"#;
+";
 
     let dump = parse_and_dump_typed("x = 1", schema_yaml);
     assert!(dump.contains("integer \"1\" <-- ERROR:"));
@@ -264,7 +289,7 @@ named:
 
 #[test]
 fn test_dump_reports_preserved_unknown_kind_after_transformation() {
-    let schema_yaml = r#"
+    let schema_yaml = r"
 named:
     program:
         $children*: assignment
@@ -272,7 +297,7 @@ named:
         left: identifier
         right: identifier
     identifier:
-"#;
+";
 
     // This rewrite runs and preserves the RHS node kind via capture.
     // With schema above, preserving `integer` should be reported inline.
@@ -292,14 +317,14 @@ named:
 
 #[test]
 fn test_dump_reports_undeclared_field_on_node() {
-    let schema_yaml = r#"
+    let schema_yaml = r"
 named:
     program:
         $children*: assignment
     assignment:
         left: identifier
     identifier:
-"#;
+";
 
     let dump = parse_and_dump_typed_with_language("x = y", schema_yaml);
     assert!(dump.contains("right: identifier \"y\" <-- ERROR:"));
@@ -308,7 +333,7 @@ named:
 
 #[test]
 fn test_dump_reports_disallowed_kind_in_field_type() {
-    let schema_yaml = r#"
+    let schema_yaml = r"
 named:
     program:
         $children*: assignment
@@ -317,7 +342,7 @@ named:
         right: identifier
     identifier:
     integer:
-"#;
+";
 
     let dump = parse_and_dump_typed_with_language("x = 1", schema_yaml);
     assert!(dump.contains("right: integer \"1\" <-- ERROR:"));
@@ -351,12 +376,12 @@ fn test_query_match() {
 fn test_run_from_ast_desugars_hand_built_tree() {
     // Output schema for the desugared tree. Its kind/field names must become
     // resolvable in the hand-built AST's schema for the rule to build them.
-    let schema_yaml = r#"
+    let schema_yaml = r"
 named:
     assignment:
         left: leaf
     leaf:
-"#;
+";
 
     // A rule over an *input* kind (`wrapper`) that is not in the output schema,
     // rewriting to an output `assignment` node.
@@ -769,9 +794,9 @@ fn test_tree_builder() {
     // Swap left and right
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let left = yeast::tree!((identifier "x"));
-    let right = yeast::tree!((integer "1"));
-    let new_id = yeast::tree!(
+    let left = tree!((identifier "x"));
+    let right = tree!((integer "1"));
+    let new_id = tree!(
         (program
             child: (assignment
                 left: {right}
@@ -792,6 +817,62 @@ fn test_tree_builder() {
     );
 }
 
+#[test]
+fn test_tree_schema_namespace() {
+    assert_eq!(test_tree::SCHEMA, OUTPUT_SCHEMA_YAML);
+
+    let input_ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut output, &mut user_ctx);
+    let assignment = tree!((assignment
+        left: (identifier "x")
+        right: (integer "1")));
+    assert_eq!(
+        ctx.output.get_node(assignment).unwrap().kind_name(),
+        "assignment"
+    );
+
+    let nodes = trees!((identifier "x") (integer "1"));
+    assert_eq!(nodes.len(), 2);
+
+    let bare_leaf = tree!((identifier));
+    assert_eq!(
+        ctx.output.get_node(bare_leaf).unwrap().kind_name(),
+        "identifier"
+    );
+}
+
+#[test]
+fn test_explicit_context_builders_support_forwarded_templates() {
+    let input_ast = parse_input("x = 1");
+
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let node = build_tree_with_kind!(
+        identifier,
+        yeast::build::BuildCtx::new(&input_ast, &mut output, &mut user_ctx)
+    );
+    assert_eq!(output.get_node(node).unwrap().kind_name(), "identifier");
+
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let nodes = build_trees_with_kind!(
+        identifier,
+        yeast::build::BuildCtx::new(&input_ast, &mut output, &mut user_ctx)
+    );
+    assert_eq!(nodes.len(), 1);
+    assert_eq!(output.get_node(nodes[0]).unwrap().kind_name(), "identifier");
+
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let node = build_tree_from_template!(
+        (identifier "x"),
+        yeast::build::BuildCtx::new(&input_ast, &mut output, &mut user_ctx)
+    );
+    assert_eq!(output.get_node(node).unwrap().kind_name(), "identifier");
+}
+
 /// Builds `(assignment left: … right: [(integer #{value})])`, where a `None`
 /// `value` leaves `right` unset rather than producing an `integer` with no
 /// content.
@@ -802,8 +883,8 @@ fn build_choice_right(
 ) -> (yeast::OutputId, yeast::OutputId) {
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(input_ast, ast, &mut user_ctx);
-    let left = yeast::tree!((identifier "x"));
-    let root = yeast::tree!(
+    let left = tree!((identifier "x"));
+    let root = tree!(
         (assignment
             left: {left}
             right: [(integer #{value})]
@@ -859,7 +940,7 @@ fn test_choice_uses_first_constructible_alternative() {
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
     let absent: Option<yeast::Id> = None;
-    let root = yeast::tree!(
+    let root = tree!(
         (assignment
             left: [
                 (identifier #{absent})
@@ -886,7 +967,7 @@ fn test_choice_guard_skips_an_alternative() {
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
     let use_first = false;
-    let root = yeast::tree!(
+    let root = tree!(
         (assignment
             left: [
                 (identifier "first") if { use_first }
@@ -913,11 +994,11 @@ fn test_choice_fallback_can_reuse_consumed_splice() {
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
     let items = vec![
-        yeast::tree!((identifier "x")),
-        yeast::tree!((identifier "y")),
+        tree!((identifier "x")),
+        tree!((identifier "y")),
     ];
     let use_first = false;
-    let root = yeast::tree!(
+    let root = tree!(
         (assignment
             left: [
                 (left_assignment_list
@@ -955,9 +1036,9 @@ fn test_output_template_interpolations_clone_user_context() {
     let mut ast = empty_output_ast(input);
     let mut user_ctx = InterpolationContext::default();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let source = yeast::tree!((identifier "source"));
+    let source = tree!((identifier "source"));
 
-    let nodes = yeast::trees!(
+    let nodes = trees!(
         (call
             location: {
                 ctx.counter += 1;
@@ -1005,9 +1086,9 @@ fn test_interpolation_preserves_build_ctx_method_borrowing() {
     let mut ast = empty_output_ast(input);
     let mut user_ctx = InterpolationContext::default();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let source = yeast::tree!((identifier "source"));
+    let source = tree!((identifier "source"));
 
-    let node = yeast::tree!((call
+    let node = tree!((call
         method: {
             ctx.literal("identifier", &ctx.source_text(source))
         }
@@ -1030,7 +1111,7 @@ fn test_interpolation_preserves_user_context_assignment() {
     let mut user_ctx = InterpolationContext::default();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
 
-    let node = yeast::tree!((identifier #{
+    let node = tree!((identifier #{
         *ctx = InterpolationContext { counter: 1 };
         ctx.counter
     }));
@@ -1049,7 +1130,7 @@ fn test_interpolation_accepts_borrowed_build_ctx() {
     fn build_identifier(
         ctx: &mut yeast::build::BuildCtx<'_, InterpolationContext>,
     ) -> yeast::OutputId {
-        yeast::tree!((identifier #{
+        tree!((identifier #{
             ctx.counter += 1;
             ctx.counter
         }))
@@ -1083,11 +1164,11 @@ fn test_interpolation_accepts_value_borrowed_from_context() {
     let mut ast = empty_output_ast(input);
     let mut user_ctx = BorrowedInterpolationContext::default();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let location = yeast::tree!((identifier "location"));
+    let location = tree!((identifier "location"));
     ctx.locations.push(location);
     let locations = ctx.locations.iter();
 
-    yeast::tree!((call location: {locations}));
+    tree!((call location: {locations}));
 }
 
 #[test]
@@ -1098,10 +1179,10 @@ fn test_location_interpolation_materializes_context_iterator() {
     let mut user_ctx = BorrowedInterpolationContext::default();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
     let location =
-        yeast::tree!((identifier "location" location: {input_ast.get_root()}));
+        tree!((identifier "location" location: {input_ast.get_root()}));
     ctx.locations.push(location);
 
-    let call = yeast::tree!((call location: {ctx.locations.drain(..)}));
+    let call = tree!((call location: {ctx.locations.drain(..)}));
 
     assert_eq!(ctx.locations, vec![location]);
     assert_eq!(ctx.output.get_node(call).unwrap().byte_range(), 0..5);
@@ -1117,11 +1198,11 @@ fn test_root_choice_returns_an_optional_node() {
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
     let absent: Option<yeast::Id> = None;
-    let missing = yeast::tree!([(identifier #{absent})]);
+    let missing = tree!([(identifier #{absent})]);
     assert_eq!(missing, None);
     assert_eq!(ctx.output.nodes().len(), node_count);
 
-    let root = yeast::tree!([
+    let root = tree!([
         (identifier #{absent})
         (identifier "fallback")
     ])
@@ -1134,7 +1215,7 @@ fn test_root_choice_returns_an_optional_node() {
     );
 
     let source = ctx.ast().get_root();
-    let located = yeast::tree!([
+    let located = tree!([
         (identifier #{absent})
         (identifier "located fallback" location: {source})
     ])
@@ -1155,7 +1236,7 @@ fn test_choice_preflights_dependencies_before_constructing() {
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
     let absent: Option<yeast::Id> = None;
-    let root = yeast::tree!(
+    let root = tree!(
         (assignment
             left: [
                 (left_assignment_list
@@ -1188,8 +1269,8 @@ fn test_choice_propagates_through_nested_nodes() {
     // The absent value sits two levels below the choice, so the whole
     // `left_assignment_list` subtree is abandoned along with it.
     let absent: Option<yeast::Id> = None;
-    let right = yeast::tree!((integer "1"));
-    let root = yeast::tree!(
+    let right = tree!((integer "1"));
+    let root = tree!(
         (assignment
             left: [(left_assignment_list child: (identifier #{absent}))]
             right: {right}
@@ -1216,7 +1297,7 @@ fn test_innermost_choice_catches_first() {
 
     // The inner choice catches, so only `child` is dropped; `left` survives.
     let absent: Option<yeast::Id> = None;
-    let root = yeast::tree!(
+    let root = tree!(
         (assignment
             left: [
                 (left_assignment_list child: [(identifier #{absent})])
@@ -1226,10 +1307,10 @@ fn test_innermost_choice_catches_first() {
 
     assert_dump_eq(
         &dump_ast(ctx.output, root, input),
-        r#"
+        r"
         assignment
           left: left_assignment_list
-    "#,
+    ",
     );
 }
 
@@ -1252,7 +1333,7 @@ fn ruby_rules() -> Vec<Rule> {
             right: {right}
         )
         {left.iter().enumerate().map(|(i, &lhs)|
-            yeast::tree!(
+            tree!(
                 (assignment
                     left: {lhs}
                     right: (element_reference
@@ -1376,8 +1457,8 @@ fn test_rule_guard_reads_raw_capture_and_user_context() {
             with_passthrough_rules(guarded_integer_rules()),
         )];
         let runner = Runner::with_schema(lang, &schema, &phases);
-        let mut user_ctx = GuardTestContext { enabled };
-        let ast = runner.run_with_ctx(input, &mut user_ctx).unwrap();
+        let user_ctx = GuardTestContext { enabled };
+        let ast = runner.run_with_ctx(input, &user_ctx).unwrap();
         dump_ast(&ast, ast.get_root(), input)
     }
 
@@ -1640,10 +1721,10 @@ fn test_transform_context_propagates_to_nested_guard_without_mutating_caller() {
     ];
     let phases = vec![Phase::new("translate", rules)];
     let runner = Runner::with_schema(lang, &schema, &phases);
-    let mut user_ctx = GuardTestContext { enabled: false };
+    let user_ctx = GuardTestContext { enabled: false };
 
     let input = "1";
-    let ast = runner.run_with_ctx(input, &mut user_ctx).unwrap();
+    let ast = runner.run_with_ctx(input, &user_ctx).unwrap();
     assert!(!user_ctx.enabled);
     let dump = dump_ast(&ast, ast.get_root(), input);
     assert_dump_eq(

@@ -144,6 +144,16 @@ private class SwiftTypeInferencePlugin extends Plugin::TypeInferencePlugin {
     field = tuple.(TupleType).getField(name)
   }
 
+  override predicate stepLanguageSpecific(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+    n2 =
+      any(UnaryExpr expr |
+        n1 = expr.getOperand() and
+        expr.getOperator().(PrefixOperator).getValue() = ["borrow", "consume", "copy", "unsafe"] and
+        prefix1.isEmpty() and
+        prefix2.isEmpty()
+      )
+  }
+
   override Type inferType(AstNode n, TypePath path) {
     // todo: approximation for now
     n instanceof BinaryExpr and

@@ -7,6 +7,7 @@ private import unified as Unified
 private import TypeMention
 private import TypeInference
 private import codeql.unified.internal.StaticNameBinding
+private import codeql.unified.internal.mad.LegacyMaD as MaD
 
 /**
  * Holds if `a` is an associated type of `c`, in which case we model it
@@ -35,7 +36,7 @@ predicate associatedTypeParameterInherited(
 ) {
   associatedTypeParameter(base, a, _) and
   baseRef = c.getABaseType().getType() and
-  base.getNameNode() = getStaticBindingTargetFromRef(baseRef) and
+  base.getNameNode() = getExpandedTypeFromRef(baseRef) and
   name = a.getName()
 }
 
@@ -70,6 +71,7 @@ newtype TType =
     associatedTypeParameter(c, a, inherited)
   } or
   TParentTypeParameterType(Member m) { isNestedType(m, _, _) } or
+  TModelType(MaD::TypeSelector selector) { not exists(selector.getDeclaration()) } or
   TUnknownType() or
   TUnknownTypeTypeParameter(int i) { i in [0 .. 20] }
 
@@ -174,6 +176,26 @@ class AliasType extends TypeImpl, TAliasType {
 }
 
 /**
+ * A type described by a type selector in a models-as-data row.
+ */
+class ModelType extends TypeImpl, TModelType {
+  private MaD::TypeSelector selector;
+
+  ModelType() { this = TModelType(selector) }
+
+  /** Gets the type selector describing this type. */
+  MaD::TypeSelector getTypeSelector() { result = selector }
+
+  override TypeParameter getPositionalTypeParameter(int i) { none() }
+
+  override Identifier getNameNode() { none() }
+
+  override string toString() { result = selector }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
  * A pseudo type that does not correspond to any concrete type in the source code.
  */
 abstract class PseudoType extends TypeImpl {
@@ -213,6 +235,8 @@ abstract class TypeParameter extends TypeImpl {
   override TypeParameter getPositionalTypeParameter(int i) { none() }
 
   abstract Member getDeclaringItem();
+
+  Member getScope() { result = this.getDeclaringItem() }
 }
 
 private class IdAstNode =
@@ -241,6 +265,12 @@ class TypeParameterType extends TypeParameter, TTypeParameterType {
     typeParam = result.(Unified::FunctionDeclaration).getATypeParameter()
   }
 
+  override Member getScope() {
+    result = super.getScope()
+    or
+    result.(ClassLikeDeclaration).resolve().getEnclosingClassResolved*() = this.getDeclaringItem()
+  }
+
   override Identifier getNameNode() { result = typeParam.getNameNode() }
 
   override string toString() { result = typeParam.getName() }
@@ -261,6 +291,12 @@ class AssociatedTypeParameterType extends TypeParameter, TAssociatedTypeParamete
   Unified::AssociatedTypeDeclaration getAssociatedTypeDeclaration() { result = assocTypeDecl }
 
   override ClassLikeDeclaration getDeclaringItem() { result = c }
+
+  override ClassLikeDeclaration getScope() {
+    result = c
+    or
+    result.resolve().getEnclosingClassResolved*() = c
+  }
 
   override Identifier getNameNode() { result = assocTypeDecl.getNameNode() }
 
@@ -306,6 +342,8 @@ class ParentTypeParameterType extends TypeParameter, TParentTypeParameterType {
   ClassLikeDeclaration getParent() { isNestedType(m, _, result) }
 
   override Member getDeclaringItem() { result = m }
+
+  override Member getScope() { none() }
 
   override Identifier getNameNode() { none() }
 

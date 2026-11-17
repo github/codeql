@@ -1,0 +1,15 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["System.Data.EntityClient", "EntityCommand", false, "EntityCommand", "(System.String)", "", "Argument[0]", "sql-injection", "manual"],
+        ["System.Data.EntityClient", "EntityCommand", false, "EntityCommand", "(System.String,System.Data.EntityClient.EntityConnection)", "", "Argument[0]", "sql-injection", "manual"],
+        ["System.Data.EntityClient", "EntityCommand", false, "EntityCommand", "(System.String,System.Data.EntityClient.EntityConnection,System.Data.EntityClient.EntityTransaction)", "", "Argument[0]", "sql-injection", "manual"]
+      ]
+    }
+  ]
+}

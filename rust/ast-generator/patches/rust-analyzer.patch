@@ -22,7 +22,64 @@ index 0aad1e2..68f679f 100644
  use self::ast_src::{AstEnumSrc, AstNodeSrc, AstSrc, Cardinality, Field, KindsSrc};
  
  pub(crate) fn generate(check: bool) {
-@@ -775,7 +779,7 @@ fn pluralize(s: &str) -> String {
+@@ -317,7 +321,7 @@ fn generate_nodes(grammar: &AstSrc) -> String {
+             let trait_name = format_ident!("{}", trait_name);
+             let kinds: Vec<_> = nodes
+                 .iter()
+-                .map(|name| format_ident!("{}", to_upper_snake_case(&name.name.to_string())))
++                .map(|name| format_ident!("{}", to_upper_snake_case(&name.name)))
+                 .collect();
+             let nodes = nodes.iter().map(|node| format_ident!("{}", node.name));
+             (
+@@ -521,9 +525,12 @@
+         contextual_keywords.iter().map(fmt_kw_as_variant).collect::<Vec<_>>();
+     let contextual_keywords_tokens = contextual_keywords.iter().map(|it| format_ident!("{it}"));
+     let contextual_keywords_str_match_arm = grammar.contextual_keywords.iter().map(|kw| {
+-        match grammar.edition_dependent_keywords.iter().find(|(ed_kw, _)| ed_kw == kw) {
+-            Some((_, ed)) => quote! { #kw if edition < #ed },
+-            None => quote! { #kw },
++        if let Some((_, ed)) =
++            grammar.edition_dependent_keywords.iter().find(|(ed_kw, _)| ed_kw == kw)
++        {
++            quote! { #kw if edition < #ed }
++        } else {
++            quote! { #kw }
+         }
+     });
+     let contextual_keywords_variants_match_arm = grammar
+@@ -531,9 +538,12 @@
+         .iter()
+         .map(|kw_s| {
+             let kw = fmt_kw_as_variant(kw_s);
+-            match grammar.edition_dependent_keywords.iter().find(|(ed_kw, _)| ed_kw == kw_s) {
+-                Some((_, ed)) => quote! { #kw if edition < #ed },
+-                None => quote! { #kw },
++            if let Some((_, ed)) =
++                grammar.edition_dependent_keywords.iter().find(|(ed_kw, _)| ed_kw == kw_s)
++            {
++                quote! { #kw if edition < #ed }
++            } else {
++                quote! { #kw }
+             }
+         })
+         .collect::<Vec<_>>();
+@@ -731,6 +741,6 @@ fn to_upper_snake_case(s: &str) -> String {
+     let mut prev = false;
+     for c in s.chars() {
+         if c.is_ascii_uppercase() && prev {
+-            buf.push('_')
++            buf.push('_');
+         }
+         prev = true;
+@@ -745,6 +755,6 @@ fn to_lower_snake_case(s: &str) -> String {
+     let mut prev = false;
+     for c in s.chars() {
+         if c.is_ascii_uppercase() && prev {
+-            buf.push('_')
++            buf.push('_');
+         }
+         prev = true;
+@@ -775,7 +785,7 @@ fn pluralize(s: &str) -> String {
  }
  
  impl Field {
@@ -31,8 +88,9 @@ index 0aad1e2..68f679f 100644
          matches!(self, Field::Node { cardinality: Cardinality::Many, .. })
      }
      fn token_kind(&self) -> Option<proc_macro2::TokenStream> {
-@@ -787,7 +791,7 @@ impl Field {
-             _ => None,
+@@ -787,7 +797,7 @@ impl Field {
+-            _ => None,
++            Field::Node { .. } => None,
          }
      }
 -    fn method_name(&self) -> String {
@@ -40,7 +98,7 @@ index 0aad1e2..68f679f 100644
          match self {
              Field::Token { name, token, .. } => {
                  if let Some(name) = name {
-@@ -836,7 +840,7 @@ impl Field {
+@@ -836,7 +846,7 @@ impl Field {
              }
          }
      }
@@ -49,7 +107,7 @@ index 0aad1e2..68f679f 100644
          match self {
              Field::Token { .. } => format_ident!("SyntaxToken"),
              Field::Node { ty, .. } => format_ident!("{}", ty),
-@@ -849,7 +853,7 @@ fn clean_token_name(name: &str) -> String {
+@@ -849,7 +859,7 @@ fn clean_token_name(name: &str) -> String {
      if cleaned.is_empty() { name.to_owned() } else { cleaned.to_owned() }
  }
  
@@ -58,6 +116,38 @@ index 0aad1e2..68f679f 100644
      let mut res = AstSrc {
          tokens:
              "Whitespace Comment String ByteString CString IntNumber FloatNumber Char Byte Ident"
+@@ -865,15 +875,12 @@
+         let name = grammar[node].name.clone();
+         let rule = &grammar[node].rule;
+         let _g = panic_context::enter(name.clone());
+-        match lower_enum(grammar, rule) {
+-            Some(variants) => {
+-                let enum_src = AstEnumSrc { doc: Vec::new(), name, traits: Vec::new(), variants };
+-                res.enums.push(enum_src);
+-            }
+-            None => {
+-                let mut fields = Vec::new();
+-                lower_rule(&mut fields, grammar, None, rule);
+-                res.nodes.push(AstNodeSrc { doc: Vec::new(), name, traits: Vec::new(), fields });
+-            }
++        if let Some(variants) = lower_enum(grammar, rule) {
++            let enum_src = AstEnumSrc { doc: Vec::new(), name, traits: Vec::new(), variants };
++            res.enums.push(enum_src);
++        } else {
++            let mut fields = Vec::new();
++            lower_rule(&mut fields, grammar, None, rule);
++            res.nodes.push(AstNodeSrc { doc: Vec::new(), name, traits: Vec::new(), fields });
+         }
+     }
+@@ -979,7 +986,7 @@ fn lower_rule(
+         }
+         Rule::Seq(rules) | Rule::Alt(rules) => {
+             for rule in rules {
+-                lower_rule(acc, grammar, label, rule)
++                lower_rule(acc, grammar, label, rule);
+             }
+         }
+         Rule::Opt(rule) => lower_rule(acc, grammar, label, rule),
 diff --git a/xtask/src/codegen/grammar/ast_src.rs b/xtask/src/codegen/grammar/ast_src.rs
 index 1ae139f..d4d791e 100644
 --- a/xtask/src/codegen/grammar/ast_src.rs

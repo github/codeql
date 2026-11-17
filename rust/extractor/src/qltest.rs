@@ -25,6 +25,10 @@ fn dump_lib() -> anyhow::Result<()> {
 
 #[derive(serde::Serialize)]
 enum TestCargoManifest<'a> {
+    #[allow(
+        clippy::empty_enum_variants_with_brackets,
+        reason = "The Mustache template requires a named Workspace section."
+    )]
     Workspace {},
     Lib {
         uses_proc_macro: bool,

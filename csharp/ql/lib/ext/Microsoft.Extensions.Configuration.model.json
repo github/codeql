@@ -1,0 +1,28 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["Microsoft.Extensions.Configuration", "EnvironmentVariablesExtensions", false, "AddEnvironmentVariables", "", "", "Argument[0]", "environment", "manual"],
+        ["Microsoft.Extensions.Configuration", "EnvironmentVariablesExtensions", false, "AddEnvironmentVariables", "", "", "ReturnValue", "environment", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["Microsoft.Extensions.Configuration", "IConfiguration", true, "get_Item", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "manual"],
+        ["Microsoft.Extensions.Configuration", "IConfigurationBuilder", true, "Build", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"],
+        ["Microsoft.Extensions.Configuration", "CommandLineConfigurationExtensions", false, "AddCommandLine", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["Microsoft.Extensions.Configuration", "CommandLineConfigurationExtensions", false, "AddCommandLine", "(Microsoft.Extensions.Configuration.IConfigurationBuilder,System.String[],System.Collections.Generic.IDictionary<System.String,System.String>)", "", "Argument[2]", "Argument[0]", "taint", "manual"],
+        ["Microsoft.Extensions.Configuration", "CommandLineConfigurationExtensions", false, "AddCommandLine", "", "", "Argument[1]", "ReturnValue", "taint", "manual"],
+        ["Microsoft.Extensions.Configuration", "CommandLineConfigurationExtensions", false, "AddCommandLine", "(Microsoft.Extensions.Configuration.IConfigurationBuilder,System.String[],System.Collections.Generic.IDictionary<System.String,System.String>)", "", "Argument[2]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

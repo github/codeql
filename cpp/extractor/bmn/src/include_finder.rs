@@ -291,7 +291,6 @@ mod tests {
     use crate::include_scanner;
     use crate::test_utils::{create_populate_tmp_dir, get_resource};
     use all_asserts::assert_true;
-    use std::path::Path;
 
     fn create_tree(files: &[&str]) -> DirectoryTree {
         DirectoryTree::from_files(files.iter().map(PathBuf::from).collect::<Vec<_>>())
@@ -655,9 +654,8 @@ mod tests {
 
             assert_eq!(
                 result.include_directories,
-                vec![path.clone(), path.clone().join("dir2")]
+                vec![path.clone(), path.join("dir2")]
             );
-            assert!(!result.unresolvable.is_empty());
             assert_eq!(
                 result.unresolvable,
                 vec![
@@ -678,7 +676,7 @@ mod tests {
 
             let result = find_includes(&tree, &empty_tree(), &no_default_includes, &includes);
 
-            assert_eq!(result.include_directories, vec![path.clone()]);
+            assert_eq!(result.include_directories, vec![path]);
             assert_eq!(
                 result.unresolvable,
                 vec![
@@ -818,7 +816,7 @@ mod tests {
 
             // This is empty since `foo.h` is in `system_files` and hence satisfied by
             // `compiler_defaults`.
-            assert!(result.include_directories.is_empty());
+            assert_eq!(result.include_directories, Vec::<PathBuf>::new());
         }
 
         #[test]

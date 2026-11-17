@@ -101,7 +101,7 @@ impl<'a> Extractor<'a> {
                 "Failed to write trap file for: {}: {}",
                 file.display(),
                 err.to_string()
-            )
+            );
         });
         self.steps
             .push(ExtractionStep::extract(before_extract, source_kind, file));
@@ -165,7 +165,7 @@ impl<'a> Extractor<'a> {
                 ));
             }
             _ => {}
-        };
+        }
         self.steps.push(ExtractionStep::load_source(before, file));
         Ok(())
     }
@@ -239,6 +239,7 @@ fn cwd() -> anyhow::Result<AbsPathBuf> {
     Ok(abs_path)
 }
 
+#[allow(clippy::too_many_lines)]
 fn main() -> anyhow::Result<()> {
     let start = Instant::now();
     let config = config::Config::extract().context("failed to load configuration")?;
@@ -258,8 +259,7 @@ fn main() -> anyhow::Result<()> {
     let (flame_layer, _flush_guard) = if let Some(path) = &config.logging_flamegraph {
         tracing_flame::FlameLayer::with_file(path)
             .ok()
-            .map(|(a, b)| (Some(a), Some(b)))
-            .unwrap_or((None, None))
+            .map_or((None, None), |(a, b)| (Some(a), Some(b)))
     } else {
         (None, None)
     };
@@ -282,7 +282,7 @@ fn main() -> anyhow::Result<()> {
     let files = inputs
         .iter()
         .map(|file| {
-            let file = std::path::absolute(file).unwrap_or(file.to_path_buf());
+            let file = std::path::absolute(file).unwrap_or_else(|_| file.clone());
             // On Windows, rust analyzer expects non-`//?/` prefixed paths (see [1]), which is what
             // `std::fs::canonicalize` returns. So we use `dunce::canonicalize` instead.
             // [1]: https://github.com/rust-lang/rust-analyzer/issues/18894#issuecomment-2580014730
@@ -326,7 +326,7 @@ fn main() -> anyhow::Result<()> {
                 match extractor.load_source(file, &semantics, &vfs) {
                     Ok(()) => extractor.extract_with_semantics(file, &semantics, &vfs, source_mode),
                     Err(e) => extractor.extract_without_semantics(file, source_mode, e),
-                };
+                }
             }
             // Fast path when there is no ambiguity in dependency extraction.
             if dependency_extraction_ambiguity {
@@ -396,7 +396,11 @@ fn main() -> anyhow::Result<()> {
         let entry = entry.context("failed to read builtins directory")?;
         let path = entry.path();
         if path.extension().is_some_and(|ext| ext == "rs") {
-            extractor.extract_without_semantics(&path, SourceKind::Library, Default::default());
+            extractor.extract_without_semantics(
+                &path,
+                SourceKind::Library,
+                RustAnalyzerNoSemantics::default(),
+            );
         }
     }
 

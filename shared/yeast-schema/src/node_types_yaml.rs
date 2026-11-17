@@ -128,7 +128,7 @@ fn parse_field_name(raw: &str) -> FieldSpec {
     }
 }
 
-/// Resolve a TypeRef to a (type, named) pair, given the sets of known named
+/// Resolve a `TypeRef` to a `(type, named)` pair, given the sets of known named
 /// and unnamed types.
 fn resolve_type_ref_pair(
     type_ref: &TypeRef,
@@ -151,7 +151,7 @@ fn resolve_type_ref_pair(
     }
 }
 
-/// Resolve a TypeRef to a {type, named} JSON record, given the sets of known named
+/// Resolve a `TypeRef` to a `{type, named}` JSON record, given the sets of known named
 /// and unnamed types.
 fn resolve_type_ref(
     type_ref: &TypeRef,
@@ -164,6 +164,48 @@ fn resolve_type_ref(
 
 /// Convert YAML string to node-types JSON string.
 pub fn convert(yaml_input: &str) -> Result<String, String> {
+    fn add_fields_to_json_entry(
+        entry: &mut serde_json::Value,
+        fields: Option<&BTreeMap<String, TypeRefOrList>>,
+        named_types: &BTreeSet<String>,
+        unnamed_types: &BTreeSet<String>,
+    ) {
+        let mut json_fields = serde_json::Map::new();
+        let mut json_children = None;
+
+        for (raw_field_name, type_refs) in fields.into_iter().flatten() {
+            let spec = parse_field_name(raw_field_name);
+            let types: Vec<_> = type_refs
+                .clone()
+                .into_vec()
+                .iter()
+                .map(|t| resolve_type_ref(t, named_types, unnamed_types))
+                .collect();
+            let field_info = json!({
+                "multiple": spec.multiple,
+                "required": spec.required,
+                "types": types,
+            });
+
+            if let Some(name) = spec.name {
+                json_fields.insert(name, field_info);
+            } else {
+                json_children = Some(field_info);
+            }
+        }
+
+        entry
+            .as_object_mut()
+            .unwrap()
+            .insert("fields".to_string(), json_fields.into());
+        if let Some(children) = json_children {
+            entry
+                .as_object_mut()
+                .unwrap()
+                .insert("children".to_string(), children);
+        }
+    }
+
     let yaml: YamlNodeTypes =
         serde_yaml::from_str(yaml_input).map_err(|e| format!("Failed to parse YAML: {e}"))?;
 
@@ -228,48 +270,6 @@ pub fn convert(yaml_input: &str) -> Result<String, String> {
         output.push(entry);
     }
 
-    fn add_fields_to_json_entry(
-        entry: &mut serde_json::Value,
-        fields: Option<&BTreeMap<String, TypeRefOrList>>,
-        named_types: &BTreeSet<String>,
-        unnamed_types: &BTreeSet<String>,
-    ) {
-        let mut json_fields = serde_json::Map::new();
-        let mut json_children = None;
-
-        for (raw_field_name, type_refs) in fields.into_iter().flatten() {
-            let spec = parse_field_name(raw_field_name);
-            let types: Vec<_> = type_refs
-                .clone()
-                .into_vec()
-                .iter()
-                .map(|t| resolve_type_ref(t, named_types, unnamed_types))
-                .collect();
-            let field_info = json!({
-                "multiple": spec.multiple,
-                "required": spec.required,
-                "types": types,
-            });
-
-            if let Some(name) = spec.name {
-                json_fields.insert(name, field_info);
-            } else {
-                json_children = Some(field_info);
-            }
-        }
-
-        entry
-            .as_object_mut()
-            .unwrap()
-            .insert("fields".to_string(), json_fields.into());
-        if let Some(children) = json_children {
-            entry
-                .as_object_mut()
-                .unwrap()
-                .insert("children".to_string(), children);
-        }
-    }
-
     // 3. Unnamed tokens
     for name in &yaml.unnamed {
         output.push(json!({
@@ -282,6 +282,7 @@ pub fn convert(yaml_input: &str) -> Result<String, String> {
 }
 
 /// Apply YAML node-type definitions to a mutable Schema.
+///
 /// Registers all types, fields, and allowed types from the YAML into the
 /// schema. Public so callers can layer YAML node-types onto a Schema that
 /// already has fields/kinds preregistered from another source (e.g. a
@@ -829,13 +830,13 @@ unnamed:
     #[test]
     fn test_leaf_kinds_from_yaml() {
         let leaf_kinds = leaf_kinds_from_yaml(
-            r#"
+            r"
 named:
   identifier:
   empty_fields: {}
   call:
     callee: identifier
-"#,
+",
         )
         .unwrap();
 
@@ -846,14 +847,14 @@ named:
 
     #[test]
     fn test_explicit_unnamed_disambiguation() {
-        let yaml = r#"
+        let yaml = r"
 named:
   foo:
     field: [{unnamed: bar}]
 
 unnamed:
   - bar
-"#;
+";
 
         let json_str = convert(yaml).unwrap();
         let result: Vec<serde_json::Value> = serde_json::from_str(&json_str).unwrap();
@@ -863,14 +864,14 @@ unnamed:
 
     #[test]
     fn test_field_suffixes() {
-        let yaml = r#"
+        let yaml = r"
 named:
   test_node:
     required_single: foo
     optional_single?: foo
     required_multiple+: foo
     optional_multiple*: foo
-"#;
+";
 
         let json_str = convert(yaml).unwrap();
         let result: Vec<serde_json::Value> = serde_json::from_str(&json_str).unwrap();
@@ -892,7 +893,7 @@ named:
 
     #[test]
     fn test_supertype_fields() {
-        let yaml = r#"
+        let yaml = r"
 supertypes:
   callable:
     subtypes:
@@ -907,7 +908,7 @@ named:
   closure:
   parameter:
   block:
-"#;
+";
 
         let json = convert(yaml).unwrap();
         let result: Vec<serde_json::Value> = serde_json::from_str(&json).unwrap();
@@ -1007,7 +1008,7 @@ unnamed:
 
     #[test]
     fn test_supertype_fields_round_trip() {
-        let yaml = r#"
+        let yaml = r"
 supertypes:
   callable:
     subtypes: [function, closure]
@@ -1020,7 +1021,7 @@ named:
   closure:
   parameter:
   block:
-"#;
+";
 
         let json = convert(yaml).unwrap();
         let yaml_output = convert_from_json(&json).unwrap();

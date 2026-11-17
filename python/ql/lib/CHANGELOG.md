@@ -1,3 +1,13 @@
+## 7.2.10
+
+### Minor Analysis Improvements
+
+* The `py/tarslip` query now uses the correct argument positions and parameter names for `TarFile.extract` and `TarFile.extractall` sinks, reporting `extract(member=...)` calls with untrusted members and no longer falsely reporting `extractall(path, members)` calls when sanitized `members` are passed positionally.
+* Await expressions are now treated as having side effects. This prevents false positives from the "Statement has no effect" query (`py/ineffectual-statement`) when an awaited task or coroutine's result is discarded.
+* The sensitive data heuristics treat names built on `trusted_schema`, such as SQLite's `set_trusted_schema` setting, as non-sensitive. This removes false positive results from queries that use the sensitive data library (for example `py/clear-text-logging-sensitive-data`).
+* Added modeling of the `mcp` (the official Model Context Protocol SDK) and `fastmcp` PyPI packages. The parameters of MCP tool, resource and prompt handlers are now sources of the opt-in `ai` threat model, as their values are produced by a language model; the `Context` parameter that the SDKs inject is not a source. The HTTP headers that `fastmcp` handlers read through `get_http_headers()` or `get_http_request()`, and the bearer token that token verifiers (`verify_token`) and `get_access_token()` receive, are sources of the `remote` threat model.
+* Type tracking now works for values stored in instance attributes and read from outside the class (for example `instance.attr` where the value was assigned to `self.attr` in a method), provided the instance at the read is reachable by local flow from a resolved constructor call. This excludes, for example, instances returned by a function and module-level instances read inside a function.
+
 ## 7.2.9
 
 No user-facing changes.

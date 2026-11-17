@@ -1,0 +1,16 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["System.Runtime.CompilerServices", "ConditionalWeakTable<TKey,TValue>", false, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"],
+        ["System.Runtime.CompilerServices", "ConfiguredTaskAwaitable<TResult>", false, "GetAwaiter", "()", "", "Argument[this].SyntheticField[m_configuredTaskAwaiter]", "ReturnValue", "value", "manual"],
+        ["System.Runtime.CompilerServices", "ConfiguredTaskAwaitable<TResult>+ConfiguredTaskAwaiter", false, "GetResult", "()", "", "Argument[this].SyntheticField[m_task_configured_task_awaitable].Property[System.Threading.Tasks.Task`1.Result]", "ReturnValue", "value", "manual"],
+        ["System.Runtime.CompilerServices", "TaskAwaiter<TResult>", false, "GetResult", "()", "", "Argument[this].SyntheticField[m_task_task_awaiter].Property[System.Threading.Tasks.Task`1.Result]", "ReturnValue", "value", "manual"]
+      ]
+    }
+  ]
+}
