@@ -31,11 +31,6 @@ module HttpHeaderInjection {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
-   */
-  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
-
   /** An active threat-model source, considered as a flow source. */
   private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
   }
