@@ -81,19 +81,19 @@ struct GoodHelperArgumentPaths {
   GoodHelperArgumentPaths& operator=(int) { // GOOD: parentheses are not casts.
     return identity(((*this)));
   }
-  GoodHelperArgumentPaths& operator=(bool flag) { // GOOD
+  GoodHelperArgumentPaths& operator=(bool flag) { // $ Alert - the helper argument must be a direct *this.
     return identity(flag ? *this : *this);
   }
-  GoodHelperArgumentPaths& operator=(char) { // GOOD
+  GoodHelperArgumentPaths& operator=(char) { // $ Alert
     return identity((0, *this));
   }
-  GoodHelperArgumentPaths& operator=(long flag) { // GOOD: the condition does not supply the reference.
+  GoodHelperArgumentPaths& operator=(long flag) { // $ Alert
     return identity(static_cast<bool>(flag) ? *this : *this);
   }
-  GoodHelperArgumentPaths& operator=(unsigned int value) { // GOOD: neither does the left comma operand.
+  GoodHelperArgumentPaths& operator=(unsigned int value) { // $ Alert
     return identity((static_cast<void>(value), *this));
   }
-  GoodHelperArgumentPaths& operator=(double) { // GOOD
+  GoodHelperArgumentPaths& operator=(double) { // $ Alert
     return identity(*this->selfPointer());
   }
 };

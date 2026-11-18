@@ -51,6 +51,7 @@ T& branching(T& destination, bool flag) {
 struct GoodBranches {
   int value;
   GoodBranches& operator=(int other) { // GOOD
+    if (value == other) return *this;
     return branching(*this, other != 0);
   }
 };
