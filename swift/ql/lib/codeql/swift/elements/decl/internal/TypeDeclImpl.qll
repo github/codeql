@@ -21,23 +21,6 @@ module Impl {
     override string toStringImpl() { result = this.getName() }
 
     /**
-     * Gets the `index`th base type of this type declaration (0-based).
-     *
-     * This is the same as `getImmediateInheritedType`.
-     * DEPRECATED: either use `getImmediateInheritedType` or unindexed `getABaseType`.
-     */
-    deprecated Type getImmediateBaseType(int index) {
-      result = this.getImmediateInheritedType(index)
-    }
-
-    /**
-     * Gets the `index`th base type of this type declaration (0-based).
-     * This is the same as `getInheritedType`.
-     * DEPRECATED: use `getInheritedType` or unindexed `getABaseType`.
-     */
-    deprecated Type getBaseType(int index) { result = this.getInheritedType(index) }
-
-    /**
      * Gets any of the base types of this type declaration. Expands protocols added in
      * extensions and expands type aliases. For example in the following code, `B` has
      * base type `A`:
@@ -56,14 +39,6 @@ module Impl {
         ed.getExtendedTypeDecl() = this and
         ed.getAProtocol().getType() = result
       )
-    }
-
-    /**
-     * Gets the declaration of the `index`th base type of this type declaration (0-based).
-     * DEPRECATED: The index is not very meaningful here. Use `getABaseTypeDecl`.
-     */
-    deprecated TypeDecl getBaseTypeDecl(int i) {
-      result = this.getBaseType(i).(AnyGenericType).getDeclaration()
     }
 
     /**
