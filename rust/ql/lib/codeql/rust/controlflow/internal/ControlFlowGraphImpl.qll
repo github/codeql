@@ -469,42 +469,7 @@ private module Ast implements AstSig<Location> {
   }
 
   private class PatPattern extends PatternImpl instanceof Rust::Pat {
-    override Pattern getPattern(int index) {
-      index = 0 and
-      result = this.(Rust::IdentPat).getPat()
-      or
-      index = 0 and
-      result = this.(Rust::BoxPat).getPat()
-      or
-      index = 0 and
-      result = this.(Rust::DerefPat).getPat()
-      or
-      index = 0 and
-      result = this.(Rust::MacroPat).getMacroCall().getMacroCallExpansion()
-      or
-      result = this.(Rust::OrPat).getPat(index)
-      or
-      index = 0 and result = this.(Rust::RangePat).getStart()
-      or
-      index = 1 and result = this.(Rust::RangePat).getEnd()
-      or
-      result = this.(Rust::StructPat).getStructPatFieldList().getField(index).getPat()
-      or
-      index = this.(Rust::StructPat).getStructPatFieldList().getNumberOfFields() and
-      result = this.(Rust::StructPat).getStructPatFieldList().getRestPat()
-      or
-      index = 0 and
-      result = this.(Rust::RefPat).getPat()
-      or
-      result = this.(Rust::SlicePat).getPat(index)
-      or
-      result = this.(Rust::TuplePat).getField(index)
-      or
-      result = this.(Rust::TupleStructPat).getField(index)
-      or
-      index = 0 and
-      result = this.(Rust::LiteralPat).getLiteral()
-    }
+    override Pattern getPattern(int index) { result = runtimeChild(this, index) }
   }
 
   class ExprPattern extends Expr, PatternImpl {
@@ -553,17 +518,6 @@ private predicate cannotCauseMatchFailure(Rust::Pat pat) {
   pat instanceof Rust::LiteralPat
 }
 
-/**
- * Holds if `pat` is guaranteed to match at its position in the AST.
- */
-private predicate guaranteedMatchPosition(Rust::Pat pat) {
-  pat = any(Rust::LetStmt let | not let.hasLetElse()).getPat()
-  or
-  pat = any(Rust::ForExpr for).getPat()
-  or
-  pat = any(Rust::Param p).getPat()
-}
-
 private module Input implements InputSig1, InputSig2 {
   private import codeql.util.Void
 
@@ -585,7 +539,13 @@ private module Input implements InputSig1, InputSig2 {
 
   predicate patternIsTest(Ast::Pattern pattern) { not cannotCauseMatchFailure(pattern) }
 
-  predicate patternAlwaysMatches(Ast::Pattern pattern) { guaranteedMatchPosition(pattern) }
+  predicate patternIsExhaustive(Ast::Pattern pattern) {
+    pattern = any(Rust::LetStmt let | not let.hasLetElse()).getPat()
+    or
+    pattern = any(Rust::ForExpr for).getPat()
+    or
+    pattern = any(Rust::Param p).getPat()
+  }
 
   predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
     kind.isMatching() and
