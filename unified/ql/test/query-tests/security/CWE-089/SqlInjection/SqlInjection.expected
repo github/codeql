@@ -39,6 +39,7 @@
 | GRDB.swift:230:37:230:48 | remoteString | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:230:37:230:48 | remoteString | This query depends on a $@. | GRDB.swift:222:26:222:80 | String(...) | user-provided value |
 | GRDB.swift:234:36:234:47 | remoteString | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:234:36:234:47 | remoteString | This query depends on a $@. | GRDB.swift:222:26:222:80 | String(...) | user-provided value |
 | GRDB.swift:235:36:235:47 | remoteString | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:235:36:235:47 | remoteString | This query depends on a $@. | GRDB.swift:222:26:222:80 | String(...) | user-provided value |
+| GRDB.swift:244:38:244:49 | remoteString | GRDB.swift:242:26:242:80 | String(...) | GRDB.swift:244:38:244:49 | remoteString | This query depends on a $@. | GRDB.swift:242:26:242:80 | String(...) | user-provided value |
 | GRDB.swift:252:32:252:43 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:252:32:252:43 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
 | GRDB.swift:253:32:253:43 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:253:32:253:43 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
 | GRDB.swift:254:32:254:43 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:254:32:254:43 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
@@ -172,6 +173,8 @@ edges
 | GRDB.swift:222:6:222:17 | remoteString | GRDB.swift:234:36:234:47 | remoteString | provenance |  |
 | GRDB.swift:222:6:222:17 | remoteString | GRDB.swift:235:36:235:47 | remoteString | provenance |  |
 | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:222:6:222:17 | remoteString | provenance |  |
+| GRDB.swift:242:6:242:17 | remoteString | GRDB.swift:244:38:244:49 | remoteString | provenance |  |
+| GRDB.swift:242:26:242:80 | String(...) | GRDB.swift:242:6:242:17 | remoteString | provenance |  |
 | GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:252:32:252:43 | remoteString | provenance |  |
 | GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:253:32:253:43 | remoteString | provenance |  |
 | GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:254:32:254:43 | remoteString | provenance |  |
@@ -338,6 +341,9 @@ nodes
 | GRDB.swift:230:37:230:48 | remoteString | semmle.label | remoteString |
 | GRDB.swift:234:36:234:47 | remoteString | semmle.label | remoteString |
 | GRDB.swift:235:36:235:47 | remoteString | semmle.label | remoteString |
+| GRDB.swift:242:6:242:17 | remoteString | semmle.label | remoteString |
+| GRDB.swift:242:26:242:80 | String(...) | semmle.label | String(...) |
+| GRDB.swift:244:38:244:49 | remoteString | semmle.label | remoteString |
 | GRDB.swift:250:6:250:17 | remoteString | semmle.label | remoteString |
 | GRDB.swift:250:26:250:80 | String(...) | semmle.label | String(...) |
 | GRDB.swift:252:32:252:43 | remoteString | semmle.label | remoteString |
@@ -458,6 +464,4 @@ nodes
 | sqlite3_c_api.swift:202:31:202:36 | buffer | semmle.label | buffer |
 subpaths
 testFailures
-| GRDB.swift:242:82:242:92 | // $ Source | Missing result: Source |
-| GRDB.swift:244:52:244:61 | // $ Alert | Missing result: Alert |
 | sqlite3_c_api.swift:210:90:210:99 | // $ Alert | Missing result: Alert |
