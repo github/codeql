@@ -858,7 +858,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       tag = patternMatchTrueTag() and
       t.(BooleanSuccessor).getValue() = true
       or
-      n instanceof Pattern and
+      Input1::patternIsTest(n) and
       tag = outerPatternMatchTag() and
       t.(MatchingSuccessor).getValue() = true
     }
@@ -1620,27 +1620,36 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         n.isAfterValue(ast, any(MatchingSuccessor t | t.getValue() = value))
       }
 
-      private predicate genericPatternStep(
-        Pattern pattern, PreControlFlowNode n1, PreControlFlowNode n2
-      ) {
+      private PreControlFlowNode getFirstPatternChild(Pattern pattern) {
+        result.isBefore(getRankedPattern(pattern, 1))
+        or
+        not exists(getRankedPattern(pattern, _)) and
+        result.isBefore(pattern.(BindingPattern).getVariable())
+        or
+        not exists(getRankedPattern(pattern, _)) and
         not pattern instanceof BindingPattern and
-        not pattern instanceof OrPattern and
-        (
+        isAfterMatch(result, pattern, true)
+      }
+
+      private predicate conjunctivePatternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+        exists(Pattern pattern | not pattern instanceof OrPattern |
           n1.isBefore(pattern) and
           (
+            // outer pattern matches
             n2.isAdditional(pattern, outerPatternMatchTag())
             or
+            // outer pattern fails
             Input1::patternIsTest(pattern) and
             isAfterMatch(n2, pattern, false)
+            or
+            // outer pattern does not perform a test, proceed directly to first child
+            not Input1::patternIsTest(pattern) and
+            n2 = getFirstPatternChild(pattern)
           )
           or
+          // outer pattern matched, proceed to first child
           n1.isAdditional(pattern, outerPatternMatchTag()) and
-          (
-            n2.isBefore(getRankedPattern(pattern, 1))
-            or
-            not exists(getRankedPattern(pattern, _)) and
-            isAfterMatch(n2, pattern, true)
-          )
+          n2 = getFirstPatternChild(pattern)
           or
           exists(int i, Pattern nested | nested = getRankedPattern(pattern, i) |
             isAfterMatch(n1, nested, true) and
@@ -1648,76 +1657,47 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
               n2.isBefore(getRankedPattern(pattern, i + 1))
               or
               not exists(getRankedPattern(pattern, i + 1)) and
-              isAfterMatch(n2, pattern, true)
+              (
+                not pattern instanceof BindingPattern and
+                isAfterMatch(n2, pattern, true)
+                or
+                n2.isBefore(pattern.(BindingPattern).getVariable())
+              )
             )
             or
             isAfterMatch(n1, nested, false) and
             isAfterMatch(n2, pattern, false)
           )
+          or
+          n1.isAfter(pattern.(BindingPattern).getVariable()) and
+          isAfterMatch(n2, pattern, true)
         )
       }
 
-      private predicate bindingPatternStep(
-        BindingPattern pattern, PreControlFlowNode n1, PreControlFlowNode n2
-      ) {
-        n1.isBefore(pattern) and
-        (
-          n2.isAdditional(pattern, outerPatternMatchTag())
-          or
-          Input1::patternIsTest(pattern) and
-          isAfterMatch(n2, pattern, false)
-        )
-        or
-        n1.isAdditional(pattern, outerPatternMatchTag()) and
-        (
+      private predicate disjunctivePatternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+        exists(OrPattern pattern |
+          n1.isBefore(pattern) and
           n2.isBefore(getRankedPattern(pattern, 1))
           or
-          not exists(getRankedPattern(pattern, _)) and
-          n2.isBefore(pattern.getVariable())
-        )
-        or
-        exists(int i, Pattern nested | nested = getRankedPattern(pattern, i) |
-          isAfterMatch(n1, nested, true) and
-          (
-            n2.isBefore(getRankedPattern(pattern, i + 1))
+          exists(int i, Pattern nested | nested = getRankedPattern(pattern, i) |
+            isAfterMatch(n1, nested, true) and
+            isAfterMatch(n2, pattern, true)
             or
-            not exists(getRankedPattern(pattern, i + 1)) and
-            n2.isBefore(pattern.getVariable())
-          )
-          or
-          isAfterMatch(n1, nested, false) and
-          isAfterMatch(n2, pattern, false)
-        )
-        or
-        n1.isAfter(pattern.getVariable()) and isAfterMatch(n2, pattern, true)
-      }
-
-      private predicate orPatternStep(
-        OrPattern pattern, PreControlFlowNode n1, PreControlFlowNode n2
-      ) {
-        n1.isBefore(pattern) and n2.isBefore(getRankedPattern(pattern, 1))
-        or
-        exists(int i, Pattern nested | nested = getRankedPattern(pattern, i) |
-          isAfterMatch(n1, nested, true) and isAfterMatch(n2, pattern, true)
-          or
-          isAfterMatch(n1, nested, false) and
-          (
-            n2.isBefore(getRankedPattern(pattern, i + 1))
-            or
-            not exists(getRankedPattern(pattern, i + 1)) and
-            isAfterMatch(n2, pattern, false)
+            isAfterMatch(n1, nested, false) and
+            (
+              n2.isBefore(getRankedPattern(pattern, i + 1))
+              or
+              not exists(getRankedPattern(pattern, i + 1)) and
+              isAfterMatch(n2, pattern, false)
+            )
           )
         )
       }
 
       private predicate patternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-        exists(Pattern pattern |
-          genericPatternStep(pattern, n1, n2)
-          or
-          bindingPatternStep(pattern, n1, n2)
-          or
-          orPatternStep(pattern, n1, n2)
-        )
+        conjunctivePatternStep(n1, n2)
+        or
+        disjunctivePatternStep(n1, n2)
       }
 
       /** Holds if there is a local non-abrupt step from `n1` to `n2`. */

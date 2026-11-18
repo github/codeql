@@ -15,9 +15,8 @@ edges
 | cfg.rs:5:1:10:1 | Entry | cfg.rs:5:16:5:20 | value |  |
 | cfg.rs:5:1:10:1 | Normal Exit | cfg.rs:5:1:10:1 | Exit |  |
 | cfg.rs:5:16:5:20 | After value [match] | cfg.rs:5:37:10:1 | { ... } |  |
-| cfg.rs:5:16:5:20 | [OuterPatternMatch] value | cfg.rs:5:16:5:20 | value |  |
 | cfg.rs:5:16:5:20 | value | cfg.rs:5:16:5:20 | After value [match] | match |
-| cfg.rs:5:16:5:20 | value | cfg.rs:5:16:5:20 | [OuterPatternMatch] value | match |
+| cfg.rs:5:16:5:20 | value | cfg.rs:5:16:5:20 | value |  |
 | cfg.rs:5:37:10:1 | After { ... } | cfg.rs:5:1:10:1 | Normal Exit |  |
 | cfg.rs:5:37:10:1 | { ... } | cfg.rs:6:5:9:5 | match value { ... } |  |
 | cfg.rs:6:5:9:5 | After match value { ... } | cfg.rs:5:37:10:1 | After { ... } |  |
@@ -25,8 +24,7 @@ edges
 | cfg.rs:6:11:6:15 | value | cfg.rs:7:9:7:27 | ... => true |  |
 | cfg.rs:7:9:7:18 | After MacroPat [match] | cfg.rs:7:9:7:27 | After ... => true [match] | match |
 | cfg.rs:7:9:7:18 | After MacroPat [no-match] | cfg.rs:7:9:7:27 | After ... => true [no-match] | no-match |
-| cfg.rs:7:9:7:18 | MacroPat | cfg.rs:7:9:7:18 | [OuterPatternMatch] MacroPat | match |
-| cfg.rs:7:9:7:18 | [OuterPatternMatch] MacroPat | cfg.rs:7:13:7:18 | CfgPredPat |  |
+| cfg.rs:7:9:7:18 | MacroPat | cfg.rs:7:13:7:18 | CfgPredPat |  |
 | cfg.rs:7:9:7:27 | ... => true | cfg.rs:7:9:7:18 | MacroPat |  |
 | cfg.rs:7:9:7:27 | After ... => true [match] | cfg.rs:7:23:7:26 | true |  |
 | cfg.rs:7:9:7:27 | After ... => true [no-match] | cfg.rs:8:9:8:19 | _ => false |  |
@@ -37,8 +35,7 @@ edges
 | cfg.rs:7:13:7:18 | [OuterPatternMatch] CfgPredPat | cfg.rs:7:13:7:18 | After CfgPredPat [match] | match |
 | cfg.rs:7:23:7:26 | true | cfg.rs:6:5:9:5 | After match value { ... } |  |
 | cfg.rs:8:9:8:9 | After _ [match] | cfg.rs:8:9:8:19 | After _ => false [match] | match |
-| cfg.rs:8:9:8:9 | [OuterPatternMatch] _ | cfg.rs:8:9:8:9 | After _ [match] | match |
-| cfg.rs:8:9:8:9 | _ | cfg.rs:8:9:8:9 | [OuterPatternMatch] _ | match |
+| cfg.rs:8:9:8:9 | _ | cfg.rs:8:9:8:9 | After _ [match] | match |
 | cfg.rs:8:9:8:19 | After _ => false [match] | cfg.rs:8:14:8:18 | false |  |
 | cfg.rs:8:9:8:19 | _ => false | cfg.rs:8:9:8:9 | _ |  |
 | cfg.rs:8:14:8:18 | false | cfg.rs:6:5:9:5 | After match value { ... } |  |
@@ -68,8 +65,7 @@ edges
 | test.rs:11:9:11:37 | After let ... = ... | test.rs:12:9:12:28 | ExprStmt |  |
 | test.rs:11:9:11:37 | let ... = ... | test.rs:11:23:11:36 | Before ...::new(...) |  |
 | test.rs:11:13:11:19 | After mut map [match] | test.rs:11:9:11:37 | After let ... = ... |  |
-| test.rs:11:13:11:19 | [OuterPatternMatch] mut map | test.rs:11:17:11:19 | map |  |
-| test.rs:11:13:11:19 | mut map | test.rs:11:13:11:19 | [OuterPatternMatch] mut map | match |
+| test.rs:11:13:11:19 | mut map | test.rs:11:17:11:19 | map |  |
 | test.rs:11:17:11:19 | map | test.rs:11:13:11:19 | After mut map [match] | match |
 | test.rs:11:23:11:34 | ...::new | test.rs:11:23:11:36 | ...::new(...) |  |
 | test.rs:11:23:11:36 | ...::new(...) | test.rs:11:23:11:36 | After ...::new(...) |  |
@@ -86,9 +82,8 @@ edges
 | test.rs:18:5:24:5 | Entry | test.rs:18:13:18:13 | n |  |
 | test.rs:18:5:24:5 | Normal Exit | test.rs:18:5:24:5 | Exit |  |
 | test.rs:18:13:18:13 | After n [match] | test.rs:18:28:24:5 | { ... } |  |
-| test.rs:18:13:18:13 | [OuterPatternMatch] n | test.rs:18:13:18:13 | n |  |
 | test.rs:18:13:18:13 | n | test.rs:18:13:18:13 | After n [match] | match |
-| test.rs:18:13:18:13 | n | test.rs:18:13:18:13 | [OuterPatternMatch] n | match |
+| test.rs:18:13:18:13 | n | test.rs:18:13:18:13 | n |  |
 | test.rs:18:28:24:5 | After { ... } | test.rs:18:5:24:5 | Normal Exit |  |
 | test.rs:18:28:24:5 | { ... } | test.rs:19:9:23:9 | if ... {...} else {...} |  |
 | test.rs:19:9:23:9 | After if ... {...} else {...} | test.rs:18:28:24:5 | After { ... } |  |
@@ -125,15 +120,13 @@ edges
 | test.rs:26:5:42:5 | Entry | test.rs:26:32:26:32 | n |  |
 | test.rs:26:5:42:5 | Normal Exit | test.rs:26:5:42:5 | Exit |  |
 | test.rs:26:32:26:32 | After n [match] | test.rs:26:48:42:5 | { ... } |  |
-| test.rs:26:32:26:32 | [OuterPatternMatch] n | test.rs:26:32:26:32 | n |  |
 | test.rs:26:32:26:32 | n | test.rs:26:32:26:32 | After n [match] | match |
-| test.rs:26:32:26:32 | n | test.rs:26:32:26:32 | [OuterPatternMatch] n | match |
+| test.rs:26:32:26:32 | n | test.rs:26:32:26:32 | n |  |
 | test.rs:26:48:42:5 | { ... } | test.rs:27:9:27:22 | let ... = n |  |
 | test.rs:27:9:27:22 | After let ... = n | test.rs:28:9:40:9 | ExprStmt |  |
 | test.rs:27:9:27:22 | let ... = n | test.rs:27:21:27:21 | n |  |
 | test.rs:27:13:27:17 | After mut i [match] | test.rs:27:9:27:22 | After let ... = n |  |
-| test.rs:27:13:27:17 | [OuterPatternMatch] mut i | test.rs:27:17:27:17 | i |  |
-| test.rs:27:13:27:17 | mut i | test.rs:27:13:27:17 | [OuterPatternMatch] mut i | match |
+| test.rs:27:13:27:17 | mut i | test.rs:27:17:27:17 | i |  |
 | test.rs:27:17:27:17 | i | test.rs:27:13:27:17 | After mut i [match] | match |
 | test.rs:27:21:27:21 | n | test.rs:27:13:27:17 | mut i |  |
 | test.rs:28:9:40:9 | After ExprStmt | test.rs:41:9:41:20 | ExprStmt |  |
@@ -220,9 +213,8 @@ edges
 | test.rs:44:5:56:5 | Entry | test.rs:44:31:44:31 | b |  |
 | test.rs:44:5:56:5 | Normal Exit | test.rs:44:5:56:5 | Exit |  |
 | test.rs:44:31:44:31 | After b [match] | test.rs:44:48:56:5 | { ... } |  |
-| test.rs:44:31:44:31 | [OuterPatternMatch] b | test.rs:44:31:44:31 | b |  |
 | test.rs:44:31:44:31 | b | test.rs:44:31:44:31 | After b [match] | match |
-| test.rs:44:31:44:31 | b | test.rs:44:31:44:31 | [OuterPatternMatch] b | match |
+| test.rs:44:31:44:31 | b | test.rs:44:31:44:31 | b |  |
 | test.rs:44:48:56:5 | After { ... } | test.rs:44:5:56:5 | Normal Exit |  |
 | test.rs:44:48:56:5 | { ... } | test.rs:45:9:54:9 | ExprStmt |  |
 | test.rs:45:9:54:9 | 'outer: loop { ... } | test.rs:45:22:54:9 | { ... } |  |
@@ -263,9 +255,8 @@ edges
 | test.rs:55:9:55:12 | true | test.rs:44:48:56:5 | After { ... } |  |
 | test.rs:58:5:70:5 | Entry | test.rs:58:34:58:34 | b |  |
 | test.rs:58:34:58:34 | After b [match] | test.rs:58:48:70:5 | { ... } |  |
-| test.rs:58:34:58:34 | [OuterPatternMatch] b | test.rs:58:34:58:34 | b |  |
 | test.rs:58:34:58:34 | b | test.rs:58:34:58:34 | After b [match] | match |
-| test.rs:58:34:58:34 | b | test.rs:58:34:58:34 | [OuterPatternMatch] b | match |
+| test.rs:58:34:58:34 | b | test.rs:58:34:58:34 | b |  |
 | test.rs:58:48:70:5 | { ... } | test.rs:59:9:69:9 | 'outer: loop { ... } |  |
 | test.rs:59:9:69:9 | 'outer: loop { ... } | test.rs:59:22:69:9 | { ... } |  |
 | test.rs:59:9:69:9 | [LoopHeader] 'outer: loop { ... } | test.rs:59:22:69:9 | { ... } |  |
@@ -303,9 +294,8 @@ edges
 | test.rs:67:17:67:32 | ExprStmt | test.rs:67:17:67:31 | Before continue 'inner |  |
 | test.rs:72:5:84:5 | Entry | test.rs:72:34:72:34 | b |  |
 | test.rs:72:34:72:34 | After b [match] | test.rs:72:48:84:5 | { ... } |  |
-| test.rs:72:34:72:34 | [OuterPatternMatch] b | test.rs:72:34:72:34 | b |  |
 | test.rs:72:34:72:34 | b | test.rs:72:34:72:34 | After b [match] | match |
-| test.rs:72:34:72:34 | b | test.rs:72:34:72:34 | [OuterPatternMatch] b | match |
+| test.rs:72:34:72:34 | b | test.rs:72:34:72:34 | b |  |
 | test.rs:72:48:84:5 | { ... } | test.rs:73:9:83:9 | 'label: loop { ... } |  |
 | test.rs:73:9:83:9 | 'label: loop { ... } | test.rs:73:22:83:9 | { ... } |  |
 | test.rs:73:22:83:9 | { ... } | test.rs:74:13:74:14 | ExprStmt |  |
@@ -343,16 +333,14 @@ edges
 | test.rs:86:5:95:5 | Entry | test.rs:86:19:86:19 | i |  |
 | test.rs:86:5:95:5 | Normal Exit | test.rs:86:5:95:5 | Exit |  |
 | test.rs:86:19:86:19 | After i [match] | test.rs:86:27:95:5 | { ... } |  |
-| test.rs:86:19:86:19 | [OuterPatternMatch] i | test.rs:86:19:86:19 | i |  |
 | test.rs:86:19:86:19 | i | test.rs:86:19:86:19 | After i [match] | match |
-| test.rs:86:19:86:19 | i | test.rs:86:19:86:19 | [OuterPatternMatch] i | match |
+| test.rs:86:19:86:19 | i | test.rs:86:19:86:19 | i |  |
 | test.rs:86:27:95:5 | After { ... } | test.rs:86:5:95:5 | Normal Exit |  |
 | test.rs:86:27:95:5 | { ... } | test.rs:87:9:87:25 | let ... = true |  |
 | test.rs:87:9:87:25 | After let ... = true | test.rs:88:9:94:9 | while b { ... } |  |
 | test.rs:87:9:87:25 | let ... = true | test.rs:87:21:87:24 | true |  |
 | test.rs:87:13:87:17 | After mut b [match] | test.rs:87:9:87:25 | After let ... = true |  |
-| test.rs:87:13:87:17 | [OuterPatternMatch] mut b | test.rs:87:17:87:17 | b |  |
-| test.rs:87:13:87:17 | mut b | test.rs:87:13:87:17 | [OuterPatternMatch] mut b | match |
+| test.rs:87:13:87:17 | mut b | test.rs:87:17:87:17 | b |  |
 | test.rs:87:17:87:17 | b | test.rs:87:13:87:17 | After mut b [match] | match |
 | test.rs:87:21:87:24 | true | test.rs:87:13:87:17 | mut b |  |
 | test.rs:88:9:94:9 | After while b { ... } | test.rs:86:27:95:5 | After { ... } |  |
@@ -396,8 +384,7 @@ edges
 | test.rs:98:9:98:29 | After let ... = ... | test.rs:99:9:103:9 | while ... { ... } |  |
 | test.rs:98:9:98:29 | let ... = ... | test.rs:98:24:98:28 | Before 1..10 |  |
 | test.rs:98:13:98:20 | After mut iter [match] | test.rs:98:9:98:29 | After let ... = ... |  |
-| test.rs:98:13:98:20 | [OuterPatternMatch] mut iter | test.rs:98:17:98:20 | iter |  |
-| test.rs:98:13:98:20 | mut iter | test.rs:98:13:98:20 | [OuterPatternMatch] mut iter | match |
+| test.rs:98:13:98:20 | mut iter | test.rs:98:17:98:20 | iter |  |
 | test.rs:98:17:98:20 | iter | test.rs:98:13:98:20 | After mut iter [match] | match |
 | test.rs:98:24:98:24 | 1 | test.rs:98:27:98:28 | 10 |  |
 | test.rs:98:24:98:28 | 1..10 | test.rs:98:24:98:28 | After 1..10 |  |
@@ -416,9 +403,8 @@ edges
 | test.rs:99:19:99:25 | Some(...) | test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) | match |
 | test.rs:99:19:99:25 | [OuterPatternMatch] Some(...) | test.rs:99:24:99:24 | x |  |
 | test.rs:99:24:99:24 | After x [match] | test.rs:99:19:99:25 | After Some(...) [match] | match |
-| test.rs:99:24:99:24 | [OuterPatternMatch] x | test.rs:99:24:99:24 | x |  |
 | test.rs:99:24:99:24 | x | test.rs:99:24:99:24 | After x [match] | match |
-| test.rs:99:24:99:24 | x | test.rs:99:24:99:24 | [OuterPatternMatch] x | match |
+| test.rs:99:24:99:24 | x | test.rs:99:24:99:24 | x |  |
 | test.rs:99:29:99:32 | iter | test.rs:99:29:99:39 | iter.next() |  |
 | test.rs:99:29:99:39 | After iter.next() | test.rs:99:19:99:25 | Some(...) |  |
 | test.rs:99:29:99:39 | Before iter.next() | test.rs:99:29:99:32 | iter |  |
@@ -441,9 +427,8 @@ edges
 | test.rs:106:5:113:5 | Entry | test.rs:106:17:106:17 | j |  |
 | test.rs:106:5:113:5 | Normal Exit | test.rs:106:5:113:5 | Exit |  |
 | test.rs:106:17:106:17 | After j [match] | test.rs:106:25:113:5 | { ... } |  |
-| test.rs:106:17:106:17 | [OuterPatternMatch] j | test.rs:106:17:106:17 | j |  |
 | test.rs:106:17:106:17 | j | test.rs:106:17:106:17 | After j [match] | match |
-| test.rs:106:17:106:17 | j | test.rs:106:17:106:17 | [OuterPatternMatch] j | match |
+| test.rs:106:17:106:17 | j | test.rs:106:17:106:17 | j |  |
 | test.rs:106:25:113:5 | After { ... } | test.rs:106:5:113:5 | Normal Exit |  |
 | test.rs:106:25:113:5 | { ... } | test.rs:107:9:112:9 | for ... in ... { ... } |  |
 | test.rs:107:9:112:9 | After for ... in ... { ... } | test.rs:106:25:113:5 | After { ... } |  |
@@ -451,9 +436,8 @@ edges
 | test.rs:107:9:112:9 | [LoopHeader] for ... in ... { ... } | test.rs:107:13:107:13 | i |  |
 | test.rs:107:9:112:9 | for ... in ... { ... } | test.rs:107:18:107:22 | Before 0..10 |  |
 | test.rs:107:13:107:13 | After i [match] | test.rs:107:24:112:9 | { ... } |  |
-| test.rs:107:13:107:13 | [OuterPatternMatch] i | test.rs:107:13:107:13 | i |  |
 | test.rs:107:13:107:13 | i | test.rs:107:13:107:13 | After i [match] | match |
-| test.rs:107:13:107:13 | i | test.rs:107:13:107:13 | [OuterPatternMatch] i | match |
+| test.rs:107:13:107:13 | i | test.rs:107:13:107:13 | i |  |
 | test.rs:107:18:107:18 | 0 | test.rs:107:21:107:22 | 10 |  |
 | test.rs:107:18:107:22 | 0..10 | test.rs:107:18:107:22 | After 0..10 [empty] | empty |
 | test.rs:107:18:107:22 | 0..10 | test.rs:107:18:107:22 | After 0..10 [non-empty] | non-empty |
@@ -494,24 +478,21 @@ edges
 | test.rs:122:1:125:1 | Entry | test.rs:122:25:122:25 | n |  |
 | test.rs:122:1:125:1 | Normal Exit | test.rs:122:1:125:1 | Exit |  |
 | test.rs:122:25:122:25 | After n [match] | test.rs:122:40:125:1 | { ... } |  |
-| test.rs:122:25:122:25 | [OuterPatternMatch] n | test.rs:122:25:122:25 | n |  |
 | test.rs:122:25:122:25 | n | test.rs:122:25:122:25 | After n [match] | match |
-| test.rs:122:25:122:25 | n | test.rs:122:25:122:25 | [OuterPatternMatch] n | match |
+| test.rs:122:25:122:25 | n | test.rs:122:25:122:25 | n |  |
 | test.rs:122:40:125:1 | After { ... } | test.rs:122:1:125:1 | Normal Exit |  |
 | test.rs:122:40:125:1 | { ... } | test.rs:123:5:123:28 | let ... = ... |  |
 | test.rs:123:5:123:28 | After let ... = ... | test.rs:124:5:124:23 | Before add_one(...) |  |
 | test.rs:123:5:123:28 | let ... = ... | test.rs:123:19:123:27 | \|...\| ... |  |
 | test.rs:123:9:123:15 | After add_one [match] | test.rs:123:5:123:28 | After let ... = ... |  |
-| test.rs:123:9:123:15 | [OuterPatternMatch] add_one | test.rs:123:9:123:15 | add_one |  |
 | test.rs:123:9:123:15 | add_one | test.rs:123:9:123:15 | After add_one [match] | match |
-| test.rs:123:9:123:15 | add_one | test.rs:123:9:123:15 | [OuterPatternMatch] add_one | match |
+| test.rs:123:9:123:15 | add_one | test.rs:123:9:123:15 | add_one |  |
 | test.rs:123:19:123:27 | Entry | test.rs:123:20:123:20 | i |  |
 | test.rs:123:19:123:27 | Normal Exit | test.rs:123:19:123:27 | Exit |  |
 | test.rs:123:19:123:27 | \|...\| ... | test.rs:123:9:123:15 | add_one |  |
 | test.rs:123:20:123:20 | After i [match] | test.rs:123:23:123:27 | Before ... + ... |  |
-| test.rs:123:20:123:20 | [OuterPatternMatch] i | test.rs:123:20:123:20 | i |  |
 | test.rs:123:20:123:20 | i | test.rs:123:20:123:20 | After i [match] | match |
-| test.rs:123:20:123:20 | i | test.rs:123:20:123:20 | [OuterPatternMatch] i | match |
+| test.rs:123:20:123:20 | i | test.rs:123:20:123:20 | i |  |
 | test.rs:123:23:123:23 | i | test.rs:123:27:123:27 | 1 |  |
 | test.rs:123:23:123:27 | ... + ... | test.rs:123:23:123:27 | After ... + ... |  |
 | test.rs:123:23:123:27 | After ... + ... | test.rs:123:19:123:27 | Normal Exit |  |
@@ -529,9 +510,8 @@ edges
 | test.rs:129:5:135:5 | Entry | test.rs:129:21:129:21 | n |  |
 | test.rs:129:5:135:5 | Normal Exit | test.rs:129:5:135:5 | Exit |  |
 | test.rs:129:21:129:21 | After n [match] | test.rs:129:36:135:5 | { ... } |  |
-| test.rs:129:21:129:21 | [OuterPatternMatch] n | test.rs:129:21:129:21 | n |  |
 | test.rs:129:21:129:21 | n | test.rs:129:21:129:21 | After n [match] | match |
-| test.rs:129:21:129:21 | n | test.rs:129:21:129:21 | [OuterPatternMatch] n | match |
+| test.rs:129:21:129:21 | n | test.rs:129:21:129:21 | n |  |
 | test.rs:129:36:135:5 | After { ... } | test.rs:129:5:135:5 | Normal Exit |  |
 | test.rs:129:36:135:5 | { ... } | test.rs:130:9:134:9 | if ... {...} else {...} |  |
 | test.rs:130:9:134:9 | After if ... {...} else {...} | test.rs:129:36:135:5 | After { ... } |  |
@@ -556,16 +536,14 @@ edges
 | test.rs:137:5:143:5 | Entry | test.rs:137:29:137:29 | b |  |
 | test.rs:137:5:143:5 | Normal Exit | test.rs:137:5:143:5 | Exit |  |
 | test.rs:137:29:137:29 | After b [match] | test.rs:137:45:143:5 | { ... } |  |
-| test.rs:137:29:137:29 | [OuterPatternMatch] b | test.rs:137:29:137:29 | b |  |
 | test.rs:137:29:137:29 | b | test.rs:137:29:137:29 | After b [match] | match |
-| test.rs:137:29:137:29 | b | test.rs:137:29:137:29 | [OuterPatternMatch] b | match |
+| test.rs:137:29:137:29 | b | test.rs:137:29:137:29 | b |  |
 | test.rs:137:45:143:5 | After { ... } | test.rs:137:5:143:5 | Normal Exit |  |
 | test.rs:137:45:143:5 | { ... } | test.rs:138:9:138:22 | let ... = 3 |  |
 | test.rs:138:9:138:22 | After let ... = 3 | test.rs:139:9:141:9 | ExprStmt |  |
 | test.rs:138:9:138:22 | let ... = 3 | test.rs:138:21:138:21 | 3 |  |
 | test.rs:138:13:138:17 | After mut i [match] | test.rs:138:9:138:22 | After let ... = 3 |  |
-| test.rs:138:13:138:17 | [OuterPatternMatch] mut i | test.rs:138:17:138:17 | i |  |
-| test.rs:138:13:138:17 | mut i | test.rs:138:13:138:17 | [OuterPatternMatch] mut i | match |
+| test.rs:138:13:138:17 | mut i | test.rs:138:17:138:17 | i |  |
 | test.rs:138:17:138:17 | i | test.rs:138:13:138:17 | After mut i [match] | match |
 | test.rs:138:21:138:21 | 3 | test.rs:138:13:138:17 | mut i |  |
 | test.rs:139:9:141:9 | After ExprStmt | test.rs:142:9:142:9 | i |  |
@@ -589,9 +567,8 @@ edges
 | test.rs:145:5:151:5 | Entry | test.rs:145:25:145:25 | a |  |
 | test.rs:145:5:151:5 | Normal Exit | test.rs:145:5:151:5 | Exit |  |
 | test.rs:145:25:145:25 | After a [match] | test.rs:145:48:151:5 | { ... } |  |
-| test.rs:145:25:145:25 | [OuterPatternMatch] a | test.rs:145:25:145:25 | a |  |
 | test.rs:145:25:145:25 | a | test.rs:145:25:145:25 | After a [match] | match |
-| test.rs:145:25:145:25 | a | test.rs:145:25:145:25 | [OuterPatternMatch] a | match |
+| test.rs:145:25:145:25 | a | test.rs:145:25:145:25 | a |  |
 | test.rs:145:48:151:5 | After { ... } | test.rs:145:5:151:5 | Normal Exit |  |
 | test.rs:145:48:151:5 | { ... } | test.rs:146:9:150:9 | if ... {...} else {...} |  |
 | test.rs:146:9:150:9 | After if ... {...} else {...} | test.rs:145:48:151:5 | After { ... } |  |
@@ -605,9 +582,8 @@ edges
 | test.rs:146:16:146:22 | Some(...) | test.rs:146:16:146:22 | [OuterPatternMatch] Some(...) | match |
 | test.rs:146:16:146:22 | [OuterPatternMatch] Some(...) | test.rs:146:21:146:21 | n |  |
 | test.rs:146:21:146:21 | After n [match] | test.rs:146:16:146:22 | After Some(...) [match] | match |
-| test.rs:146:21:146:21 | [OuterPatternMatch] n | test.rs:146:21:146:21 | n |  |
 | test.rs:146:21:146:21 | n | test.rs:146:21:146:21 | After n [match] | match |
-| test.rs:146:21:146:21 | n | test.rs:146:21:146:21 | [OuterPatternMatch] n | match |
+| test.rs:146:21:146:21 | n | test.rs:146:21:146:21 | n |  |
 | test.rs:146:26:146:26 | a | test.rs:146:16:146:22 | Some(...) |  |
 | test.rs:146:28:148:9 | After { ... } | test.rs:146:9:150:9 | After if ... {...} else {...} |  |
 | test.rs:146:28:148:9 | { ... } | test.rs:147:13:147:13 | n |  |
@@ -618,9 +594,8 @@ edges
 | test.rs:153:5:158:5 | Entry | test.rs:153:20:153:20 | a |  |
 | test.rs:153:5:158:5 | Normal Exit | test.rs:153:5:158:5 | Exit |  |
 | test.rs:153:20:153:20 | After a [match] | test.rs:153:43:158:5 | { ... } |  |
-| test.rs:153:20:153:20 | [OuterPatternMatch] a | test.rs:153:20:153:20 | a |  |
 | test.rs:153:20:153:20 | a | test.rs:153:20:153:20 | After a [match] | match |
-| test.rs:153:20:153:20 | a | test.rs:153:20:153:20 | [OuterPatternMatch] a | match |
+| test.rs:153:20:153:20 | a | test.rs:153:20:153:20 | a |  |
 | test.rs:153:43:158:5 | After { ... } | test.rs:153:5:158:5 | Normal Exit |  |
 | test.rs:153:43:158:5 | { ... } | test.rs:154:9:156:9 | ExprStmt |  |
 | test.rs:154:9:156:9 | After ExprStmt | test.rs:157:9:157:9 | 0 |  |
@@ -636,9 +611,8 @@ edges
 | test.rs:154:16:154:22 | Some(...) | test.rs:154:16:154:22 | [OuterPatternMatch] Some(...) | match |
 | test.rs:154:16:154:22 | [OuterPatternMatch] Some(...) | test.rs:154:21:154:21 | n |  |
 | test.rs:154:21:154:21 | After n [match] | test.rs:154:16:154:22 | After Some(...) [match] | match |
-| test.rs:154:21:154:21 | [OuterPatternMatch] n | test.rs:154:21:154:21 | n |  |
 | test.rs:154:21:154:21 | n | test.rs:154:21:154:21 | After n [match] | match |
-| test.rs:154:21:154:21 | n | test.rs:154:21:154:21 | [OuterPatternMatch] n | match |
+| test.rs:154:21:154:21 | n | test.rs:154:21:154:21 | n |  |
 | test.rs:154:26:154:26 | a | test.rs:154:16:154:22 | Some(...) |  |
 | test.rs:154:28:156:9 | { ... } | test.rs:155:13:155:21 | ExprStmt |  |
 | test.rs:155:13:155:20 | Before return n | test.rs:155:20:155:20 | n |  |
@@ -649,9 +623,8 @@ edges
 | test.rs:160:5:166:5 | Entry | test.rs:160:23:160:23 | a |  |
 | test.rs:160:5:166:5 | Normal Exit | test.rs:160:5:166:5 | Exit |  |
 | test.rs:160:23:160:23 | After a [match] | test.rs:160:38:166:5 | { ... } |  |
-| test.rs:160:23:160:23 | [OuterPatternMatch] a | test.rs:160:23:160:23 | a |  |
 | test.rs:160:23:160:23 | a | test.rs:160:23:160:23 | After a [match] | match |
-| test.rs:160:23:160:23 | a | test.rs:160:23:160:23 | [OuterPatternMatch] a | match |
+| test.rs:160:23:160:23 | a | test.rs:160:23:160:23 | a |  |
 | test.rs:160:38:166:5 | After { ... } | test.rs:160:5:166:5 | Normal Exit |  |
 | test.rs:160:38:166:5 | { ... } | test.rs:161:9:165:9 | if ... {...} else {...} |  |
 | test.rs:161:9:165:9 | After if ... {...} else {...} | test.rs:160:38:166:5 | After { ... } |  |
@@ -698,13 +671,11 @@ edges
 | test.rs:168:5:177:5 | Entry | test.rs:168:25:168:29 | cond1 |  |
 | test.rs:168:5:177:5 | Normal Exit | test.rs:168:5:177:5 | Exit |  |
 | test.rs:168:25:168:29 | After cond1 [match] | test.rs:168:38:168:42 | cond2 |  |
-| test.rs:168:25:168:29 | [OuterPatternMatch] cond1 | test.rs:168:25:168:29 | cond1 |  |
 | test.rs:168:25:168:29 | cond1 | test.rs:168:25:168:29 | After cond1 [match] | match |
-| test.rs:168:25:168:29 | cond1 | test.rs:168:25:168:29 | [OuterPatternMatch] cond1 | match |
+| test.rs:168:25:168:29 | cond1 | test.rs:168:25:168:29 | cond1 |  |
 | test.rs:168:38:168:42 | After cond2 [match] | test.rs:168:57:177:5 | { ... } |  |
-| test.rs:168:38:168:42 | [OuterPatternMatch] cond2 | test.rs:168:38:168:42 | cond2 |  |
 | test.rs:168:38:168:42 | cond2 | test.rs:168:38:168:42 | After cond2 [match] | match |
-| test.rs:168:38:168:42 | cond2 | test.rs:168:38:168:42 | [OuterPatternMatch] cond2 | match |
+| test.rs:168:38:168:42 | cond2 | test.rs:168:38:168:42 | cond2 |  |
 | test.rs:168:57:177:5 | After { ... } | test.rs:168:5:177:5 | Normal Exit |  |
 | test.rs:168:57:177:5 | { ... } | test.rs:169:9:176:10 | ExprStmt |  |
 | test.rs:169:9:176:9 | After if cond1 {...} | test.rs:169:9:176:10 | After ExprStmt |  |
@@ -816,9 +787,8 @@ edges
 | test.rs:179:5:188:5 | Entry | test.rs:179:29:179:29 | a |  |
 | test.rs:179:5:188:5 | Normal Exit | test.rs:179:5:188:5 | Exit |  |
 | test.rs:179:29:179:29 | After a [match] | test.rs:179:44:188:5 | { ... } |  |
-| test.rs:179:29:179:29 | [OuterPatternMatch] a | test.rs:179:29:179:29 | a |  |
 | test.rs:179:29:179:29 | a | test.rs:179:29:179:29 | After a [match] | match |
-| test.rs:179:29:179:29 | a | test.rs:179:29:179:29 | [OuterPatternMatch] a | match |
+| test.rs:179:29:179:29 | a | test.rs:179:29:179:29 | a |  |
 | test.rs:179:44:188:5 | After { ... } | test.rs:179:5:188:5 | Normal Exit |  |
 | test.rs:179:44:188:5 | { ... } | test.rs:180:9:187:9 | if ... {...} else {...} |  |
 | test.rs:180:9:187:9 | After if ... {...} else {...} | test.rs:179:44:188:5 | After { ... } |  |
@@ -827,14 +797,13 @@ edges
 | test.rs:180:13:183:9 | After match a { ... } [true] | test.rs:183:12:185:9 | { ... } |  |
 | test.rs:180:13:183:9 | match a { ... } | test.rs:180:19:180:19 | a |  |
 | test.rs:180:19:180:19 | a | test.rs:181:13:181:22 | 0 => true |  |
+| test.rs:181:13:181:13 | 0 | test.rs:181:13:181:13 | 0 |  |
 | test.rs:181:13:181:13 | 0 | test.rs:181:13:181:13 | After 0 [no-match] | no-match |
-| test.rs:181:13:181:13 | 0 | test.rs:181:13:181:13 | [OuterPatternMatch] 0 | match |
 | test.rs:181:13:181:13 | 0 | test.rs:181:13:181:13 | [OuterPatternMatch] 0 | match |
 | test.rs:181:13:181:13 | After 0 [match] | test.rs:181:13:181:13 | After 0 [match] | match |
 | test.rs:181:13:181:13 | After 0 [match] | test.rs:181:13:181:22 | After 0 => true [match] | match |
 | test.rs:181:13:181:13 | After 0 [no-match] | test.rs:181:13:181:13 | After 0 [no-match] | no-match |
 | test.rs:181:13:181:13 | After 0 [no-match] | test.rs:181:13:181:22 | After 0 => true [no-match] | no-match |
-| test.rs:181:13:181:13 | [OuterPatternMatch] 0 | test.rs:181:13:181:13 | 0 |  |
 | test.rs:181:13:181:13 | [OuterPatternMatch] 0 | test.rs:181:13:181:13 | After 0 [match] | match |
 | test.rs:181:13:181:22 | 0 => true | test.rs:181:13:181:13 | 0 |  |
 | test.rs:181:13:181:22 | After 0 => true [match] | test.rs:181:18:181:21 | true |  |
@@ -842,8 +811,7 @@ edges
 | test.rs:181:18:181:21 | After true [true] | test.rs:180:13:183:9 | After match a { ... } [true] | true |
 | test.rs:181:18:181:21 | true | test.rs:181:18:181:21 | After true [true] | true |
 | test.rs:182:13:182:13 | After _ [match] | test.rs:182:13:182:23 | After _ => false [match] | match |
-| test.rs:182:13:182:13 | [OuterPatternMatch] _ | test.rs:182:13:182:13 | After _ [match] | match |
-| test.rs:182:13:182:13 | _ | test.rs:182:13:182:13 | [OuterPatternMatch] _ | match |
+| test.rs:182:13:182:13 | _ | test.rs:182:13:182:13 | After _ [match] | match |
 | test.rs:182:13:182:23 | After _ => false [match] | test.rs:182:18:182:22 | false |  |
 | test.rs:182:13:182:23 | _ => false | test.rs:182:13:182:13 | _ |  |
 | test.rs:182:18:182:22 | After false [false] | test.rs:180:13:183:9 | After match a { ... } [false] | false |
@@ -857,9 +825,8 @@ edges
 | test.rs:190:5:199:5 | Entry | test.rs:190:29:190:29 | a |  |
 | test.rs:190:5:199:5 | Normal Exit | test.rs:190:5:199:5 | Exit |  |
 | test.rs:190:29:190:29 | After a [match] | test.rs:190:44:199:5 | { ... } |  |
-| test.rs:190:29:190:29 | [OuterPatternMatch] a | test.rs:190:29:190:29 | a |  |
 | test.rs:190:29:190:29 | a | test.rs:190:29:190:29 | After a [match] | match |
-| test.rs:190:29:190:29 | a | test.rs:190:29:190:29 | [OuterPatternMatch] a | match |
+| test.rs:190:29:190:29 | a | test.rs:190:29:190:29 | a |  |
 | test.rs:190:44:199:5 | After { ... } | test.rs:190:5:199:5 | Normal Exit |  |
 | test.rs:190:44:199:5 | { ... } | test.rs:191:9:198:9 | if ... {...} else {...} |  |
 | test.rs:191:9:198:9 | After if ... {...} else {...} | test.rs:190:44:199:5 | After { ... } |  |
@@ -886,16 +853,14 @@ edges
 | test.rs:201:5:211:5 | Entry | test.rs:201:27:201:27 | a |  |
 | test.rs:201:5:211:5 | Normal Exit | test.rs:201:5:211:5 | Exit |  |
 | test.rs:201:27:201:27 | After a [match] | test.rs:201:42:211:5 | { ... } |  |
-| test.rs:201:27:201:27 | [OuterPatternMatch] a | test.rs:201:27:201:27 | a |  |
 | test.rs:201:27:201:27 | a | test.rs:201:27:201:27 | After a [match] | match |
-| test.rs:201:27:201:27 | a | test.rs:201:27:201:27 | [OuterPatternMatch] a | match |
+| test.rs:201:27:201:27 | a | test.rs:201:27:201:27 | a |  |
 | test.rs:201:42:211:5 | After { ... } | test.rs:201:5:211:5 | Normal Exit |  |
 | test.rs:201:42:211:5 | { ... } | test.rs:202:9:202:26 | let ... = false |  |
 | test.rs:202:9:202:26 | After let ... = false | test.rs:203:9:210:9 | if ... {...} else {...} |  |
 | test.rs:202:9:202:26 | let ... = false | test.rs:202:21:202:25 | false |  |
 | test.rs:202:13:202:17 | After mut x [match] | test.rs:202:9:202:26 | After let ... = false |  |
-| test.rs:202:13:202:17 | [OuterPatternMatch] mut x | test.rs:202:17:202:17 | x |  |
-| test.rs:202:13:202:17 | mut x | test.rs:202:13:202:17 | [OuterPatternMatch] mut x | match |
+| test.rs:202:13:202:17 | mut x | test.rs:202:17:202:17 | x |  |
 | test.rs:202:17:202:17 | x | test.rs:202:13:202:17 | After mut x [match] | match |
 | test.rs:202:21:202:25 | false | test.rs:202:13:202:17 | mut x |  |
 | test.rs:203:9:210:9 | After if ... {...} else {...} | test.rs:201:42:211:5 | After { ... } |  |
@@ -923,9 +888,8 @@ edges
 | test.rs:213:5:224:5 | Entry | test.rs:213:22:213:22 | a |  |
 | test.rs:213:5:224:5 | Normal Exit | test.rs:213:5:224:5 | Exit |  |
 | test.rs:213:22:213:22 | After a [match] | test.rs:213:37:224:5 | { ... } |  |
-| test.rs:213:22:213:22 | [OuterPatternMatch] a | test.rs:213:22:213:22 | a |  |
 | test.rs:213:22:213:22 | a | test.rs:213:22:213:22 | After a [match] | match |
-| test.rs:213:22:213:22 | a | test.rs:213:22:213:22 | [OuterPatternMatch] a | match |
+| test.rs:213:22:213:22 | a | test.rs:213:22:213:22 | a |  |
 | test.rs:213:37:224:5 | After { ... } | test.rs:213:5:224:5 | Normal Exit |  |
 | test.rs:213:37:224:5 | { ... } | test.rs:214:9:223:9 | if ... {...} else {...} |  |
 | test.rs:214:9:223:9 | After if ... {...} else {...} | test.rs:213:37:224:5 | After { ... } |  |
@@ -973,9 +937,8 @@ edges
 | test.rs:226:5:237:5 | Entry | test.rs:226:22:226:22 | a |  |
 | test.rs:226:5:237:5 | Normal Exit | test.rs:226:5:237:5 | Exit |  |
 | test.rs:226:22:226:22 | After a [match] | test.rs:226:37:237:5 | { ... } |  |
-| test.rs:226:22:226:22 | [OuterPatternMatch] a | test.rs:226:22:226:22 | a |  |
 | test.rs:226:22:226:22 | a | test.rs:226:22:226:22 | After a [match] | match |
-| test.rs:226:22:226:22 | a | test.rs:226:22:226:22 | [OuterPatternMatch] a | match |
+| test.rs:226:22:226:22 | a | test.rs:226:22:226:22 | a |  |
 | test.rs:226:37:237:5 | After { ... } | test.rs:226:5:237:5 | Normal Exit |  |
 | test.rs:226:37:237:5 | { ... } | test.rs:227:9:236:9 | if ... {...} else {...} |  |
 | test.rs:227:9:236:9 | After if ... {...} else {...} | test.rs:226:37:237:5 | After { ... } |  |
@@ -1023,9 +986,8 @@ edges
 | test.rs:239:5:247:5 | Entry | test.rs:239:28:239:28 | a |  |
 | test.rs:239:5:247:5 | Normal Exit | test.rs:239:5:247:5 | Exit |  |
 | test.rs:239:28:239:28 | After a [match] | test.rs:239:43:247:5 | { ... } |  |
-| test.rs:239:28:239:28 | [OuterPatternMatch] a | test.rs:239:28:239:28 | a |  |
 | test.rs:239:28:239:28 | a | test.rs:239:28:239:28 | After a [match] | match |
-| test.rs:239:28:239:28 | a | test.rs:239:28:239:28 | [OuterPatternMatch] a | match |
+| test.rs:239:28:239:28 | a | test.rs:239:28:239:28 | a |  |
 | test.rs:239:43:247:5 | After { ... } | test.rs:239:5:247:5 | Normal Exit |  |
 | test.rs:239:43:247:5 | { ... } | test.rs:240:9:246:9 | if ... {...} else {...} |  |
 | test.rs:240:9:246:9 | After if ... {...} else {...} | test.rs:239:43:247:5 | After { ... } |  |
@@ -1051,25 +1013,21 @@ edges
 | test.rs:252:5:255:5 | Entry | test.rs:252:30:252:30 | a |  |
 | test.rs:252:5:255:5 | Normal Exit | test.rs:252:5:255:5 | Exit |  |
 | test.rs:252:30:252:30 | After a [match] | test.rs:252:39:252:39 | b |  |
-| test.rs:252:30:252:30 | [OuterPatternMatch] a | test.rs:252:30:252:30 | a |  |
 | test.rs:252:30:252:30 | a | test.rs:252:30:252:30 | After a [match] | match |
-| test.rs:252:30:252:30 | a | test.rs:252:30:252:30 | [OuterPatternMatch] a | match |
+| test.rs:252:30:252:30 | a | test.rs:252:30:252:30 | a |  |
 | test.rs:252:39:252:39 | After b [match] | test.rs:252:48:252:48 | c |  |
-| test.rs:252:39:252:39 | [OuterPatternMatch] b | test.rs:252:39:252:39 | b |  |
 | test.rs:252:39:252:39 | b | test.rs:252:39:252:39 | After b [match] | match |
-| test.rs:252:39:252:39 | b | test.rs:252:39:252:39 | [OuterPatternMatch] b | match |
+| test.rs:252:39:252:39 | b | test.rs:252:39:252:39 | b |  |
 | test.rs:252:48:252:48 | After c [match] | test.rs:252:65:255:5 | { ... } |  |
-| test.rs:252:48:252:48 | [OuterPatternMatch] c | test.rs:252:48:252:48 | c |  |
 | test.rs:252:48:252:48 | c | test.rs:252:48:252:48 | After c [match] | match |
-| test.rs:252:48:252:48 | c | test.rs:252:48:252:48 | [OuterPatternMatch] c | match |
+| test.rs:252:48:252:48 | c | test.rs:252:48:252:48 | c |  |
 | test.rs:252:65:255:5 | After { ... } | test.rs:252:5:255:5 | Normal Exit |  |
 | test.rs:252:65:255:5 | { ... } | test.rs:253:9:253:28 | let ... = ... |  |
 | test.rs:253:9:253:28 | After let ... = ... | test.rs:254:9:254:9 | d |  |
 | test.rs:253:9:253:28 | let ... = ... | test.rs:253:17:253:27 | ... && ... |  |
 | test.rs:253:13:253:13 | After d [match] | test.rs:253:9:253:28 | After let ... = ... |  |
-| test.rs:253:13:253:13 | [OuterPatternMatch] d | test.rs:253:13:253:13 | d |  |
 | test.rs:253:13:253:13 | d | test.rs:253:13:253:13 | After d [match] | match |
-| test.rs:253:13:253:13 | d | test.rs:253:13:253:13 | [OuterPatternMatch] d | match |
+| test.rs:253:13:253:13 | d | test.rs:253:13:253:13 | d |  |
 | test.rs:253:17:253:17 | After a [false] | test.rs:253:17:253:22 | After ... && ... [false] | false |
 | test.rs:253:17:253:17 | After a [true] | test.rs:253:22:253:22 | b |  |
 | test.rs:253:17:253:17 | a | test.rs:253:17:253:17 | After a [false] | false |
@@ -1088,25 +1046,21 @@ edges
 | test.rs:257:5:260:5 | Entry | test.rs:257:25:257:25 | a |  |
 | test.rs:257:5:260:5 | Normal Exit | test.rs:257:5:260:5 | Exit |  |
 | test.rs:257:25:257:25 | After a [match] | test.rs:257:34:257:34 | b |  |
-| test.rs:257:25:257:25 | [OuterPatternMatch] a | test.rs:257:25:257:25 | a |  |
 | test.rs:257:25:257:25 | a | test.rs:257:25:257:25 | After a [match] | match |
-| test.rs:257:25:257:25 | a | test.rs:257:25:257:25 | [OuterPatternMatch] a | match |
+| test.rs:257:25:257:25 | a | test.rs:257:25:257:25 | a |  |
 | test.rs:257:34:257:34 | After b [match] | test.rs:257:43:257:43 | c |  |
-| test.rs:257:34:257:34 | [OuterPatternMatch] b | test.rs:257:34:257:34 | b |  |
 | test.rs:257:34:257:34 | b | test.rs:257:34:257:34 | After b [match] | match |
-| test.rs:257:34:257:34 | b | test.rs:257:34:257:34 | [OuterPatternMatch] b | match |
+| test.rs:257:34:257:34 | b | test.rs:257:34:257:34 | b |  |
 | test.rs:257:43:257:43 | After c [match] | test.rs:257:60:260:5 | { ... } |  |
-| test.rs:257:43:257:43 | [OuterPatternMatch] c | test.rs:257:43:257:43 | c |  |
 | test.rs:257:43:257:43 | c | test.rs:257:43:257:43 | After c [match] | match |
-| test.rs:257:43:257:43 | c | test.rs:257:43:257:43 | [OuterPatternMatch] c | match |
+| test.rs:257:43:257:43 | c | test.rs:257:43:257:43 | c |  |
 | test.rs:257:60:260:5 | After { ... } | test.rs:257:5:260:5 | Normal Exit |  |
 | test.rs:257:60:260:5 | { ... } | test.rs:258:9:258:28 | let ... = ... |  |
 | test.rs:258:9:258:28 | After let ... = ... | test.rs:259:9:259:9 | d |  |
 | test.rs:258:9:258:28 | let ... = ... | test.rs:258:17:258:27 | ... \|\| ... |  |
 | test.rs:258:13:258:13 | After d [match] | test.rs:258:9:258:28 | After let ... = ... |  |
-| test.rs:258:13:258:13 | [OuterPatternMatch] d | test.rs:258:13:258:13 | d |  |
 | test.rs:258:13:258:13 | d | test.rs:258:13:258:13 | After d [match] | match |
-| test.rs:258:13:258:13 | d | test.rs:258:13:258:13 | [OuterPatternMatch] d | match |
+| test.rs:258:13:258:13 | d | test.rs:258:13:258:13 | d |  |
 | test.rs:258:17:258:17 | After a [false] | test.rs:258:22:258:22 | b |  |
 | test.rs:258:17:258:17 | After a [true] | test.rs:258:17:258:22 | After ... \|\| ... [true] | true |
 | test.rs:258:17:258:17 | a | test.rs:258:17:258:17 | After a [false] | false |
@@ -1125,25 +1079,21 @@ edges
 | test.rs:262:5:265:5 | Entry | test.rs:262:27:262:27 | a |  |
 | test.rs:262:5:265:5 | Normal Exit | test.rs:262:5:265:5 | Exit |  |
 | test.rs:262:27:262:27 | After a [match] | test.rs:262:36:262:36 | b |  |
-| test.rs:262:27:262:27 | [OuterPatternMatch] a | test.rs:262:27:262:27 | a |  |
 | test.rs:262:27:262:27 | a | test.rs:262:27:262:27 | After a [match] | match |
-| test.rs:262:27:262:27 | a | test.rs:262:27:262:27 | [OuterPatternMatch] a | match |
+| test.rs:262:27:262:27 | a | test.rs:262:27:262:27 | a |  |
 | test.rs:262:36:262:36 | After b [match] | test.rs:262:44:262:44 | c |  |
-| test.rs:262:36:262:36 | [OuterPatternMatch] b | test.rs:262:36:262:36 | b |  |
 | test.rs:262:36:262:36 | b | test.rs:262:36:262:36 | After b [match] | match |
-| test.rs:262:36:262:36 | b | test.rs:262:36:262:36 | [OuterPatternMatch] b | match |
+| test.rs:262:36:262:36 | b | test.rs:262:36:262:36 | b |  |
 | test.rs:262:44:262:44 | After c [match] | test.rs:262:61:265:5 | { ... } |  |
-| test.rs:262:44:262:44 | [OuterPatternMatch] c | test.rs:262:44:262:44 | c |  |
 | test.rs:262:44:262:44 | c | test.rs:262:44:262:44 | After c [match] | match |
-| test.rs:262:44:262:44 | c | test.rs:262:44:262:44 | [OuterPatternMatch] c | match |
+| test.rs:262:44:262:44 | c | test.rs:262:44:262:44 | c |  |
 | test.rs:262:61:265:5 | After { ... } | test.rs:262:5:265:5 | Normal Exit |  |
 | test.rs:262:61:265:5 | { ... } | test.rs:263:9:263:36 | let ... = ... |  |
 | test.rs:263:9:263:36 | After let ... = ... | test.rs:264:9:264:9 | d |  |
 | test.rs:263:9:263:36 | let ... = ... | test.rs:263:17:263:35 | ... \|\| ... |  |
 | test.rs:263:13:263:13 | After d [match] | test.rs:263:9:263:36 | After let ... = ... |  |
-| test.rs:263:13:263:13 | [OuterPatternMatch] d | test.rs:263:13:263:13 | d |  |
 | test.rs:263:13:263:13 | d | test.rs:263:13:263:13 | After d [match] | match |
-| test.rs:263:13:263:13 | d | test.rs:263:13:263:13 | [OuterPatternMatch] d | match |
+| test.rs:263:13:263:13 | d | test.rs:263:13:263:13 | d |  |
 | test.rs:263:17:263:17 | After a [false] | test.rs:263:23:263:29 | Before ... == ... |  |
 | test.rs:263:17:263:17 | After a [true] | test.rs:263:17:263:30 | After ... \|\| ... [true] | true |
 | test.rs:263:17:263:17 | a | test.rs:263:17:263:17 | After a [false] | false |
@@ -1165,17 +1115,15 @@ edges
 | test.rs:267:5:270:5 | Entry | test.rs:267:26:267:26 | a |  |
 | test.rs:267:5:270:5 | Normal Exit | test.rs:267:5:270:5 | Exit |  |
 | test.rs:267:26:267:26 | After a [match] | test.rs:267:43:270:5 | { ... } |  |
-| test.rs:267:26:267:26 | [OuterPatternMatch] a | test.rs:267:26:267:26 | a |  |
 | test.rs:267:26:267:26 | a | test.rs:267:26:267:26 | After a [match] | match |
-| test.rs:267:26:267:26 | a | test.rs:267:26:267:26 | [OuterPatternMatch] a | match |
+| test.rs:267:26:267:26 | a | test.rs:267:26:267:26 | a |  |
 | test.rs:267:43:270:5 | After { ... } | test.rs:267:5:270:5 | Normal Exit |  |
 | test.rs:267:43:270:5 | { ... } | test.rs:268:9:268:19 | let ... = ... |  |
 | test.rs:268:9:268:19 | After let ... = ... | test.rs:269:9:269:9 | d |  |
 | test.rs:268:9:268:19 | let ... = ... | test.rs:268:17:268:18 | ! ... |  |
 | test.rs:268:13:268:13 | After d [match] | test.rs:268:9:268:19 | After let ... = ... |  |
-| test.rs:268:13:268:13 | [OuterPatternMatch] d | test.rs:268:13:268:13 | d |  |
 | test.rs:268:13:268:13 | d | test.rs:268:13:268:13 | After d [match] | match |
-| test.rs:268:13:268:13 | d | test.rs:268:13:268:13 | [OuterPatternMatch] d | match |
+| test.rs:268:13:268:13 | d | test.rs:268:13:268:13 | d |  |
 | test.rs:268:17:268:18 | ! ... | test.rs:268:18:268:18 | a |  |
 | test.rs:268:17:268:18 | After ! ... | test.rs:268:13:268:13 | d |  |
 | test.rs:268:18:268:18 | a | test.rs:268:17:268:18 | After ! ... |  |
@@ -1183,17 +1131,14 @@ edges
 | test.rs:272:5:278:5 | Entry | test.rs:272:29:272:29 | a |  |
 | test.rs:272:5:278:5 | Normal Exit | test.rs:272:5:278:5 | Exit |  |
 | test.rs:272:29:272:29 | After a [match] | test.rs:272:38:272:38 | b |  |
-| test.rs:272:29:272:29 | [OuterPatternMatch] a | test.rs:272:29:272:29 | a |  |
 | test.rs:272:29:272:29 | a | test.rs:272:29:272:29 | After a [match] | match |
-| test.rs:272:29:272:29 | a | test.rs:272:29:272:29 | [OuterPatternMatch] a | match |
+| test.rs:272:29:272:29 | a | test.rs:272:29:272:29 | a |  |
 | test.rs:272:38:272:38 | After b [match] | test.rs:272:47:272:47 | c |  |
-| test.rs:272:38:272:38 | [OuterPatternMatch] b | test.rs:272:38:272:38 | b |  |
 | test.rs:272:38:272:38 | b | test.rs:272:38:272:38 | After b [match] | match |
-| test.rs:272:38:272:38 | b | test.rs:272:38:272:38 | [OuterPatternMatch] b | match |
+| test.rs:272:38:272:38 | b | test.rs:272:38:272:38 | b |  |
 | test.rs:272:47:272:47 | After c [match] | test.rs:272:64:278:5 | { ... } |  |
-| test.rs:272:47:272:47 | [OuterPatternMatch] c | test.rs:272:47:272:47 | c |  |
 | test.rs:272:47:272:47 | c | test.rs:272:47:272:47 | After c [match] | match |
-| test.rs:272:47:272:47 | c | test.rs:272:47:272:47 | [OuterPatternMatch] c | match |
+| test.rs:272:47:272:47 | c | test.rs:272:47:272:47 | c |  |
 | test.rs:272:64:278:5 | After { ... } | test.rs:272:5:278:5 | Normal Exit |  |
 | test.rs:272:64:278:5 | { ... } | test.rs:273:9:277:9 | if ... {...} else {...} |  |
 | test.rs:273:9:277:9 | After if ... {...} else {...} | test.rs:272:64:278:5 | After { ... } |  |
@@ -1225,17 +1170,14 @@ edges
 | test.rs:280:5:286:5 | Entry | test.rs:280:28:280:28 | a |  |
 | test.rs:280:5:286:5 | Normal Exit | test.rs:280:5:286:5 | Exit |  |
 | test.rs:280:28:280:28 | After a [match] | test.rs:280:37:280:37 | b |  |
-| test.rs:280:28:280:28 | [OuterPatternMatch] a | test.rs:280:28:280:28 | a |  |
 | test.rs:280:28:280:28 | a | test.rs:280:28:280:28 | After a [match] | match |
-| test.rs:280:28:280:28 | a | test.rs:280:28:280:28 | [OuterPatternMatch] a | match |
+| test.rs:280:28:280:28 | a | test.rs:280:28:280:28 | a |  |
 | test.rs:280:37:280:37 | After b [match] | test.rs:280:46:280:46 | c |  |
-| test.rs:280:37:280:37 | [OuterPatternMatch] b | test.rs:280:37:280:37 | b |  |
 | test.rs:280:37:280:37 | b | test.rs:280:37:280:37 | After b [match] | match |
-| test.rs:280:37:280:37 | b | test.rs:280:37:280:37 | [OuterPatternMatch] b | match |
+| test.rs:280:37:280:37 | b | test.rs:280:37:280:37 | b |  |
 | test.rs:280:46:280:46 | After c [match] | test.rs:280:63:286:5 | { ... } |  |
-| test.rs:280:46:280:46 | [OuterPatternMatch] c | test.rs:280:46:280:46 | c |  |
 | test.rs:280:46:280:46 | c | test.rs:280:46:280:46 | After c [match] | match |
-| test.rs:280:46:280:46 | c | test.rs:280:46:280:46 | [OuterPatternMatch] c | match |
+| test.rs:280:46:280:46 | c | test.rs:280:46:280:46 | c |  |
 | test.rs:280:63:286:5 | After { ... } | test.rs:280:5:286:5 | Normal Exit |  |
 | test.rs:280:63:286:5 | { ... } | test.rs:281:9:285:9 | if ... {...} else {...} |  |
 | test.rs:281:9:285:9 | After if ... {...} else {...} | test.rs:280:63:286:5 | After { ... } |  |
@@ -1267,9 +1209,8 @@ edges
 | test.rs:288:5:294:5 | Entry | test.rs:288:29:288:29 | a |  |
 | test.rs:288:5:294:5 | Normal Exit | test.rs:288:5:294:5 | Exit |  |
 | test.rs:288:29:288:29 | After a [match] | test.rs:288:46:294:5 | { ... } |  |
-| test.rs:288:29:288:29 | [OuterPatternMatch] a | test.rs:288:29:288:29 | a |  |
 | test.rs:288:29:288:29 | a | test.rs:288:29:288:29 | After a [match] | match |
-| test.rs:288:29:288:29 | a | test.rs:288:29:288:29 | [OuterPatternMatch] a | match |
+| test.rs:288:29:288:29 | a | test.rs:288:29:288:29 | a |  |
 | test.rs:288:46:294:5 | After { ... } | test.rs:288:5:294:5 | Normal Exit |  |
 | test.rs:288:46:294:5 | { ... } | test.rs:289:9:293:9 | if ... {...} else {...} |  |
 | test.rs:289:9:293:9 | After if ... {...} else {...} | test.rs:288:46:294:5 | After { ... } |  |
@@ -1290,9 +1231,8 @@ edges
 | test.rs:296:5:298:5 | Entry | test.rs:296:24:296:24 | a |  |
 | test.rs:296:5:298:5 | Normal Exit | test.rs:296:5:298:5 | Exit |  |
 | test.rs:296:24:296:24 | After a [match] | test.rs:296:33:298:5 | { ... } |  |
-| test.rs:296:24:296:24 | [OuterPatternMatch] a | test.rs:296:24:296:24 | a |  |
 | test.rs:296:24:296:24 | a | test.rs:296:24:296:24 | After a [match] | match |
-| test.rs:296:24:296:24 | a | test.rs:296:24:296:24 | [OuterPatternMatch] a | match |
+| test.rs:296:24:296:24 | a | test.rs:296:24:296:24 | a |  |
 | test.rs:296:33:298:5 | After { ... } | test.rs:296:5:298:5 | Normal Exit |  |
 | test.rs:296:33:298:5 | { ... } | test.rs:297:9:297:20 | ExprStmt |  |
 | test.rs:297:9:297:9 | After a [false] | test.rs:297:9:297:19 | After ... && ... |  |
@@ -1308,9 +1248,8 @@ edges
 | test.rs:300:5:305:5 | Entry | test.rs:300:22:300:22 | a |  |
 | test.rs:300:5:305:5 | Normal Exit | test.rs:300:5:305:5 | Exit |  |
 | test.rs:300:22:300:22 | After a [match] | test.rs:300:38:305:5 | { ... } |  |
-| test.rs:300:22:300:22 | [OuterPatternMatch] a | test.rs:300:22:300:22 | a |  |
 | test.rs:300:22:300:22 | a | test.rs:300:22:300:22 | After a [match] | match |
-| test.rs:300:22:300:22 | a | test.rs:300:22:300:22 | [OuterPatternMatch] a | match |
+| test.rs:300:22:300:22 | a | test.rs:300:22:300:22 | a |  |
 | test.rs:300:38:305:5 | After { ... } | test.rs:300:5:305:5 | Normal Exit |  |
 | test.rs:300:38:305:5 | { ... } | test.rs:301:9:303:9 | ExprStmt |  |
 | test.rs:301:9:303:9 | After ExprStmt | test.rs:304:9:304:9 | 0 |  |
@@ -1335,9 +1274,8 @@ edges
 | test.rs:311:5:313:5 | Entry | test.rs:311:38:311:38 | s |  |
 | test.rs:311:5:313:5 | Normal Exit | test.rs:311:5:313:5 | Exit |  |
 | test.rs:311:38:311:38 | After s [match] | test.rs:311:87:313:5 | { ... } |  |
-| test.rs:311:38:311:38 | [OuterPatternMatch] s | test.rs:311:38:311:38 | s |  |
 | test.rs:311:38:311:38 | s | test.rs:311:38:311:38 | After s [match] | match |
-| test.rs:311:38:311:38 | s | test.rs:311:38:311:38 | [OuterPatternMatch] s | match |
+| test.rs:311:38:311:38 | s | test.rs:311:38:311:38 | s |  |
 | test.rs:311:87:313:5 | After { ... } | test.rs:311:5:313:5 | Normal Exit |  |
 | test.rs:311:87:313:5 | { ... } | test.rs:312:9:312:33 | Before Ok(...) |  |
 | test.rs:312:9:312:10 | Ok | test.rs:312:12:312:32 | Before ... + ... |  |
@@ -1360,9 +1298,8 @@ edges
 | test.rs:315:5:320:5 | Entry | test.rs:315:38:315:38 | b |  |
 | test.rs:315:5:320:5 | Normal Exit | test.rs:315:5:320:5 | Exit |  |
 | test.rs:315:38:315:38 | After b [match] | test.rs:315:71:320:5 | { ... } |  |
-| test.rs:315:38:315:38 | [OuterPatternMatch] b | test.rs:315:38:315:38 | b |  |
 | test.rs:315:38:315:38 | b | test.rs:315:38:315:38 | After b [match] | match |
-| test.rs:315:38:315:38 | b | test.rs:315:38:315:38 | [OuterPatternMatch] b | match |
+| test.rs:315:38:315:38 | b | test.rs:315:38:315:38 | b |  |
 | test.rs:315:71:320:5 | After { ... } | test.rs:315:5:320:5 | Normal Exit |  |
 | test.rs:315:71:320:5 | { ... } | test.rs:316:9:319:9 | match ... { ... } |  |
 | test.rs:316:9:319:9 | After match ... { ... } | test.rs:315:71:320:5 | After { ... } |  |
@@ -1379,10 +1316,9 @@ edges
 | test.rs:317:13:317:16 | After true [no-match] | test.rs:317:13:317:16 | After true [no-match] | no-match |
 | test.rs:317:13:317:16 | After true [no-match] | test.rs:317:13:317:32 | After true => ... [no-match] | no-match |
 | test.rs:317:13:317:16 | [OuterPatternMatch] true | test.rs:317:13:317:16 | After true [match] | match |
-| test.rs:317:13:317:16 | [OuterPatternMatch] true | test.rs:317:13:317:16 | true |  |
 | test.rs:317:13:317:16 | true | test.rs:317:13:317:16 | After true [no-match] | no-match |
 | test.rs:317:13:317:16 | true | test.rs:317:13:317:16 | [OuterPatternMatch] true | match |
-| test.rs:317:13:317:16 | true | test.rs:317:13:317:16 | [OuterPatternMatch] true | match |
+| test.rs:317:13:317:16 | true | test.rs:317:13:317:16 | true |  |
 | test.rs:317:13:317:32 | After true => ... [match] | test.rs:317:21:317:31 | Before Some(...) |  |
 | test.rs:317:13:317:32 | After true => ... [no-match] | test.rs:318:13:318:32 | false => ... |  |
 | test.rs:317:13:317:32 | true => ... | test.rs:317:13:317:16 | true |  |
@@ -1394,9 +1330,8 @@ edges
 | test.rs:318:13:318:17 | After false [match] | test.rs:318:13:318:17 | After false [match] | match |
 | test.rs:318:13:318:17 | After false [match] | test.rs:318:13:318:32 | After false => ... [match] | match |
 | test.rs:318:13:318:17 | [OuterPatternMatch] false | test.rs:318:13:318:17 | After false [match] | match |
-| test.rs:318:13:318:17 | [OuterPatternMatch] false | test.rs:318:13:318:17 | false |  |
 | test.rs:318:13:318:17 | false | test.rs:318:13:318:17 | [OuterPatternMatch] false | match |
-| test.rs:318:13:318:17 | false | test.rs:318:13:318:17 | [OuterPatternMatch] false | match |
+| test.rs:318:13:318:17 | false | test.rs:318:13:318:17 | false |  |
 | test.rs:318:13:318:32 | After false => ... [match] | test.rs:318:22:318:31 | Before Some(...) |  |
 | test.rs:318:13:318:32 | false => ... | test.rs:318:13:318:17 | false |  |
 | test.rs:318:22:318:25 | Some | test.rs:318:27:318:30 | true |  |
@@ -1407,9 +1342,8 @@ edges
 | test.rs:326:5:332:5 | Entry | test.rs:326:19:326:29 | maybe_digit |  |
 | test.rs:326:5:332:5 | Normal Exit | test.rs:326:5:332:5 | Exit |  |
 | test.rs:326:19:326:29 | After maybe_digit [match] | test.rs:326:52:332:5 | { ... } |  |
-| test.rs:326:19:326:29 | [OuterPatternMatch] maybe_digit | test.rs:326:19:326:29 | maybe_digit |  |
 | test.rs:326:19:326:29 | maybe_digit | test.rs:326:19:326:29 | After maybe_digit [match] | match |
-| test.rs:326:19:326:29 | maybe_digit | test.rs:326:19:326:29 | [OuterPatternMatch] maybe_digit | match |
+| test.rs:326:19:326:29 | maybe_digit | test.rs:326:19:326:29 | maybe_digit |  |
 | test.rs:326:52:332:5 | After { ... } | test.rs:326:5:332:5 | Normal Exit |  |
 | test.rs:326:52:332:5 | { ... } | test.rs:327:9:331:9 | match maybe_digit { ... } |  |
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:326:52:332:5 | After { ... } |  |
@@ -1424,9 +1358,8 @@ edges
 | test.rs:328:13:328:47 | After ... if ... => ... [match] | test.rs:328:32:328:37 | Before ... < ... |  |
 | test.rs:328:13:328:47 | After ... if ... => ... [no-match] | test.rs:329:13:329:33 | ... => x |  |
 | test.rs:328:26:328:26 | After x [match] | test.rs:328:13:328:27 | After ...::Some(...) [match] | match |
-| test.rs:328:26:328:26 | [OuterPatternMatch] x | test.rs:328:26:328:26 | x |  |
 | test.rs:328:26:328:26 | x | test.rs:328:26:328:26 | After x [match] | match |
-| test.rs:328:26:328:26 | x | test.rs:328:26:328:26 | [OuterPatternMatch] x | match |
+| test.rs:328:26:328:26 | x | test.rs:328:26:328:26 | x |  |
 | test.rs:328:32:328:32 | x | test.rs:328:36:328:37 | 10 |  |
 | test.rs:328:32:328:37 | ... < ... | test.rs:328:32:328:37 | After ... < ... [false] | false |
 | test.rs:328:32:328:37 | ... < ... | test.rs:328:32:328:37 | After ... < ... [true] | true |
@@ -1448,9 +1381,8 @@ edges
 | test.rs:329:13:329:33 | After ... => x [match] | test.rs:329:32:329:32 | x |  |
 | test.rs:329:13:329:33 | After ... => x [no-match] | test.rs:330:13:330:30 | ...::None => 5 |  |
 | test.rs:329:26:329:26 | After x [match] | test.rs:329:13:329:27 | After ...::Some(...) [match] | match |
-| test.rs:329:26:329:26 | [OuterPatternMatch] x | test.rs:329:26:329:26 | x |  |
 | test.rs:329:26:329:26 | x | test.rs:329:26:329:26 | After x [match] | match |
-| test.rs:329:26:329:26 | x | test.rs:329:26:329:26 | [OuterPatternMatch] x | match |
+| test.rs:329:26:329:26 | x | test.rs:329:26:329:26 | x |  |
 | test.rs:329:32:329:32 | x | test.rs:327:9:331:9 | After match maybe_digit { ... } |  |
 | test.rs:330:13:330:24 | ...::None | test.rs:330:13:330:24 | [OuterPatternMatch] ...::None | match |
 | test.rs:330:13:330:24 | After ...::None [match] | test.rs:330:13:330:30 | After ...::None => 5 [match] | match |
@@ -1461,9 +1393,8 @@ edges
 | test.rs:334:5:343:5 | Entry | test.rs:334:44:334:54 | maybe_digit |  |
 | test.rs:334:5:343:5 | Normal Exit | test.rs:334:5:343:5 | Exit |  |
 | test.rs:334:44:334:54 | After maybe_digit [match] | test.rs:334:77:343:5 | { ... } |  |
-| test.rs:334:44:334:54 | [OuterPatternMatch] maybe_digit | test.rs:334:44:334:54 | maybe_digit |  |
 | test.rs:334:44:334:54 | maybe_digit | test.rs:334:44:334:54 | After maybe_digit [match] | match |
-| test.rs:334:44:334:54 | maybe_digit | test.rs:334:44:334:54 | [OuterPatternMatch] maybe_digit | match |
+| test.rs:334:44:334:54 | maybe_digit | test.rs:334:44:334:54 | maybe_digit |  |
 | test.rs:334:77:343:5 | After { ... } | test.rs:334:5:343:5 | Normal Exit |  |
 | test.rs:334:77:343:5 | { ... } | test.rs:335:9:342:9 | match ... { ... } |  |
 | test.rs:335:9:342:9 | After match ... { ... } | test.rs:334:77:343:5 | After { ... } |  |
@@ -1498,9 +1429,8 @@ edges
 | test.rs:340:13:340:37 | After ... => ... [match] | test.rs:340:32:340:36 | Before ... + ... |  |
 | test.rs:340:13:340:37 | After ... => ... [no-match] | test.rs:341:13:341:30 | ...::None => 5 |  |
 | test.rs:340:26:340:26 | After x [match] | test.rs:340:13:340:27 | After ...::Some(...) [match] | match |
-| test.rs:340:26:340:26 | [OuterPatternMatch] x | test.rs:340:26:340:26 | x |  |
 | test.rs:340:26:340:26 | x | test.rs:340:26:340:26 | After x [match] | match |
-| test.rs:340:26:340:26 | x | test.rs:340:26:340:26 | [OuterPatternMatch] x | match |
+| test.rs:340:26:340:26 | x | test.rs:340:26:340:26 | x |  |
 | test.rs:340:32:340:32 | x | test.rs:340:36:340:36 | 5 |  |
 | test.rs:340:32:340:36 | ... + ... | test.rs:340:32:340:36 | After ... + ... |  |
 | test.rs:340:32:340:36 | After ... + ... | test.rs:335:9:342:9 | After match ... { ... } |  |
@@ -1515,13 +1445,11 @@ edges
 | test.rs:345:5:350:5 | Entry | test.rs:345:23:345:26 | cond |  |
 | test.rs:345:5:350:5 | Normal Exit | test.rs:345:5:350:5 | Exit |  |
 | test.rs:345:23:345:26 | After cond [match] | test.rs:345:35:345:35 | r |  |
-| test.rs:345:23:345:26 | [OuterPatternMatch] cond | test.rs:345:23:345:26 | cond |  |
 | test.rs:345:23:345:26 | cond | test.rs:345:23:345:26 | After cond [match] | match |
-| test.rs:345:23:345:26 | cond | test.rs:345:23:345:26 | [OuterPatternMatch] cond | match |
+| test.rs:345:23:345:26 | cond | test.rs:345:23:345:26 | cond |  |
 | test.rs:345:35:345:35 | After r [match] | test.rs:345:60:350:5 | { ... } |  |
-| test.rs:345:35:345:35 | [OuterPatternMatch] r | test.rs:345:35:345:35 | r |  |
 | test.rs:345:35:345:35 | r | test.rs:345:35:345:35 | After r [match] | match |
-| test.rs:345:35:345:35 | r | test.rs:345:35:345:35 | [OuterPatternMatch] r | match |
+| test.rs:345:35:345:35 | r | test.rs:345:35:345:35 | r |  |
 | test.rs:345:60:350:5 | After { ... } | test.rs:345:5:350:5 | Normal Exit |  |
 | test.rs:345:60:350:5 | { ... } | test.rs:346:9:349:18 | ... && ... |  |
 | test.rs:346:9:349:18 | ... && ... | test.rs:346:10:349:9 | match r { ... } |  |
@@ -1539,16 +1467,14 @@ edges
 | test.rs:347:13:347:25 | After ... => a [match] | test.rs:347:24:347:24 | a |  |
 | test.rs:347:13:347:25 | After ... => a [no-match] | test.rs:348:13:348:23 | _ => false |  |
 | test.rs:347:18:347:18 | After a [match] | test.rs:347:13:347:19 | After Some(...) [match] | match |
-| test.rs:347:18:347:18 | [OuterPatternMatch] a | test.rs:347:18:347:18 | a |  |
 | test.rs:347:18:347:18 | a | test.rs:347:18:347:18 | After a [match] | match |
-| test.rs:347:18:347:18 | a | test.rs:347:18:347:18 | [OuterPatternMatch] a | match |
+| test.rs:347:18:347:18 | a | test.rs:347:18:347:18 | a |  |
 | test.rs:347:24:347:24 | After a [false] | test.rs:346:10:349:9 | After match r { ... } [false] | false |
 | test.rs:347:24:347:24 | After a [true] | test.rs:346:10:349:9 | After match r { ... } [true] | true |
 | test.rs:347:24:347:24 | a | test.rs:347:24:347:24 | After a [false] | false |
 | test.rs:347:24:347:24 | a | test.rs:347:24:347:24 | After a [true] | true |
 | test.rs:348:13:348:13 | After _ [match] | test.rs:348:13:348:23 | After _ => false [match] | match |
-| test.rs:348:13:348:13 | [OuterPatternMatch] _ | test.rs:348:13:348:13 | After _ [match] | match |
-| test.rs:348:13:348:13 | _ | test.rs:348:13:348:13 | [OuterPatternMatch] _ | match |
+| test.rs:348:13:348:13 | _ | test.rs:348:13:348:13 | After _ [match] | match |
 | test.rs:348:13:348:23 | After _ => false [match] | test.rs:348:18:348:22 | false |  |
 | test.rs:348:13:348:23 | _ => false | test.rs:348:13:348:13 | _ |  |
 | test.rs:348:18:348:22 | After false [false] | test.rs:346:10:349:9 | After match r { ... } [false] | false |
@@ -1558,9 +1484,8 @@ edges
 | test.rs:352:5:357:5 | Exceptional Exit | test.rs:352:5:357:5 | Exit |  |
 | test.rs:352:5:357:5 | Normal Exit | test.rs:352:5:357:5 | Exit |  |
 | test.rs:352:35:352:35 | After r [match] | test.rs:352:66:357:5 | { ... } |  |
-| test.rs:352:35:352:35 | [OuterPatternMatch] r | test.rs:352:35:352:35 | r |  |
 | test.rs:352:35:352:35 | r | test.rs:352:35:352:35 | After r [match] | match |
-| test.rs:352:35:352:35 | r | test.rs:352:35:352:35 | [OuterPatternMatch] r | match |
+| test.rs:352:35:352:35 | r | test.rs:352:35:352:35 | r |  |
 | test.rs:352:66:357:5 | After { ... } | test.rs:352:5:357:5 | Normal Exit |  |
 | test.rs:352:66:357:5 | { ... } | test.rs:353:9:356:9 | match r { ... } |  |
 | test.rs:353:9:356:9 | After match r { ... } | test.rs:352:66:357:5 | After { ... } |  |
@@ -1575,9 +1500,8 @@ edges
 | test.rs:354:13:354:31 | After ... => value [match] | test.rs:354:26:354:30 | value |  |
 | test.rs:354:13:354:31 | After ... => value [no-match] | test.rs:355:13:355:41 | ... => ... |  |
 | test.rs:354:16:354:20 | After value [match] | test.rs:354:13:354:21 | After Ok(...) [match] | match |
-| test.rs:354:16:354:20 | [OuterPatternMatch] value | test.rs:354:16:354:20 | value |  |
 | test.rs:354:16:354:20 | value | test.rs:354:16:354:20 | After value [match] | match |
-| test.rs:354:16:354:20 | value | test.rs:354:16:354:20 | [OuterPatternMatch] value | match |
+| test.rs:354:16:354:20 | value | test.rs:354:16:354:20 | value |  |
 | test.rs:354:26:354:30 | value | test.rs:353:9:356:9 | After match r { ... } |  |
 | test.rs:355:13:355:22 | After Err(...) [match] | test.rs:355:13:355:41 | After ... => ... [match] | match |
 | test.rs:355:13:355:22 | Err(...) | test.rs:355:13:355:22 | [OuterPatternMatch] Err(...) | match |
@@ -1585,9 +1509,8 @@ edges
 | test.rs:355:13:355:41 | ... => ... | test.rs:355:13:355:22 | Err(...) |  |
 | test.rs:355:13:355:41 | After ... => ... [match] | test.rs:355:27:355:40 | Before match never { ... } |  |
 | test.rs:355:17:355:21 | After never [match] | test.rs:355:13:355:22 | After Err(...) [match] | match |
-| test.rs:355:17:355:21 | [OuterPatternMatch] never | test.rs:355:17:355:21 | never |  |
 | test.rs:355:17:355:21 | never | test.rs:355:17:355:21 | After never [match] | match |
-| test.rs:355:17:355:21 | never | test.rs:355:17:355:21 | [OuterPatternMatch] never | match |
+| test.rs:355:17:355:21 | never | test.rs:355:17:355:21 | never |  |
 | test.rs:355:27:355:40 | Before match never { ... } | test.rs:355:33:355:37 | never |  |
 | test.rs:355:27:355:40 | match never { ... } | test.rs:352:5:357:5 | Exceptional Exit | exception |
 | test.rs:355:33:355:37 | never | test.rs:355:27:355:40 | match never { ... } |  |
@@ -1595,9 +1518,8 @@ edges
 | test.rs:362:5:365:5 | Exceptional Exit | test.rs:362:5:365:5 | Exit |  |
 | test.rs:362:5:365:5 | Normal Exit | test.rs:362:5:365:5 | Exit |  |
 | test.rs:362:23:362:23 | After a [match] | test.rs:362:46:365:5 | { ... } |  |
-| test.rs:362:23:362:23 | [OuterPatternMatch] a | test.rs:362:23:362:23 | a |  |
 | test.rs:362:23:362:23 | a | test.rs:362:23:362:23 | After a [match] | match |
-| test.rs:362:23:362:23 | a | test.rs:362:23:362:23 | [OuterPatternMatch] a | match |
+| test.rs:362:23:362:23 | a | test.rs:362:23:362:23 | a |  |
 | test.rs:362:46:365:5 | After { ... } | test.rs:362:5:365:5 | Normal Exit |  |
 | test.rs:362:46:365:5 | { ... } | test.rs:363:9:363:57 | let ... = a else {...} |  |
 | test.rs:363:9:363:57 | After let ... = a else {...} | test.rs:364:9:364:9 | n |  |
@@ -1608,9 +1530,8 @@ edges
 | test.rs:363:13:363:19 | Some(...) | test.rs:363:13:363:19 | [OuterPatternMatch] Some(...) | match |
 | test.rs:363:13:363:19 | [OuterPatternMatch] Some(...) | test.rs:363:18:363:18 | n |  |
 | test.rs:363:18:363:18 | After n [match] | test.rs:363:13:363:19 | After Some(...) [match] | match |
-| test.rs:363:18:363:18 | [OuterPatternMatch] n | test.rs:363:18:363:18 | n |  |
 | test.rs:363:18:363:18 | n | test.rs:363:18:363:18 | After n [match] | match |
-| test.rs:363:18:363:18 | n | test.rs:363:18:363:18 | [OuterPatternMatch] n | match |
+| test.rs:363:18:363:18 | n | test.rs:363:18:363:18 | n |  |
 | test.rs:363:23:363:23 | a | test.rs:363:13:363:19 | Some(...) |  |
 | test.rs:363:30:363:56 | After { ... } | test.rs:363:30:363:56 | [let-else-diverge] { ... } |  |
 | test.rs:363:30:363:56 | [let-else-diverge] { ... } | test.rs:362:5:365:5 | Exceptional Exit | exception |
@@ -1653,17 +1574,15 @@ edges
 | test.rs:367:5:373:5 | Entry | test.rs:367:29:367:29 | m |  |
 | test.rs:367:5:373:5 | Normal Exit | test.rs:367:5:373:5 | Exit |  |
 | test.rs:367:29:367:29 | After m [match] | test.rs:367:53:373:5 | { ... } |  |
-| test.rs:367:29:367:29 | [OuterPatternMatch] m | test.rs:367:29:367:29 | m |  |
 | test.rs:367:29:367:29 | m | test.rs:367:29:367:29 | After m [match] | match |
-| test.rs:367:29:367:29 | m | test.rs:367:29:367:29 | [OuterPatternMatch] m | match |
+| test.rs:367:29:367:29 | m | test.rs:367:29:367:29 | m |  |
 | test.rs:367:53:373:5 | After { ... } | test.rs:367:5:373:5 | Normal Exit |  |
 | test.rs:367:53:373:5 | { ... } | test.rs:368:9:371:10 | let ... = ... |  |
 | test.rs:368:9:371:10 | After let ... = ... | test.rs:372:9:372:12 | true |  |
 | test.rs:368:9:371:10 | let ... = ... | test.rs:368:19:371:9 | match m { ... } |  |
 | test.rs:368:13:368:15 | After ret [match] | test.rs:368:9:371:10 | After let ... = ... |  |
-| test.rs:368:13:368:15 | [OuterPatternMatch] ret | test.rs:368:13:368:15 | ret |  |
 | test.rs:368:13:368:15 | ret | test.rs:368:13:368:15 | After ret [match] | match |
-| test.rs:368:13:368:15 | ret | test.rs:368:13:368:15 | [OuterPatternMatch] ret | match |
+| test.rs:368:13:368:15 | ret | test.rs:368:13:368:15 | ret |  |
 | test.rs:368:19:371:9 | After match m { ... } | test.rs:368:13:368:15 | ret |  |
 | test.rs:368:19:371:9 | match m { ... } | test.rs:368:25:368:25 | m |  |
 | test.rs:368:25:368:25 | m | test.rs:369:13:369:29 | ... => ret |  |
@@ -1676,9 +1595,8 @@ edges
 | test.rs:369:13:369:29 | After ... => ret [match] | test.rs:369:26:369:28 | ret |  |
 | test.rs:369:13:369:29 | After ... => ret [no-match] | test.rs:370:13:370:33 | ... => ... |  |
 | test.rs:369:18:369:20 | After ret [match] | test.rs:369:13:369:21 | After Some(...) [match] | match |
-| test.rs:369:18:369:20 | [OuterPatternMatch] ret | test.rs:369:18:369:20 | ret |  |
 | test.rs:369:18:369:20 | ret | test.rs:369:18:369:20 | After ret [match] | match |
-| test.rs:369:18:369:20 | ret | test.rs:369:18:369:20 | [OuterPatternMatch] ret | match |
+| test.rs:369:18:369:20 | ret | test.rs:369:18:369:20 | ret |  |
 | test.rs:369:26:369:28 | ret | test.rs:368:19:371:9 | After match m { ... } |  |
 | test.rs:370:13:370:16 | After None [match] | test.rs:370:13:370:33 | After ... => ... [match] | match |
 | test.rs:370:13:370:16 | None | test.rs:370:13:370:16 | After None [match] | match |
@@ -1693,15 +1611,13 @@ edges
 | test.rs:378:5:381:5 | Entry | test.rs:378:28:378:31 | unit |  |
 | test.rs:378:5:381:5 | Normal Exit | test.rs:378:5:381:5 | Exit |  |
 | test.rs:378:28:378:31 | After unit [match] | test.rs:378:44:381:5 | { ... } |  |
-| test.rs:378:28:378:31 | [OuterPatternMatch] unit | test.rs:378:28:378:31 | unit |  |
 | test.rs:378:28:378:31 | unit | test.rs:378:28:378:31 | After unit [match] | match |
-| test.rs:378:28:378:31 | unit | test.rs:378:28:378:31 | [OuterPatternMatch] unit | match |
+| test.rs:378:28:378:31 | unit | test.rs:378:28:378:31 | unit |  |
 | test.rs:378:44:381:5 | { ... } | test.rs:379:9:379:22 | let ... = unit |  |
 | test.rs:379:9:379:22 | After let ... = unit | test.rs:380:9:380:15 | ExprStmt |  |
 | test.rs:379:9:379:22 | let ... = unit | test.rs:379:18:379:21 | unit |  |
 | test.rs:379:13:379:14 | After TuplePat [match] | test.rs:379:9:379:22 | After let ... = unit |  |
-| test.rs:379:13:379:14 | TuplePat | test.rs:379:13:379:14 | [OuterPatternMatch] TuplePat | match |
-| test.rs:379:13:379:14 | [OuterPatternMatch] TuplePat | test.rs:379:13:379:14 | After TuplePat [match] | match |
+| test.rs:379:13:379:14 | TuplePat | test.rs:379:13:379:14 | After TuplePat [match] | match |
 | test.rs:379:18:379:21 | unit | test.rs:379:13:379:14 | TuplePat |  |
 | test.rs:380:9:380:14 | Before return | test.rs:380:9:380:14 | return |  |
 | test.rs:380:9:380:14 | return | test.rs:378:5:381:5 | Normal Exit | return |
@@ -1709,9 +1625,8 @@ edges
 | test.rs:387:5:391:5 | Entry | test.rs:387:29:387:30 | st |  |
 | test.rs:387:5:391:5 | Normal Exit | test.rs:387:5:391:5 | Exit |  |
 | test.rs:387:29:387:30 | After st [match] | test.rs:387:50:391:5 | { ... } |  |
-| test.rs:387:29:387:30 | [OuterPatternMatch] st | test.rs:387:29:387:30 | st |  |
 | test.rs:387:29:387:30 | st | test.rs:387:29:387:30 | After st [match] | match |
-| test.rs:387:29:387:30 | st | test.rs:387:29:387:30 | [OuterPatternMatch] st | match |
+| test.rs:387:29:387:30 | st | test.rs:387:29:387:30 | st |  |
 | test.rs:387:50:391:5 | After { ... } | test.rs:387:5:391:5 | Normal Exit |  |
 | test.rs:387:50:391:5 | { ... } | test.rs:388:9:390:9 | match st { ... } |  |
 | test.rs:388:9:390:9 | After match st { ... } | test.rs:387:50:391:5 | After { ... } |  |
@@ -1722,16 +1637,14 @@ edges
 | test.rs:389:13:389:27 | [OuterPatternMatch] MyStruct {...} | test.rs:389:24:389:25 | .. |  |
 | test.rs:389:13:389:33 | ... => 1 | test.rs:389:13:389:27 | MyStruct {...} |  |
 | test.rs:389:13:389:33 | After ... => 1 [match] | test.rs:389:32:389:32 | 1 |  |
-| test.rs:389:24:389:25 | .. | test.rs:389:24:389:25 | [OuterPatternMatch] .. | match |
+| test.rs:389:24:389:25 | .. | test.rs:389:24:389:25 | After .. [match] | match |
 | test.rs:389:24:389:25 | After .. [match] | test.rs:389:13:389:27 | After MyStruct {...} [match] | match |
-| test.rs:389:24:389:25 | [OuterPatternMatch] .. | test.rs:389:24:389:25 | After .. [match] | match |
 | test.rs:389:32:389:32 | 1 | test.rs:388:9:390:9 | After match st { ... } |  |
 | test.rs:393:5:398:5 | Entry | test.rs:393:23:393:24 | st |  |
 | test.rs:393:5:398:5 | Normal Exit | test.rs:393:5:398:5 | Exit |  |
 | test.rs:393:23:393:24 | After st [match] | test.rs:393:44:398:5 | { ... } |  |
-| test.rs:393:23:393:24 | [OuterPatternMatch] st | test.rs:393:23:393:24 | st |  |
 | test.rs:393:23:393:24 | st | test.rs:393:23:393:24 | After st [match] | match |
-| test.rs:393:23:393:24 | st | test.rs:393:23:393:24 | [OuterPatternMatch] st | match |
+| test.rs:393:23:393:24 | st | test.rs:393:23:393:24 | st |  |
 | test.rs:393:44:398:5 | After { ... } | test.rs:393:5:398:5 | Normal Exit |  |
 | test.rs:393:44:398:5 | { ... } | test.rs:394:9:397:9 | match st { ... } |  |
 | test.rs:394:9:397:9 | After match st { ... } | test.rs:393:44:398:5 | After { ... } |  |
@@ -1745,14 +1658,13 @@ edges
 | test.rs:395:13:395:35 | ... => 0 | test.rs:395:13:395:29 | MyStruct {...} |  |
 | test.rs:395:13:395:35 | After ... => 0 [match] | test.rs:395:34:395:34 | 0 |  |
 | test.rs:395:13:395:35 | After ... => 0 [no-match] | test.rs:396:13:396:32 | ... => 3 |  |
+| test.rs:395:27:395:27 | 1 | test.rs:395:27:395:27 | 1 |  |
 | test.rs:395:27:395:27 | 1 | test.rs:395:27:395:27 | After 1 [no-match] | no-match |
-| test.rs:395:27:395:27 | 1 | test.rs:395:27:395:27 | [OuterPatternMatch] 1 | match |
 | test.rs:395:27:395:27 | 1 | test.rs:395:27:395:27 | [OuterPatternMatch] 1 | match |
 | test.rs:395:27:395:27 | After 1 [match] | test.rs:395:13:395:29 | After MyStruct {...} [match] | match |
 | test.rs:395:27:395:27 | After 1 [match] | test.rs:395:27:395:27 | After 1 [match] | match |
 | test.rs:395:27:395:27 | After 1 [no-match] | test.rs:395:13:395:29 | After MyStruct {...} [no-match] | no-match |
 | test.rs:395:27:395:27 | After 1 [no-match] | test.rs:395:27:395:27 | After 1 [no-match] | no-match |
-| test.rs:395:27:395:27 | [OuterPatternMatch] 1 | test.rs:395:27:395:27 | 1 |  |
 | test.rs:395:27:395:27 | [OuterPatternMatch] 1 | test.rs:395:27:395:27 | After 1 [match] | match |
 | test.rs:395:34:395:34 | 0 | test.rs:394:9:397:9 | After match st { ... } |  |
 | test.rs:396:13:396:26 | After MyStruct {...} [match] | test.rs:396:13:396:32 | After ... => 3 [match] | match |
@@ -1761,9 +1673,8 @@ edges
 | test.rs:396:13:396:32 | ... => 3 | test.rs:396:13:396:26 | MyStruct {...} |  |
 | test.rs:396:13:396:32 | After ... => 3 [match] | test.rs:396:31:396:31 | 3 |  |
 | test.rs:396:24:396:24 | After x [match] | test.rs:396:13:396:26 | After MyStruct {...} [match] | match |
-| test.rs:396:24:396:24 | [OuterPatternMatch] x | test.rs:396:24:396:24 | x |  |
 | test.rs:396:24:396:24 | x | test.rs:396:24:396:24 | After x [match] | match |
-| test.rs:396:24:396:24 | x | test.rs:396:24:396:24 | [OuterPatternMatch] x | match |
+| test.rs:396:24:396:24 | x | test.rs:396:24:396:24 | x |  |
 | test.rs:396:31:396:31 | 3 | test.rs:394:9:397:9 | After match st { ... } |  |
 | test.rs:400:5:407:5 | Entry | test.rs:400:31:407:5 | { ... } |  |
 | test.rs:400:5:407:5 | Normal Exit | test.rs:400:5:407:5 | Exit |  |
@@ -1774,67 +1685,59 @@ edges
 | test.rs:401:15:401:16 | 42 | test.rs:402:13:402:21 | ... => 1 |  |
 | test.rs:402:13:402:15 | After RangePat [match] | test.rs:402:13:402:21 | After ... => 1 [match] | match |
 | test.rs:402:13:402:15 | After RangePat [no-match] | test.rs:402:13:402:21 | After ... => 1 [no-match] | no-match |
-| test.rs:402:13:402:15 | RangePat | test.rs:402:13:402:15 | [OuterPatternMatch] RangePat | match |
-| test.rs:402:13:402:15 | [OuterPatternMatch] RangePat | test.rs:402:15:402:15 | 0 |  |
+| test.rs:402:13:402:15 | RangePat | test.rs:402:15:402:15 | 0 |  |
 | test.rs:402:13:402:21 | ... => 1 | test.rs:402:13:402:15 | RangePat |  |
 | test.rs:402:13:402:21 | After ... => 1 [match] | test.rs:402:20:402:20 | 1 |  |
 | test.rs:402:13:402:21 | After ... => 1 [no-match] | test.rs:403:13:403:22 | ... => 2 |  |
+| test.rs:402:15:402:15 | 0 | test.rs:402:15:402:15 | 0 |  |
 | test.rs:402:15:402:15 | 0 | test.rs:402:15:402:15 | After 0 [no-match] | no-match |
-| test.rs:402:15:402:15 | 0 | test.rs:402:15:402:15 | [OuterPatternMatch] 0 | match |
 | test.rs:402:15:402:15 | 0 | test.rs:402:15:402:15 | [OuterPatternMatch] 0 | match |
 | test.rs:402:15:402:15 | After 0 [match] | test.rs:402:13:402:15 | After RangePat [match] | match |
 | test.rs:402:15:402:15 | After 0 [match] | test.rs:402:15:402:15 | After 0 [match] | match |
 | test.rs:402:15:402:15 | After 0 [no-match] | test.rs:402:13:402:15 | After RangePat [no-match] | no-match |
 | test.rs:402:15:402:15 | After 0 [no-match] | test.rs:402:15:402:15 | After 0 [no-match] | no-match |
-| test.rs:402:15:402:15 | [OuterPatternMatch] 0 | test.rs:402:15:402:15 | 0 |  |
 | test.rs:402:15:402:15 | [OuterPatternMatch] 0 | test.rs:402:15:402:15 | After 0 [match] | match |
 | test.rs:402:20:402:20 | 1 | test.rs:401:9:406:9 | After match 42 { ... } |  |
+| test.rs:403:13:403:13 | 1 | test.rs:403:13:403:13 | 1 |  |
 | test.rs:403:13:403:13 | 1 | test.rs:403:13:403:13 | After 1 [no-match] | no-match |
-| test.rs:403:13:403:13 | 1 | test.rs:403:13:403:13 | [OuterPatternMatch] 1 | match |
 | test.rs:403:13:403:13 | 1 | test.rs:403:13:403:13 | [OuterPatternMatch] 1 | match |
 | test.rs:403:13:403:13 | After 1 [match] | test.rs:403:13:403:13 | After 1 [match] | match |
 | test.rs:403:13:403:13 | After 1 [match] | test.rs:403:16:403:16 | 2 |  |
 | test.rs:403:13:403:13 | After 1 [no-match] | test.rs:403:13:403:13 | After 1 [no-match] | no-match |
 | test.rs:403:13:403:13 | After 1 [no-match] | test.rs:403:13:403:16 | After RangePat [no-match] | no-match |
-| test.rs:403:13:403:13 | [OuterPatternMatch] 1 | test.rs:403:13:403:13 | 1 |  |
 | test.rs:403:13:403:13 | [OuterPatternMatch] 1 | test.rs:403:13:403:13 | After 1 [match] | match |
 | test.rs:403:13:403:16 | After RangePat [match] | test.rs:403:13:403:22 | After ... => 2 [match] | match |
 | test.rs:403:13:403:16 | After RangePat [no-match] | test.rs:403:13:403:22 | After ... => 2 [no-match] | no-match |
-| test.rs:403:13:403:16 | RangePat | test.rs:403:13:403:16 | [OuterPatternMatch] RangePat | match |
-| test.rs:403:13:403:16 | [OuterPatternMatch] RangePat | test.rs:403:13:403:13 | 1 |  |
+| test.rs:403:13:403:16 | RangePat | test.rs:403:13:403:13 | 1 |  |
 | test.rs:403:13:403:22 | ... => 2 | test.rs:403:13:403:16 | RangePat |  |
 | test.rs:403:13:403:22 | After ... => 2 [match] | test.rs:403:21:403:21 | 2 |  |
 | test.rs:403:13:403:22 | After ... => 2 [no-match] | test.rs:404:13:404:21 | ... => 3 |  |
+| test.rs:403:16:403:16 | 2 | test.rs:403:16:403:16 | 2 |  |
 | test.rs:403:16:403:16 | 2 | test.rs:403:16:403:16 | After 2 [no-match] | no-match |
-| test.rs:403:16:403:16 | 2 | test.rs:403:16:403:16 | [OuterPatternMatch] 2 | match |
 | test.rs:403:16:403:16 | 2 | test.rs:403:16:403:16 | [OuterPatternMatch] 2 | match |
 | test.rs:403:16:403:16 | After 2 [match] | test.rs:403:13:403:16 | After RangePat [match] | match |
 | test.rs:403:16:403:16 | After 2 [match] | test.rs:403:16:403:16 | After 2 [match] | match |
 | test.rs:403:16:403:16 | After 2 [no-match] | test.rs:403:13:403:16 | After RangePat [no-match] | no-match |
 | test.rs:403:16:403:16 | After 2 [no-match] | test.rs:403:16:403:16 | After 2 [no-match] | no-match |
-| test.rs:403:16:403:16 | [OuterPatternMatch] 2 | test.rs:403:16:403:16 | 2 |  |
 | test.rs:403:16:403:16 | [OuterPatternMatch] 2 | test.rs:403:16:403:16 | After 2 [match] | match |
 | test.rs:403:21:403:21 | 2 | test.rs:401:9:406:9 | After match 42 { ... } |  |
+| test.rs:404:13:404:13 | 5 | test.rs:404:13:404:13 | 5 |  |
 | test.rs:404:13:404:13 | 5 | test.rs:404:13:404:13 | After 5 [no-match] | no-match |
-| test.rs:404:13:404:13 | 5 | test.rs:404:13:404:13 | [OuterPatternMatch] 5 | match |
 | test.rs:404:13:404:13 | 5 | test.rs:404:13:404:13 | [OuterPatternMatch] 5 | match |
 | test.rs:404:13:404:13 | After 5 [match] | test.rs:404:13:404:13 | After 5 [match] | match |
 | test.rs:404:13:404:13 | After 5 [match] | test.rs:404:13:404:15 | After RangePat [match] | match |
 | test.rs:404:13:404:13 | After 5 [no-match] | test.rs:404:13:404:13 | After 5 [no-match] | no-match |
 | test.rs:404:13:404:13 | After 5 [no-match] | test.rs:404:13:404:15 | After RangePat [no-match] | no-match |
-| test.rs:404:13:404:13 | [OuterPatternMatch] 5 | test.rs:404:13:404:13 | 5 |  |
 | test.rs:404:13:404:13 | [OuterPatternMatch] 5 | test.rs:404:13:404:13 | After 5 [match] | match |
 | test.rs:404:13:404:15 | After RangePat [match] | test.rs:404:13:404:21 | After ... => 3 [match] | match |
 | test.rs:404:13:404:15 | After RangePat [no-match] | test.rs:404:13:404:21 | After ... => 3 [no-match] | no-match |
-| test.rs:404:13:404:15 | RangePat | test.rs:404:13:404:15 | [OuterPatternMatch] RangePat | match |
-| test.rs:404:13:404:15 | [OuterPatternMatch] RangePat | test.rs:404:13:404:13 | 5 |  |
+| test.rs:404:13:404:15 | RangePat | test.rs:404:13:404:13 | 5 |  |
 | test.rs:404:13:404:21 | ... => 3 | test.rs:404:13:404:15 | RangePat |  |
 | test.rs:404:13:404:21 | After ... => 3 [match] | test.rs:404:20:404:20 | 3 |  |
 | test.rs:404:13:404:21 | After ... => 3 [no-match] | test.rs:405:13:405:19 | _ => 4 |  |
 | test.rs:404:20:404:20 | 3 | test.rs:401:9:406:9 | After match 42 { ... } |  |
 | test.rs:405:13:405:13 | After _ [match] | test.rs:405:13:405:19 | After _ => 4 [match] | match |
-| test.rs:405:13:405:13 | [OuterPatternMatch] _ | test.rs:405:13:405:13 | After _ [match] | match |
-| test.rs:405:13:405:13 | _ | test.rs:405:13:405:13 | [OuterPatternMatch] _ | match |
+| test.rs:405:13:405:13 | _ | test.rs:405:13:405:13 | After _ [match] | match |
 | test.rs:405:13:405:19 | After _ => 4 [match] | test.rs:405:18:405:18 | 4 |  |
 | test.rs:405:13:405:19 | _ => 4 | test.rs:405:13:405:13 | _ |  |
 | test.rs:405:18:405:18 | 4 | test.rs:401:9:406:9 | After match 42 { ... } |  |
@@ -1848,32 +1751,28 @@ edges
 | test.rs:411:13:411:13 | n | test.rs:411:13:411:21 | After n @ ... [match] | match |
 | test.rs:411:13:411:21 | After n @ ... [match] | test.rs:411:13:411:31 | After ... => ... [match] | match |
 | test.rs:411:13:411:21 | After n @ ... [no-match] | test.rs:411:13:411:31 | After ... => ... [no-match] | no-match |
-| test.rs:411:13:411:21 | [OuterPatternMatch] n @ ... | test.rs:411:17:411:21 | RangePat |  |
-| test.rs:411:13:411:21 | n @ ... | test.rs:411:13:411:21 | [OuterPatternMatch] n @ ... | match |
+| test.rs:411:13:411:21 | n @ ... | test.rs:411:17:411:21 | RangePat |  |
 | test.rs:411:13:411:31 | ... => ... | test.rs:411:13:411:21 | n @ ... |  |
 | test.rs:411:13:411:31 | After ... => ... [match] | test.rs:411:26:411:30 | Before ... * ... |  |
 | test.rs:411:13:411:31 | After ... => ... [no-match] | test.rs:412:13:412:19 | _ => 0 |  |
+| test.rs:411:17:411:17 | 1 | test.rs:411:17:411:17 | 1 |  |
 | test.rs:411:17:411:17 | 1 | test.rs:411:17:411:17 | After 1 [no-match] | no-match |
-| test.rs:411:17:411:17 | 1 | test.rs:411:17:411:17 | [OuterPatternMatch] 1 | match |
 | test.rs:411:17:411:17 | 1 | test.rs:411:17:411:17 | [OuterPatternMatch] 1 | match |
 | test.rs:411:17:411:17 | After 1 [match] | test.rs:411:17:411:17 | After 1 [match] | match |
 | test.rs:411:17:411:17 | After 1 [match] | test.rs:411:20:411:21 | 10 |  |
 | test.rs:411:17:411:17 | After 1 [no-match] | test.rs:411:17:411:17 | After 1 [no-match] | no-match |
 | test.rs:411:17:411:17 | After 1 [no-match] | test.rs:411:17:411:21 | After RangePat [no-match] | no-match |
-| test.rs:411:17:411:17 | [OuterPatternMatch] 1 | test.rs:411:17:411:17 | 1 |  |
 | test.rs:411:17:411:17 | [OuterPatternMatch] 1 | test.rs:411:17:411:17 | After 1 [match] | match |
 | test.rs:411:17:411:21 | After RangePat [match] | test.rs:411:13:411:13 | n |  |
 | test.rs:411:17:411:21 | After RangePat [no-match] | test.rs:411:13:411:21 | After n @ ... [no-match] | no-match |
-| test.rs:411:17:411:21 | RangePat | test.rs:411:17:411:21 | [OuterPatternMatch] RangePat | match |
-| test.rs:411:17:411:21 | [OuterPatternMatch] RangePat | test.rs:411:17:411:17 | 1 |  |
+| test.rs:411:17:411:21 | RangePat | test.rs:411:17:411:17 | 1 |  |
+| test.rs:411:20:411:21 | 10 | test.rs:411:20:411:21 | 10 |  |
 | test.rs:411:20:411:21 | 10 | test.rs:411:20:411:21 | After 10 [no-match] | no-match |
-| test.rs:411:20:411:21 | 10 | test.rs:411:20:411:21 | [OuterPatternMatch] 10 | match |
 | test.rs:411:20:411:21 | 10 | test.rs:411:20:411:21 | [OuterPatternMatch] 10 | match |
 | test.rs:411:20:411:21 | After 10 [match] | test.rs:411:17:411:21 | After RangePat [match] | match |
 | test.rs:411:20:411:21 | After 10 [match] | test.rs:411:20:411:21 | After 10 [match] | match |
 | test.rs:411:20:411:21 | After 10 [no-match] | test.rs:411:17:411:21 | After RangePat [no-match] | no-match |
 | test.rs:411:20:411:21 | After 10 [no-match] | test.rs:411:20:411:21 | After 10 [no-match] | no-match |
-| test.rs:411:20:411:21 | [OuterPatternMatch] 10 | test.rs:411:20:411:21 | 10 |  |
 | test.rs:411:20:411:21 | [OuterPatternMatch] 10 | test.rs:411:20:411:21 | After 10 [match] | match |
 | test.rs:411:26:411:26 | 2 | test.rs:411:30:411:30 | n |  |
 | test.rs:411:26:411:30 | ... * ... | test.rs:411:26:411:30 | After ... * ... |  |
@@ -1881,8 +1780,7 @@ edges
 | test.rs:411:26:411:30 | Before ... * ... | test.rs:411:26:411:26 | 2 |  |
 | test.rs:411:30:411:30 | n | test.rs:411:26:411:30 | ... * ... |  |
 | test.rs:412:13:412:13 | After _ [match] | test.rs:412:13:412:19 | After _ => 0 [match] | match |
-| test.rs:412:13:412:13 | [OuterPatternMatch] _ | test.rs:412:13:412:13 | After _ [match] | match |
-| test.rs:412:13:412:13 | _ | test.rs:412:13:412:13 | [OuterPatternMatch] _ | match |
+| test.rs:412:13:412:13 | _ | test.rs:412:13:412:13 | After _ [match] | match |
 | test.rs:412:13:412:19 | After _ => 0 [match] | test.rs:412:18:412:18 | 0 |  |
 | test.rs:412:13:412:19 | _ => 0 | test.rs:412:13:412:13 | _ |  |
 | test.rs:412:18:412:18 | 0 | test.rs:410:9:413:9 | After match 43 { ... } |  |
@@ -1893,8 +1791,7 @@ edges
 | test.rs:417:9:417:23 | After let ... = 10 | test.rs:418:9:421:10 | ExprStmt |  |
 | test.rs:417:9:417:23 | let ... = 10 | test.rs:417:21:417:22 | 10 |  |
 | test.rs:417:13:417:17 | After mut a [match] | test.rs:417:9:417:23 | After let ... = 10 |  |
-| test.rs:417:13:417:17 | [OuterPatternMatch] mut a | test.rs:417:17:417:17 | a |  |
-| test.rs:417:13:417:17 | mut a | test.rs:417:13:417:17 | [OuterPatternMatch] mut a | match |
+| test.rs:417:13:417:17 | mut a | test.rs:417:17:417:17 | a |  |
 | test.rs:417:17:417:17 | a | test.rs:417:13:417:17 | After mut a [match] | match |
 | test.rs:417:21:417:22 | 10 | test.rs:417:13:417:17 | mut a |  |
 | test.rs:418:9:421:9 | After match a { ... } | test.rs:418:9:421:10 | After ExprStmt |  |
@@ -1904,33 +1801,29 @@ edges
 | test.rs:418:15:418:15 | a | test.rs:419:13:419:42 | ... => ... |  |
 | test.rs:419:13:419:29 | After ref mut n @ ... [match] | test.rs:419:13:419:42 | After ... => ... [match] | match |
 | test.rs:419:13:419:29 | After ref mut n @ ... [no-match] | test.rs:419:13:419:42 | After ... => ... [no-match] | no-match |
-| test.rs:419:13:419:29 | [OuterPatternMatch] ref mut n @ ... | test.rs:419:25:419:29 | RangePat |  |
-| test.rs:419:13:419:29 | ref mut n @ ... | test.rs:419:13:419:29 | [OuterPatternMatch] ref mut n @ ... | match |
+| test.rs:419:13:419:29 | ref mut n @ ... | test.rs:419:25:419:29 | RangePat |  |
 | test.rs:419:13:419:42 | ... => ... | test.rs:419:13:419:29 | ref mut n @ ... |  |
 | test.rs:419:13:419:42 | After ... => ... [match] | test.rs:419:34:419:41 | Before ... += ... |  |
 | test.rs:419:13:419:42 | After ... => ... [no-match] | test.rs:420:13:420:32 | ... => ... |  |
 | test.rs:419:21:419:21 | n | test.rs:419:13:419:29 | After ref mut n @ ... [match] | match |
+| test.rs:419:25:419:25 | 1 | test.rs:419:25:419:25 | 1 |  |
 | test.rs:419:25:419:25 | 1 | test.rs:419:25:419:25 | After 1 [no-match] | no-match |
-| test.rs:419:25:419:25 | 1 | test.rs:419:25:419:25 | [OuterPatternMatch] 1 | match |
 | test.rs:419:25:419:25 | 1 | test.rs:419:25:419:25 | [OuterPatternMatch] 1 | match |
 | test.rs:419:25:419:25 | After 1 [match] | test.rs:419:25:419:25 | After 1 [match] | match |
 | test.rs:419:25:419:25 | After 1 [match] | test.rs:419:28:419:29 | 10 |  |
 | test.rs:419:25:419:25 | After 1 [no-match] | test.rs:419:25:419:25 | After 1 [no-match] | no-match |
 | test.rs:419:25:419:25 | After 1 [no-match] | test.rs:419:25:419:29 | After RangePat [no-match] | no-match |
-| test.rs:419:25:419:25 | [OuterPatternMatch] 1 | test.rs:419:25:419:25 | 1 |  |
 | test.rs:419:25:419:25 | [OuterPatternMatch] 1 | test.rs:419:25:419:25 | After 1 [match] | match |
 | test.rs:419:25:419:29 | After RangePat [match] | test.rs:419:21:419:21 | n |  |
 | test.rs:419:25:419:29 | After RangePat [no-match] | test.rs:419:13:419:29 | After ref mut n @ ... [no-match] | no-match |
-| test.rs:419:25:419:29 | RangePat | test.rs:419:25:419:29 | [OuterPatternMatch] RangePat | match |
-| test.rs:419:25:419:29 | [OuterPatternMatch] RangePat | test.rs:419:25:419:25 | 1 |  |
+| test.rs:419:25:419:29 | RangePat | test.rs:419:25:419:25 | 1 |  |
+| test.rs:419:28:419:29 | 10 | test.rs:419:28:419:29 | 10 |  |
 | test.rs:419:28:419:29 | 10 | test.rs:419:28:419:29 | After 10 [no-match] | no-match |
-| test.rs:419:28:419:29 | 10 | test.rs:419:28:419:29 | [OuterPatternMatch] 10 | match |
 | test.rs:419:28:419:29 | 10 | test.rs:419:28:419:29 | [OuterPatternMatch] 10 | match |
 | test.rs:419:28:419:29 | After 10 [match] | test.rs:419:25:419:29 | After RangePat [match] | match |
 | test.rs:419:28:419:29 | After 10 [match] | test.rs:419:28:419:29 | After 10 [match] | match |
 | test.rs:419:28:419:29 | After 10 [no-match] | test.rs:419:25:419:29 | After RangePat [no-match] | no-match |
 | test.rs:419:28:419:29 | After 10 [no-match] | test.rs:419:28:419:29 | After 10 [no-match] | no-match |
-| test.rs:419:28:419:29 | [OuterPatternMatch] 10 | test.rs:419:28:419:29 | 10 |  |
 | test.rs:419:28:419:29 | [OuterPatternMatch] 10 | test.rs:419:28:419:29 | After 10 [match] | match |
 | test.rs:419:34:419:35 | * ... | test.rs:419:34:419:35 | After * ... |  |
 | test.rs:419:34:419:35 | After * ... | test.rs:419:40:419:41 | 10 |  |
@@ -1941,8 +1834,7 @@ edges
 | test.rs:419:35:419:35 | n | test.rs:419:34:419:35 | * ... |  |
 | test.rs:419:40:419:41 | 10 | test.rs:419:34:419:41 | ... += ... |  |
 | test.rs:420:13:420:21 | After ref mut n [match] | test.rs:420:13:420:32 | After ... => ... [match] | match |
-| test.rs:420:13:420:21 | [OuterPatternMatch] ref mut n | test.rs:420:21:420:21 | n |  |
-| test.rs:420:13:420:21 | ref mut n | test.rs:420:13:420:21 | [OuterPatternMatch] ref mut n | match |
+| test.rs:420:13:420:21 | ref mut n | test.rs:420:21:420:21 | n |  |
 | test.rs:420:13:420:32 | ... => ... | test.rs:420:13:420:21 | ref mut n |  |
 | test.rs:420:13:420:32 | After ... => ... [match] | test.rs:420:26:420:31 | Before ... = ... |  |
 | test.rs:420:21:420:21 | n | test.rs:420:13:420:21 | After ref mut n [match] | match |
@@ -1958,13 +1850,11 @@ edges
 | test.rs:425:5:431:5 | Entry | test.rs:425:22:425:22 | a |  |
 | test.rs:425:5:431:5 | Normal Exit | test.rs:425:5:431:5 | Exit |  |
 | test.rs:425:22:425:22 | After a [match] | test.rs:425:30:425:30 | b |  |
-| test.rs:425:22:425:22 | [OuterPatternMatch] a | test.rs:425:22:425:22 | a |  |
 | test.rs:425:22:425:22 | a | test.rs:425:22:425:22 | After a [match] | match |
-| test.rs:425:22:425:22 | a | test.rs:425:22:425:22 | [OuterPatternMatch] a | match |
+| test.rs:425:22:425:22 | a | test.rs:425:22:425:22 | a |  |
 | test.rs:425:30:425:30 | After b [match] | test.rs:425:45:431:5 | { ... } |  |
-| test.rs:425:30:425:30 | [OuterPatternMatch] b | test.rs:425:30:425:30 | b |  |
 | test.rs:425:30:425:30 | b | test.rs:425:30:425:30 | After b [match] | match |
-| test.rs:425:30:425:30 | b | test.rs:425:30:425:30 | [OuterPatternMatch] b | match |
+| test.rs:425:30:425:30 | b | test.rs:425:30:425:30 | b |  |
 | test.rs:425:45:431:5 | After { ... } | test.rs:425:5:431:5 | Normal Exit |  |
 | test.rs:425:45:431:5 | { ... } | test.rs:426:9:430:9 | match ... { ... } |  |
 | test.rs:426:9:430:9 | After match ... { ... } | test.rs:425:45:431:5 | After { ... } |  |
@@ -1976,72 +1866,62 @@ edges
 | test.rs:426:19:426:19 | b | test.rs:426:15:426:20 | TupleExpr |  |
 | test.rs:427:13:427:18 | After TuplePat [match] | test.rs:427:13:427:24 | After ... => 2 [match] | match |
 | test.rs:427:13:427:18 | After TuplePat [no-match] | test.rs:427:13:427:24 | After ... => 2 [no-match] | no-match |
-| test.rs:427:13:427:18 | TuplePat | test.rs:427:13:427:18 | [OuterPatternMatch] TuplePat | match |
-| test.rs:427:13:427:18 | [OuterPatternMatch] TuplePat | test.rs:427:14:427:14 | 1 |  |
+| test.rs:427:13:427:18 | TuplePat | test.rs:427:14:427:14 | 1 |  |
 | test.rs:427:13:427:24 | ... => 2 | test.rs:427:13:427:18 | TuplePat |  |
 | test.rs:427:13:427:24 | After ... => 2 [match] | test.rs:427:23:427:23 | 2 |  |
 | test.rs:427:13:427:24 | After ... => 2 [no-match] | test.rs:428:13:428:25 | ... => 3 |  |
+| test.rs:427:14:427:14 | 1 | test.rs:427:14:427:14 | 1 |  |
 | test.rs:427:14:427:14 | 1 | test.rs:427:14:427:14 | After 1 [no-match] | no-match |
-| test.rs:427:14:427:14 | 1 | test.rs:427:14:427:14 | [OuterPatternMatch] 1 | match |
 | test.rs:427:14:427:14 | 1 | test.rs:427:14:427:14 | [OuterPatternMatch] 1 | match |
 | test.rs:427:14:427:14 | After 1 [match] | test.rs:427:14:427:14 | After 1 [match] | match |
 | test.rs:427:14:427:14 | After 1 [match] | test.rs:427:17:427:17 | _ |  |
 | test.rs:427:14:427:14 | After 1 [no-match] | test.rs:427:13:427:18 | After TuplePat [no-match] | no-match |
 | test.rs:427:14:427:14 | After 1 [no-match] | test.rs:427:14:427:14 | After 1 [no-match] | no-match |
-| test.rs:427:14:427:14 | [OuterPatternMatch] 1 | test.rs:427:14:427:14 | 1 |  |
 | test.rs:427:14:427:14 | [OuterPatternMatch] 1 | test.rs:427:14:427:14 | After 1 [match] | match |
 | test.rs:427:17:427:17 | After _ [match] | test.rs:427:13:427:18 | After TuplePat [match] | match |
-| test.rs:427:17:427:17 | [OuterPatternMatch] _ | test.rs:427:17:427:17 | After _ [match] | match |
-| test.rs:427:17:427:17 | _ | test.rs:427:17:427:17 | [OuterPatternMatch] _ | match |
+| test.rs:427:17:427:17 | _ | test.rs:427:17:427:17 | After _ [match] | match |
 | test.rs:427:23:427:23 | 2 | test.rs:426:9:430:9 | After match ... { ... } |  |
 | test.rs:428:13:428:19 | After TuplePat [match] | test.rs:428:13:428:25 | After ... => 3 [match] | match |
 | test.rs:428:13:428:19 | After TuplePat [no-match] | test.rs:428:13:428:25 | After ... => 3 [no-match] | no-match |
-| test.rs:428:13:428:19 | TuplePat | test.rs:428:13:428:19 | [OuterPatternMatch] TuplePat | match |
-| test.rs:428:13:428:19 | [OuterPatternMatch] TuplePat | test.rs:428:14:428:15 | .. |  |
+| test.rs:428:13:428:19 | TuplePat | test.rs:428:14:428:15 | .. |  |
 | test.rs:428:13:428:25 | ... => 3 | test.rs:428:13:428:19 | TuplePat |  |
 | test.rs:428:13:428:25 | After ... => 3 [match] | test.rs:428:24:428:24 | 3 |  |
 | test.rs:428:13:428:25 | After ... => 3 [no-match] | test.rs:429:13:429:22 | ... => 4 |  |
-| test.rs:428:14:428:15 | .. | test.rs:428:14:428:15 | [OuterPatternMatch] .. | match |
+| test.rs:428:14:428:15 | .. | test.rs:428:14:428:15 | After .. [match] | match |
 | test.rs:428:14:428:15 | After .. [match] | test.rs:428:18:428:18 | 2 |  |
-| test.rs:428:14:428:15 | [OuterPatternMatch] .. | test.rs:428:14:428:15 | After .. [match] | match |
+| test.rs:428:18:428:18 | 2 | test.rs:428:18:428:18 | 2 |  |
 | test.rs:428:18:428:18 | 2 | test.rs:428:18:428:18 | After 2 [no-match] | no-match |
-| test.rs:428:18:428:18 | 2 | test.rs:428:18:428:18 | [OuterPatternMatch] 2 | match |
 | test.rs:428:18:428:18 | 2 | test.rs:428:18:428:18 | [OuterPatternMatch] 2 | match |
 | test.rs:428:18:428:18 | After 2 [match] | test.rs:428:13:428:19 | After TuplePat [match] | match |
 | test.rs:428:18:428:18 | After 2 [match] | test.rs:428:18:428:18 | After 2 [match] | match |
 | test.rs:428:18:428:18 | After 2 [no-match] | test.rs:428:13:428:19 | After TuplePat [no-match] | no-match |
 | test.rs:428:18:428:18 | After 2 [no-match] | test.rs:428:18:428:18 | After 2 [no-match] | no-match |
-| test.rs:428:18:428:18 | [OuterPatternMatch] 2 | test.rs:428:18:428:18 | 2 |  |
 | test.rs:428:18:428:18 | [OuterPatternMatch] 2 | test.rs:428:18:428:18 | After 2 [match] | match |
 | test.rs:428:24:428:24 | 3 | test.rs:426:9:430:9 | After match ... { ... } |  |
 | test.rs:429:13:429:16 | After TuplePat [match] | test.rs:429:13:429:22 | After ... => 4 [match] | match |
-| test.rs:429:13:429:16 | TuplePat | test.rs:429:13:429:16 | [OuterPatternMatch] TuplePat | match |
-| test.rs:429:13:429:16 | [OuterPatternMatch] TuplePat | test.rs:429:14:429:15 | .. |  |
+| test.rs:429:13:429:16 | TuplePat | test.rs:429:14:429:15 | .. |  |
 | test.rs:429:13:429:22 | ... => 4 | test.rs:429:13:429:16 | TuplePat |  |
 | test.rs:429:13:429:22 | After ... => 4 [match] | test.rs:429:21:429:21 | 4 |  |
-| test.rs:429:14:429:15 | .. | test.rs:429:14:429:15 | [OuterPatternMatch] .. | match |
+| test.rs:429:14:429:15 | .. | test.rs:429:14:429:15 | After .. [match] | match |
 | test.rs:429:14:429:15 | After .. [match] | test.rs:429:13:429:16 | After TuplePat [match] | match |
-| test.rs:429:14:429:15 | [OuterPatternMatch] .. | test.rs:429:14:429:15 | After .. [match] | match |
 | test.rs:429:21:429:21 | 4 | test.rs:426:9:430:9 | After match ... { ... } |  |
 | test.rs:433:5:438:5 | Entry | test.rs:433:19:433:19 | a |  |
 | test.rs:433:5:438:5 | Normal Exit | test.rs:433:5:438:5 | Exit |  |
 | test.rs:433:19:433:19 | After a [match] | test.rs:433:34:438:5 | { ... } |  |
-| test.rs:433:19:433:19 | [OuterPatternMatch] a | test.rs:433:19:433:19 | a |  |
 | test.rs:433:19:433:19 | a | test.rs:433:19:433:19 | After a [match] | match |
-| test.rs:433:19:433:19 | a | test.rs:433:19:433:19 | [OuterPatternMatch] a | match |
+| test.rs:433:19:433:19 | a | test.rs:433:19:433:19 | a |  |
 | test.rs:433:34:438:5 | After { ... } | test.rs:433:5:438:5 | Normal Exit |  |
 | test.rs:433:34:438:5 | { ... } | test.rs:434:9:437:9 | match a { ... } |  |
 | test.rs:434:9:437:9 | After match a { ... } | test.rs:433:34:438:5 | After { ... } |  |
 | test.rs:434:9:437:9 | match a { ... } | test.rs:434:15:434:15 | a |  |
 | test.rs:434:15:434:15 | a | test.rs:435:13:435:27 | ... => 3 |  |
+| test.rs:435:13:435:13 | 0 | test.rs:435:13:435:13 | 0 |  |
 | test.rs:435:13:435:13 | 0 | test.rs:435:13:435:13 | After 0 [no-match] | no-match |
-| test.rs:435:13:435:13 | 0 | test.rs:435:13:435:13 | [OuterPatternMatch] 0 | match |
 | test.rs:435:13:435:13 | 0 | test.rs:435:13:435:13 | [OuterPatternMatch] 0 | match |
 | test.rs:435:13:435:13 | After 0 [match] | test.rs:435:13:435:13 | After 0 [match] | match |
 | test.rs:435:13:435:13 | After 0 [match] | test.rs:435:13:435:21 | After 0 \| 1 \| 2 [match] | match |
 | test.rs:435:13:435:13 | After 0 [no-match] | test.rs:435:13:435:13 | After 0 [no-match] | no-match |
 | test.rs:435:13:435:13 | After 0 [no-match] | test.rs:435:17:435:17 | 1 |  |
-| test.rs:435:13:435:13 | [OuterPatternMatch] 0 | test.rs:435:13:435:13 | 0 |  |
 | test.rs:435:13:435:13 | [OuterPatternMatch] 0 | test.rs:435:13:435:13 | After 0 [match] | match |
 | test.rs:435:13:435:21 | 0 \| 1 \| 2 | test.rs:435:13:435:13 | 0 |  |
 | test.rs:435:13:435:21 | After 0 \| 1 \| 2 [match] | test.rs:435:13:435:27 | After ... => 3 [match] | match |
@@ -2049,37 +1929,33 @@ edges
 | test.rs:435:13:435:27 | ... => 3 | test.rs:435:13:435:21 | 0 \| 1 \| 2 |  |
 | test.rs:435:13:435:27 | After ... => 3 [match] | test.rs:435:26:435:26 | 3 |  |
 | test.rs:435:13:435:27 | After ... => 3 [no-match] | test.rs:436:13:436:19 | _ => 4 |  |
+| test.rs:435:17:435:17 | 1 | test.rs:435:17:435:17 | 1 |  |
 | test.rs:435:17:435:17 | 1 | test.rs:435:17:435:17 | After 1 [no-match] | no-match |
-| test.rs:435:17:435:17 | 1 | test.rs:435:17:435:17 | [OuterPatternMatch] 1 | match |
 | test.rs:435:17:435:17 | 1 | test.rs:435:17:435:17 | [OuterPatternMatch] 1 | match |
 | test.rs:435:17:435:17 | After 1 [match] | test.rs:435:13:435:21 | After 0 \| 1 \| 2 [match] | match |
 | test.rs:435:17:435:17 | After 1 [match] | test.rs:435:17:435:17 | After 1 [match] | match |
 | test.rs:435:17:435:17 | After 1 [no-match] | test.rs:435:17:435:17 | After 1 [no-match] | no-match |
 | test.rs:435:17:435:17 | After 1 [no-match] | test.rs:435:21:435:21 | 2 |  |
-| test.rs:435:17:435:17 | [OuterPatternMatch] 1 | test.rs:435:17:435:17 | 1 |  |
 | test.rs:435:17:435:17 | [OuterPatternMatch] 1 | test.rs:435:17:435:17 | After 1 [match] | match |
+| test.rs:435:21:435:21 | 2 | test.rs:435:21:435:21 | 2 |  |
 | test.rs:435:21:435:21 | 2 | test.rs:435:21:435:21 | After 2 [no-match] | no-match |
-| test.rs:435:21:435:21 | 2 | test.rs:435:21:435:21 | [OuterPatternMatch] 2 | match |
 | test.rs:435:21:435:21 | 2 | test.rs:435:21:435:21 | [OuterPatternMatch] 2 | match |
 | test.rs:435:21:435:21 | After 2 [match] | test.rs:435:13:435:21 | After 0 \| 1 \| 2 [match] | match |
 | test.rs:435:21:435:21 | After 2 [match] | test.rs:435:21:435:21 | After 2 [match] | match |
 | test.rs:435:21:435:21 | After 2 [no-match] | test.rs:435:13:435:21 | After 0 \| 1 \| 2 [no-match] | no-match |
 | test.rs:435:21:435:21 | After 2 [no-match] | test.rs:435:21:435:21 | After 2 [no-match] | no-match |
-| test.rs:435:21:435:21 | [OuterPatternMatch] 2 | test.rs:435:21:435:21 | 2 |  |
 | test.rs:435:21:435:21 | [OuterPatternMatch] 2 | test.rs:435:21:435:21 | After 2 [match] | match |
 | test.rs:435:26:435:26 | 3 | test.rs:434:9:437:9 | After match a { ... } |  |
 | test.rs:436:13:436:13 | After _ [match] | test.rs:436:13:436:19 | After _ => 4 [match] | match |
-| test.rs:436:13:436:13 | [OuterPatternMatch] _ | test.rs:436:13:436:13 | After _ [match] | match |
-| test.rs:436:13:436:13 | _ | test.rs:436:13:436:13 | [OuterPatternMatch] _ | match |
+| test.rs:436:13:436:13 | _ | test.rs:436:13:436:13 | After _ [match] | match |
 | test.rs:436:13:436:19 | After _ => 4 [match] | test.rs:436:18:436:18 | 4 |  |
 | test.rs:436:13:436:19 | _ => 4 | test.rs:436:13:436:13 | _ |  |
 | test.rs:436:18:436:18 | 4 | test.rs:434:9:437:9 | After match a { ... } |  |
 | test.rs:440:5:445:5 | Entry | test.rs:440:21:440:21 | a |  |
 | test.rs:440:5:445:5 | Normal Exit | test.rs:440:5:445:5 | Exit |  |
 | test.rs:440:21:440:21 | After a [match] | test.rs:440:45:445:5 | { ... } |  |
-| test.rs:440:21:440:21 | [OuterPatternMatch] a | test.rs:440:21:440:21 | a |  |
 | test.rs:440:21:440:21 | a | test.rs:440:21:440:21 | After a [match] | match |
-| test.rs:440:21:440:21 | a | test.rs:440:21:440:21 | [OuterPatternMatch] a | match |
+| test.rs:440:21:440:21 | a | test.rs:440:21:440:21 | a |  |
 | test.rs:440:45:445:5 | After { ... } | test.rs:440:5:445:5 | Normal Exit |  |
 | test.rs:440:45:445:5 | { ... } | test.rs:441:9:444:9 | match a { ... } |  |
 | test.rs:441:9:444:9 | After match a { ... } | test.rs:440:45:445:5 | After { ... } |  |
@@ -2109,37 +1985,34 @@ edges
 | test.rs:443:18:443:21 | After true [no-match] | test.rs:443:13:443:22 | After Some(...) [no-match] | no-match |
 | test.rs:443:18:443:21 | After true [no-match] | test.rs:443:18:443:21 | After true [no-match] | no-match |
 | test.rs:443:18:443:21 | [OuterPatternMatch] true | test.rs:443:18:443:21 | After true [match] | match |
-| test.rs:443:18:443:21 | [OuterPatternMatch] true | test.rs:443:18:443:21 | true |  |
 | test.rs:443:18:443:21 | true | test.rs:443:18:443:21 | After true [no-match] | no-match |
 | test.rs:443:18:443:21 | true | test.rs:443:18:443:21 | [OuterPatternMatch] true | match |
-| test.rs:443:18:443:21 | true | test.rs:443:18:443:21 | [OuterPatternMatch] true | match |
+| test.rs:443:18:443:21 | true | test.rs:443:18:443:21 | true |  |
 | test.rs:443:26:443:36 | After Some(...) [match] | test.rs:443:13:443:36 | After ... \| ... [match] | match |
 | test.rs:443:26:443:36 | Some(...) | test.rs:443:26:443:36 | [OuterPatternMatch] Some(...) | match |
 | test.rs:443:26:443:36 | [OuterPatternMatch] Some(...) | test.rs:443:31:443:35 | false |  |
 | test.rs:443:31:443:35 | After false [match] | test.rs:443:26:443:36 | After Some(...) [match] | match |
 | test.rs:443:31:443:35 | After false [match] | test.rs:443:31:443:35 | After false [match] | match |
 | test.rs:443:31:443:35 | [OuterPatternMatch] false | test.rs:443:31:443:35 | After false [match] | match |
-| test.rs:443:31:443:35 | [OuterPatternMatch] false | test.rs:443:31:443:35 | false |  |
 | test.rs:443:31:443:35 | false | test.rs:443:31:443:35 | [OuterPatternMatch] false | match |
-| test.rs:443:31:443:35 | false | test.rs:443:31:443:35 | [OuterPatternMatch] false | match |
+| test.rs:443:31:443:35 | false | test.rs:443:31:443:35 | false |  |
 | test.rs:443:41:443:41 | 4 | test.rs:441:9:444:9 | After match a { ... } |  |
 | test.rs:453:5:458:5 | Entry | test.rs:453:21:453:21 | a |  |
 | test.rs:453:5:458:5 | Normal Exit | test.rs:453:5:458:5 | Exit |  |
 | test.rs:453:21:453:21 | After a [match] | test.rs:453:36:458:5 | { ... } |  |
-| test.rs:453:21:453:21 | [OuterPatternMatch] a | test.rs:453:21:453:21 | a |  |
 | test.rs:453:21:453:21 | a | test.rs:453:21:453:21 | After a [match] | match |
-| test.rs:453:21:453:21 | a | test.rs:453:21:453:21 | [OuterPatternMatch] a | match |
+| test.rs:453:21:453:21 | a | test.rs:453:21:453:21 | a |  |
 | test.rs:453:36:458:5 | After { ... } | test.rs:453:5:458:5 | Normal Exit |  |
 | test.rs:453:36:458:5 | { ... } | test.rs:454:9:457:9 | match a { ... } |  |
 | test.rs:454:9:457:9 | After match a { ... } | test.rs:453:36:458:5 | After { ... } |  |
 | test.rs:454:9:457:9 | match a { ... } | test.rs:454:15:454:15 | a |  |
 | test.rs:454:15:454:15 | a | test.rs:455:13:455:31 | ... => 3 |  |
+| test.rs:455:13:455:23 | 1 | test.rs:455:13:455:23 | 1 |  |
 | test.rs:455:13:455:23 | 1 | test.rs:455:13:455:23 | After 1 [no-match] | no-match |
 | test.rs:455:13:455:23 | 1 | test.rs:455:13:455:23 | [OuterPatternMatch] 1 | match |
-| test.rs:455:13:455:23 | 1 | test.rs:455:13:455:23 | [OuterPatternMatch] 1 | match |
 | test.rs:455:13:455:23 | 1 \| 2 | test.rs:455:13:455:23 | 1 |  |
+| test.rs:455:13:455:23 | 2 | test.rs:455:13:455:23 | 2 |  |
 | test.rs:455:13:455:23 | 2 | test.rs:455:13:455:23 | After 2 [no-match] | no-match |
-| test.rs:455:13:455:23 | 2 | test.rs:455:13:455:23 | [OuterPatternMatch] 2 | match |
 | test.rs:455:13:455:23 | 2 | test.rs:455:13:455:23 | [OuterPatternMatch] 2 | match |
 | test.rs:455:13:455:23 | After 1 [match] | test.rs:455:13:455:23 | After 1 [match] | match |
 | test.rs:455:13:455:23 | After 1 [match] | test.rs:455:13:455:23 | After 1 \| 2 [match] | match |
@@ -2151,71 +2024,60 @@ edges
 | test.rs:455:13:455:23 | After 2 [match] | test.rs:455:13:455:23 | After 2 [match] | match |
 | test.rs:455:13:455:23 | After 2 [no-match] | test.rs:455:13:455:23 | After 1 \| 2 [no-match] | no-match |
 | test.rs:455:13:455:23 | After 2 [no-match] | test.rs:455:13:455:23 | After 2 [no-match] | no-match |
-| test.rs:455:13:455:23 | [OuterPatternMatch] 1 | test.rs:455:13:455:23 | 1 |  |
 | test.rs:455:13:455:23 | [OuterPatternMatch] 1 | test.rs:455:13:455:23 | After 1 [match] | match |
-| test.rs:455:13:455:23 | [OuterPatternMatch] 2 | test.rs:455:13:455:23 | 2 |  |
 | test.rs:455:13:455:23 | [OuterPatternMatch] 2 | test.rs:455:13:455:23 | After 2 [match] | match |
 | test.rs:455:13:455:25 | After MacroPat [match] | test.rs:455:13:455:31 | After ... => 3 [match] | match |
 | test.rs:455:13:455:25 | After MacroPat [no-match] | test.rs:455:13:455:31 | After ... => 3 [no-match] | no-match |
-| test.rs:455:13:455:25 | MacroPat | test.rs:455:13:455:25 | [OuterPatternMatch] MacroPat | match |
-| test.rs:455:13:455:25 | [OuterPatternMatch] MacroPat | test.rs:455:13:455:23 | 1 \| 2 |  |
+| test.rs:455:13:455:25 | MacroPat | test.rs:455:13:455:23 | 1 \| 2 |  |
 | test.rs:455:13:455:31 | ... => 3 | test.rs:455:13:455:25 | MacroPat |  |
 | test.rs:455:13:455:31 | After ... => 3 [match] | test.rs:455:30:455:30 | 3 |  |
 | test.rs:455:13:455:31 | After ... => 3 [no-match] | test.rs:456:13:456:19 | _ => 4 |  |
 | test.rs:455:30:455:30 | 3 | test.rs:454:9:457:9 | After match a { ... } |  |
 | test.rs:456:13:456:13 | After _ [match] | test.rs:456:13:456:19 | After _ => 4 [match] | match |
-| test.rs:456:13:456:13 | [OuterPatternMatch] _ | test.rs:456:13:456:13 | After _ [match] | match |
-| test.rs:456:13:456:13 | _ | test.rs:456:13:456:13 | [OuterPatternMatch] _ | match |
+| test.rs:456:13:456:13 | _ | test.rs:456:13:456:13 | After _ [match] | match |
 | test.rs:456:13:456:19 | After _ => 4 [match] | test.rs:456:18:456:18 | 4 |  |
 | test.rs:456:13:456:19 | _ => 4 | test.rs:456:13:456:13 | _ |  |
 | test.rs:456:18:456:18 | 4 | test.rs:454:9:457:9 | After match a { ... } |  |
 | test.rs:460:5:465:5 | Entry | test.rs:460:42:460:45 | pair |  |
 | test.rs:460:5:465:5 | Normal Exit | test.rs:460:5:465:5 | Exit |  |
 | test.rs:460:42:460:45 | After pair [match] | test.rs:460:73:465:5 | { ... } |  |
-| test.rs:460:42:460:45 | [OuterPatternMatch] pair | test.rs:460:42:460:45 | pair |  |
 | test.rs:460:42:460:45 | pair | test.rs:460:42:460:45 | After pair [match] | match |
-| test.rs:460:42:460:45 | pair | test.rs:460:42:460:45 | [OuterPatternMatch] pair | match |
+| test.rs:460:42:460:45 | pair | test.rs:460:42:460:45 | pair |  |
 | test.rs:460:73:465:5 | After { ... } | test.rs:460:5:465:5 | Normal Exit |  |
 | test.rs:460:73:465:5 | { ... } | test.rs:461:9:464:9 | match pair { ... } |  |
 | test.rs:461:9:464:9 | After match pair { ... } | test.rs:460:73:465:5 | After { ... } |  |
 | test.rs:461:9:464:9 | match pair { ... } | test.rs:461:15:461:18 | pair |  |
 | test.rs:461:15:461:18 | pair | test.rs:462:13:462:41 | ... => n |  |
-| test.rs:462:13:462:35 | &... | test.rs:462:13:462:35 | [OuterPatternMatch] &... | match |
+| test.rs:462:13:462:35 | &... | test.rs:462:14:462:35 | TuplePat |  |
 | test.rs:462:13:462:35 | After &... [match] | test.rs:462:13:462:41 | After ... => n [match] | match |
 | test.rs:462:13:462:35 | After &... [no-match] | test.rs:462:13:462:41 | After ... => n [no-match] | no-match |
-| test.rs:462:13:462:35 | [OuterPatternMatch] &... | test.rs:462:14:462:35 | TuplePat |  |
 | test.rs:462:13:462:41 | ... => n | test.rs:462:13:462:35 | &... |  |
 | test.rs:462:13:462:41 | After ... => n [match] | test.rs:462:40:462:40 | n |  |
 | test.rs:462:13:462:41 | After ... => n [no-match] | test.rs:463:13:463:19 | _ => 0 |  |
 | test.rs:462:14:462:35 | After TuplePat [match] | test.rs:462:13:462:35 | After &... [match] | match |
 | test.rs:462:14:462:35 | After TuplePat [no-match] | test.rs:462:13:462:35 | After &... [no-match] | no-match |
-| test.rs:462:14:462:35 | TuplePat | test.rs:462:14:462:35 | [OuterPatternMatch] TuplePat | match |
-| test.rs:462:14:462:35 | [OuterPatternMatch] TuplePat | test.rs:462:15:462:15 | n |  |
+| test.rs:462:14:462:35 | TuplePat | test.rs:462:15:462:15 | n |  |
 | test.rs:462:15:462:15 | After n [match] | test.rs:462:18:462:34 | MyStruct {...} |  |
-| test.rs:462:15:462:15 | [OuterPatternMatch] n | test.rs:462:15:462:15 | n |  |
 | test.rs:462:15:462:15 | n | test.rs:462:15:462:15 | After n [match] | match |
-| test.rs:462:15:462:15 | n | test.rs:462:15:462:15 | [OuterPatternMatch] n | match |
+| test.rs:462:15:462:15 | n | test.rs:462:15:462:15 | n |  |
 | test.rs:462:18:462:34 | After MyStruct {...} [match] | test.rs:462:14:462:35 | After TuplePat [match] | match |
 | test.rs:462:18:462:34 | After MyStruct {...} [no-match] | test.rs:462:14:462:35 | After TuplePat [no-match] | no-match |
 | test.rs:462:18:462:34 | MyStruct {...} | test.rs:462:18:462:34 | After MyStruct {...} [no-match] | no-match |
 | test.rs:462:18:462:34 | MyStruct {...} | test.rs:462:18:462:34 | [OuterPatternMatch] MyStruct {...} | match |
 | test.rs:462:18:462:34 | [OuterPatternMatch] MyStruct {...} | test.rs:462:32:462:32 | _ |  |
 | test.rs:462:32:462:32 | After _ [match] | test.rs:462:18:462:34 | After MyStruct {...} [match] | match |
-| test.rs:462:32:462:32 | [OuterPatternMatch] _ | test.rs:462:32:462:32 | After _ [match] | match |
-| test.rs:462:32:462:32 | _ | test.rs:462:32:462:32 | [OuterPatternMatch] _ | match |
+| test.rs:462:32:462:32 | _ | test.rs:462:32:462:32 | After _ [match] | match |
 | test.rs:462:40:462:40 | n | test.rs:461:9:464:9 | After match pair { ... } |  |
 | test.rs:463:13:463:13 | After _ [match] | test.rs:463:13:463:19 | After _ => 0 [match] | match |
-| test.rs:463:13:463:13 | [OuterPatternMatch] _ | test.rs:463:13:463:13 | After _ [match] | match |
-| test.rs:463:13:463:13 | _ | test.rs:463:13:463:13 | [OuterPatternMatch] _ | match |
+| test.rs:463:13:463:13 | _ | test.rs:463:13:463:13 | After _ [match] | match |
 | test.rs:463:13:463:19 | After _ => 0 [match] | test.rs:463:18:463:18 | 0 |  |
 | test.rs:463:13:463:19 | _ => 0 | test.rs:463:13:463:13 | _ |  |
 | test.rs:463:18:463:18 | 0 | test.rs:461:9:464:9 | After match pair { ... } |  |
 | test.rs:475:5:481:5 | Entry | test.rs:475:21:475:21 | e |  |
 | test.rs:475:5:481:5 | Normal Exit | test.rs:475:5:481:5 | Exit |  |
 | test.rs:475:21:475:21 | After e [match] | test.rs:475:39:481:5 | { ... } |  |
-| test.rs:475:21:475:21 | [OuterPatternMatch] e | test.rs:475:21:475:21 | e |  |
 | test.rs:475:21:475:21 | e | test.rs:475:21:475:21 | After e [match] | match |
-| test.rs:475:21:475:21 | e | test.rs:475:21:475:21 | [OuterPatternMatch] e | match |
+| test.rs:475:21:475:21 | e | test.rs:475:21:475:21 | e |  |
 | test.rs:475:39:481:5 | After { ... } | test.rs:475:5:481:5 | Normal Exit |  |
 | test.rs:475:39:481:5 | { ... } | test.rs:476:9:480:9 | match e { ... } |  |
 | test.rs:476:9:480:9 | After match e { ... } | test.rs:475:39:481:5 | After { ... } |  |
@@ -2230,8 +2092,7 @@ edges
 | test.rs:477:13:477:40 | After ... => 0 [match] | test.rs:477:39:477:39 | 0 |  |
 | test.rs:477:13:477:40 | After ... => 0 [no-match] | test.rs:478:13:478:33 | ... => 1 |  |
 | test.rs:477:32:477:32 | After _ [match] | test.rs:477:13:477:34 | After StructVariant {...} [match] | match |
-| test.rs:477:32:477:32 | [OuterPatternMatch] _ | test.rs:477:32:477:32 | After _ [match] | match |
-| test.rs:477:32:477:32 | _ | test.rs:477:32:477:32 | [OuterPatternMatch] _ | match |
+| test.rs:477:32:477:32 | _ | test.rs:477:32:477:32 | After _ [match] | match |
 | test.rs:477:39:477:39 | 0 | test.rs:476:9:480:9 | After match e { ... } |  |
 | test.rs:478:13:478:27 | After TupleVariant(...) [match] | test.rs:478:13:478:33 | After ... => 1 [match] | match |
 | test.rs:478:13:478:27 | After TupleVariant(...) [no-match] | test.rs:478:13:478:33 | After ... => 1 [no-match] | no-match |
@@ -2242,8 +2103,7 @@ edges
 | test.rs:478:13:478:33 | After ... => 1 [match] | test.rs:478:32:478:32 | 1 |  |
 | test.rs:478:13:478:33 | After ... => 1 [no-match] | test.rs:479:13:479:29 | ... => 2 |  |
 | test.rs:478:26:478:26 | After _ [match] | test.rs:478:13:478:27 | After TupleVariant(...) [match] | match |
-| test.rs:478:26:478:26 | [OuterPatternMatch] _ | test.rs:478:26:478:26 | After _ [match] | match |
-| test.rs:478:26:478:26 | _ | test.rs:478:26:478:26 | [OuterPatternMatch] _ | match |
+| test.rs:478:26:478:26 | _ | test.rs:478:26:478:26 | After _ [match] | match |
 | test.rs:478:32:478:32 | 1 | test.rs:476:9:480:9 | After match e { ... } |  |
 | test.rs:479:13:479:23 | After UnitVariant [match] | test.rs:479:13:479:29 | After ... => 2 [match] | match |
 | test.rs:479:13:479:23 | UnitVariant | test.rs:479:13:479:23 | After UnitVariant [match] | match |
@@ -2295,17 +2155,15 @@ edges
 | test.rs:498:5:517:5 | Entry | test.rs:498:26:498:26 | b |  |
 | test.rs:498:5:517:5 | Normal Exit | test.rs:498:5:517:5 | Exit |  |
 | test.rs:498:26:498:26 | After b [match] | test.rs:498:35:517:5 | { ... } |  |
-| test.rs:498:26:498:26 | [OuterPatternMatch] b | test.rs:498:26:498:26 | b |  |
 | test.rs:498:26:498:26 | b | test.rs:498:26:498:26 | After b [match] | match |
-| test.rs:498:26:498:26 | b | test.rs:498:26:498:26 | [OuterPatternMatch] b | match |
+| test.rs:498:26:498:26 | b | test.rs:498:26:498:26 | b |  |
 | test.rs:498:35:517:5 | After { ... } | test.rs:498:5:517:5 | Normal Exit |  |
 | test.rs:498:35:517:5 | { ... } | test.rs:499:9:501:10 | let ... = ... |  |
 | test.rs:499:9:501:10 | After let ... = ... | test.rs:502:9:504:10 | let ... = ... |  |
 | test.rs:499:9:501:10 | let ... = ... | test.rs:499:26:501:9 | { ... } |  |
 | test.rs:499:13:499:22 | After say_godbye [match] | test.rs:499:9:501:10 | After let ... = ... |  |
-| test.rs:499:13:499:22 | [OuterPatternMatch] say_godbye | test.rs:499:13:499:22 | say_godbye |  |
 | test.rs:499:13:499:22 | say_godbye | test.rs:499:13:499:22 | After say_godbye [match] | match |
-| test.rs:499:13:499:22 | say_godbye | test.rs:499:13:499:22 | [OuterPatternMatch] say_godbye | match |
+| test.rs:499:13:499:22 | say_godbye | test.rs:499:13:499:22 | say_godbye |  |
 | test.rs:499:26:501:9 | Entry | test.rs:499:32:501:9 | StmtList |  |
 | test.rs:499:26:501:9 | Normal Exit | test.rs:499:26:501:9 | Exit |  |
 | test.rs:499:26:501:9 | { ... } | test.rs:499:13:499:22 | say_godbye |  |
@@ -2342,9 +2200,8 @@ edges
 | test.rs:502:9:504:10 | After let ... = ... | test.rs:505:9:505:28 | let ... = ... |  |
 | test.rs:502:9:504:10 | let ... = ... | test.rs:502:31:504:9 | { ... } |  |
 | test.rs:502:13:502:27 | After say_how_are_you [match] | test.rs:502:9:504:10 | After let ... = ... |  |
-| test.rs:502:13:502:27 | [OuterPatternMatch] say_how_are_you | test.rs:502:13:502:27 | say_how_are_you |  |
 | test.rs:502:13:502:27 | say_how_are_you | test.rs:502:13:502:27 | After say_how_are_you [match] | match |
-| test.rs:502:13:502:27 | say_how_are_you | test.rs:502:13:502:27 | [OuterPatternMatch] say_how_are_you | match |
+| test.rs:502:13:502:27 | say_how_are_you | test.rs:502:13:502:27 | say_how_are_you |  |
 | test.rs:502:31:504:9 | Entry | test.rs:502:37:504:9 | StmtList |  |
 | test.rs:502:31:504:9 | Normal Exit | test.rs:502:31:504:9 | Exit |  |
 | test.rs:502:31:504:9 | { ... } | test.rs:502:13:502:27 | say_how_are_you |  |
@@ -2381,9 +2238,8 @@ edges
 | test.rs:505:9:505:28 | After let ... = ... | test.rs:506:9:506:26 | ExprStmt |  |
 | test.rs:505:9:505:28 | let ... = ... | test.rs:505:20:505:27 | { ... } |  |
 | test.rs:505:13:505:16 | After noop [match] | test.rs:505:9:505:28 | After let ... = ... |  |
-| test.rs:505:13:505:16 | [OuterPatternMatch] noop | test.rs:505:13:505:16 | noop |  |
 | test.rs:505:13:505:16 | noop | test.rs:505:13:505:16 | After noop [match] | match |
-| test.rs:505:13:505:16 | noop | test.rs:505:13:505:16 | [OuterPatternMatch] noop | match |
+| test.rs:505:13:505:16 | noop | test.rs:505:13:505:16 | noop |  |
 | test.rs:505:20:505:27 | Entry | test.rs:505:26:505:27 | StmtList |  |
 | test.rs:505:20:505:27 | Normal Exit | test.rs:505:20:505:27 | Exit |  |
 | test.rs:505:20:505:27 | { ... } | test.rs:505:13:505:16 | noop |  |
@@ -2418,16 +2274,14 @@ edges
 | test.rs:511:9:516:10 | After let ... = ... | test.rs:498:35:517:5 | After { ... } |  |
 | test.rs:511:9:516:10 | let ... = ... | test.rs:511:22:516:9 | \|...\| ... |  |
 | test.rs:511:13:511:18 | After lambda [match] | test.rs:511:9:516:10 | After let ... = ... |  |
-| test.rs:511:13:511:18 | [OuterPatternMatch] lambda | test.rs:511:13:511:18 | lambda |  |
 | test.rs:511:13:511:18 | lambda | test.rs:511:13:511:18 | After lambda [match] | match |
-| test.rs:511:13:511:18 | lambda | test.rs:511:13:511:18 | [OuterPatternMatch] lambda | match |
+| test.rs:511:13:511:18 | lambda | test.rs:511:13:511:18 | lambda |  |
 | test.rs:511:22:516:9 | Entry | test.rs:511:23:511:25 | foo |  |
 | test.rs:511:22:516:9 | Normal Exit | test.rs:511:22:516:9 | Exit |  |
 | test.rs:511:22:516:9 | \|...\| ... | test.rs:511:13:511:18 | lambda |  |
 | test.rs:511:23:511:25 | After foo [match] | test.rs:511:28:516:9 | { ... } |  |
-| test.rs:511:23:511:25 | [OuterPatternMatch] foo | test.rs:511:23:511:25 | foo |  |
 | test.rs:511:23:511:25 | foo | test.rs:511:23:511:25 | After foo [match] | match |
-| test.rs:511:23:511:25 | foo | test.rs:511:23:511:25 | [OuterPatternMatch] foo | match |
+| test.rs:511:23:511:25 | foo | test.rs:511:23:511:25 | foo |  |
 | test.rs:511:28:516:9 | Entry | test.rs:511:34:516:9 | StmtList |  |
 | test.rs:511:28:516:9 | Normal Exit | test.rs:511:28:516:9 | Exit |  |
 | test.rs:511:28:516:9 | { ... } | test.rs:511:22:516:9 | Normal Exit |  |
@@ -2454,9 +2308,8 @@ edges
 | test.rs:523:5:525:5 | Entry | test.rs:523:22:523:22 | n |  |
 | test.rs:523:5:525:5 | Normal Exit | test.rs:523:5:525:5 | Exit |  |
 | test.rs:523:22:523:22 | After n [match] | test.rs:523:37:525:5 | { ... } |  |
-| test.rs:523:22:523:22 | [OuterPatternMatch] n | test.rs:523:22:523:22 | n |  |
 | test.rs:523:22:523:22 | n | test.rs:523:22:523:22 | After n [match] | match |
-| test.rs:523:22:523:22 | n | test.rs:523:22:523:22 | [OuterPatternMatch] n | match |
+| test.rs:523:22:523:22 | n | test.rs:523:22:523:22 | n |  |
 | test.rs:523:37:525:5 | After { ... } | test.rs:523:5:525:5 | Normal Exit |  |
 | test.rs:523:37:525:5 | { ... } | test.rs:524:9:524:13 | Before ... + ... |  |
 | test.rs:524:9:524:9 | n | test.rs:524:13:524:13 | 2 |  |
@@ -2561,9 +2414,8 @@ edges
 | test.rs:569:5:580:6 | After let ... = ... | test.rs:581:5:581:10 | result |  |
 | test.rs:569:5:580:6 | let ... = ... | test.rs:569:18:580:5 | 'block: { ... } |  |
 | test.rs:569:9:569:14 | After result [match] | test.rs:569:5:580:6 | After let ... = ... |  |
-| test.rs:569:9:569:14 | [OuterPatternMatch] result | test.rs:569:9:569:14 | result |  |
 | test.rs:569:9:569:14 | result | test.rs:569:9:569:14 | After result [match] | match |
-| test.rs:569:9:569:14 | result | test.rs:569:9:569:14 | [OuterPatternMatch] result | match |
+| test.rs:569:9:569:14 | result | test.rs:569:9:569:14 | result |  |
 | test.rs:569:18:580:5 | 'block: { ... } | test.rs:570:9:570:19 | ExprStmt |  |
 | test.rs:569:18:580:5 | After 'block: { ... } | test.rs:569:9:569:14 | result |  |
 | test.rs:570:9:570:16 | do_thing | test.rs:570:9:570:18 | do_thing(...) |  |
@@ -2623,17 +2475,15 @@ edges
 | test.rs:585:5:591:6 | After let ... = ... | test.rs:584:22:592:1 | After { ... } |  |
 | test.rs:585:5:591:6 | let ... = ... | test.rs:585:18:591:5 | 'block: { ... } |  |
 | test.rs:585:9:585:14 | After result [match] | test.rs:585:5:591:6 | After let ... = ... |  |
-| test.rs:585:9:585:14 | [OuterPatternMatch] result | test.rs:585:9:585:14 | result |  |
 | test.rs:585:9:585:14 | result | test.rs:585:9:585:14 | After result [match] | match |
-| test.rs:585:9:585:14 | result | test.rs:585:9:585:14 | [OuterPatternMatch] result | match |
+| test.rs:585:9:585:14 | result | test.rs:585:9:585:14 | result |  |
 | test.rs:585:18:591:5 | 'block: { ... } | test.rs:586:9:586:34 | let ... = None |  |
 | test.rs:585:18:591:5 | After 'block: { ... } | test.rs:585:9:585:14 | result |  |
 | test.rs:586:9:586:34 | After let ... = None | test.rs:587:9:589:10 | let ... = x else {...} |  |
 | test.rs:586:9:586:34 | let ... = None | test.rs:586:30:586:33 | None |  |
 | test.rs:586:13:586:13 | After x [match] | test.rs:586:9:586:34 | After let ... = None |  |
-| test.rs:586:13:586:13 | [OuterPatternMatch] x | test.rs:586:13:586:13 | x |  |
 | test.rs:586:13:586:13 | x | test.rs:586:13:586:13 | After x [match] | match |
-| test.rs:586:13:586:13 | x | test.rs:586:13:586:13 | [OuterPatternMatch] x | match |
+| test.rs:586:13:586:13 | x | test.rs:586:13:586:13 | x |  |
 | test.rs:586:30:586:33 | None | test.rs:586:13:586:13 | x |  |
 | test.rs:587:9:589:10 | After let ... = x else {...} | test.rs:590:9:590:9 | 0 |  |
 | test.rs:587:9:589:10 | let ... = x else {...} | test.rs:587:23:587:23 | x |  |
@@ -2643,9 +2493,8 @@ edges
 | test.rs:587:13:587:19 | Some(...) | test.rs:587:13:587:19 | [OuterPatternMatch] Some(...) | match |
 | test.rs:587:13:587:19 | [OuterPatternMatch] Some(...) | test.rs:587:18:587:18 | y |  |
 | test.rs:587:18:587:18 | After y [match] | test.rs:587:13:587:19 | After Some(...) [match] | match |
-| test.rs:587:18:587:18 | [OuterPatternMatch] y | test.rs:587:18:587:18 | y |  |
 | test.rs:587:18:587:18 | y | test.rs:587:18:587:18 | After y [match] | match |
-| test.rs:587:18:587:18 | y | test.rs:587:18:587:18 | [OuterPatternMatch] y | match |
+| test.rs:587:18:587:18 | y | test.rs:587:18:587:18 | y |  |
 | test.rs:587:23:587:23 | x | test.rs:587:13:587:19 | Some(...) |  |
 | test.rs:587:30:589:9 | { ... } | test.rs:588:13:588:27 | ExprStmt |  |
 | test.rs:588:13:588:26 | Before break 'block 1 | test.rs:588:26:588:26 | 1 |  |
@@ -2660,17 +2509,15 @@ edges
 | test.rs:595:5:595:18 | After let ... = 0 | test.rs:596:5:598:5 | fn nested |  |
 | test.rs:595:5:595:18 | let ... = 0 | test.rs:595:17:595:17 | 0 |  |
 | test.rs:595:9:595:13 | After mut x [match] | test.rs:595:5:595:18 | After let ... = 0 |  |
-| test.rs:595:9:595:13 | [OuterPatternMatch] mut x | test.rs:595:13:595:13 | x |  |
-| test.rs:595:9:595:13 | mut x | test.rs:595:9:595:13 | [OuterPatternMatch] mut x | match |
+| test.rs:595:9:595:13 | mut x | test.rs:595:13:595:13 | x |  |
 | test.rs:595:13:595:13 | x | test.rs:595:9:595:13 | After mut x [match] | match |
 | test.rs:595:17:595:17 | 0 | test.rs:595:9:595:13 | mut x |  |
 | test.rs:596:5:598:5 | Entry | test.rs:596:15:596:15 | x |  |
 | test.rs:596:5:598:5 | Normal Exit | test.rs:596:5:598:5 | Exit |  |
 | test.rs:596:5:598:5 | fn nested | test.rs:599:5:599:19 | ExprStmt |  |
 | test.rs:596:15:596:15 | After x [match] | test.rs:596:28:598:5 | { ... } |  |
-| test.rs:596:15:596:15 | [OuterPatternMatch] x | test.rs:596:15:596:15 | x |  |
 | test.rs:596:15:596:15 | x | test.rs:596:15:596:15 | After x [match] | match |
-| test.rs:596:15:596:15 | x | test.rs:596:15:596:15 | [OuterPatternMatch] x | match |
+| test.rs:596:15:596:15 | x | test.rs:596:15:596:15 | x |  |
 | test.rs:596:28:598:5 | After { ... } | test.rs:596:5:598:5 | Normal Exit |  |
 | test.rs:596:28:598:5 | { ... } | test.rs:597:9:597:16 | ExprStmt |  |
 | test.rs:597:9:597:10 | * ... | test.rs:597:9:597:10 | After * ... |  |
@@ -2696,9 +2543,8 @@ edges
 | test.rs:611:5:613:5 | Entry | test.rs:611:12:611:12 | a |  |
 | test.rs:611:5:613:5 | Normal Exit | test.rs:611:5:613:5 | Exit |  |
 | test.rs:611:12:611:12 | After a [match] | test.rs:611:28:613:5 | { ... } |  |
-| test.rs:611:12:611:12 | [OuterPatternMatch] a | test.rs:611:12:611:12 | a |  |
 | test.rs:611:12:611:12 | a | test.rs:611:12:611:12 | After a [match] | match |
-| test.rs:611:12:611:12 | a | test.rs:611:12:611:12 | [OuterPatternMatch] a | match |
+| test.rs:611:12:611:12 | a | test.rs:611:12:611:12 | a |  |
 | test.rs:611:28:613:5 | After { ... } | test.rs:611:5:613:5 | Normal Exit |  |
 | test.rs:611:28:613:5 | { ... } | test.rs:612:9:612:25 | Before MyNumber {...} |  |
 | test.rs:612:9:612:25 | After MyNumber {...} | test.rs:611:28:613:5 | After { ... } |  |
@@ -2725,13 +2571,11 @@ edges
 | test.rs:619:21:619:29 | SelfParam | test.rs:619:26:619:29 | self |  |
 | test.rs:619:26:619:29 | self | test.rs:619:21:619:29 | After SelfParam |  |
 | test.rs:619:32:619:32 | After a [match] | test.rs:619:40:619:40 | b |  |
-| test.rs:619:32:619:32 | [OuterPatternMatch] a | test.rs:619:32:619:32 | a |  |
 | test.rs:619:32:619:32 | a | test.rs:619:32:619:32 | After a [match] | match |
-| test.rs:619:32:619:32 | a | test.rs:619:32:619:32 | [OuterPatternMatch] a | match |
+| test.rs:619:32:619:32 | a | test.rs:619:32:619:32 | a |  |
 | test.rs:619:40:619:40 | After b [match] | test.rs:619:48:621:5 | { ... } |  |
-| test.rs:619:40:619:40 | [OuterPatternMatch] b | test.rs:619:40:619:40 | b |  |
 | test.rs:619:40:619:40 | b | test.rs:619:40:619:40 | After b [match] | match |
-| test.rs:619:40:619:40 | b | test.rs:619:40:619:40 | [OuterPatternMatch] b | match |
+| test.rs:619:40:619:40 | b | test.rs:619:40:619:40 | b |  |
 | test.rs:619:48:621:5 | After { ... } | test.rs:619:5:621:5 | Normal Exit |  |
 | test.rs:619:48:621:5 | { ... } | test.rs:620:9:620:34 | ExprStmt |  |
 | test.rs:620:9:620:12 | self | test.rs:620:9:620:14 | self.n |  |
