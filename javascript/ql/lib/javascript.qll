@@ -47,7 +47,6 @@ import semmle.javascript.NodeJS
 import semmle.javascript.NPM
 import semmle.javascript.Paths
 import semmle.javascript.Promises
-deprecated import semmle.javascript.CanonicalNames
 import semmle.javascript.RangeAnalysis
 import semmle.javascript.Regexp
 import semmle.javascript.Routing

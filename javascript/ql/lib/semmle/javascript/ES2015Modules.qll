@@ -119,18 +119,6 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
    */
   ObjectExpr getImportAttributes() { result = this.getChildExpr(-10) }
 
-  /**
-   * DEPRECATED: use `getImportAttributes` instead.
-   * Gets the object literal passed as part of the `with` (or `assert`) clause in this import declaration.
-   *
-   * For example, this gets the `{ type: "json" }` object literal in the following:
-   * ```js
-   * import foo from "foo" with { type: "json" };
-   * import foo from "foo" assert { type: "json" };
-   * ```
-   */
-  deprecated ObjectExpr getImportAssertion() { result = this.getImportAttributes() }
-
   /** Gets the `i`th import specifier of this import declaration. */
   ImportSpecifier getSpecifier(int i) { result = this.getChildExpr(i) }
 
@@ -178,14 +166,6 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
   predicate isDeferredImport() { has_defer_keyword(this) }
 
   override string getAPrimaryQlClass() { result = "ImportDeclaration" }
-}
-
-/** A literal path expression appearing in an `import` declaration. */
-overlay[global]
-deprecated private class LiteralImportPath extends PathExpr, ConstantString {
-  LiteralImportPath() { exists(ImportDeclaration req | this = req.getChildExpr(-1)) }
-
-  override string getValue() { result = this.getStringValue() }
 }
 
 /**
@@ -412,21 +392,6 @@ abstract class ExportDeclaration extends Stmt, @export_declaration {
    * ```
    */
   ObjectExpr getImportAttributes() { result = this.getChildExpr(-10) }
-
-  /**
-   * DEPRECATED: use `getImportAttributes` instead.
-   * Gets the object literal passed as part of the `with` (or `assert`) clause, if this is
-   * a re-export declaration.
-   *
-   * For example, this gets the `{ type: "json" }` expression in each of the following:
-   * ```js
-   * export { x } from 'foo' with { type: "json" };
-   * export * from 'foo' with { type: "json" };
-   * export * as x from 'foo' with { type: "json" };
-   * export * from 'foo' assert { type: "json" };
-   * ```
-   */
-  deprecated ObjectExpr getImportAssertion() { result = this.getImportAttributes() }
 }
 
 /**
@@ -797,14 +762,6 @@ abstract class ReExportDeclaration extends ExportDeclaration {
    */
   overlay[global]
   abstract DataFlow::Node getReExportedSourceNode(string name);
-}
-
-/** A literal path expression appearing in a re-export declaration. */
-overlay[global]
-deprecated private class LiteralReExportPath extends PathExpr, ConstantString {
-  LiteralReExportPath() { exists(ReExportDeclaration bred | this = bred.getImportedPath()) }
-
-  override string getValue() { result = this.getStringValue() }
 }
 
 /**

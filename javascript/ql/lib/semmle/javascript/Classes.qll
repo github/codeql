@@ -117,14 +117,6 @@ class ClassOrInterface extends @class_or_interface, TypeParameterized {
   override string describe() { none() } // Overridden in subtypes.
 
   /**
-   * Gets the canonical name of this class or interface type.
-   *
-   * Anonymous classes and interfaces do not have a canonical name.
-   */
-  overlay[global]
-  deprecated TypeName getTypeName() { result.getADefinition() = this }
-
-  /**
    * Gets the ClassOrInterface corresponding to either a super type or an implemented interface.
    */
   ClassOrInterface getASuperTypeDeclaration() {

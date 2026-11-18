@@ -154,26 +154,6 @@ class NodeModule extends Module {
       exported instanceof AbstractOtherObject and result instanceof ArrayExternal
     )
   }
-
-  overlay[global]
-  deprecated override predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
-    path.getEnclosingModule() = this and
-    exists(string pathval | pathval = path.getValue() |
-      // paths starting with `./` or `../` are resolved relative to the importing
-      // module's folder
-      pathval.regexpMatch("\\.\\.?(/.*)?") and
-      (searchRoot = this.getFile().getParentContainer() and priority = 0)
-      or
-      // paths starting with `/` are resolved relative to the file system root
-      pathval.startsWith("/") and
-      (searchRoot.getBaseName() = "" and priority = 0)
-      or
-      // paths that do not start with `./`, `../` or `/` are resolved relative
-      // to `node_modules` folders
-      not pathval.regexpMatch("\\.\\.?(/.*)?|/.*") and
-      findNodeModulesFolder(this.getFile().getParentContainer(), searchRoot, priority)
-    )
-  }
 }
 
 // An copy of `DynamicPropertyAccess::EnumeratedPropName::getASourceProp` that doesn't use the callgraph.
@@ -343,72 +323,6 @@ class Require extends CallExpr, Import {
   override Module getEnclosingModule() { this = result.getAnImport() }
 
   override DataFlow::Node getImportedModuleNode() { result = DataFlow::valueNode(this) }
-}
-
-/** An argument to `require` or `require.resolve`, considered as a path expression. */
-deprecated private class RequirePath extends PathExprCandidate {
-  RequirePath() {
-    this = any(Require req).getArgument(0)
-    or
-    exists(MethodCallExpr reqres |
-      isRequire(TValueNode(reqres.getReceiver())) and
-      reqres.getMethodName() = "resolve" and
-      this = reqres.getArgument(0)
-    )
-  }
-}
-
-/** A constant path element appearing in a call to `require` or `require.resolve`. */
-deprecated private class ConstantRequirePathElement extends PathExpr, ConstantString {
-  ConstantRequirePathElement() { this = any(RequirePath rp).getAPart() }
-
-  override string getValue() { result = this.getStringValue() }
-}
-
-/** A `__dirname` path expression. */
-deprecated private class DirNamePath extends PathExpr, VarAccess {
-  DirNamePath() {
-    this.getName() = "__dirname" and
-    this.getVariable().getScope() instanceof ModuleScope
-  }
-
-  override string getValue() { result = this.getFile().getParentContainer().getAbsolutePath() }
-}
-
-/** A `__filename` path expression. */
-deprecated private class FileNamePath extends PathExpr, VarAccess {
-  FileNamePath() {
-    this.getName() = "__filename" and
-    this.getVariable().getScope() instanceof ModuleScope
-  }
-
-  override string getValue() { result = this.getFile().getAbsolutePath() }
-}
-
-/**
- * A path expression of the form `path.join(p, "...")` where
- * `p` is also a path expression.
- */
-deprecated private class JoinedPath extends PathExpr, @call_expr {
-  JoinedPath() {
-    exists(MethodCallExpr call | call = this |
-      call.getReceiver().(VarAccess).getName() = "path" and
-      call.getMethodName() = "join" and
-      call.getNumArgument() = 2 and
-      call.getArgument(0) instanceof PathExpr and
-      call.getArgument(1) instanceof ConstantString
-    )
-  }
-
-  override string getValue() {
-    exists(CallExpr call, PathExpr left, ConstantString right |
-      call = this and
-      left = call.getArgument(0) and
-      right = call.getArgument(1)
-    |
-      result = left.getValue() + "/" + right.getStringValue()
-    )
-  }
 }
 
 /**

@@ -283,16 +283,6 @@ module HTML {
   private module ResolveScriptSrc = Folder::Resolve<ResolverConfig>;
 
   /**
-   * A path string arising from the `src` attribute of a `script` tag.
-   */
-  overlay[global]
-  deprecated private class ScriptSrcPath extends PathString {
-    ScriptSrcPath() { scriptSrc(this, _) }
-
-    override Folder getARootFolder() { scriptSrc(this, result) }
-  }
-
-  /**
    * An HTML text node.
    *
    * Example:

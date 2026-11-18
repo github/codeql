@@ -179,17 +179,6 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   predicate mayReferToParameter(Parameter p) { DataFlow::parameterNode(p).flowsToExpr(this) }
 
   /**
-   * DEPRECATED. Use `getTypeBinding()` instead.
-   *
-   * Gets the static type of this expression, as determined by the TypeScript type system.
-   *
-   * Has no result if the expression is in a JavaScript file or in a TypeScript
-   * file that was extracted without type information.
-   */
-  overlay[global]
-  deprecated Type getType() { ast_node_type(this, result) }
-
-  /**
    * Holds if the syntactic context that the expression appears in relies on the expression
    * being non-null/non-undefined.
    *
@@ -1013,33 +1002,12 @@ class InvokeExpr extends @invokeexpr, Expr {
   }
 
   /**
-   * DEPRECATED. No longer supported.
-   *
-   * Gets the call signature of the invoked function, as determined by the TypeScript
-   * type system, with overloading resolved and type parameters substituted.
-   *
-   * This predicate is only populated for files extracted with full TypeScript extraction.
-   */
-  overlay[global]
-  deprecated CallSignatureType getResolvedSignature() { invoke_expr_signature(this, result) }
-
-  /**
    * Gets the index of the targeted call signature among the overload signatures
    * on the invoked function.
    *
    * This predicate is only populated for files extracted with full TypeScript extraction.
    */
   int getResolvedOverloadIndex() { invoke_expr_overload_index(this, result) }
-
-  /**
-   * DEPRECATED. No longer directly supported, but `getResolvedCallee()` may be usable as an alternative.
-   *
-   * Gets the canonical name of the static call target, as determined by the TypeScript type system.
-   *
-   * This predicate is only populated for files extracted with full TypeScript extraction.
-   */
-  overlay[global]
-  deprecated CanonicalFunctionName getResolvedCalleeName() { ast_node_symbol(this, result) }
 
   /**
    * Gets the statically resolved target function, as determined by the TypeScript type system, if any.
@@ -2880,32 +2848,11 @@ class DynamicImportExpr extends @dynamic_import, Expr, Import {
    */
   Expr getImportOptions() { result = this.getChildExpr(1) }
 
-  /**
-   * DEPRECATED: use `getImportOptions` instead.
-   * Gets the second "argument" to the import expression, that is, the `Y` in `import(X, Y)`.
-   *
-   * For example, gets the `{ with: { type: "json" }}` expression in the following:
-   * ```js
-   * import('foo', { with: { type: "json" }})
-   * ```
-   */
-  deprecated Expr getImportAttributes() { result = this.getImportOptions() }
-
   override Module getEnclosingModule() { result = this.getTopLevel() }
 
   override DataFlow::Node getImportedModuleNode() { result = DataFlow::valueNode(this) }
 
   override string getAPrimaryQlClass() { result = "DynamicImportExpr" }
-}
-
-/** A literal path expression appearing in a dynamic import. */
-overlay[global]
-deprecated private class LiteralDynamicImportPath extends PathExpr, ConstantString {
-  LiteralDynamicImportPath() {
-    exists(DynamicImportExpr di | this.getParentExpr*() = di.getSource())
-  }
-
-  override string getValue() { result = this.getStringValue() }
 }
 
 /**

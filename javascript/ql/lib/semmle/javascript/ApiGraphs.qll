@@ -225,11 +225,6 @@ module API {
     }
 
     /**
-     * DEPRECATED. Use either `getArrayElement()` or `getAMember()` instead.
-     */
-    deprecated Node getUnknownMember() { result = this.getArrayElement() }
-
-    /**
      * Gets an array element of unknown index.
      */
     cached
@@ -553,28 +548,6 @@ module API {
      * Gets the location of this API node, if it corresponds to a program element with a source location.
      */
     final Location getLocation() { result = this.getInducingNode().getLocation() }
-
-    /**
-     * DEPRECATED: Use `getLocation().hasLocationInfo()` instead.
-     *
-     * Holds if this node is located in file `path` between line `startline`, column `startcol`,
-     * and line `endline`, column `endcol`.
-     *
-     * For nodes that do not have a meaningful location, `path` is the empty string and all other
-     * parameters are zero.
-     */
-    deprecated predicate hasLocationInfo(
-      string path, int startline, int startcol, int endline, int endcol
-    ) {
-      this.getLocation().hasLocationInfo(path, startline, startcol, endline, endcol)
-      or
-      not exists(this.getLocation()) and
-      path = "" and
-      startline = 0 and
-      startcol = 0 and
-      endline = 0 and
-      endcol = 0
-    }
 
     /**
      * Gets a textual representation of this node.
@@ -2042,16 +2015,6 @@ module API {
         override string toString() { result = "entryPoint(\"" + e + "\")" }
       }
 
-      /** A label that gets a promised value. */
-      deprecated class LabelPromised extends ApiLabel {
-        LabelPromised() { this = MkLabelContent(ContentPrivate::MkPromiseValue()) }
-      }
-
-      /** A label that gets a rejected promise. */
-      deprecated class LabelPromisedError extends ApiLabel {
-        LabelPromisedError() { this = MkLabelContent(ContentPrivate::MkPromiseError()) }
-      }
-
       /** A label that gets the return value of a function. */
       class LabelReturn extends ApiLabel, MkLabelReturn {
         override string toString() { result = "getReturn()" }
@@ -2115,11 +2078,6 @@ module API {
         string getProperty() { result = prop }
 
         override string toString() { result = "getMember(\"" + prop + "\")" }
-      }
-
-      /** A label for a member with an unknown name. */
-      deprecated class LabelUnknownMember extends LabelContent {
-        LabelUnknownMember() { this.getContent().isUnknownArrayElement() }
       }
 
       /** A label for parameter `i`. */

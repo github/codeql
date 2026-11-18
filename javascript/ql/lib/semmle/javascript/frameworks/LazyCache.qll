@@ -58,12 +58,4 @@ module LazyCache {
       )
     }
   }
-
-  /** A constant path element appearing in a call to a lazy-cache object. */
-  overlay[global]
-  deprecated private class LazyCachePathExpr extends PathExpr, ConstantString {
-    LazyCachePathExpr() { this = any(LazyCacheImport rp).getArgument(0) }
-
-    override string getValue() { result = this.getStringValue() }
-  }
 }

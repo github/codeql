@@ -63,14 +63,6 @@ class AmdModuleDefinition extends CallExpr instanceof AmdModuleDefinition::Range
     result = this.getArgument(1)
   }
 
-  /** DEPRECATED. Use `getDependencyExpr` instead. */
-  overlay[global]
-  deprecated PathExpr getDependency(int i) { result = this.getDependencyExpr(i) }
-
-  /** DEPRECATED. Use `getADependencyExpr` instead. */
-  overlay[global]
-  deprecated PathExpr getADependency() { result = this.getADependencyExpr() }
-
   /** Gets the `i`th dependency of this module definition. */
   Expr getDependencyExpr(int i) {
     exists(Expr expr |
@@ -244,14 +236,6 @@ private class AmdDependencyPath extends PathExprCandidate {
       this = amd.getARequireCall().getAnArgument()
     )
   }
-}
-
-/** A constant path element appearing in an AMD dependency expression. */
-overlay[global]
-deprecated private class ConstantAmdDependencyPathElement extends PathExpr, ConstantString {
-  ConstantAmdDependencyPathElement() { this = any(AmdDependencyPath amd).getAPart() }
-
-  override string getValue() { result = this.getStringValue() }
 }
 
 /**

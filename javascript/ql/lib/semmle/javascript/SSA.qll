@@ -416,21 +416,6 @@ class SsaVariable extends TSsaDefinition {
 
   /** Gets the location of this SSA variable. */
   Location getLocation() { result = this.getDefinition().getLocation() }
-
-  /**
-   * DEPRECATED. Use `getLocation().hasLocationInfo()` instead.
-   *
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  deprecated predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
 }
 
 /**
@@ -483,21 +468,6 @@ class SsaDefinition extends TSsaDefinition {
 
   /** Gets a textual representation of this element. */
   string toString() { result = this.prettyPrintDef() }
-
-  /**
-   * DEPRECATED. Use `getLocation().hasLocationInfo()` instead.
-   *
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  deprecated predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
 
   /** Gets the location of this element. */
   Location getLocation() { result = this.getBasicBlock().getLocation() }

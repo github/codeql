@@ -137,46 +137,6 @@ module Babel {
   }
 
   /**
-   * An import path expression that may be transformed by `babel-plugin-root-import`.
-   */
-  deprecated private class BabelRootTransformedPathExpr extends PathExpr, Expr {
-    RootImportConfig plugin;
-    string mappedPrefix;
-    string suffix;
-
-    BabelRootTransformedPathExpr() {
-      this instanceof PathExpr and
-      plugin.appliesTo(this.getTopLevel()) and
-      suffix = this.getStringValue().regexpCapture("(.)/(.*)", 2) and
-      exists(string prefix |
-        prefix = this.getStringValue().regexpCapture("(.)/(.*)", 1) and
-        mappedPrefix = plugin.getRoot(prefix)
-      )
-    }
-
-    /** Gets the configuration that applies to this path. */
-    RootImportConfig getPlugin() { result = plugin }
-
-    override string getValue() { result = mappedPrefix + "/" + suffix }
-
-    override Folder getSearchRoot(int priority) {
-      priority = 0 and
-      result = plugin.getFolder()
-    }
-  }
-
-  /**
-   * An import path transformed by `babel-plugin-root-import`.
-   */
-  deprecated private class BabelRootTransformedPath extends PathString {
-    BabelRootTransformedPathExpr pathExpr;
-
-    BabelRootTransformedPath() { this = pathExpr.getValue() }
-
-    override Folder getARootFolder() { result = pathExpr.getPlugin().getFolder() }
-  }
-
-  /**
    * A configuration object for the `transform-react-jsx` plugin.
    *
    * The plugin option `{"pragma": xxx}` specifies a variable name used to instantiate
