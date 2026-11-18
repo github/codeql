@@ -39,7 +39,6 @@
 | GRDB.swift:230:37:230:48 | remoteString | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:230:37:230:48 | remoteString | This query depends on a $@. | GRDB.swift:222:26:222:80 | String(...) | user-provided value |
 | GRDB.swift:234:36:234:47 | remoteString | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:234:36:234:47 | remoteString | This query depends on a $@. | GRDB.swift:222:26:222:80 | String(...) | user-provided value |
 | GRDB.swift:235:36:235:47 | remoteString | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:235:36:235:47 | remoteString | This query depends on a $@. | GRDB.swift:222:26:222:80 | String(...) | user-provided value |
-| GRDB.swift:244:38:244:49 | remoteString | GRDB.swift:242:26:242:80 | String(...) | GRDB.swift:244:38:244:49 | remoteString | This query depends on a $@. | GRDB.swift:242:26:242:80 | String(...) | user-provided value |
 | GRDB.swift:252:32:252:43 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:252:32:252:43 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
 | GRDB.swift:253:32:253:43 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:253:32:253:43 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
 | GRDB.swift:254:32:254:43 | remoteString | GRDB.swift:250:26:250:80 | String(...) | GRDB.swift:254:32:254:43 | remoteString | This query depends on a $@. | GRDB.swift:250:26:250:80 | String(...) | user-provided value |
@@ -82,11 +81,7 @@
 | GRDB.swift:349:84:349:95 | remoteString | GRDB.swift:342:26:342:80 | String(...) | GRDB.swift:349:84:349:95 | remoteString | This query depends on a $@. | GRDB.swift:342:26:342:80 | String(...) | user-provided value |
 | GRDB.swift:350:69:350:80 | remoteString | GRDB.swift:342:26:342:80 | String(...) | GRDB.swift:350:69:350:80 | remoteString | This query depends on a $@. | GRDB.swift:342:26:342:80 | String(...) | user-provided value |
 | GRDB.swift:351:84:351:95 | remoteString | GRDB.swift:342:26:342:80 | String(...) | GRDB.swift:351:84:351:95 | remoteString | This query depends on a $@. | GRDB.swift:342:26:342:80 | String(...) | user-provided value |
-| SQLite.swift:73:17:73:28 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:73:17:73:28 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
-| SQLite.swift:74:17:74:28 | unsafeQuery2 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:74:17:74:28 | unsafeQuery2 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
-| SQLite.swift:75:17:75:28 | unsafeQuery3 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:75:17:75:28 | unsafeQuery3 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | SQLite.swift:83:29:83:40 | unsafeQuery3 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:83:29:83:40 | unsafeQuery3 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
-| SQLite.swift:98:32:98:43 | remoteString | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:98:32:98:43 | remoteString | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | SQLite.swift:103:29:103:40 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:103:29:103:40 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | SQLite.swift:106:30:106:41 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:106:30:106:41 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | SQLite.swift:109:29:109:40 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:109:29:109:40 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
@@ -97,7 +92,6 @@
 | SQLite.swift:121:16:121:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:121:16:121:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | SQLite.swift:123:16:123:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:123:16:123:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | SQLite.swift:125:16:125:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:125:16:125:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
-| SQLite.swift:140:20:140:31 | remoteString | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:140:20:140:31 | remoteString | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | SQLite.swift:142:13:142:24 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:142:13:142:24 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | SQLite.swift:144:13:144:24 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:144:13:144:24 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
 | SQLite.swift:146:16:146:27 | unsafeQuery1 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:146:16:146:27 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | String(...) | user-provided value |
@@ -120,12 +114,6 @@
 | sqlite3_c_api.swift:133:33:133:44 | unsafeQuery1 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:133:33:133:44 | unsafeQuery1 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
 | sqlite3_c_api.swift:134:33:134:44 | unsafeQuery2 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:134:33:134:44 | unsafeQuery2 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
 | sqlite3_c_api.swift:135:33:135:44 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:135:33:135:44 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
-| sqlite3_c_api.swift:145:26:145:37 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:145:26:145:37 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
-| sqlite3_c_api.swift:175:29:175:40 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:175:29:175:40 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
-| sqlite3_c_api.swift:183:29:183:40 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:183:29:183:40 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
-| sqlite3_c_api.swift:194:28:194:33 | buffer | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:194:28:194:33 | buffer | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
-| sqlite3_c_api.swift:202:31:202:36 | buffer | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:202:31:202:36 | buffer | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
-| sqlite3_c_api.swift:210:31:210:36 | buffer | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:210:31:210:36 | buffer | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
 edges
 | GRDB.swift:104:6:104:17 | remoteString | GRDB.swift:106:41:106:52 | remoteString | provenance |  |
 | GRDB.swift:104:6:104:17 | remoteString | GRDB.swift:108:41:108:52 | remoteString | provenance |  |
@@ -174,8 +162,6 @@ edges
 | GRDB.swift:222:6:222:17 | remoteString | GRDB.swift:234:36:234:47 | remoteString | provenance |  |
 | GRDB.swift:222:6:222:17 | remoteString | GRDB.swift:235:36:235:47 | remoteString | provenance |  |
 | GRDB.swift:222:26:222:80 | String(...) | GRDB.swift:222:6:222:17 | remoteString | provenance |  |
-| GRDB.swift:242:6:242:17 | remoteString | GRDB.swift:244:38:244:49 | remoteString | provenance |  |
-| GRDB.swift:242:26:242:80 | String(...) | GRDB.swift:242:6:242:17 | remoteString | provenance |  |
 | GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:252:32:252:43 | remoteString | provenance |  |
 | GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:253:32:253:43 | remoteString | provenance |  |
 | GRDB.swift:250:6:250:17 | remoteString | GRDB.swift:254:32:254:43 | remoteString | provenance |  |
@@ -223,12 +209,8 @@ edges
 | GRDB.swift:342:6:342:17 | remoteString | GRDB.swift:351:84:351:95 | remoteString | provenance |  |
 | GRDB.swift:342:26:342:80 | String(...) | GRDB.swift:342:6:342:17 | remoteString | provenance |  |
 | SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:65:21:65:32 | remoteString | provenance |  |
-| SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:66:62:66:73 | remoteString | provenance |  |
 | SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:67:60:67:71 | remoteString | provenance |  |
-| SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:98:32:98:43 | remoteString | provenance |  |
-| SQLite.swift:62:6:62:17 | remoteString | SQLite.swift:140:20:140:31 | remoteString | provenance |  |
 | SQLite.swift:62:25:62:79 | String(...) | SQLite.swift:62:6:62:17 | remoteString | provenance |  |
-| SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:73:17:73:28 | unsafeQuery1 | provenance |  |
 | SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:103:29:103:40 | unsafeQuery1 | provenance |  |
 | SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:106:30:106:41 | unsafeQuery1 | provenance |  |
 | SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:109:29:109:40 | unsafeQuery1 | provenance |  |
@@ -244,9 +226,6 @@ edges
 | SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:146:16:146:27 | unsafeQuery1 | provenance |  |
 | SQLite.swift:65:6:65:17 | unsafeQuery1 | SQLite.swift:148:16:148:27 | unsafeQuery1 | provenance |  |
 | SQLite.swift:65:21:65:32 | remoteString | SQLite.swift:65:6:65:17 | unsafeQuery1 | provenance |  |
-| SQLite.swift:66:6:66:17 | unsafeQuery2 | SQLite.swift:74:17:74:28 | unsafeQuery2 | provenance |  |
-| SQLite.swift:66:62:66:73 | remoteString | SQLite.swift:66:6:66:17 | unsafeQuery2 | provenance |  |
-| SQLite.swift:67:6:67:17 | unsafeQuery3 | SQLite.swift:75:17:75:28 | unsafeQuery3 | provenance |  |
 | SQLite.swift:67:6:67:17 | unsafeQuery3 | SQLite.swift:83:29:83:40 | unsafeQuery3 | provenance |  |
 | SQLite.swift:67:60:67:71 | remoteString | SQLite.swift:67:6:67:17 | unsafeQuery3 | provenance |  |
 | other.swift:51:6:51:17 | remoteString | other.swift:55:22:55:33 | remoteString | provenance |  |
@@ -276,18 +255,7 @@ edges
 | sqlite3_c_api.swift:126:6:126:17 | unsafeQuery2 | sqlite3_c_api.swift:134:33:134:44 | unsafeQuery2 | provenance |  |
 | sqlite3_c_api.swift:126:62:126:73 | remoteString | sqlite3_c_api.swift:126:6:126:17 | unsafeQuery2 | provenance |  |
 | sqlite3_c_api.swift:127:6:127:17 | unsafeQuery3 | sqlite3_c_api.swift:135:33:135:44 | unsafeQuery3 | provenance |  |
-| sqlite3_c_api.swift:127:6:127:17 | unsafeQuery3 | sqlite3_c_api.swift:145:26:145:37 | unsafeQuery3 | provenance |  |
-| sqlite3_c_api.swift:127:6:127:17 | unsafeQuery3 | sqlite3_c_api.swift:175:29:175:40 | unsafeQuery3 | provenance |  |
-| sqlite3_c_api.swift:127:6:127:17 | unsafeQuery3 | sqlite3_c_api.swift:183:29:183:40 | unsafeQuery3 | provenance |  |
-| sqlite3_c_api.swift:127:6:127:17 | unsafeQuery3 | sqlite3_c_api.swift:189:13:189:24 | unsafeQuery3 | provenance |  |
 | sqlite3_c_api.swift:127:60:127:71 | remoteString | sqlite3_c_api.swift:127:6:127:17 | unsafeQuery3 | provenance |  |
-| sqlite3_c_api.swift:189:6:189:9 | data | sqlite3_c_api.swift:190:2:190:5 | data | provenance |  |
-| sqlite3_c_api.swift:189:13:189:24 | unsafeQuery3 | sqlite3_c_api.swift:189:13:189:58 | ... .data(...) | provenance |  |
-| sqlite3_c_api.swift:189:13:189:58 | ... .data(...) | sqlite3_c_api.swift:189:6:189:9 | data | provenance |  |
-| sqlite3_c_api.swift:190:2:190:5 | data | sqlite3_c_api.swift:190:21:190:26 | [post] buffer | provenance |  |
-| sqlite3_c_api.swift:190:21:190:26 | [post] buffer | sqlite3_c_api.swift:194:28:194:33 | buffer | provenance |  |
-| sqlite3_c_api.swift:190:21:190:26 | [post] buffer | sqlite3_c_api.swift:202:31:202:36 | buffer | provenance |  |
-| sqlite3_c_api.swift:190:21:190:26 | [post] buffer | sqlite3_c_api.swift:210:31:210:36 | buffer | provenance |  |
 nodes
 | GRDB.swift:104:6:104:17 | remoteString | semmle.label | remoteString |
 | GRDB.swift:104:25:104:79 | String(...) | semmle.label | String(...) |
@@ -343,9 +311,6 @@ nodes
 | GRDB.swift:230:37:230:48 | remoteString | semmle.label | remoteString |
 | GRDB.swift:234:36:234:47 | remoteString | semmle.label | remoteString |
 | GRDB.swift:235:36:235:47 | remoteString | semmle.label | remoteString |
-| GRDB.swift:242:6:242:17 | remoteString | semmle.label | remoteString |
-| GRDB.swift:242:26:242:80 | String(...) | semmle.label | String(...) |
-| GRDB.swift:244:38:244:49 | remoteString | semmle.label | remoteString |
 | GRDB.swift:250:6:250:17 | remoteString | semmle.label | remoteString |
 | GRDB.swift:250:26:250:80 | String(...) | semmle.label | String(...) |
 | GRDB.swift:252:32:252:43 | remoteString | semmle.label | remoteString |
@@ -400,15 +365,9 @@ nodes
 | SQLite.swift:62:25:62:79 | String(...) | semmle.label | String(...) |
 | SQLite.swift:65:6:65:17 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:65:21:65:32 | remoteString | semmle.label | remoteString |
-| SQLite.swift:66:6:66:17 | unsafeQuery2 | semmle.label | unsafeQuery2 |
-| SQLite.swift:66:62:66:73 | remoteString | semmle.label | remoteString |
 | SQLite.swift:67:6:67:17 | unsafeQuery3 | semmle.label | unsafeQuery3 |
 | SQLite.swift:67:60:67:71 | remoteString | semmle.label | remoteString |
-| SQLite.swift:73:17:73:28 | unsafeQuery1 | semmle.label | unsafeQuery1 |
-| SQLite.swift:74:17:74:28 | unsafeQuery2 | semmle.label | unsafeQuery2 |
-| SQLite.swift:75:17:75:28 | unsafeQuery3 | semmle.label | unsafeQuery3 |
 | SQLite.swift:83:29:83:40 | unsafeQuery3 | semmle.label | unsafeQuery3 |
-| SQLite.swift:98:32:98:43 | remoteString | semmle.label | remoteString |
 | SQLite.swift:103:29:103:40 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:106:30:106:41 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:109:29:109:40 | unsafeQuery1 | semmle.label | unsafeQuery1 |
@@ -419,7 +378,6 @@ nodes
 | SQLite.swift:121:16:121:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:123:16:123:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:125:16:125:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
-| SQLite.swift:140:20:140:31 | remoteString | semmle.label | remoteString |
 | SQLite.swift:142:13:142:24 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:144:13:144:24 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:146:16:146:27 | unsafeQuery1 | semmle.label | unsafeQuery1 |
@@ -454,15 +412,18 @@ nodes
 | sqlite3_c_api.swift:133:33:133:44 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | sqlite3_c_api.swift:134:33:134:44 | unsafeQuery2 | semmle.label | unsafeQuery2 |
 | sqlite3_c_api.swift:135:33:135:44 | unsafeQuery3 | semmle.label | unsafeQuery3 |
-| sqlite3_c_api.swift:145:26:145:37 | unsafeQuery3 | semmle.label | unsafeQuery3 |
-| sqlite3_c_api.swift:175:29:175:40 | unsafeQuery3 | semmle.label | unsafeQuery3 |
-| sqlite3_c_api.swift:183:29:183:40 | unsafeQuery3 | semmle.label | unsafeQuery3 |
-| sqlite3_c_api.swift:189:6:189:9 | data | semmle.label | data |
-| sqlite3_c_api.swift:189:13:189:24 | unsafeQuery3 | semmle.label | unsafeQuery3 |
-| sqlite3_c_api.swift:189:13:189:58 | ... .data(...) | semmle.label | ... .data(...) |
-| sqlite3_c_api.swift:190:2:190:5 | data | semmle.label | data |
-| sqlite3_c_api.swift:190:21:190:26 | [post] buffer | semmle.label | [post] buffer |
-| sqlite3_c_api.swift:194:28:194:33 | buffer | semmle.label | buffer |
-| sqlite3_c_api.swift:202:31:202:36 | buffer | semmle.label | buffer |
-| sqlite3_c_api.swift:210:31:210:36 | buffer | semmle.label | buffer |
 subpaths
+testFailures
+| GRDB.swift:242:82:242:92 | // $ Source | Missing result: Source |
+| GRDB.swift:244:52:244:61 | // $ Alert | Missing result: Alert |
+| SQLite.swift:73:31:73:40 | // $ Alert | Missing result: Alert |
+| SQLite.swift:74:31:74:40 | // $ Alert | Missing result: Alert |
+| SQLite.swift:75:31:75:40 | // $ Alert | Missing result: Alert |
+| SQLite.swift:98:46:98:55 | // $ Alert | Missing result: Alert |
+| SQLite.swift:140:40:140:49 | // $ Alert | Missing result: Alert |
+| sqlite3_c_api.swift:145:73:145:82 | // $ Alert | Missing result: Alert |
+| sqlite3_c_api.swift:175:76:175:85 | // $ Alert | Missing result: Alert |
+| sqlite3_c_api.swift:183:79:183:88 | // $ Alert | Missing result: Alert |
+| sqlite3_c_api.swift:194:84:194:93 | // $ Alert | Missing result: Alert |
+| sqlite3_c_api.swift:202:87:202:96 | // $ Alert | Missing result: Alert |
+| sqlite3_c_api.swift:210:90:210:99 | // $ Alert | Missing result: Alert |
