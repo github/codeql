@@ -584,12 +584,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      */
     default predicate matchAll(Case c) { none() }
 
-    /**
-     * Holds if `pattern` cannot itself fail once all its nested patterns have matched.
-     *
-     * This does not imply that the overall pattern always matches, since a nested pattern
-     * may still fail.
-     */
+    /** Holds if matching `pattern` performs a test that may fail. */
     default predicate patternIsTest(Pattern pattern) { none() }
 
     /** Holds if `pattern` and all its nested patterns are guaranteed to match. */
@@ -625,8 +620,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       n instanceof FallthroughStmt
       or
       n instanceof GotoStmt
-      or
-      n instanceof BindingPattern
       or
       n instanceof Expr and
       exists(getChild(n, _)) and
@@ -866,7 +859,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       t.(BooleanSuccessor).getValue() = true
       or
       n instanceof Pattern and
-      not n instanceof BindingPattern and
       tag = outerPatternMatchTag() and
       t.(MatchingSuccessor).getValue() = true
     }
@@ -1047,9 +1039,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       )
     }
 
-    // private predicate patternCannotFail(Pattern pattern) {
-    //   patternAlwaysMatches(pattern) or Input1::patternCannotFail(pattern)
-    // }
     private predicate constantCondition(AstNode n, ConditionalSuccessor t) {
       patternAlwaysMatches(n) and
       t.(MatchingSuccessor).getValue() = true
@@ -1673,6 +1662,14 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       ) {
         n1.isBefore(pattern) and
         (
+          n2.isAdditional(pattern, outerPatternMatchTag())
+          or
+          Input1::patternIsTest(pattern) and
+          isAfterMatch(n2, pattern, false)
+        )
+        or
+        n1.isAdditional(pattern, outerPatternMatchTag()) and
+        (
           n2.isBefore(getRankedPattern(pattern, 1))
           or
           not exists(getRankedPattern(pattern, _)) and
@@ -1692,14 +1689,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           isAfterMatch(n2, pattern, false)
         )
         or
-        n1.isAfter(pattern.getVariable()) and n2.isIn(pattern)
-        or
-        n1.isIn(pattern) and isAfterMatch(n2, pattern, true)
-        or
-        n1.isIn(pattern) and
-        Input1::patternIsTest(pattern) and
-        // not patternAlwaysMatches(pattern) and
-        isAfterMatch(n2, pattern, false)
+        n1.isAfter(pattern.getVariable()) and isAfterMatch(n2, pattern, true)
       }
 
       private predicate orPatternStep(
