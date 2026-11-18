@@ -711,6 +711,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       parent.(BlockStmt).getLastStmt() = child
       or
       parent.(ExprStmt).getExpr() = child
+      or
+      getCaseBodyElement(parent.(Switch).getCase(_), _) = child and
+      not exists(getNextCaseBodyElement(child))
     }
 
     /**
@@ -1970,10 +1973,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         exists(AstNode caseBodyElement |
           n1.isAfter(caseBodyElement) and
           n2.isBefore(getNextCaseBodyElement(caseBodyElement))
-          or
-          n1.isAfter(caseBodyElement) and
-          not exists(getNextCaseBodyElement(caseBodyElement)) and
-          n2.isAfter(any(Switch s | getCaseBodyElement(s.getCase(_), _) = caseBodyElement))
         )
       }
 
