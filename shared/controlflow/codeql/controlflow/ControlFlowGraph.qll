@@ -611,6 +611,87 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     /**
+     * Gets an integer indicating the control flow order of a case within a
+     * switch. This is equal to the AST order, except that default cases are
+     * always last in control flow order, even if some languages allow them
+     * to appear before other cases in the AST.
+     */
+    private int getCaseControlFlowOrder(Switch s, Case c) {
+      exists(int pos | s.getCase(pos) = c |
+        // if a default case is not last in the AST, move it last in the CFG order
+        if c instanceof DefaultCase and exists(s.getCase(pos + 1))
+        then result = strictcount(s.getCase(_))
+        else result = pos
+      )
+    }
+
+    private module CaseDenseRankInput implements DenseRankInputSig1 {
+      class C = Switch;
+
+      class Ranked = Case;
+
+      predicate getRank = getCaseControlFlowOrder/2;
+    }
+
+    private predicate getRankedCaseCfgOrder = DenseRank1<CaseDenseRankInput>::denseRank/2;
+
+    private int numberOfStmts(Switch s) { result = strictcount(s.getStmt(_)) }
+
+    private predicate caseIndex(Switch s, Case c, int caseIdx, int caseStmtPos) {
+      c = s.getCase(caseIdx) and
+      c = s.getStmt(caseStmtPos)
+    }
+
+    /**
+     * Gets the body element of `case` at the specified (zero-based) `index`.
+     *
+     * This is either unique when the case has a single right-hand side, or it
+     * is the sequence of statements between this case and the next case.
+     */
+    private AstNode getCaseBodyElement(Case case, int index) {
+      result = case.getBody() and index = 0
+      or
+      not exists(case.getBody()) and
+      exists(Switch s, int caseIdx, int caseStmtPos, int nextCaseStmtPos |
+        caseIndex(pragma[only_bind_into](s), case, caseIdx, caseStmtPos) and
+        (
+          caseIndex(pragma[only_bind_into](s), _, caseIdx + 1, nextCaseStmtPos)
+          or
+          not exists(s.getCase(caseIdx + 1)) and
+          nextCaseStmtPos = numberOfStmts(s)
+        ) and
+        index = [0 .. nextCaseStmtPos - caseStmtPos - 2] and
+        result = pragma[only_bind_into](s).getStmt(caseStmtPos + 1 + index)
+      )
+    }
+
+    private AstNode getFirstCaseBodyElement(Case case) {
+      result = getCaseBodyElement(case, 0)
+      or
+      not exists(getCaseBodyElement(case, 0)) and
+      exists(Switch s, int i |
+        fallsThrough(case) and
+        // fall-through follows AST order, not case control flow order:
+        s.getCase(i) = case and
+        result = getFirstCaseBodyElement(s.getCase(i + 1))
+      )
+    }
+
+    private AstNode getNextCaseBodyElement(AstNode bodyElement) {
+      exists(Case case, int i | getCaseBodyElement(case, i) = bodyElement |
+        result = getCaseBodyElement(case, i + 1)
+        or
+        not exists(getCaseBodyElement(case, i + 1)) and
+        exists(Switch s, int j |
+          fallsThrough(case) and
+          // fall-through follows AST order, not case control flow order:
+          s.getCase(j) = case and
+          result = getFirstCaseBodyElement(s.getCase(j + 1))
+        )
+      )
+    }
+
+    /**
      * Holds if the value of `child` is propagated to `parent`. For example,
      * the right-hand side of short-circuiting expressions.
      */
@@ -1412,87 +1493,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n.isBefore(target) and
           c.getSuccessorType() instanceof GotoSuccessor and
           c.hasLabel(l)
-        )
-      }
-
-      /**
-       * Gets an integer indicating the control flow order of a case within a
-       * switch. This is equal to the AST order, except that default cases are
-       * always last in control flow order, even if some languages allow them
-       * to appear before other cases in the AST.
-       */
-      private int getCaseControlFlowOrder(Switch s, Case c) {
-        exists(int pos | s.getCase(pos) = c |
-          // if a default case is not last in the AST, move it last in the CFG order
-          if c instanceof DefaultCase and exists(s.getCase(pos + 1))
-          then result = strictcount(s.getCase(_))
-          else result = pos
-        )
-      }
-
-      private module CaseDenseRankInput implements DenseRankInputSig1 {
-        class C = Switch;
-
-        class Ranked = Case;
-
-        predicate getRank = getCaseControlFlowOrder/2;
-      }
-
-      private predicate getRankedCaseCfgOrder = DenseRank1<CaseDenseRankInput>::denseRank/2;
-
-      private int numberOfStmts(Switch s) { result = strictcount(s.getStmt(_)) }
-
-      private predicate caseIndex(Switch s, Case c, int caseIdx, int caseStmtPos) {
-        c = s.getCase(caseIdx) and
-        c = s.getStmt(caseStmtPos)
-      }
-
-      /**
-       * Gets the body element of `case` at the specified (zero-based) `index`.
-       *
-       * This is either unique when the case has a single right-hand side, or it
-       * is the sequence of statements between this case and the next case.
-       */
-      private AstNode getCaseBodyElement(Case case, int index) {
-        result = case.getBody() and index = 0
-        or
-        not exists(case.getBody()) and
-        exists(Switch s, int caseIdx, int caseStmtPos, int nextCaseStmtPos |
-          caseIndex(pragma[only_bind_into](s), case, caseIdx, caseStmtPos) and
-          (
-            caseIndex(pragma[only_bind_into](s), _, caseIdx + 1, nextCaseStmtPos)
-            or
-            not exists(s.getCase(caseIdx + 1)) and
-            nextCaseStmtPos = numberOfStmts(s)
-          ) and
-          index = [0 .. nextCaseStmtPos - caseStmtPos - 2] and
-          result = pragma[only_bind_into](s).getStmt(caseStmtPos + 1 + index)
-        )
-      }
-
-      private AstNode getFirstCaseBodyElement(Case case) {
-        result = getCaseBodyElement(case, 0)
-        or
-        not exists(getCaseBodyElement(case, 0)) and
-        exists(Switch s, int i |
-          fallsThrough(case) and
-          // fall-through follows AST order, not case control flow order:
-          s.getCase(i) = case and
-          result = getFirstCaseBodyElement(s.getCase(i + 1))
-        )
-      }
-
-      private AstNode getNextCaseBodyElement(AstNode bodyElement) {
-        exists(Case case, int i | getCaseBodyElement(case, i) = bodyElement |
-          result = getCaseBodyElement(case, i + 1)
-          or
-          not exists(getCaseBodyElement(case, i + 1)) and
-          exists(Switch s, int j |
-            fallsThrough(case) and
-            // fall-through follows AST order, not case control flow order:
-            s.getCase(j) = case and
-            result = getFirstCaseBodyElement(s.getCase(j + 1))
-          )
         )
       }
 
