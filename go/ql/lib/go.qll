@@ -37,7 +37,6 @@ import semmle.go.frameworks.BeegoOrm
 import semmle.go.frameworks.Bun
 import semmle.go.frameworks.CryptoLibraries
 import semmle.go.frameworks.RsCors
-import semmle.go.frameworks.Couchbase
 import semmle.go.frameworks.Echo
 import semmle.go.frameworks.ElazarlGoproxy
 import semmle.go.frameworks.Email
@@ -56,7 +55,6 @@ import semmle.go.frameworks.K8sIoApiCoreV1
 import semmle.go.frameworks.K8sIoClientGo
 import semmle.go.frameworks.Logrus
 import semmle.go.frameworks.Macaron
-import semmle.go.frameworks.Mux
 import semmle.go.frameworks.NoSQL
 import semmle.go.frameworks.Protobuf
 import semmle.go.frameworks.Revel

@@ -20,11 +20,11 @@ func Afero(writer http.ResponseWriter, request *http.Request) {
 	//osFS := afero.NewMemMapFs()
 	// OR
 	osFS := afero.NewOsFs()
-	fmt.Println(osFS.MkdirAll(filepath, 0755))                                   // $ FileSystemAccess=filepath
+	fmt.Println(osFS.MkdirAll(filepath, 0755))
 	fmt.Println(afero.WriteFile(osFS, filepath, []byte("this is me a !"), 0755)) // $ FileSystemAccess=filepath
 	content, _ := afero.ReadFile(osFS, filepath)                                 // $ FileSystemAccess=filepath
 	fmt.Println(string(content))
-	fmt.Println(osFS.Open(filepath)) // $ FileSystemAccess=filepath
+	fmt.Println(osFS.Open(filepath))
 	// NOT OK
 	fmt.Println(afero.SafeWriteReader(osFS, filepath, os.Stdout)) // $ FileSystemAccess=filepath
 	fmt.Println(afero.WriteReader(osFS, filepath, os.Stdout))     // $ FileSystemAccess=filepath

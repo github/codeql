@@ -39,24 +39,3 @@ module XPath {
     ExternalSanitizer() { barrierNode(this, "xpath-injection") }
   }
 }
-
-/**
- * DEPRECATED
- *
- * Provides classes for working with the [xmlpath](https://gopkg.in/xmlpath.v2) package.
- */
-deprecated module XmlPath {
-  /**
-   * DEPRECATED
-   *
-   * Gets the package name `github.com/go-xmlpath/xmlpath` or `gopkg.in/xmlpath`.
-   */
-  deprecated string packagePath() {
-    result =
-      package([
-          "github.com/go-xmlpath/xmlpath", "gopkg.in/xmlpath", "github.com/crankycoder/xmlpath",
-          "launchpad.net/xmlpath", "github.com/masterzen/xmlpath",
-          "github.com/going/toolkit/xmlpath", "gopkg.in/go-xmlpath/xmlpath"
-        ], "")
-  }
-}
