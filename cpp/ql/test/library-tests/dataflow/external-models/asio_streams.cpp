@@ -1,16 +1,9 @@
 
 // --- stub library headers ---
 
-#include "std_string.h"
+#include "../taint-tests/stl.h"
 
 #define SIZE_MAX 0xFFFFFFFF
-
-namespace std {
-	class string_view {
-	public:
-		string_view(const char* s);
-	};
-};
 
 namespace boost {
 	namespace system {
@@ -150,20 +143,20 @@ void test_resolve_host() {
 	sink(resolver.resolve(host, service, flags)); // $ ir
 	sink(resolver.resolve(host, service, flags, error)); // $ ir
 
-	sink(resolver.resolve(host_view, service_view)); // $ ir
-	sink(resolver.resolve(host_view, service_view, error)); // $ ir
-	sink(resolver.resolve(host_view, service_view, flags)); // $ ir
-	sink(resolver.resolve(host_view, service_view, flags, error)); // $ ir
+	sink(resolver.resolve(host_view, service_view)); // $ MISSING: ir
+	sink(resolver.resolve(host_view, service_view, error)); // $ MISSING: ir
+	sink(resolver.resolve(host_view, service_view, flags)); // $ MISSING: ir
+	sink(resolver.resolve(host_view, service_view, flags, error)); // $ MISSING: ir
 
 	sink(resolver.resolve(protocol, host, service)); // $ ir
 	sink(resolver.resolve(protocol, host, service, error)); // $ ir
 	sink(resolver.resolve(protocol, host, service, flags)); // $ ir
 	sink(resolver.resolve(protocol, host, service, flags, error)); // $ ir
 
-	sink(resolver.resolve(protocol, host_view, service_view)); // $ ir
-	sink(resolver.resolve(protocol, host_view, service_view, error)); // $ ir
-	sink(resolver.resolve(protocol, host_view, service_view, flags)); // $ ir
-	sink(resolver.resolve(protocol, host_view, service_view, flags, error)); // $ ir
+	sink(resolver.resolve(protocol, host_view, service_view)); // $ MISSING: ir
+	sink(resolver.resolve(protocol, host_view, service_view, error)); // $ MISSING: ir
+	sink(resolver.resolve(protocol, host_view, service_view, flags)); // $ MISSING: ir
+	sink(resolver.resolve(protocol, host_view, service_view, flags, error)); // $ MISSING: ir
 }
 
 void test_resolve_service() {
@@ -181,18 +174,18 @@ void test_resolve_service() {
 	sink(resolver.resolve(host, service, flags)); // $ ir
 	sink(resolver.resolve(host, service, flags, error)); // $ ir
 
-	sink(resolver.resolve(host_view, service_view)); // $ ir
-	sink(resolver.resolve(host_view, service_view, error)); // $ ir
-	sink(resolver.resolve(host_view, service_view, flags)); // $ ir
-	sink(resolver.resolve(host_view, service_view, flags, error)); // $ ir
+	sink(resolver.resolve(host_view, service_view)); // $ MISSING: ir
+	sink(resolver.resolve(host_view, service_view, error)); // $ MISSING: ir
+	sink(resolver.resolve(host_view, service_view, flags)); // $ MISSING: ir
+	sink(resolver.resolve(host_view, service_view, flags, error)); // $ MISSING: ir
 
 	sink(resolver.resolve(protocol, host, service)); // $ ir
 	sink(resolver.resolve(protocol, host, service, error)); // $ ir
 	sink(resolver.resolve(protocol, host, service, flags)); // $ ir
 	sink(resolver.resolve(protocol, host, service, flags, error)); // $ ir
 
-	sink(resolver.resolve(protocol, host_view, service_view)); // $ ir
-	sink(resolver.resolve(protocol, host_view, service_view, error)); // $ ir
-	sink(resolver.resolve(protocol, host_view, service_view, flags)); // $ ir
-	sink(resolver.resolve(protocol, host_view, service_view, flags, error)); // $ ir
+	sink(resolver.resolve(protocol, host_view, service_view)); // $ MISSING: ir
+	sink(resolver.resolve(protocol, host_view, service_view, error)); // $ MISSING: ir
+	sink(resolver.resolve(protocol, host_view, service_view, flags)); // $ MISSING: ir
+	sink(resolver.resolve(protocol, host_view, service_view, flags, error)); // $ MISSING: ir
 }

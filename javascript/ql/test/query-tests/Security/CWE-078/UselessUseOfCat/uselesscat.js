@@ -163,4 +163,15 @@ execmod("cat foo/bar", (err, out) => {console.log(out)}); // $ Alert
 execmod("cat foo/bar", {encoding: 'utf8'}); // $ Alert
 execmod("cat foo/bar", {encoding: 'utf8'}, (err, out) => {console.log(out)}); // $ Alert
 
-  
+
+function unresolvedCallback(cb) {
+    exec("cat foo", cb); // $ Alert
+    execFile("cat", ["foo"], cb); // $ Alert
+    exec("cat foo", { encoding: "utf8" }, cb); // $ Alert
+    execFile("cat", ["foo"], { encoding: "utf8" }, cb); // $ Alert
+}
+
+exec("cat foo", { encoding: "utf8" }); // $ Alert
+execFile("cat", ["foo"], { encoding: "utf8" }); // $ Alert
+exec("cat foo", { cwd: "/tmp" });
+execFile("cat", ["foo"], { cwd: "/tmp" });

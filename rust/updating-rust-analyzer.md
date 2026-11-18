@@ -50,7 +50,7 @@ pkg-config`.
 4. Regenerate vendored bazel files (these allow faster builds, particularly on
    CI where it has to start from scratch each time), commit the changes:
    ```
-   misc/bazel/3rdparty/update_tree_sitter_extractors_deps.sh
+   misc/bazel/3rdparty/update_rust_workspace_deps.sh
    git add .
    git commit -am 'Bazel: regenerate vendored cargo dependencies' --no-verify
    ```
@@ -58,9 +58,9 @@ pkg-config`.
    > If in step 6 you also bump `rules_rust` or the Rust toolchain used for
    > building the extractor, those changes invalidate _all_ vendored files
    > (including the Python ones under `misc/bazel/3rdparty/py_deps`), not just
-   > the tree-sitter ones. In that case run the umbrella script
-   > `misc/bazel/3rdparty/update_cargo_deps.sh` instead (it regenerates both
-   > `py_deps` and `tree_sitter_extractors_deps`, and runs `bazel mod tidy`),
+   > the Rust workspace ones. In that case run the umbrella script
+   > `misc/bazel/3rdparty/update_all_rust_deps.sh` instead (it regenerates both
+   > `py_deps` and `rust_workspace_deps`, and runs `bazel mod tidy`),
    > then commit all the regenerated files.
 
 5. Run codegen
@@ -96,7 +96,7 @@ pkg-config`.
         toolchain in `rust/extractor/src/nightly-toolchain/rust-toolchain.toml`
         to a more recent date while you're at it.
       * a toolchain and/or `rules_rust` bump invalidates the vendored files, so
-       re-run `misc/bazel/3rdparty/update_cargo_deps.sh` (see the note in step
+       re-run `misc/bazel/3rdparty/update_all_rust_deps.sh` (see the note in step
        4) and commit the regenerated files.
    * if it fails while compiling rust extractor code, you will need to adapt it
      to the new library version.

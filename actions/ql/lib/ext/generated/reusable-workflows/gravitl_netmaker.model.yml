@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/actions-all
-      extensible: actionsSinkModel
-    data:
-     - ["gravitl/netmaker/.github/workflows/publish-docker.yml", "*", "input.tag", "code-injection", "generated"]

@@ -7,6 +7,9 @@ license = "MIT"
 [lib]
 proc-macro = true
 
+[lints]
+workspace = true
+
 # When updating these dependencies, run `rust/update_cargo_deps.sh`
 [dependencies]
 quote = "1.0.47"

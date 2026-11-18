@@ -10,6 +10,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Box"
           genericParameterClause:
             genericParameterClause
@@ -57,7 +58,6 @@ sourceFile
               leftBrace: {
               rightBrace: }
               members:
-          modifiers:
           classKeyword: class
 
 ---

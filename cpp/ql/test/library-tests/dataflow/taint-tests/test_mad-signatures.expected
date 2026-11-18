@@ -97,44 +97,44 @@ signatureMatches
 | atl.cpp:1333:13:1333:21 | operator= | Microsoft::WRL | (const ComPtr &) | ComPtr | operator= | 0 |
 | atl.cpp:1334:13:1334:21 | operator= | Microsoft::WRL | (ComPtr &&) | ComPtr | operator= | 0 |
 | atl.cpp:1336:13:1336:21 | operator= | Microsoft::WRL | (ComPtr &&) | ComPtr | operator= | 0 |
-| stl.h:294:12:294:17 | vector | std | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:294:12:294:17 | vector | std | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:294:12:294:17 | vector | std | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:294:12:294:17 | vector | std | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:294:12:294:17 | vector | std | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:294:12:294:17 | vector | std | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:295:3:295:8 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
-| stl.h:295:3:295:8 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
-| stl.h:295:3:295:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 |
-| stl.h:295:3:295:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 |
-| stl.h:295:3:295:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:295:3:295:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:295:3:295:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
-| stl.h:295:3:295:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
-| stl.h:296:101:296:106 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 0 |
-| stl.h:296:101:296:106 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 1 |
-| stl.h:296:101:296:106 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
-| stl.h:296:101:296:106 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
-| stl.h:303:106:303:111 | assign | std | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
-| stl.h:303:106:303:111 | assign | std | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
-| stl.h:306:8:306:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
-| stl.h:306:8:306:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
-| stl.h:306:8:306:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
-| stl.h:306:8:306:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
-| stl.h:306:8:306:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
-| stl.h:306:8:306:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
-| stl.h:331:12:331:17 | insert | std | (const_iterator,T &&) | vector<T> | insert | 0 |
-| stl.h:331:12:331:17 | insert | std | (const_iterator,T &&) | vector<T> | insert | 1 |
-| stl.h:333:42:333:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
-| stl.h:333:42:333:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
-| stl.h:333:42:333:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
-| stl.h:333:42:333:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
-| stl.h:333:42:333:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
-| stl.h:333:42:333:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
-| stl.h:678:33:678:38 | format | std | (format_string,Args &&) |  | format<Args> | 0 |
-| stl.h:678:33:678:38 | format | std | (format_string,Args &&) |  | format<Args> | 0 |
-| stl.h:678:33:678:38 | format | std | (format_string,Args &&) |  | format<Args> | 1 |
-| stl.h:678:33:678:38 | format | std | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:327:12:327:17 | vector | std | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:327:12:327:17 | vector | std | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:327:12:327:17 | vector | std | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:327:12:327:17 | vector | std | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:327:12:327:17 | vector | std | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:327:12:327:17 | vector | std | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:328:3:328:8 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| stl.h:328:3:328:8 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| stl.h:328:3:328:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 |
+| stl.h:328:3:328:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 |
+| stl.h:328:3:328:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:328:3:328:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:328:3:328:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| stl.h:328:3:328:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| stl.h:329:101:329:106 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 0 |
+| stl.h:329:101:329:106 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 1 |
+| stl.h:329:101:329:106 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| stl.h:329:101:329:106 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| stl.h:336:106:336:111 | assign | std | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:336:106:336:111 | assign | std | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:339:8:339:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:339:8:339:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:339:8:339:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:339:8:339:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:339:8:339:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:339:8:339:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:364:12:364:17 | insert | std | (const_iterator,T &&) | vector<T> | insert | 0 |
+| stl.h:364:12:364:17 | insert | std | (const_iterator,T &&) | vector<T> | insert | 1 |
+| stl.h:366:42:366:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
+| stl.h:366:42:366:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
+| stl.h:366:42:366:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
+| stl.h:366:42:366:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
+| stl.h:366:42:366:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
+| stl.h:366:42:366:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
+| stl.h:747:33:747:38 | format | std | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:747:33:747:38 | format | std | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:747:33:747:38 | format | std | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:747:33:747:38 | format | std | (format_string,Args &&) |  | format<Args> | 1 |
 | taint.cpp:847:5:847:11 | toupper |  | (int) |  | toupper | 0 |
 | taint.cpp:848:5:848:11 | tolower |  | (int) |  | tolower | 0 |
 getSignatureParameterName
@@ -27341,27 +27341,27 @@ getParameterTypeName
 | format.cpp:3:16:3:16 | operator= | 0 | FILE && |
 | format.cpp:3:16:3:16 | operator= | 0 | const FILE & |
 | format.cpp:5:5:5:12 | snprintf | 0 | char * |
+| format.cpp:5:5:5:12 | snprintf | 1 | decltype(...) |
 | format.cpp:5:5:5:12 | snprintf | 1 | size_t |
-| format.cpp:5:5:5:12 | snprintf | 1 | unsigned long |
 | format.cpp:5:5:5:12 | snprintf | 2 | const char * |
 | format.cpp:5:5:5:12 | snprintf | 3 | ... |
 | format.cpp:6:5:6:11 | sprintf | 0 | char * |
 | format.cpp:6:5:6:11 | sprintf | 1 | const char * |
 | format.cpp:6:5:6:11 | sprintf | 2 | ... |
 | format.cpp:7:5:7:12 | swprintf | 0 | wchar_t * |
+| format.cpp:7:5:7:12 | swprintf | 1 | decltype(...) |
 | format.cpp:7:5:7:12 | swprintf | 1 | size_t |
-| format.cpp:7:5:7:12 | swprintf | 1 | unsigned long |
 | format.cpp:7:5:7:12 | swprintf | 2 | const wchar_t * |
 | format.cpp:7:5:7:12 | swprintf | 3 | ... |
 | format.cpp:14:5:14:13 | vsnprintf | 0 | char * |
+| format.cpp:14:5:14:13 | vsnprintf | 1 | decltype(...) |
 | format.cpp:14:5:14:13 | vsnprintf | 1 | size_t |
-| format.cpp:14:5:14:13 | vsnprintf | 1 | unsigned long |
 | format.cpp:14:5:14:13 | vsnprintf | 2 | const char * |
 | format.cpp:14:5:14:13 | vsnprintf | 3 | va_list |
 | format.cpp:14:5:14:13 | vsnprintf | 3 | void * |
 | format.cpp:16:5:16:13 | mysprintf | 0 | char * |
+| format.cpp:16:5:16:13 | mysprintf | 1 | decltype(...) |
 | format.cpp:16:5:16:13 | mysprintf | 1 | size_t |
-| format.cpp:16:5:16:13 | mysprintf | 1 | unsigned long |
 | format.cpp:16:5:16:13 | mysprintf | 2 | const char * |
 | format.cpp:16:5:16:13 | mysprintf | 3 | ... |
 | format.cpp:28:5:28:10 | sscanf | 0 | const char * |
@@ -27370,15 +27370,22 @@ getParameterTypeName
 | format.cpp:142:8:142:13 | strlen | 0 | const char * |
 | format.cpp:143:8:143:13 | wcslen | 0 | const wchar_t * |
 | format.cpp:169:6:169:9 | test | 0 | format_string |
+| map.cpp:6:21:6:26 | source | 0 | int |
 | map.cpp:8:6:8:9 | sink | 0 | char * |
 | map.cpp:9:6:9:9 | sink | 0 | const char * |
 | map.cpp:10:6:10:9 | sink | 0 | bool |
-| map.cpp:11:6:11:9 | sink | 0 | pair |
-| map.cpp:12:6:12:9 | sink | 0 | map, allocator<pair<char *const, char *>>> |
+| map.cpp:11:39:11:42 | sink | 0 | pair |
+| map.cpp:11:39:11:42 | sink | 0 | pair |
+| map.cpp:11:39:11:42 | sink | 0 | pair |
+| map.cpp:11:39:11:42 | sink | 0 | pair |
+| map.cpp:11:39:11:42 | sink | 0 | pair |
+| map.cpp:11:39:11:42 | sink | 0 | pair |
+| map.cpp:11:39:11:42 | sink | 0 | pair |
+| map.cpp:12:6:12:9 | sink | 0 | map, allocator<pair<const char *const, const char *>>> |
 | map.cpp:13:6:13:9 | sink | 0 | iterator |
-| map.cpp:14:6:14:9 | sink | 0 | unordered_map, equal_to<char *>, allocator<pair<char *const, char *>>> |
+| map.cpp:14:6:14:9 | sink | 0 | unordered_map, equal_to<const char *>, allocator<pair<const char *const, const char *>>> |
 | map.cpp:15:6:15:9 | sink | 0 | iterator |
-| map.cpp:16:6:16:9 | sink | 0 | unordered_map, hash<char *>, equal_to<char *>, allocator<pair<char *const, pair<int, int>>>> |
+| map.cpp:16:6:16:9 | sink | 0 | unordered_map, hash<const char *>, equal_to<const char *>, allocator<pair<const char *const, pair<int, int>>>> |
 | map.cpp:17:6:17:9 | sink | 0 | iterator |
 | map.cpp:442:7:442:19 | indirect_sink | 0 | int * |
 | movableclass.cpp:3:6:3:9 | sink | 0 | ... |
@@ -27447,460 +27454,502 @@ getParameterTypeName
 | standalone_iterators.cpp:102:6:102:9 | sink | 0 | insert_iterator_by_trait |
 | standalone_iterators.cpp:103:27:103:36 | operator+= | 0 | insert_iterator_by_trait & |
 | standalone_iterators.cpp:103:27:103:36 | operator+= | 1 | int |
-| stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
-| stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
-| stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
-| stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
-| stl.h:29:34:29:40 | forward | 0 | type & |
-| stl.h:29:34:29:40 | forward | 0 | type & |
-| stl.h:29:34:29:40 | forward | 0 | type & |
-| stl.h:29:34:29:40 | forward | 0 | type & |
-| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
-| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
-| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
-| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
-| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
-| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
-| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
-| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
-| stl.h:52:12:52:21 | operator++ | 0 | int |
-| stl.h:52:12:52:21 | operator++ | 0 | int |
-| stl.h:52:12:52:21 | operator++ | 0 | int |
-| stl.h:52:12:52:21 | operator++ | 0 | int |
-| stl.h:52:12:52:21 | operator++ | 0 | int |
-| stl.h:54:12:54:21 | operator-- | 0 | int |
-| stl.h:56:8:56:17 | operator!= | 0 | iterator |
-| stl.h:56:8:56:17 | operator!= | 0 | iterator |
-| stl.h:56:8:56:17 | operator!= | 0 | iterator |
-| stl.h:56:8:56:17 | operator!= | 0 | iterator |
-| stl.h:56:8:56:17 | operator!= | 0 | iterator |
-| stl.h:56:8:56:17 | operator!= | 0 | iterator |
-| stl.h:59:12:59:20 | operator+ | 0 | int |
-| stl.h:60:12:60:20 | operator- | 0 | int |
-| stl.h:61:13:61:22 | operator+= | 0 | int |
-| stl.h:61:13:61:22 | operator+= | 0 | int |
-| stl.h:62:13:62:22 | operator-= | 0 | int |
-| stl.h:64:18:64:27 | operator[] | 0 | int |
-| stl.h:67:9:67:9 | operator= | 0 | const input_iterator_tag & |
-| stl.h:67:9:67:9 | operator= | 0 | input_iterator_tag && |
-| stl.h:68:9:68:9 | operator= | 0 | const forward_iterator_tag & |
-| stl.h:68:9:68:9 | operator= | 0 | forward_iterator_tag && |
-| stl.h:69:9:69:9 | operator= | 0 | bidirectional_iterator_tag && |
-| stl.h:69:9:69:9 | operator= | 0 | const bidirectional_iterator_tag & |
-| stl.h:70:9:70:9 | operator= | 0 | const random_access_iterator_tag & |
-| stl.h:70:9:70:9 | operator= | 0 | random_access_iterator_tag && |
-| stl.h:72:9:72:9 | operator= | 0 | const output_iterator_tag & |
-| stl.h:72:9:72:9 | operator= | 0 | output_iterator_tag && |
-| stl.h:86:22:86:41 | back_insert_iterator | 0 | class:0 & |
-| stl.h:86:22:86:41 | back_insert_iterator | 0 | class:0 & |
-| stl.h:88:25:88:33 | operator= | 0 | value_type && |
-| stl.h:88:25:88:33 | operator= | 0 | value_type && |
-| stl.h:91:24:91:33 | operator++ | 0 | int |
-| stl.h:91:24:91:33 | operator++ | 0 | int |
-| stl.h:95:44:95:44 | back_inserter | 0 | func:0 & |
-| stl.h:95:44:95:44 | back_inserter | 0 | func:0 & |
-| stl.h:147:12:147:23 | basic_string | 0 | const class:2 & |
-| stl.h:148:3:148:14 | basic_string | 0 | const class:0 * |
-| stl.h:148:3:148:14 | basic_string | 1 | const class:2 & |
-| stl.h:149:33:149:44 | basic_string | 0 | func:0 |
-| stl.h:149:33:149:44 | basic_string | 1 | func:0 |
-| stl.h:149:33:149:44 | basic_string | 2 | const class:2 & |
-| stl.h:165:8:165:16 | push_back | 0 | class:0 |
-| stl.h:173:13:173:22 | operator[] | 0 | size_type |
-| stl.h:175:13:175:14 | at | 0 | size_type |
-| stl.h:176:35:176:44 | operator+= | 0 | const func:0 & |
-| stl.h:176:35:176:44 | operator+= | 0 | const func:0 & |
-| stl.h:177:17:177:26 | operator+= | 0 | const class:0 * |
-| stl.h:178:17:178:22 | append | 0 | const basic_string & |
-| stl.h:179:17:179:22 | append | 0 | const class:0 * |
-| stl.h:180:17:180:22 | append | 0 | size_type |
-| stl.h:180:17:180:22 | append | 1 | class:0 |
-| stl.h:181:47:181:52 | append | 0 | func:0 |
-| stl.h:181:47:181:52 | append | 1 | func:0 |
-| stl.h:182:17:182:22 | assign | 0 | const basic_string & |
-| stl.h:183:17:183:22 | assign | 0 | size_type |
-| stl.h:183:17:183:22 | assign | 1 | class:0 |
-| stl.h:184:47:184:52 | assign | 0 | func:0 |
-| stl.h:184:47:184:52 | assign | 1 | func:0 |
-| stl.h:185:17:185:22 | insert | 0 | size_type |
-| stl.h:185:17:185:22 | insert | 1 | const basic_string & |
-| stl.h:186:17:186:22 | insert | 0 | size_type |
-| stl.h:186:17:186:22 | insert | 1 | size_type |
-| stl.h:186:17:186:22 | insert | 2 | class:0 |
-| stl.h:187:17:187:22 | insert | 0 | size_type |
-| stl.h:187:17:187:22 | insert | 1 | const class:0 * |
-| stl.h:188:12:188:17 | insert | 0 | const_iterator |
-| stl.h:188:12:188:17 | insert | 1 | size_type |
-| stl.h:188:12:188:17 | insert | 2 | class:0 |
-| stl.h:189:42:189:47 | insert | 0 | const_iterator |
-| stl.h:189:42:189:47 | insert | 1 | func:0 |
-| stl.h:189:42:189:47 | insert | 2 | func:0 |
-| stl.h:190:17:190:23 | replace | 0 | size_type |
-| stl.h:190:17:190:23 | replace | 1 | size_type |
-| stl.h:190:17:190:23 | replace | 2 | const basic_string & |
-| stl.h:191:17:191:23 | replace | 0 | size_type |
-| stl.h:191:17:191:23 | replace | 1 | size_type |
-| stl.h:191:17:191:23 | replace | 2 | size_type |
-| stl.h:191:17:191:23 | replace | 3 | class:0 |
-| stl.h:192:13:192:16 | copy | 0 | class:0 * |
-| stl.h:192:13:192:16 | copy | 1 | size_type |
-| stl.h:192:13:192:16 | copy | 2 | size_type |
-| stl.h:194:16:194:21 | substr | 0 | size_type |
-| stl.h:194:16:194:21 | substr | 1 | size_type |
-| stl.h:195:8:195:11 | swap | 0 | basic_string & |
-| stl.h:198:94:198:102 | operator+ | 0 | const basic_string & |
-| stl.h:198:94:198:102 | operator+ | 1 | const basic_string & |
-| stl.h:199:94:199:102 | operator+ | 0 | const basic_string & |
-| stl.h:199:94:199:102 | operator+ | 1 | const func:0 * |
-| stl.h:214:33:214:42 | operator>> | 0 | int & |
-| stl.h:217:33:217:35 | get | 0 | char_type & |
-| stl.h:217:33:217:35 | get | 0 | class:0 & |
-| stl.h:218:33:218:35 | get | 0 | char_type * |
-| stl.h:218:33:218:35 | get | 0 | class:0 * |
-| stl.h:218:33:218:35 | get | 1 | streamsize |
-| stl.h:218:33:218:35 | get | 1 | unsigned long |
-| stl.h:220:33:220:36 | read | 0 | char_type * |
-| stl.h:220:33:220:36 | read | 0 | class:0 * |
-| stl.h:220:33:220:36 | read | 1 | streamsize |
-| stl.h:220:33:220:36 | read | 1 | unsigned long |
-| stl.h:221:14:221:21 | readsome | 0 | char_type * |
-| stl.h:221:14:221:21 | readsome | 0 | class:0 * |
-| stl.h:221:14:221:21 | readsome | 1 | streamsize |
-| stl.h:221:14:221:21 | readsome | 1 | unsigned long |
-| stl.h:222:33:222:39 | putback | 0 | char_type |
-| stl.h:222:33:222:39 | putback | 0 | class:0 |
-| stl.h:225:32:225:38 | getline | 0 | char_type * |
-| stl.h:225:32:225:38 | getline | 0 | class:0 * |
-| stl.h:225:32:225:38 | getline | 1 | streamsize |
-| stl.h:225:32:225:38 | getline | 1 | unsigned long |
-| stl.h:226:32:226:38 | getline | 0 | char_type * |
-| stl.h:226:32:226:38 | getline | 0 | class:0 * |
-| stl.h:226:32:226:38 | getline | 1 | streamsize |
-| stl.h:226:32:226:38 | getline | 1 | unsigned long |
-| stl.h:226:32:226:38 | getline | 2 | char_type |
-| stl.h:226:32:226:38 | getline | 2 | class:0 |
-| stl.h:229:68:229:77 | operator>> | 0 | basic_istream & |
-| stl.h:229:68:229:77 | operator>> | 1 | func:0 * |
-| stl.h:230:85:230:94 | operator>> | 0 | basic_istream & |
-| stl.h:230:85:230:94 | operator>> | 1 | basic_string & |
-| stl.h:232:84:232:90 | getline | 0 | basic_istream & |
-| stl.h:232:84:232:90 | getline | 1 | basic_string & |
-| stl.h:232:84:232:90 | getline | 2 | func:0 |
-| stl.h:233:84:233:90 | getline | 0 | basic_istream & |
-| stl.h:233:84:233:90 | getline | 1 | basic_string & |
-| stl.h:240:33:240:42 | operator<< | 0 | int |
-| stl.h:242:33:242:35 | put | 0 | char_type |
-| stl.h:242:33:242:35 | put | 0 | class:0 |
-| stl.h:243:33:243:37 | write | 0 | const char_type * |
-| stl.h:243:33:243:37 | write | 0 | const class:0 * |
-| stl.h:243:33:243:37 | write | 1 | streamsize |
-| stl.h:243:33:243:37 | write | 1 | unsigned long |
-| stl.h:247:67:247:76 | operator<< | 0 | basic_ostream & |
-| stl.h:247:67:247:76 | operator<< | 1 | const func:0 * |
-| stl.h:248:85:248:94 | operator<< | 0 | basic_ostream & |
-| stl.h:248:85:248:94 | operator<< | 1 | const basic_string & |
-| stl.h:259:12:259:29 | basic_stringstream | 0 | const basic_string & |
-| stl.h:263:23:263:31 | operator= | 0 | basic_stringstream && |
-| stl.h:265:8:265:11 | swap | 0 | basic_stringstream & |
-| stl.h:268:8:268:10 | str | 0 | const basic_string & |
-| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
-| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
-| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
-| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
-| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
-| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
-| stl.h:294:12:294:17 | vector | 0 | size_type |
-| stl.h:294:12:294:17 | vector | 0 | size_type |
-| stl.h:294:12:294:17 | vector | 0 | size_type |
-| stl.h:294:12:294:17 | vector | 0 | unsigned int |
-| stl.h:294:12:294:17 | vector | 0 | unsigned int |
-| stl.h:294:12:294:17 | vector | 0 | unsigned int |
-| stl.h:294:12:294:17 | vector | 1 | const class:1 & |
-| stl.h:294:12:294:17 | vector | 1 | const class:1 & |
-| stl.h:294:12:294:17 | vector | 1 | const class:1 & |
-| stl.h:295:3:295:8 | vector | 0 | size_type |
-| stl.h:295:3:295:8 | vector | 0 | size_type |
-| stl.h:295:3:295:8 | vector | 0 | unsigned int |
-| stl.h:295:3:295:8 | vector | 0 | unsigned int |
-| stl.h:295:3:295:8 | vector | 1 | const class:0 & |
-| stl.h:295:3:295:8 | vector | 1 | const class:0 & |
-| stl.h:295:3:295:8 | vector | 2 | const class:1 & |
-| stl.h:295:3:295:8 | vector | 2 | const class:1 & |
-| stl.h:296:101:296:106 | vector | 0 | func:0 |
-| stl.h:296:101:296:106 | vector | 1 | func:0 |
-| stl.h:296:101:296:106 | vector | 2 | const class:1 & |
-| stl.h:301:11:301:19 | operator= | 0 | const vector & |
-| stl.h:302:11:302:19 | operator= | 0 | vector && |
-| stl.h:303:106:303:111 | assign | 0 | func:0 |
-| stl.h:303:106:303:111 | assign | 1 | func:0 |
-| stl.h:306:8:306:13 | assign | 0 | size_type |
-| stl.h:306:8:306:13 | assign | 0 | size_type |
-| stl.h:306:8:306:13 | assign | 0 | size_type |
-| stl.h:306:8:306:13 | assign | 0 | unsigned int |
-| stl.h:306:8:306:13 | assign | 0 | unsigned int |
-| stl.h:306:8:306:13 | assign | 0 | unsigned int |
-| stl.h:306:8:306:13 | assign | 1 | const class:0 & |
-| stl.h:306:8:306:13 | assign | 1 | const class:0 & |
-| stl.h:306:8:306:13 | assign | 1 | const class:0 & |
-| stl.h:315:13:315:22 | operator[] | 0 | size_type |
-| stl.h:315:13:315:22 | operator[] | 0 | size_type |
-| stl.h:315:13:315:22 | operator[] | 0 | size_type |
-| stl.h:315:13:315:22 | operator[] | 0 | size_type |
-| stl.h:315:13:315:22 | operator[] | 0 | size_type |
-| stl.h:315:13:315:22 | operator[] | 0 | size_type |
-| stl.h:315:13:315:22 | operator[] | 0 | unsigned int |
-| stl.h:315:13:315:22 | operator[] | 0 | unsigned int |
-| stl.h:315:13:315:22 | operator[] | 0 | unsigned int |
-| stl.h:315:13:315:22 | operator[] | 0 | unsigned int |
-| stl.h:315:13:315:22 | operator[] | 0 | unsigned int |
-| stl.h:315:13:315:22 | operator[] | 0 | unsigned int |
-| stl.h:318:13:318:14 | at | 0 | size_type |
-| stl.h:318:13:318:14 | at | 0 | unsigned int |
-| stl.h:327:8:327:16 | push_back | 0 | const class:0 & |
-| stl.h:327:8:327:16 | push_back | 0 | const class:0 & |
-| stl.h:328:8:328:16 | push_back | 0 | class:0 && |
-| stl.h:331:12:331:17 | insert | 0 | const_iterator |
-| stl.h:331:12:331:17 | insert | 1 | class:0 && |
-| stl.h:333:42:333:47 | insert | 0 | const_iterator |
-| stl.h:333:42:333:47 | insert | 0 | const_iterator |
-| stl.h:333:42:333:47 | insert | 1 | func:0 |
-| stl.h:333:42:333:47 | insert | 1 | func:0 |
-| stl.h:333:42:333:47 | insert | 2 | func:0 |
-| stl.h:333:42:333:47 | insert | 2 | func:0 |
-| stl.h:335:37:335:43 | emplace | 0 | const_iterator |
-| stl.h:335:37:335:43 | emplace | 1 | func:0 && |
-| stl.h:336:33:336:44 | emplace_back | 0 | func:0 && |
-| stl.h:338:8:338:11 | swap | 0 | vector & |
-| stl.h:351:12:351:21 | shared_ptr | 0 | class:0 * |
-| stl.h:352:3:352:12 | shared_ptr | 0 | const shared_ptr & |
-| stl.h:352:3:352:12 | shared_ptr | 0 | const shared_ptr & |
-| stl.h:369:12:369:21 | unique_ptr | 0 | class:0 * |
-| stl.h:380:52:380:62 | make_unique | 0 | func:1 && |
-| stl.h:380:52:380:62 | make_unique | 0 | func:1 && |
-| stl.h:380:52:380:62 | make_unique | 0 | func:1 && |
-| stl.h:382:52:382:62 | make_shared | 0 | func:1 && |
-| stl.h:382:52:382:62 | make_shared | 0 | func:1 && |
-| stl.h:382:52:382:62 | make_shared | 0 | func:1 && |
-| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
-| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
-| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
-| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
-| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
-| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
-| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
-| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
-| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
-| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
-| stl.h:397:30:397:33 | pair | 0 | const pair & |
-| stl.h:397:30:397:33 | pair | 0 | const pair & |
-| stl.h:397:30:397:33 | pair | 0 | const pair & |
-| stl.h:397:30:397:33 | pair | 0 | const pair & |
-| stl.h:397:30:397:33 | pair | 0 | const pair & |
-| stl.h:397:30:397:33 | pair | 0 | const pair & |
-| stl.h:397:30:397:33 | pair | 0 | const pair & |
-| stl.h:397:30:397:33 | pair | 0 | const pair & |
-| stl.h:397:30:397:33 | pair | 0 | const pair & |
-| stl.h:397:30:397:33 | pair | 0 | const pair & |
-| stl.h:397:30:397:33 | pair | 0 | const pair & |
-| stl.h:397:30:397:33 | pair | 0 | const pair & |
-| stl.h:399:8:399:11 | swap | 0 | pair & |
-| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
-| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
-| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
-| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
-| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
-| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
-| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
-| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
-| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
-| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
-| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
-| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
-| stl.h:422:3:422:5 | map | 0 | const map & |
-| stl.h:426:8:426:16 | operator= | 0 | const map & |
-| stl.h:435:6:435:15 | operator[] | 0 | class:0 && |
-| stl.h:435:6:435:15 | operator[] | 0 | class:0 && |
-| stl.h:435:6:435:15 | operator[] | 0 | key_type && |
-| stl.h:435:6:435:15 | operator[] | 0 | key_type && |
-| stl.h:436:6:436:7 | at | 0 | const class:0 & |
-| stl.h:436:6:436:7 | at | 0 | const key_type & |
-| stl.h:439:48:439:54 | emplace | 0 | func:0 && |
-| stl.h:439:48:439:54 | emplace | 0 | func:0 && |
-| stl.h:440:36:440:47 | emplace_hint | 0 | const_iterator |
-| stl.h:440:36:440:47 | emplace_hint | 0 | const_iterator |
-| stl.h:440:36:440:47 | emplace_hint | 1 | func:0 && |
-| stl.h:440:36:440:47 | emplace_hint | 1 | func:0 && |
-| stl.h:443:24:443:29 | insert | 0 | value_type && |
-| stl.h:445:12:445:17 | insert | 0 | const_iterator |
-| stl.h:445:12:445:17 | insert | 1 | value_type && |
-| stl.h:448:48:448:58 | try_emplace | 0 | class:0 && |
-| stl.h:448:48:448:58 | try_emplace | 0 | class:0 && |
-| stl.h:448:48:448:58 | try_emplace | 0 | key_type && |
-| stl.h:448:48:448:58 | try_emplace | 0 | key_type && |
-| stl.h:448:48:448:58 | try_emplace | 1 | func:0 && |
-| stl.h:448:48:448:58 | try_emplace | 1 | func:0 && |
-| stl.h:450:36:450:46 | try_emplace | 0 | const_iterator |
-| stl.h:450:36:450:46 | try_emplace | 0 | const_iterator |
-| stl.h:450:36:450:46 | try_emplace | 1 | class:0 && |
-| stl.h:450:36:450:46 | try_emplace | 1 | class:0 && |
-| stl.h:450:36:450:46 | try_emplace | 1 | key_type && |
-| stl.h:450:36:450:46 | try_emplace | 1 | key_type && |
-| stl.h:450:36:450:46 | try_emplace | 2 | func:0 && |
-| stl.h:450:36:450:46 | try_emplace | 2 | func:0 && |
-| stl.h:452:42:452:57 | insert_or_assign | 0 | class:0 && |
-| stl.h:452:42:452:57 | insert_or_assign | 0 | key_type && |
-| stl.h:452:42:452:57 | insert_or_assign | 1 | func:0 && |
-| stl.h:454:30:454:45 | insert_or_assign | 0 | const_iterator |
-| stl.h:454:30:454:45 | insert_or_assign | 1 | class:0 && |
-| stl.h:454:30:454:45 | insert_or_assign | 1 | key_type && |
-| stl.h:454:30:454:45 | insert_or_assign | 2 | func:0 && |
-| stl.h:456:12:456:16 | erase | 0 | iterator |
-| stl.h:459:8:459:11 | swap | 0 | map & |
-| stl.h:462:27:462:31 | merge | 0 | map & |
-| stl.h:465:12:465:15 | find | 0 | const class:0 & |
-| stl.h:465:12:465:15 | find | 0 | const key_type & |
-| stl.h:468:12:468:22 | lower_bound | 0 | const class:0 & |
-| stl.h:468:12:468:22 | lower_bound | 0 | const key_type & |
-| stl.h:470:12:470:22 | upper_bound | 0 | const class:0 & |
-| stl.h:470:12:470:22 | upper_bound | 0 | const key_type & |
-| stl.h:473:28:473:38 | equal_range | 0 | const class:0 & |
-| stl.h:473:28:473:38 | equal_range | 0 | const key_type & |
-| stl.h:490:3:490:15 | unordered_map | 0 | const unordered_map & |
-| stl.h:490:3:490:15 | unordered_map | 0 | const unordered_map & |
-| stl.h:494:18:494:26 | operator= | 0 | const unordered_map & |
-| stl.h:503:16:503:25 | operator[] | 0 | class:0 && |
-| stl.h:503:16:503:25 | operator[] | 0 | class:0 && |
-| stl.h:503:16:503:25 | operator[] | 0 | key_type && |
-| stl.h:503:16:503:25 | operator[] | 0 | key_type && |
-| stl.h:504:16:504:17 | at | 0 | const class:0 & |
-| stl.h:504:16:504:17 | at | 0 | const key_type & |
-| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
-| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
-| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
-| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
-| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
-| stl.h:508:36:508:47 | emplace_hint | 0 | const_iterator |
-| stl.h:508:36:508:47 | emplace_hint | 0 | const_iterator |
-| stl.h:508:36:508:47 | emplace_hint | 1 | func:0 && |
-| stl.h:508:36:508:47 | emplace_hint | 1 | func:0 && |
-| stl.h:511:24:511:29 | insert | 0 | value_type && |
-| stl.h:513:12:513:17 | insert | 0 | const_iterator |
-| stl.h:513:12:513:17 | insert | 1 | value_type && |
-| stl.h:516:48:516:58 | try_emplace | 0 | class:0 && |
-| stl.h:516:48:516:58 | try_emplace | 0 | class:0 && |
-| stl.h:516:48:516:58 | try_emplace | 0 | class:0 && |
-| stl.h:516:48:516:58 | try_emplace | 0 | class:0 && |
-| stl.h:516:48:516:58 | try_emplace | 0 | class:0 && |
-| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
-| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
-| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
-| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
-| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
-| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
-| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
-| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
-| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
-| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
-| stl.h:518:36:518:46 | try_emplace | 0 | const_iterator |
-| stl.h:518:36:518:46 | try_emplace | 0 | const_iterator |
-| stl.h:518:36:518:46 | try_emplace | 1 | class:0 && |
-| stl.h:518:36:518:46 | try_emplace | 1 | class:0 && |
-| stl.h:518:36:518:46 | try_emplace | 1 | key_type && |
-| stl.h:518:36:518:46 | try_emplace | 1 | key_type && |
-| stl.h:518:36:518:46 | try_emplace | 2 | func:0 && |
-| stl.h:518:36:518:46 | try_emplace | 2 | func:0 && |
-| stl.h:520:42:520:57 | insert_or_assign | 0 | class:0 && |
-| stl.h:520:42:520:57 | insert_or_assign | 0 | key_type && |
-| stl.h:520:42:520:57 | insert_or_assign | 1 | func:0 && |
-| stl.h:522:30:522:45 | insert_or_assign | 0 | const_iterator |
-| stl.h:522:30:522:45 | insert_or_assign | 1 | class:0 && |
-| stl.h:522:30:522:45 | insert_or_assign | 1 | key_type && |
-| stl.h:522:30:522:45 | insert_or_assign | 2 | func:0 && |
-| stl.h:524:12:524:16 | erase | 0 | iterator |
-| stl.h:527:8:527:11 | swap | 0 | unordered_map & |
-| stl.h:530:37:530:41 | merge | 0 | unordered_map & |
-| stl.h:533:12:533:15 | find | 0 | const class:0 & |
-| stl.h:533:12:533:15 | find | 0 | const key_type & |
-| stl.h:536:28:536:38 | equal_range | 0 | const class:0 & |
-| stl.h:536:28:536:38 | equal_range | 0 | const key_type & |
-| stl.h:555:3:555:5 | set | 0 | const set & |
-| stl.h:557:33:557:35 | set | 0 | func:0 |
-| stl.h:557:33:557:35 | set | 1 | func:0 |
-| stl.h:560:8:560:16 | operator= | 0 | const set & |
-| stl.h:568:48:568:54 | emplace | 0 | func:0 && |
-| stl.h:568:48:568:54 | emplace | 0 | func:0 && |
-| stl.h:569:36:569:47 | emplace_hint | 0 | const_iterator |
-| stl.h:569:36:569:47 | emplace_hint | 0 | const_iterator |
-| stl.h:569:36:569:47 | emplace_hint | 1 | func:0 && |
-| stl.h:569:36:569:47 | emplace_hint | 1 | func:0 && |
-| stl.h:571:23:571:28 | insert | 0 | class:0 && |
-| stl.h:571:23:571:28 | insert | 0 | value_type && |
-| stl.h:573:12:573:17 | insert | 0 | const_iterator |
-| stl.h:573:12:573:17 | insert | 1 | class:0 && |
-| stl.h:573:12:573:17 | insert | 1 | value_type && |
-| stl.h:574:38:574:43 | insert | 0 | func:0 |
-| stl.h:574:38:574:43 | insert | 1 | func:0 |
-| stl.h:576:12:576:16 | erase | 0 | iterator |
-| stl.h:579:8:579:11 | swap | 0 | set & |
-| stl.h:582:27:582:31 | merge | 0 | set & |
-| stl.h:585:12:585:15 | find | 0 | const class:0 & |
-| stl.h:585:12:585:15 | find | 0 | const key_type & |
-| stl.h:588:12:588:22 | lower_bound | 0 | const class:0 & |
-| stl.h:588:12:588:22 | lower_bound | 0 | const key_type & |
-| stl.h:590:12:590:22 | upper_bound | 0 | const class:0 & |
-| stl.h:590:12:590:22 | upper_bound | 0 | const key_type & |
-| stl.h:592:28:592:38 | equal_range | 0 | const class:0 & |
-| stl.h:592:28:592:38 | equal_range | 0 | const key_type & |
-| stl.h:609:3:609:15 | unordered_set | 0 | const unordered_set & |
-| stl.h:611:33:611:45 | unordered_set | 0 | func:0 |
-| stl.h:611:33:611:45 | unordered_set | 1 | func:0 |
-| stl.h:611:33:611:45 | unordered_set | 2 | size_type |
-| stl.h:611:33:611:45 | unordered_set | 2 | unsigned long |
-| stl.h:614:18:614:26 | operator= | 0 | const unordered_set & |
-| stl.h:622:48:622:54 | emplace | 0 | func:0 && |
-| stl.h:622:48:622:54 | emplace | 0 | func:0 && |
-| stl.h:623:36:623:47 | emplace_hint | 0 | const_iterator |
-| stl.h:623:36:623:47 | emplace_hint | 0 | const_iterator |
-| stl.h:623:36:623:47 | emplace_hint | 1 | func:0 && |
-| stl.h:623:36:623:47 | emplace_hint | 1 | func:0 && |
-| stl.h:625:24:625:29 | insert | 0 | class:0 && |
-| stl.h:625:24:625:29 | insert | 0 | value_type && |
-| stl.h:627:12:627:17 | insert | 0 | const_iterator |
-| stl.h:627:12:627:17 | insert | 1 | class:0 && |
-| stl.h:627:12:627:17 | insert | 1 | value_type && |
-| stl.h:628:38:628:43 | insert | 0 | func:0 |
-| stl.h:628:38:628:43 | insert | 1 | func:0 |
-| stl.h:630:12:630:16 | erase | 0 | iterator |
-| stl.h:633:8:633:11 | swap | 0 | unordered_set & |
-| stl.h:636:37:636:41 | merge | 0 | unordered_set & |
-| stl.h:639:12:639:15 | find | 0 | const class:0 & |
-| stl.h:639:12:639:15 | find | 0 | const key_type & |
-| stl.h:641:28:641:38 | equal_range | 0 | const class:0 & |
-| stl.h:641:28:641:38 | equal_range | 0 | const key_type & |
-| stl.h:671:21:671:39 | basic_format_string | 0 | const func:0 & |
-| stl.h:671:21:671:39 | basic_format_string | 0 | const func:0 & |
-| stl.h:678:33:678:38 | format | 0 | format_string |
-| stl.h:678:33:678:38 | format | 0 | format_string |
-| stl.h:678:33:678:38 | format | 1 | func:0 && |
-| stl.h:678:33:678:38 | format | 1 | func:0 && |
-| stl.h:683:6:683:48 | same_signature_as_format_but_different_name | 0 | format_string |
-| stl.h:683:6:683:48 | same_signature_as_format_but_different_name | 1 | func:0 && |
-| stl.h:687:8:687:8 | operator= | 0 | const thread & |
-| stl.h:687:8:687:8 | thread | 0 | const thread & |
-| stl.h:690:12:690:17 | thread | 0 | func:0 && |
-| stl.h:690:12:690:17 | thread | 0 | func:0 && |
-| stl.h:690:12:690:17 | thread | 0 | func:0 && |
-| stl.h:690:12:690:17 | thread | 0 | func:0 && |
-| stl.h:690:12:690:17 | thread | 1 | func:1 && |
-| stl.h:690:12:690:17 | thread | 1 | func:1 && |
-| stl.h:690:12:690:17 | thread | 1 | func:1 && |
-| stl.h:690:12:690:17 | thread | 1 | func:1 && |
+| stl.h:5:34:5:40 | forward | 0 | remove_reference_t & |
+| stl.h:5:34:5:40 | forward | 0 | remove_reference_t & |
+| stl.h:5:34:5:40 | forward | 0 | remove_reference_t & |
+| stl.h:5:34:5:40 | forward | 0 | remove_reference_t & |
+| stl.h:5:34:5:40 | forward | 0 | type & |
+| stl.h:5:34:5:40 | forward | 0 | type & |
+| stl.h:5:34:5:40 | forward | 0 | type & |
+| stl.h:5:34:5:40 | forward | 0 | type & |
+| stl.h:25:3:25:10 | iterator | 0 | const iterator & |
+| stl.h:25:3:25:10 | iterator | 0 | const iterator & |
+| stl.h:25:3:25:10 | iterator | 0 | const iterator & |
+| stl.h:25:3:25:10 | iterator | 0 | const iterator & |
+| stl.h:25:3:25:10 | iterator | 0 | const iterator & |
+| stl.h:25:3:25:10 | iterator | 0 | const iterator & |
+| stl.h:25:3:25:10 | iterator | 0 | const iterator & |
+| stl.h:25:3:25:10 | iterator | 0 | const iterator & |
+| stl.h:28:12:28:21 | operator++ | 0 | int |
+| stl.h:28:12:28:21 | operator++ | 0 | int |
+| stl.h:28:12:28:21 | operator++ | 0 | int |
+| stl.h:28:12:28:21 | operator++ | 0 | int |
+| stl.h:28:12:28:21 | operator++ | 0 | int |
+| stl.h:30:12:30:21 | operator-- | 0 | int |
+| stl.h:32:8:32:17 | operator!= | 0 | iterator |
+| stl.h:32:8:32:17 | operator!= | 0 | iterator |
+| stl.h:32:8:32:17 | operator!= | 0 | iterator |
+| stl.h:32:8:32:17 | operator!= | 0 | iterator |
+| stl.h:32:8:32:17 | operator!= | 0 | iterator |
+| stl.h:32:8:32:17 | operator!= | 0 | iterator |
+| stl.h:35:12:35:20 | operator+ | 0 | int |
+| stl.h:36:12:36:20 | operator- | 0 | int |
+| stl.h:37:13:37:22 | operator+= | 0 | int |
+| stl.h:37:13:37:22 | operator+= | 0 | int |
+| stl.h:38:13:38:22 | operator-= | 0 | int |
+| stl.h:40:18:40:27 | operator[] | 0 | int |
+| stl.h:43:9:43:9 | operator= | 0 | const input_iterator_tag & |
+| stl.h:43:9:43:9 | operator= | 0 | input_iterator_tag && |
+| stl.h:44:9:44:9 | operator= | 0 | const forward_iterator_tag & |
+| stl.h:44:9:44:9 | operator= | 0 | forward_iterator_tag && |
+| stl.h:45:9:45:9 | operator= | 0 | bidirectional_iterator_tag && |
+| stl.h:45:9:45:9 | operator= | 0 | const bidirectional_iterator_tag & |
+| stl.h:46:9:46:9 | operator= | 0 | const random_access_iterator_tag & |
+| stl.h:46:9:46:9 | operator= | 0 | random_access_iterator_tag && |
+| stl.h:48:9:48:9 | operator= | 0 | const output_iterator_tag & |
+| stl.h:48:9:48:9 | operator= | 0 | output_iterator_tag && |
+| stl.h:62:22:62:41 | back_insert_iterator | 0 | class:0 & |
+| stl.h:62:22:62:41 | back_insert_iterator | 0 | class:0 & |
+| stl.h:64:25:64:33 | operator= | 0 | value_type && |
+| stl.h:64:25:64:33 | operator= | 0 | value_type && |
+| stl.h:67:24:67:33 | operator++ | 0 | int |
+| stl.h:67:24:67:33 | operator++ | 0 | int |
+| stl.h:71:44:71:44 | back_inserter | 0 | func:0 & |
+| stl.h:71:44:71:44 | back_inserter | 0 | func:0 & |
+| stl.h:142:12:142:23 | basic_string | 0 | const class:2 & |
+| stl.h:143:3:143:14 | basic_string | 0 | const class:0 * |
+| stl.h:143:3:143:14 | basic_string | 1 | const class:2 & |
+| stl.h:144:33:144:44 | basic_string | 0 | func:0 |
+| stl.h:144:33:144:44 | basic_string | 1 | func:0 |
+| stl.h:144:33:144:44 | basic_string | 2 | const class:2 & |
+| stl.h:147:12:147:23 | basic_string | 0 | const func:0 & |
+| stl.h:147:12:147:23 | basic_string | 1 | const class:2 & |
+| stl.h:150:3:150:14 | basic_string | 0 | const func:0 & |
+| stl.h:150:3:150:14 | basic_string | 1 | size_type |
+| stl.h:150:3:150:14 | basic_string | 2 | size_type |
+| stl.h:150:3:150:14 | basic_string | 3 | const class:2 & |
+| stl.h:167:8:167:16 | push_back | 0 | class:0 |
+| stl.h:175:13:175:22 | operator[] | 0 | size_type |
+| stl.h:177:13:177:14 | at | 0 | size_type |
+| stl.h:178:35:178:44 | operator+= | 0 | const func:0 & |
+| stl.h:178:35:178:44 | operator+= | 0 | const func:0 & |
+| stl.h:179:17:179:26 | operator+= | 0 | const class:0 * |
+| stl.h:180:17:180:22 | append | 0 | const basic_string & |
+| stl.h:183:174:183:179 | append | 0 | const func:0 & |
+| stl.h:183:174:183:179 | append | 1 | size_type |
+| stl.h:183:174:183:179 | append | 2 | size_type |
+| stl.h:185:17:185:22 | append | 0 | const class:0 * |
+| stl.h:186:17:186:22 | append | 0 | size_type |
+| stl.h:186:17:186:22 | append | 1 | class:0 |
+| stl.h:187:47:187:52 | append | 0 | func:0 |
+| stl.h:187:47:187:52 | append | 1 | func:0 |
+| stl.h:188:17:188:22 | assign | 0 | const basic_string & |
+| stl.h:191:17:191:22 | assign | 0 | const func:0 & |
+| stl.h:195:17:195:22 | assign | 0 | size_type |
+| stl.h:195:17:195:22 | assign | 1 | class:0 |
+| stl.h:196:47:196:52 | assign | 0 | func:0 |
+| stl.h:196:47:196:52 | assign | 1 | func:0 |
+| stl.h:197:17:197:22 | insert | 0 | size_type |
+| stl.h:197:17:197:22 | insert | 1 | const basic_string & |
+| stl.h:200:17:200:22 | insert | 0 | size_type |
+| stl.h:200:17:200:22 | insert | 1 | const func:0 & |
+| stl.h:203:17:203:22 | insert | 0 | size_type |
+| stl.h:203:17:203:22 | insert | 1 | size_type |
+| stl.h:203:17:203:22 | insert | 2 | class:0 |
+| stl.h:204:17:204:22 | insert | 0 | size_type |
+| stl.h:204:17:204:22 | insert | 1 | const class:0 * |
+| stl.h:205:12:205:17 | insert | 0 | const_iterator |
+| stl.h:205:12:205:17 | insert | 1 | size_type |
+| stl.h:205:12:205:17 | insert | 2 | class:0 |
+| stl.h:206:42:206:47 | insert | 0 | const_iterator |
+| stl.h:206:42:206:47 | insert | 1 | func:0 |
+| stl.h:206:42:206:47 | insert | 2 | func:0 |
+| stl.h:207:17:207:23 | replace | 0 | size_type |
+| stl.h:207:17:207:23 | replace | 1 | size_type |
+| stl.h:207:17:207:23 | replace | 2 | const basic_string & |
+| stl.h:210:17:210:23 | replace | 0 | size_type |
+| stl.h:210:17:210:23 | replace | 1 | size_type |
+| stl.h:210:17:210:23 | replace | 2 | const func:0 & |
+| stl.h:216:17:216:23 | replace | 0 | size_type |
+| stl.h:216:17:216:23 | replace | 1 | size_type |
+| stl.h:216:17:216:23 | replace | 2 | size_type |
+| stl.h:216:17:216:23 | replace | 3 | class:0 |
+| stl.h:217:13:217:16 | copy | 0 | class:0 * |
+| stl.h:217:13:217:16 | copy | 1 | size_type |
+| stl.h:217:13:217:16 | copy | 2 | size_type |
+| stl.h:219:16:219:21 | substr | 0 | size_type |
+| stl.h:219:16:219:21 | substr | 1 | size_type |
+| stl.h:220:8:220:11 | swap | 0 | basic_string & |
+| stl.h:223:94:223:102 | operator+ | 0 | const basic_string & |
+| stl.h:223:94:223:102 | operator+ | 1 | const basic_string & |
+| stl.h:224:94:224:102 | operator+ | 0 | const basic_string & |
+| stl.h:224:94:224:102 | operator+ | 1 | const func:0 * |
+| stl.h:230:41:230:49 | operator+ | 0 | func:0 |
+| stl.h:230:41:230:49 | operator+ | 1 | basic_string && |
+| stl.h:245:33:245:42 | operator>> | 0 | int & |
+| stl.h:248:33:248:35 | get | 0 | char_type & |
+| stl.h:248:33:248:35 | get | 0 | class:0 & |
+| stl.h:249:33:249:35 | get | 0 | char_type * |
+| stl.h:249:33:249:35 | get | 0 | class:0 * |
+| stl.h:249:33:249:35 | get | 1 | decltype(...) |
+| stl.h:249:33:249:35 | get | 1 | streamsize |
+| stl.h:251:33:251:36 | read | 0 | char_type * |
+| stl.h:251:33:251:36 | read | 0 | class:0 * |
+| stl.h:251:33:251:36 | read | 1 | decltype(...) |
+| stl.h:251:33:251:36 | read | 1 | streamsize |
+| stl.h:252:14:252:21 | readsome | 0 | char_type * |
+| stl.h:252:14:252:21 | readsome | 0 | class:0 * |
+| stl.h:252:14:252:21 | readsome | 1 | decltype(...) |
+| stl.h:252:14:252:21 | readsome | 1 | streamsize |
+| stl.h:253:33:253:39 | putback | 0 | char_type |
+| stl.h:253:33:253:39 | putback | 0 | class:0 |
+| stl.h:256:32:256:38 | getline | 0 | char_type * |
+| stl.h:256:32:256:38 | getline | 0 | class:0 * |
+| stl.h:256:32:256:38 | getline | 1 | decltype(...) |
+| stl.h:256:32:256:38 | getline | 1 | streamsize |
+| stl.h:257:32:257:38 | getline | 0 | char_type * |
+| stl.h:257:32:257:38 | getline | 0 | class:0 * |
+| stl.h:257:32:257:38 | getline | 1 | decltype(...) |
+| stl.h:257:32:257:38 | getline | 1 | streamsize |
+| stl.h:257:32:257:38 | getline | 2 | char_type |
+| stl.h:257:32:257:38 | getline | 2 | class:0 |
+| stl.h:260:68:260:77 | operator>> | 0 | basic_istream & |
+| stl.h:260:68:260:77 | operator>> | 1 | func:0 * |
+| stl.h:261:85:261:94 | operator>> | 0 | basic_istream & |
+| stl.h:261:85:261:94 | operator>> | 1 | basic_string & |
+| stl.h:263:84:263:90 | getline | 0 | basic_istream & |
+| stl.h:263:84:263:90 | getline | 1 | basic_string & |
+| stl.h:263:84:263:90 | getline | 2 | func:0 |
+| stl.h:264:84:264:90 | getline | 0 | basic_istream & |
+| stl.h:264:84:264:90 | getline | 1 | basic_string & |
+| stl.h:271:33:271:42 | operator<< | 0 | int |
+| stl.h:273:33:273:35 | put | 0 | char_type |
+| stl.h:273:33:273:35 | put | 0 | class:0 |
+| stl.h:274:33:274:37 | write | 0 | const char_type * |
+| stl.h:274:33:274:37 | write | 0 | const class:0 * |
+| stl.h:274:33:274:37 | write | 1 | decltype(...) |
+| stl.h:274:33:274:37 | write | 1 | streamsize |
+| stl.h:278:67:278:76 | operator<< | 0 | basic_ostream & |
+| stl.h:278:67:278:76 | operator<< | 1 | const func:0 * |
+| stl.h:279:85:279:94 | operator<< | 0 | basic_ostream & |
+| stl.h:279:85:279:94 | operator<< | 1 | const basic_string & |
+| stl.h:290:12:290:29 | basic_stringstream | 0 | const basic_string & |
+| stl.h:294:23:294:31 | operator= | 0 | basic_stringstream && |
+| stl.h:296:8:296:11 | swap | 0 | basic_stringstream & |
+| stl.h:299:8:299:10 | str | 0 | const basic_string & |
+| stl.h:327:12:327:17 | vector | 0 | size_type |
+| stl.h:327:12:327:17 | vector | 0 | size_type |
+| stl.h:327:12:327:17 | vector | 0 | size_type |
+| stl.h:327:12:327:17 | vector | 0 | unsigned int |
+| stl.h:327:12:327:17 | vector | 0 | unsigned int |
+| stl.h:327:12:327:17 | vector | 0 | unsigned int |
+| stl.h:327:12:327:17 | vector | 1 | const class:1 & |
+| stl.h:327:12:327:17 | vector | 1 | const class:1 & |
+| stl.h:327:12:327:17 | vector | 1 | const class:1 & |
+| stl.h:328:3:328:8 | vector | 0 | size_type |
+| stl.h:328:3:328:8 | vector | 0 | size_type |
+| stl.h:328:3:328:8 | vector | 0 | unsigned int |
+| stl.h:328:3:328:8 | vector | 0 | unsigned int |
+| stl.h:328:3:328:8 | vector | 1 | const class:0 & |
+| stl.h:328:3:328:8 | vector | 1 | const class:0 & |
+| stl.h:328:3:328:8 | vector | 2 | const class:1 & |
+| stl.h:328:3:328:8 | vector | 2 | const class:1 & |
+| stl.h:329:101:329:106 | vector | 0 | func:0 |
+| stl.h:329:101:329:106 | vector | 1 | func:0 |
+| stl.h:329:101:329:106 | vector | 2 | const class:1 & |
+| stl.h:334:11:334:19 | operator= | 0 | const vector & |
+| stl.h:335:11:335:19 | operator= | 0 | vector && |
+| stl.h:336:106:336:111 | assign | 0 | func:0 |
+| stl.h:336:106:336:111 | assign | 1 | func:0 |
+| stl.h:339:8:339:13 | assign | 0 | size_type |
+| stl.h:339:8:339:13 | assign | 0 | size_type |
+| stl.h:339:8:339:13 | assign | 0 | size_type |
+| stl.h:339:8:339:13 | assign | 0 | unsigned int |
+| stl.h:339:8:339:13 | assign | 0 | unsigned int |
+| stl.h:339:8:339:13 | assign | 0 | unsigned int |
+| stl.h:339:8:339:13 | assign | 1 | const class:0 & |
+| stl.h:339:8:339:13 | assign | 1 | const class:0 & |
+| stl.h:339:8:339:13 | assign | 1 | const class:0 & |
+| stl.h:348:13:348:22 | operator[] | 0 | size_type |
+| stl.h:348:13:348:22 | operator[] | 0 | size_type |
+| stl.h:348:13:348:22 | operator[] | 0 | size_type |
+| stl.h:348:13:348:22 | operator[] | 0 | size_type |
+| stl.h:348:13:348:22 | operator[] | 0 | size_type |
+| stl.h:348:13:348:22 | operator[] | 0 | size_type |
+| stl.h:348:13:348:22 | operator[] | 0 | unsigned int |
+| stl.h:348:13:348:22 | operator[] | 0 | unsigned int |
+| stl.h:348:13:348:22 | operator[] | 0 | unsigned int |
+| stl.h:348:13:348:22 | operator[] | 0 | unsigned int |
+| stl.h:348:13:348:22 | operator[] | 0 | unsigned int |
+| stl.h:348:13:348:22 | operator[] | 0 | unsigned int |
+| stl.h:351:13:351:14 | at | 0 | size_type |
+| stl.h:351:13:351:14 | at | 0 | unsigned int |
+| stl.h:360:8:360:16 | push_back | 0 | const class:0 & |
+| stl.h:360:8:360:16 | push_back | 0 | const class:0 & |
+| stl.h:361:8:361:16 | push_back | 0 | class:0 && |
+| stl.h:361:8:361:16 | push_back | 0 | class:0 && |
+| stl.h:364:12:364:17 | insert | 0 | const_iterator |
+| stl.h:364:12:364:17 | insert | 1 | class:0 && |
+| stl.h:366:42:366:47 | insert | 0 | const_iterator |
+| stl.h:366:42:366:47 | insert | 0 | const_iterator |
+| stl.h:366:42:366:47 | insert | 1 | func:0 |
+| stl.h:366:42:366:47 | insert | 1 | func:0 |
+| stl.h:366:42:366:47 | insert | 2 | func:0 |
+| stl.h:366:42:366:47 | insert | 2 | func:0 |
+| stl.h:368:37:368:43 | emplace | 0 | const_iterator |
+| stl.h:368:37:368:43 | emplace | 1 | func:0 && |
+| stl.h:369:33:369:44 | emplace_back | 0 | func:0 && |
+| stl.h:371:8:371:11 | swap | 0 | vector & |
+| stl.h:384:12:384:21 | shared_ptr | 0 | class:0 * |
+| stl.h:385:3:385:12 | shared_ptr | 0 | const shared_ptr & |
+| stl.h:385:3:385:12 | shared_ptr | 0 | const shared_ptr & |
+| stl.h:402:12:402:21 | unique_ptr | 0 | class:0 * |
+| stl.h:413:52:413:62 | make_unique | 0 | func:1 && |
+| stl.h:413:52:413:62 | make_unique | 0 | func:1 && |
+| stl.h:413:52:413:62 | make_unique | 0 | func:1 && |
+| stl.h:415:52:415:62 | make_shared | 0 | func:1 && |
+| stl.h:415:52:415:62 | make_shared | 0 | func:1 && |
+| stl.h:415:52:415:62 | make_shared | 0 | func:1 && |
+| stl.h:429:3:429:3 | pair | 0 | const class:0 & |
+| stl.h:429:3:429:3 | pair | 0 | const class:0 & |
+| stl.h:429:3:429:3 | pair | 0 | const class:0 & |
+| stl.h:429:3:429:3 | pair | 0 | const class:0 & |
+| stl.h:429:3:429:3 | pair | 0 | const class:0 & |
+| stl.h:429:3:429:3 | pair | 0 | const class:0 & |
+| stl.h:429:3:429:3 | pair | 1 | const class:1 & |
+| stl.h:429:3:429:3 | pair | 1 | const class:1 & |
+| stl.h:429:3:429:3 | pair | 1 | const class:1 & |
+| stl.h:429:3:429:3 | pair | 1 | const class:1 & |
+| stl.h:429:3:429:3 | pair | 1 | const class:1 & |
+| stl.h:429:3:429:3 | pair | 1 | const class:1 & |
+| stl.h:430:30:430:33 | pair | 0 | const pair & |
+| stl.h:430:30:430:33 | pair | 0 | const pair & |
+| stl.h:430:30:430:33 | pair | 0 | const pair & |
+| stl.h:430:30:430:33 | pair | 0 | const pair & |
+| stl.h:432:8:432:11 | swap | 0 | pair & |
+| stl.h:435:72:435:72 | make_pair | 0 | func:0 && |
+| stl.h:435:72:435:72 | make_pair | 0 | func:0 && |
+| stl.h:435:72:435:72 | make_pair | 0 | func:0 && |
+| stl.h:435:72:435:72 | make_pair | 0 | func:0 && |
+| stl.h:435:72:435:72 | make_pair | 0 | func:0 && |
+| stl.h:435:72:435:72 | make_pair | 0 | func:0 && |
+| stl.h:435:72:435:72 | make_pair | 1 | func:1 && |
+| stl.h:435:72:435:72 | make_pair | 1 | func:1 && |
+| stl.h:435:72:435:72 | make_pair | 1 | func:1 && |
+| stl.h:435:72:435:72 | make_pair | 1 | func:1 && |
+| stl.h:435:72:435:72 | make_pair | 1 | func:1 && |
+| stl.h:435:72:435:72 | make_pair | 1 | func:1 && |
+| stl.h:460:3:460:5 | map | 0 | const map & |
+| stl.h:464:8:464:16 | operator= | 0 | const map & |
+| stl.h:473:6:473:15 | operator[] | 0 | class:0 && |
+| stl.h:473:6:473:15 | operator[] | 0 | class:0 && |
+| stl.h:473:6:473:15 | operator[] | 0 | key_type && |
+| stl.h:473:6:473:15 | operator[] | 0 | key_type && |
+| stl.h:475:6:475:7 | at | 0 | const class:0 & |
+| stl.h:475:6:475:7 | at | 0 | const key_type & |
+| stl.h:478:48:478:54 | emplace | 0 | func:0 && |
+| stl.h:478:48:478:54 | emplace | 0 | func:0 && |
+| stl.h:479:36:479:47 | emplace_hint | 0 | const_iterator |
+| stl.h:479:36:479:47 | emplace_hint | 0 | const_iterator |
+| stl.h:479:36:479:47 | emplace_hint | 1 | func:0 && |
+| stl.h:479:36:479:47 | emplace_hint | 1 | func:0 && |
+| stl.h:483:42:483:47 | insert | 0 | func:0 && |
+| stl.h:483:42:483:47 | insert | 0 | func:0 && |
+| stl.h:483:42:483:47 | insert | 0 | func:0 && |
+| stl.h:486:30:486:35 | insert | 0 | const_iterator |
+| stl.h:486:30:486:35 | insert | 1 | func:0 && |
+| stl.h:488:48:488:58 | try_emplace | 0 | class:0 && |
+| stl.h:488:48:488:58 | try_emplace | 0 | class:0 && |
+| stl.h:488:48:488:58 | try_emplace | 0 | key_type && |
+| stl.h:488:48:488:58 | try_emplace | 0 | key_type && |
+| stl.h:488:48:488:58 | try_emplace | 1 | func:0 && |
+| stl.h:488:48:488:58 | try_emplace | 1 | func:0 && |
+| stl.h:490:36:490:46 | try_emplace | 0 | const_iterator |
+| stl.h:490:36:490:46 | try_emplace | 0 | const_iterator |
+| stl.h:490:36:490:46 | try_emplace | 1 | class:0 && |
+| stl.h:490:36:490:46 | try_emplace | 1 | class:0 && |
+| stl.h:490:36:490:46 | try_emplace | 1 | key_type && |
+| stl.h:490:36:490:46 | try_emplace | 1 | key_type && |
+| stl.h:490:36:490:46 | try_emplace | 2 | func:0 && |
+| stl.h:490:36:490:46 | try_emplace | 2 | func:0 && |
+| stl.h:492:42:492:57 | insert_or_assign | 0 | class:0 && |
+| stl.h:492:42:492:57 | insert_or_assign | 0 | key_type && |
+| stl.h:492:42:492:57 | insert_or_assign | 1 | func:0 && |
+| stl.h:494:30:494:45 | insert_or_assign | 0 | const_iterator |
+| stl.h:494:30:494:45 | insert_or_assign | 1 | class:0 && |
+| stl.h:494:30:494:45 | insert_or_assign | 1 | key_type && |
+| stl.h:494:30:494:45 | insert_or_assign | 2 | func:0 && |
+| stl.h:496:12:496:16 | erase | 0 | iterator |
+| stl.h:499:8:499:11 | swap | 0 | map & |
+| stl.h:502:27:502:31 | merge | 0 | map & |
+| stl.h:505:12:505:15 | find | 0 | const class:0 & |
+| stl.h:505:12:505:15 | find | 0 | const key_type & |
+| stl.h:508:12:508:22 | lower_bound | 0 | const class:0 & |
+| stl.h:508:12:508:22 | lower_bound | 0 | const key_type & |
+| stl.h:510:12:510:22 | upper_bound | 0 | const class:0 & |
+| stl.h:510:12:510:22 | upper_bound | 0 | const key_type & |
+| stl.h:513:28:513:38 | equal_range | 0 | const class:0 & |
+| stl.h:513:28:513:38 | equal_range | 0 | const key_type & |
+| stl.h:530:3:530:15 | unordered_map | 0 | const unordered_map & |
+| stl.h:530:3:530:15 | unordered_map | 0 | const unordered_map & |
+| stl.h:534:18:534:26 | operator= | 0 | const unordered_map & |
+| stl.h:543:16:543:25 | operator[] | 0 | class:0 && |
+| stl.h:543:16:543:25 | operator[] | 0 | class:0 && |
+| stl.h:543:16:543:25 | operator[] | 0 | key_type && |
+| stl.h:543:16:543:25 | operator[] | 0 | key_type && |
+| stl.h:544:16:544:17 | at | 0 | const class:0 & |
+| stl.h:544:16:544:17 | at | 0 | const key_type & |
+| stl.h:547:48:547:54 | emplace | 0 | func:0 && |
+| stl.h:547:48:547:54 | emplace | 0 | func:0 && |
+| stl.h:547:48:547:54 | emplace | 0 | func:0 && |
+| stl.h:547:48:547:54 | emplace | 0 | func:0 && |
+| stl.h:547:48:547:54 | emplace | 0 | func:0 && |
+| stl.h:548:36:548:47 | emplace_hint | 0 | const_iterator |
+| stl.h:548:36:548:47 | emplace_hint | 0 | const_iterator |
+| stl.h:548:36:548:47 | emplace_hint | 1 | func:0 && |
+| stl.h:548:36:548:47 | emplace_hint | 1 | func:0 && |
+| stl.h:551:24:551:29 | insert | 0 | value_type && |
+| stl.h:553:12:553:17 | insert | 0 | const_iterator |
+| stl.h:553:12:553:17 | insert | 1 | value_type && |
+| stl.h:556:48:556:58 | try_emplace | 0 | class:0 && |
+| stl.h:556:48:556:58 | try_emplace | 0 | class:0 && |
+| stl.h:556:48:556:58 | try_emplace | 0 | class:0 && |
+| stl.h:556:48:556:58 | try_emplace | 0 | key_type && |
+| stl.h:556:48:556:58 | try_emplace | 0 | key_type && |
+| stl.h:556:48:556:58 | try_emplace | 0 | key_type && |
+| stl.h:556:48:556:58 | try_emplace | 1 | func:0 && |
+| stl.h:556:48:556:58 | try_emplace | 1 | func:0 && |
+| stl.h:556:48:556:58 | try_emplace | 1 | func:0 && |
+| stl.h:558:36:558:46 | try_emplace | 0 | const_iterator |
+| stl.h:558:36:558:46 | try_emplace | 0 | const_iterator |
+| stl.h:558:36:558:46 | try_emplace | 1 | class:0 && |
+| stl.h:558:36:558:46 | try_emplace | 1 | class:0 && |
+| stl.h:558:36:558:46 | try_emplace | 1 | key_type && |
+| stl.h:558:36:558:46 | try_emplace | 1 | key_type && |
+| stl.h:558:36:558:46 | try_emplace | 2 | func:0 && |
+| stl.h:558:36:558:46 | try_emplace | 2 | func:0 && |
+| stl.h:560:42:560:57 | insert_or_assign | 0 | class:0 && |
+| stl.h:560:42:560:57 | insert_or_assign | 0 | key_type && |
+| stl.h:560:42:560:57 | insert_or_assign | 1 | func:0 && |
+| stl.h:562:30:562:45 | insert_or_assign | 0 | const_iterator |
+| stl.h:562:30:562:45 | insert_or_assign | 1 | class:0 && |
+| stl.h:562:30:562:45 | insert_or_assign | 1 | key_type && |
+| stl.h:562:30:562:45 | insert_or_assign | 2 | func:0 && |
+| stl.h:564:12:564:16 | erase | 0 | iterator |
+| stl.h:567:8:567:11 | swap | 0 | unordered_map & |
+| stl.h:570:37:570:41 | merge | 0 | unordered_map & |
+| stl.h:573:12:573:15 | find | 0 | const class:0 & |
+| stl.h:573:12:573:15 | find | 0 | const key_type & |
+| stl.h:576:28:576:38 | equal_range | 0 | const class:0 & |
+| stl.h:576:28:576:38 | equal_range | 0 | const key_type & |
+| stl.h:595:3:595:5 | set | 0 | const set & |
+| stl.h:597:33:597:35 | set | 0 | func:0 |
+| stl.h:597:33:597:35 | set | 1 | func:0 |
+| stl.h:600:8:600:16 | operator= | 0 | const set & |
+| stl.h:608:48:608:54 | emplace | 0 | func:0 && |
+| stl.h:608:48:608:54 | emplace | 0 | func:0 && |
+| stl.h:609:36:609:47 | emplace_hint | 0 | const_iterator |
+| stl.h:609:36:609:47 | emplace_hint | 0 | const_iterator |
+| stl.h:609:36:609:47 | emplace_hint | 1 | func:0 && |
+| stl.h:609:36:609:47 | emplace_hint | 1 | func:0 && |
+| stl.h:611:23:611:28 | insert | 0 | class:0 && |
+| stl.h:611:23:611:28 | insert | 0 | value_type && |
+| stl.h:613:12:613:17 | insert | 0 | const_iterator |
+| stl.h:613:12:613:17 | insert | 1 | class:0 && |
+| stl.h:613:12:613:17 | insert | 1 | value_type && |
+| stl.h:614:38:614:43 | insert | 0 | func:0 |
+| stl.h:614:38:614:43 | insert | 1 | func:0 |
+| stl.h:616:12:616:16 | erase | 0 | iterator |
+| stl.h:619:8:619:11 | swap | 0 | set & |
+| stl.h:622:27:622:31 | merge | 0 | set & |
+| stl.h:625:12:625:15 | find | 0 | const class:0 & |
+| stl.h:625:12:625:15 | find | 0 | const key_type & |
+| stl.h:628:12:628:22 | lower_bound | 0 | const class:0 & |
+| stl.h:628:12:628:22 | lower_bound | 0 | const key_type & |
+| stl.h:630:12:630:22 | upper_bound | 0 | const class:0 & |
+| stl.h:630:12:630:22 | upper_bound | 0 | const key_type & |
+| stl.h:632:28:632:38 | equal_range | 0 | const class:0 & |
+| stl.h:632:28:632:38 | equal_range | 0 | const key_type & |
+| stl.h:649:3:649:15 | unordered_set | 0 | const unordered_set & |
+| stl.h:651:33:651:45 | unordered_set | 0 | func:0 |
+| stl.h:651:33:651:45 | unordered_set | 1 | func:0 |
+| stl.h:651:33:651:45 | unordered_set | 2 | decltype(...) |
+| stl.h:651:33:651:45 | unordered_set | 2 | size_type |
+| stl.h:654:18:654:26 | operator= | 0 | const unordered_set & |
+| stl.h:662:48:662:54 | emplace | 0 | func:0 && |
+| stl.h:662:48:662:54 | emplace | 0 | func:0 && |
+| stl.h:663:36:663:47 | emplace_hint | 0 | const_iterator |
+| stl.h:663:36:663:47 | emplace_hint | 0 | const_iterator |
+| stl.h:663:36:663:47 | emplace_hint | 1 | func:0 && |
+| stl.h:663:36:663:47 | emplace_hint | 1 | func:0 && |
+| stl.h:665:24:665:29 | insert | 0 | class:0 && |
+| stl.h:665:24:665:29 | insert | 0 | value_type && |
+| stl.h:667:12:667:17 | insert | 0 | const_iterator |
+| stl.h:667:12:667:17 | insert | 1 | class:0 && |
+| stl.h:667:12:667:17 | insert | 1 | value_type && |
+| stl.h:668:38:668:43 | insert | 0 | func:0 |
+| stl.h:668:38:668:43 | insert | 1 | func:0 |
+| stl.h:670:12:670:16 | erase | 0 | iterator |
+| stl.h:673:8:673:11 | swap | 0 | unordered_set & |
+| stl.h:676:37:676:41 | merge | 0 | unordered_set & |
+| stl.h:679:12:679:15 | find | 0 | const class:0 & |
+| stl.h:679:12:679:15 | find | 0 | const key_type & |
+| stl.h:681:28:681:38 | equal_range | 0 | const class:0 & |
+| stl.h:681:28:681:38 | equal_range | 0 | const key_type & |
+| stl.h:696:3:696:19 | basic_string_view | 0 | const basic_string_view & |
+| stl.h:698:3:698:19 | basic_string_view | 0 | const class:0 * |
+| stl.h:699:33:699:49 | basic_string_view | 0 | func:0 |
+| stl.h:699:33:699:49 | basic_string_view | 0 | func:0 |
+| stl.h:699:33:699:49 | basic_string_view | 0 | func:0 |
+| stl.h:699:33:699:49 | basic_string_view | 0 | func:0 |
+| stl.h:699:33:699:49 | basic_string_view | 1 | func:1 |
+| stl.h:699:33:699:49 | basic_string_view | 1 | func:1 |
+| stl.h:699:33:699:49 | basic_string_view | 1 | func:1 |
+| stl.h:699:33:699:49 | basic_string_view | 1 | func:1 |
+| stl.h:701:12:701:28 | basic_string_view | 0 | func:0 && |
+| stl.h:701:12:701:28 | basic_string_view | 0 | func:0 && |
+| stl.h:702:22:702:30 | operator= | 0 | const basic_string_view & |
+| stl.h:708:16:708:25 | operator[] | 0 | decltype(...) |
+| stl.h:708:16:708:25 | operator[] | 0 | size_type |
+| stl.h:709:16:709:17 | at | 0 | decltype(...) |
+| stl.h:709:16:709:17 | at | 0 | size_type |
+| stl.h:713:8:713:20 | remove_prefix | 0 | decltype(...) |
+| stl.h:713:8:713:20 | remove_prefix | 0 | size_type |
+| stl.h:714:8:714:20 | remove_suffix | 0 | decltype(...) |
+| stl.h:714:8:714:20 | remove_suffix | 0 | size_type |
+| stl.h:715:8:715:11 | swap | 0 | basic_string_view & |
+| stl.h:716:13:716:16 | copy | 0 | class:0 * |
+| stl.h:716:13:716:16 | copy | 1 | decltype(...) |
+| stl.h:716:13:716:16 | copy | 1 | size_type |
+| stl.h:716:13:716:16 | copy | 2 | decltype(...) |
+| stl.h:716:13:716:16 | copy | 2 | size_type |
+| stl.h:717:21:717:26 | substr | 0 | decltype(...) |
+| stl.h:717:21:717:26 | substr | 0 | size_type |
+| stl.h:717:21:717:26 | substr | 1 | decltype(...) |
+| stl.h:717:21:717:26 | substr | 1 | size_type |
+| stl.h:718:21:718:27 | subview | 0 | decltype(...) |
+| stl.h:718:21:718:27 | subview | 0 | size_type |
+| stl.h:718:21:718:27 | subview | 1 | decltype(...) |
+| stl.h:718:21:718:27 | subview | 1 | size_type |
+| stl.h:740:21:740:39 | basic_format_string | 0 | const func:0 & |
+| stl.h:740:21:740:39 | basic_format_string | 0 | const func:0 & |
+| stl.h:747:33:747:38 | format | 0 | format_string |
+| stl.h:747:33:747:38 | format | 0 | format_string |
+| stl.h:747:33:747:38 | format | 1 | func:0 && |
+| stl.h:747:33:747:38 | format | 1 | func:0 && |
+| stl.h:752:6:752:48 | same_signature_as_format_but_different_name | 0 | format_string |
+| stl.h:752:6:752:48 | same_signature_as_format_but_different_name | 1 | func:0 && |
+| stl.h:756:8:756:8 | operator= | 0 | const thread & |
+| stl.h:756:8:756:8 | thread | 0 | const thread & |
+| stl.h:759:12:759:17 | thread | 0 | func:0 && |
+| stl.h:759:12:759:17 | thread | 0 | func:0 && |
+| stl.h:759:12:759:17 | thread | 0 | func:0 && |
+| stl.h:759:12:759:17 | thread | 0 | func:0 && |
+| stl.h:759:12:759:17 | thread | 1 | func:1 && |
+| stl.h:759:12:759:17 | thread | 1 | func:1 && |
+| stl.h:759:12:759:17 | thread | 1 | func:1 && |
+| stl.h:759:12:759:17 | thread | 1 | func:1 && |
 | string.cpp:17:6:17:9 | sink | 0 | const char * |
 | string.cpp:18:6:18:9 | sink | 0 | const string & |
 | string.cpp:19:6:19:9 | sink | 0 | const char * |
 | string.cpp:19:6:19:9 | sink | 1 | const char * |
 | string.cpp:20:6:20:9 | sink | 0 | char |
 | string.cpp:21:6:21:9 | sink | 0 | iterator |
+| string.cpp:22:6:22:9 | sink | 0 | string_view |
+| string.cpp:592:8:592:8 | operator= | 0 | Iterator && |
+| string.cpp:592:8:592:8 | operator= | 0 | const Iterator & |
+| string.cpp:597:9:597:9 | operator= | 0 | Range && |
+| string.cpp:597:9:597:9 | operator= | 0 | const Range & |
 | stringstream.cpp:13:6:13:9 | sink | 0 | int |
 | stringstream.cpp:15:6:15:9 | sink | 0 | const string & |
 | stringstream.cpp:18:6:18:9 | sink | 0 | const basic_ostream> & |
@@ -28280,9 +28329,9 @@ getParameterTypeName
 | thread.cpp:14:6:14:22 | thread_function_2 | 0 | S |
 | thread.cpp:18:6:18:22 | thread_function_3 | 0 | S * |
 | thread.cpp:18:6:18:22 | thread_function_3 | 1 | int |
-| thread.cpp:30:18:30:18 | (unnamed constructor) | 0 | const lambda [] type at line 762, col. 18 & |
-| thread.cpp:30:18:30:18 | (unnamed constructor) | 0 | lambda [] type at line 762, col. 18 && |
-| thread.cpp:30:18:30:18 | operator= | 0 | const lambda [] type at line 762, col. 18 & |
+| thread.cpp:30:18:30:18 | (unnamed constructor) | 0 | const lambda [] type at line 841, col. 18 & |
+| thread.cpp:30:18:30:18 | (unnamed constructor) | 0 | lambda [] type at line 841, col. 18 && |
+| thread.cpp:30:18:30:18 | operator= | 0 | const lambda [] type at line 841, col. 18 & |
 | thread.cpp:30:20:30:20 | _FUN | 0 | S * |
 | thread.cpp:30:20:30:20 | operator() | 0 | S * |
 | vector.cpp:13:6:13:9 | sink | 0 | int |
@@ -28292,6 +28341,7 @@ getParameterTypeName
 | vector.cpp:37:6:37:23 | test_element_taint | 0 | int |
 | vector.cpp:145:8:145:8 | operator= | 0 | MyPair && |
 | vector.cpp:145:8:145:8 | operator= | 0 | const MyPair & |
+| vector.cpp:150:8:150:8 | MyVectorContainer | 0 | MyVectorContainer && |
 | vector.cpp:150:8:150:8 | MyVectorContainer | 0 | const MyVectorContainer & |
 | vector.cpp:150:8:150:8 | operator= | 0 | MyVectorContainer && |
 | vector.cpp:150:8:150:8 | operator= | 0 | const MyVectorContainer & |
@@ -28307,8 +28357,8 @@ getParameterTypeName
 | vector.cpp:417:6:417:25 | test_vector_inserter | 0 | char * |
 | vector.cpp:454:7:454:12 | memcpy | 0 | void * |
 | vector.cpp:454:7:454:12 | memcpy | 1 | const void * |
+| vector.cpp:454:7:454:12 | memcpy | 2 | decltype(...) |
 | vector.cpp:454:7:454:12 | memcpy | 2 | size_t |
-| vector.cpp:454:7:454:12 | memcpy | 2 | unsigned long |
 | vector.cpp:461:6:461:9 | sink | 0 | vector> & |
 | vector.cpp:462:6:462:9 | sink | 0 | string & |
 | zmq.cpp:9:8:9:8 | operator= | 0 | const zmq_msg_t & |

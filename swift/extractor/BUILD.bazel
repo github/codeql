@@ -1,5 +1,5 @@
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
-load("//misc/bazel:pkg.bzl", "codeql_pkg_files", "codeql_pkg_runfiles")
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files", "codeql_pkg_files_overlay", "codeql_pkg_runfiles")
 load("//swift:rules.bzl", "swift_cc_binary")
 
 swift_cc_binary(
@@ -31,9 +31,23 @@ sh_binary(
 )
 
 codeql_pkg_runfiles(
-    name = "pkg",
+    name = "extractor-files",
     excludes = ["extractor.sh"],  # script gets copied as "extractor", no need for the original .sh file
     exes = [":extractor"],
+)
+
+codeql_pkg_files(
+    name = "shared-libraries",
+    exes = ["//swift/third_party/resources:shared-libraries"],
+)
+
+# Use original libraries: _solib artifacts can have owners that do not match their runfiles repository.
+codeql_pkg_files_overlay(
+    name = "pkg",
+    srcs = [
+        ":extractor-files",
+        ":shared-libraries",
+    ],
     visibility = ["//swift:__pkg__"],
 )
 

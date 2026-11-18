@@ -19,6 +19,7 @@ import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.commons.File
 import FromSensitiveFlow::PathGraph
+import ClearText as ClearText
 
 class SourceVariable extends Variable {
   SourceVariable() {
@@ -218,12 +219,12 @@ predicate isSinkEncrypt(DataFlow::Node sink, Encrypted enc) { sink.asExpr() = en
  * function returning sensitive data.
  */
 predicate isSourceImpl(DataFlow::Node source) {
-  exists(VariableAccess e |
-    e = source.asExpr() and
-    e.getTarget() instanceof SourceVariable
+  exists(Expr e |
+    e.(VariableAccess).getTarget() instanceof SourceVariable or
+    e.(FunctionCall).getTarget() instanceof SourceFunction
+  |
+    ClearText::isSource(source, e)
   )
-  or
-  source.asExpr().(FunctionCall).getTarget() instanceof SourceFunction
 }
 
 /**
@@ -235,9 +236,7 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { isSinkSendRecv(sink, _) }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node.asExpr().getUnspecifiedType() instanceof IntegralType
-  }
+  predicate isBarrier = ClearText::isBarrier/1;
 
   predicate isBarrierIn(DataFlow::Node node) {
     // As any use of a sensitive variable is a potential source, we need to block flow into
@@ -266,9 +265,7 @@ module ToEncryptionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { isSinkEncrypt(sink, _) }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node.asExpr().getUnspecifiedType() instanceof IntegralType
-  }
+  predicate isBarrier = ClearText::isBarrier/1;
 
   predicate isBarrierIn(DataFlow::Node node) {
     // As any use of a sensitive variable is a potential source, we need to block flow into
@@ -291,9 +288,7 @@ module FromEncryptionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { FromSensitiveFlow::flowTo(sink) }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node.asExpr().getUnspecifiedType() instanceof IntegralType
-  }
+  predicate isBarrier = ClearText::isBarrier/1;
 
   predicate observeDiffInformedIncrementalMode() {
     none() // only used negatively

@@ -76,6 +76,8 @@ fn should_enum_be_skipped(name: &str) -> bool {
 fn should_node_be_skipped(name: &str) -> bool {
     name == "TypeAnchor" // we flatten TypeAnchor into PathSegment in the extractor
     || name == "MacroStmts" // we workaround a getter bug in the extractor
+    || name == "ParenExpr" // parenthesized expressions are extracted as their inner expression
+    || name == "ParenPat" // parenthesized patterns are extracted as their inner pattern
 }
 
 fn should_node_be_skipped_in_extractor(name: &str) -> bool {
@@ -133,6 +135,7 @@ fn get_additional_fields(node_name: &str) -> Vec<FieldInfo> {
             FieldInfo::body("body", "TokenTree"),
         ],
         "MacroCall" => vec![FieldInfo::body("token_tree", "TokenTree")],
+        "MacroExpr" | "RecordExpr" => vec![FieldInfo::list("attrs", "AnyAttr")],
         "FormatArgsExpr" => vec![FieldInfo::list("args", "FormatArgsArg")],
         "ArgList" => vec![FieldInfo::list("args", "Expr")],
         "Fn" => vec![FieldInfo::body("body", "BlockExpr")],
@@ -188,7 +191,7 @@ fn should_predicate_be_extracted(name: &str) -> bool {
 }
 
 fn project_root() -> PathBuf {
-    let dir = env::var("CARGO_MANIFEST_DIR").unwrap().to_owned();
+    let dir = env::var("CARGO_MANIFEST_DIR").unwrap();
     PathBuf::from(dir).parent().unwrap().to_owned()
 }
 
@@ -197,7 +200,7 @@ fn to_lower_snake_case(s: &str) -> String {
     let mut prev = false;
     for c in s.chars() {
         if c.is_ascii_uppercase() && prev {
-            buf.push('_')
+            buf.push('_');
         }
         prev = true;
 
@@ -226,10 +229,10 @@ struct Schema {
 }
 
 fn get_bases(name: &str, super_types: &BTreeMap<String, BTreeSet<String>>) -> Vec<String> {
-    super_types
-        .get(name)
-        .map(|tys| tys.iter().map(|t| class_name(t)).collect())
-        .unwrap_or_else(|| vec!["AstNode".to_string()])
+    super_types.get(name).map_or_else(
+        || vec!["AstNode".to_string()],
+        |tys| tys.iter().map(|t| class_name(t)).collect(),
+    )
 }
 
 fn enum_src_to_schema_class(
@@ -276,7 +279,7 @@ fn node_src_to_schema_class(
 fn fix_blank_lines(s: &str) -> String {
     // mustache is not very good at avoiding blank lines
     // adopting the workaround from https://github.com/groue/GRMustache/issues/46#issuecomment-19498046
-    s.split("\n")
+    s.split('\n')
         .filter(|line| !line.trim().is_empty())
         .map(|line| if line == "¶" { "" } else { line })
         .join("\n")
@@ -285,7 +288,7 @@ fn fix_blank_lines(s: &str) -> String {
 
 fn write_schema(
     grammar: &AstSrc,
-    super_types: BTreeMap<String, BTreeSet<String>>,
+    super_types: &BTreeMap<String, BTreeSet<String>>,
     mustache_ctx: &mustache::Context,
 ) -> mustache::Result<String> {
     let mut schema = Schema::default();
@@ -293,13 +296,13 @@ fn write_schema(
         grammar
             .enums
             .iter()
-            .map(|node| enum_src_to_schema_class(node, &super_types)),
+            .map(|node| enum_src_to_schema_class(node, super_types)),
     );
     schema.classes.extend(
         grammar
             .nodes
             .iter()
-            .map(|node| node_src_to_schema_class(node, &super_types)),
+            .map(|node| node_src_to_schema_class(node, super_types)),
     );
     let template = mustache_ctx.compile_path("schema")?;
     let res = template.render_to_string(&schema)?;
@@ -349,6 +352,7 @@ struct EnumVariantInfo {
     name: String,
     snake_case_name: String,
     variant_ast_name: String,
+    emission: String,
 }
 
 #[derive(Serialize)]
@@ -365,6 +369,8 @@ struct ExtractorNodeFieldInfo {
     name: String,
     method: String,
     snake_case_ty: String,
+    attributes: bool,
+    parenthesized_attrs: bool,
     string: bool,
     predicate: bool,
     optional: bool,
@@ -399,10 +405,16 @@ fn enum_to_extractor_info(node: &AstEnumSrc) -> ExtractorEnumInfo {
             .map(|v| {
                 let name = class_name(v);
                 let snake_case_name = to_lower_snake_case(v);
+                let emission = match v.as_str() {
+                    "ParenExpr" => "self.emit_parenthesized_expr(inner)".to_owned(),
+                    "ParenPat" => "self.emit_parenthesized_pat(inner)".to_owned(),
+                    _ => format!("self.emit_{snake_case_name}(inner).map(Into::into)"),
+                };
                 EnumVariantInfo {
                     name,
                     snake_case_name,
-                    variant_ast_name: v.to_string(),
+                    variant_ast_name: v.clone(),
+                    emission,
                 }
             })
             .collect(),
@@ -412,6 +424,7 @@ fn enum_to_extractor_info(node: &AstEnumSrc) -> ExtractorEnumInfo {
 
 fn field_info_to_extractor_info(name: &str, field: &FieldInfo) -> ExtractorNodeFieldInfo {
     let name = property_name(name, &field.name);
+    let attributes = name == "attrs";
     match &field.ty {
         FieldType::String => ExtractorNodeFieldInfo {
             name,
@@ -440,6 +453,7 @@ fn field_info_to_extractor_info(name: &str, field: &FieldInfo) -> ExtractorNodeF
         },
         FieldType::List(ty) => ExtractorNodeFieldInfo {
             name,
+            attributes,
             method: if ty == "AnyAttr" {
                 "attrs_with_doc".to_owned()
             } else {
@@ -453,12 +467,19 @@ fn field_info_to_extractor_info(name: &str, field: &FieldInfo) -> ExtractorNodeF
 }
 fn node_to_extractor_info(node: &AstNodeSrc) -> ExtractorNodeInfo {
     let fields = get_fields(node);
-    let has_attrs = fields.iter().any(|f| f.name == "attrs");
+    let parenthesized_attrs = matches!(node.name.as_str(), "MacroExpr" | "RecordExpr");
     let name = class_name(&node.name);
-    let fields = fields
+    let fields: Vec<_> = fields
         .iter()
         .map(|f| field_info_to_extractor_info(&name, f))
+        .map(|mut f| {
+            f.parenthesized_attrs = parenthesized_attrs && f.name == "attrs";
+            f
+        })
         .collect();
+    let has_attrs = fields
+        .iter()
+        .any(|f| f.name == "attrs" && !f.parenthesized_attrs);
     ExtractorNodeInfo {
         name,
         snake_case_name: to_lower_snake_case(&node.name),
@@ -498,7 +519,7 @@ fn main() -> anyhow::Result<()> {
     for node in &grammar.enums {
         for variant in &node.variants {
             let set = super_types.entry(variant.to_owned()).or_default();
-            set.insert(node.name.to_owned());
+            set.insert(node.name.clone());
         }
     }
     // sort things while ensuring super clases are defined before they are used
@@ -512,7 +533,7 @@ fn main() -> anyhow::Result<()> {
         template_path: root.join("ast-generator").join("templates"),
         template_extension: "mustache".to_string(),
     };
-    let schema = write_schema(&grammar, super_types, &mustache_ctx)?;
+    let schema = write_schema(&grammar, &super_types, &mustache_ctx)?;
     let schema_path = root.join("schema/ast.py");
     codegen::ensure_file_contents(
         crate::flags::CodegenType::Grammar,

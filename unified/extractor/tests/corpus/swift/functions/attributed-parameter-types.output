@@ -21,6 +21,7 @@ sourceFile
               leftBrace: {
               rightBrace: }
               statements:
+          modifiers:
           name: identifier "f"
           genericParameterClause:
             genericParameterClause
@@ -34,7 +35,6 @@ sourceFile
                   name: identifier "T"
               leftAngle: <
               rightAngle: >
-          modifiers:
           signature:
             functionSignature
               parameterClause:

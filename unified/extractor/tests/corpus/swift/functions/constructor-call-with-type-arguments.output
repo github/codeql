@@ -11,18 +11,19 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Foo"
           memberBlock:
             memberBlock
               leftBrace: {
               rightBrace: }
               members:
-          modifiers:
           classKeyword: class
     codeBlockItem
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "C"
           genericParameterClause:
             genericParameterClause
@@ -37,7 +38,6 @@ sourceFile
               leftBrace: {
               rightBrace: }
               members:
-          modifiers:
           classKeyword: class
     codeBlockItem
       item:

@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# /// script
+# dependencies = ["json5"]
+# ///
+
 import sys
 import glob
 import json

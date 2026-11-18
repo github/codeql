@@ -38,3 +38,9 @@ class C {
         }
     }
 }
+
+class Sub: C {  // $ access=C
+    func t6() {  // implicit-self=t6.self
+        super.t1()  // $ access=t6.self (we treat `super` as an alias for `self`)
+    }
+}

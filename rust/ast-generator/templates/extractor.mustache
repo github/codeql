@@ -18,7 +18,7 @@ impl Translator<'_> {
         {{>pre_emission}}
         let label = match node {
             {{#variants}}
-            ast::{{ast_name}}::{{variant_ast_name}}(inner) => self.emit_{{snake_case_name}}(inner).map(Into::into),
+            ast::{{ast_name}}::{{variant_ast_name}}(inner) => {{{emission}}},
             {{/variants}}
         }?;
         {{>post_emission}}
@@ -33,6 +33,18 @@ impl Translator<'_> {
         if self.should_be_excluded(node) { return None; }
         {{/has_attrs}}
         {{#fields}}
+        {{#attributes}}
+        {{#parenthesized_attrs}}
+        let attrs = self.take_parenthesized_expr_attrs(node.syntax());
+        {{/parenthesized_attrs}}
+        {{^parenthesized_attrs}}
+        let mut attrs = self.take_parenthesized_expr_attrs(node.syntax());
+        attrs.extend(node.{{method}}().filter_map(|x| self.emit_{{snake_case_ty}}(&x)));
+        {{/parenthesized_attrs}}
+        {{/attributes}}
+        {{/fields}}
+        {{#fields}}
+        {{^attributes}}
         let {{name}} =
             {{#predicate}}
             node.{{method}}().is_some()
@@ -50,11 +62,17 @@ impl Translator<'_> {
             if self.should_skip_bodies() { None } else { node.{{method}}().and_then(|x| self.emit_{{snake_case_ty}}(&x)) }
             {{/body}}
             ;
+        {{/attributes}}
         {{/fields}}
         let label = self.trap.emit(generated::{{name}} {
             id: TrapId::Star,
             {{#fields}}
+            {{#attributes}}
+            attrs,
+            {{/attributes}}
+            {{^attributes}}
             {{name}},
+            {{/attributes}}
             {{/fields}}
         });
         self.emit_location(label, node);

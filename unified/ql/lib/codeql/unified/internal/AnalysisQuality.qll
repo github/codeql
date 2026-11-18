@@ -129,7 +129,7 @@ module TaintReach {
   }
 
   module TaintReachConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
+    predicate isSource(DataFlow::Node node) { Models::isSource(node, ["local", "remote"]) }
 
     predicate isSink(DataFlow::Node node) { node instanceof Candidate }
   }

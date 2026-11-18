@@ -1,0 +1,36 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["io/fs", "", false, "FileInfoToDirEntry", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["io/fs", "", false, "Glob", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["io/fs", "", false, "ReadDir", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["io/fs", "", false, "ReadFile", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["io/fs", "", false, "Sub", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["io/fs", "DirEntry", true, "Info", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["io/fs", "DirEntry", true, "Name", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["io/fs", "File", true, "Read", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["io/fs", "FS", true, "Open", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["io/fs", "GlobFS", true, "Glob", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["io/fs", "ReadDirFS", true, "ReadDir", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["io/fs", "ReadFileFS", true, "ReadFile", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["io/fs", "SubFS", true, "Sub", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["io/fs", "", false, "ReadFile", "", "", "ReturnValue[0]", "file", "manual"],
+        ["io/fs", "ReadFileFS", true, "ReadFile", "", "", "ReturnValue[0]", "file", "manual"],
+        ["io/fs", "FS", true, "Open", "", "", "ReturnValue[0]", "file", "manual"]
+      ]
+    }
+  ]
+}

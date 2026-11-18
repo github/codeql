@@ -1,0 +1,14 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/java-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["unsafedeserialization", "A", false, "getTaintedObjectInput", "()", "", "ReturnValue", "remote", "manual"],
+        ["unsafedeserialization", "A", false, "getTaintedMyObjectInput", "()", "", "ReturnValue", "remote", "manual"]
+      ]
+    }
+  ]
+}

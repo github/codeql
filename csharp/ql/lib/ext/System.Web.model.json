@@ -1,0 +1,44 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["System.Web", "HttpResponse", false, "BinaryWrite", "", "", "Argument[0]", "html-injection", "manual"],
+        ["System.Web", "HttpResponse", false, "TransmitFile", "", "", "Argument[0]", "html-injection", "manual"],
+        ["System.Web", "HttpResponse", false, "Write", "", "", "Argument[0]", "html-injection", "manual"],
+        ["System.Web", "HttpResponse", false, "WriteFile", "", "", "Argument[0]", "html-injection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["System.Web", "HttpCookie", false, "get_Value", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpCookie", false, "get_Values", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpServerUtility", false, "HtmlEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpServerUtility", false, "UrlEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "HtmlAttributeEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "HtmlAttributeEncode", "(System.String,System.IO.TextWriter)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "HtmlEncode", "(System.Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "HtmlEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "HtmlEncode", "(System.String,System.IO.TextWriter)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "JavaScriptStringEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "JavaScriptStringEncode", "(System.String,System.Boolean)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "ParseQueryString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "UrlDecode", "(System.Byte[],System.Int32,System.Int32,System.Text.Encoding)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "UrlDecode", "(System.Byte[],System.Text.Encoding)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "UrlDecode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "UrlDecode", "(System.String,System.Text.Encoding)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "UrlEncode", "(System.Byte[])", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "UrlEncode", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "UrlEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["System.Web", "HttpUtility", false, "UrlEncode", "(System.String,System.Text.Encoding)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

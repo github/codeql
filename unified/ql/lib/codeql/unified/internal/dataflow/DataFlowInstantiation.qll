@@ -41,6 +41,12 @@ module DataFlowInput implements InputSig<Location> {
       FlowSummaryOutput::summaryOutNode(callee, getSummaryNode(n), kind) and
       call.isSummaryCall(_, callee)
     )
+    or
+    exists(Expr access |
+      call.asGetterCall() = access and
+      n.isResultValue(access) and
+      kind.isStandardReturnValue()
+    )
   }
 
   class OutNode extends Node {
@@ -100,6 +106,9 @@ module DataFlowInput implements InputSig<Location> {
     )
     or
     n.(BuilderNode).isImplicitArgument(call, pos, false)
+    or
+    n.(BuilderNode).isSetterValueArgument(call) and
+    pos.asPositional() = 0
     or
     exists(FlowSummaryOutput::SummaryNode callee |
       FlowSummaryOutput::summaryArgumentNode(callee, getSummaryNode(n), pos) and
@@ -226,6 +235,7 @@ module DataFlowInput implements InputSig<Location> {
   //
   additional predicate nodeIsVisible(Node node) {
     exists(Expr e |
+      e.fromSource() and
       node = TValueNode(e) and
       not e instanceof ExprPattern
     )
@@ -260,6 +270,8 @@ module DataFlowInput implements InputSig<Location> {
   predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() } // TODO
 
   predicate allowParameterReturnInSelf(ParameterNode p) {
+    p.isReceiverParameter(_)
+    or
     captureSsaAllowParameterReturnInSelf(p)
     or
     exists(DataFlowCallable c, ParameterPosition pos |

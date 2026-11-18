@@ -47,30 +47,30 @@ impl Captures {
     pub fn get_opt(&self, key: &str) -> Option<Id> {
         self.captures
             .get(key)
-            .and_then(|ids| if ids.len() == 1 { Some(ids[0]) } else { None })
+            .and_then(|ids| (ids.len() == 1).then(|| ids[0]))
     }
 
     pub fn insert(&mut self, key: &'static str, id: Id) {
         self.captures.entry(key).or_default().push(id);
     }
 
-    pub(crate) fn try_translate_except<E>(
+    pub(crate) fn translate_except(
         &self,
         skip: &[&str],
-        mut f: impl FnMut(Id) -> Result<Vec<OutputId>, E>,
-    ) -> Result<TranslatedCaptures, E> {
+        mut f: impl FnMut(Id) -> Vec<OutputId>,
+    ) -> TranslatedCaptures {
         let mut translated = TranslatedCaptures::new();
         for (name, ids) in &self.captures {
             if skip.contains(name) {
                 continue;
             }
             for &id in ids {
-                for translated_id in f(id)? {
+                for translated_id in f(id) {
                     translated.insert(name, translated_id);
                 }
             }
         }
-        Ok(translated)
+        translated
     }
 
     pub fn merge(&mut self, other: &Captures) {
@@ -92,11 +92,11 @@ impl Captures {
                 .ok_or_else(|| format!("No variable named {fst}"))?
                 .len();
             // TODO: better error on missing capture
-            if id_iter.any(|id| self.captures.get(id).map(Vec::len).unwrap_or(0) != repeats) {
+            if id_iter.any(|id| self.captures.get(id).map_or(0, Vec::len) != repeats) {
                 return Err("Repeated captures must have the same number of matches".to_string());
             }
             Ok((0..repeats).map(move |iter| {
-                let mut new_vars: Captures = Captures::new();
+                let mut new_vars = Captures::new();
                 for id in children {
                     let child_capture = self.captures.get(id).unwrap()[iter];
                     new_vars.captures.insert(id, vec![child_capture]);
@@ -144,7 +144,7 @@ impl TranslatedCaptures {
     pub fn get_opt(&self, key: &str) -> Option<OutputId> {
         self.captures
             .get(key)
-            .and_then(|ids| if ids.len() == 1 { Some(ids[0]) } else { None })
+            .and_then(|ids| (ids.len() == 1).then(|| ids[0]))
     }
 
     fn insert(&mut self, key: &'static str, id: OutputId) {

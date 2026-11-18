@@ -1,0 +1,14 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/kataras/iris/middleware/jwt", "", false, "NewSigner", "", "", "Argument[1]", "credentials-key", "manual"],
+        ["github.com/kataras/iris/middleware/jwt", "Signer", true, "Key", "", "", "", "credentials-key", "manual"]
+      ]
+    }
+  ]
+}

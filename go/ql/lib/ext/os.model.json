@@ -1,0 +1,75 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        // path-injection
+        ["os", "", false, "Chdir", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "Chmod", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "Chown", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "Chtimes", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "Create", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "Lchown", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "Link", "", "", "Argument[0..1]", "path-injection", "manual"],
+        ["os", "", false, "Lstat", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "Mkdir", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "MkdirAll", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "NewFile", "", "", "Argument[1]", "path-injection", "manual"],
+        ["os", "", false, "Open", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "OpenFile", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "Readlink", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "Remove", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "RemoveAll", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "Rename", "", "", "Argument[0..1]", "path-injection", "manual"],
+        ["os", "", false, "Stat", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "Symlink", "", "", "Argument[0..1]", "path-injection", "manual"],
+        ["os", "", false, "Truncate", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "DirFS", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "ReadDir", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "ReadFile", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "MkdirTemp", "", "", "Argument[0..1]", "path-injection", "manual"],
+        ["os", "", false, "CreateTemp", "", "", "Argument[0]", "path-injection", "manual"],
+        ["os", "", false, "WriteFile", "", "", "Argument[0]", "path-injection", "manual"],
+        // command-injection
+        ["os", "", false, "StartProcess", "", "", "Argument[0]", "command-injection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["os", "", false, "Expand", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["os", "", false, "ExpandEnv", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["os", "", false, "NewFile", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["os", "File", true, "Fd", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["os", "File", true, "Read", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["os", "File", true, "ReadAt", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["os", "", false, "Args", "", "", "", "commandargs", "manual"],
+        ["os", "", false, "Environ", "", "", "ReturnValue", "environment", "manual"], // TODO: when sources can have access paths, use .ArrayElement
+        ["os", "", false, "ExpandEnv", "", "", "ReturnValue", "environment", "manual"],
+        ["os", "", false, "Getenv", "", "", "ReturnValue", "environment", "manual"],
+        ["os", "", false, "LookupEnv", "", "", "ReturnValue[0]", "environment", "manual"],
+        ["os", "", false, "Open", "", "", "ReturnValue[0]", "file", "manual"],
+        ["os", "", false, "OpenFile", "", "", "ReturnValue[0]", "file", "manual"],
+        ["os", "", false, "ReadFile", "", "", "ReturnValue[0]", "file", "manual"],
+        ["os", "", false, "Stdin", "", "", "", "stdin", "manual"],
+        ["os", "", false, "UserCacheDir", "", "", "ReturnValue[0]", "environment", "manual"],
+        ["os", "", false, "UserConfigDir", "", "", "ReturnValue[0]", "environment", "manual"],
+        ["os", "", false, "UserHomeDir", "", "", "ReturnValue[0]", "environment", "manual"]
+      ]
+    }
+  ]
+}

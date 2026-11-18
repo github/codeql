@@ -1,0 +1,16 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["compress/zlib", "", false, "NewReader", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["compress/zlib", "", false, "NewReaderDict", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["compress/zlib", "Resetter", true, "Reset", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["compress/zlib", "Writer", true, "Reset", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}

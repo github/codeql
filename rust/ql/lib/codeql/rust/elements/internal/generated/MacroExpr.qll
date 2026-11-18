@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.MacroCall
 
@@ -28,6 +29,26 @@ module Generated {
     override string getAPrimaryQlClass() { result = "MacroExpr" }
 
     override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
+    /**
+     * Gets the `index`th attr of this macro expression (0-based).
+     */
+    AnyAttr getAttr(int index) {
+      result =
+        Synth::convertAnyAttrFromRaw(Synth::convertMacroExprToRaw(this)
+              .(Raw::MacroExpr)
+              .getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this macro expression.
+     */
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this macro expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
      * Gets the macro call of this macro expression, if it exists.

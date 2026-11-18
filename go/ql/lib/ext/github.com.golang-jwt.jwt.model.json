@@ -1,0 +1,34 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/golang-jwt/jwt", "SigningMethod", true, "Sign", "", "", "Argument[1]", "credentials-key", "manual"],
+        ["github.com/golang-jwt/jwt", "Token", true, "SignedString", "", "", "Argument[0]", "credentials-key", "manual"],
+        ["github.com/golang-jwt/jwt", "Parser", true, "ParseUnverified", "", "", "Argument[0]", "jwt", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["github.com/golang-jwt/jwt", "", false, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/golang-jwt/jwt", "Parser", true, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/golang-jwt/jwt", "", false, "ParseWithClaims", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/golang-jwt/jwt", "Parser", true, "ParseWithClaims", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/golang-jwt/jwt", "", false, "ParseECPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/golang-jwt/jwt", "", false, "ParseECPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/golang-jwt/jwt", "", false, "ParseEdPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/golang-jwt/jwt", "", false, "ParseEdPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/golang-jwt/jwt", "", false, "ParseRSAPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/golang-jwt/jwt", "", false, "ParseRSAPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/golang-jwt/jwt", "", false, "RegisterSigningMethod", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}

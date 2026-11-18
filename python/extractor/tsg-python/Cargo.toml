@@ -6,7 +6,7 @@ version = "0.1.0"
 authors = ["Taus Brock-Nannestad <tausbn@github.com>"]
 edition = "2024"
 
-# When updating these dependencies, run `misc/bazel/3rdparty/update_cargo_deps.sh`
+# When updating these dependencies, run `misc/bazel/3rdparty/update_all_rust_deps.sh`
 [dependencies]
 anyhow = "1.0"
 regex = "1"

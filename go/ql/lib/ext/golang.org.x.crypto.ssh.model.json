@@ -1,0 +1,16 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["golang.org/x/crypto/ssh", "Session", true, "CombinedOutput", "", "", "Argument[0]", "command-injection", "manual"],
+        ["golang.org/x/crypto/ssh", "Session", true, "Output", "", "", "Argument[0]", "command-injection", "manual"],
+        ["golang.org/x/crypto/ssh", "Session", true, "Run", "", "", "Argument[0]", "command-injection", "manual"],
+        ["golang.org/x/crypto/ssh", "Session", true, "Start", "", "", "Argument[0]", "command-injection", "manual"]
+      ]
+    }
+  ]
+}

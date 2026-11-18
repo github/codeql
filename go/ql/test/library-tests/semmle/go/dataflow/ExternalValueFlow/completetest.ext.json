@@ -1,0 +1,66 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["github.com/nonexistent/test", "T", false, "StepArgRes", "", "", "Argument[0]", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "T", false, "StepArgRes1", "", "", "Argument[0]", "ReturnValue[1]", "value", "manual"],
+        ["github.com/nonexistent/test", "T", false, "StepArgArg", "", "", "Argument[0]", "Argument[1]", "value", "df-generated"],
+        ["github.com/nonexistent/test", "T", false, "StepArgArgIgnored", "", "", "Argument[0]", "Argument[1]", "value", "df-generated"],
+        ["github.com/nonexistent/test", "T", false, "StepArgQual", "", "", "Argument[0]", "Argument[receiver]", "value", "manual"],
+        ["github.com/nonexistent/test", "T", false, "StepQualRes", "", "", "Argument[receiver]", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "T", false, "StepQualArg", "", "", "Argument[receiver]", "Argument[0]", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "StepArgResNoQual", "", "", "Argument[0]", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "StepArgResArrayContent", "", "", "Argument[0]", "ReturnValue.ArrayElement", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "StepArgArrayContentRes", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "StepArgResCollectionContent", "", "", "Argument[0]", "ReturnValue.Element", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "StepArgCollectionContentRes", "", "", "Argument[0].Element", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "StepArgResMapKeyContent", "", "", "Argument[0]", "ReturnValue.MapKey", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "StepArgMapKeyContentRes", "", "", "Argument[0].MapKey", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "StepArgResMapValueContent", "", "", "Argument[0]", "ReturnValue.MapValue", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "StepArgMapValueContentRes", "", "", "Argument[0].MapValue", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "GetElement", "", "", "Argument[0].Element", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "GetMapKey", "", "", "Argument[0].MapKey", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "", false, "SetElement", "", "", "Argument[0]", "ReturnValue.Element", "value", "manual"],
+        ["github.com/nonexistent/test", "C", false, "Get", "", "", "Argument[receiver].Field[github.com/nonexistent/test.C.F]", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "C", false, "GetThroughPointer", "", "", "Argument[receiver].Dereference.Field[github.com/nonexistent/test.C.F]", "ReturnValue", "value", "manual"],
+        ["github.com/nonexistent/test", "C", false, "Set", "", "", "Argument[0]", "Argument[receiver].Field[github.com/nonexistent/test.C.F]", "value", "manual"],
+        ["github.com/nonexistent/test", "C", false, "SetThroughPointer", "", "", "Argument[0]", "Argument[receiver].Dereference.Field[github.com/nonexistent/test.C.F]", "value", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "neutralModel"
+      },
+      "data": [
+        ["github.com/nonexistent/test", "T", "StepArgArgIgnored", "", "summary", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["github.com/nonexistent/test", "", false, "SourceVariable", "", "", "", "qltest", "manual"],
+        ["github.com/nonexistent/test", "A", false, "Src1", "", "", "ReturnValue", "qltest", "manual"],
+        ["semmle.go.Packages", "", true, "srcParam", "", "", "Parameter[0]", "qltest", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/nonexistent/test", "", false, "SinkVariable", "", "", "", "qltest", "manual"],
+        ["github.com/nonexistent/test", "B", false, "Sink1", "", "", "Argument[0]", "qltest", "manual"],
+        ["github.com/nonexistent/test", "B", false, "SinkManyArgs", "", "", "Argument[0..2]", "qltest", "manual"]
+      ]
+    }
+  ]
+}

@@ -1688,13 +1688,17 @@ private module Impl {
   }
 
   private Element getImmediateChildOfMacroExpr(MacroExpr e, int index, string partialPredicateCall) {
-    exists(int n, int nMacroCall |
+    exists(int n, int nAttr, int nMacroCall |
       n = 0 and
-      nMacroCall = n + 1 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nMacroCall = nAttr + 1 and
       (
         none()
         or
-        index = n and result = e.getMacroCall() and partialPredicateCall = "MacroCall()"
+        result = e.getAttr(index - n) and
+        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
+        or
+        index = nAttr and result = e.getMacroCall() and partialPredicateCall = "MacroCall()"
       )
     )
   }
@@ -1841,34 +1845,6 @@ private module Impl {
         index = nAttr and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
         or
         index = nTypeRepr and result = e.getPat() and partialPredicateCall = "Pat()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfParenExpr(ParenExpr e, int index, string partialPredicateCall) {
-    exists(int n, int nAttr, int nExpr |
-      n = 0 and
-      nAttr = n + e.getNumberOfAttrs() and
-      nExpr = nAttr + 1 and
-      (
-        none()
-        or
-        result = e.getAttr(index - n) and
-        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
-        or
-        index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfParenPat(ParenPat e, int index, string partialPredicateCall) {
-    exists(int n, int nPat |
-      n = 0 and
-      nPat = n + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getPat() and partialPredicateCall = "Pat()"
       )
     )
   }
@@ -2130,16 +2106,20 @@ private module Impl {
   }
 
   private Element getImmediateChildOfStructExpr(StructExpr e, int index, string partialPredicateCall) {
-    exists(int n, int nPath, int nStructExprFieldList |
+    exists(int n, int nPath, int nAttr, int nStructExprFieldList |
       n = 0 and
       nPath = n + 1 and
-      nStructExprFieldList = nPath + 1 and
+      nAttr = nPath + e.getNumberOfAttrs() and
+      nStructExprFieldList = nAttr + 1 and
       (
         none()
         or
         index = n and result = e.getPath() and partialPredicateCall = "Path()"
         or
-        index = nPath and
+        result = e.getAttr(index - nPath) and
+        partialPredicateCall = "Attr(" + (index - nPath).toString() + ")"
+        or
+        index = nAttr and
         result = e.getStructExprFieldList() and
         partialPredicateCall = "StructExprFieldList()"
       )
@@ -3458,10 +3438,6 @@ private module Impl {
     result = getImmediateChildOfOrPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfParam(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfParenExpr(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfParenPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfParenTypeRepr(e, index, partialAccessor)
     or

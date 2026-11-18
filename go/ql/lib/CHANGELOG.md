@@ -1,3 +1,29 @@
+## 9.0.0
+
+### Breaking Changes
+
+* The Go SSA API now uses the shared SSA classes (`SsaDefinition`, `SsaWriteDefinition`, `SsaExplicitWrite`, `SsaParameterInit`, `SsaImplicitWrite`, `SsaUncertainWrite`, and `SsaPhiDefinition`):
+  - `SsaVariable`, `SsaExplicitDefinition`, `SsaImplicitDefinition`, `SsaVariableCapture`, `SsaPseudoDefinition`, and `SsaPhiNode` have been deprecated.
+  - `ControlFlow::WriteNode.definesSsaVariable`, `IR::WriteTarget.asSsaVariable`, `SsaWithFields.getBaseVariable`, and `DataFlow::ReadNode.readsSsaVariable` have been deprecated in favor of `definesSsaDefinition`, `asSsaDefinition`, `getBaseDefinition`, and `readsSsaDefinition`, respectively.
+  - `SsaDefinition` no longer defines `getVariable()`, `getRoot()`, or `hasLocationInfo(...)`. Use `SsaDefinition` directly, `getBasicBlock().getScope()`, and `getLocation().hasLocationInfo(...)` instead.
+  - `SsaDefinition.getAFirstUse()` is no longer available. First-use access remains available through `getAFirstUse()` on the deprecated `SsaVariable` class. `DataFlow::ReadNode.readsSsaDefinition()` matches all reads, not just first uses, and is not an equivalent replacement.
+  - `SsaDefinition.getARead()` returns expression reads only. Use `DataFlow::ReadNode.readsSsaDefinition()` to include implicit reads, such as reads of result variables at function exit.
+  - `IR::TypeSwitchImplicitVariableInstruction` now extends `IR::WriteInstruction`, with target class `IR::ImplicitVariableTarget`.
+
+## 8.1.0
+
+### Deprecated APIs
+
+* `ControlFlow::ConditionGuardNode` is now deprecated. Use the API from `semmle.go.controlflow.Guards` instead.
+
+### New Features
+
+* The Go language library now instantiates the shared library `semmle.go.controlflow.Guards`, including the `Guard` and `GuardValue` classes and the `guardEnsures`, `guardEnsuresEq`, `guardEnsuresNeq`, and `guardEnsuresLeq` predicates.
+
+### Bug Fixes
+
+* The Go extractor no longer modifies the global Git configuration when private `git_source` registries are configured. The registry proxy certificate is now passed to Git through the `GIT_SSL_CAINFO` environment variable instead, which only affects the Git processes spawned by `go`.
+
 ## 8.0.1
 
 No user-facing changes.

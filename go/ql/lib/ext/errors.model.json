@@ -1,0 +1,16 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["errors", "", false, "As", "", "", "Argument[0]", "Argument[1]", "taint", "manual"],
+        ["errors", "", false, "AsType", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["errors", "", false, "New", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["errors", "", false, "Unwrap", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

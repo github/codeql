@@ -1,4 +1,0 @@
----
-category: minorAnalysis
----
-* Rolled back the change that set proxy and certificate environment variables for the subprocess that invokes the NuGet CLI because the environment variables were only partially respected by the target process in some cases.

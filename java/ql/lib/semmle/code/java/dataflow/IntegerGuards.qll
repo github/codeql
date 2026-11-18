@@ -9,31 +9,6 @@ private import SSA
 private import RangeUtils
 private import RangeAnalysis
 
-/** Gets an expression that might have the value `i`. */
-deprecated private Expr exprWithIntValue(int i) {
-  result.(ConstantIntegerExpr).getIntValue() = i or
-  result.(ChooseExpr).getAResultExpr() = exprWithIntValue(i)
-}
-
-/**
- * An expression for which the predicate `integerGuard` is relevant.
- * This includes `VarRead` and `MethodCall`.
- */
-deprecated class IntComparableExpr extends Expr {
-  IntComparableExpr() { this instanceof VarRead or this instanceof MethodCall }
-
-  /** Gets an integer that is directly assigned to the expression in case of a variable; or zero. */
-  deprecated int relevantInt() {
-    exists(SsaExplicitUpdate ssa, SsaSourceVariable v |
-      this = v.getAnAccess() and
-      ssa.getSourceVariable() = v and
-      ssa.getDefiningExpr().(VariableAssign).getSource() = exprWithIntValue(result)
-    )
-    or
-    result = 0
-  }
-}
-
 /**
  * Holds if `comp` evaluating to `branch` ensures that `e1` is less than `e2`.
  * When `strict` is true, `e1` is strictly less than `e2`, otherwise it is less
@@ -109,81 +84,5 @@ Expr nonZeroGuard(Expr e, boolean branch) {
     upper = true and val < 0 // e <= val < 0  ==>  e != 0
     or
     upper = false and val > 0 // e >= val > 0  ==>  e != 0
-  )
-}
-
-/**
- * DEPRECATED.
- *
- * An expression that directly tests whether a given expression is equal to `k` or not.
- * The set of `k`s is restricted to those that are relevant for the expression or
- * have a direct comparison with the expression.
- *
- * If `result` evaluates to `branch`, then `e` is guaranteed to be equal to `k` if `is_k`
- * is true, and different from `k` if `is_k` is false.
- */
-pragma[nomagic]
-deprecated Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
-  exists(EqualityTest eqtest, boolean polarity |
-    eqtest = result and
-    eqtest.hasOperands(e, any(ConstantIntegerExpr c | c.getIntValue() = k)) and
-    polarity = eqtest.polarity() and
-    (
-      branch = true and is_k = polarity
-      or
-      branch = false and is_k = polarity.booleanNot()
-    )
-  )
-  or
-  exists(int val, boolean upper |
-    rangeGuard(result, branch, e, val, upper) and
-    k = e.relevantInt() and
-    is_k = false
-  |
-    upper = true and val < k // e <= val < k  ==>  e != k
-    or
-    upper = false and val > k // e >= val > k  ==>  e != k
-  )
-}
-
-/**
- * DEPRECATED: Use `rangeGuard` instead.
- *
- * A guard that splits the values of a variable into one range with an upper bound of `k-1`
- * and one with a lower bound of `k`.
- *
- * If `branch_with_lower_bound_k` is true then `result` is equivalent to `k <= x`
- * and if it is false then `result` is equivalent to `k > x`.
- */
-deprecated Expr intBoundGuard(VarRead x, boolean branch_with_lower_bound_k, int k) {
-  exists(ComparisonExpr comp, ConstantIntegerExpr c, int val |
-    comp = result and
-    comp.hasOperands(x, c) and
-    c.getIntValue() = val and
-    x.getVariable().getType() instanceof IntegralType
-  |
-    // c < x
-    comp.getLesserOperand() = c and
-    comp.isStrict() and
-    branch_with_lower_bound_k = true and
-    val + 1 = k
-    or
-    // c <= x
-    comp.getLesserOperand() = c and
-    not comp.isStrict() and
-    branch_with_lower_bound_k = true and
-    val = k
-    or
-    // x < c
-    comp.getGreaterOperand() = c and
-    comp.isStrict() and
-    branch_with_lower_bound_k = false and
-    val = k
-    or
-    // x <= c
-    comp.getGreaterOperand() = c and
-    not comp.isStrict() and
-    branch_with_lower_bound_k = false and
-    val + 1 = k
   )
 }

@@ -581,3 +581,18 @@ async fn main() {
     test_neutrals();
     let dummy = Some(0); // ensure that the the `lang:core` crate is extracted
 }
+
+mod try_in_sink_callback {
+    use super::source;
+
+    // has a sink model
+    fn pass_sink_option(f: impl FnOnce(()) -> Option<i64>) {}
+
+    fn test_try_in_sink_callback() {
+        let a = |_a| {
+            let _s = Some(source(100))?;
+            Some(0)
+        };
+        pass_sink_option(a);
+    }
+}

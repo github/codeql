@@ -252,7 +252,7 @@ desc = _DescModifier
 
 use_for_null = _ClassPragma("null")
 
-qltest.add(_ClassPragma("skip"))
+qltest.add(_Pragma("skip"))
 qltest.add(_ClassPragma("collapse_hierarchy"))
 qltest.add(_ClassPragma("uncollapse_hierarchy"))
 qltest.add(

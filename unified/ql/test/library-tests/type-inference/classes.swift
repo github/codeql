@@ -69,7 +69,7 @@ class Outer {
 }
 
 func testNestedTypes() {
-  let inner = Outer.Inner(value: 99)  // $ type=inner:Inner target=Outer.Inner.init
+  let inner = Outer.Inner(value: 99)  // $ type=inner:Outer.Inner target=Outer.Inner.init
   let v = inner.getValue()  // $ type=v:Int target=Outer.Inner.getValue
 }
 

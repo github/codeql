@@ -1,0 +1,20 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["encoding", "BinaryAppender", true, "AppendBinary", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding", "BinaryAppender", true, "AppendBinary", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding", "BinaryMarshaler", true, "MarshalBinary", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding", "BinaryUnmarshaler", true, "UnmarshalBinary", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["encoding", "TextAppender", true, "AppendText", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding", "TextAppender", true, "AppendText", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding", "TextMarshaler", true, "MarshalText", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding", "TextUnmarshaler", true, "UnmarshalText", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      ]
+    }
+  ]
+}

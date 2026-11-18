@@ -121,6 +121,8 @@ private module BaseSsaImpl {
         certain = true
       )
     }
+
+    predicate ssaCachedStageRevRef() { BaseSsa::ssaCachedStageRevRef1() }
   }
 
   module SsaImpl = SsaImplCommon::Make<Location, Cfg, SsaImplInput>;
@@ -146,6 +148,10 @@ private module BaseSsaImpl {
       entryDef(_, bb, v) and
       i = -1 and
       w.isParameterInit(v)
+    }
+
+    predicate explicitRead(Expr e, SsaImplInput::SourceVariable v) {
+      e.(AssignableRead).getTarget() = v
     }
   }
 }

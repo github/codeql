@@ -1,4 +1,4 @@
-| 1 | cfg.swift:1:1:613:1 | Block | 'Block -V var topLevelDecl -V topLevelDecl -> Int -> 0' |
+| 1 | cfg.swift:1:1:635:1 | Block | 'Block -V var topLevelDecl -V topLevelDecl -> Int -> 0' |
 | 2 | cfg.swift:2:1:2:1 | 0 | '0' |
 | 3 | cfg.swift:3:1:3:12 | topLevelDecl | 'topLevelDecl -> 1 -^ ... + ...' |
 | 5 | cfg.swift:5:1:5:37 | func returnZero | 'func returnZero -V returnZero' |
@@ -402,11 +402,23 @@
 | 474 | cfg.swift:474:3:474:51 | var apply_kpGet_mayB_x | 'var apply_kpGet_mayB_x -V apply_kpGet_mayB_x -> a -> Argument -V kpGet_mayB_x -^ a(...)' |
 | 477 | cfg.swift:477:1:504:1 | func testIfConfig | 'func testIfConfig -V testIfConfig' |
 | 477 | cfg.swift:477:21:504:1 | Block | 'Block' |
-| 478 | cfg.swift:478:1:484:6 |  | '' |
+| 478 | cfg.swift:478:1:484:6 | IfExpr | 'IfExpr -V FOO' |
+| 479 | cfg.swift:479:3:480:3 | Block | 'Block -V 1' |
+| 480 | cfg.swift:480:3:480:3 | 2 | '2' |
+| 481 | cfg.swift:481:1:483:3 | Block | 'Block' |
+| 482 | cfg.swift:482:3:482:3 | 3 | '3' |
+| 483 | cfg.swift:483:3:483:3 | 4 | '4' |
 | 486 | cfg.swift:486:3:486:3 | 5 | '5' |
-| 488 | cfg.swift:488:1:491:6 |  | '' |
+| 488 | cfg.swift:488:1:491:6 | IfExpr | 'IfExpr -V BAR' |
+| 489 | cfg.swift:489:3:490:3 | Block | 'Block -V 6' |
+| 490 | cfg.swift:490:3:490:3 | 7 | '7' |
 | 493 | cfg.swift:493:3:493:3 | 8 | '8' |
-| 495 | cfg.swift:495:1:501:6 |  | '' |
+| 495 | cfg.swift:495:1:501:6 | IfExpr | 'IfExpr -V FOO' |
+| 496 | cfg.swift:496:3:497:4 | Block | 'Block -V 9' |
+| 497 | cfg.swift:497:3:497:4 | 10 | '10' |
+| 498 | cfg.swift:498:1:500:4 | IfExpr | 'IfExpr -V true' |
+| 499 | cfg.swift:499:3:500:4 | Block | 'Block -V 11' |
+| 500 | cfg.swift:500:3:500:4 | 12 | '12' |
 | 503 | cfg.swift:503:3:503:4 | 13 | '13' |
 | 506 | cfg.swift:506:1:531:1 | func testAvailable | 'func testAvailable -V testAvailable' |
 | 506 | cfg.swift:506:29:531:1 | Block | 'Block' |
@@ -494,3 +506,19 @@
 | 610 | cfg.swift:610:5:610:13 | var x | 'var x -V x -> N' |
 | 611 | cfg.swift:611:5:611:9 | print | 'print -> Argument -V x -^ print(...)' |
 | 612 | cfg.swift:612:5:612:5 | _ | '_ -> value -^ ... = ...' |
+| 615 | cfg.swift:615:1:623:1 | func exhaustiveBoolSwitch | 'func exhaustiveBoolSwitch -V exhaustiveBoolSwitch' |
+| 615 | cfg.swift:615:29:615:33 | value | 'value -> Block' |
+| 616 | cfg.swift:616:3:621:3 | SwitchExpr | 'SwitchExpr -V value' |
+| 617 | cfg.swift:617:5:618:14 | SwitchCase | 'SwitchCase -V true' |
+| 618 | cfg.swift:618:7:618:14 | Block | 'Block -V 1 -^ ReturnExpr' |
+| 619 | cfg.swift:619:5:620:14 | SwitchCase | 'SwitchCase -V false' |
+| 620 | cfg.swift:620:7:620:14 | Block | 'Block -V 0 -^ ReturnExpr' |
+| 625 | cfg.swift:625:1:635:1 | func exhaustiveEnumSwitch | 'func exhaustiveEnumSwitch -V exhaustiveEnumSwitch' |
+| 625 | cfg.swift:625:29:625:33 | value | 'value -> flag -> Block' |
+| 626 | cfg.swift:626:3:633:3 | SwitchExpr | 'SwitchExpr -V value' |
+| 627 | cfg.swift:627:5:628:14 | SwitchCase | 'SwitchCase -V flag -? . -^ ... .error1 -^ ConditionalPattern' |
+| 628 | cfg.swift:628:7:628:14 | Block | 'Block -V 1 -^ ReturnExpr' |
+| 629 | cfg.swift:629:5:630:14 | SwitchCase | 'SwitchCase -V . -^ ... .error1' |
+| 630 | cfg.swift:630:7:630:14 | Block | 'Block -V 2 -^ ReturnExpr' |
+| 631 | cfg.swift:631:5:632:14 | SwitchCase | 'SwitchCase -V . -^ ... .error2 -> . -^ ... .error3 -^ OrPattern' |
+| 632 | cfg.swift:632:7:632:14 | Block | 'Block -V 3 -^ ReturnExpr' |

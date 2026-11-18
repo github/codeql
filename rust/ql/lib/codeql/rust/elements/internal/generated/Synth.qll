@@ -461,14 +461,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TParenExpr(Raw::ParenExpr id) { constructParenExpr(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TParenPat(Raw::ParenPat id) { constructParenPat(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TParenTypeRepr(Raw::ParenTypeRepr id) { constructParenTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -812,9 +804,8 @@ module Synth {
         TBreakExpr or TCallExpr or TCastExpr or TCfgPredExpr or TClosureExpr or TContinueExpr or
         TFieldExpr or TFormatArgsExpr or TIfExpr or TIncludeBytesExpr or TIndexExpr or
         TLabelableExpr or TLetExpr or TLiteralExpr or TMacroExpr or TMatchExpr or TMethodCallExpr or
-        TOffsetOfExpr or TParenExpr or TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or
-        TReturnExpr or TStructExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or
-        TYieldExpr;
+        TOffsetOfExpr or TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or TReturnExpr or
+        TStructExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -874,8 +865,8 @@ module Synth {
    */
   class TPat =
     TBoxPat or TCfgPredPat or TConstBlockPat or TDerefPat or TIdentPat or TLiteralPat or
-        TMacroPat or TNotNull or TOrPat or TParenPat or TPathPat or TRangePat or TRefPat or
-        TRestPat or TSlicePat or TStructPat or TTuplePat or TTupleStructPat or TWildcardPat;
+        TMacroPat or TNotNull or TOrPat or TPathPat or TRangePat or TRefPat or TRestPat or
+        TSlicePat or TStructPat or TTuplePat or TTupleStructPat or TWildcardPat;
 
   /**
    * INTERNAL: Do not use.
@@ -1707,20 +1698,6 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    *
-   * Converts a raw element to a synthesized `TParenExpr`, if possible.
-   */
-  TParenExpr convertParenExprFromRaw(Raw::Element e) { result = TParenExpr(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Converts a raw element to a synthesized `TParenPat`, if possible.
-   */
-  TParenPat convertParenPatFromRaw(Raw::Element e) { result = TParenPat(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   *
    * Converts a raw element to a synthesized `TParenTypeRepr`, if possible.
    */
   TParenTypeRepr convertParenTypeReprFromRaw(Raw::Element e) { result = TParenTypeRepr(e) }
@@ -2513,8 +2490,6 @@ module Synth {
     or
     result = convertOffsetOfExprFromRaw(e)
     or
-    result = convertParenExprFromRaw(e)
-    or
     result = convertPathExprBaseFromRaw(e)
     or
     result = convertPrefixExprFromRaw(e)
@@ -2704,8 +2679,6 @@ module Synth {
     result = convertNotNullFromRaw(e)
     or
     result = convertOrPatFromRaw(e)
-    or
-    result = convertParenPatFromRaw(e)
     or
     result = convertPathPatFromRaw(e)
     or
@@ -3498,18 +3471,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TParenExpr` to a raw DB element, if possible.
-   */
-  Raw::Element convertParenExprToRaw(TParenExpr e) { e = TParenExpr(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TParenPat` to a raw DB element, if possible.
-   */
-  Raw::Element convertParenPatToRaw(TParenPat e) { e = TParenPat(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TParenTypeRepr` to a raw DB element, if possible.
    */
   Raw::Element convertParenTypeReprToRaw(TParenTypeRepr e) { e = TParenTypeRepr(result) }
@@ -4233,8 +4194,6 @@ module Synth {
     or
     result = convertOffsetOfExprToRaw(e)
     or
-    result = convertParenExprToRaw(e)
-    or
     result = convertPathExprBaseToRaw(e)
     or
     result = convertPrefixExprToRaw(e)
@@ -4424,8 +4383,6 @@ module Synth {
     result = convertNotNullToRaw(e)
     or
     result = convertOrPatToRaw(e)
-    or
-    result = convertParenPatToRaw(e)
     or
     result = convertPathPatToRaw(e)
     or

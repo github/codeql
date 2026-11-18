@@ -1,6 +1,6 @@
 load("@rules_rust//rust:defs.bzl", "rust_test")
 load("//misc/bazel:rust.bzl", "codeql_rust_binary")
-load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "all_crate_deps")
+load("//misc/bazel/3rdparty/rust_workspace_deps:defs.bzl", "aliases", "all_crate_deps")
 load("//unified:platforms.bzl", "UNIFIED_SUPPORTED_PLATFORMS")
 
 exports_files(["Cargo.toml"])

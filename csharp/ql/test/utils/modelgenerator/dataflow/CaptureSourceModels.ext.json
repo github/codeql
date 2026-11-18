@@ -1,0 +1,24 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["Sources", "NewSources", false, "ManualSourceAlreadyDefined", "()", "", "ReturnValue", "test-source", "manual"],
+        ["Sources", "NewSources", false, "Source1", "()", "", "ReturnValue", "source-kind-1", "manual"],
+        ["Sources", "NewSources", false, "Source2", "()", "", "ReturnValue", "source-kind-2", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "neutralModel"
+      },
+      "data": [
+        ["Sources", "NewSources", "ManualNeutralSource", "()", "source", "manual"]
+      ]
+    }
+  ]
+}

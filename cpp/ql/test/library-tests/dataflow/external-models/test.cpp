@@ -379,6 +379,7 @@ void forward_test() {
 
 template<typename T>
 struct Container {
+	using value_type = T;
   template<typename... Args>
   void emplace(int pos, Args&&... args);
 
@@ -414,6 +415,16 @@ void forward_test_model() {
 
   Element e = c.get();
   ymlSink(e.x); // $ ir
+}
+
+void forward_test_member_alias_scalar() {
+  Container<int> scalar;
+  scalar.emplace(0, ymlSource());
+  ymlSink(scalar.get()); // $ ir
+
+  Container<int*> pointer;
+  pointer.emplace(0, ymlSourcePtr());
+  ymlSink(*pointer.get()); // $ ir
 }
 
 struct ElementWithDefaultArgument {

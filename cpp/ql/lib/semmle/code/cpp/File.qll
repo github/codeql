@@ -71,10 +71,12 @@ class File extends Container, Locatable, Impl::File {
   }
 
   /** Holds if this file was compiled as C (at any point). */
-  predicate compiledAsC() { fileannotations(underlyingElement(this), 1, "compiled as c", "1") }
+  predicate compiledAsC() { fileannotations(underlyingElement(this), _, 1, "compiled as c", "1") }
 
   /** Holds if this file was compiled as C++ (at any point). */
-  predicate compiledAsCpp() { fileannotations(underlyingElement(this), 1, "compiled as c++", "1") }
+  predicate compiledAsCpp() {
+    fileannotations(underlyingElement(this), _, 1, "compiled as c++", "1")
+  }
 
   /**
    * Holds if this file was compiled by a Microsoft compiler (at any point).

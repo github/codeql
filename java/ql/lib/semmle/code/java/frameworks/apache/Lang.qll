@@ -47,3 +47,76 @@ class TypeApacheSystemUtils extends Class {
     this.hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"], "SystemUtils")
   }
 }
+
+private predicate isStringLike(Type type) {
+  type.(RefType).hasQualifiedName("java.lang", ["String", "CharSequence"])
+}
+
+private predicate isCharacterSetType(Type type) {
+  isStringLike(type)
+  or
+  type.(Array).getElementType().(PrimitiveType).hasName("char")
+}
+
+/** A call to `StringUtils.contains` or `StringUtils.containsIgnoreCase`. */
+private class ApacheStringUtilsSubstringMatch extends MethodCall, StringSubstringMatch::Range {
+  ApacheStringUtilsSubstringMatch() {
+    this.getMethod()
+        .getDeclaringType()
+        .hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"], "StringUtils") and
+    this.getMethod().hasName(["contains", "containsIgnoreCase"]) and
+    isStringLike(this.getMethod().getParameterType(1))
+  }
+
+  override Expr getInputString() { result = this.getArgument(0) }
+
+  override Expr getMatchExpression() { result = this.getArgument(1) }
+
+  override predicate hasSubstringOnBranch(boolean branch) { branch = true }
+
+  override string getName() { result = "StringUtils." + this.getMethod().getName() }
+}
+
+/** A call to `StringUtils.containsAny` or `StringUtils.containsNone`. */
+private class ApacheStringUtilsCharacterSetMatch extends MethodCall, StringCharacterSetMatch::Range {
+  ApacheStringUtilsCharacterSetMatch() {
+    this.getMethod()
+        .getDeclaringType()
+        .hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"], "StringUtils") and
+    this.getMethod().hasName(["containsAny", "containsNone"]) and
+    isCharacterSetType(this.getMethod().getParameterType(1))
+  }
+
+  override Expr getInputString() { result = this.getArgument(0) }
+
+  override Expr getMatchExpression() { result = this.getArgument(1) }
+
+  override predicate hasMatchingCharacterOnBranch(boolean branch) {
+    this.getMethod().hasName("containsAny") and branch = true
+    or
+    this.getMethod().hasName("containsNone") and branch = false
+  }
+
+  override string getName() { result = "StringUtils." + this.getMethod().getName() }
+}
+
+/** A call to `StringUtils.replaceChars`. */
+private class ApacheStringUtilsReplaceCharsCall extends MethodCall, StringReplacement::Range {
+  ApacheStringUtilsReplaceCharsCall() {
+    this.getMethod()
+        .hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"], "StringUtils",
+          "replaceChars")
+  }
+
+  override Expr getInputString() { result = this.getArgument(0) }
+
+  override Expr getMatchExpression() { result = this.getArgument(1) }
+
+  override Expr getReplacement() { result = this.getArgument(2) }
+
+  override predicate matchExpressionIsCharacterSet() {
+    this.getMethod().getParameterType(1) instanceof TypeString
+  }
+
+  override string getName() { result = "StringUtils.replaceChars" }
+}

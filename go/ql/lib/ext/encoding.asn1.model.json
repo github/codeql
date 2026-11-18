@@ -1,0 +1,20 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["encoding/asn1", "", false, "Marshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/asn1", "", false, "MarshalWithParams", "", "", "Argument[0..1]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/asn1", "", false, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"],
+        ["encoding/asn1", "", false, "Unmarshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/asn1", "", false, "UnmarshalWithParams", "", "", "Argument[0]", "Argument[1]", "taint", "manual"],
+        ["encoding/asn1", "", false, "UnmarshalWithParams", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/asn1", "", false, "UnmarshalWithParams", "", "", "Argument[2]", "Argument[1]", "taint", "manual"],
+        ["encoding/asn1", "", false, "UnmarshalWithParams", "", "", "Argument[2]", "ReturnValue[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}

@@ -20,6 +20,7 @@ use ra_ap_syntax::{
 use ra_ap_syntax_bridge::{
     DocCommentDesugarMode, syntax_node_to_token_tree, token_tree_to_syntax_node,
 };
+use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
 impl Emission<ast::Item> for Translator<'_> {
@@ -132,6 +133,7 @@ pub struct Translator<'db> {
     pub semantics: Option<&'db Semantics<'db, RootDatabase>>,
     source_kind: SourceKind,
     pub(crate) macro_context_depth: usize,
+    parenthesized_expr_attrs: HashMap<SyntaxNode, Vec<Label<generated::AnyAttr>>>,
     diagnostic_count: usize,
     /// When emitting a reconstructed built-in derive expansion, holds the span map of the
     /// synthesized syntax tree. Those nodes are not registered in the semantics cache, so
@@ -162,6 +164,7 @@ impl<'db> Translator<'db> {
             semantics: semantic_info.map(|i| i.semantics),
             source_kind,
             macro_context_depth: 0,
+            parenthesized_expr_attrs: HashMap::new(),
             diagnostic_count: 0,
             builtin_derive_span_map: None,
         }
@@ -186,7 +189,7 @@ impl<'db> Translator<'db> {
         Some((start, end))
     }
 
-    pub fn text_range_for_node(&mut self, node: &impl ast::AstNode) -> Option<TextRange> {
+    pub fn text_range_for_node(&self, node: &impl ast::AstNode) -> Option<TextRange> {
         if let Some(span_map) = self.builtin_derive_span_map.as_ref() {
             // Nodes synthesized by a reconstructed built-in derive expansion are not in the
             // semantics cache; resolve their original source range through the expansion span map.
@@ -199,17 +202,13 @@ impl<'db> Translator<'db> {
         if let Some(semantics) = self.semantics.as_ref() {
             let file_range = semantics.original_range(node.syntax());
             let file_id = self.file_id?;
-            if file_id == file_range.file_id {
-                Some(file_range.range)
-            } else {
-                None
-            }
+            (file_id == file_range.file_id).then_some(file_range.range)
         } else {
             Some(node.syntax().text_range())
         }
     }
 
-    fn location_for_node(&mut self, node: &impl ast::AstNode) -> Option<(LineCol, LineCol)> {
+    fn location_for_node(&self, node: &impl ast::AstNode) -> Option<(LineCol, LineCol)> {
         self.text_range_for_node(node)
             .and_then(|r| self.location(r))
     }
@@ -224,7 +223,7 @@ impl<'db> Translator<'db> {
                 UNKNOWN_LOCATION,
             ),
             Some((start, end)) => self.trap.emit_location(self.label, label, start, end),
-        };
+        }
     }
     pub fn emit_location_token(
         &mut self,
@@ -239,7 +238,7 @@ impl<'db> Translator<'db> {
         {
             let token_range = clipped_range + parent_range2.start() - parent_range.start();
             if let Some((start, end)) = self.location(token_range) {
-                self.trap.emit_location(self.label, label, start, end)
+                self.trap.emit_location(self.label, label, start, end);
             }
         }
     }
@@ -387,7 +386,7 @@ impl<'db> Translator<'db> {
                             .text_range()
                             .start();
                     self.emit_parse_error(node, &SyntaxError::new(error.message, location));
-                };
+                }
             }
             for err in value.value.iter() {
                 self.emit_parse_error(node, err);
@@ -453,7 +452,7 @@ impl<'db> Translator<'db> {
                 self.emit_parse_error(mcall, &SyntaxError::new(
                     format!(
                         "macro expansion failed: the macro '{}' expands to {:?} but a {:?} was expected",
-                        mcall.path().map(|p| p.to_string()).unwrap_or_default(),
+                        mcall.path().map_or_default(|p| p.to_string()),
                         kind, expand_to
                     ),
                     range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
@@ -467,7 +466,7 @@ impl<'db> Translator<'db> {
                 &SyntaxError::new(
                     format!(
                         "macro expansion failed for '{}'",
-                        mcall.path().map(|p| p.to_string()).unwrap_or_default()
+                        mcall.path().map_or_default(|p| p.to_string())
                     ),
                     range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
                 ),
@@ -488,17 +487,14 @@ impl<'db> Translator<'db> {
     pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
         self.semantics.is_some_and(|sema| {
             item.attrs().any(|attr| {
-                let meta = match attr.meta() {
-                    Some(meta) => meta,
-                    None => return false,
+                let Some(meta) = attr.meta() else {
+                    return false;
                 };
-                let cfg_meta = match ast::CfgMeta::cast(meta.syntax().clone()) {
-                    Some(cfg_meta) => cfg_meta,
-                    None => return false,
+                let Some(cfg_meta) = ast::CfgMeta::cast(meta.syntax().clone()) else {
+                    return false;
                 };
-                let cfg_predicate = match cfg_meta.cfg_predicate() {
-                    Some(pred) => pred,
-                    None => return false,
+                let Some(cfg_predicate) = cfg_meta.cfg_predicate() else {
+                    return false;
                 };
                 let cfg_expr = ra_ap_cfg::CfgExpr::parse_from_ast(cfg_predicate);
                 // Resolve the crate the item belongs to so its `cfg` options can be checked.
@@ -521,6 +517,55 @@ impl<'db> Translator<'db> {
                 cfg_options.check(&cfg_expr) == Some(false)
             })
         })
+    }
+
+    pub(crate) fn emit_parenthesized_expr(
+        &mut self,
+        node: &ast::ParenExpr,
+    ) -> Option<Label<generated::Expr>> {
+        if self.should_be_excluded(node) {
+            return None;
+        }
+
+        let mut attrs = self.take_parenthesized_expr_attrs(node.syntax());
+        attrs.extend(
+            node.attrs_with_doc()
+                .filter_map(|attr| self.emit_any_attr(&attr)),
+        );
+        let result = node.expr().and_then(|expr| {
+            let syntax = expr.syntax().clone();
+            self.parenthesized_expr_attrs
+                .entry(syntax.clone())
+                .or_default()
+                .extend(attrs);
+            let result = self.emit_expr(&expr);
+            self.parenthesized_expr_attrs.remove(&syntax);
+            result
+        });
+        if let Some(label) = result {
+            self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        }
+        result
+    }
+
+    pub(crate) fn emit_parenthesized_pat(
+        &mut self,
+        node: &ast::ParenPat,
+    ) -> Option<Label<generated::Pat>> {
+        let result = node.pat().and_then(|pat| self.emit_pat(&pat));
+        if let Some(label) = result {
+            self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        }
+        result
+    }
+
+    pub(crate) fn take_parenthesized_expr_attrs(
+        &mut self,
+        node: &SyntaxNode,
+    ) -> Vec<Label<generated::AnyAttr>> {
+        self.parenthesized_expr_attrs
+            .remove(node)
+            .unwrap_or_default()
     }
 
     pub(crate) fn should_skip_bodies(&self) -> bool {
@@ -547,14 +592,14 @@ impl<'db> Translator<'db> {
                 .and_then(ast::Type::cast)
                 .and_then(|t| self.emit_type(&t))
             {
-                generated::PathSegment::emit_type_repr(label, t, &mut self.trap.writer)
+                generated::PathSegment::emit_type_repr(label, t, &mut self.trap.writer);
             }
             if let Some(t) = type_refs
                 .next()
                 .and_then(ast::PathType::cast)
                 .and_then(|t| self.emit_path_type(&t))
             {
-                generated::PathSegment::emit_trait_type_repr(label, t, &mut self.trap.writer)
+                generated::PathSegment::emit_trait_type_repr(label, t, &mut self.trap.writer);
             }
             // moreover as we're skipping emission of TypeAnchor, we need to attach its comments to
             // this path segment

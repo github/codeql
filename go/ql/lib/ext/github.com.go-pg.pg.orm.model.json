@@ -1,0 +1,18 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["github.com/go-pg/pg/orm", "Formatter", true, "Append", "", "", "Argument[1]", "ReturnValue", "taint", "manual"],
+        ["github.com/go-pg/pg/orm", "Formatter", true, "Append", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["github.com/go-pg/pg/orm", "Formatter", true, "AppendBytes", "", "", "Argument[1]", "ReturnValue", "taint", "manual"],
+        ["github.com/go-pg/pg/orm", "Formatter", true, "AppendBytes", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["github.com/go-pg/pg/orm", "Formatter", true, "FormatQuery", "", "", "Argument[1]", "ReturnValue", "taint", "manual"],
+        ["github.com/go-pg/pg/orm", "Formatter", true, "FormatQuery", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}

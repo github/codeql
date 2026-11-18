@@ -1,0 +1,120 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "packageGrouping"
+      },
+      "data": [
+        ["gocb1", "fixed-version:github.com/couchbase/gocb"],
+        ["gocb1", "fixed-version:gopkg.in/couchbase/gocb.v1"],
+        ["gocb1", "fixed-version:github.com/couchbaselabs/gocb"],
+        ["gocb2", "github.com/couchbase/gocb/v2"],
+        ["gocb2", "gopkg.in/couchbase/gocb.v2"],
+        ["gocb2", "github.com/couchbaselabs/gocb/v2"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["group:gocb1", "Cluster", true, "ExecuteAnalyticsQuery", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb1", "Cluster", true, "ExecuteN1qlQuery", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb1", "Cluster", true, "ExecuteSearchQuery", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "Cluster", true, "AnalyticsQuery", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "Cluster", true, "Query", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "Collection", true, "Get", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "Collection", true, "GetAndLock", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "Collection", true, "GetAndTouch", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "Collection", true, "GetAnyReplica", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "Collection", true, "LookupIn", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "Collection", true, "LookupInAllReplicas", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "Collection", true, "LookupInAnyReplica", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "Collection", true, "Scan", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "Scope", true, "AnalyticsQuery", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "Scope", true, "Query", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "TransactionAttemptContext", true, "Get", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "TransactionAttemptContext", true, "GetReplicaFromPreferredServerGroup", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "TransactionAttemptContext", true, "Insert", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "TransactionAttemptContext", true, "Query", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "TransactionAttemptContext", true, "Replace", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "ViewIndexManager", true, "GetAllDesignDocuments", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gocb2", "ViewIndexManager", true, "GetDesignDocument", "", "", "ReturnValue[0]", "database", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["group:gocb1", "Bucket", true, "ExecuteN1qlQuery", "", "", "Argument[0]", "nosql-injection", "manual"],
+        ["group:gocb1", "Bucket", true, "ExecuteAnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"],
+        ["group:gocb1", "Cluster", true, "ExecuteN1qlQuery", "", "", "Argument[0]", "nosql-injection", "manual"],
+        ["group:gocb1", "Cluster", true, "ExecuteAnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"],
+        ["group:gocb2", "Cluster", true, "AnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"],
+        ["group:gocb2", "Cluster", true, "Query", "", "", "Argument[0]", "nosql-injection", "manual"],
+        ["group:gocb2", "Scope", true, "AnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"],
+        ["group:gocb2", "Scope", true, "Query", "", "", "Argument[0]", "nosql-injection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["group:gocb1", "", false, "NewAnalyticsQuery", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "", false, "NewN1qlQuery", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "AnalyticsResults", true, "One", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb1", "AnalyticsResults", true, "Next", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb1", "AnalyticsResults", true, "NextBytes", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "AnalyticsQuery", true, "ContextId", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "AnalyticsQuery", true, "Deferred", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "AnalyticsQuery", true, "Pretty", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "AnalyticsQuery", true, "Priority", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "AnalyticsQuery", true, "RawParam", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "AnalyticsQuery", true, "ServerSideTimeout", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "N1qlQuery", true, "AdHoc", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "N1qlQuery", true, "Consistency", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "N1qlQuery", true, "ConsistentWith", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "N1qlQuery", true, "Custom", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "N1qlQuery", true, "PipelineBatch", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "N1qlQuery", true, "PipelineCap", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "N1qlQuery", true, "Profile", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "N1qlQuery", true, "ReadOnly", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "N1qlQuery", true, "ScanCap", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "N1qlQuery", true, "Timeout", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "QueryResults", true, "One", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb1", "QueryResults", true, "Next", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb1", "QueryResults", true, "NextBytes", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb1", "SearchResults", true, "Hits", "", "", "Argument[receiver]", "ReturnValue.ArrayElement", "taint", "manual"],
+        ["group:gocb2", "AnalyticsResult", true, "One", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb2", "AnalyticsResult", true, "Raw", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb2", "AnalyticsResult", true, "Row", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb2", "AnalyticsResultRaw", true, "NextBytes", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb2", "GetResult", true, "Content", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb2", "LookupInAllReplicasResult", true, "Next", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb2", "LookupInResult", true, "ContentAt", "", "", "Argument[receiver]", "Argument[1]", "taint", "manual"],
+        ["group:gocb2", "MutateInResult", true, "ContentAt", "", "", "Argument[receiver]", "Argument[1]", "taint", "manual"],
+        ["group:gocb2", "QueryResult", true, "One", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb2", "QueryResult", true, "Raw", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb2", "QueryResult", true, "Row", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb2", "QueryResultRaw", true, "NextBytes", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb2", "ScanResult", true, "Next", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb2", "ScanResultItem", true, "Content", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb2", "SearchResult", true, "Raw", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb2", "SearchResult", true, "Row", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb2", "SearchResultRaw", true, "NextBytes", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb2", "TransactionGetResult", true, "Content", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb2", "TransactionQueryResult", true, "One", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb2", "TransactionQueryResult", true, "Row", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["group:gocb2", "ViewResult", true, "Raw", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb2", "ViewResult", true, "Row", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:gocb2", "ViewResultRaw", true, "NextBytes", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}

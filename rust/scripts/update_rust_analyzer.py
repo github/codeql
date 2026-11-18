@@ -267,7 +267,7 @@ def main() -> None:
     commit_all("Rust: Update fixed toolchain")
 
     print_step(4, "Regenerate vendored bazel files")
-    run("misc/bazel/3rdparty/update_tree_sitter_extractors_deps.sh")
+    run("misc/bazel/3rdparty/update_rust_workspace_deps.sh")
     commit_all("Bazel: Regenerate vendored cargo dependencies")
 
     print_step(5, "Run codegen")

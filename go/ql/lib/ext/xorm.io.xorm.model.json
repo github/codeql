@@ -1,0 +1,60 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "packageGrouping"
+      },
+      "data": [
+        ["xorm", "xorm.io/xorm"],
+        ["xorm", "github.com/go-xorm/xorm"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["group:xorm", "Engine", true, "Alias", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "And", "", "", "Argument[0]", "sql-injection", "manual"],
+        // Engine.Exec has to be modeled in QL to select only the first syntactic argument
+        ["group:xorm", "Engine", true, "GroupBy", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "Having", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "In", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "Join", "", "", "Argument[0..2]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "NotIn", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "Or", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"],
+        // Engine.Query, Engine.QueryInterface and Engine.QueryString have to be modeled in QL to select only the first syntactic argument
+        ["group:xorm", "Engine", true, "Select", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "SetExpr", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "SQL", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "Sum", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "Sums", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "SumInt", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "SumsInt", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:xorm", "Engine", true, "Where", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "Alias", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "And", "", "", "Argument[0]", "sql-injection", "manual"],
+        // Session.Exec has to be modeled in QL to select only the first syntactic argument
+        ["group:xorm", "Session", true, "GroupBy", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "Having", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "In", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "Join", "", "", "Argument[0..2]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "NotIn", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "Or", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"],
+        // Session.Query, Session.QueryInterface and Session.QueryString have to be modeled in QL to select only the first syntactic argument
+        ["group:xorm", "Session", true, "Select", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "SetExpr", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "SQL", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "Sum", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "Sums", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "SumInt", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "SumsInt", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["group:xorm", "Session", true, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
+      ]
+    }
+  ]
+}

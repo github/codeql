@@ -1,0 +1,16 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/nonexistent/test", "", false, "SinkVariable", "", "", "", "qltest", "manual"],
+        ["github.com/nonexistent/test", "B", false, "Sink1", "", "", "Argument[0]", "qltest", "manual"],
+        ["github.com/nonexistent/test", "B", false, "SinkMethod", "", "", "Argument[receiver]", "qltest", "manual"],
+        ["github.com/nonexistent/test", "B", false, "SinkManyArgs", "", "", "Argument[0..2]", "qltest", "manual"]
+      ]
+    }
+  ]
+}

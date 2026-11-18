@@ -332,16 +332,15 @@ module MakeStateBarrierGuard<
   }
 
   private predicate ssa2GuardChecks(
-    Ssa2::SsaDataflowInput::Guard guard, Ssa2::SsaDataflowInput::Expr test, Boolean branch,
-    FlowState state
+    Ssa2::SsaDataflowInput::Guard guard, Ssa2::Definition def, Boolean branch, FlowState state
   ) {
     exists(BarrierGuard g |
       g.asExpr() = guard and
-      g.blocksExpr(branch, test, state)
+      g.blocksExpr(branch, Ssa2::getARead(def), state)
     )
   }
 
-  private module Ssa2Barrier = Ssa2::BarrierGuardWithState<FlowState, ssa2GuardChecks/4>;
+  private module Ssa2Barrier = Ssa2::SsaBarrierGuardWithState<FlowState, ssa2GuardChecks/4>;
 
   private predicate ssa2BlocksNode(DataFlow::Node node, FlowState state) {
     node = DataFlowPrivate::getNodeFromSsa2(Ssa2Barrier::getABarrierNode(state))

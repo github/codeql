@@ -1,0 +1,35 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["encoding/xml", "", false, "CopyToken", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["encoding/xml", "", false, "Escape", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["encoding/xml", "", false, "EscapeText", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["encoding/xml", "", false, "Marshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/xml", "", false, "MarshalIndent", "", "", "Argument[0..2]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/xml", "", false, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["encoding/xml", "", false, "NewTokenDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["encoding/xml", "", false, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"],
+        ["encoding/xml", "CharData", true, "Copy", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["encoding/xml", "Comment", true, "Copy", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["encoding/xml", "Decoder", true, "Decode", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["encoding/xml", "Decoder", true, "DecodeElement", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["encoding/xml", "Decoder", true, "RawToken", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/xml", "Directive", true, "Copy", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["encoding/xml", "Encoder", true, "Encode", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["encoding/xml", "Encoder", true, "EncodeElement", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["encoding/xml", "Encoder", true, "EncodeToken", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["encoding/xml", "Encoder", true, "Indent", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"],
+        ["encoding/xml", "Marshaler", true, "MarshalXML", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["encoding/xml", "ProcInst", true, "Copy", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["encoding/xml", "StartElement", true, "Copy", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["encoding/xml", "TokenReader", true, "Token", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["encoding/xml", "Unmarshaler", true, "UnmarshalXML", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      ]
+    }
+  ]
+}

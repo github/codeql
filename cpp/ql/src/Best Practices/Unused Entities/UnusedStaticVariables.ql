@@ -15,16 +15,20 @@ import cpp
 
 predicate declarationHasSideEffects(Variable v) {
   exists(Class c | c = v.getUnspecifiedType() | c.hasConstructor() or c.hasDestructor())
+  or
+  v.getInitializer().getExpr().mayBeImpure()
 }
 
 from Variable v
 where
   v.isStatic() and
+  not v.isCompilerGenerated() and
   v.hasDefinition() and
   not v.isConstexpr() and
   not exists(VariableAccess a | a.getTarget() = v) and
   not v instanceof MemberVariable and
   not declarationHasSideEffects(v) and
   not v.getAnAttribute().hasName("used") and
-  not v.getAnAttribute().hasName("unused")
+  not v.getAnAttribute().hasName("unused") and
+  not v.getAnAttribute().hasName("maybe_unused")
 select v, "Static variable " + v.getName() + " is never read."

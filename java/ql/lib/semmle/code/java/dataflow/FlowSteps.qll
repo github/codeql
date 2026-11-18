@@ -30,7 +30,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.ThreadLocal
   private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.stapler.Stapler
-  private import semmle.code.java.security.ListOfConstantsSanitizer
+  private import semmle.code.java.security.ConstantValueSanitizer
   private import semmle.code.java.security.PathSanitizer
 }
 

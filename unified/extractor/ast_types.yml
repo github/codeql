@@ -261,7 +261,10 @@ named:
   block:
     stmt*: stmt
 
+  # An if expression or a conditional compilation directive (which we view as a
+  # compile-time evaluated if expression).
   if_expr:
+    modifier*: modifier
     condition: expr
     then?: expr
     else?: expr
@@ -534,7 +537,7 @@ named:
     name_node: identifier
     accessor_kind: accessor_kind
     parameter*: parameter
-    type?: expr
+    return_type?: expr
     body?: block
 
   # "get", "set", or a language-specific kind like "didSet"

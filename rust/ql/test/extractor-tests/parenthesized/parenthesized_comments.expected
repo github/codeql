@@ -1,0 +1,2 @@
+| parenthesized.rs:18:20:18:47 | /*...*/ | parenthesized.rs:18:14:18:18 | ... + ... |
+| parenthesized.rs:19:16:19:40 | /*...*/ | parenthesized.rs:19:10:19:14 | value |

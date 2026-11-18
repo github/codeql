@@ -1,0 +1,24 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/java-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["p", "Sources", false, "source", "()", "", "ReturnValue", "test-source", "manual"],
+        ["p", "Sources", false, "source2", "()", "", "ReturnValue", "test-source2", "manual"],
+        ["p", "Sources", false, "manualSourceAlreadyDefined", "()", "", "ReturnValue", "test-source", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/java-all",
+        "extensible": "neutralModel"
+      },
+      "data": [
+        ["p", "Sources", "manualNeutralSource", "()", "source", "manual"]
+      ]
+    }
+  ]
+}

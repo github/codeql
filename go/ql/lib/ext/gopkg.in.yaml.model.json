@@ -1,0 +1,21 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["gopkg.in/yaml", "", false, "Marshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["gopkg.in/yaml", "", false, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"],
+        ["gopkg.in/yaml", "", false, "UnmarshalStrict", "", "", "Argument[0]", "Argument[1]", "taint", "manual"],
+        ["gopkg.in/yaml", "", false, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["gopkg.in/yaml", "Decoder", true, "Decode", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["gopkg.in/yaml", "Encoder", true, "Encode", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["gopkg.in/yaml", "Node", true, "Decode", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["gopkg.in/yaml", "Node", true, "Encode", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["gopkg.in/yaml", "Node", true, "SetString", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      ]
+    }
+  ]
+}

@@ -68,7 +68,7 @@ class ExtractedOrExternalFile extends Container, Impl::File, Documentable, ExprP
   string getPackageName() { result = this.getPackageNameExpr().getName() }
 
   /** Holds if this file contains at least one build constraint. */
-  pragma[noinline]
+  pragma[nomagic]
   predicate hasBuildConstraints() { exists(BuildConstraintComment bc | this = bc.getFile()) }
 
   /**

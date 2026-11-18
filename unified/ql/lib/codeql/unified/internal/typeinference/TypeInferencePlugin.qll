@@ -81,13 +81,14 @@ class TypeInferencePlugin extends Unit {
   /** Holds if `field` is a field of the tuple type `tuple` with the given `name`. */
   abstract predicate tupleField(Type tuple, string name, VariableDeclaration field);
 
-  /** Holds if `case` is an enum case constructor of `enum` with identifier `i`. */
-  abstract predicate isEnumConstructor(
-    ClassLikeDeclaration enum, ConstructorDeclaration case, Identifier i
-  );
-
-  /** Holds if `field` is an enum field of `enum`. */
-  abstract predicate isEnumField(ClassLikeDeclaration enum, VariableDeclaration field);
+  /**
+   * Holds if a type at `prefix1.suffix` on `n1` implies the same type at
+   * `prefix2.suffix` on `n2`. The reverse step is used for contextual inference
+   * when `n1` already has an inferred type matching `prefix1`.
+   */
+  predicate stepLanguageSpecific(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+    none()
+  }
 
   /** Gets the inferred type for the given AST node and type path. */
   Type inferType(AstNode n, TypePath path) { none() }
@@ -139,23 +140,8 @@ class TupleType extends Type {
   }
 }
 
-class EnumConstructor extends ConstructorDeclaration {
-  private ClassLikeDeclaration enum;
-  private Identifier id;
-
-  EnumConstructor() { any(TypeInferencePlugin p).isEnumConstructor(enum, this, id) }
-
-  ClassLikeDeclaration getEnum() { result = enum }
-
-  Identifier getNameNode() { result = id }
-}
-
-class EnumField extends VariableDeclaration {
-  private ClassLikeDeclaration enum;
-
-  EnumField() { any(TypeInferencePlugin p).isEnumField(enum, this) }
-
-  ClassLikeDeclaration getEnum() { result = enum }
+predicate stepLanguageSpecific(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+  any(TypeInferencePlugin p).stepLanguageSpecific(n1, prefix1, n2, prefix2)
 }
 
 Type inferType(AstNode n, TypePath path) { result = any(TypeInferencePlugin p).inferType(n, path) }

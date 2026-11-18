@@ -1,3 +1,15 @@
+## 7.4.3
+
+### Minor Analysis Improvements
+
+* Added support for data flow through property patterns in `is` expressions and `switch` cases.
+
+## 7.4.2
+
+### Minor Analysis Improvements
+
+* Rolled back the change that set proxy and certificate environment variables for the subprocess that invokes the NuGet CLI because the environment variables were only partially respected by the target process in some cases.
+
 ## 7.4.1
 
 ### Minor Analysis Improvements

@@ -1,0 +1,13 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/actions-all",
+        "extensible": "actionsSourceModel"
+      },
+      "data": [
+        ["redhat-plumbers-in-action/download-artifact", "*", "output.*", "artifact", "manual"]
+      ]
+    }
+  ]
+}

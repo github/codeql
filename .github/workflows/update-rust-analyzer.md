@@ -70,6 +70,7 @@ safe-outputs:
     max-patch-size: 10240
     max-patch-files: 1000
     allowed-files:
+      - "Cargo.toml"
       - "Cargo.lock"
       - "shared/tree-sitter-extractor/Cargo.toml"
       - "shared/yeast/Cargo.toml"
@@ -78,6 +79,10 @@ safe-outputs:
       - "ruby/extractor/Cargo.toml"
       - "unified/extractor/Cargo.toml"
       - "unified/swift-syntax-rs/Cargo.toml"
+      - "unified/extractor-unsupported-os/Cargo.toml"
+      - "cpp/extractor/bmn/**"
+      - "ql/extractor/**"
+      - "ql/buramu/**"
       # A rust-analyzer update can require a newer Rust toolchain whose Clippy
       # lints require compatibility fixes in any of the Rust sources.
       # rust-analyzer dependency updates can also update tree-sitter APIs,

@@ -1,0 +1,16 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/codeskyblue/go-sh", "", false, "Command", "", "", "Argument[0]", "command-injection", "manual"],
+        ["github.com/codeskyblue/go-sh", "Session", true, "Call", "", "", "Argument[0]", "command-injection", "manual"],
+        ["github.com/codeskyblue/go-sh", "Session", true, "Command", "", "", "Argument[0]", "command-injection", "manual"],
+        ["github.com/codeskyblue/go-sh", "Session", true, "Exec", "", "", "Argument[0]", "command-injection", "manual"]
+      ]
+    }
+  ]
+}

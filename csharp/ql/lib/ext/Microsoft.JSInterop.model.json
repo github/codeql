@@ -1,0 +1,14 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["Microsoft.JSInterop", "JSRuntimeExtensions", true, "InvokeAsync<TValue>", "", "", "Argument[1]", "js-injection", "manual"],
+        ["Microsoft.JSInterop", "JSRuntimeExtensions", true, "InvokeVoidAsync", "", "", "Argument[1]", "js-injection", "manual"]
+      ]
+    }
+  ]
+}

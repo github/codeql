@@ -19,3 +19,8 @@ func test(_ a1: Alias1, _ a2: Alias2<Bool>, _ a3: Alias3<String>) {
     let v2 = a2.getValue()  // $ target=MyClass.getValue type=v2@Tuple2<T0>:Bool
     let v3 = a3.getValue()  // $ target=MyClass.getValue type=v3@Tuple2<T0>.Optional<Wrapped>:String
 }
+
+func f<T>(_ value: T) {
+    typealias Local = T
+    let copy: Local = value  // $ type=copy:T
+}

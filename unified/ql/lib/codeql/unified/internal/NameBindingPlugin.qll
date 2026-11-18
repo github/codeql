@@ -69,6 +69,12 @@ class NameBindingPlugin extends Unit {
   string getImplicitReceiverParameterName(Callable callable) { none() }
 
   /**
+   * Gets the name to be used when resolving `super`, for example `this` or `self`.
+   */
+  bindingset[se]
+  string getSuperLocalName(SuperExpr se) { none() }
+
+  /**
    * Gets the name through which static members of the enclosing class `cls` can be
    * accessed, for example `Self` in Swift.
    */
@@ -81,6 +87,7 @@ predicate isInstanceMember(Member member) {
   (
     member instanceof VariableDeclaration or
     member instanceof FunctionDeclaration or
+    member instanceof AccessorDeclaration or
     member instanceof ConstructorDeclaration
   ) and
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |
@@ -98,7 +105,8 @@ predicate isStaticMember(Member member) {
   exists(ClassLikeDeclaration cls | cls.getAMember() = member |
     not any(NameBindingPlugin p).isInstanceMember(cls, member) or
     member instanceof ConstructorDeclaration or
-    member instanceof TypeAliasDeclaration
+    member instanceof TypeAliasDeclaration or
+    member instanceof ClassLikeDeclaration
   )
   or
   member = any(TopLevel t).getBody().getAStmt()

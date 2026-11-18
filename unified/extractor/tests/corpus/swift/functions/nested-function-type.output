@@ -11,8 +11,8 @@ sourceFile
       item:
         typeAliasDecl
           attributes:
-          name: identifier "NestedFunction"
           modifiers:
+          name: identifier "NestedFunction"
           initializer:
             typeInitializerClause
               equal: =
@@ -48,8 +48,8 @@ sourceFile
       item:
         typeAliasDecl
           attributes:
-          name: identifier "MixedParametersAndTuples"
           modifiers:
+          name: identifier "MixedParametersAndTuples"
           initializer:
             typeInitializerClause
               equal: =

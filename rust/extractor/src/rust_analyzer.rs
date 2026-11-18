@@ -84,7 +84,7 @@ impl<'a> RustAnalyzer<'a> {
         load_config: &LoadCargoConfig,
     ) -> Option<(RootDatabase, Vfs)> {
         let progress = |t| trace!("progress: {t}");
-        let manifest: &ManifestPath = project.manifest_path();
+        let manifest = project.manifest_path();
         match load_workspace_at(manifest.as_ref(), config, load_config, &progress) {
             Ok((db, vfs, _macro_server)) => Some((db, vfs)),
             Err(err) => {
@@ -107,17 +107,18 @@ impl<'a> RustAnalyzer<'a> {
                 reason,
             }),
             RustAnalyzer::WithSemantics { vfs, semantics } => {
-                let file_id = path_to_file_id(path, vfs).ok_or(
-                    RustAnalyzerNoSemantics::warning("file not found in project"),
-                )?;
-                let input = std::panic::catch_unwind(|| semantics.db.file_text(file_id)).or(
-                    Err(RustAnalyzerNoSemantics::warning(
-                        "no text available for the file in the project",
-                    )),
-                )?;
-                let editioned_file_id = semantics.attach_first_edition_opt(file_id).ok_or(
-                    RustAnalyzerNoSemantics::warning("failed to determine rust edition"),
-                )?;
+                let file_id = path_to_file_id(path, vfs)
+                    .ok_or_else(|| RustAnalyzerNoSemantics::warning("file not found in project"))?;
+                let input =
+                    std::panic::catch_unwind(|| semantics.db.file_text(file_id)).map_err(|_| {
+                        RustAnalyzerNoSemantics::warning(
+                            "no text available for the file in the project",
+                        )
+                    })?;
+                let editioned_file_id =
+                    semantics.attach_first_edition_opt(file_id).ok_or_else(|| {
+                        RustAnalyzerNoSemantics::warning("failed to determine rust edition")
+                    })?;
                 Ok((*semantics, editioned_file_id, input))
             }
         }
@@ -194,7 +195,7 @@ impl TomlReader {
 
     fn read(&mut self, manifest: &ManifestPath) -> anyhow::Result<Rc<CargoManifestSlice>> {
         if let Some(table) = self.cache.get(manifest) {
-            return Ok(table.clone());
+            return Ok(Rc::clone(table));
         }
         let content = fs::read_to_string(manifest).map_err(|e| {
             error!("failed to read {} ({e})", manifest.as_str());
@@ -204,7 +205,7 @@ impl TomlReader {
             error!("failed to parse {} ({e})", manifest.as_str());
             e
         })?);
-        self.cache.insert(manifest.clone(), table.clone());
+        self.cache.insert(manifest.clone(), Rc::clone(&table));
         Ok(table)
     }
 }
@@ -217,6 +218,12 @@ fn workspace_members_match(workspace_dir: &AbsPath, members: &[String], target: 
     })
 }
 
+/// Finds an enclosing Cargo workspace that includes `manifest`. That is, its
+/// `members` patterns include the manifest's directory and its `exclude`
+/// patterns do not.
+///
+/// Returns `None` if the manifest itself defines a workspace, is not a Cargo
+/// manifest, cannot be loaded, or has no matching workspace.
 fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option<ProjectManifest> {
     let ProjectManifest::CargoToml(cargo) = manifest else {
         return None;
@@ -224,12 +231,13 @@ fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option
     let parsed_cargo = reader.read(cargo).ok()?;
     if parsed_cargo.workspace.is_some() {
         debug!("{cargo} is a workspace");
-        return Some(manifest.clone());
+        return None;
     }
     let Some(parent_dir) = cargo.parent().parent() else {
         warn!("no parent dir for {cargo}");
         return None;
     };
+    // Search upward from `parent_dir` for manifest files.
     let discovered = ProjectManifest::discover(parent_dir)
         .map_err(|e| {
             error!(
@@ -240,25 +248,22 @@ fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option
         })
         .ok()?;
     discovered
-        .iter()
-        .find_map(|it| match it {
-            ProjectManifest::CargoToml(other)
-                if cargo.starts_with(other.parent())
-                    && reader.read(other).is_ok_and(|it| {
-                        it.workspace.as_ref().is_some_and(|w| {
-                            workspace_members_match(other.parent(), &w.members, cargo.parent())
-                                && !workspace_members_match(
-                                    other.parent(),
-                                    &w.exclude,
-                                    cargo.parent(),
-                                )
-                        })
-                    }) =>
+        .into_iter()
+        .find(|it| {
+            if let ProjectManifest::CargoToml(other) = it
+                && cargo.starts_with(other.parent())
+                && reader.read(other).is_ok_and(|it| {
+                    it.workspace.as_ref().is_some_and(|w| {
+                        workspace_members_match(other.parent(), &w.members, cargo.parent())
+                            && !workspace_members_match(other.parent(), &w.exclude, cargo.parent())
+                    })
+                })
             {
                 debug!("found workspace {other} containing {cargo}");
-                Some(it.clone())
+                true
+            } else {
+                false
             }
-            _ => None,
         })
         .or_else(|| {
             debug!("no workspace found for {cargo}");
@@ -269,6 +274,8 @@ fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option
 pub fn find_project_manifests(
     files: &[PathBuf],
 ) -> anyhow::Result<Vec<ra_ap_project_model::ProjectManifest>> {
+    const LOG_LIMIT: usize = 10;
+
     let current = std::env::current_dir()?;
     let abs_files: Vec<_> = files
         .iter()
@@ -282,7 +289,6 @@ pub fn find_project_manifests(
         ret.insert(workspace);
     }
     let iter = || ret.iter().map(|m| format!("  {m}"));
-    const LOG_LIMIT: usize = 10;
     if ret.len() <= LOG_LIMIT {
         info!("found manifests:\n{}", iter().join("\n"));
     } else {
@@ -300,6 +306,8 @@ pub fn find_project_manifests(
 }
 
 fn from_utf8_lossy(v: &[u8]) -> (Cow<'_, str>, Option<SyntaxError>) {
+    const REPLACEMENT: &str = "\u{FFFD}";
+
     let mut iter = v.utf8_chunks();
     let (first_valid, first_invalid) = if let Some(chunk) = iter.next() {
         let valid = chunk.valid();
@@ -313,7 +321,6 @@ fn from_utf8_lossy(v: &[u8]) -> (Cow<'_, str>, Option<SyntaxError>) {
         return (Cow::Borrowed(""), None);
     };
 
-    const REPLACEMENT: &str = "\u{FFFD}";
     let error_start = first_valid.len() as u32;
     let error_end = error_start + first_invalid.len() as u32;
     let error_range = TextRange::new(TextSize::new(error_start), TextSize::new(error_end));

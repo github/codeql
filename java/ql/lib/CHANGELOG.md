@@ -1,3 +1,18 @@
+## 9.3.5
+
+### Minor Analysis Improvements
+
+* Added taint flow model for `reactor.core.publisher.Mono<T>`.
+* The `java/weak-cryptographic-algorithm`, `java/potentially-weak-cryptographic-algorithm`, and `java/rsa-without-oaep` queries now match cryptographic algorithm names and modes case-insensitively (for example, `AES/CBC/PKCS5PADDING` and `AES/cbc/Pkcs5Padding`).
+* Java taint-tracking queries now recognize equality and case-insensitive equality checks against fixed string constants as sanitizers. The queries `java/ssrf` and `java/unvalidated-url-redirection` also recognize checks of `URI.getHost()` against fixed collections of strings, including when the host is normalized to upper or lower case.
+
+## 9.3.4
+
+### Minor Analysis Improvements
+
+* The `java/log-injection` query now recognizes additional sanitizers and sanitizer guards from the JDK, Apache Commons Lang and Text, Guava, OWASP Java Encoder, and Spring Framework.
+* Queries that use path-injection sanitizers now recognize additional substring guards and string replacement and removal operations from Apache Commons Lang and Guava.
+
 ## 9.3.3
 
 ### Minor Analysis Improvements

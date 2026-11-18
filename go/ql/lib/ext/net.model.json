@@ -1,0 +1,32 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["net", "", false, "FileConn", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net", "", false, "FilePacketConn", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net", "", false, "JoinHostPort", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["net", "", false, "SplitHostPort", "", "", "Argument[0]", "ReturnValue[0..1]", "taint", "manual"],
+        ["net", "IPConn", true, "ReadFromIP", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["net", "IPConn", true, "ReadMsgIP", "", "", "Argument[receiver]", "Argument[0..1]", "taint", "manual"],
+        ["net", "IPConn", true, "WriteMsgIP", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"],
+        ["net", "IPConn", true, "WriteToIP", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["net", "PacketConn", true, "ReadFrom", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["net", "PacketConn", true, "WriteTo", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["net", "TCPListener", true, "File", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["net", "UDPConn", true, "ReadFromUDP", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["net", "UDPConn", true, "ReadMsgUDP", "", "", "Argument[receiver]", "Argument[0..1]", "taint", "manual"],
+        ["net", "UDPConn", true, "WriteMsgUDP", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"],
+        ["net", "UDPConn", true, "WriteToUDP", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["net", "UnixConn", true, "ReadFromUnix", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["net", "UnixConn", true, "ReadMsgUnix", "", "", "Argument[receiver]", "Argument[0..1]", "taint", "manual"],
+        ["net", "UnixConn", true, "WriteMsgUnix", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"],
+        ["net", "UnixConn", true, "WriteToUnix", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["net", "UnixListener", true, "File", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}

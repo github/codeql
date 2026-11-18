@@ -123,8 +123,10 @@ module Unified {
     /** Gets the node corresponding to the field `parameter`. */
     final override F::Parameter getAParameter() { result = this.getParameter(_) }
 
-    /** Gets the node corresponding to the field `type`. */
-    final F::Expr getType() { unified_accessor_declaration_type(this, result) }
+    /** Gets the node corresponding to the field `return_type`. */
+    final override F::Expr getReturnType() {
+      unified_accessor_declaration_return_type(this, result)
+    }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -133,7 +135,7 @@ module Unified {
       unified_accessor_declaration_modifier(this, _, result) or
       unified_accessor_declaration_def(this, _, result) or
       unified_accessor_declaration_parameter(this, _, result) or
-      unified_accessor_declaration_type(this, result)
+      unified_accessor_declaration_return_type(this, result)
     }
   }
 
@@ -856,6 +858,12 @@ module Unified {
     /** Gets the node corresponding to the field `else`. */
     final F::Expr getElse() { unified_if_expr_else(this, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getModifier(int i) { unified_if_expr_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `then`. */
     final F::Expr getThen() { unified_if_expr_then(this, result) }
 
@@ -863,6 +871,7 @@ module Unified {
     final override F::AstNode getAFieldOrChild() {
       unified_if_expr_def(this, result) or
       unified_if_expr_else(this, result) or
+      unified_if_expr_modifier(this, _, result) or
       unified_if_expr_then(this, result)
     }
   }
@@ -1624,7 +1633,7 @@ module Unified {
       or
       result = node.(AccessorDeclaration).getParameter(i) and name = "getParameter"
       or
-      result = node.(AccessorDeclaration).getType() and i = -1 and name = "getType"
+      result = node.(AccessorDeclaration).getReturnType() and i = -1 and name = "getReturnType"
       or
       result = node.(Argument).getModifier(i) and name = "getModifier"
       or
@@ -1769,6 +1778,8 @@ module Unified {
       result = node.(IfExpr).getCondition() and i = -1 and name = "getCondition"
       or
       result = node.(IfExpr).getElse() and i = -1 and name = "getElse"
+      or
+      result = node.(IfExpr).getModifier(i) and name = "getModifier"
       or
       result = node.(IfExpr).getThen() and i = -1 and name = "getThen"
       or
