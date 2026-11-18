@@ -152,15 +152,26 @@ predicate trivialConversion(ExpectedType expected, Type actual) {
  */
 int sizeof_IntType() { exists(IntType it | result = it.getSize()) }
 
+private string suggestedIntegerSpecifier(FormatLiteral format, int n, Type actual) {
+  exists(string length, string conversion, string originalConversion |
+    format.parseConvSpec(n, _, "", "", "", "", ["", "l", "ll"], originalConversion) and
+    originalConversion = ["d", "i", "u"] and
+    length = ["", "l", "ll"] and
+    (if originalConversion = "i" then conversion = ["i", "u"] else conversion = ["d", "u"]) and
+    format.getIntegerConversionType(length, conversion) =
+      actual.getUnspecifiedType().(IntegralType).getCanonicalArithmeticType() and
+    result = "%" + length + conversion
+  )
+}
+
 bindingset[ffc, n, arg, actual]
 private string integerFormatSuggestion(FormattingFunctionCall ffc, int n, Expr arg, Type actual) {
   if
     ffc.getConversionArgument(n) = arg and
-    exists(ffc.getFormat().(FormatLiteral).getSuggestedIntegerConversionSpecifier(n, actual))
+    exists(suggestedIntegerSpecifier(ffc.getFormat().(FormatLiteral), n, actual))
   then
     result =
-      " Consider using '" +
-        ffc.getFormat().(FormatLiteral).getSuggestedIntegerConversionSpecifier(n, actual) +
+      " Consider using '" + suggestedIntegerSpecifier(ffc.getFormat().(FormatLiteral), n, actual) +
         "' instead."
   else result = ""
 }

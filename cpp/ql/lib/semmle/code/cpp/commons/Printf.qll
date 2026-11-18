@@ -705,30 +705,6 @@ class FormatLiteral extends Literal instanceof StringLiteral {
   string getConversionChar(int n) { this.parseConvSpec(n, _, _, _, _, _, _, result) }
 
   /**
-   * Gets a suggested replacement for the `n`th conversion specifier for an
-   * argument of type `type`, after default argument promotions.
-   *
-   * This only handles plain decimal integer conversions (`d`, `i`, and `u`,
-   * optionally with `l` or `ll`) and the signed and unsigned variants of `int`,
-   * `long`, and `long long`. There is no result for other types or conversions,
-   * or for conversions with flags, width, precision, or positional parameters.
-   * The result includes `%` and preserves `i` for signed integer arguments.
-   *
-   * This does not check whether the existing specifier matches `type`.
-   */
-  string getSuggestedIntegerConversionSpecifier(int n, Type type) {
-    exists(string length, string conversion, string originalConversion |
-      this.parseConvSpec(n, _, "", "", "", "", ["", "l", "ll"], originalConversion) and
-      originalConversion = ["d", "i", "u"] and
-      length = ["", "l", "ll"] and
-      (if originalConversion = "i" then conversion = ["i", "u"] else conversion = ["d", "u"]) and
-      this.getIntegerConversionType(length, conversion) =
-        type.getUnspecifiedType().(IntegralType).getCanonicalArithmeticType() and
-      result = "%" + length + conversion
-    )
-  }
-
-  /**
    * Gets the size of pointers in the target this formatting function is
    * compiled for.
    */
@@ -820,12 +796,36 @@ class FormatLiteral extends Literal instanceof StringLiteral {
    * conversion specifier's length flag.
    */
   Type getIntegralDisplayType(int n) {
-    exists(string len | len = this.getLength(n) |
-      len = "hh" and result instanceof CharType
-      or
-      len = "h" and result instanceof ShortType
-      or
-      not len = ["hh", "h"] and result = this.getIntegralTypeForLength(len)
+    exists(string len |
+      len = this.getLength(n) and
+      (
+        len = "hh" and result instanceof CharType
+        or
+        len = "h" and result instanceof ShortType
+        or
+        len = "l" and result = this.getLongType()
+        or
+        len = ["ll", "L", "q"] and
+        result instanceof LongLongType
+        or
+        len = "j" and result = this.getIntmax_t()
+        or
+        len = ["z", "Z"] and
+        (result = this.getSize_t() or result = this.getSsize_t())
+        or
+        len = "t" and result = this.getPtrdiff_t()
+        or
+        len = "I" and
+        (result = this.getSize_t() or result = this.getPtrdiff_t())
+        or
+        len = "I32" and
+        exists(MicrosoftInt32Type t | t.getUnsigned() = result.(IntegralType).getUnsigned())
+        or
+        len = "I64" and
+        exists(MicrosoftInt64Type t | t.getUnsigned() = result.(IntegralType).getUnsigned())
+        or
+        len = "" and result instanceof IntType
+      )
     )
   }
 
@@ -879,10 +879,10 @@ class FormatLiteral extends Literal instanceof StringLiteral {
   }
 
   /**
-   * Gets the integer argument type for a length flag and conversion character.
-   * Shared by conversion type inference and replacement specifier suggestions.
+   * Gets the required argument type for an integer conversion with length flag
+   * `len` and conversion character `conv`, using this literal's target platform.
    */
-  private Type getIntegerConversionType(string len, string conv) {
+  Type getIntegerConversionType(string len, string conv) {
     result = this.getIntegralTypeForLength(len) and
     (
       conv = ["d", "i"] and
