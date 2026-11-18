@@ -21,30 +21,42 @@ predicate isNonReferenceStructuredBinding(Variable v) {
 }
 
 /**
+ * Gets the type that `v` is declared with.
+ */
+private Type getDeclaredType(Variable v) {
+  result = v.(Parameter).getDefinition().getType()
+  or
+  not v.(Parameter).hasDefinition() and
+  result = v.getType()
+}
+
+/**
  * Get the actual type of the specified variable, as opposed to the declared type.
  * This returns the type of the variable after any pointer decay is applied, and
  * after any unsized array type has its size inferred from the initializer.
  */
 Type getVariableType(Variable v) {
-  exists(Type declaredType |
-    declaredType = v.getUnspecifiedType() and
+  exists(Type declaredType, Type unspecifiedType |
+    declaredType = getDeclaredType(v) and
+    unspecifiedType = declaredType.getUnspecifiedType()
+  |
     if v instanceof Parameter
     then
-      result = getDecayedType(declaredType)
+      result = getDecayedType(unspecifiedType)
       or
-      not exists(getDecayedType(declaredType)) and result = v.getType()
+      not exists(getDecayedType(unspecifiedType)) and result = declaredType
     else
-      if declaredType instanceof ArrayType and not declaredType.(ArrayType).hasArraySize()
+      if unspecifiedType instanceof ArrayType and not unspecifiedType.(ArrayType).hasArraySize()
       then
         result = v.getInitializer().getExpr().getType()
         or
-        not exists(v.getInitializer()) and result = v.getType()
+        not exists(v.getInitializer()) and result = declaredType
       else
         if isNonReferenceStructuredBinding(v)
         then
           // The extractor ensures `r` exists when `isNonReferenceStructuredBinding(v)` holds.
-          exists(LValueReferenceType r | r.getBaseType() = v.getUnspecifiedType() | result = r)
-        else result = v.getType()
+          exists(LValueReferenceType r | r.getBaseType() = unspecifiedType | result = r)
+        else result = declaredType
   )
 }
 
