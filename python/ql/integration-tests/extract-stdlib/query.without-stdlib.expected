@@ -1,0 +1,7 @@
+| baz | file |
+| baz | module |
+| foo | file |
+| foo | module |
+| main | file |
+| re | module |
+| sys | special |

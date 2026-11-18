@@ -1,0 +1,101 @@
+{
+  "attributes": {
+    "extractor_flags": "default"
+  },
+  "markdownMessage": "Internal telemetry for the Python extractor.\n\nNo action needed.",
+  "severity": "note",
+  "source": {
+    "extractorName": "python",
+    "id": "py/extractor/summary",
+    "name": "Python extractor telemetry"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "attributes": {},
+  "location": {
+    "endColumn": 0,
+    "endLine": 1,
+    "file": "syntaxerror3.py",
+    "startColumn": 0,
+    "startLine": 1
+  },
+  "markdownMessage": "A parse error occurred while processing `syntaxerror3.py`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "python",
+    "id": "py/diagnostics/syntax-error",
+    "name": "Could not process some files due to syntax errors"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "attributes": {},
+  "location": {
+    "endColumn": 0,
+    "endLine": 3,
+    "file": "syntaxerror1.py",
+    "startColumn": 0,
+    "startLine": 3
+  },
+  "markdownMessage": "A parse error occurred while processing `syntaxerror1.py`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "python",
+    "id": "py/diagnostics/syntax-error",
+    "name": "Could not process some files due to syntax errors"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "attributes": {},
+  "location": {
+    "endColumn": 0,
+    "endLine": 5,
+    "file": "syntaxerror2.py",
+    "startColumn": 0,
+    "startLine": 5
+  },
+  "markdownMessage": "A parse error occurred while processing `syntaxerror2.py`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "python",
+    "id": "py/diagnostics/syntax-error",
+    "name": "Could not process some files due to syntax errors"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "attributes": {},
+  "location": {
+    "file": "recursion_error.py"
+  },
+  "plaintextMessage": "maximum recursion depth exceeded",
+  "severity": "error",
+  "source": {
+    "extractorName": "python",
+    "id": "py/diagnostics/recursion-error",
+    "name": "Recursion error in Python extractor"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
