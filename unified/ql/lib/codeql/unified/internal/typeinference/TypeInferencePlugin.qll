@@ -28,8 +28,8 @@ class TypeInferencePlugin extends Unit {
   /** Gets the type parameter representing the element type of an array. */
   abstract TypeParameter getArrayElementTypeParameter();
 
-  /** Gets parameter variance: 1 for covariance, -1 for contravariance, or 0 for invariance. */
-  int getTypeParameterVariance(TypeParameter tp) { exists(tp) and result = 0 }
+  /** Gets a non-invariant variance of a type parameter; absence means invariance. */
+  Variance getTypeParameterVariance(TypeParameter tp) { none() }
 
   /**
    * Gets the type of the given function expression.

@@ -3827,10 +3827,18 @@ inferType
 | nested_types.swift:216:14:216:14 | x | (parent:Inner) | nested_types.swift:215:1:220:1 | SubOuter |
 | nested_types.swift:216:14:216:14 | x | (parent:Inner).TSubOuter | nested_types.swift:215:16:215:24 | TSubOuter |
 | nested_types.swift:216:14:216:14 | x | TInner | {EXTERNAL LOCATION} | String |
+| nested_types.swift:216:47:219:5 | Block |  | {EXTERNAL LOCATION} | Array |
+| nested_types.swift:216:47:219:5 | Block | Element | nested_types.swift:215:16:215:24 | TSubOuter |
+| nested_types.swift:217:13:217:15 | res |  | {EXTERNAL LOCATION} | Array |
+| nested_types.swift:217:13:217:15 | res | Element | nested_types.swift:215:16:215:24 | TSubOuter |
 | nested_types.swift:217:19:217:19 | x |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:217:19:217:19 | x | (parent:Inner) | nested_types.swift:215:1:220:1 | SubOuter |
 | nested_types.swift:217:19:217:19 | x | (parent:Inner).TSubOuter | nested_types.swift:215:16:215:24 | TSubOuter |
 | nested_types.swift:217:19:217:19 | x | TInner | {EXTERNAL LOCATION} | String |
+| nested_types.swift:217:19:217:30 | ... .getOuter(...) |  | {EXTERNAL LOCATION} | Array |
+| nested_types.swift:217:19:217:30 | ... .getOuter(...) | Element | nested_types.swift:215:16:215:24 | TSubOuter |
+| nested_types.swift:218:16:218:18 | res |  | {EXTERNAL LOCATION} | Array |
+| nested_types.swift:218:16:218:18 | res | Element | nested_types.swift:215:16:215:24 | TSubOuter |
 | nested_types.swift:222:5:222:12 | subOuter |  | nested_types.swift:14:5:47:5 | Outer.Inner |
 | nested_types.swift:222:5:222:12 | subOuter | (parent:Inner) | nested_types.swift:13:1:130:1 | Outer |
 | nested_types.swift:222:5:222:12 | subOuter | (parent:Inner).TOuter | {EXTERNAL LOCATION} | Array |
@@ -4041,14 +4049,22 @@ inferType
 | nested_types.swift:321:9:321:10 | x3 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
 | nested_types.swift:322:9:322:10 | x4 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
 | nested_types.swift:322:9:322:10 | x4 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
+| nested_types.swift:324:13:324:13 | a |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:324:17:324:18 | x1 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
 | nested_types.swift:324:17:324:18 | x1 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
+| nested_types.swift:324:17:324:25 | ... .getX(...) |  | {EXTERNAL LOCATION} | String |
+| nested_types.swift:325:13:325:13 | b |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:325:17:325:18 | x2 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
 | nested_types.swift:325:17:325:18 | x2 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
+| nested_types.swift:325:17:325:25 | ... .getX(...) |  | {EXTERNAL LOCATION} | String |
+| nested_types.swift:326:13:326:13 | c |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:326:17:326:18 | x3 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
 | nested_types.swift:326:17:326:18 | x3 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
+| nested_types.swift:326:17:326:25 | ... .getX(...) |  | {EXTERNAL LOCATION} | String |
+| nested_types.swift:327:13:327:13 | d |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:327:17:327:18 | x4 |  | nested_types.swift:304:5:310:5 | Base2.Nested |
 | nested_types.swift:327:17:327:18 | x4 | (parent:Nested) | nested_types.swift:312:1:316:1 | Sub |
+| nested_types.swift:327:17:327:25 | ... .getX(...) |  | {EXTERNAL LOCATION} | String |
 | nested_types.swift:335:17:335:17 | a |  | nested_types.swift:331:9:331:10 | Ta |
 | nested_types.swift:336:17:336:17 | b |  | nested_types.swift:333:13:333:14 | Tb |
 | nested_types.swift:337:17:337:17 | c |  | nested_types.swift:334:17:334:18 | Tc |

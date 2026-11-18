@@ -214,7 +214,7 @@ var y7 = innerMost.getOuter()  // $ target=Outer.Inner.InnerMost.getOuter $ MISS
 
 class SubOuter<TSubOuter>: Outer<[TSubOuter]> {
     func f(_ x: Inner<String>) -> [TSubOuter] {
-        let res = x.getOuter()  // $ target=Outer.Inner.getOuter $ MISSING: type=res@Array<Element>:TSubOuter -- this is an instance of variance sub typing
+        let res = x.getOuter()  // $ target=Outer.Inner.getOuter type=res@Array<Element>:TSubOuter
         return res
     }
 }
@@ -321,10 +321,10 @@ class SubSub: Sub {
         x3: Element2,  // $ type=x3@Base2.Nested<(parent:Nested)>:Sub
         x4: SubSub.Element2  // $ type=x4@Base2.Nested<(parent:Nested)>:Sub
     ) {
-        let a = x1.getX()  // $ target=Base2.Nested.getX $ MISSING: type=a:String -- this is an instance of variance sub typing
-        let b = x2.getX()  // $ target=Base2.Nested.getX $ MISSING: type=b:String -- this is an instance of variance sub typing
-        let c = x3.getX()  // $ target=Base2.Nested.getX $ MISSING: type=c:String -- this is an instance of variance sub typing
-        let d = x4.getX()  // $ target=Base2.Nested.getX $ MISSING: type=d:String -- this is an instance of variance sub typing
+        let a = x1.getX()  // $ target=Base2.Nested.getX type=a:String
+        let b = x2.getX()  // $ target=Base2.Nested.getX type=b:String
+        let c = x3.getX()  // $ target=Base2.Nested.getX type=c:String
+        let d = x4.getX()  // $ target=Base2.Nested.getX type=d:String
     }
 }
 

@@ -71,6 +71,57 @@ module;
 
 private import codeql.util.Location
 
+private newtype TVariance =
+  TMkCovariant() or
+  TMkContravariant()
+
+/** Describes how a type parameter relates to its enclosing type. */
+class Variance extends TVariance {
+  predicate isCovariant() { this = TMkCovariant() }
+
+  predicate isContravariant() { this = TMkContravariant() }
+
+  string toString() {
+    this.isCovariant() and result = "covariant"
+    or
+    this.isContravariant() and result = "contravariant"
+  }
+}
+
+private newtype TMatchingRelation =
+  TMkCovariantRelation() or
+  TMkContravariantRelation() or
+  TMkInvariantRelation()
+
+/** Describes the relation used while matching two type trees. */
+class MatchingRelation extends TMatchingRelation {
+  predicate isCovariant() { this = TMkCovariantRelation() }
+
+  predicate isContravariant() { this = TMkContravariantRelation() }
+
+  predicate isInvariant() { this = TMkInvariantRelation() }
+
+  string toString() {
+    this.isCovariant() and result = "covariant"
+    or
+    this.isContravariant() and result = "contravariant"
+    or
+    this.isInvariant() and result = "invariant"
+  }
+
+  MatchingRelation compose(Variance inner) {
+    this.isInvariant() and result.isInvariant()
+    or
+    this.isCovariant() and inner.isCovariant() and result.isCovariant()
+    or
+    this.isCovariant() and inner.isContravariant() and result.isContravariant()
+    or
+    this.isContravariant() and inner.isCovariant() and result.isContravariant()
+    or
+    this.isContravariant() and inner.isContravariant() and result.isCovariant()
+  }
+}
+
 /** Provides the input to `Make1`. */
 signature module InputSig1<LocationSig Location> {
   /**
@@ -106,13 +157,14 @@ signature module InputSig1<LocationSig Location> {
   class TypeParameter extends Type;
 
   /**
-   * Gets the variance of `tp`: 1 for covariance, -1 for contravariance, and 0
-   * for invariance. This describes the parameter's position in its constructor,
-   * not the variance of an inference variable substituted at that position.
+   * Gets the non-invariant variance of `tp`. An absent result means that the
+   * parameter is invariant. This describes the parameter's position in its
+   * constructor, not the variance of an inference variable substituted at that
+   * position.
    * Clients with no variant parameters retain the existing non-recursive
    * `typeMatch` behavior; `typeMatchBound` always uses recursive matching.
    */
-  default int getTypeParameterVariance(TypeParameter tp) { exists(tp) and result = 0 }
+  default Variance getTypeParameterVariance(TypeParameter tp) { none() }
 
   /**
    * A type abstraction. I.e., a place in the program where type variables may
@@ -375,7 +427,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     private import Input2
 
     private predicate varianceEnabled() {
-      exists(TypeParameter tp | getTypeParameterVariance(tp) != 0)
+      exists(TypeParameter tp, Variance variance | variance = getTypeParameterVariance(tp))
     }
 
     /**
@@ -1217,9 +1269,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     signature module VarianceMatchingInputSig<HasTypeTreeSig Term, HasTypeTreeSig Constraint> {
       predicate relevantConstraint(Term term, Constraint constraint);
 
-      /** Gets the initial relation: 1 for subtype, -1 for supertype, or 0 for equality. */
-      default int getRelation(Term term, Constraint constraint) {
-        relevantConstraint(term, constraint) and result = 1
+      /** Gets the initial relation between the matched type trees. */
+      default MatchingRelation getRelation(Term term, Constraint constraint) {
+        relevantConstraint(term, constraint) and result.isCovariant()
       }
 
       /** Gets an inferred instantiation for contextual propagation into `term`. */
@@ -1316,14 +1368,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         not exists(getTypePathLimit()) or tree.getDepth() < getTypePathLimit()
       }
 
-      private int childRelation(int relation, TypeParameter tp) {
-        relation in [-1, 0, 1] and
-        result = relation * getTypeParameterVariance(tp)
+      private MatchingRelation childRelation(MatchingRelation relation, TypeParameter tp) {
+        not exists(Variance parameterVariance | parameterVariance = getTypeParameterVariance(tp)) and
+        result.isInvariant()
+        or
+        exists(Variance parameterVariance |
+          parameterVariance = getTypeParameterVariance(tp) and
+          result = relation.compose(parameterVariance)
+        )
       }
 
       pragma[nomagic]
       private predicate aligned(
-        Term term, Constraint constraint, Tree actual, Tree expected, int relation
+        Term term, Constraint constraint, Tree actual, Tree expected, MatchingRelation relation
       ) {
         Input::relevantConstraint(term, constraint) and
         actual = MkTerm(term) and
@@ -1331,7 +1388,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         relation = Input::getRelation(term, constraint)
         or
         exists(
-          Tree actualParent, Tree expectedParent, int parentRelation, Type root, TypeParameter tp
+          Tree actualParent, Tree expectedParent, MatchingRelation parentRelation, Type root,
+          TypeParameter tp
         |
           aligned(term, constraint, actualParent, expectedParent, parentRelation) and
           root = actualParent.getTypeAt(TypePath::nil()) and
@@ -1346,7 +1404,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         or
         exists(Tree previous, Type root |
           aligned(term, constraint, previous, expected, relation) and
-          relation = 1 and
+          relation.isCovariant() and
           root = expected.getTypeAt(TypePath::nil()) and
           projection(previous, root) and
           actual = MkBase(previous, root)
@@ -1354,7 +1412,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         or
         exists(Tree previous, Type root |
           aligned(term, constraint, actual, previous, relation) and
-          relation = -1 and
+          relation.isContravariant() and
           root = actual.getTypeAt(TypePath::nil()) and
           projection(previous, root) and
           expected = MkBase(previous, root)
@@ -1363,7 +1421,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       private predicate child(Tree parent, TypeParameter tp) {
         exists(
-          Term term, Constraint constraint, Tree actual, Tree expected, int relation, Type root
+          Term term, Constraint constraint, Tree actual, Tree expected, MatchingRelation relation,
+          Type root
         |
           aligned(term, constraint, actual, expected, relation) and
           root = actual.getTypeAt(TypePath::nil()) and
@@ -1377,13 +1436,16 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       private predicate projection(Tree tree, Type root) {
         exists(
-          Term term, Constraint constraint, Tree actual, Tree expected, int relation, Type source
+          Term term, Constraint constraint, Tree actual, Tree expected, MatchingRelation relation,
+          Type source
         |
           aligned(term, constraint, actual, expected, relation) and
           (
-            relation = 1 and tree = actual and root = expected.getTypeAt(TypePath::nil())
+            relation.isCovariant() and tree = actual and root = expected.getTypeAt(TypePath::nil())
             or
-            relation = -1 and tree = expected and root = actual.getTypeAt(TypePath::nil())
+            relation.isContravariant() and
+            tree = expected and
+            root = actual.getTypeAt(TypePath::nil())
           ) and
           source = tree.getTypeAt(TypePath::nil()) and
           source != root and
@@ -1416,7 +1478,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       pragma[nomagic]
       private predicate relevantOrigin(Tree tree, TypePath path) {
-        exists(Term term, Constraint constraint, Tree expected, int relation |
+        exists(Term term, Constraint constraint, Tree expected, MatchingRelation relation |
           aligned(term, constraint, tree, expected, relation) and
           tree.getTypeAt(TypePath::nil()) instanceof PseudoType and
           (
@@ -1447,13 +1509,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
-       * Gets a possible bound on `tp`. `relation` is 1 for a lower bound
-       * (`t <: tp`), -1 for an upper bound (`tp <: t`), or 0 for equality.
-       * All paths in a bound refer to the same projected subtree.
+       * Gets a possible bound on `tp`. Covariance denotes a lower bound
+       * (`t <: tp`), contravariance an upper bound (`tp <: t`), and invariance
+       * equality. All paths in a bound refer to the same projected subtree.
        */
       pragma[nomagic]
       predicate typeBound(
-        Term term, Constraint constraint, TypeParameter tp, int relation, TypePath path, Type t
+        Term term, Constraint constraint, TypeParameter tp, MatchingRelation relation,
+        TypePath path, Type t
       ) {
         exists(Tree actual, Tree expected |
           aligned(term, constraint, actual, expected, relation) and
@@ -1466,7 +1529,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       /** Gets a contextual type for an unknown subtree of the original term. */
       pragma[nomagic]
       Type contextualType(Term term, Constraint constraint, TypePath path) {
-        exists(Tree actual, Tree expected, int relation, TypePath suffix |
+        exists(Tree actual, Tree expected, MatchingRelation relation, TypePath suffix |
           aligned(term, constraint, actual, expected, relation) and
           actual.getTypeAt(TypePath::nil()) instanceof PseudoType and
           (
@@ -1583,11 +1646,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos);
 
       /**
-       * Gets the relation of an inferred access type to its declared type.
-       * Arguments are subtypes (1); contextual return types are supertypes (-1).
+       * Gets the variance relation of an inferred access type to its declared type.
+       * Arguments are covariant; contextual return types are contravariant.
        */
       bindingset[apos]
-      default int getAccessTypeRelation(AccessPosition apos) { exists(apos) and result = 1 }
+      default MatchingRelation getAccessTypeRelation(AccessPosition apos) {
+        exists(apos) and result.isCovariant()
+      }
     }
 
     /**
@@ -1713,7 +1778,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           bindingset[target]
           abstract Type getConstraintTypeAt(Declaration target, TypePath path);
 
-          int getRelation() { result = 1 }
+          MatchingRelation getRelation() { result.isCovariant() }
 
           bindingset[a, e]
           abstract Type getInferredType(Access a, AccessEnvironment e, TypePath path);
@@ -1974,7 +2039,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             term.getDeclarationPosition() = constraint.getDeclarationPosition()
           }
 
-          int getRelation(RecursiveAccess term, RecursiveConstraint constraint) {
+          MatchingRelation getRelation(RecursiveAccess term, RecursiveConstraint constraint) {
             relevantConstraint(term, constraint) and
             result = getAccessTypeRelation(term.getAccessPosition())
           }
@@ -1992,8 +2057,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
         pragma[nomagic]
         predicate typeBound(
-          Access a, AccessEnvironment e, Declaration target, TypeParameter tp, int relation,
-          TypePath path, Type t
+          Access a, AccessEnvironment e, Declaration target, TypeParameter tp,
+          MatchingRelation relation, TypePath path, Type t
         ) {
           hasNotTypeArgument(a, target, tp) and
           exists(AccessPosition apos, DeclarationPosition dpos |
@@ -2139,15 +2204,16 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /**
        * Holds if `t` at `path` is a possible directional bound on `tp`.
-       * A relation of 1 denotes a lower bound, -1 an upper bound, and 0 equality.
+       * Covariance denotes a lower bound, contravariance an upper bound, and
+       * invariance equality.
        * Like `typeMatch`, this preserves possible alternatives rather than
        * selecting a least upper bound or rejecting inconsistent combinations.
        */
       predicate typeMatchBound(
-        Access a, AccessEnvironment e, Declaration target, TypeParameter tp, int relation,
-        TypePath path, Type t
+        Access a, AccessEnvironment e, Declaration target, TypeParameter tp,
+        MatchingRelation relation, TypePath path, Type t
       ) {
-        explicitTypeMatch(a, e, target, path, t, tp) and relation = 0
+        explicitTypeMatch(a, e, target, path, t, tp) and relation.isInvariant()
         or
         ConstraintMatching::typeBound(a, e, target, tp, relation, path, t)
       }
@@ -2419,7 +2485,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /** Gets the relation of an inferred access type to its declared type. */
       bindingset[apos]
-      default int getAccessTypeRelation(AccessPosition apos) { exists(apos) and result = 1 }
+      default MatchingRelation getAccessTypeRelation(AccessPosition apos) {
+        exists(apos) and result.isCovariant()
+      }
     }
 
     /**
@@ -3522,8 +3590,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         class AccessPosition = DeclarationPosition;
 
         bindingset[apos]
-        int getAccessTypeRelation(AccessPosition apos) {
-          if apos = getReturnPosition() then result = -1 else result = 1
+        MatchingRelation getAccessTypeRelation(AccessPosition apos) {
+          if apos = getReturnPosition() then result.isContravariant() else result.isCovariant()
         }
 
         bindingset[apos]

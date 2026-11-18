@@ -24,11 +24,21 @@ private module Input implements VarianceMatchingInputSig<Actual, TypeMention> {
 
 private module Match = VarianceMatching<Actual, TypeMention, Input>;
 
-query predicate bounds(string name, string parameter, int relation, string path, string type) {
-  exists(Actual actual, TypeMention constraint, TypeParameter tp, TypePath p, Type t |
+query predicate bounds(string name, string parameter, string relationName, string path, string type) {
+  exists(
+    Actual actual, TypeMention constraint, TypeParameter tp, TypePath p, Type t,
+    MatchingRelation relation
+  |
     Match::typeBound(actual, constraint, tp, relation, p, t) and
     name = actual.getValue() and
     parameter = tp.toString() and
+    (
+      relation.isCovariant() and relationName = "lower"
+      or
+      relation.isContravariant() and relationName = "upper"
+      or
+      relation.isInvariant() and relationName = "equality"
+    ) and
     path = TypePath::printTypePathVerbose(p) and
     type = t.toString()
   )
