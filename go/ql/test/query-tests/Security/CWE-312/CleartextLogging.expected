@@ -53,6 +53,10 @@
 | passwords.go:129:14:129:19 | config | passwords.go:126:13:126:25 | call to getPassword | passwords.go:129:14:129:19 | config | $@ flows to a logging call. | passwords.go:126:13:126:25 | call to getPassword | Sensitive data returned by a call to getPassword |
 | passwords.go:130:14:130:21 | selection of x | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:130:14:130:21 | selection of x | $@ flows to a logging call. | passwords.go:21:2:21:23 | SSA def(password) | Sensitive data returned by an access to password |
 | passwords.go:131:14:131:21 | selection of y | passwords.go:126:13:126:25 | call to getPassword | passwords.go:131:14:131:21 | selection of y | $@ flows to a logging call. | passwords.go:126:13:126:25 | call to getPassword | Sensitive data returned by a call to getPassword |
+| passwords.go:151:15:151:22 | password | passwords.go:146:2:146:24 | SSA def(password) | passwords.go:151:15:151:22 | password | $@ flows to a logging call. | passwords.go:146:2:146:24 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:151:15:151:22 | password | passwords.go:148:3:148:24 | SSA def(password) | passwords.go:151:15:151:22 | password | $@ flows to a logging call. | passwords.go:148:3:148:24 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:153:15:153:22 | password | passwords.go:146:2:146:24 | SSA def(password) | passwords.go:153:15:153:22 | password | $@ flows to a logging call. | passwords.go:146:2:146:24 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:153:15:153:22 | password | passwords.go:148:3:148:24 | SSA def(password) | passwords.go:153:15:153:22 | password | $@ flows to a logging call. | passwords.go:148:3:148:24 | SSA def(password) | Sensitive data returned by an access to password |
 | protobuf.go:14:14:14:35 | call to GetDescription | protobuf.go:9:2:9:23 | SSA def(password) | protobuf.go:14:14:14:35 | call to GetDescription | $@ flows to a logging call. | protobuf.go:9:2:9:23 | SSA def(password) | Sensitive data returned by an access to password |
 edges
 | klog.go:21:3:26:3 | extract:1 range element | klog.go:22:27:22:33 | headers | provenance |  |
@@ -142,6 +146,10 @@ edges
 | passwords.go:126:13:126:25 | call to getPassword | passwords.go:122:12:127:2 | struct literal [y] | provenance |  |
 | passwords.go:130:14:130:19 | config [x] | passwords.go:130:14:130:21 | selection of x | provenance |  |
 | passwords.go:131:14:131:19 | config [y] | passwords.go:131:14:131:21 | selection of y | provenance |  |
+| passwords.go:146:2:146:24 | SSA def(password) | passwords.go:151:15:151:22 | password | provenance |  |
+| passwords.go:146:2:146:24 | SSA def(password) | passwords.go:153:15:153:22 | password | provenance |  |
+| passwords.go:148:3:148:24 | SSA def(password) | passwords.go:151:15:151:22 | password | provenance |  |
+| passwords.go:148:3:148:24 | SSA def(password) | passwords.go:153:15:153:22 | password | provenance |  |
 | protobuf.go:9:2:9:23 | SSA def(password) | protobuf.go:12:22:12:29 | password | provenance |  |
 | protobuf.go:12:2:12:6 | implicit-deref query [postupdate] [Description] | protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | provenance |  |
 | protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | protobuf.go:14:14:14:18 | query [pointer, Description] | provenance |  |
@@ -257,6 +265,10 @@ nodes
 | passwords.go:130:14:130:21 | selection of x | semmle.label | selection of x |
 | passwords.go:131:14:131:19 | config [y] | semmle.label | config [y] |
 | passwords.go:131:14:131:21 | selection of y | semmle.label | selection of y |
+| passwords.go:146:2:146:24 | SSA def(password) | semmle.label | SSA def(password) |
+| passwords.go:148:3:148:24 | SSA def(password) | semmle.label | SSA def(password) |
+| passwords.go:151:15:151:22 | password | semmle.label | password |
+| passwords.go:153:15:153:22 | password | semmle.label | password |
 | protobuf.go:9:2:9:23 | SSA def(password) | semmle.label | SSA def(password) |
 | protobuf.go:12:2:12:6 | implicit-deref query [postupdate] [Description] | semmle.label | implicit-deref query [postupdate] [Description] |
 | protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | semmle.label | query [postupdate] [pointer, Description] |
