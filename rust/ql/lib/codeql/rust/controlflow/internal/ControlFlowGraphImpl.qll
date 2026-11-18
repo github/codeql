@@ -579,7 +579,7 @@ private module Input implements InputSig1, InputSig2 {
 
   predicate isExhaustive(Ast::Switch switch) { any() }
 
-  predicate patternCannotFail(Ast::Pattern pattern) { cannotCauseMatchFailure(pattern) }
+  predicate patternIsTest(Ast::Pattern pattern) { not cannotCauseMatchFailure(pattern) }
 
   predicate patternAlwaysMatches(Ast::Pattern pattern) { guaranteedMatchPosition(pattern) }
 
