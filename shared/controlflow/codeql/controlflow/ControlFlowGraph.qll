@@ -443,8 +443,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      * A label used for matching jump sources and targets, for example in goto
      * statements.
      */
+    bindingset[this]
     class Label {
       /** Gets a textual representation of this label. */
+      bindingset[this]
       string toString();
     }
 
@@ -1273,7 +1275,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
     private newtype TAbruptCompletion =
       TSimpleAbruptCompletion(AbruptSuccessor t) or
-      TLabeledAbruptCompletion(JumpSuccessor t, Input1::Label l)
+      TLabeledAbruptCompletion(JumpSuccessor t, Input1::Label l) { Input1::hasLabel(_, l) }
 
     /**
      * A value indicating an abrupt completion of an AST node in the control
