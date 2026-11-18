@@ -28,7 +28,7 @@ bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.2", repo_name = "json")
 bazel_dep(name = "fmt", version = "12.2.0.bcr.1-codeql.1")
 bazel_dep(name = "rules_kotlin", version = "2.4.21-codeql.1")
 bazel_dep(name = "gazelle", version = "0.54.0")
-bazel_dep(name = "rules_dotnet", version = "0.22.2-codeql.1")
+bazel_dep(name = "rules_dotnet")
 bazel_dep(name = "googletest", version = "1.18.0.bcr.1")
 bazel_dep(name = "rules_rust", version = "0.75.0")
 bazel_dep(name = "rules_swift", version = "4.2.2-codeql.1")
@@ -36,6 +36,15 @@ bazel_dep(name = "swift-syntax", version = "604.0.0")
 bazel_dep(name = "zstd", version = "1.5.7.bcr.3")
 
 bazel_dep(name = "buildifier_prebuilt", version = "10.1.0", dev_dependency = True)
+
+# TODO:
+# (1) Investigate whether we still need to patch
+# (2) Cleanup our own codeql version of the rules_dotnet.
+git_override(
+    module_name = "rules_dotnet",
+    commit = "8db43484722080564c2abd04bc09f43f61bf6c65",
+    remote = "https://github.com/bazel-contrib/rules_dotnet.git",
+)
 
 # Pin the compiler to support the Kotlin 1.8 and 1.9 language versions required by older extractors.
 kotlin = use_extension("@rules_kotlin//src/main/starlark/core/repositories:bzlmod_setup.bzl", "rules_kotlin_extensions")
@@ -222,7 +231,7 @@ http_archive(
 )
 
 dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
-dotnet.toolchain(dotnet_version = "10.0.201")
+dotnet.toolchain(dotnet_version = "11.0.100")
 use_repo(dotnet, "dotnet_toolchains")
 
 register_toolchains("@dotnet_toolchains//:all")
