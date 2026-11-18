@@ -590,7 +590,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      * This does not imply that the overall pattern always matches, since a nested pattern
      * may still fail.
      */
-    default predicate patternCannotFail(Pattern pattern) { none() }
+    default predicate patternIsTest(Pattern pattern) { none() }
 
     /** Holds if `pattern` and all its nested patterns are guaranteed to match. */
     default predicate patternAlwaysMatches(Pattern pattern) { none() }
@@ -1047,10 +1047,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       )
     }
 
-    private predicate patternCannotFail(Pattern pattern) {
-      patternAlwaysMatches(pattern) or Input1::patternCannotFail(pattern)
-    }
-
+    // private predicate patternCannotFail(Pattern pattern) {
+    //   patternAlwaysMatches(pattern) or Input1::patternCannotFail(pattern)
+    // }
     private predicate constantCondition(AstNode n, ConditionalSuccessor t) {
       patternAlwaysMatches(n) and
       t.(MatchingSuccessor).getValue() = true
@@ -1642,7 +1641,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           (
             n2.isAdditional(pattern, outerPatternMatchTag())
             or
-            not patternCannotFail(pattern) and
+            Input1::patternIsTest(pattern) and
             isAfterMatch(n2, pattern, false)
           )
           or
@@ -1698,7 +1697,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         n1.isIn(pattern) and isAfterMatch(n2, pattern, true)
         or
         n1.isIn(pattern) and
-        not patternCannotFail(pattern) and
+        Input1::patternIsTest(pattern) and
+        // not patternAlwaysMatches(pattern) and
         isAfterMatch(n2, pattern, false)
       }
 
@@ -1715,7 +1715,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             n2.isBefore(getRankedPattern(pattern, i + 1))
             or
             not exists(getRankedPattern(pattern, i + 1)) and
-            not patternCannotFail(pattern) and
             isAfterMatch(n2, pattern, false)
           )
         )
