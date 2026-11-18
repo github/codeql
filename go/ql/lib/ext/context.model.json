@@ -6,6 +6,7 @@
         "extensible": "summaryModel"
       },
       "data": [
+        // AfterFunc should be modeled when callback-based library models are supported.
         ["context", "", false, "WithCancel", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
         ["context", "", false, "WithDeadline", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
         ["context", "", false, "WithDeadlineCause", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
