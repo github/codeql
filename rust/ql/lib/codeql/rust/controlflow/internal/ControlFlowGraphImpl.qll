@@ -339,6 +339,10 @@ private module Ast implements AstSig<Location> {
 
   class ContinueStmt extends Stmt instanceof Rust::ContinueExpr { }
 
+  class FallthroughStmt extends Stmt {
+    FallthroughStmt() { none() }
+  }
+
   class GotoStmt extends Stmt {
     GotoStmt() { none() }
   }
