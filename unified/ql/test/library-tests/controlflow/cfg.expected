@@ -3,6 +3,10 @@ bbContinues
 | cfg.swift:183:3:183:3 | DeferStmt | 'DeferStmt goto DeferStmt(+4)' |
 | cfg.swift:184:5:184:14 | print(...) | 'print(...) goto Block(-7)' |
 | cfg.swift:190:7:190:16 | print(...) | 'print(...) goto Block(-7)' |
+| fallthrough.swift:42:5:42:5 | DeferStmt | 'DeferStmt goto TryExpr(+3)' |
+| fallthrough.swift:46:7:46:7 | DeferStmt | 'DeferStmt goto fallthrough(+3)' |
+| fallthrough.swift:47:9:47:28 | print(...) | 'print(...) goto Block(-5)' |
+| fallthrough.swift:49:7:49:17 | fallthrough | 'fallthrough goto Block(-3)' |
 bbStep
 | cfg.swift:20:9:20:14 | ... >= ... | '... >= ... : false -> Block(+0)' |
 | cfg.swift:20:9:20:14 | ... >= ... | '... >= ... : true -> GuardIfStmt(+3)' |
@@ -38,7 +42,8 @@ bbStep
 | cfg.swift:153:13:153:17 | ... < ... | '... < ... : successor -> x(-2)' |
 | cfg.swift:155:10:155:11 | 42 | '42 : match -> Block(+1)' |
 | cfg.swift:155:10:155:11 | 42 | '42 : no-match -> SwitchCase(+3)' |
-| cfg.swift:157:7:157:17 |  | ' : successor -> var obj(+5)' |
+| cfg.swift:157:7:157:17 | fallthrough | 'fallthrough : fallthrough -> Block(+2)' |
+| cfg.swift:158:5:158:5 | SwitchCase | 'SwitchCase : successor -> Block(+1)' |
 | cfg.swift:159:11:159:16 | ... > ... | '... > ... : false -> var obj(+3)' |
 | cfg.swift:159:11:159:16 | ... > ... | '... > ... : true -> Block(+0)' |
 | cfg.swift:163:6:163:13 | TypeTestExpr | 'TypeTestExpr : false -> let xOptional(+4)' |
@@ -167,6 +172,35 @@ bbStep
 | cfg.swift:627:10:627:27 | ConditionalPattern | 'ConditionalPattern : no-match -> SwitchCase(+2)' |
 | cfg.swift:629:10:629:16 | ... .error1 | '... .error1 : match -> Block(+1)' |
 | cfg.swift:629:10:629:16 | ... .error1 | '... .error1 : no-match -> SwitchCase(+2)' |
+| fallthrough.swift:3:8:3:8 | 0 | '0 : match -> Block(+1)' |
+| fallthrough.swift:3:8:3:8 | 0 | '0 : no-match -> SwitchCase(+7)' |
+| fallthrough.swift:4:8:4:11 | flag | 'flag : false -> print(+4)' |
+| fallthrough.swift:4:8:4:11 | flag | 'flag : true -> Block(+0)' |
+| fallthrough.swift:5:7:5:17 | fallthrough | 'fallthrough : fallthrough -> Block(+6)' |
+| fallthrough.swift:9:5:9:9 | BreakExpr | 'BreakExpr : break -> print(+10)' |
+| fallthrough.swift:10:8:10:19 | ConditionalPattern | 'ConditionalPattern : match -> Block(+1)' |
+| fallthrough.swift:10:8:10:19 | ConditionalPattern | 'ConditionalPattern : no-match -> SwitchCase(+3)' |
+| fallthrough.swift:12:5:12:15 | fallthrough | 'fallthrough : fallthrough -> Block(+2)' |
+| fallthrough.swift:13:8:13:8 | 2 | '2 : match -> Block(+1)' |
+| fallthrough.swift:13:8:13:8 | 2 | '2 : no-match -> SwitchCase(+3)' |
+| fallthrough.swift:15:5:15:15 | fallthrough | 'fallthrough : fallthrough -> Block(+2)' |
+| fallthrough.swift:16:3:16:3 | SwitchCase | 'SwitchCase : successor -> Block(+1)' |
+| fallthrough.swift:17:5:17:25 | print(...) | 'print(...) : successor -> print(+2)' |
+| fallthrough.swift:24:8:24:8 | 0 | '0 : match -> Block(+1)' |
+| fallthrough.swift:24:8:24:8 | 0 | '0 : no-match -> SwitchCase(+9)' |
+| fallthrough.swift:26:10:26:10 | 0 | '0 : match -> Block(+1)' |
+| fallthrough.swift:26:10:26:10 | 0 | '0 : no-match -> SwitchCase(+2)' |
+| fallthrough.swift:27:7:27:17 | fallthrough | 'fallthrough : fallthrough -> Block(+2)' |
+| fallthrough.swift:28:5:28:5 | SwitchCase | 'SwitchCase : successor -> Block(+1)' |
+| fallthrough.swift:32:5:32:15 | fallthrough | 'fallthrough : fallthrough -> Block(+2)' |
+| fallthrough.swift:33:3:33:3 | SwitchCase | 'SwitchCase : successor -> Block(+1)' |
+| fallthrough.swift:41:8:41:8 | 0 | '0 : match -> Block(+1)' |
+| fallthrough.swift:41:8:41:8 | 0 | '0 : no-match -> SwitchCase(+10)' |
+| fallthrough.swift:43:7:43:26 | print(...) | 'print(...) : fallthrough -> Block(+9)' |
+| fallthrough.swift:51:8:51:19 | ConditionalPattern | 'ConditionalPattern : match -> Block(+1)' |
+| fallthrough.swift:51:8:51:19 | ConditionalPattern | 'ConditionalPattern : no-match -> SwitchCase(+2)' |
+| fallthrough.swift:52:5:52:22 | print(...) | 'print(...) : successor -> print(+4)' |
+| fallthrough.swift:54:5:54:9 | BreakExpr | 'BreakExpr : break -> print(+2)' |
 noCfg
 | cfg.swift:47:42:47:47 | String |
 | cfg.swift:53:34:53:34 | _ |
@@ -188,7 +222,10 @@ noCfg
 | cfg.swift:564:49:564:51 | Int |
 | cfg.swift:622:3:622:11 | ReturnExpr |
 | cfg.swift:634:3:634:11 | ReturnExpr |
+| fallthrough.swift:6:7:6:11 | print |
 nonSimple
 | cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
 | cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern' |
 | cfg.swift:627:5:627:5 | SwitchCase | 'SwitchCase -V flag -? . -^ ... .error1 -^ ConditionalPattern' |
+| fallthrough.swift:10:3:10:3 | SwitchCase | 'SwitchCase -V flag -? 1 -^ ConditionalPattern' |
+| fallthrough.swift:51:3:51:3 | SwitchCase | 'SwitchCase -V flag -? 1 -^ ConditionalPattern' |

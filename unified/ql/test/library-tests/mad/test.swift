@@ -124,41 +124,41 @@ func testQualifiedConstructors(
     _ = String.Index.init(encodedOffset: encodedOffset)  // $ isSink=string-length
 
     _ = Realm.Configuration(
-        deleteRealmIfMigrationNeeded: false,
-        encryptionKey: encryptionKey,  // $ isSink=encryption-key
         fileURL: fileURL,  // $ isSink=path-injection
         inMemoryIdentifier: nil,
-        migrationBlock: nil,
-        objectTypes: nil,
+        syncConfiguration: nil,
+        encryptionKey: encryptionKey,  // $ isSink=encryption-key
         readOnly: false,
         schemaVersion: 0,
+        migrationBlock: nil,
+        deleteRealmIfMigrationNeeded: false,
         shouldCompactOnLaunch: nil,
-        syncConfiguration: nil)
+        objectTypes: nil)
 
     _ = Realm.Configuration.init(
-        deleteRealmIfMigrationNeeded: false,
-        encryptionKey: encryptionKey,  // $ isSink=encryption-key
         fileURL: fileURL,  // $ isSink=path-injection
         inMemoryIdentifier: nil,
-        migrationBlock: nil,
-        objectTypes: nil,
+        syncConfiguration: nil,
+        encryptionKey: encryptionKey,  // $ isSink=encryption-key
         readOnly: false,
         schemaVersion: 0,
+        migrationBlock: nil,
+        deleteRealmIfMigrationNeeded: false,
         shouldCompactOnLaunch: nil,
-        syncConfiguration: nil)
+        objectTypes: nil)
 
     _ = Realm.Configuration(
-        deleteRealmIfMigrationNeeded: false,
-        encryptionKey: encryptionKey,  // $ isSink=encryption-key
         fileURL: fileURL,  // $ isSink=path-injection
         inMemoryIdentifier: nil,
-        migrationBlock: nil,
-        objectTypes: nil,
+        syncConfiguration: nil,
+        encryptionKey: encryptionKey,  // $ isSink=encryption-key
         readOnly: false,
         schemaVersion: 0,
-        seedFilePath: seedFilePath,  // $ isSink=path-injection
+        migrationBlock: nil,
+        deleteRealmIfMigrationNeeded: false,
         shouldCompactOnLaunch: nil,
-        syncConfiguration: nil)
+        objectTypes: nil,
+        seedFilePath: seedFilePath)  // $ isSink=path-injection
 }
 
 class Connection {

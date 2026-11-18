@@ -700,6 +700,11 @@ module Ast implements AstSig<Py::Location> {
     ContinueStmt() { this = TPyStmt(any(Py::Continue c)) }
   }
 
+  /** A `fallthrough` statement. Python has no fallthrough. */
+  class FallthroughStmt extends Stmt {
+    FallthroughStmt() { none() }
+  }
+
   /** A `goto` statement. Python has no goto. */
   class GotoStmt extends Stmt {
     GotoStmt() { none() }

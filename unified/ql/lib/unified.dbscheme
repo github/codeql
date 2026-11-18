@@ -789,7 +789,7 @@ unified_return_expr_def(
   unique int id: @unified_return_expr
 );
 
-@unified_stmt = @unified_accessor_declaration | @unified_class_like_declaration | @unified_constructor_declaration | @unified_defer_stmt | @unified_destructor_declaration | @unified_do_while_stmt | @unified_expr | @unified_for_each_stmt | @unified_function_declaration | @unified_guard_if_stmt | @unified_import_declaration | @unified_labeled_stmt | @unified_operator_syntax_declaration | @unified_type_alias_declaration | @unified_variable_declaration | @unified_while_stmt
+@unified_stmt = @unified_accessor_declaration | @unified_class_like_declaration | @unified_constructor_declaration | @unified_defer_stmt | @unified_destructor_declaration | @unified_do_while_stmt | @unified_expr | @unified_for_each_stmt | @unified_function_declaration | @unified_guard_if_stmt | @unified_import_declaration | @unified_labeled_stmt | @unified_operator_syntax_declaration | @unified_token_fallthrough_stmt | @unified_type_alias_declaration | @unified_variable_declaration | @unified_while_stmt
 
 #keyset[unified_string_interpolation_expr, index]
 unified_string_interpolation_expr_element(
@@ -1020,21 +1020,22 @@ case @unified_token.kind of
 | 2 = @unified_token_boolean_literal
 | 3 = @unified_token_builtin_expr
 | 4 = @unified_token_empty_expr
-| 5 = @unified_token_fixity
-| 6 = @unified_token_float_literal
-| 7 = @unified_token_identifier
-| 8 = @unified_token_ignore_pattern
-| 9 = @unified_token_inferred_type_expr
-| 10 = @unified_token_infix_operator
-| 11 = @unified_token_int_literal
-| 12 = @unified_token_modifier
-| 13 = @unified_token_postfix_operator
-| 14 = @unified_token_prefix_operator
-| 15 = @unified_token_regex_literal
-| 16 = @unified_token_string_literal
-| 17 = @unified_token_super_expr
-| 18 = @unified_token_unhandled_node
-| 19 = @unified_token_unsupported_node
+| 5 = @unified_token_fallthrough_stmt
+| 6 = @unified_token_fixity
+| 7 = @unified_token_float_literal
+| 8 = @unified_token_identifier
+| 9 = @unified_token_ignore_pattern
+| 10 = @unified_token_inferred_type_expr
+| 11 = @unified_token_infix_operator
+| 12 = @unified_token_int_literal
+| 13 = @unified_token_modifier
+| 14 = @unified_token_postfix_operator
+| 15 = @unified_token_prefix_operator
+| 16 = @unified_token_regex_literal
+| 17 = @unified_token_string_literal
+| 18 = @unified_token_super_expr
+| 19 = @unified_token_unhandled_node
+| 20 = @unified_token_unsupported_node
 ;
 
 

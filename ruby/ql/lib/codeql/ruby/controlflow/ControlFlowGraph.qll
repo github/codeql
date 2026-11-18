@@ -308,6 +308,10 @@ private module Ast implements AstSig<Location> {
 
   class ContinueStmt extends Stmt instanceof R::Ast::NextStmt { }
 
+  class FallthroughStmt extends Stmt {
+    FallthroughStmt() { none() }
+  }
+
   class LabeledStmt extends Stmt {
     LabeledStmt() { none() }
 

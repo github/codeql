@@ -18,6 +18,7 @@
  *      \- JumpSuccessor
  *          |- BreakSuccessor
  *          |- ContinueSuccessor
+ *          |- FallthroughSuccessor
  *          |- GotoSuccessor
  *          |- RedoSuccessor // rare, used in Ruby
  *          \- RetrySuccessor // rare, used in Ruby
@@ -71,6 +72,7 @@ private newtype TSuccessorType =
   TExitSuccessor() or
   TBreakSuccessor() or
   TContinueSuccessor() or
+  TFallthroughSuccessor() or
   TGotoSuccessor() or
   TRedoSuccessor() or
   TRetrySuccessor()
@@ -357,13 +359,14 @@ class ExitSuccessor extends AbruptSuccessorImpl, TExitSuccessor {
 }
 
 private class TJumpSuccessor =
-  TBreakSuccessor or TContinueSuccessor or TGotoSuccessor or TRedoSuccessor or TRetrySuccessor;
+  TBreakSuccessor or TContinueSuccessor or TFallthroughSuccessor or TGotoSuccessor or
+      TRedoSuccessor or TRetrySuccessor;
 
 /**
  * A jump control flow successor.
  *
  * This covers non-exceptional, non-local control flow, such as `break`,
- * `continue`, and `goto`.
+ * `continue`, `fallthrough`, and `goto`.
  */
 abstract private class JumpSuccessorImpl extends AbruptSuccessorImpl, TJumpSuccessor { }
 
@@ -377,6 +380,11 @@ class BreakSuccessor extends JumpSuccessorImpl, TBreakSuccessor {
 /** A `continue` control flow successor. */
 class ContinueSuccessor extends JumpSuccessorImpl, TContinueSuccessor {
   override string toString() { result = "continue" }
+}
+
+/** A `fallthrough` control flow successor. */
+class FallthroughSuccessor extends JumpSuccessorImpl, TFallthroughSuccessor {
+  override string toString() { result = "fallthrough" }
 }
 
 /** A `goto` control flow successor. */

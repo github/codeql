@@ -256,6 +256,8 @@ module CfgImpl {
 
     class ContinueStmt = Go::ContinueStmt;
 
+    class FallthroughStmt = Go::FallthroughStmt;
+
     class GotoStmt = Go::GotoStmt;
 
     class ReturnStmt = Go::ReturnStmt;
@@ -324,12 +326,7 @@ module CfgImpl {
 
     AstNode getSwitchInit(Switch switch) { result = switch.(Go::SwitchStmt).getInit() }
 
-    predicate fallsThrough(Case c) {
-      // Go has no implicit fall-through between case clauses; an explicit
-      // `fallthrough` statement is required.
-      c.(Go::CaseClause).getStmt(max(int i | exists(c.(Go::CaseClause).getStmt(i)))) instanceof
-        Go::FallthroughStmt
-    }
+    predicate fallsThrough(Case c) { none() }
 
     /**
      * Holds if `s` is the flattened body element at position (`caseIdx`,
@@ -429,11 +426,7 @@ module CfgImpl {
 
     class CallableContext = Void;
 
-    class Label extends string {
-      Label() { this = any(Go::LabeledStmt ls).getLabel() }
-
-      string toString() { result = this }
-    }
+    class Label = string;
 
     predicate hasLabel(Ast::AstNode n, Label l) {
       l = n.(Go::LabeledStmt).getLabel()

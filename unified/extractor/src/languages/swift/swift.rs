@@ -840,6 +840,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((returnStmt expression: _? @val) => (return_expr value: {val})),
         rule!((breakStmt label: _? @@lbl) => (break_expr label_name_node: [(identifier #{lbl})])),
         rule!((continueStmt label: _? @@lbl) => (continue_expr label_name_node: [(identifier #{lbl})])),
+        rule!((fallThroughStmt) => (fallthrough_stmt)),
         rule!((throwStmt expression: @val) => (throw_expr value: {val})),
         // ---- Closures ----
         // A closure (`{ (x: Int) -> Int in … }`) becomes a `function_expr`. The
@@ -1635,7 +1636,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((classRestrictionType) => (unsupported_node "")),
         rule!((compositionType) => (unsupported_node "")),
         rule!((discardStmt) => (unsupported_node "")),
-        rule!((fallThroughStmt) => (unsupported_node "")),
         rule!((implicitlyUnwrappedOptionalType) => (unsupported_node "")),
         rule!((inlineArrayType) => (unsupported_node "")),
         rule!((keyPathExpr) => (unsupported_node "")),

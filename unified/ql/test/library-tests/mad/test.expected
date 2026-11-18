@@ -18,13 +18,13 @@ isSink
 | test.swift:114:5:114:20 | ... .encryptionKey | encryption-key |
 | test.swift:123:37:123:49 | encodedOffset | string-length |
 | test.swift:124:42:124:54 | encodedOffset | string-length |
-| test.swift:128:24:128:36 | encryptionKey | encryption-key |
-| test.swift:129:18:129:24 | fileURL | path-injection |
-| test.swift:140:24:140:36 | encryptionKey | encryption-key |
-| test.swift:141:18:141:24 | fileURL | path-injection |
-| test.swift:152:24:152:36 | encryptionKey | encryption-key |
-| test.swift:153:18:153:24 | fileURL | path-injection |
-| test.swift:159:23:159:34 | seedFilePath | path-injection |
+| test.swift:127:18:127:24 | fileURL | path-injection |
+| test.swift:130:24:130:36 | encryptionKey | encryption-key |
+| test.swift:139:18:139:24 | fileURL | path-injection |
+| test.swift:142:24:142:36 | encryptionKey | encryption-key |
+| test.swift:151:18:151:24 | fileURL | path-injection |
+| test.swift:154:24:154:36 | encryptionKey | encryption-key |
+| test.swift:161:23:161:34 | seedFilePath | path-injection |
 | test.swift:171:29:171:34 | string | path-injection |
 | test.swift:183:9:183:18 | launchPath | command-injection |
 | test.swift:184:9:184:17 | arguments | command-injection |
