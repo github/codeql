@@ -204,6 +204,10 @@ module CfgImpl {
       ContinueStmt() { none() }
     }
 
+    class FallthroughStmt extends Stmt {
+      FallthroughStmt() { none() }
+    }
+
     class GotoStmt extends Stmt {
       GotoStmt() { none() }
     }

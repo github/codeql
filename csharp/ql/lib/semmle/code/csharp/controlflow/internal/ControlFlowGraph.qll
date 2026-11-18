@@ -204,6 +204,10 @@ module Ast implements AstSig<Location> {
 
   class ContinueStmt = CS::ContinueStmt;
 
+  class FallthroughStmt extends Stmt {
+    FallthroughStmt() { none() }
+  }
+
   class GotoStmt = CS::GotoStmt;
 
   class ReturnStmt = CS::ReturnStmt;
