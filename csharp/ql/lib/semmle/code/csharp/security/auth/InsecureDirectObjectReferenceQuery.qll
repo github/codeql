@@ -2,7 +2,6 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.FlowSources
-deprecated import semmle.code.csharp.dataflow.flowsources.Remote
 import ActionMethods
 
 /**
