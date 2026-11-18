@@ -101,7 +101,7 @@
         ["", "", false, "sqlite3_prepare(_:_:_:_:_:)", "", "", "Argument[1]", "sql-injection", "manual"],
         ["", "", false, "sqlite3_prepare16(_:_:_:_:_:)", "", "", "Argument[1]", "sql-injection", "manual"],
         ["", "", false, "sqlite3_prepare16_v2(_:_:_:_:_:)", "", "", "Argument[1]", "sql-injection", "manual"],
-        ["", "", false, "sqlite3_prepare16_v3(_:_:_:_:_:)", "", "", "Argument[1]", "sql-injection", "manual"],
+        ["", "", false, "sqlite3_prepare16_v3(_:_:_:_:_:_:)", "", "", "Argument[1]", "sql-injection", "manual"],
         ["", "", false, "sqlite3_prepare_v2(_:_:_:_:_:)", "", "", "Argument[1]", "sql-injection", "manual"],
         ["", "", false, "sqlite3_prepare_v3(_:_:_:_:_:_:)", "", "", "Argument[1]", "sql-injection", "manual"],
         ["", "", false, "sqlite3_database_file_object(_:)", "", "", "Argument[0]", "path-injection", "manual"],

@@ -125,6 +125,7 @@
 | sqlite3_c_api.swift:183:29:183:40 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:183:29:183:40 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
 | sqlite3_c_api.swift:194:28:194:33 | buffer | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:194:28:194:33 | buffer | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
 | sqlite3_c_api.swift:202:31:202:36 | buffer | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:202:31:202:36 | buffer | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
+| sqlite3_c_api.swift:210:31:210:36 | buffer | sqlite3_c_api.swift:122:26:122:80 | String(...) | sqlite3_c_api.swift:210:31:210:36 | buffer | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | String(...) | user-provided value |
 edges
 | GRDB.swift:104:6:104:17 | remoteString | GRDB.swift:106:41:106:52 | remoteString | provenance |  |
 | GRDB.swift:104:6:104:17 | remoteString | GRDB.swift:108:41:108:52 | remoteString | provenance |  |
@@ -286,6 +287,7 @@ edges
 | sqlite3_c_api.swift:190:2:190:5 | data | sqlite3_c_api.swift:190:21:190:26 | [post] buffer | provenance |  |
 | sqlite3_c_api.swift:190:21:190:26 | [post] buffer | sqlite3_c_api.swift:194:28:194:33 | buffer | provenance |  |
 | sqlite3_c_api.swift:190:21:190:26 | [post] buffer | sqlite3_c_api.swift:202:31:202:36 | buffer | provenance |  |
+| sqlite3_c_api.swift:190:21:190:26 | [post] buffer | sqlite3_c_api.swift:210:31:210:36 | buffer | provenance |  |
 nodes
 | GRDB.swift:104:6:104:17 | remoteString | semmle.label | remoteString |
 | GRDB.swift:104:25:104:79 | String(...) | semmle.label | String(...) |
@@ -462,6 +464,5 @@ nodes
 | sqlite3_c_api.swift:190:21:190:26 | [post] buffer | semmle.label | [post] buffer |
 | sqlite3_c_api.swift:194:28:194:33 | buffer | semmle.label | buffer |
 | sqlite3_c_api.swift:202:31:202:36 | buffer | semmle.label | buffer |
+| sqlite3_c_api.swift:210:31:210:36 | buffer | semmle.label | buffer |
 subpaths
-testFailures
-| sqlite3_c_api.swift:210:90:210:99 | // $ Alert | Missing result: Alert |
