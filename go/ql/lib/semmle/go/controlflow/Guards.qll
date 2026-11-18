@@ -545,14 +545,14 @@ predicate guardEnsures(Expr e, boolean b, BasicBlock bb) { e.(Guard).controls(bb
 
 /** Holds if `guard` evaluating to `branch` ensures that `i = j` holds. */
 predicate guardEnsuresEq(Guard guard, boolean branch, DataFlow::Node i, DataFlow::Node j) {
-  guard.isEquality(i.asExpr(), j.asExpr(), branch)
+  guard.isEquality(i.asExpr(), j.asExpr(), any(GuardValue gv | gv.asBooleanValue() = branch))
 }
 
 /** Holds if `guard` evaluating to `branch` ensures that `i != j` holds. */
 predicate guardEnsuresNeq(Guard guard, boolean branch, DataFlow::Node i, DataFlow::Node j) {
-  exists(boolean eqval |
+  exists(GuardValue eqval |
     guard.isEquality(i.asExpr(), j.asExpr(), eqval) and
-    branch = eqval.booleanNot()
+    branch = eqval.getDualValue().asBooleanValue()
   )
 }
 

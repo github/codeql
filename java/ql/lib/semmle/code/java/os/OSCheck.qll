@@ -74,7 +74,7 @@ private Guard isOsFromSystemPropertyEqualityCheck(
         any(Literal literal |
           (literal instanceof CharacterLiteral or literal instanceof StringLiteral) and
           literal.getValue() = compareToLiteral
-        ), branch)
+        ), any(GuardValue gv | gv.asBooleanValue() = branch))
 }
 
 private class IsWindowsFromPathSeparator extends IsWindowsGuard {

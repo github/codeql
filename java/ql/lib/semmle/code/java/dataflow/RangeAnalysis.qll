@@ -208,6 +208,10 @@ module Sem implements Semantic<Location> {
 
   class Guard extends G::Guards_v2::Guard {
     Expr asExpr() { result = this }
+
+    predicate isEquality(Expr e1, Expr e2, boolean eqval) {
+      super.isEquality(e1, e2, any(G::GuardValue gv | gv.asBooleanValue() = eqval))
+    }
   }
 
   class Type = J::Type;

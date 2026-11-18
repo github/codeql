@@ -94,7 +94,7 @@ private module Impl {
       exists(Expr e1_, Expr e2_ |
         e1 = unique(ExprNode cfn | hasChild(this, e1_, _, cfn) | cfn) and
         e2 = unique(ExprNode cfn | hasChild(this, e2_, _, cfn) | cfn) and
-        super.isEquality(e1_, e2_, polarity)
+        super.isEquality(e1_, e2_, any(G::GuardValue gv | gv.asBooleanValue() = polarity))
       )
     }
   }

@@ -187,9 +187,9 @@ predicate concurrentModificationTest(BinaryExpr test) {
  * Holds if `test` and `guard` are equality tests of the same integral variable v with constants `c1` and `c2`.
  */
 pragma[nomagic]
-predicate guardedTest(EqualityTest test, Guard guard, boolean isEq, int i1, int i2) {
+predicate guardedTest(EqualityTest test, Guard guard, GuardValue eqval, int i1, int i2) {
   exists(SsaDefinition v, CompileTimeConstantExpr c1, CompileTimeConstantExpr c2 |
-    guard.isEquality(v.getARead(), c1, isEq) and
+    guard.isEquality(v.getARead(), c1, eqval) and
     test.hasOperands(v.getARead(), c2) and
     i1 = c1.getIntValue() and
     i2 = c2.getIntValue() and
@@ -201,10 +201,13 @@ predicate guardedTest(EqualityTest test, Guard guard, boolean isEq, int i1, int 
  * Holds if `guard` implies that `test` always has the value `testIsTrue`.
  */
 predicate uselessEqTest(EqualityTest test, boolean testIsTrue, Guard guard) {
-  exists(boolean guardIsTrue, boolean guardpolarity, int i |
-    guardedTest(test, guard, guardpolarity, i, i) and
-    guard.controls(test.getBasicBlock(), guardIsTrue) and
-    testIsTrue = guardIsTrue.booleanXor(guardpolarity.booleanXor(test.polarity()))
+  exists(GuardValue branch, GuardValue eqval, int i |
+    guardedTest(test, guard, eqval, i, i) and
+    guard.valueControls(test.getBasicBlock(), branch)
+  |
+    branch = eqval and testIsTrue = test.polarity()
+    or
+    branch = eqval.getDualValue() and testIsTrue = test.polarity().booleanNot()
   )
 }
 
