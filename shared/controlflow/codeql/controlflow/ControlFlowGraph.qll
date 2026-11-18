@@ -1703,14 +1703,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             not exists(getLoopElse(loopstmt)) and n2.isAfter(loopstmt)
           )
-          or
-          n1.isAfter(loopstmt.getBody()) and
-          n2.isAdditional(loopstmt, loopHeaderTag())
         )
         or
         exists(LoopStmt loopstmt |
+          n1.isAfter(loopstmt.getBody()) and
+          n2.isAdditional(loopstmt, loopHeaderTag())
+          or
           n1.isAfter(getLoopElse(loopstmt)) and
           n2.isAfter(loopstmt)
+          or
+          // a do-loop without a condition behaves like an infinite loop
+          loopstmt = any(DoStmt do | not exists(do.getCondition())) and
+          n1.isAdditional(loopstmt, loopHeaderTag()) and
+          n2.isBefore(loopstmt.getBody())
         )
         or
         exists(ForEachStmt foreachstmt |
