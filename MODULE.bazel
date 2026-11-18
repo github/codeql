@@ -38,6 +38,7 @@ bazel_dep(name = "zstd", version = "1.5.7.bcr.3")
 bazel_dep(name = "buildifier_prebuilt", version = "10.1.0", dev_dependency = True)
 
 # TODO: Cleanup our own codeql version of rules_dotnet.
+# Remember that we need to delete the old patch.
 git_override(
     module_name = "rules_dotnet",
     commit = "8db43484722080564c2abd04bc09f43f61bf6c65",
