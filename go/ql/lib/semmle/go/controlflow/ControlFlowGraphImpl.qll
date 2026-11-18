@@ -426,11 +426,7 @@ module CfgImpl {
 
     class CallableContext = Void;
 
-    class Label extends string {
-      Label() { this = any(Go::LabeledStmt ls).getLabel() }
-
-      string toString() { result = this }
-    }
+    class Label = string;
 
     predicate hasLabel(Ast::AstNode n, Label l) {
       l = n.(Go::LabeledStmt).getLabel()
