@@ -56,18 +56,16 @@ private string getQualifiedNameFromExpr(Expr e) {
 
 private string getArgLabelsFromCall(CallExpr call) {
   result =
-    concat(Argument arg, string name, int group |
+    concat(Argument arg, string name |
       arg = call.getAnArgument() and
       (
         arg.isPositional() and
-        name = "_" and
-        group = 0
+        name = "_"
         or
-        name = arg.getName() and
-        group = 1
+        name = arg.getName()
       )
     |
-      name + ":" order by group, name
+      name + ":" order by arg.getParentIndex()
     )
 }
 
@@ -98,18 +96,16 @@ private predicate isSubclassOfType(ClassLikeDeclaration cls, string typeName) {
 
 private string getArgLabelsFromCallable(Callable callable) {
   result =
-    concat(Parameter param, string name, int group |
+    concat(Parameter param, string name |
       param.getParent() = callable and
       (
         param.isPositional() and
-        name = "_" and
-        group = 0
+        name = "_"
         or
-        name = param.getExternalName() and
-        group = 1
+        name = param.getExternalName()
       )
     |
-      name + ":" order by group, name
+      name + ":" order by param.getParentIndex()
     )
 }
 
