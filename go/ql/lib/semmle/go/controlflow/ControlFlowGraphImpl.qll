@@ -411,6 +411,24 @@ module CfgImpl {
       AssignNullCoalescingExpr() { none() }
     }
 
+    class Pattern extends AstNode {
+      Pattern() { none() }
+    }
+
+    class AndPattern extends Pattern {
+      AndPattern() { none() }
+    }
+
+    class OrPattern extends Pattern {
+      OrPattern() { none() }
+    }
+
+    class NotPattern extends Pattern {
+      NotPattern() { none() }
+
+      Pattern getNegatedPattern() { none() }
+    }
+
     class PatternMatchExpr extends Expr {
       PatternMatchExpr() { none() }
 
