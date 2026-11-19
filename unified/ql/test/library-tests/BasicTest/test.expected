@@ -90,6 +90,7 @@ identifier
 | test.swift:48:37:48:40 | data | data |
 | test.swift:48:42:48:46 | count | count |
 | test.swift:49:16:49:19 | data | data |
+| test.swift:49:20:49:20 | subscript | subscript |
 | test.swift:49:21:49:25 | index | index |
 | test.swift:52:10:52:12 | add | add |
 | test.swift:52:14:52:14 | _ | _ |
@@ -131,8 +132,10 @@ identifier
 | test.swift:75:13:75:13 | i | i |
 | test.swift:75:23:75:27 | count | count |
 | test.swift:76:16:76:19 | self | self |
+| test.swift:76:20:76:20 | subscript | subscript |
 | test.swift:76:21:76:21 | i | i |
 | test.swift:76:26:76:29 | self | self |
+| test.swift:76:30:76:30 | subscript | subscript |
 | test.swift:76:31:76:31 | i | i |
 | test.swift:85:6:85:12 | combine | combine |
 | test.swift:85:14:85:14 | T | T |
@@ -153,6 +156,7 @@ identifier
 | test.swift:87:19:87:27 | dropFirst | dropFirst |
 | test.swift:87:31:87:36 | reduce | reduce |
 | test.swift:87:38:87:43 | values | values |
+| test.swift:87:44:87:44 | subscript | subscript |
 | test.swift:87:49:87:57 | transform | transform |
 | test.swift:90:5:90:9 | tuple | tuple |
 | test.swift:91:5:91:10 | unary1 | unary1 |

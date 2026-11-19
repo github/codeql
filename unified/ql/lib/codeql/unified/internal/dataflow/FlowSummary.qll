@@ -111,7 +111,7 @@ private predicate getSummaryNodeAlias = getSummaryNode/1;
 private module StepsInput implements StepsInputSig {
   predicate getSummaryNode = getSummaryNodeAlias/1;
 
-  DataFlowCall getACall(SummarizedCallable sc) { sc.matchesCall(result.asExplicitCall()) }
+  DataFlowCall getACall(SummarizedCallable sc) { sc.matchesCall(result) }
 }
 
 private import StepsInput

@@ -1,0 +1,154 @@
+xs[0] = 1
+xs[at: 1, 2] += 3
+m["a"]["b"] = c
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            assignmentExpr
+              equal: =
+          leftOperand:
+            subscriptCallExpr
+              leftSquare: [
+              rightSquare: ]
+              arguments:
+                labeledExpr
+                  expression:
+                    integerLiteralExpr
+                      literal: integerLiteral "0"
+              additionalTrailingClosures:
+              calledExpression:
+                declReferenceExpr
+                  baseName: identifier "xs"
+          rightOperand:
+            integerLiteralExpr
+              literal: integerLiteral "1"
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "+="
+          leftOperand:
+            subscriptCallExpr
+              leftSquare: [
+              rightSquare: ]
+              arguments:
+                labeledExpr
+                  colon: :
+                  label: identifier "at"
+                  expression:
+                    integerLiteralExpr
+                      literal: integerLiteral "1"
+                  trailingComma: ,
+                labeledExpr
+                  expression:
+                    integerLiteralExpr
+                      literal: integerLiteral "2"
+              additionalTrailingClosures:
+              calledExpression:
+                declReferenceExpr
+                  baseName: identifier "xs"
+          rightOperand:
+            integerLiteralExpr
+              literal: integerLiteral "3"
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            assignmentExpr
+              equal: =
+          leftOperand:
+            subscriptCallExpr
+              leftSquare: [
+              rightSquare: ]
+              arguments:
+                labeledExpr
+                  expression:
+                    stringLiteralExpr
+                      closingQuote: "
+                      openingQuote: "
+                      segments:
+                        stringSegment
+                          content: stringSegment "b"
+              additionalTrailingClosures:
+              calledExpression:
+                subscriptCallExpr
+                  leftSquare: [
+                  rightSquare: ]
+                  arguments:
+                    labeledExpr
+                      expression:
+                        stringLiteralExpr
+                          closingQuote: "
+                          openingQuote: "
+                          segments:
+                            stringSegment
+                              content: stringSegment "a"
+                  additionalTrailingClosures:
+                  calledExpression:
+                    declReferenceExpr
+                      baseName: identifier "m"
+          rightOperand:
+            declReferenceExpr
+              baseName: identifier "c"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩\n⟨stmt⟩\n⟨stmt⟩"
+      stmt:
+        binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+          left:
+            call_expr source="⟨callee⟩⟨argument⟩]"
+              callee:
+                member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                  base: identifier "xs" source="xs"
+                  member_name_node: identifier "subscript" source="["
+              argument:
+                argument source="⟨value⟩"
+                  value: int_literal "0" source="0"
+          operator: infix_operator "=" source="="
+          right: int_literal "1" source="1"
+        binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+          left:
+            call_expr source="⟨callee⟩⟨argument⟩, ⟨argument⟩]"
+              callee:
+                member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                  base: identifier "xs" source="xs"
+                  member_name_node: identifier "subscript" source="["
+              argument:
+                argument source="⟨name_node⟩: ⟨value⟩"
+                  name_node: identifier "at" source="at"
+                  value: int_literal "1" source="1"
+                argument source="⟨value⟩"
+                  value: int_literal "2" source="2"
+          operator: infix_operator "+=" source="+="
+          right: int_literal "3" source="3"
+        binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+          left:
+            call_expr source="⟨callee⟩⟨argument⟩]"
+              callee:
+                member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                  base:
+                    call_expr source="⟨callee⟩⟨argument⟩]"
+                      callee:
+                        member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                          base: identifier "m" source="m"
+                          member_name_node: identifier "subscript" source="["
+                      argument:
+                        argument source="⟨value⟩"
+                          value: string_literal "\"a\"" source="\"a\""
+                  member_name_node: identifier "subscript" source="["
+              argument:
+                argument source="⟨value⟩"
+                  value: string_literal "\"b\"" source="\"b\""
+          operator: infix_operator "=" source="="
+          right: identifier "c" source="c"

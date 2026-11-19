@@ -46,8 +46,11 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "first" source="first"
           value:
-            call_expr source="⟨callee⟩[⟨argument⟩]"
-              callee: identifier "xs" source="xs"
+            call_expr source="⟨callee⟩⟨argument⟩]"
+              callee:
+                member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                  base: identifier "xs" source="xs"
+                  member_name_node: identifier "subscript" source="["
               argument:
                 argument source="⟨value⟩"
                   value: int_literal "0" source="0"

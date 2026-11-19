@@ -21,6 +21,12 @@ module ConsistencyInput implements InputSig<Location, DataFlowInput> {
     // In summaries, 'inout' parameters result in flow directly into the post-update node for an argument
     n instanceof TSummaryNode
   }
+
+  predicate multipleArgumentCallExclude(DataFlowInput::ArgumentNode arg, DataFlowCall call) {
+    // When a call expression is updated in place, such as `x[i]` in `x[i] += y`, it invokes both
+    // a getter and a setter, which share the explicit arguments.
+    exists(CallExpr e | e = call.asSetterCall() | arg.asExpr() = e.getAnArgument().getValue())
+  }
 }
 
 module ConsistencyOutput =
