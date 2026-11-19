@@ -91,9 +91,9 @@ private module Impl {
      * true.
      */
     predicate isEquality(ExprNode e1, ExprNode e2, boolean polarity) {
-      super.isEquality(
-        e1.getExpr(), e2.getExpr(), any(G::GuardValue gv | gv.asBooleanValue() = polarity)
-      )
+      super
+          .isEquality(e1.getExpr(), e2.getExpr(),
+            any(G::GuardValue gv | gv.asBooleanValue() = polarity))
     }
   }
 
