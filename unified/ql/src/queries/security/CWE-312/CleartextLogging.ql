@@ -17,7 +17,7 @@
 // FIXME: This is a deliberately dumb and noisy version of the query used to exercise data flow early on.
 //
 import unified
-import codeql.concepts.internal.SensitiveDataHeuristics
+import codeql.unified.security.SensitiveData
 
 private string getNameFromExpr(Expr e) {
   result = e.(IdentifierExpr).getValue()
@@ -25,13 +25,11 @@ private string getNameFromExpr(Expr e) {
   result = e.(MemberAccessExpr).getMemberName()
 }
 
-module DummyConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) {
-    exists(string name |
-      name = getNameFromExpr(node.asExpr()) and
-      HeuristicNames::nameIndicatesSensitiveData(name)
-    )
-  }
+/**
+ * A taint-tracking configuration for cleartext logging vulnerabilities.
+ */
+module CleartextLoggingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof SensitiveData }
 
   predicate isSink(DataFlow::Node node) {
     exists(CallExpr call |
@@ -43,10 +41,11 @@ module DummyConfig implements DataFlow::ConfigSig {
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
-module DummyFlow = TaintTracking::Global<DummyConfig>;
+module CleartextLoggingFlow = TaintTracking::Global<CleartextLoggingConfig>;
 
-import DummyFlow::PathGraph
+import CleartextLoggingFlow::PathGraph
 
-from DummyFlow::PathNode source, DummyFlow::PathNode sink
-where DummyFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Logging of $@", source.getNode(), "sensitive data"
+from CleartextLoggingFlow::PathNode source, CleartextLoggingFlow::PathNode sink
+where CleartextLoggingFlow::flowPath(source, sink)
+select source.getNode(), source, sink, "This sensitive information is to $@ to a log file.", sink,
+  "written"
