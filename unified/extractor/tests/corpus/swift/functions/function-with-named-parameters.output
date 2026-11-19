@@ -30,8 +30,8 @@ sourceFile
                       calledExpression:
                         declReferenceExpr
                           baseName: identifier "print"
-          name: identifier "greet"
           modifiers:
+          name: identifier "greet"
           signature:
             functionSignature
               parameterClause:

@@ -13,7 +13,7 @@ Some setup is required to use QL for QL (see the below sections).
 [Install Rust](https://www.rust-lang.org/tools/install) (if using VSCode, you may also want the `rust-analyzer` extension), then run:
 
 ```bash
-cargo build --release
+cargo build --release -p codeql-extractor-ql -p buramu
 ```
 
 ## Generating the database schema and QL library

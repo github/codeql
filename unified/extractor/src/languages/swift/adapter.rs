@@ -193,14 +193,12 @@ fn classify(node: &Value) -> Result<KindInfo, String> {
 /// Iterate over a node object's structural (field, value) pairs in a stable
 /// order, skipping metadata keys.
 fn field_entries(node: &Value) -> Vec<(&str, &Value)> {
-    node.as_object()
-        .map(|map| {
-            map.iter()
-                .filter(|(k, _)| !is_metadata_key(k))
-                .map(|(k, v)| (k.as_str(), v))
-                .collect()
-        })
-        .unwrap_or_default()
+    node.as_object().map_or_default(|map| {
+        map.iter()
+            .filter(|(k, _)| !is_metadata_key(k))
+            .map(|(k, v)| (k.as_str(), v))
+            .collect()
+    })
 }
 
 /// The child node objects held by a field value.
@@ -520,9 +518,8 @@ mod tests {
     #[test]
     fn rejects_invalid_line_starts() {
         let json = r#"{"$lineStarts":[1],"$pos":0,"$end":0,"kind":"sourceFile"}"#;
-        let error = match json_to_ast(json) {
-            Ok(_) => panic!("invalid line starts should fail"),
-            Err(error) => error,
+        let Err(error) = json_to_ast(json) else {
+            panic!("invalid line starts should fail");
         };
         assert!(error.contains("must start with offset 0"), "{error}");
     }

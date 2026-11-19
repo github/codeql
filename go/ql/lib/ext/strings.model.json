@@ -1,0 +1,59 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["strings", "", false, "Clone", "", "", "Argument[0]", "ReturnValue", "value", "manual"],
+        ["strings", "", false, "Cut", "", "", "Argument[0]", "ReturnValue[0..1]", "taint", "manual"],
+        ["strings", "", false, "CutLast", "", "", "Argument[0]", "ReturnValue[0..1]", "taint", "manual"],
+        ["strings", "", false, "CutPrefix", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["strings", "", false, "CutSuffix", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["strings", "", false, "Fields", "", "", "Argument[0]", "ReturnValue.ArrayElement", "taint", "manual"],
+        ["strings", "", false, "FieldsFunc", "", "", "Argument[0]", "ReturnValue.ArrayElement", "taint", "manual"],
+        ["strings", "", false, "Join", "", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "Join", "", "", "Argument[1]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "Map", "", "", "Argument[1]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "Repeat", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "Replace", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "Replace", "", "", "Argument[2]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "ReplaceAll", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "ReplaceAll", "", "", "Argument[2]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "Split", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "SplitAfter", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "SplitAfterN", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "SplitN", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "Title", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "ToLower", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "ToLowerSpecial", "", "", "Argument[1]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "ToTitle", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "ToTitleSpecial", "", "", "Argument[1]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "ToUpper", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "ToUpperSpecial", "", "", "Argument[1]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "ToValidUTF8", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "Trim", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "TrimFunc", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "TrimLeft", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "TrimLeftFunc", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "TrimPrefix", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "TrimRight", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "TrimRightFunc", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "TrimSpace", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "", false, "TrimSuffix", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "Builder", true, "String", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["strings", "Builder", true, "WriteByte", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["strings", "Builder", true, "WriteRune", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["strings", "Reader", true, "ReadByte", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["strings", "Reader", true, "ReadRune", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["strings", "Reader", true, "Reset", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["strings", "Replacer", true, "Replace", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["strings", "Replacer", true, "Replace", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["strings", "Replacer", true, "WriteString", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["strings", "Replacer", true, "WriteString", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}

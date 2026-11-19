@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sourceModel
+    data:
+      # `mcp`, the official Model Context Protocol SDK. The handlers of `FastMCP` (1.x) and `MCPServer`
+      # (2.x) are modeled in `Mcp.qll`, which leaves out the `Context` parameter that the SDK injects.
+      # The low-level server: decorators in 1.x, constructor handlers taking `(ctx, params)` in 2.x.
+      # Its handlers take no `Context`; their parameters are chosen by the MCP client.
+      - ['mcp.server.lowlevel.Server', 'Member[call_tool,read_resource,get_prompt].ReturnValue.Argument[0].Parameter[any]', 'ai']
+      - ['mcp.server.lowlevel.Server!', 'Argument[on_call_tool:,on_get_prompt:].Parameter[1].Member[arguments,name]', 'ai']
+      - ['mcp.server.lowlevel.Server!', 'Argument[on_read_resource:].Parameter[1].Member[uri]', 'ai']
+      # The bearer token of the Authorization header reaches token verifiers and the access-token helper.
+      - ['mcp.server.auth.provider.TokenVerifier!', 'Subclass.Member[verify_token].Parameter[0,token:]', 'remote']
+      - ['mcp', 'Member[server].Member[auth].Member[middleware].Member[auth_context].Member[get_access_token].ReturnValue.Member[token]', 'remote']
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data:
+      # The class is re-exported; instances of any import path are instances of the class.
+      - ['mcp.server.lowlevel.Server!', 'mcp', 'Member[server].Member[Server]']
+      - ['mcp.server.lowlevel.Server!', 'mcp', 'Member[server].Member[lowlevel].Member[server].Member[Server]']
+      - ['mcp.server.lowlevel.Server', 'mcp.server.lowlevel.Server!', 'Instance']

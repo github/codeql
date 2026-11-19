@@ -64,24 +64,25 @@ private Guard sizeGuard(Expr e, boolean branch, boolean upper) {
       branch = true
     )
   )
+}
+
+private predicate sizeGuardLessThan(Guard g, Expr e, GuardValue gv) {
+  g = sizeGuard(e, gv.asBooleanValue(), true)
   or
-  result.isEquality(e, _, branch) and
-  (upper = true or upper = false)
+  g.isEquality(e, _, gv)
 }
 
-private predicate sizeGuardLessThan(Guard g, Expr e, boolean branch) {
-  g = sizeGuard(e, branch, true)
-}
-
-private predicate sizeGuardGreaterThan(Guard g, Expr e, boolean branch) {
-  g = sizeGuard(e, branch, false)
+private predicate sizeGuardGreaterThan(Guard g, Expr e, GuardValue gv) {
+  g = sizeGuard(e, gv.asBooleanValue(), false)
+  or
+  g.isEquality(e, _, gv)
 }
 
 /**
  * Holds if `n` is bounded in a way that is likely to prevent overflow.
  */
 predicate guardedLessThanSomething(DataFlow::Node n) {
-  DataFlow::BarrierGuard<sizeGuardLessThan/3>::getABarrierNode() = n
+  DataFlow::BarrierGuardValue<sizeGuardLessThan/3>::getABarrierNode() = n
   or
   negative(n.asExpr())
   or
@@ -92,7 +93,7 @@ predicate guardedLessThanSomething(DataFlow::Node n) {
  * Holds if `e` is bounded in a way that is likely to prevent underflow.
  */
 predicate guardedGreaterThanSomething(DataFlow::Node n) {
-  DataFlow::BarrierGuard<sizeGuardGreaterThan/3>::getABarrierNode() = n
+  DataFlow::BarrierGuardValue<sizeGuardGreaterThan/3>::getABarrierNode() = n
   or
   positive(n.asExpr())
   or

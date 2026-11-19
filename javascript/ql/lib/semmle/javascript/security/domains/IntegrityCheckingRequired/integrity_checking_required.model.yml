@@ -1,8 +1,0 @@
-extensions:
-  - addsTo: 
-      pack: codeql/javascript-all
-      extensible: isCdnDomainWithCheckingRequired
-    data:
-      - ["code.jquery.com"]
-      - ["cdnjs.cloudflare.com"]
-      - ["cdnjs.com"]

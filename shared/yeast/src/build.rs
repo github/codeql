@@ -1,13 +1,15 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use crate::captures::Captures;
-use crate::{Ast, FieldId, Id, KindId, NodeContent, Range, TranslatorHandle};
+use crate::{
+    Ast, ContextNodeId, FieldId, Id, IntoFieldIds, KindId, LocationSource, NodeContent, OutputAst,
+    OutputId, Range, TranslatorHandle,
+};
 
 /// Context for building new AST nodes during a transformation.
 ///
 /// Used by the `tree!` and `trees!` macros. Holds a mutable reference to the
-/// AST, a reference to the captures from a query match, and a mutable reference
-/// to a user-defined context of type `C`.
+/// output AST, translated captures, and a mutable user-defined context. Rule
+/// transforms additionally carry a shared immutable input AST.
 ///
 /// The user context `C` is shared across rules via the framework's driver:
 /// outer rules can write to it before recursive translation, and inner rules
@@ -18,7 +20,7 @@ use crate::{Ast, FieldId, Id, KindId, NodeContent, Range, TranslatorHandle};
 ///
 /// `BuildCtx` implements [`Deref`] and [`DerefMut`] targeting `C`, so user
 /// context fields are accessible as `ctx.my_field` directly (provided they
-/// don't collide with `BuildCtx`'s own fields like `ast`, `captures`, etc.).
+/// don't collide with `BuildCtx`'s own fields like `output`, `captures`, etc.).
 ///
 /// The default `C = ()` means rules that don't need any user context don't
 /// pay any cost.
@@ -26,10 +28,10 @@ use crate::{Ast, FieldId, Id, KindId, NodeContent, Range, TranslatorHandle};
 /// When constructed by the framework (via the rule! macro), `BuildCtx` also
 /// carries a [`TranslatorHandle`] that the [`translate`] method delegates
 /// to. When constructed by hand (e.g. in tests), the translator is `None`
-/// and [`translate`] returns an error.
+/// and [`translate`] panics.
 pub struct BuildCtx<'a, C: 'a = ()> {
-    pub ast: &'a mut Ast,
-    pub captures: &'a Captures,
+    ast: &'a Ast,
+    pub output: &'a mut OutputAst,
     /// Source range of the node matched by the current rule.
     ///
     /// The `rule!` macro applies this range to locally-created result roots
@@ -47,14 +49,14 @@ pub struct BuildCtx<'a, C: 'a = ()> {
     /// translations use their own context and therefore do not contribute to
     /// this set. Membership checks identify result roots to widen, while
     /// removals exclude nodes that are later assigned an explicit range.
-    created_nodes_without_source_range: BTreeSet<Id>,
+    created_nodes_without_source_range: BTreeSet<OutputId>,
 }
 
 impl<'a, C> BuildCtx<'a, C> {
-    pub fn new(ast: &'a mut Ast, captures: &'a Captures, user_ctx: &'a mut C) -> Self {
+    pub fn new(ast: &'a Ast, output: &'a mut OutputAst, user_ctx: &'a mut C) -> Self {
         Self {
             ast,
-            captures,
+            output,
             source_range: None,
             user_ctx,
             translator: None,
@@ -64,14 +66,14 @@ impl<'a, C> BuildCtx<'a, C> {
 
     /// Construct a context carrying a matched input source range.
     pub fn with_source_range(
-        ast: &'a mut Ast,
-        captures: &'a Captures,
+        ast: &'a Ast,
+        output: &'a mut OutputAst,
         source_range: Option<Range>,
         user_ctx: &'a mut C,
     ) -> Self {
         Self {
             ast,
-            captures,
+            output,
             source_range,
             user_ctx,
             translator: None,
@@ -82,15 +84,15 @@ impl<'a, C> BuildCtx<'a, C> {
     /// Construct a `BuildCtx` carrying a translator handle. Used by the
     /// `rule!` macro to enable [`translate`] inside rule transforms.
     pub fn with_translator(
-        ast: &'a mut Ast,
-        captures: &'a Captures,
+        ast: &'a Ast,
+        output: &'a mut OutputAst,
         source_range: Option<Range>,
         user_ctx: &'a mut C,
         translator: TranslatorHandle<'a, C>,
     ) -> Self {
         Self {
             ast,
-            captures,
+            output,
             source_range,
             user_ctx,
             translator: Some(translator),
@@ -103,22 +105,22 @@ impl<'a, C> BuildCtx<'a, C> {
         &mut self,
         kind: KindId,
         content: NodeContent,
-        fields: BTreeMap<FieldId, Vec<Id>>,
+        fields: BTreeMap<FieldId, Vec<OutputId>>,
         is_named: bool,
         source_range: Option<Range>,
-    ) -> Id {
+    ) -> OutputId {
         let has_explicit_source_range =
             source_range.is_some() || matches!(&content, NodeContent::Range(_));
         let id = self
-            .ast
+            .output
             .create_node_with_range(kind, content, fields, is_named, source_range);
         if self
-            .ast
+            .output
             .get_node(id)
             .is_some_and(|node| node.source_range().is_none())
         {
             if let Some(source_range) = self.source_range {
-                self.ast
+                self.output
                     .extend_source_range(id, source_range.empty_at_start());
             }
         }
@@ -134,12 +136,12 @@ impl<'a, C> BuildCtx<'a, C> {
         kind: &'static str,
         content: String,
         source_range: Option<Range>,
-    ) -> Id {
+    ) -> OutputId {
         let has_explicit_source_range = source_range.is_some();
         let source_range =
             source_range.or_else(|| self.source_range.map(|range| range.empty_at_start()));
         let id = self
-            .ast
+            .output
             .create_named_token_with_range(kind, content, source_range);
         if !has_explicit_source_range {
             self.created_nodes_without_source_range.insert(id);
@@ -150,11 +152,11 @@ impl<'a, C> BuildCtx<'a, C> {
     /// Finish the current rule invocation by applying the matched source range
     /// to locally-created result roots.
     #[doc(hidden)]
-    pub fn finish_rule(self, results: Vec<Id>) -> Vec<Id> {
+    pub fn finish_rule(self, results: Vec<OutputId>) -> Vec<OutputId> {
         if let Some(source_range) = self.source_range {
             for &id in &results {
                 if self.created_nodes_without_source_range.contains(&id) {
-                    self.ast.extend_source_range(id, source_range);
+                    self.output.extend_source_range(id, source_range);
                 }
             }
         }
@@ -163,59 +165,62 @@ impl<'a, C> BuildCtx<'a, C> {
 
     /// Assign an explicit source range to a newly-built result root.
     #[doc(hidden)]
-    pub fn set_node_source_range(&mut self, node: Id, source_range: Option<Range>) -> Id {
+    pub fn set_node_source_range(
+        &mut self,
+        node: OutputId,
+        source_range: Option<Range>,
+    ) -> OutputId {
         if let Some(source_range) = source_range {
-            self.ast.set_source_range(node, source_range);
+            self.output.set_source_range(node, source_range);
             self.created_nodes_without_source_range.remove(&node);
         }
         node
     }
 
-    /// Look up a capture variable, returning its node Id.
-    pub fn capture(&self, name: &str) -> Id {
-        self.captures
-            .get_var(name)
-            .unwrap_or_else(|e| panic!("build: {e}"))
+    /// Explicitly make a newly-built node locationless.
+    #[doc(hidden)]
+    pub fn set_node_locationless(&mut self, node: OutputId) -> OutputId {
+        self.output.clear_source_range(node);
+        self.created_nodes_without_source_range.remove(&node);
+        node
     }
 
-    /// Get all values of a repeated capture variable.
-    pub fn capture_all(&self, name: &str) -> Vec<Id> {
-        self.captures.get_all(name)
+    /// Return the immutable input AST. Available inside rule transforms.
+    pub fn ast(&self) -> &Ast {
+        self.ast
     }
 
-    /// Read the source text of a captured (or any other) node.
-    ///
-    /// Convenience for the common `ctx.ast.source_text(id)` reach-through used
-    /// by Rust-block rules that branch on, or embed, a raw capture's spelling
-    /// (e.g. an operator or keyword token). Resolves against the stored source
-    /// bytes, so it works for both parsed nodes and synthesized ones (via their
-    /// inherited source range).
-    pub fn source_text(&self, id: Id) -> String {
-        self.ast.source_text(id)
+    pub fn source_text<I: ContextNodeId>(&self, id: I) -> String {
+        id.source_text(self)
     }
 
     /// Return the source range of a parsed or synthetic node.
-    fn source_range_of(&self, id: Id) -> Option<Range> {
-        self.ast.get_node(id).and_then(|node| node.source_range())
+    pub fn source_range<I: ContextNodeId>(&self, id: I) -> Option<Range> {
+        id.source_range(self)
+    }
+
+    #[doc(hidden)]
+    pub fn location_source_range<S: LocationSource>(&self, source: S) -> Option<Range> {
+        source.location_range(self)
     }
 
     /// Return an empty range between two non-overlapping nodes.
-    pub fn empty_source_range_between(&self, left: Id, right: Id) -> Option<Range> {
-        let left = self.source_range_of(left)?;
-        let right = self.source_range_of(right)?;
+    pub fn empty_source_range_between(&self, left: OutputId, right: OutputId) -> Option<Range> {
+        let left = self.source_range(left)?;
+        let right = self.source_range(right)?;
         (left.end_byte <= right.start_byte).then(|| left.empty_at_end())
     }
 
     /// Create a named AST node with the given kind and fields.
-    pub fn node(&mut self, kind: &str, fields: Vec<(&str, Vec<Id>)>) -> Id {
+    pub fn node(&mut self, kind: &str, fields: Vec<(&str, Vec<OutputId>)>) -> OutputId {
         let kind_id = self
-            .ast
+            .output
             .id_for_node_kind(kind)
             .unwrap_or_else(|| panic!("build: node kind '{kind}' not found"));
-        let mut field_map: BTreeMap<FieldId, Vec<Id>> = BTreeMap::new();
+        let mut field_map: BTreeMap<FieldId, Vec<OutputId>> = BTreeMap::new();
         for (name, ids) in fields {
             let field_id = self
-                .ast
+                .output
                 .field_id_for_name(name)
                 .unwrap_or_else(|| panic!("build: field '{name}' not found"));
             field_map.entry(field_id).or_default().extend(ids);
@@ -229,8 +234,29 @@ impl<'a, C> BuildCtx<'a, C> {
         )
     }
 
+    /// Create a leaf whose value is inherited from the current rule's match.
+    #[doc(hidden)]
+    pub fn inherited_literal(&mut self, kind: &'static str) -> OutputId {
+        let source = self
+            .translator
+            .as_ref()
+            .expect("inherited leaf content requires a rule match")
+            .matched_root();
+        let node = self
+            .ast
+            .get_node(source)
+            .expect("rule source node must exist");
+        let stored = node.opt_string_content();
+        let has_children = node.fields.values().any(|children| !children.is_empty());
+        let content = match stored {
+            Some(value) if !value.is_empty() || !has_children => value,
+            _ => self.ast.source_text(source),
+        };
+        self.create_named_token_with_range(kind, content, None)
+    }
+
     /// Create a leaf node with a fixed string content.
-    pub fn literal(&mut self, kind: &'static str, value: &str) -> Id {
+    pub fn literal(&mut self, kind: &'static str, value: &str) -> OutputId {
         self.create_named_token_with_range(kind, value.to_string(), None)
     }
 
@@ -240,43 +266,55 @@ impl<'a, C> BuildCtx<'a, C> {
         kind: &'static str,
         value: &str,
         source_range: Option<Range>,
-    ) -> Id {
+    ) -> OutputId {
         self.create_named_token_with_range(kind, value.to_string(), source_range)
     }
 
     /// Create a literal with an empty range at another node's start.
-    pub fn literal_at_start_of(&mut self, kind: &'static str, value: &str, source: Id) -> Id {
-        let source_range = self.source_range_of(source).map(Range::empty_at_start);
+    pub fn literal_at_start_of<I: ContextNodeId>(
+        &mut self,
+        kind: &'static str,
+        value: &str,
+        source: I,
+    ) -> OutputId {
+        let source_range = self.source_range(source).map(Range::empty_at_start);
         self.literal_with_source_range(kind, value, source_range)
     }
 }
 
 impl<C: Clone> BuildCtx<'_, C> {
+    #[doc(hidden)]
+    pub fn extend_field_ids<V: IntoFieldIds<C>>(&mut self, value: V, out: &mut Vec<OutputId>) {
+        value.extend_into(self, out);
+    }
+
+    #[doc(hidden)]
+    pub fn translate_into(&mut self, id: Id, out: &mut Vec<OutputId>) {
+        out.extend(self.translate(id));
+    }
+
     /// Recursively translate every id in the given iterable via the
     /// framework's rule machinery and return the accumulated resulting node
     /// ids in order.
     ///
     /// The single-`Id` case works too, because `Id: IntoIterator<Item
-    /// = Id>` is a singleton iterator — so `ctx.translate(some_id)?`
-    /// returns a `Vec<Id>` containing whatever `some_id` translated to.
+    /// = Id>` is a singleton iterator — so `ctx.translate(some_id)`
+    /// returns a `Vec<OutputId>` containing whatever `some_id` translated to.
     ///
-    /// Errors if this `BuildCtx` was constructed by hand (without a
+    /// Panics if this `BuildCtx` was constructed by hand (without a
     /// translator handle) — for example, in unit tests that don't go
     /// through the rule driver.
-    pub fn translate<I: Into<Id>>(
-        &mut self,
-        ids: impl IntoIterator<Item = I>,
-    ) -> Result<Vec<Id>, String> {
+    pub fn translate(&mut self, ids: impl IntoIterator<Item = Id>) -> Vec<OutputId> {
         let translator = self
             .translator
             .as_ref()
-            .ok_or("translate() called on a BuildCtx without a translator handle")?;
+            .expect("translate() called on a BuildCtx without a translator handle");
         let mut out = Vec::new();
         for id in ids {
-            let translated = translator.translate(self.ast, self.user_ctx, id.into())?;
+            let translated = translator.translate(self.ast, self.output, self.user_ctx, id);
             out.extend(translated);
         }
-        Ok(out)
+        out
     }
 
     /// Run `f` with a temporary child [`BuildCtx`] whose `user_ctx` is
@@ -301,9 +339,9 @@ impl<C: Clone> BuildCtx<'_, C> {
     /// let val = ctx.scoped(|ctx| {
     ///     ctx.reset();
     ///     ctx.translate(val)
-    /// })?;
+    /// });
     /// // `ctx` here is untouched by the reset inside the closure.
-    /// let other = ctx.translate(other_id)?;
+    /// let other = ctx.translate(other_id);
     /// ```
     pub fn scoped<F, R>(&mut self, f: F) -> R
     where
@@ -311,8 +349,8 @@ impl<C: Clone> BuildCtx<'_, C> {
     {
         let mut child_user_ctx = self.user_ctx.clone();
         let mut child = BuildCtx {
-            ast: &mut *self.ast,
-            captures: self.captures,
+            ast: self.ast,
+            output: &mut *self.output,
             source_range: self.source_range,
             user_ctx: &mut child_user_ctx,
             translator: self.translator,

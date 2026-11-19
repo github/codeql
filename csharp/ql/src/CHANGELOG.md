@@ -1,3 +1,13 @@
+## 1.11.1
+
+No user-facing changes.
+
+## 1.11.0
+
+### Query Metadata Changes
+
+* The `external/cwe/cwe-730` tag has been removed from `cs/redos` and `cs/regex-injection`, because MITRE has marked CWE-730 as prohibited for vulnerability mapping. The queries retain their other CWE tags.
+
 ## 1.10.2
 
 ### Minor Analysis Improvements

@@ -26,6 +26,8 @@
 | tst.js:97:5:97:46 | obj[req ... g, '')] | tst.js:97:9:97:19 | req.query.x | tst.js:97:5:97:46 | obj[req ... g, '')] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:97:9:97:19 | req.query.x | user controlled input |
 | tst.js:105:5:105:17 | object[taint] | tst.js:102:24:102:37 | req.query.data | tst.js:105:5:105:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:102:24:102:37 | req.query.data | user controlled input |
 | tst.js:130:5:130:53 | obj[req ... ), '')] | tst.js:130:9:130:19 | req.query.x | tst.js:130:5:130:53 | obj[req ... ), '')] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:130:9:130:19 | req.query.x | user controlled input |
+| tst.js:139:9:139:16 | obj[key] | tst.js:135:22:135:34 | req.query.key | tst.js:139:9:139:16 | obj[key] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:135:22:135:34 | req.query.key | user controlled input |
+| tst.js:145:9:145:16 | obj[key] | tst.js:135:22:135:34 | req.query.key | tst.js:145:9:145:16 | obj[key] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:135:22:135:34 | req.query.key | user controlled input |
 edges
 | lib.js:1:38:1:40 | obj | lib.js:6:7:6:9 | obj | provenance |  |
 | lib.js:1:43:1:46 | path | lib.js:2:21:2:24 | path | provenance |  |
@@ -136,6 +138,12 @@ edges
 | tst.js:105:12:105:16 | taint | tst.js:105:5:105:17 | object[taint] | provenance | Config |
 | tst.js:130:9:130:19 | req.query.x | tst.js:130:9:130:52 | req.que ... '), '') | provenance | Config |
 | tst.js:130:9:130:52 | req.que ... '), '') | tst.js:130:5:130:53 | obj[req ... ), '')] | provenance | Config |
+| tst.js:135:9:135:11 | key | tst.js:139:13:139:15 | key | provenance |  |
+| tst.js:135:9:135:11 | key | tst.js:145:13:145:15 | key | provenance |  |
+| tst.js:135:15:135:35 | String( ... ry.key) | tst.js:135:9:135:11 | key | provenance |  |
+| tst.js:135:22:135:34 | req.query.key | tst.js:135:15:135:35 | String( ... ry.key) | provenance | Config |
+| tst.js:139:13:139:15 | key | tst.js:139:9:139:16 | obj[key] | provenance | Config |
+| tst.js:145:13:145:15 | key | tst.js:145:9:145:16 | obj[key] | provenance | Config |
 nodes
 | lib.js:1:38:1:40 | obj | semmle.label | obj |
 | lib.js:1:43:1:46 | path | semmle.label | path |
@@ -265,5 +273,12 @@ nodes
 | tst.js:130:5:130:53 | obj[req ... ), '')] | semmle.label | obj[req ... ), '')] |
 | tst.js:130:9:130:19 | req.query.x | semmle.label | req.query.x |
 | tst.js:130:9:130:52 | req.que ... '), '') | semmle.label | req.que ... '), '') |
+| tst.js:135:9:135:11 | key | semmle.label | key |
+| tst.js:135:15:135:35 | String( ... ry.key) | semmle.label | String( ... ry.key) |
+| tst.js:135:22:135:34 | req.query.key | semmle.label | req.query.key |
+| tst.js:139:9:139:16 | obj[key] | semmle.label | obj[key] |
+| tst.js:139:13:139:15 | key | semmle.label | key |
+| tst.js:145:9:145:16 | obj[key] | semmle.label | obj[key] |
+| tst.js:145:13:145:15 | key | semmle.label | key |
 subpaths
 | tst.js:14:27:14:31 | taint | tst.js:55:29:55:32 | prop | tst.js:56:12:56:33 | obj ? o ...  : null | tst.js:14:5:14:32 | unsafeG ...  taint) |

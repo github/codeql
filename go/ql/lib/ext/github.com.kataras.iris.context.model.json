@@ -1,0 +1,28 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "packageGrouping"
+      },
+      "data": [
+        ["iris-context", "github.com/kataras/iris/context"],
+        ["iris-context", "github.com/kataras/iris/server/web/context"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["group:iris-context", "Context", true, "SendFile", "", "", "Argument[0]", "path-injection", "manual"],
+        ["group:iris-context", "Context", true, "ServeFile", "", "", "Argument[0]", "path-injection", "manual"],
+        ["group:iris-context", "Context", true, "SendFileWithRate", "", "", "Argument[0]", "path-injection", "manual"],
+        ["group:iris-context", "Context", true, "ServeFileWithRate", "", "", "Argument[0]", "path-injection", "manual"],
+        ["group:iris-context", "Context", true, "UploadFormFiles", "", "", "Argument[0]", "path-injection", "manual"],
+        ["group:iris-context", "Context", true, "SaveFormFile", "", "", "Argument[1]", "path-injection", "manual"]
+      ]
+    }
+  ]
+}

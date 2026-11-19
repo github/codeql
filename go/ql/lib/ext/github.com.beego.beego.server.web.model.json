@@ -1,0 +1,80 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "packageGrouping"
+      },
+      "data": [
+        ["beego", "github.com/astaxie/beego"],
+        ["beego", "github.com/beego/beego"],
+        ["beego", "github.com/beego/beego/server/web"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        // log-injection
+        ["group:beego", "", false, "Alert", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["group:beego", "", false, "Critical", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["group:beego", "", false, "Debug", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["group:beego", "", false, "Emergency", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["group:beego", "", false, "Error", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["group:beego", "", false, "Info", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["group:beego", "", false, "Informational", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["group:beego", "", false, "Notice", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["group:beego", "", false, "Trace", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["group:beego", "", false, "Warn", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["group:beego", "", false, "Warning", "", "", "Argument[0..1]", "log-injection", "manual"],
+        // path-injection
+        ["group:beego", "", false, "Walk", "", "", "Argument[1]", "path-injection", "manual"],
+        ["group:beego", "Controller", true, "SaveToFile", "", "", "Argument[1]", "path-injection", "manual"],
+        ["group:beego", "Controller", true, "SaveToFileWithBuffer", "", "", "Argument[1]", "path-injection", "manual"], // only exists in v2
+        ["group:beego", "FileSystem", true, "Open", "", "", "Argument[0]", "path-injection", "manual"],
+        // url-redirection
+        ["group:beego", "Controller", true, "Redirect", "", "", "Argument[0]", "url-redirection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["group:beego", "", false, "HTML2str", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["group:beego", "", false, "Htmlquote", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["group:beego", "", false, "Htmlunquote", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["group:beego", "", false, "MapGet", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["group:beego", "", false, "ParseForm", "", "", "Argument[0]", "Argument[1]", "taint", "manual"],
+        ["group:beego", "", false, "Str2html", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["group:beego", "", false, "Substr", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["group:beego", "Controller", true, "ParseForm", "", "", "Argument[0]", "remote", "manual"],
+        ["group:beego", "Controller", true, "GetFile", "", "", "ReturnValue[0..1]", "remote", "manual"],
+        ["group:beego", "Controller", true, "GetFiles", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego", "Controller", true, "GetString", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego", "Controller", true, "GetStrings", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["group:beego", "Controller", true, "Input", "", "", "ReturnValue[0]", "remote", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "barrierModel"
+      },
+      "data": [
+        ["group:beego", "", true, "Htmlquote", "", "", "ReturnValue", "html-injection", "manual"]
+      ]
+    }
+  ]
+}

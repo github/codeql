@@ -1,0 +1,251 @@
+func ignore(_: Int, _: String) {
+}
+
+func ignore(first _: Int, second _: String) {
+}
+
+let ignoreClosure: (Int, String) -> Void = { _, _ in
+}
+
+let ignoreTypedClosure = { (_: Int, _: String) in
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+          modifiers:
+          name: identifier "ignore"
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: _
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "String"
+                      firstName: _
+          funcKeyword: func
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+          modifiers:
+          name: identifier "ignore"
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: identifier "first"
+                      secondName: _
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "String"
+                      firstName: identifier "second"
+                      secondName: _
+          funcKeyword: func
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    closureExpr
+                      leftBrace: {
+                      rightBrace: }
+                      signature:
+                        closureSignature
+                          attributes:
+                          inKeyword: in
+                          parameterClause:
+                            closureShorthandParameter
+                              name: _
+                              trailingComma: ,
+                            closureShorthandParameter
+                              name: _
+                      statements:
+              pattern:
+                identifierPattern
+                  identifier: identifier "ignoreClosure"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    functionType
+                      leftParen: (
+                      rightParen: )
+                      parameters:
+                        tupleTypeElement
+                          trailingComma: ,
+                          type:
+                            identifierType
+                              name: identifier "Int"
+                        tupleTypeElement
+                          type:
+                            identifierType
+                              name: identifier "String"
+                      returnClause:
+                        returnClause
+                          arrow: ->
+                          type:
+                            identifierType
+                              name: identifier "Void"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    closureExpr
+                      leftBrace: {
+                      rightBrace: }
+                      signature:
+                        closureSignature
+                          attributes:
+                          inKeyword: in
+                          parameterClause:
+                            closureParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                                closureParameter
+                                  colon: :
+                                  attributes:
+                                  modifiers:
+                                  trailingComma: ,
+                                  type:
+                                    identifierType
+                                      name: identifier "Int"
+                                  firstName: _
+                                closureParameter
+                                  colon: :
+                                  attributes:
+                                  modifiers:
+                                  type:
+                                    identifierType
+                                      name: identifier "String"
+                                  firstName: _
+                      statements:
+              pattern:
+                identifierPattern
+                  identifier: identifier "ignoreTypedClosure"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩\n\n⟨stmt⟩\n\n⟨stmt⟩\n\n⟨stmt⟩"
+      stmt:
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) ⟨body⟩"
+          name_node: identifier "ignore" source="ignore"
+          parameter:
+            parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "Int" source="Int"
+              pattern: ignore_pattern "_" source="_"
+            parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type: identifier "String" source="String"
+              pattern: ignore_pattern "_" source="_"
+          body: block "{\n}" source="{\n}"
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) ⟨body⟩"
+          name_node: identifier "ignore" source="ignore"
+          parameter:
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "first" source="first"
+              type: identifier "Int" source="Int"
+              pattern: ignore_pattern "_" source="_"
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "second" source="second"
+              type: identifier "String" source="String"
+              pattern: ignore_pattern "_" source="_"
+          body: block "{\n}" source="{\n}"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "ignoreClosure" source="ignoreClosure"
+          type:
+            function_expr source="(⟨parameter⟩, ⟨parameter⟩) -> ⟨return_type⟩"
+              parameter:
+                parameter source="⟨type⟩"
+                  type: identifier "Int" source="Int"
+                parameter source="⟨type⟩"
+                  type: identifier "String" source="String"
+              return_type: identifier "Void" source="Void"
+          value:
+            function_expr source="{ ⟨parameter⟩, ⟨parameter⟩ in\n}"
+              parameter:
+                parameter source="⟨pattern⟩"
+                  pattern: ignore_pattern "_" source="_"
+                parameter source="⟨pattern⟩"
+                  pattern: ignore_pattern "_" source="_"
+              body: block source=""
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "ignoreTypedClosure" source="ignoreTypedClosure"
+          value:
+            function_expr source="{ (⟨parameter⟩, ⟨parameter⟩) in\n}"
+              parameter:
+                parameter source="⟨pattern⟩: ⟨type⟩"
+                  type: identifier "Int" source="Int"
+                  pattern: ignore_pattern "_" source="_"
+                parameter source="⟨pattern⟩: ⟨type⟩"
+                  type: identifier "String" source="String"
+                  pattern: ignore_pattern "_" source="_"
+              body: block source=""

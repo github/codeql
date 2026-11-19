@@ -1,0 +1,13 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/appleboy/gin-jwt", "GinJWTMiddleware", true, "Key", "", "", "", "credentials-key", "manual"]
+      ]
+    }
+  ]
+}

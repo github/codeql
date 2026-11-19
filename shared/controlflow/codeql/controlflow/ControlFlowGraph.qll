@@ -180,6 +180,14 @@ signature module AstSig<LocationSig Location> {
   class ContinueStmt extends Stmt;
 
   /**
+   * A `fallthrough` statement.
+   *
+   * Fallthrough statements complete abruptly and continue at the next switch
+   * case's body, without evaluating its pattern or guard.
+   */
+  class FallthroughStmt extends Stmt;
+
+  /**
    * A `goto` statement.
    *
    * Goto statements complete abruptly and jump to a labeled statement.
@@ -443,8 +451,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      * A label used for matching jump sources and targets, for example in goto
      * statements.
      */
+    bindingset[this]
     class Label {
       /** Gets a textual representation of this label. */
+      bindingset[this]
       string toString();
     }
 
@@ -538,14 +548,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     /** Holds if catch clause `catch` catches all exceptions. */
     default predicate catchAll(CatchClause catch) { not exists(catch.getPattern()) }
 
+    /** Holds if `switch` is exhaustive, so one of its cases must match. */
+    default predicate isExhaustive(Switch switch) { none() }
+
     /**
      * Holds if case `c` matches all possible values, for example, if it is a
-     * `default` case or a match-all pattern like `Object o` or if it is the
-     * final case in a switch that is known to be exhaustive.
+     * match-all pattern like `Object o`.
      *
      * A match-all case can still ultimately fail to match if it has a guard.
+     *
+     * Default cases are handled automatically. The final case in an exhaustive
+     * switch should not be handled here but through `isExhaustive`.
      */
-    default predicate matchAll(Case c) { c instanceof DefaultCase }
+    default predicate matchAll(Case c) { none() }
   }
 
   /**
@@ -573,6 +588,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       n instanceof BreakStmt
       or
       n instanceof ContinueStmt
+      or
+      n instanceof FallthroughStmt
       or
       n instanceof GotoStmt
       or
@@ -606,6 +623,87 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     /**
+     * Gets an integer indicating the control flow order of a case within a
+     * switch. This is equal to the AST order, except that default cases are
+     * always last in control flow order, even if some languages allow them
+     * to appear before other cases in the AST.
+     */
+    private int getCaseControlFlowOrder(Switch s, Case c) {
+      exists(int pos | s.getCase(pos) = c |
+        // if a default case is not last in the AST, move it last in the CFG order
+        if c instanceof DefaultCase and exists(s.getCase(pos + 1))
+        then result = strictcount(s.getCase(_))
+        else result = pos
+      )
+    }
+
+    private module CaseDenseRankInput implements DenseRankInputSig1 {
+      class C = Switch;
+
+      class Ranked = Case;
+
+      predicate getRank = getCaseControlFlowOrder/2;
+    }
+
+    private predicate getRankedCaseCfgOrder = DenseRank1<CaseDenseRankInput>::denseRank/2;
+
+    private int numberOfStmts(Switch s) { result = strictcount(s.getStmt(_)) }
+
+    private predicate caseIndex(Switch s, Case c, int caseIdx, int caseStmtPos) {
+      c = s.getCase(caseIdx) and
+      c = s.getStmt(caseStmtPos)
+    }
+
+    /**
+     * Gets the body element of `case` at the specified (zero-based) `index`.
+     *
+     * This is either unique when the case has a single right-hand side, or it
+     * is the sequence of statements between this case and the next case.
+     */
+    private AstNode getCaseBodyElement(Case case, int index) {
+      result = case.getBody() and index = 0
+      or
+      not exists(case.getBody()) and
+      exists(Switch s, int caseIdx, int caseStmtPos, int nextCaseStmtPos |
+        caseIndex(pragma[only_bind_into](s), case, caseIdx, caseStmtPos) and
+        (
+          caseIndex(pragma[only_bind_into](s), _, caseIdx + 1, nextCaseStmtPos)
+          or
+          not exists(s.getCase(caseIdx + 1)) and
+          nextCaseStmtPos = numberOfStmts(s)
+        ) and
+        index = [0 .. nextCaseStmtPos - caseStmtPos - 2] and
+        result = pragma[only_bind_into](s).getStmt(caseStmtPos + 1 + index)
+      )
+    }
+
+    private AstNode getFirstCaseBodyElement(Case case) {
+      result = getCaseBodyElement(case, 0)
+      or
+      not exists(getCaseBodyElement(case, 0)) and
+      exists(Switch s, int i |
+        fallsThrough(case) and
+        // fall-through follows AST order, not case control flow order:
+        s.getCase(i) = case and
+        result = getFirstCaseBodyElement(s.getCase(i + 1))
+      )
+    }
+
+    private AstNode getNextCaseBodyElement(AstNode bodyElement) {
+      exists(Case case, int i | getCaseBodyElement(case, i) = bodyElement |
+        result = getCaseBodyElement(case, i + 1)
+        or
+        not exists(getCaseBodyElement(case, i + 1)) and
+        exists(Switch s, int j |
+          fallsThrough(case) and
+          // fall-through follows AST order, not case control flow order:
+          s.getCase(j) = case and
+          result = getFirstCaseBodyElement(s.getCase(j + 1))
+        )
+      )
+    }
+
+    /**
      * Holds if the value of `child` is propagated to `parent`. For example,
      * the right-hand side of short-circuiting expressions.
      */
@@ -625,6 +723,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       parent.(BlockStmt).getLastStmt() = child
       or
       parent.(ExprStmt).getExpr() = child
+      or
+      getCaseBodyElement(parent.(Switch).getCase(_), _) = child and
+      not exists(getNextCaseBodyElement(child))
     }
 
     /**
@@ -738,6 +839,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       n instanceof ContinueStmt
       or
+      n instanceof FallthroughStmt
+      or
       n instanceof GotoStmt
       or
       n instanceof ReturnStmt
@@ -847,11 +950,27 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       result = DenseRank2<ParameterCtxDenseRankInput>::denseRank(c, ctx.asSome(), rnk)
     }
 
+    private predicate matchAll(Case c) {
+      c instanceof DefaultCase
+      or
+      Input1::matchAll(c)
+      or
+      exists(Switch switch, int last |
+        Input1::isExhaustive(switch) and
+        // Default cases are always considered last in control flow order, so
+        // exhaustiveness does not apply to the last case if a default case
+        // exists.
+        not switch.getCase(_) instanceof DefaultCase and
+        switch.getCase(last) = c and
+        not exists(switch.getCase(last + 1))
+      )
+    }
+
     private predicate constantCondition(AstNode n, ConditionalSuccessor t) {
       n.(BooleanLiteral).getValue() = t.(BooleanSuccessor).getValue()
       or
       exists(Case c, int i |
-        Input1::matchAll(c) and
+        matchAll(c) and
         c.getPattern(i) = n and
         not exists(c.getPattern(i + 1)) and
         t.(MatchingSuccessor).getValue() = true
@@ -1168,7 +1287,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
     private newtype TAbruptCompletion =
       TSimpleAbruptCompletion(AbruptSuccessor t) or
-      TLabeledAbruptCompletion(JumpSuccessor t, Input1::Label l)
+      TLabeledAbruptCompletion(JumpSuccessor t, Input1::Label l) { Input1::hasLabel(_, l) }
 
     /**
      * A value indicating an abrupt completion of an AST node in the control
@@ -1254,28 +1373,31 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         or
         n.isIn(ast) and
         always = true and
-        (
+        exists(SuccessorType st |
           ast instanceof ReturnStmt and
-          c.getSuccessorType() instanceof ReturnSuccessor
+          st instanceof ReturnSuccessor
           or
           ast instanceof Throw and
-          c.getSuccessorType() instanceof ExceptionSuccessor
+          st instanceof ExceptionSuccessor
           or
           ast instanceof BreakStmt and
-          c.getSuccessorType() instanceof BreakSuccessor
+          st instanceof BreakSuccessor
           or
           ast instanceof ContinueStmt and
-          c.getSuccessorType() instanceof ContinueSuccessor
+          st instanceof ContinueSuccessor
+          or
+          ast instanceof FallthroughStmt and
+          st instanceof FallthroughSuccessor
           or
           ast instanceof GotoStmt and
-          c.getSuccessorType() instanceof GotoSuccessor
-        ) and
-        (
-          not Input1::hasLabel(ast, _) and not c.hasLabel(_)
+          st instanceof GotoSuccessor
+        |
+          not Input1::hasLabel(ast, _) and
+          c = TSimpleAbruptCompletion(st)
           or
           exists(Input1::Label l |
             Input1::hasLabel(ast, l) and
-            c.hasLabel(l)
+            c = TLabeledAbruptCompletion(st, l)
           )
         )
         or
@@ -1319,20 +1441,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n.(ExceptionalExitNodeImpl).getEnclosingCallable() = callable
         )
         or
-        exists(LoopStmt loop | ast = pragma[only_bind_into](loop).getBody() |
+        exists(LoopStmt loop, SuccessorType st | ast = pragma[only_bind_into](loop).getBody() |
           (
-            c.getSuccessorType() instanceof BreakSuccessor and
+            st instanceof BreakSuccessor and
             n.isAfter(loop)
             or
-            c.getSuccessorType() instanceof ContinueSuccessor and
+            st instanceof ContinueSuccessor and
             n.isAdditional(loop, loopHeaderTag())
           ) and
           (
-            not c.hasLabel(_)
+            c = TSimpleAbruptCompletion(st)
             or
-            exists(Input1::Label l |
-              c.hasLabel(l) and
-              (Input1::hasLabel(loop, l) or hasEnclosingLabel(loop, l))
+            exists(Input1::Label l | c = TLabeledAbruptCompletion(st, l) |
+              Input1::hasLabel(loop, l) or hasEnclosingLabel(loop, l)
             )
           )
         )
@@ -1376,6 +1497,17 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           )
         )
         or
+        exists(Switch switch, int index, Case nextCase |
+          ast = getCaseBodyElement(switch.getCase(index), _) and
+          nextCase = switch.getCase(index + 1) and
+          c.asSimpleAbruptCompletion() instanceof FallthroughSuccessor
+        |
+          n.isBefore(getFirstCaseBodyElement(nextCase))
+          or
+          not exists(getFirstCaseBodyElement(nextCase)) and
+          n.isAfter(switch)
+        )
+        or
         exists(LabeledStmt target, Input1::Label l |
           ast = target.getStmt() and
           Input1::hasLabel(target, l) and
@@ -1392,87 +1524,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n.isBefore(target) and
           c.getSuccessorType() instanceof GotoSuccessor and
           c.hasLabel(l)
-        )
-      }
-
-      /**
-       * Gets an integer indicating the control flow order of a case within a
-       * switch. This is equal to the AST order, except that default cases are
-       * always last in control flow order, even if some languages allow them
-       * to appear before other cases in the AST.
-       */
-      private int getCaseControlFlowOrder(Switch s, Case c) {
-        exists(int pos | s.getCase(pos) = c |
-          // if a default case is not last in the AST, move it last in the CFG order
-          if c instanceof DefaultCase and exists(s.getCase(pos + 1))
-          then result = strictcount(s.getCase(_))
-          else result = pos
-        )
-      }
-
-      private module CaseDenseRankInput implements DenseRankInputSig1 {
-        class C = Switch;
-
-        class Ranked = Case;
-
-        predicate getRank = getCaseControlFlowOrder/2;
-      }
-
-      private predicate getRankedCaseCfgOrder = DenseRank1<CaseDenseRankInput>::denseRank/2;
-
-      private int numberOfStmts(Switch s) { result = strictcount(s.getStmt(_)) }
-
-      private predicate caseIndex(Switch s, Case c, int caseIdx, int caseStmtPos) {
-        c = s.getCase(caseIdx) and
-        c = s.getStmt(caseStmtPos)
-      }
-
-      /**
-       * Gets the body element of `case` at the specified (zero-based) `index`.
-       *
-       * This is either unique when the case has a single right-hand side, or it
-       * is the sequence of statements between this case and the next case.
-       */
-      private AstNode getCaseBodyElement(Case case, int index) {
-        result = case.getBody() and index = 0
-        or
-        not exists(case.getBody()) and
-        exists(Switch s, int caseIdx, int caseStmtPos, int nextCaseStmtPos |
-          caseIndex(pragma[only_bind_into](s), case, caseIdx, caseStmtPos) and
-          (
-            caseIndex(pragma[only_bind_into](s), _, caseIdx + 1, nextCaseStmtPos)
-            or
-            not exists(s.getCase(caseIdx + 1)) and
-            nextCaseStmtPos = numberOfStmts(s)
-          ) and
-          index = [0 .. nextCaseStmtPos - caseStmtPos - 2] and
-          result = pragma[only_bind_into](s).getStmt(caseStmtPos + 1 + index)
-        )
-      }
-
-      private AstNode getFirstCaseBodyElement(Case case) {
-        result = getCaseBodyElement(case, 0)
-        or
-        not exists(getCaseBodyElement(case, 0)) and
-        exists(Switch s, int i |
-          fallsThrough(case) and
-          // fall-through follows AST order, not case control flow order:
-          s.getCase(i) = case and
-          result = getFirstCaseBodyElement(s.getCase(i + 1))
-        )
-      }
-
-      private AstNode getNextCaseBodyElement(AstNode bodyElement) {
-        exists(Case case, int i | getCaseBodyElement(case, i) = bodyElement |
-          result = getCaseBodyElement(case, i + 1)
-          or
-          not exists(getCaseBodyElement(case, i + 1)) and
-          exists(Switch s, int j |
-            fallsThrough(case) and
-            // fall-through follows AST order, not case control flow order:
-            s.getCase(j) = case and
-            result = getFirstCaseBodyElement(s.getCase(j + 1))
-          )
         )
       }
 
@@ -1678,14 +1729,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             not exists(getLoopElse(loopstmt)) and n2.isAfter(loopstmt)
           )
-          or
-          n1.isAfter(loopstmt.getBody()) and
-          n2.isAdditional(loopstmt, loopHeaderTag())
         )
         or
         exists(LoopStmt loopstmt |
+          n1.isAfter(loopstmt.getBody()) and
+          n2.isAdditional(loopstmt, loopHeaderTag())
+          or
           n1.isAfter(getLoopElse(loopstmt)) and
           n2.isAfter(loopstmt)
+          or
+          // a do-loop without a condition behaves like an infinite loop
+          loopstmt = any(DoStmt do | not exists(do.getCondition())) and
+          n1.isAdditional(loopstmt, loopHeaderTag()) and
+          n2.isBefore(loopstmt.getBody())
         )
         or
         exists(ForEachStmt foreachstmt |
@@ -1950,10 +2006,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         exists(AstNode caseBodyElement |
           n1.isAfter(caseBodyElement) and
           n2.isBefore(getNextCaseBodyElement(caseBodyElement))
-          or
-          n1.isAfter(caseBodyElement) and
-          not exists(getNextCaseBodyElement(caseBodyElement)) and
-          n2.isAfter(any(Switch s | getCaseBodyElement(s.getCase(_), _) = caseBodyElement))
         )
       }
 

@@ -7,6 +7,7 @@ module;
 private import unified
 private import codeql.unified.internal.LocalNameBinding
 private import codeql.unified.internal.NameBindingPlugin
+private import codeql.unified.internal.mad.LegacyMaD as MaD
 
 cached
 private newtype TNameBindingNode =
@@ -21,7 +22,8 @@ private newtype TNameBindingNode =
   } or
   TModuleScope(ModuleScopeRepr repr) or
   TFolderScope(Folder folder) or
-  TModuleRoot()
+  TModuleRoot() or
+  TTypeSelector(MaD::TypeSelector type)
 
 /**
  * A node in a graph, in which name-binding rules are represented as edges between nodes.
@@ -60,6 +62,8 @@ class NameBindingNode extends TNameBindingNode {
 
   /** Holds if this represents the root namespace in which all named modules are members. */
   predicate isModuleRoot() { this = TModuleRoot() }
+
+  predicate isTypeSelector(MaD::TypeSelector type) { this = TTypeSelector(type) }
 
   /**
    * Gets an AST node wrapped by this name-binding node, if such a node exists.
@@ -104,6 +108,10 @@ class NameBindingNode extends TNameBindingNode {
     exists(Folder folder | this.isFolderScope(folder) and result = "FolderScope(" + folder + ")")
     or
     this.isModuleRoot() and result = "ModuleRoot"
+    or
+    exists(MaD::TypeSelector type |
+      this.isTypeSelector(type) and result = "TypeSelector(" + type + ")"
+    )
   }
 
   Location getLocation() {
@@ -224,6 +232,11 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
   )
   or
   FolderHeuristic::storeStep(node1, name, node2)
+  or
+  exists(MaD::TypeSelector type |
+    node1.isTypeSelector(type.append(name)) and
+    node2.isTypeSelector(type)
+  )
 }
 
 predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
@@ -289,6 +302,11 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
     node1.isIdentifier(cls.getNameNode()) and
     node2.isLocalName(self) and
     self.hasNameAndScope(any(NameBindingPlugin p).getStaticSelfName(cls), cls)
+  )
+  or
+  exists(TopLevel top |
+    node1.isTypeSelector("") and
+    node2.isLocalNamespace(top.getBody())
   )
 }
 
@@ -529,6 +547,8 @@ private module TrackNameBindingInput implements TrackInputSig {
       node.isIdentifier(decl) and
       not isTrivialNameAlias(decl)
     )
+    or
+    node.isTypeSelector(_)
   }
 }
 
@@ -538,6 +558,14 @@ private module TrackNameBinding = Track<TrackNameBindingInput>;
 private NameBindingNode trackNameBinding(NameBinding decl) {
   exists(NameBindingNode start |
     start.isIdentifier(decl) and
+    result = TrackNameBinding::track(start)
+  )
+}
+
+/** Gets a name-binding node that may refer to the given type from a model. */
+NameBindingNode trackTypeSelector(MaD::TypeSelector type) {
+  exists(NameBindingNode start |
+    start.isTypeSelector(type) and
     result = TrackNameBinding::track(start)
   )
 }
@@ -750,15 +778,31 @@ predicate unqualifiedMemberAccess(
   ClassLikeDeclaration accessingClass
 ) {
   CachedStage::ref() and
-  unqualifiedMemberAccessCand(access, instanceAccess, target, accessingClass) and
+  unqualifiedMemberAccessCand(pragma[only_bind_into](access), instanceAccess, target,
+    pragma[only_bind_into](accessingClass)) and
   accessingClass.getDepth() = unqualifiedMemberAccessDepth(access)
 }
 
 module Public {
   /**
+   * An expression that accesses a named member, either with an explicit base (`MemberAccessExpr`)
+   * or with an implicit base (`UnqualifiedMemberAccess`).
+   */
+  abstract private class MemberAccessImpl extends Expr {
+    /** Gets the name of the member being accessed. */
+    abstract string getMemberName();
+  }
+
+  final class MemberAccess = MemberAccessImpl;
+
+  private class MemberAccessExprImpl extends MemberAccessImpl instanceof MemberAccessExpr {
+    override string getMemberName() { result = MemberAccessExpr.super.getMemberName() }
+  }
+
+  /**
    * A name node appearing in an unqualified position, referring to a member of an enclosing class.
    */
-  class UnqualifiedMemberAccess extends Identifier {
+  class UnqualifiedMemberAccess extends Identifier, MemberAccessImpl {
     private boolean instanceAccess;
     private NameBinding target;
     private ClassLikeDeclaration accessingClass;
@@ -783,7 +827,7 @@ module Public {
     }
 
     /** Gets the simple name of this identifier, that is, the name of the member being accessed. */
-    string getName() { result = this.getValue() }
+    override string getMemberName() { result = this.getValue() }
   }
 }
 
@@ -823,6 +867,35 @@ Identifier getTypeFromRef(AstNode access) {
     result = any(TypeParameter t).getNameNode()
     or
     result = any(AssociatedTypeDeclaration t).getNameNode()
+  )
+}
+
+/** Holds if `access` is a reference to a type. */
+predicate isTypeRef(AstNode access) {
+  exists(getTypeFromRef(access))
+  or
+  not exists(getStaticBindingTargetFromRef(access)) and
+  trackTypeSelector(_) = getNodeFromRef(access)
+}
+
+/**
+ * Gets the alias-expanded type being accessed by `access`, if any.
+ */
+Identifier getExpandedTypeFromRef(AstNode access) {
+  result = getTypeFromRef(access) and
+  not result = any(TypeAliasDeclaration t).getNameNode()
+  or
+  exists(TypeAliasDeclaration t, Identifier rhs |
+    t.getNameNode() = getTypeFromRef(access) and
+    rhs = getExpandedTypeFromRef(t.getType())
+  |
+    not rhs = t.getATypeParameter().getNameNode() and
+    result = rhs
+    or
+    exists(int pos |
+      rhs = t.getTypeParameter(pos).getNameNode() and
+      result = getExpandedTypeFromRef(access.(GenericTypeExpr).getTypeArgument(pos))
+    )
   )
 }
 

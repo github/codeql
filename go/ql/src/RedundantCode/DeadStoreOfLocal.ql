@@ -32,7 +32,7 @@ predicate isSimple(IR::Instruction nd) {
 from IR::WriteInstruction def, SsaSourceVariable target, IR::Instruction rhs, Expr lhs
 where
   def.writes(target, rhs) and
-  not exists(SsaExplicitDefinition ssa | ssa.getInstruction() = def) and
+  not exists(SsaExplicitWrite ssa | ssa.getDefinition() = def) and
   // exclude assignments in dead code
   def.getBasicBlock() instanceof ReachableBasicBlock and
   // exclude assignments with default values or simple expressions
@@ -45,9 +45,9 @@ where
   // exclude variables with indirect references
   not target.mayHaveIndirectReferences() and
   // Report the assigned variable rather than the whole write instruction. A write to an
-  // `SsaSourceVariable` that survives the `SsaExplicitDefinition` exclusion above always has an
+  // `SsaSourceVariable` that survives the `SsaExplicitWrite` exclusion above always has an
   // explicit left-hand side expression (writes without one, such as result-variable writes at a
-  // `return`, are `SsaExplicitDefinition`s and so are already excluded), so this does not drop
+  // `return`, are `SsaExplicitWrite`s and so are already excluded), so this does not drop
   // any results.
   lhs = def.getLhs().getExpr()
 select lhs, "This definition of " + target + " is never used."

@@ -264,3 +264,12 @@ func t29() {
     (box as! Box).field = source("t29.1")
     sink(box.field)  // $ hasValueFlow=t29.1
 }
+
+func conditional(_ b: Bool) {
+    sink(b ? source("cond.1") : "clean")  // $ hasValueFlow=cond.1
+    sink(b ? "clean" : source("cond.2"))  // $ hasValueFlow=cond.2
+    let x = if b { source("cond.3") } else { "clean" }
+    sink(x)  // $ hasValueFlow=cond.3
+    func f() -> String { b ? source("cond.4") : "clean" }
+    sink(f())  // $ hasValueFlow=cond.4
+}

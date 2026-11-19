@@ -1,0 +1,68 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "packageGrouping"
+      },
+      "data": [
+        ["gorm", "gorm.io/gorm"],
+        ["gorm", "github.com/jinzhu/gorm"],
+        ["gorm", "github.com/go-gorm/gorm"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["group:gorm", "Association", true, "Find", "", "", "Argument[0]", "database", "manual"],
+        ["group:gorm", "ConnPool", true, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gorm", "ConnPool", true, "QueryRowContext", "", "", "ReturnValue", "database", "manual"],
+        ["group:gorm", "DB", true, "Find", "", "", "Argument[0]", "database", "manual"],
+        ["group:gorm", "DB", true, "FindInBatches", "", "", "Argument[0]", "database", "manual"],
+        ["group:gorm", "DB", true, "First", "", "", "Argument[0]", "database", "manual"],
+        ["group:gorm", "DB", true, "FirstOrCreate", "", "", "Argument[0]", "database", "manual"],
+        ["group:gorm", "DB", true, "FirstOrInit", "", "", "Argument[0]", "database", "manual"],
+        ["group:gorm", "DB", true, "Last", "", "", "Argument[0]", "database", "manual"],
+        ["group:gorm", "DB", true, "Model", "", "", "Argument[0]", "database", "manual"],
+        ["group:gorm", "DB", true, "Pluck", "", "", "Argument[1]", "database", "manual"],
+        ["group:gorm", "DB", true, "Row", "", "", "ReturnValue", "database", "manual"],
+        ["group:gorm", "DB", true, "Rows", "", "", "ReturnValue[0]", "database", "manual"],
+        ["group:gorm", "DB", true, "Scan", "", "", "Argument[0]", "database", "manual"],
+        ["group:gorm", "DB", true, "Take", "", "", "Argument[0]", "database", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["group:gorm", "DB", true, "Where", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorm", "DB", true, "Raw", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorm", "DB", true, "Order", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorm", "DB", true, "Not", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorm", "DB", true, "Or", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorm", "DB", true, "Select", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorm", "DB", true, "Table", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorm", "DB", true, "Group", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorm", "DB", true, "Having", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorm", "DB", true, "Joins", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorm", "DB", true, "Exec", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorm", "DB", true, "Distinct", "", "", "Argument[0]", "sql-injection", "manual"],
+        ["group:gorm", "DB", true, "Pluck", "", "", "Argument[0]", "sql-injection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["group:gorm", "DB", true, "ScanRows", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      ]
+    }
+  ]
+}

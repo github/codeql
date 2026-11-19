@@ -1,0 +1,35 @@
+typeParameterEscapesScope
+| test.rs:83:17:83:20 | data | B | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:83:17:83:20 | data | B | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:83:24:83:43 | await ... | E | {EXTERNAL LOCATION} | T::Error[Body] |
+| test.rs:83:24:83:43 | await ... | T.B | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:83:24:83:44 | TryExpr | B | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:84:18:84:22 | &data | TRef.B | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:84:19:84:22 | data | B | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:86:25:86:28 | data | B | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:92:23:92:33 | Some(...) | T.E | {EXTERNAL LOCATION} | T::Error[Body] |
+| test.rs:92:23:92:33 | Some(...) | T.T.T | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:92:28:92:32 | frame | E | {EXTERNAL LOCATION} | T::Error[Body] |
+| test.rs:92:28:92:32 | frame | E | {EXTERNAL LOCATION} | T::Error[Body] |
+| test.rs:92:28:92:32 | frame | T.T | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:92:28:92:32 | frame | T.T | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:92:37:92:58 | await ... | T.E | {EXTERNAL LOCATION} | T::Error[Body] |
+| test.rs:92:37:92:58 | await ... | T.T.T | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:93:24:93:33 | Some(...) | T.TRef | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:93:29:93:32 | data | TRef | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:93:29:93:32 | data | TRef | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:93:37:93:41 | frame | E | {EXTERNAL LOCATION} | T::Error[Body] |
+| test.rs:93:37:93:41 | frame | T.T | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:93:37:93:42 | TryExpr | T | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:93:37:93:53 | ... .data_ref() | T.TRef | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:94:49:94:52 | data | TRef | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:95:26:95:29 | data | TRef | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:96:26:96:29 | data | TRef | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:97:33:97:36 | data | TRef | {EXTERNAL LOCATION} | T::Data[Body] |
+| test.rs:557:18:557:42 | await ... | T | {EXTERNAL LOCATION} | St::Item[Stream] |
+| test.rs:557:18:557:51 | ... .unwrap() |  | {EXTERNAL LOCATION} | St::Item[Stream] |
+| test.rs:558:23:558:32 | Some(...) | T | {EXTERNAL LOCATION} | St::Item[Stream] |
+| test.rs:558:28:558:31 | line |  | {EXTERNAL LOCATION} | St::Item[Stream] |
+| test.rs:558:28:558:31 | line |  | {EXTERNAL LOCATION} | St::Item[Stream] |
+| test.rs:558:36:558:60 | await ... | T | {EXTERNAL LOCATION} | St::Item[Stream] |
+| test.rs:559:22:559:25 | line |  | {EXTERNAL LOCATION} | St::Item[Stream] |

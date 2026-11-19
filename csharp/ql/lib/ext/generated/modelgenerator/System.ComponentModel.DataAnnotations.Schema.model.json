@@ -1,0 +1,31 @@
+// THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["System.ComponentModel.DataAnnotations.Schema", "ColumnAttribute", false, "ColumnAttribute", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.ComponentModel.DataAnnotations.Schema.ColumnAttribute.Name]", "value", "dfc-generated"],
+        ["System.ComponentModel.DataAnnotations.Schema", "ForeignKeyAttribute", false, "ForeignKeyAttribute", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.ComponentModel.DataAnnotations.Schema.ForeignKeyAttribute.Name]", "value", "dfc-generated"],
+        ["System.ComponentModel.DataAnnotations.Schema", "InversePropertyAttribute", false, "InversePropertyAttribute", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.ComponentModel.DataAnnotations.Schema.InversePropertyAttribute.Property]", "value", "dfc-generated"],
+        ["System.ComponentModel.DataAnnotations.Schema", "TableAttribute", false, "TableAttribute", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.ComponentModel.DataAnnotations.Schema.TableAttribute.Name]", "value", "dfc-generated"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "neutralModel"
+      },
+      "data": [
+        ["System.ComponentModel.DataAnnotations.Schema", "ColumnAttribute", "get_Name", "()", "summary", "df-generated"],
+        ["System.ComponentModel.DataAnnotations.Schema", "DatabaseGeneratedAttribute", "DatabaseGeneratedAttribute", "(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption)", "summary", "df-generated"],
+        ["System.ComponentModel.DataAnnotations.Schema", "DatabaseGeneratedAttribute", "get_DatabaseGeneratedOption", "()", "summary", "df-generated"],
+        ["System.ComponentModel.DataAnnotations.Schema", "ForeignKeyAttribute", "get_Name", "()", "summary", "df-generated"],
+        ["System.ComponentModel.DataAnnotations.Schema", "InversePropertyAttribute", "get_Property", "()", "summary", "df-generated"],
+        ["System.ComponentModel.DataAnnotations.Schema", "TableAttribute", "get_Name", "()", "summary", "df-generated"]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+// THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["System.ComponentModel.Composition.Registration", "ExportBuilder", false, "AddMetadata", "(System.String,System.Func<System.Type,System.Object>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "ExportBuilder", false, "AddMetadata", "(System.String,System.Object)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "ExportBuilder", false, "AsContractName", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "ExportBuilder", false, "AsContractType", "(System.Type)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "ExportBuilder", false, "AsContractType<T>", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "ExportBuilder", false, "Inherited", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "ImportBuilder", false, "AllowDefault", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "ImportBuilder", false, "AllowRecomposition", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "ImportBuilder", false, "AsContractName", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "ImportBuilder", false, "AsContractType", "(System.Type)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "ImportBuilder", false, "AsContractType<T>", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "ImportBuilder", false, "AsMany", "(System.Boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "ImportBuilder", false, "RequiredCreationPolicy", "(System.ComponentModel.Composition.CreationPolicy)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "ImportBuilder", false, "Source", "(System.ComponentModel.Composition.ImportSource)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "AddMetadata", "(System.String,System.Func<System.Type,System.Object>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "AddMetadata", "(System.String,System.Object)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "Export", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "Export", "(System.Action<System.ComponentModel.Composition.Registration.ExportBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "Export<T>", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "Export<T>", "(System.Action<System.ComponentModel.Composition.Registration.ExportBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "ExportInterfaces", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "ExportInterfaces", "(System.Predicate<System.Type>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "ExportInterfaces", "(System.Predicate<System.Type>,System.Action<System.Type,System.ComponentModel.Composition.Registration.ExportBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "ExportProperties", "(System.Predicate<System.Reflection.PropertyInfo>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "ExportProperties", "(System.Predicate<System.Reflection.PropertyInfo>,System.Action<System.Reflection.PropertyInfo,System.ComponentModel.Composition.Registration.ExportBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "ExportProperties<T>", "(System.Predicate<System.Reflection.PropertyInfo>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "ExportProperties<T>", "(System.Predicate<System.Reflection.PropertyInfo>,System.Action<System.Reflection.PropertyInfo,System.ComponentModel.Composition.Registration.ExportBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "ImportProperties", "(System.Predicate<System.Reflection.PropertyInfo>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "ImportProperties", "(System.Predicate<System.Reflection.PropertyInfo>,System.Action<System.Reflection.PropertyInfo,System.ComponentModel.Composition.Registration.ImportBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "ImportProperties<T>", "(System.Predicate<System.Reflection.PropertyInfo>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "ImportProperties<T>", "(System.Predicate<System.Reflection.PropertyInfo>,System.Action<System.Reflection.PropertyInfo,System.ComponentModel.Composition.Registration.ImportBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "SelectConstructor", "(System.Func<System.Reflection.ConstructorInfo[],System.Reflection.ConstructorInfo>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "SelectConstructor", "(System.Func<System.Reflection.ConstructorInfo[],System.Reflection.ConstructorInfo>,System.Action<System.Reflection.ParameterInfo,System.ComponentModel.Composition.Registration.ImportBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder", false, "SetCreationPolicy", "(System.ComponentModel.Composition.CreationPolicy)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", false, "ExportProperty", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", false, "ExportProperty", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>,System.Action<System.ComponentModel.Composition.Registration.ExportBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", false, "ExportProperty<TContract>", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", false, "ExportProperty<TContract>", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>,System.Action<System.ComponentModel.Composition.Registration.ExportBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", false, "ImportProperty", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", false, "ImportProperty", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>,System.Action<System.ComponentModel.Composition.Registration.ImportBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", false, "ImportProperty<TContract>", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", false, "ImportProperty<TContract>", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>,System.Action<System.ComponentModel.Composition.Registration.ImportBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", false, "SelectConstructor", "(System.Linq.Expressions.Expression<System.Func<System.ComponentModel.Composition.Registration.ParameterImportBuilder,T>>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "neutralModel"
+      },
+      "data": [
+        ["System.ComponentModel.Composition.Registration", "ParameterImportBuilder", "Import<T>", "()", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.Registration", "ParameterImportBuilder", "Import<T>", "(System.Action<System.ComponentModel.Composition.Registration.ImportBuilder>)", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.Registration", "RegistrationBuilder", "ForType", "(System.Type)", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.Registration", "RegistrationBuilder", "ForType<T>", "()", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.Registration", "RegistrationBuilder", "ForTypesDerivedFrom", "(System.Type)", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.Registration", "RegistrationBuilder", "ForTypesDerivedFrom<T>", "()", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.Registration", "RegistrationBuilder", "ForTypesMatching", "(System.Predicate<System.Type>)", "summary", "df-generated"],
+        ["System.ComponentModel.Composition.Registration", "RegistrationBuilder", "ForTypesMatching<T>", "(System.Predicate<System.Type>)", "summary", "df-generated"]
+      ]
+    }
+  ]
+}

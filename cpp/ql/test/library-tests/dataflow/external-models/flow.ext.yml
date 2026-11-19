@@ -53,4 +53,4 @@ extensions:
       - ["", "Forwarder<T>", True, "forward<Args>", "(Args &&)", "", "0", "T", "Argument[-1]", "manual"]
       - ["", "", False, "makeForwarded<T>", "(int)", "", "0", "T", "ReturnValue", "manual"]
       - ["", "Forwarder", True, "forwardToElement", "(int)", "", "0", "Element", "Argument[-1]", "manual"]
-      - ["", "Container<T>", True, "emplace<Args>", "(int,Args &&)", "", "1", "T", "Argument[-1].Element", "manual"]
+      - ["", "Container<T>", True, "emplace<Args>", "(int,Args &&)", "", "1", "value_type", "Argument[-1].Element", "manual"]

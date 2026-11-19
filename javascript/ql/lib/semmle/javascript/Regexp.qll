@@ -1275,16 +1275,26 @@ module RegExp {
   bindingset[flags]
   predicate maybeDotAll(string flags) { flags = unknownFlag() or isDotAll(flags) }
 
-  /** Holds if `term` and all of its disjuncts are anchored on both ends. */
+  /**
+   * Holds if `term` and all of its disjuncts are anchored to both ends of the input.
+   *
+   * Does not hold if a regular expression using the term has multiline or unknown flags.
+   */
   predicate isFullyAnchoredTerm(RegExpTerm term) {
-    exists(RegExpSequence seq | term = seq |
-      seq.getChild(0) instanceof RegExpCaret and
-      seq.getLastChild() instanceof RegExpDollar
+    not exists(DataFlow::RegExpCreationNode regexp |
+      regexp.getRoot() = term.getRootTerm() and
+      maybeMultiline(regexp.tryGetFlags())
+    ) and
+    (
+      exists(RegExpSequence seq | term = seq |
+        seq.getChild(0) instanceof RegExpCaret and
+        seq.getLastChild() instanceof RegExpDollar
+      )
+      or
+      isFullyAnchoredTerm(term.(RegExpGroup).getAChild())
+      or
+      isFullyAnchoredAlt(term, term.getNumChild())
     )
-    or
-    isFullyAnchoredTerm(term.(RegExpGroup).getAChild())
-    or
-    isFullyAnchoredAlt(term, term.getNumChild())
   }
 
   /** Holds if the first `i` disjuncts of `term` are fully anchored. */
@@ -1330,6 +1340,8 @@ module RegExp {
    *
    * Specifically, whitelisting regexps such as `^(foo|bar)$` sanitize matches in the true case.
    * Inverted character classes such as `[^a-z]` or `\W` sanitize matches in the false case.
+   * Anchored terms do not sanitize matches if a regular expression using the term has
+   * multiline or unknown flags.
    */
   predicate isGenericRegExpSanitizer(RegExpTerm term, boolean outcome) {
     term.isRootTerm() and

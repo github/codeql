@@ -78,4 +78,7 @@ top_level source="⟨body⟩"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "consumed" source="consumed"
-          value: unsupported_node "consume original" source="consume original"
+          value:
+            unary_expr source="⟨operator⟩ ⟨operand⟩"
+              operand: identifier "original" source="original"
+              operator: prefix_operator "consume" source="consume"

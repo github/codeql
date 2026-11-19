@@ -11,6 +11,7 @@ sourceFile
       item:
         extensionDecl
           attributes:
+          modifiers:
           memberBlock:
             memberBlock
               leftBrace: {
@@ -40,8 +41,8 @@ sourceFile
                                         declReferenceExpr
                                           baseName: self
                                   returnKeyword: return
-                      name: identifier "squared"
                       modifiers:
+                      name: identifier "squared"
                       signature:
                         functionSignature
                           parameterClause:
@@ -56,7 +57,6 @@ sourceFile
                                 identifierType
                                   name: identifier "Int"
                       funcKeyword: func
-          modifiers:
           extendedType:
             identifierType
               name: identifier "Int"

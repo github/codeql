@@ -16,7 +16,10 @@
 | lifetime.rs:317:13:317:18 | result | lifetime.rs:289:25:289:26 | &x | lifetime.rs:317:13:317:18 | result | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:289:17:289:17 | x | x |
 | lifetime.rs:411:16:411:17 | p1 | lifetime.rs:383:31:383:37 | &raw mut my_pair | lifetime.rs:411:16:411:17 | p1 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:382:11:382:17 | my_pair | my_pair |
 | lifetime.rs:416:16:416:17 | p1 | lifetime.rs:383:31:383:37 | &raw mut my_pair | lifetime.rs:416:16:416:17 | p1 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:382:11:382:17 | my_pair | my_pair |
+| lifetime.rs:421:15:421:16 | p2 | lifetime.rs:384:27:384:35 | &raw const ... | lifetime.rs:421:15:421:16 | p2 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:382:11:382:17 | my_pair | my_pair |
+| lifetime.rs:422:15:422:16 | p3 | lifetime.rs:385:31:385:39 | &raw mut ... | lifetime.rs:422:15:422:16 | p3 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:382:11:382:17 | my_pair | my_pair |
 | lifetime.rs:428:7:428:8 | p1 | lifetime.rs:383:31:383:37 | &raw mut my_pair | lifetime.rs:428:7:428:8 | p1 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:382:11:382:17 | my_pair | my_pair |
+| lifetime.rs:429:6:429:7 | p3 | lifetime.rs:385:31:385:39 | &raw mut ... | lifetime.rs:429:6:429:7 | p3 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:382:11:382:17 | my_pair | my_pair |
 | lifetime.rs:433:7:433:8 | p1 | lifetime.rs:383:31:383:37 | &raw mut my_pair | lifetime.rs:433:7:433:8 | p1 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:382:11:382:17 | my_pair | my_pair |
 | lifetime.rs:459:13:459:14 | p1 | lifetime.rs:442:17:442:23 | &my_val | lifetime.rs:459:13:459:14 | p1 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:441:6:441:11 | my_val | my_val |
 | lifetime.rs:460:13:460:31 | get_ptr_from_ref(...) | lifetime.rs:442:17:442:23 | &my_val | lifetime.rs:460:13:460:31 | get_ptr_from_ref(...) | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:441:6:441:11 | my_val | my_val |
@@ -117,6 +120,15 @@ edges
 | lifetime.rs:383:3:383:4 | p1 | lifetime.rs:428:7:428:8 | p1 | provenance |  |
 | lifetime.rs:383:3:383:4 | p1 | lifetime.rs:433:7:433:8 | p1 | provenance |  |
 | lifetime.rs:383:31:383:37 | &raw mut my_pair | lifetime.rs:383:3:383:4 | p1 | provenance |  |
+| lifetime.rs:384:3:384:4 | p2 | lifetime.rs:394:14:394:15 | p2 | provenance |  |
+| lifetime.rs:384:3:384:4 | p2 | lifetime.rs:421:15:421:16 | p2 | provenance |  |
+| lifetime.rs:384:27:384:35 | &raw const ... | lifetime.rs:384:3:384:4 | p2 | provenance |  |
+| lifetime.rs:385:3:385:4 | p3 | lifetime.rs:395:14:395:15 | p3 | provenance |  |
+| lifetime.rs:385:3:385:4 | p3 | lifetime.rs:400:5:400:6 | p3 | provenance |  |
+| lifetime.rs:385:3:385:4 | p3 | lifetime.rs:400:5:400:6 | p3 | provenance |  |
+| lifetime.rs:385:31:385:39 | &raw mut ... | lifetime.rs:385:3:385:4 | p3 | provenance |  |
+| lifetime.rs:400:5:400:6 | p3 | lifetime.rs:422:15:422:16 | p3 | provenance |  |
+| lifetime.rs:400:5:400:6 | p3 | lifetime.rs:429:6:429:7 | p3 | provenance |  |
 | lifetime.rs:442:6:442:7 | r1 | lifetime.rs:443:42:443:43 | r1 | provenance |  |
 | lifetime.rs:442:17:442:23 | &my_val | lifetime.rs:442:6:442:7 | r1 | provenance |  |
 | lifetime.rs:443:6:443:7 | p1 | lifetime.rs:446:13:446:14 | p1 | provenance |  |
@@ -262,13 +274,24 @@ nodes
 | lifetime.rs:355:28:355:30 | ptr | semmle.label | ptr |
 | lifetime.rs:383:3:383:4 | p1 | semmle.label | p1 |
 | lifetime.rs:383:31:383:37 | &raw mut my_pair | semmle.label | &raw mut my_pair |
+| lifetime.rs:384:3:384:4 | p2 | semmle.label | p2 |
+| lifetime.rs:384:27:384:35 | &raw const ... | semmle.label | &raw const ... |
+| lifetime.rs:385:3:385:4 | p3 | semmle.label | p3 |
+| lifetime.rs:385:31:385:39 | &raw mut ... | semmle.label | &raw mut ... |
 | lifetime.rs:388:15:388:16 | p1 | semmle.label | p1 |
 | lifetime.rs:391:15:391:16 | p1 | semmle.label | p1 |
+| lifetime.rs:394:14:394:15 | p2 | semmle.label | p2 |
+| lifetime.rs:395:14:395:15 | p3 | semmle.label | p3 |
 | lifetime.rs:399:6:399:7 | p1 | semmle.label | p1 |
+| lifetime.rs:400:5:400:6 | p3 | semmle.label | p3 |
+| lifetime.rs:400:5:400:6 | p3 | semmle.label | p3 |
 | lifetime.rs:401:6:401:7 | p1 | semmle.label | p1 |
 | lifetime.rs:411:16:411:17 | p1 | semmle.label | p1 |
 | lifetime.rs:416:16:416:17 | p1 | semmle.label | p1 |
+| lifetime.rs:421:15:421:16 | p2 | semmle.label | p2 |
+| lifetime.rs:422:15:422:16 | p3 | semmle.label | p3 |
 | lifetime.rs:428:7:428:8 | p1 | semmle.label | p1 |
+| lifetime.rs:429:6:429:7 | p3 | semmle.label | p3 |
 | lifetime.rs:433:7:433:8 | p1 | semmle.label | p1 |
 | lifetime.rs:442:6:442:7 | r1 | semmle.label | r1 |
 | lifetime.rs:442:17:442:23 | &my_val | semmle.label | &my_val |

@@ -4,6 +4,10 @@ generatedConstructor
 | constructors.swift:19:1:19:0 | C5.init |
 | constructors.swift:31:1:31:0 | C7.init |
 | constructors.swift:39:1:39:0 | S1.init |
+| constructors.swift:74:1:74:0 | ConditionalFields.init |
+| constructors.swift:85:1:85:0 | UnequalConditionalFields.init |
+| constructors.swift:96:1:96:0 | NestedConditionalFields.init |
+| constructors.swift:113:1:113:0 | OptionalConditionalFields.init |
 implicitReceiverParameter
 | constructors.swift:1:1:1:0 | self | constructors.swift:1:1:1:0 | C1.init |
 | constructors.swift:3:1:3:0 | self | constructors.swift:3:1:3:0 | C2.init |
@@ -21,14 +25,39 @@ implicitReceiverParameter
 | constructors.swift:49:9:51:9 | self | constructors.swift:49:9:51:9 | AccessorDeclaration |
 | constructors.swift:54:9:56:9 | self | constructors.swift:54:9:56:9 | AccessorDeclaration |
 | constructors.swift:57:9:59:9 | self | constructors.swift:57:9:59:9 | AccessorDeclaration |
+| constructors.swift:67:9:67:25 | self | constructors.swift:67:9:67:25 | ConditionalConstructor.init |
+| constructors.swift:74:1:74:0 | self | constructors.swift:74:1:74:0 | ConditionalFields.init |
+| constructors.swift:85:1:85:0 | self | constructors.swift:85:1:85:0 | UnequalConditionalFields.init |
+| constructors.swift:96:1:96:0 | self | constructors.swift:96:1:96:0 | NestedConditionalFields.init |
+| constructors.swift:113:1:113:0 | self | constructors.swift:113:1:113:0 | OptionalConditionalFields.init |
 defaultConstructorParameter
 | constructors.swift:39:1:39:0 | S1.init | 1 | constructors.swift:39:1:39:0 | f1 [init default constructor] | f1 | true |
 | constructors.swift:39:1:39:0 | S1.init | 2 | constructors.swift:39:1:39:0 | f2 [init default constructor] | f2 | false |
 | constructors.swift:39:1:39:0 | S1.init | 3 | constructors.swift:39:1:39:0 | f4 [init default constructor] | f4 | false |
 | constructors.swift:39:1:39:0 | S1.init | 4 | constructors.swift:39:1:39:0 | f7 [init default constructor] | f7 | true |
 | constructors.swift:39:1:39:0 | S1.init | 5 | constructors.swift:39:1:39:0 | f8 [init default constructor] | f8 | true |
+| constructors.swift:74:1:74:0 | ConditionalFields.init | 1 | constructors.swift:74:1:74:0 | first [init default constructor] | first | false |
+| constructors.swift:74:1:74:0 | ConditionalFields.init | 2 | constructors.swift:74:1:74:0 | third [init default constructor] | third | false |
+| constructors.swift:85:1:85:0 | UnequalConditionalFields.init | 1 | constructors.swift:85:1:85:0 | alpha [init default constructor] | alpha | false |
+| constructors.swift:85:1:85:0 | UnequalConditionalFields.init | 2 | constructors.swift:85:1:85:0 | omega [init default constructor] | omega | false |
+| constructors.swift:96:1:96:0 | NestedConditionalFields.init | 1 | constructors.swift:96:1:96:0 | before [init default constructor] | before | false |
+| constructors.swift:96:1:96:0 | NestedConditionalFields.init | 2 | constructors.swift:96:1:96:0 | selected [init default constructor] | selected | false |
+| constructors.swift:96:1:96:0 | NestedConditionalFields.init | 3 | constructors.swift:96:1:96:0 | afterNested [init default constructor] | afterNested | false |
+| constructors.swift:96:1:96:0 | NestedConditionalFields.init | 4 | constructors.swift:96:1:96:0 | after [init default constructor] | after | false |
+| constructors.swift:113:1:113:0 | OptionalConditionalFields.init | 1 | constructors.swift:113:1:113:0 | first [init default constructor] | first | false |
+| constructors.swift:113:1:113:0 | OptionalConditionalFields.init | 2 | constructors.swift:113:1:113:0 | last [init default constructor] | last | false |
 defaultConstructorParameterType
 | constructors.swift:39:1:39:0 | S1.init | 2 | constructors.swift:39:1:39:0 | f2 [init default constructor] | f2 | constructors.swift:41:13:41:18 | String |
 | constructors.swift:39:1:39:0 | S1.init | 3 | constructors.swift:39:1:39:0 | f4 [init default constructor] | f4 | constructors.swift:43:13:43:18 | Double |
 | constructors.swift:39:1:39:0 | S1.init | 4 | constructors.swift:39:1:39:0 | f7 [init default constructor] | f7 | constructors.swift:53:13:53:18 | Double |
 | constructors.swift:39:1:39:0 | S1.init | 5 | constructors.swift:39:1:39:0 | f8 [init default constructor] | f8 | constructors.swift:61:13:61:16 | GenericTypeExpr |
+| constructors.swift:74:1:74:0 | ConditionalFields.init | 1 | constructors.swift:74:1:74:0 | first [init default constructor] | first | constructors.swift:76:20:76:22 | Int |
+| constructors.swift:74:1:74:0 | ConditionalFields.init | 2 | constructors.swift:74:1:74:0 | third [init default constructor] | third | constructors.swift:80:16:80:19 | Bool |
+| constructors.swift:85:1:85:0 | UnequalConditionalFields.init | 1 | constructors.swift:85:1:85:0 | alpha [init default constructor] | alpha | constructors.swift:87:20:87:22 | Int |
+| constructors.swift:85:1:85:0 | UnequalConditionalFields.init | 2 | constructors.swift:85:1:85:0 | omega [init default constructor] | omega | constructors.swift:93:16:93:19 | Bool |
+| constructors.swift:96:1:96:0 | NestedConditionalFields.init | 1 | constructors.swift:96:1:96:0 | before [init default constructor] | before | constructors.swift:97:17:97:19 | Int |
+| constructors.swift:96:1:96:0 | NestedConditionalFields.init | 2 | constructors.swift:96:1:96:0 | selected [init default constructor] | selected | constructors.swift:100:27:100:32 | String |
+| constructors.swift:96:1:96:0 | NestedConditionalFields.init | 3 | constructors.swift:96:1:96:0 | afterNested [init default constructor] | afterNested | constructors.swift:104:26:104:29 | Bool |
+| constructors.swift:96:1:96:0 | NestedConditionalFields.init | 4 | constructors.swift:96:1:96:0 | after [init default constructor] | after | constructors.swift:110:16:110:19 | Bool |
+| constructors.swift:113:1:113:0 | OptionalConditionalFields.init | 1 | constructors.swift:113:1:113:0 | first [init default constructor] | first | constructors.swift:115:20:115:22 | Int |
+| constructors.swift:113:1:113:0 | OptionalConditionalFields.init | 2 | constructors.swift:113:1:113:0 | last [init default constructor] | last | constructors.swift:117:15:117:18 | Bool |

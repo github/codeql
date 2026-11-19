@@ -134,6 +134,7 @@ private predicate primitiveOrString(Type t) {
  * See JLS v8, section 15.28 (Constant Expressions).
  */
 class CompileTimeConstantExpr extends Expr {
+  pragma[no_dynamic_join_order]
   CompileTimeConstantExpr() {
     primitiveOrString(this.getType()) and
     (
@@ -203,6 +204,17 @@ class CompileTimeConstantExpr extends Expr {
     )
     or
     result = this.(LiveLiteral).getValue().getStringValue()
+  }
+
+  /**
+   * Gets the string value of this expression if it is a `String` constant, or
+   * the single-character string value if it is a `char` constant.
+   */
+  string getStringOrCharValue() {
+    result = this.getStringValue()
+    or
+    this.getType() instanceof CharacterType and
+    result = this.getIntValue().toUnicode()
   }
 
   /**
