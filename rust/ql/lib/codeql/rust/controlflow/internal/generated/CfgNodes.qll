@@ -1986,6 +1986,21 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       MacroExpr getMacroExpr() { result = node }
 
       /**
+       * Gets the `index`th attr of this macro expression (0-based).
+       */
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
+
+      /**
+       * Gets any of the attrs of this macro expression.
+       */
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
+
+      /**
+       * Gets the number of attrs of this macro expression.
+       */
+      int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+      /**
        * Gets the macro call of this macro expression, if it exists.
        */
       MacroCallCfgNode getMacroCall() {
@@ -3057,6 +3072,21 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
 
       /** Gets the underlying `StructExpr`. */
       StructExpr getStructExpr() { result = node }
+
+      /**
+       * Gets the `index`th attr of this struct expression (0-based).
+       */
+      AnyAttr getAttr(int index) { result = node.getAttr(index) }
+
+      /**
+       * Gets any of the attrs of this struct expression.
+       */
+      AnyAttr getAnAttr() { result = this.getAttr(_) }
+
+      /**
+       * Gets the number of attrs of this struct expression.
+       */
+      int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
       /**
        * Gets the struct expression field list of this struct expression, if it exists.

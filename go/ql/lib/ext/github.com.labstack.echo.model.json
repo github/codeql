@@ -1,0 +1,47 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        // path-injection
+        ["github.com/labstack/echo", "Context", true, "Attachment", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/labstack/echo", "Context", true, "File", "", "", "Argument[0]", "path-injection", "manual"],
+        // url-redirection
+        ["github.com/labstack/echo", "Context", true, "Redirect", "", "", "Argument[1]", "url-redirection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["github.com/labstack/echo", "Context", true, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["github.com/labstack/echo", "Context", true, "Set", "", "", "Argument[1]", "Argument[receiver]", "taint", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["github.com/labstack/echo", "Context", true, "Bind", "", "", "Argument[0]", "remote", "manual"],
+        ["github.com/labstack/echo", "Context", true, "Param", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/labstack/echo", "Context", true, "ParamValues", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/labstack/echo", "Context", true, "QueryParam", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/labstack/echo", "Context", true, "QueryParams", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/labstack/echo", "Context", true, "QueryString", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/labstack/echo", "Context", true, "FormValue", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/labstack/echo", "Context", true, "FormParams", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/labstack/echo", "Context", true, "FormFile", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/labstack/echo", "Context", true, "MultipartForm", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/labstack/echo", "Context", true, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/labstack/echo", "Context", true, "Cookies", "", "", "ReturnValue[0]", "remote", "manual"]
+      ]
+    }
+  ]
+}

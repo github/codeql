@@ -774,8 +774,20 @@ conditionBlock
 | Switch.cs:118:18:118:18 | After 2 [match] | Switch.cs:118:25:118:33 | After ... == ... [true] | true |
 | Switch.cs:123:10:123:12 | Entry | Switch.cs:125:24:125:29 | After Boolean b [match] | true |
 | Switch.cs:123:10:123:12 | Entry | Switch.cs:125:24:125:29 | After Boolean b [no-match] | false |
+| Switch.cs:123:10:123:12 | Entry | Switch.cs:125:34:125:34 | After access to local variable b [false] | true |
+| Switch.cs:123:10:123:12 | Entry | Switch.cs:125:34:125:34 | After access to local variable b [true] | true |
+| Switch.cs:125:24:125:29 | After Boolean b [match] | Switch.cs:125:34:125:34 | After access to local variable b [false] | false |
+| Switch.cs:125:24:125:29 | After Boolean b [match] | Switch.cs:125:34:125:34 | After access to local variable b [true] | true |
 | Switch.cs:129:12:129:14 | Entry | Switch.cs:131:28:131:35 | After String s [match] | true |
 | Switch.cs:129:12:129:14 | Entry | Switch.cs:131:28:131:35 | After String s [no-match] | false |
+| Switch.cs:129:12:129:14 | Entry | Switch.cs:131:40:131:40 | After access to local variable s [non-null] | true |
+| Switch.cs:129:12:129:14 | Entry | Switch.cs:131:40:131:40 | After access to local variable s [null] | true |
+| Switch.cs:129:12:129:14 | Entry | Switch.cs:131:48:131:51 | After null [non-null] | false |
+| Switch.cs:129:12:129:14 | Entry | Switch.cs:131:48:131:51 | After null [null] | false |
+| Switch.cs:131:28:131:35 | After String s [match] | Switch.cs:131:40:131:40 | After access to local variable s [non-null] | false |
+| Switch.cs:131:28:131:35 | After String s [match] | Switch.cs:131:40:131:40 | After access to local variable s [null] | true |
+| Switch.cs:131:28:131:35 | After String s [no-match] | Switch.cs:131:48:131:51 | After null [non-null] | false |
+| Switch.cs:131:28:131:35 | After String s [no-match] | Switch.cs:131:48:131:51 | After null [null] | true |
 | Switch.cs:134:9:134:11 | Entry | Switch.cs:139:18:139:18 | After 1 [match] | true |
 | Switch.cs:134:9:134:11 | Entry | Switch.cs:139:18:139:18 | After 1 [no-match] | false |
 | Switch.cs:134:9:134:11 | Entry | Switch.cs:140:18:140:18 | After 2 [match] | false |
@@ -1379,10 +1391,12 @@ conditionFlow
 | Switch.cs:117:25:117:34 | ... == ... | Switch.cs:117:25:117:34 | After ... == ... [true] | true |
 | Switch.cs:118:25:118:33 | ... == ... | Switch.cs:118:25:118:33 | After ... == ... [false] | false |
 | Switch.cs:118:25:118:33 | ... == ... | Switch.cs:118:25:118:33 | After ... == ... [true] | true |
-| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:13:125:48 | After ... switch { ... } [false] | false |
-| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:13:125:48 | After ... switch { ... } [true] | true |
-| Switch.cs:125:42:125:46 | false | Switch.cs:125:13:125:48 | After ... switch { ... } [false] | false |
-| Switch.cs:125:42:125:46 | false | Switch.cs:125:13:125:48 | After ... switch { ... } [true] | true |
+| Switch.cs:125:34:125:34 | After access to local variable b [false] | Switch.cs:125:13:125:48 | After ... switch { ... } [false] | false |
+| Switch.cs:125:34:125:34 | After access to local variable b [true] | Switch.cs:125:13:125:48 | After ... switch { ... } [true] | true |
+| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | After access to local variable b [false] | false |
+| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | After access to local variable b [true] | true |
+| Switch.cs:125:42:125:46 | After false [false] | Switch.cs:125:13:125:48 | After ... switch { ... } [false] | false |
+| Switch.cs:125:42:125:46 | false | Switch.cs:125:42:125:46 | After false [false] | false |
 | Switch.cs:157:13:157:13 | access to parameter b | Switch.cs:157:13:157:13 | After access to parameter b [false] | false |
 | Switch.cs:157:13:157:13 | access to parameter b | Switch.cs:157:13:157:13 | After access to parameter b [true] | true |
 | TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:7:13:7:22 | After ... is ... [false] | false |

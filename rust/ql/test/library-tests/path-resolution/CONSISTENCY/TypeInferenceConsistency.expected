@@ -1,0 +1,4 @@
+typeParameterEscapesScope
+| main.rs:405:26:410:9 | { ... } |  | main.rs:380:7:380:7 | T |
+| main.rs:409:13:409:19 | ...::c |  | main.rs:380:7:380:7 | T |
+| main.rs:466:9:470:12 | ...::c |  | main.rs:380:7:380:7 | T |

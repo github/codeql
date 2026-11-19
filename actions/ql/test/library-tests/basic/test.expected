@@ -8,7 +8,7 @@ files
 | .github/workflows/poisonable_steps.yml:0:0:0:0 | .github/workflows/poisonable_steps.yml |
 | .github/workflows/shell.yml:0:0:0:0 | .github/workflows/shell.yml |
 | .github/workflows/test.yml:0:0:0:0 | .github/workflows/test.yml |
-| controlchecktest.ext.yml:0:0:0:0 | controlchecktest.ext.yml |
+| controlchecktest.ext.json:0:0:0:0 | controlchecktest.ext.json |
 workflows
 | .github/workflows/commands.yml:1:1:39:30 | on: push |
 | .github/workflows/controlcheck.yml:1:1:16:25 | on: |

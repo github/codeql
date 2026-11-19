@@ -9,6 +9,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Dog"
           inheritanceClause:
             inheritanceClause
@@ -23,7 +24,6 @@ sourceFile
               leftBrace: {
               rightBrace: }
               members:
-          modifiers:
           classKeyword: class
 
 ---

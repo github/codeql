@@ -1,5 +1,6 @@
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 public class HostComparison {
@@ -199,6 +200,46 @@ public class HostComparison {
         String host = uri.getHost();
         if (ALLOWED_HOST.equalsIgnoreCase(host)) {
             uri.toURL().openConnection();
+        }
+    }
+
+    public void constantCollection(HttpServletRequest request) throws Exception {
+        URI uri = new URI(request.getParameter("url"));
+        String host = uri.getHost();
+        if (Set.of("example.com", "example.org").contains(host)) {
+            uri.toURL().openConnection();
+        }
+    }
+
+    public void normalizedConstantCollection(HttpServletRequest request) throws Exception {
+        URI uri = new URI(request.getParameter("url"));
+        String host = uri.getHost();
+        if (Set.of("EXAMPLE.COM", "EXAMPLE.ORG").contains(host.toUpperCase())) {
+            uri.toURL().openConnection();
+        }
+    }
+
+    public void nullContainingCollection(HttpServletRequest request) throws Exception {
+        URI uri = new URI(request.getParameter("url")); // $ Source
+        String host = uri.getHost();
+        if (Arrays.asList("example.com", null).contains(host)) {
+            uri.toURL().openConnection(); // $ Alert
+        }
+    }
+
+    public void nullContainingCollectionWithNonNullHost(HttpServletRequest request) throws Exception {
+        URI uri = new URI(request.getParameter("url"));
+        String host = uri.getHost();
+        if (host != null && Arrays.asList("example.com", null).contains(host)) {
+            uri.toURL().openConnection();
+        }
+    }
+
+    public void untrustedCollection(HttpServletRequest request) throws Exception {
+        URI uri = new URI(request.getParameter("url")); // $ Source
+        String host = uri.getHost();
+        if (Set.of(request.getParameter("allowed")).contains(host)) {
+            uri.toURL().openConnection(); // $ Alert
         }
     }
 

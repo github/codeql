@@ -14,6 +14,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Counter"
           memberBlock:
             memberBlock
@@ -58,8 +59,8 @@ sourceFile
                                   rightOperand:
                                     integerLiteralExpr
                                       literal: integerLiteral "1"
-                      name: identifier "bump"
                       modifiers:
+                      name: identifier "bump"
                       signature:
                         functionSignature
                           parameterClause:
@@ -68,7 +69,6 @@ sourceFile
                               rightParen: )
                               parameters:
                       funcKeyword: func
-          modifiers:
           classKeyword: class
 
 ---

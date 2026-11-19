@@ -1,0 +1,78 @@
+// THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["System.Composition.Convention", "ExportConventionBuilder", false, "AddMetadata", "(System.String,System.Func<System.Type,System.Object>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "ExportConventionBuilder", false, "AddMetadata", "(System.String,System.Object)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "ExportConventionBuilder", false, "AsContractName", "(System.Func<System.Type,System.String>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "ExportConventionBuilder", false, "AsContractName", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "ExportConventionBuilder", false, "AsContractType", "(System.Type)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "ExportConventionBuilder", false, "AsContractType<T>", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "ImportConventionBuilder", false, "AddMetadataConstraint", "(System.String,System.Func<System.Type,System.Object>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "ImportConventionBuilder", false, "AddMetadataConstraint", "(System.String,System.Object)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "ImportConventionBuilder", false, "AllowDefault", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "ImportConventionBuilder", false, "AsContractName", "(System.Func<System.Type,System.String>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "ImportConventionBuilder", false, "AsContractName", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "ImportConventionBuilder", false, "AsMany", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "ImportConventionBuilder", false, "AsMany", "(System.Boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "AddPartMetadata", "(System.String,System.Func<System.Type,System.Object>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "AddPartMetadata", "(System.String,System.Object)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "Export", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "Export", "(System.Action<System.Composition.Convention.ExportConventionBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "Export<T>", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "Export<T>", "(System.Action<System.Composition.Convention.ExportConventionBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "ExportInterfaces", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "ExportInterfaces", "(System.Predicate<System.Type>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "ExportInterfaces", "(System.Predicate<System.Type>,System.Action<System.Type,System.Composition.Convention.ExportConventionBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "ExportProperties", "(System.Predicate<System.Reflection.PropertyInfo>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "ExportProperties", "(System.Predicate<System.Reflection.PropertyInfo>,System.Action<System.Reflection.PropertyInfo,System.Composition.Convention.ExportConventionBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "ExportProperties<T>", "(System.Predicate<System.Reflection.PropertyInfo>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "ExportProperties<T>", "(System.Predicate<System.Reflection.PropertyInfo>,System.Action<System.Reflection.PropertyInfo,System.Composition.Convention.ExportConventionBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "ImportProperties", "(System.Predicate<System.Reflection.PropertyInfo>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "ImportProperties", "(System.Predicate<System.Reflection.PropertyInfo>,System.Action<System.Reflection.PropertyInfo,System.Composition.Convention.ImportConventionBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "ImportProperties<T>", "(System.Predicate<System.Reflection.PropertyInfo>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "ImportProperties<T>", "(System.Predicate<System.Reflection.PropertyInfo>,System.Action<System.Reflection.PropertyInfo,System.Composition.Convention.ImportConventionBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "NotifyImportsSatisfied", "(System.Predicate<System.Reflection.MethodInfo>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "SelectConstructor", "(System.Func<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo>,System.Reflection.ConstructorInfo>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "SelectConstructor", "(System.Func<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo>,System.Reflection.ConstructorInfo>,System.Action<System.Reflection.ParameterInfo,System.Composition.Convention.ImportConventionBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "Shared", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder", false, "Shared", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder<T>", false, "ExportProperty", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder<T>", false, "ExportProperty", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>,System.Action<System.Composition.Convention.ExportConventionBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder<T>", false, "ExportProperty<TContract>", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder<T>", false, "ExportProperty<TContract>", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>,System.Action<System.Composition.Convention.ExportConventionBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder<T>", false, "ImportProperty", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder<T>", false, "ImportProperty", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>,System.Action<System.Composition.Convention.ImportConventionBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder<T>", false, "ImportProperty<TContract>", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder<T>", false, "ImportProperty<TContract>", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>,System.Action<System.Composition.Convention.ImportConventionBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder<T>", false, "NotifyImportsSatisfied", "(System.Linq.Expressions.Expression<System.Action<T>>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"],
+        ["System.Composition.Convention", "PartConventionBuilder<T>", false, "SelectConstructor", "(System.Linq.Expressions.Expression<System.Func<System.Composition.Convention.ParameterImportConventionBuilder,T>>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "neutralModel"
+      },
+      "data": [
+        ["System.Composition.Convention", "AttributedModelProvider", "GetCustomAttributes", "(System.Type,System.Reflection.MemberInfo)", "summary", "df-generated"],
+        ["System.Composition.Convention", "AttributedModelProvider", "GetCustomAttributes", "(System.Type,System.Reflection.ParameterInfo)", "summary", "df-generated"],
+        ["System.Composition.Convention", "ConventionBuilder", "ForType", "(System.Type)", "summary", "df-generated"],
+        ["System.Composition.Convention", "ConventionBuilder", "ForType<T>", "()", "summary", "df-generated"],
+        ["System.Composition.Convention", "ConventionBuilder", "ForTypesDerivedFrom", "(System.Type)", "summary", "df-generated"],
+        ["System.Composition.Convention", "ConventionBuilder", "ForTypesDerivedFrom<T>", "()", "summary", "df-generated"],
+        ["System.Composition.Convention", "ConventionBuilder", "ForTypesMatching", "(System.Predicate<System.Type>)", "summary", "df-generated"],
+        ["System.Composition.Convention", "ConventionBuilder", "ForTypesMatching<T>", "(System.Predicate<System.Type>)", "summary", "df-generated"],
+        ["System.Composition.Convention", "ConventionBuilder", "GetCustomAttributes", "(System.Type,System.Reflection.MemberInfo)", "summary", "df-generated"],
+        ["System.Composition.Convention", "ConventionBuilder", "GetCustomAttributes", "(System.Type,System.Reflection.ParameterInfo)", "summary", "df-generated"],
+        ["System.Composition.Convention", "ParameterImportConventionBuilder", "Import<T>", "()", "summary", "df-generated"],
+        ["System.Composition.Convention", "ParameterImportConventionBuilder", "Import<T>", "(System.Action<System.Composition.Convention.ImportConventionBuilder>)", "summary", "df-generated"]
+      ]
+    }
+  ]
+}

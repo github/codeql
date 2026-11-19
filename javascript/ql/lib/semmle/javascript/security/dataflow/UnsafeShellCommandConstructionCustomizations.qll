@@ -174,58 +174,65 @@ module UnsafeShellCommandConstruction {
     override DataFlow::Node getAlertLocation() { result = this }
   }
 
+  /** Holds if `node` can reach `use` without another write to the `shell` property of `options`. */
+  private predicate reachesShellOptionUse(
+    DataFlow::SourceNode options, ControlFlowNode node, ControlFlowNode use
+  ) {
+    exists(SystemCommandExecution sys |
+      options = sys.getOptionsArg().getALocalSource() and use = sys.asExpr()
+    ) and
+    (
+      node = use
+      or
+      not node = options.getAPropertyWrite("shell").getWriteNode() and
+      reachesShellOptionUse(options, node.getASuccessor(), use)
+    )
+  }
+
+  /** Gets a value of the `shell` option that can reach the command execution. */
+  private DataFlow::Node getShellOption(SystemCommandExecution sys) {
+    exists(DataFlow::SourceNode options, DataFlow::PropWrite write, Expr use |
+      options = sys.getOptionsArg().getALocalSource() and
+      write = options.getAPropertyWrite("shell") and
+      use = sys.asExpr() and
+      result = write.getRhs()
+    |
+      write.getWriteNode().getContainer() != use.getContainer()
+      or
+      reachesShellOptionUse(options, write.getWriteNode().getASuccessor(), use)
+    )
+    or
+    exists(API::Node node, DataFlow::SourceNode options, Expr use |
+      node.asSink() = sys.getOptionsArg() and
+      result = node.getMember("shell").asSink() and
+      options = sys.getOptionsArg().getALocalSource() and
+      use = sys.asExpr() and
+      not result = options.getAPropertyWrite("shell").getRhs() and
+      reachesShellOptionUse(options, use.getContainer().getStart(), use)
+    )
+  }
+
   /**
-   * Holds if the arguments array given to `sys` is joined as a string because `shell` is set to true.
+   * Holds if the arguments array given to `sys` is joined as a string because the `shell` option is enabled.
    */
   predicate executesArrayAsShell(SystemCommandExecution sys) {
-    sys.getOptionsArg()
-        .getALocalSource()
-        .getAPropertyWrite("shell")
-        .getRhs()
-        .asExpr()
-        .(BooleanLiteral)
-        .getValue() = "true"
-    or
-    exists(API::Node node |
-      node.asSink() = sys.getOptionsArg() and
-      node.getMember("shell").asSink().mayHaveBooleanValue(true)
+    exists(DataFlow::Node shell | shell = getShellOption(sys) |
+      shell.mayHaveBooleanValue(true)
+      or
+      exists(string path | shell.mayHaveStringValue(path) and path != "")
     )
   }
 
   /**
-   * Gets a node that ends up in an array that is ultimately executed as a shell script by `sys`.
-   */
-  private DataFlow::SourceNode endsInShellExecutedArray(
-    DataFlow::TypeBackTracker t, SystemCommandExecution sys
-  ) {
-    t.start() and
-    result = sys.getArgumentList().getALocalSource() and
-    executesArrayAsShell(sys)
-    or
-    exists(DataFlow::TypeBackTracker t2 |
-      result = endsInShellExecutedArray(t2, sys).backtrack(t2, t)
-    )
-  }
-
-  /**
-   * An argument to a command invocation where the `shell` option is set to true.
+   * An argument to a command invocation where the `shell` option is enabled.
    */
   class ShellTrueCommandExecutionSink extends Sink {
     SystemCommandExecution sys;
 
     ShellTrueCommandExecutionSink() {
-      // `shell` is set to true. That means string-concatenation happens behind the scenes.
+      // `shell` is enabled. That means string-concatenation happens behind the scenes.
       // We just assume that a `shell` option in any library means the same thing as it does in NodeJS.
-      exists(DataFlow::SourceNode arr |
-        arr = endsInShellExecutedArray(DataFlow::TypeBackTracker::end(), sys)
-      |
-        this = arr.(DataFlow::ArrayCreationNode).getAnElement()
-        or
-        this = arr.getAMethodCall(["push", "unshift"]).getAnArgument()
-      )
-      or
       this = sys.getArgumentList() and
-      not this instanceof DataFlow::ArrayCreationNode and
       executesArrayAsShell(sys)
     }
 

@@ -224,7 +224,7 @@ public class ExtractorConfig {
   /** Should textual information be extracted into the lines/4 relation? */
   private boolean extractLines;
 
-  /** Override amount of RAM to allocate to the TypeScript compiler. */
+  /** Override the amount of RAM for the Node.js process.  */
   private int typescriptRam;
 
   /** The default character encoding to use for parsing source files. */

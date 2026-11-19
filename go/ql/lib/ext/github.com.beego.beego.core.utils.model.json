@@ -1,0 +1,45 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "packageGrouping"
+      },
+      "data": [
+        ["beego-utils", "github.com/astaxie/beego/utils"],
+        ["beego-utils", "github.com/beego/beego/utils"],
+        ["beego-utils", "github.com/beego/beego/core/utils"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["group:beego-utils", "", false, "Display", "", "", "Argument[0]", "log-injection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["group:beego-utils", "", false, "SliceChunk", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["group:beego-utils", "", false, "SliceDiff", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["group:beego-utils", "", false, "SliceFilter", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["group:beego-utils", "", false, "SliceIntersect", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["group:beego-utils", "", false, "SliceMerge", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"],
+        ["group:beego-utils", "", false, "SlicePad", "", "", "Argument[0..2]", "ReturnValue", "taint", "manual"],
+        ["group:beego-utils", "", false, "SliceRand", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["group:beego-utils", "", false, "SliceReduce", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["group:beego-utils", "", false, "SliceShuffle", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["group:beego-utils", "", false, "SliceUnique", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["group:beego-utils", "BeeMap", true, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:beego-utils", "BeeMap", true, "Items", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["group:beego-utils", "BeeMap", true, "Set", "", "", "Argument[1]", "Argument[receiver]", "taint", "manual"]
+      ]
+    }
+  ]
+}

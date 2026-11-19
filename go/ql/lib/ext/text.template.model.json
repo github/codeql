@@ -1,0 +1,18 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["text/template", "", false, "HTMLEscape", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["text/template", "", false, "HTMLEscapeString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["text/template", "", false, "JSEscape", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["text/template", "", false, "JSEscapeString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}
+// - ["text/template", "Template", True, "Execute", "", "", "Argument[1]", "Argument[0]", "taint", "manual"] # Implemented in QL to provide an arbitrary content read from the input.
+// - ["text/template", "Template", True, "ExecuteTemplate", "", "", "Argument[2]", "Argument[0]", "taint", "manual"] # Implemented in QL to provide an arbitrary content read from the input.

@@ -50,6 +50,7 @@ private import semmle.python.frameworks.Libxml2
 private import semmle.python.frameworks.Lxml
 private import semmle.python.frameworks.Mako
 private import semmle.python.frameworks.MarkupSafe
+private import semmle.python.frameworks.Mcp
 private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Mysql
 private import semmle.python.frameworks.MySQLdb

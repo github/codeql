@@ -99,12 +99,12 @@ edges
 | main.go:86:19:86:26 | password | main.go:90:35:90:42 | password | provenance | Sink:MaD:1 |
 | overrides.go:8:2:8:40 | SSA def(password) | overrides.go:9:9:9:16 | password | provenance |  |
 | overrides.go:9:9:9:16 | password | overrides.go:13:14:13:23 | call to String | provenance |  |
-| passwords.go:8:12:8:12 | SSA def(x) | passwords.go:9:14:9:14 | x | provenance |  |
+| passwords.go:8:12:8:12 | SSA param(x) | passwords.go:9:14:9:14 | x | provenance |  |
 | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:25:14:25:21 | password | provenance |  |
 | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:30:8:30:15 | password | provenance |  |
 | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:33:13:33:20 | password | provenance |  |
 | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:36:28:36:35 | password | provenance |  |
-| passwords.go:30:8:30:15 | password | passwords.go:8:12:8:12 | SSA def(x) | provenance |  |
+| passwords.go:30:8:30:15 | password | passwords.go:8:12:8:12 | SSA param(x) | provenance |  |
 | passwords.go:36:28:36:35 | password | passwords.go:36:14:36:35 | ...+... | provenance | Config |
 | passwords.go:36:28:36:35 | password | passwords.go:44:6:44:13 | password | provenance |  |
 | passwords.go:38:10:40:2 | struct literal | passwords.go:41:14:41:17 | obj1 | provenance |  |
@@ -147,8 +147,8 @@ edges
 | protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | protobuf.go:14:14:14:18 | query [pointer, Description] | provenance |  |
 | protobuf.go:12:22:12:29 | password | protobuf.go:12:2:12:6 | implicit-deref query [postupdate] [Description] | provenance |  |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | protobuf.go:14:14:14:35 | call to GetDescription | provenance |  |
-| protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | SSA def(x) [pointer, Description] | provenance |  |
-| protos/query/query.pb.go:117:7:117:7 | SSA def(x) [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | provenance |  |
+| protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | SSA param(x) [pointer, Description] | provenance |  |
+| protos/query/query.pb.go:117:7:117:7 | SSA param(x) [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | provenance |  |
 | protos/query/query.pb.go:119:10:119:10 | implicit-deref x [Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description | provenance |  |
 | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | implicit-deref x [Description] | provenance |  |
 models
@@ -212,7 +212,7 @@ nodes
 | overrides.go:8:2:8:40 | SSA def(password) | semmle.label | SSA def(password) |
 | overrides.go:9:9:9:16 | password | semmle.label | password |
 | overrides.go:13:14:13:23 | call to String | semmle.label | call to String |
-| passwords.go:8:12:8:12 | SSA def(x) | semmle.label | SSA def(x) |
+| passwords.go:8:12:8:12 | SSA param(x) | semmle.label | SSA param(x) |
 | passwords.go:9:14:9:14 | x | semmle.label | x |
 | passwords.go:21:2:21:23 | SSA def(password) | semmle.label | SSA def(password) |
 | passwords.go:25:14:25:21 | password | semmle.label | password |
@@ -263,9 +263,9 @@ nodes
 | protobuf.go:12:22:12:29 | password | semmle.label | password |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | semmle.label | query [pointer, Description] |
 | protobuf.go:14:14:14:35 | call to GetDescription | semmle.label | call to GetDescription |
-| protos/query/query.pb.go:117:7:117:7 | SSA def(x) [pointer, Description] | semmle.label | SSA def(x) [pointer, Description] |
+| protos/query/query.pb.go:117:7:117:7 | SSA param(x) [pointer, Description] | semmle.label | SSA param(x) [pointer, Description] |
 | protos/query/query.pb.go:119:10:119:10 | implicit-deref x [Description] | semmle.label | implicit-deref x [Description] |
 | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | semmle.label | x [pointer, Description] |
 | protos/query/query.pb.go:119:10:119:22 | selection of Description | semmle.label | selection of Description |
 subpaths
-| protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | SSA def(x) [pointer, Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description | protobuf.go:14:14:14:35 | call to GetDescription |
+| protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | SSA param(x) [pointer, Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description | protobuf.go:14:14:14:35 | call to GetDescription |

@@ -1,7 +1,0 @@
-*/db/
-*/dbs/
-*/venv/
-**/*.egg-info/
-*/.cache
-**/trap/
-**/*.testproj/

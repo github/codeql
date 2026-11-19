@@ -1,0 +1,31 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["io", "", false, "Copy", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["io", "", false, "CopyBuffer", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["io", "", false, "CopyN", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["io", "", false, "LimitReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["io", "", false, "NewSectionReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["io", "", false, "NopCloser", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["io", "", false, "ReadAll", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["io", "", false, "ReadAtLeast", "", "", "Argument[0]", "Argument[1]", "taint", "manual"],
+        ["io", "", false, "ReadFull", "", "", "Argument[0]", "Argument[1]", "taint", "manual"],
+        ["io", "", false, "TeeReader", "", "", "Argument[0]", "Argument[1]", "taint", "manual"],
+        ["io", "", false, "TeeReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["io", "", false, "WriteString", "", "", "Argument[1]", "Argument[0]", "taint", "manual"],
+        ["io", "Reader", true, "Read", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["io", "ReaderAt", true, "ReadAt", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["io", "ReaderFrom", true, "ReadFrom", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["io", "StringWriter", true, "WriteString", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["io", "Writer", true, "Write", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["io", "WriterAt", true, "WriteAt", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["io", "WriterTo", true, "WriteTo", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      ]
+    }
+  ]
+}

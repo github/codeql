@@ -23,18 +23,7 @@ private module CfgNodesInput implements InputSig<Location> {
 
   class CfgNode = AstCfgNode;
 
-  private AstNode desugar(AstNode n) {
-    result = n.(ParenPat).getPat()
-    or
-    result = n.(ParenExpr).getExpr()
-  }
-
-  AstNode getDesugared(AstNode n) {
-    result = getDesugared(desugar(n))
-    or
-    not exists(desugar(n)) and
-    result = n
-  }
+  AstNode getDesugared(AstNode n) { result = n }
 }
 
 import MakeCfgNodes<Location, CfgNodesInput>

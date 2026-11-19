@@ -144,8 +144,6 @@ private Callable getCallable(Expr expr) {
 }
 
 module Input2 implements Impl::Private::InputSig2 {
-  private import codeql.rust.controlflow.CfgNodes
-
   class SourceSinkReportingElement extends AstNode {
     DataFlowCallable getEnclosingCallable() { result.asCfgScope() = this.getEnclosingCfgScope() }
 
@@ -158,7 +156,7 @@ module Input2 implements Impl::Private::InputSig2 {
       exists(Callable c |
         sc = Impl::Private::SummaryComponent::return(_) and
         c = getCallable(this) and
-        result.getACfgNode().getASuccessor() instanceof AnnotatedExitCfgNode and
+        isReturnedValue(result) and
         result.getEnclosingCfgScope() = c
       )
     }

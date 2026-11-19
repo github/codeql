@@ -13,7 +13,6 @@ private import codeql.rust.Diagnostics
 
 private predicate nonPostOrderExpr(Expr e) {
   not e instanceof LetExpr and
-  not e instanceof ParenExpr and
   exists(AstNode last, Completion c |
     CfgImpl::last(e, last, c) and
     last != e and

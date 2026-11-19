@@ -9,6 +9,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Button"
           inheritanceClause:
             inheritanceClause
@@ -28,7 +29,6 @@ sourceFile
               leftBrace: {
               rightBrace: }
               members:
-          modifiers:
           classKeyword: class
 
 ---

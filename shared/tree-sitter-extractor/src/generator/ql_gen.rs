@@ -4,6 +4,7 @@ use crate::{generator::ql, node_types};
 
 /// Creates the hard-coded `AstNode` class that acts as a supertype of all
 /// classes we generate.
+#[allow(clippy::too_many_lines)]
 pub fn create_ast_node_class<'a>(
     ast_node: &'a str,
     node_location_table: &'a str,
@@ -205,8 +206,10 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
     }
 }
 
-/// Creates the `TriviaToken` class. Trivia tokens (e.g. comments) are
-/// `extra` nodes preserved from the original parse tree even when the tree has
+/// Creates the `TriviaToken` class.
+///
+/// Trivia tokens (e.g. comments) are `extra` nodes preserved from the original
+/// parse tree even when the tree has
 /// been rewritten by a desugaring pass. They are not part of the regular
 /// `Token` hierarchy because they do not appear in the (possibly desugared)
 /// output schema.
@@ -510,9 +513,11 @@ pub fn create_discardable_location_predicate() -> ql::Predicate<'static> {
     }
 }
 
-/// Creates a discard predicate for `@location_default` entities. This is necessary because the
-/// tree-sitter extractors use `*` IDs for locations, which means that locations don't get shared
-/// between the base and overlay databases.
+/// Creates a discard predicate for `@location_default` entities.
+///
+/// This is necessary because the tree-sitter extractors use `*` IDs for
+/// locations, which means that locations don't get shared between the base
+/// and overlay databases.
 pub fn create_discard_location_predicate() -> ql::Predicate<'static> {
     ql::Predicate {
         name: "discardLocation",
@@ -622,6 +627,7 @@ fn create_get_field_expr_for_table_storage<'a>(
 /// `parent_name` - the name of the parent node
 /// `field` - the field whose getters we are creating
 /// `field_type` - the db name of the field's type (possibly being a union we created)
+#[allow(clippy::too_many_lines)]
 fn create_field_getters<'a>(
     main_table_name: &'a str,
     main_table_arity: usize,
@@ -645,7 +651,7 @@ fn create_field_getters<'a>(
     // use in `getAFieldOrChild` (where we use a "don't care" expression to
     // match any index).
     let (get_value, get_value_any_index) = match &field.storage {
-        node_types::Storage::Column { name: _ } => {
+        node_types::Storage::Column { .. } => {
             let column_index = *main_table_column_index;
             *main_table_column_index += 1;
             (
@@ -666,17 +672,17 @@ fn create_field_getters<'a>(
         node_types::Storage::Table {
             name: field_table_name,
             has_index,
-            column_name: _,
+            ..
         } => (
             create_get_field_expr_for_table_storage(
                 get_value_result_var_name,
                 field_table_name,
-                if *has_index { Some("i") } else { None },
+                has_index.then_some("i"),
             ),
             create_get_field_expr_for_table_storage(
                 get_value_result_var_name,
                 field_table_name,
-                if *has_index { Some("_") } else { None },
+                has_index.then_some("_"),
             ),
         ),
     };
@@ -765,11 +771,7 @@ fn field_getter_return_type<'a>(
         node_types::FieldTypeInfo::Single(t) => {
             Some(ql::Type::Facade(&nodes.get(t).unwrap().ql_class_name))
         }
-        node_types::FieldTypeInfo::Multiple {
-            types: _,
-            dbscheme_union: _,
-            ql_class,
-        } => Some(ql::Type::Facade(ql_class)),
+        node_types::FieldTypeInfo::Multiple { ql_class, .. } => Some(ql::Type::Facade(ql_class)),
         node_types::FieldTypeInfo::ReservedWordInt(_) => Some(ql::Type::String),
     }
 }
@@ -966,22 +968,15 @@ fn is_predicate_inherited(
 }
 
 /// Converts the given node types into CodeQL classes wrapping the dbscheme.
+#[allow(clippy::too_many_lines)]
 pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     let mut classes = Vec::new();
-    let mut token_kinds = BTreeSet::new();
     let direct_supertypes = compute_direct_supertypes(nodes);
     let exposed_predicate_signatures = compute_exposed_predicate_signatures(nodes);
-    for (type_name, node) in nodes {
-        if let node_types::EntryKind::Token { .. } = &node.kind
-            && type_name.named
-        {
-            token_kinds.insert(&type_name.kind);
-        }
-    }
 
     for (type_name, node) in nodes {
         match &node.kind {
-            node_types::EntryKind::Token { kind_id: _ } => {
+            node_types::EntryKind::Token { .. } => {
                 if type_name.named {
                     let get_a_primary_ql_class =
                         create_get_a_primary_ql_class(&node.ql_class_name, true);
@@ -1037,9 +1032,11 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                 name: main_table_name,
                 fields,
             } => {
-                if fields.is_empty() {
-                    panic!("Encountered node '{}' with no fields", type_name.kind);
-                }
+                assert!(
+                    !fields.is_empty(),
+                    "Encountered node '{}' with no fields",
+                    type_name.kind
+                );
 
                 // Count how many columns there will be in the main table. There
                 // will be one for the id, plus one for each field that's stored
@@ -1091,7 +1088,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     }
                     main_class.predicates.extend(get_preds);
                     if let Some(get_child_expr) = get_child_expr {
-                        get_child_exprs.push(get_child_expr)
+                        get_child_exprs.push(get_child_expr);
                     }
                 }
 
@@ -1115,15 +1112,16 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     classes
 }
 
-/// Creates a `PrintAst` module containing a `getChild` predicate that maps each
-/// AST node to its children together with the name of the member predicate that
-/// produced them (and, for indexed fields, the index). This mirrors the
-/// information exposed by `getAFieldOrChild`, but keeps the member predicate
+/// Creates a `PrintAst` module with a `getChild` predicate for labelled AST edges.
+///
+/// The predicate maps each AST node to its children together with the name of the
+/// member predicate that produced them (and, for indexed fields, the index).
+/// This mirrors the information exposed by `getAFieldOrChild`, but keeps the member predicate
 /// name and index so that an AST printer can render labelled edges.
 pub fn create_print_ast_module(nodes: &node_types::NodeTypeMap) -> ql::TopLevel<'_> {
     let mut disjuncts: Vec<ql::Expression> = Vec::new();
     for node in nodes.values() {
-        if let node_types::EntryKind::Table { name: _, fields } = &node.kind {
+        if let node_types::EntryKind::Table { fields, .. } = &node.kind {
             for field in fields {
                 // `ReservedWordInt` fields have string-valued getters, so they
                 // are not children and are excluded (just as they are from
@@ -1217,7 +1215,7 @@ mod tests {
 
     #[test]
     fn indexes_predicate_signatures_exposed_by_classes() {
-        let yaml = r#"
+        let yaml = r"
 supertypes:
   callable:
     subtypes: [function_like]
@@ -1236,7 +1234,7 @@ named:
   parameter:
   block:
   identifier:
-"#;
+";
         let json = yeast::node_types_yaml::convert(yaml).unwrap();
         let nodes = node_types::read_node_types_str("test", &json).unwrap();
         let signatures = compute_exposed_predicate_signatures(&nodes);
@@ -1267,7 +1265,7 @@ named:
 
     #[test]
     fn generates_supertype_getters_and_concrete_overrides() {
-        let yaml = r#"
+        let yaml = r"
 supertypes:
   callable:
     subtypes: [function]
@@ -1280,7 +1278,7 @@ named:
     body?: block
   parameter:
   block:
-"#;
+";
         let json = yeast::node_types_yaml::convert(yaml).unwrap();
         let nodes = node_types::read_node_types_str("test", &json).unwrap();
         let generated = convert_nodes(&nodes)

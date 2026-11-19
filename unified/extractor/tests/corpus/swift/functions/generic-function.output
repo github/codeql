@@ -23,6 +23,7 @@ sourceFile
                         declReferenceExpr
                           baseName: identifier "x"
                       returnKeyword: return
+          modifiers:
           name: identifier "identity"
           genericParameterClause:
             genericParameterClause
@@ -32,7 +33,6 @@ sourceFile
                   name: identifier "T"
               leftAngle: <
               rightAngle: >
-          modifiers:
           signature:
             functionSignature
               parameterClause:
