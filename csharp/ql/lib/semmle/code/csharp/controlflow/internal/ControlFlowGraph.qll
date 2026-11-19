@@ -295,6 +295,16 @@ module Ast implements AstSig<Location> {
     boolean getValue() { result = this.getBoolValue() }
   }
 
+  class Pattern extends AstNode, CS::PatternExpr { }
+
+  class AndPattern extends Pattern, CS::AndPatternExpr { }
+
+  class OrPattern extends Pattern, CS::OrPatternExpr { }
+
+  class NotPattern extends Pattern, CS::NotPatternExpr {
+    Pattern getNegatedPattern() { result = super.getPattern() }
+  }
+
   final private class FinalIsExpr = CS::IsExpr;
 
   class PatternMatchExpr extends FinalIsExpr {
