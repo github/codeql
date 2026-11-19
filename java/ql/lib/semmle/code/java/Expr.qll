@@ -134,6 +134,7 @@ private predicate primitiveOrString(Type t) {
  * See JLS v8, section 15.28 (Constant Expressions).
  */
 class CompileTimeConstantExpr extends Expr {
+  pragma[no_dynamic_join_order]
   CompileTimeConstantExpr() {
     primitiveOrString(this.getType()) and
     (
