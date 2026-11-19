@@ -247,7 +247,7 @@ module IR {
 
     override predicate reads(ValueEntity v) {
       e = v.getAReference() and
-      e.(ReferenceExpr).isRvalue()
+      pragma[only_bind_out](e).(ReferenceExpr).isRvalue()
     }
 
     override Type getResultType() { result = e.getType() }
