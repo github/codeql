@@ -68,7 +68,11 @@ private class SensitiveDataCall extends SensitiveData {
   SensitiveDataCall() {
     exists(CallExpr call, string name |
       call = this.asExpr() and
-      name = [call.getCallee().(Identifier).getValue(), call.getCallee().(MemberAccessExpr).getMemberName()] and
+      name =
+        [
+          call.getCallee().(Identifier).getValue(),
+          call.getCallee().(MemberAccessExpr).getMemberName()
+        ] and
       HeuristicNames::nameIndicatesSensitiveData(name, classification)
     )
   }
