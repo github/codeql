@@ -430,14 +430,7 @@ module ParameterizedBarrierGuardValue<
   private module WrappedGuardChecks = ParameterizedValidationWrapper<P, guardChecks/4>;
 
   /** Gets a node that is safely guarded by the given guard check. */
-  Node getABarrierNode(P param) {
-    exists(Guard guard, GuardValue value, SsaWithFields var |
-      result = pragma[only_bind_out](var).getAUse()
-    |
-      guards(_, guard, value, _, var, param) and
-      pragma[only_bind_out](guard).valueControls(result.getBasicBlock(), value)
-    )
-  }
+  Node getABarrierNode(P param) { result = getABarrierNodeForGuard(_, param) }
 
   /**
    * Gets a node that is safely guarded by the given guard check.
