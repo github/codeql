@@ -22,12 +22,12 @@
 | Logic.java:19:9:19:12 | g(...) | false | Logic.java:25:9:25:14 | break |
 | Logic.java:19:9:19:12 | g(...) | false | Logic.java:26:7:26:14 | default |
 | Logic.java:19:9:19:12 | g(...) | true | Logic.java:20:7:20:16 | <Expr>; |
-| Logic.java:22:7:22:17 | case ... | false | Logic.java:24:7:24:17 | case ... |
-| Logic.java:22:7:22:17 | case ... | false | Logic.java:25:9:25:14 | break |
-| Logic.java:22:7:22:17 | case ... | false | Logic.java:26:7:26:14 | default |
-| Logic.java:22:7:22:17 | case ... | true | Logic.java:23:9:23:14 | break |
-| Logic.java:24:7:24:17 | case ... | false | Logic.java:26:7:26:14 | default |
-| Logic.java:24:7:24:17 | case ... | true | Logic.java:25:9:25:14 | break |
+| Logic.java:22:12:22:16 | "bar" | match | Logic.java:23:9:23:14 | break |
+| Logic.java:22:12:22:16 | "bar" | no match | Logic.java:24:7:24:17 | case ... |
+| Logic.java:22:12:22:16 | "bar" | no match | Logic.java:25:9:25:14 | break |
+| Logic.java:22:12:22:16 | "bar" | no match | Logic.java:26:7:26:14 | default |
+| Logic.java:24:12:24:16 | "foo" | match | Logic.java:25:9:25:14 | break |
+| Logic.java:24:12:24:16 | "foo" | no match | Logic.java:26:7:26:14 | default |
 | Logic.java:29:16:29:19 | g(...) | false | Logic.java:29:30:29:30 | s |
 | Logic.java:29:16:29:19 | g(...) | false | Logic.java:30:30:31:5 | { ... } |
 | Logic.java:29:16:29:19 | g(...) | true | Logic.java:29:23:29:26 | null |

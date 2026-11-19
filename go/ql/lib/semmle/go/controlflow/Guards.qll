@@ -93,64 +93,13 @@ private module GuardsInput implements
   class Case extends AstNode {
     G::ExpressionSwitchStmt switch;
 
-    Case() {
-      exists(switch.getExpr()) and
-      this = switch.getACase()
-      or
-      not exists(switch.getExpr()) and
-      (
-        this = switch.getANonDefaultCase().getAnExpr()
-        or
-        this = switch.getDefault()
-      )
-    }
+    Case() { this = switch.getACase() }
 
-    Expr getSwitchExpr() {
-      result = switch.getExpr()
-      or
-      not exists(switch.getExpr()) and result = this
-    }
+    Expr getSwitchExpr() { result = switch.getExpr() }
 
     predicate isDefaultCase() { this = switch.getDefault() }
 
-    ConstantExpr asConstantCase() {
-      exists(G::CaseClause cc |
-        this = cc and
-        cc.getNumExpr() = 1 and
-        result = cc.getExpr(0)
-      )
-    }
-
-    predicate matchEdge(CfgImpl::Cfg::BasicBlock bb1, CfgImpl::Cfg::BasicBlock bb2) {
-      exists(Expr caseExpr |
-        caseExpr = this.(G::CaseClause).getAnExpr()
-        or
-        caseExpr = this
-      |
-        caseExpressionBranch(caseExpr, bb1,
-          any(MatchingSuccessor successor |
-            bb1.getASuccessor(successor) = bb2 and successor.getValue() = true
-          ))
-      )
-    }
-
-    predicate nonMatchEdge(CfgImpl::Cfg::BasicBlock bb1, CfgImpl::Cfg::BasicBlock bb2) {
-      exists(G::CaseClause cc, int last, Expr caseExpr |
-        cc = this and
-        last = max(int i | exists(cc.getExpr(i))) and
-        caseExpr = cc.getExpr(last)
-      |
-        caseExpressionBranch(caseExpr, bb1,
-          any(MatchingSuccessor successor |
-            bb1.getASuccessor(successor) = bb2 and successor.getValue() = false
-          ))
-      )
-      or
-      caseExpressionBranch(this, bb1,
-        any(MatchingSuccessor successor |
-          bb1.getASuccessor(successor) = bb2 and successor.getValue() = false
-        ))
-    }
+    AstNode getAPattern() { result = this.(G::CaseClause).getAnExpr() }
   }
 
   additional predicate caseExpressionBranch(
@@ -161,20 +110,6 @@ private module GuardsInput implements
       caseExpr = cc.getAnExpr() and
       bb.getLastNode() = caseExpr.getControlFlowNode() and
       exists(bb.getASuccessor(successor))
-    )
-  }
-
-  predicate equalityBranchEdge(
-    Expr left, Expr right, CfgImpl::Cfg::BasicBlock bb1, CfgImpl::Cfg::BasicBlock bb2, boolean equal
-  ) {
-    exists(G::CaseClause cc, G::ExpressionSwitchStmt switch |
-      cc = switch.getACase() and
-      left = switch.getExpr() and
-      right = cc.getAnExpr() and
-      caseExpressionBranch(right, bb1,
-        any(MatchingSuccessor successor |
-          bb1.getASuccessor(successor) = bb2 and successor.getValue() = equal
-        ))
     )
   }
 

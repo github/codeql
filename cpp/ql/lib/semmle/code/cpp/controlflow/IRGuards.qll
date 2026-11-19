@@ -161,23 +161,6 @@ module GuardsInput implements SharedGuards::InputSig<Cpp::Location, Instruction,
     SwitchEdge getEdge() { result = edge }
 
     /**
-     * Holds if this case takes control-flow from `bb1` to `bb2` when
-     * the case matches the scrutinee.
-     */
-    predicate matchEdge(BasicBlock bb1, BasicBlock bb2) {
-      switch.getBlock() = bb1 and
-      this.getBasicBlock() = bb2
-    }
-
-    /**
-     * Holds if case takes control-flow from `bb1` to `bb2` when the
-     * case does not match the scrutinee.
-     *
-     * This predicate never holds for C/C++.
-     */
-    predicate nonMatchEdge(BasicBlock bb1, BasicBlock bb2) { none() }
-
-    /**
      * Gets the scrutinee expression.
      */
     Expr getSwitchExpr() { result = switch.getExpression() }
@@ -188,14 +171,26 @@ module GuardsInput implements SharedGuards::InputSig<Cpp::Location, Instruction,
     predicate isDefaultCase() { edge.isDefault() }
 
     /**
-     * Gets the constant expression of this case.
+     * Gets the expression matched by this case.
      */
-    ConstantExpr asConstantCase() {
+    AstNode getAPattern() {
       // Note: This only has a value if there is a unique value for the case.
       // So the will not be a result when using the GCC case range extension.
       // Instead, we model these using the `LogicInput_v1::rangeGuard` predicate.
       result = this and exists(this.getEdge().getValue())
     }
+  }
+
+  /**
+   * Holds if the case `c` takes control-flow from `bb1` to `bb2` when
+   * the case matches the scrutinee.
+   */
+  predicate caseMatchEdge(Case c, BasicBlock bb1, BasicBlock bb2) {
+    exists(SwitchInstruction switch |
+      switch.getSuccessor(any(SwitchEdge e)) = c and
+      switch.getBlock() = bb1 and
+      c.getBasicBlock() = bb2
+    )
   }
 
   abstract private class BinExpr extends Expr instanceof BinaryInstruction {
