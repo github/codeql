@@ -3134,14 +3134,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
         private newtype TDeclarationPosition =
           TParameterPosition(int pos, string name, int rnk) { parameterPos(_, _, pos, name, rnk) } or
-          TReturnTypePosition()
+          TReturnPosition()
 
         class DeclarationPosition extends TDeclarationPosition {
           predicate isParameterPosition(int pos, string name, int rnk) {
             this = TParameterPosition(pos, name, rnk)
           }
 
-          predicate isReturnTypePosition() { this = TReturnTypePosition() }
+          predicate isReturnTypePosition() { this = TReturnPosition() }
 
           string toString() {
             exists(int pos, string name |
@@ -3204,7 +3204,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           or
           exists(int rnk | dpos = TParameterPosition(_, apos.asNamed(rnk), rnk))
           or
-          dpos = TReturnTypePosition() and apos = TReturnValuePosition()
+          dpos = TReturnPosition() and apos = TReturnValuePosition()
         }
 
         private int getFirstTypeParameterPosition() {
