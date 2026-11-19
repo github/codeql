@@ -15,13 +15,19 @@ import java
 
 from MethodCall ma, Array recvtype, Method m
 where
-  recvtype = ma.getQualifier().getType() and
   m = ma.getMethod() and
   (
-    m instanceof HashCodeMethod
+    recvtype = ma.getQualifier().getType() and
+    (
+      m instanceof HashCodeMethod
+      or
+      m instanceof EqualsMethod and
+      haveIntersection(recvtype, ma.getArgument(0).getType().(Array))
+    )
     or
-    m instanceof EqualsMethod and
-    haveIntersection(recvtype, ma.getArgument(0).getType().(Array))
+    m.hasQualifiedName("java.util", "Objects", "equals") and
+    recvtype = ma.getArgument(0).getType() and
+    haveIntersection(recvtype, ma.getArgument(1).getType().(Array))
   )
 select ma,
   "The " + m.getName() +
