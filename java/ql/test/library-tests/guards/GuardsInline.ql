@@ -16,17 +16,16 @@ string ppGuard(Guard g, Boolean branch) {
         "'"
   )
   or
-  exists(SwitchCase cc, Expr s, string match, string value |
+  exists(SwitchCase cc, string match, string value |
     cc = g and
-    cc.getSelectorExpr() = s and
     (
       cc.(ConstCase).getValue().toString() = value
       or
       cc instanceof DefaultCase and value = "default"
     ) and
-    if branch = true then match = ":match " else match = ":non-match "
+    if branch = true then match = ":match" else match = ":no match"
   |
-    result = "'" + s.toString() + match + value + "'"
+    result = "'" + value + match + "'"
   )
 }
 

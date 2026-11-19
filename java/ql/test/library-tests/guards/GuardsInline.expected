@@ -14,15 +14,15 @@
 | Guards.java:29:7:29:11 | chk(...) | 'a:not null' |
 | Guards.java:29:7:29:11 | chk(...) | 'i < sz:true' |
 | Guards.java:29:7:29:11 | chk(...) | 'sz:Lower bound 1' |
+| Guards.java:39:9:39:13 | chk(...) | '"bar":match' |
 | Guards.java:39:9:39:13 | chk(...) | 's:bar' |
-| Guards.java:39:9:39:13 | chk(...) | 's:match "bar"' |
+| Guards.java:42:9:42:13 | chk(...) | '"bar":no match' |
+| Guards.java:42:9:42:13 | chk(...) | '"foo":match' |
 | Guards.java:42:9:42:13 | chk(...) | 's:foo' |
-| Guards.java:42:9:42:13 | chk(...) | 's:match "foo"' |
-| Guards.java:42:9:42:13 | chk(...) | 's:non-match "bar"' |
 | Guards.java:42:9:42:13 | chk(...) | 's:not bar' |
 | Guards.java:42:9:42:13 | chk(...) | g(3):false |
-| Guards.java:45:9:45:13 | chk(...) | 's:non-match "bar"' |
-| Guards.java:45:9:45:13 | chk(...) | 's:non-match "foo"' |
+| Guards.java:45:9:45:13 | chk(...) | '"bar":no match' |
+| Guards.java:45:9:45:13 | chk(...) | '"foo":no match' |
 | Guards.java:45:9:45:13 | chk(...) | 's:not bar' |
 | Guards.java:45:9:45:13 | chk(...) | 's:not foo' |
 | Guards.java:45:9:45:13 | chk(...) | g(3):false |
@@ -54,21 +54,21 @@
 | Guards.java:89:7:89:11 | chk(...) | g(2):false |
 | Guards.java:89:7:89:11 | chk(...) | g(3):false |
 | Guards.java:89:7:89:11 | chk(...) | g(Alt2):false |
+| Guards.java:92:9:92:13 | chk(...) | 'E1:match' |
 | Guards.java:92:9:92:13 | chk(...) | 'x:E1' |
-| Guards.java:92:9:92:13 | chk(...) | 'x:match E1' |
 | Guards.java:92:9:92:13 | chk(...) | g(1):true |
 | Guards.java:92:9:92:13 | chk(...) | g(2):false |
 | Guards.java:92:9:92:13 | chk(...) | g(3):false |
 | Guards.java:92:9:92:13 | chk(...) | g(Alt2):false |
+| Guards.java:95:9:95:13 | chk(...) | 'E1:no match' |
+| Guards.java:95:9:95:13 | chk(...) | 'E2:match' |
 | Guards.java:95:9:95:13 | chk(...) | 'x:E2' |
-| Guards.java:95:9:95:13 | chk(...) | 'x:match E2' |
-| Guards.java:95:9:95:13 | chk(...) | 'x:non-match E1' |
 | Guards.java:95:9:95:13 | chk(...) | 'x:not E1' |
 | Guards.java:95:9:95:13 | chk(...) | g(3):false |
+| Guards.java:98:9:98:13 | chk(...) | 'E1:no match' |
+| Guards.java:98:9:98:13 | chk(...) | 'E2:no match' |
+| Guards.java:98:9:98:13 | chk(...) | 'E3:match' |
 | Guards.java:98:9:98:13 | chk(...) | 'x:E3' |
-| Guards.java:98:9:98:13 | chk(...) | 'x:match E3' |
-| Guards.java:98:9:98:13 | chk(...) | 'x:non-match E1' |
-| Guards.java:98:9:98:13 | chk(...) | 'x:non-match E2' |
 | Guards.java:98:9:98:13 | chk(...) | 'x:not E1' |
 | Guards.java:98:9:98:13 | chk(...) | 'x:not E2' |
 | Guards.java:98:9:98:13 | chk(...) | g(3):true |
@@ -115,12 +115,12 @@
 | Guards.java:193:7:193:11 | chk(...) | 'concatNonNull(...):not null' |
 | Guards.java:193:7:193:11 | chk(...) | 'null == concatNonNull(...):false' |
 | Guards.java:193:7:193:11 | chk(...) | 's:not null' |
+| Guards.java:198:9:198:13 | chk(...) | 'SUCCESS:match' |
 | Guards.java:198:9:198:13 | chk(...) | 'testEnumWrapper(...):SUCCESS' |
-| Guards.java:198:9:198:13 | chk(...) | 'testEnumWrapper(...):match SUCCESS' |
 | Guards.java:198:9:198:13 | chk(...) | g(1):true |
+| Guards.java:201:9:201:13 | chk(...) | 'FAILURE:match' |
+| Guards.java:201:9:201:13 | chk(...) | 'SUCCESS:no match' |
 | Guards.java:201:9:201:13 | chk(...) | 'testEnumWrapper(...):FAILURE' |
-| Guards.java:201:9:201:13 | chk(...) | 'testEnumWrapper(...):match FAILURE' |
-| Guards.java:201:9:201:13 | chk(...) | 'testEnumWrapper(...):non-match SUCCESS' |
 | Guards.java:201:9:201:13 | chk(...) | 'testEnumWrapper(...):not SUCCESS' |
 | Guards.java:201:9:201:13 | chk(...) | g(1):false |
 | Guards.java:213:5:213:9 | chk(...) | 'ensureNotNull(...):no exception' |
