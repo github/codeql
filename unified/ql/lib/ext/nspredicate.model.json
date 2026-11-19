@@ -8,9 +8,9 @@
       "data": [
         // namespace, type, subtypes, name, signature, ext, output, kind, provenance
         ["", "NSPredicate", true, "init(format:)", "", "", "Argument[format:]", "predicate-injection", "manual"],
-        ["", "NSPredicate", true, "init(_:format:)", "", "", "Argument[format:]", "predicate-injection", "manual"],
-        ["", "NSPredicate", true, "init(arguments:format:)", "", "", "Argument[format:]", "predicate-injection", "manual"],
-        ["", "NSPredicate", true, "init(argumentArray:format:)", "", "", "Argument[format:]", "predicate-injection", "manual"],
+        ["", "NSPredicate", true, "init(format:_:)", "", "", "Argument[format:]", "predicate-injection", "manual"],
+        ["", "NSPredicate", true, "init(format:arguments:)", "", "", "Argument[format:]", "predicate-injection", "manual"],
+        ["", "NSPredicate", true, "init(format:argumentArray:)", "", "", "Argument[format:]", "predicate-injection", "manual"],
         ["", "NSPredicate", true, "init(fromMetadataQueryString:)", "", "", "Argument[fromMetadataQueryString:]", "predicate-injection", "manual"]
       ]
     }
