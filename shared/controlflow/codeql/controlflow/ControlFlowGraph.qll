@@ -652,7 +652,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       not n instanceof Switch and
       not n instanceof Case and
       not n instanceof BlockStmt and
-      not n instanceof TryStmt
+      not n instanceof TryStmt and
+      not n instanceof PatternMatchExpr
     }
 
     /**

@@ -137,6 +137,10 @@ private module Input implements InputSig1, InputSig2 {
 
   predicate matchAll(Ast::Case c) { c.(SwitchCaseExpr).matchesAll() }
 
+  predicate patternPerformsTest(Ast::Pattern pattern) {
+    not pattern instanceof RecursivePatternExpr
+  }
+
   private newtype TLabel =
     TLblGoto(string label) { any(GotoLabelStmt goto).getLabel() = label } or
     TLblSwitchCase(string value) { any(GotoCaseStmt goto).getLabel() = value } or
