@@ -239,8 +239,12 @@ use_repo(dotnet, "dotnet_toolchains")
 
 register_toolchains("@dotnet_toolchains//:all")
 
-csharp_main_extension = use_extension("//csharp:paket.main_extension.bzl", "main_extension")
-use_repo(csharp_main_extension, "paket.main")
+paket = use_extension("@rules_dotnet//dotnet:paket.bzl", "paket")
+paket.parse(
+    dependencies = "//csharp:paket.dependencies",
+    lock = "//csharp:paket.lock",
+)
+use_repo(paket, "paket.main")
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(

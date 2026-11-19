@@ -82,8 +82,6 @@
 /csharp/paket.lock linguist-generated=true
 # needs eol=crlf, as `paket` touches this file and saves it as crlf
 /csharp/.paket/Paket.Restore.targets linguist-generated=true eol=crlf
-/csharp/paket.main.bzl linguist-generated=true
-/csharp/paket.main_extension.bzl linguist-generated=true
 
 # swift prebuilt resources
 /swift/third_party/resources/*.zip filter=lfs diff=lfs merge=lfs -text
