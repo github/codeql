@@ -126,3 +126,32 @@ tar.extractall("/tmp/unpack/", tar) # $ Alert
 
 tar = tarfile.open(unsafe_filename_tar)
 tar.extractall("/tmp/unpack/", safemembers(tar)) # safe
+
+# `None` selects all archive members, just like an omitted `members` argument.
+tar = tarfile.open(unsafe_filename_tar) # $ MISSING: Source
+tar.extractall("/tmp/unpack/", None) # $ MISSING: Alert
+tar.extractall("/tmp/unpack/", members=None) # $ MISSING: Alert
+
+members = None
+tar.extractall("/tmp/unpack/", members) # $ MISSING: Alert
+
+tar.extractall("/tmp/unpack/", None, filter=None) # $ MISSING: Alert
+tar.extractall("/tmp/unpack/", members=None, filter="fully_trusted") # $ MISSING: Alert
+tar.extractall("/tmp/unpack/", members=None, filter="data") # safe
+tar.extractall("/tmp/unpack/", []) # safe
+tar.extractall("/tmp/unpack/", members=[]) # safe
+
+
+def extract_with_default_members(tar, path=".", members=None, *, numeric_owner=False):
+    tar.extractall(path, members, numeric_owner=numeric_owner) # $ MISSING: Alert
+
+
+def extract_with_default_members_kw(tar, path=".", *, members=None, numeric_owner=False):
+    tar.extractall(path, members=members, numeric_owner=numeric_owner) # $ MISSING: Alert
+
+
+tar = tarfile.open(unsafe_filename_tar) # $ MISSING: Source
+extract_with_default_members(tar, "/tmp/unpack/")
+
+tar = tarfile.open(unsafe_filename_tar) # $ MISSING: Source
+extract_with_default_members_kw(tar, "/tmp/unpack/")
