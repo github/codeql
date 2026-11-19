@@ -20,6 +20,14 @@ private import Cfg1
 private import Cfg2
 import Public
 
+/**
+ * Holds if `ioe` is of the form `x instanceof T y`. In this case we want to
+ * consider `T` as the pattern, with `y` being a sub expression of the pattern.
+ */
+private predicate isBindingInstanceOf(InstanceOfExpr ioe, Expr pattern, LocalVariableDeclExpr lvd) {
+  lvd = ioe.getPattern() and pattern = ioe.getTypeName()
+}
+
 /** Provides an implementation of the AST signature for Java. */
 private module Ast implements AstSig<Location> {
   private import java as J
@@ -41,11 +49,15 @@ private module Ast implements AstSig<Location> {
   AstNode getChild(AstNode n, int index) {
     not skipControlFlow(result) and
     not skipControlFlow(n) and
+    not isBindingInstanceOf(n, _, result) and
     result.(Expr).isNthChildOf(n, index)
     or
     result.(Stmt).isNthChildOf(n, index)
     or
     result = n.(SwitchCase).getRuleExpression() and index = -1
+    or
+    isBindingInstanceOf(_, n, result) and
+    index = 0
   }
 
   Callable getEnclosingCallable(AstNode node) {
@@ -241,12 +253,39 @@ private module Ast implements AstSig<Location> {
     boolean getValue() { result = this.getBooleanValue() }
   }
 
+  class Pattern extends AstNode {
+    Pattern() {
+      isBindingInstanceOf(_, this, _)
+      or
+      this instanceof RecordPatternExpr
+    }
+  }
+
+  class AndPattern extends Pattern {
+    AndPattern() { none() }
+  }
+
+  class OrPattern extends Pattern {
+    OrPattern() { none() }
+  }
+
+  class NotPattern extends Pattern {
+    NotPattern() { none() }
+
+    Pattern getNegatedPattern() { none() }
+  }
+
   final private class FinalInstanceOfExpr = J::InstanceOfExpr;
 
   class PatternMatchExpr extends FinalInstanceOfExpr {
     PatternMatchExpr() { this.isPattern() }
 
-    AstNode getPattern() { result = super.getPattern() }
+    AstNode getPattern() {
+      not isBindingInstanceOf(this, _, _) and
+      result = super.getPattern()
+      or
+      isBindingInstanceOf(this, result, _)
+    }
   }
 }
 
