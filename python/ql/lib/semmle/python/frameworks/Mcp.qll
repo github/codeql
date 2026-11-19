@@ -9,7 +9,6 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.internal.DataFlowDispatch
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
@@ -22,8 +21,8 @@ private import semmle.python.ApiGraphs
  * language model or by anyone who can reach the server. The low-level server of `mcp`, the HTTP
  * headers and the bearer tokens are modeled as data extensions (`mcp.model.yml`, `fastmcp.model.yml`).
  *
- * Complementary QL AST modeling (`McpHandlerParameter`) covers stacked custom decorators and
- * instance registrations such as `@self.mcp.tool()` that the API-graph baseline does not reach.
+ * QL decorator matching on `getADecorator()` covers handlers whose MCP registration is hidden
+ * behind inner custom project wrappers that the API-graph baseline does not reach.
  */
 module Mcp {
   /** Gets a reference to a server class whose instances register tool, resource and prompt handlers. */
@@ -82,6 +81,10 @@ module Mcp {
    */
   private API::Node standaloneDecorator() {
     exists(API::Node fastmcp | fastmcp = API::moduleImport("fastmcp") |
+      result = fastmcp.getMember("tool")
+      or
+      result = fastmcp.getMember("prompt")
+      or
       result = fastmcp.getMember("tools").getMember("tool")
       or
       result = fastmcp.getMember("tools").getMember("function_tool").getMember("tool")
@@ -124,6 +127,32 @@ module Mcp {
       result = decorator.getKeywordParameter("name_or_fn")
       or
       result = decorator.getReturn().getParameter(0)
+    )
+  }
+
+  private string registrationMethod() { result in ["tool", "prompt", "resource"] }
+
+  /** An MCP `@tool`/`@prompt`/`@resource` decorator expression on `handler`. */
+  private predicate mcpRegistrationDecorator(Function handler, Expr dec) {
+    dec = handler.getADecorator() and
+    (
+      exists(API::Node cls | cls = serverClass() |
+        exists(API::CallNode call |
+          call = cls.getAnInstance().getMember(registrationMethod()).getACall() and
+          call.getNode().getNode() = dec
+        )
+        or
+        dec =
+          cls.getAnInstance().getMember(["tool", "prompt"]).getAValueReachableFromSource().asExpr()
+      )
+      or
+      exists(API::Node decorator | decorator = standaloneDecorator() |
+        exists(API::CallNode call |
+          call = decorator.getACall() and call.getNode().getNode() = dec
+        )
+        or
+        dec = decorator.getAValueReachableFromSource().asExpr()
+      )
     )
   }
 
@@ -283,7 +312,11 @@ module Mcp {
    * parameter as well.
    */
   private predicate isClientParameter(Function handler, Parameter p) {
-    handler = handlerNode().getAValueReachingSink().asExpr().(CallableExpr).getInnerScope() and
+    (
+      handler = handlerNode().getAValueReachingSink().asExpr().(CallableExpr).getInnerScope()
+      or
+      exists(Expr dec | mcpRegistrationDecorator(handler, dec))
+    ) and
     (
       p = handler.getAnArg()
       or
@@ -303,92 +336,5 @@ module Mcp {
     override string getThreatModel() { result = "ai" }
 
     override string getSourceType() { result = "MCP handler parameter" }
-  }
-
-  private string registrationMethod() { result in ["tool", "prompt", "resource"] }
-
-  /** An MCP `@tool`/`@prompt`/`@resource` decorator expression on `handler`. */
-  private predicate mcpRegistrationDecorator(Function handler, Expr dec) {
-    dec = handler.getADecorator() and
-    exists(API::Node cls | cls = serverClass() |
-      exists(API::CallNode call |
-        call = cls.getAnInstance().getMember(registrationMethod()).getACall() and
-        call.getNode().getNode() = dec
-      )
-      or
-      exists(string name | name = registrationMethod() |
-        dec = cls.getAnInstance().getMember(name).getAValueReachableFromSource().asExpr()
-      )
-    )
-  }
-
-  /**
-   * Holds if `handler` is an MCP registration wrapped by another decorator.
-   * The API-graph baseline does not reach these stacked/custom project wrappers.
-   */
-  private predicate isWrappedMcpHandler(Function handler) {
-    exists(Expr mcpDec, Expr extra |
-      mcpRegistrationDecorator(handler, mcpDec) and
-      extra = handler.getADecorator() and
-      extra != mcpDec
-    )
-  }
-
-  /**
-   * Holds if `handler` is registered via a nested instance lookup such as `@self.mcp.tool()`.
-   * The callee object is itself an `Attribute`, not a simple name (`mcp_app.tool()`).
-   */
-  private predicate isInstanceLookupHandler(Function handler) {
-    exists(Expr dec | mcpRegistrationDecorator(handler, dec) |
-      exists(Attribute callee |
-        callee = dec.(Call).getFunc()
-        or
-        callee = dec
-      |
-        callee.getObject() instanceof Attribute
-      )
-    )
-  }
-
-  private predicate isComplementaryMcpHandler(Function handler) {
-    isWrappedMcpHandler(handler)
-    or
-    isInstanceLookupHandler(handler)
-  }
-
-  private predicate isComplementaryHandlerParameter(Function handler, Parameter p) {
-    (
-      p = handler.getAnArg()
-      or
-      p = handler.getAKeywordOnlyArg()
-      or
-      p = handler.getVararg()
-      or
-      p = handler.getKwarg()
-    ) and
-    not (
-      handler.isMethod() and
-      not isStaticmethod(handler) and
-      p = handler.getArg(0)
-    ) and
-    not isContextAnnotation(p.getAnnotation())
-  }
-
-  /**
-   * A handler parameter modeled by AST shape when the baseline `HandlerParameter` does not apply,
-   * seen as a source of the `ai` threat model.
-   */
-  private class McpHandlerParameter extends ThreatModelSource::Range, DataFlow::ParameterNode {
-    McpHandlerParameter() {
-      exists(Function handler |
-        isComplementaryMcpHandler(handler) and
-        isComplementaryHandlerParameter(handler, this.getParameter()) and
-        not isClientParameter(handler, this.getParameter())
-      )
-    }
-
-    override string getThreatModel() { result = "ai" }
-
-    override string getSourceType() { result = "MCP server handler parameter" }
   }
 }
