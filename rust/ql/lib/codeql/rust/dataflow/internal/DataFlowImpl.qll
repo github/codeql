@@ -242,6 +242,8 @@ module LocalFlow {
     or
     nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() =
       getPostUpdateReverseStep(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr(), true)
+    or
+    nodeTo.(TryEarlyReturnNode).getTryExpr().getExpr() = nodeFrom.asExpr()
   }
 }
 
@@ -483,6 +485,7 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
     node instanceof ImplicitBorrowNode or
     node instanceof DerefOutNode or
     node instanceof IndexOutNode or
+    node instanceof TryEarlyReturnNode or
     nodeIsHidden(node.(PostUpdateNode).getPreUpdateNode())
   }
 
@@ -930,6 +933,12 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
    */
   predicate expectsContent(Node n, ContentSet cs) {
     FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), cs)
+    or
+    n instanceof TryEarlyReturnNode and
+    cs.(SingletonContentSet)
+        .getContent()
+        .(TupleFieldContent)
+        .isVariantField(any(ResultEnum r).getErr(), 0)
   }
 
   class NodeRegion instanceof Void {

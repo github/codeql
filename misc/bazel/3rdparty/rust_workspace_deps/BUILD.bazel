@@ -80,18 +80,6 @@ alias(
 )
 
 alias(
-    name = "chalk-ir-0.104.0",
-    actual = "@vendor_rs__chalk-ir-0.104.0//:chalk_ir",
-    tags = ["manual"],
-)
-
-alias(
-    name = "chalk-ir",
-    actual = "@vendor_rs__chalk-ir-0.104.0//:chalk_ir",
-    tags = ["manual"],
-)
-
-alias(
     name = "chrono-0.4.45",
     actual = "@vendor_rs__chrono-0.4.45//:chrono",
     tags = ["manual"],

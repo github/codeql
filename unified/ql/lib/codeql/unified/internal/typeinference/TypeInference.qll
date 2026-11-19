@@ -141,6 +141,8 @@ module Input3 implements InputSig3 {
 
   class AstNode = Unified::AstNode;
 
+  AstNode getTypeParameterScope(TypeParameter tp) { result = tp.getScope() }
+
   class Expr extends Unified::Expr {
     Expr() {
       isInAssignmentContext(this, _) or

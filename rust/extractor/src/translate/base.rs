@@ -452,7 +452,7 @@ impl<'db> Translator<'db> {
                 self.emit_parse_error(mcall, &SyntaxError::new(
                     format!(
                         "macro expansion failed: the macro '{}' expands to {:?} but a {:?} was expected",
-                        mcall.path().map(|p| p.to_string()).unwrap_or_default(),
+                        mcall.path().map_or_default(|p| p.to_string()),
                         kind, expand_to
                     ),
                     range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
@@ -466,7 +466,7 @@ impl<'db> Translator<'db> {
                 &SyntaxError::new(
                     format!(
                         "macro expansion failed for '{}'",
-                        mcall.path().map(|p| p.to_string()).unwrap_or_default()
+                        mcall.path().map_or_default(|p| p.to_string())
                     ),
                     range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
                 ),

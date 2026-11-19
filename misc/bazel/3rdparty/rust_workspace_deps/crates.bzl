@@ -411,7 +411,6 @@ _NORMAL_DEPENDENCIES = {
     "rust/extractor": {
         _COMMON_CONDITION: {
             "anyhow": Label("@vendor_rs//anyhow-1.0.104"),
-            "chalk-ir": Label("@vendor_rs//chalk-ir-0.104.0"),
             "chrono": Label("@vendor_rs//chrono-0.4.45"),
             "clap": Label("@vendor_rs//clap-4.6.7"),
             "dunce": Label("@vendor_rs//dunce-1.0.5"),
@@ -456,7 +455,6 @@ _NORMAL_DEPENDENCIES = {
     "shared/tree-sitter-extractor": {
         _COMMON_CONDITION: {
             "chrono": Label("@vendor_rs//chrono-0.4.45"),
-            "encoding": Label("@vendor_rs//encoding-0.2.33"),
             "flate2": Label("@vendor_rs//flate2-1.1.9"),
             "globset": Label("@vendor_rs//globset-0.4.18"),
             "num_cpus": Label("@vendor_rs//num_cpus-1.17.0"),
@@ -498,7 +496,6 @@ _NORMAL_DEPENDENCIES = {
     "unified/extractor": {
         _COMMON_CONDITION: {
             "clap": Label("@vendor_rs//clap-4.6.7"),
-            "encoding": Label("@vendor_rs//encoding-0.2.33"),
             "rayon": Label("@vendor_rs//rayon-1.12.0"),
             "regex": Label("@vendor_rs//regex-1.13.1"),
             "serde": Label("@vendor_rs//serde-1.0.229"),
@@ -1444,26 +1441,6 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/chacha20/0.10.2/download"],
         strip_prefix = "chacha20-0.10.2",
         build_file = Label("//misc/bazel/3rdparty/rust_workspace_deps:BUILD.chacha20-0.10.2.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_rs__chalk-derive-0.104.0",
-        sha256 = "9ea9b1e80910f66ae87c772247591432032ef3f6a67367ff17f8343db05beafa",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/chalk-derive/0.104.0/download"],
-        strip_prefix = "chalk-derive-0.104.0",
-        build_file = Label("//misc/bazel/3rdparty/rust_workspace_deps:BUILD.chalk-derive-0.104.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_rs__chalk-ir-0.104.0",
-        sha256 = "7047a516de16226cd17344d41a319d0ea1064bf9e60bd612ab341ab4a34bbfa8",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/chalk-ir/0.104.0/download"],
-        strip_prefix = "chalk-ir-0.104.0",
-        build_file = Label("//misc/bazel/3rdparty/rust_workspace_deps:BUILD.chalk-ir-0.104.0.bazel"),
     )
 
     maybe(
@@ -4800,7 +4777,6 @@ def crate_repositories():
         struct(repo = "vendor_rs__anyhow-1.0.104", is_dev_dep = False),
         struct(repo = "vendor_rs__cached-0.54.0", is_dev_dep = False),
         struct(repo = "vendor_rs__cc-1.4.6", is_dev_dep = False),
-        struct(repo = "vendor_rs__chalk-ir-0.104.0", is_dev_dep = False),
         struct(repo = "vendor_rs__chrono-0.4.45", is_dev_dep = False),
         struct(repo = "vendor_rs__clap-4.6.7", is_dev_dep = False),
         struct(repo = "vendor_rs__dunce-1.0.5", is_dev_dep = False),

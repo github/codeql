@@ -1,5 +1,12 @@
 use codeql_extractor::extractor::desugaring;
-use yeast::{tree, ConcreteDesugarer, DesugaringConfig, Rule};
+use yeast::{ConcreteDesugarer, DesugaringConfig, Rule};
+
+yeast::tree_schema! {
+    swift_tree,
+    "ast_types.yml",
+}
+
+use swift_tree::tree;
 
 /// User context propagated from outer rules down to the inner rules that
 /// emit the corresponding output declarations, so that each emitted node
@@ -833,6 +840,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((returnStmt expression: _? @val) => (return_expr value: {val})),
         rule!((breakStmt label: _? @@lbl) => (break_expr label_name_node: [(identifier #{lbl})])),
         rule!((continueStmt label: _? @@lbl) => (continue_expr label_name_node: [(identifier #{lbl})])),
+        rule!((fallThroughStmt) => (fallthrough_stmt)),
         rule!((throwStmt expression: @val) => (throw_expr value: {val})),
         // ---- Closures ----
         // A closure (`{ (x: Int) -> Int in … }`) becomes a `function_expr`. The
@@ -1157,7 +1165,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 expression: @e)
             =>
             expr {
-                let op = format!("try{}", m.map(|m| ctx.source_text(m)).unwrap_or_default());
+                let op = format!("try{}", m.map_or_default(|m| ctx.source_text(m)));
                 let operator = tree!((prefix_operator #{op}
                     location: {keyword}
                     location: {m}));
@@ -1198,7 +1206,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((catchClause body: @body) => (catch_clause body: {body})),
         // As expression (type cast) — as?, as!
         rule!((asExpr expression: @val asKeyword: @@keyword questionOrExclamationMark: _? @@mark type: @ty) => type_cast_expr {
-            let op = format!("as{}", mark.map(|m| ctx.source_text(m)).unwrap_or_default());
+            let op = format!("as{}", mark.map_or_default(|m| ctx.source_text(m)));
             let operator = tree!((infix_operator #{op}
                 location: {keyword}
                 location: {mark}));
@@ -1628,7 +1636,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((classRestrictionType) => (unsupported_node "")),
         rule!((compositionType) => (unsupported_node "")),
         rule!((discardStmt) => (unsupported_node "")),
-        rule!((fallThroughStmt) => (unsupported_node "")),
         rule!((implicitlyUnwrappedOptionalType) => (unsupported_node "")),
         rule!((inlineArrayType) => (unsupported_node "")),
         rule!((keyPathExpr) => (unsupported_node "")),

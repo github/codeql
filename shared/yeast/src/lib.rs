@@ -15,7 +15,11 @@ pub mod schema;
 mod visitor;
 
 pub use range::{Point, Range};
-pub use yeast_macros::{query, rule, rules, tree, trees};
+#[doc(hidden)]
+pub use yeast_macros::tree_with_schema as __tree_with_schema;
+#[doc(hidden)]
+pub use yeast_macros::trees_with_schema as __trees_with_schema;
+pub use yeast_macros::{query, rule, rules, tree_schema};
 
 use captures::{Captures, TranslatedCaptures};
 use query::QueryNode;
@@ -1184,10 +1188,9 @@ impl<C: Clone> TranslatorHandle<'_, C> {
     ) -> TranslatedCaptures {
         captures.translate_except(skip, |id| {
             if id == self.matched_root {
-                translation_failure("cannot eagerly translate a capture of the matched rule root")
-            } else {
-                self.translate(ast, output, user_ctx, id)
+                translation_failure("cannot eagerly translate a capture of the matched rule root");
             }
+            self.translate(ast, output, user_ctx, id)
         })
     }
 }
