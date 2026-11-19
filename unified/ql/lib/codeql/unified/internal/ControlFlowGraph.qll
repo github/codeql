@@ -192,6 +192,8 @@ module Ast implements AstSig<Location> {
 
   class ContinueStmt = U::ContinueExpr;
 
+  class FallthroughStmt = U::FallthroughStmt;
+
   class LabeledStmt = U::LabeledStmt;
 
   class GotoStmt extends Stmt {

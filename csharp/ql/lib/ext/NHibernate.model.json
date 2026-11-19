@@ -1,0 +1,15 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/csharp-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["NHibernate", "ISession", true, "CreateSQLQuery", "(System.String)", "", "Argument[0]", "sql-injection", "manual"],
+        ["NHibernate", "IStatelessSession", true, "CreateSQLQuery", "(System.String)", "", "Argument[0]", "sql-injection", "manual"],
+        ["NHibernate.Impl", "AbstractSessionImpl", true, "CreateSQLQuery", "(System.String)", "", "Argument[0]", "sql-injection", "manual"]
+      ]
+    }
+  ]
+}
