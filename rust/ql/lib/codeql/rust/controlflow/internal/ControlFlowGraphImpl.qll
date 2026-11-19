@@ -464,22 +464,12 @@ private module Ast implements AstSig<Location> {
 
   final class Pattern = PatternImpl;
 
-  abstract private class PatternImpl extends AstNode {
-    abstract Pattern getPattern(int index);
-  }
+  abstract private class PatternImpl extends AstNode { }
 
-  private class PatPattern extends PatternImpl instanceof Rust::Pat {
-    override Pattern getPattern(int index) { result = runtimeChild(this, index) }
-  }
+  private class PatPattern extends PatternImpl instanceof Rust::Pat { }
 
-  class ExprPattern extends Expr, PatternImpl {
+  private class ExprPattern extends Expr, PatternImpl {
     ExprPattern() { this = any(Rust::LiteralPat lp).getLiteral() }
-
-    override Pattern getPattern(int index) { none() }
-  }
-
-  class BindingPattern extends Pattern instanceof Rust::IdentPat {
-    AstNode getVariable() { result = super.getName() }
   }
 
   class OrPattern extends Pattern instanceof Rust::OrPat { }
@@ -576,10 +566,6 @@ private module Input implements InputSig1, InputSig2 {
     )
   }
 
-  private predicate isAfterMatch(PreControlFlowNode n, Rust::AstNode ast, boolean value) {
-    n.isAfterValue(ast, any(MatchingSuccessor t | t.getValue() = value))
-  }
-
   private predicate letStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
     exists(Rust::LetStmt let |
       n1.isBefore(let) and
@@ -592,9 +578,9 @@ private module Input implements InputSig1, InputSig2 {
       n1.isAfter(let.getInitializer()) and
       n2.isBefore(let.getPat())
       or
-      isAfterMatch(n1, let.getPat(), true) and n2.isAfter(let)
+      n1.isAfterMatch(let.getPat()) and n2.isAfter(let)
       or
-      isAfterMatch(n1, let.getPat(), false) and
+      n1.isAfterNonMatch(let.getPat()) and
       n2.isBefore(let.getLetElse().getBlockExpr())
       or
       n1.isAfter(let.getLetElse().getBlockExpr()) and
@@ -609,9 +595,9 @@ private module Input implements InputSig1, InputSig2 {
       n1.isAfter(let.getScrutinee()) and
       n2.isBefore(let.getPat())
       or
-      isAfterMatch(n1, let.getPat(), true) and n2.isAfterTrue(let)
+      n1.isAfterMatch(let.getPat()) and n2.isAfterTrue(let)
       or
-      isAfterMatch(n1, let.getPat(), false) and n2.isAfterFalse(let)
+      n1.isAfterNonMatch(let.getPat()) and n2.isAfterFalse(let)
     )
   }
 
@@ -628,9 +614,9 @@ private module Input implements InputSig1, InputSig2 {
     exists(Rust::TryExpr try |
       n1.isBefore(try) and n2.isBefore(try.getExpr())
       or
-      isAfterMatch(n1, try.getExpr(), true) and n2.isAfter(try)
+      n1.isAfterMatch(try.getExpr()) and n2.isAfter(try)
       or
-      isAfterMatch(n1, try.getExpr(), false) and
+      n1.isAfterNonMatch(try.getExpr()) and
       n2.isAdditional(try, tryReturnTag())
     )
   }

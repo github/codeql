@@ -407,24 +407,14 @@ signature module AstSig<LocationSig Location> {
     boolean getValue();
   }
 
-  /** A pattern that can match or fail to match a value. */
-  class Pattern extends AstNode {
-    /**
-     * Gets the nested pattern at the specified index.
-     *
-     * The indices do not need to be consecutive nor start from a specific index.
-     */
-    Pattern getPattern(int index);
-  }
-
-  /** A pattern that matches the value calculated by an expression. */
-  class ExprPattern extends Expr, Pattern;
-
-  /** A pattern that binds a variable after matching its nested pattern, if any. */
-  class BindingPattern extends Pattern {
-    /** Gets the variable bound by this pattern. */
-    AstNode getVariable();
-  }
+  /**
+   * A pattern that can match or fail to match a value.
+   *
+   * Sub patterns, if any, are treated conjunctively, which means they all must
+   * match in order for the whole pattern to match (unless this pattern is an
+   * `OrPattern`).
+   */
+  class Pattern extends AstNode;
 
   /** A pattern that matches when any of its nested patterns match. */
   class OrPattern extends Pattern;
@@ -996,18 +986,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       result = DenseRank2<ParameterCtxDenseRankInput>::denseRank(c, ctx.asSome(), rnk)
     }
 
-    private module PatternDenseRankInput implements DenseRankInputSig1 {
-      class C = Pattern;
-
-      class Ranked = Pattern;
-
-      int getRank(C pattern, Ranked nested) { nested = pattern.getPattern(result) }
-    }
-
-    private Pattern getRankedPattern(Pattern pattern, int rnk) {
-      result = DenseRank1<PatternDenseRankInput>::denseRank(pattern, rnk)
-    }
-
     private predicate matchAll(Case c) {
       c instanceof DefaultCase
       or
@@ -1028,9 +1006,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       Input1::patternIsExhaustive(pattern)
       or
       exists(Pattern parent, int i |
-        pattern = getRankedPattern(parent, i) and
+        pattern = getChild(parent, i) and
         patternAlwaysMatches(parent) and
-        if parent instanceof OrPattern then not exists(getRankedPattern(parent, i + 1)) else any()
+        if parent instanceof OrPattern
+        then not getChild(parent, any(int j | j > i)) instanceof Pattern
+        else any()
       )
       or
       exists(Case c, int i |
@@ -1652,87 +1632,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         else result.isAdditional(catch, catchClauseEmptyBodyTag())
       }
 
-      private PreControlFlowNode getFirstPatternChild(Pattern pattern) {
-        result.isBefore(getRankedPattern(pattern, 1))
-        or
-        not exists(getRankedPattern(pattern, _)) and
-        (
-          not pattern instanceof BindingPattern and
-          result.isAfterMatch(pattern)
-          or
-          result.isBefore(pattern.(BindingPattern).getVariable())
-        )
-      }
-
-      private predicate conjunctivePatternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-        exists(Pattern pattern | not pattern instanceof OrPattern |
-          n1.isBefore(pattern) and
-          (
-            // outer pattern matches
-            n2.isAdditional(pattern, outerPatternMatchTag())
-            or
-            // outer pattern fails
-            Input1::patternIsTest(pattern) and
-            n2.isAfterNonMatch(pattern)
-            or
-            // outer pattern does not perform a test, proceed directly to first child
-            not Input1::patternIsTest(pattern) and
-            n2 = getFirstPatternChild(pattern)
-          )
-          or
-          // outer pattern matched, proceed to first child
-          n1.isAdditional(pattern, outerPatternMatchTag()) and
-          n2 = getFirstPatternChild(pattern)
-          or
-          exists(int i, Pattern nested | nested = getRankedPattern(pattern, i) |
-            n1.isAfterMatch(nested) and
-            (
-              n2.isBefore(getRankedPattern(pattern, i + 1))
-              or
-              not exists(getRankedPattern(pattern, i + 1)) and
-              (
-                not pattern instanceof BindingPattern and
-                n2.isAfterMatch(pattern)
-                or
-                n2.isBefore(pattern.(BindingPattern).getVariable())
-              )
-            )
-            or
-            n1.isAfterNonMatch(nested) and
-            n2.isAfterNonMatch(pattern)
-          )
-          or
-          n1.isAfter(pattern.(BindingPattern).getVariable()) and
-          n2.isAfterMatch(pattern)
-        )
-      }
-
-      private predicate disjunctivePatternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-        exists(OrPattern pattern |
-          n1.isBefore(pattern) and
-          n2.isBefore(getRankedPattern(pattern, 1))
-          or
-          exists(int i, Pattern nested | nested = getRankedPattern(pattern, i) |
-            n1.isAfterMatch(nested) and
-            n2.isAfterMatch(pattern)
-            or
-            n1.isAfterNonMatch(nested) and
-            (
-              n2.isBefore(getRankedPattern(pattern, i + 1))
-              or
-              not exists(getRankedPattern(pattern, i + 1)) and
-              n2.isAfterNonMatch(pattern)
-            )
-          )
-        )
-      }
-
-      private predicate patternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-        conjunctivePatternStep(n1, n2)
-        or
-        disjunctivePatternStep(n1, n2)
-      }
-
       /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
       private predicate explicitStep(PreControlFlowNode n1, PreControlFlowNode n2) {
         Input2::step(n1, n2)
@@ -1825,8 +1724,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           not exists(condexpr.getElse()) and
           n2.isAfter(condexpr)
         )
-        or
-        patternStep(n1, n2)
         or
         exists(PatternMatchExpr pme |
           n1.isBefore(pme) and
@@ -2214,13 +2111,82 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       private predicate getRankedChild = DenseRank1<ChildDenseRankInput>::denseRank/2;
 
+      private PreControlFlowNode getFirstPatternChild(Pattern pattern) {
+        result.isBefore(getRankedChild(pattern, 1))
+        or
+        not exists(getRankedChild(pattern, _)) and
+        result.isAfterMatch(pattern)
+      }
+
+      private predicate conjunctivePatternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+        exists(Pattern pattern |
+          defaultCfg(pattern) and
+          not pattern instanceof OrPattern
+        |
+          n1.isBefore(pattern) and
+          (
+            // outer pattern matches
+            n2.isAdditional(pattern, outerPatternMatchTag())
+            or
+            // outer pattern fails
+            Input1::patternIsTest(pattern) and
+            n2.isAfterNonMatch(pattern)
+            or
+            // outer pattern does not perform a test, proceed directly to first child
+            not Input1::patternIsTest(pattern) and
+            n2 = getFirstPatternChild(pattern)
+          )
+          or
+          // outer pattern matched, proceed to first child
+          n1.isAdditional(pattern, outerPatternMatchTag()) and
+          n2 = getFirstPatternChild(pattern)
+          or
+          exists(int i, AstNode child | child = getRankedChild(pattern, i) |
+            n1.isAfterMatch(child) and
+            (
+              n2.isBefore(getRankedChild(pattern, i + 1))
+              or
+              not exists(getRankedChild(pattern, i + 1)) and
+              n2.isAfterMatch(pattern)
+            )
+            or
+            // child pattern fails, which means whole pattern fails
+            inConditionalContext(child, any(ConditionKind k | k.isMatching())) and
+            n1.isAfterNonMatch(child) and
+            n2.isAfterNonMatch(pattern)
+          )
+        )
+      }
+
+      private predicate disjunctivePatternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+        exists(OrPattern pattern | defaultCfg(pattern) |
+          n1.isBefore(pattern) and
+          n2.isBefore(getRankedChild(pattern, 1))
+          or
+          exists(int i, AstNode child | child = getRankedChild(pattern, i) |
+            // child pattern succeeds, which means whole pattern succeeds
+            inConditionalContext(child, any(ConditionKind k | k.isMatching())) and
+            n1.isAfterMatch(child) and
+            n2.isAfterMatch(pattern)
+            or
+            n1.isAfterNonMatch(child) and
+            (
+              n2.isBefore(getRankedChild(pattern, i + 1))
+              or
+              not exists(getRankedChild(pattern, i + 1)) and
+              n2.isAfterNonMatch(pattern)
+            )
+          )
+        )
+      }
+
       /**
        * Holds if `n1` to `n2` is a default left-to-right evaluation step for
        * an `AstNode` that does not otherwise have explicitly defined control
        * flow.
        */
       private predicate defaultStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-        exists(AstNode ast | defaultCfg(ast) |
+        exists(AstNode ast | defaultCfg(ast) and not ast instanceof Pattern |
           n1.isBefore(ast) and
           n2.isBefore(getRankedChild(ast, 1))
           or
@@ -2245,6 +2211,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAfter(ast) and
           not beginAbruptCompletion(ast, n1, _, true)
         )
+        or
+        conjunctivePatternStep(n1, n2)
+        or
+        disjunctivePatternStep(n1, n2)
       }
 
       /** Holds if there is a local non-abrupt step from `n1` to `n2`. */

@@ -342,18 +342,6 @@ module CfgImpl {
 
     class Pattern extends AstNode {
       Pattern() { none() }
-
-      Pattern getPattern(int index) { none() }
-    }
-
-    class ExprPattern extends Expr, Pattern {
-      ExprPattern() { none() }
-    }
-
-    class BindingPattern extends Pattern {
-      BindingPattern() { none() }
-
-      AstNode getVariable() { none() }
     }
 
     class OrPattern extends Pattern {
