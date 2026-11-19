@@ -5379,9 +5379,7 @@ dominance
 | Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | After Patterns u [no-match] |
 | Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u |
 | Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u | Patterns.cs:54:18:54:37 | After Patterns u [match] |
-| Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } | Patterns.cs:54:18:54:37 | Patterns u |
-| Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:18:54:37 | After { ... } [no-match] |
-| Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } |
+| Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:18:54:37 | Patterns u |
 | Patterns.cs:54:27:54:35 | After { ... } [match] | Patterns.cs:54:18:54:37 | After { ... } [match] |
 | Patterns.cs:54:27:54:35 | [OuterPatternMatch] { ... } | Patterns.cs:54:33:54:33 | 1 |
 | Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:27:54:35 | After { ... } [no-match] |
@@ -5539,12 +5537,11 @@ dominance
 | Patterns.cs:95:21:95:40 | After { ... } [match] | Patterns.cs:95:13:95:40 | After ... is ... [true] |
 | Patterns.cs:95:21:95:40 | After { ... } [match] | Patterns.cs:95:21:95:40 | After { ... } [match] |
 | Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:95:13:95:40 | After ... is ... [false] |
-| Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:21:95:40 | { ... } |
+| Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
 | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:29:95:38 | ... or ... |
 | Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
 | Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } |
+| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | { ... } |
 | Patterns.cs:95:29:95:31 | After access to constant A [no-match] | Patterns.cs:95:36:95:38 | access to constant B |
 | Patterns.cs:95:29:95:31 | [OuterPatternMatch] access to constant A | Patterns.cs:95:29:95:31 | After access to constant A [match] |
 | Patterns.cs:95:29:95:31 | access to constant A | Patterns.cs:95:29:95:31 | After access to constant A [no-match] |
@@ -13221,7 +13218,7 @@ postDominance
 | Patterns.cs:54:18:54:37 | After { ... } [no-match] | Patterns.cs:54:18:54:25 | After access to type Patterns [no-match] |
 | Patterns.cs:54:18:54:37 | After { ... } [no-match] | Patterns.cs:54:18:54:37 | After Patterns u [no-match] |
 | Patterns.cs:54:18:54:37 | After { ... } [no-match] | Patterns.cs:54:27:54:35 | After { ... } [no-match] |
-| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } |
+| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | { ... } |
 | Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:14:54:37 | not ... |
 | Patterns.cs:54:27:54:35 | After { ... } [match] | Patterns.cs:54:33:54:33 | After 1 [match] |
 | Patterns.cs:54:27:54:35 | After { ... } [no-match] | Patterns.cs:54:33:54:33 | After 1 [no-match] |
@@ -13378,7 +13375,7 @@ postDominance
 | Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
 | Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:95:29:95:38 | After ... or ... [no-match] |
 | Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:13:95:16 | this access |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } |
+| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | { ... } |
 | Patterns.cs:95:29:95:31 | After access to constant A [match] | Patterns.cs:95:29:95:31 | [OuterPatternMatch] access to constant A |
 | Patterns.cs:95:29:95:31 | access to constant A | Patterns.cs:95:29:95:38 | ... or ... |
 | Patterns.cs:95:29:95:38 | ... or ... | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } |
@@ -18898,7 +18895,6 @@ blockDominance
 | Patterns.cs:53:24:53:25 | Entry | Patterns.cs:54:18:54:37 | After Patterns u [no-match] |
 | Patterns.cs:53:24:53:25 | Entry | Patterns.cs:54:18:54:37 | After { ... } [no-match] |
 | Patterns.cs:53:24:53:25 | Entry | Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u |
-| Patterns.cs:53:24:53:25 | Entry | Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } |
 | Patterns.cs:53:24:53:25 | Entry | Patterns.cs:54:27:54:35 | After { ... } [no-match] |
 | Patterns.cs:53:24:53:25 | Entry | Patterns.cs:54:27:54:35 | [OuterPatternMatch] { ... } |
 | Patterns.cs:53:24:53:25 | Entry | Patterns.cs:54:33:54:33 | After 1 [no-match] |
@@ -18919,15 +18915,6 @@ blockDominance
 | Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u | Patterns.cs:54:27:54:35 | [OuterPatternMatch] { ... } |
 | Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u | Patterns.cs:54:33:54:33 | After 1 [no-match] |
 | Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u | Patterns.cs:54:33:54:33 | [OuterPatternMatch] 1 |
-| Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } | Patterns.cs:54:18:54:25 | After access to type Patterns [no-match] |
-| Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } | Patterns.cs:54:18:54:25 | [OuterPatternMatch] access to type Patterns |
-| Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } | Patterns.cs:54:18:54:37 | After Patterns u [no-match] |
-| Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } | Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u |
-| Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } | Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } |
-| Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } | Patterns.cs:54:27:54:35 | After { ... } [no-match] |
-| Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } | Patterns.cs:54:27:54:35 | [OuterPatternMatch] { ... } |
-| Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } | Patterns.cs:54:33:54:33 | After 1 [no-match] |
-| Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } | Patterns.cs:54:33:54:33 | [OuterPatternMatch] 1 |
 | Patterns.cs:54:27:54:35 | After { ... } [no-match] | Patterns.cs:54:27:54:35 | After { ... } [no-match] |
 | Patterns.cs:54:27:54:35 | [OuterPatternMatch] { ... } | Patterns.cs:54:27:54:35 | [OuterPatternMatch] { ... } |
 | Patterns.cs:54:27:54:35 | [OuterPatternMatch] { ... } | Patterns.cs:54:33:54:33 | After 1 [no-match] |
@@ -19008,8 +18995,6 @@ blockDominance
 | Patterns.cs:93:17:93:19 | Entry | Patterns.cs:93:17:93:19 | Entry |
 | Patterns.cs:93:17:93:19 | Entry | Patterns.cs:95:9:98:9 | After if (...) ... |
 | Patterns.cs:93:17:93:19 | Entry | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
-| Patterns.cs:93:17:93:19 | Entry | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
-| Patterns.cs:93:17:93:19 | Entry | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } |
 | Patterns.cs:93:17:93:19 | Entry | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } |
 | Patterns.cs:93:17:93:19 | Entry | Patterns.cs:95:29:95:31 | After access to constant A [no-match] |
 | Patterns.cs:93:17:93:19 | Entry | Patterns.cs:95:29:95:31 | [OuterPatternMatch] access to constant A |
@@ -19018,20 +19003,11 @@ blockDominance
 | Patterns.cs:93:17:93:19 | Entry | Patterns.cs:95:36:95:38 | [OuterPatternMatch] access to constant B |
 | Patterns.cs:95:9:98:9 | After if (...) ... | Patterns.cs:95:9:98:9 | After if (...) ... |
 | Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
-| Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
-| Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
-| Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } |
-| Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } |
 | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } |
 | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:29:95:31 | After access to constant A [no-match] |
-| Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:29:95:31 | After access to constant A [no-match] |
-| Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:29:95:31 | [OuterPatternMatch] access to constant A |
 | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:29:95:31 | [OuterPatternMatch] access to constant A |
 | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:29:95:38 | After ... or ... [match] |
-| Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:29:95:38 | After ... or ... [match] |
 | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:36:95:38 | After access to constant B [no-match] |
-| Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:36:95:38 | After access to constant B [no-match] |
-| Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:36:95:38 | [OuterPatternMatch] access to constant B |
 | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:36:95:38 | [OuterPatternMatch] access to constant B |
 | Patterns.cs:95:29:95:31 | After access to constant A [no-match] | Patterns.cs:95:29:95:31 | After access to constant A [no-match] |
 | Patterns.cs:95:29:95:31 | After access to constant A [no-match] | Patterns.cs:95:36:95:38 | After access to constant B [no-match] |
@@ -23125,7 +23101,6 @@ postBlockDominance
 | Patterns.cs:54:9:54:37 | After ... is ... | Patterns.cs:54:18:54:37 | After Patterns u [no-match] |
 | Patterns.cs:54:9:54:37 | After ... is ... | Patterns.cs:54:18:54:37 | After { ... } [no-match] |
 | Patterns.cs:54:9:54:37 | After ... is ... | Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u |
-| Patterns.cs:54:9:54:37 | After ... is ... | Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } |
 | Patterns.cs:54:9:54:37 | After ... is ... | Patterns.cs:54:27:54:35 | After { ... } [no-match] |
 | Patterns.cs:54:9:54:37 | After ... is ... | Patterns.cs:54:27:54:35 | [OuterPatternMatch] { ... } |
 | Patterns.cs:54:9:54:37 | After ... is ... | Patterns.cs:54:33:54:33 | After 1 [no-match] |
@@ -23139,7 +23114,6 @@ postBlockDominance
 | Patterns.cs:54:18:54:37 | After { ... } [no-match] | Patterns.cs:54:27:54:35 | After { ... } [no-match] |
 | Patterns.cs:54:18:54:37 | After { ... } [no-match] | Patterns.cs:54:33:54:33 | After 1 [no-match] |
 | Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u | Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u |
-| Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } | Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } |
 | Patterns.cs:54:27:54:35 | After { ... } [no-match] | Patterns.cs:54:27:54:35 | After { ... } [no-match] |
 | Patterns.cs:54:27:54:35 | After { ... } [no-match] | Patterns.cs:54:33:54:33 | After 1 [no-match] |
 | Patterns.cs:54:27:54:35 | [OuterPatternMatch] { ... } | Patterns.cs:54:27:54:35 | [OuterPatternMatch] { ... } |
@@ -23212,8 +23186,6 @@ postBlockDominance
 | Patterns.cs:95:9:98:9 | After if (...) ... | Patterns.cs:93:17:93:19 | Entry |
 | Patterns.cs:95:9:98:9 | After if (...) ... | Patterns.cs:95:9:98:9 | After if (...) ... |
 | Patterns.cs:95:9:98:9 | After if (...) ... | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
-| Patterns.cs:95:9:98:9 | After if (...) ... | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
-| Patterns.cs:95:9:98:9 | After if (...) ... | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } |
 | Patterns.cs:95:9:98:9 | After if (...) ... | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } |
 | Patterns.cs:95:9:98:9 | After if (...) ... | Patterns.cs:95:29:95:31 | After access to constant A [no-match] |
 | Patterns.cs:95:9:98:9 | After if (...) ... | Patterns.cs:95:29:95:31 | [OuterPatternMatch] access to constant A |
@@ -23221,11 +23193,7 @@ postBlockDominance
 | Patterns.cs:95:9:98:9 | After if (...) ... | Patterns.cs:95:36:95:38 | After access to constant B [no-match] |
 | Patterns.cs:95:9:98:9 | After if (...) ... | Patterns.cs:95:36:95:38 | [OuterPatternMatch] access to constant B |
 | Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
-| Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
-| Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:95:21:95:40 | After { ... } [no-match] |
 | Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:95:36:95:38 | After access to constant B [no-match] |
-| Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:95:36:95:38 | After access to constant B [no-match] |
-| Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } |
 | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } |
 | Patterns.cs:95:29:95:31 | After access to constant A [no-match] | Patterns.cs:95:29:95:31 | After access to constant A [no-match] |
 | Patterns.cs:95:29:95:31 | [OuterPatternMatch] access to constant A | Patterns.cs:95:29:95:31 | [OuterPatternMatch] access to constant A |

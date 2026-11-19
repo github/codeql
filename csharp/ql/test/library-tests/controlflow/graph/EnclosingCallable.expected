@@ -5793,7 +5793,6 @@ nodeEnclosing
 | Patterns.cs:54:18:54:37 | After { ... } [no-match] | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u | Patterns.cs:53:24:53:25 | M4 |
-| Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:54:27:54:35 | After { ... } [match] | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:54:27:54:35 | After { ... } [no-match] | Patterns.cs:53:24:53:25 | M4 |
@@ -5967,7 +5966,6 @@ nodeEnclosing
 | Patterns.cs:95:21:95:40 | After { ... } [match] | Patterns.cs:93:17:93:19 | M10 |
 | Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:93:17:93:19 | M10 |
 | Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:93:17:93:19 | M10 |
-| Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:93:17:93:19 | M10 |
 | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:93:17:93:19 | M10 |
 | Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:93:17:93:19 | M10 |
 | Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:93:17:93:19 | M10 |
@@ -9442,7 +9440,6 @@ blockEnclosing
 | Patterns.cs:54:18:54:37 | After Patterns u [no-match] | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:54:18:54:37 | After { ... } [no-match] | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u | Patterns.cs:53:24:53:25 | M4 |
-| Patterns.cs:54:18:54:37 | [OuterPatternMatch] { ... } | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:54:27:54:35 | After { ... } [no-match] | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:54:27:54:35 | [OuterPatternMatch] { ... } | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:54:33:54:33 | After 1 [no-match] | Patterns.cs:53:24:53:25 | M4 |
@@ -9482,8 +9479,6 @@ blockEnclosing
 | Patterns.cs:93:17:93:19 | Entry | Patterns.cs:93:17:93:19 | M10 |
 | Patterns.cs:95:9:98:9 | After if (...) ... | Patterns.cs:93:17:93:19 | M10 |
 | Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:93:17:93:19 | M10 |
-| Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:93:17:93:19 | M10 |
-| Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:93:17:93:19 | M10 |
 | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:93:17:93:19 | M10 |
 | Patterns.cs:95:29:95:31 | After access to constant A [no-match] | Patterns.cs:93:17:93:19 | M10 |
 | Patterns.cs:95:29:95:31 | [OuterPatternMatch] access to constant A | Patterns.cs:93:17:93:19 | M10 |
