@@ -68,6 +68,7 @@ supertypes:
     - do_while_stmt
     - defer_stmt
     - labeled_stmt
+    - fallthrough_stmt
   callable:
     subtypes:
       - top_level
@@ -261,7 +262,10 @@ named:
   block:
     stmt*: stmt
 
+  # An if expression or a conditional compilation directive (which we view as a
+  # compile-time evaluated if expression).
   if_expr:
+    modifier*: modifier
     condition: expr
     then?: expr
     else?: expr
@@ -298,6 +302,9 @@ named:
   # `continue` (with optional label)
   continue_expr:
     label_name_node?: identifier
+
+  # Transfer control directly to the next switch case's body.
+  fallthrough_stmt:
 
   # A labeled statement, such as `outer: for ... { ... }`. The labeled
   # statement appears as the `stmt` field; `break`/`continue` may target
@@ -534,7 +541,7 @@ named:
     name_node: identifier
     accessor_kind: accessor_kind
     parameter*: parameter
-    type?: expr
+    return_type?: expr
     body?: block
 
   # "get", "set", or a language-specific kind like "didSet"

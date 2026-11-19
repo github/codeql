@@ -98,15 +98,39 @@ WindowLocalStorage.prototype.localStorage;
 Window.prototype.localStorage;
 
 /**
- * This is the storage event interface.
- * @see http://www.w3.org/TR/2011/CR-webstorage-20111208/#the-storage-event
- * @extends {Event}
- * @constructor
+ * @record
+ * @extends {EventInit}
+ * @see https://html.spec.whatwg.org/multipage/webstorage.html#dictdef-storageeventinit
  */
-function StorageEvent() {}
+function StorageEventInit() {}
+
+/** @type {(?string|undefined)} */
+StorageEventInit.prototype.key;
+
+/** @type {(?string|undefined)} */
+StorageEventInit.prototype.oldValue;
+
+/** @type {(?string|undefined)} */
+StorageEventInit.prototype.newValue;
+
+/** @type {(string|undefined)} */
+StorageEventInit.prototype.url;
+
+/** @type {(?Storage|undefined)} */
+StorageEventInit.prototype.storageArea;
 
 /**
- * @type {string}
+ * This is the storage event interface.
+ * @see https://html.spec.whatwg.org/multipage/webstorage.html#the-storageevent-interface
+ * @extends {Event}
+ * @constructor
+ * @param {string} type
+ * @param {StorageEventInit=} opt_eventInitDict
+ */
+function StorageEvent(type, opt_eventInitDict) {}
+
+/**
+ * @type {?string}
  */
 StorageEvent.prototype.key;
 
@@ -132,17 +156,16 @@ StorageEvent.prototype.storageArea;
 
 /**
  * @param {string} typeArg
- * @param {boolean} canBubbleArg
- * @param {boolean} cancelableArg
- * @param {string} keyArg
- * @param {?string} oldValueArg
- * @param {?string} newValueArg
- * @param {string} urlArg
- * @param {?Storage} storageAreaArg
+ * @param {boolean=} canBubbleArg
+ * @param {boolean=} cancelableArg
+ * @param {?string=} keyArg
+ * @param {?string=} oldValueArg
+ * @param {?string=} newValueArg
+ * @param {string=} urlArg
+ * @param {?Storage=} storageAreaArg
  * @return {void}
  */
 StorageEvent.prototype.initStorageEvent = function(typeArg, canBubbleArg,
                                                    cancelableArg, keyArg,
                                                    oldValueArg, newValueArg,
                                                    urlArg, storageAreaArg) {};
-

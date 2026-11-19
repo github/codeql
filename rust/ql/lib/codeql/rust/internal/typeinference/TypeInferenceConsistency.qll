@@ -47,4 +47,7 @@ int getTypeInferenceInconsistencyCounts(string type) {
   or
   type = "Non-unique certain type information" and
   result = count(AstNode n, TypePath path | nonUniqueCertainType(n, path) | n)
+  or
+  type = "Escaping type parameter" and
+  result = count(AstNode n, TypePath path | typeParameterEscapesScope(n, path, _))
 }

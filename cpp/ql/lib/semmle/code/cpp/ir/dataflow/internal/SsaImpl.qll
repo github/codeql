@@ -1104,37 +1104,29 @@ private module SsaInput implements Ssa::InputSig<Location, IRCfg::BasicBlock> {
       if use.isCertain() then certain = true else certain = false
     )
   }
+
+  predicate ssaCachedStageRevRef() { DataFlowIntegrationImpl::ssaCachedStageRevRef2() }
 }
 
-/**
- * The final SSA predicates used for dataflow purposes.
- */
-cached
-module SsaCached {
-  cached
-  predicate ssaDefReachesRead(SourceVariable v, Definition def, IRBlock bb, int i) {
-    SsaImpl::ssaDefReachesRead(v, def, bb, i)
-  }
-
-  cached
-  predicate phiHasInputFromBlock(PhiNode phi, Definition inp, IRBlock bb) {
-    SsaImpl::phiHasInputFromBlock(phi, inp, bb)
-  }
-
-  cached
-  predicate uncertainWriteDefinitionInput(Definition uncertain, Definition inp) {
-    SsaImpl::uncertainWriteDefinitionInput(uncertain, inp)
-  }
-
-  cached
-  predicate ssaDefReachesEndOfBlock(IRBlock bb, Definition def) {
-    SsaImpl::ssaDefReachesEndOfBlock(bb, def, _)
-  }
-
-  predicate variableRead = SsaInput::variableRead/4;
-
-  predicate variableWrite = SsaInput::variableWrite/4;
+predicate ssaDefReachesRead(SourceVariable v, Definition def, IRBlock bb, int i) {
+  SsaImpl::ssaDefReachesRead(v, def, bb, i)
 }
+
+predicate phiHasInputFromBlock(PhiNode phi, Definition inp, IRBlock bb) {
+  SsaImpl::phiHasInputFromBlock(phi, inp, bb)
+}
+
+predicate uncertainWriteDefinitionInput(Definition uncertain, Definition inp) {
+  SsaImpl::uncertainWriteDefinitionInput(uncertain, inp)
+}
+
+predicate ssaDefReachesEndOfBlock(IRBlock bb, Definition def) {
+  SsaImpl::ssaDefReachesEndOfBlock(bb, def, _)
+}
+
+predicate variableRead = SsaInput::variableRead/4;
+
+predicate variableWrite = SsaInput::variableWrite/4;
 
 /** Gets the `DefImpl` corresponding to `def`. */
 pragma[nomagic]
@@ -1161,25 +1153,6 @@ private module SsaImpl = Ssa::Make<Location, IRCfg, SsaInput>;
 
 private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
-
-  class Expr extends Instruction {
-    Expr() {
-      exists(IRBlock bb, int i |
-        variableRead(bb, i, _, true) and
-        this = bb.getInstruction(i)
-      )
-    }
-
-    predicate hasCfgNode(IRCfg::BasicBlock bb, int i) { bb.getInstruction(i) = this }
-  }
-
-  Expr getARead(SsaImpl::Definition def) {
-    exists(SourceVariable v, IRBlock bb, int i |
-      ssaDefReachesRead(v, def, bb, i) and
-      variableRead(bb, i, v, true) and
-      result.hasCfgNode(bb, i)
-    )
-  }
 
   predicate ssaDefHasSource(SsaImpl::WriteDefinition def) { none() }
 
@@ -1272,7 +1245,7 @@ module BarrierGuardWithIntParam<ParamSig P, IntWithParam<P>::guardChecksNodeSig/
 
   Node getABarrierNode(int indirectionIndex, P p) {
     fromDfNode(result) =
-      DataFlowIntegrationImpl::BarrierGuardDefWithState<ParamIntPair<P>::MkPair, guardChecksWithWrappers/4>::getABarrierNode(ParamIntPair<P>::MkPair(p,
+      DataFlowIntegrationImpl::SsaBarrierGuardWithState<ParamIntPair<P>::MkPair, guardChecksWithWrappers/4>::getABarrierNode(ParamIntPair<P>::MkPair(p,
           indirectionIndex))
   }
 }
@@ -1654,5 +1627,3 @@ class IndirectExplicitDefinition extends ExplicitDefinition {
 class DirectExplicitDefinition extends ExplicitDefinition {
   DirectExplicitDefinition() { this.getIndirectionIndex() = 0 }
 }
-
-import SsaCached

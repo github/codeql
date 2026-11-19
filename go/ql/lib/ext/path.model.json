@@ -1,0 +1,17 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["path", "", false, "Base", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["path", "", false, "Clean", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["path", "", false, "Dir", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["path", "", false, "Ext", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["path", "", false, "Split", "", "", "Argument[0]", "ReturnValue[0..1]", "taint", "manual"]
+      ]
+    }
+  ]
+}

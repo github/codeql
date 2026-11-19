@@ -1,0 +1,32 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["container/list", "Element", true, "Next", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["container/list", "Element", true, "Prev", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["container/list", "List", true, "Back", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["container/list", "List", true, "Front", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["container/list", "List", true, "Init", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["container/list", "List", true, "InsertAfter", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["container/list", "List", true, "InsertAfter", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["container/list", "List", true, "InsertBefore", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["container/list", "List", true, "InsertBefore", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["container/list", "List", true, "MoveAfter", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["container/list", "List", true, "MoveBefore", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["container/list", "List", true, "MoveToBack", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["container/list", "List", true, "MoveToFront", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["container/list", "List", true, "PushBack", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["container/list", "List", true, "PushBack", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["container/list", "List", true, "PushBackList", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["container/list", "List", true, "PushFront", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["container/list", "List", true, "PushFront", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["container/list", "List", true, "PushFrontList", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["container/list", "List", true, "Remove", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

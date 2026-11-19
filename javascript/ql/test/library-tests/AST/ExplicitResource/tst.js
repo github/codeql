@@ -27,3 +27,7 @@ function usesUsing() {
     }
     using(using);
 }
+
+async function asyncUsesUsing() {
+    await using("foo");
+}

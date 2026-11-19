@@ -2,16 +2,17 @@ name: Test tree-sitter-extractor
 
 on:
   push:
-    paths:
+    paths: &tree_sitter_paths
       - "shared/tree-sitter-extractor/**"
+      - Cargo.toml
+      - Cargo.lock
+      - rust-toolchain.toml
       - .github/workflows/tree-sitter-extractor-test.yml
     branches:
       - main
       - "rc/*"
   pull_request:
-    paths:
-      - "shared/tree-sitter-extractor/**"
-      - .github/workflows/tree-sitter-extractor-test.yml
+    paths: *tree_sitter_paths
     branches:
       - main
       - "rc/*"
@@ -46,4 +47,4 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Run clippy
-        run: cargo clippy -- --no-deps -D warnings -A clippy::new_without_default -A clippy::too_many_arguments
+        run: cargo clippy -- --no-deps -D warnings

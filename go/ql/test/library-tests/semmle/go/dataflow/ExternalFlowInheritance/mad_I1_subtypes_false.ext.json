@@ -1,0 +1,31 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["github.com/nonexistent/test", "I1", false, "Source", "", "", "ReturnValue", "qltest", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["github.com/nonexistent/test", "I1", false, "Step", "", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/nonexistent/test", "I1", false, "Sink", "", "", "Argument[0]", "qltest", "manual"]
+      ]
+    }
+  ]
+}

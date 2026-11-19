@@ -11,6 +11,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Factory"
           memberBlock:
             memberBlock
@@ -26,10 +27,10 @@ sourceFile
                           leftBrace: {
                           rightBrace: }
                           statements:
-                      name: identifier "make"
                       modifiers:
                         declModifier
                           name: class
+                      name: identifier "make"
                       signature:
                         functionSignature
                           parameterClause:
@@ -38,7 +39,6 @@ sourceFile
                               rightParen: )
                               parameters:
                       funcKeyword: func
-          modifiers:
           classKeyword: class
 
 ---

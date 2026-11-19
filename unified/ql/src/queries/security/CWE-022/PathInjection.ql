@@ -39,7 +39,7 @@ predicate heuristicSink(DataFlow::Node node) {
 }
 
 module PathInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, ["local", "remote"]) }
 
   predicate isSink(DataFlow::Node node) {
     Models::isSink(node, "path-injection") or

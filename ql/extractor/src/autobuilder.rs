@@ -7,7 +7,7 @@ use codeql_extractor::autobuilder;
 
 #[derive(Args)]
 // The autobuilder takes no command-line options, but this may change in the future.
-pub struct Options {}
+pub struct Options;
 
 pub fn run(_: Options) -> std::io::Result<()> {
     let database = env::var("CODEQL_EXTRACTOR_QL_WIP_DATABASE")

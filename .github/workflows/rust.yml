@@ -11,6 +11,9 @@ on:
       - "!shared/yeast-macros/**"
       - "!shared/yeast-schema/**"
       - "MODULE.bazel"
+      - Cargo.toml
+      - Cargo.lock
+      - rust-toolchain.toml
       - .github/workflows/rust.yml
       - .github/actions/**
       - codeql-workspace.yml

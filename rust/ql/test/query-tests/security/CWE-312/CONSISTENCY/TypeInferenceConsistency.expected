@@ -1,0 +1,23 @@
+typeParameterEscapesScope
+| test_storage.rs:64:9:64:17 | mut conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:64:13:64:17 | conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:64:21:64:41 | await ... | T.DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:64:21:64:42 | TryExpr | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:85:13:85:17 | conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:86:13:86:17 | conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:87:13:87:17 | conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:88:13:88:17 | conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:89:13:89:17 | conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:90:13:90:17 | conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:91:13:91:17 | conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:92:13:92:17 | conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:93:13:93:17 | conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:94:13:94:17 | conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:95:13:95:17 | conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:96:13:96:17 | conn1 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:131:9:131:17 | mut conn3 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:131:13:131:17 | conn3 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:131:21:131:41 | await ... | T.DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:131:21:131:42 | TryExpr | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:134:13:134:17 | conn3 | DB | {EXTERNAL LOCATION} | DB |
+| test_storage.rs:135:13:135:17 | conn3 | DB | {EXTERNAL LOCATION} | DB |

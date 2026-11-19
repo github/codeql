@@ -1,0 +1,34 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/elazarl/goproxy", "ProxyCtx", true, "Logf", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["github.com/elazarl/goproxy", "ProxyCtx", true, "Warnf", "", "", "Argument[0..1]", "log-injection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["github.com/elazarl/goproxy", "CertStorage", true, "Fetch", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["github.com/elazarl/goproxy", "CertStorage", true, "Fetch", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["github.com/elazarl/goproxy", "ProxyCtx", true, "UserData", "", "", "", "remote", "manual"],
+        ["github.com/elazarl/goproxy", "ProxyCtx", true, "Charset", "", "", "ReturnValue", "remote", "manual"]
+      ]
+    }
+  ]
+}

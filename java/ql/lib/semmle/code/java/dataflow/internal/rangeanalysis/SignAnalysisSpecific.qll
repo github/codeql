@@ -15,7 +15,11 @@ module Private {
 
   class ConstantIntegerExpr = RU::ConstantIntegerExpr;
 
-  class Guard = G::Guards_v2::Guard;
+  class Guard extends G::Guards_v2::Guard {
+    predicate isEquality(Expr e1, Expr e2, boolean eqval) {
+      super.isEquality(e1, e2, any(G::GuardValue gv | gv.asBooleanValue() = eqval))
+    }
+  }
 
   class SsaVariable = Ssa::SsaDefinition;
 

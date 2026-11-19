@@ -1,0 +1,46 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["github.com/spf13/afero", "HttpFs", true, "Create", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "HttpFs", true, "Open", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "HttpFs", true, "OpenFile", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "HttpFs", true, "Remove", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "HttpFs", true, "RemoveAll", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "MemMapFs", true, "Create", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "MemMapFs", true, "Open", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "MemMapFs", true, "OpenFile", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "MemMapFs", true, "Remove", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "MemMapFs", true, "RemoveAll", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "MemMapFs", true, "Mkdir", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "MemMapFs", true, "MkdirAll", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "OsFs", true, "Create", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "OsFs", true, "Open", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "OsFs", true, "OpenFile", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "OsFs", true, "ReadlinkIfPossible", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "OsFs", true, "Remove", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "OsFs", true, "RemoveAll", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "OsFs", true, "Mkdir", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "OsFs", true, "MkdirAll", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "ReadOnlyFs", true, "Create", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "ReadOnlyFs", true, "Open", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "ReadOnlyFs", true, "OpenFile", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "ReadOnlyFs", true, "ReadDir", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "ReadOnlyFs", true, "ReadlinkIfPossible", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "ReadOnlyFs", true, "Mkdir", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "ReadOnlyFs", true, "MkdirAll", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "RegexpFs", true, "Create", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "RegexpFs", true, "Open", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "RegexpFs", true, "OpenFile", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "RegexpFs", true, "Remove", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "RegexpFs", true, "RemoveAll", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "RegexpFs", true, "Mkdir", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/spf13/afero", "RegexpFs", true, "MkdirAll", "", "", "Argument[0]", "path-injection", "manual"]
+      ]
+    }
+  ]
+}

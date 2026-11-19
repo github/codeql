@@ -1,0 +1,26 @@
+from mcp.server import Server
+
+
+async def handle_call_tool(ctx, params):
+    if params.name == "run": # $ mad-source__ai=params.name threatModelSource[ai]=params.name
+        return params.arguments # $ mad-source__ai=params.arguments threatModelSource[ai]=params.arguments
+
+
+async def handle_read_resource(ctx, params):
+    return params.uri # $ mad-source__ai=params.uri threatModelSource[ai]=params.uri
+
+
+async def handle_get_prompt(ctx, params):
+    return params.name, params.arguments # $ mad-source__ai=params.name threatModelSource[ai]=params.name mad-source__ai=params.arguments threatModelSource[ai]=params.arguments
+
+
+async def not_registered(ctx, params):
+    return params.arguments
+
+
+server = Server(
+    "test",
+    on_call_tool=handle_call_tool,
+    on_read_resource=handle_read_resource,
+    on_get_prompt=handle_get_prompt,
+)

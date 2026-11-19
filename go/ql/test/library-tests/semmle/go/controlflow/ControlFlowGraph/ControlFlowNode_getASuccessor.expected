@@ -1194,6 +1194,83 @@
 | exprs.go:94:15:94:15 | y | exprs.go:94:15:94:15 | After y [false] |
 | exprs.go:94:15:94:15 | y | exprs.go:94:15:94:15 | After y [true] |
 | exprs.go:94:21:94:21 | z | exprs.go:94:9:94:21 | After ...\|\|... |
+| fallthrough.go:0:0:0:0 | After fallthrough.go | fallthrough.go:0:0:0:0 | Normal Exit |
+| fallthrough.go:0:0:0:0 | Entry | fallthrough.go:0:0:0:0 | fallthrough.go |
+| fallthrough.go:0:0:0:0 | Normal Exit | fallthrough.go:0:0:0:0 | Exit |
+| fallthrough.go:0:0:0:0 | fallthrough.go | fallthrough.go:3:1:12:1 | function declaration |
+| fallthrough.go:3:1:12:1 | Entry | fallthrough.go:3:29:3:29 | x |
+| fallthrough.go:3:1:12:1 | Exceptional Exit | fallthrough.go:3:1:12:1 | Exit |
+| fallthrough.go:3:1:12:1 | Normal Exit | fallthrough.go:3:1:12:1 | Exit |
+| fallthrough.go:3:1:12:1 | function declaration | fallthrough.go:14:1:21:1 | function declaration |
+| fallthrough.go:3:29:3:29 | x | fallthrough.go:3:36:12:1 | block statement |
+| fallthrough.go:3:36:12:1 | After block statement | fallthrough.go:3:1:12:1 | Normal Exit |
+| fallthrough.go:3:36:12:1 | block statement | fallthrough.go:4:2:10:2 | expression-switch statement |
+| fallthrough.go:4:2:10:2 | After expression-switch statement | fallthrough.go:11:2:11:13 | expression statement |
+| fallthrough.go:4:2:10:2 | expression-switch statement | fallthrough.go:4:9:4:9 | x |
+| fallthrough.go:4:9:4:9 | x | fallthrough.go:5:2:6:13 | case clause |
+| fallthrough.go:5:2:6:13 | After case clause [match] | fallthrough.go:6:3:6:13 | Before fallthrough statement |
+| fallthrough.go:5:2:6:13 | After case clause [no-match] | fallthrough.go:7:2:7:8 | case clause |
+| fallthrough.go:5:2:6:13 | case clause | fallthrough.go:5:7:5:7 | 0 |
+| fallthrough.go:5:7:5:7 | 0 | fallthrough.go:5:7:5:7 | After 0 [match] |
+| fallthrough.go:5:7:5:7 | 0 | fallthrough.go:5:7:5:7 | After 0 [no-match] |
+| fallthrough.go:5:7:5:7 | After 0 [match] | fallthrough.go:5:2:6:13 | After case clause [match] |
+| fallthrough.go:5:7:5:7 | After 0 [no-match] | fallthrough.go:5:2:6:13 | After case clause [no-match] |
+| fallthrough.go:6:3:6:13 | Before fallthrough statement | fallthrough.go:6:3:6:13 | fallthrough statement |
+| fallthrough.go:6:3:6:13 | fallthrough statement | fallthrough.go:4:2:10:2 | After expression-switch statement |
+| fallthrough.go:7:2:7:8 | After case clause [match] | fallthrough.go:4:2:10:2 | After expression-switch statement |
+| fallthrough.go:7:2:7:8 | After case clause [no-match] | fallthrough.go:8:2:9:13 | case clause |
+| fallthrough.go:7:2:7:8 | case clause | fallthrough.go:7:7:7:7 | 1 |
+| fallthrough.go:7:7:7:7 | 1 | fallthrough.go:7:7:7:7 | After 1 [match] |
+| fallthrough.go:7:7:7:7 | 1 | fallthrough.go:7:7:7:7 | After 1 [no-match] |
+| fallthrough.go:7:7:7:7 | After 1 [match] | fallthrough.go:7:2:7:8 | After case clause [match] |
+| fallthrough.go:7:7:7:7 | After 1 [no-match] | fallthrough.go:7:2:7:8 | After case clause [no-match] |
+| fallthrough.go:8:2:9:13 | After case clause [match] | fallthrough.go:9:3:9:13 | expression statement |
+| fallthrough.go:8:2:9:13 | case clause | fallthrough.go:8:2:9:13 | After case clause [match] |
+| fallthrough.go:9:3:9:7 | test5 | fallthrough.go:9:9:9:12 | true |
+| fallthrough.go:9:3:9:13 | After call to test5 | fallthrough.go:9:3:9:13 | After expression statement |
+| fallthrough.go:9:3:9:13 | After expression statement | fallthrough.go:4:2:10:2 | After expression-switch statement |
+| fallthrough.go:9:3:9:13 | Before call to test5 | fallthrough.go:9:3:9:7 | test5 |
+| fallthrough.go:9:3:9:13 | call to test5 | fallthrough.go:3:1:12:1 | Exceptional Exit |
+| fallthrough.go:9:3:9:13 | call to test5 | fallthrough.go:9:3:9:13 | After call to test5 |
+| fallthrough.go:9:3:9:13 | expression statement | fallthrough.go:9:3:9:13 | Before call to test5 |
+| fallthrough.go:9:9:9:12 | true | fallthrough.go:9:3:9:13 | call to test5 |
+| fallthrough.go:11:2:11:6 | test5 | fallthrough.go:11:8:11:12 | false |
+| fallthrough.go:11:2:11:13 | After call to test5 | fallthrough.go:11:2:11:13 | After expression statement |
+| fallthrough.go:11:2:11:13 | After expression statement | fallthrough.go:3:36:12:1 | After block statement |
+| fallthrough.go:11:2:11:13 | Before call to test5 | fallthrough.go:11:2:11:6 | test5 |
+| fallthrough.go:11:2:11:13 | call to test5 | fallthrough.go:3:1:12:1 | Exceptional Exit |
+| fallthrough.go:11:2:11:13 | call to test5 | fallthrough.go:11:2:11:13 | After call to test5 |
+| fallthrough.go:11:2:11:13 | expression statement | fallthrough.go:11:2:11:13 | Before call to test5 |
+| fallthrough.go:11:8:11:12 | false | fallthrough.go:11:2:11:13 | call to test5 |
+| fallthrough.go:14:1:21:1 | Entry | fallthrough.go:14:32:14:32 | x |
+| fallthrough.go:14:1:21:1 | Exceptional Exit | fallthrough.go:14:1:21:1 | Exit |
+| fallthrough.go:14:1:21:1 | Normal Exit | fallthrough.go:14:1:21:1 | Exit |
+| fallthrough.go:14:1:21:1 | function declaration | fallthrough.go:0:0:0:0 | After fallthrough.go |
+| fallthrough.go:14:32:14:32 | x | fallthrough.go:14:39:21:1 | block statement |
+| fallthrough.go:14:39:21:1 | After block statement | fallthrough.go:14:1:21:1 | Normal Exit |
+| fallthrough.go:14:39:21:1 | block statement | fallthrough.go:15:2:19:2 | expression-switch statement |
+| fallthrough.go:15:2:19:2 | After expression-switch statement | fallthrough.go:20:2:20:13 | expression statement |
+| fallthrough.go:15:2:19:2 | expression-switch statement | fallthrough.go:15:9:15:9 | x |
+| fallthrough.go:15:9:15:9 | x | fallthrough.go:16:2:17:13 | case clause |
+| fallthrough.go:16:2:17:13 | After case clause [match] | fallthrough.go:17:3:17:13 | Before fallthrough statement |
+| fallthrough.go:16:2:17:13 | After case clause [no-match] | fallthrough.go:18:2:18:9 | case clause |
+| fallthrough.go:16:2:17:13 | case clause | fallthrough.go:16:7:16:7 | 0 |
+| fallthrough.go:16:7:16:7 | 0 | fallthrough.go:16:7:16:7 | After 0 [match] |
+| fallthrough.go:16:7:16:7 | 0 | fallthrough.go:16:7:16:7 | After 0 [no-match] |
+| fallthrough.go:16:7:16:7 | After 0 [match] | fallthrough.go:16:2:17:13 | After case clause [match] |
+| fallthrough.go:16:7:16:7 | After 0 [no-match] | fallthrough.go:16:2:17:13 | After case clause [no-match] |
+| fallthrough.go:17:3:17:13 | Before fallthrough statement | fallthrough.go:17:3:17:13 | fallthrough statement |
+| fallthrough.go:17:3:17:13 | fallthrough statement | fallthrough.go:15:2:19:2 | After expression-switch statement |
+| fallthrough.go:18:2:18:9 | After case clause [match] | fallthrough.go:15:2:19:2 | After expression-switch statement |
+| fallthrough.go:18:2:18:9 | case clause | fallthrough.go:18:2:18:9 | After case clause [match] |
+| fallthrough.go:20:2:20:6 | test5 | fallthrough.go:20:8:20:12 | false |
+| fallthrough.go:20:2:20:13 | After call to test5 | fallthrough.go:20:2:20:13 | After expression statement |
+| fallthrough.go:20:2:20:13 | After expression statement | fallthrough.go:14:39:21:1 | After block statement |
+| fallthrough.go:20:2:20:13 | Before call to test5 | fallthrough.go:20:2:20:6 | test5 |
+| fallthrough.go:20:2:20:13 | call to test5 | fallthrough.go:14:1:21:1 | Exceptional Exit |
+| fallthrough.go:20:2:20:13 | call to test5 | fallthrough.go:20:2:20:13 | After call to test5 |
+| fallthrough.go:20:2:20:13 | expression statement | fallthrough.go:20:2:20:13 | Before call to test5 |
+| fallthrough.go:20:8:20:12 | false | fallthrough.go:20:2:20:13 | call to test5 |
 | generic.go:0:0:0:0 | After generic.go | generic.go:0:0:0:0 | Normal Exit |
 | generic.go:0:0:0:0 | Entry | generic.go:0:0:0:0 | generic.go |
 | generic.go:0:0:0:0 | Normal Exit | generic.go:0:0:0:0 | Exit |
@@ -2929,12 +3006,13 @@
 | stmts.go:91:7:91:7 | After 1 [no-match] | stmts.go:91:2:93:13 | After case clause [no-match] |
 | stmts.go:92:3:92:7 | test5 | stmts.go:92:9:92:13 | false |
 | stmts.go:92:3:92:14 | After call to test5 | stmts.go:92:3:92:14 | After expression statement |
-| stmts.go:92:3:92:14 | After expression statement | stmts.go:93:3:93:13 | fallthrough statement |
+| stmts.go:92:3:92:14 | After expression statement | stmts.go:93:3:93:13 | Before fallthrough statement |
 | stmts.go:92:3:92:14 | Before call to test5 | stmts.go:92:3:92:7 | test5 |
 | stmts.go:92:3:92:14 | call to test5 | stmts.go:75:1:109:1 | Exceptional Exit |
 | stmts.go:92:3:92:14 | call to test5 | stmts.go:92:3:92:14 | After call to test5 |
 | stmts.go:92:3:92:14 | expression statement | stmts.go:92:3:92:14 | Before call to test5 |
 | stmts.go:92:9:92:13 | false | stmts.go:92:3:92:14 | call to test5 |
+| stmts.go:93:3:93:13 | Before fallthrough statement | stmts.go:93:3:93:13 | fallthrough statement |
 | stmts.go:93:3:93:13 | fallthrough statement | stmts.go:95:3:95:13 | expression statement |
 | stmts.go:94:2:95:13 | After case clause [match] | stmts.go:95:3:95:13 | expression statement |
 | stmts.go:94:2:95:13 | After case clause [no-match] | stmts.go:90:2:96:2 | After expression-switch statement |

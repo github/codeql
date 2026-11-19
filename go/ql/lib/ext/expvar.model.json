@@ -1,0 +1,18 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["expvar", "Func", true, "Value", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["expvar", "Map", true, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["expvar", "Map", true, "Set", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"],
+        ["expvar", "String", true, "Set", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["expvar", "String", true, "Value", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["expvar", "Var", true, "String", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

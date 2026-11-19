@@ -472,8 +472,17 @@ abstract class ReturnNode extends Node {
   abstract ReturnKind getKind();
 }
 
+/** Holds if the value of `n` is returned from its enclosing callable. */
+predicate isReturnedValue(AstNode n) {
+  exists(SuccessorType t | n.getACfgNode().getASuccessor(t) instanceof AnnotatedExitCfgNode |
+    // The early return of `x?` returns the `Err` or `None` held by `x`, which is
+    // a different value from the one `x?` evaluates to
+    not (n instanceof TryExpr and t instanceof ReturnSuccessor)
+  )
+}
+
 final class ExprReturnNode extends ExprNode, ReturnNode {
-  ExprReturnNode() { n.getACfgNode().getASuccessor() instanceof AnnotatedExitCfgNode }
+  ExprReturnNode() { isReturnedValue(n) }
 
   override ReturnKind getKind() { result = TNormalReturnKind() }
 }
@@ -484,6 +493,25 @@ final class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
   SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), rk) }
 
   override ReturnKind getKind() { result = rk }
+}
+
+/**
+ * A node that represents an `Err` value returned early in a `?` expression.
+ */
+class TryEarlyReturnNode extends ReturnNode, TTryEarlyReturnNode {
+  private TryExpr try;
+
+  TryEarlyReturnNode() { this = TTryEarlyReturnNode(try) }
+
+  TryExpr getTryExpr() { result = try }
+
+  final override ReturnKind getKind() { result = TNormalReturnKind() }
+
+  final override CfgScope getCfgScope() { result = try.getEnclosingCfgScope() }
+
+  final override Location getLocation() { result = try.getLocation() }
+
+  final override string toString() { result = try.toString() + " (early return)" }
 }
 
 /** A data flow node that represents the output of a call. */
@@ -728,6 +756,7 @@ class StaticNode extends AstNodeNode, TStaticNode {
 cached
 newtype TNode =
   TExprNode(Expr e) { e.hasEnclosingCfgScope() and Stages::DataFlowStage::ref() } or
+  TTryEarlyReturnNode(TryExpr te) or
   TSourceParameterNode(ParamBase p) { p.hasEnclosingCfgScope() } or
   TPatNode(Pat p) { p.hasEnclosingCfgScope() } or
   TNameNode(Name n) { n = any(Variable v).getName() and n.hasEnclosingCfgScope() } or

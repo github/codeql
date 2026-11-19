@@ -2,7 +2,7 @@ module github.com/github/codeql-go/extractor
 
 go 1.27
 
-toolchain go1.27.2
+toolchain go1.27.4
 
 // when updating this, run
 //    bazel run @rules_go//go -- mod tidy
@@ -10,7 +10,7 @@ toolchain go1.27.2
 //    bazel mod tidy
 require (
 	github.com/stretchr/testify v1.11.1
-	golang.org/x/mod v0.42.0
+	golang.org/x/mod v0.43.0
 	golang.org/x/sys v0.49.0
 	golang.org/x/tools v0.52.0
 )

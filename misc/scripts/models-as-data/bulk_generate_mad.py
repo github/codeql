@@ -548,7 +548,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--extension-format",
         choices=["json", "yaml"],
-        default="yaml",
+        default="json",
         help="Format for the generated data extension files (default %(default)s)",
     )
     args = parser.parse_args()

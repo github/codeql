@@ -2272,7 +2272,11 @@ private module Input3 implements InputSig3 {
     BoolType() { this.getTypeItem() instanceof Builtins::Bool }
   }
 
-  class AstNode = Rust::AstNode;
+  class AstNode extends Rust::AstNode {
+    AstNode getParent() { result = this.getParentNode() }
+  }
+
+  AstNode getTypeParameterScope(TypeParameter tp) { result = tp.getScope() }
 
   final class Expr = ExprImpl;
 
@@ -2286,13 +2290,13 @@ private module Input3 implements InputSig3 {
     TypeMention getType() { result = this.getTypeRepr() }
   }
 
-  class Switch extends Rust::MatchExpr {
+  class Switch extends Expr, Rust::MatchExpr {
     Expr getExpr() { result = this.getScrutinee() }
 
     Case getCase(int index) { result = this.getArm(index) }
   }
 
-  class Case extends Rust::MatchArm {
+  class Case extends AstNode, Rust::MatchArm {
     AstNode getAPattern() { result = this.getPat() }
 
     AstNode getBody() { result = this.getExpr() }
@@ -2322,10 +2326,6 @@ private module Input3 implements InputSig3 {
 
   class AssignExpr extends AssignmentImpl, Rust::AssignmentExpr { }
 
-  class ParenExpr extends Expr instanceof Rust::ParenExpr {
-    Expr getExpr() { result = super.getExpr() }
-  }
-
   final class Declaration = DeclarationImpl;
 
   abstract private class DeclarationImpl extends AstNode {
@@ -2348,7 +2348,7 @@ private module Input3 implements InputSig3 {
 
     AstNode getDefiningNode() {
       result = this.asLocalVariable().getPat().getName() or
-      result = this.asLocalVariable().getParameter().(SelfParam) or
+      this.asLocalVariable().isParameter(result.(SelfParam)) or
       result = this.asConst().getName() or
       result = this.asStatic().getName()
     }
@@ -2453,8 +2453,8 @@ private module Input3 implements InputSig3 {
       // mutual recursion; resolving fields requires resolving types and vice versa
       result =
         [
-          resolveStructFieldExpr(this, _).(AstNode),
-          resolveTupleFieldExpr(this, _)
+          resolveStructFieldExpr(this, _).(Field),
+          resolveTupleFieldExpr(this, _).(Field)
         ]
     }
   }
@@ -2484,7 +2484,7 @@ private module Input3 implements InputSig3 {
     )
   }
 
-  class Return extends ReturnExpr {
+  class Return extends Expr, ReturnExpr {
     Expr getExpr() { result = super.getExpr() }
   }
 
@@ -2587,7 +2587,7 @@ private module Input3 implements InputSig3 {
     override TypeItem getTypeItem() { result = this }
 
     override Parameter getParameter(int i) {
-      result = [super.getTupleField(i).(AstNode), super.getNthStructField(i)]
+      result = [super.getTupleField(i).(Parameter), super.getNthStructField(i).(Parameter)]
     }
   }
 
@@ -2595,7 +2595,7 @@ private module Input3 implements InputSig3 {
     override TypeItem getTypeItem() { result = super.getEnum() }
 
     override Parameter getParameter(int i) {
-      result = [super.getTupleField(i).(AstNode), super.getNthStructField(i)]
+      result = [super.getTupleField(i).(Parameter), super.getNthStructField(i).(Parameter)]
     }
   }
 
@@ -3040,8 +3040,6 @@ private module Input3 implements InputSig3 {
       (
         n2 = n1.(OrPat).getAPat()
         or
-        n2 = n1.(ParenPat).getPat()
-        or
         n2 = n1.(LiteralPat).getLiteral()
         or
         exists(BreakExpr break |
@@ -3161,7 +3159,7 @@ module Consistency = M3::Consistency;
 
 module CachedStage = M3::CachedStage;
 
-private predicate typeTestAstNodeRepr(AstNode n, string repr) {
+private predicate typeTestAstNodeRepr(Input3::AstNode n, string repr) {
   repr = [n.toString(), n.(IdentPat).getName().getText()]
 }
 

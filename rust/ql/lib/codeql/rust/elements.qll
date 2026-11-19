@@ -131,8 +131,6 @@ import codeql.rust.elements.OrPat
 import codeql.rust.elements.Param
 import codeql.rust.elements.ParamBase
 import codeql.rust.elements.ParamList
-import codeql.rust.elements.ParenExpr
-import codeql.rust.elements.ParenPat
 import codeql.rust.elements.ParenTypeRepr
 import codeql.rust.elements.ParenthesizedArgList
 import codeql.rust.elements.Pat

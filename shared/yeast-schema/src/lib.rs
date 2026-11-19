@@ -26,8 +26,9 @@ pub type FieldId = u16;
 /// representation.
 pub type KindId = u16;
 
-/// Sentinel field id used to mean "the implicit unfielded slot" (what the
-/// tree-sitter docs call `children` and what YEAST surfaces in queries as
-/// the bare `child:` field). Reserved to avoid clashing with real field
+/// Sentinel field id for the implicit unfielded slot.
+///
+/// The tree-sitter docs call this `children`, and YEAST surfaces it in queries as
+/// the bare `child:` field. Reserved to avoid clashing with real field
 /// IDs allocated by `Schema::register_field`.
 pub const CHILD_FIELD: u16 = u16::MAX;

@@ -184,6 +184,8 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBl
     variableCapture(v, _, bb, i) and
     certain = false
   }
+
+  predicate ssaCachedStageRevRef() { Ssa::ssaCachedStageRevRef1() }
 }
 
 private module Impl = SsaImplCommon::Make<Location, Cfg, SsaImplInput>;
@@ -208,6 +210,8 @@ private module SsaInput implements Impl::SsaInputSig {
       i = -1
     )
   }
+
+  predicate explicitRead(Expr e, BaseSsaSourceVariable v) { e = v.getAnAccess().(VarRead) }
 }
 
 module Ssa = Impl::MakeSsa<SsaInput>;
@@ -221,7 +225,7 @@ private module Cached {
   cached
   predicate captures(SsaImplicitEntryDefinition init, SsaDefinition capturedvar) {
     exists(BasicBlock bb, int i |
-      Ssa::ssaDefReachesUncertainRead(_, capturedvar, bb, i) and
+      Ssa::ssaDefReachesImplicitRead(capturedvar, bb, i) and
       variableCapture(capturedvar.getSourceVariable(), init.getSourceVariable(), bb, i)
     )
   }

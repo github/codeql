@@ -192,6 +192,8 @@ module Ast implements AstSig<Location> {
 
   class ContinueStmt = U::ContinueExpr;
 
+  class FallthroughStmt = U::FallthroughStmt;
+
   class LabeledStmt = U::LabeledStmt;
 
   class GotoStmt extends Stmt {
@@ -324,6 +326,9 @@ private module Input implements InputSig1, InputSig2 {
   }
 
   class CallableContext = Void;
+
+  // Swift switches are exhaustive.
+  predicate isExhaustive(Ast::Switch switch) { any() }
 
   predicate beginAbruptCompletion(
     AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always

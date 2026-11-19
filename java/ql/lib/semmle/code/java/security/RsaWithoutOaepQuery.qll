@@ -10,7 +10,7 @@ import semmle.code.java.dataflow.DataFlow
 module RsaWithoutOaepConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
     exists(CompileTimeConstantExpr specExpr, string spec |
-      specExpr.getStringValue() = spec and
+      specExpr.getStringValue().toUpperCase() = spec and
       specExpr = src.asExpr() and
       spec.matches("RSA/%") and
       not spec.matches("%OAEP%")

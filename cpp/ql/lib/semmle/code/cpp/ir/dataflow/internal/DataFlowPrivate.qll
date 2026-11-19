@@ -2173,23 +2173,14 @@ module IteratorFlow {
     predicate variableRead(IRCfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
       Ssa::variableRead(bb, i, v, certain)
     }
+
+    predicate ssaCachedStageRevRef() { DataFlowIntegrationImpl::ssaCachedStageRevRef2() }
   }
 
   private module IteratorSsa = SsaImpl::Make<Location, IRCfg, SsaInput>;
 
   private module DataFlowIntegrationInput implements IteratorSsa::DataFlowIntegrationInputSig {
     private import codeql.util.Void
-
-    class Expr extends Instruction {
-      Expr() {
-        exists(IRBlock bb, int i |
-          SsaInput::variableRead(bb, i, _, true) and
-          this = bb.getInstruction(i)
-        )
-      }
-
-      predicate hasCfgNode(IRCfg::BasicBlock bb, int i) { bb.getInstruction(i) = this }
-    }
 
     predicate ssaDefHasSource(IteratorSsa::WriteDefinition def) { none() }
 
@@ -2278,7 +2269,7 @@ module IteratorFlow {
     result = n.(SsaIteratorNode).getIteratorFlowNode()
     or
     exists(Ssa::UseImpl use, IRBlock bb, int i |
-      result.(DataFlowIntegrationImpl::ExprNode).getExpr().hasCfgNode(bb, i) and
+      result.(DataFlowIntegrationImpl::ReadNode).readsAt(bb, i, v) and
       use.hasIndexInBlock(bb, i, v) and
       use.getNode() = n
     )
@@ -2292,7 +2283,10 @@ module IteratorFlow {
   predicate localFlowStep(Node nodeFrom, Node nodeTo) {
     exists(SourceVariable v |
       nodeFrom != nodeTo and
-      DataFlowIntegrationImpl::localFlowStep(v, fromDfNode(nodeFrom, v), fromDfNode(nodeTo, v), _)
+      // Skip use-use steps. These are already accounted for by regular SSA
+      // flow including proper handling of `modeledFlowBarrier`.
+      DataFlowIntegrationImpl::localFlowStep(v, fromDfNode(nodeFrom, v), fromDfNode(nodeTo, v),
+        false)
     )
   }
 }

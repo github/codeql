@@ -19,6 +19,9 @@ include = [
 [lib]
 path = "bindings/rust/lib.rs"
 
+[lints]
+workspace = true
+
 [dependencies]
 tree-sitter-language = "0.1.0"
 tree-sitter = ">= 0.23"
