@@ -416,7 +416,16 @@ signature module AstSig<LocationSig Location> {
    */
   class Pattern extends AstNode;
 
-  /** A pattern that matches when any of its nested patterns match. */
+  /**
+   * A pattern that matches when all of its nested patterns match, but does not
+   * by itself perform any test.
+   */
+  class AndPattern extends Pattern;
+
+  /**
+   * A pattern that matches when any of its nested patterns match, but does not
+   * by itself perform any test.
+   */
   class OrPattern extends Pattern;
 
   /**
@@ -578,8 +587,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      * Holds if `pattern` performs a test that may fail. For example, in Rust
      * the pattern `Some(x)` may fail while a tuple pattern cannot by itself
      * fail (but its subpatterns may).
+     *
+     * `AndPattern`s and `OrPattern`s never perform a test by themselves.
      */
-    default predicate patternIsTest(Pattern pattern) { none() }
+    default predicate patternPerformsTest(Pattern pattern) { any() }
 
     /**
      * Holds if `pattern` is exhaustive, meaning it is guaranteed to match.
@@ -834,6 +845,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
     private string outerPatternMatchTag() { result = "[OuterPatternMatch]" }
 
+    private predicate patternPerformsTest(Pattern pattern) {
+      Input1::patternPerformsTest(pattern) and
+      not pattern instanceof AndPattern and
+      not pattern instanceof OrPattern
+    }
+
     /**
      * Holds if an additional node tagged with `tag` should be created for
      * `n`. Edges targeting such nodes are labeled with `t` and therefore `t`
@@ -857,7 +874,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       tag = patternMatchTrueTag() and
       t.(BooleanSuccessor).getValue() = true
       or
-      Input1::patternIsTest(n) and
+      patternPerformsTest(n) and
       tag = outerPatternMatchTag() and
       t.(MatchingSuccessor).getValue() = true
     }
@@ -2129,11 +2146,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             n2.isAdditional(pattern, outerPatternMatchTag())
             or
             // outer pattern fails
-            Input1::patternIsTest(pattern) and
+            patternPerformsTest(pattern) and
             n2.isAfterNonMatch(pattern)
             or
             // outer pattern does not perform a test, proceed directly to first child
-            not Input1::patternIsTest(pattern) and
+            not patternPerformsTest(pattern) and
             n2 = getFirstPatternChild(pattern)
           )
           or

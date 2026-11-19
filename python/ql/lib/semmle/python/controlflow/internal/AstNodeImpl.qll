@@ -1170,6 +1170,11 @@ module Ast implements AstSig<Py::Location> {
     override Callable getEnclosingCallable() { none() }
   }
 
+  /** An and-pattern handled by the shared CFG. */
+  class AndPattern extends EmptyPattern {
+    AndPattern() { none() }
+  }
+
   /** An or-pattern handled by the shared CFG. */
   class OrPattern extends EmptyPattern {
     OrPattern() { none() }

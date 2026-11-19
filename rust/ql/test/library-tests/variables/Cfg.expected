@@ -700,14 +700,12 @@ edges
 | main.rs:161:9:161:40 | ... => ... | main.rs:161:9:161:16 | Some(...) |  |
 | main.rs:161:9:161:40 | After ... => ... [match] | main.rs:161:21:161:39 | Before print_str(...) |  |
 | main.rs:161:9:161:40 | After ... => ... [no-match] | main.rs:162:9:166:9 | ... => ... |  |
-| main.rs:161:14:161:15 | 50 | main.rs:161:14:161:15 | 50 |  |
+| main.rs:161:14:161:15 | 50 | main.rs:161:14:161:15 | After 50 [match] | match |
 | main.rs:161:14:161:15 | 50 | main.rs:161:14:161:15 | After 50 [no-match] | no-match |
 | main.rs:161:14:161:15 | 50 | main.rs:161:14:161:15 | [OuterPatternMatch] 50 | match |
 | main.rs:161:14:161:15 | After 50 [match] | main.rs:161:9:161:16 | After Some(...) [match] | match |
-| main.rs:161:14:161:15 | After 50 [match] | main.rs:161:14:161:15 | After 50 [match] | match |
 | main.rs:161:14:161:15 | After 50 [no-match] | main.rs:161:9:161:16 | After Some(...) [no-match] | no-match |
-| main.rs:161:14:161:15 | After 50 [no-match] | main.rs:161:14:161:15 | After 50 [no-match] | no-match |
-| main.rs:161:14:161:15 | [OuterPatternMatch] 50 | main.rs:161:14:161:15 | After 50 [match] | match |
+| main.rs:161:14:161:15 | [OuterPatternMatch] 50 | main.rs:161:14:161:15 | 50 |  |
 | main.rs:161:21:161:29 | print_str | main.rs:161:31:161:38 | "Got 50" |  |
 | main.rs:161:21:161:39 | After print_str(...) | main.rs:160:5:168:5 | After match x6 { ... } |  |
 | main.rs:161:21:161:39 | Before print_str(...) | main.rs:161:21:161:29 | print_str |  |
@@ -902,25 +900,21 @@ edges
 | main.rs:224:17:224:35 | After id_variable @ ... [match] | main.rs:223:9:225:9 | After ...::Hello {...} [match] | match |
 | main.rs:224:17:224:35 | After id_variable @ ... [no-match] | main.rs:223:9:225:9 | After ...::Hello {...} [no-match] | no-match |
 | main.rs:224:17:224:35 | id_variable @ ... | main.rs:224:31:224:35 | RangePat |  |
-| main.rs:224:31:224:31 | 3 | main.rs:224:31:224:31 | 3 |  |
+| main.rs:224:31:224:31 | 3 | main.rs:224:31:224:31 | After 3 [match] | match |
 | main.rs:224:31:224:31 | 3 | main.rs:224:31:224:31 | After 3 [no-match] | no-match |
 | main.rs:224:31:224:31 | 3 | main.rs:224:31:224:31 | [OuterPatternMatch] 3 | match |
-| main.rs:224:31:224:31 | After 3 [match] | main.rs:224:31:224:31 | After 3 [match] | match |
 | main.rs:224:31:224:31 | After 3 [match] | main.rs:224:35:224:35 | 7 |  |
-| main.rs:224:31:224:31 | After 3 [no-match] | main.rs:224:31:224:31 | After 3 [no-match] | no-match |
 | main.rs:224:31:224:31 | After 3 [no-match] | main.rs:224:31:224:35 | After RangePat [no-match] | no-match |
-| main.rs:224:31:224:31 | [OuterPatternMatch] 3 | main.rs:224:31:224:31 | After 3 [match] | match |
+| main.rs:224:31:224:31 | [OuterPatternMatch] 3 | main.rs:224:31:224:31 | 3 |  |
 | main.rs:224:31:224:35 | After RangePat [match] | main.rs:224:17:224:27 | id_variable |  |
 | main.rs:224:31:224:35 | After RangePat [no-match] | main.rs:224:17:224:35 | After id_variable @ ... [no-match] | no-match |
 | main.rs:224:31:224:35 | RangePat | main.rs:224:31:224:31 | 3 |  |
-| main.rs:224:35:224:35 | 7 | main.rs:224:35:224:35 | 7 |  |
+| main.rs:224:35:224:35 | 7 | main.rs:224:35:224:35 | After 7 [match] | match |
 | main.rs:224:35:224:35 | 7 | main.rs:224:35:224:35 | After 7 [no-match] | no-match |
 | main.rs:224:35:224:35 | 7 | main.rs:224:35:224:35 | [OuterPatternMatch] 7 | match |
 | main.rs:224:35:224:35 | After 7 [match] | main.rs:224:31:224:35 | After RangePat [match] | match |
-| main.rs:224:35:224:35 | After 7 [match] | main.rs:224:35:224:35 | After 7 [match] | match |
 | main.rs:224:35:224:35 | After 7 [no-match] | main.rs:224:31:224:35 | After RangePat [no-match] | no-match |
-| main.rs:224:35:224:35 | After 7 [no-match] | main.rs:224:35:224:35 | After 7 [no-match] | no-match |
-| main.rs:224:35:224:35 | [OuterPatternMatch] 7 | main.rs:224:35:224:35 | After 7 [match] | match |
+| main.rs:224:35:224:35 | [OuterPatternMatch] 7 | main.rs:224:35:224:35 | 7 |  |
 | main.rs:225:14:225:22 | print_i64 | main.rs:225:24:225:34 | id_variable |  |
 | main.rs:225:14:225:35 | After print_i64(...) | main.rs:221:5:234:5 | After match msg { ... } |  |
 | main.rs:225:14:225:35 | Before print_i64(...) | main.rs:225:14:225:22 | print_i64 |  |
@@ -934,25 +928,21 @@ edges
 | main.rs:226:9:228:9 | ... => ... | main.rs:226:9:226:38 | ...::Hello {...} |  |
 | main.rs:226:9:228:9 | After ... => ... [match] | main.rs:226:43:228:9 | { ... } |  |
 | main.rs:226:9:228:9 | After ... => ... [no-match] | main.rs:229:9:233:9 | ... => ... |  |
-| main.rs:226:30:226:31 | 10 | main.rs:226:30:226:31 | 10 |  |
+| main.rs:226:30:226:31 | 10 | main.rs:226:30:226:31 | After 10 [match] | match |
 | main.rs:226:30:226:31 | 10 | main.rs:226:30:226:31 | After 10 [no-match] | no-match |
 | main.rs:226:30:226:31 | 10 | main.rs:226:30:226:31 | [OuterPatternMatch] 10 | match |
-| main.rs:226:30:226:31 | After 10 [match] | main.rs:226:30:226:31 | After 10 [match] | match |
 | main.rs:226:30:226:31 | After 10 [match] | main.rs:226:35:226:36 | 12 |  |
-| main.rs:226:30:226:31 | After 10 [no-match] | main.rs:226:30:226:31 | After 10 [no-match] | no-match |
 | main.rs:226:30:226:31 | After 10 [no-match] | main.rs:226:30:226:36 | After RangePat [no-match] | no-match |
-| main.rs:226:30:226:31 | [OuterPatternMatch] 10 | main.rs:226:30:226:31 | After 10 [match] | match |
+| main.rs:226:30:226:31 | [OuterPatternMatch] 10 | main.rs:226:30:226:31 | 10 |  |
 | main.rs:226:30:226:36 | After RangePat [match] | main.rs:226:9:226:38 | After ...::Hello {...} [match] | match |
 | main.rs:226:30:226:36 | After RangePat [no-match] | main.rs:226:9:226:38 | After ...::Hello {...} [no-match] | no-match |
 | main.rs:226:30:226:36 | RangePat | main.rs:226:30:226:31 | 10 |  |
-| main.rs:226:35:226:36 | 12 | main.rs:226:35:226:36 | 12 |  |
+| main.rs:226:35:226:36 | 12 | main.rs:226:35:226:36 | After 12 [match] | match |
 | main.rs:226:35:226:36 | 12 | main.rs:226:35:226:36 | After 12 [no-match] | no-match |
 | main.rs:226:35:226:36 | 12 | main.rs:226:35:226:36 | [OuterPatternMatch] 12 | match |
 | main.rs:226:35:226:36 | After 12 [match] | main.rs:226:30:226:36 | After RangePat [match] | match |
-| main.rs:226:35:226:36 | After 12 [match] | main.rs:226:35:226:36 | After 12 [match] | match |
 | main.rs:226:35:226:36 | After 12 [no-match] | main.rs:226:30:226:36 | After RangePat [no-match] | no-match |
-| main.rs:226:35:226:36 | After 12 [no-match] | main.rs:226:35:226:36 | After 12 [no-match] | no-match |
-| main.rs:226:35:226:36 | [OuterPatternMatch] 12 | main.rs:226:35:226:36 | After 12 [match] | match |
+| main.rs:226:35:226:36 | [OuterPatternMatch] 12 | main.rs:226:35:226:36 | 12 |  |
 | main.rs:226:43:228:9 | After { ... } | main.rs:221:5:234:5 | After match msg { ... } |  |
 | main.rs:226:43:228:9 | { ... } | main.rs:227:13:227:52 | Before MacroExpr |  |
 | main.rs:227:13:227:20 | ...::_print | main.rs:227:22:227:51 | Before MacroExpr |  |

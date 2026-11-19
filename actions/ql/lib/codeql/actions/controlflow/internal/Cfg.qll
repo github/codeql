@@ -344,6 +344,10 @@ module CfgImpl {
       Pattern() { none() }
     }
 
+    class AndPattern extends Pattern {
+      AndPattern() { none() }
+    }
+
     class OrPattern extends Pattern {
       OrPattern() { none() }
     }

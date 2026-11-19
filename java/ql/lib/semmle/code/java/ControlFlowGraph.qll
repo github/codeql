@@ -245,6 +245,10 @@ private module Ast implements AstSig<Location> {
     Pattern() { none() }
   }
 
+  class AndPattern extends Pattern {
+    AndPattern() { none() }
+  }
+
   class OrPattern extends Pattern {
     OrPattern() { none() }
   }

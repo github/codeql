@@ -462,14 +462,10 @@ private module Ast implements AstSig<Location> {
     }
   }
 
-  final class Pattern = PatternImpl;
+  class Pattern extends AstNode instanceof Rust::Pat { }
 
-  abstract private class PatternImpl extends AstNode { }
-
-  private class PatPattern extends PatternImpl instanceof Rust::Pat { }
-
-  private class ExprPattern extends Expr, PatternImpl {
-    ExprPattern() { this = any(Rust::LiteralPat lp).getLiteral() }
+  class AndPattern extends Pattern {
+    AndPattern() { none() } // does not exist in Rust
   }
 
   class OrPattern extends Pattern instanceof Rust::OrPat { }
@@ -481,31 +477,6 @@ private module Ast implements AstSig<Location> {
 
     AstNode getPattern() { none() }
   }
-}
-
-/**
- * Holds if `pat` cannot itself cause a match failure.
- */
-private predicate cannotCauseMatchFailure(Rust::Pat pat) {
-  pat instanceof Rust::RangePat
-  or
-  pat =
-    any(Rust::IdentPat p |
-      p.hasPat() or
-      VariableImpl::variableDecl(_, p.getName(), _)
-    )
-  or
-  pat instanceof Rust::WildcardPat
-  or
-  pat instanceof Rust::RestPat
-  or
-  pat instanceof Rust::RefPat
-  or
-  pat instanceof Rust::TuplePat
-  or
-  pat instanceof Rust::MacroPat
-  or
-  pat instanceof Rust::LiteralPat
 }
 
 private module Input implements InputSig1, InputSig2 {
@@ -527,7 +498,30 @@ private module Input implements InputSig1, InputSig2 {
 
   predicate isExhaustive(Ast::Switch switch) { any() }
 
-  predicate patternIsTest(Ast::Pattern pattern) { not cannotCauseMatchFailure(pattern) }
+  /**
+   * Holds if `pat` cannot itself cause a match failure.
+   */
+  private predicate cannotCauseMatchFailure(Rust::Pat pat) {
+    pat instanceof Rust::RangePat
+    or
+    pat =
+      any(Rust::IdentPat p |
+        p.hasPat() or
+        VariableImpl::variableDecl(_, p.getName(), _)
+      )
+    or
+    pat instanceof Rust::WildcardPat
+    or
+    pat instanceof Rust::RestPat
+    or
+    pat instanceof Rust::RefPat
+    or
+    pat instanceof Rust::TuplePat
+    or
+    pat instanceof Rust::MacroPat
+  }
+
+  predicate patternPerformsTest(Ast::Pattern pattern) { not cannotCauseMatchFailure(pattern) }
 
   predicate patternIsExhaustive(Ast::Pattern pattern) {
     pattern = any(Rust::LetStmt let | not let.hasLetElse()).getPat()
