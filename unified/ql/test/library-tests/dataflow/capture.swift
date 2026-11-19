@@ -149,6 +149,36 @@ func t13() {
     closure2()
 }
 
+func t14() {
+    let closure = {
+        sink($0)  // $ MISSING: hasValueFlow=t14.1
+        sink($1)  // $ MISSING: hasValueFlow=t14.2
+        sink($2)  // no flow
+    }
+    closure(source("t14.1"), source("t14.2"), "safe")
+}
+
+func t15() {
+    let outer: (String) -> Void = {
+        let value = $0
+        let inner: (String, String) -> Void = {
+            sink($0)  // $ MISSING: hasValueFlow=t15.2
+            sink($1)  // $ MISSING: hasValueFlow=t15.3
+            sink(value)  // $ MISSING: hasValueFlow=t15.1
+        }
+        inner(source("t15.2"), source("t15.3"))
+        sink($0)  // $ MISSING: hasValueFlow=t15.1
+    }
+    outer(source("t15.1"))
+}
+
+func t16() {
+    let second: (String, String) -> String = {
+        sink($1)  // $ MISSING: hasValueFlow=t16.2
+    }
+    second(source("t16.1"), source("t16.2"))
+}
+
 class C {
     var x: String
 
