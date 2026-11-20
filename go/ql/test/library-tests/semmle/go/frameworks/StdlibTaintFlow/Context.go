@@ -26,6 +26,35 @@ func TaintStepTest_ContextWithTimeout_B0I0O0(sourceCQL interface{}) interface{} 
 	return intoContext957
 }
 
+func TaintStepTest_ContextWithDeadlineCauseContext(sourceCQL interface{}) interface{} {
+	fromContext := sourceCQL.(context.Context)
+	intoContext, _ := context.WithDeadlineCause(fromContext, time.Time{}, nil)
+	return intoContext
+}
+
+func TaintStepTest_ContextWithDeadlineCauseError(sourceCQL interface{}) interface{} {
+	fromError := sourceCQL.(error)
+	intoContext, _ := context.WithDeadlineCause(nil, time.Time{}, fromError)
+	return intoContext
+}
+
+func TaintStepTest_ContextWithTimeoutCauseContext(sourceCQL interface{}) interface{} {
+	fromContext := sourceCQL.(context.Context)
+	intoContext, _ := context.WithTimeoutCause(fromContext, 0, nil)
+	return intoContext
+}
+
+func TaintStepTest_ContextWithTimeoutCauseError(sourceCQL interface{}) interface{} {
+	fromError := sourceCQL.(error)
+	intoContext, _ := context.WithTimeoutCause(nil, 0, fromError)
+	return intoContext
+}
+
+func TaintStepTest_ContextWithoutCancel(sourceCQL interface{}) interface{} {
+	fromContext := sourceCQL.(context.Context)
+	return context.WithoutCancel(fromContext)
+}
+
 func TaintStepTest_ContextWithValue_B0I0O0(sourceCQL interface{}) interface{} {
 	fromContext520 := sourceCQL.(context.Context)
 	intoContext443 := context.WithValue(fromContext520, nil, nil)
@@ -162,5 +191,30 @@ func RunAllTaints_Context() {
 		source := newSource(13)
 		out := TaintStepTest_OldContextContextValue_B0I0O0(source)
 		sink(13, out)
+	}
+	{
+		source := newSource(14)
+		out := TaintStepTest_ContextWithDeadlineCauseContext(source)
+		sink(14, out)
+	}
+	{
+		source := newSource(15)
+		out := TaintStepTest_ContextWithDeadlineCauseError(source)
+		sink(15, out)
+	}
+	{
+		source := newSource(16)
+		out := TaintStepTest_ContextWithTimeoutCauseContext(source)
+		sink(16, out)
+	}
+	{
+		source := newSource(17)
+		out := TaintStepTest_ContextWithTimeoutCauseError(source)
+		sink(17, out)
+	}
+	{
+		source := newSource(18)
+		out := TaintStepTest_ContextWithoutCancel(source)
+		sink(18, out)
 	}
 }

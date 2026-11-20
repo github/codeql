@@ -6,10 +6,16 @@
         "extensible": "summaryModel"
       },
       "data": [
+        // AfterFunc should be modeled when callback-based library models are supported.
         ["context", "", false, "WithCancel", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
         ["context", "", false, "WithDeadline", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["context", "", false, "WithDeadlineCause", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["context", "", false, "WithDeadlineCause", "", "", "Argument[2]", "ReturnValue[0]", "taint", "manual"],
         ["context", "", false, "WithTimeout", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["context", "", false, "WithTimeoutCause", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["context", "", false, "WithTimeoutCause", "", "", "Argument[2]", "ReturnValue[0]", "taint", "manual"],
         ["context", "", false, "WithValue", "", "", "Argument[0..2]", "ReturnValue", "taint", "manual"],
+        ["context", "", false, "WithoutCancel", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
         ["context", "Context", true, "Value", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       ]
     }
