@@ -127,7 +127,6 @@
 | normalizedPaths.js:194:21:194:24 | path | normalizedPaths.js:174:14:174:27 | req.query.path | normalizedPaths.js:194:21:194:24 | path | This path depends on a $@. | normalizedPaths.js:174:14:174:27 | req.query.path | user-provided value |
 | normalizedPaths.js:199:21:199:24 | path | normalizedPaths.js:174:14:174:27 | req.query.path | normalizedPaths.js:199:21:199:24 | path | This path depends on a $@. | normalizedPaths.js:174:14:174:27 | req.query.path | user-provided value |
 | normalizedPaths.js:205:21:205:34 | normalizedPath | normalizedPaths.js:174:14:174:27 | req.query.path | normalizedPaths.js:205:21:205:34 | normalizedPath | This path depends on a $@. | normalizedPaths.js:174:14:174:27 | req.query.path | user-provided value |
-| normalizedPaths.js:208:21:208:34 | normalizedPath | normalizedPaths.js:174:14:174:27 | req.query.path | normalizedPaths.js:208:21:208:34 | normalizedPath | This path depends on a $@. | normalizedPaths.js:174:14:174:27 | req.query.path | user-provided value |
 | normalizedPaths.js:210:21:210:34 | normalizedPath | normalizedPaths.js:174:14:174:27 | req.query.path | normalizedPaths.js:210:21:210:34 | normalizedPath | This path depends on a $@. | normalizedPaths.js:174:14:174:27 | req.query.path | user-provided value |
 | normalizedPaths.js:222:21:222:24 | path | normalizedPaths.js:214:35:214:48 | req.query.path | normalizedPaths.js:222:21:222:24 | path | This path depends on a $@. | normalizedPaths.js:214:35:214:48 | req.query.path | user-provided value |
 | normalizedPaths.js:228:21:228:24 | path | normalizedPaths.js:226:35:226:48 | req.query.path | normalizedPaths.js:228:21:228:24 | path | This path depends on a $@. | normalizedPaths.js:226:35:226:48 | req.query.path | user-provided value |
@@ -535,7 +534,6 @@ edges
 | normalizedPaths.js:174:7:174:10 | path | normalizedPaths.js:201:45:201:48 | path | provenance |  |
 | normalizedPaths.js:174:14:174:27 | req.query.path | normalizedPaths.js:174:7:174:10 | path | provenance |  |
 | normalizedPaths.js:201:7:201:20 | normalizedPath | normalizedPaths.js:205:21:205:34 | normalizedPath | provenance |  |
-| normalizedPaths.js:201:7:201:20 | normalizedPath | normalizedPaths.js:208:21:208:34 | normalizedPath | provenance |  |
 | normalizedPaths.js:201:7:201:20 | normalizedPath | normalizedPaths.js:210:21:210:34 | normalizedPath | provenance |  |
 | normalizedPaths.js:201:24:201:49 | pathMod ... e(path) | normalizedPaths.js:201:7:201:20 | normalizedPath | provenance |  |
 | normalizedPaths.js:201:45:201:48 | path | normalizedPaths.js:201:24:201:49 | pathMod ... e(path) | provenance | Config |
@@ -1116,7 +1114,6 @@ nodes
 | normalizedPaths.js:201:24:201:49 | pathMod ... e(path) | semmle.label | pathMod ... e(path) |
 | normalizedPaths.js:201:45:201:48 | path | semmle.label | path |
 | normalizedPaths.js:205:21:205:34 | normalizedPath | semmle.label | normalizedPath |
-| normalizedPaths.js:208:21:208:34 | normalizedPath | semmle.label | normalizedPath |
 | normalizedPaths.js:210:21:210:34 | normalizedPath | semmle.label | normalizedPath |
 | normalizedPaths.js:214:7:214:10 | path | semmle.label | path |
 | normalizedPaths.js:214:14:214:49 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |

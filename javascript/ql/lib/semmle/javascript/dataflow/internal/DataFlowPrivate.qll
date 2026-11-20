@@ -23,21 +23,6 @@ private class Node = DataFlow::Node;
 
 class PostUpdateNode = DataFlow::PostUpdateNode;
 
-class SsaUseNode extends DataFlow::Node, TSsaUseNode {
-  private ControlFlowNode expr;
-
-  SsaUseNode() { this = TSsaUseNode(expr) }
-
-  cached
-  override string toString() { result = "[ssa-use] " + expr.toString() }
-
-  cached
-  override StmtContainer getContainer() { result = expr.getContainer() }
-
-  cached
-  override Location getLocation() { result = expr.getLocation() }
-}
-
 class SsaSynthReadNode extends DataFlow::Node, TSsaSynthReadNode {
   private Ssa2::SsaSynthReadNode read;
 
@@ -47,12 +32,42 @@ class SsaSynthReadNode extends DataFlow::Node, TSsaSynthReadNode {
   override string toString() { result = "[ssa-synth-read] " + read.getSourceVariable().getName() }
 
   cached
+  override BasicBlock getBasicBlock() { result = read.getBasicBlock() }
+
+  cached
+  override Location getLocation() { result = read.getLocation() }
+
+  cached
+  override File getFile() { result = this.getBasicBlock().getFile() }
+}
+
+/** A variable or 'this' value at a read that can flow past a barrier on just one expression occurrence. */
+class SharedSsaReadNode extends DataFlow::Node, TSharedSsaReadNode {
+  private ControlFlowNode read;
+
+  SharedSsaReadNode() {
+    this = TSharedSsaReadNode(any(Ssa2::ReadNode node | node.getControlFlowNode() = read))
+  }
+
+  cached
+  override string toString() { result = "[ssa-read] " + read.toString() }
+
+  cached
+  override BasicBlock getBasicBlock() { result = read.getBasicBlock() }
+
+  cached
   override StmtContainer getContainer() {
-    result = read.getSourceVariable().getDeclaringContainer()
+    result = read.(ImplicitThisUse).getUseContainer()
+    or
+    not read instanceof ImplicitThisUse and
+    result = read.getBasicBlock().getContainer()
   }
 
   cached
   override Location getLocation() { result = read.getLocation() }
+
+  cached
+  override File getFile() { result = read.getFile() }
 }
 
 class FlowSummaryNode extends DataFlow::Node, TFlowSummaryNode {
@@ -680,9 +695,9 @@ predicate nodeIsHidden(Node node) {
   or
   node instanceof RestParameterStoreNode
   or
-  node instanceof SsaUseNode
-  or
   node instanceof SsaSynthReadNode
+  or
+  node instanceof TSharedSsaReadNode
 }
 
 predicate neverSkipInPathGraph(Node node) {
@@ -1140,9 +1155,6 @@ private predicate legacyBarrier(DataFlow::Node node) {
   node = MakeBarrierGuard<BarrierGuardAdapter>::getABarrierNode()
 }
 
-/**
- * Holds if `node` should be removed from the local data flow graph, for compatibility with legacy code.
- */
 overlay[global]
 pragma[nomagic]
 private predicate isBlockedLegacyNode(Node node) {
@@ -1201,7 +1213,10 @@ private predicate imprecisePostUpdateStep(DataFlow::PostUpdateNode postUpdate, D
  */
 overlay[global]
 private predicate valuePreservingStep(Node node1, Node node2) {
-  node1.getASuccessor() = node2 and
+  (
+    DataFlow::localFlowStepForGlobal(node1, node2) or
+    sharedSsaFlow(node1, node2)
+  ) and
   not isBlockedLegacyNode(node1) and
   not isBlockedLegacyNode(node2) and
   not isThisNodeTrackedByVariableCapture(node1)
@@ -1221,50 +1236,82 @@ predicate knownSourceModel(Node sink, string model) { none() }
 
 predicate knownSinkModel(Node sink, string model) { none() }
 
-private predicate samePhi(SsaPhiNode legacyPhi, Ssa2::PhiNode newPhi) {
-  exists(BasicBlock bb, LocalVariableOrThis v |
-    newPhi.definesAt(v, bb, _) and
-    legacyPhi.definesAt(bb, _, v.asLocalVariable())
-  )
-}
-
 cached
 Node getNodeFromSsa2(Ssa2::Node node) {
-  result = TSsaUseNode(node.(Ssa2::ReadNode).getControlFlowNode())
+  result = DataFlow::getNodeFromSharedSsa(node)
   or
-  result = TExprPostUpdateNode(node.(Ssa2::PostUpdateReadNode).getControlFlowNode())
+  // Guard barriers validate both an occurrence and the variable's continuing value.
+  result = TSharedSsaReadNode(node)
+}
+
+private Node getSharedSsaFlowSucc(Ssa2::Node node) {
+  result = TSharedSsaReadNode(node)
   or
-  exists(ImplicitThisUse use |
-    node.(Ssa2::PostUpdateReadNode).getControlFlowNode() = use and
-    result = TImplicitThisUse(use, true)
+  not node instanceof Ssa2::ReadNode and
+  result = DataFlow::getNodeFromSharedSsa(node)
+}
+
+pragma[inline]
+private Node getSharedSsaFlowPred(Ssa2::Node node) {
+  result = getSharedSsaFlowSucc(node)
+  or
+  result = DataFlow::getPostUpdateNodeFromSharedSsa(node)
+}
+
+/**
+ * Gets a source that may carry `origin`'s modeled value through call and heap
+ * steps. These include copying and cloning models, not just object aliases.
+ */
+private DataFlow::SourceNode modeledPostUpdateValue(
+  DataFlow::SourceNode origin, DataFlow::TypeTracker tracker
+) {
+  tracker.start() and
+  result = origin and
+  exists(Ssa2::ReadNode read |
+    Ssa2::additionalPostUpdate(read, _, _) and
+    origin = DataFlow::getNodeFromSharedSsa(read).(Node).getALocalSource()
   )
   or
-  result = TSsaSynthReadNode(node)
-  or
-  exists(SsaPhiNode legacyPhi, Ssa2::PhiNode ssaPhi |
-    node.(Ssa2::SsaDefinitionNode).getDefinition() = ssaPhi and
-    samePhi(legacyPhi, ssaPhi) and
-    result = TSsaDefNode(legacyPhi)
+  exists(DataFlow::TypeTracker previous |
+    tracker = previous.step(modeledPostUpdateValue(origin, previous), result)
   )
 }
 
-private predicate useUseFlow(Node node1, Node node2) {
-  exists(Ssa2::Node ssa1, Ssa2::Node ssa2 |
-    Ssa2::localFlowStep(_, ssa1, ssa2, _) and
-    node1 = getNodeFromSsa2(ssa1) and
-    node2 = getNodeFromSsa2(ssa2) and
+private predicate modeledPostUpdateFlow(Node node1, Node node2) {
+  exists(
+    Ssa2::ReadNode read, Ssa2::PostUpdateReadNode post, Ssa2::Definition after,
+    Ssa2::Node successor, DataFlow::SourceNode origin
+  |
+    Ssa2::additionalPostUpdate(read, post, after) and
+    node1 = DataFlow::getPostUpdateNodeForSharedSsaRead(read.getControlFlowNode()) and
+    DataFlow::hasLocalSource(DataFlow::getNodeFromSharedSsa(read), origin) and
+    DataFlow::hasLocalSource(DataFlow::ssaDefinitionNode(after),
+      modeledPostUpdateValue(origin, DataFlow::TypeTracker::end())) and
+    // Resume after the operation without revisiting its argument or RHS reads.
+    Ssa2::localFlowStep(post.getSourceVariable(), post, successor, true) and
+    node2 = getSharedSsaFlowSucc(successor) and
+    not node1.getTopLevel().isExterns()
+  )
+}
+
+private predicate sharedSsaFlow(Node node1, Node node2) {
+  exists(Ssa2::Node ssaPred, Ssa2::Node ssaSucc, Ssa2::SsaConfig::SourceVariable variable |
+    Ssa2::localFlowStep(variable, ssaPred, ssaSucc, _) and
+    not variable.isCaptured() and
+    node1 = getSharedSsaFlowPred(ssaPred) and
+    node2 = getSharedSsaFlowSucc(ssaSucc) and
+    node1 != node2 and
     not node1.getTopLevel().isExterns()
   )
   or
-  exists(Expr use |
-    node1 = TSsaUseNode(use) and
-    node2 = TValueNode(use)
+  // A barrier on one use must not sanitize the variable at subsequent uses.
+  exists(Ssa2::ReadNode read |
+    node1 = TSharedSsaReadNode(read) and
+    node2 = DataFlow::getNodeFromSharedSsa(read) and
+    not node1.getTopLevel().isExterns()
   )
   or
-  exists(ImplicitThisUse use |
-    node1 = TSsaUseNode(use) and
-    node2 = TImplicitThisUse(use, false)
-  )
+  modeledPostUpdateFlow(node1, node2)
 }
 
 overlay[global]
@@ -1277,8 +1324,6 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   valuePreservingStep(node1, node2) and
   nodeGetEnclosingCallable(pragma[only_bind_out](node1)) =
     nodeGetEnclosingCallable(pragma[only_bind_out](node2))
-  or
-  useUseFlow(node1, node2)
   or
   exists(FlowSummaryImpl::Private::SummaryNode input, FlowSummaryImpl::Private::SummaryNode output |
     FlowSummaryPrivate::Steps::summaryStoreStep(input, MkAwaited(), output) and

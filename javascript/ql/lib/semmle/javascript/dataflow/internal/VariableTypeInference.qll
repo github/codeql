@@ -210,6 +210,12 @@ private class AnalyzedImplicitInit extends AnalyzedSsaDefinition, SsaImplicitIni
   override AbstractValue getAnRhsValue() { result = getImplicitInitValue(this.getSourceVariable()) }
 }
 
+// Summarize assignment values before joining them to every recapture.
+pragma[noinline]
+private AbstractValue getAnExplicitDefinitionValue(SsaSourceVariable variable) {
+  result = any(AnalyzedExplicitDefinition def | def.getSourceVariable() = variable).getAnRhsValue()
+}
+
 /**
  * Flow analysis for SSA definitions corresponding to implicit variable capture.
  */
@@ -218,7 +224,7 @@ private class AnalyzedVariableCapture extends AnalyzedSsaDefinition, SsaVariable
     exists(LocalVariable v | v = this.getSourceVariable() |
       result = v.(AnalyzedCapturedVariable).getALocalValue()
       or
-      result = any(AnalyzedExplicitDefinition def | def.getSourceVariable() = v).getAnRhsValue()
+      result = getAnExplicitDefinitionValue(v)
       or
       not guaranteedToBeInitialized(v) and result = getImplicitInitValue(v)
     )

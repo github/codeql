@@ -302,6 +302,8 @@ class RefinementContext extends TRefinementContext {
  */
 overlay[global]
 class VarRefinementContext extends RefinementContext, TVarRefinementContext {
+  // Keep the AST traversal rooted at the refinement, not at its candidate expressions.
+  pragma[nomagic]
   override predicate appliesTo(RefinementCandidate cand) {
     exists(AnalyzedRefinement ref, SsaSourceVariable var |
       this = TVarRefinementContext(ref, var, _)

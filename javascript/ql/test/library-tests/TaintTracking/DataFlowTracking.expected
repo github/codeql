@@ -1,5 +1,6 @@
 legacyDataFlowDifference
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:38:8:38:13 | arr[5] | only flow with NEW data flow library |
+| booleanOps.js:2:11:2:18 | source() | booleanOps.js:19:10:19:10 | x | only flow with OLD data flow library |
 | bound-function.js:27:8:27:15 | source() | bound-function.js:30:10:30:10 | y | only flow with OLD data flow library |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:24:8:24:11 | arg1 | only flow with NEW data flow library |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:32:6:32:35 | foo1.ap ... e, ""]) | only flow with NEW data flow library |
@@ -22,7 +23,6 @@ legacyDataFlowDifference
 | nested-props.js:14:15:14:22 | source() | nested-props.js:15:10:15:16 | obj.x.y | only flow with NEW data flow library |
 | nested-props.js:27:18:27:25 | source() | nested-props.js:28:10:28:14 | obj.x | only flow with NEW data flow library |
 | nested-props.js:51:22:51:29 | source() | nested-props.js:52:10:52:16 | obj.x.y | only flow with NEW data flow library |
-| sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x | only flow with NEW data flow library |
 | spread.js:4:15:4:22 | source() | spread.js:18:8:18:8 | y | only flow with NEW data flow library |
 | spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y | only flow with NEW data flow library |
 | tst.js:2:13:2:20 | source() | tst.js:35:14:35:16 | ary | only flow with NEW data flow library |
@@ -44,7 +44,6 @@ flow
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:7:10:7:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:10:10:10:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:13:10:13:10 | x |
-| booleanOps.js:2:11:2:18 | source() | booleanOps.js:19:10:19:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:22:10:22:10 | x |
 | bound-function.js:17:21:17:28 | source() | bound-function.js:5:10:5:16 | y.test2 |
 | bound-function.js:19:15:19:22 | source() | bound-function.js:6:10:6:16 | y.test3 |
@@ -174,7 +173,6 @@ flow
 | sanitizer-guards.js:43:11:43:18 | source() | sanitizer-guards.js:45:8:45:8 | x |
 | sanitizer-guards.js:43:11:43:18 | source() | sanitizer-guards.js:48:10:48:10 | x |
 | sanitizer-guards.js:43:11:43:18 | source() | sanitizer-guards.js:52:10:52:10 | x |
-| sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x |
 | sanitizer-guards.js:68:11:68:18 | source() | sanitizer-guards.js:75:8:75:8 | x |
 | sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:81:8:81:8 | x |
 | sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:84:10:84:10 | x |

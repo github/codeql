@@ -3,7 +3,7 @@ function overwriteOnFailure() {
   if (!BARRIER(x)) {
     x = "safe";
   }
-  SINK(x); // $ SPURIOUS: flow=overwrite
+  SINK(x);
 }
 
 function explicitElse() {
@@ -13,7 +13,7 @@ function explicitElse() {
   } else {
     x = "safe";
   }
-  SINK(x); // $ SPURIOUS: flow=else
+  SINK(x);
 }
 
 function preserveUnguardedInput() {
@@ -21,7 +21,7 @@ function preserveUnguardedInput() {
   if (!BARRIER(x)) {
     x = SOURCE("fallback");
   }
-  SINK(x); // $ flow=fallback SPURIOUS: flow=guarded
+  SINK(x); // $ flow=fallback
 }
 
 function returnOnFailure() {
