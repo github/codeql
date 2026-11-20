@@ -408,6 +408,27 @@ signature module AstSig<LocationSig Location> {
   }
 
   /**
+   * A pattern that can match or fail to match a value.
+   *
+   * Sub patterns, if any, are treated conjunctively, which means they all must
+   * match in order for the whole pattern to match (unless this pattern is an
+   * `OrPattern`).
+   */
+  class Pattern extends AstNode;
+
+  /**
+   * A pattern that matches when all of its nested patterns match, but does not
+   * by itself perform any test.
+   */
+  class AndPattern extends Pattern;
+
+  /**
+   * A pattern that matches when any of its nested patterns match, but does not
+   * by itself perform any test.
+   */
+  class OrPattern extends Pattern;
+
+  /**
    * A pattern matching expression.
    *
    * In Java this is `x instanceof Pattern`, and in C# this is `x is Pattern`.
@@ -561,6 +582,23 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      * switch should not be handled here but through `isExhaustive`.
      */
     default predicate matchAll(Case c) { none() }
+
+    /**
+     * Holds if `pattern` performs a test that may fail. For example, in Rust
+     * the pattern `Some(x)` may fail while a tuple pattern cannot by itself
+     * fail (but its subpatterns may).
+     *
+     * `AndPattern`s and `OrPattern`s never perform a test by themselves.
+     */
+    default predicate patternPerformsTest(Pattern pattern) { any() }
+
+    /**
+     * Holds if `pattern` is exhaustive, meaning it is guaranteed to match.
+     *
+     * For example, in Rust patterns inside parameters and `for` loops must be
+     * exhaustive.
+     */
+    default predicate patternIsExhaustive(Pattern pattern) { none() }
   }
 
   /**
@@ -596,6 +634,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       n instanceof Expr and
       exists(getChild(n, _)) and
       not Input1::preOrderExpr(n) and
+      not n instanceof Pattern and
       not n instanceof LogicalAndExpr and
       not n instanceof LogicalOrExpr and
       not n instanceof NullCoalescingExpr and
@@ -770,6 +809,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       kind.isMatching() and
       (
+        n instanceof Pattern
+        or
         n instanceof CatchClause
         or
         n = any(CatchClause catch).getPattern()
@@ -802,6 +843,14 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
     private string patternMatchTrueTag() { result = "[MatchTrue]" }
 
+    private string outerPatternMatchTag() { result = "[OuterPatternMatch]" }
+
+    private predicate patternPerformsTest(Pattern pattern) {
+      Input1::patternPerformsTest(pattern) and
+      not pattern instanceof AndPattern and
+      not pattern instanceof OrPattern
+    }
+
     /**
      * Holds if an additional node tagged with `tag` should be created for
      * `n`. Edges targeting such nodes are labeled with `t` and therefore `t`
@@ -824,6 +873,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       n instanceof PatternMatchExpr and
       tag = patternMatchTrueTag() and
       t.(BooleanSuccessor).getValue() = true
+      or
+      patternPerformsTest(n) and
+      tag = outerPatternMatchTag() and
+      t.(MatchingSuccessor).getValue() = true
     }
 
     /**
@@ -966,21 +1019,34 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       )
     }
 
-    private predicate constantCondition(AstNode n, ConditionalSuccessor t) {
-      n.(BooleanLiteral).getValue() = t.(BooleanSuccessor).getValue()
+    private predicate patternAlwaysMatches(AstNode pattern) {
+      Input1::patternIsExhaustive(pattern)
+      or
+      exists(Pattern parent, int i |
+        pattern = getChild(parent, i) and
+        patternAlwaysMatches(parent) and
+        if parent instanceof OrPattern
+        then not getChild(parent, any(int j | j > i)) instanceof Pattern
+        else any()
+      )
       or
       exists(Case c, int i |
         matchAll(c) and
-        c.getPattern(i) = n and
-        not exists(c.getPattern(i + 1)) and
-        t.(MatchingSuccessor).getValue() = true
+        c.getPattern(i) = pattern and
+        not exists(c.getPattern(i + 1))
       )
       or
       exists(CatchClause catch |
         Input1::catchAll(catch) and
-        catch.getPattern() = n and
-        t.(MatchingSuccessor).getValue() = true
+        catch.getPattern() = pattern
       )
+    }
+
+    private predicate constantCondition(AstNode n, ConditionalSuccessor t) {
+      patternAlwaysMatches(n) and
+      t.(MatchingSuccessor).getValue() = true
+      or
+      n.(BooleanLiteral).getValue() = t.(BooleanSuccessor).getValue()
     }
 
     private predicate hasCfg(AstNode n) {
@@ -1071,7 +1137,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
        * value `true`.
        *
        * Note that if this predicate is used to identify the starting point of
-       * a step, then `inConditionalContext(n, BooleanCondition())` must hold.
+       * a step, then `inConditionalContext(n, any(ConditionKind k | k.isBoolean()))`
+       * must hold.
        * On the other hand, if this is used to identify the end point of a
        * step, then there is no such requirement.
        */
@@ -1084,12 +1151,41 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
        * value `false`.
        *
        * Note that if this predicate is used to identify the starting point of
-       * a step, then `inConditionalContext(n, BooleanCondition())` must hold.
+       * a step, then `inConditionalContext(n, any(ConditionKind k | k.isBoolean()))`
+       * must hold.
        * On the other hand, if this is used to identify the end point of a
        * step, then there is no such requirement.
        */
       predicate isAfterFalse(AstNode n) {
         this.isAfterValue(n, any(BooleanSuccessor b | b.getValue() = false))
+      }
+
+      /**
+       * Holds if this is the node representing the matching of the pattern
+       * `n`.
+       *
+       * Note that if this predicate is used to identify the starting point of
+       * a step, then `inConditionalContext(n, any(ConditionKind k | k.isMatching()))`
+       * must hold.
+       * On the other hand, if this is used to identify the end point of a
+       * step, then there is no such requirement.
+       */
+      predicate isAfterMatch(AstNode n) {
+        this.isAfterValue(n, any(MatchingSuccessor m | m.getValue() = true))
+      }
+
+      /**
+       * Holds if this is the node representing the non-matching of the pattern
+       * `n`.
+       *
+       * Note that if this predicate is used to identify the starting point of
+       * a step, then `inConditionalContext(n, any(ConditionKind k | k.isMatching()))`
+       * must hold.
+       * On the other hand, if this is used to identify the end point of a
+       * step, then there is no such requirement.
+       */
+      predicate isAfterNonMatch(AstNode n) {
+        this.isAfterValue(n, any(MatchingSuccessor m | m.getValue() = false))
       }
 
       /**
@@ -2032,13 +2128,82 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       private predicate getRankedChild = DenseRank1<ChildDenseRankInput>::denseRank/2;
 
+      private PreControlFlowNode getFirstPatternChild(Pattern pattern) {
+        result.isBefore(getRankedChild(pattern, 1))
+        or
+        not exists(getRankedChild(pattern, _)) and
+        result.isAfterMatch(pattern)
+      }
+
+      private predicate conjunctivePatternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+        exists(Pattern pattern |
+          defaultCfg(pattern) and
+          not pattern instanceof OrPattern
+        |
+          n1.isBefore(pattern) and
+          (
+            // outer pattern matches
+            n2.isAdditional(pattern, outerPatternMatchTag())
+            or
+            // outer pattern fails
+            patternPerformsTest(pattern) and
+            n2.isAfterNonMatch(pattern)
+            or
+            // outer pattern does not perform a test, proceed directly to first child
+            not patternPerformsTest(pattern) and
+            n2 = getFirstPatternChild(pattern)
+          )
+          or
+          // outer pattern matched, proceed to first child
+          n1.isAdditional(pattern, outerPatternMatchTag()) and
+          n2 = getFirstPatternChild(pattern)
+          or
+          exists(int i, AstNode child | child = getRankedChild(pattern, i) |
+            n1.isAfterMatch(child) and
+            (
+              n2.isBefore(getRankedChild(pattern, i + 1))
+              or
+              not exists(getRankedChild(pattern, i + 1)) and
+              n2.isAfterMatch(pattern)
+            )
+            or
+            // child pattern fails, which means whole pattern fails
+            inConditionalContext(child, any(ConditionKind k | k.isMatching())) and
+            n1.isAfterNonMatch(child) and
+            n2.isAfterNonMatch(pattern)
+          )
+        )
+      }
+
+      private predicate disjunctivePatternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+        exists(OrPattern pattern | defaultCfg(pattern) |
+          n1.isBefore(pattern) and
+          n2.isBefore(getRankedChild(pattern, 1))
+          or
+          exists(int i, AstNode child | child = getRankedChild(pattern, i) |
+            // child pattern succeeds, which means whole pattern succeeds
+            inConditionalContext(child, any(ConditionKind k | k.isMatching())) and
+            n1.isAfterMatch(child) and
+            n2.isAfterMatch(pattern)
+            or
+            n1.isAfterNonMatch(child) and
+            (
+              n2.isBefore(getRankedChild(pattern, i + 1))
+              or
+              not exists(getRankedChild(pattern, i + 1)) and
+              n2.isAfterNonMatch(pattern)
+            )
+          )
+        )
+      }
+
       /**
        * Holds if `n1` to `n2` is a default left-to-right evaluation step for
        * an `AstNode` that does not otherwise have explicitly defined control
        * flow.
        */
       private predicate defaultStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-        exists(AstNode ast | defaultCfg(ast) |
+        exists(AstNode ast | defaultCfg(ast) and not ast instanceof Pattern |
           n1.isBefore(ast) and
           n2.isBefore(getRankedChild(ast, 1))
           or
@@ -2063,6 +2228,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAfter(ast) and
           not beginAbruptCompletion(ast, n1, _, true)
         )
+        or
+        conjunctivePatternStep(n1, n2)
+        or
+        disjunctivePatternStep(n1, n2)
       }
 
       /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
@@ -2572,6 +2741,22 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             not exists(Callable c |
               successor.getAstNode() = getBodyEntry(c, _) and
               strictcount(getBodyEntry(c, _)) > 1
+            ) and
+            // allow for abrupt successors that reach a conditional context. Example:
+            //
+            // ```
+            // if (loop {
+            //     break a > 10; // reaches both `After loop [false]` and `After loop [true]`
+            // })
+            // ```
+            not forall(ControlFlowNode successor0, SuccessorType t0 |
+              successor0 = node.getASuccessor(t0)
+            |
+              t0 instanceof AbruptSuccessor and
+              exists(AstNode n |
+                successor0.isAfterValue(n, _) and
+                successor.isAfterValue(n, _)
+              )
             )
           }
 

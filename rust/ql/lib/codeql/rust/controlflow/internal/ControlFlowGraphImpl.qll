@@ -1,681 +1,650 @@
-private import rust
-import codeql.controlflow.Cfg
-import Completion
-private import Scope as Scope
-private import codeql.rust.controlflow.ControlFlowGraph as Cfg
-private import codeql.rust.elements.internal.generated.Raw
-private import codeql.rust.elements.internal.generated.Synth
+private import rust as Rust
+private import codeql.Locations
+private import codeql.controlflow.ControlFlowGraph
+private import codeql.controlflow.SuccessorType
+private import codeql.rust.controlflow.internal.Scope as Scope
+private import codeql.rust.elements.internal.VariableImpl::Impl as VariableImpl
 
-private module CfgInput implements InputSig<Location> {
-  private import codeql.rust.internal.CachedStages
-  private import rust as Rust
-  private import Completion as C
+private module Cfg0 = Make0<Location, Ast>;
 
+private module Cfg1 = Make1<Input>;
+
+private module Cfg2 = Make2<Input>;
+
+private import Cfg0
+private import Cfg1
+private import Cfg2
+import Public
+
+class CfgScope = Ast::Callable;
+
+/**
+ * Provides an implementation of the shared control-flow AST signature for Rust.
+ */
+private module Ast implements AstSig<Location> {
   class AstNode = Rust::AstNode;
 
-  class Completion = C::Completion;
-
-  predicate completionIsNormal = C::completionIsNormal/1;
-
-  predicate completionIsSimple = C::completionIsSimple/1;
-
-  predicate completionIsValidFor = C::completionIsValidFor/2;
-
-  /** An AST node with an associated control flow graph. */
-  class CfgScope = Scope::CfgScope;
-
-  CfgScope getCfgScope(AstNode n) {
-    result = n.getEnclosingCfgScope() and
-    Stages::CfgStage::ref()
-  }
-
-  private class SuccessorType = Cfg::SuccessorType;
-
-  /** Gets a successor type that matches completion `c`. */
-  SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
-
-  /** Hold if `t` represents a conditional successor type. */
-  predicate successorTypeIsCondition(SuccessorType t) { t instanceof Cfg::BooleanSuccessor }
-
-  /** Holds if `first` is first executed when entering `scope`. */
-  predicate scopeFirst(CfgScope scope, AstNode first) { scope.scopeFirst(first) }
-
-  /** Holds if `scope` is exited when `last` finishes with completion `c`. */
-  predicate scopeLast(CfgScope scope, AstNode last, Completion c) { scope.scopeLast(last, c) }
-
-  private predicate id(Raw::AstNode x, Raw::AstNode y) { x = y }
-
-  private predicate idOfDbAstNode(Raw::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
-
-  // TODO: does not work if fresh ipa entities (`ipa: on:`) turn out to be first of the block
-  int idOfAstNode(AstNode node) { idOfDbAstNode(Synth::convertAstNodeToRaw(node), result) }
-
-  int idOfCfgScope(CfgScope node) { result = idOfAstNode(node) }
-}
-
-private module CfgSplittingInput implements SplittingInputSig<Location, CfgInput> {
-  private import Splitting as S
-
-  class SplitKindBase = S::TSplitKind;
-
-  class Split = S::Split;
-}
-
-private module ConditionalCompletionSplittingInput implements
-  ConditionalCompletionSplittingInputSig<Location, CfgInput, CfgSplittingInput>
-{
-  import Splitting::ConditionalCompletionSplitting::ConditionalCompletionSplittingInput
-}
-
-private module CfgImpl =
-  MakeWithSplitting<Location, CfgInput, CfgSplittingInput, ConditionalCompletionSplittingInput>;
-
-import CfgImpl
-
-class CallableScopeTree extends StandardTree, PreOrderTree, PostOrderTree, Scope::CallableScope {
-  override predicate propagatesAbnormal(AstNode child) { none() }
-
-  override AstNode getChildNode(int i) {
-    i = 0 and
-    result = this.getSelfParam()
+  private Rust::AstNode runtimeChild(Rust::AstNode parent, int index) {
+    index = 0 and
+    result = parent.(Rust::Param).getPat()
     or
-    result = this.getParam(i - 1)
+    index = 0 and
+    result = parent.(Rust::SelfParam).getName()
     or
-    i = this.getParamList().getNumberOfParams() + 1 and
-    result = this.getBody()
-  }
-}
-
-class ParamTree extends StandardPostOrderTree, Param {
-  override AstNode getChildNode(int i) { i = 0 and result = this.getPat() }
-}
-
-class ExprStmtTree extends StandardPreOrderTree instanceof ExprStmt {
-  override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
-}
-
-class FormatTemplateVariableAccessTree extends LeafTree, FormatTemplateVariableAccess { }
-
-class ItemTree extends LeafTree, Item {
-  ItemTree() {
-    not this instanceof MacroCall and
-    not this instanceof Const and
-    not this instanceof Static and
-    this = any(StmtList s).getAStatement()
-  }
-}
-
-class LetStmtTree extends PreOrderTree, LetStmt {
-  final override predicate propagatesAbnormal(AstNode child) {
-    child = [this.getInitializer(), this.getLetElse().getBlockExpr()]
-  }
-
-  override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    // Edge to start of initializer.
-    pred = this and first(this.getInitializer(), succ) and completionIsSimple(c)
+    index = 0 and
+    result = parent.(Rust::ExprStmt).getExpr()
     or
-    // Edge to pattern when there is no initializer.
-    pred = this and
-    first(this.getPat(), succ) and
-    completionIsSimple(c) and
-    not this.hasInitializer()
+    index = 0 and result = parent.(Rust::LetStmt).getInitializer()
     or
-    // Edge from end of initializer to pattern.
-    last(this.getInitializer(), pred, c) and first(this.getPat(), succ) and completionIsNormal(c)
+    index = 1 and result = parent.(Rust::LetStmt).getPat()
     or
-    // Edge from failed pattern to `else` branch.
-    last(this.getPat(), pred, c) and
-    first(this.getLetElse().getBlockExpr(), succ) and
-    c.(MatchCompletion).failed()
-  }
-
-  override predicate last(AstNode node, Completion c) {
-    // Edge out of a successfully matched pattern.
-    last(this.getPat(), node, c) and c.(MatchCompletion).succeeded()
-    // NOTE: No edge out of the `else` branch as that is guaranteed to diverge.
-  }
-}
-
-class MacroCallTree extends StandardPostOrderTree, MacroCall {
-  MacroCallTree() { not this.getParentNode() instanceof MacroPat }
-
-  override AstNode getChildNode(int i) { i = 0 and result = this.getMacroCallExpansion() }
-}
-
-class MatchArmTree extends ControlFlowTree, MatchArm {
-  override predicate propagatesAbnormal(AstNode child) { child = this.getExpr() }
-
-  override predicate first(AstNode node) { first(this.getPat(), node) }
-
-  override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    // Edge from pattern to guard/arm if match succeeds.
-    last(this.getPat(), pred, c) and
-    c.(MatchCompletion).succeeded() and
+    index = 2 and result = parent.(Rust::LetStmt).getLetElse().getBlockExpr()
+    or
+    parent instanceof Rust::MacroCall and
+    not parent.getParentNode() instanceof Rust::MacroPat and
+    index = 0 and
+    result = parent.(Rust::MacroCall).getMacroCallExpansion()
+    or
+    not parent.(Rust::BlockExpr).isAsync() and
+    result = parent.(Rust::BlockExpr).getStmtList().getStmtOrExpr(index) and
+    not result instanceof Rust::Const and
+    not result instanceof Rust::Static
+    or
+    parent.getParentNode() instanceof Rust::AsyncBlockExpr and
+    result = parent.(Rust::StmtList).getStmtOrExpr(index) and
+    not result instanceof Rust::Const and
+    not result instanceof Rust::Static
+    or
+    result = parent.(Rust::ArrayExpr).getExpr(index)
+    or
+    index = 0 and
+    result = parent.(Rust::AwaitExpr).getExpr()
+    or
+    index = 0 and
+    result = parent.(Rust::BecomeExpr).getExpr()
+    or
+    index = 0 and
+    result = parent.(Rust::BreakExpr).getExpr()
+    or
+    index = 0 and result = parent.(Rust::CallExpr).getFunction()
+    or
+    result = parent.(Rust::CallExpr).getSyntacticPositionalArgument(index - 1)
+    or
+    not parent instanceof Rust::CallExpr and
     (
-      first(this.getGuard().getCondition(), succ)
+      index = 0 and result = parent.(Rust::InvocationExpr).getSyntacticReceiver()
       or
-      not this.hasGuard() and first(this.getExpr(), succ)
+      result = parent.(Rust::InvocationExpr).getSyntacticPositionalArgument(index - 1)
     )
     or
-    // Edge from guard to arm if the guard succeeds.
-    last(this.getGuard().getCondition(), pred, c) and
-    first(this.getExpr(), succ) and
-    c.(BooleanCompletion).succeeded()
-  }
-
-  override predicate last(AstNode node, Completion c) {
-    last(this.getPat(), node, c) and c.(MatchCompletion).failed()
+    index = 0 and
+    result = parent.(Rust::CastExpr).getExpr()
     or
-    last(this.getGuard().getCondition(), node, c) and c.(BooleanCompletion).failed()
+    index = 0 and
+    result = parent.(Rust::FieldExpr).getContainer()
     or
-    last(this.getExpr(), node, c)
-  }
-}
-
-class NameTree extends LeafTree, Name { }
-
-class NameRefTree extends LeafTree, NameRef { }
-
-class SelfParamTree extends StandardPostOrderTree, SelfParam {
-  override AstNode getChildNode(int i) { i = 0 and result = this.getName() }
-}
-
-class TypeReprTree extends LeafTree instanceof TypeRepr { }
-
-/**
- * Provides `ControlFlowTree`s for expressions.
- *
- * Since expressions construct values, they are modeled in post-order.
- */
-module ExprTrees {
-  class ArrayExprTree extends StandardPostOrderTree, ArrayExpr {
-    override AstNode getChildNode(int i) { result = this.getExpr(i) }
-  }
-
-  class AsmExprTree extends LeafTree instanceof AsmExpr { }
-
-  class AwaitExprTree extends StandardPostOrderTree instanceof AwaitExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
-  }
-
-  // NOTE: `become` is a reserved but unused keyword.
-  class BecomeExprTree extends StandardPostOrderTree instanceof BecomeExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
-  }
-
-  class InvocationExprTree extends StandardPostOrderTree instanceof InvocationExpr {
-    InvocationExprTree() {
-      not this instanceof CallExpr and
-      not this instanceof BinaryLogicalOperation
-    }
-
-    override AstNode getChildNode(int i) {
-      i = 0 and
-      result = super.getSyntacticReceiver()
-      or
-      result = super.getSyntacticPositionalArgument(i - 1)
-    }
-  }
-
-  class LogicalOrExprTree extends PostOrderTree, LogicalOrExpr {
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getAnOperand() }
-
-    override predicate first(AstNode node) { first(this.getLhs(), node) }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      // Edge from lhs to rhs
-      last(this.getLhs(), pred, c) and
-      c.(BooleanCompletion).failed() and
-      first(this.getRhs(), succ)
-      or
-      // Edge from lhs to this
-      last(this.getLhs(), pred, c) and
-      c.(BooleanCompletion).succeeded() and
-      succ = this
-      or
-      // Edge from rhs to this
-      last(this.getRhs(), pred, c) and
-      succ = this and
-      completionIsNormal(c)
-    }
-  }
-
-  class LogicalAndExprTree extends PostOrderTree, LogicalAndExpr {
-    final override predicate propagatesAbnormal(AstNode child) { child = this.getAnOperand() }
-
-    override predicate first(AstNode node) { first(this.getLhs(), node) }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      // Edge from lhs to rhs
-      last(this.getLhs(), pred, c) and
-      c.(BooleanCompletion).succeeded() and
-      first(this.getRhs(), succ)
-      or
-      // Edge from lhs to this
-      last(this.getLhs(), pred, c) and
-      c.(BooleanCompletion).failed() and
-      succ = this
-      or
-      // Edge from rhs to this
-      last(this.getRhs(), pred, c) and
-      succ = this and
-      completionIsNormal(c)
-    }
-  }
-
-  class AsyncBlockExprTree extends StandardTree, PreOrderTree, PostOrderTree, AsyncBlockExpr {
-    override AstNode getChildNode(int i) { result = this.getStmtList().getStmtOrExpr(i) }
-
-    override predicate propagatesAbnormal(AstNode child) { none() }
-  }
-
-  class BlockExprTree extends StandardPostOrderTree, BlockExpr {
-    BlockExprTree() { not this.isAsync() }
-
-    override AstNode getChildNode(int i) { result = this.getStmtList().getStmtOrExpr(i) }
-
-    override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
-  }
-
-  class BreakExprTree extends StandardPostOrderTree, BreakExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = this.getExpr() }
-
-    override predicate last(AstNode last, Completion c) { none() }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      super.succ(pred, succ, c)
-      or
-      pred = this and c.isValidFor(pred) and succ = this.getTarget()
-    }
-  }
-
-  class CallExprTree extends StandardPostOrderTree instanceof CallExpr {
-    override AstNode getChildNode(int i) {
-      i = 0 and result = super.getFunction()
-      or
-      result = super.getSyntacticPositionalArgument(i - 1)
-    }
-  }
-
-  class CastExprTree extends StandardPostOrderTree instanceof CastExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
-  }
-
-  class ContinueExprTree extends LeafTree, ContinueExpr {
-    override predicate last(AstNode last, Completion c) { none() }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
-      c.isValidFor(pred) and
-      first(this.getTarget().(LoopingExprTree).getLoopContinue(), succ)
-    }
-  }
-
-  class FieldExprTree extends StandardPostOrderTree instanceof FieldExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getContainer() }
-  }
-
-  class IfExprTree extends PostOrderTree instanceof IfExpr {
-    override predicate first(AstNode node) { first(super.getCondition(), node) }
-
-    override predicate propagatesAbnormal(AstNode child) {
-      child = [super.getCondition(), super.getABranch()]
-    }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      // Edges from the condition to the branches
-      last(super.getCondition(), pred, c) and
-      (
-        first(super.getThen(), succ) and c.(ConditionalCompletion).succeeded()
-        or
-        first(super.getElse(), succ) and c.(ConditionalCompletion).failed()
-        or
-        not super.hasElse() and succ = this and c.(ConditionalCompletion).failed()
-      )
-      or
-      // An edge from the then branch to the last node
-      last(super.getThen(), pred, c) and
-      succ = this and
-      completionIsNormal(c)
-      or
-      // An edge from the else branch to the last node
-      last(super.getElse(), pred, c) and
-      succ = this and
-      completionIsNormal(c)
-    }
-  }
-
-  class FormatArgsExprTree extends StandardPostOrderTree, FormatArgsExpr {
-    override AstNode getChildNode(int i) {
-      i = -1 and result = this.getTemplate()
-      or
-      result = this.getArg(i).getExpr()
-      or
-      result =
-        any(FormatTemplateVariableAccess v, Format f, int index, int kind |
-          f = this.getFormat(index) and
-          (
-            v.getArgument() = f.getArgumentRef() and kind = 0
-            or
-            v.getArgument() = f.getWidthArgument() and kind = 1
-            or
-            v.getArgument() = f.getPrecisionArgument() and kind = 2
-          ) and
-          i = this.getNumberOfArgs() + index * 3 + kind
-        |
-          v
-        )
-    }
-  }
-
-  class LetExprTree extends StandardPostOrderTree, LetExpr {
-    override AstNode getChildNode(int i) {
-      i = 0 and
-      result = this.getScrutinee()
-      or
-      i = 1 and
-      result = this.getPat()
-    }
-  }
-
-  class LiteralExprTree extends LeafTree instanceof LiteralExpr { }
-
-  class CfgPredExprTree extends LeafTree instanceof CfgPredExpr { }
-
-  abstract class LoopingExprTree extends PostOrderTree {
-    override predicate propagatesAbnormal(AstNode child) { child = this.getLoopBody() }
-
-    abstract BlockExpr getLoopBody();
-
-    /**
-     * Gets the node to execute when continuing the loop; either after
-     * executing the last node in the body or after an explicit `continue`.
-     */
-    abstract AstNode getLoopContinue();
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      // Edge back to the start for final expression and continue expressions
-      last(this.getLoopBody(), pred, c) and
-      completionIsNormal(c) and
-      first(this.getLoopContinue(), succ)
-    }
-  }
-
-  class LoopExprTree extends LoopingExprTree instanceof LoopExpr {
-    override BlockExpr getLoopBody() { result = LoopExpr.super.getLoopBody() }
-
-    override AstNode getLoopContinue() { result = this.getLoopBody() }
-
-    override predicate first(AstNode node) { first(this.getLoopBody(), node) }
-  }
-
-  class WhileExprTree extends LoopingExprTree instanceof WhileExpr {
-    override BlockExpr getLoopBody() { result = WhileExpr.super.getLoopBody() }
-
-    override AstNode getLoopContinue() { result = super.getCondition() }
-
-    override predicate propagatesAbnormal(AstNode child) {
-      super.propagatesAbnormal(child)
-      or
-      child = super.getCondition()
-    }
-
-    override predicate first(AstNode node) { first(super.getCondition(), node) }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      super.succ(pred, succ, c)
-      or
-      last(super.getCondition(), pred, c) and
-      c.(ConditionalCompletion).succeeded() and
-      first(this.getLoopBody(), succ)
-      or
-      last(super.getCondition(), pred, c) and
-      c.(ConditionalCompletion).failed() and
-      succ = this
-    }
-  }
-
-  class ForExprTree extends LoopingExprTree instanceof ForExpr {
-    override BlockExpr getLoopBody() { result = ForExpr.super.getLoopBody() }
-
-    override AstNode getLoopContinue() { result = super.getPat() }
-
-    override predicate propagatesAbnormal(AstNode child) {
-      super.propagatesAbnormal(child)
-      or
-      child = super.getIterable()
-    }
-
-    override predicate first(AstNode node) { first(super.getIterable(), node) }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      super.succ(pred, succ, c)
-      or
-      last(super.getIterable(), pred, c) and
-      first(super.getPat(), succ) and
-      completionIsNormal(c)
-      or
-      last(super.getPat(), pred, c) and
-      c.(MatchCompletion).succeeded() and
-      first(this.getLoopBody(), succ)
-      or
-      last(super.getPat(), pred, c) and
-      c.(MatchCompletion).failed() and
-      succ = this
-    }
-  }
-
-  class MacroExprTree extends StandardPostOrderTree, MacroExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = this.getMacroCall() }
-  }
-
-  class MatchExprTree extends PostOrderTree instanceof MatchExpr {
-    override predicate propagatesAbnormal(AstNode child) {
-      child = [super.getScrutinee(), super.getAnArm().getExpr()]
-    }
-
-    override predicate first(AstNode node) { first(super.getScrutinee(), node) }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      // Edge from the scrutinee to the first arm or to the match expression if no arms.
-      last(super.getScrutinee(), pred, c) and
-      (
-        first(super.getArm(0).getPat(), succ)
-        or
-        not exists(super.getArm(0)) and succ = this
-      ) and
-      completionIsNormal(c)
-      or
-      // Edge from a failed pattern or guard in one arm to the beginning of the next arm.
-      exists(int i |
+    index = 0 and result = parent.(Rust::IfExpr).getCondition()
+    or
+    index = 1 and result = parent.(Rust::IfExpr).getThen()
+    or
+    index = 2 and result = parent.(Rust::IfExpr).getElse()
+    or
+    index = -1 and result = parent.(Rust::FormatArgsExpr).getTemplate()
+    or
+    result = parent.(Rust::FormatArgsExpr).getArg(index).getExpr()
+    or
+    result =
+      any(Rust::FormatTemplateVariableAccess v, Rust::Format f, int i, int kind |
+        f = parent.(Rust::FormatArgsExpr).getFormat(i) and
         (
-          last(super.getArm(i).getPat(), pred, c) or
-          last(super.getArm(i).getGuard().getCondition(), pred, c)
+          v.getArgument() = f.getArgumentRef() and kind = 0
+          or
+          v.getArgument() = f.getWidthArgument() and kind = 1
+          or
+          v.getArgument() = f.getPrecisionArgument() and kind = 2
         ) and
-        first(super.getArm(i + 1), succ) and
-        c.(ConditionalCompletion).failed()
+        index = parent.(Rust::FormatArgsExpr).getNumberOfArgs() + i * 3 + kind
+      |
+        v
       )
+    or
+    index = 0 and result = parent.(Rust::LetExpr).getScrutinee()
+    or
+    index = 1 and result = parent.(Rust::LetExpr).getPat()
+    or
+    index = 0 and
+    result = parent.(Rust::LoopExpr).getLoopBody()
+    or
+    index = 0 and result = parent.(Rust::WhileExpr).getCondition()
+    or
+    index = 1 and result = parent.(Rust::WhileExpr).getLoopBody()
+    or
+    index = 0 and result = parent.(Rust::ForExpr).getIterable()
+    or
+    index = 1 and result = parent.(Rust::ForExpr).getPat()
+    or
+    index = 2 and result = parent.(Rust::ForExpr).getLoopBody()
+    or
+    index = 0 and
+    result = parent.(Rust::MacroExpr).getMacroCall()
+    or
+    index = 0 and result = parent.(Rust::MatchExpr).getScrutinee()
+    or
+    exists(int i |
+      index = 3 * i + 1 and result = parent.(Rust::MatchExpr).getArm(i).getPat()
       or
-      // Edge from the end of each arm to the match expression.
-      last(super.getArm(_).getExpr(), pred, c) and succ = this and completionIsNormal(c)
-    }
-  }
-
-  class OffsetOfExprTree extends LeafTree instanceof OffsetOfExpr { }
-
-  class PathExprTree extends LeafTree instanceof PathExpr { }
-
-  class RangeExprTree extends StandardPostOrderTree instanceof RangeExpr {
-    override AstNode getChildNode(int i) {
-      i = 0 and result = super.getStart()
+      index = 3 * i + 2 and
+      result = parent.(Rust::MatchExpr).getArm(i).getGuard().getCondition()
       or
-      i = 1 and result = super.getEnd()
+      index = 3 * i + 3 and result = parent.(Rust::MatchExpr).getArm(i).getExpr()
+    )
+    or
+    index = 0 and result = parent.(Rust::RangeExpr).getStart()
+    or
+    index = 1 and result = parent.(Rust::RangeExpr).getEnd()
+    or
+    result = parent.(Rust::StructExpr).getStructExprFieldList().getField(index).getExpr()
+    or
+    index = 0 and
+    result = parent.(Rust::ReturnExpr).getExpr()
+    or
+    index = 0 and
+    result = parent.(Rust::TryExpr).getExpr()
+    or
+    result = parent.(Rust::TupleExpr).getField(index)
+    or
+    index = 0 and
+    result = parent.(Rust::YieldExpr).getExpr()
+    or
+    index = 0 and
+    result = parent.(Rust::YeetExpr).getExpr()
+    or
+    index = 0 and result = parent.(Rust::IdentPat).getPat()
+    or
+    index = 1 and result = parent.(Rust::IdentPat).getName()
+    or
+    index = 0 and
+    result = parent.(Rust::BoxPat).getPat()
+    or
+    index = 0 and
+    result = parent.(Rust::DerefPat).getPat()
+    or
+    index = 0 and
+    result = parent.(Rust::LiteralPat).getLiteral()
+    or
+    index = 0 and
+    result = parent.(Rust::MacroPat).getMacroCall().getMacroCallExpansion()
+    or
+    result = parent.(Rust::OrPat).getPat(index)
+    or
+    index = 0 and result = parent.(Rust::RangePat).getStart()
+    or
+    index = 1 and result = parent.(Rust::RangePat).getEnd()
+    or
+    result = parent.(Rust::StructPat).getStructPatFieldList().getField(index).getPat()
+    or
+    index = parent.(Rust::StructPat).getStructPatFieldList().getNumberOfFields() and
+    result = parent.(Rust::StructPat).getStructPatFieldList().getRestPat()
+    or
+    index = 0 and
+    result = parent.(Rust::RefPat).getPat()
+    or
+    result = parent.(Rust::SlicePat).getPat(index)
+    or
+    result = parent.(Rust::TuplePat).getField(index)
+    or
+    result = parent.(Rust::TupleStructPat).getField(index)
+  }
+
+  AstNode getChild(AstNode parent, int index) { result = runtimeChild(parent, index) }
+
+  private Callable getEnclosingCallableImpl(Rust::AstNode node) {
+    exists(Rust::AstNode parent | parent = node.getParentNode() |
+      result = parent
+      or
+      not parent instanceof Scope::CfgScope and
+      not node instanceof Rust::Const and
+      not node instanceof Rust::Static and
+      result = getEnclosingCallableImpl(parent)
+    )
+    or
+    (
+      node instanceof Rust::Const or
+      node instanceof Rust::Static
+    ) and
+    result.(Rust::SourceFile).getFile() = node.getFile()
+  }
+
+  Callable getEnclosingCallable(AstNode node) { result = getEnclosingCallableImpl(node) }
+
+  class Callable extends AstNode instanceof Scope::CfgScope { }
+
+  AstNode callableGetBody(Callable c) {
+    result = c.(Rust::Callable).getBody()
+    or
+    result = c.(Rust::AsyncBlockExpr).getStmtList()
+  }
+
+  class Parameter extends AstNode instanceof Rust::ParamBase {
+    AstNode getPattern() {
+      result = this.(Rust::Param).getPat()
+      or
+      not this instanceof Rust::Param and
+      result = this
+    }
+
+    Expr getDefaultValue() { none() }
+  }
+
+  Parameter callableGetParameter(Callable c, int index) {
+    index = 0 and
+    result = c.(Rust::Callable).getSelfParam()
+    or
+    result = c.(Rust::Callable).getParam(index - 1)
+  }
+
+  class Stmt extends AstNode {
+    Stmt() {
+      this instanceof Rust::Stmt
+      or
+      this instanceof Rust::Expr
+      or
+      this instanceof Rust::StmtList
     }
   }
 
-  class StructExprTree extends StandardPostOrderTree instanceof StructExpr {
-    override AstNode getChildNode(int i) {
-      result = super.getStructExprFieldList().getField(i).getExpr()
+  class LabeledStmt extends Stmt instanceof Rust::LabelableExpr {
+    Stmt getStmt() { result = this }
+  }
+
+  class Expr extends AstNode {
+    Expr() {
+      this instanceof Rust::Expr
+      or
+      this instanceof Rust::Pat
     }
   }
 
-  class ReturnExprTree extends StandardPostOrderTree instanceof ReturnExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+  class BlockStmt extends Stmt {
+    BlockStmt() {
+      this instanceof Rust::BlockExpr and
+      not this.(Rust::BlockExpr).isAsync()
+      or
+      this instanceof Rust::StmtList and
+      this.getParentNode() instanceof Rust::AsyncBlockExpr
+    }
+
+    Stmt getStmt(int n) {
+      result = this.(Rust::BlockExpr).getStmtList().getStmtOrExpr(n)
+      or
+      result = this.(Rust::StmtList).getStmtOrExpr(n)
+    }
+
+    Stmt getLastStmt() {
+      result = this.(Rust::BlockExpr).getStmtList().getTailExpr()
+      or
+      result = this.(Rust::StmtList).getTailExpr()
+    }
   }
 
-  class TryExprTree extends StandardPostOrderTree instanceof TryExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+  class ExprStmt extends Stmt instanceof Rust::ExprStmt {
+    Expr getExpr() { result = Rust::ExprStmt.super.getExpr() }
   }
 
-  class TupleExprTree extends StandardPostOrderTree instanceof TupleExpr {
-    override AstNode getChildNode(int i) { result = super.getField(i) }
+  class IfStmt extends Stmt {
+    IfStmt() { none() }
+
+    Expr getCondition() { none() }
+
+    Stmt getThen() { none() }
+
+    Stmt getElse() { none() }
   }
 
-  class UnderscoreExprTree extends LeafTree instanceof UnderscoreExpr { }
-
-  // NOTE: `yield` is a reserved but unused keyword.
-  class YieldExprTree extends StandardPostOrderTree instanceof YieldExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+  class LoopStmt extends Stmt instanceof Rust::LoopingExpr {
+    Stmt getBody() { result = super.getLoopBody() }
   }
 
-  // NOTE: `yeet` is experimental and not a part of Rust.
-  class YeetExprTree extends StandardPostOrderTree instanceof YeetExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
+  class WhileStmt extends LoopStmt instanceof Rust::WhileExpr {
+    Expr getCondition() { result = super.getCondition() }
+  }
+
+  class DoStmt extends LoopStmt instanceof Rust::LoopExpr {
+    Expr getCondition() { none() }
+  }
+
+  class UntilStmt extends LoopStmt {
+    UntilStmt() { none() }
+
+    Expr getCondition() { none() }
+  }
+
+  class ForStmt extends LoopStmt {
+    ForStmt() { none() }
+
+    AstNode getInit(int index) { none() }
+
+    Expr getCondition() { none() }
+
+    AstNode getUpdate(int index) { none() }
+  }
+
+  class ForEachStmt extends LoopStmt instanceof Rust::ForExpr {
+    Expr getVariable() { result = super.getPat() }
+
+    Expr getCollection() { result = super.getIterable() }
+  }
+
+  class BreakStmt extends Stmt instanceof Rust::BreakExpr { }
+
+  class ContinueStmt extends Stmt instanceof Rust::ContinueExpr { }
+
+  class FallthroughStmt extends Stmt {
+    FallthroughStmt() { none() }
+  }
+
+  class GotoStmt extends Stmt {
+    GotoStmt() { none() }
+  }
+
+  class ReturnStmt extends Stmt instanceof Rust::ReturnExpr {
+    Expr getExpr() { result = super.getExpr() }
+  }
+
+  class Throw extends AstNode {
+    Throw() { none() }
+
+    Expr getExpr() { none() }
+  }
+
+  class TryStmt extends Stmt {
+    TryStmt() { none() }
+
+    AstNode getBody(int index) { none() }
+
+    CatchClause getCatch(int index) { none() }
+
+    Stmt getFinally() { none() }
+  }
+
+  class CatchClause extends AstNode {
+    CatchClause() { none() }
+
+    AstNode getPattern() { none() }
+
+    AstNode getVariable() { none() }
+
+    Expr getCondition() { none() }
+
+    Stmt getBody() { none() }
+  }
+
+  additional class DivergingMatchExpr extends Rust::MatchExpr {
+    DivergingMatchExpr() { not exists(super.getAnArm()) }
+  }
+
+  class Switch extends AstNode instanceof Rust::MatchExpr {
+    Switch() { not this instanceof DivergingMatchExpr }
+
+    Expr getExpr() { result = super.getScrutinee() }
+
+    Case getCase(int index) { result = super.getArm(index) }
+
+    Stmt getStmt(int index) { none() }
+  }
+
+  class Case extends AstNode instanceof Rust::MatchArm {
+    AstNode getPattern(int index) {
+      result = super.getPat() and
+      index = 0
+    }
+
+    Expr getGuard() { result = super.getGuard().getCondition() }
+
+    AstNode getBody() { result = super.getExpr() }
+  }
+
+  class DefaultCase extends Case {
+    DefaultCase() { none() }
+  }
+
+  class ConditionalExpr extends Expr instanceof Rust::IfExpr {
+    Expr getCondition() { result = this.(Rust::IfExpr).getCondition() }
+
+    Expr getThen() { result = this.(Rust::IfExpr).getThen() }
+
+    Expr getElse() { result = this.(Rust::IfExpr).getElse() }
+  }
+
+  class BinaryExpr extends Expr instanceof Rust::BinaryExpr {
+    Expr getLeftOperand() { result = this.(Rust::BinaryExpr).getLhs() }
+
+    Expr getRightOperand() { result = this.(Rust::BinaryExpr).getRhs() }
+  }
+
+  class LogicalAndExpr extends BinaryExpr instanceof Rust::LogicalAndExpr { }
+
+  class LogicalOrExpr extends BinaryExpr instanceof Rust::LogicalOrExpr { }
+
+  class NullCoalescingExpr extends BinaryExpr {
+    NullCoalescingExpr() { none() }
+  }
+
+  class UnaryExpr extends Expr instanceof Rust::PrefixExpr {
+    Expr getOperand() { result = this.(Rust::PrefixExpr).getExpr() }
+  }
+
+  class LogicalNotExpr extends UnaryExpr instanceof Rust::LogicalNotExpr { }
+
+  class Assignment extends BinaryExpr instanceof Rust::AssignmentOperation { }
+
+  class AssignExpr extends Assignment instanceof Rust::AssignmentExpr { }
+
+  class CompoundAssignment extends Assignment instanceof Rust::CompoundAssignmentExpr { }
+
+  class AssignLogicalAndExpr extends CompoundAssignment {
+    AssignLogicalAndExpr() { none() }
+  }
+
+  class AssignLogicalOrExpr extends CompoundAssignment {
+    AssignLogicalOrExpr() { none() }
+  }
+
+  class AssignNullCoalescingExpr extends CompoundAssignment {
+    AssignNullCoalescingExpr() { none() }
+  }
+
+  class BooleanLiteral extends Expr instanceof Rust::BooleanLiteralExpr {
+    boolean getValue() {
+      super.getTextValue() = "true" and result = true
+      or
+      super.getTextValue() = "false" and result = false
+    }
+  }
+
+  class Pattern extends AstNode instanceof Rust::Pat { }
+
+  class AndPattern extends Pattern {
+    AndPattern() { none() } // does not exist in Rust
+  }
+
+  class OrPattern extends Pattern instanceof Rust::OrPat { }
+
+  class PatternMatchExpr extends Expr {
+    PatternMatchExpr() { none() }
+
+    Expr getExpr() { none() }
+
+    AstNode getPattern() { none() }
   }
 }
 
-/**
- * Provides `ControlFlowTree`s for patterns.
- *
- * Since patterns destruct values, they are modeled in pre-order, except for
- * `LiteralPat`s, `OrPat`s, and `IdentPat`s.
- */
-module PatternTrees {
-  abstract class StandardPatTree extends StandardTree {
-    abstract Pat getPat(int i);
+private module Input implements InputSig1, InputSig2 {
+  private import codeql.util.Void
 
-    Pat getPatRanked(int i) {
-      result = rank[i + 1](Pat pat, int j | pat = this.getPat(j) | pat order by j)
-    }
+  predicate cfgCachedStageRef() { CfgCachedStage::ref() }
 
-    override AstNode getChildNode(int i) { result = this.getPat(i) }
+  class Label = string;
+
+  predicate hasLabel(Ast::AstNode n, Label l) {
+    l = n.(Rust::BreakExpr).getLifetime().getText()
+    or
+    l = n.(Rust::ContinueExpr).getLifetime().getText()
+    or
+    l = n.(Rust::LabelableExpr).getLabel().getLifetime().getText()
   }
 
-  abstract class PreOrderPatTree extends StandardPatTree, StandardPreOrderTree {
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      c.(MatchCompletion).succeeded() and
-      (
-        StandardPatTree.super.succ(pred, succ, c)
-        or
-        pred = this and first(this.getFirstChildTree(), succ) and completionIsValidFor(c, this)
+  class CallableContext = Void;
+
+  predicate isExhaustive(Ast::Switch switch) { any() }
+
+  /**
+   * Holds if `pat` cannot itself cause a match failure.
+   */
+  private predicate cannotCauseMatchFailure(Rust::Pat pat) {
+    pat instanceof Rust::RangePat
+    or
+    pat =
+      any(Rust::IdentPat p |
+        p.hasPat() or
+        VariableImpl::variableDecl(_, p.getName(), _)
       )
-    }
+    or
+    pat instanceof Rust::WildcardPat
+    or
+    pat instanceof Rust::RestPat
+    or
+    pat instanceof Rust::RefPat
+    or
+    pat instanceof Rust::TuplePat
+    or
+    pat instanceof Rust::MacroPat
+  }
 
-    override predicate last(AstNode node, Completion c) {
-      super.last(node, c)
+  predicate patternPerformsTest(Ast::Pattern pattern) { not cannotCauseMatchFailure(pattern) }
+
+  predicate patternIsExhaustive(Ast::Pattern pattern) {
+    pattern = any(Rust::LetStmt let | not let.hasLetElse()).getPat()
+    or
+    pattern = any(Rust::ForExpr for).getPat()
+    or
+    pattern = any(Rust::Param p).getPat()
+  }
+
+  predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
+    kind.isMatching() and
+    n = any(Rust::TryExpr e).getExpr()
+  }
+
+  predicate preOrderExpr(Ast::Expr e) {
+    e instanceof Rust::LoopingExpr
+    or
+    e instanceof Rust::LetExpr
+    or
+    e instanceof Rust::TryExpr
+  }
+
+  predicate postOrInOrder(Ast::AstNode n) { n instanceof Rust::MacroCall }
+
+  private string tryReturnTag() { result = "[try-return]" }
+
+  private string letElseDivergeTag() { result = "[let-else-diverge]" }
+
+  predicate additionalNode(Ast::AstNode n, string tag, NormalSuccessor t) {
+    t instanceof DirectSuccessor and
+    (
+      n instanceof Rust::TryExpr and tag = tryReturnTag()
       or
-      c.(MatchCompletion).failed() and
-      completionIsValidFor(c, node) and
-      (node = this or last(this.getPatRanked(_), node, c))
-    }
+      n = any(Rust::LetStmt let).getLetElse().getBlockExpr() and
+      tag = letElseDivergeTag()
+    )
   }
 
-  abstract class PostOrderPatTree extends StandardPatTree, StandardPostOrderTree { }
-
-  class IdentPatTree extends PostOrderTree, IdentPat {
-    override predicate first(AstNode node) {
-      first(this.getPat(), node)
+  private predicate letStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+    exists(Rust::LetStmt let |
+      n1.isBefore(let) and
+      (
+        n2.isBefore(let.getInitializer())
+        or
+        not let.hasInitializer() and n2.isBefore(let.getPat())
+      )
       or
-      not this.hasPat() and node = this.getName()
-    }
-
-    override predicate last(AstNode node, Completion c) {
-      super.last(node, c)
+      n1.isAfter(let.getInitializer()) and
+      n2.isBefore(let.getPat())
       or
-      last(this.getPat(), node, c) and c.(MatchCompletion).failed()
-    }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      // Edge from successful subpattern to name
-      last(this.getPat(), pred, c) and
-      first(this.getName(), succ) and
-      c.(MatchCompletion).succeeded()
+      n1.isAfterMatch(let.getPat()) and n2.isAfter(let)
       or
-      // Edge from name to the identifier pattern itself
-      last(this.getName(), pred, c) and succ = this and completionIsNormal(c)
-    }
-
-    override predicate propagatesAbnormal(AstNode child) { child = this.getPat() }
-  }
-
-  class BoxPatTree extends PreOrderPatTree, BoxPat {
-    override Pat getPat(int i) { i = 0 and result = this.getPat() }
-  }
-
-  class DerefPatTree extends PreOrderPatTree, DerefPat {
-    override Pat getPat(int i) { i = 0 and result = this.getPat() }
-  }
-
-  class RestPatTree extends LeafTree, RestPat { }
-
-  class CfgPredPatTree extends LeafTree, CfgPredPat { }
-
-  class LiteralPatTree extends StandardPostOrderTree, LiteralPat {
-    override AstNode getChildNode(int i) { i = 0 and result = this.getLiteral() }
-  }
-
-  class MacroPatTree extends PreOrderPatTree, MacroPat {
-    override Pat getPat(int i) { i = 0 and result = this.getMacroCall().getMacroCallExpansion() }
-  }
-
-  class OrPatTree extends PostOrderPatTree instanceof OrPat {
-    override Pat getPat(int i) { result = OrPat.super.getPat(i) }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      // Failed patterns advance normally between children
-      c.(MatchCompletion).failed() and super.succ(pred, succ, c)
+      n1.isAfterNonMatch(let.getPat()) and
+      n2.isBefore(let.getLetElse().getBlockExpr())
       or
-      // Successful pattern step to this
-      c.(MatchCompletion).succeeded() and succ = this and last(this.getPat(_), pred, c)
-    }
+      n1.isAfter(let.getLetElse().getBlockExpr()) and
+      n2.isAdditional(let.getLetElse().getBlockExpr(), letElseDivergeTag())
+    )
   }
 
-  class PathPatTree extends LeafTree, PathPat { }
-
-  class WildcardPatTree extends LeafTree, WildcardPat { }
-
-  class RangePatTree extends PreOrderPatTree, RangePat {
-    override Pat getPat(int i) {
-      i = 0 and result = this.getStart()
+  private predicate letExprStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+    exists(Rust::LetExpr let |
+      n1.isBefore(let) and n2.isBefore(let.getScrutinee())
       or
-      i = 1 and result = this.getEnd()
-    }
-  }
-
-  class StructPatTree extends PreOrderPatTree, StructPat {
-    override Pat getPat(int i) {
-      result = this.getStructPatFieldList().getField(i).getPat()
+      n1.isAfter(let.getScrutinee()) and
+      n2.isBefore(let.getPat())
       or
-      i = this.getStructPatFieldList().getNumberOfFields() and
-      result = this.getStructPatFieldList().getRestPat()
-    }
+      n1.isAfterMatch(let.getPat()) and n2.isAfterTrue(let)
+      or
+      n1.isAfterNonMatch(let.getPat()) and n2.isAfterFalse(let)
+    )
   }
 
-  class RefPatTree extends PreOrderPatTree, RefPat {
-    override Pat getPat(int i) { i = 0 and result = super.getPat() }
+  private predicate emptyMatchStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+    exists(Ast::DivergingMatchExpr match |
+      n1.isBefore(match) and n2.isBefore(match.getScrutinee())
+      or
+      n1.isAfter(match.getScrutinee()) and
+      n2.isIn(match)
+    )
   }
 
-  class SlicePatTree extends PreOrderPatTree instanceof SlicePat {
-    override Pat getPat(int i) { result = SlicePat.super.getPat(i) }
+  private predicate tryStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+    exists(Rust::TryExpr try |
+      n1.isBefore(try) and n2.isBefore(try.getExpr())
+      or
+      n1.isAfterMatch(try.getExpr()) and n2.isAfter(try)
+      or
+      n1.isAfterNonMatch(try.getExpr()) and
+      n2.isAdditional(try, tryReturnTag())
+    )
   }
 
-  class TuplePatTree extends PreOrderPatTree, TuplePat {
-    override Pat getPat(int i) { result = this.getField(i) }
+  predicate beginAbruptCompletion(
+    Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
+  ) {
+    ast instanceof Rust::TryExpr and
+    n.isAdditional(ast, tryReturnTag()) and
+    c.asSimpleAbruptCompletion() instanceof ReturnSuccessor and
+    always = true
+    or
+    ast instanceof Ast::DivergingMatchExpr and
+    n.isIn(ast) and
+    c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+    always = true
+    or
+    ast = any(Rust::LetStmt let).getLetElse().getBlockExpr() and
+    n.isAdditional(ast, letElseDivergeTag()) and
+    c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+    always = true
   }
 
-  class TupleStructPatTree extends PreOrderPatTree, TupleStructPat {
-    override Pat getPat(int i) { result = this.getField(i) }
+  predicate endAbruptCompletion(Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
+    none()
   }
 
-  class ConstBlockPatTree extends LeafTree, ConstBlockPat { } // todo?
+  predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
+    letStmtStep(n1, n2)
+    or
+    letExprStep(n1, n2)
+    or
+    emptyMatchStep(n1, n2)
+    or
+    tryStep(n1, n2)
+  }
 }

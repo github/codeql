@@ -249,10 +249,10 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** A pattern in a `match` statement. */
-  additional class Pattern extends AstNodeImpl, TPattern {
+  additional class PythonPattern extends AstNodeImpl, TPattern {
     private Py::Pattern p;
 
-    Pattern() { this = TPattern(p) }
+    PythonPattern() { this = TPattern(p) }
 
     override string toString() { result = p.toString() }
 
@@ -264,7 +264,7 @@ module Ast implements AstSig<Py::Location> {
   /**
    * A `case x` pattern that binds `x` to the matched value.
    */
-  additional class MatchCapturePattern extends Pattern {
+  additional class MatchCapturePattern extends PythonPattern {
     private Py::MatchCapturePattern cap;
 
     MatchCapturePattern() { this = TPattern(cap) }
@@ -278,7 +278,7 @@ module Ast implements AstSig<Py::Location> {
   /**
    * A `case pattern as name` pattern.
    */
-  additional class MatchAsPattern extends Pattern {
+  additional class MatchAsPattern extends PythonPattern {
     private Py::MatchAsPattern asp;
 
     MatchAsPattern() { this = TPattern(asp) }
@@ -300,7 +300,7 @@ module Ast implements AstSig<Py::Location> {
    * A `case [a, b, *rest]` star pattern. Binds `rest` to the remaining
    * elements of the sequence.
    */
-  additional class MatchStarPattern extends Pattern {
+  additional class MatchStarPattern extends PythonPattern {
     private Py::MatchStarPattern starp;
 
     MatchStarPattern() { this = TPattern(starp) }
@@ -314,7 +314,7 @@ module Ast implements AstSig<Py::Location> {
   /**
    * A `case [a, b, ...]` sequence pattern. Recurses into the sub-patterns.
    */
-  additional class MatchSequencePattern extends Pattern {
+  additional class MatchSequencePattern extends PythonPattern {
     private Py::MatchSequencePattern seqp;
 
     MatchSequencePattern() { this = TPattern(seqp) }
@@ -328,7 +328,7 @@ module Ast implements AstSig<Py::Location> {
   /**
    * A `case Cls(a, b, x=y)` class pattern.
    */
-  additional class MatchClassPattern extends Pattern {
+  additional class MatchClassPattern extends PythonPattern {
     private Py::MatchClassPattern clsp;
 
     MatchClassPattern() { this = TPattern(clsp) }
@@ -357,7 +357,7 @@ module Ast implements AstSig<Py::Location> {
   /**
    * A `case {k: v}` mapping pattern.
    */
-  additional class MatchMappingPattern extends Pattern {
+  additional class MatchMappingPattern extends PythonPattern {
     private Py::MatchMappingPattern mapp;
 
     MatchMappingPattern() { this = TPattern(mapp) }
@@ -370,7 +370,7 @@ module Ast implements AstSig<Py::Location> {
   /**
    * A key-value pair inside a `case {k: v}` mapping pattern.
    */
-  additional class MatchKeyValuePattern extends Pattern {
+  additional class MatchKeyValuePattern extends PythonPattern {
     private Py::MatchKeyValuePattern kvp;
 
     MatchKeyValuePattern() { this = TPattern(kvp) }
@@ -389,7 +389,7 @@ module Ast implements AstSig<Py::Location> {
   /**
    * A `case Cls(name=value)` keyword sub-pattern.
    */
-  additional class MatchKeywordPattern extends Pattern {
+  additional class MatchKeywordPattern extends PythonPattern {
     private Py::MatchKeywordPattern kwp;
 
     MatchKeywordPattern() { this = TPattern(kwp) }
@@ -406,7 +406,7 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** A `case **rest` double-star mapping sub-pattern. */
-  additional class MatchDoubleStarPattern extends Pattern {
+  additional class MatchDoubleStarPattern extends PythonPattern {
     private Py::MatchDoubleStarPattern dsp;
 
     MatchDoubleStarPattern() { this = TPattern(dsp) }
@@ -417,7 +417,7 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** A `case p1 | p2 | …` or-pattern. */
-  additional class MatchOrPattern extends Pattern {
+  additional class MatchOrPattern extends PythonPattern {
     private Py::MatchOrPattern orp;
 
     MatchOrPattern() { this = TPattern(orp) }
@@ -428,7 +428,7 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** A `case 1` literal pattern. */
-  additional class MatchLiteralPattern extends Pattern {
+  additional class MatchLiteralPattern extends PythonPattern {
     private Py::MatchLiteralPattern litp;
 
     MatchLiteralPattern() { this = TPattern(litp) }
@@ -439,7 +439,7 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** A `case Cls.NAME` value pattern. */
-  additional class MatchValuePattern extends Pattern {
+  additional class MatchValuePattern extends PythonPattern {
     private Py::MatchValuePattern vp;
 
     MatchValuePattern() { this = TPattern(vp) }
@@ -1153,6 +1153,31 @@ module Ast implements AstSig<Py::Location> {
       or
       this.asExpr() instanceof Py::False and result = false
     }
+  }
+
+  final class Pattern = PatternImpl;
+
+  /** A pattern handled by the shared CFG. */
+  abstract private class PatternImpl extends AstNodeImpl { }
+
+  private class EmptyPattern extends PatternImpl {
+    EmptyPattern() { none() }
+
+    override string toString() { none() }
+
+    override Py::Location getLocation() { none() }
+
+    override Callable getEnclosingCallable() { none() }
+  }
+
+  /** An and-pattern handled by the shared CFG. */
+  class AndPattern extends EmptyPattern {
+    AndPattern() { none() }
+  }
+
+  /** An or-pattern handled by the shared CFG. */
+  class OrPattern extends EmptyPattern {
+    OrPattern() { none() }
   }
 
   /** A pattern match expression. Python has no `instanceof`-style pattern match expression. */
