@@ -53,12 +53,11 @@ struct SwiftContext {
     conditional_compilation_tail: Option<yeast::OutputId>,
     /// The enclosing `subscriptDecl`, set while translating its accessor
     /// block so the inner `accessorDecl` rule emits `subscript` methods
-    /// rather than property accessors.
+    /// rather than property accessors, and while translating its parameters,
+    /// since unlike function parameters, a subscript parameter with a single
+    /// name has no argument label. It is cleared when translating accessor
+    /// bodies.
     subscript: Option<SubscriptContext>,
-    /// True while translating the parameters of a subscript. Unlike function
-    /// parameters, a subscript parameter with a single name has no argument
-    /// label.
-    in_subscript_parameters: bool,
 }
 
 /// The parts of a `subscriptDecl` shared by its getter and setter. These are
@@ -196,13 +195,14 @@ fn subscript_method(
     accessor: SubscriptAccessor,
 ) -> yeast::OutputId {
     let is_chained = ctx.is_chained;
+    let sub_ctx = sub.clone();
     let (mods, type_params, params, element_type, body) = ctx.scoped(|ctx| {
         ctx.reset();
         let mods = ctx.translate(sub.modifiers);
         let type_params = ctx.translate(sub.type_params);
         let element_type = ctx.translate(sub.return_type).into_iter().next();
         let body = ctx.translate(accessor.body).into_iter().next();
-        ctx.in_subscript_parameters = true;
+        ctx.subscript = Some(sub_ctx);
         let params = ctx.translate(sub.params);
         (mods, type_params, params, element_type, body)
     });
@@ -876,7 +876,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 secondName: _? @@second
                 type: @@ty
                 defaultValue: (initializerClause value: @@val)?)
-            where ctx.in_subscript_parameters && second.is_none()
+            where ctx.subscript.is_some() && second.is_none()
             =>
             parameter {
                 ctx.reset();
