@@ -460,3 +460,11 @@ func testEnums(p: Password, i: Info) {
         print(contents) // safe
     }
 }
+
+struct Secret {
+    let value: String
+}
+
+func testStructConstructor() {
+    print(Secret(value: "abc")) // $ MISSING: Alert[unified/swift/cleartext-logging]
+}
