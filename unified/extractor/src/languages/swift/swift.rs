@@ -880,8 +880,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             parameter {
                 ctx.reset();
-                let ty = ctx.translate(ty).into_iter().next();
-                let val = ctx.translate(val).into_iter().next();
                 tree!((parameter
                     pattern: {parameter_pattern(&mut ctx, first)}
                     type: {ty}
