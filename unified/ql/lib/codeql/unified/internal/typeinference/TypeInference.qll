@@ -979,11 +979,23 @@ Type inferVariableType(LocalVariable variable) {
   result = Input3::inferTypeFromVariable(variable, _)
 }
 
-/** Gets the type of the given base of `access`. */
+/**
+ * Gets the type of the given base of `access`.
+ *
+ * If the base is a reference to a class-like type, as in `Foo.bar`, or is an implicit
+ * reference to the enclosing type in a static context, the result is a `MetaType`.
+ */
 Type inferBaseType(MemberAccess access) {
   result = inferType(access.(MemberAccessExpr).getBase())
   or
+  result.(MetaType).getInstanceType() = access.(MemberAccessExpr).getBase().(TypeMention).getType()
+  or
   result = inferVariableType(access.(UnqualifiedMemberAccess).getImplicitQualifierVariable())
+  or
+  exists(UnqualifiedMemberAccess uma | uma = access |
+    not uma.isInstanceAccess() and
+    result.(MetaType).getClassLikeElement() = uma.getAccessingClass().getClassLikeElement()
+  )
 }
 
 module Consistency = M3::Consistency;

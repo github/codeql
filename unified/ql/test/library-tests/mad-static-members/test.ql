@@ -1,6 +1,8 @@
 private import unified
 private import codeql.unified.internal.StaticNameBinding as N
 private import codeql.unified.internal.mad.LegacyMaD as MaD
+private import codeql.unified.internal.typeinference.TypeInference as T
+private import codeql.unified.internal.typeinference.Type as Types
 
 query predicate staticMember(AstNode ref, string member) {
   exists(MaD::MemberSelector selector |
@@ -33,4 +35,9 @@ query predicate unqualified(UnqualifiedMemberAccess access, string member) {
     access.getTargetNode().isMemberSelector(selector) and
     member = selector.getTypeString() + "." + selector.getName()
   )
+}
+
+query predicate baseMetaType(MemberAccess access, string type) {
+  type = T::inferBaseType(access).(Types::MetaType).toString() and
+  exists(access.getFile().getRelativePath())
 }

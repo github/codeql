@@ -1,3 +1,23 @@
+baseMetaType
+| test.swift:4:9:4:23 | ... .init | StaticTest.Type |
+| test.swift:5:9:5:31 | ... .staticMethod | StaticTest.Type |
+| test.swift:6:9:6:29 | ... .staticProp | StaticTest.Type |
+| test.swift:7:9:7:25 | ... .Nested | StaticTest.Type |
+| test.swift:7:9:7:42 | ... .nestedStaticProp | StaticTest.Nested.Type |
+| test.swift:9:9:9:33 | ... .instanceMethod | StaticTest.Type |
+| test.swift:10:9:10:31 | ... .instanceProp | StaticTest.Type |
+| test.swift:11:9:11:30 | ... .unknownProp | StaticTest.Type |
+| test.swift:21:13:21:22 | staticProp | StaticTestSub.Type |
+| test.swift:25:13:25:22 | staticProp | StaticTestSub.Type |
+| test.swift:31:9:31:34 | ... .staticMethod | StaticTestSub.Type |
+| test.swift:32:9:32:32 | ... .staticProp | StaticTestSub.Type |
+| test.swift:33:9:33:26 | ... .init | StaticTestSub.Type |
+| test.swift:34:9:34:34 | ... .instanceProp | StaticTestSub.Type |
+| test.swift:45:13:45:22 | staticProp | StaticTest.Type |
+| test.swift:49:13:49:22 | staticProp | StaticTest.Type |
+| test.swift:50:13:50:24 | staticMethod | StaticTest.Type |
+| test.swift:60:13:60:23 | staticField | DeclaredType.Type |
+| test.swift:69:9:69:32 | ... .staticField | DeclaredType.Type |
 instanceMember
 | StaticTest | init |
 | StaticTest | instanceMethod |

@@ -64,6 +64,7 @@ newtype TType =
     )
   } or
   TAliasType(TypeAliasDeclaration alias) or
+  TMetaType(ClassLikeElement e) { exists(TClassLikeType(e)) } or
   TClosureParameterPseudoType(ParameterEx p) {
     p.isFunctionExprParameter(_, _) and
     not exists(p.getType())
@@ -158,6 +159,32 @@ class ClassLikeType extends TypeImpl, TClassLikeType {
   }
 
   override string toString() { result = e.getQualifiedName() }
+
+  override Location getLocation() { result = e.getLocation() }
+}
+
+/**
+ * A type representing a class-like element itself, as opposed to instances of it.
+ *
+ * For example, in `Foo.bar`, the base `Foo` has the meta type of `Foo`. In Swift, this
+ * corresponds to the type `Foo.Type`.
+ */
+class MetaType extends TypeImpl, TMetaType {
+  private ClassLikeElement e;
+
+  MetaType() { this = TMetaType(e) }
+
+  /** Gets the class-like element whose meta type this is. */
+  ClassLikeElement getClassLikeElement() { result = e }
+
+  /** Gets the type of instances of the class-like element, as opposed to the element itself. */
+  ClassLikeType getInstanceType() { result.getClassLikeElement() = e }
+
+  override Identifier getNameNode() { none() }
+
+  override TypeParameter getPositionalTypeParameter(int i) { none() }
+
+  override string toString() { result = e.getQualifiedName() + ".Type" }
 
   override Location getLocation() { result = e.getLocation() }
 }
