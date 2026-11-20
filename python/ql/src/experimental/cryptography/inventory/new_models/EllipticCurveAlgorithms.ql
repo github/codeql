@@ -3,7 +3,7 @@
  * @description Finds all potential usage of elliptic curve algorithms using the supported libraries.
  * @kind problem
  * @id py/quantum-readiness/cbom/elliptic-curve-algorithms
- * @problem.severity error
+ * @severity recommendation
  * @tags cbom
  *       cryptography
  */
