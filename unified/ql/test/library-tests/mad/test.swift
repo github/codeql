@@ -290,3 +290,11 @@ func testStaticAndInstanceMethods(obj: StaticTest, string: String) {
     StaticTest.instanceSink(string)  // $ SPURIOUS: isSink=instance-sink
     obj.staticSink(string)  // $ SPURIOUS: isSink=static-sink
 }
+
+func testStaticAndInstanceProperties(obj: StaticTest) {
+    _ = obj.instanceProp  // $ isSource=instance-prop-source
+    _ = StaticTest.staticProp  // $ MISSING: isSource=static-prop-source // the base is not yet inferred to have the meta type `StaticTest.Type`
+
+    _ = StaticTest.instanceProp  // not a source: instance property accessed on the type
+    _ = obj.staticProp  // not a source: static property accessed on an instance
+}

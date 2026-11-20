@@ -9,7 +9,9 @@
         // namespace, type, subtypes, name, signature, ext, output, kind, provenance
         ["", "ShorthandTest", true, "sourceParams(_:)", "", "", "Parameter[self,0]", "shorthand-source", "manual"],
         ["", "SubscriptTest", true, "subscript(_:#newValue:)", "", "", "Parameter[#newValue:]", "subscript-setter-source", "manual"],
-        ["", "OptionalTest", true, "source(_:y?:)", "", "", "Parameter[0]", "optional-source", "manual"]
+        ["", "OptionalTest", true, "source(_:y?:)", "", "", "Parameter[0]", "optional-source", "manual"],
+        ["", "StaticTest", true, "instanceProp", "", "", "", "instance-prop-source", "manual"],
+        ["", "StaticTest.Type", true, "staticProp", "", "", "", "static-prop-source", "manual"]
       ]
     },
     {
