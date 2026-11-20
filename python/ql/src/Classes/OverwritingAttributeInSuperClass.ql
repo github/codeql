@@ -43,7 +43,7 @@ predicate self_write_stmt(Stmt s, string attr) {
     self = a.getObject() and
     s.contains(a) and
     self.getId() = "self" and
-    a.getCtx() instanceof Store and
+    a.isStoreContext() and
     a.getName() = attr
   )
 }
