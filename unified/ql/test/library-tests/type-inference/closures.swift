@@ -79,33 +79,33 @@ f(Box())  // $ target=Function.callAsFunction target=Box.init type=Box(...)@Box<
 func testShorthandClosureCall() {
     let result = apply(
         {
-            String($0)  // $ target=String.init $ MISSING: type=$0:Int
+            String($0)  // $ target=String.init type=$0:Int
         }, 42)  // $ target=apply
     _ = result  // $ type=result:String
 }
 
 func testSkippedShorthandParameter() {
     let result = {
-        $1  // $ MISSING: type=$1:String
+        $1  // $ type=$1:String
     }(42, "hello")  // $ target=Function.callAsFunction
-    _ = result  // $ MISSING: type=result:String
+    _ = result  // $ type=result:String
 }
 
 func testNestedShorthandParameters() {
     let result = {
-        let value = $0  // $ MISSING: type=$0:Int
+        let value = $0  // $ type=$0:Int
         let string = {
-            $1  // $ MISSING: type=$1:String
+            $1  // $ type=$1:String
         }(false, "hello")  // $ target=Function.callAsFunction
-        _ = string  // $ MISSING: type=string:String
-        return value  // $ MISSING: type=value:Int
+        _ = string  // $ type=string:String
+        return value  // $ type=value:Int
     }(42)  // $ target=Function.callAsFunction
-    _ = result  // $ MISSING: type=result:Int
+    _ = result  // $ type=result:Int
 }
 
 func testContextualShorthandParameter() {
     let identity: (Int) -> Int = {
-        $0  // $ MISSING: type=$0:Int
+        $0  // $ type=$0:Int
     }
     let result = identity(42)  // $ target=Function.callAsFunction
     _ = result  // $ type=result:Int
@@ -114,8 +114,19 @@ func testContextualShorthandParameter() {
 func testNamedOuterWithShorthandInner(xs: [Int], ys: [Int]) {
     let result = xs.map { outer in  // $ type=outer:Int
         ys.map {
-            outer + $0  // $ type=outer:Int $ MISSING: type=$0:Int
+            outer + $0  // $ type=outer:Int type=$0:Int
         }  // $ target=Array.map
     }  // $ target=Array.map
     _ = result  // $ type=result:Array type=result@Array<Element>:Array
+}
+
+func makeClosureArgument<T>() -> T {
+    fatalError()
+}
+
+func testReturnContextShorthandParameter() {
+    let result: String = {
+        $1  // $ type=$1:String
+    }(false, makeClosureArgument())  // $ target=Function.callAsFunction target=makeClosureArgument
+    _ = result  // $ type=result:String
 }

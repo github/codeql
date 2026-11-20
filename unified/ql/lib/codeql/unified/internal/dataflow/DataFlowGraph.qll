@@ -24,6 +24,13 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node2.isLocalVariableWrite(callable, getImplicitReceiverVariable(callable))
   )
   or
+  exists(FunctionExpr fe, LocalVariable var, ParameterPosition pos |
+    var.isImplicitFunctionExprParameter(fe, pos.asPositional()) and
+    node1.isImplicitParameter(toDataFlowCallable(fe), pos) and
+    step.value() and
+    node2.isLocalVariableWrite(fe, var)
+  )
+  or
   exists(CallExpr call, Expr receiverExpr |
     receiverExpr = call.getCallee().(MemberAccessExpr).getBase()
   |

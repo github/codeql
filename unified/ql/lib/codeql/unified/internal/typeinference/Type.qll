@@ -7,6 +7,7 @@ private import unified as Unified
 private import TypeMention
 private import TypeInference
 private import codeql.unified.internal.StaticNameBinding
+private import codeql.unified.internal.ParameterEx
 private import codeql.unified.internal.mad.LegacyMaD as MaD
 
 /**
@@ -58,11 +59,9 @@ newtype TType =
     exists(c.getNameNode())
   } or
   TAliasType(TypeAliasDeclaration alias) or
-  TClosureParameterPseudoType(Parameter p) {
-    exists(FunctionExpr fe |
-      p = fe.getAParameter() and
-      not exists(p.getType())
-    )
+  TClosureParameterPseudoType(ParameterEx p) {
+    p.isFunctionExprParameter(_, _) and
+    not exists(p.getType())
   } or
   TTypeParameterType(Unified::TypeParameter tp) or
   TAssociatedTypeParameterType(
@@ -217,11 +216,11 @@ class UnknownType extends PseudoType, TUnknownType {
  * A type representing a closure parameter.
  */
 class ClosureParameterPseudoType extends PseudoType, TClosureParameterPseudoType {
-  private Parameter param;
+  private ParameterEx param;
 
   ClosureParameterPseudoType() { this = TClosureParameterPseudoType(param) }
 
-  Parameter getParam() { result = param }
+  ParameterEx getParam() { result = param }
 
   override TypeParameter getPositionalTypeParameter(int i) { none() }
 

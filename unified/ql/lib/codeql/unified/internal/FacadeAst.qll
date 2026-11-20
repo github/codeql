@@ -436,8 +436,18 @@ module Unified {
 
   /** A function expression. */
   class FunctionExpr extends G::FunctionExpr {
-    /** Gets the number of parameters of this function. */
-    int getNumberOfParameters() { result = count(this.getAParameter()) }
+    /** Gets the number of implicit parameters, if any. */
+    int getNumberOfImplicitParameters() {
+      result = max(int n | exists(getImplicitFunctionExprParamName(this, n)) | n) + 1
+    }
+
+    /** Gets the number of explicit or implicit parameters of this function. */
+    int getNumberOfParameters() {
+      result = this.getNumberOfImplicitParameters()
+      or
+      not exists(this.getNumberOfImplicitParameters()) and
+      result = count(this.getAParameter())
+    }
   }
 
   class ArrayLiteral extends G::ArrayLiteral {

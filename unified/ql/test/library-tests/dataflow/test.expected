@@ -180,6 +180,15 @@ edges
 | capture.swift:117:36:117:36 | x | capture.swift:117:29:117:32 | blah | provenance |  |
 | capture.swift:147:5:147:5 | x | capture.swift:143:14:143:14 | x | provenance |  |
 | capture.swift:147:9:147:23 | source(...) | capture.swift:147:5:147:5 | x | provenance |  |
+| capture.swift:158:13:158:27 | source(...) | capture.swift:154:14:154:15 | $0 | provenance |  |
+| capture.swift:158:30:158:44 | source(...) | capture.swift:155:14:155:15 | $1 | provenance |  |
+| capture.swift:163:13:163:17 | value | capture.swift:167:18:167:22 | value | provenance |  |
+| capture.swift:163:21:163:22 | $0 | capture.swift:163:13:163:17 | value | provenance |  |
+| capture.swift:169:15:169:29 | source(...) | capture.swift:165:18:165:19 | $0 | provenance |  |
+| capture.swift:169:32:169:46 | source(...) | capture.swift:166:18:166:19 | $1 | provenance |  |
+| capture.swift:172:11:172:25 | source(...) | capture.swift:163:21:163:22 | $0 | provenance |  |
+| capture.swift:172:11:172:25 | source(...) | capture.swift:170:14:170:15 | $0 | provenance |  |
+| capture.swift:179:29:179:43 | source(...) | capture.swift:177:14:177:15 | $1 | provenance |  |
 | capture.swift:186:9:186:9 | x | capture.swift:188:18:188:21 | self [x] | provenance |  |
 | capture.swift:186:13:186:25 | source(...) | capture.swift:186:9:186:9 | x | provenance |  |
 | capture.swift:188:18:188:21 | self [x] | capture.swift:188:18:188:23 | ... .x | provenance |  |
@@ -838,6 +847,21 @@ nodes
 | capture.swift:143:14:143:14 | x | semmle.label | x |
 | capture.swift:147:5:147:5 | x | semmle.label | x |
 | capture.swift:147:9:147:23 | source(...) | semmle.label | source(...) |
+| capture.swift:154:14:154:15 | $0 | semmle.label | $0 |
+| capture.swift:155:14:155:15 | $1 | semmle.label | $1 |
+| capture.swift:158:13:158:27 | source(...) | semmle.label | source(...) |
+| capture.swift:158:30:158:44 | source(...) | semmle.label | source(...) |
+| capture.swift:163:13:163:17 | value | semmle.label | value |
+| capture.swift:163:21:163:22 | $0 | semmle.label | $0 |
+| capture.swift:165:18:165:19 | $0 | semmle.label | $0 |
+| capture.swift:166:18:166:19 | $1 | semmle.label | $1 |
+| capture.swift:167:18:167:22 | value | semmle.label | value |
+| capture.swift:169:15:169:29 | source(...) | semmle.label | source(...) |
+| capture.swift:169:32:169:46 | source(...) | semmle.label | source(...) |
+| capture.swift:170:14:170:15 | $0 | semmle.label | $0 |
+| capture.swift:172:11:172:25 | source(...) | semmle.label | source(...) |
+| capture.swift:177:14:177:15 | $1 | semmle.label | $1 |
+| capture.swift:179:29:179:43 | source(...) | semmle.label | source(...) |
 | capture.swift:186:9:186:9 | x | semmle.label | x |
 | capture.swift:186:13:186:25 | source(...) | semmle.label | source(...) |
 | capture.swift:188:18:188:21 | self [x] | semmle.label | self [x] |
@@ -1446,6 +1470,13 @@ testFailures
 | capture.swift:118:14:118:14 | x | capture.swift:116:13:116:27 | source(...) | capture.swift:118:14:118:14 | x | $@ | capture.swift:116:13:116:27 | source(...) | source(...) |
 | capture.swift:119:14:119:17 | blah | capture.swift:116:13:116:27 | source(...) | capture.swift:119:14:119:17 | blah | $@ | capture.swift:116:13:116:27 | source(...) | source(...) |
 | capture.swift:143:14:143:14 | x | capture.swift:147:9:147:23 | source(...) | capture.swift:143:14:143:14 | x | $@ | capture.swift:147:9:147:23 | source(...) | source(...) |
+| capture.swift:154:14:154:15 | $0 | capture.swift:158:13:158:27 | source(...) | capture.swift:154:14:154:15 | $0 | $@ | capture.swift:158:13:158:27 | source(...) | source(...) |
+| capture.swift:155:14:155:15 | $1 | capture.swift:158:30:158:44 | source(...) | capture.swift:155:14:155:15 | $1 | $@ | capture.swift:158:30:158:44 | source(...) | source(...) |
+| capture.swift:165:18:165:19 | $0 | capture.swift:169:15:169:29 | source(...) | capture.swift:165:18:165:19 | $0 | $@ | capture.swift:169:15:169:29 | source(...) | source(...) |
+| capture.swift:166:18:166:19 | $1 | capture.swift:169:32:169:46 | source(...) | capture.swift:166:18:166:19 | $1 | $@ | capture.swift:169:32:169:46 | source(...) | source(...) |
+| capture.swift:167:18:167:22 | value | capture.swift:172:11:172:25 | source(...) | capture.swift:167:18:167:22 | value | $@ | capture.swift:172:11:172:25 | source(...) | source(...) |
+| capture.swift:170:14:170:15 | $0 | capture.swift:172:11:172:25 | source(...) | capture.swift:170:14:170:15 | $0 | $@ | capture.swift:172:11:172:25 | source(...) | source(...) |
+| capture.swift:177:14:177:15 | $1 | capture.swift:179:29:179:43 | source(...) | capture.swift:177:14:177:15 | $1 | $@ | capture.swift:179:29:179:43 | source(...) | source(...) |
 | capture.swift:188:18:188:23 | ... .x | capture.swift:186:13:186:25 | source(...) | capture.swift:188:18:188:23 | ... .x | $@ | capture.swift:186:13:186:25 | source(...) | source(...) |
 | capture.swift:196:18:196:23 | ... .x | capture.swift:194:13:194:25 | source(...) | capture.swift:196:18:196:23 | ... .x | $@ | capture.swift:194:13:194:25 | source(...) | source(...) |
 | capture.swift:197:18:197:18 | x | capture.swift:194:13:194:25 | source(...) | capture.swift:197:18:197:18 | x | $@ | capture.swift:194:13:194:25 | source(...) | source(...) |
