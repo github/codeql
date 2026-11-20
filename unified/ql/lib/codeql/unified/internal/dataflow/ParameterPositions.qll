@@ -8,6 +8,8 @@ private newtype TParameterPosition =
     name = any(Parameter p).getExternalName()
     or
     name = any(Argument arg).getName()
+    or
+    name = "#newValue" // the new value passed to a setter method
   }
 
 class ParameterPosition extends TParameterPosition {

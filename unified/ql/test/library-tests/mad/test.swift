@@ -218,3 +218,24 @@ func testShorthandTokens(obj: ShorthandTest, string: String) {
         string  // $ isSink=shorthand-sink
     )  // $ isSink=shorthand-sink
 }
+
+class SubscriptTest {
+    subscript(i: Int) -> String {
+        get { "" }
+        set {}
+    }
+}
+
+class SubscriptTestSub: SubscriptTest {
+    override subscript(i: Int) -> String {
+        get { "" }
+        set(v) {  // $ isSource=subscript-setter-source
+            _ = v
+        }
+    }
+}
+
+func testSubscripts(obj: SubscriptTest, string: String) {
+    _ = obj[0]  // $ isSink=subscript-getter-sink
+    obj[0] = string  // $ isSink=subscript-setter-sink
+}
