@@ -28,6 +28,16 @@ module LogInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof Barrier }
 
+  predicate isBarrierIn(DataFlow::Node node) {
+    // make sources barriers so that we only report the closest instance
+    isSource(node)
+  }
+
+  predicate isBarrierOut(DataFlow::Node node) {
+    // make sinks barriers so that we only report the closest instance
+    isSink(node)
+  }
+
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
