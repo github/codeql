@@ -381,7 +381,8 @@ module UnsafeShellCommandConstruction {
       exists(AccessPath ap | this.asExpr() = ap.getAnInstance() |
         forall(string char | char = getAShellChar() | blocksCharInAccess(ap, char, astNode))
       ) and
-      astNode.getPropertyNameExpr().analyze().getTheType() = TTNumber()
+      astNode.getPropertyNameExpr().analyze().getTheType() = TTNumber() and
+      astNode.getBase().analyze().getTheType() = TTString()
     }
   }
 }
