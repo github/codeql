@@ -175,12 +175,12 @@ int test12() {
    size_type Start = 0;
    while (Start <= test12_helper()-1)
    {
-    range(Start); // $ MISSING:range=>=0
+    range(Start); // $ range="<=Store: ... += ...+0" MISSING:range=>=0
     const size_type Length = test12_helper();
     Start += Length + 1; // $ overflow=+
     range(Start); // $ MISSING:range=>=1 MISSING:range=>=Start+1 MISSING:range=">=call to test12_helper+1"
    }
-   range(Start); // $ MISSING:range=>=0
+   range(Start); // $ range="<=Store: ... += ...+0" MISSING:range=>=0
 
    return 1;
 }
