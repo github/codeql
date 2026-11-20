@@ -97,6 +97,23 @@ TypeParameter getTupleTypeParameter(int arity, int i) {
 private predicate inferTypeAlias = inferType/2;
 
 private class SwiftTypeInferencePlugin extends Plugin::TypeInferencePlugin {
+  override Variance getTypeParameterVariance(TypeParameter tp) {
+    tp = getFunctionArgsTypeParameter() and result.isContravariant()
+    or
+    (
+      tp = getFunctionReturnTypeParameter()
+      or
+      tp instanceof ParentTypeParameterType
+      or
+      tp = any(TupleType t).getATypeParameter()
+      or
+      tp = any(ArrayType t).getATypeParameter()
+      or
+      tp = any(OptionalType t).getATypeParameter()
+    ) and
+    result.isCovariant()
+  }
+
   override Type getBoolType() { result instanceof BoolType }
 
   override Type getIntType() { result instanceof IntType }
@@ -113,6 +130,11 @@ private class SwiftTypeInferencePlugin extends Plugin::TypeInferencePlugin {
   override Type getFunctionExprType(FunctionExpr fe) {
     result instanceof FunctionType and
     exists(fe)
+  }
+
+  override Type getFunctionExprIntermediateType(FunctionExpr fe, TypePath path) {
+    result = this.getTupleType(fe.getNumberOfParameters()) and
+    path = TypePath::singleton(getFunctionArgsTypeParameter())
   }
 
   bindingset[t]

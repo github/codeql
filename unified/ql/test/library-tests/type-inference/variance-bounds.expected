@@ -1,0 +1,16 @@
+bounds
+| boundDoubleActual | T | lower |  | Int |
+| boundDoubleNestedActual | T | equality |  | Int |
+| boundInvariantActual | T | equality |  | Int |
+| boundLowerActual | T | lower |  | Int |
+| boundMixedActual | T | lower |  | String |
+| boundMixedActual | T | upper |  | Int |
+| boundNestedActual | T | equality |  | Int |
+| boundOptionalActual | T | equality |  | Int |
+| boundShiftActual | T | equality |  | Int |
+| boundUpperActual | T | upper |  | Int |
+noBounds
+| boundContraReverseActual |
+| boundInvariantConversionActual |
+| boundInvariantFunctionActual |
+| boundWrongDirectionActual |

@@ -19,6 +19,7 @@
 
 private import codeql.util.Unit
 private import codeql.typeinference.internal.TypeInference
+private import codeql.typeinference.internal.TypeInference as TypeInferenceInternal
 private import codeql.unified.internal.ParameterEx
 private import codeql.unified.internal.ExprPositions
 private import codeql.unified.internal.NameBinding
@@ -33,6 +34,10 @@ private import TypeInferencePlugin as Plugin
 
 class Type = T::Type;
 
+class Variance = TypeInferenceInternal::Variance;
+
+class MatchingRelation = TypeInferenceInternal::MatchingRelation;
+
 private module Input1 implements InputSig1<Location> {
   private import Type as T
 
@@ -43,6 +48,10 @@ private module Input1 implements InputSig1<Location> {
   class TypeParameter = T::TypeParameter;
 
   class TypeAbstraction = TA::TypeAbstraction;
+
+  Variance getTypeParameterVariance(TypeParameter tp) {
+    result = any(Plugin::TypeInferencePlugin pl).getTypeParameterVariance(tp)
+  }
 
   int getTypeParameterId(TypeParameter tp) {
     CachedStage::ref() and
