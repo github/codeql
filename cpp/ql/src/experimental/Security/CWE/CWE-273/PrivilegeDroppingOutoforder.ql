@@ -17,7 +17,7 @@ import cpp
 
 predicate argumentMayBeRoot(Expr e) {
   e.getValue() = "0" or
-  e.(VariableAccess).getTarget().getName().toLowerCase().matches("%root%")
+  e.(VariableAccess).getTarget().getName().toLowerCase().contains("root")
 }
 
 class SetuidLikeFunctionCall extends FunctionCall {

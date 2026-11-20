@@ -15,7 +15,7 @@ class Initialization extends Function {
     // TODO: This could be refined to match precisely what functions count
     // as "initialization", and are, hence, allowed to perform dynamic
     // memory allocation.
-    this.getName().toLowerCase().matches("init%") or
+    this.getName().toLowerCase().startsWith("init") or
     this.getName().toLowerCase().matches("%\\_init")
   }
 }

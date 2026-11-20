@@ -124,7 +124,7 @@ module AsyncPackage {
                 "concat", "detect", "each", "eachOf", "forEach", "forEachOf", "every", "filter",
                 "groupBy", "map", "mapValues", "reject", "some", "sortBy",
               ]) and
-          if name.matches("%Limit")
+          if name.endsWith("Limit")
           then (
             iteratorCallbackIndex = 2 and finalCallbackIndex = 3
           ) else (

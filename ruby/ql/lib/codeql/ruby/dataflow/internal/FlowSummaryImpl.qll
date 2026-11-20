@@ -342,7 +342,7 @@ module ParsePositions {
     includeUnknown = false
     or
     result = arg and
-    not arg.matches("%!") and
+    not arg.endsWith("!") and
     includeUnknown = true
   }
 

@@ -16,7 +16,7 @@ import java
 
 class Adapter extends Class {
   Adapter() {
-    this.getName().matches("%Adapter") and
+    this.getName().endsWith("Adapter") and
     (
       this.getPackage().hasName("java.awt.event") or
       this.getPackage().hasName(javaxOrJakarta() + ".swing.event")

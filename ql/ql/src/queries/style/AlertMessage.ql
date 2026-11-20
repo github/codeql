@@ -69,8 +69,8 @@ String shouldHaveFullStop(Select sel) {
     |
       str order by i
     ) and
-  not result.getValue().matches("%.") and
-  not result.getValue().matches("%?")
+  not result.getValue().endsWith(".") and
+  not result.getValue().endsWith("?")
 }
 
 /**
@@ -202,10 +202,10 @@ AstNode getAlertLocLink(Select sel) {
 
 from AstNode node, string msg, Select sel
 where
-  not node.getLocation().getFile().getAbsolutePath().matches("%/test/%") and
-  not node.getLocation().getFile().getAbsolutePath().matches("%/examples/%") and
-  not node.getLocation().getFile().getAbsolutePath().matches("%/experimental/%") and
-  not node.getLocation().getFile().getAbsolutePath().matches("%/meta/%") and
+  not node.getLocation().getFile().getAbsolutePath().contains("/test/") and
+  not node.getLocation().getFile().getAbsolutePath().contains("/examples/") and
+  not node.getLocation().getFile().getAbsolutePath().contains("/experimental/") and
+  not node.getLocation().getFile().getAbsolutePath().contains("/meta/") and
   sel.getQueryDoc().getQueryKind() = ["problem", "path-problem"] and
   (
     node = shouldHaveFullStop(sel) and

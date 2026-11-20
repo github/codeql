@@ -83,7 +83,7 @@ module ShellJS {
     predicate hasOptionsArg() {
       exists(string val |
         this.getArgument(0).mayHaveStringValue(val) and
-        val.matches("-%")
+        val.startsWith("-")
       )
     }
 

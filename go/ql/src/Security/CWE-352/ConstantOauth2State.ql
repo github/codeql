@@ -76,8 +76,8 @@ string getAnOobOauth2Url() {
   result in ["urn:ietf:wg:oauth:2.0:oob", "urn:ietf:wg:oauth:2.0:oob:auto", "oob", "code"] or
   // Alternatively some non-web tools will create a temporary local webserver to handle the
   // OAuth2 redirect:
-  result.matches("%://localhost%") or
-  result.matches("%://127.0.0.1%")
+  result.contains("://localhost") or
+  result.contains("://127.0.0.1")
 }
 
 module PrivateUrlFlowsToAuthCodeUrlCallConfig implements DataFlow::ConfigSig {

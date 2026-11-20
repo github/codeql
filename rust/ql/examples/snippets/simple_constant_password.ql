@@ -33,7 +33,7 @@ module ConstantPasswordConfig implements DataFlow::ConfigSig {
     exists(Call call, Function target, int argIndex, Variable v |
       call.getStaticTarget() = target and
       v.getParameter() = target.getParam(argIndex) and
-      v.getText().matches("pass%") and
+      v.getText().startsWith("pass") and
       call.getPositionalArgument(argIndex) = node.asExpr()
     )
   }

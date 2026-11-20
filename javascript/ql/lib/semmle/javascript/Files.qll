@@ -52,7 +52,7 @@ class Folder extends Container, Impl::Folder {
   /** Like `getFile` except `d.ts` is treated as a single extension. */
   overlay[global]
   private File getFileLongExtension(string stem, string extension) {
-    not (stem.matches("%.d") and extension = "ts") and
+    not (stem.endsWith(".d") and extension = "ts") and
     result = this.getFile(stem, extension)
     or
     extension = "d.ts" and

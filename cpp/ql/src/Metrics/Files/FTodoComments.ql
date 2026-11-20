@@ -19,8 +19,8 @@ where
     count(Comment c |
       c.getFile() = f and
       (
-        c.getContents().matches("%TODO%") or
-        c.getContents().matches("%FIXME%")
+        c.getContents().contains("TODO") or
+        c.getContents().contains("FIXME")
       )
     )
 select f, n order by n

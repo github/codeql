@@ -288,7 +288,7 @@ module Make<RegexTreeViewSig TreeImpl> {
 
   pragma[inline]
   private string escapeRegExpCharacterClassEscape(RegExpCharacterClassEscape escape) {
-    if escape.toString().matches("%-%")
+    if escape.toString().contains("-")
     then result = Strings::escape(escape.toString()) // might contain unicode characters
     else result = escape.toString() // just a plain `\d` or `\w` etc. Those are already escaped.
   }

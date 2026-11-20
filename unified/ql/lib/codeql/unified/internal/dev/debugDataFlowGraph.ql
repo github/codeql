@@ -13,7 +13,7 @@ private import codeql.unified.internal.dataflow.DataFlowGraph
  */
 predicate relevantNode(AstNode node) {
   // Match an ancestor node by location so its whole subtree is shown.
-  node.getParent*().getLocation().toString().matches("%test.swift@13:%")
+  node.getParent*().getLocation().toString().contains("test.swift@13:")
 }
 
 import DebugGraph<relevantNode/1>

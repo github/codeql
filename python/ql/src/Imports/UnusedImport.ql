@@ -105,7 +105,7 @@ private string typehint_comment_in_file(File file) {
   exists(Comment typehint |
     file = typehint.getLocation().getFile() and
     result = typehint.getText() and
-    result.matches("# type:%")
+    result.startsWith("# type:")
   )
 }
 

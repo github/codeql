@@ -71,7 +71,7 @@ where
   not (
     name = "toString" or
     name = "valueOf" or
-    name.matches("@@%") // @@iterator, for example
+    name.startsWith("@@") // @@iterator, for example
   ) and
   // avoid flagging properties that a type system requires
   not flowsToTypeRestrictedExpression(obj) and

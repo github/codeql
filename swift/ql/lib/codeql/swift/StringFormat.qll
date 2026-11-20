@@ -36,7 +36,7 @@ class StringInitWithFormat extends FormattingFunction, Method {
   StringInitWithFormat() {
     exists(string fName |
       this.hasQualifiedName(["String", "NSString", "NSMutableString"], fName) and
-      fName.matches("init(format:%")
+      fName.startsWith("init(format:")
     )
   }
 

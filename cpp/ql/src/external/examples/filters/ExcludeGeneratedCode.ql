@@ -10,7 +10,7 @@
 import cpp
 import external.DefectFilter
 
-predicate generatedFile(File f) { f.getAbsolutePath().matches("%generated%") }
+predicate generatedFile(File f) { f.getAbsolutePath().contains("generated") }
 
 from DefectResult res
 where not generatedFile(res.getFile())

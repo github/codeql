@@ -3,7 +3,7 @@ import java
 query predicate classExprs(Expr e, string tstr) {
   exists(e.getFile().getRelativePath()) and
   tstr = e.getType().toString() and
-  tstr.matches("%Class%")
+  tstr.contains("Class")
 }
 
 from Method m

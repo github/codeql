@@ -17,5 +17,5 @@ where
     or
     errno.(Variable).hasName("errno") and use = errno.(Variable).getAnAccess()
   ) and
-  errno.getFile().getAbsolutePath().matches("%errno.h")
+  errno.getFile().getAbsolutePath().endsWith("errno.h")
 select use, "AV Rule 17: The error indicator errno shall not be used."

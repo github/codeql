@@ -37,7 +37,7 @@ predicate hashingMethod(Method m) {
 /** Holds if `e` is an expression in which `t` is used in a hashing data structure. */
 predicate usedInHash(RefType t, Expr e) {
   exists(RefType s |
-    s.getName().matches("%Hash%") and not s.getSourceDeclaration().getName() = "IdentityHashMap"
+    s.getName().contains("Hash") and not s.getSourceDeclaration().getName() = "IdentityHashMap"
   |
     exists(MethodCall ma |
       ma.getQualifier().getType() = s and

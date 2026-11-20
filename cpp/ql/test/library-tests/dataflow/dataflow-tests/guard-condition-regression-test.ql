@@ -5,7 +5,7 @@ private import semmle.code.cpp.controlflow.IRGuards
 
 module IRTestAllocationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.asParameter().getName().matches("source%") and
+    source.asParameter().getName().startsWith("source") and
     source.getLocation().getFile().getBaseName() = "guard-condition-regression-test.cpp"
   }
 

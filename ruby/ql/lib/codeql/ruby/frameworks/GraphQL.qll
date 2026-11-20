@@ -200,7 +200,7 @@ class GraphqlLoadMethod extends Method, Http::Server::RequestHandler::Range {
 
   GraphqlLoadMethod() {
     this.getEnclosingModule() = resolvableClass and
-    this.getName().regexpMatch("^load_.*")
+    this.getName().startsWith("load_")
   }
 
   override Parameter getARoutedParameter() { result = this.getAParameter() }

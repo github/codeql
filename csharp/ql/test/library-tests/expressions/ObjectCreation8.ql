@@ -10,7 +10,7 @@ where
   e.getEnclosingCallable() = m and
   e.getTarget() = cc and
   e.getNumberOfArguments() = 0 and
-  cc.getName().matches("List%") and
+  cc.getName().startsWith("List") and
   i = e.getInitializer() and
   i.getNumberOfElementInitializers() = 10 and
   forall(int d | d in [0 .. 9] |

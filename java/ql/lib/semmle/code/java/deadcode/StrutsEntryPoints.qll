@@ -65,12 +65,12 @@ class ActionAccessibleClass extends Class {
 
   Method getAGetter() {
     result = this.getAMethod() and
-    result.getName().matches("get%")
+    result.getName().startsWith("get")
   }
 
   Method getASetter() {
     result = this.getAMethod() and
-    result.getName().matches("set%")
+    result.getName().startsWith("set")
   }
 }
 

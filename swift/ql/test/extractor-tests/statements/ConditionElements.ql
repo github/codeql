@@ -2,7 +2,7 @@ import swift
 
 from ConditionElement e, AstNode underlying
 where
-  e.getLocation().getFile().getName().matches("%swift/ql/test%") and
+  e.getLocation().getFile().getName().contains("swift/ql/test") and
   (
     underlying = e.getBoolean() or
     underlying = e.getPattern() or

@@ -24,7 +24,7 @@ predicate controlName(string prefix) {
 predicate usedInHumanWrittenCode(Field f) {
   exists(File file |
     f.getAnAccess().getFile() = file and
-    not file.getBaseName().toLowerCase().matches("%.designer.cs")
+    not file.getBaseName().toLowerCase().endsWith(".designer.cs")
   )
 }
 

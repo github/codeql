@@ -329,7 +329,7 @@ class TimeConversionFunction extends Function {
         ]
       or
       // Matches all forms of GetDateFormat, e.g. GetDateFormatA/W/Ex
-      this.getName().matches("GetDateFormat%")
+      this.getName().startsWith("GetDateFormat")
     )
     or
     autoLeapYearCorrecting = true and

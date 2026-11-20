@@ -127,11 +127,11 @@ class Class extends Class_, Scope, AstNode {
   /** Holds if this is probably a mixin (has 'mixin' or similar in name or docstring) */
   predicate isProbableMixin() {
     (
-      this.getName().toLowerCase().matches("%mixin%")
+      this.getName().toLowerCase().contains("mixin")
       or
-      this.getDocString().getText().toLowerCase().matches("%mixin%")
+      this.getDocString().getText().toLowerCase().contains("mixin")
       or
-      this.getDocString().getText().toLowerCase().matches("%mix-in%")
+      this.getDocString().getText().toLowerCase().contains("mix-in")
     )
   }
 

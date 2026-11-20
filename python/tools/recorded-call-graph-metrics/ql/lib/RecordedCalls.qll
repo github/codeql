@@ -149,10 +149,10 @@ class XmlExternalCallee extends XmlCallee {
  */
 private Builtin traverse_qualname(Builtin parent, string qualname) {
   not qualname = "__objclass__" and
-  not qualname.matches("%.%") and
+  not qualname.contains(".") and
   result = parent.getMember(qualname)
   or
-  qualname.matches("%.%") and
+  qualname.contains(".") and
   exists(string before_dot, string after_dot, Builtin intermediate_parent |
     qualname = before_dot + "." + after_dot and
     not before_dot = "__objclass__" and

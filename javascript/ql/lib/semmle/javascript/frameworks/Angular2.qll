@@ -256,7 +256,7 @@ module Angular2 {
   predicate isAngularExpressionAttribute(HTML::Attribute attrib) {
     attrib.getName().matches("(%)") or
     attrib.getName().matches("[%]") or
-    attrib.getName().matches("*ng%")
+    attrib.getName().startsWith("*ng")
   }
 
   private DataFlow::Node getAttributeValueAsNode(HTML::Attribute attrib) {
@@ -601,7 +601,7 @@ module Angular2 {
         elm = any(ComponentClass cls).getATemplateElement() and
         // Ignore instantiations of known element (mainly focus on native DOM elements)
         not elm = any(ComponentClass cls).getATemplateInstantiation() and
-        not elm.getName().matches("ng-%") and
+        not elm.getName().startsWith("ng-") and
         this =
           elm.getAttributeByName(attributeName)
               .getCodeInAttribute()

@@ -25,15 +25,15 @@ predicate isNotCleartextCredentials(string value) {
   or
   value.length() < 7 // Typical credentials are no less than 6 characters
   or
-  value.matches("% %") // Sentences containing spaces
+  value.contains(" ") // Sentences containing spaces
   or
   value.regexpMatch(".*[^a-zA-Z\\d]{3,}.*") // Contain repeated non-alphanumeric characters such as a fake password pass**** or ????
   or
-  value.matches("@%") // Starts with the "@" sign
+  value.startsWith("@") // Starts with the "@" sign
   or
   value.regexpMatch("\\$\\{.*\\}") // Variable placeholder ${credentials}
   or
-  value.matches("%=") // A basic check of encrypted credentials ending with padding characters
+  value.endsWith("=") // A basic check of encrypted credentials ending with padding characters
   or
   value.matches("ENC(%)") // Encrypted value
   or

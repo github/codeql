@@ -9,5 +9,5 @@ private import semmle.code.java.dataflow.FlowSteps
 private class JwsHeaderFieldsInheritTaint extends DataFlow::SyntheticFieldContent,
   TaintInheritingContent
 {
-  JwsHeaderFieldsInheritTaint() { this.getField().matches("io.jsonwebtoken.JwsHeader.%") }
+  JwsHeaderFieldsInheritTaint() { this.getField().startsWith("io.jsonwebtoken.JwsHeader.") }
 }

@@ -4,12 +4,12 @@ import codeql.swift.dataflow.DataFlow
 
 module TestConfiguration implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
-    src.asExpr().(CallExpr).getStaticTarget().getName().matches("source%")
+    src.asExpr().(CallExpr).getStaticTarget().getName().startsWith("source")
   }
 
   predicate isSink(DataFlow::Node sink) {
     exists(CallExpr sinkCall |
-      sinkCall.getStaticTarget().getName().matches("sink%") and
+      sinkCall.getStaticTarget().getName().startsWith("sink") and
       sinkCall.getAnArgument().getExpr() = sink.asExpr()
     )
   }

@@ -11,13 +11,13 @@ abstract class ManagedBean extends Interface { }
 
 /** An `MBean`. */
 class MBean extends ManagedBean {
-  MBean() { this.getQualifiedName().matches("%MBean%") }
+  MBean() { this.getQualifiedName().contains("MBean") }
 }
 
 /** An `MXBean`. */
 class MXBean extends ManagedBean {
   MXBean() {
-    this.getQualifiedName().matches("%MXBean%") or
+    this.getQualifiedName().contains("MXBean") or
     this.getAnAnnotation().getType().hasQualifiedName(javaxOrJakarta() + ".management", "MXBean")
   }
 }

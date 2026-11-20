@@ -126,7 +126,7 @@ class QlRefDocument extends YamlDocument {
   predicate usesInlineExpectations() {
     exists(YamlMapping n, YamlScalar value |
       n.getDocument() = this and
-      value.getValue().matches("%InlineExpectations%")
+      value.getValue().contains("InlineExpectations")
     |
       value = n.lookup("postprocess")
       or
@@ -157,7 +157,7 @@ class QlRefDocument extends YamlDocument {
     or
     exists(YamlMapping n, YamlScalar value |
       n.getDocument() = this and
-      value.getValue().matches("%PrintAst%")
+      value.getValue().contains("PrintAst")
     |
       value = n.lookup("query")
     )

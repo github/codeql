@@ -38,13 +38,13 @@ class IgnorableFunction extends Function {
     this.getName() = "adjacentDay"
     or
     // Windows API function that does timezone conversions
-    this.getName().matches("%SystemTimeToTzSpecificLocalTime%")
+    this.getName().contains("SystemTimeToTzSpecificLocalTime")
     or
     // Windows APIs that do time conversions
     this.getName().matches("%localtime%\\_s%")
     or
     // Windows APIs that do time conversions
-    this.getName().matches("%SpecificLocalTimeToSystemTime%")
+    this.getName().contains("SpecificLocalTimeToSystemTime")
     or
     // postgres function for diffing timestamps, date for leap year
     // is not applicable.
@@ -60,17 +60,17 @@ class IgnorableFunction extends Function {
     or
     // Indication of a calendar not applicable to
     // gregorian leap year, e.g., Hijri, Persian, Hebrew
-    this.getName().toLowerCase().matches("%hijri%")
+    this.getName().toLowerCase().contains("hijri")
     or
-    this.getFile().getBaseName().toLowerCase().matches("%hijri%")
+    this.getFile().getBaseName().toLowerCase().contains("hijri")
     or
-    this.getName().toLowerCase().matches("%persian%")
+    this.getName().toLowerCase().contains("persian")
     or
-    this.getFile().getBaseName().toLowerCase().matches("%persian%")
+    this.getFile().getBaseName().toLowerCase().contains("persian")
     or
-    this.getName().toLowerCase().matches("%hebrew%")
+    this.getName().toLowerCase().contains("hebrew")
     or
-    this.getFile().getBaseName().toLowerCase().matches("%hebrew%")
+    this.getFile().getBaseName().toLowerCase().contains("hebrew")
     or
     // misc. from string/char converters heuristic
     this.getName()
@@ -268,7 +268,7 @@ class IgnorablePointerOrCharArithmetic extends IgnorableOperation {
       // Operations on calls to functions named like "strlen", "wcslen", etc
       // NOTE: workaround for cases where the wchar_t type is not a char, but an unsigned short
       // unclear if there is a best way to filter cases like these out based on type info.
-      op.(Call).getTarget().getName().matches("%len%")
+      op.(Call).getTarget().getName().contains("len")
     )
     or
     exists(AssignArithmeticOperation a | a.getRValue() = this |
@@ -283,7 +283,7 @@ class IgnorablePointerOrCharArithmetic extends IgnorableOperation {
       or
       // Operations on calls to functions named like "strlen", "wcslen", etc
       // for example `strlen(foo) + bar`
-      this.(BinaryArithmeticOperation).getAnOperand().(Call).getTarget().getName().matches("%len%")
+      this.(BinaryArithmeticOperation).getAnOperand().(Call).getTarget().getName().contains("len")
     )
   }
 }
@@ -347,7 +347,7 @@ module OperationToYearAssignmentConfig0 implements DataFlow::ConfigSig {
     n.getType().getUnspecifiedType() instanceof CharType
     or
     // If a type resembles "string" ignore flow (likely string conversion, currently ignored)
-    n.getType().getUnspecifiedType().stripType().getName().toLowerCase().matches("%string%")
+    n.getType().getUnspecifiedType().stripType().getName().toLowerCase().contains("string")
     or
     n.asExpr() instanceof IgnorableOperation
     or

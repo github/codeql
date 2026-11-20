@@ -441,7 +441,7 @@ module API {
     // restrict `moduleImport` so it will never give results for a dotted name. Note
     // that we cannot move this logic to the `MkModuleImport` construction, since we
     // need the intermediate API graph nodes for the prefixes in `import foo.bar.baz`.
-    not m.matches("%.%")
+    not m.contains(".")
   }
 
   /**
@@ -457,7 +457,7 @@ module API {
     // restrict `moduleImport` so it will never give results for a dotted name. Note
     // that we cannot move this logic to the `MkModuleImport` construction, since we
     // need the intermediate API graph nodes for the prefixes in `import foo.bar.baz`.
-    not m.matches("%.%")
+    not m.contains(".")
   }
 
   /** Gets a node corresponding to the built-in with the given name, if any. */
@@ -1024,7 +1024,7 @@ module API {
         lbl = Label::mod(m) and
         succ = MkModuleImport(m) and
         // Only allow undotted names to count as base modules.
-        not m.matches("%.%")
+        not m.contains(".")
       )
       or
       /* Step from the dotted module name `foo.bar` to `foo.bar.baz` along an edge labeled `baz` */
@@ -1072,7 +1072,7 @@ module API {
       newtype TLabel =
         MkLabelModule(string mod) {
           exists(Impl::MkModuleImport(mod)) and
-          not mod.matches("%.%") // only top level modules count as base modules
+          not mod.contains(".") // only top level modules count as base modules
         } or
         MkLabelMember(string member) {
           member = any(DataFlow::AttrRef pr).getAttributeName() or

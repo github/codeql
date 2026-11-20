@@ -83,4 +83,4 @@ query predicate dataflow = TestFlow::flow/2;
 
 query BlockStmt staticInitializer(ClassDefinition cd) { result = cd.getAStaticInitializerBlock() }
 
-query Identifier privateIdentifier() { result.getName().matches("#%") }
+query Identifier privateIdentifier() { result.getName().startsWith("#") }

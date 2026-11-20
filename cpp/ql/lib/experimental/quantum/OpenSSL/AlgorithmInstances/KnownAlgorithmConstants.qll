@@ -97,7 +97,7 @@ class KnownOpenSslCipherAlgorithmExpr extends Expr instanceof KnownOpenSslAlgori
 
   KnownOpenSslCipherAlgorithmExpr() {
     algType = this.(KnownOpenSslAlgorithmExpr).getAlgType() and
-    algType.matches("%ENCRYPTION")
+    algType.endsWith("ENCRYPTION")
   }
 
   int getExplicitKeySize() {
@@ -113,7 +113,7 @@ class KnownOpenSslPaddingAlgorithmExpr extends Expr instanceof KnownOpenSslAlgor
   KnownOpenSslPaddingAlgorithmExpr() {
     exists(string algType |
       resolveAlgorithmFromExpr(this, _, algType) and
-      algType.matches("%PADDING")
+      algType.endsWith("PADDING")
     )
   }
 }

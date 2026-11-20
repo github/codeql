@@ -16,12 +16,12 @@ import semmle.code.java.frameworks.j2objc.J2ObjC
 private predicate looksLikeCode(JavadocText line) {
   exists(string trimmed | trimmed = trimmedCommentText(line) |
     (
-      trimmed.matches("%;") or
-      trimmed.matches("%{") or
-      trimmed.matches("%}")
+      trimmed.endsWith(";") or
+      trimmed.endsWith("{") or
+      trimmed.endsWith("}")
     ) and
-    not trimmed.matches(">%") and
-    not trimmed.matches("@%")
+    not trimmed.startsWith(">") and
+    not trimmed.startsWith("@")
   )
 }
 
@@ -94,7 +94,7 @@ private int anyCount(JavadocFirst first) {
           line = following.getAChild() and
           not exists(string trimmed | trimmed = line.getText().trim() |
             trimmed.regexpMatch("(|/\\*|/\\*\\*|\\*|\\*/)") or
-            trimmed.matches("@%")
+            trimmed.startsWith("@")
           )
         )
     )

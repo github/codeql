@@ -73,7 +73,7 @@ class Py extends RefType {
 class PyCompileMethod extends Method {
   PyCompileMethod() {
     this.getDeclaringType().getAnAncestor*() instanceof Py and
-    this.getName().matches("compile%")
+    this.getName().startsWith("compile")
   }
 }
 

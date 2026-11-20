@@ -82,7 +82,7 @@ abstract class Module extends TopLevel {
     priority = 0 and
     exists(string v | v = path.getValue() |
       // paths starting with a dot are resolved relative to the module's directory
-      if v.matches(".%")
+      if v.startsWith(".")
       then searchRoot = this.getFile().getParentContainer()
       else
         // all other paths are resolved relative to the file system root

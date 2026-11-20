@@ -202,7 +202,7 @@ class SimplePRHeadCheckoutStep extends Step {
       this = uses and
       uses.getCallee() = "actions/checkout" and
       exists(uses.getArgument("ref")) and
-      not uses.getArgument("ref").matches("%base%") and
+      not uses.getArgument("ref").contains("base") and
       uses.getATriggerEvent().getName() = checkoutTriggers()
     )
     or
