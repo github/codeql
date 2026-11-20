@@ -6,8 +6,13 @@ For each source file provided as input, this will print:
 * "local", if the source file is not an LFS pointer
 * the sha256 hash, a space character and a transient download link obtained via the LFS protocol otherwise
 If --hash-only is provided, the transient URL will not be fetched and printed
+
+Batch requests make up to three attempts per endpoint for transient failures, with
+exponential backoff. Retry-After is honored unless it exceeds 30 seconds, in
+which case the next endpoint is tried instead of retrying early.
 """
 import dataclasses
+import email.utils
 import sys
 import pathlib
 import subprocess
@@ -21,7 +26,9 @@ from urllib.parse import urlparse
 import re
 import base64
 from dataclasses import dataclass
+from http.client import IncompleteRead
 import argparse
+import time
 
 def options():
     p = argparse.ArgumentParser(description=__doc__)
@@ -31,6 +38,8 @@ def options():
 
 
 TIMEOUT = 20
+MAX_ATTEMPTS = 3
+MAX_RETRY_DELAY = 30
 
 def warn(message: str) -> None:
     print(f"WARNING: {message}", file=sys.stderr)
@@ -153,6 +162,57 @@ def get_endpoints() -> typing.Iterable[Endpoint]:
         yield endpoint
 
 
+def retry_delay(error: Exception, attempt: int) -> typing.Optional[float]:
+    delay = 2 ** attempt
+    if isinstance(error, urllib.error.HTTPError):
+        if error.code not in (408, 429, 500, 502, 503, 504):
+            return None
+        retry_after = error.headers.get("Retry-After") if error.headers else None
+        if retry_after:
+            retry_after = retry_after.strip()
+            try:
+                if retry_after.isdigit():
+                    seconds = int(retry_after)
+                else:
+                    seconds = email.utils.parsedate_to_datetime(retry_after).timestamp() - time.time()
+                delay = max(delay, seconds)
+            except (TypeError, ValueError, OverflowError):
+                # Invalid Retry-After values fall back to exponential backoff.
+                pass
+    else:
+        reason = error.reason if isinstance(error, urllib.error.URLError) else error
+        if not isinstance(reason, (TimeoutError, ConnectionError, IncompleteRead)):
+            return None
+    return delay if delay <= MAX_RETRY_DELAY else None
+
+
+def describe_error(error: Exception) -> str:
+    # Exception messages and response bodies can contain credentials or signed URLs.
+    if isinstance(error, urllib.error.HTTPError):
+        return f"HTTP {error.code}"
+    if isinstance(error, urllib.error.URLError):
+        return f"URLError ({type(error.reason).__name__})"
+    return type(error).__name__
+
+
+def request_batch(req, endpoint_name):
+    for attempt in range(MAX_ATTEMPTS):
+        try:
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+                return json.load(resp)
+        except (urllib.error.URLError, TimeoutError, ConnectionError, IncompleteRead) as error:
+            delay = retry_delay(error, attempt)
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+            if delay is None or attempt == MAX_ATTEMPTS - 1:
+                raise
+            warn(
+                f"encountered {describe_error(error)} at endpoint {endpoint_name}, "
+                f"retrying in {delay:g}s (attempt {attempt + 2}/{MAX_ATTEMPTS})"
+            )
+            time.sleep(delay)
+
+
 # see https://github.com/git-lfs/git-lfs/blob/310d1b4a7d01e8d9d884447df4635c7a9c7642c2/docs/api/basic-transfers.md
 def get_locations(objects):
     ret = ["local" for _ in objects]
@@ -177,19 +237,18 @@ def get_locations(objects):
             data=json.dumps(data).encode("ascii"),
         )
         try:
-            with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
-                data = json.load(resp)
-            assert len(data["objects"]) == len(
+            response = request_batch(req, endpoint.name)
+            assert len(response["objects"]) == len(
                 indexes
-            ), f"received {len(data)} objects, expected {len(indexes)}"
-            for i, resp in zip(indexes, data["objects"]):
+            ), f"received {len(response['objects'])} objects, expected {len(indexes)}"
+            for i, resp in zip(indexes, response["objects"]):
                 ret[i] = f'{resp["oid"]} {resp["actions"]["download"]["href"]}'
             return ret
-        except urllib.error.URLError as e:
-            warn(f"encountered {type(e).__name__} {e}, ignoring endpoint {endpoint.name}")
+        except (urllib.error.URLError, TimeoutError, ConnectionError, IncompleteRead) as e:
+            warn(f"encountered {describe_error(e)}, ignoring endpoint {endpoint.name}")
             continue
         except KeyError:
-            warn(f"encountered malformed response, ignoring endpoint {endpoint.name}:\n{json.dumps(data, indent=2)}")
+            warn(f"encountered malformed response, ignoring endpoint {endpoint.name}")
             continue
     raise NoEndpointsFound
 
