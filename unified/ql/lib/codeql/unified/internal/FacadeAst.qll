@@ -9,6 +9,7 @@ private import AstPlugin
 private import codeql.files.FileSystem
 private import codeql.unified.internal.NameBinding as NameBinding
 private import codeql.unified.internal.typeinference.TypeMention as TypeMention
+private import codeql.unified.internal.ControlFlowGraph::Public
 
 module Unified {
   private import Ast::Unified as G
@@ -133,6 +134,12 @@ module Unified {
       or
       result = this.getParent().(Argument).getParent()
     }
+
+    /** Gets the `ControlFlowNode` corresponding to this expression. */
+    ControlFlowNode getControlFlowNode() { result.injects(this) }
+
+    /** Gets the basic block containing this expression. */
+    BasicBlock getBasicBlock() { result = this.getControlFlowNode().getBasicBlock() }
   }
 
   class AccessorDeclaration extends G::AccessorDeclaration {
