@@ -280,3 +280,17 @@ func testOptionalParameters(obj: OptionalTest, string: String) {
     _ = OptionalInit(value: string, flag: true)  // $ isSink=optional-init-sink
     _ = OptionalInit(flag: true)  // not a sink: missing required argument
 }
+
+class StaticTest {
+    func instanceSink(_ x: String) {}
+    static func staticSink(_ x: String) {}
+}
+
+func testStaticAndInstanceMethods(obj: StaticTest, string: String) {
+    obj.instanceSink(string)  // $ isSink=instance-sink
+    StaticTest.staticSink(string)  // $ isSink=static-sink
+
+    // Models for the meta type (`StaticTest.Type`) are not yet distinguished from instance members for method calls
+    StaticTest.instanceSink(string)  // $ SPURIOUS: isSink=instance-sink
+    obj.staticSink(string)  // $ SPURIOUS: isSink=static-sink
+}

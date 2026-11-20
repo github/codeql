@@ -26,7 +26,9 @@
         ["", "OptionalTest", true, "named(x:b:)", "", "", "Argument[x:]", "required-named-sink", "manual"],
         ["", "OptionalTest", true, "positional(_:_?:)", "", "", "Argument[0]", "optional-positional-sink", "manual"],
         ["", "OptionalTest", true, "mixed(_:x?:)", "", "", "Argument[0]", "optional-mixed-sink", "manual"],
-        ["", "OptionalInit", true, "init(value:flag?:)", "", "", "Argument[value:]", "optional-init-sink", "manual"]
+        ["", "OptionalInit", true, "init(value:flag?:)", "", "", "Argument[value:]", "optional-init-sink", "manual"],
+        ["", "StaticTest", true, "instanceSink(_:)", "", "", "Argument[0]", "instance-sink", "manual"],
+        ["", "StaticTest.Type", true, "staticSink(_:)", "", "", "Argument[0]", "static-sink", "manual"]
       ]
     }
   ]
