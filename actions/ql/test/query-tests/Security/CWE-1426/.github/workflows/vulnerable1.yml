@@ -1,0 +1,22 @@
+name: AI Output to Shell
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  ai-task:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      models: read
+    steps:
+      - name: AI inference
+        id: ai
+        uses: actions/ai-inference@v1
+        with:
+          prompt: |
+            Suggest a fix for: ${{ github.event.issue.body }}
+
+      - name: Apply fix unsanitized
+        run: |
+          ${{ steps.ai.outputs.response }}

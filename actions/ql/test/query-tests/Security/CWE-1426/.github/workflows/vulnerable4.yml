@@ -1,0 +1,22 @@
+name: Gemini Output to Shell
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  apply-fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Gemini review
+        id: gemini
+        uses: google-github-actions/run-gemini-cli@v1
+        with:
+          prompt: |
+            Suggest a patch for this PR.
+
+      - name: Apply Gemini suggestion
+        run: |
+          echo "${{ steps.gemini.outputs.response }}" | patch -p1
