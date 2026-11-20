@@ -36,13 +36,13 @@ public class Guards {
       s = "bar";
     switch (s) {
       case "bar":
-        chk(); // $ guarded='s:match "bar"' guarded='s:bar'
+        chk(); // $ guarded='"bar":match' guarded='s:bar'
         break;
       case "foo":
-        chk(); // $ guarded='s:non-match "bar"' guarded='s:not bar' guarded='s:match "foo"' guarded='s:foo' guarded=g(3):false
+        chk(); // $ guarded='"bar":no match' guarded='s:not bar' guarded='"foo":match' guarded='s:foo' guarded=g(3):false
         break;
       default:
-        chk(); // $ guarded='s:non-match "bar"' guarded='s:non-match "foo"' guarded='s:not bar' guarded='s:not foo' guarded=g(3):false
+        chk(); // $ guarded='"bar":no match' guarded='"foo":no match' guarded='s:not bar' guarded='s:not foo' guarded=g(3):false
         break;
     }
 
@@ -89,13 +89,13 @@ public class Guards {
       chk(); // $ guarded='x == null:true' guarded='x:null' guarded=g(1):false guarded=g(2):false guarded=g(Alt2):false guarded=g(3):false
     switch (x) {
       case E1:
-        chk(); // $ guarded='x:match E1' guarded='x:E1' guarded=g(1):true guarded=g(2):false guarded=g(Alt2):false guarded=g(3):false
+        chk(); // $ guarded='E1:match' guarded='x:E1' guarded=g(1):true guarded=g(2):false guarded=g(Alt2):false guarded=g(3):false
         break;
       case E2:
-        chk(); // $ guarded='x:non-match E1' guarded='x:not E1' guarded='x:match E2' guarded='x:E2' guarded=g(3):false
+        chk(); // $ guarded='E1:no match' guarded='x:not E1' guarded='E2:match' guarded='x:E2' guarded=g(3):false
         break;
       case E3:
-        chk(); // $ guarded='x:non-match E1' guarded='x:non-match E2' guarded='x:not E1' guarded='x:not E2' guarded='x:match E3' guarded='x:E3' guarded=g(3):true
+        chk(); // $ guarded='E1:no match' guarded='E2:no match' guarded='x:not E1' guarded='x:not E2' guarded='E3:match' guarded='x:E3' guarded=g(3):true
         break;
     }
     Object o = g(4) ? new Object() : null;
@@ -195,10 +195,10 @@ public class Guards {
 
     switch (testEnumWrapper(g(1))) {
       case SUCCESS:
-        chk(); // $ guarded='testEnumWrapper(...):SUCCESS' guarded='testEnumWrapper(...):match SUCCESS' guarded=g(1):true
+        chk(); // $ guarded='testEnumWrapper(...):SUCCESS' guarded='SUCCESS:match' guarded=g(1):true
         break;
       case FAILURE:
-        chk(); // $ guarded='testEnumWrapper(...):not SUCCESS' guarded='testEnumWrapper(...):non-match SUCCESS' guarded='testEnumWrapper(...):FAILURE' guarded='testEnumWrapper(...):match FAILURE' guarded=g(1):false
+        chk(); // $ guarded='testEnumWrapper(...):not SUCCESS' guarded='SUCCESS:no match' guarded='testEnumWrapper(...):FAILURE' guarded='FAILURE:match' guarded=g(1):false
         break;
     }
   }

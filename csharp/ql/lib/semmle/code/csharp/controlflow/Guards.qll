@@ -81,17 +81,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
 
     predicate isDefaultCase() { this instanceof DefaultCase }
 
-    ConstantExpr asConstantCase() { super.getPattern() = result }
-
-    predicate matchEdge(BasicBlock bb1, BasicBlock bb2) {
-      bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = true)) = bb2 and
-      bb1.getLastNode() = super.getPattern().getControlFlowNode()
-    }
-
-    predicate nonMatchEdge(BasicBlock bb1, BasicBlock bb2) {
-      bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = false)) = bb2 and
-      bb1.getLastNode() = super.getPattern().getControlFlowNode()
-    }
+    AstNode getAPattern() { super.getPattern() = result }
   }
 
   abstract private class BinExpr extends BinaryOperation { }
