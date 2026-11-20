@@ -310,7 +310,7 @@ module Ast implements AstSig<Location> {
   }
 
   class BindingPattern extends PatternImpl {
-    BindingPattern() { this = any(CS::VariablePatternExpr vp).getAccess().(ControlFlowElement) }
+    BindingPattern() { this = any(CS::VariablePatternExpr vp).getAccess() }
   }
 
   final private class FinalIsExpr = CS::IsExpr;
