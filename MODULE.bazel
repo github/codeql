@@ -176,7 +176,6 @@ use_repo(
     "vendor_rs__serde-1.0.229",
     "vendor_rs__serde_json-1.0.154",
     "vendor_rs__serde_with-1.14.0",
-    "vendor_rs__serde_with-3.24.0",
     "vendor_rs__serde_yaml-0.9.34-deprecated",
     "vendor_rs__syn-3.0.9",
     "vendor_rs__tempfile-3.27.0",
