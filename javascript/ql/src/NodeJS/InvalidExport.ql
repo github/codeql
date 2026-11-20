@@ -43,6 +43,8 @@ from Assignment assgn, Variable exportsVar, DataFlow::Node exportsVal
 where
   exportsAssign(assgn, exportsVar, exportsVal) and
   not exists(exportsVal.getAPredecessor()) and
+  // Post-updates change object contents, not the identity of the exported value.
+  not exportsVal instanceof DataFlow::PostUpdateNode and
   // this is OK if `exportsVal` flows into `module.exports`
   not moduleExportsAssign(_, exportsVal) and
   // export assignments do work in closure modules

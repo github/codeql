@@ -43,6 +43,7 @@ private predicate guardChecksFalsy(
     guard.getTest() = g and
     guard.getOutcome() = outcome and
     g = Ssa2::getARead(def) and
+    g instanceof VarAccess and
     outcome = false
   )
 }

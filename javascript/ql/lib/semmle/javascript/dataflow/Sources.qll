@@ -9,6 +9,7 @@ overlay[local?]
 module;
 
 private import javascript
+private import internal.DataFlowNode
 private import semmle.javascript.dataflow.TypeTracking
 private import semmle.javascript.internal.CachedStages
 
@@ -45,7 +46,10 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
    * Holds if this node flows into `sink` in zero or more local (that is,
    * intra-procedural) steps.
    */
-  predicate flowsTo(DataFlow::Node sink) { Cached::hasLocalSource(sink, this) }
+  predicate flowsTo(DataFlow::Node sink) {
+    Cached::hasLocalSource(sink, this) and
+    not sink instanceof TSsaSynthReadNode
+  }
 
   /**
    * Holds if this node flows into `sink` in zero or more local (that is,
@@ -209,6 +213,14 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
     t2 = t.step(result, this)
   }
 }
+
+/**
+ * INTERNAL. DO NOT USE.
+ *
+ * Holds if `source` is a `SourceNode` that can reach `sink` via local flow steps,
+ * including internal synthesized SSA read nodes.
+ */
+predicate hasLocalSource = Cached::hasLocalSource/2;
 
 /**
  * Cached predicates used by the member predicates in `SourceNode`.

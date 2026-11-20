@@ -6,6 +6,7 @@ module;
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
+private import semmle.javascript.dataflow.internal.DataFlowNode
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.internal.CachedStages
 
@@ -413,7 +414,8 @@ module AccessPath {
   pragma[inline]
   DataFlow::Node getAReferenceTo(Root root, string path) {
     path = fromReference(result, root) and
-    not root.isGlobal()
+    not root.isGlobal() and
+    not result instanceof TSsaSynthReadNode
   }
 
   /**
@@ -436,7 +438,8 @@ module AccessPath {
   overlay[caller?]
   pragma[inline]
   DataFlow::Node getAReferenceTo(string path) {
-    path = fromReference(result, DataFlow::globalAccessPathRootPseudoNode())
+    path = fromReference(result, DataFlow::globalAccessPathRootPseudoNode()) and
+    not result instanceof TSsaSynthReadNode
   }
 
   /**

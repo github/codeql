@@ -32,12 +32,15 @@ private module Cached {
   cached
   newtype TNode =
     TValueNode(AST::ValueNode nd) or
-    /** An SSA node from the legacy SSA library */
-    TSsaDefNode(SsaDefinition d) or
-    /** Use of a variable or 'this', with flow from a post-update node (from an earlier use) */
-    TSsaUseNode(ControlFlowNode use) { use = any(Ssa2::SsaConfig::SourceVariable v).getAUse() } or
-    /** A synthesized variable read (new SSA library). Definitions are represented by TSsaDefNode. */
-    TSsaSynthReadNode(Ssa2::SsaSynthReadNode read) or
+    /** An SSA definition from the shared SSA library */
+    TSharedSsaDefNode(Ssa2::SsaConfig::SourceVariable v, BasicBlock bb, int i) {
+      exists(Ssa2::SsaDefinitionNode node | node.getDefinition().definesAt(v, bb, i)) and
+      exists(v.asLocalVariable())
+    } or
+    /** A synthesized phi input or phi read. */
+    TSsaSynthReadNode(Ssa2::SsaSynthReadNode read) { not read.getSourceVariable().isCaptured() } or
+    /** The variable or 'this' value at a read, separate from the expression occurrence. */
+    TSharedSsaReadNode(Ssa2::ReadNode read) { not read.getSourceVariable().isCaptured() } or
     TCapturedVariableNode(LocalVariable v) { v.isCaptured() } or
     TPropNode(@property p) or
     TRestPatternNode(DestructuringPattern dp, Expr rest) { rest = dp.getRest() } or
@@ -130,8 +133,8 @@ private module Cached {
 import Cached
 
 private class TEarlyStageNode =
-  TValueNode or TSsaDefNode or TCapturedVariableNode or TPropNode or TRestPatternNode or
-      TElementPatternNode or TElementNode or TReflectiveCallNode or TThisNode or
+  TValueNode or TSharedSsaDefNode or TSsaSynthReadNode or TCapturedVariableNode or TPropNode or
+      TRestPatternNode or TElementPatternNode or TElementNode or TReflectiveCallNode or TThisNode or
       TFunctionSelfReferenceNode or TDestructuredModuleImportNode or THtmlAttributeNode or
       TFunctionReturnNode or TExceptionalFunctionReturnNode or TExceptionalInvocationReturnNode or
       TGlobalAccessPathRoot or TTemplatePlaceholderTag or TReflectiveParametersNode or

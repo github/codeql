@@ -1,0 +1,81 @@
+import javascript
+import semmle.javascript.dataflow.internal.DataFlowNode
+import semmle.javascript.dataflow.internal.DataFlowImplConsistency as DataFlowImplConsistency
+import semmle.javascript.dataflow.internal.sharedlib.Ssa as Ssa2
+import Ssa2::Consistency
+import Ssa2::DfConsistency
+
+query predicate localFlowIsLocal = DataFlowImplConsistency::Consistency::localFlowIsLocal/3;
+
+query predicate nonUniqueSsaDefinition(SsaDefinition definition, int nodes) {
+  nodes = count(DataFlow::ssaDefinitionNode(definition)) and
+  nodes != 1
+}
+
+query predicate nonUniqueSsaVariable(DataFlow::SsaDefinitionNode node, int variables) {
+  variables = count(node.getSsaVariable()) and
+  variables != 1
+}
+
+query predicate missingSsaNodeMetadata(DataFlow::Node node) {
+  (
+    node instanceof TSharedSsaDefNode or
+    node instanceof TSharedSsaReadNode or
+    node instanceof TSsaSynthReadNode
+  ) and
+  not (
+    exists(node.toString()) and
+    exists(node.getBasicBlock()) and
+    exists(node.getContainer()) and
+    exists(node.getLocation()) and
+    exists(node.getFile())
+  )
+}
+
+query predicate orphanSsaDefinitionNode(DataFlow::Node node) {
+  node instanceof TSharedSsaDefNode and
+  not node instanceof DataFlow::SsaDefinitionNode
+}
+
+query predicate ssaDefinitionHasAstNode(DataFlow::SsaDefinitionNode node, AstNode ast) {
+  ast = node.getAstNode()
+}
+
+query predicate unmappedWriteDefSourceNode(Ssa2::WriteDefSourceNode node, int mapped) {
+  mapped = count(DataFlow::getNodeFromSharedSsa(node)) and
+  mapped != 1
+}
+
+query predicate nonUniqueSharedSsaNodeMapping(Ssa2::Node node, int mapped) {
+  mapped = count(DataFlow::getNodeFromSharedSsa(node)) and
+  mapped > 1
+}
+
+query predicate sharedReadContainerMismatch(Ssa2::ReadNode read) {
+  TSharedSsaReadNode(read).(DataFlow::Node).getContainer() !=
+    DataFlow::getNodeFromSharedSsa(read).(DataFlow::Node).getContainer()
+}
+
+query predicate postUpdateMustFlow(DataFlow::PostUpdateNode update, DataFlow::Node node) {
+  node.getImmediatePredecessor() = update
+}
+
+query predicate leakedSynthReadInFlowsTo(DataFlow::SourceNode source, DataFlow::Node sink) {
+  source.flowsTo(sink) and
+  (sink instanceof TSsaSynthReadNode or sink instanceof TSharedSsaReadNode)
+}
+
+query predicate leakedSynthReadInGetALocalSource(DataFlow::Node node, DataFlow::SourceNode source) {
+  source = node.getALocalSource() and
+  (node instanceof TSsaSynthReadNode or node instanceof TSharedSsaReadNode)
+}
+
+query predicate leakedSynthReadInAnalyze(DataFlow::Node node) {
+  exists(node.analyze()) and
+  (node instanceof TSsaSynthReadNode or node instanceof TSharedSsaReadNode)
+}
+
+query predicate leakedSynthReadInAccessPath(DataFlow::Node node, string path) {
+  (node = AccessPath::getAReferenceTo(_, path) or node = AccessPath::getAReferenceTo(path)) and
+  (node instanceof TSsaSynthReadNode or node instanceof TSharedSsaReadNode)
+}

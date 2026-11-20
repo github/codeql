@@ -20,10 +20,13 @@ app.get("/", (req, res) => {
     execFile("git", ["ls-remote", remote, "HEAD"]); // OK - it's not an option
   }
 
-  if (remote.startsWith("git@")) {
-    execFile("git", ["ls-remote", remote, "HEAD"]); // OK - it's a git URL
+  execFile("git", ["ls-remote", remote, "HEAD"]); // Both outcomes of the earlier check are modeled as safe.
+
+  const uncheckedRemote = req.query.uncheckedRemote; // $ Source
+  if (uncheckedRemote.startsWith("git@")) {
+    execFile("git", ["ls-remote", uncheckedRemote, "HEAD"]); // OK - it's a git URL
   } else {
-    execFile("git", ["ls-remote", remote, "HEAD"]); // $ Alert - unknown starting string
+    execFile("git", ["ls-remote", uncheckedRemote, "HEAD"]); // $ Alert - unknown starting string
   }
 
   execFile("git", req.query.args); // $ Alert - unknown args

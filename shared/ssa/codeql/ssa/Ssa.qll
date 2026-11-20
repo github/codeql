@@ -1533,6 +1533,15 @@ module Make<
     default predicate includeWriteDefsInFlowStep() { any() }
 
     /**
+     * Holds if phi definitions should always have a data flow node, even when
+     * they have a unique next reference. This is useful for language-specific
+     * APIs that expose a node for each SSA definition.
+     *
+     * Phi reads may still be skipped.
+     */
+    default predicate includePhiDefsInFlowStep() { none() }
+
+    /**
      * Holds if barrier guards should be supported on input edges to phi
      * nodes. Disable this only if barrier guards are not going to be used.
      */
@@ -1603,9 +1612,75 @@ module Make<
       )
     }
 
+    private predicate isValuePreservingUncertainDef(UncertainWriteDefinition def, Definition inp) {
+      DfInput::allowFlowIntoUncertainDef(def) and
+      not DfInput::ssaDefHasSource(def) and
+      uncertainWriteDefinitionInput(def, inp)
+    }
+
+    pragma[nomagic]
+    private predicate hasValuePreservingUncertainDef(SourceVariable v) {
+      exists(UncertainWriteDefinition def |
+        isValuePreservingUncertainDef(def, _) and
+        def.getSourceVariable() = v
+      )
+    }
+
+    private predicate valuePreservingDefInput(Definition def, Definition inp) {
+      isValuePreservingUncertainDef(def, inp)
+      or
+      hasValuePreservingUncertainDef(def.getSourceVariable()) and
+      phiHasInputFromBlock(def, inp, _)
+    }
+
+    private predicate reachesValuePreservingAncestor(Definition def, Definition anc) {
+      hasValuePreservingUncertainDef(anc.getSourceVariable()) and
+      def = anc
+      or
+      valuePreservingDefInput+(def, anc)
+    }
+
+    pragma[nomagic]
+    private predicate phiHasMissingInput(PhiNode phi) {
+      hasValuePreservingUncertainDef(phi.getSourceVariable()) and
+      exists(BasicBlock bb |
+        getABasicBlockPredecessor(phi.getBasicBlock()) = bb and
+        not phiHasInputFromBlock(phi, _, bb)
+      )
+    }
+
+    private predicate nonValuePreservingDescendant(Definition def, Definition anc) {
+      valuePreservingDefInput+(def, anc) and
+      (
+        phiHasMissingInput(def)
+        or
+        exists(Definition inp |
+          valuePreservingDefInput(def, inp) and
+          not reachesValuePreservingAncestor(inp, anc)
+        )
+      )
+      or
+      exists(Definition mid |
+        nonValuePreservingDescendant(mid, anc) and
+        valuePreservingDefInput(def, mid) and
+        def != anc
+      )
+    }
+
+    /**
+     * Gets an ancestor definition of `def` whose value is preserved along all
+     * control-flow paths reaching `def`.
+     */
+    private Definition getAValuePreservingInputDef(Definition def) {
+      result = def
+      or
+      valuePreservingDefInput+(def, result) and
+      not nonValuePreservingDescendant(def, result)
+    }
+
     pragma[nomagic]
     private predicate phiInputHasRead(SsaPhiExt phi, BasicBlock input) {
-      hasRead(getAPhiInputDef(phi, input))
+      hasRead(getAValuePreservingInputDef(getAPhiInputDef(phi, input)))
     }
 
     /** Holds if `bb` is the target end of a branch edge of a guard and the guard controls `bb`. */
@@ -1731,6 +1806,7 @@ module Make<
      * flow edges.
      */
     private predicate phiHasUniqNextNode(SsaPhiExt phi) {
+      not (phi instanceof PhiNode and DfInput::includePhiDefsInFlowStep()) and
       not relevantBackEdge(phi, _) and
       exists(int nextPhiInput, int nextPhi, int nextRef |
         1 = nextPhiInput + nextPhi + nextRef and
@@ -2151,7 +2227,7 @@ module Make<
       pragma[nomagic]
       Node getABarrierNode(State state) {
         exists(DfInput::Guard g, DfInput::GuardValue val, Definition def, BasicBlock bb |
-          guardChecks(g, def, val, state)
+          guardChecks(g, getAValuePreservingInputDef(def), val, state)
         |
           // guard controls a read
           exists(SourceVariable v, int i |
