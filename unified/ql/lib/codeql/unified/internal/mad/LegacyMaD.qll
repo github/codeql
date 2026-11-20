@@ -7,6 +7,7 @@ private import codeql.dataflow.internal.AccessPathSyntax
 private import codeql.unified.internal.typeinference.TypeInference as T
 private import codeql.unified.internal.typeinference.Type as Types
 private import codeql.unified.internal.StaticNameBinding as N
+private import codeql.unified.internal.NameBindingPlugin as NameBindingPlugin
 private import codeql.unified.internal.dataflow.DataFlowCall
 private import codeql.unified.internal.dataflow.DataFlowNode
 
@@ -127,13 +128,10 @@ private predicate constructorCallSelector(
   argLabels = getArgLabelsFromCall(call)
 }
 
-private predicate isSubclassOfType(ClassLikeDeclaration cls, string typeName) {
-  typeName = any(Selector s).getTypeString() and
-  (
-    getQualifiedNameFromExpr(cls.getABaseType().getType()) = typeName
-    or
-    isSubclassOfType(cls.getABaseClass(), typeName)
-  )
+private predicate isSubclassOfType(ClassLikeDeclaration cls, TypeSelector typeName) {
+  getQualifiedNameFromExpr(cls.getABaseType().getType()) = typeName
+  or
+  isSubclassOfType(cls.getABaseClass(), typeName)
 }
 
 private string getArgLabelsFromCallable(Callable callable) {
@@ -157,9 +155,14 @@ private predicate callableSelector(
 ) {
   name = callable.getName() and
   argLabels = getArgLabelsFromCallable(callable) and
-  exists(ClassLikeDeclaration cls |
+  exists(ClassLikeDeclaration cls, TypeSelector baseType |
     callable = cls.getAMemberIncludingExtensions() and
-    isSubclassOfType(cls, type)
+    isSubclassOfType(cls, baseType)
+  |
+    // Static members are members of the meta type
+    if NameBindingPlugin::isStaticMember(callable)
+    then type = baseType.getMetaType()
+    else type = baseType
   )
 }
 
@@ -251,6 +254,9 @@ private string getNamedJoinLabels(Selector selector) {
 
 /**
  * A tuple from a model that identifies call sites, callables, or property accesses.
+ *
+ * Static members are members of the meta type, so their type is written as, for example,
+ * `String.Type`.
  */
 class Selector extends TSelector {
   string getTypeString() {
@@ -399,15 +405,33 @@ private string typeSelectorCons(string qualifier, string component) {
   splitTypeString(_, _, qualifier, component, result)
 }
 
-/** A type, or prefix thereof, mentioned in a model. */
+/** Holds if `meta` names the meta type of `type`, as in `Foo.Type` for `Foo`. */
+private predicate isMetaTypeOf(string meta, string type) {
+  splitTypeString(_, _, _, _, type) and
+  type != "" and
+  meta = type + ".Type"
+}
+
+/**
+ * A type, or prefix thereof, mentioned in a model, or the meta type of such a type.
+ *
+ * The meta type of `Foo` is named `Foo.Type`. Its instances are references to the type `Foo`
+ * itself, and its members are the static members of `Foo`.
+ */
 class TypeSelector extends string {
-  TypeSelector() { splitTypeString(_, _, _, _, this) }
+  TypeSelector() { splitTypeString(_, _, _, _, this) or isMetaTypeOf(this, _) }
 
   TypeSelector append(string component) { result = typeSelectorCons(this, component) }
 
   TypeSelector getQualifier() { this = result.append(_) }
 
   string getHead() { this = typeSelectorCons(_, result) }
+
+  /** Gets the meta type of this type, as in `Foo.Type` for `Foo`. */
+  TypeSelector getMetaType() { isMetaTypeOf(result, this) }
+
+  /** Holds if this is the meta type of some type. */
+  predicate isMetaType() { isMetaTypeOf(this, _) }
 
   /** Gets a static reference to this type. */
   AstNode getAStaticRef() {
