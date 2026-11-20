@@ -1,1 +1,10 @@
+load("@rules_python//python:defs.bzl", "py_test")
+
 exports_files(["install.py"])
+
+py_test(
+    name = "test_git_lfs_probe",
+    size = "small",
+    srcs = ["test_git_lfs_probe.py"],
+    data = ["git_lfs_probe.py"],
+)
