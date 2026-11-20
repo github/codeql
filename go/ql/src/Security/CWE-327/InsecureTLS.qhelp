@@ -23,6 +23,12 @@
 	Only use secure TLS versions (1.3 and 1.2) and avoid using insecure cipher suites
 	(you can see a list here: https://golang.org/src/crypto/tls/cipher_suites.go#L81)
 </p>
+<p>
+	A zero <code>MinVersion</code>, whether explicit or omitted, selects Go's default minimum
+	TLS version. This is TLS 1.2 for clients since Go 1.18 and servers since Go 1.22.
+	When using older Go versions or compatibility settings that allow older TLS versions,
+	set <code>MinVersion</code> to <code>tls.VersionTLS12</code> or higher explicitly.
+</p>
 </recommendation>
 <example>
 <p>
