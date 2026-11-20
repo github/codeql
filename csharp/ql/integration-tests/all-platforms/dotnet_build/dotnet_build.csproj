@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <Target Name="CheckNodeReuse">
+    <Error Condition="'$(MSBUILDDISABLENODEREUSE)' != '1'"
+           Text="Expected MSBuild node reuse to be disabled during CodeQL tracing." />
+  </Target>
+
 </Project>
