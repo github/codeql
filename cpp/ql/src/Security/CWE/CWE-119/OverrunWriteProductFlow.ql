@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.3
- * @precision medium
+ * @precision high
  * @id cpp/overrun-write
  * @tags reliability
  *       security
