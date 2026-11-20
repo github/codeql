@@ -44,21 +44,6 @@ private class ShellOrSudoExecution extends SystemCommandExecution::Range, DataFl
 }
 
 /**
- * DEPRECATED
- *
- * Provides classes for working with the
- * [golang.org/x/crypto/ssh](https://pkg.go.dev/golang.org/x/crypto/ssh) package.
- */
-deprecated module CryptoSsh {
-  /**
-   * DEPRECATED: Use `package("golang.org/x/crypto", "ssh")` instead.
-   *
-   * Gets the package path `golang.org/x/crypto/ssh`.
-   */
-  deprecated string packagePath() { result = package("golang.org/x/crypto", "ssh") }
-}
-
-/**
  * A data-flow node whose string value might refer to a command that interprets (some of)
  * its arguments as commands.
  *

@@ -43,11 +43,6 @@ module OpenUrlRedirect {
   }
 
   /**
-   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
-   */
-  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
-
-  /**
    * A source of third-party user input, considered as a flow source for URL redirects.
    */
   private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource {
