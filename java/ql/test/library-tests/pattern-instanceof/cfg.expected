@@ -38,9 +38,15 @@
 | Test.java:14:22:14:91 | Outer(...) | Test.java:3:22:3:25 | Normal Exit |
 | Test.java:14:22:14:91 | Outer(...) | Test.java:14:28:14:67 | Inner(...) |
 | Test.java:14:28:14:67 | Inner(...) | Test.java:3:22:3:25 | Normal Exit |
-| Test.java:14:28:14:67 | Inner(...) | Test.java:14:41:14:47 | tainted |
-| Test.java:14:41:14:47 | tainted | Test.java:14:57:14:66 | notTainted |
-| Test.java:14:57:14:66 | notTainted | Test.java:14:77:14:90 | alsoNotTainted |
+| Test.java:14:28:14:67 | Inner(...) | Test.java:14:34:14:39 | String |
+| Test.java:14:34:14:39 | String | Test.java:3:22:3:25 | Normal Exit |
+| Test.java:14:34:14:39 | String | Test.java:14:41:14:47 | tainted |
+| Test.java:14:41:14:47 | tainted | Test.java:14:50:14:55 | String |
+| Test.java:14:50:14:55 | String | Test.java:3:22:3:25 | Normal Exit |
+| Test.java:14:50:14:55 | String | Test.java:14:57:14:66 | notTainted |
+| Test.java:14:57:14:66 | notTainted | Test.java:14:70:14:75 | String |
+| Test.java:14:70:14:75 | String | Test.java:3:22:3:25 | Normal Exit |
+| Test.java:14:70:14:75 | String | Test.java:14:77:14:90 | alsoNotTainted |
 | Test.java:14:77:14:90 | alsoNotTainted | Test.java:14:94:18:5 | { ... } |
 | Test.java:14:94:18:5 | { ... } | Test.java:15:7:15:20 | <Expr>; |
 | Test.java:15:7:15:19 | sink(...) | Test.java:16:7:16:23 | <Expr>; |

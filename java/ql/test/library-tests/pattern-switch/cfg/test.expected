@@ -299,10 +299,16 @@
 | Test.java:88:8:88:43 | case <Pattern> | Test.java:88:13:88:42 | A(...) |
 | Test.java:88:13:88:42 | A(...) | Test.java:88:15:88:32 | B(...) |
 | Test.java:88:13:88:42 | A(...) | Test.java:90:8:90:15 | default |
-| Test.java:88:15:88:32 | B(...) | Test.java:88:21:88:21 | x |
+| Test.java:88:15:88:32 | B(...) | Test.java:88:17:88:19 | int |
 | Test.java:88:15:88:32 | B(...) | Test.java:90:8:90:15 | default |
-| Test.java:88:21:88:21 | x | Test.java:88:31:88:31 | y |
-| Test.java:88:31:88:31 | y | Test.java:88:41:88:41 | z |
+| Test.java:88:17:88:19 | int | Test.java:88:21:88:21 | x |
+| Test.java:88:17:88:19 | int | Test.java:90:8:90:15 | default |
+| Test.java:88:21:88:21 | x | Test.java:88:24:88:29 | String |
+| Test.java:88:24:88:29 | String | Test.java:88:31:88:31 | y |
+| Test.java:88:24:88:29 | String | Test.java:90:8:90:15 | default |
+| Test.java:88:31:88:31 | y | Test.java:88:35:88:39 | float |
+| Test.java:88:35:88:39 | float | Test.java:88:41:88:41 | z |
+| Test.java:88:35:88:39 | float | Test.java:90:8:90:15 | default |
 | Test.java:88:41:88:41 | z | Test.java:89:10:89:15 | break |
 | Test.java:89:10:89:15 | break | Test.java:94:6:94:18 | switch (...) |
 | Test.java:90:8:90:15 | default | Test.java:91:10:91:15 | break |
@@ -310,32 +316,32 @@
 | Test.java:94:6:94:18 | switch (...) | Test.java:94:13:94:17 | thing |
 | Test.java:94:13:94:17 | thing | Test.java:95:8:95:38 | case <Pattern> |
 | Test.java:95:8:95:38 | case <Pattern> | Test.java:95:13:95:37 | A(...) |
-| Test.java:95:13:95:37 | A(...) | Test.java:95:15:95:29 | B(...) |
+| Test.java:95:13:95:37 | A(...) | Test.java:95:21:95:21 | x |
 | Test.java:95:13:95:37 | A(...) | Test.java:97:8:97:15 | default |
-| Test.java:95:15:95:29 | B(...) | Test.java:95:21:95:21 | x |
+| Test.java:95:15:95:29 | B(...) | Test.java:95:36:95:36 | z |
 | Test.java:95:15:95:29 | B(...) | Test.java:97:8:97:15 | default |
 | Test.java:95:21:95:21 | x | Test.java:95:28:95:28 | y |
-| Test.java:95:28:95:28 | y | Test.java:95:36:95:36 | z |
+| Test.java:95:28:95:28 | y | Test.java:95:15:95:29 | B(...) |
 | Test.java:95:36:95:36 | z | Test.java:96:10:96:15 | break |
 | Test.java:96:10:96:15 | break | Test.java:101:6:101:18 | switch (...) |
 | Test.java:97:8:97:15 | default | Test.java:98:10:98:15 | break |
 | Test.java:98:10:98:15 | break | Test.java:101:6:101:18 | switch (...) |
 | Test.java:101:6:101:18 | switch (...) | Test.java:101:13:101:17 | thing |
 | Test.java:101:13:101:17 | thing | Test.java:102:8:102:20 | case <Pattern> |
-| Test.java:102:8:102:20 | case <Pattern> | Test.java:102:13:102:19 | B(...) |
-| Test.java:102:13:102:19 | B(...) | Test.java:102:15:102:15 | <anonymous local variable> |
+| Test.java:102:8:102:20 | case <Pattern> | Test.java:102:15:102:15 | <anonymous local variable> |
 | Test.java:102:13:102:19 | B(...) | Test.java:103:8:103:77 | case <Pattern> |
+| Test.java:102:13:102:19 | B(...) | Test.java:105:10:105:15 | break |
 | Test.java:102:15:102:15 | <anonymous local variable> | Test.java:102:18:102:18 | <anonymous local variable> |
-| Test.java:102:18:102:18 | <anonymous local variable> | Test.java:105:10:105:15 | break |
+| Test.java:102:18:102:18 | <anonymous local variable> | Test.java:102:13:102:19 | B(...) |
 | Test.java:103:8:103:77 | case <Pattern> | Test.java:103:21:103:21 | <anonymous local variable> |
 | Test.java:103:21:103:21 | <anonymous local variable> | Test.java:103:31:103:31 | <anonymous local variable> |
 | Test.java:103:21:103:21 | <anonymous local variable> | Test.java:103:47:103:51 | thing |
-| Test.java:103:31:103:31 | <anonymous local variable> | Test.java:103:34:103:40 | A(...) |
+| Test.java:103:31:103:31 | <anonymous local variable> | Test.java:103:36:103:36 | <anonymous local variable> |
 | Test.java:103:31:103:31 | <anonymous local variable> | Test.java:103:47:103:51 | thing |
-| Test.java:103:34:103:40 | A(...) | Test.java:103:36:103:36 | <anonymous local variable> |
+| Test.java:103:34:103:40 | A(...) | Test.java:103:47:103:51 | thing |
 | Test.java:103:34:103:40 | A(...) | Test.java:104:8:104:20 | case <Pattern> |
 | Test.java:103:36:103:36 | <anonymous local variable> | Test.java:103:39:103:39 | <anonymous local variable> |
-| Test.java:103:39:103:39 | <anonymous local variable> | Test.java:103:47:103:51 | thing |
+| Test.java:103:39:103:39 | <anonymous local variable> | Test.java:103:34:103:40 | A(...) |
 | Test.java:103:47:103:51 | thing | Test.java:103:47:103:62 | toString(...) |
 | Test.java:103:47:103:62 | toString(...) | Test.java:103:71:103:75 | "abc" |
 | Test.java:103:47:103:76 | equals(...) | Test.java:104:8:104:20 | case <Pattern> |
@@ -351,20 +357,20 @@
 | Test.java:110:10:110:31 | result | Test.java:119:6:119:27 | switch (...) |
 | Test.java:110:19:110:31 | switch (...) | Test.java:110:26:110:30 | thing |
 | Test.java:110:26:110:30 | thing | Test.java:111:8:111:20 | case <Pattern> |
-| Test.java:111:8:111:20 | case <Pattern> | Test.java:111:13:111:19 | B(...) |
-| Test.java:111:13:111:19 | B(...) | Test.java:111:15:111:15 | <anonymous local variable> |
+| Test.java:111:8:111:20 | case <Pattern> | Test.java:111:15:111:15 | <anonymous local variable> |
 | Test.java:111:13:111:19 | B(...) | Test.java:112:8:112:77 | case <Pattern> |
+| Test.java:111:13:111:19 | B(...) | Test.java:114:16:114:16 | 1 |
 | Test.java:111:15:111:15 | <anonymous local variable> | Test.java:111:18:111:18 | <anonymous local variable> |
-| Test.java:111:18:111:18 | <anonymous local variable> | Test.java:114:16:114:16 | 1 |
+| Test.java:111:18:111:18 | <anonymous local variable> | Test.java:111:13:111:19 | B(...) |
 | Test.java:112:8:112:77 | case <Pattern> | Test.java:112:21:112:21 | <anonymous local variable> |
 | Test.java:112:21:112:21 | <anonymous local variable> | Test.java:112:31:112:31 | <anonymous local variable> |
 | Test.java:112:21:112:21 | <anonymous local variable> | Test.java:112:47:112:51 | thing |
-| Test.java:112:31:112:31 | <anonymous local variable> | Test.java:112:34:112:40 | A(...) |
+| Test.java:112:31:112:31 | <anonymous local variable> | Test.java:112:36:112:36 | <anonymous local variable> |
 | Test.java:112:31:112:31 | <anonymous local variable> | Test.java:112:47:112:51 | thing |
-| Test.java:112:34:112:40 | A(...) | Test.java:112:36:112:36 | <anonymous local variable> |
+| Test.java:112:34:112:40 | A(...) | Test.java:112:47:112:51 | thing |
 | Test.java:112:34:112:40 | A(...) | Test.java:113:8:113:20 | case <Pattern> |
 | Test.java:112:36:112:36 | <anonymous local variable> | Test.java:112:39:112:39 | <anonymous local variable> |
-| Test.java:112:39:112:39 | <anonymous local variable> | Test.java:112:47:112:51 | thing |
+| Test.java:112:39:112:39 | <anonymous local variable> | Test.java:112:34:112:40 | A(...) |
 | Test.java:112:47:112:51 | thing | Test.java:112:47:112:62 | toString(...) |
 | Test.java:112:47:112:62 | toString(...) | Test.java:112:71:112:75 | "abc" |
 | Test.java:112:47:112:76 | equals(...) | Test.java:113:8:113:20 | case <Pattern> |

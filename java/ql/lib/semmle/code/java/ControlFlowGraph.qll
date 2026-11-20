@@ -24,8 +24,15 @@ import Public
  * Holds if `ioe` is of the form `x instanceof T y`. In this case we want to
  * consider `T` as the pattern, with `y` being a sub expression of the pattern.
  */
-private predicate isBindingInstanceOf(InstanceOfExpr ioe, Expr pattern, LocalVariableDeclExpr lvd) {
-  lvd = ioe.getPattern() and pattern = ioe.getTypeName()
+private predicate isBindingPattern(Expr parent, Expr pattern, int i, LocalVariableDeclExpr lvd) {
+  parent = any(InstanceOfExpr ioe | lvd = ioe.getPattern() and pattern = ioe.getTypeName()) and
+  i = 0
+  or
+  exists(RecordPatternExpr rpe |
+    rpe = parent and
+    lvd = rpe.getSubPattern(i) and
+    pattern.isNthChildOf(rpe, -i - 1)
+  )
 }
 
 /** Provides an implementation of the AST signature for Java. */
@@ -35,12 +42,18 @@ private module Ast implements AstSig<Location> {
   class AstNode = ExprParent;
 
   private predicate skipControlFlow(AstNode e) {
-    e.(Expr).getParent*() instanceof Annotation or
-    e instanceof TypeAccess or
-    e instanceof ArrayTypeAccess or
-    e instanceof UnionTypeAccess or
-    e instanceof IntersectionTypeAccess or
-    e instanceof WildcardTypeAccess or
+    e.(Expr).getParent*() instanceof Annotation
+    or
+    e instanceof TypeAccess
+    or
+    e instanceof ArrayTypeAccess
+    or
+    e instanceof UnionTypeAccess
+    or
+    e instanceof IntersectionTypeAccess
+    or
+    e instanceof WildcardTypeAccess
+    or
     // Switch cases of the form `case e1 -> e2;` skip the ExprStmt and treat
     // the right-hand side as an expression. See `SwitchCase.getRuleExpression()`.
     any(SwitchCase sc).getRuleExpression() = e.(J::ExprStmt).getExpr()
@@ -49,15 +62,17 @@ private module Ast implements AstSig<Location> {
   AstNode getChild(AstNode n, int index) {
     not skipControlFlow(result) and
     not skipControlFlow(n) and
-    not isBindingInstanceOf(n, _, result) and
+    not isBindingPattern(n, _, _, result) and
     result.(Expr).isNthChildOf(n, index)
     or
     result.(Stmt).isNthChildOf(n, index)
     or
     result = n.(SwitchCase).getRuleExpression() and index = -1
     or
-    isBindingInstanceOf(_, n, result) and
+    isBindingPattern(_, n, _, result) and
     index = 0
+    or
+    isBindingPattern(n, result, index, _)
   }
 
   Callable getEnclosingCallable(AstNode node) {
@@ -255,7 +270,9 @@ private module Ast implements AstSig<Location> {
 
   class Pattern extends AstNode {
     Pattern() {
-      isBindingInstanceOf(_, this, _)
+      isBindingPattern(_, this, _, _)
+      or
+      isBindingPattern(_, _, _, this)
       or
       this instanceof RecordPatternExpr
     }
@@ -275,16 +292,20 @@ private module Ast implements AstSig<Location> {
     Pattern getNegatedPattern() { none() }
   }
 
+  class BindingPattern extends Pattern {
+    BindingPattern() { isBindingPattern(_, _, _, this) }
+  }
+
   final private class FinalInstanceOfExpr = J::InstanceOfExpr;
 
   class PatternMatchExpr extends FinalInstanceOfExpr {
     PatternMatchExpr() { this.isPattern() }
 
     AstNode getPattern() {
-      not isBindingInstanceOf(this, _, _) and
+      not isBindingPattern(this, _, _, _) and
       result = super.getPattern()
       or
-      isBindingInstanceOf(this, result, _)
+      isBindingPattern(this, result, _, _)
     }
   }
 }
