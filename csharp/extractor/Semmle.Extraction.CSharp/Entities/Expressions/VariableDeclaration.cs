@@ -13,13 +13,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         private VariableDeclaration(IExpressionInfo info) : base(info) { }
 
-        public static VariableDeclaration Create(Context cx, ISymbol symbol, AnnotatedTypeSymbol? type, TypeSyntax? optionalSyntax, Location exprLocation, bool isVar, IExpressionParentEntity parent, int child)
+        public static VariableDeclaration Create(Context cx, ISymbol symbol, AnnotatedTypeSymbol? type, TypeSyntax? optionalSyntax, Location exprLocation, bool isVar, IExpressionParentEntity parent, int child, bool isPattern = false)
         {
             var ret = new VariableDeclaration(new ExpressionInfo(cx, type, exprLocation, ExprKind.LOCAL_VAR_DECL, parent, child, isCompilerGenerated: false, null));
             cx.Try(null, null, () =>
             {
                 var l = LocalVariable.Create(cx, symbol);
                 l.PopulateManual(ret, isVar);
+                if (isPattern)
+                    ret.CreateDefiningAccess(l, type);
                 if (optionalSyntax is not null)
                     TypeMention.Create(cx, optionalSyntax, ret, type);
             });
@@ -86,10 +88,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         case SingleVariableDesignationSyntax single:
                             if (cx.GetModel(variable).GetDeclaredSymbol(single) is ILocalSymbol local)
                             {
-                                var decl = Create(cx, variable, local.GetAnnotatedType(), tuple, child0++);
-                                var l = LocalVariable.Create(cx, local);
-                                l.PopulateManual(decl, true);
-                                sub = decl;
+                                sub = Create(cx, local, local.GetAnnotatedType(), null, cx.CreateLocation(single.FixedLocation()), true, tuple, child0++, isPattern: true);
                             }
                             else
                             {
@@ -176,10 +175,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 if (d.Initializer is not null)
                 {
-                    // Create an access
-                    var access = new Expression(new ExpressionInfo(cx, type, localVar.Location, ExprKind.LOCAL_VARIABLE_ACCESS, ret, 0, isCompilerGenerated: false, null));
-                    cx.TrapWriter.Writer.expr_access(access, localVar);
-
+                    ret.CreateDefiningAccess(localVar, type);
                     Create(cx, d.Initializer.Value, ret, 1);
                 }
 
@@ -187,6 +183,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     TypeMention.Create(cx, decl.Type, ret, type);
             });
             return ret;
+        }
+
+        private void CreateDefiningAccess(LocalVariable localVar, AnnotatedTypeSymbol? type)
+        {
+            var access = new Expression(new ExpressionInfo(Context, type, localVar.Location, ExprKind.LOCAL_VARIABLE_ACCESS, this, 0, isCompilerGenerated: false, null));
+            Context.TrapWriter.Writer.expr_access(access, localVar);
         }
     }
 
