@@ -732,8 +732,7 @@ module ClientRequest {
 
     /** Gets an event listener registered on this XHR object. */
     DataFlow::FunctionNode getAnEventListener() {
-      exists(string propertyName |
-        propertyName.startsWith("on") |
+      exists(string propertyName | propertyName.startsWith("on") |
         result = this.getAPropertyWrite(propertyName).getRhs().getAFunctionValue()
       )
       or

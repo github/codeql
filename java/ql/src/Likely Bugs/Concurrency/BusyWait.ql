@@ -35,7 +35,9 @@ class WaitMethod extends Method {
 }
 
 class ConcurrentMethod extends Method {
-  ConcurrentMethod() { this.getDeclaringType().getQualifiedName().startsWith("java.util.concurrent") }
+  ConcurrentMethod() {
+    this.getDeclaringType().getQualifiedName().startsWith("java.util.concurrent")
+  }
 }
 
 class CommunicationMethod extends Method {

@@ -91,7 +91,9 @@ module Regexp {
 
   private class ReplaceFunction extends RegexpReplaceFunction::Range, Method {
     ReplaceFunction() {
-      exists(string fn | fn.startsWith("ReplaceAll") | this.hasQualifiedName("regexp", "Regexp", fn))
+      exists(string fn | fn.startsWith("ReplaceAll") |
+        this.hasQualifiedName("regexp", "Regexp", fn)
+      )
     }
 
     override FunctionInput getRegexpArg() { result.isReceiver() }

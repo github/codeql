@@ -44,7 +44,9 @@ module HardcodedCredentials {
 
   /** A use of a credential. */
   private class ExternalCredentialsSink extends Sink {
-    ExternalCredentialsSink() { exists(string s | s.startsWith("credentials-") | sinkNode(this, s)) }
+    ExternalCredentialsSink() {
+      exists(string s | s.startsWith("credentials-") | sinkNode(this, s))
+    }
   }
 
   /** A use of a credential. */
