@@ -16,7 +16,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// Holds if this project is for .Net core.
         /// </summary>
-        public bool DotNetProject { get; private set; }
+        public bool MaybeDotNetProject { get; init; }
 
         public bool ValidToolsVersion { get; private set; }
 
@@ -51,7 +51,11 @@ namespace Semmle.Autobuild.Shared
             includedProjectsLazy = new Lazy<List<Project<TAutobuildOptions>>>(() => new List<Project<TAutobuildOptions>>());
 
             if (!builder.Actions.FileExists(FullPath))
+            {
+                // We can't out-rule that this is a dotnet project.
+                MaybeDotNetProject = true;
                 return;
+            }
 
             XmlDocument projFile;
             try
@@ -70,7 +74,7 @@ namespace Semmle.Autobuild.Shared
             {
                 if (ReferencesSdk(root))
                 {
-                    DotNetProject = true;
+                    MaybeDotNetProject = true;
                     return;
                 }
 
