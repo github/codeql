@@ -33,10 +33,10 @@ public class RuntimeExecTest {
 
                 // 4. Stream concatenation
                 Runtime.getRuntime().exec(
-                    Stream.concat( // $
+                    Stream.concat( // $ Alert[java/command-line-injection-extra-local]
                         Arrays.stream(new String[]{"/bin/sh"}),
                         Arrays.stream(new String[]{script})
-                    ).toArray(String[]::new) // $ Alert[java/command-line-injection-extra-local]
+                    ).toArray(String[]::new)
                 );
 
             } catch (Exception e) {

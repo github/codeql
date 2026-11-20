@@ -4,14 +4,14 @@ class TestController < ActionController::Base
   gzip_path = params[:path] # $ Source
 
   Zlib::GzipReader.open(gzip_path).read # $ Alert
-  Zlib::GzipReader.open(gzip_path) do |uncompressedfile|
+  Zlib::GzipReader.open(gzip_path) do |uncompressedfile| # $ Alert
     puts uncompressedfile.read
-  end # $ Alert
-  Zlib::GzipReader.open(gzip_path) do |uncompressedfile|
+  end
+  Zlib::GzipReader.open(gzip_path) do |uncompressedfile| # $ Alert
     uncompressedfile.each do |entry|
       puts entry
     end
-  end # $ Alert
+  end
   uncompressedfile = Zlib::GzipReader.open(gzip_path) # $ Alert
   uncompressedfile.each do |entry|
     puts entry

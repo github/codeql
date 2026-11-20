@@ -107,9 +107,9 @@ function test14(url) {
 }
 
 function chain1(url) {
-    return url
+    return url // $ Alert
         .replace(/javascript:/, "")
-        .replace(/data:/, ""); // $ Alert
+        .replace(/data:/, "");
 }
 
 function chain2(url) {

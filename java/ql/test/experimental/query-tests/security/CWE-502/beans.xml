@@ -7,24 +7,24 @@
 
     <bean id="anotherBookingService" class="com.gypsyengineer.server.CabBookingServiceImpl"/>
 
-    <bean name="/unsafeBooking" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+    <bean name="/unsafeBooking" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter"> <!-- $ Alert[java/unsafe-deserialization-spring-exporter-in-xml-configuration] -->
         <property name="service" ref="anotherBookingService"/>
         <property name="serviceInterface" value="com.gypsyengineer.api.CabBookingService"/>
-    </bean> <!-- $ Alert[java/unsafe-deserialization-spring-exporter-in-xml-configuration] -->
+    </bean>
 
-    <bean class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+    <bean class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter"> <!-- $ Alert[java/unsafe-deserialization-spring-exporter-in-xml-configuration] -->
         <property name="service" ref="anotherBookingService"/>
         <property name="serviceInterface" value="com.gypsyengineer.api.CabBookingService"/>
-    </bean> <!-- $ Alert[java/unsafe-deserialization-spring-exporter-in-xml-configuration] -->
+    </bean>
 
-    <bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+    <bean class="org.springframework.remoting.rmi.RmiServiceExporter"> <!-- $ Alert[java/unsafe-deserialization-spring-exporter-in-xml-configuration] -->
         <property name="service" ref="oneMoreBookingService"/>
         <property name="serviceInterface" value="com.gypsyengineer.api.CabBookingService"/>
         <property name="registryPort" value="1199"/>
-    </bean> <!-- $ Alert[java/unsafe-deserialization-spring-exporter-in-xml-configuration] -->
+    </bean>
 
-    <bean class="org.springframework.remoting.caucho.HessianServiceExporter">
+    <bean class="org.springframework.remoting.caucho.HessianServiceExporter"> <!-- $ Alert[java/unsafe-deserialization-spring-exporter-in-xml-configuration] -->
         <property name="service" ref="oneMoreBookingService"/>
         <property name="serviceInterface" value="com.gypsyengineer.api.CabBookingService"/>
-    </bean> <!-- $ Alert[java/unsafe-deserialization-spring-exporter-in-xml-configuration] -->
+    </bean>
 </beans>

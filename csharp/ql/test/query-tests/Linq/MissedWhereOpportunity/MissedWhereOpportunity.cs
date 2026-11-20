@@ -7,23 +7,23 @@ class MissedWhereOpportunity
     public void M1(List<int> lst)
     {
         // BAD: Can be replaced with lst.Where(e => e % 2 == 0)
-        foreach (int i in lst)
+        foreach (int i in lst) // $ Alert
         {
             if (i % 2 != 0)
                 continue;
             Console.WriteLine(i);
             Console.WriteLine((i / 2));
-        } // $ Alert
+        }
 
         // BAD: Can be replaced with lst.Where(e => e % 2 == 0)
-        foreach (int i in lst)
+        foreach (int i in lst) // $ Alert
         {
             if (i % 2 == 0)
             {
                 Console.WriteLine(i);
                 Console.WriteLine((i / 2));
             }
-        } // $ Alert
+        }
     }
 
     public void M2(NonEnumerableClass nec)
@@ -42,14 +42,14 @@ class MissedWhereOpportunity
     public void M3(int[] arr)
     {
         // BAD: Can be replaced with arr.Where(e => e % 2 == 0)
-        foreach (var n in arr)
+        foreach (var n in arr) // $ Alert
         {
             if (n % 2 == 0)
             {
                 Console.WriteLine(n);
                 Console.WriteLine((n / 2));
             }
-        } // $ Alert
+        }
     }
 
     public void M4(Array arr)
@@ -67,13 +67,13 @@ class MissedWhereOpportunity
     public void M5(IEnumerable<int> elements)
     {
         // BAD: Can be replaced with elements.Where(e => e.GetHashCode() % 2 == 0)
-        foreach (var element in elements)
+        foreach (var element in elements) // $ Alert
         {
             if (element.GetHashCode() % 2 == 0)
             {
                 Console.WriteLine(element);
             }
-        } // $ Alert
+        }
     }
 
     public int M6(IEnumerable<int> elements)
@@ -117,13 +117,13 @@ class MissedWhereOpportunity
     public IEnumerable<int> M9(IEnumerable<int> elements)
     {
         // BAD: A yield return does not exit the iterator, so the loop still filters yielded values.
-        foreach (var element in elements)
+        foreach (var element in elements) // $ Alert
         {
             if (element.GetHashCode() % 2 == 0)
             {
                 yield return element;
             }
-        } // $ Alert
+        }
     }
 
     public int M10(IEnumerable<int> elements)

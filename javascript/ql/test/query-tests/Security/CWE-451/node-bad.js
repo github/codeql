@@ -1,4 +1,4 @@
 var http = require('http')
 
-http.createServer(function (request, response) {
-  }).listen(9615) // $ Alert
+http.createServer(function (request, response) { // $ Alert
+  }).listen(9615)

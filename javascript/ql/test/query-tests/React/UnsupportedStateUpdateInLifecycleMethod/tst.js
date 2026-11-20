@@ -105,9 +105,9 @@ React.createClass({
 // eslint examples
 React.createClass({
   componentDidUpdate: function() {
-     this.setState({
+     this.setState({ // $ Alert
         name: this.props.name.toUpperCase()
-      }); // $ Alert
+      });
     },
   render: function() {
     return <div>Hello {this.state.name}</div>;
@@ -115,9 +115,9 @@ React.createClass({
 });
 React.createClass({
   componentWillUpdate: function() {
-     this.setState({
+     this.setState({ // $ Alert
         name: this.props.name.toUpperCase()
-      }); // $ Alert
+      });
     },
   render: function() {
     return <div>Hello {this.state.name}</div>;
