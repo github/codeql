@@ -1,0 +1,18 @@
+| integer-hints.c:8:16:8:17 | ll | This format specifier for type 'int' does not match the argument type 'long long'. Consider using '%lld' instead. |
+| integer-hints.c:9:16:9:18 | ull | This format specifier for type 'int' does not match the argument type 'unsigned long long'. Consider using '%llu' instead. |
+| integer-hints.c:10:16:10:17 | ll | This format specifier for type 'int' does not match the argument type 'long long'. Consider using '%lli' instead. |
+| integer-hints.c:11:18:11:18 | i | This format specifier for type 'long long' does not match the argument type 'int'. Consider using '%d' instead. |
+| integer-hints.c:12:18:12:19 | ui | This format specifier for type 'unsigned long long' does not match the argument type 'unsigned int'. Consider using '%u' instead. |
+| integer-hints.c:13:18:13:18 | l | This format specifier for type 'long long' does not match the argument type 'long'. Consider using '%ld' instead. |
+| integer-hints.c:14:18:14:19 | ul | This format specifier for type 'unsigned long long' does not match the argument type 'unsigned long'. Consider using '%lu' instead. |
+| integer-hints.c:15:26:15:28 | ull | This format specifier for type 'int' does not match the argument type 'unsigned long long'. Consider using '%llu' instead. |
+| integer-hints.c:16:19:16:20 | ll | This format specifier for type 'int' does not match the argument type 'long long'. Consider using '%lld' instead. |
+| integer-hints.c:16:23:16:25 | ull | This format specifier for type 'int' does not match the argument type 'unsigned long long'. Consider using '%llu' instead. |
+| integer-hints.c:26:18:26:19 | ll | This format specifier for type 'int' does not match the argument type 'long long'. |
+| integer-hints.c:27:17:27:18 | ll | This format specifier for type 'int' does not match the argument type 'long long'. |
+| integer-hints.c:28:18:28:19 | ll | This format specifier for type 'int' does not match the argument type 'long long'. |
+| integer-hints.c:29:18:29:19 | ll | This format specifier for type 'int' does not match the argument type 'long long'. |
+| integer-hints.c:30:16:30:18 | ull | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long long'. |
+| integer-hints.c:31:16:31:16 | d | This format specifier for type 'int' does not match the argument type 'double'. |
+| integer-hints.c:32:16:32:17 | ll | This format specifier for type 'char *' does not match the argument type 'long long'. |
+| integer-hints.c:34:16:34:16 | i | This format specifier for type 'double' does not match the argument type 'int'. |

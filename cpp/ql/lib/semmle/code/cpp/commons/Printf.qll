@@ -759,38 +759,36 @@ class FormatLiteral extends Literal instanceof StringLiteral {
    * Gets the family of integral types required by the nth conversion
    * specifier's length flag.
    */
-  Type getIntegralConversion(int n) {
-    exists(string len |
-      len = this.getLength(n) and
-      (
-        len = "hh" and result instanceof IntType
-        or
-        len = "h" and result instanceof IntType
-        or
-        len = "l" and result = this.getLongType()
-        or
-        len = ["ll", "L", "q"] and
-        result instanceof LongLongType
-        or
-        len = "j" and result = this.getIntmax_t()
-        or
-        len = ["z", "Z"] and
-        (result = this.getSize_t() or result = this.getSsize_t())
-        or
-        len = "t" and result = this.getPtrdiff_t()
-        or
-        len = "I" and
-        (result = this.getSize_t() or result = this.getPtrdiff_t())
-        or
-        len = "I32" and
-        exists(MicrosoftInt32Type t | t.getUnsigned() = result.(IntegralType).getUnsigned())
-        or
-        len = "I64" and
-        exists(MicrosoftInt64Type t | t.getUnsigned() = result.(IntegralType).getUnsigned())
-        or
-        len = "" and result instanceof IntType
-      )
-    )
+  Type getIntegralConversion(int n) { result = this.getIntegralTypeForLength(this.getLength(n)) }
+
+  /** Gets the integer type family associated with a length flag. */
+  private Type getIntegralTypeForLength(string len) {
+    len = "hh" and result instanceof IntType
+    or
+    len = "h" and result instanceof IntType
+    or
+    len = "l" and result = this.getLongType()
+    or
+    len = ["ll", "L", "q"] and
+    result instanceof LongLongType
+    or
+    len = "j" and result = this.getIntmax_t()
+    or
+    len = ["z", "Z"] and
+    (result = this.getSize_t() or result = this.getSsize_t())
+    or
+    len = "t" and result = this.getPtrdiff_t()
+    or
+    len = "I" and
+    (result = this.getSize_t() or result = this.getPtrdiff_t())
+    or
+    len = "I32" and
+    exists(MicrosoftInt32Type t | t.getUnsigned() = result.(IntegralType).getUnsigned())
+    or
+    len = "I64" and
+    exists(MicrosoftInt64Type t | t.getUnsigned() = result.(IntegralType).getUnsigned())
+    or
+    len = "" and result instanceof IntType
   }
 
   /**
@@ -869,9 +867,8 @@ class FormatLiteral extends Literal instanceof StringLiteral {
    * Gets the argument type required by the nth conversion specifier.
    */
   Type getConversionType(int n) {
-    result = this.getConversionType1(n) or
+    result = this.getIntegerConversionType(this.getLength(n), this.getConversionChar(n)) or
     result = this.getConversionType1b(n) or
-    result = this.getConversionType2(n) or
     result = this.getConversionType3(n) or
     result = this.getConversionType4(n) or
     result = this.getConversionType6(n) or
@@ -881,12 +878,19 @@ class FormatLiteral extends Literal instanceof StringLiteral {
     result = this.getConversionType10(n)
   }
 
-  private Type getConversionType1(int n) {
-    exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv = ["d", "i"] and
-      result = this.getIntegralConversion(n) and
+  /**
+   * Gets the required argument type for an integer conversion with length flag
+   * `len` and conversion character `conv`, using this literal's target platform.
+   */
+  Type getIntegerConversionType(string len, string conv) {
+    result = this.getIntegralTypeForLength(len) and
+    (
+      conv = ["d", "i"] and
       not result.getUnderlyingType().(IntegralType).isExplicitlySigned() and
       not result.getUnderlyingType().(IntegralType).isExplicitlyUnsigned()
+      or
+      conv = ["o", "u", "x", "X"] and
+      result.getUnderlyingType().(IntegralType).isUnsigned()
     )
   }
 
@@ -918,14 +922,6 @@ class FormatLiteral extends Literal instanceof StringLiteral {
         (len != "l" and len != "w" and len != "h") and
         result = this.getNonDefaultCharType()
       )
-    )
-  }
-
-  private Type getConversionType2(int n) {
-    exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv = ["o", "u", "x", "X"] and
-      result = this.getIntegralConversion(n) and
-      result.getUnderlyingType().(IntegralType).isUnsigned()
     )
   }
 

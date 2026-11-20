@@ -152,6 +152,30 @@ predicate trivialConversion(ExpectedType expected, Type actual) {
  */
 int sizeof_IntType() { exists(IntType it | result = it.getSize()) }
 
+private string suggestedIntegerSpecifier(FormatLiteral format, int n, Type actual) {
+  exists(string length, string conversion, string originalConversion |
+    format.parseConvSpec(n, _, "", "", "", "", ["", "l", "ll"], originalConversion) and
+    originalConversion = ["d", "i", "u"] and
+    length = ["", "l", "ll"] and
+    (if originalConversion = "i" then conversion = ["i", "u"] else conversion = ["d", "u"]) and
+    format.getIntegerConversionType(length, conversion) =
+      actual.getUnspecifiedType().(IntegralType).getCanonicalArithmeticType() and
+    result = "%" + length + conversion
+  )
+}
+
+bindingset[ffc, n, arg, actual]
+private string integerFormatSuggestion(FormattingFunctionCall ffc, int n, Expr arg, Type actual) {
+  if
+    ffc.getConversionArgument(n) = arg and
+    exists(suggestedIntegerSpecifier(ffc.getFormat().(FormatLiteral), n, actual))
+  then
+    result =
+      " Consider using '" + suggestedIntegerSpecifier(ffc.getFormat().(FormatLiteral), n, actual) +
+        "' instead."
+  else result = ""
+}
+
 from FormattingFunctionCall ffc, int n, Expr arg, Type expected, Type actual
 where
   (
@@ -178,4 +202,4 @@ where
   count(ffc.getTarget().getFormatParameterIndex()) = 1
 select arg,
   "This format specifier for type '" + expected.getName() + "' does not match the argument type '" +
-    actual.getUnspecifiedType().getName() + "'."
+    actual.getUnspecifiedType().getName() + "'." + integerFormatSuggestion(ffc, n, arg, actual)
