@@ -438,6 +438,13 @@ signature module AstSig<LocationSig Location> {
   }
 
   /**
+   * A pattern that binds a value to a variable. Such a pattern does not by itself
+   * perform a test, but it may be a sub pattern of a pattern that performs for
+   * example a constructor test, `Some(x)`, or a type test, `int x`.
+   */
+  class BindingPattern extends Pattern;
+
+  /**
    * A pattern matching expression.
    *
    * In Java this is `x instanceof Pattern`, and in C# this is `x is Pattern`.
@@ -618,6 +625,16 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     private import codeql.util.DenseRank
     private import codeql.util.Option
 
+    final private class PatternFinal = Pattern;
+
+    /**
+     * A leaf pattern, that is, a pattern without sub patterns (but possibly
+     * with non-pattern children). For example `None` and `Some(42)` in Rust.
+     */
+    private class LeafPattern extends PatternFinal {
+      LeafPattern() { not getChild(this, _) instanceof Pattern }
+    }
+
     /**
      * Holds if `n` is executed in post-order or in-order. This means that an
      * additional node is created to represent `n` in the control flow graph.
@@ -643,7 +660,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       n instanceof Expr and
       exists(getChild(n, _)) and
       not Input1::preOrderExpr(n) and
-      not n instanceof Pattern and
+      (n instanceof Pattern implies n instanceof LeafPattern) and
       not n instanceof LogicalAndExpr and
       not n instanceof LogicalOrExpr and
       not n instanceof NullCoalescingExpr and
@@ -882,6 +899,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       t instanceof DirectSuccessor
       or
       patternPerformsTest(n) and
+      not n instanceof LeafPattern and
       tag = outerPatternMatchTag() and
       t.(MatchingSuccessor).getValue() = true
     }
@@ -1026,8 +1044,14 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       )
     }
 
+    private predicate patternIsExhaustive(Pattern pattern) {
+      Input1::patternIsExhaustive(pattern)
+      or
+      pattern instanceof BindingPattern
+    }
+
     private predicate constantPattern(AstNode pattern, boolean value) {
-      Input1::patternIsExhaustive(pattern) and
+      patternIsExhaustive(pattern) and
       value = true
       or
       exists(Pattern parent, int i |
@@ -2155,7 +2179,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       private predicate conjunctivePatternStep(PreControlFlowNode n1, PreControlFlowNode n2) {
         exists(Pattern pattern |
           defaultCfg(pattern) and
-          not pattern instanceof OrPattern
+          not pattern instanceof OrPattern and
+          not pattern instanceof LeafPattern
         |
           n1.isBefore(pattern) and
           (
@@ -2220,7 +2245,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
        * flow.
        */
       private predicate defaultStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-        exists(AstNode ast | defaultCfg(ast) and not ast instanceof Pattern |
+        exists(AstNode ast |
+          defaultCfg(ast) and
+          (ast instanceof Pattern implies ast instanceof LeafPattern)
+        |
           n1.isBefore(ast) and
           n2.isBefore(getRankedChild(ast, 1))
           or
@@ -2630,6 +2658,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             query = "multipleDefaultCases" and
             results =
               strictcount(Switch s, int defaultCases | multipleDefaultCases(s, defaultCases))
+            or
+            query = "nonLeafBindingPattern" and
+            results = strictcount(BindingPattern bp | nonLeafBindingPattern(bp))
           }
 
           /**
@@ -2837,6 +2868,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             defaultCases = strictcount(DefaultCase c | s.getCase(_) = c) and
             defaultCases > 1
           }
+
+          /**
+           * Holds if binding pattern is not a leaf node.
+           */
+          query predicate nonLeafBindingPattern(BindingPattern bp) { exists(getChild(bp, _)) }
         }
       }
     }
