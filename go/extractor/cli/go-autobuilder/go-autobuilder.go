@@ -29,6 +29,9 @@ Options:
 
 Build behavior:
 
+    When the build mode is 'none', the script resolves dependencies and invokes the extractor
+    without running project build scripts or custom build commands.
+
     When LGTM_SRC is not set, the script installs dependencies as described below, and then invokes the
     extractor in the working directory.
 
@@ -587,7 +590,12 @@ func installDependenciesAndBuild() {
 
 	// check whether an explicit dependency installation command was provided
 	inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
-	if inst == "" {
+	if os.Getenv("CODEQL_EXTRACTOR_GO_BUILD_MODE") == "none" {
+		log.Println("Build mode is 'none'; skipping project build scripts and custom build commands.")
+		for i := range workspaces {
+			workspaces[i].ShouldInstallDependencies = true
+		}
+	} else if inst == "" {
 		buildWithoutCustomCommands(workspaces)
 	} else {
 		buildWithCustomCommands(inst)
