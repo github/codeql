@@ -230,6 +230,8 @@
 | ViableCallable.cs:185:19:185:25 | dynamic access to element | get_Item | C2`1 |
 | ViableCallable.cs:185:19:185:25 | dynamic access to element | get_Item | C6`2 |
 | ViableCallable.cs:189:13:189:17 | dynamic call to operator + | + | Decimal |
+| ViableCallable.cs:189:13:189:17 | dynamic call to operator + | + | Decimal64 |
+| ViableCallable.cs:189:13:189:17 | dynamic call to operator + | + | Decimal128 |
 | ViableCallable.cs:189:13:189:17 | dynamic call to operator + | + | Double |
 | ViableCallable.cs:189:13:189:17 | dynamic call to operator + | + | Int32 |
 | ViableCallable.cs:189:13:189:17 | dynamic call to operator + | + | Int64 |
@@ -237,6 +239,8 @@
 | ViableCallable.cs:189:13:189:17 | dynamic call to operator + | + | NFloat |
 | ViableCallable.cs:189:13:189:17 | dynamic call to operator + | + | Single |
 | ViableCallable.cs:191:13:191:17 | dynamic call to operator - | - | Decimal |
+| ViableCallable.cs:191:13:191:17 | dynamic call to operator - | - | Decimal64 |
+| ViableCallable.cs:191:13:191:17 | dynamic call to operator - | - | Decimal128 |
 | ViableCallable.cs:191:13:191:17 | dynamic call to operator - | - | Double |
 | ViableCallable.cs:191:13:191:17 | dynamic call to operator - | - | Int32 |
 | ViableCallable.cs:191:13:191:17 | dynamic call to operator - | - | Int64 |
@@ -244,6 +248,8 @@
 | ViableCallable.cs:191:13:191:17 | dynamic call to operator - | - | NFloat |
 | ViableCallable.cs:191:13:191:17 | dynamic call to operator - | - | Single |
 | ViableCallable.cs:193:13:193:18 | dynamic call to operator + | + | Decimal |
+| ViableCallable.cs:193:13:193:18 | dynamic call to operator + | + | Decimal64 |
+| ViableCallable.cs:193:13:193:18 | dynamic call to operator + | + | Decimal128 |
 | ViableCallable.cs:193:13:193:18 | dynamic call to operator + | + | Double |
 | ViableCallable.cs:193:13:193:18 | dynamic call to operator + | + | Int32 |
 | ViableCallable.cs:193:13:193:18 | dynamic call to operator + | + | Int64 |

@@ -14,7 +14,16 @@
 | [...]/csharp/tools/[...]/Microsoft.CodeAnalysis.VisualBasic.dll |
 | [...]/csharp/tools/[...]/Microsoft.CodeAnalysis.Workspaces.dll |
 | [...]/csharp/tools/[...]/Microsoft.CodeAnalysis.dll |
+| [...]/csharp/tools/[...]/Microsoft.Extensions.Caching.Abstractions.dll |
+| [...]/csharp/tools/[...]/Microsoft.Extensions.Configuration.Abstractions.dll |
+| [...]/csharp/tools/[...]/Microsoft.Extensions.DependencyInjection.Abstractions.dll |
+| [...]/csharp/tools/[...]/Microsoft.Extensions.Diagnostics.Abstractions.dll |
+| [...]/csharp/tools/[...]/Microsoft.Extensions.FileProviders.Abstractions.dll |
+| [...]/csharp/tools/[...]/Microsoft.Extensions.Hosting.Abstractions.dll |
+| [...]/csharp/tools/[...]/Microsoft.Extensions.Logging.Abstractions.dll |
 | [...]/csharp/tools/[...]/Microsoft.Extensions.ObjectPool.dll |
+| [...]/csharp/tools/[...]/Microsoft.Extensions.Options.dll |
+| [...]/csharp/tools/[...]/Microsoft.Extensions.Primitives.dll |
 | [...]/csharp/tools/[...]/Microsoft.NET.StringTools.dll |
 | [...]/csharp/tools/[...]/Microsoft.VisualBasic.Core.dll |
 | [...]/csharp/tools/[...]/Microsoft.VisualBasic.dll |
