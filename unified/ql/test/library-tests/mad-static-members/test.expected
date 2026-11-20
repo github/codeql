@@ -1,3 +1,14 @@
+instanceMember
+| StaticTest | init |
+| StaticTest | instanceMethod |
+| StaticTest | instanceProp |
+| StaticTestSub | init |
+| StaticTestSub | instanceMethod |
+| StaticTestSub | instanceProp |
+staticMember
 | test.swift:5:9:5:31 | ... .staticMethod | StaticTest.Type.staticMethod |
 | test.swift:6:9:6:29 | ... .staticProp | StaticTest.Type.staticProp |
 | test.swift:7:9:7:42 | ... .nestedStaticProp | StaticTest.Nested.Type.nestedStaticProp |
+| test.swift:21:9:21:34 | ... .staticMethod | StaticTest.Type.staticMethod |
+| test.swift:22:9:22:32 | ... .staticProp | StaticTest.Type.staticProp |
+| test.swift:28:5:28:9 | NSLog | .NSLog |

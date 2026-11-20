@@ -9,3 +9,21 @@ query predicate staticMember(AstNode ref, string member) {
     member = selector.getTypeString() + "." + selector.getName()
   )
 }
+
+query predicate instanceMember(string type, string member) {
+  exists(N::NamespaceNode namespace, MaD::TypeSelector typeSelector, N::NameBindingNode node |
+    namespace.isTypeSelector(typeSelector) and
+    not typeSelector.isMetaType() and
+    node = namespace.getMember(member) and
+    node.isMemberSelector(_) and
+    type = typeSelector and
+    type.matches("StaticTest%")
+  )
+  or
+  exists(N::NamespaceNode namespace, ClassLikeDeclaration cls, N::NameBindingNode node |
+    namespace.isInstanceMemberNamespace(cls) and
+    node = namespace.getMember(member) and
+    node.isMemberSelector(_) and
+    type = cls.getName()
+  )
+}

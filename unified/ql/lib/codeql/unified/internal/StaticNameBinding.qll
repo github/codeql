@@ -428,6 +428,12 @@ private predicate isInheritableMemberNode(NameBindingNode node) {
     node.isIdentifier(decl) and
     isInheritableMember(decl.getDeclaration())
   )
+  or
+  // Members from a model are inherited if the model applies to subtypes
+  exists(MaD::MemberSelector member |
+    node.isMemberSelector(member) and
+    member.getSubtypesFlag() = true
+  )
 }
 
 /** A name-binding node that can have members. */
@@ -442,6 +448,8 @@ class NamespaceNode extends NameBindingNode {
     this.isInstanceMemberNamespace(_)
     or
     this.isStaticMemberNamespace(_)
+    or
+    this.isTypeSelector(_)
   }
 
   /** Gets a name-binding node that may refer to this namespace. */
@@ -456,15 +464,20 @@ class NamespaceNode extends NameBindingNode {
   /** Gets an own (non-inherited) member of this namespace of the given name. */
   NameBindingNode getOwnMember(string name) { result = this.getOwnMember(name, _) }
 
-  /** If this is the static namespace for a class, gets the corresponding instance namespace. */
+  /** If this is the static namespace for a class or model type, gets the corresponding instance namespace. */
   NamespaceNode toInstanceNamespace() {
     exists(ClassLikeDeclaration cls |
       this.isStaticMemberNamespace(cls) and
       result.isInstanceMemberNamespace(cls)
     )
+    or
+    exists(MaD::TypeSelector type |
+      this.isTypeSelector(type.getMetaType()) and
+      result.isTypeSelector(type)
+    )
   }
 
-  /** If this is the instance namespace for a class, gets the corresponding static namespace. */
+  /** If this is the instance namespace for a class or model type, gets the corresponding static namespace. */
   NamespaceNode toStaticNamespace() { result.toInstanceNamespace() = this }
 
   private NamespaceNode getAnExtension1() { extensionStep(result, this.ref()) }
