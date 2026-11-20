@@ -97,7 +97,7 @@ private module PythonJose {
       exists(KeyValuePair optionsDict, NameConstant falseName |
         falseName.getId() = "False" and
         optionsDict = this.getOptions().asExpr().(Dict).getItem(_) and
-        optionsDict.getKey().(Str_).getS().matches("%verify%") and
+        optionsDict.getKey().(Str_).getS().contains("verify") and
         falseName = optionsDict.getValue()
       )
     }

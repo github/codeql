@@ -13,7 +13,7 @@ private import codeql.unified.internal.NameBinding
  */
 predicate relevantNode(AstNode node) {
   // Match an ancestor node by location so its whole subtree is shown.
-  node.getParent*().getLocation().toString().matches("%test.swift@227:%")
+  node.getParent*().getLocation().toString().contains("test.swift@227:")
 }
 
 import LocalNameBindingOutput::DebugScopeGraph<relevantNode/1>

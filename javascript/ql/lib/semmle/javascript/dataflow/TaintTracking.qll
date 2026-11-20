@@ -714,7 +714,7 @@ module TaintTracking {
       exists(string m, DataFlow::MethodCallNode call | call = succ |
         call.getMethodName() = m and
         call.getReceiver() = pred and
-        m.matches("get%")
+        m.startsWith("get")
       )
     }
   }

@@ -80,7 +80,7 @@ private string normalizeFunctionName(Function f, string algType) {
   (
     (result.length() <= 4 and result = "DESX")
     implies
-    (f.getName().toUpperCase().matches("%DESX%") or f.getName().toUpperCase().matches("%DES_X%"))
+    (f.getName().toUpperCase().contains("DESX") or f.getName().toUpperCase().matches("%DES_X%"))
   ) and
   // (result.length() <= 3 implies (not f.getName().toUpperCase().regexpMatch(".*" + result + "[a-zA-Z0-9].*|.*[a-zA-Z0-9]" + result + ".*")))
   // and
@@ -90,7 +90,7 @@ private string normalizeFunctionName(Function f, string algType) {
     implies
     not f.getName().toUpperCase().regexpMatch(".*DES[a-zA-Z0-9].*|.*[a-zA-Z0-9]DES.*")
   ) and
-  // ((result.matches("%DES%")) implies not exists(string s | s in ["DESCRIBE", "DESTROY", "DESCRIPTION", "DESCRIPTOR", "NODES"] |
+  // ((result.contains("DES")) implies not exists(string s | s in ["DESCRIBE", "DESTROY", "DESCRIPTION", "DESCRIPTOR", "NODES"] |
   //     f.getName().toUpperCase().matches("%" + s + "%"))) and
   // SEED specific false positives
   (
@@ -106,16 +106,16 @@ private string normalizeFunctionName(Function f, string algType) {
     )
   ) and
   // ARIA specific false positives
-  (result.matches("ARIA") implies not f.getName().toUpperCase().matches("%VARIANT%")) and
+  (result.matches("ARIA") implies not f.getName().toUpperCase().contains("VARIANT")) and
   // CTR false positives
-  (result.matches("CTR") implies not f.getName().toUpperCase().matches("%CTRL%")) and
+  (result.matches("CTR") implies not f.getName().toUpperCase().contains("CTRL")) and
   // ES false positives (e.g., ES256 from AES256)
-  (result.matches("ES%") implies not f.getName().toUpperCase().matches("%AES%")) and
+  (result.startsWith("ES") implies not f.getName().toUpperCase().contains("AES")) and
   // RSA false positives
-  (result.matches("RSA") implies not f.getName().toUpperCase().matches("%UNIVERSAL%")) and
+  (result.matches("RSA") implies not f.getName().toUpperCase().contains("UNIVERSAL")) and
   //rsaz functions deemed to be too low level, and can be ignored
   not f.getLocation().getFile().getBaseName().matches("rsaz_exp.c") and
   // General False positives
   // Functions that 'get' do not set an algorithm, and therefore are considered ignorable
-  not f.getName().toLowerCase().matches("%get%")
+  not f.getName().toLowerCase().contains("get")
 }

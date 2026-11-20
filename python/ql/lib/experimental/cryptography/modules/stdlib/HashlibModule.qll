@@ -111,7 +111,7 @@ module Hashes {
         "new", "pbkdf2_hmac", "algorithms_available", "algorithms_guaranteed", "file_digest"
       ] and
     // Don't match things like __file__
-    not hashName.regexpMatch("_.*")
+    not hashName.startsWith("_")
   }
 
   /**

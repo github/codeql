@@ -45,8 +45,8 @@ private AstNode discardPredicate() {
 
 AstNode hackyShouldBeTreatedAsAlive() {
   // Stages from the shared DataFlow impl are copy-pasted, so predicates that are dead in one stage are not dead in another.
-  result = any(Module mod | mod.getName().matches("Stage%")).getAMember().(ClasslessPredicate) and
-  result.getLocation().getFile().getBaseName().matches("DataFlowImpl%")
+  result = any(Module mod | mod.getName().startsWith("Stage")).getAMember().(ClasslessPredicate) and
+  result.getLocation().getFile().getBaseName().startsWith("DataFlowImpl")
   or
   // Python stuff
   result.(Predicate).getName() = "quickEvalMe" // private predicate used for quick-eval
@@ -244,7 +244,7 @@ private AstNode benign() {
   result.(ClasslessPredicate).getName() = "forceStage" or
   result.getLocation().getFile().getBaseName() = "Caching.qll" or
   // sometimes contains dead code - ignore
-  result.getLocation().getFile().getRelativePath().matches("%/tutorials/%") or
+  result.getLocation().getFile().getRelativePath().contains("/tutorials/") or
   result = classUnion()
 }
 
@@ -290,5 +290,5 @@ AstNode unQueryable(string msg) {
   not result = benign() and
   not result.getParent() = any(AstNode node | not node = queryable()) and
   msg = result.getLocation().getFile().getBaseName() and
-  result.getLocation().getFile().getAbsolutePath().matches("%/javascript/%")
+  result.getLocation().getFile().getAbsolutePath().contains("/javascript/")
 }

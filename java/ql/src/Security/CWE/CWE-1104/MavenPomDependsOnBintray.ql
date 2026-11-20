@@ -14,7 +14,7 @@ import java
 import semmle.code.xml.MavenPom
 
 predicate isBintrayRepositoryUsage(DeclaredRepository repository) {
-  repository.getRepositoryUrl().matches("%.bintray.com%")
+  repository.getRepositoryUrl().contains(".bintray.com")
 }
 
 from DeclaredRepository repository

@@ -29,7 +29,7 @@ private class DefaultSafeExternalApiMethod extends SafeExternalApiMethod {
     or
     this.getDeclaringType().hasQualifiedName("com.google.common.base", "Preconditions")
     or
-    this.getDeclaringType().getPackage().getName().matches("org.junit%")
+    this.getDeclaringType().getPackage().getName().startsWith("org.junit")
     or
     this.getDeclaringType().hasQualifiedName("com.google.common.base", "Strings") and
     this.getName() = "isNullOrEmpty"

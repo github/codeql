@@ -216,7 +216,7 @@ private predicate isPotentialMicrosoftAspNetCoreMvcController(Class controller) 
       (
         c.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
         or
-        c.getABaseType*().getName().matches("%Controller")
+        c.getABaseType*().getName().endsWith("Controller")
         or
         c.getABaseType*()
             .getAnAttribute()
@@ -402,7 +402,7 @@ private predicate isDefaultMicrosoftAspNetCoreMvcController(Class controller) {
   (
     hasMicrosoftAspNetCoreMvcControllerIdentity(controller)
     or
-    controller.getName().toLowerCase().matches("%controller") and
+    controller.getName().toLowerCase().endsWith("controller") and
     hasMicrosoftAspNetCoreMvcEndpointMapping(_, controller)
   ) and
   not controller.getABaseType*().getAnAttribute() instanceof
@@ -434,11 +434,11 @@ class MicrosoftAspNetCoreMvcControllerHelperClass extends Class {
   Method getAResponseMethod() {
     result = this.getAMethod() and
     (
-      result.getName().matches("Redirect%")
+      result.getName().startsWith("Redirect")
       or
-      result.getName().matches("Accepted%")
+      result.getName().startsWith("Accepted")
       or
-      result.getName().matches("Created%")
+      result.getName().startsWith("Created")
     )
   }
 }

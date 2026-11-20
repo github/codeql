@@ -42,7 +42,7 @@ module XML {
       exists(string m |
         call = API::moduleImport("libxmljs").getMember(m).getACall() and
         this = call.asExpr() and
-        m.matches("parseXml%")
+        m.startsWith("parseXml")
       )
     }
 
@@ -192,7 +192,7 @@ module XML {
             .getAMethodCall("parseFromString")
             .asExpr() and
       // type contains the string `xml`, that is, it's not `text/html`
-      this.getArgument(1).mayHaveStringValue(any(string tp | tp.matches("%xml%")))
+      this.getArgument(1).mayHaveStringValue(any(string tp | tp.contains("xml")))
     }
 
     override JS::Expr getSourceArgument() { result = this.getArgument(0) }
@@ -284,7 +284,7 @@ module XML {
 
     override DataFlow::Node getAResult() {
       result =
-        parser.getReturn().getMember(any(string s | s.matches("on%"))).getAParameter().asSource()
+        parser.getReturn().getMember(any(string s | s.startsWith("on"))).getAParameter().asSource()
     }
   }
 

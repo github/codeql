@@ -218,7 +218,7 @@ class AuthorizationCall extends SensitiveAction, DataFlow::CallNode {
         callWithIgnoredReturnValue(c)
         or
         // Method names ending in `!` are likely to be actions.
-        s.matches("%!")
+        s.endsWith("!")
       )
     )
   }

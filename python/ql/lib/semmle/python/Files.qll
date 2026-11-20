@@ -91,7 +91,7 @@ class File extends Container, Impl::File {
     exists(this.getRelativePath()) and
     (
       // The file doesn't have the extension `.py` but still contains Python statements
-      not this.getExtension().matches("py%") and
+      not this.getExtension().startsWith("py") and
       exists(Stmt s | s.getLocation().getFile() = this)
       or
       // The file contains the usual `if __name__ == '__main__':` construction
@@ -366,7 +366,7 @@ class SyntaxError extends Location {
 class EncodingError extends SyntaxError {
   EncodingError() {
     /* Leave spaces around 'decode' in unlikely event it occurs as a name in a syntax error */
-    this.getMessage().toLowerCase().matches("% decode %")
+    this.getMessage().toLowerCase().contains(" decode ")
   }
 
   override string toString() { result = "Encoding Error" }

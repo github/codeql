@@ -124,7 +124,7 @@ private predicate callableSelector(
 /** Holds if `name` from a model refers to a property, such as `count` in `String.count`. */
 private predicate isRawPropertyName(string name) {
   modelContainsMethodName(name) and
-  not name.matches("%(%")
+  not name.contains("(")
 }
 
 /**

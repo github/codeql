@@ -234,7 +234,7 @@ module HTML {
      * Gets the folder relative to which the `src` attribute is resolved.
      */
     Folder getSearchRoot() {
-      if this.getSourcePath().matches("/%")
+      if this.getSourcePath().startsWith("/")
       then result.getBaseName() = ""
       else result = this.getFile().getParentContainer()
     }

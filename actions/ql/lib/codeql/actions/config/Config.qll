@@ -138,7 +138,7 @@ predicate immutableActionsDataModel(string action) { Extensions::immutableAction
  */
 predicate trustedActionsOwnerDataModel(string owner) {
   Extensions::trustedActionsOwnerDataModel(owner) and
-  not owner.matches("!%") and
+  not owner.startsWith("!") and
   not Extensions::trustedActionsOwnerDataModel("!" + owner)
 }
 

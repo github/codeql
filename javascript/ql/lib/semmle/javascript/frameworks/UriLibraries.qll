@@ -375,7 +375,7 @@ private module ClosureLibraryUri {
         base.(SetterCall).getUri() = uri
       |
         this = base.getAMethodCall(name) and
-        name.matches("set%")
+        name.startsWith("set")
       )
     }
 

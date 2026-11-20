@@ -15,7 +15,7 @@ import cpp
 class Setjmp extends Macro {
   Setjmp() {
     super.getHead().matches("setjmp(%)") and
-    super.getFile().getAbsolutePath().matches("%setjmp.h")
+    super.getFile().getAbsolutePath().endsWith("setjmp.h")
   }
 }
 
@@ -23,7 +23,7 @@ class Longjmp extends Function {
   Longjmp() {
     super.hasName("longjmp") and
     super.getNumberOfParameters() = 2 and
-    super.getFile().getAbsolutePath().matches("%setjmp.h")
+    super.getFile().getAbsolutePath().endsWith("setjmp.h")
   }
 }
 

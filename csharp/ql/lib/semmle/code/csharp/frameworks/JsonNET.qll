@@ -36,13 +36,13 @@ module JsonNET {
     /** Gets a `Deserialize` method. */
     Method getADeserializeMethod() {
       result = this.getAMethod() and
-      result.getName().matches("Deserialize%")
+      result.getName().startsWith("Deserialize")
     }
 
     /** Gets a `Serialize` method. */
     Method getASerializeMethod() {
       result = this.getAMethod() and
-      result.getName().matches("Serialize%")
+      result.getName().startsWith("Serialize")
     }
   }
 

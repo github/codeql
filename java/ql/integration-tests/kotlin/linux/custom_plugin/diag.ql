@@ -6,7 +6,7 @@ where
   (
     // Different installations get different sets of these messages,
     // so we filter out all but one that happens everywhere.
-    msg.matches("Not rewriting trap file for %")
+    msg.startsWith("Not rewriting trap file for ")
     implies
     msg.matches("Not rewriting trap file for %Boolean.members%")
   ) and

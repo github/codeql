@@ -65,7 +65,7 @@ class SetCookieRawHeaderMethodCall extends MethodCall {
  */
 module MatchesHttpOnlyToRawHeaderConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.asExpr().(CompileTimeConstantExpr).getStringValue().toLowerCase().matches("%httponly%")
+    source.asExpr().(CompileTimeConstantExpr).getStringValue().toLowerCase().contains("httponly")
   }
 
   predicate isSink(DataFlow::Node sink) {

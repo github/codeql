@@ -4,7 +4,7 @@ class PowerShellScript extends ShellScript {
   PowerShellScript() {
     exists(Run run |
       this = run.getScript() and
-      run.getShell().matches("pwsh%")
+      run.getShell().startsWith("pwsh")
     )
   }
 

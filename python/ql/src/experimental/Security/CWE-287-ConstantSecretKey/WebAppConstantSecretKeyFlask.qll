@@ -86,13 +86,13 @@ module FlaskConstantSecretKeyConfig {
           then
             file.getShortName() = flaskInstance().asSource().getLocation().getFile().getShortName()
           else (
-            fileNamehelper.matches("%.py") and
+            fileNamehelper.endsWith(".py") and
             file.getShortName().matches("%" + configFileName + "%") and
             // after spliting, don't look at %py% pattern
             configFileName != ".py"
             or
             // in case of referencing to a directory which then we must look for __init__.py file
-            not fileNamehelper.matches("%.py") and
+            not fileNamehelper.endsWith(".py") and
             file.getRelativePath()
                 .matches("%" + fileNamehelper.replaceAll(".", "/") + "/__init__.py")
           )

@@ -15,7 +15,7 @@ class JoddJsonParser extends RefType {
 class JoddJsonParseMethod extends Method {
   JoddJsonParseMethod() {
     this.getDeclaringType() instanceof JoddJsonParser and
-    this.getName().matches("parse%")
+    this.getName().startsWith("parse")
   }
 }
 

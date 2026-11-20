@@ -19,9 +19,9 @@ import InsecureSqlConnection::PathGraph
 module InsecureSqlConnectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(string s | s = source.asExpr().(StringLiteral).getValue().toLowerCase() |
-      s.matches("%encrypt=false%")
+      s.contains("encrypt=false")
       or
-      not s.matches("%encrypt=%")
+      not s.contains("encrypt=")
     )
   }
 

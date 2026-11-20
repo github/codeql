@@ -5,7 +5,7 @@ import cpp
  * if the function's declaration exists in a subdirectory of any directory matching 'openssl' as a substring.
  */
 predicate isPossibleOpenSSLFunction(Function f) {
-  f.getADeclarationLocation().toString().toLowerCase().matches("%openssl%")
+  f.getADeclarationLocation().toString().toLowerCase().contains("openssl")
 }
 
 predicate openSSLLibraryFunc(Function f) {

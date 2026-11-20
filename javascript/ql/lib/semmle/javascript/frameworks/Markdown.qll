@@ -140,7 +140,7 @@ module Markdown {
         exists(UnifiedChain chain |
           // sanitizer. Mostly looking for `rehype-sanitize`, but also other plugins with `sanitize` in their name.
           not chain.getAUsedPlugin().getALocalSource() =
-            DataFlow::moduleImport(any(string s | s.matches("%sanitize%")))
+            DataFlow::moduleImport(any(string s | s.contains("sanitize")))
         |
           pred = chain.getInput() and
           succ = chain.getOutput()

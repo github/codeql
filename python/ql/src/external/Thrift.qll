@@ -83,7 +83,7 @@ abstract class ThriftNamedElement extends ThriftElement {
 }
 
 class ThriftType extends ThriftNamedElement {
-  ThriftType() { kind.matches("%type") }
+  ThriftType() { kind.endsWith("type") }
 
   override ThriftElement getNameElement() {
     result = this.getChild(0)

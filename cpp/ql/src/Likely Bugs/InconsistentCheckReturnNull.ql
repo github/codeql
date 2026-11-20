@@ -17,7 +17,7 @@
 
 import cpp
 
-predicate assertMacro(Macro m) { m.getHead().toLowerCase().matches("%assert%") }
+predicate assertMacro(Macro m) { m.getHead().toLowerCase().contains("assert") }
 
 predicate assertInvocation(File f, int line) {
   exists(MacroInvocation i, Location l | assertMacro(i.getMacro()) and l = i.getLocation() |

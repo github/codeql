@@ -16,8 +16,8 @@ import cpp
 
 predicate exclude(Function f) {
   exists(string name | name = f.getName() |
-    name.toLowerCase().matches("get%") or
-    name.matches("strto%")
+    name.toLowerCase().startsWith("get") or
+    name.startsWith("strto")
   )
 }
 
@@ -67,7 +67,7 @@ where
   not checkedFunctionCall(unchecked, operation) and
   functionStats(f, operation, _, _, percent) and
   percent >= 70 and
-  unchecked.getFile().getAbsolutePath().matches("%fbcode%") and
+  unchecked.getFile().getAbsolutePath().contains("fbcode") and
   not unchecked.getFile().getAbsolutePath().matches("%\\_build%")
 select unchecked,
   "After " + percent.toString() + "% of calls to " + f.getName() + " there is a call to " +

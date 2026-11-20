@@ -25,7 +25,7 @@ module DataFlowFromMethodToHash = TaintTracking::Global<DataFlowFromMethodToHash
 predicate isGetHash(Expr arg) {
   exists(MethodCall mc |
     (
-      mc.getTarget().getName().matches("%Hash%") or
+      mc.getTarget().getName().contains("Hash") or
       mc.getTarget().getName().regexpMatch("Md[4-5]|Sha[1-9]{1,3}")
     ) and
     mc.getAnArgument() = arg

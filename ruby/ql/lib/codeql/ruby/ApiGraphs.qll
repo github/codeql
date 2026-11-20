@@ -999,7 +999,7 @@ module API {
 
     private string resolveTopLevel(ConstantReadAccess read) {
       result = read.getModule().getQualifiedName() and
-      not result.matches("%::%")
+      not result.contains("::")
     }
 
     /**

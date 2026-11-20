@@ -308,7 +308,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     bindingset[label1, label2]
     pragma[inline_late]
     private string mergeLabels(string label1, string label2) {
-      if label2.matches("Sink:%")
+      if label2.startsWith("Sink:")
       then if label1 = "" then result = label2 else result = label1 + " " + label2
       else
         // Big-step, hidden nodes, and summaries all may need to merge labels.

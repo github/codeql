@@ -143,7 +143,7 @@ module PrototypePollution {
       id = "jquery" and
       version.maybeBefore("3.4.0")
       or
-      id = "lodash" + any(string s) and
+      id.startsWith("lodash") and
       version.maybeBefore("4.17.12")
       or
       id = "merge" and

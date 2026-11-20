@@ -100,7 +100,7 @@ class EvpCipherEXInitCall extends EvpEXInitializer {
     or
     // NOTE: for EncryptInit and DecryptInit there is no subtype arg
     // the subtype is determined automatically by the initializer based on the operation name
-    this.getTarget().getName().toLowerCase().matches("%cipherinit%") and
+    this.getTarget().getName().toLowerCase().contains("cipherinit") and
     result.asExpr() = this.getArgument(5) and
     type = KeyOperationSubtypeIO()
   }
@@ -117,7 +117,7 @@ class Evp_Cipher_EX2_or_Simple_Init_Call extends EvpEX2Initializer {
   override DataFlow::Node getInput(IOType type) {
     result = super.getInput(type)
     or
-    this.getTarget().getName().toLowerCase().matches("%cipherinit%") and
+    this.getTarget().getName().toLowerCase().contains("cipherinit") and
     // the key op subtype is an int, use asExpr
     result.asExpr() = this.getArgument(4) and
     type = KeyOperationSubtypeIO()
@@ -282,12 +282,12 @@ class OpenSslCipherOperationInstance extends Crypto::KeyOperationInstance instan
 
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
     result instanceof Crypto::TEncryptMode and
-    super.getTarget().getName().toLowerCase().matches("%encrypt%")
+    super.getTarget().getName().toLowerCase().contains("encrypt")
     or
     result instanceof Crypto::TDecryptMode and
-    super.getTarget().getName().toLowerCase().matches("%decrypt%")
+    super.getTarget().getName().toLowerCase().contains("decrypt")
     or
-    super.getTarget().getName().toLowerCase().matches("%cipher%") and
+    super.getTarget().getName().toLowerCase().contains("cipher") and
     resolveKeyOperationSubTypeOperationStep(super
           .getDominatingInitializersToStep(KeyOperationSubtypeIO())) = result
   }

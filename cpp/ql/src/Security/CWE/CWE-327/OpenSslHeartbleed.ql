@@ -53,7 +53,7 @@ predicate varPointsInto(Variable tainted, DataVariable src) {
 
 from FunctionCall fc, Struct ssl3_record_st, Field data, Field length
 where
-  fc.getTarget().getName().matches("%memcpy%") and
+  fc.getTarget().getName().contains("memcpy") and
   ssl3_record_st.hasName("ssl3_record_st") and
   data = ssl3_record_st.getAField() and
   data.hasName("data") and

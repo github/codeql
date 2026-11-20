@@ -69,7 +69,7 @@ private class CommandArgumentList extends SsaExplicitWrite {
   CommandArgumentList() {
     this.getSourceVariable().getType() instanceof ListOfStringType and
     forex(CollectionMutation ma | ma.getQualifier() = this.getARead() |
-      ma.getMethod().getName().matches("add%")
+      ma.getMethod().getName().startsWith("add")
     )
   }
 
@@ -92,7 +92,7 @@ private class CommandArgumentList extends SsaExplicitWrite {
    */
   MethodCall getAnAdd() {
     result.getQualifier() = this.getARead() and
-    result.getMethod().getName().matches("add%")
+    result.getMethod().getName().startsWith("add")
   }
 
   /** Gets an addition to this list which could be its first element. */

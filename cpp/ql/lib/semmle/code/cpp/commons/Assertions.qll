@@ -17,7 +17,7 @@ abstract class Assertion extends Locatable {
  * expression which may terminate the program.
  */
 class LibcAssert extends MacroInvocation, Assertion {
-  LibcAssert() { this.getMacro().getHead().matches("assert(%") }
+  LibcAssert() { this.getMacro().getHead().startsWith("assert(") }
 
   override Expr getAsserted() {
     exists(ConditionalExpr ce | this.getAGeneratedElement() = ce | result = ce.getCondition())

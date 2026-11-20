@@ -21,15 +21,15 @@ File imports(File file) {
   )
 }
 
-predicate testFile(File f) { f.getRelativePath().matches("%/ql/test/%") }
+predicate testFile(File f) { f.getRelativePath().contains("/ql/test/") }
 
-predicate nonTestQuery(File f) { f.getBaseName().matches("%.ql") and not testFile(f) }
+predicate nonTestQuery(File f) { f.getBaseName().endsWith(".ql") and not testFile(f) }
 
 predicate liveNonTestFile(File f) {
   exists(File query | nonTestQuery(query) and f = imports*(query))
 }
 
-predicate experimentalFile(File f) { f.getRelativePath().matches("%/experimental/%") }
+predicate experimentalFile(File f) { f.getRelativePath().contains("/experimental/") }
 
 Class getASubclassOfAbstract(Class ab) {
   ab.isAbstract() and

@@ -1,9 +1,9 @@
 import javascript
 
 string getStringKind(StringLiteral lit) {
-  result = "global" and lit.getStringValue().matches("global%")
+  result = "global" and lit.getStringValue().startsWith("global")
   or
-  result = "non-global" and not lit.getStringValue().matches("global%")
+  result = "non-global" and not lit.getStringValue().startsWith("global")
 }
 
 string getVariableKind(Variable variable) {

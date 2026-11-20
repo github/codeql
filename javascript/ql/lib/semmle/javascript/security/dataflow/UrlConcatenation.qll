@@ -21,7 +21,7 @@ private predicate hasIncompleteSubstring(DataFlow::Node nd) {
  * Holds if the given data flow node refers to a string that ends with a slash.
  */
 private predicate endsWithSlash(DataFlow::Node nd) {
-  nd.getStringValue().matches("%/")
+  nd.getStringValue().endsWith("/")
   or
   endsWithSlash(StringConcatenation::getLastOperand(nd))
 }

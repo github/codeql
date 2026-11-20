@@ -14,7 +14,7 @@ import semmle.go.security.SensitiveActions
 
 private predicate isBadResult(DataFlow::Node e) {
   exists(string path | path = e.asExpr().getFile().getAbsolutePath().toLowerCase() |
-    path.matches(["%fake%", "%dummy%", "%test%", "%example%"]) and not path.matches("%ql/test%")
+    path.matches(["%fake%", "%dummy%", "%test%", "%example%"]) and not path.contains("ql/test")
   )
 }
 

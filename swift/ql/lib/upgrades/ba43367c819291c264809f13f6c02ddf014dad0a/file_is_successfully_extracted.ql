@@ -6,7 +6,7 @@ from Element file, string filename
 where
   db_files(file) and
   files(file, filename) and
-  filename.matches("%.swift") and
+  filename.endsWith(".swift") and
   not exists(Element error, Element loc |
     diagnostics(error, _, 4) and
     locatable_locations(error, loc) and

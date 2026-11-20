@@ -6,7 +6,7 @@ import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView>
 import utils.test.InlineExpectationsTest
 
 bindingset[s]
-string quote(string s) { if s.matches("% %") then result = "\"" + s + "\"" else result = s }
+string quote(string s) { if s.contains(" ") then result = "\"" + s + "\"" else result = s }
 
 module RegexTest implements TestSig {
   string getARelevantTag() {

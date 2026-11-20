@@ -68,7 +68,7 @@ private class AssertionComment extends Comment {
   /**
    * Holds if a consistency issue is expected at this location.
    */
-  predicate expectConsistencyError() { this.getText().matches("%[INCONSISTENCY]%") }
+  predicate expectConsistencyError() { this.getText().contains("[INCONSISTENCY]") }
 }
 
 deprecated private DataFlow::Node getASink() {

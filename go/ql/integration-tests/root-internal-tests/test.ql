@@ -8,7 +8,7 @@ select f.getRelativePath()
 
 query predicate testFunctions(string name, string file) {
   exists(FuncDecl fn |
-    fn.getName().matches("Test%") and
+    fn.getName().startsWith("Test") and
     name = fn.getName() and
     file = fn.getFile().getRelativePath()
   )

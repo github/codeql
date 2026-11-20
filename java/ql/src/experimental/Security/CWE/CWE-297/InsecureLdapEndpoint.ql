@@ -83,8 +83,8 @@ predicate isBooleanTrue(Expr expr) {
 predicate isTestMethod(MethodCall ma) {
   ma.getEnclosingCallable() instanceof TestMethod or
   ma.getEnclosingCallable().getDeclaringType() instanceof TestClass or
-  ma.getEnclosingCallable().getDeclaringType().getPackage().getName().matches("%test%") or
-  ma.getEnclosingCallable().getDeclaringType().getName().toLowerCase().matches("%test%")
+  ma.getEnclosingCallable().getDeclaringType().getPackage().getName().contains("test") or
+  ma.getEnclosingCallable().getDeclaringType().getName().toLowerCase().contains("test")
 }
 
 /** Holds if `MethodCall` ma disables SSL endpoint check. */

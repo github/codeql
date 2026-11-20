@@ -28,5 +28,5 @@ string describe(Function f) {
 from Function f
 where
   exists(f.getFile().getRelativePath()) and
-  not f.getName().matches("%init%")
+  not f.getName().contains("init")
 select f, concat(describe(f), ", ")

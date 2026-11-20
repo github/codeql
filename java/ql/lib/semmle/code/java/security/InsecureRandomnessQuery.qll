@@ -80,7 +80,7 @@ module InsecureRandomnessConfig implements DataFlow::ConfigSig {
     or
     exists(MethodCall mc, string methodName |
       mc.getMethod().hasQualifiedName("org.owasp.esapi", "Encoder", methodName) and
-      methodName.matches("encode%")
+      methodName.startsWith("encode")
     |
       n1.asExpr() = mc.getArgument(0) and
       n2.asExpr() = mc

@@ -40,7 +40,7 @@ class Comment extends Locatable, @comment {
  * A C style comment (one which starts with `/*`).
  */
 class CStyleComment extends Comment {
-  CStyleComment() { this.getContents().matches("/*%") }
+  CStyleComment() { this.getContents().startsWith("/*") }
 }
 
 /**
@@ -50,5 +50,5 @@ class CStyleComment extends Comment {
  * ```
  */
 class CppStyleComment extends Comment {
-  CppStyleComment() { this.getContents().matches("//%") }
+  CppStyleComment() { this.getContents().startsWith("//") }
 }

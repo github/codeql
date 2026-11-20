@@ -70,7 +70,7 @@ private class GuidSanitizer extends Sanitizer, GuidSanitizedExpr { }
 class CompileAssemblyFromSourceSink extends Sink {
   CompileAssemblyFromSourceSink() {
     exists(Method m, MethodCall mc |
-      m.getName().matches("CompileAssemblyFromSource%") and
+      m.getName().startsWith("CompileAssemblyFromSource") and
       m = any(SystemCodeDomCompilerICodeCompilerClass c).getAMethod() and
       mc = m.getAnOverrider*().getACall()
     |

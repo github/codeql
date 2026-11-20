@@ -65,7 +65,7 @@ predicate maybeCredential(Expr e) {
   exists(IntegerLiteral lit | lit = e |
     not exists(lit.getValue()) and
     /* Not a set of flags or round number */
-    not lit.toString().matches("%00%")
+    not lit.toString().contains("00")
   )
 }
 
@@ -86,7 +86,7 @@ private string getACredentialRegExp() {
 bindingset[name]
 private predicate maybeCredentialName(string name) {
   name.regexpMatch(getACredentialRegExp()) and
-  not name.matches("%file")
+  not name.endsWith("file")
 }
 
 // Positional parameter

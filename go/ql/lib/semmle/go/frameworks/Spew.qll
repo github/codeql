@@ -30,7 +30,7 @@ module Spew {
   }
 
   private class StringFormatter extends StringOps::Formatting::Range instanceof SpewFunction {
-    StringFormatter() { this.getName().matches("%f") }
+    StringFormatter() { this.getName().endsWith("f") }
 
     override int getFormatStringIndex() { result = super.getFirstPrintedArg() }
   }

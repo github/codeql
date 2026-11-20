@@ -209,7 +209,7 @@ module EntityFramework {
     SqlParameter() {
       this.getType() instanceof StringType and
       (
-        exists(Callable c | this = c.getParameter(0) | c.getName().matches("%Sql"))
+        exists(Callable c | this = c.getParameter(0) | c.getName().endsWith("Sql"))
         or
         this.getName() = "sql"
       ) and
@@ -358,7 +358,7 @@ module EntityFramework {
     pragma[nomagic]
     Method getASaveChanges() {
       this.hasMethod(result) and
-      result.getName().matches("SaveChanges%")
+      result.getName().startsWith("SaveChanges")
     }
 
     /** Holds if component stack `head :: tail` is required for the input specification. */

@@ -75,9 +75,9 @@ class TestClass extends Class {
 class LikelyTestClass extends Class {
   LikelyTestClass() {
     this instanceof TestClass or
-    this.getName().toLowerCase().matches("%test%") or
-    this.getPackage().getName().toLowerCase().matches("%test%") or
-    this.getLocation().getFile().getAbsolutePath().matches("%/src/test/java%")
+    this.getName().toLowerCase().contains("test") or
+    this.getPackage().getName().toLowerCase().contains("test") or
+    this.getLocation().getFile().getAbsolutePath().contains("/src/test/java")
   }
 }
 
@@ -88,7 +88,7 @@ class JUnit3TestMethod extends Method {
   JUnit3TestMethod() {
     this.isPublic() and
     this.getDeclaringType() instanceof JUnit38TestClass and
-    this.getName().matches("test%") and
+    this.getName().startsWith("test") and
     this.getReturnType().hasName("void") and
     this.hasNoParameters()
   }
@@ -275,9 +275,9 @@ class LikelyJunitTest extends Method {
     this.getReturnType().hasName("void") and
     this.hasNoParameters() and
     (
-      this.getName().matches("JUnit%") or
-      this.getName().matches("test%") or
-      this.getAnAnnotation().getType().getName().matches("%Test")
+      this.getName().startsWith("JUnit") or
+      this.getName().startsWith("test") or
+      this.getAnAnnotation().getType().getName().endsWith("Test")
     )
   }
 }
@@ -286,14 +286,14 @@ class LikelyJunitTest extends Method {
  * A TestNG annotation used to mark a method that runs "before".
  */
 class TestNGBeforeAnnotation extends TestNGAnnotation {
-  TestNGBeforeAnnotation() { this.getType().getName().matches("Before%") }
+  TestNGBeforeAnnotation() { this.getType().getName().startsWith("Before") }
 }
 
 /**
  * A TestNG annotation used to mark a method that runs "after".
  */
 class TestNGAfterAnnotation extends TestNGAnnotation {
-  TestNGAfterAnnotation() { this.getType().getName().matches("After%") }
+  TestNGAfterAnnotation() { this.getType().getName().startsWith("After") }
 }
 
 /**

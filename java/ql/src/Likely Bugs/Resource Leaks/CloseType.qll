@@ -219,7 +219,7 @@ private predicate closeCalled(LocalScopeVariable v) {
   or
   // Otherwise, there should be an explicit call to a method whose name contains "close".
   exists(MethodCall e |
-    e.getMethod().getName().toLowerCase().matches("%close%") and
+    e.getMethod().getName().toLowerCase().contains("close") and
     exists(VarAccess va | va = v.getAnAccess() |
       e.getQualifier() = va or
       e.getAnArgument() = va

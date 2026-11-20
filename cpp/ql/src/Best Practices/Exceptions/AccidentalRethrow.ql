@@ -19,7 +19,7 @@ predicate isInCatch(Expr e) {
   or
   exists(Function f | f = e.getEnclosingFunction() |
     isInCatch(f.getACallToThisFunction()) or // as will dynamically enclosing catch blocks.
-    f.getName().toLowerCase().matches("%exception%") // We assume that rethrows are intended when the function is called *exception*.
+    f.getName().toLowerCase().contains("exception") // We assume that rethrows are intended when the function is called *exception*.
   )
 }
 

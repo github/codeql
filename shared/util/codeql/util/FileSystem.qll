@@ -171,7 +171,7 @@ module Make<InputSig Input> {
         absPath = pref and result = ""
         or
         absPath = pref.regexpReplaceAll("/$", "") + "/" + result and
-        not result.matches("/%")
+        not result.startsWith("/")
       )
     }
 
@@ -296,7 +296,7 @@ module Make<InputSig Input> {
       private string getPathSegmentAsGlobRegexp(string segment) {
         allowGlobs() and
         segment = getPathSegment(_, _) and
-        segment.matches("%*%") and
+        segment.contains("*") and
         not segment = ["*", "**"] and // these are special-cased
         result = segment.regexpReplaceAll("[^a-zA-Z0-9*]", "\\\\$0").replaceAll("*", ".*")
       }

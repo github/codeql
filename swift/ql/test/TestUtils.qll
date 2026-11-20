@@ -27,7 +27,7 @@ predicate toBeTested(Element e) {
     not m.isSystemModule()
   )
   or
-  e.(Locatable).getLocation().getFile().getName().matches("%swift/ql/test%")
+  e.(Locatable).getLocation().getFile().getName().contains("swift/ql/test")
   or
   exists(Element tested |
     toBeTested(tested) and

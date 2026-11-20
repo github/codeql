@@ -109,7 +109,7 @@ module Sinatra {
   private ErbFile getTemplateFile(MethodCall erbCall) {
     erbCall.getMethodName() = "erb" and
     result.getTemplateName() = erbCall.getArgument(0).getConstantValue().getStringlikeValue() and
-    result.getRelativePath().matches("%views/%")
+    result.getRelativePath().contains("views/")
   }
 
   pragma[nomagic]
