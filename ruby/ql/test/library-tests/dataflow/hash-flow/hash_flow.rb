@@ -715,7 +715,7 @@ def m43()
         :c => taint(43.2)
     }
     a = hash.values
-    sink (a[0]) # $ hasValueFlow=43.1 # $ hasValueFlow=43.2
+    sink (a[0]) # $ hasValueFlow=43.1 hasValueFlow=43.2
 end
 
 m43()

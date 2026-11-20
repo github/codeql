@@ -17,6 +17,9 @@ module Impl implements InlineExpectationsTestSig {
     /** Returns the contents of the given comment, _without_ the preceding comment marker (`//`). */
     string getContents() { result = comment.getValue().suffix(2) }
 
+    /** QL expectation comments use line-comment syntax. */
+    predicate isLineComment() { any() }
+
     /** Gets a textual representation of this element. */
     string toString() { result = comment.toString() }
 
@@ -34,5 +37,13 @@ module Impl implements InlineExpectationsTestSig {
       result =
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
+  }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // The QL extractor can also extract YAML (e.g. `qlpack.yml`), whose `#` comment syntax
+    // differs, so we only render for QL sources and dbscheme files.
+    relativePath.regexpMatch(".*\\.(ql|qll|dbscheme)") and
+    result = "//"
   }
 }

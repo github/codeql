@@ -6,6 +6,9 @@ module Impl implements InlineExpectationsTestSig {
   class ExpectationComment extends U::Comment {
     /** Gets the text inside this comment, without the surrounding comment delimiters. */
     string getContents() { result = this.getCommentText() }
+
+    /** Holds if this comment uses `//` syntax. */
+    predicate isLineComment() { this.getValue().matches("//%") }
   }
 
   class Location = U::Location;
@@ -18,5 +21,13 @@ module Impl implements InlineExpectationsTestSig {
       result =
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
+  }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // The unified extractor currently ingests only Swift sources, which use `//`. Gating on
+    // the extension keeps this correct if it gains a language with a different comment syntax.
+    relativePath.regexpMatch(".*\\.(swift|swiftinterface)") and
+    result = "//"
   }
 }
