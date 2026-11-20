@@ -1,0 +1,11 @@
+service: aws-node-module-formats
+
+provider:
+  name: aws
+  runtime: nodejs24.x
+
+functions:
+  esm:
+    handler: esm.handler
+  cjs:
+    handler: cjs.handler

@@ -35,7 +35,7 @@ module SL = ServerLess<YamlImpl>;
 private DataFlow::FunctionNode getAServerlessHandler() {
   exists(File file, string stem, string handler, Module mod |
     SL::hasServerlessHandler(stem, handler, _, _) and
-    file.getAbsolutePath() = stem + ".js"
+    file.getAbsolutePath() = stem + [".js", ".mjs", ".cjs"]
   |
     mod.getFile() = file and
     result = mod.getAnExportedValue(handler).getAFunctionValue()
