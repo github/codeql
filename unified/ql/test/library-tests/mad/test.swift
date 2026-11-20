@@ -293,8 +293,35 @@ func testStaticAndInstanceMethods(obj: StaticTest, string: String) {
 
 func testStaticAndInstanceProperties(obj: StaticTest) {
     _ = obj.instanceProp  // $ isSource=instance-prop-source
-    _ = StaticTest.staticProp  // $ MISSING: isSource=static-prop-source // the base is not yet inferred to have the meta type `StaticTest.Type`
+    _ = StaticTest.staticProp  // $ isSource=static-prop-source
 
     _ = StaticTest.instanceProp  // not a source: instance property accessed on the type
+    _ = obj.staticProp  // not a source: static property accessed on an instance
+}
+
+class StaticTestSub: StaticTest {
+    func testInstanceContext() {
+        _ = instanceProp  // $ isSource=instance-prop-source
+    }
+
+    static func testStaticContext() {
+        _ = staticProp  // $ isSource=static-prop-source
+    }
+}
+
+extension StaticTest {
+    func testInstanceContextInExtension() {
+        _ = instanceProp  // $ isSource=instance-prop-source
+    }
+
+    static func testStaticContextInExtension() {
+        _ = staticProp  // $ isSource=static-prop-source
+    }
+}
+
+func testStaticPropertiesOnSubclass(obj: StaticTestSub) {
+    _ = StaticTestSub.staticProp  // $ isSource=static-prop-source
+    _ = obj.instanceProp  // $ isSource=instance-prop-source
+    _ = StaticTestSub.instanceProp  // not a source: instance property accessed on the type
     _ = obj.staticProp  // not a source: static property accessed on an instance
 }

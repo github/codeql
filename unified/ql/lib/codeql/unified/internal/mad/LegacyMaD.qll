@@ -367,6 +367,9 @@ class MemberSelector extends TMemberSelector {
   /**
    * Holds if `access` is an access to the property identified by this selector, as determined
    * by the inferred type of its base.
+   *
+   * For a static property, the type is a meta type such as `Foo.Type`, so the base must be a
+   * reference to the type `Foo` itself.
    */
   predicate matchesPropertyAccess(MemberAccess access) {
     exists(TypeSelector type, boolean subtypes, string name |
@@ -459,13 +462,22 @@ class TypeSelector extends string {
     result.getABaseClass*().getABaseType().getType() = this.getAStaticRef()
   }
 
-  /** Gets a `Type` corresponding to instances of this type. */
+  /**
+   * Gets a `Type` corresponding to instances of this type.
+   *
+   * The instances of a meta type `Foo.Type` are references to the type `Foo`, whose type is
+   * the `MetaType` of `Foo`.
+   */
   T::Type getAnInstanceType(boolean subtype) {
     subtype = false and
     result.(Types::ClassLikeType).getClassLikeElement() = this.getClassLikeElement()
     or
     subtype = true and
     result.asClass() = this.getASubtypeDeclaration()
+    or
+    exists(TypeSelector type | this = type.getMetaType() |
+      result.(Types::MetaType).getInstanceType() = type.getAnInstanceType(subtype)
+    )
   }
 
   /**
