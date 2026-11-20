@@ -2542,6 +2542,7 @@
 | Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:8:13:8:13 | access to local variable o |
 | Patterns.cs:8:13:8:23 | ... is ... | Patterns.cs:8:13:8:23 | ... is ... |
 | Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:8:18:8:23 | Int32 i1 |
+| Patterns.cs:8:22:8:23 | access to local variable i1 | Patterns.cs:8:22:8:23 | access to local variable i1 |
 | Patterns.cs:9:9:11:9 | {...} | Patterns.cs:9:9:11:9 | {...} |
 | Patterns.cs:10:13:10:42 | call to method WriteLine | Patterns.cs:10:33:10:36 | "int " |
 | Patterns.cs:10:13:10:43 | ...; | Patterns.cs:10:13:10:43 | ...; |
@@ -2553,6 +2554,7 @@
 | Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:12:18:12:18 | access to local variable o |
 | Patterns.cs:12:18:12:31 | ... is ... | Patterns.cs:12:18:12:31 | ... is ... |
 | Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:12:23:12:31 | String s1 |
+| Patterns.cs:12:30:12:31 | access to local variable s1 | Patterns.cs:12:30:12:31 | access to local variable s1 |
 | Patterns.cs:13:9:15:9 | {...} | Patterns.cs:13:9:15:9 | {...} |
 | Patterns.cs:14:13:14:45 | call to method WriteLine | Patterns.cs:14:33:14:39 | "string " |
 | Patterns.cs:14:13:14:46 | ...; | Patterns.cs:14:13:14:46 | ...; |
@@ -2564,6 +2566,7 @@
 | Patterns.cs:16:18:16:18 | access to local variable o | Patterns.cs:16:18:16:18 | access to local variable o |
 | Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:16:18:16:28 | ... is ... |
 | Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:16:23:16:28 | Object v1 |
+| Patterns.cs:16:27:16:28 | access to local variable v1 | Patterns.cs:16:27:16:28 | access to local variable v1 |
 | Patterns.cs:17:9:18:9 | {...} | Patterns.cs:17:9:18:9 | {...} |
 | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:20:9:38:9 | switch (...) {...} |
 | Patterns.cs:20:17:20:17 | access to local variable o | Patterns.cs:20:17:20:17 | access to local variable o |
@@ -2572,6 +2575,7 @@
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:23:17:23:22 | break; |
 | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:13:24:36 | case ...: |
 | Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | Int32 i2 |
+| Patterns.cs:24:22:24:23 | access to local variable i2 | Patterns.cs:24:22:24:23 | access to local variable i2 |
 | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:30:24:31 | access to local variable i2 |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:24:30:24:31 | access to local variable i2 |
 | Patterns.cs:24:35:24:35 | 0 | Patterns.cs:24:35:24:35 | 0 |
@@ -2584,6 +2588,7 @@
 | Patterns.cs:26:17:26:22 | break; | Patterns.cs:26:17:26:22 | break; |
 | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:13:27:24 | case ...: |
 | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | Int32 i3 |
+| Patterns.cs:27:22:27:23 | access to local variable i3 | Patterns.cs:27:22:27:23 | access to local variable i3 |
 | Patterns.cs:28:17:28:46 | call to method WriteLine | Patterns.cs:28:37:28:40 | "int " |
 | Patterns.cs:28:17:28:47 | ...; | Patterns.cs:28:17:28:47 | ...; |
 | Patterns.cs:28:35:28:45 | $"..." | Patterns.cs:28:37:28:40 | "int " |
@@ -2593,6 +2598,7 @@
 | Patterns.cs:29:17:29:22 | break; | Patterns.cs:29:17:29:22 | break; |
 | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:13:30:27 | case ...: |
 | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | String s2 |
+| Patterns.cs:30:25:30:26 | access to local variable s2 | Patterns.cs:30:25:30:26 | access to local variable s2 |
 | Patterns.cs:31:17:31:49 | call to method WriteLine | Patterns.cs:31:37:31:43 | "string " |
 | Patterns.cs:31:17:31:50 | ...; | Patterns.cs:31:17:31:50 | ...; |
 | Patterns.cs:31:35:31:48 | $"..." | Patterns.cs:31:37:31:43 | "string " |
@@ -2602,6 +2608,7 @@
 | Patterns.cs:32:17:32:22 | break; | Patterns.cs:32:17:32:22 | break; |
 | Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:13:33:24 | case ...: |
 | Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | Object v2 |
+| Patterns.cs:33:22:33:23 | access to local variable v2 | Patterns.cs:33:22:33:23 | access to local variable v2 |
 | Patterns.cs:34:17:34:22 | break; | Patterns.cs:34:17:34:22 | break; |
 | Patterns.cs:35:13:35:20 | default: | Patterns.cs:35:13:35:20 | default: |
 | Patterns.cs:36:17:36:51 | call to method WriteLine | Patterns.cs:36:35:36:50 | "Something else" |
@@ -2635,6 +2642,7 @@
 | Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:18:54:37 | { ... } |
 | Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:27:54:35 | { ... } |
 | Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:33:54:33 | 1 |
+| Patterns.cs:54:37:54:37 | access to local variable u | Patterns.cs:54:37:54:37 | access to local variable u |
 | Patterns.cs:56:33:56:33 | i | Patterns.cs:56:33:56:33 | i |
 | Patterns.cs:57:5:63:5 | {...} | Patterns.cs:57:5:63:5 | {...} |
 | Patterns.cs:58:9:62:10 | return ...; | Patterns.cs:58:16:62:9 | ... switch { ... } |
@@ -2841,6 +2849,7 @@
 | Switch.cs:19:17:19:29 | goto default; | Switch.cs:19:17:19:29 | goto default; |
 | Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:13:20:23 | case ...: |
 | Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | Int32 i |
+| Switch.cs:20:22:20:22 | access to local variable i | Switch.cs:20:22:20:22 | access to local variable i |
 | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:21:17:22:27 | if (...) ... |
 | Switch.cs:21:21:21:21 | access to parameter o | Switch.cs:21:21:21:21 | access to parameter o |
 | Switch.cs:21:21:21:29 | ... == ... | Switch.cs:21:21:21:21 | access to parameter o |
@@ -2850,6 +2859,7 @@
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:27:23:27 | 0 |
 | Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:13:24:56 | case ...: |
 | Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | String s |
+| Switch.cs:24:25:24:25 | access to local variable s | Switch.cs:24:25:24:25 | access to local variable s |
 | Switch.cs:24:32:24:32 | access to local variable s | Switch.cs:24:32:24:32 | access to local variable s |
 | Switch.cs:24:32:24:39 | access to property Length | Switch.cs:24:32:24:32 | access to local variable s |
 | Switch.cs:24:32:24:43 | ... > ... | Switch.cs:24:32:24:32 | access to local variable s |
@@ -2864,6 +2874,7 @@
 | Switch.cs:26:17:26:23 | return ...; | Switch.cs:26:17:26:23 | return ...; |
 | Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:13:27:39 | case ...: |
 | Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | Double d |
+| Switch.cs:27:25:27:25 | access to local variable d | Switch.cs:27:25:27:25 | access to local variable d |
 | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:27:32:27:38 | call to method Throw |
 | Switch.cs:28:13:28:17 | Label: | Switch.cs:28:13:28:17 | Label: |
 | Switch.cs:29:17:29:23 | return ...; | Switch.cs:29:17:29:23 | return ...; |
@@ -2984,6 +2995,7 @@
 | Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:13:125:48 | ... switch { ... } |
 | Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:24:125:29 | Boolean b |
 | Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:34 | ... => ... |
+| Switch.cs:125:29:125:29 | access to local variable b | Switch.cs:125:29:125:29 | access to local variable b |
 | Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | access to local variable b |
 | Switch.cs:125:37:125:37 | _ | Switch.cs:125:37:125:37 | _ |
 | Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:37:125:46 | ... => ... |
@@ -2997,6 +3009,7 @@
 | Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:17:131:53 | ... switch { ... } |
 | Switch.cs:131:28:131:35 | String s | Switch.cs:131:28:131:35 | String s |
 | Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:40 | ... => ... |
+| Switch.cs:131:35:131:35 | access to local variable s | Switch.cs:131:35:131:35 | access to local variable s |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s |
 | Switch.cs:131:43:131:43 | _ | Switch.cs:131:43:131:43 | _ |
 | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:51 | ... => ... |
@@ -3103,6 +3116,7 @@
 | TypeAccesses.cs:7:13:7:13 | access to parameter o | TypeAccesses.cs:7:13:7:13 | access to parameter o |
 | TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:7:13:7:22 | ... is ... |
 | TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:7:18:7:22 | Int32 j |
+| TypeAccesses.cs:7:22:7:22 | access to local variable j | TypeAccesses.cs:7:22:7:22 | access to local variable j |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:8:9:8:28 | ... ...; |
 | TypeAccesses.cs:8:13:8:13 | access to local variable t | TypeAccesses.cs:8:13:8:13 | access to local variable t |
