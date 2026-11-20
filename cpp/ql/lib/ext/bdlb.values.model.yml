@@ -1,0 +1,9 @@
+# Contained values of BDE nullable values and variants.
+# https://github.com/bloomberg/bde/tree/ec310b87e008199ecbdbc00a0b0264a53d806a0a/groups/bdl/bdlb
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data:
+      - ["BloombergLP::bdlb", "NullableValue", False, "value", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["BloombergLP::bdlb", "VariantImp", False, "the", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
