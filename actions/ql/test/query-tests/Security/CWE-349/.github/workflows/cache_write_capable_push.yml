@@ -1,10 +1,47 @@
-on:
-  push:
-    branches: [main]
+on: push
+
+cache-mode: read
 
 jobs:
   injection:
     permissions: {}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{ github.event.head_commit.message }}"
+      - run: echo "${{ github.event.head_commit.message }}" # No cache alert: inherits workflow read mode.
+
+  read:
+    cache-mode: read
+    permissions: {}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.head_commit.message }}" # No cache alert: read mode prevents saves.
+
+  none:
+    cache-mode: none
+    permissions: {}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.head_commit.message }}" # No cache alert: cache access is disabled.
+
+  write:
+    cache-mode: write
+    permissions: {}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.head_commit.message }}" # Cache alert: write overrides read; unfiltered pushes include main.
+
+  write-only:
+    cache-mode: write-only
+    permissions: {}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.head_commit.message }}" # Cache alert: write-only permits saves after commit-message injection.
+
+  inherited-cache:
+    permissions: {}
+    uses: ./.github/workflows/cache_write_capable_reusable_workflow.yml # No cache alert: caller read mode caps the callee.
+
+  declared-cache:
+    cache-mode: write-only
+    permissions: {}
+    uses: ./.github/workflows/cache_mode_reusable.yml # No cache alert: callee write exceeds the write-only limit.
