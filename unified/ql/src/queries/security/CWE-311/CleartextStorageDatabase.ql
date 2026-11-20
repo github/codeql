@@ -35,7 +35,7 @@ private predicate coreDataSink(DataFlow::Node node) {
   )
   or
   exists(MemberAccessExpr access |
-    node.isPostUpdate(access) and
+    (node.isIncomingValue(access) or node.isPostUpdate(access)) and
     isSubclassOf(TypeInference::inferType(access.getBase()).asClass(), "NSManagedObject")
   )
 }
@@ -45,7 +45,7 @@ private predicate coreDataSink(DataFlow::Node node) {
  */
 private predicate realmSink(DataFlow::Node node) {
   exists(MemberAccessExpr access |
-    node.isPostUpdate(access) and
+    (node.isIncomingValue(access) or node.isPostUpdate(access)) and
     (
       isSubclassOf(TypeInference::inferType(access.getBase()).asClass(), "RealmSwiftObject")
       or

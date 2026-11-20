@@ -61,7 +61,7 @@ func test2(obj : MyManagedObject, password : String, password_file : String) {
 	obj.setIndirect(value: password) // $ Source[unified/swift/cleartext-storage-database] // BAD [reported on line 19]
 	obj.setIndirect(value: password_file) // GOOD (not sensitive)
 
-	obj.myValue = password // $ Source[unified/swift/cleartext-storage-database] $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [also reported on line 32]
+	obj.myValue = password // $ Source[unified/swift/cleartext-storage-database] $ Alert[unified/swift/cleartext-storage-database] // BAD [also reported on line 32]
 	obj.myValue = password_file // GOOD (not sensitive)
 }
 
