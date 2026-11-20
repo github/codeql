@@ -7,7 +7,7 @@ def check_build_out(msg, s):
     ), f"The C# tracer did not interpret the dotnet path-to-application command correctly."
 
 def test1(codeql, csharp):
-    codeql.database.create(command="dotnet build")
+    codeql.database.create(command="dotnet build -t:Build,CheckNodeReuse")
 
 
 # This test checks that we don't inject any flags when running the application using `dotnet`
