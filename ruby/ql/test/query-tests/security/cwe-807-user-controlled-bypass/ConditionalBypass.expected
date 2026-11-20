@@ -5,7 +5,6 @@ edges
 | ConditionalBypass.rb:14:14:14:19 | call to params | ConditionalBypass.rb:14:14:14:27 | ...[...] | provenance |  |
 | ConditionalBypass.rb:25:5:25:5 | p | ConditionalBypass.rb:27:8:27:8 | p | provenance |  |
 | ConditionalBypass.rb:25:10:25:15 | call to params | ConditionalBypass.rb:25:10:25:22 | ...[...] | provenance |  |
-| ConditionalBypass.rb:25:10:25:15 | call to params | ConditionalBypass.rb:25:10:25:22 | ...[...] | provenance |  |
 | ConditionalBypass.rb:25:10:25:22 | ...[...] | ConditionalBypass.rb:25:5:25:5 | p | provenance |  |
 nodes
 | ConditionalBypass.rb:3:5:3:9 | check | semmle.label | check |
@@ -16,7 +15,6 @@ nodes
 | ConditionalBypass.rb:14:14:14:27 | ...[...] | semmle.label | ...[...] |
 | ConditionalBypass.rb:25:5:25:5 | p | semmle.label | p |
 | ConditionalBypass.rb:25:10:25:15 | call to params | semmle.label | call to params |
-| ConditionalBypass.rb:25:10:25:22 | ...[...] | semmle.label | ...[...] |
 | ConditionalBypass.rb:25:10:25:22 | ...[...] | semmle.label | ...[...] |
 | ConditionalBypass.rb:27:8:27:8 | p | semmle.label | p |
 subpaths
