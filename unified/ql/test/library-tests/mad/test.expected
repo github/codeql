@@ -43,10 +43,10 @@ isSink
 | test.swift:276:15:276:20 | string | optional-mixed-sink |
 | test.swift:279:29:279:34 | string | optional-init-sink |
 | test.swift:280:29:280:34 | string | optional-init-sink |
-| test.swift:290:22:290:27 | string | instance-sink |
-| test.swift:291:27:291:32 | string | static-sink |
-| test.swift:294:29:294:34 | string | instance-sink |
-| test.swift:295:20:295:25 | string | static-sink |
+| test.swift:286:22:286:27 | string | instance-sink |
+| test.swift:287:27:287:32 | string | static-sink |
+| test.swift:290:29:290:34 | string | instance-sink |
+| test.swift:291:20:291:25 | string | static-sink |
 isSource
 | test.swift:4:5:4:27 | String(...) | remote |
 | test.swift:5:5:5:44 | String(...) | remote |

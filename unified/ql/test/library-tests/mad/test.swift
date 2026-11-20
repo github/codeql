@@ -281,11 +281,7 @@ func testOptionalParameters(obj: OptionalTest, string: String) {
     _ = OptionalInit(flag: true)  // not a sink: missing required argument
 }
 
-class StaticTest {
-    func instanceSink(_ x: String) {}
-    static func staticSink(_ x: String) {}
-}
-
+// `StaticTest` is not declared in the test codebase; it is only known from the models.
 func testStaticAndInstanceMethods(obj: StaticTest, string: String) {
     obj.instanceSink(string)  // $ isSink=instance-sink
     StaticTest.staticSink(string)  // $ isSink=static-sink
