@@ -58,7 +58,7 @@ private module Cached {
     // indirection of the pointer arithmetic instruction. This provides flow from `source`
     // in `x[source]` to the result of the associated load instruction.
     exists(PointerArithmeticInstruction pai, int indirectionIndex |
-      nodeHasOperand(nodeFrom, pai.getAnOperand(), pragma[only_bind_into](indirectionIndex)) and
+      nodeHasOperand(nodeFrom, pai.getRightOperand(), pragma[only_bind_into](indirectionIndex)) and
       hasInstructionAndIndex(nodeTo, pai, indirectionIndex + 1)
     ) and
     model = ""
