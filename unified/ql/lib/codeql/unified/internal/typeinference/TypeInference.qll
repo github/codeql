@@ -577,6 +577,15 @@ module Input3 implements InputSig3 {
       exists(c)
     }
 
+    /**
+     * Gets the setter method invoked when this call appears as an assignment target, or is
+     * otherwise updated in place.
+     */
+    Callable getSetterTarget() {
+      result = [lookupInstanceMember(this.getCallee()), this.getTargetViaStaticNameBinding()] and
+      result.asCallable() instanceof SetterMethodDeclaration
+    }
+
     Callable getATargetForTypeQualifierMatching() { result = this.getTargetViaStaticNameBinding() }
   }
 
@@ -966,16 +975,7 @@ Callable resolveCallTarget(CallExpr ce) {
 cached
 SetterMethodDeclaration resolveSetterCallTarget(CallExpr ce) {
   CachedStage::ref() and
-  exists(MemberAccessExpr callee, ClassLikeDeclaration cls, NamespaceNode ns |
-    callee = ce.getCallee() and
-    ns.getMember(callee.getMemberName()).isIdentifier(result.getNameNode())
-  |
-    cls = inferType(callee.getBase()).asClass() and
-    ns.isInstanceMemberNamespace(cls)
-    or
-    cls = callee.getBase().(TypeMention).getType().asClass() and
-    ns.isStaticMemberNamespace(cls)
-  )
+  result = ce.(Input3::Invocation).getSetterTarget().asCallable()
 }
 
 private predicate typeTestAstNodeRepr(AstNode n, string repr) {
