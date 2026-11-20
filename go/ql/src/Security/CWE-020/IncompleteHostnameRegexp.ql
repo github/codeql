@@ -15,6 +15,25 @@
 import go
 private import semmle.go.controlflow.Guards
 
+/** Escapes dots within quoted sections for the hostname pattern check. */
+bindingset[pattern]
+private string escapeQuotedDots(string pattern) {
+  if not pattern.matches("%\\Q%")
+  then result = pattern
+  else
+    result =
+      concat(string part, string escapedPart, int i |
+        // Consume quoted sections before other escapes. Outside quoting, paired
+        // backslashes cannot open a section; inside, the first \E closes it.
+        part = pattern.regexpFind("\\\\Q[\\s\\S]*?(?:\\\\E|\\z)|\\\\[^Q]|[^\\\\]+|\\\\\\z", i, _) and
+        if part.prefix(2) = "\\Q"
+        then escapedPart = part.replaceAll(".", "\\.")
+        else escapedPart = part
+      |
+        escapedPart, "" order by i
+      )
+}
+
 /**
  * Holds if `pattern` is a regular expression pattern for URLs with a host matched by `hostPart`,
  * and `pattern` contains a subtle mistake that allows it to match unexpected hosts.
@@ -115,7 +134,21 @@ import Flow::PathGraph
 from Flow::PathNode source, Flow::PathNode sink, string hostPart
 where
   Flow::flowPath(source, sink) and
-  IncompleteHostNameRegexpConfig::isSourceString(source.getNode(), hostPart)
+  // A preceding concatenation can escape a quote opener in a source fragment.
+  // Interpret quoting only when the complete pattern is known.
+  if
+    exists(string pattern |
+      pattern = sink.getNode().(RegexpPattern).getPattern() and
+      pattern.matches("%\\Q%")
+    )
+  then
+    exists(string pattern |
+      pattern = sink.getNode().(RegexpPattern).getPattern() and
+      pattern = source.getNode().asExpr().getStringValue()
+    |
+      isIncompleteHostNameRegexpPattern(escapeQuotedDots(pattern), hostPart)
+    )
+  else IncompleteHostNameRegexpConfig::isSourceString(source.getNode(), hostPart)
 select source, source, sink,
   "This regular expression has an unescaped dot before '" + hostPart + "', " +
     "so it might match more hosts than expected when $@.", sink, "the regular expression is used"

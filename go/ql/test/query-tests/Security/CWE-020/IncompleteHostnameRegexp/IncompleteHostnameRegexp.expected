@@ -5,13 +5,37 @@
 | main.go:49:21:49:45 | `https://www.example.com` | main.go:49:21:49:45 | `https://www.example.com` | main.go:65:15:65:23 | localVar3 | This regular expression has an unescaped dot before 'example.com', so it might match more hosts than expected when $@. | main.go:65:15:65:23 | localVar3 | the regular expression is used |
 | main.go:56:15:56:34 | ...+... | main.go:56:15:56:34 | ...+... | main.go:56:15:56:34 | ...+... | This regular expression has an unescaped dot before 'example.com', so it might match more hosts than expected when $@. | main.go:56:15:56:34 | ...+... | the regular expression is used |
 | main.go:58:15:58:42 | ...+... | main.go:58:15:58:42 | ...+... | main.go:58:15:58:42 | ...+... | This regular expression has an unescaped dot before 'example.com', so it might match more hosts than expected when $@. | main.go:58:15:58:42 | ...+... | the regular expression is used |
+| quoted-hostnames.go:10:21:10:43 | `^https://github.com/$` | quoted-hostnames.go:10:21:10:43 | `^https://github.com/$` | quoted-hostnames.go:10:21:10:43 | `^https://github.com/$` | This regular expression has an unescaped dot before 'com', so it might match more hosts than expected when $@. | quoted-hostnames.go:10:21:10:43 | `^https://github.com/$` | the regular expression is used |
+| quoted-hostnames.go:16:21:16:47 | `^https://\\Qgithub\\E.com/$` | quoted-hostnames.go:16:21:16:47 | `^https://\\Qgithub\\E.com/$` | quoted-hostnames.go:16:21:16:47 | `^https://\\Qgithub\\E.com/$` | This regular expression has an unescaped dot before 'com', so it might match more hosts than expected when $@. | quoted-hostnames.go:16:21:16:47 | `^https://\\Qgithub\\E.com/$` | the regular expression is used |
+| quoted-hostnames.go:19:21:19:72 | `^(?:\\Qhttps://github.com/\\E\|https://example.org/)$` | quoted-hostnames.go:19:21:19:72 | `^(?:\\Qhttps://github.com/\\E\|https://example.org/)$` | quoted-hostnames.go:19:21:19:72 | `^(?:\\Qhttps://github.com/\\E\|https://example.org/)$` | This regular expression has an unescaped dot before 'org', so it might match more hosts than expected when $@. | quoted-hostnames.go:19:21:19:72 | `^(?:\\Qhttps://github.com/\\E\|https://example.org/)$` | the regular expression is used |
+| quoted-hostnames.go:28:21:28:46 | `^\\\\Qhttps://github.com/$` | quoted-hostnames.go:28:21:28:46 | `^\\\\Qhttps://github.com/$` | quoted-hostnames.go:28:21:28:46 | `^\\\\Qhttps://github.com/$` | This regular expression has an unescaped dot before 'com', so it might match more hosts than expected when $@. | quoted-hostnames.go:28:21:28:46 | `^\\\\Qhttps://github.com/$` | the regular expression is used |
+| quoted-hostnames.go:34:21:34:74 | `^(?:\\Qhttps://github\\Q.com/\\E\|https://example.org/)$` | quoted-hostnames.go:34:21:34:74 | `^(?:\\Qhttps://github\\Q.com/\\E\|https://example.org/)$` | quoted-hostnames.go:34:21:34:74 | `^(?:\\Qhttps://github\\Q.com/\\E\|https://example.org/)$` | This regular expression has an unescaped dot before 'org', so it might match more hosts than expected when $@. | quoted-hostnames.go:34:21:34:74 | `^(?:\\Qhttps://github\\Q.com/\\E\|https://example.org/)$` | the regular expression is used |
+| quoted-hostnames.go:37:21:37:48 | `^\\Qhttps://github\\\\E.com/$` | quoted-hostnames.go:37:21:37:48 | `^\\Qhttps://github\\\\E.com/$` | quoted-hostnames.go:37:21:37:48 | `^\\Qhttps://github\\\\E.com/$` | This regular expression has an unescaped dot before 'com', so it might match more hosts than expected when $@. | quoted-hostnames.go:37:21:37:48 | `^\\Qhttps://github\\\\E.com/$` | the regular expression is used |
+| quoted-hostnames.go:46:21:46:49 | "^https://\\\\Qgithub\\\\E.com/$" | quoted-hostnames.go:46:21:46:49 | "^https://\\\\Qgithub\\\\E.com/$" | quoted-hostnames.go:46:21:46:49 | "^https://\\\\Qgithub\\\\E.com/$" | This regular expression has an unescaped dot before 'com', so it might match more hosts than expected when $@. | quoted-hostnames.go:46:21:46:49 | "^https://\\\\Qgithub\\\\E.com/$" | the regular expression is used |
+| quoted-hostnames.go:53:28:53:54 | `^https://\\Qgithub\\E.com/$` | quoted-hostnames.go:53:28:53:54 | `^https://\\Qgithub\\E.com/$` | quoted-hostnames.go:61:21:61:38 | wildcardAfterQuote | This regular expression has an unescaped dot before 'com', so it might match more hosts than expected when $@. | quoted-hostnames.go:61:21:61:38 | wildcardAfterQuote | the regular expression is used |
+| quoted-hostnames.go:53:28:53:54 | `^https://\\Qgithub\\E.com/$` | quoted-hostnames.go:53:28:53:54 | `^https://\\Qgithub\\E.com/$` | quoted-hostnames.go:62:17:62:34 | wildcardAfterQuote | This regular expression has an unescaped dot before 'com', so it might match more hosts than expected when $@. | quoted-hostnames.go:62:17:62:34 | wildcardAfterQuote | the regular expression is used |
+| quoted-hostnames.go:53:28:53:54 | `^https://\\Qgithub\\E.com/$` | quoted-hostnames.go:53:28:53:54 | `^https://\\Qgithub\\E.com/$` | quoted-hostnames.go:63:21:63:38 | wildcardAfterQuote | This regular expression has an unescaped dot before 'com', so it might match more hosts than expected when $@. | quoted-hostnames.go:63:21:63:38 | wildcardAfterQuote | the regular expression is used |
+| quoted-hostnames.go:69:12:69:37 | `\\Q)?https://github.com/$` | quoted-hostnames.go:69:12:69:37 | `\\Q)?https://github.com/$` | quoted-hostnames.go:70:21:70:35 | ...+... | This regular expression has an unescaped dot before 'com', so it might match more hosts than expected when $@. | quoted-hostnames.go:70:21:70:35 | ...+... | the regular expression is used |
+| quoted-hostnames.go:73:30:73:55 | `\\Q)?https://github.com/$` | quoted-hostnames.go:73:30:73:55 | `\\Q)?https://github.com/$` | quoted-hostnames.go:73:21:73:55 | ...+... | This regular expression has an unescaped dot before 'com', so it might match more hosts than expected when $@. | quoted-hostnames.go:73:21:73:55 | ...+... | the regular expression is used |
+| quoted-hostnames.go:76:21:76:56 | ...+... | quoted-hostnames.go:76:21:76:56 | ...+... | quoted-hostnames.go:76:21:76:56 | ...+... | This regular expression has an unescaped dot before 'com', so it might match more hosts than expected when $@. | quoted-hostnames.go:76:21:76:56 | ...+... | the regular expression is used |
 edges
-| IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | IncompleteHostnameRegexp.go:12:38:12:39 | re | provenance | Sink:MaD:2 |
+| IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | IncompleteHostnameRegexp.go:12:38:12:39 | re | provenance | Sink:MaD:3 |
 | main.go:49:21:49:45 | `https://www.example.com` | main.go:62:15:62:25 | sourceConst | provenance |  |
-| main.go:62:15:62:25 | sourceConst | main.go:65:15:65:23 | localVar3 | provenance | Sink:MaD:1 |
+| main.go:62:15:62:25 | sourceConst | main.go:65:15:65:23 | localVar3 | provenance | Sink:MaD:2 |
+| quoted-hostnames.go:52:24:52:50 | `^\\Qhttps://github.com/\\E$` | quoted-hostnames.go:57:21:57:34 | quotedHostname | provenance | Sink:MaD:4 |
+| quoted-hostnames.go:52:24:52:50 | `^\\Qhttps://github.com/\\E$` | quoted-hostnames.go:58:17:58:30 | quotedHostname | provenance | Sink:MaD:1 |
+| quoted-hostnames.go:52:24:52:50 | `^\\Qhttps://github.com/\\E$` | quoted-hostnames.go:59:21:59:34 | quotedHostname | provenance | Sink:MaD:3 |
+| quoted-hostnames.go:53:28:53:54 | `^https://\\Qgithub\\E.com/$` | quoted-hostnames.go:61:21:61:38 | wildcardAfterQuote | provenance | Sink:MaD:4 |
+| quoted-hostnames.go:53:28:53:54 | `^https://\\Qgithub\\E.com/$` | quoted-hostnames.go:62:17:62:34 | wildcardAfterQuote | provenance | Sink:MaD:1 |
+| quoted-hostnames.go:53:28:53:54 | `^https://\\Qgithub\\E.com/$` | quoted-hostnames.go:63:21:63:38 | wildcardAfterQuote | provenance | Sink:MaD:3 |
+| quoted-hostnames.go:69:12:69:37 | `\\Q)?https://github.com/$` | quoted-hostnames.go:70:30:70:35 | suffix | provenance |  |
+| quoted-hostnames.go:70:30:70:35 | suffix | quoted-hostnames.go:70:21:70:35 | ...+... | provenance | Config Sink:MaD:4 |
+| quoted-hostnames.go:73:30:73:55 | `\\Q)?https://github.com/$` | quoted-hostnames.go:73:21:73:55 | ...+... | provenance | Config Sink:MaD:4 |
 models
-| 1 | Sink: regexp; ; false; Match; ; ; Argument[0]; regex-use[1]; manual |
-| 2 | Sink: regexp; ; false; MatchString; ; ; Argument[0]; regex-use[1]; manual |
+| 1 | Sink: regexp; ; false; Compile; ; ; Argument[0]; regex-use[c]; manual |
+| 2 | Sink: regexp; ; false; Match; ; ; Argument[0]; regex-use[1]; manual |
+| 3 | Sink: regexp; ; false; MatchString; ; ; Argument[0]; regex-use[1]; manual |
+| 4 | Sink: regexp; ; false; MustCompile; ; ; Argument[0]; regex-use[c]; manual |
 nodes
 | IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | semmle.label | "^((www\|beta).)?example.com/" |
 | IncompleteHostnameRegexp.go:12:38:12:39 | re | semmle.label | re |
@@ -22,4 +46,32 @@ nodes
 | main.go:58:15:58:42 | ...+... | semmle.label | ...+... |
 | main.go:62:15:62:25 | sourceConst | semmle.label | sourceConst |
 | main.go:65:15:65:23 | localVar3 | semmle.label | localVar3 |
+| quoted-hostnames.go:7:21:7:87 | `^// TODO (\\Qhttps://github.com/FerretDB/\\E([-\\w]+)/issues/(\\d+))$` | semmle.label | `^// TODO (\\Qhttps://github.com/FerretDB/\\E([-\\w]+)/issues/(\\d+))$` |
+| quoted-hostnames.go:10:21:10:43 | `^https://github.com/$` | semmle.label | `^https://github.com/$` |
+| quoted-hostnames.go:16:21:16:47 | `^https://\\Qgithub\\E.com/$` | semmle.label | `^https://\\Qgithub\\E.com/$` |
+| quoted-hostnames.go:19:21:19:72 | `^(?:\\Qhttps://github.com/\\E\|https://example.org/)$` | semmle.label | `^(?:\\Qhttps://github.com/\\E\|https://example.org/)$` |
+| quoted-hostnames.go:22:21:22:76 | `^(?:\\Qhttps://github.com/\\E\|\\Qhttps://example.org/\\E)$` | semmle.label | `^(?:\\Qhttps://github.com/\\E\|\\Qhttps://example.org/\\E)$` |
+| quoted-hostnames.go:25:21:25:44 | `^\\Qhttps://github.com/` | semmle.label | `^\\Qhttps://github.com/` |
+| quoted-hostnames.go:28:21:28:46 | `^\\\\Qhttps://github.com/$` | semmle.label | `^\\\\Qhttps://github.com/$` |
+| quoted-hostnames.go:31:21:31:49 | `^\\\\\\Qhttps://github.com/\\E$` | semmle.label | `^\\\\\\Qhttps://github.com/\\E$` |
+| quoted-hostnames.go:34:21:34:74 | `^(?:\\Qhttps://github\\Q.com/\\E\|https://example.org/)$` | semmle.label | `^(?:\\Qhttps://github\\Q.com/\\E\|https://example.org/)$` |
+| quoted-hostnames.go:37:21:37:48 | `^\\Qhttps://github\\\\E.com/$` | semmle.label | `^\\Qhttps://github\\\\E.com/$` |
+| quoted-hostnames.go:40:21:40:66 | `^\\Qhttps://github.com/\\ehttps://example.org/` | semmle.label | `^\\Qhttps://github.com/\\ehttps://example.org/` |
+| quoted-hostnames.go:43:21:43:49 | "^\\\\Qhttps://github.com/\\\\E$" | semmle.label | "^\\\\Qhttps://github.com/\\\\E$" |
+| quoted-hostnames.go:46:21:46:49 | "^https://\\\\Qgithub\\\\E.com/$" | semmle.label | "^https://\\\\Qgithub\\\\E.com/$" |
+| quoted-hostnames.go:49:21:49:63 | `^\\Qhttps://github.com/\\E\\Qexample.org/\\E$` | semmle.label | `^\\Qhttps://github.com/\\E\\Qexample.org/\\E$` |
+| quoted-hostnames.go:52:24:52:50 | `^\\Qhttps://github.com/\\E$` | semmle.label | `^\\Qhttps://github.com/\\E$` |
+| quoted-hostnames.go:53:28:53:54 | `^https://\\Qgithub\\E.com/$` | semmle.label | `^https://\\Qgithub\\E.com/$` |
+| quoted-hostnames.go:57:21:57:34 | quotedHostname | semmle.label | quotedHostname |
+| quoted-hostnames.go:58:17:58:30 | quotedHostname | semmle.label | quotedHostname |
+| quoted-hostnames.go:59:21:59:34 | quotedHostname | semmle.label | quotedHostname |
+| quoted-hostnames.go:61:21:61:38 | wildcardAfterQuote | semmle.label | wildcardAfterQuote |
+| quoted-hostnames.go:62:17:62:34 | wildcardAfterQuote | semmle.label | wildcardAfterQuote |
+| quoted-hostnames.go:63:21:63:38 | wildcardAfterQuote | semmle.label | wildcardAfterQuote |
+| quoted-hostnames.go:69:12:69:37 | `\\Q)?https://github.com/$` | semmle.label | `\\Q)?https://github.com/$` |
+| quoted-hostnames.go:70:21:70:35 | ...+... | semmle.label | ...+... |
+| quoted-hostnames.go:70:30:70:35 | suffix | semmle.label | suffix |
+| quoted-hostnames.go:73:21:73:55 | ...+... | semmle.label | ...+... |
+| quoted-hostnames.go:73:30:73:55 | `\\Q)?https://github.com/$` | semmle.label | `\\Q)?https://github.com/$` |
+| quoted-hostnames.go:76:21:76:56 | ...+... | semmle.label | ...+... |
 subpaths
