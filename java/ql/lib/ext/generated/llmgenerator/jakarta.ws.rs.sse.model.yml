@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/jakartaee/rest.git#8617779abb277aa1a37cdcd1deeb4cbadc5e0d96 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["jakarta.ws.rs.sse", "InboundSseEvent", True, "readData", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.sse", "InboundSseEvent", True, "readData", "(Class)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.sse", "InboundSseEvent", True, "readData", "(Class,MediaType)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.sse", "InboundSseEvent", True, "readData", "(GenericType)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.sse", "InboundSseEvent", True, "readData", "(GenericType,MediaType)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.sse", "SseEvent", True, "getComment", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.sse", "SseEvent", True, "getId", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["jakarta.ws.rs.sse", "SseEvent", True, "getName", "()", "", "ReturnValue", "remote", "ai-generated"]
