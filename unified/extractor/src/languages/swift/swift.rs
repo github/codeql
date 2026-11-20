@@ -176,8 +176,9 @@ fn member_chain(
 struct SubscriptAccessor {
     /// Modifiers written on the accessor itself, such as `nonmutating`.
     modifiers: Vec<yeast::OutputId>,
-    /// For a setter, the explicit name of its new-value parameter (`set(v)`),
-    /// if any, and the token at which to locate an implicit `newValue`.
+    /// For a setter, the explicit name of its new-value parameter (the `v` in
+    /// `set(v) { ... }`), if any, and the token at which to locate an implicit
+    /// `newValue`.
     setter: Option<(Option<yeast::Id>, yeast::Id)>,
     /// The raw accessor body, if any.
     body: Option<yeast::Id>,
