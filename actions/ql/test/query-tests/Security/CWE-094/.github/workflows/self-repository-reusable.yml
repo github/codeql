@@ -1,0 +1,14 @@
+name: Self repository reusable workflow
+
+on:
+  workflow_call:
+    inputs:
+      title:
+        type: string
+        required: true
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ inputs.title }}"
