@@ -23,7 +23,8 @@ private newtype TNameBindingNode =
   TModuleScope(ModuleScopeRepr repr) or
   TFolderScope(Folder folder) or
   TModuleRoot() or
-  TTypeSelector(MaD::TypeSelector type)
+  TTypeSelector(MaD::TypeSelector type) or
+  TMemberSelector(MaD::MemberSelector member)
 
 /**
  * A node in a graph, in which name-binding rules are represented as edges between nodes.
@@ -63,7 +64,16 @@ class NameBindingNode extends TNameBindingNode {
   /** Holds if this represents the root namespace in which all named modules are members. */
   predicate isModuleRoot() { this = TModuleRoot() }
 
+  /**
+   * Holds if this represents the members of the given type from a model.
+   *
+   * Static members are members of the meta type, such as `Foo.Type`, whose node also
+   * represents references to the type `Foo` itself.
+   */
   predicate isTypeSelector(MaD::TypeSelector type) { this = TTypeSelector(type) }
+
+  /** Holds if this represents the member identified by `member` from a model. */
+  predicate isMemberSelector(MaD::MemberSelector member) { this = TMemberSelector(member) }
 
   /**
    * Gets an AST node wrapped by this name-binding node, if such a node exists.
@@ -111,6 +121,10 @@ class NameBindingNode extends TNameBindingNode {
     or
     exists(MaD::TypeSelector type |
       this.isTypeSelector(type) and result = "TypeSelector(" + type + ")"
+    )
+    or
+    exists(MaD::MemberSelector member |
+      this.isMemberSelector(member) and result = "MemberSelector(" + member + ")"
     )
   }
 
@@ -233,10 +247,30 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
   or
   FolderHeuristic::storeStep(node1, name, node2)
   or
-  exists(MaD::TypeSelector type |
-    node1.isTypeSelector(type.append(name)) and
-    node2.isTypeSelector(type)
+  // A nested type is a static member of its enclosing type, and a reference to it is a value
+  // of its meta type
+  exists(MaD::TypeSelector type, MaD::TypeSelector nested |
+    nested = type.append(name) and
+    not nested.isMetaType() and
+    node1.isTypeSelector(nested.getMetaType()) and
+    node2.isTypeSelector(getMetaTypeOrRoot(type))
   )
+  or
+  exists(MaD::MemberSelector member |
+    node1.isMemberSelector(member) and
+    name = member.getName() and
+    node2.isTypeSelector(member.getTypeString())
+  )
+}
+
+/**
+ * Gets the meta type of `type`, whose members are accessible through a reference to `type`,
+ * or the root type selector itself if `type` is the root.
+ */
+private MaD::TypeSelector getMetaTypeOrRoot(MaD::TypeSelector type) {
+  result = type.getMetaType()
+  or
+  type = "" and result = ""
 }
 
 predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
@@ -549,6 +583,8 @@ private module TrackNameBindingInput implements TrackInputSig {
     )
     or
     node.isTypeSelector(_)
+    or
+    node.isMemberSelector(_)
   }
 }
 
@@ -562,10 +598,22 @@ private NameBindingNode trackNameBinding(NameBinding decl) {
   )
 }
 
-/** Gets a name-binding node that may refer to the given type from a model. */
+/**
+ * Gets a name-binding node that may refer to the given type from a model.
+ *
+ * A reference to a type is a value of its meta type, so this tracks the node of the meta type.
+ */
 NameBindingNode trackTypeSelector(MaD::TypeSelector type) {
   exists(NameBindingNode start |
-    start.isTypeSelector(type) and
+    start.isTypeSelector(getMetaTypeOrRoot(type)) and
+    result = TrackNameBinding::track(start)
+  )
+}
+
+/** Gets a name-binding node that may refer to the given member from a model. */
+NameBindingNode trackMemberSelector(MaD::MemberSelector member) {
+  exists(NameBindingNode start |
+    start.isMemberSelector(member) and
     result = TrackNameBinding::track(start)
   )
 }
