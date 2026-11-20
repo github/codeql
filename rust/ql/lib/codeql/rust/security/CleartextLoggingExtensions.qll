@@ -56,4 +56,18 @@ module CleartextLogging {
 
   private class FieldlessEnumTypeBarrier extends Barrier instanceof Barriers::FieldlessEnumTypeBarrier
   { }
+
+  /**
+   * A node in a test function, such as one with a `#[test]` or `#[tokio::test]`
+   * attribute. A test's assertion messages and output go to the test runner, not
+   * to an application's log.
+   */
+  private class TestFunctionBarrier extends Barrier {
+    TestFunctionBarrier() {
+      exists(Function f |
+        f.getAnAttr().(Attr).getMeta().getMetaPath().getText() = "test" and
+        f = this.asExpr().getEnclosingCallable+()
+      )
+    }
+  }
 }
