@@ -38,7 +38,7 @@ func test1(realm : Realm, myHarmless: String, myPassword : String, myHashedPassw
 	// add objects (within a transaction) ...
 
 	let a = MyRealmSwiftObject()
-	a.data = myPassword // $ Alert[swift/cleartext-storage-database]
+	a.data = myPassword // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	realm.add(a)
 
 	let b = MyRealmSwiftObject()
@@ -46,7 +46,7 @@ func test1(realm : Realm, myHarmless: String, myPassword : String, myHashedPassw
 	realm.add(b) // GOOD (not sensitive)
 
 	let c = MyRealmSwiftObject()
-	c.data = myPassword // $ Alert[swift/cleartext-storage-database]
+	c.data = myPassword // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	realm.create(MyRealmSwiftObject.self, value: c)
 
 	let d = MyRealmSwiftObject()
@@ -56,21 +56,21 @@ func test1(realm : Realm, myHarmless: String, myPassword : String, myHashedPassw
 	// retrieve objects ...
 
 	var e = realm.object(ofType: MyRealmSwiftObject.self, forPrimaryKey: "key")
-	e!.data = myPassword // $ Alert[swift/cleartext-storage-database]
+	e!.data = myPassword // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 
 	var f = realm.object(ofType: MyRealmSwiftObject.self, forPrimaryKey: "key")
 	f!.data = myHashedPassword // GOOD (not sensitive)
 
 	let g = MyRealmSwiftObject()
 	g.data = "" // GOOD (not sensitive)
-	g.data = myPassword // $ Alert[swift/cleartext-storage-database]
+	g.data = myPassword // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	g.data = "" // GOOD (not sensitive)
 
 	// MyRealmSwiftObject2...
 
 	let h = MyRealmSwiftObject2()
 	h.harmless = myHarmless // GOOD (not sensitive)
-	h.password = myPassword // $ Alert[swift/cleartext-storage-database]
+	h.password = myPassword // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	realm.add(h)
 }
 

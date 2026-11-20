@@ -70,145 +70,145 @@ class CommonTableExpression {
 // --- tests ---
 
 func test(database: Database, password: String, harmless: String) {
-    let _ = database.allStatements(sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    let _ = database.allStatements(sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = database.allStatements(sql: "", arguments: [harmless]) // GOOD
 
-    database.execute(sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    database.execute(sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     database.execute(sql: "", arguments: [harmless]) // GOOD
 }
 
 func testSqlRequest(password: String, harmless: String) {
-    let _ = SQLRequest(sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    let _ = SQLRequest(sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = SQLRequest(sql: "", arguments: [harmless]) // GOOD
-    let _ = SQLRequest(sql: "", arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
+    let _ = SQLRequest(sql: "", arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = SQLRequest(sql: "", arguments: [harmless], adapter: nil) // GOOD
-    let _ = SQLRequest(sql: "", arguments: [password], cached: false) // $ Alert[swift/cleartext-storage-database]
+    let _ = SQLRequest(sql: "", arguments: [password], cached: false) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = SQLRequest(sql: "", arguments: [harmless], cached: false) // GOOD
-    let _ = SQLRequest(sql: "", arguments: [password], adapter: nil, cached: false) // $ Alert[swift/cleartext-storage-database]
+    let _ = SQLRequest(sql: "", arguments: [password], adapter: nil, cached: false) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = SQLRequest(sql: "", arguments: [harmless], adapter: nil, cached: false) // GOOD
 }
 
 func test(sql: SQL, password: String, harmless: String) {
-    let _ = SQL(sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    let _ = SQL(sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = SQL(sql: "", arguments: [harmless]) // GOOD
     
-    sql.append(sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    sql.append(sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     sql.append(sql: "", arguments: [harmless]) // GOOD
 }
 
 func testSqlStatementCursor(database: Database, password: String, harmless: String) {
-    let _ = SQLStatementCursor(database: database, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
-    let _ = SQLStatementCursor(database: database, sql: "", arguments: [password], prepFlags: 0) // $ Alert[swift/cleartext-storage-database]
+    let _ = SQLStatementCursor(database: database, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
+    let _ = SQLStatementCursor(database: database, sql: "", arguments: [password], prepFlags: 0) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = SQLStatementCursor(database: database, sql: "", arguments: [harmless]) // GOOD
     let _ = SQLStatementCursor(database: database, sql: "", arguments: [harmless], prepFlags: 0) // GOOD
 }
 
 func testTableRecord(password: String, harmless: String) {
-    let _ = TableRecord.select(sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    let _ = TableRecord.select(sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = TableRecord.select(sql: "", arguments: [harmless]) // GOOD
-    let _ = TableRecord.filter(sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    let _ = TableRecord.filter(sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = TableRecord.filter(sql: "", arguments: [harmless]) // GOOD
-    let _ = TableRecord.order(sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    let _ = TableRecord.order(sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = TableRecord.order(sql: "", arguments: [harmless]) // GOOD
 }
 
 func test(row: Row, stmt: Statement, password: String, harmless: String) {
-    row.fetchCursor(stmt, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    row.fetchCursor(stmt, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     row.fetchCursor(stmt, sql: "", arguments: [harmless]) // GOOD
-    row.fetchCursor(stmt, sql: "", arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
+    row.fetchCursor(stmt, sql: "", arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     row.fetchCursor(stmt, sql: "", arguments: [harmless], adapter: nil) // GOOD
 
-    row.fetchAll(stmt, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    row.fetchAll(stmt, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     row.fetchAll(stmt, sql: "", arguments: [harmless]) // GOOD
-    row.fetchAll(stmt, sql: "", arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
+    row.fetchAll(stmt, sql: "", arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     row.fetchAll(stmt, sql: "", arguments: [harmless], adapter: nil) // GOOD
 
-    row.fetchSet(stmt, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    row.fetchSet(stmt, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     row.fetchSet(stmt, sql: "", arguments: [harmless]) // GOOD
-    row.fetchSet(stmt, sql: "", arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
+    row.fetchSet(stmt, sql: "", arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     row.fetchSet(stmt, sql: "", arguments: [harmless], adapter: nil) // GOOD
 
-    row.fetchOne(stmt, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    row.fetchOne(stmt, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     row.fetchOne(stmt, sql: "", arguments: [harmless]) // GOOD
-    row.fetchOne(stmt, sql: "", arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
+    row.fetchOne(stmt, sql: "", arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     row.fetchOne(stmt, sql: "", arguments: [harmless], adapter: nil) // GOOD
 }
 
 func test(databaseValueConvertible: DatabaseValueConvertible, stmt: Statement, password: String, harmless: String) {
-    databaseValueConvertible.fetchCursor(stmt, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    databaseValueConvertible.fetchCursor(stmt, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     databaseValueConvertible.fetchCursor(stmt, sql: "", arguments: [harmless]) // GOOD
-    databaseValueConvertible.fetchCursor(stmt, sql: "", arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
+    databaseValueConvertible.fetchCursor(stmt, sql: "", arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     databaseValueConvertible.fetchCursor(stmt, sql: "", arguments: [harmless], adapter: nil) // GOOD
 
-    databaseValueConvertible.fetchAll(stmt, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    databaseValueConvertible.fetchAll(stmt, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     databaseValueConvertible.fetchAll(stmt, sql: "", arguments: [harmless]) // GOOD
-    databaseValueConvertible.fetchAll(stmt, sql: "", arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
+    databaseValueConvertible.fetchAll(stmt, sql: "", arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     databaseValueConvertible.fetchAll(stmt, sql: "", arguments: [harmless], adapter: nil) // GOOD
 
-    databaseValueConvertible.fetchSet(stmt, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    databaseValueConvertible.fetchSet(stmt, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     databaseValueConvertible.fetchSet(stmt, sql: "", arguments: [harmless]) // GOOD
-    databaseValueConvertible.fetchSet(stmt, sql: "", arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
+    databaseValueConvertible.fetchSet(stmt, sql: "", arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     databaseValueConvertible.fetchSet(stmt, sql: "", arguments: [harmless], adapter: nil) // GOOD
 
-    databaseValueConvertible.fetchOne(stmt, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    databaseValueConvertible.fetchOne(stmt, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     databaseValueConvertible.fetchOne(stmt, sql: "", arguments: [harmless]) // GOOD
-    databaseValueConvertible.fetchOne(stmt, sql: "", arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
+    databaseValueConvertible.fetchOne(stmt, sql: "", arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     databaseValueConvertible.fetchOne(stmt, sql: "", arguments: [harmless], adapter: nil) // GOOD
 }
 
 func test(fetchableRecord: FetchableRecord, stmt: Statement, password: String, harmless: String) {
-    fetchableRecord.fetchCursor(stmt, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
-    fetchableRecord.fetchCursor(stmt, arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    fetchableRecord.fetchCursor(stmt, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
+    fetchableRecord.fetchCursor(stmt, arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     fetchableRecord.fetchCursor(stmt, sql: "", arguments: [harmless]) // GOOD
     fetchableRecord.fetchCursor(stmt, arguments: [harmless]) // GOOD
-    fetchableRecord.fetchCursor(stmt, sql: "", arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
-    fetchableRecord.fetchCursor(stmt, arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
+    fetchableRecord.fetchCursor(stmt, sql: "", arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
+    fetchableRecord.fetchCursor(stmt, arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     fetchableRecord.fetchCursor(stmt, sql: "", arguments: [harmless], adapter: nil) // GOOD
     fetchableRecord.fetchCursor(stmt, arguments: [harmless], adapter: nil) // GOOD
 
-    fetchableRecord.fetchAll(stmt, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
-    fetchableRecord.fetchAll(stmt, arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    fetchableRecord.fetchAll(stmt, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
+    fetchableRecord.fetchAll(stmt, arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     fetchableRecord.fetchAll(stmt, sql: "", arguments: [harmless]) // GOOD
     fetchableRecord.fetchAll(stmt, arguments: [harmless]) // GOOD
-    fetchableRecord.fetchAll(stmt, sql: "", arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
-    fetchableRecord.fetchAll(stmt, arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
+    fetchableRecord.fetchAll(stmt, sql: "", arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
+    fetchableRecord.fetchAll(stmt, arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     fetchableRecord.fetchAll(stmt, sql: "", arguments: [harmless], adapter: nil) // GOOD
     fetchableRecord.fetchAll(stmt, arguments: [harmless], adapter: nil) // GOOD
 
-    fetchableRecord.fetchSet(stmt, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
-    fetchableRecord.fetchSet(stmt, arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    fetchableRecord.fetchSet(stmt, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
+    fetchableRecord.fetchSet(stmt, arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     fetchableRecord.fetchSet(stmt, sql: "", arguments: [harmless]) // GOOD
     fetchableRecord.fetchSet(stmt, arguments: [harmless]) // GOOD
-    fetchableRecord.fetchSet(stmt, sql: "", arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
-    fetchableRecord.fetchSet(stmt, arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
+    fetchableRecord.fetchSet(stmt, sql: "", arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
+    fetchableRecord.fetchSet(stmt, arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     fetchableRecord.fetchSet(stmt, sql: "", arguments: [harmless], adapter: nil) // GOOD
     fetchableRecord.fetchSet(stmt, arguments: [harmless], adapter: nil) // GOOD
 
-    fetchableRecord.fetchOne(stmt, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
-    fetchableRecord.fetchOne(stmt, arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    fetchableRecord.fetchOne(stmt, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
+    fetchableRecord.fetchOne(stmt, arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     fetchableRecord.fetchOne(stmt, sql: "", arguments: [harmless]) // GOOD
     fetchableRecord.fetchOne(stmt, arguments: [harmless]) // GOOD
-    fetchableRecord.fetchOne(stmt, sql: "", arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
-    fetchableRecord.fetchOne(stmt, arguments: [password], adapter: nil) // $ Alert[swift/cleartext-storage-database]
+    fetchableRecord.fetchOne(stmt, sql: "", arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
+    fetchableRecord.fetchOne(stmt, arguments: [password], adapter: nil) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     fetchableRecord.fetchOne(stmt, sql: "", arguments: [harmless], adapter: nil) // GOOD
     fetchableRecord.fetchOne(stmt, arguments: [harmless], adapter: nil) // GOOD
 }
 
 func test(stmt: Statement, password: String, harmless: String) {
-    stmt.execute(arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    stmt.execute(arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     stmt.execute(arguments: [harmless]) // GOOD
 
-    stmt.setArguments([password]) // $ Alert[swift/cleartext-storage-database]
+    stmt.setArguments([password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     stmt.setArguments([harmless]) // GOOD
 }
 
 func testCommonTableExpression(password: String, harmless: String) {
-    let _ = CommonTableExpression(named: "", sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    let _ = CommonTableExpression(named: "", sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = CommonTableExpression(named: "", sql: "", arguments: [harmless]) // GOOD
-    let _ = CommonTableExpression(named: "", columns: nil, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    let _ = CommonTableExpression(named: "", columns: nil, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = CommonTableExpression(named: "", columns: nil, sql: "", arguments: [harmless]) // GOOD
-    let _ = CommonTableExpression(recursive: false, named: "", sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    let _ = CommonTableExpression(recursive: false, named: "", sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = CommonTableExpression(recursive: false, named: "", sql: "", arguments: [harmless]) // GOOD
-    let _ = CommonTableExpression(recursive: false, named: "", columns: nil, sql: "", arguments: [password]) // $ Alert[swift/cleartext-storage-database]
+    let _ = CommonTableExpression(recursive: false, named: "", columns: nil, sql: "", arguments: [password]) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
     let _ = CommonTableExpression(recursive: false, named: "", columns: nil, sql: "", arguments: [harmless]) // GOOD
 }

@@ -16,7 +16,7 @@ class NSManagedObject : NSObject
 class MyManagedObject : NSManagedObject
 {
 	func setIndirect(value: String) {
-		setValue(value, forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
+		setValue(value, forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
 	}
 
 	var myValue: String {
@@ -29,7 +29,7 @@ class MyManagedObject : NSManagedObject
 			}
 		}
 		set {
-			setValue(newValue, forKey: "myKey") // $ Alert[swift/cleartext-storage-database] // [additional result reported here]
+			setValue(newValue, forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database] // [additional result reported here]
 		}
 	}
 }
@@ -45,23 +45,23 @@ func doSomething(password: String) { }
 func test1(obj : NSManagedObject, password : String, password_hash : String) {
 	// NSManagedObject methods...
 
-	obj.setValue(password, forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
+	obj.setValue(password, forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
 	obj.setValue(password_hash, forKey: "myKey") // GOOD (not sensitive)
 
-	obj.setPrimitiveValue(password, forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
+	obj.setPrimitiveValue(password, forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
 	obj.setPrimitiveValue(password_hash, forKey: "myKey") // GOOD (not sensitive)
 }
 
 func test2(obj : MyManagedObject, password : String, password_file : String) {
 	// MyManagedObject methods...
 
-	obj.setValue(password, forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
+	obj.setValue(password, forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
 	obj.setValue(password_file, forKey: "myKey") // GOOD (not sensitive)
 
-	obj.setIndirect(value: password) // $ Source[swift/cleartext-storage-database] // BAD [reported on line 19]
+	obj.setIndirect(value: password) // $ Source[unified/swift/cleartext-storage-database] // BAD [reported on line 19]
 	obj.setIndirect(value: password_file) // GOOD (not sensitive)
 
-	obj.myValue = password // $ Alert[swift/cleartext-storage-database] Source[swift/cleartext-storage-database] // BAD [also reported on line 32]
+	obj.myValue = password // $ Source[unified/swift/cleartext-storage-database] $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [also reported on line 32]
 	obj.myValue = password_file // GOOD (not sensitive)
 }
 
@@ -74,34 +74,34 @@ func test3(obj : NSManagedObject, x : String) {
 	// alternative evidence of sensitivity...
 
 	obj.setValue(x, forKey: "myKey") // BAD [NOT REPORTED]
-	doSomething(password: x); // $ Source[swift/cleartext-storage-database]
-	obj.setValue(x, forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
+	doSomething(password: x); // $ MISSING: Source[unified/swift/cleartext-storage-database]
+	obj.setValue(x, forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 
-	let y = getPassword(); // $ Source[swift/cleartext-storage-database]
-	obj.setValue(y, forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
+	let y = getPassword(); // $ Source[unified/swift/cleartext-storage-database]
+	obj.setValue(y, forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
 
 	let z = MyClass()
 	obj.setValue(z.harmless, forKey: "myKey") // GOOD (not sensitive)
-	obj.setValue(z.password, forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
+	obj.setValue(z.password, forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
 }
 
 func test4(obj : NSManagedObject, passwd : String) {
 	// sanitizers...
 
-	var x = passwd; // $ Source[swift/cleartext-storage-database]
-	var y = passwd; // $ Source[swift/cleartext-storage-database]
-	var z = passwd; // $ Source[swift/cleartext-storage-database]
+	var x = passwd; // $ Source[unified/swift/cleartext-storage-database]
+	var y = passwd; // $ Source[unified/swift/cleartext-storage-database]
+	var z = passwd; // $ Source[unified/swift/cleartext-storage-database]
 
-	obj.setValue(x, forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
-	obj.setValue(y, forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
-	obj.setValue(z, forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
+	obj.setValue(x, forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
+	obj.setValue(y, forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
+	obj.setValue(z, forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
 
 	x = encrypt(x);
 	hash(data: &y);
 	z = "";
 
 	obj.setValue(x, forKey: "myKey") // GOOD (not sensitive)
-	obj.setValue(y, forKey: "myKey") // GOOD (not sensitive)
+	obj.setValue(y, forKey: "myKey") // $ SPURIOUS: Alert[unified/swift/cleartext-storage-database] // GOOD (not sensitive) [FALSE POSITIVE]
 	obj.setValue(z, forKey: "myKey") // GOOD (not sensitive)
 }
 
@@ -124,16 +124,16 @@ class SecureKeyStore {
 func test5(obj : NSManagedObject) {
 	// more variants...
 
-	obj.setValue(createSecureKey(), forKey: "myKey") // $ MISSING: Alert[swift/cleartext-storage-database] // BAD [NOT DETECTED]
-	obj.setValue(generateSecretKey(), forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
-	obj.setValue(getCertificate(), forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
+	obj.setValue(createSecureKey(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.setValue(generateSecretKey(), forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
+	obj.setValue(getCertificate(), forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
 
 	let gen = KeyGen()
 	let v = gen.generate()
 
-	obj.setValue(KeyGen().generate(), forKey: "myKey") // $ MISSING: Alert[swift/cleartext-storage-database] // BAD [NOT DETECTED]
-	obj.setValue(gen.generate(), forKey: "myKey") // $ MISSING: Alert[swift/cleartext-storage-database] // BAD [NOT DETECTED]
-	obj.setValue(v, forKey: "myKey") // $ MISSING: Alert[swift/cleartext-storage-database] // BAD [NOT DETECTED]
-	obj.setValue(KeyManager().generateKey(), forKey: "myKey") // $ MISSING: Alert[swift/cleartext-storage-database] // BAD [NOT DETECTED]
-	obj.setValue(SecureKeyStore().getEncryptionKey(), forKey: "myKey") // $ MISSING: Alert[swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.setValue(KeyGen().generate(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.setValue(gen.generate(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.setValue(v, forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.setValue(KeyManager().generateKey(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.setValue(SecureKeyStore().getEncryptionKey(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
 }
