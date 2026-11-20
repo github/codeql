@@ -18,7 +18,7 @@
    .NET 5, .NET 6, .NET 7, .NET 8, .NET 9, .NET 10","``.sln``, ``.slnx``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    GitHub Actions,"Not applicable",Not applicable,"``.github/workflows/*.yml``, ``.github/workflows/*.yaml``, ``**/action.yml``, ``**/action.yaml``"
    Go (aka Golang), "Go up to 1.27", "Go 1.11 or more recent", ``.go``
-   Java,"Java 7 to 26 [5]_","javac (OpenJDK and Oracle JDK),
+   Java,"Java 7 to 27 [5]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [6]_",``.java``
    Kotlin,"Kotlin 1.8.0 to 2.4.2\ *x*","kotlinc",``.kt``
@@ -35,7 +35,7 @@
     .. [2] C23 and C++23 support is currently in beta.
     .. [3] Objective-C, Objective-C++, C++/CLI, and C++/CX are not supported.
     .. [4] Support for the Arm Compiler (armcc) is preliminary.
-    .. [5] Builds that execute on Java 7 to 26 can be analyzed. The analysis understands standard language features in Java 8 to 26; "preview" and "incubator" features are not supported. Source code using Java language versions older than Java 8 are analyzed as Java 8 code.
+    .. [5] Builds that execute on Java 7 to 27 can be analyzed. The analysis understands standard language features in Java 8 to 27; "preview" and "incubator" features are not supported. Source code using Java language versions older than Java 8 are analyzed as Java 8 code.
     .. [6] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
     .. [7] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
     .. [8] The extractor requires Python 3 to run. To analyze Python 2.7 you should install both versions of Python.
