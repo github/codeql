@@ -17,6 +17,26 @@ module Afero {
   string aferoPackage() { result = package("github.com/spf13/afero", "") }
 
   /**
+   * A modeled filesystem method called through an interface on a value returned by an Afero
+   * constructor. These constructors return `Fs`, so the concrete-type data extensions do not apply.
+   */
+  private class AferoConstructorSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    AferoConstructorSystemAccess() {
+      exists(string fsType, string methodName, Method method, Function constructor |
+        fsType = ["OsFs", "MemMapFs", "ReadOnlyFs", "RegexpFs"] and
+        sinkModel("github.com/spf13/afero", fsType, _, methodName, "", "", "Argument[0]",
+          "path-injection", _, _) and
+        method.hasQualifiedName(aferoPackage(), fsType, methodName) and
+        this = method.getACall() and
+        constructor.hasQualifiedName(aferoPackage(), "New" + fsType) and
+        DataFlow::localFlow(constructor.getACall().getResult(0), this.getReceiver())
+      )
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+  }
+
+  /**
    * The File system access sinks of [afero](https://github.com/spf13/afero) framework utility functions
    *
    * Afero Type is basically is an wrapper around utility functions which make them like a method, look at [here](https://github.com/spf13/afero/blob/cf95922e71986c0116204b6eeb3b345a01ffd842/ioutil.go#L61)
