@@ -60,6 +60,9 @@ abstract private class ParameterExImpl extends TParameterEx {
     this.isDefaultConstructorParameter(result, _, _)
   }
 
+  /** Gets the external name of this parameter, if any. */
+  abstract string getExternalName();
+
   /** Holds if this parameter has a default value. */
   abstract predicate hasDefault();
 
@@ -78,6 +81,8 @@ private class AstParameterEx extends ParameterExImpl, TAstParameter {
 
   AstParameterEx() { this = TAstParameter(p) }
 
+  override string getExternalName() { result = p.getExternalName() }
+
   override predicate hasDefault() { exists(p.getDefault()) }
 
   override AstNode getType() { result = p.getType() }
@@ -91,6 +96,8 @@ private class ImplicitReceiverParameterEx extends ParameterExImpl, TImplicitRece
   Callable c;
 
   ImplicitReceiverParameterEx() { this = TImplicitReceiverParameter(c) }
+
+  override string getExternalName() { none() }
 
   override predicate hasDefault() { none() }
 
@@ -115,6 +122,8 @@ private class DefaultConstructorParameterEx extends ParameterExImpl, TDefaultCon
   DefaultConstructorParameterEx() { this = TDefaultConstructorParameter(cd, i, name, hasDefault) }
 
   override AstNode getType() { defaultConstructorParameterType(cd, i, result) }
+
+  override string getExternalName() { result = name }
 
   override predicate hasDefault() { hasDefault = true }
 
