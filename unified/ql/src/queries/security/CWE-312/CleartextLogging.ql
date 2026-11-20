@@ -13,9 +13,6 @@
  *       external/cwe/cwe-532
  */
 
-//
-// FIXME: This is a deliberately dumb and noisy version of the query used to exercise data flow early on.
-//
 import unified
 import codeql.unified.security.SensitiveData
 
@@ -32,6 +29,8 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof SensitiveData }
 
   predicate isSink(DataFlow::Node node) {
+    Models::isSink(node, "log-injection")
+    or
     // TODO: implement full sinks as in the original Swift query
     exists(CallExpr call |
       getNameFromExpr(call.getCallee()).regexpMatch("(?i)(ns)?(log|warn(ing)?|error|print).*") and
