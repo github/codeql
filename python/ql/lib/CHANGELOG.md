@@ -1,3 +1,7 @@
+## 7.2.11
+
+No user-facing changes.
+
 ## 7.2.10
 
 ### Minor Analysis Improvements
