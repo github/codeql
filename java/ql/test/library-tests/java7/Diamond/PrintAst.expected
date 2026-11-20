@@ -31,11 +31,58 @@ Diamond.java:
 #   15|         1: [TypeAccess] Object
 #   15|       0: [ClassInstanceExpr] new HashMap<String,Object>(...)
 #   15|         -3: [TypeAccess] HashMap<String,Object>
-#   18|     7: [FieldDeclaration] List<> l;
-#   18|       -1: [TypeAccess] List<>
-#   18|       0: [ClassInstanceExpr] new ArrayList<>(...)
-#   18|         -3: [TypeAccess] ArrayList<>
-#   19|     8: [FieldDeclaration] Error e;
-#   19|       -1: [TypeAccess] Error
-#   19|       0: [ClassInstanceExpr] new Error(...)
-#   19|         -3: [TypeAccess] Error
+#   18|     7: [FieldDeclaration] Object obj;
+#   18|       -1: [TypeAccess] Object
+#   18|       0: [ClassInstanceExpr] new (...)
+#   18|         -4: [AnonymousClass] new Object(...) { ... }
+#   18|         -3: [TypeAccess] Object
+#   19|     8: [FieldDeclaration] Runnable runnable;
+#   19|       -1: [TypeAccess] Runnable
+#   19|       0: [ClassInstanceExpr] new (...)
+#   19|         -4: [AnonymousClass] new Runnable(...) { ... }
+#   21|           2: [Method] run
+#-----|             1: (Annotations)
+#   20|               1: [Annotation] Override
+#   21|             3: [TypeAccess] void
+#   21|             5: [BlockStmt] { ... }
+#   19|         -3: [TypeAccess] Runnable
+#   24|     9: [FieldDeclaration] List<Integer> list2;
+#   24|       -1: [TypeAccess] List<Integer>
+#   24|         0: [TypeAccess] Integer
+#   24|       0: [ClassInstanceExpr] new (...)
+#   24|         -4: [AnonymousClass] new ArrayList<Integer>(...) { ... }
+#   24|         -3: [TypeAccess] ArrayList<Integer>
+#   24|           0: [TypeAccess] Integer
+#   27|     10: [FieldDeclaration] List<Integer> list3;
+#   27|       -1: [TypeAccess] List<Integer>
+#   27|         0: [TypeAccess] Integer
+#   27|       0: [ClassInstanceExpr] new (...)
+#   27|         -4: [AnonymousClass] new ArrayList<Integer>(...) { ... }
+#   27|         -3: [TypeAccess] ArrayList<Integer>
+#   28|     11: [FieldDeclaration] Map<String,Object> map2;
+#   28|       -1: [TypeAccess] Map<String,Object>
+#   28|         0: [TypeAccess] String
+#   28|         1: [TypeAccess] Object
+#   28|       0: [ClassInstanceExpr] new (...)
+#   28|         -4: [AnonymousClass] new HashMap<String,Object>(...) { ... }
+#   30|           2: [Method] toString
+#-----|             1: (Annotations)
+#   29|               1: [Annotation] Override
+#   30|             3: [TypeAccess] String
+#   30|             5: [BlockStmt] { ... }
+#   31|               0: [ReturnStmt] return ...
+#   31|                 0: [StringLiteral] "custom map"
+#   28|         -3: [TypeAccess] HashMap<String,Object>
+#   36|     12: [FieldDeclaration] List<> l;
+#   36|       -1: [TypeAccess] List<>
+#   36|       0: [ClassInstanceExpr] new ArrayList<>(...)
+#   36|         -3: [TypeAccess] ArrayList<>
+#   37|     13: [FieldDeclaration] List<> l2;
+#   37|       -1: [TypeAccess] List<>
+#   37|       0: [ClassInstanceExpr] new (...)
+#   37|         -4: [AnonymousClass] new ArrayList<>(...) { ... }
+#   37|         -3: [TypeAccess] ArrayList<>
+#   38|     14: [FieldDeclaration] Error e;
+#   38|       -1: [TypeAccess] Error
+#   38|       0: [ClassInstanceExpr] new Error(...)
+#   38|         -3: [TypeAccess] Error
