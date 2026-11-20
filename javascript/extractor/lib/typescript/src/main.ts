@@ -8,7 +8,8 @@
  * When run without arguments, the wrapper enters server mode, expecting JSON-encoded requests
  * on `stdin`, one per line.
  *
- * Each request should have a `command` property, which should either be `parse` or `quit`.
+ * Each request should have a `command` property, which should be `parse`, `prepare-files`,
+ * `reset`, `get-metadata`, or `quit`.
  *
  * A `quit` request causes the wrapper to terminate.
  *
@@ -16,25 +17,15 @@
  * TypeScript file.
  *
  * In response to a `parse` request, the wrapper invokes the TypeScript parser to parse
- * the given file, and dumps a JSON representation of the resulting AST to stdout,
- * with the following adjustments:
- *
- *   - the `kind` and `operator` properties have symbolic string values instead of numeric
- *     values (the latter change between versions of the TypeScript compiler, the former
- *     don't);
- *   - position information is given in terms of line/column pairs instead of offsets;
- *   - declarations have a `declarationKind` property indicating whether they are `var`,
- *     `let` or `const` declarations;
- *   - `parent` pointers are omitted (since they cannot be serialised to JSON);
- *   - tokens and comments are added to the AST root node in a `tokens` property.
+ * the given file, and dumps a JSON representation of the resulting AST to stdout.
  */
-
-"use strict";
 
 import * as pathlib from "path";
 import * as readline from "readline";
-import * as ts from "typescript";
-import * as ast_extractor from "./ast_extractor";
+import * as ts from "typescript/ast";
+import { API, JsxEmit } from "typescript/sync";
+import { version } from "typescript";
+import { extractAst } from "./ast_extractor.js";
 
 // Remove limit on stack trace depth.
 Error.stackTraceLimit = Infinity;
@@ -63,16 +54,13 @@ class State {
     /** List of files that have been requested. */
     public pendingFiles: string[] = [];
     public pendingFileIndex = 0;
-
     /** Next response to be delivered. */
-    public pendingResponse: string = null;
+    public pendingResponse: string | null = null;
 }
 let state = new State();
 
 /**
- * Debugging method for finding cycles in the TypeScript AST. Should not be used in production.
- *
- * If cycles are found, the whitelist in `astProperties` is too permissive.
+ * Debugging method for finding cycles in the projected AST. Should not be used in production.
  */
 // tslint:disable-next-line:no-unused-variable
 function checkCycle(root: any) {
@@ -85,8 +73,6 @@ function checkCycle(root: any) {
         obj.$cycle_visiting = true;
         for (let k in obj) {
             if (!obj.hasOwnProperty(k)) continue;
-            // Ignore numeric and whitelisted properties.
-            if (+k !== +k && !astPropertySet.has(k)) continue;
             if (k === "$cycle_visiting") continue;
             let cycle = visit(obj[k]);
             if (cycle) {
@@ -104,293 +90,123 @@ function checkCycle(root: any) {
     }
 }
 
-/** Property names to extract from the TypeScript AST. */
-const astProperties: string[] = [
-    "$declarationKind",
-    "$end",
-    "$lineStarts",
-    "$overloadIndex",
-    "$pos",
-    "$tokens",
-    "argument",
-    "argumentExpression",
-    "arguments",
-    "assertsModifier",
-    "asteriskToken",
-    "attributes",
-    "block",
-    "body",
-    "caseBlock",
-    "catchClause",
-    "checkType",
-    "children",
-    "clauses",
-    "closingElement",
-    "closingFragment",
-    "condition",
-    "constraint",
-    "constructor",
-    "declarationList",
-    "declarations",
-    "default",
-    "delete",
-    "dotDotDotToken",
-    "elements",
-    "elementType",
-    "elementTypes",
-    "elseStatement",
-    "escapedText",
-    "exclamationToken",
-    "exportClause",
-    "expression",
-    "exprName",
-    "extendsType",
-    "falseType",
-    "finallyBlock",
-    "flags",
-    "head",
-    "heritageClauses",
-    "importClause",
-    "incrementor",
-    "indexType",
-    "init",
-    "initializer",
-    "isExportEquals",
-    "isTypeOf",
-    "isTypeOnly",
-    "keywordToken",
-    "kind",
-    "label",
-    "left",
-    "literal",
-    "members",
-    "messageText",
-    "modifiers",
-    "moduleReference",
-    "moduleSpecifier",
-    "name",
-    "namedBindings",
-    "objectType",
-    "openingElement",
-    "openingFragment",
-    "operand",
-    "operator",
-    "operatorToken",
-    "parameterName",
-    "parameters",
-    "parseDiagnostics",
-    "phaseModifier",
-    "properties",
-    "propertyName",
-    "qualifier",
-    "questionDotToken",
-    "questionToken",
-    "right",
-    "selfClosing",
-    "statement",
-    "statements",
-    "tag",
-    "tagName",
-    "template",
-    "templateSpans",
-    "text",
-    "thenStatement",
-    "token",
-    "tokenPos",
-    "trueType",
-    "tryBlock",
-    "type",
-    "typeArguments",
-    "typeName",
-    "typeParameter",
-    "typeParameters",
-    "types",
-    "variableDeclaration",
-    "whenFalse",
-    "whenTrue",
-];
+// The API instance used to interact with the TypeScript compiler. Should be
+// accessed through `getAPI` and `closeAPI`.
+let api: API | undefined;
 
-/** Property names used in a parse command response, in addition to the AST itself. */
-const astMetaProperties: string[] = [
-    "ast",
-    "type",
-];
+function getAPI(): API {
+    return api ??= new API();
+}
 
-/** Property names to extract in an AST response. */
-const astPropertySet = new Set([...astProperties, ...astMetaProperties]);
-
-/**
- * Converts (part of) an AST to a JSON string, ignoring properties we're not interested in.
- */
-function stringifyAST(obj: any) {
-    return JSON.stringify(obj, (k, v) => {
-        // Filter out properties that aren't numeric, empty, or whitelisted.
-        // Note `k` is the empty string for the root object, which is also covered by +k === +k.
-        return (+k === +k || astPropertySet.has(k)) ? v : undefined;
-    });
+function closeAPI() {
+    const previous = api;
+    api = undefined;
+    previous?.close();
 }
 
 function extractFile(filename: string): string {
-    let ast = getAstForFile(filename);
-
-    return stringifyAST({
-        type: "ast",
-        ast,
+    const program = getAPI().createProgram([pathlib.resolve(filename)], {
+        experimentalDecorators: true,
+        jsx: JsxEmit.Preserve,
+        noResolve: true,
+        noLib: true,
     });
+    const ast = program.getSourceFile(pathlib.resolve(filename));
+    if (ast == null) {
+        throw new Error("TypeScript did not return a source file for " + filename);
+    }
+    const json = JSON.stringify({
+        type: "ast",
+        ast: extractAst(ast, program.getSyntacticDiagnostics()),
+    });
+    program.dispose();
+    return json;
 }
 
 function prepareNextFile() {
     if (state.pendingResponse != null) return;
     if (state.pendingFileIndex < state.pendingFiles.length) {
-        let nextFilename = state.pendingFiles[state.pendingFileIndex];
-        state.pendingResponse = extractFile(nextFilename);
+        state.pendingResponse = extractFile(state.pendingFiles[state.pendingFileIndex]);
     }
 }
 
-function handleParseCommand(command: ParseCommand, checkPending = true) {
-    let filename = command.filename;
-    let expectedFilename = state.pendingFiles[state.pendingFileIndex];
-    if (expectedFilename !== filename && checkPending) {
-        // File was requested out of order. This happens in rare cases because the Java process decided against extracting it,
-        // for example because it was too large. Just recover and accept that some work was wasted.
+// Start working on the next file as soon as the old one is flushed.
+// Note that if we didn't wait for flushing, this would block the I/O
+// loop and delay flushing.
+function afterResponse(expectedState: State) {
+    return (error?: Error | null) => {
+        if (!error && state === expectedState) {
+            prepareNextFile();
+        }
+    };
+}
+
+function handleParseCommand(command: ParseCommand) {
+    const filename = command.filename;
+    const expectedFilename = state.pendingFiles[state.pendingFileIndex];
+    if (expectedFilename !== filename) {
+        // File was requested out of order. This happens in rare cases because the Java process decided
+        // against extracting it, for example because it was too large. Just recover and accept some wasted work.
         state.pendingResponse = null;
         state.pendingFileIndex = state.pendingFiles.indexOf(filename);
     }
     ++state.pendingFileIndex;
-    let response = state.pendingResponse || extractFile(command.filename);
+    const response = state.pendingResponse || extractFile(filename);
     state.pendingResponse = null;
-    process.stdout.write(response + "\n", () => {
-        // Start working on the next file as soon as the old one is flushed.
-        // Note that if we didn't wait for flushing, this would block the I/O
-        // loop and delay flushing.
-        prepareNextFile();
-    });
-}
-
-/**
- * Returns true if the given source file has an actual AST, as opposed to
- * a SourceFile that is a "redirect" to another SourceFile.
- *
- * The TypeScript API should not expose such redirecting SourceFiles,
- * but we sometimes get them anyway.
- */
-function isExtractableSourceFile(ast: ast_extractor.AugmentedSourceFile): boolean {
-    return ast.redirectInfo == null;
-}
-
-/**
- * Gets the AST and source code by parsing the given file.
- */
-function getAstForFile(filename: string): ts.SourceFile {
-    let { ast, code } = parseSingleFile(filename);
-    if (ast != null && isExtractableSourceFile(ast)) {
-        ast_extractor.augmentAst(ast, code);
-    }
-    return ast;
-}
-
-function parseSingleFile(filename: string): { ast: ts.SourceFile, code: string } {
-    let code = ts.sys.readFile(filename);
-
-    // create a compiler host that only allows access to `filename`
-    let compilerHost: ts.CompilerHost = {
-        fileExists() { return true; },
-        getCanonicalFileName() { return filename; },
-        getCurrentDirectory() { return ""; },
-        getDefaultLibFileName() { return "lib.d.ts"; },
-        getNewLine() { return "\n"; },
-        getSourceFile() {
-            return ts.createSourceFile(filename, code, ts.ScriptTarget.Latest, true);
-        },
-        readFile() { return null; },
-        useCaseSensitiveFileNames() { return true; },
-        writeFile() { return null; },
-        getDirectories() { return []; },
-    };
-
-    // parse `filename` with minimial checking
-    let compilerOptions: ts.CompilerOptions = {
-        experimentalDecorators: true,
-        jsx: ts.JsxEmit.Preserve,
-        noResolve: true,
-    };
-
-    let program = ts.createProgram([filename], compilerOptions, compilerHost);
-
-    let ast = program.getSourceFile(filename);
-
-    return { ast, code };
-}
-
-function handleResetCommand(command: ResetCommand) {
-    reset();
-    console.log(JSON.stringify({
-        type: "reset-done",
-    }));
-}
-
-function handlePrepareFilesCommand(command: PrepareFilesCommand) {
-    state.pendingFiles = command.filenames;
-    state.pendingFileIndex = 0;
-    state.pendingResponse = null;
-    process.stdout.write('{"type":"ok"}\n', () => {
-        prepareNextFile();
-    });
-}
-
-function handleGetMetadataCommand(command: GetMetadataCommand) {
-    console.log(JSON.stringify({
-        type: "metadata",
-        syntaxKinds: ts.SyntaxKind,
-        nodeFlags: ts.NodeFlags,
-    }));
-}
-
-function reset() {
-    state = new State();
+    process.stdout.write(response + "\n", afterResponse(state));
 }
 
 function runReadLineInterface() {
-    reset();
-    let rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    rl.on("close", () => {
+        state = new State();
+        process.stdin.destroy();
+        closeAPI();
+    });
     rl.on("line", (line: string) => {
-        let req: Command = JSON.parse(line);
+        const req: Command = JSON.parse(line);
         switch (req.command) {
             case "parse":
                 handleParseCommand(req);
                 break;
             case "prepare-files":
-                handlePrepareFilesCommand(req);
+                state = new State();
+                state.pendingFiles = req.filenames;
+                process.stdout.write('{"type":"ok"}\n', afterResponse(state));
                 break;
             case "reset":
-                handleResetCommand(req);
+                state = new State();
+                closeAPI();
+                console.log('{"type":"reset-done"}');
                 break;
             case "get-metadata":
-                handleGetMetadataCommand(req);
+                console.log(JSON.stringify({
+                    type: "metadata",
+                    syntaxKinds: ts.SyntaxKind,
+                    nodeFlags: ts.NodeFlags,
+                }));
                 break;
             case "quit":
                 rl.close();
                 break;
             default:
-                throw new Error("Unknown command " + (req as any).command + ".");
+                throw new Error("Unknown command " + (req as { command: string }).command + ".");
         }
     });
 }
 
 // Parse command-line arguments.
 if (process.argv.length > 2) {
-    let argument = process.argv[2];
+    const argument = process.argv[2];
     if (argument === "--version") {
-        console.log("parser-wrapper with TypeScript " + ts.version);
+        console.log("parser-wrapper with TypeScript " + version);
     } else if (pathlib.extname(argument) === ".ts" || pathlib.extname(argument) === ".tsx") {
-        handleParseCommand({
-            command: "parse",
-            filename: argument,
-        }, false);
+        process.stdout.write(extractFile(argument) + "\n");
+        closeAPI();
     } else {
         console.error("Unrecognized file or flag: " + argument);
+        process.exitCode = 1;
     }
-    process.exit(0);
 } else {
     runReadLineInterface();
 }
