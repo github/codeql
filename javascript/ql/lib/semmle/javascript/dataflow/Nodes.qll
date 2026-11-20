@@ -1739,6 +1739,7 @@ class RegExpCreationNode extends DataFlow::SourceNode {
 
   /** Gets a data flow node referring to this regular expression. */
   overlay[global]
+  pragma[no_dynamic_join_order]
   private DataFlow::SourceNode getAReference(DataFlow::TypeTracker t) {
     t.start() and
     result = this
