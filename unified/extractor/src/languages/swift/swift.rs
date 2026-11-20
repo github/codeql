@@ -179,7 +179,7 @@ struct SubscriptAccessor {
     /// For a setter, the explicit name of its new-value parameter (the `v` in
     /// `set(v) { ... }`), if any, and the token at which to locate an implicit
     /// `newValue`.
-    setter: Option<(Option<yeast::Id>, yeast::Id)>,
+    new_value_param: Option<(Option<yeast::Id>, yeast::Id)>,
     /// The raw accessor body, if any.
     body: Option<yeast::Id>,
 }
@@ -208,7 +208,7 @@ fn subscript_method(
     });
     let body = body.unwrap_or_else(|| tree!((block)));
     let kw = sub.keyword;
-    if let Some((param_name, spec)) = accessor.setter {
+    if let Some((param_name, spec)) = accessor.new_value_param {
         let implicit_param_name = param_name.is_none().then_some("newValue");
         tree!((function_declaration
             modifier: {mods}
@@ -566,7 +566,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 ctx.is_chained = false;
                 subscript_method(&mut ctx, sub, SubscriptAccessor {
                     modifiers: Vec::new(),
-                    setter: None,
+                    new_value_param: None,
                     body,
                 })
             }
@@ -585,10 +585,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let sub = ctx.subscript.clone().expect("checked by guard");
                 let spec_text = ctx.source_text(spec);
                 if spec_text == "get" || spec_text == "set" {
-                    let setter = (spec_text == "set").then_some((param_name, spec));
+                    let new_value_param = (spec_text == "set").then_some((param_name, spec));
                     subscript_method(&mut ctx, sub, SubscriptAccessor {
                         modifiers: acc_mods,
-                        setter,
+                        new_value_param,
                         body,
                     })
                 } else {
