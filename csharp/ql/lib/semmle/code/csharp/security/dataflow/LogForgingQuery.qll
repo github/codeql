@@ -10,6 +10,7 @@ private import semmle.code.csharp.frameworks.system.text.RegularExpressions
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
+private import semmle.code.csharp.security.dataflow.JsonLoggingConfiguration
 
 /**
  * A data flow source for untrusted user input used in log entries.
@@ -57,6 +58,7 @@ private class HtmlSanitizer extends Sanitizer {
  */
 private class LogForgingLogMessageSink extends Sink, LogMessageSink {
   LogForgingLogMessageSink() {
+    not isJsonProtectedLogArgument(this.getExpr()) and
     not exists(ExtensionMethodCall mc |
       this.getExpr() = mc.getAnArgument() and
       mc.getTarget().fromSource()

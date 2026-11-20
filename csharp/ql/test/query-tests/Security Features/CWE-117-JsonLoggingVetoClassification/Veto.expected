@@ -1,0 +1,41 @@
+| Test.cs:18:23:18:52 | call to method CreateBuilder | host without associated JSON setup |
+| Test.cs:25:23:25:52 | call to method CreateBuilder | host without associated JSON setup |
+| Test.cs:32:23:32:52 | call to method CreateBuilder | host without associated JSON setup |
+| Test.cs:39:23:39:52 | call to method CreateBuilder | host without associated JSON setup |
+| Test.cs:40:9:41:82 | call to method AddLogging | unsupported Microsoft logging configuration |
+| Test.cs:46:23:46:79 | object creation of type HostApplicationBuilder | host without associated JSON setup |
+| Test.cs:52:28:52:57 | call to method CreateBuilder | host without associated JSON setup |
+| Test.cs:53:29:53:58 | call to method CreateBuilder | host without associated JSON setup |
+| Test.cs:60:23:60:52 | call to method CreateBuilder | host without associated JSON setup |
+| Test.cs:67:23:67:52 | call to method CreateBuilder | host without associated JSON setup |
+| Test.cs:74:23:74:52 | call to method CreateBuilder | host without associated JSON setup |
+| Test.cs:90:28:90:54 | call to method CreateDefaultBuilder | host without associated JSON setup |
+| Test.cs:91:29:91:55 | call to method CreateDefaultBuilder | host without associated JSON setup |
+| Test.cs:112:9:112:105 | call to method PostConfigure<ConsoleLoggerOptions> | logging options configuration |
+| Test.cs:112:73:112:104 | ... = ... | console formatter selection |
+| Test.cs:120:9:120:115 | call to method TryAddSingleton<ILoggerProvider,DebugLoggerProvider> | logging service registration |
+| Test.cs:128:13:128:114 | call to method Singleton<ILoggerProvider,DebugLoggerProvider> | logging service descriptor |
+| Test.cs:130:13:130:114 | call to method Singleton<ILoggerProvider,DebugLoggerProvider> | logging service descriptor |
+| Test.cs:132:13:132:114 | call to method Singleton<ILoggerProvider,DebugLoggerProvider> | logging service descriptor |
+| Test.cs:139:9:139:42 | call to method AddLogging | unsupported Microsoft logging configuration |
+| Test.cs:146:9:146:53 | call to method AddLogging | unsupported Microsoft logging configuration |
+| Test.cs:149:62:149:81 | call to method AddConsole | unsupported Microsoft logging configuration |
+| Test.cs:155:9:155:44 | call to method UseMysteryProvider | unsupported Microsoft logging configuration |
+| Test.cs:160:9:160:58 | call to method Create | unsupported Microsoft logging configuration |
+| Test.cs:160:41:160:57 | ... = ... | logging configuration escape |
+| Test.cs:165:9:165:48 | call to method CreateLogger | unsupported Serilog configuration |
+| Test.cs:166:46:168:30 | call to method Console | unsupported Serilog configuration |
+| Test.cs:169:9:169:87 | call to method AddSerilog | unsupported Serilog configuration |
+| Test.cs:169:46:169:86 | call to method Services | unsupported Serilog configuration |
+| Test.cs:170:9:171:53 | call to method AddSerilog | unsupported Serilog configuration |
+| Test.cs:170:46:171:52 | call to method Async | unsupported Serilog configuration |
+| Test.cs:171:37:171:51 | call to method Console | unsupported Serilog configuration |
+| Test.cs:172:9:172:77 | call to method AddSerilog | unsupported Serilog configuration |
+| Test.cs:172:46:172:76 | call to method Console | unsupported Serilog configuration |
+| Test.cs:177:9:178:60 | call to method AddSerilog | unsupported Serilog configuration |
+| Test.cs:177:46:178:59 | call to method Console | unsupported Serilog configuration |
+| Test.cs:179:9:180:82 | call to method AddSerilog | unsupported Serilog configuration |
+| Test.cs:179:46:180:81 | call to method Console | unsupported Serilog configuration |
+| Test.cs:187:9:187:81 | call to method AddNLog | alternative logging registration |
+| Test.cs:187:9:187:81 | call to method AddNLog | unsupported Microsoft logging configuration |
+| Test.cs:200:7:200:18 | CustomLogger | source-defined logger implementation |
