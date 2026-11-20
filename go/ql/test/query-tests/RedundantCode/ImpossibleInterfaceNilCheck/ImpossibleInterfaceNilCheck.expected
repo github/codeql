@@ -1,2 +1,6 @@
 | ImpossibleInterfaceNilCheck.go:9:5:9:5 | e | This value can never be nil, since it is a wrapped interface value. |
+| ssa.go:15:6:15:6 | x | This value can never be nil, since it is a wrapped interface value. |
+| ssa.go:18:5:18:9 | value | This value can never be nil, since it is a wrapped interface value. |
+| ssa.go:44:6:44:6 | x | This value can never be nil, since it is a wrapped interface value. |
+| ssa.go:47:5:47:9 | value | This value can never be nil, since it is a wrapped interface value. |
 | tst.go:10:14:10:14 | y | This value can never be nil, since it is a wrapped interface value. |
