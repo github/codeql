@@ -466,5 +466,5 @@ struct Secret {
 }
 
 func testStructConstructor() {
-    print(Secret(value: "abc")) // $ MISSING: Alert[unified/swift/cleartext-logging]
+    print(Secret(value: "abc")) // $ Alert[unified/swift/cleartext-logging]
 }
