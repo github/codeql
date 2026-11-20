@@ -62,6 +62,7 @@
 | CleartextLoggingTest.swift:411:29:411:35 | authKey | CleartextLoggingTest.swift:411:29:411:35 | authKey | CleartextLoggingTest.swift:417:20:417:22 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:417:20:417:22 | msg | written |
 | CleartextLoggingTest.swift:411:29:411:35 | authKey | CleartextLoggingTest.swift:411:29:411:35 | authKey | CleartextLoggingTest.swift:418:18:418:20 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:418:18:418:20 | msg | written |
 | CleartextLoggingTest.swift:411:29:411:35 | authKey | CleartextLoggingTest.swift:411:29:411:35 | authKey | CleartextLoggingTest.swift:419:21:419:23 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:419:21:419:23 | msg | written |
+| CleartextLoggingTest.swift:411:29:411:35 | authKey | CleartextLoggingTest.swift:411:29:411:35 | authKey | CleartextLoggingTest.swift:420:18:420:20 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:420:18:420:20 | msg | written |
 | CleartextLoggingTest.swift:428:29:428:36 | password | CleartextLoggingTest.swift:428:29:428:36 | password | CleartextLoggingTest.swift:428:29:428:36 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:428:29:428:36 | password | written |
 | CleartextLoggingTest.swift:429:28:429:33 | secret | CleartextLoggingTest.swift:429:28:429:33 | secret | CleartextLoggingTest.swift:429:28:429:33 | secret | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:429:28:429:33 | secret | written |
 | CleartextLoggingTest.swift:437:11:437:24 | globalPassword | CleartextLoggingTest.swift:437:11:437:24 | globalPassword | CleartextLoggingTest.swift:437:11:437:24 | globalPassword | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:437:11:437:24 | globalPassword | written |
@@ -133,6 +134,7 @@ edges
 | CleartextLoggingTest.swift:411:9:411:11 | msg | CleartextLoggingTest.swift:417:20:417:22 | msg | provenance |  |
 | CleartextLoggingTest.swift:411:9:411:11 | msg | CleartextLoggingTest.swift:418:18:418:20 | msg | provenance |  |
 | CleartextLoggingTest.swift:411:9:411:11 | msg | CleartextLoggingTest.swift:419:21:419:23 | msg | provenance |  |
+| CleartextLoggingTest.swift:411:9:411:11 | msg | CleartextLoggingTest.swift:420:18:420:20 | msg | provenance |  |
 | CleartextLoggingTest.swift:411:29:411:35 | authKey | CleartextLoggingTest.swift:411:9:411:11 | msg | provenance |  |
 | CleartextLoggingTest.swift:415:34:415:36 | msg | CleartextLoggingTest.swift:415:17:415:37 | NSString(...) | provenance |  |
 nodes
@@ -261,6 +263,7 @@ nodes
 | CleartextLoggingTest.swift:417:20:417:22 | msg | semmle.label | msg |
 | CleartextLoggingTest.swift:418:18:418:20 | msg | semmle.label | msg |
 | CleartextLoggingTest.swift:419:21:419:23 | msg | semmle.label | msg |
+| CleartextLoggingTest.swift:420:18:420:20 | msg | semmle.label | msg |
 | CleartextLoggingTest.swift:428:29:428:36 | password | semmle.label | password |
 | CleartextLoggingTest.swift:429:28:429:33 | secret | semmle.label | secret |
 | CleartextLoggingTest.swift:437:11:437:24 | globalPassword | semmle.label | globalPassword |

@@ -417,7 +417,7 @@ func test7(authKey: String, authKey2: Int, authKey3: Float, password: String, se
     logger.warning(msg) // $ Sink[unified/swift/cleartext-logging]
     logger.error(msg) // $ Sink[unified/swift/cleartext-logging]
     logger.critical(msg) // $ Sink[unified/swift/cleartext-logging]
-    logger.fatal(msg) // $ MISSING: Sink[unified/swift/cleartext-logging]
+    logger.fatal(msg) // $ Sink[unified/swift/cleartext-logging]
 
     let logic = Logic()
     logic.addInt(authKey2) // GOOD: not logging
