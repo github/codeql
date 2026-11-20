@@ -7,8 +7,8 @@ column_kind: "utf16"
 overlay_support_version: 20250626
 extra_env_vars:
   DOTNET_GENERATE_ASPNET_CERTIFICATE: "false"
-  # Reused MSBuild nodes may have been started outside the traced build.
-  MSBUILDDISABLENODEREUSE: "1"
+  # The MSBuild server may have been started outside the traced build.
+  DOTNET_CLI_USE_MSBUILD_SERVER: "false"
 build_modes:
   - autobuild
   - manual
