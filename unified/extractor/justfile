@@ -1,0 +1,4 @@
+import '../../lib.just'
+
+[group('test')]
+test *BAZEL_ARGS: (_bazel (['test', '--build_tests_only', '@codeql//unified/extractor/...'] ++ BAZEL_ARGS))
