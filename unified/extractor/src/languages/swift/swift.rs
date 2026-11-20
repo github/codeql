@@ -207,35 +207,34 @@ fn subscript_method(
     });
     let body = body.unwrap_or_else(|| tree!((block)));
     let kw = sub.keyword;
-    match accessor.setter {
-        Some((param_name, spec)) => {
-            let implicit_param_name = param_name.is_none().then_some("newValue");
-            tree!((function_declaration
-                modifier: {mods}
-                modifier: {accessor.modifiers}
-                modifier: [(modifier "chained_declaration") if { is_chained }]
-                name_node: (identifier #{kw})
-                type_parameter: {type_params}
-                parameter: {params}
-                // The new value is passed as a named parameter with the reserved
-                // external name `#newValue`, so it can't clash with the index
-                // parameters (including omitted defaults).
-                parameter: [
-                    (parameter
-                        external_name_node: (identifier "#newValue" location: {spec})
-                        pattern: (identifier #{param_name})
-                        type: {element_type}
-                        location: {param_name})
-                    (parameter
-                        modifier: (modifier "generated")
-                        external_name_node: (identifier "#newValue" location: {spec})
-                        pattern: (identifier #{implicit_param_name} location: {spec})
-                        type: {element_type}
-                        location: {spec})
-                ]
-                body: {body}))
-        }
-        None => tree!((function_declaration
+    if let Some((param_name, spec)) = accessor.setter {
+        let implicit_param_name = param_name.is_none().then_some("newValue");
+        tree!((function_declaration
+            modifier: {mods}
+            modifier: {accessor.modifiers}
+            modifier: [(modifier "chained_declaration") if { is_chained }]
+            name_node: (identifier #{kw})
+            type_parameter: {type_params}
+            parameter: {params}
+            // The new value is passed as a named parameter with the reserved
+            // external name `#newValue`, so it can't clash with the index
+            // parameters (including omitted defaults).
+            parameter: [
+                (parameter
+                    external_name_node: (identifier "#newValue" location: {spec})
+                    pattern: (identifier #{param_name})
+                    type: {element_type}
+                    location: {param_name})
+                (parameter
+                    modifier: (modifier "generated")
+                    external_name_node: (identifier "#newValue" location: {spec})
+                    pattern: (identifier #{implicit_param_name} location: {spec})
+                    type: {element_type}
+                    location: {spec})
+            ]
+            body: {body}))
+    } else {
+        tree!((function_declaration
             modifier: {mods}
             modifier: {accessor.modifiers}
             modifier: [(modifier "chained_declaration") if { is_chained }]
@@ -243,7 +242,7 @@ fn subscript_method(
             type_parameter: {type_params}
             parameter: {params}
             return_type: {element_type}
-            body: {body})),
+            body: {body}))
     }
 }
 
@@ -538,7 +537,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     return_type: ret,
                 });
                 let mut result = Vec::new();
-                for acc in accessors.into_iter() {
+                for acc in accessors {
                     ctx.is_chained = !result.is_empty();
                     result.extend(ctx.translate(acc));
                 }
