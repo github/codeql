@@ -537,12 +537,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     params,
                     return_type: ret,
                 });
-                let mut result = Vec::new();
-                for acc in accessors {
-                    ctx.is_chained = !result.is_empty();
-                    result.extend(ctx.translate(acc));
-                }
-                result
+                accessors
+                    .into_iter()
+                    .enumerate()
+                    .flat_map(|(i, acc)| {
+                        ctx.is_chained = i > 0;
+                        ctx.translate(acc)
+                    })
+                    .collect::<Vec<_>>()
             }
         ),
         // A subscript with a getter-only body (`subscript(i: Int) -> T { … }`).
