@@ -168,6 +168,23 @@ private module Input2 implements Impl::Private::InputSig2 {
     result = e.(FunctionAccess).getTarget()
     or
     result = e.(ConversionCall).getQualifier().(LambdaExpression).getLambdaFunction()
+    or
+    result = e.(LambdaExpression).getLambdaFunction()
+    or
+    // Taking a function's address and applying unary plus to a captureless
+    // lambda can wrap the callable assigned to a callback variable.
+    e.getUnspecifiedType() instanceof FunctionPointerIshType and
+    (
+      result = getFunctionFromExpr(e.(AddressOfExpr).getOperand())
+      or
+      result = getFunctionFromExpr(e.(UnaryPlusExpr).getOperand())
+      or
+      // Follow reaching assignments through copies of a callback pointer.
+      exists(Ssa::Definition def |
+        def.getAUse().getDef().getUnconvertedResultExpression() = e and
+        hasAnUltimateFunctionAccessDefinition(def, result)
+      )
+    )
   }
 
   private predicate isRelevantUltimateDefinition(Ssa::DirectExplicitDefinition def, Function f) {
@@ -207,12 +224,6 @@ private module Input2 implements Impl::Private::InputSig2 {
       or
       // The expression is a function pointer
       result = getFunctionFromExpr(this)
-      or
-      // The expression is an SSA read of an assignment of a callable
-      exists(Ssa::Definition def |
-        def.getAUse().getDef().getUnconvertedResultExpression() = this and
-        hasAnUltimateFunctionAccessDefinition(def, result)
-      )
     }
 
     SourceSinkReportingElement getASuccessor(Impl::Private::SummaryComponent sc) {
