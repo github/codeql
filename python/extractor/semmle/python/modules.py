@@ -3,6 +3,7 @@ imp.find_module to Module subclass'''
 
 import semmle.python.parser.tokenizer
 import semmle.python.parser.tsg_parser
+import semmle.python.parser.yeast_parser
 import re
 import os
 from blib2to3.pgen2 import tokenize
@@ -121,6 +122,28 @@ class PythonSourceModule(object):
 
     @property
     def py_ast(self):
+        if self._py_ast is None and not os.environ.get(
+            "CODEQL_PYTHON_DISABLE_YEAST_PARSER"
+        ):
+            with timers["yeast_py_ast"]:
+                self.logger.debug("Trying yeast parser on %s", self.path)
+                try:
+                    self._py_ast = semmle.python.parser.yeast_parser.parse(
+                        self.path, self.source, self.logger
+                    )
+                except Exception as ex:
+                    self.logger.debug(
+                        "Yeast parser failed on %s: %s", self.path, ex
+                    )
+                    self._py_ast = None
+                if self._py_ast is not None:
+                    self.logger.debug("Yeast parser successful on %s", self.path)
+                    self.diagnostics_writer.record_tree_sitter_parser()
+                    return self._py_ast
+        elif self._py_ast is None:
+            self.logger.debug(
+                "Yeast parser disabled, skipping parse attempt for %s", self.path
+            )
         try:
             # If the `CODEQL_PYTHON_DISABLE_OLD_PARSER` flag is present, we do not try to use the
             # old parser, and instead jump straight to the exception handler.
