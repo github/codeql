@@ -87,14 +87,6 @@ class Expr extends ControlFlowElement, @expr {
   Expr stripCasts() { result = this }
 
   /**
-   * DEPRECATED: Use `stripImplicit` instead.
-   *
-   * Gets an expression that is the result of stripping (recursively) all
-   * implicit casts from this expression, if any.
-   */
-  deprecated Expr stripImplicitCasts() { result = this.stripImplicit() }
-
-  /**
    * Gets an expression that is the result of stripping (recursively) all
    * implicit casts and implicit ToString calls from this expression, if any.
    */
