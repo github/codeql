@@ -1,0 +1,14 @@
+name: Safe AI on Push Event
+on:
+  push:
+    branches: [main]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Gemini on push
+        uses: google-github-actions/run-gemini-cli@v1
+        with:
+          prompt: |
+            Review the latest changes on the main branch and generate a summary.
