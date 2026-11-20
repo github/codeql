@@ -23,8 +23,8 @@ func testPropertiesWithoutStubs(
 
 extension Process {
     func testImplicitSelfSink(string: String) {
-        launchPath = string  // $ MISSING: isSink=command-injection
-        arguments = [string]  // $ MISSING: isSink=command-injection
-        arguments.append(string)  // $ MISSING: isSink=command-injection
+        launchPath = string  // $ isSink=command-injection
+        arguments = [string]  // $ isSink=command-injection
+        arguments.append(string)  // $ isSink=command-injection
     }
 }

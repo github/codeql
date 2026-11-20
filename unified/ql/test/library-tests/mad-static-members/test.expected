@@ -9,6 +9,22 @@ staticMember
 | test.swift:5:9:5:31 | ... .staticMethod | StaticTest.Type.staticMethod |
 | test.swift:6:9:6:29 | ... .staticProp | StaticTest.Type.staticProp |
 | test.swift:7:9:7:42 | ... .nestedStaticProp | StaticTest.Nested.Type.nestedStaticProp |
-| test.swift:21:9:21:34 | ... .staticMethod | StaticTest.Type.staticMethod |
-| test.swift:22:9:22:32 | ... .staticProp | StaticTest.Type.staticProp |
-| test.swift:28:5:28:9 | NSLog | .NSLog |
+| test.swift:21:13:21:22 | staticProp | StaticTest.Type.staticProp |
+| test.swift:25:13:25:22 | staticProp | StaticTest.Type.staticProp |
+| test.swift:31:9:31:34 | ... .staticMethod | StaticTest.Type.staticMethod |
+| test.swift:32:9:32:32 | ... .staticProp | StaticTest.Type.staticProp |
+| test.swift:38:5:38:9 | NSLog | .NSLog |
+| test.swift:45:13:45:22 | staticProp | StaticTest.Type.staticProp |
+| test.swift:49:13:49:22 | staticProp | StaticTest.Type.staticProp |
+| test.swift:50:13:50:24 | staticMethod | StaticTest.Type.staticMethod |
+unqualified
+| test.swift:20:13:20:24 | instanceProp | StaticTest.instanceProp |
+| test.swift:21:13:21:22 | staticProp | StaticTest.Type.staticProp |
+| test.swift:25:13:25:22 | staticProp | StaticTest.Type.staticProp |
+| test.swift:26:13:26:24 | instanceProp | StaticTest.instanceProp |
+| test.swift:43:13:43:24 | instanceProp | StaticTest.instanceProp |
+| test.swift:44:13:44:26 | instanceMethod | StaticTest.instanceMethod |
+| test.swift:45:13:45:22 | staticProp | StaticTest.Type.staticProp |
+| test.swift:49:13:49:22 | staticProp | StaticTest.Type.staticProp |
+| test.swift:50:13:50:24 | staticMethod | StaticTest.Type.staticMethod |
+| test.swift:51:13:51:24 | instanceProp | StaticTest.instanceProp |

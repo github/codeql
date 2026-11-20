@@ -15,7 +15,17 @@ func testStaticMembers(obj: StaticTest) {
     _ = obj.staticProp
 }
 
-class StaticTestSub: StaticTest {}
+class StaticTestSub: StaticTest {
+    func testInstanceContextInSubclass() {
+        _ = instanceProp  // $ unqualified=StaticTest.instanceProp
+        _ = staticProp  // $ staticMember=StaticTest.Type.staticProp SPURIOUS: unqualified=StaticTest.Type.staticProp // not accessible from an instance context
+    }
+
+    static func testStaticContextInSubclass() {
+        _ = staticProp  // $ unqualified=StaticTest.Type.staticProp staticMember=StaticTest.Type.staticProp
+        _ = instanceProp  // $ SPURIOUS: unqualified=StaticTest.instanceProp // not accessible from a static context
+    }
+}
 
 func testInheritedStaticMembers() {
     _ = StaticTestSub.staticMethod(1)  // $ staticMember=StaticTest.Type.staticMethod
@@ -26,4 +36,18 @@ func testInheritedStaticMembers() {
 
 func testTopLevelFunctions(string: String) {
     NSLog(string)  // $ staticMember=.NSLog
+}
+
+extension StaticTest {
+    func testInstanceContextInExtension() {
+        _ = instanceProp  // $ unqualified=StaticTest.instanceProp
+        _ = instanceMethod(1)  // $ unqualified=StaticTest.instanceMethod
+        _ = staticProp  // $ staticMember=StaticTest.Type.staticProp SPURIOUS: unqualified=StaticTest.Type.staticProp // not accessible from an instance context
+    }
+
+    static func testStaticContextInExtension() {
+        _ = staticProp  // $ unqualified=StaticTest.Type.staticProp staticMember=StaticTest.Type.staticProp
+        _ = staticMethod(1)  // $ unqualified=StaticTest.Type.staticMethod staticMember=StaticTest.Type.staticMethod
+        _ = instanceProp  // $ SPURIOUS: unqualified=StaticTest.instanceProp // not accessible from a static context
+    }
 }

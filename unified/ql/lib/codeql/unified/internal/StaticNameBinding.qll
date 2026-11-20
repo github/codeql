@@ -797,43 +797,78 @@ private ClassLikeDeclaration getMemberLookupClass(ClassLikeDeclaration scope) {
 }
 
 /**
+ * A name-binding node that can be the target of an unqualified member access, that is,
+ * a member declaration, or a type or member from a model.
+ */
+final class MemberTargetNode extends NameBindingNode {
+  MemberTargetNode() {
+    this.asIdentifier() instanceof NameBinding
+    or
+    this.isTypeSelector(_)
+    or
+    this.isMemberSelector(_)
+  }
+}
+
+/**
+ * Gets a namespace in which unqualified member accesses in `scope` should be looked up.
+ *
+ * `instanceAccess` indicates whether this is the namespace of instance members or static members.
+ */
+private NamespaceNode getMemberLookupNamespace(ClassLikeDeclaration scope, boolean instanceAccess) {
+  exists(ClassLikeDeclaration cls | cls = getMemberLookupClass(scope) |
+    instanceAccess = true and
+    result.isInstanceMemberNamespace(cls)
+    or
+    instanceAccess = false and
+    result.isStaticMemberNamespace(cls)
+  )
+  or
+  // An extension of a type that is only known from a model
+  exists(MaD::TypeSelector type |
+    not exists(getExtendedDeclaration(scope)) and
+    trackTypeSelector(type) = getNodeFromRef(scope.getExtensionTarget())
+  |
+    instanceAccess = true and
+    result.isTypeSelector(type)
+    or
+    instanceAccess = false and
+    result.isTypeSelector(type.getMetaType())
+  )
+}
+
+/**
  * Holds if `access` may resolve to `target` through the enclosing `accessingClass`.
  *
  * `instanceAccess` indicates whether this member should be accessed as an instance of `accessingClass`
  * or as a static member.
  */
 private predicate unqualifiedMemberAccessCand(
-  PotentialLocalNameAccess access, boolean instanceAccess, NameBinding target,
+  PotentialLocalNameAccess access, boolean instanceAccess, MemberTargetNode target,
   ClassLikeDeclaration accessingClass
 ) {
   not access instanceof NameBinding and
   (
     // Resolved by local scoping
-    exists(LocalName local |
-      target.getLocalName() = local and
+    exists(LocalName local, NameBinding binding |
+      target.isIdentifier(binding) and
+      binding.getLocalName() = local and
       access.getLocalName() = local and
-      target.getDeclaration() = accessingClass.getAMember()
+      binding.getDeclaration() = accessingClass.getAMember()
     |
       instanceAccess = true and
-      isInstanceMember(target.getDeclaration())
+      isInstanceMember(binding.getDeclaration())
       or
       instanceAccess = false and
-      isStaticMember(target.getDeclaration())
+      isStaticMember(binding.getDeclaration())
     )
     or
     // Resolved in an uncertain scope
-    exists(NamespaceNode namespace, string name |
+    exists(string name, ClassLikeDeclaration scope |
       name = access.getName() and
-      accessingClass =
-        getMemberLookupClass(LocalNameBindingOutput::getAnUncertainScope(access, name))
-    |
-      instanceAccess = true and
-      namespace.isInstanceMemberNamespace(accessingClass) and
-      namespace.getMember(name).isIdentifier(target)
-      or
-      instanceAccess = false and
-      namespace.isStaticMemberNamespace(accessingClass) and
-      namespace.getMember(name).isIdentifier(target)
+      scope = LocalNameBindingOutput::getAnUncertainScope(access, name) and
+      accessingClass = getMemberLookupClass(scope) and
+      getMemberLookupNamespace(scope, instanceAccess).getMember(name) = target
     )
   )
 }
@@ -850,7 +885,7 @@ private int unqualifiedMemberAccessDepth(PotentialLocalNameAccess access) {
  */
 cached
 predicate unqualifiedMemberAccess(
-  PotentialLocalNameAccess access, boolean instanceAccess, NameBinding target,
+  PotentialLocalNameAccess access, boolean instanceAccess, MemberTargetNode target,
   ClassLikeDeclaration accessingClass
 ) {
   CachedStage::ref() and
@@ -880,15 +915,21 @@ module Public {
    */
   class UnqualifiedMemberAccess extends Identifier, MemberAccessImpl {
     private boolean instanceAccess;
-    private NameBinding target;
+    private MemberTargetNode target;
     private ClassLikeDeclaration accessingClass;
 
     UnqualifiedMemberAccess() {
       unqualifiedMemberAccess(this, instanceAccess, target, accessingClass)
     }
 
-    /** Gets the name binding of the member being accessed. */
-    NameBinding getTarget() { result = target }
+    /**
+     * Gets the name-binding node of the member being accessed, which is either a member
+     * declaration, or a type or member from a model.
+     */
+    MemberTargetNode getTargetNode() { result = target }
+
+    /** Gets the name binding of the member being accessed, if it is declared in the database. */
+    NameBinding getTarget() { target.isIdentifier(result) }
 
     /** Gets the enclosing class whose (possibly inherited) member is being accessed. */
     ClassLikeDeclaration getAccessingClass() { result = accessingClass }

@@ -23,5 +23,5 @@ import MakeTest<StaticDeclAccess>
 query predicate unqualifiedMemberAccess(
   UnqualifiedMemberAccess uma, NameBinding target, ClassLikeDeclaration accessingClass
 ) {
-  unqualifiedMemberAccess(uma, _, target, accessingClass)
+  unqualifiedMemberAccess(uma, _, any(MemberTargetNode n | n.isIdentifier(target)), accessingClass)
 }

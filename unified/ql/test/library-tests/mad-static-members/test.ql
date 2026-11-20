@@ -27,3 +27,10 @@ query predicate instanceMember(string type, string member) {
     type = cls.getName()
   )
 }
+
+query predicate unqualified(UnqualifiedMemberAccess access, string member) {
+  exists(MaD::MemberSelector selector |
+    access.getTargetNode().isMemberSelector(selector) and
+    member = selector.getTypeString() + "." + selector.getName()
+  )
+}
