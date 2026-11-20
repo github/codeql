@@ -168,16 +168,46 @@ private predicate linqAllCandidate(Stmt s, Expr e) {
     )
 }
 
+private predicate linqAllReturnCandidate(Stmt s, Expr e) {
+  s =
+    any(IfStmt is |
+      e = is.getCondition() and
+      not exists(is.getElse()) and
+      not e.getAChildExpr*() instanceof AwaitExpr and
+      not exists(LocalScopeVariable v |
+        v.getAnAccess() = e.getAChildExpr*() and
+        (v.isRef() or v.getType().isRefLikeType())
+      ) and
+      exists(ReturnStmt ret |
+        ret = is.getThen().stripSingletonBlocks() and
+        ret.getExpr().stripImplicit().(BoolLiteral).toString() = "false"
+      )
+    )
+}
+
 /**
  * Holds if `foreach` statement `fes` could be converted to a `.All()` call.
  * That is, the `ForEachStmt` contains a single `if` with a condition that
- * accesses the loop variable and with a body that assigns `false` to a variable
- * and `break`s out of the `foreach`.
+ * accesses the loop variable and with a body that either assigns `false` to a
+ * variable and `break`s out of the `foreach`, or returns `false` when the loop
+ * is immediately followed by `return true`.
  */
 predicate missedAllOpportunity(ForEachStmtGenericEnumerable fes) {
   // The loop contains an if statement with no else case, and nothing else.
-  LinqFilterOpportunity<linqAllCandidate/2>::missed(fes, _) and
-  numStmts(fes) = 1
+  numStmts(fes) = 1 and
+  (
+    LinqFilterOpportunity<linqAllCandidate/2>::missed(fes, _)
+    or
+    LinqFilterOpportunity<linqAllReturnCandidate/2>::missed(fes, _) and
+    not fes.isAsync() and
+    not fes.getVariable().isCaptured() and
+    fes.getElementType() = fes.getVariable().getType() and
+    exists(BlockStmt enclosingBlock, int i, ReturnStmt ret |
+      enclosingBlock.getStmt(i) = fes and
+      enclosingBlock.getStmt(i + 1) = ret and
+      ret.getExpr().stripImplicit().(BoolLiteral).toString() = "true"
+    )
+  )
 }
 
 private predicate linqCastCandidate(Stmt s, Expr e) {
