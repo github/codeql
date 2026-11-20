@@ -26,13 +26,9 @@
 | patterns.cs:9:9:11:9 | if (...) ... | patterns.cs:9:13:9:29 | ... is ... | semmle.label | successor |
 | patterns.cs:9:13:9:13 | access to local variable o | patterns.cs:9:18:9:29 | MyStruct ms1 | semmle.label | successor |
 | patterns.cs:9:13:9:29 | ... is ... | patterns.cs:9:13:9:13 | access to local variable o | semmle.label | successor |
-| patterns.cs:9:13:9:29 | After ... is ... [false] | patterns.cs:9:9:11:9 | After if (...) ... | semmle.label | successor |
 | patterns.cs:9:13:9:29 | After ... is ... [true] | patterns.cs:10:9:11:9 | {...} | semmle.label | successor |
 | patterns.cs:9:18:9:29 | After MyStruct ms1 [match] | patterns.cs:9:13:9:29 | After ... is ... [true] | semmle.label | true |
-| patterns.cs:9:18:9:29 | After MyStruct ms1 [no-match] | patterns.cs:9:13:9:29 | After ... is ... [false] | semmle.label | false |
-| patterns.cs:9:18:9:29 | MyStruct ms1 | patterns.cs:9:18:9:29 | After MyStruct ms1 [no-match] | semmle.label | no-match |
-| patterns.cs:9:18:9:29 | MyStruct ms1 | patterns.cs:9:18:9:29 | [OuterPatternMatch] MyStruct ms1 | semmle.label | match |
-| patterns.cs:9:18:9:29 | [OuterPatternMatch] MyStruct ms1 | patterns.cs:9:18:9:29 | After MyStruct ms1 [match] | semmle.label | match |
+| patterns.cs:9:18:9:29 | MyStruct ms1 | patterns.cs:9:18:9:29 | After MyStruct ms1 [match] | semmle.label | match |
 | patterns.cs:10:9:11:9 | {...} | patterns.cs:9:9:11:9 | After if (...) ... | semmle.label | successor |
 | patterns.cs:13:9:15:9 | After if (...) ... | patterns.cs:17:9:19:9 | if (...) ... | semmle.label | successor |
 | patterns.cs:13:9:15:9 | if (...) ... | patterns.cs:13:13:13:56 | ... && ... | semmle.label | successor |
@@ -48,16 +44,12 @@
 | patterns.cs:13:13:13:56 | After ... && ... [true] | patterns.cs:14:9:15:9 | {...} | semmle.label | successor |
 | patterns.cs:13:18:13:25 | After access to type MyStruct [match] | patterns.cs:13:27:13:38 | { ... } | semmle.label | successor |
 | patterns.cs:13:18:13:25 | After access to type MyStruct [no-match] | patterns.cs:13:18:13:40 | After { ... } [no-match] | semmle.label | no-match |
-| patterns.cs:13:18:13:25 | [OuterPatternMatch] access to type MyStruct | patterns.cs:13:18:13:25 | After access to type MyStruct [match] | semmle.label | match |
+| patterns.cs:13:18:13:25 | access to type MyStruct | patterns.cs:13:18:13:25 | After access to type MyStruct [match] | semmle.label | match |
 | patterns.cs:13:18:13:25 | access to type MyStruct | patterns.cs:13:18:13:25 | After access to type MyStruct [no-match] | semmle.label | no-match |
-| patterns.cs:13:18:13:25 | access to type MyStruct | patterns.cs:13:18:13:25 | [OuterPatternMatch] access to type MyStruct | semmle.label | match |
 | patterns.cs:13:18:13:40 | After MyStruct s [match] | patterns.cs:13:18:13:25 | access to type MyStruct | semmle.label | successor |
-| patterns.cs:13:18:13:40 | After MyStruct s [no-match] | patterns.cs:13:18:13:40 | After { ... } [no-match] | semmle.label | no-match |
 | patterns.cs:13:18:13:40 | After { ... } [match] | patterns.cs:13:13:13:40 | After ... is ... [true] | semmle.label | true |
 | patterns.cs:13:18:13:40 | After { ... } [no-match] | patterns.cs:13:13:13:40 | After ... is ... [false] | semmle.label | false |
-| patterns.cs:13:18:13:40 | MyStruct s | patterns.cs:13:18:13:40 | After MyStruct s [no-match] | semmle.label | no-match |
-| patterns.cs:13:18:13:40 | MyStruct s | patterns.cs:13:18:13:40 | [OuterPatternMatch] MyStruct s | semmle.label | match |
-| patterns.cs:13:18:13:40 | [OuterPatternMatch] MyStruct s | patterns.cs:13:18:13:40 | After MyStruct s [match] | semmle.label | match |
+| patterns.cs:13:18:13:40 | MyStruct s | patterns.cs:13:18:13:40 | After MyStruct s [match] | semmle.label | match |
 | patterns.cs:13:18:13:40 | { ... } | patterns.cs:13:18:13:40 | MyStruct s | semmle.label | successor |
 | patterns.cs:13:27:13:38 | After { ... } [match] | patterns.cs:13:18:13:40 | After { ... } [match] | semmle.label | match |
 | patterns.cs:13:27:13:38 | After { ... } [no-match] | patterns.cs:13:18:13:40 | After { ... } [no-match] | semmle.label | no-match |
@@ -65,10 +57,7 @@
 | patterns.cs:13:27:13:38 | { ... } | patterns.cs:13:27:13:38 | After { ... } [no-match] | semmle.label | no-match |
 | patterns.cs:13:27:13:38 | { ... } | patterns.cs:13:27:13:38 | [OuterPatternMatch] { ... } | semmle.label | match |
 | patterns.cs:13:32:13:36 | After Int32 x [match] | patterns.cs:13:27:13:38 | After { ... } [match] | semmle.label | match |
-| patterns.cs:13:32:13:36 | After Int32 x [no-match] | patterns.cs:13:27:13:38 | After { ... } [no-match] | semmle.label | no-match |
-| patterns.cs:13:32:13:36 | Int32 x | patterns.cs:13:32:13:36 | After Int32 x [no-match] | semmle.label | no-match |
-| patterns.cs:13:32:13:36 | Int32 x | patterns.cs:13:32:13:36 | [OuterPatternMatch] Int32 x | semmle.label | match |
-| patterns.cs:13:32:13:36 | [OuterPatternMatch] Int32 x | patterns.cs:13:32:13:36 | After Int32 x [match] | semmle.label | match |
+| patterns.cs:13:32:13:36 | Int32 x | patterns.cs:13:32:13:36 | After Int32 x [match] | semmle.label | match |
 | patterns.cs:13:45:13:45 | access to local variable x | patterns.cs:13:47:13:47 | 4 | semmle.label | successor |
 | patterns.cs:13:45:13:47 | ... < ... | patterns.cs:13:45:13:47 | After ... < ... [false] | semmle.label | false |
 | patterns.cs:13:45:13:47 | ... < ... | patterns.cs:13:45:13:47 | After ... < ... [true] | semmle.label | true |
@@ -95,16 +84,12 @@
 | patterns.cs:17:13:17:21 | After ... is ... [true] | patterns.cs:18:9:19:9 | {...} | semmle.label | successor |
 | patterns.cs:17:18:17:19 | After { ... } [match] | patterns.cs:17:18:17:21 | After { ... } [match] | semmle.label | match |
 | patterns.cs:17:18:17:19 | After { ... } [no-match] | patterns.cs:17:18:17:21 | After { ... } [no-match] | semmle.label | no-match |
-| patterns.cs:17:18:17:19 | [OuterPatternMatch] { ... } | patterns.cs:17:18:17:19 | After { ... } [match] | semmle.label | match |
+| patterns.cs:17:18:17:19 | { ... } | patterns.cs:17:18:17:19 | After { ... } [match] | semmle.label | match |
 | patterns.cs:17:18:17:19 | { ... } | patterns.cs:17:18:17:19 | After { ... } [no-match] | semmle.label | no-match |
-| patterns.cs:17:18:17:19 | { ... } | patterns.cs:17:18:17:19 | [OuterPatternMatch] { ... } | semmle.label | match |
 | patterns.cs:17:18:17:21 | After Object p [match] | patterns.cs:17:18:17:19 | { ... } | semmle.label | successor |
-| patterns.cs:17:18:17:21 | After Object p [no-match] | patterns.cs:17:18:17:21 | After { ... } [no-match] | semmle.label | no-match |
 | patterns.cs:17:18:17:21 | After { ... } [match] | patterns.cs:17:13:17:21 | After ... is ... [true] | semmle.label | true |
 | patterns.cs:17:18:17:21 | After { ... } [no-match] | patterns.cs:17:13:17:21 | After ... is ... [false] | semmle.label | false |
-| patterns.cs:17:18:17:21 | Object p | patterns.cs:17:18:17:21 | After Object p [no-match] | semmle.label | no-match |
-| patterns.cs:17:18:17:21 | Object p | patterns.cs:17:18:17:21 | [OuterPatternMatch] Object p | semmle.label | match |
-| patterns.cs:17:18:17:21 | [OuterPatternMatch] Object p | patterns.cs:17:18:17:21 | After Object p [match] | semmle.label | match |
+| patterns.cs:17:18:17:21 | Object p | patterns.cs:17:18:17:21 | After Object p [match] | semmle.label | match |
 | patterns.cs:17:18:17:21 | { ... } | patterns.cs:17:18:17:21 | Object p | semmle.label | successor |
 | patterns.cs:18:9:19:9 | {...} | patterns.cs:17:9:19:9 | After if (...) ... | semmle.label | successor |
 | patterns.cs:22:9:24:9 | After if (...) ... | patterns.cs:27:9:29:9 | if (...) ... | semmle.label | successor |
@@ -115,9 +100,8 @@
 | patterns.cs:22:13:22:53 | After ... is ... [true] | patterns.cs:23:9:24:9 | {...} | semmle.label | successor |
 | patterns.cs:22:18:22:25 | After access to type MyStruct [match] | patterns.cs:22:27:22:53 | { ... } | semmle.label | successor |
 | patterns.cs:22:18:22:25 | After access to type MyStruct [no-match] | patterns.cs:22:18:22:53 | After { ... } [no-match] | semmle.label | no-match |
-| patterns.cs:22:18:22:25 | [OuterPatternMatch] access to type MyStruct | patterns.cs:22:18:22:25 | After access to type MyStruct [match] | semmle.label | match |
+| patterns.cs:22:18:22:25 | access to type MyStruct | patterns.cs:22:18:22:25 | After access to type MyStruct [match] | semmle.label | match |
 | patterns.cs:22:18:22:25 | access to type MyStruct | patterns.cs:22:18:22:25 | After access to type MyStruct [no-match] | semmle.label | no-match |
-| patterns.cs:22:18:22:25 | access to type MyStruct | patterns.cs:22:18:22:25 | [OuterPatternMatch] access to type MyStruct | semmle.label | match |
 | patterns.cs:22:18:22:53 | After { ... } [match] | patterns.cs:22:13:22:53 | After ... is ... [true] | semmle.label | true |
 | patterns.cs:22:18:22:53 | After { ... } [no-match] | patterns.cs:22:13:22:53 | After ... is ... [false] | semmle.label | false |
 | patterns.cs:22:18:22:53 | { ... } | patterns.cs:22:18:22:25 | access to type MyStruct | semmle.label | successor |
@@ -126,11 +110,10 @@
 | patterns.cs:22:27:22:53 | [OuterPatternMatch] { ... } | patterns.cs:22:31:22:32 | 12 | semmle.label | successor |
 | patterns.cs:22:27:22:53 | { ... } | patterns.cs:22:27:22:53 | After { ... } [no-match] | semmle.label | no-match |
 | patterns.cs:22:27:22:53 | { ... } | patterns.cs:22:27:22:53 | [OuterPatternMatch] { ... } | semmle.label | match |
+| patterns.cs:22:31:22:32 | 12 | patterns.cs:22:31:22:32 | After 12 [match] | semmle.label | match |
 | patterns.cs:22:31:22:32 | 12 | patterns.cs:22:31:22:32 | After 12 [no-match] | semmle.label | no-match |
-| patterns.cs:22:31:22:32 | 12 | patterns.cs:22:31:22:32 | [OuterPatternMatch] 12 | semmle.label | match |
 | patterns.cs:22:31:22:32 | After 12 [match] | patterns.cs:22:38:22:51 | { ... } | semmle.label | successor |
 | patterns.cs:22:31:22:32 | After 12 [no-match] | patterns.cs:22:27:22:53 | After { ... } [no-match] | semmle.label | no-match |
-| patterns.cs:22:31:22:32 | [OuterPatternMatch] 12 | patterns.cs:22:31:22:32 | After 12 [match] | semmle.label | match |
 | patterns.cs:22:38:22:51 | After { ... } [match] | patterns.cs:22:27:22:53 | After { ... } [match] | semmle.label | match |
 | patterns.cs:22:38:22:51 | After { ... } [match] | patterns.cs:22:38:22:51 | After { ... } [match] | semmle.label | match |
 | patterns.cs:22:38:22:51 | After { ... } [no-match] | patterns.cs:22:27:22:53 | After { ... } [no-match] | semmle.label | no-match |
@@ -140,10 +123,7 @@
 | patterns.cs:22:38:22:51 | { ... } | patterns.cs:22:38:22:51 | [OuterPatternMatch] { ... } | semmle.label | match |
 | patterns.cs:22:38:22:51 | { ... } | patterns.cs:22:38:22:51 | { ... } | semmle.label | successor |
 | patterns.cs:22:42:22:49 | After Int32 subX [match] | patterns.cs:22:38:22:51 | After { ... } [match] | semmle.label | match |
-| patterns.cs:22:42:22:49 | After Int32 subX [no-match] | patterns.cs:22:38:22:51 | After { ... } [no-match] | semmle.label | no-match |
-| patterns.cs:22:42:22:49 | Int32 subX | patterns.cs:22:42:22:49 | After Int32 subX [no-match] | semmle.label | no-match |
-| patterns.cs:22:42:22:49 | Int32 subX | patterns.cs:22:42:22:49 | [OuterPatternMatch] Int32 subX | semmle.label | match |
-| patterns.cs:22:42:22:49 | [OuterPatternMatch] Int32 subX | patterns.cs:22:42:22:49 | After Int32 subX [match] | semmle.label | match |
+| patterns.cs:22:42:22:49 | Int32 subX | patterns.cs:22:42:22:49 | After Int32 subX [match] | semmle.label | match |
 | patterns.cs:23:9:24:9 | {...} | patterns.cs:22:9:24:9 | After if (...) ... | semmle.label | successor |
 | patterns.cs:27:9:29:9 | After if (...) ... | patterns.cs:6:5:30:5 | After {...} | semmle.label | successor |
 | patterns.cs:27:9:29:9 | if (...) ... | patterns.cs:27:13:27:58 | ... is ... | semmle.label | successor |
@@ -153,9 +133,8 @@
 | patterns.cs:27:13:27:58 | After ... is ... [true] | patterns.cs:28:9:29:9 | {...} | semmle.label | successor |
 | patterns.cs:27:18:27:25 | After access to type MyStruct [match] | patterns.cs:27:27:27:58 | { ... } | semmle.label | successor |
 | patterns.cs:27:18:27:25 | After access to type MyStruct [no-match] | patterns.cs:27:18:27:58 | After { ... } [no-match] | semmle.label | no-match |
-| patterns.cs:27:18:27:25 | [OuterPatternMatch] access to type MyStruct | patterns.cs:27:18:27:25 | After access to type MyStruct [match] | semmle.label | match |
+| patterns.cs:27:18:27:25 | access to type MyStruct | patterns.cs:27:18:27:25 | After access to type MyStruct [match] | semmle.label | match |
 | patterns.cs:27:18:27:25 | access to type MyStruct | patterns.cs:27:18:27:25 | After access to type MyStruct [no-match] | semmle.label | no-match |
-| patterns.cs:27:18:27:25 | access to type MyStruct | patterns.cs:27:18:27:25 | [OuterPatternMatch] access to type MyStruct | semmle.label | match |
 | patterns.cs:27:18:27:58 | After { ... } [match] | patterns.cs:27:13:27:58 | After ... is ... [true] | semmle.label | true |
 | patterns.cs:27:18:27:58 | After { ... } [no-match] | patterns.cs:27:13:27:58 | After ... is ... [false] | semmle.label | false |
 | patterns.cs:27:18:27:58 | { ... } | patterns.cs:27:18:27:25 | access to type MyStruct | semmle.label | successor |
@@ -164,23 +143,18 @@
 | patterns.cs:27:27:27:58 | [OuterPatternMatch] { ... } | patterns.cs:27:31:27:32 | 12 | semmle.label | successor |
 | patterns.cs:27:27:27:58 | { ... } | patterns.cs:27:27:27:58 | After { ... } [no-match] | semmle.label | no-match |
 | patterns.cs:27:27:27:58 | { ... } | patterns.cs:27:27:27:58 | [OuterPatternMatch] { ... } | semmle.label | match |
+| patterns.cs:27:31:27:32 | 12 | patterns.cs:27:31:27:32 | After 12 [match] | semmle.label | match |
 | patterns.cs:27:31:27:32 | 12 | patterns.cs:27:31:27:32 | After 12 [no-match] | semmle.label | no-match |
-| patterns.cs:27:31:27:32 | 12 | patterns.cs:27:31:27:32 | [OuterPatternMatch] 12 | semmle.label | match |
 | patterns.cs:27:31:27:32 | After 12 [match] | patterns.cs:27:38:27:56 | { ... } | semmle.label | successor |
 | patterns.cs:27:31:27:32 | After 12 [no-match] | patterns.cs:27:27:27:58 | After { ... } [no-match] | semmle.label | no-match |
-| patterns.cs:27:31:27:32 | [OuterPatternMatch] 12 | patterns.cs:27:31:27:32 | After 12 [match] | semmle.label | match |
 | patterns.cs:27:38:27:45 | After access to type MyStruct [match] | patterns.cs:27:47:27:53 | { ... } | semmle.label | successor |
 | patterns.cs:27:38:27:45 | After access to type MyStruct [no-match] | patterns.cs:27:38:27:56 | After { ... } [no-match] | semmle.label | no-match |
-| patterns.cs:27:38:27:45 | [OuterPatternMatch] access to type MyStruct | patterns.cs:27:38:27:45 | After access to type MyStruct [match] | semmle.label | match |
+| patterns.cs:27:38:27:45 | access to type MyStruct | patterns.cs:27:38:27:45 | After access to type MyStruct [match] | semmle.label | match |
 | patterns.cs:27:38:27:45 | access to type MyStruct | patterns.cs:27:38:27:45 | After access to type MyStruct [no-match] | semmle.label | no-match |
-| patterns.cs:27:38:27:45 | access to type MyStruct | patterns.cs:27:38:27:45 | [OuterPatternMatch] access to type MyStruct | semmle.label | match |
 | patterns.cs:27:38:27:56 | After MyStruct ms [match] | patterns.cs:27:38:27:45 | access to type MyStruct | semmle.label | successor |
-| patterns.cs:27:38:27:56 | After MyStruct ms [no-match] | patterns.cs:27:38:27:56 | After { ... } [no-match] | semmle.label | no-match |
 | patterns.cs:27:38:27:56 | After { ... } [match] | patterns.cs:27:27:27:58 | After { ... } [match] | semmle.label | match |
 | patterns.cs:27:38:27:56 | After { ... } [no-match] | patterns.cs:27:27:27:58 | After { ... } [no-match] | semmle.label | no-match |
-| patterns.cs:27:38:27:56 | MyStruct ms | patterns.cs:27:38:27:56 | After MyStruct ms [no-match] | semmle.label | no-match |
-| patterns.cs:27:38:27:56 | MyStruct ms | patterns.cs:27:38:27:56 | [OuterPatternMatch] MyStruct ms | semmle.label | match |
-| patterns.cs:27:38:27:56 | [OuterPatternMatch] MyStruct ms | patterns.cs:27:38:27:56 | After MyStruct ms [match] | semmle.label | match |
+| patterns.cs:27:38:27:56 | MyStruct ms | patterns.cs:27:38:27:56 | After MyStruct ms [match] | semmle.label | match |
 | patterns.cs:27:38:27:56 | { ... } | patterns.cs:27:38:27:56 | MyStruct ms | semmle.label | successor |
 | patterns.cs:27:47:27:53 | After { ... } [match] | patterns.cs:27:38:27:56 | After { ... } [match] | semmle.label | match |
 | patterns.cs:27:47:27:53 | After { ... } [no-match] | patterns.cs:27:38:27:56 | After { ... } [no-match] | semmle.label | no-match |
@@ -188,8 +162,5 @@
 | patterns.cs:27:47:27:53 | { ... } | patterns.cs:27:47:27:53 | After { ... } [no-match] | semmle.label | no-match |
 | patterns.cs:27:47:27:53 | { ... } | patterns.cs:27:47:27:53 | [OuterPatternMatch] { ... } | semmle.label | match |
 | patterns.cs:27:51:27:51 | After _ [match] | patterns.cs:27:47:27:53 | After { ... } [match] | semmle.label | match |
-| patterns.cs:27:51:27:51 | After _ [no-match] | patterns.cs:27:47:27:53 | After { ... } [no-match] | semmle.label | no-match |
-| patterns.cs:27:51:27:51 | [OuterPatternMatch] _ | patterns.cs:27:51:27:51 | After _ [match] | semmle.label | match |
-| patterns.cs:27:51:27:51 | _ | patterns.cs:27:51:27:51 | After _ [no-match] | semmle.label | no-match |
-| patterns.cs:27:51:27:51 | _ | patterns.cs:27:51:27:51 | [OuterPatternMatch] _ | semmle.label | match |
+| patterns.cs:27:51:27:51 | _ | patterns.cs:27:51:27:51 | After _ [match] | semmle.label | match |
 | patterns.cs:28:9:29:9 | {...} | patterns.cs:27:9:29:9 | After if (...) ... | semmle.label | successor |

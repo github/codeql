@@ -2631,7 +2631,6 @@
 | Patterns.cs:54:9:54:9 | access to parameter c | Patterns.cs:54:9:54:9 | access to parameter c |
 | Patterns.cs:54:9:54:37 | ... is ... | Patterns.cs:54:9:54:37 | ... is ... |
 | Patterns.cs:54:14:54:37 | not ... | Patterns.cs:54:14:54:37 | not ... |
-| Patterns.cs:54:18:54:25 | access to type Patterns | Patterns.cs:54:18:54:25 | access to type Patterns |
 | Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | Patterns u |
 | Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:18:54:37 | { ... } |
 | Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:27:54:35 | { ... } |
@@ -2664,11 +2663,11 @@
 | Patterns.cs:76:9:82:10 | return ...; | Patterns.cs:76:16:82:9 | ... switch { ... } |
 | Patterns.cs:76:16:76:16 | access to parameter i | Patterns.cs:76:16:76:16 | access to parameter i |
 | Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:76:16:82:9 | ... switch { ... } |
-| Patterns.cs:78:13:78:15 | > ... | Patterns.cs:78:13:78:15 | > ... |
+| Patterns.cs:78:13:78:15 | > ... | Patterns.cs:78:15:78:15 | 1 |
 | Patterns.cs:78:13:78:24 | ... => ... | Patterns.cs:78:13:78:24 | ... => ... |
 | Patterns.cs:78:15:78:15 | 1 | Patterns.cs:78:15:78:15 | 1 |
 | Patterns.cs:78:20:78:24 | "> 1" | Patterns.cs:78:20:78:24 | "> 1" |
-| Patterns.cs:79:13:79:15 | < ... | Patterns.cs:79:13:79:15 | < ... |
+| Patterns.cs:79:13:79:15 | < ... | Patterns.cs:79:15:79:15 | 0 |
 | Patterns.cs:79:13:79:24 | ... => ... | Patterns.cs:79:13:79:24 | ... => ... |
 | Patterns.cs:79:15:79:15 | 0 | Patterns.cs:79:15:79:15 | 0 |
 | Patterns.cs:79:20:79:24 | "< 0" | Patterns.cs:79:20:79:24 | "< 0" |

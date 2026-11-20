@@ -141,6 +141,8 @@ private module Input implements InputSig1, InputSig2 {
     not pattern instanceof RecursivePatternExpr
   }
 
+  predicate patternIsExhaustive(Ast::Pattern pattern) { pattern instanceof DiscardPatternExpr }
+
   private newtype TLabel =
     TLblGoto(string label) { any(GotoLabelStmt goto).getLabel() = label } or
     TLblSwitchCase(string value) { any(GotoCaseStmt goto).getLabel() = value } or
