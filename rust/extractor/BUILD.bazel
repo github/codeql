@@ -11,6 +11,7 @@ codeql_rust_binary(
         "src/qltest_cargo.mustache",
         "src/nightly-toolchain/rust-toolchain.toml",
     ],
+    full_lto = True,
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ) + [
