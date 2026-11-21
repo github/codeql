@@ -2,6 +2,8 @@
 
 Using user-controlled input in GitHub Actions may lead to code injection in contexts like _run:_ or _script:_.
 
+This includes inputs from events such as `issue_comment`, `pull_request`, and `workflow_dispatch`. In particular, `workflow_dispatch` inputs with type `string` (or no type, which defaults to `string`) are user-controlled and should be treated as untrusted. Note that `workflow_dispatch` can only be triggered by users with write permissions to the repository, so the risk is lower than for events like `issue_comment` which can be triggered by any user. Nevertheless, this is still a code injection vector and should be handled safely.
+
 Code injection in GitHub Actions may allow an attacker to exfiltrate any secrets used in the workflow and the temporary GitHub repository authorization token. The token may have write access to the repository, allowing an attacker to make changes to the repository.
 
 ## Recommendation
@@ -25,6 +27,24 @@ jobs:
     steps:
       - run: |
           echo '${{ github.event.comment.body }}'
+```
+
+The following example uses a `workflow_dispatch` string input directly in a _run:_ step, which allows code injection:
+
+```yaml
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Title'
+        type: string
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo '${{ inputs.title }}'
 ```
 
 The following example uses an environment variable, but **still allows the injection** because of the use of expression syntax:
@@ -55,6 +75,26 @@ jobs:
           BODY: ${{ github.event.issue.body }}
         run: |
           echo "$BODY"
+```
+
+The following example safely uses a `workflow_dispatch` input by passing it through an environment variable:
+
+```yaml
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Title'
+        type: string
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          TITLE: ${{ inputs.title }}
+        run: |
+          echo "$TITLE"
 ```
 
 The following example uses `process.env` to read environment variables within JavaScript code.
