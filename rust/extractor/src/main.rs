@@ -41,18 +41,38 @@ struct Extractor<'a> {
     archiver: &'a Archiver,
     traps: &'a trap::TrapFileProvider,
     steps: Vec<ExtractionStep>,
+    source_files: HashSet<PathBuf>,
+    generated_source_root: PathBuf,
+    extracted_source_files: HashSet<PathBuf>,
 }
 
 impl<'a> Extractor<'a> {
-    pub fn new(archiver: &'a Archiver, traps: &'a trap::TrapFileProvider) -> Self {
+    pub fn new(
+        archiver: &'a Archiver,
+        traps: &'a trap::TrapFileProvider,
+        source_files: HashSet<PathBuf>,
+        generated_source_root: PathBuf,
+    ) -> Self {
         Self {
             archiver,
             traps,
             steps: Vec::new(),
+            source_files,
+            generated_source_root,
+            extracted_source_files: HashSet::new(),
         }
     }
 
-    fn extract(&mut self, rust_analyzer: &RustAnalyzer, file: &Path, source_kind: SourceKind) {
+    fn is_selected_source(&self, file: &Path) -> bool {
+        self.source_files.contains(file) || file.starts_with(&self.generated_source_root)
+    }
+
+    fn extract(
+        &mut self,
+        rust_analyzer: &RustAnalyzer,
+        file: &Path,
+        source_kind: SourceKind,
+    ) -> Vec<PathBuf> {
         self.archiver.archive(file);
         let before_parse = Instant::now();
         let ParseResult {
@@ -96,6 +116,14 @@ impl<'a> Extractor<'a> {
         }
         translator.emit_source_file(&ast);
         translator.emit_truncated_diagnostics_message();
+        for file in translator
+            .included_file_steps
+            .iter()
+            .filter_map(|step| step.file.as_deref())
+        {
+            self.archiver.archive(file);
+        }
+        self.steps.append(&mut translator.included_file_steps);
         translator.trap.commit().unwrap_or_else(|err| {
             error!(
                 "Failed to write trap file for: {}: {}",
@@ -105,6 +133,7 @@ impl<'a> Extractor<'a> {
         });
         self.steps
             .push(ExtractionStep::extract(before_extract, source_kind, file));
+        translator.module_files
     }
 
     pub fn extract_with_semantics<'db>(
@@ -113,8 +142,27 @@ impl<'a> Extractor<'a> {
         semantics: &'db Semantics<'db, RootDatabase>,
         vfs: &'db Vfs,
         source_kind: SourceKind,
+        selected_source: bool,
     ) {
-        self.extract(&RustAnalyzer::new(vfs, semantics), file, source_kind);
+        let mut pending = vec![file.to_path_buf()];
+        let mut visited = HashSet::new();
+        while let Some(file) = pending.pop() {
+            if !visited.insert(file.clone())
+                || selected_source && !self.is_selected_source(&file)
+                || !selected_source && self.extracted_source_files.contains(&file)
+            {
+                continue;
+            }
+            if selected_source {
+                self.extracted_source_files.insert(file.clone());
+            }
+            let modules = self.extract(&RustAnalyzer::new(vfs, semantics), &file, source_kind);
+            if selected_source {
+                pending.extend(modules.into_iter().filter(|module| {
+                    self.is_selected_source(module) && !self.source_files.contains(module)
+                }));
+            }
+        }
     }
 
     pub fn extract_without_semantics(
@@ -274,11 +322,6 @@ fn main() -> anyhow::Result<()> {
     info!("{config:#?}\n");
     info!("number of inputs: {}", inputs.len());
 
-    let traps = trap::TrapFileProvider::new(&config).context("failed to set up trap files")?;
-    let archiver = archive::Archiver {
-        root: config.source_archive_dir.clone(),
-    };
-    let mut extractor = Extractor::new(&archiver, &traps);
     let files = inputs
         .iter()
         .map(|file| {
@@ -289,6 +332,20 @@ fn main() -> anyhow::Result<()> {
             dunce::canonicalize(&file).unwrap_or(file)
         })
         .collect::<Vec<_>>();
+    let source_files = HashSet::from_iter(files.iter().cloned());
+    let generated_source_root = std::path::absolute(config.cargo_target_dir())?;
+    let generated_source_root =
+        dunce::canonicalize(&generated_source_root).unwrap_or(generated_source_root);
+    let traps = trap::TrapFileProvider::new(&config).context("failed to set up trap files")?;
+    let archiver = archive::Archiver {
+        root: config.source_archive_dir.clone(),
+    };
+    let mut extractor = Extractor::new(
+        &archiver,
+        &traps,
+        source_files.clone(),
+        generated_source_root,
+    );
     let manifests = extractor.find_manifests(&files)?;
     let workspaces = extractor.group_files(&manifests, &files);
     let cwd = cwd()?;
@@ -304,7 +361,6 @@ fn main() -> anyhow::Result<()> {
     } else {
         SourceKind::Source
     };
-    let source_files = HashSet::from_iter(files.iter().cloned());
 
     let mut dependencies = DependencyFiles::default();
 
@@ -324,14 +380,16 @@ fn main() -> anyhow::Result<()> {
             let semantics = Semantics::new(&db);
             for file in files {
                 match extractor.load_source(file, &semantics, &vfs) {
-                    Ok(()) => extractor.extract_with_semantics(file, &semantics, &vfs, source_mode),
+                    Ok(()) => {
+                        extractor.extract_with_semantics(file, &semantics, &vfs, source_mode, true);
+                    }
                     Err(e) => extractor.extract_without_semantics(file, source_mode, e),
                 }
             }
             // Fast path when there is no ambiguity in dependency extraction.
             if dependency_extraction_ambiguity {
                 for (_, file) in dependency_files(&db, &vfs, &source_files) {
-                    extractor.extract_with_semantics(file, &semantics, &vfs, library_mode);
+                    extractor.extract_with_semantics(file, &semantics, &vfs, library_mode, false);
                 }
             } else {
                 dependencies.add_manifest(manifest, &semantics, &vfs, &source_files);
@@ -372,7 +430,13 @@ fn main() -> anyhow::Result<()> {
                             .and_then(|id| semantics.file_to_module_def(id))
                             .is_some()
                     {
-                        extractor.extract_with_semantics(&file, &semantics, &vfs, library_mode);
+                        extractor.extract_with_semantics(
+                            &file,
+                            &semantics,
+                            &vfs,
+                            library_mode,
+                            false,
+                        );
                         dependencies.extracted(&file);
                     }
                 }
