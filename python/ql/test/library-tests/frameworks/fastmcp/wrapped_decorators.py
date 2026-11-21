@@ -1,7 +1,7 @@
 import functools
 
 from fastmcp import Context, FastMCP
-from fastmcp import tool as standalone_tool
+from fastmcp.tools import tool as standalone_tool
 
 app = FastMCP("wrapped-test")
 
@@ -30,4 +30,9 @@ class WrappedHandlers:
     @app.tool()
     @custom_wrapper
     def class_body_wrapped(command: str, ctx: Context) -> str:  # $ threatModelSource[ai]=command
+        return command
+
+    @app.tool()
+    @staticmethod
+    def static_wrapped(command: str, ctx: Context) -> str:  # $ threatModelSource[ai]=command
         return command

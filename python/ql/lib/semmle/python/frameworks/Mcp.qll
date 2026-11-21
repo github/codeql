@@ -8,7 +8,6 @@
  */
 
 private import python
-private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
@@ -81,10 +80,6 @@ module Mcp {
    */
   private API::Node standaloneDecorator() {
     exists(API::Node fastmcp | fastmcp = API::moduleImport("fastmcp") |
-      result = fastmcp.getMember("tool")
-      or
-      result = fastmcp.getMember("prompt")
-      or
       result = fastmcp.getMember("tools").getMember("tool")
       or
       result = fastmcp.getMember("tools").getMember("function_tool").getMember("tool")
@@ -130,26 +125,17 @@ module Mcp {
     )
   }
 
-  private string registrationMethod() { result in ["tool", "prompt", "resource"] }
-
-  /** An MCP `@tool`/`@prompt`/`@resource` decorator expression on `handler`. */
-  private predicate mcpRegistrationDecorator(Function handler, Expr dec) {
-    dec = handler.getADecorator() and
-    (
-      exists(API::Node cls | cls = serverClass() |
-        exists(API::CallNode call |
-          call = cls.getAnInstance().getMember(registrationMethod()).getACall() and
-          call.getNode().getNode() = dec
-        )
+  /** Holds if `handler` has an MCP `@tool`, `@prompt` or `@resource` decorator. */
+  private predicate hasMcpRegistrationDecorator(Function handler) {
+    exists(Expr dec | dec = handler.getADecorator() |
+      exists(API::Node server | server = serverClass().getAnInstance() |
+        dec = server.getMember(["tool", "prompt", "resource"]).getACall().asExpr()
         or
-        dec =
-          cls.getAnInstance().getMember(["tool", "prompt"]).getAValueReachableFromSource().asExpr()
+        dec = server.getMember(["tool", "prompt"]).getAValueReachableFromSource().asExpr()
       )
       or
       exists(API::Node decorator | decorator = standaloneDecorator() |
-        exists(API::CallNode call |
-          call = decorator.getACall() and call.getNode().getNode() = dec
-        )
+        dec = decorator.getACall().asExpr()
         or
         dec = decorator.getAValueReachableFromSource().asExpr()
       )
@@ -315,7 +301,7 @@ module Mcp {
     (
       handler = handlerNode().getAValueReachingSink().asExpr().(CallableExpr).getInnerScope()
       or
-      exists(Expr dec | mcpRegistrationDecorator(handler, dec))
+      hasMcpRegistrationDecorator(handler)
     ) and
     (
       p = handler.getAnArg()
