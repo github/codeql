@@ -189,8 +189,8 @@
 | 163 | cfg.swift:163:15:165:3 | Block | 'Block' |
 | 164 | cfg.swift:164:12:164:15 | true | 'true -^ ReturnExpr' |
 | 167 | cfg.swift:167:3:167:25 | let xOptional | 'let xOptional -V xOptional -> Optional -> Int -^ GenericTypeExpr -> x' |
-| 168 | cfg.swift:168:3:172:3 | IfExpr | 'IfExpr -V xOptional -^ PatternGuardExpr' |
-| 168 | cfg.swift:168:11:168:11 | . | '. -^ ... .some -> Argument -V x -^ ExprPattern -^ ... .some(...) -> Block' |
+| 168 | cfg.swift:168:3:172:3 | IfExpr | 'IfExpr -V PatternGuardExpr -V xOptional -? . -^ ... .some -> Argument -V x -^ ExprPattern -^ ... .some(...)' |
+| 168 | cfg.swift:168:36:170:3 | Block | 'Block' |
 | 169 | cfg.swift:169:12:169:12 | x | 'x -> 0 -^ ... == ... -^ ReturnExpr' |
 | 170 | cfg.swift:170:10:172:3 | Block | 'Block' |
 | 171 | cfg.swift:171:12:171:16 | false | 'false -^ ReturnExpr' |

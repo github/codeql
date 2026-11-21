@@ -296,25 +296,33 @@
 | Test.java:84:10:84:15 | break | Test.java:87:6:87:18 | switch (...) |
 | Test.java:87:6:87:18 | switch (...) | Test.java:87:13:87:17 | thing |
 | Test.java:87:13:87:17 | thing | Test.java:88:8:88:43 | case <Pattern> |
-| Test.java:88:8:88:43 | case <Pattern> | Test.java:88:21:88:21 | x |
-| Test.java:88:13:88:42 | A(...) | Test.java:89:10:89:15 | break |
+| Test.java:88:8:88:43 | case <Pattern> | Test.java:88:13:88:42 | A(...) |
+| Test.java:88:13:88:42 | A(...) | Test.java:88:15:88:32 | B(...) |
 | Test.java:88:13:88:42 | A(...) | Test.java:90:8:90:15 | default |
-| Test.java:88:15:88:32 | B(...) | Test.java:88:41:88:41 | z |
-| Test.java:88:21:88:21 | x | Test.java:88:31:88:31 | y |
-| Test.java:88:31:88:31 | y | Test.java:88:15:88:32 | B(...) |
-| Test.java:88:41:88:41 | z | Test.java:88:13:88:42 | A(...) |
+| Test.java:88:15:88:32 | B(...) | Test.java:88:17:88:19 | int |
+| Test.java:88:15:88:32 | B(...) | Test.java:90:8:90:15 | default |
+| Test.java:88:17:88:19 | int | Test.java:88:21:88:21 | x |
+| Test.java:88:17:88:19 | int | Test.java:90:8:90:15 | default |
+| Test.java:88:21:88:21 | x | Test.java:88:24:88:29 | String |
+| Test.java:88:24:88:29 | String | Test.java:88:31:88:31 | y |
+| Test.java:88:24:88:29 | String | Test.java:90:8:90:15 | default |
+| Test.java:88:31:88:31 | y | Test.java:88:35:88:39 | float |
+| Test.java:88:35:88:39 | float | Test.java:88:41:88:41 | z |
+| Test.java:88:35:88:39 | float | Test.java:90:8:90:15 | default |
+| Test.java:88:41:88:41 | z | Test.java:89:10:89:15 | break |
 | Test.java:89:10:89:15 | break | Test.java:94:6:94:18 | switch (...) |
 | Test.java:90:8:90:15 | default | Test.java:91:10:91:15 | break |
 | Test.java:91:10:91:15 | break | Test.java:94:6:94:18 | switch (...) |
 | Test.java:94:6:94:18 | switch (...) | Test.java:94:13:94:17 | thing |
 | Test.java:94:13:94:17 | thing | Test.java:95:8:95:38 | case <Pattern> |
-| Test.java:95:8:95:38 | case <Pattern> | Test.java:95:21:95:21 | x |
-| Test.java:95:13:95:37 | A(...) | Test.java:96:10:96:15 | break |
+| Test.java:95:8:95:38 | case <Pattern> | Test.java:95:13:95:37 | A(...) |
+| Test.java:95:13:95:37 | A(...) | Test.java:95:21:95:21 | x |
 | Test.java:95:13:95:37 | A(...) | Test.java:97:8:97:15 | default |
 | Test.java:95:15:95:29 | B(...) | Test.java:95:36:95:36 | z |
+| Test.java:95:15:95:29 | B(...) | Test.java:97:8:97:15 | default |
 | Test.java:95:21:95:21 | x | Test.java:95:28:95:28 | y |
 | Test.java:95:28:95:28 | y | Test.java:95:15:95:29 | B(...) |
-| Test.java:95:36:95:36 | z | Test.java:95:13:95:37 | A(...) |
+| Test.java:95:36:95:36 | z | Test.java:96:10:96:15 | break |
 | Test.java:96:10:96:15 | break | Test.java:101:6:101:18 | switch (...) |
 | Test.java:97:8:97:15 | default | Test.java:98:10:98:15 | break |
 | Test.java:98:10:98:15 | break | Test.java:101:6:101:18 | switch (...) |

@@ -48,8 +48,8 @@ bbStep
 | cfg.swift:159:11:159:16 | ... > ... | '... > ... : true -> Block(+0)' |
 | cfg.swift:163:6:163:13 | TypeTestExpr | 'TypeTestExpr : false -> let xOptional(+4)' |
 | cfg.swift:163:6:163:13 | TypeTestExpr | 'TypeTestExpr : true -> Block(+0)' |
-| cfg.swift:168:6:168:34 | PatternGuardExpr | 'PatternGuardExpr : false -> Block(+2)' |
-| cfg.swift:168:6:168:34 | PatternGuardExpr | 'PatternGuardExpr : true -> .(+0)' |
+| cfg.swift:168:11:168:22 | ... .some(...) | '... .some(...) : match -> Block(+0)' |
+| cfg.swift:168:11:168:22 | ... .some(...) | '... .some(...) : no-match -> Block(+2)' |
 | cfg.swift:196:6:196:10 | ... > ... | '... > ... : false -> IfExpr(+3)' |
 | cfg.swift:196:6:196:10 | ... > ... | '... > ... : true -> Block(+0)' |
 | cfg.swift:199:11:199:16 | ... <= ... | '... <= ... : false,false,false -> Block(+5)' |
@@ -226,6 +226,7 @@ noCfg
 nonSimple
 | cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
 | cfg.swift:35:5:35:5 | CatchClause | 'CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern' |
+| cfg.swift:168:3:168:3 | IfExpr | 'IfExpr -V PatternGuardExpr -V xOptional -? . -^ ... .some -> Argument -V x -^ ExprPattern -^ ... .some(...)' |
 | cfg.swift:627:5:627:5 | SwitchCase | 'SwitchCase -V flag -? . -^ ... .error1 -^ ConditionalPattern' |
 | fallthrough.swift:10:3:10:3 | SwitchCase | 'SwitchCase -V flag -? 1 -^ ConditionalPattern' |
 | fallthrough.swift:51:3:51:3 | SwitchCase | 'SwitchCase -V flag -? 1 -^ ConditionalPattern' |

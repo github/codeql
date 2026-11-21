@@ -1,3 +1,4 @@
+#select
 | A.cs:8:15:8:32 | access to local variable synchronizedAlways | Variable $@ is always null at this dereference. | A.cs:7:16:7:33 | synchronizedAlways | synchronizedAlways |
 | A.cs:17:9:17:17 | access to local variable arrayNull | Variable $@ is always null at this dereference. | A.cs:16:15:16:23 | arrayNull | arrayNull |
 | A.cs:31:27:31:37 | access to local variable arrayAccess | Variable $@ is always null at this dereference. | A.cs:26:15:26:25 | arrayAccess | arrayAccess |
@@ -15,6 +16,7 @@
 | C.cs:18:13:18:13 | access to local variable o | Variable $@ is always null at this dereference. | C.cs:10:16:10:16 | o | o |
 | C.cs:42:9:42:9 | access to local variable s | Variable $@ is always null at this dereference. | C.cs:40:13:40:13 | s | s |
 | C.cs:57:9:57:10 | access to local variable o2 | Variable $@ is always null at this dereference. | C.cs:55:13:55:14 | o2 | o2 |
+| C.cs:89:13:89:13 | access to local variable o | Variable $@ is always null at this dereference. | C.cs:87:16:87:16 | o | o |
 | C.cs:162:13:162:13 | access to local variable s | Variable $@ is always null at this dereference. | C.cs:151:13:151:13 | s | s |
 | C.cs:170:13:170:13 | access to local variable s | Variable $@ is always null at this dereference. | C.cs:151:13:151:13 | s | s |
 | C.cs:196:13:196:13 | access to local variable s | Variable $@ is always null at this dereference. | C.cs:185:13:185:13 | s | s |
@@ -31,14 +33,16 @@
 | D.cs:217:13:217:14 | access to local variable o3 | Variable $@ is always null at this dereference. | D.cs:215:13:215:14 | o3 | o3 |
 | D.cs:222:13:222:14 | access to local variable o4 | Variable $@ is always null at this dereference. | D.cs:220:13:220:14 | o4 | o4 |
 | D.cs:385:13:385:15 | access to local variable ioe | Variable $@ is always null at this dereference. | D.cs:378:19:378:21 | ioe | ioe |
-| E.cs:210:16:210:16 | access to parameter s | Variable $@ is always null at this dereference. | E.cs:206:28:206:28 | s | s |
-| E.cs:323:13:323:14 | access to parameter s1 | Variable $@ is always null at this dereference. | E.cs:319:29:319:30 | s1 | s1 |
-| E.cs:324:13:324:14 | access to parameter s2 | Variable $@ is always null at this dereference. | E.cs:319:40:319:41 | s2 | s2 |
 | E.cs:331:9:331:9 | access to local variable x | Variable $@ is always null at this dereference. | E.cs:330:13:330:13 | x | x |
 | E.cs:405:16:405:16 | access to local variable i | Variable $@ is always null at this dereference. | E.cs:403:14:403:14 | i | i |
-| E.cs:439:13:439:13 | access to parameter s | Variable $@ is always null at this dereference. | E.cs:435:29:435:29 | s | s |
 | F.cs:8:9:8:9 | access to local variable o | Variable $@ is always null at this dereference. | F.cs:7:16:7:16 | o | o |
 | Forwarding.cs:31:31:31:31 | access to local variable s | Variable $@ is always null at this dereference. | Forwarding.cs:7:16:7:16 | s | s |
 | Forwarding.cs:36:31:36:31 | access to local variable s | Variable $@ is always null at this dereference. | Forwarding.cs:7:16:7:16 | s | s |
 | Forwarding.cs:40:27:40:27 | access to local variable s | Variable $@ is always null at this dereference. | Forwarding.cs:7:16:7:16 | s | s |
 | NullAlwaysBad.cs:9:30:9:30 | access to parameter s | Variable $@ is always null at this dereference. | NullAlwaysBad.cs:7:29:7:29 | s | s |
+testFailures
+| C.cs:89:13:89:13 | Variable $@ is always null at this dereference. | Unexpected result: Alert |
+| E.cs:210:33:210:80 | // ... | Missing result: Alert[cs/dereferenced-value-is-always-null] |
+| E.cs:323:28:323:75 | // ... | Missing result: Alert[cs/dereferenced-value-is-always-null] |
+| E.cs:324:28:324:75 | // ... | Missing result: Alert[cs/dereferenced-value-is-always-null] |
+| E.cs:439:27:439:74 | // ... | Missing result: Alert[cs/dereferenced-value-is-always-null] |

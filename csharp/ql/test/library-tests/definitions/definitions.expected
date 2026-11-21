@@ -137,10 +137,12 @@
 | definitions.cs:210:13:210:14 | C8 | definitions.cs:206:11:206:12 | C8 | T |
 | definitions.cs:211:17:211:19 | access to local variable c8a | definitions.cs:210:16:210:18 | c8a | V |
 | definitions.cs:211:24:211:25 | C8 | definitions.cs:206:11:206:12 | C8 | T |
+| definitions.cs:211:27:211:29 | access to local variable c8b | definitions.cs:211:27:211:29 | c8b | V |
 | definitions.cs:212:17:212:19 | access to local variable c8a | definitions.cs:210:16:210:18 | c8a | V |
 | definitions.cs:212:23:212:25 | access to local variable c8b | definitions.cs:211:27:211:29 | c8b | V |
 | definitions.cs:213:21:213:23 | access to local variable c8a | definitions.cs:210:16:210:18 | c8a | V |
 | definitions.cs:215:22:215:23 | C8 | definitions.cs:206:11:206:12 | C8 | T |
+| definitions.cs:215:25:215:27 | access to local variable c8c | definitions.cs:215:25:215:27 | c8c | V |
 | definitions.cs:215:34:215:36 | access to local variable c8c | definitions.cs:215:25:215:27 | c8c | V |
 | definitions.cs:216:21:216:23 | access to local variable c8a | definitions.cs:210:16:210:18 | c8a | V |
 | definitions.cs:216:27:216:29 | access to local variable c8c | definitions.cs:215:25:215:27 | c8c | V |

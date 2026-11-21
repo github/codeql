@@ -134,6 +134,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
       ct.getComparisonKind().isInequality() and polarity = false
     )
     or
+    // todo: handled in shared lib?
     exists(IsExpr ie, PatternExpr pat |
       ie = eqtest and
       ie.getExpr() = left and

@@ -937,8 +937,6 @@
 | null | Guards.cs:118:27:118:36 | access to property Property |
 | null | Guards.cs:119:27:119:36 | access to property Property |
 | null | Guards.cs:130:18:130:21 | null |
-| null | Guards.cs:131:20:131:20 | access to parameter s |
-| null | Guards.cs:139:16:139:16 | access to parameter s |
 | null | Guards.cs:159:18:159:21 | null |
 | null | Guards.cs:160:24:160:24 | access to parameter o |
 | null | Guards.cs:172:39:172:42 | null |

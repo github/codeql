@@ -325,3 +325,31 @@ patternExprTypes
 | patterns.cs:142:17:142:36 | { ... } | MyStruct |
 | patterns.cs:142:26:142:34 | { ... } | null |
 | patterns.cs:142:31:142:32 | 10 | Int32 |
+patternDefiningAccess
+| patterns.cs:9:18:9:29 | MyStruct ms1 | patterns.cs:9:27:9:29 | access to local variable ms1 | patterns.cs:9:27:9:29 | ms1 |
+| patterns.cs:13:18:13:40 | MyStruct s | patterns.cs:13:40:13:40 | access to local variable s | patterns.cs:13:40:13:40 | s |
+| patterns.cs:13:32:13:36 | Int32 x | patterns.cs:13:36:13:36 | access to local variable x | patterns.cs:13:36:13:36 | x |
+| patterns.cs:17:18:17:21 | Object p | patterns.cs:17:21:17:21 | access to local variable p | patterns.cs:17:21:17:21 | p |
+| patterns.cs:22:42:22:49 | Int32 subX | patterns.cs:22:46:22:49 | access to local variable subX | patterns.cs:22:46:22:49 | subX |
+| patterns.cs:27:38:27:56 | MyStruct ms | patterns.cs:27:55:27:56 | access to local variable ms | patterns.cs:27:55:27:56 | ms |
+| patterns.cs:38:18:38:29 | MyStruct ms1 | patterns.cs:38:27:38:29 | access to local variable ms1 | patterns.cs:38:27:38:29 | ms1 |
+| patterns.cs:41:18:41:29 | MyStruct ms2 | patterns.cs:41:27:41:29 | access to local variable ms2 | patterns.cs:41:27:41:29 | ms2 |
+| patterns.cs:48:32:48:36 | Int32 x | patterns.cs:48:36:48:36 | access to local variable x | patterns.cs:48:36:48:36 | x |
+| patterns.cs:51:18:51:38 | MyStruct ms | patterns.cs:51:37:51:38 | access to local variable ms | patterns.cs:51:37:51:38 | ms |
+| patterns.cs:54:23:54:28 | Int32 x2 | patterns.cs:54:27:54:28 | access to local variable x2 | patterns.cs:54:27:54:28 | x2 |
+| patterns.cs:59:23:59:23 | Int32 x | patterns.cs:59:23:59:23 | access to local variable x | patterns.cs:59:23:59:23 | x |
+| patterns.cs:59:26:59:26 | Int32 y | patterns.cs:59:26:59:26 | access to local variable y | patterns.cs:59:26:59:26 | y |
+| patterns.cs:67:32:67:36 | Int32 x | patterns.cs:67:36:67:36 | access to local variable x | patterns.cs:67:36:67:36 | x |
+| patterns.cs:70:18:70:38 | MyStruct ms | patterns.cs:70:37:70:38 | access to local variable ms | patterns.cs:70:37:70:38 | ms |
+| patterns.cs:78:19:78:23 | Int32 x | patterns.cs:78:23:78:23 | access to local variable x | patterns.cs:78:23:78:23 | x |
+| patterns.cs:78:26:78:32 | Single y | patterns.cs:78:32:78:32 | access to local variable y | patterns.cs:78:32:78:32 | y |
+| patterns.cs:93:22:93:26 | Int32 x | patterns.cs:93:26:93:26 | access to local variable x | patterns.cs:93:26:93:26 | x |
+| patterns.cs:101:13:101:17 | Int32 y | patterns.cs:101:17:101:17 | access to local variable y | patterns.cs:101:17:101:17 | y |
+| patterns.cs:117:16:117:21 | Int32 y2 | patterns.cs:117:20:117:21 | access to local variable y2 | patterns.cs:117:20:117:21 | y2 |
+| patterns.cs:118:14:118:19 | Int32 x2 | patterns.cs:118:18:118:19 | access to local variable x2 | patterns.cs:118:18:118:19 | x2 |
+| patterns.cs:119:14:119:19 | Int32 x2 | patterns.cs:119:18:119:19 | access to local variable x2 | patterns.cs:119:18:119:19 | x2 |
+| patterns.cs:119:22:119:27 | Int32 y2 | patterns.cs:119:26:119:27 | access to local variable y2 | patterns.cs:119:26:119:27 | y2 |
+| patterns.cs:128:27:128:31 | Int32 x | patterns.cs:128:31:128:31 | access to local variable x | patterns.cs:128:31:128:31 | x |
+| patterns.cs:129:13:129:33 | MyStruct ms | patterns.cs:129:32:129:33 | access to local variable ms | patterns.cs:129:32:129:33 | ms |
+| patterns.cs:131:18:131:18 | Int32 x | patterns.cs:131:18:131:18 | access to local variable x | patterns.cs:131:18:131:18 | x |
+| patterns.cs:140:17:140:24 | Object y | patterns.cs:140:24:140:24 | access to local variable y | patterns.cs:140:24:140:24 | y |
