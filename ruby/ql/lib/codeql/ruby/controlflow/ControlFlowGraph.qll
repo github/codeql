@@ -460,6 +460,10 @@ private module Ast implements AstSig<Location> {
     Pattern getNegatedPattern() { none() }
   }
 
+  class BindingPattern extends Pattern {
+    BindingPattern() { none() }
+  }
+
   class PatternMatchExpr extends Expr {
     PatternMatchExpr() { none() }
 

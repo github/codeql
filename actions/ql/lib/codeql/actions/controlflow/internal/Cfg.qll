@@ -358,6 +358,10 @@ module CfgImpl {
       Pattern getNegatedPattern() { none() }
     }
 
+    class BindingPattern extends Pattern {
+      BindingPattern() { none() }
+    }
+
     class PatternMatchExpr extends Expr {
       PatternMatchExpr() { none() }
 

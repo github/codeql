@@ -311,6 +311,10 @@ module Ast implements AstSig<Location> {
     Pattern getNegatedPattern() { none() }
   }
 
+  class BindingPattern extends Pattern {
+    BindingPattern() { none() }
+  }
+
   class PatternMatchExpr extends U::PatternGuardExpr {
     Expr getExpr() { result = super.getValue() }
 

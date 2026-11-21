@@ -1187,6 +1187,11 @@ module Ast implements AstSig<Py::Location> {
     Pattern getNegatedPattern() { none() }
   }
 
+  /** A binding pattern handled by the shared CFG. */
+  class BindingPattern extends EmptyPattern {
+    BindingPattern() { none() }
+  }
+
   /** A pattern match expression. Python has no `instanceof`-style pattern match expression. */
   class PatternMatchExpr extends Expr {
     PatternMatchExpr() { none() }
