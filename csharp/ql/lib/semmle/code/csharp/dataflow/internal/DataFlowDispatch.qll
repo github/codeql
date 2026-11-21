@@ -6,6 +6,7 @@ private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.dispatch.RuntimeCallable
+private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.internal.Location
@@ -82,6 +83,9 @@ private module Cached {
     } or
     TSummaryCall(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
+    } or
+    TImplicitDeconstructCall(ControlFlowNodes::ElementNode cfn, DeconstructMethod deconstruct) {
+      implicitDeconstructCall(cfn.asExpr(), deconstruct, _)
     }
 
   /** Gets a viable run-time target for the call `call`. */
@@ -363,6 +367,34 @@ bindingset[f1, f2]
 pragma[inline_late]
 private predicate folderDist(Folder f1, Folder f2, int i) =
   shortestDistances(relevantFolder/1, adjacentFolders/2)(f1, f2, i)
+
+/**
+ * A synthetic call to a Deconstruct method.
+ *
+ * Example: `var (x, y) = r;` where `r` is of type `R` with a `Deconstruct` method.
+ * The synthetic call is created to represent the deconstruction of `r` into `x` and `y`.
+ * That is, we synthesize a call to deconstruct `r.Deconstruct(out var x0, out var y0)`, with synthetic nodes representing the out parameters `x0` and `y0`.
+ */
+class ImplicitDeconstructCallDataFlowCall extends DataFlowCall, TImplicitDeconstructCall {
+  private ControlFlowNodes::ElementNode cfn;
+  private Method deconstruct;
+
+  ImplicitDeconstructCallDataFlowCall() { this = TImplicitDeconstructCall(cfn, deconstruct) }
+
+  override DataFlowCallable getARuntimeTarget() {
+    result.getUnderlyingCallable() = deconstruct.getUnboundDeclaration()
+  }
+
+  override ControlFlowNodes::ElementNode getControlFlowNode() { result = cfn }
+
+  override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
+
+  override DataFlowCallable getEnclosingCallable() { result.getAControlFlowNode() = cfn }
+
+  override string toString() { result = cfn.toString() }
+
+  override Location getLocation() { result = cfn.getLocation() }
+}
 
 /** A non-delegate C# call relevant for data flow. */
 class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
