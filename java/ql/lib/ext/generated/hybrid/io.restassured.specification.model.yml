@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://www.github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.restassured.specification", "RequestSenderOptions", False, "get", "(String,Object[])", "", "Argument[0]", "ai-candidate-cwe-918", "ai-generated"]
+      - ["io.restassured.specification", "RequestSenderOptions", False, "get", "(String,Object[])", "", "Argument[1]", "ai-candidate-cwe-918", "ai-generated"]
+      - ["io.restassured.specification", "RequestSenderOptions", False, "post", "(String,Object[])", "", "Argument[0]", "ai-candidate-cwe-918", "ai-generated"]
+      - ["io.restassured.specification", "RequestSenderOptions", False, "post", "(String,Object[])", "", "Argument[1]", "ai-candidate-cwe-918", "ai-generated"]
+      - ["io.restassured.specification", "RequestSenderOptions", False, "put", "(String,Object[])", "", "Argument[0]", "ai-candidate-cwe-918", "ai-generated"]
+      - ["io.restassured.specification", "RequestSenderOptions", False, "put", "(String,Object[])", "", "Argument[1]", "ai-candidate-cwe-918", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.restassured.specification", "RequestSenderOptions", False, "get", "(String,Object[])", "", "ReturnValue", "ai-candidate", "ai-generated"]
+      - ["io.restassured.specification", "RequestSenderOptions", False, "post", "(String,Object[])", "", "ReturnValue", "ai-candidate", "ai-generated"]
+      - ["io.restassured.specification", "RequestSenderOptions", False, "put", "(String,Object[])", "", "ReturnValue", "ai-candidate", "ai-generated"]
