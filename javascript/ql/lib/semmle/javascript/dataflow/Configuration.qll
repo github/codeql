@@ -526,7 +526,8 @@ deprecated private predicate barrierGuardBlocksEdge(
   |
     bb = getADominatedBasicBlock(guard, cond) and
     pred = DataFlow::ssaDefinitionNode(input) and
-    succ = DataFlow::ssaDefinitionNode(phi) and
+    succ.(DataFlowPrivate::SsaPhiInputNode).getPhi() = phi and
+    succ.(DataFlowPrivate::SsaPhiInputNode).getInputBlock() = bb and
     input = phi.getInputFromBlock(bb) and
     outcome = cond.getOutcome() and
     barrierGuardBlocksExpr(guard, outcome, input.getAUse(), label)

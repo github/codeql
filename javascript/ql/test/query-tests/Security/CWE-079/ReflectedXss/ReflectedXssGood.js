@@ -85,3 +85,18 @@ app.get('/user/:id', function(req, res) {
   res.send(escapeHtml2(url));
 });
 
+app.get('/language', function(req, res) {
+  let lang = req.query.lang;
+  if (!["en", "de"].includes(lang)) {
+    lang = "en";
+  }
+  res.send("<p>" + lang + "</p>"); // OK - allowlisted or replaced with a safe default
+});
+
+app.get('/greeting', function(req, res) {
+  let name = req.query.name;
+  if (!/^\w+$/.test(name)) {
+    name = "guest";
+  }
+  res.send("<p>Hello " + name + "</p>"); // OK - checked or replaced with a safe default
+});
