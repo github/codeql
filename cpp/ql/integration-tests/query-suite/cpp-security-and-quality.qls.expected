@@ -27,6 +27,7 @@ ql/cpp/ql/src/Critical/MissingCheckScanf.ql
 ql/cpp/ql/src/Critical/NewArrayDeleteMismatch.ql
 ql/cpp/ql/src/Critical/NewDeleteArrayMismatch.ql
 ql/cpp/ql/src/Critical/NewFreeMismatch.ql
+ql/cpp/ql/src/Critical/OverflowCalculated.ql
 ql/cpp/ql/src/Critical/OverflowStatic.ql
 ql/cpp/ql/src/Critical/SizeCheck.ql
 ql/cpp/ql/src/Critical/SizeCheck2.ql
