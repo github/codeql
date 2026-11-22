@@ -23,4 +23,8 @@ app.get('/a', function (req, res) {
   res.send("<p>" + name.replace("<", "&lt;") + "</p>"); // $ Alert - only replaces the first `<`
   res.send("<p>" + name.replaceAll("&", "&amp;") + "</p>"); // $ Alert - does not escape `<`
   res.send("<p>" + name.replaceAll("<script>", "") + "</p>"); // $ Alert - not a meta-character
+
+  const flag = Math.random() > 0.5;
+  res.send("<p>" + name.replaceAll(flag ? "<" : "x", "&lt;") + "</p>"); // $ Alert - may not escape `<`
+  res.send("<p>" + name.replace(flag ? /x/g : "<", "&lt;") + "</p>"); // $ Alert - neither pattern escapes every `<`
 });

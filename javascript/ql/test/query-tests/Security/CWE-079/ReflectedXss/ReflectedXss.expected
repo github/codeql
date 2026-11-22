@@ -56,6 +56,8 @@
 | replaceAll.js:23:12:23:53 | "<p>" + ...  "</p>" | replaceAll.js:16:16:16:29 | req.query.name | replaceAll.js:23:12:23:53 | "<p>" + ...  "</p>" | Cross-site scripting vulnerability due to a $@. | replaceAll.js:16:16:16:29 | req.query.name | user-provided value |
 | replaceAll.js:24:12:24:57 | "<p>" + ...  "</p>" | replaceAll.js:16:16:16:29 | req.query.name | replaceAll.js:24:12:24:57 | "<p>" + ...  "</p>" | Cross-site scripting vulnerability due to a $@. | replaceAll.js:16:16:16:29 | req.query.name | user-provided value |
 | replaceAll.js:25:12:25:59 | "<p>" + ...  "</p>" | replaceAll.js:16:16:16:29 | req.query.name | replaceAll.js:25:12:25:59 | "<p>" + ...  "</p>" | Cross-site scripting vulnerability due to a $@. | replaceAll.js:16:16:16:29 | req.query.name | user-provided value |
+| replaceAll.js:28:12:28:69 | "<p>" + ...  "</p>" | replaceAll.js:16:16:16:29 | req.query.name | replaceAll.js:28:12:28:69 | "<p>" + ...  "</p>" | Cross-site scripting vulnerability due to a $@. | replaceAll.js:16:16:16:29 | req.query.name | user-provided value |
+| replaceAll.js:29:12:29:67 | "<p>" + ...  "</p>" | replaceAll.js:16:16:16:29 | req.query.name | replaceAll.js:29:12:29:67 | "<p>" + ...  "</p>" | Cross-site scripting vulnerability due to a $@. | replaceAll.js:16:16:16:29 | req.query.name | user-provided value |
 | response-object.js:14:18:14:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:14:18:14:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:17:18:17:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:17:18:17:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:23:18:23:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:23:18:23:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
@@ -192,6 +194,8 @@ edges
 | replaceAll.js:16:9:16:12 | name | replaceAll.js:23:20:23:23 | name | provenance |  |
 | replaceAll.js:16:9:16:12 | name | replaceAll.js:24:20:24:23 | name | provenance |  |
 | replaceAll.js:16:9:16:12 | name | replaceAll.js:25:20:25:23 | name | provenance |  |
+| replaceAll.js:16:9:16:12 | name | replaceAll.js:28:20:28:23 | name | provenance |  |
+| replaceAll.js:16:9:16:12 | name | replaceAll.js:29:20:29:23 | name | provenance |  |
 | replaceAll.js:16:16:16:29 | req.query.name | replaceAll.js:16:9:16:12 | name | provenance |  |
 | replaceAll.js:23:20:23:23 | name | replaceAll.js:23:20:23:44 | name.re ... "&lt;") | provenance |  |
 | replaceAll.js:23:20:23:44 | name.re ... "&lt;") | replaceAll.js:23:12:23:53 | "<p>" + ...  "</p>" | provenance |  |
@@ -199,6 +203,10 @@ edges
 | replaceAll.js:24:20:24:48 | name.re ... &amp;") | replaceAll.js:24:12:24:57 | "<p>" + ...  "</p>" | provenance |  |
 | replaceAll.js:25:20:25:23 | name | replaceAll.js:25:20:25:50 | name.re ... >", "") | provenance |  |
 | replaceAll.js:25:20:25:50 | name.re ... >", "") | replaceAll.js:25:12:25:59 | "<p>" + ...  "</p>" | provenance |  |
+| replaceAll.js:28:20:28:23 | name | replaceAll.js:28:20:28:60 | name.re ... "&lt;") | provenance |  |
+| replaceAll.js:28:20:28:60 | name.re ... "&lt;") | replaceAll.js:28:12:28:69 | "<p>" + ...  "</p>" | provenance |  |
+| replaceAll.js:29:20:29:23 | name | replaceAll.js:29:20:29:58 | name.re ... "&lt;") | provenance |  |
+| replaceAll.js:29:20:29:58 | name.re ... "&lt;") | replaceAll.js:29:12:29:67 | "<p>" + ...  "</p>" | provenance |  |
 | response-object.js:7:11:7:14 | data | response-object.js:14:18:14:21 | data | provenance |  |
 | response-object.js:7:11:7:14 | data | response-object.js:17:18:17:21 | data | provenance |  |
 | response-object.js:7:11:7:14 | data | response-object.js:23:18:23:21 | data | provenance |  |
@@ -439,6 +447,12 @@ nodes
 | replaceAll.js:25:12:25:59 | "<p>" + ...  "</p>" | semmle.label | "<p>" + ...  "</p>" |
 | replaceAll.js:25:20:25:23 | name | semmle.label | name |
 | replaceAll.js:25:20:25:50 | name.re ... >", "") | semmle.label | name.re ... >", "") |
+| replaceAll.js:28:12:28:69 | "<p>" + ...  "</p>" | semmle.label | "<p>" + ...  "</p>" |
+| replaceAll.js:28:20:28:23 | name | semmle.label | name |
+| replaceAll.js:28:20:28:60 | name.re ... "&lt;") | semmle.label | name.re ... "&lt;") |
+| replaceAll.js:29:12:29:67 | "<p>" + ...  "</p>" | semmle.label | "<p>" + ...  "</p>" |
+| replaceAll.js:29:20:29:23 | name | semmle.label | name |
+| replaceAll.js:29:20:29:58 | name.re ... "&lt;") | semmle.label | name.re ... "&lt;") |
 | response-object.js:7:11:7:14 | data | semmle.label | data |
 | response-object.js:7:18:7:25 | req.body | semmle.label | req.body |
 | response-object.js:14:18:14:21 | data | semmle.label | data |

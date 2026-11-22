@@ -44,7 +44,8 @@ module Shared {
         RegExp::isWildcardLike(this.getRegExp().getRoot())
         or
         // or it's a `replaceAll` call whose string pattern is a meta-character.
-        this.getArgument(0).mayHaveStringValue(["<", "'", "\""])
+        this.getMethodName() = "replaceAll" and
+        forex(string s | this.getArgument(0).mayHaveStringValue(s) | s = ["<", "'", "\""])
       )
     }
   }
