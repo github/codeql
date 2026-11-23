@@ -117,7 +117,7 @@ func testUIWebView() {
 	let remoteString = getRemoteData()
 
 	webview.loadHTMLString(localString, baseURL: nil) // GOOD: the HTML data is local
-	webview.loadHTMLString(getRemoteData(), baseURL: nil) // $ Alert // BAD: HTML contains remote input, may access local secrets
+	webview.loadHTMLString(getRemoteData(), baseURL: nil) // $ Alert (HTML contains remote input, may access local secrets)
 	webview.loadHTMLString(remoteString, baseURL: nil) // $ Alert
 
 	webview.loadHTMLString("<html>" + localStringFragment + "</html>", baseURL: nil) // GOOD: the HTML data is local
