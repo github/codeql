@@ -809,7 +809,7 @@ module Public {
    * flow graph.
    */
   class UninitializedNode extends AbstractUninitializedNode {
-    UninitializedNode() { indirectionIndex = 0 }
+    UninitializedNode() { indirectionIndex = 0 and not v.getUnspecifiedType() instanceof ArrayType }
   }
 
   /**
