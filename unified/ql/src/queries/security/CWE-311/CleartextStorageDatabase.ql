@@ -88,17 +88,12 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
       target = TypeInference::resolveCallTarget(call) and
       target.getName().regexpMatch("(?is).*(crypt|hash|encode|protect).*") and
       argument = call.getAnArgument().getValue() and
-      (
-        node.asExpr() = argument
-        or
-        node.isPostUpdate(argument)
-        or
-        node.isPostUpdate(argument.(UnaryExpr).getOperand())
-      )
+      node.asExpr() = argument
     )
     or
     // booleans are more likely to be settings than actual sensitive data.
     TypeInference::inferType(node.asExpr()).asClass().getName() = "Bool"
+    // TODO: verify that the `Bool` barrier works.
     // TODO: Add models-as-data barriers.
   }
 
@@ -121,5 +116,5 @@ from
   CleartextStorageDatabaseFlow::PathNode sourceNode, CleartextStorageDatabaseFlow::PathNode sinkNode
 where CleartextStorageDatabaseFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
-  "This database operation may read or write unencrypted sensitive data from $@.", sourceNode.getNode(),
-  sourceNode.getNode().toString()
+  "This database operation may read or write unencrypted sensitive data from $@.",
+  sourceNode.getNode(), sourceNode.getNode().toString()
