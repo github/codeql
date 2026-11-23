@@ -494,6 +494,26 @@ module Unified {
     SetterDeclaration() { this.getAccessorKind().getValue() = "set" }
   }
 
+  /**
+   * A function declaration with a parameter whose external name is the reserved name `#newValue`,
+   * representing a setter that is invoked via call syntax when a call appears as an assignment
+   * target or is otherwise updated in place. Such a call to `foo` invokes the setter method named
+   * `foo`, rather than the ordinary method `foo`, passing the new value as the `#newValue` argument.
+   *
+   * For example, the setter of a Swift subscript declaration:
+   * ```swift
+   * subscript(i: Int) -> String {
+   *   get { "42" }
+   *   set { print(newValue) } // setter method declaration, with parameters `i` and `newValue`
+   * }
+   * ```
+   */
+  final class SetterMethodDeclaration extends FunctionDeclaration {
+    SetterMethodDeclaration() {
+      this.getAParameter().getExternalNameNode().getValue() = "#newValue"
+    }
+  }
+
   /** An `if` statement or conditional expression. */
   class IfExpr extends G::IfExpr {
     /** Holds if this expression represents conditional compilation. */

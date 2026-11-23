@@ -1,0 +1,170 @@
+struct S {
+    subscript(i: Int, j: Int = 0) -> Int {
+        get { i + j }
+        set { print(newValue) }
+    }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        structDecl
+          attributes:
+          modifiers:
+          name: identifier "S"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    subscriptDecl
+                      attributes:
+                      modifiers:
+                      parameterClause:
+                        functionParameterClause
+                          leftParen: (
+                          rightParen: )
+                          parameters:
+                            functionParameter
+                              colon: :
+                              attributes:
+                              modifiers:
+                              trailingComma: ,
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                              firstName: identifier "i"
+                            functionParameter
+                              colon: :
+                              attributes:
+                              modifiers:
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                              firstName: identifier "j"
+                              defaultValue:
+                                initializerClause
+                                  equal: =
+                                  value:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "0"
+                      returnClause:
+                        returnClause
+                          arrow: ->
+                          type:
+                            identifierType
+                              name: identifier "Int"
+                      accessorBlock:
+                        accessorBlock
+                          accessors:
+                            accessorDecl
+                              accessorSpecifier: get
+                              attributes:
+                              body:
+                                codeBlock
+                                  leftBrace: {
+                                  rightBrace: }
+                                  statements:
+                                    codeBlockItem
+                                      item:
+                                        infixOperatorExpr
+                                          operator:
+                                            binaryOperatorExpr
+                                              operator: binaryOperator "+"
+                                          leftOperand:
+                                            declReferenceExpr
+                                              baseName: identifier "i"
+                                          rightOperand:
+                                            declReferenceExpr
+                                              baseName: identifier "j"
+                              modifiers:
+                            accessorDecl
+                              accessorSpecifier: set
+                              attributes:
+                              body:
+                                codeBlock
+                                  leftBrace: {
+                                  rightBrace: }
+                                  statements:
+                                    codeBlockItem
+                                      item:
+                                        functionCallExpr
+                                          leftParen: (
+                                          rightParen: )
+                                          arguments:
+                                            labeledExpr
+                                              expression:
+                                                declReferenceExpr
+                                                  baseName: identifier "newValue"
+                                          additionalTrailingClosures:
+                                          calledExpression:
+                                            declReferenceExpr
+                                              baseName: identifier "print"
+                              modifiers:
+                          leftBrace: {
+                          rightBrace: }
+                      subscriptKeyword: subscript
+          structKeyword: struct
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {\n    ⟨member⟩⟨member⟩\n    }\n}"
+          modifier: modifier "struct" source="struct"
+          name_node: identifier "S" source="S"
+          member:
+            function_declaration source="⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) -> ⟨return_type⟩ {\n        get ⟨body⟩"
+              name_node: identifier "subscript" source="subscript"
+              parameter:
+                parameter source="⟨pattern⟩: ⟨type⟩"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "i" source="i"
+                parameter source="⟨pattern⟩: ⟨type⟩ = ⟨default⟩"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "j" source="j"
+                  default: int_literal "0" source="0"
+              return_type: identifier "Int" source="Int"
+              body:
+                block source="{ ⟨stmt⟩ }"
+                  stmt:
+                    binary_expr source="⟨left⟩ ⟨operator⟩ ⟨right⟩"
+                      left: identifier "i" source="i"
+                      operator: infix_operator "+" source="+"
+                      right: identifier "j" source="j"
+            function_declaration source="⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩) -> Int {\n        get { i + j }\n        ⟨parameter⟩ ⟨body⟩"
+              modifier: modifier "chained_declaration" source=""
+              name_node: identifier "subscript" source="subscript"
+              parameter:
+                parameter source="⟨pattern⟩: ⟨type⟩"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "i" source="i"
+                parameter source="⟨pattern⟩: ⟨type⟩ = ⟨default⟩"
+                  type: identifier "Int" source="Int"
+                  pattern: identifier "j" source="j"
+                  default: int_literal "0" source="0"
+                parameter source="⟨external_name_node⟩⟨pattern⟩"
+                  modifier: modifier "generated" source=""
+                  external_name_node: identifier "#newValue" source="set"
+                  type: identifier "Int" source="Int" (external)
+                  pattern: identifier "newValue" source="set"
+              body:
+                block source="{ ⟨stmt⟩ }"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee: identifier "print" source="print"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: identifier "newValue" source="newValue"
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""

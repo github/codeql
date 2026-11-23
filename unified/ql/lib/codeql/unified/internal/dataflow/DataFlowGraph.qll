@@ -31,14 +31,14 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node2.isLocalVariableWrite(fe, var)
   )
   or
-  exists(CallExpr call, Expr receiverExpr |
-    receiverExpr = call.getCallee().(MemberAccessExpr).getBase()
+  exists(DataFlowCall call, Expr receiverExpr |
+    receiverExpr = call.getCallExpr().getCallee().(MemberAccessExpr).getBase()
   |
     node1.isResultValue(receiverExpr) and
     step.value() and
-    node2.isReceiverArgument(call)
+    node2.isReceiverArgumentEx(call)
     or
-    node1.isReceiverPostUpdate(call) and
+    node1.isReceiverPostUpdateEx(call) and
     step.value() and
     node2.isPostUpdate(receiverExpr)
   )
@@ -53,12 +53,14 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node2.isPostUpdate(call.getCallee())
   )
   or
-  exists(CallExpr call, UnqualifiedMemberAccess callee | callee = call.getCallee() |
+  exists(DataFlowCall call, UnqualifiedMemberAccess callee |
+    callee = call.getCallExpr().getCallee()
+  |
     node1.isLocalVariableRead(callee, callee.getImplicitQualifierVariable()) and
     step.value() and
-    node2.isReceiverArgument(call)
+    node2.isReceiverArgumentEx(call)
     or
-    node1.isReceiverPostUpdate(call) and
+    node1.isReceiverPostUpdateEx(call) and
     step.value() and
     node2.isLocalVariablePostUpdate(callee, callee.getImplicitQualifierVariable())
   )

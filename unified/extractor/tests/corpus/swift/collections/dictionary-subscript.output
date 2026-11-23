@@ -49,8 +49,11 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "v" source="v"
           value:
-            call_expr source="⟨callee⟩[⟨argument⟩]"
-              callee: identifier "d" source="d"
+            call_expr source="⟨callee⟩⟨argument⟩]"
+              callee:
+                member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                  base: identifier "d" source="d"
+                  member_name_node: identifier "subscript" source="["
               argument:
                 argument source="⟨value⟩"
                   value: string_literal "\"key\"" source="\"key\""
