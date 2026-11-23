@@ -42,7 +42,8 @@ module KindValidation<KindValidationConfigSig Config> {
           "cors-origin", "mongodb.sink", "system-prompt-injection", "user-prompt-injection",
           // Swift-only currently, but may be shared in the future
           "database-store", "format-string", "hash-iteration-count", "predicate-injection",
-          "preferences-store", "tls-protocol-version", "transmission", "webview-fetch", "xxe",
+          "preferences-store", "tls-protocol-version", "transmission", "webview-fetch",
+          "webview-baseurl", "xxe",
           // Go-only currently, but may be shared in the future
           "jwt",
           // CPP-only currently

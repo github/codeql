@@ -20,10 +20,16 @@ import unified
 private class UnsafeWebViewFetchSink extends DataFlow::Node {
   UnsafeWebViewFetchSink() { Models::isSink(this, "webview-fetch") }
 
-  Expr getBaseUrl() {
+  /**
+   * Gets a base URL argument of this WebView fetch.
+   */
+  DataFlow::Node getABaseUrl() {
+    // `result` is a `webview-baseurl` sink that's part of the same
+    // call as this `webview-fetch` sink.
     exists(CallExpr call |
-      this.asExpr() = call.getAnArgument().getValue() and
-      result = call.getNamedArgument("baseURL")
+      Models::isSink(result, "webview-baseurl") and
+      call.getAnArgument().getValue() = this.asExpr() and
+      call.getAnArgument().getValue() = result.asExpr()
     )
   }
 }
@@ -37,7 +43,7 @@ module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) {
     exists(UnsafeWebViewFetchSink sink |
       node = sink or
-      node.asExpr() = sink.getBaseUrl()
+      node = sink.getABaseUrl()
     )
   }
 
@@ -48,7 +54,6 @@ module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
 }
 
 // TODO: Recover the relative-URL and Data paths marked MISSING in the tests.
-
 module UnsafeWebViewFetchFlow = TaintTracking::Global<UnsafeWebViewFetchConfig>;
 
 import UnsafeWebViewFetchFlow::PathGraph
@@ -61,16 +66,16 @@ where
   sink = sinkNode.getNode() and
   (
     // no base URL
-    not exists(sink.getBaseUrl()) and
+    not exists(sink.getABaseUrl()) and
     message = "Tainted data is used in a WebView fetch."
     or
     // base URL is nil
-    sink.getBaseUrl().(BuiltinExpr).getValue() = "nil" and
+    sink.getABaseUrl().asExpr().(BuiltinExpr).getValue() = "nil" and
     message = "Tainted data is used in a WebView fetch without restricting the base URL."
     or
     // base URL is also tainted
     exists(DataFlow::Node baseUrl |
-      baseUrl.asExpr() = sink.getBaseUrl() and
+      baseUrl = sink.getABaseUrl() and
       UnsafeWebViewFetchFlow::flowTo(baseUrl)
     ) and
     message = "Tainted data is used in a WebView fetch with a tainted base URL."

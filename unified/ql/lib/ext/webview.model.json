@@ -7,11 +7,14 @@
       },
       "data": [
         // namespace, type, subtypes, name, signature, ext, input, kind, provenance
-        // note that the baseURL argument is currently recognized by name, not encoded here.
         ["", "UIWebView", true, "loadHTMLString(_:baseURL:)", "", "", "Argument[0]", "webview-fetch", "manual"],
+        ["", "UIWebView", true, "loadHTMLString(_:baseURL:)", "", "", "Argument[baseURL:]", "webview-baseurl", "manual"],
         ["", "WKWebView", true, "loadHTMLString(_:baseURL:)", "", "", "Argument[0]", "webview-fetch", "manual"],
+        ["", "WKWebView", true, "loadHTMLString(_:baseURL:)", "", "", "Argument[baseURL:]", "webview-baseurl", "manual"],
         ["", "UIWebView", true, "load(_:mimeType:textEncodingName:baseURL:)", "", "", "Argument[0]", "webview-fetch", "manual"],
-        ["", "WKWebView", true, "load(_:mimeType:characterEncodingName:baseURL:)", "", "", "Argument[0]", "webview-fetch", "manual"]
+        ["", "UIWebView", true, "load(_:mimeType:textEncodingName:baseURL:)", "", "", "Argument[baseURL:]", "webview-baseurl", "manual"],
+        ["", "WKWebView", true, "load(_:mimeType:characterEncodingName:baseURL:)", "", "", "Argument[0]", "webview-fetch", "manual"],
+        ["", "WKWebView", true, "load(_:mimeType:characterEncodingName:baseURL:)", "", "", "Argument[baseURL:]", "webview-baseurl", "manual"]
       ]
     }
   ]
