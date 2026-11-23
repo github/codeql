@@ -436,8 +436,27 @@ module Unified {
 
   /** A function expression. */
   class FunctionExpr extends G::FunctionExpr {
-    /** Gets the number of parameters of this function. */
-    int getNumberOfParameters() { result = count(this.getAParameter()) }
+    /**
+     * Gets the number of implicit positional parameters of this function.
+     *
+     * These are parameters that are not declared, but are inferred from
+     * occurrences in this function's body such as Swift's `$0`, `$1`, `$2`, ...
+     */
+    int getNumberOfImplicitParameters() {
+      result = max(int n | exists(getImplicitFunctionExprParamName(this, n)) | n) + 1
+      or
+      not exists(getImplicitFunctionExprParamName(this, _)) and
+      result = 0
+    }
+
+    /** Gets the number of explicit or implicit parameters of this function. */
+    int getNumberOfParameters() {
+      this.getNumberOfImplicitParameters() > 0 and
+      result = this.getNumberOfImplicitParameters()
+      or
+      this.getNumberOfImplicitParameters() = 0 and
+      result = count(this.getAParameter())
+    }
   }
 
   class ArrayLiteral extends G::ArrayLiteral {
