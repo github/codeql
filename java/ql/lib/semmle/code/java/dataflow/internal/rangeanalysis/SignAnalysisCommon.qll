@@ -64,7 +64,8 @@ private predicate unknownSign(Expr e) {
 private predicate lowerBound(Expr lowerbound, SsaVariable v, SsaReadPosition pos, boolean isStrict) {
   exists(boolean testIsTrue, ComparisonExpr comp |
     pos.hasReadOfVar(v) and
-    guardControlsSsaRead(getComparisonGuard(comp), pos, testIsTrue) and
+    guardControlsSsaRead(getComparisonGuard(comp), pos,
+      any(GuardValue gv | gv.asBooleanValue() = testIsTrue)) and
     not unknownSign(lowerbound)
   |
     testIsTrue = true and
@@ -86,7 +87,8 @@ private predicate lowerBound(Expr lowerbound, SsaVariable v, SsaReadPosition pos
 private predicate upperBound(Expr upperbound, SsaVariable v, SsaReadPosition pos, boolean isStrict) {
   exists(boolean testIsTrue, ComparisonExpr comp |
     pos.hasReadOfVar(v) and
-    guardControlsSsaRead(getComparisonGuard(comp), pos, testIsTrue) and
+    guardControlsSsaRead(getComparisonGuard(comp), pos,
+      any(GuardValue gv | gv.asBooleanValue() = testIsTrue)) and
     not unknownSign(upperbound)
   |
     testIsTrue = true and
@@ -109,12 +111,15 @@ private predicate upperBound(Expr upperbound, SsaVariable v, SsaReadPosition pos
  *  - `isEq = false` : `v != eqbound`
  */
 private predicate eqBound(Expr eqbound, SsaVariable v, SsaReadPosition pos, boolean isEq) {
-  exists(Guard guard, boolean testIsTrue, boolean polarity |
+  exists(Guard guard, GuardValue testIsTrue, GuardValue eqval |
     pos.hasReadOfVar(v) and
     guardControlsSsaRead(guard, pos, testIsTrue) and
-    guard.isEquality(eqbound, ssaRead(v, 0), polarity) and
-    isEq = polarity.booleanXor(testIsTrue).booleanNot() and
+    guard.isEquality(eqbound, ssaRead(v, 0), eqval) and
     not unknownSign(eqbound)
+  |
+    testIsTrue = eqval and isEq = true
+    or
+    testIsTrue = eqval.getDualValue() and isEq = false
   )
 }
 

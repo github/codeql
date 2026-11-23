@@ -13,7 +13,7 @@ public class Test {
 
   public static String test(Object o) {
 
-    if (o instanceof Object o2) {
+    if (o instanceof Object o2 && o2.hashCode() > 0) {
       // So we should know o2.toString is really Specific.toString():
       return o2.toString();
     }

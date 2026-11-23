@@ -2762,6 +2762,23 @@ class RecordPatternExpr extends Expr, @recordpatternexpr {
   PatternExpr getSubPattern(int i) { result.isNthChildOf(this, i) }
 
   /**
+   * Holds if the `i`th sub pattern `subPattern` of this record pattern matches
+   * any value of its type.
+   *
+   * This is used to determine if this record pattern matches any record of its type.
+   */
+  predicate subPatternIsUnrestricted(PatternExpr subPattern, int idx) {
+    subPattern = this.getSubPattern(idx) and
+    subPattern.getType() =
+      this.getType().(Record).getCanonicalConstructor().getParameter(idx).getType() and
+    (
+      subPattern instanceof LocalVariableDeclExpr
+      or
+      subPattern.(RecordPatternExpr).isUnrestricted()
+    )
+  }
+
+  /**
    * Holds if this record pattern matches any record of its type.
    *
    * For example, for `record R(Object o) { }`, pattern `R(Object o)` is unrestricted, whereas
@@ -2769,13 +2786,7 @@ class RecordPatternExpr extends Expr, @recordpatternexpr {
    */
   predicate isUnrestricted() {
     forall(PatternExpr subPattern, int idx | subPattern = this.getSubPattern(idx) |
-      subPattern.getType() =
-        this.getType().(Record).getCanonicalConstructor().getParameter(idx).getType() and
-      (
-        subPattern instanceof LocalVariableDeclExpr
-        or
-        subPattern.(RecordPatternExpr).isUnrestricted()
-      )
+      this.subPatternIsUnrestricted(subPattern, idx)
     )
   }
 
