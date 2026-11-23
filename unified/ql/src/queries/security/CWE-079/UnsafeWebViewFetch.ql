@@ -45,7 +45,6 @@ module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-// TODO: Recover the relative-URL and Data paths marked MISSING in the tests.
 module UnsafeWebViewFetchFlow = TaintTracking::Global<UnsafeWebViewFetchConfig>;
 
 import UnsafeWebViewFetchFlow::PathGraph
