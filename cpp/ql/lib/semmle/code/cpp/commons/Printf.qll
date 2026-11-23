@@ -376,6 +376,10 @@ private int lengthInBase10(float f) {
 pragma[nomagic]
 private predicate isPointerTypeWithBase(Type base, PointerType pt) { base = pt.getBaseType() }
 
+private predicate isFloatingPointConversion(string conv) {
+  conv = ["a", "A", "e", "E", "f", "F", "g", "G"]
+}
+
 bindingset[expr]
 private BufferWriteEstimationReason getEstimationReasonForIntegralExpression(Expr expr) {
   // we consider the range analysis non trivial if it
@@ -834,10 +838,12 @@ class FormatLiteral extends Literal instanceof StringLiteral {
    * specifier's length flag.
    */
   FloatingPointType getFloatingPointConversion(int n) {
-    exists(string len |
-      len = this.getLength(n) and
-      if len = ["L", "ll"] then result instanceof LongDoubleType else result instanceof DoubleType
-    )
+    result = this.getFloatingPointConversionForLength(this.getLength(n))
+  }
+
+  bindingset[len]
+  private FloatingPointType getFloatingPointConversionForLength(string len) {
+    if len = ["L", "ll"] then result instanceof LongDoubleType else result instanceof DoubleType
   }
 
   /**
@@ -845,8 +851,12 @@ class FormatLiteral extends Literal instanceof StringLiteral {
    * specifier's length flag.
    */
   PointerType getStorePointerConversion(int n) {
+    result = this.getStorePointerConversionForLength(this.getLength(n))
+  }
+
+  private PointerType getStorePointerConversionForLength(string len) {
     exists(IntegralType base |
-      exists(string len | len = this.getLength(n) |
+      (
         len = "hh" and base instanceof CharType
         or
         len = "h" and base instanceof ShortType
@@ -867,22 +877,31 @@ class FormatLiteral extends Literal instanceof StringLiteral {
    * Gets the argument type required by the nth conversion specifier.
    */
   Type getConversionType(int n) {
-    result = this.getIntegerConversionType(this.getLength(n), this.getConversionChar(n)) or
-    result = this.getConversionType1b(n) or
-    result = this.getConversionType3(n) or
-    result = this.getConversionType4(n) or
-    result = this.getConversionType6(n) or
-    result = this.getConversionType7(n) or
-    result = this.getConversionType8(n) or
-    result = this.getConversionType9(n) or
-    result = this.getConversionType10(n)
+    result = this.getConversionTypeForSpecifier(this.getLength(n), this.getConversionChar(n))
+  }
+
+  bindingset[len, conv]
+  private Type getConversionTypeForSpecifier(string len, string conv) {
+    result = this.getIntegerConversionType(len, conv)
+    or
+    conv = ["c", "C"] and result = this.getCharacterConversionType(len, conv)
+    or
+    isFloatingPointConversion(conv) and result = this.getFloatingPointConversionForLength(len)
+    or
+    conv = ["s", "S"] and isPointerTypeWithBase(this.getCharacterConversionType(len, conv), result)
+    or
+    conv = "p" and result instanceof VoidPointerType
+    or
+    conv = "n" and result = this.getCountConversionType(len)
+    or
+    conv = "Z" and result = this.getCountedStringConversionType(len)
   }
 
   /**
    * Gets the required argument type for an integer conversion with length flag
    * `len` and conversion character `conv`, using this literal's target platform.
    */
-  Type getIntegerConversionType(string len, string conv) {
+  private Type getIntegerConversionType(string len, string conv) {
     result = this.getIntegralTypeForLength(len) and
     (
       conv = ["d", "i"] and
@@ -895,110 +914,204 @@ class FormatLiteral extends Literal instanceof StringLiteral {
   }
 
   /**
-   * Gets the char type required by the `n`th conversion specifier.
-   *  - in the base case this is the default for the formatting function
-   *    (e.g. `char` for `printf`, `char` or `wchar_t` for `wprintf`).
-   *  - the `%C` format character reverses wideness.
-   *  - the size prefixes 'l'/'w' and 'h' override the type character
-   *    to wide or single-byte characters respectively.
+   * Gets the character type for a character or string conversion. Uppercase
+   * conversions use the non-default type. A length modifier can override it.
    */
-  private Type getConversionType1b(int n) {
-    exists(string len, string conv |
-      this.parseConvSpec(n, _, _, _, _, _, len, conv) and
-      (
-        conv = ["c", "C"] and
-        len = "h" and
-        result instanceof PlainCharType
-        or
-        conv = ["c", "C"] and
-        len = ["l", "w"] and
-        result = this.getWideCharType()
-        or
-        conv = "c" and
-        (len != "l" and len != "w" and len != "h") and
-        result = this.getDefaultCharType()
-        or
-        conv = "C" and
-        (len != "l" and len != "w" and len != "h") and
-        result = this.getNonDefaultCharType()
+  bindingset[len, conv]
+  private Type getCharacterConversionType(string len, string conv) {
+    if len = "h"
+    then result instanceof PlainCharType
+    else
+      if len = ["l", "w"]
+      then result = this.getWideCharType()
+      else
+        if conv = ["c", "s"]
+        then result = this.getDefaultCharType()
+        else result = this.getNonDefaultCharType()
+  }
+
+  bindingset[len]
+  private PointerType getCountConversionType(string len) {
+    if exists(this.getStorePointerConversionForLength(len))
+    then result = this.getStorePointerConversionForLength(len)
+    else
+      exists(IntType base | base = result.getBaseType() |
+        base.isSigned() and not base.isExplicitlySigned()
       )
+  }
+
+  bindingset[len]
+  private PointerType getCountedStringConversionType(string len) {
+    if len = ["l", "w"]
+    then result.getBaseType().getName() = "UNICODE_STRING"
+    else result.getBaseType().getName() = "ANSI_STRING"
+  }
+
+  /**
+   * Holds if the conversion is safe to use as a replacement with the given
+   * fields. The diagnostic type model also accepts some nonstandard lengths
+   * and fallbacks that should not be emitted as suggestions.
+   */
+  bindingset[originalLen, flags, prec]
+  private predicate isReplacementConversion(
+    string originalLen, string len, string conv, string flags, string prec
+  ) {
+    len.regexpMatch(this.getLengthRegexp()) and
+    (
+      exists(this.getIntegerConversionType(len, conv)) and
+      not len = ["L", "q", "Z"] and
+      (not len = ["h", "hh"] or len = originalLen) and
+      (
+        if conv = ["d", "i"]
+        then flags.regexpMatch("[-+ 0]*")
+        else
+          if conv = "u"
+          then flags.regexpMatch("[-0]*")
+          else flags.regexpMatch("[-#0]*")
+      )
+      or
+      isFloatingPointConversion(conv) and
+      (
+        len = ["", "L"]
+        or
+        len = "l" and len = originalLen
+      ) and
+      flags.regexpMatch("[-+ #0]*")
+      or
+      conv = ["c", "C", "s", "S"] and
+      (
+        len = ""
+        or
+        conv = ["c", "s"] and len = "l"
+        or
+        this.isMicrosoft() and len = ["h", "l", "w"]
+      ) and
+      flags.regexpMatch("-*") and
+      (conv = ["s", "S"] or prec = "")
     )
   }
 
-  private Type getConversionType3(int n) {
-    exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv = ["a", "A", "e", "E", "f", "F", "g", "G"] and result = this.getFloatingPointConversion(n)
+  private predicate isNativeCharacterType(Type t) {
+    t.getUnspecifiedType() instanceof PlainCharType or
+    t.getUnspecifiedType() instanceof WideCharType or
+    t instanceof Wchar_t
+  }
+
+  bindingset[conv]
+  private predicate matchesReplacementType(string conv, Type required, Expr arg) {
+    if conv = ["c", "C"]
+    then
+      // The unpromoted type is needed to distinguish narrow and wide characters.
+      required.getUnspecifiedType() = arg.getType().getUnspecifiedType() and
+      this.isNativeCharacterType(required) and
+      (
+        required.getUnspecifiedType() instanceof PlainCharType
+        or
+        this.isMicrosoft()
+        or
+        forex(Type wint | wint.hasName("wint_t") |
+          wint.getUnspecifiedType() = arg.getFullyConverted().getType().getUnspecifiedType()
+        )
+      )
+    else
+      exists(Type promoted | promoted = arg.getFullyConverted().getType().getUnspecifiedType() |
+        if conv = ["s", "S"]
+        then
+          exists(Type base, Type requiredBase |
+            base = promoted.(PointerType).getBaseType() and
+            requiredBase = required.(PointerType).getBaseType()
+          |
+            not base.isVolatile() and
+            this.isNativeCharacterType(requiredBase) and
+            requiredBase.getUnspecifiedType() = base.getUnspecifiedType()
+          )
+        else (
+          required.getUnspecifiedType() = promoted
+          or
+          required.getUnspecifiedType().(IntegralType).getCanonicalArithmeticType() =
+            promoted.(IntegralType).getCanonicalArithmeticType()
+        )
+      )
+  }
+
+  bindingset[originalLen, len, conv, arg]
+  private int getReplacementLengthRank(string originalLen, string len, string conv, Expr arg) {
+    // Preserve the modifier where possible. Then prefer a modifier for the
+    // argument's declared typedef, or the ordinary spelling for its type.
+    if len = originalLen
+    then result = 0
+    else
+      if len = ["j", "z", "t"] and this.getConversionTypeForSpecifier(len, conv) = arg.getType()
+      then result = 1
+      else
+        if len = ["", "l", "ll", "L"]
+        then result = 2
+        else
+          if len = ["j", "z", "t"]
+          then result = 3
+          else result = 4
+  }
+
+  private string getConversionSpecifierCandidate(int n, Expr arg, int preference) {
+    exists(
+      string position, string flags, string width, string prec, string originalLen,
+      string originalConv, string len, string conv
+    |
+      this.parseConvSpec(n, _, position, flags, width, prec, originalLen, originalConv) and
+      // The standard Microsoft printf functions do not support positional fields.
+      (
+        not this.isMicrosoft()
+        or
+        position = "" and
+        not width.matches("%$%") and
+        not prec.matches("%$%")
+      ) and
+      this.isReplacementConversion(originalLen, originalLen, originalConv, flags, prec) and
+      (
+        conv = originalConv and
+        (not conv = ["C", "S"] or len = originalLen)
+        or
+        originalConv = ["d", "i"] and conv = "u"
+        or
+        originalConv = "u" and conv = "d"
+        or
+        // Use the standard character and string conversions for replacements.
+        originalConv = "C" and conv = "c"
+        or
+        originalConv = "S" and conv = "s"
+      ) and
+      this.isReplacementConversion(originalLen, len, conv, flags, prec) and
+      (
+        len != "z"
+        or
+        // The signed type corresponding to size_t need not be `ssize_t`.
+        forex(Size_t sizeType | sizeType = this.getSize_t() |
+          sizeType.getUnspecifiedType().(IntegralType).getCanonicalArithmeticType() =
+            arg.getFullyConverted().getType().getUnspecifiedType().(IntegralType).getUnsigned()
+        )
+      ) and
+      forex(Type required | required = this.getConversionTypeForSpecifier(len, conv) |
+        this.matchesReplacementType(conv, required, arg)
+      ) and
+      preference = this.getReplacementLengthRank(originalLen, len, conv, arg) and
+      result = "%" + position + flags + width + prec + len + conv
     )
   }
 
   /**
-   * Gets the string type required by the `n`th conversion specifier.
-   *  - in the base case this is the default for the formatting function
-   *    (e.g. `char *` for `printf`, `char *` or `wchar_t *` for `wprintf`).
-   *  - the `%S` format character reverses wideness on some platforms.
-   *  - the size prefixes 'l'/'w' and 'h' override the type character
-   *    to wide or single-byte characters respectively.
+   * Gets a replacement for the nth conversion specifier for the argument
+   * expression `arg`, if there is a single best type-correct replacement
+   * that preserves the kind of conversion and the other format fields.
    */
-  private Type getConversionType4(int n) {
-    exists(string len, string conv |
-      this.parseConvSpec(n, _, _, _, _, _, len, conv) and
-      (
-        conv = ["s", "S"] and
-        len = "h" and
-        isPointerTypeWithBase(any(PlainCharType plainCharType), result)
-        or
-        conv = ["s", "S"] and
-        len = ["l", "w"] and
-        isPointerTypeWithBase(this.getWideCharType(), result)
-        or
-        conv = "s" and
-        (len != "l" and len != "w" and len != "h") and
-        isPointerTypeWithBase(this.getDefaultCharType(), result)
-        or
-        conv = "S" and
-        (len != "l" and len != "w" and len != "h") and
-        isPointerTypeWithBase(this.getNonDefaultCharType(), result)
-      )
-    )
-  }
-
-  private Type getConversionType6(int n) {
-    exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv = "p" and result instanceof VoidPointerType
-    )
-  }
-
-  private Type getConversionType7(int n) {
-    exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv = "n" and result = this.getStorePointerConversion(n)
-    )
-  }
-
-  private IntPointerType getConversionType8(int n) {
-    exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv = "n" and
-      not exists(this.getStorePointerConversion(n)) and
-      result.getBaseType().(IntType).isSigned() and
-      not result.getBaseType().(IntType).isExplicitlySigned()
-    )
-  }
-
-  private Type getConversionType9(int n) {
-    this.getConversionChar(n) = "Z" and
-    this.getLength(n) = ["l", "w"] and
-    exists(Type t |
-      t.getName() = "UNICODE_STRING" and
-      result.(PointerType).getBaseType() = t
-    )
-  }
-
-  private Type getConversionType10(int n) {
-    this.getConversionChar(n) = "Z" and
-    not this.getLength(n) = "l" and
-    not this.getLength(n) = "w" and
-    exists(Type t |
-      t.getName() = "ANSI_STRING" and
-      result.(PointerType).getBaseType() = t
+  string getSuggestedConversionSpecifier(int n, Expr arg) {
+    this.getUse().getConversionArgument(n) = arg and
+    exists(int preference |
+      preference =
+        min(int score | exists(this.getConversionSpecifierCandidate(n, arg, score)) | score)
+    |
+      result =
+        unique(string spec | spec = this.getConversionSpecifierCandidate(n, arg, preference) | spec) and
+      result != this.getConvSpec(n)
     )
   }
 

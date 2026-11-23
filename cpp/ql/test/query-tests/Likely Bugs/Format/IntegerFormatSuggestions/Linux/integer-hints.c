@@ -23,13 +23,13 @@ void integer_hints(int i, unsigned int ui, long l, unsigned long ul,
   printf("%llu", ull);          // Correct: no alert.
   printf("%d", s);              // Correct after default argument promotion.
 
-  printf("%08d", ll);           // Existing alert; decorated formats out of scope.
+  printf("%08d", ll);           // Suggest %08lld.
   printf("%*d", ll, i);         // Width argument mismatch; no conversion suggestion.
   printf("%.*d", ll, i);        // Precision argument mismatch; no suggestion.
-  printf("%1$d", ll);           // Positional format out of scope.
-  printf("%x", ull);            // Hexadecimal formatting out of scope.
+  printf("%1$d", ll);           // Suggest %1$lld.
+  printf("%x", ull);            // Suggest %llx.
   printf("%d", d);              // Non-integer actual type: no suggestion.
-  printf("%s", ll);             // Non-integer conversion: no suggestion.
+  printf("%s", ll);             // A string conversion needs a string pointer.
   printf("%p", ll);             // Pointer conversion: no suggestion.
-  printf("%f", i);              // Floating-point conversion: no suggestion.
+  printf("%f", i);              // Preserve the floating-point conversion.
 }

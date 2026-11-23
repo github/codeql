@@ -152,28 +152,19 @@ predicate trivialConversion(ExpectedType expected, Type actual) {
  */
 int sizeof_IntType() { exists(IntType it | result = it.getSize()) }
 
-private string suggestedIntegerSpecifier(FormatLiteral format, int n, Type actual) {
-  exists(string length, string conversion, string originalConversion |
-    format.parseConvSpec(n, _, "", "", "", "", ["", "l", "ll"], originalConversion) and
-    originalConversion = ["d", "i", "u"] and
-    length = ["", "l", "ll"] and
-    (if originalConversion = "i" then conversion = ["i", "u"] else conversion = ["d", "u"]) and
-    format.getIntegerConversionType(length, conversion) =
-      actual.getUnspecifiedType().(IntegralType).getCanonicalArithmeticType() and
-    result = "%" + length + conversion
-  )
-}
-
-bindingset[ffc, n, arg, actual]
-private string integerFormatSuggestion(FormattingFunctionCall ffc, int n, Expr arg, Type actual) {
-  if
-    ffc.getConversionArgument(n) = arg and
-    exists(suggestedIntegerSpecifier(ffc.getFormat().(FormatLiteral), n, actual))
-  then
-    result =
-      " Consider using '" + suggestedIntegerSpecifier(ffc.getFormat().(FormatLiteral), n, actual) +
-        "' instead."
-  else result = ""
+bindingset[ffc, n, arg]
+private string formatSuggestion(FormattingFunctionCall ffc, int n, Expr arg) {
+  result =
+    concat(string replacement |
+      ffc.getConversionArgument(n) = arg and
+      // Changing one conversion may not fix an argument reused by a positional format.
+      not ffc.getMinFieldWidthArgument(_) = arg and
+      not ffc.getPrecisionArgument(_) = arg and
+      not exists(int other | other != n and ffc.getConversionArgument(other) = arg) and
+      replacement = ffc.getFormat().(FormatLiteral).getSuggestedConversionSpecifier(n, arg)
+    |
+      " Consider using '" + replacement + "' instead."
+    )
 }
 
 from FormattingFunctionCall ffc, int n, Expr arg, Type expected, Type actual
@@ -202,4 +193,4 @@ where
   count(ffc.getTarget().getFormatParameterIndex()) = 1
 select arg,
   "This format specifier for type '" + expected.getName() + "' does not match the argument type '" +
-    actual.getUnspecifiedType().getName() + "'." + integerFormatSuggestion(ffc, n, arg, actual)
+    actual.getUnspecifiedType().getName() + "'." + formatSuggestion(ffc, n, arg)
