@@ -38,10 +38,10 @@ by Apple's swift-syntax rather than by tree-sitter.
 - Check the output files for correctness but do not edit them manually. Regenerate them with `scripts/update-corpus.sh`.
 
 ## CodeQL Testing
-- If you changed the extractor code, always rebuild it before running CodeQL tests.
+- If you changed the extractor code or Unified QL tests report an incompatible database schema, rebuild with `scripts/create-extractor-pack.sh` and rerun the tests with `--search-path extractor-pack`.
 
 - To run all CodeQL tests, run `codeql test run --search-path extractor-pack ql/test`
 
-- Do not edit `.expected` files manually. To update the expected output, pass `--learn` to the `codeql test run` command.
+- To update the expected output, pass `--learn` to the `codeql test run` command.
 
 - To run a specific test, pass the specific directory to the `codeql test run` command instead of `ql/test`.

@@ -8,6 +8,7 @@ private import unified as U
 private import AstPlugin
 private import codeql.files.FileSystem
 private import codeql.unified.internal.NameBinding as NameBinding
+private import codeql.unified.internal.typeinference.TypeMention as TypeMention
 
 module Unified {
   private import Ast::Unified as G
@@ -49,6 +50,11 @@ module Unified {
         result = parent.getEnclosingClass()
       )
     }
+
+    /**
+     * Gets the nearest resolved enclosing class declaration, if any.
+     */
+    ClassLikeDeclaration getEnclosingClassResolved() { result = this.getEnclosingClass().resolve() }
 
     private AstNode overrideEnclosingCallableParent() {
       exists(FunctionExpr func |
@@ -136,7 +142,7 @@ module Unified {
 
   class Argument extends G::Argument {
     /** Gets the name of this argument. */
-    string getName() { result = this.getNameNode().getValue() }
+    string getName() { result = this.getNameNode().getValue() and result != "_" }
 
     /** Holds if this is a positional argument. */
     predicate isPositional() { not exists(this.getName()) }
@@ -239,15 +245,16 @@ module Unified {
     /** Gets the name of this declaration. */
     string getName() { result = this.getNameNode().getValue() }
 
-    /** Gets a direct base class of this class. */
+    /** Gets a direct base class of this class, where type aliases are resolved. */
+    pragma[nomagic]
     ClassLikeDeclaration getABaseClass() {
-      result.getNameNode() =
-        NameBinding::getStaticBindingTargetFromRef(this.getABaseType().getType())
+      result = this.getABaseType().getType().(TypeMention::TypeMention).getClassLikeDeclaration()
     }
 
     /**
      * Gets the target of this extension class, or this class itself if it is not an extension.
      */
+    pragma[nomagic]
     ClassLikeDeclaration resolve() {
       not exists(this.getExtensionTarget()) and
       result = this
@@ -468,8 +475,31 @@ module Unified {
     SetterDeclaration() { this.getAccessorKind().getValue() = "set" }
   }
 
+  /**
+   * A function declaration with a parameter whose external name is the reserved name `#newValue`,
+   * representing a setter that is invoked via call syntax when a call appears as an assignment
+   * target or is otherwise updated in place. Such a call to `foo` invokes the setter method named
+   * `foo`, rather than the ordinary method `foo`, passing the new value as the `#newValue` argument.
+   *
+   * For example, the setter of a Swift subscript declaration:
+   * ```swift
+   * subscript(i: Int) -> String {
+   *   get { "42" }
+   *   set { print(newValue) } // setter method declaration, with parameters `i` and `newValue`
+   * }
+   * ```
+   */
+  final class SetterMethodDeclaration extends FunctionDeclaration {
+    SetterMethodDeclaration() {
+      this.getAParameter().getExternalNameNode().getValue() = "#newValue"
+    }
+  }
+
   /** An `if` statement or conditional expression. */
   class IfExpr extends G::IfExpr {
+    /** Holds if this expression represents conditional compilation. */
+    predicate isConditionalCompilation() { this.hasModifier("conditional_compilation") }
+
     /** Gets then `then` or `else` branch. */
     Expr getABranch() { result = [this.getThen(), this.getElse()] }
   }

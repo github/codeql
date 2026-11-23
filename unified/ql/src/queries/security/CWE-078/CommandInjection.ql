@@ -18,12 +18,9 @@ import unified
  * A taint configuration for tainted data that reaches a command injection sink.
  */
 module CommandInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, ["local", "remote"]) }
 
-  predicate isSink(DataFlow::Node node) {
-    // TODO: Support Process property-write sinks from original Swift's CommandInjectionExtensions.qll.
-    Models::isSink(node, "command-injection")
-  }
+  predicate isSink(DataFlow::Node node) { Models::isSink(node, "command-injection") }
 
   predicate isBarrier(DataFlow::Node node) {
     // TODO: Port the numeric-type barrier from original Swift's CommandInjectionExtensions.qll.

@@ -1,5 +1,8 @@
 # this file should contain bazel settings required to build things from `semmle-code`
 
+# Preserve CodeQL's placeholder during rules_pkg variable substitution.
+build --define=CODEQL_PLATFORM={CODEQL_PLATFORM}
+
 common --registry=file:///%workspace%/ql/misc/bazel/registry
 common --registry=https://bcr.bazel.build
 

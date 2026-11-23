@@ -2835,6 +2835,24 @@ mod contextual_bound {
     }
 }
 
+mod multi_bound {
+    trait MyTrait<T> {}
+
+    struct S;
+
+    impl MyTrait<bool> for S {}
+
+    impl MyTrait<i32> for S {}
+
+    fn f<X, T: MyTrait<X> + MyTrait<i32>>(x: X, t: T) -> X {
+        x
+    }
+
+    fn call_f() {
+        let res = f(true, S); // $ target=f type=res:bool
+    }
+}
+
 fn main() {
     field_access::f(); // $ target=f
     method_impl::f(); // $ target=f

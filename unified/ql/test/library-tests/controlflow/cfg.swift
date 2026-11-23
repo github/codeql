@@ -154,8 +154,8 @@ func patterns(x : Int) -> Bool {
       return true
     case 42: // $ bbStep='42 : match -> Block(+1)' bbStep='42 : no-match -> SwitchCase(+3)'
       print("42!")
-      fallthrough // $ bbStep=' : successor -> var obj(+5)'
-    default:
+      fallthrough // $ bbStep='fallthrough : fallthrough -> Block(+2)'
+    default: // $ bbStep='SwitchCase : successor -> Block(+1)'
       if (x > 10) { return false } // $ bbStep='... > ... : false -> var obj(+3)' bbStep='... > ... : true -> Block(+0)'
   }
 
@@ -475,29 +475,29 @@ func test(a : A) {
 }
 
 func testIfConfig() {
-#if FOO
+#if FOO // $ bbStep='FOO : false -> Block(+3)' bbStep='FOO : true -> Block(+1)'
   1
-  2
+  2 // $ bbStep='2 : successor -> 5(+6)'
 #else
   3
-  4
+  4 // $ bbStep='4 : successor -> 5(+3)'
 #endif
 
   5
 
-#if BAR
+#if BAR // $ bbStep='BAR : false -> 8(+5)' bbStep='BAR : true -> Block(+1)'
   6
-  7
+  7 // $ bbStep='7 : successor -> 8(+3)'
 #endif
 
   8
 
-#if FOO
+#if FOO // $ bbStep='FOO : false -> IfExpr(+3)' bbStep='FOO : true -> Block(+1)'
   9
-  10
+  10 // $ bbStep='10 : successor -> 13(+6)'
 #elseif true
   11
-  12
+  12 // $ bbStep='12 : successor -> 13(+3)'
 #endif
 
   13

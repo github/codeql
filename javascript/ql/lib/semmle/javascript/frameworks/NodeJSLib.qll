@@ -797,13 +797,32 @@ module NodeJSLib {
     override DataFlow::Node getArgumentList() {
       methodName = ["execFile", "execFileSync", "fork", "spawn", "spawnSync"] and
       // all of the above methods take the argument list as their second argument
-      result = this.getParameter(1).asSink()
+      result = this.getParameter(1).asSink() and
+      not this.isOptionsObject(result) and
+      not result.getALocalSource() instanceof DataFlow::FunctionNode
     }
 
     override predicate isSync() { methodName.matches("%Sync") }
 
+    /** Holds if `node` is known to be an options object rather than an argument array or callback. */
+    pragma[inline]
+    private predicate isOptionsObject(DataFlow::Node node) {
+      not node.getALocalSource() instanceof DataFlow::ArrayCreationNode and
+      (
+        node.getALocalSource() instanceof DataFlow::ObjectLiteralNode
+        or
+        exists(node.getALocalSource().getAPropertyWrite("shell"))
+        or
+        exists(API::Node api |
+          api.asSink() = node and
+          api.getAValueReachingSink().getALocalSource() instanceof DataFlow::ObjectLiteralNode
+        )
+      )
+    }
+
     override DataFlow::Node getOptionsArg() {
       not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback
+      // Shell execution still takes separate arguments for the array and the options object.
       not result.getALocalSource() instanceof DataFlow::ArrayCreationNode and // looks like argumentlist
       not result = this.getParameter(0).asSink() and
       // fork/spawn and all sync methos always has options as the last argument
@@ -812,9 +831,14 @@ module NodeJSLib {
         methodName.matches("spawn%") or
         methodName.matches("%Sync")
       then result = this.getLastArgument()
-      else
-        // the rest (exec/execFile) has the options argument as their second last.
-        result = this.getParameter(this.getNumArgument() - 2).asSink()
+      else (
+        result = this.getParameter(this.getNumArgument() - 2).asSink() and
+        (methodName = "exec" or this.getNumArgument() = 4 or this.isOptionsObject(result))
+        or
+        // Without a callback, require evidence that the last argument is an options object.
+        result = this.getLastArgument() and
+        this.isOptionsObject(result)
+      )
     }
   }
 

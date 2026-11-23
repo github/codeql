@@ -466,9 +466,9 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
 
     var config = Realm.Configuration()  // GOOD
     config.fileURL = safeUrl  // GOOD
-    config.fileURL = remoteUrl  // $ MISSING: Alert
+    config.fileURL = remoteUrl  // $ Alert
     config.seedFilePath = safeUrl  // GOOD
-    config.seedFilePath = remoteUrl  // $ MISSING: Alert
+    config.seedFilePath = remoteUrl  // $ Alert
 
     // sqlite3
 
@@ -556,7 +556,7 @@ func testPathInjection2(
     _ = remoteString.completePath(
         into: s3, caseSensitive: false, matchesInto: nil, filterTypes: nil)
     _ = NSData().write(toFile: s3.pointee, atomically: true)  // $ MISSING: Alert // Originally missing
-    _ = NSData().write(toFile: s3[0], atomically: true)  // $ MISSING: Alert
+    _ = NSData().write(toFile: s3[0], atomically: true)  // $ Alert
 
     _ = fm.fileAttributes(atPath: remoteString, traverseLink: true)  // $ Alert
     _ = try fm.attributesOfItem(atPath: remoteString)  // $ Alert

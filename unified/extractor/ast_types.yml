@@ -68,6 +68,7 @@ supertypes:
     - do_while_stmt
     - defer_stmt
     - labeled_stmt
+    - fallthrough_stmt
   callable:
     subtypes:
       - top_level
@@ -261,7 +262,10 @@ named:
   block:
     stmt*: stmt
 
+  # An if expression or a conditional compilation directive (which we view as a
+  # compile-time evaluated if expression).
   if_expr:
+    modifier*: modifier
     condition: expr
     then?: expr
     else?: expr
@@ -299,6 +303,9 @@ named:
   continue_expr:
     label_name_node?: identifier
 
+  # Transfer control directly to the next switch case's body.
+  fallthrough_stmt:
+
   # A labeled statement, such as `outer: for ... { ... }`. The labeled
   # statement appears as the `stmt` field; `break`/`continue` may target
   # the label.
@@ -335,6 +342,13 @@ named:
     type: expr
 
   # A top-level function declaration.
+  #
+  # A function with a parameter whose external name is the reserved name
+  # `#newValue` is a setter method, such as the setter of a Swift subscript. A
+  # call `x.foo(...)` that is the target of an assignment, or is otherwise
+  # updated in place, invokes the setter method named `foo` (whereas a call in
+  # a read position invokes the ordinary method `foo`), passing the new value
+  # as the `#newValue` argument.
   function_declaration:
     modifier*: modifier
     name_node: identifier

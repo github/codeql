@@ -410,17 +410,17 @@ char *my_string_copy() {
 void scan_and_write() {
 	{
 		int i;
-		if (scanf("%d", &i) < 1) { // $ Source[cpp/missing-check-scanf]
+		if (scanf("%d", &i) < 1) {
 			i = 0;
 		}
-		use(i);  // $ SPURIOUS: Alert[cpp/missing-check-scanf] // GOOD [FALSE POSITIVE]: variable is overwritten with a default value when scanf fails
+		use(i);  // GOOD: variable is overwritten with a default value when scanf fails
 	}
 	{
 		int i;
-		if (scanf("%d", &i) != 1) { // $ Source[cpp/missing-check-scanf]
+		if (scanf("%d", &i) != 1) {
 			i = 0;
 		}
-		use(i);  // $ SPURIOUS: Alert[cpp/missing-check-scanf] // GOOD [FALSE POSITIVE]: variable is overwritten with a default value when scanf fails
+		use(i);  // GOOD: variable is overwritten with a default value when scanf fails
 	}
 }
 

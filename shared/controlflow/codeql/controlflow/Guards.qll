@@ -507,12 +507,12 @@ module Make<
      * Holds if this guard tests equality between `e1` and `e2` upon evaluating
      * to `eqval`.
      */
-    predicate isEquality(Expr e1, Expr e2, boolean eqval) {
-      equalityTestSymmetric(this, e1, e2, eqval)
+    predicate isEquality(Expr e1, Expr e2, GuardValue eqval) {
+      equalityTestSymmetric(this, e1, e2, eqval.asBooleanValue())
       or
-      constcaseEquality(this, e1, e2) and eqval = true
+      constcaseEquality(this, e1, e2) and eqval.asBooleanValue() = true
       or
-      constcaseEquality(this, e2, e1) and eqval = true
+      constcaseEquality(this, e2, e1) and eqval.asBooleanValue() = true
     }
 
     /**
@@ -541,7 +541,7 @@ module Make<
     g1.(NotExpr).getOperand() = g2 and v1.asBooleanValue().booleanNot() = v2.asBooleanValue()
     or
     exists(GuardValue eqval, ConstantExpr constant, GuardValue cv |
-      g1.isEquality(g2, constant, eqval.asBooleanValue()) and
+      g1.isEquality(g2, constant, eqval) and
       constantHasValue(constant, cv)
     |
       v1 = eqval and v2 = cv

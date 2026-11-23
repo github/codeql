@@ -150,19 +150,27 @@ pub fn get_package_database() -> anyhow::Result<PackageDatabase> {
     {
         if !path.exists() {
             return Err(anyhow!(
-                "Local deptrace database path specified but file does not exist: {path:?}.",
+                "Local deptrace database path specified but file does not exist: {}.",
+                path.display()
             ));
         }
         debug!(
             "Using local deptrace database from {}: {path:?}",
             environment::CODEQL_EXTRACTOR_CPP_LOCAL_DEPTRACE_DB,
         );
-        fs::read_to_string(&path)
-            .map_err(|e| anyhow!("Failed to read local deptrace database from {path:?}: {e}"))?
+        fs::read_to_string(&path).map_err(|e| {
+            anyhow!(
+                "Failed to read local deptrace database from {}: {e}",
+                path.display()
+            )
+        })?
     } else {
         let archive_file_path = get_deptrace_db_zip_path()?;
         extract_content_from_zip(&archive_file_path).map_err(|e| {
-            anyhow!("Failed to extract package database from {archive_file_path:?}: {e}")
+            anyhow!(
+                "Failed to extract package database from {}: {e}",
+                archive_file_path.display()
+            )
         })?
     };
     PackageDatabase::from_deptrace_content(&content)
@@ -213,17 +221,31 @@ fn infer_os_version_name() -> Option<OsReleaseInfo> {
 /// as a string.
 fn extract_content_from_zip(archive_zip_name: &Path) -> anyhow::Result<String> {
     let inner_file_name = "deptrace-db.txt";
-    let file = File::open(archive_zip_name)
-        .map_err(|e| anyhow!("Could not open archive zip name {archive_zip_name:?}: {e}"))?;
-    let mut archive = ZipArchive::new(file)
-        .map_err(|e| anyhow!("Could not read zip archive {archive_zip_name:?}: {e}"))?;
+    let file = File::open(archive_zip_name).map_err(|e| {
+        anyhow!(
+            "Could not open archive zip name {}: {e}",
+            archive_zip_name.display()
+        )
+    })?;
+    let mut archive = ZipArchive::new(file).map_err(|e| {
+        anyhow!(
+            "Could not read zip archive {}: {e}",
+            archive_zip_name.display()
+        )
+    })?;
     let mut zipped_file = archive.by_name(inner_file_name).map_err(|e| {
-        anyhow!("Could not find {inner_file_name} in archive {archive_zip_name:?}: {e}")
+        anyhow!(
+            "Could not find {inner_file_name} in archive {}: {e}",
+            archive_zip_name.display()
+        )
     })?;
 
     let mut buffer = String::new();
     zipped_file.read_to_string(&mut buffer).map_err(|e| {
-        anyhow!("Could not read {inner_file_name} from archive {archive_zip_name:?}: {e}")
+        anyhow!(
+            "Could not read {inner_file_name} from archive {}: {e}",
+            archive_zip_name.display()
+        )
     })?;
 
     Ok(buffer)
@@ -233,7 +255,6 @@ fn extract_content_from_zip(archive_zip_name: &Path) -> anyhow::Result<String> {
 mod tests {
     use super::*;
     use all_asserts::assert_true;
-    use std::fs::File;
     use std::io::Write;
     use tempfile::tempdir;
 

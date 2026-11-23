@@ -94,31 +94,6 @@ TypeParameter getTupleTypeParameter(int arity, int i) {
   result = any(TupleType t | t.getArity() = arity).getPositionalTypeParameter(i)
 }
 
-private class Enum extends ClassLikeDeclaration {
-  Enum() { this.getAModifier().getValue() = "enum" }
-}
-
-private class EnumConstructor extends EnumCaseConstructor {
-  private Enum e;
-
-  EnumConstructor() { this = e.getAMember().(EnumCaseClass).getConstructor() }
-
-  Identifier getNameNode() { result = this.getEnumCaseClass().getNameNode() }
-
-  Enum getEnum() { result = e }
-}
-
-private class EnumField extends VariableDeclaration {
-  private Enum e;
-
-  EnumField() {
-    this = e.getAMember() and
-    this.getAModifier().getValue() = "enum_case"
-  }
-
-  Enum getEnum() { result = e }
-}
-
 private predicate inferTypeAlias = inferType/2;
 
 private class SwiftTypeInferencePlugin extends Plugin::TypeInferencePlugin {
@@ -158,9 +133,9 @@ private class SwiftTypeInferencePlugin extends Plugin::TypeInferencePlugin {
 
   bindingset[t, arity, i]
   override predicate functionInvokeSignature(Type t, int arity, int i, int j, TypePath path) {
-    j = 1 and
+    j = 0 and
     path = TypePath::singleton(getTupleTypeParameter(arity, i)) and
-    exists(t)
+    t instanceof FunctionType
   }
 
   override Type getTupleType(int arity) { result.(TupleType).getArity() = arity }
@@ -169,18 +144,14 @@ private class SwiftTypeInferencePlugin extends Plugin::TypeInferencePlugin {
     field = tuple.(TupleType).getField(name)
   }
 
-  override predicate isEnumConstructor(
-    ClassLikeDeclaration enum, ConstructorDeclaration case, Identifier i
-  ) {
-    case =
-      any(EnumConstructor ec |
-        enum = ec.getEnum() and
-        i = ec.getNameNode()
+  override predicate stepLanguageSpecific(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+    n2 =
+      any(UnaryExpr expr |
+        n1 = expr.getOperand() and
+        expr.getOperator().(PrefixOperator).getValue() = ["borrow", "consume", "copy", "unsafe"] and
+        prefix1.isEmpty() and
+        prefix2.isEmpty()
       )
-  }
-
-  override predicate isEnumField(ClassLikeDeclaration enum, VariableDeclaration field) {
-    enum = field.(EnumField).getEnum()
   }
 
   override Type inferType(AstNode n, TypePath path) {

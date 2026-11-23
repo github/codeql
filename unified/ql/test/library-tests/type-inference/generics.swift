@@ -241,7 +241,7 @@ extension MyClass: MyProtocol2 {
   typealias MyType = T
 
   func baz() -> T {
-    return value  // $ field=MyClass.value $ MISSING: type=value:T
+    return value  // $ field=MyClass.value type=value:T
   }
 }
 
@@ -309,9 +309,11 @@ struct IntPrimaryAssociatedType: PrimaryAssociatedTypeProtocol {
 }
 
 func getPrimaryAssociatedType(_ value: some PrimaryAssociatedTypeProtocol<Int>) -> Int {
-  return value.element()  // $ MISSING: target=PrimaryAssociatedTypeProtocol.element
+  return value.element()  // $ target=PrimaryAssociatedTypeProtocol.element
 }
 
 func testPrimaryAssociatedType() {
   let value = getPrimaryAssociatedType(IntPrimaryAssociatedType())  // $ type=value:Int target=getPrimaryAssociatedType target=IntPrimaryAssociatedType.init
 }
+
+let x: Array = [1, 2]

@@ -989,13 +989,6 @@ module TaintTracking {
     |
       operand = isNaN.getArgument(0).asExpr()
       or
-      exists(DataFlow::CallNode parse |
-        parse = DataFlow::globalVarRef(["parseInt", "parseFloat"]).getACall()
-      |
-        parse = isNaN.getArgument(0) and
-        operand = parse.getArgument(0).asExpr()
-      )
-      or
       exists(UnaryExpr unary | unary.getOperator() = ["+", "-"] |
         unary = isNaN.getArgument(0).asExpr() and
         operand = unary.getOperand()

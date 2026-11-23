@@ -1,0 +1,18 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["net/mail", "", false, "ParseAddress", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/mail", "", false, "ParseAddressList", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/mail", "", false, "ReadMessage", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/mail", "AddressParser", true, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/mail", "AddressParser", true, "ParseList", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
+        ["net/mail", "Header", true, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

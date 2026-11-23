@@ -61,15 +61,13 @@
 | lib/lib.js:351:10:351:27 | "rm -rf " + unsafe | lib/lib.js:349:29:349:34 | unsafe | lib/lib.js:351:22:351:27 | unsafe | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:349:29:349:34 | unsafe | library input | lib/lib.js:351:2:351:28 | cp.exec ... unsafe) | shell command |
 | lib/lib.js:406:10:406:25 | "rm -rf " + name | lib/lib.js:405:39:405:42 | name | lib/lib.js:406:22:406:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:405:39:405:42 | name | library input | lib/lib.js:406:2:406:26 | cp.exec ... + name) | shell command |
 | lib/lib.js:415:10:415:25 | "rm -rf " + name | lib/lib.js:414:40:414:43 | name | lib/lib.js:415:22:415:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:415:2:415:26 | cp.exec ... + name) | shell command |
-| lib/lib.js:417:28:417:31 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:417:28:417:31 | name | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:417:2:417:66 | cp.exec ...  => {}) | shell command |
-| lib/lib.js:418:25:418:28 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:418:25:418:28 | name | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:418:2:418:45 | cp.spaw ...  true}) | shell command |
-| lib/lib.js:419:32:419:35 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:419:32:419:35 | name | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:419:2:419:52 | cp.exec ...  true}) | shell command |
-| lib/lib.js:420:29:420:32 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:420:29:420:32 | name | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:420:2:420:49 | cp.spaw ...  true}) | shell command |
-| lib/lib.js:424:24:424:27 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:424:24:424:27 | name | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:424:2:424:40 | spawn(" ... WN_OPT) | shell command |
-| lib/lib.js:426:11:426:14 | name | lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:427:2:427:28 | spawn(" ... WN_OPT) | shell command |
+| lib/lib.js:417:20:417:32 | ["-rf", name] | lib/lib.js:414:40:414:43 | name | lib/lib.js:417:20:417:32 | ["-rf", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:417:2:417:66 | cp.exec ...  => {}) | shell command |
+| lib/lib.js:418:17:418:29 | ["-rf", name] | lib/lib.js:414:40:414:43 | name | lib/lib.js:418:17:418:29 | ["-rf", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:418:2:418:45 | cp.spaw ...  true}) | shell command |
+| lib/lib.js:419:24:419:36 | ["-rf", name] | lib/lib.js:414:40:414:43 | name | lib/lib.js:419:24:419:36 | ["-rf", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:419:2:419:52 | cp.exec ...  true}) | shell command |
+| lib/lib.js:420:21:420:33 | ["-rf", name] | lib/lib.js:414:40:414:43 | name | lib/lib.js:420:21:420:33 | ["-rf", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:420:2:420:49 | cp.spaw ...  true}) | shell command |
+| lib/lib.js:424:14:424:28 | ["first", name] | lib/lib.js:414:40:414:43 | name | lib/lib.js:424:14:424:28 | ["first", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:424:2:424:40 | spawn(" ... WN_OPT) | shell command |
 | lib/lib.js:427:14:427:16 | arr | lib/lib.js:414:40:414:43 | name | lib/lib.js:427:14:427:16 | arr | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:427:2:427:28 | spawn(" ... WN_OPT) | shell command |
 | lib/lib.js:428:14:428:58 | build(" ...  + '-') | lib/lib.js:414:40:414:43 | name | lib/lib.js:428:14:428:58 | build(" ...  + '-') | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:428:2:428:70 | spawn(" ... WN_OPT) | shell command |
-| lib/lib.js:436:19:436:22 | last | lib/lib.js:414:40:414:43 | name | lib/lib.js:436:19:436:22 | last | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:414:40:414:43 | name | library input | lib/lib.js:428:2:428:70 | spawn(" ... WN_OPT) | shell command |
 | lib/lib.js:442:12:442:27 | "rm -rf " + name | lib/lib.js:441:39:441:42 | name | lib/lib.js:442:24:442:27 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:441:39:441:42 | name | library input | lib/lib.js:442:2:442:28 | asyncEx ... + name) | shell command |
 | lib/lib.js:447:13:447:28 | "rm -rf " + name | lib/lib.js:446:20:446:23 | name | lib/lib.js:447:25:447:28 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:446:20:446:23 | name | library input | lib/lib.js:447:3:447:29 | asyncEx ... + name) | shell command |
 | lib/lib.js:478:27:478:46 | config.installedPath | lib/lib.js:477:39:477:44 | config | lib/lib.js:478:27:478:46 | config.installedPath | This path concatenation which depends on $@ is later used in a $@. | lib/lib.js:477:39:477:44 | config | library input | lib/lib.js:479:12:479:20 | exec(cmd) | shell command |
@@ -78,13 +76,14 @@
 | lib/lib.js:510:10:510:25 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:510:22:510:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:510:2:510:26 | cp.exec ... + name) | shell command |
 | lib/lib.js:513:11:513:26 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:513:23:513:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:513:3:513:27 | cp.exec ... + name) | shell command |
 | lib/lib.js:519:11:519:26 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:519:23:519:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:519:3:519:27 | cp.exec ... + name) | shell command |
+| lib/lib.js:521:11:521:26 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:521:23:521:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:521:3:521:27 | cp.exec ... + name) | shell command |
 | lib/lib.js:525:11:525:26 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:525:23:525:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:525:3:525:27 | cp.exec ... + name) | shell command |
 | lib/lib.js:531:11:531:26 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:531:23:531:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:531:3:531:27 | cp.exec ... + name) | shell command |
+| lib/lib.js:533:11:533:26 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:533:23:533:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:533:3:533:27 | cp.exec ... + name) | shell command |
 | lib/lib.js:537:11:537:26 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:537:23:537:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:537:3:537:27 | cp.exec ... + name) | shell command |
 | lib/lib.js:543:11:543:26 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:543:23:543:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:543:3:543:27 | cp.exec ... + name) | shell command |
 | lib/lib.js:545:11:545:26 | "rm -rf " + name | lib/lib.js:509:39:509:42 | name | lib/lib.js:545:23:545:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:509:39:509:42 | name | library input | lib/lib.js:545:3:545:27 | cp.exec ... + name) | shell command |
 | lib/lib.js:552:23:552:26 | args | lib/lib.js:550:39:550:42 | name | lib/lib.js:552:23:552:26 | args | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:550:39:550:42 | name | library input | lib/lib.js:552:9:552:38 | cp.spaw ... wnOpts) | shell command |
-| lib/lib.js:555:33:555:36 | name | lib/lib.js:550:39:550:42 | name | lib/lib.js:555:33:555:36 | name | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:550:39:550:42 | name | library input | lib/lib.js:552:9:552:38 | cp.spaw ... wnOpts) | shell command |
 | lib/lib.js:560:14:560:29 | "rm -rf " + name | lib/lib.js:558:41:558:44 | name | lib/lib.js:560:26:560:29 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:558:41:558:44 | name | library input | lib/lib.js:560:9:560:30 | exec("r ... + name) | shell command |
 | lib/lib.js:562:14:562:29 | "rm -rf " + name | lib/lib.js:558:41:558:44 | name | lib/lib.js:562:26:562:29 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:558:41:558:44 | name | library input | lib/lib.js:562:9:562:30 | exec("r ... + name) | shell command |
 | lib/lib.js:566:14:566:29 | "rm -rf " + name | lib/lib.js:558:41:558:44 | name | lib/lib.js:566:26:566:29 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:558:41:558:44 | name | library input | lib/lib.js:566:9:566:30 | exec("r ... + name) | shell command |
@@ -97,6 +96,31 @@
 | lib/lib.js:629:13:629:28 | "rm -rf " + name | lib/lib.js:608:42:608:45 | name | lib/lib.js:629:25:629:28 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:608:42:608:45 | name | library input | lib/lib.js:629:5:629:29 | cp.exec ... + name) | shell command |
 | lib/lib.js:633:18:633:68 | "'" + n ... ) + "'" | lib/lib.js:632:38:632:41 | name | lib/lib.js:633:24:633:62 | name.re ... '\\\\''") | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:632:38:632:41 | name | library input | lib/lib.js:634:2:634:31 | cp.exec ... itized) | shell command |
 | lib/lib.js:634:10:634:30 | "rm -rf ... nitized | lib/lib.js:632:38:632:41 | name | lib/lib.js:634:22:634:30 | sanitized | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:632:38:632:41 | name | library input | lib/lib.js:634:2:634:31 | cp.exec ... itized) | shell command |
+| lib/lib.js:645:22:645:36 | ["hello", name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:645:22:645:36 | ["hello", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:645:5:645:54 | cp.spaw ... true }) | shell command |
+| lib/lib.js:646:22:646:36 | ["hello", name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:646:22:646:36 | ["hello", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:646:5:646:59 | cp.spaw ... /sh" }) | shell command |
+| lib/lib.js:647:26:647:40 | ["hello", name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:647:26:647:40 | ["hello", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:647:5:647:58 | cp.spaw ... true }) | shell command |
+| lib/lib.js:648:26:648:40 | ["hello", name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:648:26:648:40 | ["hello", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:648:5:648:63 | cp.spaw ... /sh" }) | shell command |
+| lib/lib.js:649:25:649:39 | ["hello", name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:649:25:649:39 | ["hello", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:649:5:649:57 | cp.exec ... true }) | shell command |
+| lib/lib.js:650:25:650:39 | ["hello", name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:650:25:650:39 | ["hello", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:650:5:650:62 | cp.exec ... /sh" }) | shell command |
+| lib/lib.js:651:25:651:39 | ["hello", name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:651:25:651:39 | ["hello", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:651:5:651:67 | cp.exec ...  => {}) | shell command |
+| lib/lib.js:652:25:652:39 | ["hello", name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:652:25:652:39 | ["hello", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:652:5:652:72 | cp.exec ...  => {}) | shell command |
+| lib/lib.js:653:29:653:43 | ["hello", name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:653:29:653:43 | ["hello", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:653:5:653:61 | cp.exec ... true }) | shell command |
+| lib/lib.js:654:29:654:43 | ["hello", name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:654:29:654:43 | ["hello", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:654:5:654:66 | cp.exec ... /sh" }) | shell command |
+| lib/lib.js:655:41:655:55 | ["hello", name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:655:41:655:55 | ["hello", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:655:5:655:73 | util.pr ... true }) | shell command |
+| lib/lib.js:656:41:656:55 | ["hello", name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:656:41:656:55 | ["hello", name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:656:5:656:78 | util.pr ... /sh" }) | shell command |
+| lib/lib.js:661:22:661:25 | args | lib/lib.js:643:48:643:51 | name | lib/lib.js:661:22:661:25 | args | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:661:5:661:35 | cp.spaw ... ptions) | shell command |
+| lib/lib.js:662:25:662:28 | args | lib/lib.js:643:48:643:51 | name | lib/lib.js:662:25:662:28 | args | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:662:5:662:38 | cp.exec ... ptions) | shell command |
+| lib/lib.js:667:22:667:38 | arrayWithProperty | lib/lib.js:643:48:643:51 | name | lib/lib.js:667:22:667:38 | arrayWithProperty | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:667:5:667:56 | cp.spaw ... true }) | shell command |
+| lib/lib.js:671:22:671:27 | pushed | lib/lib.js:643:48:643:51 | name | lib/lib.js:671:22:671:27 | pushed | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:671:5:671:45 | cp.spaw ... true }) | shell command |
+| lib/lib.js:674:25:674:31 | shifted | lib/lib.js:643:48:643:51 | name | lib/lib.js:674:25:674:31 | shifted | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:674:5:674:54 | cp.exec ... /sh" }) | shell command |
+| lib/lib.js:706:22:706:27 | [name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:706:22:706:27 | [name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:706:5:706:37 | cp.spaw ... nabled) | shell command |
+| lib/lib.js:716:22:716:27 | [name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:716:22:716:27 | [name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:716:5:716:41 | cp.spaw ... tional) | shell command |
+| lib/lib.js:725:22:725:27 | [name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:725:22:725:27 | [name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:725:5:725:47 | cp.spaw ... erCall) | shell command |
+| lib/lib.js:729:26:729:29 | args | lib/lib.js:643:48:643:51 | name | lib/lib.js:729:26:729:29 | args | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:729:9:729:47 | cp.spaw ... true }) | shell command |
+| lib/lib.js:730:29:730:32 | args | lib/lib.js:643:48:643:51 | name | lib/lib.js:730:29:730:32 | args | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:730:9:730:55 | cp.exec ... /sh" }) | shell command |
+| lib/lib.js:736:26:736:31 | [name] | lib/lib.js:643:48:643:51 | name | lib/lib.js:736:26:736:31 | [name] | This shell argument which depends on $@ is later used in a $@. | lib/lib.js:643:48:643:51 | name | library input | lib/lib.js:736:9:736:41 | cp.spaw ... ptions) | shell command |
+| lib/lib.js:752:11:752:26 | "rm -rf " + name | lib/lib.js:750:48:750:51 | name | lib/lib.js:752:23:752:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:750:48:750:51 | name | library input | lib/lib.js:752:3:752:27 | cp.exec ... + name) | shell command |
+| lib/lib.js:754:11:754:26 | "rm -rf " + name | lib/lib.js:750:48:750:51 | name | lib/lib.js:754:23:754:26 | name | This string concatenation which depends on $@ is later used in a $@. | lib/lib.js:750:48:750:51 | name | library input | lib/lib.js:754:3:754:27 | cp.exec ... + name) | shell command |
 | lib/subLib2/compiled-file.ts:4:13:4:28 | "rm -rf " + name | lib/subLib2/compiled-file.ts:3:26:3:29 | name | lib/subLib2/compiled-file.ts:4:25:4:28 | name | This string concatenation which depends on $@ is later used in a $@. | lib/subLib2/compiled-file.ts:3:26:3:29 | name | library input | lib/subLib2/compiled-file.ts:4:5:4:29 | cp.exec ... + name) | shell command |
 | lib/subLib2/special-file.js:4:10:4:25 | "rm -rf " + name | lib/subLib2/special-file.js:3:28:3:31 | name | lib/subLib2/special-file.js:4:22:4:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/subLib2/special-file.js:3:28:3:31 | name | library input | lib/subLib2/special-file.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/subLib3/my-file.ts:4:10:4:25 | "rm -rf " + name | lib/subLib3/my-file.ts:3:28:3:31 | name | lib/subLib3/my-file.ts:4:22:4:25 | name | This string concatenation which depends on $@ is later used in a $@. | lib/subLib3/my-file.ts:3:28:3:31 | name | library input | lib/subLib3/my-file.ts:4:2:4:26 | cp.exec ... + name) | shell command |
@@ -194,14 +218,17 @@ edges
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:420:29:420:32 | name | provenance |  |
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:424:24:424:27 | name | provenance |  |
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name | provenance |  |
-| lib/lib.js:414:40:414:43 | name | lib/lib.js:426:11:426:14 | name | provenance |  |
 | lib/lib.js:414:40:414:43 | name | lib/lib.js:428:36:428:39 | name | provenance |  |
+| lib/lib.js:417:28:417:31 | name | lib/lib.js:417:20:417:32 | ["-rf", name] | provenance |  |
+| lib/lib.js:418:25:418:28 | name | lib/lib.js:418:17:418:29 | ["-rf", name] | provenance |  |
+| lib/lib.js:419:32:419:35 | name | lib/lib.js:419:24:419:36 | ["-rf", name] | provenance |  |
+| lib/lib.js:420:29:420:32 | name | lib/lib.js:420:21:420:33 | ["-rf", name] | provenance |  |
+| lib/lib.js:424:24:424:27 | name | lib/lib.js:424:14:424:28 | ["first", name] | provenance |  |
 | lib/lib.js:426:2:426:4 | [post update] arr [ArrayElement] | lib/lib.js:427:14:427:16 | arr | provenance |  |
 | lib/lib.js:426:11:426:14 | name | lib/lib.js:426:2:426:4 | [post update] arr [ArrayElement] | provenance |  |
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:428:14:428:58 | build(" ...  + '-') | provenance |  |
 | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | lib/lib.js:431:23:431:26 | last | provenance |  |
 | lib/lib.js:428:36:428:39 | name | lib/lib.js:428:28:428:57 | (name ? ... ) + '-' | provenance |  |
-| lib/lib.js:431:23:431:26 | last | lib/lib.js:436:19:436:22 | last | provenance |  |
 | lib/lib.js:431:23:431:26 | last | lib/lib.js:436:19:436:22 | last | provenance |  |
 | lib/lib.js:436:10:436:12 | [post update] arr [ArrayElement] | lib/lib.js:437:9:437:11 | arr [ArrayElement] | provenance |  |
 | lib/lib.js:436:19:436:22 | last | lib/lib.js:436:10:436:12 | [post update] arr [ArrayElement] | provenance |  |
@@ -214,12 +241,13 @@ edges
 | lib/lib.js:509:39:509:42 | name | lib/lib.js:510:22:510:25 | name | provenance |  |
 | lib/lib.js:509:39:509:42 | name | lib/lib.js:513:23:513:26 | name | provenance |  |
 | lib/lib.js:509:39:509:42 | name | lib/lib.js:519:23:519:26 | name | provenance |  |
+| lib/lib.js:509:39:509:42 | name | lib/lib.js:521:23:521:26 | name | provenance |  |
 | lib/lib.js:509:39:509:42 | name | lib/lib.js:525:23:525:26 | name | provenance |  |
 | lib/lib.js:509:39:509:42 | name | lib/lib.js:531:23:531:26 | name | provenance |  |
+| lib/lib.js:509:39:509:42 | name | lib/lib.js:533:23:533:26 | name | provenance |  |
 | lib/lib.js:509:39:509:42 | name | lib/lib.js:537:23:537:26 | name | provenance |  |
 | lib/lib.js:509:39:509:42 | name | lib/lib.js:543:23:543:26 | name | provenance |  |
 | lib/lib.js:509:39:509:42 | name | lib/lib.js:545:23:545:26 | name | provenance |  |
-| lib/lib.js:550:39:550:42 | name | lib/lib.js:555:33:555:36 | name | provenance |  |
 | lib/lib.js:550:39:550:42 | name | lib/lib.js:555:33:555:36 | name | provenance |  |
 | lib/lib.js:551:33:551:36 | args [1] | lib/lib.js:552:23:552:26 | args | provenance |  |
 | lib/lib.js:555:25:555:37 | ["-rf", name] [1] | lib/lib.js:551:33:551:36 | args [1] | provenance |  |
@@ -239,6 +267,122 @@ edges
 | lib/lib.js:633:24:633:27 | name | lib/lib.js:633:24:633:62 | name.re ... '\\\\''") | provenance |  |
 | lib/lib.js:633:24:633:27 | name | lib/lib.js:633:24:633:62 | name.re ... '\\\\''") | provenance |  |
 | lib/lib.js:633:24:633:62 | name.re ... '\\\\''") | lib/lib.js:633:6:633:14 | sanitized | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:645:32:645:35 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:646:32:646:35 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:647:36:647:39 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:648:36:648:39 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:649:35:649:38 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:650:35:650:38 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:651:35:651:38 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:652:35:652:38 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:653:39:653:42 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:654:39:654:42 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:655:51:655:54 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:656:51:656:54 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:660:28:660:31 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:665:32:665:35 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:670:17:670:20 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:673:21:673:24 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:676:23:676:26 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:677:23:677:26 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:678:23:678:26 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:679:27:679:30 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:680:27:680:30 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:681:27:681:30 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:682:26:682:29 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:683:26:683:29 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:684:26:684:29 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:685:30:685:33 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:686:30:686:33 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:687:30:687:33 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:693:20:693:23 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:696:26:696:29 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:700:23:700:26 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:703:26:703:29 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:706:23:706:26 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:709:26:709:29 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:711:23:711:26 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:716:23:716:26 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:722:23:722:26 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:725:23:725:26 | name | provenance |  |
+| lib/lib.js:643:48:643:51 | name | lib/lib.js:732:18:732:21 | name | provenance |  |
+| lib/lib.js:645:32:645:35 | name | lib/lib.js:645:22:645:36 | ["hello", name] | provenance |  |
+| lib/lib.js:645:32:645:35 | name | lib/lib.js:646:32:646:35 | name | provenance |  |
+| lib/lib.js:646:32:646:35 | name | lib/lib.js:646:22:646:36 | ["hello", name] | provenance |  |
+| lib/lib.js:646:32:646:35 | name | lib/lib.js:647:36:647:39 | name | provenance |  |
+| lib/lib.js:647:36:647:39 | name | lib/lib.js:647:26:647:40 | ["hello", name] | provenance |  |
+| lib/lib.js:647:36:647:39 | name | lib/lib.js:648:36:648:39 | name | provenance |  |
+| lib/lib.js:648:36:648:39 | name | lib/lib.js:648:26:648:40 | ["hello", name] | provenance |  |
+| lib/lib.js:648:36:648:39 | name | lib/lib.js:649:35:649:38 | name | provenance |  |
+| lib/lib.js:649:35:649:38 | name | lib/lib.js:649:25:649:39 | ["hello", name] | provenance |  |
+| lib/lib.js:649:35:649:38 | name | lib/lib.js:650:35:650:38 | name | provenance |  |
+| lib/lib.js:650:35:650:38 | name | lib/lib.js:650:25:650:39 | ["hello", name] | provenance |  |
+| lib/lib.js:650:35:650:38 | name | lib/lib.js:651:35:651:38 | name | provenance |  |
+| lib/lib.js:651:35:651:38 | name | lib/lib.js:651:25:651:39 | ["hello", name] | provenance |  |
+| lib/lib.js:651:35:651:38 | name | lib/lib.js:652:35:652:38 | name | provenance |  |
+| lib/lib.js:652:35:652:38 | name | lib/lib.js:652:25:652:39 | ["hello", name] | provenance |  |
+| lib/lib.js:652:35:652:38 | name | lib/lib.js:653:39:653:42 | name | provenance |  |
+| lib/lib.js:653:39:653:42 | name | lib/lib.js:653:29:653:43 | ["hello", name] | provenance |  |
+| lib/lib.js:653:39:653:42 | name | lib/lib.js:654:39:654:42 | name | provenance |  |
+| lib/lib.js:654:39:654:42 | name | lib/lib.js:654:29:654:43 | ["hello", name] | provenance |  |
+| lib/lib.js:654:39:654:42 | name | lib/lib.js:655:51:655:54 | name | provenance |  |
+| lib/lib.js:655:51:655:54 | name | lib/lib.js:655:41:655:55 | ["hello", name] | provenance |  |
+| lib/lib.js:655:51:655:54 | name | lib/lib.js:656:51:656:54 | name | provenance |  |
+| lib/lib.js:656:51:656:54 | name | lib/lib.js:656:41:656:55 | ["hello", name] | provenance |  |
+| lib/lib.js:656:51:656:54 | name | lib/lib.js:660:28:660:31 | name | provenance |  |
+| lib/lib.js:660:11:660:14 | args [1] | lib/lib.js:661:22:661:25 | args | provenance |  |
+| lib/lib.js:660:11:660:14 | args [1] | lib/lib.js:662:25:662:28 | args | provenance |  |
+| lib/lib.js:660:18:660:32 | ["hello", name] [1] | lib/lib.js:660:11:660:14 | args [1] | provenance |  |
+| lib/lib.js:660:28:660:31 | name | lib/lib.js:660:18:660:32 | ["hello", name] [1] | provenance |  |
+| lib/lib.js:660:28:660:31 | name | lib/lib.js:665:32:665:35 | name | provenance |  |
+| lib/lib.js:665:11:665:27 | arrayWithProperty [0] | lib/lib.js:667:22:667:38 | arrayWithProperty | provenance |  |
+| lib/lib.js:665:31:665:36 | [name] [0] | lib/lib.js:665:11:665:27 | arrayWithProperty [0] | provenance |  |
+| lib/lib.js:665:32:665:35 | name | lib/lib.js:665:31:665:36 | [name] [0] | provenance |  |
+| lib/lib.js:665:32:665:35 | name | lib/lib.js:670:17:670:20 | name | provenance |  |
+| lib/lib.js:670:5:670:10 | [post update] pushed [ArrayElement] | lib/lib.js:671:22:671:27 | pushed | provenance |  |
+| lib/lib.js:670:17:670:20 | name | lib/lib.js:670:5:670:10 | [post update] pushed [ArrayElement] | provenance |  |
+| lib/lib.js:670:17:670:20 | name | lib/lib.js:673:21:673:24 | name | provenance |  |
+| lib/lib.js:673:5:673:11 | [post update] shifted [ArrayElement] | lib/lib.js:674:25:674:31 | shifted | provenance |  |
+| lib/lib.js:673:21:673:24 | name | lib/lib.js:673:5:673:11 | [post update] shifted [ArrayElement] | provenance |  |
+| lib/lib.js:673:21:673:24 | name | lib/lib.js:676:23:676:26 | name | provenance |  |
+| lib/lib.js:676:23:676:26 | name | lib/lib.js:677:23:677:26 | name | provenance |  |
+| lib/lib.js:677:23:677:26 | name | lib/lib.js:678:23:678:26 | name | provenance |  |
+| lib/lib.js:678:23:678:26 | name | lib/lib.js:679:27:679:30 | name | provenance |  |
+| lib/lib.js:679:27:679:30 | name | lib/lib.js:680:27:680:30 | name | provenance |  |
+| lib/lib.js:680:27:680:30 | name | lib/lib.js:681:27:681:30 | name | provenance |  |
+| lib/lib.js:681:27:681:30 | name | lib/lib.js:682:26:682:29 | name | provenance |  |
+| lib/lib.js:682:26:682:29 | name | lib/lib.js:683:26:683:29 | name | provenance |  |
+| lib/lib.js:683:26:683:29 | name | lib/lib.js:684:26:684:29 | name | provenance |  |
+| lib/lib.js:684:26:684:29 | name | lib/lib.js:685:30:685:33 | name | provenance |  |
+| lib/lib.js:685:30:685:33 | name | lib/lib.js:686:30:686:33 | name | provenance |  |
+| lib/lib.js:686:30:686:33 | name | lib/lib.js:687:30:687:33 | name | provenance |  |
+| lib/lib.js:687:30:687:33 | name | lib/lib.js:693:20:693:23 | name | provenance |  |
+| lib/lib.js:693:20:693:23 | name | lib/lib.js:696:26:696:29 | name | provenance |  |
+| lib/lib.js:696:26:696:29 | name | lib/lib.js:700:23:700:26 | name | provenance |  |
+| lib/lib.js:700:23:700:26 | name | lib/lib.js:703:26:703:29 | name | provenance |  |
+| lib/lib.js:703:26:703:29 | name | lib/lib.js:706:23:706:26 | name | provenance |  |
+| lib/lib.js:706:23:706:26 | name | lib/lib.js:706:22:706:27 | [name] | provenance |  |
+| lib/lib.js:706:23:706:26 | name | lib/lib.js:709:26:709:29 | name | provenance |  |
+| lib/lib.js:709:26:709:29 | name | lib/lib.js:711:23:711:26 | name | provenance |  |
+| lib/lib.js:711:23:711:26 | name | lib/lib.js:716:23:716:26 | name | provenance |  |
+| lib/lib.js:716:23:716:26 | name | lib/lib.js:716:22:716:27 | [name] | provenance |  |
+| lib/lib.js:716:23:716:26 | name | lib/lib.js:722:23:722:26 | name | provenance |  |
+| lib/lib.js:722:23:722:26 | name | lib/lib.js:725:23:725:26 | name | provenance |  |
+| lib/lib.js:725:23:725:26 | name | lib/lib.js:725:22:725:27 | [name] | provenance |  |
+| lib/lib.js:725:23:725:26 | name | lib/lib.js:732:18:732:21 | name | provenance |  |
+| lib/lib.js:728:26:728:29 | args [0] | lib/lib.js:729:26:729:29 | args | provenance |  |
+| lib/lib.js:728:26:728:29 | args [0] | lib/lib.js:730:29:730:32 | args | provenance |  |
+| lib/lib.js:732:17:732:22 | [name] [0] | lib/lib.js:728:26:728:29 | args [0] | provenance |  |
+| lib/lib.js:732:18:732:21 | name | lib/lib.js:732:17:732:22 | [name] [0] | provenance |  |
+| lib/lib.js:732:18:732:21 | name | lib/lib.js:734:5:737:5 | functio ... t\\n    } [name] | provenance |  |
+| lib/lib.js:732:18:732:21 | name | lib/lib.js:738:5:738:18 | runWithOptions [name] | provenance |  |
+| lib/lib.js:734:5:737:5 | functio ... t\\n    } [name] | lib/lib.js:734:14:734:27 | runWithOptions [name] | provenance |  |
+| lib/lib.js:734:5:737:5 | functio ... t\\n    } [name] | lib/lib.js:736:27:736:30 | name | provenance |  |
+| lib/lib.js:734:14:734:27 | runWithOptions [name] | lib/lib.js:738:5:738:18 | runWithOptions [name] | provenance |  |
+| lib/lib.js:736:27:736:30 | name | lib/lib.js:736:26:736:31 | [name] | provenance |  |
+| lib/lib.js:738:5:738:18 | runWithOptions [name] | lib/lib.js:736:27:736:30 | name | provenance |  |
+| lib/lib.js:750:48:750:51 | name | lib/lib.js:752:23:752:26 | name | provenance |  |
+| lib/lib.js:750:48:750:51 | name | lib/lib.js:754:23:754:26 | name | provenance |  |
 | lib/subLib2/compiled-file.ts:3:26:3:29 | name | lib/subLib2/compiled-file.ts:4:25:4:28 | name | provenance |  |
 | lib/subLib2/special-file.js:3:28:3:31 | name | lib/subLib2/special-file.js:4:22:4:25 | name | provenance |  |
 | lib/subLib3/my-file.ts:3:28:3:31 | name | lib/subLib3/my-file.ts:4:22:4:25 | name | provenance |  |
@@ -371,13 +515,17 @@ nodes
 | lib/lib.js:406:22:406:25 | name | semmle.label | name |
 | lib/lib.js:414:40:414:43 | name | semmle.label | name |
 | lib/lib.js:415:22:415:25 | name | semmle.label | name |
+| lib/lib.js:417:20:417:32 | ["-rf", name] | semmle.label | ["-rf", name] |
 | lib/lib.js:417:28:417:31 | name | semmle.label | name |
+| lib/lib.js:418:17:418:29 | ["-rf", name] | semmle.label | ["-rf", name] |
 | lib/lib.js:418:25:418:28 | name | semmle.label | name |
+| lib/lib.js:419:24:419:36 | ["-rf", name] | semmle.label | ["-rf", name] |
 | lib/lib.js:419:32:419:35 | name | semmle.label | name |
+| lib/lib.js:420:21:420:33 | ["-rf", name] | semmle.label | ["-rf", name] |
 | lib/lib.js:420:29:420:32 | name | semmle.label | name |
+| lib/lib.js:424:14:424:28 | ["first", name] | semmle.label | ["first", name] |
 | lib/lib.js:424:24:424:27 | name | semmle.label | name |
 | lib/lib.js:426:2:426:4 | [post update] arr [ArrayElement] | semmle.label | [post update] arr [ArrayElement] |
-| lib/lib.js:426:11:426:14 | name | semmle.label | name |
 | lib/lib.js:426:11:426:14 | name | semmle.label | name |
 | lib/lib.js:427:14:427:16 | arr | semmle.label | arr |
 | lib/lib.js:428:14:428:58 | build(" ...  + '-') | semmle.label | build(" ...  + '-') |
@@ -385,7 +533,6 @@ nodes
 | lib/lib.js:428:36:428:39 | name | semmle.label | name |
 | lib/lib.js:431:23:431:26 | last | semmle.label | last |
 | lib/lib.js:436:10:436:12 | [post update] arr [ArrayElement] | semmle.label | [post update] arr [ArrayElement] |
-| lib/lib.js:436:19:436:22 | last | semmle.label | last |
 | lib/lib.js:436:19:436:22 | last | semmle.label | last |
 | lib/lib.js:437:9:437:11 | arr [ArrayElement] | semmle.label | arr [ArrayElement] |
 | lib/lib.js:441:39:441:42 | name | semmle.label | name |
@@ -403,8 +550,10 @@ nodes
 | lib/lib.js:510:22:510:25 | name | semmle.label | name |
 | lib/lib.js:513:23:513:26 | name | semmle.label | name |
 | lib/lib.js:519:23:519:26 | name | semmle.label | name |
+| lib/lib.js:521:23:521:26 | name | semmle.label | name |
 | lib/lib.js:525:23:525:26 | name | semmle.label | name |
 | lib/lib.js:531:23:531:26 | name | semmle.label | name |
+| lib/lib.js:533:23:533:26 | name | semmle.label | name |
 | lib/lib.js:537:23:537:26 | name | semmle.label | name |
 | lib/lib.js:543:23:543:26 | name | semmle.label | name |
 | lib/lib.js:545:23:545:26 | name | semmle.label | name |
@@ -412,7 +561,6 @@ nodes
 | lib/lib.js:551:33:551:36 | args [1] | semmle.label | args [1] |
 | lib/lib.js:552:23:552:26 | args | semmle.label | args |
 | lib/lib.js:555:25:555:37 | ["-rf", name] [1] | semmle.label | ["-rf", name] [1] |
-| lib/lib.js:555:33:555:36 | name | semmle.label | name |
 | lib/lib.js:555:33:555:36 | name | semmle.label | name |
 | lib/lib.js:558:41:558:44 | name | semmle.label | name |
 | lib/lib.js:560:26:560:29 | name | semmle.label | name |
@@ -433,6 +581,84 @@ nodes
 | lib/lib.js:633:24:633:62 | name.re ... '\\\\''") | semmle.label | name.re ... '\\\\''") |
 | lib/lib.js:633:24:633:62 | name.re ... '\\\\''") | semmle.label | name.re ... '\\\\''") |
 | lib/lib.js:634:22:634:30 | sanitized | semmle.label | sanitized |
+| lib/lib.js:643:48:643:51 | name | semmle.label | name |
+| lib/lib.js:645:22:645:36 | ["hello", name] | semmle.label | ["hello", name] |
+| lib/lib.js:645:32:645:35 | name | semmle.label | name |
+| lib/lib.js:646:22:646:36 | ["hello", name] | semmle.label | ["hello", name] |
+| lib/lib.js:646:32:646:35 | name | semmle.label | name |
+| lib/lib.js:647:26:647:40 | ["hello", name] | semmle.label | ["hello", name] |
+| lib/lib.js:647:36:647:39 | name | semmle.label | name |
+| lib/lib.js:648:26:648:40 | ["hello", name] | semmle.label | ["hello", name] |
+| lib/lib.js:648:36:648:39 | name | semmle.label | name |
+| lib/lib.js:649:25:649:39 | ["hello", name] | semmle.label | ["hello", name] |
+| lib/lib.js:649:35:649:38 | name | semmle.label | name |
+| lib/lib.js:650:25:650:39 | ["hello", name] | semmle.label | ["hello", name] |
+| lib/lib.js:650:35:650:38 | name | semmle.label | name |
+| lib/lib.js:651:25:651:39 | ["hello", name] | semmle.label | ["hello", name] |
+| lib/lib.js:651:35:651:38 | name | semmle.label | name |
+| lib/lib.js:652:25:652:39 | ["hello", name] | semmle.label | ["hello", name] |
+| lib/lib.js:652:35:652:38 | name | semmle.label | name |
+| lib/lib.js:653:29:653:43 | ["hello", name] | semmle.label | ["hello", name] |
+| lib/lib.js:653:39:653:42 | name | semmle.label | name |
+| lib/lib.js:654:29:654:43 | ["hello", name] | semmle.label | ["hello", name] |
+| lib/lib.js:654:39:654:42 | name | semmle.label | name |
+| lib/lib.js:655:41:655:55 | ["hello", name] | semmle.label | ["hello", name] |
+| lib/lib.js:655:51:655:54 | name | semmle.label | name |
+| lib/lib.js:656:41:656:55 | ["hello", name] | semmle.label | ["hello", name] |
+| lib/lib.js:656:51:656:54 | name | semmle.label | name |
+| lib/lib.js:660:11:660:14 | args [1] | semmle.label | args [1] |
+| lib/lib.js:660:18:660:32 | ["hello", name] [1] | semmle.label | ["hello", name] [1] |
+| lib/lib.js:660:28:660:31 | name | semmle.label | name |
+| lib/lib.js:661:22:661:25 | args | semmle.label | args |
+| lib/lib.js:662:25:662:28 | args | semmle.label | args |
+| lib/lib.js:665:11:665:27 | arrayWithProperty [0] | semmle.label | arrayWithProperty [0] |
+| lib/lib.js:665:31:665:36 | [name] [0] | semmle.label | [name] [0] |
+| lib/lib.js:665:32:665:35 | name | semmle.label | name |
+| lib/lib.js:667:22:667:38 | arrayWithProperty | semmle.label | arrayWithProperty |
+| lib/lib.js:670:5:670:10 | [post update] pushed [ArrayElement] | semmle.label | [post update] pushed [ArrayElement] |
+| lib/lib.js:670:17:670:20 | name | semmle.label | name |
+| lib/lib.js:671:22:671:27 | pushed | semmle.label | pushed |
+| lib/lib.js:673:5:673:11 | [post update] shifted [ArrayElement] | semmle.label | [post update] shifted [ArrayElement] |
+| lib/lib.js:673:21:673:24 | name | semmle.label | name |
+| lib/lib.js:674:25:674:31 | shifted | semmle.label | shifted |
+| lib/lib.js:676:23:676:26 | name | semmle.label | name |
+| lib/lib.js:677:23:677:26 | name | semmle.label | name |
+| lib/lib.js:678:23:678:26 | name | semmle.label | name |
+| lib/lib.js:679:27:679:30 | name | semmle.label | name |
+| lib/lib.js:680:27:680:30 | name | semmle.label | name |
+| lib/lib.js:681:27:681:30 | name | semmle.label | name |
+| lib/lib.js:682:26:682:29 | name | semmle.label | name |
+| lib/lib.js:683:26:683:29 | name | semmle.label | name |
+| lib/lib.js:684:26:684:29 | name | semmle.label | name |
+| lib/lib.js:685:30:685:33 | name | semmle.label | name |
+| lib/lib.js:686:30:686:33 | name | semmle.label | name |
+| lib/lib.js:687:30:687:33 | name | semmle.label | name |
+| lib/lib.js:693:20:693:23 | name | semmle.label | name |
+| lib/lib.js:696:26:696:29 | name | semmle.label | name |
+| lib/lib.js:700:23:700:26 | name | semmle.label | name |
+| lib/lib.js:703:26:703:29 | name | semmle.label | name |
+| lib/lib.js:706:22:706:27 | [name] | semmle.label | [name] |
+| lib/lib.js:706:23:706:26 | name | semmle.label | name |
+| lib/lib.js:709:26:709:29 | name | semmle.label | name |
+| lib/lib.js:711:23:711:26 | name | semmle.label | name |
+| lib/lib.js:716:22:716:27 | [name] | semmle.label | [name] |
+| lib/lib.js:716:23:716:26 | name | semmle.label | name |
+| lib/lib.js:722:23:722:26 | name | semmle.label | name |
+| lib/lib.js:725:22:725:27 | [name] | semmle.label | [name] |
+| lib/lib.js:725:23:725:26 | name | semmle.label | name |
+| lib/lib.js:728:26:728:29 | args [0] | semmle.label | args [0] |
+| lib/lib.js:729:26:729:29 | args | semmle.label | args |
+| lib/lib.js:730:29:730:32 | args | semmle.label | args |
+| lib/lib.js:732:17:732:22 | [name] [0] | semmle.label | [name] [0] |
+| lib/lib.js:732:18:732:21 | name | semmle.label | name |
+| lib/lib.js:734:5:737:5 | functio ... t\\n    } [name] | semmle.label | functio ... t\\n    } [name] |
+| lib/lib.js:734:14:734:27 | runWithOptions [name] | semmle.label | runWithOptions [name] |
+| lib/lib.js:736:26:736:31 | [name] | semmle.label | [name] |
+| lib/lib.js:736:27:736:30 | name | semmle.label | name |
+| lib/lib.js:738:5:738:18 | runWithOptions [name] | semmle.label | runWithOptions [name] |
+| lib/lib.js:750:48:750:51 | name | semmle.label | name |
+| lib/lib.js:752:23:752:26 | name | semmle.label | name |
+| lib/lib.js:754:23:754:26 | name | semmle.label | name |
 | lib/subLib2/compiled-file.ts:3:26:3:29 | name | semmle.label | name |
 | lib/subLib2/compiled-file.ts:4:25:4:28 | name | semmle.label | name |
 | lib/subLib2/special-file.js:3:28:3:31 | name | semmle.label | name |

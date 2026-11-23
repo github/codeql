@@ -145,7 +145,7 @@ In order of preference:
    keep its checksum field populated.
 
 Vendored Rust crates under [`misc/bazel/3rdparty`](../../../misc/bazel/3rdparty) are generated. Regenerate with
-[`update_cargo_deps.sh`](../../../misc/bazel/3rdparty/update_cargo_deps.sh) rather than editing, and keep the
+[`update_all_rust_deps.sh`](../../../misc/bazel/3rdparty/update_all_rust_deps.sh) rather than editing, and keep the
 `use_repo` lists in sync, which `bazel mod tidy` does for module extensions.
 
 ## Building standalone

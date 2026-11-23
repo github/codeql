@@ -1,54 +1,103 @@
 | 1 | cfg.swift:1:1:635:1 | Block | 'Block -V var topLevelDecl -V topLevelDecl -> Int -> 0' |
+| 1 | fallthrough.swift:1:1:57:1 | Block | 'Block -V func fallthroughChain -V fallthroughChain' |
+| 1 | fallthrough.swift:1:25:1:25 | x | 'x -> flag -> Block' |
 | 2 | cfg.swift:2:1:2:1 | 0 | '0' |
+| 2 | fallthrough.swift:2:3:18:3 | SwitchExpr | 'SwitchExpr -V x' |
 | 3 | cfg.swift:3:1:3:12 | topLevelDecl | 'topLevelDecl -> 1 -^ ... + ...' |
+| 3 | fallthrough.swift:3:3:9:9 | SwitchCase | 'SwitchCase -V 0' |
+| 4 | fallthrough.swift:4:5:9:9 | Block | 'Block -V IfExpr -V flag' |
+| 4 | fallthrough.swift:4:13:7:5 | Block | 'Block' |
 | 5 | cfg.swift:5:1:5:37 | func returnZero | 'func returnZero -V returnZero' |
 | 5 | cfg.swift:5:26:5:37 | Block | 'Block -V 0 -^ ReturnExpr' |
+| 5 | fallthrough.swift:5:7:5:17 | fallthrough | 'fallthrough' |
 | 7 | cfg.swift:7:1:7:10 | returnZero | 'returnZero -^ returnZero(...)' |
 | 8 | cfg.swift:8:1:8:6 | Double | 'Double -> Argument -V topLevelDecl -^ Double(...)' |
+| 8 | fallthrough.swift:8:5:8:9 | print | 'print -> Argument -V "stay in first case" -^ print(...)' |
+| 9 | fallthrough.swift:9:5:9:9 | BreakExpr | 'BreakExpr' |
 | 10 | cfg.swift:10:1:13:1 | enum MyError | 'enum MyError -V MyError -> BaseType -V Error' |
+| 10 | fallthrough.swift:10:3:12:15 | SwitchCase | 'SwitchCase -V flag -? 1 -^ ConditionalPattern' |
 | 11 | cfg.swift:11:10:11:15 | MyError.error1 | 'MyError.error1 -V error1 -> MyError.error2 -V error2' |
+| 11 | fallthrough.swift:11:5:12:15 | Block | 'Block -V print -> Argument -V "second case" -^ print(...)' |
 | 12 | cfg.swift:12:10:12:31 | MyError.error3 | 'MyError.error3 -V error3 -^ MyError.error3.(constructor)' |
 | 12 | cfg.swift:12:17:12:25 | withParam | 'withParam -? Block' |
+| 12 | fallthrough.swift:12:5:12:15 | fallthrough | 'fallthrough' |
+| 13 | fallthrough.swift:13:3:15:15 | SwitchCase | 'SwitchCase -V 2' |
+| 14 | fallthrough.swift:14:5:15:15 | Block | 'Block -V print -> Argument -V "third case" -^ print(...)' |
 | 15 | cfg.swift:15:1:17:1 | func isZero | 'func isZero -V isZero' |
 | 15 | cfg.swift:15:13:15:13 | x | 'x -> Block' |
+| 15 | fallthrough.swift:15:5:15:15 | fallthrough | 'fallthrough' |
 | 16 | cfg.swift:16:10:16:10 | x | 'x -> 0 -^ ... == ... -^ ReturnExpr' |
+| 16 | fallthrough.swift:16:3:17:25 | SwitchCase | 'SwitchCase' |
+| 17 | fallthrough.swift:17:5:17:25 | Block | 'Block -V print -> Argument -V "default case" -^ print(...)' |
 | 19 | cfg.swift:19:1:26:1 | func mightThrow | 'func mightThrow -V mightThrow' |
 | 19 | cfg.swift:19:17:19:17 | x | 'x -> Block' |
+| 19 | fallthrough.swift:19:3:19:7 | print | 'print -> Argument -V "after switch" -^ print(...)' |
 | 20 | cfg.swift:20:3:22:3 | GuardIfStmt | 'GuardIfStmt -V x -> 0 -^ ... >= ...' |
 | 20 | cfg.swift:20:21:22:3 | Block | 'Block' |
 | 21 | cfg.swift:21:11:21:17 | MyError | 'MyError -^ ... .error1 -^ ThrowExpr' |
+| 22 | fallthrough.swift:22:1:37:1 | func nestedFallthrough | 'func nestedFallthrough -V nestedFallthrough' |
+| 22 | fallthrough.swift:22:26:22:26 | x | 'x -> y -> Block' |
 | 23 | cfg.swift:23:3:25:3 | GuardIfStmt | 'GuardIfStmt -V x -> 0 -^ ... <= ...' |
 | 23 | cfg.swift:23:21:25:3 | Block | 'Block' |
+| 23 | fallthrough.swift:23:3:35:3 | SwitchExpr | 'SwitchExpr -V x' |
 | 24 | cfg.swift:24:11:24:17 | MyError | 'MyError -^ ... .error3 -> Argument -V x -> 1 -^ ... + ... -^ ... .error3(...) -^ ThrowExpr' |
+| 24 | fallthrough.swift:24:3:32:15 | SwitchCase | 'SwitchCase -V 0' |
+| 25 | fallthrough.swift:25:5:32:15 | Block | 'Block -V SwitchExpr -V y' |
+| 26 | fallthrough.swift:26:5:27:17 | SwitchCase | 'SwitchCase -V 0' |
+| 27 | fallthrough.swift:27:7:27:17 | Block | 'Block -V fallthrough' |
 | 28 | cfg.swift:28:1:45:1 | func tryCatch | 'func tryCatch -V tryCatch' |
 | 28 | cfg.swift:28:15:28:15 | x | 'x -> Block' |
+| 28 | fallthrough.swift:28:5:29:28 | SwitchCase | 'SwitchCase' |
 | 29 | cfg.swift:29:3:43:3 | TryExpr | 'TryExpr -V Block' |
+| 29 | fallthrough.swift:29:7:29:28 | Block | 'Block -V print -> Argument -V "inner default" -^ print(...)' |
 | 30 | cfg.swift:30:5:30:24 | try ... | 'try ...' |
 | 30 | cfg.swift:30:9:30:18 | mightThrow | 'mightThrow -> Argument -V 0 -^ mightThrow(...)' |
 | 31 | cfg.swift:31:5:31:9 | print | 'print -> Argument -V "Did not throw." -^ print(...)' |
+| 31 | fallthrough.swift:31:5:31:9 | print | 'print -> Argument -V "after inner switch" -^ print(...)' |
 | 32 | cfg.swift:32:10:32:19 | mightThrow | 'mightThrow -> Argument -V 0 -^ mightThrow(...) -^ try! ...' |
+| 32 | fallthrough.swift:32:5:32:15 | fallthrough | 'fallthrough' |
 | 33 | cfg.swift:33:5:33:9 | print | 'print -> Argument -V "Still did not throw." -^ print(...)' |
+| 33 | fallthrough.swift:33:3:34:26 | SwitchCase | 'SwitchCase' |
+| 34 | fallthrough.swift:34:5:34:26 | Block | 'Block -V print -> Argument -V "outer default" -^ print(...)' |
 | 35 | cfg.swift:35:5:37:3 | CatchClause | 'CatchClause -V MyError -^ ... .error1 -> isZero -> Argument -V x -^ isZero(...) -? MyError -^ ... .error2 -^ ConditionalPattern -^ OrPattern' |
 | 35 | cfg.swift:35:62:37:3 | Block | 'Block' |
 | 36 | cfg.swift:36:12:36:12 | 0 | '0 -^ ReturnExpr' |
+| 36 | fallthrough.swift:36:3:36:7 | print | 'print -> Argument -V "after outer switch" -^ print(...)' |
 | 37 | cfg.swift:37:5:39:3 | CatchClause | 'CatchClause -V MyError -^ ... .error3 -> Argument -V withParam -^ ExprPattern -^ ... .error3(...)' |
 | 37 | cfg.swift:37:41:39:3 | Block | 'Block' |
 | 38 | cfg.swift:38:12:38:20 | withParam | 'withParam -^ ReturnExpr' |
 | 39 | cfg.swift:39:5:41:3 | CatchClause | 'CatchClause -V ' |
 | 39 | cfg.swift:39:22:41:3 | Block | 'Block' |
+| 39 | fallthrough.swift:39:1:57:1 | func fallthroughWithDefer | 'func fallthroughWithDefer -V fallthroughWithDefer' |
+| 39 | fallthrough.swift:39:29:39:29 | x | 'x -> flag -> Block' |
 | 40 | cfg.swift:40:5:40:9 | print | 'print -> Argument -V "MyError" -^ print(...)' |
+| 40 | fallthrough.swift:40:3:55:3 | SwitchExpr | 'SwitchExpr -V x' |
 | 41 | cfg.swift:41:5:43:3 | CatchClause | 'CatchClause -V Block' |
+| 41 | fallthrough.swift:41:3:50:5 | SwitchCase | 'SwitchCase -V 0' |
 | 42 | cfg.swift:42:5:42:9 | print | 'print -> Argument -V Unknown error  -> interpolation -> Argument -V error -^ interpolation(...) ->  -^ StringInterpolationExpr -^ print(...)' |
+| 42 | fallthrough.swift:42:5:50:5 | Block | 'Block -V DeferStmt' |
+| 42 | fallthrough.swift:42:11:44:5 | Block | 'Block' |
+| 43 | fallthrough.swift:43:7:43:11 | print | 'print -> Argument -V "outer defer" -^ print(...)' |
 | 44 | cfg.swift:44:10:44:10 | 0 | '0 -^ ReturnExpr' |
+| 45 | fallthrough.swift:45:5:50:5 | TryExpr | 'TryExpr -V Block' |
+| 46 | fallthrough.swift:46:7:48:7 | DeferStmt | 'DeferStmt' |
+| 46 | fallthrough.swift:46:13:48:7 | Block | 'Block' |
 | 47 | cfg.swift:47:1:51:1 | func createClosure1 | 'func createClosure1 -V createClosure1' |
 | 47 | cfg.swift:47:21:47:21 | s | 's -> Block' |
+| 47 | fallthrough.swift:47:9:47:13 | print | 'print -> Argument -V "inner defer" -^ print(...)' |
 | 48 | cfg.swift:48:10:50:3 | FunctionExpr | 'FunctionExpr -^ ReturnExpr' |
 | 49 | cfg.swift:49:5:49:17 | Block | 'Block -V s -> "" -^ ... + ... -^ ReturnExpr' |
+| 49 | fallthrough.swift:49:7:49:17 | fallthrough | 'fallthrough' |
+| 51 | fallthrough.swift:51:3:52:22 | SwitchCase | 'SwitchCase -V flag -? 1 -^ ConditionalPattern' |
+| 52 | fallthrough.swift:52:5:52:22 | Block | 'Block -V print -> Argument -V "next case" -^ print(...)' |
 | 53 | cfg.swift:53:1:58:1 | func createClosure2 | 'func createClosure2 -V createClosure2' |
 | 53 | cfg.swift:53:21:53:21 | x | 'x -> Block' |
+| 53 | fallthrough.swift:53:3:54:9 | SwitchCase | 'SwitchCase' |
 | 54 | cfg.swift:54:3:56:3 | func f | 'func f -V f' |
 | 54 | cfg.swift:54:10:54:10 | y | 'y -> Block' |
+| 54 | fallthrough.swift:54:5:54:9 | Block | 'Block -V BreakExpr' |
 | 55 | cfg.swift:55:12:55:12 | x | 'x -> y -^ ... + ... -^ ReturnExpr' |
+| 56 | fallthrough.swift:56:3:56:7 | print | 'print -> Argument -V "after deferred fallthrough" -^ print(...)' |
 | 57 | cfg.swift:57:10:57:10 | f | 'f -^ ReturnExpr' |
 | 60 | cfg.swift:60:1:64:1 | func createClosure3 | 'func createClosure3 -V createClosure3' |
 | 60 | cfg.swift:60:21:60:21 | x | 'x -> Block' |
@@ -131,7 +180,7 @@
 | 154 | cfg.swift:154:7:154:17 | Block | 'Block -V true -^ ReturnExpr' |
 | 155 | cfg.swift:155:5:157:17 | SwitchCase | 'SwitchCase -V 42' |
 | 156 | cfg.swift:156:7:157:17 | Block | 'Block -V print -> Argument -V "42!" -^ print(...)' |
-| 157 | cfg.swift:157:7:157:17 |  | '' |
+| 157 | cfg.swift:157:7:157:17 | fallthrough | 'fallthrough' |
 | 158 | cfg.swift:158:5:159:34 | SwitchCase | 'SwitchCase' |
 | 159 | cfg.swift:159:7:159:34 | Block | 'Block -V IfExpr -V x -> 10 -^ ... > ...' |
 | 159 | cfg.swift:159:19:159:34 | Block | 'Block -V false -^ ReturnExpr' |
@@ -245,32 +294,32 @@
 | 288 | cfg.swift:288:1:319:1 | func testSubscriptExpr | 'func testSubscriptExpr -V testSubscriptExpr' |
 | 288 | cfg.swift:288:55:319:1 | Block | 'Block' |
 | 289 | cfg.swift:289:3:289:44 | var a | 'var a -V a -> 0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -^ ArrayLiteral' |
-| 290 | cfg.swift:290:3:290:3 | a | 'a -> Argument -V 0 -^ a(...) -> 0 -^ ... = ...' |
-| 291 | cfg.swift:291:3:291:3 | a | 'a -> Argument -V 1 -^ a(...) -> 1 -^ ... += ...' |
-| 292 | cfg.swift:292:3:292:3 | a | 'a -> Argument -V 2 -^ a(...) -> 1 -^ ... -= ...' |
-| 293 | cfg.swift:293:3:293:3 | a | 'a -> Argument -V 3 -^ a(...) -> 1 -^ ... *= ...' |
-| 294 | cfg.swift:294:3:294:3 | a | 'a -> Argument -V 4 -^ a(...) -> 1 -^ ... /= ...' |
-| 295 | cfg.swift:295:3:295:3 | a | 'a -> Argument -V 5 -^ a(...) -> 1 -^ ... %= ...' |
-| 296 | cfg.swift:296:3:296:3 | a | 'a -> Argument -V 6 -^ a(...) -> 1 -^ ... &= ...' |
-| 297 | cfg.swift:297:3:297:3 | a | 'a -> Argument -V 7 -^ a(...) -> 1 -^ ... \|= ...' |
-| 298 | cfg.swift:298:3:298:3 | a | 'a -> Argument -V 8 -^ a(...) -> 1 -^ ... ^= ...' |
-| 299 | cfg.swift:299:3:299:3 | a | 'a -> Argument -V 9 -^ a(...) -> 1 -^ ... <<= ...' |
-| 300 | cfg.swift:300:3:300:3 | a | 'a -> Argument -V 10 -^ a(...) -> 1 -^ ... >>= ...' |
-| 302 | cfg.swift:302:3:302:49 | var tupleWithA | 'var tupleWithA -V tupleWithA -> Argument -V a -> Argument -V 0 -^ a(...) -> Argument -V a -> Argument -V 1 -^ a(...) -> Argument -V a -> Argument -V 2 -^ a(...) -> Argument -V a -> Argument -V 3 -^ a(...) -> Argument -V a -> Argument -V 4 -^ a(...) -^ TupleExpr' |
+| 290 | cfg.swift:290:3:290:3 | a | 'a -^ ... .subscript -> Argument -V 0 -^ ... .subscript(...) -> 0 -^ ... = ...' |
+| 291 | cfg.swift:291:3:291:3 | a | 'a -^ ... .subscript -> Argument -V 1 -^ ... .subscript(...) -> 1 -^ ... += ...' |
+| 292 | cfg.swift:292:3:292:3 | a | 'a -^ ... .subscript -> Argument -V 2 -^ ... .subscript(...) -> 1 -^ ... -= ...' |
+| 293 | cfg.swift:293:3:293:3 | a | 'a -^ ... .subscript -> Argument -V 3 -^ ... .subscript(...) -> 1 -^ ... *= ...' |
+| 294 | cfg.swift:294:3:294:3 | a | 'a -^ ... .subscript -> Argument -V 4 -^ ... .subscript(...) -> 1 -^ ... /= ...' |
+| 295 | cfg.swift:295:3:295:3 | a | 'a -^ ... .subscript -> Argument -V 5 -^ ... .subscript(...) -> 1 -^ ... %= ...' |
+| 296 | cfg.swift:296:3:296:3 | a | 'a -^ ... .subscript -> Argument -V 6 -^ ... .subscript(...) -> 1 -^ ... &= ...' |
+| 297 | cfg.swift:297:3:297:3 | a | 'a -^ ... .subscript -> Argument -V 7 -^ ... .subscript(...) -> 1 -^ ... \|= ...' |
+| 298 | cfg.swift:298:3:298:3 | a | 'a -^ ... .subscript -> Argument -V 8 -^ ... .subscript(...) -> 1 -^ ... ^= ...' |
+| 299 | cfg.swift:299:3:299:3 | a | 'a -^ ... .subscript -> Argument -V 9 -^ ... .subscript(...) -> 1 -^ ... <<= ...' |
+| 300 | cfg.swift:300:3:300:3 | a | 'a -^ ... .subscript -> Argument -V 10 -^ ... .subscript(...) -> 1 -^ ... >>= ...' |
+| 302 | cfg.swift:302:3:302:49 | var tupleWithA | 'var tupleWithA -V tupleWithA -> Argument -V a -^ ... .subscript -> Argument -V 0 -^ ... .subscript(...) -> Argument -V a -^ ... .subscript -> Argument -V 1 -^ ... .subscript(...) -> Argument -V a -^ ... .subscript -> Argument -V 2 -^ ... .subscript(...) -> Argument -V a -^ ... .subscript -> Argument -V 3 -^ ... .subscript(...) -> Argument -V a -^ ... .subscript -> Argument -V 4 -^ ... .subscript(...) -^ TupleExpr' |
 | 304 | cfg.swift:304:3:304:48 | var b | 'var b -V b -> 0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 -> 11 -^ ArrayLiteral' |
-| 305 | cfg.swift:305:3:305:3 | b | 'b -> Argument -V 0 -^ b(...) -> a -> Argument -V 10 -^ a(...) -^ ... = ...' |
-| 306 | cfg.swift:306:3:306:3 | b | 'b -> Argument -V 1 -^ b(...) -> b -> Argument -V 0 -^ b(...) -> 1 -^ ... + ... -^ ... = ...' |
-| 307 | cfg.swift:307:3:307:3 | b | 'b -> Argument -V 2 -^ b(...) -> b -> Argument -V 1 -^ b(...) -> 1 -^ ... - ... -^ ... = ...' |
-| 308 | cfg.swift:308:3:308:3 | b | 'b -> Argument -V 3 -^ b(...) -> b -> Argument -V 2 -^ b(...) -> 1 -^ ... * ... -^ ... = ...' |
-| 309 | cfg.swift:309:3:309:3 | b | 'b -> Argument -V 4 -^ b(...) -> b -> Argument -V 3 -^ b(...) -> 1 -^ ... / ... -^ ... = ...' |
-| 310 | cfg.swift:310:3:310:3 | b | 'b -> Argument -V 5 -^ b(...) -> b -> Argument -V 4 -^ b(...) -> 1 -^ ... % ... -^ ... = ...' |
-| 311 | cfg.swift:311:3:311:3 | b | 'b -> Argument -V 6 -^ b(...) -> b -> Argument -V 5 -^ b(...) -> 1 -^ ... & ... -^ ... = ...' |
-| 312 | cfg.swift:312:3:312:3 | b | 'b -> Argument -V 7 -^ b(...) -> b -> Argument -V 6 -^ b(...) -> 1 -^ ... \| ... -^ ... = ...' |
-| 313 | cfg.swift:313:3:313:3 | b | 'b -> Argument -V 8 -^ b(...) -> b -> Argument -V 7 -^ b(...) -> 1 -^ ... ^ ... -^ ... = ...' |
-| 314 | cfg.swift:314:3:314:3 | b | 'b -> Argument -V 9 -^ b(...) -> b -> Argument -V 8 -^ b(...) -> 1 -^ ... << ... -^ ... = ...' |
-| 315 | cfg.swift:315:3:315:3 | b | 'b -> Argument -V 10 -^ b(...) -> b -> Argument -V 9 -^ b(...) -> 1 -^ ... >> ... -^ ... = ...' |
+| 305 | cfg.swift:305:3:305:3 | b | 'b -^ ... .subscript -> Argument -V 0 -^ ... .subscript(...) -> a -^ ... .subscript -> Argument -V 10 -^ ... .subscript(...) -^ ... = ...' |
+| 306 | cfg.swift:306:3:306:3 | b | 'b -^ ... .subscript -> Argument -V 1 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 0 -^ ... .subscript(...) -> 1 -^ ... + ... -^ ... = ...' |
+| 307 | cfg.swift:307:3:307:3 | b | 'b -^ ... .subscript -> Argument -V 2 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 1 -^ ... .subscript(...) -> 1 -^ ... - ... -^ ... = ...' |
+| 308 | cfg.swift:308:3:308:3 | b | 'b -^ ... .subscript -> Argument -V 3 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 2 -^ ... .subscript(...) -> 1 -^ ... * ... -^ ... = ...' |
+| 309 | cfg.swift:309:3:309:3 | b | 'b -^ ... .subscript -> Argument -V 4 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 3 -^ ... .subscript(...) -> 1 -^ ... / ... -^ ... = ...' |
+| 310 | cfg.swift:310:3:310:3 | b | 'b -^ ... .subscript -> Argument -V 5 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 4 -^ ... .subscript(...) -> 1 -^ ... % ... -^ ... = ...' |
+| 311 | cfg.swift:311:3:311:3 | b | 'b -^ ... .subscript -> Argument -V 6 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 5 -^ ... .subscript(...) -> 1 -^ ... & ... -^ ... = ...' |
+| 312 | cfg.swift:312:3:312:3 | b | 'b -^ ... .subscript -> Argument -V 7 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 6 -^ ... .subscript(...) -> 1 -^ ... \| ... -^ ... = ...' |
+| 313 | cfg.swift:313:3:313:3 | b | 'b -^ ... .subscript -> Argument -V 8 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 7 -^ ... .subscript(...) -> 1 -^ ... ^ ... -^ ... = ...' |
+| 314 | cfg.swift:314:3:314:3 | b | 'b -^ ... .subscript -> Argument -V 9 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 8 -^ ... .subscript(...) -> 1 -^ ... << ... -^ ... = ...' |
+| 315 | cfg.swift:315:3:315:3 | b | 'b -^ ... .subscript -> Argument -V 10 -^ ... .subscript(...) -> b -^ ... .subscript -> Argument -V 9 -^ ... .subscript(...) -> 1 -^ ... >> ... -^ ... = ...' |
 | 317 | cfg.swift:317:3:317:39 | let (pattern assignment) | 'let (pattern assignment) -V Argument -V a1 -> Argument -V a2 -> Argument -V a3 -> Argument -V a4 -> Argument -V a5 -^ TupleExpr -> tupleWithA' |
-| 318 | cfg.swift:318:11:318:19 | Argument | 'Argument -V a1 -> b -> Argument -V 0 -^ b(...) -^ ... + ... -> Argument -V a2 -> b -> Argument -V 1 -^ b(...) -^ ... + ... -> Argument -V a3 -> b -> Argument -V 2 -^ b(...) -^ ... + ... -> Argument -V a4 -> b -> Argument -V 3 -^ b(...) -^ ... + ... -> Argument -V a5 -> b -> Argument -V 4 -^ b(...) -^ ... + ... -^ TupleExpr -^ ReturnExpr' |
+| 318 | cfg.swift:318:11:318:19 | Argument | 'Argument -V a1 -> b -^ ... .subscript -> Argument -V 0 -^ ... .subscript(...) -^ ... + ... -> Argument -V a2 -> b -^ ... .subscript -> Argument -V 1 -^ ... .subscript(...) -^ ... + ... -> Argument -V a3 -> b -^ ... .subscript -> Argument -V 2 -^ ... .subscript(...) -^ ... + ... -> Argument -V a4 -> b -^ ... .subscript -> Argument -V 3 -^ ... .subscript(...) -^ ... + ... -> Argument -V a5 -> b -^ ... .subscript -> Argument -V 4 -^ ... .subscript(...) -^ ... + ... -^ TupleExpr -^ ReturnExpr' |
 | 321 | cfg.swift:321:1:326:1 | func loop1 | 'func loop1 -V loop1' |
 | 321 | cfg.swift:321:12:321:12 | x | 'x -> Block' |
 | 322 | cfg.swift:322:3:325:3 | WhileStmt | 'WhileStmt' |
@@ -396,17 +445,29 @@
 | 467 | cfg.swift:467:3:467:31 | var kpGet_bs_0_x | 'var kpGet_bs_0_x -V kpGet_bs_0_x -> ' |
 | 468 | cfg.swift:468:3:468:37 | var kpGet_mayB_force_x | 'var kpGet_mayB_force_x -V kpGet_mayB_force_x -> ' |
 | 469 | cfg.swift:469:3:469:31 | var kpGet_mayB_x | 'var kpGet_mayB_x -V kpGet_mayB_x -> ' |
-| 471 | cfg.swift:471:3:471:45 | var apply_kpGet_b_x | 'var apply_kpGet_b_x -V apply_kpGet_b_x -> a -> Argument -V kpGet_b_x -^ a(...)' |
-| 472 | cfg.swift:472:3:472:51 | var apply_kpGet_bs_0_x | 'var apply_kpGet_bs_0_x -V apply_kpGet_bs_0_x -> a -> Argument -V kpGet_bs_0_x -^ a(...)' |
-| 473 | cfg.swift:473:3:473:63 | var apply_kpGet_mayB_force_x | 'var apply_kpGet_mayB_force_x -V apply_kpGet_mayB_force_x -> a -> Argument -V kpGet_mayB_force_x -^ a(...)' |
-| 474 | cfg.swift:474:3:474:51 | var apply_kpGet_mayB_x | 'var apply_kpGet_mayB_x -V apply_kpGet_mayB_x -> a -> Argument -V kpGet_mayB_x -^ a(...)' |
+| 471 | cfg.swift:471:3:471:45 | var apply_kpGet_b_x | 'var apply_kpGet_b_x -V apply_kpGet_b_x -> a -^ ... .subscript -> Argument -V kpGet_b_x -^ ... .subscript(...)' |
+| 472 | cfg.swift:472:3:472:51 | var apply_kpGet_bs_0_x | 'var apply_kpGet_bs_0_x -V apply_kpGet_bs_0_x -> a -^ ... .subscript -> Argument -V kpGet_bs_0_x -^ ... .subscript(...)' |
+| 473 | cfg.swift:473:3:473:63 | var apply_kpGet_mayB_force_x | 'var apply_kpGet_mayB_force_x -V apply_kpGet_mayB_force_x -> a -^ ... .subscript -> Argument -V kpGet_mayB_force_x -^ ... .subscript(...)' |
+| 474 | cfg.swift:474:3:474:51 | var apply_kpGet_mayB_x | 'var apply_kpGet_mayB_x -V apply_kpGet_mayB_x -> a -^ ... .subscript -> Argument -V kpGet_mayB_x -^ ... .subscript(...)' |
 | 477 | cfg.swift:477:1:504:1 | func testIfConfig | 'func testIfConfig -V testIfConfig' |
 | 477 | cfg.swift:477:21:504:1 | Block | 'Block' |
-| 478 | cfg.swift:478:1:484:6 |  | '' |
+| 478 | cfg.swift:478:1:484:6 | IfExpr | 'IfExpr -V FOO' |
+| 479 | cfg.swift:479:3:480:3 | Block | 'Block -V 1' |
+| 480 | cfg.swift:480:3:480:3 | 2 | '2' |
+| 481 | cfg.swift:481:1:483:3 | Block | 'Block' |
+| 482 | cfg.swift:482:3:482:3 | 3 | '3' |
+| 483 | cfg.swift:483:3:483:3 | 4 | '4' |
 | 486 | cfg.swift:486:3:486:3 | 5 | '5' |
-| 488 | cfg.swift:488:1:491:6 |  | '' |
+| 488 | cfg.swift:488:1:491:6 | IfExpr | 'IfExpr -V BAR' |
+| 489 | cfg.swift:489:3:490:3 | Block | 'Block -V 6' |
+| 490 | cfg.swift:490:3:490:3 | 7 | '7' |
 | 493 | cfg.swift:493:3:493:3 | 8 | '8' |
-| 495 | cfg.swift:495:1:501:6 |  | '' |
+| 495 | cfg.swift:495:1:501:6 | IfExpr | 'IfExpr -V FOO' |
+| 496 | cfg.swift:496:3:497:4 | Block | 'Block -V 9' |
+| 497 | cfg.swift:497:3:497:4 | 10 | '10' |
+| 498 | cfg.swift:498:1:500:4 | IfExpr | 'IfExpr -V true' |
+| 499 | cfg.swift:499:3:500:4 | Block | 'Block -V 11' |
+| 500 | cfg.swift:500:3:500:4 | 12 | '12' |
 | 503 | cfg.swift:503:3:503:4 | 13 | '13' |
 | 506 | cfg.swift:506:1:531:1 | func testAvailable | 'func testAvailable -V testAvailable' |
 | 506 | cfg.swift:506:29:531:1 | Block | 'Block' |

@@ -87,13 +87,12 @@ impl DirectoryTree {
     /// suffix `sub/foo.h` results in `/a` and `/b`.
     pub fn directories_with_path(&self, file_suffix: &Path) -> HashSet<PathBuf> {
         self.files_with_same_name(file_suffix)
-            .map(|files_with_name| {
+            .map_or_default(|files_with_name| {
                 files_with_name
                     .iter()
                     .filter_map(|p| strip_suffix(p, file_suffix))
                     .collect()
             })
-            .unwrap_or_default()
     }
 
     /// Returns an iterator over all files in the directory tree.
@@ -171,8 +170,6 @@ mod tests {
     mod from_path {
         use super::*;
         use crate::test_utils::get_resource;
-        use std::collections::HashSet;
-        use std::ffi::OsString;
 
         fn check_files(tree: &DirectoryTree, file_name: &str, expected: &[PathBuf]) {
             let files = tree

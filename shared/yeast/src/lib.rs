@@ -15,10 +15,25 @@ pub mod schema;
 mod visitor;
 
 pub use range::{Point, Range};
-pub use yeast_macros::{query, rule, rules, tree, trees};
+#[doc(hidden)]
+pub use yeast_macros::tree_with_schema as __tree_with_schema;
+#[doc(hidden)]
+pub use yeast_macros::trees_with_schema as __trees_with_schema;
+pub use yeast_macros::{query, rule, rules, tree_schema};
 
 use captures::{Captures, TranslatedCaptures};
 use query::QueryNode;
+
+/// Private payload for translation failures that should become file-level
+/// errors without invoking Rust's panic hook. [`Runner::run_once`] catches this
+/// payload; unexpected panics keep their normal hook output.
+#[derive(Debug)]
+struct TranslationFailure(String);
+
+/// Unwind a deliberate translation failure without printing it as a panic.
+pub(crate) fn translation_failure(message: impl Into<String>) -> ! {
+    std::panic::resume_unwind(Box::new(TranslationFailure(message.into())))
+}
 
 impl From<tree_sitter::Point> for Point {
     fn from(p: tree_sitter::Point) -> Self {
@@ -40,8 +55,9 @@ impl From<tree_sitter::Range> for Range {
     }
 }
 
-/// Node id: an index into the output [`OutputAst`] arena. A newtype around `usize`
-/// rather than a bare alias so that it can carry its own
+/// Node id: an index into the output [`OutputAst`] arena.
+///
+/// A newtype around `usize` rather than a bare alias so that it can carry its own
 /// [`YeastDisplay`] / [`YeastSourceRange`] / [`IntoFieldIds`] impls
 /// without colliding with the impls for plain integers.
 ///
@@ -225,18 +241,26 @@ impl<T: ContextNodeId> ContextNodeId for &T {
     }
 }
 
-/// Values accepted by `location: { ... }` template entries.
-pub trait IntoLocationRanges<C> {
-    fn extend_ranges(self, ctx: &build::BuildCtx<'_, C>, out: &mut Vec<Range>);
+#[doc(hidden)]
+pub trait LocationSource: Copy {
+    fn location_range<C>(self, ctx: &build::BuildCtx<'_, C>) -> Option<Range>;
 }
 
-impl<C, I, T> IntoLocationRanges<C> for I
-where
-    I: IntoIterator<Item = T>,
-    T: ContextNodeId,
-{
-    fn extend_ranges(self, ctx: &build::BuildCtx<'_, C>, out: &mut Vec<Range>) {
-        out.extend(self.into_iter().filter_map(|id| id.source_range(ctx)));
+impl<T: ContextNodeId> LocationSource for T {
+    fn location_range<C>(self, ctx: &build::BuildCtx<'_, C>) -> Option<Range> {
+        ContextNodeId::source_range(self, ctx)
+    }
+}
+
+impl LocationSource for Range {
+    fn location_range<C>(self, _ctx: &build::BuildCtx<'_, C>) -> Option<Range> {
+        Some(self)
+    }
+}
+
+impl LocationSource for &Range {
+    fn location_range<C>(self, _ctx: &build::BuildCtx<'_, C>) -> Option<Range> {
+        Some(*self)
     }
 }
 
@@ -326,8 +350,9 @@ impl<T: YeastSourceRange + ?Sized> YeastSourceRange for &T {
     }
 }
 
-/// Normalizes a `#{expr}` interpolation to an optional value, so that a
-/// template choice — `field: [(kind #{expr})]` — can tell "there is a value
+/// Normalizes a `#{expr}` interpolation to an optional value.
+///
+/// A template choice — `field: [(kind #{expr})]` — can tell "there is a value
 /// to interpolate" apart from "there is none, so try the next alternative".
 ///
 /// Implemented for every [`YeastDisplay`] type, which always yields a value,
@@ -564,15 +589,15 @@ impl<Id: TreeId> std::fmt::Debug for Ast<Id> {
         f.debug_struct("Ast")
             .field("root", &self.root)
             .field("nodes", &self.nodes.len())
-            .finish()
+            .finish_non_exhaustive()
     }
 }
 
 impl Ast {
     /// Construct an AST from a TS tree
-    pub fn from_tree(language: tree_sitter::Language, tree: &tree_sitter::Tree) -> Self {
-        let schema = schema::from_language(&language);
-        Self::from_tree_with_schema(schema, tree, &language)
+    pub fn from_tree(language: &tree_sitter::Language, tree: &tree_sitter::Tree) -> Self {
+        let schema = schema::from_language(language);
+        Self::from_tree_with_schema(schema, tree, language)
     }
 
     pub fn from_tree_with_schema(
@@ -1035,7 +1060,7 @@ impl<Id: TreeId> Node<Id> {
         self.is_error
     }
 
-    fn fake_point(&self) -> Point {
+    fn fake_point() -> Point {
         Point { row: 0, column: 0 }
     }
 
@@ -1048,12 +1073,12 @@ impl<Id: TreeId> Node<Id> {
 
     pub fn start_position(&self) -> Point {
         self.source_range()
-            .map_or_else(|| self.fake_point(), |range| range.start_point)
+            .map_or_else(Self::fake_point, |range| range.start_point)
     }
 
     pub fn end_position(&self) -> Point {
         self.source_range()
-            .map_or_else(|| self.fake_point(), |range| range.end_point)
+            .map_or_else(Self::fake_point, |range| range.end_point)
     }
 
     pub fn start_byte(&self) -> usize {
@@ -1072,17 +1097,14 @@ impl<Id: TreeId> Node<Id> {
         match &self.content {
             NodeContent::Range(_range) => None,
             NodeContent::String(s) => Some(s.to_string()),
-            NodeContent::DynamicString(s) => Some(s.to_string()),
+            NodeContent::DynamicString(s) => Some(s.clone()),
         }
     }
 
     /// Read the child ids stored under a given field, or an empty slice if
     /// no such field is present on this node.
     pub fn field_children(&self, field_id: FieldId) -> &[Id] {
-        self.fields
-            .get(&field_id)
-            .map(|v| v.as_slice())
-            .unwrap_or(&[])
+        self.fields.get(&field_id).map_or(&[][..], Vec::as_slice)
     }
 }
 
@@ -1136,16 +1158,16 @@ impl<C> TranslatorHandle<'_, C> {
     }
 }
 
-impl<'a, C: Clone> TranslatorHandle<'a, C> {
+impl<C: Clone> TranslatorHandle<'_, C> {
     /// Recursively apply the current phase's rules to `id` and return the
     /// resulting node ids.
     pub fn translate(
         &self,
         ast: &Ast,
         output: &mut OutputAst,
-        user_ctx: &mut C,
+        user_ctx: &C,
         id: Id,
-    ) -> Result<Vec<OutputId>, String> {
+    ) -> Vec<OutputId> {
         apply_rules_inner(
             self.index,
             ast,
@@ -1161,15 +1183,14 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
         captures: &Captures,
         ast: &Ast,
         output: &mut OutputAst,
-        user_ctx: &mut C,
+        user_ctx: &C,
         skip: &[&str],
-    ) -> Result<TranslatedCaptures, String> {
-        captures.try_translate_except(skip, |id| {
+    ) -> TranslatedCaptures {
+        captures.translate_except(skip, |id| {
             if id == self.matched_root {
-                Err("cannot eagerly translate a capture of the matched rule root".to_string())
-            } else {
-                self.translate(ast, output, user_ctx, id)
+                translation_failure("cannot eagerly translate a capture of the matched rule root");
             }
+            self.translate(ast, output, user_ctx, id)
         })
     }
 }
@@ -1178,7 +1199,7 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
 ///
 /// Takes the immutable input AST, mutable output AST, raw captured variables,
 /// source range of the matched node, mutable user context, and a
-/// [`TranslatorHandle`]. Returns output IDs or an error.
+/// [`TranslatorHandle`]. Returns output IDs.
 ///
 /// Transforms receive raw input captures. Macro-generated transforms eagerly
 /// translate `@` captures and translate raw ids when they are returned or
@@ -1191,16 +1212,18 @@ pub type Transform<C = ()> = Box<
             Option<Range>,
             &mut C,
             TranslatorHandle<'_, C>,
-        ) -> Result<Vec<OutputId>, String>
+        ) -> Vec<OutputId>
         + Send
         + Sync,
 >;
 
 /// Predicate evaluated after a rule's query matches and before its transform
-/// runs. Returning `false` makes the rule behave as if its query did not
+/// runs.
+///
+/// Returning `false` makes the rule behave as if its query did not
 /// match, so the driver continues to the next rule. Guards have read-only
 /// access to the shared user context.
-pub type Guard<C = ()> = Box<dyn Fn(&Ast, &Captures, &C) -> Result<bool, String> + Send + Sync>;
+pub type Guard<C = ()> = Box<dyn Fn(&Ast, &Captures, &C) -> bool + Send + Sync>;
 
 pub struct Rule<C = ()> {
     query: QueryNode,
@@ -1238,21 +1261,21 @@ impl<C> Rule<C> {
     /// Attempt to match this rule's query against `node`, returning the raw
     /// captures on success. Does not evaluate the guard or invoke the
     /// transform.
-    fn match_query(&self, ast: &Ast, node: Id) -> Result<Option<Captures>, String> {
+    fn match_query(&self, ast: &Ast, node: Id) -> Option<Captures> {
         let mut captures = Captures::new();
-        if !self.query.do_match(ast, node, &mut captures)? {
-            return Ok(None);
+        if !self.query.do_match(ast, node, &mut captures) {
+            return None;
         }
-        Ok(Some(captures))
+        Some(captures)
     }
 
     /// Evaluate this rule's guard against a successful query match. An
     /// unguarded rule always succeeds.
-    fn guard_matches(&self, ast: &Ast, captures: &Captures, user_ctx: &C) -> Result<bool, String> {
+    fn guard_matches(&self, ast: &Ast, captures: &Captures, user_ctx: &C) -> bool {
         if let Some(guard) = &self.guard {
             guard(ast, captures, user_ctx)
         } else {
-            Ok(true)
+            true
         }
     }
 
@@ -1266,7 +1289,7 @@ impl<C> Rule<C> {
         node: Id,
         user_ctx: &mut C,
         translator: TranslatorHandle<'_, C>,
-    ) -> Result<Vec<OutputId>, String> {
+    ) -> Vec<OutputId> {
         let source_range = ast.source_range_ignoring_fields(node, &self.ignored_location_fields);
         (self.transform)(ast, output, captures, source_range, user_ctx, translator)
     }
@@ -1306,14 +1329,14 @@ impl<'a, C> RuleIndex<'a, C> {
 
 /// Apply the first matching rule to each visited node. Recursion proceeds
 /// only through captured nodes (not through the input node's children
-/// directly), and an error is returned if no rule matches a visited node.
+/// directly), and panics if no rule matches a visited node.
 fn apply_rules<C: Clone>(
     rules: &[Rule<C>],
     ast: &Ast,
     output: &mut OutputAst,
-    user_ctx: &mut C,
+    user_ctx: &C,
     id: Id,
-) -> Result<Vec<OutputId>, String> {
+) -> Vec<OutputId> {
     let index = RuleIndex::new(rules);
     apply_rules_inner(&index, ast, output, user_ctx, id, 0)
 }
@@ -1322,25 +1345,25 @@ fn apply_rules_inner<C: Clone>(
     index: &RuleIndex<C>,
     ast: &Ast,
     output: &mut OutputAst,
-    user_ctx: &mut C,
+    user_ctx: &C,
     id: Id,
     rewrite_depth: usize,
-) -> Result<Vec<OutputId>, String> {
+) -> Vec<OutputId> {
     if rewrite_depth > MAX_REWRITE_DEPTH {
-        return Err(format!(
+        translation_failure(format!(
             "Desugaring exceeded maximum rewrite depth ({MAX_REWRITE_DEPTH}). \
              This likely indicates a non-terminating rule cycle."
         ));
     }
 
-    let node_kind = ast.get_node(id).map(|n| n.kind_name()).unwrap_or("");
+    let node_kind = ast.get_node(id).map_or("", |n| n.kind_name());
 
     for rule in index.rules_for_kind(node_kind) {
-        let Some(captures) = rule.match_query(ast, id)? else {
+        let Some(captures) = rule.match_query(ast, id) else {
             continue;
         };
 
-        if !rule.guard_matches(ast, &captures, user_ctx)? {
+        if !rule.guard_matches(ast, &captures, user_ctx) {
             continue;
         }
 
@@ -1355,11 +1378,11 @@ fn apply_rules_inner<C: Clone>(
             rewrite_depth,
             matched_root: id,
         };
-        let result = rule.run_transform(ast, output, captures, id, &mut local, translator)?;
-        return Ok(result);
+        let result = rule.run_transform(ast, output, captures, id, &mut local, translator);
+        return result;
     }
 
-    Err(format!("no rule matched node of kind '{node_kind}'"))
+    translation_failure(format!("no rule matched node of kind '{node_kind}'"))
 }
 
 /// A named bundle of exhaustive rules for the one-shot translation pass.
@@ -1431,6 +1454,7 @@ impl<C> DesugaringConfig<C> {
     /// Add a translation phase with the given name and exhaustive rules.
     ///
     /// Runners currently reject configurations containing more than one phase.
+    #[must_use]
     pub fn add_phase(mut self, name: impl Into<String>, mut rules: Vec<Rule<C>>) -> Self {
         for rule in &mut rules {
             rule.set_ignored_location_fields(&self.ignored_location_fields);
@@ -1441,6 +1465,7 @@ impl<C> DesugaringConfig<C> {
 
     /// Ignore boundary syntax stored under any of these input field names when
     /// calculating matched locations for rule results.
+    #[must_use]
     pub fn with_ignored_location_fields(
         mut self,
         fields: impl IntoIterator<Item = &'static str>,
@@ -1454,6 +1479,7 @@ impl<C> DesugaringConfig<C> {
         self
     }
 
+    #[must_use]
     pub fn with_output_node_types_yaml(mut self, yaml: &'static str) -> Self {
         self.output_node_types_yaml = Some(yaml);
         self
@@ -1562,7 +1588,7 @@ impl<'a, C> Runner<'a, C> {
     }
 }
 
-impl<'a, C: Clone> Runner<'a, C> {
+impl<C: Clone> Runner<'_, C> {
     /// Parse `tree` against `source` and run the configured translation, threading
     /// `user_ctx` through every rule transform. The caller owns the
     /// initial context state.
@@ -1570,7 +1596,7 @@ impl<'a, C: Clone> Runner<'a, C> {
         &self,
         tree: &tree_sitter::Tree,
         source: &[u8],
-        user_ctx: &mut C,
+        user_ctx: &C,
     ) -> Result<OutputAst, String> {
         let language = self
             .language
@@ -1591,7 +1617,7 @@ impl<'a, C: Clone> Runner<'a, C> {
 
     /// Parse `input` and run the configured translation, threading `user_ctx` through
     /// every rule transform. The caller owns the initial context state.
-    pub fn run_with_ctx(&self, input: &str, user_ctx: &mut C) -> Result<OutputAst, String> {
+    pub fn run_with_ctx(&self, input: &str, user_ctx: &C) -> Result<OutputAst, String> {
         let language = self
             .language
             .as_ref()
@@ -1616,28 +1642,47 @@ impl<'a, C: Clone> Runner<'a, C> {
         self.run_once(raw, user_ctx)
     }
 
-    fn run_once(&self, ast: Ast, user_ctx: &mut C) -> Result<OutputAst, String> {
+    fn run_once(&self, ast: Ast, user_ctx: &C) -> Result<OutputAst, String> {
+        match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            self.run_once_inner(ast, user_ctx)
+        })) {
+            Ok(output) => Ok(output),
+            Err(payload) => match payload.downcast::<TranslationFailure>() {
+                Ok(failure) => Err(failure.0),
+                Err(payload) => {
+                    let message = if let Some(message) = payload.downcast_ref::<&str>() {
+                        (*message).to_owned()
+                    } else if let Some(message) = payload.downcast_ref::<String>() {
+                        message.clone()
+                    } else {
+                        "unknown panic payload".to_owned()
+                    };
+                    Err(format!("YEAST translation panicked: {message}"))
+                }
+            },
+        }
+    }
+
+    fn run_once_inner(&self, ast: Ast, user_ctx: &C) -> OutputAst {
         if self.phases.len() != 1 {
-            return Err("YEAST requires exactly one translation phase".to_string());
+            translation_failure("YEAST requires exactly one translation phase");
         }
         let phase = &self.phases[0];
         let mut output = OutputAst::with_schema(self.schema.clone());
-        let res = apply_rules(&phase.rules, &ast, &mut output, user_ctx, ast.get_root())
-            .map_err(|e| format!("Phase `{}`: {e}", phase.name))?;
+        let res = apply_rules(&phase.rules, &ast, &mut output, user_ctx, ast.get_root());
         if res.len() != 1 {
-            return Err(format!(
-                "Phase `{}`: expected exactly one result node, got {}",
-                phase.name,
+            translation_failure(format!(
+                "expected exactly one result node, got {}",
                 res.len()
             ));
         }
         output.set_root(res[0]);
         output.set_source(ast.into_source());
-        Ok(output)
+        output
     }
 }
 
-impl<'a, C: Clone + Default> Runner<'a, C> {
+impl<C: Clone + Default> Runner<'_, C> {
     /// Parse `tree` against `source` and run the configured translation, using
     /// the default context (`C::default()`) as the initial context state.
     pub fn run_from_tree(
@@ -1645,21 +1690,21 @@ impl<'a, C: Clone + Default> Runner<'a, C> {
         tree: &tree_sitter::Tree,
         source: &[u8],
     ) -> Result<OutputAst, String> {
-        let mut user_ctx = C::default();
-        self.run_from_tree_with_ctx(tree, source, &mut user_ctx)
+        let user_ctx = C::default();
+        self.run_from_tree_with_ctx(tree, source, &user_ctx)
     }
 
     /// Parse `input` and run the configured translation, using the default
     /// context (`C::default()`) as the initial context state.
     pub fn run(&self, input: &str) -> Result<OutputAst, String> {
-        let mut user_ctx = C::default();
-        self.run_with_ctx(input, &mut user_ctx)
+        let user_ctx = C::default();
+        self.run_with_ctx(input, &user_ctx)
     }
 
     /// Run the configured translation over an already-built input AST.
     pub fn run_from_ast(&self, ast: Ast) -> Result<OutputAst, String> {
-        let mut user_ctx = C::default();
-        self.run_once(ast, &mut user_ctx)
+        let user_ctx = C::default();
+        self.run_once(ast, &user_ctx)
     }
 }
 
@@ -1692,8 +1737,10 @@ pub trait Desugarer: Send + Sync {
 }
 
 /// A concrete [`Desugarer`] backed by a [`DesugaringConfig<C>`] for a
-/// specific user context type `C`. Stores the language and a pre-built
-/// schema so that per-call cost is bounded to constructing a transient
+/// specific user context type `C`.
+///
+/// Stores the language and a pre-built schema so that per-call cost is bounded
+/// to constructing a transient
 /// [`Runner`] and cloning the schema (no YAML re-parsing).
 pub struct ConcreteDesugarer<C: Default + Clone + Send + Sync + 'static> {
     /// The input tree-sitter language, or `None` for a custom (non-tree-sitter)

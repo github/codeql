@@ -1,3 +1,18 @@
+## 3.0.2
+
+No user-facing changes.
+
+## 3.0.1
+
+### Minor Analysis Improvements
+
+* Checks of the form `isNaN(parseInt(x))` and `isNaN(parseFloat(x))` are no longer treated as checking that `x` is a number, since `parseInt` and `parseFloat` only validate a numeric prefix of `x`. This can reveal previously missed alerts, for example from `js/shell-command-constructed-from-input` and `js/unsafe-jquery-plugin`.
+* The command injection queries now properly recognize argument arrays passed to `spawn` and `execFile` as sinks when the `shell` option is enabled.
+* The sensitive data heuristics treat names built on `trusted_schema`, such as SQLite's `set_trusted_schema` setting, as non-sensitive. This removes false positive results from queries that use the sensitive data library (for example `js/clear-text-logging`).
+* Regular expression checks using multiline (`m`) or unknown flags are no longer treated as generic taint sanitizers just because the pattern is anchored with `^` and `$`. This can reveal previously missed alerts, including command injection and reflected cross-site scripting.
+* Added modeling of the `@modelcontextprotocol/sdk` and `@modelcontextprotocol/server` (the official Model Context Protocol SDK) and `fastmcp` npm packages. The arguments of MCP tool, resource and prompt callbacks and the requests that handlers of the low-level `Server` receive are now sources of the opt-in `ai` threat model, as their values are produced by a language model. The request headers and the bearer token that the SDK passes to a callback are sources of the `remote` threat model.
+* Added flow summaries for schema parsing with the `zod` npm package: data now flows from the argument of `parse`, `safeParse`, `parseAsync` and `safeParseAsync` to the parsed result.
+
 ## 3.0.0
 
 ### Breaking Changes

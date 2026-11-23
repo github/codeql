@@ -54,21 +54,23 @@ pub fn get_overlay_settings() -> Result<OverlaySettings> {
         (Some(overlay_changes), Some(metadata_in), None) => {
             let changes_file = fs::File::open(overlay_changes)?;
             let json: Value = from_reader(changes_file)?;
-            let obj = json.as_object().ok_or(anyhow!(
-                "Overlay changes file does not contain a JSON object."
-            ))?;
+            let obj = json
+                .as_object()
+                .ok_or_else(|| anyhow!("Overlay changes file does not contain a JSON object."))?;
             // TODO: Log/warn if there are any fields other than "changes"
             let files = obj.get("changes").ok_or_else(|| {
                 anyhow!("Overlay changes file does not contain a 'changes' field.")
             })?;
-            let files_array = files.as_array().ok_or(anyhow!(
-                "Overlay changes file 'changes' field is not an array."
-            ))?;
+            let files_array = files
+                .as_array()
+                .ok_or_else(|| anyhow!("Overlay changes file 'changes' field is not an array."))?;
             let changed_files = files_array
                 .iter()
                 .map(|v| {
                     Ok(v.as_str()
-                        .ok_or(anyhow!("Overlay changes file contains non-string entries."))?
+                        .ok_or_else(|| {
+                            anyhow!("Overlay changes file contains non-string entries.")
+                        })?
                         .into())
                 })
                 .collect::<Result<_>>()?;

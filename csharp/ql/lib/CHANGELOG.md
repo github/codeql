@@ -1,3 +1,13 @@
+## 7.4.4
+
+No user-facing changes.
+
+## 7.4.3
+
+### Minor Analysis Improvements
+
+* Added support for data flow through property patterns in `is` expressions and `switch` cases.
+
 ## 7.4.2
 
 ### Minor Analysis Improvements

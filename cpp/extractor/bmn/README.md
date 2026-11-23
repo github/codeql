@@ -7,7 +7,7 @@ a build.
 Run the Rust checks with:
 
 ```sh
-./lint --check
+cargo clippy --all-targets -- -D warnings
 cargo test
 ```
 
@@ -22,5 +22,5 @@ After changing Cargo dependencies, regenerate the checked-in Bazel dependency
 definitions with:
 
 ```sh
-misc/bazel/3rdparty/update_cpp_bmn_deps.sh
+misc/bazel/3rdparty/update_rust_workspace_deps.sh
 ```

@@ -1,3 +1,11 @@
+## 12.4.2
+
+No user-facing changes.
+
+## 12.4.1
+
+No user-facing changes.
+
 ## 12.4.0
 
 ### New Features

@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/actions-all
-      extensible: actionsSinkModel
-    data:
-     - ["chipsalliance/chisel/.github/workflows/test.yml", "*", "input.scala", "code-injection", "generated"]
-     - ["chipsalliance/chisel/.github/workflows/test.yml", "*", "input.circt", "code-injection", "generated"]

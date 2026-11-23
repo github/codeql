@@ -40,7 +40,7 @@ enum Message {
 
 impl Default for Message {
     fn default() -> Self {
-        Message::TextMessage("".to_string())
+        Message::TextMessage(String::new())
     }
 }
 

@@ -1,5 +1,12 @@
 use codeql_extractor::extractor::desugaring;
-use yeast::{ConcreteDesugarer, DesugaringConfig, Rule, tree};
+use yeast::{ConcreteDesugarer, DesugaringConfig, Rule};
+
+yeast::tree_schema! {
+    swift_tree,
+    "ast_types.yml",
+}
+
+use swift_tree::tree;
 
 /// User context propagated from outer rules down to the inner rules that
 /// emit the corresponding output declarations, so that each emitted node
@@ -38,6 +45,30 @@ struct SwiftContext {
     /// True while translating a pattern. Optional chaining in this context is
     /// represented as an `Optional.some` call rather than being unwrapped.
     in_pattern: bool,
+    /// True when a conditional compilation block should be translated into an
+    /// if expression.
+    conditional_compilation_as_expr: bool,
+    /// When iterating over the clauses of a conditional compilation block, this
+    /// holds the tail of the clauses that have already been translated.
+    conditional_compilation_tail: Option<yeast::OutputId>,
+    /// The enclosing `subscriptDecl`, set while translating its accessor
+    /// block so the inner `accessorDecl` rule emits `subscript` methods
+    /// rather than property accessors, and while translating its parameters,
+    /// since unlike function parameters, a subscript parameter with a single
+    /// name has no argument label. It is cleared when translating accessor
+    /// bodies.
+    subscript: Option<SubscriptContext>,
+}
+
+/// The parts of a `subscriptDecl` shared by its getter and setter. These are
+/// kept untranslated so that each emitted method gets its own copy.
+#[derive(Clone)]
+struct SubscriptContext {
+    keyword: yeast::Id,
+    modifiers: Vec<yeast::Id>,
+    type_params: Vec<yeast::Id>,
+    params: Vec<yeast::Id>,
+    return_type: yeast::Id,
 }
 
 impl SwiftContext {
@@ -51,10 +82,9 @@ impl SwiftContext {
     /// Called before recursively translating a body / initializer
     /// slot. Most rules mutate `ctx` in place — the framework invokes
     /// each rule with a private clone of the user context, so
-    /// mutations are discarded on rule exit anyway. Rules that need
-    /// the outer context intact *after* the reset-and-translate (see
-    /// e.g. the `property_binding` willSet/didSet rule) wrap the
-    /// mutation in `ctx.scoped(...)` instead.
+    /// mutations are discarded on rule exit anyway. Output-template
+    /// interpolations additionally restore the context after evaluation,
+    /// preventing mutations from leaking into sibling fields.
     fn reset(&mut self) {
         *self = SwiftContext::default();
     }
@@ -111,6 +141,17 @@ fn make_or_pattern(
     }
 }
 
+fn parameter_pattern(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    name: yeast::Id,
+) -> yeast::OutputId {
+    if ctx.source_text(name) == "_" {
+        tree!((ignore_pattern #{name}))
+    } else {
+        tree!((identifier #{name}))
+    }
+}
+
 /// Translate a multi-part identifier (for example `Foo.Bar.Baz`) into a
 /// `member_access_expr` chain rooted at a `name_node` for the first
 /// part. Panics on an empty input because the grammar's `_+` quantifier
@@ -130,6 +171,83 @@ fn member_chain(
     )
 }
 
+/// The accessor-specific parts of a subscript getter or setter.
+struct SubscriptAccessor {
+    /// Modifiers written on the accessor itself, such as `nonmutating`.
+    modifiers: Vec<yeast::OutputId>,
+    /// For a setter, the explicit name of its new-value parameter (the `v` in
+    /// `set(v) { ... }`), if any, and the token at which to locate an implicit
+    /// `newValue`.
+    new_value_param: Option<(Option<yeast::Id>, yeast::Id)>,
+    /// The raw accessor body, if any.
+    body: Option<yeast::Id>,
+}
+
+/// Emit a `function_declaration` named `subscript` for one accessor of a
+/// subscript. The shared parts of the subscript (modifiers, generic and value
+/// parameters and the element type) are translated afresh for each accessor,
+/// so a getter/setter pair each get their own copy. A setter takes the new
+/// value as an extra trailing parameter named `#newValue` and has no return
+/// type.
+fn subscript_method(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    sub: SubscriptContext,
+    accessor: SubscriptAccessor,
+) -> yeast::OutputId {
+    let is_chained = ctx.is_chained;
+    let sub_ctx = sub.clone();
+    let (mods, type_params, params, element_type, body) = ctx.scoped(|ctx| {
+        ctx.reset();
+        let mods = ctx.translate(sub.modifiers);
+        let type_params = ctx.translate(sub.type_params);
+        let element_type = ctx.translate(sub.return_type).into_iter().next();
+        let body = ctx.translate(accessor.body).into_iter().next();
+        ctx.subscript = Some(sub_ctx);
+        let params = ctx.translate(sub.params);
+        (mods, type_params, params, element_type, body)
+    });
+    let body = body.unwrap_or_else(|| tree!((block)));
+    let kw = sub.keyword;
+    if let Some((param_name, spec)) = accessor.new_value_param {
+        let implicit_param_name = param_name.is_none().then_some("newValue");
+        tree!((function_declaration
+            modifier: {mods}
+            modifier: {accessor.modifiers}
+            modifier: [(modifier "chained_declaration") if { is_chained }]
+            name_node: (identifier #{kw})
+            type_parameter: {type_params}
+            parameter: {params}
+            // The new value is passed as a named parameter with the reserved
+            // external name `#newValue`, so it can't clash with the index
+            // parameters (including omitted defaults).
+            parameter: [
+                (parameter
+                    external_name_node: (identifier "#newValue" location: {spec})
+                    pattern: (identifier #{param_name})
+                    type: {element_type}
+                    location: {param_name})
+                (parameter
+                    modifier: (modifier "generated")
+                    external_name_node: (identifier "#newValue" location: {spec})
+                    pattern: (identifier #{implicit_param_name} location: {spec})
+                    type: {element_type}
+                    location: {spec})
+            ]
+            body: {body}))
+    } else {
+        tree!((function_declaration
+            modifier: {mods}
+            modifier: {accessor.modifiers}
+            modifier: [(modifier "chained_declaration") if { is_chained }]
+            name_node: (identifier #{kw})
+            type_parameter: {type_params}
+            parameter: {params}
+            return_type: {element_type}
+            body: {body}))
+    }
+}
+
+#[allow(clippy::too_many_lines)]
 fn translation_rules() -> Vec<Rule<SwiftContext>> {
     yeast::rules! {
         input: "swift_node_types.yml",
@@ -153,6 +271,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // but a single wrapped `variableDecl` can translate to *several*
         // declarations (`let x = 1, y = 2`), so the wrapped node is captured with
         // `_*` and the result annotated `stmt*` to splice all of them.
+        rule!(
+            (codeBlockItem item: (ifConfigDecl) @@item)
+            =>
+            stmt* {
+                ctx.conditional_compilation_as_expr = true;
+                ctx.translate(item)
+            }
+        ),
         rule!((codeBlockItem item: _* @item) => stmt* { item }),
         // ---- Literals ----
         // swift-syntax does not distinguish the lexical integer/string forms
@@ -371,24 +497,105 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let mut result = Vec::new();
                 if let Some(val) = val {
                     // Stored property with observers: the initializer is not part
-                    // of the binding, so translate it in a reset scope.
-                    let val = ctx.scoped(|ctx| {
-                        ctx.reset();
-                        ctx.translate(val)
-                    })?;
+                    // of the binding, so translate it in a reset interpolation.
                     result.push(tree!(
                         (variable_declaration
                             modifier: {ctx.outer_modifiers.clone()}
                             pattern: (identifier #{name})
                             type: {ty}
-                            value: {val})
+                            value: {ctx.reset(); val})
                     ));
                 }
-                for acc in accessors.into_iter() {
+                for acc in accessors {
                     ctx.is_chained = !result.is_empty();
-                    result.extend(ctx.translate(acc)?);
+                    result.extend(ctx.translate(acc));
                 }
                 result
+            }
+        ),
+        // ---- Subscripts ----
+        // A subscript declaration becomes a `function_declaration` named
+        // `subscript` for its getter and, if it has a setter, another one for
+        // the setter, which is identified by its `#newValue` parameter.
+        // A subscript with an explicit accessor block publishes its shared parts
+        // in `ctx` and lets the `accessorDecl` rule below emit one method per
+        // accessor; each one after the first is tagged `chained_declaration`.
+        rule!(
+            (subscriptDecl
+                modifiers: _* @@mods
+                subscriptKeyword: @@kw
+                genericParameterClause: (genericParameterClause parameters: _* @@type_params)?
+                parameterClause: (functionParameterClause parameters: _* @@params)
+                returnClause: (returnClause type: @@ret)
+                accessorBlock: (accessorBlock accessors: (accessorDecl)+ @@accessors))
+            =>
+            member* {
+                ctx.subscript = Some(SubscriptContext {
+                    keyword: kw,
+                    modifiers: mods,
+                    type_params,
+                    params,
+                    return_type: ret,
+                });
+                accessors
+                    .into_iter()
+                    .enumerate()
+                    .flat_map(|(i, acc)| {
+                        ctx.is_chained = i > 0;
+                        ctx.translate(acc)
+                    })
+                    .collect::<Vec<_>>()
+            }
+        ),
+        // A subscript with a getter-only body (`subscript(i: Int) -> T { … }`).
+        rule!(
+            (subscriptDecl
+                modifiers: _* @@mods
+                subscriptKeyword: @@kw
+                genericParameterClause: (genericParameterClause parameters: _* @@type_params)?
+                parameterClause: (functionParameterClause parameters: _* @@params)
+                returnClause: (returnClause type: @@ret)
+                accessorBlock: _? @@body)
+            =>
+            function_declaration {
+                let sub = SubscriptContext {
+                    keyword: kw,
+                    modifiers: mods,
+                    type_params,
+                    params,
+                    return_type: ret,
+                };
+                ctx.is_chained = false;
+                subscript_method(&mut ctx, sub, SubscriptAccessor {
+                    modifiers: Vec::new(),
+                    new_value_param: None,
+                    body,
+                })
+            }
+        ),
+        // An accessor of a subscript (see above). Accessor kinds other than
+        // `get` and `set` (such as `_modify`) are not supported.
+        rule!(
+            (accessorDecl
+                modifiers: _* @acc_mods
+                accessorSpecifier: @@spec
+                parameters: (accessorParameters name: @@param_name)?
+                body: _? @@body)
+            where ctx.subscript.is_some()
+            =>
+            member {
+                let sub = ctx.subscript.clone().expect("checked by guard");
+                let spec_text = ctx.source_text(spec);
+                if spec_text == "get" || spec_text == "set" {
+                    let new_value_param = (spec_text == "set").then_some((param_name, spec));
+                    subscript_method(&mut ctx, sub, SubscriptAccessor {
+                        modifiers: acc_mods,
+                        new_value_param,
+                        body,
+                    })
+                } else {
+                    tree!((unsupported_node ""))
+                }
             }
         ),
         // Each `accessorDecl` becomes an `accessor_declaration`, reading the
@@ -421,7 +628,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let modifiers = ctx.outer_modifiers.clone();
                 let name = ctx
                     .property_name_node
-                    .ok_or("accessor outside property context")?;
+                    .expect("accessor outside property context");
                 let return_ty = if spec_text == "get" {
                     ctx.property_type
                 } else {
@@ -431,7 +638,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     Some(block) => ctx.scoped(|ctx| {
                         ctx.reset();
                         ctx.translate(block)
-                    })?.into_iter().next(),
+                    }).into_iter().next(),
                     None => None,
                 };
                 tree!((accessor_declaration
@@ -496,7 +703,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let mut result = Vec::new();
                 for (i, b) in bindings.into_iter().enumerate() {
                     ctx.is_chained = i > 0;
-                    result.extend(ctx.translate(b)?);
+                    result.extend(ctx.translate(b));
                 }
                 result
             }
@@ -507,7 +714,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (enumCaseParameter firstName: _? @@name type: @ty)
             =>
-            (parameter pattern: [(identifier #{name})] type: {ty})
+            (parameter
+                external_name_node: [(identifier #{name})]
+                pattern: [(identifier #{name})]
+                type: {ty})
         ),
         // An enum element with associated values (`case circle(radius: Double)`)
         // becomes a nested `class_like_declaration` whose constructor carries the
@@ -569,7 +779,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let mut result = Vec::new();
                 for (i, case) in cases.into_iter().enumerate() {
                     ctx.is_chained = i > 0;
-                    result.extend(ctx.translate(case)?);
+                    result.extend(ctx.translate(case));
                 }
                 result
             }
@@ -657,6 +867,25 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 return_type: {ret}
                 body: (block))
         ),
+        // A subscript parameter with a single name has no argument label
+        // (`subscript(i: Int)` is called as `x[0]`). It is translated in a reset
+        // context so its type and default value are not affected.
+        rule!(
+            (functionParameter
+                firstName: @@first
+                secondName: _? @@second
+                type: @@ty
+                defaultValue: (initializerClause value: @@val)?)
+            where ctx.subscript.is_some() && second.is_none()
+            =>
+            parameter {
+                ctx.reset();
+                tree!((parameter
+                    pattern: {parameter_pattern(&mut ctx, first)}
+                    type: {ty}
+                    default: {val}))
+            }
+        ),
         // A function parameter. With two names (`firstName`+`secondName`) the
         // first is the external argument label and the second the internal name;
         // with one name it is both the external and internal name.
@@ -669,7 +898,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (parameter
                 external_name_node: (identifier #{first})
-                pattern: (identifier #{second})
+                pattern: {parameter_pattern(&mut ctx, second)}
                 type: {ty}
                 default: {val})
         ),
@@ -681,7 +910,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (parameter
                 external_name_node: (identifier #{first}) // duplicate the parameter name
-                pattern: (identifier #{first})
+                pattern: {parameter_pattern(&mut ctx, first)}
                 type: {ty}
                 default: {val})
         ),
@@ -736,19 +965,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 trailingClosure: _? @trailing
                 additionalTrailingClosures: _* @additional)
             =>
-            expr {
-                // Always translate the callee in non-pattern context.
-                let callee = ctx.scoped(|ctx| {
-                    ctx.in_pattern = false;
-                    ctx.translate(rawCallee)
-                })?;
-                tree!((call_expr
-                    callee: {callee}
-                    argument: {args}
-                    argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
-                    argument: {additional}
-                ))
-            }
+            (call_expr
+                callee: {ctx.in_pattern = false; rawCallee}
+                argument: {args}
+                argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
+                argument: {additional})
         ),
         // A call or enum-case pattern argument.
         rule!(
@@ -817,6 +1038,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((returnStmt expression: _? @val) => (return_expr value: {val})),
         rule!((breakStmt label: _? @@lbl) => (break_expr label_name_node: [(identifier #{lbl})])),
         rule!((continueStmt label: _? @@lbl) => (continue_expr label_name_node: [(identifier #{lbl})])),
+        rule!((fallThroughStmt) => (fallthrough_stmt)),
         rule!((throwStmt expression: @val) => (throw_expr value: {val})),
         // ---- Closures ----
         // A closure (`{ (x: Int) -> Int in … }`) becomes a `function_expr`. The
@@ -867,14 +1089,69 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (closureParameter firstName: @@name type: _? @ty)
             =>
-            (parameter pattern: (identifier #{name}) type: {ty})
+            (parameter pattern: {parameter_pattern(&mut ctx, name)} type: {ty})
         ),
         // A shorthand closure parameter (`x` in `{ x, y in … }`): a bare name
         // with no parentheses and no type.
         rule!(
             (closureShorthandParameter name: @@name)
             =>
-            (parameter pattern: (identifier #{name}))
+            (parameter pattern: {parameter_pattern(&mut ctx, name)})
+        ),
+        // ---- Conditional compilation blocks ----
+        // Conditional compilation blocks (`#if … #elseif … #else … #endif`) are
+        // represented with a `ifConfigDecl` node for the entire block and an
+        // `ifConfigClause` for each branch.
+
+        // When a conditional compilation block is not in a context where it
+        // should be translated into an if expression we simply extract the
+        // first branch (for now).
+        rule!(
+            (ifConfigDecl
+                clauses: (ifConfigClause elements: _* @items)
+                clauses: _* @@rest)
+            where !ctx.conditional_compilation_as_expr
+            =>
+            _* { items }
+        ),
+        // A conditional compilation block is translated into `if_expr` nodes
+        // with branches occurring nested within the else branch.
+        rule!(
+            (ifConfigDecl clauses: _* @@clauses) @@declaration
+            =>
+            expr {
+                // Revert `conditional_compilation_as_expr` before processing
+                // clauses. Note that if a clause contains a nested conditional
+                // compilation block, then that block will be wrapped in another
+                // `codeBlockItem` which will flip this back to `true`.
+                ctx.conditional_compilation_as_expr = false;
+                ctx.conditional_compilation_tail = None;
+                for clause in clauses.into_iter().rev() {
+                    ctx.conditional_compilation_tail = ctx.translate(clause).into_iter().next();
+                }
+                let result = ctx.conditional_compilation_tail.expect("conditional compilation has no clauses");
+                ctx.set_node_source_range(result, ctx.source_range(declaration))
+            }
+        ),
+        // A single clause is mapped to an if expression with the tail of
+        // already processed clauses (stored in `conditional_compilation_tail`)
+        // inserted into the else branch.
+        rule!(
+            (ifConfigClause condition: @condition elements: _* @items)
+            =>
+            (if_expr
+                // Mark this `if_expr` as coming from conditional compilation.
+                modifier: (modifier "conditional_compilation")
+                condition: {condition}
+                then: (block stmt: {items})
+                else: {ctx.conditional_compilation_tail})
+        ),
+        // A conditional compilation clause without a condition (a final `#else`
+        // block).
+        rule!(
+            (ifConfigClause elements: _* @items)
+            =>
+            (block stmt: {items})
         ),
         // ---- Control flow ----
         // An `if`/`else` expression. Conditions are joined via `and_chain`; the
@@ -1043,27 +1320,38 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (key_value_pair key: {key} value: {value})
         ),
-        // A subscript access (`xs[0]`) is modelled as a call. swift-syntax does
-        // report a distinct `subscriptCallExpr`, so giving
-        // subscripts their own shape needs only a `subscript_expr` node in
-        // ast_types.yml and a remap here.
+        // A subscript access (`xs[0]`) is modelled as a call to a member named
+        // `subscript` on the subscripted value, i.e. `xs.subscript(0)`. This
+        // matches the `subscript` methods emitted for `subscriptDecl`s.
         rule!(
             (subscriptCallExpr
                 calledExpression: @callee
+                leftSquare: @@left_square
                 arguments: _* @args
                 trailingClosure: _? @trailing
                 additionalTrailingClosures: _* @additional)
             =>
-            (call_expr
-                callee: {callee}
-                argument: {args}
-                argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
-                argument: {additional})
+            call_expr {
+                let member = tree!((member_access_expr
+                    base: {callee}
+                    member_name_node: (identifier "subscript" location: {left_square})
+                    location: {callee}
+                    location: {left_square}));
+                tree!((call_expr
+                    callee: {member}
+                    argument: {args}
+                    argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
+                    argument: {additional}))
+            }
         ),
         // ---- Optionals and errors ----
         // Optional chaining — unwrap the marker
         rule!((optionalChainingExpr expression: @@inner) => expr {
-            let inner = ctx.translate(inner)?.into_iter().next().ok_or("optional chaining expression has no child")?;
+            let inner = ctx
+                .translate(inner)
+                .into_iter()
+                .next()
+                .expect("optional chaining expression has no child");
             if ctx.in_pattern {
                 tree!((call_expr
                     callee: (member_access_expr
@@ -1082,7 +1370,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 expression: @e)
             =>
             expr {
-                let op = format!("try{}", m.map(|m| ctx.source_text(m)).unwrap_or_default());
+                let op = format!("try{}", m.map_or_default(|m| ctx.source_text(m)));
                 let operator = tree!((prefix_operator #{op}
                     location: {keyword}
                     location: {m}));
@@ -1123,7 +1411,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((catchClause body: @body) => (catch_clause body: {body})),
         // As expression (type cast) — as?, as!
         rule!((asExpr expression: @val asKeyword: @@keyword questionOrExclamationMark: _? @@mark type: @ty) => type_cast_expr {
-            let op = format!("as{}", mark.map(|m| ctx.source_text(m)).unwrap_or_default());
+            let op = format!("as{}", mark.map_or_default(|m| ctx.source_text(m)));
             let operator = tree!((infix_operator #{op}
                 location: {keyword}
                 location: {mark}));
@@ -1137,6 +1425,18 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // Await expression → unary_expr with operator "await"
         rule!((awaitExpr awaitKeyword: @@keyword expression: @val) => (unary_expr
             operator: (prefix_operator "await" location: {keyword})
+            operand: {val})),
+        rule!((borrowExpr borrowKeyword: @@keyword expression: @val) => (unary_expr
+            operator: (prefix_operator #{keyword})
+            operand: {val})),
+        rule!((consumeExpr consumeKeyword: @@keyword expression: @val) => (unary_expr
+            operator: (prefix_operator #{keyword})
+            operand: {val})),
+        rule!((copyExpr copyKeyword: @@keyword expression: @val) => (unary_expr
+            operator: (prefix_operator #{keyword})
+            operand: {val})),
+        rule!((unsafeExpr unsafeKeyword: @@keyword expression: @val) => (unary_expr
+            operator: (prefix_operator #{keyword})
             operand: {val})),
         // Force-unwrap (`x!`) → postfix unary_expr, via swift-syntax's dedicated
         // `forceUnwrapExpr` node.
@@ -1160,7 +1460,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 path: (importPathComponent name: @@parts)*) @@decl
             =>
             import_declaration {
-                let last = *parts.last().ok_or("import has no path")?;
+                let last = *parts.last().expect("import has no path");
                 tree!((import_declaration
                     modifier: [(modifier #{kind})]
                     modifier: {attrs}
@@ -1197,6 +1497,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 modifier: {attrs}
                 modifier: {late}
                 type: {base})
+        ),
+        rule!(
+            (someOrAnyType someOrAnySpecifier: @@spec constraint: @constraint)
+            =>
+            (modified_type_expr
+                modifier: (modifier #{spec})
+                type: {constraint})
         ),
         // Preserve the `super` keyword as a dedicated expression, normally used
         // as the base of a member access (`super.foo`).
@@ -1318,6 +1625,35 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (classDecl
                 classKeyword: @@kind
+                modifiers: _* @mods
+                name: @@name
+                genericParameterClause: (genericParameterClause
+                    parameters: _* @params
+                    genericWhereClause: (genericWhereClause requirements: _* @parameter_constraints)?)?
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                genericWhereClause: (genericWhereClause requirements: _* @declaration_constraints)?
+                memberBlock: (memberBlock members: _* @members))
+            =>
+            class_like_declaration {
+                let implicit_initializer = implicit_parameterless_initializer(&mut ctx, &members);
+                tree!((class_like_declaration
+                    modifier: (modifier #{kind})
+                    modifier: {mods}
+                    name_node: (identifier #{name})
+                    type_parameter: {params}
+                    type_constraint: {parameter_constraints}
+                    type_constraint: {declaration_constraints}
+                    base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
+                    member: {members}
+                    member: {implicit_initializer}))
+            }
+        ),
+        // Actors are syntactically like classes, but they begin with the
+        // `actor` keyword. We extract them just like classes, but with the
+        // `actor` keyword as a modifier.
+        rule!(
+            (actorDecl
+                actorKeyword: @@kind
                 modifiers: _* @mods
                 name: @@name
                 genericParameterClause: (genericParameterClause
@@ -1502,15 +1838,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // these roots is discarded with its parent and needs no separate rule.
         // Explicit empty content preserves their existing representation
         // instead of inheriting the matched source text.
-        rule!((actorDecl) => (unsupported_node "")),
-        rule!((borrowExpr) => (unsupported_node "")),
         rule!((classRestrictionType) => (unsupported_node "")),
         rule!((compositionType) => (unsupported_node "")),
-        rule!((consumeExpr) => (unsupported_node "")),
-        rule!((copyExpr) => (unsupported_node "")),
         rule!((discardStmt) => (unsupported_node "")),
-        rule!((fallThroughStmt) => (unsupported_node "")),
-        rule!((ifConfigDecl) => (unsupported_node "")),
         rule!((implicitlyUnwrappedOptionalType) => (unsupported_node "")),
         rule!((inlineArrayType) => (unsupported_node "")),
         rule!((keyPathExpr) => (unsupported_node "")),
@@ -1525,11 +1855,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((postfixIfConfigExpr) => (unsupported_node "")),
         rule!((poundSourceLocation) => (unsupported_node "")),
         rule!((precedenceGroupDecl) => (unsupported_node "")),
-        rule!((someOrAnyType) => (unsupported_node "")),
-        rule!((subscriptDecl) => (unsupported_node "")),
         rule!((suppressedType) => (unsupported_node "")),
         rule!((typeExpr) => (unsupported_node "")),
-        rule!((unsafeExpr) => (unsupported_node "")),
         rule!((yieldStmt) => (unsupported_node "")),
         // Anything reaching this final generic handler has neither a
         // dedicated rule nor an explicit unsupported entry.

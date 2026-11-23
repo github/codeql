@@ -210,6 +210,8 @@ private module SsaInput implements Impl::SsaInputSig {
       i = -1
     )
   }
+
+  predicate explicitRead(Expr e, BaseSsaSourceVariable v) { e = v.getAnAccess().(VarRead) }
 }
 
 module Ssa = Impl::MakeSsa<SsaInput>;
@@ -223,7 +225,7 @@ private module Cached {
   cached
   predicate captures(SsaImplicitEntryDefinition init, SsaDefinition capturedvar) {
     exists(BasicBlock bb, int i |
-      Ssa::ssaDefReachesUncertainRead(_, capturedvar, bb, i) and
+      Ssa::ssaDefReachesImplicitRead(capturedvar, bb, i) and
       variableCapture(capturedvar.getSourceVariable(), init.getSourceVariable(), bb, i)
     )
   }

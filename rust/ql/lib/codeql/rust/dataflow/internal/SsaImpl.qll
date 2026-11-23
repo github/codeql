@@ -285,14 +285,14 @@ private module Cached {
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
       private predicate guardChecksAdjTypes(
-        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e,
+        DataFlowIntegrationInput::Guard g, Definition def,
         DataFlowIntegrationInput::GuardValue branch
       ) {
-        guardChecks(g, e, branch)
+        guardChecks(g, Cached::getARead(def), branch)
       }
 
       private Node getABarrierNodeImpl() {
-        result = DataFlowIntegrationImpl::BarrierGuard<guardChecksAdjTypes/3>::getABarrierNode()
+        result = DataFlowIntegrationImpl::SsaBarrierGuard<guardChecksAdjTypes/3>::getABarrierNode()
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/0;
@@ -309,15 +309,15 @@ private module Cached {
     cached // nothing is actually cached
     module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
       private predicate guardChecksAdjTypes(
-        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e,
+        DataFlowIntegrationInput::Guard g, Definition def,
         DataFlowIntegrationInput::GuardValue branch, P param
       ) {
-        guardChecks(g, e, branch, param)
+        guardChecks(g, Cached::getARead(def), branch, param)
       }
 
       private Node getABarrierNodeImpl(P param) {
         result =
-          DataFlowIntegrationImpl::BarrierGuardWithState<P, guardChecksAdjTypes/4>::getABarrierNode(param)
+          DataFlowIntegrationImpl::SsaBarrierGuardWithState<P, guardChecksAdjTypes/4>::getABarrierNode(param)
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/1;
@@ -328,15 +328,9 @@ private module Cached {
 import Cached
 private import codeql.rust.dataflow.Ssa
 
-private class ExprAlias = Expr;
-
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.rust.dataflow.internal.DataFlowImpl as DataFlowImpl
   private import codeql.util.Boolean
-
-  class Expr extends ExprAlias {
-    predicate hasCfgNode(BasicBlock bb, int i) { this.getACfgNode() = bb.getNode(i) }
-  }
 
   predicate ssaDefHasSource(WriteDefinition def) { none() } // handled in `DataFlowImpl.qll` instead
 

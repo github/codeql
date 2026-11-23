@@ -1,5 +1,3 @@
-[workspace]
-
 [package]
 name = "bmn"
 version = "0.1.0"
@@ -7,7 +5,7 @@ edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-# When updating, run `misc/bazel/3rdparty/update_cpp_bmn_deps.sh` to update Bazel bindings.
+# When updating these dependencies, run `rust/update_cargo_deps.sh`
 [dependencies]
 anyhow = "1"
 cached = "0.54"
@@ -26,10 +24,5 @@ all_asserts = "2.3.3"
 itertools = "0.14.0"
 zip = "9.0.5"
 
-[lints.clippy]
-pedantic = "warn"
-missing_errors_doc = { level = "allow", priority = 1 }
-missing_panics_doc = { level = "allow", priority = 1 }
-must_use_candidate = { level = "allow", priority = 1 }
-implicit_hasher = { level = "allow", priority = 1 }
-if_not_else = { level = "allow", priority = 1 }
+[lints]
+workspace = true

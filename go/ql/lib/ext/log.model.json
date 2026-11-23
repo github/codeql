@@ -1,0 +1,43 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["log", "", false, "Fatal", "", "", "Argument[0]", "log-injection", "manual"],
+        ["log", "", false, "Fatalf", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["log", "", false, "Fatalln", "", "", "Argument[0]", "log-injection", "manual"],
+        ["log", "", false, "Output", "", "", "Argument[1]", "log-injection", "manual"],
+        ["log", "", false, "Panic", "", "", "Argument[0]", "log-injection", "manual"],
+        ["log", "", false, "Panicf", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["log", "", false, "Panicln", "", "", "Argument[0]", "log-injection", "manual"],
+        ["log", "", false, "Print", "", "", "Argument[0]", "log-injection", "manual"],
+        ["log", "", false, "Printf", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["log", "", false, "Println", "", "", "Argument[0]", "log-injection", "manual"],
+        ["log", "Logger", true, "Fatal", "", "", "Argument[0]", "log-injection", "manual"],
+        ["log", "Logger", true, "Fatalf", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["log", "Logger", true, "Fatalln", "", "", "Argument[0]", "log-injection", "manual"],
+        ["log", "Logger", true, "Output", "", "", "Argument[1]", "log-injection", "manual"],
+        ["log", "Logger", true, "Panic", "", "", "Argument[0]", "log-injection", "manual"],
+        ["log", "Logger", true, "Panicf", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["log", "Logger", true, "Panicln", "", "", "Argument[0]", "log-injection", "manual"],
+        ["log", "Logger", true, "Print", "", "", "Argument[0]", "log-injection", "manual"],
+        ["log", "Logger", true, "Printf", "", "", "Argument[0..1]", "log-injection", "manual"],
+        ["log", "Logger", true, "Println", "", "", "Argument[0]", "log-injection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["log", "Logger", true, "SetOutput", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"],
+        ["log", "Logger", true, "SetPrefix", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["log", "Logger", true, "Writer", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      ]
+    }
+  ]
+}

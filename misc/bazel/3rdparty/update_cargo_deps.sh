@@ -1,10 +1,10 @@
 #! /usr/bin/env bash
 
+# Temporary script that forwards to update_all_rust_deps.sh. Remove once all
+# references to this script has been removed.
+
 set -eu
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-
-"$SCRIPT_DIR/update_py_deps.sh"
-"$SCRIPT_DIR/update_tree_sitter_extractors_deps.sh"
-"$SCRIPT_DIR/update_cpp_bmn_deps.sh"
+exec "$SCRIPT_DIR/update_all_rust_deps.sh" "$@"

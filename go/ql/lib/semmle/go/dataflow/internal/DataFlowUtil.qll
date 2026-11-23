@@ -87,9 +87,9 @@ ParameterNode parameterNode(Parameter p) { result.asParameter() = p }
 ReceiverNode receiverNode(ReceiverVariable r) { result.asReceiverVariable() = r }
 
 /**
- * Gets the data-flow node corresponding to SSA variable `v`.
+ * Gets the data-flow node corresponding to SSA definition `def`.
  */
-SsaNode ssaNode(SsaVariable v) { result.getDefinition() = v.getDefinition() }
+SsaNode ssaNode(SsaDefinition def) { result.getDefinition() = def }
 
 /**
  * Gets the data-flow node corresponding to the `i`th element of tuple `t` (which is either a call

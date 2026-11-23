@@ -32,12 +32,12 @@ fn get_includes_cached(filename: PathBuf) -> Vec<IncludeDirective> {
                 .map(|global_include| {
                     IncludeDirective::system(replace_backslashes(&global_include[1]), &filename)
                 })
-                .or(
+                .or_else(|| {
                     // #include "(.*)"
                     LOCAL_INCLUDE_RE.captures(line).map(|local_include| {
                         IncludeDirective::local(replace_backslashes(&local_include[1]), &filename)
-                    }),
-                )
+                    })
+                })
         })
         .collect()
 }
@@ -65,7 +65,7 @@ mod tests {
             IncludeDirective::system("missing_system.hpp", &file_name),
         ];
 
-        let actual = get_includes(file_name.clone());
+        let actual = get_includes(file_name);
 
         assert_eq!(actual, expected);
     }

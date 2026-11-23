@@ -1,3 +1,15 @@
+## 0.2.27
+
+No user-facing changes.
+
+## 0.2.26
+
+### Minor Analysis Improvements
+
+* The Rust AST no longer exposes `ParenExpr` and `ParenPat` nodes. Parenthesized expressions and patterns are represented by their inner entities instead.
+* The `rust/access-after-lifetime-ended` query now detects more accesses through pointers to struct fields created by `std::ptr::addr_of!` and `std::ptr::addr_of_mut!`.
+* The sensitive data heuristics treat names built on `trusted_schema`, such as SQLite's `set_trusted_schema` setting, as non-sensitive. This removes false positive results from queries that use the sensitive data library (for example `rust/cleartext-logging`).
+
 ## 0.2.25
 
 ### Minor Analysis Improvements
