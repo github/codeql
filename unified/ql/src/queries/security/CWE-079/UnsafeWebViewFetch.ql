@@ -40,7 +40,7 @@ private class UnsafeWebViewFetchSink extends DataFlow::Node {
 module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
 
-  predicate isSink(DataFlow::Node node) { exists(UnsafeWebViewFetchSink sink | node = sink) }
+  predicate isSink(DataFlow::Node node) { node = any(UnsafeWebViewFetchSink sink) }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }
