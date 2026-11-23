@@ -136,7 +136,7 @@ func testUIWebView() {
 	webview.loadHTMLString(localString, baseURL: localURL!) // GOOD: a presumed safe baseURL is specified
 	webview.loadHTMLString(remoteString, baseURL: localURL!) // GOOD: a presumed safe baseURL is specified
 	webview.loadHTMLString(localString, baseURL: remoteURL!) // GOOD: the HTML data is local
-	webview.loadHTMLString(remoteString, baseURL: remoteURL!) // $ MISSING: Alert
+	webview.loadHTMLString(remoteString, baseURL: remoteURL!) // $ Alert
 	webview.loadHTMLString(localString, baseURL: remoteURL2!) // GOOD: the HTML data is local
 	webview.loadHTMLString(remoteString, baseURL: remoteURL2!) // $ MISSING: Alert
 
@@ -183,7 +183,7 @@ func testWKWebView() {
 	webview.loadHTMLString(localString, baseURL: localURL!) // GOOD: a presumed safe baseURL is specified
 	webview.loadHTMLString(remoteString, baseURL: localURL!) // GOOD: a presumed safe baseURL is specified
 	webview.loadHTMLString(localString, baseURL: remoteURL!) // GOOD: the HTML data is local
-	webview.loadHTMLString(remoteString, baseURL: remoteURL!) // $ MISSING: Alert
+	webview.loadHTMLString(remoteString, baseURL: remoteURL!) // $ Alert
 	webview.loadHTMLString(localString, baseURL: remoteURL2!) // GOOD: the HTML data is local
 	webview.loadHTMLString(remoteString, baseURL: remoteURL2!) // $ MISSING: Alert
 

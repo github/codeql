@@ -47,7 +47,7 @@ module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
 
 /**
  * Detect taint flow of taint sources to sinks (and `baseURL` arguments) for this query.
- * TODO: Recover the tainted-base-URL paths marked MISSING in the tests.
+ * TODO: Recover the relative-URL and Data paths marked MISSING in the tests.
  */
 module UnsafeWebViewFetchFlow = TaintTracking::Global<UnsafeWebViewFetchConfig>;
 
@@ -69,7 +69,10 @@ where
     message = "Tainted data is used in a WebView fetch without restricting the base URL."
     or
     // base URL is also tainted
-    UnsafeWebViewFetchFlow::flowToExpr(sink.getBaseUrl()) and
+    exists(DataFlow::Node baseUrl |
+      baseUrl.asExpr() = sink.getBaseUrl() and
+      UnsafeWebViewFetchFlow::flowTo(baseUrl)
+    ) and
     message = "Tainted data is used in a WebView fetch with a tainted base URL."
   )
 select sink, sourceNode, sinkNode, message
