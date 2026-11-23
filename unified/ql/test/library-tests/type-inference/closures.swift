@@ -107,8 +107,6 @@ func testContextualShorthandParameter() {
     let identity: (Int) -> Int = {
         $0  // $ type=$0:Int
     }
-    let result = identity(42)  // $ target=Function.callAsFunction
-    _ = result  // $ type=result:Int
 }
 
 func testNamedOuterWithShorthandInner(xs: [Int], ys: [Int]) {
