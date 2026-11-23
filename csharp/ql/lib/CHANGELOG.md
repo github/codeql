@@ -1,3 +1,7 @@
+## 7.4.4
+
+No user-facing changes.
+
 ## 7.4.3
 
 ### Minor Analysis Improvements

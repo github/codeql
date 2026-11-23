@@ -1,3 +1,7 @@
+## 9.3.6
+
+No user-facing changes.
+
 ## 9.3.5
 
 ### Minor Analysis Improvements

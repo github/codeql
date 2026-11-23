@@ -10,47 +10,88 @@ import semmle.code.java.Collections
 
 /**
  * Holds if `ex` is used safely as an argument to a command;
- * i.e. it's not in the first position and it's not a shell command.
+ * i.e. it's not in a position that selects a command to execute, and the executed command is not a shell.
  */
 predicate isSafeCommandArgument(Expr ex) {
   exists(ArrayInit ai, int i |
     ex = ai.getInit(i) and
     i > 0 and
-    not isShell(ai.getInit(0))
+    not isShell(ai.getInit(0)) and
+    not exists(int cmdIndex | cmdIndex = delegatedCommandIndex(ai.getInit(0)) |
+      i = cmdIndex
+      or
+      i > cmdIndex and isShellOrLauncher(ai.getInit(cmdIndex))
+    )
   )
   or
-  exists(CommandArgumentList cal |
+  exists(CommandArgumentList cal, MethodCall add |
     not cal.isShell() and
-    ex = cal.getASubsequentAdd().getArgument(0)
+    add = cal.getASubsequentAdd() and
+    ex = add.getArgument(0) and
+    not exists(int cmdIndex | cmdIndex = delegatedCommandIndex(cal.getAFirstAdd().getArgument(0)) |
+      add = cal.getAnAddAtIndex(cmdIndex)
+      or
+      not add = cal.getAnAddAtIndex([1 .. cmdIndex - 1]) and
+      isShellOrLauncher(cal.getAnAddAtIndex(cmdIndex).getArgument(0))
+    )
   )
   or
-  exists(CommandArgArrayImmutableFirst caa |
+  exists(CommandArgArrayImmutableFirst caa, int i |
     not caa.isShell() and
-    ex = caa.getAWrite(any(int i | i > 0))
+    i > 0 and
+    ex = caa.getAWrite(i) and
+    not exists(int cmdIndex | cmdIndex = delegatedCommandIndex(caa.getFirstElement()) |
+      i = cmdIndex
+      or
+      i > cmdIndex and isShellOrLauncher(caa.getAnElement(cmdIndex))
+    )
   )
 }
 
-/**
- * Holds if the given expression is the name of a shell command such as bash or python
- */
-private predicate isShell(Expr ex) {
-  exists(string cmd | cmd = ex.(StringLiteral).getValue() |
-    cmd.regexpMatch(".*(sh|javac?|python[23]?|osascript|cmd)(\\.exe)?$")
-  )
+/** Gets a string command name that `ex` may evaluate to. */
+private string commandName(Expr ex) {
+  result = ex.(CompileTimeConstantExpr).getStringValue()
   or
   exists(SsaDefinition ssa, SsaExplicitWrite def |
     ex = ssa.getARead() and
-    isShell(def.getDefiningExpr())
+    result = commandName(def.getDefiningExpr())
   |
     ssa.getAnUltimateDefinition() = def
     or
     ssa.(SsaCapturedDefinition).getAnUltimateCapturedDefinition() = def
   )
   or
-  isShell(ex.(Assignment).getRhs())
+  result = commandName(ex.(Assignment).getRhs())
   or
-  isShell(ex.(LocalVariableDeclExpr).getInit())
+  result = commandName(ex.(LocalVariableDeclExpr).getInit())
 }
+
+/**
+ * Holds if the given expression is the name of a shell command such as bash or python.
+ */
+private predicate isShell(Expr ex) {
+  commandName(ex).regexpMatch(".*(sh|javac?|python[23]?|osascript|cmd)(\\.exe)?$")
+}
+
+/**
+ * Gets the fixed position of the command executed by a supported delegating launcher.
+ *
+ * Only simple invocation forms with a command at the expected position are recognized. Launcher
+ * options and environment assignments are intentionally not interpreted.
+ */
+private int delegatedCommandIndex(Expr ex) {
+  exists(string launcher |
+    launcher = commandName(ex).regexpCapture("(.*[/\\\\])?([^/\\\\.]+)(\\.exe)?$", 2) and
+    (
+      launcher = ["env", "nice", "nohup", "setsid", "sudo", "xargs"] and result = 1
+      or
+      launcher = ["chroot", "stdbuf", "timeout"] and result = 2
+    )
+  )
+}
+
+/** Holds if `ex` may evaluate to a shell or a supported delegating launcher. */
+private predicate isShellOrLauncher(Expr ex) { isShell(ex) or exists(delegatedCommandIndex(ex)) }
 
 /**
  * A type that could be a list of strings. Includes raw `List` types.
@@ -107,6 +148,37 @@ private class CommandArgumentList extends SsaExplicitWrite {
     not result = this.getAFirstAdd()
   }
 
+  /**
+   * Gets a use of the variable at which the list could have `index` elements,
+   * for `index` in `0 .. 2`.
+   */
+  private VarRead getAUseAtIndex(int index) {
+    index = 0 and result = this.getAUseBeforeFirstAdd()
+    or
+    index in [1 .. 2] and
+    exists(VarRead mid |
+      adjacentUseUse(mid, result) and
+      (
+        mid = this.getAUseAtIndex(index - 1) and
+        exists(MethodCall ma |
+          mid = ma.getQualifier() and
+          ma.getMethod().hasName("add") and
+          ma.getNumArgument() = 1
+        )
+        or
+        mid = this.getAUseAtIndex(index) and
+        not mid = this.getAnAdd().getQualifier()
+      )
+    )
+  }
+
+  /** Gets an addition to this list that could start at `index`, for `index` in `1 .. 2`. */
+  MethodCall getAnAddAtIndex(int index) {
+    index in [1 .. 2] and
+    result = this.getAnAdd() and
+    result.getQualifier() = this.getAUseAtIndex(index)
+  }
+
   /** Holds if the first element of this list is a shell command. */
   predicate isShell() {
     exists(MethodCall ma | ma = this.getAFirstAdd() and isShell(ma.getArgument(0)))
@@ -117,7 +189,10 @@ private class CommandArgumentList extends SsaExplicitWrite {
  * The type `String[]`.
  */
 private class ArrayOfStringType extends Array {
-  ArrayOfStringType() { this.getElementType() instanceof TypeString }
+  ArrayOfStringType() {
+    this.getDimension() = 1 and
+    this.getElementType() instanceof TypeString
+  }
 }
 
 private predicate arrayVarWrite(ArrayAccess acc) { exists(Assignment a | a.getDest() = acc) }
@@ -149,54 +224,59 @@ private class CommandArgumentArray extends SsaExplicitWrite {
 }
 
 /**
- * A `CommandArgArray` whose element at index 0 is never written to, except possibly once to initialise it.
+ * A `CommandArgumentArray` whose element at index 0 is never written to, except possibly once to initialise it.
  */
 private class CommandArgArrayImmutableFirst extends CommandArgumentArray {
   CommandArgArrayImmutableFirst() {
-    (exists(this.getAWrite(0)) or exists(firstElementOf(this.getDefiningExpr()))) and
+    (exists(this.getAWrite(0)) or exists(arrayElementOf(this.getDefiningExpr(), 0))) and
     forall(VarRead use | exists(this.getAWrite(0, use)) | use = ssaGetAFirstUse(this))
   }
 
-  /** Gets the first element of this array. */
-  Expr getFirstElement() {
-    result = this.getAWrite(0)
-    or
-    not exists(this.getAWrite(0)) and
-    result = firstElementOf(this.getDefiningExpr())
+  /** Gets an expression that may be stored at `index`, for `index` in `0 .. 2`. */
+  Expr getAnElement(int index) {
+    index in [0 .. 2] and
+    (
+      result = this.getAWrite(index)
+      or
+      (index > 0 or not exists(this.getAWrite(0))) and
+      result = arrayElementOf(this.getDefiningExpr(), index)
+    )
   }
+
+  /** Gets the first element of this array. */
+  Expr getFirstElement() { result = this.getAnElement(0) }
 
   /** Holds if the first element of this array is a shell command. */
   predicate isShell() { isShell(this.getFirstElement()) }
 }
 
-/** Gets the first element of an imutable array of strings */
-private Expr firstElementOf(Expr arr) {
+/** Gets an expression for the element at `index` of an array of strings `arr`, for `index` in `0 .. 2`. */
+private Expr arrayElementOf(Expr arr, int index) {
+  index in [0 .. 2] and
   arr.getType() instanceof ArrayOfStringType and
   (
-    result = firstElementOf(arr.(Assignment).getRhs())
+    result = arrayElementOf(arr.(Assignment).getRhs(), index)
     or
-    result = firstElementOf(arr.(LocalVariableDeclExpr).getInit())
+    result = arrayElementOf(arr.(LocalVariableDeclExpr).getInit(), index)
     or
     exists(CommandArgArrayImmutableFirst caa | arr = caa.getARead() |
-      result = caa.getFirstElement()
+      result = caa.getAnElement(index)
     )
     or
-    exists(MethodCall ma, Method m |
+    exists(MethodCall ma |
       arr = ma and
-      ma.getMethod() = m and
-      m.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
-      m.hasName("copyOf") and
-      result = firstElementOf(ma.getArgument(0))
+      ma.getMethod().hasQualifiedName("java.util", "Arrays", "copyOf") and
+      result = arrayElementOf(ma.getArgument(0), index)
     )
     or
     exists(Field f |
       f.isStatic() and
       arr.(FieldRead).getField() = f and
-      result = firstElementOf(f.getInitializer())
+      result = arrayElementOf(f.getInitializer(), index)
     )
     or
-    result = arr.(ArrayInit).getInit(0)
+    result = arr.(ArrayInit).getInit(index)
     or
-    result = arr.(ArrayCreationExpr).getInit().getInit(0)
+    result = arr.(ArrayCreationExpr).getInit().getInit(index)
   )
 }
