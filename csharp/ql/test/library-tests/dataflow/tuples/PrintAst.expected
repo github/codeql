@@ -30,9 +30,12 @@ Tuples.cs:
 #   11|         0: [AssignExpr] ... = ...
 #   11|           0: [TupleExpr] (..., ...)
 #   11|             0: [LocalVariableDeclExpr] Object a
+#   11|               0: [LocalVariableAccess] access to local variable a
 #   11|             1: [TupleExpr] (..., ...)
 #   11|               0: [LocalVariableDeclExpr] Int32 b
+#   11|                 0: [LocalVariableAccess] access to local variable b
 #   11|               1: [LocalVariableDeclExpr] Object c
+#   11|                 0: [LocalVariableAccess] access to local variable c
 #   11|           1: [LocalVariableAccess] access to local variable x
 #   12|       4: [ExprStmt] ...;
 #   12|         0: [MethodCall] call to method Sink
@@ -66,7 +69,9 @@ Tuples.cs:
 #   21|         0: [AssignExpr] ... = ...
 #   21|           0: [TupleExpr] (..., ...)
 #   21|             0: [LocalVariableDeclExpr] Object p
+#   21|               0: [LocalVariableAccess] access to local variable p
 #   21|             1: [LocalVariableDeclExpr] (Int32,Object) q
+#   21|               0: [LocalVariableAccess] access to local variable q
 #   21|           1: [LocalVariableAccess] access to local variable x
 #   22|       12: [ExprStmt] ...;
 #   22|         0: [MethodCall] call to method Sink
@@ -415,7 +420,9 @@ Tuples.cs:
 #  103|         0: [AssignExpr] ... = ...
 #  103|           0: [TupleExpr] (..., ...)
 #  103|             0: [LocalVariableDeclExpr] String a
+#  103|               0: [LocalVariableAccess] access to local variable a
 #  103|             1: [LocalVariableDeclExpr] Int32 b
+#  103|               0: [LocalVariableAccess] access to local variable b
 #  103|           1: [LocalVariableAccess] access to local variable r
 #  104|       4: [ExprStmt] ...;
 #  104|         0: [MethodCall] call to method Sink
@@ -459,6 +466,7 @@ Tuples.cs:
 #  121|         0: [AssignExpr] ... = ...
 #  121|           0: [TupleExpr] (..., ...)
 #  121|             0: [LocalVariableDeclExpr] Object x1
+#  121|               0: [LocalVariableAccess] access to local variable x1
 #  121|             1: [LocalVariableAccess] access to local variable y1
 #  121|           1: [TupleExpr] (..., ...)
 #  121|             0: [LocalVariableAccess] access to local variable o
@@ -477,6 +485,7 @@ Tuples.cs:
 #  125|           0: [TupleExpr] (..., ...)
 #  125|             0: [LocalVariableAccess] access to local variable x2
 #  125|             1: [LocalVariableDeclExpr] Int32 y2
+#  125|               0: [LocalVariableAccess] access to local variable y2
 #  125|           1: [TupleExpr] (..., ...)
 #  125|             0: [LocalVariableAccess] access to local variable o
 #  125|             1: [IntLiteral] 1
@@ -493,6 +502,7 @@ Tuples.cs:
 #  129|           0: [TupleExpr] (..., ...)
 #  129|             0: [LocalVariableAccess] access to local variable x3
 #  129|             1: [LocalVariableDeclExpr] Object y3
+#  129|               0: [LocalVariableAccess] access to local variable y3
 #  129|           1: [TupleExpr] (..., ...)
 #  129|             0: [IntLiteral] 1
 #  129|             1: [LocalVariableAccess] access to local variable o
@@ -509,6 +519,7 @@ Tuples.cs:
 #  133|         0: [AssignExpr] ... = ...
 #  133|           0: [TupleExpr] (..., ...)
 #  133|             0: [LocalVariableDeclExpr] Int32 x4
+#  133|               0: [LocalVariableAccess] access to local variable x4
 #  133|             1: [LocalVariableAccess] access to local variable y4
 #  133|           1: [TupleExpr] (..., ...)
 #  133|             0: [IntLiteral] 1

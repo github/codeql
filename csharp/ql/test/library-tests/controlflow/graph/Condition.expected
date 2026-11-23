@@ -59,16 +59,16 @@ conditionBlock
 | Assert.cs:123:9:123:37 | After call to method IsTrue | Assert.cs:126:13:126:13 | After access to parameter b [true] | true |
 | Assert.cs:126:13:126:25 | After ... ? ... : ... | Assert.cs:127:24:127:32 | After ... != ... [false] | false |
 | Assert.cs:126:13:126:25 | After ... ? ... : ... | Assert.cs:127:24:127:32 | After ... != ... [true] | true |
-| BreakInTry.cs:3:10:3:11 | Entry | BreakInTry.cs:7:26:7:28 | String arg | false |
+| BreakInTry.cs:3:10:3:11 | Entry | BreakInTry.cs:7:26:7:28 | Before String arg | false |
 | BreakInTry.cs:3:10:3:11 | Entry | BreakInTry.cs:7:33:7:36 | After access to parameter args [empty] | true |
 | BreakInTry.cs:3:10:3:11 | Entry | BreakInTry.cs:7:33:7:36 | After access to parameter args [non-empty] | false |
 | BreakInTry.cs:3:10:3:11 | Entry | BreakInTry.cs:9:21:9:31 | After ... == ... [false] | false |
 | BreakInTry.cs:3:10:3:11 | Entry | BreakInTry.cs:9:21:9:31 | After ... == ... [true] | false |
 | BreakInTry.cs:7:13:11:13 | After foreach (... ... in ...) ... | BreakInTry.cs:15:17:15:28 | After ... == ... [false] | false |
 | BreakInTry.cs:7:13:11:13 | After foreach (... ... in ...) ... | BreakInTry.cs:15:17:15:28 | After ... == ... [true] | true |
-| BreakInTry.cs:7:26:7:28 | String arg | BreakInTry.cs:9:21:9:31 | After ... == ... [false] | false |
-| BreakInTry.cs:7:26:7:28 | String arg | BreakInTry.cs:9:21:9:31 | After ... == ... [true] | true |
-| BreakInTry.cs:20:10:20:11 | Entry | BreakInTry.cs:22:22:22:24 | String arg | false |
+| BreakInTry.cs:7:26:7:28 | Before String arg | BreakInTry.cs:9:21:9:31 | After ... == ... [false] | false |
+| BreakInTry.cs:7:26:7:28 | Before String arg | BreakInTry.cs:9:21:9:31 | After ... == ... [true] | true |
+| BreakInTry.cs:20:10:20:11 | Entry | BreakInTry.cs:22:22:22:24 | Before String arg | false |
 | BreakInTry.cs:20:10:20:11 | Entry | BreakInTry.cs:22:29:22:32 | After access to parameter args [empty] | true |
 | BreakInTry.cs:20:10:20:11 | Entry | BreakInTry.cs:22:29:22:32 | After access to parameter args [non-empty] | false |
 | BreakInTry.cs:20:10:20:11 | Entry | BreakInTry.cs:24:13:33:13 | After try {...} ... | false |
@@ -78,28 +78,28 @@ conditionBlock
 | BreakInTry.cs:20:10:20:11 | Entry | BreakInTry.cs:31:17:32:21 | After if (...) ... | false |
 | BreakInTry.cs:20:10:20:11 | Entry | BreakInTry.cs:31:21:31:32 | After ... == ... [false] | false |
 | BreakInTry.cs:20:10:20:11 | Entry | BreakInTry.cs:31:21:31:32 | After ... == ... [true] | false |
-| BreakInTry.cs:22:22:22:24 | String arg | BreakInTry.cs:26:21:26:31 | After ... == ... [false] | false |
-| BreakInTry.cs:22:22:22:24 | String arg | BreakInTry.cs:26:21:26:31 | After ... == ... [true] | true |
+| BreakInTry.cs:22:22:22:24 | Before String arg | BreakInTry.cs:26:21:26:31 | After ... == ... [false] | false |
+| BreakInTry.cs:22:22:22:24 | Before String arg | BreakInTry.cs:26:21:26:31 | After ... == ... [true] | true |
 | BreakInTry.cs:30:13:33:13 | {...} | BreakInTry.cs:31:21:31:32 | After ... == ... [false] | false |
 | BreakInTry.cs:30:13:33:13 | {...} | BreakInTry.cs:31:21:31:32 | After ... == ... [true] | true |
 | BreakInTry.cs:38:10:38:11 | Entry | BreakInTry.cs:42:17:42:28 | After ... == ... [false] | false |
 | BreakInTry.cs:38:10:38:11 | Entry | BreakInTry.cs:42:17:42:28 | After ... == ... [true] | true |
-| BreakInTry.cs:46:9:52:9 | {...} | BreakInTry.cs:47:26:47:28 | String arg | false |
+| BreakInTry.cs:46:9:52:9 | {...} | BreakInTry.cs:47:26:47:28 | Before String arg | false |
 | BreakInTry.cs:46:9:52:9 | {...} | BreakInTry.cs:47:33:47:36 | After access to parameter args [empty] | true |
 | BreakInTry.cs:46:9:52:9 | {...} | BreakInTry.cs:47:33:47:36 | After access to parameter args [non-empty] | false |
 | BreakInTry.cs:46:9:52:9 | {...} | BreakInTry.cs:49:21:49:31 | After ... == ... [false] | false |
 | BreakInTry.cs:46:9:52:9 | {...} | BreakInTry.cs:49:21:49:31 | After ... == ... [true] | false |
-| BreakInTry.cs:47:26:47:28 | String arg | BreakInTry.cs:49:21:49:31 | After ... == ... [false] | false |
-| BreakInTry.cs:47:26:47:28 | String arg | BreakInTry.cs:49:21:49:31 | After ... == ... [true] | true |
+| BreakInTry.cs:47:26:47:28 | Before String arg | BreakInTry.cs:49:21:49:31 | After ... == ... [false] | false |
+| BreakInTry.cs:47:26:47:28 | Before String arg | BreakInTry.cs:49:21:49:31 | After ... == ... [true] | true |
 | BreakInTry.cs:56:10:56:11 | Entry | BreakInTry.cs:60:17:60:28 | After ... == ... [false] | false |
 | BreakInTry.cs:56:10:56:11 | Entry | BreakInTry.cs:60:17:60:28 | After ... == ... [true] | true |
-| BreakInTry.cs:64:9:70:9 | {...} | BreakInTry.cs:65:26:65:28 | String arg | false |
+| BreakInTry.cs:64:9:70:9 | {...} | BreakInTry.cs:65:26:65:28 | Before String arg | false |
 | BreakInTry.cs:64:9:70:9 | {...} | BreakInTry.cs:65:33:65:36 | After access to parameter args [empty] | true |
 | BreakInTry.cs:64:9:70:9 | {...} | BreakInTry.cs:65:33:65:36 | After access to parameter args [non-empty] | false |
 | BreakInTry.cs:64:9:70:9 | {...} | BreakInTry.cs:67:21:67:31 | After ... == ... [false] | false |
 | BreakInTry.cs:64:9:70:9 | {...} | BreakInTry.cs:67:21:67:31 | After ... == ... [true] | false |
-| BreakInTry.cs:65:26:65:28 | String arg | BreakInTry.cs:67:21:67:31 | After ... == ... [false] | false |
-| BreakInTry.cs:65:26:65:28 | String arg | BreakInTry.cs:67:21:67:31 | After ... == ... [true] | true |
+| BreakInTry.cs:65:26:65:28 | Before String arg | BreakInTry.cs:67:21:67:31 | After ... == ... [false] | false |
+| BreakInTry.cs:65:26:65:28 | Before String arg | BreakInTry.cs:67:21:67:31 | After ... == ... [true] | true |
 | ConditionalAccess.cs:3:12:3:13 | Entry | ConditionalAccess.cs:3:26:3:26 | After access to parameter i [non-null] | false |
 | ConditionalAccess.cs:3:12:3:13 | Entry | ConditionalAccess.cs:3:26:3:26 | After access to parameter i [null] | true |
 | ConditionalAccess.cs:3:12:3:13 | Entry | ConditionalAccess.cs:3:26:3:38 | After call to method ToString [non-null] | false |
@@ -195,7 +195,7 @@ conditionBlock
 | Conditions.cs:60:16:60:22 | After ... > ... [false] | Conditions.cs:65:13:65:13 | After access to parameter b [true] | true |
 | Conditions.cs:60:16:60:22 | After ... > ... [true] | Conditions.cs:62:17:62:17 | After access to parameter b [false] | false |
 | Conditions.cs:60:16:60:22 | After ... > ... [true] | Conditions.cs:62:17:62:17 | After access to parameter b [true] | true |
-| Conditions.cs:70:9:70:10 | Entry | Conditions.cs:74:22:74:22 | String _ | false |
+| Conditions.cs:70:9:70:10 | Entry | Conditions.cs:74:22:74:22 | Before String _ | false |
 | Conditions.cs:70:9:70:10 | Entry | Conditions.cs:74:27:74:28 | After access to parameter ss [empty] | true |
 | Conditions.cs:70:9:70:10 | Entry | Conditions.cs:74:27:74:28 | After access to parameter ss [non-empty] | false |
 | Conditions.cs:70:9:70:10 | Entry | Conditions.cs:76:13:77:20 | After if (...) ... | false |
@@ -206,11 +206,11 @@ conditionBlock
 | Conditions.cs:70:9:70:10 | Entry | Conditions.cs:78:17:78:21 | After ... > ... [true] | false |
 | Conditions.cs:74:9:80:9 | After foreach (... ... in ...) ... | Conditions.cs:81:13:81:13 | After access to local variable b [false] | false |
 | Conditions.cs:74:9:80:9 | After foreach (... ... in ...) ... | Conditions.cs:81:13:81:13 | After access to local variable b [true] | true |
-| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:76:17:76:17 | After access to local variable b [false] | false |
-| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:76:17:76:17 | After access to local variable b [true] | true |
+| Conditions.cs:74:22:74:22 | Before String _ | Conditions.cs:76:17:76:17 | After access to local variable b [false] | false |
+| Conditions.cs:74:22:74:22 | Before String _ | Conditions.cs:76:17:76:17 | After access to local variable b [true] | true |
 | Conditions.cs:76:13:77:20 | After if (...) ... | Conditions.cs:78:17:78:21 | After ... > ... [false] | false |
 | Conditions.cs:76:13:77:20 | After if (...) ... | Conditions.cs:78:17:78:21 | After ... > ... [true] | true |
-| Conditions.cs:86:9:86:10 | Entry | Conditions.cs:90:22:90:22 | String _ | false |
+| Conditions.cs:86:9:86:10 | Entry | Conditions.cs:90:22:90:22 | Before String _ | false |
 | Conditions.cs:86:9:86:10 | Entry | Conditions.cs:90:27:90:28 | After access to parameter ss [empty] | true |
 | Conditions.cs:86:9:86:10 | Entry | Conditions.cs:90:27:90:28 | After access to parameter ss [non-empty] | false |
 | Conditions.cs:86:9:86:10 | Entry | Conditions.cs:92:13:93:20 | After if (...) ... | false |
@@ -222,8 +222,8 @@ conditionBlock
 | Conditions.cs:86:9:86:10 | Entry | Conditions.cs:96:13:97:20 | After if (...) ... | false |
 | Conditions.cs:86:9:86:10 | Entry | Conditions.cs:96:17:96:17 | After access to local variable b [false] | false |
 | Conditions.cs:86:9:86:10 | Entry | Conditions.cs:96:17:96:17 | After access to local variable b [true] | false |
-| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:92:17:92:17 | After access to local variable b [false] | false |
-| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:92:17:92:17 | After access to local variable b [true] | true |
+| Conditions.cs:90:22:90:22 | Before String _ | Conditions.cs:92:17:92:17 | After access to local variable b [false] | false |
+| Conditions.cs:90:22:90:22 | Before String _ | Conditions.cs:92:17:92:17 | After access to local variable b [true] | true |
 | Conditions.cs:92:13:93:20 | After if (...) ... | Conditions.cs:94:17:94:21 | After ... > ... [false] | false |
 | Conditions.cs:92:13:93:20 | After if (...) ... | Conditions.cs:94:17:94:21 | After ... > ... [true] | true |
 | Conditions.cs:94:13:95:26 | After if (...) ... | Conditions.cs:96:17:96:17 | After access to local variable b [false] | false |
@@ -404,10 +404,10 @@ conditionBlock
 | Finally.cs:243:13:253:13 | {...} | Finally.cs:246:25:246:26 | After access to parameter b2 [false] | false |
 | Finally.cs:243:13:253:13 | {...} | Finally.cs:246:25:246:26 | After access to parameter b2 [true] | true |
 | Finally.cs:243:13:253:13 | {...} | Finally.cs:247:31:247:46 | After object creation of type ExceptionA | true |
-| Foreach.cs:6:10:6:11 | Entry | Foreach.cs:8:22:8:24 | String arg | false |
+| Foreach.cs:6:10:6:11 | Entry | Foreach.cs:8:22:8:24 | Before String arg | false |
 | Foreach.cs:6:10:6:11 | Entry | Foreach.cs:8:29:8:32 | After access to parameter args [empty] | true |
 | Foreach.cs:6:10:6:11 | Entry | Foreach.cs:8:29:8:32 | After access to parameter args [non-empty] | false |
-| Foreach.cs:12:10:12:11 | Entry | Foreach.cs:14:22:14:22 | String _ | false |
+| Foreach.cs:12:10:12:11 | Entry | Foreach.cs:14:22:14:22 | Before String _ | false |
 | Foreach.cs:12:10:12:11 | Entry | Foreach.cs:14:27:14:30 | After access to parameter args [empty] | true |
 | Foreach.cs:12:10:12:11 | Entry | Foreach.cs:14:27:14:30 | After access to parameter args [non-empty] | false |
 | Foreach.cs:18:10:18:11 | Entry | Foreach.cs:20:27:20:27 | After access to parameter e [non-null] | false |
@@ -428,42 +428,42 @@ conditionBlock
 | LoopUnrolling.cs:7:10:7:11 | Entry | LoopUnrolling.cs:9:13:9:28 | After ... == ... [false] | false |
 | LoopUnrolling.cs:7:10:7:11 | Entry | LoopUnrolling.cs:9:13:9:28 | After ... == ... [true] | true |
 | LoopUnrolling.cs:7:10:7:11 | Entry | LoopUnrolling.cs:11:9:12:35 | After foreach (... ... in ...) ... | false |
-| LoopUnrolling.cs:7:10:7:11 | Entry | LoopUnrolling.cs:11:22:11:24 | String arg | false |
+| LoopUnrolling.cs:7:10:7:11 | Entry | LoopUnrolling.cs:11:22:11:24 | Before String arg | false |
 | LoopUnrolling.cs:7:10:7:11 | Entry | LoopUnrolling.cs:11:29:11:32 | After access to parameter args [empty] | false |
 | LoopUnrolling.cs:7:10:7:11 | Entry | LoopUnrolling.cs:11:29:11:32 | After access to parameter args [non-empty] | false |
-| LoopUnrolling.cs:9:13:9:28 | After ... == ... [false] | LoopUnrolling.cs:11:22:11:24 | String arg | false |
+| LoopUnrolling.cs:9:13:9:28 | After ... == ... [false] | LoopUnrolling.cs:11:22:11:24 | Before String arg | false |
 | LoopUnrolling.cs:9:13:9:28 | After ... == ... [false] | LoopUnrolling.cs:11:29:11:32 | After access to parameter args [empty] | true |
 | LoopUnrolling.cs:9:13:9:28 | After ... == ... [false] | LoopUnrolling.cs:11:29:11:32 | After access to parameter args [non-empty] | false |
-| LoopUnrolling.cs:15:10:15:11 | Entry | LoopUnrolling.cs:18:22:18:22 | String x | false |
+| LoopUnrolling.cs:15:10:15:11 | Entry | LoopUnrolling.cs:18:22:18:22 | Before String x | false |
 | LoopUnrolling.cs:15:10:15:11 | Entry | LoopUnrolling.cs:18:27:18:28 | After access to local variable xs [empty] | true |
 | LoopUnrolling.cs:15:10:15:11 | Entry | LoopUnrolling.cs:18:27:18:28 | After access to local variable xs [non-empty] | false |
-| LoopUnrolling.cs:22:10:22:11 | Entry | LoopUnrolling.cs:24:22:24:24 | Char arg | false |
+| LoopUnrolling.cs:22:10:22:11 | Entry | LoopUnrolling.cs:24:22:24:24 | Before Char arg | false |
 | LoopUnrolling.cs:22:10:22:11 | Entry | LoopUnrolling.cs:24:29:24:32 | After access to parameter args [empty] | true |
 | LoopUnrolling.cs:22:10:22:11 | Entry | LoopUnrolling.cs:24:29:24:32 | After access to parameter args [non-empty] | false |
 | LoopUnrolling.cs:22:10:22:11 | Entry | LoopUnrolling.cs:25:13:26:40 | After foreach (... ... in ...) ... | false |
-| LoopUnrolling.cs:22:10:22:11 | Entry | LoopUnrolling.cs:25:26:25:29 | Char arg0 | false |
+| LoopUnrolling.cs:22:10:22:11 | Entry | LoopUnrolling.cs:25:26:25:29 | Before Char arg0 | false |
 | LoopUnrolling.cs:22:10:22:11 | Entry | LoopUnrolling.cs:25:34:25:37 | After access to parameter args [empty] | false |
 | LoopUnrolling.cs:22:10:22:11 | Entry | LoopUnrolling.cs:25:34:25:37 | After access to parameter args [non-empty] | false |
-| LoopUnrolling.cs:24:22:24:24 | Char arg | LoopUnrolling.cs:25:26:25:29 | Char arg0 | false |
-| LoopUnrolling.cs:24:22:24:24 | Char arg | LoopUnrolling.cs:25:34:25:37 | After access to parameter args [empty] | true |
-| LoopUnrolling.cs:24:22:24:24 | Char arg | LoopUnrolling.cs:25:34:25:37 | After access to parameter args [non-empty] | false |
-| LoopUnrolling.cs:29:10:29:11 | Entry | LoopUnrolling.cs:32:22:32:22 | String x | false |
+| LoopUnrolling.cs:24:22:24:24 | Before Char arg | LoopUnrolling.cs:25:26:25:29 | Before Char arg0 | false |
+| LoopUnrolling.cs:24:22:24:24 | Before Char arg | LoopUnrolling.cs:25:34:25:37 | After access to parameter args [empty] | true |
+| LoopUnrolling.cs:24:22:24:24 | Before Char arg | LoopUnrolling.cs:25:34:25:37 | After access to parameter args [non-empty] | false |
+| LoopUnrolling.cs:29:10:29:11 | Entry | LoopUnrolling.cs:32:22:32:22 | Before String x | false |
 | LoopUnrolling.cs:29:10:29:11 | Entry | LoopUnrolling.cs:32:27:32:28 | After access to local variable xs [empty] | true |
 | LoopUnrolling.cs:29:10:29:11 | Entry | LoopUnrolling.cs:32:27:32:28 | After access to local variable xs [non-empty] | false |
-| LoopUnrolling.cs:36:10:36:11 | Entry | LoopUnrolling.cs:40:22:40:22 | String x | false |
+| LoopUnrolling.cs:36:10:36:11 | Entry | LoopUnrolling.cs:40:22:40:22 | Before String x | false |
 | LoopUnrolling.cs:36:10:36:11 | Entry | LoopUnrolling.cs:40:27:40:28 | After access to local variable xs [empty] | true |
 | LoopUnrolling.cs:36:10:36:11 | Entry | LoopUnrolling.cs:40:27:40:28 | After access to local variable xs [non-empty] | false |
 | LoopUnrolling.cs:36:10:36:11 | Entry | LoopUnrolling.cs:41:13:42:41 | After foreach (... ... in ...) ... | false |
-| LoopUnrolling.cs:36:10:36:11 | Entry | LoopUnrolling.cs:41:26:41:26 | String y | false |
+| LoopUnrolling.cs:36:10:36:11 | Entry | LoopUnrolling.cs:41:26:41:26 | Before String y | false |
 | LoopUnrolling.cs:36:10:36:11 | Entry | LoopUnrolling.cs:41:31:41:32 | After access to local variable ys [empty] | false |
 | LoopUnrolling.cs:36:10:36:11 | Entry | LoopUnrolling.cs:41:31:41:32 | After access to local variable ys [non-empty] | false |
-| LoopUnrolling.cs:40:22:40:22 | String x | LoopUnrolling.cs:41:26:41:26 | String y | false |
-| LoopUnrolling.cs:40:22:40:22 | String x | LoopUnrolling.cs:41:31:41:32 | After access to local variable ys [empty] | true |
-| LoopUnrolling.cs:40:22:40:22 | String x | LoopUnrolling.cs:41:31:41:32 | After access to local variable ys [non-empty] | false |
+| LoopUnrolling.cs:40:22:40:22 | Before String x | LoopUnrolling.cs:41:26:41:26 | Before String y | false |
+| LoopUnrolling.cs:40:22:40:22 | Before String x | LoopUnrolling.cs:41:31:41:32 | After access to local variable ys [empty] | true |
+| LoopUnrolling.cs:40:22:40:22 | Before String x | LoopUnrolling.cs:41:31:41:32 | After access to local variable ys [non-empty] | false |
 | LoopUnrolling.cs:45:10:45:11 | Entry | LoopUnrolling.cs:48:27:48:28 | After access to local variable xs [empty] | true |
 | LoopUnrolling.cs:45:10:45:11 | Entry | LoopUnrolling.cs:48:27:48:28 | After access to local variable xs [non-empty] | false |
 | LoopUnrolling.cs:45:10:45:11 | Entry | LoopUnrolling.cs:50:9:50:13 | Label: | false |
-| LoopUnrolling.cs:55:10:55:11 | Entry | LoopUnrolling.cs:58:22:58:22 | String x | false |
+| LoopUnrolling.cs:55:10:55:11 | Entry | LoopUnrolling.cs:58:22:58:22 | Before String x | false |
 | LoopUnrolling.cs:55:10:55:11 | Entry | LoopUnrolling.cs:58:27:58:28 | After access to local variable xs [empty] | true |
 | LoopUnrolling.cs:55:10:55:11 | Entry | LoopUnrolling.cs:58:27:58:28 | After access to local variable xs [non-empty] | false |
 | LoopUnrolling.cs:55:10:55:11 | Entry | LoopUnrolling.cs:60:13:61:37 | After if (...) ... | false |
@@ -472,26 +472,26 @@ conditionBlock
 | LoopUnrolling.cs:55:10:55:11 | Entry | LoopUnrolling.cs:62:13:63:37 | After if (...) ... | false |
 | LoopUnrolling.cs:55:10:55:11 | Entry | LoopUnrolling.cs:62:17:62:17 | After access to parameter b [false] | false |
 | LoopUnrolling.cs:55:10:55:11 | Entry | LoopUnrolling.cs:62:17:62:17 | After access to parameter b [true] | false |
-| LoopUnrolling.cs:58:22:58:22 | String x | LoopUnrolling.cs:60:17:60:17 | After access to parameter b [false] | false |
-| LoopUnrolling.cs:58:22:58:22 | String x | LoopUnrolling.cs:60:17:60:17 | After access to parameter b [true] | true |
+| LoopUnrolling.cs:58:22:58:22 | Before String x | LoopUnrolling.cs:60:17:60:17 | After access to parameter b [false] | false |
+| LoopUnrolling.cs:58:22:58:22 | Before String x | LoopUnrolling.cs:60:17:60:17 | After access to parameter b [true] | true |
 | LoopUnrolling.cs:60:13:61:37 | After if (...) ... | LoopUnrolling.cs:62:17:62:17 | After access to parameter b [false] | false |
 | LoopUnrolling.cs:60:13:61:37 | After if (...) ... | LoopUnrolling.cs:62:17:62:17 | After access to parameter b [true] | true |
 | LoopUnrolling.cs:67:10:67:11 | Entry | LoopUnrolling.cs:69:14:69:23 | After call to method Any<String> [false] | false |
 | LoopUnrolling.cs:67:10:67:11 | Entry | LoopUnrolling.cs:69:14:69:23 | After call to method Any<String> [true] | true |
 | LoopUnrolling.cs:67:10:67:11 | Entry | LoopUnrolling.cs:72:9:73:35 | After foreach (... ... in ...) ... | true |
-| LoopUnrolling.cs:67:10:67:11 | Entry | LoopUnrolling.cs:72:22:72:24 | String arg | true |
+| LoopUnrolling.cs:67:10:67:11 | Entry | LoopUnrolling.cs:72:22:72:24 | Before String arg | true |
 | LoopUnrolling.cs:67:10:67:11 | Entry | LoopUnrolling.cs:72:29:72:32 | After access to parameter args [empty] | true |
 | LoopUnrolling.cs:67:10:67:11 | Entry | LoopUnrolling.cs:72:29:72:32 | After access to parameter args [non-empty] | true |
-| LoopUnrolling.cs:69:14:69:23 | After call to method Any<String> [true] | LoopUnrolling.cs:72:22:72:24 | String arg | false |
+| LoopUnrolling.cs:69:14:69:23 | After call to method Any<String> [true] | LoopUnrolling.cs:72:22:72:24 | Before String arg | false |
 | LoopUnrolling.cs:69:14:69:23 | After call to method Any<String> [true] | LoopUnrolling.cs:72:29:72:32 | After access to parameter args [empty] | true |
 | LoopUnrolling.cs:69:14:69:23 | After call to method Any<String> [true] | LoopUnrolling.cs:72:29:72:32 | After access to parameter args [non-empty] | false |
-| LoopUnrolling.cs:76:10:76:11 | Entry | LoopUnrolling.cs:79:22:79:22 | String x | false |
+| LoopUnrolling.cs:76:10:76:11 | Entry | LoopUnrolling.cs:79:22:79:22 | Before String x | false |
 | LoopUnrolling.cs:76:10:76:11 | Entry | LoopUnrolling.cs:79:27:79:28 | After access to local variable xs [empty] | true |
 | LoopUnrolling.cs:76:10:76:11 | Entry | LoopUnrolling.cs:79:27:79:28 | After access to local variable xs [non-empty] | false |
-| LoopUnrolling.cs:85:10:85:12 | Entry | LoopUnrolling.cs:88:22:88:22 | String x | false |
+| LoopUnrolling.cs:85:10:85:12 | Entry | LoopUnrolling.cs:88:22:88:22 | Before String x | false |
 | LoopUnrolling.cs:85:10:85:12 | Entry | LoopUnrolling.cs:88:27:88:28 | After access to local variable xs [empty] | true |
 | LoopUnrolling.cs:85:10:85:12 | Entry | LoopUnrolling.cs:88:27:88:28 | After access to local variable xs [non-empty] | false |
-| LoopUnrolling.cs:94:10:94:12 | Entry | LoopUnrolling.cs:97:22:97:22 | String x | false |
+| LoopUnrolling.cs:94:10:94:12 | Entry | LoopUnrolling.cs:97:22:97:22 | Before String x | false |
 | LoopUnrolling.cs:94:10:94:12 | Entry | LoopUnrolling.cs:97:27:97:28 | After access to local variable xs [empty] | true |
 | LoopUnrolling.cs:94:10:94:12 | Entry | LoopUnrolling.cs:97:27:97:28 | After access to local variable xs [non-empty] | false |
 | NullCoalescing.cs:3:9:3:10 | Entry | NullCoalescing.cs:3:23:3:23 | After access to parameter i [non-null] | false |
@@ -1058,17 +1058,17 @@ conditionBlock
 | cflow.cs:213:17:213:32 | After ... > ... [false] | cflow.cs:217:17:217:32 | After ... < ... [false] | false |
 | cflow.cs:213:17:213:32 | After ... > ... [false] | cflow.cs:217:17:217:32 | After ... < ... [true] | true |
 | cflow.cs:224:10:224:16 | Entry | cflow.cs:226:9:237:9 | [LoopHeader] foreach (... ... in ...) ... | false |
-| cflow.cs:224:10:224:16 | Entry | cflow.cs:226:22:226:22 | String x | false |
+| cflow.cs:224:10:224:16 | Entry | cflow.cs:226:22:226:22 | Before String x | false |
 | cflow.cs:224:10:224:16 | Entry | cflow.cs:226:27:226:64 | After call to method Repeat<String> [empty] | true |
 | cflow.cs:224:10:224:16 | Entry | cflow.cs:226:27:226:64 | After call to method Repeat<String> [non-empty] | false |
 | cflow.cs:224:10:224:16 | Entry | cflow.cs:229:17:229:32 | After ... > ... [false] | false |
 | cflow.cs:224:10:224:16 | Entry | cflow.cs:229:17:229:32 | After ... > ... [true] | false |
 | cflow.cs:224:10:224:16 | Entry | cflow.cs:233:17:233:32 | After ... < ... [false] | false |
 | cflow.cs:224:10:224:16 | Entry | cflow.cs:233:17:233:32 | After ... < ... [true] | false |
-| cflow.cs:226:22:226:22 | String x | cflow.cs:229:17:229:32 | After ... > ... [false] | false |
-| cflow.cs:226:22:226:22 | String x | cflow.cs:229:17:229:32 | After ... > ... [true] | true |
-| cflow.cs:226:22:226:22 | String x | cflow.cs:233:17:233:32 | After ... < ... [false] | false |
-| cflow.cs:226:22:226:22 | String x | cflow.cs:233:17:233:32 | After ... < ... [true] | false |
+| cflow.cs:226:22:226:22 | Before String x | cflow.cs:229:17:229:32 | After ... > ... [false] | false |
+| cflow.cs:226:22:226:22 | Before String x | cflow.cs:229:17:229:32 | After ... > ... [true] | true |
+| cflow.cs:226:22:226:22 | Before String x | cflow.cs:233:17:233:32 | After ... < ... [false] | false |
+| cflow.cs:226:22:226:22 | Before String x | cflow.cs:233:17:233:32 | After ... < ... [true] | false |
 | cflow.cs:229:17:229:32 | After ... > ... [false] | cflow.cs:233:17:233:32 | After ... < ... [false] | false |
 | cflow.cs:229:17:229:32 | After ... > ... [false] | cflow.cs:233:17:233:32 | After ... < ... [true] | true |
 | cflow.cs:242:5:242:9 | Label: | cflow.cs:242:19:242:35 | After ... == ... [false] | false |

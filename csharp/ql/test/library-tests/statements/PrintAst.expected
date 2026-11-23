@@ -80,7 +80,8 @@ statements.cs:
 #   32|       4: [BlockStmt] {...}
 #   33|         0: [LocalVariableDeclStmt] ... ...;
 #   33|           0: [LocalVariableDeclExpr] Int32 a
-#   33|             0: [TypeMention] int
+#   33|             -1: [TypeMention] int
+#   33|             0: [LocalVariableAccess] access to local variable a
 #   34|         1: [LocalVariableDeclStmt] ... ...;
 #   34|           0: [LocalVariableDeclAndInitExpr] Int32 b = ...
 #   34|             -1: [TypeMention] int
@@ -144,7 +145,8 @@ statements.cs:
 #   49|       4: [BlockStmt] {...}
 #   50|         0: [LocalVariableDeclStmt] ... ...;
 #   50|           0: [LocalVariableDeclExpr] Int32 i
-#   50|             0: [TypeMention] int
+#   50|             -1: [TypeMention] int
+#   50|             0: [LocalVariableAccess] access to local variable i
 #   51|         1: [ExprStmt] ...;
 #   51|           0: [AssignExpr] ... = ...
 #   51|             0: [LocalVariableAccess] access to local variable i
@@ -303,7 +305,8 @@ statements.cs:
 #  122|       4: [BlockStmt] {...}
 #  123|         0: [LocalVariableDeclStmt] ... ...;
 #  123|           0: [LocalVariableDeclExpr] String s
-#  123|             0: [TypeMention] string
+#  123|             -1: [TypeMention] string
+#  123|             0: [LocalVariableAccess] access to local variable s
 #  124|         1: [DoStmt] do ... while (...);
 #  128|           0: [NEExpr] ... != ...
 #  128|             0: [LocalVariableAccess] access to local variable s
@@ -359,7 +362,8 @@ statements.cs:
 #  140|       4: [BlockStmt] {...}
 #  141|         0: [ForEachStmt] foreach (... ... in ...) ...
 #  141|           0: [LocalVariableDeclExpr] String s
-#  141|             0: [TypeMention] string
+#  141|             -1: [TypeMention] string
+#  141|             0: [LocalVariableAccess] access to local variable s
 #  141|           1: [ParameterAccess] access to parameter args
 #  142|           2: [BlockStmt] {...}
 #  143|             0: [ExprStmt] ...;
@@ -503,7 +507,8 @@ statements.cs:
 #  193|       4: [BlockStmt] {...}
 #  194|         0: [ForEachStmt] foreach (... ... in ...) ...
 #  194|           0: [LocalVariableDeclExpr] Int32 x
-#  194|             0: [TypeMention] int
+#  194|             -1: [TypeMention] int
+#  194|             0: [LocalVariableAccess] access to local variable x
 #  194|           1: [MethodCall] call to method Range
 #  194|             0: [UnaryMinusExpr] -...
 #  194|               0: [IntLiteral] 10
@@ -588,7 +593,8 @@ statements.cs:
 #  215|                   1: [LocalVariableAccess] access to local variable y
 #  217|           1: [SpecificCatchClause] catch (...) {...}
 #  217|             0: [LocalVariableDeclExpr] Exception e
-#  217|               0: [TypeMention] Exception
+#  217|               -1: [TypeMention] Exception
+#  217|               0: [LocalVariableAccess] access to local variable e
 #  218|             1: [BlockStmt] {...}
 #  219|               0: [ExprStmt] ...;
 #  219|                 0: [MethodCall] call to method WriteLine

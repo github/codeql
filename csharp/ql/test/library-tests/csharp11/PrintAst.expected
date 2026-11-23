@@ -945,7 +945,8 @@ SignAnalysis.cs:
 #    5|     4: [BlockStmt] {...}
 #    6|       0: [LocalVariableDeclStmt] ... ...;
 #    6|         0: [LocalVariableDeclExpr] Int32 z
-#    6|           0: [TypeMention] int
+#    6|           -1: [TypeMention] int
+#    6|           0: [LocalVariableAccess] access to local variable z
 #    7|       1: [IfStmt] if (...) ...
 #    7|         0: [EQExpr] ... == ...
 #    7|           0: [ParameterAccess] access to parameter x

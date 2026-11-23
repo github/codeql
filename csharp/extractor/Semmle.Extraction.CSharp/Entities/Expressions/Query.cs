@@ -91,7 +91,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     cx.CreateLocation(node.GetLocation()),
                     true,
                     parent,
-                    child
+                    child,
+                    createAccess: false
                     );
 
                 var nameLoc = cx.CreateLocation(name.GetLocation());
