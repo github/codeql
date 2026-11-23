@@ -84,7 +84,7 @@ module TarSlip {
    * A sink capturing method calls to `extractall`.
    *
    * For a call to `file.extractall`, `file` is considered a sink if
-   * there is no `members` argument and the extraction filter is unsafe.
+   * the `members` argument is omitted or may be `None`, and the extraction filter is unsafe.
    */
   class ExtractAllSink extends Sink {
     ExtractAllSink() {
@@ -96,7 +96,11 @@ module TarSlip {
               .getMember("extractall")
               .getACall() and
         hasUnsafeFilter(call) and
-        not exists(call.getParameter(1, "members")) and
+        (
+          not exists(call.getParameter(1, "members"))
+          or
+          call.getParameter(1, "members").getAValueReachingSink().asExpr() instanceof None
+        ) and
         this = call.(DataFlow::MethodCallNode).getObject()
       )
     }
