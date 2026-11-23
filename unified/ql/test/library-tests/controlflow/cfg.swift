@@ -165,7 +165,7 @@ func patterns(x : Int) -> Bool {
   }
 
   let xOptional: Int? = x
-  if case .some(let x) = xOptional { // $ bbStep='PatternGuardExpr : false -> Block(+2)' bbStep='PatternGuardExpr : true -> .(+0)'
+  if case .some(let x) = xOptional { // $ bbStep='... .some(...) : match -> Block(+0)' bbStep='... .some(...) : no-match -> Block(+2)' nonSimple='IfExpr -V PatternGuardExpr -V xOptional -? . -^ ... .some -> Argument -V x -^ ExprPattern -^ ... .some(...)'
     return x == 0
   } else {
     return false
