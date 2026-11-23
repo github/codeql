@@ -18,6 +18,25 @@ Examples include log files, cookies and plain text storage on disk.
 Ensure that private information is only stored in secure data locations.
 </p>
 
+<p>
+If your application uses a custom method to redact private information, you can model its return
+value as a barrier for this query. For example, add the following data extension to a model pack
+for a <code>CodeQLDocs.Redaction.Redact(string)</code> method that removes the private information
+from its result.
+</p>
+
+<pre>extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: barrierModel
+    data:
+      - ["CodeQLDocs", "Redaction", false, "Redact", "(System.String)", "", "ReturnValue", "file-content-store", "manual"]</pre>
+
+<p>
+The <code>ReturnValue</code> access path applies the barrier to the return value of the method.
+The <code>file-content-store</code> kind is used by this query when tracking flow to external locations.
+</p>
+
 </recommendation>
 <example>
 
@@ -31,6 +50,8 @@ that do not normally have access to this private data.
 
 </example>
 <references>
-
+<li>CodeQL documentation:
+  <a href="https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-csharp/">Customizing library models for C#</a>.
+</li>
 </references>
 </qhelp>
