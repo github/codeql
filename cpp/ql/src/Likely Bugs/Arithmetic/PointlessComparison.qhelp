@@ -14,9 +14,10 @@ loop condition on line 9 is always true because the range of
 
 <p>The bounds which were deduced for the left and right operands of the
 comparison are included in the message as they often make it easier to
-understand why a result was reported. For example the message for the
-comparison <code>x >= y</code> might read: "Comparison is always false
-because x >= 5 and 3 >= y."</p>
+understand why a result was reported. For example, the comparison
+<code>x &lt;= y</code> might be reported as "Comparison is always false
+because x >= 5 and 3 >= y." If an integer conversion changes a constant
+operand, the message also reports the value used in the comparison.</p>
 
 </overview>
 <recommendation>

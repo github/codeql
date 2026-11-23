@@ -18,6 +18,19 @@ private import semmle.code.cpp.rangeanalysis.PointlessComparison
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import UnsignedGEZero
 
+/** Explains a value-changing integral conversion of a constant operand. */
+bindingset[side]
+private string constantConversionReason(Expr operand, string side) {
+  if
+    operand.getUnconverted().getValue() !=
+      operand.getFullyConverted().(IntegralConversion).getValue()
+  then
+    result =
+      " and the " + side + " operand evaluates to " + operand.getFullyConverted().getValue() +
+        " after conversion"
+  else result = ""
+}
+
 // Trivial comparisons of the form 1 > 0 are usually due to macro expansion.
 // For example:
 //
@@ -52,13 +65,15 @@ where
     ) and
     leftReason = cmp.getLeftOperand().toString() + cmpOp + left.toString() and
     rightReason = right.toString() + cmpOp + cmp.getRightOperand().toString() and
-    // If either of the operands is constant, then don't include it.
+    // For a constant operand, explain its value only when conversion changes it.
     (
       if cmp.getLeftOperand().isConstant()
-      then not cmp.getRightOperand().isConstant() and reason = rightReason
+      then
+        not cmp.getRightOperand().isConstant() and
+        reason = rightReason + constantConversionReason(cmp.getLeftOperand(), "left")
       else
         if cmp.getRightOperand().isConstant()
-        then reason = leftReason
+        then reason = leftReason + constantConversionReason(cmp.getRightOperand(), "right")
         else reason = leftReason + " and " + rightReason
     )
   ) and
