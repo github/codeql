@@ -29,7 +29,7 @@ class MyManagedObject : NSManagedObject
 			}
 		}
 		set {
-			setValue(newValue, forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database] // [additional result reported here]
+			setValue(newValue, forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database] [additional result reported here]
 		}
 	}
 }
@@ -58,10 +58,10 @@ func test2(obj : MyManagedObject, password : String, password_file : String) {
 	obj.setValue(password, forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
 	obj.setValue(password_file, forKey: "myKey") // GOOD (not sensitive)
 
-	obj.setIndirect(value: password) // $ Source[unified/swift/cleartext-storage-database] // BAD [reported on line 19]
+	obj.setIndirect(value: password) // $ Source[unified/swift/cleartext-storage-database] [reported on line 19]
 	obj.setIndirect(value: password_file) // GOOD (not sensitive)
 
-	obj.myValue = password // $ Source[unified/swift/cleartext-storage-database] $ Alert[unified/swift/cleartext-storage-database] // BAD [also reported on line 32]
+	obj.myValue = password // $ Source[unified/swift/cleartext-storage-database] $ Alert[unified/swift/cleartext-storage-database] [also reported on line 32]
 	obj.myValue = password_file // GOOD (not sensitive)
 }
 
@@ -73,7 +73,7 @@ class MyClass {
 func test3(obj : NSManagedObject, x : String) {
 	// alternative evidence of sensitivity...
 
-	obj.setValue(x, forKey: "myKey") // BAD [NOT REPORTED]
+	obj.setValue(x, forKey: "myKey") // MISSING: Alert[unified/swift/cleartext-storage-database]
 	doSomething(password: x); // $ MISSING: Source[unified/swift/cleartext-storage-database]
 	obj.setValue(x, forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 
@@ -101,7 +101,7 @@ func test4(obj : NSManagedObject, passwd : String) {
 	z = "";
 
 	obj.setValue(x, forKey: "myKey") // GOOD (not sensitive)
-	obj.setValue(y, forKey: "myKey") // $ SPURIOUS: Alert[unified/swift/cleartext-storage-database] // GOOD (not sensitive) [FALSE POSITIVE]
+	obj.setValue(y, forKey: "myKey") // $ SPURIOUS: Alert[unified/swift/cleartext-storage-database] GOOD (not sensitive)
 	obj.setValue(z, forKey: "myKey") // GOOD (not sensitive)
 }
 
@@ -124,16 +124,16 @@ class SecureKeyStore {
 func test5(obj : NSManagedObject) {
 	// more variants...
 
-	obj.setValue(createSecureKey(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.setValue(createSecureKey(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	obj.setValue(generateSecretKey(), forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
 	obj.setValue(getCertificate(), forKey: "myKey") // $ Alert[unified/swift/cleartext-storage-database]
 
 	let gen = KeyGen()
 	let v = gen.generate()
 
-	obj.setValue(KeyGen().generate(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
-	obj.setValue(gen.generate(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
-	obj.setValue(v, forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
-	obj.setValue(KeyManager().generateKey(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
-	obj.setValue(SecureKeyStore().getEncryptionKey(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.setValue(KeyGen().generate(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database]
+	obj.setValue(gen.generate(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database]
+	obj.setValue(v, forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database]
+	obj.setValue(KeyManager().generateKey(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database]
+	obj.setValue(SecureKeyStore().getEncryptionKey(), forKey: "myKey") // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 }

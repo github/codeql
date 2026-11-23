@@ -35,21 +35,21 @@ func testCoreData2_1(obj: MyManagedObject2, maybeObj: MyManagedObject2?, value: 
 	// @NSManaged fields of an NSManagedObject...
 	obj.myValue = value // GOOD (not sensitive)
 	obj.myValue = bankAccountNo // $ Alert[unified/swift/cleartext-storage-database]
-	obj.myBankAccountNumber = value // $ Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.myBankAccountNumber = value // $ Alert[unified/swift/cleartext-storage-database]
 	obj.myBankAccountNumber = bankAccountNo // $ Alert[unified/swift/cleartext-storage-database]
-	obj.myBankAccountNumber2 = value // $ Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.myBankAccountNumber2 = value // $ Alert[unified/swift/cleartext-storage-database]
 	obj.myBankAccountNumber2 = bankAccountNo // $ Alert[unified/swift/cleartext-storage-database]
-	obj.notStoredBankAccountNumber = value // $ SPURIOUS: Alert[unified/swift/cleartext-storage-database] // GOOD (not stored in the database)
-	obj.notStoredBankAccountNumber = bankAccountNo // $ SPURIOUS: Alert[unified/swift/cleartext-storage-database] // GOOD (not stored in the database) [FALSE POSITIVE]
+	obj.notStoredBankAccountNumber = value // $ SPURIOUS: Alert[unified/swift/cleartext-storage-database] GOOD (not stored in the database)
+	obj.notStoredBankAccountNumber = bankAccountNo // $ SPURIOUS: Alert[unified/swift/cleartext-storage-database] GOOD (not stored in the database)
 
 	maybeObj?.myValue = value // GOOD (not sensitive)
 	maybeObj?.myValue = bankAccountNo // $ MISSING: Alert[unified/swift/cleartext-storage-database]
-	maybeObj?.myBankAccountNumber = value // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	maybeObj?.myBankAccountNumber = value // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	maybeObj?.myBankAccountNumber = bankAccountNo // $ MISSING: Alert[unified/swift/cleartext-storage-database]
-	maybeObj?.myBankAccountNumber2 = value // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	maybeObj?.myBankAccountNumber2 = value // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	maybeObj?.myBankAccountNumber2 = bankAccountNo // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	maybeObj?.notStoredBankAccountNumber = value // GOOD (not stored in the database)
-	maybeObj?.notStoredBankAccountNumber = bankAccountNo // GOOD (not stored in the database) [FALSE POSITIVE]
+	maybeObj?.notStoredBankAccountNumber = bankAccountNo // GOOD (not stored in the database)
 }
 
 class testCoreData2_2 {
@@ -88,19 +88,19 @@ func testCoreData2_3(dbObj: MyManagedObject2, maybeObj: MyManagedObject2?, conta
 	maybeObj?.myValue = bankAccountNo.value // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	maybeObj?.myValue = bankAccountNo2.value2 // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 
-	var a = bankAccountNo // $ Source[unified/swift/cleartext-storage-database] // sensitive
+	var a = bankAccountNo // $ Source[unified/swift/cleartext-storage-database] sensitive
 	var b = a.value
 	dbObj.myValue = b // $ Alert[unified/swift/cleartext-storage-database]
 
-	let c = bankAccountNo // $ Source[unified/swift/cleartext-storage-database] // sensitive
+	let c = bankAccountNo // $ Source[unified/swift/cleartext-storage-database] sensitive
 	var d: MyContainer = MyContainer()
 	d.value = c.value
 	dbObj.myValue = d.value // $ Alert[unified/swift/cleartext-storage-database]
 	dbObj.myValue = d.value2 // GOOD
 
-	let e = bankAccountNo // $ Source[unified/swift/cleartext-storage-database] // sensitive
+	let e = bankAccountNo // $ Source[unified/swift/cleartext-storage-database] sensitive
 	var f: MyContainer?
 	f?.value = e.value
 	dbObj.myValue = e.value // $ Alert[unified/swift/cleartext-storage-database]
-	dbObj.myValue = e.value2 // $ SPURIOUS: Alert[unified/swift/cleartext-storage-database] // GOOD [FALSE POSITIVE]
+	dbObj.myValue = e.value2 // $ SPURIOUS: Alert[unified/swift/cleartext-storage-database] GOOD
 }

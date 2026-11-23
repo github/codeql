@@ -24,7 +24,7 @@ func test2(o: MyRealmSwiftObject3, ccn: String, socialSecurityNumber: String, ss
 	o.data = socialSecurityNumber // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	o.data = ssn // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	o.data = String(ssn_int) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
-	o.data = userSSN // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	o.data = userSSN // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	o.data = classno // GOOD
 }
 
@@ -32,6 +32,6 @@ func test3(o: MyRealmSwiftObject3, ccn: String, creditCardNumber: String, CCN: S
 	o.data = creditCardNumber // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	o.data = CCN // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	o.data = String(int_ccn) // $ MISSING: Alert[unified/swift/cleartext-storage-database]
-	o.data = userCcn // $ MISSING: Alert[unified/swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	o.data = userCcn // $ MISSING: Alert[unified/swift/cleartext-storage-database]
 	o.data = succnode // GOOD
 }
