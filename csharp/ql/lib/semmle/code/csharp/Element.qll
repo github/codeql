@@ -96,29 +96,6 @@ class NamedElement extends Element, @named_element {
   final predicate hasName(string name) { name = this.getName() }
 
   /**
-   * DEPRECATED: Use `hasFullyQualifiedName` instead.
-   *
-   * Gets the fully qualified name of this element, for example the
-   * fully qualified name of `M` on line 3 is `N.C.M` in
-   *
-   * ```csharp
-   * namespace N {
-   *   class C {
-   *     void M(int i, string s) { }
-   *   }
-   * }
-   * ```
-   *
-   * Unbound generic types, such as `IList<T>`, are represented as
-   * ``System.Collections.Generic.IList`1``.
-   */
-  deprecated final string getFullyQualifiedName() {
-    exists(string qualifier, string name | this.hasFullyQualifiedName(qualifier, name) |
-      if qualifier = "" then result = name else result = qualifier + "." + name
-    )
-  }
-
-  /**
    * INTERNAL: Do not use.
    *
    * This is intended for DEBUG ONLY.

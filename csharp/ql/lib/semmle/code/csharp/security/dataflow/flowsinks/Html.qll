@@ -56,20 +56,6 @@ class HtmlTextWriterSink extends HtmlSink {
 }
 
 /**
- * DEPRECATED: Attribute collections are no longer considered HTML sinks.
- */
-deprecated class AttributeCollectionSink extends DataFlow::ExprNode {
-  AttributeCollectionSink() {
-    exists(SystemWebUIAttributeCollectionClass ac, Parameter p |
-      p = ac.getAddMethod().getParameter(1) or
-      p = ac.getItemProperty().getSetter().getParameter(0)
-    |
-      this.getExpr() = p.getAnAssignedArgument()
-    )
-  }
-}
-
-/**
  * An expression that is used as the second argument `HtmlElement.SetAttribute`.
  */
 class SetAttributeSink extends HtmlSink {
