@@ -11,8 +11,9 @@ edges
 | OData.cs:53:17:53:22 | access to local variable entity : BoundEntity1 | OData.cs:57:18:57:38 | access to property Owner | provenance |  |
 | OData.cs:53:17:53:22 | access to local variable entity : BoundEntity1 | OData.cs:60:22:60:28 | access to property Owner | provenance |  |
 | OData.cs:53:26:53:59 | (...) ... : BoundEntity1 | OData.cs:53:17:53:22 | access to local variable entity : BoundEntity1 | provenance |  |
-| OData.cs:64:55:64:64 | parameters : ODataActionParameters | OData.cs:70:26:70:35 | access to property Label | provenance |  |
+| OData.cs:64:55:64:64 | parameters : ODataActionParameters | OData.cs:66:65:66:70 | access to local variable items1 : IEnumerable<RelatedItem> | provenance |  |
 | OData.cs:64:55:64:64 | parameters : ODataActionParameters | OData.cs:74:26:74:72 | ... as ... : IEnumerable<RelatedItem> | provenance |  |
+| OData.cs:66:65:66:70 | access to local variable items1 : IEnumerable<RelatedItem> | OData.cs:70:26:70:35 | access to property Label | provenance |  |
 | OData.cs:74:17:74:22 | access to local variable items2 : IEnumerable<RelatedItem> | OData.cs:77:22:77:34 | access to property Category | provenance |  |
 | OData.cs:74:26:74:72 | ... as ... : IEnumerable<RelatedItem> | OData.cs:74:17:74:22 | access to local variable items2 : IEnumerable<RelatedItem> | provenance |  |
 | OData.cs:81:52:81:61 | parameters : ODataActionParameters | OData.cs:83:24:83:62 | (...) ... : ODataActionParameters | provenance |  |
@@ -44,6 +45,7 @@ nodes
 | OData.cs:57:18:57:38 | access to property Owner | semmle.label | access to property Owner |
 | OData.cs:60:22:60:28 | access to property Owner | semmle.label | access to property Owner |
 | OData.cs:64:55:64:64 | parameters : ODataActionParameters | semmle.label | parameters : ODataActionParameters |
+| OData.cs:66:65:66:70 | access to local variable items1 : IEnumerable<RelatedItem> | semmle.label | access to local variable items1 : IEnumerable<RelatedItem> |
 | OData.cs:70:26:70:35 | access to property Label | semmle.label | access to property Label |
 | OData.cs:74:17:74:22 | access to local variable items2 : IEnumerable<RelatedItem> | semmle.label | access to local variable items2 : IEnumerable<RelatedItem> |
 | OData.cs:74:26:74:72 | ... as ... : IEnumerable<RelatedItem> | semmle.label | ... as ... : IEnumerable<RelatedItem> |

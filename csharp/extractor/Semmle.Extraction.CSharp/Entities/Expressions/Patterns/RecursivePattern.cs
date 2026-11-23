@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var type = symbol.GetAnnotatedType();
 
-                VariableDeclaration.Create(cx, symbol, type, null, cx.CreateLocation(syntax.GetLocation()), false, this, 0);
+                VariableDeclaration.Create(cx, symbol, type, null, cx.CreateLocation(syntax.GetLocation()), false, this, 0, isPattern: true);
             }
 
             if (syntax.PositionalPatternClause is PositionalPatternClauseSyntax posPc)

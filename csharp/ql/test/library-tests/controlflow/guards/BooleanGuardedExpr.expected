@@ -58,6 +58,8 @@
 | Guards.cs:132:16:132:16 | access to parameter s | Guards.cs:130:13:130:21 | ... is ... | Guards.cs:130:13:130:13 | access to parameter s | false |
 | Guards.cs:138:20:138:20 | access to parameter s | Guards.cs:137:13:137:25 | ... is ... | Guards.cs:137:13:137:13 | access to parameter s | true |
 | Guards.cs:139:16:139:16 | access to parameter s | Guards.cs:137:13:137:25 | ... is ... | Guards.cs:137:13:137:13 | access to parameter s | false |
+| Guards.cs:144:25:144:25 | access to local variable s | Guards.cs:144:13:144:25 | ... is ... | Guards.cs:144:25:144:25 | access to local variable s | true |
+| Guards.cs:145:20:145:20 | access to local variable s | Guards.cs:144:13:144:25 | ... is ... | Guards.cs:144:25:144:25 | access to local variable s | true |
 | Guards.cs:146:16:146:16 | access to parameter o | Guards.cs:144:13:144:25 | ... is ... | Guards.cs:144:13:144:13 | access to parameter o | false |
 | Guards.cs:169:31:169:31 | access to parameter x | Guards.cs:168:14:168:41 | call to method IsNullOrWhiteSpace | Guards.cs:168:40:168:40 | access to parameter x | false |
 | Guards.cs:190:31:190:31 | access to parameter s | Guards.cs:189:14:189:25 | call to method NullTest1 | Guards.cs:189:24:189:24 | access to parameter s | false |
@@ -70,6 +72,7 @@
 | Guards.cs:269:13:269:14 | access to parameter o1 | Guards.cs:268:13:268:41 | call to operator == | Guards.cs:268:13:268:14 | access to parameter o1 | true |
 | Guards.cs:271:13:271:14 | access to parameter o1 | Guards.cs:270:13:270:42 | call to operator == | Guards.cs:270:13:270:14 | access to parameter o1 | true |
 | Guards.cs:279:17:279:17 | access to parameter o | Guards.cs:278:13:279:28 | ... => ... | Guards.cs:279:17:279:17 | access to parameter o | true |
+| Guards.cs:281:17:281:17 | access to local variable a | Guards.cs:280:13:281:28 | ... => ... | Guards.cs:280:28:280:28 | access to local variable a | true |
 | Guards.cs:281:17:281:17 | access to local variable a | Guards.cs:280:13:281:28 | ... => ... | Guards.cs:281:17:281:17 | access to local variable a | true |
 | Guards.cs:283:17:283:17 | access to parameter o | Guards.cs:278:13:279:28 | ... => ... | Guards.cs:279:17:279:17 | access to parameter o | false |
 | Guards.cs:283:17:283:17 | access to parameter o | Guards.cs:282:13:283:28 | ... => ... | Guards.cs:283:17:283:17 | access to parameter o | true |
