@@ -1,0 +1,17 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/unified-all",
+        "extensible": "legacySinkModel"
+      },
+      "data": [
+        // namespace, type, subtypes, name, signature, ext, input, kind, provenance
+        ["", "UIWebView", true, "loadHTMLString(_:baseURL:)", "", "", "Argument[0]", "webview-fetch", "manual"],
+        ["", "WKWebView", true, "loadHTMLString(_:baseURL:)", "", "", "Argument[0]", "webview-fetch", "manual"],
+        ["", "UIWebView", true, "load(_:mimeType:textEncodingName:baseURL:)", "", "", "Argument[0]", "webview-fetch", "manual"],
+        ["", "WKWebView", true, "load(_:mimeType:characterEncodingName:baseURL:)", "", "", "Argument[0]", "webview-fetch", "manual"]
+      ]
+    }
+  ]
+}

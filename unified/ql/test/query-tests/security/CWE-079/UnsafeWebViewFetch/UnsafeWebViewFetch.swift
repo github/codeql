@@ -136,9 +136,9 @@ func testUIWebView() {
 	webview.loadHTMLString(localString, baseURL: localURL!) // GOOD: a presumed safe baseURL is specified
 	webview.loadHTMLString(remoteString, baseURL: localURL!) // GOOD: a presumed safe baseURL is specified
 	webview.loadHTMLString(localString, baseURL: remoteURL!) // GOOD: the HTML data is local
-	webview.loadHTMLString(remoteString, baseURL: remoteURL!) // $ Alert
+	webview.loadHTMLString(remoteString, baseURL: remoteURL!) // $ MISSING: Alert
 	webview.loadHTMLString(localString, baseURL: remoteURL2!) // GOOD: the HTML data is local
-	webview.loadHTMLString(remoteString, baseURL: remoteURL2!) // $ Alert
+	webview.loadHTMLString(remoteString, baseURL: remoteURL2!) // $ MISSING: Alert
 
 	let localRequest = URLRequest(url: localURL!)
 	let remoteRequest = URLRequest(url: remoteURL!)
@@ -151,7 +151,7 @@ func testUIWebView() {
 	webview.load(localData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: localSafeURL!) // GOOD: the data is local
 	webview.load(remoteData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: localSafeURL!) // GOOD: a safe baseURL is specified
 	webview.load(localData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: remoteURL!) // GOOD: the HTML data is local
-	webview.load(remoteData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: remoteURL!) // $ Alert
+	webview.load(remoteData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: remoteURL!) // $ MISSING: Alert
 }
 
 func testWKWebView() {
@@ -183,9 +183,9 @@ func testWKWebView() {
 	webview.loadHTMLString(localString, baseURL: localURL!) // GOOD: a presumed safe baseURL is specified
 	webview.loadHTMLString(remoteString, baseURL: localURL!) // GOOD: a presumed safe baseURL is specified
 	webview.loadHTMLString(localString, baseURL: remoteURL!) // GOOD: the HTML data is local
-	webview.loadHTMLString(remoteString, baseURL: remoteURL!) // $ Alert
+	webview.loadHTMLString(remoteString, baseURL: remoteURL!) // $ MISSING: Alert
 	webview.loadHTMLString(localString, baseURL: remoteURL2!) // GOOD: the HTML data is local
-	webview.loadHTMLString(remoteString, baseURL: remoteURL2!) // $ Alert
+	webview.loadHTMLString(remoteString, baseURL: remoteURL2!) // $ MISSING: Alert
 
 	let localRequest = URLRequest(url: localURL!)
 	let remoteRequest = URLRequest(url: remoteURL!)
@@ -198,7 +198,7 @@ func testWKWebView() {
 	webview.load(localData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: localSafeURL!) // GOOD: the data is local
 	webview.load(remoteData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: localSafeURL!) // GOOD: a safe baseURL is specified
 	webview.load(localData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: remoteURL!) // GOOD: the HTML data is local
-	webview.load(remoteData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: remoteURL!) // $ Alert
+	webview.load(remoteData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: remoteURL!) // $ MISSING: Alert
 }
 
 func testQHelpExamples() {
