@@ -27,7 +27,6 @@ edges
 | UnsafeWebViewFetch.swift:117:6:117:17 | remoteString | UnsafeWebViewFetch.swift:121:25:121:36 | remoteString | provenance |  |
 | UnsafeWebViewFetch.swift:117:6:117:17 | remoteString | UnsafeWebViewFetch.swift:124:36:124:47 | remoteString | provenance |  |
 | UnsafeWebViewFetch.swift:117:6:117:17 | remoteString | UnsafeWebViewFetch.swift:127:34:127:45 | remoteString | provenance |  |
-| UnsafeWebViewFetch.swift:117:6:117:17 | remoteString | UnsafeWebViewFetch.swift:131:30:131:41 | remoteString | provenance |  |
 | UnsafeWebViewFetch.swift:117:6:117:17 | remoteString | UnsafeWebViewFetch.swift:135:25:135:36 | remoteString | provenance |  |
 | UnsafeWebViewFetch.swift:117:6:117:17 | remoteString | UnsafeWebViewFetch.swift:137:25:137:36 | remoteString | provenance |  |
 | UnsafeWebViewFetch.swift:117:6:117:17 | remoteString | UnsafeWebViewFetch.swift:139:25:139:36 | remoteString | provenance |  |
@@ -35,19 +34,9 @@ edges
 | UnsafeWebViewFetch.swift:117:21:117:35 | getRemoteData(...) | UnsafeWebViewFetch.swift:117:6:117:17 | remoteString | provenance |  |
 | UnsafeWebViewFetch.swift:124:36:124:47 | remoteString | UnsafeWebViewFetch.swift:124:25:124:59 | ... + ... | provenance |  |
 | UnsafeWebViewFetch.swift:127:34:127:45 | remoteString | UnsafeWebViewFetch.swift:127:25:127:54 | StringInterpolationExpr | provenance |  |
-| UnsafeWebViewFetch.swift:131:6:131:14 | remoteURL | UnsafeWebViewFetch.swift:138:47:138:55 | remoteURL | provenance |  |
-| UnsafeWebViewFetch.swift:131:6:131:14 | remoteURL | UnsafeWebViewFetch.swift:139:48:139:56 | remoteURL | provenance |  |
-| UnsafeWebViewFetch.swift:131:6:131:14 | remoteURL | UnsafeWebViewFetch.swift:153:85:153:93 | remoteURL | provenance |  |
-| UnsafeWebViewFetch.swift:131:6:131:14 | remoteURL | UnsafeWebViewFetch.swift:154:86:154:94 | remoteURL | provenance |  |
-| UnsafeWebViewFetch.swift:131:30:131:41 | remoteString | UnsafeWebViewFetch.swift:131:6:131:14 | remoteURL | provenance |  |
-| UnsafeWebViewFetch.swift:138:47:138:55 | remoteURL | UnsafeWebViewFetch.swift:138:47:138:56 | ... ! | provenance |  |
-| UnsafeWebViewFetch.swift:139:48:139:56 | remoteURL | UnsafeWebViewFetch.swift:139:48:139:57 | ... ! | provenance |  |
-| UnsafeWebViewFetch.swift:153:85:153:93 | remoteURL | UnsafeWebViewFetch.swift:153:85:153:94 | ... ! | provenance |  |
-| UnsafeWebViewFetch.swift:154:86:154:94 | remoteURL | UnsafeWebViewFetch.swift:154:86:154:95 | ... ! | provenance |  |
 | UnsafeWebViewFetch.swift:164:6:164:17 | remoteString | UnsafeWebViewFetch.swift:168:25:168:36 | remoteString | provenance |  |
 | UnsafeWebViewFetch.swift:164:6:164:17 | remoteString | UnsafeWebViewFetch.swift:171:36:171:47 | remoteString | provenance |  |
 | UnsafeWebViewFetch.swift:164:6:164:17 | remoteString | UnsafeWebViewFetch.swift:174:34:174:45 | remoteString | provenance |  |
-| UnsafeWebViewFetch.swift:164:6:164:17 | remoteString | UnsafeWebViewFetch.swift:178:30:178:41 | remoteString | provenance |  |
 | UnsafeWebViewFetch.swift:164:6:164:17 | remoteString | UnsafeWebViewFetch.swift:182:25:182:36 | remoteString | provenance |  |
 | UnsafeWebViewFetch.swift:164:6:164:17 | remoteString | UnsafeWebViewFetch.swift:184:25:184:36 | remoteString | provenance |  |
 | UnsafeWebViewFetch.swift:164:6:164:17 | remoteString | UnsafeWebViewFetch.swift:186:25:186:36 | remoteString | provenance |  |
@@ -55,15 +44,6 @@ edges
 | UnsafeWebViewFetch.swift:164:21:164:35 | getRemoteData(...) | UnsafeWebViewFetch.swift:164:6:164:17 | remoteString | provenance |  |
 | UnsafeWebViewFetch.swift:171:36:171:47 | remoteString | UnsafeWebViewFetch.swift:171:25:171:59 | ... + ... | provenance |  |
 | UnsafeWebViewFetch.swift:174:34:174:45 | remoteString | UnsafeWebViewFetch.swift:174:25:174:54 | StringInterpolationExpr | provenance |  |
-| UnsafeWebViewFetch.swift:178:6:178:14 | remoteURL | UnsafeWebViewFetch.swift:185:47:185:55 | remoteURL | provenance |  |
-| UnsafeWebViewFetch.swift:178:6:178:14 | remoteURL | UnsafeWebViewFetch.swift:186:48:186:56 | remoteURL | provenance |  |
-| UnsafeWebViewFetch.swift:178:6:178:14 | remoteURL | UnsafeWebViewFetch.swift:200:90:200:98 | remoteURL | provenance |  |
-| UnsafeWebViewFetch.swift:178:6:178:14 | remoteURL | UnsafeWebViewFetch.swift:201:91:201:99 | remoteURL | provenance |  |
-| UnsafeWebViewFetch.swift:178:30:178:41 | remoteString | UnsafeWebViewFetch.swift:178:6:178:14 | remoteURL | provenance |  |
-| UnsafeWebViewFetch.swift:185:47:185:55 | remoteURL | UnsafeWebViewFetch.swift:185:47:185:56 | ... ! | provenance |  |
-| UnsafeWebViewFetch.swift:186:48:186:56 | remoteURL | UnsafeWebViewFetch.swift:186:48:186:57 | ... ! | provenance |  |
-| UnsafeWebViewFetch.swift:200:90:200:98 | remoteURL | UnsafeWebViewFetch.swift:200:90:200:99 | ... ! | provenance |  |
-| UnsafeWebViewFetch.swift:201:91:201:99 | remoteURL | UnsafeWebViewFetch.swift:201:91:201:100 | ... ! | provenance |  |
 | UnsafeWebViewFetch.swift:206:6:206:13 | htmlData | UnsafeWebViewFetch.swift:210:25:210:32 | htmlData | provenance |  |
 | UnsafeWebViewFetch.swift:206:6:206:13 | htmlData | UnsafeWebViewFetch.swift:211:25:211:32 | htmlData | provenance |  |
 | UnsafeWebViewFetch.swift:206:17:206:31 | getRemoteData(...) | UnsafeWebViewFetch.swift:206:6:206:13 | htmlData | provenance |  |
@@ -85,20 +65,10 @@ nodes
 | UnsafeWebViewFetch.swift:124:36:124:47 | remoteString | semmle.label | remoteString |
 | UnsafeWebViewFetch.swift:127:25:127:54 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
 | UnsafeWebViewFetch.swift:127:34:127:45 | remoteString | semmle.label | remoteString |
-| UnsafeWebViewFetch.swift:131:6:131:14 | remoteURL | semmle.label | remoteURL |
-| UnsafeWebViewFetch.swift:131:30:131:41 | remoteString | semmle.label | remoteString |
 | UnsafeWebViewFetch.swift:135:25:135:36 | remoteString | semmle.label | remoteString |
 | UnsafeWebViewFetch.swift:137:25:137:36 | remoteString | semmle.label | remoteString |
-| UnsafeWebViewFetch.swift:138:47:138:55 | remoteURL | semmle.label | remoteURL |
-| UnsafeWebViewFetch.swift:138:47:138:56 | ... ! | semmle.label | ... ! |
 | UnsafeWebViewFetch.swift:139:25:139:36 | remoteString | semmle.label | remoteString |
-| UnsafeWebViewFetch.swift:139:48:139:56 | remoteURL | semmle.label | remoteURL |
-| UnsafeWebViewFetch.swift:139:48:139:57 | ... ! | semmle.label | ... ! |
 | UnsafeWebViewFetch.swift:141:25:141:36 | remoteString | semmle.label | remoteString |
-| UnsafeWebViewFetch.swift:153:85:153:93 | remoteURL | semmle.label | remoteURL |
-| UnsafeWebViewFetch.swift:153:85:153:94 | ... ! | semmle.label | ... ! |
-| UnsafeWebViewFetch.swift:154:86:154:94 | remoteURL | semmle.label | remoteURL |
-| UnsafeWebViewFetch.swift:154:86:154:95 | ... ! | semmle.label | ... ! |
 | UnsafeWebViewFetch.swift:164:6:164:17 | remoteString | semmle.label | remoteString |
 | UnsafeWebViewFetch.swift:164:21:164:35 | getRemoteData(...) | semmle.label | getRemoteData(...) |
 | UnsafeWebViewFetch.swift:167:25:167:39 | getRemoteData(...) | semmle.label | getRemoteData(...) |
@@ -107,20 +77,10 @@ nodes
 | UnsafeWebViewFetch.swift:171:36:171:47 | remoteString | semmle.label | remoteString |
 | UnsafeWebViewFetch.swift:174:25:174:54 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
 | UnsafeWebViewFetch.swift:174:34:174:45 | remoteString | semmle.label | remoteString |
-| UnsafeWebViewFetch.swift:178:6:178:14 | remoteURL | semmle.label | remoteURL |
-| UnsafeWebViewFetch.swift:178:30:178:41 | remoteString | semmle.label | remoteString |
 | UnsafeWebViewFetch.swift:182:25:182:36 | remoteString | semmle.label | remoteString |
 | UnsafeWebViewFetch.swift:184:25:184:36 | remoteString | semmle.label | remoteString |
-| UnsafeWebViewFetch.swift:185:47:185:55 | remoteURL | semmle.label | remoteURL |
-| UnsafeWebViewFetch.swift:185:47:185:56 | ... ! | semmle.label | ... ! |
 | UnsafeWebViewFetch.swift:186:25:186:36 | remoteString | semmle.label | remoteString |
-| UnsafeWebViewFetch.swift:186:48:186:56 | remoteURL | semmle.label | remoteURL |
-| UnsafeWebViewFetch.swift:186:48:186:57 | ... ! | semmle.label | ... ! |
 | UnsafeWebViewFetch.swift:188:25:188:36 | remoteString | semmle.label | remoteString |
-| UnsafeWebViewFetch.swift:200:90:200:98 | remoteURL | semmle.label | remoteURL |
-| UnsafeWebViewFetch.swift:200:90:200:99 | ... ! | semmle.label | ... ! |
-| UnsafeWebViewFetch.swift:201:91:201:99 | remoteURL | semmle.label | remoteURL |
-| UnsafeWebViewFetch.swift:201:91:201:100 | ... ! | semmle.label | ... ! |
 | UnsafeWebViewFetch.swift:206:6:206:13 | htmlData | semmle.label | htmlData |
 | UnsafeWebViewFetch.swift:206:17:206:31 | getRemoteData(...) | semmle.label | getRemoteData(...) |
 | UnsafeWebViewFetch.swift:210:25:210:32 | htmlData | semmle.label | htmlData |

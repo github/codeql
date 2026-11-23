@@ -15,7 +15,7 @@
 import unified
 
 /**
- * A modeled WebView fetch, with its associated base URL if present.
+ * A modeled WebView fetch.
  */
 private class UnsafeWebViewFetchSink extends DataFlow::Node {
   UnsafeWebViewFetchSink() { Models::isSink(this, "webview-fetch") }
@@ -35,28 +35,35 @@ private class UnsafeWebViewFetchSink extends DataFlow::Node {
 }
 
 /**
- * A taint configuration from taint sources to sinks for this query, and to `baseURL` arguments.
+ * A taint configuration from taint sources to sinks for this query.
  */
 module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
 
-  predicate isSink(DataFlow::Node node) {
-    exists(UnsafeWebViewFetchSink sink |
-      node = sink or
-      node = sink.getABaseUrl()
-    )
-  }
+  predicate isSink(DataFlow::Node node) { exists(UnsafeWebViewFetchSink sink | node = sink) }
 
-  predicate observeDiffInformedIncrementalMode() {
-    none() // can't override location accurately because of secondary use in select.
-    // TODO: review this, perhaps split into two flows and use two sink models even???
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 // TODO: Recover the relative-URL and Data paths marked MISSING in the tests.
 module UnsafeWebViewFetchFlow = TaintTracking::Global<UnsafeWebViewFetchConfig>;
 
 import UnsafeWebViewFetchFlow::PathGraph
+
+/**
+ * A taint configuration from taint sources to base URL arguments of WebView fetches.
+ */
+module BaseUrlConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
+
+  predicate isSink(DataFlow::Node node) { node = any(UnsafeWebViewFetchSink sink).getABaseUrl() }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used as secondary configuration
+  }
+}
+
+module BaseUrlFlow = TaintTracking::Global<BaseUrlConfig>;
 
 from
   UnsafeWebViewFetchFlow::PathNode sourceNode, UnsafeWebViewFetchFlow::PathNode sinkNode,
@@ -74,10 +81,7 @@ where
     message = "Tainted data is used in a WebView fetch without restricting the base URL."
     or
     // base URL is also tainted
-    exists(DataFlow::Node baseUrl |
-      baseUrl = sink.getABaseUrl() and
-      UnsafeWebViewFetchFlow::flowTo(baseUrl)
-    ) and
+    BaseUrlFlow::flowTo(sink.getABaseUrl()) and
     message = "Tainted data is used in a WebView fetch with a tainted base URL."
   )
 select sink, sourceNode, sinkNode, message
