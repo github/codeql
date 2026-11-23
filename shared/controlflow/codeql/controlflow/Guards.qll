@@ -216,12 +216,14 @@ module Make<
   private newtype TAbstractSingleValue =
     TValueNull() or
     TValueBool(Boolean b) or
+    TValueMatch(Boolean b) or
     TValueInt(int i) { exists(ConstantExpr c | c.asIntegerValue() = i) or i = 0 } or
     TValueConstant(ConstantValue c) { exists(ConstantExpr ce | ce.asConstantValue() = c) }
 
   private newtype TGuardValue =
     TValue(TAbstractSingleValue val, Boolean isVal) {
-      val instanceof TValueBool implies isVal = true
+      (val instanceof TValueBool implies isVal = true) and
+      (val instanceof TValueMatch implies isVal = true)
     } or
     TIntRange(int bound, Boolean upper) {
       exists(ConstantExpr c | c.asIntegerValue() + [-1, 0, 1] = bound) and
@@ -239,6 +241,10 @@ module Make<
       result = "true" and this = TValueBool(true)
       or
       result = "false" and this = TValueBool(false)
+      or
+      result = "match" and this = TValueMatch(true)
+      or
+      result = "non-match" and this = TValueMatch(false)
       or
       exists(int i | result = i.toString() and this = TValueInt(i))
       or
@@ -264,6 +270,9 @@ module Make<
       exists(boolean b |
         this = TValue(TValueBool(b), true) and
         result = TValue(TValueBool(b.booleanNot()), true)
+        or
+        this = TValue(TValueMatch(b), true) and
+        result = TValue(TValueMatch(b.booleanNot()), true)
       )
       or
       exists(int bound, int d, boolean upper |
@@ -298,6 +307,9 @@ module Make<
 
     /** Gets the boolean that this value represents, if any. */
     boolean asBooleanValue() { this = TValue(TValueBool(result), true) }
+
+    /** Gets the match boolean that this value represents, if any. */
+    boolean asMatchValue() { this = TValue(TValueMatch(result), true) }
 
     /** Gets the constant that this value represents, if any. */
     ConstantValue asConstantValue() { this = TValue(TValueConstant(result), true) }
@@ -402,6 +414,8 @@ module Make<
       s instanceof NullnessSuccessor and v = TValue(TValueNull(), s.getValue())
       or
       s instanceof BooleanSuccessor and v = TValue(TValueBool(s.getValue()), true)
+      or
+      s instanceof MatchingSuccessor and v = TValue(TValueMatch(s.getValue()), true)
     )
     or
     exceptionBranchPoint(bb1, bb2, _) and v = TException(false)
