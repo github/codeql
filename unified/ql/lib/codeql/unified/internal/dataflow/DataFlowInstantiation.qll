@@ -77,11 +77,8 @@ module DataFlowInput implements InputSig<Location> {
   private predicate isParameterNodeImpl(Node p, DataFlowCallable c, ParameterPosition pos) {
     exists(Parameter param |
       p.asExpr() = param.getPattern() and
-      c.asSourceCallable() = param.getEnclosingCallable()
-    |
-      pos.asPositional() = param.getPositionalIndex()
-      or
-      pos.asNamed() = param.getExternalName()
+      c.asSourceCallable() = param.getEnclosingCallable() and
+      pos = getParameterPosition(param)
     )
     or
     p.(BuilderNode).isImplicitParameter(c, pos)
@@ -102,11 +99,8 @@ module DataFlowInput implements InputSig<Location> {
   private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition pos) {
     exists(Argument arg |
       n.asExpr() = arg.getValue() and
-      call.asExplicitCall().getAnArgument() = arg
-    |
-      pos.asPositional() = arg.getPositionalIndex()
-      or
-      pos.asNamed() = arg.getName()
+      call.asExplicitCall().getAnArgument() = arg and
+      pos = getArgumentPosition(_, arg)
     )
     or
     n.(BuilderNode).isImplicitArgument(call, pos, false)
