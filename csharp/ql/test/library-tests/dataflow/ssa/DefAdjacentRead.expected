@@ -101,11 +101,11 @@
 | OutRef.cs:34:38:34:38 | j | OutRef.cs:34:38:34:38 | j | OutRef.cs:36:13:36:13 | access to parameter j |
 | OutRef.cs:39:24:39:24 | b | OutRef.cs:39:24:39:24 | b | OutRef.cs:41:13:41:13 | access to parameter b |
 | Patterns.cs:7:16:7:16 | o | Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:8:13:8:13 | access to local variable o |
-| Patterns.cs:8:22:8:23 | i1 | Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:10:38:10:39 | access to local variable i1 |
-| Patterns.cs:12:30:12:31 | s1 | Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:14:41:14:42 | access to local variable s1 |
-| Patterns.cs:24:22:24:23 | i2 | Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:30:24:31 | access to local variable i2 |
-| Patterns.cs:27:22:27:23 | i3 | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:28:42:28:43 | access to local variable i3 |
-| Patterns.cs:30:25:30:26 | s2 | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:31:45:31:46 | access to local variable s2 |
+| Patterns.cs:8:22:8:23 | i1 | Patterns.cs:8:22:8:23 | Int32 i1 | Patterns.cs:10:38:10:39 | access to local variable i1 |
+| Patterns.cs:12:30:12:31 | s1 | Patterns.cs:12:30:12:31 | String s1 | Patterns.cs:14:41:14:42 | access to local variable s1 |
+| Patterns.cs:24:22:24:23 | i2 | Patterns.cs:24:22:24:23 | Int32 i2 | Patterns.cs:24:30:24:31 | access to local variable i2 |
+| Patterns.cs:27:22:27:23 | i3 | Patterns.cs:27:22:27:23 | Int32 i3 | Patterns.cs:28:42:28:43 | access to local variable i3 |
+| Patterns.cs:30:25:30:26 | s2 | Patterns.cs:30:25:30:26 | String s2 | Patterns.cs:31:45:31:46 | access to local variable s2 |
 | Properties.cs:5:18:5:19 | xs | Properties.cs:24:9:24:23 | ... = ... | Properties.cs:25:13:25:14 | access to property xs |
 | Properties.cs:5:18:5:19 | xs | Properties.cs:42:9:42:23 | ... = ... | Properties.cs:44:13:44:14 | access to property xs |
 | Properties.cs:5:18:5:19 | xs | Properties.cs:45:9:45:25 | ... = ... | Properties.cs:46:13:46:16 | access to property xs |

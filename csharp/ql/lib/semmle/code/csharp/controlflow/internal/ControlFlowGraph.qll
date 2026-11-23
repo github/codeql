@@ -75,7 +75,7 @@ module Ast implements AstSig<Location> {
 
   additional predicate skipControlFlow(AstNode e) {
     e instanceof TypeAccess and
-    not e instanceof TypeAccessPatternExpr and
+    // not e instanceof TypeAccessPatternExpr and
     not any(CS::SpecificCatchClause sc).getTypeAccess() = e
     or
     not e.getFile().fromSource()
@@ -293,6 +293,24 @@ module Ast implements AstSig<Location> {
 
   class BooleanLiteral extends FinalBoolLiteral {
     boolean getValue() { result = this.getBoolValue() }
+  }
+
+  final class Pattern = PatternImpl;
+
+  abstract private class PatternImpl extends AstNode { }
+
+  private class PatternExprPattern extends PatternImpl, CS::PatternExpr { }
+
+  class AndPattern extends Pattern instanceof CS::AndPatternExpr { }
+
+  class OrPattern extends Pattern instanceof CS::OrPatternExpr { }
+
+  class NotPattern extends Pattern instanceof CS::NotPatternExpr {
+    Pattern getNegatedPattern() { result = super.getPattern() }
+  }
+
+  class BindingPattern extends PatternImpl {
+    BindingPattern() { this = any(CS::VariablePatternExpr vp).getAccess() }
   }
 
   final private class FinalIsExpr = CS::IsExpr;

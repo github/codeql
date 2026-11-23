@@ -134,6 +134,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
       ct.getComparisonKind().isInequality() and polarity = false
     )
     or
+    // todo: handled in shared lib?
     exists(IsExpr ie, PatternExpr pat |
       ie = eqtest and
       ie.getExpr() = left and
@@ -190,6 +191,16 @@ private module GuardsImpl = SharedGuards::Make<Location, Cfg, GuardsInput>;
 
 class GuardValue = GuardsImpl::GuardValue;
 
+private PatternExpr getSameSubPattern(PatternExpr pattern) {
+  result = pattern
+  or
+  result = getSameSubPattern(pattern).(AndPatternExpr).getAnOperand()
+  or
+  result = getSameSubPattern(pattern).(OrPatternExpr).getAnOperand()
+  or
+  result = getSameSubPattern(pattern).(NotPatternExpr).getPattern()
+}
+
 private module LogicInput implements GuardsImpl::LogicInputSig {
   import Ssa
 
@@ -217,22 +228,23 @@ private module LogicInput implements GuardsImpl::LogicInputSig {
       isNull = false
     )
     or
-    guard =
-      any(PatternMatch pm |
-        e instanceof DereferenceableExpr and
-        e = pm.getExpr() and
-        (
-          val.asBooleanValue().booleanNot() = patternMatchesNull(pm.getPattern()) and
-          isNull = false
-          or
-          exists(TypePatternExpr tpe |
-            // E.g. `x is string` where `x` has type `string`
-            typePattern(guard, tpe, tpe.getCheckedType()) and
-            val.asBooleanValue() = false and
-            isNull = true
-          )
-        )
-      )
+    exists(PatternMatch pm |
+      e instanceof DereferenceableExpr and
+      e = pm.getExpr() and
+      guard = getSameSubPattern(pm.getPattern())
+    |
+      val.asMatchValue() = true and
+      isNull = patternMatchesNull(guard)
+      or
+      val.asMatchValue() = false and
+      guard instanceof NullLiteral and
+      isNull = false
+      or
+      // E.g. `x is string` where `x` has type `string`
+      guard.(TypePatternExpr).getCheckedType() = e.getType() and
+      val.asMatchValue() = false and
+      isNull = true
+    )
     or
     e.(DereferenceableExpr).hasNullableType() and
     guard =
@@ -355,24 +367,6 @@ private boolean patternMatchesNull(PatternExpr pat) {
   not pat instanceof OrPatternExpr and
   not pat instanceof AndPatternExpr and
   result = false
-  or
-  result = patternMatchesNull(pat.(NotPatternExpr).getPattern()).booleanNot()
-  or
-  exists(OrPatternExpr ope | pat = ope |
-    result =
-      patternMatchesNull(ope.getLeftOperand()).booleanOr(patternMatchesNull(ope.getRightOperand()))
-  )
-  or
-  exists(AndPatternExpr ape | pat = ape |
-    result =
-      patternMatchesNull(ape.getLeftOperand()).booleanAnd(patternMatchesNull(ape.getRightOperand()))
-  )
-}
-
-pragma[nomagic]
-private predicate typePattern(PatternMatch pm, TypePatternExpr tpe, Type t) {
-  tpe = pm.getPattern() and
-  t = pm.getExpr().getType()
 }
 
 pragma[nomagic]
