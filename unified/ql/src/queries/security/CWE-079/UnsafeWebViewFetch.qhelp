@@ -18,7 +18,7 @@
 
 <sample src="UnsafeWebViewFetchBad.swift" />
 
-<p>To fix the problem, we set the <code>baseURL</code> to <code>about:blank</code>. This ensures that an attacker cannot resolve URLs that point to the local file system, or to web servers under their control.</p>
+<p>To fix the problem, we set the <code>baseURL</code> to <code>about:blank</code>. This avoids resolving relative URLs against the application's local file system. A base URL is not a general navigation restriction: absolute remote URLs still need appropriate navigation and content controls.</p>
 
 <sample src="UnsafeWebViewFetchGood.swift" />
 
