@@ -880,10 +880,10 @@ namespace GlobalArrays {
     static const char static_local_array_static_indirect_1[] = "indirect_source(1)";
     static const char static_local_array_static_indirect_2[] = "indirect_source(2)";
     sink(static_local_array_static); // clean
-    sink(static_local_array_static_indirect_1); // $ ir MISSING: ast
-    indirect_sink(static_local_array_static_indirect_1); // clean
+    sink(static_local_array_static_indirect_1); // $ SPURIOUS: ir MISSING: ast
+    indirect_sink(static_local_array_static_indirect_1); // $ MISSING: ast,ir
     sink(static_local_array_static_indirect_2); // clean
-    indirect_sink(static_local_array_static_indirect_2); // $ ir MISSING: ast
+    indirect_sink(static_local_array_static_indirect_2); // $ SPURIOUS: ir
   }
 
   void test6() {
@@ -904,11 +904,11 @@ namespace GlobalArrays {
   void test7() {
     sink(global_array_static); // clean
     sink(*global_array_static); // clean
-    sink(global_array_static_indirect_1); // $ ir MISSING: ast
-    sink(*global_array_static_indirect_1); // clean
+    sink(global_array_static_indirect_1); // $ SPURIOUS: ir MISSING: ast
+    sink(*global_array_static_indirect_1); // $ MISSING: ast,ir // Missing in IR because the expression is constant-folded to 'i'
     indirect_sink(global_array_static); // clean
-    indirect_sink(global_array_static_indirect_1); // clean
-    indirect_sink(global_array_static_indirect_2); // $ ir MISSING: ast
+    indirect_sink(global_array_static_indirect_1); // $ MISSING: ast,ir
+    indirect_sink(global_array_static_indirect_2); // $ SPURIOUS: ir
   }
 
   static const char* global_pointer_static = "source";
@@ -1348,4 +1348,10 @@ void uninitialized_scalar_address() {
   int x;
   int *p = &x;
   sink(p); // $ SPURIOUS: ast
+}
+
+void local_array() {
+  char local_array_indirect_1[] = "indirect_source(1)";
+  sink(local_array_indirect_1); // $ SPURIOUS: ir MISSING: ast
+  indirect_sink(local_array_indirect_1); // $ MISSING: ast,ir
 }
