@@ -20,9 +20,11 @@
  * the given file, and dumps a JSON representation of the resulting AST to stdout.
  */
 
+import * as fs from "fs";
 import * as pathlib from "path";
 import * as readline from "readline";
 import * as ts from "typescript/ast";
+import { serverFS } from "typescript/fs";
 import { API, JsxEmit } from "typescript/sync";
 import { version } from "typescript";
 import { extractAst } from "./ast_extractor.js";
@@ -95,7 +97,47 @@ function checkCycle(root: any) {
 let api: API | undefined;
 
 function getAPI(): API {
-    return api ??= new API();
+    return api ??= new API({
+        fs: {
+            readFile: readSourceFile, // Custom `readFile`
+            directoryExists: serverFS.useOS,
+            fileExists: serverFS.useOS,
+            getAccessibleEntries: serverFS.useOS,
+            realpath: serverFS.useOS,
+            stat: serverFS.useOS,
+            writeFile: serverFS.useOS,
+            removeFile: serverFS.useOS,
+        },
+    });
+}
+
+/**
+ * Reads source with Node's UTF-8 decoding, as the previous parser did.
+ *
+ * For malformed UTF8 encoded text the new Go-based parser returns source
+ * positions that don't index correctly into the source text (neither on the
+ * NodeJS side nor the Java side). Decoding the source as UTF-8 before parsing
+ * (instead of reading the source inside the native parser) ensures that the
+ * offsets are consistent with the source text.
+ *
+ * This issue is reported upstream, and this function can be removed when/if
+ * that is fixed: https://github.com/microsoft/TypeScript/issues/65637
+ */
+function readSourceFile(filename: string): string | typeof serverFS.useOS {
+    try {
+        const content = fs.readFileSync(filename);
+        // Ignore files that begin with a little-endian/big-endian UTF-16 BOM,
+        // we only want to correct invalid UTF8.
+        if (content[0] === 0xFF && content[1] === 0xFE
+            || content[0] === 0xFE && content[1] === 0xFF) {
+            return serverFS.useOS;
+        } else {
+            return content.toString("utf8").replace(/^\uFEFF/, "");
+        }
+    } catch {
+        // On error, fall back to the native filesystem.
+        return serverFS.useOS;
+    }
 }
 
 function closeAPI() {
