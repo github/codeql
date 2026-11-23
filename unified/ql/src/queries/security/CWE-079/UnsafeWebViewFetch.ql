@@ -14,7 +14,9 @@
 
 import unified
 
-/** A modeled WebView fetch, with its associated base URL if present. */
+/**
+ * A modeled WebView fetch, with its associated base URL if present.
+ */
 private class UnsafeWebViewFetchSink extends DataFlow::Node {
   UnsafeWebViewFetchSink() { Models::isSink(this, "webview-fetch") }
 
@@ -27,8 +29,7 @@ private class UnsafeWebViewFetchSink extends DataFlow::Node {
 }
 
 /**
- * A taint configuration from taint sources to sinks (and `baseURL` arguments)
- * for this query.
+ * A taint configuration from taint sources to sinks for this query, and to `baseURL` arguments.
  */
 module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
@@ -42,13 +43,12 @@ module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
 
   predicate observeDiffInformedIncrementalMode() {
     none() // can't override location accurately because of secondary use in select.
+    // TODO: review this, perhaps split into two flows and use two sink models even???
   }
 }
 
-/**
- * Detect taint flow of taint sources to sinks (and `baseURL` arguments) for this query.
- * TODO: Recover the relative-URL and Data paths marked MISSING in the tests.
- */
+// TODO: Recover the relative-URL and Data paths marked MISSING in the tests.
+
 module UnsafeWebViewFetchFlow = TaintTracking::Global<UnsafeWebViewFetchConfig>;
 
 import UnsafeWebViewFetchFlow::PathGraph

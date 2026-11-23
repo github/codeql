@@ -7,6 +7,7 @@
       },
       "data": [
         // namespace, type, subtypes, name, signature, ext, input, kind, provenance
+        // note that the baseURL argument is currently recognized by name, not encoded here.
         ["", "UIWebView", true, "loadHTMLString(_:baseURL:)", "", "", "Argument[0]", "webview-fetch", "manual"],
         ["", "WKWebView", true, "loadHTMLString(_:baseURL:)", "", "", "Argument[0]", "webview-fetch", "manual"],
         ["", "UIWebView", true, "load(_:mimeType:textEncodingName:baseURL:)", "", "", "Argument[0]", "webview-fetch", "manual"],
