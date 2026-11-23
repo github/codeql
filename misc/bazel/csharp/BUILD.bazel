@@ -3,14 +3,12 @@ load("@rules_python//python:defs.bzl", "py_binary")
 py_binary(
     name = "gen-git-assembly-info",
     srcs = ["gen-git-assembly-info.py"],
-    deps = ["@rules_python//python/runfiles"],
 )
 
 py_binary(
     name = "gen-assembly-info",
     srcs = ["gen-assembly-info.py"],
-    visibility = ["//csharp:__subpackages__"],
-    deps = ["@rules_python//python/runfiles"],
+    visibility = ["//visibility:public"],
 )
 
 genrule(
@@ -19,5 +17,5 @@ genrule(
     outs = ["GitAssemblyInfo.cs"],
     cmd = "$(execpath :gen-git-assembly-info) $@ $(SRCS)",
     tools = [":gen-git-assembly-info"],
-    visibility = ["//csharp:__subpackages__"],
+    visibility = ["//visibility:public"],
 )
