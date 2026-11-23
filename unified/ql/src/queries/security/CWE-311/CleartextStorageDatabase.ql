@@ -121,5 +121,5 @@ from
   CleartextStorageDatabaseFlow::PathNode sourceNode, CleartextStorageDatabaseFlow::PathNode sinkNode
 where CleartextStorageDatabaseFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
-  "This operation stores unencrypted sensitive data from $@.", sourceNode.getNode(),
+  "This database operation may read or write unencrypted sensitive data from $@.", sourceNode.getNode(),
   sourceNode.getNode().toString()
