@@ -1,7 +1,7 @@
 derive_generated_canonical_paths
-| derive_macro.rs:8:12:8:17 | struct ConfigBuilder | test::derive_macro::Config::ConfigBuilder |
-| derive_macro.rs:14:3:14:45 | struct MacroGenerated | test::derive_macro::MacroDerive::MacroGenerated |
-| derive_macro.rs:21:3:21:49 | struct AttributeGenerated | test::derive_macro::AttributeDerive::AttributeGenerated |
+| derive_macro.rs:8:12:8:17 | struct ConfigBuilder | test::derive_macro::ConfigBuilder |
+| derive_macro.rs:14:3:14:45 | struct MacroGenerated | test::derive_macro::MacroGenerated |
+| derive_macro.rs:21:3:21:49 | struct AttributeGenerated | test::derive_macro::AttributeGenerated |
 mod
 | derive_macro.rs:28:1:41:1 | mod glob_shadowing |
 | derive_macro.rs:29:5:31:5 | mod helper |
@@ -63,8 +63,14 @@ mod
 | my/nested.rs:2:5:11:5 | mod nested2 |
 resolvePath
 | derive_macro.rs:7:3:7:8 | derive | {EXTERNAL LOCATION} | MacroDef |
+| derive_macro.rs:10:18:10:30 | ConfigBuilder | derive_macro.rs:8:12:8:17 | struct ConfigBuilder |
+| derive_macro.rs:11:5:11:17 | ConfigBuilder | derive_macro.rs:8:12:8:17 | struct ConfigBuilder |
 | derive_macro.rs:14:3:14:8 | derive | {EXTERNAL LOCATION} | MacroDef |
+| derive_macro.rs:17:34:17:47 | MacroGenerated | derive_macro.rs:14:3:14:45 | struct MacroGenerated |
+| derive_macro.rs:18:5:18:18 | MacroGenerated | derive_macro.rs:14:3:14:45 | struct MacroGenerated |
 | derive_macro.rs:21:3:21:8 | derive | {EXTERNAL LOCATION} | MacroDef |
+| derive_macro.rs:24:38:24:55 | AttributeGenerated | derive_macro.rs:21:3:21:49 | struct AttributeGenerated |
+| derive_macro.rs:25:5:25:22 | AttributeGenerated | derive_macro.rs:21:3:21:49 | struct AttributeGenerated |
 | derive_macro.rs:35:7:35:12 | derive | {EXTERNAL LOCATION} | MacroDef |
 | derive_macro.rs:39:16:39:28 | GlobCollision | derive_macro.rs:33:5:33:25 | struct GlobCollision |
 | invalid/main.rs:6:9:6:9 | A | invalid/main.rs:3:11:4:9 | struct A |

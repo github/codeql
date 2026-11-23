@@ -7,22 +7,22 @@ macro_rules! build_via_macro {
 #[derive(proc_macro::GenerateBuilder)] // $ item=derive
 pub struct Config;
 
-pub fn make() -> ConfigBuilder { // $ MISSING: item=ConfigBuilder
-    ConfigBuilder // $ MISSING: item=ConfigBuilder
+pub fn make() -> ConfigBuilder { // $ item=ConfigBuilder
+    ConfigBuilder // $ item=ConfigBuilder
 }
 
 #[derive(proc_macro::GenerateBuilderViaMacro)] // $ item=derive
 struct MacroDerive;
 
-pub fn make_macro_generated() -> MacroGenerated { // $ MISSING: item=MacroGenerated
-    MacroGenerated // $ MISSING: item=MacroGenerated
+pub fn make_macro_generated() -> MacroGenerated { // $ item=MacroGenerated
+    MacroGenerated // $ item=MacroGenerated
 }
 
 #[derive(proc_macro::GenerateBuilderViaAttribute)] // $ item=derive
 struct AttributeDerive;
 
-pub fn make_attribute_generated() -> AttributeGenerated { // $ MISSING: item=AttributeGenerated
-    AttributeGenerated // $ MISSING: item=AttributeGenerated
+pub fn make_attribute_generated() -> AttributeGenerated { // $ item=AttributeGenerated
+    AttributeGenerated // $ item=AttributeGenerated
 }
 
 mod glob_shadowing {
