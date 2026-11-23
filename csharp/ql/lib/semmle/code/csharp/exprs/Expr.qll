@@ -171,7 +171,7 @@ class LocalVariableDeclExpr extends Expr, @local_var_decl_expr {
     result = "_"
   }
 
-  /** Gets the variable access used in this declaration, if any. */
+  /** Gets the defining variable access used in this declaration, if any. */
   LocalVariableAccess getAccess() {
     result = this.getChild(0) or
     result = this // `out` argument

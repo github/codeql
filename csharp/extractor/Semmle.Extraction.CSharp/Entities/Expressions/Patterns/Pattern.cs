@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                                 if (cx.GetModel(syntax).GetDeclaredSymbol(singleDesignation) is ILocalSymbol symbol)
                                 {
                                     var type = symbol.GetAnnotatedType();
-                                    return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.CreateLocation(syntax.GetLocation()), false, parent, child);
+                                    return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.CreateLocation(syntax.GetLocation()), false, parent, child, isPattern: true);
                                 }
                                 throw new InternalError(singleDesignation, "Unable to get the declared symbol of the declaration pattern designation.");
                             case DiscardDesignationSyntax _:
@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             if (cx.GetModel(syntax).GetDeclaredSymbol(varDesignation) is ILocalSymbol symbol)
                             {
                                 var type = symbol.GetAnnotatedType();
-                                return VariableDeclaration.Create(cx, symbol, type, null, cx.CreateLocation(syntax.GetLocation()), true, parent, child);
+                                return VariableDeclaration.Create(cx, symbol, type, null, cx.CreateLocation(syntax.GetLocation()), true, parent, child, isPattern: true);
                             }
 
                             throw new InternalError(varPattern, "Unable to get the declared symbol of the var pattern designation.");

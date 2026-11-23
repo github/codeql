@@ -73,3 +73,13 @@ query predicate tupleTypes(TupleExpr te, string type) { te.getType().toString() 
 query predicate patternExprTypes(PatternExpr pattern, string type) {
   pattern.getType().toString() = type
 }
+
+query predicate patternDefiningAccess(
+  LocalVariableDeclExpr decl, AssignableWrite access, LocalVariable target
+) {
+  decl = any(AssignableDefinitions::PatternDefinition def).getDeclaration() and
+  access = decl.getAccess() and
+  target = decl.getVariable() and
+  target = access.getTarget() and
+  not access instanceof AssignableRead
+}
