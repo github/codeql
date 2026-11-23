@@ -36,8 +36,8 @@
 </example>
 <references>
 
-  <li>Python Language Reference: <a href="https://docs.python.org/2/reference/simple_stmts.html#the-assert-statement">The assert statement</a>.</li>
-  <li>The Python Tutorial: <a href="https://docs.python.org/2.7/tutorial/modules.html#compiled-python-files">“Compiled” Python files</a>.</li>
+  <li>Python Language Reference: <a href="https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement">The assert statement</a>.</li>
+  <li>The Python Tutorial: <a href="https://docs.python.org/3/tutorial/modules.html#compiled-python-files">“Compiled” Python files</a>.</li>
 
 </references>
 </qhelp>

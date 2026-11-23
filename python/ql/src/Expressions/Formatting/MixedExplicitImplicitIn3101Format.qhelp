@@ -24,7 +24,7 @@ In the following example the formatting uses both implicit, <code>{}</code>, and
 </example>
 <references>
 
-  <li>Python Library Reference: <a href="https://docs.python.org/2/library/string.html#string-formatting">String Formatting.</a> </li>
+  <li>Python Library Reference: <a href="https://docs.python.org/3/library/string.html#format-string-syntax">String Formatting.</a> </li>
 
 
 </references>
