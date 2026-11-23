@@ -1,6 +1,6 @@
 STORAGE: NONE
 STRATEGY: MAX
-RESTRICTION: == net10.0
+RESTRICTION: == net11.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
     Basic.CompilerLog.Util (0.9.66)
@@ -120,10 +120,7 @@ NUGET
     System.Memory (4.6.3)
     System.Numerics.Vectors (4.6.1)
     System.Reflection.Metadata (11.0)
-      System.Collections.Immutable (>= 11.0)
     System.Reflection.MetadataLoadContext (11.0)
-      System.Collections.Immutable (>= 11.0)
-      System.Reflection.Metadata (>= 11.0)
     System.Runtime.CompilerServices.Unsafe (6.1.2)
     System.Security.Cryptography.ProtectedData (11.0)
     System.Text.Encoding.CodePages (11.0)
