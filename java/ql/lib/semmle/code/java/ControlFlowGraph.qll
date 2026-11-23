@@ -20,6 +20,27 @@ private import Cfg1
 private import Cfg2
 import Public
 
+/**
+ * Holds if the `i`th child of `parent` performs a type test at `typeTest`, and when
+ * successful binds the value at `lvd`.
+ *
+ * In this case want the CFG to first visit the type test, and only if it succeeds do
+ * we proceed to bind the value at `lvd`.
+ */
+private predicate isBindingTypeTest(Element parent, Expr typeTest, int i, LocalVariableDeclExpr lvd) {
+  parent = any(InstanceOfExpr ioe | lvd = ioe.getPattern() and typeTest = ioe.getTypeName()) and
+  i = 0
+  or
+  exists(RecordPatternExpr rpe |
+    rpe = parent and
+    lvd = rpe.getSubPattern(i) and
+    typeTest.isNthChildOf(rpe, -i - 1)
+  )
+  or
+  lvd = parent.(PatternCase).getPattern(i) and
+  typeTest = lvd.getTypeAccess()
+}
+
 /** Provides an implementation of the AST signature for Java. */
 private module Ast implements AstSig<Location> {
   private import java as J
@@ -27,12 +48,18 @@ private module Ast implements AstSig<Location> {
   class AstNode = ExprParent;
 
   private predicate skipControlFlow(AstNode e) {
-    e.(Expr).getParent*() instanceof Annotation or
-    e instanceof TypeAccess or
-    e instanceof ArrayTypeAccess or
-    e instanceof UnionTypeAccess or
-    e instanceof IntersectionTypeAccess or
-    e instanceof WildcardTypeAccess or
+    e.(Expr).getParent*() instanceof Annotation
+    or
+    e instanceof TypeAccess
+    or
+    e instanceof ArrayTypeAccess
+    or
+    e instanceof UnionTypeAccess
+    or
+    e instanceof IntersectionTypeAccess
+    or
+    e instanceof WildcardTypeAccess
+    or
     // Switch cases of the form `case e1 -> e2;` skip the ExprStmt and treat
     // the right-hand side as an expression. See `SwitchCase.getRuleExpression()`.
     any(SwitchCase sc).getRuleExpression() = e.(J::ExprStmt).getExpr()
@@ -41,11 +68,17 @@ private module Ast implements AstSig<Location> {
   AstNode getChild(AstNode n, int index) {
     not skipControlFlow(result) and
     not skipControlFlow(n) and
+    not isBindingTypeTest(n, _, _, result) and
     result.(Expr).isNthChildOf(n, index)
     or
     result.(Stmt).isNthChildOf(n, index)
     or
     result = n.(SwitchCase).getRuleExpression() and index = -1
+    or
+    isBindingTypeTest(_, n, _, result) and
+    index = 0
+    or
+    isBindingTypeTest(n, result, index, _)
   }
 
   Callable getEnclosingCallable(AstNode node) {
@@ -178,7 +211,11 @@ private module Ast implements AstSig<Location> {
   class Case extends AstNode instanceof J::SwitchCase {
     /** Gets the pattern being matched by this case at the specified (zero-based) `index`. */
     AstNode getPattern(int index) {
-      result = this.(PatternCase).getPattern(index) or
+      isBindingTypeTest(this, result, index, _)
+      or
+      not isBindingTypeTest(this, _, _, result) and
+      result = this.(PatternCase).getPattern(index)
+      or
       result = this.(ConstCase).getValue(index)
     }
 
@@ -241,12 +278,52 @@ private module Ast implements AstSig<Location> {
     boolean getValue() { result = this.getBooleanValue() }
   }
 
+  final class Pattern = PatternImpl;
+
+  abstract private class PatternImpl extends AstNode { }
+
+  private class NonBindingPattern extends PatternImpl {
+    NonBindingPattern() {
+      isBindingTypeTest(_, this, _, _)
+      or
+      this instanceof RecordPatternExpr
+    }
+  }
+
+  class AndPattern extends Pattern {
+    AndPattern() { none() }
+  }
+
+  class OrPattern extends Pattern {
+    OrPattern() { none() }
+  }
+
+  class NotPattern extends Pattern {
+    NotPattern() { none() }
+
+    Pattern getNegatedPattern() { none() }
+  }
+
+  class BindingPattern extends PatternImpl {
+    BindingPattern() {
+      isBindingTypeTest(_, _, _, this)
+      or
+      // needed for cases like `A(var x)` where there is no type test
+      this = any(RecordPatternExpr rpe).getSubPattern(_).(LocalVariableDeclExpr)
+    }
+  }
+
   final private class FinalInstanceOfExpr = J::InstanceOfExpr;
 
   class PatternMatchExpr extends FinalInstanceOfExpr {
     PatternMatchExpr() { this.isPattern() }
 
-    AstNode getPattern() { result = super.getPattern() }
+    AstNode getPattern() {
+      not isBindingTypeTest(this, _, _, _) and
+      result = super.getPattern()
+      or
+      isBindingTypeTest(this, result, _, _)
+    }
   }
 }
 
@@ -530,6 +607,17 @@ private module Input implements InputSig1, InputSig2 {
   /** Holds if this case matches all possible values. */
   predicate matchAll(Ast::Case c) {
     c.(J::PatternCase).getAPattern().getType() instanceof TypeObject
+  }
+
+  predicate patternIsExhaustive(Ast::Pattern pattern) {
+    pattern.(TypeAccess).getType() instanceof TypeObject
+    or
+    exists(PatternExpr sub | any(RecordPatternExpr rpe).subPatternIsUnrestricted(sub, _) |
+      isBindingTypeTest(_, pattern, _, sub)
+      or
+      not sub instanceof LocalVariableDeclExpr and
+      pattern = sub
+    )
   }
 
   private newtype TLabel =
