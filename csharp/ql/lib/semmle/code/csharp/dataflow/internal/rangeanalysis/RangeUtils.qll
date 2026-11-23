@@ -78,24 +78,22 @@ private module Impl {
       )
   }
 
+  class GuardValue = G::GuardValue;
+
   /** An expression whose value may control the execution of another element. */
   class Guard extends Expr instanceof G::Guard {
     /**
      * Holds if basic block `bb` is guarded by this guard having value `v`.
      */
-    predicate controlsBasicBlock(BasicBlock bb, G::GuardValue v) { super.controlsBasicBlock(bb, v) }
+    predicate controlsBasicBlock(BasicBlock bb, GuardValue v) { super.controlsBasicBlock(bb, v) }
 
     /**
      * Holds if this guard is an equality test between `e1` and `e2`. If the test is
      * negated, that is `!=`, then `polarity` is false, otherwise `polarity` is
      * true.
      */
-    predicate isEquality(ExprNode e1, ExprNode e2, boolean polarity) {
-      exists(Expr e1_, Expr e2_ |
-        e1 = unique(ExprNode cfn | hasChild(this, e1_, _, cfn) | cfn) and
-        e2 = unique(ExprNode cfn | hasChild(this, e2_, _, cfn) | cfn) and
-        super.isEquality(e1_, e2_, any(G::GuardValue gv | gv.asBooleanValue() = polarity))
-      )
+    predicate isEquality(ExprNode e1, ExprNode e2, GuardValue eqval) {
+      super.isEquality(e1.getExpr(), e2.getExpr(), eqval)
     }
   }
 
@@ -108,7 +106,8 @@ private module Impl {
    */
   Guard eqFlowCond(SsaDefinition def, ExprNode e, int delta, boolean isEq, boolean testIsTrue) {
     exists(boolean eqpolarity |
-      result.isEquality(ssaRead(def, delta), e, eqpolarity) and
+      result
+          .isEquality(ssaRead(def, delta), e, any(GuardValue gv | gv.asBooleanValue() = eqpolarity)) and
       testIsTrue = [false, true] and
       eqpolarity.booleanXor(testIsTrue).booleanNot() = isEq
     )
@@ -117,10 +116,8 @@ private module Impl {
   /**
    * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
    */
-  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-    exists(G::GuardValue b | b.asBooleanValue() = testIsTrue |
-      guard.controlsBasicBlock(controlled.(SsaReadPositionBlock).getBlock(), b)
-    )
+  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, GuardValue val) {
+    guard.controlsBasicBlock(controlled.(SsaReadPositionBlock).getBlock(), val)
   }
 
   /**

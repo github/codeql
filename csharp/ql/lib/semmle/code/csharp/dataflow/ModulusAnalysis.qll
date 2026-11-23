@@ -19,7 +19,7 @@ private predicate valueFlowStepSsa(SsaVariable v, SsaReadPosition pos, Expr e, i
   exists(Guard guard, boolean testIsTrue |
     pos.hasReadOfVar(v) and
     guard = eqFlowCond(v, e, delta, true, testIsTrue) and
-    guardControlsSsaRead(guard, pos, testIsTrue)
+    guardControlsSsaRead(guard, pos, any(GuardValue gv | gv.asBooleanValue() = testIsTrue))
   )
 }
 
@@ -69,14 +69,14 @@ private Expr modExpr(Expr arg, int mod) {
  * its `testIsTrue` branch.
  */
 private Guard moduloCheck(SsaVariable v, int val, int mod, boolean testIsTrue) {
-  exists(Expr rem, ConstantIntegerExpr c, int r, boolean polarity |
+  exists(Expr rem, ConstantIntegerExpr c, int r, GuardValue polarity |
     result.isEquality(rem, c, polarity) and
     c.getIntValue() = r and
     rem = modExpr(v.getAUse(), mod) and
     (
-      testIsTrue = polarity and val = r
+      testIsTrue = polarity.asBooleanValue() and val = r
       or
-      testIsTrue = polarity.booleanNot() and
+      testIsTrue = polarity.asBooleanValue().booleanNot() and
       mod = 2 and
       val = 1 - r and
       (r = 0 or r = 1)
@@ -91,7 +91,7 @@ private predicate moduloGuardedRead(SsaVariable v, SsaReadPosition pos, int val,
   exists(Guard guard, boolean testIsTrue |
     pos.hasReadOfVar(v) and
     guard = moduloCheck(v, val, mod, testIsTrue) and
-    guardControlsSsaRead(guard, pos, testIsTrue)
+    guardControlsSsaRead(guard, pos, any(GuardValue gv | gv.asBooleanValue() = testIsTrue))
   )
 }
 

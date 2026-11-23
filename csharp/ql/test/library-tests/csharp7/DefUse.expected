@@ -52,14 +52,14 @@
 | CSharp7.cs:232:16:232:23 | Object o = ... | CSharp7.cs:244:18:244:18 | access to local variable o |
 | CSharp7.cs:232:16:232:23 | Object o = ... | CSharp7.cs:248:17:248:17 | access to local variable o |
 | CSharp7.cs:232:16:232:23 | Object o = ... | CSharp7.cs:254:27:254:27 | access to local variable o |
-| CSharp7.cs:233:18:233:23 | Int32 i1 | CSharp7.cs:233:28:233:29 | access to local variable i1 |
-| CSharp7.cs:233:18:233:23 | Int32 i1 | CSharp7.cs:235:38:235:39 | access to local variable i1 |
-| CSharp7.cs:237:23:237:31 | String s1 | CSharp7.cs:239:41:239:42 | access to local variable s1 |
-| CSharp7.cs:254:32:254:40 | String s4 | CSharp7.cs:255:40:255:41 | access to local variable s4 |
-| CSharp7.cs:257:18:257:23 | Int32 i2 | CSharp7.cs:257:30:257:31 | access to local variable i2 |
-| CSharp7.cs:257:18:257:23 | Int32 i2 | CSharp7.cs:258:47:258:48 | access to local variable i2 |
-| CSharp7.cs:260:18:260:23 | Int32 i3 | CSharp7.cs:261:42:261:43 | access to local variable i3 |
-| CSharp7.cs:263:18:263:26 | String s2 | CSharp7.cs:264:45:264:46 | access to local variable s2 |
+| CSharp7.cs:233:22:233:23 | Int32 i1 | CSharp7.cs:233:28:233:29 | access to local variable i1 |
+| CSharp7.cs:233:22:233:23 | Int32 i1 | CSharp7.cs:235:38:235:39 | access to local variable i1 |
+| CSharp7.cs:237:30:237:31 | String s1 | CSharp7.cs:239:41:239:42 | access to local variable s1 |
+| CSharp7.cs:254:39:254:40 | String s4 | CSharp7.cs:255:40:255:41 | access to local variable s4 |
+| CSharp7.cs:257:22:257:23 | Int32 i2 | CSharp7.cs:257:30:257:31 | access to local variable i2 |
+| CSharp7.cs:257:22:257:23 | Int32 i2 | CSharp7.cs:258:47:258:48 | access to local variable i2 |
+| CSharp7.cs:260:22:260:23 | Int32 i3 | CSharp7.cs:261:42:261:43 | access to local variable i3 |
+| CSharp7.cs:263:25:263:26 | String s2 | CSharp7.cs:264:45:264:46 | access to local variable s2 |
 | CSharp7.cs:282:13:282:48 | Dictionary<Int32,String> dict = ... | CSharp7.cs:283:20:283:23 | access to local variable dict |
 | CSharp7.cs:283:13:283:62 | IEnumerable<(Int32,String)> list = ... | CSharp7.cs:285:39:285:42 | access to local variable list |
 | CSharp7.cs:283:13:283:62 | IEnumerable<(Int32,String)> list = ... | CSharp7.cs:287:36:287:39 | access to local variable list |
@@ -69,7 +69,7 @@
 | CSharp7.cs:297:18:297:22 | Int32 x = ... | CSharp7.cs:297:25:297:25 | access to local variable x |
 | CSharp7.cs:297:18:297:22 | Int32 x = ... | CSharp7.cs:297:35:297:35 | access to local variable x |
 | CSharp7.cs:297:18:297:22 | Int32 x = ... | CSharp7.cs:297:49:297:49 | access to local variable x |
-| CSharp7.cs:297:40:297:44 | Int32 y | CSharp7.cs:299:31:299:31 | access to local variable y |
+| CSharp7.cs:297:44:297:44 | Int32 y | CSharp7.cs:299:31:299:31 | access to local variable y |
 | CSharp7.cs:297:47:297:49 | ++... | CSharp7.cs:297:25:297:25 | access to local variable x |
 | CSharp7.cs:297:47:297:49 | ++... | CSharp7.cs:297:35:297:35 | access to local variable x |
 | CSharp7.cs:297:47:297:49 | ++... | CSharp7.cs:297:49:297:49 | access to local variable x |

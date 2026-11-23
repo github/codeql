@@ -441,7 +441,7 @@ public class E
 
         if (i == 1 && s is not not null)
         {
-            s.ToString(); // $ Alert[cs/dereferenced-value-may-be-null] MISSING: Alert[cs/dereferenced-value-is-always-null]
+            s.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         }
 
         if (i == 2 && s is not null)

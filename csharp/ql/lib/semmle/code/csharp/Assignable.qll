@@ -270,7 +270,7 @@ module AssignableInternal {
     or
     def = TAddressOfDefinition(result)
     or
-    def = TPatternDefinition(result)
+    def = TPatternDefinition(any(LocalVariablePatternDecl decl | decl.getAccess() = result))
     or
     def = TAssignOperationDefinition(result)
     or
