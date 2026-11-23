@@ -1337,3 +1337,15 @@ void certain_def_uninitialized_instruction_test() {
     buffer[0] = source();
   }
 }
+
+void uninitialized_array_address() {
+  char buf[10];
+  char *p = buf;
+  sink(p); // $ SPURIOUS: ast,ir
+}
+
+void uninitialized_scalar_address() {
+  int x;
+  int *p = &x;
+  sink(p); // $ SPURIOUS: ast
+}
