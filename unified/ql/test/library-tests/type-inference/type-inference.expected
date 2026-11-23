@@ -283,6 +283,13 @@ inferCertainType
 | closures.swift:128:26:130:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
 | closures.swift:128:26:130:5 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple2 |
 | closures.swift:131:9:131:14 | result |  | {EXTERNAL LOCATION} | String |
+| closures.swift:135:9:135:16 | repeated |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:135:20:141:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:142:18:142:25 | repeated |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:147:9:147:14 | result |  | {EXTERNAL LOCATION} | String |
+| closures.swift:147:26:149:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:147:26:149:5 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple2 |
+| closures.swift:150:9:150:14 | result |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:2:12:2:12 | x |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:5:9:5:12 | self |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:24:12:24:12 | x |  | {EXTERNAL LOCATION} | Int |
@@ -2351,6 +2358,117 @@ inferType
 | closures.swift:131:5:131:5 | _ |  | {EXTERNAL LOCATION} | String |
 | closures.swift:131:5:131:14 | ... = ... |  | {EXTERNAL LOCATION} | String |
 | closures.swift:131:9:131:14 | result |  | {EXTERNAL LOCATION} | String |
+| closures.swift:134:50:144:1 | Block |  | {EXTERNAL LOCATION} | Tuple4 |
+| closures.swift:134:50:144:1 | Block | T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:134:50:144:1 | Block | T1 | {EXTERNAL LOCATION} | Int |
+| closures.swift:134:50:144:1 | Block | T2 | {EXTERNAL LOCATION} | String |
+| closures.swift:134:50:144:1 | Block | T3 | {EXTERNAL LOCATION} | String |
+| closures.swift:135:9:135:16 | repeated |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:135:9:135:16 | repeated | Args | {EXTERNAL LOCATION} | Tuple2 |
+| closures.swift:135:9:135:16 | repeated | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:135:9:135:16 | repeated | Args.T1 | {EXTERNAL LOCATION} | String |
+| closures.swift:135:9:135:16 | repeated | Return | {EXTERNAL LOCATION} | Tuple4 |
+| closures.swift:135:9:135:16 | repeated | Return.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:135:9:135:16 | repeated | Return.T1 | {EXTERNAL LOCATION} | Int |
+| closures.swift:135:9:135:16 | repeated | Return.T2 | {EXTERNAL LOCATION} | String |
+| closures.swift:135:9:135:16 | repeated | Return.T3 | {EXTERNAL LOCATION} | String |
+| closures.swift:135:20:141:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:135:20:141:5 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple2 |
+| closures.swift:135:20:141:5 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:135:20:141:5 | FunctionExpr | Args.T1 | {EXTERNAL LOCATION} | String |
+| closures.swift:135:20:141:5 | FunctionExpr | Return | {EXTERNAL LOCATION} | Tuple4 |
+| closures.swift:135:20:141:5 | FunctionExpr | Return.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:135:20:141:5 | FunctionExpr | Return.T1 | {EXTERNAL LOCATION} | Int |
+| closures.swift:135:20:141:5 | FunctionExpr | Return.T2 | {EXTERNAL LOCATION} | String |
+| closures.swift:135:20:141:5 | FunctionExpr | Return.T3 | {EXTERNAL LOCATION} | String |
+| closures.swift:136:9:140:27 | Block |  | {EXTERNAL LOCATION} | Tuple4 |
+| closures.swift:136:9:140:27 | Block | T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:136:9:140:27 | Block | T1 | {EXTERNAL LOCATION} | Int |
+| closures.swift:136:9:140:27 | Block | T2 | {EXTERNAL LOCATION} | String |
+| closures.swift:136:9:140:27 | Block | T3 | {EXTERNAL LOCATION} | String |
+| closures.swift:136:13:136:13 | a |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:136:17:136:18 | $0 |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:137:13:137:13 | b |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:137:17:137:18 | $0 |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:138:13:138:13 | c |  | {EXTERNAL LOCATION} | String |
+| closures.swift:138:17:138:18 | $1 |  | {EXTERNAL LOCATION} | String |
+| closures.swift:139:13:139:13 | d |  | {EXTERNAL LOCATION} | String |
+| closures.swift:139:17:139:18 | $1 |  | {EXTERNAL LOCATION} | String |
+| closures.swift:140:16:140:27 | TupleExpr |  | {EXTERNAL LOCATION} | Tuple4 |
+| closures.swift:140:16:140:27 | TupleExpr | T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:140:16:140:27 | TupleExpr | T1 | {EXTERNAL LOCATION} | Int |
+| closures.swift:140:16:140:27 | TupleExpr | T2 | {EXTERNAL LOCATION} | String |
+| closures.swift:140:16:140:27 | TupleExpr | T3 | {EXTERNAL LOCATION} | String |
+| closures.swift:140:17:140:17 | Argument |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:140:17:140:17 | a |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:140:20:140:20 | Argument |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:140:20:140:20 | b |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:140:23:140:23 | Argument |  | {EXTERNAL LOCATION} | String |
+| closures.swift:140:23:140:23 | c |  | {EXTERNAL LOCATION} | String |
+| closures.swift:140:26:140:26 | Argument |  | {EXTERNAL LOCATION} | String |
+| closures.swift:140:26:140:26 | d |  | {EXTERNAL LOCATION} | String |
+| closures.swift:142:9:142:14 | result |  | {EXTERNAL LOCATION} | Tuple4 |
+| closures.swift:142:9:142:14 | result | T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:142:9:142:14 | result | T1 | {EXTERNAL LOCATION} | Int |
+| closures.swift:142:9:142:14 | result | T2 | {EXTERNAL LOCATION} | String |
+| closures.swift:142:9:142:14 | result | T3 | {EXTERNAL LOCATION} | String |
+| closures.swift:142:18:142:25 | repeated |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:142:18:142:25 | repeated | Args | {EXTERNAL LOCATION} | Tuple2 |
+| closures.swift:142:18:142:25 | repeated | Args.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:142:18:142:25 | repeated | Args.T1 | {EXTERNAL LOCATION} | String |
+| closures.swift:142:18:142:25 | repeated | Return | {EXTERNAL LOCATION} | Tuple4 |
+| closures.swift:142:18:142:25 | repeated | Return.T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:142:18:142:25 | repeated | Return.T1 | {EXTERNAL LOCATION} | Int |
+| closures.swift:142:18:142:25 | repeated | Return.T2 | {EXTERNAL LOCATION} | String |
+| closures.swift:142:18:142:25 | repeated | Return.T3 | {EXTERNAL LOCATION} | String |
+| closures.swift:142:18:142:33 | repeated(...) |  | {EXTERNAL LOCATION} | Tuple4 |
+| closures.swift:142:18:142:33 | repeated(...) | T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:142:18:142:33 | repeated(...) | T1 | {EXTERNAL LOCATION} | Int |
+| closures.swift:142:18:142:33 | repeated(...) | T2 | {EXTERNAL LOCATION} | String |
+| closures.swift:142:18:142:33 | repeated(...) | T3 | {EXTERNAL LOCATION} | String |
+| closures.swift:142:27:142:27 | 1 |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:142:27:142:27 | Argument |  | {EXTERNAL LOCATION} | Int |
+| closures.swift:142:30:142:32 | "a" |  | {EXTERNAL LOCATION} | String |
+| closures.swift:142:30:142:32 | Argument |  | {EXTERNAL LOCATION} | String |
+| closures.swift:143:5:143:5 | _ |  | {EXTERNAL LOCATION} | Tuple4 |
+| closures.swift:143:5:143:5 | _ | T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:143:5:143:5 | _ | T1 | {EXTERNAL LOCATION} | Int |
+| closures.swift:143:5:143:5 | _ | T2 | {EXTERNAL LOCATION} | String |
+| closures.swift:143:5:143:5 | _ | T3 | {EXTERNAL LOCATION} | String |
+| closures.swift:143:5:143:14 | ... = ... |  | {EXTERNAL LOCATION} | Tuple4 |
+| closures.swift:143:5:143:14 | ... = ... | T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:143:5:143:14 | ... = ... | T1 | {EXTERNAL LOCATION} | Int |
+| closures.swift:143:5:143:14 | ... = ... | T2 | {EXTERNAL LOCATION} | String |
+| closures.swift:143:5:143:14 | ... = ... | T3 | {EXTERNAL LOCATION} | String |
+| closures.swift:143:9:143:14 | result |  | {EXTERNAL LOCATION} | Tuple4 |
+| closures.swift:143:9:143:14 | result | T0 | {EXTERNAL LOCATION} | Int |
+| closures.swift:143:9:143:14 | result | T1 | {EXTERNAL LOCATION} | Int |
+| closures.swift:143:9:143:14 | result | T2 | {EXTERNAL LOCATION} | String |
+| closures.swift:143:9:143:14 | result | T3 | {EXTERNAL LOCATION} | String |
+| closures.swift:146:52:151:1 | Block |  | {EXTERNAL LOCATION} | String |
+| closures.swift:147:9:147:14 | result |  | {EXTERNAL LOCATION} | String |
+| closures.swift:147:26:149:5 | FunctionExpr |  | {EXTERNAL LOCATION} | Function |
+| closures.swift:147:26:149:5 | FunctionExpr | Args | {EXTERNAL LOCATION} | Tuple2 |
+| closures.swift:147:26:149:5 | FunctionExpr | Args.T0 | {EXTERNAL LOCATION} | Bool |
+| closures.swift:147:26:149:5 | FunctionExpr | Args.T1 | {EXTERNAL LOCATION} | String |
+| closures.swift:147:26:149:5 | FunctionExpr | Return | {EXTERNAL LOCATION} | String |
+| closures.swift:147:26:149:35 | ...(...) |  | {EXTERNAL LOCATION} | String |
+| closures.swift:148:9:148:16 | TupleExpr |  | {EXTERNAL LOCATION} | Tuple2 |
+| closures.swift:148:9:148:16 | TupleExpr | T0 | {EXTERNAL LOCATION} | String |
+| closures.swift:148:9:148:16 | TupleExpr | T1 | {EXTERNAL LOCATION} | String |
+| closures.swift:148:9:148:18 | ... .1 |  | {EXTERNAL LOCATION} | String |
+| closures.swift:148:9:148:18 | Block |  | {EXTERNAL LOCATION} | String |
+| closures.swift:148:10:148:11 | $1 |  | {EXTERNAL LOCATION} | String |
+| closures.swift:148:10:148:11 | Argument |  | {EXTERNAL LOCATION} | String |
+| closures.swift:148:14:148:15 | $1 |  | {EXTERNAL LOCATION} | String |
+| closures.swift:148:14:148:15 | Argument |  | {EXTERNAL LOCATION} | String |
+| closures.swift:149:7:149:11 | Argument |  | {EXTERNAL LOCATION} | Bool |
+| closures.swift:149:7:149:11 | false |  | {EXTERNAL LOCATION} | Bool |
+| closures.swift:149:14:149:34 | Argument |  | {EXTERNAL LOCATION} | String |
+| closures.swift:149:14:149:34 | makeClosureArgument(...) |  | {EXTERNAL LOCATION} | String |
+| closures.swift:150:5:150:5 | _ |  | {EXTERNAL LOCATION} | String |
+| closures.swift:150:5:150:14 | ... = ... |  | {EXTERNAL LOCATION} | String |
+| closures.swift:150:9:150:14 | result |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:2:12:2:12 | x |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:4:24:6:5 | Block |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:5:9:5:12 | self |  | constructors.swift:1:1:7:1 | C1 |

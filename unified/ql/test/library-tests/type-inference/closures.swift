@@ -130,3 +130,22 @@ func testReturnContextShorthandParameter() {
     }(false, makeClosureArgument())  // $ target=Function.callAsFunction target=makeClosureArgument
     _ = result  // $ type=result:String
 }
+
+func testRepeatedContextualShorthandParameters() {
+    let repeated = {
+        let a = $0  // $ type=$0:Int
+        let b = $0  // $ type=$0:Int
+        let c = $1  // $ type=$1:String
+        let d = $1  // $ type=$1:String
+        return (a, b, c, d)  // $ type=a:Int type=b:Int type=c:String type=d:String
+    }
+    let result = repeated(1, "a")  // $ target=Function.callAsFunction
+    _ = result  // $ type=result@Tuple4<T0>:Int type=result@Tuple4<T1>:Int type=result@Tuple4<T2>:String type=result@Tuple4<T3>:String
+}
+
+func testRepeatedReturnContextShorthandParameter() {
+    let result: String = {
+        ($1, $1).1  // $ type=$1:String field=Tuple2.1
+    }(false, makeClosureArgument())  // $ target=Function.callAsFunction target=makeClosureArgument
+    _ = result  // $ type=result:String
+}
