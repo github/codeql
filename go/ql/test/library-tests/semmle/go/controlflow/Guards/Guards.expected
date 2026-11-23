@@ -62,12 +62,17 @@ valueControlsResult
 | guards.go:12:7:12:11 | value | negative | Upper bound -1 |
 | guards.go:12:7:12:11 | value | positive | Lower bound 0 |
 | guards.go:12:7:12:11 | value | zero | Lower bound 0 |
+| guards.go:12:7:12:15 | ...<... | negative | match |
 | guards.go:12:7:12:15 | ...<... | negative | true |
 | guards.go:12:7:12:15 | ...<... | positive | false |
+| guards.go:12:7:12:15 | ...<... | positive | non-match |
 | guards.go:12:7:12:15 | ...<... | zero | false |
+| guards.go:12:7:12:15 | ...<... | zero | non-match |
 | guards.go:14:7:14:11 | value | positive | not 0 |
 | guards.go:14:7:14:11 | value | zero | 0 |
 | guards.go:14:7:14:16 | ...==... | positive | false |
+| guards.go:14:7:14:16 | ...==... | positive | non-match |
+| guards.go:14:7:14:16 | ...==... | zero | match |
 | guards.go:14:7:14:16 | ...==... | zero | true |
 | guards.go:22:9:22:13 | value | tagged one or two | not 0 |
 | guards.go:22:9:22:13 | value | tagged other | not 0 |
@@ -77,14 +82,22 @@ valueControlsResult
 | guards.go:23:2:24:21 | case clause | tagged one or two | false |
 | guards.go:23:2:24:21 | case clause | tagged other | false |
 | guards.go:23:2:24:21 | case clause | tagged zero | true |
+| guards.go:23:7:23:7 | 0 | tagged one or two | non-match |
+| guards.go:23:7:23:7 | 0 | tagged other | non-match |
+| guards.go:23:7:23:7 | 0 | tagged zero | match |
 | guards.go:25:2:26:27 | case clause | tagged other | false |
+| guards.go:25:7:25:7 | 1 | tagged other | non-match |
+| guards.go:25:10:25:10 | 2 | tagged other | non-match |
 | guards.go:34:2:35:30 | case clause | tagged false boolean | true |
 | guards.go:34:7:34:11 | value | tagged false boolean | false |
+| guards.go:34:7:34:11 | value | tagged false boolean | match |
 | guards.go:38:2:39:29 | case clause | tagged true boolean | true |
+| guards.go:38:7:38:11 | value | tagged true boolean | match |
 | guards.go:38:7:38:11 | value | tagged true boolean | true |
 | guards.go:42:2:43:33 | case clause | tagged false comparison | true |
 | guards.go:42:7:42:12 | number | tagged false comparison | Lower bound 10 |
 | guards.go:42:7:42:17 | ...<... | tagged false comparison | false |
+| guards.go:42:7:42:17 | ...<... | tagged false comparison | match |
 | guards.go:48:5:48:5 | a | compound true | true |
 | guards.go:48:5:48:17 | ...&&... | compound false | false |
 | guards.go:48:5:48:17 | ...&&... | compound true | true |
@@ -142,12 +155,18 @@ valueControlsResult
 | guards.go:136:9:136:13 | value | non-default case | 0 |
 | guards.go:137:2:138:26 | case clause | default case | false |
 | guards.go:137:2:138:26 | case clause | non-default case | true |
+| guards.go:137:7:137:7 | 0 | default case | non-match |
+| guards.go:137:7:137:7 | 0 | non-default case | match |
 | guards.go:145:9:145:13 | value | case after default | 0 |
 | guards.go:145:9:145:13 | value | default before case | not 0 |
 | guards.go:148:2:149:28 | case clause | case after default | true |
 | guards.go:148:2:149:28 | case clause | default before case | false |
+| guards.go:148:7:148:7 | 0 | case after default | match |
+| guards.go:148:7:148:7 | 0 | default before case | non-match |
+| guards.go:162:7:162:11 | value | expressionless case | match |
 | guards.go:162:7:162:11 | value | expressionless case | true |
 | guards.go:162:7:162:11 | value | expressionless default | false |
+| guards.go:162:7:162:11 | value | expressionless default | non-match |
 | guards.go:183:5:183:21 | call to isNotNil | non-variadic wrapper | no exception |
 | guards.go:183:5:183:21 | call to isNotNil | non-variadic wrapper | true |
 | guards.go:183:14:183:20 | pointer | non-variadic wrapper | not null |
