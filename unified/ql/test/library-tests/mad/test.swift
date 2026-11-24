@@ -124,41 +124,41 @@ func testQualifiedConstructors(
     _ = String.Index.init(encodedOffset: encodedOffset)  // $ isSink=string-length
 
     _ = Realm.Configuration(
-        deleteRealmIfMigrationNeeded: false,
-        encryptionKey: encryptionKey,  // $ isSink=encryption-key
         fileURL: fileURL,  // $ isSink=path-injection
         inMemoryIdentifier: nil,
-        migrationBlock: nil,
-        objectTypes: nil,
+        syncConfiguration: nil,
+        encryptionKey: encryptionKey,  // $ isSink=encryption-key
         readOnly: false,
         schemaVersion: 0,
+        migrationBlock: nil,
+        deleteRealmIfMigrationNeeded: false,
         shouldCompactOnLaunch: nil,
-        syncConfiguration: nil)
+        objectTypes: nil)
 
     _ = Realm.Configuration.init(
-        deleteRealmIfMigrationNeeded: false,
-        encryptionKey: encryptionKey,  // $ isSink=encryption-key
         fileURL: fileURL,  // $ isSink=path-injection
         inMemoryIdentifier: nil,
-        migrationBlock: nil,
-        objectTypes: nil,
+        syncConfiguration: nil,
+        encryptionKey: encryptionKey,  // $ isSink=encryption-key
         readOnly: false,
         schemaVersion: 0,
+        migrationBlock: nil,
+        deleteRealmIfMigrationNeeded: false,
         shouldCompactOnLaunch: nil,
-        syncConfiguration: nil)
+        objectTypes: nil)
 
     _ = Realm.Configuration(
-        deleteRealmIfMigrationNeeded: false,
-        encryptionKey: encryptionKey,  // $ isSink=encryption-key
         fileURL: fileURL,  // $ isSink=path-injection
         inMemoryIdentifier: nil,
-        migrationBlock: nil,
-        objectTypes: nil,
+        syncConfiguration: nil,
+        encryptionKey: encryptionKey,  // $ isSink=encryption-key
         readOnly: false,
         schemaVersion: 0,
-        seedFilePath: seedFilePath,  // $ isSink=path-injection
+        migrationBlock: nil,
+        deleteRealmIfMigrationNeeded: false,
         shouldCompactOnLaunch: nil,
-        syncConfiguration: nil)
+        objectTypes: nil,
+        seedFilePath: seedFilePath)  // $ isSink=path-injection
 }
 
 class Connection {
@@ -217,4 +217,25 @@ func testShorthandTokens(obj: ShorthandTest, string: String) {
     obj.sinkArgs(
         string  // $ isSink=shorthand-sink
     )  // $ isSink=shorthand-sink
+}
+
+class SubscriptTest {
+    subscript(i: Int) -> String {
+        get { "" }
+        set {}
+    }
+}
+
+class SubscriptTestSub: SubscriptTest {
+    override subscript(i: Int) -> String {
+        get { "" }
+        set(v) {  // $ isSource=subscript-setter-source
+            _ = v
+        }
+    }
+}
+
+func testSubscripts(obj: SubscriptTest, string: String) {
+    _ = obj[0]  // $ isSink=subscript-getter-sink
+    obj[0] = string  // $ isSink=subscript-setter-sink
 }

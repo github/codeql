@@ -48,19 +48,19 @@ private class ExternalIntentRedirectionSanitizer extends IntentRedirectionSaniti
 private class DefaultIntentRedirectionSanitizer extends IntentRedirectionSanitizer {
   DefaultIntentRedirectionSanitizer() {
     this.getType() instanceof TypeIntent and
-    exists(MethodCall ma, Method m, Guard g, boolean branch |
+    exists(MethodCall ma, Method m, Guard g, GuardValue branch |
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeComponentName and
       m.hasName("getPackageName") and
       g.isEquality(ma, _, branch) and
-      g.controls(this.asExpr().getBasicBlock(), branch)
+      g.valueControls(this.asExpr().getBasicBlock(), branch)
     ) and
-    exists(MethodCall ma, Method m, Guard g, boolean branch |
+    exists(MethodCall ma, Method m, Guard g, GuardValue branch |
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeComponentName and
       m.hasName("getClassName") and
       g.isEquality(ma, _, branch) and
-      g.controls(this.asExpr().getBasicBlock(), branch)
+      g.valueControls(this.asExpr().getBasicBlock(), branch)
     )
   }
 }

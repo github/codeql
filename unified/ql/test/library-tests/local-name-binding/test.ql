@@ -20,6 +20,8 @@ module VariableAccessTest implements TestSig {
       else (
         // implicit declarations have their own tags
         v.getName() = "self" and tag = "implicit-self"
+        or
+        tag = "implicit-param" + v.getName().regexpCapture("\\$([0-9]+)", 1)
       )
     |
       keyValueCommentAt(filepath, line, tag, alias)

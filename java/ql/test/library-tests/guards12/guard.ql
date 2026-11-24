@@ -12,9 +12,9 @@ query predicate hasBranchEdge(
   )
 }
 
-from Guard g, BasicBlock bb, boolean branch, Expr e1, Expr e2, boolean pol
+from Guard g, BasicBlock bb, GuardValue branch, Expr e1, Expr e2, GuardValue eqval
 where
-  g.controls(bb, branch) and
-  g.isEquality(e1, e2, pol) and
+  g.valueControls(bb, branch) and
+  g.isEquality(e1, e2, eqval) and
   not e1 instanceof Literal
-select g, e1, e2, pol, branch, getFirstAstNodeOrSynth(bb)
+select g, e1, e2, eqval, branch, getFirstAstNodeOrSynth(bb)

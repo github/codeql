@@ -1,2 +1,7 @@
+| ObjectsEquals.java:7:3:7:31 | equals(...) | The equals method on arrays only considers object identity and ignores array contents. |
+| ObjectsEquals.java:8:3:8:34 | equals(...) | The equals method on arrays only considers object identity and ignores array contents. |
+| ObjectsEquals.java:9:3:9:34 | equals(...) | The equals method on arrays only considers object identity and ignores array contents. |
+| ObjectsEquals.java:10:3:10:37 | equals(...) | The equals method on arrays only considers object identity and ignores array contents. |
+| ObjectsEquals.java:11:3:11:41 | equals(...) | The equals method on arrays only considers object identity and ignores array contents. |
 | Test.java:6:10:6:37 | equals(...) | The equals method on arrays only considers object identity and ignores array contents. |
 | Test.java:20:3:20:20 | hashCode(...) | The hashCode method on arrays only considers object identity and ignores array contents. |

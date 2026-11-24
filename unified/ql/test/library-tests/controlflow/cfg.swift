@@ -154,8 +154,8 @@ func patterns(x : Int) -> Bool {
       return true
     case 42: // $ bbStep='42 : match -> Block(+1)' bbStep='42 : no-match -> SwitchCase(+3)'
       print("42!")
-      fallthrough // $ bbStep=' : successor -> var obj(+5)'
-    default:
+      fallthrough // $ bbStep='fallthrough : fallthrough -> Block(+2)'
+    default: // $ bbStep='SwitchCase : successor -> Block(+1)'
       if (x > 10) { return false } // $ bbStep='... > ... : false -> var obj(+3)' bbStep='... > ... : true -> Block(+0)'
   }
 

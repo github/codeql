@@ -11,6 +11,9 @@ private newtype TParameterEx =
   TImplicitReceiverParameter(Callable c) {
     exists(LocalVariable v | v.isImplicitReceiverParameter(c))
   } or
+  TImplicitFunctionExprParameter(FunctionExpr fe, int i) {
+    i = [0 .. fe.getNumberOfImplicitParameters() - 1]
+  } or
   TDefaultConstructorParameter(ConstructorDeclaration cd, int i, string name, boolean hasDefault) {
     cd.hasModifier("generated") and
     defaultConstructorParameter(cd, i, name, hasDefault)
@@ -37,6 +40,18 @@ abstract private class ParameterExImpl extends TParameterEx {
    */
   predicate isImplicitReceiverParameter(Callable c) { this = TImplicitReceiverParameter(c) }
 
+  /** Holds if this entity represents implicit parameter `i` of `fe`. */
+  predicate isImplicitFunctionExprParameter(FunctionExpr fe, int i) {
+    this = TImplicitFunctionExprParameter(fe, i)
+  }
+
+  /** Holds if this entity represents parameter `i` of `fe`, explicit or implicit. */
+  predicate isFunctionExprParameter(FunctionExpr fe, int i) {
+    this.asParameter() = fe.getParameter(i)
+    or
+    this.isImplicitFunctionExprParameter(fe, i)
+  }
+
   /**
    * Holds if this entity represents the `i`th parameter of the default
    * constructor `cd` with name `name`.
@@ -57,8 +72,13 @@ abstract private class ParameterExImpl extends TParameterEx {
     or
     this.isImplicitReceiverParameter(result)
     or
+    this.isImplicitFunctionExprParameter(result, _)
+    or
     this.isDefaultConstructorParameter(result, _, _)
   }
+
+  /** Gets the external name of this parameter, if any. */
+  abstract string getExternalName();
 
   /** Holds if this parameter has a default value. */
   abstract predicate hasDefault();
@@ -78,6 +98,8 @@ private class AstParameterEx extends ParameterExImpl, TAstParameter {
 
   AstParameterEx() { this = TAstParameter(p) }
 
+  override string getExternalName() { result = p.getExternalName() }
+
   override predicate hasDefault() { exists(p.getDefault()) }
 
   override AstNode getType() { result = p.getType() }
@@ -91,6 +113,8 @@ private class ImplicitReceiverParameterEx extends ParameterExImpl, TImplicitRece
   Callable c;
 
   ImplicitReceiverParameterEx() { this = TImplicitReceiverParameter(c) }
+
+  override string getExternalName() { none() }
 
   override predicate hasDefault() { none() }
 
@@ -106,6 +130,29 @@ private class ImplicitReceiverParameterEx extends ParameterExImpl, TImplicitRece
   override Location getLocation() { result = c.getLocation() }
 }
 
+/**
+ * An implicit parameter of a function expression inferred from usage of
+ * implicit parameters inside its body.
+ */
+private class ImplicitFunctionExprParameterEx extends ParameterExImpl,
+  TImplicitFunctionExprParameter
+{
+  FunctionExpr fe;
+  int i;
+
+  ImplicitFunctionExprParameterEx() { this = TImplicitFunctionExprParameter(fe, i) }
+
+  override string getExternalName() { none() }
+
+  override predicate hasDefault() { none() }
+
+  override AstNode getType() { none() }
+
+  override string toString() { result = "implicit parameter " + i }
+
+  override Location getLocation() { result = fe.getLocation() }
+}
+
 private class DefaultConstructorParameterEx extends ParameterExImpl, TDefaultConstructorParameter {
   ConstructorDeclaration cd;
   int i;
@@ -115,6 +162,8 @@ private class DefaultConstructorParameterEx extends ParameterExImpl, TDefaultCon
   DefaultConstructorParameterEx() { this = TDefaultConstructorParameter(cd, i, name, hasDefault) }
 
   override AstNode getType() { defaultConstructorParameterType(cd, i, result) }
+
+  override string getExternalName() { result = name }
 
   override predicate hasDefault() { hasDefault = true }
 

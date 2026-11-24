@@ -7,6 +7,7 @@ module;
 private import unified
 private import unified as U
 private import codeql.namebinding.LocalNameBinding
+private import codeql.unified.internal.AstPlugin
 private import codeql.unified.internal.NameBindingPlugin
 private import codeql.unified.internal.StaticNameBinding
 
@@ -325,6 +326,9 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       scope = callable
     )
     or
+    isLocalVariable = true and
+    name = getImplicitFunctionExprParamName(scope, _)
+    or
     exists(ClassLikeDeclaration cls |
       isLocalVariable = false and
       name = any(NameBindingPlugin p).getStaticSelfName(cls) and
@@ -415,6 +419,9 @@ module Public {
      * Holds if this local variable represents an implicit receiver parameter of the given callable.
      */
     abstract predicate isImplicitReceiverParameter(Callable c);
+
+    /** Holds if this local variable represents implicit parameter `n` of `fe`. */
+    abstract predicate isImplicitFunctionExprParameter(FunctionExpr fe, int n);
   }
 
   private class ExplicitLocalVariable extends LocalVariableImpl {
@@ -438,6 +445,8 @@ module Public {
     override Callable getDeclaringCallable() { result = this.getABinding().getEnclosingCallable() }
 
     override predicate isImplicitReceiverParameter(Callable c) { none() }
+
+    override predicate isImplicitFunctionExprParameter(FunctionExpr fe, int n) { none() }
   }
 
   private class ImplicitLocalVariable extends LocalVariableImpl instanceof LocalNameBindingOutput::ImplicitLocal
@@ -461,6 +470,11 @@ module Public {
     override predicate isImplicitReceiverParameter(Callable c) {
       name = any(NameBindingPlugin p).getImplicitReceiverParameterName(scope) and
       scope = c
+    }
+
+    override predicate isImplicitFunctionExprParameter(FunctionExpr fe, int n) {
+      scope = fe and
+      name = getImplicitFunctionExprParamName(fe, n)
     }
   }
 

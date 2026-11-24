@@ -14,7 +14,6 @@
  * - Overloading (both arity based and type based)
  * - Indexing expressions
  * - Operations
- * - Closure short-hand parameters `$0`, `$1`, etc (extractor change?)
  */
 
 private import codeql.util.Unit
@@ -131,6 +130,8 @@ module Input3 implements InputSig3 {
     (exists(resolveAccessorAccess(_)) implies any())
     or
     (exists(resolveCallTarget(_)) implies any())
+    or
+    (exists(resolveSetterCallTarget(_)) implies any())
   }
 
   predicate inferTypeForDefaults = M3::inferType/2;
@@ -341,7 +342,12 @@ module Input3 implements InputSig3 {
     or
     exists(Parameter param |
       implicitParameterDecl(param, v) and
-      result = param.getType().getTypeAt(path)
+      (
+        result = param.getType().getTypeAt(path)
+        or
+        param.getParameterEx().isImplicitFunctionExprParameter(_, _) and
+        result = inferType(v.getAnAccess(), path)
+      )
     )
   }
 
@@ -393,6 +399,8 @@ module Input3 implements InputSig3 {
 
     ParameterEx getParameterEx() { result = p }
 
+    string getExternalName() { result = p.getExternalName() }
+
     override AstNode getPattern() { result = p.asParameter().getPattern() }
 
     override AstNode getInitializer() { none() }
@@ -420,6 +428,11 @@ module Input3 implements InputSig3 {
     exists(Unified::Callable c |
       p.getParameterEx().isImplicitReceiverParameter(c) and
       v.(LocalVariable).isImplicitReceiverParameter(c)
+    )
+    or
+    exists(FunctionExpr fe, int i |
+      p.getParameterEx().isImplicitFunctionExprParameter(fe, i) and
+      v.(LocalVariable).isImplicitFunctionExprParameter(fe, i)
     )
   }
 
@@ -475,12 +488,22 @@ module Input3 implements InputSig3 {
 
     Parameter getParameter(int i) {
       exists(ParameterEx param | param = result.getParameterEx() |
-        param.isImplicitReceiverParameter(c) and
-        i = 0
-        or
-        param.asParameter() = c.getParameter(i - 1)
-        or
-        param.isDefaultConstructorParameter(c, i, _)
+        if c = getFunctionInvoke(_)
+        then
+          param.isImplicitReceiverParameter(c) and
+          i = -1
+          or
+          param.asParameter() = c.getParameter(-i - 2)
+        else (
+          param.isImplicitReceiverParameter(c) and
+          i = 0
+          or
+          param.asParameter() = c.getParameter(i - 1)
+          or
+          param.isImplicitFunctionExprParameter(c, i - 1)
+          or
+          param.isDefaultConstructorParameter(c, i, _)
+        )
       )
     }
 
@@ -502,30 +525,65 @@ module Input3 implements InputSig3 {
     result = ce.getCallee().(MemberAccessExpr).getBase()
   }
 
+  abstract class Argument extends AstNode {
+    abstract Expr getValue();
+
+    abstract string getName();
+  }
+
+  private class SyntacticArgument extends Argument instanceof Unified::Argument {
+    override Expr getValue() { result = Unified::Argument.super.getValue() }
+
+    override string getName() { result = Unified::Argument.super.getName() }
+  }
+
+  private class CalleeArgument extends Argument {
+    CalleeArgument() { this = any(CallExpr ce).getCallee() }
+
+    override Expr getValue() { result = this }
+
+    override string getName() { none() }
+  }
+
+  private class ReceiverArgument extends Argument {
+    ReceiverArgument() { this = any(CalleeArgument ce).(MemberAccessExpr).getBase() }
+
+    override Expr getValue() { result = this }
+
+    override string getName() { none() }
+  }
+
+  private class SyntheticConstructorArgument extends Argument {
+    SyntheticConstructorArgument() { this = Construction::getSyntheticConstructionReceiver(_) }
+
+    override Expr getValue() { result = this }
+
+    override string getName() { none() }
+  }
+
   class Invocation extends Expr, CallExpr {
     Type getTypeQualifier(TypePath path) { result = getQualifierTypeMention(this).getTypeAt(path) }
 
     Type getTypeArgument(int i, TypePath path) { none() }
 
-    Expr getArgument(int i) {
+    Argument getArgument(int i) {
+      i = -1 and
+      result = CallExpr.super.getCallee()
+      or
       i = 0 and
       (
         result = Construction::getSyntheticConstructionReceiver(this)
         or
         not exists(Construction::getSyntheticConstructionReceiver(this)) and
-        exists(boolean isFunctionExprInvoke | exists(this.getTargetImpl(isFunctionExprInvoke)) |
-          if isFunctionExprInvoke = true
-          then result = CallExpr.super.getCallee()
-          else result = CallExpr.super.getCallee().(MemberAccessExpr).getBase()
-        )
+        result = CallExpr.super.getCallee().(MemberAccessExpr).getBase()
       )
       or
-      result = CallExpr.super.getArgument(i - 1).getValue()
+      result = CallExpr.super.getArgument(i - 1)
     }
 
     /** Gets the special `invoke` target when the callee evaluates to a function expression. */
     pragma[nomagic]
-    Unified::Callable getInvokeTarget(Type t) {
+    private Unified::Callable getInvokeTarget(Type t) {
       t = inferType(this.getCallee()) and
       result = getFunctionInvoke(t)
     }
@@ -550,30 +608,54 @@ module Input3 implements InputSig3 {
       )
     }
 
-    Callable getTargetImpl(boolean isFunctionExprInvoke) {
+    Callable getTarget() {
       (
         // mutual recursion; call with explicit receiver: `obj.foo(42)`
-        result = lookupInstanceMember(this.getCallee()) and
-        isFunctionExprInvoke = false
+        result = lookupInstanceMember(this.getCallee())
         or
         // mutual recursion; call to a function expression: `callback(42)`
-        result.asCallable() = this.getInvokeTarget(_) and
-        isFunctionExprInvoke = true
+        result.asCallable() = this.getInvokeTarget(_)
         or
         // no mutual recursion; can be resolved directly with static name binding
-        result = this.getTargetViaStaticNameBinding() and
-        isFunctionExprInvoke = false
+        result = this.getTargetViaStaticNameBinding()
       ) and
       // handled as a field access
-      not result.asCallable() instanceof AccessorDeclaration
+      not result.asCallable() instanceof AccessorDeclaration and
+      // only invoked from a setter position; see `resolveSetterCallTarget`
+      not result.asCallable() instanceof SetterMethodDeclaration
     }
 
     Callable getTarget(InvocationResolutionContext c) {
-      result = this.getTargetImpl(_) and
+      result = this.getTarget() and
       exists(c)
     }
 
+    /**
+     * Gets the setter method invoked when this call appears as an assignment target, or is
+     * otherwise updated in place.
+     */
+    Callable getSetterTarget() {
+      result = [lookupInstanceMember(this.getCallee()), this.getTargetViaStaticNameBinding()] and
+      result.asCallable() instanceof SetterMethodDeclaration
+    }
+
     Callable getATargetForTypeQualifierMatching() { result = this.getTargetViaStaticNameBinding() }
+  }
+
+  /**
+   * Holds if argument `arg` of `ce` should be mapped to position `i` with type
+   * path prefix `prefix`, whenever the target is the `invoke` function.
+   *
+   * We use a unique negative index for `i` which will only be matched when the
+   * target is in fact the `invoke` function.
+   */
+  pragma[nomagic]
+  private predicate inferInvokeArgument(CallExpr ce, int i, TypePath prefix, Unified::Argument arg) {
+    exists(int j |
+      functionInvokeSignature(inferType(ce.getCallee()), ce.getNumberOfArguments(), j, -i - 2,
+        prefix) and
+      arg = ce.getArgument(j)
+    )
   }
 
   Type inferInvocationArgumentType(
@@ -581,31 +663,32 @@ module Input3 implements InputSig3 {
   ) {
     exists(ctx) and
     (
-      // A call to a function expression
-      exists(Type t | exists(invocation.getInvokeTarget(t)) |
-        i = 0 and
-        result = inferType(invocation.(CallExpr).getCallee(), path)
-        or
-        exists(TypePath prefix, TypePath suffix, int j |
-          functionInvokeSignature(t, invocation.getNumberOfArguments(), j, i, prefix) and
-          result = inferType(invocation.getArgument(j + 1), suffix) and
-          path = prefix.append(suffix)
-        )
-      )
+      i = 0 and
+      result = getImplicitReceiverType(invocation.getCallee(), path)
       or
-      // A non-function-expression call
-      exists(invocation.getTargetImpl(false)) and
-      (
-        result = inferType(invocation.getArgument(i), path)
-        or
-        i = 0 and
-        result = getImplicitReceiverType(invocation.getCallee(), path)
+      result = inferType(invocation.getArgument(i), path)
+      or
+      // A call to a function expression
+      exists(TypePath prefix, TypePath suffix, Unified::Argument arg |
+        inferInvokeArgument(invocation, i, prefix, arg) and
+        result = inferType(arg, suffix) and
+        path = prefix.append(suffix)
       )
     )
   }
 
-  Type inferInvocationArgumentTypeContextual(Expr arg, TypePath path) {
-    result = M3::inferInvocationArgumentTypeContextualDefault(_, _, _, arg, path)
+  Type inferInvocationArgumentTypeContextual(Argument arg, TypePath path) {
+    exists(Invocation invocation, int pos, TypePath path0 |
+      result = M3::inferInvocationArgumentTypeContextualDefault(invocation, _, pos, path0)
+    |
+      arg = invocation.getArgument(pos) and
+      path = path0
+      or
+      exists(TypePath prefix |
+        inferInvokeArgument(invocation, pos, prefix, arg) and
+        path0 = prefix.appendInverse(path)
+      )
+    )
   }
 
   Type inferInvocationType(Invocation invocation, TypePath path) {
@@ -621,7 +704,7 @@ module Input3 implements InputSig3 {
   }
 
   class ClosureParameterPseudoType extends T::ClosureParameterPseudoType {
-    Parameter getParameter() { result.getParameterEx().asParameter() = this.getParam() }
+    Parameter getParameter() { result.getParameterEx() = this.getParam() }
   }
 
   pragma[nomagic]
@@ -630,7 +713,7 @@ module Input3 implements InputSig3 {
   pragma[nomagic]
   TypePath getClosureParameterTypePath(Parameter p) {
     exists(FunctionExpr fe, Type t, int i |
-      p.getParameterEx().asParameter() = fe.getParameter(i) and
+      p.getParameterEx().isFunctionExprParameter(fe, i) and
       t = getFunctionExprType(fe) and
       result = getFunctionExprParameterTypePath(t, fe.getNumberOfParameters(), i)
     )
@@ -657,7 +740,7 @@ module Input3 implements InputSig3 {
     n2 =
       any(TupleExpr te |
         exists(int i, int arity, TupleType tt |
-          n1 = te.getElement(i).getValue() and
+          n1 = te.getElement(i) and
           arity = te.getNumberOfElements() and
           tt.getArity() = arity and
           prefix1.isEmpty() and
@@ -711,10 +794,10 @@ module Input3 implements InputSig3 {
     }
 
     private predicate constructionReceiver(
-      Invocation i, Callable constructor, Expr receiver, TypePath enumPrefixPath
+      Invocation i, Callable constructor, Argument receiver, TypePath enumPrefixPath
     ) {
       exists(ConstructorDeclaration cd |
-        constructor = i.getTargetImpl(_) and
+        constructor = i.getTarget() and
         cd = constructor.asCallable() and
         receiver = i.getArgument(0)
       |
@@ -761,7 +844,7 @@ module Input3 implements InputSig3 {
 
     private predicate needsContextualTyping(Invocation i, TypePath path) {
       exists(
-        Callable constructor, Expr receiver, TypePath enumPrefixPath,
+        Callable constructor, Argument receiver, TypePath enumPrefixPath,
         ClassLikeDeclarationType receiverType, TypePath path0
       |
         constructionReceiver(i, constructor, receiver, enumPrefixPath) and
@@ -949,7 +1032,20 @@ AccessorDeclaration resolveAccessorAccess(Expr access) {
 cached
 Callable resolveCallTarget(CallExpr ce) {
   CachedStage::ref() and
-  result = ce.(Input3::Invocation).getTargetImpl(_).asCallable()
+  result = ce.(Input3::Invocation).getTarget().asCallable()
+}
+
+/**
+ * Gets the setter invoked when the given call expression appears as an assignment target,
+ * or is otherwise updated in place.
+ *
+ * For a call `x.foo(...)` this is the setter method named `foo` of the receiver type,
+ * such as the setter of a subscript for a Swift subscript call `x[i]`.
+ */
+cached
+SetterMethodDeclaration resolveSetterCallTarget(CallExpr ce) {
+  CachedStage::ref() and
+  result = ce.(Input3::Invocation).getSetterTarget().asCallable()
 }
 
 private predicate typeTestAstNodeRepr(AstNode n, string repr) {

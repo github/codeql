@@ -18,13 +18,13 @@ isSink
 | test.swift:114:5:114:20 | ... .encryptionKey | encryption-key |
 | test.swift:123:37:123:49 | encodedOffset | string-length |
 | test.swift:124:42:124:54 | encodedOffset | string-length |
-| test.swift:128:24:128:36 | encryptionKey | encryption-key |
-| test.swift:129:18:129:24 | fileURL | path-injection |
-| test.swift:140:24:140:36 | encryptionKey | encryption-key |
-| test.swift:141:18:141:24 | fileURL | path-injection |
-| test.swift:152:24:152:36 | encryptionKey | encryption-key |
-| test.swift:153:18:153:24 | fileURL | path-injection |
-| test.swift:159:23:159:34 | seedFilePath | path-injection |
+| test.swift:127:18:127:24 | fileURL | path-injection |
+| test.swift:130:24:130:36 | encryptionKey | encryption-key |
+| test.swift:139:18:139:24 | fileURL | path-injection |
+| test.swift:142:24:142:36 | encryptionKey | encryption-key |
+| test.swift:151:18:151:24 | fileURL | path-injection |
+| test.swift:154:24:154:36 | encryptionKey | encryption-key |
+| test.swift:161:23:161:34 | seedFilePath | path-injection |
 | test.swift:171:29:171:34 | string | path-injection |
 | test.swift:183:9:183:18 | launchPath | command-injection |
 | test.swift:184:9:184:17 | arguments | command-injection |
@@ -32,6 +32,8 @@ isSink
 | test.swift:191:9:191:18 | launchPath | command-injection |
 | test.swift:217:5:219:5 | [self arg] ... .sinkArgs(...) | shorthand-sink |
 | test.swift:218:9:218:14 | string | shorthand-sink |
+| test.swift:239:13:239:13 | 0 | subscript-getter-sink |
+| test.swift:240:5:240:10 | ... .subscript(...) | subscript-setter-sink |
 isSource
 | test.swift:4:5:4:27 | String(...) | remote |
 | test.swift:5:5:5:44 | String(...) | remote |
@@ -48,3 +50,4 @@ isSource
 | test.swift:177:13:177:21 | ... .text | local |
 | test.swift:209:5:213:5 | [self param] func ShorthandTestSub.sourceParams | shorthand-source |
 | test.swift:210:11:210:11 | x | shorthand-source |
+| test.swift:232:13:232:13 | v | subscript-setter-source |
