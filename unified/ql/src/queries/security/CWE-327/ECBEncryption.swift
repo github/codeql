@@ -9,10 +9,9 @@ func encrypt(key : Key, padding : Padding) {
 	_ = try Blowfish(key: key, blockMode: blockMode, padding: padding)
 
 	// GOOD: ECB is not used for block mode
-	let aesBlockMode = CBC(iv: AES.randomIV(AES.blockSize))
 	let blowfishBlockMode = CBC(iv: Blowfish.randomIV(Blowfish.blockSize))
-	_ = try AES(key: key, blockMode: aesBlockMode, padding: padding)
-	_ = try AES(key: key, blockMode: aesBlockMode)
+	_ = try AES(key: key, blockMode: CBC(iv: AES.randomIV(AES.blockSize)), padding: padding)
+	_ = try AES(key: key, blockMode: CBC(iv: AES.randomIV(AES.blockSize)))
 	_ = try Blowfish(key: key, blockMode: blowfishBlockMode, padding: padding)
 
 	// ...
