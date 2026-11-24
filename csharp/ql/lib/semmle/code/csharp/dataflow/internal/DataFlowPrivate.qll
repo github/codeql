@@ -18,6 +18,7 @@ private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Razor
 private import semmle.code.csharp.frameworks.system.threading.Tasks
+private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.internal.Location
 private import codeql.util.Unit
 private import codeql.util.Boolean
@@ -602,10 +603,77 @@ module LocalFlow {
     not v.getAssignable().(Modifiable).isStatic()
   }
 
+  /**
+   * Holds if there is a data flow step from the output of a Deconstruct method
+   * to the corresponding target in the tuple assignment.
+   *
+   * Example: `var (x, y) = r;` where `r` is of type `R` with a `Deconstruct` method.
+   * In this example, `x` and `y` are the targets receiving the values from the out parameters in the synthetic
+   * call `r.Deconstruct(out var x0, out var y0)` (that this `x0` -> `x` and `y0` -> `y`).
+   */
+  private predicate implicitDeconstructCallStep(
+    ImplicitDeconstructMethodCallParameterNode output, AssignableDefinitionNode target
+  ) {
+    // Flow from x0 -> x, y0 -> y in the synthetic Deconstruct call r.Deconstruct(out var x0, out var y0) in
+    // the cases below.
+    exists(TupleExpr tgt, Expr item |
+      tgt = output.getDeconstructCallNode().getTarget() and
+      item = tgt.getArgument(output.getPosition())
+    |
+      // var (x, y) = r, (var x, var y) = r, (x, y) = r
+      exists(AssignableDefinitions::TupleAssignmentDefinition def, AssignExpr assignment |
+        assignment = def.getAssignment() and
+        assignment.getRightOperand() = output.getDeconstructCallNode().getSource() and
+        tgt = assignment.getLeftOperand() and
+        def.getLeaf() = item and
+        target.getDefinition() = def
+      )
+      or
+      // r is var (x, y)
+      exists(AssignableDefinitions::PatternDefinition def, IsExpr ie |
+        ie.getExpr() = output.getDeconstructCallNode().getSource() and
+        tgt = ie.getPattern() and
+        item = def.getDeclaration() and
+        target.getDefinition() = def
+      )
+      or
+      // switch(r) case var (x, y)
+      exists(AssignableDefinitions::PatternDefinition def, Switch sw |
+        sw.getExpr() = output.getDeconstructCallNode().getSource() and
+        tgt = sw.getACase().getPattern() and
+        item = def.getDeclaration() and
+        target.getDefinition() = def
+      )
+    )
+    or
+    exists(RecursivePatternExpr tgt, Expr item |
+      tgt = output.getDeconstructCallNode().getTarget() and
+      item = tgt.getPositionalPatterns().getPattern(output.getPosition())
+    |
+      // r is (var x, var y)
+      exists(AssignableDefinitions::PatternDefinition def, IsExpr ie |
+        ie.getExpr() = output.getDeconstructCallNode().getSource() and
+        tgt = ie.getPattern() and
+        item = def.getDeclaration() and
+        target.getDefinition() = def
+      )
+      or
+      // switch(r) case (var x, var y)
+      exists(AssignableDefinitions::PatternDefinition def, Switch sw |
+        sw.getExpr() = output.getDeconstructCallNode().getSource() and
+        tgt = sw.getACase().getPattern() and
+        item = def.getDeclaration() and
+        target.getDefinition() = def
+      )
+    )
+  }
+
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     localExprStep(nodeFrom.asExpr(), nodeTo.asExpr())
     or
     defAssigns(nodeFrom, nodeTo)
+    or
+    implicitDeconstructCallStep(nodeFrom, nodeTo)
     or
     ThisFlow::adjacentThisRefs(nodeFrom, nodeTo) and
     nodeFrom != nodeTo
@@ -989,6 +1057,12 @@ private class CallableUsedInSource extends Callable {
     |
       this = target.getUnboundDeclaration()
     )
+    or
+    // Should generate nodes for deconstruct methods used in synthetic deconstruct calls.
+    exists(DeconstructMethod deconstruct |
+      implicitDeconstructCall(_, deconstruct, _) and
+      this = deconstruct.getUnboundDeclaration()
+    )
   }
 }
 
@@ -1055,6 +1129,15 @@ private module Cached {
     TYieldReturnNode(ControlFlowNodes::ElementNode cfn) {
       any(Callable c).canYieldReturn(cfn.asExpr())
     } or
+    TImplicitDeconstructMethodCallNode(ControlFlowNodes::ElementNode cfn) {
+      implicitDeconstructCall(cfn.asExpr(), _, _)
+    } or
+    TImplicitDeconstructMethodCallParameterNode(ControlFlowNodes::ElementNode cfn, Parameter p) {
+      exists(DeconstructMethod deconstruct |
+        implicitDeconstructCall(cfn.asExpr(), deconstruct, _) and
+        deconstruct.getAParameter() = p
+      )
+    } or
     TAsyncReturnNode(ControlFlowNodes::ElementNode cfn) {
       any(Callable c | c.(Modifiable).isAsync()).canReturn(cfn.asExpr())
     } or
@@ -1089,6 +1172,8 @@ private module Cached {
           or
           arrayRead(e, read)
         )
+        or
+        implicitDeconstructCall(cfn.getExpr(), _, _)
       )
       or
       lambdaCallExpr(_, _, cfn)
@@ -1494,6 +1579,23 @@ private module ArgumentNodes {
     }
   }
 
+  /**
+   * A data-flow node that represents an argument in an implicit deconstruct call.
+   *
+   * Example: `var (x, y) = r;` where `r` is of type `R` with a `Deconstruct` method.
+   * In this case we synthesize a call to the deconstruct method `r.Deconstruct(out var x0, out var y0)`
+   * where `r` is the qualifier argument to the call.
+   */
+  class ImplicitDeconstructMethodCallArgumentNode extends ArgumentNodeImpl, ExprNode {
+    ImplicitDeconstructMethodCallArgumentNode() { implicitDeconstructCall(this.getExpr(), _, _) }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call instanceof ImplicitDeconstructCallDataFlowCall and
+      pos.isQualifier() and
+      call.getExpr() = this.getExpr()
+    }
+  }
+
   /** A data-flow node that represents a delegate passed into itself. */
   class DelegateSelfArgumentNode extends ArgumentNodeImpl, ExprNode {
     private DataFlowCall call_;
@@ -1776,6 +1878,15 @@ private module OutNodes {
 
     override DataFlowCall getCall(ReturnKind kind) { result = call and kind = kind_ }
   }
+
+  private class ImplicitDeconstructMethodCallOutNode extends ImplicitDeconstructMethodCallParameterNode,
+    OutNode
+  {
+    override DataFlowCall getCall(ReturnKind kind) {
+      result.getControlFlowNode() = this.getControlFlowNode() and
+      kind.(OutReturnKind).getPosition() = this.getPosition()
+    }
+  }
 }
 
 import OutNodes
@@ -1803,6 +1914,146 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
   override Location getLocationImpl() { result = this.getSummaryNode().getLocation() }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
+}
+
+/**
+ * Holds, if there is an implicit call to the to the `deconstruct` method at `source`, where `target` is the expression
+ * receiving the deconstructed values, and `tt` is the tuple type of the `target` expression.
+ * The method may be declared on the source type or inherited from a base class.
+ *
+ * Example: `var (x, y) = r;` where `r` is of type `R` with a `Deconstruct` method.
+ */
+predicate implicitDeconstructCall(Expr source, DeconstructMethod deconstruct, Expr target) {
+  exists(ValueOrRefType type, TupleType tt |
+    type = source.getType() and
+    tt = target.getType() and
+    type.hasMethod(deconstruct) and
+    deconstruct.getNumberOfParameters() = tt.getArity() and
+    forall(int i | i = [0 .. deconstruct.getNumberOfParameters() - 1] |
+      tt.getElementType(i) = deconstruct.getParameter(i).getType()
+    )
+  |
+    // var (x, y) = r, (var x, var y) = r, (x, y) = r
+    exists(Assignment a |
+      a.getRightOperand() = source and
+      a.getLeftOperand() = target and
+      target.getType() = tt
+    )
+    or
+    // r is var (x, y)
+    exists(IsExpr ie |
+      ie.getExpr() = source and
+      target = ie.getPattern() and
+      target.getType() = tt and
+      target instanceof TuplePatternExpr
+    )
+    or
+    // switch(r) case var (x, y)
+    exists(Switch sw |
+      source = sw.getExpr() and
+      target = sw.getACase().getPattern() and
+      target.getType() = tt and
+      target instanceof TuplePatternExpr
+    )
+  )
+  or
+  target =
+    any(RecursivePatternExpr rpe |
+      source.getType().(ValueOrRefType).hasMethod(deconstruct) and
+      deconstruct.getNumberOfParameters() = count(rpe.getPositionalPatterns().getPattern(_)) and
+      forall(int i | i = [0 .. deconstruct.getNumberOfParameters() - 1] |
+        rpe.getPositionalPatterns().getPattern(i).getType() = deconstruct.getParameter(i).getType()
+      ) and
+      (
+        // r is (var x, var y)
+        exists(IsExpr ie |
+          source = ie.getExpr() and
+          rpe = ie.getPattern()
+        )
+        or
+        // switch(r) case (var x, var y)
+        exists(Switch sw |
+          source = sw.getExpr() and
+          rpe = sw.getACase().getPattern()
+        )
+      )
+    )
+}
+
+/**
+ * A `deconstruct call` node. A node is synthesized in order to model implicit deconstruction calls.
+ *
+ * Example: `var (x, y) = r;` where `r` is of type `R` with a `Deconstruct` method.
+ * In this case a call to the `Deconstruct` method is synthesized `r.Deconstruct(out x, out y)`.
+ */
+class ImplicitDeconstructMethodCallNode extends NodeImpl, TImplicitDeconstructMethodCallNode {
+  private Expr source;
+  private Expr target;
+  private ControlFlowNodes::ElementNode cfn;
+
+  ImplicitDeconstructMethodCallNode() {
+    this = TImplicitDeconstructMethodCallNode(cfn) and
+    source = cfn.asExpr() and
+    implicitDeconstructCall(source, _, target)
+  }
+
+  Expr getSource() { result = source }
+
+  Expr getTarget() { result = target }
+
+  override DataFlowCallable getEnclosingCallableImpl() { result.getAControlFlowNode() = cfn }
+
+  override Type getTypeImpl() { result = target.getType() }
+
+  override ControlFlowNode getControlFlowNodeImpl() { result = cfn }
+
+  override Location getLocationImpl() { result = source.getLocation() }
+
+  override string toStringImpl() { result = source.toString() }
+}
+
+/**
+ * A class of parameter nodes representing the out parameters of an implicit deconstruct method call.
+ * Example: `var (x, y) = r;` where `r` is of type `R` with a `Deconstruct` method.
+ *
+ * In this case a call to the `Deconstruct` method is synthesized `r.Deconstruct(out x, out y)`.
+ * Each of the out parameters (`x` and `y` in the example) is represented by an `ImplicitDeconstructMethodCallParameterNode`.
+ */
+private class ImplicitDeconstructMethodCallParameterNode extends NodeImpl,
+  TImplicitDeconstructMethodCallParameterNode
+{
+  private ControlFlowNodes::ElementNode cfn;
+  private Expr expr;
+  private Parameter parameter;
+
+  ImplicitDeconstructMethodCallParameterNode() {
+    this = TImplicitDeconstructMethodCallParameterNode(cfn, parameter) and
+    expr = cfn.asExpr() and
+    exists(DeconstructMethod deconstruct |
+      implicitDeconstructCall(expr, deconstruct, _) and
+      parameter = deconstruct.getAParameter()
+    )
+  }
+
+  ImplicitDeconstructMethodCallNode getDeconstructCallNode() {
+    result = TImplicitDeconstructMethodCallNode(cfn)
+  }
+
+  Parameter getParameter() { result = parameter }
+
+  int getPosition() { parameter.getPosition() = result }
+
+  override DataFlowCallable getEnclosingCallableImpl() { result.getAControlFlowNode() = cfn }
+
+  override Type getTypeImpl() { result = parameter.getType() }
+
+  override ControlFlowNode getControlFlowNodeImpl() { result = cfn }
+
+  override Location getLocationImpl() { result = expr.getLocation() }
+
+  override string toStringImpl() {
+    result = "[deconstruct parameter " + parameter.getPosition() + "] " + expr.toString()
+  }
 }
 
 /**
