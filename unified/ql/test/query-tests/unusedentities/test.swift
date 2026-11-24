@@ -21,7 +21,7 @@ class C {
     func x() -> Int? { return nil }
 
     func t3() -> Bool {
-        guard let x = x() else { return false } // $ SPURIOUS: Alert[unified/unused-variable]
+        guard let x = x() else { return false }
         let succeeded = true
         guard succeeded else { return false }
         print(x)
