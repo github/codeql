@@ -446,11 +446,11 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     let _ = DatabaseQueue(path: "", configuration: Configuration())  // Safe
     let _ = DatabaseSnapshotPool(path: remoteString, configuration: Configuration())  // $ Alert
     let _ = DatabaseSnapshotPool(path: "", configuration: Configuration())  // Safe
-    let _ = SerializedDatabase(path: remoteString, defaultLabel: "")  // $ MISSING: Alert
+    let _ = SerializedDatabase(path: remoteString, defaultLabel: "")  // $ Alert
     let _ = SerializedDatabase(path: "", defaultLabel: "")  // Safe
-    let _ = SerializedDatabase(path: remoteString, defaultLabel: "", purpose: nil)  // $ MISSING: Alert
+    let _ = SerializedDatabase(path: remoteString, defaultLabel: "", purpose: nil)  // $ Alert
     let _ = SerializedDatabase(path: "", defaultLabel: "", purpose: nil)  // Safe
-    let _ = SerializedDatabase(path: remoteString, configuration: Configuration(), defaultLabel: "")  // $ MISSING: Alert
+    let _ = SerializedDatabase(path: remoteString, configuration: Configuration(), defaultLabel: "")  // $ Alert
     let _ = SerializedDatabase(path: "", configuration: Configuration(), defaultLabel: "")  // Safe
     let _ = SerializedDatabase(
         path: remoteString, configuration: Configuration(), defaultLabel: "", purpose: nil)  // $ Alert
@@ -460,9 +460,9 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     // Realm
 
     _ = Realm.Configuration(fileURL: safeUrl)  // GOOD
-    _ = Realm.Configuration(fileURL: remoteUrl)  // $ MISSING: Alert
+    _ = Realm.Configuration(fileURL: remoteUrl)  // $ Alert
     _ = Realm.Configuration(seedFilePath: safeUrl)  // GOOD
-    _ = Realm.Configuration(seedFilePath: remoteUrl)  // $ MISSING: Alert
+    _ = Realm.Configuration(seedFilePath: remoteUrl)  // $ Alert
 
     var config = Realm.Configuration()  // GOOD
     config.fileURL = safeUrl  // GOOD
@@ -494,10 +494,10 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
 
     try! _ = Connection()
     try! _ = Connection(Connection.Location.uri("myFile.sqlite3"))  // GOOD
-    try! _ = Connection(Connection.Location.uri(remoteString))  // $ MISSING: Alert
+    try! _ = Connection(Connection.Location.uri(remoteString))  // $ Alert
     try! _ = Connection(Connection.Location.uri(remoteString, parameters: []))  // $ Alert
     try! _ = Connection("myFile.sqlite3")  // GOOD
-    try! _ = Connection(remoteString)  // $ MISSING: Alert
+    try! _ = Connection(remoteString)  // $ Alert
     let remoteData2 = Data(contentsOf: URL(string: "http://example.com/")!)  // $ Source
     nsData.write(toFile: remoteData2, options: [])  // $ Alert
 }
