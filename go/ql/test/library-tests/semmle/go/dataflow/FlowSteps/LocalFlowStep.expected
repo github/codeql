@@ -34,7 +34,6 @@
 | main.go:26:11:26:11 | x | main.go:26:2:26:17 | extract:0 ... := ... |
 | main.go:38:2:38:20 | SSA def(s) | main.go:39:15:39:15 | s |
 | main.go:38:7:38:20 | slice literal | main.go:38:2:38:20 | SSA def(s) |
-| main.go:38:7:38:20 | slice literal [postupdate] | main.go:38:2:38:20 | SSA def(s) |
 | main.go:39:2:39:25 | SSA def(s1) | main.go:40:18:40:19 | s1 |
 | main.go:39:8:39:25 | call to append | main.go:39:2:39:25 | SSA def(s1) |
 | main.go:39:15:39:15 | s | main.go:40:15:40:15 | s |

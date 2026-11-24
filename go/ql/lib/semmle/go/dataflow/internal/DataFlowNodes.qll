@@ -68,14 +68,8 @@ module Private {
       result.(PostUpdateNode).getPreUpdateNode().asInstruction() = insn
     )
     or
-    exists(IR::Instruction rhs |
-      rhs =
-        n.(SsaFlow::WriteDefSourceNode).getDefinition().(SsaExplicitWrite).getDefinition().getRhs()
-    |
-      result.asInstruction() = rhs
-      or
-      result.(PostUpdateNode).getPreUpdateNode().asInstruction() = rhs
-    )
+    result.asInstruction() =
+      n.(SsaFlow::WriteDefSourceNode).getDefinition().(SsaExplicitWrite).getDefinition().getRhs()
   }
 
   /** Gets the callable in which this node occurs. */
