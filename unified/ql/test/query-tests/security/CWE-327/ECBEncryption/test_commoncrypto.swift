@@ -202,12 +202,12 @@ func test_commoncrypto2(
 	// block modes (the default is CBC)
 	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(0), key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil)
 	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(kCCOptionPKCS7Padding), key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil)
-	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(kCCOptionECBMode), key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil) // BAD [NOT DETECTED]
-	_ = CCCryptorCreate(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), CCOptions(kCCOptionECBMode), key, keyLen, iv, &myCryptor) // BAD [NOT DETECTED]
-	_ = CCCryptorCreateFromData(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), CCOptions(kCCOptionECBMode), key, keyLen, iv, dataIn, dataInLen, &myCryptor, &dataOutWritten) // BAD [NOT DETECTED]
+	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(kCCOptionECBMode), key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil) // $ MISSING: Alert
+	_ = CCCryptorCreate(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), CCOptions(kCCOptionECBMode), key, keyLen, iv, &myCryptor) // $ MISSING: Alert
+	_ = CCCryptorCreateFromData(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), CCOptions(kCCOptionECBMode), key, keyLen, iv, dataIn, dataInLen, &myCryptor, &dataOutWritten) // $ MISSING: Alert
 
 	// modes
-	_ = CCCryptorCreateWithMode(CCOperation(kCCAlgorithmAES), CCMode(kCCModeECB), CCAlgorithm(kCCAlgorithm3DES), CCPadding(0), iv, key, keyLen, nil, 0, 0, CCModeOptions(0), &myCryptor) // BAD [NOT DETECTED]
+	_ = CCCryptorCreateWithMode(CCOperation(kCCAlgorithmAES), CCMode(kCCModeECB), CCAlgorithm(kCCAlgorithm3DES), CCPadding(0), iv, key, keyLen, nil, 0, 0, CCModeOptions(0), &myCryptor) // $ MISSING: Alert
 	_ = CCCryptorCreateWithMode(CCOperation(kCCAlgorithmAES), CCMode(kCCModeCBC), CCAlgorithm(kCCAlgorithm3DES), CCPadding(0), iv, key, keyLen, nil, 0, 0, CCModeOptions(0), &myCryptor)
 	_ = CCCryptorCreateWithMode(CCOperation(kCCAlgorithmAES), CCMode(kCCModeCFB), CCAlgorithm(kCCAlgorithm3DES), CCPadding(0), iv, key, keyLen, nil, 0, 0, CCModeOptions(0), &myCryptor)
 	_ = CCCryptorCreateWithMode(CCOperation(kCCAlgorithmAES), CCMode(kCCModeCTR), CCAlgorithm(kCCAlgorithm3DES), CCPadding(0), iv, key, keyLen, nil, 0, 0, CCModeOptions(0), &myCryptor)
