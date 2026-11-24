@@ -40,9 +40,10 @@ module KindValidation<KindValidationConfigSig Config> {
           "xslt-injection",
           // JavaScript-only currently, but may be shared in the future
           "cors-origin", "mongodb.sink", "system-prompt-injection", "user-prompt-injection",
-          // Swift-only currently, but may be shared in the future
+          // Swift / Unified Swift only currently, but may be shared in the future
           "database-store", "format-string", "hash-iteration-count", "predicate-injection",
           "preferences-store", "tls-protocol-version", "transmission", "webview-fetch", "xxe",
+          "encryption-block-mode",
           // Go-only currently, but may be shared in the future
           "jwt",
           // CPP-only currently
@@ -134,7 +135,9 @@ module KindValidation<KindValidationConfigSig Config> {
           // JavaScript
           "database-access-result", "response", "request", "browser", "browser-url-query",
           "browser-url-fragment", "browser-url-path", "browser-url", "browser-window-name",
-          "browser-message-event"
+          "browser-message-event",
+          // Unified Swift
+          "ecb-block-mode"
         ]
       or
       this.matches([
