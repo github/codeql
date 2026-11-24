@@ -282,6 +282,14 @@ class ExprTypeMention extends TypeMentionImpl, Expr {
     result.(Plugin::TupleType).getArity() = this.(TupleExpr).getNumberOfElements()
     or
     result.(ClassLikeType).getTypeSelector().getAStaticRef() = this
+    or
+    // A meta type, such as `X.Type`, unless `Type` refers to a nested type named `Type`
+    not exists(getTypeFromRef(this)) and
+    exists(Expr operand | operand = Plugin::getMetaTypeOperand(this) |
+      result.(MetaType).getInstanceType().getNameNode() = getExpandedTypeFromRef(operand)
+      or
+      result.(MetaType).getInstanceType().getTypeSelector().getAStaticRef() = operand
+    )
   }
 
   override Type getUnexpandedType() {

@@ -1552,6 +1552,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (member_access_expr base: {base} member_name_node: (identifier #{name}))
         ),
+        // A metatype (`T.Type`, `P.Protocol`) is represented like a qualified type,
+        // as a member access on the base type.
+        rule!(
+            (metatypeType baseType: @base metatypeSpecifier: @@specifier)
+            =>
+            (member_access_expr base: {base} member_name_node: (identifier #{specifier}))
+        ),
         // Sugared types desugar to `generic_type_expr`: `T?` -> Optional<T>,
         // `[T]` -> Array<T>, `[K: V]` -> Dictionary<K, V>.
         rule!(
@@ -1854,7 +1861,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((inlineArrayType) => (unsupported_node "")),
         rule!((keyPathExpr) => (unsupported_node "")),
         rule!((macroDecl) => (unsupported_node "")),
-        rule!((metatypeType) => (unsupported_node "")),
         rule!((namedOpaqueReturnType) => (unsupported_node "")),
         rule!((operatorDecl) => (unsupported_node "")),
         rule!((packElementExpr) => (unsupported_node "")),
