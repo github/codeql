@@ -413,7 +413,7 @@ public class ESNextParser extends JSXParser {
       return parseExpressionStatement(false, startLoc, expr);
     } else if (this.eat(TokenType.parenL)) {
       DynamicImport di = parseDynamicImport(startLoc);
-      Expression expr = parseSubscripts(di, startPos, startLoc, false);
+      Expression expr = parseExpressionFromAtom(di, startPos, startLoc, false);
       return parseExpressionStatement(false, startLoc, expr);
     } else {
       return super.parseImportRest(loc);
