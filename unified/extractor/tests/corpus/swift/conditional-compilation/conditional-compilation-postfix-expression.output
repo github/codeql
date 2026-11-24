@@ -638,32 +638,307 @@ top_level source="⟨body⟩"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "result" source="result"
-          value: unsupported_node "value\n    #if DEBUG\n        .foo(1)\n    #else\n        .bar(\"hi\")\n    #endif" source="value\n    #if DEBUG\n        .foo(1)\n    #else\n        .bar(\"hi\")\n    #endif"
+          value:
+            if_expr source="value\n    #if ⟨condition⟩\n        ⟨then⟩\n    ⟨else⟩\n    #endif"
+              modifier: modifier "conditional_compilation" source=""
+              condition: identifier "DEBUG" source="DEBUG"
+              then:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee:
+                        member_access_expr source=".⟨member_name_node⟩"
+                          base: identifier "value" source="value" (external)
+                          member_name_node: identifier "foo" source="foo"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: int_literal "1" source="1"
+              else:
+                block source="#else\n        ⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                      callee:
+                        member_access_expr source=".⟨member_name_node⟩"
+                          base: identifier "value" source="value" (external)
+                          member_name_node: identifier "bar" source="bar"
+                      argument:
+                        argument source="⟨value⟩"
+                          value: string_literal "\"hi\"" source="\"hi\""
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "branches" source="branches"
-          value: unsupported_node "makeValue()\n    #if FIRST\n        .foo(.argument).bar[0]!\n    #elseif SECOND\n        .otherMember\n    #else\n        .baz()\n    #endif" source="makeValue()\n    #if FIRST\n        .foo(.argument).bar[0]!\n    #elseif SECOND\n        .otherMember\n    #else\n        .baz()\n    #endif"
+          value:
+            if_expr source="makeValue()\n    #if ⟨condition⟩\n        ⟨then⟩\n    ⟨else⟩\n    #endif"
+              modifier: modifier "conditional_compilation" source=""
+              condition: identifier "FIRST" source="FIRST"
+              then:
+                block source="⟨stmt⟩"
+                  stmt:
+                    unary_expr source="⟨operand⟩⟨operator⟩"
+                      operand:
+                        call_expr source="⟨callee⟩⟨argument⟩]"
+                          callee:
+                            member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                              base:
+                                member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                                  base:
+                                    call_expr source="⟨callee⟩(⟨argument⟩)"
+                                      callee:
+                                        member_access_expr source=".⟨member_name_node⟩"
+                                          base:
+                                            call_expr source="⟨callee⟩()" (external)
+                                              callee: identifier "makeValue" source="makeValue"
+                                          member_name_node: identifier "foo" source="foo"
+                                      argument:
+                                        argument source="⟨value⟩"
+                                          value:
+                                            member_access_expr source="⟨base⟩⟨member_name_node⟩"
+                                              base: inferred_type_expr "." source="."
+                                              member_name_node: identifier "argument" source="argument"
+                                  member_name_node: identifier "bar" source="bar"
+                              member_name_node: identifier "subscript" source="["
+                          argument:
+                            argument source="⟨value⟩"
+                              value: int_literal "0" source="0"
+                      operator: postfix_operator "!" source="!"
+              else:
+                if_expr source="#elseif ⟨condition⟩\n        ⟨then⟩\n    ⟨else⟩"
+                  modifier: modifier "conditional_compilation" source=""
+                  condition: identifier "SECOND" source="SECOND"
+                  then:
+                    block source="⟨stmt⟩"
+                      stmt:
+                        member_access_expr source=".⟨member_name_node⟩"
+                          base:
+                            call_expr source="⟨callee⟩()" (external)
+                              callee: identifier "makeValue" source="makeValue"
+                          member_name_node: identifier "otherMember" source="otherMember"
+                  else:
+                    block source="#else\n        ⟨stmt⟩"
+                      stmt:
+                        call_expr source="⟨callee⟩()"
+                          callee:
+                            member_access_expr source=".⟨member_name_node⟩"
+                              base:
+                                call_expr source="⟨callee⟩()" (external)
+                                  callee: identifier "makeValue" source="makeValue"
+                              member_name_node: identifier "baz" source="baz"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "noElse" source="noElse"
-          value: unsupported_node "makeValue()\n    #if FIRST\n        .foo()\n    #elseif SECOND\n        .bar()\n    #endif" source="makeValue()\n    #if FIRST\n        .foo()\n    #elseif SECOND\n        .bar()\n    #endif"
+          value:
+            if_expr source="⟨else⟩⟨condition⟩⟨then⟩\n    #endif"
+              modifier: modifier "conditional_compilation" source=""
+              condition: identifier "FIRST" source="FIRST"
+              then:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩()"
+                      callee:
+                        member_access_expr source=".⟨member_name_node⟩"
+                          base:
+                            call_expr source="⟨callee⟩()" (external)
+                              callee: identifier "makeValue" source="makeValue"
+                          member_name_node: identifier "foo" source="foo"
+              else:
+                if_expr source="⟨else⟩\n    #if FIRST\n        .foo()\n    #elseif ⟨condition⟩\n        ⟨then⟩"
+                  modifier: modifier "conditional_compilation" source=""
+                  condition: identifier "SECOND" source="SECOND"
+                  then:
+                    block source="⟨stmt⟩"
+                      stmt:
+                        call_expr source="⟨callee⟩()"
+                          callee:
+                            member_access_expr source=".⟨member_name_node⟩"
+                              base:
+                                call_expr source="⟨callee⟩()" (external)
+                                  callee: identifier "makeValue" source="makeValue"
+                              member_name_node: identifier "bar" source="bar"
+                  else:
+                    block source="⟨stmt⟩"
+                      stmt:
+                        call_expr source="⟨callee⟩()"
+                          callee: identifier "makeValue" source="makeValue"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "emptyBranch" source="emptyBranch"
-          value: unsupported_node "value\n    #if FIRST\n        .foo()\n    #else\n    #endif" source="value\n    #if FIRST\n        .foo()\n    #else\n    #endif"
+          value:
+            if_expr source="⟨else⟩⟨condition⟩⟨then⟩\n    #endif"
+              modifier: modifier "conditional_compilation" source=""
+              condition: identifier "FIRST" source="FIRST"
+              then:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩()"
+                      callee:
+                        member_access_expr source=".⟨member_name_node⟩"
+                          base: identifier "value" source="value" (external)
+                          member_name_node: identifier "foo" source="foo"
+              else:
+                block source="⟨stmt⟩\n    #if FIRST\n        .foo()\n    #else"
+                  stmt: identifier "value" source="value"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "nested" source="nested"
-          value: unsupported_node "value\n    #if FIRST\n        .foo()\n            #if SECOND\n                .bar()\n            #else\n                .baz()\n            #endif\n    #else\n        .otherMember\n    #endif" source="value\n    #if FIRST\n        .foo()\n            #if SECOND\n                .bar()\n            #else\n                .baz()\n            #endif\n    #else\n        .otherMember\n    #endif"
+          value:
+            if_expr source="value\n    #if ⟨condition⟩\n        ⟨then⟩\n    ⟨else⟩\n    #endif"
+              modifier: modifier "conditional_compilation" source=""
+              condition: identifier "FIRST" source="FIRST"
+              then:
+                block source="⟨stmt⟩"
+                  stmt:
+                    if_expr source=".foo()\n            #if ⟨condition⟩\n                ⟨then⟩\n            ⟨else⟩\n            #endif"
+                      modifier: modifier "conditional_compilation" source=""
+                      condition: identifier "SECOND" source="SECOND"
+                      then:
+                        block source="⟨stmt⟩"
+                          stmt:
+                            call_expr source="⟨callee⟩()"
+                              callee:
+                                member_access_expr source=".⟨member_name_node⟩"
+                                  base:
+                                    call_expr source="⟨callee⟩()" (external)
+                                      callee:
+                                        member_access_expr source=".⟨member_name_node⟩"
+                                          base: identifier "value" source="value" (external)
+                                          member_name_node: identifier "foo" source="foo"
+                                  member_name_node: identifier "bar" source="bar"
+                      else:
+                        block source="#else\n                ⟨stmt⟩"
+                          stmt:
+                            call_expr source="⟨callee⟩()"
+                              callee:
+                                member_access_expr source=".⟨member_name_node⟩"
+                                  base:
+                                    call_expr source="⟨callee⟩()" (external)
+                                      callee:
+                                        member_access_expr source=".⟨member_name_node⟩"
+                                          base: identifier "value" source="value" (external)
+                                          member_name_node: identifier "foo" source="foo"
+                                  member_name_node: identifier "baz" source="baz"
+              else:
+                block source="#else\n        ⟨stmt⟩"
+                  stmt:
+                    member_access_expr source=".⟨member_name_node⟩"
+                      base: identifier "value" source="value" (external)
+                      member_name_node: identifier "otherMember" source="otherMember"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "inChain" source="inChain"
-          value: unsupported_node "value.foo()\n    #if CHAIN\n        .bar()\n    #endif" source="value.foo()\n    #if CHAIN\n        .bar()\n    #endif"
+          value:
+            if_expr source="⟨else⟩\n    #if ⟨condition⟩\n        ⟨then⟩\n    #endif"
+              modifier: modifier "conditional_compilation" source=""
+              condition: identifier "CHAIN" source="CHAIN"
+              then:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩()"
+                      callee:
+                        member_access_expr source=".⟨member_name_node⟩"
+                          base:
+                            call_expr source="⟨callee⟩()" (external)
+                              callee:
+                                member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                                  base: identifier "value" source="value"
+                                  member_name_node: identifier "foo" source="foo"
+                          member_name_node: identifier "bar" source="bar"
+              else:
+                block source="⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩()"
+                      callee:
+                        member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                          base: identifier "value" source="value"
+                          member_name_node: identifier "foo" source="foo"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "nestedWithoutBase" source="nestedWithoutBase"
-          value: unsupported_node "value\n    #if FIRST\n        #if SECOND\n            .foo()\n        #else\n            .bar()\n        #endif\n    #else\n        .baz()\n    #endif" source="value\n    #if FIRST\n        #if SECOND\n            .foo()\n        #else\n            .bar()\n        #endif\n    #else\n        .baz()\n    #endif"
+          value:
+            if_expr source="value\n    #if ⟨condition⟩\n        ⟨then⟩\n    ⟨else⟩\n    #endif"
+              modifier: modifier "conditional_compilation" source=""
+              condition: identifier "FIRST" source="FIRST"
+              then:
+                block source="⟨stmt⟩"
+                  stmt:
+                    if_expr source="#if ⟨condition⟩\n            ⟨then⟩\n        ⟨else⟩\n        #endif"
+                      modifier: modifier "conditional_compilation" source=""
+                      condition: identifier "SECOND" source="SECOND"
+                      then:
+                        block source="⟨stmt⟩"
+                          stmt:
+                            call_expr source="⟨callee⟩()"
+                              callee:
+                                member_access_expr source=".⟨member_name_node⟩"
+                                  base: identifier "value" source="value" (external)
+                                  member_name_node: identifier "foo" source="foo"
+                      else:
+                        block source="#else\n            ⟨stmt⟩"
+                          stmt:
+                            call_expr source="⟨callee⟩()"
+                              callee:
+                                member_access_expr source=".⟨member_name_node⟩"
+                                  base: identifier "value" source="value" (external)
+                                  member_name_node: identifier "bar" source="bar"
+              else:
+                block source="#else\n        ⟨stmt⟩"
+                  stmt:
+                    call_expr source="⟨callee⟩()"
+                      callee:
+                        member_access_expr source=".⟨member_name_node⟩"
+                          base: identifier "value" source="value" (external)
+                          member_name_node: identifier "baz" source="baz"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "postfixChain" source="postfixChain"
-          value: unsupported_node "baseExpr\n    #if CONDITION_1\n        #if CONDITION_2\n            .someMethod()\n        #endif\n        #if CONDITION_3\n            .otherMethod()\n        #endif\n    #endif" source="baseExpr\n    #if CONDITION_1\n        #if CONDITION_2\n            .someMethod()\n        #endif\n        #if CONDITION_3\n            .otherMethod()\n        #endif\n    #endif"
+          value:
+            if_expr source="⟨else⟩\n    #if ⟨condition⟩\n        ⟨then⟩\n    #endif"
+              modifier: modifier "conditional_compilation" source=""
+              condition: identifier "CONDITION_1" source="CONDITION_1"
+              then:
+                block source="⟨stmt⟩"
+                  stmt:
+                    if_expr source="⟨else⟩\n        #if ⟨condition⟩\n            ⟨then⟩\n        #endif"
+                      modifier: modifier "conditional_compilation" source=""
+                      condition: identifier "CONDITION_3" source="CONDITION_3"
+                      then:
+                        block source="⟨stmt⟩"
+                          stmt:
+                            call_expr source="⟨callee⟩()"
+                              callee:
+                                member_access_expr source=".⟨member_name_node⟩"
+                                  base:
+                                    if_expr source="#if ⟨condition⟩\n            ⟨then⟩\n        #endif" (external)
+                                      modifier: modifier "conditional_compilation" source=""
+                                      condition: identifier "CONDITION_2" source="CONDITION_2"
+                                      then:
+                                        block source="⟨stmt⟩"
+                                          stmt:
+                                            call_expr source="⟨callee⟩()"
+                                              callee:
+                                                member_access_expr source=".⟨member_name_node⟩"
+                                                  base: identifier "baseExpr" source="baseExpr" (external)
+                                                  member_name_node: identifier "someMethod" source="someMethod"
+                                      else:
+                                        block source="⟨stmt⟩" (external)
+                                          stmt: identifier "baseExpr" source="baseExpr"
+                                  member_name_node: identifier "otherMethod" source="otherMethod"
+                      else:
+                        block source="⟨stmt⟩"
+                          stmt:
+                            if_expr source="#if ⟨condition⟩\n            ⟨then⟩\n        #endif"
+                              modifier: modifier "conditional_compilation" source=""
+                              condition: identifier "CONDITION_2" source="CONDITION_2"
+                              then:
+                                block source="⟨stmt⟩"
+                                  stmt:
+                                    call_expr source="⟨callee⟩()"
+                                      callee:
+                                        member_access_expr source=".⟨member_name_node⟩"
+                                          base: identifier "baseExpr" source="baseExpr" (external)
+                                          member_name_node: identifier "someMethod" source="someMethod"
+                              else:
+                                block source="⟨stmt⟩" (external)
+                                  stmt: identifier "baseExpr" source="baseExpr"
+              else:
+                block source="⟨stmt⟩"
+                  stmt: identifier "baseExpr" source="baseExpr"

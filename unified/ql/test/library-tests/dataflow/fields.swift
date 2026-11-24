@@ -30,7 +30,7 @@ func postfixConditionalFieldWrite() {
         #if FIRST
             .setField(source("fields.postfix-write"))
         #endif
-    sink(box.field)  // $ MISSING: hasValueFlow=fields.postfix-write
+    sink(box.field)  // $ hasValueFlow=fields.postfix-write
 }
 
 func inheritedFields() {

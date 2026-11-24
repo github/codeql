@@ -51,6 +51,15 @@ struct SwiftContext {
     /// When iterating over the clauses of a conditional compilation block, this
     /// holds the tail of the clauses that have already been translated.
     conditional_compilation_tail: Option<yeast::OutputId>,
+    /// Base to copy into each branch of a postfix conditional compilation
+    /// block. This is populated whenever we encounter a postfix conditional
+    /// compilation block.
+    conditional_compilation_base: Option<yeast::Id>,
+    /// Inside (potentially nested) postfix conditional compilation blocks this
+    /// maps leading expressions in branches to the base that should be
+    /// substituted into them. Keep the input ids so each use translates a fresh
+    /// tree.
+    conditional_compilation_leading_bases: Vec<(yeast::Id, yeast::Id)>,
     /// The enclosing `subscriptDecl`, set while translating its accessor
     /// block so the inner `accessorDecl` rule emits `subscript` methods
     /// rather than property accessors, and while translating its parameters,
@@ -245,6 +254,69 @@ fn subscript_method(
             return_type: {element_type}
             body: {body}))
     }
+}
+
+/// Get the first input child in `field` of `node`, or `None` if the field is
+/// absent or empty.
+fn input_child(
+    ctx: &yeast::build::BuildCtx<'_, SwiftContext>,
+    node: yeast::Id,
+    field: &str,
+) -> Option<yeast::Id> {
+    let field = ctx.ast().field_id_for_name(field)?;
+    ctx.ast()
+        .get_node(node)?
+        .field_children(field)
+        .first()
+        .copied()
+}
+
+/// Find the leading expression in a conditional compilation body. This is
+/// either a member access (`.member`) or a postfix conditional expression
+/// _without_ a base.
+fn find_leading_expr(
+    ctx: &yeast::build::BuildCtx<'_, SwiftContext>,
+    mut node: yeast::Id,
+) -> yeast::Id {
+    loop {
+        let kind = ctx.ast().get_node(node).expect("postfix node").kind_name();
+        // This should be sufficient to reach the leading member. Note that
+        // since the body always starts with `.` or `#if` the expressions that
+        // can appear is severely restricted.
+        let field = match kind {
+            "memberAccessExpr" | "postfixIfConfigExpr" => "base",
+            "functionCallExpr" | "subscriptCallExpr" => "calledExpression",
+            _ => "expression",
+        };
+        let Some(child) = input_child(ctx, node, field) else {
+            return node;
+        };
+        node = child;
+    }
+}
+
+/// Translate a conditional compilation clause body into a block.
+fn conditional_compilation_body(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    items: Vec<yeast::Id>,
+) -> yeast::OutputId {
+    let Some(base) = ctx.conditional_compilation_base.take() else {
+        // If there's no base, then we're not within a postfix conditional
+        // compilation clause and in that case the body should be a block.
+        return tree!((block stmt: {items}));
+    };
+    let statements = if let Some(&suffix) = items.first() {
+        let leading = find_leading_expr(ctx, suffix);
+        ctx.conditional_compilation_leading_bases
+            .push((leading, base));
+        let statements = ctx.translate(items);
+        ctx.conditional_compilation_leading_bases.pop();
+        statements
+    } else {
+        // On empty branches, just translate the base as the body.
+        ctx.translate(base)
+    };
+    tree!((block stmt: {statements}))
 }
 
 #[allow(clippy::too_many_lines)]
@@ -1027,10 +1099,24 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (member_access_expr base: {base} member_name_node: (identifier #{member}))
         ),
+        // A member access without a base: `.member`. These can occur in two
+        // contexts:
+        // - Inside a postfix `#if` expression, `base #if COND .member() #endif`,
+        //   it denotes conditional acces on the `#if`'s base.
+        // - Otherwise, it denotes a member access with an inferred base type.
         rule!(
-            (memberAccessExpr period: @@dot declName: (declReferenceExpr baseName: @@member))
+            (memberAccessExpr period: @@dot declName: (declReferenceExpr baseName: @@member)) @@node
             =>
-            (member_access_expr base: (inferred_type_expr #{dot}) member_name_node: (identifier #{member}))
+            (member_access_expr
+                base: {
+                    let base = ctx.conditional_compilation_leading_bases.iter().rev().find(|(target, _)| *target == node).copied();
+                    match base {
+                        Some((_, base)) => ctx.translate(base),
+                        None => vec![tree!((inferred_type_expr #{dot}))],
+                    }
+                }
+                member_name_node: (identifier #{member})
+                location: {node})
         ),
         // Control transfer, one rule per keyword. `return` carries an optional
         // value; `break` / `continue` an optional target label; `throw` its
@@ -1076,9 +1162,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 pattern: (identifier #{name})
                 value: {
                     // Expand [x] into [x = x]
-                    match val {
-                        Some(val) => val,
-                        None => tree!((identifier #{name})),
+                    if let Some(val) = val {
+                        val
+                    } else {
+                        tree!((identifier #{name}))
                     }
                 })
         ),
@@ -1125,8 +1212,23 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 // compilation block, then that block will be wrapped in another
                 // `codeBlockItem` which will flip this back to `true`.
                 ctx.conditional_compilation_as_expr = false;
+                let base = ctx.conditional_compilation_base.take();
                 ctx.conditional_compilation_tail = None;
+                if let Some(base) = base
+                    && clauses.last().is_some_and(|clause| input_child(&ctx, *clause, "condition").is_some())
+                {
+                    // When the base is set (meaning we're in a postfix
+                    // conditional compilation expression) and the last clause
+                    // does not have a condition (meaning it's not an `#else`
+                    // branch) then we need to set the tail to base to create a
+                    // "synthetic" else branch. This ensures that
+                    // `base #if .method() #endif`
+                    // gets translated as had it been
+                    // `#if base.method() #else base #endif`.
+                    ctx.conditional_compilation_tail = Some(tree!((block stmt: {base})));
+                }
                 for clause in clauses.into_iter().rev() {
+                    ctx.conditional_compilation_base = base;
                     ctx.conditional_compilation_tail = ctx.translate(clause).into_iter().next();
                 }
                 let result = ctx.conditional_compilation_tail.expect("conditional compilation has no clauses");
@@ -1137,21 +1239,45 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // already processed clauses (stored in `conditional_compilation_tail`)
         // inserted into the else branch.
         rule!(
-            (ifConfigClause condition: @condition elements: _* @items)
+            (ifConfigClause condition: @condition elements: _* @@items)
             =>
             (if_expr
                 // Mark this `if_expr` as coming from conditional compilation.
                 modifier: (modifier "conditional_compilation")
                 condition: {condition}
-                then: (block stmt: {items})
+                then: {conditional_compilation_body(&mut ctx, items)}
                 else: {ctx.conditional_compilation_tail})
         ),
         // A conditional compilation clause without a condition (a final `#else`
         // block).
         rule!(
-            (ifConfigClause elements: _* @items)
+            (ifConfigClause elements: _* @@items)
             =>
-            (block stmt: {items})
+            block {conditional_compilation_body(&mut ctx, items)}
+        ),
+        // A postfix conditional compilation expression. We translate these into
+        // conditional compilation `if` expressions with the base substituted
+        // into each clause. For instance,
+        // ```swift
+        // base #if COND .foo() #else .bar #endif
+        // ```
+        // is tranlated into
+        // ```
+        // if COND { base.foo() } else { base.bar }
+        // ```
+        rule!(
+            (postfixIfConfigExpr base: _? @@base config: @@config) @@node
+            =>
+            expr {
+                ctx.conditional_compilation_base = base.or_else(|| {
+                    ctx.conditional_compilation_leading_bases.iter().rev()
+                        .find(|(target, _)| *target == node)
+                        .map(|(_, base)| *base)
+                });
+                ctx.conditional_compilation_as_expr = true;
+                let result = ctx.translate(config)[0];
+                ctx.set_node_source_range(result, ctx.source_range(node))
+            }
         ),
         // ---- Control flow ----
         // An `if`/`else` expression. Conditions are joined via `and_chain`; the
@@ -1852,7 +1978,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((packElementType) => (unsupported_node "")),
         rule!((packExpansionExpr) => (unsupported_node "")),
         rule!((packExpansionType) => (unsupported_node "")),
-        rule!((postfixIfConfigExpr) => (unsupported_node "")),
         rule!((poundSourceLocation) => (unsupported_node "")),
         rule!((precedenceGroupDecl) => (unsupported_node "")),
         rule!((suppressedType) => (unsupported_node "")),
