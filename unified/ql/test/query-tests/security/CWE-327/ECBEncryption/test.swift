@@ -47,18 +47,18 @@ func getCBCBlockMode() ->  BlockMode {
 
 func test1() {
 	let key: Array<UInt8> = [0x2a, 0x3a, 0x80, 0x05, 0xaf, 0x46, 0x58, 0x2d, 0x66, 0x52, 0x10, 0xae, 0x86, 0xd3, 0x8e, 0x8f]
-	let ecb = ECB() // $ Source
+	let ecb = ECB() // $ Source[unified/swift/ecb-encryption]
 	let iv = getRandomArray()
 	let cbc = CBC(iv: iv)
 	let padding = Padding.noPadding
 
 	// AES test cases
-	let ab1 = AES(key: key, blockMode: ecb, padding: padding) // $ Alert
-	let ab2 = AES(key: key, blockMode: ecb) // $ Alert
-	let ab3 = AES(key: key, blockMode: ECB(), padding: padding) // $ Alert
-	let ab4 = AES(key: key, blockMode: ECB()) // $ Alert
-	let ab5 = AES(key: key, blockMode: getECBBlockMode(), padding: padding) // $ Alert
-	let ab6 = AES(key: key, blockMode: getECBBlockMode()) // $ Alert
+	let ab1 = AES(key: key, blockMode: ecb, padding: padding) // $ Alert[unified/swift/ecb-encryption]
+	let ab2 = AES(key: key, blockMode: ecb) // $ Alert[unified/swift/ecb-encryption]
+	let ab3 = AES(key: key, blockMode: ECB(), padding: padding) // $ Alert[unified/swift/ecb-encryption]
+	let ab4 = AES(key: key, blockMode: ECB()) // $ Alert[unified/swift/ecb-encryption]
+	let ab5 = AES(key: key, blockMode: getECBBlockMode(), padding: padding) // $ Alert[unified/swift/ecb-encryption]
+	let ab6 = AES(key: key, blockMode: getECBBlockMode()) // $ Alert[unified/swift/ecb-encryption]
 
 	let ag1 = AES(key: key, blockMode: cbc, padding: padding) // GOOD
 	let ag2 = AES(key: key, blockMode: cbc) // GOOD
@@ -68,9 +68,9 @@ func test1() {
 	let ag6 = AES(key: key, blockMode: getCBCBlockMode()) // GOOD
 
 	// Blowfish test cases
-	let bb1 = Blowfish(key: key, blockMode: ecb, padding: padding) // $ Alert
-	let bb2 = Blowfish(key: key, blockMode: ECB(), padding: padding) // $ Alert
-	let bb3 = Blowfish(key: key, blockMode: getECBBlockMode(), padding: padding) // $ Alert
+	let bb1 = Blowfish(key: key, blockMode: ecb, padding: padding) // $ Alert[unified/swift/ecb-encryption]
+	let bb2 = Blowfish(key: key, blockMode: ECB(), padding: padding) // $ Alert[unified/swift/ecb-encryption]
+	let bb3 = Blowfish(key: key, blockMode: getECBBlockMode(), padding: padding) // $ Alert[unified/swift/ecb-encryption]
 
 	let bg1 = Blowfish(key: key, blockMode: cbc, padding: padding) // GOOD
 	let bg2 = Blowfish(key: key, blockMode: CBC(iv: iv), padding: padding) // GOOD

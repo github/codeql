@@ -134,7 +134,7 @@ func test_commoncrypto1(key: Data, iv: Data, dataIn: Data, dataOut: inout Data) 
 			ivPtr in
 			let result1 = CCCryptorCreate(
 				CCOperation(kCCEncrypt),
-				CCAlgorithm(kCCAlgorithm3DES), // BAD [NOT DETECTED]
+				CCAlgorithm(kCCAlgorithm3DES), // weak-cryptographic-algorithm
 				CCOptions(0),
 				keyPtr.baseAddress!,
 				keyPtr.count,
@@ -189,25 +189,25 @@ func test_commoncrypto2(
 	// algorithms
 	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES128), 0, key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil)
 	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), 0, key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil)
-	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmDES), 0, key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil) // BAD [NOT DETECTED]
-	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), 0, key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil) // BAD [NOT DETECTED]
+	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmDES), 0, key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil) // weak-cryptographic-algorithm
+	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), 0, key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil) // weak-cryptographic-algorithm
 	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmCAST), 0, key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil)
-	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmRC4), 0, key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil) // BAD [NOT DETECTED]
-	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmRC2), 0, key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil) // BAD [NOT DETECTED]
+	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmRC4), 0, key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil) // weak-cryptographic-algorithm
+	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmRC2), 0, key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil) // weak-cryptographic-algorithm
 	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmBlowfish), 0, key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil)
-	_ = CCCryptorCreate(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), 0, key, keyLen, iv, &myCryptor) // BAD [NOT DETECTED]
-	_ = CCCryptorCreateFromData(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), 0, key, keyLen, iv, dataIn, dataInLen, &myCryptor, &dataOutWritten) // BAD [NOT DETECTED]
-	_ = CCCryptorCreateFromData(CCOperation(kCCDecrypt), CCAlgorithm(kCCAlgorithm3DES), 0, key, keyLen, iv, dataIn, dataInLen, &myCryptor, &dataOutWritten) // BAD [NOT DETECTED]
+	_ = CCCryptorCreate(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), 0, key, keyLen, iv, &myCryptor) // weak-cryptographic-algorithm
+	_ = CCCryptorCreateFromData(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), 0, key, keyLen, iv, dataIn, dataInLen, &myCryptor, &dataOutWritten) // weak-cryptographic-algorithm
+	_ = CCCryptorCreateFromData(CCOperation(kCCDecrypt), CCAlgorithm(kCCAlgorithm3DES), 0, key, keyLen, iv, dataIn, dataInLen, &myCryptor, &dataOutWritten) // weak-cryptographic-algorithm
 
 	// block modes (the default is CBC)
 	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(0), key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil)
 	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(kCCOptionPKCS7Padding), key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil)
-	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(kCCOptionECBMode), key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil) // $ MISSING: Alert
-	_ = CCCryptorCreate(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), CCOptions(kCCOptionECBMode), key, keyLen, iv, &myCryptor) // $ MISSING: Alert
-	_ = CCCryptorCreateFromData(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), CCOptions(kCCOptionECBMode), key, keyLen, iv, dataIn, dataInLen, &myCryptor, &dataOutWritten) // $ MISSING: Alert
+	_ = CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(kCCOptionECBMode), key, keyLen, iv, dataIn, dataInLen, dataOut, dataOutAvail, nil) // $ MISSING: Alert[unified/swift/ecb-encryption]
+	_ = CCCryptorCreate(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), CCOptions(kCCOptionECBMode), key, keyLen, iv, &myCryptor) // $ MISSING: Alert[unified/swift/ecb-encryption]
+	_ = CCCryptorCreateFromData(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithm3DES), CCOptions(kCCOptionECBMode), key, keyLen, iv, dataIn, dataInLen, &myCryptor, &dataOutWritten) // $ MISSING: Alert[unified/swift/ecb-encryption]
 
 	// modes
-	_ = CCCryptorCreateWithMode(CCOperation(kCCAlgorithmAES), CCMode(kCCModeECB), CCAlgorithm(kCCAlgorithm3DES), CCPadding(0), iv, key, keyLen, nil, 0, 0, CCModeOptions(0), &myCryptor) // $ MISSING: Alert
+	_ = CCCryptorCreateWithMode(CCOperation(kCCAlgorithmAES), CCMode(kCCModeECB), CCAlgorithm(kCCAlgorithm3DES), CCPadding(0), iv, key, keyLen, nil, 0, 0, CCModeOptions(0), &myCryptor) // $ MISSING: Alert[unified/swift/ecb-encryption]
 	_ = CCCryptorCreateWithMode(CCOperation(kCCAlgorithmAES), CCMode(kCCModeCBC), CCAlgorithm(kCCAlgorithm3DES), CCPadding(0), iv, key, keyLen, nil, 0, 0, CCModeOptions(0), &myCryptor)
 	_ = CCCryptorCreateWithMode(CCOperation(kCCAlgorithmAES), CCMode(kCCModeCFB), CCAlgorithm(kCCAlgorithm3DES), CCPadding(0), iv, key, keyLen, nil, 0, 0, CCModeOptions(0), &myCryptor)
 	_ = CCCryptorCreateWithMode(CCOperation(kCCAlgorithmAES), CCMode(kCCModeCTR), CCAlgorithm(kCCAlgorithm3DES), CCPadding(0), iv, key, keyLen, nil, 0, 0, CCModeOptions(0), &myCryptor)
